@@ -1,0 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
+
+.contact {
+  display: flex;
+  height: 1000px;
+  justify-content: center;
+  align-items: center;
+}

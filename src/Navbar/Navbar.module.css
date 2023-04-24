@@ -1,0 +1,112 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
+
+.header {
+  min-width: 1024px;
+  height: 500px;
+  width: 100vw;
+  display: flex;
+}
+
+.block {
+  position: absolute;
+  height: 48px;
+  top: 0;
+  width: auto;
+  box-sizing: border-box;
+  opacity: 0.8;
+  border: 1px solid #1D2E43;
+  border-left: 1px solid #1D2E43;
+  background: rgba(246, 246, 246, 0.9)
+}
+
+.block_logo {
+text-align: left;
+width: 100%;
+height: 48px;
+border-right: none;
+min-width: 1024px;
+display: flex;
+align-items: center;
+padding-left: 29.84px;
+} 
+.block_logo:hover {
+  background: rgba(212, 237, 251, 0.6);
+  cursor: pointer;
+}
+
+.block1 {
+  width: 149px;
+  height: 48px;
+  right: 836px;
+  border-right: none;
+}
+.block1:hover {
+  background: rgba(212, 237, 251, 0.6);
+  cursor: pointer;
+}
+.block2 {
+  width: 149px;
+  height: 48px;
+  right: 685px; 
+  border-right: none;
+} 
+.block2:hover {
+  background: rgba(212, 237, 251, 0.6);
+  cursor: pointer;
+}
+.block3 {
+  width: 149px;
+  height: 48px;
+  right: 536px; 
+  border-right: none;
+}
+.block3:hover {
+  background: rgba(212, 237, 251, 0.6);
+  cursor: pointer;
+}
+.block4 {
+  width: 149px;
+  height: 48px;
+  right: 385px;
+  border-right: none;
+}
+.block4:hover {
+  background: rgba(212, 237, 251, 0.6);
+  cursor: pointer;
+}
+.block5 {
+  width: 149px;
+  height: 48px;
+  right: 236px;
+  border-right: none;
+}
+.block5:hover {
+  background: rgba(212, 237, 251, 0.6);
+  cursor: pointer;
+}
+.block6{
+  width: 149px;
+  height: 48px;
+  right: 87px;
+  border-right: none;
+}
+.block6:hover {
+  background: rgba(212, 237, 251, 0.6);
+  cursor: pointer;
+}
+
+.block_lang {
+  width: 85px;
+  height: 48px;
+  right: 0px;
+
+}    
+ button:hover p {
+   color: #FF7F6A; 
+ }
+ img:hover {
+  cursor: pointer;
+}
+img {
+   left: 0px;
+}
