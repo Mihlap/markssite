@@ -1,7 +1,7 @@
-# Getting Started with Create React App
+# Marks Group main site
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
+ Готовим сайт к выставке которая состояиться 24 мая 
+<!--
 ## Available Scripts
 
 In the project directory, you can run:
@@ -67,4 +67,4 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/d
 
 ### `npm run build` fails to minify
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify) -->
