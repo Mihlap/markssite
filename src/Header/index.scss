@@ -1,44 +1,27 @@
 
-.title {
-  font-size: max(2vw, 24px);
-  line-height: 1.1;
-  padding-bottom: .4em;
-  color: rgb(255, 255, 255);
-  text-shadow: 0 2px 2px rgba(0, 0, 0, .1);
-}
-
-.text {
-  font-size: max(1vw, 15px);
-  line-height: 1.4;
-  overflow: hidden;
-  padding-bottom: 20px;
-  color: rgba(255, 255, 255, 0.7);
-}
-
 .accordions {
   display: flex;
-  position: absolute;
+  position: relative;
   flex-direction: column;
   width: 100%;
-  height: auto;
-  top: 2450px;
+  height: 100%;
+  top: 1200px;
   font-family: 'Unbounded';
   font-style: normal;
   font-weight: 300;
   font-size: 32px;
   line-height: 40px;
   color: #3C3C3C;
-  z-index: -1;
+   // z-index: -2;
 }
 
 .accordion {
   background: linear-gradient(200deg, rgb(29, 145, 252) 13.57%, rgb(90, 54, 192) 98.38%);
-  width: max(50vw, 280px);
-  padding: 25px 30px 10px;
-  border-radius: 15px;
-  margin-bottom: 40px;
+  width: max(5vw, auto);
+  padding: 27px 30px 10px;
   box-shadow: 0 30px 30px -10px rgba(0, 0, 0, .3);
-  
+  position: sticky;
+    
   &:nth-child(2) {
     background: linear-gradient(200deg, rgb(242, 136, 133) 13.57%, rgb(233, 79, 102) 98.38%);
   }
@@ -53,7 +36,7 @@
 }
 
 .spacer {
-  top: 2450px;
+  top: 170vh;
 }
 
 @media (max-width: 480px) {
@@ -65,6 +48,21 @@
   }
 }
 
+.title {
+  font-size: max(2vw, 24px);
+  line-height: 1.1;
+  padding-bottom: .4em;
+  color: rgb(255, 255, 255);
+  text-shadow: 0 2px 2px rgba(0, 0, 0, .1);
+}
+
+.text {
+  font-size: max(1vw, 15px);
+  line-height: 1.4;
+  overflow: hidden;
+   // padding-bottom: 20px;
+  color: rgba(255, 255, 255, 0.7);
+}
 
 
 /* .names_competencies {

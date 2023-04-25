@@ -33,30 +33,34 @@ const Header = () => {
 
   gsap.registerPlugin(ScrollTrigger, CSSPlugin);
  
-  useEffect(() => {
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: '.accordions',
-        pin: true,
-        start: 'top top',
-        end: 'bottom top',
-        scrub: 2,
-        ease: 'linear',
-      }
-    })
-    
-    tl.to('.accordion .text', {
-      height: 0,
-      paddingBottom: 0,
-      opacity: 0,
-      stagger: .5,
-    })
-    tl.to('.accordion', {
-      marginBottom: 1,
-      stagger: .5,
-    }, '<')
-  }, []);
+ useEffect(() => {
+  const accordions = document.querySelectorAll('.accordion');
+  const lastAccordion = accordions[accordions.length - 1];
+  const lastAccordionRect = lastAccordion.getBoundingClientRect();
 
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: '.accordions',
+      pin: true,
+      start: `bottom bottom-=${lastAccordionRect.height}`,
+      end: 'bottom top',
+      scrub: true,
+      ease: 'linear',
+    } 
+  })
+  tl.from('.accordion .text', {
+    height: 0,
+    paddingBottom: 0,
+    opacity: 0,
+    stagger: .5,
+  })
+  tl.to('.accordion', {
+    marginBottom: 1,
+    stagger: .5,
+  }, '<')
+}, []);
+
+// test git
   useEffect(() => {
     function handleScroll() {
       const logo = document.querySelector('.logo_fixed');
@@ -69,32 +73,6 @@ const Header = () => {
       } else {
         setIsFixed(false);
       }
-
-      const accordions = document.querySelectorAll('.accordion');
-
-      accordions.forEach((accordion) => {
-       const rect = accordion.getBoundingClientRect();
-       if (rect.top < window.innerHeight * 0.8 && rect.bottom > 0) {
-         gsap.to(accordion.querySelector('.title'), {
-           opacity: 1,
-           duration: 0.5,
-         });
-         gsap.to(accordion.querySelector('.text'), {
-           opacity: 1,
-           duration: 0.5,
-           delay: 0.5,
-         });
-       } else {
-         gsap.to(accordion.querySelector('.title'), {
-           opacity: 0,
-           duration: 0.5,
-         });
-         gsap.to(accordion.querySelector('.text'), {
-           opacity: 0,
-           duration: 0.5,
-         });
-       }
-     });
     }
 
     window.addEventListener('scroll', handleScroll);
