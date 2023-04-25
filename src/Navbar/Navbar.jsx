@@ -4,13 +4,16 @@ import logo from '.././icons/logo.svg';
 import { Link, useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
-
   const [clicked, setClicked] = useState(false);
+  const [navOpen, setNavOpen] = useState(false);
   const navigate = useNavigate();
 
   function handleClick() {
     setClicked(!clicked);
+  }
 
+  if (navOpen) {
+    window.scrollTo(0, 0);
   }
   return (
     <>
@@ -76,42 +79,67 @@ const Navbar = () => {
       </div>
 
       <div className={styles.navDesktop_container}>
-        <div>
+        {/* <div>
           <img src={logo} alt="logo" />
-        </div>
+        </div> */}
         <nav>
           <div className={styles.navbar}>
+            <div className={styles.logo}>
+              <img className={styles.logo_img} src={logo} alt="logo" />
+            </div>
             <div className={`${styles.container} ${styles.nav_container}`}>
               <input
                 className={styles.checkbox}
                 type="checkbox"
                 name=""
                 id=""
+                onClick={() => setNavOpen(!navOpen)}
               />
               <div className={styles.hamburger_lines}>
                 <span className={`${styles.line} ${styles.line1}`}></span>
                 <span className={`${styles.line} ${styles.line2}`}></span>
                 <span className={`${styles.line} ${styles.line3}`}></span>
               </div>
-              <div className={styles.logo}>
-              </div>
-              <div className={styles.menu_items}>
-                <li>
-                  <a href="#">Home</a>
-                </li>
-                <li>
-                  <a href="#">about</a>
-                </li>
-                <li>
-                  <a href="#">blogs</a>
-                </li>
-                <li>
-                  <a href="#">portfolio</a>
-                </li>
-                <li>
-                  <a href="#">contact</a>
-                </li>
-              </div>
+              {navOpen && (
+                <>
+                  <div className={styles.menu_items}>
+                    <li>
+                      <Link to="#">Главная</Link>
+                    </li>
+                    <li>
+                      <Link to="#">Компетенции</Link>
+                    </li>
+                    <li>
+                      <Link to="#">Кейсы</Link>
+                    </li>
+                    <li>
+                      <Link to="#">Публикации</Link>
+                    </li>
+                    <li>
+                      <Link to="#">О Компании</Link>
+                    </li>
+                    <li>
+                      <Link to="#">Контакты</Link>
+                    </li>
+                    <li>
+                      <Link to="#">HR портал</Link>
+                    </li>
+                  </div>
+                  <div className={styles.contact_info}>
+                    <div className={styles.contact_info_block}>
+                      <div className={styles.contact_info_language}>
+                        EN | CN
+                      </div>
+                      <div className={styles.contact_info_mail}>
+                        mail@marksgroup.ru
+                      </div>
+                      <div className={styles.contact_info_phone}>
+                        +7 (495) 120-12-26
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
             </div>
           </div>
         </nav>
