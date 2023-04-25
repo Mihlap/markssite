@@ -1,9 +1,9 @@
 import { Route, Routes } from 'react-router-dom';
 import './App.css';
+import Header from './Header/Header';
 import Company from './Company/Company';
 import Competentions from './Competentions/Competentions';
 import Contacts from './Contacts/Contacts';
-import Header from './Header/Header';
 import NotFound from './NotFound/NotFound';
 import Portal from './Portal/Portal';
 import Project from './Project/Project';
@@ -20,7 +20,6 @@ const App = () => {
       <Route path="/contacts" element={<Contacts />} />
       <Route path="/portal" element={<Portal />} />
       <Route path="*" element={<NotFound />} />
-      <Route/>
      </Routes>
   )
 }
