@@ -12,9 +12,10 @@ const Navbar = () => {
     setClicked(!clicked);
   }
 
-  if (navOpen) {
-    window.scrollTo(0, 0);
+  const openHandler = () => {
+    setNavOpen(!navOpen);
   }
+
   return (
     <>
       <div className={styles.navbar_desctop}>
@@ -93,7 +94,7 @@ const Navbar = () => {
                 type="checkbox"
                 name=""
                 id=""
-                onClick={() => setNavOpen(!navOpen)}
+                onClick={openHandler}
               />
               <div className={styles.hamburger_lines}>
                 <span className={`${styles.line} ${styles.line1}`}></span>
