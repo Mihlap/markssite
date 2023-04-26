@@ -195,8 +195,10 @@ line-height: 20px;
     font-size: 48px;
     line-height: 64px;
     color: #3C3C3C;
-    }
-  
+    background-color: var(--white-F6)
+   }
+
+ 
   .name_11 {
   font-family: 'Unbounded';
   font-style: normal;
@@ -206,6 +208,19 @@ line-height: 20px;
   margin-right: 16px;
   }
   
+
+ 
+ /* Стили для мобильной версии сайта блока NavBar начинаются тут */
+ @media screen and (max-width: 700px) {
+   .main {
+      min-width: 0px;
+   }
+     .header {
+      min-width: 0px;
+     }
+
+  }
+
   
 
 
