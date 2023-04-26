@@ -1,3 +1,9 @@
+:root {
+  --blue: #1D2E43;
+  --light-blue: #75BBFD;
+  --white-F6: #F6F6F6;
+}
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Raleway', 'Segoe UI', 'Roboto', 'Oxygen',
@@ -6,8 +12,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   width: 100vw;
-  /* background-color: black; */
-  
+  background-color: var(--white-F6);
 }
 
 code {
