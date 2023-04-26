@@ -12,93 +12,93 @@ import styles from "./Header.module.css";
 import "./index.scss";
 import CSSPlugin from "gsap/CSSPlugin";
 
-// const settings = {
-//   dots: false,
-//   infinite: true,
-//   speed: 20000,
-//   slidesToShow: 5,
-//   slidesToScroll: 6,
-//   autoplay: true,
-//   autoplaySpeed: 1,
-//   cssEase: "linear",
-//   vertical: false,
-//   verticalSwiping: true,
-//   swipeToSlide: true,
-//   touchThreshold: 1,
-//   arrows: false,
-//   variableWidth: true,
-// };
+const settings = {
+  dots: false,
+  infinite: true,
+  speed: 20000,
+  slidesToShow: 5,
+  slidesToScroll: 6,
+  autoplay: true,
+  autoplaySpeed: 1,
+  cssEase: "linear",
+  vertical: false,
+  verticalSwiping: true,
+  swipeToSlide: true,
+  touchThreshold: 1,
+  arrows: false,
+  variableWidth: true,
+};
 const Header = () => {
-  // const [isFixed, setIsFixed] = useState(false);
+  const [isFixed, setIsFixed] = useState(false);
 
-  // gsap.registerPlugin(ScrollTrigger, CSSPlugin);
+  gsap.registerPlugin(ScrollTrigger, CSSPlugin);
 
-  // useEffect(() => {
-  //   const accordions = document.querySelectorAll(".accordion");
-  //   const lastAccordion = accordions[accordions.length - 1];
-  //   const lastAccordionRect = lastAccordion.getBoundingClientRect();
+  useEffect(() => {
+    const accordions = document.querySelectorAll(".accordion");
+    const lastAccordion = accordions[accordions.length - 1];
+    const lastAccordionRect = lastAccordion.getBoundingClientRect();
 
-  //   const tl = gsap.timeline({
-  //     scrollTrigger: {
-  //       trigger: ".accordions",
-  //       pin: true,
-  //       start: `bottom bottom-=${lastAccordionRect.height}`,
-  //       end: "bottom top",
-  //       scrub: true,
-  //       ease: "linear",
-  //     },
-  //   });
-  //   tl.from(".accordion .text", {
-  //     height: 0,
-  //     paddingBottom: 0,
-  //     opacity: 0,
-  //     stagger: 0.5,
-  //   });
-  //   tl.to(
-  //     ".accordion",
-  //     {
-  //       marginBottom: 1,
-  //       stagger: 0.5,
-  //     },
-  //     "<"
-  //   );
-  // }, []);
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: ".accordions",
+        pin: true,
+        start: `bottom bottom-=${lastAccordionRect.height}`,
+        end: "bottom top",
+        scrub: true,
+        ease: "linear",
+      },
+    });
+    tl.from(".accordion .text", {
+      height: 0,
+      paddingBottom: 0,
+      opacity: 0,
+      stagger: 0.5,
+    });
+    tl.to(
+      ".accordion",
+      {
+        marginBottom: 1,
+        stagger: 0.5,
+      },
+      "<"
+    );
+  }, []);
 
   // test git
-  // useEffect(() => {
-  //   function handleScroll() {
-  //     const logo = document.querySelector(".logo_fixed");
-  //     const header = document.querySelector("logo_slider");
-  //     const headerHeight = header ? header.offsetHeight : 0;
-  //     const logoPosition = logo ? logo.getBoundingClientRect().top : 0;
+  useEffect(() => {
+    function handleScroll() {
+      const logo = document.querySelector(".logo_fixed");
+      const header = document.querySelector("logo_slider");
+      const headerHeight = header ? header.offsetHeight : 0;
+      const logoPosition = logo ? logo.getBoundingClientRect().top : 0;
 
-  //     if (logoPosition <= headerHeight) {
-  //       setIsFixed(true);
-  //     } else {
-  //       setIsFixed(false);
-  //     }
-  //   }
+      if (logoPosition <= headerHeight) {
+        setIsFixed(true);
+      } else {
+        setIsFixed(false);
+      }
+    }
 
-  //   window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll);
 
-  //   return () => {
-  //     window.removeEventListener("scroll", handleScroll);
-  //   };
-  // }, []);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   return (
     <div className={styles.main}>
       <div className={styles.header}>
         <div className={styles.menu}>
-          {/* <img className={styles.image} src="./image.png" alt="изображение" /> */}
+          <img className={styles.image} src="./image.png" alt="изображение" />
         </div>
         <Navbar />
-        {/* <div className={styles.str}>Награды проектов</div> */}
-        {/* <div className={styles.str1}>
+        <div className={styles.str}>Награды проектов</div>
+        <div className={styles.str1}>
           Наша компания участвует в многочисленных выставках, конференциях и
           конкурсах. Предлагаем ознакомиться с некоторыми докладами
-        </div> */}
-        {/* <div className={styles.logo}>
+        </div>
+        <div className={styles.logo}>
           <Slider
             className={
               isFixed ? `${styles.logo_fixed}` : `${styles.logo_slider}`
@@ -143,15 +143,15 @@ const Header = () => {
               <img src="./assets/6.png" alt="image6" />
             </div>
           </Slider>
-        </div> */}
-        {/* <div className={styles.most}>
+        </div>
+        <div className={styles.most}>
           <img
             className={styles.image_most}
             src="./assets/most.png"
             alt="most"
           />
-        </div> */}
-        {/* <button className={styles.show_svg}>
+        </div>
+        <button className={styles.show_svg}>
           <img src={show} alt="show" />
         </button>
         <div className={styles.card_container}>
@@ -231,10 +231,10 @@ const Header = () => {
             </div>
           </div>
           <div class="spacer"></div>
-        </div> */}
-        {/* <div>
+        </div>
+        <div>
           <Footer />
-        </div> */}
+        </div>
       </div>
     </div>
   );
