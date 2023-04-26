@@ -19,3 +19,10 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+ /* Стили для мобильной версии сайта блока NavBar начинаются тут */
+ @media screen and (max-width: 700px) {
+   .body {
+    overflow-x: hidden;
+   }
+ }
