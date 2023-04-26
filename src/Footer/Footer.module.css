@@ -12,11 +12,11 @@ align-items: flex-start;
 width: 100%;
 min-width: 1024px;
 height: 229px;
-top: 5248px;
+top: 1px;
 background: #1D2E43;
 flex-wrap: wrap;
-position: absolute;
-z-index: 1;
+position: relative;
+z-index: 2;
 }
 
 .mail {
