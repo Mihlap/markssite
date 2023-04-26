@@ -11,6 +11,9 @@ import show from ".././icons/show.svg";
 import styles from "./Header.module.css";
 import "./index.scss";
 import CSSPlugin from "gsap/CSSPlugin";
+import BlockHeader from '../UI/BlockHeader';
+
+
 
 const settings = {
   dots: false,
@@ -64,7 +67,6 @@ const Header = () => {
     );
   }, []);
 
-  // test git
   useEffect(() => {
     function handleScroll() {
       const logo = document.querySelector(".logo_fixed");
@@ -79,10 +81,10 @@ const Header = () => {
       }
     }
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener('scroll', handleScroll);
 
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
@@ -188,6 +190,68 @@ const Header = () => {
           <div className={styles.name_11}>+11</div>
           <div className={styles.name_competencies}>Компетенции</div>
         </div>
+        <Navbar />
+        <div className={styles.str}>
+          Награды проектов
+        </div>
+        <div className={styles.str1}>Наша компания участвует в многочисленных выставках, конференциях и конкурсах. Предлагаем ознакомиться с некоторыми докладами</div>
+        <div className={styles.logo}>
+          <Slider className={isFixed ? `${styles.logo_fixed}` : `${styles.logo_slider}`} {...settings} centerPadding='5px'>
+            <div className={styles.item}><img src="./assets/1.png" alt="image1" /></div>
+            <div className={styles.item}><img src="./assets/2.png" alt="image2" /></div>
+            <div className={styles.item}><img src="./assets/3.png" alt="image3" /></div>
+            <div className={styles.item}><img src="./assets/4.png" alt="image4" /></div>
+            <div className={styles.item}><img src="./assets/5.png" alt="image5" /></div>
+            <div className={styles.item}><img src="./assets/6.png" alt="image6" /></div>
+            {/*добавлено для слайдера*/}
+            <div className={styles.item}><img src="./assets/1.png" alt="image1" /></div>
+            <div className={styles.item}><img src="./assets/2.png" alt="image2" /></div>
+            <div className={styles.item}><img src="./assets/3.png" alt="image3" /></div>
+            <div className={styles.item}><img src="./assets/4.png" alt="image4" /></div>
+            <div className={styles.item}><img src="./assets/5.png" alt="image5" /></div>
+            <div className={styles.item}><img src="./assets/6.png" alt="image6" /></div>
+          </Slider>
+        </div>
+        <div className={styles.test}>
+          <button className={styles.show_svg}>
+          <img src={show} alt="show" />
+        </button>
+        <div className={styles.card_container}>
+          <div className={styles.card_item_1}>
+            <div className={styles.card_img}>
+              <img className={styles.img_1} src="./assets/B.png" alt="image1" />
+            </div>
+            <div className={styles.card_text}>
+              <h3>Смотр-конкурс Стекло в архитектуре 2022</h3>
+              <span>Номинация Объект • нового строительства</span>
+            </div>
+            <button className={styles.card_button}>
+              <img src={IconPlus} alt="button" />
+            </button>
+          </div>
+          <div className={styles.card_item_2}>
+            <div className={styles.card_img}>
+              <img className={styles.img_2} src="./assets/B1.png" alt="image2" />
+            </div>
+            <div className={styles.card_text}>
+              <h3>Смотр-конкурс Стекло в архитектуре 2022</h3>
+              <span>Номинация Объект • нового строительства</span>
+            </div>
+            <button className={styles.card_button}>
+              <img src={IconPlus} alt="button" />
+            </button>
+          </div>
+        </div>
+        <div className={styles.names_contents}>
+          <div className={styles.name_11}>+11</div>
+          <div className={styles.name_competencies}>Компетенции</div>
+        </div>
+        <div className={styles.most}>
+          <img className={styles.image_most} ></img>
+        </div>
+        <div>
+       <BlockHeader />
+        </div>
         <div>
           <div class="spacer"></div>
           <div class="accordions">
@@ -239,5 +303,7 @@ const Header = () => {
     </div>
   );
 };
+
+
 
 export default Header;
