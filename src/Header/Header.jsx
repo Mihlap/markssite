@@ -9,7 +9,6 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import IconPlus from ".././icons/plus.svg";
 import show from ".././icons/show.svg";
 import styles from "./Header.module.css";
-import "./index.scss";
 import CSSPlugin from "gsap/CSSPlugin";
 import BlockHeader from '../UI/BlockHeader';
 
@@ -89,7 +88,7 @@ const Header = () => {
   }, []);
 
   return (
-    <div className={styles.main}>
+    // <div className={styles.main}>
       <div className={styles.header}>
         <div className={styles.menu}>
           <img className={styles.image} src="./image.png" alt="изображение" />
@@ -301,8 +300,10 @@ const Header = () => {
         </div>
       </div>
     </div>
+    /* </div> */
   );
 };
+
 
 
 
