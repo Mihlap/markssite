@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { useEffect, useState } from "react";
 import Footer from "../Footer/Footer";
 import Navbar from "../Navbar/Navbar";
@@ -20,8 +21,7 @@ import D7 from '.././icons/D7.svg';
 import D8 from '.././icons/D8.svg';
 import D9 from '.././icons/D9.svg';
 
-
-
+import photo from "./img/phone.svg";
 
 const settings = {
   dots: false,
@@ -39,7 +39,7 @@ const settings = {
   arrows: false,
   variableWidth: true,
 };
-const Header = () => {
+const Header = ({ handleClickScroll }) => {
   const [isFixed, setIsFixed] = useState(false);
 
   useEffect(() => {
@@ -56,10 +56,10 @@ const Header = () => {
       }
     }
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
 
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
@@ -88,7 +88,19 @@ const Header = () => {
         </Slider>
       </div>
       <div className={styles.test}>
-        <button className={styles.show_svg}>
+        <img className={styles.image_phone} src={photo} alt="photo" />
+      </div>
+      <Navbar handleClickScroll={handleClickScroll} />
+      <div className={styles.header_block}>
+        <h1 className={styles.heading}>Награды проектов</h1>
+        <p className={styles.heading_text}>
+          Наша компания участвует в<br /> многочисленных выставках, конференциях
+          <br /> и конкурсах. Предлагаем ознакомиться с<br /> некоторыми
+          докладами.
+        </p>
+      </div>
+        <div className={styles.test}>
+          <button className={styles.show_svg}>
           <img src={show} alt="show" />
         </button>
         <div className={styles.card_container}>
@@ -176,12 +188,10 @@ const Header = () => {
       <div>
         <Footer />
       </div>
+      </div> */}
     </div>
     /* </div> */
   );
 };
-
-
-
 
 export default Header;
