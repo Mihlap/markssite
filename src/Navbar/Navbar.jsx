@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import styles from './Navbar.module.css';
 import logo from '.././icons/logo.svg';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const Navbar = () => {
   const [clicked, setClicked] = useState(false);
   const [navOpen, setNavOpen] = useState(false);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   function handleClick() {
     setClicked(!clicked);
@@ -75,7 +75,7 @@ const Navbar = () => {
           </button>
         </Link>
         <button className={`${styles.block} ${styles.block_lang}`}>
-          <p>EN</p>
+          <p>EN | CN</p>
         </button>
       </div>
 
