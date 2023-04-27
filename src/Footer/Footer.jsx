@@ -9,7 +9,7 @@ const Footer = () => {
      <a href="mailto:mail@marksgroup.ru">mail@marksgroup.ru</a>
      </div>
      <div className={styles.block_lang}>
-   <p className={styles.en}>EN</p>
+   <p className={styles.en}>EN | CN</p>
 </div>
      <div className={`${styles.office} ${styles.a}`}>Офис Москва</div>
      <div className={styles.social_links}>
