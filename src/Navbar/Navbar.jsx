@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
+import logo from '.././icons/logo.svg';
+import { Link } from 'react-router-dom';
 import styles from "./Navbar.module.css";
-import logo from ".././icons/logo.svg";
-
-import { Link } from "react-router-dom";
 
 const Navbar = ({ handleClickScroll }) => {
   const [clicked, setClicked] = useState(false);
   const [navOpen, setNavOpen] = useState(false);
+
+  // const navigate = useNavigate();
+
 
   function handleClick() {
     setClicked(!clicked);
@@ -16,11 +18,7 @@ const Navbar = ({ handleClickScroll }) => {
     setNavOpen(!navOpen);
   };
 
-  useEffect(() => {
-    console.log(window);
-  }, [navOpen]);
-
-  return (
+ return (
     <>
       <div className={styles.navbar_desctop}>
         <Link
@@ -79,7 +77,7 @@ const Navbar = ({ handleClickScroll }) => {
           </button>
         </Link>
         <button className={`${styles.block} ${styles.block_lang}`}>
-          <p>EN</p>
+          <p>EN | CN</p>
         </button>
       </div>
 
