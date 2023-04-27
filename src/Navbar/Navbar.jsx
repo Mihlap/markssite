@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import styles from './Navbar.module.css';
-import logo from '.././icons/logo.svg';
-import { Link, useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from "react";
+import styles from "./Navbar.module.css";
+import logo from ".././icons/logo.svg";
 
-const Navbar = () => {
+import { Link } from "react-router-dom";
+
+const Navbar = ({ handleClickScroll }) => {
   const [clicked, setClicked] = useState(false);
   const [navOpen, setNavOpen] = useState(false);
-  const navigate = useNavigate();
 
   function handleClick() {
     setClicked(!clicked);
@@ -14,7 +14,11 @@ const Navbar = () => {
 
   const openHandler = () => {
     setNavOpen(!navOpen);
-  }
+  };
+
+  useEffect(() => {
+    console.log(window);
+  }, [navOpen]);
 
   return (
     <>
@@ -94,7 +98,10 @@ const Navbar = () => {
                 type="checkbox"
                 name=""
                 id=""
-                onClick={openHandler}
+                onClick={() => {
+                  openHandler();
+                  handleClickScroll();
+                }}
               />
               <div className={styles.hamburger_lines}>
                 <span className={`${styles.line} ${styles.line1}`}></span>
@@ -125,17 +132,17 @@ const Navbar = () => {
                     <li>
                       <Link to="#">HR портал</Link>
                     </li>
-                  </div>
-                  <div className={styles.contact_info}>
-                    <div className={styles.contact_info_block}>
-                      <div className={styles.contact_info_language}>
-                        EN | CN
-                      </div>
-                      <div className={styles.contact_info_mail}>
-                        mail@marksgroup.ru
-                      </div>
-                      <div className={styles.contact_info_phone}>
-                        +7 (495) 120-12-26
+                    <div className={styles.contact_info}>
+                      <div className={styles.contact_info_block}>
+                        <div className={styles.contact_info_language}>
+                          EN | CN
+                        </div>
+                        <div className={styles.contact_info_mail}>
+                          mail@marksgroup.ru
+                        </div>
+                        <div className={styles.contact_info_phone}>
+                          +7 (495) 120-12-26
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -147,6 +154,6 @@ const Navbar = () => {
       </div>
     </>
   );
-    }
+};
 
-export default Navbar
+export default Navbar;

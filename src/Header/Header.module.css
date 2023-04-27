@@ -1,6 +1,13 @@
 @import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;700;900&family=Unbounded:wght@300&display=swap');
 
+
+:root {
+  --blue: #1D2E43;
+  --light-blue: #75BBFD;
+  --white-F6: #F6F6F6;
+}
+
 .main {
   display: flex;
   min-width: 1024px;
@@ -20,6 +27,32 @@
   width: 100%;
   height: 976px;
   left: 0px;
+ }
+
+ .image_phone {
+  display: none;
+ }
+
+ .header_block {
+  padding-left: 15px;
+  padding-top: 20px;
+ }
+
+
+ .heading {
+  font-family: 'Unbounded';
+  font-weight: 300;
+    font-size: 24px;
+    color: var(--blue);
+ }
+
+ .heading_text {
+   font-family: 'Raleway';
+   font-style: normal;
+   font-weight: 400;
+   font-size: 16px;
+   line-height: 24px;
+   color: var(--blue);
  }
 
 .str {
@@ -215,10 +248,24 @@ line-height: 20px;
    .main {
       min-width: 0px;
    }
-     .header {
+     
+   .header {
       min-width: 0px;
      }
 
+     .image {
+      display: none;
+     }
+
+     .image_phone {
+      display: block;
+      padding-top: 15%;
+      width: 100%;
+     }
+
+         .logo_slider {
+          margin-left: 0;
+         }
   }
 
   

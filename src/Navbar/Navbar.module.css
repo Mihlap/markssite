@@ -156,7 +156,9 @@ img {
   }
 
   .logo_img {
-    width: 90%;
+    position: relative;
+    z-index: 9999;
+    width: 65%;
   }
 
   .container {
@@ -205,30 +207,30 @@ img {
   }
 
   .nav_container .checkbox {
-    position: absolute;
-    display: block;
+    position: relative;
+    z-index: 9999;
     height: 32px;
     width: 32px;
-    top: 15px;
-    left: 310px;
-    z-index: 5;
     opacity: 0;
     cursor: pointer;
+    float: right;
+    margin-right: 8%;
+    bottom: 10%;
+
   }
 
   .nav_container .hamburger_lines {
-    display: block;
     height: 15px;
     width: 41px;
-    position: relative;
-    top: 25px;
-    left: 315px;
-    z-index: 2;
+    top: 3px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    position: relative;
+    z-index: 9998;
+    left: 83%;
   }
-  
+
 
   .nav_container .hamburger_lines .line {
     display: block;
@@ -253,7 +255,7 @@ img {
   }
 
   .navbar .menu_items {
-    margin-top: 115px;
+    padding-top: 115px;
     /* box-shadow: inset 0 0 2000px rgba(255, 255, 255, 0.5); */
     background-color: var(--white-F6);
     height: 100vh;
@@ -265,6 +267,8 @@ img {
     padding-left: 50px; */
     transition: transform 0.5s ease-in-out;
     text-align: center;
+    position: relative;
+    z-index: 9997;
   }
 
   .navbar .menu_items li {
@@ -280,6 +284,8 @@ img {
     /* right: 15px; */
     font-size: 1.2rem;
     color: #0e2431;
+    position: relative;
+    z-index: 9999;
   }
 
   .nav_container input[type="checkbox"]:checked~.menu_items {
@@ -305,7 +311,7 @@ img {
   .contact_info {
     position: fixed;
     right: 15px;
-    bottom: 26px;
+    bottom: 25%;
     color: var(--blue);
     font-weight: 400;
     font-size: 1rem;
@@ -313,11 +319,12 @@ img {
 
   .contact_info_block {
     display: flex;
-      align-items: end;
-      flex-direction: column;
+    align-items: end;
+    flex-direction: column;
   }
-  
-  .contact_info_language, .contact_info_mail {
+
+  .contact_info_language,
+  .contact_info_mail {
     padding-bottom: 9px;
   }
 
