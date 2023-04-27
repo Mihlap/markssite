@@ -15,6 +15,10 @@
     "react-scripts": "5.0.1",
     "react-slick": "^0.29.0",
     "sass": "1.62.0",
+    "@mapbox/mapbox-gl-geocoder": "^5.0.1",
+    "mapbox-gl": "^2.13.0",
+    "mapbox-gl-controls": "^2.3.5",
+    "@mapbox/mapbox-gl-draw": "^1.4.1",
     "slick-carousel": "^1.8.1",
     "web-vitals": "^2.1.4"
   },
