@@ -68,6 +68,9 @@ const Header = ({ handleClickScroll }) => {
     <div className={styles.header}>
       <div className={styles.menu}>
         <img className={styles.image} src="./image.png" alt="изображение" />
+
+        {/* фото для мобильной версии  */}
+      <img className={styles.image_phone} src={photo} alt="photo" />
       </div>
       <Navbar />
       <div className={styles.logo}>
@@ -88,7 +91,6 @@ const Header = ({ handleClickScroll }) => {
         </Slider>
       </div>
       <div className={styles.test}>
-        <img className={styles.image_phone} src={photo} alt="photo" />
       </div>
       <Navbar handleClickScroll={handleClickScroll} />
       <div className={styles.header_block}>
