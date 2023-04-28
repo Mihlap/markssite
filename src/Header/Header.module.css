@@ -309,11 +309,12 @@ span {
 .main_project_right {
   display: grid;
   grid-template-columns: 3fr 4fr;
-  grid-template-rows: auto 1fr auto;
+  grid-auto-rows: minmax(100px, auto);
   grid-column: 2 / span 2;
   padding-bottom: 3vh;
   /* align-items: start; */
-}
+  grid-auto-flow: dense;
+ }
 
 .main_project_right1 {
   display: grid;
