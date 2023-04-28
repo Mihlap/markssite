@@ -64,11 +64,16 @@ const Header = ({ handleClickScroll }) => {
   }, []);
 
   return (
-    // <div className={styles.main}>
+    <div className={styles.main}>
     <div className={styles.header}>
       <div className={styles.menu}>
         <img className={styles.image} src="./image.png" alt="изображение" />
+
+      </div>
+      <div className={styles.test}>
+
         {/* фото для мобильной версии  */}
+
         <img className={styles.image_phone} src={photo} alt="photo" />
       </div>
       <Navbar handleClickScroll={handleClickScroll} />
@@ -166,7 +171,10 @@ const Header = ({ handleClickScroll }) => {
         </div> */}
         {/* <div>
           <BlockHeader />
+        </div>
+
         </div> */}
+
         {/* <Mapbox3D /> */}
       </div>
       {/* <div className={styles.icon_partner}>
@@ -183,7 +191,7 @@ const Header = ({ handleClickScroll }) => {
       {/* <div className={styles.project_name}>Проекты</div> */}
       {/* <div className={styles.main_project}>
         <div className={styles.main_project_left}>
-          <img className={styles.img_poject} src="./assets/project_left.png" alt="project-left" />
+          <img className={styles.img_project} src="./assets/project_left.png" alt="project-left" />
           <div className={styles.card_text}>
               <h3>Жилой квартал PRIME PARK</h3>
               <span>г. Москва, Ленинградский проспект &bull; 2021 </span>
@@ -212,8 +220,11 @@ const Header = ({ handleClickScroll }) => {
             </div>
           </div> 
         </div>
-      </div> */}
-      <div>{/* <Footer /> */}</div>
+      </div>
+      <div>
+        <Footer />
+      </div>
+      </div> 
     </div>
     /* </div> */
   );

@@ -38,7 +38,8 @@ function Block_Header() {
       stagger: .5,
     },
       '<');
-  }, []);
+
+ }, []);
 
   return (
     <div class="wrapper">
