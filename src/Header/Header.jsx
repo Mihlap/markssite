@@ -8,8 +8,8 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import IconPlus from ".././icons/plus.svg";
 import show from ".././icons/show.svg";
-import BlockHeader from '../UI/BlockHeader/BlockHeader';
-import SwiperContainer from './Swiper-Phone/SwiperContainer';
+import BlockHeader from "../UI/BlockHeader/BlockHeader";
+import SwiperContainer from "./Swiper-Phone/SwiperContainer";
 import styles from "./Header.module.css";
  
 import D1 from '.././icons/D1.svg';
@@ -65,22 +65,19 @@ const Header = ({ handleClickScroll }) => {
   }, []);
  
   return (
-    <div className={styles.main}>
     <div className={styles.header}>
       <div className={styles.menu}>
-        <img className={styles.image} src="./image.png" alt="изображение" />
-        </div>
-      <div className={styles.test}>
+        <img className={styles.image} src="./fon.jpg" alt="изображение" />
         {/* фото для мобильной версии  */}
         <img className={styles.image_phone} src={photo} alt="photo" />
       </div>
       <Navbar handleClickScroll={handleClickScroll} />
       <div className={styles.header_desctop_block}>
         <h1 className={styles.desctop_title}>Награды и публикации</h1>
-        <p className={styles.desctop_test}>
+        <div className={styles.desctop_test}>
           Наша компания участвует в многочисленных выставках, конференциях
           <br /> и конкурсах. Предлагаем ознакомиться с некоторыми докладами
-        </p>
+        </div>
       </div>
       <div className={styles.header_block}>
         <h1 className={styles.heading}>Награды проектов</h1>
@@ -90,7 +87,7 @@ const Header = ({ handleClickScroll }) => {
           докладами.
         </p>
       </div>
-      <div className={styles.test}>
+      <div className={styles.container_main}>
         <div className={styles.logo}>
           <Slider
             className={
@@ -117,7 +114,6 @@ const Header = ({ handleClickScroll }) => {
             <div className={styles.item}>
               <img src="./assets/6.png" alt="image6" />
             </div>
-            {/*добавлено для слайдера*/}
             <div className={styles.item}>
               <img src="./assets/1.png" alt="image1" />
             </div>
@@ -141,9 +137,11 @@ const Header = ({ handleClickScroll }) => {
         <div className={styles.swiper_container}>
           <SwiperContainer />
         </div>
-        <button className={styles.show_svg}>
+        {/* эта кнопка сделанна неправильно, из-за неё появляется горизонтальный
+        скролл 👇 */}
+        {/* <button className={styles.show_svg}>
           <img src={show} alt="show" />
-        </button>
+        </button> */}
         <div className={styles.card_container}>
           <div className={styles.card_item_1}>
             <div className={styles.card_img}>
@@ -159,7 +157,11 @@ const Header = ({ handleClickScroll }) => {
           </div>
           <div className={styles.card_item_2}>
             <div className={styles.card_img}>
-              <img className={styles.img_2} src="./assets/B1.png" alt="image2" />
+              <img
+                className={styles.img_2}
+                src="./assets/B1.png"
+                alt="image2"
+              />
             </div>
             <div className={styles.card_text}>
               <h3>Смотр-конкурс Стекло в архитектуре 2022</h3>
@@ -177,7 +179,6 @@ const Header = ({ handleClickScroll }) => {
         <div className={styles.most}>
           <img className={styles.image_most} alt=""></img>
         </div>
-        <div>
           <BlockHeader />
         </div>
         {/* <Mapbox3D /> */}
@@ -198,32 +199,44 @@ const Header = ({ handleClickScroll }) => {
         <div className={styles.main_project_left}>
           <img className={styles.img_poject} src="./assets/project_left.png" alt="project-left" />
           <div className={styles.card_text}>
-              <h3>Жилой квартал PRIME PARK</h3>
-              <span>г. Москва, Ленинградский проспект &bull; 2021 </span>
-            </div>
-         </div>
+            <h3>Жилой квартал PRIME PARK</h3>
+            <span>г. Москва, Ленинградский проспект &bull; 2021 </span>
+          </div>
+        </div>
         <div className={styles.main_project_right}>
-        <div className={styles.main_project_right1}>
-          <img className={styles.img_project} src="./assets/project_right1.png" alt="project-right1" />
-          <div className={styles.card_text}>
+          <div className={styles.main_project_right1}>
+            <img
+              className={styles.img_project}
+              src="./assets/project_right1.png"
+              alt="project-right1"
+            />
+            <div className={styles.card_text}>
               <h3>Гостиничный комплекс с апартаментами</h3>
               <span>г. Москва, наб. Космодамианская &bull; 2021</span>
             </div>
           </div>
-        <div className={styles.main_project_right2}>
-          <img className={styles.img_project} src="./assets/project_right2.png" alt="project-right2" />
-          <div className={styles.card_text}>
+          <div className={styles.main_project_right2}>
+            <img
+              className={styles.img_project}
+              src="./assets/project_right2.png"
+              alt="project-right2"
+            />
+            <div className={styles.card_text}>
               <h3>МФК Комплекс апартаментов &laquo;Slava&raquo;</h3>
               <span>Россия, Москва &bull; 2020</span>
             </div>
           </div>
-        <div className={styles.main_project_right3}>
-          <img className={styles.img_project} src="./assets/project_right3.png" alt="project-right3" />
-          <div className={styles.card_text}>
+          <div className={styles.main_project_right3}>
+            <img
+              className={styles.img_project}
+              src="./assets/project_right3.png"
+              alt="project-right3"
+            />
+            <div className={styles.card_text}>
               <h3>МЖК Бадаевский</h3>
               <span>г. Москва, Кутузовский проспект &bull; 2020</span>
             </div>
-          </div> 
+          </div>
         </div>
       </div>
       <div><Footer /></div>
