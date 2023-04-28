@@ -11,41 +11,45 @@ import Publics from "./Publics/Publics";
 import { useEffect, useState } from "react";
 
 const App = () => {
-  const [isScrollDisabled, setIsScrollDisabled] = useState(false);
+ const [isScrollDisabled, setIsScrollDisabled] = useState(false);
+ const [scrollPosition, setScrollPosition] = useState(0);
 
-  // функция выключения скрола
-  function handleClickScroll() {
-    setIsScrollDisabled((prevState) => !prevState);
-  }
+ useEffect(() => {
+   // Функция для отключения скролла
+   function disableScroll() {
+     // Сохраняем текущую позицию скролла
+     setScrollPosition(
+       window.pageYOffset || document.documentElement.scrollTop
+     );
+     // Фиксируем body в текущей позиции скролла
+     document.body.style.position = "fixed";
+     document.body.style.top = `-${scrollPosition}px`;
+   }
 
-  useEffect(() => {
-    const html = document.documentElement;
-    const body = document.body;
+   // Функция для включения скролла
+   function enableScroll() {
+     // Разблокируем body и возвращаем его в начальное положение
+     document.body.style.position = "";
+     document.body.style.top = "";
+     // Прокручиваем страницу до сохраненной позиции скролла
+     window.scrollTo(0, parseInt(scrollPosition || "0") * -1);
+   }
 
-    if (isScrollDisabled) {
-      // Запретить прокрутку
-      html.style.overflow = "hidden";
-      body.style.overflow = "hidden";
-      body.style.position = "fixed";
-      body.style.width = "100%";
-    } else {
-      // Разрешить прокрутку
-      html.style.overflow = "";
-      body.style.overflowX = "auto";
-      body.style.overflowY = "scroll";
-      body.style.position = "";
-      body.style.width = "";
-    }
+   if (isScrollDisabled) {
+     disableScroll();
+   } else {
+     enableScroll();
+   }
 
-    return () => {
-      // Восстановить значения по умолчанию при размонтировании компонента
-      html.style.overflow = "";
-      body.style.overflowX = "";
-      body.style.overflowY = "";
-      body.style.position = "";
-      body.style.width = "";
-    };
-  }, [isScrollDisabled]);
+   // Очистка эффекта
+   return () => {
+     enableScroll();
+   };
+ }, [isScrollDisabled]);
+
+ function handleClickScroll() {
+   setIsScrollDisabled(!isScrollDisabled);
+ }
 
   return (
     <>
