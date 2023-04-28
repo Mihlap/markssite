@@ -20,7 +20,7 @@ const Mapbox3D = () => {
       antialias: true,
     });
 
-    const marker = new mapboxgl.Marker()
+    new mapboxgl.Marker()
    .setLngLat([37.5804, 55.783])
     .addTo(map);
 
@@ -37,7 +37,7 @@ const Mapbox3D = () => {
           type: 'fill-extrusion',
           minzoom: 11,
           paint: {
-            'fill-extrusion-color': 'gray',
+            'fill-extrusion-color': 'lightblue',            
             'fill-extrusion-height': [
               'interpolate',
               ['linear'],
