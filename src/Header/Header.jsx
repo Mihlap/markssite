@@ -72,6 +72,13 @@ const Header = ({ handleClickScroll }) => {
         <img className={styles.image_phone} src={photo} alt="photo" />
       </div>
       <Navbar handleClickScroll={handleClickScroll} />
+      <div className={styles.header_desctop_block}>
+        <h1 className={styles.desctop_title}>Награды и публикации</h1>
+        <p className={styles.desctop_test}>
+          Наша компания участвует в многочисленных выставках, конференциях<br/> и
+          конкурсах. Предлагаем ознакомиться с некоторыми докладами
+        </p>
+      </div>
       <div className={styles.header_block}>
         <h1 className={styles.heading}>Награды проектов</h1>
         <p className={styles.heading_text}>
