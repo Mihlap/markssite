@@ -3,7 +3,6 @@
 
 .accordions {
   display: flex;
-  // position: relative;
   flex-direction: column;
   width: 100%;
   height: auto;
@@ -22,8 +21,7 @@
   width: max(5vw, auto);
   padding: 27px 30px 10px;
   box-shadow: 0 30px 30px -10px rgba(0, 0, 0, .3);
-  position: sticky;
-    
+     
   &:nth-child(2) {
     background: linear-gradient(200deg, rgb(242, 136, 133) 13.57%, rgb(233, 79, 102) 98.38%);
   }
