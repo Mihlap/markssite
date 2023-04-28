@@ -339,4 +339,18 @@ span {
     min-width: 0px;
   }
 
+    .logo_slider {
+      margin-left: 0;
+    }
+
+  .image {
+    display: none;
+  }
+
+ .image_phone {
+   display: block;
+   padding-top: 15%;
+   width: 100%;
+ }
+
 }
