@@ -23,8 +23,7 @@
     "styled-components": "^5.3.10",
     "web-vitals": "^2.1.4",
     "react-slider-swiper": "^2.0.6",
-    "swiper": "^9.2.4"
-
+    "swiper": "^9.2.4",
     "smooth-scrollbar": "^8.8.3",
     "web-vitals": "^2.1.4"
   },
