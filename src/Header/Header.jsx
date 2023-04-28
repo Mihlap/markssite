@@ -138,7 +138,7 @@ const Header = ({ handleClickScroll }) => {
         <div>
           <BlockHeader />
         </div>
-        <Mapbox3D />
+        {/* <Mapbox3D /> */}
       </div>
       <div className={styles.icon_partner}>
         <img src={D1} alt="logo" />
