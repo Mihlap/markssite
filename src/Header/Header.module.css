@@ -330,6 +330,10 @@ span {
   padding-right: 2.7vw;
 }
 
+.swiper_container {
+  display: none;
+}
+
 /* Стили для мобильной версии сайта блока NavBar начинаются тут */
 @media screen and (max-width: 700px) {
   .main {
@@ -359,6 +363,10 @@ span {
 
  .header_desctop_block {
   display: none;
+ }
+
+ .swiper_container {
+  display: block;
  }
 
 }
