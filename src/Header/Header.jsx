@@ -139,10 +139,10 @@ const Header = ({ handleClickScroll }) => {
         <div className={styles.swiper_container}>
           <SwiperContainer />
         </div>
-        {/* <button className={styles.show_svg}>
+        <button className={styles.show_svg}>
           <img src={show} alt="show" />
-        </button> */}
-        {/* <div className={styles.card_container}>
+        </button>
+        <div className={styles.card_container}>
           <div className={styles.card_item_1}>
             <div className={styles.card_img}>
               <img className={styles.img_1} src="./assets/B.png" alt="image1" />
@@ -174,13 +174,13 @@ const Header = ({ handleClickScroll }) => {
         </div>
         <div className={styles.most}>
           <img className={styles.image_most} alt=""></img>
-        </div> */}
-        {/* <div>
+        </div>
+        <div>
           <BlockHeader />
-        </div> */}
-        {/* <Mapbox3D /> */}
+        </div>
+        <Mapbox3D />
       </div>
-      {/* <div className={styles.icon_partner}>
+      <div className={styles.icon_partner}>
         <img src={D1} alt="logo" />
         <img src={D2} alt="logo" />
         <img src={D3} alt="logo" />
@@ -190,9 +190,9 @@ const Header = ({ handleClickScroll }) => {
         <img src={D7} alt="logo" />
         <img src={D8} alt="logo" />
         <img src={D9} alt="logo" />
-      </div> */}
-      {/* <div className={styles.project_name}>Проекты</div> */}
-      {/* <div className={styles.main_project}>
+      </div>
+      <div className={styles.project_name}>Проекты</div>
+      <div className={styles.main_project}>
         <div className={styles.main_project_left}>
           <img className={styles.img_poject} src="./assets/project_left.png" alt="project-left" />
           <div className={styles.card_text}>
@@ -223,8 +223,8 @@ const Header = ({ handleClickScroll }) => {
             </div>
           </div> 
         </div>
-      </div> */}
-      <div>{/* <Footer /> */}</div>
+      </div>
+      <div><Footer /></div>
     </div>
     /* </div> */
   );
