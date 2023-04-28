@@ -65,20 +65,19 @@ const Header = ({ handleClickScroll }) => {
   }, []);
 
   return (
-    // <div className={styles.main}>
     <div className={styles.header}>
       <div className={styles.menu}>
-        <img className={styles.image} src="./image.png" alt="изображение" />
+        <img className={styles.image} src="./fon.jpg" alt="изображение" />
         {/* фото для мобильной версии  */}
         <img className={styles.image_phone} src={photo} alt="photo" />
       </div>
       <Navbar handleClickScroll={handleClickScroll} />
       <div className={styles.header_desctop_block}>
         <h1 className={styles.desctop_title}>Награды и публикации</h1>
-        <p className={styles.desctop_test}>
+        <div className={styles.desctop_test}>
           Наша компания участвует в многочисленных выставках, конференциях
           <br /> и конкурсах. Предлагаем ознакомиться с некоторыми докладами
-        </p>
+        </div>
       </div>
       <div className={styles.header_block}>
         <h1 className={styles.heading}>Награды проектов</h1>
@@ -88,7 +87,7 @@ const Header = ({ handleClickScroll }) => {
           докладами.
         </p>
       </div>
-      <div className={styles.test}>
+      <div className={styles.container_main}>
         <div className={styles.logo}>
           <Slider
             className={
@@ -115,7 +114,6 @@ const Header = ({ handleClickScroll }) => {
             <div className={styles.item}>
               <img src="./assets/6.png" alt="image6" />
             </div>
-            {/*добавлено для слайдера*/}
             <div className={styles.item}>
               <img src="./assets/1.png" alt="image1" />
             </div>
@@ -139,9 +137,11 @@ const Header = ({ handleClickScroll }) => {
         <div className={styles.swiper_container}>
           <SwiperContainer />
         </div>
-        <button className={styles.show_svg}>
+        {/* эта кнопка сделанна неправильно, из-за неё появляется горизонтальный
+        скролл 👇 */}
+        {/* <button className={styles.show_svg}>
           <img src={show} alt="show" />
-        </button>
+        </button> */}
         <div className={styles.card_container}>
           <div className={styles.card_item_1}>
             <div className={styles.card_img}>
@@ -179,10 +179,8 @@ const Header = ({ handleClickScroll }) => {
         <div className={styles.most}>
           <img className={styles.image_most} alt=""></img>
         </div>
-        <div>
           <BlockHeader />
-        </div>
-        <Mapbox3D />
+        {/* <Mapbox3D /> */}
       </div>
       <div className={styles.icon_partner}>
         <img src={D1} alt="logo" />
@@ -244,11 +242,8 @@ const Header = ({ handleClickScroll }) => {
           </div>
         </div>
       </div>
-      <div>
-        <Footer />
-      </div>
-    </div>
-    /* </div> */
+    <Footer />
+  </div>
   );
 };
 
