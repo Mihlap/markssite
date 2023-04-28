@@ -68,8 +68,12 @@ const Header = ({ handleClickScroll }) => {
     <div className={styles.header}>
       <div className={styles.menu}>
         <img className={styles.image} src="./image.png" alt="изображение" />
+
       </div>
       <div className={styles.test}>
+
+        {/* фото для мобильной версии  */}
+
         <img className={styles.image_phone} src={photo} alt="photo" />
       </div>
       <Navbar handleClickScroll={handleClickScroll} />
@@ -81,28 +85,58 @@ const Header = ({ handleClickScroll }) => {
           докладами.
         </p>
       </div>
+      <div className={styles.test}>
         <div className={styles.logo}>
-        <Slider className={isFixed ? `${styles.logo_fixed}` : `${styles.logo_slider}`} {...settings} centerPadding='5px'>
-          <div className={styles.item}><img src="./assets/1.png" alt="image1" /></div>
-          <div className={styles.item}><img src="./assets/2.png" alt="image2" /></div>
-          <div className={styles.item}><img src="./assets/3.png" alt="image3" /></div>
-          <div className={styles.item}><img src="./assets/4.png" alt="image4" /></div>
-          <div className={styles.item}><img src="./assets/5.png" alt="image5" /></div>
-          <div className={styles.item}><img src="./assets/6.png" alt="image6" /></div>
-          {/*добавлено для слайдера*/}
-          <div className={styles.item}><img src="./assets/1.png" alt="image1" /></div>
-          <div className={styles.item}><img src="./assets/2.png" alt="image2" /></div>
-          <div className={styles.item}><img src="./assets/3.png" alt="image3" /></div>
-          <div className={styles.item}><img src="./assets/4.png" alt="image4" /></div>
-          <div className={styles.item}><img src="./assets/5.png" alt="image5" /></div>
-          <div className={styles.item}><img src="./assets/6.png" alt="image6" /></div>
-        </Slider>
-      </div>
-        <div className={styles.test}>
-          <button className={styles.show_svg}>
+          <Slider
+            className={
+              isFixed ? `${styles.logo_fixed}` : `${styles.logo_slider}`
+            }
+            {...settings}
+            centerPadding="5px"
+          >
+            <div className={styles.item}>
+              <img src="./assets/1.png" alt="image1" />
+            </div>
+            <div className={styles.item}>
+              <img src="./assets/2.png" alt="image2" />
+            </div>
+            <div className={styles.item}>
+              <img src="./assets/3.png" alt="image3" />
+            </div>
+            <div className={styles.item}>
+              <img src="./assets/4.png" alt="image4" />
+            </div>
+            <div className={styles.item}>
+              <img src="./assets/5.png" alt="image5" />
+            </div>
+            <div className={styles.item}>
+              <img src="./assets/6.png" alt="image6" />
+            </div>
+            {/*добавлено для слайдера*/}
+            <div className={styles.item}>
+              <img src="./assets/1.png" alt="image1" />
+            </div>
+            <div className={styles.item}>
+              <img src="./assets/2.png" alt="image2" />
+            </div>
+            <div className={styles.item}>
+              <img src="./assets/3.png" alt="image3" />
+            </div>
+            <div className={styles.item}>
+              <img src="./assets/4.png" alt="image4" />
+            </div>
+            <div className={styles.item}>
+              <img src="./assets/5.png" alt="image5" />
+            </div>
+            <div className={styles.item}>
+              <img src="./assets/6.png" alt="image6" />
+            </div>
+          </Slider>
+        </div>
+        {/* <button className={styles.show_svg}>
           <img src={show} alt="show" />
-        </button>
-        <div className={styles.card_container}>
+        </button> */}
+        {/* <div className={styles.card_container}>
           <div className={styles.card_item_1}>
             <div className={styles.card_img}>
               <img className={styles.img_1} src="./assets/B.png" alt="image1" />
@@ -134,13 +168,16 @@ const Header = ({ handleClickScroll }) => {
         </div>
         <div className={styles.most}>
           <img className={styles.image_most} alt=""></img>
-        </div>
-        <div>
+        </div> */}
+        {/* <div>
           <BlockHeader />
         </div>
+
+        </div> */}
+
         {/* <Mapbox3D /> */}
       </div>
-      <div className={styles.icon_partner}>
+      {/* <div className={styles.icon_partner}>
         <img src={D1} alt="logo" />
         <img src={D2} alt="logo" />
         <img src={D3} alt="logo" />
@@ -150,9 +187,9 @@ const Header = ({ handleClickScroll }) => {
         <img src={D7} alt="logo" />
         <img src={D8} alt="logo" />
         <img src={D9} alt="logo" />
-      </div>
-      <div className={styles.project_name}>Проекты</div>
-      <div className={styles.main_project}>
+      </div> */}
+      {/* <div className={styles.project_name}>Проекты</div> */}
+      {/* <div className={styles.main_project}>
         <div className={styles.main_project_left}>
           <img className={styles.img_project} src="./assets/project_left.png" alt="project-left" />
           <div className={styles.card_text}>
