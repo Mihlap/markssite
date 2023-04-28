@@ -64,13 +64,24 @@ const Header = ({ handleClickScroll }) => {
   }, []);
 
   return (
-    // <div className={styles.main}>
+    <div className={styles.main}>
     <div className={styles.header}>
       <div className={styles.menu}>
         <img className={styles.image} src="./image.png" alt="изображение" />
       </div>
-      <Navbar />
-      <div className={styles.logo}>
+      <div className={styles.test}>
+        <img className={styles.image_phone} src={photo} alt="photo" />
+      </div>
+      <Navbar handleClickScroll={handleClickScroll} />
+      <div className={styles.header_block}>
+        <h1 className={styles.heading}>Награды проектов</h1>
+        <p className={styles.heading_text}>
+          Наша компания участвует в<br /> многочисленных выставках, конференциях
+          <br /> и конкурсах. Предлагаем ознакомиться с<br /> некоторыми
+          докладами.
+        </p>
+      </div>
+        <div className={styles.logo}>
         <Slider className={isFixed ? `${styles.logo_fixed}` : `${styles.logo_slider}`} {...settings} centerPadding='5px'>
           <div className={styles.item}><img src="./assets/1.png" alt="image1" /></div>
           <div className={styles.item}><img src="./assets/2.png" alt="image2" /></div>
@@ -86,18 +97,6 @@ const Header = ({ handleClickScroll }) => {
           <div className={styles.item}><img src="./assets/5.png" alt="image5" /></div>
           <div className={styles.item}><img src="./assets/6.png" alt="image6" /></div>
         </Slider>
-      </div>
-      <div className={styles.test}>
-        <img className={styles.image_phone} src={photo} alt="photo" />
-      </div>
-      <Navbar handleClickScroll={handleClickScroll} />
-      <div className={styles.header_block}>
-        <h1 className={styles.heading}>Награды проектов</h1>
-        <p className={styles.heading_text}>
-          Наша компания участвует в<br /> многочисленных выставках, конференциях
-          <br /> и конкурсах. Предлагаем ознакомиться с<br /> некоторыми
-          докладами.
-        </p>
       </div>
         <div className={styles.test}>
           <button className={styles.show_svg}>
@@ -155,7 +154,7 @@ const Header = ({ handleClickScroll }) => {
       <div className={styles.project_name}>Проекты</div>
       <div className={styles.main_project}>
         <div className={styles.main_project_left}>
-          <img className={styles.img_poject} src="./assets/project_left.png" alt="project-left" />
+          <img className={styles.img_project} src="./assets/project_left.png" alt="project-left" />
           <div className={styles.card_text}>
               <h3>Жилой квартал PRIME PARK</h3>
               <span>г. Москва, Ленинградский проспект &bull; 2021 </span>
@@ -188,7 +187,7 @@ const Header = ({ handleClickScroll }) => {
       <div>
         <Footer />
       </div>
-      </div> */}
+      </div> 
     </div>
     /* </div> */
   );
