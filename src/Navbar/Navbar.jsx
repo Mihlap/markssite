@@ -144,7 +144,7 @@ const Navbar = ({ handleClickScroll }) => {
                     </div>
                   </div>
                 </>
-              )}
+               )} 
             </div>
           </div>
         </nav>

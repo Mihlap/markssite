@@ -9,6 +9,7 @@ import "slick-carousel/slick/slick-theme.css";
 import IconPlus from ".././icons/plus.svg";
 import show from ".././icons/show.svg";
 import BlockHeader from '../UI/BlockHeader/BlockHeader';
+import SwiperContainer from './Swiper-Phone/SwiperContainer';
 import styles from "./Header.module.css";
 
 import D1 from '.././icons/D1.svg';
@@ -77,6 +78,13 @@ const Header = ({ handleClickScroll }) => {
         <img className={styles.image_phone} src={photo} alt="photo" />
       </div>
       <Navbar handleClickScroll={handleClickScroll} />
+      <div className={styles.header_desctop_block}>
+        <h1 className={styles.desctop_title}>Награды и публикации</h1>
+        <p className={styles.desctop_test}>
+          Наша компания участвует в многочисленных выставках, конференциях
+          <br /> и конкурсах. Предлагаем ознакомиться с некоторыми докладами
+        </p>
+      </div>
       <div className={styles.header_block}>
         <h1 className={styles.heading}>Награды проектов</h1>
         <p className={styles.heading_text}>
@@ -133,10 +141,13 @@ const Header = ({ handleClickScroll }) => {
             </div>
           </Slider>
         </div>
-        {/* <button className={styles.show_svg}>
+        <div className={styles.swiper_container}>
+          <SwiperContainer />
+        </div>
+        <button className={styles.show_svg}>
           <img src={show} alt="show" />
-        </button> */}
-        {/* <div className={styles.card_container}>
+        </button>
+        <div className={styles.card_container}>
           <div className={styles.card_item_1}>
             <div className={styles.card_img}>
               <img className={styles.img_1} src="./assets/B.png" alt="image1" />
@@ -168,16 +179,15 @@ const Header = ({ handleClickScroll }) => {
         </div>
         <div className={styles.most}>
           <img className={styles.image_most} alt=""></img>
-        </div> */}
-        {/* <div>
+        </div>
+        <div>
           <BlockHeader />
         </div>
-
-        </div> */}
+        </div> 
 
         {/* <Mapbox3D /> */}
       </div>
-      {/* <div className={styles.icon_partner}>
+      <div className={styles.icon_partner}>
         <img src={D1} alt="logo" />
         <img src={D2} alt="logo" />
         <img src={D3} alt="logo" />
@@ -187,9 +197,9 @@ const Header = ({ handleClickScroll }) => {
         <img src={D7} alt="logo" />
         <img src={D8} alt="logo" />
         <img src={D9} alt="logo" />
-      </div> */}
-      {/* <div className={styles.project_name}>Проекты</div> */}
-      {/* <div className={styles.main_project}>
+      </div>
+      <div className={styles.project_name}>Проекты</div>
+      <div className={styles.main_project}>
         <div className={styles.main_project_left}>
           <img className={styles.img_project} src="./assets/project_left.png" alt="project-left" />
           <div className={styles.card_text}>
@@ -221,10 +231,7 @@ const Header = ({ handleClickScroll }) => {
           </div> 
         </div>
       </div>
-      <div>
-        <Footer />
-      </div>
-      </div> 
+      <div><Footer /></div>
     </div>
     /* </div> */
   );

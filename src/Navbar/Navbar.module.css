@@ -129,9 +129,9 @@ img:hover {
   cursor: pointer;
 }
 
-img {
+/* img {
   left: 0px;
-}
+} */
 
 .navDesktop_container {
   display: none;
@@ -170,6 +170,7 @@ img {
   .navbar {
     width: 100%;
     background-color: var(--white-F6);
+    height: 60px;
   }
 
   .nav_container {
@@ -280,7 +281,7 @@ img {
   .logo {
     position: absolute;
     top: 25px;
-    left: 15px;
+    padding-left: 20px;
     /* right: 15px; */
     font-size: 1.2rem;
     color: #0e2431;

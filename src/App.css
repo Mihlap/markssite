@@ -1,3 +1,34 @@
+:root {
+  --blue: #1D2E43;
+  --light-blue: #75BBFD;
+  --white-F6: #F6F6F6;
+  --orange: #FF7F6A;
+  --light-grey: #EBECEE;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Raleway', 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  width: 100vw;
+  background-color: var(--white-F6);
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+/* Стили для мобильной версии сайта блока NavBar начинаются тут */
+@media screen and (max-width: 700px) {
+  .body {
+    overflow-x: hidden;
+  }
+}
+
 .App {
   text-align: center;
 }
