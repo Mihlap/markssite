@@ -9,6 +9,7 @@ import "slick-carousel/slick/slick-theme.css";
 import IconPlus from ".././icons/plus.svg";
 import show from ".././icons/show.svg";
 import BlockHeader from '../UI/BlockHeader/BlockHeader';
+import SwiperContainer from './Swiper-Phone/SwiperContainer';
 import styles from "./Header.module.css";
 
 import D1 from '.././icons/D1.svg';
@@ -75,8 +76,8 @@ const Header = ({ handleClickScroll }) => {
       <div className={styles.header_desctop_block}>
         <h1 className={styles.desctop_title}>Награды и публикации</h1>
         <p className={styles.desctop_test}>
-          Наша компания участвует в многочисленных выставках, конференциях<br/> и
-          конкурсах. Предлагаем ознакомиться с некоторыми докладами
+          Наша компания участвует в многочисленных выставках, конференциях
+          <br /> и конкурсах. Предлагаем ознакомиться с некоторыми докладами
         </p>
       </div>
       <div className={styles.header_block}>
@@ -134,6 +135,9 @@ const Header = ({ handleClickScroll }) => {
               <img src="./assets/6.png" alt="image6" />
             </div>
           </Slider>
+        </div>
+        <div className={styles.swiper_container}>
+          <SwiperContainer />
         </div>
         {/* <button className={styles.show_svg}>
           <img src={show} alt="show" />
