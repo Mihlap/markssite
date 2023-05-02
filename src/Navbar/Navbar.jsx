@@ -19,7 +19,7 @@ const Navbar = ({ handleClickScroll }) => {
 
   return (
     <>
-      <div className={styles.navbar_desctop}>
+      <nav className={styles.navbar_desctop}>
         <Link
           to="/"
           className={`${styles.block} ${styles.block_logo}`}
@@ -78,7 +78,7 @@ const Navbar = ({ handleClickScroll }) => {
         <button className={`${styles.block} ${styles.block_lang}`}>
           <p>EN | CN</p>
         </button>
-      </div>
+      </nav>
 
       <div className={styles.navDesktop_container}>
         {/* <div>
@@ -144,7 +144,7 @@ const Navbar = ({ handleClickScroll }) => {
                     </div>
                   </div>
                 </>
-               )} 
+              )}
             </div>
           </div>
         </nav>

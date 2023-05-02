@@ -1,132 +1,165 @@
 /* @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;500&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap'); */
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;700;900&display=swap');
+
 :root {
-  --primary-color: #FFBFB5;
-  --secondary-color: #FFFFFF;;
-}
-.main {
-display: flex;
-justify-content: space-between;
-align-items: flex-start;
-width: 100%;
-min-width: 1024px;
-height: 229px;
-top: 1px;
-background: #1D2E43;
-flex-wrap: wrap;
-position: relative;
-z-index: 2;
+  --orange-light: #FFBFB5;
+  --color-white-main: #f6f6f6;
+  --color-white: #FFFFFF;
+  --color-container: #1D2E43;
+  --color-light-grey: #C0C5CB;
+  --color-link-active: #BADDFE;
 }
 
-.mail {
-  color: var(--secondary-color);
-  font-family: 'Raleway', sans-serif;
+.footer_container {
+  display: flex;
+  justify-content: space-between;
+  background-color: var(--color-container);
+  padding: 1.7vh 2.7vh 4vh 2.7vh;
+}
+
+.mail_link {
+  color: var(--color-white-main);
   font-weight: 400;
   font-size: 48px;
   line-height: 48px;
-  width: 457px;
-  height: 48px;
-  margin-left: 27px;
-  margin-top: 17px;
-  position: absolute;
 }
- a {
-  color: var(--secondary-color);
-  text-decoration: none;
- }
 
- a path:hover {
-  fill: var(--primary-color);;
+.mail_link:hover {
+  color: var(--orange-light);
+  cursor: pointer;
+}
+
+.mail_link:visited {
+  color: var(--color-link-active);
+}
+
+.office {
+  color: var(--color-white-main);
+  padding-top: 40px;
+  padding-bottom: 14px;
+  font-weight: 700;
+  font-size: 18px;
+  line-height: 24px;
+}
+
+.tel,
+.address {
+  color: var(--color-white);
+  font-family: 'Raleway', sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  padding-top: 4px;
+}
+
+.tel:hover {
+  color: var(--orange-light);
+  cursor: pointer;
+}
+/* 
+.tel:visited {
+  color: var(--color-link-active);
+} */
+
+.footer_block_right {
+  display: flex;
+  flex-direction: column;
+  align-items: end;
 }
 
 .block_lang {
-  /* position: absolute; */
-  right: 0;
-  width: 85px;
-  height: 50px;
-  margin-right: 31px;
-  margin-top: 17.5px;
-  background: #1D2E43;
-  text-align: right;
-  flex: 0 0 auto;
-  position: absolute;
-} 
-.en {
-color: var(--secondary-color);
-font-family: 'Raleway';
-font-style: normal;
-font-weight: 400;
-font-size: 14px;
-line-height: 18px;
+  color: var(--color-white-main);
 }
-p:hover {
- color: var(--primary-color); 
- }
- .office {
-  color: var(--secondary-color);
-  font-family: 'Raleway';
-  font-size: 18px;
-  font-weight: 700;
-  line-height: 24px;
-  margin-left: 27px;
-  margin-top: 105px;
-  position: absolute;
-  }
-  .social_links {
-  color: var(--secondary-color);
+
+.social_links {
+  padding-top: 69px;
+}
+
+.social_links_item {
+  color: var(--color-white);
   text-decoration: none;
-  font-family: 'Raleway', sans-serif;
   letter-spacing: 0.1em;
   font-size: 14px;
-  font-weight: 400;
+  font-weight: 900;
   line-height: 14px;
-  right: 27px;
-  margin-top: 105px;
- justify-content: flex-end;
- position: absolute;
- }
-
- .social_links a:hover {
-  color: var(--primary-color);
-  }
-
-  .tel {
-  color: var(--secondary-color);
-  font-family: 'Raleway', sans-serif;
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 20px;
-  margin-top: 145px;
-  margin-left: 27px;
-  position: absolute;
-  }
-  .tel:hover {
-    color: var(--primary-color); 
-    }
-  .address {
-  color: var(--secondary-color);
-  font-family: 'Raleway', sans-serif;
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 20px;
-  margin-top: 169px;
-  margin-left: 27px;
 }
- 
-  .job {
-  color: var(--secondary-color);
-  font-family: 'Raleway', sans-serif;
+
+.social_links_item:hover {
+  color: var(--orange-light);
+}
+
+/* .social_links_item:visited {
+  color: var(--color-link-active);
+} */
+
+.job {
+  padding-top: 44px;
+}
+
+.job_link {
+  color: var(--color-light-grey);
   font-size: 14px;
   font-weight: 400;
   line-height: 14px;
-  margin-top: 169px;
-  right: 27px;
-  }
-  .job a:hover {
-  color: var(--primary-color); 
-  }
-  .job a{
-    margin-right: 24px;
+}
+.job_link:hover {
+  color: var(--orange-light);
+}
+
+/* .job_link:visited {
+  color: var(--color-link-active);
+} */
+
+.job_link:not(:last-child) {
+  color: var(--color-light-grey);
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 14px;
+  padding-right: 20px;
+}
+
+
+/* Стили для мобильной версии сайта блока NavBar начинаются тут */
+@media screen and (max-width: 700px) {
+  .footer_container {
+    min-width: 0px;
+    height: auto;
+    flex-direction: column;
+    padding: 2.4vh 1.7vh 4vh 1.7vh;
+    margin-top: 5vh;
   }
 
+  .mail_link {
+    font-weight: 400;
+    font-size: 32px;
+    line-height: 32px;
+  }
+
+  .block_lang {
+    display: none;
+  }
+
+  .office {
+    padding-bottom: 14px;
+  }
+
+  .address {
+    font-size: 12px;
+  }
+
+  .footer_block_right {
+    align-items: normal;
+  }
+
+  .job_link:first-child {
+    display: none;
+  }
+
+  .job {
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: row-reverse;
+    gap: 2vh;
+  }
+}

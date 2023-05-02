@@ -1,3 +1,5 @@
+/* глобальный стили  */
+
 :root {
   --blue: #1D2E43;
   --light-blue: #75BBFD;
@@ -16,6 +18,26 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--white-F6);
   overflow-x: hidden;
+}
+
+ul {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:visited {
+  color: var(--color-link-active);
+}
+
+button {
+  cursor: pointer;
+}
+
+input {
+  outline: none;
 }
 
 code {
