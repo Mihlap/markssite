@@ -1,6 +1,6 @@
 # Marks Group main site
 
- Готовим сайт к выставке которая состояиться 24 мая 
+ ![MarksGroup-site](/preview.png)
 <!--
 ## Available Scripts
 
