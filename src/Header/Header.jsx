@@ -1,14 +1,13 @@
 /* eslint-disable jsx-a11y/no-distracting-elements */
 /* eslint-disable jsx-a11y/img-redundant-alt */
-import React, { useEffect, useState } from "react";
+import React, { useLayoutEffect, useState } from "react";
 import Footer from "../Footer/Footer";
 import Navbar from "../Navbar/Navbar";
-import Mapbox3D from "../UI/Map3D/Mapbox3D";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import IconPlus from ".././icons/plus.svg";
-import show from ".././icons/show.svg";
+// import show from ".././icons/show.svg";
 import BlockHeader from "../UI/BlockHeader/BlockHeader";
 import SwiperContainer from "./Swiper-Phone/SwiperContainer";
 import styles from "./Header.module.css";
@@ -30,7 +29,7 @@ const settings = {
   dots: false,
   infinite: true,
   speed: 20000,
-  slidesToShow: 5,
+  slidesToShow: 4,
   slidesToScroll: 6,
   autoplay: true,
   autoplaySpeed: 1,
@@ -44,8 +43,9 @@ const settings = {
 };
 const Header = ({ handleClickScroll }) => {
   const [isFixed, setIsFixed] = useState(false);
+ 
+  useLayoutEffect(() => {
 
-  useEffect(() => {
     function handleScroll() {
       const logo = document.querySelector(".logo_fixed");
       const header = document.querySelector("logo_slider");
@@ -181,11 +181,7 @@ const Header = ({ handleClickScroll }) => {
         <div className={styles.most}>
           <img className={styles.image_most} alt=""></img>
         </div>
-        <div>
-          <h2>меню с моделями</h2>
-          <h2>карта</h2>
-        </div>
-        {/* <BlockHeader /> */}
+          <BlockHeader />
         {/* <Mapbox3D /> */}
       </div>
       <div className={styles.icon_partner}>
@@ -268,8 +264,8 @@ const Header = ({ handleClickScroll }) => {
           </div>
         </div>
       </div>
-      <Footer />
-    </div>
+    <Footer />
+  </div>
   );
 };
 
