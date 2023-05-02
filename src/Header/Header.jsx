@@ -1,26 +1,25 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
-import React, { useEffect, useState } from "react";
+import React, { useLayoutEffect, useState } from "react";
 import Footer from "../Footer/Footer";
 import Navbar from "../Navbar/Navbar";
-import Mapbox3D from "../UI/Map3D/Mapbox3D";
 import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import IconPlus from ".././icons/plus.svg";
-import show from ".././icons/show.svg";
+// import show from ".././icons/show.svg";
 import BlockHeader from "../UI/BlockHeader/BlockHeader";
 import SwiperContainer from "./Swiper-Phone/SwiperContainer";
 import styles from "./Header.module.css";
  
-import D1 from '.././icons/D1.svg';
-import D2 from '.././icons/D2.svg';
-import D3 from '.././icons/D3.svg';
-import D4 from '.././icons/D4.svg';
-import D5 from '.././icons/D5.svg';
-import D6 from '.././icons/D6.svg';
-import D7 from '.././icons/D7.svg';
-import D8 from '.././icons/D8.svg';
-import D9 from '.././icons/D9.svg';
+import D1 from ".././icons/D1.svg";
+import D2 from ".././icons/D2.svg";
+import D3 from ".././icons/D3.svg";
+import D4 from ".././icons/D4.svg";
+import D5 from ".././icons/D5.svg";
+import D6 from ".././icons/D6.svg";
+import D7 from ".././icons/D7.svg";
+import D8 from ".././icons/D8.svg";
+import D9 from ".././icons/D9.svg";
  
 import photo from "./img/phone.svg";
  
@@ -28,7 +27,7 @@ const settings = {
   dots: false,
   infinite: true,
   speed: 20000,
-  slidesToShow: 5,
+  slidesToShow: 4,
   slidesToScroll: 6,
   autoplay: true,
   autoplaySpeed: 1,
@@ -43,7 +42,7 @@ const settings = {
 const Header = ({ handleClickScroll }) => {
   const [isFixed, setIsFixed] = useState(false);
  
-  useEffect(() => {
+  useLayoutEffect(() => {
     function handleScroll() {
       const logo = document.querySelector(".logo_fixed");
       const header = document.querySelector("logo_slider");
@@ -180,7 +179,6 @@ const Header = ({ handleClickScroll }) => {
           <img className={styles.image_most} alt=""></img>
         </div>
           <BlockHeader />
-        </div>
         {/* <Mapbox3D /> */}
       </div>
       <div className={styles.icon_partner}>
@@ -197,7 +195,11 @@ const Header = ({ handleClickScroll }) => {
       <div className={styles.project_name}>Проекты</div>
       <div className={styles.main_project}>
         <div className={styles.main_project_left}>
-          <img className={styles.img_poject} src="./assets/project_left.png" alt="project-left" />
+          <img
+            className={styles.img_poject}
+            src="./assets/project_left.png"
+            alt="project-left"
+          />
           <div className={styles.card_text}>
             <h3>Жилой квартал PRIME PARK</h3>
             <span>г. Москва, Ленинградский проспект &bull; 2021 </span>
@@ -239,9 +241,8 @@ const Header = ({ handleClickScroll }) => {
           </div>
         </div>
       </div>
-      <div><Footer /></div>
-    </div>
-     </div> 
+    <Footer />
+  </div>
   );
 };
  

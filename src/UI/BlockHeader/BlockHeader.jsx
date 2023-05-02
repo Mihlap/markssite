@@ -4,7 +4,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import CSSPlugin from 'gsap/CSSPlugin';
 import './index.scss';
 
-function Block_Header() {
+function BlockHeader() {
   gsap.registerPlugin(ScrollTrigger, CSSPlugin);
 
   useEffect(() => {
@@ -14,8 +14,8 @@ function Block_Header() {
       scrollTrigger: {
         trigger: '.accordions',
         pinSpacing: true,
-        start: 'top bottom-=300',
-        end: 'bottom top',
+        start: 'bottom bottom-=100',
+        end: 'bottom bottom',
         scrub: true,
         ease: 'linear',
         immediateRender: false,
@@ -27,6 +27,7 @@ function Block_Header() {
         height: 0,
         paddingBottom: 0,
         opacity: 0,
+        // transformOrigin: 'top',
         onComplete: () => {
           accordion.style.height = 'auto';
         }
@@ -45,28 +46,53 @@ function Block_Header() {
     <div class="wrapper">
       <div class="spacer"></div>
       <div class="accordions">
-        <div class="accordion">
+        <div class="accordion part1">
           <div class="title">Архитектура</div>
           <div class="text">
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsum consequatur error natus omnis voluptatem mollitia earum nisi et voluptatibus repellendus!
+           Архитектура и концепции
+           <span>Разработка концепции, архитектурное проектирование -
+            <br/>от идеи до ввода объекта в эксплуатацию</span>
+           Адаптация зарубежных концепций
+           <span>Подготовка проектной и рабочей документации на базе
+            <br/>архитектурного/инжинерного решения</span>
+           Дизайн-проекты
+           <span>Для жилых и общественных помещений. Авторский надзор,
+            <br/> ЗD-моделирование, VR-визуализация</span>
+           Проектная и рабочая документация
+           <span>Прохождение экспертизы, авторский надзор, сопровождение
+            <br/>строительства</span>
           </div>
         </div>
-        <div class="accordion">
+        <div class="accordion part2">
           <div class="title">Конструктив</div>
           <div class="text">
-            The breakthrough M1 chip is now in Air. An 8-core CPU delivers up to 60 percent faster performance than the previous generation, making Air a creative and mobile gaming powerhouse. Multitask smoothly between powerful apps and play graphics-intensive games. And with M1, you can go even further with your creativity with apps like SketchUp.
-          </div>
+            Инженерное проектирование
+            <span>Разработка внутренних и наружных инженерных коммуникаций</span>
+            Подземные транспортные сооружения
+            <span>Проекты освоения подземного пространства для уникальных
+              <br/>особо сложных объектов строительства</span>
+              Управление линейными объектами
+              <span>Проектирование транспортных объектов и инфраструктуры</span>
+              Конструктивные решения
+              <span>Разработка полного комплекса документации на всех стадиях
+                <br/>жизненного цикла проекта</span>
+           </div>
         </div>
-        <div class="accordion">
+        <div class="accordion part3">
           <div class="title">Наука</div>
           <div class="text">
-            The 12MP Ultra Wide front camera enables Center Stage, making video calls more natural and content creation more fun. As you move around, the camera automatically pans to keep you centered in the shot. When others join or leave the frame, the view expands or zooms in.
+          Научно-техническое сопровождение
+          <span>Расчетное сопровождение проектирования и строительства
+            <br/>любой сложности
+          </span>
           </div>
         </div>
-        <div class="accordion">
+        <div class="accordion part4">
           <div class="title">Digital</div>
           <div class="text">
-            Join superfast 5G wireless networks when you’re on the go. Download files, play multiplayer games, stream movies, check in with friends, and more. Join superfast 5G wireless networks when you’re on the go. Download files, play multiplayer games, stream movies, check in with friends, and more.
+            BIM моделирование
+            <span>Проекты освоения подземного пространства для уникальных
+              <br/>особо сложных объектов строительства</span>
           </div>
         </div>
       </div>
@@ -75,4 +101,4 @@ function Block_Header() {
   )
 }
 
-export default Block_Header
+export default BlockHeader
