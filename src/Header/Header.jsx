@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/no-distracting-elements */
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { useLayoutEffect, useState } from "react";
 import Footer from "../Footer/Footer";
@@ -10,7 +11,7 @@ import IconPlus from ".././icons/plus.svg";
 import BlockHeader from "../UI/BlockHeader/BlockHeader";
 import SwiperContainer from "./Swiper-Phone/SwiperContainer";
 import styles from "./Header.module.css";
- 
+
 import D1 from ".././icons/D1.svg";
 import D2 from ".././icons/D2.svg";
 import D3 from ".././icons/D3.svg";
@@ -20,9 +21,10 @@ import D6 from ".././icons/D6.svg";
 import D7 from ".././icons/D7.svg";
 import D8 from ".././icons/D8.svg";
 import D9 from ".././icons/D9.svg";
- 
+
 import photo from "./img/phone.svg";
- 
+import SwiperContainerProgect from "./Swiper-project/SwiperContainerProgect";
+
 const settings = {
   dots: false,
   infinite: true,
@@ -43,26 +45,27 @@ const Header = ({ handleClickScroll }) => {
   const [isFixed, setIsFixed] = useState(false);
  
   useLayoutEffect(() => {
+
     function handleScroll() {
       const logo = document.querySelector(".logo_fixed");
       const header = document.querySelector("logo_slider");
       const headerHeight = header ? header.offsetHeight : 0;
       const logoPosition = logo ? logo.getBoundingClientRect().top : 0;
- 
+
       if (logoPosition <= headerHeight) {
         setIsFixed(true);
       } else {
         setIsFixed(false);
       }
     }
- 
+
     window.addEventListener("scroll", handleScroll);
- 
+
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
- 
+
   return (
     <div className={styles.header}>
       <div className={styles.menu}>
@@ -192,7 +195,27 @@ const Header = ({ handleClickScroll }) => {
         <img src={D8} alt="logo" />
         <img src={D9} alt="logo" />
       </div>
+      <marquee
+        behavior="scroll"
+        direction="left"
+        className={styles.marguee_block}
+      >
+        <div className={styles.icon_partner_phone}>
+          <img src={D1} alt="logo" />
+          <img src={D2} alt="logo" />
+          <img src={D3} alt="logo" />
+          <img src={D4} alt="logo" />
+          <img src={D5} alt="logo" />
+          <img src={D6} alt="logo" />
+          <img src={D7} alt="logo" />
+          <img src={D8} alt="logo" />
+          <img src={D9} alt="logo" />
+        </div>
+      </marquee>
       <div className={styles.project_name}>Проекты</div>
+      <div className={styles.swiper_progect_container}>
+      <SwiperContainerProgect />
+      </div>
       <div className={styles.main_project}>
         <div className={styles.main_project_left}>
           <img
@@ -245,5 +268,5 @@ const Header = ({ handleClickScroll }) => {
   </div>
   );
 };
- 
+
 export default Header;
