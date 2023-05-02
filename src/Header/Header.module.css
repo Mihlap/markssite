@@ -28,52 +28,52 @@
   object-fit: cover;
 }
 
- .image_phone {
+.image_phone {
   display: none;
- }
+}
 
- .header_block {
+.header_block {
   display: none;
   padding-left: 15px;
   padding-top: 20px;
- }
+}
 
 
- .heading {
+.heading {
   font-family: 'Unbounded';
   font-weight: 300;
   font-size: 24px;
   color: var(--blue);
- }
+}
 
- .heading_text {
-   font-family: 'Raleway';
-   font-style: normal;
-   font-weight: 400;
-   font-size: 16px;
-   line-height: 24px;
-   color: var(--blue);
- }
-
- .header_desctop_block {
-  padding-left: 263px;
- }
-
- .desctop_title {
-  font-family: 'Unbounded';
-    font-style: normal;
-    font-weight: 300;
-    font-size: 40px;
-    line-height: 48px;
- }
-
- .desctop_test {
+.heading_text {
   font-family: 'Raleway';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 24px;
- }
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--blue);
+}
+
+.header_desctop_block {
+  padding-left: 263px;
+}
+
+.desctop_title {
+  font-family: 'Unbounded';
+  font-style: normal;
+  font-weight: 300;
+  font-size: 40px;
+  line-height: 48px;
+}
+
+.desctop_test {
+  font-family: 'Raleway';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 24px;
+}
 
 .str {
   display: flex;
@@ -231,7 +231,7 @@ span {
   font-weight: 400;
   font-size: 14px;
   line-height: 20px;
- }
+}
 
 .card_button {
   background-color: transparent;
@@ -287,7 +287,7 @@ span {
 .img_project {
   width: 100%;
   height: 100%;
- }
+}
 
 .main_project {
   display: grid;
@@ -295,17 +295,19 @@ span {
   width: 100%;
   padding-bottom: 6vh;
   padding-top: 4vh;
-  }
+}
 
 .main_project_left {
   padding: 3vh 3vw 3.5vh 2.7vw;
 
 }
+
 .main_project_left img {
   width: 100%;
   height: 100%;
- 
+
 }
+
 .main_project_right {
   display: grid;
   grid-template-columns: 3fr 4fr;
@@ -314,7 +316,7 @@ span {
   padding-bottom: 3vh;
   /* align-items: start; */
   grid-auto-flow: dense;
- }
+}
 
 .main_project_right1 {
   display: grid;
@@ -324,12 +326,13 @@ span {
   padding-top: 3vh;
   height: auto;
   width: auto;
-  }
-  .main_project_right1 img {
-    width: 100%;
-    height: 100%;
-   
-  }
+}
+
+.main_project_right1 img {
+  width: 100%;
+  height: 100%;
+
+}
 
 .main_project_right2 {
   display: grid;
@@ -339,12 +342,12 @@ span {
   padding-top: 3vh;
   height: auto;
   width: auto;
- }
+}
 
- .main_project_right2 img {
+.main_project_right2 img {
   width: 100%;
   height: 100%;
- 
+
 }
 
 .main_project_right3 {
@@ -353,12 +356,17 @@ span {
   padding-right: 2.7vw;
   height: auto;
   width: auto;
-  }
-  .card_text {
-    box-sizing: border-box;
-  }
+}
 
-.swiper_container {
+.card_text {
+  box-sizing: border-box;
+}
+
+.swiper_container, .marguee_block {
+  display: none;
+}
+
+.swiper_progect_container {
   display: none;
 }
 
@@ -372,29 +380,65 @@ span {
     min-width: 0px;
   }
 
-    .logo_slider {
-      margin-left: 0;
-    }
+  .logo_slider {
+    margin-left: 0;
+  }
 
   .image {
     display: none;
   }
 
- .image_phone {
-   display: block;
-   padding-top: 15%;
-   width: 100%;
- }
- .header_block {
-  display: block;
- }
+  .image_phone {
+    display: block;
+    padding-top: 15%;
+    width: 100%;
+  }
 
- .header_desctop_block {
-  display: none;
- }
+  .header_block {
+    display: block;
+  }
 
- .swiper_container {
-  display: block;
- }
+  .header_desctop_block,
+  .card_container,
+  .most, .icon_partner {
+    display: none;
+  }
+
+  .swiper_container, .marguee_block {
+    display: block;
+  }
+
+  .names_contents {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    margin-top: 5vh;
+    font-size: 32px;
+  }
+
+  .name_11 {
+    font-weight: 600;
+    font-size: 12px;
+  }
+
+  .icon_partner_phone {
+    display: flex;
+    gap: 30px;
+    padding: 3.7vh 2.9vw 0vh 2.9vw;
+  }
+
+  .project_name {
+  font-weight: 300;
+    font-size: 24px;
+    line-height: 32px;
+  }
+
+  .swiper_progect_container {
+    display: block;
+  }
+
+  .main_project {
+    display: none;
+  }
 
 }

@@ -1,6 +1,7 @@
 import React from 'react';
 import styles from './Footer.module.css';
 import marks from '.././icons/© marksdigital.svg';
+import { Link } from 'react-router-dom';
 
 const Footer = () => {
   return (
@@ -13,10 +14,10 @@ const Footer = () => {
 </div>
      <div className={`${styles.office} ${styles.a}`}>Офис Москва</div>
      <div className={styles.social_links}>
-  <a href="https://vk.com/profile" style={{marginRight: '21px'}}>VK </a>
-  <a href="https://www.instagram.com/profile/" style={{marginRight: '25px'}}>IG </a>
-  <a href="https://www.behance.net/profile" style={{marginRight: '22px'}}>BE </a>
-  <a href="https://telegram.me/profile">TG</a>
+  <Link to="https://vk.com/profile" style={{marginRight: '21px'}}>VK </Link>
+  <Link to="https://www.instagram.com/profile/" style={{marginRight: '25px'}}>IG </Link>
+  <Link to="https://www.behance.net/profile" style={{marginRight: '22px'}}>BE </Link>
+  <Link to="https://telegram.me/profile">TG</Link>
 </div>
 <div className={styles.tel}>+7(495) 120-12-26</div>
      <div className={styles.address}>Москва З-я ул. Ямского Поля, дом 20 строение 1 офис 704</div>
