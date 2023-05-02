@@ -12,6 +12,7 @@
   height: 500px;
   width: 100vw;
   display: flex;
+  
 }
 
 .block {
@@ -23,8 +24,8 @@
   opacity: 0.8;
   border: 1px solid #1D2E43;
   border-left: 1px solid #1D2E43;
-  background: rgba(246, 246, 246, 0.9)
-}
+  background: rgba(246, 246, 246, 0.9);
+  }
 
 .block_logo {
   text-align: left;
