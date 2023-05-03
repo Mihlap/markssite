@@ -70,6 +70,9 @@
 .block_lang {
   color: var(--color-white-main);
 }
+.block_lang:hover {
+  color: var(--orange-light);
+}
 
 .social_links {
   padding-top: 69px;
@@ -77,7 +80,7 @@
 
 .social_links_item {
   color: var(--color-white);
-  text-decoration: none;
+  /* text-decoration: none; */
   letter-spacing: 0.1em;
   font-size: 14px;
   font-weight: 900;
@@ -101,6 +104,7 @@
   font-size: 14px;
   font-weight: 400;
   line-height: 14px;
+  padding-left: 24px;
 }
 .job_link:hover {
   color: var(--orange-light);
