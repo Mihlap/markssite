@@ -1,6 +1,6 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwipeCore, { Navigation, Pagination, Autoplay } from "swiper";
-import { useState, useRef, useEffect } from "react";
+// import { useState, useRef, useEffect } from "react";
 import oneImg from "../img/project_left.png";
 import twoImg from "../img/project_right1.png";
 import threeImg from "../img/project_right2.png";
