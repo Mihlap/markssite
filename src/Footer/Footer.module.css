@@ -48,11 +48,13 @@
   font-weight: 400;
   line-height: 20px;
   padding-top: 4px;
+  font-feature-settings: 'pnum' on, 'lnum' on;
 }
 
 .tel:hover {
   color: var(--orange-light);
   cursor: pointer;
+  
 }
 /* 
 .tel:visited {
