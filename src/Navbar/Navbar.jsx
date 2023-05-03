@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import logo from ".././icons/logo.svg";
 import { Link } from "react-router-dom";
 import styles from "./Navbar.module.css";
+import { useEffect } from "react";
 
 const Navbar = ({ handleClickScroll }) => {
   const [clicked, setClicked] = useState(false);
