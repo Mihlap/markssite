@@ -52,12 +52,8 @@ const App = () => {
  }
 
   return (
-    <>
       <Routes>
-        <Route
-          path="/"
-          element={<Header handleClickScroll={handleClickScroll} />}
-        />
+        <Route path="/" element={<Header handleClickScroll={handleClickScroll} />} />
         <Route path="/competention" element={<Competentions />} />
         <Route path="/project" element={<Project />} />
         <Route path="/public" element={<Publics />} />
@@ -66,7 +62,6 @@ const App = () => {
         <Route path="/portal" element={<Portal />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
-    </>
   );
 };
 

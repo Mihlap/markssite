@@ -17,8 +17,24 @@ const Navbar = ({ handleClickScroll }) => {
     setNavOpen(!navOpen);
   };
 
+  const [prevScrollpos, setPrevScrollpos] = useState(window.pageYOffset);
+  const [visible, setVisible] = useState(true);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollPos = window.pageYOffset;
+      const visible = prevScrollpos > currentScrollPos;
+      setVisible(visible);
+      setPrevScrollpos(currentScrollPos);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [prevScrollpos]);
+
   return (
-    <>
+    <header
+      className={`${styles.fixed} ${visible ? styles.visible : styles.hidden}`}
+    >
       <nav className={styles.navbar_desctop}>
         <Link
           to="/"
@@ -80,7 +96,9 @@ const Navbar = ({ handleClickScroll }) => {
         </button>
       </nav>
 
-      <div className={styles.navDesktop_container}>
+      <div
+        className={styles.navDesktop_container}
+      >
         {/* <div>
           <img src={logo} alt="logo" />
         </div> */}
@@ -89,7 +107,7 @@ const Navbar = ({ handleClickScroll }) => {
             <div className={styles.logo}>
               <img className={styles.logo_img} src={logo} alt="logo" />
             </div>
-            <div className={`${styles.container} ${styles.nav_container}`}>
+            <div  className={`${styles.container} ${styles.nav_container}`}>
               <input
                 className={styles.checkbox}
                 type="checkbox"
@@ -149,7 +167,7 @@ const Navbar = ({ handleClickScroll }) => {
           </div>
         </nav>
       </div>
-    </>
+    </header>
   );
 };
 

@@ -6,6 +6,25 @@
   --white-F6: #F6F6F6;
 }
 
+.fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+}
+
+.hidden {
+    opacity: 0;
+    transform: translateY(-100%);
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+}
+
+.visible {
+    opacity: 1;
+    transition: all .3s ease;
+    transform: translateY(0);
+}
 
 .header {
   min-width: 1024px;
@@ -172,6 +191,7 @@ button:hover p {
     width: 100%;
     background-color: var(--white-F6);
     height: 60px;
+    border-bottom: 1px solid var(--blue);
   }
 
   .nav_container {

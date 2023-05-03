@@ -1,9 +1,29 @@
 import React from "react";
 import styles from "./Footer.module.css";
-import marks from ".././icons/© marksdigital.svg";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
+  function goToLink(link) {
+    window.location.href = link;
+  }
+  const telegramHendler = () => {
+    goToLink("https://web.telegram.org/z/#-1625972274");
+  };
+  // эти 3️⃣ функции 👆👇 имитируют работу Link потому что эти ссылки горят активными, хотя по ним не проходили
+  function goToLinkVK(link) {
+    window.location.href = link;
+  }
+  const vkHendler = () => {
+    goToLinkVK("https://vk.com/marks_group_vk");
+  };
+
+   function mapToLink(link) {
+     window.location.href = link;
+   }
+   const mapHendler = () => {
+     mapToLink("https://yandex.ru/maps/-/CCUgmThXKA");
+   };
+
   return (
     <footer>
       <div className={styles.footer_container}>
@@ -14,24 +34,31 @@ const Footer = () => {
             </Link>
           </div>
           <div className={styles.office}>Офис Москва</div>
-          <div className={styles.tel}>+7(495) 120-12-26</div>
-          <div className={styles.address}>
+          <Link to={"tel:+15551234567"} className={styles.tel}>
+            +7(495) 120-12-26
+          </Link>
+          <span
+            // to={"https://yandex.ru/maps/-/CCUgmThXKA"}
+            className={styles.address}
+            onClick={mapHendler}
+          >
             Москва З-я ул. Ямского Поля, дом 20 строение 1 офис 704
-          </div>
+          </span>
         </div>
         {/* правая сторона  */}
         <div className={styles.footer_block_right}>
           <div className={styles.block_lang}>
-            <span className={styles.en}>EN | CN</span>
+            <span className={styles.en}>EN</span>
           </div>
           <div className={styles.social_links}>
-            <Link
+            <span
               className={styles.social_links_item}
-              to="https://vk.com/marks_group_vk"
+              // to="https://vk.com/marks_group_vk"
+              onClick={vkHendler}
               style={{ marginRight: "21px" }}
             >
               VK
-            </Link>
+            </span>
             <Link
               className={styles.social_links_item}
               to="https://instagram.com/marks_group?igshid=YmMyMTA2M2Y="
@@ -46,12 +73,13 @@ const Footer = () => {
             >
               YT
             </Link>
-            <Link
+            <span
               className={styles.social_links_item}
-              to="https://web.telegram.org/z/#-1625972274"
+              onClick={telegramHendler}
+              // to="https://web.telegram.org/z/#-1625972274"
             >
               TG
-            </Link>
+            </span>
           </div>
           <div className={styles.job}>
             <Link className={styles.job_link} to="/">
@@ -60,9 +88,7 @@ const Footer = () => {
             <Link className={styles.job_link} to="/">
               Документы
             </Link>
-            <Link className={styles.job_link} to="/">
-              © MARKSDIGITAL
-            </Link>
+            <div className={styles.job_link}>© MARKSDIGITAL</div>
           </div>
         </div>
       </div>
