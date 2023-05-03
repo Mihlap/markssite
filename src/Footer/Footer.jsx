@@ -1,9 +1,9 @@
 import React from "react";
 import styles from "./Footer.module.css";
-import marks from ".././icons/© marksdigital.svg";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
+  
   return (
     <footer>
       <div className={styles.footer_container}>
