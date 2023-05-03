@@ -7,16 +7,16 @@ const Footer = () => {
 function goToLink(link) {
     window.location.href = link;
   }
-  const telegramHendler = () => {
-    goToLink("https://web.telegram.org/z/#-1625972274");
-  };
+  // const telegramHendler = () => {
+  //   goToLink("https://web.telegram.org/z/#-1625972274");
+  // };
   // эти 3️⃣ функции 👆👇 имитируют работу Link потому что эти ссылки горят активными, хотя по ним не проходили
   function goToLinkVK(link) {
     window.location.href = link;
   }
-  const vkHendler = () => {
-    goToLinkVK("https://vk.com/marks_group_vk");
-  };
+  // const vkHendler = () => {
+  //   goToLinkVK("https://vk.com/marks_group_vk");
+  // };
 
    function mapToLink(link) {
      window.location.href = link;
@@ -35,7 +35,7 @@ function goToLink(link) {
             </Link>
           </div>
           <div className={styles.office}>Офис Москва</div>
-          <Link to={"tel:+15551234567"} className={styles.tel}>
+          <Link to={"tel:+15551234567"} className={styles.tel} style={{ fontVariantNumeric: 'lining-nums' }}>
             +7(495) 120-12-26
           </Link>
           <span
@@ -52,44 +52,48 @@ function goToLink(link) {
             <span className={styles.en}>EN</span>
           </div>
           <div className={styles.social_links}>
+            <Link  to="https://vk.com/marks_group_vk">
             <span
               className={styles.social_links_item}
-              // to="https://vk.com/marks_group_vk"
-              onClick={vkHendler}
+              // onClick={vkHendler}
               style={{ marginRight: "21px" }}
             >
               VK
             </span>
-            <Link
+            </Link>
+            <Link to="https://instagram.com/marks_group?igshid=YmMyMTA2M2Y=">
+            <span
               className={styles.social_links_item}
-              to="https://instagram.com/marks_group?igshid=YmMyMTA2M2Y="
               style={{ marginRight: "25px" }}
             >
               IG
+              </span>
             </Link>
-            <Link
+            <Link to="https://youtube.com/channel/UCGlamaj4PhMQyy1zsZLtaWg?view_as=subscriber">
+            <span
               className={styles.social_links_item}
-              to="https://youtube.com/channel/UCGlamaj4PhMQyy1zsZLtaWg?view_as=subscriber"
               style={{ marginRight: "22px" }}
             >
               YT
+              </span>
             </Link>
+            <Link to="https://web.telegram.org/z/#-1625972274">
             <span
               className={styles.social_links_item}
-              onClick={telegramHendler}
-              // to="https://web.telegram.org/z/#-1625972274"
+              // onClick={telegramHendler}
             >
               TG
             </span>
+            </Link>
           </div>
           <div className={styles.job}>
-            <Link className={styles.job_link} to="/">
-              Сотрудникам
+            <Link to="/">
+              <span className={styles.job_link}>Сотрудникам</span>
             </Link>
-            <Link className={styles.job_link} to="/">
-              Документы
-            </Link>
-            <div className={styles.job_link}>© MARKSDIGITAL</div>
+            <Link to="/">
+            <span  className={styles.job_link}> Документы</span>
+             </Link>
+            <span className={styles.job_link}>© MARKSDIGITAL</span>
           </div>
         </div>
       </div>
