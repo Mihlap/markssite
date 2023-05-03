@@ -13,7 +13,7 @@ const Mapbox3D = () => {
     const map = new mapboxgl.Map({
       style: 'mapbox://styles/anna02/clgz2fy0200hg01qu5tb8a6is',
       center: [37.581, 55.783], 
-      zoom: 16.5,
+      zoom: 15.5,
       pitch: 45,
       bearing: 10,
       container: 'map', 
