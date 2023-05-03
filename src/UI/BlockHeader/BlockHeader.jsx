@@ -1,24 +1,31 @@
-import React, { useEffect } from 'react';
+import React, { useLayoutEffect } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+// import { ScrollSmoother } from 'gsap/ScrollSmoother';
 import CSSPlugin from 'gsap/CSSPlugin';
 import './index.scss';
 
 function BlockHeader() {
   gsap.registerPlugin(ScrollTrigger, CSSPlugin);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     const accordions = document.querySelectorAll('.accordion');
-
+    
     const tl = gsap.timeline({
       scrollTrigger: {
         trigger: '.accordions',
         pinSpacing: true,
         start: 'bottom bottom-=100',
         end: 'bottom bottom',
-        scrub: true,
+        scrub: false,
         ease: 'linear',
         immediateRender: false,
+        smoothScroll: true,
+        onLeaveBack: () => tl.reverse(
+          {
+            duration: 1.5
+          },
+        ),
       }
     });
 
@@ -27,19 +34,18 @@ function BlockHeader() {
         height: 0,
         paddingBottom: 0,
         opacity: 0,
-        // transformOrigin: 'top',
         onComplete: () => {
-          accordion.style.height = 'auto';
-        }
-      });
+        accordion.style.height = 'auto';
+        },
+        duration: 1,
+       });
     });
 
     tl.to('.accordion', {
       marginTop: 1,
-      stagger: .5,
-    },
+      stagger: 0.5,
+     },
       '<');
-
  }, []);
 
   return (

@@ -3,14 +3,13 @@
 import React, { useLayoutEffect, useState } from "react";
 import Footer from "../Footer/Footer";
 import Navbar from "../Navbar/Navbar";
-import Slider from "react-slick";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
-import IconPlus from ".././icons/plus.svg";
-// import show from ".././icons/show.svg";
 import BlockHeader from "../UI/BlockHeader/BlockHeader";
 import SwiperContainer from "./Swiper-Phone/SwiperContainer";
+import Mapbox3D from '../UI/Map3D/Mapbox3D';
 import styles from "./Header.module.css";
+
+import IconPlus from ".././icons/plus.svg";
+import show from '.././icons/show.svg';
 
 import D1 from ".././icons/D1.svg";
 import D2 from ".././icons/D2.svg";
@@ -24,48 +23,10 @@ import D9 from ".././icons/D9.svg";
 
 import photo from "./img/phone.svg";
 import SwiperContainerProgect from "./Swiper-project/SwiperContainerProgect";
+import SliderHeader from "../UI/SliderHeader/SliderHeader";
 
-const settings = {
-  dots: false,
-  infinite: true,
-  speed: 20000,
-  slidesToShow: 4,
-  slidesToScroll: 6,
-  autoplay: true,
-  autoplaySpeed: 1,
-  cssEase: "linear",
-  vertical: false,
-  verticalSwiping: true,
-  swipeToSlide: true,
-  touchThreshold: 1,
-  arrows: false,
-  variableWidth: true,
-};
 const Header = ({ handleClickScroll }) => {
-  const [isFixed, setIsFixed] = useState(false);
- 
-  useLayoutEffect(() => {
-
-    function handleScroll() {
-      const logo = document.querySelector(".logo_fixed");
-      const header = document.querySelector("logo_slider");
-      const headerHeight = header ? header.offsetHeight : 0;
-      const logoPosition = logo ? logo.getBoundingClientRect().top : 0;
-
-      if (logoPosition <= headerHeight) {
-        setIsFixed(true);
-      } else {
-        setIsFixed(false);
-      }
-    }
-
-    window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-
+  
   return (
     <div className={styles.header}>
       <div className={styles.menu}>
@@ -90,60 +51,15 @@ const Header = ({ handleClickScroll }) => {
         </p>
       </div>
       <div className={styles.container_main}>
-        <div className={styles.logo}>
-          <Slider
-            className={
-              isFixed ? `${styles.logo_fixed}` : `${styles.logo_slider}`
-            }
-            {...settings}
-            centerPadding="5px"
-          >
-            <div className={styles.item}>
-              <img src="./assets/1.png" alt="image1" />
-            </div>
-            <div className={styles.item}>
-              <img src="./assets/2.png" alt="image2" />
-            </div>
-            <div className={styles.item}>
-              <img src="./assets/3.png" alt="image3" />
-            </div>
-            <div className={styles.item}>
-              <img src="./assets/4.png" alt="image4" />
-            </div>
-            <div className={styles.item}>
-              <img src="./assets/5.png" alt="image5" />
-            </div>
-            <div className={styles.item}>
-              <img src="./assets/6.png" alt="image6" />
-            </div>
-            <div className={styles.item}>
-              <img src="./assets/1.png" alt="image1" />
-            </div>
-            <div className={styles.item}>
-              <img src="./assets/2.png" alt="image2" />
-            </div>
-            <div className={styles.item}>
-              <img src="./assets/3.png" alt="image3" />
-            </div>
-            <div className={styles.item}>
-              <img src="./assets/4.png" alt="image4" />
-            </div>
-            <div className={styles.item}>
-              <img src="./assets/5.png" alt="image5" />
-            </div>
-            <div className={styles.item}>
-              <img src="./assets/6.png" alt="image6" />
-            </div>
-          </Slider>
-        </div>
-        <div className={styles.swiper_container}>
+        <SliderHeader />
+      <div className={styles.swiper_container}>
           <SwiperContainer />
         </div>
-        {/* эта кнопка сделанна неправильно, из-за неё появляется горизонтальный
-        скролл 👇 */}
-        {/* <button className={styles.show_svg}>
+        <div className={styles.show_container}>
+         <button className={styles.show_svg}>
           <img src={show} alt="show" />
-        </button> */}
+        </button>
+        </div>
         <div className={styles.card_container}>
           <div className={styles.card_item_1}>
             <div className={styles.card_img}>
