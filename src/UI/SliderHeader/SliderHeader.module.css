@@ -1,0 +1,10 @@
+.item {
+  margin-right: 7vw;
+}
+.item:not(:last-child) {
+  margin-left: 0;
+  transition: margin-left 1s ease-out;
+}
+.logo {
+  padding-top: 4vh;
+}

@@ -3,7 +3,8 @@ import styles from "./Footer.module.css";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
-  function goToLink(link) {
+
+function goToLink(link) {
     window.location.href = link;
   }
   const telegramHendler = () => {
