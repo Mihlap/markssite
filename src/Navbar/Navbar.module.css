@@ -6,6 +6,25 @@
   --white-F6: #F6F6F6;
 }
 
+.fixed {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+}
+
+.hidden {
+    opacity: 0;
+    transform: translateY(-100%);
+    transition: opacity 0.3s ease-out, transform 0.3s ease-out;
+}
+
+.visible {
+    opacity: 1;
+    transition: all .3s ease;
+    transform: translateY(0);
+}
 
 .header {
   min-width: 1024px;
@@ -172,6 +191,7 @@ button:hover p {
     width: 100%;
     background-color: var(--white-F6);
     height: 60px;
+    border-bottom: 1px solid var(--blue);
   }
 
   .nav_container {
@@ -181,13 +201,7 @@ button:hover p {
     height: 62px;
   }
 
-  .navbar .menu_items {
-    display: flex;
-  }
 
-  .navbar .nav_container li {
-    list-style: none;
-  }
 
   .navbar .nav_container a {
     text-decoration: none;
@@ -256,24 +270,13 @@ button:hover p {
     transition: transform 0.4s ease-in-out;
   }
 
-  .navbar .menu_items {
-    padding-top: 115px;
-    /* box-shadow: inset 0 0 2000px rgba(255, 255, 255, 0.5); */
-    background-color: var(--white-F6);
-    height: 100vh;
-    width: 100%;
-    transform: translate(150%);
-    display: flex;
-    flex-direction: column;
-    /* margin-left: -40px;
-    padding-left: 50px; */
-    transition: transform 0.5s ease-in-out;
-    text-align: center;
-    position: relative;
-    z-index: 9997;
+  .menu_items {
+   padding: 0;
+  text-align: center;
+  padding-top: 20%;
   }
 
-  .navbar .menu_items li {
+  .menu_items li {
     margin-bottom: 2rem;
     font-size: 1.5rem;
     font-weight: 500;
@@ -311,9 +314,9 @@ button:hover p {
   }
 
   .contact_info {
-    position: fixed;
+    position: absolute;
     right: 15px;
-    bottom: 25%;
+    bottom: 10%;
     color: var(--blue);
     font-weight: 400;
     font-size: 1rem;
@@ -334,6 +337,7 @@ button:hover p {
     font-size: 14px;
     font-weight: 400;
     line-height: 20px;
+    font-feature-settings: 'pnum' on, 'lnum' on;
   }
 
 }
