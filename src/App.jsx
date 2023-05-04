@@ -9,6 +9,9 @@ import Portal from "./Portal/Portal";
 import Project from "./Project/Project";
 import Publics from "./Publics/Publics";
 import { useEffect, useState } from "react";
+import Navbar from "./Navbar/Navbar";
+import Footer from "./Footer/Footer";
+import WinePark from "./Project/WinePark/WinePark";
 
 const App = () => {
  const [isScrollDisabled, setIsScrollDisabled] = useState(false);
@@ -52,8 +55,13 @@ const App = () => {
  }
 
   return (
+    <>
+      <Navbar handleClickScroll={handleClickScroll} />
       <Routes>
-        <Route path="/" element={<Header handleClickScroll={handleClickScroll} />} />
+        <Route
+          path="/"
+          element={<Header />}
+        />
         <Route path="/competention" element={<Competentions />} />
         <Route path="/project" element={<Project />} />
         <Route path="/public" element={<Publics />} />
@@ -61,7 +69,10 @@ const App = () => {
         <Route path="/contacts" element={<Contacts />} />
         <Route path="/portal" element={<Portal />} />
         <Route path="*" element={<NotFound />} />
+        <Route path="/project/winepark" element={<WinePark />} />
       </Routes>
+      <Footer />
+    </>
   );
 };
 
