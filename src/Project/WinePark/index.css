@@ -1,0 +1,101 @@
+:root {
+    --title-font: 'Unbounded', sans-serif;
+    --slogan-font: 'Inter', sans-serif;
+    --text-font: 'Raleway', sans-serif;
+
+    /* отступы у контейнера */
+    --mb-container-2: 2rem;
+
+    /* цвет кнопки */
+    --color-green: #F6F6F66B;
+    --color-while: #F6F6F6;
+    --color-desc: #EBECEE;
+
+    /* font-weight */
+    --fw-300: 300;
+    --fw-400: 400;
+}
+
+ul {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+img,
+video {
+    max-width: 100%;
+    height: auto;
+}
+
+button {
+    cursor: pointer;
+}
+
+
+.container {
+    max-width: 1440px;
+    margin-left: var(--mb-container-2);
+    margin-right: var(--mb-container-2);
+}
+
+.header_img {
+    width: 100%;
+    height: 100vh;
+    object-fit: cover;
+}
+
+.header_img_title {
+    position: absolute;
+    top: 8vh;
+}
+
+.header_link {
+
+    font-weight: var(--text-font);
+
+    background: var(--color-green);
+    /* Цвет фона */
+    border: none;
+    /* Убираем границу */
+    color: var(--color-while);
+    /* Цвет текста */
+    padding: 10px 20px;
+    /* Отступы внутри кнопки */
+    text-align: left;
+    /* Выравнивание текста по левому краю */
+    font-size: 16px;
+    /* Размер шрифта */
+    cursor: pointer;
+    /* Изменяем вид курсора при наведении на кнопку */
+    border-radius: 18px;
+    padding-left: 20px;
+}
+
+.header_link::before {
+    content: "<";
+    /* Код символа стрелки влево */
+    margin-right: 10px;
+    /* Отступ между стрелкой и текстом */
+}
+
+.header_title {
+    font-family: var(--title-font);
+    font-style: normal;
+    font-weight: var(--fw-300);
+    font-size: 48px;
+    line-height: 30px;
+    color: var(--color-while);
+    padding-top: 4.7vh;
+}
+
+.header_desc {
+    font-family: var(--slogan-font);
+    font-style: normal;
+    font-weight: var(--fw-400);
+    font-size: 14px;
+    line-height: 14px;
+    color: var(--color-desc);
+}
