@@ -41,6 +41,14 @@ button {
 .container {
     margin-left: var(--mb-container-2);
     margin-right: var(--mb-container-2);
+    overflow-y: auto;
+    scroll-snap-type: y mandatory;
+}
+
+.item {
+    height: 100%;
+    width: 100%;
+    scroll-snap-align: start;
 }
 
 
@@ -155,7 +163,6 @@ button {
     gap: 4.17vw;
 }
 
-.result_block {}
 
 .result_number {
     font-family: var(--font-unbounded);
@@ -212,4 +219,23 @@ button {
     line-height: 1.39vw;
     font-feature-settings: 'pnum' on, 'lnum' on;
     color: var(--color-grey-text);
+}
+
+.block_img div {
+    padding-bottom: 2.78vw;
+}
+
+.block_img div img{
+    border-radius: 16px;
+}
+
+.block_img {
+    height: 100%;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    scroll-padding: 40px;
+}
+
+.block_img div {
+    scroll-snap-align: start;
 }
