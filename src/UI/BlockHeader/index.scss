@@ -27,7 +27,7 @@
   height: max(18.4vh, auto);
   border-top: 2px solid #F7F3F2;
   position: relative;
-  // z-index: 1;
+  z-index: 1;
         
   &:nth-child(2) {
     background: linear-gradient(261.46deg, rgba(255, 203, 193, 0.09) -4.67%, rgba(117, 187, 253, 0.09) 44.63%, rgba(188, 188, 188, 0.09) 103.07%);
@@ -75,6 +75,22 @@ padding-left:2.7vw;
 .text {
 display: flex;
 flex-direction: column;
+overflow: hidden;
+}
+
+
+.text.closed {
+  max-height: 0;
+  overflow: hidden;
+}
+.text.hidden {
+  display: none;
+}
+
+
+.text_span {
+display: flex;
+flex-direction: column;
 align-items: flex-start;
 font-family: 'Unbounded';
 font-style: normal;
@@ -82,19 +98,17 @@ font-weight: 300;
 font-size: 20px;
 line-height: 28px;
 color: var(--black_text);
-width: max(5vw, 44.2vh);
-overflow: hidden;
-gap: 32px;
 padding-top: 3.2vh;
 padding-left: 50.9vw;
 padding-right: 18.3vw;
 padding-bottom: 91px;
-transform-origin: top;
+width: max(5vw, 44.2vh);
 }
-p {
-font-family: 'Raleway';
-font-style: normal;
-font-weight: 400;
-font-size: 14px;
-line-height: 20px;
-}
+span {
+  font-family: 'Raleway';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  padding: 15px 0px 15px 0px;
+  }
