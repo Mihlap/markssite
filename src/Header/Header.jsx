@@ -1,6 +1,6 @@
 /* eslint-disable jsx-a11y/no-distracting-elements */
 /* eslint-disable jsx-a11y/img-redundant-alt */
-import React from "react";
+import React, { useEffect } from "react";
 import BlockHeader from "../UI/BlockHeader/BlockHeader";
 import SwiperContainer from "./Swiper-Phone/SwiperContainer";
 // import Mapbox3D from '../UI/Map3D/Mapbox3D';
@@ -24,7 +24,12 @@ import SwiperContainerProgect from "./Swiper-project/SwiperContainerProgect";
 import SliderHeader from "../UI/SliderHeader/SliderHeader";
 import { Link } from "react-router-dom";
 
+
+
 const Header = () => {
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
   return (
     <div className={styles.header}>
       <div className={styles.menu}>

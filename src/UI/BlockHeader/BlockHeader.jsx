@@ -4,6 +4,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { CSSPlugin } from 'gsap/CSSPlugin';
 import './index.scss';
 
+import cub from "../../icons/cub.svg";
+
 function BlockHeader() {
   gsap.registerPlugin(ScrollTrigger, CSSPlugin);
   const accordionsRef = useRef(null);
@@ -33,7 +35,7 @@ function BlockHeader() {
 
      ScrollTrigger.create({
         trigger: text,
-        start: 'bottom bottom-=150vh',
+        start: 'bottom bottom-=200vh',
         end: 'top bottom+=5%',
         onEnter: () => {
           gsap.to(text, {
@@ -52,7 +54,7 @@ function BlockHeader() {
       ScrollTrigger.create({
         trigger: accordion,
         start: 'top bottom',
-        end: 'bottom bottom+=7%',
+        end: 'bottom bottom',
         onEnter: () => {
           if (!accordion.classList.contains('open')) {
             gsap.to(text, {
@@ -93,6 +95,7 @@ function BlockHeader() {
           <div className="title">Архитектура</div>
           <div className="text">
             <div className="text_span">
+          <img src={cub} alt="logo" style={{position: 'absolute', zIndex: 0, left: '600px'}} />
            Архитектура и концепции
            <span>Разработка концепции, архитектурное проектирование -
             <br/>от идеи до ввода объекта в эксплуатацию</span>
@@ -112,6 +115,7 @@ function BlockHeader() {
           <div className="title">Конструктив</div>
           <div className="text">
             <div className="text_span">
+            {/* <img src={cub} alt="logo" /> */}
             Инженерное проектирование
             <span>Разработка внутренних и наружных инженерных коммуникаций</span>
             Подземные транспортные сооружения
@@ -129,6 +133,7 @@ function BlockHeader() {
           <div className="title">Наука</div>
           <div className="text">
             <div className="text_span">
+            {/* <img src={cub} alt="logo"/> */}
           Научно-техническое сопровождение
           <span>Расчетное сопровождение проектирования и строительства
               <br />любой сложности</span>
@@ -139,6 +144,7 @@ function BlockHeader() {
           <div className="title">Digital</div>
           <div className="text">
             <div className="text_span">
+            {/* <img src={cub} alt="logo" /> */}
             BIM моделирование
             <span>Проекты освоения подземного пространства для уникальных
               <br/>особо сложных объектов строительства</span>
