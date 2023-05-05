@@ -1,10 +1,9 @@
 /* eslint-disable jsx-a11y/no-distracting-elements */
 /* eslint-disable jsx-a11y/img-redundant-alt */
-import React, { useLayoutEffect, useState } from "react";
-import Navbar from "../Navbar/Navbar";
+import React from "react";
 import BlockHeader from "../UI/BlockHeader/BlockHeader";
 import SwiperContainer from "./Swiper-Phone/SwiperContainer";
-import Mapbox3D from '../UI/Map3D/Mapbox3D';
+// import Mapbox3D from '../UI/Map3D/Mapbox3D';
 import styles from "./Header.module.css";
 
 import IconPlus from ".././icons/plus.svg";

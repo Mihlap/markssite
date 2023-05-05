@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import "./App.css";
 import Header from "./Header/Header";
 import Company from "./Company/Company";
@@ -12,29 +12,30 @@ import { useEffect, useState } from "react";
 import Navbar from "./Navbar/Navbar";
 import Footer from "./Footer/Footer";
 import WinePark from "./Project/WinePark/WinePark";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
+
 
 const App = () => {
+  const location = useLocation();
  const [isScrollDisabled, setIsScrollDisabled] = useState(false);
- const [scrollPosition, setScrollPosition] = useState(0);
+  const [scrollPosition, setScrollPosition] = useState(0);
+  
+ 
 
  useEffect(() => {
    // Функция для отключения скролла
    function disableScroll() {
-     // Сохраняем текущую позицию скролла
      setScrollPosition(
        window.pageYOffset || document.documentElement.scrollTop
      );
-     // Фиксируем body в текущей позиции скролла
      document.body.style.position = "fixed";
      document.body.style.top = `-${scrollPosition}px`;
    }
 
    // Функция для включения скролла
    function enableScroll() {
-     // Разблокируем body и возвращаем его в начальное положение
      document.body.style.position = "";
      document.body.style.top = "";
-     // Прокручиваем страницу до сохраненной позиции скролла
      window.scrollTo(0, parseInt(scrollPosition || "0") * -1);
    }
 
@@ -43,34 +44,36 @@ const App = () => {
    } else {
      enableScroll();
    }
-
    // Очистка эффекта
    return () => {
      enableScroll();
    };
+ // eslint-disable-next-line react-hooks/exhaustive-deps
  }, [isScrollDisabled]);
 
  function handleClickScroll() {
    setIsScrollDisabled(!isScrollDisabled);
  }
 
+  
   return (
     <>
       <Navbar handleClickScroll={handleClickScroll} />
-      <Routes>
-        <Route
-          path="/"
-          element={<Header />}
-        />
-        <Route path="/competention" element={<Competentions />} />
-        <Route path="/project" element={<Project />} />
-        <Route path="/public" element={<Publics />} />
-        <Route path="/company" element={<Company />} />
-        <Route path="/contacts" element={<Contacts />} />
-        <Route path="/portal" element={<Portal />} />
-        <Route path="*" element={<NotFound />} />
-        <Route path="/project/winepark" element={<WinePark />} />
-      </Routes>
+      <TransitionGroup>
+        <CSSTransition key={location.key} classNames="fade" timeout={300}>
+          <Routes location={location}>
+            <Route path="/" element={<Header />} />
+            <Route path="/competention" element={<Competentions />} />
+            <Route path="/project" element={<Project />} />
+            <Route path="/public" element={<Publics />} />
+            <Route path="/company" element={<Company />} />
+            <Route path="/contacts" element={<Contacts />} />
+            <Route path="/portal" element={<Portal />} />
+            <Route path="*" element={<NotFound />} />
+            <Route path="/project/winepark" element={<WinePark />} />
+          </Routes>
+        </CSSTransition>
+      </TransitionGroup>
       <Footer />
     </>
   );
