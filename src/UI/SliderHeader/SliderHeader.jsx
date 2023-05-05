@@ -15,7 +15,7 @@ const SliderHeader = () => {
          gaps={0} 
          gradientColor={'#F6F6F6'}
         >
-          <div className={styles.item} style={{ marginLeft: '26vw'}}>
+          <div className={styles.item} style={{ marginLeft: '16vw'}}>
         <img src="./assets/1.png" alt="image1" />
       </div>
       <div className={styles.item}>
