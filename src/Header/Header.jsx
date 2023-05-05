@@ -1,11 +1,9 @@
 /* eslint-disable jsx-a11y/no-distracting-elements */
 /* eslint-disable jsx-a11y/img-redundant-alt */
-import React, { useLayoutEffect, useState } from "react";
-import Footer from "../Footer/Footer";
-import Navbar from "../Navbar/Navbar";
+import React from "react";
 import BlockHeader from "../UI/BlockHeader/BlockHeader";
 import SwiperContainer from "./Swiper-Phone/SwiperContainer";
-import Mapbox3D from '../UI/Map3D/Mapbox3D';
+// import Mapbox3D from '../UI/Map3D/Mapbox3D';
 import styles from "./Header.module.css";
 
 import IconPlus from ".././icons/plus.svg";
@@ -24,9 +22,9 @@ import D9 from ".././icons/D9.svg";
 import photo from "./img/phone.svg";
 import SwiperContainerProgect from "./Swiper-project/SwiperContainerProgect";
 import SliderHeader from "../UI/SliderHeader/SliderHeader";
+import { Link } from "react-router-dom";
 
-const Header = ({ handleClickScroll }) => {
-  
+const Header = () => {
   return (
     <div className={styles.header}>
       <div className={styles.menu}>
@@ -34,7 +32,6 @@ const Header = ({ handleClickScroll }) => {
         {/* фото для мобильной версии  */}
         <img className={styles.image_phone} src={photo} alt="photo" />
       </div>
-      <Navbar handleClickScroll={handleClickScroll} />
       <div className={styles.header_desctop_block}>
         <h1 className={styles.desctop_title}>Награды и публикации</h1>
         <div className={styles.desctop_test}>
@@ -52,13 +49,13 @@ const Header = ({ handleClickScroll }) => {
       </div>
       <div className={styles.container_main}>
         <SliderHeader />
-      <div className={styles.swiper_container}>
+        <div className={styles.swiper_container}>
           <SwiperContainer />
         </div>
         <div className={styles.show_container}>
-         <button className={styles.show_svg}>
-          <img src={show} alt="show" />
-        </button>
+          <button className={styles.show_svg}>
+            <img src={show} alt="show" />
+          </button>
         </div>
         <div className={styles.card_container}>
           <div className={styles.card_item_1}>
@@ -66,12 +63,14 @@ const Header = ({ handleClickScroll }) => {
               <img className={styles.img_1} src="./assets/B.png" alt="image1" />
             </div>
             <div className={styles.card_text}>
-              <h3>Смотр-конкурс Стекло в архитектуре 2022</h3>
-              <span>Номинация Объект • нового строительства</span>
+              <h3>Центр энотуризма WinePark</h3>
+              <span>Конкурс • 100 лучших объектов росии</span>
             </div>
+            <Link to="/project/winepark">
             <button className={styles.card_button}>
               <img src={IconPlus} alt="button" />
             </button>
+            </Link>
           </div>
           <div className={styles.card_item_2}>
             <div className={styles.card_img}>
@@ -82,8 +81,11 @@ const Header = ({ handleClickScroll }) => {
               />
             </div>
             <div className={styles.card_text}>
-              <h3>Смотр-конкурс Стекло в архитектуре 2022</h3>
-              <span>Номинация Объект • нового строительства</span>
+              <h3>Баня, рынок, супер-слэб — что ждет Бадаевский?</h3>
+              <span>
+                Статья • Экспертное обсуждение реставрации и приспособления
+                объектов культурного наследия
+              </span>
             </div>
             <button className={styles.card_button}>
               <img src={IconPlus} alt="button" />
@@ -97,7 +99,7 @@ const Header = ({ handleClickScroll }) => {
         <div className={styles.most}>
           <img className={styles.image_most} alt=""></img>
         </div>
-          <BlockHeader />
+        <BlockHeader />
         {/* <Mapbox3D /> */}
       </div>
       <div className={styles.icon_partner}>
@@ -130,7 +132,7 @@ const Header = ({ handleClickScroll }) => {
       </marquee>
       <div className={styles.project_name}>Проекты</div>
       <div className={styles.swiper_progect_container}>
-      <SwiperContainerProgect />
+        <SwiperContainerProgect />
       </div>
       <div className={styles.main_project}>
         <div className={styles.main_project_left}>
@@ -180,8 +182,7 @@ const Header = ({ handleClickScroll }) => {
           </div>
         </div>
       </div>
-    <Footer />
-  </div>
+    </div>
   );
 };
 

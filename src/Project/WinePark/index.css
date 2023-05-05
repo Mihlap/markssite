@@ -1,0 +1,241 @@
+:root {
+    --font-unbounded: 'Unbounded', sans-serif;
+    --font-inter: 'Inter', sans-serif;
+    --font-raleway: 'Raleway', sans-serif;
+
+    /* отступы у контейнера */
+    --mb-container-2: 2rem;
+
+    /* цвета */
+    --color-green: #F6F6F66B;
+    --color-while: #F6F6F6;
+    --color-desc: #EBECEE;
+    --color-title-text: #1D2E43;
+    --color-grey-text: #959DA6;
+    --color-number-hextension: #566272;
+
+    /* font-weight */
+    --fw-300: 300;
+    --fw-400: 400;
+}
+
+ul {
+    list-style: none;
+}
+
+a {
+    text-decoration: none;
+}
+
+img,
+video {
+    max-width: 100%;
+    height: auto;
+}
+
+button {
+    cursor: pointer;
+}
+
+
+.container {
+    margin-left: var(--mb-container-2);
+    margin-right: var(--mb-container-2);
+    overflow-y: auto;
+    scroll-snap-type: y mandatory;
+}
+
+.item {
+    height: 100%;
+    width: 100%;
+    scroll-snap-align: start;
+}
+
+
+.header_img {
+    width: 100%;
+    height: 100vh;
+    object-fit: cover;
+}
+
+.header_img_title {
+    position: absolute;
+    top: 8vh;
+}
+
+.header_link {
+    background: var(--color-green);
+    /* Цвет фона */
+    border: none;
+    /* Убираем границу */
+    color: var(--color-while);
+    /* Цвет текста */
+    padding: 0.69vw 1.39vw;
+    /* Отступы внутри кнопки */
+    text-align: left;
+    /* Выравнивание текста по левому краю */
+    font-size: 1.11vw;
+    /* Размер шрифта */
+    cursor: pointer;
+    /* Изменяем вид курсора при наведении на кнопку */
+    border-radius: 18px;
+    padding-left: 20px;
+}
+
+.header_link::before {
+    content: "<";
+    /* Код символа стрелки влево */
+    margin-right: 10px;
+    /* Отступ между стрелкой и текстом */
+}
+
+.header_title {
+    font-family: var(--font-unbounded);
+    font-style: normal;
+    font-weight: var(--fw-300);
+    font-size: 3.33vw;
+    line-height: 30px;
+    color: var(--color-while);
+    padding-top: 4.7vh;
+}
+
+.header_desc {
+    font-family: var(--font-inter);
+    font-style: normal;
+    font-weight: var(--fw-400);
+    font-size: 0.97vw;
+    line-height: 14px;
+    color: var(--color-desc);
+}
+
+.header_content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 3.89vw;
+}
+
+/* <<=============== левый блок контента с информацией===============>> */
+
+.header_content_left {
+    width: 70%;
+}
+
+.title_block {
+    display: flex;
+    align-items: center;
+    gap: 1.39vw;
+}
+
+.left_title {
+    font-family: var(--font-unbounded);
+    font-style: normal;
+    font-weight: var(--fw-300);
+    font-size: 2.22vw;
+    line-height: 2.78vw;
+    color: var(--color-title-text);
+}
+
+.left_meta {
+    font-style: normal;
+    font-weight: var(--fw-400);
+    font-size: 0.83vw;
+    line-height: 1.11vw;
+    font-feature-settings: 'pnum' on, 'lnum' on;
+    color: var(--color-grey-text);
+    border: 1px solid;
+    border-radius: 1.25vw;
+    padding: 0.35vw 1.25vw;
+}
+
+.title_text {
+    font-style: normal;
+    font-weight: var(--fw-400);
+    font-size: 1.11vw;
+    line-height: 1.67vw;
+    font-feature-settings: 'pnum' on, 'lnum' on;
+    color: var(--color-title-text);
+    padding-bottom: 2.22vw;
+}
+
+.result_container {
+    display: flex;
+    gap: 4.17vw;
+}
+
+
+.result_number {
+    font-family: var(--font-unbounded);
+    font-style: normal;
+    font-weight: var(--fw-300);
+    font-size: 1.39vw;
+    line-height: 1.94vw;
+    color: var(--color-number-hextension);
+}
+
+.result_text {
+    font-style: normal;
+    font-weight: var(--fw-400);
+    font-size: 0.97vw;
+    line-height: 1.39vw;
+    font-feature-settings: 'pnum' on, 'lnum' on;
+    color: var(--color-grey-text);
+}
+
+
+/* << =============== правый блок контента с информацией =============== >> */
+.header_content_right {
+    width: 30%;
+}
+
+.local_container {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 4.86vw;
+    padding-top: 2.08vw;
+}
+
+.local_ritgh,
+.local_left {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 2.39vw;
+}
+
+.local_title {
+    font-style: normal;
+    font-weight: var(--fw-400);
+    font-size: 0.97vw;
+    line-height: 1.39vw;
+    font-feature-settings: 'pnum' on, 'lnum' on;
+    color: var(--color-number-hextension);
+}
+
+.local_text {
+    font-style: normal;
+    font-weight: var(--fw-400);
+    font-size: 0.97vw;
+    line-height: 1.39vw;
+    font-feature-settings: 'pnum' on, 'lnum' on;
+    color: var(--color-grey-text);
+}
+
+.block_img div {
+    padding-bottom: 2.78vw;
+}
+
+.block_img div img{
+    border-radius: 16px;
+}
+
+.block_img {
+    height: 100%;
+    overflow-y: scroll;
+    scroll-snap-type: y mandatory;
+    scroll-padding: 40px;
+}
+
+.block_img div {
+    scroll-snap-align: start;
+}
