@@ -7,8 +7,12 @@ import { useEffect } from "react";
 const Navbar = ({ handleClickScroll }) => {
   const [clicked, setClicked] = useState(false);
   const [navOpen, setNavOpen] = useState(false);
-
   // const navigate = useNavigate();
+  const [isChecked, setIsChecked] = useState(false);
+
+  function handleCheckboxChange() {
+    setIsChecked(!isChecked);
+  }
 
   function handleClick() {
     setClicked(!clicked);
@@ -16,6 +20,12 @@ const Navbar = ({ handleClickScroll }) => {
 
   const openHandler = () => {
     setNavOpen((prevNavOpen) => !prevNavOpen);
+  };
+
+  const closeNavBar = () => {
+    setNavOpen((prevNavOpen) => !prevNavOpen);
+    setClicked(!clicked);
+    setIsChecked(!isChecked);
   };
 
   const [prevScrollpos, setPrevScrollpos] = useState(window.pageYOffset);
@@ -109,6 +119,8 @@ const Navbar = ({ handleClickScroll }) => {
                 type="checkbox"
                 name=""
                 id=""
+                checked={isChecked}
+                onChange={handleCheckboxChange}
                 onClick={() => {
                   openHandler();
                   handleClickScroll();
@@ -131,38 +143,87 @@ const Navbar = ({ handleClickScroll }) => {
                   marginTop: "15%",
                 }}
               >
-                <ul className={styles.menu_items}>
+                <ul className={styles.menu_list}>
                   <li>
-                    <Link to="/">Главная</Link>
+                    <Link
+                      className={styles.menu_item}
+                      onClick={closeNavBar}
+                      to="/"
+                    >
+                      Главная
+                    </Link>
                   </li>
                   <li>
-                    <Link to="#">Компетенции</Link>
+                    <Link
+                      className={styles.menu_item}
+                      onClick={closeNavBar}
+                      to="/competention"
+                    >
+                      Компетенции
+                    </Link>
                   </li>
                   <li>
-                    <Link to="#">Кейсы</Link>
+                    <Link
+                      className={styles.menu_item}
+                      onClick={closeNavBar}
+                      to="/project"
+                    >
+                      Кейсы
+                    </Link>
                   </li>
                   <li>
-                    <Link to="#">Публикации</Link>
+                    <Link
+                      className={styles.menu_item}
+                      onClick={closeNavBar}
+                      to="/public"
+                    >
+                      Публикации
+                    </Link>
                   </li>
                   <li>
-                    <Link to="#">О Компании</Link>
+                    <Link
+                      className={styles.menu_item}
+                      onClick={closeNavBar}
+                      to="/company"
+                    >
+                      О Компании
+                    </Link>
                   </li>
                   <li>
-                    <Link to="#">Контакты</Link>
+                    <Link
+                      className={styles.menu_item}
+                      onClick={closeNavBar}
+                      to="/contacts"
+                    >
+                      Контакты
+                    </Link>
                   </li>
                   <li>
-                    <Link to="#">HR портал</Link>
+                    <Link
+                      className={styles.menu_item}
+                      onClick={closeNavBar}
+                      to="/portal"
+                    >
+                      HR портал
+                    </Link>
                   </li>
                 </ul>
                 <div className={styles.contact_info}>
                   <div className={styles.contact_info_block}>
                     <div className={styles.contact_info_language}>EN | CN</div>
-                    <div className={styles.contact_info_mail}>
+                    <Link
+                      className={styles.contact_info_mail}
+                      to="mailto:mail@marksgroup.ru"
+                    >
                       mail@marksgroup.ru
-                    </div>
-                    <div className={styles.contact_info_phone}>
-                      +7 (495) 120-12-26
-                    </div>
+                    </Link>
+                    <Link
+                      to={"tel:+15551234567"}
+                      className={styles.contact_info_phone}
+                      style={{ fontVariantNumeric: "lining-nums" }}
+                    >
+                      +7(495) 120-12-26
+                    </Link>
                   </div>
                 </div>
               </div>
