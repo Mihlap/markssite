@@ -133,7 +133,7 @@ const Navbar = ({ handleClickScroll }) => {
               >
                 <ul className={styles.menu_items}>
                   <li>
-                    <Link to="#">Главная</Link>
+                    <Link to="/">Главная</Link>
                   </li>
                   <li>
                     <Link to="#">Компетенции</Link>
