@@ -1,21 +1,31 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Marquee from "react-fast-marquee";
 import styles from './SliderHeader.module.css';
 
 const SliderHeader = () => {
-  
+  const [marqueeFinished, setMarqueeFinished] = useState(true);
+
+  useEffect(() => {
+    if (!marqueeFinished) {
+      document.querySelector(`.${styles.firstItem}`).style.marginLeft = '0';
+    }
+  }, [marqueeFinished]);
+
   return (
         <div className={styles.logo}>
        <Marquee
+       onFinish={() => setMarqueeFinished(false)}
         gradient={true}
         speed={80}
         direction="left"
          spacing={10}
          autoFill={true}
-         gaps={0} 
+         gaps={null} 
          gradientColor={'#F6F6F6'}
+         delayBetweenLoops={2000}
         >
-          <div className={styles.item} style={{ marginLeft: '16vw'}}>
+          <div className={`${styles.item} ${styles.firstItem}`}
+           style={{marginLeft: marqueeFinished ? '16vw' : '0'}}>
         <img src="./assets/1.png" alt="image1" />
       </div>
       <div className={styles.item}>

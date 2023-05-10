@@ -1,9 +1,11 @@
 .item {
   margin-right: 7vw;
 }
-.item:not(:last-child) {
+.firstItem {
   margin-left: 0;
-  transition: margin-left 1s ease-out;
+}
+.item:not(:last-child) {
+   transition: margin-left 1s ease-out;
 }
 .logo {
   padding-top: 4vh;
