@@ -221,11 +221,11 @@ button {
     color: var(--color-grey-text);
 }
 
-.block_img div {
+.item {
     padding-bottom: 2.78vw;
 }
 
-.block_img div img {
+.item {
     width: 100%;
     height: auto;
     border-radius: 16px;

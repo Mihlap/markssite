@@ -9,7 +9,6 @@ import img2 from "./img/WinePark2.jpg";
 import img3 from "./img/WinePark3.jpg";
 import img4 from "./img/WinePark4.jpg";
 import img5 from "./img/WinePark5.jpg";
-import png from "./img/iconsBtn.png";
 import { Link } from "react-router-dom";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 export default function WinePark() {
@@ -20,13 +19,9 @@ export default function WinePark() {
   const blockRight = useRef(null);
   const blockRightPhone = useRef(null);
 
-  // useEffect(() => {
-  //   window.scrollTo(20, 0);
-  // }, []);
-
   useEffect(() => {
-
     window.scrollTo(20, 0);
+
 
     const title = titleRef.current;
     const link = linkRef.current;

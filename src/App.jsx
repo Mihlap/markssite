@@ -13,6 +13,7 @@ import Navbar from "./Navbar/Navbar";
 import Footer from "./Footer/Footer";
 import WinePark from "./Project/WinePark/WinePark";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
+import Badaevsky from "./articlesProject/Badaevsky/Badaevsky";
 
 
 const App = () => {
@@ -70,7 +71,8 @@ const App = () => {
             <Route path="/contacts" element={<Contacts />} />
             <Route path="/portal" element={<Portal />} />
             <Route path="*" element={<NotFound />} />
-            <Route path="/:id" element={<WinePark />} />
+            <Route path="/winepark" element={<WinePark />} />
+            <Route path="/badaevsky" element={<Badaevsky />} />
           </Routes>
         </CSSTransition>
       </TransitionGroup>
