@@ -301,6 +301,8 @@ span {
   width: 100%;
   padding-bottom: 6vh;
   padding-top: 4vh;
+  grid-auto-flow: dense;
+  padding-bottom: 100px;
 }
 
 .main_project_left {
@@ -329,12 +331,12 @@ span {
   grid-column: 1;
   padding-right: 3vw;
   padding-top: 3vh;
-  height: 100%;
+  height: auto;
   width: auto;
 }
   .main_project_right1 img {
     width: 100%;
-    height: auto;
+    height: 100%;
    }
 .main_project_right2 {
   display: grid;
@@ -342,7 +344,7 @@ span {
   grid-column: 2;
   padding-right: 2.7vw;
   padding-top: 3vh;
-  height: 100%;
+  height: auto;
   width: auto;
 }
 
@@ -357,6 +359,7 @@ span {
   grid-column: 1 / span 2;
   padding-right: 2.7vw;
   width: auto;
+  height: auto;
 }
 
 .card_text {

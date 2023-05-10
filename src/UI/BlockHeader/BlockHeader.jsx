@@ -11,44 +11,36 @@ function BlockHeader() {
   const accordionsRef = useRef(null);
       
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-
     const accordions = document.querySelectorAll('.accordion');
-
     accordions.forEach((accordion) => {
-      const title = accordion.querySelector('.title');
-      const text = accordion.querySelector('.text');
-
-      
-
-      if (text.classList.contains('closed')) {
-        gsap.set(text, {
-          maxHeight: 0,
-          overflow: 'hidden',
-        });
-      } else {
-        gsap.set(text, {
+      const text = accordion.querySelector('.text_span');
+      text.classList.add('closed');
+           
+      gsap.set(text, {
           maxHeight: text.scrollHeight,
           overflow: 'hidden',
-        });
-      }
-
+      });
+   
      ScrollTrigger.create({
         trigger: text,
-        start: 'bottom bottom-=200vh',
+        start: 'bottom bottom-=25%',
         end: 'top bottom+=5%',
         onEnter: () => {
-          gsap.to(text, {
-            maxHeight: text.scrollHeight,
-            duration: 1,
-          });
+          if (!accordion.classList.contains('open')) {
+            gsap.to(text, {
+              maxHeight: text.scrollHeight,
+              duration: 1,
+            });
+            accordion.classList.add('open');
+          }
         },
         onLeaveBack: () => {
-          gsap.to(text, {
-            maxHeight: 0,
-            duration: 1,
-          });
-        },
+              gsap.to(text, {
+              maxHeight: 0,
+              duration: 1,
+            });
+            accordion.classList.remove('open');
+         }
       });
 
       ScrollTrigger.create({
@@ -65,24 +57,7 @@ function BlockHeader() {
         },
       });
 
-      title.addEventListener('click', () => {
-        const isOpen = accordion.classList.contains('open');
-
-        if (isOpen) {
-          gsap.to(text, {
-            maxHeight: 0,
-            duration: 1,
-          });
-        } else {
-          gsap.to(text, {
-            maxHeight: text.scrollHeight,
-            duration: 1,
-          });
-        }
-
-        accordion.classList.toggle('open');
       });
-    });
 
   }, []);
   
@@ -94,7 +69,8 @@ function BlockHeader() {
         <div className="accordion">
           <div className="title">Архитектура</div>
           <div className="text">
-            <div className="wraper_block_text">
+            <div className="text_span">
+             <div className="wraper_block_text">
               <img
                 src={cub}
                 alt="logo"
