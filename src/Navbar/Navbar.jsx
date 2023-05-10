@@ -111,7 +111,9 @@ const Navbar = ({ handleClickScroll }) => {
         <nav>
           <div className={styles.navbar}>
             <div className={styles.logo}>
+              <Link to="/">
               <img className={styles.logo_img} src={logo} alt="logo" />
+              </Link>
             </div>
             <div className={`${styles.container} ${styles.nav_container}`}>
               <input

@@ -5,6 +5,7 @@
 
     /* отступы у контейнера */
     --mb-container-2: 2rem;
+    --mb-container-1: 1rem;
 
     /* цвета */
     --color-green: #F6F6F66B;
@@ -93,12 +94,13 @@ button {
 }
 
 .header_desc {
-    font-family: var(--font-inter);
+    font-family: var(--font-raleway);
     font-style: normal;
     font-weight: var(--fw-400);
     font-size: 0.97vw;
     line-height: 14px;
     color: var(--color-desc);
+    padding-top: 30px;
 }
 
 .header_content {
@@ -148,12 +150,17 @@ button {
     line-height: 1.67vw;
     font-feature-settings: 'pnum' on, 'lnum' on;
     color: var(--color-title-text);
+    padding-top: 1.22vw;
     padding-bottom: 2.22vw;
 }
 
 .result_container {
     display: flex;
     gap: 4.17vw;
+}
+
+.result_container_phone {
+    display: none;
 }
 
 
@@ -214,12 +221,118 @@ button {
     color: var(--color-grey-text);
 }
 
-.block_img div {
+.item {
     padding-bottom: 2.78vw;
 }
 
-.block_img div img{
+.item {
     width: 100%;
     height: auto;
     border-radius: 16px;
+}
+
+/* Стили для мобильной версии сайта блока WinePark начинаются тут */
+@media screen and (max-width: 700px) {
+
+    .container {
+        margin-left: var(--mb-container-1);
+        margin-right: var(--mb-container-1);
+    }
+
+    .result_container {
+        display: none;
+    }
+
+    .result_container_phone {
+        display: block
+    }
+
+
+    .header_img_title {
+        top: 9vh;
+        left: 2vh;
+    }
+
+    .header_link {
+        font-size: 3.73vw;
+        padding: 1.67vw 3.47vw;
+    }
+
+    .header_title {
+        font-size: 8.53vw;
+        line-height: 10.67vw;
+        padding-top: 8vw;
+    }
+
+    .header_desc {
+        font-size: 3.73vw;
+        line-height: 3.73vw;
+    }
+
+    .header_content {
+        padding-top: 5.33vh;
+        flex-direction: column;
+        justify-content: normal;
+    }
+
+    .header_content_left, .header_content_right {
+        width: auto;
+    }
+
+    .title_block {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0px;
+    }
+
+    .left_title {
+        font-size: 5.07vw;
+        line-height: 7.47vw;
+    }
+
+    .left_meta {
+        font-size: 9px;
+        padding: 7px 15px;
+        border-radius: 34px;
+        margin-top: 2.13vw;
+    }
+
+    .title_text {
+        font-size: 4.27vw;
+        line-height: 6.40vw;
+        padding-top: 4.27vw;
+    }
+    
+    .local_container {
+        padding-top: 5.33vw;
+        gap: 20vw;
+    }
+
+    .local_title {
+        font-size: 3.73vw;
+        line-height: 5.33vw;
+    }
+    
+    .local_text {
+        font-size: 3.73vw;
+        line-height: 5.33vw;
+    }
+
+    .result_container_phone {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 5.33vw;
+        padding-top: 5.33vw;
+    }
+
+    .result_number {
+        font-size: 5.33vw;
+        line-height: 7.47vw;
+    }
+
+    .result_text {
+        font-size: 3.73vw;
+        line-height: 5.33vw;
+    }
 }

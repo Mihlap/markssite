@@ -9,7 +9,6 @@ import img2 from "./img/WinePark2.jpg";
 import img3 from "./img/WinePark3.jpg";
 import img4 from "./img/WinePark4.jpg";
 import img5 from "./img/WinePark5.jpg";
-import png from "./img/iconsBtn.png";
 import { Link } from "react-router-dom";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 export default function WinePark() {
@@ -18,12 +17,12 @@ export default function WinePark() {
   const descRef = useRef(null);
   const blockLeft = useRef(null);
   const blockRight = useRef(null);
+  const blockRightPhone = useRef(null);
 
   useEffect(() => {
     window.scrollTo(20, 0);
-  }, []);
 
-  useEffect(() => {
+
     const title = titleRef.current;
     const link = linkRef.current;
     const desc = descRef.current;
@@ -47,7 +46,6 @@ export default function WinePark() {
         start: "top 80%",
       },
     });
-    gsap.registerPlugin(ScrollTrigger);
     gsap.from(blockRight.current, {
       x: "100%",
       opacity: 0,
@@ -58,6 +56,16 @@ export default function WinePark() {
         start: "top 80%",
       },
     });
+    gsap.from(blockRightPhone.current, {
+      x: "100%",
+      opacity: 0,
+      duration: 1,
+      ease: "power4.out",
+      scrollTrigger: {
+        trigger: blockRightPhone.current,
+        start: "top 80%",
+      },
+    });
   }, []);
   return (
     <section className="section">
@@ -65,7 +73,7 @@ export default function WinePark() {
       <div className="container">
         <div className="header_container">
           <div className="header_img_title">
-            <Link ref={linkRef} className="header_link" to="#">
+            <Link to="/project" ref={linkRef} className="header_link">
               Все проекты
             </Link>
             <h1 ref={titleRef} className="header_title">
@@ -146,26 +154,40 @@ export default function WinePark() {
                 </div>
               </div>
             </div>
+            <div ref={blockRightPhone} className="result_container_phone">
+              <div className="result_block">
+                <div className="result_number">30 га</div>
+                <div className="result_text">Общая площадь</div>
+              </div>
+              <div className="result_block">
+                <div className="result_number">7. 75 га</div>
+                <div className="result_text">Площадь виноградников</div>
+              </div>
+              <div className="result_block">
+                <div className="result_number">54.5 м</div>
+                <div className="result_text">Высота винной башни</div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
       <div className="block_img">
         <div className="container">
-        <div className="item">
-          <img src={img1} alt="" />
-        </div>
-        <div className="item">
-          <img src={img2} alt="" />
-        </div>
-        <div className="item">
-          <img src={img3} alt="" />
-        </div>
-        <div className="item">
-          <img src={img4} alt="" />
-        </div>
-        <div className="item">
-          <img src={img5} alt="" />
-        </div>
+          <div className="item">
+            <img src={img1} alt="" />
+          </div>
+          <div className="item">
+            <img src={img2} alt="" />
+          </div>
+          <div className="item">
+            <img src={img3} alt="" />
+          </div>
+          <div className="item">
+            <img src={img4} alt="" />
+          </div>
+          <div className="item">
+            <img src={img5} alt="" />
+          </div>
         </div>
       </div>
     </section>
