@@ -42,13 +42,6 @@ button {
     margin-left: var(--mb-container-2);
     margin-right: var(--mb-container-2);
     overflow-y: auto;
-    scroll-snap-type: y mandatory;
-}
-
-.item {
-    height: 100%;
-    width: 100%;
-    scroll-snap-align: start;
 }
 
 
@@ -226,16 +219,7 @@ button {
 }
 
 .block_img div img{
+    width: 100%;
+    height: auto;
     border-radius: 16px;
-}
-
-.block_img {
-    height: 100%;
-    overflow-y: scroll;
-    scroll-snap-type: y mandatory;
-    scroll-padding: 40px;
-}
-
-.block_img div {
-    scroll-snap-align: start;
 }
