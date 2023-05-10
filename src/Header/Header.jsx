@@ -92,9 +92,11 @@ const Header = () => {
                 объектов культурного наследия
               </span>
             </div>
+            <Link to="/badaevsky">
             <button className={styles.card_button}>
               <img src={IconPlus} alt="button" />
             </button>
+            </Link>
           </div>
         </div>
         <div className={styles.names_contents}>
