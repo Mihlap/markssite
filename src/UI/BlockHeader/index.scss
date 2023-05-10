@@ -1,9 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;700;900&family=Unbounded:wght@300&display=swap');
+
 :root {
   --black: #3C3C3C;
   --black_text: #1D2E43;
   --white-F6: #F6F6F6;
 }
+
 .accordions {
   display: flex;
   flex-direction: column;
@@ -17,31 +19,31 @@
   color: var(--black);
   box-sizing: border-box;
   filter: drop-shadow(0px -2px 24px rgba(242, 238, 239, 0.32));
-   }
+}
 
 .accordion {
   background: linear-gradient(261.46deg, rgba(255, 203, 193, 0.09) -4.67%, rgba(117, 187, 253, 0.09) 44.63%, rgba(188, 188, 188, 0.09) 103.07%);
   filter: drop-shadow(0px 0px 34px rgba(150, 157, 162, 0.1));
-  backdrop-filter: blur(14.5px); 
+  backdrop-filter: blur(14.5px);
   width: max(5vw, auto);
   height: max(18.4vh, auto);
   border-top: 2px solid #F7F3F2;
   position: relative;
   z-index: 1;
 
-        
+
   &:nth-child(2) {
     background: linear-gradient(261.46deg, rgba(255, 203, 193, 0.09) -4.67%, rgba(117, 187, 253, 0.12) 44.63%, rgba(188, 188, 188, 0.09) 103.07%);
     filter: drop-shadow(0px 0px 34px rgba(150, 157, 162, 0.1));
     backdrop-filter: blur(14.5px);
   }
-  
+
   &:nth-child(3) {
     background: linear-gradient(261.46deg, rgba(255, 203, 193, 0.09) -4.67%, rgba(117, 187, 253, 0.15) 44.63%, rgba(188, 188, 188, 0.09) 103.07%);
     filter: drop-shadow(0px 0px 34px rgba(150, 157, 162, 0.1));
     backdrop-filter: blur(14.5px);
   }
-  
+
   &:nth-child(4) {
     background: linear-gradient(261.46deg, rgba(255, 203, 193, 0.09) -4.67%, rgba(117, 187, 253, 0.18) 44.63%, rgba(188, 188, 188, 0.09) 103.07%);
     filter: drop-shadow(0px 0px 34px rgba(150, 157, 162, 0.1));
@@ -56,22 +58,28 @@
   .accordion {
     padding: 15px 20px 8px;
   }
+
   .title {
     font-size: 20px;
   }
 }
 
 .title {
-font-family: 'Unbounded';
-font-style: normal;
-font-weight: 300;
-font-size: 32px;
-line-height: 40px;
-color: var(--black);
-padding-top: 3.2vh;
-padding-left:2.7vw;
-padding-bottom: 4vh;
+  font-family: 'Unbounded';
+  font-style: normal;
+  font-weight: 300;
+  font-size: 32px;
+  line-height: 40px;
+  color: var(--black);
+  padding-top: 3.2vh;
+  padding-left: 2.7vw;
+  padding-bottom: 4vh;
 }
+// .text {
+//   display: flex;
+//   flex-direction: column;
+//   overflow: hidden;
+// }
 
 .img.hidden {
   display: none;
@@ -102,8 +110,21 @@ span {
   line-height: 20px;
   padding: 15px 0px 15px 0px;
   }
-// .text {
-// display: flex;
-// flex-direction: column;
-// overflow: hidden;
+
+// .wraper_block_text {
+//   display: flex;
+//   flex-direction: column;
+//   align-items: flex-start;
+//   font-family: 'Unbounded';
+//   font-style: normal;
+//   font-weight: 300;
+//   font-size: 20px;
+//   line-height: 28px;
+//   color: var(--black_text);
+//   padding-top: 3.2vh;
+//   padding-left: 50.9vw;
+//   padding-right: 18.3vw;
+//   padding-bottom: 91px;
+//   width: max(5vw, 44.2vh);
 // }
+
