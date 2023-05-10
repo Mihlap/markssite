@@ -70,7 +70,7 @@ const App = () => {
             <Route path="/contacts" element={<Contacts />} />
             <Route path="/portal" element={<Portal />} />
             <Route path="*" element={<NotFound />} />
-            <Route path="/project/winepark" element={<WinePark />} />
+            <Route path="/:id" element={<WinePark />} />
           </Routes>
         </CSSTransition>
       </TransitionGroup>

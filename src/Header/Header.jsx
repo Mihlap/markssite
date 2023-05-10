@@ -58,9 +58,9 @@ const Header = () => {
           <SwiperContainer />
         </div>
         <div className={styles.show_container}>
-          <button className={styles.show_svg}>
+          {/* <button className={styles.show_svg}>
             <img src={show} alt="show" />
-          </button>
+          </button> */}
         </div>
         <div className={styles.card_container}>
           <div className={styles.card_item_1}>
@@ -71,7 +71,7 @@ const Header = () => {
               <h3>Центр энотуризма WinePark</h3>
               <span>Конкурс • 100 лучших объектов росии</span>
             </div>
-            <Link to="/project/winepark">
+            <Link to="/winepark">
             <button className={styles.card_button}>
               <img src={IconPlus} alt="button" />
             </button>

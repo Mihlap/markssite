@@ -1,5 +1,6 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwipeCore, { Navigation, Pagination, Autoplay } from "swiper";
+import { useParams } from "react-router-dom";
 // import { useState, useRef, useEffect } from "react";
 import oneImg from "./svgImg/one.png"
 import twoImg from "./svgImg/two.png";
@@ -17,18 +18,21 @@ import "./SwiperContainer.css";
 const point = "●";
 const items = [
   {
+    id: "1",
     title: "Смотр-конкурс Стекло в архитектуре 2022",
     text: `Номинация ${point} Объект нового строительства`,
     src: `${threeImg}`,
     icon: `${iconPlus}`,
   },
   {
+    id: "winepark",
     title: "Центр энотуризма WinePark",
     text: `Конкурс ${point} 100 лучших объектов росии`,
     src: `${twoImg}`,
     icon: `${iconPlus}`,
   },
   {
+    id: "3",
     title: "Баня, рынок, супер-слэб — что ждет Бадаевский?",
     text: `Статья ${point} Экспертное обсуждение реставрации...`,
     src: `${oneImg}`,
@@ -36,7 +40,8 @@ const items = [
   },
 ];
 
-const SwiperContainer = () => {
+console.log(items);
+export default function SwiperContainer() {
   SwipeCore.use([Navigation, Pagination, Autoplay]);
 
   return (
@@ -66,6 +71,7 @@ const SwiperContainer = () => {
                   src={item.src}
                   text={item.text}
                   icon={item.icon}
+                  id={item.id}
                 />
               </SwiperSlide>
             );
@@ -77,4 +83,3 @@ const SwiperContainer = () => {
   );
 };
 
-export default SwiperContainer;
