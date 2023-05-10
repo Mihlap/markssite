@@ -70,7 +70,7 @@ function BlockHeader() {
           <div className="title">Архитектура</div>
           <div className="text">
             <div className="text_span">
-             <div className="wraper_block_text">
+             {/* <div className="wraper_block_text"> */}
               <img
                 src={cub}
                 alt="logo"
