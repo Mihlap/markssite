@@ -178,7 +178,6 @@ button:hover p {
   .logo_img {
     position: relative;
     z-index: 9999;
-    width: 65%;
   }
 
   .container {
