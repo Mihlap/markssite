@@ -7,7 +7,7 @@ import SwiperContainer from "./Swiper-Phone/SwiperContainer";
 import styles from "./Header.module.css";
 
 import IconPlus from ".././icons/plus.svg";
-import show from '.././icons/show.svg';
+// import show from '.././icons/show.svg';
 
 import D1 from ".././icons/D1.svg";
 import D2 from ".././icons/D2.svg";
