@@ -1,5 +1,26 @@
 @import "../../App.css";
 
+/* Fonts */
+:root {
+    --font-unbounded: 'Unbounded', sans-serif;
+    --font-inter: 'Inter', sans-serif;
+    --font-raleway: 'Raleway', sans-serif;
+
+    /* Font weights */
+    --fw-300: 300;
+    --fw-400: 400;
+}
+
+/* Colors */
+:root {
+    --color-green: #F6F6F66B;
+    --color-white: #F6F6F6;
+    --color-desc: #EBECEE;
+    --color-title-text: #1D2E43;
+    --color-grey-text: #959DA6;
+    --color-number-hextension: #566272;
+}
+
 
 /* Container styles */
 .container {
@@ -26,9 +47,8 @@
 }
 
 .header_link {
-    background: var(--color-green);
     border: none;
-    color: var(--color-white);
+    color: var(--white-F6F6F6);
     padding: 0.69vw 1.39vw;
     text-align: left;
     font-size: 1.11vw;
@@ -48,7 +68,7 @@
     font-weight: var(--fw-300);
     font-size: 3.33vw;
     line-height: 4.44vw;
-    color: var(--color-white);
+    color: var(--white-F6F6F6);
     padding-top: 4.7vh;
 }
 
@@ -58,7 +78,7 @@
     font-weight: var(--fw-300);
     font-size: 1.67vw;
     line-height: 2.22vw;
-    color: var(--color-white);
+    color: var(--white-F6F6F6);
     padding-top: 1.11vw;
 }
 
@@ -68,7 +88,7 @@
     font-weight: var(--fw-400);
     font-size: 0.97vw;
     line-height: 14px;
-    color: var(--color-desc);
+    color: var(--light-light-gray-EBECEE);
     padding-top: 0.56vw;
 }
 
@@ -106,7 +126,7 @@
     font-size: 1.11vw;
     line-height: 1.67vw;
     font-feature-settings: 'pnum' on, 'lnum' on;
-    color: var(--color-title-text);
+    color: var(--black-1D2E43);
     padding-top: 1.22vw;
 }
 
@@ -133,16 +153,16 @@
 }
 
 .quote_text {
-    font-weight: 400;
+    font-weight: var(--fw-400);
     font-size: 1.11vw;
     line-height: 1.67vw;
     padding-bottom: 30px;
 }
 
 .quote {
-    background-color: var(--color-desc);
+    background-color: var(--light-light-gray-EBECEE);
     border-radius: 16px;
-    font-weight: 400;
+    font-weight: var(--fw-400);
     font-size: 1.11vw;
     line-height: 1.67vw;
     padding: 20px;
@@ -150,10 +170,10 @@
 }
 
 .quote_director {
-    font-weight: 400;
+    font-weight: var(--fw-400);
     font-size: 1.11vw;
     line-height: 1.39vw;
-    color: #959DA6;
+    color: var(--gray-959DA6);
     padding-top: 24px;
 }
 
