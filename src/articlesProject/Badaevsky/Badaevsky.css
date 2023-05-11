@@ -1,25 +1,31 @@
+/* Fonts */
 :root {
     --font-unbounded: 'Unbounded', sans-serif;
     --font-inter: 'Inter', sans-serif;
     --font-raleway: 'Raleway', sans-serif;
 
-    /* отступы у контейнера */
-    --mb-container-2: 2rem;
-    --mb-container-1: 1rem;
-
-    /* цвета */
-    --color-green: #F6F6F66B;
-    --color-while: #F6F6F6;
-    --color-desc: #EBECEE;
-    --color-title-text: #1D2E43;
-    --color-grey-text: #959DA6;
-    --color-number-hextension: #566272;
-
-    /* font-weight */
+    /* Font weights */
     --fw-300: 300;
     --fw-400: 400;
 }
 
+/* Colors */
+:root {
+    --color-green: #F6F6F66B;
+    --color-white: #F6F6F6;
+    --color-desc: #EBECEE;
+    --color-title-text: #1D2E43;
+    --color-grey-text: #959DA6;
+    --color-number-hextension: #566272;
+}
+
+/* Spacing */
+:root {
+    --mb-container-2: 2rem;
+    --mb-container-1: 1rem;
+}
+
+/* General styles */
 ul {
     list-style: none;
 }
@@ -38,14 +44,18 @@ button {
     cursor: pointer;
 }
 
-
+/* Container styles */
 .container {
     margin-left: var(--mb-container-2);
     margin-right: var(--mb-container-2);
     overflow-y: auto;
 }
 
+.item img {
+    border-radius: 1.11vw;
+}
 
+/* Header styles */
 .header_img {
     width: 100%;
     height: 100vh;
@@ -60,28 +70,19 @@ button {
 
 .header_link {
     background: var(--color-green);
-    /* Цвет фона */
     border: none;
-    /* Убираем границу */
-    color: var(--color-while);
-    /* Цвет текста */
+    color: var(--color-white);
     padding: 0.69vw 1.39vw;
-    /* Отступы внутри кнопки */
     text-align: left;
-    /* Выравнивание текста по левому краю */
     font-size: 1.11vw;
-    /* Размер шрифта */
     cursor: pointer;
-    /* Изменяем вид курсора при наведении на кнопку */
     border-radius: 18px;
     padding-left: 20px;
 }
 
 .header_link::before {
     content: "<";
-    /* Код символа стрелки влево */
     margin-right: 10px;
-    /* Отступ между стрелкой и текстом */
 }
 
 .header_title {
@@ -90,7 +91,7 @@ button {
     font-weight: var(--fw-300);
     font-size: 3.33vw;
     line-height: 4.44vw;
-    color: var(--color-while);
+    color: var(--color-white);
     padding-top: 4.7vh;
 }
 
@@ -100,7 +101,7 @@ button {
     font-weight: var(--fw-300);
     font-size: 1.67vw;
     line-height: 2.22vw;
-    color: var(--color-while);
+    color: var(--color-white);
     padding-top: 1.11vw;
 }
 
@@ -120,15 +121,13 @@ button {
     align-items: center;
     padding-bottom: 3.89vw;
     padding-top: 2.22vw;
-
 }
 
-/* <<=============== левый блок контента с информацией===============>> */
-
-.header_content_left {
+.header_content_text {
     width: 70%;
 }
 
+/* Title block styles */
 .title_block {
     display: flex;
     align-items: center;
@@ -144,19 +143,7 @@ button {
     color: var(--color-title-text);
 }
 
-.left_meta {
-    font-style: normal;
-    font-weight: var(--fw-400);
-    font-size: 0.83vw;
-    line-height: 1.11vw;
-    font-feature-settings: 'pnum' on, 'lnum' on;
-    color: var(--color-grey-text);
-    border: 1px solid;
-    border-radius: 1.25vw;
-    padding: 0.35vw 1.25vw;
-}
-
-.title_text {
+.articles_title_text {
     font-style: normal;
     font-weight: var(--fw-400);
     font-size: 1.11vw;
@@ -164,23 +151,34 @@ button {
     font-feature-settings: 'pnum' on, 'lnum' on;
     color: var(--color-title-text);
     padding-top: 1.22vw;
-    padding-bottom: 2.22vw;
 }
 
-.quote_container, .description_object_container {
+/* Quote and description object styles */
+.quote_container,
+.description_object_container {
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.quote_block, .description_object_block {
+.quote_block,
+.description_object_block {
     width: 70%;
+}
+
+.description_object_block {
+    display: flex;
+    font-size: 1.11vw;
+    line-height: 1.67vw;
+    flex-direction: column;
+    gap: 2.78vw;
+    padding-bottom: 2.78vw;
 }
 
 .quote_text {
     font-weight: 400;
-    font-size: 16px;
-    line-height: 24px;
+    font-size: 1.11vw;
+    line-height: 1.67vw;
     padding-bottom: 30px;
 }
 
@@ -188,80 +186,27 @@ button {
     background-color: var(--color-desc);
     border-radius: 16px;
     font-weight: 400;
-    font-size: 16px;
-    line-height: 24px;
+    font-size: 1.11vw;
+    line-height: 1.67vw;
     padding: 20px;
     margin-bottom: 40px;
 }
 
 .quote_director {
     font-weight: 400;
-    font-size: 14px;
-    line-height: 20px;
+    font-size: 1.11vw;
+    line-height: 1.39vw;
     color: #959DA6;
     padding-top: 24px;
 }
 
-/* << =============== правый блок контента с информацией =============== >> */
-.header_content_right {
-    width: 30%;
-}
-
-.local_container {
-    display: flex;
-    flex-wrap: nowrap;
-    gap: 4.86vw;
-    padding-top: 2.08vw;
-}
-
-.local_ritgh,
-.local_left {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    gap: 2.39vw;
-}
-
-.local_title {
-    font-style: normal;
-    font-weight: var(--fw-400);
-    font-size: 0.97vw;
-    line-height: 1.39vw;
-    font-feature-settings: 'pnum' on, 'lnum' on;
-    color: var(--color-number-hextension);
-}
-
-.local_text {
-    font-style: normal;
-    font-weight: var(--fw-400);
-    font-size: 0.97vw;
-    line-height: 1.39vw;
-    font-feature-settings: 'pnum' on, 'lnum' on;
-    color: var(--color-grey-text);
-}
-
-.block_img div img {
-    width: 100%;
-    height: auto;
-    border-radius: 16px;
-}
-
-/* Стили для мобильной версии сайта блока WinePark начинаются тут */
+/* Mobile styles */
 @media screen and (max-width: 700px) {
 
     .container {
         margin-left: var(--mb-container-1);
         margin-right: var(--mb-container-1);
     }
-
-    .result_container {
-        display: none;
-    }
-
-    .result_container_phone {
-        display: block
-    }
-
 
     .header_img_title {
         top: 9vh;
@@ -275,13 +220,14 @@ button {
 
     .header_title {
         font-size: 8.53vw;
-        line-height: 10.67vw;
+        line-height: 12.4vw;
         padding-top: 8vw;
     }
 
     .header_desc {
         font-size: 3.73vw;
         line-height: 3.73vw;
+        padding-top: 2.56vw;
     }
 
     .header_content {
@@ -290,8 +236,7 @@ button {
         justify-content: normal;
     }
 
-    .header_content_left,
-    .header_content_right {
+    .header_content_text {
         width: auto;
     }
 
@@ -306,49 +251,25 @@ button {
         line-height: 7.47vw;
     }
 
-    .left_meta {
-        font-size: 9px;
-        padding: 7px 15px;
-        border-radius: 34px;
-        margin-top: 2.13vw;
+    .quote_block,
+    .description_object_block {
+        width: auto;
     }
 
-    .title_text {
+    .description_object_block,
+    .quote_text,
+    .quote,
+    .articles_title_text {
         font-size: 4.27vw;
         line-height: 6.40vw;
-        padding-top: 4.27vw;
     }
 
-    .local_container {
-        padding-top: 5.33vw;
-        gap: 20vw;
-    }
-
-    .local_title {
+    .quote_director {
         font-size: 3.73vw;
         line-height: 5.33vw;
     }
 
-    .local_text {
+    .header_name {
         font-size: 3.73vw;
-        line-height: 5.33vw;
-    }
-
-    .result_container_phone {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        gap: 5.33vw;
-        padding-top: 5.33vw;
-    }
-
-    .result_number {
-        font-size: 5.33vw;
-        line-height: 7.47vw;
-    }
-
-    .result_text {
-        font-size: 3.73vw;
-        line-height: 5.33vw;
     }
 }
