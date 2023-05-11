@@ -2,6 +2,8 @@
 import React, { useEffect, useRef } from "react";
 import "./Badaevsky.css";
 import gsap from "gsap";
+import { Link } from "react-router-dom";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 // импортируем фото
 import img from "./img/img.jpg";
@@ -9,8 +11,6 @@ import img1 from "./img/img1.jpg";
 import img2 from "./img/img2.jpg";
 import img3 from "./img/img3.jpg";
 
-import { Link } from "react-router-dom";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 export default function Badaevsky() {
   //useRefs для анимация появления блоков в шапке на картинке
   const titleRef = useRef(null);
