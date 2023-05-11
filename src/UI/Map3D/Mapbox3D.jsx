@@ -28,8 +28,8 @@ const Mapbox3D = () => {
   }, []);
   
   return (
-    <div className={styles.map} style={{ width: 'auto', height: '64.5vh', display: 'flex'}}>
-       <div id="map" style={{ width: '100%', height: '100%', boxSizing: 'border-box' }} />
+    <div className={styles.map}>
+       <div id="map" style={{ width: '100%', height: '100%', boxSizing: 'border-box', borderRadius: '7px' }} />
     </div>
   )
 }

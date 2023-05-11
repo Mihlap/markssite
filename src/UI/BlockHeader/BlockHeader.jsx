@@ -5,25 +5,42 @@ import { CSSPlugin } from 'gsap/CSSPlugin';
 import './index.scss';
 
 import cub from "../../icons/cub.svg";
+gsap.registerPlugin(ScrollTrigger, CSSPlugin);
 
 function BlockHeader() {
-  gsap.registerPlugin(ScrollTrigger, CSSPlugin);
   const accordionsRef = useRef(null);
-      
+
+  const closeAccordions = () => {
+    const accordions = document.querySelectorAll('.accordion');
+    accordions.forEach((accordion) => {
+      const text = accordion.querySelector('.text_span');
+      text.classList.add('closed');
+      gsap.set(text, {
+        maxHeight: 0,
+        opacity: 0,
+        overflow: 'hidden',
+      });
+      accordion.classList.remove('open');
+    });
+  };
+  closeAccordions();
+  
   useEffect(() => {
     const accordions = document.querySelectorAll('.accordion');
+    
     accordions.forEach((accordion) => {
       const text = accordion.querySelector('.text_span');
       text.classList.add('closed');
            
       gsap.set(text, {
-          maxHeight: text.scrollHeight,
+          maxHeight: 0,
           overflow: 'hidden',
+          delay: 1,
       });
    
      ScrollTrigger.create({
         trigger: text,
-        start: 'bottom bottom-=25%',
+        start: 'bottom bottom-=10%',
         end: 'top bottom+=5%',
         onEnter: () => {
           if (!accordion.classList.contains('open')) {
@@ -37,8 +54,8 @@ function BlockHeader() {
         onLeaveBack: () => {
               gsap.to(text, {
               maxHeight: 0,
-              duration: 1,
-            });
+              duration: 0.5,
+             });
             accordion.classList.remove('open');
          }
       });
@@ -51,38 +68,37 @@ function BlockHeader() {
           if (!accordion.classList.contains('open')) {
             gsap.to(text, {
               maxHeight: 0,
-              duration: 1,
+              duration: 0.5,
             });
           }
         },
       });
 
       });
-
-  }, []);
+      
+       }, []);
   
 
   return (
     <div className="wrapper">
       <div className="spacer"></div>
-      <div ref={accordionsRef} className="accordions">
+      <div className="accordions" ref={accordionsRef}>
         <div className="accordion">
           <div className="title">Архитектура</div>
           <div className="text">
-            <div className="text_span">
-             <div className="wraper_block_text">
-              <img
+          <img
                 src={cub}
                 alt="logo"
-                style={{ position: "absolute", zIndex: 0, left: "600px" }}
+                style={{ position: "absolute", zIndex: 0, left: "20vw" }}
               />
-              Архитектура и концепции
+            <div className="text_span">
+               Архитектура и концепции
               <span>
                 Разработка концепции, архитектурное проектирование -
                 <br />
                 от идеи до ввода объекта в эксплуатацию
               </span>
-              Адаптация зарубежных концепций
+                Адаптация зарубежных концепций
               <span>
                 Подготовка проектной и рабочей документации на базе
                 <br />
@@ -105,8 +121,7 @@ function BlockHeader() {
         <div className="accordion">
           <div className="title">Конструктив</div>
           <div className="text">
-            <div className="text_span">
-              {/* <img src={cub} alt="logo" /> */}
+              <div className="text_span">
               Инженерное проектирование
               <span>
                 Разработка внутренних и наружных инженерных коммуникаций
@@ -132,7 +147,6 @@ function BlockHeader() {
           <div className="title">Наука</div>
           <div className="text">
             <div className="text_span">
-              {/* <img src={cub} alt="logo"/> */}
               Научно-техническое сопровождение
               <span>
                 Расчетное сопровождение проектирования и строительства
@@ -146,7 +160,6 @@ function BlockHeader() {
           <div className="title">Digital</div>
           <div className="text">
             <div className="text_span">
-              {/* <img src={cub} alt="logo" /> */}
               BIM моделирование
               <span>
                 Проекты освоения подземного пространства для уникальных

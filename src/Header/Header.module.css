@@ -140,8 +140,9 @@
   background-image: url("/public/assets/most.png");
   background-repeat: no-repeat;
   background-position: right;
-  /* height: 900px; */
- }
+   z-index: 0;
+  
+   }
 
 .image_most {
   width: 100%;
@@ -260,8 +261,8 @@ span {
   font-size: 48px;
   line-height: 64px;
   color: #3C3C3C;
-  background-color: var(--white-F6)
-}
+  background-color: var(--white-F6);
+  }
 
 
 .name_11 {
@@ -281,7 +282,7 @@ span {
 }
 
 .project_name {
-  padding: 10vh 2.9vw 0vh 2.7vw;
+  padding: 10vh 2.7vw 0vh 2.7vw;
   font-family: 'Unbounded';
   font-style: normal;
   font-weight: 300;
