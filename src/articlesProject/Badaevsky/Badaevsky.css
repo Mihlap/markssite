@@ -1,48 +1,5 @@
-/* Fonts */
-:root {
-    --font-unbounded: 'Unbounded', sans-serif;
-    --font-inter: 'Inter', sans-serif;
-    --font-raleway: 'Raleway', sans-serif;
+@import "../../App.css";
 
-    /* Font weights */
-    --fw-300: 300;
-    --fw-400: 400;
-}
-
-/* Colors */
-:root {
-    --color-green: #F6F6F66B;
-    --color-white: #F6F6F6;
-    --color-desc: #EBECEE;
-    --color-title-text: #1D2E43;
-    --color-grey-text: #959DA6;
-    --color-number-hextension: #566272;
-}
-
-/* Spacing */
-:root {
-    --mb-container-2: 2rem;
-    --mb-container-1: 1rem;
-}
-
-/* General styles */
-ul {
-    list-style: none;
-}
-
-a {
-    text-decoration: none;
-}
-
-img,
-video {
-    max-width: 100%;
-    height: auto;
-}
-
-button {
-    cursor: pointer;
-}
 
 /* Container styles */
 .container {

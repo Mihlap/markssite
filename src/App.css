@@ -1,11 +1,48 @@
 /* глобальный стили  */
 
+@import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;700;900&family=Unbounded:wght@300&display=swap');
+
+/* Colors */
 :root {
-  --blue: #1D2E43;
-  --light-blue: #75BBFD;
-  --white-F6: #F6F6F6;
-  --orange: #FF7F6A;
-  --light-grey: #EBECEE;
+  --blue-75BBFD: #75BBFD;
+  --orange-FE5000: #FE5000;
+  --salmon-FF7F6A: #FF7F6A;
+  --crimson-E00747: #E00747;
+  --white-F6F6F6: #F6F6F6;
+  --black-3C3C3C: #3C3C3C;
+  --black-4E4E4E: #4E4E4E;
+  --black-1D2E43: #1D2E43;
+  --dark-gray-566272: #566272;
+  --gray-959DA6: #959DA6;
+  --light-gray-C0C5CB: #C0C5CB;
+  --light-light-gray-EBECEE: #EBECEE;
+  --light-light-gray-EDEDED: #EDEDED;
+  --green-96A96C: #96A96C;
+  --yellow-FFD481: #FFD481;
+  --salmon-light-FFBFB5: #FFBFB5;
+  --blue-light-BADDFE: #BADDFE;
+  --crimson-light-F39CB5: #F39CB5;
+}
+
+/* Fonts */
+:root {
+  --font-unbounded: 'Unbounded', sans-serif;
+  --font-inter: 'Inter', sans-serif;
+  --font-raleway: 'Raleway', sans-serif;
+
+  /* Font weights */
+  --fw-300: 300;
+  --fw-400: 400;
+  --fw-500: 500;
+  --fw-600: 600;
+  --fw-700: 700;
+}
+
+/* Spacing */
+:root {
+  --mb-container-2: 2rem;
+  --mb-container-1: 1rem;
 }
 
 body {
@@ -20,6 +57,11 @@ body {
   overflow-x: hidden;
 }
 
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
 h1,h2,h3,h4,h5,h6 {
   margin: 0;
 }
@@ -31,10 +73,6 @@ ul {
 a {
   text-decoration: none;
 }
-/* 
-a:visited {
-  color: var(--color-link-active);
-} */
 
 button {
   cursor: pointer;
@@ -42,11 +80,6 @@ button {
 
 input {
   outline: none;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
 }
 
 /* Стили для мобильной версии сайта блока NavBar начинаются тут */

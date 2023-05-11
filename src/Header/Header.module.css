@@ -1,12 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;700;900&family=Unbounded:wght@300&display=swap');
-
-
-:root {
-  --blue: #1D2E43;
-  --light-blue: #75BBFD;
-  --white-F6: #F6F6F6;
-}
+@import "../App.css";
 
 .main {
   display: flex;
@@ -39,19 +31,19 @@
 
 
 .heading {
-  font-family: 'Unbounded';
-  font-weight: 300;
+  font-family: var(--font-unbounded);
+  font-weight: var(--fw-300);
   font-size: 24px;
-  color: var(--blue);
+  color: var(--black-1D2E43);
 }
 
 .heading_text {
-  font-family: 'Raleway';
+  font-family: var(--font-raleway);
   font-style: normal;
-  font-weight: 400;
+  font-weight: var(--fw-400);
   font-size: 16px;
   line-height: 24px;
-  color: var(--blue);
+  color: var(--black-1D2E43);
 }
 
 .header_desctop_block {
@@ -60,17 +52,17 @@
 }
 
 .desctop_title {
-  font-family: 'Unbounded';
+  font-family: var(--font-unbounded);
   font-style: normal;
-  font-weight: 300;
+  font-weight: var(--fw-300);
   font-size: 40px;
   line-height: 48px;
 }
 
 .desctop_test {
-  font-family: 'Raleway';
+  font-family: var(--font-raleway);
   font-style: normal;
-  font-weight: 400;
+  font-weight: var(--fw-400);
   font-size: 16px;
   line-height: 24px;
   padding-top: 16px;
@@ -78,12 +70,12 @@
 
 .str {
   display: flex;
-  font-family: 'Unbounded';
+  font-family: var(--font-unbounded);
   font-style: normal;
-  font-weight: 300;
+  font-weight: var(--fw-300);
   font-size: 40px;
   line-height: 48px;
-  color: #1D2E43;
+  color: var(--black-1D2E43);
   width: 560px;
   height: 48px;
   margin-left: 263px;
@@ -93,14 +85,14 @@
 
 .str1 {
   display: flex;
-  font-family: 'Raleway';
+  font-family: var(--font-raleway);
   font-style: normal;
-  font-weight: 400;
+  font-weight: var(--fw-400);
   font-size: 16px;
   line-height: 24px;
   width: 550px;
   height: 48px;
-  color: #1D2E43;
+  color: var(--black-1D2E43);
   margin-left: 263px;
   margin-top: 16px;
   margin-right: 627px;
@@ -223,7 +215,7 @@
 .card_text h3 {
   display: flex;
   flex-direction: column;
-  font-family: "Raleway", sans-serif;
+  font-family: var(--font-raleway);
   font-style: normal;
   font-weight: 700;
   font-size: 16px;
@@ -232,9 +224,9 @@
 }
 
 span {
-  font-family: 'Raleway';
+  font-family: var(--font-raleway);
   font-style: normal;
-  font-weight: 400;
+  font-weight: var(--fw-400);
   font-size: 14px;
   line-height: 20px;
 }
@@ -254,20 +246,20 @@ span {
   margin-top: 41vh;
   margin-bottom: 2.4vh;
   padding-right: 2.7vw;
-  font-family: 'Unbounded';
+  font-family: var(--font-unbounded);
   font-style: normal;
-  font-weight: 300;
+  font-weight: var(--fw-300);
   font-size: 48px;
   line-height: 64px;
-  color: #3C3C3C;
-  background-color: var(--white-F6)
+  color: var(--black-3C3C3C);
+  background-color: var(--white-F6F6F6)
 }
 
 
 .name_11 {
-  font-family: 'Unbounded';
+  font-family: var(--font-unbounded);
   font-style: normal;
-  font-weight: 400;
+  font-weight: var(--fw-400);
   font-size: 18px;
   line-height: 64px;
   margin-right: 16px;
@@ -282,12 +274,12 @@ span {
 
 .project_name {
   padding: 10vh 2.9vw 0vh 2.7vw;
-  font-family: 'Unbounded';
+  font-family: var(--font-unbounded);
   font-style: normal;
-  font-weight: 300;
+  font-weight: var(--fw-300);
   font-size: 60px;
   line-height: 48px;
-  color: #1D2E43;
+  color: var(--black-1D2E43);
 }
 
 .img_project {
