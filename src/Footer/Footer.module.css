@@ -71,6 +71,7 @@
 .block_lang {
   color: var(--color-white-main);
 }
+
 .block_lang:hover {
   color: var(--orange-light);
 }
