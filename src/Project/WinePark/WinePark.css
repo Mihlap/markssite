@@ -75,6 +75,8 @@
 
 .header_content_left {
     width: 70%;
+    overflow: hidden;
+
 }
 
 .title_block {
