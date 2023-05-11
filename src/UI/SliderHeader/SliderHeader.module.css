@@ -1,11 +1,5 @@
 .item {
-  margin-right: 7vw;
-}
-.firstItem {
-  margin-left: 0;
-}
-.item:not(:last-child) {
-   transition: margin-left 1s ease-out;
+  padding-left: 10vw;
 }
 .logo {
   padding-top: 4vh;
