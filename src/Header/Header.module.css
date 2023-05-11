@@ -274,7 +274,7 @@ span {
 
 .project_name {
   padding: 10vh 2.7vw 0vh 2.7vw;
-  font-family: var(--font-unbounded
+  font-family: var(--font-unbounded);
   font-style: normal;
   font-weight: var(--fw-300);
   font-size: 60px;
