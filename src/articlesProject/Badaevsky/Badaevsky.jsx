@@ -58,7 +58,8 @@ export default function Badaevsky() {
       gsap.from(element, {
         x: "-100%",
         opacity: 0,
-        duration: 1,
+        duration: 1.5,
+        delay: 1,
         ease: "power4.out",
         scrollTrigger: {
           trigger: element,
@@ -71,7 +72,8 @@ export default function Badaevsky() {
       gsap.from(element, {
         x: "100%",
         opacity: 0,
-        duration: 1,
+        duration: 1.5,
+        delay: 1,
         ease: "power4.out",
         scrollTrigger: {
           trigger: element,

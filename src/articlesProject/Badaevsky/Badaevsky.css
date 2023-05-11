@@ -1,26 +1,5 @@
 @import "../../App.css";
 
-/* Fonts */
-:root {
-    --font-unbounded: 'Unbounded', sans-serif;
-    --font-inter: 'Inter', sans-serif;
-    --font-raleway: 'Raleway', sans-serif;
-
-    /* Font weights */
-    --fw-300: 300;
-    --fw-400: 400;
-}
-
-/* Colors */
-:root {
-    --color-green: #F6F6F66B;
-    --color-white: #F6F6F6;
-    --color-desc: #EBECEE;
-    --color-title-text: #1D2E43;
-    --color-grey-text: #959DA6;
-    --color-number-hextension: #566272;
-}
-
 
 /* Container styles */
 .container {
