@@ -1,43 +1,4 @@
-:root {
-    --font-unbounded: 'Unbounded', sans-serif;
-    --font-inter: 'Inter', sans-serif;
-    --font-raleway: 'Raleway', sans-serif;
-
-    /* отступы у контейнера */
-    --mb-container-2: 2rem;
-    --mb-container-1: 1rem;
-
-    /* цвета */
-    --color-green: #F6F6F66B;
-    --color-while: #F6F6F6;
-    --color-desc: #EBECEE;
-    --color-title-text: #1D2E43;
-    --color-grey-text: #959DA6;
-    --color-number-hextension: #566272;
-
-    /* font-weight */
-    --fw-300: 300;
-    --fw-400: 400;
-}
-
-ul {
-    list-style: none;
-}
-
-a {
-    text-decoration: none;
-}
-
-img,
-video {
-    max-width: 100%;
-    height: auto;
-}
-
-button {
-    cursor: pointer;
-}
-
+@import "../../App.css";
 
 .container {
     margin-left: var(--mb-container-2);
@@ -58,11 +19,11 @@ button {
 }
 
 .header_link {
-    background: var(--color-green);
+    background: rgba(246, 246, 246, 0.42);;
     /* Цвет фона */
     border: none;
     /* Убираем границу */
-    color: var(--color-while);
+    color: var(-white-F6F6F6);
     /* Цвет текста */
     padding: 0.69vw 1.39vw;
     /* Отступы внутри кнопки */
@@ -89,7 +50,7 @@ button {
     font-weight: var(--fw-300);
     font-size: 3.33vw;
     line-height: 30px;
-    color: var(--color-while);
+    color: var(-white-F6F6F6);
     padding-top: 4.7vh;
 }
 
@@ -99,7 +60,7 @@ button {
     font-weight: var(--fw-400);
     font-size: 0.97vw;
     line-height: 14px;
-    color: var(--color-desc);
+    color: var(--black-1D2E43);
     padding-top: 30px;
 }
 
@@ -114,6 +75,8 @@ button {
 
 .header_content_left {
     width: 70%;
+    overflow: hidden;
+
 }
 
 .title_block {
@@ -128,7 +91,7 @@ button {
     font-weight: var(--fw-300);
     font-size: 2.22vw;
     line-height: 2.78vw;
-    color: var(--color-title-text);
+    color: var(--black-1D2E43);
 }
 
 .left_meta {
@@ -137,7 +100,7 @@ button {
     font-size: 0.83vw;
     line-height: 1.11vw;
     font-feature-settings: 'pnum' on, 'lnum' on;
-    color: var(--color-grey-text);
+    color: var(--gray-959DA6);
     border: 1px solid;
     border-radius: 1.25vw;
     padding: 0.35vw 1.25vw;
@@ -149,7 +112,7 @@ button {
     font-size: 1.11vw;
     line-height: 1.67vw;
     font-feature-settings: 'pnum' on, 'lnum' on;
-    color: var(--color-title-text);
+    color: var(--black-1D2E43);
     padding-top: 1.22vw;
     padding-bottom: 2.22vw;
 }
@@ -170,7 +133,7 @@ button {
     font-weight: var(--fw-300);
     font-size: 1.39vw;
     line-height: 1.94vw;
-    color: var(--color-number-hextension);
+    color: var(--dark-gray-566272);
 }
 
 .result_text {
@@ -179,7 +142,7 @@ button {
     font-size: 0.97vw;
     line-height: 1.39vw;
     font-feature-settings: 'pnum' on, 'lnum' on;
-    color: var(--color-grey-text);
+    color: (var--gray-959DA6);
 }
 
 
@@ -209,7 +172,7 @@ button {
     font-size: 0.97vw;
     line-height: 1.39vw;
     font-feature-settings: 'pnum' on, 'lnum' on;
-    color: var(--color-number-hextension);
+    color: var(--dark-gray-566272);
 }
 
 .local_text {
@@ -218,7 +181,7 @@ button {
     font-size: 0.97vw;
     line-height: 1.39vw;
     font-feature-settings: 'pnum' on, 'lnum' on;
-    color: var(--color-grey-text);
+    color: var(--gray-959DA6);
 }
 
 .item {
@@ -229,6 +192,10 @@ button {
     width: 100%;
     height: auto;
     border-radius: 16px;
+}
+
+.item img {
+    width: 100%;
 }
 
 /* Стили для мобильной версии сайта блока WinePark начинаются тут */

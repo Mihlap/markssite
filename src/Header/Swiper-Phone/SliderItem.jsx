@@ -9,8 +9,8 @@ const Slideritem = ({ title, src, text, icon, id }) => {
       <div className="slider-image-wrapper">
         <img className="slider-image" src={src} alt="SliderImg" />
         {/* <div className="icon_image">{icon}</div> */}
-        <Link to="/winepark">
-        <img className="icon_image" src={icon} alt="icon" />
+        <Link to={`/${id}`}>
+          <img className="icon_image" src={icon} alt="icon" />
         </Link>
       </div>
       <div className="slider-item-content">

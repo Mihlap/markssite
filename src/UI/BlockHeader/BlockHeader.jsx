@@ -86,7 +86,7 @@ function BlockHeader() {
         <div className="accordion">
           <div className="title">Архитектура</div>
           <div className="text">
-          <img
+              <img
                 src={cub}
                 alt="logo"
                 style={{ position: "absolute", zIndex: 0, left: "20vw" }}

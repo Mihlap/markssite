@@ -1,6 +1,9 @@
+/* eslint-disable array-callback-return */
 import React, { useEffect, useRef } from "react";
 import "./Badaevsky.css";
 import gsap from "gsap";
+import { Link } from "react-router-dom";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 
 // импортируем фото
 import img from "./img/img.jpg";
@@ -8,16 +11,20 @@ import img1 from "./img/img1.jpg";
 import img2 from "./img/img2.jpg";
 import img3 from "./img/img3.jpg";
 
-import { Link } from "react-router-dom";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 export default function Badaevsky() {
+  //useRefs для анимация появления блоков в шапке на картинке
   const titleRef = useRef(null);
   const linkRef = useRef(null);
   const descRef = useRef(null);
-  const blockLeft = useRef(null);
+  //useRefs для анимация появления блоков справой стороны экрана
   const blockRight = useRef(null);
-  const blockRightPhone = useRef(null);
+  const blockRightQuote = useRef(null);
+  const blockDescription = useRef(null);
   const blockName = useRef(null);
+  //useRefs для анимация появления блоков слевой стороны экрана
+  const leftImg1 = useRef(null);
+  const leftImg2 = useRef(null);
+  const leftImg3 = useRef(null);
 
   useEffect(() => {
     window.scrollTo(20, 0);
@@ -38,23 +45,35 @@ export default function Badaevsky() {
 
     gsap.registerPlugin(ScrollTrigger);
 
-    gsap.from(blockLeft.current, {
-      x: "-100%",
-      opacity: 0,
-      duration: 1,
-      ease: "power4.out",
-      scrollTrigger: {
-        trigger: blockLeft.current,
-        start: "top 80%",
-      },
-    });
-    const elements = [blockRight.current, blockRightPhone.current];
+    const { elementsLeft, elementsRight } = {
+      elementsLeft: [leftImg1.current, leftImg2.current, leftImg3.current],
+      elementsRight: [
+        blockRight.current,
+        blockRightQuote.current,
+        blockDescription.current,
+      ],
+    };
 
-    elements.map((element) => {
+    elementsLeft.forEach((element) => {
+      gsap.from(element, {
+        x: "-100%",
+        opacity: 0,
+        duration: 1.5,
+        delay: 1,
+        ease: "power4.out",
+        scrollTrigger: {
+          trigger: element,
+          start: "top 80%",
+        },
+      });
+    });
+
+    elementsRight.forEach((element) => {
       gsap.from(element, {
         x: "100%",
         opacity: 0,
-        duration: 1,
+        duration: 1.5,
+        delay: 1,
         ease: "power4.out",
         scrollTrigger: {
           trigger: element,
@@ -85,14 +104,14 @@ export default function Badaevsky() {
             </div>
           </div>
           <div className="header_content">
-            <div ref={blockRight} className="header_content_left">
+            <div ref={blockRight} className="header_content_text">
               <div className="title_block">
                 <h2 className="left_title">
                   В Capital Group назвали проектное бюро для нового знакового
                   объекта Москвы
                 </h2>
               </div>
-              <div className="title_text">
+              <div className="articles_title_text">
                 Генеральным проектированием жилого комплекса премиум-класса
                 «Бадаевский» – первого столичного проекта, получившего сразу три
                 награды международного конкурса World Architecture Festival –
@@ -113,10 +132,10 @@ export default function Badaevsky() {
       <div className="block_img">
         <div className="container">
           <div className="item">
-            <img src={img1} alt="" />
+            <img ref={leftImg1} src={img1} alt="" />
           </div>
           <div className="quote_container">
-            <div className="quote_block">
+            <div ref={blockRightQuote} className="quote_block">
               <div className="quote_text">
                 Принципиальные проектные решения авторов проекта – швейцарского
                 бюро Herzog & de Meuron, будут воплощены генеральным
@@ -140,9 +159,9 @@ export default function Badaevsky() {
             </div>
           </div>
           <div className="item">
-            <img src={img2} alt="" />
+            <img ref={leftImg2} src={img2} alt="" />
           </div>
-          <div сlassName="description_object_container">
+          <div ref={blockDescription} className="description_object_container">
             <div className="description_object_block">
               <div className="description_object_text1">
                 В рамках реализации проекта премиум-класса наряду с новым
@@ -165,7 +184,7 @@ export default function Badaevsky() {
             </div>
           </div>
           <div className="item">
-            <img src={img3} alt="" />
+            <img ref={leftImg3} src={img3} alt="" />
           </div>
         </div>
       </div>
