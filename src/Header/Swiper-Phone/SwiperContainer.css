@@ -1,3 +1,5 @@
+@import '../../App.css';
+
 .swiper-container {
     width: 100%;
     position: relative;
@@ -13,7 +15,6 @@
     width: 100%;
     height: 100%;
     display: flex;
-    /* align-items: center; */
     z-index: 1;
     position: relative;
 }
@@ -27,16 +28,6 @@
     padding-top: 8px;
     font-size: 100px;
 }
-
-/* .swiper-button-next,
-.swiper-button-prev {
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  outline: none;
-  position: relative;
-  margin-left: 4px;
-} */
 
 .swiper-pagination {
     position: absolute;
@@ -54,7 +45,7 @@
     line-height: 30px;
     font-size: 12px;
     opacity: 1;
-    background: #EBECEE;
+    background: var(--light-light-gray-EBECEE);
     display: inline-block;
     margin-right: 8px;
     cursor: pointer;
@@ -62,7 +53,7 @@
 }
 
 .swiper-pagination-bullet-active {
-    background: #FF7F6A;
+    background: var(--salmon-FF7F6A);
     width: 40px;
     height: 4px;
     border-radius: 1px;

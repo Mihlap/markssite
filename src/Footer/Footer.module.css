@@ -1,26 +1,16 @@
-/* @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;500&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap'); */
-@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;700;900&display=swap');
+@import '../App.css';
 
-:root {
-  --orange-light: #FFBFB5;
-  --color-white-main: #f6f6f6;
-  --color-white: #FFFFFF;
-  --color-container: #1D2E43;
-  --color-light-grey: #C0C5CB;
-  --color-link-active: #BADDFE;
-}
 
 .footer_container {
   display: flex;
   justify-content: space-between;
-  background-color: var(--color-container);
+  background-color: var(--black-1D2E43);
   padding: 1.7vh 2.7vh 4vh 2.7vh;
 }
 
 .mail_link {
-  color: var(--color-white-main);
-  font-weight: 400;
+  color: var(--white-F6F6F6);
+  font-weight: var(--fw-400);
   font-size: 48px;
   line-height: 48px;
   cursor: pointer;
@@ -31,10 +21,10 @@
 }
 
 .office {
-  color: var(--color-white-main);
+  color: var(--white-F6F6F6);
   padding-top: 40px;
   padding-bottom: 14px;
-  font-weight: 700;
+  font-weight: var(--fw-700);
   font-size: 18px;
   line-height: 24px;
 }
@@ -42,24 +32,21 @@
 .tel,
 .address {
   display: block;
-  color: var(--color-white);
+  color: var(--white-F6F6F6);
   font-family: 'Raleway', sans-serif;
   font-size: 14px;
-  font-weight: 400;
+  font-weight: var(--fw-400);
   line-height: 20px;
   padding-top: 4px;
   font-feature-settings: 'pnum' on, 'lnum' on;
 }
 
 .tel:hover {
-  color: var(--orange-light);
+  color: var(--salmon-FF7F6A);
   cursor: pointer;
   
 }
-/* 
-.tel:visited {
-  color: var(--color-link-active);
-} */
+
 
 .footer_block_right {
   display: flex;
@@ -69,10 +56,11 @@
 }
 
 .block_lang {
-  color: var(--color-white-main);
+  color: var(--white-F6F6F6);
 }
+
 .block_lang:hover {
-  color: var(--orange-light);
+  color: var(--salmon-FF7F6A);
 }
 
 .social_links {
@@ -80,21 +68,16 @@
 }
 
 .social_links_item {
-  color: var(--color-white);
-  /* text-decoration: none; */
+  color: var(--white-F6F6F6);
   letter-spacing: 0.1em;
   font-size: 14px;
-  font-weight: 900;
+  font-weight: var(--fw-900);
   line-height: 14px;
 }
 
 .social_links_item:hover {
-  color: var(--orange-light);
+  color: var(--salmon-FF7F6A);
 }
-
-/* .social_links_item:visited {
-  color: var(--color-link-active);
-} */
 
 .job {
   display: flex;
@@ -102,14 +85,15 @@
 }
 
 .job_link {
-  color: var(--color-light-grey);
+  color: var(--light-gray-C0C5CB);
   font-size: 14px;
-  font-weight: 400;
+  font-weight: var(--fw-400);
   line-height: 14px;
   padding-left: 24px;
 }
 .job_link:hover {
-  color: var(--orange-light);
+  color: var(--salmon-FF7F6A);
+  cursor: pointer;
 }
 
 /* .job_link:visited {
@@ -117,9 +101,9 @@
 } */
 
 .job_link:not(:last-child) {
-  color: var(--color-light-grey);
+  color: var(--light-gray-C0C5CB);
   font-size: 14px;
-  font-weight: 400;
+  font-weight: var(--fw-400);
   line-height: 14px;
   padding-right: 20px;
 }
@@ -136,7 +120,7 @@
   }
 
   .mail_link {
-    font-weight: 400;
+    font-weight: var(--fw-400);
     font-size: 32px;
     line-height: 32px;
   }
