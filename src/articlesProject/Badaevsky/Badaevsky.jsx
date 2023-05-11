@@ -1,3 +1,4 @@
+/* eslint-disable array-callback-return */
 import React, { useEffect, useRef } from "react";
 import "./Badaevsky.css";
 import gsap from "gsap";
@@ -142,7 +143,7 @@ export default function Badaevsky() {
           <div className="item">
             <img src={img2} alt="" />
           </div>
-          <div сlassName="description_object_container">
+          <div className="description_object_container">
             <div className="description_object_block">
               <div className="description_object_text1">
                 В рамках реализации проекта премиум-класса наряду с новым
