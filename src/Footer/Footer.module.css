@@ -4,8 +4,9 @@
 .footer_container {
   display: flex;
   justify-content: space-between;
+  padding: 1.7vh 2.7vw 4vh 2.7vw;
   background-color: var(--black-1D2E43);
-  padding: 1.7vh 2.7vh 4vh 2.7vh;
+
 }
 
 .mail_link {
@@ -53,7 +54,7 @@
   flex-direction: column;
   align-items: end;
   justify-content: space-around;
-}
+  }
 
 .block_lang {
   color: var(--white-F6F6F6);
@@ -91,7 +92,7 @@
   line-height: 14px;
   padding-left: 24px;
 }
-.job_link:hover {
+.job .job_link:hover {
   color: var(--salmon-FF7F6A);
   cursor: pointer;
 }

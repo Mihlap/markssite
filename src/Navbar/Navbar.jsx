@@ -103,7 +103,7 @@ const Navbar = ({ handleClickScroll }) => {
           </button>
         </Link>
         <button className={`${styles.block} ${styles.block_lang}`}>
-          <p>EN | CN</p>
+          <p>EN</p>
         </button>
       </nav>
 

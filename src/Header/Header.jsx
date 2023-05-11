@@ -3,7 +3,7 @@
 import React, { useEffect } from "react";
 import BlockHeader from "../UI/BlockHeader/BlockHeader";
 import SwiperContainer from "./Swiper-Phone/SwiperContainer";
-// import Mapbox3D from '../UI/Map3D/Mapbox3D';
+import Mapbox3D from '../UI/Map3D/Mapbox3D';
 import styles from "./Header.module.css";
 
 import IconPlus from ".././icons/plus.svg";
@@ -103,6 +103,8 @@ const Header = () => {
           <div className={styles.name_11}>+11</div>
           <div className={styles.name_competencies}>Компетенции</div>
         </div>
+       
+        
         <div className={styles.most}>
           <img className={styles.image_most} alt=""></img>
         </div>
