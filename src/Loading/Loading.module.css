@@ -1,0 +1,98 @@
+@import '../App.css';
+
+.contentLoaderContainer {
+    font-family: var(--font-MyCustomFont);
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+}
+
+.contentLoaderContainer {
+    background: linear-gradient(to right, #DEE6ED, #BCDBF9, #F3E2E1);
+    background-size: 200% 200%;
+    animation: gradient 5s ease infinite;
+}
+
+.contentLoaderTitle {
+    font-size: 5vw;
+    color: var(--black-1D2E43);
+}
+
+.contentLoaderSubtitle {
+    font-size: 2vw;
+    color: var(--black-1D2E43);
+}
+
+
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.loadingContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 30px;
+}
+
+.percent {
+    font-family: var(--font-unbounded);
+    color: var(--black-1D2E43);
+    font-size: 20px;
+    font-weight: var(--fw-300);
+    line-height: 28px;
+    text-align: center;
+    margin-bottom: 15px;
+}
+
+.loadingProgresBar {
+    width: 400px;
+    height: 4px;
+    background: var(--black-1D2E43);
+    ;
+    box-sizing: border-box;
+}
+
+.loadingProgresBar {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.progress {
+    height: 15px;
+    background: var(--salmon-FF7F6A);
+    border-radius: 3px;
+    height: 4px;
+}
+
+.textBlink {
+    animation: animate .7s ease-in-out .1s;
+}
+
+@keyframes animate {
+    0% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.2;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
