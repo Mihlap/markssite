@@ -3,6 +3,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;700;900&family=Unbounded:wght@300&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;700;900&display=swap');
+/* это шрифт для прелоудера  */
+@font-face {
+  font-family: 'MyCustomFont';
+  src: url('./font/square721bdexbtcyr_bold.otf') format('woff2'),
+    url('./font/square721bdexbtcyr_bold.otf') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
 
 /* Colors */
 :root {
@@ -31,6 +39,7 @@
   --font-unbounded: 'Unbounded', sans-serif;
   --font-inter: 'Inter', sans-serif;
   --font-raleway: 'Raleway', sans-serif;
+  --font-MyCustomFont: 'MyCustomFont', sans-serif;
 
   /* Font weights */
   --fw-300: 300;
