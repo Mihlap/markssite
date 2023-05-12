@@ -1,13 +1,18 @@
 /* eslint-disable jsx-a11y/no-distracting-elements */
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { useEffect } from "react";
+import { Link } from "react-router-dom";
 import BlockHeader from "../UI/BlockHeader/BlockHeader";
 import SwiperContainer from "./Swiper-Phone/SwiperContainer";
+import SwiperContainerProgect from "./Swiper-project/SwiperContainerProgect";
+import SliderHeader from "../UI/SliderHeader/SliderHeader";
+import VideoPlayer from "../UI/Videoplayer/VideoPlayer";
 import Mapbox3D from '../UI/Map3D/Mapbox3D';
 import styles from "./Header.module.css";
 
 import IconPlus from ".././icons/plus.svg";
 // import show from '.././icons/show.svg';
+// import photo from "./img/phone.svg";
 
 import D1 from ".././icons/D1.svg";
 import D2 from ".././icons/D2.svg";
@@ -19,10 +24,8 @@ import D7 from ".././icons/D7.svg";
 import D8 from ".././icons/D8.svg";
 import D9 from ".././icons/D9.svg";
 
-import photo from "./img/phone.svg";
-import SwiperContainerProgect from "./Swiper-project/SwiperContainerProgect";
-import SliderHeader from "../UI/SliderHeader/SliderHeader";
-import { Link } from "react-router-dom";
+
+
 
 
 
@@ -33,9 +36,10 @@ const Header = () => {
   return (
     <div className={styles.header}>
       <div className={styles.menu}>
-        <img className={styles.image} src="./fon.jpg" alt="изображение" />
+      <VideoPlayer/>
+        {/* <img className={styles.image} src="./fon.jpg" alt="изображение" /> */}
         {/* фото для мобильной версии  */}
-        <img className={styles.image_phone} src={photo} alt="photo" />
+        {/* <img className={styles.image_phone} src={photo} alt="photo" /> */}
       </div>
       <div className={styles.header_desctop_block}>
         <h1 className={styles.desctop_title}>Награды и публикации</h1>
@@ -145,11 +149,13 @@ const Header = () => {
       </div>
       <div className={styles.main_project}>
         <div className={styles.main_project_left}>
+          <Link>
           <img
             className={styles.img_poject}
             src="./assets/project_left.png"
             alt="project-left"
           />
+          </Link>
           <div className={styles.card_text}>
             <h3>Жилой квартал PRIME PARK</h3>
             <span>г. Москва, Ленинградский проспект &bull; 2021 </span>
@@ -157,36 +163,42 @@ const Header = () => {
         </div>
         <div className={styles.main_project_right}>
           <div className={styles.main_project_right1}>
+          <Link>
             <img
               className={styles.img_project}
               src="./assets/project_right1.png"
               alt="project-right1"
             />
+             </Link>
             <div className={styles.card_text}>
               <h3>Гостиничный комплекс с апартаментами</h3>
               <span>г. Москва, наб. Космодамианская &bull; 2021</span>
             </div>
           </div>
           <div className={styles.main_project_right2}>
+          <Link>
             <img
               className={styles.img_project}
               src="./assets/project_right2.png"
               alt="project-right2"
             />
+            </Link>
             <div className={styles.card_text}>
               <h3>МФК Комплекс апартаментов &laquo;Slava&raquo;</h3>
               <span>Россия, Москва &bull; 2020</span>
             </div>
           </div>
           <div className={styles.main_project_right3}>
+          <Link>
             <img
               className={styles.img_project}
               src="./assets/project_right3.png"
               alt="project-right3"
             />
+            </Link>
             <div className={styles.card_text}>
-              <h3>МЖК Бадаевский</h3>
-              <span>г. Москва, Кутузовский проспект &bull; 2020</span>
+              <h3>Винный парк WinePark</h3>
+              <span>Республика Крым &bull; 2021</span>
             </div>
           </div>
         </div>
