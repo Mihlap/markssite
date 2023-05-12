@@ -14,69 +14,80 @@ import Footer from "./Footer/Footer";
 import WinePark from "./Project/WinePark/WinePark";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import Badaevsky from "./articlesProject/Badaevsky/Badaevsky";
+import Loading from "./Loading/Loading";
 
 
 const App = () => {
   const location = useLocation();
- const [isScrollDisabled, setIsScrollDisabled] = useState(false);
+  const [isScrollDisabled, setIsScrollDisabled] = useState(false);
   const [scrollPosition, setScrollPosition] = useState(0);
-  
- 
 
- useEffect(() => {
-   // Функция для отключения скролла
-   function disableScroll() {
-     setScrollPosition(
-       window.pageYOffset || document.documentElement.scrollTop
-     );
-     document.body.style.position = "fixed";
-     document.body.style.top = `-${scrollPosition}px`;
-   }
+  const [loading, setLoading] = useState(true);
+  setTimeout(() => {
+    setLoading(false);
+  }, 7000);
 
-   // Функция для включения скролла
-   function enableScroll() {
-     document.body.style.position = "";
-     document.body.style.top = "";
-     window.scrollTo(0, parseInt(scrollPosition || "0") * -1);
-   }
 
-   if (isScrollDisabled) {
-     disableScroll();
-   } else {
-     enableScroll();
-   }
-   // Очистка эффекта
-   return () => {
-     enableScroll();
-   };
- // eslint-disable-next-line react-hooks/exhaustive-deps
- }, [isScrollDisabled]);
 
- function handleClickScroll() {
-   setIsScrollDisabled(!isScrollDisabled);
- }
+  useEffect(() => {
+    // Функция для отключения скролла
+    function disableScroll() {
+      setScrollPosition(
+        window.pageYOffset || document.documentElement.scrollTop
+      );
+      document.body.style.position = "fixed";
+      document.body.style.top = `-${scrollPosition}px`;
+    }
 
-  
+    // Функция для включения скролла
+    function enableScroll() {
+      document.body.style.position = "";
+      document.body.style.top = "";
+      window.scrollTo(0, parseInt(scrollPosition || "0") * -1);
+    }
+
+    if (isScrollDisabled) {
+      disableScroll();
+    } else {
+      enableScroll();
+    }
+    // Очистка эффекта
+    return () => {
+      enableScroll();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isScrollDisabled]);
+
+  function handleClickScroll() {
+    setIsScrollDisabled(!isScrollDisabled);
+  }
+
   return (
     <>
-      <Navbar handleClickScroll={handleClickScroll} />
-      <TransitionGroup>
-        <CSSTransition key={location.key} classNames="fade" timeout={300}>
-          <Routes location={location}>
-            <Route path="/" element={<Header />} />
-            <Route path="/competention" element={<Competentions />} />
-            <Route path="/project" element={<Project />} />
-            <Route path="/public" element={<Publics />} />
-            <Route path="/company" element={<Company />} />
-            <Route path="/contacts" element={<Contacts />} />
-            <Route path="/portal" element={<Portal />} />
-            <Route path="*" element={<NotFound />} />
-            <Route path="/winepark" element={<WinePark />} />
-            <Route path="/badaevsky" element={<Badaevsky />} />
-          </Routes>
-        </CSSTransition>
-      </TransitionGroup>
-      <Footer />
+      {loading === true ? (
+        <Loading />
+      ) : (
+        <>
+        <Navbar handleClickScroll={handleClickScroll} />
+        <TransitionGroup>
+          <CSSTransition key={location.key} classNames="fade" timeout={300}>
+            <Routes location={location}>
+              <Route path="/" element={<Header />} />
+              <Route path="/competention" element={<Competentions />} />
+              <Route path="/project" element={<Project />} />
+              <Route path="/public" element={<Publics />} />
+              <Route path="/company" element={<Company />} />
+              <Route path="/contacts" element={<Contacts />} />
+              <Route path="/portal" element={<Portal />} />
+              <Route path="*" element={<NotFound />} />
+              <Route path="/winepark" element={<WinePark />} />
+              <Route path="/badaevsky" element={<Badaevsky />} />
+            </Routes>
+          </CSSTransition>
+        </TransitionGroup>
+        <Footer />
+        </>
+      )}
     </>
   );
 };
