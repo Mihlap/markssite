@@ -133,8 +133,7 @@
   background-repeat: no-repeat;
   background-position: right;
    z-index: 0;
-  
-   }
+  }
 
 .image_most {
   width: 100%;
@@ -305,14 +304,15 @@ span {
 .main_project_left img {
   width: 100%;
   height: 100%;
-
+  border-radius: 1.1vw;
 }
 
 .main_project_right {
   display: grid;
   grid-template-columns: 3fr 4fr;
-  grid-auto-rows: minmax(100px, auto);
+  grid-auto-rows: minmax(3.66vh, auto);
   grid-column: 2 / span 2;
+  align-items: stretch;
   padding-bottom: 3.2vh;
   grid-auto-flow: dense;
 }
@@ -323,12 +323,15 @@ span {
   grid-column: 1;
   padding-right: 3vw;
   padding-top: 3vh;
+  align-items: stretch;
   height: auto;
   width: auto;
-}
+  }
   .main_project_right1 img {
     width: 100%;
     height: 100%;
+    object-fit: cover;
+    border-radius: 1.1vw;
    }
 .main_project_right2 {
   display: grid;
@@ -336,14 +339,16 @@ span {
   grid-column: 2;
   padding-right: 2.7vw;
   padding-top: 3vh;
+  align-items: stretch;
   height: auto;
   width: auto;
 }
 
 .main_project_right2 img {
   width: 100%;
-  height: auto;
-
+  height: 100%;
+  object-fit: cover;
+  border-radius: 1.1vw;
 }
 
 .main_project_right3 {
@@ -352,6 +357,12 @@ span {
   padding-right: 2.7vw;
   width: auto;
   height: auto;
+}
+.main_project_right3 img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 1.1vw;
 }
 
 .card_text {
@@ -410,6 +421,7 @@ span {
     justify-content: end;
     margin-top: 5vh;
     font-size: 32px;
+    background-color: transparent;
   }
 
   .name_11 {

@@ -34,7 +34,7 @@
   top: 0;
   width: auto;
   box-sizing: border-box;
-  opacity: 0.8;
+  opacity: 0.5;
   border: 1px solid var(--black-1D2E43);
   border-left: 1px solid var(--black-1D2E43);
   background: var(--white-F6F6F6);
@@ -49,19 +49,20 @@
   display: flex;
   align-items: center;
   padding-left: 34px;
-}
+  opacity: 0.9;
+ }
 
-.block_logo:hover {
+/* .block_logo:hover {
   background: #d4edfb99;
   cursor: pointer;
-}
+} */
 
 .block1 {
   width: 149px;
   height: 48px;
   right: 836px;
   border-right: none;
-}
+ }
 
 .block1:hover {
   background: rgba(212, 237, 251, 0.6);
@@ -176,7 +177,7 @@ button:hover p {
   .navbar {
     width: 100%;
     background-color: var(--white-F6F6F6);
-    height: 60px;
+    height: 65px;
     border-bottom: 1px solid var(--black-1D2E43);
   }
 
