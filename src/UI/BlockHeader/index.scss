@@ -50,16 +50,6 @@
   top: auto;
 }
 
-@media (max-width: 480px) {
-  .accordion {
-    padding: 15px 20px 8px;
-  }
-
-  .title {
-    font-size: 20px;
-  }
-}
-
 .title {
   display: flex;
   flex-direction: row;
@@ -85,8 +75,10 @@ font-weight: var(--fw-300);
 font-size: 20px;
 line-height: 28px;
 color: var(--black-1D2E43);
-padding-left: 50.9vw;
-padding-right: 18.3vw;
+padding-left: 50%;
+padding-right: 17%;
+word-wrap: break-word;
+word-break: keep-all;
 }
 
 
@@ -100,7 +92,7 @@ padding-right: 18.3vw;
   font-size: 20px;
   line-height: 28px;
   color: var(--black_text);
-  }
+   }
 
 .text_span span {
   font-family: var(--font-raleway);
@@ -112,4 +104,51 @@ padding-right: 18.3vw;
   padding-top: 8px;
   }
 
+  .cub_img {
+    position: absolute;
+    z-index: 0;
+    left: 20vw;
+    opacity: 0.3;
+  }
 
+/* Стили для мобильной версии сайта блока NavBar начинаются тут */
+
+@media screen and (max-width: 700px) {
+  .title {
+font-family: 'Unbounded';
+font-style: normal;
+font-weight: var(--fw-300);
+font-size: 20px;
+line-height: 28px;
+color: var(--black-1D2E43);
+  }
+  .text {
+ display: flex;
+ flex-direction: column;
+ align-items: flex-start;
+ font-family: var(--font-unbounded);
+ font-style: normal;
+ font-weight: var(--fw-300);
+ font-size: 20px;
+ line-height: 28px;
+ color: var(--black-1D2E43);
+ padding-left: 16px;
+ }
+.text_span {
+font-family: 'Raleway';
+font-style: normal;
+font-weight: 400;
+font-size: 14px;
+line-height: 20px;
+color: var(--black_text);
+font-feature-settings: 'pnum' on, 'lnum' on;
+overflow-x: auto;
+  }
+  .cub_img {
+    position: absolute;
+    z-index: 0;
+    top: 30%;
+    left: 20vw;
+    opacity: 0.3;
+  }
+}

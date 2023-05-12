@@ -6,6 +6,7 @@
     margin-left: var(--mb-container-2);
     margin-right: var(--mb-container-2);
     overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .item img {
@@ -28,9 +29,9 @@
 .header_link {
     border: none;
     color: var(--white-F6F6F6);
-    padding: 0.69vw 1.39vw;
+    padding: 0.69vh 1.39vw;
     text-align: left;
-    font-size: 1.11vw;
+    font-size: 1.11vh;
     cursor: pointer;
     border-radius: 18px;
     padding-left: 20px;
