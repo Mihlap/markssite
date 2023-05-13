@@ -1,6 +1,5 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwipeCore, { Navigation, Pagination, Autoplay } from "swiper";
-import { useParams } from "react-router-dom";
 // import { useState, useRef, useEffect } from "react";
 import oneImg from "./svgImg/one.png"
 import twoImg from "./svgImg/two.png";
