@@ -7,7 +7,7 @@ import SwiperContainer from "./Swiper-Phone/SwiperContainer";
 import SwiperContainerProgect from "./Swiper-project/SwiperContainerProgect";
 import SliderHeader from "../UI/SliderHeader/SliderHeader";
 import VideoPlayer from "../UI/Videoplayer/VideoPlayer";
-import Mapbox3D from '../UI/Map3D/Mapbox3D';
+// import Mapbox3D from '../UI/Map3D/Mapbox3D';
 import styles from "./Header.module.css";
 
 import IconPlus from ".././icons/plus.svg";
@@ -34,7 +34,7 @@ const Header = () => {
     window.scrollTo(0, 0);
   }, []);
   return (
-    <div className={styles.header}>
+    <main className={styles.header}>
       <div className={styles.menu}>
       <VideoPlayer/>
         {/* <img className={styles.image} src="./fon.jpg" alt="изображение" /> */}
@@ -203,7 +203,7 @@ const Header = () => {
           </div>
         </div>
       </div>
-    </div>
+    </main>
   );
 };
 
