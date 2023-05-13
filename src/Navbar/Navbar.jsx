@@ -4,6 +4,8 @@ import { Link } from "react-router-dom";
 import styles from "./Navbar.module.css";
 import { useEffect } from "react";
 
+// тетс гита на сливание с новой веткой 
+
 const Navbar = ({ handleClickScroll }) => {
   const [clicked, setClicked] = useState(false);
   const [navOpen, setNavOpen] = useState(false);
