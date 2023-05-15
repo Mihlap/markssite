@@ -165,13 +165,16 @@
 
 .item:not(:last-child) {
   padding-bottom: 2.78vw;
-  width: 100%;
-  height: auto;
 }
 
 .item img {
   width: 100%;
   border-radius: 1.11vw;
+}
+
+.item_photo_together {
+  display: flex;
+  gap: 2.08vw;
 }
 
 .quote_container,
@@ -328,5 +331,34 @@
   .result_text {
     font-size: 3.73vw;
     line-height: 5.33vw;
+  }
+}
+
+/* Стили для мобильной версии начинаются тут */
+@media screen and (max-width: 700px) {
+  .description_object_container {
+    justify-content: center;
+    justify-content: initial;
+    align-items: initial;
+  }
+
+  .description_object_block {
+    width: 100%;
+  }
+
+  .description_object_title {
+    font-family: var(--font-unbounded);
+    font-style: normal;
+    font-weight: var(--fw-300);
+    font-size: 5.33vw;
+    line-height: 7.47vw;
+  }
+
+  .description_object_text1 {
+    font-family: var(--font-raleway);
+    font-style: normal;
+    font-weight: var(--fw-400);
+    font-size: 4.27vw;
+    line-height: 6.40vw;
   }
 }

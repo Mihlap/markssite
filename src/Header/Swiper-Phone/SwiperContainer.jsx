@@ -16,13 +16,13 @@ import "./SwiperContainer.css";
 
 const point = "●";
 const items = [
-  {
-    id: "1",
-    title: "Смотр-конкурс Стекло в архитектуре 2022",
-    text: `Номинация ${point} Объект нового строительства`,
-    src: `${threeImg}`,
-    icon: `${iconPlus}`,
-  },
+  // {
+  //   id: "1",
+  //   title: "Смотр-конкурс Стекло в архитектуре 2022",
+  //   text: `Номинация ${point} Объект нового строительства`,
+  //   src: `${threeImg}`,
+  //   icon: `${iconPlus}`,
+  // },
   {
     id: "winepark",
     title: "Центр энотуризма WinePark",
