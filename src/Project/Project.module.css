@@ -167,9 +167,12 @@
   padding-bottom: 2.78vw;
 }
 
-.item img {
+.item_img {
   width: 100%;
-  border-radius: 1.11vw;
+}
+
+.styles .item:not(:last-child) .item_img {
+  border-radius: 10px;
 }
 
 .item_photo_together {

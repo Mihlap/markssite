@@ -92,7 +92,7 @@ export default function WinePark() {
       <div className={styles.container}>
         <div className={styles.header_container}>
           <div className={styles.header_img_title}>
-            <AllProjectsButton/>
+            <AllProjectsButton />
             <h1 ref={refs.title} className={styles.header_title}>
               Винный парк WinePark
             </h1>
@@ -156,10 +156,10 @@ export default function WinePark() {
                       to="https://tass.ru/obschestvo/9880739"
                       target="_blank"
                     >
-                    <div className={styles.local_text}>
-                      ТАСС «Первый в России винный парк откроется под Ялтой
-                      весной 2021 года»
-                    </div>
+                      <div className={styles.local_text}>
+                        ТАСС «Первый в России винный парк откроется под Ялтой
+                        весной 2021 года»
+                      </div>
                     </Link>
                   </div>
                 </div>
@@ -204,23 +204,23 @@ export default function WinePark() {
       <div className={styles.blockImg}>
         <div className={styles.container}>
           <div className={styles.item}>
-            <img className={styles.leftImg1} src={img1} alt="" />
+            <img className={styles.item_img} src={img1} alt="" />
           </div>
           <div className={styles.item}>
-            <img className={styles.leftImg2} src={img2} alt="" />
+            <img className={styles.item_img} src={img2} alt="" />
           </div>
           <div className={styles.item}>
-            <img className={styles.leftImg3} src={img3} alt="" />
+            <img className={styles.item_img} src={img3} alt="" />
           </div>
           <div className={styles.item}>
-            <img className={styles.leftImg4} src={img4} alt="" />
+            <img className={styles.item_img} src={img4} alt="" />
           </div>
           <div className={styles.item}>
-            <img className={styles.leftImg5} src={img5} alt="" />
+            <img className={styles.item_img} src={img5} alt="" />
           </div>
         </div>
       </div>
-      <PreviousNextButton/>
+      <PreviousNextButton />
     </section>
   );
 }
