@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import "./WinePark.css";
+import styles from "../Project.module.css";
 import gsap from "gsap";
 import { Link } from "react-router-dom";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -86,28 +86,30 @@ export default function WinePark() {
  // eslint-disable-next-line react-hooks/exhaustive-deps
  }, []);
   return (
-    <section className="section">
-      <img className="header_img" src={img} alt="" />
-      <div className="container">
-        <div className="header_container">
-          <div className="header_img_title">
-            <Link to="/project" ref={refs.link} className="header_link">
+    <section className={styles.section}>
+      <img className={styles.header_img} src={img} alt="" />
+      <div className={styles.container}>
+        <div className={styles.header_container}>
+          <div className={styles.header_img_title}>
+            <Link to="/project" ref={refs.link} className={styles.header_link}>
               Все проекты
             </Link>
-            <h1 ref={refs.title} className="header_title">
+            <h1 ref={refs.title} className={styles.header_title}>
               Винный парк WinePark
             </h1>
-            <div ref={refs.desc} className="header_desc">
+            <div ref={refs.desc} className={styles.header_desc}>
               Республика Крым &#8226; 2021
             </div>
           </div>
-          <div className="header_content">
-            <div ref={refs.blockLeft} className="header_content_left">
-              <div className="title_block">
-                <h2 className="left_title">Новый формат путешествий</h2>
-                <div className="left_meta">Генеральное проектирование</div>
+          <div className={styles.header_content}>
+            <div ref={refs.blockLeft} className={styles.header_content_left}>
+              <div className={styles.title_block}>
+                <h2 className={styles.left_title}>Новый формат путешествий</h2>
+                <div className={styles.left_meta}>
+                  Генеральное проектирование
+                </div>
               </div>
-              <div className="title_text">
+              <div className={styles.title_text}>
                 Винный парк — это многофункциональное пространство для
                 энотуризма с собственными
                 <br /> виноградниками и гравитационной винодельней, остащённой
@@ -120,91 +122,104 @@ export default function WinePark() {
                 архитектурные формы и концептуальные скульптуры.
               </div>
 
-              <div className="result_container">
-                <div className="result_block">
-                  <div className="result_number">30 га</div>
-                  <div className="result_text">Общая площадь</div>
+              <div className={styles.result_container}>
+                <div className={styles.result_block}>
+                  <div className={styles.result_number}>30 га</div>
+                  <div className={styles.result_text}>Общая площадь</div>
                 </div>
-                <div className="result_block">
-                  <div className="result_number">7. 75 га</div>
-                  <div className="result_text">Площадь виноградников</div>
+                <div className={styles.result_block}>
+                  <div className={styles.result_number}>7. 75 га</div>
+                  <div className={styles.result_text}>
+                    Площадь виноградников
+                  </div>
                 </div>
-                <div className="result_block">
-                  <div className="result_number">54.5 м</div>
-                  <div className="result_text">Высота винной башни</div>
+                <div className={styles.result_block}>
+                  <div className={styles.result_number}>54.5 м</div>
+                  <div className={styles.result_text}>Высота винной башни</div>
                 </div>
               </div>
             </div>
-            <div ref={refs.blockRight} className="header_content_right">
-              <div className="local_container">
-                <div className="local_ritgh">
+            <div ref={refs.blockRight} className={styles.header_content_right}>
+              <div className={styles.local_container}>
+                <div className={styles.local_ritgh}>
                   <div>
-                    <div className="local_title">Расположение</div>
-                    <div className="local_text">
+                    <div className={styles.local_title}>Расположение</div>
+                    <div className={styles.local_text}>
                       г. Москва, Ленинградский проспект, вл. 37
                     </div>
                   </div>
+
                   <div>
-                    <div className="local_title">Заказчик</div>
-                    <div className="local_text">-</div>
+                    <div className={styles.local_title}>Заказчик</div>
+                    <div className={styles.local_text}>-</div>
                   </div>
                   <div>
-                    <div className="local_title">Публикации</div>
-                    <div className="local_text">
+                    <div className={styles.local_title}>Публикации</div>
+                    <Link
+                      to="https://tass.ru/obschestvo/9880739"
+                      target="_blank"
+                    >
+                    <div className={styles.local_text}>
                       ТАСС «Первый в России винный парк откроется под Ялтой
                       весной 2021 года»
                     </div>
+                    </Link>
                   </div>
                 </div>
-                <div className="local_left">
+                <div className={styles.local_left}>
                   <div>
-                    <div className="local_title">Степень участия</div>
-                    <div className="local_text">Генеральный проектировщик</div>
+                    <div className={styles.local_title}>Степень участия</div>
+                    <div className={styles.local_text}>
+                      Генеральный проектировщик
+                    </div>
                   </div>
                   <div>
-                    <div className="local_title">Статус</div>
-                    <div className="local_text">В эксплуатации</div>
+                    <div className={styles.local_title}>Статус</div>
+                    <div className={styles.local_text}>В эксплуатации</div>
                   </div>
                   <div>
-                    <div className="local_title">Награды</div>
-                    <div className="local_text">-</div>
+                    <div className={styles.local_title}>Награды</div>
+                    <div className={styles.local_text}>-</div>
                   </div>
                 </div>
               </div>
             </div>
-            <div ref={refs.blockRightPhone} className="result_container_phone">
-              <div className="result_block">
-                <div className="result_number">30 га</div>
-                <div className="result_text">Общая площадь</div>
+            <div
+              ref={refs.blockRightPhone}
+              className={styles.result_container_phone}
+            >
+              <div className={styles.result_block}>
+                <div className={styles.result_number}>30 га</div>
+                <div className={styles.result_text}>Общая площадь</div>
               </div>
-              <div className="result_block">
-                <div className="result_number">7. 75 га</div>
-                <div className="result_text">Площадь виноградников</div>
+              <div className={styles.result_block}>
+                <div className={styles.result_number}>7. 75 га</div>
+                <div className={styles.result_text}>Площадь виноградников</div>
               </div>
-              <div className="result_block">
-                <div className="result_number">54.5 м</div>
-                <div className="result_text">Высота винной башни</div>
+              <div className={styles.result_block}>
+                <div className={styles.result_number}>54.5 м</div>
+                <div className={styles.result_text}>Высота винной башни</div>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div className="block_img">
-        <div className="container">
-          <div className="item">
-            <img ref={refs.leftImg1} src={img1} alt="" />
+      <div className={styles.blockImg}>
+        <div className={styles.container}>
+          <div className={styles.item}>
+            <img className={styles.leftImg1} src={img1} alt="" />
           </div>
-          <div className="item">
-            <img ref={refs.leftImg2} src={img2} alt="" />
+          <div className={styles.item}>
+            <img className={styles.leftImg2} src={img2} alt="" />
           </div>
-          <div className="item">
-            <img ref={refs.leftImg3} src={img3} alt="" />
+          <div className={styles.item}>
+            <img className={styles.leftImg3} src={img3} alt="" />
           </div>
-          <div className="item">
-            <img ref={refs.leftImg4} src={img4} alt="" />
+          <div className={styles.item}>
+            <img className={styles.leftImg4} src={img4} alt="" />
           </div>
-          <div className="item">
-            <img ref={refs.leftImg5} src={img5} alt="" />
+          <div className={styles.item}>
+            <img className={styles.leftImg5} src={img5} alt="" />
           </div>
         </div>
       </div>
