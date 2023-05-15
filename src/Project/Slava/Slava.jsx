@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import styles from "./Slava.module.css";
+import styles from "../Project.module.css";
 import gsap from "gsap";
 import { Link } from "react-router-dom";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -206,10 +206,10 @@ export default function Slava() {
           </div>
           <div
             ref={refs.blockDescription}
-            className="description_object_container"
+            className={styles.description_object_container}
           >
-            <div className="description_object_block">
-              <div className="description_object_text1">
+            <div className={styles.description_object_block}>
+              <div className={styles.description_object_text1}>
                 Назначение – многофункциональный комплекс, содержащий
                 апартаменты, магазины, кафе, офисы, предприятия бытового
                 обслуживания населения, подземный паркинг. МФК состоит из 6

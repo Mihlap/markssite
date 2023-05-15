@@ -7,9 +7,9 @@ const Slideritem = ({ title, src, text, icon, id }) => {
   return (
     <div className="slider-item swiper-slide">
       <div className="slider-image-wrapper">
+        <Link to={`/${id}`}>
         <img className="slider-image" src={src} alt="SliderImg" />
         {/* <div className="icon_image">{icon}</div> */}
-        <Link to={`/${id}`}>
           <img className="icon_image" src={icon} alt="icon" />
         </Link>
       </div>
