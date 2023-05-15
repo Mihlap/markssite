@@ -362,3 +362,78 @@
     line-height: 6.40vw;
   }
 }
+
+/* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
+
+/* Стили временно для кнопок */
+
+.button_project_link {
+  border: none;
+  color: var(--white-F6F6F6);
+  text-align: center;
+  font-size: 1.4vh;
+  cursor: pointer;
+  font-family: 'Raleway';
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  padding: 3vh 3vw;
+  }
+  
+.button_link::before {
+  content: "<";
+  /* Код символа стрелки влево */
+  margin-right: 10px;
+  /* Отступ между стрелкой и текстом */
+}
+.button_project {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  }
+
+.previous_svg, .next_svg {
+display: flex;
+border: none;
+justify-content: center;
+align-items: center;
+height: 100%;
+}
+.previous_span,
+.next_span {
+   padding-left: 0.7vw;
+  font-family: var(--font-raleway);
+  font-weight: var(--fw-400);
+  font-size: 0.97vw;
+  line-height: 1.38vh;
+  color: var(--black-1D2E43);
+}
+
+.next_svg span{
+padding-right: 0.7vw;
+font-family: 'Raleway';
+font-style: normal;
+font-weight: 400;
+font-size: 0.97vw;
+line-height: 1.38vh;
+/* color: var(--black-1D2E43); */
+  }
+
+  .button_project :hover {
+   background-color: var(--salmon-light-FFBFB5);
+    fill: var(--salmon-light-FFBFB5);
+  }
+
+
+/* Стили для мобильной версии сайта блока WinePark начинаются тут */
+@media screen and (max-width: 700px) {
+
+.button_link {
+     padding: 0.5vh 3vw;
+     border-radius: 2.6vw;
+    }  
+
+    .button_project {
+      display: none;
+    } 
+}
