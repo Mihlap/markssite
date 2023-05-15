@@ -1,6 +1,6 @@
 /* eslint-disable array-callback-return */
 import React, { useEffect, useRef } from "react";
-import "./Badaevsky.css";
+import styles from "./Badaevsky.module.css";
 import gsap from "gsap";
 import { Link } from "react-router-dom";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -83,35 +83,35 @@ export default function Badaevsky() {
     });
   }, []);
   return (
-    <section className="section">
-      <img className="header_img" src={img} alt="" />
-      <div className="container">
-        <div className="header_container">
-          <div className="header_img_title">
-            <Link to="/project" ref={linkRef} className="header_link">
+    <section className={styles.section}>
+      <img className={styles.header_img} src={img} alt="" />
+      <div className={styles.container}>
+        <div className={styles.header_container}>
+          <div className={styles.header_img_title}>
+            <Link to="/project" ref={linkRef} className={styles.header_link}>
               Все статьи
             </Link>
-            <h1 ref={titleRef} className="header_title">
+            <h1 ref={titleRef} className={styles.header_title}>
               Marks Group – генеральный
               <br /> проектировщик ЖК «Бадаевский»
             </h1>
 
-            <div ref={blockName} className="header_name">
+            <div ref={blockName} className={styles.header_name}>
               Александр Александров
             </div>
-            <div ref={descRef} className="header_desc">
+            <div ref={descRef} className={styles.header_desc}>
               ТАСС, Грозный &#8226; 7 октября 2022
             </div>
           </div>
-          <div className="header_content">
-            <div ref={blockRight} className="header_content_text">
-              <div className="title_block">
-                <h2 className="left_title">
+          <div className={styles.header_content}>
+            <div ref={blockRight} className={styles.header_content_text}>
+              <div className={styles.title_block}>
+                <h2 className={styles.left_title}>
                   В Capital Group назвали проектное бюро для нового знакового
                   объекта Москвы
                 </h2>
               </div>
-              <div className="articles_title_text">
+              <div className={styles.articles_title_text}>
                 Генеральным проектированием жилого комплекса премиум-класса
                 «Бадаевский» – первого столичного проекта, получившего сразу три
                 награды международного конкурса World Architecture Festival –
@@ -129,14 +129,14 @@ export default function Badaevsky() {
           </div>
         </div>
       </div>
-      <div className="block_img">
-        <div className="container">
-          <div className="item">
+      <div className={styles.block_img}>
+        <div className={styles.container}>
+          <div className={styles.item}>
             <img ref={leftImg1} src={img1} alt="" />
           </div>
-          <div className="quote_container">
-            <div ref={blockRightQuote} className="quote_block">
-              <div className="quote_text">
+          <div className={styles.quote_container}>
+            <div ref={blockRightQuote} className={styles.quote_block}>
+              <div className={styles.quote_text}>
                 Принципиальные проектные решения авторов проекта – швейцарского
                 бюро Herzog & de Meuron, будут воплощены генеральным
                 проектировщиком в комплексном проектировании и организации
@@ -146,24 +146,27 @@ export default function Badaevsky() {
                 лауреатов Притцкеровской премии.
               </div>
 
-              <div className="quote">
+              <div className={styles.quote}>
                 В чертежах, по которым будет вестись строительство учитывается
                 всё – от основных конструктивных решений и методик реставрации
                 объектов культурного наследия, до мебели и материалов в отделке
                 помещений
-                <div className="quote_director">
+                <div className={styles.quote_director}>
                   Руководитель проекта в Группе компаний MARKS GROUP Виталий
                   Алёхин
                 </div>
               </div>
             </div>
           </div>
-          <div className="item">
+          <div className={styles.item}>
             <img ref={leftImg2} src={img2} alt="" />
           </div>
-          <div ref={blockDescription} className="description_object_container">
-            <div className="description_object_block">
-              <div className="description_object_text1">
+          <div
+            ref={blockDescription}
+            className={styles.description_object_container}
+          >
+            <div className={styles.description_object_block}>
+              <div className={styles.description_object_text1}>
                 В рамках реализации проекта премиум-класса наряду с новым
                 строительством жилого комплекса, парящего над землёй на колоннах
                 высотой 35 метров, запланирована реставрация двух корпусов
@@ -172,7 +175,7 @@ export default function Badaevsky() {
                 восстановить утраченное строение, не имеющее охранного статуса,
                 но важное для целостности архитектурного ансамбля.
               </div>
-              <div className="description_object_text2">
+              <div className={styles.description_object_text2}>
                 В рамках реализации проекта премиум-класса наряду с новым
                 строительством жилого комплекса, парящего над землёй на колоннах
                 высотой 35 метров, запланирована реставрация двух корпусов
@@ -183,7 +186,7 @@ export default function Badaevsky() {
               </div>
             </div>
           </div>
-          <div className="item">
+          <div className={styles.item}>
             <img ref={leftImg3} src={img3} alt="" />
           </div>
         </div>
