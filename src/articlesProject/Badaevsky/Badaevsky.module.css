@@ -9,9 +9,14 @@
     overflow-x: hidden;
 }
 
-.item img {
+
+.item_img {
     width: 100%;
     border-radius: 1.11vw;
+}
+
+.item_img_latest {
+    border-radius: 1.11vw 1.11vw 0 0;
 }
 
 /* Header styles */

@@ -132,7 +132,7 @@ export default function Badaevsky() {
       <div className={styles.block_img}>
         <div className={styles.container}>
           <div className={styles.item}>
-            <img ref={leftImg1} src={img1} alt="" />
+            <img className={styles.item_img} ref={leftImg1} src={img1} alt="" />
           </div>
           <div className={styles.quote_container}>
             <div ref={blockRightQuote} className={styles.quote_block}>
@@ -159,7 +159,7 @@ export default function Badaevsky() {
             </div>
           </div>
           <div className={styles.item}>
-            <img ref={leftImg2} src={img2} alt="" />
+            <img className={styles.item_img} ref={leftImg2} src={img2} alt="" />
           </div>
           <div
             ref={blockDescription}
@@ -187,7 +187,12 @@ export default function Badaevsky() {
             </div>
           </div>
           <div className={styles.item}>
-            <img ref={leftImg3} src={img3} alt="" />
+            <img
+              className={`${styles.item_img} ${styles.item_img_latest}`}
+              ref={leftImg3}
+              src={img3}
+              alt=""
+            />
           </div>
         </div>
       </div>
