@@ -18,24 +18,28 @@ import "./SwiperContainerProgect.css";
 const point = "●";
 const items = [
   {
+    id: "slava",
     title: "МФК Комплекс апартаментов «Slava»",
     text: `Россия, Москва, 1-я ул. Ямского Поля ${point} 2020`,
     src: `${threeImg}`,
     icon: `${iconPlus}`,
   },
   {
+    id: "hotel-appart",
     title: "Гостиничный комплекс с апартаментами",
     text: `г. Москва, наб. Космодамианская ${point} 2021`,
     src: `${twoImg}`,
     icon: `${iconPlus}`,
   },
   {
+    id: "badaevsky",
     title: "МЖК Бадаевкий",
     text: `г. Москва, Кутузовский проспект ${point} 2020`,
     src: `${four}`,
     icon: `${iconPlus}`,
   },
   {
+    id: "prime-park",
     title: "Жилой квартал PRIME PARK",
     text: `г. Москва, Ленинградский проспект ${point} 2021`,
     src: `${oneImg}`,
@@ -73,6 +77,7 @@ const SwiperContainerProgect = () => {
                   src={item.src}
                   text={item.text}
                   icon={item.icon}
+                  id={item.id}
                 />
               </SwiperSlide>
             );

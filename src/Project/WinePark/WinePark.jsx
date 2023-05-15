@@ -120,7 +120,6 @@ export default function WinePark() {
                 амфитеатр, водопад с гротом, малые <br />
                 архитектурные формы и концептуальные скульптуры.
               </div>
- 
               <div className={styles.result_container}>
                 <div className={styles.result_block}>
                   <div className={styles.result_number}>30 га</div>
@@ -147,7 +146,6 @@ export default function WinePark() {
                       г. Москва, Ленинградский проспект, вл. 37
                     </div>
                   </div>
- 
                   <div>
                     <div className={styles.local_title}>Заказчик</div>
                     <div className={styles.local_text}>-</div>
