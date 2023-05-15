@@ -41,7 +41,7 @@ function BlockHeader() {
      ScrollTrigger.create({
         trigger: text,
         start: 'bottom bottom-=15%',
-        end: 'top bottom+=5%',
+        end: 'top bottom+=10%',
         onEnter: () => {
           if (!accordion.classList.contains('open')) {
             gsap.to(text, {
