@@ -19,80 +19,74 @@ import img6 from "./img/Hotel_appart6.jpg";
 
 
 export default function HotelAppart() {
-  const refs = {
-    title: useRef(null),
-    link: useRef(null),
-    desc: useRef(null),
-    blockLeft: useRef(null),
-    blockRight: useRef(null),
-    blockRightPhone: useRef(null),
-    leftImg1: useRef(null),
-    blockDescription: useRef(null),
-    leftImg2: useRef(null),
-    leftImg3: useRef(null),
-    leftImg4: useRef(null),
-    leftImg5: useRef(null),
-  };
+ const refs = {
+   title: useRef(null),
+   link: useRef(null),
+   desc: useRef(null),
+   blockLeft: useRef(null),
+   blockRight: useRef(null),
+   blockDescription: useRef(null),
+   blockRightPhone: useRef(null),
+   leftImg1: useRef(null),
+   leftImg2: useRef(null),
+   leftImg3: useRef(null),
+   leftImg4: useRef(null),
+ };
 
-  useEffect(() => {
-    window.scrollTo(20, 0);
+ useEffect(() => {
+   window.scrollTo(20, 0);
 
-    const { title, link, desc } = refs;
+   const { title, link, desc } = refs;
 
-    // Скрываем заголовок, ссылку и описание перед анимацией
-    gsap.set([title.current, link.current, desc.current], { opacity: 0 });
+   // Скрываем заголовок, ссылку и описание перед анимацией
+   gsap.set([title.current, link.current, desc.current], { opacity: 0 });
 
-    // Анимируем появление заголовка, затем ссылки, затем описания
-    gsap.to(title.current, { duration: 1, opacity: 1, delay: 0.5 });
-    gsap.to(link.current, { duration: 1, opacity: 1, delay: 1 });
-    gsap.to(desc.current, { duration: 1, opacity: 1, delay: 0.7 });
+   // Анимируем появление заголовка, затем ссылки, затем описания
+   gsap.to(title.current, { duration: 1, opacity: 1, delay: 0.5 });
+   gsap.to(link.current, { duration: 1, opacity: 1, delay: 1 });
+   gsap.to(desc.current, { duration: 1, opacity: 1, delay: 0.7 });
 
-    gsap.registerPlugin(ScrollTrigger);
+   gsap.registerPlugin(ScrollTrigger);
 
-    const {
-      blockLeft,
-      blockRight,
-      blockRightPhone,
-      leftImg1,
-      blockDescription,
-      leftImg2,
-      leftImg3,
-      leftImg4,
-      leftImg5,
-    } = refs;
+   const {
+     blockLeft,
+     blockRight,
+     blockDescription,
+     blockRightPhone,
+     leftImg1,
+     leftImg2,
+     leftImg3,
+     leftImg4,
+   } = refs;
 
-    const elementsLeft = [
-      blockLeft.current,
-      leftImg1.current,
-      blockDescription.current,
-      leftImg3.current,
-      leftImg5.current,
-    ];
-    const elementsRight = [
-      blockRightPhone.current,
-      blockRight.current,
-      leftImg2.current,
-      leftImg4.current,
-    ];
+   const elementsRight = [
+     blockRightPhone.current,
+     blockDescription.current,
+     blockLeft.current,
+     blockRight.current,
+     leftImg1.current,
+     leftImg2.current,
+     leftImg3.current,
+     leftImg4.current,
+   ];
 
-    const animateElement = (element) => {
-      gsap.from(element, {
-        x: "-100%",
-        opacity: 0,
-        duration: 1.5,
-        delay: 1,
-        ease: "power4.out",
-        scrollTrigger: {
-          trigger: element,
-          start: "top 80%",
-        },
-      });
-    };
+   const animateElement = (element) => {
+     gsap.from(element, {
+       x: "-100%",
+       opacity: 0,
+       duration: 1.5,
+       delay: 1,
+       ease: "power4.out",
+       scrollTrigger: {
+         trigger: element,
+         start: "top 110%",
+       },
+     });
+   };
 
-    elementsLeft.forEach(animateElement);
-    elementsRight.forEach(animateElement);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+   elementsRight.forEach(animateElement);
+   // eslint-disable-next-line react-hooks/exhaustive-deps
+ }, []);
   return (
     <section className={styles.section}>
       <img className={styles.header_img} src={img} alt="" />
@@ -204,7 +198,7 @@ export default function HotelAppart() {
       </div>
       <div className={styles.blockImg}>
         <div className={styles.container}>
-          <div className={styles.item_photo_together}>
+          <div ref={refs.leftImg1} className={styles.item_photo_together}>
             <div className={styles.item}>
               <img className={styles.item_img} src={img1} alt="" />
             </div>
@@ -234,9 +228,14 @@ export default function HotelAppart() {
             </div>
           </div>
           <div className={styles.item}>
-            <img className={styles.item_img} src={img3} alt="" />
+            <img
+              ref={refs.leftImg2}
+              className={styles.item_img}
+              src={img3}
+              alt=""
+            />
           </div>
-          <div className={styles.item_photo_together}>
+          <div ref={refs.leftImg3} className={styles.item_photo_together}>
             <div className={styles.item}>
               <img className={styles.item_img} src={img4} alt="" />
             </div>
@@ -246,6 +245,7 @@ export default function HotelAppart() {
           </div>
           <div className={styles.item}>
             <img
+              ref={refs.leftImg4}
               className={`${styles.item_img} ${styles.item_img_latest}`}
               src={img6}
               alt=""

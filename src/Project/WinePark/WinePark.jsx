@@ -55,17 +55,15 @@ export default function WinePark() {
      leftImg5,
    } = refs;
  
-   const elementsLeft = [
-     blockLeft.current,
-     leftImg1.current,
-     leftImg3.current,
-     leftImg5.current,
-   ];
-   const elementsRight = [
-     blockRightPhone.current,
-     blockRight.current,
-     leftImg2.current,
-     leftImg4.current,
+  const elementsRight = [
+    blockRightPhone.current,
+    blockLeft.current,
+      blockRight.current,
+      leftImg1.current,
+      leftImg2.current,
+      leftImg3.current,
+      leftImg4.current,
+      leftImg5.current,
    ];
  
    const animateElement = (element) => {
@@ -77,12 +75,12 @@ export default function WinePark() {
        ease: "power4.out",
        scrollTrigger: {
          trigger: element,
-         start: "top 80%",
+         start: "top 110%",
        },
      });
    };
+
  
-   elementsLeft.forEach(animateElement);
    elementsRight.forEach(animateElement);
  // eslint-disable-next-line react-hooks/exhaustive-deps
  }, []);
@@ -204,19 +202,40 @@ export default function WinePark() {
       <div className={styles.blockImg}>
         <div className={styles.container}>
           <div className={styles.item}>
-            <img className={styles.item_img} src={img1} alt="" />
-          </div>
-          <div className={styles.item}>
-            <img className={styles.item_img} src={img2} alt="" />
-          </div>
-          <div className={styles.item}>
-            <img className={styles.item_img} src={img3} alt="" />
-          </div>
-          <div className={styles.item}>
-            <img className={styles.item_img} src={img4} alt="" />
+            <img
+              ref={refs.leftImg1}
+              className={styles.item_img}
+              src={img1}
+              alt=""
+            />
           </div>
           <div className={styles.item}>
             <img
+              ref={refs.leftImg2}
+              className={styles.item_img}
+              src={img2}
+              alt=""
+            />
+          </div>
+          <div className={styles.item}>
+            <img
+              ref={refs.leftImg3}
+              className={styles.item_img}
+              src={img3}
+              alt=""
+            />
+          </div>
+          <div className={styles.item}>
+            <img
+              ref={refs.leftImg4}
+              className={styles.item_img}
+              src={img4}
+              alt=""
+            />
+          </div>
+          <div className={styles.item}>
+            <img
+              ref={refs.leftImg5}
               className={`${styles.item_img} ${styles.item_img_latest}`}
               src={img5}
               alt=""
