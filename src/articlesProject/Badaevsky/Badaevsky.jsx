@@ -63,7 +63,7 @@ export default function Badaevsky() {
         ease: "power4.out",
         scrollTrigger: {
           trigger: element,
-          start: "top 80%",
+          start: "top 100%",
         },
       });
     });
