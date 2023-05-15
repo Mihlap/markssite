@@ -36,7 +36,7 @@ const Header = () => {
   return (
     <main className={styles.header}>
       <div className={styles.menu}>
-      <VideoPlayer/>
+        <VideoPlayer />
         {/* <img className={styles.image} src="./fon.jpg" alt="изображение" /> */}
         {/* фото для мобильной версии  */}
         {/* <img className={styles.image_phone} src={photo} alt="photo" /> */}
@@ -76,9 +76,9 @@ const Header = () => {
               <span>Конкурс • 100 лучших объектов росии</span>
             </div>
             <Link to="/winepark">
-            <button className={styles.card_button}>
-              <img src={IconPlus} alt="button" />
-            </button>
+              <button className={styles.card_button}>
+                <img src={IconPlus} alt="button" />
+              </button>
             </Link>
           </div>
           <div className={styles.card_item_2}>
@@ -97,9 +97,9 @@ const Header = () => {
               </span>
             </div>
             <Link to="/badaevsky">
-            <button className={styles.card_button}>
-              <img src={IconPlus} alt="button" />
-            </button>
+              <button className={styles.card_button}>
+                <img src={IconPlus} alt="button" />
+              </button>
             </Link>
           </div>
         </div>
@@ -107,8 +107,7 @@ const Header = () => {
           <div className={styles.name_11}>+11</div>
           <div className={styles.name_competencies}>Компетенции</div>
         </div>
-       
-        
+
         <div className={styles.most}>
           <img className={styles.image_most} alt=""></img>
         </div>
@@ -150,11 +149,11 @@ const Header = () => {
       <div className={styles.main_project}>
         <div className={styles.main_project_left}>
           <Link>
-          <img
-            className={styles.img_poject}
-            src="./assets/project_left.png"
-            alt="project-left"
-          />
+            <img
+              className={styles.img_poject}
+              src="./assets/project_left.png"
+              alt="project-left"
+            />
           </Link>
           <div className={styles.card_text}>
             <h3>Жилой квартал PRIME PARK</h3>
@@ -163,25 +162,25 @@ const Header = () => {
         </div>
         <div className={styles.main_project_right}>
           <div className={styles.main_project_right1}>
-          <Link>
-            <img
-              className={styles.img_project}
-              src="./assets/project_right1.png"
-              alt="project-right1"
-            />
-             </Link>
+            <Link>
+              <img
+                className={styles.img_project}
+                src="./assets/project_right1.png"
+                alt="project-right1"
+              />
+            </Link>
             <div className={styles.card_text}>
               <h3>Гостиничный комплекс с апартаментами</h3>
               <span>г. Москва, наб. Космодамианская &bull; 2021</span>
             </div>
           </div>
           <div className={styles.main_project_right2}>
-          <Link>
-            <img
-              className={styles.img_project}
-              src="./assets/project_right2.png"
-              alt="project-right2"
-            />
+            <Link to="/slava">
+              <img
+                className={styles.img_project}
+                src="./assets/project_right2.png"
+                alt="project-right2"
+              />
             </Link>
             <div className={styles.card_text}>
               <h3>МФК Комплекс апартаментов &laquo;Slava&raquo;</h3>
@@ -189,12 +188,12 @@ const Header = () => {
             </div>
           </div>
           <div className={styles.main_project_right3}>
-          <Link>
-            <img
-              className={styles.img_project}
-              src="./assets/project_right3.png"
-              alt="project-right3"
-            />
+            <Link>
+              <img
+                className={styles.img_project}
+                src="./assets/project_right3.png"
+                alt="project-right3"
+              />
             </Link>
             <div className={styles.card_text}>
               <h3>Винный парк WinePark</h3>
