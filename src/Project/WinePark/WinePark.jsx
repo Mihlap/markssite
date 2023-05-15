@@ -11,6 +11,8 @@ import img2 from "./img/WinePark2.jpg";
 import img3 from "./img/WinePark3.jpg";
 import img4 from "./img/WinePark4.jpg";
 import img5 from "./img/WinePark5.jpg";
+import PreviousNextButton from "../../UI/ButtonsProjects/PreviousNextButton";
+import AllProjectsButton from "../../UI/ButtonsProjects/AllProjectsButton";
  
 export default function WinePark() {
  const refs = {
@@ -90,9 +92,7 @@ export default function WinePark() {
       <div className={styles.container}>
         <div className={styles.header_container}>
           <div className={styles.header_img_title}>
-            <Link to="/project" ref={refs.link} className={styles.header_link}>
-              Все проекты
-            </Link>
+            <AllProjectsButton/>
             <h1 ref={refs.title} className={styles.header_title}>
               Винный парк WinePark
             </h1>
@@ -220,6 +220,7 @@ export default function WinePark() {
           </div>
         </div>
       </div>
+      <PreviousNextButton/>
     </section>
   );
 }

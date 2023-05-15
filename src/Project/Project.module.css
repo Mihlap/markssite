@@ -25,32 +25,6 @@
   top: 8vh;
 }
 
-.header_link {
-  background: rgba(246, 246, 246, 0.42);
-  /* Цвет фона */
-  border: none;
-  /* Убираем границу */
-  color: var(--white-F6F6F6);
-  /* Цвет текста */
-  padding: 0.69vw 1.39vw;
-  /* Отступы внутри кнопки */
-  text-align: left;
-  /* Выравнивание текста по левому краю */
-  font-size: 1.11vw;
-  /* Размер шрифта */
-  cursor: pointer;
-  /* Изменяем вид курсора при наведении на кнопку */
-  border-radius: 18px;
-  padding-left: 20px;
-}
-
-.header_link::before {
-  content: "<";
-  /* Код символа стрелки влево */
-  margin-right: 10px;
-  /* Отступ между стрелкой и текстом */
-}
-
 .header_title {
   font-family: var(--font-unbounded);
   font-style: normal;
@@ -189,7 +163,7 @@
   color: var(--gray-959DA6);
 }
 
-.item {
+.item:not(:last-child) {
   padding-bottom: 2.78vw;
   width: 100%;
   height: auto;

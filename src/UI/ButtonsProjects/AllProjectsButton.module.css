@@ -68,8 +68,9 @@ color: var(--salmon-light-FFBFB5);
      padding: 0.5vh 3vw;
      border-radius: 2.6vw;
     }  
+
+    .button_project {
+      display: none;
+    } 
 }
 
-/* wefrrefg4 */
-
-/* vvvvvvvvvvvvvvvvvvvvvvvvv */

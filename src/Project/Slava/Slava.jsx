@@ -9,6 +9,8 @@ import img from "./img/Slava.jpg";
 import img1 from "./img/Slava2.jpg";
 import img2 from "./img/Slava3.jpg";
 import img3 from "./img/Slava4.jpg";
+import AllProjectsButton from "../../UI/ButtonsProjects/AllProjectsButton";
+import PreviousNextButton from "../../UI/ButtonsProjects/PreviousNextButton";
 
 export default function Slava() {
   const refs = {
@@ -91,9 +93,7 @@ export default function Slava() {
       <div className={styles.container}>
         <div className={styles.header_container}>
           <div className={styles.header_img_title}>
-            <Link to="/project" ref={refs.link} className={styles.header_link}>
-              Все проекты
-            </Link>
+          <AllProjectsButton/>
             <h1 ref={refs.title} className={styles.header_title}>
               МФК Комплекс апартаментов «Slava»
             </h1>
@@ -228,6 +228,7 @@ export default function Slava() {
           </div>
         </div>
       </div>
+      <PreviousNextButton/>
     </section>
   );
 }
