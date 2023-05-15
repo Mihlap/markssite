@@ -130,7 +130,7 @@ export default function Slava() {
                 </div>
                 <div className={styles.result_block}>
                   <div className={styles.result_number}>8 — 17</div>
-                  <div className={styles.result_text}>Этажностьр</div>
+                  <div className={styles.result_text}>Этажность</div>
                 </div>
               </div>
             </div>
@@ -150,7 +150,10 @@ export default function Slava() {
                   </div>
                   <div>
                     <div className={styles.local_title}>Публикации</div>
-                    <Link to="https://tass.ru/obschestvo/9880739" h>
+                    <Link
+                      to="https://tass.ru/obschestvo/9880739"
+                      target="_blank"
+                    >
                       <div className={styles.local_text}>
                         ТАСС «Первый в России винный парк откроется под Ялтой
                         весной 2021 года»
