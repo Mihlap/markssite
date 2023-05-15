@@ -14,6 +14,7 @@ import Footer from "./Footer/Footer";
 import WinePark from "./Project/WinePark/WinePark";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import Badaevsky from "./articlesProject/Badaevsky/Badaevsky";
+import Slava from "./Project/Slava/Slava"
 import Loading from "./Loading/Loading";
 
 
@@ -68,24 +69,25 @@ const App = () => {
         <Loading />
       ) : (
         <>
-        <Navbar handleClickScroll={handleClickScroll} />
-        <TransitionGroup>
-          <CSSTransition key={location.key} classNames="fade" timeout={300}>
-            <Routes location={location}>
-              <Route path="/" element={<Header />} />
-              <Route path="/competention" element={<Competentions />} />
-              <Route path="/project" element={<Project />} />
-              <Route path="/public" element={<Publics />} />
-              <Route path="/company" element={<Company />} />
-              <Route path="/contacts" element={<Contacts />} />
-              <Route path="/portal" element={<Portal />} />
-              <Route path="*" element={<NotFound />} />
-              <Route path="/winepark" element={<WinePark />} />
-              <Route path="/badaevsky" element={<Badaevsky />} />
-            </Routes>
-          </CSSTransition>
-        </TransitionGroup>
-        <Footer />
+          <Navbar handleClickScroll={handleClickScroll} />
+          <TransitionGroup>
+            <CSSTransition key={location.key} classNames="fade" timeout={300}>
+              <Routes location={location}>
+                <Route path="/" element={<Header />} />
+                <Route path="/competention" element={<Competentions />} />
+                <Route path="/project" element={<Project />} />
+                <Route path="/public" element={<Publics />} />
+                <Route path="/company" element={<Company />} />
+                <Route path="/contacts" element={<Contacts />} />
+                <Route path="/portal" element={<Portal />} />
+                <Route path="*" element={<NotFound />} />
+                <Route path="/winepark" element={<WinePark />} />
+                <Route path="/badaevsky" element={<Badaevsky />} />
+                <Route path="/slava" element={<Slava />} />
+              </Routes>
+            </CSSTransition>
+          </TransitionGroup>
+          <Footer />
         </>
       )}
     </>

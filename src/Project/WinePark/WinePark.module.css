@@ -6,7 +6,6 @@
     overflow-y: auto;
 }
 
-
 .header_img {
     width: 100%;
     height: 100vh;
@@ -19,11 +18,11 @@
 }
 
 .header_link {
-    background: rgba(246, 246, 246, 0.42);;
+    background: rgba(246, 246, 246, 0.42);
     /* Цвет фона */
     border: none;
     /* Убираем границу */
-    color: var(-white-F6F6F6);
+    color: var(--white-F6F6F6);
     /* Цвет текста */
     padding: 0.69vw 1.39vw;
     /* Отступы внутри кнопки */
@@ -50,7 +49,7 @@
     font-weight: var(--fw-300);
     font-size: 3.33vw;
     line-height: 30px;
-    color: var(-white-F6F6F6);
+    color: var(--white-F6F6F6);
     padding-top: 4.7vh;
 }
 
@@ -60,7 +59,7 @@
     font-weight: var(--fw-400);
     font-size: 0.97vw;
     line-height: 14px;
-    color: var(--black-1D2E43);
+    color: var(--white-F6F6F6);
     padding-top: 30px;
 }
 
@@ -76,7 +75,6 @@
 .header_content_left {
     width: 70%;
     overflow: hidden;
-
 }
 
 .title_block {
@@ -126,7 +124,6 @@
     display: none;
 }
 
-
 .result_number {
     font-family: var(--font-unbounded);
     font-style: normal;
@@ -145,8 +142,8 @@
     color: (var--gray-959DA6);
 }
 
-
 /* << =============== правый блок контента с информацией =============== >> */
+
 .header_content_right {
     width: 30%;
 }
@@ -186,19 +183,17 @@
 
 .item {
     padding-bottom: 2.78vw;
-}
-
-.item {
     width: 100%;
     height: auto;
-    border-radius: 16px;
 }
 
 .item img {
     width: 100%;
+    border-radius: 1.11vw;
 }
 
 /* Стили для мобильной версии сайта блока WinePark начинаются тут */
+
 @media screen and (max-width: 700px) {
 
     .container {
@@ -211,9 +206,12 @@
     }
 
     .result_container_phone {
-        display: block
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        gap: 5.33vw;
+        padding-top: 5.33vw;
     }
-
 
     .header_img_title {
         top: 9vh;
@@ -242,7 +240,8 @@
         justify-content: normal;
     }
 
-    .header_content_left, .header_content_right {
+    .header_content_left,
+    .header_content_right {
         width: auto;
     }
 
@@ -269,7 +268,7 @@
         line-height: 6.40vw;
         padding-top: 4.27vw;
     }
-    
+
     .local_container {
         padding-top: 5.33vw;
         gap: 20vw;
@@ -279,18 +278,10 @@
         font-size: 3.73vw;
         line-height: 5.33vw;
     }
-    
+
     .local_text {
         font-size: 3.73vw;
         line-height: 5.33vw;
-    }
-
-    .result_container_phone {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        gap: 5.33vw;
-        padding-top: 5.33vw;
     }
 
     .result_number {
