@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import styles from "./PrimePark.module.css";
+import styles from "../Project.module.css";
 import gsap from "gsap";
 import { Link } from "react-router-dom";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -203,9 +203,9 @@ export default function PrimePark() {
           </div>
           <div
             ref={refs.blockDescription}
-            className="description_object_container"
+            className={styles.description_object_container}
           >
-            <div className="description_object_block">
+            <div className={styles.description_object_block}>
               <div className={styles.description_object_title}>
                 Приватный парк
               </div>

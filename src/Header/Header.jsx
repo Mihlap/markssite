@@ -26,13 +26,10 @@ import D9 from ".././icons/D9.svg";
 
 
 
-
-
-
-const Header = () => {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+export default function Header() {
+  // useEffect(() => {
+  //   window.scrollTo(0, 0);
+  // }, []);
   return (
     <main className={styles.header}>
       <div className={styles.menu}>
@@ -162,7 +159,7 @@ const Header = () => {
         </div>
         <div className={styles.main_project_right}>
           <div className={styles.main_project_right1}>
-            <Link>
+            <Link to="/hotel-appart">
               <img
                 className={styles.img_project}
                 src="./assets/project_right1.png"
@@ -188,7 +185,7 @@ const Header = () => {
             </div>
           </div>
           <div className={styles.main_project_right3}>
-            <Link>
+            <Link to="/winepark">
               <img
                 className={styles.img_project}
                 src="./assets/project_right3.png"
@@ -206,4 +203,3 @@ const Header = () => {
   );
 };
 
-export default Header;

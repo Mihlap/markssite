@@ -14,10 +14,10 @@ import Footer from "./Footer/Footer";
 import WinePark from "./Project/WinePark/WinePark";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import Badaevsky from "./articlesProject/Badaevsky/Badaevsky";
-import Slava from "./Project/Slava/Slava"
+import Slava from "./Project/Slava/Slava";
 import Loading from "./Loading/Loading";
 import PrimePark from "./Project/PrimePark/PrimePark";
-
+import HotelAppart from "./Project/Hotel_appart/HotelAppart";
 
 const App = () => {
   const location = useLocation();
@@ -25,7 +25,7 @@ const App = () => {
   const [scrollPosition, setScrollPosition] = useState(0);
 
   const [loading, setLoading] = useState(false);
-  // таймаут для прелоудера на сайте 
+  // таймаут для прелоудера на сайте
 
   // setTimeout(() => {
   //   setLoading(false);
@@ -86,6 +86,7 @@ const App = () => {
                 <Route path="/badaevsky" element={<Badaevsky />} />
                 <Route path="/slava" element={<Slava />} />
                 <Route path="/prime-park" element={<PrimePark />} />
+                <Route path="/hotel-appart" element={<HotelAppart />} />
               </Routes>
             </CSSTransition>
           </TransitionGroup>
