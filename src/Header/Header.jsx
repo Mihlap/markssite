@@ -148,7 +148,7 @@ const Header = () => {
       </div>
       <div className={styles.main_project}>
         <div className={styles.main_project_left}>
-          <Link>
+          <Link to="/prime-park">
             <img
               className={styles.img_poject}
               src="./assets/project_left.png"

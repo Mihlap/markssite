@@ -16,6 +16,7 @@ import { CSSTransition, TransitionGroup } from "react-transition-group";
 import Badaevsky from "./articlesProject/Badaevsky/Badaevsky";
 import Slava from "./Project/Slava/Slava"
 import Loading from "./Loading/Loading";
+import PrimePark from "./Project/PrimePark/PrimePark";
 
 
 const App = () => {
@@ -84,6 +85,7 @@ const App = () => {
                 <Route path="/winepark" element={<WinePark />} />
                 <Route path="/badaevsky" element={<Badaevsky />} />
                 <Route path="/slava" element={<Slava />} />
+                <Route path="/prime-park" element={<PrimePark />} />
               </Routes>
             </CSSTransition>
           </TransitionGroup>
