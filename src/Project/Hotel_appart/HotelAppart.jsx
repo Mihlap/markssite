@@ -206,10 +206,10 @@ export default function HotelAppart() {
         <div className={styles.container}>
           <div className={styles.item_photo_together}>
             <div className={styles.item}>
-              <img className={styles.leftImg1} src={img1} alt="" />
+              <img className={styles.item_img} src={img1} alt="" />
             </div>
             <div className={styles.item}>
-              <img className={styles.leftImg2} src={img2} alt="" />
+              <img className={styles.item_img} src={img2} alt="" />
             </div>
           </div>
           <div
@@ -234,18 +234,22 @@ export default function HotelAppart() {
             </div>
           </div>
           <div className={styles.item}>
-            <img className={styles.leftImg3} src={img3} alt="" />
+            <img className={styles.item_img} src={img3} alt="" />
           </div>
           <div className={styles.item_photo_together}>
-          <div className={styles.item}>
-            <img className={styles.leftImg4} src={img4} alt="" />
+            <div className={styles.item}>
+              <img className={styles.item_img} src={img4} alt="" />
+            </div>
+            <div className={styles.item}>
+              <img className={styles.item_img} src={img5} alt="" />
+            </div>
           </div>
           <div className={styles.item}>
-            <img className={styles.leftImg5} src={img5} alt="" />
-          </div>
-           </div>
-          <div className={styles.item}>
-            <img className={styles.leftImg6} src={img6} alt="" />
+            <img
+              className={`${styles.item_img} ${styles.item_img_latest}`}
+              src={img6}
+              alt=""
+            />
           </div>
         </div>
       </div>

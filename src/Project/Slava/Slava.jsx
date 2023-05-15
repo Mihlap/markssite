@@ -93,7 +93,7 @@ export default function Slava() {
       <div className={styles.container}>
         <div className={styles.header_container}>
           <div className={styles.header_img_title}>
-          <AllProjectsButton/>
+            <AllProjectsButton />
             <h1 ref={refs.title} className={styles.header_title}>
               МФК Комплекс апартаментов «Slava»
             </h1>
@@ -202,7 +202,7 @@ export default function Slava() {
       <div className={styles.blockImg}>
         <div className={styles.container}>
           <div className={styles.item}>
-            <img className={styles.leftImg1} src={img1} alt="" />
+            <img className={styles.item_img} src={img1} alt="" />
           </div>
           <div
             ref={refs.blockDescription}
@@ -221,14 +221,18 @@ export default function Slava() {
             </div>
           </div>
           <div className={styles.item}>
-            <img className={styles.leftImg2} src={img2} alt="" />
+            <img className={styles.item_img} src={img2} alt="" />
           </div>
           <div className={styles.item}>
-            <img className={styles.leftImg3} src={img3} alt="" />
+            <img
+              className={`${styles.item_img} ${styles.item_img_latest}`}
+              src={img3}
+              alt=""
+            />
           </div>
         </div>
       </div>
-      <PreviousNextButton/>
+      <PreviousNextButton />
     </section>
   );
 }

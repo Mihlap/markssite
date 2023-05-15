@@ -216,7 +216,11 @@ export default function WinePark() {
             <img className={styles.item_img} src={img4} alt="" />
           </div>
           <div className={styles.item}>
-            <img className={styles.item_img} src={img5} alt="" />
+            <img
+              className={`${styles.item_img} ${styles.item_img_latest}`}
+              src={img5}
+              alt=""
+            />
           </div>
         </div>
       </div>
