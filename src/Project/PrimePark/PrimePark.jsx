@@ -3,14 +3,14 @@ import styles from "../Project.module.css";
 import gsap from "gsap";
 import { Link } from "react-router-dom";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import AllProjectsButton from "../../UI/ButtonsProjects/AllProjectsButton";
+import PreviousNextButton from "../../UI/ButtonsProjects/PreviousNextButton";
 
 // импортируем фото
 import img from "./img/Prime-park.jpg";
 import img1 from "./img/Prime-park1.jpg";
 import img2 from "./img/Prime-park2.jpg";
 import img3 from "./img/Prime-park3.jpg";
-import AllProjectsButton from "../../UI/ButtonsProjects/AllProjectsButton";
-import PreviousNextButton from "../../UI/ButtonsProjects/PreviousNextButton";
 
 export default function PrimePark() {
   const refs = {
