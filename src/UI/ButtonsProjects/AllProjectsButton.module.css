@@ -34,7 +34,7 @@ border: none;
 background-color: var(--white-F6F6F6);;
 justify-content: center;
 align-items: center;
-padding: 18px 0px;
+padding: 1.25vh 0vh;
 }
  
 .previous_svg span{
@@ -55,12 +55,12 @@ line-height: 1.38vh;
 color: var(--black-1D2E43);
   }
 
-.button_project :hover,
-.next_svg :hover {
-color: var(--salmon-light-FFBFB5);
-}
+.button_project :hover {
+    color: var(--salmon-light-FFBFB5);
+    fill: var(--salmon-light-FFBFB5);
+  }
 
-  
+
 /* Стили для мобильной версии сайта блока WinePark начинаются тут */
 @media screen and (max-width: 700px) {
 
