@@ -167,13 +167,17 @@
   padding-bottom: 2.78vw;
 }
 
+
 .item_img {
   width: 100%;
+  border-radius: 1.11vw;
 }
 
-.styles .item:not(:last-child) .item_img {
-  border-radius: 10px;
+.item_img_latest {
+  border-radius: 1.11vw 1.11vw 0 0;
+  background-color: red;
 }
+
 
 .item_photo_together {
   display: flex;
