@@ -1,7 +1,12 @@
-import React from 'react'
+import React from 'react';
+import PreviousNextButton from '../../UI/ButtonsProjects/PreviousNextButton';
+import AllProjectsButton from '../../UI/ButtonsProjects/AllProjectsButton';
 
 export default function HotelAppart() {
   return (
-    <div>HotelAppart</div>
-  )
+    <div>
+      <AllProjectsButton/>
+      <PreviousNextButton/>
+    </div>
+      )
 }
