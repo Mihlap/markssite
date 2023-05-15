@@ -17,13 +17,17 @@
 
 .contentLoaderTitle {
     font-size: 5vw;
-    color: var(--black-1D2E43);
 }
 
 .contentLoaderSubtitle {
     font-size: 2vw;
+}
+
+.contentLoaderTitle,
+.contentLoaderSubtitle {
     color: var(--black-1D2E43);
 }
+
 
 
 
@@ -94,5 +98,24 @@
 
     100% {
         opacity: 1;
+    }
+}
+
+/* Стили для мобильной версии начинаются тут */
+@media screen and (max-width: 700px) {
+    .contentLoaderTitle {
+        font-size: 6.33vw;
+    }
+
+    .contentLoaderSubtitle {
+        font-size: 2.40vw;
+    }
+
+    .loadingProgresBar {
+        width: 319px;
+    }
+
+    .percent {
+        font-size: 4.40vw;
     }
 }
