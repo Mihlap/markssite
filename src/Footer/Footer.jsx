@@ -12,7 +12,7 @@ const Footer = () => {
 
   return (
     <footer>
-      <div className={styles.footer_container}>
+      <div id="contacts" className={styles.footer_container}>
         <div className={styles.footer_block_left}>
           <div className={styles.mail_block}>
             <Link className={styles.mail_link} to="mailto:mail@marksgroup.ru">
@@ -80,7 +80,7 @@ const Footer = () => {
               Сотрудникам
             </Link>
             <Link className={styles.job_link} to="/">
-               Документы
+              Документы
             </Link>
             <div className={styles.job_link}>© MARKSDIGITAL</div>
           </div>
