@@ -3,7 +3,7 @@ import styles from "../Project.module.css";
 import gsap from "gsap";
 import { Link } from "react-router-dom";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-
+ 
 // импортируем фото
 import img from "./img/WinePark.jpg";
 import img1 from "./img/WinePark1.jpg";
@@ -11,8 +11,7 @@ import img2 from "./img/WinePark2.jpg";
 import img3 from "./img/WinePark3.jpg";
 import img4 from "./img/WinePark4.jpg";
 import img5 from "./img/WinePark5.jpg";
-
-
+ 
 export default function WinePark() {
  const refs = {
    title: useRef(null),
@@ -27,22 +26,22 @@ export default function WinePark() {
    leftImg4: useRef(null),
    leftImg5: useRef(null),
  };
-
+ 
  useEffect(() => {
    window.scrollTo(20, 0);
-
+ 
    const { title, link, desc } = refs;
-
+ 
    // Скрываем заголовок, ссылку и описание перед анимацией
    gsap.set([title.current, link.current, desc.current], { opacity: 0 });
-
+ 
    // Анимируем появление заголовка, затем ссылки, затем описания
    gsap.to(title.current, { duration: 1, opacity: 1, delay: 0.5 });
    gsap.to(link.current, { duration: 1, opacity: 1, delay: 1 });
    gsap.to(desc.current, { duration: 1, opacity: 1, delay: 0.7 });
-
+ 
    gsap.registerPlugin(ScrollTrigger);
-
+ 
    const {
      blockLeft,
      blockRight,
@@ -53,7 +52,7 @@ export default function WinePark() {
      leftImg4,
      leftImg5,
    } = refs;
-
+ 
    const elementsLeft = [
      blockLeft.current,
      leftImg1.current,
@@ -66,7 +65,7 @@ export default function WinePark() {
      leftImg2.current,
      leftImg4.current,
    ];
-
+ 
    const animateElement = (element) => {
      gsap.from(element, {
        x: "-100%",
@@ -80,7 +79,7 @@ export default function WinePark() {
        },
      });
    };
-
+ 
    elementsLeft.forEach(animateElement);
    elementsRight.forEach(animateElement);
  // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -121,7 +120,6 @@ export default function WinePark() {
                 амфитеатр, водопад с гротом, малые <br />
                 архитектурные формы и концептуальные скульптуры.
               </div>
-
               <div className={styles.result_container}>
                 <div className={styles.result_block}>
                   <div className={styles.result_number}>30 га</div>
@@ -148,7 +146,6 @@ export default function WinePark() {
                       г. Москва, Ленинградский проспект, вл. 37
                     </div>
                   </div>
-
                   <div>
                     <div className={styles.local_title}>Заказчик</div>
                     <div className={styles.local_text}>-</div>
