@@ -223,7 +223,7 @@
   padding: 10px 0px;
 }
 
-span {
+.card_text_span {
   font-family: var(--font-raleway);
   font-style: normal;
   font-weight: var(--fw-400);

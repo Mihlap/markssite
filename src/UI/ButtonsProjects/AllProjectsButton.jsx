@@ -23,9 +23,9 @@ const AllProjectsButton = () => {
  
   }, []);
   return (
-    <Link to="/project" ref={refs.link}>
+    <Link to="/" ref={refs.link}>
     <button className={style.button_link}>
-    Все проекты
+    Вернуться на главную 
     </button>
     </Link>
   )

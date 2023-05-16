@@ -1,7 +1,9 @@
 /* eslint-disable jsx-a11y/no-distracting-elements */
 /* eslint-disable jsx-a11y/img-redundant-alt */
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import BlockHeader from "../UI/BlockHeader/BlockHeader";
 import SwiperContainer from "./Swiper-Phone/SwiperContainer";
 import SwiperContainerProgect from "./Swiper-project/SwiperContainerProgect";
@@ -24,12 +26,60 @@ import D7 from ".././icons/D7.svg";
 import D8 from ".././icons/D8.svg";
 import D9 from ".././icons/D9.svg";
 
-
-
 export default function Header() {
   // useEffect(() => {
   //   window.scrollTo(0, 0);
   // }, []);
+
+  const refs = {
+    blockLeft: useRef(null),
+    blockRight: useRef(null),
+    headerBlock: useRef(null),
+  };
+
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    const { blockLeft, blockRight, headerBlock } = refs;
+
+    const animateElement = (element, props) => {
+      gsap.from(element, {
+        ...props,
+        scrollTrigger: {
+          trigger: element,
+          start: "top " + props.start,
+        },
+      });
+    };
+
+    animateElement(headerBlock.current, {
+      y: "100%",
+      opacity: 0,
+      duration: 1,
+      delay: 1,
+      ease: "power2.out",
+      start: "100%",
+    });
+
+    animateElement(blockLeft.current, {
+      x: "-100%",
+      opacity: 0,
+      duration: 1,
+      delay: 1,
+      ease: "power1.out",
+      start: "90%",
+    });
+
+    animateElement(blockRight.current, {
+      x: "100%",
+      opacity: 0,
+      duration: 1,
+      delay: 1,
+      ease: "power1.out",
+      start: "100% right",
+    });
+  }, [refs]);
+
   return (
     <main className={styles.header}>
       <div className={styles.menu}>
@@ -38,7 +88,7 @@ export default function Header() {
         {/* фото для мобильной версии  */}
         {/* <img className={styles.image_phone} src={photo} alt="photo" /> */}
       </div>
-      <div className={styles.header_desctop_block}>
+      <div ref={refs.headerBlock} className={styles.header_desctop_block}>
         <h1 id="public" className={styles.desctop_title}>
           Награды и публикации
         </h1>
@@ -47,7 +97,7 @@ export default function Header() {
           <br /> и конкурсах. Предлагаем ознакомиться с некоторыми докладами
         </div>
       </div>
-      <div className={styles.header_block}>
+      <div ref={refs.blockLeft} className={styles.header_block}>
         <h1 className={styles.heading}>Награды проектов</h1>
         <p className={styles.heading_text}>
           Наша компания участвует в<br /> многочисленных выставках, конференциях
@@ -66,13 +116,15 @@ export default function Header() {
           </button> */}
         </div>
         <div className={styles.card_container}>
-          <div className={styles.card_item_1}>
+          <div ref={refs.blockLeft} className={styles.card_item_1}>
             <div className={styles.card_img}>
               <img className={styles.img_1} src="./assets/B.png" alt="image1" />
             </div>
             <div className={styles.card_text}>
               <h3>Центр энотуризма WinePark</h3>
-              <span>Конкурс • 100 лучших объектов росии</span>
+              <span className={styles.card_text_span}>
+                Конкурс • 100 лучших объектов росии
+              </span>
             </div>
             <Link to="/winepark">
               <button className={styles.card_button}>
@@ -80,7 +132,7 @@ export default function Header() {
               </button>
             </Link>
           </div>
-          <div className={styles.card_item_2}>
+          <div ref={refs.blockRight} className={styles.card_item_2}>
             <div className={styles.card_img}>
               <img
                 className={styles.img_2}
@@ -90,7 +142,7 @@ export default function Header() {
             </div>
             <div className={styles.card_text}>
               <h3>Баня, рынок, супер-слэб — что ждет Бадаевский?</h3>
-              <span>
+              <span className={styles.card_text_span}>
                 Статья • Экспертное обсуждение реставрации и приспособления
                 объектов культурного наследия
               </span>
@@ -205,5 +257,4 @@ export default function Header() {
       </div>
     </main>
   );
-};
-
+}
