@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import debounce from 'lodash.debounce';
 import { Link, animateScroll as scroll } from "react-scroll";
 import logo from ".././icons/logo.svg";
 import styles from "./Navbar.module.css";
@@ -38,12 +39,12 @@ const Navbar = ({ handleClickScroll }) => {
   const [visible, setVisible] = useState(true);
 
   useEffect(() => {
-    const handleScroll = () => {
+    const handleScroll = debounce(() => {
       const currentScrollPos = window.pageYOffset;
       const visible = prevScrollpos > currentScrollPos;
       setVisible(visible);
       setPrevScrollpos(currentScrollPos);
-    };
+    }, 100);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [prevScrollpos]);
