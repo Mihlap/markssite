@@ -1,10 +1,10 @@
 import React, { useState } from "react";
+import { Link, animateScroll as scroll } from "react-scroll";
 import logo from ".././icons/logo.svg";
-import { Link } from "react-router-dom";
 import styles from "./Navbar.module.css";
 import { useEffect } from "react";
 
-// тетс гита на сливание с новой веткой 
+// тетс гита на сливание с новой веткой
 
 const Navbar = ({ handleClickScroll }) => {
   const [clicked, setClicked] = useState(false);
@@ -15,9 +15,13 @@ const Navbar = ({ handleClickScroll }) => {
   function handleCheckboxChange() {
     setIsChecked(!isChecked);
   }
-
   function handleClick() {
     setClicked(!clicked);
+  }
+
+  function handleNavbarTitleClick() {
+    // Осуществляем переход на главную страницу
+    window.location.href = "/";
   }
 
   const openHandler = () => {
@@ -49,70 +53,53 @@ const Navbar = ({ handleClickScroll }) => {
       className={`${styles.fixed} ${visible ? styles.visible : styles.hidden}`}
     >
       <nav className={styles.navbar_desctop}>
-        <Link
-          to="/"
-          className={`${styles.block} ${styles.block_logo}`}
-          onClick={handleClick}
-        >
-          <img src={logo} alt="logo" />
-        </Link>
-        <Link to="/competention">
-          <button
-            className={`${styles.block} ${styles.block1}`}
-            onClick={handleClick}
-          >
-            Компетенции
-          </button>
-        </Link>
-        <Link to="/project">
-          <button
-            className={`${styles.block} ${styles.block2}`}
-            onClick={handleClick}
-          >
-            Проекты
-          </button>
-        </Link>
-        <Link to="/public">
-          <button
-            className={`${styles.block} ${styles.block3}`}
-            onClick={handleClick}
-          >
-            Публикации
-          </button>
-        </Link>
-        <Link to="/company">
-          <button
-            className={`${styles.block} ${styles.block4}`}
-            onClick={handleClick}
-          >
-            О Компании
-          </button>
-        </Link>
-        <Link to="/contacts">
-          <button
-            className={`${styles.block} ${styles.block5}`}
-            onClick={handleClick}
-          >
-            Контакты
-          </button>
-        </Link>
-        <Link to="/portal">
-          <button
-            className={`${styles.block} ${styles.block6}`}
-            onClick={handleClick}
-          >
-            HR портал
-          </button>
-        </Link>
-        <button className={`${styles.block} ${styles.block_lang}`}>
-          <p>EN</p>
-        </button>
+        <div className={styles.navbar_container}>
+          <div className={styles.navbar_title_block}>
+            <Link to="/" onClick={handleNavbarTitleClick}>
+              <h1 className={styles.navbar_title}>MARKS GROUP</h1>
+            </Link>
+          </div>
+          <ul className={styles.navbar_list}>
+            <Link
+              className={styles.navbar_item}
+              to="competention"
+              smooth={true}
+              duration={700}
+            >
+              <li>Компетенции</li>
+            </Link>
+            <Link
+              className={styles.navbar_item}
+              to="project"
+              smooth={true}
+              duration={700}
+            >
+              <li>Проекты</li>
+            </Link>
+            <Link
+              className={styles.navbar_item}
+              to="public"
+              smooth={true}
+              duration={700}
+            >
+              <li>Публикации</li>
+            </Link>
+            <Link
+              className={styles.navbar_item}
+              to="contacts"
+              smooth={true}
+              duration={700}
+            >
+              <li>Контакты</li>
+            </Link>
+          </ul>
+        </div>
       </nav>
       <div className={styles.navDesktop_container}>
         <nav>
           <div className={styles.navbar}>
             <div className={styles.logo}>
-              <Link to="/">
+              <Link to="/" onClick={handleNavbarTitleClick}>
                 <img className={styles.logo_img} src={logo} alt="logo" />
               </Link>
             </div>
@@ -183,7 +170,7 @@ const Navbar = ({ handleClickScroll }) => {
                       Публикации
                     </Link>
                   </li>
-                  <li>
+                  {/* <li>
                     <Link
                       className={styles.menu_item}
                       onClick={closeNavBar}
@@ -191,7 +178,7 @@ const Navbar = ({ handleClickScroll }) => {
                     >
                       О Компании
                     </Link>
-                  </li>
+                  </li> */}
                   <li>
                     <Link
                       className={styles.menu_item}
@@ -201,7 +188,7 @@ const Navbar = ({ handleClickScroll }) => {
                       Контакты
                     </Link>
                   </li>
-                  <li>
+                  {/* <li>
                     <Link
                       className={styles.menu_item}
                       onClick={closeNavBar}
@@ -209,7 +196,7 @@ const Navbar = ({ handleClickScroll }) => {
                     >
                       HR портал
                     </Link>
-                  </li>
+                  </li> */}
                 </ul>
                 <div className={styles.contact_info}>
                   <div className={styles.contact_info_block}>
