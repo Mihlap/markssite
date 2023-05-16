@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable jsx-a11y/no-distracting-elements */
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { useEffect, useRef } from "react";
@@ -106,7 +107,9 @@ export default function Header() {
         </p>
       </div>
       <div className={styles.container_main}>
+        <span>
         <SliderHeader />
+        </span>
         <div className={styles.swiper_container}>
           <SwiperContainer />
         </div>
