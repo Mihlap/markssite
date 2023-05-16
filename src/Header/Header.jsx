@@ -122,7 +122,9 @@ export default function Header() {
             </div>
             <div className={styles.card_text}>
               <h3>Центр энотуризма WinePark</h3>
-              <span>Конкурс • 100 лучших объектов росии</span>
+              <span className={styles.card_text_span}>
+                Конкурс • 100 лучших объектов росии
+              </span>
             </div>
             <Link to="/winepark">
               <button className={styles.card_button}>
@@ -140,7 +142,7 @@ export default function Header() {
             </div>
             <div className={styles.card_text}>
               <h3>Баня, рынок, супер-слэб — что ждет Бадаевский?</h3>
-              <span>
+              <span className={styles.card_text_span}>
                 Статья • Экспертное обсуждение реставрации и приспособления
                 объектов культурного наследия
               </span>
