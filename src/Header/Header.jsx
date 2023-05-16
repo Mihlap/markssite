@@ -39,7 +39,9 @@ export default function Header() {
         {/* <img className={styles.image_phone} src={photo} alt="photo" /> */}
       </div>
       <div className={styles.header_desctop_block}>
-        <h1 className={styles.desctop_title}>Награды и публикации</h1>
+        <h1 id="public" className={styles.desctop_title}>
+          Награды и публикации
+        </h1>
         <div className={styles.desctop_test}>
           Наша компания участвует в многочисленных выставках, конференциях
           <br /> и конкурсах. Предлагаем ознакомиться с некоторыми докладами
@@ -102,7 +104,9 @@ export default function Header() {
         </div>
         <div className={styles.names_contents}>
           <div className={styles.name_11}>+11</div>
-          <div className={styles.name_competencies}>Компетенции</div>
+          <div id="competention" className={styles.name_competencies}>
+            Компетенции
+          </div>
         </div>
 
         <div className={styles.most}>
@@ -144,7 +148,7 @@ export default function Header() {
         <SwiperContainerProgect />
       </div>
       <div className={styles.main_project}>
-        <div className={styles.main_project_left}>
+        <div id="project" className={styles.main_project_left}>
           <Link to="/prime-park">
             <img
               className={styles.img_poject}
