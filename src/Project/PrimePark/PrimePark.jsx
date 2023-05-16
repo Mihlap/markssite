@@ -259,5 +259,5 @@ export default function PrimePark() {
         </div>
       </div>
      </section>
-  );
+   );
 }
