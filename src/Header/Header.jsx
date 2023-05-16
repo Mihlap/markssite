@@ -1,7 +1,9 @@
 /* eslint-disable jsx-a11y/no-distracting-elements */
 /* eslint-disable jsx-a11y/img-redundant-alt */
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import BlockHeader from "../UI/BlockHeader/BlockHeader";
 import SwiperContainer from "./Swiper-Phone/SwiperContainer";
 import SwiperContainerProgect from "./Swiper-project/SwiperContainerProgect";
@@ -24,12 +26,83 @@ import D7 from ".././icons/D7.svg";
 import D8 from ".././icons/D8.svg";
 import D9 from ".././icons/D9.svg";
 
-
-
 export default function Header() {
   // useEffect(() => {
   //   window.scrollTo(0, 0);
   // }, []);
+
+  const refsLeft = {
+    blockLeft: useRef(null),
+  };
+
+  const refsRight = {
+    blockRight: useRef(null),
+  };
+
+  const refsHeader = {
+    headerBlock: useRef(null),
+  };
+
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger);
+
+    const { blockLeft } = refsLeft;
+    const { blockRight } = refsRight;
+    const { headerBlock } = refsHeader;
+
+    const elementsLeft = [blockLeft.current];
+    const elementsRight = [blockRight.current];
+    const elementsHeaderBlock = [headerBlock.current];
+
+    const animateElementHeader = (element) => {
+     gsap.from(element, {
+       y: "100%", // изменяем свойство x на y и задаем значение "100%"
+       opacity: 0,
+       duration: 1,
+       delay: 1,
+       ease: "power2.out",
+       scrollTrigger: {
+         trigger: element,
+         start: "top bottom", // изменяем start на "top bottom"
+       },
+     });
+
+    };
+
+    const animateElementLeft = (element) => {
+      gsap.from(element, {
+        x: "-100%",
+        opacity: 0,
+        duration: 1,
+        delay: 1,
+        ease: "power1.out",
+        scrollTrigger: {
+          trigger: element,
+          start: "top 100%",
+        },
+      });
+    };
+
+    const animateElementRight = (element) => {
+      gsap.from(element, {
+        x: "100%",
+        opacity: 0,
+        duration: 1,
+        delay: 1,
+        ease: "power1.out",
+        scrollTrigger: {
+          trigger: element,
+          start: "top 100% right",
+        },
+      });
+    };
+
+    elementsHeaderBlock.forEach(animateElementHeader);
+    elementsRight.forEach(animateElementRight);
+    elementsLeft.forEach(animateElementLeft);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <main className={styles.header}>
       <div className={styles.menu}>
@@ -38,7 +111,7 @@ export default function Header() {
         {/* фото для мобильной версии  */}
         {/* <img className={styles.image_phone} src={photo} alt="photo" /> */}
       </div>
-      <div className={styles.header_desctop_block}>
+      <div ref={refsHeader.headerBlock} className={styles.header_desctop_block}>
         <h1 id="public" className={styles.desctop_title}>
           Награды и публикации
         </h1>
@@ -47,7 +120,7 @@ export default function Header() {
           <br /> и конкурсах. Предлагаем ознакомиться с некоторыми докладами
         </div>
       </div>
-      <div className={styles.header_block}>
+      <div ref={refsLeft.blockLeft} className={styles.header_block}>
         <h1 className={styles.heading}>Награды проектов</h1>
         <p className={styles.heading_text}>
           Наша компания участвует в<br /> многочисленных выставках, конференциях
@@ -66,7 +139,7 @@ export default function Header() {
           </button> */}
         </div>
         <div className={styles.card_container}>
-          <div className={styles.card_item_1}>
+          <div ref={refsLeft.blockLeft} className={styles.card_item_1}>
             <div className={styles.card_img}>
               <img className={styles.img_1} src="./assets/B.png" alt="image1" />
             </div>
@@ -80,7 +153,7 @@ export default function Header() {
               </button>
             </Link>
           </div>
-          <div className={styles.card_item_2}>
+          <div ref={refsRight.blockRight} className={styles.card_item_2}>
             <div className={styles.card_img}>
               <img
                 className={styles.img_2}
@@ -205,5 +278,4 @@ export default function Header() {
       </div>
     </main>
   );
-};
-
+}

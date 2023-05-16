@@ -19,11 +19,6 @@ const Navbar = ({ handleClickScroll }) => {
     setClicked(!clicked);
   }
 
-  function handleNavbarTitleClick() {
-    // Осуществляем переход на главную страницу
-    window.location.href = "/";
-  }
-
   const openHandler = () => {
     setNavOpen((prevNavOpen) => !prevNavOpen);
   };
@@ -55,7 +50,7 @@ const Navbar = ({ handleClickScroll }) => {
       <nav className={styles.navbar_desctop}>
         <div className={styles.navbar_container}>
           <div className={styles.navbar_title_block}>
-            <Link to="/" onClick={handleNavbarTitleClick}>
+            <Link to="/">
               <h1 className={styles.navbar_title}>MARKS GROUP</h1>
             </Link>
           </div>
@@ -99,7 +94,7 @@ const Navbar = ({ handleClickScroll }) => {
         <nav>
           <div className={styles.navbar}>
             <div className={styles.logo}>
-              <Link to="/" onClick={handleNavbarTitleClick}>
+              <Link to="/">
                 <img className={styles.logo_img} src={logo} alt="logo" />
               </Link>
             </div>
