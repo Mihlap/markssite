@@ -89,6 +89,7 @@ a {
 
 button {
   cursor: pointer;
+  padding: 0;
 }
 
 input {
