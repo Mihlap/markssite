@@ -139,6 +139,10 @@
   width: 100%;
   height: 100%;
 }
+.container_main {
+  
+  position: relative;
+}
 .show_container {
   position: relative;
   width: 90%; 
@@ -276,7 +280,7 @@
   font-family: var(--font-unbounded);
   font-style: normal;
   font-weight: var(--fw-300);
-  font-size: 60px;
+  font-size: 48px;
   line-height: 48px;
   color: var(--black-1D2E43);
 }
