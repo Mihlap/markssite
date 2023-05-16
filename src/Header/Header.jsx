@@ -31,77 +31,54 @@ export default function Header() {
   //   window.scrollTo(0, 0);
   // }, []);
 
-  const refsLeft = {
+  const refs = {
     blockLeft: useRef(null),
-  };
-
-  const refsRight = {
     blockRight: useRef(null),
-  };
-
-  const refsHeader = {
     headerBlock: useRef(null),
   };
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
-    const { blockLeft } = refsLeft;
-    const { blockRight } = refsRight;
-    const { headerBlock } = refsHeader;
+    const { blockLeft, blockRight, headerBlock } = refs;
 
-    const elementsLeft = [blockLeft.current];
-    const elementsRight = [blockRight.current];
-    const elementsHeaderBlock = [headerBlock.current];
-
-    const animateElementHeader = (element) => {
-     gsap.from(element, {
-       y: "100%", // изменяем свойство x на y и задаем значение "100%"
-       opacity: 0,
-       duration: 1,
-       delay: 1,
-       ease: "power2.out",
-       scrollTrigger: {
-         trigger: element,
-         start: "top bottom", // изменяем start на "top bottom"
-       },
-     });
-
-    };
-
-    const animateElementLeft = (element) => {
+    const animateElement = (element, props) => {
       gsap.from(element, {
-        x: "-100%",
-        opacity: 0,
-        duration: 1,
-        delay: 1,
-        ease: "power1.out",
+        ...props,
         scrollTrigger: {
           trigger: element,
-          start: "top 100%",
+          start: "top " + props.start,
         },
       });
     };
 
-    const animateElementRight = (element) => {
-      gsap.from(element, {
-        x: "100%",
-        opacity: 0,
-        duration: 1,
-        delay: 1,
-        ease: "power1.out",
-        scrollTrigger: {
-          trigger: element,
-          start: "top 100% right",
-        },
-      });
-    };
+    animateElement(headerBlock.current, {
+      y: "100%",
+      opacity: 0,
+      duration: 1,
+      delay: 1,
+      ease: "power2.out",
+      start: "100%",
+    });
 
-    elementsHeaderBlock.forEach(animateElementHeader);
-    elementsRight.forEach(animateElementRight);
-    elementsLeft.forEach(animateElementLeft);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    animateElement(blockLeft.current, {
+      x: "-100%",
+      opacity: 0,
+      duration: 1,
+      delay: 1,
+      ease: "power1.out",
+      start: "90%",
+    });
+
+    animateElement(blockRight.current, {
+      x: "100%",
+      opacity: 0,
+      duration: 1,
+      delay: 1,
+      ease: "power1.out",
+      start: "100% right",
+    });
+  }, [refs]);
 
   return (
     <main className={styles.header}>
@@ -111,7 +88,7 @@ export default function Header() {
         {/* фото для мобильной версии  */}
         {/* <img className={styles.image_phone} src={photo} alt="photo" /> */}
       </div>
-      <div ref={refsHeader.headerBlock} className={styles.header_desctop_block}>
+      <div ref={refs.headerBlock} className={styles.header_desctop_block}>
         <h1 id="public" className={styles.desctop_title}>
           Награды и публикации
         </h1>
@@ -120,7 +97,7 @@ export default function Header() {
           <br /> и конкурсах. Предлагаем ознакомиться с некоторыми докладами
         </div>
       </div>
-      <div ref={refsLeft.blockLeft} className={styles.header_block}>
+      <div ref={refs.blockLeft} className={styles.header_block}>
         <h1 className={styles.heading}>Награды проектов</h1>
         <p className={styles.heading_text}>
           Наша компания участвует в<br /> многочисленных выставках, конференциях
@@ -139,7 +116,7 @@ export default function Header() {
           </button> */}
         </div>
         <div className={styles.card_container}>
-          <div ref={refsLeft.blockLeft} className={styles.card_item_1}>
+          <div ref={refs.blockLeft} className={styles.card_item_1}>
             <div className={styles.card_img}>
               <img className={styles.img_1} src="./assets/B.png" alt="image1" />
             </div>
@@ -153,7 +130,7 @@ export default function Header() {
               </button>
             </Link>
           </div>
-          <div ref={refsRight.blockRight} className={styles.card_item_2}>
+          <div ref={refs.blockRight} className={styles.card_item_2}>
             <div className={styles.card_img}>
               <img
                 className={styles.img_2}
