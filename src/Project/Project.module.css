@@ -49,6 +49,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding-top: 2.22vw;
   padding-bottom: 3.89vw;
 }
 
@@ -57,6 +58,7 @@
 .header_content_left {
   width: 70%;
   overflow: hidden;
+  padding-right: 14rem;
 }
 
 .title_block {
@@ -66,6 +68,7 @@
 }
 
 .left_title {
+  position: relative;
   font-family: var(--font-unbounded);
   font-style: normal;
   font-weight: var(--fw-300);
@@ -84,6 +87,13 @@
   border: 1px solid;
   border-radius: 1.25vw;
   padding: 0.35vw 1.25vw;
+}
+
+.left_meta_castom {
+  display: inline-block;
+  position: absolute;
+  bottom: 5px;
+  margin-left: 10px;
 }
 
 .title_text {
@@ -282,6 +292,10 @@
     padding-top: 5.33vh;
     flex-direction: column;
     justify-content: normal;
+  }
+
+  .header_content_left {
+    padding-right: 0;
   }
 
   .header_content_left,
