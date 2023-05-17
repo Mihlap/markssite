@@ -24,7 +24,7 @@ const App = () => {
   const [isScrollDisabled, setIsScrollDisabled] = useState(false);
   const [scrollPosition, setScrollPosition] = useState(0);
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [navOpen, setNavOpen] = useState(false);
   const [isHidden, setHidden] = useState(false);
 
