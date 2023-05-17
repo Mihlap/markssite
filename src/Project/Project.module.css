@@ -29,17 +29,17 @@
   font-family: var(--font-unbounded);
   font-style: normal;
   font-weight: var(--fw-300);
-  font-size: 3.33vw;
+  font-size: 3rem;
   line-height: 30px;
   color: var(--white-F6F6F6);
-  padding-top: 4.7vh;
+  padding-top: 3.563rem;
 }
 
 .header_desc {
   font-family: var(--font-raleway);
   font-style: normal;
   font-weight: var(--fw-400);
-  font-size: 0.97vw;
+  font-size: 0.875rem;
   line-height: 14px;
   color: var(--white-F6F6F6);
   padding-top: 30px;
@@ -180,11 +180,11 @@
 .item_img {
   width: 100%;
   border-radius: 1.11vw;
- }
+}
 
 .item_img_latest {
   border-radius: 1.11vw 1.11vw 0vw 0vw;
- }
+}
 
 
 .item_photo_together {
@@ -289,7 +289,7 @@
   }
 
   .header_content {
-    padding-top: 5.33vh;
+    padding-top: 2.5rem;
     flex-direction: column;
     justify-content: normal;
   }
@@ -315,10 +315,15 @@
   }
 
   .left_meta {
-    font-size: 9px;
-    padding: 7px 15px;
+    padding: 3px 15px;
     border-radius: 34px;
     margin-top: 2.13vw;
+    font-family: var(--font-raleway);
+    font-style: normal;
+    font-weight: var(--fw-400);
+    font-size: 12px;
+    line-height: 16px;
+    font-feature-settings: 'pnum' on, 'lnum' on;
   }
 
   .title_text {
@@ -355,6 +360,16 @@
 
 /* Стили для мобильной версии начинаются тут */
 @media screen and (max-width: 700px) {
+
+  .button_link {
+    padding: 0.5vh 3vw;
+    border-radius: 2.6vw;
+  }
+
+  .button_project {
+    display: none;
+  }
+
   .description_object_container {
     justify-content: center;
     justify-content: initial;
@@ -380,6 +395,10 @@
     font-size: 4.27vw;
     line-height: 6.40vw;
   }
+
+  .header_desc {
+    padding-top: 16px;
+  }
 }
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
@@ -397,30 +416,33 @@
   font-weight: 400;
   line-height: 20px;
   padding: 3vh 3vw;
-  }
-  
+}
+
 .button_link::before {
   content: "<";
   /* Код символа стрелки влево */
   margin-right: 10px;
   /* Отступ между стрелкой и текстом */
 }
+
 .button_project {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  }
-
-.previous_svg, .next_svg {
-display: flex;
-border: none;
-justify-content: center;
-align-items: center;
-height: 100%;
 }
+
+.previous_svg,
+.next_svg {
+  display: flex;
+  border: none;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+}
+
 .previous_span,
 .next_span {
-   padding-left: 0.7vw;
+  padding-left: 0.7vw;
   font-family: var(--font-raleway);
   font-weight: var(--fw-400);
   font-size: 0.97vw;
@@ -428,31 +450,17 @@ height: 100%;
   color: var(--black-1D2E43);
 }
 
-.next_svg span{
-padding-right: 0.7vw;
-font-family: 'Raleway';
-font-style: normal;
-font-weight: 400;
-font-size: 0.97vw;
-line-height: 1.38vh;
-/* color: var(--black-1D2E43); */
-  }
+.next_svg span {
+  padding-right: 0.7vw;
+  font-family: 'Raleway';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 0.97vw;
+  line-height: 1.38vh;
+  /* color: var(--black-1D2E43); */
+}
 
-  .button_project :hover {
-   background-color: var(--salmon-light-FFBFB5);
-    fill: var(--salmon-light-FFBFB5);
-  }
-
-
-/* Стили для мобильной версии сайта блока WinePark начинаются тут */
-@media screen and (max-width: 700px) {
-
-.button_link {
-     padding: 0.5vh 3vw;
-     border-radius: 2.6vw;
-    }  
-
-    .button_project {
-      display: none;
-    } 
+.button_project :hover {
+  background-color: var(--salmon-light-FFBFB5);
+  fill: var(--salmon-light-FFBFB5);
 }
