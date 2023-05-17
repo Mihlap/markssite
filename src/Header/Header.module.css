@@ -373,7 +373,7 @@
   box-sizing: border-box;
 }
 
-.swiper_container, .marguee_block {
+.swiper_container {
   display: none;
 }
 
@@ -415,7 +415,7 @@
     display: none;
   }
 
-  .swiper_container, .marguee_block {
+  .swiper_container {
     display: block;
   }
 
@@ -431,12 +431,6 @@
   .name_11 {
     font-weight: 600;
     font-size: 12px;
-  }
-
-  .icon_partner_phone {
-    display: flex;
-    gap: 30px;
-    padding: 3.7vh 2.9vw 0vh 2.9vw;
   }
 
   .project_name {

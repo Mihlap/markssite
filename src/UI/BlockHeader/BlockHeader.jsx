@@ -85,7 +85,7 @@ function BlockHeader() {
       <div className="accordions" ref={accordionsRef}>
         <div className="accordion">
           <div className="title">Архитектура</div>
-              <img className="cub_img" src={cub} alt="logo"/>
+              {/* <img className="cub_img" src={cub} alt="logo"/> */}
           <div className="text">
             <div className="text_span">
                Архитектура и концепции
