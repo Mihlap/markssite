@@ -129,6 +129,10 @@
     display: none;
   }
 
+  .social_links {
+    display: none;
+  }
+
   .office {
     padding-bottom: 14px;
   }
@@ -152,10 +156,6 @@
 
   .job_link {
     padding: 0;
-  }
-
-  .job_link:first-child {
-    display: none;
   }
 
 }
