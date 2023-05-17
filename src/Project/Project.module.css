@@ -131,7 +131,7 @@
   font-size: 0.97vw;
   line-height: 1.39vw;
   font-feature-settings: 'pnum' on, 'lnum' on;
-  color: (var--gray-959DA6);
+  color: var(--gray-959DA6);
 }
 
 /* << =============== правый блок контента с информацией =============== >> */
@@ -152,7 +152,7 @@
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 2.39vw;
+  gap: 1.5rem;
 }
 
 .local_title {
@@ -340,6 +340,7 @@
   .local_title {
     font-size: 3.73vw;
     line-height: 5.33vw;
+    padding-bottom: 0.5rem;
   }
 
   .local_text {
@@ -355,7 +356,21 @@
   .result_text {
     font-size: 3.73vw;
     line-height: 5.33vw;
+    padding-top: 0.25rem;
   }
+
+    .item:not(:last-child) {
+      padding-bottom: 1.5rem;
+    }
+
+  .blockImg {
+    padding-top: 1.9rem;
+  }
+
+    .item_img {
+      width: 100%;
+      border-radius: 1rem;
+    }
 }
 
 /* Стили для мобильной версии начинаются тут */
@@ -378,6 +393,7 @@
 
   .description_object_block {
     width: 100%;
+    padding-bottom: 2.5rem;
   }
 
   .description_object_title {
