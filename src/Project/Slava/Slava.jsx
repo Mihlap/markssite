@@ -96,7 +96,7 @@ export default function Slava() {
             </div>
           </div>
           <div className={styles.header_content}>
-            <div ref={refs.blockLeft} className={styles.header_content_left}>
+            <div ref={refs.blockLeft} className={`${styles.header_content_left} ${styles.header_content_left_custom}`}>
               <div className={styles.title_block}>
                 <h2 className={styles.left_title}>МФК на сложном рельефе</h2>
                 <div className={styles.left_meta}>

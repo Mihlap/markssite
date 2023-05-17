@@ -100,9 +100,11 @@ export default function PrimePark() {
               <div className={styles.title_block}>
                 <div className={styles.left_title}>
                   Сохранение градоформирующего облика среды
-                <div className={`${styles.left_meta} ${styles.left_meta_castom}`}>
-                  Генеральное проектирование
-                </div>
+                  <div
+                    className={`${styles.left_meta} ${styles.left_meta_castom}`}
+                  >
+                    Генеральное проектирование
+                  </div>
                 </div>
               </div>
               <div className={styles.title_text}>
@@ -113,17 +115,17 @@ export default function PrimePark() {
 
               <div className={styles.result_container}>
                 <div className={styles.result_block}>
-                  <div className={styles.result_number}>? м²</div>
+                  <div className={styles.result_number}>4 га</div>
                   <div className={styles.result_text}>Общая площадь</div>
                 </div>
                 <div className={styles.result_block}>
-                  <div className={styles.result_number}>? га</div>
+                  <div className={styles.result_number}>11,4 га</div>
                   <div className={styles.result_text}>
                     Площадь виноградников
                   </div>
                 </div>
                 <div className={styles.result_block}>
-                  <div className={styles.result_number}>? м²</div>
+                  <div className={styles.result_number}>42</div>
                   <div className={styles.result_text}>Этажность</div>
                 </div>
               </div>
@@ -133,12 +135,14 @@ export default function PrimePark() {
                 <div className={styles.local_ritgh}>
                   <div>
                     <div className={styles.local_title}>Расположение</div>
-                    <div className={styles.local_text}>?</div>
+                    <div className={styles.local_text}>
+                      Ленинградский пр-т. вл 37, г. Москва
+                    </div>
                   </div>
 
                   <div>
                     <div className={styles.local_title}>Заказчик</div>
-                    <div className={styles.local_text}>-</div>
+                    <div className={styles.local_text}>Optima Development</div>
                   </div>
                   <div>
                     <div className={styles.local_title}>Публикации</div>
@@ -165,7 +169,9 @@ export default function PrimePark() {
                   </div>
                   <div>
                     <div className={styles.local_title}>Награды</div>
-                    <div className={styles.local_text}>?</div>
+                    <div className={styles.local_text}>
+                      EUROPEAN PROPERTY AWARDS 11 номинаций
+                    </div>
                   </div>
                 </div>
               </div>
@@ -242,13 +248,17 @@ export default function PrimePark() {
       <div className={styles.container}>
         <div className={styles.button_project}>
           <Link className={styles.button_project_link} to="/winepark">
-            <div className={`${styles.previous_svg} ${styles.button_project_button}`}>
-             <img src={previous} alt="" />
+            <div
+              className={`${styles.previous_svg} ${styles.button_project_button}`}
+            >
+              <img src={previous} alt="" />
               <span className={styles.previous_span}>Предыдущий проект</span>
             </div>
           </Link>
           <Link className={styles.button_project_link} to="/hotel-appart">
-            <div className={`${styles.next_svg} ${styles.button_project_button}`}>
+            <div
+              className={`${styles.next_svg} ${styles.button_project_button}`}
+            >
               <span className={styles.next_span}>Следующий проект</span>
               <img src={next} alt="" />
             </div>
