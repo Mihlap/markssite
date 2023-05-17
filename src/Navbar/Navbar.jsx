@@ -132,7 +132,7 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen }) => {
                     <Link
                       className={styles.menu_item}
                       onClick={closeNavBar}
-                      to="/"
+                      to="#"
                     >
                       Главная
                     </Link>
@@ -141,7 +141,7 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen }) => {
                     <Link
                       className={styles.menu_item}
                       onClick={closeNavBar}
-                      to="/competention"
+                      to="#"
                     >
                       Компетенции
                     </Link>
@@ -150,7 +150,7 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen }) => {
                     <Link
                       className={styles.menu_item}
                       onClick={closeNavBar}
-                      to="/project"
+                      to="#"
                     >
                       Кейсы
                     </Link>
@@ -159,7 +159,7 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen }) => {
                     <Link
                       className={styles.menu_item}
                       onClick={closeNavBar}
-                      to="/public"
+                      to="#"
                     >
                       Публикации
                     </Link>
@@ -177,7 +177,7 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen }) => {
                     <Link
                       className={styles.menu_item}
                       onClick={closeNavBar}
-                      to="/contacts"
+                      to="#"
                     >
                       Контакты
                     </Link>
