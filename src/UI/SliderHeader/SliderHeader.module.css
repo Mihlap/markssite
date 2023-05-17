@@ -2,5 +2,23 @@
   padding-left: 10vw;
 }
 .logo {
-  padding-top: 4vh;
+  padding-top: 56px;
 }
+.icon_partner_phone {
+  display: none;
+}
+
+/* Стили для мобильной версии сайта блока NavBar начинаются тут */
+@media only screen and (max-width: 700px) {
+  .item_mobile {
+    padding-left: 10vw;
+  }
+  .icon_partner_phone {
+    padding-top: 40px;
+    display: block;
+     }
+     .logo {
+      padding-top: 40px;
+    }
+    
+  }
