@@ -7,10 +7,8 @@ import { useEffect } from "react";
 
 // тетс гита на сливание с новой веткой
 
-const Navbar = ({ handleClickScroll }) => {
+const Navbar = ({ handleClickScroll, navOpen, setNavOpen }) => {
   const [clicked, setClicked] = useState(false);
-  const [navOpen, setNavOpen] = useState(false);
-  // const navigate = useNavigate();
   const [isChecked, setIsChecked] = useState(false);
 
   function handleCheckboxChange() {

@@ -3,6 +3,7 @@ import styles from "../Project.module.css";
 import gsap from "gsap";
 import { Link } from "react-router-dom";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+
 // import PreviousNextButton from "../../UI/ButtonsProjects/PreviousNextButton";
 import AllProjectsButton from "../../UI/ButtonsProjects/AllProjectsButton";
  
@@ -31,19 +32,19 @@ export default function WinePark() {
  
  useEffect(() => {
    window.scrollTo(20, 0);
- 
+
    const { title, link, desc } = refs;
- 
+
    // Скрываем заголовок, ссылку и описание перед анимацией
    gsap.set([title.current, link.current, desc.current], { opacity: 0 });
- 
+
    // Анимируем появление заголовка, затем ссылки, затем описания
    gsap.to(title.current, { duration: 1, opacity: 1, delay: 0.5 });
    gsap.to(link.current, { duration: 1, opacity: 1, delay: 1 });
    gsap.to(desc.current, { duration: 1, opacity: 1, delay: 0.7 });
- 
+
    gsap.registerPlugin(ScrollTrigger);
- 
+
    const {
      blockLeft,
      blockRight,
@@ -54,18 +55,18 @@ export default function WinePark() {
      leftImg4,
      leftImg5,
    } = refs;
- 
-  const elementsRight = [
-    blockRightPhone.current,
-    blockLeft.current,
-      blockRight.current,
-      leftImg1.current,
-      leftImg2.current,
-      leftImg3.current,
-      leftImg4.current,
-      leftImg5.current,
+
+   const elementsRight = [
+     blockRightPhone.current,
+     blockLeft.current,
+     blockRight.current,
+     leftImg1.current,
+     leftImg2.current,
+     leftImg3.current,
+     leftImg4.current,
+     leftImg5.current,
    ];
- 
+
    const animateElement = (element) => {
      gsap.from(element, {
        x: "-100%",
@@ -80,9 +81,8 @@ export default function WinePark() {
      });
    };
 
- 
    elementsRight.forEach(animateElement);
- // eslint-disable-next-line react-hooks/exhaustive-deps
+   // eslint-disable-next-line react-hooks/exhaustive-deps
  }, []);
   return (
     <section className={styles.section}>
