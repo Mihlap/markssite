@@ -104,11 +104,13 @@ export default function HotelAppart() {
           <div className={styles.header_content}>
             <div ref={refs.blockLeft} className={styles.header_content_left}>
               <div className={styles.title_block}>
-                <h2 className={styles.left_title}>
+                <div className={styles.left_title}>
                   Сохранение градоформирующего облика среды
-                </h2>
-                <div className={styles.left_meta}>
+                <div
+                  className={`${styles.left_meta} ${styles.left_meta_castom}`}
+                >
                   Генеральное проектирование
+                </div>
                 </div>
               </div>
               <div className={styles.title_text}>
@@ -254,22 +256,61 @@ export default function HotelAppart() {
         </div>
       </div>
       <div className={styles.container}>
-          <div className={styles.button_project}>
+        <div className={styles.button_project}>
           <Link className={styles.button_project_link} to="/prime-park">
-            <div className={`${styles.previous_svg} ${styles.button_project_button}`}>
-              <svg className={styles.previous_svg} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="12" cy="12" r="11.75" stroke="#1D2E43" stroke-width="0.5" />
-                <path d="M14 7L9 12L14 17" stroke="#1D2E43" stroke-width="0.5" />
+            <div
+              className={`${styles.previous_svg} ${styles.button_project_button}`}
+            >
+              <svg
+                className={styles.previous_svg}
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="11.75"
+                  stroke="#1D2E43"
+                  stroke-width="0.5"
+                />
+                <path
+                  d="M14 7L9 12L14 17"
+                  stroke="#1D2E43"
+                  stroke-width="0.5"
+                />
               </svg>
               <span className={styles.previous_span}>Предыдущий проект</span>
             </div>
           </Link>
           <Link className={styles.button_project_link} to="/slava">
-            <div className={`${styles.next_svg} ${styles.button_project_button}`}>
+            <div
+              className={`${styles.next_svg} ${styles.button_project_button}`}
+            >
               <span className={styles.next_span}>Следующий проект</span>
-              <svg className={styles.next_svg} width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <circle cx="12" cy="12" r="11.75" transform="rotate(-180 12 12)" stroke="#1D2E43" stroke-width="0.5" />
-                <path d="M10 17L15 12L10 7" stroke="#1D2E43" stroke-width="0.5" />
+              <svg
+                className={styles.next_svg}
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle
+                  cx="12"
+                  cy="12"
+                  r="11.75"
+                  transform="rotate(-180 12 12)"
+                  stroke="#1D2E43"
+                  stroke-width="0.5"
+                />
+                <path
+                  d="M10 17L15 12L10 7"
+                  stroke="#1D2E43"
+                  stroke-width="0.5"
+                />
               </svg>
             </div>
           </Link>

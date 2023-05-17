@@ -369,6 +369,31 @@
   border-radius: 1.1vw;
 }
 
+.card_item_1,
+.card_item_2,
+.main_project_left,
+.main_project_right1,
+.main_project_right2,
+.main_project_right3 {
+  transition: filter 0.5s ease;
+}
+
+.card_item_1:hover,
+.card_item_2:hover,
+.main_project_left:hover,
+.main_project_right1:hover,
+.main_project_right2:hover,
+.main_project_right3:hover {
+  filter: brightness(50%);
+}
+
+/* .main_project_left,
+.main_project_right1,
+.main_project_right2,
+.main_project_right3:hover {
+  opacity: 0.5;
+} */
+
 .card_text {
   box-sizing: border-box;
 }
