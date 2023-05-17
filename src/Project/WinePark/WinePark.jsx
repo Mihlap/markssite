@@ -102,7 +102,10 @@ export default function WinePark() {
             </div>
           </div>
           <div className={styles.header_content}>
-            <div ref={refs.blockLeft} className={styles.header_content_left}>
+            <div
+              ref={refs.blockLeft}
+              className={`${styles.header_content_left} ${styles.header_content_left_custom}`}
+            >
               <div className={styles.title_block}>
                 <h2 className={styles.left_title}>Новый формат путешествий</h2>
                 <div className={styles.left_meta}>
@@ -123,11 +126,11 @@ export default function WinePark() {
               </div>
               <div className={styles.result_container}>
                 <div className={styles.result_block}>
-                  <div className={styles.result_number}>30 га</div>
+                  <div className={styles.result_number}>39.7 га</div>
                   <div className={styles.result_text}>Общая площадь</div>
                 </div>
                 <div className={styles.result_block}>
-                  <div className={styles.result_number}>7. 75 га</div>
+                  <div className={styles.result_number}>7.9 га</div>
                   <div className={styles.result_text}>
                     Площадь виноградников
                   </div>
@@ -149,7 +152,7 @@ export default function WinePark() {
                   </div>
                   <div>
                     <div className={styles.local_title}>Заказчик</div>
-                    <div className={styles.local_text}>-</div>
+                    <div className={styles.local_text}>СБ Девелопмент</div>
                   </div>
                   <div>
                     <div className={styles.local_title}>Публикации</div>
@@ -247,15 +250,19 @@ export default function WinePark() {
         </div>
       </div>
       <div className={styles.container}>
-          <div className={styles.button_project}>
+        <div className={styles.button_project}>
           <Link className={styles.button_project_link} to="/slava">
-            <div className={`${styles.previous_svg} ${styles.button_project_button}`}>
+            <div
+              className={`${styles.previous_svg} ${styles.button_project_button}`}
+            >
               <img src={previous} alt="" />
               <span className={styles.previous_span}>Предыдущий проект</span>
             </div>
           </Link>
           <Link className={styles.button_project_link} to="/prime-park">
-            <div className={`${styles.next_svg} ${styles.button_project_button}`}>
+            <div
+              className={`${styles.next_svg} ${styles.button_project_button}`}
+            >
               <span className={styles.next_span}>Следующий проект</span>
               <img src={next} alt="" />
             </div>
