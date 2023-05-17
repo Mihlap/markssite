@@ -5,6 +5,7 @@ import React, { useEffect, useRef } from "react";
 import { Link } from "react-router-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 import BlockHeader from "../UI/BlockHeader/BlockHeader";
 import SwiperContainer from "./Swiper-Phone/SwiperContainer";
 import SwiperContainerProgect from "./Swiper-project/SwiperContainerProgect";
@@ -28,7 +29,7 @@ import D8 from ".././icons/D8.svg";
 import D9 from ".././icons/D9.svg";
 import SliderMobile from "../UI/SliderHeader/SliderMobile";
 
-
+gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 export default function Header({ isHidden, navOpen }) {
   console.log(isHidden);
 
@@ -47,9 +48,8 @@ export default function Header({ isHidden, navOpen }) {
   };
 
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
-
-    const {
+  
+  const {
       blockLeft,
       blockRight,
       headerBlock,
@@ -75,7 +75,7 @@ export default function Header({ isHidden, navOpen }) {
       duration: 1,
       delay: 1,
       ease: "power2.out",
-      start: "100%",
+      clipPath: { start: "100%" },
     });
 
     animateElement(headerBlockPhone.current, {
@@ -84,7 +84,7 @@ export default function Header({ isHidden, navOpen }) {
       duration: 1,
       delay: 1,
       ease: "power2.out",
-      start: "100%",
+      clipPath: { start: "100%" },
     });
 
     animateElement(tickerString.current, {
@@ -93,7 +93,7 @@ export default function Header({ isHidden, navOpen }) {
       duration: 1,
       delay: 1,
       ease: "power2.out",
-      start: "100%",
+      clipPath: { start: "100%" },
     });
 
     animateElement(blockLeft.current, {
@@ -102,7 +102,7 @@ export default function Header({ isHidden, navOpen }) {
       duration: 1,
       delay: 1,
       ease: "power1.out",
-      start: "90%",
+      clipPath: { start: "90%" },
     });
 
     animateElement(blockRight.current, {
@@ -111,7 +111,7 @@ export default function Header({ isHidden, navOpen }) {
       duration: 1,
       delay: 1,
       ease: "power1.out",
-      start: "100% right",
+      clipPath: { start: "100%" },
     });
 
     animateElement(swiperPhone.current, {
@@ -120,7 +120,7 @@ export default function Header({ isHidden, navOpen }) {
       duration: 1,
       delay: 1,
       ease: "power2.out",
-      start: "100%",
+      clipPath: { start: "100%" },
     });
 
     animateElement(swiperProgeject.current, {
@@ -129,7 +129,7 @@ export default function Header({ isHidden, navOpen }) {
       duration: 1,
       delay: 1,
       ease: "power2.out",
-      start: "100%",
+      clipPath: { start: "100%" },
     });
   }, []);
 
