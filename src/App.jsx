@@ -24,12 +24,12 @@ const App = () => {
   const [isScrollDisabled, setIsScrollDisabled] = useState(false);
   const [scrollPosition, setScrollPosition] = useState(0);
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   // таймаут для прелоудера на сайте
 
-  // setTimeout(() => {
-  //   setLoading(false);
-  // }, 7000);
+  setTimeout(() => {
+    setLoading(false);
+  }, 7000);
 
   useEffect(() => {
     // Функция для отключения скролла
