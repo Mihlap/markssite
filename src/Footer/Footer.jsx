@@ -76,12 +76,12 @@ const Footer = () => {
             </Link>
           </div>
           <div className={styles.job}>
-            <Link className={styles.job_link} to="/">
+            {/* <Link className={styles.job_link} to="/">
               Сотрудникам
             </Link>
             <Link className={styles.job_link} to="/">
               Документы
-            </Link>
+            </Link> */}
             <div className={styles.job_link}>© MARKSDIGITAL</div>
           </div>
         </div>
