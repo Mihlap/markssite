@@ -28,7 +28,10 @@ import D8 from ".././icons/D8.svg";
 import D9 from ".././icons/D9.svg";
 import SliderMobile from "../UI/SliderHeader/SliderMobile";
 
-export default function Header() {
+
+export default function Header({ isHidden, navOpen }) {
+  console.log(isHidden);
+
   // useEffect(() => {
   //   window.scrollTo(0, 0);
   // }, []);
@@ -37,12 +40,24 @@ export default function Header() {
     blockLeft: useRef(null),
     blockRight: useRef(null),
     headerBlock: useRef(null),
+    headerBlockPhone: useRef(null),
+    tickerString: useRef(null),
+    swiperPhone: useRef(null),
+    swiperProgeject: useRef(null),
   };
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
 
-    const { blockLeft, blockRight, headerBlock } = refs;
+    const {
+      blockLeft,
+      blockRight,
+      headerBlock,
+      headerBlockPhone,
+      tickerString,
+      swiperPhone,
+      swiperProgeject,
+    } = refs;
 
     const animateElement = (element, props) => {
       gsap.from(element, {
@@ -55,7 +70,25 @@ export default function Header() {
     };
 
     animateElement(headerBlock.current, {
-      y: "100%",
+      x: "-100%",
+      opacity: 0,
+      duration: 1,
+      delay: 1,
+      ease: "power2.out",
+      start: "100%",
+    });
+
+    animateElement(headerBlockPhone.current, {
+      x: "-100%",
+      opacity: 0,
+      duration: 1,
+      delay: 1,
+      ease: "power2.out",
+      start: "100%",
+    });
+
+    animateElement(tickerString.current, {
+      x: "100%",
       opacity: 0,
       duration: 1,
       delay: 1,
@@ -80,7 +113,25 @@ export default function Header() {
       ease: "power1.out",
       start: "100% right",
     });
-  }, [refs]);
+
+    animateElement(swiperPhone.current, {
+      x: "100%",
+      opacity: 0,
+      duration: 1,
+      delay: 1,
+      ease: "power2.out",
+      start: "100%",
+    });
+
+    animateElement(swiperProgeject.current, {
+      x: "-100%",
+      opacity: 0,
+      duration: 1,
+      delay: 1,
+      ease: "power2.out",
+      start: "100%",
+    });
+  }, []);
 
   return (
     <main className={styles.header}>
@@ -99,7 +150,7 @@ export default function Header() {
           <br /> и конкурсах. Предлагаем ознакомиться с некоторыми докладами
         </div>
       </div>
-      <div ref={refs.blockLeft} className={styles.header_block}>
+      <div ref={refs.headerBlockPhone} className={styles.header_block}>
         <h1 className={styles.heading}>Награды проектов</h1>
         <p className={styles.heading_text}>
           Наша компания участвует в<br /> многочисленных выставках, конференциях
@@ -108,10 +159,14 @@ export default function Header() {
         </p>
       </div>
       <div className={styles.container_main}>
-        <span>
-        <SliderHeader />
+        {/* <button onClick={isHiddenHandler}>click</button> */}
+        <span
+          ref={refs.tickerString}
+          style={{ display: navOpen ? "none" : "block" }}
+        >
+          <SliderHeader />
         </span>
-        <div className={styles.swiper_container}>
+        <div ref={refs.swiperPhone} className={styles.swiper_container}>
           <SwiperContainer />
         </div>
         <div className={styles.show_container}>
@@ -182,9 +237,14 @@ export default function Header() {
         <img src={D8} alt="logo" />
         <img src={D9} alt="logo" />
       </div>
-       <SliderMobile/>
+      <span style={{ display: navOpen ? "none" : "block" }}>
+        <SliderMobile />
+      </span>
       <div className={styles.project_name}>Проекты</div>
-      <div className={styles.swiper_progect_container}>
+      <div
+        ref={refs.swiperProgeject}
+        className={styles.swiper_progect_container}
+      >
         <SwiperContainerProgect />
       </div>
       <div className={styles.main_project}>

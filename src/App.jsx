@@ -25,6 +25,9 @@ const App = () => {
   const [scrollPosition, setScrollPosition] = useState(0);
 
   const [loading, setLoading] = useState(true);
+  const [navOpen, setNavOpen] = useState(false);
+  const [isHidden, setHidden] = useState(false);
+
   // таймаут для прелоудера на сайте
 
   setTimeout(() => {
@@ -70,11 +73,18 @@ const App = () => {
         <Loading />
       ) : (
         <>
-          <Navbar handleClickScroll={handleClickScroll} />
+          <Navbar
+            handleClickScroll={handleClickScroll}
+            setNavOpen={setNavOpen}
+            navOpen={navOpen}
+          />
           <TransitionGroup>
             <CSSTransition key={location.key} classNames="fade" timeout={300}>
               <Routes location={location}>
-                <Route path="/" element={<Header />} />
+                <Route
+                  path="/"
+                  element={<Header navOpen={navOpen} isHidden={isHidden} />}
+                />
                 {/* <Route path="/competention" element={<Competentions />} /> */}
                 {/* <Route path="/project" element={<Project />} /> */}
                 {/* <Route path="/public" element={<Publics />} /> */}
