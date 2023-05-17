@@ -195,7 +195,7 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen }) => {
                 </ul>
                 <div className={styles.contact_info}>
                   <div className={styles.contact_info_block}>
-                    <div className={styles.contact_info_language}>EN | CN</div>
+                    {/* <div className={styles.contact_info_language}>EN | CN</div> */}
                     <NavLink
                       className={styles.contact_info_mail}
                       to="mailto:mail@marksgroup.ru"
