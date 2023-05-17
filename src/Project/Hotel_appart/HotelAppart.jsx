@@ -107,11 +107,11 @@ export default function HotelAppart() {
               <div className={styles.title_block}>
                 <div className={styles.left_title}>
                   Сохранение градоформирующего облика среды
-                <div
-                  className={`${styles.left_meta} ${styles.left_meta_castom}`}
-                >
-                  Генеральное проектирование
-                </div>
+                  <div
+                    className={`${styles.left_meta} ${styles.left_meta_castom}`}
+                  >
+                    Генеральное проектирование
+                  </div>
                 </div>
               </div>
               <div className={styles.title_text}>
@@ -122,17 +122,15 @@ export default function HotelAppart() {
 
               <div className={styles.result_container}>
                 <div className={styles.result_block}>
-                  <div className={styles.result_number}>? м²</div>
+                  <div className={styles.result_number}>10 653,41 м²</div>
                   <div className={styles.result_text}>Общая площадь</div>
                 </div>
                 <div className={styles.result_block}>
-                  <div className={styles.result_number}>? га</div>
-                  <div className={styles.result_text}>
-                    Площадь виноградников
-                  </div>
+                  <div className={styles.result_number}>2 359 м²</div>
+                  <div className={styles.result_text}>Площадь участка</div>
                 </div>
                 <div className={styles.result_block}>
-                  <div className={styles.result_number}>? м²</div>
+                  <div className={styles.result_number}>9hh</div>
                   <div className={styles.result_text}>Этажность</div>
                 </div>
               </div>
@@ -142,12 +140,14 @@ export default function HotelAppart() {
                 <div className={styles.local_ritgh}>
                   <div>
                     <div className={styles.local_title}>Расположение</div>
-                    <div className={styles.local_text}>?</div>
+                    <div className={styles.local_text}>
+                      Наб. Космодамианская, вл 4/22, стр.8, 9 г. Москва
+                    </div>
                   </div>
 
                   <div>
                     <div className={styles.local_title}>Заказчик</div>
-                    <div className={styles.local_text}>-</div>
+                    <div className={styles.local_text}>ГАЛС</div>
                   </div>
                   <div>
                     <div className={styles.local_title}>Публикации</div>
@@ -259,13 +259,17 @@ export default function HotelAppart() {
       <div className={styles.container}>
         <div className={styles.button_project}>
           <Link className={styles.button_project_link} to="/prime-park">
-            <div className={`${styles.previous_svg} ${styles.button_project_button}`}>
-             <img src={previous} alt="" />
+            <div
+              className={`${styles.previous_svg} ${styles.button_project_button}`}
+            >
+              <img src={previous} alt="" />
               <span className={styles.previous_span}>Предыдущий проект</span>
             </div>
           </Link>
           <Link className={styles.button_project_link} to="/slava">
-            <div className={`${styles.next_svg} ${styles.button_project_button}`}>
+            <div
+              className={`${styles.next_svg} ${styles.button_project_button}`}
+            >
               <span className={styles.next_span}>Следующий проект</span>
               <img src={next} alt="" />
             </div>

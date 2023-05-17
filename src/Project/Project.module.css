@@ -50,7 +50,7 @@
   justify-content: space-between;
   align-items: center;
   padding-top: 2.22vw;
-  padding-bottom: 3.89vw;
+  padding-bottom: 4.5rem;
 }
 
 /* <<=============== левый блок контента с информацией===============>> */
@@ -59,6 +59,10 @@
   width: 70%;
   overflow: hidden;
   padding-right: 14rem;
+}
+
+.header_content_left_custom {
+  padding-right: 10rem;
 }
 
 .title_block {
@@ -158,23 +162,24 @@
 .local_title {
   font-style: normal;
   font-weight: var(--fw-400);
-  font-size: 0.97vw;
+  font-size: 0.875rem;
   line-height: 1.39vw;
   font-feature-settings: 'pnum' on, 'lnum' on;
   color: var(--dark-gray-566272);
+  padding-bottom: 0.5rem;
 }
 
 .local_text {
   font-style: normal;
   font-weight: var(--fw-400);
-  font-size: 0.97vw;
+  font-size: 0.875rem;
   line-height: 1.39vw;
   font-feature-settings: 'pnum' on, 'lnum' on;
   color: var(--gray-959DA6);
 }
 
 .item:not(:last-child) {
-  padding-bottom: 2.78vw;
+  padding-bottom: 3rem;
 }
 
 .item_img {
@@ -217,8 +222,8 @@
   font-size: 1.11vw;
   line-height: 1.67vw;
   flex-direction: column;
-  gap: 2.78vw;
-  padding-bottom: 2.78vw;
+  gap: 1.5rem;
+  padding-bottom: 3rem;
 }
 
 .quote_text {
