@@ -3,6 +3,7 @@ import styles from "../Project.module.css";
 import gsap from "gsap";
 import { Link } from "react-router-dom";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 import PreviousNextButton from "../../UI/ButtonsProjects/PreviousNextButton";
 import AllProjectsButton from "../../UI/ButtonsProjects/AllProjectsButton";
 
@@ -16,7 +17,7 @@ import img4 from "./img/Hotel_appart4.jpg";
 import img5 from "./img/Hotel_appart5.jpg";
 import img6 from "./img/Hotel_appart6.jpg";
 
-
+gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
 export default function HotelAppart() {
  const refs = {
@@ -45,8 +46,6 @@ export default function HotelAppart() {
    gsap.to(title.current, { duration: 1, opacity: 1, delay: 0.5 });
    gsap.to(link.current, { duration: 1, opacity: 1, delay: 1 });
    gsap.to(desc.current, { duration: 1, opacity: 1, delay: 0.7 });
-
-   gsap.registerPlugin(ScrollTrigger);
 
    const {
      blockLeft,
@@ -79,9 +78,9 @@ export default function HotelAppart() {
        ease: "power4.out",
        scrollTrigger: {
          trigger: element,
-         start: "top 110%",
-       },
+         },
      });
+     gsap.from(element, { duration: 1, clipPath: { start: "110%" } })
    };
 
    elementsRight.forEach(animateElement);
