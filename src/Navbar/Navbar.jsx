@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { NavLink } from 'react-router-dom';
 import debounce from 'lodash.debounce';
 import { Link, animateScroll as scroll } from "react-scroll";
 import logo from ".././icons/logo.svg";
@@ -49,9 +50,9 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen }) => {
       <nav className={styles.navbar_desctop}>
         <div className={styles.navbar_container}>
           <div className={styles.navbar_title_block}>
-            <Link to="/">
+            <NavLink to="/">
               <h1 className={styles.navbar_title}>MARKS GROUP</h1>
-            </Link>
+            </NavLink>
           </div>
           <ul className={styles.navbar_list}>
             <Link
@@ -93,9 +94,9 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen }) => {
         <nav>
           <div className={styles.navbar}>
             <div className={styles.logo}>
-              <Link to="/">
+              <NavLink to="/">
                 <img className={styles.logo_img} src={logo} alt="logo" />
-              </Link>
+              </NavLink>
             </div>
             <div className={`${styles.container} ${styles.nav_container}`}>
               <input
@@ -129,40 +130,40 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen }) => {
               >
                 <ul className={styles.menu_list}>
                   <li>
-                    <Link
+                    <NavLink
                       className={styles.menu_item}
                       onClick={closeNavBar}
                       to="#"
                     >
                       Главная
-                    </Link>
+                    </NavLink>
                   </li>
                   <li>
-                    <Link
+                    <NavLink
                       className={styles.menu_item}
                       onClick={closeNavBar}
                       to="#"
                     >
                       Компетенции
-                    </Link>
+                    </NavLink>
                   </li>
                   <li>
-                    <Link
+                    <NavLink
                       className={styles.menu_item}
                       onClick={closeNavBar}
                       to="#"
                     >
                       Кейсы
-                    </Link>
+                    </NavLink>
                   </li>
                   <li>
-                    <Link
+                    <NavLink
                       className={styles.menu_item}
                       onClick={closeNavBar}
                       to="#"
                     >
                       Публикации
-                    </Link>
+                    </NavLink>
                   </li>
                   {/* <li>
                     <Link
@@ -174,13 +175,13 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen }) => {
                     </Link>
                   </li> */}
                   <li>
-                    <Link
+                    <NavLink
                       className={styles.menu_item}
                       onClick={closeNavBar}
                       to="#"
                     >
                       Контакты
-                    </Link>
+                    </NavLink>
                   </li>
                   {/* <li>
                     <Link
@@ -195,19 +196,19 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen }) => {
                 <div className={styles.contact_info}>
                   <div className={styles.contact_info_block}>
                     <div className={styles.contact_info_language}>EN | CN</div>
-                    <Link
+                    <NavLink
                       className={styles.contact_info_mail}
                       to="mailto:mail@marksgroup.ru"
                     >
                       mail@marksgroup.ru
-                    </Link>
-                    <Link
+                    </NavLink>
+                    <NavLink
                       to={"tel:+15551234567"}
                       className={styles.contact_info_phone}
                       style={{ fontVariantNumeric: "lining-nums" }}
                     >
                       +7(495) 120-12-26
-                    </Link>
+                    </NavLink>
                   </div>
                 </div>
               </div>

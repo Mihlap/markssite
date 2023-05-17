@@ -3,6 +3,7 @@ import styles from "../Project.module.css";
 import gsap from "gsap";
 import { Link } from "react-router-dom";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 
 // import PreviousNextButton from "../../UI/ButtonsProjects/PreviousNextButton";
 import AllProjectsButton from "../../UI/ButtonsProjects/AllProjectsButton";
@@ -15,7 +16,9 @@ import img3 from "./img/WinePark3.jpg";
 import img4 from "./img/WinePark4.jpg";
 import img5 from "./img/WinePark5.jpg";
  
+gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 export default function WinePark() {
+
  const refs = {
    title: useRef(null),
    link: useRef(null),
@@ -43,9 +46,7 @@ export default function WinePark() {
    gsap.to(link.current, { duration: 1, opacity: 1, delay: 1 });
    gsap.to(desc.current, { duration: 1, opacity: 1, delay: 0.7 });
 
-   gsap.registerPlugin(ScrollTrigger);
-
-   const {
+    const {
      blockLeft,
      blockRight,
      blockRightPhone,
@@ -76,9 +77,9 @@ export default function WinePark() {
        ease: "power4.out",
        scrollTrigger: {
          trigger: element,
-         start: "top 110%",
-       },
+        },
      });
+     gsap.from(element, { duration: 1, clipPath: { start: "110%" } })
    };
 
    elementsRight.forEach(animateElement);
