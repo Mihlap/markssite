@@ -26,6 +26,7 @@ import D6 from ".././icons/D6.svg";
 import D7 from ".././icons/D7.svg";
 import D8 from ".././icons/D8.svg";
 import D9 from ".././icons/D9.svg";
+import SliderMobile from "../UI/SliderHeader/SliderMobile";
 
 export default function Header() {
   // useEffect(() => {
@@ -181,23 +182,7 @@ export default function Header() {
         <img src={D8} alt="logo" />
         <img src={D9} alt="logo" />
       </div>
-      <marquee
-        behavior="scroll"
-        direction="left"
-        className={styles.marguee_block}
-      >
-        <div className={styles.icon_partner_phone}>
-          <img src={D1} alt="logo" />
-          <img src={D2} alt="logo" />
-          <img src={D3} alt="logo" />
-          <img src={D4} alt="logo" />
-          <img src={D5} alt="logo" />
-          <img src={D6} alt="logo" />
-          <img src={D7} alt="logo" />
-          <img src={D8} alt="logo" />
-          <img src={D9} alt="logo" />
-        </div>
-      </marquee>
+       <SliderMobile/>
       <div className={styles.project_name}>Проекты</div>
       <div className={styles.swiper_progect_container}>
         <SwiperContainerProgect />
