@@ -253,11 +253,10 @@
   font-family: var(--font-unbounded);
   font-style: normal;
   font-weight: var(--fw-300);
-  font-size: 48px;
+  font-size: 50px;
   line-height: 64px;
   color: var(--black-3C3C3C);
-  background-color: var(--white-F6F6F6)
-  }
+ }
 
  .name_11 {
   font-family: var(--font-unbounded);
@@ -283,6 +282,10 @@
   font-size: 48px;
   line-height: 48px;
   color: var(--black-1D2E43);
+}
+
+.card_text h3 {
+  padding-bottom: 8px;
 }
 
 .img_project {

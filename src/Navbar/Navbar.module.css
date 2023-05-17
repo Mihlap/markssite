@@ -38,13 +38,13 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 3.33vw;
-  padding-left: 2.43vw;
+  height: 49px;
+  padding-left: 34px;
 }
 
 .navbar_title {
   font-family: var(--font-MyCustomFont);
-  font-size: 1.67vw;
+  font-size: 24px;
   color: var(--black-1D2E43);
   cursor: pointer;
 }
@@ -58,7 +58,7 @@
   font-family: var(--font-raleway);
   font-style: normal;
   font-weight: var(--fw-400);
-  font-size: 1.11vw;
+  font-size: 16px;
   line-height: 1.25vw;
   color: var(--black-1D2E43);
   display: flex;
@@ -66,6 +66,7 @@
   padding-left: 1.53vw;
   padding-right: 1.53vw;
   border-left: 1px solid var(--black-1D2E43);
+  border-right: 1px solid var(--black-1D2E43);
 }
 
 .navbar_item:hover {
