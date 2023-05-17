@@ -437,6 +437,10 @@
     display: block;
   }
 
+  .heading_text {
+    padding-top: 0.875rem;
+  }
+
   .header_desctop_block,
   .card_container,
   .most, .icon_partner {
