@@ -3,7 +3,7 @@ import SwipeCore, { Navigation, Pagination, Autoplay } from "swiper";
 // import { useState, useRef, useEffect } from "react";
 import oneImg from "./svgImg/one.png"
 import twoImg from "./svgImg/two.png";
-import threeImg from "./svgImg/three.png";
+// import threeImg from "./svgImg/three.png";
 import iconPlus from "./svgImg/icon.svg";
 
 
