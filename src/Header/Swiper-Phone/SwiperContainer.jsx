@@ -39,7 +39,6 @@ const items = [
   },
 ];
 
-console.log(items);
 export default function SwiperContainer() {
   SwipeCore.use([Navigation, Pagination, Autoplay]);
 

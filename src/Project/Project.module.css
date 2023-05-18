@@ -101,6 +101,7 @@
 }
 
 .title_text {
+  font-family: var(--font-raleway);
   font-style: normal;
   font-weight: var(--fw-400);
   font-size: 1.11vw;
@@ -170,6 +171,7 @@
 }
 
 .local_text {
+  font-family: var(--font-raleway);
   font-style: normal;
   font-weight: var(--fw-400);
   font-size: 0.875rem;
@@ -295,6 +297,7 @@
 
   .header_content {
     padding-top: 2.5rem;
+    padding-bottom: 2.5rem;
     flex-direction: column;
     justify-content: normal;
   }
@@ -331,8 +334,15 @@
     font-feature-settings: 'pnum' on, 'lnum' on;
   }
 
+  .left_meta_castom {
+    display: inline-block;
+    position: relative;
+    bottom: 0;
+    margin-left: 0;
+  }
+
   .title_text {
-    font-size: 4.27vw;
+    font-size: 1rem;
     line-height: 6.40vw;
     padding-top: 4.27vw;
   }
@@ -367,10 +377,6 @@
     .item:not(:last-child) {
       padding-bottom: 1.5rem;
     }
-
-  .blockImg {
-    padding-top: 1.9rem;
-  }
 
     .item_img {
       width: 100%;

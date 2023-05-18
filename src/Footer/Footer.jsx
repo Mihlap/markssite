@@ -21,7 +21,7 @@ const Footer = () => {
           </div>
           <div className={styles.office}>Офис Москва</div>
           <Link
-            to={"tel:+15551234567"}
+            to={"tel:+74951201226"}
             className={styles.tel}
             style={{ fontVariantNumeric: "lining-nums" }}
           >

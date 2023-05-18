@@ -14,9 +14,6 @@ import VideoPlayer from "../UI/Videoplayer/VideoPlayer";
 // import Mapbox3D from '../UI/Map3D/Mapbox3D';
 import styles from "./Header.module.css";
 
-import IconPlus from ".././icons/plus.svg";
-// import show from '.././icons/show.svg';
-// import photo from "./img/phone.svg";
 
 import D1 from ".././icons/D1.svg";
 import D2 from ".././icons/D2.svg";
@@ -31,8 +28,6 @@ import SliderMobile from "../UI/SliderHeader/SliderMobile";
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 export default function Header({ isHidden, navOpen }) {
-  console.log(isHidden);
-
   // useEffect(() => {
   //   window.scrollTo(0, 0);
   // }, []);
@@ -48,8 +43,7 @@ export default function Header({ isHidden, navOpen }) {
   };
 
   useEffect(() => {
-  
-  const {
+    const {
       blockLeft,
       blockRight,
       headerBlock,
@@ -135,7 +129,7 @@ export default function Header({ isHidden, navOpen }) {
 
   return (
     <main className={styles.header}>
-      <div className={styles.menu}>
+      <div className={styles.video_block}>
         <VideoPlayer />
         {/* <img className={styles.image} src="./fon.jpg" alt="изображение" /> */}
         {/* фото для мобильной версии  */}
@@ -175,30 +169,51 @@ export default function Header({ isHidden, navOpen }) {
           </button> */}
         </div>
         <div className={styles.card_container}>
-          <div ref={refs.blockLeft} className={styles.card_item_1}>
-            <div className={styles.card_img}>
-              <img className={styles.img_1} src="./assets/B.png" alt="image1" />
-            </div>
+          <div className={styles.card_item_1}>
+            <Link to="/winepark">
+              <div className={styles.card_img}>
+                <img
+                  className={styles.img_1}
+                  src="./assets/B.jpg"
+                  alt="image1"
+                />
+              </div>
+            </Link>
             <div className={styles.card_text}>
               <h3>Центр энотуризма WinePark</h3>
               <span className={styles.card_text_span}>
                 Конкурс • 100 лучших объектов росии
               </span>
             </div>
-            <Link to="/winepark">
-              <button className={styles.card_button}>
-                <img src={IconPlus} alt="button" />
-              </button>
+            <Link to="/winepark" className={styles.card_button}>
+              <svg
+                className={styles.card_button_link}
+                width="40"
+                height="40"
+                viewBox="0 0 40 40"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle cx="20" cy="20" r="20" fill="#566272" />
+                <path
+                  d="M10 20H20M30 20H20M20 20V10M20 20V30"
+                  stroke="#F6F6F6"
+                  stroke-width="2"
+                  stroke-linecap="square"
+                />
+              </svg>
             </Link>
           </div>
-          <div ref={refs.blockRight} className={styles.card_item_2}>
-            <div className={styles.card_img}>
-              <img
-                className={styles.img_2}
-                src="./assets/B1.png"
-                alt="image2"
-              />
-            </div>
+          <div className={styles.card_item_2}>
+            <Link to="/badaevsky">
+              <div className={styles.card_img}>
+                <img
+                  className={styles.img_2}
+                  src="./assets/B1.jpg"
+                  alt="image2"
+                />
+              </div>
+            </Link>
             <div className={styles.card_text}>
               <h3>Баня, рынок, супер-слэб — что ждет Бадаевский?</h3>
               <span className={styles.card_text_span}>
@@ -206,10 +221,23 @@ export default function Header({ isHidden, navOpen }) {
                 объектов культурного наследия
               </span>
             </div>
-            <Link to="/badaevsky">
-              <button className={styles.card_button}>
-                <img src={IconPlus} alt="button" />
-              </button>
+            <Link to="/badaevsky" className={styles.card_button}>
+              <svg
+                className={styles.card_button_link}
+                width="40"
+                height="40"
+                viewBox="0 0 40 40"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle cx="20" cy="20" r="20" fill="#566272" />
+                <path
+                  d="M10 20H20M30 20H20M20 20V10M20 20V30"
+                  stroke="#F6F6F6"
+                  stroke-width="2"
+                  stroke-linecap="square"
+                />
+              </svg>
             </Link>
           </div>
         </div>
@@ -252,7 +280,7 @@ export default function Header({ isHidden, navOpen }) {
           <Link to="/prime-park">
             <img
               className={styles.img_poject}
-              src="./assets/project_left.png"
+              src="./assets/project_left.jpg"
               alt="project-left"
             />
           </Link>
@@ -266,7 +294,7 @@ export default function Header({ isHidden, navOpen }) {
             <Link to="/hotel-appart">
               <img
                 className={styles.img_project}
-                src="./assets/project_right1.png"
+                src="./assets/project_right1.jpg"
                 alt="project-right1"
               />
             </Link>
@@ -279,7 +307,7 @@ export default function Header({ isHidden, navOpen }) {
             <Link to="/slava">
               <img
                 className={styles.img_project}
-                src="./assets/project_right2.png"
+                src="./assets/project_right2.jpg"
                 alt="project-right2"
               />
             </Link>
@@ -292,7 +320,7 @@ export default function Header({ isHidden, navOpen }) {
             <Link to="/winepark">
               <img
                 className={styles.img_project}
-                src="./assets/project_right3.png"
+                src="./assets/project_right3.jpg"
                 alt="project-right3"
               />
             </Link>
