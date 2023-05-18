@@ -52,7 +52,7 @@
     font-family: var(--font-unbounded);
     font-style: normal;
     font-weight: var(--fw-300);
-    font-size: 3.33vw;
+    font-size: 3rem;
     line-height: 4.44vw;
     color: var(--white-F6F6F6);
     padding-top: 4.7vh;
@@ -62,7 +62,7 @@
     font-family: var(--font-unbounded);
     font-style: normal;
     font-weight: var(--fw-300);
-    font-size: 1.67vw;
+    font-size: 1.5rem;
     line-height: 2.22vw;
     color: var(--white-F6F6F6);
     padding-top: 1.11vw;
@@ -72,7 +72,7 @@
     font-family: var(--font-inter);
     font-style: normal;
     font-weight: var(--fw-400);
-    font-size: 0.97vw;
+    font-size: 0.875vw;
     line-height: 14px;
     color: var(--light-light-gray-EBECEE);
     padding-top: 0.56vw;
