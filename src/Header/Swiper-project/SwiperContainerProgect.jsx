@@ -15,7 +15,7 @@ import "swiper/css/pagination";
 import SliderItemProject from "./SliderItemProject";
 import "./SwiperContainerProgect.css";
 
-const point = "●";
+const point = "⦁";
 const items = [
   {
     id: "slava",
