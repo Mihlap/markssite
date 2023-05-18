@@ -2,6 +2,7 @@ import React from 'react';
 import styles from './Videoplayer.module.css';
 
 function VideoPlayer() {
+  //изменил размер видео 
   return (
     <video
       className={styles.video_player}
