@@ -4,6 +4,7 @@ import styles from "./Badaevsky.module.css";
 import gsap from "gsap";
 import { Link } from "react-router-dom";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import AllProjectsButton from "../../UI/ButtonsProjects/AllProjectsButton";
 
 // импортируем фото
 import img from "./img/img.jpg";
@@ -88,9 +89,7 @@ export default function Badaevsky() {
       <div className={styles.container}>
         <div className={styles.header_container}>
           <div className={styles.header_img_title}>
-            <Link to="/project" ref={linkRef} className={styles.header_link}>
-              Все статьи
-            </Link>
+            <AllProjectsButton />
             <h1 ref={titleRef} className={styles.header_title}>
               Marks Group – генеральный
               <br /> проектировщик ЖК «Бадаевский»

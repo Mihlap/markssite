@@ -163,11 +163,8 @@
 
 .card_container {
   display: flex;
-  box-sizing: border-box;
   flex-direction: row;
   width: 100%;
-  height: 652px;
-  min-width: 1024px;
   z-index: 1;
   padding-top: 0em;
   padding-bottom: 0em;
@@ -175,7 +172,6 @@
 }
 
 .card_item_1 {
-  box-sizing: border-box;
   z-index: 0;
   height: 652px;
   width: 39%;
@@ -185,7 +181,6 @@
 
 .card_item_2 {
   margin-top: 145px;
-  box-sizing: border-box;
   z-index: 0;
   margin-left: 3vw;
   padding-right: 2.7vw;
@@ -200,21 +195,14 @@
   overflow: hidden;
 }
 
-.card_img img:not(.card_button) {
-  cursor: default;
-}
 
-.img_1 {
+.img_1, .img_2 {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  cursor: pointer;
 }
 
-.img_2 {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
 
 .card_text h3 {
   display: flex;
@@ -238,9 +226,28 @@
 .card_button {
   background-color: transparent;
   border: none;
-  margin-top: 16px;
   cursor: pointer;
 }
+
+.card_button_link {
+  margin-top: 1rem;
+}
+
+
+.card_button_link circle,
+svg path {
+  transition: fill 0.3s ease;
+}
+
+.card_button_link:hover circle {
+  fill: var(--black-1D2E43);
+}
+
+/* .card_button_link:hover path {
+тут можно покрасить плюсик иконки  
+} */
+
+
 
 .names_contents {
   display: flex;
@@ -372,8 +379,8 @@
   border-radius: 1.1vw;
 }
 
-.card_item_1,
-.card_item_2,
+
+.card_img,
 .main_project_left,
 .main_project_right1,
 .main_project_right2,
@@ -381,8 +388,7 @@
   transition: filter 0.5s ease;
 }
 
-.card_item_1:hover,
-.card_item_2:hover,
+.card_img:hover,
 .main_project_left:hover,
 .main_project_right1:hover,
 .main_project_right2:hover,
@@ -477,6 +483,10 @@
 
   .main_project {
     display: none;
+  }
+
+  .video_block {
+    padding-top: 3.75rem;
   }
 
 }

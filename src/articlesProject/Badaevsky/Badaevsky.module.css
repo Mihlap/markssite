@@ -69,7 +69,7 @@
 }
 
 .header_desc {
-    font-family: var(--font-raleway);
+    font-family: var(--font-inter);
     font-style: normal;
     font-weight: var(--fw-400);
     font-size: 0.97vw;
@@ -181,19 +181,21 @@
     }
 
     .header_title {
-        font-size: 8.53vw;
-        line-height: 12.4vw;
-        padding-top: 8vw;
+        font-family: var(--font-unbounded);
+        font-style: normal;
+        font-weight: var(--fw-300);
+        font-size: 2rem;
+        line-height: 2.5rem;
     }
 
     .header_desc {
         font-size: 3.73vw;
         line-height: 3.73vw;
-        padding-top: 2.56vw;
+        padding-top: 0.5rem;
     }
 
     .header_content {
-        padding-top: 5.33vh;
+        padding-top: 2.5rem;
         flex-direction: column;
         justify-content: normal;
     }
@@ -213,6 +215,10 @@
         line-height: 7.47vw;
     }
 
+    .articles_title_text {
+        padding-top: 1rem;
+    }
+
     .quote_block,
     .description_object_block {
         width: auto;
@@ -226,12 +232,27 @@
         line-height: 6.40vw;
     }
 
+    .quote_container {
+        padding: 0;
+    }
+
+    .item_img {
+        padding: 2.5rem 0rem;
+        border-radius: 1rem;
+    }
+
     .quote_director {
         font-size: 3.73vw;
         line-height: 5.33vw;
     }
 
     .header_name {
-        font-size: 3.73vw;
+        font-family: var(--font-unbounded);
+            font-style: normal;
+            font-weight: var(--fw-300);
+            font-size: 1.25rem;
+            line-height: 1.75rem;
+            color: var(--white-F6F6F6);
+            padding-top: 1rem;
     }
 }
