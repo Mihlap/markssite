@@ -169,8 +169,8 @@ export default function Header({ isHidden, navOpen }) {
           </button> */}
         </div>
         <div className={styles.card_container}>
-          <div className={styles.card_item_1}>
-            <Link to="/winepark">
+          <div ref={refs.blockLeft} className={styles.card_item_1}>
+            <Link to="/winepark-article">
               <div className={styles.card_img}>
                 <img
                   className={styles.img_1}
@@ -204,7 +204,7 @@ export default function Header({ isHidden, navOpen }) {
               </svg>
             </Link>
           </div>
-          <div className={styles.card_item_2}>
+          <div ref={refs.blockRight} className={styles.card_item_2}>
             <Link to="/badaevsky">
               <div className={styles.card_img}>
                 <img
