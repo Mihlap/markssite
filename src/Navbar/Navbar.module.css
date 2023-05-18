@@ -30,7 +30,6 @@
 .navbar_desctop {
   background: rgb(246 246 246 / 90%);
   border-bottom: 1px solid var(--black-1D2E43);
-  border-left: 1px solid var(--black-1D2E43);
   border-top: 1px solid var(--black-1D2E43);
 }
 
@@ -66,6 +65,18 @@
   padding-left: 1.53vw;
   padding-right: 1.53vw;
   border-left: 1px solid var(--black-1D2E43);
+  }
+.navbar_item_last {
+  font-family: var(--font-raleway);
+  font-style: normal;
+  font-weight: var(--fw-400);
+  font-size: 16px;
+  line-height: 1.25vw;
+  color: var(--black-1D2E43);
+  display: flex;
+  align-items: center;
+  padding-left: 1.53vw;
+  padding-right: 1.53vw;
   border-right: 1px solid var(--black-1D2E43);
 }
 

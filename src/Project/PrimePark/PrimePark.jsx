@@ -248,17 +248,13 @@ export default function PrimePark() {
       <div className={styles.container}>
         <div className={styles.button_project}>
           <Link className={styles.button_project_link} to="/winepark">
-            <div
-              className={`${styles.previous_svg} ${styles.button_project_button}`}
-            >
+            <div className={styles.previous_svg}>
               <img src={previous} alt="" />
               <span className={styles.previous_span}>Предыдущий проект</span>
             </div>
           </Link>
           <Link className={styles.button_project_link} to="/hotel-appart">
-            <div
-              className={`${styles.next_svg} ${styles.button_project_button}`}
-            >
+            <div className={styles.next_svg}>
               <span className={styles.next_span}>Следующий проект</span>
               <img src={next} alt="" />
             </div>

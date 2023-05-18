@@ -47,6 +47,7 @@ function BlockHeader() {
             gsap.to(text, {
               maxHeight: text.scrollHeight,
               duration: 1,
+              // ease: "Power1.easeInOut",
             });
             accordion.classList.add('open');
           }
@@ -57,7 +58,8 @@ function BlockHeader() {
               duration: 0.3,
              });
             accordion.classList.remove('open');
-         }
+         },
+         smoothChildTiming: true
       });
 
       ScrollTrigger.create({
