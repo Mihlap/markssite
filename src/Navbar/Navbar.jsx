@@ -133,7 +133,7 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen }) => {
                     <NavLink
                       className={styles.menu_item}
                       onClick={closeNavBar}
-                      to="#"
+                      to="/"
                     >
                       Главная
                     </NavLink>
