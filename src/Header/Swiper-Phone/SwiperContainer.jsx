@@ -24,7 +24,7 @@ const items = [
   //   icon: `${iconPlus}`,
   // },
   {
-    id: "winepark",
+    id: "winepark-article",
     title: "Центр энотуризма WinePark",
     text: `Конкурс ${point} 100 лучших объектов росии`,
     src: `${twoImg}`,
@@ -32,7 +32,7 @@ const items = [
   },
   {
     id: "badaevsky",
-    title: "Баня, рынок, супер-слэб — что ждет Бадаевский?",
+    title: "Баня, супер-слэб — что ждет Бадаевский?",
     text: `Статья ${point} Экспертное обсуждение реставрации...`,
     src: `${oneImg}`,
     icon: `${iconPlus}`,
