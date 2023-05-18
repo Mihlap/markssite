@@ -80,7 +80,7 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen }) => {
               <li>Публикации</li>
             </Link>
             <Link
-              className={styles.navbar_item}
+              className={`${styles.navbar_item} ${styles.navbar_item_last}`}
               to="contacts"
               smooth={true}
               duration={700}
