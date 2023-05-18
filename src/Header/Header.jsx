@@ -11,7 +11,7 @@ import SwiperContainer from "./Swiper-Phone/SwiperContainer";
 import SwiperContainerProgect from "./Swiper-project/SwiperContainerProgect";
 import SliderHeader from "../UI/SliderHeader/SliderHeader";
 import VideoPlayer from "../UI/Videoplayer/VideoPlayer";
-// import Mapbox3D from '../UI/Map3D/Mapbox3D';
+import Mapbox3D from '../UI/Map3D/Mapbox3D';
 import styles from "./Header.module.css";
 
 
@@ -252,7 +252,7 @@ export default function Header({ isHidden, navOpen }) {
           <img className={styles.image_most} alt=""></img>
         </div>
         <BlockHeader />
-        {/* <Mapbox3D /> */}
+        <Mapbox3D />
       </div>
       <div className={styles.icon_partner}>
         <img src={D1} alt="logo" />

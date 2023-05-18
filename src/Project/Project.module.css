@@ -180,7 +180,6 @@
   color: var(--gray-959DA6);
 }
 .blockImg {
-  display: flex;
   width: 100%;
   height: 100%;
 }
@@ -434,16 +433,18 @@
   .header_desc {
     padding-top: 16px;
   }
-  .button_project_link {
-    padding-top: 1vh;
+  
+  .previous_svg,
+  .next_svg {
+    height: auto; 
   }
-  .previous_span, .next_span {
-  font-family: var(--font-raleway);
-  font-weight: var(--fw-400);
-  font-size: 14px;
-  line-height: 28px;
-  color: var(--black-1D2E43);
-}
+  
+  .previous_span,
+  .next_span {
+    padding-left: 8px !important; 
+    padding-right: 8px !important;
+    font-size: 10px !important; 
+   }
 }
 
 /* +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++ */
