@@ -51,9 +51,9 @@
   font-family: var(--font-raleway);
   font-style: normal;
   font-weight: var(--fw-400);
-  font-size: 0.97vw;
+  font-size: 1rem;
   line-height: 1.67vw;
-  padding-bottom: 60px;
+  padding-bottom: 3.75rem;
 }
 
 .error_link {
@@ -69,4 +69,54 @@
         rgba(255, 127, 106, 0.53) 108.02%);
     border: 1px solid rgba(255, 127, 106, 0.53);
   }
+}
+
+// стили для мобильной версии 404 компонента 
+
+@media screen and (max-width: 700px) {
+  .error_section {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0px 16px;
+  }
+
+  .error_block_mobail {
+    all: unset;
+  }
+
+  .error_number {
+    font-family: var(--font-unbounded);
+    font-style: normal;
+    font-weight: var(--fw-300);
+    font-size: 141px;
+    line-height: 175px;
+  }
+
+  .error_title {
+    font-family: var(--font-unbounded);
+    font-style: normal;
+    font-weight: var(--fw-300);
+    font-size: 1.5rem;
+    line-height: 1.875rem;
+    padding-bottom: 1rem;
+  }
+
+  .error_text {
+    font-family: var(--font-raleway);
+    font-style: normal;
+    font-weight: var(--fw-300);
+    font-size: 1rem;
+    line-height: 1.5rem;
+    padding-bottom: 2.5rem;
+    display: flex;
+    align-items: center;
+    font-feature-settings: "pnum" on, "lnum" on;
+  }
+
+  .error_link {
+    padding: 1rem 1.875rem;
+    border-radius: 4.125rem;
+  }
+
 }
