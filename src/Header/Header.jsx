@@ -11,7 +11,7 @@ import SwiperContainer from "./Swiper-Phone/SwiperContainer";
 import SwiperContainerProgect from "./Swiper-project/SwiperContainerProgect";
 import SliderHeader from "../UI/SliderHeader/SliderHeader";
 import VideoPlayer from "../UI/Videoplayer/VideoPlayer";
-import Mapbox3D from '../UI/Map3D/Mapbox3D';
+// import Mapbox3D from '../UI/Map3D/Mapbox3D';
 import styles from "./Header.module.css";
 
 
@@ -135,7 +135,7 @@ export default function Header({ isHidden, navOpen }) {
         {/* фото для мобильной версии  */}
         {/* <img className={styles.image_phone} src={photo} alt="photo" /> */}
       </div>
-      <div ref={refs.headerBlock} className={styles.header_desctop_block}>
+      <div  className={styles.header_desctop_block}>
         <h1 id="public" className={styles.desctop_title}>
           Награды и публикации
         </h1>
@@ -160,7 +160,7 @@ export default function Header({ isHidden, navOpen }) {
         >
           <SliderHeader />
         </span>
-        <div ref={refs.swiperPhone} className={styles.swiper_container}>
+        <div className={styles.swiper_container}>
           <SwiperContainer />
         </div>
         <div className={styles.show_container}>
@@ -169,7 +169,7 @@ export default function Header({ isHidden, navOpen }) {
           </button> */}
         </div>
         <div className={styles.card_container}>
-          <div ref={refs.blockLeft} className={styles.card_item_1}>
+          <div  className={styles.card_item_1}>
             <Link to="/winepark-article">
               <div className={styles.card_img}>
                 <img
@@ -204,7 +204,7 @@ export default function Header({ isHidden, navOpen }) {
               </svg>
             </Link>
           </div>
-          <div ref={refs.blockRight} className={styles.card_item_2}>
+          <div className={styles.card_item_2}>
             <Link to="/badaevsky">
               <div className={styles.card_img}>
                 <img
@@ -252,7 +252,7 @@ export default function Header({ isHidden, navOpen }) {
           <img className={styles.image_most} alt=""></img>
         </div>
         <BlockHeader />
-        <Mapbox3D />
+        {/* <Mapbox3D /> */}
       </div>
       <div className={styles.icon_partner}>
         <img src={D1} alt="logo" />
