@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-import { NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import debounce from 'lodash.debounce';
-import { Link, animateScroll as scroll } from "react-scroll";
 import logo from ".././icons/logo.svg";
 import styles from "./Navbar.module.css";
 import { useEffect } from "react";
@@ -50,40 +49,32 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen }) => {
       <nav className={styles.navbar_desctop}>
         <div className={styles.navbar_container}>
           <div className={styles.navbar_title_block}>
-            <NavLink to="/">
+            <Link to="/">
               <h1 className={styles.navbar_title}>MARKS GROUP</h1>
-            </NavLink>
+            </Link>
           </div>
           <ul className={styles.navbar_list}>
             <Link
               className={styles.navbar_item}
-              to="competention"
-              smooth={true}
-              duration={700}
+              to="#"
             >
               <li>Компетенции</li>
             </Link>
             <Link
               className={styles.navbar_item}
-              to="project"
-              smooth={true}
-              duration={700}
+              to="#"
             >
               <li>Проекты</li>
             </Link>
             <Link
               className={styles.navbar_item}
-              to="public"
-              smooth={true}
-              duration={700}
+              to="#"
             >
               <li>Публикации</li>
             </Link>
             <Link
               className={`${styles.navbar_item} ${styles.navbar_item_last}`}
-              to="contacts"
-              smooth={true}
-              duration={700}
+              to="#"
             >
               <li>Контакты</li>
             </Link>
@@ -94,9 +85,9 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen }) => {
         <nav>
           <div className={styles.navbar}>
             <div className={styles.logo}>
-              <NavLink to="/">
+              <Link to="/">
                 <img className={styles.logo_img} src={logo} alt="logo" />
-              </NavLink>
+              </Link>
             </div>
             <div className={`${styles.container} ${styles.nav_container}`}>
               <input
@@ -130,85 +121,67 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen }) => {
               >
                 <ul className={styles.menu_list}>
                   <li>
-                    <NavLink
+                    <Link
                       className={styles.menu_item}
                       onClick={closeNavBar}
                       to="/"
                     >
                       Главная
-                    </NavLink>
+                    </Link>
                   </li>
                   <li>
-                    <NavLink
+                    <Link
                       className={styles.menu_item}
                       onClick={closeNavBar}
                       to="#"
                     >
                       Компетенции
-                    </NavLink>
+                    </Link>
                   </li>
                   <li>
-                    <NavLink
+                    <Link
                       className={styles.menu_item}
                       onClick={closeNavBar}
                       to="#"
                     >
                       Кейсы
-                    </NavLink>
+                    </Link>
                   </li>
                   <li>
-                    <NavLink
+                    <Link
                       className={styles.menu_item}
                       onClick={closeNavBar}
                       to="#"
                     >
                       Публикации
-                    </NavLink>
-                  </li>
-                  {/* <li>
-                    <Link
-                      className={styles.menu_item}
-                      onClick={closeNavBar}
-                      to="/company"
-                    >
-                      О Компании
                     </Link>
-                  </li> */}
+                  </li>
                   <li>
-                    <NavLink
+                    <Link
                       className={styles.menu_item}
                       onClick={closeNavBar}
                       to="#"
                     >
                       Контакты
-                    </NavLink>
-                  </li>
-                  {/* <li>
-                    <Link
-                      className={styles.menu_item}
-                      onClick={closeNavBar}
-                      to="/portal"
-                    >
-                      HR портал
                     </Link>
-                  </li> */}
+                  </li>
                 </ul>
                 <div className={styles.contact_info}>
                   <div className={styles.contact_info_block}>
                     {/* <div className={styles.contact_info_language}>EN | CN</div> */}
-                    <NavLink
+                    <Link
                       className={styles.contact_info_mail}
                       to="mailto:mail@marksgroup.ru"
                     >
                       mail@marksgroup.ru
-                    </NavLink>
-                    <NavLink
+                    </Link>
+                    <Link
                       to={"tel:+15551234567"}
                       className={styles.contact_info_phone}
                       style={{ fontVariantNumeric: "lining-nums" }}
                     >
                       +7(495) 120-12-26
-                    </NavLink>
+                    </Link>
                   </div>
                 </div>
               </div>
