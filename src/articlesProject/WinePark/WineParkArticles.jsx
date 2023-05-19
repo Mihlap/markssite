@@ -29,6 +29,10 @@ export default function WineParkArticles() {
   const blockRight = useRef(null);
   const blockRightQuote = useRef(null);
   const blockDescription = useRef(null);
+  const blockDescription2 = useRef(null);
+  const blockDescription3 = useRef(null);
+  const blockDescription4 = useRef(null);
+  const blockDescription5 = useRef(null);
   const blockName = useRef(null);
   //useRefs для анимация появления блоков слевой стороны экрана
   const leftImg1 = useRef(null);
@@ -81,6 +85,10 @@ export default function WineParkArticles() {
         blockRight.current,
         blockRightQuote.current,
         blockDescription.current,
+        blockDescription2.current,
+        blockDescription3.current,
+        blockDescription4.current,
+        blockDescription5.current,
       ],
     };
 
@@ -120,11 +128,11 @@ export default function WineParkArticles() {
           <div className={styles.header_img_title}>
             <AllProjectsButton />
             <h1 ref={titleRef} className={styles.header_title}>
-              Центр винноготуризма WINEPARK
+              Центр винного туризма WINEPARK
             </h1>
 
             <div ref={blockName} className={styles.header_name}>
-              Archea Associati +T+T Architects +INPI (входитв ГК MARKSGROUP)
+              Archea Associati +T+T Architects + INPI (входит в ГК MARKSGROUP)
             </div>
             <div ref={descRef} className={styles.header_desc}>
               Проект Россия, Москва &#8226; 24 Мая 2023
@@ -134,7 +142,8 @@ export default function WineParkArticles() {
             <div ref={blockRight} className={styles.header_content_text}>
               <div className={styles.title_block}>
                 <h2 className={styles.left_title}>
-                  Archea Associati +T+T Architects +INPI (входитв ГК MARKSGROUP)
+                  Archea Associati +T+T Architects + INPI (входит в ГК
+                  MARKSGROUP)
                 </h2>
               </div>
               <div className={styles.articles_title_text}>
@@ -195,7 +204,7 @@ export default function WineParkArticles() {
             <img className={styles.item_img} ref={leftImg2} src={img2} alt="" />
           </div>
           <div
-            ref={blockDescription}
+            ref={blockDescription2}
             className={styles.description_object_container}
           >
             <div className={styles.description_object_block}>
@@ -235,7 +244,7 @@ export default function WineParkArticles() {
             <img className={styles.item_img} ref={leftImg4} src={img4} alt="" />
           </div>
           <div
-            ref={blockDescription}
+            ref={blockDescription3}
             className={styles.description_object_container}
           >
             <div className={styles.description_object_block}>
@@ -269,7 +278,7 @@ export default function WineParkArticles() {
           </div>
 
           <div
-            ref={blockDescription}
+            ref={blockDescription4}
             className={styles.description_object_container}
           >
             <div className={styles.description_object_block}>
@@ -328,7 +337,7 @@ export default function WineParkArticles() {
             />
           </div>
           <div
-            ref={blockDescription}
+            ref={blockDescription5}
             className={styles.description_object_container}
           >
             <div className={styles.description_object_block}>

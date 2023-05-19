@@ -73,6 +73,10 @@ body {
   overflow-x: hidden;
 }
 
+body::before {
+  background-color: var(--white-F6F6F6);
+}
+
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
