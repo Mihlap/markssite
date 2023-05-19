@@ -81,7 +81,7 @@ const App = () => {
                 <Route path="/slava" element={<Slava />} />
                 <Route path="/prime-park" element={<PrimePark />} />
                 <Route path="/hotel-appart" element={<HotelAppart />} />
-              </Routes>
+                </Routes>
             </CSSTransition>
           </TransitionGroup>
           <Footer />
