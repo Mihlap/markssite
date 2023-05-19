@@ -9,15 +9,17 @@
     overflow-x: hidden;
 }
 
+.item {
+    padding-bottom: 3rem;
+}
+
 
 .item_img {
     width: 100%;
-    border-radius: 1.11vw;
+    border-radius: 1rem;
 }
 
-.item_img_latest {
-    border-radius: 1.11vw 1.11vw 0 0;
-}
+
 
 /* Header styles */
 .header_img {
@@ -53,7 +55,7 @@
     font-style: normal;
     font-weight: var(--fw-300);
     font-size: 3rem;
-    line-height: 4.44vw;
+    line-height: 4rem;
     color: var(--white-F6F6F6);
     padding-top: 4.7vh;
 }
@@ -82,8 +84,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding-bottom: 3.89vw;
-    padding-top: 2.22vw;
 }
 
 .header_content_text {
@@ -104,9 +104,11 @@
     font-size: 2.22vw;
     line-height: 2.78vw;
     color: var(--color-title-text);
+    padding-top: 2rem;
 }
 
 .articles_title_text {
+    font-family: var(--font-raleway);
     font-style: normal;
     font-weight: var(--fw-400);
     font-size: 1.11vw;
@@ -114,6 +116,7 @@
     font-feature-settings: 'pnum' on, 'lnum' on;
     color: var(--black-1D2E43);
     padding-top: 1.22vw;
+    padding-bottom: 3.5rem;
 }
 
 /* Quote and description object styles */
@@ -122,7 +125,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 3.33vw 0px 2.78vw 0px;
 }
 
 .quote_block,
@@ -136,6 +138,7 @@
     line-height: 1.67vw;
     flex-direction: column;
     gap: 2.78vw;
+    padding-bottom: 3rem;
 }
 
 .quote_text {
@@ -152,6 +155,7 @@
     font-size: 1.11vw;
     line-height: 1.67vw;
     padding: 20px;
+    margin-bottom: 2.5rem;
 }
 
 .quote_director {
@@ -196,8 +200,13 @@
 
     .header_content {
         padding-top: 2.5rem;
+        padding-bottom: 2.5rem;
         flex-direction: column;
         justify-content: normal;
+    }
+
+    .item {
+        padding: 0;
     }
 
     .header_content_text {
@@ -213,10 +222,17 @@
     .left_title {
         font-size: 5.07vw;
         line-height: 7.47vw;
+        padding: 0;
     }
 
     .articles_title_text {
         padding-top: 1rem;
+        padding-bottom: 0;
+    }
+
+    .quote {
+
+        margin-bottom: 0;
     }
 
     .quote_block,
@@ -232,13 +248,15 @@
         line-height: 6.40vw;
     }
 
+    .description_object_block,
     .quote_container {
         padding: 0;
+        margin-bottom: 40px;
+        margin-top: 40px;
     }
 
-    .item_img {
-        padding: 2.5rem 0rem;
-        border-radius: 1rem;
+    .quote_container {
+        padding: 0;
     }
 
     .quote_director {
@@ -248,11 +266,11 @@
 
     .header_name {
         font-family: var(--font-unbounded);
-            font-style: normal;
-            font-weight: var(--fw-300);
-            font-size: 1.25rem;
-            line-height: 1.75rem;
-            color: var(--white-F6F6F6);
-            padding-top: 1rem;
+        font-style: normal;
+        font-weight: var(--fw-300);
+        font-size: 1.25rem;
+        line-height: 1.75rem;
+        color: var(--white-F6F6F6);
+        padding-top: 1rem;
     }
 }

@@ -8,10 +8,10 @@ export default function Loading() {
 
   useEffect(() => {
     const loading = setInterval(() => {
-      if (percent === 100 && progressWidth === 400) {
+      if (percent === 100 && progressWidth === 200) {
         clearInterval(loading);
       } else {
-        setPercent((prevPercent) => prevPercent + 1);
+        setPercent((prevPercent) => prevPercent + 2);
         setProgressWidth((prevWidth) => prevWidth + 4);
       }
     }, 50);

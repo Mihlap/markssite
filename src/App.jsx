@@ -23,46 +23,28 @@ import WineParkArticles from "./articlesProject/WinePark/WineParkArticles";
 const App = () => {
   const location = useLocation();
   const [isScrollDisabled, setIsScrollDisabled] = useState(false);
-  const [scrollPosition, setScrollPosition] = useState(0);
 
   const [loading, setLoading] = useState(true);
   const [navOpen, setNavOpen] = useState(false);
   const [isHidden, setHidden] = useState(false);
 
-  // таймаут для прелоудера на сайте
 
+    useEffect(() => {
+      const body = document.querySelector("body");
+      if (navOpen) {
+        // Запрещаем вертикальный скролл
+        body.style.overflowY = "hidden";
+      } else {
+        // Разрешаем вертикальный скролл
+        body.style.overflowY = "scroll";
+      }
+    }, [navOpen]);  
+
+  // таймаут для прелоудера на сайте
   setTimeout(() => {
     setLoading(false);
-  }, 7000);
+  }, 3500);
 
-  useEffect(() => {
-    // Функция для отключения скролла
-    function disableScroll() {
-      setScrollPosition(
-        window.pageYOffset || document.documentElement.scrollTop
-      );
-      document.body.style.position = "fixed";
-      document.body.style.top = `-${scrollPosition}px`;
-    }
-
-    // Функция для включения скролла
-    function enableScroll() {
-      document.body.style.position = "";
-      document.body.style.top = "";
-      window.scrollTo(0, parseInt(scrollPosition || "0") * -1);
-    }
-
-    if (isScrollDisabled) {
-      disableScroll();
-    } else {
-      enableScroll();
-    }
-    // Очистка эффекта
-    return () => {
-      enableScroll();
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isScrollDisabled]);
 
   function handleClickScroll() {
     setIsScrollDisabled(!isScrollDisabled);
@@ -92,7 +74,7 @@ const App = () => {
                 <Route path="/company" element={<Company />} />
                 {/* <Route path="/contacts" element={<Contacts />} /> */}
                 <Route path="/portal" element={<Portal />} />
-                <Route path="*" element={<NotFound />} />
+                <Route path="*" element={<NotFound />} />``
                 <Route path="/winepark" element={<WinePark />} />
                 <Route path="/winepark-article" element={<WineParkArticles />} />
                 <Route path="/badaevsky" element={<Badaevsky />} />
