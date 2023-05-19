@@ -11,16 +11,6 @@ import VideoPlayer from "../UI/Videoplayer/VideoPlayer";
 import Mapbox3D from '../UI/Map3D/Mapbox3D';
 import styles from "./Header.module.css";
 
-
-import D1 from ".././icons/D1.svg";
-import D2 from ".././icons/D2.svg";
-import D3 from ".././icons/D3.svg";
-import D4 from ".././icons/D4.svg";
-import D5 from ".././icons/D5.svg";
-import D6 from ".././icons/D6.svg";
-import D7 from ".././icons/D7.svg";
-import D8 from ".././icons/D8.svg";
-import D9 from ".././icons/D9.svg";
 import SliderMobile from "../UI/SliderHeader/SliderMobile";
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
@@ -146,18 +136,18 @@ export default function Header({ isHidden, navOpen }) {
           <img className={styles.image_most} alt=""></img>
         </div>
         <BlockHeader />
-        <Mapbox3D />
+        {/* <Mapbox3D /> */}
       </div>
       <div className={styles.icon_partner}>
-        <img src={D1} alt="logo" />
-        <img src={D2} alt="logo" />
-        <img src={D3} alt="logo" />
-        <img src={D4} alt="logo" />
-        <img src={D5} alt="logo" />
-        <img src={D6} alt="logo" />
-        <img src={D7} alt="logo" />
-        <img src={D8} alt="logo" />
-        <img src={D9} alt="logo" />
+        <img src="./assets/D1.png" alt="logo" />
+        <img src="./assets/D2.png" alt="logo" />
+        <img src="./assets/D3.png" alt="logo" />
+        <img src="./assets/D4.png" alt="logo" />
+        <img src="./assets/D5.png" alt="logo" />
+        <img src="./assets/D6.png" alt="logo" />
+        <img src="./assets/D7.png" alt="logo" />
+        <img src="./assets/D8.png" alt="logo" />
+        <img src="./assets/D9.png" alt="logo" />
       </div>
         <SliderMobile />
       <div className={styles.project_name}>Проекты</div>
