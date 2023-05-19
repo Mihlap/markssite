@@ -1,7 +1,4 @@
-/* eslint-disable react-hooks/exhaustive-deps */
-/* eslint-disable jsx-a11y/no-distracting-elements */
-/* eslint-disable jsx-a11y/img-redundant-alt */
-import React, { useEffect, useRef } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -28,105 +25,6 @@ import SliderMobile from "../UI/SliderHeader/SliderMobile";
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 export default function Header({ isHidden, navOpen }) {
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
-
-  const refs = {
-    blockLeft: useRef(null),
-    blockRight: useRef(null),
-    headerBlock: useRef(null),
-    headerBlockPhone: useRef(null),
-    tickerString: useRef(null),
-    swiperPhone: useRef(null),
-    swiperProgeject: useRef(null),
-  };
-
-  useEffect(() => {
-    const {
-      blockLeft,
-      blockRight,
-      headerBlock,
-      headerBlockPhone,
-      tickerString,
-      swiperPhone,
-      swiperProgeject,
-    } = refs;
-
-    const animateElement = (element, props) => {
-      gsap.from(element, {
-        ...props,
-        scrollTrigger: {
-          trigger: element,
-          start: "top " + props.start,
-        },
-      });
-    };
-
-    animateElement(headerBlock.current, {
-      x: "-100%",
-      opacity: 0,
-      duration: 1,
-      delay: 1,
-      ease: "power2.out",
-      clipPath: { start: "100%" },
-    });
-
-    animateElement(headerBlockPhone.current, {
-      x: "-100%",
-      opacity: 0,
-      duration: 1,
-      delay: 1,
-      ease: "power2.out",
-      clipPath: { start: "100%" },
-    });
-
-    animateElement(tickerString.current, {
-      x: "100%",
-      opacity: 0,
-      duration: 1,
-      delay: 1,
-      ease: "power2.out",
-      clipPath: { start: "100%" },
-    });
-
-    animateElement(blockLeft.current, {
-      x: "-100%",
-      opacity: 0,
-      duration: 1,
-      delay: 1,
-      ease: "power1.out",
-      clipPath: { start: "90%" },
-    });
-
-    animateElement(blockRight.current, {
-      x: "100%",
-      opacity: 0,
-      duration: 1,
-      delay: 1,
-      ease: "power1.out",
-      clipPath: { start: "100%" },
-    });
-
-    animateElement(swiperPhone.current, {
-      x: "100%",
-      opacity: 0,
-      duration: 1,
-      delay: 1,
-      ease: "power2.out",
-      clipPath: { start: "100%" },
-    });
-
-    animateElement(swiperProgeject.current, {
-      x: "-100%",
-      opacity: 0,
-      duration: 1,
-      delay: 1,
-      ease: "power2.out",
-      clipPath: { start: "100%" },
-    });
-  }, []);
-
   return (
     <main className={styles.header}>
       <div className={styles.video_block}>
@@ -135,7 +33,7 @@ export default function Header({ isHidden, navOpen }) {
         {/* фото для мобильной версии  */}
         {/* <img className={styles.image_phone} src={photo} alt="photo" /> */}
       </div>
-      <div  className={styles.header_desctop_block}>
+      <div className={styles.header_desctop_block}>
         <h1 id="public" className={styles.desctop_title}>
           Награды и публикации
         </h1>
@@ -144,7 +42,7 @@ export default function Header({ isHidden, navOpen }) {
           <br /> и конкурсах. Предлагаем ознакомиться с некоторыми докладами
         </div>
       </div>
-      <div ref={refs.headerBlockPhone} className={styles.header_block}>
+      <div className={styles.header_block}>
         <h1 className={styles.heading}>Награды проектов</h1>
         <p className={styles.heading_text}>
           Наша компания участвует в<br /> многочисленных выставках, конференциях
@@ -154,12 +52,7 @@ export default function Header({ isHidden, navOpen }) {
       </div>
       <div className={styles.container_main}>
         {/* <button onClick={isHiddenHandler}>click</button> */}
-        <span
-          // ref={refs.tickerString}
-          style={{ display: navOpen ? "none" : "block" }}
-        >
           <SliderHeader />
-        </span>
         <div className={styles.swiper_container}>
           <SwiperContainer />
         </div>
@@ -169,7 +62,7 @@ export default function Header({ isHidden, navOpen }) {
           </button> */}
         </div>
         <div className={styles.card_container}>
-          <div  className={styles.card_item_1}>
+          <div className={styles.card_item_1}>
             <Link to="/winepark-article">
               <div className={styles.card_img}>
                 <img
@@ -266,12 +159,10 @@ export default function Header({ isHidden, navOpen }) {
         <img src={D8} alt="logo" />
         <img src={D9} alt="logo" />
       </div>
-      <span style={{ display: navOpen ? "none" : "block" }}>
         <SliderMobile />
-      </span>
       <div className={styles.project_name}>Проекты</div>
       <div
-        ref={refs.swiperProgeject}
+        // ref={refs.swiperProgeject}
         className={styles.swiper_progect_container}
       >
         <SwiperContainerProgect />
