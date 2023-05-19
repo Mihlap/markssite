@@ -96,7 +96,10 @@ export default function Slava() {
             </div>
           </div>
           <div className={styles.header_content}>
-            <div ref={refs.blockLeft} className={`${styles.header_content_left} ${styles.header_content_left_custom}`}>
+            <div
+              ref={refs.blockLeft}
+              className={`${styles.header_content_left} ${styles.header_content_left_custom}`}
+            >
               <div className={styles.title_block}>
                 <h2 className={styles.left_title}>МФК на сложном рельефе</h2>
                 <div className={styles.left_meta}>
@@ -145,12 +148,12 @@ export default function Slava() {
                   <div>
                     <div className={styles.local_title}>Публикации</div>
                     <Link
-                      to="https://tass.ru/obschestvo/9880739"
+                      to="https://realty.rbc.ru/news/6380ab7d9a79474428aef71a"
                       target="_blank"
                     >
                       <div className={styles.local_text}>
-                        ТАСС «Первый в России винный парк откроется под Ялтой
-                        весной 2021 года»
+                        РБК Недвижимость &quot;Каким будет квартал SLAVA:
+                        апартаменты с&nbsp;видом на&nbsp;Москву
                       </div>
                     </Link>
                   </div>
@@ -238,15 +241,19 @@ export default function Slava() {
         </div>
       </div>
       <div className={styles.container}>
-          <div className={styles.button_project}>
+        <div className={styles.button_project}>
           <Link className={styles.button_project_link} to="/hotel-appart">
-            <div className={`${styles.previous_svg} ${styles.button_project_button}`}>
+            <div
+              className={`${styles.previous_svg} ${styles.button_project_button}`}
+            >
               <img src={previous} alt="" />
               <span className={styles.previous_span}>Предыдущий проект</span>
             </div>
           </Link>
           <Link className={styles.button_project_link} to="/winepark">
-            <div className={`${styles.next_svg} ${styles.button_project_button}`}>
+            <div
+              className={`${styles.next_svg} ${styles.button_project_button}`}
+            >
               <span className={styles.next_span}>Следующий проект</span>
               <img src={next} alt="" />
             </div>
