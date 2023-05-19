@@ -16,11 +16,11 @@
 }
 
 .contentLoaderTitle {
-    font-size: 5vw;
+    font-size: 3.75rem;
 }
 
 .contentLoaderSubtitle {
-    font-size: 2vw;
+    font-size: 1.625rem;
 }
 
 .contentLoaderTitle,
@@ -63,7 +63,7 @@
 }
 
 .loadingProgresBar {
-    width: 400px;
+    width: 200px;
     height: 4px;
     background: var(--black-1D2E43);
     ;
@@ -112,7 +112,6 @@
     }
 
     .loadingProgresBar {
-        width: 319px;
     }
 
     .percent {

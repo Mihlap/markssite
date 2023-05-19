@@ -1,16 +1,9 @@
-import React from 'react';
-import styles from './Videoplayer.module.css';
+import React from "react";
+import styles from "./Videoplayer.module.css";
 
-function VideoPlayer() {
-  //изменил размер видео 
+const VideoPlayer = React.memo(() => {
   return (
-    <video
-      className={styles.video_player}
-      playsInline
-      autoPlay
-      muted
-      loop
-    >
+    <video className={styles.video_player} playsInline autoPlay muted loop>
       <source
         src="./assets/PrimePark.mp4"
         type="video/mp4"
@@ -18,6 +11,6 @@ function VideoPlayer() {
       />
     </video>
   );
-}
+});
 
 export default VideoPlayer;

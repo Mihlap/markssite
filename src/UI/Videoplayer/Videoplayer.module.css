@@ -5,3 +5,8 @@
  .video_player {
   width: 100%;
  }
+
+ @media screen and (max-width: 700px) {
+
+
+  }
