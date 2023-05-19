@@ -62,10 +62,22 @@ export default function Header({ isHidden, navOpen }) {
                 />
               </div>
             </Link>
-            <div className={styles.card_text}>
-              <h3>Центр энотуризма WinePark</h3>
-              <span className={styles.card_text_span}>
-                Конкурс • 100 лучших объектов росии
+            <div className={styles.card_text_container}>
+              <h3 className={styles.card_text_heading}>
+                Центр энотуризма WinePark
+              </h3>
+              <span className={styles.card_text_description}>
+                Конкурс
+                <svg
+                  width="4"
+                  height="4"
+                  viewBox="0 0 4 4"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle cx="2" cy="2" r="2" fill="#566272" />
+                </svg>
+                100 лучших объектов росии
               </span>
             </div>
             <Link to="/winepark-article" className={styles.card_button}>
@@ -97,14 +109,24 @@ export default function Header({ isHidden, navOpen }) {
                 />
               </div>
             </Link>
-            <div className={styles.card_text}>
-              <h3>
+            <div className={styles.card_text_container}>
+              <h3 className={styles.card_text_heading}>
                 Marks Group&nbsp;&mdash; генеральный проектировщик ЖК
                 &laquo;Бадаевский&raquo;
               </h3>
-              <span className={styles.card_text_span}>
-                Статья • Экспертное обсуждение реставрации и приспособления
-                объектов культурного наследия
+              <span className={styles.card_text_description}>
+                Статья
+                <svg
+                  width="4"
+                  height="4"
+                  viewBox="0 0 4 4"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle cx="2" cy="2" r="2" fill="#566272" />
+                </svg>
+                Экспертное обсуждение реставрации и приспособления объектов
+                культурного наследия
               </span>
             </div>
             <Link to="/badaevsky" className={styles.card_button}>
