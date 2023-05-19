@@ -292,6 +292,9 @@ svg path {
 }
 .icon_partner img {
  height: 40px;
+ }
+ .icon_partner img:not(:last-child) {
+  margin-right: 57px;
 }
 
 .project_name {
