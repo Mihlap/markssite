@@ -11,7 +11,7 @@ import SwiperContainer from "./Swiper-Phone/SwiperContainer";
 import SwiperContainerProgect from "./Swiper-project/SwiperContainerProgect";
 import SliderHeader from "../UI/SliderHeader/SliderHeader";
 import VideoPlayer from "../UI/Videoplayer/VideoPlayer";
-// import Mapbox3D from '../UI/Map3D/Mapbox3D';
+import Mapbox3D from '../UI/Map3D/Mapbox3D';
 import styles from "./Header.module.css";
 
 
@@ -28,9 +28,9 @@ import SliderMobile from "../UI/SliderHeader/SliderMobile";
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 export default function Header({ isHidden, navOpen }) {
-  // useEffect(() => {
-  //   window.scrollTo(0, 0);
-  // }, []);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   const refs = {
     blockLeft: useRef(null),
@@ -155,7 +155,7 @@ export default function Header({ isHidden, navOpen }) {
       <div className={styles.container_main}>
         {/* <button onClick={isHiddenHandler}>click</button> */}
         <span
-          ref={refs.tickerString}
+          // ref={refs.tickerString}
           style={{ display: navOpen ? "none" : "block" }}
         >
           <SliderHeader />
@@ -185,7 +185,7 @@ export default function Header({ isHidden, navOpen }) {
                 Конкурс • 100 лучших объектов росии
               </span>
             </div>
-            <Link to="/winepark" className={styles.card_button}>
+            <Link to="/winepark-article" className={styles.card_button}>
               <svg
                 className={styles.card_button_link}
                 width="40"
@@ -215,7 +215,8 @@ export default function Header({ isHidden, navOpen }) {
               </div>
             </Link>
             <div className={styles.card_text}>
-              <h3>Баня, рынок, супер-слэб — что ждет Бадаевский?</h3>
+              <h3>Marks Group&nbsp;&mdash; генеральный проектировщик
+                 ЖК &laquo;Бадаевский&raquo;</h3>
               <span className={styles.card_text_span}>
                 Статья • Экспертное обсуждение реставрации и приспособления
                 объектов культурного наследия
@@ -252,7 +253,7 @@ export default function Header({ isHidden, navOpen }) {
           <img className={styles.image_most} alt=""></img>
         </div>
         <BlockHeader />
-        {/* <Mapbox3D /> */}
+        <Mapbox3D />
       </div>
       <div className={styles.icon_partner}>
         <img src={D1} alt="logo" />
