@@ -113,9 +113,9 @@
   }
 
   .container {
-    /* max-width: 1050px; */
+ 
     width: 100%;
-    /* margin: auto; */
+    
   }
 
   .navbar {
@@ -183,7 +183,6 @@
     display: block;
     height: 2px;
     width: 100%;
-    /* border-radius: 10px; */
     background: var(--black-1D2E43);
   }
 
@@ -220,7 +219,7 @@
     position: absolute;
     top: 25px;
     padding-left: 20px;
-    /* right: 15px; */
+ 
     font-size: 1.2rem;
     color: var(--black-1D2E43);
     position: relative;
@@ -275,4 +274,3 @@
   }
 
 }
-/* +++++++++++++ */
