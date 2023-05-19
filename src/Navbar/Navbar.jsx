@@ -123,8 +123,8 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen }) => {
                   <li>
                     <Link
                       className={styles.menu_item}
-                      onClick={closeNavBar}
                       to="/"
+                      onClick={closeNavBar}
                     >
                       Главная
                     </Link>
