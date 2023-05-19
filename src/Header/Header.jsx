@@ -138,7 +138,7 @@ export default function Header({ isHidden, navOpen }) {
           <img className={styles.image_most} alt=""></img>
         </div>
         <BlockHeader />
-        {/* <Mapbox3D /> */}
+        <Mapbox3D />
       </div>
       <div className={styles.icon_partner}>
         <img src="./assets/D1.png" alt="logo" />
