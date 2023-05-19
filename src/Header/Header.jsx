@@ -52,7 +52,7 @@ export default function Header({ isHidden, navOpen }) {
       </div>
       <div className={styles.container_main}>
         {/* <button onClick={isHiddenHandler}>click</button> */}
-          <SliderHeader />
+        <SliderHeader />
         <div className={styles.swiper_container}>
           <SwiperContainer />
         </div>
@@ -91,8 +91,8 @@ export default function Header({ isHidden, navOpen }) {
                 <path
                   d="M10 20H20M30 20H20M20 20V10M20 20V30"
                   stroke="#F6F6F6"
-                  stroke-width="2"
-                  stroke-linecap="square"
+                  strokeWidth="2"
+                  strokeLinecap="square"
                 />
               </svg>
             </Link>
@@ -108,8 +108,10 @@ export default function Header({ isHidden, navOpen }) {
               </div>
             </Link>
             <div className={styles.card_text}>
-              <h3>Marks Group&nbsp;&mdash; генеральный проектировщик
-                 ЖК &laquo;Бадаевский&raquo;</h3>
+              <h3>
+                Marks Group&nbsp;&mdash; генеральный проектировщик ЖК
+                &laquo;Бадаевский&raquo;
+              </h3>
               <span className={styles.card_text_span}>
                 Статья • Экспертное обсуждение реставрации и приспособления
                 объектов культурного наследия
@@ -128,8 +130,8 @@ export default function Header({ isHidden, navOpen }) {
                 <path
                   d="M10 20H20M30 20H20M20 20V10M20 20V30"
                   stroke="#F6F6F6"
-                  stroke-width="2"
-                  stroke-linecap="square"
+                  strokeWidth="2"
+                  strokeLinecap="square"
                 />
               </svg>
             </Link>
@@ -159,7 +161,7 @@ export default function Header({ isHidden, navOpen }) {
         <img src={D8} alt="logo" />
         <img src={D9} alt="logo" />
       </div>
-        <SliderMobile />
+      <SliderMobile />
       <div className={styles.project_name}>Проекты</div>
       <div
         // ref={refs.swiperProgeject}
@@ -177,8 +179,10 @@ export default function Header({ isHidden, navOpen }) {
             />
           </Link>
           <div className={styles.card_text}>
-            <h3>Жилой квартал PRIME PARK</h3>
-            <span>г. Москва, Ленинградский проспект &bull; 2021 </span>
+            <h3 className={styles.card_text_title}>Жилой квартал PRIME PARK</h3>
+            <span className={styles.card_text_local}>
+              г. Москва, Ленинградский проспект &bull; 2021{" "}
+            </span>
           </div>
         </div>
         <div className={styles.main_project_right}>
@@ -191,8 +195,10 @@ export default function Header({ isHidden, navOpen }) {
               />
             </Link>
             <div className={styles.card_text}>
-              <h3>Гостиничный комплекс с апартаментами</h3>
-              <span>г. Москва, наб. Космодамианская &bull; 2021</span>
+              <h3 className={styles.card_text_title}>Клубный дом Космо 4/22</h3>
+              <span className={styles.card_text_local}>
+                г. Москва, наб. Космодамианская &bull; 2021
+              </span>
             </div>
           </div>
           <div className={styles.main_project_right2}>
@@ -204,8 +210,12 @@ export default function Header({ isHidden, navOpen }) {
               />
             </Link>
             <div className={styles.card_text}>
-              <h3>МФК Комплекс апартаментов &laquo;Slava&raquo;</h3>
-              <span>Россия, Москва &bull; 2020</span>
+              <h3 className={styles.card_text_title}>
+                Многофункциональный комплекс апартаментов Slava
+              </h3>
+              <span className={styles.card_text_local}>
+                Россия, Москва, 1-я ул. Ямского Поля &bull; 2020
+              </span>
             </div>
           </div>
           <div className={styles.main_project_right3}>
@@ -217,8 +227,12 @@ export default function Header({ isHidden, navOpen }) {
               />
             </Link>
             <div className={styles.card_text}>
-              <h3>Винный парк WinePark</h3>
-              <span>Республика Крым &bull; 2021</span>
+              <h3 className={styles.card_text_title}>
+                Центр энотуризма WinePark
+              </h3>
+              <span className={styles.card_text_local}>
+                г. Москва, Кутузовский проспект &bull; 2020
+              </span>
             </div>
           </div>
         </div>

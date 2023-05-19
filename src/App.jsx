@@ -24,7 +24,7 @@ const App = () => {
   const location = useLocation();
   const [isScrollDisabled, setIsScrollDisabled] = useState(false);
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [navOpen, setNavOpen] = useState(false);
   const [isHidden, setHidden] = useState(false);
 
@@ -41,9 +41,9 @@ const App = () => {
     }, [navOpen]);  
 
   // таймаут для прелоудера на сайте
-  setTimeout(() => {
-    setLoading(false);
-  }, 3500);
+  // setTimeout(() => {
+  //   setLoading(false);
+  // }, 3500);
 
 
   function handleClickScroll() {
