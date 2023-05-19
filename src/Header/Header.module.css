@@ -201,6 +201,7 @@
   height: 100%;
   object-fit: cover;
   cursor: pointer;
+
 }
 
 .card_text_container {
@@ -261,6 +262,13 @@ font-family: var(--font-raleway);
   color: var(--gray-959DA6);
 }
 
+.card_text_span {
+  font-family: var(--font-raleway);
+  font-style: normal;
+  font-weight: var(--fw-400);
+  font-size: 14px;
+  line-height: 20px;
+  }
 
 .card_button {
   background-color: transparent;
@@ -314,6 +322,7 @@ svg path {
   justify-content: space-between;
   padding: 3.7vh 2.9vw 0vh 2.9vw;
   gap: 3.563rem;
+}
 
  .icon_partner img {
  height: 26px;
