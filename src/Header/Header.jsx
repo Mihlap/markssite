@@ -62,7 +62,7 @@ export default function Header({ isHidden, navOpen }) {
                 />
               </div>
             </Link>
-            <div className={styles.card_text}>
+            <div className={styles.card_text1}>
               <h3>Центр энотуризма WinePark</h3>
               <span className={styles.card_text_span}>
                 Конкурс • 100 лучших объектов росии
@@ -97,7 +97,7 @@ export default function Header({ isHidden, navOpen }) {
                 />
               </div>
             </Link>
-            <div className={styles.card_text}>
+            <div className={styles.card_text2}>
               <h3>
                 Marks Group&nbsp;&mdash; генеральный проектировщик ЖК
                 &laquo;Бадаевский&raquo;
@@ -138,7 +138,7 @@ export default function Header({ isHidden, navOpen }) {
           <img className={styles.image_most} alt=""></img>
         </div>
         <BlockHeader />
-        <Mapbox3D />
+        {/* <Mapbox3D /> */}
       </div>
       <div className={styles.icon_partner}>
         <img src="./assets/D1.png" alt="logo" />
