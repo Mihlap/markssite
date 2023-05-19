@@ -201,8 +201,12 @@
   height: 100%;
   object-fit: cover;
   cursor: pointer;
-}
-
+  }
+  .card_text1,
+  .card_text2 {
+    padding-top: 16px;
+  }
+    
 .card_text_title {
   display: flex;
   flex-direction: column;
@@ -230,7 +234,7 @@
   font-weight: var(--fw-400);
   font-size: 14px;
   line-height: 20px;
-}
+  }
 
 .card_button {
   background-color: transparent;
@@ -288,7 +292,7 @@ svg path {
   flex-direction: row;
   justify-content: space-between;
   padding: 3.7vh 2.9vw 0vh 2.9vw;
-  gap: 57px;
+  gap: 3.563rem;
 }
  .icon_partner img {
  height: 26px;
