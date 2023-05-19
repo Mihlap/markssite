@@ -288,14 +288,11 @@ svg path {
   flex-direction: row;
   justify-content: space-between;
   padding: 3.7vh 2.9vw 0vh 2.9vw;
- 
+  gap: 57px;
 }
-.icon_partner img {
- height: 40px;
+ .icon_partner img {
+ height: 26px;
  }
- .icon_partner img:not(:last-child) {
-  margin-right: 57px;
-}
 
 .project_name {
   padding: 10vh 2.7vw 0vh 2.7vw;
