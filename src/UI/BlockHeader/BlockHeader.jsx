@@ -7,7 +7,7 @@ import './index.scss';
 import cub from "../../icons/cub.svg";
 gsap.registerPlugin(ScrollTrigger, CSSPlugin);
 
-function BlockHeader() {
+const BlockHeader = React.memo(() => {
   const accordionsRef = useRef(null);
 
   const closeAccordions = () => {
@@ -75,10 +75,8 @@ function BlockHeader() {
           }
         },
       });
-
-      });
-      
-       }, []);
+    });
+  }, []);
   
 // test git
   return (
@@ -156,7 +154,7 @@ function BlockHeader() {
       <div className="spacer"></div>
     </div>
   );
-}
+});
 
 export default BlockHeader;
 

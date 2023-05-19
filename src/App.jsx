@@ -25,7 +25,7 @@ const App = () => {
   const [isScrollDisabled, setIsScrollDisabled] = useState(false);
   const [scrollPosition, setScrollPosition] = useState(0);
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [navOpen, setNavOpen] = useState(false);
   const [isHidden, setHidden] = useState(false);
 
@@ -99,7 +99,7 @@ const App = () => {
                 <Route path="/slava" element={<Slava />} />
                 <Route path="/prime-park" element={<PrimePark />} />
                 <Route path="/hotel-appart" element={<HotelAppart />} />
-              </Routes>
+                </Routes>
             </CSSTransition>
           </TransitionGroup>
           <Footer />
