@@ -2,16 +2,6 @@ import React, { useEffect, useState } from 'react';
 import Marquee from "react-fast-marquee";
 import styles from './SliderHeader.module.css';
 
-import D1 from "../../icons/D1.svg";
-import D2 from "../../icons/D2.svg";
-import D3 from "../../icons/D3.svg";
-import D4 from "../../icons/D4.svg";
-import D5 from "../../icons/D5.svg";
-import D6 from "../../icons/D6.svg";
-import D7 from "../../icons/D7.svg";
-import D8 from "../../icons/D8.svg";
-import D9 from "../../icons/D9.svg";
-
 const SliderMobile = () => {
   const [show, setShow] = useState(false);
 
@@ -35,31 +25,31 @@ const SliderMobile = () => {
     delayBetweenLoops={2000}
       >
         <div className={styles.item_mobile}>
-          <img src={D1} alt="logo" />
+          <img src="./assets/D1.png" alt="logo1" />
           </div>
           <div className={styles.item_mobile}>
-          <img src={D2} alt="logo" />
+          <img src="./assets/D2.png" alt="logo2" />
           </div>
           <div className={styles.item_mobile}>
-          <img src={D3} alt="logo" />
+          <img src="./assets/D3.png" alt="logo3" />
           </div>
           <div className={styles.item_mobile}>
-          <img src={D4} alt="logo" />
+          <img src="./assets/D4.png" alt="logo4" />
           </div>
           <div className={styles.item_mobile}>
-          <img src={D5} alt="logo" />
+          <img src="./assets/D5.png" alt="logo5" />
           </div>
           <div className={styles.item_mobile}>
-          <img src={D6} alt="logo" />
+          <img src="./assets/D6.png" alt="logo6" />
           </div>
           <div className={styles.item_mobile}>
-          <img src={D7} alt="logo" />
+          <img src="./assets/D7.png" alt="logo7" />
           </div>
           <div className={styles.item_mobile}>
-          <img src={D8} alt="logo" />
+          <img src="./assets/D8.png" alt="logo8" />
           </div>
           <div className={styles.item_mobile}>
-          <img src={D9} alt="logo" />
+          <img src="./assets/D9.png" alt="logo9" />
           </div>
         </Marquee>
         )}
