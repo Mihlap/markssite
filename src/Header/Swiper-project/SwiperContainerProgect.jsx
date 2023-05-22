@@ -66,7 +66,7 @@ const SwiperContainerProgect = () => {
         //   delay: 7000,
         //   disableOnInteraction: false,
         // }}
-        className="swiper-container"
+        className="swiper-container_progect"
       >
         <div className="swiper-wrapper">
           {items.map((item, idx) => {

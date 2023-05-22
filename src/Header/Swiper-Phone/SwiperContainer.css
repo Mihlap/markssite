@@ -1,6 +1,6 @@
 @import '../../App.css';
 
-.swiper-container {
+.swiper-container_articles {
     width: 100%;
     position: relative;
     max-width: 350px;

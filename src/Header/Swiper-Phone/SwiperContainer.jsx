@@ -16,13 +16,6 @@ import "./SwiperContainer.css";
 
 const point = "⦁";
 const items = [
-  // {
-  //   id: "1",
-  //   title: "Смотр-конкурс Стекло в архитектуре 2022",
-  //   text: `Номинация ${point} Объект нового строительства`,
-  //   src: `${threeImg}`,
-  //   icon: `${iconPlus}`,
-  // },
   {
     id: "winepark-article",
     title: "Центр энотуризма WinePark",
@@ -58,7 +51,7 @@ export default function SwiperContainer() {
         //   delay: 7000,
         //   disableOnInteraction: false,
         // }}
-        className="swiper-container"
+        className="swiper-container_articles"
       >
         <div className="swiper-wrapper">
           {items.map((item, idx) => {
