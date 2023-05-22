@@ -1,7 +1,8 @@
-import { useEffect, useState, lazy, Suspense } from "react";
+import { useEffect, useState } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import "./App.css";
 import Company from "./Company/Company";
+import Header from "./Header/Header";
 // import Competentions from "./Competentions/Competentions";
 // import Contacts from "./Contacts/Contacts";
 // import Project from "./Project/Project";
@@ -18,8 +19,6 @@ import Loading from "./Loading/Loading";
 import PrimePark from "./Project/PrimePark/PrimePark";
 import HotelAppart from "./Project/Hotel_appart/HotelAppart";
 import WineParkArticles from "./articlesProject/WinePark/WineParkArticles";
-
-const Header = lazy(() => import("./Header/Header"));
 
 const App = () => {
   const location = useLocation();
@@ -67,17 +66,7 @@ const App = () => {
                 <Route
                   path="/"
                   element={
-                    // <MyComponent navOpen={navOpen} isHidden={isHidden} />
-
-                    <Suspense
-                      fallback={
-                        <div>
-                          <Loading />
-                        </div>
-                      }
-                    >
-                      <Header />
-                    </Suspense>
+                    <Header navOpen={navOpen} isHidden={isHidden} />
                   }
                 />
                 {/* <Route path="/competention" element={<Competentions />} /> */}
