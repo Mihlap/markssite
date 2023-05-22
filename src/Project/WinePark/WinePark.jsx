@@ -180,7 +180,7 @@ export default function WinePark() {
                   </div>
                   <div>
                     <div className={styles.local_title}>Награды</div>
-                    <div className={styles.local_text}>-</div>
+                    <div className={styles.local_text}>&mdash;</div>
                   </div>
                 </div>
               </div>
