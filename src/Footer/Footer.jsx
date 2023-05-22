@@ -37,11 +37,11 @@ const Footer = () => {
           </div>
         {/* правая сторона  */}
         <div className={styles.footer_block_right}>
-          <div className={styles.block_lang}>
+          {/* <div className={styles.block_lang}>
             <span className={styles.en}>EN</span>
-          </div>
+          </div> */}
           <div className={styles.social_links}>
-            <Link to="https://vk.com/marks_group_vk">
+            <Link to="https://vk.com/marks_group_vk" target="_blank">
               <span
                 className={styles.social_links_item}
                 // onClick={vkHendler}
@@ -50,7 +50,7 @@ const Footer = () => {
                 VK
               </span>
             </Link>
-            <Link to="https://instagram.com/marks_group?igshid=YmMyMTA2M2Y=">
+            <Link to="https://instagram.com/marks_group?igshid=YmMyMTA2M2Y=" target="_blank">
               <span
                 className={styles.social_links_item}
                 style={{ marginRight: "25px" }}
@@ -58,7 +58,7 @@ const Footer = () => {
                 IG
               </span>
             </Link>
-            <Link to="https://youtube.com/channel/UCGlamaj4PhMQyy1zsZLtaWg?view_as=subscriber">
+            <Link to="https://youtube.com/@marksgroup5338" target="_blank">
               <span
                 className={styles.social_links_item}
                 style={{ marginRight: "22px" }}
@@ -66,7 +66,7 @@ const Footer = () => {
                 YT
               </span>
             </Link>
-            <Link to="https://web.telegram.org/z/#-1625972274">
+            <Link to="https://t.me/marks_group" target="_blank">
               <span
                 className={styles.social_links_item}
                 // onClick={telegramHendler}
