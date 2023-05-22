@@ -163,7 +163,7 @@
 .local_title {
   font-style: normal;
   font-weight: var(--fw-400);
-  font-size: 0.875rem;
+  font-size: 0.97vw;
   line-height: 1.39vw;
   font-feature-settings: 'pnum' on, 'lnum' on;
   color: var(--dark-gray-566272);
@@ -174,7 +174,7 @@
   font-family: var(--font-raleway);
   font-style: normal;
   font-weight: var(--fw-400);
-  font-size: 0.875rem;
+  font-size: 0.97vw;
   line-height: 1.39vw;
   font-feature-settings: 'pnum' on, 'lnum' on;
   color: var(--gray-959DA6);
