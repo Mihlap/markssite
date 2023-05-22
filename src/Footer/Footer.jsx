@@ -34,7 +34,7 @@ const Footer = () => {
           >
             Москва З-я ул. Ямского Поля, дом 20 строение 1 офис 704
           </span>
-          </div>
+        </div>
         {/* правая сторона  */}
         <div className={styles.footer_block_right}>
           <div className={styles.block_lang}>

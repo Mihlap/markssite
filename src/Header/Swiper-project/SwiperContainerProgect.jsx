@@ -31,13 +31,13 @@ const items = [
     src: `${twoImg}`,
     icon: `${iconPlus}`,
   },
-  // {
-  //   id: "badaevsky",
-  //   title: "МЖК Бадаевкий",
-  //   text: `г. Москва, Кутузовский проспект ${point} 2020`,
-  //   src: `${four}`,
-  //   icon: `${iconPlus}`,
-  // },
+  {
+    id: "winepark",
+    title: "Центр энотуризма WinePark",
+    text: `г. Москва, Кутузовский проспект ${point} 2020`,
+    src: `${four}`,
+    icon: `${iconPlus}`,
+  },
   {
     id: "prime-park",
     title: "Жилой квартал PRIME PARK",
@@ -66,7 +66,7 @@ const SwiperContainerProgect = () => {
         //   delay: 7000,
         //   disableOnInteraction: false,
         // }}
-        className="swiper-container"
+        className="swiper-container_progect"
       >
         <div className="swiper-wrapper">
           {items.map((item, idx) => {

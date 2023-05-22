@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import { Link } from 'react-router-dom';
+import { Link } from "react-scroll";
 import debounce from 'lodash.debounce';
+
 import logo from ".././icons/logo.svg";
 import styles from "./Navbar.module.css";
 import { useEffect } from "react";
+import { NavLink } from "react-router-dom";
 
 // тетс гита на сливание с новой веткой
 
@@ -49,32 +51,40 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen }) => {
       <nav className={styles.navbar_desctop}>
         <div className={styles.navbar_container}>
           <div className={styles.navbar_title_block}>
-            <Link to="/">
+            <NavLink to="/">
               <h1 className={styles.navbar_title}>MARKS GROUP</h1>
-            </Link>
+            </NavLink>
           </div>
           <ul className={styles.navbar_list}>
             <Link
               className={styles.navbar_item}
-              to="#"
+              to="competencies"
+              smooth={true}
+              duration={500}
             >
               <li>Компетенции</li>
             </Link>
             <Link
               className={styles.navbar_item}
-              to="#"
+              to="projects"
+              smooth={true}
+              duration={500}
             >
               <li>Проекты</li>
             </Link>
             <Link
               className={styles.navbar_item}
-              to="#"
+              to="publications"
+              smooth={true}
+              duration={500}
             >
               <li>Публикации</li>
             </Link>
             <Link
               className={`${styles.navbar_item} ${styles.navbar_item_last}`}
-              to="#"
+              to="contacts"
+              smooth={true}
+              duration={500}
             >
               <li>Контакты</li>
             </Link>
@@ -85,9 +95,9 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen }) => {
         <nav>
           <div className={styles.navbar}>
             <div className={styles.logo}>
-              <Link to="/">
+              <NavLink to="/">
                 <img className={styles.logo_img} src={logo} alt="logo" />
-              </Link>
+              </NavLink>
             </div>
             <div className={`${styles.container} ${styles.nav_container}`}>
               <input
@@ -121,19 +131,21 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen }) => {
               >
                 <ul className={styles.menu_list}>
                   <li>
-                    <Link
+                    <NavLink
                       className={styles.menu_item}
                       to="/"
                       onClick={closeNavBar}
                     >
                       Главная
-                    </Link>
+                    </NavLink>
                   </li>
                   <li>
                     <Link
                       className={styles.menu_item}
                       onClick={closeNavBar}
-                      to="#"
+                      to="competencies"
+                      smooth={true}
+                      duration={500}
                     >
                       Компетенции
                     </Link>
@@ -142,16 +154,20 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen }) => {
                     <Link
                       className={styles.menu_item}
                       onClick={closeNavBar}
-                      to="#"
+                      to="projects"
+                      smooth={true}
+                      duration={500}
                     >
-                      Кейсы
+                      Проекты
                     </Link>
                   </li>
                   <li>
                     <Link
                       className={styles.menu_item}
                       onClick={closeNavBar}
-                      to="#"
+                      to="publications"
+                      smooth={true}
+                      duration={500}
                     >
                       Публикации
                     </Link>
@@ -160,7 +176,9 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen }) => {
                     <Link
                       className={styles.menu_item}
                       onClick={closeNavBar}
-                      to="#"
+                      to="contacts"
+                      smooth={true}
+                      duration={500}
                     >
                       Контакты
                     </Link>
@@ -176,7 +194,7 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen }) => {
                       mail@marksgroup.ru
                     </Link>
                     <Link
-                      to={"tel:+15551234567"}
+                      to={"tel:+74951201226"}
                       className={styles.contact_info_phone}
                       style={{ fontVariantNumeric: "lining-nums" }}
                     >
