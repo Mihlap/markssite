@@ -6,7 +6,7 @@
   flex-direction: column;
   width: 100%;
   height: auto;
-  font-family: 'Unbounded';
+  font-family: var(--font-unbounded);
   font-style: normal;
   font-weight: var(--fw-300);
   font-size: 32px;
@@ -53,7 +53,7 @@
 .title {
   display: flex;
   flex-direction: row;
-  font-family: 'Unbounded';
+  font-family: var(--font-unbounded);
   font-style: normal;
   font-weight: var(--fw-300);
   font-size: 32px;
@@ -86,7 +86,7 @@ word-break: keep-all;
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  font-family: 'Unbounded';
+  font-family: var(--font-unbounded);
   font-style: normal;
   font-weight: 300;
   font-size: 20px;
@@ -126,7 +126,6 @@ color: var(--black-1D2E43);
  display: flex;
  flex-direction: column;
  align-items: flex-start;
- font-family: var(--font-unbounded);
  font-style: normal;
  font-weight: var(--fw-300);
  font-size: 20px;
@@ -135,7 +134,7 @@ color: var(--black-1D2E43);
  padding-left: 16px;
  }
 .text_span {
-font-family: 'Raleway';
+font-family: var(--font-unbounded);
 font-style: normal;
 font-weight: 400;
 font-size: 14px;
@@ -144,6 +143,16 @@ color: var(--black_text);
 font-feature-settings: 'pnum' on, 'lnum' on;
 overflow-x: auto;
   }
+  .text_span span {
+    font-family: var(--font-raleway);
+    font-style: normal;
+    font-weight: var(--fw-400);
+    font-size: 14px;
+    line-height: 20px;
+    padding-bottom: 32px;
+    padding-top: 8px;
+    color: var(--black-1D2E43);
+    }
   .cub_img {
     position: absolute;
     z-index: 0;

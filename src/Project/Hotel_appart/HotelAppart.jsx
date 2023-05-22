@@ -130,7 +130,7 @@ export default function HotelAppart() {
                   <div className={styles.result_text}>Площадь участка</div>
                 </div>
                 <div className={styles.result_block}>
-                  <div className={styles.result_number}>9hh</div>
+                  <div className={styles.result_number}>9</div>
                   <div className={styles.result_text}>Этажность</div>
                 </div>
               </div>
@@ -174,7 +174,7 @@ export default function HotelAppart() {
                   </div>
                   <div>
                     <div className={styles.local_title}>Награды</div>
-                    <div className={styles.local_text}>?</div>
+                    <div className={styles.local_text}>&mdash;</div>
                   </div>
                 </div>
               </div>
