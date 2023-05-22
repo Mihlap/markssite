@@ -132,7 +132,7 @@ export default function WineParkArticles() {
             </h1>
 
             <div ref={blockName} className={styles.header_name}>
-              Archea Associati +T+T Architects + INPI (входит в ГК MARKSGROUP)
+              Archea Associati + T+T Architects + INPI (входит в ГК MARKSGROUP)
             </div>
             <div ref={descRef} className={styles.header_desc}>
               Проект Россия, Москва &#8226; 24 Мая 2023
@@ -142,7 +142,7 @@ export default function WineParkArticles() {
             <div ref={blockRight} className={styles.header_content_text}>
               <div className={styles.title_block}>
                 <h2 className={styles.left_title}>
-                  Archea Associati +T+T Architects + INPI (входит в ГК
+                  Archea Associati + T+T Architects + INPI (входит в ГК
                   MARKSGROUP)
                 </h2>
               </div>
