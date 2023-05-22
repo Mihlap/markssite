@@ -23,13 +23,12 @@ import WineParkArticles from "./articlesProject/WinePark/WineParkArticles";
 const App = () => {
   const location = useLocation();
   const [isScrollDisabled, setIsScrollDisabled] = useState(false);
-
+  
   const [loading, setLoading] = useState(false);
   const [navOpen, setNavOpen] = useState(false);
   const [isHidden, setHidden] = useState(false);
-
-
-    useEffect(() => {
+  
+ useEffect(() => {
       const body = document.querySelector("body");
       if (navOpen) {
         // Запрещаем вертикальный скролл

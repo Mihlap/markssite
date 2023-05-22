@@ -169,7 +169,7 @@ export default function Slava() {
                   </div>
                   <div>
                     <div className={styles.local_title}>Награды</div>
-                    <div className={styles.local_text}>-</div>
+                    <div className={styles.local_text}>&mdash;</div>
                   </div>
                 </div>
               </div>
