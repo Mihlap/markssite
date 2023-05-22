@@ -165,7 +165,7 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen }) => {
                     <Link
                       className={styles.menu_item}
                       onClick={closeNavBar}
-                      to="publications"
+                      to="publications1"
                       smooth={true}
                       duration={500}
                     >
