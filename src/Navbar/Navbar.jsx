@@ -176,7 +176,7 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen }) => {
                       mail@marksgroup.ru
                     </Link>
                     <Link
-                      to={"tel:+15551234567"}
+                      to={"tel:+74951201226"}
                       className={styles.contact_info_phone}
                       style={{ fontVariantNumeric: "lining-nums" }}
                     >
