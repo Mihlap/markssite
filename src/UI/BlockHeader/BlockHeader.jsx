@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+// import { ScrollSmoother } from 'gsap/ScrollSmoother';
 import { CSSPlugin } from 'gsap/CSSPlugin';
 import './index.scss';
 
@@ -10,25 +11,26 @@ gsap.registerPlugin(ScrollTrigger, CSSPlugin);
 const BlockHeader = React.memo(() => {
   const accordionsRef = useRef(null);
 
-  const closeAccordions = () => {
-    const accordions = document.querySelectorAll('.accordion');
-    accordions.forEach((accordion) => {
-      const text = accordion.querySelector('.text_span');
-      text.classList.add('closed');
-      gsap.set(text, {
-        maxHeight: 0,
-        opacity: 0,
-        overflow: 'hidden',
-      });
-      accordion.classList.remove('open');
-    });
-  };
-  closeAccordions();
+  // const closeAccordions = () => {
+  //   const accordions = document.querySelectorAll('.accordion');
+  //   accordions.forEach((accordion) => {
+  //     const text = accordion.querySelector('.text_span');
+  //     text.classList.add('closed');
+  //     gsap.set(text, {
+  //       maxHeight: text.scrollHeight,
+  //       opacity: 0,
+  //       overflow: 'hidden',
+  //     });
+  //     accordion.classList.remove('open');
+  //   });
+  // };
+  // closeAccordions();
   
   useEffect(() => {
     const accordions = document.querySelectorAll('.accordion');
+    let currentIndex = -1;
     
-    accordions.forEach((accordion) => {
+    accordions.forEach((accordion, index) => {
       const text = accordion.querySelector('.text_span');
       text.classList.add('closed');
            
@@ -38,47 +40,34 @@ const BlockHeader = React.memo(() => {
           delay: 1,
       });
    
-     ScrollTrigger.create({
+      ScrollTrigger.create({
         trigger: text,
-        start: 'bottom bottom-=15%',
+        start: 'bottom bottom-=20%',
         end: 'top bottom+=10%',
-        onEnter: () => {
-          if (!accordion.classList.contains('open')) {
+        onUpdate: (self) => {
+          if (self.direction === 1 && index > currentIndex) {
             gsap.to(text, {
               maxHeight: text.scrollHeight,
-              duration: 1,
-              // ease: "Power4.easeInOut",
-            });
+              duration: 1.1,
+              pin: true,
+          });
             accordion.classList.add('open');
+            currentIndex = index;
           }
         },
         onLeaveBack: () => {
-              gsap.to(text, {
-              maxHeight: 0,
-              duration: 0.3,
-             });
-            accordion.classList.remove('open');
-         },
-        //  smoothChildTiming: true
-      });
-
-      ScrollTrigger.create({
-        trigger: accordion,
-        start: 'top bottom',
-        end: 'bottom bottom',
-        onEnter: () => {
-          if (!accordion.classList.contains('open')) {
-            gsap.to(text, {
-              maxHeight: 0,
-              duration: 0.5,
-            });
-          }
+          gsap.to(text, {
+            maxHeight: 0,
+            duration: 0.5,
+          });
+          accordion.classList.remove('open');
+          currentIndex = index - 1;
         },
       });
     });
   }, []);
   
-// test git
+
   return (
     <div className="wrapper">
       <div className="spacer"></div>
@@ -159,6 +148,21 @@ const BlockHeader = React.memo(() => {
 
 export default BlockHeader;
 
+
+ 
+//       ScrollTrigger.create({
+      //   trigger: accordion,
+      //   start: 'top bottom',
+      //   end: 'bottom bottom',
+      //   onEnter: () => {
+      //     if (!accordion.classList.contains('open')) {
+      //       gsap.to(text, {
+      //         maxHeight: 0,
+      //         duration: 0.5,
+      //       });
+      //     }
+      //   },
+      // });
 
 
 
