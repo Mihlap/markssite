@@ -142,7 +142,7 @@ export default function WineParkArticles() {
             <div ref={blockRight} className={styles.header_content_text}>
               <div className={styles.title_block}>
                 <h2 className={styles.left_title}>
-                  Archea Associati + T+T Architects + INPI  (входит
+                  Archea Associati + T+T Architects + INPI (входит
                   в&nbsp;ГК&nbsp;MARKSGROUP)
                 </h2>
               </div>

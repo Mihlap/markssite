@@ -123,7 +123,7 @@ export default function HotelAppart() {
               <div className={styles.result_container}>
                 <div className={styles.result_block}>
                   <div className={styles.result_number}>10 653,41 м²</div>
-                  <div className={styles.result_text}>Общая площадь</div>
+                  <div className={styles.result_text}>Общая площадь здания</div>
                 </div>
                 <div className={styles.result_block}>
                   <div className={styles.result_number}>2 359 м²</div>
@@ -184,16 +184,16 @@ export default function HotelAppart() {
               className={styles.result_container_phone}
             >
               <div className={styles.result_block}>
-                <div className={styles.result_number}>30 га</div>
-                <div className={styles.result_text}>Общая площадь</div>
+                <div className={styles.result_number}>10653,41 м²</div>
+                <div className={styles.result_text}>Общая площадь здания</div>
               </div>
               <div className={styles.result_block}>
-                <div className={styles.result_number}>7. 75 га</div>
-                <div className={styles.result_text}>Площадь виноградников</div>
+                <div className={styles.result_number}>2359 м²</div>
+                <div className={styles.result_text}>Площадь участка</div>
               </div>
               <div className={styles.result_block}>
-                <div className={styles.result_number}>54.5 м</div>
-                <div className={styles.result_text}>Высота винной башни</div>
+                <div className={styles.result_number}>9</div>
+                <div className={styles.result_text}>Этажность</div>
               </div>
             </div>
           </div>
@@ -214,16 +214,18 @@ export default function HotelAppart() {
             className={styles.description_object_container}
           >
             <div className={styles.description_object_block}>
-               <div className={styles.description_object_text1}>
-                В рамках нового строительства планируется реконструкция исторического
-                фасада со стороны Космодамианской набережной с увеличением этажности.
-                В целях воссоздания исторического проекта 1901 г. архитектора И. Благовещенского
-                архитектурные решения включают в себя частичное сохранение существующей стены,
-                дополненной фасадными деталями в соответствии с архивной документацией. Гостиничный
-                комплекс с апартаментами представляет собой объем из двух жилых корпусов,
-                объединенных общей подземной частью Г-образной формы. Здание включает в себя два
-                подземных этажа, цокольный этаж, 6 наземных этажей с устройствами светопрозрачной
-                конструкции фонаря.
+              <div className={styles.description_object_text1}>
+                В рамках нового строительства планируется реконструкция
+                исторического фасада со стороны Космодамианской набережной с
+                увеличением этажности. В целях воссоздания исторического проекта
+                1901 г. архитектора И. Благовещенского архитектурные решения
+                включают в себя частичное сохранение существующей стены,
+                дополненной фасадными деталями в соответствии с архивной
+                документацией. Гостиничный комплекс с апартаментами представляет
+                собой объем из двух жилых корпусов, объединенных общей подземной
+                частью Г-образной формы. Здание включает в себя два подземных
+                этажа, цокольный этаж, 6 наземных этажей с устройствами
+                светопрозрачной конструкции фонаря.
               </div>
             </div>
           </div>

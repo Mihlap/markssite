@@ -56,7 +56,7 @@
 /* <<=============== левый блок контента с информацией===============>> */
 
 .header_content_left {
-  width: 70%;
+  width: 72%;
   overflow: hidden;
   padding-right: 14rem;
 }
@@ -142,7 +142,7 @@
 /* << =============== правый блок контента с информацией =============== >> */
 
 .header_content_right {
-  width: 30%;
+  width: 35%;
 }
 
 .local_container {
@@ -156,8 +156,8 @@
 .local_left {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
   gap: 1.5rem;
+  width: 50%;
 }
 
 .local_title {
@@ -281,6 +281,10 @@
     padding-top: 2.5rem;
   }
 
+  .result_number_block {
+    padding-left: 18%;
+  }
+
   .header_img_title {
     top: 9vh;
     left: 2vh;
@@ -356,7 +360,7 @@
 
   .local_container {
     padding-top: 5.33vw;
-    gap: 20vw;
+    gap: 10vw;
   }
 
   .local_title {
@@ -428,6 +432,7 @@
     font-weight: var(--fw-400);
     font-size: 4.27vw;
     line-height: 6.40vw;
+    color: var(--black-1D2E43);
   }
 
   .header_desc {
