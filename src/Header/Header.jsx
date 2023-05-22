@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -8,13 +8,16 @@ import SwiperContainer from "./Swiper-Phone/SwiperContainer";
 import SwiperContainerProgect from "./Swiper-project/SwiperContainerProgect";
 import SliderHeader from "../UI/SliderHeader/SliderHeader";
 import VideoPlayer from "../UI/Videoplayer/VideoPlayer";
-import Mapbox3D from '../UI/Map3D/Mapbox3D';
+import Mapbox3D from "../UI/Map3D/Mapbox3D";
 import styles from "./Header.module.css";
 
 import SliderMobile from "../UI/SliderHeader/SliderMobile";
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
-export default function Header({ isHidden, navOpen }) {
+export default function Header() {
+  useEffect(() => {
+    window.scrollTo(20, 0);
+  }, []);
   return (
     <main className={styles.header}>
       <div className={styles.video_block}>
