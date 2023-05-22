@@ -117,7 +117,7 @@
     color: var(--black-1D2E43);
     padding-top: 1.22vw;
     padding-bottom: 3.5rem;
-}
+ }
 
 /* Quote and description object styles */
 .quote_container,
@@ -130,7 +130,7 @@
 .quote_block,
 .description_object_block {
     width: 70%;
-}
+  }
 
 .description_object_block {
     display: flex;
