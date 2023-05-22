@@ -27,7 +27,7 @@ const Mapbox3D = () => {
     .addTo(map);
     
     map.addControl(new mapboxgl.NavigationControl());
-  }, []);
+     }, []);
   
   return (
     <div className={styles.map}>
@@ -38,43 +38,3 @@ const Mapbox3D = () => {
 
 export default Mapbox3D;
 
-
-
-    // map.on('style.load', () => {
-    //   const layers = map.getStyle().layers;
-    //   const labelLayerId = layers.find((layer) => layer.type === 'symbol' && layer.layout['text-field']).id;
-          
-    //   map.addLayer(
-    //     {
-    //       id: 'add-3d-buildings',
-    //       source: 'composite',
-    //       'source-layer': 'building',
-    //       filter: ['==', 'extrude', 'true'],
-    //       type: 'fill-extrusion',
-    //       minzoom: 11,
-    //       paint: {
-    //         'fill-extrusion-color': 'lightblue',            
-    //         'fill-extrusion-height': [
-    //           'interpolate',
-    //           ['linear'],
-    //           ['zoom'],
-    //           15,
-    //           0,
-    //           15.05,
-    //           ['get', 'height'],
-    //         ],
-    //         'fill-extrusion-base': [
-    //           'interpolate',
-    //           ['linear'],
-    //           ['zoom'],
-    //           15,
-    //           0,
-    //           15.05,
-    //           ['get', 'min_height'],
-    //         ],
-    //         'fill-extrusion-opacity': 0.6,
-    //       },
-    //     },
-    //     labelLayerId,
-    //     );
-    //   });
