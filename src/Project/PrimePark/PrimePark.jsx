@@ -120,9 +120,7 @@ export default function PrimePark() {
                 </div>
                 <div className={styles.result_block}>
                   <div className={styles.result_number}>11,4 га</div>
-                  <div className={styles.result_text}>
-                    Площадь виноградников
-                  </div>
+                  <div className={styles.result_text}>Площадь участка</div>
                 </div>
                 <div className={styles.result_block}>
                   <div className={styles.result_number}>42</div>
@@ -181,16 +179,16 @@ export default function PrimePark() {
               className={styles.result_container_phone}
             >
               <div className={styles.result_block}>
-                <div className={styles.result_number}>30 га</div>
+                <div className={styles.result_number}>4 га</div>
                 <div className={styles.result_text}>Общая площадь</div>
               </div>
               <div className={styles.result_block}>
-                <div className={styles.result_number}>7. 75 га</div>
-                <div className={styles.result_text}>Площадь виноградников</div>
+                <div className={styles.result_number}>11,4 га</div>
+                <div className={styles.result_text}>Площадь участка</div>
               </div>
               <div className={styles.result_block}>
-                <div className={styles.result_number}>54.5 м</div>
-                <div className={styles.result_text}>Высота винной башни</div>
+                <div className={styles.result_number}>42</div>
+                <div className={styles.result_text}>Этажность</div>
               </div>
             </div>
           </div>

@@ -190,11 +190,11 @@ export default function WinePark() {
               className={styles.result_container_phone}
             >
               <div className={styles.result_block}>
-                <div className={styles.result_number}>30 га</div>
+                <div className={styles.result_number}>39.7 га</div>
                 <div className={styles.result_text}>Общая площадь</div>
               </div>
               <div className={styles.result_block}>
-                <div className={styles.result_number}>7. 75 га</div>
+                <div className={styles.result_number}>7.9 га</div>
                 <div className={styles.result_text}>Площадь виноградников</div>
               </div>
               <div className={styles.result_block}>
