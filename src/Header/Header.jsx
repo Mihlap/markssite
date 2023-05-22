@@ -24,7 +24,7 @@ export default function Header({ isHidden, navOpen }) {
         {/* <img className={styles.image_phone} src={photo} alt="photo" /> */}
       </div>
       <div className={styles.header_desctop_block}>
-        <h1 id="public" className={styles.desctop_title}>
+        <h1 id="publications" className={styles.desctop_title}>
           Награды и публикации
         </h1>
         <div className={styles.desctop_test}>
@@ -151,7 +151,7 @@ export default function Header({ isHidden, navOpen }) {
         </div>
         <div className={styles.names_contents}>
           <div className={styles.name_11}>+11</div>
-          <div id="competention" className={styles.name_competencies}>
+          <div id="competencies" className={styles.name_competencies}>
             Компетенции
           </div>
         </div>
@@ -182,7 +182,7 @@ export default function Header({ isHidden, navOpen }) {
         <SwiperContainerProgect />
       </div>
       <div className={styles.main_project}>
-        <div id="project" className={styles.main_project_left}>
+        <div className={styles.main_project_left}>
           <Link to="/prime-park">
             <img
               className={styles.img_poject}
@@ -213,7 +213,7 @@ export default function Header({ isHidden, navOpen }) {
               </span>
             </div>
           </div>
-          <div className={styles.main_project_right2}>
+          <div id="projects" className={styles.main_project_right2}>
             <Link to="/slava">
               <img
                 className={styles.img_project}
