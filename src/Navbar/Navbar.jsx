@@ -39,7 +39,7 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen }) => {
       const visible = prevScrollpos > currentScrollPos;
       setVisible(visible);
       setPrevScrollpos(currentScrollPos);
-    }, 100);
+    }, 200);
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [prevScrollpos]);
@@ -187,19 +187,19 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen }) => {
                 <div className={styles.contact_info}>
                   <div className={styles.contact_info_block}>
                     {/* <div className={styles.contact_info_language}>EN | CN</div> */}
-                    <Link
+                    <NavLink
                       className={styles.contact_info_mail}
                       to="mailto:mail@marksgroup.ru"
                     >
                       mail@marksgroup.ru
-                    </Link>
-                    <Link
+                    </NavLink>
+                    <NavLink
                       to={"tel:+74951201226"}
                       className={styles.contact_info_phone}
                       style={{ fontVariantNumeric: "lining-nums" }}
                     >
                       +7(495) 120-12-26
-                    </Link>
+                    </NavLink>
                   </div>
                 </div>
               </div>
