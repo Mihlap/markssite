@@ -40,7 +40,7 @@ const Footer = () => {
           {/* <div className={styles.block_lang}>
             <span className={styles.en}>EN</span>
           </div> */}
-          <div className={styles.social_links}>
+          <div id="projects" className={styles.social_links}>
             <Link to="https://vk.com/marks_group_vk" target="_blank">
               <span
                 className={styles.social_links_item}

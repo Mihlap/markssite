@@ -178,7 +178,6 @@ export default function Header() {
         Проекты
       </div>
       <div
-        // ref={refs.swiperProgeject}
         className={styles.swiper_progect_container}
       >
         <SwiperContainerProgect />
