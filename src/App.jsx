@@ -1,14 +1,13 @@
+import { useEffect, useState, lazy, Suspense } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import "./App.css";
-import Header from "./Header/Header";
 import Company from "./Company/Company";
-import Competentions from "./Competentions/Competentions";
-import Contacts from "./Contacts/Contacts";
+// import Competentions from "./Competentions/Competentions";
+// import Contacts from "./Contacts/Contacts";
+// import Project from "./Project/Project";
+// import Publics from "./Publics/Publics";
 import NotFound from "./NotFound/NotFound";
 import Portal from "./Portal/Portal";
-import Project from "./Project/Project";
-import Publics from "./Publics/Publics";
-import { useEffect, useState } from "react";
 import Navbar from "./Navbar/Navbar";
 import Footer from "./Footer/Footer";
 import WinePark from "./Project/WinePark/WinePark";
@@ -20,31 +19,32 @@ import PrimePark from "./Project/PrimePark/PrimePark";
 import HotelAppart from "./Project/Hotel_appart/HotelAppart";
 import WineParkArticles from "./articlesProject/WinePark/WineParkArticles";
 
+const Header = lazy(() => import("./Header/Header"));
+
 const App = () => {
   const location = useLocation();
   const [isScrollDisabled, setIsScrollDisabled] = useState(false);
 
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [navOpen, setNavOpen] = useState(false);
   const [isHidden, setHidden] = useState(false);
 
 
-    useEffect(() => {
-      const body = document.querySelector("body");
-      if (navOpen) {
-        // Запрещаем вертикальный скролл
-        body.style.overflowY = "hidden";
-      } else {
-        // Разрешаем вертикальный скролл
-        body.style.overflowY = "scroll";
-      }
-    }, [navOpen]);  
+  useEffect(() => {
+    const body = document.querySelector("body");
+    if (navOpen) {
+      // Запрещаем вертикальный скролл
+      body.style.overflowY = "hidden";
+    } else {
+      // Разрешаем вертикальный скролл
+      body.style.overflowY = "scroll";
+    }
+  }, [navOpen]);
 
   // таймаут для прелоудера на сайте
   setTimeout(() => {
     setLoading(false);
   }, 3500);
-
 
   function handleClickScroll() {
     setIsScrollDisabled(!isScrollDisabled);
@@ -66,7 +66,19 @@ const App = () => {
               <Routes location={location}>
                 <Route
                   path="/"
-                  element={<Header navOpen={navOpen} isHidden={isHidden} />}
+                  element={
+                    // <MyComponent navOpen={navOpen} isHidden={isHidden} />
+
+                    <Suspense
+                      fallback={
+                        <div>
+                          <Loading />
+                        </div>
+                      }
+                    >
+                      <Header />
+                    </Suspense>
+                  }
                 />
                 {/* <Route path="/competention" element={<Competentions />} /> */}
                 {/* <Route path="/project" element={<Project />} /> */}
@@ -74,14 +86,18 @@ const App = () => {
                 <Route path="/company" element={<Company />} />
                 {/* <Route path="/contacts" element={<Contacts />} /> */}
                 <Route path="/portal" element={<Portal />} />
-                <Route path="*" element={<NotFound />} />``
+                <Route path="*" element={<NotFound />} />
+                ``
                 <Route path="/winepark" element={<WinePark />} />
-                <Route path="/winepark-article" element={<WineParkArticles />} />
+                <Route
+                  path="/winepark-article"
+                  element={<WineParkArticles />}
+                />
                 <Route path="/badaevsky" element={<Badaevsky />} />
                 <Route path="/slava" element={<Slava />} />
                 <Route path="/prime-park" element={<PrimePark />} />
                 <Route path="/hotel-appart" element={<HotelAppart />} />
-                </Routes>
+              </Routes>
             </CSSTransition>
           </TransitionGroup>
           <Footer />
