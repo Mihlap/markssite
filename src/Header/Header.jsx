@@ -155,7 +155,6 @@ export default function Header({ isHidden, navOpen }) {
             Компетенции
           </div>
         </div>
-
         <div className={styles.most}>
           <img className={styles.image_most} alt=""></img>
         </div>
