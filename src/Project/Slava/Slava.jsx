@@ -121,9 +121,7 @@ export default function Slava() {
                 </div>
                 <div className={styles.result_block}>
                   <div className={styles.result_number}>4394,7 м²</div>
-                  <div className={styles.result_text}>
-                    Площадь виноградников
-                  </div>
+                  <div className={styles.result_text}>Площадь застройки</div>
                 </div>
                 <div className={styles.result_block}>
                   <div className={styles.result_number}>8 — 17</div>
@@ -181,16 +179,18 @@ export default function Slava() {
               className={styles.result_container_phone}
             >
               <div className={styles.result_block}>
-                <div className={styles.result_number}>30 га</div>
+                <div className={styles.result_number}>1,218 га</div>
                 <div className={styles.result_text}>Общая площадь</div>
               </div>
-              <div className={styles.result_block}>
-                <div className={styles.result_number}>7. 75 га</div>
-                <div className={styles.result_text}>Площадь виноградников</div>
+              <div
+                className={`${styles.result_block} ${styles.result_number_block}`}
+              >
+                <div className={styles.result_number}>4394,7 м²</div>
+                <div className={styles.result_text}>Площадь застройки</div>
               </div>
               <div className={styles.result_block}>
-                <div className={styles.result_number}>54.5 м</div>
-                <div className={styles.result_text}>Высота винной башни</div>
+                <div className={styles.result_number}>8 — 17</div>
+                <div className={styles.result_text}>Этажность</div>
               </div>
             </div>
           </div>
