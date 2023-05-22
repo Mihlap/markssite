@@ -109,7 +109,7 @@ export default function Slava() {
               <div className={styles.title_text}>
                 Участок многофункционального комплекса расположен в САО г.
                 Москвы в районе «Беговой», на территории Второго часового завода
-                “Слава”. Рельеф со стороны 1-ой улицы Ямского поля – спокойный,
+                «Слава». Рельеф со стороны 1-ой улицы Ямского поля – спокойный,
                 идущий на повышение в сторону существующей застройки, перепад
                 рельефа составляет около 3,5 м.
               </div>
@@ -143,7 +143,7 @@ export default function Slava() {
 
                   <div>
                     <div className={styles.local_title}>Заказчик</div>
-                    <div className={styles.local_text}>-</div>
+                    <div className={styles.local_text}>MR Group</div>
                   </div>
                   <div>
                     <div className={styles.local_title}>Публикации</div>
