@@ -214,7 +214,7 @@ export default function PrimePark() {
               <div className={styles.description_object_title}>
                 Приватный парк
               </div>
-              <div className="description_object_text1">
+              <div className={styles.description_object_text1}>
                 Садово-парковый комплекс внутри двора над стилобатной частью
                 представлен различными природными ландшафтными решениями, зонами
                 активностей и детскими игровыми площадками. Реализованные
