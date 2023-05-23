@@ -21,7 +21,6 @@ const Contacts = () => {
         container: 'map',
         antialias: true,
       });
-
       newMap.on('load', () => {
         newMap.addSource('marker', {
           type: 'geojson',

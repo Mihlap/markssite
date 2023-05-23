@@ -2,7 +2,6 @@
 import React, { useEffect, useRef } from "react";
 import styles from "../ArticlesProject.module.css";
 import gsap from "gsap";
-import { Link } from "react-router-dom";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import AllProjectsButton from "../../UI/ButtonsProjects/AllProjectsButton";
 
