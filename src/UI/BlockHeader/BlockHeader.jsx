@@ -26,7 +26,7 @@ const BlockHeader = React.memo(() => {
    
       ScrollTrigger.create({
         trigger: text,
-        start: 'bottom bottom-=20%',
+        start: 'bottom bottom-=15%',
         end: 'top bottom+=10%',
         onUpdate: (self) => {
           if (self.direction === 1 && index > currentIndex) {

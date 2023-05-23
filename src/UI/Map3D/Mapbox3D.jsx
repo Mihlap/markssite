@@ -20,6 +20,7 @@ const Mapbox3D = () => {
       bearing: 10,
       container: 'map', 
       antialias: true,
+      // attributionControl: false,
     });
     map.scrollZoom.disable();
     new mapboxgl.Marker({color: '#FF7F6A'})
