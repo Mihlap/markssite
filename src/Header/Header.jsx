@@ -33,7 +33,7 @@ export default function Header() {
           Наша компания участвует в многочисленных выставках, конференциях
           <br /> и конкурсах. Предлагаем ознакомиться с некоторыми докладами
         </div>
-       
+        </div>
       </div>
       <div id="publications1" className={styles.header_block}>
         <h1 className={styles.heading}>Награды проектов</h1>
