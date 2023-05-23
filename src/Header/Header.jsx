@@ -8,7 +8,7 @@ import SwiperContainer from "./Swiper-Phone/SwiperContainer";
 import SwiperContainerProgect from "./Swiper-project/SwiperContainerProgect";
 import SliderHeader from "../UI/SliderHeader/SliderHeader";
 import VideoPlayer from "../UI/Videoplayer/VideoPlayer";
-// import Mapbox3D from "../UI/Map3D/Mapbox3D";
+import Mapbox3D from "../UI/Map3D/Mapbox3D";
 import styles from "./Header.module.css";
 
 import SliderMobile from "../UI/SliderHeader/SliderMobile";

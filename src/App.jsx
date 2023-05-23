@@ -4,7 +4,7 @@ import "./App.css";
 import Company from "./Company/Company";
 import Header from "./Header/Header";
 // import Competentions from "./Competentions/Competentions";
-// import Contacts from "./Contacts/Contacts";
+import Contacts from "./Contacts/Contacts";
 // import Project from "./Project/Project";
 // import Publics from "./Publics/Publics";
 import NotFound from "./NotFound/NotFound";
@@ -24,7 +24,7 @@ const App = () => {
   const location = useLocation();
   const [isScrollDisabled, setIsScrollDisabled] = useState(false);
 
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [navOpen, setNavOpen] = useState(false);
   const [isHidden, setHidden] = useState(false);
 
@@ -73,7 +73,7 @@ const App = () => {
                 {/* <Route path="/project" element={<Project />} /> */}
                 {/* <Route path="/public" element={<Publics />} /> */}
                 <Route path="/company" element={<Company />} />
-                {/* <Route path="/contacts" element={<Contacts />} /> */}
+                <Route path="/contacts" element={<Contacts />} />
                 <Route path="/portal" element={<Portal />} />
                 <Route path="*" element={<NotFound />} />
                 ``
