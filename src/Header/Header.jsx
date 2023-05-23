@@ -12,7 +12,7 @@ import Mapbox3D from "../UI/Map3D/Mapbox3D";
 import styles from "./Header.module.css";
 import SliderMobile from "../UI/SliderHeader/SliderMobile";
 import { useDispatch, useSelector } from "react-redux";
-import { increment, decrement } from "../store/counterSlice";
+
 
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
@@ -36,12 +36,7 @@ export default function Header() {
           Наша компания участвует в многочисленных выставках, конференциях
           <br /> и конкурсах. Предлагаем ознакомиться с некоторыми докладами
         </div>
-        <div>
-          <h3>Counter: {count}</h3>
-          <button onClick={() => dispatch(increment())}>плюс</button>
-          <button onClick={() => dispatch(decrement())}>минус</button>
         </div>
-      </div>
       <div id="publications1" className={styles.header_block}>
         <h1 className={styles.heading}>Награды проектов</h1>
         <p className={styles.heading_text}>
