@@ -78,4 +78,10 @@
   height: 2.25rem;
   border-radius: 34px;
   background-color: transparent;
-  }
+  border: 1px solid var(--black-1D2E43);
+}
+
+.menu_button:active {
+  color: var(--white-F6F6F6);
+  background-color: var(--black-1D2E43);
+}

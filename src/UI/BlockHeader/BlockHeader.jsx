@@ -4,7 +4,6 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { CSSPlugin } from 'gsap/CSSPlugin';
 import './index.scss';
 
-import cub from "../../icons/cub.svg";
 gsap.registerPlugin(ScrollTrigger, CSSPlugin);
 
 const BlockHeader = React.memo(() => {
