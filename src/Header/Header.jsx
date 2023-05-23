@@ -34,8 +34,7 @@ export default function Header() {
           <br /> и конкурсах. Предлагаем ознакомиться с некоторыми докладами
         </div>
         </div>
-      </div>
-      <div id="publications1" className={styles.header_block}>
+       <div id="publications1" className={styles.header_block}>
         <h1 className={styles.heading}>Награды проектов</h1>
         <p className={styles.heading_text}>
           Наша компания участвует в<br /> многочисленных выставках, конференциях
