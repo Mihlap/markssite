@@ -8,19 +8,19 @@ const Contacts = () => {
   const apiKey = process.env.REACT_APP_API_KEY;
   mapboxgl.accessToken = apiKey;
 
-  useLayoutEffect(() => {
-    const map = new mapboxgl.Map({
-      style: 'mapbox://styles/anna02/clgz2fy0200hg01qu5tb8a6is',
-      center: [37.581, 55.783],
-      zoom: 11,
-      attributionControl: false,
-      container: 'map',
-      antialias: true,
-    });
-    new mapboxgl.Marker({ color: '#FF7F6A' })
-      .setLngLat([37.5804, 55.783])
-      .addTo(map);
-  }, []);
+  // useLayoutEffect(() => {
+  //   const map = new mapboxgl.Map({
+  //     style: 'mapbox://styles/anna02/clgz2fy0200hg01qu5tb8a6is',
+  //     center: [37.581, 55.783],
+  //     zoom: 11,
+  //     attributionControl: false,
+  //     container: 'map',
+  //     antialias: true,
+  //   });
+  //   new mapboxgl.Marker({ color: '#FF7F6A' })
+  //     .setLngLat([37.5804, 55.783])
+  //     .addTo(map);
+  // }, []);
 
   return (
 
