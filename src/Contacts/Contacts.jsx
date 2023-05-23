@@ -15,7 +15,7 @@ const Contacts = () => {
     if (!map) {
       const newMap = new mapboxgl.Map({
         style: 'mapbox://styles/anna02/clgz2fy0200hg01qu5tb8a6is',
-        center: getCityCenter(selectedMap),
+        center: getOfficeCenter(selectedMap),
         zoom: 11,
         attributionControl: false,
         container: 'map',
@@ -31,47 +31,46 @@ const Contacts = () => {
                 type: 'Feature',
                 geometry: {
                   type: 'Point',
-                  coordinates: getCityCenter(selectedMap),
+                  coordinates: getOfficeCenter(selectedMap),
                 },
               },
             ],
           },
         });
-
         const newMarker = new mapboxgl.Marker({ color: '#FF7F6A' })
-          .setLngLat(getCityCenter(selectedMap))
+          .setLngLat(getOfficeCenter(selectedMap))
           .addTo(newMap);
         setMarker(newMarker);
       });
 
       setMap(newMap);
     } else {
-      map.setCenter(getCityCenter(selectedMap));
+      map.setCenter(getOfficeCenter(selectedMap));
       if (map && map.getSource('marker')) {
-      map.getSource('marker').setData({
-        type: 'FeatureCollection',
-        features: [
-          {
-            type: 'Feature',
-            geometry: {
-              type: 'Point',
-              coordinates: getCityCenter(selectedMap),
+        map.getSource('marker').setData({
+          type: 'FeatureCollection',
+          features: [
+            {
+              type: 'Feature',
+              geometry: {
+                type: 'Point',
+                coordinates: getOfficeCenter(selectedMap),
+              },
             },
-          },
-        ],
-      });
-    }
+          ],
+        });
+      }
       const newMarker = new mapboxgl.Marker({ color: '#FF7F6A' })
-        .setLngLat(getCityCenter(selectedMap))
+        .setLngLat(getOfficeCenter(selectedMap))
         .addTo(map);
       setMarker(newMarker);
     }
   }, [map, selectedMap]);
 
-  function getCityCenter(city) {
+  function getOfficeCenter(city) {
     switch (city) {
       case 'Москва':
-        return [37.618423, 55.751244];
+        return [37.5804, 55.783];
       case 'Оренбург':
         return [55.098208, 51.768199];
       case 'Челябинск':
@@ -100,25 +99,25 @@ const Contacts = () => {
         </div>
         <div className={styles.menu_button_group}>
           <button
-            className={styles.menu_button}
+            className={`${styles.menu_button} ${selectedMap === 'Москва' ? styles.menu_button_active : ''}`}
             onClick={() => setSelectedMap('Москва')}
           >
             Москва
           </button>
           <button
-            className={styles.menu_button}
+            className={`${styles.menu_button} ${selectedMap === 'Оренбург' ? styles.menu_button_active : ''}`}
             onClick={() => setSelectedMap('Оренбург')}
           >
             Оренбург
           </button>
           <button
-            className={styles.menu_button}
+            className={`${styles.menu_button} ${selectedMap === 'Челябинск' ? styles.menu_button_active : ''}`}
             onClick={() => setSelectedMap('Челябинск')}
           >
             Челябинск
           </button>
           <button
-            className={styles.menu_button}
+            className={`${styles.menu_button} ${selectedMap === 'Ташкент' ? styles.menu_button_active : ''}`}
             onClick={() => setSelectedMap('Ташкент')}
           >
             Ташкент
@@ -131,9 +130,7 @@ const Contacts = () => {
           style={{
             width: '100%',
             height: '100%',
-            boxSizing: 'border-box',
-            borderRadius: '7px',
-          }}
+           }}
         />
       </div>
     </div>
