@@ -1,14 +1,7 @@
-import React from 'react';
-import styles from './Company.module.css';
-
-const Company = () => {
+import React from 'react'
+import styles from "./Company.module.css";
+export default function Company() {
   return (
-    <>
-    <div className={styles.company}>
-       <h1>Здесь будет страница о Компании</h1>
-      </div>
-      </>
+    <div>Company</div>
   )
 }
-
-export default Company;
