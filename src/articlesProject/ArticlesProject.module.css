@@ -1,4 +1,4 @@
-@import "../../App.css";
+@import "../App.css";
 
 
 /* Container styles */
@@ -146,10 +146,12 @@
     font-size: 1.11vw;
     line-height: 1.67vw;
     padding-bottom: 30px;
+    color: var(--black-1D2E43);
 }
 
 .quote {
     background-color: var(--light-light-gray-EBECEE);
+    color: var(--black-1D2E43);
     border-radius: 16px;
     font-weight: var(--fw-400);
     font-size: 1.11vw;
@@ -164,6 +166,10 @@
     line-height: 1.39vw;
     color: var(--gray-959DA6);
     padding-top: 24px;
+}
+
+.description_object_text1,.description_object_text2 {
+    color: var(--black-1D2E43);
 }
 
 /* Mobile styles */

@@ -10,11 +10,15 @@ import SliderHeader from "../UI/SliderHeader/SliderHeader";
 import VideoPlayer from "../UI/Videoplayer/VideoPlayer";
 import Mapbox3D from "../UI/Map3D/Mapbox3D";
 import styles from "./Header.module.css";
-
 import SliderMobile from "../UI/SliderHeader/SliderMobile";
+import { useDispatch, useSelector } from "react-redux";
+import { increment, decrement } from "../store/counterSlice";
+
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 export default function Header() {
+   const dispatch = useDispatch();
+   const count = useSelector((state) => state.counterSlice.value);
   useEffect(() => {
     window.scrollTo(20, 0);
   }, []);
@@ -31,6 +35,11 @@ export default function Header() {
         <div className={styles.desctop_test}>
           Наша компания участвует в многочисленных выставках, конференциях
           <br /> и конкурсах. Предлагаем ознакомиться с некоторыми докладами
+        </div>
+        <div>
+          <h3>Counter: {count}</h3>
+          <button onClick={() => dispatch(increment())}>плюс</button>
+          <button onClick={() => dispatch(decrement())}>минус</button>
         </div>
       </div>
       <div id="publications1" className={styles.header_block}>
@@ -177,9 +186,7 @@ export default function Header() {
       <div id="projects" className={styles.project_name}>
         Проекты
       </div>
-      <div
-        className={styles.swiper_progect_container}
-      >
+      <div className={styles.swiper_progect_container}>
         <SwiperContainerProgect />
       </div>
       <div className={styles.main_project}>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Link } from "react-scroll";
 import debounce from 'lodash.debounce';
 
@@ -30,23 +30,35 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen }) => {
     setIsChecked(!isChecked);
   };
 
-  const [prevScrollpos, setPrevScrollpos] = useState(window.pageYOffset);
-  const [visible, setVisible] = useState(true);
+const [scrollDirection, setScrollDirection] = useState("none");
+const [isVisible, setIsVisible] = useState(true);
 
-  useEffect(() => {
-    const handleScroll = debounce(() => {
-      const currentScrollPos = window.pageYOffset;
-      const visible = prevScrollpos > currentScrollPos;
-      setVisible(visible);
-      setPrevScrollpos(currentScrollPos);
-    }, 200);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [prevScrollpos]);
+const handleScroll = () => {
+  const currentScrollPos = window.pageYOffset;
+  if (currentScrollPos > scrollPos.current) {
+    setScrollDirection("down");
+    setIsVisible(false);
+  } else if (currentScrollPos < scrollPos.current) {
+    setScrollDirection("up");
+    setIsVisible(true);
+  }
+  scrollPos.current = currentScrollPos;
+};
+
+const scrollPos = useRef(0);
+
+useEffect(() => {
+  window.addEventListener("scroll", handleScroll);
+  return () => {
+    window.removeEventListener("scroll", handleScroll);
+  };
+}, []);
 
   return (
     <header
-      className={`${styles.fixed} ${visible ? styles.visible : styles.hidden}`}
+      className={`${styles.fixed} ${
+        isVisible ? styles.visible : styles.hidden
+      }`}
     >
       <nav className={styles.navbar_desctop}>
         <div className={styles.navbar_container}>
@@ -96,7 +108,7 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen }) => {
           <div className={styles.navbar}>
             <div className={styles.logo}>
               <NavLink to="/">
-                <img className={styles.logo_img} src={logo} alt="logo" />
+                <h1 className={styles.navbar_title}>MARKS GROUP</h1>
               </NavLink>
             </div>
             <div className={`${styles.container} ${styles.nav_container}`}>
@@ -127,6 +139,7 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen }) => {
                   backgroundColor: "#f6f6f6",
                   transition: "left 0.5s ease-in-out", // Анимация скрытия/показа
                   marginTop: "15%",
+                  zIndex: "9999",
                 }}
               >
                 <ul className={styles.menu_list}>
