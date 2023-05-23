@@ -41,9 +41,9 @@ const App = () => {
   }, [navOpen]);
 
   // таймаут для прелоудера на сайте
-  setTimeout(() => {
-    setLoading(false);
-  }, 3500);
+  // setTimeout(() => {
+  //   setLoading(false);
+  // }, 3500);
 
   function handleClickScroll() {
     setIsScrollDisabled(!isScrollDisabled);

@@ -8,16 +8,17 @@
   z-index: 9999;
 }
 
-.hidden {
-  opacity: 0;
-  transform: translateY(-100%);
-  transition: opacity 0.3s ease-out, transform 0.3s ease-out;
-}
 
 .visible {
-  opacity: 1;
+  display: block;
   transition: all .3s ease;
   transform: translateY(0);
+}
+
+.hidden {
+  display: none;
+  transform: translateY(-100%);
+  transition: opacity 0.3s ease-out, transform 0.3s ease-out;
 }
 
 .header {
@@ -25,6 +26,12 @@
   height: 500px;
   width: 100vw;
   display: flex;
+}
+
+.header {
+  position: sticky;
+  top: 0px;
+  height: 6rem;
 }
 
 .navbar_desctop {
