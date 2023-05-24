@@ -13,15 +13,17 @@ const Contacts = () => {
 
   useEffect(() => {
     if (!map) {
+      const zoomLevel = window.innerWidth <= 700 ? 9 : 12;
       const newMap = new mapboxgl.Map({
         style: 'mapbox://styles/anna02/clgz2fy0200hg01qu5tb8a6is',
         center: getOfficeCenter(selectedMap),
-        zoom: 11,
+        zoom: zoomLevel,
         attributionControl: false,
         container: 'map',
         antialias: true,
       });
-      newMap.on('load', () => {
+
+       newMap.on('load', () => {
         newMap.addSource('marker', {
           type: 'geojson',
           data: {
@@ -78,19 +80,37 @@ const Contacts = () => {
       case 'Ташкент':
         return [69.267883, 41.311151];
       default:
-        return [37.618423, 55.751244];
+        return [37.5804, 55.783];
     }
   }
+  const cityInfo = {
+    Москва: {
+      address: 'Москва, 3-я Ямского Поля, дом 20, строение 1, офис 70',
+      phone: '+7 (495) 120-12-26',
+    },
+    Оренбург: {
+      address: 'г. Оренбург, проезд Нижний, 17, офис 305',
+      phone: '+7 (495) 120-12-26',
+    },
+    Челябинск: {
+      address: 'г. Челябинск, ул. Северная дом 52/3',
+      phone: '+7 (495) 120-12-26',
+    },
+    Ташкент: {
+      address: 'Tashkent, Oybek Street, 18/1',
+      phone: '+7 (495) 120-12-26',
+    },
+  };
+
+  const { address, phone } = cityInfo[selectedMap];
 
   return (
     <div className={styles.main_contact}>
       <div className={styles.menu_block}>
         <div className={styles.menu_span}>Стать клиентом или партнером</div>
         <div className={styles.menu_mail}>mail@marksgroup.ru</div>
-        <div className={styles.menu_tel}>+7 (495) 120-12-26</div>
-        <div className={styles.menu_address}>
-          Москва 3-я Ямского Поля, дом 20 строение1 офис 70
-        </div>
+        <div className={styles.menu_tel}>{phone}</div>
+        <div className={styles.menu_address}>{address}</div>
         <div className={styles.menu_work}>
           Режим работы &nbsp;&bull;&nbsp; Пн.&mdash;Пт. 10.00&mdash;19.00
         </div>
@@ -122,14 +142,14 @@ const Contacts = () => {
           >
             Ташкент
           </button>
-        </div>
+         </div>
       </div>
       <div className={styles.map_block}>
         <div
           id="map"
           style={{
             width: '100%',
-            height: '100%',
+            height: '100%%',
            }}
         />
       </div>
