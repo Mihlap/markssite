@@ -44,7 +44,13 @@ const Contacts = () => {
           .addTo(newMap);
         setMarker(newMarker);
       });
-
+        //меняем названия на русский язык
+        newMap.getStyle().layers.forEach(function (layer) {
+          if (layer.type === 'symbol') {
+            newMap.setLayoutProperty(layer.id, 'text-field', ['get', 'name_ru']);
+          }
+        });
+      });
       setMap(newMap);
     } else {
       map.setCenter(getOfficeCenter(selectedMap));
