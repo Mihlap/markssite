@@ -8,7 +8,6 @@ import styles from './Mapbox.module.css';
 const Mapbox3D = () => {
 
   const apiKey = process.env.REACT_APP_API_KEY;
-  
   mapboxgl.accessToken = apiKey;
 
   useLayoutEffect(() => {
