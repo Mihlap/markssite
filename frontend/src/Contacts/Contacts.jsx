@@ -18,7 +18,7 @@ const Contacts = () => {
         style: 'mapbox://styles/anna02/clgz2fy0200hg01qu5tb8a6is',
         center: getOfficeCenter(selectedMap),
         zoom: zoomLevel,
-        attributionControl: false,
+        // attributionControl: false,
         container: 'map',
         antialias: true,
       });
@@ -45,12 +45,11 @@ const Contacts = () => {
         setMarker(newMarker);
       });
         //меняем названия на русский язык
-        newMap.getStyle().layers.forEach(function (layer) {
-          if (layer.type === 'symbol') {
-            newMap.setLayoutProperty(layer.id, 'text-field', ['get', 'name_ru']);
-          }
-        });
-      });
+        // newMap.getStyle().layers.forEach(function (layer) {
+        //   if (layer.type === 'symbol') {
+        //     newMap.setLayoutProperty(layer.id, 'text-field', ['get', 'name_ru']);
+        //   }
+        // });
       setMap(newMap);
     } else {
       map.setCenter(getOfficeCenter(selectedMap));

@@ -1,8 +1,8 @@
 import React, { useRef, useState } from "react";
 import { Link } from "react-scroll";
-import debounce from 'lodash.debounce';
+// import debounce from 'lodash.debounce';
 
-import logo from ".././icons/logo.svg";
+// import logo from ".././icons/logo.svg";
 import styles from "./Navbar.module.css";
 import { useEffect } from "react";
 import { NavLink } from "react-router-dom";
