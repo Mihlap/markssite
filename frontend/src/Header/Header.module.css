@@ -1,0 +1,529 @@
+@import "../App.css";
+
+.main {
+  display: flex;
+  min-width: 1024px;
+  max-width: 100vw;
+  position: relative;
+  z-index: 2;
+}
+
+.header {
+  min-width: 1024px;
+  max-width: 100%;
+}
+
+.image {
+  width: 100%;
+  height: 976px;
+  object-fit: cover;
+}
+
+.image_phone {
+  display: none;
+}
+
+.header_block {
+  display: none;
+  padding-left: 15px;
+  padding-top: 20px;
+}
+
+
+.heading {
+  font-family: var(--font-unbounded);
+  font-weight: var(--fw-300);
+  font-size: 24px;
+  color: var(--black-1D2E43);
+}
+
+.heading_text {
+  font-family: var(--font-raleway);
+  font-style: normal;
+  font-weight: var(--fw-400);
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--black-1D2E43);
+}
+
+.header_desctop_block {
+  padding-left: 263px;
+  padding-top: 80px;
+}
+
+.desctop_title {
+  font-family: var(--font-unbounded);
+  font-style: normal;
+  font-weight: var(--fw-300);
+  font-size: 40px;
+  line-height: 48px;
+}
+
+.desctop_test {
+  font-family: var(--font-raleway);
+  font-style: normal;
+  font-weight: var(--fw-400);
+  font-size: 16px;
+  line-height: 24px;
+  padding-top: 16px;
+}
+
+.str {
+  display: flex;
+  font-family: var(--font-unbounded);
+  font-style: normal;
+  font-weight: var(--fw-300);
+  font-size: 40px;
+  line-height: 48px;
+  color: var(--black-1D2E43);
+  width: 560px;
+  height: 48px;
+  margin-left: 263px;
+  margin-right: 617px;
+  margin-top: 80px;
+}
+
+.str1 {
+  display: flex;
+  font-family: var(--font-raleway);
+  font-style: normal;
+  font-weight: var(--fw-400);
+  font-size: 16px;
+  line-height: 24px;
+  width: 550px;
+  height: 48px;
+  color: var(--black-1D2E43);
+  margin-left: 263px;
+  margin-top: 16px;
+  margin-right: 627px;
+  font-feature-settings: 'pnum' on, 'lnum' on;
+}
+
+.logo_slider {
+  display: flex;
+  overflow: hidden;
+  -webkit-overflow-scrolling: touch;
+  height: 40px;
+  margin-left: 263px;
+  margin-top: 50.58px;
+  width: 100vw;
+}
+
+.logo_fixed {
+  display: flex;
+  overflow: hidden;
+  -webkit-overflow-scrolling: touch;
+  height: 40px;
+  margin-left: 0px;
+  margin-top: 50.58px;
+  width: 100vw;
+}
+
+.item {
+  height: 100%;
+  margin-right: 100px;
+}
+
+.item img:not(.card_button) {
+  cursor: default;
+}
+
+.most {
+  background-image: url("/public/assets/most.png");
+  background-repeat: no-repeat;
+  background-position: right;
+   z-index: 0;
+  }
+
+.image_most {
+  width: 100%;
+  height: 100%;
+}
+.container_main {
+  
+  position: relative;
+}
+.show_container {
+  position: relative;
+  width: 90%; 
+  margin: 0 auto;
+  top: 45vh;
+ }
+
+.show_svg {
+  position: absolute;
+  z-index: 2;
+  background-color: transparent;
+  border: none;
+  top: 50%;
+  right: 10%;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+}
+
+.card_container {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  z-index: 1;
+  padding-top: 0em;
+  padding-bottom: 0em;
+  margin-top: 56px;
+}
+
+.card_item_1 {
+  z-index: 0;
+  height: 652px;
+  width: 39%;
+  flex-grow: 1;
+  padding-left: 2.7vw;
+}
+
+.card_item_2 {
+  margin-top: 145px;
+  z-index: 0;
+  margin-left: 3vw;
+  padding-right: 2.7vw;
+  height: 652px;
+  width: 55%;
+  flex-grow: 1;
+}
+
+.card_img {
+  height: 100%;
+  border-radius: 1.1vw;
+  overflow: hidden;
+}
+
+
+.img_1, .img_2 {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  cursor: pointer;
+
+}
+
+.card_text_container {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.card_text_heading {
+  font-family: var(--font-raleway);
+    font-style: normal;
+    font-weight: var(--fw-700);
+    font-size: 1rem;
+    line-height: 1.5rem;
+    font-feature-settings: 'pnum' on, 'lnum' on;
+    color: var(--black-1D2E43);
+}
+
+.card_text_description {
+  display: flex;
+  align-items: center;
+font-family: var(--font-raleway);
+  font-style: normal;
+  font-weight: var(--fw-400);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-feature-settings: 'pnum' on, 'lnum' on;
+  color: var(--black-1D2E43);
+}
+
+.card_text_description svg{
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+}
+
+
+.card_text_title {
+  display: flex;
+  flex-direction: column;
+  font-family: var(--font-raleway);
+  font-style: normal;
+  font-weight: var(--fw-700);
+  font-size: 0.875rem;
+  line-height: 1.25;
+  font-feature-settings: 'pnum' on, 'lnum' on;
+  color: var(--black-1D2E43);
+  padding: 1rem 0px;
+}
+
+.card_text_local {
+  font-family: var(--font-raleway);
+  font-style: normal;
+  font-weight: var(--fw-400);
+  font-size: 0.625rem;
+  line-height: 0.75rem;
+  color: var(--gray-959DA6);
+}
+
+.card_text_span {
+  font-family: var(--font-raleway);
+  font-style: normal;
+  font-weight: var(--fw-400);
+  font-size: 14px;
+  line-height: 20px;
+  }
+
+.card_button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+.card_button_link circle,
+svg path {
+  transition: fill 0.3s ease;
+}
+
+.card_button_link:hover circle {
+  fill: var(--black-1D2E43);
+}
+
+/* .card_button_link:hover path {
+тут можно покрасить плюсик иконки  
+} */
+
+
+
+.names_contents {
+  display: flex;
+  float: right;
+  max-width: 100vw;
+  box-sizing: border-box;
+  padding-top: 41vh;
+  margin-bottom: 2.4vh;
+  padding-right: 2.7vw;
+  font-family: var(--font-unbounded);
+  font-style: normal;
+  font-weight: var(--fw-300);
+  font-size: 50px;
+  line-height: 64px;
+  color: var(--black-3C3C3C);
+ }
+
+ .name_11 {
+  font-family: var(--font-unbounded);
+  font-style: normal;
+  font-weight: var(--fw-400);
+  font-size: 18px;
+  line-height: 64px;
+  margin-right: 16px;
+}
+
+.icon_partner {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 3.7vh 2.9vw 0vh 2.9vw;
+  gap: 3.563rem;
+}
+
+ .icon_partner img {
+ height: 26px;
+ }
+
+.project_name {
+  padding: 10vh 2.7vw 0vh 2.7vw;
+  font-family: var(--font-unbounded);
+  font-style: normal;
+  font-weight: var(--fw-300);
+  font-size: 48px;
+  line-height: 48px;
+  color: var(--black-1D2E43);
+}
+
+.card_text h3 {
+  padding-bottom: 8px;
+}
+
+.img_project {
+  width: 100%;
+  height: 100%;
+}
+
+.main_project {
+  display: grid;
+  grid-template-columns: 40% 1fr;
+  width: 100%;
+  padding-bottom: 6vh;
+  padding-top: 4vh;
+  grid-auto-flow: dense;
+  padding-bottom: 100px;
+}
+
+.main_project_left {
+  padding: 3vh 3vw 3.5vh 2.7vw;
+
+}
+
+.main_project_left img {
+  width: 100%;
+  height: 100%;
+  border-radius: 1.1vw;
+}
+
+.main_project_right {
+  display: grid;
+  grid-template-columns: 3fr 4fr;
+  grid-auto-rows: minmax(3.66vh, auto);
+  grid-column: 2 / span 2;
+  align-items: stretch;
+  padding-bottom: 3.2vh;
+  grid-auto-flow: dense;
+}
+
+.main_project_right1 {
+  display: grid;
+  grid-row: 1;
+  grid-column: 1;
+  padding-right: 3vw;
+  padding-top: 3vh;
+  align-items: stretch;
+  height: auto;
+  width: auto;
+  }
+  .main_project_right1 img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 1.1vw;
+   }
+.main_project_right2 {
+  display: grid;
+  grid-row: 1;
+  grid-column: 2;
+  padding-right: 2.7vw;
+  padding-top: 3vh;
+  align-items: stretch;
+  height: auto;
+  width: auto;
+}
+
+.main_project_right2 img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 1.1vw;
+}
+
+.main_project_right3 {
+  grid-row: 3;
+  grid-column: 1 / span 2;
+  padding-right: 2.7vw;
+  width: auto;
+  height: auto;
+}
+.main_project_right3 img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 1.1vw;
+}
+
+
+.card_img,
+.main_project_left,
+.main_project_right1,
+.main_project_right2,
+.main_project_right3 {
+  transition: filter 0.5s ease;
+}
+
+.card_img:hover,
+.main_project_left:hover,
+.main_project_right1:hover,
+.main_project_right2:hover,
+.main_project_right3:hover {
+  filter: brightness(50%);
+}
+
+.swiper_container {
+  display: none;
+}
+
+.swiper_progect_container {
+  display: none;
+}
+
+/* Стили для мобильной версии сайта блока NavBar начинаются тут */
+@media screen and (max-width: 700px) {
+  .main {
+    min-width: 0px;
+  }
+
+  .header {
+    min-width: 0px;
+  }
+
+  .logo_slider {
+    margin-left: 0;
+  }
+
+  .image {
+    display: none;
+  }
+
+  .image_phone {
+    display: block;
+    padding-top: 15%;
+    width: 100%;
+  }
+
+  .header_block {
+    display: block;
+  }
+
+  .heading_text {
+    padding-top: 0.875rem;
+  }
+
+  .header_desctop_block,
+  .card_container,
+  .most, .icon_partner {
+    display: none;
+  }
+
+  .swiper_container {
+    display: block;
+  }
+
+  .names_contents {
+    width: 100%;
+    display: flex;
+    justify-content: end;
+    padding-top: 5rem;
+    font-size: 32px;
+    background-color: transparent;
+
+  }
+
+  .name_11 {
+    font-weight: 600;
+    font-size: 12px;
+  }
+
+  .project_name {
+  font-weight: 300;
+    font-size: 24px;
+    line-height: 32px;
+  }
+
+  .swiper_progect_container {
+    display: block;
+  }
+
+  .main_project {
+    display: none;
+  }
+
+  .video_block {
+    padding-top: 3.75rem;
+  }
+
+}

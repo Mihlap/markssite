@@ -1,0 +1,73 @@
+@import '../../App.css';
+
+.slider-item {
+    width: 100%;
+    height: 100%;
+    border-radius: 1rem;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    cursor: grab;
+}
+
+.slider-item-content {
+    padding: 20px 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: 0.4s;
+}
+
+.slider-image-wrapper {
+    height: 346px;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 0px 0px 1rem 1rem;
+    position: relative;
+}
+
+.slider-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: 0.2s;
+}
+
+.slider_subject {
+    font-family: var(--font-raleway);
+    font-style: normal;
+    font-weight: var(--fw-700);
+    font-size: 0.875rem;
+    line-height: 1.125rem;
+    color: var(--black-4E4E4E);
+
+    @media screen and (max-width: 520px) {
+        & {
+            font-size: 16px;
+            line-height: 24px;
+        }
+    }
+}
+
+.slider_text {
+    font-family: var(--font-raleway);
+    font-style: normal;
+    font-weight: var(--fw-400);
+    font-size: 0.625rem;
+    line-height: 0.75rem;
+    color: var(--gray-959DA6);
+
+    @media screen and (max-width: 520px) {
+        & {
+            font-size: 14px;
+            line-height: 20px;
+        }
+    }
+}
+
+.icon_image {
+    position: absolute;
+    bottom: 6%;
+    right: 6%;
+}

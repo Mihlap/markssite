@@ -1,0 +1,161 @@
+@import '../App.css';
+
+
+.footer_container {
+  display: flex;
+  justify-content: space-between;
+  padding: 1.7vh 2.7vw 4vh 2.7vw;
+  background-color: var(--black-1D2E43);
+
+}
+
+.mail_link {
+  color: var(--white-F6F6F6);
+  font-weight: var(--fw-400);
+  font-size: 48px;
+  line-height: 48px;
+  cursor: pointer;
+}
+
+.mail_link:visited {
+  color: var(--color-link-active);
+}
+
+.office {
+  color: var(--white-F6F6F6);
+  padding-top: 40px;
+  padding-bottom: 14px;
+  font-weight: var(--fw-700);
+  font-size: 18px;
+  line-height: 24px;
+}
+
+.tel,
+.address {
+  display: block;
+  color: var(--white-F6F6F6);
+  font-family: 'Raleway', sans-serif;
+  font-size: 14px;
+  font-weight: var(--fw-400);
+  line-height: 20px;
+  padding-top: 4px;
+  font-feature-settings: 'pnum' on, 'lnum' on;
+}
+
+.tel:hover {
+  color: var(--salmon-light-FFBFB5);
+  cursor: pointer;
+}
+
+
+.footer_block_right {
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  justify-content: space-around;
+  }
+
+.block_lang {
+  color: var(--white-F6F6F6);
+}
+
+.block_lang:hover {
+  color: var(--salmon-light-FFBFB5);
+}
+
+.social_links {
+  padding-top: 69px;
+}
+
+.social_links_item {
+  color: var(--white-F6F6F6);
+  letter-spacing: 0.1em;
+  font-size: 14px;
+  font-weight: var(--fw-900);
+  line-height: 14px;
+}
+
+.social_links_item:hover {
+  color: var(--salmon-light-FFBFB5);
+}
+
+.job {
+  display: flex;
+  padding-top: 44px;
+}
+
+.job_link {
+  color: var(--light-gray-C0C5CB);
+  font-size: 14px;
+  font-weight: var(--fw-400);
+  line-height: 14px;
+  padding-left: 24px;
+}
+.job .job_link:hover {
+  color: var(--salmon-light-FFBFB5);
+  cursor: pointer;
+}
+
+/* .job_link:visited {
+  color: var(--color-link-active);
+} */
+
+.job_link:not(:last-child) {
+  color: var(--light-gray-C0C5CB);
+  font-size: 14px;
+  font-weight: var(--fw-400);
+  line-height: 14px;
+  padding-right: 20px;
+}
+
+
+/* Стили для мобильной версии сайта блока NavBar начинаются тут */
+@media screen and (max-width: 700px) {
+  .footer_container {
+    min-width: 0px;
+    height: auto;
+    flex-direction: column;
+    padding: 2.4vh 1.7vh 4vh 1.7vh;
+    /* margin-top: 5vh; */
+  }
+
+  .mail_link {
+    font-weight: var(--fw-400);
+    font-size: 32px;
+    line-height: 32px;
+  }
+
+  .block_lang {
+    display: none;
+  }
+
+  .social_links {
+    display: none;
+  }
+
+  .office {
+    padding-bottom: 14px;
+  }
+
+  .address {
+    font-size: 12px;
+  }
+
+  .footer_block_right {
+    align-items: normal;
+  }
+
+
+  .job {
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: row-reverse;
+    align-items: center;
+    gap: 2vh;
+  }
+
+  .job_link {
+    padding: 0;
+  }
+
+}
