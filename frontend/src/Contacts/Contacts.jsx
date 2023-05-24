@@ -50,7 +50,6 @@ const Contacts = () => {
             newMap.setLayoutProperty(layer.id, 'text-field', ['get', 'name_ru']);
           }
         });
-      });
       setMap(newMap);
     } else {
       map.setCenter(getOfficeCenter(selectedMap));
