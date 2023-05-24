@@ -18,6 +18,7 @@ export default function Header() {
  
   useEffect(() => {
     window.scrollTo(20, 0);
+
   }, []);
   return (
     <main className={styles.header}>

@@ -107,7 +107,7 @@ useEffect(() => {
         <nav>
           <div className={styles.navbar}>
             <div className={styles.logo}>
-              <NavLink to="/">
+              <NavLink className={styles.test} to="/">
                 <h1 className={styles.navbar_title}>MARKS GROUP</h1>
               </NavLink>
             </div>
