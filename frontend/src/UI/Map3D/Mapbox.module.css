@@ -1,0 +1,16 @@
+.map {
+  display: flex;
+  width: auto;
+  height: 64.5vh;
+  padding: 0px 1vh;
+ }
+
+ @media screen and (max-width: 700px) {
+  .map {
+    width: auto;
+    height: 35vh;
+    padding: 0;
+  }
+ }
+
+
