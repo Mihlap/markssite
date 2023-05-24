@@ -119,10 +119,12 @@
     z-index: 9999;
   }
 
+  .test {
+    display: inline-block;
+  }
+
   .container {
- 
     width: 100%;
-    
   }
 
   .navbar {
