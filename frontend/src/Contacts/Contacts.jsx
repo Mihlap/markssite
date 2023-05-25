@@ -4,6 +4,7 @@ import "swiper/css";
 import "swiper/css/pagination";
 import { Pagination } from "swiper";
 import mapboxgl from 'mapbox-gl';
+import { Link } from "react-router-dom";
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import styles from './Contacts.module.css';
 
@@ -126,6 +127,18 @@ const Contacts = () => {
         <div className={styles.menu_span}>Стать клиентом или партнером</div>
         <div className={styles.menu_mail}>{mail}</div>
         <div className={styles.menu_tel}>{phone}</div>
+        <Link
+          to={`mailto:${mail}`}
+          className={styles.link_mail}
+        >
+        {mail}
+        </Link>
+        <Link
+        to={`tel:${phone}`}
+        className={styles.link_tel}
+        >
+        {phone}
+        </Link>
         <div className={styles.menu_address}>{address}</div>
         <div className={styles.menu_work}>
           Режим работы &nbsp;&bull;&nbsp; Пн.&mdash;Пт. 10.00&mdash;19.00
