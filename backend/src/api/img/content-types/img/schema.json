@@ -1,10 +1,10 @@
 {
   "kind": "collectionType",
-  "collectionName": "tests",
+  "collectionName": "imgs",
   "info": {
-    "singularName": "test",
-    "pluralName": "tests",
-    "displayName": "Test",
+    "singularName": "img",
+    "pluralName": "imgs",
+    "displayName": "img",
     "description": ""
   },
   "options": {
@@ -12,19 +12,22 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "test": {
-      "type": "string"
-    },
     "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos",
         "audios"
-      ],
-      "type": "media",
-      "multiple": true,
-      "required": true
+      ]
+    },
+    "title": {
+      "type": "string"
+    },
+    "img": {
+      "type": "string"
     }
   }
 }
