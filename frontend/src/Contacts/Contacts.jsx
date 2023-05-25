@@ -1,4 +1,8 @@
 import React, { useEffect, useState } from 'react';
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/pagination";
+import { Pagination } from "swiper";
 import mapboxgl from 'mapbox-gl';
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import styles from './Contacts.module.css';
@@ -13,11 +17,10 @@ const Contacts = () => {
 
   useEffect(() => {
     if (!map) {
-      const zoomLevel = window.innerWidth <= 700 ? 10 : 12;
-      const newMap = new mapboxgl.Map({
+        const newMap = new mapboxgl.Map({
         style: 'mapbox://styles/anna02/clgz2fy0200hg01qu5tb8a6is',
         center: getOfficeCenter(selectedMap),
-        zoom: zoomLevel,
+        zoom: 11,
         attributionControl: false,
         container: 'map',
         antialias: true,
@@ -39,7 +42,7 @@ const Contacts = () => {
             ],
           },
         });
-        
+
         //меняем названия на русский язык
         newMap.getStyle().layers.forEach(function (layer) {
           if (layer.type === 'symbol') {
@@ -74,6 +77,7 @@ const Contacts = () => {
         .setLngLat(getOfficeCenter(selectedMap))
         .addTo(map);
       setMarker(newMarker);
+      map.panBy([-100, -100], { duration: 0 });
     }
   }, [map, selectedMap]);
 
@@ -95,28 +99,32 @@ const Contacts = () => {
     Москва: {
       address: 'Москва, 3-я Ямского Поля, дом 20, строение 1, офис 70',
       phone: '+7 (495) 120-12-26',
+      mail: 'mail@marksgroup.ru',
     },
     Оренбург: {
       address: 'г. Оренбург, проезд Нижний, 17, офис 305',
       phone: '+7 (495) 120-12-26',
+      mail: 'mail@marksgroup.ru',
     },
     Челябинск: {
       address: 'г. Челябинск, ул. Северная дом 52/3',
       phone: '+7 (495) 120-12-26',
+      mail: 'mail@marksgroup.ru',
     },
     Ташкент: {
       address: 'Tashkent, Oybek Street, 18/1',
-      phone: '+7 (495) 120-12-26',
+      phone: '+9 (989) 935 39 90',
+      mail: 'bondarcev@marksgroup.ru',
     },
   };
 
-  const { address, phone } = cityInfo[selectedMap];
+  const { address, phone, mail} = cityInfo[selectedMap];
 
   return (
     <div className={styles.main_contact}>
       <div className={styles.menu_block}>
         <div className={styles.menu_span}>Стать клиентом или партнером</div>
-        <div className={styles.menu_mail}>mail@marksgroup.ru</div>
+        <div className={styles.menu_mail}>{mail}</div>
         <div className={styles.menu_tel}>{phone}</div>
         <div className={styles.menu_address}>{address}</div>
         <div className={styles.menu_work}>
@@ -126,40 +134,73 @@ const Contacts = () => {
           У нас есть офисы по всему материку!
         </div>
         <div className={styles.menu_button_group}>
-          <button
-            className={`${styles.menu_button} ${selectedMap === 'Москва' ? styles.menu_button_active : ''}`}
-            onClick={() => setSelectedMap('Москва')}
-          >
-            Москва
-          </button>
-          <button
-            className={`${styles.menu_button} ${selectedMap === 'Оренбург' ? styles.menu_button_active : ''}`}
-            onClick={() => setSelectedMap('Оренбург')}
-          >
-            Оренбург
-          </button>
-          <button
-            className={`${styles.menu_button} ${selectedMap === 'Челябинск' ? styles.menu_button_active : ''}`}
-            onClick={() => setSelectedMap('Челябинск')}
-          >
-            Челябинск
-          </button>
-          <button
-            className={`${styles.menu_button} ${selectedMap === 'Ташкент' ? styles.menu_button_active : ''}`}
-            onClick={() => setSelectedMap('Ташкент')}
-          >
-            Ташкент
-          </button>
-         </div>
-      </div>
+          {Object.keys(cityInfo).map((city) => (
+            <button
+              key={city}
+              className={`${styles.menu_button} ${
+                selectedMap === city ? styles.menu_button_active : ''
+              }`}
+              onClick={() => setSelectedMap(city)}
+            >
+              {city}
+            </button>
+          ))}
+        </div>
+       </div>
       <div className={styles.map_block}>
         <div
           id="map"
           style={{
             width: '100%',
             height: '100%%',
-           }}
+      }}
         />
+          <Swiper
+        slidesPerView={3}
+        spaceBetween={10}
+        pagination={{
+          clickable: true,
+        }}
+        breakpoints={{
+          640: {
+            slidesPerView: 2,
+            spaceBetween: 20,
+          },
+          768: {
+            slidesPerView: 3,
+            spaceBetween: 20,
+          },
+         }}
+        // modules={[Pagination]}
+        className={styles.mySwiper}
+      >
+        <div className={styles.slider_menu_button_group}>
+          <SwiperSlide
+            className={`${styles.slider_menu_button} ${selectedMap === 'Москва' ? styles.slider_menu_button_active : ''}`}
+            onClick={() => setSelectedMap('Москва')}
+          >
+            Москва
+          </SwiperSlide>
+          <SwiperSlide
+            className={`${styles.slider_menu_button} ${selectedMap === 'Оренбург' ? styles.slider_menu_button_active : ''}`}
+            onClick={() => setSelectedMap('Оренбург')}
+          >
+            Оренбург
+          </SwiperSlide>
+          <SwiperSlide
+            className={`${styles.slider_menu_button} ${selectedMap === 'Челябинск' ? styles.slider_menu_button_active : ''}`}
+            onClick={() => setSelectedMap('Челябинск')}
+          >
+            Челябинск
+          </SwiperSlide>
+          <SwiperSlide
+            className={`${styles.slider_menu_button} ${selectedMap === 'Ташкент' ? styles.slider_menu_button_active : ''}`}
+            onClick={() => setSelectedMap('Ташкент')}
+          >
+            Ташкент
+          </SwiperSlide>
+         </div>
+        </Swiper>
       </div>
     </div>
   );
