@@ -1,9 +1,42 @@
-import React from 'react'
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchReviews } from "../store/Slice/reviewsSlice";
+import styles from "./Test.module.css";
 
 export default function Test() {
+  const dispatch = useDispatch();
+  const reviews = useSelector((state) => state.reviews.reviews);
+  const loading = useSelector((state) => state.reviews.loading);
+  const error = useSelector((state) => state.reviews.error);
+
+  useEffect(() => {
+    dispatch(fetchReviews());
+  }, [dispatch]);
+
+  if (loading) {
+    return <h1>Loading...</h1>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  console.log(reviews);
+
   return (
-      <div>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Laudantium enim reprehenderit reiciendis ad expedita non delectus minus est, ut cum aut nesciunt quos natus, earum tempora porro hic iusto dolorum optio fugiat magni, necessitatibus doloribus blanditiis! Eos saepe corporis architecto consequuntur facere dignissimos nihil amet deleniti cupiditate neque voluptatibus beatae voluptate aspernatur, id magnam velit recusandae quidem mollitia. Velit labore eaque nesciunt quam quibusdam. Quia tenetur velit illo, distinctio nisi asperiores corrupti. Quas provident pariatur nihil, modi adipisci sapiente odio quaerat! Aut sequi et voluptatum assumenda delectus facere consectetur? Iusto, corporis ex culpa aut iure quibusdam error nostrum laborum velit accusamus fugit necessitatibus reprehenderit deleniti voluptates numquam incidunt ea odit quod libero. Officiis similique optio voluptatem corporis! Soluta, voluptates modi? Aspernatur aliquam adipisci quo, alias ea id illo, dicta aut eveniet fugiat aperiam quos similique reprehenderit labore qui nostrum, est nulla sed deleniti dolorem ratione. Totam consequatur consectetur saepe non recusandae soluta magni repellat veritatis perferendis. Maiores ipsa totam aspernatur itaque, sunt cum quae dolor corrupti. Itaque debitis totam architecto provident maiores nesciunt beatae vel quibusdam. Expedita, temporibus obcaecati quam aliquam, non eius amet, quidem at voluptatem est repellat minima facilis doloremque laudantium nam nobis molestiae vero eos facere placeat!
+    <div className={styles.test_container}>
+      <div style={{ paddingTop: "12rem" }} />
+      <h1>Test Container</h1>
+      {reviews.map((element) => (
+        <ul key={element.id}>
+          <li>
+            <h3>{element.attributes.title}</h3>
+            <div>{element.attributes.rating}</div>
+            <div>{element.attributes.body}</div>
+            <img style={{width: "400px"}} src={element.attributes.img} alt={ element.attributes.img} />
+          </li>
+        </ul>
+      ))}
     </div>
-  )
+  );
 }
