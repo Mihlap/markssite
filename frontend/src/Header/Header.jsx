@@ -28,7 +28,9 @@ export default function Header() {
         {/* фото для мобильной версии  */}
         {/* <img className={styles.image_phone} src={photo} alt="photo" /> */}
       </div>
+
       <div id="publications" className={styles.header_desctop_block}>
+      <Link to="/test"><h3>Test</h3></Link>
         <h1 className={styles.desctop_title}>Награды и публикации</h1>
         <div className={styles.desctop_test}>
           Наша компания участвует в многочисленных выставках, конференциях
