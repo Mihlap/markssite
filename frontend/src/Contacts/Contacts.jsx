@@ -13,12 +13,12 @@ const Contacts = () => {
 
   useEffect(() => {
     if (!map) {
-      const zoomLevel = window.innerWidth <= 700 ? 9 : 12;
+      const zoomLevel = window.innerWidth <= 700 ? 10 : 12;
       const newMap = new mapboxgl.Map({
         style: 'mapbox://styles/anna02/clgz2fy0200hg01qu5tb8a6is',
         center: getOfficeCenter(selectedMap),
         zoom: zoomLevel,
-        // attributionControl: false,
+        attributionControl: false,
         container: 'map',
         antialias: true,
       });
@@ -39,18 +39,21 @@ const Contacts = () => {
             ],
           },
         });
+        
+        //меняем названия на русский язык
+        newMap.getStyle().layers.forEach(function (layer) {
+          if (layer.type === 'symbol') {
+            newMap.setLayoutProperty(layer.id, 'text-field', ['get', 'name_ru']);
+          }
+        });
+        
         const newMarker = new mapboxgl.Marker({ color: '#FF7F6A' })
           .setLngLat(getOfficeCenter(selectedMap))
           .addTo(newMap);
         setMarker(newMarker);
       });
-        //меняем названия на русский язык
-        // newMap.getStyle().layers.forEach(function (layer) {
-        //   if (layer.type === 'symbol') {
-        //     newMap.setLayoutProperty(layer.id, 'text-field', ['get', 'name_ru']);
-        //   }
-        // });
-      setMap(newMap);
+
+       setMap(newMap);
     } else {
       map.setCenter(getOfficeCenter(selectedMap));
       if (map && map.getSource('marker')) {
@@ -163,3 +166,7 @@ const Contacts = () => {
 };
 
 export default Contacts;
+
+
+
+ 
