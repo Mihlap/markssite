@@ -1,12 +1,13 @@
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchArticles } from '../../store/Slice/articlesSlice'
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwipeCore, { Navigation, Pagination, Autoplay } from "swiper";
 // import { useState, useRef, useEffect } from "react";
-import oneImg from "./svgImg/one.jpg"
+import oneImg from "./svgImg/one.jpg";
 import twoImg from "./svgImg/two.jpg";
 // import threeImg from "./svgImg/three.png";
 import iconPlus from "./svgImg/icon.svg";
-
-
 
 import "swiper/css";
 import "swiper/css/navigation";
@@ -34,6 +35,24 @@ const items = [
 
 export default function SwiperContainer() {
   SwipeCore.use([Navigation, Pagination, Autoplay]);
+  const dispatch = useDispatch();
+  const artickes = useSelector((state) => state.articles);
+  const loading = useSelector((state) => state.articles.loading);
+  const error = useSelector((state) => state.articles.error);
+
+  useEffect(() => {
+    dispatch(fetchArticles());
+  }, [dispatch]);
+
+  if (loading) {
+    return <h1>Loading...</h1>;
+  }
+
+  if (error) {
+    return <div>Error: {error}</div>;
+  }
+
+  console.log(artickes.articles);
 
   return (
     <>
@@ -72,5 +91,4 @@ export default function SwiperContainer() {
       </Swiper>
     </>
   );
-};
-
+}
