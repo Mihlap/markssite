@@ -143,14 +143,15 @@
    .menu_work {
     padding-bottom: 3rem;
   }
-   .menu_button_group {
+  .menu_button_group {
     position: absolute;
-   bottom: -130%; 
-   gap: 1.14vw;
-   left: 0;
-   transform: translateY(-50%);   
-   cursor: pointer;
+    bottom: -100%; /* кнопки будут находиться под родительским элементом на расстоянии 50% от его нижней границы */
+    gap: 1.14vw;
+    left: 0;
+    transform: translateY(100%); /* перемещаем кнопки на 100% от их собственной высоты вверх, чтобы они были видны */
+    cursor: pointer;
   }
+  
  .map_block {
     position: relative;
     width: 100%;
