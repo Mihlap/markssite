@@ -2,7 +2,7 @@
 
 .main_contact {
   display: flex;
-  min-width: 1024px;
+  /* min-width: 1024px; */
   max-width: 100%;
   height: 100%;
   width: 100%;
@@ -40,6 +40,7 @@
   display: flex;
   height: 100%;
   width: 100%;
+ 
 }
 
 .menu_span {
@@ -49,7 +50,7 @@
 }
 
 .menu_mail {
-  font-size: 48px;
+  font-size: 3.33vw;
   line-height: 64px;
   padding-top: 0.54vh;
 }
@@ -98,13 +99,29 @@
   border-radius: 34px;
   background-color: transparent;
   border: 1px solid var(--black-1D2E43);
-}
+  font-family: var(--font-raleway);
+  font-style: normal;
+  font-weight: var(--fw-400);
+  font-size: 14px;
+  line-height: 20px;
+ }
+ .menu_button:hover {
+  background-color: var( --light-gray-C0C5CB);
+ }
 
 .menu_button_active {
   color: var(--white-F6F6F6);
   background-color: var(--black-1D2E43);
+  pointer-events: none;
 }
-@media screen and (max-width: 700px) {
+
+@media (min-width: 1025px) {
+  .mySwiper {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 767px) {
   .main_contact {
     min-width: 0px;
     display: flex;
@@ -124,13 +141,113 @@
     padding-top: 110px;
   }
   .menu_mail {
-    font-size: 27px;
+    font-size: 6vw;
     line-height: 32px;
     font-weight: var(--fw-400);
+  }
+  .menu_mail:hover {
+    color: var(--salmon-light-FFBFB5);
+    cursor: pointer;
   }
   .menu_tel {
     font-size: 20px;
     line-height: 28px;
+  }
+  .menu_tel:hover {
+    color: var(--salmon-light-FFBFB5);
+    cursor: pointer;
+  }
+  
+  .menu_address {
+    font-size: 16px;
+    line-height: 24px;
+    font-feature-settings: 'pnum' on, 'lnum' on;
+   }
+   .menu_office_name {
+    display: none;
+   }
+   .menu_work {
+    padding-bottom: 3rem;
+  }
+  .menu_button_group {
+   display: none;
+  }
+    
+ .map_block {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+  }
+  .mySwiper {
+    position: absolute;
+    bottom: 2rem;
+    width: 85%;
+    left: 7%;
+    }
+
+  .slider_menu_button_group {
+    /* padding-top: 1.688rem; */
+    gap: 0.55vw;
+   }
+
+  .slider_menu_button {
+    width: 6.18rem;
+    height: 2.25rem;
+    border-radius: 34px;
+    background-color: var(--white-F6F6F6);
+    border: 1px solid var(--black-1D2E43);
+    font-family: var(--font-raleway);
+    font-style: normal;
+    font-weight: var(--fw-400);
+    font-size: 14px;
+    line-height: 2.25rem;
+    text-align: center;
+  }
+
+  .slider_menu_button_active {
+    color: var(--white-F6F6F6);
+    background-color: var(--black-1D2E43);
+ } 
+ 
+}
+
+
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .main_contact {
+    min-width: 0px;
+    display: flex;
+    flex-direction: column;
+  }
+  .menu_block {
+    position: absolute;
+    height:auto;
+    width: 100%;
+  }
+
+  .menu_span {
+    font-family: var(--font-raleway);
+    font-weight: var(--fw-400);
+    font-size: 16px;
+    line-height: 24px;
+    padding-top: 110px;
+  }
+  .menu_mail {
+    font-size: 6vw;
+    line-height: 32px;
+    font-weight: var(--fw-400);
+  }
+  .menu_mail:hover {
+    color: var(--salmon-light-FFBFB5);
+    cursor: pointer;
+  }
+
+  .menu_tel {
+    font-size: 20px;
+    line-height: 28px;
+  }
+  .menu_tel:hover {
+    color: var(--salmon-light-FFBFB5);
+    cursor: pointer;
   }
   .menu_address {
     font-size: 16px;
@@ -144,12 +261,7 @@
     padding-bottom: 3rem;
   }
   .menu_button_group {
-    position: absolute;
-    bottom: -100%; /* кнопки будут находиться под родительским элементом на расстоянии 50% от его нижней границы */
-    gap: 1.14vw;
-    left: 0;
-    transform: translateY(100%); /* перемещаем кнопки на 100% от их собственной высоты вверх, чтобы они были видны */
-    cursor: pointer;
+   display: none;
   }
   
  .map_block {
@@ -157,6 +269,35 @@
     width: 100%;
     height: 100vh;
   }
-  
- } 
+  .mySwiper {
+    position: absolute;
+    bottom: 2rem;
+    width: 85%;
+    left: 7%;
+    }
 
+  .slider_menu_button_group {
+    /* padding-top: 1.688rem; */
+    gap: 0.55vw;
+   }
+
+  .slider_menu_button {
+    width: 6.18rem;
+    height: 2.25rem;
+    border-radius: 34px;
+    background-color: var(--white-F6F6F6);
+    border: 1px solid var(--black-1D2E43);
+    font-family: var(--font-raleway);
+    font-style: normal;
+    font-weight: var(--fw-400);
+    font-size: 14px;
+    line-height: 2.25rem;
+    text-align: center;
+  }
+
+  .slider_menu_button_active {
+    color: var(--white-F6F6F6);
+    background-color: var(--black-1D2E43);
+ }  
+  
+}

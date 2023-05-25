@@ -6,8 +6,7 @@
   justify-content: space-between;
   padding: 1.7vh 2.7vw 4vh 2.7vw;
   background-color: var(--black-1D2E43);
-
-}
+ }
 
 .mail_link {
   color: var(--white-F6F6F6);
@@ -113,7 +112,6 @@
 @media screen and (max-width: 700px) {
   .footer_container {
     min-width: 0px;
-    height: auto;
     flex-direction: column;
     padding: 2.4vh 1.7vh 4vh 1.7vh;
     /* margin-top: 5vh; */
