@@ -51,11 +51,10 @@
 }
 
 .menu_mail {
-  font-size: 3.33vw;
+  font-size: 48px;
   line-height: 64px;
   padding-top: 0.54vh;
 }
-
 .menu_tel {
   font-size: 24px;
   line-height: 32px;
@@ -250,8 +249,9 @@
 
     .link_mail {
       display: block;
-      font-family: 'Unbounded';
+      font-family: var(--font-unbounded);
       font-size: 48px;
+      font-style: normal;
       line-height: 64px;
       font-weight: var(--fw-400);
       color: var(--black-1D2E43);
@@ -260,9 +260,9 @@
   
     .link_tel {
       display: block;
-      font-family: 'Unbounded';
+      font-family: var(--font-unbounded);
       font-style: normal;
-      font-weight: 300;
+      font-weight: var(--fw-300);
       font-size: 24px;
       line-height: 32px;
       color: var(--black-1D2E43);

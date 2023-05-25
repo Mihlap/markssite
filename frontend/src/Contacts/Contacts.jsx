@@ -115,7 +115,7 @@ const Contacts = () => {
     Ташкент: {
       address: 'Tashkent, Oybek Street, 18/1',
       phone: '+9 (989) 935 39 90',
-      mail: 'bondarcev@marksgroup.ru',
+      mail: 'mail@marksgroup.ru',
     },
   };
 
