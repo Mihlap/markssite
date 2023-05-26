@@ -8,18 +8,43 @@ import { Link } from "react-router-dom";
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
 import styles from './Contacts.module.css';
 
+const apiKey = process.env.REACT_APP_API_KEY;
+mapboxgl.accessToken = apiKey;
+
+const cities = ['Москва', 'Оренбург', 'Челябинск', 'Ташкент'];
+
+const cityInfo = {
+  Москва: {
+    address: 'Москва, 3-я Ямского Поля, дом 20, строение 1, офис 70',
+    phone: '+7 (495) 120-12-26',
+    mail: 'mail@marksgroup.ru',
+  },
+  Оренбург: {
+    address: 'г. Оренбург, проезд Нижний, 17, офис 305',
+    phone: '+7 (495) 120-12-26',
+    mail: 'mail@marksgroup.ru',
+  },
+  Челябинск: {
+    address: 'г. Челябинск, ул. Северная дом 52/3',
+    phone: '+7 (495) 120-12-26',
+    mail: 'mail@marksgroup.ru',
+  },
+  Ташкент: {
+    address: 'Tashkent, Oybek Street, 18/1',
+    phone: '+9 (989) 935 39 90',
+    mail: 'mail@marksgroup.ru',
+  },
+};
+
 const Contacts = () => {
   const [map, setMap] = useState(null);
   const [selectedMap, setSelectedMap] = useState('Москва');
   const [marker, setMarker] = useState(null);
   const [swiper, setSwiper] = useState(null);
 
-  const apiKey = process.env.REACT_APP_API_KEY;
-  mapboxgl.accessToken = apiKey;
-
   useEffect(() => {
     if (!map) {
-        const newMap = new mapboxgl.Map({
+      const newMap = new mapboxgl.Map({
         style: 'mapbox://styles/anna02/clgz2fy0200hg01qu5tb8a6is',
         center: getOfficeCenter(selectedMap),
         zoom: 11,
@@ -28,7 +53,7 @@ const Contacts = () => {
         antialias: true,
       });
 
-       newMap.on('load', () => {
+      newMap.on('load', () => {
         newMap.addSource('marker', {
           type: 'geojson',
           data: {
@@ -51,14 +76,14 @@ const Contacts = () => {
             newMap.setLayoutProperty(layer.id, 'text-field', ['get', 'name_ru']);
           }
         });
-        
+
         const newMarker = new mapboxgl.Marker({ color: '#FF7F6A' })
           .setLngLat(getOfficeCenter(selectedMap))
           .addTo(newMap);
         setMarker(newMarker);
       });
 
-       setMap(newMap);
+      setMap(newMap);
     } else {
       map.setCenter(getOfficeCenter(selectedMap));
       if (map && map.getSource('marker')) {
@@ -97,30 +122,8 @@ const Contacts = () => {
         return [37.5804, 55.783];
     }
   }
-  const cityInfo = {
-    Москва: {
-      address: 'Москва, 3-я Ямского Поля, дом 20, строение 1, офис 70',
-      phone: '+7 (495) 120-12-26',
-      mail: 'mail@marksgroup.ru',
-    },
-    Оренбург: {
-      address: 'г. Оренбург, проезд Нижний, 17, офис 305',
-      phone: '+7 (495) 120-12-26',
-      mail: 'mail@marksgroup.ru',
-    },
-    Челябинск: {
-      address: 'г. Челябинск, ул. Северная дом 52/3',
-      phone: '+7 (495) 120-12-26',
-      mail: 'mail@marksgroup.ru',
-    },
-    Ташкент: {
-      address: 'Tashkent, Oybek Street, 18/1',
-      phone: '+9 (989) 935 39 90',
-      mail: 'mail@marksgroup.ru',
-    },
-  };
 
-  const { address, phone, mail} = cityInfo[selectedMap];
+  const { address, phone, mail } = cityInfo[selectedMap];
 
   return (
     <div className={styles.main_contact}>
@@ -128,17 +131,11 @@ const Contacts = () => {
         <div className={styles.menu_span}>Стать клиентом или партнером</div>
         <div className={styles.menu_mail}>{mail}</div>
         <div className={styles.menu_tel}>{phone}</div>
-        <Link
-          to={`mailto:${mail}`}
-          className={styles.link_mail}
-        >
-        {mail}
+        <Link to={`mailto:${mail}`} className={styles.link_mail}>
+          {mail}
         </Link>
-        <Link
-        to={`tel:${phone}`}
-        className={styles.link_tel}
-        >
-        {phone}
+        <Link to={`tel:${phone}`} className={styles.link_tel}>
+          {phone}
         </Link>
         <div className={styles.menu_address}>{address}</div>
         <div className={styles.menu_work}>
@@ -148,7 +145,7 @@ const Contacts = () => {
           У нас есть офисы по всему материку!
         </div>
         <div className={styles.menu_button_group}>
-          {Object.keys(cityInfo).map((city) => (
+          {cities.map((city) => (
             <button
               key={city}
               className={`${styles.menu_button} ${
@@ -160,14 +157,14 @@ const Contacts = () => {
             </button>
           ))}
         </div>
-       </div>
+      </div>
       <div className={styles.map_block}>
         <div
           id="map"
           style={{
             width: '100%',
-            height: '100%%',
-      }}
+            height: '100%',
+          }}
         />
         <Swiper
           onSwiper={setSwiper}
@@ -176,56 +173,27 @@ const Contacts = () => {
           pagination={{
             clickable: true,
           }}
-        className={styles.mySwiper}
-        touch={true}
-         >
-        <div className={styles.slider_menu_button_group}>
-          <SwiperSlide
-            className={`${styles.slider_menu_button} ${selectedMap === 'Москва' ? styles.slider_menu_button_active : ''}`}
-            onClick={() => {
-              if (swiper) {
-                swiper.slideTo(0);
-              }
-              setSelectedMap('Москва');
-            }}
-          >
-            <p className={styles.slider_button_city}>Москва</p>
-          </SwiperSlide>
-          <SwiperSlide
-            className={`${styles.slider_menu_button} ${selectedMap === 'Оренбург' ? styles.slider_menu_button_active : ''}`}
-            onClick={() => {
-              if (swiper) {
-                swiper.slideTo(1);
-              }
-              setSelectedMap('Оренбург');
-            }}
-          >
-           <p className={styles.slider_button_city}>Оренбург</p>
-          </SwiperSlide>
-          <SwiperSlide
-            className={`${styles.slider_menu_button} ${selectedMap === 'Челябинск' ? styles.slider_menu_button_active : ''}`}
-            onClick={() => {
-              if (swiper) {
-                swiper.slideTo(2);
-              }
-              setSelectedMap('Челябинск');
-            }}
-          >
-            <p className={styles.slider_button_city}>Челябинск</p>
-          </SwiperSlide>
-          <SwiperSlide
-            className={`${styles.slider_menu_button} ${selectedMap === 'Ташкент' ? styles.slider_menu_button_active : ''}`}
-            onClick={() => {
-              if (swiper) {
-                swiper.slideTo(0);
-              }
-          
-              setSelectedMap('Ташкент');
-            }}
-          >
-            <p className={styles.slider_button_city}>Ташкент</p>
-          </SwiperSlide>
-         </div>
+          className={styles.mySwiper}
+          touch={true}
+        >
+          <div className={styles.slider_menu_button_group}>
+            {cities.map((city) => (
+              <SwiperSlide
+                key={city}
+                className={`${styles.slider_menu_button} ${
+                  selectedMap === city ? styles.slider_menu_button_active : ''
+                }`}
+                onClick={() => {
+                  if (swiper) {
+                    swiper.slideTo(cities.indexOf(city));
+                  }
+                  setSelectedMap(city);
+                }}
+              >
+                <p className={styles.slider_button_city}>{city}</p>
+              </SwiperSlide>
+            ))}
+          </div>
         </Swiper>
       </div>
     </div>
@@ -233,7 +201,3 @@ const Contacts = () => {
 };
 
 export default Contacts;
-
-
-
- 
