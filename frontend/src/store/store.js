@@ -3,6 +3,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import counterSlice from "./Slice/counterSlice";
 import reviewsSlice from "./Slice/reviewsSlice";
 import articlesSlice from "./Slice/articlesSlice";
+import projectSlice from "./Slice/projectSlice";
 
 export default configureStore({
   reducer: {
@@ -10,5 +11,6 @@ export default configureStore({
     counterSlice: counterSlice,
     reviews: reviewsSlice,
     articles: articlesSlice,
+    project: projectSlice
   },
 });
