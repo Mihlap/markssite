@@ -2,7 +2,6 @@
 
 .main_contact {
   display: flex;
-  /* min-width: 1024px; */
   max-width: 100%;
   height: 100%;
   width: 100%;
@@ -94,13 +93,12 @@
 .menu_button_group {
   display: flex;
   padding-top: 1.688rem;
-  gap: 0.55vw;
+  gap: 8px;
   padding-bottom: 8vh;
+  
 }
 
 .menu_button {
-  width: 6.18rem;
-  height: 2.25rem;
   border-radius: 34px;
   background-color: transparent;
   border: 1px solid var(--black-1D2E43);
@@ -109,7 +107,9 @@
   font-weight: var(--fw-400);
   font-size: 14px;
   line-height: 20px;
-}
+  width: fit-content;
+  align-items: center;
+  }
 
 .menu_button:hover {
   background-color: var(--light-gray-C0C5CB);
@@ -120,12 +120,11 @@
   background-color: var(--black-1D2E43);
   pointer-events: none;
 }
-
-@media (min-width: 1025px) {
-  .mySwiper {
-    display: none;
-  }
+.menu_button_city {
+  padding: 8px 24px;
 }
+
+/* Стили мобильной версии */
 
 @media screen and (max-width: 767px) {
   .main_contact {
@@ -138,22 +137,19 @@
     position: absolute;
     height: auto;
     width: 100%;
-  }
+   }
 
   .menu_span {
-    font-family: var(--font-raleway);
-    font-weight: var(--fw-400);
-    font-size: 16px;
-    line-height: 24px;
-    padding-top: 110px;
+  display: none;
   }
 
   .link_mail {
     display: block;
-    font-size: 6vw;
+    font-size: 27px;
     line-height: 32px;
     font-weight: var(--fw-400);
     color: var(--black-1D2E43);
+    padding-top: 142px;
   }
 
   .link_tel {
@@ -161,6 +157,7 @@
     font-size: 20px;
     line-height: 28px;
     color: var(--black-1D2E43);
+    padding-top: 32px;
   }
 
   .menu_mail,
@@ -179,7 +176,7 @@
   }
 
   .menu_work {
-    padding-bottom: 3rem;
+    padding-bottom: 4.25rem;
   }
 
   .menu_button_group {
@@ -195,50 +192,55 @@
   .mySwiper {
     position: absolute;
     bottom: 2rem;
-    width: 85%;
-    left: 7%;
-  }
-
-  .slider_menu_button_group {
-    /* padding-top: 1.688rem; */
-    gap: 0.55vw;
-  }
-
+    padding-left: 10px;
+    padding-right: 10px;
+    max-width: 100%;
+   }
+  
   .slider_menu_button {
-    width: 6.18rem;
-    height: 2.25rem;
     border-radius: 34px;
     background-color: var(--white-F6F6F6);
     border: 1px solid var(--black-1D2E43);
     font-family: var(--font-raleway);
-    font-style: normal;
     font-weight: var(--fw-400);
     font-size: 14px;
-    line-height: 2.25rem;
-    text-align: center;
-  }
-
+    line-height: 2rem;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+   }
   .slider_menu_button_active {
     color: var(--white-F6F6F6);
     background-color: var(--black-1D2E43);
   }
+  .slider_button_city {
+     padding: 2px 24px;
+  }
 
 }
 
+/* Стили планшетной версии */
 
 @media screen and (min-width: 768px) and (max-width: 1024px) {
   .main_contact {
     min-width: 0px;
-    display: flex;
-    flex-direction: column;
-  }
+    }
 
   .menu_block {
     position: absolute;
     height: auto;
     width: 100%;
+    padding-left: 3.43rem;
   }
-
+  .menu_block::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 1px;
+    background: linear-gradient(134.18deg, #FFFFFF 3.46%, #C5D8E9 53.29%, #E4DEE3 54.97%, #FFFFFF 90.97%);
+  }
   .menu_span {
     font-family: var(--font-raleway);
     font-weight: var(--fw-400);
@@ -278,20 +280,30 @@
     font-size: 16px;
     line-height: 24px;
     font-feature-settings: 'pnum' on, 'lnum' on;
+    padding-top: 1rem;
   }
 
   .menu_office_name {
     display: none;
   }
-
-  .menu_work {
-    padding-bottom: 3rem;
-  }
-
+ 
   .menu_button_group {
-    display: none;
+   padding-bottom: 2rem;
+   gap: 8px;
   }
-
+  .menu_button {
+   background-color: var(--white-F6F6F6);
+  }
+  
+  .menu_button:hover {
+    background-color: var(--black-1D2E43);
+  }
+  
+  .menu_button_active {
+    color: var(--white-F6F6F6);
+    background-color: var(--black-1D2E43);
+    pointer-events: none;
+  }
   .map_block {
     position: relative;
     width: 100%;
@@ -299,34 +311,12 @@
   }
 
   .mySwiper {
-    position: absolute;
-    bottom: 2rem;
-    width: 85%;
-    left: 7%;
+    display: none;
   }
+}
 
-  .slider_menu_button_group {
-    /* padding-top: 1.688rem; */
-    gap: 0.55vw;
+@media (min-width: 1025px) {
+  .mySwiper {
+    display: none;
   }
-
-  .slider_menu_button {
-    width: 6.18rem;
-    height: 2.25rem;
-    border-radius: 34px;
-    background-color: var(--white-F6F6F6);
-    border: 1px solid var(--black-1D2E43);
-    font-family: var(--font-raleway);
-    font-style: normal;
-    font-weight: var(--fw-400);
-    font-size: 14px;
-    line-height: 2.25rem;
-    text-align: center;
-  }
-
-  .slider_menu_button_active {
-    color: var(--white-F6F6F6);
-    background-color: var(--black-1D2E43);
-  }
-
 }
