@@ -92,14 +92,14 @@ useEffect(() => {
             >
               <li>Публикации</li>
             </Link>
-            <Link
+            <NavLink
               className={`${styles.navbar_item} ${styles.navbar_item_last}`}
               to="contacts"
               smooth={true}
               duration={500}
             >
               <li>Контакты</li>
-            </Link>
+            </NavLink>
           </ul>
         </div>
       </nav>
@@ -186,7 +186,7 @@ useEffect(() => {
                     </Link>
                   </li>
                   <li>
-                    <Link
+                    <NavLink
                       className={styles.menu_item}
                       onClick={closeNavBar}
                       to="contacts"
@@ -194,7 +194,7 @@ useEffect(() => {
                       duration={500}
                     >
                       Контакты
-                    </Link>
+                    </NavLink>
                   </li>
                 </ul>
                 <div className={styles.contact_info}>
