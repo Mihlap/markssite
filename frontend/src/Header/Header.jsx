@@ -13,17 +13,24 @@ import styles from "./Header.module.css";
 import SliderMobile from "../UI/SliderHeader/SliderMobile";
 import { fetchArticles } from "../store/Slice/articlesSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { fetchProject } from "../store/Slice/projectSlice";
 
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 export default function Header() {
     const dispatch = useDispatch();
     const artickes = useSelector((state) => state.articles.articles);
+    const project = useSelector((state) => state.project.articles);
     const loading = useSelector((state) => state.articles.loading);
     const error = useSelector((state) => state.articles.error);
+    
+    // const loading = useSelector((state) => state.project.loading);
+    // const error = useSelector((state) => state.project.error);
+   
 
     useEffect(() => {
       dispatch(fetchArticles());
+      dispatch(fetchProject());
     }, [dispatch]);
 
     if (loading) {
@@ -34,6 +41,15 @@ export default function Header() {
       return <div>Error: {error}</div>;
     }
 
+  
+    if (loading) {
+      return <h1>Loading...</h1>;
+    }
+
+    if (error) {
+      return <div>Error: {error}</div>;
+    }
+  
   const array = artickes.map((el) => el.attributes);
 
   if (array[0] === undefined) { 
@@ -49,7 +65,7 @@ export default function Header() {
   const winePark = array[0];
   const badaevsky = array[1];
   
- 
+ console.log(project);
   return (
     <main className={styles.header}>
       <div className={styles.video_block}>

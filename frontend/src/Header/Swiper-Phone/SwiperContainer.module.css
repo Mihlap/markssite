@@ -1,0 +1,54 @@
+@import '../../App.css';
+
+.swiper_container_articles {
+    width: 100%;
+    position: relative;
+    max-width: 350px;
+    height: 100%;
+    max-height: 450px;
+    border-radius: 10px;
+    padding-top: 4rem;
+    padding-bottom: 31rem
+}
+
+.swiper_wrapper {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    z-index: 1;
+    position: relative;
+}
+
+.swiperPagination {
+    position: absolute;
+    left: 50%;
+    bottom: 8px;
+    transform: translatex(-50%);
+    z-index: 1;
+    width: auto !important;
+    color: red;
+    background-color: red;
+}
+
+.swiperPaginationBullet {
+    width: 15px;
+    height: 4px;
+    border-radius: 1%;
+    line-height: 30px;
+    font-size: 12px;
+    opacity: 1;
+    background: var(--light-gray-C0C5CB);
+    display: inline-block;
+    margin-right: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: red;
+        background-color: red;
+}
+
+.swiperPaginationBulletActive {
+    background: var(--salmon-FF7F6A);
+    width: 40px;
+    height: 4px;
+    border-radius: 1px;
+}
