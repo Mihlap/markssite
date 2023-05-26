@@ -12,6 +12,7 @@ const Contacts = () => {
   const [map, setMap] = useState(null);
   const [selectedMap, setSelectedMap] = useState('Москва');
   const [marker, setMarker] = useState(null);
+  const [swiper, setSwiper] = useState(null);
 
   const apiKey = process.env.REACT_APP_API_KEY;
   mapboxgl.accessToken = apiKey;
@@ -155,7 +156,7 @@ const Contacts = () => {
               }`}
               onClick={() => setSelectedMap(city)}
             >
-              {city}
+              <p className={styles.menu_button_city}>{city}</p>
             </button>
           ))}
         </div>
@@ -168,49 +169,61 @@ const Contacts = () => {
             height: '100%%',
       }}
         />
-          <Swiper
-        slidesPerView={3}
-        spaceBetween={10}
-        pagination={{
-          clickable: true,
-        }}
-        breakpoints={{
-          640: {
-            slidesPerView: 2,
-            spaceBetween: 20,
-          },
-          768: {
-            slidesPerView: 3,
-            spaceBetween: 20,
-          },
-         }}
-        // modules={[Pagination]}
+        <Swiper
+          onSwiper={setSwiper}
+          slidesPerView={'auto'}
+          spaceBetween={10}
+          pagination={{
+            clickable: true,
+          }}
         className={styles.mySwiper}
-      >
+        touch={true}
+         >
         <div className={styles.slider_menu_button_group}>
           <SwiperSlide
             className={`${styles.slider_menu_button} ${selectedMap === 'Москва' ? styles.slider_menu_button_active : ''}`}
-            onClick={() => setSelectedMap('Москва')}
+            onClick={() => {
+              if (swiper) {
+                swiper.slideTo(0);
+              }
+              setSelectedMap('Москва');
+            }}
           >
-            Москва
+            <p className={styles.slider_button_city}>Москва</p>
           </SwiperSlide>
           <SwiperSlide
             className={`${styles.slider_menu_button} ${selectedMap === 'Оренбург' ? styles.slider_menu_button_active : ''}`}
-            onClick={() => setSelectedMap('Оренбург')}
+            onClick={() => {
+              if (swiper) {
+                swiper.slideTo(1);
+              }
+              setSelectedMap('Оренбург');
+            }}
           >
-            Оренбург
+           <p className={styles.slider_button_city}>Оренбург</p>
           </SwiperSlide>
           <SwiperSlide
             className={`${styles.slider_menu_button} ${selectedMap === 'Челябинск' ? styles.slider_menu_button_active : ''}`}
-            onClick={() => setSelectedMap('Челябинск')}
+            onClick={() => {
+              if (swiper) {
+                swiper.slideTo(2);
+              }
+              setSelectedMap('Челябинск');
+            }}
           >
-            Челябинск
+            <p className={styles.slider_button_city}>Челябинск</p>
           </SwiperSlide>
           <SwiperSlide
             className={`${styles.slider_menu_button} ${selectedMap === 'Ташкент' ? styles.slider_menu_button_active : ''}`}
-            onClick={() => setSelectedMap('Ташкент')}
+            onClick={() => {
+              if (swiper) {
+                swiper.slideTo(0);
+              }
+          
+              setSelectedMap('Ташкент');
+            }}
           >
-            Ташкент
+            <p className={styles.slider_button_city}>Ташкент</p>
           </SwiperSlide>
          </div>
         </Swiper>
