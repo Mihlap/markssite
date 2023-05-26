@@ -1,6 +1,6 @@
 @import '../../App.css';
 
-.swiper-container_articles {
+.swiper_container_articles {
     width: 100%;
     position: relative;
     max-width: 350px;
@@ -11,7 +11,7 @@
     padding-bottom: 31rem
 }
 
-.swiper-wrapper {
+.swiper_wrapper {
     width: 100%;
     height: 100%;
     display: flex;
@@ -19,26 +19,18 @@
     position: relative;
 }
 
-.slider-buttons {
-    position: absolute;
-    display: flex;
-    top: 100%;
-    justify-content: flex-end;
-    width: 100%;
-    padding-top: 8px;
-    font-size: 100px;
-}
-
-.swiper-pagination {
+.swiperPagination {
     position: absolute;
     left: 50%;
     bottom: 8px;
     transform: translatex(-50%);
     z-index: 1;
     width: auto !important;
+    color: red;
+    background-color: red;
 }
 
-.swiper-pagination-bullet {
+.swiperPaginationBullet {
     width: 15px;
     height: 4px;
     border-radius: 1%;
@@ -50,9 +42,11 @@
     margin-right: 8px;
     cursor: pointer;
     transition: all 0.2s;
+    color: red;
+        background-color: red;
 }
 
-.swiper-pagination-bullet-active {
+.swiperPaginationBulletActive {
     background: var(--salmon-FF7F6A);
     width: 40px;
     height: 4px;

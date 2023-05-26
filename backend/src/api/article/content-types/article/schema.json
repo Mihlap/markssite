@@ -26,9 +26,6 @@
     },
     "icon": {
       "type": "string"
-    },
-    "svg": {
-      "type": "string"
     }
   }
 }

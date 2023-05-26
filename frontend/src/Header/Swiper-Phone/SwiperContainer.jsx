@@ -1,12 +1,11 @@
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwipeCore, { Navigation, Pagination, Autoplay } from "swiper";
 
-
 import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
+// import "swiper/css/navigation";
+// import "swiper/css/pagination";
 import Slideritem from "./SliderItem";
-import "./SwiperContainer.css";
+import styles from "./SwiperContainer.module.css";
 
 export default function SwiperContainer({ artickes }) {
   SwipeCore.use([Navigation, Pagination, Autoplay]);
@@ -27,9 +26,9 @@ export default function SwiperContainer({ artickes }) {
         //   delay: 7000,
         //   disableOnInteraction: false,
         // }}
-        className="swiper-container_articles"
+        className={styles.swiper_container_articles}
       >
-        <div className="swiper-wrapper">
+        <div className={styles.swiper_wrapper}>
           {artickes.map((item) => {
             return (
               <SwiperSlide key={item.id}>
@@ -43,7 +42,10 @@ export default function SwiperContainer({ artickes }) {
               </SwiperSlide>
             );
           })}
-          <div className="slider-buttons"></div>
+          <div className={styles.swiperPagination}>
+            <div className={styles.swiperPaginationBullet}></div>
+            <div className={styles.swiperPaginationBulletActive}></div>
+          </div>
         </div>
       </Swiper>
     </>
