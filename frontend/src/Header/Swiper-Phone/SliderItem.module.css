@@ -1,0 +1,81 @@
+@import '../../App.css';
+
+.slider_item {
+    width: 100%;
+    height: 100%;
+    border-radius: 1rem;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    cursor: grab;
+}
+
+.slider_item_content {
+    padding: 20px 0px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    transition: 0.4s;
+}
+
+.slider_image_wrapper {
+    height: 346px;
+    width: 100%;
+    overflow: hidden;
+    border-radius: 0px 0px 1rem 1rem;
+    position: relative;
+}
+
+.slider_image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: 0.2s;
+    border-radius: 16px;
+}
+
+.slider_subject {
+    font-style: normal;
+    font-weight: var(--fw-700);
+    font-size: 16px;
+    line-height: 24px;
+    font-feature-settings: 'pnum' on, 'lnum' on;
+    color: var(--black-1D2E43);
+
+    @media screen and (max-width: 520px) {
+        & {
+            font-size: 16px;
+            line-height: 24px;
+        }
+    }
+}
+
+.slider_text {
+    font-style: normal;
+    padding-top: 10px;
+    font-weight: var(--fw-400);
+    font-size: 14px;
+    line-height: 20px;
+    font-feature-settings: 'pnum' on, 'lnum' on;
+    color: var(--black-1D2E43);
+
+    @media screen and (max-width: 520px) {
+        & {
+            font-size: 14px;
+            line-height: 20px;
+        }
+    }
+}
+
+.icon_image {
+    position: absolute;
+    bottom: 6%;
+    right: 6%;
+}
+
+/* первый 350 на 515 
+
+второй 350 на 515
+
+третий 350 на 560 */
