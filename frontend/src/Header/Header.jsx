@@ -14,6 +14,7 @@ import SliderMobile from "../UI/SliderHeader/SliderMobile";
 import { fetchArticles } from "../store/Slice/articlesSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProject } from "../store/Slice/projectSlice";
+import LoadingCircle from "../Loading/LoadingCircle";
 
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
@@ -34,7 +35,7 @@ export default function Header() {
     }, [dispatch]);
 
     if (loading) {
-      return <h1>Loading...</h1>;
+      return <LoadingCircle />
     }
 
     if (error) {
@@ -43,7 +44,7 @@ export default function Header() {
 
   
     if (loading) {
-      return <h1>Loading...</h1>;
+      return <LoadingCircle />
     }
 
     if (error) {
@@ -89,13 +90,6 @@ if (project !== undefined) {
    slavaProject = arrayProject[2];
    wineParkProject = arrayProject[3];
 
-  // используем значения переменных за пределами блока if
-  console.log(
-    primeParkProject,
-    hotelAppartProject,
-    slavaProject,
-    wineParkProject
-  );
 }
 
   
@@ -105,9 +99,6 @@ if (project !== undefined) {
         <VideoPlayer />
       </div>
       <div id="publications" className={styles.header_desctop_block}>
-        <Link to="/test">
-          <h3>Test</h3>
-        </Link>
         <h1 className={styles.desctop_title}>Награды и публикации</h1>
         <div className={styles.desctop_test}>
           Наша компания участвует в многочисленных выставках, конференциях
