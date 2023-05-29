@@ -52,8 +52,8 @@ const Contacts = () => {
         container: 'map',
         antialias: true,
       });
-
-      newMap.on('load', () => {
+     
+       newMap.on('load', () => {
         newMap.addSource('marker', {
           type: 'geojson',
           data: {
@@ -105,6 +105,11 @@ const Contacts = () => {
         .addTo(map);
       setMarker(newMarker);
       map.panBy([-100, -100], { duration: 0 });
+      const canvas = map.getCanvasContainer();
+      canvas.style.touchAction = 'pan-y';
+      if (canvas.classList.contains('mapboxgl-touch-zoom-rotate')) {
+        canvas.classList.add('pinch-zoom');
+      }
     }
   }, [map, selectedMap]);
 
@@ -113,11 +118,11 @@ const Contacts = () => {
       case 'Москва':
         return [37.5804, 55.783];
       case 'Оренбург':
-        return [55.098208, 51.768199];
+        return [55.1053, 51.804];
       case 'Челябинск':
-        return [61.402554, 55.160026];
+        return [61.3018, 55.1566];
       case 'Ташкент':
-        return [69.267883, 41.311151];
+        return [69.275, 41.2964];
       default:
         return [37.5804, 55.783];
     }
