@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchReviews } from "../store/Slice/reviewsSlice";
 import styles from "./Test.module.css";
+import LoadingCircle from "../Loading/LoadingCircle";
 
 export default function Test() {
   const dispatch = useDispatch();
@@ -26,17 +27,37 @@ export default function Test() {
   return (
     <div className={styles.test_container}>
       <div style={{ paddingTop: "12rem" }} />
-      <h1>Test Container</h1>
-      {reviews.map((element) => (
-        <ul key={element.id}>
-          <li>
-            <h3>{element.attributes.title}</h3>
-            <div>{element.attributes.rating}</div>
-            <div>{element.attributes.body}</div>
-            <img style={{width: "400px"}} src={element.attributes.img} alt={ element.attributes.img} />
-          </li>
-        </ul>
-      ))}
+      <div className={styles.test_block}>
+        <div>
+          <h1>Добавить пост</h1>
+          <font className={styles.test_form}>
+            <input type="text" placeholder="title" />
+            <input type="number" name="" id="" placeholder="rating" />
+            <input type="text" placeholder="body" />
+            <button>отправить </button>
+          </font>
+        </div>
+        <div>
+          <h1>Все посты</h1>
+
+          {reviews.map((element) => (
+            <div key={element.id}>
+              <ul>
+                <li className={styles.test_item}>
+                  <h3> title: {element.attributes.title}</h3>
+                  <div> rating: {element.attributes.rating}</div>
+                  <div>body: {element.attributes.body}</div>
+                  <img
+                    style={{ width: "400px" }}
+                    src={element.attributes.img}
+                    alt={element.attributes.img}
+                  />
+                </li>
+              </ul>
+            </div>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }
