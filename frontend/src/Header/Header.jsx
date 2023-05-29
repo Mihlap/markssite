@@ -60,12 +60,10 @@ export default function Header() {
      return array[1]
   }
   
-  
-  
+  // из объекта вытаскиваются только 0 и 1 статья 
   const winePark = array[0];
   const badaevsky = array[1];
   
- console.log(project);
   return (
     <main className={styles.header}>
       <div className={styles.video_block}>

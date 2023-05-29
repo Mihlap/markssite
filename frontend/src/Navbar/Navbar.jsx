@@ -71,7 +71,7 @@ useEffect(() => {
             <Link
               className={styles.navbar_item}
               to="competencies"
-              smooth={true}
+              smooth={"true"}
               duration={500}
             >
               <li>Компетенции</li>
@@ -79,7 +79,7 @@ useEffect(() => {
             <Link
               className={styles.navbar_item}
               to="projects"
-              smooth={true}
+              smooth={"true"}
               duration={500}
             >
               <li>Проекты</li>
@@ -87,7 +87,7 @@ useEffect(() => {
             <Link
               className={styles.navbar_item}
               to="publications"
-              smooth={true}
+              smooth={"true"}
               duration={500}
             >
               <li>Публикации</li>
@@ -95,7 +95,7 @@ useEffect(() => {
             <NavLink
               className={`${styles.navbar_item} ${styles.navbar_item_last}`}
               to="contacts"
-              smooth={true}
+              smooth={"true"}
               duration={500}
             >
               <li>Контакты</li>
@@ -157,7 +157,7 @@ useEffect(() => {
                       className={styles.menu_item}
                       onClick={closeNavBar}
                       to="competencies"
-                      smooth={true}
+                      smooth={"true"}
                       duration={500}
                     >
                       Компетенции
@@ -168,7 +168,7 @@ useEffect(() => {
                       className={styles.menu_item}
                       onClick={closeNavBar}
                       to="projects"
-                      smooth={true}
+                      smooth={"true"}
                       duration={500}
                     >
                       Проекты
@@ -179,7 +179,7 @@ useEffect(() => {
                       className={styles.menu_item}
                       onClick={closeNavBar}
                       to="publications1"
-                      smooth={true}
+                      smooth={"true"}
                       duration={500}
                     >
                       Публикации
@@ -190,7 +190,7 @@ useEffect(() => {
                       className={styles.menu_item}
                       onClick={closeNavBar}
                       to="contacts"
-                      smooth={true}
+                      smooth={"true"}
                       duration={500}
                     >
                       Контакты
