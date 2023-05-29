@@ -139,9 +139,14 @@
     width: 100%;
    }
 
-  .menu_span {
-  display: none;
-  }
+    .menu_span {
+      font-family: var(--font-raleway);
+      font-style: normal;
+      font-weight: var(--fw-400);
+      font-size: 16px;
+      line-height: 24px;
+      padding-top: 130px;
+    }
 
   .link_mail {
     display: block;
@@ -149,7 +154,7 @@
     line-height: 32px;
     font-weight: var(--fw-400);
     color: var(--black-1D2E43);
-    padding-top: 142px;
+    padding-top: 8px;
   }
 
   .link_tel {
@@ -176,7 +181,7 @@
   }
 
   .menu_work {
-    padding-bottom: 4.25rem;
+    padding-bottom: 48px;
   }
 
   .menu_button_group {
