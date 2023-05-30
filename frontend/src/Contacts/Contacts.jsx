@@ -15,7 +15,7 @@ const cities = ['Москва', 'Оренбург', 'Челябинск', 'Та�
 
 const cityInfo = {
   Москва: {
-    address: 'Москва, 3-я Ямского Поля, дом 20, строение 1, офис 70',
+    address: 'Москва, 3-я Ямского Поля, дом 20, строение 1, офис 704',
     phone: '+7 (495) 120-12-26',
     mail: 'mail@marksgroup.ru',
   },
@@ -79,11 +79,11 @@ const Contacts = () => {
         });
 
        //меняем названия на русский язык
-        newMap.getStyle().layers.forEach(function (layer) {
-          if (layer.type === 'symbol') {
-            newMap.setLayoutProperty(layer.id, 'text-field', ['get', 'name_ru']);
-          }
-        });
+        // newMap.getStyle().layers.forEach(function (layer) {
+        //   if (layer.type === 'symbol') {
+        //     newMap.setLayoutProperty(layer.id, 'text-field', ['get', 'name_ru']);
+        //   }
+        // });
 
         const newMarker = new mapboxgl.Marker({ color: '#FF7F6A' })
           .setLngLat(getOfficeCenter(selectedMap))
@@ -152,7 +152,7 @@ const Contacts = () => {
         </Link>
         <div className={styles.menu_address}>{address}</div>
         <div className={styles.menu_work}>
-          Режим работы &nbsp;&bull;&nbsp; Пн.&mdash;Пт. 10.00&mdash;19.00
+          Режим работы &nbsp;&bull;&nbsp; Пн. &mdash; Пт. 10.00&mdash;19.00
         </div>
         <div className={styles.menu_office_name}>
           У нас есть офисы по всему материку!
