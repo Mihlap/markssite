@@ -1,6 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
+ const host = process.env.REACT_APP_DEV_HOST;
+
+
 const projectSlice = createSlice({
     name: "project",
     initialState: {
@@ -30,11 +33,13 @@ export const {
     fetchProjectFailure,
 } = projectSlice.actions;
 
+
+
 export const fetchProject = () => async (dispatch) => {
     dispatch(fetchProjectStart());
-
+    
     try {
-        const response = await axios.get("http://localhost:1337/api/projects");
+        const response = await axios.get(`${host}/api/projects`);
         dispatch(fetchProjectSuccess(response.data.data));
     } catch (error) {
         dispatch(fetchProjectFailure(error.message));
