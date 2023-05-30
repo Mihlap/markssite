@@ -52,7 +52,15 @@ const Contacts = () => {
         container: 'map',
         antialias: true,
       });
-     
+
+      if ('ontouchstart' in window) {
+        newMap.dragPan.disable();
+        newMap.touchZoomRotate.enable();
+      } else {
+        newMap.dragPan.enable();
+        newMap.scrollZoom.enable();
+      }
+
        newMap.on('load', () => {
         newMap.addSource('marker', {
           type: 'geojson',
@@ -70,7 +78,7 @@ const Contacts = () => {
           },
         });
 
-        //меняем названия на русский язык
+       //меняем названия на русский язык
         newMap.getStyle().layers.forEach(function (layer) {
           if (layer.type === 'symbol') {
             newMap.setLayoutProperty(layer.id, 'text-field', ['get', 'name_ru']);
