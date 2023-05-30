@@ -32,6 +32,7 @@
   right: 0;
   bottom: 0;
   width: 1px;
+  border-width: 0 0 0 1px;
   background: linear-gradient(134.18deg, #FFFFFF 3.46%, #C5D8E9 53.29%, #E4DEE3 54.97%, #FFFFFF 90.97%);
 }
 
@@ -236,7 +237,8 @@
     height: auto;
     width: 100%;
     padding-left: 3.43rem;
-  }
+    border-bottom: 1px;
+   }
   .menu_block::after {
     content: "";
     position: absolute;
@@ -244,8 +246,10 @@
     right: 0;
     bottom: 0;
     width: 1px;
+    border-width: 0 0 0 1px;
+    border-image: linear-gradient(134.18deg, #FFFFFF 3.46%, #C5D8E9 53.29%, #E4DEE3 54.97%, #FFFFFF 90.97%);
     background: linear-gradient(134.18deg, #FFFFFF 3.46%, #C5D8E9 53.29%, #E4DEE3 54.97%, #FFFFFF 90.97%);
-  }
+   }
   .menu_span {
     font-family: var(--font-raleway);
     font-weight: var(--fw-400);
