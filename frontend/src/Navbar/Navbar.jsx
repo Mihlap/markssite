@@ -96,6 +96,14 @@ useEffect(() => {
               <li>Публикации</li>
             </Link>
             <NavLink
+              className={styles.navbar_item}
+              to="company"
+              smooth={"true"}
+              duration={500}
+            >
+              <li>О Компании</li>
+            </NavLink>
+            <NavLink
               className={`${styles.navbar_item} ${styles.navbar_item_last}`}
               to="contacts"
               smooth={"true"}
@@ -187,6 +195,17 @@ useEffect(() => {
                     >
                       Публикации
                     </Link>
+                  </li>
+                  <li>
+                    <NavLink
+                      className={styles.menu_item}
+                      onClick={closeNavBar}
+                      to="company"
+                      smooth={"true"}
+                      duration={500}
+                    >
+                      О Компании
+                    </NavLink>
                   </li>
                   <li>
                     <NavLink
