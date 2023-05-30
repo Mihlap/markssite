@@ -14,6 +14,7 @@ import SliderMobile from "../UI/SliderHeader/SliderMobile";
 import { fetchArticles } from "../store/Slice/articlesSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProject } from "../store/Slice/projectSlice";
+import LoadingCircle from "../Loading/LoadingCircle";
 
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
@@ -34,7 +35,7 @@ export default function Header() {
     }, [dispatch]);
 
     if (loading) {
-      return <h1>Loading...</h1>;
+      return <LoadingCircle />
     }
 
     if (error) {
@@ -43,7 +44,7 @@ export default function Header() {
 
   
     if (loading) {
-      return <h1>Loading...</h1>;
+      return <LoadingCircle />
     }
 
     if (error) {
@@ -55,14 +56,42 @@ export default function Header() {
   if (array[0] === undefined) { 
     return array[0]
   }
-
   if (array[1] === undefined) {
      return array[1]
-  }
-  
+  }  
   // из объекта вытаскиваются только 0 и 1 статья 
   const winePark = array[0];
   const badaevsky = array[1];
+
+  let primeParkProject = []
+  let hotelAppartProject = []
+  let slavaProject = []
+  let wineParkProject =[]
+
+
+if (project !== undefined) {
+  const arrayProject = project.map((elem) => elem.attributes);
+
+  if (arrayProject[0] === undefined) {
+    return arrayProject[0];
+  }
+  if (arrayProject[1] === undefined) {
+    return arrayProject[1];
+  }
+  if (arrayProject[2] === undefined) {
+    return arrayProject[2];
+  }
+  if (arrayProject[3] === undefined) {
+    return arrayProject[3];
+  }
+
+   primeParkProject = arrayProject[0];
+   hotelAppartProject = arrayProject[1];
+   slavaProject = arrayProject[2];
+   wineParkProject = arrayProject[3];
+
+}
+
   
   return (
     <main className={styles.header}>
@@ -70,9 +99,6 @@ export default function Header() {
         <VideoPlayer />
       </div>
       <div id="publications" className={styles.header_desctop_block}>
-        <Link to="/test">
-          <h3>Test</h3>
-        </Link>
         <h1 className={styles.desctop_title}>Награды и публикации</h1>
         <div className={styles.desctop_test}>
           Наша компания участвует в многочисленных выставках, конференциях
@@ -197,67 +223,67 @@ export default function Header() {
       </div>
       <div className={styles.main_project}>
         <div className={styles.main_project_left}>
-          <Link to="/prime-park">
+          <Link to={primeParkProject.link}>
             <img
               className={styles.img_poject}
-              src="./assets/project_left.jpg"
-              alt="project-left"
+              src={primeParkProject.img}
+              alt={primeParkProject.title}
             />
           </Link>
           <div className={styles.card_text}>
-            <h3 className={styles.card_text_title}>Жилой квартал PRIME PARK</h3>
+            <h3 className={styles.card_text_title}>{primeParkProject.title}</h3>
             <span className={styles.card_text_local}>
-              г. Москва, Ленинградский проспект &bull; 2021{" "}
+              {primeParkProject.text}
             </span>
           </div>
         </div>
         <div className={styles.main_project_right}>
           <div className={styles.main_project_right1}>
-            <Link to="/hotel-appart">
+            <Link to={hotelAppartProject.link}>
               <img
                 className={styles.img_project}
-                src="./assets/project_right1.jpg"
-                alt="project-right1"
+                src={hotelAppartProject.img}
+                alt={hotelAppartProject.title}
               />
             </Link>
             <div className={styles.card_text}>
-              <h3 className={styles.card_text_title}>Клубный дом Космо 4/22</h3>
+              <h3 className={styles.card_text_title}>{hotelAppartProject.title}</h3>
               <span className={styles.card_text_local}>
-                г. Москва, наб. Космодамианская &bull; 2021
+                {hotelAppartProject.text}
               </span>
             </div>
           </div>
           <div className={styles.main_project_right2}>
-            <Link to="/slava">
+            <Link to={slavaProject.link}>
               <img
                 className={styles.img_project}
-                src="./assets/project_right2.jpg"
-                alt="project-right2"
+                src={slavaProject.img}
+                alt={slavaProject.title}
               />
             </Link>
             <div className={styles.card_text}>
               <h3 className={styles.card_text_title}>
-                Многофункциональный комплекс апартаментов Slava
+                {slavaProject.title}
               </h3>
               <span className={styles.card_text_local}>
-                Россия, Москва, 1-я ул. Ямского Поля &bull; 2020
+                {slavaProject.text}
               </span>
             </div>
           </div>
           <div className={styles.main_project_right3}>
-            <Link to="/winepark">
+            <Link to={wineParkProject.link}>
               <img
                 className={styles.img_project}
-                src="./assets/project_right3.jpg"
-                alt="project-right3"
+                src={wineParkProject.img}
+                alt={wineParkProject.title}
               />
             </Link>
             <div className={styles.card_text}>
               <h3 className={styles.card_text_title}>
-                Центр энотуризма WinePark
+                {wineParkProject.title}
               </h3>
               <span className={styles.card_text_local}>
-                г. Москва, Кутузовский проспект &bull; 2020
+                {wineParkProject.text}
               </span>
             </div>
           </div>

@@ -118,3 +118,29 @@
         font-size: 4.40vw;
     }
 }
+
+
+/* Создаем стили для контейнера лоадера */
+.loader_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+/* Создаем стили для самого лоадера */
+.loader {
+    border: 12px solid rgba(255, 203, 193, 0.18);
+    border-top-color: #ff9988;
+    border-radius: 50%;
+    width: 80px;
+    height: 80px;
+    animation: spin 1s ease-in-out infinite;
+}
+
+/* Создаем анимацию вращения */
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}

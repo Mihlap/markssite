@@ -68,6 +68,9 @@ useEffect(() => {
             </NavLink>
           </div>
           <ul className={styles.navbar_list}>
+              <NavLink className={styles.navbar_item} to="/test">
+                <div>Добавить</div>
+              </NavLink>
             <Link
               className={styles.navbar_item}
               to="competencies"
