@@ -5,7 +5,21 @@ import styles from "./Test.module.css";
 import LoadingCircle from "../Loading/LoadingCircle";
 
 export default function Test() {
-const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState({});
+
+  const token = process.env.REACT_APP_AUTH_TOKEN;
+ 
+ 
+
+  const data = {
+    data: {
+      id: 15,
+      title: "15 15 15 15",
+      rating: 6,
+      body: "Lorem 15 ipsum 15 dolor 15 15",
+      img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJLUKzA1cLD4qzN9SItC5yoWWvX379-ZAxIXuLV4N4k0q4XgVm5us0CIU2AfUvlK-28-s&usqp=CAU",
+    },
+  };
 
   const dispatch = useDispatch();
   const reviews = useSelector((state) => state.reviews.reviews);
@@ -16,6 +30,21 @@ const [formData, setFormData] = useState({});
     dispatch(fetchReviews());
   }, [dispatch]);
 
+  // useEffect(() => {
+  //   fetch("http://localhost:1337/api/reviews", {
+  //     method: "POST",
+  //     body: JSON.stringify(data),
+  //     headers: {
+  //       "Content-Type": "application/json",
+  //       Authorization:
+  //         `Bearer ${token}`,
+  //     },
+  //   })
+  //     .then((response) => response.json())
+  //     .then((data) => console.log(data))
+  //     .catch((error) => console.error(error));
+  // }, []);
+
   if (loading) {
     return <h1>Loading...</h1>;
   }
@@ -25,20 +54,17 @@ const [formData, setFormData] = useState({});
   }
   console.log(reviews);
 
-   const handleChange = (event) => {
-     setFormData({
-       ...formData,
-       [event.target.name]: event.target.value,
-     });
-   };
+  const handleChange = (event) => {
+    setFormData({
+      ...formData,
+      [event.target.name]: event.target.value,
+    });
+  };
 
-   const handleSubmit = (event) => {
-     event.preventDefault();
-     console.log(formData);
-   };
-
-
-
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    console.log(formData);
+  };
 
   return (
     <div className={styles.test_container}>
@@ -76,7 +102,7 @@ const [formData, setFormData] = useState({});
                   <div> rating: {element.attributes.rating}</div>
                   <div>body: {element.attributes.body}</div>
                   <img
-                    style={{ width: "400px" }}
+                    style={{ width: "300px" }}
                     src={element.attributes.img}
                     alt={element.attributes.img}
                   />

@@ -1,6 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
+ const host = process.env.REACT_APP_DEV_HOST;
+
 const articlesSlice = createSlice({
   name: "articles",
   initialState: {
@@ -34,7 +36,7 @@ export const fetchArticles = () => async (dispatch) => {
   dispatch(fetchArticlesStart());
 
   try {
-    const response = await axios.get("http://localhost:1337/api/articles");
+    const response = await axios.get(`${host}/api/articles`);
     dispatch(fetchArticlesSuccess(response.data.data));
   } catch (error) {
     dispatch(fetchArticlesFailure(error.message));
