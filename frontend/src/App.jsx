@@ -74,15 +74,12 @@ const App = () => {
                 {/* <Route path="/project" element={<Project />} /> */}
                 {/* <Route path="/public" element={<Publics />} /> */}
                 <Route path="/company" element={<Company />} />
-                <Route path="/contacts" element={<Contacts />} />
+                {/* <Route path="/contacts" element={<Contacts />} /> */}
                 <Route path="/portal" element={<Portal />} />
                 <Route path="*" element={<NotFound />} />
                 ``
                 <Route path="/winepark" element={<WinePark />} />
-                <Route
-                  path="/winepark-article"
-                  element={<WineParkArticles />}
-                />
+                <Route path="/winepark-article" element={<WineParkArticles />}/>
                 <Route path="/badaevsky" element={<Badaevsky />} />
                 <Route path="/slava" element={<Slava />} />
                 <Route path="/prime-park" element={<PrimePark />} />
