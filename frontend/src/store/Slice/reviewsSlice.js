@@ -1,6 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
+
+ const host = process.env.REACT_APP_DEV_HOST;
+
 const reviewsSlice = createSlice({
   name: "reviews",
   initialState: {
@@ -31,7 +34,7 @@ export const fetchReviews = () => async (dispatch) => {
   dispatch(fetchReviewsStart());
 
   try {
-    const response = await axios.get("http://localhost:1337/api/reviews");
+    const response = await axios.get(`${host}/api/reviews`);
     dispatch(fetchReviewsSuccess(response.data.data));
   } catch (error) {
     dispatch(fetchReviewsFailure(error.message));
