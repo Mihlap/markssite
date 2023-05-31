@@ -15,6 +15,7 @@ import { fetchArticles } from "../store/Slice/articlesSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchProject } from "../store/Slice/projectSlice";
 import LoadingCircle from "../Loading/LoadingCircle";
+import Error from "../Loading/Error/Error";
 
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
@@ -39,7 +40,7 @@ export default function Header() {
     }
 
     if (error) {
-      return <div>Error: {error}</div>;
+      return <div> <Error error={error} /></div>;
     }
 
   
@@ -48,7 +49,11 @@ export default function Header() {
     }
 
     if (error) {
-      return <div>Error: {error}</div>;
+      return (
+        <div>
+          <Error error={error} />
+        </div>
+      );
     }
   
   const array = artickes.map((el) => el.attributes);

@@ -4,6 +4,7 @@ import { fetchReviews, deleteReview } from "../store/Slice/reviewsSlice";
 import styles from "./Test.module.css";
 import { customAlphabet } from "nanoid";
 import LoadingCircle from "../Loading/LoadingCircle";
+import Error from "../Loading/Error/Error";
 
 export default function Test() {
   const dispatch = useDispatch();
@@ -26,13 +27,13 @@ export default function Test() {
     dispatch(fetchReviews());
   }, [dispatch]);
 
-  
+
   if (loading) {
-    return <h1>Loading...</h1>;
+    return <LoadingCircle />;
   }
 
   if (error) {
-    return <div>Error: {error}</div>;
+    return <div><Error error={error} /></div>;
   }
 
   const handleChange = (event) => {
