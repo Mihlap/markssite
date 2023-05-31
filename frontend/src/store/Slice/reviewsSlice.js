@@ -1,8 +1,8 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
+const host = process.env.REACT_APP_DEV_HOST;
 
- const host = process.env.REACT_APP_DEV_HOST;
 
 const reviewsSlice = createSlice({
   name: "reviews",
@@ -24,11 +24,23 @@ const reviewsSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+    deleteReviewSuccess(state, action) {
+      const reviewId = action.payload;
+      state.reviews = state.reviews.filter((review) => review.id !== reviewId);
+    },
+    deleteReviewFailure(state, action) {
+      state.error = action.payload;
+    },
   },
 });
 
-export const { fetchReviewsStart, fetchReviewsSuccess, fetchReviewsFailure } =
-  reviewsSlice.actions;
+export const {
+  fetchReviewsStart,
+  fetchReviewsSuccess,
+  fetchReviewsFailure,
+  deleteReviewSuccess,
+  deleteReviewFailure,
+} = reviewsSlice.actions;
 
 export const fetchReviews = () => async (dispatch) => {
   dispatch(fetchReviewsStart());
@@ -38,6 +50,21 @@ export const fetchReviews = () => async (dispatch) => {
     dispatch(fetchReviewsSuccess(response.data.data));
   } catch (error) {
     dispatch(fetchReviewsFailure(error.message));
+  }
+};
+
+export const deleteReview = (id, token) => async (dispatch) => {
+    const token = process.env.REACT_APP_AUTH_TOKEN;
+
+  try {
+    await axios.delete(`${host}/api/reviews/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    dispatch(deleteReviewSuccess(id));
+  } catch (error) {
+    dispatch(deleteReviewFailure(error.message));
   }
 };
 
