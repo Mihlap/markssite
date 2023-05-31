@@ -6,21 +6,31 @@ const Company_Slider = () => {
   const sliderRef = useRef(null);
   const [width, setWidth] = useState(22);
   const [activeIndex, setActiveIndex] = useState(0);
-  
-  const settings = {
-    lazyLoad: true,
-    arrows: false,
-    ref: sliderRef,
-  };
-
-   const handleButtonClick = (index) => {
+   
+    const handleButtonClick = (index) => {
     if (sliderRef.current) {
       sliderRef.current.slickGoTo(index);
       setWidth((index + 1) * 22 + 2);
       setActiveIndex(index);
     }
   };
+  const handleSwipe = (direction) => {
+    if (direction === "left" && activeIndex < 3) {
+      handleButtonClick(activeIndex + 1);
+    } else if (direction === "right" && activeIndex > 0) {
+      handleButtonClick(activeIndex - 1);
+    }
+  };
 
+  const settings = {
+    lazyLoad: true,
+    arrows: false,
+    ref: sliderRef,
+    slidesToScroll: 1,
+    onSwipe: handleSwipe, 
+    infinite: false,
+  };
+ 
   return (
     <div className="company-slider-container">
       <Slider {...settings}>
@@ -65,7 +75,7 @@ const Company_Slider = () => {
           </button>
           <div className="underline" style={{ width: `${width}%` }}></div>
         </div>
-        <div className="gray-line"></div>
+        <div className="gray-underline"></div>
       </div>
     </div>
   );
