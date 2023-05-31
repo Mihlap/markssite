@@ -14,6 +14,7 @@ export default function Test() {
   const id = Number(nanoid(10));
 
   const token = process.env.REACT_APP_AUTH_TOKEN;
+  console.log(token);
  
   const [reviewData, setReviewData] = useState({
     id: id,

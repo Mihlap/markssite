@@ -12,12 +12,18 @@ import { NavLink } from "react-router-dom";
 const Navbar = ({ handleClickScroll, navOpen, setNavOpen }) => {
   const [clicked, setClicked] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
+  const [activeLink, setActiveLink] = useState(null);
 
   function handleCheckboxChange() {
     setIsChecked(!isChecked);
   }
-  function handleClick() {
+  function handleClick(to) {
+    const activeNavItem = document.querySelector('.navbar_item.active');
+    if (activeNavItem) {
+      activeNavItem.classList.remove('active');
+    }
     setClicked(!clicked);
+    setActiveLink(to);
   }
 
   const openHandler = () => {
@@ -63,49 +69,72 @@ useEffect(() => {
       <nav className={styles.navbar_desctop}>
         <div className={styles.navbar_container}>
           <div className={styles.navbar_title_block}>
-            <NavLink to="/">
+            <NavLink
+             to="/"
+             onClick={handleClick}
+             >
               <h1 className={styles.navbar_title}>MARKS GROUP</h1>
             </NavLink>
           </div>
           <ul className={styles.navbar_list}>
-              <NavLink className={styles.navbar_item} to="/test">
-                <div>Добавить</div>
-              </NavLink>
+            <NavLink className={styles.navbar_item} to="/test">
+              <div>Добавить</div>
+            </NavLink>
             <Link
-              className={styles.navbar_item}
+              exact="true"
+              className={`${styles.navbar_item} ${
+                activeLink === "/competencies" ? styles.active : ""
+              }`}
               to="competencies"
+              onClick={() => handleClick("/competencies")}
               smooth={"true"}
               duration={500}
             >
               <li>Компетенции</li>
             </Link>
             <Link
-              className={styles.navbar_item}
+            exact="true"
+              className={`${styles.navbar_item} ${
+                activeLink === "/projects" ? styles.active : ""
+              }`}
               to="projects"
+              onClick={() => handleClick("/projects")}
               smooth={"true"}
               duration={500}
             >
               <li>Проекты</li>
             </Link>
             <Link
-              className={styles.navbar_item}
+            exact="true"
+              className={`${styles.navbar_item} ${
+                activeLink === "/publications" ? styles.active : ""
+              }`}
               to="publications"
+              onClick={() => handleClick("/publications")}
               smooth={"true"}
               duration={500}
             >
               <li>Публикации</li>
             </Link>
             <NavLink
-              className={styles.navbar_item}
+            exact="true"
+              className={`${styles.navbar_item} ${
+                activeLink === "/company" ? styles.active : ""
+              }`}
               to="company"
+              onClick={() => handleClick("/company")}
               smooth={"true"}
               duration={500}
             >
               <li>О Компании</li>
             </NavLink>
             <NavLink
-              className={`${styles.navbar_item} ${styles.navbar_item_last}`}
+            exact="true"
+              className={`${styles.navbar_item} ${
+                activeLink === "/contacts" ? styles.active : ""
+              }`}
               to="contacts"
+              onClick={() => handleClick("/contacts")}
               smooth={"true"}
               duration={500}
             >
