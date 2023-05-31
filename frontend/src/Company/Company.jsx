@@ -96,7 +96,18 @@ export default function Company() {
         </div>
       </div>
       <div className={styles.sliderMobile_wrapper}>
-      <SliderMobile/>
+      <div className={styles.icon_partner}>
+        <img src="./assets/D1.png" alt="logo" />
+        <img src="./assets/D2.png" alt="logo" />
+        <img src="./assets/D3.png" alt="logo" />
+        <img src="./assets/D4.png" alt="logo" />
+        <img src="./assets/D5.png" alt="logo" />
+        <img src="./assets/D6.png" alt="logo" />
+        <img src="./assets/D7.png" alt="logo" />
+        <img src="./assets/D8.png" alt="logo" />
+        <img src="./assets/D9.png" alt="logo" />
+      </div>
+        <SliderMobile/>
       </div>
     </div>
   );
