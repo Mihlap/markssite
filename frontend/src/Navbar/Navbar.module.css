@@ -98,7 +98,7 @@
 
 
 /* Стили для мобильной версии сайта блока NavBar начинаются тут */
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 1024px) {
   .navbar_desctop {
     display: none;
   }
