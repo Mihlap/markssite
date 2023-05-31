@@ -1,50 +1,32 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchReviews } from "../store/Slice/reviewsSlice";
+import { fetchReviews, deleteReview } from "../store/Slice/reviewsSlice";
 import styles from "./Test.module.css";
+import { customAlphabet } from "nanoid";
 import LoadingCircle from "../Loading/LoadingCircle";
 
 export default function Test() {
-  const [formData, setFormData] = useState({});
-
-  const token = process.env.REACT_APP_AUTH_TOKEN;
- 
- 
-
-  const data = {
-    data: {
-      id: 15,
-      title: "15 15 15 15",
-      rating: 6,
-      body: "Lorem 15 ipsum 15 dolor 15 15",
-      img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRJLUKzA1cLD4qzN9SItC5yoWWvX379-ZAxIXuLV4N4k0q4XgVm5us0CIU2AfUvlK-28-s&usqp=CAU",
-    },
-  };
-
   const dispatch = useDispatch();
   const reviews = useSelector((state) => state.reviews.reviews);
   const loading = useSelector((state) => state.reviews.loading);
   const error = useSelector((state) => state.reviews.error);
+  const nanoid = customAlphabet("1234567890", 10);
+  const id = Number(nanoid(10));
 
+  const token = process.env.REACT_APP_AUTH_TOKEN;
+ 
+  const [reviewData, setReviewData] = useState({
+    id: id,
+    title: "",
+    rating: "",
+    body: "",
+    img: "",
+  });
   useEffect(() => {
     dispatch(fetchReviews());
   }, [dispatch]);
 
-  // useEffect(() => {
-  //   fetch("http://localhost:1337/api/reviews", {
-  //     method: "POST",
-  //     body: JSON.stringify(data),
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       Authorization:
-  //         `Bearer ${token}`,
-  //     },
-  //   })
-  //     .then((response) => response.json())
-  //     .then((data) => console.log(data))
-  //     .catch((error) => console.error(error));
-  // }, []);
-
+  
   if (loading) {
     return <h1>Loading...</h1>;
   }
@@ -52,18 +34,32 @@ export default function Test() {
   if (error) {
     return <div>Error: {error}</div>;
   }
-  console.log(reviews);
 
   const handleChange = (event) => {
-    setFormData({
-      ...formData,
-      [event.target.name]: event.target.value,
-    });
+    const { name, value } = event.target;
+    setReviewData((prevReviewData) => ({
+      ...prevReviewData,
+      [name]: value,
+    }));
   };
+
+    const handleDelete = (id, token) => {
+      dispatch(deleteReview(id, token));
+    };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log(formData);
+    fetch("http://localhost:1337/api/reviews", {
+      method: "POST",
+      body: JSON.stringify({ data: reviewData }),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => console.log(data))
+      .catch((error) => console.error(error));
   };
 
   return (
@@ -72,22 +68,42 @@ export default function Test() {
       <div className={styles.test_block}>
         <div>
           <h1>Добавить пост</h1>
-          <form className={styles.test_form} onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit}>
             <label>
-              Name:
-              <input type="text" name="name" onChange={handleChange} />
+              Title:
+              <input
+                type="text"
+                name="title"
+                value={reviewData.title}
+                onChange={handleChange}
+              />
             </label>
-            <br />
             <label>
               Rating:
-              <input type="number" name="rating" onChange={handleChange} />
+              <input
+                type="number"
+                name="rating"
+                value={reviewData.rating}
+                onChange={handleChange}
+              />
             </label>
-            <br />
             <label>
               Body:
-              <input type="text" name="body" onChange={handleChange} />
+              <textarea
+                name="body"
+                value={reviewData.body}
+                onChange={handleChange}
+              />
             </label>
-            <br />
+            <label>
+              Image URL:
+              <input
+                type="text"
+                name="img"
+                value={reviewData.img}
+                onChange={handleChange}
+              />
+            </label>
             <button type="submit">Submit</button>
           </form>
         </div>
@@ -98,6 +114,7 @@ export default function Test() {
             <div key={element.id}>
               <ul>
                 <li className={styles.test_item}>
+                  <h2>{element.id }</h2>
                   <h3> title: {element.attributes.title}</h3>
                   <div> rating: {element.attributes.rating}</div>
                   <div>body: {element.attributes.body}</div>
@@ -106,6 +123,9 @@ export default function Test() {
                     src={element.attributes.img}
                     alt={element.attributes.img}
                   />
+                  <button onClick={() => handleDelete(element.id)}>
+                    Delete
+                  </button>
                 </li>
               </ul>
             </div>
