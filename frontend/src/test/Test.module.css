@@ -13,9 +13,9 @@
 
 
 .test_form {
-        display: flex;
-            flex-direction: column;
-            gap: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
 }
 
 .test_item {
