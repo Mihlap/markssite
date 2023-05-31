@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchReviews } from "../store/Slice/reviewsSlice";
+import { fetchReviews, deleteReview } from "../store/Slice/reviewsSlice";
 import styles from "./Test.module.css";
-import { nanoid } from "nanoid";
+import { customAlphabet } from "nanoid";
 import LoadingCircle from "../Loading/LoadingCircle";
 
 export default function Test() {
@@ -10,7 +10,10 @@ export default function Test() {
   const reviews = useSelector((state) => state.reviews.reviews);
   const loading = useSelector((state) => state.reviews.loading);
   const error = useSelector((state) => state.reviews.error);
-  const id = nanoid();
+  const nanoid = customAlphabet("1234567890", 10);
+  const id = Number(nanoid(10));
+
+  const token = process.env.REACT_APP_AUTH_TOKEN;
  
   const [reviewData, setReviewData] = useState({
     id: id,
@@ -19,12 +22,11 @@ export default function Test() {
     body: "",
     img: "",
   });
-
   useEffect(() => {
     dispatch(fetchReviews());
   }, [dispatch]);
-  console.log(reviews);
 
+  
   if (loading) {
     return <h1>Loading...</h1>;
   }
@@ -41,9 +43,12 @@ export default function Test() {
     }));
   };
 
+    const handleDelete = (id, token) => {
+      dispatch(deleteReview(id, token));
+    };
+
   const handleSubmit = (event) => {
     event.preventDefault();
-    const token = process.env.REACT_APP_AUTH_TOKEN;
     fetch("http://localhost:1337/api/reviews", {
       method: "POST",
       body: JSON.stringify({ data: reviewData }),
@@ -109,6 +114,7 @@ export default function Test() {
             <div key={element.id}>
               <ul>
                 <li className={styles.test_item}>
+                  <h2>{element.id }</h2>
                   <h3> title: {element.attributes.title}</h3>
                   <div> rating: {element.attributes.rating}</div>
                   <div>body: {element.attributes.body}</div>
@@ -117,6 +123,9 @@ export default function Test() {
                     src={element.attributes.img}
                     alt={element.attributes.img}
                   />
+                  <button onClick={() => handleDelete(element.id)}>
+                    Delete
+                  </button>
                 </li>
               </ul>
             </div>
