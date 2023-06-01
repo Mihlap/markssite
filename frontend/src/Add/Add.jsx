@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchReviews, deleteReview } from "../store/Slice/reviewsSlice";
-import styles from "./Test.module.css";
+import styles from "./Add.module.css";
 import { customAlphabet } from "nanoid";
 import LoadingCircle from "../Loading/LoadingCircle";
 import Error from "../Loading/Error/Error";
@@ -15,7 +15,6 @@ export default function Test() {
   const id = Number(nanoid(10));
 
   const token = process.env.REACT_APP_AUTH_TOKEN;
-  console.log(token);
  
   const [reviewData, setReviewData] = useState({
     id: id,
@@ -28,6 +27,7 @@ export default function Test() {
     dispatch(fetchReviews());
   }, [dispatch]);
 
+  console.log(reviews);
 
   if (loading) {
     return <LoadingCircle />;
@@ -49,20 +49,23 @@ export default function Test() {
       dispatch(deleteReview(id, token));
     };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    fetch("http://localhost:1337/api/reviews", {
-      method: "POST",
-      body: JSON.stringify({ data: reviewData }),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
+const handleSubmit = (event) => {
+  event.preventDefault();
+  fetch("http://localhost:1337/api/reviews", {
+    method: "POST",
+    body: JSON.stringify({ data: reviewData }),
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data);
+      dispatch(fetchReviews()); // dispatch action to update the Redux store
     })
-      .then((response) => response.json())
-      .then((data) => console.log(data))
-      .catch((error) => console.error(error));
-  };
+    .catch((error) => console.error(error));
+};
 
   return (
     <div className={styles.test_container}>
@@ -70,7 +73,7 @@ export default function Test() {
       <div className={styles.test_block}>
         <div>
           <h1>Добавить пост</h1>
-          <form onSubmit={handleSubmit}>
+          <form className={styles.test_form} onSubmit={handleSubmit}>
             <label>
               Title:
               <input
@@ -106,7 +109,7 @@ export default function Test() {
                 onChange={handleChange}
               />
             </label>
-            <button type="submit">Submit</button>
+            <button type="submit">Опубликовать</button>
           </form>
         </div>
         <div>
@@ -116,7 +119,7 @@ export default function Test() {
             <div key={element.id}>
               <ul>
                 <li className={styles.test_item}>
-                  <h2>{element.id }</h2>
+                  <h2>{element.id}</h2>
                   <h3> title: {element.attributes.title}</h3>
                   <div> rating: {element.attributes.rating}</div>
                   <div>body: {element.attributes.body}</div>
