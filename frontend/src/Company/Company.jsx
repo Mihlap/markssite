@@ -3,16 +3,21 @@ import styles from "./Company.module.css";
 import Company_Slider from "../UI/Company_Slider/Company_Slider";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import SliderMobile from '../UI/SliderHeader/SliderMobile';
+import SliderMobile from "../UI/SliderHeader/SliderMobile";
 
 import bracket from "../icons/bracket.svg";
-
+import bracket_dark from "../icons/bracket_dark.svg";
 
 export default function Company() {
   const [countPercent, setCountPercent] = useState(0);
   const [countHuman, setCountHuman] = useState(0);
-  const [countProject, setCountProject] = useState(0)
+  const [countProject, setCountProject] = useState(0);
   const blockSlider = useRef(null);
+  const [countDepartment, setCountDepartment] = useState(0);
+  const [countGap, setCountGap] = useState(0);
+  const [countScient, setCountScient] = useState(0);
+  const [countScienceDegree, setCountScienceDegree] = useState(0);
+  const blockSliderNext = useRef(null);
 
   useEffect(() => {
     const timer1 = setTimeout(() => {
@@ -25,31 +30,92 @@ export default function Company() {
       if (countProject < 200) {
         setCountProject(countProject + 5);
       }
-    }, 80);
+    }, 50);
     return () => clearTimeout(timer1);
   }, [countPercent, countHuman, countProject]);
-  
+
   useEffect(() => {
     window.scrollTo(20, 0);
 
     gsap.registerPlugin(ScrollTrigger);
 
-    const { elementsRight } = {elementsRight: [blockSlider.current],};
+    const { elementsRight } = { elementsRight: [blockSlider.current] };
 
-      gsap.from(elementsRight, {
-        x: "-100%",
-        opacity: 0,
-        duration: 1.5,
-        delay: 1,
-        ease: "power4.out",
-        scrollTrigger: {
-          trigger: elementsRight,
-          start: "top 80%",
-        },
+    gsap.from(elementsRight, {
+      x: "-100%",
+      opacity: 0,
+      duration: 1.5,
+      delay: 1,
+      ease: "power4.out",
+      scrollTrigger: {
+        trigger: elementsRight,
+        start: "top 80%",
+      },
+    });
+  }, []);
+
+  useEffect(() => {
+    const options = {
+      root: null,
+      rootMargin: "10px 20px",
+      threshold: 0.5,
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          const timer1 = setTimeout(() => {
+            if (countDepartment < 10) {
+              setCountDepartment(countDepartment + 1);
+            }
+            if (countGap < 80) {
+              setCountGap(countGap + 2);
+            }
+            if (countScient < 50) {
+              setCountScient(countScient + 2);
+            }
+            if (countScienceDegree < 30) {
+              setCountScienceDegree(countScienceDegree + 2);
+            }
+          }, 30);
+          return () => clearTimeout(timer1);
+        }
       });
-     }, []);
+    }, options);
 
+    if (blockSliderNext.current) {
+      observer.observe(blockSliderNext.current);
+    }
+
+    return () => {
+      if (blockSliderNext.current) {
+        observer.unobserve(blockSliderNext.current);
+      }
+    };
+  }, [
+    blockSliderNext,
+    countDepartment,
+    countGap,
+    countScient,
+    countScienceDegree,
+  ]);
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const leftBlock = document.querySelector('.left_about');
+    const rightBlock = document.querySelector('.right_about');
   
+    window.addEventListener('scroll', function() {
+      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+      const { top } = rightBlock.getBoundingClientRect();
+      leftBlock.style.transform = `translateY(${top}px)`;
+      const block = document.querySelector('.this_block');
+      if (scrollTop > 0) {
+        block.style.transform = 'rotate(90deg)';
+      } else {
+        block.style.transform = 'none';
+      }
+    });
+  });
 
   return (
     <div className={styles.company_main}>
@@ -72,42 +138,120 @@ export default function Company() {
             </span>
           </div>
           <div className={styles.container_text}>
-          <div className={styles.div_underSlider_text}>
-            <div className={styles.text_svg}>
-              <img src={bracket} alt="bracket" />
+            <div className={styles.div_underSlider_text}>
+              <div className={styles.text_svg}>
+                <img src={bracket} alt="bracket" />
+              </div>
+              <p>{countHuman}</p>
             </div>
-            <p>{countHuman}</p>
-          </div>
-          <span className={styles.span_underSlider_text}>
-            Квалифицированных сотрудников
-          </span>
+            <span className={styles.span_underSlider_text}>
+              Квалифицированных сотрудников
+            </span>
           </div>
           <div className={styles.container_text}>
-          <div className={styles.div_underSlider_text}>
-            <div className={styles.text_svg}>
-              <img src={bracket} alt="bracket" />
+            <div className={styles.div_underSlider_text}>
+              <div className={styles.text_svg}>
+                <img src={bracket} alt="bracket" />
+              </div>
+              <p>{countProject}</p>
             </div>
-            <p>{countProject}</p>
-          </div>
-          <span className={styles.span_underSlider_text}>
-            Проектов реализовано
-          </span>
+            <span className={styles.span_underSlider_text}>
+              Проектов реализовано
+            </span>
           </div>
         </div>
       </div>
       <div className={styles.sliderMobile_wrapper}>
-      <div className={styles.icon_partner}>
-        <img src="./assets/D1.png" alt="logo" />
-        <img src="./assets/D2.png" alt="logo" />
-        <img src="./assets/D3.png" alt="logo" />
-        <img src="./assets/D4.png" alt="logo" />
-        <img src="./assets/D5.png" alt="logo" />
-        <img src="./assets/D6.png" alt="logo" />
-        <img src="./assets/D7.png" alt="logo" />
-        <img src="./assets/D8.png" alt="logo" />
-        <img src="./assets/D9.png" alt="logo" />
+        <div className={styles.icon_partner}>
+          <img src="./assets/D1.png" alt="logo" />
+          <img src="./assets/D2.png" alt="logo" />
+          <img src="./assets/D3.png" alt="logo" />
+          <img src="./assets/D4.png" alt="logo" />
+          <img src="./assets/D5.png" alt="logo" />
+          <img src="./assets/D6.png" alt="logo" />
+          <img src="./assets/D7.png" alt="logo" />
+          <img src="./assets/D8.png" alt="logo" />
+          <img src="./assets/D9.png" alt="logo" />
+        </div>
+        <SliderMobile />
       </div>
-        <SliderMobile/>
+      <div className={styles.about_main}>
+        <div className={styles.left_about}>
+          <div className={styles.name_company}>MARKS GROUP</div>
+          <div className={styles.this_block}>&mdash; ЭТО</div>
+        </div>
+        <div className={styles.right_about}>
+          <div className={styles.text_right_about}>
+            <span>
+              ГК MARKS GROUP создана на базе компании OОО «ПОДЗЕМ- ПРОЕКТ»,
+              начавшей свою деятельность в 2005 году. Основателем является
+              академик Ильичёв Вячеслав Александрович, более 20 лет занимавший
+              пост директора НИИОСП им. Н.М. Герсеванова.
+            </span>
+            <br />
+            <br />
+            <span>
+              Первым крупным объектом команды стал уникальный проект мирового
+              уровня по расширению подземного пространства Государственного
+              академического Большого Театра России (ГАБТ), г. Москва, где
+              специалисты компании отвечали за разработку конструктивных
+              решений.
+            </span>
+          </div>
+          <div ref={blockSliderNext} className={styles.right_counter_wrapper}>
+            <div className={styles.container_text_right}>
+              <div className={styles.div_underSlider_text_right}>
+                <div className={styles.text_svg_right}>
+                  <img src={bracket_dark} alt="bracket_dark" />
+                </div>
+                <p className={styles.number}>{countDepartment}</p>
+              </div>
+              <span className={styles.span_underSlider_text_right}>
+                Департаментов
+              </span>
+            </div>
+            <div className={styles.container_text_right}>
+              <div className={styles.div_underSlider_text_right}>
+                <div className={styles.text_svg_right}>
+                  <img src={bracket_dark} alt="bracket_dark" />
+                </div>
+                <p className={styles.number}>{countGap}</p>
+              </div>
+              <span className={styles.span_underSlider_text_right}>
+                Проектов в качестве ГАП
+              </span>
+            </div>
+            <div className={styles.container_text_right}>
+              <div
+                className={`${styles.div_underSlider_text_right} ${styles.div_underSlider_text_right_last}`}
+              >
+                <div className={styles.text_svg_right}>
+                  <img src={bracket_dark} alt="bracket_dark" />
+                </div>
+                <p className={styles.number}>{countScient}</p>
+              </div>
+              <span className={styles.span_underSlider_text_right}>
+                Научных работ
+              </span>
+            </div>
+            <div className={styles.container_text_right}>
+              <div
+                className={`${styles.div_underSlider_text_right} ${styles.div_underSlider_text_right_last}`}
+              >
+                <div className={styles.text_svg_right}>
+                  <img src={bracket_dark} alt="bracket_dark" />
+                </div>
+                <p className={styles.number}>{countScienceDegree}%</p>
+              </div>
+              <span className={styles.span_underSlider_text_right}>
+                Сотрудников с научной степенью
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style={{ paddingTop: "100px", backgroundColor: "gray" }}>
+        Состав группы компаний
       </div>
     </div>
   );
