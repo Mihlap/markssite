@@ -1,0 +1,105 @@
+@import '../App.css';
+
+$offset: 187;
+$duration: 2.5s;
+$radius: 1rem;
+
+.spinner {
+    animation: rotator $duration linear infinite;
+}
+
+@keyframes rotator {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(270deg);
+    }
+}
+
+.path {
+    border-radius: $radius;
+    stroke-dasharray: $offset;
+    stroke-dashoffset: 0;
+    transform-origin: center;
+    animation:
+        dash $duration ease-in-out infinite,
+        colors ($duration*4) ease-in-out infinite;
+}
+
+@keyframes colors {
+    0% {
+        stroke: #FEB0A4;
+    }
+
+    25% {
+        stroke: #FFA597;
+    }
+
+    50% {
+        stroke: #FEC6BD;
+    }
+
+    75% {
+        stroke: #FF9F8F;
+    }
+
+    100% {
+        stroke: #FEB0A4;
+    }
+}
+
+@keyframes dash {
+    0% {
+        stroke-dashoffset: $offset;
+    }
+
+    50% {
+        stroke-dashoffset: $offset/4;
+        transform: rotate(135deg);
+    }
+
+    100% {
+        stroke-dashoffset: $offset;
+        transform: rotate(450deg);
+    }
+}
+
+
+.div_round {
+    position: relative;
+    width: 115px;
+    height: 115px;
+    border-radius: 50%;
+    box-shadow: 0 0 0 20px #E2EEFB;
+}
+
+
+.inner-circle {
+    transform: none;
+}
+
+.div_svg {
+    position: relative;
+    display: inline-block;
+    height: 163px;
+    width: 163px;
+    margin: 0em;
+    border-radius: 50%;
+    background: none repeat scroll 0 0 #E1EEFC;
+    overflow: hidden;
+}
+
+.div_svg:after {
+    content: "";
+    position: absolute;
+    top: 33px;
+    left: 33px;
+    display: block;
+    height: 100px;
+    width: 100px;
+    background: none repeat scroll 0 0 #F2F2F2;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
