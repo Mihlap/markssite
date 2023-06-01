@@ -318,10 +318,8 @@ svg path {
 
 .icon_partner {
   display: flex;
-  flex-direction: row;
   justify-content: space-between;
   padding: 3.7vh 2.9vw 0vh 2.9vw;
-  gap: 3.563rem;
 }
 
  .icon_partner img {
