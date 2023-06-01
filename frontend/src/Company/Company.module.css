@@ -2,6 +2,7 @@
 
 .company_main {
   display: flex;
+  flex-direction: column;
   height: 100%;
   width: 100%;
  }
@@ -70,4 +71,26 @@ width: 210px;
   line-height: 24px;
   color: var(--white-F6F6F6);
   padding-top: 9px;
+ }
+ .sliderMobile_wrapper {
+  padding: 32px 1.87vw 120px 1.87vw;
+ }
+ .icon_partner {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+   gap: 3.563rem;
+}
+ .icon_partner img {
+ height: 26px;
+ }
+
+ 
+
+/* Стили мобильной версии */
+
+ @media screen and (max-width: 767px) {
+  .icon_partner {
+    display: none;
+  }
  }
