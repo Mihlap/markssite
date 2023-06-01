@@ -23,7 +23,7 @@
   z-index: 1;
   padding-left: 1.94vw;
   padding-right: 6.39vw;
-}
+  }
 
 .menu_block::after {
   content: "";
@@ -32,7 +32,6 @@
   right: 0;
   bottom: 0;
   width: 1px;
-  border-width: 0 0 0 1px;
   background: linear-gradient(134.18deg, #FFFFFF 3.46%, #C5D8E9 53.29%, #E4DEE3 54.97%, #FFFFFF 90.97%);
 }
 
@@ -138,6 +137,8 @@
     position: absolute;
     height: auto;
     width: 100%;
+    padding-left: 16px;
+    border-bottom: 1px solid #EBECEE;;
    }
 
     .menu_span {
@@ -175,6 +176,7 @@
     font-size: 16px;
     line-height: 24px;
     font-feature-settings: 'pnum' on, 'lnum' on;
+    padding-right: 10px;
   }
 
   .menu_office_name {
@@ -230,26 +232,16 @@
 @media screen and (min-width: 768px) and (max-width: 1024px) {
   .main_contact {
     min-width: 0px;
-    }
+  }
 
   .menu_block {
     position: absolute;
     height: auto;
     width: 100%;
     padding-left: 3.43rem;
-    border-bottom: 1px;
-   }
-  .menu_block::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    width: 1px;
-    border-width: 0 0 0 1px;
-    border-image: linear-gradient(134.18deg, #FFFFFF 3.46%, #C5D8E9 53.29%, #E4DEE3 54.97%, #FFFFFF 90.97%);
-    background: linear-gradient(134.18deg, #FFFFFF 3.46%, #C5D8E9 53.29%, #E4DEE3 54.97%, #FFFFFF 90.97%);
-   }
+    border-bottom: 1px solid #EBECEE;;
+  }
+
   .menu_span {
     font-family: var(--font-raleway);
     font-weight: var(--fw-400);
@@ -258,27 +250,27 @@
     padding-top: 6.25rem;
   }
 
-    .link_mail {
-      display: block;
-      font-family: var(--font-unbounded);
-      font-size: 48px;
-      font-style: normal;
-      line-height: 64px;
-      font-weight: var(--fw-400);
-      color: var(--black-1D2E43);
-      padding-top: 0.5rem;
-    }
-  
-    .link_tel {
-      display: block;
-      font-family: var(--font-unbounded);
-      font-style: normal;
-      font-weight: var(--fw-300);
-      font-size: 24px;
-      line-height: 32px;
-      color: var(--black-1D2E43);
-      padding-top: 2rem;
-    }
+  .link_mail {
+    display: block;
+    font-family: var(--font-unbounded);
+    font-size: 48px;
+    font-style: normal;
+    line-height: 64px;
+    font-weight: var(--fw-400);
+    color: var(--black-1D2E43);
+    padding-top: 0.5rem;
+  }
+
+  .link_tel {
+    display: block;
+    font-family: var(--font-unbounded);
+    font-style: normal;
+    font-weight: var(--fw-300);
+    font-size: 24px;
+    line-height: 32px;
+    color: var(--black-1D2E43);
+    padding-top: 2rem;
+  }
 
   .menu_mail,
   .menu_tel {
@@ -295,24 +287,26 @@
   .menu_office_name {
     display: none;
   }
- 
+
   .menu_button_group {
-   padding-bottom: 2rem;
-   gap: 8px;
+    padding-bottom: 2rem;
+    gap: 8px;
   }
+
   .menu_button {
-   background-color: var(--white-F6F6F6);
+    background-color: var(--white-F6F6F6);
   }
-  
+
   .menu_button:hover {
     background-color: var(--black-1D2E43);
   }
-  
+
   .menu_button_active {
     color: var(--white-F6F6F6);
     background-color: var(--black-1D2E43);
     pointer-events: none;
   }
+
   .map_block {
     position: relative;
     width: 100%;
