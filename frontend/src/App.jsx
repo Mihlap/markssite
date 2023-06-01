@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import "./App.css";
 import Company from "./Company/Company";
 import Header from "./Header/Header";
+import { useSelector } from "react-redux";
 // import Competentions from "./Competentions/Competentions";
 import Contacts from "./Contacts/Contacts";
 // import Project from "./Project/Project";
@@ -20,8 +21,10 @@ import PrimePark from "./Project/PrimePark/PrimePark";
 import HotelAppart from "./Project/Hotel_appart/HotelAppart";
 import WineParkArticles from "./articlesProject/WinePark/WineParkArticles";
 import Login from "./Login/Login";
+import Add from "./Add/Add";
 
 const App = () => {
+  const user = useSelector((state) => state.login.user);
   const location = useLocation();
   const [isScrollDisabled, setIsScrollDisabled] = useState(false);
 
@@ -74,7 +77,6 @@ const App = () => {
                 <Route path="/contacts" element={<Contacts />} />
                 <Route path="/portal" element={<Portal />} />
                 <Route path="*" element={<NotFound />} />
-                ``
                 <Route path="/winepark" element={<WinePark />} />
                 <Route
                   path="/winepark-article"
@@ -85,6 +87,14 @@ const App = () => {
                 <Route path="/prime-park" element={<PrimePark />} />
                 <Route path="/hotel-appart" element={<HotelAppart />} />
                 <Route path="/login" element={<Login />} />
+                <Route
+                  path="/add"
+                  element={
+                    // Если пользователь авторизован, показываем компонент Add,
+                    // иначе перенаправляем пользователя на страницу входа
+                    user ? <Add /> : <Navigate to="/login" replace={true} />
+                  }
+                />
               </Routes>
             </CSSTransition>
           </TransitionGroup>

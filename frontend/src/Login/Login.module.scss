@@ -29,6 +29,10 @@
 }
 
 .login_block {
+    position: relative;
+}
+
+.login_form {
     display: flex;
     gap: 20px;
 }
@@ -88,7 +92,7 @@
     padding-bottom: 6px;
     font-weight: 700;
     border-width: 3px;
-        border-image: linear-gradient(to right, var(--blue-75BBFD), var(--blue-75BBFD)) 1 / 0 0 2px 0 stretch;
+    border-image: linear-gradient(to right, var(--blue-75BBFD), var(--blue-75BBFD)) 1 / 0 0 2px 0 stretch;
     border-image-slice: 2;
 }
 
@@ -99,4 +103,25 @@
     &:invalid {
         box-shadow: none;
     }
+}
+
+.form_button {
+        color: var(--black-1D2E43);
+        background-color: transparent;
+        border: 1px solid var(--black-1D2E43);
+        padding: 1rem 2.5rem;
+        transition: all 0.3s ease-in-out;
+
+        &:hover {
+            background: linear-gradient(278.5deg,
+                    rgba(220, 238, 255, 0.53) -49.88%,
+                    rgba(255, 127, 106, 0.53) 108.02%);
+            border: 1px solid rgba(255, 127, 106, 0.53);
+        }
+    }
+
+.welcome_block {
+    position: absolute;
+    bottom: -100%;
+    left: 25%;
 }
