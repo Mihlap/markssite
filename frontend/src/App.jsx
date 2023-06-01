@@ -19,7 +19,7 @@ import Loading from "./Loading/Loading";
 import PrimePark from "./Project/PrimePark/PrimePark";
 import HotelAppart from "./Project/Hotel_appart/HotelAppart";
 import WineParkArticles from "./articlesProject/WinePark/WineParkArticles";
-import Test from "./test/Test";
+import Login from "./test/Login";
 
 const App = () => {
   const location = useLocation();
@@ -84,7 +84,7 @@ const App = () => {
                 <Route path="/slava" element={<Slava />} />
                 <Route path="/prime-park" element={<PrimePark />} />
                   <Route path="/hotel-appart" element={<HotelAppart />} />
-                  <Route path="/test" element={<Test />} />
+                  <Route path="/login" element={<Login />} />
               </Routes>
             </CSSTransition>
           </TransitionGroup>
