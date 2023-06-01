@@ -19,7 +19,7 @@ import Loading from "./Loading/Loading";
 import PrimePark from "./Project/PrimePark/PrimePark";
 import HotelAppart from "./Project/Hotel_appart/HotelAppart";
 import WineParkArticles from "./articlesProject/WinePark/WineParkArticles";
-import Login from "./test/Login";
+import Login from "./Login/Login";
 
 const App = () => {
   const location = useLocation();
@@ -28,7 +28,6 @@ const App = () => {
   const [loading, setLoading] = useState(false);
   const [navOpen, setNavOpen] = useState(false);
   const [isHidden, setHidden] = useState(false);
-
 
   useEffect(() => {
     const body = document.querySelector("body");
@@ -66,9 +65,7 @@ const App = () => {
               <Routes location={location}>
                 <Route
                   path="/"
-                  element={
-                    <Header navOpen={navOpen} isHidden={isHidden} />
-                  }
+                  element={<Header navOpen={navOpen} isHidden={isHidden} />}
                 />
                 {/* <Route path="/competention" element={<Competentions />} /> */}
                 {/* <Route path="/project" element={<Project />} /> */}
@@ -79,12 +76,15 @@ const App = () => {
                 <Route path="*" element={<NotFound />} />
                 ``
                 <Route path="/winepark" element={<WinePark />} />
-                <Route path="/winepark-article" element={<WineParkArticles />}/>
+                <Route
+                  path="/winepark-article"
+                  element={<WineParkArticles />}
+                />
                 <Route path="/badaevsky" element={<Badaevsky />} />
                 <Route path="/slava" element={<Slava />} />
                 <Route path="/prime-park" element={<PrimePark />} />
-                  <Route path="/hotel-appart" element={<HotelAppart />} />
-                  <Route path="/login" element={<Login />} />
+                <Route path="/hotel-appart" element={<HotelAppart />} />
+                <Route path="/login" element={<Login />} />
               </Routes>
             </CSSTransition>
           </TransitionGroup>
