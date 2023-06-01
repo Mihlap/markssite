@@ -112,13 +112,17 @@
   }
 
 .menu_button:hover {
-  background-color: var(--light-gray-C0C5CB);
+  background-color: var(--dark-gray-566272);
+  border: 1px solid transparent;
+  color: var(--white-F6F6F6);
+  font-weight: var(--fw-300);
 }
 
 .menu_button_active {
   color: var(--white-F6F6F6);
   background-color: var(--black-1D2E43);
   pointer-events: none;
+  font-weight: var(--fw-300);
 }
 .menu_button_city {
   padding: 8px 24px;
