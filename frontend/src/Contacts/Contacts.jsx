@@ -79,11 +79,11 @@ const Contacts = () => {
         });
 
        //меняем названия на русский язык
-        // newMap.getStyle().layers.forEach(function (layer) {
-        //   if (layer.type === 'symbol') {
-        //     newMap.setLayoutProperty(layer.id, 'text-field', ['get', 'name_ru']);
-        //   }
-        // });
+        newMap.getStyle().layers.forEach(function (layer) {
+          if (layer.type === 'symbol') {
+            newMap.setLayoutProperty(layer.id, 'text-field', ['get', 'name_ru']);
+          }
+        });
 
         const newMarker = new mapboxgl.Marker({ color: '#FF7F6A' })
           .setLngLat(getOfficeCenter(selectedMap))

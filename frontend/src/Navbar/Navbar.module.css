@@ -35,18 +35,20 @@
 }
 
 .navbar_desctop {
-  background: rgb(246 246 246 / 90%);
   border-bottom: 1px solid var(--black-1D2E43);
   border-top: 1px solid var(--black-1D2E43);
 }
 
 .navbar_container {
+  background: rgb(246 246 246 / 90%);
+  backdrop-filter: blur(2px);
   display: flex;
   justify-content: space-between;
   align-items: center;
   height: 49px;
   padding-left: 34px;
 }
+
 
 .navbar_title {
   font-family: var(--font-MyCustomFont);
@@ -87,21 +89,22 @@
   border-right: 1px solid var(--black-1D2E43);
 }
 
-.navbar_item:hover,
-.navbar_item.active
-{
+.navbar_item.active {
   background: rgba(212, 237, 251, 0.6);
   cursor: pointer;
 }
-
-
+.navbar_item:hover {
+  background: rgb(246 246 246 / 30%);
+  backdrop-filter: blur(3px);
+  cursor: pointer;
+}
 .navDesktop_container {
   display: none;
 }
 
 
 /* Стили для мобильной версии сайта блока NavBar начинаются тут */
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 1024px) {
   .navbar_desctop {
     display: none;
   }
@@ -122,7 +125,7 @@
     z-index: 9999;
   }
 
-  .test {
+  .logo_heading {
     display: inline-block;
   }
 
