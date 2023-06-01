@@ -6,7 +6,7 @@ import { customAlphabet } from "nanoid";
 import LoadingCircle from "../Loading/LoadingCircle";
 import Error from "../Loading/Error/Error";
 
-export default function Test() {
+export default function Add({ user }) {
   const dispatch = useDispatch();
   const reviews = useSelector((state) => state.reviews.reviews);
   const loading = useSelector((state) => state.reviews.loading);
@@ -15,7 +15,7 @@ export default function Test() {
   const id = Number(nanoid(10));
 
   const token = process.env.REACT_APP_AUTH_TOKEN;
- 
+
   const [reviewData, setReviewData] = useState({
     id: id,
     title: "",
@@ -34,7 +34,11 @@ export default function Test() {
   }
 
   if (error) {
-    return <div><Error error={error} /></div>;
+    return (
+      <div>
+        <Error error={error} />
+      </div>
+    );
   }
 
   const handleChange = (event) => {
@@ -45,31 +49,32 @@ export default function Test() {
     }));
   };
 
-    const handleDelete = (id, token) => {
-      dispatch(deleteReview(id, token));
-    };
+  const handleDelete = (id, token) => {
+    dispatch(deleteReview(id, token));
+  };
 
-const handleSubmit = (event) => {
-  event.preventDefault();
-  fetch("http://localhost:1337/api/reviews", {
-    method: "POST",
-    body: JSON.stringify({ data: reviewData }),
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: `Bearer ${token}`,
-    },
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log(data);
-      dispatch(fetchReviews()); // dispatch action to update the Redux store
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    fetch("http://localhost:1337/api/reviews", {
+      method: "POST",
+      body: JSON.stringify({ data: reviewData }),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
     })
-    .catch((error) => console.error(error));
-};
+      .then((response) => response.json())
+      .then((data) => {
+        console.log(data);
+        dispatch(fetchReviews()); // dispatch action to update the Redux store
+      })
+      .catch((error) => console.error(error));
+  };
 
   return (
     <div className={styles.test_container}>
-      <div style={{ paddingTop: "12rem" }} />
+      <div style={{ paddingTop: "10rem" }} />
+      <h2>Привет {user.username} 👋</h2>
       <div className={styles.test_block}>
         <div>
           <h1>Добавить пост</h1>

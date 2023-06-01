@@ -58,7 +58,8 @@ const App = () => {
         <Loading />
       ) : (
         <>
-          <Navbar
+            <Navbar
+            user={user}
             handleClickScroll={handleClickScroll}
             setNavOpen={setNavOpen}
             navOpen={navOpen}
@@ -92,7 +93,11 @@ const App = () => {
                   element={
                     // Если пользователь авторизован, показываем компонент Add,
                     // иначе перенаправляем пользователя на страницу входа
-                    user ? <Add /> : <Navigate to="/login" replace={true} />
+                    user ? (
+                      <Add user={user} />
+                    ) : (
+                      <Navigate to="/login" replace={true} />
+                    )
                   }
                 />
               </Routes>
