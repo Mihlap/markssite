@@ -1,0 +1,127 @@
+@import '../App.css';
+
+.login_container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Raleway';
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to right, #DEE6ED, #BCDBF9, #F3E2E1);
+    background-size: 200% 200%;
+    animation: gradient 5s ease infinite;
+
+    @keyframes gradient {
+        0% {
+            background-position: 0% 50%;
+        }
+
+        50% {
+            background-position: 100% 50%;
+        }
+
+        100% {
+            background-position: 0% 50%;
+        }
+    }
+}
+
+.login_block {
+    position: relative;
+}
+
+.login_form {
+    display: flex;
+    gap: 20px;
+}
+
+
+.form__group {
+    position: relative;
+    padding: 15px 0 0;
+    margin-top: 10px;
+    width: 50%;
+}
+
+.form__field {
+    font-family: var(--font-raleway);
+    width: 100%;
+    border: 0;
+    border-bottom: 2px solid var(--gray-959DA6);
+    outline: 0;
+    font-size: 1.3rem;
+    color: var(--black-1D2E43);
+    padding: 7px 0;
+    background: transparent;
+    transition: border-color 0.2s;
+
+    &::placeholder {
+        color: transparent;
+    }
+
+    &:placeholder-shown~.form__label {
+        font-size: 1rem;
+        cursor: text;
+        top: 20px;
+        font-weight: var(--fw-600);
+    }
+}
+
+.form__label {
+    position: absolute;
+    top: 0;
+    display: block;
+    transition: 0.2s;
+    font-size: 1rem;
+    color: var(--black-3C3C3C);
+}
+
+.form__field:focus {
+    ~.form__label {
+        position: absolute;
+        top: 0;
+        display: block;
+        transition: 0.2s;
+        font-size: 0.70rem;
+        color: var(--gray-959DA6);
+        font-weight: 700;
+    }
+
+    padding-bottom: 6px;
+    font-weight: 700;
+    border-width: 3px;
+    border-image: linear-gradient(to right, var(--blue-75BBFD), var(--blue-75BBFD)) 1 / 0 0 2px 0 stretch;
+    border-image-slice: 2;
+}
+
+/* reset input */
+.form__field {
+
+    &:required,
+    &:invalid {
+        box-shadow: none;
+    }
+}
+
+.form_button {
+        color: var(--black-1D2E43);
+        background-color: transparent;
+        border: 1px solid var(--black-1D2E43);
+        padding: 1rem 2.5rem;
+        transition: all 0.3s ease-in-out;
+
+        &:hover {
+            background: linear-gradient(278.5deg,
+                    rgba(220, 238, 255, 0.53) -49.88%,
+                    rgba(255, 127, 106, 0.53) 108.02%);
+            border: 1px solid rgba(255, 127, 106, 0.53);
+        }
+    }
+
+.welcome_block {
+    position: absolute;
+    bottom: -100%;
+    left: 25%;
+}
