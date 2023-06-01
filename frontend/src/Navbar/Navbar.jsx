@@ -153,11 +153,11 @@ useEffect(() => {
               </NavLink>
             </div>
             <div className={`${styles.container} ${styles.nav_container}`}>
+              <div className={styles.cross_container}>
+                <div className={styles.cross_block}>
               <input
                 className={styles.checkbox}
                 type="checkbox"
-                name=""
-                id=""
                 checked={isChecked}
                 onChange={handleCheckboxChange}
                 onClick={() => {
@@ -170,6 +170,8 @@ useEffect(() => {
                 <span className={`${styles.line} ${styles.line2}`}></span>
                 <span className={`${styles.line} ${styles.line3}`}></span>
               </div>
+                </div>
+              </div>
               <div
                 style={{
                   position: "fixed",
@@ -179,7 +181,7 @@ useEffect(() => {
                   height: "100vh",
                   backgroundColor: "#f6f6f6",
                   transition: "left 0.5s ease-in-out", // Анимация скрытия/показа
-                  marginTop: "15%",
+                  marginTop: "60px",
                   zIndex: "9999",
                 }}
               >
