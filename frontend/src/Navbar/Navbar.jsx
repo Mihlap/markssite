@@ -77,15 +77,10 @@ useEffect(() => {
             </NavLink>
           </div>
           <ul className={styles.navbar_list}>
-<<<<<<< HEAD
               <NavLink className={styles.navbar_item} to="/login">
                 <div>Добавить</div>
               </NavLink>
-=======
-            <NavLink className={styles.navbar_item} to="/test">
-              <div>Добавить</div>
-            </NavLink>
->>>>>>> 050a3c0758721e8bc5f4a73068fd94223e987486
+
             <Link
               exact="true"
               className={`${styles.navbar_item} ${
