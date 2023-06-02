@@ -18,6 +18,8 @@ export default function Company() {
   const [countScient, setCountScient] = useState(0);
   const [countScienceDegree, setCountScienceDegree] = useState(0);
   const blockSliderNext = useRef(null);
+  const nameCompanyRef = useRef(null);
+  const thisBlockRef = useRef(null);
 
   useEffect(() => {
     const timer1 = setTimeout(() => {
@@ -100,23 +102,36 @@ export default function Company() {
     countScienceDegree,
   ]);
 
-  document.addEventListener('DOMContentLoaded', function() {
-    const leftBlock = document.querySelector('.left_about');
-    const rightBlock = document.querySelector('.right_about');
   
-    window.addEventListener('scroll', function() {
-      const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-      const { top } = rightBlock.getBoundingClientRect();
-      leftBlock.style.transform = `translateY(${top}px)`;
-      const block = document.querySelector('.this_block');
-      if (scrollTop > 0) {
-        block.style.transform = 'rotate(90deg)';
-      } else {
-        block.style.transform = 'none';
-      }
-    });
-  });
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
 
+  function handleScroll() {
+    const screenWidth = window.innerWidth;
+    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+    const nameCompanyRect = nameCompanyRef.current.getBoundingClientRect();
+    const thisBlockRect = thisBlockRef.current.getBoundingClientRect();
+  
+    if (scrollTop > thisBlockRect.top && screenWidth >= 1948) {
+      const translateYValue = nameCompanyRect.height + 213;
+      nameCompanyRef.current.style.transform = `translateY(${translateYValue}px)`;
+      thisBlockRef.current.style.transform = `translateY(${translateYValue}px) translateX(143px) rotate(-90deg)`;
+    } else if (scrollTop > thisBlockRect.top && screenWidth < 1948) {
+      const translateYValue = nameCompanyRect.height + 310;
+      nameCompanyRef.current.style.transform = `translateY(${translateYValue}px)`;
+      thisBlockRef.current.style.transform = `translateY(${translateYValue}px) translateX(143px) rotate(-90deg)`;
+    } else {
+      nameCompanyRef.current.style.transform = 'none';
+      thisBlockRef.current.style.transform = 'rotate(-180deg)';
+    }
+  }
+  
+
+  
   return (
     <div className={styles.company_main}>
       <Company_Slider />
@@ -177,8 +192,8 @@ export default function Company() {
       </div>
       <div className={styles.about_main}>
         <div className={styles.left_about}>
-          <div className={styles.name_company}>MARKS GROUP</div>
-          <div className={styles.this_block}>&mdash; ЭТО</div>
+          <div ref={nameCompanyRef} className={styles.name_company}>MARKS GROUP</div>
+          <div ref={thisBlockRef} className={styles.this_block}>&mdash; ЭТО</div>
         </div>
         <div className={styles.right_about}>
           <div className={styles.text_right_about}>
@@ -249,6 +264,27 @@ export default function Company() {
             </div>
           </div>
         </div>
+      </div>
+      <div style={{ paddingTop: "100px", backgroundColor: "gray" }}>
+        Состав группы компаний
+      </div>
+      <div style={{ paddingTop: "100px", backgroundColor: "gray" }}>
+        Состав группы компаний
+      </div>
+      <div style={{ paddingTop: "100px", backgroundColor: "gray" }}>
+        Состав группы компаний
+      </div>
+      <div style={{ paddingTop: "100px", backgroundColor: "gray" }}>
+        Состав группы компаний
+      </div>
+      <div style={{ paddingTop: "100px", backgroundColor: "gray" }}>
+        Состав группы компаний
+      </div>
+      <div style={{ paddingTop: "100px", backgroundColor: "gray" }}>
+        Состав группы компаний
+      </div>
+      <div style={{ paddingTop: "100px", backgroundColor: "gray" }}>
+        Состав группы компаний
       </div>
       <div style={{ paddingTop: "100px", backgroundColor: "gray" }}>
         Состав группы компаний
