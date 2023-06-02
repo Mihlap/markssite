@@ -1,7 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
 import { setIdentifier, setPassword, login } from "../store/Slice/loginSlice";
 import { useNavigate } from "react-router-dom";
-import Add from "../Add/Add";
 import styles from "./Login.module.scss";
 import { useEffect } from "react";
 

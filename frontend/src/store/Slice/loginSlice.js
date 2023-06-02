@@ -51,7 +51,7 @@ export const login = () => async (dispatch, getState) => {
       password,
     });
 
-    dispatch(loginSuccess(response.data.user));
+    dispatch(loginSuccess(response.data));
   } catch (error) {
     dispatch(loginFailure(error.message));
   }

@@ -9,7 +9,7 @@ import { NavLink } from "react-router-dom";
 
 // тетс гита на сливание с новой веткой
 
-const Navbar = ({ handleClickScroll, navOpen, setNavOpen }) => {
+const Navbar = ({ handleClickScroll, navOpen, setNavOpen, user }) => {
   const [clicked, setClicked] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
   const [activeLink, setActiveLink] = useState(null);
@@ -18,9 +18,9 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen }) => {
     setIsChecked(!isChecked);
   }
   function handleClick(to) {
-    const activeNavItem = document.querySelector('.navbar_item.active');
+    const activeNavItem = document.querySelector(".navbar_item.active");
     if (activeNavItem) {
-      activeNavItem.classList.remove('active');
+      activeNavItem.classList.remove("active");
     }
     setClicked(!clicked);
     setActiveLink(to);
@@ -36,29 +36,29 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen }) => {
     setIsChecked(!isChecked);
   };
 
-const [scrollDirection, setScrollDirection] = useState("none");
-const [isVisible, setIsVisible] = useState(true);
+  const [scrollDirection, setScrollDirection] = useState("none");
+  const [isVisible, setIsVisible] = useState(true);
 
-const handleScroll = () => {
-  const currentScrollPos = window.pageYOffset;
-  if (currentScrollPos > scrollPos.current) {
-    setScrollDirection("down");
-    setIsVisible(false);
-  } else if (currentScrollPos < scrollPos.current) {
-    setScrollDirection("up");
-    setIsVisible(true);
-  }
-  scrollPos.current = currentScrollPos;
-};
-
-const scrollPos = useRef(0);
-
-useEffect(() => {
-  window.addEventListener("scroll", handleScroll);
-  return () => {
-    window.removeEventListener("scroll", handleScroll);
+  const handleScroll = () => {
+    const currentScrollPos = window.pageYOffset;
+    if (currentScrollPos > scrollPos.current) {
+      setScrollDirection("down");
+      setIsVisible(false);
+    } else if (currentScrollPos < scrollPos.current) {
+      setScrollDirection("up");
+      setIsVisible(true);
+    }
+    scrollPos.current = currentScrollPos;
   };
-}, []);
+
+  const scrollPos = useRef(0);
+
+  useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   return (
     <header
@@ -69,17 +69,16 @@ useEffect(() => {
       <nav className={styles.navbar_desctop}>
         <div className={styles.navbar_container}>
           <div className={styles.navbar_title_block}>
-            <NavLink
-             to="/"
-             onClick={handleClick}
-             >
+            <NavLink to="/" onClick={handleClick}>
               <h1 className={styles.navbar_title}>MARKS GROUP</h1>
             </NavLink>
           </div>
           <ul className={styles.navbar_list}>
-              <NavLink className={styles.navbar_item} to="/login">
-                <div>^_^</div>
+            {user ? (
+              <NavLink className={styles.navbar_item} to="/add">
+                <div>Добавить (проект / статью )</div>
               </NavLink>
+            ) : null}
 
             <Link
               exact="true"
@@ -94,7 +93,7 @@ useEffect(() => {
               <li>Компетенции</li>
             </Link>
             <Link
-            exact="true"
+              exact="true"
               className={`${styles.navbar_item} ${
                 activeLink === "/projects" ? styles.active : ""
               }`}
@@ -106,7 +105,7 @@ useEffect(() => {
               <li>Проекты</li>
             </Link>
             <Link
-            exact="true"
+              exact="true"
               className={`${styles.navbar_item} ${
                 activeLink === "/publications" ? styles.active : ""
               }`}
@@ -118,7 +117,7 @@ useEffect(() => {
               <li>Публикации</li>
             </Link>
             <NavLink
-            exact="true"
+              exact="true"
               className={`${styles.navbar_item} ${
                 activeLink === "/company" ? styles.active : ""
               }`}
@@ -130,7 +129,7 @@ useEffect(() => {
               <li>О Компании</li>
             </NavLink>
             <NavLink
-            exact="true"
+              exact="true"
               className={`${styles.navbar_item} ${
                 activeLink === "/contacts" ? styles.active : ""
               }`}
@@ -155,21 +154,21 @@ useEffect(() => {
             <div className={`${styles.container} ${styles.nav_container}`}>
               <div className={styles.cross_container}>
                 <div className={styles.cross_block}>
-              <input
-                className={styles.checkbox}
-                type="checkbox"
-                checked={isChecked}
-                onChange={handleCheckboxChange}
-                onClick={() => {
-                  openHandler();
-                  handleClickScroll();
-                }}
-              />
-              <div className={styles.hamburger_lines}>
-                <span className={`${styles.line} ${styles.line1}`}></span>
-                <span className={`${styles.line} ${styles.line2}`}></span>
-                <span className={`${styles.line} ${styles.line3}`}></span>
-              </div>
+                  <input
+                    className={styles.checkbox}
+                    type="checkbox"
+                    checked={isChecked}
+                    onChange={handleCheckboxChange}
+                    onClick={() => {
+                      openHandler();
+                      handleClickScroll();
+                    }}
+                  />
+                  <div className={styles.hamburger_lines}>
+                    <span className={`${styles.line} ${styles.line1}`}></span>
+                    <span className={`${styles.line} ${styles.line2}`}></span>
+                    <span className={`${styles.line} ${styles.line3}`}></span>
+                  </div>
                 </div>
               </div>
               <div

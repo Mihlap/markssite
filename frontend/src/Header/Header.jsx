@@ -224,7 +224,7 @@ if (project !== undefined) {
         Проекты
       </div>
       <div className={styles.swiper_progect_container}>
-        <SwiperContainerProgect />
+        <SwiperContainerProgect project={project} />
       </div>
       <div className={styles.main_project}>
         <div className={styles.main_project_left}>
@@ -252,7 +252,9 @@ if (project !== undefined) {
               />
             </Link>
             <div className={styles.card_text}>
-              <h3 className={styles.card_text_title}>{hotelAppartProject.title}</h3>
+              <h3 className={styles.card_text_title}>
+                {hotelAppartProject.title}
+              </h3>
               <span className={styles.card_text_local}>
                 {hotelAppartProject.text}
               </span>
@@ -267,9 +269,7 @@ if (project !== undefined) {
               />
             </Link>
             <div className={styles.card_text}>
-              <h3 className={styles.card_text_title}>
-                {slavaProject.title}
-              </h3>
+              <h3 className={styles.card_text_title}>{slavaProject.title}</h3>
               <span className={styles.card_text_local}>
                 {slavaProject.text}
               </span>
