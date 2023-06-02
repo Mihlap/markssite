@@ -3,9 +3,7 @@
 .add_container {
     width: 100%;
     height: 100vh;
-    background-color: #212b36;
-    color: aliceblue;
-    // color: var(--black-1D2E43);
+    color: var(--black-1D2E43);
     padding: 0rem 3rem;
 
     &__userName {
@@ -63,6 +61,24 @@
         }
     }
 
+    &__publish_button {
+        font-family: var(--font-unbounded);
+        font-size: 1rem;
+        color: var(--black-1D2E43);
+        border: 1px solid var(--black-1D2E43);
+        padding: 1.11vw 2.22vw;
+        border-radius: 4px;
+        transition: all 0.3s ease-in-out;
+        background: linear-gradient(180.65deg, rgba(255, 212, 129, 0.53) -25.82%, rgba(255, 255, 255, 0.53) 177.61%);
+        border: 0.5px solid #2C3B44;
+        backdrop-filter: blur(3.5px);
+        
+        &:hover {
+            background-color: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 127, 106, 0.53);
+        }
+    }
+
     &__list_block {
         display: flex;
         gap: 10px;
@@ -71,6 +87,7 @@
     &__form_articles {
         display: flex;
         flex-direction: column;
+        font-family: var(--font-raleway);
         gap: 4rem;
         padding-top: 1rem;
     }
@@ -89,7 +106,8 @@
 
     &__modal {
         position: relative;
-        background-color: #212b36;
+        background-color: var(--light-light-gray-EBECEE);
+        color: var(--black-1D2E43);
         padding: 20px;
         width: 50%;
         max-width: 600px;
@@ -139,6 +157,7 @@
     }
 
     &__form_title {
+        font-family: var(--font-unbounded);
         font-size: 1.5rem;
         font-weight: 500;
         text-align: center;
