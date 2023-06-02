@@ -3,8 +3,9 @@
 .add_container {
     width: 100%;
     height: 100vh;
-    background-color: rgb(32, 33, 36);
+    background-color: #212b36;
     color: aliceblue;
+    // color: var(--black-1D2E43);
     padding: 0rem 3rem;
 
     &__userName {
@@ -14,7 +15,11 @@
 
     }
 
-    &__block {}
+    &__block {
+        display: grid;
+         grid-template-columns: 200px auto;
+        grid-column-gap: 20rem;
+    }
 
     &__button_blocks {
         display: inline-flex;
@@ -24,37 +29,41 @@
     }
 
     &__articles_button {
+        font-family: var(--font-unbounded);
+        font-size: 1rem;
         color: var(--black-1D2E43);
-        border: 1px solid var(--black-1D2E43);
         padding: 1.11vw 2.22vw;
         border-radius: 4px;
-        transition: all 0.3s ease-in-out;
+        transition: all 0.3s ease;
+        background: linear-gradient(202.96deg, rgba(211, 234, 255, 0.53) 41.47%, rgba(255, 150, 129, 0.53) 197.92%);
+            border: 0.5px solid #2C3B44;
+            backdrop-filter: blur(3.5px);
 
         &:hover {
-            background: linear-gradient(278.5deg,
-                    rgba(220, 238, 255, 0.53) -49.88%,
-                    rgba(255, 127, 106, 0.53) 108.02%);
+            background-color: rgba(0, 0, 0, 0.5);
+                /* Прозрачный фон */
             border: 1px solid rgba(255, 127, 106, 0.53);
         }
     }
 
     &__project_button {
+        font-family: var(--font-unbounded);
+        font-size: 1rem;
         color: var(--black-1D2E43);
         border: 1px solid var(--black-1D2E43);
         padding: 1.11vw 2.22vw;
         border-radius: 4px;
         transition: all 0.3s ease-in-out;
+        background: linear-gradient(278.5deg, rgba(220, 238, 255, 0.53) -49.88%, rgba(255, 127, 106, 0.53) 108.02%);
+            border: 0.5px solid #2C3B44;
 
         &:hover {
-            background: linear-gradient(278.5deg,
-                    rgba(220, 238, 255, 0.53) -49.88%,
-                    rgba(255, 127, 106, 0.53) 108.02%);
+        background-color: rgba(0, 0, 0, 0.5);
             border: 1px solid rgba(255, 127, 106, 0.53);
         }
     }
 
     &__list_block {
-        float: right;
         display: flex;
         gap: 10px;
     }
@@ -104,7 +113,7 @@
     &__list_block {}
 
     &__item_title {
-        font-size: 1.2rem;
+        font-size: 1rem;
         font-weight: 500;
     }
 
@@ -116,11 +125,12 @@
     &__item_articles {
         display: flex;
         align-items: center;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
         border-radius: 1rem;
         transition: transform 0.3s ease-in-out;
         margin: 10px 0px;
         padding: 5px;
+        background-color: var(--white-F6F6F6);
 
 
         &:hover {
@@ -135,11 +145,11 @@
     }
 
     &__img_articles {
-        margin-left: auto;
         max-width: 100px;
         max-height: 50px;
         border-radius: 4px;
         margin: 0px 7px;
+        margin-left: auto;
     }
 
         &__item_buttom_del {
