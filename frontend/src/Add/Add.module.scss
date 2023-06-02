@@ -1,0 +1,261 @@
+@import '../App.css';
+
+.add_container {
+    width: 100%;
+    height: 100vh;
+    background-color: #212b36;
+    color: aliceblue;
+    // color: var(--black-1D2E43);
+    padding: 0rem 3rem;
+
+    &__userName {
+        font-size: 2rem;
+        font-family: var(--font-unbounded);
+        font-weight: 300;
+
+    }
+
+    &__block {
+        display: grid;
+         grid-template-columns: 200px auto;
+        grid-column-gap: 20rem;
+    }
+
+    &__button_blocks {
+        display: inline-flex;
+        flex-direction: column;
+        gap: 16px;
+        padding-top: 2rem;
+    }
+
+    &__articles_button {
+        font-family: var(--font-unbounded);
+        font-size: 1rem;
+        color: var(--black-1D2E43);
+        padding: 1.11vw 2.22vw;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+        background: linear-gradient(202.96deg, rgba(211, 234, 255, 0.53) 41.47%, rgba(255, 150, 129, 0.53) 197.92%);
+            border: 0.5px solid #2C3B44;
+            backdrop-filter: blur(3.5px);
+
+        &:hover {
+            background-color: rgba(0, 0, 0, 0.5);
+                /* Прозрачный фон */
+            border: 1px solid rgba(255, 127, 106, 0.53);
+        }
+    }
+
+    &__project_button {
+        font-family: var(--font-unbounded);
+        font-size: 1rem;
+        color: var(--black-1D2E43);
+        border: 1px solid var(--black-1D2E43);
+        padding: 1.11vw 2.22vw;
+        border-radius: 4px;
+        transition: all 0.3s ease-in-out;
+        background: linear-gradient(278.5deg, rgba(220, 238, 255, 0.53) -49.88%, rgba(255, 127, 106, 0.53) 108.02%);
+            border: 0.5px solid #2C3B44;
+
+        &:hover {
+        background-color: rgba(0, 0, 0, 0.5);
+            border: 1px solid rgba(255, 127, 106, 0.53);
+        }
+    }
+
+    &__list_block {
+        display: flex;
+        gap: 10px;
+    }
+
+    &__form_articles {
+        display: flex;
+        flex-direction: column;
+        gap: 4rem;
+        padding-top: 1rem;
+    }
+
+    &__modal_overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    &__modal {
+        position: relative;
+        background-color: #212b36;
+        padding: 20px;
+        width: 50%;
+        max-width: 600px;
+        border-radius: 5px;
+    }
+
+    &__close {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        font-size: 50px;
+        font-weight: bold;
+        cursor: pointer;
+        color: white;
+
+        &:hover {
+            color: red;
+        }
+    }
+
+    &__list_block {}
+
+    &__item_title {
+        font-size: 1rem;
+        font-weight: 500;
+    }
+
+    &__list_title {
+        font-size: 1.2rem;
+        font-weight: 600;
+    }
+
+    &__item_articles {
+        display: flex;
+        align-items: center;
+        box-shadow: 0 0 4px rgba(0, 0, 0, 0.5);
+        border-radius: 1rem;
+        transition: transform 0.3s ease-in-out;
+        margin: 10px 0px;
+        padding: 5px;
+        background-color: var(--white-F6F6F6);
+
+
+        &:hover {
+            transform: translateY(-5px);
+        }
+    }
+
+    &__form_title {
+        font-size: 1.5rem;
+        font-weight: 500;
+        text-align: center;
+    }
+
+    &__img_articles {
+        max-width: 100px;
+        max-height: 50px;
+        border-radius: 4px;
+        margin: 0px 7px;
+        margin-left: auto;
+    }
+
+        &__item_buttom_del {
+            background: transparent;
+            border: aliceblue;
+    
+            .wrapper {
+                position: relative;
+                cursor: pointer;
+    
+                .lid {
+                    position: relative;
+                    top: 2px;
+                    width: 24px;
+                    height: 6px;
+                    // background: white;
+                    border: solid 2px rgb(100, 100, 100);
+                    transition: all .2s ease-in-out;
+                    transform-origin: left;
+                    transform: rotate(0deg) translateY(0px);
+    
+                    &:before,
+                    &:after {
+                        content: '';
+                        position: absolute;
+                    }
+    
+                    &:before {
+                        width: 10px;
+                        height: 5px;
+                        top: -5px;
+                        left: 5px;
+                        background: rgb(100, 100, 100);
+                    }
+    
+                    &:after {
+                        width: 6px;
+                        height: 4px;
+                        top: -3px;
+                        left: 7px;
+                        // background: white;
+                    }
+                }
+    
+                .can {
+                    position: relative;
+                    left: 2px;
+                    width: 20px;
+                    height: 20px;
+                    // background: white;
+                    border: solid 2px rgb(100, 100, 100);
+                    border-radius: 0 0 3px 3px;
+    
+                    &:before {
+                        content: '';
+                        position: absolute;
+                        top: 0;
+                        left: 0;
+                        width: 0;
+                        height: 0;
+                        box-shadow:
+                            4px 5px 0px 1px rgb(100, 100, 100),
+                            4px 7px 0px 1px rgb(100, 100, 100),
+                            4px 9px 0px 1px rgb(100, 100, 100),
+                            4px 11px 0px 1px rgb(100, 100, 100),
+                            4px 13px 0px 1px rgb(100, 100, 100),
+                            8px 5px 0px 1px rgb(100, 100, 100),
+                            8px 7px 0px 1px rgb(100, 100, 100),
+                            8px 9px 0px 1px rgb(100, 100, 100),
+                            8px 11px 0px 1px rgb(100, 100, 100),
+                            8px 13px 0px 1px rgb(100, 100, 100),
+                            12px 5px 0px 1px rgb(100, 100, 100),
+                            12px 7px 0px 1px rgb(100, 100, 100),
+                            12px 9px 0px 1px rgb(100, 100, 100),
+                            12px 11px 0px 1px rgb(100, 100, 100),
+                            12px 13px 0px 1px rgb(100, 100, 100);
+                    }
+                }
+    
+                span {
+                    position: absolute;
+                    background: rgb(100, 100, 100);
+                    color: white;
+                    font: normal 10px/15px Arial;
+                    padding: 2px 4px;
+                    border-radius: 2px;
+                    left: -6px;
+                    bottom: 0px;
+                    opacity: 0;
+                    z-index: -1;
+                    transition: all .4s ease .4s;
+                }
+    
+                input {
+                    display: none;
+                }
+    
+                &:hover .lid {
+                    transform: rotate(-30deg) translateY(-2px);
+                }
+    
+                &:hover span {
+                    bottom: -22px;
+                    opacity: 1;
+                }
+    
+            }
+        }
+}

@@ -24,8 +24,10 @@
     "img": {
       "type": "string"
     },
-    "icon": {
-      "type": "string"
+    "user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user"
     }
   }
 }
