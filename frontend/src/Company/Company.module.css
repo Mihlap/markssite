@@ -98,7 +98,6 @@
 }
 
 .left_about {
-  position: relative;
   display: flex;
   flex-direction: column;
   font-family: var(--font-unbounded);
@@ -107,26 +106,27 @@
   padding-bottom: 400px;
   padding-left: 1.87vw;
   white-space: nowrap;
- }
+  }
 
 .name_company {
   font-size: 53px;
   line-height: 48px;
   color: var(--gray-959DA6);
-}
+  transition: 0.5s;
+  padding-bottom: 20px;
+  /* padding-left: 100px; */
+ }
 
 .this_block {
   font-size: 48px;
   line-height: 64px;
   color: var(--black-1D2E43);
   writing-mode: vertical-rl;
-  transform: rotate(-180deg);
-  padding-bottom: 40px;
-  padding-right: 328px;
-}
+  padding-right: 200px;
+  transition: 0.5s;
+ }
 
 .right_about {
-  position: relative;
   padding-right: 10vw;
   font-family: var(--font-raleway);
   font-style: normal;
