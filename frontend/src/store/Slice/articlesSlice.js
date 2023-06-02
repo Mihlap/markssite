@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
 
- const host = process.env.REACT_APP_DEV_HOST;
+import axios from "axios";
+const host = process.env.REACT_APP_DEV_HOST;
 
 const articlesSlice = createSlice({
   name: "articles",

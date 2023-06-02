@@ -36,7 +36,7 @@ const SwiperContainerProgect = ({ project }) => {
                   <SliderItemProject
                     title={item.attributes.title}
                     src={item.attributes.img}
-                    text={item.attributes.text}
+                    text={item.attributes.text}а 
                     id={item.attributes.link}
                   />
                 </SwiperSlide>
