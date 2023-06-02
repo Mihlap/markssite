@@ -1,6 +1,6 @@
 @import '../../App.css';
 
-.slider-item {
+.slider_item {
     width: 100%;
     height: 100%;
     border-radius: 1rem;
@@ -11,7 +11,7 @@
     cursor: grab;
 }
 
-.slider-item-content {
+.slider_item_content {
     padding: 20px 0px;
     display: flex;
     flex-direction: column;
@@ -19,7 +19,7 @@
     transition: 0.4s;
 }
 
-.slider-image-wrapper {
+.slider_image_wrapper {
     height: 346px;
     width: 100%;
     overflow: hidden;
@@ -27,11 +27,12 @@
     position: relative;
 }
 
-.slider-image {
+.slider_image {
     width: 100%;
     height: 100%;
     object-fit: cover;
     transition: 0.2s;
+    border-radius: 16px;
 }
 
 .slider_subject {

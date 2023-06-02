@@ -29,14 +29,13 @@ export default function SwiperContainer({ artickes }) {
         className={styles.swiper_container_articles}
       >
         <div className={styles.swiper_wrapper}>
-          {artickes.map((item) => {
+          {artickes && artickes.map((item) => {
             return (
               <SwiperSlide key={item.id}>
                 <Slideritem
                   title={item.attributes.title}
                   src={item.attributes.img}
                   text={item.attributes.text}
-                  icon={item.attributes.icon}
                   id={item.attributes.link}
                 />
               </SwiperSlide>
