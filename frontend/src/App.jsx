@@ -51,7 +51,7 @@ const App = () => {
   function handleClickScroll() {
     setIsScrollDisabled(!isScrollDisabled);
   }
-
+console.log(user);
   return (
     <>
       {loading === true ? (

@@ -1,20 +1,24 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchReviews, deleteReview } from "../store/Slice/reviewsSlice";
+import { fetchArticles } from "../store/Slice/articlesSlice";
 import styles from "./Add.module.scss";
 import { customAlphabet } from "nanoid";
 import LoadingCircle from "../Loading/LoadingCircle";
 import Error from "../Loading/Error/Error";
+import { fetchProject } from "../store/Slice/projectSlice";
 
 export default function Add({ user }) {
   const dispatch = useDispatch();
   const reviews = useSelector((state) => state.reviews.reviews);
+  const artickes = useSelector((state) => state.articles.articles);
+  const project = useSelector((state) => state.project.articles);
   const loading = useSelector((state) => state.reviews.loading);
   const error = useSelector((state) => state.reviews.error);
   const nanoid = customAlphabet("1234567890", 10);
   const id = Number(nanoid(10));
 
-  const token = process.env.REACT_APP_AUTH_TOKEN;
+  const token = user.jwt;
   const [isOpen, setIsOpen] = useState(false);
   const [reviewData, setReviewData] = useState({
     id: id,
@@ -25,9 +29,9 @@ export default function Add({ user }) {
   });
   useEffect(() => {
     dispatch(fetchReviews());
+    dispatch(fetchArticles());
+    dispatch(fetchProject());
   }, [dispatch]);
-
-  console.log(reviews);
 
   if (loading) {
     return <LoadingCircle />;
@@ -160,12 +164,15 @@ export default function Add({ user }) {
         <div className={styles.add_container__list_block}>
           <div className={styles.add_container__articles_container}>
             <div className={styles.add_container__list_title}>
-              Все Публикации
+              Все Публикации 🗂️
             </div>
-            {reviews.map((element) => (
-              <div key={element.id}>
-                <ul>
-                  <li className={styles.add_container__item_articles}>
+            <ul>
+              {artickes &&
+                artickes.map((element) => (
+                  <li
+                    key={element.id}
+                    className={styles.add_container__item_articles}
+                  >
                     <div className={styles.add_container__item_title}>
                       {element.attributes.title}
                     </div>
@@ -178,7 +185,7 @@ export default function Add({ user }) {
                       className={styles.add_container__item_buttom_del}
                       onClick={() => handleDelete(element.id)}
                     >
-                      <label for="delete" className={styles.label}>
+                      <label htmlfor="delete" className={styles.label}>
                         <div className={`${styles.wrapper}`}>
                           <div className={`${styles.lid}`}></div>
                           <div className={`${styles.can}`}></div>
@@ -187,34 +194,43 @@ export default function Add({ user }) {
                       </label>
                     </button>
                   </li>
-                </ul>
-              </div>
-            ))}
+                ))}
+            </ul>
           </div>
           <div className={styles.add_container__project_container}>
-            <div className={styles.add_container__list_title}>Все Проекты</div>
-            <div>
-              <ul>
-                <li className={styles.add_container__item_articles}>
-                  <div className={styles.add_container__item_title}>
-                    Lorem ipsum dolor sit amet.
-                  </div>
-                  <img
-                    className={styles.add_container__img_articles}
-                    alt="img"
-                  />
-                  <button className={styles.add_container__item_buttom_del}>
-                    <label for="delete" className={styles.label}>
-                      <div className={`${styles.wrapper}`}>
-                        <div className={`${styles.lid}`}></div>
-                        <div className={`${styles.can}`}></div>
-                        <span>delete</span>
-                      </div>
-                    </label>
-                  </button>
-                </li>
-              </ul>
+            <div className={styles.add_container__list_title}>
+              Все Проекты 🏠
             </div>
+            <ul>
+              {project &&
+                project.map((element) => (
+                  <li
+                    key={element.id}
+                    className={styles.add_container__item_articles}
+                  >
+                    <div className={styles.add_container__item_title}>
+                      {element.attributes.title}
+                    </div>
+                    <img
+                      className={styles.add_container__img_articles}
+                      src={element.attributes.img}
+                      alt={element.attributes.img}
+                    />
+                    <button
+                      className={styles.add_container__item_buttom_del}
+                      onClick={() => handleDelete(element.id)}
+                    >
+                      <label htmlfor="delete" className={styles.label}>
+                        <div className={`${styles.wrapper}`}>
+                          <div className={`${styles.lid}`}></div>
+                          <div className={`${styles.can}`}></div>
+                          <span>delete</span>
+                        </div>
+                      </label>
+                    </button>
+                  </li>
+                ))}
+            </ul>
           </div>
         </div>
       </div>
