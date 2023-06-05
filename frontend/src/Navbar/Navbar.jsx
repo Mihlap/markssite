@@ -74,6 +74,9 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen, user }) => {
             </NavLink>
           </div>
           <ul className={styles.navbar_list}>
+            <NavLink className={styles.navbar_item} to="/login">
+              <div>войти</div>
+            </NavLink>
             {user ? (
               <NavLink className={styles.navbar_item} to="/add">
                 <div>Добавить (проект / статью )</div>
