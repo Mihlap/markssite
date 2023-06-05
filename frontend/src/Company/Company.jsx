@@ -7,6 +7,8 @@ import SliderMobile from "../UI/SliderHeader/SliderMobile";
 
 import bracket from "../icons/bracket.svg";
 import bracket_dark from "../icons/bracket_dark.svg";
+import plusNine from '../icons/+9.svg';
+import CompanyGroupSlider from "../UI/CompanyGroupSlider/CompanyGroupSlider";
 
 export default function Company() {
   const [countPercent, setCountPercent] = useState(0);
@@ -110,26 +112,26 @@ export default function Company() {
     };
   }, []);
 
-  function handleScroll() {
-    const screenWidth = window.innerWidth;
-    const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-    const nameCompanyRect = nameCompanyRef.current.getBoundingClientRect();
-    const thisBlockRect = thisBlockRef.current.getBoundingClientRect();
-  
-    if (scrollTop > thisBlockRect.top && screenWidth >= 1948) {
-      const translateYValue = nameCompanyRect.height + 213;
-      nameCompanyRef.current.style.transform = `translateY(${translateYValue}px)`;
-      thisBlockRef.current.style.transform = `translateY(${translateYValue}px) translateX(143px) rotate(-90deg)`;
-    } else if (scrollTop > thisBlockRect.top && screenWidth < 1948) {
-      const translateYValue = nameCompanyRect.height + 310;
-      nameCompanyRef.current.style.transform = `translateY(${translateYValue}px)`;
-      thisBlockRef.current.style.transform = `translateY(${translateYValue}px) translateX(143px) rotate(-90deg)`;
-    } else {
-      nameCompanyRef.current.style.transform = 'none';
-      thisBlockRef.current.style.transform = 'rotate(-180deg)';
-    }
+function handleScroll() {
+  const screenWidth = window.innerWidth;
+  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  const nameCompanyRect = nameCompanyRef.current.getBoundingClientRect();
+  const thisBlockRect = thisBlockRef.current.getBoundingClientRect();
+
+  if (scrollTop > thisBlockRect.top && screenWidth >= 1948) {
+    const translateYValue = nameCompanyRect.height + 212;
+    nameCompanyRef.current.style.transform = `translateY(${translateYValue}px)`;
+    thisBlockRef.current.style.transform = `translateY(${translateYValue}px) translateX(143px) rotate(-90deg)`;
+  } else if (scrollTop > thisBlockRect.top && screenWidth < 1948) {
+    const translateYValue = nameCompanyRect.height + 212;
+    nameCompanyRef.current.style.transform = `translateY(${translateYValue}px)`;
+    thisBlockRef.current.style.transform = `translateY(${translateYValue}px) translateX(143px) rotate(-90deg)`;
+  } else {
+    nameCompanyRef.current.style.transform = 'none';
+    thisBlockRef.current.style.transform = 'rotate(-180deg)';
   }
-  
+}
+
 
   
   return (
@@ -192,8 +194,12 @@ export default function Company() {
       </div>
       <div className={styles.about_main}>
         <div className={styles.left_about}>
-          <div ref={nameCompanyRef} className={styles.name_company}>MARKS GROUP</div>
-          <div ref={thisBlockRef} className={styles.this_block}>&mdash; ЭТО</div>
+          <div ref={nameCompanyRef} className={styles.name_company}>
+            MARKS GROUP
+          </div>
+          <div ref={thisBlockRef} className={styles.this_block}>
+            &mdash; ЭТО
+          </div>
         </div>
         <div className={styles.right_about}>
           <div className={styles.text_right_about}>
@@ -265,30 +271,13 @@ export default function Company() {
           </div>
         </div>
       </div>
-      <div style={{ paddingTop: "100px", backgroundColor: "gray" }}>
-        Состав группы компаний
+      <div className={styles.company_group_name}>
+        <span>Состав группы компаний</span>
+        <div className={styles.plus_nine}>
+        <img src={plusNine} alt="plus_nine" />
+        </div>
       </div>
-      <div style={{ paddingTop: "100px", backgroundColor: "gray" }}>
-        Состав группы компаний
-      </div>
-      <div style={{ paddingTop: "100px", backgroundColor: "gray" }}>
-        Состав группы компаний
-      </div>
-      <div style={{ paddingTop: "100px", backgroundColor: "gray" }}>
-        Состав группы компаний
-      </div>
-      <div style={{ paddingTop: "100px", backgroundColor: "gray" }}>
-        Состав группы компаний
-      </div>
-      <div style={{ paddingTop: "100px", backgroundColor: "gray" }}>
-        Состав группы компаний
-      </div>
-      <div style={{ paddingTop: "100px", backgroundColor: "gray" }}>
-        Состав группы компаний
-      </div>
-      <div style={{ paddingTop: "100px", backgroundColor: "gray" }}>
-        Состав группы компаний
-      </div>
+      <CompanyGroupSlider/>
     </div>
   );
 }
