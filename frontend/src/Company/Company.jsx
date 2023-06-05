@@ -9,6 +9,7 @@ import bracket from "../icons/bracket.svg";
 import bracket_dark from "../icons/bracket_dark.svg";
 import plusNine from '../icons/+9.svg';
 import CompanyGroupSlider from "../UI/CompanyGroupSlider/CompanyGroupSlider";
+import TableCompany from "../UI/TableCompany/TableCompany";
 
 export default function Company() {
   const [countPercent, setCountPercent] = useState(0);
@@ -278,6 +279,16 @@ function handleScroll() {
         </div>
       </div>
       <CompanyGroupSlider/>
+      <div className={styles.awards_wrapper}>
+      Награды и премии
+      </div>
+      <div className={styles.list_project}>
+      Список проектов, которые были отмечены конкурсами в разных номинациях за годы практики с 2005 года 
+      </div>
+      <TableCompany/>
+      <div className={styles.specialist_wrapper}>
+
+      </div>
     </div>
   );
 }
