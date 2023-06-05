@@ -1,14 +1,17 @@
 .company-group-container {
-  width: 100%;
-  height: 100%;
-  position: relative;
-  padding-bottom: 120px;
   padding-left: 1.87vw;
 }
 
-.company-group-slide img {
-  width: 324px;
-  height: 132px;
+.slick-slide {
   padding-right: 30px;
+  padding-bottom: 120px;
 }
 
+.slick-list {
+  margin: 0 -10px;
+}
+
+.slick-slide img {
+  width: 100%;
+  height: auto;
+}
