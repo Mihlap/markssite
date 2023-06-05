@@ -83,12 +83,11 @@ export default function Add({ user }) {
   const closeModal = () => {
     setIsOpen(false);
   };
-
   return (
     <div className={styles.add_container}>
       <div style={{ paddingTop: "8rem" }} />
       <div className={styles.add_container__userName}>
-        Привет {user.username} 👋
+        Привет {user.user.username} 👋
       </div>
       <div className={styles.add_container__block}>
         <div className={styles.add_container__button_blocks}>
@@ -149,7 +148,12 @@ export default function Add({ user }) {
                       onChange={handleChange}
                     />
                   </label>
-                  <button type="submit">Опубликовать</button>
+                  <button
+                    className={styles.add_container__publish_button}
+                    type="submit"
+                  >
+                    Опубликовать
+                  </button>
                 </form>
               </div>
             </div>
