@@ -53,10 +53,9 @@ export const fetchReviews = () => async (dispatch) => {
   }
 };
 
-export const deleteReview = (id, token) => async (dispatch) => {
-    const token = process.env.REACT_APP_AUTH_TOKEN;
-
+export const deleteReview = (id) => async (dispatch) => {
   try {
+    const token = localStorage.getItem("token");
     await axios.delete(`${host}/api/reviews/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,

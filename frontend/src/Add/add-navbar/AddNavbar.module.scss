@@ -1,0 +1,57 @@
+@import '../../App.css';
+
+.add_navbar_container {
+    position: fixed;
+    left: 0;
+    top: 50%;
+    /* это свойство поможет выровнять блок по вертикали */
+    transform: translateY(-50%);
+    width: 27.5%;
+    /* замените на нужную ширину */
+    height: 100%;
+    /* замените на нужную высоту */
+    background-color: var(--dark-gray-566272);
+    /* замените на нужный цвет фона */
+    z-index: 999;
+    /* если ваш сайт использует другие элементы с позицией z-index, установите значение больше */
+
+    &__block{
+        padding: 3rem;
+    }
+
+    &__management {
+
+    }
+
+    &__title {
+        font-family: var(--font-MyCustomFont);
+        font-size: 1.525rem;
+        color: var(--white-F6F6F6);
+    }
+
+    &__list {
+        padding-top: 3.25rem;
+        display: grid;
+        grid-column: auto;
+        gap: 1rem;
+    }
+
+    &__item {
+        font-family: var(--font-raleway);
+        font-weight: 400;
+        font-size: 1.25rem;
+        line-height: 1.5rem;
+        background-color: var(--light-gray-C0C5CB);
+        border-radius: 4px;
+        padding: 1.5rem 2rem;
+
+        &.active {
+            background-color: var(--white-F6F6F6);
+            color: #fff;
+        }
+
+        a {
+            color: var(--black-1D2E43);
+        }
+    }
+}

@@ -7,8 +7,9 @@ import { customAlphabet } from "nanoid";
 import LoadingCircle from "../Loading/LoadingCircle";
 import Error from "../Loading/Error/Error";
 import { fetchProject } from "../store/Slice/projectSlice";
+import AddNavbar from "./add-navbar/AddNavbar";
 
-export default function Add({ user }) {
+export default function Add({ user, setNavBarOpen, setShowFooter }) {
   const dispatch = useDispatch();
   const reviews = useSelector((state) => state.reviews.reviews);
   const artickes = useSelector((state) => state.articles.articles);
@@ -19,6 +20,11 @@ export default function Add({ user }) {
   const id = Number(nanoid(10));
 
   const token = user.jwt;
+  localStorage.setItem("token", token);
+
+  const tokens = localStorage.getItem("token");
+
+  console.log(token);
   const [isOpen, setIsOpen] = useState(false);
   const [reviewData, setReviewData] = useState({
     id: id,
@@ -28,6 +34,11 @@ export default function Add({ user }) {
     img: "",
   });
   useEffect(() => {
+    function handleHideElements() {
+      setNavBarOpen(false);
+      setShowFooter(false);
+    }
+    handleHideElements();
     dispatch(fetchReviews());
     dispatch(fetchArticles());
     dispatch(fetchProject());
@@ -64,7 +75,7 @@ export default function Add({ user }) {
       body: JSON.stringify({ data: reviewData }),
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${tokens}`,
       },
     })
       .then((response) => response.json())
@@ -85,9 +96,10 @@ export default function Add({ user }) {
   };
   return (
     <div className={styles.add_container}>
+      <AddNavbar />
       <div style={{ paddingTop: "8rem" }} />
       <div className={styles.add_container__userName}>
-        Привет {user.user.username} 👋
+        {/* Привет {user.user.username} 👋 */}
       </div>
       <div className={styles.add_container__block}>
         <div className={styles.add_container__button_blocks}>
@@ -170,7 +182,7 @@ export default function Add({ user }) {
             <div className={styles.add_container__list_title}>
               Все Публикации 🗂️
             </div>
-            <ul>
+            {/* <ul>
               {artickes &&
                 artickes.map((element) => (
                   <li
@@ -200,12 +212,43 @@ export default function Add({ user }) {
                   </li>
                 ))}
             </ul>
+
+            <ul>
+              {reviews &&
+                reviews.map((element) => (
+                  <li
+                    key={element.id}
+                    className={styles.add_container__item_articles}
+                  >
+                    <div className={styles.add_container__item_title}>
+                      {element.attributes.title}
+                    </div>
+                    <img
+                      className={styles.add_container__img_articles}
+                      src={element.attributes.img}
+                      alt={element.attributes.img}
+                    />
+                    <button
+                      className={styles.add_container__item_buttom_del}
+                      onClick={() => handleDelete(element.id)}
+                    >
+                      <label htmlfor="delete" className={styles.label}>
+                        <div className={`${styles.wrapper}`}>
+                          <div className={`${styles.lid}`}></div>
+                          <div className={`${styles.can}`}></div>
+                          <span>delete</span>
+                        </div>
+                      </label>
+                    </button>
+                  </li>
+                ))}
+            </ul> */}
           </div>
           <div className={styles.add_container__project_container}>
             <div className={styles.add_container__list_title}>
               Все Проекты 🏠
             </div>
-            <ul>
+            {/* <ul>
               {project &&
                 project.map((element) => (
                   <li
@@ -234,7 +277,7 @@ export default function Add({ user }) {
                     </button>
                   </li>
                 ))}
-            </ul>
+            </ul> */}
           </div>
         </div>
       </div>

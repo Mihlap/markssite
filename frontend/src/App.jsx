@@ -24,13 +24,16 @@ import Login from "./Login/Login";
 import Add from "./Add/Add";
 
 const App = () => {
-  const user = useSelector((state) => state.login.user);
+  // const user = useSelector((state) => state.login.user);
+  const user = 1;
   const location = useLocation();
   const [isScrollDisabled, setIsScrollDisabled] = useState(false);
 
   const [loading, setLoading] = useState(false);
   const [navOpen, setNavOpen] = useState(false);
   const [isHidden, setHidden] = useState(false);
+  const [showNavbar, setNavBarOpen] = useState(true);
+  const [showFooter, setShowFooter] = useState(true);
 
   useEffect(() => {
     const body = document.querySelector("body");
@@ -51,19 +54,20 @@ const App = () => {
   function handleClickScroll() {
     setIsScrollDisabled(!isScrollDisabled);
   }
-console.log(user);
   return (
     <>
       {loading === true ? (
         <Loading />
       ) : (
         <>
+          {showNavbar && (
             <Navbar
-            user={user}
-            handleClickScroll={handleClickScroll}
-            setNavOpen={setNavOpen}
-            navOpen={navOpen}
-          />
+              user={user}
+              handleClickScroll={handleClickScroll}
+              setNavOpen={setNavOpen}
+              navOpen={navOpen}
+            />
+          )}
           <TransitionGroup>
             <CSSTransition key={location.key} classNames="fade" timeout={300}>
               <Routes location={location}>
@@ -94,7 +98,11 @@ console.log(user);
                     // Если пользователь авторизован, показываем компонент Add,
                     // иначе перенаправляем пользователя на страницу входа
                     user ? (
-                      <Add user={user} />
+                      <Add
+                        setNavBarOpen={setNavBarOpen}
+                        setShowFooter={setShowFooter}
+                        user={user}
+                      />
                     ) : (
                       <Navigate to="/login" replace={true} />
                     )
@@ -103,7 +111,7 @@ console.log(user);
               </Routes>
             </CSSTransition>
           </TransitionGroup>
-          <Footer />
+          {showFooter && <Footer />}
         </>
       )}
     </>
