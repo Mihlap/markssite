@@ -1,0 +1,93 @@
+.tableStyle {
+  border-collapse: collapse;
+  margin-left: 1.87vw;
+  margin-right: 1.87vw;
+  }
+
+.thStyle {
+  text-align: left;
+  border-bottom: 1px solid black;
+  padding-bottom: 16px;
+  font-family: var(--font-raleway);
+  font-style: normal;
+  font-weight: var(--fw-400);
+  color: var(--gray-959DA6);
+  font-size: 14px;
+  line-height: 20px;
+}
+.thStyle4 {
+  text-align: right;
+  border-bottom: 1px solid black;
+  padding-bottom: 16px;
+  padding-right: 82px;
+  font-family: var(--font-raleway);
+  font-style: normal;
+  font-weight: var(--fw-400);
+  color: var(--gray-959DA6);
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.tdStyle1 {
+  font-family: var( --font-unbounded);
+  font-style: normal;
+  font-weight: var(--fw-300);
+  font-size: 20px;
+  line-height: 28px;
+  color: var(--black-1D2E43);
+  text-align: left;
+  }
+ .tdStyle2 {
+  font-family: var(--font-raleway);
+  font-style: normal;
+  font-weight: var(--fw-400);
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--black-1D2E43);
+  text-align: left;
+  border-top: "1px solid black",
+ }
+ .tdStyle3 {
+  font-family: var(--font-raleway);
+  font-style: normal;
+  font-weight: var(--fw-400);
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--dark-gray-566272);
+  text-align: left;
+ }
+ .tdStyle4 {
+  font-family: var(--font-raleway);
+  font-style: normal;
+  font-weight: var(--fw-400);
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--dark-gray-566272);
+  text-align: right;
+  }
+
+ .button_table {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 1.87vw;
+  padding-top: 13px;
+ }
+
+ .button_look_all {
+   display: flex;
+   width: 144px;
+   height: 36px;
+   background: var(--light-light-gray-EBECEE);
+   border-radius: 34px;
+   justify-content: center;
+   align-items: center;
+   border: 1px solid transparent;
+   font-family: var(--font-raleway);
+   font-style: normal;
+   font-weight: var(--fw-400);
+   font-size: 14px;
+   line-height: 20px;
+ }
+  .button_look_all:hover {
+    background: var(--light-gray-C0C5CB);
+  }
