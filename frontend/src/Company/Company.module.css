@@ -213,6 +213,32 @@
   align-items: flex-start;
  }
 
+ .awards_wrapper {
+   font-family: var(--font-unbounded);
+   font-style: normal;
+   font-weight: var(--fw-300);
+   font-size: 40px;
+   line-height: 48px;
+   color: var(--black-1D2E43);
+   padding-left: 42.84vw;
+   padding-right: 25.8vw;
+   padding-bottom: 24px;
+ }
+
+ .list_project {
+   font-family: var(--font-unbounded);
+   font-style: normal;
+   font-weight: var(--fw-300);
+   font-size: 20px;
+   line-height: 28px;
+   color: var(--black-1D2E43);
+   padding-left: 42.84vw;
+   padding-right: 1.87vw;
+   padding-bottom: 84px;
+ }
+ .specialist_wrapper {
+  padding-top: 173px;
+ }
 /* стили мобильной версии  */
 
 @media screen and (max-width: 767px) {
