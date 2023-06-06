@@ -78,7 +78,7 @@ const App = () => {
               <Routes location={location}>
                 <Route
                   path="/"
-                  element={<Header navOpen={navOpen} isHidden={isHidden} />}
+                  element={<Header user={user} navOpen={navOpen} isHidden={isHidden} />}
                 />
                 {/* <Route path="/competention" element={<Competentions />} /> */}
                 {/* <Route path="/project" element={<Project />} /> */}
