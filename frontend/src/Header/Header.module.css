@@ -23,6 +23,23 @@
   display: none;
 }
 
+.preview_mode {
+  position: fixed;
+  top: 100px;
+  right: 50px;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  color: var(--white-F6F6F6);
+  background-color: var(--blue-75BBFD);
+  padding: 1rem 1.5rem;
+  border-radius: 2rem;
+}
+
+.preview_title {
+  margin-right: 20px;
+}
+
 .header_block {
   display: none;
   padding-left: 15px;

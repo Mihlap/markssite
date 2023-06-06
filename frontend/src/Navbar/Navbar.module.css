@@ -15,12 +15,6 @@
   transform: translateY(0);
 }
 
-.preview_mode {
-  position: fixed;
-  top: 100px;
-  right: 50px;
-  z-index: 9999;
-}
 
 
 
