@@ -22,10 +22,10 @@ import HotelAppart from "./Project/Hotel_appart/HotelAppart";
 import WineParkArticles from "./articlesProject/WinePark/WineParkArticles";
 import Login from "./Login/Login";
 import Add from "./Add/Add";
+import HomeAdmin from "./Add/HomeAdmin";
 import AddProject from "./Add/add-project/AddProject";
-import AddCompany from "./Add/add-about-the-company/AddCompany";
 import AddArticles from "./Add/add-articles/AddArticles";
-import AddNavbar from "./Add/add-navbar/AddNavbar";
+import AddCompany from "./Add/add-about-the-company/AddCompany";
 
 const App = () => {
   // const user = useSelector((state) => state.login.user);
@@ -49,6 +49,7 @@ const App = () => {
       body.style.overflowY = "scroll";
     }
   }, [navOpen]);
+
 
   // таймаут для прелоудера на сайте
   // setTimeout(() => {
@@ -96,7 +97,6 @@ const App = () => {
                 <Route path="/prime-park" element={<PrimePark />} />
                 <Route path="/hotel-appart" element={<HotelAppart />} />
                 <Route path="/login" element={<Login />} />
-
                 <Route
                   path="/admin/*"
                   element={
@@ -113,36 +113,10 @@ const App = () => {
                     )
                   }
                 >
-                  <Route
-                    path="admin/project"
-                    element={
-                      user ? (
-                        <AddProject />
-                      ) : (
-                        <Navigate to="/login" replace={true} />
-                      )
-                    }
-                  />
-                  <Route
-                    path="admin/company"
-                    element={
-                      user ? (
-                        <AddCompany />
-                      ) : (
-                        <Navigate to="/login" replace={true} />
-                      )
-                    }
-                  />
-                  <Route
-                    path="admin/articles"
-                    element={
-                      user ? (
-                        <AddArticles />
-                      ) : (
-                        <Navigate to="/login" replace={true} />
-                      )
-                    }
-                  />
+                  <Route path="home" element={<Add />} />
+                  <Route path="add-a-project" element={<AddProject />} />
+                  <Route path="add-a-articles" element={<AddArticles />} />
+                  <Route path="add-a-company" element={<AddCompany />} />
                 </Route>
               </Routes>
             </CSSTransition>

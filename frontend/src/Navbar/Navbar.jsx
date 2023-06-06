@@ -78,7 +78,7 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen, user }) => {
               <div>войти</div>
             </NavLink>
             {user ? (
-              <NavLink className={styles.navbar_item} to="/add">
+              <NavLink className={styles.navbar_item} to="/admin">
                 <div>Добавить (проект / статью )</div>
               </NavLink>
             ) : null}

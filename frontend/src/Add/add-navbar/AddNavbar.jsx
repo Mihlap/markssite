@@ -1,10 +1,15 @@
 import React, { useState } from "react";
 import styles from "./AddNavbar.module.scss";
-import { Link } from "react-router-dom";
+import { Link, Route, Routes } from "react-router-dom";
+import HomeAdmin from "../HomeAdmin";
+import AddProject from "../add-project/AddProject";
+import AddArticles from "../add-articles/AddArticles";
+import AddCompany from "../add-about-the-company/AddCompany";
 
 export default function AddNavbar() {
+  console.log("AddNavbar component is rendered"); // временный console.log
 
-     const [activeIndex, setActiveIndex] = useState(0); // начальный индекс активного элемента
+  const [activeIndex, setActiveIndex] = useState(0); // начальный индекс активного элемента
 
   const handleItemClick = (index) => {
     setActiveIndex(index);
@@ -25,7 +30,7 @@ export default function AddNavbar() {
                     activeIndex === 0 ? styles.active : ""
                   }`}
                   onClick={() => handleItemClick(0)}
-                  to="#"
+                  to="./"
                 >
                   Главная
                 </Link>
@@ -36,7 +41,7 @@ export default function AddNavbar() {
                     activeIndex === 1 ? styles.active : ""
                   }`}
                   onClick={() => handleItemClick(1)}
-                  to="/add/project"
+                  to="./add-a-project"
                 >
                   Проекты
                 </Link>
@@ -47,7 +52,7 @@ export default function AddNavbar() {
                     activeIndex === 2 ? styles.active : ""
                   }`}
                   onClick={() => handleItemClick(2)}
-                  to="#"
+                  to="./add-a-articles"
                 >
                   Публикации
                 </Link>
@@ -58,7 +63,7 @@ export default function AddNavbar() {
                     activeIndex === 3 ? styles.active : ""
                   }`}
                   onClick={() => handleItemClick(3)}
-                  to="#"
+                  to="./add-a-company"
                 >
                   О компании
                 </Link>
@@ -70,6 +75,12 @@ export default function AddNavbar() {
       <Link className={styles.preview} to="/">
         Предпросмотр
       </Link>
+      {/* <Routes>
+        <Route path="home" element={<HomeAdmin />} />
+        <Route path="add-a-project" element={<AddProject />} />
+        <Route path="add-a-articles" element={<AddArticles />} />
+        <Route path="add-a-company" element={<AddCompany />} />
+      </Routes> */}
     </>
   );
 }
