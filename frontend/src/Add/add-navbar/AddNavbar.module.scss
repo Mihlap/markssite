@@ -37,6 +37,8 @@
     }
 
     &__item {
+        display: block;
+        width: 100%;
         font-family: var(--font-raleway);
         font-weight: 400;
         font-size: 1.25rem;
@@ -44,14 +46,33 @@
         background-color: var(--light-gray-C0C5CB);
         border-radius: 4px;
         padding: 1.5rem 2rem;
+        color: var(--black-1D2E43);
 
         &.active {
             background-color: var(--white-F6F6F6);
-            color: #fff;
+            color: var(--black-1D2E43)
         }
 
         a {
             color: var(--black-1D2E43);
         }
+    }
+}
+
+.preview {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    z-index: 9999;
+    border: 1px solid;
+    border-radius: 2rem;
+    padding: 10px 32px;
+    color: var(--black-1D2E43);
+    transition: background-color 0.3s ease, color 0.3s ease;
+
+    &:hover {
+        cursor: pointer;
+        background: linear-gradient(278.5deg, rgba(220, 238, 255, 0.53) -49.88%, rgba(255, 127, 106, 0.53) 108.02%);
+        border: var(--white-F6F6F6);
     }
 }
