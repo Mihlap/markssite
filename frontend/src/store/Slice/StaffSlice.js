@@ -7,7 +7,7 @@ import axios from "axios";
 const staffSlice = createSlice({
     name: "staff",
     initialState: {
-        stuff: [],
+        staff: [],
         loading: false,
         error: null,
     },
@@ -18,7 +18,7 @@ const staffSlice = createSlice({
         },
         fetchStaffSuccess(state, action) {
             state.loading = false;
-            state.articles = action.payload;
+            state.staff = action.payload;
         },
         fetchStaffFailure(state, action) {
             state.loading = false;
