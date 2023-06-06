@@ -10,6 +10,8 @@ import bracket_dark from "../icons/bracket_dark.svg";
 import plusNine from '../icons/+9.svg';
 import CompanyGroupSlider from "../UI/CompanyGroupSlider/CompanyGroupSlider";
 import TableCompany from "../UI/TableCompany/TableCompany";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchStaff } from "../store/Slice/StaffSlice";
 
 export default function Company() {
   const [countPercent, setCountPercent] = useState(0);
@@ -23,6 +25,14 @@ export default function Company() {
   const blockSliderNext = useRef(null);
   const nameCompanyRef = useRef(null);
   const thisBlockRef = useRef(null);
+  const dispatch = useDispatch();
+  const staff = useSelector((state) => state.staff);
+  // const loading = useSelector((state) => state.staff.loading);
+  // const error = useSelector((state) => state.staff.error);
+
+  useEffect(() => {
+    dispatch(fetchStaff());
+  }, [dispatch]);
 
   useEffect(() => {
     const timer1 = setTimeout(() => {
@@ -275,19 +285,45 @@ function handleScroll() {
       <div className={styles.company_group_name}>
         <span>Состав группы компаний</span>
         <div className={styles.plus_nine}>
-        <img src={plusNine} alt="plus_nine" />
+          <img src={plusNine} alt="plus_nine" />
         </div>
       </div>
-      <CompanyGroupSlider/>
-      <div className={styles.awards_wrapper}>
-      Награды и премии
-      </div>
+      <CompanyGroupSlider />
+      <div className={styles.awards_wrapper}>Награды и премии</div>
       <div className={styles.list_project}>
-      Список проектов, которые были отмечены конкурсами в разных номинациях за годы практики с 2005 года 
+        Список проектов, которые были отмечены конкурсами в разных номинациях за
+        годы практики с 2005 года
       </div>
-      <TableCompany/>
+      <TableCompany />
       <div className={styles.specialist_wrapper}>
-
+        <div className={styles.specialist}>Специалисты</div>
+        <div className={styles.button_group}>
+          <button className={styles.button_leader}>Руководство</button>
+          <button className={styles.button_department}>
+            Руководители отделов
+          </button>
+          <button className={styles.button_support}>
+            Научно-техническое сопровождение
+          </button>
+          <button className={styles.button_hr}>HR</button>
+        </div>
+      </div>
+      <div className={styles.card_container}>
+        <ul>
+          {staff &&
+            staff.map((el) => (
+              <li key={el.id} className={styles.container__item_stuff}>
+                <div className={styles.container__item_title_stuff}>
+                  {el.attributes.title}
+                </div>
+                <img
+                  className={styles.add_container__img_stuff}
+                  src={el.attributes.img}
+                  alt={el.attributes.img}
+                />
+              </li>
+            ))}
+        </ul>
       </div>
     </div>
   );
