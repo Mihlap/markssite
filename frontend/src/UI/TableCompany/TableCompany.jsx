@@ -5,12 +5,17 @@ const TableCompany = () => {
   const [showAll, setShowAll] = useState(false);
 
   const tdStyle = {
-    padding: "36px 0px",
+    paddingTop: "36px",
+    paddingBottom: "36px",
     borderTop: "1px solid var(--dark-gray-566272)",
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    wordWrap: 'break-word',
    };
 
   const tdStyle4 = {
-    padding: "36px 45px 0px 0px",
+    padding: "36px 45px 36px 30px",
     borderTop: "1px solid var(--dark-gray-566272)",
   };
  

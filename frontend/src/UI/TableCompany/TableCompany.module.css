@@ -29,13 +29,16 @@
 }
 
 .tdStyle1 {
-  font-family: var( --font-unbounded);
+  font-family: var(--font-unbounded);
   font-style: normal;
   font-weight: var(--fw-300);
   font-size: 20px;
   line-height: 28px;
   color: var(--black-1D2E43);
   text-align: left;
+  max-width: 40.97vw;
+  width: 40.97vw;
+  padding-right: 30px;
   }
  .tdStyle2 {
   font-family: var(--font-raleway);
@@ -45,8 +48,11 @@
   line-height: 24px;
   color: var(--black-1D2E43);
   text-align: left;
-  border-top: "1px solid black",
- }
+  border-top: "1px solid black";
+  max-width: 30.69vw;
+  width: 30.69vw;
+  padding-right: 30px;
+  }
  .tdStyle3 {
   font-family: var(--font-raleway);
   font-style: normal;
@@ -55,7 +61,9 @@
   line-height: 24px;
   color: var(--dark-gray-566272);
   text-align: left;
- }
+  max-width: 16.3vw;
+  width: 16.3vw;
+  }
  .tdStyle4 {
   font-family: var(--font-raleway);
   font-style: normal;
