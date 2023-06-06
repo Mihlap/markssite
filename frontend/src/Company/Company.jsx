@@ -309,7 +309,7 @@ function handleScroll() {
         </div>
       </div>
       <div className={styles.card_container}>
-        <ul>
+        {/* <ul>
           {staff &&
             staff.map((el) => (
               <li key={el.id} className={styles.container__item_stuff}>
@@ -323,7 +323,7 @@ function handleScroll() {
                 />
               </li>
             ))}
-        </ul>
+        </ul> */}
       </div>
     </div>
   );
