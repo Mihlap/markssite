@@ -10,6 +10,8 @@ import bracket_dark from "../icons/bracket_dark.svg";
 import plusNine from '../icons/+9.svg';
 import CompanyGroupSlider from "../UI/CompanyGroupSlider/CompanyGroupSlider";
 import TableCompany from "../UI/TableCompany/TableCompany";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchStaff } from "../store/Slice/StaffSlice";
 
 export default function Company() {
   const [countPercent, setCountPercent] = useState(0);
@@ -23,6 +25,14 @@ export default function Company() {
   const blockSliderNext = useRef(null);
   const nameCompanyRef = useRef(null);
   const thisBlockRef = useRef(null);
+  const dispatch = useDispatch();
+  const staff = useSelector((state) => state.staff);
+  // const loading = useSelector((state) => state.staff.loading);
+  // const error = useSelector((state) => state.staff.error);
+
+  useEffect(() => {
+    dispatch(fetchStaff());
+  }, [dispatch]);
 
   useEffect(() => {
     const timer1 = setTimeout(() => {
@@ -299,9 +309,9 @@ function handleScroll() {
         </div>
       </div>
       <div className={styles.card_container}>
-        {/* <ul>
-          {stuffs &&
-            stuffs.map((el) => (
+        <ul>
+          {staff &&
+            staff.map((el) => (
               <li key={el.id} className={styles.container__item_stuff}>
                 <div className={styles.container__item_title_stuff}>
                   {el.attributes.title}
@@ -313,7 +323,7 @@ function handleScroll() {
                 />
               </li>
             ))}
-        </ul> */}
+        </ul>
       </div>
     </div>
   );
