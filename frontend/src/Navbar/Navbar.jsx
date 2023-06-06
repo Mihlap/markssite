@@ -6,6 +6,7 @@ import { Link } from "react-scroll";
 import styles from "./Navbar.module.css";
 import { useEffect } from "react";
 import { NavLink } from "react-router-dom";
+import icon from './img/actively.png'
 
 // тетс гита на сливание с новой веткой
 
@@ -66,6 +67,12 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen, user }) => {
         isVisible ? styles.visible : styles.hidden
       }`}
     >
+      {/* {user ? (
+        <NavLink className={styles.preview_mode} to="/admin">
+          <div>Режим предпросмотра</div>
+          <img src= alt="" />
+        </NavLink>
+      ) : null} */}
       <nav className={styles.navbar_desctop}>
         <div className={styles.navbar_container}>
           <div className={styles.navbar_title_block}>
@@ -77,11 +84,6 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen, user }) => {
             <NavLink className={styles.navbar_item} to="/login">
               <div>войти</div>
             </NavLink>
-            {user ? (
-              <NavLink className={styles.navbar_item} to="/admin">
-                <div>Добавить (проект / статью )</div>
-              </NavLink>
-            ) : null}
 
             <Link
               exact="true"
