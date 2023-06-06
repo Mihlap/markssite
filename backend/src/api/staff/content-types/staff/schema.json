@@ -4,7 +4,8 @@
   "info": {
     "singularName": "staff",
     "pluralName": "staffs",
-    "displayName": "staff"
+    "displayName": "staff",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -28,6 +29,21 @@
     },
     "categorie": {
       "type": "string"
+    },
+    "obout1": {
+      "type": "text"
+    },
+    "obout2": {
+      "type": "text"
+    },
+    "obout3": {
+      "type": "text"
+    },
+    "obout4": {
+      "type": "text"
+    },
+    "obout5": {
+      "type": "text"
     }
   }
 }
