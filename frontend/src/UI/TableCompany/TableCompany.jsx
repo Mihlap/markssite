@@ -6,12 +6,12 @@ const TableCompany = () => {
 
   const tdStyle = {
     padding: "36px 0px",
-    borderTop: "1px solid black",
+    borderTop: "1px solid var(--dark-gray-566272)",
    };
 
   const tdStyle4 = {
     padding: "36px 45px 0px 0px",
-    borderTop: "1px solid black",
+    borderTop: "1px solid var(--dark-gray-566272)",
   };
  
   const handleShowAllClick = (e) => {
