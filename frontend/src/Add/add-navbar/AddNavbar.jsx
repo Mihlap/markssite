@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import styles from "./AddNavbar.module.scss";
 import { Link } from "react-router-dom";
 
-export default function AddNavbar() {
 
-     const [activeIndex, setActiveIndex] = useState(0); // начальный индекс активного элемента
+export default function AddNavbar() {
+  console.log("AddNavbar component is rendered"); // временный console.log
+
+  const [activeIndex, setActiveIndex] = useState(0); // начальный индекс активного элемента
 
   const handleItemClick = (index) => {
     setActiveIndex(index);
@@ -25,7 +27,7 @@ export default function AddNavbar() {
                     activeIndex === 0 ? styles.active : ""
                   }`}
                   onClick={() => handleItemClick(0)}
-                  to="#"
+                  to="./"
                 >
                   Главная
                 </Link>
@@ -36,7 +38,7 @@ export default function AddNavbar() {
                     activeIndex === 1 ? styles.active : ""
                   }`}
                   onClick={() => handleItemClick(1)}
-                  to="/add/project"
+                  to="./add-a-project"
                 >
                   Проекты
                 </Link>
@@ -47,7 +49,7 @@ export default function AddNavbar() {
                     activeIndex === 2 ? styles.active : ""
                   }`}
                   onClick={() => handleItemClick(2)}
-                  to="#"
+                  to="./add-a-articles"
                 >
                   Публикации
                 </Link>
@@ -58,7 +60,7 @@ export default function AddNavbar() {
                     activeIndex === 3 ? styles.active : ""
                   }`}
                   onClick={() => handleItemClick(3)}
-                  to="#"
+                  to="./add-a-company"
                 >
                   О компании
                 </Link>
