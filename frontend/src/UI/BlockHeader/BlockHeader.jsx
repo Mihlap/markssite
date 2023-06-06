@@ -4,10 +4,11 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { CSSPlugin } from 'gsap/CSSPlugin';
 import './index.scss';
 
-gsap.registerPlugin(ScrollTrigger, CSSPlugin);
 
 const BlockHeader = React.memo(() => {
   const accordionsRef = useRef(null);
+  
+  gsap.registerPlugin(ScrollTrigger, CSSPlugin);
 
   useEffect(() => {
     const accordions = document.querySelectorAll('.accordion');

@@ -4,6 +4,7 @@ import reviewsSlice from "./Slice/reviewsSlice";
 import articlesSlice from "./Slice/articlesSlice";
 import projectSlice from "./Slice/projectSlice";
 import loginSlice from "./Slice/loginSlice";
+import staffSlice from './Slice/StaffSlice';
 
 
 export default configureStore({
@@ -12,6 +13,7 @@ export default configureStore({
     reviews: reviewsSlice,
     articles: articlesSlice,
     project: projectSlice,
-    login: loginSlice
+    login: loginSlice,
+    staff: staffSlice,
   },
 });
