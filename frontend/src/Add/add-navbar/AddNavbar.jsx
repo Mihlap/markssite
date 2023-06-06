@@ -1,17 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./AddNavbar.module.scss";
 import { Link } from "react-router-dom";
 
 
 export default function AddNavbar() {
-  console.log("AddNavbar component is rendered"); // временный console.log
 
   const [activeIndex, setActiveIndex] = useState(0); // начальный индекс активного элемента
 
   const handleItemClick = (index) => {
     setActiveIndex(index);
   };
-
+console.log(activeIndex);
   return (
     <>
       <section className={styles.add_navbar_container}>
@@ -32,12 +31,13 @@ export default function AddNavbar() {
                   Главная
                 </Link>
               </li>
-              <li>
+              <li
+                className={`${styles.add_navbar_container__item} ${
+                  activeIndex === 1 ? styles.active : ""
+                }`}
+                onClick={() => handleItemClick(1)}
+              >
                 <Link
-                  className={`${styles.add_navbar_container__item} ${
-                    activeIndex === 1 ? styles.active : ""
-                  }`}
-                  onClick={() => handleItemClick(1)}
                   to="./add-a-project"
                 >
                   Проекты
