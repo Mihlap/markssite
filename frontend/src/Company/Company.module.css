@@ -239,6 +239,54 @@
  .specialist_wrapper {
   padding-top: 173px;
  }
+
+ .specialist {
+   font-family: var(--font-unbounded);
+   font-style: normal;
+   font-weight: var(--fw-300);
+   font-size: 32px;
+   line-height: 40px;
+   color: var(--black-1D2E43);
+   padding-left: 1.87vw;
+   padding-bottom: 40px;
+ }
+
+ .button_group {
+ display: flex;
+ padding-left: 1.87vw;
+ padding-bottom: 52px;
+ }
+
+ .button_group button {
+   display: inline-block;
+   margin-right: 8px;
+   width: auto;
+   height: 36px;
+   background: transparent;
+   border-radius: 34px;
+   border: 1px solid var(--black-1D2E43);
+   text-align: center;
+   font-family: var(--font-raleway);
+   font-style: normal;
+   font-weight: var(--fw-400);
+   font-size: 14px;
+   line-height: 20px;
+   color: var(--black-1D2E43);
+   padding: 8px 24px;
+ }
+
+ button:active,
+ button:hover {
+  background: var(--black-1D2E43);
+  color: var(--white-F6F6F6);
+ }
+
+ .card_container {
+
+ }
+
+ 
+
 /* стили мобильной версии  */
 
 @media screen and (max-width: 767px) {

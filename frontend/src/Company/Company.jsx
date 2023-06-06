@@ -275,19 +275,45 @@ function handleScroll() {
       <div className={styles.company_group_name}>
         <span>Состав группы компаний</span>
         <div className={styles.plus_nine}>
-        <img src={plusNine} alt="plus_nine" />
+          <img src={plusNine} alt="plus_nine" />
         </div>
       </div>
-      <CompanyGroupSlider/>
-      <div className={styles.awards_wrapper}>
-      Награды и премии
-      </div>
+      <CompanyGroupSlider />
+      <div className={styles.awards_wrapper}>Награды и премии</div>
       <div className={styles.list_project}>
-      Список проектов, которые были отмечены конкурсами в разных номинациях за годы практики с 2005 года 
+        Список проектов, которые были отмечены конкурсами в разных номинациях за
+        годы практики с 2005 года
       </div>
-      <TableCompany/>
+      <TableCompany />
       <div className={styles.specialist_wrapper}>
-
+        <div className={styles.specialist}>Специалисты</div>
+        <div className={styles.button_group}>
+          <button className={styles.button_leader}>Руководство</button>
+          <button className={styles.button_department}>
+            Руководители отделов
+          </button>
+          <button className={styles.button_support}>
+            Научно-техническое сопровождение
+          </button>
+          <button className={styles.button_hr}>HR</button>
+        </div>
+      </div>
+      <div className={styles.card_container}>
+        {/* <ul>
+          {stuffs &&
+            stuffs.map((el) => (
+              <li key={el.id} className={styles.container__item_stuff}>
+                <div className={styles.container__item_title_stuff}>
+                  {el.attributes.title}
+                </div>
+                <img
+                  className={styles.add_container__img_stuff}
+                  src={el.attributes.img}
+                  alt={el.attributes.img}
+                />
+              </li>
+            ))}
+        </ul> */}
       </div>
     </div>
   );
