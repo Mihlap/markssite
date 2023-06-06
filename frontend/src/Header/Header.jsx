@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
@@ -16,10 +16,11 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchProject } from "../store/Slice/projectSlice";
 import LoadingCircle from "../Loading/LoadingCircle";
 import Error from "../Loading/Error/Error";
+import actively from "./img/actively.png";
 
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
-export default function Header() {
+export default function Header({user}) {
     const dispatch = useDispatch();
     const artickes = useSelector((state) => state.articles.articles);
     const project = useSelector((state) => state.project.articles);
@@ -100,6 +101,12 @@ if (project !== undefined) {
   
   return (
     <main className={styles.header}>
+      {user ? (
+        <NavLink className={styles.preview_mode} to="/admin">
+          <div className={styles.preview_title}>Режим предпросмотра</div>
+          <img src={actively} alt="icon" />
+        </NavLink>
+      ) : null}
       <div className={styles.video_block}>
         <VideoPlayer />
       </div>
