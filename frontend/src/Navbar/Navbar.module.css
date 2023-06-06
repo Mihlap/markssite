@@ -15,6 +15,15 @@
   transform: translateY(0);
 }
 
+.preview_mode {
+  position: fixed;
+  top: 100px;
+  right: 50px;
+  z-index: 9999;
+}
+
+
+
 .hidden {
   display: none;
   transform: translateY(-100%);
@@ -74,7 +83,8 @@
   padding-left: 1.53vw;
   padding-right: 1.53vw;
   border-left: 1px solid var(--black-1D2E43);
-  }
+}
+
 .navbar_item_last {
   font-family: var(--font-raleway);
   font-style: normal;
@@ -93,11 +103,13 @@
   background: rgba(212, 237, 251, 0.6);
   cursor: pointer;
 }
+
 .navbar_item:hover {
   background: rgb(246 246 246 / 30%);
   backdrop-filter: blur(3px);
   cursor: pointer;
 }
+
 .navDesktop_container {
   display: none;
 }
@@ -240,7 +252,7 @@
     position: absolute;
     top: 25px;
     padding-left: 20px;
- 
+
     font-size: 1.2rem;
     color: var(--black-1D2E43);
     position: relative;
@@ -304,5 +316,3 @@
     bottom: -17px;
   }
 }
-
-

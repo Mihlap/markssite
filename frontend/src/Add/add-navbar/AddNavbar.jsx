@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import styles from "./AddNavbar.module.scss";
-import { Link, Route, Routes } from "react-router-dom";
-import HomeAdmin from "../HomeAdmin";
-import AddProject from "../add-project/AddProject";
-import AddArticles from "../add-articles/AddArticles";
-import AddCompany from "../add-about-the-company/AddCompany";
+import { Link } from "react-router-dom";
+
 
 export default function AddNavbar() {
   console.log("AddNavbar component is rendered"); // временный console.log
@@ -75,12 +72,6 @@ export default function AddNavbar() {
       <Link className={styles.preview} to="/">
         Предпросмотр
       </Link>
-      {/* <Routes>
-        <Route path="home" element={<HomeAdmin />} />
-        <Route path="add-a-project" element={<AddProject />} />
-        <Route path="add-a-articles" element={<AddArticles />} />
-        <Route path="add-a-company" element={<AddCompany />} />
-      </Routes> */}
     </>
   );
 }
