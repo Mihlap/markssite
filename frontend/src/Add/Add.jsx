@@ -8,8 +8,16 @@ import LoadingCircle from "../Loading/LoadingCircle";
 import Error from "../Loading/Error/Error";
 import { fetchProject } from "../store/Slice/projectSlice";
 import AddNavbar from "./add-navbar/AddNavbar";
+import { Route, Routes } from "react-router-dom";
+import HomeAdmin from "./HomeAdmin";
+import AddProject from "./add-project/AddProject";
+import AddArticles from "./add-articles/AddArticles";
+import AddCompany from "./add-about-the-company/AddCompany";
+
 
 export default function Add({ user, setNavBarOpen, setShowFooter }) {
+  console.log("Add component is rendered"); // временный console.log
+
   const dispatch = useDispatch();
   const reviews = useSelector((state) => state.reviews.reviews);
   const artickes = useSelector((state) => state.articles.articles);
@@ -24,7 +32,7 @@ export default function Add({ user, setNavBarOpen, setShowFooter }) {
 
   const tokens = localStorage.getItem("token");
 
-  console.log(token, '<<---TOKEN');
+  console.log(token, "<<---TOKEN");
   const [isOpen, setIsOpen] = useState(false);
   const [reviewData, setReviewData] = useState({
     id: id,
@@ -34,20 +42,20 @@ export default function Add({ user, setNavBarOpen, setShowFooter }) {
     img: "",
   });
 
- useEffect(() => {
-   function handleHideElements() {
-     setNavBarOpen(false);
-     setShowFooter(false);
-   }
-   handleHideElements();
- }, []);
+  useEffect(() => {
+    function handleHideElements() {
+      setNavBarOpen(false);
+      setShowFooter(false);
+    }
+    handleHideElements();
+  }, []);
 
-//  useEffect(() => {
-//    return () => {
-//      setNavBarOpen(true);
-//      setShowFooter(true);
-//    };
-//  }, [setNavBarOpen, setShowFooter]);
+  //  useEffect(() => {
+  //    return () => {
+  //      setNavBarOpen(true);
+  //      setShowFooter(true);
+  //    };
+  //  }, [setNavBarOpen, setShowFooter]);
 
   useEffect(() => {
     dispatch(fetchReviews());
@@ -108,11 +116,17 @@ export default function Add({ user, setNavBarOpen, setShowFooter }) {
   return (
     <div className={styles.add_container}>
       <AddNavbar />
-      <div style={{ paddingTop: "8rem" }} />
+      <Routes>
+        <Route path="/" element={<HomeAdmin />} />
+        <Route path="add-a-project" element={<AddProject />} />
+        <Route path="add-a-articles" element={<AddArticles />} />
+        <Route path="add-a-company" element={<AddCompany />} />
+      </Routes>
+
+      {/* <div style={{ paddingTop: "8rem" }} />
       <div className={styles.add_container__userName}>
-        {/* Привет {user.user.username} 👋 */}
-      </div>
-      <div className={styles.add_container__block}>
+      </div> */}
+      {/* <div className={styles.add_container__block}>
         <div className={styles.add_container__button_blocks}>
           <button
             className={styles.add_container__articles_button}
@@ -193,7 +207,7 @@ export default function Add({ user, setNavBarOpen, setShowFooter }) {
             <div className={styles.add_container__list_title}>
               Все Публикации 🗂️
             </div>
-            {/* <ul>
+             <ul>
               {artickes &&
                 artickes.map((element) => (
                   <li
@@ -253,13 +267,13 @@ export default function Add({ user, setNavBarOpen, setShowFooter }) {
                     </button>
                   </li>
                 ))}
-            </ul> */}
+            </ul> 
           </div>
           <div className={styles.add_container__project_container}>
             <div className={styles.add_container__list_title}>
               Все Проекты 🏠
             </div>
-            {/* <ul>
+            <ul>
               {project &&
                 project.map((element) => (
                   <li
@@ -288,10 +302,10 @@ export default function Add({ user, setNavBarOpen, setShowFooter }) {
                     </button>
                   </li>
                 ))}
-            </ul> */}
+            </ul> 
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

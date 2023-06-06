@@ -24,26 +24,11 @@
     "description": {
       "type": "text"
     },
-    "obout": {
+    "about": {
       "type": "text"
     },
     "categorie": {
       "type": "string"
-    },
-    "obout1": {
-      "type": "text"
-    },
-    "obout2": {
-      "type": "text"
-    },
-    "obout3": {
-      "type": "text"
-    },
-    "obout4": {
-      "type": "text"
-    },
-    "obout5": {
-      "type": "text"
     }
   }
 }
