@@ -24,7 +24,7 @@ export default function Add({ user, setNavBarOpen, setShowFooter }) {
 
   const tokens = localStorage.getItem("token");
 
-  console.log(token);
+  console.log(token, '<<---TOKEN');
   const [isOpen, setIsOpen] = useState(false);
   const [reviewData, setReviewData] = useState({
     id: id,
@@ -33,12 +33,23 @@ export default function Add({ user, setNavBarOpen, setShowFooter }) {
     body: "",
     img: "",
   });
+
+ useEffect(() => {
+   function handleHideElements() {
+     setNavBarOpen(false);
+     setShowFooter(false);
+   }
+   handleHideElements();
+ }, []);
+
+//  useEffect(() => {
+//    return () => {
+//      setNavBarOpen(true);
+//      setShowFooter(true);
+//    };
+//  }, [setNavBarOpen, setShowFooter]);
+
   useEffect(() => {
-    function handleHideElements() {
-      setNavBarOpen(false);
-      setShowFooter(false);
-    }
-    handleHideElements();
     dispatch(fetchReviews());
     dispatch(fetchArticles());
     dispatch(fetchProject());
