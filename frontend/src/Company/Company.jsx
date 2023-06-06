@@ -12,6 +12,8 @@ import CompanyGroupSlider from "../UI/CompanyGroupSlider/CompanyGroupSlider";
 import TableCompany from "../UI/TableCompany/TableCompany";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchStaff } from "../store/Slice/StaffSlice";
+import LoadingCircle from "../Loading/LoadingCircle";
+import Error from "../Loading/Error/Error";
 
 export default function Company() {
   const [countPercent, setCountPercent] = useState(0);
@@ -26,9 +28,9 @@ export default function Company() {
   const nameCompanyRef = useRef(null);
   const thisBlockRef = useRef(null);
   const dispatch = useDispatch();
-  const staff = useSelector((state) => state.staff);
-  // const loading = useSelector((state) => state.staff.loading);
-  // const error = useSelector((state) => state.staff.error);
+  const staff = useSelector((state) => state.staff.staff);
+  const loading = useSelector((state) => state.staff.loading);
+  const error = useSelector((state) => state.staff.error);
 
   useEffect(() => {
     dispatch(fetchStaff());
@@ -117,34 +119,46 @@ export default function Company() {
 
   
   useEffect(() => {
+    function handleScroll() {
+      
+      if (nameCompanyRef.current && thisBlockRef.current) {
+        const nameCompanyRect = nameCompanyRef.current.getBoundingClientRect();
+        const thisBlockRect = thisBlockRef.current.getBoundingClientRect();
+        const screenWidth = window.innerWidth;
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+  
+        if (scrollTop > thisBlockRect.top && screenWidth >= 1948) {
+          const translateYValue = nameCompanyRect.height + 212;
+          nameCompanyRef.current.style.transform = `translateY(${translateYValue}px)`;
+          thisBlockRef.current.style.transform = `translateY(${translateYValue}px) translateX(143px) rotate(-90deg)`;
+        } else if (scrollTop > thisBlockRect.top && screenWidth < 1948) {
+          const translateYValue = nameCompanyRect.height + 212;
+          nameCompanyRef.current.style.transform = `translateY(${translateYValue}px)`;
+          thisBlockRef.current.style.transform = `translateY(${translateYValue}px) translateX(143px) rotate(-90deg)`;
+        } else {
+          nameCompanyRef.current.style.transform = 'none';
+          thisBlockRef.current.style.transform = 'rotate(-180deg)';
+        }
+      }
+    }
+  
     window.addEventListener('scroll', handleScroll);
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+  
 
-function handleScroll() {
-  const screenWidth = window.innerWidth;
-  const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-  const nameCompanyRect = nameCompanyRef.current.getBoundingClientRect();
-  const thisBlockRect = thisBlockRef.current.getBoundingClientRect();
+ 
 
-  if (scrollTop > thisBlockRect.top && screenWidth >= 1948) {
-    const translateYValue = nameCompanyRect.height + 212;
-    nameCompanyRef.current.style.transform = `translateY(${translateYValue}px)`;
-    thisBlockRef.current.style.transform = `translateY(${translateYValue}px) translateX(143px) rotate(-90deg)`;
-  } else if (scrollTop > thisBlockRect.top && screenWidth < 1948) {
-    const translateYValue = nameCompanyRect.height + 212;
-    nameCompanyRef.current.style.transform = `translateY(${translateYValue}px)`;
-    thisBlockRef.current.style.transform = `translateY(${translateYValue}px) translateX(143px) rotate(-90deg)`;
-  } else {
-    nameCompanyRef.current.style.transform = 'none';
-    thisBlockRef.current.style.transform = 'rotate(-180deg)';
-  }
+if (loading) {
+  return <LoadingCircle />
 }
 
+if (error) {
+  return <div> <Error error={error} /></div>;
+}
 
-  
   return (
     <div className={styles.company_main}>
       <Company_Slider />
@@ -308,22 +322,23 @@ function handleScroll() {
           <button className={styles.button_hr}>HR</button>
         </div>
       </div>
-      <div className={styles.card_container}>
-        {/* <ul>
+        <div className={styles.card_container}>
+        <ul>
           {staff &&
-            staff.map((el) => (
+            staff?.map((el) => (
               <li key={el.id} className={styles.container__item_stuff}>
-                <div className={styles.container__item_title_stuff}>
-                  {el.attributes.title}
-                </div>
                 <img
-                  className={styles.add_container__img_stuff}
+                  className={styles.container__img_stuff}
                   src={el.attributes.img}
                   alt={el.attributes.img}
-                />
-              </li>
+                  />
+                <div className={styles.container__item_title_stuff}>
+                  {el.attributes.name}
+                </div>
+                <div>{el.attributes.position}</div>
+               </li>
             ))}
-        </ul> */}
+        </ul>
       </div>
     </div>
   );
