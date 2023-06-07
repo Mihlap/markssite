@@ -44,19 +44,7 @@ export default function Header({user}) {
       return <div> <Error error={error} /></div>;
     }
 
-  
-    if (loading) {
-      return <LoadingCircle />
-    }
 
-    if (error) {
-      return (
-        <div>
-          <Error error={error} />
-        </div>
-      );
-    }
-  
   const array = artickes.map((el) => el.attributes);
 
   if (array[0] === undefined) { 
