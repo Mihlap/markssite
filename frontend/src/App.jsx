@@ -28,8 +28,8 @@ import AddArticles from "./Add/add-articles/AddArticles";
 import AddCompany from "./Add/add-about-the-company/AddCompany";
 
 const App = () => {
-  // const user = useSelector((state) => state.login.user);
-  const user = 1;
+  const user = useSelector((state) => state.login.user);
+  // const user = 1;
   const location = useLocation();
   const [isScrollDisabled, setIsScrollDisabled] = useState(false);
 
