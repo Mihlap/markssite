@@ -322,8 +322,8 @@ if (error) {
           <button className={styles.button_hr}>HR</button>
         </div>
       </div>
-        <div className={styles.card_container}>
-        <ul>
+      <div className={styles.card_container}>
+        <ul className={styles.card_container_ul}>
           {staff &&
             staff?.map((el) => (
               <li key={el.id} className={styles.container__item_stuff}>
@@ -331,12 +331,14 @@ if (error) {
                   className={styles.container__img_stuff}
                   src={el.attributes.img}
                   alt={el.attributes.img}
-                  />
-                <div className={styles.container__item_title_stuff}>
+                />
+                <div className={styles.container__item_name_stuff}>
                   {el.attributes.name}
                 </div>
-                <div>{el.attributes.position}</div>
-               </li>
+                <div className={styles.container__item_position_stuff}>
+                  {el.attributes.position}
+                </div>
+              </li>
             ))}
         </ul>
       </div>
