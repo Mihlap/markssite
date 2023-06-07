@@ -126,81 +126,76 @@ export default function Add({ user, setNavBarOpen, setShowFooter }) {
       {/* <div style={{ paddingTop: "8rem" }} />
       <div className={styles.add_container__userName}>
       </div> */}
-      {/* <div className={styles.add_container__block}>
-        <div className={styles.add_container__button_blocks}>
+       {/* <div className={styles.add_container__block}> */}
+        {/* <div className={styles.add_container__button_blocks}> */}
           <button
             className={styles.add_container__articles_button}
             onClick={openModal}
           >
             Добавить Публикацию
           </button>
-          {isOpen && (
-            <div className={styles.add_container__modal_overlay}>
-              <div className={styles.add_container__modal}>
-                <span
-                  className={styles.add_container__close}
-                  onClick={closeModal}
-                >
-                  &times;
-                </span>
-                <div className={styles.add_container__form_title}>
-                  Добавить публикацию
-                </div>
-                <form
-                  className={styles.add_container__form_articles}
-                  onSubmit={handleSubmit}
-                >
-                  <label>
-                    Заголовок
-                    <input
-                      type="text"
-                      name="title"
-                      value={reviewData.title}
-                      onChange={handleChange}
-                    />
-                  </label>
-                  <label>
-                    Rating:
-                    <input
-                      type="number"
-                      name="rating"
-                      value={reviewData.rating}
-                      onChange={handleChange}
-                    />
-                  </label>
-                  <label>
-                    Body:
-                    <textarea
-                      name="body"
-                      value={reviewData.body}
-                      onChange={handleChange}
-                    />
-                  </label>
-                  <label>
-                    Image URL:
-                    <input
-                      type="text"
-                      name="img"
-                      value={reviewData.img}
-                      onChange={handleChange}
-                    />
-                  </label>
-                  <button
-                    className={styles.add_container__publish_button}
-                    type="submit"
-                  >
-                    Опубликовать
-                  </button>
-                </form>
-              </div>
+      {isOpen && (
+        <div className={styles.add_container__modal_overlay}>
+          <div className={styles.add_container__modal}>
+            <span
+              className={styles.add_container__close}
+              onClick={closeModal}
+            >
+              &times;
+            </span>
+            <div className={styles.add_container__form_title}>
+              Добавить публикацию
             </div>
-          )}
-          <button
-            className={styles.add_container__project_button}
-            onClick={openModal}
-          >
-            Добавить Проект
-          </button>
+            <form
+              className={styles.add_container__form_articles}
+              onSubmit={handleSubmit}
+            >
+              <label>
+                Заголовок
+                <input
+                  type="text"
+                  name="title"
+                  value={reviewData.title}
+                  onChange={handleChange}
+                />
+              </label>
+              <label>
+                Rating:
+                <input
+                  type="number"
+                  name="rating"
+                  value={reviewData.rating}
+                  onChange={handleChange}
+                />
+              </label>
+              <label>
+                Body:
+                <textarea
+                  name="body"
+                  value={reviewData.body}
+                  onChange={handleChange}
+                />
+              </label>
+              <label>
+                Image URL:
+                <input
+                  type="text"
+                  name="img"
+                  value={reviewData.img}
+                  onChange={handleChange}
+                />
+              </label>
+              <button
+                className={styles.add_container__publish_button}
+                type="submit"
+              >
+                Опубликовать
+              </button>
+            </form>
+          </div>
+        </div>
+      )}
+          {/*
         </div>
         <div className={styles.add_container__list_block}>
           <div className={styles.add_container__articles_container}>
@@ -237,7 +232,7 @@ export default function Add({ user, setNavBarOpen, setShowFooter }) {
                   </li>
                 ))}
             </ul>
-
+                */} 
             <ul>
               {reviews &&
                 reviews.map((element) => (
@@ -268,6 +263,7 @@ export default function Add({ user, setNavBarOpen, setShowFooter }) {
                   </li>
                 ))}
             </ul> 
+      {/*
           </div>
           <div className={styles.add_container__project_container}>
             <div className={styles.add_container__list_title}>
