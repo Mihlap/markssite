@@ -7,13 +7,14 @@ import axios from "axios";
 const staffSlice = createSlice({
     name: "staff",
     initialState: {
+        categoryId: "Руководство",
         staff: [],
         loading: false,
         error: null,
     },
     reducers: {
-        fetchStaffStart(state) {
-            state.loading = true;
+        fetchStaffStart(state, action) {
+            state.categoryId = action.payload;
             state.error = null;
         },
         fetchStaffSuccess(state, action) {
@@ -24,7 +25,7 @@ const staffSlice = createSlice({
             state.loading = false;
             state.error = action.payload;
         },
-    },
+     },
 });
 
 export const {
@@ -34,13 +35,16 @@ export const {
 } = staffSlice.actions;
 
 
-
-export const fetchStaff = () => async (dispatch) => {
+export const fetchCategoryStaff = (categoryId) => async (dispatch) => {
     dispatch(fetchStaffStart());
     
     try {
         const response = await axios.get(`${host}/api/staffs`);
-        dispatch(fetchStaffSuccess(response.data.data));
+        const filteredData = response.data.data.filter(
+            (staff) => staff.attributes.categorie === categoryId
+        );
+        dispatch(fetchStaffSuccess(filteredData));
+     
     } catch (error) {
         dispatch(fetchStaffFailure(error.message));
     }
