@@ -16,7 +16,6 @@ import AddCompany from "./add-about-the-company/AddCompany";
 
 
 export default function Add({ user, setNavBarOpen, setShowFooter }) {
-  console.log("Add component is rendered"); // временный console.log
 
   const dispatch = useDispatch();
   const reviews = useSelector((state) => state.reviews.reviews);
@@ -113,6 +112,8 @@ export default function Add({ user, setNavBarOpen, setShowFooter }) {
   const closeModal = () => {
     setIsOpen(false);
   };
+
+  console.log(reviews);
   return (
     <div className={styles.add_container}>
       <AddNavbar />
