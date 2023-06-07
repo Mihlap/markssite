@@ -11,7 +11,7 @@ import plusNine from '../icons/+9.svg';
 import CompanyGroupSlider from "../UI/CompanyGroupSlider/CompanyGroupSlider";
 import TableCompany from "../UI/TableCompany/TableCompany";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchStaff } from "../store/Slice/StaffSlice";
+import { fetchCategoryStaff } from "../store/Slice/StaffSlice";
 import LoadingCircle from "../Loading/LoadingCircle";
 import Error from "../Loading/Error/Error";
 
@@ -28,14 +28,15 @@ export default function Company() {
   const nameCompanyRef = useRef(null);
   const thisBlockRef = useRef(null);
   const dispatch = useDispatch();
-  const staff = useSelector((state) => state.staff.staff);
-  const loading = useSelector((state) => state.staff.loading);
-  const error = useSelector((state) => state.staff.error);
+  const { categoryId, staff, loading, error } = useSelector(
+    (state) => state.staff
+  );
 
+  
   useEffect(() => {
-    dispatch(fetchStaff());
+     dispatch(fetchCategoryStaff(categoryId));
   }, [dispatch]);
-
+  
   useEffect(() => {
     const timer1 = setTimeout(() => {
       if (countPercent < 80) {
@@ -117,7 +118,6 @@ export default function Company() {
     countScienceDegree,
   ]);
 
-  
   useEffect(() => {
     function handleScroll() {
       
@@ -147,11 +147,8 @@ export default function Company() {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
-  
 
- 
-
-if (loading) {
+ if (loading) {
   return <LoadingCircle />
 }
 
@@ -312,14 +309,24 @@ if (error) {
       <div className={styles.specialist_wrapper}>
         <div className={styles.specialist}>Специалисты</div>
         <div className={styles.button_group}>
-          <button className={styles.button_leader}>Руководство</button>
-          <button className={styles.button_department}>
+          <button
+           onClick={() => dispatch(fetchCategoryStaff('Руководство'))}
+           className={styles.button_leader}>
+            Руководство
+            </button>
+          <button
+          onClick={() => dispatch(fetchCategoryStaff('Руководители отделов'))}
+           className={styles.button_department}>
             Руководители отделов
           </button>
-          <button className={styles.button_support}>
+          <button
+          onClick={() => dispatch(fetchCategoryStaff('Научно-техническое сопровождение'))}
+           className={styles.button_support}>
             Научно-техническое сопровождение
           </button>
-          <button className={styles.button_hr}>HR</button>
+          <button
+          onClick={() => dispatch(fetchCategoryStaff('HR'))}
+           className={styles.button_hr}>HR</button>
         </div>
       </div>
       <div className={styles.card_container}>
