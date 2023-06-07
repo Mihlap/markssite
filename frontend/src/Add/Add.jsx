@@ -38,9 +38,10 @@ export default function Add({ user, setNavBarOpen, setShowFooter }) {
     title: "",
     rating: "",
     body: "",
-    img: "",
+    photo: "",
   });
 
+  console.log(reviewData);
   useEffect(() => {
     function handleHideElements() {
       setNavBarOpen(false);
@@ -86,36 +87,59 @@ export default function Add({ user, setNavBarOpen, setShowFooter }) {
     dispatch(deleteReview(id, token));
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    fetch("http://localhost:1337/api/reviews", {
-      method: "POST",
-      body: JSON.stringify({ data: reviewData }),
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${tokens}`,
-      },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log(data);
-        dispatch(fetchReviews()); // dispatch action to update the Redux store
-      })
-      .catch((error) => console.error(error));
-    setIsOpen(false);
-  };
+const handlePhotoChange = (event) => {
+  const file = event.target.files[0];
+  setReviewData((prevReviewData) => ({
+    ...prevReviewData,
+    photo: file,
+  }));
+  console.log(file);
+};
 
-  const openModal = () => {
-    setIsOpen(true);
-  };
+  
+const handleSubmit = async (event) => {
+  event.preventDefault();
 
-  const closeModal = () => {
-    setIsOpen(false);
-  };
+  const formData = new FormData();
+  formData.append("files.photo", reviewData.photo); // Обратите внимание на изменение здесь
+  formData.append("data", JSON.stringify(reviewData));
 
-  console.log(reviews);
-  return (
-    <div className={styles.add_container}>
+  console.log(formData, "<----FORM_DATA");
+
+   fetch("http://localhost:1337/api/reviews", {
+  method: "POST",
+  body: formData,
+  headers: {
+    Authorization: `Bearer ${tokens}`,
+  },
+})
+  .then((response) => response.json())
+  .then((data) => {
+    console.log(data);
+    // Здесь вы можете получить доступ к данным о фотографии и другим данным
+    const { photo, ...restData } = data;
+    console.log("Данные о фотографии:", photo);
+    console.log("Остальные данные:", restData);
+    
+    dispatch(fetchReviews());
+  })
+  .catch((error) => console.error(error));
+
+setIsOpen(false);
+};
+
+
+const openModal = () => {
+  setIsOpen(true);
+};
+
+const closeModal = () => {
+  setIsOpen(false);
+};
+
+console.log(reviews.map((el) => el.attributes));
+return (
+  <div className={styles.add_container}>
       <AddNavbar />
       <Routes>
         <Route path="/" element={<HomeAdmin />} />
@@ -127,21 +151,18 @@ export default function Add({ user, setNavBarOpen, setShowFooter }) {
       {/* <div style={{ paddingTop: "8rem" }} />
       <div className={styles.add_container__userName}>
       </div> */}
-       {/* <div className={styles.add_container__block}> */}
-        {/* <div className={styles.add_container__button_blocks}> */}
-          <button
-            className={styles.add_container__articles_button}
-            onClick={openModal}
-          >
-            Добавить Публикацию
-          </button>
+      {/* <div className={styles.add_container__block}> */}
+      {/* <div className={styles.add_container__button_blocks}> */}
+      <button
+        className={styles.add_container__articles_button}
+        onClick={openModal}
+      >
+        Добавить Публикацию
+      </button>
       {isOpen && (
         <div className={styles.add_container__modal_overlay}>
           <div className={styles.add_container__modal}>
-            <span
-              className={styles.add_container__close}
-              onClick={closeModal}
-            >
+            <span className={styles.add_container__close} onClick={closeModal}>
               &times;
             </span>
             <div className={styles.add_container__form_title}>
@@ -178,13 +199,8 @@ export default function Add({ user, setNavBarOpen, setShowFooter }) {
                 />
               </label>
               <label>
-                Image URL:
-                <input
-                  type="text"
-                  name="img"
-                  value={reviewData.img}
-                  onChange={handleChange}
-                />
+                Фотография:
+                <input type="file" name="photo" onChange={handlePhotoChange} />
               </label>
               <button
                 className={styles.add_container__publish_button}
@@ -196,7 +212,7 @@ export default function Add({ user, setNavBarOpen, setShowFooter }) {
           </div>
         </div>
       )}
-          {/*
+      {/*
         </div>
         <div className={styles.add_container__list_block}>
           <div className={styles.add_container__articles_container}>
@@ -233,37 +249,37 @@ export default function Add({ user, setNavBarOpen, setShowFooter }) {
                   </li>
                 ))}
             </ul>
-                */} 
-            <ul>
-              {reviews &&
-                reviews.map((element) => (
-                  <li
-                    key={element.id}
-                    className={styles.add_container__item_articles}
-                  >
-                    <div className={styles.add_container__item_title}>
-                      {element.attributes.title}
-                    </div>
-                    <img
-                      className={styles.add_container__img_articles}
-                      src={element.attributes.img}
-                      alt={element.attributes.img}
-                    />
-                    <button
-                      className={styles.add_container__item_buttom_del}
-                      onClick={() => handleDelete(element.id)}
-                    >
-                      <label htmlfor="delete" className={styles.label}>
-                        <div className={`${styles.wrapper}`}>
-                          <div className={`${styles.lid}`}></div>
-                          <div className={`${styles.can}`}></div>
-                          <span>delete</span>
-                        </div>
-                      </label>
-                    </button>
-                  </li>
-                ))}
-            </ul> 
+                */}
+      <ul>
+        {reviews &&
+          reviews.map((element) => (
+            <li
+              key={element.id}
+              className={styles.add_container__item_articles}
+            >
+              <div className={styles.add_container__item_title}>
+                {element.attributes.title}
+              </div>
+              <img
+                className={styles.add_container__img_articles}
+                src={element.attributes.img}
+                alt={element.attributes.img}
+              />
+              <button
+                className={styles.add_container__item_buttom_del}
+                onClick={() => handleDelete(element.id)}
+              >
+                <label htmlfor="delete" className={styles.label}>
+                  <div className={`${styles.wrapper}`}>
+                    <div className={`${styles.lid}`}></div>
+                    <div className={`${styles.can}`}></div>
+                    <span>delete</span>
+                  </div>
+                </label>
+              </button>
+            </li>
+          ))}
+      </ul>
       {/*
           </div>
           <div className={styles.add_container__project_container}>

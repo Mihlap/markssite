@@ -25,15 +25,18 @@
       "type": "richtext",
       "required": false
     },
-    "img": {
-      "type": "string"
-    },
     "user": {
       "type": "relation",
       "relation": "oneToOne",
       "target": "plugin::users-permissions.user"
     },
-    "images": {
+    "test": {
+      "type": "dynamiczone",
+      "components": [
+        "huiznaet.testic"
+      ]
+    },
+    "photo": {
       "allowedTypes": [
         "images",
         "files",
