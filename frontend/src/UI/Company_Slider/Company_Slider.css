@@ -35,6 +35,9 @@
 .button_slider.active {
   font-size: 40px;
 }
+.button_slider.active:hover {
+  display: none;
+}
 
 .button_slider_wrapper {
   position: relative;

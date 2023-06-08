@@ -4,38 +4,46 @@ import Company_Slider from "../UI/Company_Slider/Company_Slider";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SliderMobile from "../UI/SliderHeader/SliderMobile";
-
-import bracket from "../icons/bracket.svg";
-import bracket_dark from "../icons/bracket_dark.svg";
-import plusNine from '../icons/+9.svg';
 import CompanyGroupSlider from "../UI/CompanyGroupSlider/CompanyGroupSlider";
 import TableCompany from "../UI/TableCompany/TableCompany";
+
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCategoryStaff } from "../store/Slice/StaffSlice";
 import LoadingCircle from "../Loading/LoadingCircle";
 import Error from "../Loading/Error/Error";
 
+import bracket from "../icons/bracket.svg";
+import bracket_dark from "../icons/bracket_dark.svg";
+import plusNine from '../icons/+9.svg';
+
 export default function Company() {
+
   const [countPercent, setCountPercent] = useState(0);
   const [countHuman, setCountHuman] = useState(0);
   const [countProject, setCountProject] = useState(0);
-  const blockSlider = useRef(null);
+  
   const [countDepartment, setCountDepartment] = useState(0);
   const [countGap, setCountGap] = useState(0);
   const [countScient, setCountScient] = useState(0);
   const [countScienceDegree, setCountScienceDegree] = useState(0);
+  const [activeButton, setActiveButton] = useState("Руководство");
+
+  const blockSlider = useRef(null);
   const blockSliderNext = useRef(null);
   const nameCompanyRef = useRef(null);
   const thisBlockRef = useRef(null);
-  const dispatch = useDispatch();
-  const { categoryId, staff, loading, error } = useSelector(
-    (state) => state.staff
-  );
 
+  const dispatch = useDispatch();
+  const { categoryId, staff, loading, error } = useSelector((state) => state.staff);
   
   useEffect(() => {
-     dispatch(fetchCategoryStaff(categoryId));
-  }, [dispatch]);
+    dispatch(fetchCategoryStaff(categoryId));
+  }, [dispatch, categoryId]);
+  
+  const handleButtonClick = (categoryId) => {
+    setActiveButton(categoryId);
+    dispatch(fetchCategoryStaff(categoryId));
+  };
   
   useEffect(() => {
     const timer1 = setTimeout(() => {
@@ -120,13 +128,13 @@ export default function Company() {
 
   useEffect(() => {
     function handleScroll() {
-      
       if (nameCompanyRef.current && thisBlockRef.current) {
         const nameCompanyRect = nameCompanyRef.current.getBoundingClientRect();
         const thisBlockRect = thisBlockRef.current.getBoundingClientRect();
         const screenWidth = window.innerWidth;
-        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
-  
+        const scrollTop =
+          window.pageYOffset || document.documentElement.scrollTop;
+
         if (scrollTop > thisBlockRect.top && screenWidth >= 1948) {
           const translateYValue = nameCompanyRect.height + 212;
           nameCompanyRef.current.style.transform = `translateY(${translateYValue}px)`;
@@ -136,27 +144,32 @@ export default function Company() {
           nameCompanyRef.current.style.transform = `translateY(${translateYValue}px)`;
           thisBlockRef.current.style.transform = `translateY(${translateYValue}px) translateX(143px) rotate(-90deg)`;
         } else {
-          nameCompanyRef.current.style.transform = 'none';
-          thisBlockRef.current.style.transform = 'rotate(-180deg)';
+          nameCompanyRef.current.style.transform = "none";
+          thisBlockRef.current.style.transform = "rotate(-180deg)";
         }
       }
     }
-  
-    window.addEventListener('scroll', handleScroll);
+
+    window.addEventListener("scroll", handleScroll);
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
- if (loading) {
-  return <LoadingCircle />
-}
+  if (loading) {
+    return <LoadingCircle />;
+  }
 
-if (error) {
-  return <div> <Error error={error} /></div>;
-}
-
-  return (
+  if (error) {
+    return (
+      <div>
+        {" "}
+        <Error error={error} />
+      </div>
+    );
+  }
+  
+   return (
     <div className={styles.company_main}>
       <Company_Slider />
       <div ref={blockSlider} className={styles.underSlider_text_wrapper}>
@@ -309,24 +322,31 @@ if (error) {
       <div className={styles.specialist_wrapper}>
         <div className={styles.specialist}>Специалисты</div>
         <div className={styles.button_group}>
-          <button
-           onClick={() => dispatch(fetchCategoryStaff('Руководство'))}
-           className={styles.button_leader}>
-            Руководство
-            </button>
-          <button
-          onClick={() => dispatch(fetchCategoryStaff('Руководители отделов'))}
-           className={styles.button_department}>
-            Руководители отделов
-          </button>
-          <button
-          onClick={() => dispatch(fetchCategoryStaff('Научно-техническое сопровождение'))}
-           className={styles.button_support}>
-            Научно-техническое сопровождение
-          </button>
-          <button
-          onClick={() => dispatch(fetchCategoryStaff('HR'))}
-           className={styles.button_hr}>HR</button>
+        <button
+  onClick={() => handleButtonClick("Руководство")}
+  className={`${styles.button_leader} ${activeButton === "Руководство" ? styles.active : ""}`}
+>
+  Руководство
+</button>
+<button
+  onClick={() => handleButtonClick("Руководители отделов")}
+  className={`${styles.button_department} ${activeButton === "Руководители отделов" ? styles.active : ""}`}
+>
+  Руководители отделов
+</button>
+<button
+  onClick={() => handleButtonClick("Научно-техническое сопровождение")}
+  className={`${styles.button_support} ${activeButton === "Научно-техническое сопровождение" ? styles.active : ""}`}
+>
+  Научно-техническое сопровождение
+</button>
+<button
+  onClick={() => handleButtonClick("HR")}
+  className={`${styles.button_hr} ${activeButton === "HR" ? styles.active : ""}`}
+>
+  HR
+</button>
+
         </div>
       </div>
       <div className={styles.card_container}>

@@ -282,12 +282,12 @@
   padding: 8px 24px;
 }
 
-button:active,
-button:hover {
-  background: var(--black-1D2E43);
-  color: var(--white-F6F6F6);
+.button_act:active,
+.button_act:hover,
+.active {
+  background: var(--black-1D2E43) !important;
+  color: var(--white-F6F6F6) !important;
 }
-
 .card_container {
   display: flex;
   padding-left: 1.87vw;
