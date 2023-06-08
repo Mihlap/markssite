@@ -30,21 +30,19 @@
       "relation": "oneToOne",
       "target": "plugin::users-permissions.user"
     },
-    "test": {
-      "type": "dynamiczone",
-      "components": [
-        "huiznaet.testic"
-      ]
-    },
     "photo": {
+      "type": "media",
+      "multiple": true,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos",
         "audios"
-      ],
-      "type": "media",
-      "multiple": true
+      ]
+    },
+    "photos": {
+      "type": "string"
     }
   }
 }
