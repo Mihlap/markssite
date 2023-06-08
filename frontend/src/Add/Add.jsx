@@ -31,14 +31,14 @@ export default function Add({ user, setNavBarOpen, setShowFooter }) {
 
   const tokens = localStorage.getItem("token");
 
-  console.log(token, "<<---TOKEN");
+  // console.log(token, "<<---TOKEN");
   const [isOpen, setIsOpen] = useState(false);
   const [reviewData, setReviewData] = useState({
     id: id,
     title: "",
     rating: "",
     body: "",
-    photo: "",
+    photos: "",
   });
 
   console.log(reviewData);
@@ -91,7 +91,7 @@ const handlePhotoChange = (event) => {
   const file = event.target.files[0];
   setReviewData((prevReviewData) => ({
     ...prevReviewData,
-    photo: file,
+    photos: file,
   }));
   console.log(file);
 };
@@ -101,7 +101,7 @@ const handleSubmit = async (event) => {
   event.preventDefault();
 
   const formData = new FormData();
-  formData.append("files.photo", reviewData.photo); // Обратите внимание на изменение здесь
+  formData.append("files.photos", reviewData.photos); // Обратите внимание на изменение здесь
   formData.append("data", JSON.stringify(reviewData));
 
   console.log(formData, "<----FORM_DATA");
@@ -117,8 +117,8 @@ const handleSubmit = async (event) => {
   .then((data) => {
     console.log(data);
     // Здесь вы можете получить доступ к данным о фотографии и другим данным
-    const { photo, ...restData } = data;
-    console.log("Данные о фотографии:", photo);
+    const { photos, ...restData } = data;
+    console.log("Данные о фотографии:", photos);
     console.log("Остальные данные:", restData);
     
     dispatch(fetchReviews());
