@@ -1,0 +1,109 @@
+.form_left_wrapper {
+  display: flex;
+  width: 38.8vw;
+  height: 100%;
+  border-radius: 1rem;
+  background: linear-gradient(261.46deg, rgba(255, 203, 193, 0.09) -4.67%, rgba(117, 187, 253, 0.09) 44.63%, rgba(188, 188, 188, 0.09) 103.07%);
+  box-shadow: 0px 0px 37px rgba(44, 59, 68, 0.05);
+  backdrop-filter: blur(14.5px);
+}
+
+.form_left_main {
+  display: flex;
+  flex-direction: column;
+  padding-left: 40px;
+  padding-right: 40px;
+  padding-top: 40px;
+}
+
+.title {
+  font-family: var(--font-unbounded);
+  font-style: normal;
+  font-weight: var(--fw-300);
+  font-size: 32px;
+  line-height: 40px;
+  color: var(--black-1D2E43);
+  }
+
+.span_text {
+  font-family: var(--font-raleway);
+  font-style: normal;
+  font-weight: var(--fw-400);
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--black-3C3C3C);
+  padding-top: 24px;
+  padding-right: 25px;
+  }
+
+  .form_form_wrapper {
+    display: flex;
+    flex-direction: column;
+    padding: 42px 40px 40px 0px;
+   }
+.group {}
+
+input {
+  border: none;
+  outline: none;
+  background-color: transparent;
+  padding-top: 34px;
+}
+
+::placeholder {
+  font-family: var(--font-raleway);
+  font-style: normal;
+  font-weight: var(--fw-400);
+  font-size: 16px;
+  line-height: 16px;
+  color: #959DA6;
+  }
+
+.line {
+  bottom: 0;
+  left: 0;
+  width: 480px;
+  height: 1px;
+  margin-top: 8px;
+  background-color: #959DA6;
+}
+
+.form_button {
+  margin-top: 40px;
+  width: 145px;
+  height: 56px;
+  border: 1px solid var(--black-1D2E43);
+  border-radius: 66px;
+}
+
+.button_name {
+  font-family: var(--font-raleway);
+  font-style: normal;
+  font-weight: var(--fw-400);
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--black-1D2E43);
+}
+
+.agreement {
+  font-family: var(--font-raleway);
+  font-style: normal;
+  font-weight: var(--fw-400);
+  font-size: 10px;
+  line-height: 14px;
+  color: var(--black-1D2E43);
+  padding-top: 16px;
+ }
+ 
+ .agreement label {
+  display: flex;
+  align-items: center;
+  }
+
+ .agreement input[type="checkbox"] {
+  margin-right: 8px;
+}
+
+ .agreement a {
+  text-decoration: underline;
+ }

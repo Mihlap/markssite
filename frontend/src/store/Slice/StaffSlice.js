@@ -14,8 +14,7 @@ const staffSlice = createSlice({
     },
     reducers: {
         fetchStaffStart(state, action) {
-            // state.categoryId = action.payload;
-            state.error = null;
+         state.error = null;
         },
         fetchStaffSuccess(state, action) {
             state.loading = false;
