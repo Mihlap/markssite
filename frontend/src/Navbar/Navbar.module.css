@@ -43,21 +43,30 @@
 }
 
 .navbar_container {
-  background: rgb(246 246 246 / 90%);
-  backdrop-filter: blur(2px);
   display: flex;
   justify-content: space-between;
   align-items: center;
   height: 49px;
-  padding-left: 34px;
 }
 
+.navbar_title_block {
+  background: rgb(246 246 246 / 90%);
+  /* Желаемый цвет фона */
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  /* Для того, чтобы блок занимал всю доступную ширину */
+}
 
 .navbar_title {
   font-family: var(--font-MyCustomFont);
   font-size: 24px;
   color: var(--black-1D2E43);
   cursor: pointer;
+  width: 100%;
+  padding-left: 34px;
+  /* Для того, чтобы h1 занимал всю доступную ширину */
 }
 
 .navbar_list {
@@ -71,15 +80,32 @@
   font-weight: var(--fw-400);
   font-size: 16px;
   line-height: 1.25vw;
+  background: rgb(246 246 246 / 90%);
   color: var(--black-1D2E43);
   display: flex;
   align-items: center;
   padding-left: 1.53vw;
   padding-right: 1.53vw;
   border-left: 1px solid var(--black-1D2E43);
+  white-space: nowrap;
 }
 
-.navbar_item_last {
+.navbar_item.active {
+  background: rgba(212, 237, 251, 0.6);
+  cursor: pointer;
+}
+
+.navbar_item:hover {
+  background: rgb(246 246 246 / 60%);
+  backdrop-filter: blur(3px);
+  cursor: pointer;
+}
+
+.navDesktop_container {
+  display: none;
+}
+
+/* .navbar_item_last {
   font-family: var(--font-raleway);
   font-style: normal;
   font-weight: var(--fw-400);
@@ -91,22 +117,7 @@
   padding-left: 1.53vw;
   padding-right: 1.53vw;
   border-right: 1px solid var(--black-1D2E43);
-}
-
-.navbar_item.active {
-  background: rgba(212, 237, 251, 0.6);
-  cursor: pointer;
-}
-
-.navbar_item:hover {
-  background: rgb(246 246 246 / 30%);
-  backdrop-filter: blur(3px);
-  cursor: pointer;
-}
-
-.navDesktop_container {
-  display: none;
-}
+} */
 
 
 /* Стили для мобильной версии сайта блока NavBar начинаются тут */
