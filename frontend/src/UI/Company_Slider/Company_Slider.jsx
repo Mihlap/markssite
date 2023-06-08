@@ -10,7 +10,8 @@ const Company_Slider = () => {
     const handleButtonClick = (index) => {
     if (sliderRef.current) {
       sliderRef.current.slickGoTo(index);
-      setWidth((index + 1) * 22 + 2);
+      setWidth((prevWidth) => (index + 1) * 22 + 2);
+      // setWidth((index + 1) * 22 + 2);
       setActiveIndex(index);
     }
   };
