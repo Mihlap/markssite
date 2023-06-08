@@ -14,7 +14,7 @@ const staffSlice = createSlice({
     },
     reducers: {
         fetchStaffStart(state, action) {
-            state.categoryId = action.payload;
+            // state.categoryId = action.payload;
             state.error = null;
         },
         fetchStaffSuccess(state, action) {
@@ -36,7 +36,7 @@ export const {
 
 
 export const fetchCategoryStaff = (categoryId) => async (dispatch) => {
-    dispatch(fetchStaffStart());
+    dispatch(fetchStaffStart(categoryId));
     
     try {
         const response = await axios.get(`${host}/api/staffs`);
