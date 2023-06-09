@@ -1,6 +1,6 @@
 .form_left_wrapper {
   display: flex;
-  width: 38.8vw;
+  max-width: 683px;
   height: 100%;
   border-radius: 1rem;
   background: linear-gradient(261.46deg, rgba(255, 203, 193, 0.09) -4.67%, rgba(117, 187, 253, 0.09) 44.63%, rgba(188, 188, 188, 0.09) 103.07%);
@@ -11,10 +11,8 @@
 .form_left_main {
   display: flex;
   flex-direction: column;
-  padding-left: 40px;
-  padding-right: 40px;
-  padding-top: 40px;
-}
+  padding: 8.19vh 2.77vw 5vh 5vw;
+ }
 
 .title {
   font-family: var(--font-unbounded);
@@ -32,22 +30,22 @@
   font-size: 16px;
   line-height: 24px;
   color: var(--black-3C3C3C);
-  padding-top: 24px;
-  padding-right: 25px;
+  padding-top: 1.66vh;
+  padding-right: 3.2vw;
   }
 
   .form_form_wrapper {
     display: flex;
     flex-direction: column;
-    padding: 42px 40px 40px 0px;
+    padding-top: 2.91vh;
+    width: 480px;
    }
-.group {}
 
 input {
   border: none;
   outline: none;
   background-color: transparent;
-  padding-top: 34px;
+  padding-top: 2.36vh;
 }
 
 ::placeholder {
@@ -62,18 +60,26 @@ input {
 .line {
   bottom: 0;
   left: 0;
-  width: 480px;
-  height: 1px;
-  margin-top: 8px;
+  height: 0.069vh;
+  margin-top: 0.55vh;
   background-color: #959DA6;
 }
 
-.form_button {
-  margin-top: 40px;
+.button_hover {
+  margin-top: 2.77vh;
   width: 145px;
   height: 56px;
   border: 1px solid var(--black-1D2E43);
   border-radius: 66px;
+}
+
+.active {
+  background: var(--black-1D2E43) !important;
+  color: var(--white-F6F6F6) !important;
+}
+.button_hover:hover {
+  background: var(--dark-gray-566272);
+  color: var(--white-F6F6F6);
 }
 
 .button_name {
@@ -82,9 +88,7 @@ input {
   font-weight: var(--fw-400);
   font-size: 16px;
   line-height: 24px;
-  color: var(--black-1D2E43);
-}
-
+  }
 .agreement {
   font-family: var(--font-raleway);
   font-style: normal;
@@ -92,7 +96,7 @@ input {
   font-size: 10px;
   line-height: 14px;
   color: var(--black-1D2E43);
-  padding-top: 16px;
+  padding-top: 1.11vh;
  }
  
  .agreement label {
@@ -107,3 +111,37 @@ input {
  .agreement a {
   text-decoration: underline;
  }
+
+ input[type=checkbox] {
+  transform: scale(1);
+  cursor: pointer;
+}
+
+/* стили checkbox */
+.checkbox {
+  position: relative;
+}
+.checkbox::before {
+  content: "";
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 0px solid var(--white-F6F6F6);
+  margin-right: 10px;
+}
+.checkbox::after {
+  content: "\2713";
+  position: absolute;
+  top: 45%;
+  left: 60%;
+  transform: translate(-50%, -50%);
+  display: none; 
+}
+.checkbox:checked::before {
+  background-color: #FF7F6A;
+ }
+
+ .checkbox:checked::after {
+  display: block;  
+  color: var(--white-F6F6F6);
+}
