@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./CompanyFormContacts.module.css";
 
 const CompanyFormContacts = () => {
+  
   return (
     <div className={styles.form_left_wrapper}>
       <div className={styles.form_left_main}>
@@ -56,7 +57,9 @@ const CompanyFormContacts = () => {
               Подтвердите согласие на обработку <a href="">персональных данных</a>
             </label>
           </div>
-          <button className={styles.form_button}>
+          <button
+           className={styles.button_hover}
+           >
             <p className={styles.button_name}>Отправить</p>
           </button>
         </form>
