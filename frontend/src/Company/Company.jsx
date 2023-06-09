@@ -134,29 +134,32 @@ export default function Company() {
   ]);
 
   useEffect(() => {
-    function handleScroll() {
-      if (nameCompanyRef.current && thisBlockRef.current) {
-        const nameCompanyRect = nameCompanyRef.current.getBoundingClientRect();
-        const thisBlockRect = thisBlockRef.current.getBoundingClientRect();
-        const screenWidth = window.innerWidth;
-        const scrollTop =
-          window.pageYOffset || document.documentElement.scrollTop;
+  function handleScroll() {
+    if (nameCompanyRef.current && thisBlockRef.current) {
+      const nameCompanyRect = nameCompanyRef.current.getBoundingClientRect();
+      const thisBlockRect = thisBlockRef.current.getBoundingClientRect();
+      const screenWidth = window.innerWidth;
+      const scrollTop =
+        window.pageYOffset || document.documentElement.scrollTop;
 
-        if (scrollTop > thisBlockRect.top && screenWidth >= 1948) {
-          const translateYValue = nameCompanyRect.height + 212;
-          nameCompanyRef.current.style.transform = `translateY(${translateYValue}px)`;
-          thisBlockRef.current.style.transform = `translateY(${translateYValue}px) translateX(143px) rotate(-90deg)`;
-        } else if (scrollTop > thisBlockRect.top && screenWidth < 1948) {
-          const translateYValue = nameCompanyRect.height + 212;
-          nameCompanyRef.current.style.transform = `translateY(${translateYValue}px)`;
-          thisBlockRef.current.style.transform = `translateY(${translateYValue}px) translateX(143px) rotate(-90deg)`;
-        } else {
-          nameCompanyRef.current.style.transform = "none";
-          thisBlockRef.current.style.transform = "rotate(-180deg)";
-        }
+      if (scrollTop > thisBlockRect.top && screenWidth >= 2000) {
+        const translateYValue = nameCompanyRect.height + 212;
+        nameCompanyRef.current.style.transform = `translateY(${translateYValue}px)`;
+        thisBlockRef.current.style.transform = `translateY(340px) translateX(-40px) rotate(-90deg)`;
+      } else if (scrollTop > thisBlockRect.top && screenWidth < 1999 && screenWidth >= 1480) {
+        const translateYValue = nameCompanyRect.height + 212;
+        nameCompanyRef.current.style.transform = `translateY(${translateYValue}px)`;
+        thisBlockRef.current.style.transform = `translateY(260px) translateX(40px) rotate(-90deg)`;
+      } else if (scrollTop > thisBlockRect.top && screenWidth < 1480) {
+        const translateYValue = nameCompanyRect.height + 212;
+        nameCompanyRef.current.style.transform = `translateY(${translateYValue}px)`;
+        thisBlockRef.current.style.transform = `translateY(220px) translateX(80px) rotate(-90deg)`;
+      } else {
+        nameCompanyRef.current.style.transform = "none";
+        thisBlockRef.current.style.transform = "rotate(-180deg)";
       }
     }
-
+  }
     window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);
