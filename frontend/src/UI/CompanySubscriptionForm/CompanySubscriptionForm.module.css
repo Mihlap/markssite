@@ -1,5 +1,6 @@
 .form_right_wrapper {
   display: flex;
+  align-items: flex-end;
   width: 1086px;
   height: 100%;
   border-radius: 1rem;
@@ -7,6 +8,7 @@
   box-shadow: 0px 4px 37px rgba(44, 59, 68, 0.05);
   backdrop-filter: blur(14.5px);
   margin-left: 53px;
+  margin-top: 21.3vh;
  }
 
 .form_right_main {
