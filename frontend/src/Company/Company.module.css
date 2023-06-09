@@ -374,8 +374,8 @@ img {
    background: linear-gradient(261.46deg, rgba(255, 203, 193, 0.09) -4.67%, rgba(117, 187, 253, 0.09) 44.63%, rgba(188, 188, 188, 0.09) 103.07%);
    box-shadow: 0px 4px 37px rgba(44, 59, 68, 0.05);
    backdrop-filter: blur(14.5px);
-   margin-left: 2.08vw;
-   margin-top: 176px;
+   /* margin-left: 2.08vw; */
+   /* margin-top: 176px; */
  }
 
 
