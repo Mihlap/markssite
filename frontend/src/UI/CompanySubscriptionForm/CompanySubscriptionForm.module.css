@@ -1,0 +1,106 @@
+.form_right_wrapper {
+  display: flex;
+  width: 1086px;
+  height: 100%;
+  border-radius: 1rem;
+  background: linear-gradient(261.46deg, rgba(255, 203, 193, 0.09) -4.67%, rgba(117, 187, 253, 0.09) 44.63%, rgba(188, 188, 188, 0.09) 103.07%);
+  box-shadow: 0px 4px 37px rgba(44, 59, 68, 0.05);
+  backdrop-filter: blur(14.5px);
+  margin-left: 53px;
+ }
+
+.form_right_main {
+  display: flex;
+  flex-direction: column;
+  margin-left: 4vw;
+  padding-right: 2.77vw;
+  padding-top: 2.77vh;
+}
+
+.title1 {
+  font-family: var(--font-unbounded);
+  font-style: normal;
+  font-weight: var(--fw-300);
+  font-size: 20px;
+  line-height: 28px;
+  color: var(--black-1D2E43);
+  width: 615px;
+  /* margin-right: 9.65vw; */
+  }
+
+.form_form_wrapper1 {
+    display: flex;
+    flex-direction: column;
+    padding: 1.66vh 2.77vw 2.77vh 0vw;
+   }
+   .label {
+    position: relative;
+  }
+
+  input {
+    border: none;
+    outline: none;
+    background-color: transparent;
+    padding-top: 2.36vh;
+    }
+  
+  .line1 {
+    bottom: 0;
+    left: 0;
+    width: 402px;
+    height: 0.069vh;
+    margin-top: 0.55vh;
+    background-color: #959DA6;
+  }
+
+  .input:focus + .line1 {
+    transform: scaleX(1);
+    transition-duration: 0.2s;
+    transition-timing-function: ease-out;
+  }
+
+  .placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: #999;
+    font-size: 16px;
+    transform-origin: left top;
+    /* transition: all 0.1s ease-out; */
+   }
+  
+  .focused .placeholder {
+    transform: translateY(-100%) scale(1);
+  }
+  
+  .input:not(:placeholder-shown) + .placeholder,
+  .input:empty + .placeholder,
+  .focused .placeholder {
+    transform: translateY(-100%) scale(1);
+  
+  }
+  
+.button_hover1 {
+  margin-top: 2.77vh;
+  width: 145px;
+  height: 56px;
+  border: 1px solid var(--black-1D2E43);
+  border-radius: 66px;
+}
+
+.active {
+  background: var(--black-1D2E43) !important;
+  color: var(--white-F6F6F6) !important;
+}
+.button_hover1:hover {
+  background: var(--dark-gray-566272);
+  color: var(--white-F6F6F6);
+}
+
+.button_name {
+  font-family: var(--font-raleway);
+  font-style: normal;
+  font-weight: var(--fw-400);
+  font-size: 16px;
+  line-height: 24px;
+ }
