@@ -301,7 +301,10 @@
   flex-wrap: wrap;
   justify-content: space-between;
   width: 100%;
+ }
 
+.container__item_stuff {
+  cursor: pointer;
 }
 
 .container__item_stuff:first-child {
@@ -367,9 +370,16 @@ img {
   padding: 103px 1.87vw 54px;
 }
 
+.modal_wrapper {
+  display: flex;
+  width: 534px;
+  height: 1060px;
+  right: 0px;
+}
 
-
-
+.modal_img_stuff {
+  
+}
 /* стили мобильной версии  */
 
 @media screen and (max-width: 767px) {
