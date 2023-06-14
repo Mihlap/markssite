@@ -8,6 +8,7 @@ const staffSlice = createSlice({
   initialState: {
     categoryId: "Руководство",
     selectedCardId: null,
+    selectedCard: null,
     staff: [],
     loading: false,
     error: null,
@@ -26,8 +27,17 @@ const staffSlice = createSlice({
       state.error = action.payload;
     },
     selectCard(state, action) {
-      state.selectedCardId = action.payload;
-      state.selectedCard = state.staff.find((staff) => staff.id === action.payload);
+        const selectedCardId = action.payload;
+        const selectedCard = state.staff.find((staff) => staff.id === selectedCardId);
+      if (selectedCardId === state.selectedCardId) {
+      return state;
+      }
+      return {
+        ...state,
+        selectedCardId,
+        selectedCard: selectedCard || null, 
+      };
+      
       },
       setCategoryId(state, action) {
         state.categoryId = action.payload;
@@ -40,7 +50,6 @@ export const { fetchStaffStart, fetchStaffSuccess, fetchStaffFailure, selectCard
 
 export const fetchCategoryStaff =
   (categoryId) => async (dispatch, getState) => {
-    const { selectedCardId } = getState().staff;
     dispatch(fetchStaffStart());
 
     try {
@@ -54,8 +63,8 @@ export const fetchCategoryStaff =
         (staff) => staff.attributes.categorie === categoryId
       );
     
+      dispatch(setCategoryId(categoryId));
      dispatch(fetchStaffSuccess(filteredData));
-     dispatch(setCategoryId(categoryId));
 
     } catch (error) {
       dispatch(fetchStaffFailure(error));
