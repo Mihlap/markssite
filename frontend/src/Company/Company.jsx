@@ -9,7 +9,7 @@ import CompanyGroupSlider from "../UI/CompanyGroupSlider/CompanyGroupSlider";
 import TableCompany from "../UI/TableCompany/TableCompany";
 
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCategoryStaff, selectCard, selectedCard } from "../store/Slice/StaffSlice";
+import { fetchCategoryStaff, selectCard, setCategoryId } from "../store/Slice/StaffSlice";
 import LoadingCircle from "../Loading/LoadingCircle";
 import Error from "../Loading/Error/Error";
 
@@ -32,8 +32,9 @@ export default function Company() {
   const [showCards, setShowCards] = useState(false);
   const [activeButton, setActiveButton] = useState("Руководство");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  // const [selectedCardId, setSelectedCardId] = useState(null);
-
+  const [selectedCardId, setSelectedCardId] = useState(null);
+ 
+ 
   const blockSlider = useRef(null);
   const blockSliderNext = useRef(null);
   const nameCompanyRef = useRef(null);
@@ -43,21 +44,29 @@ export default function Company() {
   const { selectedCard, categoryId, staff, loading, error } = useSelector(
     (state) => state.staff
   );
-  // const selectedCard = useSelector((state) => state.staff.selectedCard);
-
-  const handleButtonClick = (categoryId, selectСardId) => {
-    dispatch(fetchCategoryStaff(categoryId));
-      setIsModalOpen(true);
-      setActiveButton(categoryId);
-      dispatch(selectCard(selectedCard));
-    };
+ 
 
   useEffect(() => {
     setTimeout(() => {
+      dispatch(selectCard(selectedCardId));
       dispatch(fetchCategoryStaff(categoryId));
       setShowCards(true);
     }, 100);
   }, []);
+
+  const handleButtonClick = (categoryId, selectedCardId) => {
+    if (selectedCardId) {
+      dispatch(selectCard(selectedCardId));
+      setIsModalOpen(true);
+    } else {
+      setIsModalOpen(false);
+      setSelectedCardId(null);
+      dispatch(fetchCategoryStaff(categoryId));
+      setActiveButton(categoryId);
+      dispatch(setCategoryId(categoryId));
+    }
+  };
+  
 
   useEffect(() => {
     const timer1 = setTimeout(() => {
@@ -385,7 +394,7 @@ return (
               key={el.id}
               {...el}
               className={styles.container__item_stuff}
-              onClick={(event) => handleButtonClick(categoryId, event)}
+              onClick={() => handleButtonClick(el, el.id)}
             >
               <img
                 className={styles.container__img_stuff}
@@ -400,25 +409,54 @@ return (
               </div>
             </li>
           ))}
-        {isModalOpen && (
+        {isModalOpen && selectedCard && (
           <Modal
             isOpen={isModalOpen}
-            onRequestClose={() => setIsModalOpen(false)}
+            onRequestClose={() => {
+              setIsModalOpen(false);
+              setSelectedCardId(null);
+            }}
             ariaHideApp={false}
             className={styles.modal_wrapper}
+            categoryId={categoryId}
           >
-          {selectedCard && (
-              <div key={selectedCard.id}>
-                <img
-                  className={styles.modal_img_stuff}
-                  src={selectedCard.attributes.img}
-                  alt={selectedCard.attributes.img}
-                />
+            {selectedCard && (
+              <div key={selectedCard.id} X>
+                <div className={styles.modal}>
+                  <img
+                    className={styles.modal_img_stuff}
+                    src={selectedCard.attributes.img}
+                    alt={selectedCard.attributes.img}
+                  />
+                </div>
                 <div className={styles.modal_name_stuff}>
                   {selectedCard.attributes.name}
                 </div>
-                <div className={styles.modal_position_stuff}>
-                  {selectedCard.attributes.position}
+                <div className={styles.modal_description_stuff}>
+                  {selectedCard.attributes.description}
+                </div>
+                <div className={styles.modal_about_stuff}>
+                  {selectedCard.attributes.about}
+                </div>
+                <div className={styles.modal_about_stuff}>
+                  {/* <p>&bull;</p> */}
+                  {selectedCard.attributes.about1}
+                </div>
+                <div className={styles.modal_about_stuff}>
+                  {/* <p>&bull;</p> */}
+                  {selectedCard.attributes.about2}
+                </div>
+                <div className={styles.modal_about_stuff}>
+                  {/* <p>&bull;</p> */}
+                  {selectedCard.attributes.about3}
+                </div>
+                <div className={styles.modal_about_stuff}>
+                  {/* <p>&bull;</p> */}
+                  {selectedCard.attributes.about4}
+                </div>
+                <div className={styles.modal_about_stuff}>
+                  {/* <p>&bull;</p> */}
+                  {selectedCard.attributes.about5}
                 </div>
               </div>
             )}
