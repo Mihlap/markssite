@@ -29,6 +29,21 @@
     },
     "categorie": {
       "type": "string"
+    },
+    "about1": {
+      "type": "text"
+    },
+    "about2": {
+      "type": "text"
+    },
+    "about3": {
+      "type": "text"
+    },
+    "about4": {
+      "type": "text"
+    },
+    "about5": {
+      "type": "text"
     }
   }
 }
