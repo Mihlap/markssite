@@ -54,7 +54,7 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen, user }) => {
   const scrollPos = useRef(0);
 
   const handleScroll = () => {
-    const currentScrollPos = window.pageYOffset;
+    const currentScrollPos = window.scrollY;
     if (currentScrollPos > scrollPos.current) {
       setScrollDirection("down");
       setIsVisible(false);
