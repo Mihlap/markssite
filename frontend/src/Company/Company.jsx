@@ -34,8 +34,7 @@ export default function Company() {
   const blockSlider = useRef(null);
   const nameCompanyRef = useRef(null);
   const thisBlockRef = useRef(null);
-  const ref = useRef(null);
-
+ 
   const dispatch = useDispatch();
   const { selectedCard, categoryId, staff, loading, error } = useSelector(
     (state) => state.staff
@@ -44,6 +43,10 @@ export default function Company() {
   const countGap = useSelector(state => state.counter.countGap);
   const countScient = useSelector(state => state.counter.countScient);
   const countScienceDegree = useSelector(state => state.counter.countScienceDegree);
+
+  const [ref, inView] = useInView({
+    threshold: 0.5, // задаем пороговое значение для пересечения
+  });
 
  useEffect(() => {
     setTimeout(() => {
@@ -82,15 +85,17 @@ export default function Company() {
   }, [countPercent, countHuman, countProject]);
   
   useEffect(() => {
-         let timer1;
-        timer1 = setTimeout(() => {
+    if (inView) {
+      let timer1;
+      timer1 = setTimeout(() => {
         dispatch(incrementDepartment());
         dispatch(incrementGap());
         dispatch(incrementScient());
         dispatch(incrementScienceDegree());
       }, 30);
       return () => clearTimeout(timer1);
-    },  [dispatch, countDepartment, countGap, countScient, countScienceDegree]);
+    }
+  }, [dispatch, countDepartment, countGap, countScient, countScienceDegree, inView]);
 
 
   

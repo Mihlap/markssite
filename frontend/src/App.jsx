@@ -4,10 +4,10 @@ import "./App.css";
 import Company from "./Company/Company";
 import Header from "./Header/Header";
 import { useSelector } from "react-redux";
-// import Competentions from "./Competentions/Competentions";
+import Competentions from "./Competentions/Competentions";
 import Contacts from "./Contacts/Contacts";
-// import Project from "./Project/Project";
-// import Publics from "./Publics/Publics";
+import Project from "./Project/Project";
+import Publics from "./Publics/Publics";
 import NotFound from "./NotFound/NotFound";
 import Portal from "./Portal/Portal";
 import Navbar from "./Navbar/Navbar";
@@ -28,8 +28,8 @@ import AddArticles from "./Add/add-articles/AddArticles";
 import AddCompany from "./Add/add-about-the-company/AddCompany";
 
 const App = () => {
-  // const user = useSelector((state) => state.login.user);
-  const user = 1;
+  const user = useSelector((state) => state.login.user);
+  // const user = 1;
   const location = useLocation();
   const [isScrollDisabled, setIsScrollDisabled] = useState(false);
 
@@ -80,9 +80,9 @@ const App = () => {
                   path="/"
                   element={<Header user={user} navOpen={navOpen} isHidden={isHidden} />}
                 />
-                {/* <Route path="/competention" element={<Competentions />} /> */}
-                {/* <Route path="/project" element={<Project />} /> */}
-                {/* <Route path="/public" element={<Publics />} /> */}
+                <Route path="/competention" element={<Competentions />} />
+                <Route path="/project" element={<Project />} />
+                <Route path="/public" element={<Publics />} />
                 <Route path="/company" element={<Company />} />
                 {/* <Route path="/contacts" element={<Contacts />} /> */}
                 <Route path="/portal" element={<Portal />} />
