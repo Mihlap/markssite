@@ -40,12 +40,42 @@
     padding-top: 2.91vh;
     width: 480px;
    }
+   .label1 {
+    position: relative;
+  }
+
 
 input {
   border: none;
   outline: none;
   background-color: transparent;
   padding-top: 2.36vh;
+  }
+
+.placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: var(--gray-959DA6);
+  font-size: 16px;
+  transform-origin: left top;
+  /* transition: all 0.1s ease-out; */
+ }
+
+/* .focused1 .placeholder {
+  transform: translateY(-100%) scale(1);
+} */
+
+.input:not(:placeholder-shown)+.placeholder,
+.input:empty+.placeholder,
+.focused1 .placeholder {
+  transform: translateY(-100%) scale(1);
+  font-size: 12px;
+  color: var(--gray-959DA6);
+}
+
+input:focus + .line {
+  background-color: #FF7F6A;
 }
 
 ::placeholder {
@@ -78,8 +108,14 @@ input {
   color: var(--white-F6F6F6) !important;
 }
 .button_hover:hover {
-  background: var(--dark-gray-566272);
-  color: var(--white-F6F6F6);
+  background: linear-gradient(278.5deg, rgba(220, 238, 255, 0.53) -49.88%, rgba(255, 127, 106, 0.53) 108.02%);
+  color: var(--black-1D2E43);
+  border: 0px solid transparent;
+}
+
+.form_left_wrapper:focus-within .button_hover {
+  background-color: var(--light-light-gray-EBECEE);
+  border: 1px solid var(--gray-959DA6);
 }
 
 .button_name {
@@ -88,6 +124,10 @@ input {
   font-weight: var(--fw-400);
   font-size: 16px;
   line-height: 24px;
+  }
+
+  .form_left_wrapper:focus-within .button_name  {
+    color: var(--gray-959DA6);
   }
 .agreement {
   font-family: var(--font-raleway);
