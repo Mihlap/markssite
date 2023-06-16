@@ -391,33 +391,31 @@ img {
 
  .modal_context {
   padding-left: 2vw;
+  
  }
  
  .modal_close {
   padding-top: 32px;
-  padding-left: 90%;
+  padding-left: 432px;
   cursor: pointer;
  }
 
  .modal {
-   display: flex;
-   flex-direction: column;
-   padding-top: 10px;
-   padding-left: 70px;
-   width: 293px;
-   height: 298px;
+ 
   }
 
 
  .modal_img_stuff {
-  border-radius: 170px;
-   }
-
- .modal_img_stuff img {
-   height: 100%;
-   width: 100%;
+  /* border-radius: 146.5px; */
+   width: 293px;
+   height: 298px;
+   margin-left: 15%;
    object-fit: contain;
-  }
+ }
+ .modal_img_stuff img {
+   width: auto;
+   height: auto;
+   }
 
  .modal_name_stuff {
    font-family: var(--font-unbounded);
