@@ -118,6 +118,12 @@ input:focus + .line {
   border: 1px solid var(--gray-959DA6);
 }
 
+.button_hover1:disabled:hover {
+  background-color: var(--light-light-gray-EBECEE);
+  cursor: default;
+  cursor: not-allowed;
+}
+
 .button_name {
   font-family: var(--font-raleway);
   font-style: normal;
