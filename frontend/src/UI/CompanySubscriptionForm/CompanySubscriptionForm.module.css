@@ -75,7 +75,7 @@ input {
   transition: all 0.1s ease-out;
 }
 
-#email-input:not(:placeholder-shown)+.placeholder,
+#email-input:not(:placeholder-shown) +.placeholder,
 #email-input:empty+.placeholder,
 .focused .placeholder 
 {
@@ -84,7 +84,7 @@ input {
   color: var(--gray-959DA6);
 }
 
-
+/* #email-input:not(:placeholder-shown):not(:valid) + .placeholder, */
 
 input:focus+.line1 {
   background-color: #FF7F6A;

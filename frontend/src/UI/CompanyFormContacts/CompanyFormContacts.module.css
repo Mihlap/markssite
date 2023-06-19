@@ -59,7 +59,7 @@ input {
   color: var(--gray-959DA6);
   font-size: 16px;
   transform-origin: left top;
-  /* transition: all 0.1s ease-out; */
+  transition: all 0.1s ease-out;
  }
 
 /* .focused1 .placeholder {
@@ -77,15 +77,6 @@ input {
 input:focus + .line {
   background-color: #FF7F6A;
 }
-
-::placeholder {
-  font-family: var(--font-raleway);
-  font-style: normal;
-  font-weight: var(--fw-400);
-  font-size: 16px;
-  line-height: 16px;
-  color: #959DA6;
-  }
 
 .line {
   bottom: 0;
