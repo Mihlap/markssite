@@ -373,11 +373,13 @@ export default function Company() {
                 className={styles.container__item_stuff}
                 onClick={() => handleButtonClick(el, el.id)}
               >
+                <div className={styles.wrapper_container_item_stuff}>
                 <img
                   className={styles.container__img_stuff}
                   src={el.attributes.img}
                   alt={el.attributes.img}
                 />
+                </div>
                 <div className={styles.container__item_name_stuff}>
                   {el.attributes.name}
                 </div>
@@ -388,6 +390,7 @@ export default function Company() {
             ))}
           {isModalOpen && selectedCard && (
             <Modal
+              className={styles.modal_wrapper}
               const
               modal={document.querySelector(".modal")}
               modalStyleZIndex={9999}
@@ -406,7 +409,6 @@ export default function Company() {
                 document.body.classList.remove("modal-open");
               }}
               ariaHideApp={false}
-              className={styles.modal_wrapper}
               categoryId={categoryId}
               style={{
                 overlay: {
