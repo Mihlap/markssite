@@ -28,8 +28,8 @@ import AddArticles from "./Add/add-articles/AddArticles";
 import AddCompany from "./Add/add-about-the-company/AddCompany";
 
 const App = () => {
-  const user = useSelector((state) => state.login.user);
-  // const user = 1;
+  // const user = useSelector((state) => state.login.user);
+  const user = 1;
   const location = useLocation();
   const [isScrollDisabled, setIsScrollDisabled] = useState(false);
 
@@ -113,10 +113,10 @@ const App = () => {
                     )
                   }
                 >
-                  <Route path="home" element={<Add />} />
+                  {/* <Route path="home" element={<Add />} />
                   <Route path="add-a-project" element={<AddProject />} />
                   <Route path="add-a-articles" element={<AddArticles />} />
-                  <Route path="add-a-company" element={<AddCompany />} />
+                  <Route path="add-a-company" element={<AddCompany />} /> */}
                 </Route>
               </Routes>
             </CSSTransition>
