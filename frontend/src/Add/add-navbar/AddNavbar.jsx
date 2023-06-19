@@ -1,16 +1,25 @@
 import React, { useEffect, useState } from "react";
 import styles from "./AddNavbar.module.scss";
-import { Link } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
 
 export default function AddNavbar() {
+  const [selectedItem, setSelectedItem] = useState(null);
+  const navigate = useNavigate();
 
-  const [activeIndex, setActiveIndex] = useState(0); // начальный индекс активного элемента
+  useEffect(() => {
+    const storedSelectedItem = localStorage.getItem("selectedItem");
+    if (storedSelectedItem) {
+      setSelectedItem(storedSelectedItem);
+    }
+  }, []);
 
-  const handleItemClick = (index) => {
-    setActiveIndex(index);
+  const handleItemClick = (event, itemName, itemPath) => {
+    event.preventDefault();
+    setSelectedItem(itemName);
+    localStorage.setItem("selectedItem", itemName);
+    navigate(itemPath); // Выполняем переход по ссылке
   };
-console.log(activeIndex);
+
   return (
     <>
       <section className={styles.add_navbar_container}>
@@ -23,22 +32,23 @@ console.log(activeIndex);
               <li>
                 <Link
                   className={`${styles.add_navbar_container__item} ${
-                    activeIndex === 0 ? styles.active : ""
+                    selectedItem === "home" ? styles.active : ""
                   }`}
-                  onClick={() => handleItemClick(0)}
                   to="./"
+                  onClick={(event) => handleItemClick(event, "home", "./")}
                 >
                   Главная
                 </Link>
               </li>
-              <li
-                className={`${styles.add_navbar_container__item} ${
-                  activeIndex === 1 ? styles.active : ""
-                }`}
-                onClick={() => handleItemClick(1)}
-              >
+              <li>
                 <Link
+                  className={`${styles.add_navbar_container__item} ${
+                    selectedItem === "projects" ? styles.active : ""
+                  }`}
                   to="./add-a-project"
+                  onClick={(event) =>
+                    handleItemClick(event, "projects", "./add-a-project")
+                  }
                 >
                   Проекты
                 </Link>
@@ -46,10 +56,12 @@ console.log(activeIndex);
               <li>
                 <Link
                   className={`${styles.add_navbar_container__item} ${
-                    activeIndex === 2 ? styles.active : ""
+                    selectedItem === "articles" ? styles.active : ""
                   }`}
-                  onClick={() => handleItemClick(2)}
                   to="./add-a-articles"
+                  onClick={(event) =>
+                    handleItemClick(event, "articles", "./add-a-articles")
+                  }
                 >
                   Публикации
                 </Link>
@@ -57,10 +69,12 @@ console.log(activeIndex);
               <li>
                 <Link
                   className={`${styles.add_navbar_container__item} ${
-                    activeIndex === 3 ? styles.active : ""
+                    selectedItem === "company" ? styles.active : ""
                   }`}
-                  onClick={() => handleItemClick(3)}
                   to="./add-a-company"
+                  onClick={(event) =>
+                    handleItemClick(event, "company", "./add-a-company")
+                  }
                 >
                   О компании
                 </Link>
