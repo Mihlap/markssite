@@ -442,6 +442,7 @@ export default function Company() {
                       />
                     </svg>
                   </div>
+                  {/* <div className={styles.modal_container}> */}
                   <div className={styles.modal}>
                     <img
                       className={styles.modal_img_stuff}
@@ -449,6 +450,7 @@ export default function Company() {
                       alt={selectedCard.attributes.img}
                     />
                   </div>
+                  {/* </div> */}
                   <div className={styles.modal_name_stuff}>
                     {selectedCard.attributes.name}
                   </div>
