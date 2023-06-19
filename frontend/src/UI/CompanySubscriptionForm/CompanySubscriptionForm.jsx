@@ -10,24 +10,20 @@ const CompanySubscriptionForm = () => {
   const [isMatching, setIsMatching] = useState(true);
   const emailInputRef = useRef(null);
 
-  function handleFocus(event) {
-    // const email = event.target.value;
+  function handleFocus() {
     setIsFocused(true);
-    event.target.placeholder = '';
   }
 
   function handleBlur(event) {
-    setIsFocused(false);
+    setIsFocused(true);
     const email = event.target.value;
     const isValid = isValidRegex.test(email);
+    if (!email) {
+      setIsFocused(false);
+    }
     setValue(email);
     setIsValid(isValid);
-    // if (!email) {
-    //   event.target.placeholder = 'Ваш Email';
-    // } else {
-    //   event.target.placeholder = null;
-    // }
-  }
+    }
 
   function handleChange(event) {
   const email = event.target.value.toLowerCase();
@@ -36,20 +32,6 @@ const CompanySubscriptionForm = () => {
   setValue(email);
   setIsValid(isValid);
   setIsMatching(true);
-}
-function handleSubmit(event) {
-  event.preventDefault();
-  if (emailInputRef.current.checkValidity()) {
-    const email = emailInputRef.current.value;
-    if (email !== '') {
-      if (emailInputRef.current.parentNode.querySelector('.placeholder')) {
-        emailInputRef.current.parentNode.querySelector('.placeholder').style.transform = 'translateY(-100%) scale(0)';
-      }
-    }
-    console.log(`Sending email to ${email}`);
-  } else {
-    console.log('Некорректный Email');
-  }
 }
 
 function checkMatching(event) {
@@ -68,15 +50,15 @@ function checkMatching(event) {
           Что бы всегда быть в курсе новых направлений и наших проектов
           подпишитесь на рассылку/альманах
         </div>
-        <form className={styles.form_form_wrapper1} onSubmit={handleSubmit}>
+        <form className={styles.form_form_wrapper1}>
           <div className={styles.group}>
             <label
-              className={`${styles.label} ${isFocused ? styles.focused : ""}`}
+              className={`${styles.label} ${isFocused ? styles.focused : " "}`}
             >
               <input
                 id="email-input"
                 type="email"
-                placeholder="Ваш Email"
+                placeholder=""
                 value={value}
                 onChange={handleChange}
                 onFocus={handleFocus}
@@ -90,6 +72,7 @@ function checkMatching(event) {
                 }}
                 required
                 ref={emailInputRef}
+                autocomplete="off"
               />
               <div
               className={styles.line1}
@@ -104,7 +87,6 @@ function checkMatching(event) {
           className={`${styles.button_hover1} ${(!isValid || !isMatching || !value) ? styles.disabled : ''}`}
           id="submit-button"
           disabled={!isValid || !isMatching || !value}
-          onClick={handleSubmit}
           type="submit"
           >
             <p className={styles.button_name}>Подписаться</p>
