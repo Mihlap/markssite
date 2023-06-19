@@ -25,18 +25,18 @@ const CompanyFormContacts = () => {
     const name = event.target.name;
     if (name === "name") {
       setIsFocused1(false);
-      if (!event.target.value) {
-        event.target.placeholder = "";
+      if (!name) {
+        setIsFocused1(false);
       }
     } else if (name === "phone") {
       setIsFocused2(false);
-      if (!event.target.value) {
-        event.target.placeholder = "";
+      if (!name) {
+        setIsFocused2(false);
       }
     } else if (name === "task") {
       setIsFocused3(false);
-      if (!event.target.value) {
-        event.target.placeholder = "";
+      if (!name) {
+        setIsFocused3(false);
       }
     }
   }
@@ -79,13 +79,14 @@ const CompanyFormContacts = () => {
               <input
                 type="text"
                 name="name"
-                placeholder="Ваше Имя"
+                placeholder=""
                 value={value1}
                 onChange={handleChange}
                 onFocus={handleFocus}
                 onBlur={handleBlur}
                 maxLength="30"
                 size="65"
+                autocomplete="off"
               />
               <div className={styles.line}></div>
               <span className={styles.placeholder}>Ваше Имя</span>
@@ -100,13 +101,14 @@ const CompanyFormContacts = () => {
               <input
                 type="tel"
                 name="phone"
-                placeholder="Номер телефона"
+                placeholder=""
                 value={value2}
                 onChange={handleChange}
                 onFocus={handleFocus}
                 onBlur={handleBlur}
                 maxLength="15"
                 size="65"
+                autocomplete="off"
               />
               <div className={styles.line}></div>
               <span className={styles.placeholder}>Номер телефона</span>
@@ -121,13 +123,14 @@ const CompanyFormContacts = () => {
               <input
                 type="text"
                 name="task"
-                placeholder="Задача"
+                placeholder=""
                 value={value3}
                 onChange={handleChange}
                 onFocus={handleFocus}
                 onBlur={handleBlur}
                 maxLength="300"
                 size="65"
+                autocomplete="off"
               />
               <div className={styles.line}></div>
               <span className={styles.placeholder}>Задача</span>
