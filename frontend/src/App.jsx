@@ -12,6 +12,7 @@ import NotFound from "./NotFound/NotFound";
 import Portal from "./Portal/Portal";
 import Navbar from "./Navbar/Navbar";
 import Footer from "./Footer/Footer";
+import Information from "./Information/Information";
 import WinePark from "./Project/WinePark/WinePark";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import Badaevsky from "./articlesProject/Badaevsky/Badaevsky";
@@ -26,6 +27,7 @@ import HomeAdmin from "./Add/HomeAdmin";
 import AddProject from "./Add/add-project/AddProject";
 import AddArticles from "./Add/add-articles/AddArticles";
 import AddCompany from "./Add/add-about-the-company/AddCompany";
+
 
 const App = () => {
   // const user = useSelector((state) => state.login.user);
@@ -97,6 +99,7 @@ const App = () => {
                 <Route path="/prime-park" element={<PrimePark />} />
                 <Route path="/hotel-appart" element={<HotelAppart />} />
                 <Route path="/login" element={<Login />} />
+                <Route path="/information" element={Information}/>
                 <Route
                   path="/admin/*"
                   element={
