@@ -45,6 +45,11 @@ input {
   outline: none;
   background-color: transparent;
   padding-top: 2.36vh;
+  font-family: var(--font-raleway);
+  font-style: normal;
+  font-weight: var(--fw-400);
+  font-size: 16px;
+  line-height: 16px;
 }
 
 .line1 {
@@ -84,9 +89,7 @@ input {
   color: var(--gray-959DA6);
 }
 
-/* #email-input:not(:placeholder-shown):not(:valid) + .placeholder, */
-
-input:focus+.line1 {
+input:focus + .line1 {
   background-color: #FF7F6A;
 }
 
@@ -124,6 +127,7 @@ input:focus+.line1 {
 
 .button_hover1:disabled {
   background-color: var(--light-light-gray-EBECEE);
+  pointer-events: none;
 }
 
 .button_hover1:disabled:hover {
