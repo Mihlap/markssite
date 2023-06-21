@@ -84,6 +84,7 @@ const CompanyFormContacts = () => {
       }
     }
   }
+
   
   return (
     <div className={styles.form_left_wrapper}>
@@ -153,7 +154,7 @@ const CompanyFormContacts = () => {
                 onFocus={handleFocus}
                 onBlur={handleBlur}
                 maxLength="300"
-                size="65"
+                size="55"
                 autocomplete="off"
               />
               <div className={styles.line}></div>
