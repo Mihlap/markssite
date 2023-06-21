@@ -50,7 +50,29 @@ input {
   outline: none;
   background-color: transparent;
   padding-top: 2.36vh;
-  }
+  font-family: var(--font-raleway);
+  font-style: normal;
+  font-weight: var(--fw-400);
+  font-size: 16px;
+  line-height: 16px;
+}
+
+.line {
+  bottom: 0;
+  left: 0;
+  height: 0.069vh;
+  margin-top: 0.55vh;
+  background-color: var(--gray-959DA6);
+}
+
+.error_line {
+  font-family: var(--font-raleway);
+  font-style: normal;
+  font-weight: var(--fw-400);
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--crimson-E00747);
+}
 
 .placeholder {
   position: absolute;
@@ -62,14 +84,11 @@ input {
   transition: all 0.1s ease-out;
  }
 
-/* .focused1 .placeholder {
-  transform: translateY(-100%) scale(1);
-} */
-
 .input:not(:placeholder-shown)+.placeholder,
 .input:empty+.placeholder,
-.focused1 .placeholder {
-  transform: translateY(-100%) scale(1);
+.focused1 .placeholder 
+{
+  transform: translateY(-150%) scale(1);
   font-size: 12px;
   color: var(--gray-959DA6);
 }
@@ -78,26 +97,15 @@ input:focus + .line {
   background-color: #FF7F6A;
 }
 
-.line {
-  bottom: 0;
-  left: 0;
-  height: 0.069vh;
-  margin-top: 0.55vh;
-  background-color: #959DA6;
-}
-
 .button_hover {
   margin-top: 2.77vh;
   width: 145px;
   height: 56px;
   border: 1px solid var(--black-1D2E43);
   border-radius: 66px;
+  background-color: transparent;
 }
 
-.active {
-  background: var(--black-1D2E43) !important;
-  color: var(--white-F6F6F6) !important;
-}
 .button_hover:hover {
   background: linear-gradient(278.5deg, rgba(220, 238, 255, 0.53) -49.88%, rgba(255, 127, 106, 0.53) 108.02%);
   color: var(--black-1D2E43);
@@ -107,12 +115,6 @@ input:focus + .line {
 .form_left_wrapper:focus-within .button_hover {
   background-color: var(--light-light-gray-EBECEE);
   border: 1px solid var(--gray-959DA6);
-}
-
-.button_hover:disabled:hover {
-  background-color: var(--light-light-gray-EBECEE);
-  cursor: default;
-  /* cursor: not-allowed; */
 }
 
 .button_name {
@@ -126,6 +128,18 @@ input:focus + .line {
   .form_left_wrapper:focus-within .button_name  {
     color: var(--gray-959DA6);
   }
+
+  .button_hover:disabled {
+    background-color: var(--light-light-gray-EBECEE);
+    pointer-events: none;
+  }
+
+  .button_hover:disabled:hover {
+    background-color: var(--light-light-gray-EBECEE);
+    cursor: default;
+    pointer-events: none;
+  }
+
 .agreement {
   font-family: var(--font-raleway);
   font-style: normal;
