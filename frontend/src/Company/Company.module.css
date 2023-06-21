@@ -453,14 +453,23 @@
    padding-right: 46px;
    list-style: none;
   }
-  /* .modal_about_stuff p {
-    margin-right: 10px;
-  }
-  */
+ 
+  /* стили для планшетной версии  */
+  @media screen and (min-width: 768px) and (max-width: 1024px) {
+    .icon_partner {
+      display: none;
+    }
+    }
+  
+
+
 /* стили мобильной версии  */
  
 @media screen and (max-width: 767px) {
   .icon_partner {
     display: none;
   }
+
+  
 }
+
