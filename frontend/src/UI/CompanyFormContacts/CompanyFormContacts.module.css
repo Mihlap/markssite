@@ -1,3 +1,4 @@
+
 .form_left_wrapper {
   display: flex;
   max-width: 683px;
@@ -202,4 +203,63 @@ input:focus + .line {
  .checkbox:checked::after {
   display: block;  
   color: var(--white-F6F6F6);
+}
+
+ /* стили для планшетной версии  */
+ @media screen and (min-width: 768px) and (max-width: 1024px) {
+   .form_left_wrapper {
+     max-width: 442px;
+   }
+
+   .form_left_main {
+     padding: 32px 2vw 32px 2vw;
+   }
+   .span_text {
+    padding-top: 16px;
+    padding-right: 10vw;
+  }
+  .line {
+    width: 378px;
+  }
+  input[name="task"] {
+    width: 70%;
+  }
+
+ }
+  
+
+/* стили мобильной версии  */
+
+@media (max-width: 767px) {
+  .form_left_wrapper {
+    width: 100%;
+  }
+
+  .form_left_main {
+    padding: 32px 2vw 32px 2vw;
+  }
+
+  .title {
+    font-size: 20px;
+    line-height: 28px;
+  }
+
+  .span_text {
+    padding-top: 16px;
+    padding-right: 40vw;
+  }
+
+  .form_form_wrapper {
+    padding-top: 32px;
+    width: 480px;
+  }
+
+  .line {
+    width: 80vw;
+  }
+
+  input[name="task"] {
+    width: 55%;
+  }
+
 }

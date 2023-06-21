@@ -99,7 +99,7 @@ const App = () => {
                 <Route path="/prime-park" element={<PrimePark />} />
                 <Route path="/hotel-appart" element={<HotelAppart />} />
                 <Route path="/login" element={<Login />} />
-                <Route path="/information" element={Information}/>
+                <Route path="/information" element={<Information/>}/>
                 <Route
                   path="/admin/*"
                   element={

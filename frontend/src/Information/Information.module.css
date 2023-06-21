@@ -1,0 +1,37 @@
+@import "../App.css";
+
+.information_wrapper {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  min-width: 1024px;
+  max-width: 100vw;
+  }
+
+.information_h1 {
+  display: flex;
+  padding-top: 150px;
+  padding-left: 20vw;
+  font-family: var(--font-unbounded);
+  font-style: normal;
+  font-weight: var(--fw-400);
+  font-size: 40px;
+  line-height: 48px;
+  color: var(--black-1D2E43);
+}
+
+.information_p {
+  padding-top: 40px;
+  padding-left: 20vw;
+  padding-right: 10vw;
+  font-family: var( --font-raleway);
+  font-style: normal;
+  font-weight: var(--fw-400);
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--black-1D2E43);
+}
+
+.information_p:last-of-type {
+  padding-bottom: 100px;
+}
