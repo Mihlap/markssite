@@ -1,7 +1,7 @@
 .form_right_wrapper {
   display: flex;
   align-items: flex-end;
-  width: 1086px;
+  width: 46vw;
   height: 100%;
   border-radius: 1rem;
   background: linear-gradient(261.46deg, rgba(255, 203, 193, 0.09) -4.67%, rgba(117, 187, 253, 0.09) 44.63%, rgba(188, 188, 188, 0.09) 103.07%);
@@ -26,7 +26,7 @@
   font-size: 20px;
   line-height: 28px;
   color: var(--black-1D2E43);
-  width: 615px;
+  width: 32vw;
   /* margin-right: 9.65vw; */
 }
 
@@ -55,7 +55,7 @@ input {
 .line1 {
   bottom: 0;
   left: 0;
-  width: 402px;
+  width: 28vw;
   height: 0.069vh;
   margin-top: 0.55vh;
   background-color: var(--gray-959DA6);
@@ -135,3 +135,34 @@ input:focus + .line1 {
   cursor: default;
   /* cursor: not-allowed; */
 }
+
+ @media screen and (min-width: 768px) and (max-width: 1024px) {
+   
+    }
+  
+
+ /* стили для планшетной версии  */
+ @media screen and (min-width: 768px) and (max-width: 1024px) {
+  .icon_partner {
+    display: none;
+  }
+  .form_right_wrapper {
+        width: 75.4vw;
+   }
+
+  .title1 {
+       width: 42.7vw;
+   }
+  
+   .line1 {
+    width: 28vw;
+   }
+   input[type="email"] {
+    width: 65%;
+  }
+  }
+
+
+
+/* стили мобильной версии  */
+

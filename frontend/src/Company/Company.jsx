@@ -44,6 +44,8 @@ export default function Company() {
   const countScient = useSelector(state => state.counter.countScient);
   const countScienceDegree = useSelector(state => state.counter.countScienceDegree);
 
+  const isMobile = window.innerWidth <= 768;
+
   const [ref, inView] = useInView({
     threshold: 0.5, // задаем пороговое значение для пересечения
   });
@@ -486,7 +488,7 @@ export default function Company() {
       <div className={styles.fon}>
         <div className={styles.form_wrapper}>
           <CompanyFormContacts />
-          <CompanySubscriptionForm />
+          {!isMobile &&<CompanySubscriptionForm />}
         </div>
       </div>
     </div>
