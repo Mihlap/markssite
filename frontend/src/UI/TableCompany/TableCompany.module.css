@@ -99,3 +99,10 @@
   .button_look_all:hover {
     background: var(--light-gray-C0C5CB);
   }
+/* стили для планшетной версии  */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .tableStyle {
+    margin-left: 5.4vw;
+    margin-right: 5.4vw;
+  }
+}

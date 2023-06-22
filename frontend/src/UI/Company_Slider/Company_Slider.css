@@ -63,3 +63,26 @@
 }
 
 
+   /* стили для планшетной версии  */
+   @media screen and (min-width: 768px) and (max-width: 1024px) {
+    .company-slider-container {
+      width: 100%;
+      height: 100%;
+      position: relative;
+    }
+    
+    .company-slider-slide img {
+      width: 100%;
+      height: 64rem;
+      object-fit: cover;
+      filter: brightness(83%);   
+    }
+    
+   
+    }
+
+    /* стили мобильной версии  */
+ 
+@media screen and (max-width: 767px) {
+  
+  }
