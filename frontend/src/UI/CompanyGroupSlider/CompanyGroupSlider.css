@@ -13,4 +13,10 @@
   height: 132px;
   outline: none;
 }
-
+    /* стили для планшетной версии  */
+    @media screen and (min-width: 768px) and (max-width: 1024px) {
+      .company-group-container {
+        padding-left: 5.2vw;
+        padding-bottom: 6.25rem;
+      }
+      }

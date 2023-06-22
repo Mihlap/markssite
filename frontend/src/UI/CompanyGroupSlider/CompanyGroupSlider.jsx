@@ -10,6 +10,8 @@ const CompanyGroupSlider = () => {
     slidesToScroll: 3,
     arrows: false,
     centerPadding: "60px",
+    // autoplay: true, 
+    // autoplaySpeed: 3000, 
     responsive: [
       {
         breakpoint: 2000,
@@ -17,6 +19,7 @@ const CompanyGroupSlider = () => {
           slidesToShow: 5,
           slidesToScroll: 3,
           centerPadding: "60px",
+          autoplay: false,
         }
       },
       {
@@ -25,14 +28,17 @@ const CompanyGroupSlider = () => {
           slidesToShow: 4,
           slidesToScroll: 2,
           centerPadding: "60px",
+          autoplay: false,
         }
       },
       {
         breakpoint: 1024,
         settings: {
           slidesToShow: 3,
-          slidesToScroll: 2,
+          slidesToScroll: 1,
           centerPadding: "40px",
+          autoplay: true, 
+        autoplaySpeed: 3000,
         }
       },
       {
@@ -41,6 +47,8 @@ const CompanyGroupSlider = () => {
           slidesToShow: 2,
           slidesToScroll: 1,
           centerPadding: "40px",
+          autoplay: true, 
+          autoplaySpeed: 3000,
         }
       },
       {
@@ -49,6 +57,8 @@ const CompanyGroupSlider = () => {
           slidesToShow: 1,
           slidesToScroll: 1,
           centerPadding: "20px",
+          autoplay: true, 
+          autoplaySpeed: 3000,
         }
       }
     ]

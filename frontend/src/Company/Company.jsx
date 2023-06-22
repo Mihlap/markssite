@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import Modal from "react-modal";
-import { useInView } from 'react-intersection-observer';
+import { useInView } from "react-intersection-observer";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./Company.module.css";
 import Company_Slider from "../UI/Company_Slider/Company_Slider";
@@ -9,11 +9,23 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import SliderMobile from "../UI/SliderHeader/SliderMobile";
 import CompanyGroupSlider from "../UI/CompanyGroupSlider/CompanyGroupSlider";
 import TableCompany from "../UI/TableCompany/TableCompany";
-import { incrementDepartment, incrementGap, incrementScient, incrementScienceDegree } from '../store/Slice/counterSlice';
+import {
+  incrementDepartment,
+  incrementGap,
+  incrementScient,
+  incrementScienceDegree,
+} from "../store/Slice/counterSlice";
 
-import { fetchCategoryStaff, selectCard, setCategoryId } from "../store/Slice/StaffSlice";
+import {
+  fetchCategoryStaff,
+  selectCard,
+  setCategoryId,
+} from "../store/Slice/StaffSlice";
 import LoadingCircle from "../Loading/LoadingCircle";
 import Error from "../Loading/Error/Error";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/pagination";
 
 import bracket from "../icons/bracket.svg";
 import bracket_dark from "../icons/bracket_dark.svg";
@@ -30,27 +42,27 @@ export default function Company() {
   const [activeButton, setActiveButton] = useState("Руководство");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedCardId, setSelectedCardId] = useState(null);
- 
+
   const blockSlider = useRef(null);
   const nameCompanyRef = useRef(null);
   const thisBlockRef = useRef(null);
- 
+
   const dispatch = useDispatch();
   const { selectedCard, categoryId, staff, loading, error } = useSelector(
     (state) => state.staff
   );
-  const countDepartment = useSelector(state => state.counter.countDepartment);
-  const countGap = useSelector(state => state.counter.countGap);
-  const countScient = useSelector(state => state.counter.countScient);
-  const countScienceDegree = useSelector(state => state.counter.countScienceDegree);
-
-  const isMobile = window.innerWidth <= 768;
+  const countDepartment = useSelector((state) => state.counter.countDepartment);
+  const countGap = useSelector((state) => state.counter.countGap);
+  const countScient = useSelector((state) => state.counter.countScient);
+  const countScienceDegree = useSelector(
+    (state) => state.counter.countScienceDegree
+  );
 
   const [ref, inView] = useInView({
     threshold: 0.5, // задаем пороговое значение для пересечения
   });
 
- useEffect(() => {
+  useEffect(() => {
     setTimeout(() => {
       dispatch(selectCard(selectedCardId));
       dispatch(fetchCategoryStaff(categoryId));
@@ -85,7 +97,7 @@ export default function Company() {
     }, 50);
     return () => clearTimeout(timer1);
   }, [countPercent, countHuman, countProject]);
-  
+
   useEffect(() => {
     if (inView) {
       let timer1;
@@ -97,12 +109,17 @@ export default function Company() {
       }, 30);
       return () => clearTimeout(timer1);
     }
-  }, [dispatch, countDepartment, countGap, countScient, countScienceDegree, inView]);
+  }, [
+    dispatch,
+    countDepartment,
+    countGap,
+    countScient,
+    countScienceDegree,
+    inView,
+  ]);
 
-
-  
   useEffect(() => {
-    window.scrollTo(20, 0);
+    // window.scrollTo(20, 0);
 
     gsap.registerPlugin(ScrollTrigger);
 
@@ -123,12 +140,16 @@ export default function Company() {
 
   useEffect(() => {
     function handleScroll() {
+      // const screenWidth = window.innerWidth;
+      // if (screenWidth < 1025) {
+      //   return;
+      // }
+
       if (nameCompanyRef.current && thisBlockRef.current) {
         const nameCompanyRect = nameCompanyRef.current.getBoundingClientRect();
         const thisBlockRect = thisBlockRef.current.getBoundingClientRect();
         const screenWidth = window.innerWidth;
-        const scrollTop =
-        window.scrollY || document.documentElement.scrollTop;
+        const scrollTop = window.scrollY || document.documentElement.scrollTop;
 
         if (scrollTop > thisBlockRect.top && screenWidth >= 2000) {
           const translateYValue = nameCompanyRect.height + 212;
@@ -227,7 +248,7 @@ export default function Company() {
           <img src="./assets/D8.png" alt="logo" />
           <img src="./assets/D9.png" alt="logo" />
         </div>
-        <SliderMobile />
+        {/* <SliderMobile /> */}
       </div>
       <div className={styles.about_main}>
         <div className={styles.left_about}>
@@ -237,7 +258,15 @@ export default function Company() {
           <div ref={thisBlockRef} className={styles.this_block}>
             &mdash; ЭТО
           </div>
-        </div>
+         </div>
+         <div className={styles.left_about_mobile}>
+          <div className={styles.name_company}>
+            MARKS GROUP
+          </div>
+          <div className={styles.this_block}>
+            &mdash; ЭТО
+          </div>
+         </div>
         <div className={styles.right_about}>
           <div className={styles.text_right_about}>
             <span>
@@ -376,11 +405,11 @@ export default function Company() {
                 onClick={() => handleButtonClick(el, el.id)}
               >
                 <div className={styles.wrapper_container_item_stuff}>
-                <img
-                  className={styles.container__img_stuff}
-                  src={el.attributes.img}
-                  alt={el.attributes.img}
-                />
+                  <img
+                    className={styles.container__img_stuff}
+                    src={el.attributes.img}
+                    alt={el.attributes.img}
+                  />
                 </div>
                 <div className={styles.container__item_name_stuff}>
                   {el.attributes.name}
@@ -485,10 +514,46 @@ export default function Company() {
           )}
         </ul>
       </div>
+    <div className={styles.slider_card_wrapper}>
+      <Swiper
+     className={styles.slider_card_container}
+     loop={true}
+     slidesPerView={3}
+     spaceBetween={30}
+     pagination={{
+       clickable: true,
+     }}
+     touch={true}
+    >
+          {staff &&
+            staff?.map((el) => (
+              <SwiperSlide
+                key={el.id}
+                {...el}
+                className={styles.slide_container_item_stuff}
+                onClick={() => handleButtonClick(el, el.id)}
+              >
+                <div className={styles.wrapper_container_item_stuff}>
+                  <img
+                    className={styles.container__img_stuff}
+                    src={el.attributes.img}
+                    alt={el.attributes.img}
+                  />
+                </div>
+                <div className={styles.container__item_name_stuff}>
+                  {el.attributes.name}
+                </div>
+                <div className={styles.container__item_position_stuff}>
+                  {el.attributes.position}
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+      </div>
       <div className={styles.fon}>
         <div className={styles.form_wrapper}>
-          <CompanyFormContacts />
-          {!isMobile &&<CompanySubscriptionForm />}
+          <div className={styles.company_form_contacts_wrapper}><CompanyFormContacts /></div>
+           <div className={styles.companySubscriptionForm_wrapper}><CompanySubscriptionForm /></div>
         </div>
       </div>
     </div>

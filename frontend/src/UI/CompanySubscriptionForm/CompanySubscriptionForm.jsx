@@ -64,15 +64,15 @@ function checkMatching(event) {
                 onFocus={handleFocus}
                 onBlur={handleBlur} 
                 onInput={checkMatching}
-                maxLength="55"
-                size="55"
+                maxLength="70"
+                size="70"
                 style={{
                   borderColor: (isValid && isMatching) ? '' : '#E00747',
                   color: (isValid && isMatching) ? '' : '#E00747',
                 }}
                 required
                 ref={emailInputRef}
-                autocomplete="off"
+                autoComplete="off"
               />
               <div
               className={styles.line1}
