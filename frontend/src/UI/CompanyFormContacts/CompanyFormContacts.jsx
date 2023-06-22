@@ -111,7 +111,7 @@ const CompanyFormContacts = () => {
                 onBlur={handleBlur}
                 maxLength="30"
                 size="65"
-                autocomplete="off"
+                autoComplete="off"
               />
               <div className={styles.line}></div>
               <span className={styles.placeholder}>Ваше Имя</span>
@@ -155,7 +155,7 @@ const CompanyFormContacts = () => {
                 onBlur={handleBlur}
                 maxLength="300"
                 size="55"
-                autocomplete="off"
+                autoComplete="off"
               />
               <div className={styles.line}></div>
               <span className={styles.placeholder}>Задача</span>
