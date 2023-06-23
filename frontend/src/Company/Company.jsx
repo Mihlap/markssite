@@ -6,8 +6,7 @@ import styles from "./Company.module.css";
 import Company_Slider from "../UI/Company_Slider/Company_Slider";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import SliderMobile from "../UI/SliderHeader/SliderMobile";
-import CompanyGroupSlider from "../UI/CompanyGroupSlider/CompanyGroupSlider";
+// import SliderMobile from "../UI/SliderHeader/SliderMobile";
 import TableCompany from "../UI/TableCompany/TableCompany";
 import {
   incrementDepartment,
@@ -32,8 +31,11 @@ import bracket_dark from "../icons/bracket_dark.svg";
 import plusNine from "../icons/+9.svg";
 import CompanyFormContacts from "../UI/CompanyFormContacts/CompanyFormContacts";
 import CompanySubscriptionForm from "../UI/CompanySubscriptionForm/CompanySubscriptionForm";
+import CounterCompanyMobile from "../UI/CounterCompanyMobile";
+import CounterCompanyMobile2 from "../UI/CounterCompanyMobile2";
 
 export default function Company() {
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [countPercent, setCountPercent] = useState(0);
   const [countHuman, setCountHuman] = useState(0);
   const [countProject, setCountProject] = useState(0);
@@ -59,8 +61,20 @@ export default function Company() {
   );
 
   const [ref, inView] = useInView({
-    threshold: 0.5, // задаем пороговое значение для пересечения
+    threshold: 0.5, 
   });
+
+  const isMobile = windowWidth <= 767;
+
+  useEffect(() => {
+    function handleResize() {
+      setWindowWidth(window.innerWidth);
+    }
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   useEffect(() => {
     setTimeout(() => {
@@ -119,8 +133,6 @@ export default function Company() {
   ]);
 
   useEffect(() => {
-    // window.scrollTo(20, 0);
-
     gsap.registerPlugin(ScrollTrigger);
 
     const { elementsRight } = { elementsRight: [blockSlider.current] };
@@ -140,12 +152,7 @@ export default function Company() {
 
   useEffect(() => {
     function handleScroll() {
-      // const screenWidth = window.innerWidth;
-      // if (screenWidth < 1025) {
-      //   return;
-      // }
-
-      if (nameCompanyRef.current && thisBlockRef.current) {
+        if (nameCompanyRef.current && thisBlockRef.current) {
         const nameCompanyRect = nameCompanyRef.current.getBoundingClientRect();
         const thisBlockRect = thisBlockRef.current.getBoundingClientRect();
         const screenWidth = window.innerWidth;
@@ -179,7 +186,7 @@ export default function Company() {
     };
   }, []);
 
-  if (loading) {
+   if (loading) {
     return <LoadingCircle />;
   }
 
@@ -200,6 +207,8 @@ export default function Company() {
           Самые крутые проекты! самой крутой командой
         </span>
         <span className={styles.span_underSlider_text2}>О компании</span>
+        {isMobile && <CounterCompanyMobile />}
+        {!isMobile && (
         <div className={styles.div_counter_wrapper}>
           <div className={styles.container_text}>
             <div className={styles.div_underSlider_text}>
@@ -235,6 +244,7 @@ export default function Company() {
             </span>
           </div>
         </div>
+        )}
       </div>
       <div className={styles.sliderMobile_wrapper}>
         <div className={styles.icon_partner}>
@@ -285,6 +295,8 @@ export default function Company() {
               решений.
             </span>
           </div>
+          {isMobile && <CounterCompanyMobile2 />}
+          {!isMobile && (
           <div ref={ref} className={styles.right_counter_wrapper}>
             <div className={styles.container_text_right}>
               <div className={styles.div_underSlider_text_right}>
@@ -335,6 +347,7 @@ export default function Company() {
               </span>
             </div>
           </div>
+           )}
         </div>
       </div>
       <div className={styles.company_group_name}>
@@ -343,8 +356,7 @@ export default function Company() {
           <img src={plusNine} alt="plus_nine" />
         </div>
       </div>
-      <CompanyGroupSlider />
-      <div className={styles.awards_wrapper}>Награды и премии</div>
+        <div className={styles.awards_wrapper}>Награды и премии</div>
       <div className={styles.list_project}>
         Список проектов, которые были отмечены конкурсами в разных номинациях за
         годы практики с 2005 года
@@ -354,7 +366,11 @@ export default function Company() {
         <div className={styles.specialist}>Специалисты</div>
         <div className={styles.button_group}>
           <button
-            onClick={() => handleButtonClick("Руководство")}
+           type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                handleButtonClick("Руководство");
+              }}
             className={`${styles.button_leader} ${styles.button_hover} ${
               activeButton === "Руководство" ? styles.active : ""
             }`}
@@ -362,7 +378,11 @@ export default function Company() {
             Руководство
           </button>
           <button
-            onClick={() => handleButtonClick("Руководители отделов")}
+           type="button"
+             onClick={(e) => {
+              e.preventDefault();
+              handleButtonClick("Руководители отделов");
+            }}
             className={`${styles.button_department} ${styles.button_hover} ${
               activeButton === "Руководители отделов" ? styles.active : ""
             }`}
@@ -370,9 +390,11 @@ export default function Company() {
             Руководители отделов
           </button>
           <button
-            onClick={() =>
-              handleButtonClick("Научно-техническое сопровождение")
-            }
+           type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              handleButtonClick("Научно-техническое сопровождение");
+            }}
             className={`${styles.button_support} ${styles.button_hover} ${
               activeButton === "Научно-техническое сопровождение"
                 ? styles.active
@@ -382,7 +404,11 @@ export default function Company() {
             Научно-техническое сопровождение
           </button>
           <button
-            onClick={() => handleButtonClick("HR")}
+           type="button"
+             onClick={(e) => {
+              e.preventDefault();
+              handleButtonClick("HR");
+            }}
             className={`${styles.button_hr} ${styles.button_hover} ${
               activeButton === "HR" ? styles.active : ""
             }`}
@@ -514,43 +540,41 @@ export default function Company() {
           )}
         </ul>
       </div>
-    <div className={styles.slider_card_wrapper}>
-      <Swiper
-     className={styles.slider_card_container}
-     loop={true}
-     slidesPerView={3}
-     spaceBetween={30}
-     pagination={{
-       clickable: true,
-     }}
-     touch={true}
-    >
-          {staff &&
-            staff?.map((el) => (
-              <SwiperSlide
-                key={el.id}
-                {...el}
-                className={styles.slide_container_item_stuff}
-                onClick={() => handleButtonClick(el, el.id)}
-              >
-                <div className={styles.wrapper_container_item_stuff}>
-                  <img
-                    className={styles.container__img_stuff}
-                    src={el.attributes.img}
-                    alt={el.attributes.img}
-                  />
-                </div>
-                <div className={styles.container__item_name_stuff}>
-                  {el.attributes.name}
-                </div>
-                <div className={styles.container__item_position_stuff}>
-                  {el.attributes.position}
-                </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-      </div>
-      <div className={styles.fon}>
+      <div className={styles.slider_card_wrapper}>
+  <Swiper
+    className={styles.slider_card_container}
+    loop={true}
+    slidesPerView={3}
+    spaceBetween={30}
+    pagination={{
+      clickable: true,
+    }}
+    touch="true"
+  >
+    {staff?.map((el) => (
+      <SwiperSlide
+        key={el.id}
+        className={styles.slide_container_item_stuff}
+        onClick={() => handleButtonClick(el, el.id)}
+      >
+        <div className={styles.wrapper_container_item_stuff}>
+          <img
+            className={styles.container__img_stuff}
+            src={el.attributes.img}
+            alt={el.attributes.img}
+          />
+        </div>
+        <div className={styles.container__item_name_stuff}>
+          {el.attributes.name}
+        </div>
+        <div className={styles.container__item_position_stuff}>
+          {el.attributes.position}
+        </div>
+      </SwiperSlide>
+    ))}
+  </Swiper>
+</div>
+    <div className={styles.fon}>
         <div className={styles.form_wrapper}>
           <div className={styles.company_form_contacts_wrapper}><CompanyFormContacts /></div>
            <div className={styles.companySubscriptionForm_wrapper}><CompanySubscriptionForm /></div>

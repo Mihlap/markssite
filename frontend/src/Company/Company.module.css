@@ -22,6 +22,8 @@
   font-size: 24px;
   line-height: 32px;
   color: var(--white-F6F6F6);
+  white-space: pre-wrap;
+  /* margin-right: 20rem; */
 }
 
 .span_underSlider_text2 {
@@ -138,6 +140,7 @@
   padding-left: 20vw;
   padding-right: 4vw;
   width: 76vw;
+  color: var(--black-1D2E434);
 }
 
 .text_right_about {
@@ -580,6 +583,11 @@
     padding-bottom: 2rem;
   }
 
+  .button_group button {
+    font-size: 12px;
+    padding: 6px 16px;
+  }
+
   .card_container {
     display: none;
   }
@@ -617,12 +625,53 @@
     padding-left: 23rem;
  }
 
+
 }
 
 
 /* стили мобильной версии  */
 
 @media screen and (max-width: 767px) {
+
+  .underSlider_text_wrapper {
+    padding-top: 26rem;
+    padding-left: 1.3rem;
+    width: 30rem;
+  }
+  
+  .span_underSlider_text1 {
+    font-family: var(--font-raleway);
+    font-weight: var(--fw-700);
+    font-size: 18px;
+    line-height: 24px;
+    margin-right: 10rem;
+  }
+  
+  .span_underSlider_text2 {
+    font-weight: var(--fw-600);
+    font-size: 32px;
+    line-height: 40px;
+    padding-top: 0.31rem;
+  }
+
+  .div_counter_wrapper {
+   padding-top: 1.93rem;
+   transition: all 2s ease-in-out;
+   }
+    .container_text {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    width: 15rem;
+  }
+ 
+    .span_underSlider_text {
+    font-weight: var(--fw-700);
+    font-size: 14px;
+    line-height: 20px;
+    padding-top: 0.25rem;
+  }
+
   .icon_partner {
     display: none;
   }
@@ -645,18 +694,85 @@
      font-family: var(--font-unbounded);
      font-style: normal;
      font-weight: var(--fw-300);
-     padding-bottom: 3.5rem;
+     padding-bottom: 1rem;
      padding-left: 1.87vw;
      white-space: nowrap;
      width: 23vw;
    }
-   .this_block {
-    writing-mode: initial;
-    transition: none;
-    margin-top: 1px;
-    margin-left: 430px;
-    margin-right: 36vw;
+   .name_company {
+    padding-left: 0px;
+    padding-right: 48vw;
+    font-size: 32px;
+    font-weight: var(--fw-700);
+    line-height: 40px;
   }
+     .this_block {
+       writing-mode: initial;
+       transition: none;
+       margin-top: 0.31rem;
+       margin-left: 163px;
+       margin-right: 36vw;
+       font-size: 32px;
+       font-weight: var(--fw-300);
+       line-height: 40px;
+       }
+
+     .right_about {
+      display: flex;
+      flex-direction: column;
+      padding-left: 1.87vw;
+      margin-right: 0;
+      width: 100%;
+      /* height: 26rem; */
+      }
+  
+    .text_right_about {
+      /* height: 14.37rem; */
+      padding-bottom: 10vh;
+      padding-right: 0;
+    }
+    .main_counter_wrapper {
+      display: flex;
+     padding-top: 200px;
+    }
+    .right_counter_wrapper {
+      display: flex;
+      flex-direction: column;
+      max-width: 0px;
+      flex-wrap: wrap;
+      font-weight: var(--fw-300);
+      font-size: 60px;
+       padding-right: 0;
+       padding-top: 0;
+      
+    }
+    
+    .container_text_right {
+      box-sizing: border-box;
+      width: 0;
+    }
+    
+    .div_underSlider_text_right {
+      font-size: 60px;
+      line-height: 74px;
+      padding-right: 192px;
+    }
+    
+     .text_svg_right {
+      padding-right: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .span_underSlider_text_right {
+      font-size: 14px;
+      line-height: 20px;
+      padding-top: 10px;
+    }
+  
+
+
 
   .companySubscriptionForm_wrapper {
     display: none;
