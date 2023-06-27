@@ -6,8 +6,13 @@ import styles from "./Company.module.css";
 import Company_Slider from "../UI/Company_Slider/Company_Slider";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-// import SliderMobile from "../UI/SliderHeader/SliderMobile";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/pagination";
+import { Pagination } from "swiper";
+import SliderMobile from "../UI/SliderHeader/SliderMobile";
 import TableCompany from "../UI/TableCompany/TableCompany";
+import TableCompanyMobile from "../UI/TableCompany/TableCompanyMobile";
 import {
   incrementDepartment,
   incrementGap,
@@ -22,9 +27,6 @@ import {
 } from "../store/Slice/StaffSlice";
 import LoadingCircle from "../Loading/LoadingCircle";
 import Error from "../Loading/Error/Error";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "swiper/css/pagination";
 
 import bracket from "../icons/bracket.svg";
 import bracket_dark from "../icons/bracket_dark.svg";
@@ -33,12 +35,14 @@ import CompanyFormContacts from "../UI/CompanyFormContacts/CompanyFormContacts";
 import CompanySubscriptionForm from "../UI/CompanySubscriptionForm/CompanySubscriptionForm";
 import CounterCompanyMobile from "../UI/CounterCompanyMobile";
 import CounterCompanyMobile2 from "../UI/CounterCompanyMobile2";
+import CompanyGroupSlider from "../UI/CompanyGroupSlider/CompanyGroupSlider";
 
 export default function Company() {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [countPercent, setCountPercent] = useState(0);
   const [countHuman, setCountHuman] = useState(0);
   const [countProject, setCountProject] = useState(0);
+  const [swiper, setSwiper] = useState(null);
 
   const [showCards, setShowCards] = useState(false);
   const [activeButton, setActiveButton] = useState("Руководство");
@@ -61,7 +65,7 @@ export default function Company() {
   );
 
   const [ref, inView] = useInView({
-    threshold: 0.5, 
+    threshold: 0.5,
   });
 
   const isMobile = windowWidth <= 767;
@@ -70,9 +74,9 @@ export default function Company() {
     function handleResize() {
       setWindowWidth(window.innerWidth);
     }
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
@@ -152,7 +156,7 @@ export default function Company() {
 
   useEffect(() => {
     function handleScroll() {
-        if (nameCompanyRef.current && thisBlockRef.current) {
+      if (nameCompanyRef.current && thisBlockRef.current) {
         const nameCompanyRect = nameCompanyRef.current.getBoundingClientRect();
         const thisBlockRect = thisBlockRef.current.getBoundingClientRect();
         const screenWidth = window.innerWidth;
@@ -186,7 +190,7 @@ export default function Company() {
     };
   }, []);
 
-   if (loading) {
+  if (loading) {
     return <LoadingCircle />;
   }
 
@@ -209,41 +213,41 @@ export default function Company() {
         <span className={styles.span_underSlider_text2}>О компании</span>
         {isMobile && <CounterCompanyMobile />}
         {!isMobile && (
-        <div className={styles.div_counter_wrapper}>
-          <div className={styles.container_text}>
-            <div className={styles.div_underSlider_text}>
-              <div className={styles.text_svg}>
-                <img src={bracket} alt="bracket" />
+          <div className={styles.div_counter_wrapper}>
+            <div className={styles.container_text}>
+              <div className={styles.div_underSlider_text}>
+                <div className={styles.text_svg}>
+                  <img src={bracket} alt="bracket" />
+                </div>
+                <p>{countPercent}%</p>
               </div>
-              <p>{countPercent}%</p>
+              <span className={styles.span_underSlider_text}>
+                Объем работ выполняем собственными силами
+              </span>
             </div>
-            <span className={styles.span_underSlider_text}>
-              Объем работ выполняем собственными силами
-            </span>
-          </div>
-          <div className={styles.container_text}>
-            <div className={styles.div_underSlider_text}>
-              <div className={styles.text_svg}>
-                <img src={bracket} alt="bracket" />
+            <div className={styles.container_text}>
+              <div className={styles.div_underSlider_text}>
+                <div className={styles.text_svg}>
+                  <img src={bracket} alt="bracket" />
+                </div>
+                <p>{countHuman}</p>
               </div>
-              <p>{countHuman}</p>
+              <span className={styles.span_underSlider_text}>
+                Квалифицированных сотрудников
+              </span>
             </div>
-            <span className={styles.span_underSlider_text}>
-              Квалифицированных сотрудников
-            </span>
-          </div>
-          <div className={styles.container_text}>
-            <div className={styles.div_underSlider_text}>
-              <div className={styles.text_svg}>
-                <img src={bracket} alt="bracket" />
+            <div className={styles.container_text}>
+              <div className={styles.div_underSlider_text}>
+                <div className={styles.text_svg}>
+                  <img src={bracket} alt="bracket" />
+                </div>
+                <p>{countProject}</p>
               </div>
-              <p>{countProject}</p>
+              <span className={styles.span_underSlider_text}>
+                Проектов реализовано
+              </span>
             </div>
-            <span className={styles.span_underSlider_text}>
-              Проектов реализовано
-            </span>
           </div>
-        </div>
         )}
       </div>
       <div className={styles.sliderMobile_wrapper}>
@@ -258,7 +262,6 @@ export default function Company() {
           <img src="./assets/D8.png" alt="logo" />
           <img src="./assets/D9.png" alt="logo" />
         </div>
-        {/* <SliderMobile /> */}
       </div>
       <div className={styles.about_main}>
         <div className={styles.left_about}>
@@ -268,15 +271,11 @@ export default function Company() {
           <div ref={thisBlockRef} className={styles.this_block}>
             &mdash; ЭТО
           </div>
-         </div>
-         <div className={styles.left_about_mobile}>
-          <div className={styles.name_company}>
-            MARKS GROUP
-          </div>
-          <div className={styles.this_block}>
-            &mdash; ЭТО
-          </div>
-         </div>
+        </div>
+        <div className={styles.left_about_mobile}>
+          <div className={styles.name_company}>MARKS GROUP</div>
+          <div className={styles.this_block}>&mdash; ЭТО</div>
+        </div>
         <div className={styles.right_about}>
           <div className={styles.text_right_about}>
             <span>
@@ -295,127 +294,217 @@ export default function Company() {
               решений.
             </span>
           </div>
-          {isMobile && <CounterCompanyMobile2 />}
-          {!isMobile && (
-          <div ref={ref} className={styles.right_counter_wrapper}>
-            <div className={styles.container_text_right}>
-              <div className={styles.div_underSlider_text_right}>
-                <div className={styles.text_svg_right}>
-                  <img src={bracket_dark} alt="bracket_dark" />
-                </div>
-                <p className={styles.number}>{countDepartment}</p>
-              </div>
-              <span className={styles.span_underSlider_text_right}>
-                Департаментов
-              </span>
-            </div>
-            <div className={styles.container_text_right}>
-              <div className={styles.div_underSlider_text_right}>
-                <div className={styles.text_svg_right}>
-                  <img src={bracket_dark} alt="bracket_dark" />
-                </div>
-                <p className={styles.number}>{countGap}</p>
-              </div>
-              <span className={styles.span_underSlider_text_right}>
-                Проектов в качестве ГАП
-              </span>
-            </div>
-            <div className={styles.container_text_right}>
-              <div
-                className={`${styles.div_underSlider_text_right} ${styles.div_underSlider_text_right_last}`}
-              >
-                <div className={styles.text_svg_right}>
-                  <img src={bracket_dark} alt="bracket_dark" />
-                </div>
-                <p className={styles.number}>{countScient}</p>
-              </div>
-              <span className={styles.span_underSlider_text_right}>
-                Научных работ
-              </span>
-            </div>
-            <div className={styles.container_text_right}>
-              <div
-                className={`${styles.div_underSlider_text_right} ${styles.div_underSlider_text_right_last}`}
-              >
-                <div className={styles.text_svg_right}>
-                  <img src={bracket_dark} alt="bracket_dark" />
-                </div>
-                <p className={styles.number}>{countScienceDegree}%</p>
-              </div>
-              <span className={styles.span_underSlider_text_right}>
-                Сотрудников с научной степенью
-              </span>
-            </div>
+          <div className={styles.main_counter_wrapper}>
+            {isMobile && <CounterCompanyMobile2 />}
           </div>
-           )}
+          {!isMobile && (
+            <div ref={ref} className={styles.right_counter_wrapper}>
+              <div className={styles.container_text_right}>
+                <div className={styles.div_underSlider_text_right}>
+                  <div className={styles.text_svg_right}>
+                    <img src={bracket_dark} alt="bracket_dark" />
+                  </div>
+                  <p className={styles.number}>{countDepartment}</p>
+                </div>
+                <span className={styles.span_underSlider_text_right}>
+                  Департаментов
+                </span>
+              </div>
+              <div className={styles.container_text_right}>
+                <div className={styles.div_underSlider_text_right}>
+                  <div className={styles.text_svg_right}>
+                    <img src={bracket_dark} alt="bracket_dark" />
+                  </div>
+                  <p className={styles.number}>{countGap}</p>
+                </div>
+                <span className={styles.span_underSlider_text_right}>
+                  Проектов в качестве ГАП
+                </span>
+              </div>
+              <div className={styles.container_text_right}>
+                <div
+                  className={`${styles.div_underSlider_text_right} ${styles.div_underSlider_text_right_last}`}
+                >
+                  <div className={styles.text_svg_right}>
+                    <img src={bracket_dark} alt="bracket_dark" />
+                  </div>
+                  <p className={styles.number}>{countScient}</p>
+                </div>
+                <span className={styles.span_underSlider_text_right}>
+                  Научных работ
+                </span>
+              </div>
+              <div className={styles.container_text_right}>
+                <div
+                  className={`${styles.div_underSlider_text_right} ${styles.div_underSlider_text_right_last}`}
+                >
+                  <div className={styles.text_svg_right}>
+                    <img src={bracket_dark} alt="bracket_dark" />
+                  </div>
+                  <p className={styles.number}>{countScienceDegree}%</p>
+                </div>
+                <span className={styles.span_underSlider_text_right}>
+                  Сотрудников с научной степенью
+                </span>
+              </div>
+            </div>
+          )}
         </div>
       </div>
       <div className={styles.company_group_name}>
-        <span>Состав группы компаний</span>
-        <div className={styles.plus_nine}>
+        Состав группы компаний
+        <p className={styles.plus_nine} style={{ verticalAlign: "top" }}>
           <img src={plusNine} alt="plus_nine" />
-        </div>
+        </p>
       </div>
-        <div className={styles.awards_wrapper}>Награды и премии</div>
+      <div className={styles.company_group_slider}>
+        <CompanyGroupSlider />
+      </div>
+      <div className={styles.awards_wrapper}>
+        Награды и премии
+        <div className={styles.years_div}>/2005-2022/</div>
+      </div>
       <div className={styles.list_project}>
         Список проектов, которые были отмечены конкурсами в разных номинациях за
         годы практики с 2005 года
       </div>
-      <TableCompany />
+      {isMobile && <TableCompanyMobile />}
+      {!isMobile && <TableCompany />}
       <div className={styles.specialist_wrapper}>
         <div className={styles.specialist}>Специалисты</div>
-        <div className={styles.button_group}>
-          <button
-           type="button"
-              onClick={(e) => {
-                e.preventDefault();
-                handleButtonClick("Руководство");
-              }}
-            className={`${styles.button_leader} ${styles.button_hover} ${
-              activeButton === "Руководство" ? styles.active : ""
-            }`}
-          >
-            Руководство
-          </button>
-          <button
-           type="button"
-             onClick={(e) => {
-              e.preventDefault();
-              handleButtonClick("Руководители отделов");
+        {isMobile && (
+          <Swiper
+            onSwiper={setSwiper}
+            slidesPerView={"auto"}
+            spaceBetween={0}
+            pagination={{
+              clickable: true,
             }}
-            className={`${styles.button_department} ${styles.button_hover} ${
-              activeButton === "Руководители отделов" ? styles.active : ""
-            }`}
+            className={styles.my_swiper_button_group}
+            touch={true}
           >
-            Руководители отделов
-          </button>
-          <button
-           type="button"
-            onClick={(e) => {
-              e.preventDefault();
-              handleButtonClick("Научно-техническое сопровождение");
-            }}
-            className={`${styles.button_support} ${styles.button_hover} ${
-              activeButton === "Научно-техническое сопровождение"
-                ? styles.active
-                : ""
-            }`}
-          >
-            Научно-техническое сопровождение
-          </button>
-          <button
-           type="button"
-             onClick={(e) => {
-              e.preventDefault();
-              handleButtonClick("HR");
-            }}
-            className={`${styles.button_hr} ${styles.button_hover} ${
-              activeButton === "HR" ? styles.active : ""
-            }`}
-          >
-            HR
-          </button>
-        </div>
+            <div className={styles.button_group}>
+              <SwiperSlide
+              
+              >
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleButtonClick("Руководство");
+                  }}
+                  className={`${styles.button_leader} ${styles.button_hover} ${
+                    activeButton === "Руководство" ? styles.active : ""
+                  }`}
+                  type="button"
+                >
+                  Руководство
+                </button>
+              </SwiperSlide>
+              <SwiperSlide>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleButtonClick("Руководители отделов");
+                  }}
+                  className={`${styles.button_department} ${
+                    styles.button_hover
+                  } ${
+                    activeButton === "Руководители отделов" ? styles.active : ""
+                  }`}
+                >
+                  Руководители отделов
+                </button>
+              </SwiperSlide>
+              <SwiperSlide>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleButtonClick("Научно-техническое сопровождение");
+                  }}
+                  className={`${styles.button_support} ${styles.button_hover} ${
+                    activeButton === "Научно-техническое сопровождение"
+                      ? styles.active
+                      : ""
+                  }`}
+                >
+                  Научно-техническое сопровождение
+                </button>
+              </SwiperSlide>
+              <SwiperSlide>
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleButtonClick("HR");
+                  }}
+                  className={`${styles.button_hr} ${styles.button_hover} ${
+                    activeButton === "HR" ? styles.active : ""
+                  }`}
+                >
+                  HR
+                </button>
+              </SwiperSlide>
+            </div>
+          </Swiper>
+        )}
+            {!isMobile && (
+            <div className={styles.button_group}>
+              <button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleButtonClick("Руководство");
+                  }}
+                  className={`${styles.button_leader} ${styles.button_hover} ${
+                    activeButton === "Руководство" ? styles.active : ""
+                  }`}
+                >
+                  Руководство
+                </button>
+                 <button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleButtonClick("Руководители отделов");
+                  }}
+                  className={`${styles.button_department} ${
+                    styles.button_hover
+                  } ${
+                    activeButton === "Руководители отделов" ? styles.active : ""
+                  }`}
+                >
+                  Руководители отделов
+                </button>
+                  <button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleButtonClick("Научно-техническое сопровождение");
+                  }}
+                  className={`${styles.button_support} ${styles.button_hover} ${
+                    activeButton === "Научно-техническое сопровождение"
+                      ? styles.active
+                      : ""
+                  }`}
+                >
+                  Научно-техническое сопровождение
+                </button>
+                  <button
+                  type="button"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    handleButtonClick("HR");
+                  }}
+                  className={`${styles.button_hr} ${styles.button_hover} ${
+                    activeButton === "HR" ? styles.active : ""
+                  }`}
+                >
+                  HR
+                </button>
+              </div>
+           )}
       </div>
       <div
         className={styles.card_container}
@@ -541,43 +630,47 @@ export default function Company() {
         </ul>
       </div>
       <div className={styles.slider_card_wrapper}>
-  <Swiper
-    className={styles.slider_card_container}
-    loop={true}
-    slidesPerView={3}
-    spaceBetween={30}
-    pagination={{
-      clickable: true,
-    }}
-    touch="true"
-  >
-    {staff?.map((el) => (
-      <SwiperSlide
-        key={el.id}
-        className={styles.slide_container_item_stuff}
-        onClick={() => handleButtonClick(el, el.id)}
-      >
-        <div className={styles.wrapper_container_item_stuff}>
-          <img
-            className={styles.container__img_stuff}
-            src={el.attributes.img}
-            alt={el.attributes.img}
-          />
-        </div>
-        <div className={styles.container__item_name_stuff}>
-          {el.attributes.name}
-        </div>
-        <div className={styles.container__item_position_stuff}>
-          {el.attributes.position}
-        </div>
-      </SwiperSlide>
-    ))}
-  </Swiper>
-</div>
-    <div className={styles.fon}>
+        <Swiper
+          className={styles.slider_card_container}
+          loop={true}
+          slidesPerView={3}
+          spaceBetween={30}
+          pagination={{
+            clickable: true,
+          }}
+          touch="true"
+        >
+          {staff?.map((el) => (
+            <SwiperSlide
+              key={el.id}
+              className={styles.slide_container_item_stuff}
+              onClick={() => handleButtonClick(el, el.id)}
+            >
+              <div className={styles.wrapper_container_item_stuff}>
+                <img
+                  className={styles.container__img_stuff}
+                  src={el.attributes.img}
+                  alt={el.attributes.img}
+                />
+              </div>
+              <div className={styles.container__item_name_stuff}>
+                {el.attributes.name}
+              </div>
+              <div className={styles.container__item_position_stuff}>
+                {el.attributes.position}
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
+      <div className={styles.fon}>
         <div className={styles.form_wrapper}>
-          <div className={styles.company_form_contacts_wrapper}><CompanyFormContacts /></div>
-           <div className={styles.companySubscriptionForm_wrapper}><CompanySubscriptionForm /></div>
+          <div className={styles.company_form_contacts_wrapper}>
+            <CompanyFormContacts />
+          </div>
+          <div className={styles.companySubscriptionForm_wrapper}>
+            <CompanySubscriptionForm />
+          </div>
         </div>
       </div>
     </div>

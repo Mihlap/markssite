@@ -27,32 +27,29 @@ const CounterCompanyMobile2 = () => {
   });
 
   useEffect(() => {
+    let timer1;
+    let timer2;
+    let timer3;
     if (inView) {
-      let timer1;
       timer1 = setTimeout(() => {
         dispatch(incrementDepartment());
         dispatch(incrementScient());
       }, 50);
-      let timer2;
+      
       timer2 = setTimeout(() => {
         dispatch(incrementGap());
         dispatch(incrementScienceDegree());
-      }, 100);
-      let timer3;
-      timer3 = setTimeout(() => {
         setCounting(false);
-      }, 500); 
-      return () => {
-        clearTimeout(timer1);
-        clearTimeout(timer2);
-        // clearTimeout(timer3);
-      };
-    } else {
-      setCounting(true);
-      let timer1 = 0;
-      let timer2 = 0;
-      let timer3 = 0;
-    }
+      }, 100);
+      timer3 = setTimeout(() => {
+         }, 500); 
+      }
+          
+          return () => {
+            clearTimeout(timer1);
+            clearTimeout(timer2);
+            clearTimeout(timer3);
+          };
   }, [
     dispatch,
     countDepartment,
@@ -63,13 +60,10 @@ const CounterCompanyMobile2 = () => {
   ]);
   
  
-
   return (
-    
-    <div className={styles.main_counter_wrapper}>
     <div ref={ref} className={styles.right_counter_wrapper}>
     {counting ? (
-      <>
+        <>
         <div className={styles.container_text_right}>
           <div className={styles.div_underSlider_text_right}>
             <div className={styles.text_svg_right}>
@@ -121,10 +115,10 @@ const CounterCompanyMobile2 = () => {
             Сотрудников с научной степенью
           </span>
         </div>
-      </>
-    )}
-  </div>
-  </div>
+        </>
+        )}
+        </div>
+ 
   );
 };
 
