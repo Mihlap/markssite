@@ -10,8 +10,6 @@ const CompanyGroupSlider = () => {
     slidesToScroll: 3,
     arrows: false,
     centerPadding: "60px",
-    // autoplay: true, 
-    // autoplaySpeed: 3000, 
     responsive: [
       {
         breakpoint: 2000,
@@ -20,7 +18,7 @@ const CompanyGroupSlider = () => {
           slidesToScroll: 3,
           centerPadding: "60px",
           autoplay: false,
-        }
+        },
       },
       {
         breakpoint: 1440,
@@ -29,7 +27,7 @@ const CompanyGroupSlider = () => {
           slidesToScroll: 2,
           centerPadding: "60px",
           autoplay: false,
-        }
+        },
       },
       {
         breakpoint: 1024,
@@ -37,31 +35,81 @@ const CompanyGroupSlider = () => {
           slidesToShow: 3,
           slidesToScroll: 1,
           centerPadding: "40px",
-          autoplay: true, 
-        autoplaySpeed: 3000,
-        }
+          autoplay: true,
+          autoplaySpeed: 3000,
+        },
       },
       {
-        breakpoint: 768,
+        breakpoint: 767,
         settings: {
+          dots: true,
           slidesToShow: 2,
           slidesToScroll: 1,
           centerPadding: "40px",
-          autoplay: true, 
+          autoplay: false,
           autoplaySpeed: 3000,
-        }
+          appendDots: (dots) => (
+            <div>
+              {dots.map((dot, index) => {
+                  if (index < 3) {
+                    return <li key={index} className="custom-dots">{dot}</li>;
+                  }
+                  return null;
+                })}
+            </div>
+          ),
+          customPaging: (i) => (
+            <div
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+                width: "20px",
+                height: "1px",
+                borderRadius: "30%",
+                backgroundColor: "#FF7F6A",
+                border: "3px #FF7F6A solid",
+                margin: "2rem 2px",
+              }}
+            ></div>
+          ),
+        },
       },
       {
         breakpoint: 480,
         settings: {
+          dots: true,
           slidesToShow: 1,
           slidesToScroll: 1,
           centerPadding: "20px",
-          autoplay: true, 
+          autoplay: false,
           autoplaySpeed: 3000,
-        }
-      }
-    ]
+          appendDots: (dots) => (
+            <div>
+             {dots.map((dot, index) => {
+                  if (index < 3) {
+                    return <li key={index} className="custom-dots">{dot}</li>;
+                  }
+                  return null;
+                })}
+            </div>
+          ),
+          customPaging: (i) => (
+            <div
+              style={{
+                justifyContent: "center",
+                alignItems: "center",
+                width: "20px",
+                height: "1px",
+                borderRadius: "30%",
+                backgroundColor: "#FF7F6A",
+                border: "3px #FF7F6A solid",
+                margin: "2rem 2px",
+              }}
+            ></div>
+          ),
+        },
+      },
+    ],
   };
 
   return (
