@@ -20,3 +20,18 @@
         padding-bottom: 6.25rem;
       }
       }
+
+      /* стили мобильной версии  */
+
+@media screen and (max-width: 767px) {
+
+    .custom-dots li.slick-active {
+      align-items: center;
+      justify-content: center;
+       width: 8px;
+      height: 1.39rem;
+      transform: scale(1.08);
+       border: "1px #FF7F6A solid";
+     }
+  
+ }

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import styles from "./TableCompany.module.css";
+import tableData from "./tableData";
 
 const TableCompany = () => {
   const [showAll, setShowAll] = useState(false);
@@ -36,19 +37,19 @@ const TableCompany = () => {
           </tr>
         </thead>
         <tbody>
-          {[...Array(showAll ? 10 : 6)].map((_, index) => (
+          {tableData.slice(0, showAll ? tableData.length : 6).map((el, index) => (
             <tr key={index}>
               <td className={styles.tdStyle1} style={tdStyle}>
-                Стекло в архитектуре
+                {el.title}
               </td>
               <td className={styles.tdStyle2} style={tdStyle}>
-                Объект нового строительства
+                {el.nomination}
               </td>
               <td className={styles.tdStyle3} style={tdStyle}>
-                Победитель
+              {el.prize}
               </td>
               <td className={styles.tdStyle4} style={tdStyle4}>
-                /_2022/
+               {el.year}
               </td>
             </tr>
           ))}
