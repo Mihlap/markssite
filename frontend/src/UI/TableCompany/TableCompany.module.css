@@ -2,7 +2,7 @@
   border-collapse: collapse;
   margin-left: 1.87vw;
   margin-right: 1.87vw;
-  }
+}
 
 .thStyle {
   text-align: left;
@@ -15,6 +15,7 @@
   font-size: 14px;
   line-height: 20px;
 }
+
 .thStyle4 {
   text-align: right;
   border-bottom: 1px solid black;
@@ -39,8 +40,9 @@
   max-width: 40.97vw;
   width: 40.97vw;
   padding-right: 30px;
-  }
- .tdStyle2 {
+}
+
+.tdStyle2 {
   font-family: var(--font-raleway);
   font-style: normal;
   font-weight: var(--fw-400);
@@ -52,8 +54,9 @@
   max-width: 30.69vw;
   width: 30.69vw;
   padding-right: 30px;
-  }
- .tdStyle3 {
+}
+
+.tdStyle3 {
   font-family: var(--font-raleway);
   font-style: normal;
   font-weight: var(--fw-400);
@@ -63,8 +66,9 @@
   text-align: left;
   max-width: 16.3vw;
   width: 16.3vw;
-  }
- .tdStyle4 {
+}
+
+.tdStyle4 {
   font-family: var(--font-raleway);
   font-style: normal;
   font-weight: var(--fw-400);
@@ -72,37 +76,140 @@
   line-height: 24px;
   color: var(--dark-gray-566272);
   text-align: right;
-  }
+}
 
- .button_table {
+.button_table {
   display: flex;
   justify-content: flex-end;
   padding-right: 1.87vw;
   padding-top: 13px;
- }
+}
 
- .button_look_all {
-   display: flex;
-   width: 144px;
-   height: 36px;
-   background: var(--light-light-gray-EBECEE);
-   border-radius: 34px;
-   justify-content: center;
-   align-items: center;
-   border: 1px solid transparent;
-   font-family: var(--font-raleway);
-   font-style: normal;
-   font-weight: var(--fw-400);
-   font-size: 14px;
-   line-height: 20px;
- }
-  .button_look_all:hover {
-    background: var(--light-gray-C0C5CB);
-  }
+.button_look_all {
+  display: flex;
+  width: 144px;
+  height: 36px;
+  background: var(--light-light-gray-EBECEE);
+  border-radius: 34px;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid transparent;
+  font-family: var(--font-raleway);
+  font-style: normal;
+  font-weight: var(--fw-400);
+  font-size: 14px;
+  line-height: 20px;
+  transition: all 0.5s ease-in-out;
+}
+
+.button_look_all:hover {
+  background: var(--light-gray-C0C5CB);
+}
+
 /* стили для планшетной версии  */
 @media screen and (min-width: 768px) and (max-width: 1024px) {
   .tableStyle {
-    margin-left: 5.4vw;
-    margin-right: 5.4vw;
+    border-collapse: collapse;
+    margin-left: 3.37rem;
+    margin-right: 3.37rem;
+  }
+}
+
+/* стили для планшетной версии  */
+@media screen and (max-width: 767px) {
+  .tableStyle {
+    border-collapse: collapse;
+    margin-left: 1rem;
+    margin-right: 1rem;
+    border-bottom: 1px solid var(--dark-gray-566272);
+  }
+
+  .tdStyle1 {
+    font-family: var(--font-raleway);
+    font-weight: var(--fw-300);
+    font-size: 18px;
+    line-height: 24px;
+    text-align: left;
+    width: 100%;
+    padding-right: 3rem;
+    padding-left: 1rem;
+  }
+
+  .tdStyle4 {
+    font-family: var(--font-raleway);
+    font-style: normal;
+    font-weight: var(--fw-400);
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--dark-gray-566272);
+    text-align: right;
+    padding-right: 2rem;
+  }
+
+  .tdStyle5 {
+    font-family: var(--font-raleway);
+    font-style: normal;
+    font-weight: var(--fw-400);
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--dark-gray-566272);
+    text-align: right;
+  }
+
+    .expanded {
+      width: 100%;
+      padding-top: 1rem;
+      padding-left: 1rem;
+      padding-bottom: 2rem;
+      height: 0rem;
+      overflow: hidden;
+      transition: all 1s ease-in-out;
+    }
+  
+    .expanded.show {
+      height: auto;
+    }
+
+  .field_nomination {
+    display: flex;
+    flex-direction: row;
+    font-size: 14px;
+    font-family: var(--font-raleway);
+    line-height: 20px;
+    color: var(--gray-959DA6);
+  }
+
+  .element_nomination {
+    color: var(--black-1D2E43);
+    font-size: 16px;
+    font-family: var(--font-raleway);
+    line-height: 24px;
+    padding-left: 1rem;
+    
+  }
+
+  .field_prize {
+    display: flex;
+    flex-direction: row;
+    font-size: 14px;
+    font-family: var(--font-raleway);
+    line-height: 20px;
+    color: var(--gray-959DA6);
+    padding-top: 1rem;
+  }
+
+  .element_prize {
+    color: var(--black-1D2E43);
+    font-size: 16px;
+    font-family: var(--font-raleway);
+    line-height: 24px;
+    padding-left: 3.7rem;
+  }
+
+  .button_table {
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 1.87vw;
+    padding-top: 1.5rem;
   }
 }
