@@ -136,27 +136,35 @@ input:focus + .line1 {
 
  
 
- /* стили для планшетной версии  */
+ /* стили только для планшетной версии  */
  @media screen and (min-width: 768px) and (max-width: 1024px) {
   .icon_partner {
     display: none;
   }
   .form_right_wrapper {
-    max-width: 27.62rem;
-    height: 21.43rem;
-  }
+    max-width: 100vw;
+    max-height: 100%;
+    margin-left: 1rem;
+    margin-bottom: 1rem;
+   }
+
+  .form_right_main {
+    display: flex;
+    flex-direction: column;
+    margin-left: 1rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    height: 100%;
+   }
+  
    .form_form_wrapper1 {
     display: flex;
     flex-direction: column;
-    padding: 0vh 2rem 2rem 0vw;
-  }
-
-  .title1 {
-    max-width: 23rem;
+    padding-bottom: 0rem;
    }
-  
-   .line1 {
-    width: 28vw;
+
+  .line1 {
+    width: 20vw;
    }
    input[type="email"] {
     width: 65%;
@@ -165,5 +173,4 @@ input:focus + .line1 {
 
 
 
-/* стили мобильной версии  */
 
