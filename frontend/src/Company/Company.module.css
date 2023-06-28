@@ -418,7 +418,7 @@
   right: 0vw;
   bottom: 0;
   width: 33.37rem;
-  height: auto;
+  height: 100%;
   margin-top: 0px;
   border: none !important;
   outline: none;
@@ -907,11 +907,7 @@
     padding-top: 1.5rem;
    }
 
-   .slider_card_container {
-    
-   }
-
-  .slide_container_item_stuff {
+   .slide_container_item_stuff {
     min-width: 19.81rem;
     height: auto;
     margin-right: 1rem;
@@ -921,11 +917,11 @@
     width: 19.81rem;
     height: auto;
    }
-  
-   .modal_wrapper {
+
+
+  .modal_wrapper {
      width: 100%;
      height: auto;
-     /* justify-content: center; */
     }
     
     .modal_close {
@@ -934,6 +930,7 @@
     }
 
     .modal_context {
+      max-width: 23rem;
       padding-left: 1rem;
     }
     
@@ -942,7 +939,7 @@
       border-radius: 146.5px;
       width: 294px;
       height: 294px;
-       margin-left: 6.1rem;
+       margin-left: 2rem;
       margin-right: 6.1rem;
       object-fit: contain;
     }
@@ -965,6 +962,12 @@
     .modal_about_stuff {
       padding-top: 2.5rem;
       padding-right: 2rem;
+     }
+
+     .modal_about_stuff:last-of-type {
+      padding-top: 2.5rem;
+      padding-right: 2rem;
+      padding-bottom: 5rem;
      }
     
     .form_wrapper {
