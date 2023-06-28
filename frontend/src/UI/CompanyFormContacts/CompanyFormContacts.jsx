@@ -112,6 +112,7 @@ const CompanyFormContacts = () => {
                 maxLength="30"
                 size="65"
                 autoComplete="off"
+                className={styles.input_name_form_contacts}
               />
               <div className={styles.line}></div>
               <span className={styles.placeholder}>Ваше Имя</span>

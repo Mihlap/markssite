@@ -23,7 +23,7 @@
   line-height: 32px;
   color: var(--white-F6F6F6);
   white-space: pre-wrap;
-  /* margin-right: 20rem; */
+  margin-right: 20rem;
 }
 
 .span_underSlider_text2 {
@@ -104,6 +104,7 @@
   font-weight: var(--fw-300);
   padding-bottom: 400px;
   padding-left: 1.87vw;
+  margin-right: 10vw;
   white-space: nowrap;
   width: 23vw;
 }
@@ -137,7 +138,7 @@
   font-size: 16px;
   line-height: 24px;
   padding-left: 20vw;
-  padding-right: 4vw;
+  padding-right: 0vw;
   width: 76vw;
   color: var(--black-1D2E434);
 }
@@ -498,6 +499,10 @@
     padding-left: 5.4vw;
   }
 
+  .span_underSlider_text1 {
+    margin-right: 10rem;
+  }
+
   .icon_partner {
     display: none;
   }
@@ -602,10 +607,14 @@
     padding-left: 5.4vw;
     padding-bottom: 2rem;
   }
-
+  
   .button_group button {
     font-size: 12px;
-    padding: 6px 16px;
+    padding: 8px 24px;
+  }
+
+  .button_hover {
+   width: fit-content;
   }
 
   .card_container {
@@ -615,18 +624,18 @@
   .slider_card_wrapper {
     display: flex;
     padding-left: 5.4vw;
-    /* margin-right: 1.875rem; */
-  }
+    }
 
   .slide_container_item_stuff {
     width: 20.18rem;
     height: 20.93rem;
+    margin-right: 1.875rem;
   }
 
   .form_wrapper {
     display: flex;
     flex-direction: row;
-    padding: 0rem 5.4vw 3.5rem 5.4vw;
+    padding: 0rem 3.4vw 3.5rem 5.4vw;
   }
 
   .company_form_contacts_wrapper {
@@ -634,10 +643,9 @@
   }
 
   .companySubscriptionForm_wrapper {
-    padding: 5.6rem 1.87vw 0rem 0vw
+    padding-top: 5.6rem;
   }
-
-  .modal_wrapper {
+   .modal_wrapper {
     width: 29rem;
     height: auto;
   }
@@ -658,7 +666,7 @@
   .underSlider_text_wrapper {
     padding-top: 26rem;
     padding-left: 1.3rem;
-    width: 30rem;
+    /* width: 30rem; */
   }
 
   .span_underSlider_text1 {
@@ -847,7 +855,7 @@
   }
 
   .specialist_wrapper {
-    padding-top: 5rem;
+    padding-top: 3rem;
   }
 
   .specialist {
@@ -859,16 +867,13 @@
 
   .my_swiper_button_group {
     display: flex;
-    bottom: 1rem;
+    bottom: 0rem;
     left: 1rem;
-    max-width: 100%;
-   }
- 
-  .button_hover {
-    display: inline-block;
-    margin-right: 8px;
-    width: auto;
-    height: 36px;
+    width: 100%;
+    }
+
+    .button_hover {
+     margin-right: 0.5rem;
     background: transparent;
     border-radius: 34px;
     border: 1px solid var(--black-1D2E43);
@@ -880,13 +885,98 @@
     line-height: 20px;
     color: var(--black-1D2E43);
     padding: 8px 24px;
-  }
+    width: 0%;
+   }
+
+   .button_hover p {
+    width: fit-content;
+   }
 
  .active {
     background: var(--black-1D2E43) !important;
     color: var(--white-F6F6F6) !important;
   }
 
+  .card_container {
+    display: none;
+  }
+
+  .slider_card_wrapper {
+    display: flex;
+    padding-left: 1rem;
+    padding-top: 1.5rem;
+   }
+
+   .slider_card_container {
+    
+   }
+
+  .slide_container_item_stuff {
+    min-width: 19.81rem;
+    height: auto;
+    margin-right: 1rem;
+   }
+
+   .container__img_stuff {
+    width: 19.81rem;
+    height: auto;
+   }
+  
+   .modal_wrapper {
+     width: 100%;
+     height: auto;
+     /* justify-content: center; */
+    }
+    
+    .modal_close {
+      padding-top: 2rem;
+      padding-left: 90%;
+    }
+
+    .modal_context {
+      padding-left: 1rem;
+    }
+    
+
+    .modal_img_stuff {
+      border-radius: 146.5px;
+      width: 294px;
+      height: 294px;
+       margin-left: 6.1rem;
+      margin-right: 6.1rem;
+      object-fit: contain;
+    }
+    
+    .modal_img_stuff img {
+      width: 100%;
+      height: 100%;
+    }
+    
+    
+    .modal_name_stuff {
+     padding-top: 1.5rem;
+    }
+    
+    .modal_description_stuff {
+      padding-top: 0.5rem;
+      padding-right: 2rem;
+    }
+    
+    .modal_about_stuff {
+      padding-top: 2.5rem;
+      padding-right: 2rem;
+     }
+    
+    .form_wrapper {
+      display: flex;
+      flex-direction: row;
+      padding: 0rem 1rem 0rem 1rem;
+    }
+  
+    .company_form_contacts_wrapper {
+      width: 100%;
+      padding: 0rem 0rem 2.8rem 0rem;
+    }
 
   .companySubscriptionForm_wrapper {
     display: none;

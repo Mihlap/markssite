@@ -113,14 +113,24 @@
     margin-left: 3.37rem;
     margin-right: 3.37rem;
   }
+  .tdStyle1 {
+    font-family: var(--font-raleway);
+    font-weight: var(--fw-300);
+    font-size: 18px;
+    line-height: 24px;
+    text-align: left;
+    width: 90%;
+    padding-right: 3rem;
+    padding-left: 1rem;
+  }
 }
 
 /* стили для планшетной версии  */
 @media screen and (max-width: 767px) {
   .tableStyle {
     border-collapse: collapse;
-    margin-left: 1rem;
-    margin-right: 1rem;
+    margin-left: 0rem;
+    margin-right: 0rem;
     border-bottom: 1px solid var(--dark-gray-566272);
   }
 
