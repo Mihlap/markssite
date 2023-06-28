@@ -9,8 +9,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css/bundle";
 import "swiper/css/pagination";
-import { Pagination } from "swiper";
-import SliderMobile from "../UI/SliderHeader/SliderMobile";
+// import { Pagination } from "swiper";
+// import SliderMobile from "../UI/SliderHeader/SliderMobile";
 import TableCompany from "../UI/TableCompany/TableCompany";
 import TableCompanyMobile from "../UI/TableCompany/TableCompanyMobile";
 import {
@@ -385,14 +385,14 @@ export default function Company() {
           >
             <div className={styles.button_group}>
               <SwiperSlide
-                  className={` ${styles.button_hover} ${
-                    activeButton === "Руководство" ? styles.active : ""
-                  }`}
+                className={` ${styles.button_hover} ${
+                  activeButton === "Руководство" ? styles.active : ""
+                }`}
                 onClick={(e) => {
                   e.preventDefault();
                   handleButtonClick("Руководство");
                 }}
-                style={{width: "fit-content"}}
+                style={{ width: "fit-content" }}
               >
                 <p type="button">Руководство</p>
               </SwiperSlide>
@@ -404,7 +404,7 @@ export default function Company() {
                 className={` ${styles.button_hover} ${
                   activeButton === "Руководители отделов" ? styles.active : ""
                 }`}
-                style={{width: "fit-content"}}
+                style={{ width: "fit-content" }}
               >
                 <p type="button">Руководители отделов</p>
               </SwiperSlide>
@@ -418,7 +418,7 @@ export default function Company() {
                     ? styles.active
                     : ""
                 }`}
-                style={{width: "fit-content"}}
+                style={{ width: "fit-content" }}
               >
                 <p type="button">Научно-техническое сопровождение</p>
               </SwiperSlide>
@@ -430,7 +430,7 @@ export default function Company() {
                 className={` ${styles.button_hover} ${
                   activeButton === "HR" ? styles.active : ""
                 }`}
-                style={{width: "fit-content"}}
+                style={{ width: "fit-content" }}
               >
                 <p type="button">HR</p>
               </SwiperSlide>
@@ -576,15 +576,15 @@ export default function Company() {
                       />
                     </svg>
                   </div>
-                  {/* <div className={styles.modal_container}> */}
-                  <div className={styles.modal}>
-                    <img
-                      className={styles.modal_img_stuff}
-                      src={selectedCard.attributes.img}
-                      alt={selectedCard.attributes.img}
-                    />
+                  <div className={styles.modal_container}>
+                    <div className={styles.modal}>
+                      <img
+                        className={styles.modal_img_stuff}
+                        src={selectedCard.attributes.img}
+                        alt={selectedCard.attributes.img}
+                      />
+                    </div>
                   </div>
-                  {/* </div> */}
                   <div className={styles.modal_name_stuff}>
                     {selectedCard.attributes.name}
                   </div>
@@ -622,7 +622,7 @@ export default function Company() {
           slidesPerView={3}
           spaceBetween={0}
           pagination={{
-          clickable: true,
+            clickable: true,
           }}
           touch="true"
         >
@@ -631,7 +631,7 @@ export default function Company() {
               key={el.id}
               className={styles.slide_container_item_stuff}
               onClick={() => handleButtonClick(el, el.id)}
-             >
+            >
               <div className={styles.wrapper_container_item_stuff}>
                 <img
                   className={styles.container__img_stuff}
