@@ -7,7 +7,7 @@ import Company_Slider from "../UI/Company_Slider/Company_Slider";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
+import "swiper/css/bundle";
 import "swiper/css/pagination";
 import { Pagination } from "swiper";
 import SliderMobile from "../UI/SliderHeader/SliderMobile";
@@ -163,9 +163,9 @@ export default function Company() {
         const scrollTop = window.scrollY || document.documentElement.scrollTop;
 
         if (scrollTop > thisBlockRect.top && screenWidth >= 2000) {
-          const translateYValue = nameCompanyRect.height + 212;
+          const translateYValue = nameCompanyRect.height + 112;
           nameCompanyRef.current.style.transform = `translateY(${translateYValue}px)`;
-          thisBlockRef.current.style.transform = `translateY(340px) translateX(-50px) rotate(-90deg)`;
+          thisBlockRef.current.style.transform = `translateY(240px) translateX(-50px) rotate(-90deg)`;
         } else if (
           scrollTop > thisBlockRect.top &&
           screenWidth < 1999 &&
@@ -175,9 +175,9 @@ export default function Company() {
           nameCompanyRef.current.style.transform = `translateY(${translateYValue}px)`;
           thisBlockRef.current.style.transform = `translateY(260px) translateX(40px) rotate(-90deg)`;
         } else if (scrollTop > thisBlockRect.top && screenWidth < 1480) {
-          const translateYValue = nameCompanyRect.height + 212;
+          const translateYValue = nameCompanyRect.height + 262;
           nameCompanyRef.current.style.transform = `translateY(${translateYValue}px)`;
-          thisBlockRef.current.style.transform = `translateY(220px) translateX(80px) rotate(-90deg)`;
+          thisBlockRef.current.style.transform = `translateY(250px) translateX(80px) rotate(-90deg)`;
         } else {
           nameCompanyRef.current.style.transform = "none";
           thisBlockRef.current.style.transform = "rotate(-180deg)";
@@ -375,136 +375,122 @@ export default function Company() {
         {isMobile && (
           <Swiper
             onSwiper={setSwiper}
-            slidesPerView={"auto"}
+            slidesPerView="auto"
             spaceBetween={0}
             pagination={{
               clickable: true,
             }}
             className={styles.my_swiper_button_group}
-            touch={true}
+            touch="true"
           >
             <div className={styles.button_group}>
               <SwiperSlide
-              
-              >
-                <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleButtonClick("Руководство");
-                  }}
-                  className={`${styles.button_leader} ${styles.button_hover} ${
+                  className={` ${styles.button_hover} ${
                     activeButton === "Руководство" ? styles.active : ""
                   }`}
-                  type="button"
-                >
-                  Руководство
-                </button>
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleButtonClick("Руководство");
+                }}
+                style={{width: "fit-content"}}
+              >
+                <p type="button">Руководство</p>
               </SwiperSlide>
-              <SwiperSlide>
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleButtonClick("Руководители отделов");
-                  }}
-                  className={`${styles.button_department} ${
-                    styles.button_hover
-                  } ${
-                    activeButton === "Руководители отделов" ? styles.active : ""
-                  }`}
-                >
-                  Руководители отделов
-                </button>
+              <SwiperSlide
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleButtonClick("Руководители отделов");
+                }}
+                className={` ${styles.button_hover} ${
+                  activeButton === "Руководители отделов" ? styles.active : ""
+                }`}
+                style={{width: "fit-content"}}
+              >
+                <p type="button">Руководители отделов</p>
               </SwiperSlide>
-              <SwiperSlide>
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleButtonClick("Научно-техническое сопровождение");
-                  }}
-                  className={`${styles.button_support} ${styles.button_hover} ${
-                    activeButton === "Научно-техническое сопровождение"
-                      ? styles.active
-                      : ""
-                  }`}
-                >
-                  Научно-техническое сопровождение
-                </button>
+              <SwiperSlide
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleButtonClick("Научно-техническое сопровождение");
+                }}
+                className={` ${styles.button_hover} ${
+                  activeButton === "Научно-техническое сопровождение"
+                    ? styles.active
+                    : ""
+                }`}
+                style={{width: "fit-content"}}
+              >
+                <p type="button">Научно-техническое сопровождение</p>
               </SwiperSlide>
-              <SwiperSlide>
-                <button
-                  type="button"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleButtonClick("HR");
-                  }}
-                  className={`${styles.button_hr} ${styles.button_hover} ${
-                    activeButton === "HR" ? styles.active : ""
-                  }`}
-                >
-                  HR
-                </button>
+              <SwiperSlide
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleButtonClick("HR");
+                }}
+                className={` ${styles.button_hover} ${
+                  activeButton === "HR" ? styles.active : ""
+                }`}
+                style={{width: "fit-content"}}
+              >
+                <p type="button">HR</p>
               </SwiperSlide>
             </div>
           </Swiper>
         )}
-            {!isMobile && (
-            <div className={styles.button_group}>
-              <button
-                  type="button"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleButtonClick("Руководство");
-                  }}
-                  className={`${styles.button_leader} ${styles.button_hover} ${
-                    activeButton === "Руководство" ? styles.active : ""
-                  }`}
-                >
-                  Руководство
-                </button>
-                 <button
-                  type="button"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleButtonClick("Руководители отделов");
-                  }}
-                  className={`${styles.button_department} ${
-                    styles.button_hover
-                  } ${
-                    activeButton === "Руководители отделов" ? styles.active : ""
-                  }`}
-                >
-                  Руководители отделов
-                </button>
-                  <button
-                  type="button"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleButtonClick("Научно-техническое сопровождение");
-                  }}
-                  className={`${styles.button_support} ${styles.button_hover} ${
-                    activeButton === "Научно-техническое сопровождение"
-                      ? styles.active
-                      : ""
-                  }`}
-                >
-                  Научно-техническое сопровождение
-                </button>
-                  <button
-                  type="button"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    handleButtonClick("HR");
-                  }}
-                  className={`${styles.button_hr} ${styles.button_hover} ${
-                    activeButton === "HR" ? styles.active : ""
-                  }`}
-                >
-                  HR
-                </button>
-              </div>
-           )}
+        {!isMobile && (
+          <div className={styles.button_group}>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                handleButtonClick("Руководство");
+              }}
+              className={`${styles.button_leader} ${styles.button_hover} ${
+                activeButton === "Руководство" ? styles.active : ""
+              }`}
+            >
+              Руководство
+            </button>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                handleButtonClick("Руководители отделов");
+              }}
+              className={`${styles.button_department} ${styles.button_hover} ${
+                activeButton === "Руководители отделов" ? styles.active : ""
+              }`}
+            >
+              Руководители отделов
+            </button>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                handleButtonClick("Научно-техническое сопровождение");
+              }}
+              className={`${styles.button_support} ${styles.button_hover} ${
+                activeButton === "Научно-техническое сопровождение"
+                  ? styles.active
+                  : ""
+              }`}
+            >
+              Научно-техническое сопровождение
+            </button>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                handleButtonClick("HR");
+              }}
+              className={`${styles.button_hr} ${styles.button_hover} ${
+                activeButton === "HR" ? styles.active : ""
+              }`}
+            >
+              HR
+            </button>
+          </div>
+        )}
       </div>
       <div
         className={styles.card_container}
@@ -634,9 +620,9 @@ export default function Company() {
           className={styles.slider_card_container}
           loop={true}
           slidesPerView={3}
-          spaceBetween={30}
+          spaceBetween={0}
           pagination={{
-            clickable: true,
+          clickable: true,
           }}
           touch="true"
         >
@@ -645,7 +631,7 @@ export default function Company() {
               key={el.id}
               className={styles.slide_container_item_stuff}
               onClick={() => handleButtonClick(el, el.id)}
-            >
+             >
               <div className={styles.wrapper_container_item_stuff}>
                 <img
                   className={styles.container__img_stuff}

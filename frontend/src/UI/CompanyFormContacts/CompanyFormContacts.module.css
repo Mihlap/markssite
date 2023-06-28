@@ -2,7 +2,7 @@
 .form_left_wrapper {
   display: flex;
   width: 35rem;
-  height: 35rem;
+  /* height: 35rem; */
   border-radius: 1rem;
   background: linear-gradient(261.46deg, rgba(255, 203, 193, 0.09) -4.67%, rgba(117, 187, 253, 0.09) 44.63%, rgba(188, 188, 188, 0.09) 103.07%);
   box-shadow: 0px 0px 37px rgba(44, 59, 68, 0.05);
@@ -39,7 +39,7 @@
     display: flex;
     flex-direction: column;
     padding-top: 2.91vh;
-    width: 29.3rem;
+    /* width: 29.3rem; */
     padding-bottom: 2.5rem;
    }
 
@@ -210,19 +210,20 @@ input:focus + .line {
  /* стили для планшетной версии  */
  @media screen and (min-width: 768px) and (max-width: 1024px) {
    .form_left_wrapper {
-     max-width: 27.6rem;
+     width: 27rem;
      height: 32rem;
    }
    .form_left_main {
      padding: 2rem 2vw 0rem 2vw;
+     width: 80vw;
    }
    .title {
-    width: 23rem;
+    width: 80vw;
    }
    .span_text {
     padding-top: 16px;
-    padding-right: 10vw;
-    width: 28rem;
+    /* padding-right: 10vw; */
+    width: 40vw;
   }
   .line {
     width: 23rem;
@@ -242,7 +243,8 @@ input:focus + .line {
   }
 
   .form_left_main {
-    padding: 2rem 2vw 2rem 2vw;
+    width: 80vw;
+    padding: 2rem 1rem 2rem 1rem;
   }
 
   .title {
@@ -251,21 +253,30 @@ input:focus + .line {
   }
 
   .span_text {
-    padding-top: 16px;
-    padding-right: 40vw;
-  }
+    width: 80vw;
+    padding-top: 1rem;
+   }
 
   .form_form_wrapper {
     padding-top: 32px;
-    width: 480px;
+    padding-bottom: 20px;
   }
 
   .line {
-    width:23rem;
+    width: 84vw;
   }
 
   input[name="task"] {
     width: 55%;
   }
+  .input_name_form_contacts {
+    width: 100%;
+  }
 
+  .agreement  {
+    width: 80vw;
+    padding-top: 1.5rem;
+  }
+ 
+ 
 }
