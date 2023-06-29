@@ -901,13 +901,7 @@
     display: none;
   }
 
-  .slider_card_wrapper {
-    display: flex;
-    padding-left: 1rem;
-    padding-top: 1.5rem;
-   }
-
-   .slide_container_item_stuff {
+     .slide_container_item_stuff {
     min-width: 19.81rem;
     height: auto;
     margin-right: 1rem;
@@ -916,10 +910,30 @@
    .container__img_stuff {
     width: 19.81rem;
     height: auto;
+    margin-right: 2rem;
    }
-
-
+   
+   .pagination_company_slider {
+    display: flex;
+    justify-content: center;
+    margin-top: 32px;
+  }
+  
+  .pagination_company_slider-dot {
+    width: 20px;
+    height: 4px;
+    border: 2px solid var(--light-light-gray-EBECEE);
+    background-color: var(--light-light-gray-EBECEE);
+    margin: 0 5px;
+    cursor: pointer;
+  }
+  
+  .pagination_company_slider-dot.active {
+    width: 54px;
+    border: 2px solid var(--salmon-FF7F6A);
+  }
   .modal_wrapper {
+    max-width: 23.43rem;
      width: 100%;
      height: auto;
     }
@@ -973,7 +987,7 @@
     .form_wrapper {
       display: flex;
       flex-direction: row;
-      padding: 0rem 1rem 0rem 1rem;
+      padding: 5rem 1rem 0rem 1rem;
     }
   
     .company_form_contacts_wrapper {
