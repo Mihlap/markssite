@@ -25,13 +25,23 @@
 
 @media screen and (max-width: 767px) {
 
-    .custom-dots li.slick-active {
-      align-items: center;
+  .pagination_company_slider {
+      display: flex;
       justify-content: center;
-       width: 8px;
-      height: 1.39rem;
-      transform: scale(1.08);
-       border: "1px #FF7F6A solid";
-     }
-  
+      margin-top: 35px;
+    }
+    
+    .pagination_company_slider-dot {
+      width: 20px;
+      height: 4px;
+      border: 2px solid var(--light-light-gray-EBECEE);
+      background-color: var(--light-light-gray-EBECEE);
+      margin: 0 5px;
+      cursor: pointer;
+    }
+    
+    .pagination_company_slider-dot.active {
+      width: 54px;
+      border: 2px solid var(--salmon-FF7F6A);
+    }
  }
