@@ -7,10 +7,11 @@ import Company_Slider from "../UI/Company_Slider/Company_Slider";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css/bundle";
-import "swiper/css/pagination";
-// import { Pagination } from "swiper";
-// import SliderMobile from "../UI/SliderHeader/SliderMobile";
+import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+
+import SliderMobile from "../UI/SliderHeader/SliderMobile";
 import TableCompany from "../UI/TableCompany/TableCompany";
 import TableCompanyMobile from "../UI/TableCompany/TableCompanyMobile";
 import {
@@ -52,6 +53,8 @@ export default function Company() {
   const blockSlider = useRef(null);
   const nameCompanyRef = useRef(null);
   const thisBlockRef = useRef(null);
+  const [currentCard, setCurrentCard] = useState(0);
+  const sliderRefCard = useRef(null);
 
   const dispatch = useDispatch();
   const { selectedCard, categoryId, staff, loading, error } = useSelector(
@@ -177,7 +180,7 @@ export default function Company() {
         } else if (scrollTop > thisBlockRect.top && screenWidth < 1480) {
           const translateYValue = nameCompanyRect.height + 262;
           nameCompanyRef.current.style.transform = `translateY(${translateYValue}px)`;
-          thisBlockRef.current.style.transform = `translateY(250px) translateX(80px) rotate(-90deg)`;
+          thisBlockRef.current.style.transform = `translateY(280px) translateX(80px) rotate(-90deg)`;
         } else {
           nameCompanyRef.current.style.transform = "none";
           thisBlockRef.current.style.transform = "rotate(-180deg)";
@@ -202,6 +205,37 @@ export default function Company() {
       </div>
     );
   }
+
+  const settings = {
+    infinite: true,
+    speed: 500,
+    slidesToShow: 2,
+    slidesToScroll: 2,
+    beforeChange: (current, next) => setCurrentCard(next),
+    responsive: [
+      {
+        breakpoint: 767,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 2,
+          autoplay: false,
+        },
+      },
+       {
+        breakpoint: 480,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          autoplay: false,
+         },
+      },
+    ],
+  };
+
+  const handleCardClick = (page) => {
+    setCurrentCard(page);
+    sliderRefCard.current.slickGoTo(page);
+  };
 
   return (
     <div className={styles.company_main}>
@@ -615,40 +649,87 @@ export default function Company() {
           )}
         </ul>
       </div>
-      <div className={styles.slider_card_wrapper}>
-        <Swiper
-          className={styles.slider_card_container}
-          loop={true}
-          slidesPerView={3}
-          spaceBetween={0}
-          pagination={{
-            clickable: true,
-          }}
-          touch="true"
-        >
-          {staff?.map((el) => (
-            <SwiperSlide
-              key={el.id}
-              className={styles.slide_container_item_stuff}
-              onClick={() => handleButtonClick(el, el.id)}
-            >
-              <div className={styles.wrapper_container_item_stuff}>
-                <img
-                  className={styles.container__img_stuff}
-                  src={el.attributes.img}
-                  alt={el.attributes.img}
-                />
+      {isMobile && (
+        <div
+         className="company_slider_card_wrapper"
+         style={{ paddingLeft: "1rem", paddingTop: "1.5rem",
+        display: "flex", flexDirection: "column",
+        justifyContent: "center",
+      }}
+         >
+          <Slider
+            ref={sliderRefCard}
+            {...settings}
+            className="slider_card_container"
+           >
+            {staff?.map((el) => (
+              <div
+                key={el.id}
+                className="slide_container_item_stuff"
+                onClick={() => handleButtonClick(el, el.id)}
+               >
+                <div className="wrapper_container_item_stuff">
+                  <img
+                    className={styles.container__img_stuff}
+                    src={el.attributes.img}
+                    alt={el.attributes.img}
+                  />
+                </div>
+                <div className={styles.container__item_name_stuff}>
+                  {el.attributes.name}
+                </div>
+                <div className={styles.container__item_position_stuff}>
+                  {el.attributes.position}
+                </div>
               </div>
-              <div className={styles.container__item_name_stuff}>
-                {el.attributes.name}
-              </div>
-              <div className={styles.container__item_position_stuff}>
-                {el.attributes.position}
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </div>
+            ))}
+          </Slider>
+          <div className="pagination_company_slider">
+            {Array.from({ length: Math.ceil(9) }).map((_, el) => (
+              <button
+                key={el}
+                className={`pagination_company_slider-dot ${
+                  currentCard === el ? "active" : ""
+                }`}
+                onClick={() => handleCardClick(el)}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+      {!isMobile && (
+        <div className={styles.slider_card_wrapper}>
+          <Swiper
+            className={styles.slider_card_container}
+            loop={true}
+            slidesPerView={3}
+            spaceBetween={0}
+            touch="true"
+          >
+            {staff?.map((el) => (
+              <SwiperSlide
+                key={el.id}
+                className={styles.slide_container_item_stuff}
+                onClick={() => handleButtonClick(el, el.id)}
+              >
+                <div className={styles.wrapper_container_item_stuff}>
+                  <img
+                    className={styles.container__img_stuff}
+                    src={el.attributes.img}
+                    alt={el.attributes.img}
+                  />
+                </div>
+                <div className={styles.container__item_name_stuff}>
+                  {el.attributes.name}
+                </div>
+                <div className={styles.container__item_position_stuff}>
+                  {el.attributes.position}
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+      )}
       <div className={styles.fon}>
         <div className={styles.form_wrapper}>
           <div className={styles.company_form_contacts_wrapper}>
