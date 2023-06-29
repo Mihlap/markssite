@@ -1,8 +1,11 @@
-import React  from "react";
+import React, { useRef, useState }  from "react";
 import Slider from "react-slick";
 import "./CompanyGroupSlider.css";
 
 const CompanyGroupSlider = () => {
+  const [currentPage, setCurrentPage] = useState(0);
+  const sliderRef = useRef(null);
+
   const settings = {
     infinite: true,
     speed: 700,
@@ -10,6 +13,7 @@ const CompanyGroupSlider = () => {
     slidesToScroll: 3,
     arrows: false,
     centerPadding: "60px",
+    beforeChange: (current, next) => setCurrentPage(next),
     responsive: [
       {
         breakpoint: 2000,
@@ -42,79 +46,35 @@ const CompanyGroupSlider = () => {
       {
         breakpoint: 767,
         settings: {
-          dots: true,
           slidesToShow: 2,
           slidesToScroll: 1,
           centerPadding: "40px",
           autoplay: false,
           autoplaySpeed: 3000,
-          appendDots: (dots) => (
-            <div>
-              {dots.map((dot, index) => {
-                  if (index < 3) {
-                    return <li key={index} className="custom-dots">{dot}</li>;
-                  }
-                  return null;
-                })}
-            </div>
-          ),
-          customPaging: (i) => (
-            <div
-              style={{
-                justifyContent: "center",
-                alignItems: "center",
-                width: "20px",
-                height: "1px",
-                borderRadius: "30%",
-                backgroundColor: "#FF7F6A",
-                border: "3px #FF7F6A solid",
-                margin: "2rem 2px",
-              }}
-            ></div>
-          ),
         },
       },
       {
         breakpoint: 480,
         settings: {
-          dots: true,
-          slidesToShow: 1,
+           slidesToShow: 1,
           slidesToScroll: 1,
           centerPadding: "20px",
           autoplay: false,
           autoplaySpeed: 3000,
-          appendDots: (dots) => (
-            <div>
-             {dots.map((dot, index) => {
-                  if (index < 3) {
-                    return <li key={index} className="custom-dots">{dot}</li>;
-                  }
-                  return null;
-                })}
-            </div>
-          ),
-          customPaging: (i) => (
-            <div
-              style={{
-                justifyContent: "center",
-                alignItems: "center",
-                width: "20px",
-                height: "1px",
-                borderRadius: "30%",
-                backgroundColor: "#FF7F6A",
-                border: "3px #FF7F6A solid",
-                margin: "2rem 2px",
-              }}
-            ></div>
-          ),
-        },
+         },
       },
     ],
   };
 
+  const handlePageClick = (page) => {
+    setCurrentPage(page);
+    sliderRef.current.slickGoTo(page);
+  };
+
+
   return (
     <div className="company-group-container">
-      <Slider {...settings}>
+      <Slider ref={sliderRef} {...settings}>
         <div className="company-group-slide">
           <img src="./assets/group_company.png" alt="1" />
         </div>
@@ -143,6 +103,19 @@ const CompanyGroupSlider = () => {
           <img src="./assets/group_company.png" alt="9" />
         </div>
       </Slider>
+      <div className="pagination_company_slider">
+        {Array.from({ length: Math.ceil(9) }).map(
+          (_, index) => (
+            <button
+              key={index}
+              className={`pagination_company_slider-dot ${
+                currentPage === index ? "active" : ""
+              }`}
+              onClick={() => handlePageClick(index)}
+            />
+          )
+        )}
+      </div>
     </div>
   );
 };
