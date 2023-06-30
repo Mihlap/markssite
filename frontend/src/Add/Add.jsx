@@ -18,11 +18,11 @@ import AddCompany from "./add-about-the-company/AddCompany";
 export default function Add({ user, setNavBarOpen, setShowFooter }) {
 
   const dispatch = useDispatch();
-  const reviews = useSelector((state) => state.reviews.reviews);
-  const artickes = useSelector((state) => state.articles.articles);
-  const project = useSelector((state) => state.project.articles);
-  const loading = useSelector((state) => state.reviews.loading);
-  const error = useSelector((state) => state.reviews.error);
+  // const reviews = useSelector((state) => state.reviews.reviews);
+  // const artickes = useSelector((state) => state.articles.articles);
+  // const project = useSelector((state) => state.project.articles);
+  // const loading = useSelector((state) => state.reviews.loading);
+  // const error = useSelector((state) => state.reviews.error);
   const nanoid = customAlphabet("1234567890", 10);
   const id = Number(nanoid(10));
 
@@ -63,17 +63,17 @@ export default function Add({ user, setNavBarOpen, setShowFooter }) {
     dispatch(fetchProject());
   }, [dispatch]);
 
-  if (loading) {
-    return <LoadingCircle />;
-  }
+  // if (loading) {
+  //   return <LoadingCircle />;
+  // }
 
-  if (error) {
-    return (
-      <div>
-        <Error error={error} />
-      </div>
-    );
-  }
+  // if (error) {
+  //   return (
+  //     <div>
+  //       <Error error={error} />
+  //     </div>
+  //   );
+  // }
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -137,7 +137,7 @@ const closeModal = () => {
   setIsOpen(false);
 };
 
-console.log(reviews.map((el) => el.attributes));
+// console.log(reviews.map((el) => el.attributes));
 return (
   <div className={styles.add_container}>
       <AddNavbar />
@@ -250,7 +250,7 @@ return (
                 ))}
             </ul>
                 */}
-      <ul>
+      {/* <ul>
         {reviews &&
           reviews.map((element) => (
             <li
@@ -279,7 +279,7 @@ return (
               </button>
             </li>
           ))}
-      </ul>
+      </ul> */}
       {/*
           </div>
           <div className={styles.add_container__project_container}>

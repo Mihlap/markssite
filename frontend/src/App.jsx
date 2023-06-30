@@ -98,7 +98,7 @@ const App = () => {
                 <Route path="/slava" element={<Slava />} />
                 <Route path="/prime-park" element={<PrimePark />} />
                 <Route path="/hotel-appart" element={<HotelAppart />} />
-                <Route path="/login" element={<Login />} />
+                {/* <Route path="/login" element={<Login />} /> */}
                 <Route path="/information" element={<Information/>}/>
                 <Route
                   path="/admin/*"
@@ -116,10 +116,10 @@ const App = () => {
                     )
                   }
                 >
-                  {/* <Route path="home" element={<Add />} />
+                  <Route path="home" element={<Add />} />
                   <Route path="add-a-project" element={<AddProject />} />
                   <Route path="add-a-articles" element={<AddArticles />} />
-                  <Route path="add-a-company" element={<AddCompany />} /> */}
+                  <Route path="add-a-company" element={<AddCompany />} />
                 </Route>
               </Routes>
             </CSSTransition>
