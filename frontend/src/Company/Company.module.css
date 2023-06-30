@@ -316,6 +316,7 @@
 .card_container {
   padding-left: 1.87vw;
   padding-right: 1.87vw;
+  padding-bottom: 2rem;
 }
 
 .card_container_ul {
@@ -408,8 +409,7 @@
 .companySubscriptionForm_wrapper {
   display: flex;
   padding: 18.43rem 1.87vw 3.37rem 1.87vw;
-  /* max-width: 1440px; */
-}
+ }
 
 .modal_wrapper {
   display: flex;
@@ -424,7 +424,7 @@
   outline: none;
   border-radius: none;
   background-color: rgba(246, 246, 246, 0.92);
-  box-shadow: 1px 4px 11px 0px;
+  box-shadow: -2px 4px 22px 0px rgba(29, 46, 67, 0.46);
   backdrop-filter: blur(8.5px);
   overflow-y: auto;
 }
@@ -437,6 +437,12 @@
   padding-top: 2rem;
   padding-left: 27rem;
   cursor: pointer;
+}
+
+.fixed {
+  position: sticky;
+  top: 0rem; 
+  right: 2rem; 
 }
 
 .modal_img_stuff {
@@ -485,6 +491,24 @@
   padding-top: 26px;
   padding-right: 46px;
   list-style: none;
+}
+
+.modal_about_stuff1,
+.modal_about_stuff2,
+.modal_about_stuff3,
+.modal_about_stuff4,
+.modal_about_stuff5 {
+  display: flex;
+  font-family: var(--font-raleway);
+  font-style: normal;
+  font-weight: var(--fw-400);
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--black-1D2E43);
+  padding-top: 26px;
+  padding-right: 2.5rem;
+  list-style: none;
+  padding-left: 2rem;
 }
 
 .slider_card_wrapper {
@@ -607,14 +631,14 @@
     padding-left: 5.4vw;
     padding-bottom: 2rem;
   }
-  
+
   .button_group button {
     font-size: 12px;
     padding: 8px 24px;
   }
 
   .button_hover {
-   width: fit-content;
+    width: fit-content;
   }
 
   .card_container {
@@ -624,7 +648,7 @@
   .slider_card_wrapper {
     display: flex;
     padding-left: 5.4vw;
-    }
+  }
 
   .slide_container_item_stuff {
     width: 20.18rem;
@@ -639,20 +663,45 @@
   }
 
   .company_form_contacts_wrapper {
-    padding: 5.6rem 1.87vw 0rem 0vw;
+    padding: 3.6rem 1.87vw 0rem 0vw;
   }
 
   .companySubscriptionForm_wrapper {
-    padding-top: 5.6rem;
+    padding-top: 3.6rem;
   }
-   .modal_wrapper {
+
+  .modal_wrapper {
     width: 29rem;
     height: auto;
   }
 
+  .modal_context {
+    padding-left: 2rem;
+  }
+
+  .modal_img_stuff {
+    border-radius: 146.5px;
+    width: 294px;
+    height: 294px;
+    margin-left: 10%;
+    object-fit: contain;
+  }
+
+  .modal_img_stuff img {
+    width: auto;
+    height: auto;
+  }
+
+
   .modal_close {
     padding-top: 2rem;
     padding-left: 23rem;
+  }
+
+  .modal_about_stuff5 {
+    padding-top: 2.5rem;
+    padding-right: 2rem;
+    padding-bottom: 5rem;
   }
 
 
@@ -870,10 +919,10 @@
     bottom: 0rem;
     left: 1rem;
     width: 100%;
-    }
+  }
 
-    .button_hover {
-     margin-right: 0.5rem;
+  .button_hover {
+    margin-right: 0.5rem;
     background: transparent;
     border-radius: 34px;
     border: 1px solid var(--black-1D2E43);
@@ -886,13 +935,13 @@
     color: var(--black-1D2E43);
     padding: 8px 24px;
     width: 0%;
-   }
+  }
 
-   .button_hover p {
+  .button_hover p {
     width: fit-content;
-   }
+  }
 
- .active {
+  .active {
     background: var(--black-1D2E43) !important;
     color: var(--white-F6F6F6) !important;
   }
@@ -901,92 +950,114 @@
     display: none;
   }
 
-  .pagination_company_slider {
+  .slider_card_wrapper {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: 32px;
+    padding-left: 1rem;
+    padding-top: 1.5rem;
   }
-  
-  .pagination_company_slider-dot {
-    width: 20px;
-    height: 4px;
-    border: 2px solid var(--light-light-gray-EBECEE);
-    background-color: var(--light-light-gray-EBECEE);
-    margin: 0 5px;
-    cursor: pointer;
-  }
-  
-  .pagination_company_slider-dot.active {
-    width: 54px !important;
-    border: 2px solid var(--salmon-FF7F6A);
+
+  .slide_container_item_stuff {
+    min-width: 20.18rem;
+    height: 100%;
+    margin-right: 1rem;
   }
 
   .modal_wrapper {
-    max-width: 26rem;
-     width: 100%;
-     height: auto;
-    }
-    
-    .modal_close {
-      padding-top: 2rem;
-      padding-left: 90%;
-    }
+    width: auto;
+    height: auto;
+    overflow-y: scroll;
+  }
 
-    .modal_context {
-      max-width: 23rem;
-      padding-left: 1rem;
-    }
-    
+  .modal_context {
+   padding-left: 1rem;
+    padding-right: 2rem;
+  }
 
-    .modal_img_stuff {
-      border-radius: 146.5px;
-      width: 294px;
-      height: 294px;
-       margin-left: 2rem;
-      margin-right: 6.1rem;
-      object-fit: contain;
-    }
-    
-    .modal_img_stuff img {
-      width: 100%;
-      height: 100%;
-    }
-    
-    
-    .modal_name_stuff {
-     padding-top: 1.5rem;
-    }
-    
-    .modal_description_stuff {
-      padding-top: 0.5rem;
-      padding-right: 2rem;
-    }
-    
-    .modal_about_stuff {
-      padding-top: 2.5rem;
-      padding-right: 2rem;
-     }
-
-     .modal_about_stuff:last-of-type {
-      padding-top: 2.5rem;
-      padding-right: 2rem;
-      padding-bottom: 5rem;
-     }
-    
-    .form_wrapper {
-      display: flex;
-      flex-direction: row;
-      padding: 5rem 1rem 0rem 1rem;
-    }
+  .modal_close {
+    display: flex;
+    padding-top: 2rem;
+    padding-left: 90%;
+  }
   
-    .company_form_contacts_wrapper {
-      width: 100%;
-      padding: 0rem 0rem 2.8rem 0rem;
-    }
+
+  .fixed {
+    position: sticky;
+    top: 0rem; 
+    right: 2rem; 
+  }
+
+  .modal_img_stuff {
+    display: flex;
+    justify-content: center;
+    border-radius: 50%;
+    max-width: 68vw;
+    height: 100%;
+    padding-left: auto;
+    padding-right: auto;
+    margin-left: auto;
+    margin-right: auto;
+    object-fit: contain;
+  }
+
+  .modal_img_stuff {
+    max-width: auto;
+    max-height: auto;
+  }
+
+
+  .modal_name_stuff {
+    padding-top: 1.5rem;
+  }
+
+  .modal_description_stuff {
+    padding-top: 0.5rem;
+    padding-right: 2rem;
+  }
+
+  .modal_about_stuff {
+    padding-top: 2.5rem;
+    padding-right: 2rem;
+  }
+
+  .modal_about_stuff1,
+  .modal_about_stuff2,
+  .modal_about_stuff3,
+  .modal_about_stuff4 {
+    padding-right: 3rem;
+    padding-left: 2rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .modal_about_stuff5 {
+    padding-top: 2.5rem;
+    padding-right: 3rem;
+    padding-bottom: 5rem;
+  }
+
+  .form_wrapper {
+    display: flex;
+    flex-direction: row;
+    padding: 5rem 1rem 0rem 1rem;
+  }
+
+  .company_form_contacts_wrapper {
+    width: 100%;
+    padding: 0rem 0rem 2.8rem 0rem;
+  }
 
   .companySubscriptionForm_wrapper {
     display: none;
   }
 
+}
+
+@media (max-width: 480px) {
+  .modal_about_stuff1,
+  .modal_about_stuff2,
+  .modal_about_stuff3,
+  .modal_about_stuff4 {
+    padding-right: 0.5rem;
+    padding-left: 0.5rem;
+  }
 }
