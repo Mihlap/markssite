@@ -206,11 +206,17 @@ export default function Company() {
     );
   }
 
+  
+  const handleCardClick = (cardIndex) => {
+    setCurrentCard(cardIndex);
+    sliderRefCard.current.slickGoTo(cardIndex);
+  };
+
   const settings = {
     infinite: true,
     speed: 500,
-    slidesToShow: 2,
-    slidesToScroll: 2,
+    slidesToShow: 8,
+    slidesToScroll: 3,
     beforeChange: (current, next) => setCurrentCard(next),
     responsive: [
       {
@@ -219,6 +225,7 @@ export default function Company() {
           slidesToShow: 2,
           slidesToScroll: 2,
           autoplay: false,
+          // centerMode: true,
         },
       },
        {
@@ -227,14 +234,10 @@ export default function Company() {
           slidesToShow: 1,
           slidesToScroll: 1,
           autoplay: false,
+          // centerMode: true,
          },
       },
     ],
-  };
-
-  const handleCardClick = (page) => {
-    setCurrentCard(page);
-    sliderRefCard.current.slickGoTo(page);
   };
 
   return (
@@ -651,47 +654,74 @@ export default function Company() {
       </div>
       {isMobile && (
         <div
-         className="company_slider_card_wrapper"
-         style={{ paddingLeft: "1rem", paddingTop: "1.5rem",
-        display: "flex", flexDirection: "column",
-        justifyContent: "center",
-      }}
+          style={{
+          paddingLeft: "1rem",
+          paddingTop: "1.5rem",
+          display: "inline-block",
+         }}
          >
           <Slider
             ref={sliderRefCard}
             {...settings}
-            className="slider_card_container"
+            style={{
+              display: "flex",
+              width: "18rem",
+              height: "100%",
+              // gap: "16px",
+              // overflowX: "auto",
+            }}
            >
             {staff?.map((el) => (
               <div
                 key={el.id}
-                className="slide_container_item_stuff"
                 onClick={() => handleButtonClick(el, el.id)}
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  width: "18rem",
+                  // marginRight: "20rem",
+                }}
                >
-                <div className="wrapper_container_item_stuff">
+                <div
+                  style={{
+                  //   display: "flex",
+                  // width: "18rem",
+                  // height: "20rem",
+                  marginRight: "1rem"
+                }}
+                >
                   <img
-                    className={styles.container__img_stuff}
-                    src={el.attributes.img}
+                   src={el.attributes.img}
                     alt={el.attributes.img}
+                    style={{
+                    objectFit: "contain",
+                    width: "100%",
+                    height: "auto",
+                    borderRadius: "1rem",
+                   }}
                   />
                 </div>
-                <div className={styles.container__item_name_stuff}>
+                <div
+                 className={styles.container__item_name_stuff}
+                 >
                   {el.attributes.name}
                 </div>
-                <div className={styles.container__item_position_stuff}>
+                <div
+                 className={styles.container__item_position_stuff}
+                 >
                   {el.attributes.position}
                 </div>
               </div>
             ))}
           </Slider>
           <div className="pagination_company_slider">
-            {Array.from({ length: Math.ceil(9) }).map((_, el) => (
+            {Array.from({ length: Math.ceil(8) }).map((_, index) => (
               <button
-                key={el}
+                key={index}
                 className={`pagination_company_slider-dot ${
-                  currentCard === el ? "active" : ""
+                  currentCard === index ? "active" : ""
                 }`}
-                onClick={() => handleCardClick(el)}
+                onClick={() => handleCardClick(index)}
               />
             ))}
           </div>
@@ -707,7 +737,7 @@ export default function Company() {
             touch="true"
           >
             {staff?.map((el) => (
-              <SwiperSlide
+            <SwiperSlide
                 key={el.id}
                 className={styles.slide_container_item_stuff}
                 onClick={() => handleButtonClick(el, el.id)}

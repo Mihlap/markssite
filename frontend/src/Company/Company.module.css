@@ -901,21 +901,10 @@
     display: none;
   }
 
-     .slide_container_item_stuff {
-    min-width: 19.81rem;
-    height: auto;
-    margin-right: 1rem;
-   }
-
-   .container__img_stuff {
-    width: 19.81rem;
-    height: auto;
-    margin-right: 2rem;
-   }
-   
-   .pagination_company_slider {
+  .pagination_company_slider {
     display: flex;
     justify-content: center;
+    align-items: center;
     margin-top: 32px;
   }
   
@@ -929,11 +918,12 @@
   }
   
   .pagination_company_slider-dot.active {
-    width: 54px;
+    width: 54px !important;
     border: 2px solid var(--salmon-FF7F6A);
   }
+
   .modal_wrapper {
-    max-width: 23.43rem;
+    max-width: 26rem;
      width: 100%;
      height: auto;
     }
