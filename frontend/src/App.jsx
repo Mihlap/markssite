@@ -58,6 +58,8 @@ const App = () => {
   //   setLoading(false);
   // }, 3500);
 
+  // для соммита
+
   function handleClickScroll() {
     setIsScrollDisabled(!isScrollDisabled);
   }
