@@ -54,7 +54,7 @@ export const fetchCategoryStaff =
 
     try {
       const response = await axios.get(
-        `${host}/api/staffs?category=${categoryId}`
+        `${host}/stuff_Foto?category=${categoryId}`
       );
       const {
         data: { data: staff },
