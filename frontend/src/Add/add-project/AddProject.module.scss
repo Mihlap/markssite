@@ -1,1 +1,29 @@
-@import '../../App.css'
+@import '../../App.css';
+
+.project_components_admin {
+    padding-left: 3rem;
+    padding-top: 7.5rem;
+
+    &__title {
+        font-family: var(--font-unbounded);
+        font-size: 2rem;
+        font-style: normal;
+        font-weight: 300;
+        line-height: 2.5rem;
+    }
+
+    &__button {
+        display: flex;
+        width: 1038px;
+        height: 104px;
+        padding: 16px 0px;
+        justify-content: center;
+        align-items: center;
+        flex-shrink: 0;
+        background-color: var(--blue-75BBFD);
+        border: 0;
+        border-radius: 6px;
+        color: var(--white-F6F6F6);
+        margin-top: 32px;
+    }
+}
