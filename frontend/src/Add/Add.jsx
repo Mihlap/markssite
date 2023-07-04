@@ -41,7 +41,7 @@ export default function Add({ user, setNavBarOpen, setShowFooter }) {
     photos: "",
   });
 
-  console.log(reviewData);
+
   useEffect(() => {
     function handleHideElements() {
       setNavBarOpen(false);
@@ -153,12 +153,12 @@ return (
       </div> */}
       {/* <div className={styles.add_container__block}> */}
       {/* <div className={styles.add_container__button_blocks}> */}
-      <button
+      {/* <button
         className={styles.add_container__articles_button}
         onClick={openModal}
       >
         Добавить Публикацию
-      </button>
+      </button> */}
       {isOpen && (
         <div className={styles.add_container__modal_overlay}>
           <div className={styles.add_container__modal}>
