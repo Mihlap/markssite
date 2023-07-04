@@ -232,8 +232,7 @@ export default function Company() {
   //     },
   //     {
   //       breakpoint: 480,
-  //       settings: {
-  //         slidesToShow: 1,
+  //       settings: {categorie:
   //         slidesToScroll: 1,
   //         autoplay: false,
   //       },
