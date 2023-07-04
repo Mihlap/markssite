@@ -1,12 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
+const DEFAULT_CATEGORY = "Руководство";
 const host = process.env.REACT_APP_DEV_HOST;
 
 const staffSlice = createSlice({
   name: "staff",
   initialState: {
-    categoryId: "Руководство",
+    categoryId: DEFAULT_CATEGORY,
     selectedCardId: null,
     selectedCard: null,
     staff: [],
@@ -59,15 +60,17 @@ export const fetchCategoryStaff =
       const {
         data: { data: staff },
       } = response;
+      // const { data: staff } = response.data;
       const filteredData = staff.filter(
         (staff) => staff.attributes.categorie === categoryId
       );
     
       dispatch(setCategoryId(categoryId));
      dispatch(fetchStaffSuccess(filteredData));
+     dispatch(fetchStaffSuccess(staff));
 
     } catch (error) {
-      dispatch(fetchStaffFailure(error));
+      dispatch(fetchStaffFailure(error.message));
     }
   };
 
