@@ -36,6 +36,7 @@ const App = () => {
   const [isScrollDisabled, setIsScrollDisabled] = useState(false);
 
   const [loading, setLoading] = useState(false);
+  /////////
   const [navOpen, setNavOpen] = useState(false);
   const [isHidden, setHidden] = useState(false);
   const [showNavbar, setNavBarOpen] = useState(true);
