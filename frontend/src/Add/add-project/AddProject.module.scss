@@ -12,7 +12,7 @@
         line-height: 2.5rem;
     }
 
-    &__button {
+    &__button_block {
         display: flex;
         width: 1038px;
         height: 104px;
@@ -23,7 +23,90 @@
         background-color: var(--blue-75BBFD);
         border: 0;
         border-radius: 6px;
-        color: var(--white-F6F6F6);
         margin-top: 32px;
+        transition: background-color 0.3s;
+        cursor: pointer;
+
+        &:hover {
+            background-color: #389FFF;
+        }
+
+        &:hover .project_components_admin__icon circle {
+            fill: var(--black-1D2E43);
+        }
     }
+
+    &__icon circle {
+        transition: fill 0.3s;
+    }
+
+    &__button_text {
+        color: var(--white-F6F6F6);
+        padding-top: 1rem;
+        font-size: 1rem;
+        font-family: var(--font-raleway);
+        font-style: normal;
+        font-weight: 400;
+        line-height: 1rem;
+    }
+
+    &__button {
+        appearance: none;
+        border: none;
+        background-color: transparent;
+        cursor: pointer;
+    }
+
+
+    &__modal_container {
+        position: fixed;
+        z-index: 9999;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.6);
+        /* Затемнение фона */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+
+    &__modal_block {
+        position: relative; // Add position: relative to the modal block
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 1rem;
+        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    &__close_button {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 66px;
+        height: 66px;
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        outline: none;
+    }
+
+    &__close_button::after,
+    &__close_button::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 25px;
+        height: 1px;
+        background-color: #000;
+        transform: translate(-50%, -50%) rotate(45deg);
+    }
+
+    &__close_button::after {
+        transform: translate(-50%, -50%) rotate(-45deg);
+    }
+
 }
