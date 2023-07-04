@@ -22,7 +22,7 @@ export default function AddNavbar() {
 
   return (
     <>
-      <section className={styles.add_navbar_container}>
+      <nav className={styles.add_navbar_container}>
         <div className={styles.add_navbar_container__block}>
           <div className={styles.add_navbar_container__management}>
             <div className={styles.add_navbar_container__title}>
@@ -82,7 +82,7 @@ export default function AddNavbar() {
             </ul>
           </div>
         </div>
-      </section>
+      </nav>
       <Link className={styles.preview} to="/">
         Предпросмотр
       </Link>
