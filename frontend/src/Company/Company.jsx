@@ -104,6 +104,8 @@ export default function Company() {
     }
   };
 
+  
+
   useEffect(() => {
     const timer1 = setTimeout(() => {
       if (countPercent < 80) {
