@@ -25,4 +25,4 @@ module.exports = {
     host: '127.0.0.1',
     dialect: 'mysql',
   },
-};
+};It seems that you have not provided any specific information or question regarding the function you want help with. Could you please provide more details or clarify your request so that I can assist you better?
