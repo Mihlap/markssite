@@ -206,40 +206,6 @@ export default function Company() {
     );
   }
 
-  
-  // const handleCardClick = (cardIndex) => {
-  //   if (sliderRefCard.current) {
-  //     sliderRefCard.current.slickGoTo(cardIndex);
-  //   }
-  //   setCurrentCard(cardIndex);
-  // };
-
-  // const settings = {
-  //   infinite: false,
-  //   speed: 500,
-  //   slidesToShow: 8,
-  //   slidesToScroll: 3,
-  //   beforeChange: (current, next) => setCurrentCard(next),
-  //   centerMode: true,
-  //   responsive: [
-  //     {
-  //       breakpoint: 767,
-  //       settings: {
-  //         slidesToShow: 1,
-  //         slidesToScroll: 1,
-  //         autoplay: false,
-  //       },
-  //     },
-  //     {
-  //       breakpoint: 480,
-  //       settings: {categorie:
-  //         slidesToScroll: 1,
-  //         autoplay: false,
-  //       },
-  //     },
-  //   ],
-  // };
-
   return (
     <div className={styles.company_main}>
       <Company_Slider />
@@ -653,49 +619,16 @@ export default function Company() {
         </ul>
       </div>
       {isMobile && (
-       <div className={styles.slider_card_wrapper}>
-       <Swiper
-         className={styles.slider_card_container}
-         loop={true}
-         slidesPerView={2}
-         spaceBetween={0}
-         touch="true"
-       >
-         {staff?.map((el) => (
-         <SwiperSlide
-             key={el.id}
-             className={styles.slide_container_item_stuff}
-             onClick={() => handleButtonClick(el, el.id)}
-           >
-             <div className={styles.wrapper_container_item_stuff}>
-               <img
-                 className={styles.container__img_stuff}
-                 src={el.attributes.img}
-                 alt={el.attributes.img}
-               />
-             </div>
-             <div className={styles.container__item_name_stuff}>
-               {el.attributes.name}
-             </div>
-             <div className={styles.container__item_position_stuff}>
-               {el.attributes.position}
-             </div>
-           </SwiperSlide>
-         ))}
-       </Swiper>
-     </div>
-      )}
-      {!isMobile && (
         <div className={styles.slider_card_wrapper}>
           <Swiper
             className={styles.slider_card_container}
             loop={true}
-            slidesPerView={3}
+            slidesPerView={2}
             spaceBetween={0}
             touch="true"
           >
             {staff?.map((el) => (
-            <SwiperSlide
+              <SwiperSlide
                 key={el.id}
                 className={styles.slide_container_item_stuff}
                 onClick={() => handleButtonClick(el, el.id)}
@@ -717,7 +650,40 @@ export default function Company() {
             ))}
           </Swiper>
         </div>
-      )} 
+      )}
+      {!isMobile && (
+        <div className={styles.slider_card_wrapper}>
+          <Swiper
+            className={styles.slider_card_container}
+            loop={true}
+            slidesPerView={3}
+            spaceBetween={0}
+            touch="true"
+          >
+            {staff?.map((el) => (
+              <SwiperSlide
+                key={el.id}
+                className={styles.slide_container_item_stuff}
+                onClick={() => handleButtonClick(el, el.id)}
+              >
+                <div className={styles.wrapper_container_item_stuff}>
+                  <img
+                    className={styles.container__img_stuff}
+                    src={el.attributes.img}
+                    alt={el.attributes.img}
+                  />
+                </div>
+                <div className={styles.container__item_name_stuff}>
+                  {el.attributes.name}
+                </div>
+                <div className={styles.container__item_position_stuff}>
+                  {el.attributes.position}
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+      )}
       <div className={styles.fon}>
         <div className={styles.form_wrapper}>
           <div className={styles.company_form_contacts_wrapper}>
