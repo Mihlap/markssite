@@ -1,0 +1,104 @@
+@import '../../../App.css';
+
+.form_container {
+    width: 33.375rem;
+    padding: 1.62rem 2rem 1.75rem 2rem;
+
+
+    &__title {
+        font-size: 1.5rem;
+            font-family: var(--font-unbounded);
+            font-style: normal;
+            font-weight: 300;
+            line-height: 2rem;
+    }
+
+    &__block_gray_one {
+        background-color: var(--light-light-gray-EBECEE);
+        padding: 0.88rem 1rem 2rem 1rem;
+        margin-top: 2.5rem;
+        border-radius: 6px;
+    }
+
+    &__checkbox_block {
+        color: var(--light-gray-C0C5CB);
+        font-size: 0.75rem;
+        font-family: Raleway;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 1rem;
+        margin-top: 2rem;
+    
+        span {
+           color: var(--salmon-light-FFBFB5);
+        }
+    }
+
+    
+}
+
+.form__group {
+    position: relative;
+    padding: 15px 0 0;
+    margin-top: 10px;
+}
+
+.form__field {
+    font-family: var(--font-raleway);
+    width: 100%;
+    border: 0;
+    border-bottom: 1px solid var(--gray-959DA6);
+    outline: 0;
+    font-size: 1.3rem;
+    color: var(--black-1D2E43);
+    padding: 7px 0;
+    background: transparent;
+    transition: border-color 0.2s;
+
+    &::placeholder {
+        color: transparent;
+    }
+
+    &:placeholder-shown~.form__label {
+        font-size: 1rem;
+        cursor: text;
+        top: 20px;
+        font-weight: var(--fw-400);
+    }
+}
+
+.form__label {
+    position: absolute;
+    top: 0;
+    display: block;
+    transition: 0.2s;
+    font-size: 1rem;
+    color: var(--gray-959DA6);
+}
+
+.form__field:focus {
+    ~.form__label {
+        position: absolute;
+        top: 0;
+        display: block;
+        transition: 0.2s;
+        font-size: 0.70rem;
+        color: var(--gray-959DA6);
+        font-weight: 400;
+    }
+
+    padding-bottom: 6px;
+    font-weight: 400;
+    border-width: 3px;
+    border-image: linear-gradient(to right, var(--salmon-FF7F6A), var(--salmon-FF7F6A)) 1 / 0 0 1px 0 stretch;
+    border-image-slice: 2;
+}
+
+/* reset input */
+.form__field {
+
+    &:required,
+    &:invalid {
+        box-shadow: none;
+    }
+}
