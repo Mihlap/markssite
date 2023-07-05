@@ -7,6 +7,9 @@ const path = require("path");
 const staffsRouter = require("./Routes/staffsRouter");
 const projectRouter = require("./routes/projectRouter");
 
+
+
+
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -27,6 +30,7 @@ app.get("/", (req, res) => {
 
 app.use('/api', staffsRouter);
 app.use('/api-project', projectRouter);
+
 
 app.listen(PORT, () => {
   console.log(`Старт server --->🔥 ${PORT} 🔥<---`);

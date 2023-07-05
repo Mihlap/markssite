@@ -8,7 +8,7 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
-      },
+        },
       name: {
         type: Sequelize.STRING,
       },
@@ -42,7 +42,7 @@ module.exports = {
       about5: {
         type: Sequelize.TEXT,
       },
-      staffId: {
+      userId: {
         type: Sequelize.INTEGER,
         references: {
           model: 'Users',
