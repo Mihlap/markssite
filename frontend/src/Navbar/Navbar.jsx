@@ -9,7 +9,7 @@ import { NavLink } from "react-router-dom";
 
 // тетс гита на сливание с новой веткой
 
-const Navbar = ({ handleClickScroll, navOpen, setNavOpen, user }) => {
+const Navbar = ({ handleClickScroll, navOpen, setNavOpen }) => {
   const [clicked, setClicked] = useState(false);
   const [isChecked, setIsChecked] = useState(() => {
     const activeNavItem = localStorage.getItem("activeNavItem");

@@ -12,7 +12,7 @@ export default function FormAddProject() {
     countryCity: "",
     monthYear: "",
     viewConstruction: "",
-    // dropPhoto: [],
+    dropPhoto: [],
   });
 
     const changeHandler = (event) => {
@@ -38,7 +38,8 @@ export default function FormAddProject() {
   
    const submitHandler = async (e) => {
      e.preventDefault();
-     dispatch(fetchProject(inputData, setInputData));
+     console.log(inputData);
+    //  dispatch(fetchProject(inputData, setInputData));
    };
 
   const customStyles = {
@@ -123,7 +124,7 @@ export default function FormAddProject() {
               styles={customStyles}
               isMulti
               name="viewConstruction"
-              value={inputData.changeHandler}
+              value={inputData.viewConstruction}
               onChange={changeHandler}
               options={[
                 { value: "Архитектура", label: "Архитектура" },
@@ -147,6 +148,16 @@ export default function FormAddProject() {
             <span>*отображается первое изображение слайдера</span>
           </div>
         </div>
+        <label>
+          Загрузить фото
+          <input
+            type="file"
+            name="dropPhoto"
+            onChange={changeHandler}
+            multiple
+          />
+        </label>
+        <button type="submit">опубликовать</button>
       </form>
     </div>
   );

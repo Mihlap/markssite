@@ -23,7 +23,7 @@ router.post('/postzapros', fileMiddleware.array('dropPhoto', 4), async (req, res
       title: req.body.title,
       selectCompetencies: req.body.selectCompetencies,
       countryCity: req.body.countryCity,
-    //   image: req.files.map((file) => file.originalname).join(', '), // Объединяем имена фотографий через запятую
+      imageTitle: req.files.map((file) => file.originalname).join(', '), // Объединяем имена фотографий через запятую
       // video: req.files.find((file) => file.fieldname === "dropVideo").filename,
     });
 
