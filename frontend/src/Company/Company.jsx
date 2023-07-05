@@ -199,14 +199,14 @@ export default function Company() {
     return <LoadingCircle />;
   }
 
-  if (error) {
-    return (
-      <div>
-        {" "}
-        <Error error={error.message} />
-      </div>
-    );
-  }
+  // if (error) {
+  //   return (
+  //     <div>
+  //       {" "}
+  //       <Error error={error.message} />
+  //     </div>
+  //   );
+  // }
 
   return (
     <div className={styles.company_main}>
