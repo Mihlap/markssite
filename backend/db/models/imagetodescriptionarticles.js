@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class imageToDescriptionArticles extends Model {
+  class ImageToDescriptionArticles extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -14,13 +14,13 @@ module.exports = (sequelize, DataTypes) => {
       this.belongsTo(Articles, { foreignKey: 'idBlock' });
     }
   }
-  imageToDescriptionArticles.init({
+  ImageToDescriptionArticles.init({
     image: DataTypes.TEXT,
     text: DataTypes.STRING,
     idBlock: DataTypes.INTEGER
   }, {
     sequelize,
-    modelName: 'imageToDescriptionArticles',
+    modelName: 'ImageToDescriptionArticles',
   });
-  return imageToDescriptionArticles;
+  return ImageToDescriptionArticles;
 };

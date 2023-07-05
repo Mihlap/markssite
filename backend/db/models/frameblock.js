@@ -3,7 +3,7 @@ const {
   Model
 } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
-  class frameBlock extends Model {
+  class FrameBlock extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
@@ -14,12 +14,12 @@ module.exports = (sequelize, DataTypes) => {
       this.belongsTo(Articles, { foreignKey: 'idBlock' });
     }
   }
-  frameBlock.init({
+  FrameBlock.init({
     text: DataTypes.TEXT,
     idBlock: DataTypes.INTEGER
   }, {
     sequelize,
-    modelName: 'frameBlock',
+    modelName: 'FrameBlock',
   });
-  return frameBlock;
+  return FrameBlock;
 };

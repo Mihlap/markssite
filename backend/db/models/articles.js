@@ -11,27 +11,27 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate({
       User,
-      blockHeadingTitle,
-      textBlockArticles,
-      frameBlock,
-      imageToDescriptionArticles,
-      quoteBlocks,
-      notesBlock,
-      imageTwoArticles,
-      imageSliderArticles,
-      videoArticles,
+      BlockHeadingTitle,
+      TextBlockArticles,
+      FrameBlock,
+      ImageToDescriptionArticles,
+      QuoteBlocks,
+      NotesBlock,
+      ImageTwoArticles,
+      ImageSliderArticles,
+      VideoArticles,
     }) {
       // define association here
       this.belongsTo(User, { foreignKey: 'authorId' });
-      this.hasMany(blockHeadingTitle, { foreignKey: 'idBlock' });
-      this.hasMany(textBlockArticles, { foreignKey: 'idBlock' });
-      this.hasMany(frameBlock, { foreignKey: 'idBlock' });
-      this.hasMany(imageToDescriptionArticles, { foreignKey: 'idBlock' });
-      this.hasMany(quoteBlocks, { foreignKey: 'idBlock' });
-      this.hasMany(notesBlock, { foreignKey: 'idBlock' });
-      this.hasMany(imageTwoArticles, { foreignKey: 'idBlock' });
-      this.hasMany(imageSliderArticles, { foreignKey: 'idBlock' });
-      this.hasMany(videoArticles, { foreignKey: 'idBlock' });
+      this.hasMany(BlockHeadingTitle, { foreignKey: 'idBlock' });
+      this.hasMany(TextBlockArticles, { foreignKey: 'idBlock' });
+      this.hasMany(FrameBlock, { foreignKey: 'idBlock' });
+      this.hasMany(ImageToDescriptionArticles, { foreignKey: 'idBlock' });
+      this.hasMany(QuoteBlocks, { foreignKey: 'idBlock' });
+      this.hasMany(NotesBlock, { foreignKey: 'idBlock' });
+      this.hasMany(ImageTwoArticles, { foreignKey: 'idBlock' });
+      this.hasMany(ImageSliderArticles, { foreignKey: 'idBlock' });
+      this.hasMany(VideoArticles, { foreignKey: 'idBlock' });
     }
   }
   Articles.init({
