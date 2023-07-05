@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const DEFAULT_CATEGORY = "Руководство";
-const host = process.env.REACT_APP_DEV_HOST;
+const host = process.env.REACT_APP_SERVER_HOST;
 
 const staffSlice = createSlice({
   name: "staff",
@@ -55,18 +55,19 @@ export const fetchCategoryStaff =
 
     try {
       const response = await axios.get(
-        `${host}/api/staffs?category=${categoryId}`
+        // `${host}/api/staffs?category=${categoryId}`
+        `${host}/api/staffs`
       );
-      const {
-        data: { data: staff },
-      } = response;
-      // const { data: staff } = response.data;
-      const filteredData = staff.filter(
-        (staff) => staff.attributes.categorie === categoryId
-      );
+      // const {
+      //   data: { data: staff },
+      // } = response;
+      const { data: staff } = response.data;
+      // const filteredData = staff.filter(
+      //   (staff) => staff.attributes.categorie === categoryId
+      // );
     
       dispatch(setCategoryId(categoryId));
-     dispatch(fetchStaffSuccess(filteredData));
+    //  dispatch(fetchStaffSuccess(filteredData));
      dispatch(fetchStaffSuccess(staff));
 
     } catch (error) {
