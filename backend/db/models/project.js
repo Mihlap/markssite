@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate({
       User,
-      imageToDescription,
+      ImageToDescription,
       TextBlock,
       ImageBlockThree,
       ImageBlockTwo,
@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     }) {
       // define association here
       this.belongsTo(User, { foreignKey: 'authorId' });
-      this.hasMany(imageToDescription, { foreignKey: 'idBlock' });
+      this.hasMany(ImageToDescription, { foreignKey: 'idBlock' });
       this.hasMany(TextBlock, { foreignKey: 'idBlock' });
       this.hasMany(ImageBlockThree, { foreignKey: 'idBlock' });
       this.hasMany(ImageBlockTwo, { foreignKey: 'idBlock' });
