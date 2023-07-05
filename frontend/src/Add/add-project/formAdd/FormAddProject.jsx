@@ -1,8 +1,46 @@
-import React from "react";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import Select from "react-select";
 import styles from "./FormAddProject.module.scss";
+import { fetchProject } from "../../../store/Slice/projectSlice";
 
 export default function FormAddProject() {
+  const dispatch = useDispatch(); 
+  const [inputData, setInputData] = useState({
+    title: "",
+    selectCompetencies: "",
+    countryCity: "",
+    monthYear: "",
+    viewConstruction: "",
+    dropPhoto: [],
+  });
+
+    const changeHandler = (event) => {
+      if (event.target.files) {
+        if (event.target.name === "dropPhoto") {
+          setInputData((prev) => ({
+            ...prev,
+            dropPhoto: event.target.files,
+          }));
+        } else if (event.target.name === "dropVideo") {
+          setInputData((prev) => ({
+            ...prev,
+            dropVideo: event.target.files[0],
+          }));
+        }
+      } else {
+        setInputData((prev) => ({
+          ...prev,
+          [event.target.name]: event.target.value,
+        }));
+      }
+  };
+  
+   const submitHandler = async (e) => {
+     e.preventDefault();
+     console.log(inputData);
+    //  dispatch(fetchProject(inputData, setInputData));
+   };
 
   const customStyles = {
     control: (provided, state) => ({
@@ -16,7 +54,7 @@ export default function FormAddProject() {
     <div className={styles.form_container}>
       <div className={styles.form_container__title}>Новый проект</div>
 
-      <form>
+      <form onSubmit={submitHandler}>
         <div className={styles.form_container__block_gray_one}>
           <div className={`${styles.form__group} ${styles.field}`}>
             <input
@@ -24,6 +62,8 @@ export default function FormAddProject() {
               className={styles.form__field}
               placeholder="Название проекта"
               name="title"
+              value={inputData.title}
+              onChange={changeHandler}
               required
             />
             <label htmlFor="Название проекта" className={styles.form__label}>
@@ -44,6 +84,8 @@ export default function FormAddProject() {
               ]}
               className={styles.form__field}
               placeholder="Выбрать компетенции"
+              value={inputData.selectCompetencies}
+              onChange={changeHandler}
             />
             <label htmlFor="selectCompetencies" className={styles.form__label}>
               Выбрать компетенции
@@ -55,6 +97,8 @@ export default function FormAddProject() {
               className={styles.form__field}
               placeholder="countryCity"
               name="countryCity"
+              value={inputData.countryCity}
+              onChange={changeHandler}
               required
             />
             <label htmlFor="countryCity" className={styles.form__label}>
@@ -67,6 +111,8 @@ export default function FormAddProject() {
               className={styles.form__field}
               placeholder="monthYear"
               name="monthYear"
+              value={inputData.monthYear}
+              onChange={changeHandler}
               required
             />
             <label htmlFor="monthYear" className={styles.form__label}>
@@ -78,6 +124,8 @@ export default function FormAddProject() {
               styles={customStyles}
               isMulti
               name="viewConstruction"
+              value={inputData.viewConstruction}
+              onChange={changeHandler}
               options={[
                 { value: "Архитектура", label: "Архитектура" },
                 { value: "BIM", label: "BIM" },
@@ -100,6 +148,16 @@ export default function FormAddProject() {
             <span>*отображается первое изображение слайдера</span>
           </div>
         </div>
+        <label>
+          Загрузить фото
+          <input
+            type="file"
+            name="dropPhoto"
+            onChange={changeHandler}
+            multiple
+          />
+        </label>
+        <button type="submit">опубликовать</button>
       </form>
     </div>
   );

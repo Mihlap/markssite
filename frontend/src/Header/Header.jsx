@@ -11,82 +11,12 @@ import VideoPlayer from "../UI/Videoplayer/VideoPlayer";
 import Mapbox3D from "../UI/Map3D/Mapbox3D";
 import styles from "./Header.module.css";
 import SliderMobile from "../UI/SliderHeader/SliderMobile";
-import { fetchArticles } from "../store/Slice/articlesSlice";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchProject } from "../store/Slice/projectSlice";
-import LoadingCircle from "../Loading/LoadingCircle";
-import Error from "../Loading/Error/Error";
 import actively from "./img/actively.png";
 
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
-export default function Header({user}) {
-    // const dispatch = useDispatch();
-    // const artickes = useSelector((state) => state.articles.articles);
-    // const project = useSelector((state) => state.project.articles);
-    // const loading = useSelector((state) => state.articles.loading);
-    // const error = useSelector((state) => state.articles.error);
-    
-    // const loading = useSelector((state) => state.project.loading);
-    // const error = useSelector((state) => state.project.error);
-   
+export default function Header() {
 
-//     useEffect(() => {
-//       dispatch(fetchArticles());
-//       dispatch(fetchProject());
-//     }, [dispatch]);
-
-//     if (loading) {
-//       return <LoadingCircle />
-//     }
-
-//     if (error) {
-//       return <div> <Error error={error} /></div>;
-//     }
-
-
-//   const array = artickes.map((el) => el.attributes);
-
-//   if (array[0] === undefined) { 
-//     return array[0]
-//   }
-//   if (array[1] === undefined) {
-//      return array[1]
-//   }  
-//   // из объекта вытаскиваются только 0 и 1 статья 
-//   const winePark = array[0];
-//   const badaevsky = array[1];
-
-//   let primeParkProject = []
-//   let hotelAppartProject = []
-//   let slavaProject = []
-//   let wineParkProject =[]
-
-
-// if (project !== undefined) {
-//   const arrayProject = project.map((elem) => elem.attributes);
-
-//   if (arrayProject[0] === undefined) {
-//     return arrayProject[0];
-//   }
-//   if (arrayProject[1] === undefined) {
-//     return arrayProject[1];
-//   }
-//   if (arrayProject[2] === undefined) {
-//     return arrayProject[2];
-//   }
-//   if (arrayProject[3] === undefined) {
-//     return arrayProject[3];
-//   }
-
-//    primeParkProject = arrayProject[0];
-//    hotelAppartProject = arrayProject[1];
-//    slavaProject = arrayProject[2];
-//    wineParkProject = arrayProject[3];
-
-// }
-
-  
   return (
     <main className={styles.header}>
       {true ? (

@@ -3,7 +3,9 @@ require("dotenv").config();
 const morgan = require("morgan");
 const cors = require("cors");
 const path = require("path");
-const staffsRouter = require('./Routes/staffsRouter');
+// eslint-disable-next-line
+const staffsRouter = require("./Routes/staffsRouter");
+const projectRouter = require("./routes/projectRouter");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -24,9 +26,10 @@ app.get("/", (req, res) => {
 });
 
 app.use('/api', staffsRouter);
+app.use('/api-project', projectRouter);
 
 app.listen(PORT, () => {
-  console.log(`Старт 🏎️ 💨 ${PORT}`);
+  console.log(`Старт server --->🔥 ${PORT} 🔥<---`);
 });
 
 
