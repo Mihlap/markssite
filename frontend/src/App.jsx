@@ -30,9 +30,8 @@ import AddCompany from "./Add/add-about-the-company/AddCompany";
 
 
 const App = () => {
-  // const user = useSelector((state) => state.login.user);
-  const user = 1;
   const location = useLocation();
+  const user = true;
   const [isScrollDisabled, setIsScrollDisabled] = useState(false);
 
   const [loading, setLoading] = useState(false);
@@ -72,7 +71,6 @@ const App = () => {
         <>
           {showNavbar && (
             <Navbar
-              user={user}
               handleClickScroll={handleClickScroll}
               setNavOpen={setNavOpen}
               navOpen={navOpen}
@@ -83,7 +81,7 @@ const App = () => {
               <Routes location={location}>
                 <Route
                   path="/"
-                  element={<Header user={user} navOpen={navOpen} isHidden={isHidden} />}
+                  element={<Header navOpen={navOpen} isHidden={isHidden} />}
                 />
                 <Route path="/competention" element={<Competentions />} />
                 <Route path="/project" element={<Project />} />
@@ -108,7 +106,8 @@ const App = () => {
                   element={
                     // Если пользователь авторизован, показываем компонент Add,
                     // иначе перенаправляем пользователя на страницу входа
-                    user ? (
+                    user
+                      ? (
                       <Add
                         setNavBarOpen={setNavBarOpen}
                         setShowFooter={setShowFooter}

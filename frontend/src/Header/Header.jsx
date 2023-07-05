@@ -15,9 +15,8 @@ import actively from "./img/actively.png";
 
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
-export default function Header({user}) {
+export default function Header() {
 
-  
   return (
     <main className={styles.header}>
       {true ? (
