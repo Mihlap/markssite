@@ -5,7 +5,7 @@ const cors = require("cors");
 const path = require("path");
 // eslint-disable-next-line
 const staffsRouter = require("./Routes/staffsRouter");
-const projectRouter = require("./routes/projectRouter");
+const projectRouter = require("./Routes/projectRouter");
 
 
 
