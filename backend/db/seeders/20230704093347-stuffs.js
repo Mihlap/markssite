@@ -7,7 +7,7 @@ module.exports = {
      await queryInterface.bulkInsert('Staffs', [{
        name: 'Готман Юрий Альфредович',
        img: 'gotman.png',
-       categorie: 'Руководство',
+       category: 'Руководство',
        position: 'Генеральный директор',
        description: 'Hero',
        about: 'superman',
@@ -23,7 +23,7 @@ module.exports = {
      {
       name: 'Магзумов Раиль Наилович',
       img: 'magzumov.png',
-      categorie: 'Руководство',
+      category: 'Руководство',
       position: 'Первый заместитель',
       description: 'Hero',
       about: 'superman',
@@ -39,7 +39,7 @@ module.exports = {
      {
       name: 'Колесников Роман Игоревич',
       img: 'kolesnikov.png',
-      categorie: 'Руководство',
+      category: 'Руководство',
       position: 'Заместитель генерального директора',
       description: 'Hero',
       about: 'superman',
@@ -55,7 +55,7 @@ module.exports = {
      {
       name: 'Бикбулатов Мансур Иршатович',
       img: 'bikbulatov.png',
-      categorie: 'Руководство',
+      category: 'Руководство',
       position: 'Заместитель генерального директора по общим вопросам',
       description: 'Hero',
       about: 'superman',
@@ -71,7 +71,7 @@ module.exports = {
      {
       name: 'Илютенко Денис Владимирович',
       img: 'ilutenko.png',
-      categorie: 'Руководство',
+      category: 'Руководство',
       position: 'Заместитель генерального директора по проектированию',
       description: 'Hero',
       about: 'superman',
@@ -87,7 +87,7 @@ module.exports = {
      {
       name: 'Васильев Максим Львович',
       img: 'vasilev.png',
-      categorie: 'Руководство',
+      category: 'Руководство',
       position: 'Заместитель генерального директора по объектам метрополитена транспортной инфраструктуры',
       description: 'Hero',
       about: 'superman',
@@ -103,7 +103,7 @@ module.exports = {
      {
       name: 'Галяутдинов Рустам Салаватович',
       img: 'galayutdinov.png',
-      categorie: 'Руководство',
+      category: 'Руководство',
       position: 'Заместитель генерального директора по объектам промышленного назначения',
       description: 'Hero',
       about: 'superman',
@@ -119,7 +119,7 @@ module.exports = {
     {
      name: 'Котов Алексей Игоревич',
      img: 'kotov.png',
-     categorie: 'Руководство',
+     category: 'Руководство',
      position: 'Заместитель генерального директора по объектам благоустройства',
      description: 'Hero',
      about: 'superman',
