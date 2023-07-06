@@ -7,9 +7,6 @@ import Company_Slider from "../UI/Company_Slider/Company_Slider";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Swiper, SwiperSlide } from "swiper/react";
-// import Slider from "react-slick";
-// import "slick-carousel/slick/slick.css";
-// import "slick-carousel/slick/slick-theme.css";
 
 import SliderMobile from "../UI/SliderHeader/SliderMobile";
 import TableCompany from "../UI/TableCompany/TableCompany";
@@ -21,7 +18,11 @@ import {
   incrementScienceDegree,
 } from "../store/Slice/counterSlice";
 
-import { fetchCategoryStaff, selectCard, setCategory} from "../store/Slice/StaffSlice";
+import {
+  fetchCategoryStaff,
+  selectCard,
+  setCategory,
+} from "../store/Slice/StaffSlice";
 import LoadingCircle from "../Loading/LoadingCircle";
 import Error from "../Loading/Error/Error";
 
@@ -44,19 +45,16 @@ export default function Company() {
   const [showCards, setShowCards] = useState(false);
   const [activeButton, setActiveButton] = useState("Руководство");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedCardId, setSelectedCardId] = useState(null);
-
-  const blockSlider = useRef(null);
-  const nameCompanyRef = useRef(null);
-  const thisBlockRef = useRef(null);
-  // const [currentCard, setCurrentCard] = useState(0);
-  // const sliderRefCard = useRef(null);
-
+    
   const dispatch = useDispatch();
   const { selectedCard, category, staff, loading, error } = useSelector(
     (state) => state.staff
     );
-    console.log(staff, category, "=================================");
+
+    const blockSlider = useRef(null);
+    const nameCompanyRef = useRef(null);
+    const thisBlockRef = useRef(null);
+ 
   const countDepartment = useSelector((state) => state.counter.countDepartment);
   const countGap = useSelector((state) => state.counter.countGap);
   const countScient = useSelector((state) => state.counter.countScient);
@@ -69,7 +67,7 @@ export default function Company() {
   });
 
   const isMobile = windowWidth <= 767;
-
+ 
   useEffect(() => {
     function handleResize() {
       setWindowWidth(window.innerWidth);
@@ -89,12 +87,10 @@ export default function Company() {
         </div>
       );
     }
-    // setTimeout(() => {
-      // dispatch(selectCard(selectedCardId));
-      dispatch(fetchCategoryStaff(category));
-      // setShowCards(true);
-    // }, 100);
-  }, [dispatch, category, error]);
+    dispatch(selectCard(null));
+    dispatch(fetchCategoryStaff(category));
+    setShowCards(true);
+    }, [dispatch, category, error]);
 
   const handleButtonClick = (category, selectedCardId) => {
     if (selectedCardId) {
@@ -102,14 +98,12 @@ export default function Company() {
       setIsModalOpen(true);
     } else {
       setIsModalOpen(false);
-      setSelectedCardId(null);
-      // dispatch(fetchCategoryStaff(category));
+      dispatch(selectCard(null));
+      dispatch(fetchCategoryStaff(category));
       setActiveButton(category);
       dispatch(setCategory(category));
     }
   };
-
-  
 
   useEffect(() => {
     const timer1 = setTimeout(() => {
@@ -203,8 +197,6 @@ export default function Company() {
   if (loading) {
     return <LoadingCircle />;
   }
-
-
 
   return (
     <div className={styles.company_main}>
@@ -500,35 +492,28 @@ export default function Company() {
         style={{ opacity: showCards ? 1 : 0 }}
       >
         <ul className={styles.card_container_ul}>
-          console.log(staff, "========================================");
           {staff &&
             staff?.map((el) => (
               <li
                 key={el.id}
-                // {...el}
+                {...el}
                 className={styles.container__item_stuff}
-                onClick={() => handleButtonClick(el, el.id)}
+                onClick={() => handleButtonClick(category, el.id)}
               >
                 <div className={styles.wrapper_container_item_stuff}>
-                {el && el.img && (
-                  <img
-                    className={styles.container__img_stuff}
-                    src={el.img}
-                    alt={el.img}
-                  />
-                  )}
-                </div>
-                {el && el.name && (
-                <div className={styles.container__item_name_stuff}>
-                  {el.name}
-                </div>
-                 )}
-                 {el && el.position && (
-                <div className={styles.container__item_position_stuff}>
-                  {el.position}
-                </div>
-                 )}
-              </li>
+                    <img
+                      className={styles.container__img_stuff}
+                      src={`/images/${el.img}`}
+                      alt={el.img}
+                    />
+                 </div>
+                   <div className={styles.container__item_name_stuff}>
+                    {el.name}
+                  </div>
+                  <div className={styles.container__item_position_stuff}>
+                    {el.position}
+                  </div>
+                </li>
             ))}
           {isModalOpen && selectedCard && (
             <Modal
@@ -538,7 +523,7 @@ export default function Company() {
               modalStyleZIndex={9999}
               isOpen={isModalOpen}
               onRequestClose={() => {
-                setSelectedCardId(null);
+                dispatch(selectCard(null));
                 setIsModalOpen(false);
               }}
               onAfterOpen={() => {
@@ -568,7 +553,7 @@ export default function Company() {
                     className={`${styles.modal_close} ${styles.fixed}`}
                     onClick={() => {
                       setIsModalOpen(false);
-                      setSelectedCardId(null);
+                      dispatch(selectCard(null));
                     }}
                   >
                     <svg
@@ -588,37 +573,37 @@ export default function Company() {
                   </div>
                   <div className={styles.modal_container}>
                     <div className={styles.modal}>
-                      {/* <img
+                      <img
                         className={styles.modal_img_stuff}
-                        src={selectedCard.attributes.img}
-                        alt={selectedCard.attributes.img}
-                      /> */}
+                        src={`/images/${selectedCard.img}`}
+                        alt={selectedCard.img}
+                      />
                     </div>
                   </div>
-                  {/* <div className={styles.modal_name_stuff}>
-                    {selectedCard.attributes.name}
+                  <div className={styles.modal_name_stuff}>
+                    {selectedCard.name}
                   </div>
                   <div className={styles.modal_description_stuff}>
-                    {selectedCard.attributes.description}
+                    {selectedCard.description}
                   </div>
                   <div className={styles.modal_about_stuff}>
-                    {selectedCard.attributes.about}
+                    {selectedCard.about}
                   </div>
                   <div className={styles.modal_about_stuff1}>
-                    {selectedCard.attributes.about1}
+                    {selectedCard.about1}
                   </div>
                   <div className={styles.modal_about_stuff2}>
-                    {selectedCard.attributes.about2}
+                    {selectedCard.about2}
                   </div>
                   <div className={styles.modal_about_stuff3}>
-                    {selectedCard.attributes.about3}
+                    {selectedCard.about3}
                   </div>
                   <div className={styles.modal_about_stuff4}>
-                    {selectedCard.attributes.about4}
+                    {selectedCard.about4}
                   </div>
                   <div className={styles.modal_about_stuff5}>
-                    {selectedCard.attributes.about5}
-                  </div> */}
+                    {selectedCard.about5}
+                  </div>
                 </div>
               )}
             </Modal>
@@ -638,21 +623,21 @@ export default function Company() {
               <SwiperSlide
                 key={el.id}
                 className={styles.slide_container_item_stuff}
-                onClick={() => handleButtonClick(el, el.id)}
+                onClick={() => handleButtonClick(category, el.id)}
               >
                 <div className={styles.wrapper_container_item_stuff}>
-                  {/* <img
+                  <img
                     className={styles.container__img_stuff}
-                    src={el.attributes.img}
-                    alt={el.attributes.img}
-                  /> */}
+                    src={`/images/${el.img}`}
+                    alt={el.img}
+                  />
                 </div>
-                {/* <div className={styles.container__item_name_stuff}>
-                  {el.attributes.name}
+                <div className={styles.container__item_name_stuff}>
+                  {el.name}
                 </div>
                 <div className={styles.container__item_position_stuff}>
-                  {el.attributes.position}
-                </div> */}
+                  {el.position}
+                </div>
               </SwiperSlide>
             ))}
           </Swiper>
@@ -671,21 +656,21 @@ export default function Company() {
               <SwiperSlide
                 key={el.id}
                 className={styles.slide_container_item_stuff}
-                onClick={() => handleButtonClick(el, el.id)}
+                onClick={() => handleButtonClick(category, el.id)}
               >
                 <div className={styles.wrapper_container_item_stuff}>
-                  {/* <img
+                  <img
                     className={styles.container__img_stuff}
-                    src={el.attributes.img}
-                    alt={el.attributes.img}
-                  /> */}
+                    src={`/images/${el.img}`}
+                    alt={el.img}
+                  />
                 </div>
-                {/* <div className={styles.container__item_name_stuff}>
-                  {el.attributes.name}
+                <div className={styles.container__item_name_stuff}>
+                  {el.name}
                 </div>
                 <div className={styles.container__item_position_stuff}>
-                  {el.attributes.position}
-                </div> */}
+                  {el.position}
+                </div>
               </SwiperSlide>
             ))}
           </Swiper>
