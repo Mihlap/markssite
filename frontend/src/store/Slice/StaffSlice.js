@@ -60,7 +60,6 @@ export const fetchCategoryStaff =
 
     try {
       const response = await axios.get(
-        // `${host}/api/staffs?category=${categoryId}`
         `${host}/api/staffs`
       );
      
@@ -72,7 +71,7 @@ export const fetchCategoryStaff =
     
       dispatch(setCategory(category));
      dispatch(fetchStaffSuccess(filteredData));
-     } catch (error) {
+       } catch (error) {
       dispatch(fetchStaffFailure(error.message));
     }
   };
