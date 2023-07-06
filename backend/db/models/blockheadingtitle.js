@@ -20,7 +20,7 @@ module.exports = (sequelize, DataTypes) => {
     idBlock: DataTypes.INTEGER
   }, {
     sequelize,
-    modelName: 'blockHeadingTitle',
+    modelName: 'BlockHeadingTitle',
   });
   return BlockHeadingTitle;
 };

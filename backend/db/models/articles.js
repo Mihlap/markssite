@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       TextBlockArticles,
       FrameBlock,
       ImageToDescriptionArticles,
-      QuoteBlocks,
+      QuoteBlock,
       NotesBlock,
       ImageTwoArticles,
       ImageSliderArticles,
@@ -27,7 +27,7 @@ module.exports = (sequelize, DataTypes) => {
       this.hasMany(TextBlockArticles, { foreignKey: 'idBlock' });
       this.hasMany(FrameBlock, { foreignKey: 'idBlock' });
       this.hasMany(ImageToDescriptionArticles, { foreignKey: 'idBlock' });
-      this.hasMany(QuoteBlocks, { foreignKey: 'idBlock' });
+      this.hasMany(QuoteBlock, { foreignKey: 'idBlock' });
       this.hasMany(NotesBlock, { foreignKey: 'idBlock' });
       this.hasMany(ImageTwoArticles, { foreignKey: 'idBlock' });
       this.hasMany(ImageSliderArticles, { foreignKey: 'idBlock' });

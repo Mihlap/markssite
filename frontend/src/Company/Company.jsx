@@ -84,11 +84,19 @@ export default function Company() {
   }, []);
 
   useEffect(() => {
-    setTimeout(() => {
+    if (error) {
+      return (
+        <div>
+          {" "}
+          <Error error={error.message} />
+        </div>
+      );
+    }
+    // setTimeout(() => {
       dispatch(selectCard(selectedCardId));
       dispatch(fetchCategoryStaff(categoryId));
       setShowCards(true);
-    }, 100);
+    // }, 100);
   }, []);
 
   const handleButtonClick = (categoryId, selectedCardId) => {
@@ -199,14 +207,7 @@ export default function Company() {
     return <LoadingCircle />;
   }
 
-  // if (error) {
-  //   return (
-  //     <div>
-  //       {" "}
-  //       <Error error={error.message} />
-  //     </div>
-  //   );
-  // }
+
 
   return (
     <div className={styles.company_main}>
@@ -511,11 +512,13 @@ export default function Company() {
                 onClick={() => handleButtonClick(el, el.id)}
               >
                 <div className={styles.wrapper_container_item_stuff}>
+                {el.attributes && el.attributes.img && (
                   <img
                     className={styles.container__img_stuff}
                     src={el.attributes.img}
                     alt={el.attributes.img}
                   />
+                  )}
                 </div>
                 <div className={styles.container__item_name_stuff}>
                   {el.attributes.name}
