@@ -15,7 +15,7 @@ module.exports = {
       img: {
         type: Sequelize.TEXT,
       },
-      categorie: {
+      category: {
         type: Sequelize.STRING,
       },
       position: {
