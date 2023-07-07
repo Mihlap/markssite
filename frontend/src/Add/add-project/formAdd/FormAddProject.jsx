@@ -8,6 +8,7 @@ export default function FormAddProject() {
   const dispatch = useDispatch(); 
   const [selectedCompetencies, setSelectedCompetencies] = useState([]);
   const [selectedViewConstruction, setSelectedViewConstruction] = useState([]);
+  const [selectedRadio, setSelectedRadio] = useState("520");
   const [inputData, setInputData] = useState({
     title: "",
     selectCompetencies: [],
@@ -48,11 +49,13 @@ export default function FormAddProject() {
        viewConstruction: selectedViewConstruction
          .map((option) => option.label)
          .join(","),
+       radioValue: selectedRadio,
      };
-     console.log(formattedData);
-     dispatch(fetchProject(formattedData, setInputData));
+     console.log(formattedData, "<<<----консоль на фронте");
+    //  dispatch(fetchProject(formattedData, setInputData));
      setSelectedCompetencies([]);
      setSelectedViewConstruction([]);
+     setSelectedRadio("");
      setInputData({
        title: "",
        selectCompetencies: [],
@@ -168,6 +171,42 @@ export default function FormAddProject() {
             <br />
             <span>*отображается первое изображение слайдера</span>
           </div>
+        </div>
+        <div>
+          <label>
+            <input
+              type="radio"
+              name="radioGroup"
+              value="520"
+              checked={selectedRadio === "520"}
+              onChange={(e) => setSelectedRadio(e.target.value)}
+            />
+            Value 1
+          </label>
+        </div>
+        <div>
+          <label>
+            <input
+              type="radio"
+              name="radioGroup"
+              value="299"
+              checked={selectedRadio === "299"}
+              onChange={(e) => setSelectedRadio(e.target.value)}
+            />
+            Value 2
+          </label>
+        </div>
+        <div>
+          <label>
+            <input
+              type="radio"
+              name="radioGroup"
+              value="849"
+              checked={selectedRadio === "849"}
+              onChange={(e) => setSelectedRadio(e.target.value)}
+            />
+            Value 3
+          </label>
         </div>
         <label>
           Загрузить фото
