@@ -67,7 +67,9 @@ export default function Company() {
   });
 
   const isMobile = windowWidth <= 767;
- 
+  const symbol = "•";
+  const port = process.env.PORT || window.location.port;
+  
   useEffect(() => {
     function handleResize() {
       setWindowWidth(window.innerWidth);
@@ -590,19 +592,24 @@ export default function Company() {
                     {selectedCard.about}
                   </div>
                   <div className={styles.modal_about_stuff1}>
-                    {selectedCard.about1}
+                  <div className={styles.modal_about_stuff_symbol}>{symbol}</div>
+                   {selectedCard.about1}
                   </div>
                   <div className={styles.modal_about_stuff2}>
-                    {selectedCard.about2}
+                  <div className={styles.modal_about_stuff_symbol}>{symbol}</div>
+                   {selectedCard.about2}
                   </div>
                   <div className={styles.modal_about_stuff3}>
-                    {selectedCard.about3}
+                  <div className={styles.modal_about_stuff_symbol}>{symbol}</div>
+                   {selectedCard.about3}
                   </div>
                   <div className={styles.modal_about_stuff4}>
-                    {selectedCard.about4}
+                  <div className={styles.modal_about_stuff_symbol}>{symbol}</div>
+                   {selectedCard.about4}
                   </div>
                   <div className={styles.modal_about_stuff5}>
-                    {selectedCard.about5}
+                  <div className={styles.modal_about_stuff_symbol}>{symbol}</div>
+                   {selectedCard.about5}
                   </div>
                 </div>
               )}

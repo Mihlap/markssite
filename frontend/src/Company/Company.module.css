@@ -240,8 +240,9 @@
   line-height: 48px;
   color: var(--black-1D2E43);
   padding-left: 42.84vw;
-  padding-right: 25.8vw;
+  padding-right: 15rem;
   padding-bottom: 24px;
+  white-space: nowrap;
 }
 
 .years_div {
@@ -249,7 +250,7 @@
   font-family: var(--font-raleway);
   line-height: 20px;
   color: var(--gray-959DA6);
-  padding-left: 1rem;
+  padding-left: 16px;
 }
 
 .list_project {
@@ -427,6 +428,7 @@
   box-shadow: -2px 4px 22px 0px rgba(29, 46, 67, 0.46);
   backdrop-filter: blur(8.5px);
   overflow-y: auto;
+  
 }
 
 .modal_context {
@@ -508,7 +510,12 @@
   padding-top: 26px;
   padding-right: 2.5rem;
   list-style: none;
-  padding-left: 2rem;
+  padding-left: 1.5rem;
+}
+
+.modal_about_stuff_symbol {
+  display: flex;
+  padding-right: 8px;
 }
 
 .slider_card_wrapper {
@@ -710,7 +717,7 @@
 
 /* стили мобильной версии  */
 
-@media screen and (max-width: 767px) {
+@media screen and (min-width: 200px) and (max-width: 768px) {
 
   .underSlider_text_wrapper {
     padding-top: 26rem;
@@ -976,7 +983,7 @@
   .modal_close {
     display: flex;
     padding-top: 2rem;
-    padding-left: 90
+    padding-left: 90vw;
   }
   
 
@@ -1007,16 +1014,19 @@
 
   .modal_name_stuff {
     padding-top: 1.5rem;
+    padding-left: 1rem;
   }
 
   .modal_description_stuff {
     padding-top: 0.5rem;
     padding-right: 2rem;
+    padding-left: 1rem;
   }
 
   .modal_about_stuff {
     padding-top: 2.5rem;
     padding-right: 2rem;
+    padding-left: 1rem;
   }
 
   .modal_about_stuff1,
@@ -1052,12 +1062,14 @@
 
 }
 
-@media (max-width: 480px) {
-  .modal_about_stuff1,
-  .modal_about_stuff2,
-  .modal_about_stuff3,
-  .modal_about_stuff4 {
-    padding-right: 0.5rem;
-    padding-left: 0.5rem;
-  }
+
+
+@media (max-width: 300px) {
+
+.modal_close {
+  display: flex;
+  padding-top: 2rem;
+  padding-left: 100;
+}
+
 }
