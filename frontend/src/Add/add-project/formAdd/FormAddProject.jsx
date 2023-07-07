@@ -172,41 +172,43 @@ export default function FormAddProject() {
             <span>*отображается первое изображение слайдера</span>
           </div>
         </div>
-        <div>
-          <label>
-            <input
-              type="radio"
-              name="radioGroup"
-              value="520"
-              checked={selectedRadio === "520"}
-              onChange={(e) => setSelectedRadio(e.target.value)}
-            />
-            Value 1
-          </label>
-        </div>
-        <div>
-          <label>
-            <input
-              type="radio"
-              name="radioGroup"
-              value="299"
-              checked={selectedRadio === "299"}
-              onChange={(e) => setSelectedRadio(e.target.value)}
-            />
-            Value 2
-          </label>
-        </div>
-        <div>
-          <label>
-            <input
-              type="radio"
-              name="radioGroup"
-              value="849"
-              checked={selectedRadio === "849"}
-              onChange={(e) => setSelectedRadio(e.target.value)}
-            />
-            Value 3
-          </label>
+        <div className={styles.form_container__radio_container}>
+          <div className={styles.form_container__radio_block_one}>
+            <label className={styles.form_container__radio_label_one}>
+              <input
+                className={styles.form_container__radio_input}
+                type="radio"
+                name="radioGroup"
+                value="520"
+                checked={selectedRadio === "520"}
+                onChange={(e) => setSelectedRadio(e.target.value)}
+              />
+            </label>
+          </div>
+          <div className={styles.form_container__radio_block_two}>
+            <label className={styles.form_container__radio_label_two}>
+              <input
+                className={styles.form_container__radio_input}
+                type="radio"
+                name="radioGroup"
+                value="299"
+                checked={selectedRadio === "299"}
+                onChange={(e) => setSelectedRadio(e.target.value)}
+              />
+            </label>
+          </div>
+          <div className={styles.form_container__radio_block_three}>
+            <label className={styles.form_container__radio_label_three}>
+              <input
+                className={styles.form_container__radio_input}
+                type="radio"
+                name="radioGroup"
+                value="849"
+                checked={selectedRadio === "849"}
+                onChange={(e) => setSelectedRadio(e.target.value)}
+              />
+            </label>
+          </div>
         </div>
         <label>
           Загрузить фото
