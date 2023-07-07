@@ -58,21 +58,22 @@ export const fetchProject = (formattedData, setInputData) => async (dispatch) =>
   // if (inputData.dropVideo !== null) {
   //   formData.append("dropVideo", inputData.dropVideo);
   // }
-  console.log(formData, "REDUX");
-
+  
   axios
-    .post(`${serverHost}/api-project/postzapros`, formData) // Использование { inputData } вместо { data: inputData }
-    .then(() => {
-      setInputData({
-        title: "",
-        selectCompetencies: "",
-        countryCity: "",
-        monthYear: "",
-        viewConstruction: "",
-        dropPhoto: [],
-      });
-      dispatch(getFetchForm()); // Добавлен этот вызов для получения обновленных данных после успешной отправки формы
+  .post(`${serverHost}/api-project/postzapros`, formData) // Использование { inputData } вместо { data: inputData }
+  .then(() => {
+    setInputData({
+      title: "",
+      selectCompetencies: "",
+      countryCity: "",
+      monthYear: "",
+      viewConstruction: "",
+      dropPhoto: [],
+      radioValue: '',
     });
+    dispatch(getFetchForm()); // Добавлен этот вызов для получения обновленных данных после успешной отправки формы
+  });
+  console.log(formattedData, "REDUX");
 };
 
 export const getFetchForm = () => async (dispatch) => {

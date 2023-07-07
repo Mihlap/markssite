@@ -19,8 +19,8 @@ router.get('/getzapros', async (req, res) => {
 
 router.post('/postzapros', fileMiddleware.array('dropPhoto', 4), async (req, res) => {
     // эта консоль помогает нам понять, какие значения приходят на бекенд 
-    // const { title, selectCompetencies, viewConstruction } = req.body;
-    // console.log(title, selectCompetencies, viewConstruction);
+    const { radioValue } = req.body;
+    console.log(radioValue);
   try {
     await Project.create({
       title: req.body.title,
@@ -28,6 +28,8 @@ router.post('/postzapros', fileMiddleware.array('dropPhoto', 4), async (req, res
       countryCity: req.body.countryCity,
       monthYear: req.body.monthYear,
       viewConstruction: req.body.viewConstruction,
+      style: req.body.radioValue,
+
       imageTitle: req.files.map((file) => file.originalname).join(', '), // Объединяем имена фотографий через запятую
       // video: req.files.find((file) => file.fieldname === "dropVideo").filename,
     });
