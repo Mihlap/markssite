@@ -42,22 +42,23 @@ export const {
 
 
 
-export const fetchProject = (inputData, setInputData) => async (dispatch) => {
+export const fetchProject = (formattedData, setInputData) => async (dispatch) => {
   dispatch(fetchProjectStart());
   const formData = new FormData();
-  for (const key in inputData) {
-    if (typeof inputData[key] === "object") {
-      for (const file in inputData[key]) {
-        formData.append("dropPhoto", inputData[key][file]);
+  for (const key in formattedData) {
+    if (typeof formattedData[key] === "object") {
+      for (const file in formattedData[key]) {
+        formData.append("dropPhoto", formattedData[key][file]);
       }
     } else {
-      formData.append(key, inputData[key]);
+      formData.append(key, formattedData[key]);
     }
   }
 
   // if (inputData.dropVideo !== null) {
   //   formData.append("dropVideo", inputData.dropVideo);
   // }
+  console.log(formData, "REDUX");
 
   axios
     .post(`${serverHost}/api-project/postzapros`, formData) // Использование { inputData } вместо { data: inputData }

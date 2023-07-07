@@ -6,12 +6,14 @@ import { fetchProject } from "../../../store/Slice/projectSlice";
 
 export default function FormAddProject() {
   const dispatch = useDispatch(); 
+  const [selectedCompetencies, setSelectedCompetencies] = useState([]);
+  const [selectedViewConstruction, setSelectedViewConstruction] = useState([]);
   const [inputData, setInputData] = useState({
     title: "",
-    selectCompetencies: "",
+    selectCompetencies: [],
     countryCity: "",
     monthYear: "",
-    viewConstruction: "",
+    viewConstruction: [],
     dropPhoto: [],
   });
 
@@ -38,8 +40,27 @@ export default function FormAddProject() {
   
    const submitHandler = async (e) => {
      e.preventDefault();
-     console.log(inputData);
-    //  dispatch(fetchProject(inputData, setInputData));
+     const formattedData = {
+       ...inputData,
+       selectCompetencies: selectedCompetencies
+         .map((option) => option.label)
+         .join(","),
+       viewConstruction: selectedViewConstruction
+         .map((option) => option.label)
+         .join(","),
+     };
+     console.log(formattedData);
+     dispatch(fetchProject(formattedData, setInputData));
+     setSelectedCompetencies([]);
+     setSelectedViewConstruction([]);
+     setInputData({
+       title: "",
+       selectCompetencies: [],
+       countryCity: "",
+       monthYear: "",
+       viewConstruction: [],
+       dropPhoto: [],
+     });
    };
 
   const customStyles = {
@@ -84,8 +105,8 @@ export default function FormAddProject() {
               ]}
               className={styles.form__field}
               placeholder="Выбрать компетенции"
-              value={inputData.selectCompetencies}
-              onChange={changeHandler}
+              value={selectedCompetencies}
+              onChange={setSelectedCompetencies}
             />
             <label htmlFor="selectCompetencies" className={styles.form__label}>
               Выбрать компетенции
@@ -124,8 +145,8 @@ export default function FormAddProject() {
               styles={customStyles}
               isMulti
               name="viewConstruction"
-              value={inputData.viewConstruction}
-              onChange={changeHandler}
+              value={selectedViewConstruction}
+              onChange={setSelectedViewConstruction}
               options={[
                 { value: "Архитектура", label: "Архитектура" },
                 { value: "BIM", label: "BIM" },
