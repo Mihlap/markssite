@@ -1,0 +1,40 @@
+@import '../App.css';
+
+.section_project {
+    padding-top: 5rem;
+    background-color: rgb(32,36,38);
+    color: aliceblue;
+
+    &__block {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 30px;
+    }
+
+}
+
+.cart_project {
+
+    &__container {
+        max-width: min-content;
+        border: 1px solid red;
+    }
+
+    &__content {
+        display: flex;
+        flex-wrap: wrap;
+    }
+
+    &__title {
+        width: 50%;
+    }
+
+    &__widget {
+        width: 50%;
+    }
+
+
+    &__img {
+        border-radius: 1rem;
+    }
+}

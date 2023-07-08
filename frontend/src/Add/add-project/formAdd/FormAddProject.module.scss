@@ -96,6 +96,53 @@
         background-color: rgb(151, 157, 165);
     }
 
+          &:checked+&__radio_block_one &__radio_label_one {
+              background-color: red;
+          }
+    
+          &:checked+&__radio_block_two &__radio_label_two {
+              background-color: blue;
+          }
+    
+          &:checked+&__radio_block_three &__radio_label_three {
+              background-color: green;
+          }
+
+
+    
+
+    // &__radio_input:checked+.form_container__radio_label {
+    //     background-color: #fff;
+    // }
+
+    // &__radio_input:checked+.form_container__radio_label .form_container__radio_block {
+    //     background-color: rgb(133, 185, 247);
+    // }
+
+    // &__radio_block_one,
+    // &__radio_block_two,
+    // &__radio_block_three {
+    //     transition: background-color 0.3s ease;
+    // }
+
+    // &__radio_label_one,
+    // &__radio_label_two,
+    // &__radio_label_three {
+    //     transition: background-color 0.3s ease;
+    // }
+
+    // &__radio_input:checked+.form_container__radio_label_one .form_container__radio_block_one,
+    // &__radio_input:checked+.form_container__radio_label_two .form_container__radio_block_two,
+    // &__radio_input:checked+.form_container__radio_label_three .form_container__radio_block_three {
+    //     background-color: rgb(133, 185, 247);
+    // }
+
+    // &__radio_input:checked+.form_container__radio_label_one,
+    // &__radio_input:checked+.form_container__radio_label_two,
+    // &__radio_input:checked+.form_container__radio_label_three {
+    //     background-color: #fff;
+    // }
+
 
 }
 
