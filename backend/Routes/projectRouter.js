@@ -12,6 +12,7 @@ router.get('/getzapros', async (req, res) => {
   try {
     const data = await Project.findAll();
     res.json(data);
+    console.log( res.json(data));
   } catch (error) {
     console.log(error);
   }
@@ -30,7 +31,7 @@ router.post('/postzapros', fileMiddleware.array('dropPhoto', 4), async (req, res
       viewConstruction: req.body.viewConstruction,
       style: req.body.radioValue,
 
-      imageTitle: req.files.map((file) => file.originalname).join(', '), // Объединяем имена фотографий через запятую
+      imageTitle: req.files.map((file) => file.filename).join(', '), // Объединяем имена фотографий через запятую
       // video: req.files.find((file) => file.fieldname === "dropVideo").filename,
     });
     res.status(200).json({ message: 'Данные успешно сохранены' });

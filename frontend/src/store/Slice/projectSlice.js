@@ -83,10 +83,12 @@ export const getFetchForm = () => async (dispatch) => {
     const response = await axios.get(
       `${serverHost}/api-project/getzapros`
     );
+    console.log(response.data);
     dispatch(fetchProjectSuccess(response.data));
   } catch (error) {
     dispatch(fetchProjectFailure(error.message));
   }
 };
+
 
 export default projectSlice.reducer;

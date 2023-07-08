@@ -52,7 +52,7 @@ export default function FormAddProject() {
        radioValue: selectedRadio,
      };
      console.log(formattedData, "<<<----консоль на фронте");
-    //  dispatch(fetchProject(formattedData, setInputData));
+     dispatch(fetchProject(formattedData, setInputData));
      setSelectedCompetencies([]);
      setSelectedViewConstruction([]);
      setSelectedRadio("");
