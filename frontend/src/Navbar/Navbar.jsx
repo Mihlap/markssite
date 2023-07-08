@@ -102,18 +102,18 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen }) => {
             >
               <li>Компетенции</li>
             </Link>
-            <Link
+            <NavLink
               exact="true"
               className={`${styles.navbar_item} ${
-                activeLink === "/projects" ? styles.active : ""
+                activeLink === "/project" ? styles.active : ""
               }`}
-              to="projects"
-              onClick={() => handleClick("/projects")}
+              to="project"
+              onClick={() => handleClick("/project")}
               smooth={"true"}
               duration={500}
             >
               <li>Проекты</li>
-            </Link>
+            </NavLink>
             <Link
               exact="true"
               className={`${styles.navbar_item} ${
