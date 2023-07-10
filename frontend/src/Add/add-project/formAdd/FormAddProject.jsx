@@ -3,8 +3,10 @@ import { useDispatch } from "react-redux";
 import Select from "react-select";
 import styles from "./FormAddProject.module.scss";
 import { fetchProject } from "../../../store/Slice/projectSlice";
+import icon from "./img/Frame4684.png";
 
 export default function FormAddProject() {
+
   const dispatch = useDispatch(); 
   const [selectedCompetencies, setSelectedCompetencies] = useState([]);
   const [selectedViewConstruction, setSelectedViewConstruction] = useState([]);
@@ -246,15 +248,25 @@ console.log(selectedRadio);
             </label>
           </div>
         </div>
-        <label>
-          Загрузить фото
-          <input
-            type="file"
-            name="dropPhoto"
-            onChange={changeHandler}
-            multiple
-          />
-        </label>
+
+        <div className={styles.slider_container}>
+          <div className={styles.slider_container__title}>Слайдер</div>
+
+          <label className={styles.slider_container__customFileUpload}>
+            <input
+              type="file"
+              name="dropPhoto"
+              onChange={changeHandler}
+              multiple
+            />
+            <div className={styles.slider_container__uploadIcon}>
+              <img src={icon} alt="icon" />
+            </div>
+            <div className={styles.slider_container__uploadText}>
+              Загрузить изображения
+            </div>
+          </label>
+        </div>
         <button type="submit">опубликовать</button>
       </form>
     </div>

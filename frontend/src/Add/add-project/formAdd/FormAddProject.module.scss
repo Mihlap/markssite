@@ -58,10 +58,11 @@
         justify-content: center;
         align-items: center;
         transition: all 0.2s ease-in-out;
+
         /* Добавлено свойство transition */
         &:hover {
-                background-color: rgb(133 185 247 / 35%);
-            }
+            background-color: rgb(133 185 247 / 15%);
+        }
     }
 
     &__radio_label_one {
@@ -82,10 +83,11 @@
         justify-content: center;
         align-items: center;
         transition: all 0.2s ease-in-out;
+
         /* Добавлено свойство transition */
         &:hover {
-                background-color: rgb(133 185 247 / 35%);
-            }
+            background-color: rgb(133 185 247 / 15%);
+        }
     }
 
     &__radio_label_two {
@@ -108,7 +110,7 @@
         /* Добавлено свойство transition */
 
         &:hover {
-            background-color: rgb(133 185 247 / 35%);
+            background-color: rgb(133 185 247 / 15%);
         }
     }
 
@@ -121,7 +123,7 @@
     }
 
     &__radio_activ_block {
-        background-color: rgb(133, 185, 247);
+        background-color: var(--blue-75BBFD);
         transform: scale(1.1);
         /* Пример анимации при выборе */
     }
@@ -196,5 +198,60 @@
     &:required,
     &:invalid {
         box-shadow: none;
+    }
+}
+
+
+
+.slider_container {
+
+    padding-top: 2rem;
+
+    &__title {
+        color: var(--light-gray-C0C5CB);
+        font-size: 0.75rem;
+        font-family: Raleway;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 1rem;
+        padding-bottom: 0.5rem;
+    }
+
+    &__customFileUpload {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        padding: 0.5rem 1rem;
+        background-color: var(--light-light-gray-EBECEE);
+        border-radius: 20px;
+        cursor: pointer;
+
+        &:hover {
+            box-shadow: 0px 0px 6px 0px var(--blue-75BBFD);
+        }
+    }
+
+    &__uploadIcon {
+        display: inline-block;
+        margin-right: 8px;
+        font-size: 14px;
+        color: #888;
+    }
+
+    &__uploadText {
+        display: inline-block;
+        font-size: 0.875rem;
+        font-family: var(--font-raleway);
+        font-style: normal;
+        font-weight: 400;
+        line-height: 1.25rem;
+        color: var(--secondary-dark-gray-525459);
+    }
+
+    /* Скрыть стандартную фразу "файл не выбран" */
+    &__customFileUpload input[type="file"] {
+        position: absolute;
+        left: -9999px;
     }
 }
