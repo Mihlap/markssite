@@ -6,12 +6,43 @@ import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 import BlockHeader from "../UI/BlockHeader/BlockHeader";
 import SwiperContainer from "./Swiper-Phone/SwiperContainer";
 import SwiperContainerProgect from "./Swiper-project/SwiperContainerProgect";
+import { Swiper, SwiperSlide } from "swiper/react";
 import SliderHeader from "../UI/SliderHeader/SliderHeader";
 import VideoPlayer from "../UI/Videoplayer/VideoPlayer";
 import Mapbox3D from "../UI/Map3D/Mapbox3D";
 import styles from "./Header.module.css";
 import SliderMobile from "../UI/SliderHeader/SliderMobile";
 import actively from "./img/actively.png";
+
+const project = {
+  title: 'Название проекта',
+  selectCompetencies: 'Выбранные компетенции',
+  countryCity: 'Страна, Город',
+  monthYear: 'Месяц, Год',
+  viewConstruction: 'Вид строительства',
+  imageTitle: 'Заголовок изображения',
+  titleTextBlock: 'Заголовок текстового блока',
+  descriptionProject: 'Описание проекта',
+  totalArea: 'Общая площадь',
+  siteArea: 'Площадь участка',
+  floors: 'Количество этажей',
+  altitude: 'Высота',
+  constructionVolume: 'Объем строительства',
+  location: 'Местоположение',
+  degreeParticipation: 'Степень участия',
+  statusObject: 'Статус объекта',
+  customer: 'Заказчик',
+  publication: 'Публикация',
+  linkToPublication: 'Ссылка на публикацию',
+  awards: 'Награды',
+  imageOpen: 'Изображение (открыто)',
+  textBlock: 'Текстовый блок',
+  imageClose: 'Изображение (закрыто)',
+  authorId: 1,
+  style: 'Стиль'
+};
+
+
 
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
@@ -158,91 +189,123 @@ export default function Header() {
       <div id="projects" className={styles.project_name}>
         Проекты
       </div>
-      <div className={styles.swiper_progect_container}>
+      {/* <div className={styles.swiper_progect_container}>
         <SwiperContainerProgect
           // project={project}
         />
-      </div>
+      </div> */}
       <div className={styles.main_project}>
-        <div className={styles.main_project_left}>
+      <Swiper
+            className={styles.slider_card_container_project}
+            loop={true}
+            slidesPerView={4}
+            spaceBetween={0}
+            touch="true"
+          >
+            {project?.map((el) => (
+              <SwiperSlide
+                key={el.id}
+                className={styles.slide_container_item_stuff}
+                // onClick={() => handleButtonClick(category, el.id)}
+              >
+                <div className={styles.wrapper_container_item_stuff}>
+                  <img
+                    className={styles.container__img_stuff}
+                    src={`http://localhost:3002/images/${el.img}`}
+                    alt={el.img}
+                  />
+                </div>
+                <div className={styles.container__item_name_stuff}>
+                  {el.name}
+                </div>
+                <div className={styles.container__item_position_stuff}>
+                  {el.position}
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+      
+      </div>
+    </main>
+  );
+}
+
+
+  {/* <div className={styles.main_project_left}>
           <Link
-            // to={primeParkProject.link}
+            to={primeParkProject.link}
           >
             <img
               className={styles.img_poject}
-              // src={primeParkProject.img}
-              // alt={primeParkProject.title}
+              src={primeParkProject.img}
+              alt={primeParkProject.title}
             />
           </Link>
           <div className={styles.card_text}>
             <h3 className={styles.card_text_title}>
-              {/* {primeParkProject.title} */}
+              {primeParkProject.title}
             </h3>
             <span className={styles.card_text_local}>
-              {/* {primeParkProject.text} */}
+              {primeParkProject.text}
             </span>
           </div>
         </div>
         <div className={styles.main_project_right}>
           <div className={styles.main_project_right1}>
             <Link
-              // to={hotelAppartProject.link}
+              to={hotelAppartProject.link}
             >
               <img
                 className={styles.img_project}
-                // src={hotelAppartProject.img}
-                // alt={hotelAppartProject.title}
+                src={hotelAppartProject.img}
+                alt={hotelAppartProject.title}
               />
             </Link>
             <div className={styles.card_text}>
               <h3 className={styles.card_text_title}>
-                {/* {hotelAppartProject.title} */}
+                {hotelAppartProject.title}
               </h3>
               <span className={styles.card_text_local}>
-                {/* {hotelAppartProject.text} */}
+                {hotelAppartProject.text}
               </span>
             </div>
           </div>
           <div className={styles.main_project_right2}>
             <Link
-              // to={slavaProject.link}
+              to={slavaProject.link}
             >
               <img
                 className={styles.img_project}
-                // src={slavaProject.img}
-                // alt={slavaProject.title}
+                src={slavaProject.img}
+                alt={slavaProject.title}
               />
             </Link>
             <div className={styles.card_text}>
               <h3 className={styles.card_text_title}>
-                {/* {slavaProject.title} */}
+                {slavaProject.title}
               </h3>
               <span className={styles.card_text_local}>
-                {/* {slavaProject.text} */}
+                {slavaProject.text}
               </span>
             </div>
           </div>
           <div className={styles.main_project_right3}>
             <Link
-              // to={wineParkProject.link}
+              to={wineParkProject.link}
             >
               <img
                 className={styles.img_project}
-                // src={wineParkProject.img}
-                // alt={wineParkProject.title}
+                src={wineParkProject.img}
+                alt={wineParkProject.title}
               />
             </Link>
             <div className={styles.card_text}>
               <h3 className={styles.card_text_title}>
-                {/* {wineParkProject.title} */}
+                {wineParkProject.title}
               </h3>
               <span className={styles.card_text_local}>
-                {/* {wineParkProject.text} */}
+                {wineParkProject.text}
               </span>
             </div>
           </div>
-        </div>
-      </div>
-    </main>
-  );
-}
+        </div> */}
