@@ -55,9 +55,6 @@ export const fetchProject = (formattedData, setInputData) => async (dispatch) =>
     }
   }
 
-  // if (inputData.dropVideo !== null) {
-  //   formData.append("dropVideo", inputData.dropVideo);
-  // }
   
   axios
   .post(`${serverHost}/api-project/postzapros`, formData) // Использование { inputData } вместо { data: inputData }
@@ -69,7 +66,8 @@ export const fetchProject = (formattedData, setInputData) => async (dispatch) =>
       monthYear: "",
       viewConstruction: "",
       dropPhoto: [],
-      radioValue: '',
+      radioValue: "",
+      photoAva: [],
     });
     dispatch(getFetchForm()); // Добавлен этот вызов для получения обновленных данных после успешной отправки формы
   });
