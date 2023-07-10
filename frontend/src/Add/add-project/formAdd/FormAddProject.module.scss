@@ -13,6 +13,12 @@
         line-height: 2rem;
     }
 
+    &__radio_container {
+        display: flex;
+        gap: 1rem;
+        padding-top: 0.5rem;
+    }
+
     &__block_gray_one {
         background-color: var(--light-light-gray-EBECEE);
         padding: 0.88rem 1rem 2rem 1rem;
@@ -34,9 +40,13 @@
         }
     }
 
-    &__radio_container {
-        display: flex;
-        gap: 1rem;
+    &__radio_input {
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+        position: absolute;
+        top: 0;
+        right: 0;
     }
 
     &__radio_block_one {
@@ -47,20 +57,22 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        transition: all 0.2s ease-in-out;
+
+        /* Добавлено свойство transition */
+        &:hover {
+            background-color: rgb(133 185 247 / 15%);
+        }
     }
 
     &__radio_label_one {
         width: 20px;
-        height: 15px;
+        height: 13px;
         border-radius: 2px;
         background-color: rgb(151, 157, 165);
+        cursor: pointer;
     }
 
-    &__radio_input {
-        cursor: pointer;
-        width: 40px;
-        height: 40px;
-    }
 
     &__radio_block_two {
         width: 40px;
@@ -70,6 +82,12 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        transition: all 0.2s ease-in-out;
+
+        /* Добавлено свойство transition */
+        &:hover {
+            background-color: rgb(133 185 247 / 15%);
+        }
     }
 
     &__radio_label_two {
@@ -77,6 +95,7 @@
         height: 12px;
         border-radius: 2px;
         background-color: rgb(151, 157, 165);
+        cursor: pointer;
     }
 
     &__radio_block_three {
@@ -87,6 +106,12 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        transition: all 0.2s ease-in-out;
+        /* Добавлено свойство transition */
+
+        &:hover {
+            background-color: rgb(133 185 247 / 15%);
+        }
     }
 
     &__radio_label_three {
@@ -94,57 +119,21 @@
         height: 20px;
         border-radius: 2px;
         background-color: rgb(151, 157, 165);
+        cursor: pointer;
     }
 
-          &:checked+&__radio_block_one &__radio_label_one {
-              background-color: red;
-          }
-    
-          &:checked+&__radio_block_two &__radio_label_two {
-              background-color: blue;
-          }
-    
-          &:checked+&__radio_block_three &__radio_label_three {
-              background-color: green;
-          }
+    &__radio_activ_block {
+        background-color: var(--blue-75BBFD);
+        transform: scale(1.1);
+        /* Пример анимации при выборе */
+    }
 
-
-    
-
-    // &__radio_input:checked+.form_container__radio_label {
-    //     background-color: #fff;
-    // }
-
-    // &__radio_input:checked+.form_container__radio_label .form_container__radio_block {
-    //     background-color: rgb(133, 185, 247);
-    // }
-
-    // &__radio_block_one,
-    // &__radio_block_two,
-    // &__radio_block_three {
-    //     transition: background-color 0.3s ease;
-    // }
-
-    // &__radio_label_one,
-    // &__radio_label_two,
-    // &__radio_label_three {
-    //     transition: background-color 0.3s ease;
-    // }
-
-    // &__radio_input:checked+.form_container__radio_label_one .form_container__radio_block_one,
-    // &__radio_input:checked+.form_container__radio_label_two .form_container__radio_block_two,
-    // &__radio_input:checked+.form_container__radio_label_three .form_container__radio_block_three {
-    //     background-color: rgb(133, 185, 247);
-    // }
-
-    // &__radio_input:checked+.form_container__radio_label_one,
-    // &__radio_input:checked+.form_container__radio_label_two,
-    // &__radio_input:checked+.form_container__radio_label_three {
-    //     background-color: #fff;
-    // }
-
+    &__radio_activ_label {
+        background-color: #fff;
+    }
 
 }
+
 
 .form__group {
     position: relative;
@@ -209,5 +198,60 @@
     &:required,
     &:invalid {
         box-shadow: none;
+    }
+}
+
+
+
+.slider_container {
+
+    padding-top: 2rem;
+
+    &__title {
+        color: var(--light-gray-C0C5CB);
+        font-size: 0.75rem;
+        font-family: Raleway;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 1rem;
+        padding-bottom: 0.5rem;
+    }
+
+    &__customFileUpload {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        padding: 0.5rem 1rem;
+        background-color: var(--light-light-gray-EBECEE);
+        border-radius: 20px;
+        cursor: pointer;
+
+        &:hover {
+            box-shadow: 0px 0px 6px 0px var(--blue-75BBFD);
+        }
+    }
+
+    &__uploadIcon {
+        display: inline-block;
+        margin-right: 8px;
+        font-size: 14px;
+        color: #888;
+    }
+
+    &__uploadText {
+        display: inline-block;
+        font-size: 0.875rem;
+        font-family: var(--font-raleway);
+        font-style: normal;
+        font-weight: 400;
+        line-height: 1.25rem;
+        color: var(--secondary-dark-gray-525459);
+    }
+
+    /* Скрыть стандартную фразу "файл не выбран" */
+    &__customFileUpload input[type="file"] {
+        position: absolute;
+        left: -9999px;
     }
 }

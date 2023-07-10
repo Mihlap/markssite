@@ -3,8 +3,10 @@ import { useDispatch } from "react-redux";
 import Select from "react-select";
 import styles from "./FormAddProject.module.scss";
 import { fetchProject } from "../../../store/Slice/projectSlice";
+import icon from "./img/Frame4684.png";
 
 export default function FormAddProject() {
+
   const dispatch = useDispatch(); 
   const [selectedCompetencies, setSelectedCompetencies] = useState([]);
   const [selectedViewConstruction, setSelectedViewConstruction] = useState([]);
@@ -17,7 +19,7 @@ export default function FormAddProject() {
     viewConstruction: [],
     dropPhoto: [],
   });
-
+console.log(selectedRadio);
     const changeHandler = (event) => {
       if (event.target.files) {
         if (event.target.name === "dropPhoto") {
@@ -173,8 +175,20 @@ export default function FormAddProject() {
           </div>
         </div>
         <div className={styles.form_container__radio_container}>
-          <div className={styles.form_container__radio_block_one}>
-            <label className={styles.form_container__radio_label_one}>
+          <div
+            className={`${styles.form_container__radio_block_one} ${
+              selectedRadio === "520"
+                ? styles.form_container__radio_activ_block
+                : ""
+            }`}
+          >
+            <label
+              className={`${styles.form_container__radio_label_one} ${
+                selectedRadio === "520"
+                  ? styles.form_container__radio_activ_label
+                  : ""
+              }`}
+            >
               <input
                 className={styles.form_container__radio_input}
                 type="radio"
@@ -185,8 +199,20 @@ export default function FormAddProject() {
               />
             </label>
           </div>
-          <div className={styles.form_container__radio_block_two}>
-            <label className={styles.form_container__radio_label_two}>
+          <div
+            className={`${styles.form_container__radio_block_two} ${
+              selectedRadio === "299"
+                ? styles.form_container__radio_activ_block
+                : ""
+            }`}
+          >
+            <label
+              className={`${styles.form_container__radio_label_two} ${
+                selectedRadio === "299"
+                  ? styles.form_container__radio_activ_label
+                  : ""
+              }`}
+            >
               <input
                 className={styles.form_container__radio_input}
                 type="radio"
@@ -197,8 +223,20 @@ export default function FormAddProject() {
               />
             </label>
           </div>
-          <div className={styles.form_container__radio_block_three}>
-            <label className={styles.form_container__radio_label_three}>
+          <div
+            className={`${styles.form_container__radio_block_three} ${
+              selectedRadio === "849"
+                ? styles.form_container__radio_activ_block
+                : ""
+            }`}
+          >
+            <label
+              className={`${styles.form_container__radio_label_three} ${
+                selectedRadio === "849"
+                  ? styles.form_container__radio_activ_label
+                  : ""
+              }`}
+            >
               <input
                 className={styles.form_container__radio_input}
                 type="radio"
@@ -210,15 +248,25 @@ export default function FormAddProject() {
             </label>
           </div>
         </div>
-        <label>
-          Загрузить фото
-          <input
-            type="file"
-            name="dropPhoto"
-            onChange={changeHandler}
-            multiple
-          />
-        </label>
+
+        <div className={styles.slider_container}>
+          <div className={styles.slider_container__title}>Слайдер</div>
+
+          <label className={styles.slider_container__customFileUpload}>
+            <input
+              type="file"
+              name="dropPhoto"
+              onChange={changeHandler}
+              multiple
+            />
+            <div className={styles.slider_container__uploadIcon}>
+              <img src={icon} alt="icon" />
+            </div>
+            <div className={styles.slider_container__uploadText}>
+              Загрузить изображения
+            </div>
+          </label>
+        </div>
         <button type="submit">опубликовать</button>
       </form>
     </div>
