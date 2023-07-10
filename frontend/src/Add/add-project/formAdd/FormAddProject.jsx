@@ -30,7 +30,8 @@ export default function FormAddProject() {
       } else if (event.target.name === "photoAva") {
         setInputData((prev) => ({
           ...prev,
-          photoAva: event.target.files[0],
+          photoAva:
+            event.target.files.length > 0 ? event.target.files[0] : null,
         }));
       }
     } else {
@@ -52,7 +53,7 @@ export default function FormAddProject() {
           .map((option) => option.label)
           .join(","),
         radioValue: selectedRadio,
-        photoAva: inputData.photoAva[0], // Добавлено поле "photoAva" в объект "formattedData"
+        photoAva: inputData.photoAva, // Добавлено поле "photoAva" в объект "formattedData"
       };
       console.log(formattedData, "<<<----консоль на фронте");
       dispatch(fetchProject(formattedData, setInputData));
