@@ -13,14 +13,16 @@ import Mapbox3D from "../UI/Map3D/Mapbox3D";
 import styles from "./Header.module.css";
 import SliderMobile from "../UI/SliderHeader/SliderMobile";
 import actively from "./img/actively.png";
+import image140 from "./img/image140.png"
 
-const project = {
+const project = [
+  {
   title: 'Название проекта',
   selectCompetencies: 'Выбранные компетенции',
   countryCity: 'Страна, Город',
   monthYear: 'Месяц, Год',
   viewConstruction: 'Вид строительства',
-  imageTitle: 'Заголовок изображения',
+  imageTitle: image140,
   titleTextBlock: 'Заголовок текстового блока',
   descriptionProject: 'Описание проекта',
   totalArea: 'Общая площадь',
@@ -40,7 +42,143 @@ const project = {
   imageClose: 'Изображение (закрыто)',
   authorId: 1,
   style: 'Стиль'
-};
+},
+{
+  title: 'Название проекта',
+  selectCompetencies: 'Выбранные компетенции',
+  countryCity: 'Страна, Город',
+  monthYear: 'Месяц, Год',
+  viewConstruction: 'Вид строительства',
+  imageTitle: image140,
+  titleTextBlock: 'Заголовок текстового блока',
+  descriptionProject: 'Описание проекта',
+  totalArea: 'Общая площадь',
+  siteArea: 'Площадь участка',
+  floors: 'Количество этажей',
+  altitude: 'Высота',
+  constructionVolume: 'Объем строительства',
+  location: 'Местоположение',
+  degreeParticipation: 'Степень участия',
+  statusObject: 'Статус объекта',
+  customer: 'Заказчик',
+  publication: 'Публикация',
+  linkToPublication: 'Ссылка на публикацию',
+  awards: 'Награды',
+  imageOpen: 'Изображение (открыто)',
+  textBlock: 'Текстовый блок',
+  imageClose: 'Изображение (закрыто)',
+  authorId: 1,
+  style: 'Стиль'
+},
+{
+  title: 'Название проекта',
+  selectCompetencies: 'Выбранные компетенции',
+  countryCity: 'Страна, Город',
+  monthYear: 'Месяц, Год',
+  viewConstruction: 'Вид строительства',
+  imageTitle: image140,
+  titleTextBlock: 'Заголовок текстового блока',
+  descriptionProject: 'Описание проекта',
+  totalArea: 'Общая площадь',
+  siteArea: 'Площадь участка',
+  floors: 'Количество этажей',
+  altitude: 'Высота',
+  constructionVolume: 'Объем строительства',
+  location: 'Местоположение',
+  degreeParticipation: 'Степень участия',
+  statusObject: 'Статус объекта',
+  customer: 'Заказчик',
+  publication: 'Публикация',
+  linkToPublication: 'Ссылка на публикацию',
+  awards: 'Награды',
+  imageOpen: 'Изображение (открыто)',
+  textBlock: 'Текстовый блок',
+  imageClose: 'Изображение (закрыто)',
+  authorId: 1,
+  style: 'Стиль'
+},
+{
+  title: 'Название проекта',
+  selectCompetencies: 'Выбранные компетенции',
+  countryCity: 'Страна, Город',
+  monthYear: 'Месяц, Год',
+  viewConstruction: 'Вид строительства',
+  imageTitle: image140,
+  titleTextBlock: 'Заголовок текстового блока',
+  descriptionProject: 'Описание проекта',
+  totalArea: 'Общая площадь',
+  siteArea: 'Площадь участка',
+  floors: 'Количество этажей',
+  altitude: 'Высота',
+  constructionVolume: 'Объем строительства',
+  location: 'Местоположение',
+  degreeParticipation: 'Степень участия',
+  statusObject: 'Статус объекта',
+  customer: 'Заказчик',
+  publication: 'Публикация',
+  linkToPublication: 'Ссылка на публикацию',
+  awards: 'Награды',
+  imageOpen: 'Изображение (открыто)',
+  textBlock: 'Текстовый блок',
+  imageClose: 'Изображение (закрыто)',
+  authorId: 1,
+  style: 'Стиль'
+},
+{
+  title: 'Название проекта',
+  selectCompetencies: 'Выбранные компетенции',
+  countryCity: 'Страна, Город',
+  monthYear: 'Месяц, Год',
+  viewConstruction: 'Вид строительства',
+  imageTitle: image140,
+  titleTextBlock: 'Заголовок текстового блока',
+  descriptionProject: 'Описание проекта',
+  totalArea: 'Общая площадь',
+  siteArea: 'Площадь участка',
+  floors: 'Количество этажей',
+  altitude: 'Высота',
+  constructionVolume: 'Объем строительства',
+  location: 'Местоположение',
+  degreeParticipation: 'Степень участия',
+  statusObject: 'Статус объекта',
+  customer: 'Заказчик',
+  publication: 'Публикация',
+  linkToPublication: 'Ссылка на публикацию',
+  awards: 'Награды',
+  imageOpen: 'Изображение (открыто)',
+  textBlock: 'Текстовый блок',
+  imageClose: 'Изображение (закрыто)',
+  authorId: 1,
+  style: 'Стиль'
+},
+{
+  title: 'Название проекта',
+  selectCompetencies: 'Выбранные компетенции',
+  countryCity: 'Страна, Город',
+  monthYear: 'Месяц, Год',
+  viewConstruction: 'Вид строительства',
+  imageTitle: image140,
+  titleTextBlock: 'Заголовок текстового блока',
+  descriptionProject: 'Описание проекта',
+  totalArea: 'Общая площадь',
+  siteArea: 'Площадь участка',
+  floors: 'Количество этажей',
+  altitude: 'Высота',
+  constructionVolume: 'Объем строительства',
+  location: 'Местоположение',
+  degreeParticipation: 'Степень участия',
+  statusObject: 'Статус объекта',
+  customer: 'Заказчик',
+  publication: 'Публикация',
+  linkToPublication: 'Ссылка на публикацию',
+  awards: 'Награды',
+  imageOpen: 'Изображение (открыто)',
+  textBlock: 'Текстовый блок',
+  imageClose: 'Изображение (закрыто)',
+  authorId: 1,
+  style: 'Стиль'
+}
+];
 
 
 
@@ -201,111 +339,34 @@ export default function Header() {
             slidesPerView={4}
             spaceBetween={0}
             touch="true"
+            direction="horizontal"
           >
-            {project?.map((el) => (
+            {project?.map((el, index) => (
               <SwiperSlide
                 key={el.id}
-                className={styles.slide_container_item_stuff}
-                // onClick={() => handleButtonClick(category, el.id)}
-              >
-                <div className={styles.wrapper_container_item_stuff}>
+                className={styles.slider_container_item_card}
+                style={index % 2 === 1 ? { paddingTop: '10rem' } : {}}
+                >
+                <div className={styles.wrapper_container_item_card}>
                   <img
-                    className={styles.container__img_stuff}
-                    src={`http://localhost:3002/images/${el.img}`}
-                    alt={el.img}
+                    className={styles.container__imageTitle}
+                    src={el.imageTitle}
+                    alt={el.imageTitle}
                   />
                 </div>
-                <div className={styles.container__item_name_stuff}>
-                  {el.name}
+                <div className={styles.container__title}>
+                  {el.title}
                 </div>
-                <div className={styles.container__item_position_stuff}>
+                {/* <div className={styles.container__item_position_stuff}>
                   {el.position}
-                </div>
+                </div> */}
               </SwiperSlide>
             ))}
           </Swiper>
-      
-      </div>
+       </div>
     </main>
   );
 }
 
 
-  {/* <div className={styles.main_project_left}>
-          <Link
-            to={primeParkProject.link}
-          >
-            <img
-              className={styles.img_poject}
-              src={primeParkProject.img}
-              alt={primeParkProject.title}
-            />
-          </Link>
-          <div className={styles.card_text}>
-            <h3 className={styles.card_text_title}>
-              {primeParkProject.title}
-            </h3>
-            <span className={styles.card_text_local}>
-              {primeParkProject.text}
-            </span>
-          </div>
-        </div>
-        <div className={styles.main_project_right}>
-          <div className={styles.main_project_right1}>
-            <Link
-              to={hotelAppartProject.link}
-            >
-              <img
-                className={styles.img_project}
-                src={hotelAppartProject.img}
-                alt={hotelAppartProject.title}
-              />
-            </Link>
-            <div className={styles.card_text}>
-              <h3 className={styles.card_text_title}>
-                {hotelAppartProject.title}
-              </h3>
-              <span className={styles.card_text_local}>
-                {hotelAppartProject.text}
-              </span>
-            </div>
-          </div>
-          <div className={styles.main_project_right2}>
-            <Link
-              to={slavaProject.link}
-            >
-              <img
-                className={styles.img_project}
-                src={slavaProject.img}
-                alt={slavaProject.title}
-              />
-            </Link>
-            <div className={styles.card_text}>
-              <h3 className={styles.card_text_title}>
-                {slavaProject.title}
-              </h3>
-              <span className={styles.card_text_local}>
-                {slavaProject.text}
-              </span>
-            </div>
-          </div>
-          <div className={styles.main_project_right3}>
-            <Link
-              to={wineParkProject.link}
-            >
-              <img
-                className={styles.img_project}
-                src={wineParkProject.img}
-                alt={wineParkProject.title}
-              />
-            </Link>
-            <div className={styles.card_text}>
-              <h3 className={styles.card_text_title}>
-                {wineParkProject.title}
-              </h3>
-              <span className={styles.card_text_local}>
-                {wineParkProject.text}
-              </span>
-            </div>
-          </div>
-        </div> */}
+ 
