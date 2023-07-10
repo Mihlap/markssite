@@ -35,6 +35,7 @@ module.exports = (sequelize, DataTypes) => {
     monthYear: DataTypes.STRING,
     viewConstruction: DataTypes.STRING,
     imageTitle: DataTypes.TEXT,
+    imageProject: DataTypes.TEXT,
     titleTextBlock: DataTypes.STRING,
     descriptionProject: DataTypes.TEXT,
     totalArea: DataTypes.STRING,

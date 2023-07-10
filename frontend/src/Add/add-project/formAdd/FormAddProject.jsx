@@ -18,64 +18,67 @@ export default function FormAddProject() {
     monthYear: "",
     viewConstruction: [],
     dropPhoto: [],
+    photoAva: [],
   });
-console.log(selectedRadio);
-    const changeHandler = (event) => {
-      if (event.target.files) {
-        if (event.target.name === "dropPhoto") {
-          setInputData((prev) => ({
-            ...prev,
-            dropPhoto: event.target.files,
-          }));
-        } else if (event.target.name === "dropVideo") {
-          setInputData((prev) => ({
-            ...prev,
-            dropVideo: event.target.files[0],
-          }));
-        }
-      } else {
+  const changeHandler = (event) => {
+    if (event.target.files) {
+      if (event.target.name === "dropPhoto") {
         setInputData((prev) => ({
           ...prev,
-          [event.target.name]: event.target.value,
+          dropPhoto: event.target.files,
+        }));
+      } else if (event.target.name === "photoAva") {
+        setInputData((prev) => ({
+          ...prev,
+          photoAva: event.target.files[0],
         }));
       }
-  };
-  
-   const submitHandler = async (e) => {
-     e.preventDefault();
-     const formattedData = {
-       ...inputData,
-       selectCompetencies: selectedCompetencies
-         .map((option) => option.label)
-         .join(","),
-       viewConstruction: selectedViewConstruction
-         .map((option) => option.label)
-         .join(","),
-       radioValue: selectedRadio,
-     };
-     console.log(formattedData, "<<<----консоль на фронте");
-     dispatch(fetchProject(formattedData, setInputData));
-     setSelectedCompetencies([]);
-     setSelectedViewConstruction([]);
-     setSelectedRadio("");
-     setInputData({
-       title: "",
-       selectCompetencies: [],
-       countryCity: "",
-       monthYear: "",
-       viewConstruction: [],
-       dropPhoto: [],
-     });
-   };
-
-  const customStyles = {
-    control: (provided, state) => ({
+    } else {
+      setInputData((prev) => ({
+        ...prev,
+         [event.target.name]: event.target.value,
+        }));
+      }
+    };
+    
+    const submitHandler = async (e) => {
+      e.preventDefault();
+      const formattedData = {
+        ...inputData,
+        selectCompetencies: selectedCompetencies
+          .map((option) => option.label)
+          .join(","),
+        viewConstruction: selectedViewConstruction
+          .map((option) => option.label)
+          .join(","),
+        radioValue: selectedRadio,
+        photoAva: inputData.photoAva[0], // Добавлено поле "photoAva" в объект "formattedData"
+      };
+      console.log(formattedData, "<<<----консоль на фронте");
+      dispatch(fetchProject(formattedData, setInputData));
+      setSelectedCompetencies([]);
+      setSelectedViewConstruction([]);
+      setSelectedRadio("");
+      setInputData({
+        title: "",
+        selectCompetencies: "",
+        countryCity: "",
+        monthYear: "",
+        viewConstruction: "",
+        dropPhoto: [],
+        photoAva: [],
+      });
+    };
+    
+    const customStyles = {
+      control: (provided, state) => ({
       ...provided,
       border: "1px solid red",
       // остальные стили
     }),
     // другие свойства стилей
   };
+  console.log(inputData);
   return (
     <div className={styles.form_container}>
       <div className={styles.form_container__title}>Новый проект</div>
@@ -169,11 +172,19 @@ console.log(selectedRadio);
         </div>
         <div className={styles.form_container__checkbox_block}>
           <div>
-            Выберете ориентацию отображения карточки на странице «Проекты»
-            <br />
-            <span>*отображается первое изображение слайдера</span>
+            Загрузите фото и выберете ориентацию
+            <span> на странице «Проекты»</span>
           </div>
         </div>
+        <label className={styles.slider_container__customFileUpload}>
+          <input type="file" name="photoAva" onChange={changeHandler} />
+          <div className={styles.slider_container__uploadIcon}>
+            <img src={icon} alt="icon" />
+          </div>
+          <div className={styles.slider_container__uploadText}>
+            Загрузить изображения
+          </div>
+        </label>
         <div className={styles.form_container__radio_container}>
           <div
             className={`${styles.form_container__radio_block_one} ${
@@ -248,9 +259,15 @@ console.log(selectedRadio);
             </label>
           </div>
         </div>
-
         <div className={styles.slider_container}>
-          <div className={styles.slider_container__title}>Слайдер</div>
+          {/* <div className={styles.slider_container__title}>Слайдер</div> */}
+
+          <div className={styles.form_container__checkbox_block}>
+            <div>
+              Слайдер
+              <span> *допускается загрузка 4х изображений</span>
+            </div>
+          </div>
 
           <label className={styles.slider_container__customFileUpload}>
             <input
