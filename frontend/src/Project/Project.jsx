@@ -12,11 +12,15 @@ export default function Project() {
       dispatch(getFetchForm());
     }, [dispatch]);
   
-let arr = project?.map((el) => el.selectCompetencies);
+   const colors = {
+     Архитектура: "#FF7F6A",
+     BIM: "#75BBFD",
+     Конструкции: "#566272",
+     Дизайн: "#FAA8BD",
+     Инженерия: "#90B734",
+   };
   
-  
-
-  console.log(arr);
+  console.log(project);
 
 return (
   <section className={styles.section_project}>
@@ -24,6 +28,10 @@ return (
       {project &&
         project.map((el) => {
           const firstPhoto = el.imageTitle.split(", ")[0];
+          const competencies = el.selectCompetencies
+            .split(",")
+            .map((comp) => comp.trim())
+            .filter(Boolean);
           return (
             <div className={styles.section_project__block_cart} key={el.id}>
               <div className={styles.cart_project}>
@@ -35,14 +43,39 @@ return (
                     alt="pfoto"
                   />
                   <div className={styles.cart_project__content}>
-                    <span className={styles.cart_project__title}>{el.title}</span>
-                    <span className={styles.cart_project__widget}>
-                      {el.selectCompetencies}
+                    <span className={styles.cart_project__title}>
+                      {el.title}
                     </span>
-                  </div>
-                    <div className={styles.cart_project__address}>
-                      {el.countryCity} точка {el.monthYear}
+                    <div className={styles.cart_project__widget}>
+                      {competencies.map((comp) => (
+                        <div
+                          key={comp}
+                          style={{
+                            color: colors[comp],
+                            borderColor: colors[comp],
+                            border: "1px solid",
+                            padding: "3px 6px",
+                            borderRadius: "34px",
+                          }}
+                        >
+                          {comp}
+                        </div>
+                      ))}
                     </div>
+                  </div>
+                  <div className={styles.cart_project__address}>
+                    {el.countryCity}{" "}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="2"
+                      height="2"
+                      viewBox="0 0 2 2"
+                      fill="none"
+                    >
+                      <circle cx="1" cy="1" r="1" fill="#959DA6" />
+                    </svg>{" "}
+                    {el.monthYear}
+                  </div>
                 </div>
               </div>
             </div>

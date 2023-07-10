@@ -10,7 +10,6 @@
         flex-wrap: wrap;
         gap: 30px;
     }
-
 }
 
 .cart_project {
@@ -27,10 +26,37 @@
 
     &__title {
         width: 50%;
+        /* Body Bold · 14 */
+            font-family: var(--font-raleway);
+            font-size: 14px;
+            font-style: normal;
+            font-weight: var(--fw-700);
+            line-height: 20px;
+            color: var(--black-4E4E4E);
     }
 
     &__widget {
         width: 50%;
+        display: flex;
+        flex-wrap: wrap;
+        grid-column-gap: 16px;
+
+        div {
+            font-family: var(--font-raleway);
+                font-size: 9px;
+                font-style: normal;
+                font-weight: 500;
+                line-height: normal;
+        }
+    }
+
+    &__address {
+        color: var(--gray-959DA6);
+        font-family: var(--font-raleway);
+            font-size: 10px;
+            font-style: normal;
+            font-weight: var(--fw-400);
+            line-height: normal;
     }
 
 
