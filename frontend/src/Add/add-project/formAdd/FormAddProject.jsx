@@ -28,12 +28,11 @@ export default function FormAddProject() {
           dropPhoto: event.target.files,
         }));
       } else if (event.target.name === "photoAva") {
-        setInputData((prev) => ({
-          ...prev,
-          photoAva:
-            event.target.files.length > 0 ? event.target.files[0] : null,
-        }));
-      }
+  setInputData((prev) => ({
+    ...prev,
+    photoAva: event.target.files.length > 0 ? event.target.files[0] : null,
+  }));
+}
     } else {
       setInputData((prev) => ({
         ...prev,
@@ -53,10 +52,10 @@ export default function FormAddProject() {
           .map((option) => option.label)
           .join(","),
         radioValue: selectedRadio,
-        photoAva: inputData.photoAva, // Добавлено поле "photoAva" в объект "formattedData"
+        photoAva: inputData.photoAva[0], // Добавлено поле "photoAva" в объект "formattedData"
       };
       console.log(formattedData, "<<<----консоль на фронте");
-      dispatch(fetchProject(formattedData, setInputData));
+      // dispatch(fetchProject(formattedData, setInputData));
       setSelectedCompetencies([]);
       setSelectedViewConstruction([]);
       setSelectedRadio("");

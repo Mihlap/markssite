@@ -66,8 +66,7 @@ export const fetchProject = (formattedData, setInputData) => async (dispatch) =>
       monthYear: "",
       viewConstruction: "",
       dropPhoto: [],
-      radioValue: "",
-      photoAva: [],
+      radioValue: '',
     });
     dispatch(getFetchForm()); // Добавлен этот вызов для получения обновленных данных после успешной отправки формы
   });
