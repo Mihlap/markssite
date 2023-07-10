@@ -27,6 +27,9 @@ module.exports = {
       imageTitle: {
         type: Sequelize.TEXT,
       },
+      imageProject: {
+        type: Sequelize.TEXT,
+      },
       titleTextBlock: {
         type: Sequelize.STRING,
       },
