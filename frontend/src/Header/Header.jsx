@@ -195,7 +195,7 @@ export default function Header() {
         />
       </div> */}
       <div className={styles.main_project}>
-      <Swiper
+      {/* <Swiper
             className={styles.slider_card_container_project}
             loop={true}
             slidesPerView={4}
@@ -223,7 +223,7 @@ export default function Header() {
                 </div>
               </SwiperSlide>
             ))}
-          </Swiper>
+          </Swiper> */}
       
       </div>
     </main>
