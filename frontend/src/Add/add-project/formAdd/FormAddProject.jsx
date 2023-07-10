@@ -17,7 +17,7 @@ export default function FormAddProject() {
     viewConstruction: [],
     dropPhoto: [],
   });
-
+console.log(selectedRadio);
     const changeHandler = (event) => {
       if (event.target.files) {
         if (event.target.name === "dropPhoto") {
@@ -173,8 +173,20 @@ export default function FormAddProject() {
           </div>
         </div>
         <div className={styles.form_container__radio_container}>
-          <div className={styles.form_container__radio_block_one}>
-            <label className={styles.form_container__radio_label_one}>
+          <div
+            className={`${styles.form_container__radio_block_one} ${
+              selectedRadio === "520"
+                ? styles.form_container__radio_activ_block
+                : ""
+            }`}
+          >
+            <label
+              className={`${styles.form_container__radio_label_one} ${
+                selectedRadio === "520"
+                  ? styles.form_container__radio_activ_label
+                  : ""
+              }`}
+            >
               <input
                 className={styles.form_container__radio_input}
                 type="radio"
@@ -185,8 +197,20 @@ export default function FormAddProject() {
               />
             </label>
           </div>
-          <div className={styles.form_container__radio_block_two}>
-            <label className={styles.form_container__radio_label_two}>
+          <div
+            className={`${styles.form_container__radio_block_two} ${
+              selectedRadio === "299"
+                ? styles.form_container__radio_activ_block
+                : ""
+            }`}
+          >
+            <label
+              className={`${styles.form_container__radio_label_two} ${
+                selectedRadio === "299"
+                  ? styles.form_container__radio_activ_label
+                  : ""
+              }`}
+            >
               <input
                 className={styles.form_container__radio_input}
                 type="radio"
@@ -197,8 +221,20 @@ export default function FormAddProject() {
               />
             </label>
           </div>
-          <div className={styles.form_container__radio_block_three}>
-            <label className={styles.form_container__radio_label_three}>
+          <div
+            className={`${styles.form_container__radio_block_three} ${
+              selectedRadio === "849"
+                ? styles.form_container__radio_activ_block
+                : ""
+            }`}
+          >
+            <label
+              className={`${styles.form_container__radio_label_three} ${
+                selectedRadio === "849"
+                  ? styles.form_container__radio_activ_label
+                  : ""
+              }`}
+            >
               <input
                 className={styles.form_container__radio_input}
                 type="radio"
