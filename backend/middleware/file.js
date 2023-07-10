@@ -21,4 +21,10 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-module.exports = multer({ storage, fileFilter });
+// Для массива файлов
+const uploadArray = multer({ storage, fileFilter }).array('dropPhoto', 4);
+
+// Для одного файла
+const uploadSingle = multer({ storage, fileFilter }).single('photoAva');
+
+module.exports = { uploadArray, uploadSingle };
