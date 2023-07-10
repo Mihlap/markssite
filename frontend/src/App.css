@@ -103,10 +103,27 @@ input {
   outline: none;
 }
 
-/* input[type="radio"] {
+input[type="radio"] {
   appearance: none;
   display: none;
-} */
+}
+
+input[type="radio"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  outline: none;
+  transition: border-color 0.2s;
+  cursor: pointer;
+}
+
+input[type="radio"]:checked {
+  border-color: #007bff;
+}
 
 /* Стили для мобильной версии сайта блока NavBar начинаются тут */
 @media screen and (max-width: 700px) {
