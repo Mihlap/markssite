@@ -14,39 +14,29 @@ import styles from "./Header.module.css";
 import SliderMobile from "../UI/SliderHeader/SliderMobile";
 import actively from "./img/actively.png";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchProjectStart,
-  fetchProjectSuccess,
-  fetchProjectFailure,
-  getFetchForm,
-} from "../store/Slice/projectSlice";
-import Error from "../Loading/Error/Error";
-import LoadingCircle from "../Loading/LoadingCircle";
+import { getFetchForm } from "../store/Slice/projectSlice";
 
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 export default function Header() {
-  const { project, error, loading } = useSelector((state) => state.project);
+  const  project  = useSelector((state) => state.project.articles);
   const dispatch = useDispatch();
    const Host = process.env.REACT_APP_SERVER_HOST;
 
+  
   useEffect(() => {
     dispatch(getFetchForm())
   }, [dispatch]);
+  
+  const colors = {
+    Архитектура: "#FF7F6A",
+    BIM: "#75BBFD",
+    Конструкции: "#566272",
+    Дизайн: "#FAA8BD",
+    Инженерия: "#90B734",
+  };
 
-  if (loading) {
-    return <LoadingCircle />;
-  }
-  if (error) {
-    return (
-      <div>
-        {" "}
-        <Error error={error.message} />
-      </div>
-    );
-  }
-
-  return (
+ return (
     <main className={styles.header}>
       {true ? (
         <NavLink className={styles.preview_mode} to="/admin">
@@ -197,7 +187,7 @@ export default function Header() {
       <div className={styles.main_project}>
         <Swiper
           className={styles.slider_card_container_project}
-          slidesPerView={4}
+          slidesPerView={3}
           spaceBetween={0}
           touch="true"
           direction="horizontal"
@@ -212,17 +202,47 @@ export default function Header() {
               <div className={styles.wrapper_container_item_card}>
                 <img
                   className={styles.container__imageTitle}
-                  src={`${Host}/images/${el.imageTitle}`}
+                 src={`${Host}/images/${el.imageTitle}`}
                   alt={el.imageTitle}
                 />
               </div>
-              <div className={styles.container__title}>
-                {el.title}
-                <div className={styles.container__selectCompetencies}>
-                  {JSON.parse(el.selectCompetencies).map((competency) => (
-                    <span key={competency.value}>{competency.label}</span>
-                  ))}
-                </div>
+              <div className={styles.title_selectCompetencies}>
+              <div className={styles.container__title}>{el.title}</div>
+              <div className={styles.container__selectCompetencies}>
+                {(() => {
+                  try {
+                    const selectCompetencies = JSON.parse(
+                      el.selectCompetencies
+                    );
+                    return selectCompetencies.map((el) => (
+                      <div key={el.value}
+                      className={styles.div_el_selectCompetencies}
+                      style={{
+                        color: colors[el.value],
+                        borderColor: colors[el.value],
+                        border: "1px solid",
+                        padding: "3px 6px",
+                        borderRadius: "34px",
+                      }}
+                      >   
+                        {el.label}
+                        </div>
+                    ));
+                  } catch (error) {
+                    console.log(
+                      "Error parsing selectCompetencies JSON:",
+                      error
+                    );
+                    return null; 
+                  }
+                })()}
+              </div>
+              </div>
+              <div className={styles.countryCity_monthYear}>
+              <div className={styles.container__countryCity}>
+                {el.countryCity}
+              </div>
+              <div className={styles.container__monthYear}>{el.monthYear}</div>
               </div>
             </SwiperSlide>
           ))}
