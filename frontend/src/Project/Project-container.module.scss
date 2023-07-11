@@ -10,6 +10,10 @@
         flex-wrap: wrap;
         gap: 30px;
     }
+
+    &__block_cart {
+        display: inline-block;
+    }
 }
 
 .cart_project {
