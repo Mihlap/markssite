@@ -12,8 +12,7 @@ router.get('/getzapros', async (req, res) => {
   try {
     const data = await Project.findAll();
     res.json(data);
-    console.log( res.json(data));
-  } catch (error) {
+   } catch (error) {
     console.log(error);
   }
 });
