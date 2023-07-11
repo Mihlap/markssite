@@ -10,7 +10,7 @@ export default function FormAddProject() {
   const [selectedCompetencies, setSelectedCompetencies] = useState([]);
   const [selectedViewConstruction, setSelectedViewConstruction] = useState([]);
   const [previewPhotos, setPreviewPhotos] = useState([]);
-  const [selectedRadio, setSelectedRadio] = useState("520");
+  const [selectedRadio, setSelectedRadio] = useState("28,28");
   const [inputData, setInputData] = useState({
     title: "",
     selectCompetencies: [],
@@ -76,7 +76,7 @@ const changeHandler = (event) => {
       photoAva: inputData.photoAva, // Добавлено поле "photoAva" в объект "formattedData"
     };
     console.log(formattedData, "<<<----консоль на фронте");
-    // dispatch(fetchProject(formattedData, setInputData));
+    dispatch(fetchProject(formattedData, setInputData));
     setSelectedCompetencies([]);
     setSelectedViewConstruction([]);
     setSelectedRadio("");
@@ -101,6 +101,7 @@ const changeHandler = (event) => {
     // другие свойства стилей
   };
   console.log(inputData);
+  console.log(selectedRadio);
   return (
     <div className={styles.form_container}>
       <div className={styles.form_container__title}>Новый проект</div>
@@ -210,14 +211,14 @@ const changeHandler = (event) => {
         <div className={styles.form_container__radio_container}>
           <div
             className={`${styles.form_container__radio_block_one} ${
-              selectedRadio === "520"
+              selectedRadio === "28,28"
                 ? styles.form_container__radio_activ_block
                 : ""
             }`}
           >
             <label
               className={`${styles.form_container__radio_label_one} ${
-                selectedRadio === "520"
+                selectedRadio === "28,28"
                   ? styles.form_container__radio_activ_label
                   : ""
               }`}
@@ -226,22 +227,22 @@ const changeHandler = (event) => {
                 className={styles.form_container__radio_input}
                 type="radio"
                 name="radioGroup"
-                value="520"
-                checked={selectedRadio === "520"}
+                value="28,28"
+                checked={selectedRadio === "28,28"}
                 onChange={(e) => setSelectedRadio(e.target.value)}
               />
             </label>
           </div>
           <div
             className={`${styles.form_container__radio_block_two} ${
-              selectedRadio === "299"
+              selectedRadio === "28,14"
                 ? styles.form_container__radio_activ_block
                 : ""
             }`}
           >
             <label
               className={`${styles.form_container__radio_label_two} ${
-                selectedRadio === "299"
+                selectedRadio === "28,14"
                   ? styles.form_container__radio_activ_label
                   : ""
               }`}
@@ -250,22 +251,22 @@ const changeHandler = (event) => {
                 className={styles.form_container__radio_input}
                 type="radio"
                 name="radioGroup"
-                value="299"
-                checked={selectedRadio === "299"}
+                value="28,14"
+                checked={selectedRadio === "28,14"}
                 onChange={(e) => setSelectedRadio(e.target.value)}
               />
             </label>
           </div>
           <div
             className={`${styles.form_container__radio_block_three} ${
-              selectedRadio === "849"
+              selectedRadio === "28,48"
                 ? styles.form_container__radio_activ_block
                 : ""
             }`}
           >
             <label
               className={`${styles.form_container__radio_label_three} ${
-                selectedRadio === "849"
+                selectedRadio === "28,48"
                   ? styles.form_container__radio_activ_label
                   : ""
               }`}
@@ -274,8 +275,8 @@ const changeHandler = (event) => {
                 className={styles.form_container__radio_input}
                 type="radio"
                 name="radioGroup"
-                value="849"
-                checked={selectedRadio === "849"}
+                value="28,48"
+                checked={selectedRadio === "28,48"}
                 onChange={(e) => setSelectedRadio(e.target.value)}
               />
             </label>
