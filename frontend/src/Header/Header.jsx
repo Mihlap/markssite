@@ -28,6 +28,7 @@ gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 export default function Header() {
   const { project, error, loading } = useSelector((state) => state.project);
   const dispatch = useDispatch();
+   const Host = process.env.REACT_APP_SERVER_HOST;
 
   useEffect(() => {
     dispatch(getFetchForm())
@@ -75,14 +76,14 @@ export default function Header() {
         <SliderHeader />
         <div className={styles.swiper_container}>
           <SwiperContainer
-            // artickes={artickes}
+          // artickes={artickes}
           />
         </div>
         <div className={styles.show_container}></div>
         <div className={styles.card_container}>
           <div className={styles.card_item_1}>
             <Link
-              // to={winePark.link}
+            // to={winePark.link}
             >
               <div className={styles.card_img}>
                 <img
@@ -100,7 +101,8 @@ export default function Header() {
             </div>
             <Link
               // to={winePark.link}
-              className={styles.card_button}>
+              className={styles.card_button}
+            >
               <svg
                 className={styles.card_button_link}
                 width="40"
@@ -139,7 +141,8 @@ export default function Header() {
             </div>
             <Link
               // to={badaevsky.link}
-              className={styles.card_button}>
+              className={styles.card_button}
+            >
               <svg
                 className={styles.card_button_link}
                 width="40"
@@ -192,39 +195,39 @@ export default function Header() {
         />
       </div> */}
       <div className={styles.main_project}>
-       <Swiper
-            className={styles.slider_card_container_project}
-            slidesPerView={4}
-            spaceBetween={0}
-            touch="true"
-            direction="horizontal"
-            loop={false}
-          >
-            {project?.map((el, index) => (
-              <SwiperSlide
-                key={el.id}
-                className={styles.slider_container_item_card}
-                style={index % 2 === 1 ? { paddingTop: '10rem' } : {}}
-                >
-                <div className={styles.wrapper_container_item_card}>
-                  <img
-                    className={styles.container__imageTitle}
-                    src={`http://localhost:3002/images/${el.imageTitle}`}
-                    alt={el.imageTitle}
-                  />
-                </div>
-                <div className={styles.container__title}>
-                  {el.title}
+        <Swiper
+          className={styles.slider_card_container_project}
+          slidesPerView={4}
+          spaceBetween={0}
+          touch="true"
+          direction="horizontal"
+          loop={false}
+        >
+          {project?.map((el, index) => (
+            <SwiperSlide
+              key={el.id}
+              className={styles.slider_container_item_card}
+              style={index % 2 === 1 ? { paddingTop: "10rem" } : {}}
+            >
+              <div className={styles.wrapper_container_item_card}>
+                <img
+                  className={styles.container__imageTitle}
+                  src={`${Host}/images/${el.imageTitle}`}
+                  alt={el.imageTitle}
+                />
+              </div>
+              <div className={styles.container__title}>
+                {el.title}
                 <div className={styles.container__selectCompetencies}>
-                {JSON.parse(el.selectCompetencies).map((competency) => (
-                <span key={competency.value}>{competency.label}</span>
-              ))}
-               </div>
+                  {JSON.parse(el.selectCompetencies).map((competency) => (
+                    <span key={competency.value}>{competency.label}</span>
+                  ))}
                 </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-       </div>
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
     </main>
   );
 }
