@@ -13,214 +13,37 @@ import Mapbox3D from "../UI/Map3D/Mapbox3D";
 import styles from "./Header.module.css";
 import SliderMobile from "../UI/SliderHeader/SliderMobile";
 import actively from "./img/actively.png";
-import image140 from "./img/image140.png"
-
-const project = [
-  {
-    title: "Многофункциональный111111111 комплекс, Нагатинская пойма",
-    selectCompetencies: [
-      { value: "Архитектура", label: "Архитектура" },
-      { value: "BIM", label: "BIM" },
-      { value: "Конструкции", label: "Конструкции" },
-      { value: "Инженерия", label: "Инженерия" },
-      { value: "Дизайн", label: "Дизайн" },
-    ],
-    countryCity: "Россия Москва",
-    monthYear: "апрель 2021",
-    viewConstruction: "Вид строительства",
-    imageTitle: image140,
-    titleTextBlock: "Заголовок текстового блока",
-    descriptionProject: "Описание проекта",
-    totalArea: "Общая площадь",
-    siteArea: "Площадь участка",
-    floors: "Количество этажей",
-    altitude: "Высота",
-    constructionVolume: "Объем строительства",
-    location: "Местоположение",
-    degreeParticipation: "Степень участия",
-    statusObject: "Статус объекта",
-    customer: "Заказчик",
-    publication: "Публикация",
-    linkToPublication: "Ссылка на публикацию",
-    awards: "Награды",
-    imageOpen: "Изображение (открыто)",
-    textBlock: "Текстовый блок",
-    imageClose: "Изображение (закрыто)",
-    authorId: 1,
-    style: "Стиль",
-  },
-  {
-    title: "Многофункциональный111111111 комплекс, Нагатинская пойма",
-    selectCompetencies: [
-      { value: "Архитектура", label: "Архитектура" },
-      { value: "BIM", label: "BIM" },
-      { value: "Конструкции", label: "Конструкции" },
-      { value: "Инженерия", label: "Инженерия" },
-      { value: "Дизайн", label: "Дизайн" },
-    ],
-    countryCity: "Россия Москва",
-    monthYear: "апрель 2021",
-    viewConstruction: "Вид строительства",
-    imageTitle: image140,
-    titleTextBlock: "Заголовок текстового блока",
-    descriptionProject: "Описание проекта",
-    totalArea: "Общая площадь",
-    siteArea: "Площадь участка",
-    floors: "Количество этажей",
-    altitude: "Высота",
-    constructionVolume: "Объем строительства",
-    location: "Местоположение",
-    degreeParticipation: "Степень участия",
-    statusObject: "Статус объекта",
-    customer: "Заказчик",
-    publication: "Публикация",
-    linkToPublication: "Ссылка на публикацию",
-    awards: "Награды",
-    imageOpen: "Изображение (открыто)",
-    textBlock: "Текстовый блок",
-    imageClose: "Изображение (закрыто)",
-    authorId: 1,
-    style: "Стиль",
-  },
-  {
-    title: "Многофункциональный111111111 комплекс, Нагатинская пойма",
-    selectCompetencies: [
-      { value: "Архитектура", label: "Архитектура" },
-      { value: "BIM", label: "BIM" },
-      { value: "Конструкции", label: "Конструкции" },
-      { value: "Инженерия", label: "Инженерия" },
-      { value: "Дизайн", label: "Дизайн" },
-    ],
-    countryCity: "Россия Москва",
-    monthYear: "апрель 2021",
-    viewConstruction: "Вид строительства",
-    imageTitle: image140,
-    titleTextBlock: "Заголовок текстового блока",
-    descriptionProject: "Описание проекта",
-    totalArea: "Общая площадь",
-    siteArea: "Площадь участка",
-    floors: "Количество этажей",
-    altitude: "Высота",
-    constructionVolume: "Объем строительства",
-    location: "Местоположение",
-    degreeParticipation: "Степень участия",
-    statusObject: "Статус объекта",
-    customer: "Заказчик",
-    publication: "Публикация",
-    linkToPublication: "Ссылка на публикацию",
-    awards: "Награды",
-    imageOpen: "Изображение (открыто)",
-    textBlock: "Текстовый блок",
-    imageClose: "Изображение (закрыто)",
-    authorId: 1,
-    style: "Стиль",
-  },
-  {
-    title: "Многофункциональный111111111 комплекс, Нагатинская пойма",
-    selectCompetencies: [
-      { value: "Архитектура", label: "Архитектура" },
-      { value: "BIM", label: "BIM" },
-      { value: "Конструкции", label: "Конструкции" },
-      { value: "Инженерия", label: "Инженерия" },
-      { value: "Дизайн", label: "Дизайн" },
-    ],
-    countryCity: "Россия Москва",
-    monthYear: "апрель 2021",
-    viewConstruction: "Вид строительства",
-    imageTitle: image140,
-    titleTextBlock: "Заголовок текстового блока",
-    descriptionProject: "Описание проекта",
-    totalArea: "Общая площадь",
-    siteArea: "Площадь участка",
-    floors: "Количество этажей",
-    altitude: "Высота",
-    constructionVolume: "Объем строительства",
-    location: "Местоположение",
-    degreeParticipation: "Степень участия",
-    statusObject: "Статус объекта",
-    customer: "Заказчик",
-    publication: "Публикация",
-    linkToPublication: "Ссылка на публикацию",
-    awards: "Награды",
-    imageOpen: "Изображение (открыто)",
-    textBlock: "Текстовый блок",
-    imageClose: "Изображение (закрыто)",
-    authorId: 1,
-    style: "Стиль",
-  },
-  {
-    title: "Многофункциональный111111111 комплекс, Нагатинская пойма",
-    selectCompetencies: [
-      { value: "Архитектура", label: "Архитектура" },
-      { value: "BIM", label: "BIM" },
-      { value: "Конструкции", label: "Конструкции" },
-      { value: "Инженерия", label: "Инженерия" },
-      { value: "Дизайн", label: "Дизайн" },
-    ],
-    countryCity: "Россия Москва",
-    monthYear: "апрель 2021",
-    viewConstruction: "Вид строительства",
-    imageTitle: image140,
-    titleTextBlock: "Заголовок текстового блока",
-    descriptionProject: "Описание проекта",
-    totalArea: "Общая площадь",
-    siteArea: "Площадь участка",
-    floors: "Количество этажей",
-    altitude: "Высота",
-    constructionVolume: "Объем строительства",
-    location: "Местоположение",
-    degreeParticipation: "Степень участия",
-    statusObject: "Статус объекта",
-    customer: "Заказчик",
-    publication: "Публикация",
-    linkToPublication: "Ссылка на публикацию",
-    awards: "Награды",
-    imageOpen: "Изображение (открыто)",
-    textBlock: "Текстовый блок",
-    imageClose: "Изображение (закрыто)",
-    authorId: 1,
-    style: "Стиль",
-  },
-  {
-    title: "Многофункциональный111111111 комплекс, Нагатинская пойма",
-    selectCompetencies: [
-      { value: "Архитектура", label: "Архитектура" },
-      { value: "BIM", label: "BIM" },
-      { value: "Конструкции", label: "Конструкции" },
-      { value: "Инженерия", label: "Инженерия" },
-      { value: "Дизайн", label: "Дизайн" },
-    ],
-    countryCity: "Россия Москва",
-    monthYear: "апрель 2021",
-    viewConstruction: "Вид строительства",
-    imageTitle: image140,
-    titleTextBlock: "Заголовок текстового блока",
-    descriptionProject: "Описание проекта",
-    totalArea: "Общая площадь",
-    siteArea: "Площадь участка",
-    floors: "Количество этажей",
-    altitude: "Высота",
-    constructionVolume: "Объем строительства",
-    location: "Местоположение",
-    degreeParticipation: "Степень участия",
-    statusObject: "Статус объекта",
-    customer: "Заказчик",
-    publication: "Публикация",
-    linkToPublication: "Ссылка на публикацию",
-    awards: "Награды",
-    imageOpen: "Изображение (открыто)",
-    textBlock: "Текстовый блок",
-    imageClose: "Изображение (закрыто)",
-    authorId: 1,
-    style: "Стиль",
-  },
-];
-
-
+import { useDispatch, useSelector } from "react-redux";
+import {
+  fetchProjectStart,
+  fetchProjectSuccess,
+  fetchProjectFailure,
+  getFetchForm,
+} from "../store/Slice/projectSlice";
+import Error from "../Loading/Error/Error";
+import LoadingCircle from "../Loading/LoadingCircle";
 
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 export default function Header() {
+  const { project, error, loading } = useSelector((state) => state.project);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getFetchForm())
+  }, [dispatch]);
+
+  if (loading) {
+    return <LoadingCircle />;
+  }
+  if (error) {
+    return (
+      <div>
+        {" "}
+        <Error error={error.message} />
+      </div>
+    );
+  }
 
   return (
     <main className={styles.header}>
@@ -386,17 +209,17 @@ export default function Header() {
                 <div className={styles.wrapper_container_item_card}>
                   <img
                     className={styles.container__imageTitle}
-                    src={el.imageTitle}
+                    src={`http://localhost:3002/images/${el.imageTitle}`}
                     alt={el.imageTitle}
                   />
                 </div>
                 <div className={styles.container__title}>
                   {el.title}
                 <div className={styles.container__selectCompetencies}>
-                {project?.selectCompetencies?.map((competency) => (
-                 <span key={competency.value}>{competency.label}</span>
-                 ))}
-                </div>
+                {JSON.parse(el.selectCompetencies).map((competency) => (
+                <span key={competency.value}>{competency.label}</span>
+              ))}
+               </div>
                 </div>
               </SwiperSlide>
             ))}
