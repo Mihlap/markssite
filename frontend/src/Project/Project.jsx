@@ -39,7 +39,7 @@ return (
                   <img
                     className={styles.cart_project__img}
                     style={{ height: `${el.style}px` }}
-                    src={`http://localhost:3001/images/${el.imageProject}`}
+                    src={`http://localhost:3002/images/${el.imageProject}`}
                     alt="pfoto"
                   />
                   <div className={styles.cart_project__content}>
