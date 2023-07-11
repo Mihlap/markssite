@@ -25,8 +25,8 @@ const projectSlice = createSlice({
       state.error = action.payload;
     },
     deleteProjectSuccess(state, action) {
-      const prjectId = action.payload;
-      state.project = state.project.filter((el) => el.id !== prjectId);
+      const projectId = action.payload;
+      state.project = state.project.filter((el) => el.id !== projectId);
     },
     deleteProjectFailure(state, action) {
       state.error = action.payload;
