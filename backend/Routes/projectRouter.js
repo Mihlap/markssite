@@ -18,14 +18,20 @@ router.get('/getzapros', async (req, res) => {
   }
 });
 
+
 router.post(
   '/postzapros',
-  fileMiddleware.array('dropPhoto', 4),
+  fileMiddleware.fields([
+    { name: 'dropPhoto', maxCount: 4 },
+    { name: 'photoAva', maxCount: 1 },
+  ]),
   async (req, res) => {
-    // эта консоль помогает нам понять, какие значения приходят на бекенд
-// const photoAvaFile = req.files.find((file) => file.fieldname === 'photoAva');
-// const imageProjectResult = photoAvaFile ? photoAvaFile.filename : null;
     try {
+      console.log(req.files); // Вывод информации о файлах в консоль
+      const imageTitles = req.files.dropPhoto.map((file) => file.filename).join(', ');
+      const imageProjects = req.files.photoAva ? req.files.photoAva[0].filename : null;
+
+      console.log(imageProjects);
       await Project.create({
         title: req.body.title,
         selectCompetencies: req.body.selectCompetencies,
@@ -33,13 +39,13 @@ router.post(
         monthYear: req.body.monthYear,
         viewConstruction: req.body.viewConstruction,
         style: req.body.radioValue,
-        imageTitle: req.files.map((file) => file.filename).join(', '), // Объединяем имена фотографий через запятую
-        imageProject: req.files.map((file) => file.fieldname),
-        // video: req.files.find((file) => file.fieldname === "dropVideo").filename,
+        imageTitle: imageTitles,
+        imageProject: imageProjects,
       });
+
       res.status(200).json({ message: 'Данные успешно сохранены' });
     } catch (error) {
-      console.log(error);
+      console.log(error); // Вывод ошибки в консоль
       res.status(500).json({ message: 'Произошла ошибка при сохранении данных' });
     }
   },

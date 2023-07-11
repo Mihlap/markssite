@@ -6,8 +6,7 @@ import { fetchProject } from "../../../store/Slice/projectSlice";
 import icon from "./img/Frame4684.png";
 
 export default function FormAddProject() {
-
-  const dispatch = useDispatch(); 
+  const dispatch = useDispatch();
   const [selectedCompetencies, setSelectedCompetencies] = useState([]);
   const [selectedViewConstruction, setSelectedViewConstruction] = useState([]);
   const [selectedRadio, setSelectedRadio] = useState("520");
@@ -18,7 +17,7 @@ export default function FormAddProject() {
     monthYear: "",
     viewConstruction: [],
     dropPhoto: [],
-    photoAva: [],
+    photoAva: "",
   });
   const changeHandler = (event) => {
     if (event.target.files) {
@@ -28,50 +27,50 @@ export default function FormAddProject() {
           dropPhoto: event.target.files,
         }));
       } else if (event.target.name === "photoAva") {
-  setInputData((prev) => ({
-    ...prev,
-    photoAva: event.target.files.length > 0 ? event.target.files[0] : null,
-  }));
-}
+        setInputData((prev) => ({
+          ...prev,
+          photoAva: event.target.files.length > 0 ? event.target.files : null,
+        }));
+      }
     } else {
       setInputData((prev) => ({
         ...prev,
-         [event.target.name]: event.target.value,
-        }));
-      }
+        [event.target.name]: event.target.value,
+      }));
+    }
+  };
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    const formattedData = {
+      ...inputData,
+      selectCompetencies: selectedCompetencies
+        .map((option) => option.label)
+        .join(","),
+      viewConstruction: selectedViewConstruction
+        .map((option) => option.label)
+        .join(","),
+      radioValue: selectedRadio,
+      photoAva: inputData.photoAva, // Добавлено поле "photoAva" в объект "formattedData"
     };
-    
-    const submitHandler = async (e) => {
-      e.preventDefault();
-      const formattedData = {
-        ...inputData,
-        selectCompetencies: selectedCompetencies
-          .map((option) => option.label)
-          .join(","),
-        viewConstruction: selectedViewConstruction
-          .map((option) => option.label)
-          .join(","),
-        radioValue: selectedRadio,
-        photoAva: inputData.photoAva[0], // Добавлено поле "photoAva" в объект "formattedData"
-      };
-      console.log(formattedData, "<<<----консоль на фронте");
-      // dispatch(fetchProject(formattedData, setInputData));
-      setSelectedCompetencies([]);
-      setSelectedViewConstruction([]);
-      setSelectedRadio("");
-      setInputData({
-        title: "",
-        selectCompetencies: "",
-        countryCity: "",
-        monthYear: "",
-        viewConstruction: "",
-        dropPhoto: [],
-        photoAva: [],
-      });
-    };
-    
-    const customStyles = {
-      control: (provided, state) => ({
+    console.log(formattedData, "<<<----консоль на фронте");
+    dispatch(fetchProject(formattedData, setInputData));
+    setSelectedCompetencies([]);
+    setSelectedViewConstruction([]);
+    setSelectedRadio("");
+    setInputData({
+      title: "",
+      selectCompetencies: "",
+      countryCity: "",
+      monthYear: "",
+      viewConstruction: "",
+      dropPhoto: [],
+      photoAva: [],
+    });
+  };
+
+  const customStyles = {
+    control: (provided, state) => ({
       ...provided,
       border: "1px solid red",
       // остальные стили

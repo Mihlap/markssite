@@ -27,7 +27,7 @@ return (
     <div className={styles.section_project__block}>
       {project &&
         project.map((el) => {
-          const firstPhoto = el.imageTitle.split(", ")[0];
+          // const firstPhoto = el.imageTitle.split(", ")[0];
           const competencies = el.selectCompetencies
             .split(",")
             .map((comp) => comp.trim())
@@ -39,7 +39,7 @@ return (
                   <img
                     className={styles.cart_project__img}
                     style={{ height: `${el.style}px` }}
-                    src={`http://localhost:3001/images/${firstPhoto}`}
+                    src={`http://localhost:3001/images/${el.imageProject}`}
                     alt="pfoto"
                   />
                   <div className={styles.cart_project__content}>

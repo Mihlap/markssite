@@ -42,36 +42,44 @@ export const {
 
 
 
-export const fetchProject = (formattedData, setInputData) => async (dispatch) => {
-  dispatch(fetchProjectStart());
-  const formData = new FormData();
-  for (const key in formattedData) {
-    if (typeof formattedData[key] === "object") {
-      for (const file in formattedData[key]) {
-        formData.append("dropPhoto", formattedData[key][file]);
+export const fetchProject =
+  (formattedData, setInputData) => async (dispatch) => {
+    dispatch(fetchProjectStart());
+    const formData = new FormData();
+    for (const key in formattedData) {
+      if (key === "dropPhoto") {
+        for (let i = 0; i < formattedData[key].length; i++) {
+          formData.append("dropPhoto", formattedData[key][i]);
+        }
+      } else if (key === "photoAva") {
+        if (formattedData[key].length > 0) {
+          formData.append("photoAva", formattedData[key][0]);
+        }
+      } else {
+        formData.append(key, formattedData[key]);
       }
-    } else {
-      formData.append(key, formattedData[key]);
     }
-  }
 
-  
-  axios
-  .post(`${serverHost}/api-project/postzapros`, formData) // Использование { inputData } вместо { data: inputData }
-  .then(() => {
-    setInputData({
-      title: "",
-      selectCompetencies: "",
-      countryCity: "",
-      monthYear: "",
-      viewConstruction: "",
-      dropPhoto: [],
-      radioValue: '',
-    });
-    dispatch(getFetchForm()); // Добавлен этот вызов для получения обновленных данных после успешной отправки формы
-  });
-  console.log(formattedData, "REDUX");
-};
+    axios
+      .post(`${serverHost}/api-project/postzapros`, formData)
+      .then(() => {
+        setInputData({
+          title: "",
+          selectCompetencies: "",
+          countryCity: "",
+          monthYear: "",
+          viewConstruction: "",
+          dropPhoto: [],
+          radioValue: "",
+          photoAva: "",
+        });
+        dispatch(getFetchForm());
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
 
 export const getFetchForm = () => async (dispatch) => {
   dispatch(fetchProjectStart());
