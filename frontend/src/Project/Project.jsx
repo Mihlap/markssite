@@ -8,6 +8,9 @@ export default function Project() {
   const project = useSelector((state) => state.project.articles);
 
 
+  const Host = process.env.REACT_APP_SERVER_HOST;
+
+
     useEffect(() => {
       dispatch(getFetchForm());
     }, [dispatch]);
@@ -38,8 +41,11 @@ return (
                 <div className={styles.cart_project__container}>
                   <img
                     className={styles.cart_project__img}
-                    style={{ height: `${el.style}px` }}
-                    src={`http://localhost:3002/images/${el.imageProject}`}
+                    style={{
+                      height: `${project.style?.split(",")[0]}rem`,
+                      width: `${project.style?.split(",")[1]}rem`,
+                    }}
+                    src={`${Host}/images/${el.imageProject}`}
                     alt="pfoto"
                   />
                   <div className={styles.cart_project__content}>
