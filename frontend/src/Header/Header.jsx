@@ -21,6 +21,7 @@ gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 export default function Header() {
   const  project  = useSelector((state) => state.project.articles);
   const dispatch = useDispatch();
+   const Host = process.env.REACT_APP_SERVER_HOST;
 
   
   useEffect(() => {
@@ -201,7 +202,7 @@ export default function Header() {
               <div className={styles.wrapper_container_item_card}>
                 <img
                   className={styles.container__imageTitle}
-                  src={`http://localhost:3002/images/${el.imageTitle}`}
+                 src={`${Host}/images/${el.imageTitle}`}
                   alt={el.imageTitle}
                 />
               </div>
