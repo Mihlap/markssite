@@ -9,6 +9,7 @@ export default function FormAddProject() {
   const dispatch = useDispatch();
   const [selectedCompetencies, setSelectedCompetencies] = useState([]);
   const [selectedViewConstruction, setSelectedViewConstruction] = useState([]);
+  const [previewPhotos, setPreviewPhotos] = useState([]);
   const [selectedRadio, setSelectedRadio] = useState("520");
   const [inputData, setInputData] = useState({
     title: "",
@@ -19,26 +20,47 @@ export default function FormAddProject() {
     dropPhoto: [],
     photoAva: "",
   });
-  const changeHandler = (event) => {
-    if (event.target.files) {
-      if (event.target.name === "dropPhoto") {
-        setInputData((prev) => ({
-          ...prev,
-          dropPhoto: event.target.files,
-        }));
-      } else if (event.target.name === "photoAva") {
-        setInputData((prev) => ({
-          ...prev,
-          photoAva: event.target.files.length > 0 ? event.target.files : null,
-        }));
-      }
-    } else {
+const removePreviewPhoto = (index) => {
+  // Удаление фото из массива превью
+  const updatedPreviewPhotos = [...previewPhotos];
+  updatedPreviewPhotos.splice(index, 1);
+  setPreviewPhotos(updatedPreviewPhotos);
+
+  // Удаление фото из массива выбранных файлов
+  const updatedDropPhotos = [...inputData.dropPhoto];
+  updatedDropPhotos.splice(index, 1);
+  setInputData((prev) => ({
+    ...prev,
+    dropPhoto: updatedDropPhotos,
+  }));
+};
+
+const changeHandler = (event) => {
+  if (event.target.files) {
+    if (event.target.name === "dropPhoto") {
       setInputData((prev) => ({
         ...prev,
-        [event.target.name]: event.target.value,
+        dropPhoto: event.target.files,
+      }));
+
+      // Создание и отображение превью фото
+      const filesArray = Array.from(event.target.files);
+      const previewArray = filesArray.map((file) => URL.createObjectURL(file));
+      setPreviewPhotos(previewArray);
+    } else if (event.target.name === "photoAva") {
+      setInputData((prev) => ({
+        ...prev,
+        photoAva: event.target.files.length > 0 ? event.target.files : null,
       }));
     }
-  };
+  } else {
+    setInputData((prev) => ({
+      ...prev,
+      [event.target.name]: event.target.value,
+    }));
+  }
+};
+
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -54,10 +76,11 @@ export default function FormAddProject() {
       photoAva: inputData.photoAva, // Добавлено поле "photoAva" в объект "formattedData"
     };
     console.log(formattedData, "<<<----консоль на фронте");
-    dispatch(fetchProject(formattedData, setInputData));
+    // dispatch(fetchProject(formattedData, setInputData));
     setSelectedCompetencies([]);
     setSelectedViewConstruction([]);
     setSelectedRadio("");
+    setPreviewPhotos([]);
     setInputData({
       title: "",
       selectCompetencies: "",
@@ -172,7 +195,7 @@ export default function FormAddProject() {
         <div className={styles.form_container__checkbox_block}>
           <div>
             Загрузите фото и выберете ориентацию
-            <span> на странице «Проекты»</span>
+            <span> для отображения на странице «Проекты»</span>
           </div>
         </div>
         <label className={styles.slider_container__customFileUpload}>
@@ -282,6 +305,23 @@ export default function FormAddProject() {
               Загрузить изображения
             </div>
           </label>
+        </div>
+        <div className={styles.preview_photos_container}>
+          {previewPhotos.map((preview, index) => (
+            <div key={index} className={styles.preview_photos_container__block}>
+              <img
+                className={styles.preview_photos_container__img}
+                src={preview}
+                alt={`Preview ${index}`}
+              />
+              <div
+                className={styles.preview_photos_container__remove_icon}
+                onClick={() => removePreviewPhoto(index)}
+              >
+                <span></span>
+              </div>
+            </div>
+          ))}
         </div>
         <button type="submit">опубликовать</button>
       </form>
