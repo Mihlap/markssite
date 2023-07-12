@@ -5,7 +5,7 @@ import { getFetchForm } from '../store/Slice/projectSlice';
 
 export default function Project() {
   const dispatch = useDispatch();
-  const project = useSelector((state) => state.project.articles);
+  const project = useSelector((state) => state.project.projects);
 
 
   const Host = process.env.REACT_APP_SERVER_HOST;

@@ -9,7 +9,7 @@ import { NavLink } from "react-router-dom";
 
 // тетс гита на сливание с новой веткой
 
-const Navbar = ({ handleClickScroll, navOpen, setNavOpen }) => {
+const Navbar = ({ handleClickScroll, navOpen, setNavOpen, user }) => {
   const [clicked, setClicked] = useState(false);
   const [isChecked, setIsChecked] = useState(() => {
     const activeNavItem = localStorage.getItem("activeNavItem");
@@ -85,9 +85,13 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen }) => {
               <h1 className={styles.navbar_title}>MARKS GROUP</h1>
             </NavLink>
           </div>
+            <h4>{user?.id ? `Привет ${user.userName}` : 'Привет Гость'}</h4>
           <ul className={styles.navbar_list}>
+            <NavLink className={styles.navbar_item} to="/signup">
+              <div>signup</div>
+            </NavLink>
             <NavLink className={styles.navbar_item} to="/login">
-              <div>войти</div>
+              <div>login</div>
             </NavLink>
 
             <Link
