@@ -367,7 +367,8 @@ svg path {
   flex-direction: row;
   padding-left: 2.7vw;
   padding-bottom: 3.97rem;
- }
+}
+
 .slider_card_container_project{
   width: 100%;
   height: 100%;
@@ -380,18 +381,47 @@ svg path {
  }
 
 .wrapper_container_item_card {
+  width: 90%;
+  height: 100%;
+  border-radius: 1rem;
+  transition: width 0.3s, height 0.3s ease-in-out;
+  overflow: hidden;
+ }
+
+ .customSize {
+  min-width: 43rem;
+  min-height: 24rem;
+  margin-right: -1rem;
+}
+
+ .wrapper_container_item_card:hover {
+  width: 88%;
+  height: auto;
+  justify-content: center;
+  align-items: center;
+}
+.wrapper_container_item_card .container__imageTitle  {
   width: 100%;
   height: 100%;
+  transition: transform 0.5s;
+  /* cursor: pointer; */
+ }
+
+ .wrapper_container_item_card:hover .container__imageTitle {
+  transform: scale(1.2);
+  /* cursor: pointer; */
  }
 .container__imageTitle {
-  max-width: 90%;
+  width: auto;
+  height: auto;
   border-radius: 1rem;
 }
+ 
 
 .title_selectCompetencies {
   display: flex;
   padding-top: 1rem;
-  display: flex;
+  padding-right: 1rem;
  }
 
 .container__title {
@@ -401,6 +431,7 @@ svg path {
   font-style: normal;
   font-weight: var(--fw-700);
   line-height: 1.125rem;
+  width: 50%;
 }
 
 .container__selectCompetencies {
@@ -409,6 +440,9 @@ svg path {
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  padding-right: 1rem;
+  padding-left: 1rem;
+  width: 100%;
  }
 
  .div_el_selectCompetencies {
@@ -424,6 +458,7 @@ svg path {
   display: flex;
   justify-content: space-between;
   padding-top: 0.5rem;
+  width: 90%;
  }
 
 .container__countryCity {
@@ -443,8 +478,7 @@ svg path {
   font-style: normal;
   font-weight: var(--fw-400);
   line-height: normal;
-  margin-right: 9%;
-}
+ }
 
 /* .main_project {
   display: grid;
