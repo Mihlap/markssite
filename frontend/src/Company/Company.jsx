@@ -68,7 +68,7 @@ export default function Company() {
 
   const isMobile = windowWidth <= 767;
   const symbol = "•";
-  const port = process.env.PORT || window.location.port;
+  const Host = process.env.REACT_APP_SERVER_HOST;
   
   useEffect(() => {
     function handleResize() {
@@ -81,15 +81,7 @@ export default function Company() {
   }, []);
 
   useEffect(() => {
-    if (error) {
-      return (
-        <div>
-          {" "}
-          <Error error={error.message} />
-        </div>
-      );
-    }
-    dispatch(selectCard(null));
+     dispatch(selectCard(null));
     dispatch(fetchCategoryStaff(category));
     setShowCards(true);
     }, [dispatch, category, error]);
@@ -196,10 +188,19 @@ export default function Company() {
     };
   }, []);
 
+  if (error) {
+    return (
+      <div>
+        {" "}
+        <Error error={error.message} />
+      </div>
+    );
+  }
   if (loading) {
     return <LoadingCircle />;
   }
 
+  
   return (
     <div className={styles.company_main}>
       <Company_Slider />
@@ -668,7 +669,7 @@ export default function Company() {
                 <div className={styles.wrapper_container_item_stuff}>
                   <img
                     className={styles.container__img_stuff}
-                    src={`http://localhost:3002/images/${el.img}`}
+                    src={`${Host}/images/${el.img}`}
                     alt={el.img}
                   />
                 </div>
