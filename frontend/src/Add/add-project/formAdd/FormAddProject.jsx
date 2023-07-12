@@ -324,7 +324,16 @@ const changeHandler = (event) => {
             </div>
           ))}
         </div>
-        <button type="submit">опубликовать</button>
+        <div className={styles.form_container__button_block}>
+        <button
+          className={styles.form_container__button_save}
+          type="submit"
+        ></button>
+        <button
+          className={styles.form_container__button_cancel}
+          type="submit"
+        ></button>
+        </div>
       </form>
     </div>
   );
