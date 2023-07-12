@@ -101,7 +101,6 @@ const changeHandler = (event) => {
     // другие свойства стилей
   };
   console.log(inputData);
-  console.log(selectedRadio);
   return (
     <div className={styles.form_container}>
       <div className={styles.form_container__title}>Новый проект</div>
