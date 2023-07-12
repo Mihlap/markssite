@@ -27,11 +27,11 @@ import HomeAdmin from "./Add/HomeAdmin";
 import AddProject from "./Add/add-project/AddProject";
 import AddArticles from "./Add/add-articles/AddArticles";
 import AddCompany from "./Add/add-about-the-company/AddCompany";
+import SignUpPage from "./Login/SignUpPage";
 
 
-const App = () => {
+export default function App({user}) {
   const location = useLocation();
-  const user = true;
   const [isScrollDisabled, setIsScrollDisabled] = useState(false);
 
   const [loading, setLoading] = useState(false);
@@ -74,6 +74,7 @@ const App = () => {
               handleClickScroll={handleClickScroll}
               setNavOpen={setNavOpen}
               navOpen={navOpen}
+              user={user}
             />
           )}
           <TransitionGroup>
@@ -99,15 +100,15 @@ const App = () => {
                 <Route path="/slava" element={<Slava />} />
                 <Route path="/prime-park" element={<PrimePark />} />
                 <Route path="/hotel-appart" element={<HotelAppart />} />
-                {/* <Route path="/login" element={<Login />} /> */}
-                <Route path="/information" element={<Information/>}/>
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<SignUpPage />} />
+                <Route path="/information" element={<Information />} />
                 <Route
                   path="/admin/*"
                   element={
                     // Если пользователь авторизован, показываем компонент Add,
                     // иначе перенаправляем пользователя на страницу входа
-                    user
-                      ? (
+                    user ? (
                       <Add
                         setNavBarOpen={setNavBarOpen}
                         setShowFooter={setShowFooter}
@@ -133,4 +134,3 @@ const App = () => {
   );
 };
 
-export default App;

@@ -7,7 +7,7 @@ const serverHost = process.env.REACT_APP_SERVER_HOST;
 const projectSlice = createSlice({
   name: "project",
   initialState: {
-    project: [],
+    projects: [],
     loading: false,
     error: null,
   },
@@ -18,7 +18,7 @@ const projectSlice = createSlice({
     },
     fetchProjectSuccess(state, action) {
       state.loading = false;
-      state.articles = action.payload;
+      state.projects = action.payload;
     },
     fetchProjectFailure(state, action) {
       state.loading = false;
@@ -26,7 +26,7 @@ const projectSlice = createSlice({
     },
     deleteProjectSuccess(state, action) {
       const projectId = action.payload;
-      state.project = state.project.filter((el) => el.id !== projectId);
+      state.projects = state.projects.filter((el) => el.id !== projectId);
     },
     deleteProjectFailure(state, action) {
       state.error = action.payload;
