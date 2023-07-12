@@ -16,10 +16,10 @@ import SliderMobile from "../UI/SliderHeader/SliderMobile";
 import actively from "./img/actively.png";
 import { useDispatch, useSelector } from "react-redux";
 import { getFetchForm } from "../store/Slice/projectSlice";
-import 'swiper/css';
-import 'swiper/css/navigation';
+// import 'swiper/css';
+// import 'swiper/css/navigation';
 
-SwiperCore.use([Navigation]);
+// SwiperCore.use([Navigation]);
 const Host = process.env.REACT_APP_SERVER_HOST;
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
@@ -27,30 +27,11 @@ export default function Header() {
   const mainProjectRef = useRef(null);
   const  project  = useSelector((state) => state.project.articles);
   const dispatch = useDispatch();
-  const [isScrollEnabled, setScrollEnabled] = useState(true);
- 
-   useEffect(() => {
-    dispatch(getFetchForm())
-  }, [dispatch]);
+
 
   useEffect(() => {
-    const handleScroll = () => {
-      const { top, bottom } = mainProjectRef.current.getBoundingClientRect();
-      const windowHeight = window.innerHeight || document.documentElement.clientHeight;
-
-      if (top < windowHeight && bottom > 0) {
-        setScrollEnabled(false);
-      } else {
-        setScrollEnabled(true);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+    dispatch(getFetchForm())
+  }, [dispatch]);
 
    const colors = {
     Архитектура: "#FF7F6A",
@@ -61,10 +42,7 @@ export default function Header() {
   };
 
  return (
-   <main
-     className={styles.header}
-     style={{ overflow: isScrollEnabled ? "auto" : "hidden" }}
-   >
+   <main className={styles.header}>
      {true ? (
        <NavLink className={styles.preview_mode} to="/admin">
          <div className={styles.preview_title}>Режим предпросмотра</div>
@@ -211,72 +189,88 @@ export default function Header() {
           // project={project}
         />
       </div> */}
-     <div className={styles.main_project} ref={mainProjectRef}>
-       <Swiper
-         className={styles.slider_card_container_project}
-         slidesPerView={3}
-         spaceBetween={0}
-         touch="true"
-         direction="horizontal"
-         loop={false}
-       >
-         {project?.map((el, index) => (
-           <SwiperSlide
-             key={el.id}
-             className={styles.slider_container_item_card}
-             style={index % 2 === 1 ? { paddingTop: "10rem" } : {}}
-           >
-             <div className={styles.wrapper_container_item_card}>
-               <img
-                 className={styles.container__imageTitle}
-                 src={`${Host}/images/${el.imageTitle}`}
-                 alt={el.imageTitle}
-               />
-             </div>
-                 <div className={styles.title_selectCompetencies}>
-                   <div className={styles.container__title}>{el.title}</div>
-                    <div className={styles.container__selectCompetencies}>
-                       {(() => {
-                     try {
-                     const selectCompetencies = JSON.parse(
-                       el.selectCompetencies
-                     );
-                     return selectCompetencies.map((el) => (
-                       <div
-                         key={el.value}
-                         className={styles.div_el_selectCompetencies}
-                         style={{
-                           color: colors[el.value],
-                           borderColor: colors[el.value],
-                           border: "1px solid",
-                           padding: "3px 6px",
-                           borderRadius: "34px",
-                         }}
-                       >
-                         {el.label}
-                       </div>
-                     ));
-                   } catch (error) {
-                     console.log(
-                       "Error parsing selectCompetencies JSON:",
-                       error
-                     );
-                     return null;
-                   }
-                 })()}
-               </div>
-             </div>
-             <div className={styles.countryCity_monthYear}>
-               <div className={styles.container__countryCity}>
-                 {el.countryCity}
-               </div>
-               <div className={styles.container__monthYear}>{el.monthYear}</div>
-             </div>
-           </SwiperSlide>
-         ))}
-       </Swiper>
-     </div>
-   </main>
+    <div className={styles.main_project} ref={mainProjectRef}>
+  <Swiper
+    className={styles.slider_card_container_project}
+    spaceBetween={0}
+    touch="true"
+    direction="horizontal"
+    loop={false}
+     breakpoints={{
+      1440: {
+        slidesPerView: 3.2,
+      },
+      1024: {
+        slidesPerView: 2.3,
+      },
+      768: {
+        slidesPerView: 1.4,
+      },
+    }}
+   >
+    {project?.map((el, index) => {
+      const isCustomSize = el.hasCustomSize; 
+
+      return (
+        <SwiperSlide
+          key={el.id}
+          className={`{styles.slider_container_item_card}
+           ${isCustomSize ? styles.customSize : ""}`}
+          style={index % 2 === 1 ? { paddingTop: "10rem" } : {}}
+        >
+          <div className={styles.wrapper_container_item_card}
+          >
+            <img
+              className={styles.container__imageTitle}
+              src={`${Host}/images/${el.imageTitle}`}
+              alt={el.imageTitle}
+            />
+          </div>
+          <div className={styles.title_selectCompetencies}>
+            <div className={styles.container__title}>{el.title}</div>
+            <div className={styles.container__selectCompetencies}>
+              {(() => {
+                try {
+                  const selectCompetencies = JSON.parse(
+                    el.selectCompetencies
+                  );
+                  return selectCompetencies.map((el) => (
+                    <div
+                      key={el.value}
+                      className={styles.div_el_selectCompetencies}
+                      style={{
+                        color: colors[el.value],
+                        borderColor: colors[el.value],
+                        border: "1px solid",
+                        padding: "3px 6px",
+                        borderRadius: "34px",
+                      }}
+                    >
+                      {el.label}
+                    </div>
+                  ));
+                } catch (error) {
+                  console.log(
+                    "Error parsing selectCompetencies JSON:",
+                    error
+                  );
+                  return null;
+                }
+              })()}
+            </div>
+          </div>
+          <div className={styles.countryCity_monthYear}>
+            <div className={styles.container__countryCity}>
+              {el.countryCity}
+            </div>
+            <div className={styles.container__monthYear}>{el.monthYear}</div>
+          </div>
+        </SwiperSlide>
+      );
+    })}
+  </Swiper>
+</div>
+ </main>
  );
 }
 
