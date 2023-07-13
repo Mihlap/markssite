@@ -506,7 +506,7 @@ export default function Company() {
                 <div className={styles.wrapper_container_item_stuff}>
                     <img
                       className={styles.container__img_stuff}
-                      src={`http://localhost:3002/images/${el.img}`}
+                      src={`${Host}/images/${el.img}`}
                       alt={el.img}
                     />
                  </div>
