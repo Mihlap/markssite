@@ -3,7 +3,7 @@ import styles from './AddProject.module.scss'
 import FormAddProject from './formAdd/FormAddProject';
 
 export default function AddProject() {
-const [isModalOpen, setIsModalOpen] = useState(true);
+const [isModalOpen, setIsModalOpen] = useState(false);
 
 const handleOpenModal = () => {
   setIsModalOpen(true);
@@ -57,7 +57,7 @@ const handleCloseModal = () => {
       {isModalOpen && (
         <div className={styles.project_components_admin__modal_container}>
           <div className={styles.project_components_admin__modal_block}>
-            <FormAddProject />
+            <FormAddProject setIsModalOpen={setIsModalOpen} />
             <button
               className={styles.project_components_admin__close_button}
               onClick={handleCloseModal}

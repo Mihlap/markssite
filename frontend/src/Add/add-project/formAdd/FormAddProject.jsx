@@ -5,7 +5,7 @@ import styles from "./FormAddProject.module.scss";
 import { fetchProject } from "../../../store/Slice/projectSlice";
 import icon from "./img/Frame4684.png";
 
-export default function FormAddProject() {
+export default function FormAddProject({ setIsModalOpen }) {
   const dispatch = useDispatch();
   const [selectedCompetencies, setSelectedCompetencies] = useState([]);
   const [selectedViewConstruction, setSelectedViewConstruction] = useState([]);
@@ -20,47 +20,48 @@ export default function FormAddProject() {
     dropPhoto: [],
     photoAva: "",
   });
-const removePreviewPhoto = (index) => {
-  // Удаление фото из массива превью
-  const updatedPreviewPhotos = [...previewPhotos];
-  updatedPreviewPhotos.splice(index, 1);
-  setPreviewPhotos(updatedPreviewPhotos);
+  const removePreviewPhoto = (index) => {
+    // Удаление фото из массива превью
+    const updatedPreviewPhotos = [...previewPhotos];
+    updatedPreviewPhotos.splice(index, 1);
+    setPreviewPhotos(updatedPreviewPhotos);
 
-  // Удаление фото из массива выбранных файлов
-  const updatedDropPhotos = [...inputData.dropPhoto];
-  updatedDropPhotos.splice(index, 1);
-  setInputData((prev) => ({
-    ...prev,
-    dropPhoto: updatedDropPhotos,
-  }));
-};
-
-const changeHandler = (event) => {
-  if (event.target.files) {
-    if (event.target.name === "dropPhoto") {
-      setInputData((prev) => ({
-        ...prev,
-        dropPhoto: event.target.files,
-      }));
-
-      // Создание и отображение превью фото
-      const filesArray = Array.from(event.target.files);
-      const previewArray = filesArray.map((file) => URL.createObjectURL(file));
-      setPreviewPhotos(previewArray);
-    } else if (event.target.name === "photoAva") {
-      setInputData((prev) => ({
-        ...prev,
-        photoAva: event.target.files.length > 0 ? event.target.files : null,
-      }));
-    }
-  } else {
+    // Удаление фото из массива выбранных файлов
+    const updatedDropPhotos = [...inputData.dropPhoto];
+    updatedDropPhotos.splice(index, 1);
     setInputData((prev) => ({
       ...prev,
-      [event.target.name]: event.target.value,
+      dropPhoto: updatedDropPhotos,
     }));
-  }
-};
+  };
 
+  const changeHandler = (event) => {
+    if (event.target.files) {
+      if (event.target.name === "dropPhoto") {
+        const filesArray = Array.from(event.target.files);
+        setInputData((prev) => ({
+          ...prev,
+          dropPhoto: filesArray,
+        }));
+
+        // Create and display photo previews
+        const previewArray = filesArray.map((file) =>
+          URL.createObjectURL(file)
+        );
+        setPreviewPhotos(previewArray);
+      } else if (event.target.name === "photoAva") {
+       setInputData((prev) => ({
+         ...prev,
+         photoAva: event.target.files.length > 0 ? event.target.files : null,
+       }));
+      }
+    } else {
+      setInputData((prev) => ({
+        ...prev,
+        [event.target.name]: event.target.value,
+      }));
+    }
+  };
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -90,6 +91,7 @@ const changeHandler = (event) => {
       dropPhoto: [],
       photoAva: [],
     });
+    setIsModalOpen(false);
   };
 
   const customStyles = {
@@ -324,14 +326,14 @@ const changeHandler = (event) => {
           ))}
         </div>
         <div className={styles.form_container__button_block}>
-        <button
-          className={styles.form_container__button_save}
-          type="submit"
-        ></button>
-        <button
-          className={styles.form_container__button_cancel}
-          type="submit"
-        ></button>
+          <button
+            className={styles.form_container__button_save}
+            type="submit"
+          ></button>
+          <button
+            className={styles.form_container__button_cancel}
+            type="submit"
+          ></button>
         </div>
       </form>
     </div>
