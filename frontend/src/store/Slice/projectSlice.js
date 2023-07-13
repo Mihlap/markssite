@@ -47,8 +47,12 @@ export const fetchProject = (formattedData, setInputData) => async (dispatch) =>
   const formData = new FormData();
   for (const key in formattedData) {
     if (typeof formattedData[key] === "object") {
-      for (const file in formattedData[key]) {
-        formData.append("dropPhoto", formattedData[key][file]);
+      if (key === "photoAva" && formattedData[key].length > 0) {
+        formData.append("photoAva", formattedData[key][0]);
+      } else {
+        for (const file of formattedData[key]) {
+          formData.append(key, file);
+        }
       }
     } else {
       formData.append(key, formattedData[key]);
@@ -56,9 +60,7 @@ export const fetchProject = (formattedData, setInputData) => async (dispatch) =>
   }
 
   
-  axios
-  .post(`${serverHost}/api-project/postzapros`, formData) // Использование { inputData } вместо { data: inputData }
-  .then(() => {
+  axios.post(`${serverHost}/api-project/postzapros`, formData).then(() => {
     setInputData({
       title: "",
       selectCompetencies: "",
@@ -66,7 +68,7 @@ export const fetchProject = (formattedData, setInputData) => async (dispatch) =>
       monthYear: "",
       viewConstruction: "",
       dropPhoto: [],
-      radioValue: '',
+      photoAva: [],
     });
     dispatch(getFetchForm()); // Добавлен этот вызов для получения обновленных данных после успешной отправки формы
   });

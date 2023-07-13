@@ -30,10 +30,10 @@ import AddCompany from "./Add/add-about-the-company/AddCompany";
 import SignUpPage from "./Login/SignUpPage";
 
 
-export default function App({user}) {
+export default function App() {
   const location = useLocation();
   const [isScrollDisabled, setIsScrollDisabled] = useState(false);
-
+  const user = true;
   const [loading, setLoading] = useState(false);
   /////////
   const [navOpen, setNavOpen] = useState(false);

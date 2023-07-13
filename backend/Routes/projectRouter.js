@@ -26,7 +26,7 @@ router.post(
   ]),
   async (req, res) => {
     try {
-      console.log(req.files); // Вывод информации о файлах в консоль
+      console.log(req.files); // Output file information to the console
       const imageTitles = req.files.dropPhoto.map((file) => file.filename).join(', ');
       const imageProjects = req.files.photoAva ? req.files.photoAva[0].filename : null;
 
@@ -44,7 +44,7 @@ router.post(
 
       res.status(200).json({ message: 'Данные успешно сохранены' });
     } catch (error) {
-      console.log(error); // Вывод ошибки в консоль
+      console.log(error); // Output error to the console
       res.status(500).json({ message: 'Произошла ошибка при сохранении данных' });
     }
   },
