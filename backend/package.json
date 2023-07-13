@@ -6,7 +6,8 @@
   "scripts": {
     "start": "nodemon server.js",
     "dev": "node server.js",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "prep-db": "npx sequelize-cli db:migrate:undo:all && npx sequelize-cli db:migrate"
   },
   "keywords": [],
   "author": "",

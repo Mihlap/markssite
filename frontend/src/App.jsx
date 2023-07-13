@@ -30,10 +30,10 @@ import AddCompany from "./Add/add-about-the-company/AddCompany";
 import SignUpPage from "./Login/SignUpPage";
 
 
-export default function App() {
+export default function App({ user }) {
   const location = useLocation();
   const [isScrollDisabled, setIsScrollDisabled] = useState(false);
-  const user = true;
+  // const user = true;
   const [loading, setLoading] = useState(false);
   /////////
   const [navOpen, setNavOpen] = useState(false);
@@ -63,6 +63,8 @@ export default function App() {
   function handleClickScroll() {
     setIsScrollDisabled(!isScrollDisabled);
   }
+  // const user = true;
+  console.log(user);
   return (
     <>
       {loading === true ? (
@@ -102,21 +104,19 @@ export default function App() {
                 <Route path="/hotel-appart" element={<HotelAppart />} />
                 <Route path="/login" element={<Login />} />
                 <Route path="/signup" element={<SignUpPage />} />
-                <Route path="/information" element={<Information />} />
+                  <Route path="/information" element={<Information />} />
+                  
+                  {user ? (
                 <Route
                   path="/admin/*"
                   element={
                     // Если пользователь авторизован, показываем компонент Add,
                     // иначе перенаправляем пользователя на страницу входа
-                    user ? (
                       <Add
                         setNavBarOpen={setNavBarOpen}
                         setShowFooter={setShowFooter}
                         user={user}
                       />
-                    ) : (
-                      <Navigate to="/login" replace={true} />
-                    )
                   }
                 >
                   <Route path="home" element={<Add />} />
@@ -124,6 +124,9 @@ export default function App() {
                   <Route path="add-a-articles" element={<AddArticles />} />
                   <Route path="add-a-company" element={<AddCompany />} />
                 </Route>
+                  ): (
+                     console.log("не авторизованный") 
+                  )}
               </Routes>
             </CSSTransition>
           </TransitionGroup>

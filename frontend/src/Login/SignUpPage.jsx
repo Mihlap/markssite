@@ -8,22 +8,25 @@ export default function SignUpPage() {
 
   const serverHost = process.env.REACT_APP_SERVER_HOST;
 
-  const sumbitHandler = async (event) => {
-    event.preventDefault();
-    const formData = Object.fromEntries(new FormData(event.target));
+   const sumbitHandler = async (event) => {
+     event.preventDefault();
+     const formData = Object.fromEntries(new FormData(event.target));
 
-    try {
-      const response = await axios.post(
-        `${serverHost}/api/auth/signup`,
-        formData
-      );
-      if (response.status === 200) {
-        navigate("/");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
+     try {
+       const response = await axios({
+         method: "post",
+         url: `${serverHost}/api/auth/signup`,
+         data: formData,
+         withCredentials: true, // Включает отправку кук с запросом
+       });
+
+       if (response.status === 200) {
+         navigate("/admin");
+       }
+     } catch (error) {
+       console.log(error);
+     }
+   };
   return (
     <section className={styles.login_container}>
       <div className={styles.login_block}>
