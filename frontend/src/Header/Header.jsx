@@ -11,21 +11,21 @@ import SwiperCore, { Navigation } from 'swiper';
 import SliderHeader from "../UI/SliderHeader/SliderHeader";
 import VideoPlayer from "../UI/Videoplayer/VideoPlayer";
 import Mapbox3D from "../UI/Map3D/Mapbox3D";
-import styles from "./Header.module.css";
 import SliderMobile from "../UI/SliderHeader/SliderMobile";
 import actively from "./img/actively.png";
 import { useDispatch, useSelector } from "react-redux";
 import { getFetchForm } from "../store/Slice/projectSlice";
-// import 'swiper/css';
-// import 'swiper/css/navigation';
+import styles from "./Header.module.css";
+import 'swiper/css';
+import 'swiper/css/navigation';
 
-// SwiperCore.use([Navigation]);
+SwiperCore.use([Navigation]);
 const Host = process.env.REACT_APP_SERVER_HOST;
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 export default function Header() {
   const mainProjectRef = useRef(null);
-  const  project  = useSelector((state) => state.project.articles);
+  const  project = useSelector((state) => state.project.projects);
   const dispatch = useDispatch();
 
 
@@ -41,7 +41,7 @@ export default function Header() {
     Инженерия: "#90B734",
   };
 
- return (
+  return (
    <main className={styles.header}>
      {true ? (
        <NavLink className={styles.preview_mode} to="/admin">
@@ -191,10 +191,10 @@ export default function Header() {
       </div> */}
     <div className={styles.main_project} ref={mainProjectRef}>
   <Swiper
-    className={styles.slider_card_container_project}
-    spaceBetween={0}
-    touch="true"
-    direction="horizontal"
+   className={styles.slider_card_container_project}
+    spaceBetween={30}
+     touch="true"
+     direction="horizontal"
     loop={false}
      breakpoints={{
       1440: {
@@ -210,63 +210,86 @@ export default function Header() {
    >
     {project?.map((el, index) => {
       const isCustomSize = el.hasCustomSize; 
-
-      return (
-        <SwiperSlide
-          key={el.id}
-          className={`{styles.slider_container_item_card}
+        return (
+          <SwiperSlide
+            key={el.id}
+            className={`{styles.slider_container_item_card}
            ${isCustomSize ? styles.customSize : ""}`}
-          style={index % 2 === 1 ? { paddingTop: "10rem" } : {}}
-        >
-          <div className={styles.wrapper_container_item_card}
+            style={index % 2 === 1 ? { paddingTop: "10rem" } : {}}
           >
-            <img
-              className={styles.container__imageTitle}
-              src={`${Host}/images/${el.imageTitle}`}
-              alt={el.imageTitle}
-            />
-          </div>
-          <div className={styles.title_selectCompetencies}>
-            <div className={styles.container__title}>{el.title}</div>
-            <div className={styles.container__selectCompetencies}>
-              {(() => {
-                try {
-                  const selectCompetencies = JSON.parse(
-                    el.selectCompetencies
-                  );
-                  return selectCompetencies.map((el) => (
-                    <div
-                      key={el.value}
-                      className={styles.div_el_selectCompetencies}
-                      style={{
-                        color: colors[el.value],
-                        borderColor: colors[el.value],
-                        border: "1px solid",
-                        padding: "3px 6px",
-                        borderRadius: "34px",
-                      }}
-                    >
-                      {el.label}
-                    </div>
-                  ));
-                } catch (error) {
-                  console.log(
-                    "Error parsing selectCompetencies JSON:",
-                    error
-                  );
-                  return null;
-                }
-              })()}
+            <div className={styles.wrapper_container_item_card}>
+              <img
+                className={styles.container__imageTitle}
+                src={`${Host}/images/${
+                  el.imageProject ? el.imageProject : el.imageTitle
+                }`}
+                alt={el.imageTitle ? el.imageProject : el.imageTitle}
+              />
             </div>
-          </div>
-          <div className={styles.countryCity_monthYear}>
-            <div className={styles.container__countryCity}>
-              {el.countryCity}
+            <div className={styles.title_selectCompetencies}>
+              <div className={styles.container__title}>{el.title}</div>
+              <div className={styles.container__selectCompetencies}>
+                {(() => {
+                  try {
+                    const selectCompetencies = JSON.parse(
+                      el.selectCompetencies
+                    );
+                    return selectCompetencies.map((competency) => (
+                      <div
+                        key={competency.value}
+                        className={styles.div_el_selectCompetencies}
+                        style={{
+                          color: colors[competency.value],
+                          borderColor: colors[competency.value],
+                          border: "1px solid",
+                          padding: "3px 6px",
+                          borderRadius: "34px",
+                        }}
+                      >
+                        {competency.label}
+                      </div>
+                    ));
+                  } catch (error) {
+                    if (
+                      typeof el.selectCompetencies === "string" &&
+                      el.selectCompetencies.includes(",")
+                    ) {
+                      return el.selectCompetencies.split(",").map((value) => {
+                        const label = value.trim();
+                        return (
+                          <div
+                            key={value}
+                            className={styles.div_el_selectCompetencies}
+                            style={{
+                              color: colors[value],
+                              borderColor: colors[value],
+                              border: "1px solid",
+                              padding: "3px 6px",
+                              borderRadius: "34px",
+                            }}
+                          >
+                            {label}
+                          </div>
+                        );
+                      });
+                    }
+                    console.log(
+                      "Error parsing selectCompetencies JSON:",
+                      error
+                    );
+                    return null;
+                  }
+                })()}
+              </div>
             </div>
-            <div className={styles.container__monthYear}>{el.monthYear}</div>
-          </div>
-        </SwiperSlide>
-      );
+            <div className={styles.countryCity_monthYear}>
+              <div className={styles.container__countryCity}>
+                {el.countryCity}
+              </div>
+              <div className={styles.container__monthYear}>{el.monthYear}</div>
+            </div>
+          </SwiperSlide>
+        );
     })}
   </Swiper>
 </div>
