@@ -188,17 +188,17 @@ export default function Company() {
     };
   }, []);
 
-  if (error) {
-    return (
-      <div>
-        {" "}
-        <Error error={error.message} />
-      </div>
-    );
-  }
-  if (loading) {
-    return <LoadingCircle />;
-  }
+  // if (error) {
+  //   return (
+  //     <div>
+  //       {" "}
+  //       <Error error={error.message} />
+  //     </div>
+  //   );
+  // }
+  // if (loading) {
+  //   return <LoadingCircle />;
+  // }
 
   
   return (
@@ -578,7 +578,7 @@ export default function Company() {
                     <div className={styles.modal}>
                       <img
                         className={styles.modal_img_stuff}
-                        src={`http://localhost:3002/images/${selectedCard.img}`}
+                         src={`${Host}/images/${selectedCard.img}`}
                         alt={selectedCard.img}
                       />
                     </div>
@@ -636,7 +636,7 @@ export default function Company() {
                 <div className={styles.wrapper_container_item_stuff}>
                   <img
                     className={styles.container__img_stuff}
-                    src={`http://localhost:3002/images/${el.img}`}
+                    src={`${Host}/images/${el.img}`}
                     alt={el.img}
                   />
                 </div>
