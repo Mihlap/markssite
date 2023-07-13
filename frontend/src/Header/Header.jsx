@@ -16,8 +16,7 @@ import actively from "./img/actively.png";
 import { useDispatch, useSelector } from "react-redux";
 import { getFetchForm } from "../store/Slice/projectSlice";
 import styles from "./Header.module.css";
-import 'swiper/css';
-import 'swiper/css/navigation';
+
 
 SwiperCore.use([Navigation]);
 const Host = process.env.REACT_APP_SERVER_HOST;
@@ -25,13 +24,49 @@ const Host = process.env.REACT_APP_SERVER_HOST;
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 export default function Header() {
   const mainProjectRef = useRef(null);
+  const sliderRef = useRef(null);
   const  project = useSelector((state) => state.project.projects);
   const dispatch = useDispatch();
+ 
 
 
   useEffect(() => {
     dispatch(getFetchForm())
   }, [dispatch]);
+
+  useEffect(() => {
+    gsap.utils.toArray(".wrapper_container_item_cardt").forEach(text => {
+      gsap.timeline({
+        defaults: {ease: "none"},
+        scrollTrigger: {
+          scroller: text.closest(".main_project"),
+          horizontal: true,
+          trigger: text.closest(".wrapper_container_item_card"),
+          start: "left right",
+          end: "left left",
+          scrub: true
+        }
+      })
+      .fromTo(text, {x: 250}, {x: -250}, 0)
+      .from(text.nextElementSibling, {scale: 0.8}, 0)
+
+    });
+    
+  }, []);
+
+  useEffect(() => {
+    const handleMouseWheelScroll = (event) => {
+      const container = mainProjectRef.current;
+      const scrollAmount = 150; // Adjust the scroll amount as needed
+      container.scrollLeft += event.deltaY > 0 ? scrollAmount : -scrollAmount;
+    };
+  
+    mainProjectRef.current.addEventListener("wheel", handleMouseWheelScroll);
+  
+    return () => {
+      mainProjectRef.current.removeEventListener("wheel", handleMouseWheelScroll);
+    };
+  }, []);
 
    const colors = {
     Архитектура: "#FF7F6A",
@@ -41,6 +76,7 @@ export default function Header() {
     Инженерия: "#90B734",
   };
 
+  
   return (
    <main className={styles.header}>
      {true ? (
@@ -190,28 +226,34 @@ export default function Header() {
         />
       </div> */}
     <div className={styles.main_project} ref={mainProjectRef}>
-  <Swiper
+    <div
+   ref={sliderRef}
    className={styles.slider_card_container_project}
-    spaceBetween={30}
-     touch="true"
-     direction="horizontal"
-    loop={false}
-     breakpoints={{
-      1440: {
-        slidesPerView: 3.2,
-      },
-      1024: {
-        slidesPerView: 2.3,
-      },
-      768: {
-        slidesPerView: 1.4,
-      },
-    }}
-   >
+   style={{ 
+    // overflowX: "auto",
+    // overflowY: "hidden",
+    // height: "1000px", 
+     }}
+    // spaceBetween={30}
+    //  touch="true"
+    //  direction="horizontal"
+    // loop={false}
+    //  breakpoints={{
+    //   1440: {
+    //     slidesPerView: 3.2,
+    //   },
+    //   1024: {
+    //     slidesPerView: 2.3,
+    //   },
+    //   768: {
+    //     slidesPerView: 1.4,
+    //   },
+    // }}
+    >
     {project?.map((el, index) => {
       const isCustomSize = el.hasCustomSize; 
         return (
-          <SwiperSlide
+          <div
             key={el.id}
             className={`{styles.slider_container_item_card}
            ${isCustomSize ? styles.customSize : ""}`}
@@ -288,11 +330,11 @@ export default function Header() {
               </div>
               <div className={styles.container__monthYear}>{el.monthYear}</div>
             </div>
-          </SwiperSlide>
+          </div>
         );
     })}
-  </Swiper>
-</div>
+  </div>
+  </div>
  </main>
  );
 }
