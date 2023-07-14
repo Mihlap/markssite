@@ -1,6 +1,7 @@
 @import '../../App.css';
 
 .project_components_admin {
+    height: 100vh;
     padding-left: 3rem;
     padding-top: 7.5rem;
 
@@ -28,7 +29,7 @@
         cursor: pointer;
 
         &:hover {
-            background-color: #389FFF;
+            background-color: var(--dark-blue-389FFF);
         }
 
         &:hover .project_components_admin__icon circle {

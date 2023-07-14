@@ -8,10 +8,14 @@ import AddArticles from "./add-articles/AddArticles";
 import AddCompany from "./add-about-the-company/AddCompany";
 
 export default function Add({ user, setNavBarOpen, setShowFooter }) {
-  // console.log(reviews.map((el) => el.attributes));
+  
   return (
     <div className={styles.add_container}>
-      <AddNavbar />
+      <AddNavbar
+        setNavBarOpen={setNavBarOpen}
+        setShowFooter={setShowFooter}
+        user={user}
+      />
       <Routes>
         <Route path="/" element={<HomeAdmin />} />
         <Route path="add-a-project" element={<AddProject />} />
