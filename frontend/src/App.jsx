@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import { Navigate, Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import "./App.css";
 import Company from "./Company/Company";
 import Header from "./Header/Header";
-import { useSelector } from "react-redux";
+
 import Competentions from "./Competentions/Competentions";
 import Contacts from "./Contacts/Contacts";
 import Project from "./Project/Project";
@@ -28,12 +28,16 @@ import AddProject from "./Add/add-project/AddProject";
 import AddArticles from "./Add/add-articles/AddArticles";
 import AddCompany from "./Add/add-about-the-company/AddCompany";
 import SignUpPage from "./Login/SignUpPage";
+import axios from "axios";
 
 
-export default function App({ user }) {
+export default function App() {
+  const serverHost = process.env.REACT_APP_SERVER_HOST;
+
   const location = useLocation();
   const [isScrollDisabled, setIsScrollDisabled] = useState(false);
-  // const user = true;
+  const [user, setUser] = useState(false);
+  const [isUserChecked, setIsUserChecked] = useState(false);
   const [loading, setLoading] = useState(false);
   /////////
   const [navOpen, setNavOpen] = useState(false);
@@ -52,6 +56,32 @@ export default function App({ user }) {
     }
   }, [navOpen]);
 
+  useEffect(() => {
+    const checkUser = async () => {
+      try {
+        const response = await axios({
+          method: "get",
+          url: `${serverHost}/api/auth/user`,
+          withCredentials: true, // Включает отправку кук с запросом
+        });
+
+        if (response.status === 200) {
+          setUser(response.data.name);
+          setIsUserChecked(true);
+          setNavBarOpen(false); // скрываем навбар
+          setShowFooter(false); // скрываем футер
+        }
+      } catch (error) {
+        console.log(error);
+        setIsUserChecked(true); // Добавьте эту строку
+      }
+    };
+
+    if (!isUserChecked) {
+      checkUser();
+    }
+  }, [isUserChecked]);
+
 
   // таймаут для прелоудера на сайте
   // setTimeout(() => {
@@ -63,8 +93,8 @@ export default function App({ user }) {
   function handleClickScroll() {
     setIsScrollDisabled(!isScrollDisabled);
   }
-  // const user = true;
-  console.log(user);
+
+  console.log(`пользователь 👉${user}👈`);
   return (
     <>
       {loading === true ? (
@@ -84,7 +114,13 @@ export default function App({ user }) {
               <Routes location={location}>
                 <Route
                   path="/"
-                  element={<Header navOpen={navOpen} isHidden={isHidden} />}
+                  element={
+                    <Header
+                      user={user}
+                      setNavBarOpen={setNavBarOpen}
+                      setShowFooter={setShowFooter}
+                    />
+                  }
                 />
                 <Route path="/competention" element={<Competentions />} />
                 <Route path="/project" element={<Project />} />
@@ -103,30 +139,33 @@ export default function App({ user }) {
                 <Route path="/prime-park" element={<PrimePark />} />
                 <Route path="/hotel-appart" element={<HotelAppart />} />
                 <Route path="/login" element={<Login />} />
-                <Route path="/signup" element={<SignUpPage />} />
-                  <Route path="/information" element={<Information />} />
-                  
-                  {user ? (
                 <Route
-                  path="/admin/*"
-                  element={
-                    // Если пользователь авторизован, показываем компонент Add,
-                    // иначе перенаправляем пользователя на страницу входа
+                  path="/signup"
+                  element={<SignUpPage setUser={setUser} />}
+                />
+                <Route path="/information" element={<Information />} />
+
+                {user ? (
+                  <Route
+                    path="/admin/*"
+                    element={
+                      // Если пользователь авторизован, показываем компонент Add,
+                      // иначе перенаправляем пользователя на страницу входа
                       <Add
                         setNavBarOpen={setNavBarOpen}
                         setShowFooter={setShowFooter}
                         user={user}
                       />
-                  }
-                >
-                  <Route path="home" element={<Add />} />
-                  <Route path="add-a-project" element={<AddProject />} />
-                  <Route path="add-a-articles" element={<AddArticles />} />
-                  <Route path="add-a-company" element={<AddCompany />} />
-                </Route>
-                  ): (
-                     console.log("не авторизованный") 
-                  )}
+                    }
+                  >
+                    <Route path="home" element={<Add />} />
+                    <Route path="add-a-project" element={<AddProject />} />
+                    <Route path="add-a-articles" element={<AddArticles />} />
+                    <Route path="add-a-company" element={<AddCompany />} />
+                  </Route>
+                ) : (
+                  console.log("")
+                )}
               </Routes>
             </CSSTransition>
           </TransitionGroup>

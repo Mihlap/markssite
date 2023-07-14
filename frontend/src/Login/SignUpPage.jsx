@@ -1,32 +1,56 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import axios from 'axios';
 import styles from "./Login.module.scss";
 import { useNavigate } from 'react-router-dom';
 
-export default function SignUpPage() {
+export default function SignUpPage({ setUser, setName }) {
   const navigate = useNavigate(); // Хук для перенаправления пользователя
 
   const serverHost = process.env.REACT_APP_SERVER_HOST;
 
-   const sumbitHandler = async (event) => {
-     event.preventDefault();
-     const formData = Object.fromEntries(new FormData(event.target));
+  useEffect(() => {
+    const checkUser = async () => {
+      try {
+        const response = await axios({
+          method: "get",
+          url: `${serverHost}/api/auth/user`,
+          withCredentials: true, // Включает отправку кук с запросом
+        });
 
-     try {
-       const response = await axios({
-         method: "post",
-         url: `${serverHost}/api/auth/signup`,
-         data: formData,
-         withCredentials: true, // Включает отправку кук с запросом
-       });
+        if (response.status === 200) {
+          setName(response.data.name); // Устанавливаем имя пользователя вместо boolean значения
+          // Здесь вы можете обновить ваш стейт, чтобы отразить, что пользователь зарегистрирован
+          console.log("cooki");
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
-       if (response.status === 200) {
-         navigate("/admin");
-       }
-     } catch (error) {
-       console.log(error);
-     }
-   };
+    checkUser();
+  }, []);
+
+  const sumbitHandler = async (event) => {
+    event.preventDefault();
+    const formData = Object.fromEntries(new FormData(event.target));
+
+    try {
+      const response = await axios({
+        method: "post",
+        url: `${serverHost}/api/auth/signup`,
+        data: formData,
+        withCredentials: true, // Включает отправку кук с запросом
+      });
+
+      if (response.status === 200) {
+        console.log("зашел сюда");
+        setUser(true);
+        navigate("/admin");
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
   return (
     <section className={styles.login_container}>
       <div className={styles.login_block}>
