@@ -4,7 +4,7 @@ import { useState } from "react";
 import axios from "axios";
 
 
-export default function Login() {
+export default function Login({ setUser }) {
   const serverHost = process.env.REACT_APP_SERVER_HOST;
   const navigate = useNavigate(); // Хук для перенаправления пользователя
   const [inputGroup, setInputGroup] = useState({
@@ -12,30 +12,30 @@ export default function Login() {
     password: "",
   });
 
-  const changeHandler = (event) => setInputGroup(prev => ({
-    ...prev, [event.target.name]: event.target.value
-  }))
+  const changeHandler = (event) =>
+    setInputGroup((prev) => ({
+      ...prev,
+      [event.target.name]: event.target.value,
+    }));
 
+  const submitHandler = async (event) => {
+    event.preventDefault();
+    try {
+      const response = await axios.post(
+        `${serverHost}/api/auth/login`,
+        inputGroup,
+        { withCredentials: true }
+      );
 
-const submitHandler = async (event) => {
-  event.preventDefault();
-  try {
-   const response = await axios.post(
-     `${serverHost}/api/auth/login`,
-     inputGroup,
-     { withCredentials: true }
-   );
-
-    if (response.status === 200) {
-      console.log('тут');
-      navigate("/admin");
+      if (response.status === 200) {
+        console.log("тут");
+        setUser(response.data.name);
+        navigate("/admin");
+      }
+    } catch (error) {
+      console.error("Ошибка при попытке войти в систему", error);
     }
-  } catch (error) {
-    console.error("Ошибка при попытке войти в систему", error);
-  }
-};
-
-
+  };
 
   return (
     <section className={styles.login_container}>

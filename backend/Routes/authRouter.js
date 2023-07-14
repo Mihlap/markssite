@@ -4,7 +4,7 @@ const { User } = require('../db/models');
 
 const authRouter = express.Router();
 
-authRouter.post('/signup', async (req, res) => {
+authRouter.post('/signup', async(req, res) => {
   const { userName, password } = req.body;
 
   const hashpass = await bcrypt.hash(password, 10);
@@ -22,10 +22,10 @@ authRouter.post('/signup', async (req, res) => {
   const sessionData = {
     name: currentUser.userName,
     id: currentUser.id,
-  };
-
-  // вот тут вы вкладываем в сессию данные пользователя и его id из объекта sessionData
+    };
+    
   req.session.user = sessionData; // Используйте ту же переменную сессии, которую вы пытаетесь получить позже
+  // вот тут вы вкладываем в сессию данные пользователя и его id из объекта sessionData
 
   if (!created) {
     return res.status(401).json({
@@ -44,14 +44,6 @@ authRouter.post('/signup', async (req, res) => {
   });
 });
 
-authRouter.get('/user', (req, res) => {
-  if (req.session.user) {
-    res.status(200).json(req.session.user);
-  } else {
-    res.status(401).json({ message: 'Пользователь не авторизован' });
-  }
-});
-
 authRouter.post('/login', async(req, res) => {
     const { userName, password } = req.body; 
 
@@ -60,12 +52,28 @@ authRouter.post('/login', async(req, res) => {
     if (!foundUser) return res.status(401).json({ message: 'пользователь не найден' })
     
     if (await bcrypt.compare(password, foundUser.hashpass)) {
-        req.session.user = foundUser;
+
+        const sessionData = {
+          name: foundUser.userName,
+          id: foundUser.id,
+        };
+
+        req.session.user = sessionData; 
+
         return res.sendStatus(200);
     }
 
     return res.status(401).json({ message: 'неправильный name пользователя или пароль' });
 })
+
+authRouter.get('/user', (req, res) => {
+  if (req.session.user) {
+    res.status(200).json(req.session.user);
+  } else {
+    res.status(401).json({ message: 'Пользователь не авторизован' });
+  }
+});
+
 
 authRouter.get('/logout', (req, res) => {
     req.session.destroy();
