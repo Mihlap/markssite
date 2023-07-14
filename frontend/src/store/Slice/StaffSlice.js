@@ -56,7 +56,7 @@ export const {
 
 export const fetchCategoryStaff =
   (category) => async (dispatch, getState) => {
-    dispatch(fetchStaffStart());
+    // dispatch(fetchStaffStart());
 
     try {
       const response = await axios.get(
