@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import styles from "./AddNavbar.module.scss";
 import { Link, useNavigate } from "react-router-dom";
+import axios from "axios";
 
-export default function AddNavbar() {
+export default function AddNavbar({ user, setNavBarOpen, setShowFooter }) {
   const [selectedItem, setSelectedItem] = useState(null);
+  const serverHost = process.env.REACT_APP_SERVER_HOST;
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -19,6 +21,27 @@ export default function AddNavbar() {
     localStorage.setItem("selectedItem", itemName);
     navigate(itemPath); // Выполняем переход по ссылке
   };
+
+  const openNavbarHandler = () => {
+    setNavBarOpen(true);
+    setShowFooter(true);
+  }
+
+const logouthandler = async () => {
+  try {
+    const response = await axios.get(`${serverHost}/api/auth/logout`, {
+      withCredentials: true,
+    }); // Убедитесь, что вы отправляете запрос с куками
+
+    if (response.status === 200) {
+      navigate("/login"); // Перенаправьте пользователя на страницу входа
+      setNavBarOpen(true);
+      setShowFooter(true);
+    }
+  } catch (error) {
+    console.error("Ошибка при выходе из системы", error);
+  }
+};
 
   return (
     <>
@@ -79,11 +102,22 @@ export default function AddNavbar() {
                   О компании
                 </Link>
               </li>
+              <li>
+                <button type="button" onClick={() => logouthandler()}>Выход</button>
+              </li>
             </ul>
+          </div>
+          <div>
+            пользователь cookies <strong>{user}👋</strong>
           </div>
         </div>
       </nav>
-      <Link className={styles.preview} to="/">
+      <div></div>
+      <Link
+        className={styles.preview}
+        to="/"
+        onClick={() => openNavbarHandler()}
+      >
         Предпросмотр
       </Link>
     </>
