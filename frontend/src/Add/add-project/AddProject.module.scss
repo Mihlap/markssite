@@ -141,4 +141,39 @@
         transform: translate(-50%, -50%) rotate(-45deg);
     }
 
+    &__section_map {
+    }
+
+    &__block_map {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 3rem;
+        padding-top: 2.5rem;
+    }
+
 }
+
+.section_project__block_cart {
+    max-width: min-content;
+}
+
+.cart_project {
+    &__img {
+        border-radius: 1rem;
+    }
+
+    &__title {
+        color: var(--1, #4E4E4E);
+        
+            /* Body Bold · 14 */
+            font-family: Raleway;
+            font-size: 14px;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 20px;
+            color: var(--black-4E4E4E);
+            /* 142.857% */
+    }
+
+}
+
