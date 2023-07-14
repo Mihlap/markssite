@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import "./App.css";
 import Company from "./Company/Company";
 import Header from "./Header/Header";
@@ -33,11 +33,13 @@ import axios from "axios";
 
 export default function App() {
   const serverHost = process.env.REACT_APP_SERVER_HOST;
+  const navigate = useNavigate(); // Хук для перенаправления пользователя
 
   const location = useLocation();
   const [isScrollDisabled, setIsScrollDisabled] = useState(false);
   const [user, setUser] = useState(false);
   const [isUserChecked, setIsUserChecked] = useState(false);
+  const [isLoadingUser, setIsLoadingUser] = useState(true);
   const [loading, setLoading] = useState(false);
   /////////
   const [navOpen, setNavOpen] = useState(false);
@@ -58,6 +60,7 @@ export default function App() {
 
   useEffect(() => {
     const checkUser = async () => {
+      setIsLoadingUser(true);
       try {
         const response = await axios({
           method: "get",
@@ -71,6 +74,7 @@ export default function App() {
           setNavBarOpen(false); // скрываем навбар
           setShowFooter(false); // скрываем футер
         }
+        setIsLoadingUser(false);
       } catch (error) {
         console.log(error);
         setIsUserChecked(true); // Добавьте эту строку
@@ -81,7 +85,6 @@ export default function App() {
       checkUser();
     }
   }, [isUserChecked]);
-
 
   // таймаут для прелоудера на сайте
   // setTimeout(() => {
@@ -138,19 +141,17 @@ export default function App() {
                 <Route path="/slava" element={<Slava />} />
                 <Route path="/prime-park" element={<PrimePark />} />
                 <Route path="/hotel-appart" element={<HotelAppart />} />
-                <Route path="/login" element={<Login />} />
+                <Route path="/login" element={<Login setUser={setUser} />} />
                 <Route
                   path="/signup"
                   element={<SignUpPage setUser={setUser} />}
                 />
                 <Route path="/information" element={<Information />} />
 
-                {user ? (
+                {user && !isLoadingUser ? (
                   <Route
                     path="/admin/*"
                     element={
-                      // Если пользователь авторизован, показываем компонент Add,
-                      // иначе перенаправляем пользователя на страницу входа
                       <Add
                         setNavBarOpen={setNavBarOpen}
                         setShowFooter={setShowFooter}
@@ -163,9 +164,7 @@ export default function App() {
                     <Route path="add-a-articles" element={<AddArticles />} />
                     <Route path="add-a-company" element={<AddCompany />} />
                   </Route>
-                ) : (
-                  console.log("")
-                )}
+                ) : null}
               </Routes>
             </CSSTransition>
           </TransitionGroup>
