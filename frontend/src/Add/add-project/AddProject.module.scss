@@ -29,7 +29,7 @@
         cursor: pointer;
 
         &:hover {
-            background-color: #389FFF;
+            background-color: var(--dark-blue-389FFF);
         }
 
         &:hover .project_components_admin__icon circle {

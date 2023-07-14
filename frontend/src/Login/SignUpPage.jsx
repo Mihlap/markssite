@@ -3,7 +3,7 @@ import axios from 'axios';
 import styles from "./Login.module.scss";
 import { useNavigate } from 'react-router-dom';
 
-export default function SignUpPage({ setUser }) {
+export default function SignUpPage({ setUser, setName }) {
   const navigate = useNavigate(); // Хук для перенаправления пользователя
 
   const serverHost = process.env.REACT_APP_SERVER_HOST;
@@ -18,6 +18,7 @@ export default function SignUpPage({ setUser }) {
         });
 
         if (response.status === 200) {
+          setName(response.data.name); // Устанавливаем имя пользователя вместо boolean значения
           // Здесь вы можете обновить ваш стейт, чтобы отразить, что пользователь зарегистрирован
           console.log("cooki");
         }
