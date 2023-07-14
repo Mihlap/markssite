@@ -76,7 +76,10 @@ export default function Company() {
   //   }
   //   window.addEventListener("resize", handleResize);
   //   return () => {
-  //     window.removeEventListener("resize", handleResize);
+
+  //     if (window) {
+  //       window.removeEventListener("resize", handleResize);
+  //     }
   //   };
   // }, []);
 
@@ -184,7 +187,11 @@ export default function Company() {
     }
     // window.addEventListener("scroll", handleScroll);
     return () => {
-      // window.removeEventListener("scroll", handleScroll);
+
+      if (nameCompanyRef.current && thisBlockRef.current) {
+        window.removeEventListener("scroll", handleScroll);
+      }
+
     };
   }, []);
 
