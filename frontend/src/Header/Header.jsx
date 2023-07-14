@@ -25,11 +25,7 @@ gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
 export default function Header({ user, setNavBarOpen, setShowFooter }) {
   const sliderCardRef = useRef(null);
-  const [stateMouse, setStateMouse] = useState({
-    isScroling: false,
-    clientX: 0,
-    scrollX: 0
-  })
+  const [enableVerticalScroll, setEnableVerticalScroll] = useState(true);
   const  project = useSelector((state) => state.project.projects);
   const dispatch = useDispatch();
 
@@ -46,69 +42,44 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
     Инженерия: "#90B734",
   };
 
+  const handleScroll = () => {
+    const sliderElement = document.getElementById("slider_card_container_project");
+    if (sliderElement) {
+      const rect = sliderElement.getBoundingClientRect();
+      const isSliderInView = rect.top <= window.innerHeight && rect.bottom >= 0;
+      setEnableVerticalScroll(!isSliderInView);
+    }
+  };
+
+  useEffect(() => {
+  
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
+  const onWheel = (e) => {
+    if (!enableVerticalScroll) {
+      e.preventDefault();
+      const el = sliderCardRef.current;
+      el.scrollTo({
+        left: el.scrollLeft + e.deltaY * 8,
+        behavior: "smooth",
+      });
+    }
+  };
+
   useEffect(() => {
     const el = sliderCardRef.current;
-   if (el) {
-    const onWheel = e => {
-      if (el.contains(e.target.closest("#slider_card_container_project"))) {
-      e.preventDefault()
-        el.scrollTo({
-        left: el.scrollLeft + e.deltaY * 8,
-        behavior: "smooth"
-      })
-    } else {
-      // Предотвращаем горизонтальный скролл вне блока
-      e.preventDefault();
+    if (el) {
+       el.addEventListener("wheel", onWheel);
+      return () => el.removeEventListener("wheel", onWheel);
     }
-    }
-    el.addEventListener("wheel", onWheel);
-    return () => el.removeEventListener("wheel", onWheel)
-  }
-  },[])
+  }, [enableVerticalScroll]);
 
-  const onMouseMove = e => {
-  if (sliderCardRef && sliderCardRef.current && !sliderCardRef.current.contains(e.target)) {
-    return
-  }
-  e.preventDefault()
-  const { clientX, scrollX, isScroling } = stateMouse
 
-  if(isScroling) {
-    sliderCardRef.current.scrollLeft = scrollX + e.clientX - clientX
-    setStateMouse({ ...stateMouse, scrollX: scrollX + e.clientX - clientX, clientX: e.clientX })
-  }
-  }
 
-  useEffect(() => {
-   document.addEventListener("mouseMove", onMouseMove)
-
-   return () => {
-    document.removeEventListener("mouseMove", onMouseMove)
-    }
-  })
-  useEffect(() => {
-    const handleScroll = () => {
-      const sliderCardContainer = document.getElementById('slider_card_container_project');
-      const windowHeight = window.innerHeight;
-  
-      // Определяем положение блока slider_card_container_project относительно окна просмотра
-      const sliderBottom = sliderCardContainer.getBoundingClientRect().bottom;
-  
-      // Проверяем, если вертикальная прокрутка достигла блока slider_card_container_project
-      if (sliderBottom <= windowHeight) {
-        // Начинаем горизонтальную прокрутку
-        const el = sliderCardRef.current;
-        if (el) {
-          el.scrollTo({
-            left: el.scrollLeft,
-            behavior: 'smooth',
-          });
-        }
-      }
-    };
-      window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   const closeNavbarHandler = () => {
     setNavBarOpen(false);
@@ -272,7 +243,6 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
     className={styles.slider_card_container_project}
     id="slider_card_container_project"
     ref={sliderCardRef}
-    onMouseMove={onMouseMove}
     spaceBetween={30}
     touch="true"
     direction="horizontal"
