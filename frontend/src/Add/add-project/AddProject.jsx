@@ -1,8 +1,13 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from './AddProject.module.scss'
 import FormAddProject from './formAdd/FormAddProject';
+import { useDispatch, useSelector } from 'react-redux';
+import { getFetchForm } from '../../store/Slice/projectSlice';
 
 export default function AddProject() {
+    const Host = process.env.REACT_APP_SERVER_HOST;
+ const dispatch = useDispatch();
+ const project = useSelector((state) => state.project.projects);
 const [isModalOpen, setIsModalOpen] = useState(false);
 
 const handleOpenModal = () => {
@@ -13,6 +18,13 @@ const handleCloseModal = () => {
   setIsModalOpen(false);
 };
 
+   useEffect(() => {
+     dispatch(getFetchForm());
+   }, [dispatch]);
+  
+  
+  console.log(project);
+  
   return (
     <section className={styles.project_components_admin}>
       <div className={styles.project_components_admin__title}>Проекты</div>
@@ -65,6 +77,36 @@ const handleCloseModal = () => {
           </div>
         </div>
       )}
+
+      <div className={styles.project_components_admin__section_map}>
+        <div className={styles.project_components_admin__block_map}>
+        {project &&
+          project.map((el) => {
+            // const firstPhoto = el.imageTitle.split(", ")[0];
+            return (
+              <div className={styles.section_project__block_cart} key={el.id}>
+                <div className={styles.cart_project}>
+                  <div className={styles.cart_project__container}>
+                    <img
+                      className={styles.cart_project__img}
+                      src={`${Host}/images/${el.imageProject}`}
+                      alt="pfoto"
+                    />
+                    <div className={styles.cart_project__content}>
+                      <span className={styles.cart_project__title}>
+                        {el.title}
+                      </span>
+                    </div>
+                    <div>
+                      {el.id}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
     </section>
   );
 }
