@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./AddNavbar.module.scss";
 import { Link, useNavigate } from "react-router-dom";
 
-export default function AddNavbar() {
+export default function AddNavbar({ user, setNavBarOpen, setShowFooter }) {
   const [selectedItem, setSelectedItem] = useState(null);
   const navigate = useNavigate();
 
@@ -19,6 +19,11 @@ export default function AddNavbar() {
     localStorage.setItem("selectedItem", itemName);
     navigate(itemPath); // Выполняем переход по ссылке
   };
+
+  const openNavbarHandler = () => {
+    setNavBarOpen(true);
+    setShowFooter(true);
+  }
 
   return (
     <>
@@ -81,9 +86,17 @@ export default function AddNavbar() {
               </li>
             </ul>
           </div>
+          <div>
+            пользователь cookies <strong>{user}👋</strong>
+          </div>
         </div>
       </nav>
-      <Link className={styles.preview} to="/">
+      <div></div>
+      <Link
+        className={styles.preview}
+        to="/"
+        onClick={() => openNavbarHandler()}
+      >
         Предпросмотр
       </Link>
     </>

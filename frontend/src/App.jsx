@@ -37,6 +37,7 @@ export default function App() {
   const location = useLocation();
   const [isScrollDisabled, setIsScrollDisabled] = useState(false);
   const [user, setUser] = useState(false);
+  const [isUserChecked, setIsUserChecked] = useState(false);
   const [loading, setLoading] = useState(false);
   /////////
   const [navOpen, setNavOpen] = useState(false);
@@ -61,20 +62,25 @@ export default function App() {
         const response = await axios({
           method: "get",
           url: `${serverHost}/api/auth/user`,
-          withCredentials: true,
+          withCredentials: true, // Включает отправку кук с запросом
         });
 
         if (response.status === 200) {
-          setUser(true);
-        } else {
-          setUser(false);
+          setUser(response.data.name);
+          setIsUserChecked(true);
+          setNavBarOpen(false); // скрываем навбар
+          setShowFooter(false); // скрываем футер
         }
       } catch (error) {
         console.log(error);
+        setIsUserChecked(true); // Добавьте эту строку
       }
     };
-    checkUser();
-  }, []);
+
+    if (!isUserChecked) {
+      checkUser();
+    }
+  }, [isUserChecked]);
 
 
   // таймаут для прелоудера на сайте
@@ -88,7 +94,7 @@ export default function App() {
     setIsScrollDisabled(!isScrollDisabled);
   }
 
-  console.log(user);
+  console.log(`пользователь 👉${user}👈`);
   return (
     <>
       {loading === true ? (
@@ -108,7 +114,12 @@ export default function App() {
               <Routes location={location}>
                 <Route
                   path="/"
-                  element={<Header navOpen={navOpen} isHidden={isHidden} />}
+                  element={
+                    <Header
+                      setNavBarOpen={setNavBarOpen}
+                      setShowFooter={setShowFooter}
+                    />
+                  }
                 />
                 <Route path="/competention" element={<Competentions />} />
                 <Route path="/project" element={<Project />} />
