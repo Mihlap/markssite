@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import styles from "./Login.module.scss";
-import { useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 
 
@@ -11,6 +11,8 @@ export default function Login({ setUser }) {
     userName: "",
     password: "",
   });
+
+  const inputRef = useRef(null);
 
   const changeHandler = (event) =>
     setInputGroup((prev) => ({
@@ -30,12 +32,22 @@ export default function Login({ setUser }) {
       if (response.status === 200) {
         console.log("тут");
         setUser(response.data.name);
-        navigate("/admin");
+        navigate("/");
       }
     } catch (error) {
       console.error("Ошибка при попытке войти в систему", error);
     }
   };
+
+  useEffect(() => {
+    const inputs = document.querySelectorAll(".form__field");
+
+    inputs.forEach((input) => {
+      input.addEventListener("click", () => {
+        input.focus();
+      });
+    });
+  }, []);
 
   return (
     <section className={styles.login_container}>
@@ -51,7 +63,7 @@ export default function Login({ setUser }) {
               name="userName"
               required
             />
-            <label htmlFor="name" className={styles.form__label}>
+            <label htmlFor="name" className={styles.form__label} onClick={() => inputRef.current.focus()}>
               Name
             </label>
           </div>
