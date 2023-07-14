@@ -53,7 +53,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
       if (el.contains(e.target.closest("#slider_card_container_project"))) {
       e.preventDefault()
         el.scrollTo({
-        left: el.scrollLeft + e.deltaY * 4,
+        left: el.scrollLeft + e.deltaY * 8,
         behavior: "smooth"
       })
     } else {
