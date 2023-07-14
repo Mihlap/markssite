@@ -70,15 +70,17 @@ export default function Company() {
   const symbol = "•";
   const Host = process.env.REACT_APP_SERVER_HOST;
   
-  useEffect(() => {
-    function handleResize() {
-      setWindowWidth(window.innerWidth);
-    }
-    window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
+  // useEffect(() => {
+  //   function handleResize() {
+  //     setWindowWidth(window.innerWidth);
+  //   }
+  //   window.addEventListener("resize", handleResize);
+  //   return () => {
+  //     if (window) {
+  //       window.removeEventListener("resize", handleResize);
+  //     }
+  //   };
+  // }, []);
 
   useEffect(() => {
      dispatch(selectCard(null));
@@ -184,7 +186,9 @@ export default function Company() {
     }
     window.addEventListener("scroll", handleScroll);
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      if (nameCompanyRef.current && thisBlockRef.current) {
+        window.removeEventListener("scroll", handleScroll);
+      }
     };
   }, []);
 
