@@ -5,10 +5,10 @@ const cors = require("cors");
 const path = require("path");
 const session = require('express-session');
 const FileStore = require('session-file-store')(session);
-const staffsRouter = require("./routes/staffsRouter");
-const projectRouter = require("./routes/projectRouter");
-const authRouter = require("./routes/authRouter");
-const indexRouter = require("./routes/indexRouter");
+const staffsRouter = require("./Routes/staffsRouter");
+const projectRouter = require("./Routes/projectRouter");
+const authRouter = require("./Routes/authRouter");
+const indexRouter = require("./Routes/indexRouter");
 
 
 
@@ -52,10 +52,10 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use('/api', staffsRouter);
-app.use('/api-project', projectRouter);
-app.use('/api/auth', authRouter);
 app.get('/', indexRouter);
+app.use('/api/auth', authRouter);
+app.use('/api-stuffs', staffsRouter);
+app.use('/api-project', projectRouter);
 
 
 app.listen(PORT, () => {
