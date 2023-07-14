@@ -85,7 +85,7 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen, user }) => {
               <h1 className={styles.navbar_title}>MARKS GROUP</h1>
             </NavLink>
           </div>
-            <h4>{user?.id ? `Привет ${user.userName}` : 'Привет Гость'}</h4>
+          <h4>{user ? `Привет ${user}` : "Привет Гость"}</h4>
           <ul className={styles.navbar_list}>
             <NavLink className={styles.navbar_item} to="/signup">
               <div>signup</div>
