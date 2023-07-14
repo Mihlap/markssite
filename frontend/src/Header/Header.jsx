@@ -64,7 +64,7 @@ export default function Header() {
     mainProjectRef.current.addEventListener("wheel", handleMouseWheelScroll);
   
     return () => {
-      mainProjectRef.current.removeEventListener("wheel", handleMouseWheelScroll);
+      // mainProjectRef.current.removeEventListener("wheel", handleMouseWheelScroll);
     };
   }, []);
 
