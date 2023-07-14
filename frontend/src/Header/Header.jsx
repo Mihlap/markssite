@@ -19,59 +19,26 @@ import styles from "./Header.module.css";
 
 
 SwiperCore.use([Navigation]);
+ const Host = process.env.REACT_APP_SERVER_HOST;
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
 export default function Header({ user, setNavBarOpen, setShowFooter }) {
-  const Host = process.env.REACT_APP_SERVER_HOST;
-  const mainProjectRef = useRef(null);
-  const sliderRef = useRef(null);
-  const project = useSelector((state) => state.project.projects);
+  const sliderCardRef = useRef(null);
+  const [stateMouse, setStateMouse] = useState({
+    isScroling: false,
+    clientX: 0,
+    scrollX: 0
+  })
+  const  project = useSelector((state) => state.project.projects);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getFetchForm());
   }, [dispatch]);
 
-  useEffect(() => {
-    gsap.utils.toArray(".wrapper_container_item_cardt").forEach((text) => {
-      gsap
-        .timeline({
-          defaults: { ease: "none" },
-          scrollTrigger: {
-            scroller: text.closest(".main_project"),
-            horizontal: true,
-            trigger: text.closest(".wrapper_container_item_card"),
-            start: "left right",
-            end: "left left",
-            scrub: true,
-          },
-        })
-        .fromTo(text, { x: 250 }, { x: -250 }, 0)
-        .from(text.nextElementSibling, { scale: 0.8 }, 0);
-    });
-  }, []);
-
-  useEffect(() => {
-    const handleMouseWheelScroll = (event) => {
-      const container = mainProjectRef.current;
-      const scrollAmount = 150; // Adjust the scroll amount as needed
-      container.scrollLeft += event.deltaY > 0 ? scrollAmount : -scrollAmount;
-    };
-
-    mainProjectRef.current.addEventListener("wheel", handleMouseWheelScroll);
-
-    return () => {
-      // mainProjectRef.current.removeEventListener("wheel", handleMouseWheelScroll);
-    };
-  }, []);
-
-  const closeNavbarHandler = () => {
-    setNavBarOpen(false);
-    setShowFooter(false);
-  }
-
-  const colors = {
+  
+   const colors = {
     Архитектура: "#FF7F6A",
     BIM: "#75BBFD",
     Конструкции: "#566272",
@@ -79,7 +46,76 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
     Инженерия: "#90B734",
   };
 
-  return (
+  useEffect(() => {
+    const el = sliderCardRef.current;
+   if (el) {
+    const onWheel = e => {
+      if (el.contains(e.target.closest("#slider_card_container_project"))) {
+      e.preventDefault()
+        el.scrollTo({
+        left: el.scrollLeft + e.deltaY * 4,
+        behavior: "smooth"
+      })
+    } else {
+      // Предотвращаем горизонтальный скролл вне блока
+      e.preventDefault();
+    }
+    }
+    el.addEventListener("wheel", onWheel);
+    return () => el.removeEventListener("wheel", onWheel)
+  }
+  },[])
+
+  const onMouseMove = e => {
+  if (sliderCardRef && sliderCardRef.current && !sliderCardRef.current.contains(e.target)) {
+    return
+  }
+  e.preventDefault()
+  const { clientX, scrollX, isScroling } = stateMouse
+
+  if(isScroling) {
+    sliderCardRef.current.scrollLeft = scrollX + e.clientX - clientX
+    setStateMouse({ ...stateMouse, scrollX: scrollX + e.clientX - clientX, clientX: e.clientX })
+  }
+  }
+
+  useEffect(() => {
+   document.addEventListener("mouseMove", onMouseMove)
+
+   return () => {
+    document.removeEventListener("mouseMove", onMouseMove)
+    }
+  })
+  useEffect(() => {
+    const handleScroll = () => {
+      const sliderCardContainer = document.getElementById('slider_card_container_project');
+      const windowHeight = window.innerHeight;
+  
+      // Определяем положение блока slider_card_container_project относительно окна просмотра
+      const sliderBottom = sliderCardContainer.getBoundingClientRect().bottom;
+  
+      // Проверяем, если вертикальная прокрутка достигла блока slider_card_container_project
+      if (sliderBottom <= windowHeight) {
+        // Начинаем горизонтальную прокрутку
+        const el = sliderCardRef.current;
+        if (el) {
+          el.scrollTo({
+            left: el.scrollLeft,
+            behavior: 'smooth',
+          });
+        }
+      }
+    };
+      window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  const closeNavbarHandler = () => {
+    setNavBarOpen(false);
+    setShowFooter(false);
+  }
+
+ return (
     <main className={styles.header}>
       {user ? (
         <NavLink
@@ -231,124 +267,115 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
           // project={project}
         />
       </div> */}
-      <div className={styles.main_project} ref={mainProjectRef}>
-        <div
-          ref={sliderRef}
-          className={styles.slider_card_container_project}
-          style={
-            {
-              // overflowX: "auto",
-              // overflowY: "hidden",
-              // height: "1000px",
-            }
-          }
-          // spaceBetween={30}
-          //  touch="true"
-          //  direction="horizontal"
-          // loop={false}
-          //  breakpoints={{
-          //   1440: {
-          //     slidesPerView: 3.2,
-          //   },
-          //   1024: {
-          //     slidesPerView: 2.3,
-          //   },
-          //   768: {
-          //     slidesPerView: 1.4,
-          //   },
-          // }}
-        >
-          {project?.map((el, index) => {
-            const isCustomSize = el.hasCustomSize;
-            return (
-              <div
-                key={el.id}
-                className={`{styles.slider_container_item_card}
-           ${isCustomSize ? styles.customSize : ""}`}
-                style={index % 2 === 1 ? { paddingTop: "10rem" } : {}}
-              >
-                <div className={styles.wrapper_container_item_card}>
-                  <img
-                    className={styles.container__imageTitle}
-                    src={`${Host}/images/${
-                      el.imageProject ? el.imageProject : el.imageTitle
-                    }`}
-                    alt={el.imageTitle ? el.imageProject : el.imageTitle}
-                  />
-                </div>
-                <div className={styles.title_selectCompetencies}>
-                  <div className={styles.container__title}>{el.title}</div>
-                  <div className={styles.container__selectCompetencies}>
-                    {(() => {
-                      try {
-                        const selectCompetencies = JSON.parse(
-                          el.selectCompetencies
-                        );
-                        return selectCompetencies.map((competency) => (
+ <div className={styles.main_project}>
+    <Swiper
+    className={styles.slider_card_container_project}
+    id="slider_card_container_project"
+    ref={sliderCardRef}
+    onMouseMove={onMouseMove}
+    spaceBetween={30}
+    touch="true"
+    direction="horizontal"
+   loop={false}
+    breakpoints={{
+     1440: {
+       slidesPerView: 3.2,
+     },
+     1024: {
+       slidesPerView: 2.3,
+     },
+     768: {
+       slidesPerView: 1.4,
+     },
+   }}
+    >
+      {project?.map((el, index) => {
+      const isCustomSize = el.hasCustomSize; 
+        return (
+          <SwiperSlide
+            key={el.id}
+            className={`{styles.slider_container_item_card}
+             ${isCustomSize ? styles.customSize : ""}`}
+            style={index % 2 === 1 ? { paddingTop: "10rem" } : {}}
+          >
+            <div className={styles.wrapper_container_item_card}>
+              <img
+                className={styles.container__imageTitle}
+                src={`${Host}/images/${
+                  el.imageProject ? el.imageProject : el.imageTitle
+                }`}
+                alt={el.imageTitle ? el.imageProject : el.imageTitle}
+              />
+            </div>
+            <div className={styles.title_selectCompetencies}>
+              <div className={styles.container__title}>{el.title}</div>
+              <div className={styles.container__selectCompetencies}>
+                {(() => {
+                  try {
+                    const selectCompetencies = JSON.parse(
+                      el.selectCompetencies
+                    );
+                    return selectCompetencies.map((competency) => (
+                      <div
+                        key={competency.value}
+                        className={styles.div_el_selectCompetencies}
+                        style={{
+                          color: colors[competency.value],
+                          borderColor: colors[competency.value],
+                          border: "1px solid",
+                          padding: "3px 6px",
+                          borderRadius: "34px",
+                        }}
+                      >
+                        {competency.label}
+                      </div>
+                    ));
+                  } catch (error) {
+                    if (
+                      typeof el.selectCompetencies === "string" &&
+                      el.selectCompetencies.includes(",")
+                    ) {
+                      return el.selectCompetencies.split(",").map((value) => {
+                        const label = value.trim();
+                        return (
                           <div
-                            key={competency.value}
+                            key={value}
                             className={styles.div_el_selectCompetencies}
                             style={{
-                              color: colors[competency.value],
-                              borderColor: colors[competency.value],
+                              color: colors[value],
+                              borderColor: colors[value],
                               border: "1px solid",
                               padding: "3px 6px",
                               borderRadius: "34px",
                             }}
                           >
-                            {competency.label}
+                            {label}
                           </div>
-                        ));
-                      } catch (error) {
-                        if (
-                          typeof el.selectCompetencies === "string" &&
-                          el.selectCompetencies.includes(",")
-                        ) {
-                          return el.selectCompetencies
-                            .split(",")
-                            .map((value) => {
-                              const label = value.trim();
-                              return (
-                                <div
-                                  key={value}
-                                  className={styles.div_el_selectCompetencies}
-                                  style={{
-                                    color: colors[value],
-                                    borderColor: colors[value],
-                                    border: "1px solid",
-                                    padding: "3px 6px",
-                                    borderRadius: "34px",
-                                  }}
-                                >
-                                  {label}
-                                </div>
-                              );
-                            });
-                        }
-                        console.log(
-                          "Error parsing selectCompetencies JSON:",
-                          error
                         );
-                        return null;
-                      }
-                    })()}
-                  </div>
-                </div>
-                <div className={styles.countryCity_monthYear}>
-                  <div className={styles.container__countryCity}>
-                    {el.countryCity}
-                  </div>
-                  <div className={styles.container__monthYear}>
-                    {el.monthYear}
-                  </div>
-                </div>
+                      });
+                    }
+                    console.log(
+                      "Error parsing selectCompetencies JSON:",
+                      error
+                    );
+                    return null;
+                  }
+                })()}
               </div>
-            );
-          })}
-        </div>
-      </div>
-    </main>
-  );
+            </div>
+            <div className={styles.countryCity_monthYear}>
+              <div className={styles.container__countryCity}>
+                {el.countryCity}
+              </div>
+              <div className={styles.container__monthYear}>{el.monthYear}</div>
+            </div>
+          </SwiperSlide>
+        );
+    })}
+  </Swiper>
+  </div>
+ </main>
+ );
 }
 
 
