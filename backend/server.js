@@ -23,7 +23,7 @@ const sessionConfig = {
   saveUninitialized: false,
   store: new FileStore(),
   cookie: {
-    maxAge: 1000 * 60 * 60 * 12,
+    maxAge: 10 * 24 * 60 * 60 * 1000, // 10 дней в миллисекундах
     httpOnly: true,
     sameSite: 'lax', // 'lax' или 'strict' для HTTP
     secure: false, // false для HTTP
@@ -48,7 +48,7 @@ app.use(session(sessionConfig));
 
 // Добавьте этот блок кода здесь
 app.use((req, res, next) => {
-    console.log('Session: ', req.session);
+    // console.log('Session: ', req.session);
     next();
 });
 
