@@ -24,6 +24,7 @@ authRouter.post('/signup', async (req, res) => {
     id: currentUser.id,
   };
 
+  // вот тут вы вкладываем в сессию данные пользователя и его id из объекта sessionData
   req.session.user = sessionData; // Используйте ту же переменную сессии, которую вы пытаетесь получить позже
 
   if (!created) {
@@ -49,6 +50,27 @@ authRouter.get('/user', (req, res) => {
   } else {
     res.status(401).json({ message: 'Пользователь не авторизован' });
   }
+});
+
+authRouter.post('/login', async(req, res) => {
+    const { userName, password } = req.body; 
+
+    const foundUser = await User.findOne({ where: { userName } });
+
+    if (!foundUser) return res.status(401).json({ message: 'пользователь не найден' })
+    
+    if (await bcrypt.compare(password, foundUser.hashpass)) {
+        req.session.user = foundUser;
+        return res.sendStatus(200);
+    }
+
+    return res.status(401).json({ message: 'неправильный name пользователя или пароль' });
+})
+
+authRouter.get('/logout', (req, res) => {
+    req.session.destroy();
+    res.clearCookie('user_marks_group');
+    res.sendStatus(200);
 });
 
 module.exports = authRouter;

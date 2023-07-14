@@ -116,6 +116,7 @@ export default function App() {
                   path="/"
                   element={
                     <Header
+                      user={user}
                       setNavBarOpen={setNavBarOpen}
                       setShowFooter={setShowFooter}
                     />

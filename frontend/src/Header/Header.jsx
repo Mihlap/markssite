@@ -19,11 +19,11 @@ import styles from "./Header.module.css";
 
 
 SwiperCore.use([Navigation]);
-const Host = process.env.REACT_APP_SERVER_HOST;
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
-export default function Header({ setNavBarOpen, setShowFooter }) {
+export default function Header({ user, setNavBarOpen, setShowFooter }) {
+  const Host = process.env.REACT_APP_SERVER_HOST;
   const mainProjectRef = useRef(null);
   const sliderRef = useRef(null);
   const project = useSelector((state) => state.project.projects);
@@ -81,10 +81,11 @@ export default function Header({ setNavBarOpen, setShowFooter }) {
 
   return (
     <main className={styles.header}>
-      {true ? (
-        <NavLink className={styles.preview_mode}
+      {user ? (
+        <NavLink
+          className={styles.preview_mode}
           to="/admin"
-        onClick={() => closeNavbarHandler()}
+          onClick={() => closeNavbarHandler()}
         >
           <div className={styles.preview_title}>Режим предпросмотра</div>
           <img src={actively} alt="icon" />
