@@ -45,7 +45,7 @@ return (
                       height: `${project.style?.split(",")[0]}rem`,
                       width: `${project.style?.split(",")[1]}rem`,
                     }}
-                    src={`${Host}/images/${el.imageProject}`}
+                    src={`${Host}/images/imageAdd/${el.imageProject}`}
                     alt="pfoto"
                   />
                   <div className={styles.cart_project__content}>
