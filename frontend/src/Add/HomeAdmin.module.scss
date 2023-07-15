@@ -1,0 +1,16 @@
+@import "../App.css";
+
+.home_admin_section {
+    height: 100vh;
+    padding-left: 3rem;
+    padding-top: 7.5rem;
+
+    &__title {
+        font-family: var(--font-unbounded);
+        color: var(--black-1D2E43);
+        font-size: 32px;
+        font-style: normal;
+        font-weight: 300;
+        line-height: 40px;
+    }
+}

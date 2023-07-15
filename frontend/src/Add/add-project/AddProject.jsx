@@ -89,7 +89,7 @@ const handleCloseModal = () => {
                   <div className={styles.cart_project__container}>
                     <img
                       className={styles.cart_project__img}
-                      src={`${Host}/images/${el.imageProject}`}
+                      src={`${Host}/images/imageAdd/${el.imageProject}`}
                       alt="pfoto"
                     />
                     <div className={styles.cart_project__content}>
@@ -97,9 +97,7 @@ const handleCloseModal = () => {
                         {el.title}
                       </span>
                     </div>
-                    <div>
-                      {el.id}
-                    </div>
+                    <div>{el.id}</div>
                   </div>
                 </div>
               </div>

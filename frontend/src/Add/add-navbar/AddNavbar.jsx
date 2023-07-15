@@ -66,11 +66,11 @@ const logouthandler = async () => {
               <li>
                 <Link
                   className={`${styles.add_navbar_container__item} ${
-                    selectedItem === "projects" ? styles.active : ""
+                    selectedItem === "add-a-project" ? styles.active : ""
                   }`}
                   to="./add-a-project"
                   onClick={(event) =>
-                    handleItemClick(event, "projects", "./add-a-project")
+                    handleItemClick(event, "add-a-project", "./add-a-project")
                   }
                 >
                   Проекты
@@ -79,11 +79,11 @@ const logouthandler = async () => {
               <li>
                 <Link
                   className={`${styles.add_navbar_container__item} ${
-                    selectedItem === "articles" ? styles.active : ""
+                    selectedItem === "add-a-articles" ? styles.active : ""
                   }`}
                   to="./add-a-articles"
                   onClick={(event) =>
-                    handleItemClick(event, "articles", "./add-a-articles")
+                    handleItemClick(event, "add-a-articles", "./add-a-articles")
                   }
                 >
                   Публикации
@@ -92,18 +92,20 @@ const logouthandler = async () => {
               <li>
                 <Link
                   className={`${styles.add_navbar_container__item} ${
-                    selectedItem === "company" ? styles.active : ""
+                    selectedItem === "add-a-company" ? styles.active : ""
                   }`}
                   to="./add-a-company"
                   onClick={(event) =>
-                    handleItemClick(event, "company", "./add-a-company")
+                    handleItemClick(event, "add-a-company", "./add-a-company")
                   }
                 >
                   О компании
                 </Link>
               </li>
               <li>
-                <button type="button" onClick={() => logouthandler()}>Выход</button>
+                <button type="button" onClick={() => logouthandler()}>
+                  Выход
+                </button>
               </li>
             </ul>
           </div>
