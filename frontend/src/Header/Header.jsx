@@ -26,6 +26,7 @@ gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 export default function Header({ user, setNavBarOpen, setShowFooter }) {
   const sliderCardRef = useRef(null);
   const [enableVerticalScroll, setEnableVerticalScroll] = useState(true);
+  const [data, setData] = useState(null);
   const  project = useSelector((state) => state.project.projects);
   const dispatch = useDispatch();
 
@@ -33,6 +34,12 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
     dispatch(getFetchForm());
   }, [dispatch]);
 
+    useEffect(() => {
+      const storedData = localStorage.getItem("selectedItem");
+      setData(storedData);
+    }, []);
+
+  
   
    const colors = {
     Архитектура: "#FF7F6A",
@@ -91,7 +98,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
       {user ? (
         <NavLink
           className={styles.preview_mode}
-          to="/admin"
+          to={`/admin/${data}`}
           onClick={() => closeNavbarHandler()}
         >
           <div className={styles.preview_title}>Режим предпросмотра</div>
@@ -271,7 +278,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
             <div className={styles.wrapper_container_item_card}>
               <img
                 className={styles.container__imageTitle}
-                src={`${Host}/images/${
+                src={`${Host}/images/imageAdd/${
                   el.imageProject ? el.imageProject : el.imageTitle
                 }`}
                 alt={el.imageTitle ? el.imageProject : el.imageTitle}
@@ -324,10 +331,6 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
                         );
                       });
                     }
-                    console.log(
-                      "Error parsing selectCompetencies JSON:",
-                      error
-                    );
                     return null;
                   }
                 })()}
