@@ -1,30 +1,52 @@
-import React, { useEffect, useState } from 'react'
-import styles from './AddProject.module.scss'
-import FormAddProject from './formAdd/FormAddProject';
-import { useDispatch, useSelector } from 'react-redux';
-import { getFetchForm } from '../../store/Slice/projectSlice';
+import React, { useEffect, useState } from "react";
+import styles from "./AddProject.module.scss";
+import FormAddProject from "./formAdd/FormAddProject";
+import { useDispatch, useSelector } from "react-redux";
+import { getFetchForm } from "../../store/Slice/projectSlice";
+
+import icon from "./icon/Vector.png";
 
 export default function AddProject() {
-    const Host = process.env.REACT_APP_SERVER_HOST;
- const dispatch = useDispatch();
- const project = useSelector((state) => state.project.projects);
-const [isModalOpen, setIsModalOpen] = useState(false);
+  const Host = process.env.REACT_APP_SERVER_HOST;
+  const dispatch = useDispatch();
+  const project = useSelector((state) => state.project.projects);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
+  const [isonCopy, seticonCopy] = useState(false);
+  const [copiedId, setCopiedId] = useState("");
 
-const handleOpenModal = () => {
-  setIsModalOpen(true);
-};
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
 
-const handleCloseModal = () => {
-  setIsModalOpen(false);
-};
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
 
-   useEffect(() => {
-     dispatch(getFetchForm());
-   }, [dispatch]);
-  
-  
+  const handleCopyClick = (id) => {
+    navigator.clipboard.writeText(id);
+    setIsCopied(true);
+    seticonCopy(true);
+    setCopiedId(id);
+  };
+
+  useEffect(() => {
+    dispatch(getFetchForm());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (isCopied) {
+      const timer = setTimeout(() => {
+        setIsCopied(false);
+        seticonCopy(false);
+        setCopiedId("");
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [isCopied]);
+
   console.log(project);
-  
+
   return (
     <section className={styles.project_components_admin}>
       <div className={styles.project_components_admin__title}>Проекты</div>
@@ -80,29 +102,60 @@ const handleCloseModal = () => {
 
       <div className={styles.project_components_admin__section_map}>
         <div className={styles.project_components_admin__block_map}>
-        {project &&
-          project.map((el) => {
-            // const firstPhoto = el.imageTitle.split(", ")[0];
-            return (
-              <div className={styles.section_project__block_cart} key={el.id}>
-                <div className={styles.cart_project}>
-                  <div className={styles.cart_project__container}>
-                    <img
-                      className={styles.cart_project__img}
-                      src={`${Host}/images/imageAdd/${el.imageProject}`}
-                      alt="pfoto"
-                    />
-                    <div className={styles.cart_project__content}>
-                      <span className={styles.cart_project__title}>
-                        {el.title}
-                      </span>
+          {project &&
+            project.map((el) => {
+              const firstPhoto = el.imageTitle.split(", ")[0];
+              return (
+                <div className={styles.section_project__block_cart} key={el.id}>
+                  <div className={styles.cart_project}>
+                    <div className={styles.cart_project__container}>
+                      <div
+                        className={styles.cart_project__imageContainer}
+                        style={{ width: "100%", height: "100%" }}
+                      >
+                        <img
+                          className={styles.cart_project__img}
+                          src={`${Host}/images/imageAdd/${firstPhoto}`}
+                          alt="pfoto"
+                        />
+                      </div>
+                      <div className={styles.cart_project__content}>
+                        <span className={styles.cart_project__title}>
+                          {el.title}
+                        </span>
+                      </div>
+                      <div className={styles.cart_project__id_block}>
+                        <div className={styles.cart_project__id_text}>
+                          id: {el.id}
+                        </div>
+                        {isCopied && el.id === copiedId && (
+                          <>
+                            <div className={styles.cart_project__copyMessage}>
+                              id скопирован
+                            </div>
+                            <div
+                              className={
+                                styles.cart_project__copyButton_img_copu_deffalt
+                              }
+                            />
+                          </>
+                        )}
+                        <button
+                          className={styles.cart_project__copyButton}
+                          onClick={() => handleCopyClick(el.id)}
+                        >
+                          <div
+                            className={
+                              styles.cart_project__copyButton_img_copu_ok
+                            }
+                          />
+                        </button>
+                      </div>
                     </div>
-                    <div>{el.id}</div>
                   </div>
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
         </div>
       </div>
     </section>
