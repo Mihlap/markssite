@@ -5,10 +5,11 @@ const cors = require('cors');
 const path = require('path');
 const session = require('express-session');
 const FileStore = require('session-file-store')(session);
+const indexRouter = require('./routes/indexRouter');
 const authRouter = require('./routes/authRouter');
 const staffsRouter = require('./routes/staffsRouter');
 const projectRouter = require('./routes/projectRouter');
-const indexRouter = require('./routes/indexRouter');
+const articleRouter = require('./routes/articleRouter');
 
 
 const app = express();
@@ -40,7 +41,8 @@ app.use(
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use('/images', express.static(path.join(__dirname, 'images')));
+// app.use('/images', express.static(path.join(__dirname, 'images')));
+app.use('/images/imageAdd', express.static(path.join(__dirname, 'images/imageAdd')));
 app.use(session(sessionConfig));
 
 // Добавьте этот блок кода здесь
@@ -53,6 +55,7 @@ app.get('/', indexRouter);
 app.use('/api/auth', authRouter);
 app.use('/api-stuffs', staffsRouter);
 app.use('/api-project', projectRouter);
+app.use('/api-article', articleRouter);
 
 app.listen(PORT, () => {
   console.log(`Старт server --->🔥 ${PORT} 🔥<---`);
