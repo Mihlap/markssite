@@ -512,7 +512,7 @@ export default function Company() {
                 <div className={styles.wrapper_container_item_stuff}>
                     <img
                       className={styles.container__img_stuff}
-                      src={`${Host}/images/${el.img}`}
+                      src={`${Host}/images/imageAdd/${el.img}`}
                       alt={el.img}
                     />
                  </div>
@@ -584,7 +584,7 @@ export default function Company() {
                     <div className={styles.modal}>
                       <img
                         className={styles.modal_img_stuff}
-                         src={`${Host}/images/${selectedCard.img}`}
+                         src={`${Host}/images/imageAdd/${selectedCard.img}`}
                         alt={selectedCard.img}
                       />
                     </div>
@@ -642,7 +642,7 @@ export default function Company() {
                 <div className={styles.wrapper_container_item_stuff}>
                   <img
                     className={styles.container__img_stuff}
-                    src={`${Host}/images/${el.img}`}
+                    src={`${Host}/images/imageAdd/${el.img}`}
                     alt={el.img}
                   />
                 </div>
@@ -675,7 +675,7 @@ export default function Company() {
                 <div className={styles.wrapper_container_item_stuff}>
                   <img
                     className={styles.container__img_stuff}
-                    src={`${Host}/images/${el.img}`}
+                    src={`${Host}/images/imageAdd/${el.img}`}
                     alt={el.img}
                   />
                 </div>
