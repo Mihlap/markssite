@@ -7,7 +7,7 @@ import BlockHeader from "../UI/BlockHeader/BlockHeader";
 import SwiperContainer from "./Swiper-Phone/SwiperContainer";
 import SwiperContainerProgect from "./Swiper-project/SwiperContainerProgect";
 import { Swiper, SwiperSlide } from "swiper/react";
-import SwiperCore, { Navigation } from 'swiper';
+import SwiperCore, { Navigation } from "swiper";
 import SliderHeader from "../UI/SliderHeader/SliderHeader";
 import VideoPlayer from "../UI/Videoplayer/VideoPlayer";
 import Mapbox3D from "../UI/Map3D/Mapbox3D";
@@ -15,33 +15,34 @@ import SliderMobile from "../UI/SliderHeader/SliderMobile";
 import actively from "./img/actively.png";
 import { useDispatch, useSelector } from "react-redux";
 import { getFetchForm } from "../store/Slice/projectSlice";
+import { getFetchFormArticle } from "../store/Slice/articleSlice";
 import styles from "./Header.module.css";
 
-
 SwiperCore.use([Navigation]);
- const Host = process.env.REACT_APP_SERVER_HOST;
+const Host = process.env.REACT_APP_SERVER_HOST;
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
 export default function Header({ user, setNavBarOpen, setShowFooter }) {
   const sliderCardRef = useRef(null);
   const [enableVerticalScroll, setEnableVerticalScroll] = useState(true);
+
   const [data, setData] = useState(null);
-  const  project = useSelector((state) => state.project.projects);
+  const project = useSelector((state) => state.project.projects);
+  const article = useSelector((state) => state.article);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getFetchForm());
+    dispatch(getFetchFormArticle());
   }, [dispatch]);
 
-    useEffect(() => {
-      const storedData = localStorage.getItem("selectedItem");
-      setData(storedData);
-    }, []);
+  useEffect(() => {
+    const storedData = localStorage.getItem("selectedItem");
+    setData(storedData);
+  }, []);
 
-  
-  
-   const colors = {
+  const colors = {
     Архитектура: "#FF7F6A",
     BIM: "#75BBFD",
     Конструкции: "#566272",
@@ -50,50 +51,128 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
   };
 
   const handleScroll = () => {
-    const sliderElement = document.getElementById("slider_card_container_project");
+    const sliderElement = document.getElementById(
+      "slider_card_container_project"
+    );
     if (sliderElement) {
       const rect = sliderElement.getBoundingClientRect();
       const isSliderInView = rect.top <= window.innerHeight && rect.bottom >= 0;
       setEnableVerticalScroll(!isSliderInView);
+
+      const el = sliderCardRef.current;
+      if (el) {
+        const isScrollingLeft = el.scrollLeft > 0;
+        const isScrollingRight =
+          el.scrollLeft + el.clientWidth < el.scrollWidth;
+        const isAtLeftEdge = el.scrollLeft <= 0;
+        const isAtRightEdge = el.scrollLeft + el.clientWidth >= el.scrollWidth;
+
+        if (isSliderInView && isScrollingLeft) {
+          setEnableVerticalScroll(false);
+        } else if (!isSliderInView && isScrollingRight && isAtRightEdge) {
+          setEnableVerticalScroll(true);
+        } else if (!isSliderInView && isScrollingLeft && isAtLeftEdge) {
+          setEnableVerticalScroll(true);
+        } else if (
+          !isSliderInView &&
+          !isScrollingRight &&
+          isAtRightEdge &&
+          el.scrollTop + el.clientHeight >= el.scrollHeight
+        ) {
+          setEnableVerticalScroll(true);
+        }
+      }
     }
   };
 
-  useEffect(() => {
-  
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
+  const onVerticalScroll = (e) => {
+    if (enableVerticalScroll) {
+      const el = sliderCardRef.current;
+      const isScrollingUp = e.deltaY < 0;
+      const isAtTop = el.scrollTop <= 0;
+      const isAtBottom = el.scrollTop + el.clientHeight >= el.scrollHeight;
+
+      if (isScrollingUp && isAtTop) {
+        setEnableVerticalScroll(false);
+        el.scrollLeft += e.deltaY;
+      } else if (!isAtBottom) {
+        el.scrollTo({
+          top: el.scrollTop + e.deltaY,
+          behavior: "smooth",
+        });
+      } else {
+        e.preventDefault();
+      }
+    } else {
+      e.preventDefault();
+    }
+  };
 
   const onWheel = (e) => {
-    if (!enableVerticalScroll) {
-      e.preventDefault();
-      const el = sliderCardRef.current;
+    const el = sliderCardRef.current;
+    const isScrollingRight = e.deltaY >= 0;
+    const isAtRightEdge = el.scrollLeft + el.clientWidth >= el.scrollWidth;
+    const isAtBottom = el.scrollTop + el.clientHeight >= el.scrollHeight;
+    const isAtLeftEdge = el.scrollLeft <= 0;
+    const isAtTop = el.scrollTop <= 0;
+
+    if (
+      !enableVerticalScroll &&
+      isScrollingRight &&
+      isAtRightEdge &&
+      isAtBottom
+    ) {
+      setEnableVerticalScroll(true);
       el.scrollTo({
-        left: el.scrollLeft + e.deltaY * 8,
+        top: el.scrollTop + e.deltaY,
         behavior: "smooth",
       });
+    } else if (enableVerticalScroll && !isScrollingRight) {
+      if (isAtLeftEdge && isAtTop) {
+        setEnableVerticalScroll(false);
+        el.scrollLeft += e.deltaY;
+      } else if (isAtLeftEdge && !isAtTop) {
+        el.scrollTo({
+          top: el.scrollTop + e.deltaY,
+          behavior: "smooth",
+        });
+      } else if (isAtRightEdge && isAtBottom && e.deltaY < 0) {
+        setEnableVerticalScroll(false);
+        el.scrollLeft += e.deltaY;
+      } else if (isAtRightEdge && isAtBottom && e.deltaY > 0) {
+        setEnableVerticalScroll(true);
+        el.scrollTo({
+          top: el.scrollTop + e.deltaY,
+          behavior: "smooth",
+        });
+      } else {
+        e.preventDefault();
+      }
+    } else {
+      el.scrollLeft += e.deltaY;
     }
   };
 
   useEffect(() => {
     const el = sliderCardRef.current;
     if (el) {
-       el.addEventListener("wheel", onWheel);
-      return () => el.removeEventListener("wheel", onWheel);
+      el.addEventListener("wheel", onVerticalScroll, { passive: false });
+      el.addEventListener("wheel", onWheel, { passive: false });
+      el.addEventListener("scroll", handleScroll);
+      return () => {
+        el.removeEventListener("wheel", onVerticalScroll);
+        el.removeEventListener("wheel", onWheel);
+        el.removeEventListener("scroll", handleScroll);
+      };
     }
-  }, [enableVerticalScroll]);
-
-
-
+  }, []);
 
   const closeNavbarHandler = () => {
     setNavBarOpen(false);
     setShowFooter(false);
-  }
+  };
 
- return (
+  return (
     <main className={styles.header}>
       {user ? (
         <NavLink
@@ -132,66 +211,65 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
         </div>
         <div className={styles.show_container}></div>
         <div className={styles.card_container}>
-          <div className={styles.card_item_1}>
-            <Link
-            // to={winePark.link}
-            >
-              <div className={styles.card_img}>
-                <img
-                  className={styles.img_1}
-                  // src={winePark.img}
-                  alt="winePark"
-                />
+          {article?.map((article) => (
+            <div key={article.id}
+             className={styles.card_item_1}
+             >
+              <Link to={article.link}>
+                <div className={styles.card_img}>
+                  <img
+                    className={styles.img_1}
+                    src={`${Host}/images/imageAdd/winepark.png`}
+                    alt="winePark"
+                  />
+                </div>
+              </Link>
+              <div className={styles.card_text_container}>
+                <h3 className={styles.card_text_heading}>{article.title}</h3>
+                <span className={styles.card_text_description}>
+                  {/* {article.text} */}
+                </span>
               </div>
-            </Link>
-            <div className={styles.card_text_container}>
-              {/* <h3 className={styles.card_text_heading}>{winePark.title}</h3> */}
-              <span className={styles.card_text_description}>
-                {/* {winePark.text} */}
-              </span>
+              <Link to={article.link} className={styles.card_button}>
+                <svg
+                  className={styles.card_button_link}
+                  width="40"
+                  height="40"
+                  viewBox="0 0 40 40"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <circle cx="20" cy="20" r="20" fill="#566272" />
+                  <path
+                    d="M10 20H20M30 20H20M20 20V10M20 20V30"
+                    stroke="#F6F6F6"
+                    strokeWidth="2"
+                    strokeLinecap="square"
+                  />
+                </svg>
+              </Link>
             </div>
-            <Link
-              // to={winePark.link}
-              className={styles.card_button}
-            >
-              <svg
-                className={styles.card_button_link}
-                width="40"
-                height="40"
-                viewBox="0 0 40 40"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <circle cx="20" cy="20" r="20" fill="#566272" />
-                <path
-                  d="M10 20H20M30 20H20M20 20V10M20 20V30"
-                  stroke="#F6F6F6"
-                  strokeWidth="2"
-                  strokeLinecap="square"
-                />
-              </svg>
-            </Link>
-          </div>
-          <div className={styles.card_item_2}>
-            {/* <Link to={badaevsky.link}>
-              <div className={styles.card_img}>
-                <img
+          ))}
+          {/* <div className={styles.card_item_2}>
+            <Link to={badaevsky.link}>
+                   <div className={styles.card_img}>
+                 <img
                   className={styles.img_2}
-                  src={badaevsky.img}
-                  alt="badaevsky"
-                />
-              </div>
-            </Link> */}
+                  src={`${Host}/images/imageAdd/${article.imageTitle}`}
+                    alt="badaevsky"
+                   />
+                 </div>
+                  </Link>
             <div className={styles.card_text_container}>
               <h3 className={styles.card_text_heading}>
-                {/* {badaevsky.title} */}
+                {badaevsky.title}
               </h3>
               <span className={styles.card_text_description}>
-                {/* {badaevsky.text} */}
+                {badaevsky.text}
               </span>
             </div>
             <Link
-              // to={badaevsky.link}
+              to={badaevsky.link}
               className={styles.card_button}
             >
               <svg
@@ -211,8 +289,9 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
                 />
               </svg>
             </Link>
-          </div>
+          </div> */}
         </div>
+
         <div className={styles.names_contents}>
           <div className={styles.name_11}>+11</div>
           <div id="competencies" className={styles.name_competencies}>
@@ -245,111 +324,114 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
           // project={project}
         />
       </div> */}
- <div className={styles.main_project}>
-    <Swiper
-    className={styles.slider_card_container_project}
-    id="slider_card_container_project"
-    ref={sliderCardRef}
-    spaceBetween={30}
-    touch="true"
-    direction="horizontal"
-   loop={false}
-    breakpoints={{
-     1440: {
-       slidesPerView: 3.2,
-     },
-     1024: {
-       slidesPerView: 2.3,
-     },
-     768: {
-       slidesPerView: 1.4,
-     },
-   }}
-    >
-      {project?.map((el, index) => {
-      const isCustomSize = el.hasCustomSize; 
-        return (
-          <SwiperSlide
-            key={el.id}
-            className={`{styles.slider_container_item_card}
+      <div className={styles.main_project}>
+        <Swiper
+          className={styles.slider_card_container_project}
+          id="slider_card_container_project"
+          ref={sliderCardRef}
+          spaceBetween={30}
+          touch="true"
+          direction="horizontal"
+          loop={false}
+          breakpoints={{
+            1440: {
+              slidesPerView: 3.2,
+            },
+            1024: {
+              slidesPerView: 2.3,
+            },
+            768: {
+              slidesPerView: 1.4,
+            },
+          }}
+        >
+          {project?.map((el, index) => {
+            const isCustomSize = el.hasCustomSize;
+            return (
+              <SwiperSlide
+                onScroll={handleScroll}
+                key={el.id}
+                id="slider_container_item_card"
+                className={`{styles.slider_container_item_card}
              ${isCustomSize ? styles.customSize : ""}`}
-            style={index % 2 === 1 ? { paddingTop: "10rem" } : {}}
-          >
-            <div className={styles.wrapper_container_item_card}>
-              <img
-                className={styles.container__imageTitle}
-                src={`${Host}/images/imageAdd/${
-                  el.imageProject ? el.imageProject : el.imageTitle
-                }`}
-                alt={el.imageTitle ? el.imageProject : el.imageTitle}
-              />
-            </div>
-            <div className={styles.title_selectCompetencies}>
-              <div className={styles.container__title}>{el.title}</div>
-              <div className={styles.container__selectCompetencies}>
-                {(() => {
-                  try {
-                    const selectCompetencies = JSON.parse(
-                      el.selectCompetencies
-                    );
-                    return selectCompetencies.map((competency) => (
-                      <div
-                        key={competency.value}
-                        className={styles.div_el_selectCompetencies}
-                        style={{
-                          color: colors[competency.value],
-                          borderColor: colors[competency.value],
-                          border: "1px solid",
-                          padding: "3px 6px",
-                          borderRadius: "34px",
-                        }}
-                      >
-                        {competency.label}
-                      </div>
-                    ));
-                  } catch (error) {
-                    if (
-                      typeof el.selectCompetencies === "string" &&
-                      el.selectCompetencies.includes(",")
-                    ) {
-                      return el.selectCompetencies.split(",").map((value) => {
-                        const label = value.trim();
-                        return (
+                style={index % 2 === 1 ? { paddingTop: "10rem" } : {}}
+              >
+                <div className={styles.wrapper_container_item_card}>
+                  <img
+                    className={styles.container__imageTitle}
+                    src={`${Host}/images/imageAdd/${
+                      el.imageProject ? el.imageProject : el.imageTitle
+                    }`}
+                    alt={el.imageProject ? el.imageProject : el.imageTitle}
+                  />
+                </div>
+                <div className={styles.title_selectCompetencies}>
+                  <div className={styles.container__title}>{el.title}</div>
+                  <div className={styles.container__selectCompetencies}>
+                    {(() => {
+                      try {
+                        const selectCompetencies = JSON.parse(
+                          el.selectCompetencies
+                        );
+                        return selectCompetencies.map((competency) => (
                           <div
-                            key={value}
+                            key={competency.value}
                             className={styles.div_el_selectCompetencies}
                             style={{
-                              color: colors[value],
-                              borderColor: colors[value],
+                              color: colors[competency.value],
+                              borderColor: colors[competency.value],
                               border: "1px solid",
                               padding: "3px 6px",
                               borderRadius: "34px",
                             }}
                           >
-                            {label}
+                            {competency.label}
                           </div>
-                        );
-                      });
-                    }
-                    return null;
-                  }
-                })()}
-              </div>
-            </div>
-            <div className={styles.countryCity_monthYear}>
-              <div className={styles.container__countryCity}>
-                {el.countryCity}
-              </div>
-              <div className={styles.container__monthYear}>{el.monthYear}</div>
-            </div>
-          </SwiperSlide>
-        );
-    })}
-  </Swiper>
-  </div>
- </main>
- );
+                        ));
+                      } catch (error) {
+                        if (
+                          typeof el.selectCompetencies === "string" &&
+                          el.selectCompetencies.includes(",")
+                        ) {
+                          return el.selectCompetencies
+                            .split(",")
+                            .map((value) => {
+                              const label = value.trim();
+                              return (
+                                <div
+                                  key={value}
+                                  className={styles.div_el_selectCompetencies}
+                                  style={{
+                                    color: colors[value],
+                                    borderColor: colors[value],
+                                    border: "1px solid",
+                                    padding: "3px 6px",
+                                    borderRadius: "34px",
+                                  }}
+                                >
+                                  {label}
+                                </div>
+                              );
+                            });
+                        }
+                        return null;
+                      }
+                    })()}
+                  </div>
+                </div>
+                <div className={styles.countryCity_monthYear}>
+                  <div className={styles.container__countryCity}>
+                    {el.countryCity}
+                  </div>
+                  <div className={styles.container__monthYear}>
+                    {el.monthYear}
+                  </div>
+                </div>
+              </SwiperSlide>
+            );
+          })}
+        </Swiper>
+      </div>
+    </main>
+  );
 }
-
-
- 
