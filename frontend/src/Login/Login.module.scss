@@ -28,13 +28,38 @@
     }
 }
 
+
 .login_block {
     position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: baseline;
+    padding: 64px 42px;
+    border-radius: 1rem;
+    box-shadow: 20px 19px 70px 2px rgb(84 86 87 / 25%);
+    overflow: hidden;
+
+
+    &__title {
+        font-family: var(--font-MyCustomFont);
+        font-size: 2.5rem;
+        color: var(--black-1D2E43);
+        padding-bottom: 24px;
+    }
+    
+    &__subtitle{
+    color: var(--black-1D2E43);
+            font-family: var(--font-raleway);
+            font-size: 18px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 24px;
+            padding-bottom: 16px;
+    }
 }
 
 .login_form {
-    display: flex;
-    gap: 20px;
+    width: 100%;
 }
 
 
@@ -42,7 +67,6 @@
     position: relative;
     padding: 15px 0 0;
     margin-top: 10px;
-    width: 50%;
 }
 
 .form__field {
@@ -65,7 +89,8 @@
         font-size: 1rem;
         cursor: text;
         top: 20px;
-        font-weight: var(--fw-600);
+        font-weight: var(--fw-400);
+        color: var(--dark-gray-566272);
     }
 }
 
@@ -111,6 +136,8 @@
         border: 1px solid var(--black-1D2E43);
         padding: 1rem 2.5rem;
         transition: all 0.3s ease-in-out;
+        border-radius: 2rem;
+        margin-top: 50px;
 
         &:hover {
             background: linear-gradient(278.5deg,

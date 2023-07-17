@@ -52,6 +52,10 @@ export default function Login({ setUser }) {
   return (
     <section className={styles.login_container}>
       <div className={styles.login_block}>
+        <div className={styles.login_block__title}>MARKS GROUP</div>
+        <div className={styles.login_block__subtitle}>
+          Вход в административную панель
+        </div>
         <form className={styles.login_form} onSubmit={submitHandler}>
           <div className={`${styles.form__group} ${styles.field}`}>
             <input
@@ -63,8 +67,12 @@ export default function Login({ setUser }) {
               name="userName"
               required
             />
-            <label htmlFor="name" className={styles.form__label} onClick={() => inputRef.current.focus()}>
-              Name
+            <label
+              htmlFor="name"
+              className={styles.form__label}
+              onClick={() => inputRef.current.focus()}
+            >
+              Введите рабочий E-mail
             </label>
           </div>
           <div className={`${styles.form__group} ${styles.field}`}>
@@ -78,11 +86,11 @@ export default function Login({ setUser }) {
               required
             />
             <label htmlFor="name" className={styles.form__label}>
-              password
+              Введите пароль
             </label>
           </div>
           <button className={styles.form_button} type="submit">
-            войти
+            Войти
           </button>
         </form>
       </div>
