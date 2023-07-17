@@ -161,27 +161,27 @@
     }
 
     &__button_cancel {
-            display: flex;
-                width: 231px;
-                padding: 16px 32px;
-                justify-content: center;
-                align-items: center;
-                border-radius: 66px;
-                background-color: var(--light-light-gray-EBECEE);
-                color: var(--black-1D2E43);
-                border: none;
-            
-                &::before {
-                    content: "Отменить";
-                    display: inline-block;
-                    font-family: var(--font-raleway);
-                    font-size: 1rem;
-                    font-style: normal;
-                    font-weight: 400;
-                    line-height: 24px;
-                    margin-right: 8px;
-                    /* Отступ между текстом и кнопкой */
-                }
+        display: flex;
+        width: 231px;
+        padding: 16px 32px;
+        justify-content: center;
+        align-items: center;
+        border-radius: 66px;
+        background-color: var(--light-light-gray-EBECEE);
+        color: var(--black-1D2E43);
+        border: none;
+
+        &::before {
+            content: "Отменить";
+            display: inline-block;
+            font-family: var(--font-raleway);
+            font-size: 1rem;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 24px;
+            margin-right: 8px;
+            /* Отступ между текстом и кнопкой */
+        }
     }
 
 }
