@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import Select from "react-select";
 import styles from "./FormAddProject.module.scss";
 import { fetchProject } from "../../../store/Slice/projectSlice";
+import customStyles from "./customStyles";
 import icon from "./img/Frame4684.png";
 
 export default function FormAddProject({ setIsModalOpen }) {
@@ -94,15 +95,7 @@ export default function FormAddProject({ setIsModalOpen }) {
     setIsModalOpen(false);
   };
 
-  const customStyles = {
-    control: (provided, state) => ({
-      ...provided,
-      border: "1px solid red",
-      // остальные стили
-    }),
-    // другие свойства стилей
-  };
-  console.log(inputData);
+
   return (
     <div className={styles.form_container}>
       <div className={styles.form_container__title}>Новый проект</div>
@@ -140,9 +133,9 @@ export default function FormAddProject({ setIsModalOpen }) {
               value={selectedCompetencies}
               onChange={setSelectedCompetencies}
             />
-            <label htmlFor="selectCompetencies" className={styles.form__label}>
+            {/* <label htmlFor="selectCompetencies" className={styles.form__label}>
               Выбрать компетенции
-            </label>
+            </label> */}
           </div>
           <div className={`${styles.form__group} ${styles.field}`}>
             <input
@@ -189,9 +182,9 @@ export default function FormAddProject({ setIsModalOpen }) {
               className={styles.form__field}
               placeholder="Выберите вид строительства"
             />
-            <label htmlFor="viewConstruction" className={styles.form__label}>
+            {/* <label htmlFor="viewConstruction" className={styles.form__label}>
               Выберите вид строительства
-            </label>
+            </label> */}
           </div>
         </div>
         <div className={styles.form_container__checkbox_block}>
