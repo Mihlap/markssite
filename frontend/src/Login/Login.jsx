@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import styles from "./Login.module.scss";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 
 
@@ -11,8 +11,8 @@ export default function Login({ setUser }) {
     userName: "",
     password: "",
   });
+  const [errorDiv, setErrorDiv] = useState(false);
 
-  const inputRef = useRef(null);
 
   const changeHandler = (event) =>
     setInputGroup((prev) => ({
@@ -35,19 +35,20 @@ export default function Login({ setUser }) {
         navigate("/");
       }
     } catch (error) {
+      setErrorDiv(true);
       console.error("Ошибка при попытке войти в систему", error);
     }
   };
 
   useEffect(() => {
-    const inputs = document.querySelectorAll(".form__field");
+    if (errorDiv) {
+      const timer = setTimeout(() => {
+        setErrorDiv(false);
+      }, 6000);
+      return () => clearTimeout(timer)
+    }
+  })
 
-    inputs.forEach((input) => {
-      input.addEventListener("click", () => {
-        input.focus();
-      });
-    });
-  }, []);
 
   return (
     <section className={styles.login_container}>
@@ -63,18 +64,16 @@ export default function Login({ setUser }) {
               className={styles.form__field}
               value={inputGroup.userName}
               onChange={changeHandler}
-              placeholder="Name"
+              placeholder="userName"
               name="userName"
+              id="userName"
               required
             />
-            <label
-              htmlFor="name"
-              className={styles.form__label}
-              onClick={() => inputRef.current.focus()}
-            >
+            <label htmlFor="userName" className={styles.form__label}>
               Введите рабочий E-mail
             </label>
           </div>
+
           <div className={`${styles.form__group} ${styles.field}`}>
             <input
               type="password"
@@ -83,15 +82,24 @@ export default function Login({ setUser }) {
               onChange={changeHandler}
               placeholder="password"
               name="password"
+              id="password"
               required
             />
-            <label htmlFor="name" className={styles.form__label}>
+            <label htmlFor="password" className={styles.form__label}>
               Введите пароль
             </label>
           </div>
-          <button className={styles.form_button} type="submit">
-            Войти
-          </button>
+
+          <div className={styles.error_bnt_block}>
+            <button className={styles.form_button} type="submit">
+              Войти
+            </button>
+            {errorDiv && (
+              <div className={styles.error_div}>
+                Hеверный E-mail или пароль 😔
+              </div>
+            )}
+          </div>
         </form>
       </div>
     </section>
