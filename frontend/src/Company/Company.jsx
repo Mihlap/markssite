@@ -47,9 +47,7 @@ export default function Company() {
   const [isModalOpen, setIsModalOpen] = useState(false);
     
   const dispatch = useDispatch();
-  const { selectedCard, category, staff, loading, error } = useSelector(
-    (state) => state.staff
-    );
+  const { selectedCard, category, staff, loading, error } = useSelector((state) => state.staff);
 
     const blockSlider = useRef(null);
     const nameCompanyRef = useRef(null);
