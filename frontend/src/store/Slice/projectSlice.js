@@ -69,6 +69,8 @@ export const fetchProject = (formattedData, setInputData) => async (dispatch) =>
       viewConstruction: "",
       dropPhoto: [],
       photoAva: [],
+      titleTextBlock: "",
+      descriptionProject: "",
     });
     dispatch(getFetchForm()); // Добавлен этот вызов для получения обновленных данных после успешной отправки формы
   });
