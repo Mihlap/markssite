@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
@@ -13,10 +14,11 @@ import VideoPlayer from "../UI/Videoplayer/VideoPlayer";
 import Mapbox3D from "../UI/Map3D/Mapbox3D";
 import SliderMobile from "../UI/SliderHeader/SliderMobile";
 import actively from "./img/actively.png";
-import { useDispatch, useSelector } from "react-redux";
 import { getFetchForm } from "../store/Slice/projectSlice";
 import { getFetchFormArticle } from "../store/Slice/articleSlice";
 import styles from "./Header.module.css";
+import LoadingCircle from "../Loading/LoadingCircle";
+import Error from "../Loading/Error/Error";
 
 SwiperCore.use([Navigation]);
 const Host = process.env.REACT_APP_SERVER_HOST;
@@ -26,15 +28,17 @@ gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 export default function Header({ user, setNavBarOpen, setShowFooter }) {
   const sliderCardRef = useRef(null);
   const [enableVerticalScroll, setEnableVerticalScroll] = useState(true);
+  const [isHorizontalScroll, setIsHorizontalScroll] = useState(false);
+  const [loadingArticle, setLoadingArticle] = useState(false);
 
   const [data, setData] = useState(null);
+  const { article, loading, error } = useSelector((state) => state.article);
   const project = useSelector((state) => state.project.projects);
-  const article = useSelector((state) => state.article);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getFetchForm());
     dispatch(getFetchFormArticle());
+    dispatch(getFetchForm());
   }, [dispatch]);
 
   useEffect(() => {
@@ -67,19 +71,21 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
         const isAtLeftEdge = el.scrollLeft <= 0;
         const isAtRightEdge = el.scrollLeft + el.clientWidth >= el.scrollWidth;
 
-        if (isSliderInView && isScrollingLeft) {
-          setEnableVerticalScroll(false);
-        } else if (!isSliderInView && isScrollingRight && isAtRightEdge) {
-          setEnableVerticalScroll(true);
-        } else if (!isSliderInView && isScrollingLeft && isAtLeftEdge) {
-          setEnableVerticalScroll(true);
-        } else if (
-          !isSliderInView &&
-          !isScrollingRight &&
-          isAtRightEdge &&
-          el.scrollTop + el.clientHeight >= el.scrollHeight
-        ) {
-          setEnableVerticalScroll(true);
+        if (!loadingArticle) {
+          if (isSliderInView && isScrollingLeft) {
+            setEnableVerticalScroll(false);
+          } else if (!isSliderInView && isScrollingRight && isAtRightEdge) {
+            setEnableVerticalScroll(true);
+          } else if (!isSliderInView && isScrollingLeft && isAtLeftEdge) {
+            setEnableVerticalScroll(true);
+          } else if (
+            !isSliderInView &&
+            !isScrollingRight &&
+            isAtRightEdge &&
+            el.scrollTop + el.clientHeight >= el.scrollHeight
+          ) {
+            setEnableVerticalScroll(true);
+          }
         }
       }
     }
@@ -122,14 +128,14 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
       isAtRightEdge &&
       isAtBottom
     ) {
-      setEnableVerticalScroll(true);
+      setIsHorizontalScroll(false); // Переключение в режим вертикальной прокрутки
       el.scrollTo({
         top: el.scrollTop + e.deltaY,
         behavior: "smooth",
       });
     } else if (enableVerticalScroll && !isScrollingRight) {
       if (isAtLeftEdge && isAtTop) {
-        setEnableVerticalScroll(false);
+        setIsHorizontalScroll(true); // Переключение в режим горизонтальной прокрутки
         el.scrollLeft += e.deltaY;
       } else if (isAtLeftEdge && !isAtTop) {
         el.scrollTo({
@@ -137,10 +143,10 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
           behavior: "smooth",
         });
       } else if (isAtRightEdge && isAtBottom && e.deltaY < 0) {
-        setEnableVerticalScroll(false);
+        setIsHorizontalScroll(false); // Переключение в режим вертикальной прокрутки
         el.scrollLeft += e.deltaY;
       } else if (isAtRightEdge && isAtBottom && e.deltaY > 0) {
-        setEnableVerticalScroll(true);
+        setIsHorizontalScroll(true); // Переключение в режим горизонтальной прокрутки
         el.scrollTo({
           top: el.scrollTop + e.deltaY,
           behavior: "smooth",
@@ -165,12 +171,24 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
         el.removeEventListener("scroll", handleScroll);
       };
     }
-  }, []);
+  }, [loading, loadingArticle]);
 
   const closeNavbarHandler = () => {
     setNavBarOpen(false);
     setShowFooter(false);
   };
+
+  if (error) {
+    return (
+      <div>
+        {" "}
+        <Error error={error.message} />
+      </div>
+    );
+  }
+  if (loading) {
+    return <LoadingCircle />;
+  }
 
   return (
     <main className={styles.header}>
@@ -211,87 +229,50 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
         </div>
         <div className={styles.show_container}></div>
         <div className={styles.card_container}>
-          {article?.map((article) => (
-            <div key={article.id}
-             className={styles.card_item_1}
-             >
-              <Link to={article.link}>
-                <div className={styles.card_img}>
-                  <img
-                    className={styles.img_1}
-                    src={`${Host}/images/imageAdd/winepark.png`}
-                    alt="winePark"
-                  />
-                </div>
-              </Link>
-              <div className={styles.card_text_container}>
-                <h3 className={styles.card_text_heading}>{article.title}</h3>
-                <span className={styles.card_text_description}>
-                  {/* {article.text} */}
-                </span>
-              </div>
-              <Link to={article.link} className={styles.card_button}>
-                <svg
-                  className={styles.card_button_link}
-                  width="40"
-                  height="40"
-                  viewBox="0 0 40 40"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <circle cx="20" cy="20" r="20" fill="#566272" />
-                  <path
-                    d="M10 20H20M30 20H20M20 20V10M20 20V30"
-                    stroke="#F6F6F6"
-                    strokeWidth="2"
-                    strokeLinecap="square"
-                  />
-                </svg>
-              </Link>
-            </div>
-          ))}
-          {/* <div className={styles.card_item_2}>
-            <Link to={badaevsky.link}>
-                   <div className={styles.card_img}>
-                 <img
-                  className={styles.img_2}
-                  src={`${Host}/images/imageAdd/${article.imageTitle}`}
-                    alt="badaevsky"
-                   />
-                 </div>
-                  </Link>
-            <div className={styles.card_text_container}>
-              <h3 className={styles.card_text_heading}>
-                {badaevsky.title}
-              </h3>
-              <span className={styles.card_text_description}>
-                {badaevsky.text}
-              </span>
-            </div>
-            <Link
-              to={badaevsky.link}
-              className={styles.card_button}
-            >
-              <svg
-                className={styles.card_button_link}
-                width="40"
-                height="40"
-                viewBox="0 0 40 40"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
+          {article &&
+            article?.map((el, index) => (
+              <div
+                key={el.id}
+                className={
+                  index === 0 ? styles.card_item_1 : styles.card_item_2
+                }
               >
-                <circle cx="20" cy="20" r="20" fill="#566272" />
-                <path
-                  d="M10 20H20M30 20H20M20 20V10M20 20V30"
-                  stroke="#F6F6F6"
-                  strokeWidth="2"
-                  strokeLinecap="square"
-                />
-              </svg>
-            </Link>
-          </div> */}
+                <Link to={el.link}>
+                  <div className={styles.card_img}>
+                    <img
+                      className={index === 0 ? styles.img_1 : styles.img_2}
+                      src={`${Host}/images/imageAdd/${el.imageTitle}`}
+                      alt={el.imageTitle}
+                    />
+                  </div>
+                </Link>
+                <div className={styles.card_text_container}>
+                  <h3 className={styles.card_text_heading}>{el.title}</h3>
+                  <span className={styles.card_text_description}>
+                    {el.descriptionArticle}
+                  </span>
+                </div>
+                <Link to={el.link} className={styles.card_button}>
+                  <svg
+                    className={styles.card_button_link}
+                    width="40"
+                    height="40"
+                    viewBox="0 0 40 40"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <circle cx="20" cy="20" r="20" fill="#566272" />
+                    <path
+                      d="M10 20H20M30 20H20M20 20V10M20 20V30"
+                      stroke="#F6F6F6"
+                      strokeWidth="2"
+                      strokeLinecap="square"
+                    />
+                  </svg>
+                </Link>
+              </div>
+            ))}
         </div>
-
         <div className={styles.names_contents}>
           <div className={styles.name_11}>+11</div>
           <div id="competencies" className={styles.name_competencies}>

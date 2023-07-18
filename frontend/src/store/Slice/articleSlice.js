@@ -7,7 +7,7 @@ const serverHost = process.env.REACT_APP_SERVER_HOST;
 const articleSlice = createSlice({
   name: "article",
   initialState: {
-    articles: [],
+    article: [],
     loading: false,
     error: null,
   },
@@ -18,19 +18,20 @@ const articleSlice = createSlice({
     },
     fetchArticleSuccess(state, action) {
       state.loading = false;
-      state.articles = action.payload;
+      state.article = action.payload;
+      state.error = null;
     },
     fetchArticleFailure(state, action) {
       state.loading = false;
       state.error = action.payload;
     },
-    deleteArticleSuccess(state, action) {
-      const articleId = action.payload;
-      state.articles = state.articles.filter((el) => el.id !== articleId);
-    },
-    deleteArticleFailure(state, action) {
-      state.error = action.payload;
-    },
+    // deleteArticleSuccess(state, action) {
+    //   const articleId = action.payload;
+    //   state.article = state.article.filter((el) => el.id !== articleId);
+    // },
+    // deleteArticleFailure(state, action) {
+    //   state.error = action.payload;
+    // },
   },
 });
 
@@ -50,6 +51,7 @@ export const getFetchFormArticle = () => async (dispatch) => {
       `${serverHost}/api-article/getzapros`
     );
    dispatch(fetchArticleSuccess(response.data));
+   
   } catch (error) {
     dispatch(fetchArticleFailure(error.message));
   }
