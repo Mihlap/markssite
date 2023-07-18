@@ -59,14 +59,13 @@ export default function SignUpPage({ setUser, setName }) {
             <input
               type="input"
               className={styles.form__field}
-              placeholder="Name"
+              placeholder="userName"
               name="userName"
-              // value={identifier}
-              // onChange={(e) => dispatch(setIdentifier(e.target.value))}
+              id="userName"
               required
             />
-            <label htmlFor="name" className={styles.form__label}>
-              Name
+            <label htmlFor="userName" className={styles.form__label}>
+              Введите рабочий E-mail
             </label>
           </div>
           <div className={`${styles.form__group} ${styles.field}`}>
@@ -75,12 +74,11 @@ export default function SignUpPage({ setUser, setName }) {
               className={styles.form__field}
               placeholder="password"
               name="password"
-              // value={password}
-              // onChange={(e) => dispatch(setPassword(e.target.value))}
+              id="password"
               required
             />
-            <label htmlFor="name" className={styles.form__label}>
-              password
+            <label htmlFor="password" className={styles.form__label}>
+              Введите пароль
             </label>
           </div>
           <button
