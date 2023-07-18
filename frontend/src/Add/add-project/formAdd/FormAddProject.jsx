@@ -11,6 +11,7 @@ export default function FormAddProject({ setIsModalOpen }) {
   const [selectedCompetencies, setSelectedCompetencies] = useState([]);
   const [selectedViewConstruction, setSelectedViewConstruction] = useState([]);
   const [previewPhotos, setPreviewPhotos] = useState([]);
+  const [previewPhotoAva, setPreviewPhotoAva] = useState([]);
   const [selectedRadio, setSelectedRadio] = useState("28,28");
   const [inputData, setInputData] = useState({
     title: "",
@@ -21,49 +22,87 @@ export default function FormAddProject({ setIsModalOpen }) {
     dropPhoto: [],
     photoAva: "",
   });
-  const removePreviewPhoto = (index) => {
-    // Удаление фото из массива превью
-    const updatedPreviewPhotos = [...previewPhotos];
-    updatedPreviewPhotos.splice(index, 1);
-    setPreviewPhotos(updatedPreviewPhotos);
 
-    // Удаление фото из массива выбранных файлов
-    const updatedDropPhotos = [...inputData.dropPhoto];
-    updatedDropPhotos.splice(index, 1);
-    setInputData((prev) => ({
-      ...prev,
-      dropPhoto: updatedDropPhotos,
-    }));
-  };
+  // функция Удаление фото из массива превью
+const removePreviewPhoto = (index) => {
+  const updatedPreviewPhotos = [...previewPhotos];
+  updatedPreviewPhotos.splice(index, 1);
+  setPreviewPhotos(updatedPreviewPhotos);
 
-  const changeHandler = (event) => {
-    if (event.target.files) {
-      if (event.target.name === "dropPhoto") {
-        const filesArray = Array.from(event.target.files);
-        setInputData((prev) => ({
-          ...prev,
-          dropPhoto: filesArray,
-        }));
+  // Remove photo from the selected files array
+  const updatedDropPhotos = [...inputData.dropPhoto];
+  updatedDropPhotos.splice(index, 1);
+  setInputData((prev) => ({
+    ...prev,
+    dropPhoto: updatedDropPhotos,
+  }));
 
-        // Create and display photo previews
-        const previewArray = filesArray.map((file) =>
-          URL.createObjectURL(file)
-        );
-        setPreviewPhotos(previewArray);
-      } else if (event.target.name === "photoAva") {
-       setInputData((prev) => ({
-         ...prev,
-         photoAva: event.target.files.length > 0 ? event.target.files : null,
-       }));
-      }
-    } else {
+  // Show the hidden input
+  const inputElement = document.getElementById("dropPhotoInput");
+  if (inputElement && inputElement.parentNode) {
+    inputElement.parentNode.style.display = "block";
+  }
+};
+
+  // Удаление фото из массива превью который с одной фоткой
+ const removePreviewPhotoAva = (index) => {
+   const updatedPreviewPhotosAva = [...previewPhotoAva];
+   updatedPreviewPhotosAva.splice(index, 1);
+   setPreviewPhotoAva(updatedPreviewPhotosAva);
+
+   // Remove photo from the selected files array
+   const updatedDropPhotosAva = [...inputData.photoAva];
+   updatedDropPhotosAva.splice(index, 1);
+   setInputData((prev) => ({
+     ...prev,
+     photoAva: updatedDropPhotosAva,
+   }));
+
+   // Show the hidden input
+   const inputElement = document.getElementById("photoAvaInput");
+   inputElement.parentNode.style.display = "block";
+ };
+  // функция сборщика, тут у нас запускаются if-else на превью фото для картинок 
+const changeHandler = (event) => {
+  if (event.target.files) {
+    if (event.target.name === "dropPhoto") {
+      const filesArray = Array.from(event.target.files);
       setInputData((prev) => ({
         ...prev,
-        [event.target.name]: event.target.value,
+        dropPhoto: filesArray,
       }));
-    }
-  };
 
+      // Create and display photo previews
+      const previewArray = filesArray.map((file) => URL.createObjectURL(file));
+      setPreviewPhotos(previewArray);
+
+      // Hide the input for dropPhoto
+      event.target.parentNode.style.display = "none";
+    } else if (event.target.name === "photoAva") {
+      const filesArrayAva =
+        event.target.files.length > 0 ? event.target.files : null;
+      setInputData((prev) => ({
+        ...prev,
+        photoAva: filesArrayAva,
+      }));
+
+      const previewArray = Array.from(filesArrayAva).map((file) =>
+        URL.createObjectURL(file)
+      );
+      setPreviewPhotoAva(previewArray);
+
+      // Hide the input for photoAva
+      event.target.parentNode.style.display = "none";
+    }
+  } else {
+    setInputData((prev) => ({
+      ...prev,
+      [event.target.name]: event.target.value,
+    }));
+  }
+};
+
+  // функция отправки формы на Redux
   const submitHandler = async (e) => {
     e.preventDefault();
     const formattedData = {
@@ -94,7 +133,6 @@ export default function FormAddProject({ setIsModalOpen }) {
     });
     setIsModalOpen(false);
   };
-
 
   return (
     <div className={styles.form_container}>
@@ -205,6 +243,23 @@ export default function FormAddProject({ setIsModalOpen }) {
             Загрузить изображения
           </div>
         </label>
+        <div className={styles.preview_photos_container}>
+          {previewPhotoAva.map((preview, index) => (
+            <div key={index} className={styles.preview_photos_container__block}>
+              <img
+                className={styles.preview_photos_container__img}
+                src={preview}
+                alt={`Preview ${index}`}
+              />
+              <div
+                className={styles.preview_photos_container__remove_icon}
+                onClick={() => removePreviewPhotoAva(index)}
+              >
+                <span></span>
+              </div>
+            </div>
+          ))}
+        </div>
         <div className={styles.form_container__radio_container}>
           <div
             className={`${styles.form_container__radio_block_one} ${
