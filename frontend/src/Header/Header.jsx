@@ -29,6 +29,10 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
   const sliderCardRef = useRef(null);
   const [enableVerticalScroll, setEnableVerticalScroll] = useState(true);
   const [isHorizontalScroll, setIsHorizontalScroll] = useState(false);
+  const [isScrollingHorizontal, setIsScrollingHorizontal] = useState(false);
+  const [isAtTop, setIsAtTop] = useState(true);
+
+
   const [loadingArticle, setLoadingArticle] = useState(false);
 
   const [data, setData] = useState(null);
@@ -92,27 +96,32 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
   };
 
   const onVerticalScroll = (e) => {
-    if (enableVerticalScroll) {
-      const el = sliderCardRef.current;
-      const isScrollingUp = e.deltaY < 0;
-      const isAtTop = el.scrollTop <= 0;
-      const isAtBottom = el.scrollTop + el.clientHeight >= el.scrollHeight;
-
-      if (isScrollingUp && isAtTop) {
-        setEnableVerticalScroll(false);
-        el.scrollLeft += e.deltaY;
-      } else if (!isAtBottom) {
-        el.scrollTo({
-          top: el.scrollTop + e.deltaY,
-          behavior: "smooth",
-        });
-      } else {
-        e.preventDefault();
-      }
+    const el = sliderCardRef.current;
+    const isScrollingUp = e.deltaY < 0;
+    const isAtTop = el.scrollTop <= 0;
+    const isAtBottom = el.scrollTop + el.clientHeight >= el.scrollHeight;
+  
+    if (isScrollingUp && isAtTop) {
+      setEnableVerticalScroll(false);
+      el.scrollLeft += e.deltaY;
+    } else if (!isAtBottom && !isHorizontalScroll) {
+      el.scrollTo({
+        top: el.scrollTop + e.deltaY,
+        behavior: "smooth",
+      });
+    } else if (isScrollingUp && el.scrollLeft === 0) {
+      setEnableVerticalScroll(false);
+      el.scrollLeft += e.deltaY;
+    } else if (!isAtTop && !isHorizontalScroll) {
+      el.scrollTo({
+        top: el.scrollTop + e.deltaY,
+        behavior: "smooth",
+      });
     } else {
       e.preventDefault();
     }
   };
+  
 
   const onWheel = (e) => {
     const el = sliderCardRef.current;
@@ -237,7 +246,9 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
                   index === 0 ? styles.card_item_1 : styles.card_item_2
                 }
               >
-                <Link to={el.link}>
+                <div
+                //  to={el.link}
+                 >
                   <div className={styles.card_img}>
                     <img
                       className={index === 0 ? styles.img_1 : styles.img_2}
@@ -245,14 +256,17 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
                       alt={el.imageTitle}
                     />
                   </div>
-                </Link>
+                </div>
                 <div className={styles.card_text_container}>
                   <h3 className={styles.card_text_heading}>{el.title}</h3>
                   <span className={styles.card_text_description}>
                     {el.descriptionArticle}
                   </span>
                 </div>
-                <Link to={el.link} className={styles.card_button}>
+                <div
+                //  to={el.link}
+                  className={styles.card_button}
+                  >
                   <svg
                     className={styles.card_button_link}
                     width="40"
@@ -269,7 +283,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
                       strokeLinecap="square"
                     />
                   </svg>
-                </Link>
+                </div>
               </div>
             ))}
         </div>
@@ -413,6 +427,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
           })}
         </Swiper>
       </div>
+      <div id="preFooter"></div>
     </main>
   );
 }
