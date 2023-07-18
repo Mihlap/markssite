@@ -31,6 +31,7 @@ export default function FormAddProject({ setIsModalOpen }) {
     dropPhoto: [],
     photoAva: "",
     titleTextBlock: "",
+    descriptionProject: "",
   });
 
   // функция Удаление фото из массива превью
@@ -88,6 +89,7 @@ export default function FormAddProject({ setIsModalOpen }) {
       dropPhoto: [],
       photoAva: [],
       titleTextBlock: "",
+      descriptionProject: "",
     });
     setIsModalOpen(false);
   };
@@ -390,6 +392,58 @@ export default function FormAddProject({ setIsModalOpen }) {
             </div>
           ))}
         </div>
+        <div className={styles.form_container__heading_block}>
+          <input
+            type="input"
+            className={styles.form_container__heading_block_input}
+            placeholder="Не более 56 символов"
+            name="titleTextBlock"
+            id="titleTextBlock"
+            maxLength="56"
+            value={inputData.titleTextBlock}
+            onChange={(event) => {
+              const value = event.target.value;
+              if (value.length <= 56) {
+                setInputData({ ...inputData, titleTextBlock: value });
+              }
+            }}
+            required
+          />
+          <label
+            htmlFor="titleTextBlock"
+            className={styles.form_container__heading_block_label}
+          >
+            Название проекта
+          </label>
+          <div className={styles.form_container__heading_block_input_length}>
+            {`${inputData.titleTextBlock.length}/56`}
+          </div>
+        </div>
+
+        <div className={styles.form_container__description_text}>
+          <div className={styles.form_container__textarea_length}>
+            {`${inputData.descriptionProject.length}/260`}
+          </div>
+          <textarea
+            className={styles.form_container__textarea}
+            name="descriptionProject"
+            id="descriptionProject"
+            cols="30"
+            rows="10"
+            placeholder="Не более 260 символов"
+            value={inputData.descriptionProject}
+            onChange={(event) => {
+              const value = event.target.value;
+              if (value.length <= 260) {
+                setInputData({ ...inputData, descriptionProject: value });
+              }
+            }}
+          ></textarea>
+          <label htmlFor="" className={styles.form_container__textarea_label}>
+            Описание проекта
+          </label>
+        </div>
+
         <div className={styles.form_container__button_block}>
           <button
             className={styles.form_container__button_save}
@@ -399,34 +453,6 @@ export default function FormAddProject({ setIsModalOpen }) {
             className={styles.form_container__button_cancel}
             type="submit"
           ></button>
-        </div>
-        <div className={styles.form_container__heading_block}>
-          <input
-            type="input"
-            className={styles.form_container__heading_block_input}
-            placeholder="titleTextBlock"
-            name="titleTextBlock"
-            id="titleTextBlock"
-            value={inputData.titleTextBlock}
-            onChange={(event) =>
-              changeHandler(
-                event,
-                inputData,
-                setInputData,
-                setPreviewPhotos,
-                setIsDropPhotoVisible,
-                setPreviewPhotoAva,
-                setIsPhotoAvaVisible
-              )
-            }
-            required
-          />
-          <label
-            htmlFor="titleTextBlock"
-            className={styles.form_container__heading_block_label}
-          >
-            Название проекта
-          </label>
         </div>
       </form>
     </div>
