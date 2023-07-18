@@ -3,6 +3,13 @@ import { useDispatch } from "react-redux";
 import Select from "react-select";
 import styles from "./FormAddProject.module.scss";
 import { fetchProject } from "../../../store/Slice/projectSlice";
+import {
+  removePreviewPhoto,
+  removePreviewPhotoAva,
+  changeHandler,
+  submitHandler,
+} from "./formHelpers";
+
 import customStyles from "./customStyles";
 import icon from "./img/Frame4684.png";
 
@@ -12,6 +19,8 @@ export default function FormAddProject({ setIsModalOpen }) {
   const [selectedViewConstruction, setSelectedViewConstruction] = useState([]);
   const [previewPhotos, setPreviewPhotos] = useState([]);
   const [previewPhotoAva, setPreviewPhotoAva] = useState([]);
+  const [isDropPhotoVisible, setIsDropPhotoVisible] = useState(true);
+  const [isPhotoAvaVisible, setIsPhotoAvaVisible] = useState(true);
   const [selectedRadio, setSelectedRadio] = useState("28,28");
   const [inputData, setInputData] = useState({
     title: "",
@@ -24,83 +33,30 @@ export default function FormAddProject({ setIsModalOpen }) {
   });
 
   // функция Удаление фото из массива превью
-const removePreviewPhoto = (index) => {
-  const updatedPreviewPhotos = [...previewPhotos];
-  updatedPreviewPhotos.splice(index, 1);
-  setPreviewPhotos(updatedPreviewPhotos);
-
-  // Remove photo from the selected files array
-  const updatedDropPhotos = [...inputData.dropPhoto];
-  updatedDropPhotos.splice(index, 1);
-  setInputData((prev) => ({
-    ...prev,
-    dropPhoto: updatedDropPhotos,
-  }));
-
-  // Show the hidden input
-  const inputElement = document.getElementById("dropPhotoInput");
-  if (inputElement && inputElement.parentNode) {
-    inputElement.parentNode.style.display = "block";
-  }
-};
+  // Удаление фото из массива превью
+  const handleRemovePreviewPhoto = (index) => {
+    removePreviewPhoto(
+      previewPhotos,
+      setPreviewPhotos,
+      index,
+      inputData,
+      setInputData,
+      setIsDropPhotoVisible
+    );
+  };
 
   // Удаление фото из массива превью который с одной фоткой
- const removePreviewPhotoAva = (index) => {
-   const updatedPreviewPhotosAva = [...previewPhotoAva];
-   updatedPreviewPhotosAva.splice(index, 1);
-   setPreviewPhotoAva(updatedPreviewPhotosAva);
+  const handleRemovePreviewPhotoAva = (index) => {
+    removePreviewPhotoAva(
+      previewPhotoAva,
+      setPreviewPhotoAva,
+      index,
+      inputData,
+      setInputData,
+      setIsPhotoAvaVisible
+    );
+  };
 
-   // Remove photo from the selected files array
-   const updatedDropPhotosAva = [...inputData.photoAva];
-   updatedDropPhotosAva.splice(index, 1);
-   setInputData((prev) => ({
-     ...prev,
-     photoAva: updatedDropPhotosAva,
-   }));
-
-   // Show the hidden input
-   const inputElement = document.getElementById("photoAvaInput");
-   inputElement.parentNode.style.display = "block";
- };
-  // функция сборщика, тут у нас запускаются if-else на превью фото для картинок 
-const changeHandler = (event) => {
-  if (event.target.files) {
-    if (event.target.name === "dropPhoto") {
-      const filesArray = Array.from(event.target.files);
-      setInputData((prev) => ({
-        ...prev,
-        dropPhoto: filesArray,
-      }));
-
-      // Create and display photo previews
-      const previewArray = filesArray.map((file) => URL.createObjectURL(file));
-      setPreviewPhotos(previewArray);
-
-      // Hide the input for dropPhoto
-      event.target.parentNode.style.display = "none";
-    } else if (event.target.name === "photoAva") {
-      const filesArrayAva =
-        event.target.files.length > 0 ? event.target.files : null;
-      setInputData((prev) => ({
-        ...prev,
-        photoAva: filesArrayAva,
-      }));
-
-      const previewArray = Array.from(filesArrayAva).map((file) =>
-        URL.createObjectURL(file)
-      );
-      setPreviewPhotoAva(previewArray);
-
-      // Hide the input for photoAva
-      event.target.parentNode.style.display = "none";
-    }
-  } else {
-    setInputData((prev) => ({
-      ...prev,
-      [event.target.name]: event.target.value,
-    }));
-  }
-};
 
   // функция отправки формы на Redux
   const submitHandler = async (e) => {
@@ -148,7 +104,17 @@ const changeHandler = (event) => {
               name="title"
               id="title"
               value={inputData.title}
-              onChange={changeHandler}
+              onChange={(event) =>
+                changeHandler(
+                  event,
+                  inputData,
+                  setInputData,
+                  setPreviewPhotos,
+                  setIsDropPhotoVisible,
+                  setPreviewPhotoAva,
+                  setIsPhotoAvaVisible
+                )
+              }
               required
             />
             <label htmlFor="title" className={styles.form__label}>
@@ -184,7 +150,17 @@ const changeHandler = (event) => {
               name="countryCity"
               id="countryCity"
               value={inputData.countryCity}
-              onChange={changeHandler}
+              onChange={(event) =>
+                changeHandler(
+                  event,
+                  inputData,
+                  setInputData,
+                  setPreviewPhotos,
+                  setIsDropPhotoVisible,
+                  setPreviewPhotoAva,
+                  setIsPhotoAvaVisible
+                )
+              }
               required
             />
             <label htmlFor="countryCity" className={styles.form__label}>
@@ -199,7 +175,17 @@ const changeHandler = (event) => {
               name="monthYear"
               id="monthYear"
               value={inputData.monthYear}
-              onChange={changeHandler}
+              onChange={(event) =>
+                changeHandler(
+                  event,
+                  inputData,
+                  setInputData,
+                  setPreviewPhotos,
+                  setIsDropPhotoVisible,
+                  setPreviewPhotoAva,
+                  setIsPhotoAvaVisible
+                )
+              }
               required
             />
             <label htmlFor="monthYear" className={styles.form__label}>
@@ -235,7 +221,22 @@ const changeHandler = (event) => {
           </div>
         </div>
         <label className={styles.slider_container__customFileUpload}>
-          <input type="file" name="photoAva" onChange={changeHandler} />
+          <input
+            type="file"
+            name="photoAva"
+            onChange={(event) =>
+              changeHandler(
+                event,
+                inputData,
+                setInputData,
+                setPreviewPhotos,
+                setIsDropPhotoVisible,
+                setPreviewPhotoAva,
+                setIsPhotoAvaVisible
+              )
+            }
+            style={{ display: isPhotoAvaVisible ? "block" : "none" }}
+          />
           <div className={styles.slider_container__uploadIcon}>
             <img src={icon} alt="icon" />
           </div>
@@ -253,7 +254,7 @@ const changeHandler = (event) => {
               />
               <div
                 className={styles.preview_photos_container__remove_icon}
-                onClick={() => removePreviewPhotoAva(index)}
+                onClick={() => handleRemovePreviewPhotoAva(index)}
               >
                 <span></span>
               </div>
@@ -348,8 +349,19 @@ const changeHandler = (event) => {
             <input
               type="file"
               name="dropPhoto"
-              onChange={changeHandler}
+              onChange={(event) =>
+                changeHandler(
+                  event,
+                  inputData,
+                  setInputData,
+                  setPreviewPhotos,
+                  setIsDropPhotoVisible,
+                  setPreviewPhotoAva,
+                  setIsPhotoAvaVisible
+                )
+              }
               multiple
+              style={{ display: isDropPhotoVisible ? "block" : "none" }}
             />
             <div className={styles.slider_container__uploadIcon}>
               <img src={icon} alt="icon" />
@@ -369,7 +381,7 @@ const changeHandler = (event) => {
               />
               <div
                 className={styles.preview_photos_container__remove_icon}
-                onClick={() => removePreviewPhoto(index)}
+                onClick={() => handleRemovePreviewPhoto(index)}
               >
                 <span></span>
               </div>
