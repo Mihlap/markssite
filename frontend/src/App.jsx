@@ -47,6 +47,7 @@ export default function App() {
   const [showNavbar, setNavBarOpen] = useState(true);
   const [showFooter, setShowFooter] = useState(true);
 
+ 
   useEffect(() => {
     const body = document.querySelector("body");
     if (navOpen) {
@@ -168,7 +169,7 @@ export default function App() {
               </Routes>
             </CSSTransition>
           </TransitionGroup>
-          {showFooter && <Footer />}
+          {showFooter && <Footer/>}
         </>
       )}
     </>
