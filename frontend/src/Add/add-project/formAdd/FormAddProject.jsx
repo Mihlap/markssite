@@ -106,13 +106,14 @@ export default function FormAddProject({ setIsModalOpen }) {
             <input
               type="input"
               className={styles.form__field}
-              placeholder="Название проекта"
+              placeholder="title"
               name="title"
+              id="title"
               value={inputData.title}
               onChange={changeHandler}
               required
             />
-            <label htmlFor="Название проекта" className={styles.form__label}>
+            <label htmlFor="title" className={styles.form__label}>
               Название проекта
             </label>
           </div>
@@ -143,6 +144,7 @@ export default function FormAddProject({ setIsModalOpen }) {
               className={styles.form__field}
               placeholder="countryCity"
               name="countryCity"
+              id="countryCity"
               value={inputData.countryCity}
               onChange={changeHandler}
               required
@@ -157,6 +159,7 @@ export default function FormAddProject({ setIsModalOpen }) {
               className={styles.form__field}
               placeholder="monthYear"
               name="monthYear"
+              id="monthYear"
               value={inputData.monthYear}
               onChange={changeHandler}
               required
