@@ -4,7 +4,6 @@ import FormAddProject from "./formAdd/FormAddProject";
 import { useDispatch, useSelector } from "react-redux";
 import { getFetchForm } from "../../store/Slice/projectSlice";
 
-import icon from "./icon/Vector.png";
 
 export default function AddProject() {
   const Host = process.env.REACT_APP_SERVER_HOST;
