@@ -30,6 +30,7 @@ export default function FormAddProject({ setIsModalOpen }) {
     viewConstruction: [],
     dropPhoto: [],
     photoAva: "",
+    titleTextBlock: "",
   });
 
   // функция Удаление фото из массива превью
@@ -86,6 +87,7 @@ export default function FormAddProject({ setIsModalOpen }) {
       viewConstruction: "",
       dropPhoto: [],
       photoAva: [],
+      titleTextBlock: "",
     });
     setIsModalOpen(false);
   };
@@ -397,6 +399,34 @@ export default function FormAddProject({ setIsModalOpen }) {
             className={styles.form_container__button_cancel}
             type="submit"
           ></button>
+        </div>
+        <div className={styles.form_container__heading_block}>
+          <input
+            type="input"
+            className={styles.form_container__heading_block_input}
+            placeholder="titleTextBlock"
+            name="titleTextBlock"
+            id="titleTextBlock"
+            value={inputData.titleTextBlock}
+            onChange={(event) =>
+              changeHandler(
+                event,
+                inputData,
+                setInputData,
+                setPreviewPhotos,
+                setIsDropPhotoVisible,
+                setPreviewPhotoAva,
+                setIsPhotoAvaVisible
+              )
+            }
+            required
+          />
+          <label
+            htmlFor="titleTextBlock"
+            className={styles.form_container__heading_block_label}
+          >
+            Название проекта
+          </label>
         </div>
       </form>
     </div>
