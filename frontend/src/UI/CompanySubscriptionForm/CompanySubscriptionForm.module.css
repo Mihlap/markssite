@@ -36,7 +36,7 @@
   position: relative;
 }
 
-input {
+.email_input_form {
   border: none;
   outline: none;
   background-color: transparent;
@@ -46,8 +46,9 @@ input {
   font-weight: var(--fw-400);
   font-size: 16px;
   line-height: 16px;
+  caret-color: black;
 }
-input[type="email"] {
+.email_input_form {
   width: 65%;
 }
 .line1 {
@@ -87,7 +88,7 @@ input[type="email"] {
   color: var(--gray-959DA6);
 }
 
-input:focus + .line1 {
+.email_input_form:focus + .line1 {
   background-color: #FF7F6A;
 }
 
@@ -166,7 +167,7 @@ input:focus + .line1 {
   .line1 {
     width: 20vw;
    }
-   input[type="email"] {
+   .email_input_form {
     width: 65%;
   }
   }
