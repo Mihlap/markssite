@@ -42,6 +42,11 @@ router.post(
         imageProject: imageProjects,
         titleTextBlock: req.body.titleTextBlock,
         descriptionProject: req.body.descriptionProject,
+        totalArea: req.body.totalArea,
+        siteArea: req.body.siteArea,
+        floors: req.body.floors,
+        altitude: req.body.altitude,
+        constructionVolume: req.body.constructionVolume,
       });
 
       res.status(200).json({ message: 'Данные успешно сохранены' });

@@ -11,6 +11,7 @@
         font-style: normal;
         font-weight: 300;
         line-height: 2rem;
+        margin-bottom: 2.5rem;
     }
 
     &__radio_container {
@@ -21,7 +22,6 @@
     &__block_gray_one {
         background-color: var(--light-light-gray-EBECEE);
         padding: 0.88rem 1rem 2rem 1rem;
-        margin-top: 2.5rem;
         border-radius: 6px;
     }
 
@@ -245,6 +245,7 @@
         font-family: var(--font-raleway);
         font-size: 1rem;
         color: var(--black-1D2E43);
+        margin-bottom: 32px;
 
         &::placeholder {
             color: var(--gray-959DA6);
@@ -269,7 +270,7 @@
     &__textarea_length {
             position: absolute;
                 right: 10px;
-                bottom: 9%;
+                bottom: 20%;
                 z-index: 9;
         background-color: rgb(255 255 255);
         color: var(--gray-959DA6);
