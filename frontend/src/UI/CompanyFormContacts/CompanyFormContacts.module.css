@@ -48,7 +48,9 @@
   }
 
 
-input {
+  .input_name_form_contacts,
+  .input_task_form_contacts,
+  .input_tel_form_contacts {
   border: none;
   outline: none;
   background-color: transparent;
@@ -87,8 +89,8 @@ input {
   transition: all 0.1s ease-out;
  }
 
-.input:not(:placeholder-shown)+.placeholder,
-.input:empty+.placeholder,
+.input_tel_form_contacts:not(:placeholder-shown)+.placeholder,
+.input_tel_form_contacts:empty+.placeholder,
 .focused1 .placeholder 
 {
   transform: translateY(-150%) scale(1);
@@ -96,7 +98,10 @@ input {
   color: var(--gray-959DA6);
 }
 
-input:focus + .line {
+.input_name_form_contacts:focus + .line {
+  background-color: #FF7F6A;
+}
+.input_task_form_contacts:focus + .line {
   background-color: #FF7F6A;
 }
 
@@ -173,7 +178,7 @@ input:focus + .line {
    color: var(--black-1D2E43);
  }
 
- input[type=checkbox] {
+ .checkbox-input[type=checkbox] {
   transform: scale(1);
   cursor: pointer;
 }
@@ -228,7 +233,7 @@ input:focus + .line {
   .line {
     width: 23rem;
   }
-  input[name="task"] {
+  .some-unique-class input[name="task"] {
     width: 70%;
   }
 
@@ -266,7 +271,7 @@ input:focus + .line {
     width: 84vw;
   }
 
-  input[name="task"] {
+  .some-unique-class input[name="task"] {
     width: 55%;
   }
   .input_name_form_contacts {

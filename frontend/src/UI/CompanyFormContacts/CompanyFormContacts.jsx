@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import PhoneInput from 'react-phone-number-input';
+// import PhoneInput from 'react-phone-number-input';
 import InputMask from 'react-input-mask';
 import styles from "./CompanyFormContacts.module.css";
 import 'react-phone-number-input/style.css';
@@ -95,7 +95,7 @@ const CompanyFormContacts = () => {
           вопросы..........................
         </span>
         <form className={styles.form_form_wrapper}>
-          <div className={styles.group}>
+          <div className={`${styles.group} some-unique-class`}>
             <label
               className={`${styles.label1} ${
                 isFocused1 ? styles.focused1 : " "
@@ -131,7 +131,7 @@ const CompanyFormContacts = () => {
                 onBlur={handleBlur}
                 onChange={handleChange}
                 onFocus={handleFocus}
-                className={`${styles.input} ${isFocused2 ? styles.focused : ''}`}
+                className={`${styles.input_tel_form_contacts} ${isFocused2 ? styles.focused : ''}`}
               />
               <div className={styles.line}
               style={{backgroundColor: (!value2 && !isFocused2) ? '' : (!value2 && isFocused2) ? '#FF7F6A' : (isValid && isMatching) ? '' : '#E00747'}}
@@ -157,6 +157,7 @@ const CompanyFormContacts = () => {
                 maxLength="300"
                 size="55"
                 autoComplete="off"
+                className={styles.input_task_form_contacts}
               />
               <div className={styles.line}></div>
               <span className={styles.placeholder}>Задача</span>
@@ -167,7 +168,7 @@ const CompanyFormContacts = () => {
               <input
                 type="checkbox"
                 id="checkbox"
-                className={styles.checkbox}
+                className={`${styles.checkbox} checkbox-input`}
                 checked={isConsentGiven}
                 onChange={(e) => setIsConsentGiven(e.target.checked)}
               />
