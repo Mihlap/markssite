@@ -40,6 +40,8 @@ router.post(
         style: req.body.radioValue,
         imageTitle: imageTitles,
         imageProject: imageProjects,
+        titleTextBlock: req.body.titleTextBlock,
+        descriptionProject: req.body.descriptionProject,
       });
 
       res.status(200).json({ message: 'Данные успешно сохранены' });
