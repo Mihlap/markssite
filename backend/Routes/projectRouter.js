@@ -42,6 +42,16 @@ router.post(
         imageProject: imageProjects,
         titleTextBlock: req.body.titleTextBlock,
         descriptionProject: req.body.descriptionProject,
+        totalArea: req.body.totalArea,
+        siteArea: req.body.siteArea,
+        floors: req.body.floors,
+        altitude: req.body.altitude,
+        constructionVolume: req.body.constructionVolume,
+        location: req.body.location,
+        degreeParticipation: req.body.degreeParticipation,
+        statusObject: req.body.statusObject,
+        customer: req.body.customer,
+        awards: req.body.awards,
       });
 
       res.status(200).json({ message: 'Данные успешно сохранены' });
