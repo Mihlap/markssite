@@ -1,4 +1,3 @@
-import { fetchProject } from "../../../store/Slice/projectSlice";
 
 // formHelpers.js
 export const removePreviewPhoto = (
@@ -49,7 +48,29 @@ export const removePreviewPhotoAva = (
   // Обновление стиля поля ввода файлов
 };
 
+export const removePreviewPhotoOpen = (
+  previewPhotoOpen,
+  setPreviewPhotoOpen,
+  index,
+  inputData,
+  setInputData,
+  setIsPhotoOpenVisible
+) => {
+  const updatedPreviewPhotosOpen = [...previewPhotoOpen];
+  updatedPreviewPhotosOpen.splice(index, 1);
+  setPreviewPhotoOpen(updatedPreviewPhotosOpen);
+  setIsPhotoOpenVisible(true);
+
+  const updatedDropPhotoOpen = Array.from(inputData.imageOpen);
+  updatedDropPhotoOpen.splice(index, 1);
+  setInputData((prev) => ({
+    ...prev,
+    imageOpen: updatedDropPhotoOpen,
+  }));
+};
+
  // функция сборщика, тут у нас запускаются if-else на превью фото для картинок
+// функция сборщика, тут у нас запускаются if-else на превью фото для картинок
 export function changeHandler(
   event,
   inputData,
@@ -57,7 +78,9 @@ export function changeHandler(
   setPreviewPhotos,
   setIsDropPhotoVisible,
   setPreviewPhotoAva,
-  setIsPhotoAvaVisible
+  setIsPhotoAvaVisible,
+  setPreviewPhotoOpen,
+  setIsPhotoOpenVisible
 ) {
   if (event.target.files) {
     if (event.target.name === "dropPhoto") {
@@ -86,6 +109,20 @@ export function changeHandler(
       setPreviewPhotoAva(previewArray);
 
       event.target.style.display = "none";
+    } else if (event.target.name === "imageOpen") {
+      const filesArrayOpen =
+        event.target.files.length > 0 ? event.target.files : null;
+      setInputData((prev) => ({
+        ...prev,
+        imageOpen: filesArrayOpen,
+      }));
+      setIsPhotoOpenVisible(false);
+      const previewArray = Array.from(filesArrayOpen).map((file) =>
+        URL.createObjectURL(file)
+      );
+      setPreviewPhotoOpen(previewArray);
+
+      event.target.style.display = "none";
     }
   } else {
     setInputData((prev) => ({
@@ -94,3 +131,4 @@ export function changeHandler(
     }));
   }
 }
+
