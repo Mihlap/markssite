@@ -71,6 +71,11 @@ export const fetchProject = (formattedData, setInputData) => async (dispatch) =>
       photoAva: [],
       titleTextBlock: "",
       descriptionProject: "",
+      totalArea: "",
+      siteArea: "",
+      floors: "",
+      altitude: "",
+      constructionVolume: "",
     });
     dispatch(getFetchForm()); // Добавлен этот вызов для получения обновленных данных после успешной отправки формы
   });
