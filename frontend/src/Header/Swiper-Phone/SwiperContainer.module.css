@@ -3,12 +3,9 @@
 .swiper_container_articles {
     width: 100%;
     position: relative;
-    max-width: 350px;
-    height: 100%;
-    max-height: 450px;
-    border-radius: 10px;
-    padding-top: 4rem;
-    padding-bottom: 31rem
+    border-radius: 1rem;
+    padding: 3.75rem 2.7vw 1.5rem 2.7vw;
+    margin-bottom: 5.06rem;
 }
 
 .swiper_wrapper {
@@ -43,7 +40,7 @@
     cursor: pointer;
     transition: all 0.2s;
     color: red;
-        background-color: red;
+    background-color: red;
 }
 
 .swiperPaginationBulletActive {
