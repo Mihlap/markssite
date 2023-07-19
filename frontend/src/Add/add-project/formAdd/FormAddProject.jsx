@@ -7,7 +7,7 @@ import {
   removePreviewPhoto,
   removePreviewPhotoAva,
   changeHandler,
-  submitHandler,
+  removePreviewPhotoOpen
 } from "./formHelpers";
 
 import customStyles from "./customStyles";
@@ -19,8 +19,14 @@ export default function FormAddProject({ setIsModalOpen }) {
   const [selectedViewConstruction, setSelectedViewConstruction] = useState([]);
   const [previewPhotos, setPreviewPhotos] = useState([]);
   const [previewPhotoAva, setPreviewPhotoAva] = useState([]);
+
+  const [previewPhotoOpen, setPreviewPhotoOpen] = useState([]);
+  
   const [isDropPhotoVisible, setIsDropPhotoVisible] = useState(true);
   const [isPhotoAvaVisible, setIsPhotoAvaVisible] = useState(true);
+  
+  const [isPhotoOpenVisible, setIsPhotoOpenVisible] = useState(true);
+  
   const [selectedRadio, setSelectedRadio] = useState("28,28");
   const [inputData, setInputData] = useState({
     title: "",
@@ -41,7 +47,12 @@ export default function FormAddProject({ setIsModalOpen }) {
     degreeParticipation: "",
     statusObject: "",
     customer: "",
+    publication: "",
+    linkToPublication: "",
+    publicationTwo: "",
+    linkToPublicationTwo: "",
     awards: "",
+    imageOpen: "",
   });
 
   // функция Удаление фото из массива превью
@@ -69,6 +80,18 @@ export default function FormAddProject({ setIsModalOpen }) {
     );
   };
 
+  // Удаление превью фото перед основным текстом
+  const handleRemovePreviewPhotoOpen = (index) => {
+    removePreviewPhotoOpen(
+      previewPhotoOpen,
+      setPreviewPhotoOpen,
+      index,
+      inputData,
+      setInputData,
+      setIsPhotoOpenVisible
+    )
+  }
+
 
   // функция отправки формы на Redux
   const submitHandler = async (e) => {
@@ -83,6 +106,7 @@ export default function FormAddProject({ setIsModalOpen }) {
         .join(","),
       radioValue: selectedRadio,
       photoAva: inputData.photoAva, // Добавлено поле "photoAva" в объект "formattedData"
+      imageOpen: inputData.imageOpen,
     };
     console.log(formattedData, "<<<----консоль на фронте");
     dispatch(fetchProject(formattedData, setInputData));
@@ -97,7 +121,7 @@ export default function FormAddProject({ setIsModalOpen }) {
       monthYear: "",
       viewConstruction: "",
       dropPhoto: [],
-      photoAva: [],
+      photoAva: "",
       titleTextBlock: "",
       descriptionProject: "",
       totalArea: "",
@@ -109,11 +133,17 @@ export default function FormAddProject({ setIsModalOpen }) {
       degreeParticipation: "",
       statusObject: "",
       customer: "",
+      publication: "",
+      linkToPublication: "",
+      publicationTwo: "",
+      linkToPublicationTwo: "",
       awards: "",
+      imageOpen: "",
     });
     setIsModalOpen(false);
   };
 
+  console.log(inputData);
   return (
     <div className={styles.form_container}>
       <div className={styles.form_container__title}>Новый проект</div>
@@ -136,7 +166,9 @@ export default function FormAddProject({ setIsModalOpen }) {
                   setPreviewPhotos,
                   setIsDropPhotoVisible,
                   setPreviewPhotoAva,
-                  setIsPhotoAvaVisible
+                  setIsPhotoAvaVisible,
+                  setPreviewPhotoOpen,
+                  setIsPhotoOpenVisible
                 )
               }
               required
@@ -182,7 +214,9 @@ export default function FormAddProject({ setIsModalOpen }) {
                   setPreviewPhotos,
                   setIsDropPhotoVisible,
                   setPreviewPhotoAva,
-                  setIsPhotoAvaVisible
+                  setIsPhotoAvaVisible,
+                  setPreviewPhotoOpen,
+                  setIsPhotoOpenVisible
                 )
               }
               required
@@ -207,7 +241,9 @@ export default function FormAddProject({ setIsModalOpen }) {
                   setPreviewPhotos,
                   setIsDropPhotoVisible,
                   setPreviewPhotoAva,
-                  setIsPhotoAvaVisible
+                  setIsPhotoAvaVisible,
+                  setPreviewPhotoOpen,
+                  setIsPhotoOpenVisible
                 )
               }
               required
@@ -256,7 +292,9 @@ export default function FormAddProject({ setIsModalOpen }) {
                 setPreviewPhotos,
                 setIsDropPhotoVisible,
                 setPreviewPhotoAva,
-                setIsPhotoAvaVisible
+                setIsPhotoAvaVisible,
+                setPreviewPhotoOpen,
+                setIsPhotoOpenVisible
               )
             }
             style={{ display: isPhotoAvaVisible ? "block" : "none" }}
@@ -269,7 +307,7 @@ export default function FormAddProject({ setIsModalOpen }) {
           </div>
         </label>
         <div className={styles.preview_photos_container}>
-          {previewPhotoAva.map((preview, index) => (
+          {previewPhotoAva?.map((preview, index) => (
             <div key={index} className={styles.preview_photos_container__block}>
               <img
                 className={styles.preview_photos_container__img}
@@ -381,7 +419,9 @@ export default function FormAddProject({ setIsModalOpen }) {
                   setPreviewPhotos,
                   setIsDropPhotoVisible,
                   setPreviewPhotoAva,
-                  setIsPhotoAvaVisible
+                  setIsPhotoAvaVisible,
+                  setPreviewPhotoOpen,
+                  setIsPhotoOpenVisible
                 )
               }
               multiple
@@ -484,7 +524,9 @@ export default function FormAddProject({ setIsModalOpen }) {
                   setPreviewPhotos,
                   setIsDropPhotoVisible,
                   setPreviewPhotoAva,
-                  setIsPhotoAvaVisible
+                  setIsPhotoAvaVisible,
+                  setPreviewPhotoOpen,
+                  setIsPhotoOpenVisible
                 )
               }
               required
@@ -509,7 +551,9 @@ export default function FormAddProject({ setIsModalOpen }) {
                   setPreviewPhotos,
                   setIsDropPhotoVisible,
                   setPreviewPhotoAva,
-                  setIsPhotoAvaVisible
+                  setIsPhotoAvaVisible,
+                  setPreviewPhotoOpen,
+                  setIsPhotoOpenVisible
                 )
               }
               required
@@ -534,7 +578,9 @@ export default function FormAddProject({ setIsModalOpen }) {
                   setPreviewPhotos,
                   setIsDropPhotoVisible,
                   setPreviewPhotoAva,
-                  setIsPhotoAvaVisible
+                  setIsPhotoAvaVisible,
+                  setPreviewPhotoOpen,
+                  setIsPhotoOpenVisible
                 )
               }
               required
@@ -559,7 +605,9 @@ export default function FormAddProject({ setIsModalOpen }) {
                   setPreviewPhotos,
                   setIsDropPhotoVisible,
                   setPreviewPhotoAva,
-                  setIsPhotoAvaVisible
+                  setIsPhotoAvaVisible,
+                  setPreviewPhotoOpen,
+                  setIsPhotoOpenVisible
                 )
               }
               required
@@ -584,7 +632,9 @@ export default function FormAddProject({ setIsModalOpen }) {
                   setPreviewPhotos,
                   setIsDropPhotoVisible,
                   setPreviewPhotoAva,
-                  setIsPhotoAvaVisible
+                  setIsPhotoAvaVisible,
+                  setPreviewPhotoOpen,
+                  setIsPhotoOpenVisible
                 )
               }
               required
@@ -614,7 +664,9 @@ export default function FormAddProject({ setIsModalOpen }) {
                   setPreviewPhotos,
                   setIsDropPhotoVisible,
                   setPreviewPhotoAva,
-                  setIsPhotoAvaVisible
+                  setIsPhotoAvaVisible,
+                  setPreviewPhotoOpen,
+                  setIsPhotoOpenVisible
                 )
               }
               required
@@ -639,7 +691,9 @@ export default function FormAddProject({ setIsModalOpen }) {
                   setPreviewPhotos,
                   setIsDropPhotoVisible,
                   setPreviewPhotoAva,
-                  setIsPhotoAvaVisible
+                  setIsPhotoAvaVisible,
+                  setPreviewPhotoOpen,
+                  setIsPhotoOpenVisible
                 )
               }
               required
@@ -664,7 +718,9 @@ export default function FormAddProject({ setIsModalOpen }) {
                   setPreviewPhotos,
                   setIsDropPhotoVisible,
                   setPreviewPhotoAva,
-                  setIsPhotoAvaVisible
+                  setIsPhotoAvaVisible,
+                  setPreviewPhotoOpen,
+                  setIsPhotoOpenVisible
                 )
               }
               required
@@ -689,7 +745,9 @@ export default function FormAddProject({ setIsModalOpen }) {
                   setPreviewPhotos,
                   setIsDropPhotoVisible,
                   setPreviewPhotoAva,
-                  setIsPhotoAvaVisible
+                  setIsPhotoAvaVisible,
+                  setPreviewPhotoOpen,
+                  setIsPhotoOpenVisible
                 )
               }
               required
@@ -699,16 +757,16 @@ export default function FormAddProject({ setIsModalOpen }) {
             </label>
           </div>
 
-          <div>
+          <div className={styles.form_container__block_gray_flex}>
             <div>
               <div className={`${styles.form__group} ${styles.field}`}>
                 <input
                   type="input"
                   className={styles.form__field}
-                  placeholder="customer"
-                  name="customer"
-                  id="customer"
-                  value={inputData.customer}
+                  placeholder="publication"
+                  name="publication"
+                  id="publication"
+                  value={inputData.publication}
                   onChange={(event) =>
                     changeHandler(
                       event,
@@ -717,23 +775,25 @@ export default function FormAddProject({ setIsModalOpen }) {
                       setPreviewPhotos,
                       setIsDropPhotoVisible,
                       setPreviewPhotoAva,
-                      setIsPhotoAvaVisible
+                      setIsPhotoAvaVisible,
+                      setPreviewPhotoOpen,
+                      setIsPhotoOpenVisible
                     )
                   }
                   required
                 />
-                <label htmlFor="customer" className={styles.form__label}>
-                  Заказчик
+                <label htmlFor="publication" className={styles.form__label}>
+                  Публикация
                 </label>
               </div>
               <div className={`${styles.form__group} ${styles.field}`}>
                 <input
                   type="input"
                   className={styles.form__field}
-                  placeholder="customer"
-                  name="customer"
-                  id="customer"
-                  value={inputData.customer}
+                  placeholder="linkToPublication"
+                  name="linkToPublication"
+                  id="linkToPublication"
+                  value={inputData.linkToPublication}
                   onChange={(event) =>
                     changeHandler(
                       event,
@@ -742,13 +802,18 @@ export default function FormAddProject({ setIsModalOpen }) {
                       setPreviewPhotos,
                       setIsDropPhotoVisible,
                       setPreviewPhotoAva,
-                      setIsPhotoAvaVisible
+                      setIsPhotoAvaVisible,
+                      setPreviewPhotoOpen,
+                      setIsPhotoOpenVisible
                     )
                   }
                   required
                 />
-                <label htmlFor="customer" className={styles.form__label}>
-                  Заказчик
+                <label
+                  htmlFor="linkToPublication"
+                  className={styles.form__label}
+                >
+                  Ссылк на статью
                 </label>
               </div>
             </div>
@@ -757,10 +822,10 @@ export default function FormAddProject({ setIsModalOpen }) {
                 <input
                   type="input"
                   className={styles.form__field}
-                  placeholder="customer"
-                  name="customer"
-                  id="customer"
-                  value={inputData.customer}
+                  placeholder="publicationTwo"
+                  name="publicationTwo"
+                  id="publicationTwo"
+                  value={inputData.publicationTwo}
                   onChange={(event) =>
                     changeHandler(
                       event,
@@ -769,23 +834,25 @@ export default function FormAddProject({ setIsModalOpen }) {
                       setPreviewPhotos,
                       setIsDropPhotoVisible,
                       setPreviewPhotoAva,
-                      setIsPhotoAvaVisible
+                      setIsPhotoAvaVisible,
+                      setPreviewPhotoOpen,
+                      setIsPhotoOpenVisible
                     )
                   }
                   required
                 />
-                <label htmlFor="customer" className={styles.form__label}>
-                  Заказчик
+                <label htmlFor="publicationTwo" className={styles.form__label}>
+                  Публикация
                 </label>
               </div>
               <div className={`${styles.form__group} ${styles.field}`}>
                 <input
                   type="input"
                   className={styles.form__field}
-                  placeholder="customer"
-                  name="customer"
-                  id="customer"
-                  value={inputData.customer}
+                  placeholder="linkToPublicationTwo"
+                  name="linkToPublicationTwo"
+                  id="linkToPublicationTwo"
+                  value={inputData.linkToPublicationTwo}
                   onChange={(event) =>
                     changeHandler(
                       event,
@@ -794,13 +861,18 @@ export default function FormAddProject({ setIsModalOpen }) {
                       setPreviewPhotos,
                       setIsDropPhotoVisible,
                       setPreviewPhotoAva,
-                      setIsPhotoAvaVisible
+                      setIsPhotoAvaVisible,
+                      setPreviewPhotoOpen,
+                      setIsPhotoOpenVisible
                     )
                   }
                   required
                 />
-                <label htmlFor="customer" className={styles.form__label}>
-                  Заказчик
+                <label
+                  htmlFor="linkToPublicationTwo"
+                  className={styles.form__label}
+                >
+                  Ссылк на статью
                 </label>
               </div>
             </div>
@@ -821,7 +893,9 @@ export default function FormAddProject({ setIsModalOpen }) {
                   setPreviewPhotos,
                   setIsDropPhotoVisible,
                   setPreviewPhotoAva,
-                  setIsPhotoAvaVisible
+                  setIsPhotoAvaVisible,
+                  setPreviewPhotoOpen,
+                  setIsPhotoOpenVisible
                 )
               }
               required
@@ -830,6 +904,52 @@ export default function FormAddProject({ setIsModalOpen }) {
               Награды
             </label>
           </div>
+        </div>
+        <div className={styles.form_container__checkbox_block}>
+          <div>Открывающая картинка</div>
+        </div>
+        <label className={styles.slider_container__customFileUpload}>
+          <input
+            type="file"
+            name="imageOpen"
+            onChange={(event) =>
+              changeHandler(
+                event,
+                inputData,
+                setInputData,
+                setPreviewPhotos,
+                setIsDropPhotoVisible,
+                setPreviewPhotoAva,
+                setIsPhotoAvaVisible,
+                setPreviewPhotoOpen,
+                setIsPhotoOpenVisible
+              )
+            }
+            style={{ display: isPhotoOpenVisible ? "block" : "none" }}
+          />
+          <div className={styles.slider_container__uploadIcon}>
+            <img src={icon} alt="icon" />
+          </div>
+          <div className={styles.slider_container__uploadText}>
+            Загрузить изображения
+          </div>
+        </label>
+        <div className={styles.preview_photos_container}>
+          {previewPhotoOpen?.map((preview, index) => (
+            <div key={index} className={styles.preview_photos_container__block}>
+              <img
+                className={styles.preview_photos_container__img}
+                src={preview}
+                alt={`Preview ${index}`}
+              />
+              <div
+                className={styles.preview_photos_container__remove_icon}
+                onClick={() => handleRemovePreviewPhotoOpen(index)}
+              >
+                <span></span>
+              </div>
+            </div>
+          ))}
         </div>
 
         <div className={styles.form_container__button_block}>
