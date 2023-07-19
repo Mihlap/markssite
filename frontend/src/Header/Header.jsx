@@ -62,28 +62,37 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
       const rect = el.getBoundingClientRect();
       const isSliderInView = rect.top <= window.innerHeight && rect.bottom >= 0;
       setEnableVerticalScroll(!isSliderInView);
-  
+
       if (!loadingArticle) {
         if (isSliderInView && el.scrollLeft > 0) {
           setEnableVerticalScroll(false);
-        } else if (!isSliderInView && el.scrollLeft + el.clientWidth >= el.scrollWidth) {
+        } else if (
+          !isSliderInView &&
+          el.scrollLeft + el.clientWidth >= el.scrollWidth
+        ) {
           setEnableVerticalScroll(true);
+          setIsScrollingHorizontal(false);
         } else if (!isSliderInView && el.scrollLeft <= 0) {
           setEnableVerticalScroll(true);
-        } else if (!isSliderInView && el.scrollLeft + el.clientWidth >= el.scrollWidth && el.scrollTop + el.clientHeight >= el.scrollHeight) {
+          setIsScrollingHorizontal(false);
+        } else if (
+          !isSliderInView &&
+          el.scrollLeft + el.clientWidth >= el.scrollWidth &&
+          el.scrollTop + el.clientHeight >= el.scrollHeight
+        ) {
           setEnableVerticalScroll(true);
+          setIsScrollingHorizontal(false);
         }
       }
     }
   };
-  
 
   const onVerticalScroll = (e) => {
     const el = sliderCardRef.current;
     const isScrollingUp = e.deltaY < 0;
     const isAtTop = el.scrollTop <= 0;
     const isAtBottom = el.scrollTop + el.clientHeight >= el.scrollHeight;
-  
+
     if (isScrollingUp && isAtTop) {
       setEnableVerticalScroll(false);
       el.scrollLeft += e.deltaY;
@@ -96,7 +105,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
       e.preventDefault();
     }
   };
-  
+
   const onWheel = (e) => {
     const el = sliderCardRef.current;
     const isScrollingRight = e.deltaY >= 0;
@@ -104,12 +113,13 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
     const isAtBottom = el.scrollTop + el.clientHeight >= el.scrollHeight;
     const isAtLeftEdge = el.scrollLeft <= 0;
     const isAtTop = el.scrollTop <= 0;
-  
+
     if (
-      !enableVerticalScroll &&
+      
       isScrollingRight &&
       isAtRightEdge &&
-      isAtBottom
+      isAtBottom &&
+      !isScrollingHorizontal
     ) {
       setIsHorizontalScroll(false); // Переключение в режим вертикальной прокрутки
       el.scrollTo({
@@ -125,10 +135,20 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
           top: el.scrollTop + e.deltaY,
           behavior: "smooth",
         });
-      } else if (isAtRightEdge && isAtBottom && e.deltaY < 0) {
+      } else if (
+        isAtRightEdge &&
+        isAtBottom &&
+        e.deltaY < 0 &&
+        !isScrollingHorizontal
+      ) {
         setIsHorizontalScroll(false); // Переключение в режим вертикальной прокрутки
         el.scrollLeft += e.deltaY;
-      } else if (isAtRightEdge && isAtBottom && e.deltaY > 0) {
+      } else if (
+        isAtRightEdge &&
+        isAtBottom &&
+        e.deltaY > 0 &&
+        !isScrollingHorizontal
+      ) {
         setIsHorizontalScroll(true); // Переключение в режим горизонтальной прокрутки
         el.scrollTo({
           top: el.scrollTop + e.deltaY,
@@ -136,12 +156,11 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
         });
       } else {
         e.preventDefault();
-     }
+      }
     } else {
       el.scrollLeft += e.deltaY;
     }
   };
-  
 
   useEffect(() => {
     const el = sliderCardRef.current;
@@ -208,7 +227,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
         <SliderHeader />
         <div className={styles.swiper_container}>
           <SwiperContainer
-          // artickes={artickes}
+          article={article}
           />
         </div>
         <div className={styles.show_container}></div>
@@ -227,7 +246,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
                   <div className={styles.card_img}>
                     <img
                       className={index === 0 ? styles.img_1 : styles.img_2}
-                      src={`${Host}/images/imageAdd/${el.imageTitle}`}
+                      src={`${Host}/images/${el.imageTitle}`}
                       alt={el.imageTitle}
                     />
                   </div>
@@ -289,11 +308,9 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
       <div id="projects" className={styles.project_name}>
         Проекты
       </div>
-      {/* <div className={styles.swiper_progect_container}>
-        <SwiperContainerProgect
-          // project={project}
-        />
-      </div> */}
+      <div className={styles.swiper_progect_container}>
+        <SwiperContainerProgect project={project}/>
+      </div>
       <div className={styles.main_project}>
         <Swiper
           className={styles.slider_card_container_project}

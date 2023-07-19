@@ -7,7 +7,9 @@ import "swiper/css";
 import Slideritem from "./SliderItem";
 import styles from "./SwiperContainer.module.css";
 
-export default function SwiperContainer({ artickes }) {
+const Host = process.env.REACT_APP_SERVER_HOST;
+
+export default function SwiperContainer({ article }) {
   SwipeCore.use([Navigation, Pagination, Autoplay]);
 
   return (
@@ -29,14 +31,14 @@ export default function SwiperContainer({ artickes }) {
         className={styles.swiper_container_articles}
       >
         <div className={styles.swiper_wrapper}>
-          {artickes && artickes.map((item) => {
+          {article && article.map((item) => {
             return (
               <SwiperSlide key={item.id}>
                 <Slideritem
-                  title={item.attributes.title}
-                  src={item.attributes.img}
-                  text={item.attributes.text}
-                  id={item.attributes.link}
+                  title={item.title}
+                  src={`${Host}/images/${item.imageTitle}`}
+                  text={item.descriptionArticle}
+                  id={item.link}
                 />
               </SwiperSlide>
             );
