@@ -1,8 +1,8 @@
 @import '../../App.css';
 
 .slider_item {
-    width: 100%;
-    height: 100%;
+    width: 36.25rem;
+    height: 20.37rem;
     border-radius: 1rem;
     overflow: hidden;
     display: flex;
@@ -12,7 +12,7 @@
 }
 
 .slider_item_content {
-    padding: 20px 0px;
+    padding: 1rem 0rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -20,8 +20,8 @@
 }
 
 .slider_image_wrapper {
-    height: 346px;
     width: 100%;
+    height: 20.37rem;
     overflow: hidden;
     border-radius: 0px 0px 1rem 1rem;
     position: relative;
