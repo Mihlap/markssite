@@ -119,6 +119,17 @@ export default function AddProject() {
                             src={`${Host}/images/imageAdd/${firstPhoto}`}
                             alt="pfoto"
                           />
+                          <div className={styles.del_block}>
+                          <button className={styles.buttom_del}>
+                            <label htmlfor="delete" className={styles.label}>
+                              <div className={`${styles.wrapper}`}>
+                                <div className={`${styles.lid}`}></div>
+                                <div className={`${styles.can}`}></div>
+                                <span>delete</span>
+                              </div>
+                            </label>
+                          </button>
+                          </div>
                         </div>
                         <div className={styles.cart_project__content}>
                           <span className={styles.cart_project__title}>

@@ -7,7 +7,7 @@
     "start": "nodemon server.js",
     "dev": "node server.js",
     "lint": "eslint .",
-    "prep-db": "npx sequelize-cli db:seed:undo:all && npx sequelize-cli db:migrate:undo:all && npx sequelize-cli db:migrate && npx sequelize db:seed:all"
+    "pre-db": "npx sequelize-cli db:seed:undo:all && npx sequelize-cli db:migrate:undo:all && npx sequelize-cli db:migrate && npx sequelize db:seed:all"
   },
   "keywords": [],
   "author": "",
