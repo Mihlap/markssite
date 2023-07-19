@@ -57,6 +57,7 @@ function checkMatching(event) {
             >
               <input
                 id="email-input"
+                className={styles.email_input_form}
                 type="email"
                 placeholder=""
                 value={value}
