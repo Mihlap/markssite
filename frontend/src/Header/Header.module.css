@@ -153,17 +153,16 @@
   background-image: url("/public/assets/most.png");
   background-repeat: no-repeat;
   background-position: right;
-   z-index: 0;
-  }
+ }
 
 .image_most {
   width: 100%;
   height: 100%;
 }
 .container_main {
-  
-  position: relative;
+   position: relative;
 }
+
 .show_container {
   position: relative;
   width: 90%; 
@@ -185,45 +184,47 @@
 .card_container {
   display: flex;
   flex-direction: row;
+  height: 100%;
   width: 100%;
   z-index: 1;
-  padding-top: 0em;
-  padding-bottom: 0em;
-  margin-top: 56px;
+  padding-top: 3.5em;
+  padding-bottom: 0rem;
 }
 
 .card_item_1 {
   z-index: 0;
-  height: 652px;
-  width: 39%;
+  height: 100%;
+  width: 45%;
   flex-grow: 1;
   padding-left: 2.7vw;
 }
 
 .card_item_2 {
-  margin-top: 145px;
+  margin-top: 9rem;
   z-index: 0;
   margin-left: 3vw;
   padding-right: 2.7vw;
-  height: 652px;
+  height: 100%;
   width: 55%;
   flex-grow: 1;
 }
 
-.card_img {
+.card_img img{
+  width: 100%;
   height: 100%;
-  border-radius: 1.1vw;
+  border-radius: 1rem;
+  object-fit: cover;
   overflow: hidden;
 }
 
 
-.img_1, .img_2 {
+/* .img_1, .img_2 {
   width: 100%;
   height: 100%;
   object-fit: cover;
   cursor: pointer;
 
-}
+} */
 
 .card_text_container {
   padding-top: 1rem;
@@ -348,7 +349,7 @@ svg path {
  }
 
 .project_name {
-  padding: 10vh 2.7vw 2.5vh 2.7vw;
+  padding: 11rem 0rem 2.5rem 2.7vw;
   font-family: var(--font-unbounded);
   font-style: normal;
   font-weight: var(--fw-300);
@@ -554,10 +555,9 @@ svg path {
     width: 100%;
     display: flex;
     justify-content: end;
-    padding-top: 5rem;
+    padding-top: 0rem;
     font-size: 32px;
     background-color: transparent;
-
   }
 
   .name_11 {
@@ -569,6 +569,7 @@ svg path {
   font-weight: 300;
     font-size: 24px;
     line-height: 32px;
+    padding: 5.5rem 0rem 0rem 2.7vw;
   }
 
   .swiper_progect_container {
