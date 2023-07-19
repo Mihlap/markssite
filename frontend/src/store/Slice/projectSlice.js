@@ -45,19 +45,21 @@ export const {
 export const fetchProject = (formattedData, setInputData) => async (dispatch) => {
   dispatch(fetchProjectStart());
   const formData = new FormData();
-  for (const key in formattedData) {
-    if (typeof formattedData[key] === "object") {
-      if (key === "photoAva" && formattedData[key].length > 0) {
-        formData.append("photoAva", formattedData[key][0]);
-      } else {
-        for (const file of formattedData[key]) {
-          formData.append(key, file);
-        }
-      }
+for (const key in formattedData) {
+  if (typeof formattedData[key] === "object") {
+    if (key === "photoAva" && formattedData[key].length > 0) {
+      formData.append("photoAva", formattedData[key][0]);
+    } else if (key === "imageOpen" && formattedData[key].length > 0) {
+      formData.append("imageOpen", formattedData[key][0]);
     } else {
-      formData.append(key, formattedData[key]);
+      for (const file of formattedData[key]) {
+        formData.append(key, file);
+      }
     }
+  } else {
+    formData.append(key, formattedData[key]);
   }
+}
 
   
   axios.post(`${serverHost}/api-project/postzapros`, formData).then(() => {
@@ -80,7 +82,12 @@ export const fetchProject = (formattedData, setInputData) => async (dispatch) =>
       degreeParticipation: "",
       statusObject: "",
       customer: "",
+      publication: "",
+      linkToPublication: "",
+      publicationTwo: "",
+      linkToPublicationTwo: "",
       awards: "",
+      imageOpen: [],
     });
     dispatch(getFetchForm()); // Добавлен этот вызов для получения обновленных данных после успешной отправки формы
   });
