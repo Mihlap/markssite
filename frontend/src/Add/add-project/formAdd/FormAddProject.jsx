@@ -32,6 +32,16 @@ export default function FormAddProject({ setIsModalOpen }) {
     photoAva: "",
     titleTextBlock: "",
     descriptionProject: "",
+    totalArea: "",
+    siteArea: "",
+    floors: "",
+    altitude: "",
+    constructionVolume: "",
+    location: "",
+    degreeParticipation: "",
+    statusObject: "",
+    customer: "",
+    awards: "",
   });
 
   // функция Удаление фото из массива превью
@@ -90,6 +100,16 @@ export default function FormAddProject({ setIsModalOpen }) {
       photoAva: [],
       titleTextBlock: "",
       descriptionProject: "",
+      totalArea: "",
+      siteArea: "",
+      floors: "",
+      altitude: "",
+      constructionVolume: "",
+      location: "",
+      degreeParticipation: "",
+      statusObject: "",
+      customer: "",
+      awards: "",
     });
     setIsModalOpen(false);
   };
@@ -442,6 +462,374 @@ export default function FormAddProject({ setIsModalOpen }) {
           <label htmlFor="" className={styles.form_container__textarea_label}>
             Описание проекта
           </label>
+        </div>
+
+        <div className={styles.form_container__textarea_label}>
+          Заполните 3 значения на выбор
+        </div>
+        <div className={styles.form_container__block_gray_one}>
+          <div className={`${styles.form__group} ${styles.field}`}>
+            <input
+              type="input"
+              className={styles.form__field}
+              placeholder="totalArea"
+              name="totalArea"
+              id="totalArea"
+              value={inputData.totalArea}
+              onChange={(event) =>
+                changeHandler(
+                  event,
+                  inputData,
+                  setInputData,
+                  setPreviewPhotos,
+                  setIsDropPhotoVisible,
+                  setPreviewPhotoAva,
+                  setIsPhotoAvaVisible
+                )
+              }
+              required
+            />
+            <label htmlFor="totalArea" className={styles.form__label}>
+              Общая площадь
+            </label>
+          </div>
+          <div className={`${styles.form__group} ${styles.field}`}>
+            <input
+              type="input"
+              className={styles.form__field}
+              placeholder="siteArea"
+              name="siteArea"
+              id="siteArea"
+              value={inputData.siteArea}
+              onChange={(event) =>
+                changeHandler(
+                  event,
+                  inputData,
+                  setInputData,
+                  setPreviewPhotos,
+                  setIsDropPhotoVisible,
+                  setPreviewPhotoAva,
+                  setIsPhotoAvaVisible
+                )
+              }
+              required
+            />
+            <label htmlFor="siteArea" className={styles.form__label}>
+              Площадь участка
+            </label>
+          </div>
+          <div className={`${styles.form__group} ${styles.field}`}>
+            <input
+              type="input"
+              className={styles.form__field}
+              placeholder="floors"
+              name="floors"
+              id="floors"
+              value={inputData.floors}
+              onChange={(event) =>
+                changeHandler(
+                  event,
+                  inputData,
+                  setInputData,
+                  setPreviewPhotos,
+                  setIsDropPhotoVisible,
+                  setPreviewPhotoAva,
+                  setIsPhotoAvaVisible
+                )
+              }
+              required
+            />
+            <label htmlFor="floors" className={styles.form__label}>
+              Этажность
+            </label>
+          </div>
+          <div className={`${styles.form__group} ${styles.field}`}>
+            <input
+              type="input"
+              className={styles.form__field}
+              placeholder="altitude"
+              name="altitude"
+              id="altitude"
+              value={inputData.altitude}
+              onChange={(event) =>
+                changeHandler(
+                  event,
+                  inputData,
+                  setInputData,
+                  setPreviewPhotos,
+                  setIsDropPhotoVisible,
+                  setPreviewPhotoAva,
+                  setIsPhotoAvaVisible
+                )
+              }
+              required
+            />
+            <label htmlFor="altitude" className={styles.form__label}>
+              Высотность
+            </label>
+          </div>
+          <div className={`${styles.form__group} ${styles.field}`}>
+            <input
+              type="input"
+              className={styles.form__field}
+              placeholder="constructionVolume"
+              name="constructionVolume"
+              id="constructionVolume"
+              value={inputData.constructionVolume}
+              onChange={(event) =>
+                changeHandler(
+                  event,
+                  inputData,
+                  setInputData,
+                  setPreviewPhotos,
+                  setIsDropPhotoVisible,
+                  setPreviewPhotoAva,
+                  setIsPhotoAvaVisible
+                )
+              }
+              required
+            />
+            <label htmlFor="constructionVolume" className={styles.form__label}>
+              Строительный объем
+            </label>
+          </div>
+        </div>
+
+        <div
+          className={`${styles.form_container__block_gray_one} ${styles.form_container__three_grey_block}`}
+        >
+          <div className={`${styles.form__group} ${styles.field}`}>
+            <input
+              type="input"
+              className={styles.form__field}
+              placeholder="location"
+              name="location"
+              id="location"
+              value={inputData.location}
+              onChange={(event) =>
+                changeHandler(
+                  event,
+                  inputData,
+                  setInputData,
+                  setPreviewPhotos,
+                  setIsDropPhotoVisible,
+                  setPreviewPhotoAva,
+                  setIsPhotoAvaVisible
+                )
+              }
+              required
+            />
+            <label htmlFor="location" className={styles.form__label}>
+              Расположение: Город, улица, номер дома
+            </label>
+          </div>
+          <div className={`${styles.form__group} ${styles.field}`}>
+            <input
+              type="input"
+              className={styles.form__field}
+              placeholder="degreeParticipation"
+              name="degreeParticipation"
+              id="degreeParticipation"
+              value={inputData.degreeParticipation}
+              onChange={(event) =>
+                changeHandler(
+                  event,
+                  inputData,
+                  setInputData,
+                  setPreviewPhotos,
+                  setIsDropPhotoVisible,
+                  setPreviewPhotoAva,
+                  setIsPhotoAvaVisible
+                )
+              }
+              required
+            />
+            <label htmlFor="degreeParticipation" className={styles.form__label}>
+              Степень участия
+            </label>
+          </div>
+          <div className={`${styles.form__group} ${styles.field}`}>
+            <input
+              type="input"
+              className={styles.form__field}
+              placeholder="statusObject"
+              name="statusObject"
+              id="statusObject"
+              value={inputData.statusObject}
+              onChange={(event) =>
+                changeHandler(
+                  event,
+                  inputData,
+                  setInputData,
+                  setPreviewPhotos,
+                  setIsDropPhotoVisible,
+                  setPreviewPhotoAva,
+                  setIsPhotoAvaVisible
+                )
+              }
+              required
+            />
+            <label htmlFor="statusObject" className={styles.form__label}>
+              Статус объекта (например «Дом сдан»)
+            </label>
+          </div>
+          <div className={`${styles.form__group} ${styles.field}`}>
+            <input
+              type="input"
+              className={styles.form__field}
+              placeholder="customer"
+              name="customer"
+              id="customer"
+              value={inputData.customer}
+              onChange={(event) =>
+                changeHandler(
+                  event,
+                  inputData,
+                  setInputData,
+                  setPreviewPhotos,
+                  setIsDropPhotoVisible,
+                  setPreviewPhotoAva,
+                  setIsPhotoAvaVisible
+                )
+              }
+              required
+            />
+            <label htmlFor="customer" className={styles.form__label}>
+              Заказчик
+            </label>
+          </div>
+
+          <div>
+            <div>
+              <div className={`${styles.form__group} ${styles.field}`}>
+                <input
+                  type="input"
+                  className={styles.form__field}
+                  placeholder="customer"
+                  name="customer"
+                  id="customer"
+                  value={inputData.customer}
+                  onChange={(event) =>
+                    changeHandler(
+                      event,
+                      inputData,
+                      setInputData,
+                      setPreviewPhotos,
+                      setIsDropPhotoVisible,
+                      setPreviewPhotoAva,
+                      setIsPhotoAvaVisible
+                    )
+                  }
+                  required
+                />
+                <label htmlFor="customer" className={styles.form__label}>
+                  Заказчик
+                </label>
+              </div>
+              <div className={`${styles.form__group} ${styles.field}`}>
+                <input
+                  type="input"
+                  className={styles.form__field}
+                  placeholder="customer"
+                  name="customer"
+                  id="customer"
+                  value={inputData.customer}
+                  onChange={(event) =>
+                    changeHandler(
+                      event,
+                      inputData,
+                      setInputData,
+                      setPreviewPhotos,
+                      setIsDropPhotoVisible,
+                      setPreviewPhotoAva,
+                      setIsPhotoAvaVisible
+                    )
+                  }
+                  required
+                />
+                <label htmlFor="customer" className={styles.form__label}>
+                  Заказчик
+                </label>
+              </div>
+            </div>
+            <div>
+              <div className={`${styles.form__group} ${styles.field}`}>
+                <input
+                  type="input"
+                  className={styles.form__field}
+                  placeholder="customer"
+                  name="customer"
+                  id="customer"
+                  value={inputData.customer}
+                  onChange={(event) =>
+                    changeHandler(
+                      event,
+                      inputData,
+                      setInputData,
+                      setPreviewPhotos,
+                      setIsDropPhotoVisible,
+                      setPreviewPhotoAva,
+                      setIsPhotoAvaVisible
+                    )
+                  }
+                  required
+                />
+                <label htmlFor="customer" className={styles.form__label}>
+                  Заказчик
+                </label>
+              </div>
+              <div className={`${styles.form__group} ${styles.field}`}>
+                <input
+                  type="input"
+                  className={styles.form__field}
+                  placeholder="customer"
+                  name="customer"
+                  id="customer"
+                  value={inputData.customer}
+                  onChange={(event) =>
+                    changeHandler(
+                      event,
+                      inputData,
+                      setInputData,
+                      setPreviewPhotos,
+                      setIsDropPhotoVisible,
+                      setPreviewPhotoAva,
+                      setIsPhotoAvaVisible
+                    )
+                  }
+                  required
+                />
+                <label htmlFor="customer" className={styles.form__label}>
+                  Заказчик
+                </label>
+              </div>
+            </div>
+          </div>
+          <div className={`${styles.form__group} ${styles.field}`}>
+            <input
+              type="input"
+              className={styles.form__field}
+              placeholder="awards"
+              name="awards"
+              id="awards"
+              value={inputData.awards}
+              onChange={(event) =>
+                changeHandler(
+                  event,
+                  inputData,
+                  setInputData,
+                  setPreviewPhotos,
+                  setIsDropPhotoVisible,
+                  setPreviewPhotoAva,
+                  setIsPhotoAvaVisible
+                )
+              }
+              required
+            />
+            <label htmlFor="awards" className={styles.form__label}>
+              Награды
+            </label>
+          </div>
         </div>
 
         <div className={styles.form_container__button_block}>
