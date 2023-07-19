@@ -69,6 +69,12 @@ module.exports = {
       linkToPublication: {
         type: Sequelize.STRING,
       },
+      publicationTwo: {
+        type: Sequelize.STRING,
+      },
+      linkToPublicationTwo: {
+        type: Sequelize.STRING,
+      },
       awards: {
         type: Sequelize.STRING,
       },

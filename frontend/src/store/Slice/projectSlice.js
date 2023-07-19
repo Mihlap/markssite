@@ -76,6 +76,11 @@ export const fetchProject = (formattedData, setInputData) => async (dispatch) =>
       floors: "",
       altitude: "",
       constructionVolume: "",
+      location: "",
+      degreeParticipation: "",
+      statusObject: "",
+      customer: "",
+      awards: "",
     });
     dispatch(getFetchForm()); // Добавлен этот вызов для получения обновленных данных после успешной отправки формы
   });

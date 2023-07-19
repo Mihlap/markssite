@@ -49,6 +49,8 @@ module.exports = (sequelize, DataTypes) => {
     customer: DataTypes.STRING,
     publication: DataTypes.STRING,
     linkToPublication: DataTypes.STRING,
+    publicationTwo: DataTypes.STRING,
+    linkToPublicationTwo: DataTypes.STRING,
     awards: DataTypes.STRING,
     imageOpen: DataTypes.STRING,
     textBlock: DataTypes.TEXT,
