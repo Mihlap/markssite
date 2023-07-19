@@ -1,8 +1,9 @@
 @import '../../App.css';
 
+
 .slider_item {
-    width: 100%;
-    height: 100%;
+    width: 29rem;
+    height: 24rem;
     border-radius: 1rem;
     overflow: hidden;
     display: flex;
@@ -12,7 +13,7 @@
 }
 
 .slider_item_content {
-    padding: 20px 0px;
+    padding: 1rem 0rem;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -20,7 +21,7 @@
 }
 
 .slider_image_wrapper {
-    height: 346px;
+    height: 100%;
     width: 100%;
     overflow: hidden;
     border-radius: 0px 0px 1rem 1rem;
@@ -33,6 +34,43 @@
     object-fit: cover;
     transition: 0.2s;
     border-radius: 16px;
+}
+
+.container__selectCompetencies {
+    display: flex;
+    background: var(--white-F6F6F6);
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 100%;
+    padding-left: 0;
+}
+
+.countryCity_monthYear {
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    padding-top: 0.5rem;
+    width: 98%;
+}
+
+.container__countryCity {
+    color: var(--black-4E4E4E);
+    font-family: var(--font-raleway);
+    font-size: 0.625rem;
+    font-style: normal;
+    font-weight: var(--fw-400);
+    line-height: normal;
+}
+
+.container__monthYear {
+    color: var(--unnamed, #A7A7A7);
+    text-align: right;
+    font-family: var(--font-raleway);
+    font-size: 0.625rem;
+    font-style: normal;
+    font-weight: var(--fw-400);
+    line-height: normal;
 }
 
 .slider_subject {

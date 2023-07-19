@@ -2,7 +2,7 @@
 import { Link } from "react-router-dom";
 import styles from './SliderItem.module.css';
 
-const Slideritem = ({ title, src, text, id }) => {
+const Slideritem = ({ title, src, descriptionArticle, id }) => {
 
   return (
     <div className={`${styles.slider_item}${styles.swiper_slide}`}>
@@ -29,7 +29,7 @@ const Slideritem = ({ title, src, text, id }) => {
       </div>
       <div className={styles.slider_item_content}>
         <h1 className={styles.slider_subject}>{title}</h1>
-        <span className={styles.slider_text}>{text}</span>
+        <span className={styles.slider_text}>{descriptionArticle}</span>
       </div>
     </div>
   );

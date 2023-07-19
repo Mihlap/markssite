@@ -37,7 +37,7 @@ export default function SwiperContainer({ article }) {
                 <Slideritem
                   title={item.title}
                   src={`${Host}/images/${item.imageTitle}`}
-                  text={item.descriptionArticle}
+                  descriptionArticle={item.descriptionArticle}
                   id={item.link}
                 />
               </SwiperSlide>
