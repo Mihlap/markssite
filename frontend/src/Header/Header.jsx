@@ -136,7 +136,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
         });
       } else {
         e.preventDefault();
-      }
+     }
     } else {
       el.scrollLeft += e.deltaY;
     }
@@ -221,8 +221,8 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
                   index === 0 ? styles.card_item_1 : styles.card_item_2
                 }
               >
-                <div
-                //  to={el.link}
+                <Link
+                 to={el.link}
                  >
                   <div className={styles.card_img}>
                     <img
@@ -231,15 +231,15 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
                       alt={el.imageTitle}
                     />
                   </div>
-                </div>
+                </Link>
                 <div className={styles.card_text_container}>
                   <h3 className={styles.card_text_heading}>{el.title}</h3>
                   <span className={styles.card_text_description}>
                     {el.descriptionArticle}
                   </span>
                 </div>
-                <div
-                //  to={el.link}
+                <Link
+                 to={el.link}
                   className={styles.card_button}
                   >
                   <svg
@@ -258,7 +258,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
                       strokeLinecap="square"
                     />
                   </svg>
-                </div>
+                </Link>
               </div>
             ))}
         </div>
@@ -329,7 +329,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
                 <div className={styles.wrapper_container_item_card}>
                   <img
                     className={styles.container__imageTitle}
-                    src={`${Host}/images/imageAdd/${
+                    src={`${Host}/images/${
                       el.imageProject ? el.imageProject : el.imageTitle
                     }`}
                     alt={el.imageProject ? el.imageProject : el.imageTitle}
