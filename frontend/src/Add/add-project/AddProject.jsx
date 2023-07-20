@@ -2,16 +2,19 @@ import React, { useEffect, useState } from "react";
 import styles from "./AddProject.module.scss";
 import FormAddProject from "./formAdd/FormAddProject";
 import { useDispatch, useSelector } from "react-redux";
-import { getFetchForm } from "../../store/Slice/projectSlice";
+import { deleteForm, getFetchForm } from "../../store/Slice/projectSlice";
 
 export default function AddProject() {
   const Host = process.env.REACT_APP_SERVER_HOST;
   const dispatch = useDispatch();
   const project = useSelector((state) => state.project.projects);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [modalDeleteId, setModalDeleteId] = useState(null);
   const [isCopied, setIsCopied] = useState(false);
   const [isonCopy, seticonCopy] = useState(false);
   const [copiedId, setCopiedId] = useState("");
+  const [deleteModalState, setDeleteModalState] = useState({});
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -21,11 +24,31 @@ export default function AddProject() {
     setIsModalOpen(false);
   };
 
+  const handleDeleteModalOpen = (id) => {
+    setDeleteModalState((prevState) => ({
+      ...prevState,
+      [id]: true,
+    }));
+  };
+
+const handleDeleteModalClose = (id) => {
+  setDeleteModalState((prevState) => {
+    const newState = { ...prevState };
+    delete newState[id];
+    return newState;
+  });
+};
+
   const handleCopyClick = (id) => {
     navigator.clipboard.writeText(id);
     setIsCopied(true);
     seticonCopy(true);
     setCopiedId(id);
+  };
+
+  const handleFormDelete = (formId) => {
+    dispatch(deleteForm(formId));
+    handleDeleteModalClose();
   };
 
   useEffect(() => {
@@ -120,15 +143,18 @@ export default function AddProject() {
                             alt="pfoto"
                           />
                           <div className={styles.del_block}>
-                          <button className={styles.buttom_del}>
-                            <label htmlfor="delete" className={styles.label}>
-                              <div className={`${styles.wrapper}`}>
-                                <div className={`${styles.lid}`}></div>
-                                <div className={`${styles.can}`}></div>
-                                <span>delete</span>
-                              </div>
-                            </label>
-                          </button>
+                            <button
+                              className={styles.buttom_del}
+                              onClick={() => handleDeleteModalOpen(el.id)}
+                            >
+                              <label htmlFor="delete" className={styles.label}>
+                                <div className={`${styles.wrapper}`}>
+                                  <div className={`${styles.lid}`}></div>
+                                  <div className={`${styles.can}`}></div>
+                                  <span>delete</span>
+                                </div>
+                              </label>
+                            </button>
                           </div>
                         </div>
                         <div className={styles.cart_project__content}>
@@ -165,11 +191,41 @@ export default function AddProject() {
                         </div>
                       </div>
                     </div>
+                    {/* Модальное окно подтверждения удаления */}
+                    {deleteModalState[el.id] && (
+                      <div className={styles.delete_modal_container}>
+                        <div className={styles.delete_modal_block}>
+                          <div className={styles.delete_modal_block__title}>
+                            Вы точно хотите удалить проект <br /> «{el.title}»
+                          </div>
+                          <p className={styles.delete_modal_block__text}>
+                            Удаленный проект нельзя будет вернуть
+                          </p>
+
+                          <div className={styles.button_block}>
+                            <button
+                              className={`${styles.button_block__cancel} ${styles.delete_modal_button_cancel}`}
+                              onClick={() => handleDeleteModalClose(el.id)}
+                            />
+                            <button
+                              className={`${styles.button_block__save} ${styles.delete_modal_button_delete}`}
+                              onClick={() => handleFormDelete(el.id)}
+                            />
+                          </div>
+
+                          {/* <button
+                            className={styles.delete_modal_close_button}
+                            onClick={handleDeleteModalClose}
+                          ></button> */}
+                        </div>
+                      </div>
+                    )}
                   </div>
                 );
               })}
           </div>
         </div>
+
       </div>
     </section>
   );
