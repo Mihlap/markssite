@@ -206,7 +206,7 @@
     &__copyMessage {
         position: absolute;
         bottom: 100%;
-        left: 86px;
+        left: 90px;
         background-color: var(--gray-959DA6);
         white-space: nowrap;
         color: #FFF;
@@ -263,17 +263,17 @@
 
     &__copyButton_img_copu_deffalt {
         position: absolute;
-        right: 21px;
+        right: 20px;
         width: 20px;
         height: 20px;
-        background-image: url("./icon/VectorCopy.png");
+        background-image: url("./icon/VectorCopy.svg");
         background-repeat: no-repeat;
     }
 
     &__copyButton_img_copu_ok {
         width: 20px;
         height: 20px;
-        background-image: url("./icon/Vector.png");
+        background-image: url("./icon/Vector.svg");
         background-repeat: no-repeat;
     }
 
@@ -282,8 +282,8 @@
 // стили помойного ведра 
 .del_block {
     position: absolute;
-        right: 70px;
-        bottom: 16px;
+    right: 70px;
+    bottom: 16px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -397,5 +397,103 @@
             opacity: 1;
         }
 
+    }
+}
+
+.delete_modal_container {
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.delete_modal_block {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    padding: 32px;
+    border-radius: 1rem;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    height: 32vh;
+    overflow-y: auto;
+
+    &__title {
+        color: #000;
+        font-family: var(--font-unbounded);
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 300;
+        line-height: 32px;
+        padding-bottom: 1rem;
+    }
+
+    &__text {
+        color: #000;
+        padding-bottom: 3rem;
+        font-family: var(--font-raleway);
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 24px;
+    }
+}
+
+.button_block {
+    display: flex;
+    gap: 7px;
+
+    &__save {
+        display: flex;
+        width: 231px;
+        padding: 16px 32px;
+        justify-content: center;
+        align-items: center;
+        border-radius: 66px;
+        background-color: var(--blue-75BBFD);
+        color: var(--white-F6F6F6);
+        border: none;
+
+        &::before {
+            content: "Удалить";
+            display: inline-block;
+            font-family: var(--font-raleway);
+            font-size: 1rem;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 24px;
+            margin-right: 8px;
+            /* Отступ между текстом и кнопкой */
+        }
+    }
+
+    &__cancel {
+        display: flex;
+        width: 231px;
+        padding: 16px 32px;
+        justify-content: center;
+        align-items: center;
+        border-radius: 66px;
+        background-color: var(--light-light-gray-EBECEE);
+        color: var(--black-1D2E43);
+        border: none;
+
+        &::before {
+            content: "Отменить";
+            display: inline-block;
+            font-family: var(--font-raleway);
+            font-size: 1rem;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 24px;
+            margin-right: 8px;
+            /* Отступ между текстом и кнопкой */
+        }
     }
 }
