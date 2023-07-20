@@ -471,6 +471,10 @@
             margin-right: 8px;
             /* Отступ между текстом и кнопкой */
         }
+
+        &:hover {
+            background-color: var(--dark-blue-389FFF);
+        }
     }
 
     &__cancel {
@@ -494,6 +498,10 @@
             line-height: 24px;
             margin-right: 8px;
             /* Отступ между текстом и кнопкой */
+        }
+
+        &:hover {
+            background-color: var(--light-gray-C0C5CB);
         }
     }
 }
