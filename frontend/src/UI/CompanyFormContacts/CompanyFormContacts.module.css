@@ -248,7 +248,7 @@
   }
 
   .form_left_main {
-    width: 80vw;
+    width: 80%;
     padding: 2rem 1rem 2rem 1rem;
   }
 
@@ -265,7 +265,7 @@
   .form_form_wrapper {
     padding-top: 32px;
     padding-bottom: 20px;
-  }
+   }
 
   .line {
     width: 84vw;
@@ -281,6 +281,10 @@
   .agreement  {
     width: 80vw;
     padding-top: 1.5rem;
+  }
+
+  .input_task_form_contacts {
+   width: 100%;
   }
  
  

@@ -717,7 +717,7 @@
 
 /* стили мобильной версии  */
 
-@media screen and (min-width: 200px) and (max-width: 768px) {
+@media screen and (min-width: 200px) and (max-width: 767px) {
 
   .underSlider_text_wrapper {
     padding-top: 26rem;
@@ -958,13 +958,13 @@
   }
 
   .slider_card_wrapper {
-    display: flex;
-    padding-left: 1rem;
+   display: flex;
+   padding-left: 1rem;
     padding-top: 1.5rem;
   }
 
   .slide_container_item_stuff {
-    min-width: 20.18rem;
+    max-width: 19.81rem;
     height: 100%;
     margin-right: 1rem;
   }
