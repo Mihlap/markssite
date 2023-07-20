@@ -1,34 +1,41 @@
+import { useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwipeCore, { Navigation, Pagination, Autoplay } from "swiper";
-
 import "swiper/css";
-// import "swiper/css/navigation";
-// import "swiper/css/pagination";
+import "swiper/css/navigation";
+import "swiper/css/pagination";
 import Slideritem from "./SliderItem";
-import styles from "./SwiperContainer.module.css";
+import styles from "./SwiperContainer.css";
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 
 export default function SwiperContainer({ article }) {
+  const [currentIndexContainer, setCurrentIndexContainer] = useState(0);
+  const swiperContainerRef = useRef(null);
   SwipeCore.use([Navigation, Pagination, Autoplay]);
 
+  const handleContainerClick = (index) => {
+    setCurrentIndexContainer(index);
+    if (swiperContainerRef.current && swiperContainerRef.current.slideTo) {
+      swiperContainerRef.current.slideTo(index);
+    }
+  };
+
   return (
-    <>
+    <div className="swiper_container_wrapper">
       <Swiper
-        pagination={{
-          clickable: true,
-          dynamicBullets: true,
-        }}
-        slidesPerView={1}
+         slidesPerView={1}
         spaceBetween={20}
         effect={"fade"}
         loop={true}
         speed={300}
-        // autoplay={{
-        //   delay: 7000,
-        //   disableOnInteraction: false,
-        // }}
-        className={styles.swiper_container_articles}
+        className="swiper_container_articles"
+        onSlideChange={(swiper) => setCurrentIndexContainer(swiper.realIndex)}
+        onSwiper={(swiper) => {
+          if (swiperContainerRef.current === null) {
+            swiperContainerRef.current = swiper;
+          }
+        }}
       >
         <div className={styles.swiper_wrapper}>
           {article && article.map((item) => {
@@ -43,12 +50,20 @@ export default function SwiperContainer({ article }) {
               </SwiperSlide>
             );
           })}
-          <div className={styles.swiperPagination}>
-            <div className={styles.swiperPaginationBullet}></div>
-            <div className={styles.swiperPaginationBulletActive}></div>
-          </div>
         </div>
       </Swiper>
-    </>
+      <div className="swiper_pagination_container">
+        {article &&
+          article.map((_, index) => (
+            <button
+              key={index}
+              className={`swiper_pagination_bullet_container ${
+                currentIndexContainer === index ? "active" : ""
+              }`}
+              onClick={() => handleContainerClick(index)}
+            />
+          ))}
+      </div>
+    </div>
   );
 }
