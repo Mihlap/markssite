@@ -21,12 +21,12 @@ export default function FormAddProject({ setIsModalOpen }) {
   const [previewPhotoAva, setPreviewPhotoAva] = useState([]);
 
   const [previewPhotoOpen, setPreviewPhotoOpen] = useState([]);
-  
+
   const [isDropPhotoVisible, setIsDropPhotoVisible] = useState(true);
   const [isPhotoAvaVisible, setIsPhotoAvaVisible] = useState(true);
-  
+
   const [isPhotoOpenVisible, setIsPhotoOpenVisible] = useState(true);
-  
+
   const [selectedRadio, setSelectedRadio] = useState("28,28");
   const [inputData, setInputData] = useState({
     title: "",
@@ -53,6 +53,7 @@ export default function FormAddProject({ setIsModalOpen }) {
     linkToPublicationTwo: "",
     awards: "",
     imageOpen: "",
+    textBlock: "",
   });
 
   // функция Удаление фото из массива превью
@@ -89,9 +90,8 @@ export default function FormAddProject({ setIsModalOpen }) {
       inputData,
       setInputData,
       setIsPhotoOpenVisible
-    )
-  }
-
+    );
+  };
 
   // функция отправки формы на Redux
   const submitHandler = async (e) => {
@@ -139,6 +139,7 @@ export default function FormAddProject({ setIsModalOpen }) {
       linkToPublicationTwo: "",
       awards: "",
       imageOpen: "",
+      textBlock: "",
     });
     setIsModalOpen(false);
   };
@@ -950,6 +951,37 @@ export default function FormAddProject({ setIsModalOpen }) {
               </div>
             </div>
           ))}
+        </div>
+
+        <div className={styles.form_container__description_text}>
+          <textarea
+            className={styles.form_container__textarea}
+            name="textBlock"
+            id="textBlock"
+            cols="30"
+            rows="10"
+            placeholder="Дополнительный текстовый блок"
+            value={inputData.textBlock}
+            onChange={(event) =>
+              changeHandler(
+                event,
+                inputData,
+                setInputData,
+                setPreviewPhotos,
+                setIsDropPhotoVisible,
+                setPreviewPhotoAva,
+                setIsPhotoAvaVisible,
+                setPreviewPhotoOpen,
+                setIsPhotoOpenVisible
+              )
+            }
+          ></textarea>
+          <label
+            htmlFor="textBlock"
+            className={styles.form_container__textarea_label}
+          >
+            Текстовый блок
+          </label>
         </div>
 
         <div className={styles.form_container__button_block}>

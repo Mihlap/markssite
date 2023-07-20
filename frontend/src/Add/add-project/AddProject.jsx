@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./AddProject.module.scss";
 import FormAddProject from "./formAdd/FormAddProject";
 import { useDispatch, useSelector } from "react-redux";
-import { getFetchForm } from "../../store/Slice/projectSlice";
+import { deleteForm, getFetchForm } from "../../store/Slice/projectSlice";
 
 export default function AddProject() {
   const Host = process.env.REACT_APP_SERVER_HOST;
@@ -27,6 +27,11 @@ export default function AddProject() {
     seticonCopy(true);
     setCopiedId(id);
   };
+
+    const handleFormDelete = (formId) => {
+      dispatch(deleteForm(formId));
+    };
+
 
   useEffect(() => {
     dispatch(getFetchForm());
@@ -120,15 +125,18 @@ export default function AddProject() {
                             alt="pfoto"
                           />
                           <div className={styles.del_block}>
-                          <button className={styles.buttom_del}>
-                            <label htmlfor="delete" className={styles.label}>
-                              <div className={`${styles.wrapper}`}>
-                                <div className={`${styles.lid}`}></div>
-                                <div className={`${styles.can}`}></div>
-                                <span>delete</span>
-                              </div>
-                            </label>
-                          </button>
+                            <button
+                              className={styles.buttom_del}
+                              onClick={() => handleFormDelete(el.id)}
+                            >
+                              <label htmlFor="delete" className={styles.label}>
+                                <div className={`${styles.wrapper}`}>
+                                  <div className={`${styles.lid}`}></div>
+                                  <div className={`${styles.can}`}></div>
+                                  <span>delete</span>
+                                </div>
+                              </label>
+                            </button>
                           </div>
                         </div>
                         <div className={styles.cart_project__content}>

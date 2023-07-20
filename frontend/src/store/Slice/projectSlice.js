@@ -35,9 +35,11 @@ const projectSlice = createSlice({
 });
 
 export const {
-    fetchProjectStart,
-    fetchProjectSuccess,
-    fetchProjectFailure,
+  fetchProjectStart,
+  fetchProjectSuccess,
+  fetchProjectFailure,
+  deleteProjectSuccess,
+  deleteProjectFailure,
 } = projectSlice.actions;
 
 
@@ -88,6 +90,7 @@ for (const key in formattedData) {
       linkToPublicationTwo: "",
       awards: "",
       imageOpen: [],
+      textBlock: "",
     });
     dispatch(getFetchForm()); // Добавлен этот вызов для получения обновленных данных после успешной отправки формы
   });
@@ -104,6 +107,15 @@ export const getFetchForm = () => async (dispatch) => {
    dispatch(fetchProjectSuccess(response.data));
   } catch (error) {
     dispatch(fetchProjectFailure(error.message));
+  }
+};
+
+export const deleteForm = (id) => async (dispatch) => {
+  try {
+    await axios.delete(`${serverHost}/api-project/deletezapros/${id}`);
+    dispatch(deleteProjectSuccess(id));
+  } catch (error) {
+    dispatch(deleteProjectFailure(error.message));
   }
 };
 
