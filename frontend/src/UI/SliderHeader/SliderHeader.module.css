@@ -9,7 +9,14 @@
   display: none;
 }
 
-/* Стили для мобильной версии сайта блока NavBar начинаются тут */
+/* Стили для планшетной версии сайта блока SliderHeader начинаются тут */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .logo {
+    padding-left: 3.44rem;
+  }
+}
+
+/* Стили для мобильной версии сайта блока SliderHeader начинаются тут */
 @media only screen and (max-width: 700px) {
   .item img {
    height: 30px;

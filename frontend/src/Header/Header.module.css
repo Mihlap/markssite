@@ -509,8 +509,82 @@ svg path {
   display: none;
 }
 
+/* Стили для планшетной версии сайта блока Header начинаются тут */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+
+  .header_desctop_block {
+    padding-left: 3.69rem;
+    padding-top: 5rem;
+  }
+  .most {
+    display: none;
+  }
+
+  .card_container {
+   padding: 2.5rem 3.44rem 0rem 3.44rem;
+  }
+  
+  .card_item_1 {
+    width: 100%;
+    height: 100%;
+    flex-grow: 1;
+    padding-left: 0vw;
+  }
+  
+  .card_item_2 {
+    margin-top: 0rem;
+    margin-left: 2vw;
+    padding-right: 0vw;
+    height: 100%;
+    width: 100%;
+   }
+  
+  .card_img img{
+    width: 100%;
+    height: 100%;
+    border-radius: 1rem;
+   }
+  
+  
+ .card_text_container {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0rem;
+  }
+  
+  .card_text_description {
+    padding-top: 0.25rem;
+  }
+  
+  .card_text_description svg{
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+  }
+
+  .names_contents {
+    padding-top: 5.5rem;
+    margin-bottom: 2.5rem;
+    padding-right: 7.1rem;
+    font-size: 40px;
+    line-height: 48px;
+   }
+  
+   .name_11 {
+    font-family: var(--font-unbounded);
+    font-style: normal;
+    font-weight: var(--fw-400);
+    font-size: 12px;
+    line-height: 64px;
+    margin-right: 16px;
+  }
+  
+
+}
+
 /* Стили для мобильной версии сайта блока NavBar начинаются тут */
-@media screen and (max-width: 700px) {
+@media screen and (max-width: 767px) {
   .main {
     min-width: 0px;
   }
