@@ -6,7 +6,7 @@ module.exports = {
  
       await queryInterface.bulkInsert('Projects', [
         {
-          title: "Многофункциональный111111111 комплекс, Нагатинская пойма",
+          title: "Многофункциональный Нагатинская пойма",
           selectCompetencies: JSON.stringify([
             { value: "Архитектура", label: "Архитектура" },
             { value: "BIM", label: "BIM" },

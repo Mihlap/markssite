@@ -1,9 +1,9 @@
 const express = require('express');
 // eslint-disable-next-line
+const path = require("path");
+const fs = require("fs");
 const { Project } = require("../db/models");
 const fileMiddleware = require('../middleware/file');
-// const path = require('path');
-// const fs = require('fs');
 
 const router = express.Router();
 
@@ -59,6 +59,7 @@ router.post(
         linkToPublicationTwo: req.body.linkToPublicationTwo,
         awards: req.body.awards,
         imageOpen: imageOpens,
+        textBlock: req.body.textBlock,
       });
 
       res.status(200).json({ message: 'Данные успешно сохранены' });
@@ -68,6 +69,47 @@ router.post(
     }
   },
 );
+
+router.delete('/deletezapros/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const post = await Project.findByPk(id);
+
+    // Удаление фотографий из imageTitle
+    const imageNames = post.imageTitle.split(', ');
+    imageNames.forEach((imageName) => {
+      const imagePath = path.join(__dirname, '..', 'images/imageAdd', imageName);
+      fs.unlinkSync(imagePath);
+    });
+
+    // Удаление фотографий из imageProject
+    const projectImageNames = post.imageProject.split(', ');
+    projectImageNames.forEach((imageName) => {
+      const imagePath = path.join(__dirname, '..', 'images/imageAdd', imageName);
+      fs.unlinkSync(imagePath);
+    });
+
+    // Удаление фотографии из imageOpen
+    if (post.imageOpen) {
+      const imagePath = path.join(__dirname, '..', 'images/imageAdd', post.imageOpen);
+      fs.unlinkSync(imagePath);
+    }
+
+    // Удаление фотографии из imageClose
+    // if (post.imageClose) {
+    //   const imagePath = path.join(__dirname, '..', 'images/imageAdd', post.imageClose);
+    //   fs.unlinkSync(imagePath);
+    // }
+
+    // Удаление поста
+    await Project.destroy({ where: { id } });
+    res.sendStatus(200);
+  } catch (e) {
+    console.log(e);
+    res.sendStatus(500);
+  }
+});
+
 
 
 module.exports = router;
