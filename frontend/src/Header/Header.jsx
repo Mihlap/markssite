@@ -13,7 +13,7 @@ import SliderHeader from "../UI/SliderHeader/SliderHeader";
 import VideoPlayer from "../UI/Videoplayer/VideoPlayer";
 import Mapbox3D from "../UI/Map3D/Mapbox3D";
 import SliderMobile from "../UI/SliderHeader/SliderMobile";
-import actively from "./img/actively.png";
+import actively from "./img/actively.svg";
 import { getFetchForm } from "../store/Slice/projectSlice";
 import { getFetchFormArticle } from "../store/Slice/articleSlice";
 import styles from "./Header.module.css";
@@ -201,8 +201,10 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
           to={`/admin/${data}`}
           onClick={() => closeNavbarHandler()}
         >
-          <div className={styles.preview_title}>Режим предпросмотра</div>
           <img src={actively} alt="icon" />
+          <div className={styles.preview_title}>
+            Вернуться в кабинет редактора
+          </div>
         </NavLink>
       ) : null}
       <div className={styles.video_block}>
@@ -226,9 +228,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
       <div className={styles.container_main}>
         <SliderHeader />
         <div className={styles.swiper_container}>
-          <SwiperContainer
-          article={article}
-          />
+          <SwiperContainer article={article} />
         </div>
         <div className={styles.show_container}></div>
         <div className={styles.card_container}>
@@ -240,9 +240,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
                   index === 0 ? styles.card_item_1 : styles.card_item_2
                 }
               >
-                <Link
-                 to={el.link}
-                 >
+                <Link to={el.link}>
                   <div className={styles.card_img}>
                     <img
                       className={index === 0 ? styles.img_1 : styles.img_2}
@@ -257,10 +255,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
                     {el.descriptionArticle}
                   </span>
                 </div>
-                <Link
-                 to={el.link}
-                  className={styles.card_button}
-                  >
+                <Link to={el.link} className={styles.card_button}>
                   <svg
                     className={styles.card_button_link}
                     width="40"
@@ -309,7 +304,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
         Проекты
       </div>
       <div className={styles.swiper_progect_container}>
-        <SwiperContainerProgect project={project}/>
+        <SwiperContainerProgect project={project} />
       </div>
       <div className={styles.main_project}>
         <Swiper
