@@ -26,8 +26,8 @@ const BlockHeader = React.memo(() => {
   
       ScrollTrigger.create({
         trigger: text,
-        start: 'bottom bottom-=15%',
-        end: 'top bottom+=10%',
+        start: 'bottom bottom-=20%',
+        end: 'top bottom+=15%',
         onUpdate: (self) => {
           // const scrollDistance = self.start - self.scroll();
           const scrollDelta = self.getVelocity() * 100;

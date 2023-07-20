@@ -5,7 +5,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import SliderItemProject from "./SliderItemProject";
-import "../Swiper-project/SwiperContainerProgect.css";
+import "./SwiperContainerProgect.css";
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 
@@ -23,9 +23,8 @@ const SwiperContainerProgect = ({ project }) => {
     Инженерия: "#90B734",
   };
 
-
   const handlePageClick = (index) => {
-    setCurrentIndex(index)
+    setCurrentIndex(index);
     if (swiperRef.current && swiperRef.current.slideTo) {
       swiperRef.current.slideTo(index);
     }
@@ -39,18 +38,19 @@ const SwiperContainerProgect = ({ project }) => {
         effect={"fade"}
         loop={true}
         speed={300}
-        // autoplay={{
-        //   delay: 7000,
-        //   disableOnInteraction: false,
-        // }}
         className="swiper_container_project"
         onSlideChange={(swiper) => setCurrentIndex(swiper.realIndex)}
+        onSwiper={(swiper) => {
+          if (swiperRef.current === null) {
+            swiperRef.current = swiper;
+          }
+        }}
       >
         <div className="swiper_wrapper">
           {project &&
             project.map((item) => {
               return (
-                <SwiperSlide key={item.id} ref={swiperRef}>
+                <SwiperSlide key={item.id}>
                   <SliderItemProject
                     title={item.title}
                     src={`${Host}/images/${
@@ -59,73 +59,73 @@ const SwiperContainerProgect = ({ project }) => {
                     text={item.text}
                     id={item.link}
                     selectCompetencies={(() => {
-                        try {
-                          const selectCompetencies = JSON.parse(
-                            item.selectCompetencies
-                          );
-                          return selectCompetencies.map((competency) => (
-                            <div
-                              key={competency.value}
-                              className="div_el_selectCompetencies"
-                              style={{
-                                color: colors[competency.value],
-                                borderColor: colors[competency.value],
-                                border: "1px solid",
-                                padding: "3px 6px",
-                                borderRadius: "34px",
-                              }}
-                            >
-                              {competency.label}
-                            </div>
-                          ));
-                        } catch (error) {
-                          if (
-                            typeof item.selectCompetencies === "string" &&
-                            item.selectCompetencies.includes(",")
-                          ) {
-                            return item.selectCompetencies
-                              .split(",")
-                              .map((value) => {
-                                const label = value.trim();
-                                return (
-                                  <div
-                                    key={value}
-                                    className="div_el_selectCompetencies"
-                                    style={{
-                                      color: colors[value],
-                                      borderColor: colors[value],
-                                      border: "1px solid",
-                                      padding: "3px 6px",
-                                      borderRadius: "34px",
-                                    }}
-                                  >
-                                    {label}
-                                  </div>
-                                );
-                              });
-                          }
-                          return null;
+                      try {
+                        const selectCompetencies = JSON.parse(
+                          item.selectCompetencies
+                        );
+                        return selectCompetencies.map((competency) => (
+                          <div
+                            key={competency.value}
+                            className="div_el_selectCompetencies"
+                            style={{
+                              color: colors[competency.value],
+                              borderColor: colors[competency.value],
+                              border: "1px solid",
+                              padding: "3px 6px",
+                              borderRadius: "34px",
+                            }}
+                          >
+                            {competency.label}
+                          </div>
+                        ));
+                      } catch (error) {
+                        if (
+                          typeof item.selectCompetencies === "string" &&
+                          item.selectCompetencies.includes(",")
+                        ) {
+                          return item.selectCompetencies
+                            .split(",")
+                            .map((value) => {
+                              const label = value.trim();
+                              return (
+                                <div
+                                  key={value}
+                                  className="div_el_selectCompetencies"
+                                  style={{
+                                    color: colors[value],
+                                    borderColor: colors[value],
+                                    border: "1px solid",
+                                    padding: "3px 6px",
+                                    borderRadius: "34px",
+                                  }}
+                                >
+                                  {label}
+                                </div>
+                              );
+                            });
                         }
-                      })()}
-                      countryCity={item.countryCity}
-                      monthYear={item.monthYear}
-                      >
-                </SliderItemProject>
+                        return null;
+                      }
+                    })()}
+                    countryCity={item.countryCity}
+                    monthYear={item.monthYear}
+                  />
                 </SwiperSlide>
               );
             })}
         </div>
       </Swiper>
-        <div className="swiper_pagination">
-          {project &&
-            project.map((_, index) => (
-              <button
-                 key={index}
-                className={`swiper_pagination_bullet
-                ${currentIndex === index ? "active" : ""}`}
-                onClick={() => handlePageClick(index)}
-              />
-            ))}
+      <div className="swiper_pagination">
+        {project &&
+          project.map((_, index) => (
+            <button
+              key={index}
+              className={`swiper_pagination_bullet ${
+                currentIndex === index ? "active" : ""
+              }`}
+              onClick={() => handlePageClick(index)}
+            />
+          ))}
       </div>
     </div>
   );

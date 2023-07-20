@@ -41,18 +41,22 @@ export default function Company() {
   const [countHuman, setCountHuman] = useState(0);
   const [countProject, setCountProject] = useState(0);
   const [swiper, setSwiper] = useState(null);
+  const [currentIndexCompany, setCurrentIndexCompany] = useState(0);
+  const swiperCompanyRef = useRef(null);
 
   const [showCards, setShowCards] = useState(false);
   const [activeButton, setActiveButton] = useState("Руководство");
   const [isModalOpen, setIsModalOpen] = useState(false);
-    
-  const dispatch = useDispatch();
-  const { selectedCard, category, staff, loading, error } = useSelector((state) => state.staff);
 
-    const blockSlider = useRef(null);
-    const nameCompanyRef = useRef(null);
-    const thisBlockRef = useRef(null);
- 
+  const dispatch = useDispatch();
+  const { selectedCard, category, staff, loading, error } = useSelector(
+    (state) => state.staff
+  );
+
+  const blockSlider = useRef(null);
+  const nameCompanyRef = useRef(null);
+  const thisBlockRef = useRef(null);
+
   const countDepartment = useSelector((state) => state.counter.countDepartment);
   const countGap = useSelector((state) => state.counter.countGap);
   const countScient = useSelector((state) => state.counter.countScient);
@@ -67,7 +71,7 @@ export default function Company() {
   const isMobile = windowWidth <= 767;
   const symbol = "•";
   const Host = process.env.REACT_APP_SERVER_HOST;
-  
+
   useEffect(() => {
     function handleResize() {
       setWindowWidth(window.innerWidth);
@@ -81,10 +85,10 @@ export default function Company() {
   }, []);
 
   useEffect(() => {
-     dispatch(selectCard(null));
+    dispatch(selectCard(null));
     dispatch(fetchCategoryStaff(category));
     setShowCards(true);
-    }, [dispatch, category, error]);
+  }, [dispatch, category, error]);
 
   const handleButtonClick = (category, selectedCardId) => {
     if (selectedCardId) {
@@ -184,27 +188,31 @@ export default function Company() {
     }
     // window.addEventListener("scroll", handleScroll);
     return () => {
-
       if (nameCompanyRef.current && thisBlockRef.current) {
         window.removeEventListener("scroll", handleScroll);
       }
-
     };
   }, []);
 
-  // if (error) {
-  //   return (
-  //     <div>
-  //       {" "}
-  //       <Error error={error.message} />
-  //     </div>
-  //   );
-  // }
-  // if (loading) {
-  //   return <LoadingCircle />;
-  // }
+  const handlePCardCompanyClick = (index) => {
+    setCurrentIndexCompany(index);
+    if (swiperCompanyRef.current && swiperCompanyRef.current.slideTo) {
+      swiperCompanyRef.current.slideTo(index);
+    }
+  };
 
-  
+  if (error) {
+    return (
+      <div>
+        {" "}
+        <Error error={error.message} />
+      </div>
+    );
+  }
+  if (loading) {
+    return <LoadingCircle />;
+  }
+
   return (
     <div className={styles.company_main}>
       <Company_Slider />
@@ -379,9 +387,9 @@ export default function Company() {
             onSwiper={setSwiper}
             slidesPerView="auto"
             spaceBetween={0}
-            pagination={{
-              clickable: true,
-            }}
+            // pagination={{
+            //   clickable: true,
+            // }}
             className={styles.my_swiper_button_group}
             touch="true"
           >
@@ -508,19 +516,19 @@ export default function Company() {
                 onClick={() => handleButtonClick(category, el.id)}
               >
                 <div className={styles.wrapper_container_item_stuff}>
-                    <img
-                      className={styles.container__img_stuff}
-                      src={`${Host}/images/${el.img}`}
-                      alt={el.img}
-                    />
-                 </div>
-                   <div className={styles.container__item_name_stuff}>
-                    {el.name}
-                  </div>
-                  <div className={styles.container__item_position_stuff}>
-                    {el.position}
-                  </div>
-                </li>
+                  <img
+                    className={styles.container__img_stuff}
+                    src={`${Host}/images/${el.img}`}
+                    alt={el.img}
+                  />
+                </div>
+                <div className={styles.container__item_name_stuff}>
+                  {el.name}
+                </div>
+                <div className={styles.container__item_position_stuff}>
+                  {el.position}
+                </div>
+              </li>
             ))}
           {isModalOpen && selectedCard && (
             <Modal
@@ -582,7 +590,7 @@ export default function Company() {
                     <div className={styles.modal}>
                       <img
                         className={styles.modal_img_stuff}
-                         src={`${Host}/images/${selectedCard.img}`}
+                        src={`${Host}/images/${selectedCard.img}`}
                         alt={selectedCard.img}
                       />
                     </div>
@@ -597,24 +605,34 @@ export default function Company() {
                     {selectedCard.about}
                   </div>
                   <div className={styles.modal_about_stuff1}>
-                  <div className={styles.modal_about_stuff_symbol}>{symbol}</div>
-                   {selectedCard.about1}
+                    <div className={styles.modal_about_stuff_symbol}>
+                      {symbol}
+                    </div>
+                    {selectedCard.about1}
                   </div>
                   <div className={styles.modal_about_stuff2}>
-                  <div className={styles.modal_about_stuff_symbol}>{symbol}</div>
-                   {selectedCard.about2}
+                    <div className={styles.modal_about_stuff_symbol}>
+                      {symbol}
+                    </div>
+                    {selectedCard.about2}
                   </div>
                   <div className={styles.modal_about_stuff3}>
-                  <div className={styles.modal_about_stuff_symbol}>{symbol}</div>
-                   {selectedCard.about3}
+                    <div className={styles.modal_about_stuff_symbol}>
+                      {symbol}
+                    </div>
+                    {selectedCard.about3}
                   </div>
                   <div className={styles.modal_about_stuff4}>
-                  <div className={styles.modal_about_stuff_symbol}>{symbol}</div>
-                   {selectedCard.about4}
+                    <div className={styles.modal_about_stuff_symbol}>
+                      {symbol}
+                    </div>
+                    {selectedCard.about4}
                   </div>
                   <div className={styles.modal_about_stuff5}>
-                  <div className={styles.modal_about_stuff_symbol}>{symbol}</div>
-                   {selectedCard.about5}
+                    <div className={styles.modal_about_stuff_symbol}>
+                      {symbol}
+                    </div>
+                    {selectedCard.about5}
                   </div>
                 </div>
               )}
@@ -627,9 +645,16 @@ export default function Company() {
           <Swiper
             className={styles.slider_card_container}
             loop={true}
-            slidesPerView={2}
-            spaceBetween={0}
+            slidesPerView={1.1}
+            spaceBetween={20}
+            effect={"fade"}
             touch="true"
+            onSlideChange={(swiper) => setCurrentIndexCompany(swiper.realIndex)}
+            onSwiper={(swiper) => {
+              if (swiperCompanyRef.current === null) {
+                swiperCompanyRef.current = swiper;
+              }
+            }}
           >
             {staff?.map((el) => (
               <SwiperSlide
@@ -655,6 +680,18 @@ export default function Company() {
           </Swiper>
         </div>
       )}
+          <div className="swiper_pagination" style={{paddingLeft: '1rem', paddingRight: '1rem'}}>
+            {staff &&
+              staff.map((_, index) => (
+                <button
+                  key={index}
+                  className={`swiper_pagination_bullet ${
+                    currentIndexCompany === index ? "active" : ""
+                  }`}
+                  onClick={() => handlePCardCompanyClick(index)}
+                />
+              ))}
+          </div>
       {!isMobile && (
         <div className={styles.slider_card_wrapper}>
           <Swiper
