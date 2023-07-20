@@ -1,14 +1,18 @@
+import { useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwipeCore, { Navigation, Pagination, Autoplay } from "swiper";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import SliderItemProject from "./SliderItemProject";
-import styles from "./SwiperContainerProgect.module.css";
+import "../Swiper-project/SwiperContainerProgect.css";
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 
 const SwiperContainerProgect = ({ project }) => {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const swiperRef = useRef(null);
+
   SwipeCore.use([Navigation, Pagination, Autoplay]);
 
   const colors = {
@@ -19,14 +23,18 @@ const SwiperContainerProgect = ({ project }) => {
     Инженерия: "#90B734",
   };
 
+
+  const handlePageClick = (index) => {
+    setCurrentIndex(index)
+    if (swiperRef.current && swiperRef.current.slideTo) {
+      swiperRef.current.slideTo(index);
+    }
+  };
+
   return (
-    <>
+    <div className="swiper_container">
       <Swiper
-        pagination={{
-          clickable: true,
-          dynamicBullets: true,
-        }}
-        slidesPerView={1}
+        slidesPerView={1.1}
         spaceBetween={20}
         effect={"fade"}
         loop={true}
@@ -35,13 +43,14 @@ const SwiperContainerProgect = ({ project }) => {
         //   delay: 7000,
         //   disableOnInteraction: false,
         // }}
-        className={styles.swiper_container_progect}
+        className="swiper_container_project"
+        onSlideChange={(swiper) => setCurrentIndex(swiper.realIndex)}
       >
-        <div className={styles.swiper_wrapper}>
+        <div className="swiper_wrapper">
           {project &&
             project.map((item) => {
               return (
-                <SwiperSlide key={item.id}>
+                <SwiperSlide key={item.id} ref={swiperRef}>
                   <SliderItemProject
                     title={item.title}
                     src={`${Host}/images/${
@@ -57,7 +66,7 @@ const SwiperContainerProgect = ({ project }) => {
                           return selectCompetencies.map((competency) => (
                             <div
                               key={competency.value}
-                              className={styles.div_el_selectCompetencies}
+                              className="div_el_selectCompetencies"
                               style={{
                                 color: colors[competency.value],
                                 borderColor: colors[competency.value],
@@ -81,7 +90,7 @@ const SwiperContainerProgect = ({ project }) => {
                                 return (
                                   <div
                                     key={value}
-                                    className={styles.div_el_selectCompetencies}
+                                    className="div_el_selectCompetencies"
                                     style={{
                                       color: colors[value],
                                       borderColor: colors[value],
@@ -105,13 +114,20 @@ const SwiperContainerProgect = ({ project }) => {
                 </SwiperSlide>
               );
             })}
-          <div className={styles.swiperPagination}>
-            <div className={styles.swiperPaginationBullet}></div>
-            <div className={styles.swiperPaginationBulletActive}></div>
-          </div>
         </div>
       </Swiper>
-    </>
+        <div className="swiper_pagination">
+          {project &&
+            project.map((_, index) => (
+              <button
+                 key={index}
+                className={`swiper_pagination_bullet
+                ${currentIndex === index ? "active" : ""}`}
+                onClick={() => handlePageClick(index)}
+              />
+            ))}
+      </div>
+    </div>
   );
 };
 
