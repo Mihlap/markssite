@@ -213,10 +213,12 @@ const handleDeleteModalClose = (id) => {
                             />
                           </div>
 
-                          {/* <button
-                            className={styles.delete_modal_close_button}
-                            onClick={handleDeleteModalClose}
-                          ></button> */}
+                          <button
+                            className={
+                              styles.project_components_admin__close_button
+                            }
+                            onClick={() => handleDeleteModalClose(el.id)}
+                          ></button>
                         </div>
                       </div>
                     )}
