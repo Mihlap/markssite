@@ -37,6 +37,7 @@ const logouthandler = async () => {
       navigate("/login"); // Перенаправьте пользователя на страницу входа
       setNavBarOpen(true);
       setShowFooter(true);
+      window.location.reload();
     }
   } catch (error) {
     console.error("Ошибка при выходе из системы", error);

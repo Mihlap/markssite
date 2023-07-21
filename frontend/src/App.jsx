@@ -70,6 +70,8 @@ export default function App() {
         });
 
         if (response.status === 200) {
+
+          console.log(response.status);
           setUser(response.data.name);
           setIsUserChecked(true);
           setNavBarOpen(false); // скрываем навбар
@@ -87,6 +89,7 @@ export default function App() {
     }
   }, [isUserChecked]);
 
+console.log(isUserChecked);
   // таймаут для прелоудера на сайте
   // setTimeout(() => {
   //   setLoading(false);
