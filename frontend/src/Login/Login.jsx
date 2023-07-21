@@ -31,6 +31,7 @@ export default function Login({ setUser }) {
         console.log("тут");
         setUser(response.data.name);
         navigate("/");
+        window.location.reload();
       }
     } catch (error) {
       setErrorDiv(true);

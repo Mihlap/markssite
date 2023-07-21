@@ -9,8 +9,6 @@ export default function AddProject() {
   const dispatch = useDispatch();
   const project = useSelector((state) => state.project.projects);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [modalDeleteId, setModalDeleteId] = useState(null);
   const [isCopied, setIsCopied] = useState(false);
   const [isonCopy, seticonCopy] = useState(false);
   const [copiedId, setCopiedId] = useState("");
@@ -149,7 +147,13 @@ const handleDeleteModalClose = (id) => {
                             >
                               <label htmlFor="delete" className={styles.label}>
                                 <div className={`${styles.wrapper}`}>
-                                  <div className={`${styles.lid}`}></div>
+                                  <div className={`${styles.lid}`}>
+                                    <div className={styles.container_vedro}>
+                                      <div className={styles.triangle_left}></div>
+                                      <div className={styles.rectangle}></div>
+                                      <div className={styles.triangle_right}></div>
+                                    </div>
+                                  </div>
                                   <div className={`${styles.can}`}></div>
                                   <span>delete</span>
                                 </div>
