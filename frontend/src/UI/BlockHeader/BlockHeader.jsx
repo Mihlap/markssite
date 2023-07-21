@@ -5,16 +5,54 @@ import { CSSPlugin } from 'gsap/CSSPlugin';
 import './index.scss';
 
 
-const BlockHeader = React.memo(() => {
+const BlockHeader = () => {
   const accordionsRef = useRef(null);
   
   gsap.registerPlugin(ScrollTrigger, CSSPlugin);
-
+  
   useEffect(() => {
+    const isMobileScreen = window.innerWidth < 700;
     const accordions = document.querySelectorAll('.accordion');
     let currentIndex = -1;
-  
-    accordions.forEach((accordion, index) => {
+
+    if (isMobileScreen) {
+      accordions.forEach((accordion, index) => {
+        const text = accordion.querySelector('.text_span');
+        text.classList.add('closed');
+             
+        gsap.set(text, {
+            maxHeight: 0,
+            overflow: 'hidden',
+            delay: 1,
+        });
+     
+        ScrollTrigger.create({
+          trigger: text,
+          start: 'bottom bottom-=15%',
+          end: 'top bottom+=10%',
+          onUpdate: (self) => {
+            if (self.direction === 1 && index > currentIndex) {
+              gsap.to(text, {
+                maxHeight: text.scrollHeight,
+                duration: 0.3,
+                pin: true,
+            });
+              accordion.classList.add('open');
+              currentIndex = index;
+            }
+          },
+          onLeaveBack: () => {
+            gsap.to(text, {
+              maxHeight: 0,
+              duration: 0.2,
+            });
+            accordion.classList.remove('open');
+            currentIndex = index - 1;
+          },
+        });
+      });
+    } else {
+      accordions.forEach((accordion, index) => {
       const text = accordion.querySelector('.text');
       text.classList.add('closed');
   
@@ -57,7 +95,10 @@ const BlockHeader = React.memo(() => {
         },
       });
     });
+  }
   }, []);
+
+
   
  return (
     <div className="wrapper">
@@ -135,7 +176,7 @@ const BlockHeader = React.memo(() => {
       <div className="spacer"></div>
     </div>
   );
-});
+};
 
 export default BlockHeader;
 
