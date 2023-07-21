@@ -322,8 +322,8 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
             1024: {
               slidesPerView: 2.3,
             },
-            768: {
-              slidesPerView: 1.4,
+            700: {
+              slidesPerView: 2.1,
             },
           }}
         >
