@@ -29,7 +29,9 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
   const sliderCardRef = useRef(null);
   const [enableVerticalScroll, setEnableVerticalScroll] = useState(true);
   const [isHorizontalScroll, setIsHorizontalScroll] = useState(false);
-  const [isScrollingHorizontal, setIsScrollingHorizontal] = useState(false);
+  const [isAtRightEdge, setIsAtRightEdge] = useState(false);
+  const [scrollingMode, setScrollingMode] = useState("vertical");
+ 
 
   const [loadingArticle, setLoadingArticle] = useState(false);
 
@@ -62,30 +64,37 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
       const rect = el.getBoundingClientRect();
       const isSliderInView = rect.top <= window.innerHeight && rect.bottom >= 0;
       setEnableVerticalScroll(!isSliderInView);
-
+  
       if (!loadingArticle) {
         if (isSliderInView && el.scrollLeft > 0) {
           setEnableVerticalScroll(false);
+          setIsHorizontalScroll(false); // Disable vertical scrolling
         } else if (
           !isSliderInView &&
           el.scrollLeft + el.clientWidth >= el.scrollWidth
         ) {
           setEnableVerticalScroll(true);
-          setIsScrollingHorizontal(false);
+          setIsHorizontalScroll(false);
         } else if (!isSliderInView && el.scrollLeft <= 0) {
           setEnableVerticalScroll(true);
-          setIsScrollingHorizontal(false);
+          setIsHorizontalScroll(false);
         } else if (
           !isSliderInView &&
           el.scrollLeft + el.clientWidth >= el.scrollWidth &&
           el.scrollTop + el.clientHeight >= el.scrollHeight
         ) {
           setEnableVerticalScroll(true);
-          setIsScrollingHorizontal(false);
+          setIsHorizontalScroll(false);
         }
       }
     }
+  
+    if (el) {
+      const isRightEdge = el.scrollLeft + el.clientWidth >= el.scrollWidth;
+      setIsAtRightEdge(isRightEdge);
+    }
   };
+  
 
   const onVerticalScroll = (e) => {
     const el = sliderCardRef.current;
@@ -113,22 +122,21 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
     const isAtBottom = el.scrollTop + el.clientHeight >= el.scrollHeight;
     const isAtLeftEdge = el.scrollLeft <= 0;
     const isAtTop = el.scrollTop <= 0;
-
+  
     if (
-      
       isScrollingRight &&
       isAtRightEdge &&
       isAtBottom &&
-      !isScrollingHorizontal
+      !isHorizontalScroll
     ) {
-      setIsHorizontalScroll(false); // Переключение в режим вертикальной прокрутки
+      setIsHorizontalScroll(false); // Horizontal scrolling has stopped
       el.scrollTo({
         top: el.scrollTop + e.deltaY,
         behavior: "smooth",
       });
     } else if (enableVerticalScroll && !isScrollingRight) {
       if (isAtLeftEdge && isAtTop) {
-        setIsHorizontalScroll(true); // Переключение в режим горизонтальной прокрутки
+        setIsHorizontalScroll(true); // Horizontal scrolling is in progress
         el.scrollLeft += e.deltaY;
       } else if (isAtLeftEdge && !isAtTop) {
         el.scrollTo({
@@ -139,17 +147,17 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
         isAtRightEdge &&
         isAtBottom &&
         e.deltaY < 0 &&
-        !isScrollingHorizontal
+        !isHorizontalScroll
       ) {
-        setIsHorizontalScroll(false); // Переключение в режим вертикальной прокрутки
+         setIsHorizontalScroll(false); // Allow vertical scrolling
         el.scrollLeft += e.deltaY;
       } else if (
         isAtRightEdge &&
         isAtBottom &&
         e.deltaY > 0 &&
-        !isScrollingHorizontal
+        !isHorizontalScroll
       ) {
-        setIsHorizontalScroll(true); // Переключение в режим горизонтальной прокрутки
+         setIsHorizontalScroll(true); // Disable vertical scrolling
         el.scrollTo({
           top: el.scrollTop + e.deltaY,
           behavior: "smooth",
@@ -161,6 +169,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
       el.scrollLeft += e.deltaY;
     }
   };
+  
 
   useEffect(() => {
     const el = sliderCardRef.current;
@@ -174,7 +183,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
         el.removeEventListener("scroll", handleScroll);
       };
     }
-  }, [loading, loadingArticle]);
+  }, [loading, loadingArticle, scrollingMode]);
 
   const closeNavbarHandler = () => {
     setNavBarOpen(false);
@@ -283,7 +292,9 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
           </div>
         </div>
         <div className={styles.most}>
-          <img className={styles.image_most} alt=""></img>
+          <img className={styles.image_most}
+           src="./assets/most.png"
+            alt=""></img>
         </div>
         <BlockHeader />
         {/* <Mapbox3D /> */}
@@ -341,7 +352,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
                 <div className={styles.wrapper_container_item_card}>
                   <img
                     className={styles.container__imageTitle}
-                    src={`${Host}/images/${
+                    src={`${Host}/images/imageAdd/${
                       el.imageProject ? el.imageProject : el.imageTitle
                     }`}
                     alt={el.imageProject ? el.imageProject : el.imageTitle}
