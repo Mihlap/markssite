@@ -5,7 +5,7 @@ import { CSSPlugin } from 'gsap/CSSPlugin';
 import './index.scss';
 
 
-const BlockHeader = React.memo(() => {
+const BlockHeader = () => {
   const accordionsRef = useRef(null);
   
   gsap.registerPlugin(ScrollTrigger, CSSPlugin);
@@ -176,7 +176,7 @@ const BlockHeader = React.memo(() => {
       <div className="spacer"></div>
     </div>
   );
-});
+};
 
 export default BlockHeader;
 
