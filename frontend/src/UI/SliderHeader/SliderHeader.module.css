@@ -10,10 +10,22 @@
 }
 
 /* Стили для планшетной версии сайта блока SliderHeader начинаются тут */
-@media screen and (min-width: 768px) and (max-width: 1024px) {
-  .logo {
-    padding-left: 3.44rem;
-  }
+@media screen and (min-width: 700px) and (max-width: 1024px) {
+  .item img {
+    height: 30px;
+    padding-left: 3rem;
+   }
+   .item_mobile img{
+     padding-left: 2.81rem;
+     height: 26px;
+   }
+   .icon_partner_phone {
+     padding-top: 40px;
+     display: block;
+   }
+      .logo {
+       padding-top: 40px;
+   }
 }
 
 /* Стили для мобильной версии сайта блока SliderHeader начинаются тут */

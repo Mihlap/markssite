@@ -67,6 +67,11 @@
   color: var(--black-1D2E43);
 }
 
+.video_block {
+  width: 100%;
+}
+
+
 .header_desctop_block {
   padding-left: 263px;
   padding-top: 80px;
@@ -382,10 +387,10 @@ svg path {
  
 
 .slider_container_item_card {
-  min-width: 29em;
-  min-height: 24rem;
-  /* margin-right: -1rem; */
- }
+  /* white-space: nowrap; */
+  max-width: 29em;
+  max-height: 24rem;
+}
 
 
 .wrapper_container_item_card {
@@ -510,13 +515,14 @@ svg path {
 }
 
 /* Стили для планшетной версии сайта блока Header начинаются тут */
-@media screen and (min-width: 768px) and (max-width: 1024px) {
+@media screen and (min-width: 700px) and (max-width: 1024px) {
 
   .header_desctop_block {
+    width: fit-content;
     padding-left: 3.69rem;
     padding-top: 5rem;
   }
-  .most {
+  .most, .icon_partner {
     display: none;
   }
 
@@ -579,12 +585,24 @@ svg path {
     line-height: 64px;
     margin-right: 16px;
   }
-  
+
+  .project_name {
+    padding: 5.5rem 2rem 2rem 3.37vw;
+    font-size: 32px;
+    line-height: 40px;
+    width: fit-content;
+  }
+  .main_project {
+    display: flex;
+    flex-direction: row;
+    padding-left: 3.37vw;
+    padding-bottom: 3.22rem;
+  }
 
 }
 
 /* Стили для мобильной версии сайта блока NavBar начинаются тут */
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 700px) {
   .main {
     min-width: 0px;
   }
