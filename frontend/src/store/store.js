@@ -5,6 +5,7 @@ import staffSlice from './Slice/StaffSlice';
 import counterSlice from './Slice/counterSlice';
 import authSlice from './Slice/authSlice';
 import articleSlice from "./Slice/articleSlice";
+import searchPublicationSlice from "./Slice/searchPublicationSlice";
 
 
 export default configureStore({
@@ -15,5 +16,6 @@ export default configureStore({
     counter: counterSlice,
     auth: authSlice,
     article: articleSlice,
+    searchPublicationSlice: searchPublicationSlice
   },
 });
