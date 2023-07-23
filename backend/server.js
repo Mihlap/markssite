@@ -5,11 +5,12 @@ const cors = require('cors');
 const path = require('path');
 const session = require('express-session');
 const FileStore = require('session-file-store')(session);
-const indexRouter = require('./routes/indexRouter');
-const authRouter = require('./routes/authRouter');
-const staffsRouter = require('./routes/staffsRouter');
-const projectRouter = require('./routes/projectRouter');
-const articleRouter = require('./routes/articleRouter');
+const indexRouter = require('./Routes/indexRouter');
+const authRouter = require('./Routes/authRouter');
+const staffsRouter = require('./Routes/staffsRouter');
+const projectRouter = require('./Routes/projectRouter');
+const articleRouter = require('./Routes/articleRouter');
+const searchRouter = require('./Routes/searchRouter');
 
 
 const app = express();
@@ -56,6 +57,7 @@ app.use('/api/auth', authRouter);
 app.use('/api-stuffs', staffsRouter);
 app.use('/api-project', projectRouter);
 app.use('/api-article', articleRouter);
+app.use('/search', searchRouter);
 
 app.listen(PORT, () => {
   console.log(`Старт server --->🔥 ${PORT} 🔥<---`);
