@@ -4,10 +4,9 @@ import FormAddProject from "./formAdd/FormAddProject";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteForm, getFetchForm } from "../../store/Slice/projectSlice";
 
-export default function AddProject() {
+export default function AddProject({ project }) {
   const Host = process.env.REACT_APP_SERVER_HOST;
   const dispatch = useDispatch();
-  const project = useSelector((state) => state.project.projects);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
   const [isonCopy, seticonCopy] = useState(false);
@@ -29,13 +28,13 @@ export default function AddProject() {
     }));
   };
 
-const handleDeleteModalClose = (id) => {
-  setDeleteModalState((prevState) => {
-    const newState = { ...prevState };
-    delete newState[id];
-    return newState;
-  });
-};
+  const handleDeleteModalClose = (id) => {
+    setDeleteModalState((prevState) => {
+      const newState = { ...prevState };
+      delete newState[id];
+      return newState;
+    });
+  };
 
   const handleCopyClick = (id) => {
     navigator.clipboard.writeText(id);
@@ -48,10 +47,6 @@ const handleDeleteModalClose = (id) => {
     dispatch(deleteForm(formId));
     handleDeleteModalClose();
   };
-
-  useEffect(() => {
-    dispatch(getFetchForm());
-  }, [dispatch]);
 
   useEffect(() => {
     if (isCopied) {
@@ -149,9 +144,13 @@ const handleDeleteModalClose = (id) => {
                                 <div className={`${styles.wrapper}`}>
                                   <div className={`${styles.lid}`}>
                                     <div className={styles.container_vedro}>
-                                      <div className={styles.triangle_left}></div>
+                                      <div
+                                        className={styles.triangle_left}
+                                      ></div>
                                       <div className={styles.rectangle}></div>
-                                      <div className={styles.triangle_right}></div>
+                                      <div
+                                        className={styles.triangle_right}
+                                      ></div>
                                     </div>
                                   </div>
                                   <div className={`${styles.can}`}></div>
@@ -231,7 +230,6 @@ const handleDeleteModalClose = (id) => {
               })}
           </div>
         </div>
-
       </div>
     </section>
   );
