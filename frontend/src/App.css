@@ -127,6 +127,16 @@ input[type="radio"]:checked {
   border-color: #007bff;
 }
 
+    /* Скрыть стрелки управления для input number */
+    input[type="number"]::-webkit-inner-spin-button,
+    input[type="number"]::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  
+    input[type="number"] {
+      -moz-appearance: textfield;
+    }
 /* Стили для мобильной версии сайта блока NavBar начинаются тут */
 @media screen and (max-width: 700px) {
   .body {

@@ -3,22 +3,29 @@ import { useDispatch, useSelector } from "react-redux";
 import styles from "./HomeAdmin.module.scss";
 import { getZaprosData, searchProgectMainPostzapros } from "../store/Slice/searchProjectMainSlice";
 
-export default function HomeAdmin() {
+export default function HomeAdmin({ projects }) {
   const [searchId, setSearchId] = useState(""); // Состояние для хранения введенного значения id
   const [errorMessage, setErrorMessage] = useState("");
   const [showError, setShowError] = useState(false);
   const [okMessage, setOkMessage] = useState("");
   const [showOk, setShowOk] = useState(false);
-  const projects = useSelector((state) => state.project.projects); // Получение массива проектов из Redux store
-  // const projectsArr = useSelector((state) => state.search.projects);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true); // Добавлено состояние для дизейблинга кнопки
+
   const dispatch = useDispatch();
 
-    // useEffect(() => {
-    //   dispatch(getZaprosData());
-    // }, [dispatch]);
   // Обработчик изменения значения в инпуте поиска
   const handleSearchChange = (event) => {
     setSearchId(event.target.value);
+
+    // Устанавливаем состояние дизейблинга кнопки в зависимости от того, пустое ли поле ввода
+    setIsButtonDisabled(event.target.value === "");
+  };
+
+  const handleKeyPress = (event) => {
+    // Проверяем, является ли нажатая клавиша клавишей "Enter" (код клавиши 13)
+    if (event.key === "Enter") {
+      filterProjectsById(); // Выполняем поиск
+    }
   };
 
   // Функция для фильтрации проектов по введенному id
@@ -60,17 +67,31 @@ export default function HomeAdmin() {
     <section className={styles.home_admin_section}>
       <div className={styles.home_admin_section__title}>Проекты</div>
 
-      <div>
-        <div>
-          <input
-            style={{ background: "orange" }}
-            type="number"
-            value={searchId}
-            onChange={handleSearchChange}
+      <div className={styles.home_admin_section__section}>
+        <div className={styles.home_admin_section__block_search}>
+          <div className={`${styles.form__group} ${styles.field}`}>
+            <input
+              type="number"
+              className={styles.form__field}
+              placeholder="idshnik"
+              name="idshnik"
+              id="idshnik"
+              value={searchId}
+              onChange={handleSearchChange}
+              onKeyPress={handleKeyPress}
+              required
+            />
+            <label htmlFor="idshnik" className={styles.form__label}>
+              Укажите id статьи
+            </label>
+          </div>
+          <button
+            className={styles.home_admin_section__button}
+            onClick={filterProjectsById}
+            disabled={isButtonDisabled}
           />
-          <button onClick={filterProjectsById}>Найти проект по ID</button>
         </div>
-        <div>
+        {/* <div>
           <div>
             <input
               style={{ background: "tomato" }}
@@ -80,7 +101,7 @@ export default function HomeAdmin() {
             />
             <button>добавить на главную</button>
           </div>
-        </div>
+        </div> */}
       </div>
       <div>{showError && <ErrorMessage message={errorMessage} />}</div>
       <div>{showOk && <OkMessage message={okMessage} />}</div>
@@ -103,6 +124,8 @@ export default function HomeAdmin() {
           </div>
         </div>
       </div> */}
+
+      <div></div>
     </section>
   );
 }
