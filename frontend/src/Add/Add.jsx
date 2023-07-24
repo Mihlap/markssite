@@ -13,13 +13,17 @@ import { getZaprosData } from "../store/Slice/searchProjectMainSlice";
 export default function Add({ user, setNavBarOpen, setShowFooter }) {
   const dispatch = useDispatch();
   const project = useSelector((state) => state.project.projects);
-  const projects = useSelector((state) => state.searchproject.projects);
+  const projectMain = useSelector((state) => state.searchproject.projects);
 
-    useEffect(() => {
-      dispatch(getFetchForm());
-      dispatch(getZaprosData());
-    }, [dispatch]);
-  console.log(projects);
+   useEffect(() => {
+     if (project.length === 0) {
+       dispatch(getFetchForm());
+     }
+     if (projectMain.length === 0) {
+       dispatch(getZaprosData());
+     }
+   }, [dispatch, project, projectMain]);
+  console.log(projectMain);
   return (
     <div className={styles.add_container}>
       <AddNavbar
@@ -28,7 +32,7 @@ export default function Add({ user, setNavBarOpen, setShowFooter }) {
         user={user}
       />
       <Routes>
-        <Route path="/" element={<HomeAdmin />} />
+        <Route path="/" element={<HomeAdmin projects={project} />} />
         <Route
           path="add-a-project"
           element={<AddProject user={user} project={project} />}
