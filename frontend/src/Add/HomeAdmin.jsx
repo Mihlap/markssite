@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./HomeAdmin.module.scss";
-import { setFoundObject } from "../store/Slice/searchPublicationSlice";
+import { searchPublicationOne, setFoundObject } from "../store/Slice/searchPublicationSlice";
 
 export default function HomeAdmin() {
   const [searchId, setSearchId] = useState(""); // Состояние для хранения введенного значения id
@@ -19,7 +19,8 @@ export default function HomeAdmin() {
     );
     if (filteredProject) {
       console.log("Найденный проект:", filteredProject);
-      dispatch(setFoundObject(filteredProject)); // Отправляем найденный объект в наш Slice
+      // dispatch(setFoundObject(filteredProject)); // Отправляем найденный объект в наш Slice
+      dispatch(searchPublicationOne(filteredProject)); // Отправляем найденный объект на сервер
     } else {
       console.log("Проект с таким id не найден");
     }

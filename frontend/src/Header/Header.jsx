@@ -219,14 +219,14 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
       <div className={styles.video_block}>
         <VideoPlayer />
       </div>
-      <div id="publications" className={styles.header_desctop_block}>
+      <div className={styles.header_desctop_block}>
         <h1 className={styles.desctop_title}>Награды и публикации</h1>
         <div className={styles.desctop_test}>
           Наша компания участвует в многочисленных выставках, конференциях
           <br /> и конкурсах. Предлагаем ознакомиться с некоторыми докладами
         </div>
       </div>
-      <div id="publications1" className={styles.header_block}>
+      <div className={styles.header_block}>
         <h1 className={styles.heading}>Награды проектов</h1>
         <p className={styles.heading_text}>
           Наша компания участвует в<br /> многочисленных выставках, конференциях
