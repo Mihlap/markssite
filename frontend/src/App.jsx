@@ -141,10 +141,10 @@ console.log(isUserChecked);
                   path="/winepark-article"
                   element={<WineParkArticles />}
                 />
-                <Route path="/badaevsky" element={<Badaevsky />} />
-                <Route path="/slava" element={<Slava />} />
+                {/* <Route path="/badaevsky" element={<Badaevsky />} /> */}
+                {/* <Route path="/slava" element={<Slava />} /> */}
                 <Route path="/prime-park" element={<PrimePark />} />
-                <Route path="/hotel-appart" element={<HotelAppart />} />
+                {/* <Route path="/hotel-appart" element={<HotelAppart />} /> */}
                 <Route path="/login" element={<Login setUser={setUser} />} />
                 <Route
                   path="/signup"

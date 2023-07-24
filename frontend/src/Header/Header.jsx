@@ -344,6 +344,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
               <SwiperSlide
                 onScroll={handleScroll}
                 key={el.id}
+                to={el.link}
                 id="slider_container_item_card"
                 className={`{styles.slider_container_item_card}
              ${isCustomSize ? styles.customSize : ""}`}

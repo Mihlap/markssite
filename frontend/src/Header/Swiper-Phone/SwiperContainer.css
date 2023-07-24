@@ -27,7 +27,7 @@
   .swiper_pagination_bullet_container {
     width: 20px;
     height: 4px;
-    border: 2px solid var(--light-light-gray-EBECEE);
+    border: 2px solid var(--light-gray-C0C5CB);
     background-color: var(--light-light-gray-EBECEE);
     margin: 0 5px;
     cursor: pointer;
