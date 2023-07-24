@@ -8,14 +8,18 @@ import AddArticles from "./add-articles/AddArticles";
 import AddCompany from "./add-about-the-company/AddCompany";
 import { useDispatch, useSelector } from "react-redux";
 import { getFetchForm } from "../store/Slice/projectSlice";
+import { getZaprosData } from "../store/Slice/searchProjectMainSlice";
 
 export default function Add({ user, setNavBarOpen, setShowFooter }) {
   const dispatch = useDispatch();
   const project = useSelector((state) => state.project.projects);
+  const projects = useSelector((state) => state.searchproject.projects);
 
     useEffect(() => {
       dispatch(getFetchForm());
+      dispatch(getZaprosData());
     }, [dispatch]);
+  console.log(projects);
   return (
     <div className={styles.add_container}>
       <AddNavbar
