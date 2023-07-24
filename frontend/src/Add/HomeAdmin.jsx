@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./HomeAdmin.module.scss";
 import { getZaprosData, searchProgectMainPostzapros } from "../store/Slice/searchProjectMainSlice";

@@ -19,6 +19,7 @@ import { getFetchFormArticle } from "../store/Slice/articleSlice";
 import styles from "./Header.module.css";
 import LoadingCircle from "../Loading/LoadingCircle";
 import Error from "../Loading/Error/Error";
+import { getZaprosData } from "../store/Slice/searchProjectMainSlice";
 
 SwiperCore.use([Navigation]);
 const Host = process.env.REACT_APP_SERVER_HOST;
@@ -37,14 +38,15 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
 
   const [data, setData] = useState(null);
   const { article, loading, error } = useSelector((state) => state.article);
-  const project = useSelector((state) => state.project.projects);
+  const project = useSelector((state) => state.searchproject.projects);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getFetchFormArticle());
-    dispatch(getFetchForm());
+    dispatch(getZaprosData());
   }, [dispatch]);
 
+  console.log("HEADER", project);
   useEffect(() => {
     const storedData = localStorage.getItem("selectedItem");
     setData(storedData);
