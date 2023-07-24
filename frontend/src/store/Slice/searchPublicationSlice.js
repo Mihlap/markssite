@@ -23,7 +23,7 @@ export const searchPublicationOne = (filteredObject) => async (dispatch) => {
   try {
        await axios.post(
          `${serverHost}/search/search-publication-one`,
-         filteredObject
+         { publication: filteredObject } // Оборачиваем filteredObject в объект
        );
 
     // Диспатчим какие-то дополнительные actions, если необходимо
