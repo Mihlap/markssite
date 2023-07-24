@@ -465,7 +465,7 @@ svg path {
 .container__selectCompetencies {
   display: flex;
   background: var(--white-F6F6F6);
-  display: flex;
+  justify-content: flex-end;
   flex-direction: row;
   flex-wrap: wrap;
   padding-left: 1rem;
