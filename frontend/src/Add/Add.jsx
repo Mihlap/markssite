@@ -31,7 +31,7 @@ export default function Add({ user, setNavBarOpen, setShowFooter }) {
         <Route path="/" element={<HomeAdmin />} />
         <Route
           path="add-a-project"
-          element={<AddProject project={project} />}
+          element={<AddProject user={user} project={project} />}
         />
         <Route path="add-a-articles" element={<AddArticles />} />
         <Route path="add-a-company" element={<AddCompany />} />

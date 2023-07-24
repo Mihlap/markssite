@@ -4,7 +4,8 @@ import FormAddProject from "./formAdd/FormAddProject";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteForm, getFetchForm } from "../../store/Slice/projectSlice";
 
-export default function AddProject({ project }) {
+export default function AddProject({ project, user }) {
+  console.log(user);
   const Host = process.env.REACT_APP_SERVER_HOST;
   const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -135,30 +136,37 @@ export default function AddProject({ project }) {
                             src={`${Host}/images/imageAdd/${firstPhoto}`}
                             alt="pfoto"
                           />
-                          <div className={styles.del_block}>
-                            <button
-                              className={styles.buttom_del}
-                              onClick={() => handleDeleteModalOpen(el.id)}
-                            >
-                              <label htmlFor="delete" className={styles.label}>
-                                <div className={`${styles.wrapper}`}>
-                                  <div className={`${styles.lid}`}>
-                                    <div className={styles.container_vedro}>
-                                      <div
-                                        className={styles.triangle_left}
-                                      ></div>
-                                      <div className={styles.rectangle}></div>
-                                      <div
-                                        className={styles.triangle_right}
-                                      ></div>
+                          {user === "obezyankaa" ||
+                          user === "Покемон" ||
+                          user === "покемон" ? (
+                            <div className={styles.del_block}>
+                              <button
+                                className={styles.buttom_del}
+                                onClick={() => handleDeleteModalOpen(el.id)}
+                              >
+                                <label
+                                  htmlFor="delete"
+                                  className={styles.label}
+                                >
+                                  <div className={`${styles.wrapper}`}>
+                                    <div className={`${styles.lid}`}>
+                                      <div className={styles.container_vedro}>
+                                        <div
+                                          className={styles.triangle_left}
+                                        ></div>
+                                        <div className={styles.rectangle}></div>
+                                        <div
+                                          className={styles.triangle_right}
+                                        ></div>
+                                      </div>
                                     </div>
+                                    <div className={`${styles.can}`}></div>
+                                    <span>delete</span>
                                   </div>
-                                  <div className={`${styles.can}`}></div>
-                                  <span>delete</span>
-                                </div>
-                              </label>
-                            </button>
-                          </div>
+                                </label>
+                              </button>
+                            </div>
+                          ) : null}
                         </div>
                         <div className={styles.cart_project__content}>
                           <span className={styles.cart_project__title}>

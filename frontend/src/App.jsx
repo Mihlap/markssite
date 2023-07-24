@@ -163,10 +163,10 @@ console.log(isUserChecked);
                       />
                     }
                   >
-                    <Route path="home" element={<Add />} />
+                    {/* <Route path="home" element={<Add />} />
                     <Route path="add-a-project" element={<AddProject />} />
                     <Route path="add-a-articles" element={<AddArticles />} />
-                    <Route path="add-a-company" element={<AddCompany />} />
+                    <Route path="add-a-company" element={<AddCompany />} /> */}
                   </Route>
                 ) : null}
               </Routes>
