@@ -3,34 +3,30 @@ import { useDispatch, useSelector } from "react-redux";
 import styles from "./HomeAdmin.module.scss";
 import { getZaprosData, searchProgectMainPostzapros } from "../store/Slice/searchProjectMainSlice";
 
-export default function HomeAdmin() {
+export default function HomeAdmin({ projects }) {
   const [searchId, setSearchId] = useState(""); // Состояние для хранения введенного значения id
   const [errorMessage, setErrorMessage] = useState("");
   const [showError, setShowError] = useState(false);
   const [okMessage, setOkMessage] = useState("");
   const [showOk, setShowOk] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true); // Добавлено состояние для дизейблинга кнопки
-  const projects = useSelector((state) => state.project.projects); // Получение массива проектов из Redux store
-  // const projectsArr = useSelector((state) => state.search.projects);
+
   const dispatch = useDispatch();
 
-  // useEffect(() => {
-  //   dispatch(getZaprosData());
-  // }, [dispatch]);
   // Обработчик изменения значения в инпуте поиска
-   const handleSearchChange = (event) => {
-     setSearchId(event.target.value);
+  const handleSearchChange = (event) => {
+    setSearchId(event.target.value);
 
-     // Устанавливаем состояние дизейблинга кнопки в зависимости от того, пустое ли поле ввода
-     setIsButtonDisabled(event.target.value === "");
+    // Устанавливаем состояние дизейблинга кнопки в зависимости от того, пустое ли поле ввода
+    setIsButtonDisabled(event.target.value === "");
   };
-  
-   const handleKeyPress = (event) => {
-     // Проверяем, является ли нажатая клавиша клавишей "Enter" (код клавиши 13)
-     if (event.key === "Enter") {
-       filterProjectsById(); // Выполняем поиск
-     }
-   };
+
+  const handleKeyPress = (event) => {
+    // Проверяем, является ли нажатая клавиша клавишей "Enter" (код клавиши 13)
+    if (event.key === "Enter") {
+      filterProjectsById(); // Выполняем поиск
+    }
+  };
 
   // Функция для фильтрации проектов по введенному id
   const filterProjectsById = () => {
@@ -128,6 +124,8 @@ export default function HomeAdmin() {
           </div>
         </div>
       </div> */}
+
+      <div></div>
     </section>
   );
 }
