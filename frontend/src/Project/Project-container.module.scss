@@ -1,8 +1,21 @@
 @import '../App.css';
 
+.project_main {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    width: 100%;
+}
+
+.project_button {
+    position: absolute;
+    top: 8vh;
+    margin-left: 1.69rem;
+}
+
 .section_project {
     padding-top: 5rem;
-    background-color: rgb(32,36,38);
+    background-color: rgb(32, 36, 38);
     color: aliceblue;
 
     &__block {
@@ -31,12 +44,12 @@
     &__title {
         width: 50%;
         /* Body Bold · 14 */
-            font-family: var(--font-raleway);
-            font-size: 14px;
-            font-style: normal;
-            font-weight: var(--fw-700);
-            line-height: 20px;
-            color: var(--black-4E4E4E);
+        font-family: var(--font-raleway);
+        font-size: 14px;
+        font-style: normal;
+        font-weight: var(--fw-700);
+        line-height: 20px;
+        color: var(--black-4E4E4E);
     }
 
     &__widget {
@@ -47,20 +60,20 @@
 
         div {
             font-family: var(--font-raleway);
-                font-size: 9px;
-                font-style: normal;
-                font-weight: 500;
-                line-height: normal;
+            font-size: 9px;
+            font-style: normal;
+            font-weight: 500;
+            line-height: normal;
         }
     }
 
     &__address {
         color: var(--gray-959DA6);
         font-family: var(--font-raleway);
-            font-size: 10px;
-            font-style: normal;
-            font-weight: var(--fw-400);
-            line-height: normal;
+        font-size: 10px;
+        font-style: normal;
+        font-weight: var(--fw-400);
+        line-height: normal;
     }
 
 

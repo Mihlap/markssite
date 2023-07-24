@@ -2,6 +2,11 @@ import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./Project-container.module.scss";
 import { getFetchForm } from '../store/Slice/projectSlice';
+import Company_Slider from "../UI/Company_Slider/Company_Slider";
+import "../UI/Company_Slider/Company_Slider.css";
+import { Link } from 'react-router-dom';
+import AllProjectsButton from '../UI/ButtonsProjects/AllProjectsButton';
+import '../UI/ButtonsProjects/AllProjectsButton.module.css';
 
 export default function Project() {
   const dispatch = useDispatch();
@@ -26,7 +31,14 @@ export default function Project() {
   console.log(project);
 
 return (
+  <div className={styles.project_main}>
+      <Company_Slider project={project} />
+    <div className={styles.project_button}>
+      <AllProjectsButton/> 
+      </div>
   <section className={styles.section_project}>
+    <div>
+    </div>
     <div className={styles.section_project__block}>
       {project &&
         project.map((el) => {
@@ -36,8 +48,13 @@ return (
             .map((comp) => comp.trim())
             .filter(Boolean);
           return (
-            <div className={styles.section_project__block_cart} key={el.id}>
+            <Link
+            to={el.link}
+            className={styles.section_project__block_cart}
+            key={el.id}
+            >
               <div className={styles.cart_project}>
+          
                 <div className={styles.cart_project__container}>
                   <img
                     className={styles.cart_project__img}
@@ -84,10 +101,11 @@ return (
                   </div>
                 </div>
               </div>
-            </div>
+            </Link>
           );
         })}
     </div>
   </section>
+  </div>
 );
 }
