@@ -117,7 +117,7 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen }) => {
             >
               <li>Проекты</li>
             </NavLink>
-            <Link
+            <NavLink
               exact="true"
               className={`${styles.navbar_item} ${
                 activeLink === "/publications" ? styles.active : ""
@@ -128,7 +128,7 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen }) => {
               duration={500}
             >
               <li>Публикации</li>
-            </Link>
+            </NavLink>
             <NavLink
               exact="true"
               className={`${styles.navbar_item} ${
