@@ -52,7 +52,8 @@ export const getZaprosData = () => async (dispatch) => {
     const response = await axios.get(
       `${serverHost}/search/search-project/getzapros`
     );
-    dispatch(fetchProjectSuccess(response.data)); // Dispatch success action with the fetched data
+    const dataFromResponse = response.data;
+    dispatch(fetchProjectSuccess(dataFromResponse)); // Dispatch success action with the fetched data
   } catch (error) {
     dispatch(fetchProjectFailure(error.message));
   }

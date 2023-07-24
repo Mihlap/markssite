@@ -38,7 +38,9 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
 
   const [data, setData] = useState(null);
   const { article, loading, error } = useSelector((state) => state.article);
-  const project = useSelector((state) => state.searchproject.projects);
+  const projects = useSelector((state) => state.searchproject.projects);
+ 
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -46,7 +48,6 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
     dispatch(getZaprosData());
   }, [dispatch]);
 
-  console.log("HEADER", project);
   useEffect(() => {
     const storedData = localStorage.getItem("selectedItem");
     setData(storedData);
@@ -203,7 +204,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
   if (loading) {
     return <LoadingCircle />;
   }
-
+ 
   return (
     <main className={styles.header}>
       {user ? (
@@ -317,7 +318,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
         Проекты
       </div>
       <div className={styles.swiper_progect_container}>
-        <SwiperContainerProgect project={project} />
+        <SwiperContainerProgect projects={projects} />
       </div>
       <div className={styles.main_project}>
         <Swiper
@@ -340,13 +341,13 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
             },
           }}
         >
-          {project?.map((el, index) => {
-            const isCustomSize = el.hasCustomSize;
+          {projects?.map((project, index) => {
+            const isCustomSize = project.hasCustomSize;
             return (
               <SwiperSlide
                 onScroll={handleScroll}
-                key={el.id}
-                to={el.link}
+                key={project.id}
+                to={project.link}
                 id="slider_container_item_card"
                 className={`{styles.slider_container_item_card}
              ${isCustomSize ? styles.customSize : ""}`}
@@ -356,18 +357,18 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
                   <img
                     className={styles.container__imageTitle}
                     src={`${Host}/images/imageAdd/${
-                      el.imageProject ? el.imageProject : el.imageTitle
+                      project.project.imageProject ? project.project.imageProject : project.project.imageTitle
                     }`}
-                    alt={el.imageProject ? el.imageProject : el.imageTitle}
+                    alt={project.project.imageProject ? project.project.imageProject : project.project.imageTitle}
                   />
                 </div>
                 <div className={styles.title_selectCompetencies}>
-                  <div className={styles.container__title}>{el.title}</div>
+                  <div className={styles.container__title}>{project.project.title}</div>
                   <div className={styles.container__selectCompetencies}>
                     {(() => {
                       try {
                         const selectCompetencies = JSON.parse(
-                          el.selectCompetencies
+                          project.project.selectCompetencies
                         );
                         return selectCompetencies.map((competency) => (
                           <div
@@ -386,10 +387,10 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
                         ));
                       } catch (error) {
                         if (
-                          typeof el.selectCompetencies === "string" &&
-                          el.selectCompetencies.includes(",")
+                          typeof project.project.selectCompetencies === "string" &&
+                          project.project.selectCompetencies.includes(",")
                         ) {
-                          return el.selectCompetencies
+                          return project.project.selectCompetencies
                             .split(",")
                             .map((value) => {
                               const label = value.trim();
@@ -417,10 +418,10 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
                 </div>
                 <div className={styles.countryCity_monthYear}>
                   <div className={styles.container__countryCity}>
-                    {el.countryCity}
+                    {project.project.countryCity}
                   </div>
                   <div className={styles.container__monthYear}>
-                    {el.monthYear}
+                    {project.project.monthYear}
                   </div>
                 </div>
               </SwiperSlide>
