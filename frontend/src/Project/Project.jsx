@@ -10,7 +10,7 @@ import '../UI/ButtonsProjects/AllProjectsButton.module.css';
 
 export default function Project() {
   const dispatch = useDispatch();
-  const project = useSelector((state) => state.project.projects);
+  const projects = useSelector((state) => state.project.projects);
 
 
   const Host = process.env.REACT_APP_SERVER_HOST;
@@ -28,11 +28,11 @@ export default function Project() {
      Инженерия: "#90B734",
    };
   
-  console.log(project);
+  console.log(projects);
 
 return (
   <div className={styles.project_main}>
-      <Company_Slider project={project} />
+      <Company_Slider projects={projects} />
     <div className={styles.project_button}>
       <AllProjectsButton/> 
       </div>
@@ -40,8 +40,7 @@ return (
     <div>
     </div>
     <div className={styles.section_project__block}>
-      {project &&
-        project.map((el) => {
+      {projects && projects?.map((el) => {
           // const firstPhoto = el.imageTitle.split(", ")[0];
           const competencies = el.selectCompetencies
             .split(",")
@@ -59,8 +58,8 @@ return (
                   <img
                     className={styles.cart_project__img}
                     style={{
-                      height: `${project.style?.split(",")[0]}rem`,
-                      width: `${project.style?.split(",")[1]}rem`,
+                      height: `${projects.style?.split(",")[0]}rem`,
+                      width: `${projects.style?.split(",")[1]}rem`,
                     }}
                     src={`${Host}/images/imageAdd/${el.imageProject}`}
                     alt="pfoto"

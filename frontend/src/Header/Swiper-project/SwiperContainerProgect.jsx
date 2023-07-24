@@ -9,7 +9,7 @@ import "./SwiperContainerProgect.css";
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 
-const SwiperContainerProgect = ({ project }) => {
+const SwiperContainerProgect = ({ projects }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const swiperRef = useRef(null);
 
@@ -47,21 +47,20 @@ const SwiperContainerProgect = ({ project }) => {
         }}
       >
         <div className="swiper_wrapper">
-          {project &&
-            project.map((item) => {
+          {projects && projects?.map((project) => {
               return (
-                <SwiperSlide key={item.id}>
+                <SwiperSlide key={project.id}>
                   <SliderItemProject
-                    title={item.title}
-                    src={`${Host}/images/${
-                      item.imageProject ? item.imageProject : item.imageTitle
+                    title={project.project.title}
+                    src={`${Host}/images/imageAdd/${
+                      project.project.imageProject ? project.project.imageProject : project.project.imageTitle
                     }`}
-                    text={item.text}
-                    id={item.link}
+                    text={project.project.text}
+                    id={project.project.link}
                     selectCompetencies={(() => {
                       try {
                         const selectCompetencies = JSON.parse(
-                          item.selectCompetencies
+                          project.project.selectCompetencies
                         );
                         return selectCompetencies.map((competency) => (
                           <div
@@ -80,10 +79,10 @@ const SwiperContainerProgect = ({ project }) => {
                         ));
                       } catch (error) {
                         if (
-                          typeof item.selectCompetencies === "string" &&
-                          item.selectCompetencies.includes(",")
+                          typeof project.project.selectCompetencies === "string" &&
+                          project.project.selectCompetencies.includes(",")
                         ) {
-                          return item.selectCompetencies
+                          return project.project.selectCompetencies
                             .split(",")
                             .map((value) => {
                               const label = value.trim();
@@ -107,8 +106,8 @@ const SwiperContainerProgect = ({ project }) => {
                         return null;
                       }
                     })()}
-                    countryCity={item.countryCity}
-                    monthYear={item.monthYear}
+                    countryCity={project.project.countryCity}
+                    monthYear={project.project.monthYear}
                   />
                 </SwiperSlide>
               );
@@ -116,8 +115,7 @@ const SwiperContainerProgect = ({ project }) => {
         </div>
       </Swiper>
       <div className="swiper_pagination">
-        {project &&
-          project.map((_, index) => (
+        {projects && projects?.map((_, index) => (
             <button
               key={index}
               className={`swiper_pagination_bullet ${

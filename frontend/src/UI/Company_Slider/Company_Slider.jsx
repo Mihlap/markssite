@@ -3,7 +3,7 @@ import Slider from "react-slick";
 import "./Company_Slider.css";
 
 
-const Company_Slider = ({ project }) => {
+const Company_Slider = ({project }) => {
   const sliderRef = useRef(null);
   const [width, setWidth] = useState(22);
   const [activeIndex, setActiveIndex] = useState(0);
