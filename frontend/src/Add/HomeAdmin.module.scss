@@ -36,13 +36,14 @@
         margin-top: 2rem;
         width: 14rem;
         border-radius: 4.125rem;
-        border: 1px solid var(--gray-959-da-6, #959DA6);
-        background: var(--light-light-gray-ebecee, #EBECEE);
+        border: none;
+        // background-color: var(--blue-light-BADDFE);
+        background-color: var(--dark-blue-389FFF);
         
 
         &::before {
             content: "Добавить на главную";
-            color: var(--gray-959DA6);
+            color: var(--white-F6F6F6);
             font-variant-numeric: lining-nums proportional-nums;
             font-family: var(--font-raleway);
             font-size: 1rem;
@@ -52,7 +53,7 @@
         }
 
                  &[disabled] {
-                     opacity: 0.6;
+                     opacity: 0.3;
                      /* Уменьшение непрозрачности кнопки */
                      pointer-events: none;
                      /* Отключение событий для дизейбл кнопки */
