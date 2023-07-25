@@ -3,14 +3,14 @@ import { useDispatch, useSelector } from "react-redux";
 import styles from "./HomeAdmin.module.scss";
 import { getZaprosData, searchProgectMainPostzapros } from "../store/Slice/searchProjectMainSlice";
 
-export default function HomeAdmin({ projects }) {
+export default function HomeAdmin({ projects, projectMain }) {
   const [searchId, setSearchId] = useState(""); // Состояние для хранения введенного значения id
   const [errorMessage, setErrorMessage] = useState("");
   const [showError, setShowError] = useState(false);
   const [okMessage, setOkMessage] = useState("");
   const [showOk, setShowOk] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true); // Добавлено состояние для дизейблинга кнопки
-
+  const [savedId, setSavedId] = useState(null);
   const dispatch = useDispatch();
 
   // Обработчик изменения значения в инпуте поиска
@@ -29,15 +29,27 @@ export default function HomeAdmin({ projects }) {
   };
 
   // Функция для фильтрации проектов по введенному id
-  const filterProjectsById = () => {
+  // Функция для фильтрации проектов по введенному id
+  const filterProjectsById = async () => {
     const filteredProject = projects.find(
       (project) => project.id === parseInt(searchId, 10)
     );
     if (filteredProject) {
       console.log("Найденный проект:", filteredProject);
-      dispatch(searchProgectMainPostzapros(filteredProject, setSearchId)); // Отправляем найденный объект на сервер
-      setOkMessage("Проект добавлен");
-      setShowOk(true);
+
+      try {
+        await dispatch(
+          searchProgectMainPostzapros(filteredProject, setSearchId)
+        ); // Отправляем найденный объект на сервер
+
+        // Установим id сохраненного объекта в состояние savedId
+        setSavedId(filteredProject.id);
+
+        setOkMessage("Проект добавлен");
+        setShowOk(true);
+      } catch (error) {
+        console.error("Ошибка при сохранении проекта:", error);
+      }
     } else {
       console.log("Проект с таким id не найден");
       setErrorMessage("Проект с таким id не найден");
@@ -62,7 +74,7 @@ export default function HomeAdmin({ projects }) {
   const OkMessage = ({ message }) => {
     return <div style={{ color: "green" }}>{message}</div>;
   };
-  // console.log(projectsArr);
+  console.log(projectMain.map((el) => el.project.title));
   return (
     <section className={styles.home_admin_section}>
       <div className={styles.home_admin_section__title}>Проекты</div>
@@ -76,7 +88,7 @@ export default function HomeAdmin({ projects }) {
               placeholder="idshnik"
               name="idshnik"
               id="idshnik"
-              value={searchId}
+              value={savedId !== null ? savedId : searchId}
               onChange={handleSearchChange}
               onKeyPress={handleKeyPress}
               required
@@ -124,8 +136,6 @@ export default function HomeAdmin({ projects }) {
           </div>
         </div>
       </div> */}
-
-      <div></div>
     </section>
   );
 }

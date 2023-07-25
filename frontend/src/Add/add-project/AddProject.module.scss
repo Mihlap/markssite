@@ -154,7 +154,6 @@
 
 }
 
-.section_project__block_cart {}
 
 .cart_project {
 
@@ -306,36 +305,11 @@
             top: -1px;
             width: 19px;
             height: 2px;
-            // background: white;
             border: solid 1px var(--white-F6F6F6);
             background-color: var(--white-F6F6F6);
             transition: all .2s ease-in-out;
             transform-origin: left;
             transform: rotate(0deg) translateY(0px);
-
-
-
-            // &:before,
-            // &:after {
-            //     content: '';
-            //     position: absolute;
-            // }
-
-            // &:before {
-            //     width: 7px;
-            //     height: 2px;
-            //     top: -3px;
-            //     left: 5px;
-            //     background: var(--white-F6F6F6);
-            // }
-
-            // &:after {
-            //     width: 6px;
-            //     height: 4px;
-            //     top: -3px;
-            //     left: 7px;
-            //     background-color: red;
-            // }
         }
 
                    .container_vedro {
