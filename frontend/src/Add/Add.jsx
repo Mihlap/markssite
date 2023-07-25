@@ -16,13 +16,9 @@ export default function Add({ user, setNavBarOpen, setShowFooter }) {
   const projectMain = useSelector((state) => state.searchproject.projects);
 
    useEffect(() => {
-     if (project.length === 0) {
        dispatch(getFetchForm());
-     }
-     if (projectMain.length === 0) {
        dispatch(getZaprosData());
-     }
-   }, [dispatch, project, projectMain]);
+   }, [dispatch]);
   console.log(projectMain);
   return (
     <div className={styles.add_container}>
