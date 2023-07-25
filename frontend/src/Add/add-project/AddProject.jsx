@@ -5,7 +5,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { deleteForm, getFetchForm } from "../../store/Slice/projectSlice";
 
 export default function AddProject({ project, user }) {
-  console.log(user);
   const Host = process.env.REACT_APP_SERVER_HOST;
   const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -60,7 +59,6 @@ export default function AddProject({ project, user }) {
     }
   }, [isCopied]);
 
-  console.log(project);
 
   return (
     <section className={styles.project_components_admin}>
@@ -134,7 +132,7 @@ export default function AddProject({ project, user }) {
                           <img
                             className={styles.cart_project__img}
                             src={`${Host}/images/imageAdd/${firstPhoto}`}
-                            alt="pfoto"
+                            alt="photo"
                           />
                           {user === "obezyankaa" ||
                           user === "Покемон" ||

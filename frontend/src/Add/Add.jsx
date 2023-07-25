@@ -19,7 +19,6 @@ export default function Add({ user, setNavBarOpen, setShowFooter }) {
        dispatch(getFetchForm());
        dispatch(getZaprosData());
    }, [dispatch]);
-  console.log(projectMain);
   return (
     <div className={styles.add_container}>
       <AddNavbar
@@ -28,7 +27,10 @@ export default function Add({ user, setNavBarOpen, setShowFooter }) {
         user={user}
       />
       <Routes>
-        <Route path="/" element={<HomeAdmin projects={project} />} />
+        <Route
+          path="/"
+          element={<HomeAdmin projects={project} projectMain={projectMain} />}
+        />
         <Route
           path="add-a-project"
           element={<AddProject user={user} project={project} />}
