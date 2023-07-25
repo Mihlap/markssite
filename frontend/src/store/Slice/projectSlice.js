@@ -10,6 +10,7 @@ const projectSlice = createSlice({
     projects: [],
     loading: false,
     error: null,
+    selectedViewConstruction: "Все",
   },
   reducers: {
     fetchProjectStart(state) {
@@ -31,6 +32,9 @@ const projectSlice = createSlice({
     deleteProjectFailure(state, action) {
       state.error = action.payload;
     },
+    setSelectedViewConstruction(state, action) {
+      state.selectedViewConstruction = action.payload;
+    },
   },
 });
 
@@ -40,6 +44,7 @@ export const {
   fetchProjectFailure,
   deleteProjectSuccess,
   deleteProjectFailure,
+  setSelectedViewConstruction,
 } = projectSlice.actions;
 
 
@@ -70,7 +75,19 @@ for (const key in formattedData) {
       selectCompetencies: "",
       countryCity: "",
       monthYear: "",
-      viewConstruction: "",
+      viewConstruction: {
+        'Все': '',
+        'Автодорожные': '',
+        'Тоннели': '',
+        'Метрополитен': '',
+        'Уникальные объекты': '',
+        'Аэропорты': '',
+        'РЖД': '',
+        'Жилищное строительство': '',
+        'Дизайн': '',
+        'Архитектура': '',
+        'Реконструкция': ''
+      },
       dropPhoto: [],
       photoAva: [],
       titleTextBlock: "",
@@ -97,12 +114,13 @@ for (const key in formattedData) {
   console.log(formattedData, "REDUX");
 };
 
-export const getFetchForm = () => async (dispatch) => {
+export const getFetchForm = (page) => async (dispatch, getState) => {
   dispatch(fetchProjectStart());
 
   try {
+    const selectedViewConstruction = getState().project.selectedViewConstruction;
     const response = await axios.get(
-      `${serverHost}/api-project/getzapros`
+      `${serverHost}/api-project/getzapros?page=${page}&viewConstruction=${selectedViewConstruction}`
     );
    dispatch(fetchProjectSuccess(response.data));
   } catch (error) {
