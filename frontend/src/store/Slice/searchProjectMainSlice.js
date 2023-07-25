@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 const serverHost = process.env.REACT_APP_SERVER_HOST;
 const searchProjectMainSlice = createSlice({
-  name: "search",
+  name: "searchproject",
   initialState: {
     projects: [],
     loading: false,
@@ -34,7 +34,7 @@ export const searchProgectMainPostzapros =
     try {
       await axios.post(
         `${serverHost}/search/search-project`,
-        { project: filteredObject } // Оборачиваем filteredObject в объект
+        { project: filteredObject } 
       );
 
       setSearchId({
@@ -46,6 +46,17 @@ export const searchProgectMainPostzapros =
     }
   };
 
+  export const fetchSingleProject = (projectId) => async (dispatch) => {
+    dispatch(fetchProjectStart());
+    try {
+      const response = await axios.get(`${serverHost}/search/search-project/${projectId}`);
+      const singleProject = response.data;
+      dispatch(fetchProjectSuccess(singleProject));
+    } catch (error) {
+      dispatch(fetchProjectFailure(error.message));
+    }
+  };
+
 export const getZaprosData = () => async (dispatch) => {
   dispatch(fetchProjectStart());
   try {
@@ -53,7 +64,7 @@ export const getZaprosData = () => async (dispatch) => {
       `${serverHost}/search/search-project/getzapros`
     );
     const dataFromResponse = response.data;
-    dispatch(fetchProjectSuccess(dataFromResponse)); // Dispatch success action with the fetched data
+    dispatch(fetchProjectSuccess(dataFromResponse)); 
   } catch (error) {
     dispatch(fetchProjectFailure(error.message));
   }
