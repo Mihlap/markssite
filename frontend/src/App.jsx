@@ -130,7 +130,7 @@ export default function App() {
                 />
                 <Route path="/competention" element={<Competentions />} />
                 <Route path="/project" element={<Project />} />
-                <Route path="/publications" element={<Publics />} />
+                <Route path="/public" element={<Publics />} />
                 <Route path="/company" element={<Company />} />
                 {/* <Route path="/contacts" element={<Contacts />} /> */}
                 <Route path="/portal" element={<Portal />} />
