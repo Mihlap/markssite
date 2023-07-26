@@ -89,7 +89,7 @@ export default function App() {
     }
   }, [isUserChecked]);
 
-console.log(isUserChecked);
+// console.log(isUserChecked);
   // таймаут для прелоудера на сайте
   // setTimeout(() => {
   //   setLoading(false);
@@ -101,7 +101,7 @@ console.log(isUserChecked);
     setIsScrollDisabled(!isScrollDisabled);
   }
 
-  console.log(`пользователь 👉${user}👈`);
+  // console.log(`пользователь 👉${user}👈`);
   return (
     <>
       {loading === true ? (
