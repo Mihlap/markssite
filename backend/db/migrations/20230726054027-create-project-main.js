@@ -12,6 +12,9 @@ module.exports = {
       project: {
         type: Sequelize.JSON
       },
+      IdProject: {
+        type: Sequelize.SMALLINT
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
