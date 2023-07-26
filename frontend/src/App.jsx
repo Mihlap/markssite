@@ -71,7 +71,6 @@ export default function App() {
 
         if (response.status === 200) {
 
-          console.log(response.status);
           setUser(response.data.name);
           setIsUserChecked(true);
           setNavBarOpen(false); // скрываем навбар

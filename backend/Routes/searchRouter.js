@@ -7,12 +7,16 @@ const router = express.Router();
 router.post('/search-project', async (req, res) => {
   try {
     const publicationData = req.body;
-    console.log(publicationData);
+    const IdProjects = req.body.project.id;
 
-    // Здесь вместо `publication: publicationData` вы можете использовать просто `publicationData`
-    const newPublication = await ProjectMain.create(publicationData);
+    // Save the project data to the database
+    const savedProject = await ProjectMain.create({
+      project: publicationData,
+      IdProject: IdProjects,
+    });
 
-    res.status(201).json(newPublication);
+    // Send back the ID of the saved project
+    res.status(200).json({ message: 'Данные успешно сохранены', projectId: savedProject.id });
   } catch (error) {
     console.error('Ошибка при сохранении в базе данных:', error);
     res.status(500).json({ error: 'Ошибка при сохранении в базе данных' });
