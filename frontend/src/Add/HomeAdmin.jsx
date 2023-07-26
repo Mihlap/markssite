@@ -1,16 +1,22 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import styles from "./HomeAdmin.module.scss";
-import { getZaprosData, searchProgectMainPostzapros } from "../store/Slice/searchProjectMainSlice";
+import { searchProgectMainPostzapros } from "../store/Slice/searchProjectMainSlice";
+import { useSelector } from "react-redux";
+import { arrIdProjectSelector } from "./HomeAdminSelectors";
 
-export default function HomeAdmin({ projects, projectMain }) {
-  const [searchId, setSearchId] = useState(""); // Состояние для хранения введенного значения id
+export default function HomeAdmin({ projects }) {
   const [errorMessage, setErrorMessage] = useState("");
   const [showError, setShowError] = useState(false);
   const [okMessage, setOkMessage] = useState("");
   const [showOk, setShowOk] = useState(false);
-  const [isButtonDisabled, setIsButtonDisabled] = useState(true); // Добавлено состояние для дизейблинга кнопки
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+  const [searchId, setSearchId] = useState("");
   const [savedId, setSavedId] = useState(null);
+
+  // Use the memoized selector with useSelector
+  const arrIdProject = useSelector(arrIdProjectSelector);
+  const newArr = arrIdProject[arrIdProject.length - 1];
   const dispatch = useDispatch();
 
   // Обработчик изменения значения в инпуте поиска
@@ -27,8 +33,6 @@ export default function HomeAdmin({ projects, projectMain }) {
       filterProjectsById(); // Выполняем поиск
     }
   };
-
-  // Функция для фильтрации проектов по введенному id
   // Функция для фильтрации проектов по введенному id
   const filterProjectsById = async () => {
     const filteredProject = projects.find(
@@ -39,11 +43,10 @@ export default function HomeAdmin({ projects, projectMain }) {
 
       try {
         await dispatch(
-          searchProgectMainPostzapros(filteredProject, setSearchId)
+          searchProgectMainPostzapros(filteredProject, setSearchId, setSavedId)
         ); // Отправляем найденный объект на сервер
 
         // Установим id сохраненного объекта в состояние savedId
-        setSavedId(filteredProject.id);
 
         setOkMessage("Проект добавлен");
         setShowOk(true);
@@ -74,13 +77,14 @@ export default function HomeAdmin({ projects, projectMain }) {
   const OkMessage = ({ message }) => {
     return <div style={{ color: "green" }}>{message}</div>;
   };
-  console.log(projectMain.map((el) => el.project.title));
   return (
     <section className={styles.home_admin_section}>
       <div className={styles.home_admin_section__title}>Проекты</div>
 
       <div className={styles.home_admin_section__section}>
         <div className={styles.home_admin_section__block_search}>
+          {/* <div>{arrIdProject}</div> */}
+          <div>{JSON.stringify(newArr)}</div>
           <div className={`${styles.form__group} ${styles.field}`}>
             <input
               type="number"

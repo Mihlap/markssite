@@ -37,7 +37,6 @@
         width: 14rem;
         border-radius: 4.125rem;
         border: none;
-        // background-color: var(--blue-light-BADDFE);
         background-color: var(--dark-blue-389FFF);
         
 
@@ -52,16 +51,13 @@
             line-height: 1.5rem;
         }
 
-                 &[disabled] {
+        &[disabled] {
+                     transition: all 0.3s ease-in-out;
                      opacity: 0.3;
-                     /* Уменьшение непрозрачности кнопки */
                      pointer-events: none;
-                     /* Отключение событий для дизейбл кнопки */
                  }
 
-        &:hover {
-            background-color: var(--light-gray-C0C5CB);
-        }
+       
     }
 }
 
