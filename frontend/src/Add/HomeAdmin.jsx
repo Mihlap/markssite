@@ -94,7 +94,7 @@ export default function HomeAdmin({ projects, projectMain }) {
               required
             />
             <label htmlFor="idshnik" className={styles.form__label}>
-              Укажите id статьи
+              Укажите id проекта
             </label>
           </div>
           <button
