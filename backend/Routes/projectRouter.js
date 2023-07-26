@@ -17,6 +17,25 @@ router.get('/getzapros', async (req, res) => {
   }
 });
 
+router.get('/getzapros-filter', async (req, res) => {
+  try {
+    const { viewConstruction } = req.query;
+    let data;
+
+    if (viewConstruction && viewConstruction !== 'Все') {
+      data = await Project.findAll({
+        where: { viewConstruction },
+      });
+    } else {
+      data = await Project.findAll();
+    }
+
+    res.json(data);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'Произошла ошибка при получении проектов.' });
+  }
+});
 
 router.post(
   '/postzapros',

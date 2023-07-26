@@ -7,7 +7,8 @@ module.exports = {
       'Users',
       [
         {
-          userName: 'Покемон',
+          userName: 'Pokemon',
+          hashpass: '123',
           createdAt: new Date(),
           updatedAt: new Date(),
         },
