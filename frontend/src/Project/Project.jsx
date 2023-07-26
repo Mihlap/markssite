@@ -111,20 +111,20 @@ export default function Project() {
     }
     return { width, height };
   };
-  console.log(
-    selectedViewConstruction,
-    "================================================"
-  );
+  // console.log(
+  //   selectedViewConstruction,
+  //   "================================================"
+  // );
   const filteredProjects = projects.filter((project) =>
     selectedViewConstruction === "Все"
       ? true
       : project.selectCompetencies.includes(selectedViewConstruction)
   );
 
-  console.log(
-    filteredProjects,
-    "+++++++++++++++++++++++++++++++++++++++++++++++"
-  );
+  // console.log(
+  //   filteredProjects,
+  //   "+++++++++++++++++++++++++++++++++++++++++++++++"
+  // );
 
   return (
     <div className={styles.project_main}>
