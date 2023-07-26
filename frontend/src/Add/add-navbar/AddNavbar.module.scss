@@ -4,23 +4,14 @@
     position: fixed;
     left: 0;
     top: 50%;
-    /* это свойство поможет выровнять блок по вертикали */
     transform: translateY(-50%);
     width: 27.5%;
-    /* замените на нужную ширину */
     height: 100%;
-    /* замените на нужную высоту */
     background-color: var(--dark-gray-566272);
-    /* замените на нужный цвет фона */
     z-index: 999;
-    /* если ваш сайт использует другие элементы с позицией z-index, установите значение больше */
 
     &__block{
         padding: 3rem;
-    }
-
-    &__management {
-
     }
 
     &__title {
@@ -60,19 +51,28 @@
 }
 
 .preview {
+    display: inline-flex;
+    padding: 1rem 2rem;
+    justify-content: center;
+    align-items: center;
     position: fixed;
     top: 10px;
     right: 10px;
     z-index: 9999;
     border: 1px solid;
     border-radius: 2rem;
-    padding: 10px 32px;
-    color: var(--black-1D2E43);
-    transition: background-color 0.3s ease, color 0.3s ease;
+    color: var(--white-F6F6F6);
+    background-color: var(--blue-75BBFD);
+    transition: all 0.3s ease-in-out;
 
     &:hover {
-        cursor: pointer;
-        background: linear-gradient(278.5deg, rgba(220, 238, 255, 0.53) -49.88%, rgba(255, 127, 106, 0.53) 108.02%);
-        border: var(--white-F6F6F6);
-    }
+            background-color: var(--dark-blue-389FFF);
+        }
+    
+        &:focus {
+            background-color: var(--dark-blue-389FFF);
+            outline: 1px solid var(--white-F6F6F6);
+            /* Добавьте эту строку */
+            /* Дополнительные стили, если необходимы */
+        }
 }

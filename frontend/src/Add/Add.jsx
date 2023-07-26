@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Add.module.scss";
 import AddNavbar from "./add-navbar/AddNavbar";
 import { Route, Routes } from "react-router-dom";
@@ -14,11 +14,18 @@ export default function Add({ user, setNavBarOpen, setShowFooter }) {
   const dispatch = useDispatch();
   const project = useSelector((state) => state.project.projects);
   const projectMain = useSelector((state) => state.searchproject.projects);
+  const [arrIdProject, setArrIdProject] = useState([]);
 
    useEffect(() => {
        dispatch(getFetchForm());
        dispatch(getZaprosData());
    }, [dispatch]);
+  
+   useEffect(() => {
+     // Update the arrIdProject state whenever projectMain changes
+     const newIds = projectMain.map((el) => el.IdProject);
+     setArrIdProject(newIds);
+   }, [projectMain]);
   return (
     <div className={styles.add_container}>
       <AddNavbar
@@ -29,7 +36,7 @@ export default function Add({ user, setNavBarOpen, setShowFooter }) {
       <Routes>
         <Route
           path="/"
-          element={<HomeAdmin projects={project} projectMain={projectMain} />}
+          element={<HomeAdmin projects={project} arrIdProject={arrIdProject} />}
         />
         <Route
           path="add-a-project"
