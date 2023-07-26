@@ -36,7 +36,6 @@ export default function Project() {
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [showButton, setShowButton] = useState(false);
-  const [buttonsMovedToNewRow, setButtonsMovedToNewRow] = useState(false);
   const projectsPerPage = 10;
 
   const handleButtonClick = (viewConstruction) => {
@@ -49,12 +48,7 @@ export default function Project() {
 
   const handleShowButtonAll = (e) => {
     e.preventDefault();
-    setShowButton(!showButton);
-    if (showButton && buttonsMovedToNewRow) {
-      setButtonsMovedToNewRow(false);
-    } else if (showButton && !buttonsMovedToNewRow) {
-      setButtonsMovedToNewRow(true);
-    }
+    setShowButton((prevShowButton) => !prevShowButton);
   };
 
   useEffect(() => {
@@ -135,33 +129,72 @@ export default function Project() {
       </div>
       <div className={styles.menu_button_group_project_wrapper}>
         <div className={styles.menu_button_group_project}>
-          {buttonChoose.map((el) => (
-            <button
+          {buttonChoose.map((el, index) => (
+            <div
               key={el}
-              className={`${styles.menu__button__allProject} ${
-                el === selectedViewConstruction ? styles.active : ""
+              className={`${styles.button_wrapper} ${
+                showButton ? "" : index ? styles.hidden : ""
               }`}
-              onClick={() => handleButtonClick(el)}
             >
-              <p className={styles.menu_button_items}>{el}</p>
-            </button>
+              <button
+                className={`${styles.menu__button__allProject} ${
+                  el === selectedViewConstruction ? styles.active : ""
+                }`}
+                onClick={() => handleButtonClick(el)}
+              >
+                <p className={styles.menu_button_items}>{el}</p>
+              </button>
+            </div>
           ))}
         </div>
-        <button className={styles.button_look_all} onClick={handleShowButtonAll}>
-          {showButton ? "Скрыть все" : "Смотреть все"}
-          <svg
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d={showButton ? "M17 14L12.5 9L8 14" : "M8 10L12.5 15L17 10"}
-              stroke="#1D2E43"
-            />
-          </svg>
-        </button>
+        <button
+          className={styles.button_look_all}
+          onClick={handleShowButtonAll}
+        >
+          {showButton ? (
+            <div className={styles.project__svg1}>
+            <svg
+               xmlns="http://www.w3.org/2000/svg"
+               width="24"
+               height="24"
+               viewBox="0 0 24 24"
+               fill="none"
+            >
+               <rect
+                 x="24"
+                 y="24"
+                 width="24"
+                 height="24"
+                 rx="12"
+                 transform="rotate(-180 24 24)"
+                 fill="#1D2E43"
+               />
+               <path d="M17 14L12.5 9L8 14" stroke="#F6F6F6" />
+             </svg>
+             </div>
+          ) : (
+            <div className={styles.project__svg2}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+            >
+              <path d="M8 10L12.5 15L17 10" stroke="#1D2E43" />
+              <rect
+                x="23.5"
+                y="23.5"
+                width="23"
+                height="23"
+                rx="11.5"
+                transform="rotate(-180 23.5 23.5)"
+                stroke="#1D2E43"
+              />
+            </svg>
+            </div>
+          )}
+       </button>
       </div>
       <section className={styles.section_project}>
         <div className={styles.section_project__block}>
