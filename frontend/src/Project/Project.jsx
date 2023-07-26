@@ -1,28 +1,68 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./Project-container.module.scss";
-import { setSelectedViewConstruction, getFetchForm } from '../store/Slice/projectSlice';
+import {
+  setSelectedViewConstruction,
+  getFetchFormFilter,
+} from "../store/Slice/projectSlice";
 import Company_Slider from "../UI/Company_Slider/Company_Slider";
 import "../UI/Company_Slider/Company_Slider.css";
-import { Link } from 'react-router-dom';
-import '../UI/ButtonsProjects/AllProjectsButton.module.css';
+import { Link } from "react-router-dom";
+import "../UI/ButtonsProjects/AllProjectsButton.module.css";
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 
 export default function Project() {
+  const buttonChoose = [
+    "Все",
+    "Автодорожные",
+    "Тоннели",
+    "Метрополитен",
+    "Уникальные объекты",
+    "Аэропорты",
+    "BIM",
+    "Жилищное строительство",
+    "Дизайн",
+    "Архитектура",
+    "Конструкции",
+  ];
+
   const dispatch = useDispatch();
-  const projects  = useSelector((state) => state.project.projects);
-  const selectedViewConstruction = useSelector((state) => state.project.selectedViewConstruction);
-  const [currentPage, setCurrentPage] = useState(1); 
-  const [loading, setLoading] = useState(false); 
-  // const [selectedViewConstruction, setSelectedViewConstruction] = useState('Все');
+  const projects = useSelector((state) => state.project.projects);
+  const selectedViewConstruction = useSelector(
+    (state) => state.project.selectedViewConstruction
+  );
+  // const filteredProjects = useSelector((state) => state.project.filteredProjects);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [showButton, setShowButton] = useState(false);
+  const [buttonsMovedToNewRow, setButtonsMovedToNewRow] = useState(false);
   const projectsPerPage = 10;
 
   const handleButtonClick = (viewConstruction) => {
     dispatch(setSelectedViewConstruction(viewConstruction));
     setCurrentPage(1);
+    dispatch(
+      getFetchFormFilter(currentPage, projectsPerPage, viewConstruction)
+    );
   };
 
+  const handleShowButtonAll = (e) => {
+    e.preventDefault();
+    setShowButton(!showButton);
+    if (showButton && buttonsMovedToNewRow) {
+      setButtonsMovedToNewRow(false);
+    } else if (showButton && !buttonsMovedToNewRow) {
+      setButtonsMovedToNewRow(true);
+    }
+  };
+
+  useEffect(() => {
+    dispatch(
+      getFetchFormFilter(currentPage, projectsPerPage, selectedViewConstruction)
+    );
+    setLoading(false);
+  }, [dispatch, currentPage, projectsPerPage, selectedViewConstruction]);
 
   const handleScroll = () => {
     const isAtBottom =
@@ -34,72 +74,72 @@ export default function Project() {
   };
 
   const loadMoreProjects = async () => {
-    setLoading(true); 
-    setCurrentPage((prev) => prev + 1); 
+    setLoading(true);
+    setCurrentPage((prev) => prev + 1);
   };
 
   useEffect(() => {
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
-  useEffect(() => {
-   dispatch(getFetchForm(currentPage, projectsPerPage, selectedViewConstruction));
-    setLoading(false); 
-  }, [dispatch, currentPage, projectsPerPage, selectedViewConstruction]);
+  const colors = {
+    Архитектура: "#FF7F6A",
+    BIM: "#75BBFD",
+    Конструкции: "#566272",
+    Дизайн: "#FAA8BD",
+    Инженерия: "#90B734",
+  };
 
-
-    const colors = {
-     Архитектура: "#FF7F6A",
-     BIM: "#75BBFD",
-     Конструкции: "#566272",
-     Дизайн: "#FAA8BD",
-     Инженерия: "#90B734",
-   };
-
-   const buttonChoose = [
-    'Все', 'Автодорожные', 'Тоннели', 'Метрополитен',
-     'Уникальные объекты', 'Аэропорты', 'РЖД', 'Жилищное строительство',
-     'Дизайн', 'Архитектура', 'Реконструкция'
-    ];
-
-   const resizeImage = (width, height) => {
+  const resizeImage = (width, height) => {
     const aspectRatio = height / width;
-  
+
     if (aspectRatio >= 1.2) {
       if (width !== 28 || height !== 48) {
         return { width: 28.18, height: 48.18 };
       }
     } else if (aspectRatio < 0.8) {
-       if (width !== 28 || height !== 14) {
+      if (width !== 28 || height !== 14) {
         return { width: 27.62, height: 13.81 };
       }
     } else {
-        if (width !== 28 || height !== 28) {
+      if (width !== 28 || height !== 28) {
         return { width: 28.18, height: 27.62 };
       }
     }
-     return { width, height };
+    return { width, height };
   };
-  
-  
-  // console.log(projects, '+++++++++++++++++++++++++++++++++++++++++++++++');
+  console.log(
+    selectedViewConstruction,
+    "================================================"
+  );
+  const filteredProjects = projects.filter((project) =>
+    selectedViewConstruction === "Все"
+      ? true
+      : project.selectCompetencies.includes(selectedViewConstruction)
+  );
 
-return (
-  <div className={styles.project_main}>
+  console.log(
+    filteredProjects,
+    "+++++++++++++++++++++++++++++++++++++++++++++++"
+  );
+
+  return (
+    <div className={styles.project_main}>
       <Company_Slider />
-    <div className={styles.project_slider_text}>
-    <p className={styles.actuality_text}>Актуальные кейсы MARKS GROUP</p>
-    <span className={styles.projects_name_text}>Проекты</span>
-     </div>
-  <div className={styles.menu_button_group_project}>
+      <div className={styles.project_slider_text}>
+        <p className={styles.actuality_text}>Актуальные кейсы MARKS GROUP</p>
+        <span className={styles.projects_name_text}>Проекты</span>
+      </div>
+      <div className={styles.menu_button_group_project_wrapper}>
+        <div className={styles.menu_button_group_project}>
           {buttonChoose.map((el) => (
             <button
-              key={el.id}
+              key={el}
               className={`${styles.menu__button__allProject} ${
-                el === selectedViewConstruction ? styles.active : ''
+                el === selectedViewConstruction ? styles.active : ""
               }`}
               onClick={() => handleButtonClick(el)}
             >
@@ -107,117 +147,136 @@ return (
             </button>
           ))}
         </div>
-  <section className={styles.section_project}>
-    <div className={styles.section_project__block}>
-      {projects && projects?.map((project) => {
-            const competencies = project.selectCompetencies
-            .split(",")
-            .map((comp) => comp.trim())
-            .filter(Boolean);
-              
-            const { width, height } = resizeImage(
-              project.imageWidth,
-              project.imageHeight
-            );
+        <button className={styles.button_look_all} onClick={handleShowButtonAll}>
+          {showButton ? "Скрыть все" : "Смотреть все"}
+          <svg
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d={showButton ? "M17 14L12.5 9L8 14" : "M8 10L12.5 15L17 10"}
+              stroke="#1D2E43"
+            />
+          </svg>
+        </button>
+      </div>
+      <section className={styles.section_project}>
+        <div className={styles.section_project__block}>
+          {filteredProjects &&
+            filteredProjects?.map((project) => {
+              const competencies = project.selectCompetencies
+                .split(",")
+                .map((comp) => comp.trim())
+                .filter(Boolean);
 
-          return (
-            <Link
-            to={project.link}
-            className={styles.section_project__block_cart}
-            key={project.id}
-            >
-              <div className={styles.cart_project}>
-          
-                <div className={styles.cart_project__container}>
-                  <img
-                    className={styles.cart_project__img}
-                    style={{
-                      height: `${height}rem`,
-                      width: `${width}rem`,
-                    }}
-                    src={`${Host}/images/imageAdd/${
-                      project.imageProject ? project.imageProject : project.imageTitle
-                    }`}
-                    alt={project.imageProject}
-                  />
-                  <div className={styles.cart_project__content}>
-                    <span className={styles.cart_project__title}>
-                      {project.title}
-                    </span>
-                    <div className={styles.cart_project__widget}>
-                    {(() => {
-                      try {
-                        const selectCompetencies = JSON.parse(
-                          project.selectCompetencies
-                        );
-                        return selectCompetencies.map((competency) => (
-                          <div
-                            key={competency.value}
-                            className={styles.div_el_selectCompetencies}
-                            style={{
-                              color: colors[competency.value],
-                              borderColor: colors[competency.value],
-                              border: "1px solid",
-                              padding: "3px 6px",
-                              borderRadius: "34px",
-                            }}
-                          >
-                            {competency.label}
+              const { width, height } = resizeImage(
+                project.imageWidth,
+                project.imageHeight
+              );
+
+              return (
+                <Link
+                  to={project.link}
+                  className={styles.section_project__block_cart}
+                  key={project.id}
+                >
+                  <div className={styles.cart_project}>
+                    <div className={styles.cart_project__container}>
+                      <img
+                        className={styles.cart_project__img}
+                        style={{
+                          height: `${height}rem`,
+                          width: `${width}rem`,
+                        }}
+                        src={`${Host}/images/imageAdd/${
+                          project.imageProject
+                            ? project.imageProject
+                            : project.imageTitle
+                        }`}
+                        alt={project.imageProject}
+                      />
+                      <div className={styles.project_content__wrapper}>
+                        <div className={styles.cart_project_title}>
+                          {project.title}
+                        </div>
+                        <div className={styles.cart_project__content}>
+                          <div className={styles.cart_project__widget}>
+                            {(() => {
+                              try {
+                                const selectCompetencies = JSON.parse(
+                                  project.selectCompetencies
+                                );
+                                return selectCompetencies.map((competency) => (
+                                  <div
+                                    key={competency.value}
+                                    className={
+                                      styles.el_project_selectCompetencies
+                                    }
+                                    style={{
+                                      color: colors[competency.value],
+                                      borderColor: colors[competency.value],
+                                    }}
+                                  >
+                                    {competency.label}
+                                  </div>
+                                ));
+                              } catch (error) {
+                                if (
+                                  typeof project.selectCompetencies ===
+                                    "string" &&
+                                  project.selectCompetencies.includes(",")
+                                ) {
+                                  return project.selectCompetencies
+                                    .split(",")
+                                    .map((value) => {
+                                      const label = value.trim();
+                                      return (
+                                        <div
+                                          key={value}
+                                          className={
+                                            styles.el_project_selectCompetencies
+                                          }
+                                          style={{
+                                            color: colors[value],
+                                            borderColor: colors[value],
+                                          }}
+                                        >
+                                          {label}
+                                        </div>
+                                      );
+                                    });
+                                }
+                                return null;
+                              }
+                            })()}
                           </div>
-                        ));
-                      } catch (error) {
-                        if (
-                          typeof project.selectCompetencies === "string" &&
-                          project.selectCompetencies.includes(",")
-                        ) {
-                          return project.selectCompetencies
-                            .split(",")
-                            .map((value) => {
-                              const label = value.trim();
-                              return (
-                                <div
-                                  key={value}
-                                  className={styles.div_el_selectCompetencies}
-                                  style={{
-                                    color: colors[value],
-                                    borderColor: colors[value],
-                                    border: "1px solid",
-                                    padding: "3px 6px",
-                                    borderRadius: "34px",
-                                  }}
-                                >
-                                  {label}
-                                </div>
-                              );
-                            });
-                        }
-                        return null;
-                      }
-                    })()}
+                        </div>
+                      </div>
+                      <div className={styles.cart_project__address}>
+                        {project.countryCity}{" "}
+                        <div className={styles.cart_project__address__svg}>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="2"
+                            height="2"
+                            viewBox="0 0 2 2"
+                            fill="none"
+                          >
+                            <circle cx="1" cy="1" r="1" fill="#959DA6" />
+                          </svg>{" "}
+                        </div>
+                        {project.monthYear}
+                      </div>
                     </div>
                   </div>
-                  <div className={styles.cart_project__address}>
-                    {project.countryCity}{" "}
-                    <div className={styles.cart_project__address__svg}>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="2"
-                      height="2"
-                      viewBox="0 0 2 2"
-                      fill="none"
-                    >
-                      <circle cx="1" cy="1" r="1" fill="#959DA6" />
-                    </svg>{" "}
-                    </div>
-                    {project.monthYear}
-                  </div>
-                </div>
-              </div>
-            </Link>
-          );
-        })}
+                </Link>
+              );
+            })}
+        </div>
+      </section>
     </div>
-  </section>
-  </div>
-);
+  );
 }
