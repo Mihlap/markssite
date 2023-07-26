@@ -14,7 +14,8 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   ProjectMain.init({
-    project: DataTypes.JSON
+    project: DataTypes.JSON,
+    IdProject: DataTypes.SMALLINT
   }, {
     sequelize,
     modelName: 'ProjectMain',
