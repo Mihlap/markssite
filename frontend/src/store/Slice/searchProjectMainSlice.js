@@ -31,14 +31,18 @@ export const { fetchProjectStart, fetchProjectSuccess, fetchProjectFailure } =
 export const searchProgectMainPostzapros =
   (filteredObject, setSearchId) => async (dispatch) => {
     dispatch(fetchProjectStart());
+    console.log(filteredObject.id);
     try {
-      await axios.post(
-        `${serverHost}/search/search-project`,
-        { project: filteredObject } 
-      );
+      await axios.post(`${serverHost}/search/search-project`, {
+        project: filteredObject,
+        IdProject: filteredObject.id,
+      });
+
+      // After successfully saving the project, fetch the updated data from the server
+      dispatch(getZaprosData());
 
       setSearchId({
-        searchId: '',
+        searchId: "",
       });
     } catch (error) {
       console.error("Ошибка при отправке на бекенд:", error);

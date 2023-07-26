@@ -34,11 +34,20 @@
   background-color: var(--blue-75BBFD);
   padding: 1rem 1.5rem;
   border-radius: 2rem;
+  transition: all 0.3s ease-in-out;
 }
 
-.preview_mode:hover {
-  background-color: var(--dark-blue-389FFF);
-}
+ .preview_mode:hover {
+   background-color: var(--dark-blue-389FFF);
+ }
+
+ .preview_mode:focus {
+   background-color: var(--dark-blue-389FFF);
+   outline: 1px solid var(--white-F6F6F6);
+   /* Добавьте эту строку */
+   /* Дополнительные стили, если необходимы */
+ }
+
 
 .preview_title {
   margin-left: 16px;
