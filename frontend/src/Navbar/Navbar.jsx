@@ -1,11 +1,11 @@
 import React, { useRef, useState } from "react";
-import { Link } from "react-scroll";
+// import { Link } from "react-scroll";
 // import debounce from 'lodash.debounce';
 
 // import logo from ".././icons/logo.svg";
 import styles from "./Navbar.module.css";
 import { useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 // тетс гита на сливание с новой веткой
 
@@ -81,31 +81,31 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen }) => {
       <nav className={styles.navbar_desctop}>
         <div className={styles.navbar_container}>
           <div className={styles.navbar_title_block}>
-            <NavLink to="/" onClick={handleClick}>
+            <Link to="/" onClick={handleClick}>
               <h1 className={styles.navbar_title}>MARKS GROUP</h1>
-            </NavLink>
+            </Link>
           </div>
           <ul className={styles.navbar_list}>
-            <NavLink className={styles.navbar_item} to="/signup">
+            <Link className={styles.navbar_item} to="/signup">
               <div>signup</div>
-            </NavLink>
-            <NavLink className={styles.navbar_item} to="/login">
+            </Link>
+            <Link className={styles.navbar_item} to="/login">
               <div>login</div>
-            </NavLink>
+            </Link>
 
             <Link
               exact="true"
               className={`${styles.navbar_item} ${
-                activeLink === "/competencies" ? styles.active : ""
+                activeLink === "/competention" ? styles.active : ""
               }`}
-              to="competencies"
-              onClick={() => handleClick("/competencies")}
+              to="competention"
+              onClick={() => handleClick("/competention")}
               smooth={"true"}
               duration={500}
             >
               <li>Компетенции</li>
             </Link>
-            <NavLink
+            <Link
               exact="true"
               className={`${styles.navbar_item} ${
                 activeLink === "/project" ? styles.active : ""
@@ -116,20 +116,20 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen }) => {
               duration={500}
             >
               <li>Проекты</li>
-            </NavLink>
-            <NavLink
+            </Link>
+            <Link
               exact="true"
               className={`${styles.navbar_item} ${
-                activeLink === "/publications" ? styles.active : ""
+                activeLink === "/public" ? styles.active : ""
               }`}
-              to="publications"
-              onClick={() => handleClick("/publications")}
+              to="public"
+              onClick={() => handleClick("/public")}
               smooth={"true"}
               duration={500}
             >
               <li>Публикации</li>
-            </NavLink>
-            <NavLink
+            </Link>
+            <Link
               exact="true"
               className={`${styles.navbar_item} ${
                 activeLink === "/company" ? styles.active : ""
@@ -140,8 +140,8 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen }) => {
               duration={500}
             >
               <li>О Компании</li>
-            </NavLink>
-            <NavLink
+            </Link>
+            <Link
               exact="true"
               className={`${styles.navbar_item} ${
                 activeLink === "/contacts" ? styles.active : ""
@@ -152,7 +152,7 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen }) => {
               duration={500}
             >
               <li>Контакты</li>
-            </NavLink>
+            </Link>
           </ul>
         </div>
       </nav>
@@ -160,9 +160,9 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen }) => {
         <nav>
           <div className={styles.navbar}>
             <div className={styles.logo}>
-              <NavLink className={styles.logo_heading} to="/">
+              <Link className={styles.logo_heading} to="/">
                 <h1 className={styles.navbar_title}>MARKS GROUP</h1>
-              </NavLink>
+              </Link>
             </div>
             <div className={`${styles.container} ${styles.nav_container}`}>
               <div className={styles.cross_container}>
@@ -199,21 +199,20 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen }) => {
               >
                 <ul className={styles.menu_list}>
                   <li>
-                    <NavLink
+                    <Link
                       className={styles.menu_item}
                       to="/"
                       onClick={closeNavBar}
                     >
                       Главная
-                    </NavLink>
+                    </Link>
                   </li>
                   <li>
                     <Link
                       className={styles.menu_item}
                       onClick={closeNavBar}
-                      to="competencies"
+                      to="/competention"
                       smooth={"true"}
-                      duration={500}
                     >
                       Компетенции
                     </Link>
@@ -222,9 +221,8 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen }) => {
                     <Link
                       className={styles.menu_item}
                       onClick={closeNavBar}
-                      to="projects"
+                      to="/project"
                       smooth={"true"}
-                      duration={500}
                     >
                       Проекты
                     </Link>
@@ -233,26 +231,24 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen }) => {
                     <Link
                       className={styles.menu_item}
                       onClick={closeNavBar}
-                      to="publications1"
+                      to="/public"
                       smooth={"true"}
-                      duration={500}
                     >
                       Публикации
                     </Link>
                   </li>
                   <li>
-                    <NavLink
+                    <Link
                       className={styles.menu_item}
                       onClick={closeNavBar}
-                      to="company"
+                      to="/company"
                       smooth={"true"}
-                      duration={500}
                     >
                       О Компании
-                    </NavLink>
+                    </Link>
                   </li>
                   <li>
-                    <NavLink
+                    <Link
                       className={styles.menu_item}
                       onClick={closeNavBar}
                       to="contacts"
@@ -260,25 +256,25 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen }) => {
                       duration={500}
                     >
                       Контакты
-                    </NavLink>
+                    </Link>
                   </li>
                 </ul>
                 <div className={styles.contact_info}>
                   <div className={styles.contact_info_block}>
                     {/* <div className={styles.contact_info_language}>EN | CN</div> */}
-                    <NavLink
+                    <Link
                       className={styles.contact_info_mail}
                       to="mailto:mail@marksgroup.ru"
                     >
                       mail@marksgroup.ru
-                    </NavLink>
-                    <NavLink
+                    </Link>
+                    <Link
                       to={"tel:+74951201226"}
                       className={styles.contact_info_phone}
                       style={{ fontVariantNumeric: "lining-nums" }}
                     >
                       +7(495) 120-12-26
-                    </NavLink>
+                    </Link>
                   </div>
                 </div>
               </div>
