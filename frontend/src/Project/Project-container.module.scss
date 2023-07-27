@@ -33,7 +33,7 @@
 
 .menu_button_group_project_wrapper {
     display: flex;
-   
+    width: 100%;
 }
 
 .menu_button_group_project {
@@ -43,13 +43,9 @@
     padding-left: 1.69rem;
     grid-column-gap: 8px;
     grid-row-gap: 16px;
-    max-width: 60%;
+    width: 100%;
 }
 
-//   .button_wrapper {
-//     display: block;
-//     margin: 5px;
-//   }
 .menu__button__allProject {
     display: inline-block;
     width: auto;
@@ -82,23 +78,62 @@
     line-height: 1.25rem;
 }
 
+.button_look_all_wrapper {
+    display: flex;
+    justify-content: flex-start;
+
+}
+
 .button_look_all {
-    display: flex; 
+    display: flex;
+    justify-content: flex-start;
     align-items: center;
     border: none;
     background-color: var(--white-F6F6F6);
-
 }
+
 .project__svg1 {
     display: flex;
-    margin-top: -1rem;
-    padding-left: 0rem;
+    margin-top: 2rem;
+    padding-left: 0.5rem;
 }
 
 .project__svg2 {
     display: flex;
     padding-top: 2rem;
     padding-left: 0.5rem;
+}
+
+.menu__button__choose__city {
+    display: inline-flex;
+    padding: 0.5rem 1rem;
+    justify-content: flex-end;
+    align-items: center;
+    white-space: nowrap;
+    margin-right: 3.31rem;
+    margin-top: 2rem;
+    margin-left: 0.5rem;
+    width: auto;
+    gap: 0.5rem;
+    border-radius: 2.125rem;
+    background-color: var(--light-light-gray-EBECEE);
+    border: none;
+}
+
+.icon__svg_button__choose__city {
+    display: flex;
+    align-items: center;
+}
+
+.button_choose_city {
+    display: flex;
+    border: none;
+    font-family: var(--font-raleway);
+    font-size: 0.875rem;
+    font-style: normal;
+    font-weight: var(--fw-400);
+    line-height: 1.25rem;
+    color: var(--black-1D2E43);
 }
 
 .hidden {
@@ -208,3 +243,207 @@
     border-radius: 34px;
     max-width: fit-content;
 }
+
+.modal_wrapper_project_location {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 50%;
+    height: 100%;
+    margin-top: 0px;
+    border: none !important;
+    outline: none;
+    border-radius: none;
+    background-color: rgba(246, 246, 246, 0.92);
+    box-shadow: -2px 4px 22px 0px rgba(29, 46, 67, 0.46);
+    backdrop-filter: blur(8.5px);
+    overflow-y: auto;
+}
+
+.modal_project_close {
+    padding-top: 2rem;
+    padding-left: 95%;
+    cursor: pointer;
+}
+
+.fixed_modal_project {
+    position: sticky;
+    top: 0rem;
+    right: 0rem;
+}
+
+.modal_project_container {
+    display: flex;
+    padding: 19.5rem 1.81rem 0rem 5.5rem;
+
+}
+
+.modal_project_description {
+    display: flex;
+    color: var(--black-1D2E43);
+    font-family: var(--font-unbounded);
+    font-size: 1.25rem;
+    font-style: normal;
+    font-weight: var(--fw-500);
+    line-height: 1.75rem;
+}
+
+.modal_pointer_location {
+    display: flex;
+    padding-left: 0.5rem;
+    align-items: center;
+}
+
+.modal_project_city_location {
+    display: flex;
+    align-items: center;
+    color: var(--black-1D2E43);
+    font-family: var(--font-unbounded);
+    font-size: 1.25rem;
+    font-style: normal;
+    font-weight: var(--fw-300);
+    line-height: 1.75rem;
+    padding-left: 0.25rem;
+}
+
+.location_project_group {
+    display: flex;
+    flex-direction: column;
+    padding-top: 2.5rem;
+    padding-left: 5.5rem;
+    padding-right: 1.81rem;
+}
+
+.label_project {
+    position: relative;
+  }
+
+  .address_and_city_choose_location {
+    border: none;
+    outline: none;
+    background-color: transparent;
+    padding-top: 2.36vh;
+    font-family: var(--font-raleway);
+    font-style: normal;
+    font-weight: var(--fw-400);
+    font-size: 16px;
+    line-height: 16px;
+    caret-color: black;
+    width: 65%;
+  }
+  /* .email_input_form {
+  } */
+  .line_modal_project {
+    bottom: 0;
+    left: 0;
+    width: 21.25vw;
+    height: 0.069vh;
+    background-color: var(--gray-959DA6);
+  }
+  
+  .error_line_modal_project {
+    font-family: var(--font-raleway);
+    font-style: normal;
+    font-weight: var(--fw-400);
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--crimson-E00747);
+  }
+  
+  .placeholder_modal_project {
+    display: flex;
+    position: absolute;
+    top: 1.5rem;
+    left: 0;
+    color: var(--gray-959DA6);
+    font-size: 16px;
+    line-height: 16px;
+    font-weight: var(--fw-400);
+    font-family: var(--font-raleway);
+    font-style: normal;
+    transform-origin: left top;
+    transition: all 0.1s ease-out;
+  }
+  
+  #text-input:not(:placeholder-shown) + .placeholder_modal_project,
+  #text-input:empty + .placeholder_modal_project,
+  .focused .placeholder_modal_project
+  {
+    transform: translateY(-100%) scale(1);
+    font-size: 12px;
+    color: var(--gray-959DA6);
+  }
+  
+  .address_and_city_choose_location:focus + .line_modal_project {
+    background-color: #FF7F6A;
+  }
+
+  .text_placeholder_modal_project {
+  display: flex;
+  padding-left: 0.5rem;
+  }
+  
+  .text_object_modal_project {
+      display: flex;
+      padding: 2.5rem 0rem 1rem 5.5rem;
+      color: var(--black-1D2E43);
+      font-family: var(--font-raleway);
+      font-size: 1.125rem;
+      font-style: normal;
+      font-weight: var(--fw-400);
+      line-height: 1.5rem;
+   }
+
+   .modal_project_button_group {
+       display: flex;
+       flex-wrap: wrap;
+       padding: 2rem 2.81rem 0rem 5.5rem;
+       grid-column-gap: 8px;
+       grid-row-gap: 16px;
+       width: 100%;
+
+   }
+
+   .menu_button_group_project_wrapper {
+    display: flex;
+    width: 100%;
+}
+
+
+
+.menu__button__modal__project {
+    display: flex;
+    width: 100%;
+    padding: 8px 24px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2.125rem;
+    border: 1px solid var(--black-1D2E43);
+    background-color: transparent;
+    white-space: wrap;
+    color: var(--black-1D2E43);
+   
+}
+
+.active {
+    background-color: var(--black-1D2E43);
+    color: var(--white-F6F6F6);
+    pointer-events: none;
+}
+
+.menu__button__modal__project:hover {
+    background-color: var(--dark-gray-566272);
+    color: var(--white-F6F6F6);
+}
+
+.menu_button_items {
+    font-family: var(--font-raleway);
+    font-size: 0.875rem;
+    font-style: normal;
+    font-weight: var(--fw-400);
+    line-height: 1.25rem;
+}
+
