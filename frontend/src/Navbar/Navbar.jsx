@@ -1,8 +1,4 @@
 import React, { useRef, useState } from "react";
-// import { Link } from "react-scroll";
-// import debounce from 'lodash.debounce';
-
-// import logo from ".././icons/logo.svg";
 import styles from "./Navbar.module.css";
 import { useEffect } from "react";
 import { Link } from "react-router-dom";
@@ -66,6 +62,19 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen }) => {
   };
 
   useEffect(() => {
+    const activeNavItem = document.querySelector(".navbar_item.active");
+    if (activeNavItem) {
+      activeNavItem.classList.remove("active");
+    }
+    const newActiveItem = document.querySelector(
+      `.navbar_item[href="${activeLink}"]`
+    );
+    if (newActiveItem) {
+      newActiveItem.classList.add("active");
+    }
+  }, [activeLink]);
+
+  useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);
@@ -98,10 +107,9 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen }) => {
               className={`${styles.navbar_item} ${
                 activeLink === "/competention" ? styles.active : ""
               }`}
-              to="competention"
+              to="/competention"
               onClick={() => handleClick("/competention")}
               smooth={"true"}
-              duration={500}
             >
               <li>Компетенции</li>
             </Link>
@@ -110,22 +118,20 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen }) => {
               className={`${styles.navbar_item} ${
                 activeLink === "/project" ? styles.active : ""
               }`}
-              to="project"
+              to="/project"
               onClick={() => handleClick("/project")}
               smooth={"true"}
-              duration={500}
             >
               <li>Проекты</li>
             </Link>
             <Link
               exact="true"
               className={`${styles.navbar_item} ${
-                activeLink === "/public" ? styles.active : ""
+                activeLink === "/publication" ? styles.active : ""
               }`}
-              to="public"
-              onClick={() => handleClick("/public")}
+              to="/publication"
+              onClick={() => handleClick("/publication")}
               smooth={"true"}
-              duration={500}
             >
               <li>Публикации</li>
             </Link>
@@ -134,10 +140,9 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen }) => {
               className={`${styles.navbar_item} ${
                 activeLink === "/company" ? styles.active : ""
               }`}
-              to="company"
+              to="/company"
               onClick={() => handleClick("/company")}
               smooth={"true"}
-              duration={500}
             >
               <li>О Компании</li>
             </Link>
@@ -146,10 +151,9 @@ const Navbar = ({ handleClickScroll, navOpen, setNavOpen }) => {
               className={`${styles.navbar_item} ${
                 activeLink === "/contacts" ? styles.active : ""
               }`}
-              to="contacts"
+              to="/contacts"
               onClick={() => handleClick("/contacts")}
               smooth={"true"}
-              duration={500}
             >
               <li>Контакты</li>
             </Link>

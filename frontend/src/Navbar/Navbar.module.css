@@ -105,19 +105,6 @@
   display: none;
 }
 
-/* .navbar_item_last {
-  font-family: var(--font-raleway);
-  font-style: normal;
-  font-weight: var(--fw-400);
-  font-size: 16px;
-  line-height: 1.25vw;
-  color: var(--black-1D2E43);
-  display: flex;
-  align-items: center;
-  padding-left: 1.53vw;
-  padding-right: 1.53vw;
-  border-right: 1px solid var(--black-1D2E43);
-} */
 
 
 /* Стили для мобильной версии сайта блока NavBar начинаются тут */
