@@ -4,43 +4,52 @@ import { Link, useLocation } from "react-router-dom";
 import NavBarPhone from "./NavBarPhone/NavBarPhone";
 
 export default function Navbar() {
-  // State для хранения активного класса
-  const [activeClass, setActiveClass] = useState("");
+    const [activeClass, setActiveClass] = useState("");
+    const [prevScrollPos, setPrevScrollPos] = useState(0);
+    const [visible, setVisible] = useState(true);
 
-  // Hook useLocation для получения текущего пути страницы
-  const location = useLocation();
-  // Эффект, который будет срабатывать при изменении пути
-  useEffect(() => {
-    // Получаем путь из location объекта
-    const currentPath = location.pathname;
-    // Обновляем состояние активного класса, основываясь на текущем пути
-    setActiveClass(currentPath);
-  }, [location]);
+    const handleScroll = () => {
+      const currentScrollPos = window.pageYOffset;
 
-  // Функция для обработки клика на элементе меню
-  const handleItemClick = (path) => {
-    // Обновляем состояние активного класса при клике на элемент меню
-    setActiveClass(path);
-    // Сохраняем состояние в localStorage
-    localStorage.setItem("activeClass", path);
-  };
+      if (prevScrollPos > currentScrollPos) {
+        setVisible(true);
+      } else {
+        setVisible(false);
+      }
 
-  // Получаем значение активного класса из localStorage при загрузке компонента
-  useEffect(() => {
-    const storedActiveClass = localStorage.getItem("activeClass");
-    if (storedActiveClass) {
-      setActiveClass(storedActiveClass);
-    }
-  }, []);
+      setPrevScrollPos(currentScrollPos);
+    };
+
+    useEffect(() => {
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [prevScrollPos]);
+
+    const location = useLocation();
+
+    useEffect(() => {
+      const currentPath = location.pathname;
+      setActiveClass(currentPath);
+    }, [location]);
+
+    const handleItemClick = (path) => {
+      setActiveClass(path);
+      localStorage.setItem("activeClass", path);
+    };
+
+    useEffect(() => {
+      const storedActiveClass = localStorage.getItem("activeClass");
+      if (storedActiveClass) {
+        setActiveClass(storedActiveClass);
+      }
+    }, []);
   return (
-    <header>
+    <header className={visible ? styles.header_visible : styles.header_hidden}>
       <nav className={styles.navbar}>
         <div className={styles.navbar__container}>
           <div className={styles.navbar__title_block}>
             <Link
-              className={`${styles.navbar__title} ${
-                activeClass === "/"
-              }`}
+              className={`${styles.navbar__title} ${activeClass === "/"}`}
               to="/"
               onClick={() => handleItemClick("/")}
             >

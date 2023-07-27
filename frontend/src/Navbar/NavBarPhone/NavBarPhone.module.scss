@@ -1,5 +1,12 @@
 @import "../../App.css";
 
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 9998;
+}
 
 .container {
     max-width: 83rem;
@@ -22,7 +29,7 @@
 }
 
 // Section: Navbar Menu
-.navbar {
+.navbar_block {
     max-width: 100%;
     height: auto;
     margin: 0 auto;
@@ -155,7 +162,7 @@
 
 // Стили для телефонов 
 @media only screen and (max-width: 425px) {
-    .navbar {
+    .navbar_block {
         .burger {
             display: block;
             opacity: 1;
@@ -225,7 +232,7 @@
 
 // стили для планшета 
 @media only screen and (min-width: 426px) and (max-width: 1024px) {
-    .navbar {
+    .navbar_block {
         .burger {
             display: block;
             opacity: 1;

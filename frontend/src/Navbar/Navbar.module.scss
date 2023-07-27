@@ -90,10 +90,19 @@
 .navbar_phone {
   display: none;
 }
+
+.header_visible {
+  display: block;
+}
+
+.header_hidden {
+  display: none;
+}
+
+
+
+
 /* Стили для меню на экранах шириной меньше или равной 1024px */
-
-
-
 @media screen and (max-width: 1024px) {
   .navbar {
     display: none;

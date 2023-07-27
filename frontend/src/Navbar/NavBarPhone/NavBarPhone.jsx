@@ -22,8 +22,9 @@ const [isMenuActive, setMenuActive] = useState(false);
     setMenuActive((prevMenuActive) => !prevMenuActive);
   };
 
-  return (
-    <nav className={styles.navbar}>
+    return (
+      <nav className={styles.navbar}>        
+    <div className={styles.navbar_block}>
       <div className={styles.container}>
         <section className={styles.wrapper}>
           <Link to="/" className={styles.brand}>
@@ -124,6 +125,7 @@ const [isMenuActive, setMenuActive] = useState(false);
           </div>
         </section>
       </div>
-    </nav>
+    </div>
+      </nav>
   );
 };
