@@ -76,3 +76,40 @@
             /* Дополнительные стили, если необходимы */
         }
 }
+
+.exit_container {
+        position: fixed;
+            right: 145px;
+            bottom: 26px;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+
+            &__user {
+                color: var(--black-1D2E43);
+                    font-variant-numeric: lining-nums proportional-nums;
+                    font-family: Raleway;
+                    font-size: 1rem;
+                    font-style: normal;
+                    font-weight: 400;
+                    line-height: 1rem;
+                    /* 100% */
+            }
+}
+
+.btn_exit {
+    display: inline-flex;
+        padding: 1rem 2rem;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+        border: none;
+        border-radius: 2rem;
+        color: var(--white-F6F6F6);
+        background-color: var(--blue-75BBFD);
+        transition: all 0.3s ease-in-out;
+
+        &:hover {
+                background-color: var(--dark-blue-389FFF);
+            }
+}
