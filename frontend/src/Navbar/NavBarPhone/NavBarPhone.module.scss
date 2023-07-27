@@ -1,0 +1,289 @@
+@import "../../App.css";
+
+
+.container {
+    max-width: 83rem;
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.brand {
+    font-family: var(--font-MyCustomFont);
+    font-size: 1.4rem;
+    font-weight: 700;
+    line-height: inherit;
+    border: none;
+    outline: none;
+    color: var(--black-1D2E43);
+    text-transform: uppercase;
+    text-rendering: optimizeLegibility;
+}
+
+// Section: Navbar Menu
+.navbar {
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+    padding: 0.75rem 0;
+    border: none;
+    outline: none;
+    color: black;
+    background: var(--white-F6F6F6);
+    position: relative;
+    z-index: 1;
+
+    .wrapper {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        height: auto;
+        margin: 0 auto;
+    }
+
+    .burger {
+        position: relative;
+        display: none;
+        cursor: pointer;
+        width: 2.5rem;
+        height: 1rem;
+        border: none;
+        outline: none;
+        opacity: 0;
+        visibility: hidden;
+        background: none;
+        transform: rotate(0deg);
+        transition: 0.35s ease-in-out;
+
+        &-line {
+            display: block;
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            left: 0;
+            border: none;
+            outline: none;
+            opacity: 1;
+            background: var(--black-1D2E43);
+            transform: rotate(0deg);
+            transition: 0.25s ease-in-out;
+
+            &:nth-child(1) {
+                top: 0;
+            }
+
+            &:nth-child(2),
+            &:nth-child(3) {
+                top: 0.5rem;
+            }
+
+            &:nth-child(4) {
+                top: 1rem;
+            }
+        }
+
+        &.is-active {
+            .burger-line {
+
+                &:nth-child(1),
+                &:nth-child(4) {
+                    top: 1.25rem;
+                    width: 0%;
+                    left: 50%;
+                }
+
+                &:nth-child(2) {
+                    transform: rotate(25deg);
+                }
+
+                &:nth-child(3) {
+                    transform: rotate(-25deg);
+                }
+            }
+        }
+    }
+
+    .menu {
+        &-inner {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        &-link {
+            font-family: var(--font-raleway);
+            color: var(--black-1D2E43);
+            text-align: center;
+            font-variant-numeric: lining-nums proportional-nums;
+            font-size: 1.125rem;
+            font-style: normal;
+            font-weight: 700;
+            line-height: 1.5rem;
+
+            text-rendering: optimizeLegibility;
+            transition: all 0.35s ease-in-out;
+
+            &:active {
+                color: var(--blue-75BBFD);
+            }
+
+        }
+
+        position: absolute;
+        top: 100%;
+        left: 0;
+        width: 100%;
+        background-color: var(--white-F6F6F6);
+        box-shadow: var(--black-1D2E43);
+
+        /* Hide the menu initially */
+        visibility: hidden;
+        opacity: 0;
+        pointer-events: none;
+
+        /* Add a transition for smooth animation */
+        transition: opacity 0.35s ease,
+        visibility 0.35s ease;
+    }
+}
+
+// Стили для телефонов 
+@media only screen and (max-width: 425px) {
+    .navbar {
+        .burger {
+            display: block;
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .menu {
+            width: 100%;
+            max-height: 0rem;
+            padding: 0;
+            opacity: 0;
+            visibility: hidden;
+            overflow: hidden;
+            transition: all 0.35s ease;
+
+            &.is-active {
+                height: 100vh;
+                z-index: 9999;
+                visibility: visible;
+                opacity: 1;
+                pointer-events: auto;
+            }
+
+            &-inner {
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 2rem;
+                padding: 6.5rem 0;
+            }
+        }
+    }
+
+    .contact_info {
+        position: absolute;
+        right: 15px;
+        bottom: 20%;
+        color: var(--black-1D2E43);
+        font-weight: var(--fw-400);
+        font-size: 1rem;
+    }
+
+    .contact_info_block {
+        display: flex;
+        align-items: end;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .contact_info_language,
+    .contact_info_mail,
+        .contact_info_phone {
+        color: var(--black-1D2E43);
+        font-variant-numeric: lining-nums proportional-nums;
+        font-family: var(--font-raleway);
+        font-size: 1rem;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 1.5rem;
+    }
+}
+
+// стили для планшета 
+@media only screen and (min-width: 426px) and (max-width: 1024px) {
+    .navbar {
+        .burger {
+            display: block;
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .menu {
+            width: 19.5rem;
+            max-height: 0rem;
+            padding: 0;
+            opacity: 0;
+            visibility: hidden;
+            overflow: hidden;
+            transition: all 0.35s ease;
+
+            &.is-active {
+                height: 100vh;
+                z-index: 9999;
+                visibility: visible;
+                opacity: 1;
+                pointer-events: auto;
+                border-top: 1px solid var(--black-1D2E43);
+                background: var(--white-F6F6F6);
+                box-shadow: 0px 4px 22px 0px rgba(0, 0, 0, 0.12);
+            }
+
+            &-inner {
+                display: flex;
+                flex-direction: column;
+                justify-content: stretch;
+                align-items: baseline;
+                gap: 2rem;
+                padding: 2rem 1.69rem;
+            }
+        }
+    }
+
+    .contact_info {
+        position: absolute;
+        right: 15px;
+        bottom: 20%;
+        color: var(--black-1D2E43);
+        font-weight: var(--fw-400);
+        font-size: 1rem;
+    }
+
+    .contact_info_block {
+        display: flex;
+        align-items: end;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+
+    .contact_info_language,
+    .contact_info_mail,
+    .contact_info_phone {
+        color: var(--black-1D2E43);
+        font-variant-numeric: lining-nums proportional-nums;
+        font-family: var(--font-raleway);
+        font-size: 1rem;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 1.5rem;
+    }
+}
