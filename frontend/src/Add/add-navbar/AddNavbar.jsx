@@ -103,19 +103,19 @@ const logouthandler = async () => {
                   О компании
                 </Link>
               </li>
-              <li>
-                <button type="button" onClick={() => logouthandler()}>
-                  Выход
-                </button>
-              </li>
             </ul>
           </div>
-          <div>
-            пользователь cookies <strong>{user}👋</strong>
+          <div className={styles.exit_container}>
+          <div className={styles.exit_container__user}>
+            Пользователь cookies <strong>{user}👋</strong>
+          </div>
+                <button className={styles.btn_exit} type="button" onClick={() => logouthandler()}>
+                  Выход
+                </button>
+
           </div>
         </div>
       </nav>
-      <div></div>
       <Link
         className={styles.preview}
         to="/"
