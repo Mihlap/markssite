@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Route, Routes, useLocation, useNavigate } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import "./App.css";
 import Company from "./Company/Company";
 import Header from "./Header/Header";
@@ -15,49 +15,26 @@ import Footer from "./Footer/Footer";
 import Information from "./Information/Information";
 import WinePark from "./Project/WinePark/WinePark";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
-import Badaevsky from "./articlesProject/Badaevsky/Badaevsky";
-import Slava from "./Project/Slava/Slava";
 import Loading from "./Loading/Loading";
 import PrimePark from "./Project/PrimePark/PrimePark";
-import HotelAppart from "./Project/Hotel_appart/HotelAppart";
 import WineParkArticles from "./articlesProject/WinePark/WineParkArticles";
 import Login from "./Login/Login";
 import Add from "./Add/Add";
-import HomeAdmin from "./Add/HomeAdmin";
-import AddProject from "./Add/add-project/AddProject";
-import AddArticles from "./Add/add-articles/AddArticles";
-import AddCompany from "./Add/add-about-the-company/AddCompany";
+
 import SignUpPage from "./Login/SignUpPage";
 import axios from "axios";
 
 
 export default function App() {
   const serverHost = process.env.REACT_APP_SERVER_HOST;
-  const navigate = useNavigate(); // Хук для перенаправления пользователя
-
   const location = useLocation();
-  const [isScrollDisabled, setIsScrollDisabled] = useState(false);
   const [user, setUser] = useState(false);
   const [isUserChecked, setIsUserChecked] = useState(false);
   const [isLoadingUser, setIsLoadingUser] = useState(true);
   const [loading, setLoading] = useState(false);
-  /////////
-  const [navOpen, setNavOpen] = useState(false);
-  const [isHidden, setHidden] = useState(false);
   const [showNavbar, setNavBarOpen] = useState(true);
   const [showFooter, setShowFooter] = useState(true);
 
- 
-  useEffect(() => {
-    const body = document.querySelector("body");
-    if (navOpen) {
-      // Запрещаем вертикальный скролл
-      body.style.overflowY = "hidden";
-    } else {
-      // Разрешаем вертикальный скролл
-      body.style.overflowY = "scroll";
-    }
-  }, [navOpen]);
 
   useEffect(() => {
     const checkUser = async () => {
@@ -94,11 +71,6 @@ export default function App() {
   //   setLoading(false);
   // }, 3500);
 
-  // для соммита
-
-  function handleClickScroll() {
-    setIsScrollDisabled(!isScrollDisabled);
-  }
 
   // console.log(`пользователь 👉${user}👈`);
   return (
@@ -109,9 +81,6 @@ export default function App() {
         <>
           {showNavbar && (
             <Navbar
-              handleClickScroll={handleClickScroll}
-              setNavOpen={setNavOpen}
-              navOpen={navOpen}
               user={user}
             />
           )}
@@ -162,10 +131,6 @@ export default function App() {
                       />
                     }
                   >
-                    {/* <Route path="home" element={<Add />} />
-                    <Route path="add-a-project" element={<AddProject />} />
-                    <Route path="add-a-articles" element={<AddArticles />} />
-                    <Route path="add-a-company" element={<AddCompany />} /> */}
                   </Route>
                 ) : null}
               </Routes>
