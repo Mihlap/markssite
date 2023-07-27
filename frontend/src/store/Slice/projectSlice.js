@@ -11,6 +11,7 @@ const projectSlice = createSlice({
     loading: false,
     error: null,
     selectedViewConstruction: "Все",
+
   },
   reducers: {
     fetchProjectStart(state) {
@@ -123,6 +124,19 @@ export const getFetchFormFilter = (page, projectsPerPage, viewConstruction) => a
       `${serverHost}/api-project/getzapros-filter?page=${page}&viewConstruction=${viewConstruction}&limit=${projectsPerPage}`
     );
    dispatch(fetchProjectSuccess(response.data));
+  } catch (error) {
+    dispatch(fetchProjectFailure(error.message));
+  }
+};
+
+export const fetchFilteredProject = (countryCity, location) => async (dispatch) => {
+  dispatch(fetchProjectStart());
+
+  try {
+    const response = await axios.get(
+      `${serverHost}/getzapros-filter-address?countryCity=${countryCity}&location=${location}`
+    );
+    dispatch(fetchProjectSuccess(response.data));
   } catch (error) {
     dispatch(fetchProjectFailure(error.message));
   }
