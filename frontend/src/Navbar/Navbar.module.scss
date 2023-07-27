@@ -7,15 +7,15 @@
   left: 0;
   right: 0;
   z-index: 9998;
-
+  
   &__container {
     display: flex;
     justify-content: space-between;
     align-items: center;
     height: 49px;
-        border-bottom: 1px solid var(--black-1D2E43);
+    border-bottom: 1px solid var(--black-1D2E43);
   }
-
+  
   &__title_block {
     background: rgb(246 246 246 / 90%);
     width: 100%;
@@ -23,7 +23,7 @@
     display: flex;
     align-items: center;
   }
-
+  
   &__title {
     font-family: var(--font-MyCustomFont);
     font-size: 24px;
@@ -32,13 +32,13 @@
     width: 100%;
     padding-left: 34px;
   }
-
+  
   &__list {
     display: flex;
     height: 100%;
     
   }
-
+  
   &__item {
     font-family: var(--font-raleway);
     font-style: normal;
@@ -53,22 +53,22 @@
     padding-right: 1.53vw;
     border-left: 1px solid var(--black-1D2E43);
     white-space: nowrap;
-
+    
     &:hover {
-        background: rgb(246 246 246 / 60%);
-        backdrop-filter: blur(3px);
-        cursor: pointer;
+      background: rgb(246 246 246 / 60%);
+      backdrop-filter: blur(3px);
+      cursor: pointer;
+    }
+    
+    &:active {
+      background: rgba(212, 237, 251, 0.6);
+      cursor: pointer;
+    }
+    
+    
   }
-
-  &:active {
-    background: rgba(212, 237, 251, 0.6);
-    cursor: pointer;
-  }
-
-  
-}
-&__item_open {
-  font-family: var(--font-raleway);
+  &__item_open {
+    font-family: var(--font-raleway);
     font-style: normal;
     font-weight: var(--fw-400);
     font-size: 16px;
@@ -83,7 +83,28 @@
     white-space: nowrap;
     background: rgba(212, 237, 251, 0.60);
     backdrop-filter: blur(3px);
+  }
+  
 }
 
+.navbar_phone {
+  display: none;
 }
+/* Стили для меню на экранах шириной меньше или равной 1024px */
+
+
+
+@media screen and (max-width: 1024px) {
+  .navbar {
+    display: none;
+  }
+
+    .navbar_phone {
+      display: block;
+    }
+  
+}
+
+
+
 

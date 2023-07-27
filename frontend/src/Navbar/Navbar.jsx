@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import styles from "./Navbar.module.scss";
 import { Link, useLocation } from "react-router-dom";
+import NavBarPhone from "./NavBarPhone/NavBarPhone";
 
 export default function Navbar() {
   // State для хранения активного класса
@@ -8,7 +9,6 @@ export default function Navbar() {
 
   // Hook useLocation для получения текущего пути страницы
   const location = useLocation();
-
   // Эффект, который будет срабатывать при изменении пути
   useEffect(() => {
     // Получаем путь из location объекта
@@ -114,6 +114,9 @@ export default function Navbar() {
           </ul>
         </div>
       </nav>
+      <div className={styles.navbar_phone}>
+        <NavBarPhone />
+      </div>
     </header>
   );
 }
