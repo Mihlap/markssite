@@ -1,9 +1,22 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from "./NavBarPhone.module.scss";
 import { Link } from 'react-router-dom';
 
 export default function NavBarPhone() {
-  const [isMenuActive, setMenuActive] = useState(true);
+const [isMenuActive, setMenuActive] = useState(false);
+    
+// этот useEffect выключает скрол и включает обратно когда ты переключаем меню бургер
+ useEffect(() => {
+   if (isMenuActive) {
+     document.body.style.overflow = "hidden";
+   } else {
+     document.body.style.overflow = "auto";
+   }
+   return () => {
+     document.body.style.overflow = "auto";
+   };
+ }, [isMenuActive]);
+
 
   const handleBurgerClick = () => {
     setMenuActive((prevMenuActive) => !prevMenuActive);

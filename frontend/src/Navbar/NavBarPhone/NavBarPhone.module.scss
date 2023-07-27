@@ -217,6 +217,10 @@
         font-weight: 400;
         line-height: 1.5rem;
     }
+
+        .disable-scroll {
+            overflow: hidden;
+        }
 }
 
 // стили для планшета 
@@ -286,4 +290,8 @@
         font-weight: 400;
         line-height: 1.5rem;
     }
+
+        .disable-scroll {
+            overflow: hidden;
+        }
 }
