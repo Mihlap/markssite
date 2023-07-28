@@ -3,9 +3,6 @@ import axios from "axios";
 
 const serverHost = process.env.REACT_APP_SERVER_HOST;
 
-
-
-
 const projectSlice = createSlice({
   name: "project",
   initialState: {
@@ -14,6 +11,7 @@ const projectSlice = createSlice({
     error: null,
     selectedViewConstruction: "Все",
     selectedCity: '',
+    selectedLocation: "",
   },
   reducers: {
     fetchProjectStart(state) {
@@ -41,6 +39,9 @@ const projectSlice = createSlice({
     setSelectedCity(state, action) {
       state.selectedCity = action.payload;
     },
+    setSelectedLocation(state, action) {
+      state.selectedLocation = action.payload;
+    },
   },
 });
 
@@ -52,9 +53,8 @@ export const {
   deleteProjectFailure,
   setSelectedViewConstruction,
   setSelectedCity,
+  setSelectedLocation,
 } = projectSlice.actions;
-
-
 
 export const fetchProject = (formattedData, setInputData) => async (dispatch) => {
   dispatch(fetchProjectStart());
@@ -105,9 +105,7 @@ for (const key in formattedData) {
       textBlock: "",
     });
     dispatch(getFetchForm()); // Добавлен этот вызов для получения обновленных данных после успешной отправки формы
-    // dispatch(getFetchFormFilter())
-    // dispatch(getFetchFormCityFilter())
-   });
+    });
   console.log(formattedData, "REDUX");
 };
 
@@ -142,7 +140,7 @@ export const getFetchFormCityFilter = (page, projectsPerPage, countryCity) => as
 
   try {
     const response = await axios.get(
-      `${serverHost}/api-project/getzapros-filter?page=${page}&countryCity=${countryCity}&limit=${projectsPerPage}`
+      `${serverHost}/api-project/getzapros?page=${page}&countryCity=${countryCity}&limit=${projectsPerPage}`
     );
    dispatch(fetchProjectSuccess(response.data));
   } catch (error) {
@@ -150,18 +148,18 @@ export const getFetchFormCityFilter = (page, projectsPerPage, countryCity) => as
   }
 };
 
-// export const fetchFilteredProject = (countryCity, location) => async (dispatch) => {
-//   dispatch(fetchProjectStart());
+export const getFetchFormLocationFilter = (page, projectsPerPage, location, countryCity) => async (dispatch) => {
+  dispatch(fetchProjectStart());
 
-//   try {
-//     const response = await axios.get(
-//       `${serverHost}/getzapros-filter-address?countryCity=${countryCity}&location=${location}`
-//     );
-//     dispatch(fetchProjectSuccess(response.data));
-//   } catch (error) {
-//     dispatch(fetchProjectFailure(error.message));
-//   }
-// };
+  try {
+    const response = await axios.get(
+      `${serverHost}/api-project/getzapros?page=${page}&countryCity=${countryCity}&location=${location}&limit=${projectsPerPage}`
+    );
+    dispatch(fetchProjectSuccess(response.data));
+  } catch (error) {
+    dispatch(fetchProjectFailure(error.message));
+  }
+};
 
 export const deleteForm = (id) => async (dispatch) => {
   try {
