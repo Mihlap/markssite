@@ -28,7 +28,7 @@ const CompanySubscriptionForm = () => {
   function handleChange(event) {
   const email = event.target.value.toLowerCase();
   const isValid = isValidRegex.test(email);
-  const button = document.querySelector('#submit-button');
+  // const button = document.querySelector('#submit-button');
   setValue(email);
   setIsValid(isValid);
   setIsMatching(true);
