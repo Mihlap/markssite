@@ -44,6 +44,7 @@
     grid-column-gap: 8px;
     grid-row-gap: 16px;
     width: 100%;
+    cursor: pointer;
 }
 
 .menu__button__allProject {
@@ -64,6 +65,7 @@
     background-color: var(--black-1D2E43);
     color: var(--white-F6F6F6);
     pointer-events: none;
+    
 }
 
 .menu__button__allProject:hover {
