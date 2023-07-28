@@ -8,7 +8,8 @@ import {
   setSelectedCity,
   getFetchFormFilter,
   getFetchFormCityFilter,
-  // fetchFilteredProject,
+  getFetchFormLocationFilter,
+  getFetchForm,
 } from "../store/Slice/projectSlice";
 import Company_Slider from "../UI/Company_Slider/Company_Slider";
 import { getUserGeolocation } from "./utils";
@@ -50,8 +51,9 @@ export default function Project() {
   const selectedCity = useSelector(
     (state) => state.project.selectedCity
   );
-  const city = useSelector((state) => state.project.countryCity);
-const address = useSelector((state) => state.project.location);
+  const selectedLocation = useSelector(
+    (state) => state.project.selectedLocation
+  );
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [showButton, setShowButton] = useState(false);
@@ -59,7 +61,7 @@ const address = useSelector((state) => state.project.location);
   const [userGeolocation, setUserGeolocation] = useState(null);
   const [isFocusedProject, setIsFocusedProject] = useState(false);
   const [isValid, setIsValid] = useState(true);
-  const [isMatching, setIsMatching] = useState(true);
+  const [isTyping, setIsTyping] = useState(false);
   const [value, setValue] = useState('');
   const addressInputRef = useRef(null);
   // const [address, setAddress] = useState("");
@@ -72,6 +74,9 @@ const address = useSelector((state) => state.project.location);
     dispatch(
       getFetchFormCityFilter(projectsPerPage, selectedCity)
     );
+    dispatch(
+      getFetchFormLocationFilter(projectsPerPage, selectedLocation)
+    );
      setLoading(false);
   }, [dispatch, projectsPerPage]);
 
@@ -82,11 +87,13 @@ const address = useSelector((state) => state.project.location);
   function handleChange(event) {
     const address = event.target.value.toLowerCase();
      setValue(address);
+     setIsValid(address === '');
+     setIsTyping(true);
+     dispatch(setSelectedCity(""));
    }
 
    const handleAddressSubmit = (event) => {
     event.preventDefault();
-    // dispatch(fetchFilteredProject(city, address)); 
   };
 
 
@@ -101,15 +108,25 @@ const address = useSelector((state) => state.project.location);
     }
 
 
-   const handleButtonClick = (viewConstruction) => {
-    dispatch(setSelectedViewConstruction(viewConstruction));
-    dispatch(
-      getFetchFormFilter(currentPage, projectsPerPage, viewConstruction)
-      );
-      setCurrentPage(1);
-  };
+    const handleButtonClick = (viewConstruction) => {
+      if (selectedCity !== "" || selectedViewConstruction !== viewConstruction) {
+        dispatch(setSelectedCity(""));
+        dispatch(setSelectedViewConstruction(viewConstruction));
+        dispatch(getFetchFormFilter(currentPage, projectsPerPage, viewConstruction));
+        setCurrentPage(1);
+        setValue("");
+        setIsTyping(false);
+      } else {
+        // If "Все" is clicked without any changes, simply fetch all projects again
+        dispatch(getFetchForm());
+      }
+    };
 
-  const handleButtonCityClick = (countryCity) => {
+  const handleButtonCityClick = (countryCity, viewConstruction) => {
+    if (isTyping) {
+      dispatch(setSelectedCity(""));
+      setIsTyping(false);
+    }
     dispatch(setSelectedCity(countryCity));
     dispatch(
       getFetchFormCityFilter(currentPage, projectsPerPage, countryCity)
@@ -125,11 +142,14 @@ const address = useSelector((state) => state.project.location);
   const handleSelectCityClick = (e) => {
     e.preventDefault();
     setIsModalProjectOpen(true);
+    setSelectedViewConstruction("Все");
   };
 
   const handleModalClose = (e) => {
     e.preventDefault();
     setIsModalProjectOpen(false);
+    setSelectedViewConstruction("Все");
+    // dispatch(setSelectedCity(""));
   };
 
   // Получение геопозиции пользователя
@@ -194,6 +214,7 @@ const address = useSelector((state) => state.project.location);
   };
 
   const extractCityFromCountryCity = (countryCity) => {
+    if (!countryCity) return "";
     const parts = countryCity.split(/[.,:\s]+/);
     if (parts.length === 1) {
       return parts[0].trim();
@@ -211,9 +232,14 @@ const address = useSelector((state) => state.project.location);
   )
   .filter((project) => {
     const projectCity = extractCityFromCountryCity(project.countryCity);
-    return selectedCity === ""
-      ? true
-      : projectCity === selectedCity;
+    return selectedCity === "" ? true : projectCity === selectedCity;
+  })
+  .filter((project) => {
+    const searchValue = value.toLowerCase(); 
+    const projectLocation = project.location.toLowerCase(); 
+    const projectCity = extractCityFromCountryCity(project.countryCity).toLowerCase();
+
+    return projectLocation.includes(searchValue) && (selectedCity === "" || projectCity === selectedCity.toLowerCase());
   });
 
  
@@ -230,9 +256,9 @@ const address = useSelector((state) => state.project.location);
           {buttonChoose.map((el, index) => (
             <div
               key={el}
-              className={`${styles.button_wrapper} ${
-                showButton ? "" : index ? styles.hidden : ""
-              }`}
+              // className={`${styles.button_wrapper} ${
+              //   showButton ? "" : index ? styles.hidden : ""
+              // }`}
             >
               <button
                 className={`${styles.menu__button__allProject} ${
@@ -405,8 +431,7 @@ const address = useSelector((state) => state.project.location);
                 ref={addressInputRef}
                 className={styles.address_and_city_choose_location}
                 type="address"
-                // placeholder=""
-                value={city}
+                value={value}
                 onFocus={handleFocus}
                 onChange={handleChange}
                 onBlur={handleBlur}
@@ -417,7 +442,9 @@ const address = useSelector((state) => state.project.location);
               />
               <div
                 className={styles.line_modal_project}
-                style={{backgroundColor: (!value && !isFocusedProject) ? '' : (!value && isFocusedProject) ? '#FF7F6A' : (isValid && isMatching) ? '' : '#E00747'}}
+                style={{
+                  backgroundColor: !isValid ? '#FF7F6A' : (isFocusedProject ? '#FF7F6A' : '#959DA6'),
+                }}
               ></div>
               <div className={styles.placeholder_modal_project}>
                 <div className={styles.lupa_svg_modal_project}>
@@ -460,13 +487,19 @@ const address = useSelector((state) => state.project.location);
         <div className={styles.modal_project_button_group}>
         {buttonCity.map((el) => (
             <div
-              key={el.id}
+              key={el}
               className={styles.button_modal_project_wrapper}>
               <button
                 className={`${styles.menu__button__modal__project} ${
                   el === selectedCity ? styles.active : ""
                 }`}
                 onClick={() => handleButtonCityClick(el)}
+                disabled={!isValid}
+                style={{
+                  backgroundColor: !isValid ? "#959DA6" : "",
+                  pointerEvents: !isValid ? "none" : "auto",
+                  opacity: !isValid ? 0.6 : 1, 
+                }}
               >
                 <p className={styles.menu_button_items}>{el}</p>
               </button>
@@ -491,9 +524,9 @@ const address = useSelector((state) => state.project.location);
 
               return (
                 <Link
+                  key={project.id}
                   to={project.link}
                   className={styles.section_project__block_cart}
-                  key={project.id}
                 >
                   <div className={styles.cart_project}>
                     <div className={styles.cart_project__container}>

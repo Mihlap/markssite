@@ -37,42 +37,6 @@ router.get('/getzapros-filter', async (req, res) => {
   }
 });
 
-// router.get('/getzapros-filter-address', async (req, res) => {
-//   try {
-//     const { countryCity, location } = req.query;
-//     let data;
-
-//     if (countryCity && location) {
-//       data = await Project.findAll({
-//         where: {
-//           countryCity,
-//           location,
-//         },
-//       });
-//     } else if (countryCity) {
-//        data = await Project.findAll({
-//         where: {
-//           countryCity,
-//         },
-//       });
-//     } else if (location) {
-//      data = await Project.findAll({
-//         where: {
-//           location,
-//         },
-//       });
-//     } else {
-//       data = await Project.findAll();
-//     }
-
-//     res.json(data);
-//   } catch (error) {
-//     console.log(error);
-//     res.status(500).json({ error: 'Произошла ошибка при получении адреса проектов.' });
-//   }
-// });
-
-
 router.post(
   '/postzapros',
   fileMiddleware.fields([
