@@ -9,26 +9,29 @@
 }
 
 .project_slider_text {
+font-family: var(--font-unbounded);
     position: absolute;
-    padding-top: 51.56rem;
-    padding-left: 3.44rem;
+    bottom: 19%;
+    left: 10vw;
+    z-index: 1;
     color: var(--white-F6F6F6);
-    font-family: var(--font-unbounded);
     font-style: normal;
     background-color: transparent;
 }
 
 .actuality_text {
-    font-size: 1.5rem;
-    font-weight: var(--fw-300);
-    line-height: 2rem;
+    font-size: 1.5vw;
+        font-weight: var(--fw-300);
+        line-height: 2vw;
 }
 
 .projects_name_text {
-    font-size: 3rem;
-    font-weight: var(--fw-500);
-    line-height: 4rem;
-    padding-top: 0.25rem;
+    font-family: var(--font-unbounded);
+        font-size: 3vw;
+        /* font-size: clamp(1.6rem, calc(-.13rem + 2.43vw), 2.6rem); */
+        font-weight: 600;
+        line-height: 4vw;
+        padding-top: 0.25rem;
 }
 
 .menu_button_group_project_wrapper {
