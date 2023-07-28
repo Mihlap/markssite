@@ -1,6 +1,12 @@
 import React, { useState, useEffect } from "react";
 import styles from "./Navbar.module.scss";
 import { Link, useLocation } from "react-router-dom";
+import {
+  handleScroll,
+  handleItemClick,
+  handlePath,
+  handleStoredClass,
+} from "./utils/navbarUtils";
 import NavBarPhone from "./NavBarPhone/NavBarPhone";
 
 export default function Navbar() {

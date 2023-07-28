@@ -204,7 +204,16 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
   if (loading) {
     return <LoadingCircle />;
   }
- 
+const NewProject = projects.map((el) =>
+  el && el.project !== undefined ? el.project : null
+);
+const MapProject = NewProject.map((el) =>
+  el && el.project !== undefined ? el.project : null
+);
+
+
+
+console.log(MapProject);
   return (
     <main className={styles.header}>
       {user ? (
@@ -221,6 +230,13 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
       ) : null}
       <div className={styles.video_block}>
         <VideoPlayer />
+        {/* {MapProject?.map((el) => (
+          <div key={el.id}>
+            <div>
+              {el.title}
+            </div>
+          </div>
+        ))} */}
       </div>
       <div className={styles.header_desctop_block}>
         <h1 className={styles.desctop_title}>Награды и публикации</h1>
@@ -295,9 +311,11 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
           </div>
         </div>
         <div className={styles.most}>
-          <img className={styles.image_most}
-           src="./assets/most.png"
-            alt=""></img>
+          <img
+            className={styles.image_most}
+            src="./assets/most.png"
+            alt=""
+          ></img>
         </div>
         <BlockHeader />
         {/* <Mapbox3D /> */}
@@ -341,7 +359,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
             },
           }}
         >
-          {projects?.map((project, index) => {
+          {MapProject?.map((project, index) => {
             const isCustomSize = project.hasCustomSize;
             return (
               <SwiperSlide
@@ -357,18 +375,26 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
                   <img
                     className={styles.container__imageTitle}
                     src={`${Host}/images/imageAdd/${
-                      project.project.imageProject ? project.project.imageProject : project.project.imageTitle
+                      project.imageProject
+                        ? project.imageProject
+                        : project.imageTitle
                     }`}
-                    alt={project.project.imageProject ? project.project.imageProject : project.project.imageTitle}
+                    alt={
+                      project.imageProject
+                        ? project.imageProject
+                        : project.imageTitle
+                    }
                   />
                 </div>
                 <div className={styles.title_selectCompetencies}>
-                  <div className={styles.container__title}>{project.project.title}</div>
+                  <div className={styles.container__title}>
+                    {project.title}
+                  </div>
                   <div className={styles.container__selectCompetencies}>
                     {(() => {
                       try {
                         const selectCompetencies = JSON.parse(
-                          project.project.selectCompetencies
+                          project.selectCompetencies
                         );
                         return selectCompetencies.map((competency) => (
                           <div
@@ -387,10 +413,11 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
                         ));
                       } catch (error) {
                         if (
-                          typeof project.project.selectCompetencies === "string" &&
-                          project.project.selectCompetencies.includes(",")
+                          typeof project.selectCompetencies ===
+                            "string" &&
+                          project.selectCompetencies.includes(",")
                         ) {
-                          return project.project.selectCompetencies
+                          return project.selectCompetencies
                             .split(",")
                             .map((value) => {
                               const label = value.trim();
@@ -418,10 +445,10 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
                 </div>
                 <div className={styles.countryCity_monthYear}>
                   <div className={styles.container__countryCity}>
-                    {project.project.countryCity}
+                    {project.countryCity}
                   </div>
                   <div className={styles.container__monthYear}>
-                    {project.project.monthYear}
+                    {project.monthYear}
                   </div>
                 </div>
               </SwiperSlide>
