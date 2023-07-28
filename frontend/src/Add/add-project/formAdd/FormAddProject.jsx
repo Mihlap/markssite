@@ -144,7 +144,7 @@ export default function FormAddProject({ setIsModalOpen }) {
     setIsModalOpen(false);
   };
 
-  console.log(inputData);
+  // console.log(inputData);
   return (
     <div className={styles.form_container}>
       <div className={styles.form_container__title}>Новый проект</div>
