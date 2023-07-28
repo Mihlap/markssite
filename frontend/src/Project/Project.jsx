@@ -5,8 +5,10 @@ import { useDispatch, useSelector } from "react-redux";
 import styles from "./Project-container.module.scss";
 import {
   setSelectedViewConstruction,
+  setSelectedCity,
   getFetchFormFilter,
-  fetchFilteredProject,
+  getFetchFormCityFilter,
+  // fetchFilteredProject,
 } from "../store/Slice/projectSlice";
 import Company_Slider from "../UI/Company_Slider/Company_Slider";
 import { getUserGeolocation } from "./utils";
@@ -45,9 +47,11 @@ export default function Project() {
   const selectedViewConstruction = useSelector(
     (state) => state.project.selectedViewConstruction
   );
+  const selectedCity = useSelector(
+    (state) => state.project.selectedCity
+  );
   const city = useSelector((state) => state.project.countryCity);
 const address = useSelector((state) => state.project.location);
-  // const filteredProjects = useSelector((state) => state.project.filteredProjects);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [showButton, setShowButton] = useState(false);
@@ -61,6 +65,16 @@ const address = useSelector((state) => state.project.location);
   // const [address, setAddress] = useState("");
   const projectsPerPage = 10;
 
+  useEffect(() => {
+    dispatch(
+      getFetchFormFilter(projectsPerPage, selectedViewConstruction)
+    );
+    dispatch(
+      getFetchFormCityFilter(projectsPerPage, selectedCity)
+    );
+     setLoading(false);
+  }, [dispatch, projectsPerPage]);
+
   function handleFocus() {
     setIsFocusedProject(true);
   };
@@ -72,7 +86,7 @@ const address = useSelector((state) => state.project.location);
 
    const handleAddressSubmit = (event) => {
     event.preventDefault();
-    dispatch(fetchFilteredProject(city, address)); 
+    // dispatch(fetchFilteredProject(city, address)); 
   };
 
 
@@ -89,19 +103,19 @@ const address = useSelector((state) => state.project.location);
 
    const handleButtonClick = (viewConstruction) => {
     dispatch(setSelectedViewConstruction(viewConstruction));
-    setCurrentPage(1);
     dispatch(
       getFetchFormFilter(currentPage, projectsPerPage, viewConstruction)
-    );
+      );
+      setCurrentPage(1);
   };
 
-  const handleButtonCityClick = () => {
-    // dispatch(setSelectedViewConstruction(viewConstruction));
-    // setCurrentPage(1);
-    // dispatch(
-    //   getFetchFormFilter(currentPage, projectsPerPage, viewConstruction)
-    // );
-  };
+  const handleButtonCityClick = (countryCity) => {
+    dispatch(setSelectedCity(countryCity));
+    dispatch(
+      getFetchFormCityFilter(currentPage, projectsPerPage, countryCity)
+      ); 
+      setCurrentPage(1);
+   };
 
   const handleShowButtonAll = (e) => {
     e.preventDefault();
@@ -130,16 +144,6 @@ const address = useSelector((state) => state.project.location);
   const currentLocation = userGeolocation
     ? `${userGeolocation.latitude}, ${userGeolocation.longitude}`
     : "Москва";
-
-  useEffect(() => {
-    dispatch(
-      getFetchFormFilter(currentPage, projectsPerPage, selectedViewConstruction)
-    );
-    dispatch(
-      fetchFilteredProject(city, address)
-    );
-    setLoading(false);
-  }, [dispatch, currentPage, projectsPerPage, city, address]);
 
   const handleScroll = () => {
     const isAtBottom =
@@ -188,22 +192,32 @@ const address = useSelector((state) => state.project.location);
     }
     return { width, height };
   };
-  // console.log(
-  //   selectedViewConstruction
-  //   "================================================"
-  // );
-  const filteredProjects = projects.filter((project) =>
+
+  const extractCityFromCountryCity = (countryCity) => {
+    const parts = countryCity.split(/[.,:\s]+/);
+    if (parts.length === 1) {
+      return parts[0].trim();
+    } else if (parts.length > 1) {
+      return parts[1].trim();
+    }
+    return "";
+  };
+
+  const filteredProjects = projects
+  .filter((project) =>
     selectedViewConstruction === "Все"
       ? true
       : project.selectCompetencies.includes(selectedViewConstruction)
-  );
+  )
+  .filter((project) => {
+    const projectCity = extractCityFromCountryCity(project.countryCity);
+    return selectedCity === ""
+      ? true
+      : projectCity === selectedCity;
+  });
 
-  // console.log(
-  //   filteredProjects,
-  //   "+++++++++++++++++++++++++++++++++++++++++++++++"
-  // );
-console.log(city, '=======================================');
-console.log(address, '++++++++++++++++++++++++++++++++++++++++++++++++++');
+ 
+
   return (
     <div className={styles.project_main}>
       <Company_Slider />
@@ -444,13 +458,13 @@ console.log(address, '++++++++++++++++++++++++++++++++++++++++++++++++++');
         </form>
         <div className={styles.text_object_modal_project}>Наши объекты есть</div>
         <div className={styles.modal_project_button_group}>
-        {buttonCity.map((el, index) => (
+        {buttonCity.map((el) => (
             <div
-              key={el}
+              key={el.id}
               className={styles.button_modal_project_wrapper}>
               <button
                 className={`${styles.menu__button__modal__project} ${
-                  el === selectedViewConstruction ? styles.active : ""
+                  el === selectedCity ? styles.active : ""
                 }`}
                 onClick={() => handleButtonCityClick(el)}
               >
