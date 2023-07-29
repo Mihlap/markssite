@@ -45,9 +45,8 @@ export default function HomeAdmin({ projects }) {
       try {
         await dispatch(
           searchProgectMainPostzapros(filteredProject, setSearchId, setSavedId)
-        ); // Отправляем найденный объект на сервер
+        ); 
 
-        // Установим id сохраненного объекта в состояние savedId
 
         setOkMessage("Проект добавлен");
         setShowOk(true);
@@ -92,11 +91,15 @@ export default function HomeAdmin({ projects }) {
   };
 
   const ErrorMessage = ({ message }) => {
-    return <div style={{ color: "red" }}>{message}</div>;
+    return <div className={styles.home_admin_section__error}>{message}</div>;
   };
 
   const OkMessage = ({ message }) => {
-    return <div style={{ color: "green" }}>{message}</div>;
+    return (
+      <div className={styles.home_admin_section__ok}>
+        {message}
+      </div>
+    );
   };
 
   // console.log(arrIdProject);
@@ -140,10 +143,10 @@ export default function HomeAdmin({ projects }) {
             onClick={filterProjectsById}
             disabled={isButtonDisabled}
           />
-        </div>
-      </div>
       <div>{showError && <ErrorMessage message={errorMessage} />}</div>
       <div>{showOk && <OkMessage message={okMessage} />}</div>
+        </div>
+      </div>
     </section>
   );
 }
