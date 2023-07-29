@@ -116,30 +116,30 @@ export default function FormAddProject({ setIsModalOpen }) {
     setPreviewPhotos([]);
     setInputData({
       title: "",
-      selectCompetencies: "",
-      countryCity: "",
-      monthYear: "",
-      viewConstruction: "",
-      dropPhoto: [],
-      photoAva: "",
-      titleTextBlock: "",
-      descriptionProject: "",
-      totalArea: "",
-      siteArea: "",
-      floors: "",
-      altitude: "",
-      constructionVolume: "",
-      location: "",
-      degreeParticipation: "",
-      statusObject: "",
-      customer: "",
-      publication: "",
-      linkToPublication: "",
-      publicationTwo: "",
-      linkToPublicationTwo: "",
-      awards: "",
-      imageOpen: "",
-      textBlock: "",
+      // selectCompetencies: "",
+      // countryCity: "",
+      // monthYear: "",
+      // viewConstruction: "",
+      // dropPhoto: [],
+       photoAva: "",
+      // titleTextBlock: "",
+      // descriptionProject: "",
+      // totalArea: "",
+      // siteArea: "",
+      // floors: "",
+      // altitude: "",
+      // constructionVolume: "",
+      // location: "",
+      // degreeParticipation: "",
+      // statusObject: "",
+      // customer: "",
+      // publication: "",
+      // linkToPublication: "",
+      // publicationTwo: "",
+      // linkToPublicationTwo: "",
+      // awards: "",
+      // imageOpen: "",
+      // textBlock: "",
     });
     setIsModalOpen(false);
   };
@@ -178,7 +178,7 @@ export default function FormAddProject({ setIsModalOpen }) {
               Название проекта
             </label>
           </div>
-          <div className={`${styles.form__group} ${styles.field}`}>
+          {/* <div className={`${styles.form__group} ${styles.field}`}>
             <Select
               styles={customStyles}
               isMulti
@@ -195,11 +195,8 @@ export default function FormAddProject({ setIsModalOpen }) {
               value={selectedCompetencies}
               onChange={setSelectedCompetencies}
             />
-            {/* <label htmlFor="selectCompetencies" className={styles.form__label}>
-              Выбрать компетенции
-            </label> */}
-          </div>
-          <div className={`${styles.form__group} ${styles.field}`}>
+          </div> */}
+          {/* <div className={`${styles.form__group} ${styles.field}`}>
             <input
               type="input"
               className={styles.form__field}
@@ -225,8 +222,8 @@ export default function FormAddProject({ setIsModalOpen }) {
             <label htmlFor="countryCity" className={styles.form__label}>
               Страна, город
             </label>
-          </div>
-          <div className={`${styles.form__group} ${styles.field}`}>
+          </div> */}
+          {/* <div className={`${styles.form__group} ${styles.field}`}>
             <input
               type="input"
               className={styles.form__field}
@@ -252,8 +249,8 @@ export default function FormAddProject({ setIsModalOpen }) {
             <label htmlFor="monthYear" className={styles.form__label}>
               Месяц, год
             </label>
-          </div>
-          <div className={`${styles.form__group} ${styles.field}`}>
+          </div> */}
+          {/* <div className={`${styles.form__group} ${styles.field}`}>
             <Select
               styles={customStyles}
               isMulti
@@ -270,10 +267,7 @@ export default function FormAddProject({ setIsModalOpen }) {
               className={styles.form__field}
               placeholder="Выберите вид строительства"
             />
-            {/* <label htmlFor="viewConstruction" className={styles.form__label}>
-              Выберите вид строительства
-            </label> */}
-          </div>
+          </div> */}
         </div>
         <div className={styles.form_container__checkbox_block}>
           <div>
@@ -324,7 +318,7 @@ export default function FormAddProject({ setIsModalOpen }) {
             </div>
           ))}
         </div>
-        <div className={styles.form_container__radio_container}>
+        {/* <div className={styles.form_container__radio_container}>
           <div
             className={`${styles.form_container__radio_block_one} ${
               selectedRadio === "28,28"
@@ -397,9 +391,8 @@ export default function FormAddProject({ setIsModalOpen }) {
               />
             </label>
           </div>
-        </div>
-        <div className={styles.slider_container}>
-          {/* <div className={styles.slider_container__title}>Слайдер</div> */}
+        </div> */}
+        {/* <div className={styles.slider_container}>
 
           <div className={styles.form_container__checkbox_block}>
             <div>
@@ -452,8 +445,8 @@ export default function FormAddProject({ setIsModalOpen }) {
               </div>
             </div>
           ))}
-        </div>
-        <div className={styles.form_container__heading_block}>
+        </div> */}
+        {/* <div className={styles.form_container__heading_block}>
           <input
             type="input"
             className={styles.form_container__heading_block_input}
@@ -982,7 +975,7 @@ export default function FormAddProject({ setIsModalOpen }) {
           >
             Текстовый блок
           </label>
-        </div>
+        </div> */}
 
         <div className={styles.form_container__button_block}>
           <button

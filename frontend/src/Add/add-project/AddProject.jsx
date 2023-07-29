@@ -117,7 +117,7 @@ export default function AddProject({ project, user }) {
           <div className={styles.project_components_admin__block_map}>
             {project &&
               project.map((el) => {
-                const firstPhoto = el.imageTitle.split(", ")[0];
+                // const firstPhoto = el.imageTitle.split(", ")[0];
                 return (
                   <div
                     className={styles.section_project__block_cart}
@@ -131,7 +131,7 @@ export default function AddProject({ project, user }) {
                         >
                           <img
                             className={styles.cart_project__img}
-                            src={`${Host}/images/imageAdd/${firstPhoto}`}
+                            src={`${Host}/images/imageAdd/${el.imageProject}`}
                             alt="photo"
                           />
                           {user === "obezyankaa" ||
