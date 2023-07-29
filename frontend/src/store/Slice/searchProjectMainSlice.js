@@ -22,11 +22,29 @@ const searchProjectMainSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+    updateProjectOrderSuccess(state, action) {
+      state.projects = action.payload;
+    },
+    deleteProjectSuccess(state, action) {
+      const projectId = action.payload;
+      state.projects = state.projects.filter(
+        (el) => el.IdProject !== projectId
+      );
+    },
+    deleteProjectFailure(state, action) {
+      state.error = action.payload;
+    },
   },
 });
 
-export const { fetchProjectStart, fetchProjectSuccess, fetchProjectFailure } =
-  searchProjectMainSlice.actions;
+export const {
+  fetchProjectStart,
+  fetchProjectSuccess,
+  fetchProjectFailure,
+  updateProjectOrderSuccess,
+  deleteProjectSuccess,
+  deleteProjectFailure,
+} = searchProjectMainSlice.actions;
 
 export const searchProgectMainPostzapros =
   (filteredObject, setSearchId) => async (dispatch) => {
@@ -73,4 +91,16 @@ export const getZaprosData = () => async (dispatch) => {
     dispatch(fetchProjectFailure(error.message));
   }
 };
+
+export const deleteProject = (IdProject) => async (dispatch) => {
+  try {
+    await axios.delete(
+      `${serverHost}/search/search-project/deletezapros/${IdProject}`
+    );
+    dispatch(deleteProjectSuccess(IdProject));
+  } catch (error) {
+    dispatch(deleteProjectFailure(error.message));
+  }
+};
+
 export default searchProjectMainSlice.reducer;

@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import styles from "./HomeAdmin.module.scss";
-import { searchProgectMainPostzapros } from "../store/Slice/searchProjectMainSlice";
+import { deleteProject, searchProgectMainPostzapros, updateProjectOrderSuccess } from "../store/Slice/searchProjectMainSlice";
 import { useSelector } from "react-redux";
 import { arrIdProjectSelector } from "./HomeAdminSelectors";
+import DraggableProject from "./DraggableProject";
 
 export default function HomeAdmin({ projects }) {
   const [errorMessage, setErrorMessage] = useState("");
@@ -16,7 +17,7 @@ export default function HomeAdmin({ projects }) {
 
   // Use the memoized selector with useSelector
   const arrIdProject = useSelector(arrIdProjectSelector);
-  const newArr = arrIdProject[arrIdProject.length - 1];
+
   const dispatch = useDispatch();
 
   // Обработчик изменения значения в инпуте поиска
@@ -44,9 +45,8 @@ export default function HomeAdmin({ projects }) {
       try {
         await dispatch(
           searchProgectMainPostzapros(filteredProject, setSearchId, setSavedId)
-        ); // Отправляем найденный объект на сервер
+        ); 
 
-        // Установим id сохраненного объекта в состояние savedId
 
         setOkMessage("Проект добавлен");
         setShowOk(true);
@@ -61,6 +61,10 @@ export default function HomeAdmin({ projects }) {
     }
   };
 
+  const handleFormDelete = (formId) => {
+    dispatch(deleteProject(formId));
+  };
+
   setTimeout(() => {
     setShowError(false);
     setErrorMessage("");
@@ -70,13 +74,35 @@ export default function HomeAdmin({ projects }) {
     setShowOk(false);
   }, 5000);
 
+  const updateProjectOrder = (updatedProjects) => {
+    return (dispatch) => {
+      dispatch(updateProjectOrderSuccess(updatedProjects));
+    };
+  };
+
+  const moveProject = (draggedIndex, targetIndex) => {
+    const updatedProjects = [...arrIdProject];
+    const draggedProject = updatedProjects[draggedIndex];
+    updatedProjects.splice(draggedIndex, 1);
+    updatedProjects.splice(targetIndex, 0, draggedProject);
+
+    // Вызываем действие для обновления порядка элементов
+    dispatch(updateProjectOrder(updatedProjects));
+  };
+
   const ErrorMessage = ({ message }) => {
-    return <div style={{ color: "red" }}>{message}</div>;
+    return <div className={styles.home_admin_section__error}>{message}</div>;
   };
 
   const OkMessage = ({ message }) => {
-    return <div style={{ color: "green" }}>{message}</div>;
+    return (
+      <div className={styles.home_admin_section__ok}>
+        {message}
+      </div>
+    );
   };
+
+  // console.log(arrIdProject);
   return (
     <section className={styles.home_admin_section}>
       <div className={styles.home_admin_section__title}>Проекты</div>
@@ -84,7 +110,18 @@ export default function HomeAdmin({ projects }) {
       <div className={styles.home_admin_section__section}>
         <div className={styles.home_admin_section__block_search}>
           {/* <div>{arrIdProject}</div> */}
-          <div>{JSON.stringify(newArr)}</div>
+          {/* <div>{JSON.stringify(arrIdProject)}</div> */}
+          <div className={styles.home_admin_section__id_container}>
+            {arrIdProject?.map((el, index) => (
+              <DraggableProject
+                key={index}
+                project={el}
+                index={index}
+                moveProject={moveProject}
+                handleFormDelete={handleFormDelete}
+              />
+            ))}
+          </div>
           <div className={`${styles.form__group} ${styles.field}`}>
             <input
               type="number"
@@ -106,40 +143,10 @@ export default function HomeAdmin({ projects }) {
             onClick={filterProjectsById}
             disabled={isButtonDisabled}
           />
-        </div>
-        {/* <div>
-          <div>
-            <input
-              style={{ background: "tomato" }}
-              type="number"
-              name=""
-              id=""
-            />
-            <button>добавить на главную</button>
-          </div>
-        </div> */}
-      </div>
       <div>{showError && <ErrorMessage message={errorMessage} />}</div>
       <div>{showOk && <OkMessage message={okMessage} />}</div>
-
-      {/* <div className={styles.home_admin_section__title}>Публикации</div>
-      <div>
-        <div>
-          <input style={{ background: "orange" }} type="number" name="" id="" />
-          <button>добавить на главную</button>
         </div>
-        <div>
-          <div>
-            <input
-              style={{ background: "tomato" }}
-              type="number"
-              name=""
-              id=""
-            />
-            <button>добавить на главную</button>
-          </div>
-        </div>
-      </div> */}
+      </div>
     </section>
   );
 }
