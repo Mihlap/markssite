@@ -32,4 +32,15 @@ router.get('/search-project/getzapros', async (req, res) => {
   }
 });
 
+router.delete('/search-project/deletezapros/:IdProject', async (req, res) => {
+  try {
+    const { IdProject } = req.params;
+    await ProjectMain.destroy({ where: { IdProject } });
+    res.sendStatus(200);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+});
+
 module.exports = router;

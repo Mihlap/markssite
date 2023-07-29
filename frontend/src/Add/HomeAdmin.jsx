@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import styles from "./HomeAdmin.module.scss";
-import { searchProgectMainPostzapros } from "../store/Slice/searchProjectMainSlice";
+import { deleteProject, searchProgectMainPostzapros } from "../store/Slice/searchProjectMainSlice";
 import { useSelector } from "react-redux";
 import { arrIdProjectSelector } from "./HomeAdminSelectors";
 
@@ -16,7 +16,7 @@ export default function HomeAdmin({ projects }) {
 
   // Use the memoized selector with useSelector
   const arrIdProject = useSelector(arrIdProjectSelector);
-  const newArr = arrIdProject[arrIdProject.length - 1];
+
   const dispatch = useDispatch();
 
   // Обработчик изменения значения в инпуте поиска
@@ -61,6 +61,10 @@ export default function HomeAdmin({ projects }) {
     }
   };
 
+  const handleFormDelete = (formId) => {
+    dispatch(deleteProject(formId));
+  };
+
   setTimeout(() => {
     setShowError(false);
     setErrorMessage("");
@@ -84,7 +88,39 @@ export default function HomeAdmin({ projects }) {
       <div className={styles.home_admin_section__section}>
         <div className={styles.home_admin_section__block_search}>
           {/* <div>{arrIdProject}</div> */}
-          <div>{JSON.stringify(newArr)}</div>
+          {/* <div>{JSON.stringify(arrIdProject)}</div> */}
+          <div className={styles.home_admin_section__id_container}>
+            {arrIdProject?.map((el, index) => (
+              <div className={styles.home_admin_section__id_block} key={index}>
+                id: {JSON.stringify(el.IdProject)}
+                <button
+                  className={styles.home_admin_section__button_del}
+                  onClick={() => handleFormDelete(el.IdProject)}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                  >
+                    <path
+                      d="M9 9L15 15"
+                      stroke="#1D2E43"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                    <path
+                      d="M15 9L9 15"
+                      stroke="#1D2E43"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </svg>
+                </button>
+              </div>
+            ))}
+          </div>
           <div className={`${styles.form__group} ${styles.field}`}>
             <input
               type="number"
@@ -107,39 +143,9 @@ export default function HomeAdmin({ projects }) {
             disabled={isButtonDisabled}
           />
         </div>
-        {/* <div>
-          <div>
-            <input
-              style={{ background: "tomato" }}
-              type="number"
-              name=""
-              id=""
-            />
-            <button>добавить на главную</button>
-          </div>
-        </div> */}
       </div>
       <div>{showError && <ErrorMessage message={errorMessage} />}</div>
       <div>{showOk && <OkMessage message={okMessage} />}</div>
-
-      {/* <div className={styles.home_admin_section__title}>Публикации</div>
-      <div>
-        <div>
-          <input style={{ background: "orange" }} type="number" name="" id="" />
-          <button>добавить на главную</button>
-        </div>
-        <div>
-          <div>
-            <input
-              style={{ background: "tomato" }}
-              type="number"
-              name=""
-              id=""
-            />
-            <button>добавить на главную</button>
-          </div>
-        </div>
-      </div> */}
     </section>
   );
 }

@@ -59,6 +59,59 @@
 
        
     }
+
+    &__id_container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    &__id_block {
+        display: flex;
+        align-items: center;
+        padding: 8px 16px 8px 24px;
+        border-radius: 1rem;
+        gap: 4px;
+        background-color: var(--white-F6F6F6);
+        color: var(--black-1D2E43);
+        font-family: var(--font-raleway);
+        font-size: 18px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 24px;
+    }
+
+    &__button_del {
+        display: flex;
+        align-items: center;
+    }
+
+    // &__button_del svg path {
+    //     stroke: #1d2e43;
+    //     stroke-linecap: round;
+    //     stroke-linejoin: round;
+
+    //     &:hover {
+    //         stroke: red;
+    //     }
+    // }
+}
+
+.home_admin_section__button_del svg {
+    width: 30px;
+    height: 30px;
+}
+
+.home_admin_section__button_del svg path {
+    stroke: #1d2e43;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* Стили для кнопки с иконкой при наведении на неё */
+.home_admin_section__button_del:hover svg path {
+    stroke: red;
+    /* Здесь вы можете указать красный цвет или любой другой цвет */
 }
 
 .form__group {
