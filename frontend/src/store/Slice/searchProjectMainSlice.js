@@ -22,6 +22,9 @@ const searchProjectMainSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+    updateProjectOrderSuccess(state, action) {
+      state.projects = action.payload;
+    },
     deleteProjectSuccess(state, action) {
       const projectId = action.payload;
       state.projects = state.projects.filter(
@@ -30,8 +33,7 @@ const searchProjectMainSlice = createSlice({
     },
     deleteProjectFailure(state, action) {
       state.error = action.payload;
-    }
-
+    },
   },
 });
 
@@ -39,6 +41,7 @@ export const {
   fetchProjectStart,
   fetchProjectSuccess,
   fetchProjectFailure,
+  updateProjectOrderSuccess,
   deleteProjectSuccess,
   deleteProjectFailure,
 } = searchProjectMainSlice.actions;
@@ -99,4 +102,5 @@ export const deleteProject = (IdProject) => async (dispatch) => {
     dispatch(deleteProjectFailure(error.message));
   }
 };
+
 export default searchProjectMainSlice.reducer;

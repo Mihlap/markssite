@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import styles from "./HomeAdmin.module.scss";
-import { deleteProject, searchProgectMainPostzapros } from "../store/Slice/searchProjectMainSlice";
+import { deleteProject, searchProgectMainPostzapros, updateProjectOrderSuccess } from "../store/Slice/searchProjectMainSlice";
 import { useSelector } from "react-redux";
 import { arrIdProjectSelector } from "./HomeAdminSelectors";
+import DraggableProject from "./DraggableProject";
 
 export default function HomeAdmin({ projects }) {
   const [errorMessage, setErrorMessage] = useState("");
@@ -74,6 +75,22 @@ export default function HomeAdmin({ projects }) {
     setShowOk(false);
   }, 5000);
 
+  const updateProjectOrder = (updatedProjects) => {
+    return (dispatch) => {
+      dispatch(updateProjectOrderSuccess(updatedProjects));
+    };
+  };
+
+  const moveProject = (draggedIndex, targetIndex) => {
+    const updatedProjects = [...arrIdProject];
+    const draggedProject = updatedProjects[draggedIndex];
+    updatedProjects.splice(draggedIndex, 1);
+    updatedProjects.splice(targetIndex, 0, draggedProject);
+
+    // Вызываем действие для обновления порядка элементов
+    dispatch(updateProjectOrder(updatedProjects));
+  };
+
   const ErrorMessage = ({ message }) => {
     return <div style={{ color: "red" }}>{message}</div>;
   };
@@ -81,6 +98,8 @@ export default function HomeAdmin({ projects }) {
   const OkMessage = ({ message }) => {
     return <div style={{ color: "green" }}>{message}</div>;
   };
+
+  // console.log(arrIdProject);
   return (
     <section className={styles.home_admin_section}>
       <div className={styles.home_admin_section__title}>Проекты</div>
@@ -91,34 +110,13 @@ export default function HomeAdmin({ projects }) {
           {/* <div>{JSON.stringify(arrIdProject)}</div> */}
           <div className={styles.home_admin_section__id_container}>
             {arrIdProject?.map((el, index) => (
-              <div className={styles.home_admin_section__id_block} key={index}>
-                id: {JSON.stringify(el.IdProject)}
-                <button
-                  className={styles.home_admin_section__button_del}
-                  onClick={() => handleFormDelete(el.IdProject)}
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                  >
-                    <path
-                      d="M9 9L15 15"
-                      stroke="#1D2E43"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                    <path
-                      d="M15 9L9 15"
-                      stroke="#1D2E43"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                    />
-                  </svg>
-                </button>
-              </div>
+              <DraggableProject
+                key={index}
+                project={el}
+                index={index}
+                moveProject={moveProject}
+                handleFormDelete={handleFormDelete}
+              />
             ))}
           </div>
           <div className={`${styles.form__group} ${styles.field}`}>

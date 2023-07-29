@@ -25,7 +25,7 @@
         display: inline-flex;
         flex-direction: column;
         padding: 2.62rem 1.5rem 1.5rem 1.5rem;
-        
+
     }
 
     &__button {
@@ -38,7 +38,7 @@
         border-radius: 4.125rem;
         border: none;
         background-color: var(--dark-blue-389FFF);
-        
+
 
         &::before {
             content: "Добавить на главную";
@@ -52,12 +52,12 @@
         }
 
         &[disabled] {
-                     transition: all 0.3s ease-in-out;
-                     opacity: 0.3;
-                     pointer-events: none;
-                 }
+            transition: all 0.3s ease-in-out;
+            opacity: 0.3;
+            pointer-events: none;
+        }
 
-       
+
     }
 
     &__id_container {
@@ -79,7 +79,22 @@
         font-style: normal;
         font-weight: 400;
         line-height: 24px;
+
     }
+
+    &__dragging {
+        /* Добавьте стили, которые вы хотите применить при поднятии блока */
+        /* Например, добавьте тень или обводку */
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        border: 2px solid var(--blue-75BBFD);
+        border-radius: 1rem;
+    }
+
+   &__moved {
+       /* Стили для элемента, который только что был перемещен */
+       /* Например, измените цвет фона */
+       background-color: var(--green-00FF00);
+   }
 
     &__button_del {
         display: flex;
@@ -95,6 +110,12 @@
     //         stroke: red;
     //     }
     // }
+}
+
+
+/* Add a class for the placeholder when dragging over */
+.home_admin_section__id_block--drag-over {
+    border: 2px dashed blue;
 }
 
 .home_admin_section__button_del svg {
