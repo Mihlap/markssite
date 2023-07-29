@@ -213,7 +213,6 @@ const MapProject = NewProject.map((el) =>
 
 
 
-console.log(MapProject);
   return (
     <main className={styles.header}>
       {user ? (
