@@ -41,16 +41,14 @@ export default function Project() {
     "Омск",
     "Екатеринбург",
     "Уфа",
-  ]
+  ];
 
   const dispatch = useDispatch();
   const projects = useSelector((state) => state.project.projects);
   const selectedViewConstruction = useSelector(
     (state) => state.project.selectedViewConstruction
   );
-  const selectedCity = useSelector(
-    (state) => state.project.selectedCity
-  );
+  const selectedCity = useSelector((state) => state.project.selectedCity);
   const selectedLocation = useSelector(
     (state) => state.project.selectedLocation
   );
@@ -62,77 +60,96 @@ export default function Project() {
   const [isFocusedProject, setIsFocusedProject] = useState(false);
   const [isValid, setIsValid] = useState(true);
   const [isTyping, setIsTyping] = useState(false);
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState("");
   const addressInputRef = useRef(null);
-  // const [address, setAddress] = useState("");
-  const projectsPerPage = 10;
+  const [selectOnCompetencies, setSelectOnCompetencies] = useState("Все");
+
+  const projectsPerPage = 100;
+  const screenWidth = window.innerWidth;
 
   useEffect(() => {
-    dispatch(
-      getFetchFormFilter(projectsPerPage, selectedViewConstruction)
-    );
-    dispatch(
-      getFetchFormCityFilter(projectsPerPage, selectedCity)
-    );
-    dispatch(
-      getFetchFormLocationFilter(projectsPerPage, selectedLocation)
-    );
-     setLoading(false);
+    dispatch(getFetchFormFilter(projectsPerPage, selectedViewConstruction));
+    dispatch(getFetchFormCityFilter(projectsPerPage, selectedCity));
+    dispatch(getFetchFormLocationFilter(projectsPerPage, selectedLocation));
+    setLoading(false);
   }, [dispatch, projectsPerPage]);
 
   function handleFocus() {
     setIsFocusedProject(true);
-  };
+  }
 
-  function handleChange(event) {
+
+      
+      // if (screenWidth >= 1800) {
+      //   setShowButton(true);
+      // } else if (screenWidth >= 1441 && screenWidth <= 1799) {
+      //   setShowButton(false);
+      // } else if (screenWidth >= 1024 && screenWidth <= 1440) {
+      //   setShowButton(false);
+      // }
+    
+
+    function handleChange(event) {
     const address = event.target.value.toLowerCase();
-     setValue(address);
-     setIsValid(address === '');
-     setIsTyping(true);
-     dispatch(setSelectedCity(""));
-   }
+    setValue(address);
+    setIsValid(address === "");
+    setIsTyping(true);
+    dispatch(setSelectedCity(""));
+    setSelectOnCompetencies("");
+  }
 
-   const handleAddressSubmit = (event) => {
+  const handleAddressSubmit = (event) => {
     event.preventDefault();
   };
 
-
-   function handleBlur(event) {
+  function handleBlur(event) {
     setIsFocusedProject(true);
     const address = event.target.value;
-   if (!address) {
-    setIsFocusedProject(false);
+    if (!address) {
+      setIsFocusedProject(false);
     }
     setValue(address);
     setIsValid(isValid);
+    dispatch(setSelectedCity(""));
+    setSelectOnCompetencies("");
+  }
+
+  const handleButtonClick = (viewConstruction) => {
+    if (
+      selectedCity !== "" ||
+      selectedViewConstruction !== viewConstruction ||
+      selectedViewConstruction === viewConstruction
+    ) {
+      dispatch(setSelectedCity(""));
+      dispatch(setSelectedViewConstruction(viewConstruction));
+      dispatch(
+        getFetchFormFilter(currentPage, projectsPerPage, viewConstruction)
+      );
+      setCurrentPage(1);
+      setValue("");
+      setIsTyping(false);
+      setSelectOnCompetencies(viewConstruction);
+    } else {
+      dispatch(setSelectedCity(""));
+      // dispatch(setSelectedViewConstruction(""));
+      dispatch(getFetchFormFilter(currentPage, projectsPerPage, ""));
+      setCurrentPage(1);
+      setValue("");
+      setIsTyping(false);
+      setSelectOnCompetencies("");
     }
+  };
 
-
-    const handleButtonClick = (viewConstruction) => {
-      if (selectedCity !== "" || selectedViewConstruction !== viewConstruction) {
-        dispatch(setSelectedCity(""));
-        dispatch(setSelectedViewConstruction(viewConstruction));
-        dispatch(getFetchFormFilter(currentPage, projectsPerPage, viewConstruction));
-        setCurrentPage(1);
-        setValue("");
-        setIsTyping(false);
-      } else {
-        // If "Все" is clicked without any changes, simply fetch all projects again
-        dispatch(getFetchForm());
-      }
-    };
-
-  const handleButtonCityClick = (countryCity, viewConstruction) => {
+  const handleButtonCityClick = (countryCity) => {
     if (isTyping) {
       dispatch(setSelectedCity(""));
       setIsTyping(false);
     }
     dispatch(setSelectedCity(countryCity));
-    dispatch(
-      getFetchFormCityFilter(currentPage, projectsPerPage, countryCity)
-      ); 
-      setCurrentPage(1);
-   };
+    dispatch(getFetchFormCityFilter(currentPage, projectsPerPage, countryCity));
+    setCurrentPage(1);
+    setSelectOnCompetencies("");
+  };
 
   const handleShowButtonAll = (e) => {
     e.preventDefault();
@@ -142,14 +159,24 @@ export default function Project() {
   const handleSelectCityClick = (e) => {
     e.preventDefault();
     setIsModalProjectOpen(true);
-    setSelectedViewConstruction("Все");
+    // setSelectedViewConstruction("Все");
+    setValue("");
+    setIsTyping(false);
   };
 
-  const handleModalClose = (e) => {
+  const handleModalClose = (e, viewConstruction) => {
     e.preventDefault();
     setIsModalProjectOpen(false);
-    setSelectedViewConstruction("Все");
-    // dispatch(setSelectedCity(""));
+    setSelectedViewConstruction(selectOnCompetencies);
+    setSelectOnCompetencies("");
+    // setSelectedCity("");
+    setIsTyping(false);
+    setIsFocusedProject(false);
+    setIsValid(true);
+    if (selectOnCompetencies === viewConstruction) {
+      setSelectedCity("");
+    }
+    dispatch(setSelectedViewConstruction(viewConstruction));
   };
 
   // Получение геопозиции пользователя
@@ -225,24 +252,27 @@ export default function Project() {
   };
 
   const filteredProjects = projects
-  .filter((project) =>
-    selectedViewConstruction === "Все"
-      ? true
-      : project.selectCompetencies.includes(selectedViewConstruction)
-  )
-  .filter((project) => {
-    const projectCity = extractCityFromCountryCity(project.countryCity);
-    return selectedCity === "" ? true : projectCity === selectedCity;
-  })
-  .filter((project) => {
-    const searchValue = value.toLowerCase(); 
-    const projectLocation = project.location.toLowerCase(); 
-    const projectCity = extractCityFromCountryCity(project.countryCity).toLowerCase();
+    .filter((project) =>
+      selectOnCompetencies === "Все"
+        ? true
+        : project.selectCompetencies.includes(selectOnCompetencies)
+    )
+    .filter((project) => {
+      const projectCity = extractCityFromCountryCity(project.countryCity);
+      return selectedCity === "" ? true : projectCity === selectedCity;
+    })
+    .filter((project) => {
+      const searchValue = value.toLowerCase();
+      const projectLocation = project.location.toLowerCase();
+      const projectCity = extractCityFromCountryCity(
+        project.countryCity
+      ).toLowerCase();
 
-    return projectLocation.includes(searchValue) && (selectedCity === "" || projectCity === selectedCity.toLowerCase());
-  });
-
- 
+      return (
+        projectLocation.includes(searchValue) &&
+        (selectedCity === "" || projectCity === selectedCity.toLowerCase())
+      );
+    });
 
   return (
     <div className={styles.project_main}>
@@ -251,27 +281,8 @@ export default function Project() {
         <p className={styles.actuality_text}>Актуальные кейсы MARKS GROUP</p>
         <span className={styles.projects_name_text}>Проекты</span>
       </div>
-      <div className={styles.menu_button_group_project_wrapper}>
-        <div className={styles.menu_button_group_project}>
-          {buttonChoose.map((el, index) => (
-            <div
-              key={el}
-              // className={`${styles.button_wrapper} ${
-              //   showButton ? "" : index ? styles.hidden : ""
-              // }`}
-            >
-              <button
-                className={`${styles.menu__button__allProject} ${
-                  el === selectedViewConstruction ? styles.active : ""
-                }`}
-                onClick={() => handleButtonClick(el)}
-              >
-                <p className={styles.menu_button_items}>{el}</p>
-              </button>
-            </div>
-          ))}
-        </div>
-        <div className={styles.button_look_all_wrapper}>
+      <div className={styles.menu_button_group_project_wrapper_main}>
+        {/* <div className={styles.button_look_all_wrapper}>
           <button
             className={styles.button_look_all}
             onClick={handleShowButtonAll}
@@ -320,7 +331,29 @@ export default function Project() {
               </div>
             )}
           </button>
+        </div> */}
+       <div className={styles.menu_button_group_project_wrapper}>
+        <div className={styles.menu_button_group_project}>
+          {buttonChoose.map((el, index) => (
+            <div
+              key={el}
+              className={`${styles.button_wrapper} ${
+                showButton ? "" : index ? styles.hidden : ""
+              }`}
+            >
+              <button
+                className={`${styles.menu__button__allProject} ${
+                  el === selectOnCompetencies ? styles.active : ""
+                }`}
+                onClick={() => handleButtonClick(el)}
+              >
+                <p className={styles.menu_button_items}>{el}</p>
+              </button>
+            </div>
+          ))}
         </div>
+        </div>
+    
         <button
           className={styles.menu__button__choose__city}
           onClick={handleSelectCityClick}
@@ -350,9 +383,8 @@ export default function Project() {
         modal={document.querySelector(".modal")}
         modalStyleZIndex={9999}
         isOpen={isModalProjectOpen}
-        onRequestClose={() => {
-          // dispatch(selectCard(null));
-          setIsModalProjectOpen(false);
+        onRequestClose={(e) => {
+          handleModalClose(e, selectOnCompetencies);
         }}
         onAfterOpen={() => {
           setIsModalProjectOpen(true);
@@ -423,7 +455,7 @@ export default function Project() {
           <div className={styles.location_project_group}>
             <label
               className={`${styles.label_project} ${
-                isFocusedProject ? styles.focused : " "
+                isFocusedProject ? styles.focused : ""
               }`}
             >
               <input
@@ -440,12 +472,7 @@ export default function Project() {
                 required
                 autoComplete="off"
               />
-              <div
-                className={styles.line_modal_project}
-                style={{
-                  backgroundColor: !isValid ? '#FF7F6A' : (isFocusedProject ? '#FF7F6A' : '#959DA6'),
-                }}
-              ></div>
+              <div className={styles.line_modal_project}></div>
               <div className={styles.placeholder_modal_project}>
                 <div className={styles.lupa_svg_modal_project}>
                   <svg
@@ -478,17 +505,19 @@ export default function Project() {
                     </defs>
                   </svg>
                 </div>
-               <p className={styles.text_placeholder_modal_project}>Ведите адрес или город</p>
+                <p className={styles.text_placeholder_modal_project}>
+                  Ведите адрес или город
+                </p>
               </div>
             </label>
           </div>
         </form>
-        <div className={styles.text_object_modal_project}>Наши объекты есть</div>
+        <div className={styles.text_object_modal_project}>
+          Наши объекты есть
+        </div>
         <div className={styles.modal_project_button_group}>
-        {buttonCity.map((el) => (
-            <div
-              key={el}
-              className={styles.button_modal_project_wrapper}>
+          {buttonCity.map((el) => (
+            <div key={el} className={styles.button_modal_project_wrapper}>
               <button
                 className={`${styles.menu__button__modal__project} ${
                   el === selectedCity ? styles.active : ""
@@ -498,7 +527,7 @@ export default function Project() {
                 style={{
                   backgroundColor: !isValid ? "#959DA6" : "",
                   pointerEvents: !isValid ? "none" : "auto",
-                  opacity: !isValid ? 0.6 : 1, 
+                  opacity: !isValid ? 0.6 : 1,
                 }}
               >
                 <p className={styles.menu_button_items}>{el}</p>
