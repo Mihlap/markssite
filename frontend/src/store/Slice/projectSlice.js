@@ -9,7 +9,7 @@ const projectSlice = createSlice({
     projects: [],
     loading: false,
     error: null,
-    selectedViewConstruction: "Все",
+    selectedViewConstruction: "",
     selectedCity: '',
     selectedLocation: "",
   },
