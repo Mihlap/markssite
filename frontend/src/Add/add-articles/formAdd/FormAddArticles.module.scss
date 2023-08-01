@@ -1,0 +1,21 @@
+@import "../../../App.css";
+
+.form_container {
+    width: 33.375rem;
+    padding: 1.62rem 2rem 1.75rem 2rem;
+
+
+    &__title {
+        font-size: 1.5rem;
+        font-family: var(--font-unbounded);
+        font-style: normal;
+        font-weight: 300;
+        line-height: 2rem;
+        margin-bottom: 2.5rem;
+    }
+
+    &__radio_container {
+        display: flex;
+        gap: 1rem;
+    }
+}
