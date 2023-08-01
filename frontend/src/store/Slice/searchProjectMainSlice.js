@@ -103,4 +103,22 @@ export const deleteProject = (IdProject) => async (dispatch) => {
   }
 };
 
+
+export const updateProjectOrderReplacement =
+  (updatedProjects) => async (dispatch) => {
+    dispatch(fetchProjectStart());
+    try {
+      // Send a PUT request to the server with the updated projects array
+      const response = await axios.put(
+        `${serverHost}/search/search-project-replacement`,
+        updatedProjects
+      );
+      // After the server responds, update the state with the updated projects data
+      dispatch(updateProjectOrderSuccess(response.data));
+    } catch (error) {
+      console.error("Ошибка при отправке на бекенд:", error);
+      dispatch(fetchProjectFailure(error.message));
+    }
+  };
+
 export default searchProjectMainSlice.reducer;

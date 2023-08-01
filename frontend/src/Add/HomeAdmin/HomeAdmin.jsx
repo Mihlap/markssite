@@ -1,9 +1,14 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import styles from "./HomeAdmin.module.scss";
-import { deleteProject, searchProgectMainPostzapros, updateProjectOrderSuccess } from "../store/Slice/searchProjectMainSlice";
+import {
+  deleteProject,
+  searchProgectMainPostzapros,
+  updateProjectOrderReplacement,
+  updateProjectOrderSuccess,
+} from "../../store/Slice/searchProjectMainSlice";
 import { useSelector } from "react-redux";
-import { arrIdProjectSelector } from "./HomeAdminSelectors";
+import { arrIdProjectSelector } from "./utils/HomeAdminSelectors";
 import DraggableProject from "./DraggableProject";
 
 export default function HomeAdmin({ projects }) {
@@ -11,11 +16,12 @@ export default function HomeAdmin({ projects }) {
   const [showError, setShowError] = useState(false);
   const [okMessage, setOkMessage] = useState("");
   const [showOk, setShowOk] = useState(false);
+  const [replacementMessage, setReplacementMessage] = useState('');
+  const [replacement, setReplacement] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [searchId, setSearchId] = useState("");
   const [savedId, setSavedId] = useState(null);
 
-  // Use the memoized selector with useSelector
   const arrIdProject = useSelector(arrIdProjectSelector);
 
   const dispatch = useDispatch();
@@ -74,6 +80,10 @@ export default function HomeAdmin({ projects }) {
     setShowOk(false);
   }, 5000);
 
+  setTimeout(() => {
+    setReplacement(false);
+  }, 4000);
+
   const updateProjectOrder = (updatedProjects) => {
     return (dispatch) => {
       dispatch(updateProjectOrderSuccess(updatedProjects));
@@ -88,6 +98,11 @@ export default function HomeAdmin({ projects }) {
 
     // Вызываем действие для обновления порядка элементов
     dispatch(updateProjectOrder(updatedProjects));
+
+    setReplacementMessage("Проект перемещен");
+    setReplacement(true);
+    // И тут же сохраняем новый порядок в базу данных
+    dispatch(updateProjectOrderReplacement(updatedProjects));
   };
 
   const ErrorMessage = ({ message }) => {
@@ -95,22 +110,21 @@ export default function HomeAdmin({ projects }) {
   };
 
   const OkMessage = ({ message }) => {
-    return (
-      <div className={styles.home_admin_section__ok}>
-        {message}
-      </div>
+    return ( <div className={styles.home_admin_section__ok}>{message}</div>
     );
   };
 
-  // console.log(arrIdProject);
+  const Replacement = ({ message }) => {
+    return <div className={styles.home_admin_section__ok}>{message}</div>;
+  };
+
+  console.log(arrIdProject);
   return (
     <section className={styles.home_admin_section}>
       <div className={styles.home_admin_section__title}>Проекты</div>
 
       <div className={styles.home_admin_section__section}>
         <div className={styles.home_admin_section__block_search}>
-          {/* <div>{arrIdProject}</div> */}
-          {/* <div>{JSON.stringify(arrIdProject)}</div> */}
           <div className={styles.home_admin_section__id_container}>
             {arrIdProject?.map((el, index) => (
               <DraggableProject
@@ -143,8 +157,11 @@ export default function HomeAdmin({ projects }) {
             onClick={filterProjectsById}
             disabled={isButtonDisabled}
           />
-      <div>{showError && <ErrorMessage message={errorMessage} />}</div>
-      <div>{showOk && <OkMessage message={okMessage} />}</div>
+          <div>{showError && <ErrorMessage message={errorMessage} />}</div>
+          <div>{showOk && <OkMessage message={okMessage} />}</div>
+          <div>
+            {replacement && <Replacement message={replacementMessage} />}
+          </div>
         </div>
       </div>
     </section>

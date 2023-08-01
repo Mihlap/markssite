@@ -13,12 +13,16 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  ProjectMain.init({
-    project: DataTypes.JSON,
-    IdProject: DataTypes.SMALLINT
-  }, {
-    sequelize,
-    modelName: 'ProjectMain',
-  });
+  ProjectMain.init(
+    {
+      project: DataTypes.JSON,
+      IdProject: DataTypes.SMALLINT,
+      order: DataTypes.INTEGER,
+    },
+    {
+      sequelize,
+      modelName: 'ProjectMain',
+    },
+  );
   return ProjectMain;
 };

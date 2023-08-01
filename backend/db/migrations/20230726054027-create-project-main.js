@@ -15,6 +15,9 @@ module.exports = {
       IdProject: {
         type: Sequelize.SMALLINT
       },
+      order: {
+        type: Sequelize.INTEGER
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
