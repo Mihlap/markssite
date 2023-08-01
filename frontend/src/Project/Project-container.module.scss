@@ -5,14 +5,14 @@
     flex-direction: column;
     height: 100%;
     width: 100%;
-    padding-bottom: 3rem;
+    padding-bottom: 3.38rem;
 }
 
 .project_slider_text {
-font-family: var(--font-unbounded);
+    font-family: var(--font-unbounded);
     position: absolute;
-    bottom: 19%;
-    left: 10vw;
+    bottom: 8.44vh;
+    left: 9.06vw;
     z-index: 1;
     color: var(--white-F6F6F6);
     font-style: normal;
@@ -20,22 +20,23 @@ font-family: var(--font-unbounded);
 }
 
 .actuality_text {
-    font-size: 1.5vw;
+    font-size: 1.5rem;
     font-weight: var(--fw-300);
-    line-height: 2vw;
+    line-height: 2rem;
 }
 
 .projects_name_text {
     font-family: var(--font-unbounded);
-    font-size: 3vw;
+    font-size: 3rem;
     /* font-size: clamp(1.6rem, calc(-.13rem + 2.43vw), 2.6rem); */
-    font-weight: 600;
-    line-height: 4vw;
+    font-weight: var(--fw-500);
+    line-height: 4rem;
     padding-top: 0.25rem;
 }
+
 .menu_button_group_project_wrapper_main {
-display: flex;
-align-items: flex-start;
+    display: flex;
+    align-items: flex-start;
 }
 
 .menu_button_group_project_wrapper {
@@ -45,7 +46,7 @@ align-items: flex-start;
 
 .menu_button_group_project {
     display: flex;
-     flex-wrap: wrap;
+    flex-wrap: wrap;
     padding-top: 2rem;
     padding-left: 1.69rem;
     grid-column-gap: 8px;
@@ -62,7 +63,7 @@ align-items: flex-start;
 .menu__button__allProject {
     display: flex;
     width: auto;
-     padding: 8px 24px;
+    padding: 8px 24px;
     align-items: center;
     justify-content: center;
     border-radius: 2.125rem;
@@ -77,7 +78,7 @@ align-items: flex-start;
     background-color: var(--black-1D2E43);
     color: var(--white-F6F6F6);
     pointer-events: none;
-    
+
 }
 
 .menu__button__allProject:hover {
@@ -127,7 +128,7 @@ align-items: flex-start;
     align-items: center;
     white-space: nowrap;
     margin-right: 3.31rem;
-    margin-top: 1.8rem;
+    margin-top: 2.5rem;
     margin-left: 0.5rem;
     width: auto;
     gap: 0.5rem;
@@ -140,7 +141,7 @@ align-items: flex-start;
     display: flex;
     align-items: center;
     width: 1rem;
-height: 1rem;
+    height: 1rem;
 }
 
 .button_choose_city {
@@ -152,7 +153,7 @@ height: 1rem;
     font-weight: var(--fw-400);
     line-height: 1.25rem;
     color: var(--black-1D2E43);
-   }
+}
 
 // .hidden {
 //     display: none;
@@ -167,6 +168,7 @@ height: 1rem;
 
 .section_project__block {
     display: flex;
+    // justify-content: space-around;
     flex-wrap: wrap;
     gap: 30px;
     padding-left: 1.69rem;
@@ -249,8 +251,8 @@ height: 1rem;
 
 .cart_project__img {
     border-radius: 1rem;
-    width: 100%;
-    height: 100%;
+    width: auto;
+    height: auto;
 }
 
 .el_project_selectCompetencies {
@@ -269,7 +271,7 @@ height: 1rem;
     top: 0;
     right: 0;
     bottom: 0;
-    width: 50%;
+    width: 45%;
     height: 100%;
     margin-top: 0px;
     border: none !important;
@@ -283,7 +285,7 @@ height: 1rem;
 
 .modal_project_close {
     padding-top: 2rem;
-    padding-left: 95%;
+    padding-left: 93%;
     cursor: pointer;
 }
 
@@ -295,7 +297,7 @@ height: 1rem;
 
 .modal_project_container {
     display: flex;
-    padding: 19.5rem 1.81rem 0rem 5.5rem;
+    padding: 11.25rem 1.81rem 0rem 7.5rem;
 
 }
 
@@ -305,7 +307,7 @@ height: 1rem;
     font-family: var(--font-unbounded);
     font-size: 1.25rem;
     font-style: normal;
-    font-weight: var(--fw-500);
+    font-weight: var(--fw-700);
     line-height: 1.75rem;
 }
 
@@ -331,15 +333,15 @@ height: 1rem;
     display: flex;
     flex-direction: column;
     padding-top: 2.5rem;
-    padding-left: 5.5rem;
+    padding-left: 7.5rem;
     padding-right: 1.81rem;
 }
 
 .label_project {
     position: relative;
-  }
+}
 
-  .address_and_city_choose_location {
+.address_and_city_choose_location {
     border: none;
     outline: none;
     background-color: transparent;
@@ -351,31 +353,30 @@ height: 1rem;
     line-height: 16px;
     caret-color: black;
     width: 65%;
-  }
-  /* .email_input_form {
-  } */
-  .line_modal_project {
+}
+
+.line_modal_project {
     bottom: 0;
     left: 0;
-    width: 21.25vw;
+    width: 25vw;
     height: 0.069vh;
     background-color: var(--gray-959DA6);
-  }
+}
 
-  .line_modal_project.focused {
+.line_modal_project.focused {
     background-color: var(--salmon-FF7F6A);
-  }
-  
-  .error_line_modal_project {
+}
+
+.error_line_modal_project {
     font-family: var(--font-raleway);
     font-style: normal;
     font-weight: var(--fw-400);
     font-size: 12px;
     line-height: 16px;
     color: var(--crimson-E00747);
-  }
-  
-  .placeholder_modal_project {
+}
+
+.placeholder_modal_project {
     display: flex;
     position: absolute;
     top: 1.5rem;
@@ -388,54 +389,58 @@ height: 1rem;
     font-style: normal;
     transform-origin: left top;
     transition: all 0.1s ease-out;
-  }
-  
-  #text-input:not(:placeholder-shown) + .placeholder_modal_project,
-  #text-input:empty + .placeholder_modal_project,
-  .focused .placeholder_modal_project
-  {
+}
+
+#text-input:not(:placeholder-shown)+.placeholder_modal_project,
+#text-input:empty+.placeholder_modal_project,
+.focused .placeholder_modal_project {
     transform: translateY(-100%) scale(1);
     font-size: 12px;
     color: var(--gray-959DA6);
-  }
-  
-  .address_and_city_choose_location:focus + .line_modal_project {
+}
+
+.address_and_city_choose_location:focus+.line_modal_project {
     background-color: #FF7F6A;
-  }
+}
 
-  .text_placeholder_modal_project {
-  display: flex;
-  padding-left: 0.5rem;
-  }
-  
-  .text_object_modal_project {
-      display: flex;
-      padding: 2.5rem 0rem 1rem 5.5rem;
-      color: var(--black-1D2E43);
-      font-family: var(--font-raleway);
-      font-size: 1.125rem;
-      font-style: normal;
-      font-weight: var(--fw-400);
-      line-height: 1.5rem;
-   }
+.text_placeholder_modal_project {
+    display: flex;
+    padding-left: 0.5rem;
+}
 
-   .modal_project_button_group {
-       display: flex;
-       flex-wrap: wrap;
-       padding: 2rem 2.81rem 0rem 5.5rem;
-       grid-column-gap: 8px;
-       grid-row-gap: 16px;
-       width: 100%;
+.text_object_modal_project {
+    display: flex;
+    padding: 2.5rem 0rem 1rem 7.5rem;
+    color: var(--black-1D2E43);
+    font-family: var(--font-raleway);
+    font-size: 1.125rem;
+    font-style: normal;
+    font-weight: var(--fw-400);
+    line-height: 1.5rem;
+}
 
-   }
+.modal_project_button_group {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 1rem 6.81rem 0rem 7.5rem;
+    grid-column-gap: 8px;
+    grid-row-gap: 16px;
+    width: 100%;
 
-   .menu_button_group_project_wrapper {
+}
+
+.searchCityAddress_wrapper {
+    display: none;
+ }
+
+.my_swiper2_button_group_project {
+    display: none;
+ }
+
+.menu_button_group_project_wrapper {
     display: flex;
     width: 100%;
 }
-
-
-
 .menu__button__modal__project {
     display: flex;
     width: 100%;
@@ -447,7 +452,7 @@ height: 1rem;
     background-color: transparent;
     white-space: wrap;
     color: var(--black-1D2E43);
-   
+
 }
 
 .active {
@@ -469,6 +474,314 @@ height: 1rem;
     line-height: 1.25rem;
 }
 
- .menu__button__modal__project.active:hover {
+.menu__button__modal__project.active:hover {
     background-color: var(--black-1D2E43);
- }
+}
+
+
+/* Стили для планшетной версии сайта блока Project начинаются тут */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+
+    .project_slider_text {
+        bottom: 44vh;
+        left: 3.44rem;
+    }
+
+    .actuality_text {
+        font-family: var(--font-unbounded);
+        font-size: 1.5rem;
+        font-weight: var(--fw-300);
+        line-height: 2rem;
+    }
+
+    .projects_name_text {
+        font-family: var(--font-unbounded);
+        font-size: 3rem;
+        // font-size: clamp(1.6rem, calc(-.13rem + 2.43vw), 2.6rem); 
+        font-weight: var(--fw-500);
+        line-height: 4rem;
+        padding-top: 0.25rem;
+    }
+
+    .searchCityAddress_wrapper {
+       display: none;
+    }
+
+    .my_swiper2_button_group_project {
+        display: none;
+     }
+
+    .menu_button_group_project {
+        padding-left: 3rem;
+        padding-right: 3rem;
+    }
+
+    .modal_wrapper_project_location {
+      width: 50%;
+    }
+    
+    .modal_project_close {
+        padding-left: 90%;
+    }
+    
+    
+    .modal_project_container {
+        display: flex;
+        padding: 19.5rem 1.81rem 0rem 5.5rem;
+    
+    }
+    
+   .location_project_group {
+        display: flex;
+        flex-direction: column;
+        padding-top: 2.5rem;
+        padding-left: 5.5rem;
+        padding-right: 1.81rem;
+    }
+    
+    .label_project {
+        position: relative;
+    }
+    
+    .address_and_city_choose_location {
+        width: 80%;
+    }
+    
+    .line_modal_project {
+        width: 30vw;
+    }
+
+  
+    .placeholder_modal_project {
+        display: flex;
+        position: absolute;
+        top: 1rem;
+        left: 0;
+        color: var(--gray-959DA6);
+        font-size: 16px;
+        line-height: 16px;
+        font-weight: var(--fw-400);
+        font-family: var(--font-raleway);
+        font-style: normal;
+        transform-origin: left top;
+        transition: all 0.1s ease-out;
+    }
+  
+   
+    .text_object_modal_project {
+       padding: 2.5rem 1.81rem 0rem 5.5rem;
+     }
+    
+    .modal_project_button_group {
+       padding: 1rem 2.81rem 0rem 5.5rem;
+     }
+   
+    .section_project {
+        padding-top: 2rem;
+        background-color: var(--white-F6F6F6);
+    }
+
+    .section_project__block {
+        padding-left: 3rem;
+        padding-right: 2rem;
+    }
+}
+
+/* Стили для мобильной версии сайта блока Project начинаются тут */
+@media screen and (max-width: 767px) {
+    .project_slider_text {
+        bottom: 64vh;
+        left: 1.31rem;
+    }
+
+    .actuality_text {
+        font-size: 1.125rem;
+        font-family: var(--font-raleway);
+        font-weight: var(--fw-700);
+        line-height: 1.5rem;
+    }
+
+    .projects_name_text {
+        font-size: 2rem;
+        font-weight: var(--fw-600);
+        line-height: 2.5rem;
+        padding-top: 0.25rem;
+    }
+
+    .searchCityAddress_wrapper {
+        display: block;
+     }
+     
+     .searchCityAddress_location_project_group {
+        display: flex;
+        flex-direction: column;
+        padding-top: 0rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+     }
+
+     .searchCityAddress_label_project {
+        position: relative;
+    }
+    
+    .searchCityAddress_address_and_city_choose_location {
+        border: none;
+        outline: none;
+        background-color: transparent;
+        padding-top: 2.36vh;
+        font-family: var(--font-raleway);
+        font-style: normal;
+        font-weight: var(--fw-400);
+        font-size: 16px;
+        line-height: 16px;
+        caret-color: black;
+        width: 100%;
+    }
+    
+     .line_modal_project {
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 0.069vh;
+        background-color: var(--gray-959DA6);
+    }
+    
+    .line_modal_project.focused {
+        background-color: var(--salmon-FF7F6A);
+    }
+    
+    .error_line_modal_project {
+        font-family: var(--font-raleway);
+        font-style: normal;
+        font-weight: var(--fw-400);
+        font-size: 12px;
+        line-height: 16px;
+        color: var(--crimson-E00747);
+    }
+    
+    .placeholder_modal_project {
+        display: flex;
+        position: absolute;
+        top: 1.5rem;
+        left: 0;
+        color: var(--gray-959DA6);
+        font-size: 16px;
+        line-height: 16px;
+        font-weight: var(--fw-400);
+        font-family: var(--font-raleway);
+        font-style: normal;
+        transform-origin: left top;
+        transition: all 0.1s ease-out;
+    }
+    
+    #text-input:not(:placeholder-shown)+.placeholder_modal_project,
+    #text-input:empty+.placeholder_modal_project,
+    .focused .placeholder_modal_project {
+        transform: translateY(-100%) scale(1);
+        font-size: 12px;
+        color: var(--gray-959DA6);
+    }
+    
+    .address_and_city_choose_location:focus+.line_modal_project {
+        background-color: #FF7F6A;
+    }
+
+    .menu_button_group_project_wrapper_main {
+        display: none;
+    }
+
+  
+    .my_swiper2_button_group_project {
+        display: flex;
+        padding-top: 2.5rem;
+        bottom: 0rem;
+        left: 1rem;
+        width: 100%;
+       }
+       
+      .active {
+        background: var(--black-1D2E43) !important;
+        color: var(--white-F6F6F6) !important;
+      }
+   
+    .section_project {
+        display: flex;
+        flex-direction: column;
+        padding-top: 2rem;
+        background-color: var(--white-F6F6F6);
+    }
+    
+    .section_project__block {
+        display: flex;
+        flex-direction: column;
+        gap: 2rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+    
+    .section_project__block_cart {
+        display: flex;
+        flex-direction: column;
+     }
+    
+      .cart_project__container {
+        max-width: none;
+    }
+    
+    .project_content__wrapper {
+        display: block;
+    
+    }
+    
+    .cart_project_title {
+        display: block;
+        width: 100%;
+        font-size: 0.875rem;
+        line-height: 1.31rem;
+        padding-top: 1rem;
+    }
+    
+    .cart_project__content {
+        display: block;
+        flex-direction: row;
+        flex-wrap: wrap;
+        width: auto
+    }
+    
+    .cart_project__widget {
+        display: flex;
+        flex-direction: row;
+        width: fit-content;
+        flex-wrap: wrap;
+        grid-row-gap: 0.25rem;
+        padding-top: 0.38rem;
+        padding-left: 0px;
+        padding-bottom: 0.5rem;
+        flex-direction: row;
+        font-size: 0.56rem;
+        font-weight: var(--fw-500);
+       
+    }
+    
+    
+    .cart_project__address {
+        display: flex;
+        color: var(--gray-959DA6);
+        font-size: 0.625rem;
+        padding-top: 0.5rem;
+    }
+    
+    .el_project_selectCompetencies {
+        margin-right: 6px;
+        // margin-top: 6px;
+        border: 1px solid;
+        padding: 3px 6px;
+        border-radius: 34px;
+        max-width: fit-content;
+    }
+    .modal_wrapper_project_location {
+        display: none;
+    }
+  
+
+}
