@@ -44,4 +44,24 @@ router.delete('/search-project/deletezapros/:IdProject', async (req, res) => {
 });
 
 
+router.put('/search-project-replacement', async (req, res) => {
+  try {
+    const updatedProjects = req.body;
+
+    // Update the order of each project in the database
+    for (let i = 0; i < updatedProjects.length; i++) {
+      await ProjectMain.update({ order: i }, { where: { id: updatedProjects[i].id } });
+    }
+
+    // Fetch the updated data from the database and send it back
+    const data = await ProjectMain.findAll();
+    res.json(data);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+});
+
+
+
 module.exports = router;

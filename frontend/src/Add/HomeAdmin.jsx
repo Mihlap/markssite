@@ -4,6 +4,7 @@ import styles from "./HomeAdmin.module.scss";
 import {
   deleteProject,
   searchProgectMainPostzapros,
+  updateProjectOrderReplacement,
   updateProjectOrderSuccess,
 } from "../store/Slice/searchProjectMainSlice";
 import { useSelector } from "react-redux";
@@ -15,6 +16,8 @@ export default function HomeAdmin({ projects }) {
   const [showError, setShowError] = useState(false);
   const [okMessage, setOkMessage] = useState("");
   const [showOk, setShowOk] = useState(false);
+  const [replacementMessage, setReplacementMessage] = useState('');
+  const [replacement, setReplacement] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [searchId, setSearchId] = useState("");
   const [savedId, setSavedId] = useState(null);
@@ -78,6 +81,10 @@ export default function HomeAdmin({ projects }) {
     setShowOk(false);
   }, 5000);
 
+  setTimeout(() => {
+    setReplacement(false);
+  }, 4000);
+
   const updateProjectOrder = (updatedProjects) => {
     return (dispatch) => {
       dispatch(updateProjectOrderSuccess(updatedProjects));
@@ -92,6 +99,11 @@ export default function HomeAdmin({ projects }) {
 
     // Вызываем действие для обновления порядка элементов
     dispatch(updateProjectOrder(updatedProjects));
+
+    setReplacementMessage("Проект перемещен");
+    setReplacement(true);
+    // И тут же сохраняем новый порядок в базу данных
+    dispatch(updateProjectOrderReplacement(updatedProjects));
   };
 
   const ErrorMessage = ({ message }) => {
@@ -99,14 +111,15 @@ export default function HomeAdmin({ projects }) {
   };
 
   const OkMessage = ({ message }) => {
-    return (
-      <div className={styles.home_admin_section__ok}>
-        {message}
-      </div>
+    return ( <div className={styles.home_admin_section__ok}>{message}</div>
     );
   };
 
-  // console.log(arrIdProject);
+  const Replacement = ({ message }) => {
+    return <div className={styles.home_admin_section__ok}>{message}</div>;
+  };
+
+  console.log(arrIdProject);
   return (
     <section className={styles.home_admin_section}>
       <div className={styles.home_admin_section__title}>Проекты</div>
@@ -140,6 +153,16 @@ export default function HomeAdmin({ projects }) {
               Укажите id проекта
             </label>
           </div>
+          {/* <button
+            style={{
+              backgroundColor: "red",
+              width: "150px",
+              height: "20px"
+            }}
+            onClick={handleSaveOrderClick}
+          >
+            Сохранить порядок
+          </button> */}
           <button
             className={styles.home_admin_section__button}
             onClick={filterProjectsById}
@@ -147,6 +170,9 @@ export default function HomeAdmin({ projects }) {
           />
           <div>{showError && <ErrorMessage message={errorMessage} />}</div>
           <div>{showOk && <OkMessage message={okMessage} />}</div>
+          <div>
+            {replacement && <Replacement message={replacementMessage} />}
+          </div>
         </div>
       </div>
     </section>
