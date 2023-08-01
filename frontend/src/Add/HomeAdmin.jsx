@@ -1,7 +1,11 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import styles from "./HomeAdmin.module.scss";
-import { deleteProject, searchProgectMainPostzapros, updateProjectOrderSuccess } from "../store/Slice/searchProjectMainSlice";
+import {
+  deleteProject,
+  searchProgectMainPostzapros,
+  updateProjectOrderSuccess,
+} from "../store/Slice/searchProjectMainSlice";
 import { useSelector } from "react-redux";
 import { arrIdProjectSelector } from "./HomeAdminSelectors";
 import DraggableProject from "./DraggableProject";
@@ -109,8 +113,6 @@ export default function HomeAdmin({ projects }) {
 
       <div className={styles.home_admin_section__section}>
         <div className={styles.home_admin_section__block_search}>
-          {/* <div>{arrIdProject}</div> */}
-          {/* <div>{JSON.stringify(arrIdProject)}</div> */}
           <div className={styles.home_admin_section__id_container}>
             {arrIdProject?.map((el, index) => (
               <DraggableProject
@@ -143,8 +145,8 @@ export default function HomeAdmin({ projects }) {
             onClick={filterProjectsById}
             disabled={isButtonDisabled}
           />
-      <div>{showError && <ErrorMessage message={errorMessage} />}</div>
-      <div>{showOk && <OkMessage message={okMessage} />}</div>
+          <div>{showError && <ErrorMessage message={errorMessage} />}</div>
+          <div>{showOk && <OkMessage message={okMessage} />}</div>
         </div>
       </div>
     </section>
