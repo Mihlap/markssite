@@ -6,9 +6,9 @@ import {
   searchProgectMainPostzapros,
   updateProjectOrderReplacement,
   updateProjectOrderSuccess,
-} from "../store/Slice/searchProjectMainSlice";
+} from "../../store/Slice/searchProjectMainSlice";
 import { useSelector } from "react-redux";
-import { arrIdProjectSelector } from "./HomeAdminSelectors";
+import { arrIdProjectSelector } from "./utils/HomeAdminSelectors";
 import DraggableProject from "./DraggableProject";
 
 export default function HomeAdmin({ projects }) {
@@ -22,7 +22,6 @@ export default function HomeAdmin({ projects }) {
   const [searchId, setSearchId] = useState("");
   const [savedId, setSavedId] = useState(null);
 
-  // Use the memoized selector with useSelector
   const arrIdProject = useSelector(arrIdProjectSelector);
 
   const dispatch = useDispatch();
@@ -153,16 +152,6 @@ export default function HomeAdmin({ projects }) {
               Укажите id проекта
             </label>
           </div>
-          {/* <button
-            style={{
-              backgroundColor: "red",
-              width: "150px",
-              height: "20px"
-            }}
-            onClick={handleSaveOrderClick}
-          >
-            Сохранить порядок
-          </button> */}
           <button
             className={styles.home_admin_section__button}
             onClick={filterProjectsById}
