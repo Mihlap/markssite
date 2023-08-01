@@ -3,7 +3,6 @@
   height: 100%;
   position: relative;
   overflow: hidden;
-  /* Ensure the slider does not overflow */
 }
 
 .company-slider-slide img {
@@ -15,31 +14,27 @@
 
 .navigation_slider {
   position: absolute;
-  bottom: 2%;
-  right: 2vw;
+  bottom: 3%;
+  right: 2%;
 }
 
 .button_slider {
-  height: 8vw;
-  /* Use a relative unit for the height, for example, 8vw */
+  height: 8rem;
   border: none;
   color: rgba(234, 236, 237, 0.4);
   font-size: 1vw;
-  /* Use relative font size, for example, 1.5vw */
   cursor: pointer;
   margin-right: 1.5vw;
-  /* Use relative margin, for example, 1.5vw */
-  font-family: 'Unbounded';
+  font-family: var(--font-unbounded);
   font-style: normal;
-  font-weight: 300;
-  line-height: 1.5;
+  font-weight: var(--fw-300);
+  line-height: 1.5rem;
   background-color: transparent;
   transition: font-size 0.5s ease-in-out;
 }
 
 .active {
-  font-size: 2.8vw;
-  /* Use a relative font size, for example, 3.5vw */
+  font-size: 2.5vw;
 }
 
 .button_slider_wrapper {
@@ -48,8 +43,8 @@
 
 .underline {
   position: absolute;
-  bottom: 20px;
-  height: 6px;
+  bottom: 1.25rem;
+  height: 0.375rem;
   background-color: #F6F6F6;
   border-radius: 5px;
   transition: width 0.5s ease-in-out;
@@ -57,25 +52,32 @@
 
 .gray-underline {
   position: absolute;
-  bottom: 20px;
-  height: 6px;
+  bottom: 1.25rem;
+  height: 0.375rem;
   background-color: rgba(234, 236, 237, 0.4);
   border-radius: 5px;
   width: 88%;
 }
 
-/* Styles for tablet version */
+
 @media screen and (min-width: 768px) and (max-width: 1024px) {
   .company-slider-slide img {
-    height: 64vw;
-    /* Use relative height, for example, 64vw */
+    height: 64vh;
   }
+  .navigation_slider {
+   display: none;
+  }
+  
 }
 
-/* Styles for mobile version */
+
 @media screen and (max-width: 767px) {
   .company-slider-slide img {
-    height: 45vw;
-    /* Use relative height, for example, 45vw */
+    height: 45vh;
+  
   }
+  .navigation_slider {
+    display: none;
+  }
+  
 }

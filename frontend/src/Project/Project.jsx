@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import Modal from "react-modal";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { Swiper, SwiperSlide } from "swiper/react";
 import styles from "./Project-container.module.scss";
 import {
   setSelectedViewConstruction,
@@ -12,9 +13,10 @@ import {
   getFetchForm,
 } from "../store/Slice/projectSlice";
 import Company_Slider from "../UI/Company_Slider/Company_Slider";
-import { getUserGeolocation } from "./utils";
+import { resizeImage, extractCityFromCountryCity, getUserGeolocation } from "./utils";
 import "../UI/Company_Slider/Company_Slider.css";
 import "../UI/ButtonsProjects/AllProjectsButton.module.css";
+
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 
@@ -43,6 +45,15 @@ export default function Project() {
     "Уфа",
   ];
 
+  const colors = {
+    Архитектура: "#FF7F6A",
+    BIM: "#75BBFD",
+    Конструкции: "#566272",
+    Дизайн: "#FAA8BD",
+    Инженерия: "#90B734",
+  };
+
+
   const dispatch = useDispatch();
   const projects = useSelector((state) => state.project.projects);
   const selectedViewConstruction = useSelector(
@@ -63,9 +74,23 @@ export default function Project() {
   const [value, setValue] = useState("");
   const addressInputRef = useRef(null);
   const [selectOnCompetencies, setSelectOnCompetencies] = useState("Все");
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+  const [swiper, setSwiper] = useState(null);
 
   const projectsPerPage = 100;
-  const screenWidth = window.innerWidth;
+  const isMobileScreen = screenWidth <= 768;
+
+  const handleResize = () => {
+    setScreenWidth(window.innerWidth);
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
 
   useEffect(() => {
     dispatch(getFetchFormFilter(projectsPerPage, selectedViewConstruction));
@@ -78,17 +103,6 @@ export default function Project() {
     setIsFocusedProject(true);
   }
 
-
-      
-      // if (screenWidth >= 1800) {
-      //   setShowButton(true);
-      // } else if (screenWidth >= 1441 && screenWidth <= 1799) {
-      //   setShowButton(false);
-      // } else if (screenWidth >= 1024 && screenWidth <= 1440) {
-      //   setShowButton(false);
-      // }
-    
-
     function handleChange(event) {
     const address = event.target.value.toLowerCase();
     setValue(address);
@@ -96,6 +110,9 @@ export default function Project() {
     setIsTyping(true);
     dispatch(setSelectedCity(""));
     setSelectOnCompetencies("");
+    if (!address) {
+      setSelectOnCompetencies("Все");
+    }
   }
 
   const handleAddressSubmit = (event) => {
@@ -103,16 +120,22 @@ export default function Project() {
   };
 
   function handleBlur(event) {
-    setIsFocusedProject(true);
+       setIsFocusedProject(true);
     const address = event.target.value;
     if (!address) {
       setIsFocusedProject(false);
+      dispatch(setSelectedCity(""));
     }
     setValue(address);
     setIsValid(isValid);
     dispatch(setSelectedCity(""));
     setSelectOnCompetencies("");
+    if (value.trim() === "") {
+      setSelectOnCompetencies("Все");
+    }
   }
+
+  
 
   const handleButtonClick = (viewConstruction) => {
     if (
@@ -131,14 +154,13 @@ export default function Project() {
       setSelectOnCompetencies(viewConstruction);
     } else {
       dispatch(setSelectedCity(""));
-      // dispatch(setSelectedViewConstruction(""));
       dispatch(getFetchFormFilter(currentPage, projectsPerPage, ""));
       setCurrentPage(1);
       setValue("");
       setIsTyping(false);
-      setSelectOnCompetencies("");
+      setSelectOnCompetencies("Все");
     }
-  };
+  }
 
   const handleButtonCityClick = (countryCity) => {
     if (isTyping) {
@@ -151,15 +173,14 @@ export default function Project() {
     setSelectOnCompetencies("");
   };
 
-  const handleShowButtonAll = (e) => {
-    e.preventDefault();
-    setShowButton((prevShowButton) => !prevShowButton);
-  };
+  // const handleShowButtonAll = (e) => {
+  //   e.preventDefault();
+  //   setShowButton((prevShowButton) => !prevShowButton);
+  // };
 
   const handleSelectCityClick = (e) => {
     e.preventDefault();
     setIsModalProjectOpen(true);
-    // setSelectedViewConstruction("Все");
     setValue("");
     setIsTyping(false);
   };
@@ -169,17 +190,19 @@ export default function Project() {
     setIsModalProjectOpen(false);
     setSelectedViewConstruction(selectOnCompetencies);
     setSelectOnCompetencies("");
-    // setSelectedCity("");
     setIsTyping(false);
     setIsFocusedProject(false);
     setIsValid(true);
     if (selectOnCompetencies === viewConstruction) {
       setSelectedCity("");
     }
+     if (value.trim() === "") {
+      setSelectOnCompetencies("Все");
+    }
     dispatch(setSelectedViewConstruction(viewConstruction));
   };
 
-  // Получение геопозиции пользователя
+
   useEffect(() => {
     getUserGeolocation()
       .then((geolocation) => setUserGeolocation(geolocation))
@@ -187,6 +210,8 @@ export default function Project() {
         console.error("Ошибка при получении геопозиции:", error)
       );
   }, []);
+
+  
 
   const currentLocation = userGeolocation
     ? `${userGeolocation.latitude}, ${userGeolocation.longitude}`
@@ -212,44 +237,6 @@ export default function Project() {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-
-  const colors = {
-    Архитектура: "#FF7F6A",
-    BIM: "#75BBFD",
-    Конструкции: "#566272",
-    Дизайн: "#FAA8BD",
-    Инженерия: "#90B734",
-  };
-
-  const resizeImage = (width, height) => {
-    const aspectRatio = height / width;
-
-    if (aspectRatio >= 1.2) {
-      if (width !== 28 || height !== 48) {
-        return { width: 28.18, height: 48.18 };
-      }
-    } else if (aspectRatio < 0.8) {
-      if (width !== 28 || height !== 14) {
-        return { width: 27.62, height: 13.81 };
-      }
-    } else {
-      if (width !== 28 || height !== 28) {
-        return { width: 28.18, height: 27.62 };
-      }
-    }
-    return { width, height };
-  };
-
-  const extractCityFromCountryCity = (countryCity) => {
-    if (!countryCity) return "";
-    const parts = countryCity.split(/[.,:\s]+/);
-    if (parts.length === 1) {
-      return parts[0].trim();
-    } else if (parts.length > 1) {
-      return parts[1].trim();
-    }
-    return "";
-  };
 
   const filteredProjects = projects
     .filter((project) =>
@@ -281,6 +268,93 @@ export default function Project() {
         <p className={styles.actuality_text}>Актуальные кейсы MARKS GROUP</p>
         <span className={styles.projects_name_text}>Проекты</span>
       </div>
+      {screenWidth && (
+      <div onSubmit={handleAddressSubmit} className={styles.searchCityAddress_wrapper}>
+          <div className={styles.searchCityAddress_location_project_group}>
+            <label
+              className={`${styles.searchCityAddress_label_project} ${
+                isFocusedProject ? styles.focused : ""
+              }`}
+            >
+              <input
+                id="text-input"
+                ref={addressInputRef}
+                className={styles.address_and_city_choose_location}
+                type="address"
+                value={value}
+                onFocus={handleFocus}
+                onChange={handleChange}
+                onBlur={handleBlur}
+                maxLength="50"
+                size="60"
+                required
+                autoComplete="off"
+              />
+              <div className={styles.line_modal_project}></div>
+              <div className={styles.placeholder_modal_project}>
+                <div className={styles.lupa_svg_modal_project}>
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g id="Frame 4665" clipPath="url(#clip0_3684_1098)">
+                      <g id="Group 5">
+                        <path
+                          id="Union"
+                          fillRule="evenodd"
+                          clipRule="evenodd"
+                          d="M12.9219 6.7676C12.9219 9.67654 10.5637 12.0347 7.6548 12.0347C4.74586 12.0347 2.3877 9.67654 2.3877 6.7676C2.3877 3.85865 4.74586 1.50049 7.6548 1.50049C10.5637 1.50049 12.9219 3.85865 12.9219 6.7676ZM10.7887 12.7669C9.85175 13.2573 8.78567 13.5347 7.6548 13.5347C3.91743 13.5347 0.887695 10.505 0.887695 6.7676C0.887695 3.03023 3.91743 0.000488281 7.6548 0.000488281C11.3922 0.000488281 14.4219 3.03023 14.4219 6.7676C14.4219 8.82566 13.5032 10.6691 12.0535 11.9103L14.7265 14.5833C15.0194 14.8762 15.0194 15.3511 14.7265 15.644C14.4336 15.9369 13.9587 15.9369 13.6658 15.644L10.7887 12.7669Z"
+                          fill="#959DA6"
+                        />
+                      </g>
+                    </g>
+                    <defs>
+                      <clipPath id="clip0_3684_1098">
+                        <rect
+                          width="16"
+                          height="16"
+                          fill="white"
+                          transform="translate(0 0.000488281)"
+                        />
+                      </clipPath>
+                    </defs>
+                  </svg>
+                </div>
+                <p className={styles.text_placeholder_modal_project}>
+                  Ведите адрес или город
+                </p>
+              </div>
+            </label>
+          </div>
+        </div>
+        )}
+        {screenWidth && (
+      <Swiper
+        onSwiper={setSwiper}
+        slidesPerView="auto"
+        spaceBetween={8}
+        className={styles.my_swiper2_button_group_project}
+        touch="true"
+      >
+        <div className={styles.button_group_project}>
+          {buttonChoose && buttonChoose?.map((el) => (
+            <SwiperSlide
+              key={el}
+              onClick={() => handleButtonClick(el)}
+              className={`${styles.menu__button__allProject} ${
+                el === selectOnCompetencies ? styles.active : ""
+              }`}
+              style={{ width: "fit-content" }}
+            >
+              <p type="button" className={styles.menu_button_items}>{el}</p>
+            </SwiperSlide>
+          ))}
+        </div>
+      </Swiper>
+    )}
       <div className={styles.menu_button_group_project_wrapper_main}>
         {/* <div className={styles.button_look_all_wrapper}>
           <button
@@ -290,7 +364,7 @@ export default function Project() {
             {showButton ? (
               <div className={styles.project__svg1}>
                 <svg
-                  xmlns="http://www.w3.org/2000/svg"
+                  xmlns="http://www.w3.org/2000/svg" 
                   width="24"
                   height="24"
                   viewBox="0 0 24 24"
@@ -332,7 +406,7 @@ export default function Project() {
             )}
           </button>
         </div> */}
-       <div className={styles.menu_button_group_project_wrapper}>
+        <div className={styles.menu_button_group_project_wrapper}>
         <div className={styles.menu_button_group_project}>
           {buttonChoose.map((el, index) => (
             <div
@@ -562,8 +636,8 @@ export default function Project() {
                       <img
                         className={styles.cart_project__img}
                         style={{
-                          height: `${height}rem`,
-                          width: `${width}rem`,
+                          height: isMobileScreen ? "auto" : `${height}rem`,
+                          width: isMobileScreen ? "100%" : `${width}rem`,
                         }}
                         src={`${Host}/images/imageAdd/${
                           project.imageProject
