@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import Select from "react-select";
 import styles from "./FormAddProject.module.scss";
 import { fetchProject } from "../../../store/Slice/projectSlice";
 import {
@@ -10,7 +9,6 @@ import {
   removePreviewPhotoOpen
 } from "./formHelpers";
 
-import customStyles from "./customStyles";
 import icon from "./img/Frame4684.png";
 
 export default function FormAddProject({ setIsModalOpen }) {
@@ -93,6 +91,10 @@ export default function FormAddProject({ setIsModalOpen }) {
     );
   };
 
+  const closeModal = () => {
+    setIsModalOpen(false);
+  }
+
   // функция отправки формы на Redux
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -121,7 +123,7 @@ export default function FormAddProject({ setIsModalOpen }) {
       // monthYear: "",
       // viewConstruction: "",
       // dropPhoto: [],
-       photoAva: "",
+      photoAva: "",
       // titleTextBlock: "",
       // descriptionProject: "",
       // totalArea: "",
@@ -985,6 +987,7 @@ export default function FormAddProject({ setIsModalOpen }) {
           <button
             className={styles.form_container__button_cancel}
             type="submit"
+            onClick={closeModal}
           ></button>
         </div>
       </form>

@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
 import { useDrag, useDrop } from "react-dnd";
 import styles from "./HomeAdmin.module.scss";
 
@@ -58,7 +57,15 @@ const DraggableProject = ({
       onDragEnter={handleDragEnter}
       onDragLeave={handleDragLeave}
     >
-      id: {JSON.stringify(project.IdProject)}
+      <div className={styles.home_admin_section__circle_block}>
+        <div className={styles.home_admin_section__circle}></div>
+        <div className={styles.home_admin_section__circle}></div>
+        <div className={styles.home_admin_section__circle}></div>
+        <div className={styles.home_admin_section__circle}></div>
+        <div className={styles.home_admin_section__circle}></div>
+        <div className={styles.home_admin_section__circle}></div>
+      </div>
+      <div>id: {JSON.stringify(project.IdProject)}</div>
       <button
         className={styles.home_admin_section__button_del}
         onClick={() => handleFormDelete(project.IdProject)}

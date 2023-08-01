@@ -423,7 +423,7 @@
 
 .preview_photos_container {
 
-    display: flex;
+    // display: flex;
     flex-wrap: wrap;
     gap: 10px;
 
@@ -432,9 +432,13 @@
     }
 
     &__img {
-        width: 14.1875rem;
+        width: 100%;
         height: 7rem;
         border-radius: 0.39rem;
+        object-fit: cover;
+        /* Обрезать изображение, сохраняя его пропорции */
+        object-position: center;
+        /* Центрировать изображение в контейнере */
     }
 
     &__remove_icon {
@@ -444,7 +448,7 @@
         background-color: var(--white-F6F6F6);
         position: absolute;
         top: 35%;
-        left: 40%;
+        left: 45%;
         cursor: pointer;
         transition: transform 0.3s ease;
 

@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import styles from "./AddProject.module.scss";
 import FormAddProject from "./formAdd/FormAddProject";
-import { useDispatch, useSelector } from "react-redux";
-import { deleteForm, getFetchForm } from "../../store/Slice/projectSlice";
+import { useDispatch } from "react-redux";
+import { deleteForm } from "../../store/Slice/projectSlice";
 
 export default function AddProject({ project, user }) {
   const Host = process.env.REACT_APP_SERVER_HOST;
@@ -97,7 +97,7 @@ export default function AddProject({ project, user }) {
               </svg>
             </div>
             <div className={styles.project_components_admin__button_text}>
-              Добавить проект на главную
+              Добавить новый проект
             </div>
           </button>
         </div>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import styles from "./Add.module.scss";
 import AddNavbar from "./add-navbar/AddNavbar";
 import { Route, Routes } from "react-router-dom";
-import HomeAdmin from "./HomeAdmin";
+import HomeAdmin from "./HomeAdmin/HomeAdmin";
 import AddProject from "./add-project/AddProject";
 import AddArticles from "./add-articles/AddArticles";
 import AddCompany from "./add-about-the-company/AddCompany";
