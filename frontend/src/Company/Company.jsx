@@ -201,6 +201,13 @@ export default function Company({ userId }) {
     }
   };
 
+  const buttonsStuff = [
+    { name: "Руководство", onClick: handleButtonClick },
+    { name: "Руководители отделов", onClick: handleButtonClick },
+    { name: "Научно-техническое сопровождение", onClick: handleButtonClick },
+    { name: "HR", onClick: handleButtonClick },
+  ];
+
   if (error) {
     return (
       <div>
@@ -383,70 +390,35 @@ export default function Company({ userId }) {
       <div className={styles.specialist_wrapper}>
         <div className={styles.specialist}>Специалисты</div>
         {isMobile && (
-          <Swiper
-            onSwiper={setSwiper}
-            slidesPerView="auto"
-            spaceBetween={0}
-            // pagination={{
-            //   clickable: true,
-            // }}
-            className={styles.my_swiper_button_group}
-            touch="true"
-          >
-            <div className={styles.button_group}>
-              <SwiperSlide
-                className={` ${styles.button_hover} ${
-                  activeButton === "Руководство" ? styles.active : ""
-                }`}
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleButtonClick("Руководство");
-                }}
-                style={{ width: "fit-content" }}
-              >
-                <p type="button">Руководство</p>
-              </SwiperSlide>
-              <SwiperSlide
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleButtonClick("Руководители отделов");
-                }}
-                className={` ${styles.button_hover} ${
-                  activeButton === "Руководители отделов" ? styles.active : ""
-                }`}
-                style={{ width: "fit-content" }}
-              >
-                <p type="button">Руководители отделов</p>
-              </SwiperSlide>
-              <SwiperSlide
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleButtonClick("Научно-техническое сопровождение");
-                }}
-                className={` ${styles.button_hover} ${
-                  activeButton === "Научно-техническое сопровождение"
-                    ? styles.active
-                    : ""
-                }`}
-                style={{ width: "fit-content" }}
-              >
-                <p type="button">Научно-техническое сопровождение</p>
-              </SwiperSlide>
-              <SwiperSlide
-                onClick={(e) => {
-                  e.preventDefault();
-                  handleButtonClick("HR");
-                }}
-                className={` ${styles.button_hover} ${
-                  activeButton === "HR" ? styles.active : ""
-                }`}
-                style={{ width: "fit-content" }}
-              >
-                <p type="button">HR</p>
-              </SwiperSlide>
-            </div>
-          </Swiper>
-        )}
+      <Swiper
+        onSwiper={setSwiper}
+        slidesPerView="auto"
+        spaceBetween={0}
+        // pagination={{
+        //   clickable: true,
+        // }}
+        className={styles.my_swiper_button_group}
+        touch="true"
+      >
+        <div className={styles.button_group}>
+          {buttonsStuff && buttonsStuff?.map((button) => (
+            <SwiperSlide
+              key={button.name}
+              onClick={(e) => {
+                e.preventDefault();
+                button.onClick(button.name);
+              }}
+              className={`${styles.button_hover} ${
+                activeButton === button.name ? styles.active : ""
+              }`}
+              style={{ width: "fit-content" }}
+            >
+              <p type="button">{button.name}</p>
+            </SwiperSlide>
+          ))}
+        </div>
+      </Swiper>
+    )}
         {!isMobile && (
           <div className={styles.button_group}>
             <button

@@ -74,6 +74,15 @@ const [isMenuActive, setMenuActive] = useState(false);
               <li className={styles["menu-item"]}>
                 <Link
                   onClick={handleBurgerClick}
+                  to="/project"
+                  className={styles["menu-link"]}
+                >
+                  Проекты
+                </Link>
+              </li>
+              <li className={styles["menu-item"]}>
+                <Link
+                  onClick={handleBurgerClick}
                   to="/publication"
                   className={styles["menu-link"]}
                 >

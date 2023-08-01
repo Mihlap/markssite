@@ -4,23 +4,25 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  width: 100%;
+  max-width: 100%;
 }
 
 .underSlider_text_wrapper {
   position: absolute;
   display: flex;
   flex-direction: column;
-  padding-top: 60vh;
-  padding-left: 10vw;
+  bottom: 10vh;
+  left: 10vw;
+  max-width: 100%;
+  z-index: 1;
 }
 
 .span_underSlider_text1 {
   font-family: var(--font-unbounded);
   font-style: normal;
   font-weight: var(--fw-300);
-  font-size: 24px;
-  line-height: 32px;
+  font-size: 1.25rem;
+  line-height: 1.5rem;
   color: var(--white-F6F6F6);
   white-space: pre-wrap;
   margin-right: 20rem;
@@ -30,8 +32,8 @@
   font-family: var(--font-unbounded);
   font-style: normal;
   font-weight: var(--fw-500);
-  font-size: 48px;
-  line-height: 64px;
+  font-size: 2rem;
+  line-height: 2.5rem;
   color: var(--white-F6F6F6);
   padding-top: 4px;
 }
@@ -39,14 +41,14 @@
 .div_counter_wrapper {
   display: flex;
   flex-direction: row;
-  padding-top: 56px;
+  padding-top: 1.94vh;
 }
 
 .container_text {
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  width: 210px;
+  width: 13rem;
 }
 
 .div_underSlider_text {
@@ -525,9 +527,8 @@
 /* стили для планшетной версии  */
 @media screen and (min-width: 768px) and (max-width: 1024px) {
   .underSlider_text_wrapper {
-    padding-bottom: 0;
-    padding-top: 38rem;
-    padding-left: 5.4vw;
+    bottom: 40vh;
+    left: 3.5rem;
   }
 
   .span_underSlider_text1 {
@@ -720,28 +721,32 @@
 @media screen and (min-width: 200px) and (max-width: 767px) {
 
   .underSlider_text_wrapper {
-    padding-top: 26rem;
-    padding-left: 1.3rem;
-    /* width: 30rem; */
-  }
+    left: 1.3rem;
+    bottom: 56vh;
+    /* max-width: 100%; */
+    word-wrap: break-word;
+   }
 
   .span_underSlider_text1 {
     font-family: var(--font-raleway);
     font-weight: var(--fw-700);
-    font-size: 18px;
-    line-height: 24px;
+    font-size: 1.125rem;
+    line-height: 1.5rem;
     margin-right: 10rem;
+    max-width: 100%;
+    word-wrap: break-word;
+
   }
 
   .span_underSlider_text2 {
     font-weight: var(--fw-600);
-    font-size: 32px;
-    line-height: 40px;
-    padding-top: 0.31rem;
+    font-size: 2rem;
+    line-height: 2.5rem;
+    padding-top: 0.30vh;
   }
 
   .div_counter_wrapper {
-    padding-top: 1.93rem;
+    padding-top: 1.90vh;
     transition: all 2s ease-in-out;
   }
 
@@ -749,14 +754,14 @@
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
-    width: 15rem;
+    width: 100%;
   }
 
   .span_underSlider_text {
     font-weight: var(--fw-700);
-    font-size: 14px;
-    line-height: 20px;
-    padding-top: 0.25rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    padding-top: 0.25vh;
   }
 
   .icon_partner {
