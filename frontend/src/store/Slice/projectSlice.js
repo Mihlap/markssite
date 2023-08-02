@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+// import { getImageUrls } from "../../Project/utils";
 
 const serverHost = process.env.REACT_APP_SERVER_HOST;
 
@@ -116,6 +117,10 @@ export const getFetchForm = () => async (dispatch) => {
     const response = await axios.get(
       `${serverHost}/api-project/getzapros`
     );
+    // const projectsWithImageUrls = response.data.map((project) => ({
+    //   ...project,
+    //   imageUrls: getImageUrls(project.imageTitle),
+    // }));
    dispatch(fetchProjectSuccess(response.data));
   } catch (error) {
     dispatch(fetchProjectFailure(error.message));

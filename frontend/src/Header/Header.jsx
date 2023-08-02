@@ -364,7 +364,7 @@ const MapProject = NewProject.map((el) =>
               <SwiperSlide
                 onScroll={handleScroll}
                 key={project.id}
-                to={project.link}
+                to={`/projects/${project.id}`}
                 id="slider_container_item_card"
                 className={`{styles.slider_container_item_card}
              ${isCustomSize ? styles.customSize : ""}`}

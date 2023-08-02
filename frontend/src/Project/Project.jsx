@@ -260,7 +260,7 @@ export default function Project() {
         (selectedCity === "" || projectCity === selectedCity.toLowerCase())
       );
     });
-
+    
   return (
     <div className={styles.project_main}>
       <Company_Slider />
@@ -354,7 +354,7 @@ export default function Project() {
           ))}
         </div>
       </Swiper>
-    )}
+      )}
       <div className={styles.menu_button_group_project_wrapper_main}>
         {/* <div className={styles.button_look_all_wrapper}>
           <button
@@ -610,7 +610,6 @@ export default function Project() {
           ))}
         </div>
       </Modal>
-
       <section className={styles.section_project}>
         <div className={styles.section_project__block}>
           {filteredProjects &&
@@ -628,7 +627,7 @@ export default function Project() {
               return (
                 <Link
                   key={project.id}
-                  to={project.link}
+                  to={`/projects/${project.id}`}
                   className={styles.section_project__block_cart}
                 >
                   <div className={styles.cart_project}>
