@@ -23,6 +23,7 @@ import Add from "./Add/Add";
 
 import SignUpPage from "./Login/SignUpPage";
 import axios from "axios";
+import ProjectCard from "./Project/ProjectCard";
 
 
 export default function App() {
@@ -99,6 +100,7 @@ export default function App() {
                 />
                 <Route path="/competention" element={<Competentions />} />
                 <Route path="/project" element={<Project />} />
+                <Route path="/projects/:id" element={<ProjectCard />} />
                 <Route path="/company" element={<Company />} />
                 <Route path="/publication" element={<Publics />} />
                 {/* <Route path="/contacts" element={<Contacts />} /> */}
