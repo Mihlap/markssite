@@ -159,9 +159,9 @@
             /* Отступ между текстом и кнопкой */
         }
 
-                &:hover {
-                    background-color: var(--dark-blue-389FFF);
-                }
+        &:hover {
+            background-color: var(--dark-blue-389FFF);
+        }
     }
 
     &__button_cancel {
@@ -187,9 +187,9 @@
             /* Отступ между текстом и кнопкой */
         }
 
-                &:hover {
-                    background-color: var(--light-gray-C0C5CB);
-                }
+        &:hover {
+            background-color: var(--light-gray-C0C5CB);
+        }
     }
 
     &__heading_block {
@@ -457,12 +457,12 @@
         }
 
         span {
-                position: absolute;
-                    top: 50%;
-                    left: 50%;
-                    width: 2px;
-                    height: 16px;
-                    transform: translate(-50%, -50%);
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 2px;
+            height: 16px;
+            transform: translate(-50%, -50%);
 
             &::before,
             &::after {
