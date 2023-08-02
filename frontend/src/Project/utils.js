@@ -1,3 +1,5 @@
+const Host = process.env.REACT_APP_SERVER_HOST;
+
 export const getUserGeolocation = () => {
   return new Promise((resolve, reject) => {
     if (navigator.geolocation) {
@@ -47,6 +49,18 @@ export const extractCityFromCountryCity = (countryCity) => {
   return "";
 };
 
+export const getImageUrls = (imageTitle) => {
+  if (!imageTitle) {
+    return [];
+  }
+
+  const filenames = imageTitle.replace(/{|}/g, "").split(",");
+
+  const trimmedFilenames = filenames.map((filename) => filename.trim());
+
+  const imageUrls = trimmedFilenames.map((filename) => `${Host}/images/${filename}`);
+  return imageUrls;
+};
 
 
 
