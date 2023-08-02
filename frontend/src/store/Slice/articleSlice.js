@@ -44,7 +44,14 @@ export const {
 
 
 export const fetchArticle =
-  (formattedData, setInputData, setPreviewPhotos, setPreviewPhotoAva) =>
+  (
+    formattedData,
+    setInputData,
+    setPreviewPhotos,
+    setPreviewPhotoAva,
+    setPreviewPhotoOpen,
+    setPreviewPhotoClose
+  ) =>
   async (dispatch) => {
     dispatch(fetchArticleStart());
     const formData = new FormData();
@@ -74,12 +81,17 @@ export const fetchArticle =
         titleTextBlock: "",
         descriptionArticle: "",
         photoAva: [],
+        imageOpen: [],
+        textBlock: "",
+        imageClose: [],
       });
       setPreviewPhotos([]);
       setPreviewPhotoAva([]);
+      setPreviewPhotoOpen([]);
+      setPreviewPhotoClose([]);
       dispatch(getFetchFormArticle()); // Добавлен этот вызов для получения обновленных данных после успешной отправки формы
     });
-    console.log(formattedData, "REDUX");
+    // console.log(formattedData, "REDUX");
   };
 
 export const getFetchFormArticle = () => async (dispatch) => {

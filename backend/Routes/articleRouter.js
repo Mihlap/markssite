@@ -23,15 +23,17 @@ router.post(
     { name: 'dropPhoto', maxCount: 4 },
     { name: 'photoAva', maxCount: 1 },
     { name: 'imageOpen', maxCount: 1 },
+    { name: 'imageClose', maxCount: 1 },
   ]),
   async (req, res) => {
     try {
       console.log(req.files); // Output file information to the console
       const imageTitles = req.files.dropPhoto.map((file) => file.filename).join(', ');
       const imageProjects = req.files.photoAva ? req.files.photoAva[0].filename : null;
-      // const imageOpens = req.files.imageOpen ? req.files.imageOpen[0].filename : null;
+      const imageOpens = req.files.imageOpen ? req.files.imageOpen[0].filename : null;
+      const imageCloses = req.files.imageClose ? req.files.imageClose[0].filename : null;
 
-      console.log(imageTitles);
+      // console.log(imageCloses);
       await Articles.create({
         title: req.body.title,
         author: req.body.author,
@@ -41,6 +43,9 @@ router.post(
         titleTextBlock: req.body.titleTextBlock,
         descriptionArticle: req.body.descriptionArticle,
         imageAuthor: imageProjects,
+        imageOpen: imageOpens,
+        textBlock: req.body.textBlock,
+        imageClose: imageCloses,
         // selectCompetencies: req.body.selectCompetencies,
         // countryCity: req.body.countryCity,
         // monthYear: req.body.monthYear,
@@ -61,7 +66,6 @@ router.post(
         // publicationTwo: req.body.publicationTwo,
         // linkToPublicationTwo: req.body.linkToPublicationTwo,
         // awards: req.body.awards,
-        // imageOpen: imageOpens,
         // textBlock: req.body.textBlock,
       });
 

@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch } from "react-redux";
 import styles from "./FormAddArticles.module.scss";
-import { changeHandler, removePreviewPhoto, removePreviewPhotoAva } from './formHelpers';
+import { changeHandler, removePreviewPhoto, removePreviewPhotoAva, removePreviewPhotoClose, removePreviewPhotoOpen } from './formHelpers';
 import { fetchArticle } from '../../../store/Slice/articleSlice';
 
 import icon from "./img/Frame4684.png";
@@ -11,6 +11,8 @@ export default function FormAddArticles({ setIsModalOpen }) {
   const [previewPhotos, setPreviewPhotos] = useState([]);
   const [previewPhotoAva, setPreviewPhotoAva] = useState([]);
   const [previewPhotoOpen, setPreviewPhotoOpen] = useState([]);
+  const [previewPhotoClose, setPreviewPhotoClose] = useState([]);
+  const [isPhotoCloseVisible, setIsPhotoCloseVisible] = useState(true);
   const [isPhotoOpenVisible, setIsPhotoOpenVisible] = useState(true);
   const [isPhotoAvaVisible, setIsPhotoAvaVisible] = useState(true);
   const [isDropPhotoVisible, setIsDropPhotoVisible] = useState(true);
@@ -23,6 +25,9 @@ export default function FormAddArticles({ setIsModalOpen }) {
     titleTextBlock: "",
     descriptionArticle: "",
     photoAva: "",
+    imageOpen: "",
+    textBlock: "",
+    imageClose: "",
   });
 
   const handleRemovePreviewPhoto = (index) => {
@@ -48,6 +53,31 @@ export default function FormAddArticles({ setIsModalOpen }) {
     );
   };
 
+  // Удаление превью фото перед основным текстом
+  const handleRemovePreviewPhotoOpen = (index) => {
+    removePreviewPhotoOpen(
+      previewPhotoOpen,
+      setPreviewPhotoOpen,
+      index,
+      inputData,
+      setInputData,
+      setIsPhotoOpenVisible
+    );
+  };
+
+  // Удаление превью фото из закрывающей картинки
+ const handleRemovePreviewPhotoClose = (index) => {
+   removePreviewPhotoClose(
+     previewPhotoClose,
+     setPreviewPhotoClose,
+     index,
+     inputData,
+     setInputData,
+     setIsPhotoCloseVisible
+   );
+ };
+
+
   // функция отправки формы на Redux
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -59,7 +89,9 @@ export default function FormAddArticles({ setIsModalOpen }) {
         formattedData,
         setInputData,
         setPreviewPhotos,
-        setPreviewPhotoAva
+        setPreviewPhotoAva,
+        setPreviewPhotoOpen,
+        setPreviewPhotoClose
       )
     );
     console.log(formattedData, "<<<----консоль на фронте");
@@ -69,7 +101,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
     setIsModalOpen(false);
   };
 
-  console.log(inputData);
+  // console.log(inputData);
   return (
     <div className={styles.form_container}>
       <div className={styles.form_container__title}>Новая публикация</div>
@@ -270,7 +302,9 @@ export default function FormAddArticles({ setIsModalOpen }) {
                 setPreviewPhotoAva,
                 setIsPhotoAvaVisible,
                 setPreviewPhotoOpen,
-                setIsPhotoOpenVisible
+                setIsPhotoOpenVisible,
+                setPreviewPhotoClose,
+                setIsPhotoCloseVisible
               )
             }
             style={{ display: isPhotoAvaVisible ? "block" : "none" }}
@@ -293,6 +327,136 @@ export default function FormAddArticles({ setIsModalOpen }) {
               <div
                 className={styles.preview_photos_container__remove_icon}
                 onClick={() => handleRemovePreviewPhotoAva(index)}
+              >
+                <span></span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className={styles.form_container__checkbox_block}>
+          <div>Открывающая картинка</div>
+        </div>
+        <label className={styles.slider_container__customFileUpload}>
+          <input
+            type="file"
+            name="imageOpen"
+            onChange={(event) =>
+              changeHandler(
+                event,
+                inputData,
+                setInputData,
+                setPreviewPhotos,
+                setIsDropPhotoVisible,
+                setPreviewPhotoAva,
+                setIsPhotoAvaVisible,
+                setPreviewPhotoOpen,
+                setIsPhotoOpenVisible,
+                setPreviewPhotoClose,
+                setIsPhotoCloseVisible
+              )
+            }
+            style={{ display: isPhotoOpenVisible ? "block" : "none" }}
+          />
+          <div className={styles.slider_container__uploadIcon}>
+            <img src={icon} alt="icon" />
+          </div>
+          <div className={styles.slider_container__uploadText}>
+            Загрузить изображения
+          </div>
+        </label>
+        <div className={styles.preview_photos_container}>
+          {previewPhotoOpen?.map((preview, index) => (
+            <div key={index} className={styles.preview_photos_container__block}>
+              <img
+                className={styles.preview_photos_container__img}
+                src={preview}
+                alt={`Preview ${index}`}
+              />
+              <div
+                className={styles.preview_photos_container__remove_icon}
+                onClick={() => handleRemovePreviewPhotoOpen(index)}
+              >
+                <span></span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className={styles.form_container__description_text}>
+          <textarea
+            className={styles.form_container__textarea}
+            name="textBlock"
+            id="textBlock"
+            cols="30"
+            rows="10"
+            placeholder="Дополнительный текстовый блок"
+            value={inputData.textBlock}
+            onChange={(event) =>
+              changeHandler(
+                event,
+                inputData,
+                setInputData,
+                setPreviewPhotos,
+                setIsDropPhotoVisible,
+                setPreviewPhotoAva,
+                setIsPhotoAvaVisible,
+                setPreviewPhotoOpen,
+                setIsPhotoOpenVisible,
+                setPreviewPhotoClose,
+                setIsPhotoCloseVisible
+              )
+            }
+          ></textarea>
+          <label
+            htmlFor="textBlock"
+            className={styles.form_container__textarea_label}
+          >
+            Текстовый блок
+          </label>
+        </div>
+        <div className={styles.form_container__checkbox_block}>
+          <div>Закрывающая картинка</div>
+        </div>
+        <label className={styles.slider_container__customFileUpload}>
+          <input
+            type="file"
+            name="imageClose"
+            onChange={(event) =>
+              changeHandler(
+                event,
+                inputData,
+                setInputData,
+                setPreviewPhotos,
+                setIsDropPhotoVisible,
+                setPreviewPhotoAva,
+                setIsPhotoAvaVisible,
+                setPreviewPhotoOpen,
+                setIsPhotoOpenVisible,
+                setPreviewPhotoClose,
+                setIsPhotoCloseVisible
+              )
+            }
+            style={{ display: isPhotoCloseVisible ? "block" : "none" }}
+          />
+          <div className={styles.slider_container__uploadIcon}>
+            <img src={icon} alt="icon" />
+          </div>
+          <div className={styles.slider_container__uploadText}>
+            Загрузить изображения
+          </div>
+        </label>
+        <div className={styles.preview_photos_container}>
+          {previewPhotoClose?.map((preview, index) => (
+            <div key={index} className={styles.preview_photos_container__block}>
+              <img
+                className={styles.preview_photos_container__img}
+                src={preview}
+                alt={`Preview ${index}`}
+              />
+              <div
+                className={styles.preview_photos_container__remove_icon}
+                onClick={() => handleRemovePreviewPhotoClose(index)}
               >
                 <span></span>
               </div>

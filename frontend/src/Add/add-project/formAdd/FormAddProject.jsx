@@ -448,7 +448,7 @@ export default function FormAddProject({ setIsModalOpen }) {
             </div>
           ))}
         </div> */}
-       {/* <div className={styles.form_container__heading_block}>
+        {/* <div className={styles.form_container__heading_block}>
           <input
             type="input"
             className={styles.form_container__heading_block_input}
@@ -475,7 +475,7 @@ export default function FormAddProject({ setIsModalOpen }) {
             {`${inputData.titleTextBlock.length}/56`}
           </div>
         </div> */}
-{/*
+        {/*
         <div className={styles.form_container__description_text}>
           <div className={styles.form_container__textarea_length}>
             {`${inputData.descriptionProject.length}/260`}
@@ -901,6 +901,7 @@ export default function FormAddProject({ setIsModalOpen }) {
             </label>
           </div>
         </div>
+        */}
         <div className={styles.form_container__checkbox_block}>
           <div>Открывающая картинка</div>
         </div>
@@ -977,7 +978,7 @@ export default function FormAddProject({ setIsModalOpen }) {
           >
             Текстовый блок
           </label>
-        </div> */}
+        </div>
 
         <div className={styles.form_container__button_block}>
           <button
