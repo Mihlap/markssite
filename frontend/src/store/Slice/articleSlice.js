@@ -25,20 +25,22 @@ const articleSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
-    // deleteArticleSuccess(state, action) {
-    //   const articleId = action.payload;
-    //   state.article = state.article.filter((el) => el.id !== articleId);
-    // },
-    // deleteArticleFailure(state, action) {
-    //   state.error = action.payload;
-    // },
+    deleteArticleSuccess(state, action) {
+      const articleId = action.payload;
+      state.article = state.article.filter((el) => el.id !== articleId);
+    },
+    deleteArticleFailure(state, action) {
+      state.error = action.payload;
+    },
   },
 });
 
 export const {
-    fetchArticleStart,
-    fetchArticleSuccess,
-    fetchArticleFailure,
+  fetchArticleStart,
+  fetchArticleSuccess,
+  fetchArticleFailure,
+  deleteArticleSuccess,
+  deleteArticleFailure,
 } = articleSlice.actions;
 
 
@@ -105,6 +107,16 @@ export const getFetchFormArticle = () => async (dispatch) => {
    
   } catch (error) {
     dispatch(fetchArticleFailure(error.message));
+  }
+};
+
+
+export const deleteFormArticle = (id) => async (dispatch) => {
+  try {
+    await axios.delete(`${serverHost}/api-article/deletezapros/${id}`);
+    dispatch(deleteArticleSuccess(id));
+  } catch (error) {
+    dispatch(deleteArticleFailure(error.message));
   }
 };
 

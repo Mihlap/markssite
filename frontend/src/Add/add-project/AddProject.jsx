@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styles from "./AddProject.module.scss";
+import styles from "../style/style-card.module.scss";
 import FormAddProject from "./formAdd/FormAddProject";
 import { useDispatch } from "react-redux";
 import { deleteForm } from "../../store/Slice/projectSlice";
@@ -61,17 +61,17 @@ export default function AddProject({ project, user }) {
 
 
   return (
-    <section className={styles.project_components_admin}>
-      <div className={styles.project_components_admin__block}>
-        <div className={styles.project_components_admin__title}>Проекты</div>
+    <section className={styles.card_components_admin}>
+      <div className={styles.card_components_admin__block}>
+        <div className={styles.card_components_admin__title}>Проекты</div>
         <div
-          className={styles.project_components_admin__button_block}
+          className={styles.card_components_admin__button_block}
           onClick={handleOpenModal}
         >
-          <button className={styles.project_components_admin__button}>
+          <button className={styles.card_components_admin__button}>
             <div>
               <svg
-                className={styles.project_components_admin__icon}
+                className={styles.card_components_admin__icon}
                 width="41"
                 height="40"
                 viewBox="0 0 41 40"
@@ -96,28 +96,28 @@ export default function AddProject({ project, user }) {
                 </g>
               </svg>
             </div>
-            <div className={styles.project_components_admin__button_text}>
+            <div className={styles.card_components_admin__button_text}>
               Добавить новый проект
             </div>
           </button>
         </div>
         {isModalOpen && (
-          <div className={styles.project_components_admin__modal_container}>
-            <div className={styles.project_components_admin__modal_block}>
+          <div className={styles.card_components_admin__modal_container}>
+            <div className={styles.card_components_admin__modal_block}>
               <FormAddProject setIsModalOpen={setIsModalOpen} />
               <button
-                className={styles.project_components_admin__close_button}
+                className={styles.card_components_admin__close_button}
                 onClick={handleCloseModal}
               ></button>
             </div>
           </div>
         )}
 
-        <div className={styles.project_components_admin__section_map}>
-          <div className={styles.project_components_admin__block_map}>
+        <div className={styles.card_components_admin__section_map}>
+          <div className={styles.card_components_admin__block_map}>
             {project &&
               project.map((el) => {
-                // const firstPhoto = el.imageTitle.split(", ")[0];
+                const firstPhoto = el.imageTitle.split(", ")[0];
                 return (
                   <div
                     className={styles.section_project__block_cart}
@@ -131,7 +131,7 @@ export default function AddProject({ project, user }) {
                         >
                           <img
                             className={styles.cart_project__img}
-                            src={`${Host}/images/imageAdd/${el.imageProject}`}
+                            src={`${Host}/images/imageAdd/${firstPhoto}`}
                             alt="photo"
                           />
                           {user === "obezyankaa" ||
@@ -224,7 +224,7 @@ export default function AddProject({ project, user }) {
 
                           <button
                             className={
-                              styles.project_components_admin__close_button
+                              styles.card_components_admin__close_button
                             }
                             onClick={() => handleDeleteModalClose(el.id)}
                           ></button>
