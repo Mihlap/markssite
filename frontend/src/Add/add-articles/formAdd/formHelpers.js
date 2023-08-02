@@ -68,6 +68,27 @@ export const removePreviewPhotoOpen = (
   }));
 };
 
+export const removePreviewPhotoClose = (
+  previewPhotoClose,
+  setPreviewPhotoClose,
+  index,
+  inputData,
+  setInputData,
+  setIsPhotoCloseVisible
+) => {
+  const updatedPreviewPhotosOpen = [...previewPhotoClose];
+  updatedPreviewPhotosOpen.splice(index, 1);
+  setPreviewPhotoClose(updatedPreviewPhotosOpen);
+  setIsPhotoCloseVisible(true);
+
+  const updatedDropPhotoClose = Array.from(inputData.imageOpen);
+  updatedDropPhotoClose.splice(index, 1);
+  setInputData((prev) => ({
+    ...prev,
+    imageOpen: updatedDropPhotoClose,
+  }));
+};
+
 // функция сборщика, тут у нас запускаются if-else на превью фото для картинок
 // функция сборщика, тут у нас запускаются if-else на превью фото для картинок
 export function changeHandler(
@@ -79,7 +100,9 @@ export function changeHandler(
   setPreviewPhotoAva,
   setIsPhotoAvaVisible,
   setPreviewPhotoOpen,
-  setIsPhotoOpenVisible
+  setIsPhotoOpenVisible,
+  setPreviewPhotoClose,
+  setIsPhotoCloseVisible
 ) {
   if (event.target.files) {
     if (event.target.name === "dropPhoto") {
@@ -120,6 +143,20 @@ export function changeHandler(
         URL.createObjectURL(file)
       );
       setPreviewPhotoOpen(previewArray);
+
+      event.target.style.display = "none";
+    } else if (event.target.name === "imageClose") {
+      const filesArrayOpen =
+        event.target.files.length > 0 ? event.target.files : null;
+      setInputData((prev) => ({
+        ...prev,
+        imageClose: filesArrayOpen,
+      }));
+      setIsPhotoCloseVisible(false);
+      const previewArray = Array.from(filesArrayOpen).map((file) =>
+        URL.createObjectURL(file)
+      );
+      setPreviewPhotoClose(previewArray);
 
       event.target.style.display = "none";
     }
