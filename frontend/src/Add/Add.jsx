@@ -9,16 +9,20 @@ import AddCompany from "./add-about-the-company/AddCompany";
 import { useDispatch, useSelector } from "react-redux";
 import { getFetchForm } from "../store/Slice/projectSlice";
 import { getZaprosData } from "../store/Slice/searchProjectMainSlice";
+import { getFetchFormArticle } from "../store/Slice/articleSlice";
 
 export default function Add({ user, setNavBarOpen, setShowFooter }) {
   const dispatch = useDispatch();
   const project = useSelector((state) => state.project.projects);
   const projectMain = useSelector((state) => state.searchproject.projects);
+  const article = useSelector((state) => state.article.article);
+
   const [arrIdProject, setArrIdProject] = useState([]);
 
    useEffect(() => {
-       dispatch(getFetchForm());
-       dispatch(getZaprosData());
+      dispatch(getFetchForm());
+     dispatch(getZaprosData());
+     dispatch(getFetchFormArticle());
    }, [dispatch]);
   
    useEffect(() => {
@@ -26,6 +30,7 @@ export default function Add({ user, setNavBarOpen, setShowFooter }) {
      const newIds = projectMain.map((el) => el.IdProject);
      setArrIdProject(newIds);
    }, [projectMain]);
+  console.log(article);
   return (
     <div className={styles.add_container}>
       <AddNavbar
@@ -42,7 +47,10 @@ export default function Add({ user, setNavBarOpen, setShowFooter }) {
           path="add-a-project"
           element={<AddProject user={user} project={project} />}
         />
-        <Route path="add-a-articles" element={<AddArticles />} />
+        <Route
+          path="add-a-articles"
+          element={<AddArticles user={user} article={article} />}
+        />
         <Route path="add-a-company" element={<AddCompany />} />
       </Routes>
     </div>
