@@ -28,30 +28,30 @@ export default function FormAddProject({ setIsModalOpen }) {
   const [selectedRadio, setSelectedRadio] = useState("28,28");
   const [inputData, setInputData] = useState({
     title: "",
-    selectCompetencies: [],
-    countryCity: "",
-    monthYear: "",
-    viewConstruction: [],
-    dropPhoto: [],
+    // selectCompetencies: [],
+    // countryCity: "",
+    // monthYear: "",
+    // viewConstruction: [],
+    // dropPhoto: [],
     photoAva: "",
-    titleTextBlock: "",
-    descriptionProject: "",
-    totalArea: "",
-    siteArea: "",
-    floors: "",
-    altitude: "",
-    constructionVolume: "",
-    location: "",
-    degreeParticipation: "",
-    statusObject: "",
-    customer: "",
-    publication: "",
-    linkToPublication: "",
-    publicationTwo: "",
-    linkToPublicationTwo: "",
-    awards: "",
-    imageOpen: "",
-    textBlock: "",
+    // titleTextBlock: "",
+    // descriptionProject: "",
+    // totalArea: "",
+    // siteArea: "",
+    // floors: "",
+    // altitude: "",
+    // constructionVolume: "",
+    // location: "",
+    // degreeParticipation: "",
+    // statusObject: "",
+    // customer: "",
+    // publication: "",
+    // linkToPublication: "",
+    // publicationTwo: "",
+    // linkToPublicationTwo: "",
+    // awards: "",
+    // imageOpen: "",
+    // textBlock: "",
   });
 
   // функция Удаление фото из массива превью
@@ -320,6 +320,7 @@ export default function FormAddProject({ setIsModalOpen }) {
             </div>
           ))}
         </div>
+        {/* 
         <div className={styles.form_container__radio_container}>
           <div
             className={`${styles.form_container__radio_block_one} ${
@@ -447,7 +448,7 @@ export default function FormAddProject({ setIsModalOpen }) {
               </div>
             </div>
           ))}
-        </div> */}
+        </div>  */}
         {/* <div className={styles.form_container__heading_block}>
           <input
             type="input"
@@ -902,7 +903,7 @@ export default function FormAddProject({ setIsModalOpen }) {
           </div>
         </div>
         */}
-        <div className={styles.form_container__checkbox_block}>
+        {/* <div className={styles.form_container__checkbox_block}>
           <div>Открывающая картинка</div>
         </div>
         <label className={styles.slider_container__customFileUpload}>
@@ -978,7 +979,7 @@ export default function FormAddProject({ setIsModalOpen }) {
           >
             Текстовый блок
           </label>
-        </div>
+        </div> */}
 
         <div className={styles.form_container__button_block}>
           <button

@@ -259,6 +259,8 @@ export default function Project() {
       );
     });
 
+  console.log(projects);
+  
     return (
     <div className={styles.project_main}>
       <Company_Slider />
