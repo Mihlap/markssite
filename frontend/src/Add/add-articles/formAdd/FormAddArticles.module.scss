@@ -1,4 +1,4 @@
-@import "../../../App.css";
+@import '../../../App.css';
 
 .form_container {
     width: 33.375rem;
@@ -17,5 +17,471 @@
     &__radio_container {
         display: flex;
         gap: 1rem;
+    }
+
+    &__block_gray_one {
+        background-color: var(--light-light-gray-EBECEE);
+        padding: 0.88rem 1rem 2rem 1rem;
+        border-radius: 6px;
+    }
+
+    &__checkbox_block {
+        color: var(--light-gray-C0C5CB);
+        font-size: 0.75rem;
+        font-family: Raleway;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 1rem;
+        margin-top: 2rem;
+
+        span {
+            color: var(--salmon-FF7F6A);
+        }
+    }
+
+    &__radio_input {
+        cursor: pointer;
+        width: 40px;
+        height: 40px;
+        position: absolute;
+        top: 0;
+        right: 0;
+    }
+
+    &__radio_block_one {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: rgb(235, 236, 238);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: all 0.2s ease-in-out;
+
+        /* Добавлено свойство transition */
+        &:hover {
+            background-color: rgb(133 185 247 / 15%);
+        }
+    }
+
+    &__radio_label_one {
+        width: 20px;
+        height: 13px;
+        border-radius: 2px;
+        background-color: rgb(151, 157, 165);
+        cursor: pointer;
+    }
+
+
+    &__radio_block_two {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: rgb(235, 236, 238);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: all 0.2s ease-in-out;
+
+        /* Добавлено свойство transition */
+        &:hover {
+            background-color: rgb(133 185 247 / 15%);
+        }
+    }
+
+    &__radio_label_two {
+        width: 12px;
+        height: 12px;
+        border-radius: 2px;
+        background-color: rgb(151, 157, 165);
+        cursor: pointer;
+    }
+
+    &__radio_block_three {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: rgb(235, 236, 238);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        transition: all 0.2s ease-in-out;
+        /* Добавлено свойство transition */
+
+        &:hover {
+            background-color: rgb(133 185 247 / 15%);
+        }
+    }
+
+    &__radio_label_three {
+        width: 12px;
+        height: 20px;
+        border-radius: 2px;
+        background-color: rgb(151, 157, 165);
+        cursor: pointer;
+    }
+
+    &__radio_activ_block {
+        background-color: var(--blue-75BBFD);
+        transform: scale(1.1);
+        /* Пример анимации при выборе */
+    }
+
+    &__radio_activ_label {
+        background-color: #fff;
+    }
+
+    &__button_block {
+        display: flex;
+        gap: 7px;
+    }
+
+    &__button_save {
+        display: flex;
+        width: 231px;
+        padding: 16px 32px;
+        justify-content: center;
+        align-items: center;
+        border-radius: 66px;
+        background-color: var(--blue-75BBFD);
+        color: var(--white-F6F6F6);
+        border: none;
+
+        &::before {
+            content: "Сохранить";
+            display: inline-block;
+            font-family: var(--font-raleway);
+            font-size: 1rem;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 24px;
+            margin-right: 8px;
+            /* Отступ между текстом и кнопкой */
+        }
+
+        &:hover {
+            background-color: var(--dark-blue-389FFF);
+        }
+    }
+
+    &__button_cancel {
+        display: flex;
+        width: 231px;
+        padding: 16px 32px;
+        justify-content: center;
+        align-items: center;
+        border-radius: 66px;
+        background-color: var(--light-light-gray-EBECEE);
+        color: var(--black-1D2E43);
+        border: none;
+
+        &::before {
+            content: "Отменить";
+            display: inline-block;
+            font-family: var(--font-raleway);
+            font-size: 1rem;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 24px;
+            margin-right: 8px;
+            /* Отступ между текстом и кнопкой */
+        }
+
+        &:hover {
+            background-color: var(--light-gray-C0C5CB);
+        }
+    }
+
+    &__heading_block {
+        display: flex;
+        flex-direction: column-reverse;
+        position: relative;
+        padding-bottom: 32px;
+    }
+
+    &__heading_block_input {
+        font-family: var(--font-raleway);
+        font-size: 1.3rem;
+        border: 1px solid var(--blue-75BBFD);
+        border-radius: 6px;
+        padding: 1rem;
+
+        &::placeholder {
+            color: var(--gray-959DA6);
+            font-family: var(--font-raleway);
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 16px;
+        }
+    }
+
+    &__heading_block_input_length {
+        position: absolute;
+        right: 7px;
+        bottom: 47%;
+        color: var(--gray-959DA6);
+        font-family: var(--font-raleway);
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 16px;
+    }
+
+    &__heading_block_label {
+        color: var(--light-gray-C0C5CB);
+        font-family: var(--font-raleway);
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 16px;
+        margin-bottom: 4px;
+    }
+
+    &__description_text {
+        display: flex;
+        flex-direction: column-reverse;
+        position: relative;
+
+    }
+
+    &__textarea {
+        resize: none;
+        height: auto;
+        padding: 1rem 1rem 2rem 1rem;
+        border: 1px solid var(--blue-75BBFD);
+        height: 175px;
+        border-radius: 6px;
+        font-family: var(--font-raleway);
+        font-size: 1rem;
+        color: var(--black-1D2E43);
+        margin-bottom: 32px;
+
+        &::placeholder {
+            color: var(--gray-959DA6);
+            font-family: var(--font-raleway);
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 16px;
+        }
+    }
+
+    &__textarea_label {
+        color: var(--light-gray-C0C5CB);
+        font-family: var(--font-raleway);
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 16px;
+        margin-bottom: 4px;
+    }
+
+    &__textarea_length {
+        position: absolute;
+        right: 10px;
+        bottom: 20%;
+        z-index: 9;
+        background-color: rgb(255 255 255);
+        color: var(--gray-959DA6);
+        font-family: var(--font-raleway);
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 16px;
+    }
+
+    &__three_grey_block {
+        margin-top: 3rem;
+    }
+
+    &__block_gray_flex {
+        display: flex;
+        gap: 32px;
+    }
+
+}
+
+
+.form__group {
+    position: relative;
+    padding: 15px 0 0;
+    margin-top: 10px;
+}
+
+.form__field {
+    font-family: var(--font-raleway);
+    width: 100%;
+    border: 0;
+    border-bottom: 1px solid var(--gray-959DA6);
+    outline: 0;
+    font-size: 1.3rem;
+    color: var(--black-1D2E43);
+    padding: 7px 0;
+    background: transparent;
+    transition: border-color 0.2s;
+
+    &::placeholder {
+        color: transparent;
+    }
+
+    &:placeholder-shown~.form__label {
+        font-size: 1rem;
+        cursor: text;
+        top: 20px;
+        font-weight: var(--fw-400);
+    }
+}
+
+.form__label {
+    position: absolute;
+    top: 0;
+    display: block;
+    transition: 0.2s;
+    font-size: 1rem;
+    color: var(--gray-959DA6);
+}
+
+.form__field:focus {
+    ~.form__label {
+        position: absolute;
+        top: 0;
+        display: block;
+        transition: 0.2s;
+        font-size: 0.70rem;
+        color: var(--gray-959DA6);
+        font-weight: 400;
+    }
+
+    padding-bottom: 6px;
+    font-weight: 400;
+    border-width: 3px;
+    border-image: linear-gradient(to right, var(--salmon-FF7F6A), var(--salmon-FF7F6A)) 1 / 0 0 1px 0 stretch;
+    border-image-slice: 2;
+}
+
+/* reset input */
+.form__field {
+
+    &:required,
+    &:invalid {
+        box-shadow: none;
+    }
+}
+
+
+
+.slider_container {
+    &__title {
+        color: var(--light-gray-C0C5CB);
+        font-size: 0.75rem;
+        font-family: Raleway;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 1rem;
+        padding-bottom: 0.5rem;
+    }
+
+    &__customFileUpload {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        padding: 0.5rem 1rem;
+        margin: 10px 0px 15px 0px;
+        background-color: var(--light-light-gray-EBECEE);
+        border-radius: 20px;
+        cursor: pointer;
+
+        &:hover {
+            background-color: var(--blue-75BBFD);
+            box-shadow: 0px 0px 6px 0px var(--blue-75BBFD);
+        }
+    }
+
+    &__uploadIcon {
+        display: inline-block;
+        margin-right: 8px;
+        font-size: 14px;
+        color: #888;
+    }
+
+    &__uploadText {
+        display: inline-block;
+        font-size: 0.875rem;
+        font-family: var(--font-raleway);
+        font-style: normal;
+        font-weight: 400;
+        line-height: 1.25rem;
+        color: var(--secondary-dark-gray-525459);
+    }
+
+    /* Скрыть стандартную фразу "файл не выбран" */
+    &__customFileUpload input[type="file"] {
+        position: absolute;
+        left: -9999px;
+    }
+}
+
+.preview_photos_container {
+
+    // display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+
+    &__block {
+        position: relative;
+    }
+
+    &__img {
+        width: 100%;
+        height: 7rem;
+        border-radius: 0.39rem;
+        object-fit: cover;
+        /* Обрезать изображение, сохраняя его пропорции */
+        object-position: center;
+        /* Центрировать изображение в контейнере */
+    }
+
+    &__remove_icon {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background-color: var(--white-F6F6F6);
+        position: absolute;
+        top: 35%;
+        left: 45%;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+
+        &:hover {
+            transform: scale(1.3);
+        }
+
+        span {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 2px;
+            height: 16px;
+            transform: translate(-50%, -50%);
+
+            &::before,
+            &::after {
+                content: '';
+                position: absolute;
+                width: 3px;
+                height: 16px;
+                background-color: var(--blue-75BBFD);
+            }
+
+            &::before {
+                transform: rotate(45deg);
+            }
+
+            &::after {
+                transform: rotate(-45deg);
+            }
+        }
     }
 }
