@@ -49,18 +49,18 @@ export const extractCityFromCountryCity = (countryCity) => {
   return "";
 };
 
-export const getImageUrls = (imageTitle) => {
-  if (!imageTitle) {
-    return [];
-  }
+// export const getImageUrls = (imageTitle) => {
+//   if (!imageTitle) {
+//     return [];
+//   }
 
-  const filenames = imageTitle.replace(/{|}/g, "").split(",");
+//   const filenames = imageTitle.replace(/{|}/g, "").split(",");
 
-  const trimmedFilenames = filenames.map((filename) => filename.trim());
+//   const trimmedFilenames = filenames.map((filename) => filename.trim());
 
-  const imageUrls = trimmedFilenames.map((filename) => `${Host}/images/${filename}`);
-  return imageUrls;
-};
+//   const imageUrls = trimmedFilenames.map((filename) => `${Host}/images/${filename}`);
+//   return imageUrls;
+// };
 
 
 
