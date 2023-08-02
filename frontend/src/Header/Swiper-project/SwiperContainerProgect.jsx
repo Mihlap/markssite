@@ -30,6 +30,14 @@ const SwiperContainerProgect = ({ projects }) => {
     }
   };
 
+  const NewProject = projects.map((el) =>
+  el && el.project !== undefined ? el.project : null
+);
+const MapProject = NewProject.map((el) =>
+  el && el.project !== undefined ? el.project : null
+);
+
+
   return (
     <div className="swiper_container">
       <Swiper
@@ -47,20 +55,20 @@ const SwiperContainerProgect = ({ projects }) => {
         }}
       >
         <div className="swiper_wrapper">
-          {projects && projects?.map((project) => {
+          {MapProject?.map((project) => {
               return (
                 <SwiperSlide key={project.id}>
                   <SliderItemProject
-                    title={project.project.title}
+                    title={project.title}
                     src={`${Host}/images/imageAdd/${
-                      project.project.imageProject ? project.project.imageProject : project.project.imageTitle
+                      project.imageProject ? project.imageProject : project.imageTitle
                     }`}
-                    text={project.project.text}
-                    id={project.project.link}
+                    text={project.text}
+                    id={project.link}
                     selectCompetencies={(() => {
                       try {
                         const selectCompetencies = JSON.parse(
-                          project.project.selectCompetencies
+                          project.selectCompetencies
                         );
                         return selectCompetencies.map((competency) => (
                           <div
@@ -79,10 +87,10 @@ const SwiperContainerProgect = ({ projects }) => {
                         ));
                       } catch (error) {
                         if (
-                          typeof project.project.selectCompetencies === "string" &&
-                          project.project.selectCompetencies.includes(",")
+                          typeof project.selectCompetencies === "string" &&
+                          project.selectCompetencies.includes(",")
                         ) {
-                          return project.project.selectCompetencies
+                          return project.selectCompetencies
                             .split(",")
                             .map((value) => {
                               const label = value.trim();
@@ -106,8 +114,8 @@ const SwiperContainerProgect = ({ projects }) => {
                         return null;
                       }
                     })()}
-                    countryCity={project.project.countryCity}
-                    monthYear={project.project.monthYear}
+                    countryCity={project.countryCity}
+                    monthYear={project.monthYear}
                   />
                 </SwiperSlide>
               );

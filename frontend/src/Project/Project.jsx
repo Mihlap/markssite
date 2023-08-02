@@ -238,11 +238,12 @@ export default function Project() {
     };
   }, []);
 
+ 
   const filteredProjects = projects
     .filter((project) =>
       selectOnCompetencies === "Все"
         ? true
-        : project.selectCompetencies.includes(selectOnCompetencies)
+        : project.selectCompetencies?.includes(selectOnCompetencies)
     )
     .filter((project) => {
       const projectCity = extractCityFromCountryCity(project.countryCity);
@@ -250,18 +251,15 @@ export default function Project() {
     })
     .filter((project) => {
       const searchValue = value.toLowerCase();
-      const projectLocation = project.location.toLowerCase();
-      const projectCity = extractCityFromCountryCity(
-        project.countryCity
-      ).toLowerCase();
-
+      const projectLocation = project.location?.toLowerCase();
+      const projectCity = extractCityFromCountryCity(project.countryCity)?.toLowerCase();
       return (
-        projectLocation.includes(searchValue) &&
-        (selectedCity === "" || projectCity === selectedCity.toLowerCase())
+        projectLocation?.includes(searchValue) &&
+        (selectedCity === "" || projectCity === selectedCity?.toLowerCase())
       );
     });
-    
-  return (
+
+    return (
     <div className={styles.project_main}>
       <Company_Slider />
       <div className={styles.project_slider_text}>
@@ -610,20 +608,23 @@ export default function Project() {
           ))}
         </div>
       </Modal>
+
       <section className={styles.section_project}>
         <div className={styles.section_project__block}>
           {filteredProjects &&
             filteredProjects?.map((project) => {
-              const competencies = project.selectCompetencies
-                .split(",")
-                .map((comp) => comp.trim())
-                .filter(Boolean);
-
-              const { width, height } = resizeImage(
+              if (!project) {
+                return null; 
+              }
+              // const competencies = project.selectCompetencies
+              //   .split(",")
+              //   .map((comp) => comp.trim())
+              //   .filter(Boolean);
+               const { width, height } = resizeImage(
                 project.imageWidth,
                 project.imageHeight
               );
-
+              console.log(project.imageProject, "++++++++++++++++++++++++++++++++++++++++++++++++");
               return (
                 <Link
                   key={project.id}
