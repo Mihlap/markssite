@@ -59,7 +59,7 @@ export default function AddArticles() {
         {isModalOpen && (
           <div className={styles.articles_components_admin__modal_container}>
             <div className={styles.articles_components_admin__modal_block}>
-              <FormAddArticles />
+              <FormAddArticles setIsModalOpen={setIsModalOpen} />
               <button
                 className={styles.articles_components_admin__close_button}
                 onClick={handleCloseModal}
