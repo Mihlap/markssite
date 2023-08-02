@@ -360,11 +360,21 @@ const MapProject = NewProject.map((el) =>
         >
           {MapProject?.map((project, index) => {
             const isCustomSize = project.hasCustomSize;
+
+            // let imageTitles = [];
+            // if (project.imageTitle && /\S/.test(project.imageTitle)) {
+            //      imageTitles = project.imageTitle
+            //     .split(",")
+            //     .map((el) => el.replace(/[{}]/g, ""));
+            // }
+
+            // const firstImageTitle = imageTitles.length > 0 ? imageTitles[0] : null;
+            // console.log(MapProject, '++++++++++++++++++++++++++++++++++++++++');
             return (
+              <Link key={project.id} to={`/projects/${project.id}`}>
               <SwiperSlide
+               key={project.id} 
                 onScroll={handleScroll}
-                key={project.id}
-                to={`/projects/${project.id}`}
                 id="slider_container_item_card"
                 className={`{styles.slider_container_item_card}
              ${isCustomSize ? styles.customSize : ""}`}
@@ -451,6 +461,7 @@ const MapProject = NewProject.map((el) =>
                   </div>
                 </div>
               </SwiperSlide>
+              </Link>
             );
           })}
         </Swiper>

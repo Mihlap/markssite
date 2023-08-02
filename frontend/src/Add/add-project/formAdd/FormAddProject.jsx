@@ -320,7 +320,7 @@ export default function FormAddProject({ setIsModalOpen }) {
             </div>
           ))}
         </div>
-        {/* <div className={styles.form_container__radio_container}>
+        <div className={styles.form_container__radio_container}>
           <div
             className={`${styles.form_container__radio_block_one} ${
               selectedRadio === "28,28"
@@ -393,8 +393,8 @@ export default function FormAddProject({ setIsModalOpen }) {
               />
             </label>
           </div>
-        </div> */}
-        {/* <div className={styles.slider_container}>
+        </div>
+        <div className={styles.slider_container}>
 
           <div className={styles.form_container__checkbox_block}>
             <div>
@@ -447,7 +447,7 @@ export default function FormAddProject({ setIsModalOpen }) {
               </div>
             </div>
           ))}
-        </div> */}
+        </div>
        <div className={styles.form_container__heading_block}>
           <input
             type="input"
