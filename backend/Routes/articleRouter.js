@@ -1,9 +1,9 @@
 const express = require('express');
 // eslint-disable-next-line
+const path = require("path");
+const fs = require("fs");
 const { Articles } = require("../db/models");
 const fileMiddleware = require("../middleware/fileArticle");
-// const path = require('path');
-// const fs = require('fs');
 
 const router = express.Router();
 
@@ -46,27 +46,6 @@ router.post(
         imageOpen: imageOpens,
         textBlock: req.body.textBlock,
         imageClose: imageCloses,
-        // selectCompetencies: req.body.selectCompetencies,
-        // countryCity: req.body.countryCity,
-        // monthYear: req.body.monthYear,
-        // viewConstruction: req.body.viewConstruction,
-        // style: req.body.radioValue,
-        // descriptionProject: req.body.descriptionProject,
-        // totalArea: req.body.totalArea,
-        // siteArea: req.body.siteArea,
-        // floors: req.body.floors,
-        // altitude: req.body.altitude,
-        // constructionVolume: req.body.constructionVolume,
-        // location: req.body.location,
-        // degreeParticipation: req.body.degreeParticipation,
-        // statusObject: req.body.statusObject,
-        // customer: req.body.customer,
-        // publication: req.body.publication,
-        // linkToPublication: req.body.linkToPublication,
-        // publicationTwo: req.body.publicationTwo,
-        // linkToPublicationTwo: req.body.linkToPublicationTwo,
-        // awards: req.body.awards,
-        // textBlock: req.body.textBlock,
       });
 
       res.status(200).json({ message: 'Данные успешно сохранены' });
@@ -76,6 +55,47 @@ router.post(
     }
   },
 );
+
+
+router.delete('/deletezapros/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const post = await Articles.findByPk(id);
+
+    // Удаление фотографий из imageTitle
+    const imageNames = post.imageTitle.split(', ');
+    imageNames.forEach((imageName) => {
+      const imagePath = path.join(__dirname, '..', 'images/imageArticle', imageName);
+      fs.unlinkSync(imagePath);
+    });
+
+    // Удаление фотографий из imageProject
+    const projectImageNames = post.imageProject.split(', ');
+    projectImageNames.forEach((imageName) => {
+      const imagePath = path.join(__dirname, '..', 'images/imageArticle', imageName);
+      fs.unlinkSync(imagePath);
+    });
+
+    // Удаление фотографии из imageOpen
+    if (post.imageOpen) {
+      const imagePath = path.join(__dirname, '..', 'images/imageArticle', post.imageOpen);
+      fs.unlinkSync(imagePath);
+    }
+
+    // Удаление фотографии из imageClose
+    if (post.imageClose) {
+      const imagePath = path.join(__dirname, '..', 'images/imageArticle', post.imageClose);
+      fs.unlinkSync(imagePath);
+    }
+
+    // Удаление поста
+    await Articles.destroy({ where: { id } });
+    res.sendStatus(200);
+  } catch (e) {
+    console.log(e);
+    res.sendStatus(500);
+  }
+});
 
 
 module.exports = router;

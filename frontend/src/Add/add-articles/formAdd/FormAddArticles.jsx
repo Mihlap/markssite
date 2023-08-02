@@ -94,7 +94,8 @@ export default function FormAddArticles({ setIsModalOpen }) {
         setPreviewPhotoClose
       )
     );
-    console.log(formattedData, "<<<----консоль на фронте");
+    setIsModalOpen(false);
+    // console.log(formattedData, "<<<----консоль на фронте");
   };
 
   const closeModal = () => {
