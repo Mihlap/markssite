@@ -69,8 +69,8 @@ router.delete('/deletezapros/:id', async (req, res) => {
       fs.unlinkSync(imagePath);
     });
 
-    // Удаление фотографий из imageProject
-    const projectImageNames = post.imageProject.split(', ');
+    // Удаление фотографий из imageAuthor
+    const projectImageNames = post.imageAuthor.split(', ');
     projectImageNames.forEach((imageName) => {
       const imagePath = path.join(__dirname, '..', 'images/imageArticle', imageName);
       fs.unlinkSync(imagePath);
@@ -96,6 +96,7 @@ router.delete('/deletezapros/:id', async (req, res) => {
     res.sendStatus(500);
   }
 });
+
 
 
 module.exports = router;
