@@ -2,6 +2,10 @@ import React, { useEffect, useState } from "react";
 import styles from "./AddNavbar.module.scss";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
+import icon1 from './icon/cone.png';
+import icon2 from "./icon/torus.png";
+import icon3 from "./icon/icosahedron.png";
+import icon4 from "./icon/sphere.png";
 
 export default function AddNavbar({ user, setNavBarOpen, setShowFooter }) {
   const [selectedItem, setSelectedItem] = useState(null);
@@ -116,13 +120,23 @@ const logouthandler = async () => {
           </div>
         </div>
       </nav>
+      <div className={styles.button_position}>    
+      <div className={styles.button_container}>
       <Link
-        className={styles.preview}
+        className={styles.button}
         to="/"
         onClick={() => openNavbarHandler()}
       >
-        Предпросмотр
+        <span className={styles.button__text}>
+                Предпросмотр
+            </span>
+        <img src={icon1} alt="1" className={styles.button__cone} />
+        <img src={icon2} alt="2" className={styles.button__torus} />
+        <img src={icon3} alt="3" className={styles.button__icosahedron} />
+        <img src={icon4} alt="4" className={styles.button__sphere} />
       </Link>
+      </div>
+      </div>
     </>
   );
 }

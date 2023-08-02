@@ -1,32 +1,78 @@
-import React, { useState } from 'react'
-import styles from "./AddArticles.module.scss";
+import React, { useEffect, useState } from 'react'
+import { useDispatch } from "react-redux";
+import styles from "../style/style-card.module.scss";
 import FormAddArticles from './formAdd/FormAddArticles';
+import { deleteFormArticle } from '../../store/Slice/articleSlice';
 
-export default function AddArticles() {
-  const [isModalOpen, setIsModalOpen] = useState(true);
+export default function AddArticles({user, article}) {
+  const Host = process.env.REACT_APP_SERVER_HOST;
+  const dispatch = useDispatch();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
+  const [isonCopy, seticonCopy] = useState(false);
+  const [copiedId, setCopiedId] = useState("");
+  const [deleteModalState, setDeleteModalState] = useState({});
   
-  const handleOpenModal = () => {
-    setIsModalOpen(true);
-  };
+   const handleOpenModal = () => {
+     setIsModalOpen(true);
+   };
 
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-  };
+   const handleCloseModal = () => {
+     setIsModalOpen(false);
+   };
+
+   const handleDeleteModalOpen = (id) => {
+     setDeleteModalState((prevState) => ({
+       ...prevState,
+       [id]: true,
+     }));
+   };
+
+   const handleDeleteModalClose = (id) => {
+     setDeleteModalState((prevState) => {
+       const newState = { ...prevState };
+       delete newState[id];
+       return newState;
+     });
+   };
+
+   const handleCopyClick = (id) => {
+     navigator.clipboard.writeText(id);
+     setIsCopied(true);
+     seticonCopy(true);
+     setCopiedId(id);
+   };
+
+   const handleFormDelete = (formId) => {
+     dispatch(deleteFormArticle(formId));
+     handleDeleteModalClose();
+   };
+
+   useEffect(() => {
+     if (isCopied) {
+       const timer = setTimeout(() => {
+         setIsCopied(false);
+         seticonCopy(false);
+         setCopiedId("");
+       }, 3000);
+       return () => clearTimeout(timer);
+     }
+   }, [isCopied]);
 
   return (
-    <section className={styles.articles_components_admin}>
-      <div className={styles.articles_components_admin__block}>
-        <div className={styles.articles_components_admin__title}>
+    <section className={styles.card_components_admin}>
+      <div className={styles.card_components_admin__block}>
+        <div className={styles.card_components_admin__title}>
           Публикации
         </div>
         <div
-          className={styles.articles_components_admin__button_block}
+          className={styles.card_components_admin__button_block}
           onClick={handleOpenModal}
         >
-          <button className={styles.articles_components_admin__button}>
+          <button className={styles.card_components_admin__button}>
             <div>
               <svg
-                className={styles.articles_components_admin__icon}
+                className={styles.card_components_admin__icon}
                 width="41"
                 height="40"
                 viewBox="0 0 41 40"
@@ -51,22 +97,145 @@ export default function AddArticles() {
                 </g>
               </svg>
             </div>
-            <div className={styles.articles_components_admin__button_text}>
+            <div className={styles.card_components_admin__button_text}>
               Добавить новую публикацию
             </div>
           </button>
         </div>
         {isModalOpen && (
-          <div className={styles.articles_components_admin__modal_container}>
-            <div className={styles.articles_components_admin__modal_block}>
+          <div className={styles.card_components_admin__modal_container}>
+            <div className={styles.card_components_admin__modal_block}>
               <FormAddArticles setIsModalOpen={setIsModalOpen} />
               <button
-                className={styles.articles_components_admin__close_button}
+                className={styles.card_components_admin__close_button}
                 onClick={handleCloseModal}
               ></button>
             </div>
           </div>
         )}
+
+        <div className={styles.card_components_admin__section_map}>
+          <div className={styles.card_components_admin__block_map}>
+            {article &&
+              article.map((el) => {
+                 const firstPhoto = el.imageTitle.split(", ")[0];
+                return (
+                  <div
+                    className={styles.section_project__block_cart}
+                    key={el.id}
+                  >
+                    <div className={styles.cart_project}>
+                      <div className={styles.cart_project__container}>
+                        <div
+                          className={styles.cart_project__imageContainer}
+                          style={{ width: "100%", height: "100%" }}
+                        >
+                          <img
+                            className={styles.cart_project__img}
+                            src={`${Host}/images/imageArticle/${firstPhoto}`}
+                            alt="photo"
+                          />
+                          {user === "obezyankaa" ||
+                          user === "Покемон" ||
+                          user === "покемон" ? (
+                            <div className={styles.del_block}>
+                              <button
+                                className={styles.buttom_del}
+                                onClick={() => handleDeleteModalOpen(el.id)}
+                              >
+                                <label
+                                  htmlFor="delete"
+                                  className={styles.label}
+                                >
+                                  <div className={`${styles.wrapper}`}>
+                                    <div className={`${styles.lid}`}>
+                                      <div className={styles.container_vedro}>
+                                        <div
+                                          className={styles.triangle_left}
+                                        ></div>
+                                        <div className={styles.rectangle}></div>
+                                        <div
+                                          className={styles.triangle_right}
+                                        ></div>
+                                      </div>
+                                    </div>
+                                    <div className={`${styles.can}`}></div>
+                                    <span>delete</span>
+                                  </div>
+                                </label>
+                              </button>
+                            </div>
+                          ) : null}
+                        </div>
+                        <div className={styles.cart_project__content}>
+                          <span className={styles.cart_project__title}>
+                            {el.title}
+                          </span>
+                        </div>
+                        <div className={styles.cart_project__id_block}>
+                          <div className={styles.cart_project__id_text}>
+                            id: {el.id}
+                          </div>
+                          {isCopied && el.id === copiedId && (
+                            <>
+                              <div className={styles.cart_project__copyMessage}>
+                                id скопирован
+                              </div>
+                              <div
+                                className={
+                                  styles.cart_project__copyButton_img_copu_deffalt
+                                }
+                              />
+                            </>
+                          )}
+                          <button
+                            className={styles.cart_project__copyButton}
+                            onClick={() => handleCopyClick(el.id)}
+                          >
+                            <div
+                              className={
+                                styles.cart_project__copyButton_img_copu_ok
+                              }
+                            />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    {deleteModalState[el.id] && (
+                      <div className={styles.delete_modal_container}>
+                        <div className={styles.delete_modal_block}>
+                          <div className={styles.delete_modal_block__title}>
+                            Вы точно хотите удалить проект <br /> «{el.title}»
+                          </div>
+                          <p className={styles.delete_modal_block__text}>
+                            Удаленный проект нельзя будет вернуть
+                          </p>
+
+                          <div className={styles.button_block}>
+                            <button
+                              className={`${styles.button_block__cancel} ${styles.delete_modal_button_cancel}`}
+                              onClick={() => handleDeleteModalClose(el.id)}
+                            />
+                            <button
+                              className={`${styles.button_block__save} ${styles.delete_modal_button_delete}`}
+                              onClick={() => handleFormDelete(el.id)}
+                            />
+                          </div>
+
+                          <button
+                            className={
+                              styles.card_components_admin__close_button
+                            }
+                            onClick={() => handleDeleteModalClose(el.id)}
+                          ></button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+          </div>
+        </div>
       </div>
     </section>
   );
