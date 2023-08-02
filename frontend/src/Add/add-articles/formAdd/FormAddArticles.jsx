@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { useDispatch } from "react-redux";
 import styles from "./FormAddArticles.module.scss";
-import { changeHandler, removePreviewPhoto } from './formHelpers';
+import { changeHandler, removePreviewPhoto, removePreviewPhotoAva } from './formHelpers';
 import { fetchArticle } from '../../../store/Slice/articleSlice';
 
 import icon from "./img/Frame4684.png";
@@ -9,6 +9,10 @@ import icon from "./img/Frame4684.png";
 export default function FormAddArticles({ setIsModalOpen }) {
   const dispatch = useDispatch();
   const [previewPhotos, setPreviewPhotos] = useState([]);
+  const [previewPhotoAva, setPreviewPhotoAva] = useState([]);
+  const [previewPhotoOpen, setPreviewPhotoOpen] = useState([]);
+  const [isPhotoOpenVisible, setIsPhotoOpenVisible] = useState(true);
+  const [isPhotoAvaVisible, setIsPhotoAvaVisible] = useState(true);
   const [isDropPhotoVisible, setIsDropPhotoVisible] = useState(true);
   const [inputData, setInputData] = useState({
     title: "",
@@ -16,20 +20,33 @@ export default function FormAddArticles({ setIsModalOpen }) {
     city: "",
     dataMonthYear: "",
     dropPhoto: [],
-    titleTextBlock: '',
+    titleTextBlock: "",
+    descriptionArticle: "",
+    photoAva: "",
   });
 
-   const handleRemovePreviewPhoto = (index) => {
-     removePreviewPhoto(
-       previewPhotos,
-       setPreviewPhotos,
-       index,
-       inputData,
-       setInputData,
-       setIsDropPhotoVisible
-     );
-   };
+  const handleRemovePreviewPhoto = (index) => {
+    removePreviewPhoto(
+      previewPhotos,
+      setPreviewPhotos,
+      index,
+      inputData,
+      setInputData,
+      setIsDropPhotoVisible
+    );
+  };
 
+  // Удаление фото из массива превью который с одной фоткой
+  const handleRemovePreviewPhotoAva = (index) => {
+    removePreviewPhotoAva(
+      previewPhotoAva,
+      setPreviewPhotoAva,
+      index,
+      inputData,
+      setInputData,
+      setIsPhotoAvaVisible
+    );
+  };
 
   // функция отправки формы на Redux
   const submitHandler = async (e) => {
@@ -37,7 +54,14 @@ export default function FormAddArticles({ setIsModalOpen }) {
     const formattedData = {
       ...inputData,
     };
-    dispatch(fetchArticle(formattedData, setInputData, setPreviewPhotos));
+    dispatch(
+      fetchArticle(
+        formattedData,
+        setInputData,
+        setPreviewPhotos,
+        setPreviewPhotoAva
+      )
+    );
     console.log(formattedData, "<<<----консоль на фронте");
   };
 
@@ -200,6 +224,80 @@ export default function FormAddArticles({ setIsModalOpen }) {
           <div className={styles.form_container__heading_block_input_length}>
             {`${inputData.titleTextBlock.length}/56`}
           </div>
+        </div>
+
+        <div className={styles.form_container__description_text}>
+          <div className={styles.form_container__textarea_length}>
+            {`${inputData.descriptionArticle.length}/260`}
+          </div>
+          <textarea
+            className={styles.form_container__textarea}
+            name="descriptionArticle"
+            id="descriptionArticle"
+            cols="30"
+            rows="10"
+            placeholder="Не более 260 символов"
+            value={inputData.descriptionArticle}
+            onChange={(event) => {
+              const value = event.target.value;
+              if (value.length <= 260) {
+                setInputData({ ...inputData, descriptionArticle: value });
+              }
+            }}
+          ></textarea>
+          <label htmlFor="" className={styles.form_container__textarea_label}>
+            Описание проекта
+          </label>
+        </div>
+
+        <div className={styles.form_container__checkbox_block}>
+          <div>
+            Фото автора статьи
+            {/* <span> для отображения на странице «Проекты»</span> */}
+          </div>
+        </div>
+        <label className={styles.slider_container__customFileUpload}>
+          <input
+            type="file"
+            name="photoAva"
+            onChange={(event) =>
+              changeHandler(
+                event,
+                inputData,
+                setInputData,
+                setPreviewPhotos,
+                setIsDropPhotoVisible,
+                setPreviewPhotoAva,
+                setIsPhotoAvaVisible,
+                setPreviewPhotoOpen,
+                setIsPhotoOpenVisible
+              )
+            }
+            style={{ display: isPhotoAvaVisible ? "block" : "none" }}
+          />
+          <div className={styles.slider_container__uploadIcon}>
+            <img src={icon} alt="icon" />
+          </div>
+          <div className={styles.slider_container__uploadText}>
+            Загрузить изображения
+          </div>
+        </label>
+        <div className={styles.preview_photos_container}>
+          {previewPhotoAva?.map((preview, index) => (
+            <div key={index} className={styles.preview_photos_container__block}>
+              <img
+                className={styles.preview_photos_container__img}
+                src={preview}
+                alt={`Preview ${index}`}
+              />
+              <div
+                className={styles.preview_photos_container__remove_icon}
+                onClick={() => handleRemovePreviewPhotoAva(index)}
+              >
+                <span></span>
+              </div>
+            </div>
+          ))}
         </div>
 
         <div className={styles.form_container__button_block}>

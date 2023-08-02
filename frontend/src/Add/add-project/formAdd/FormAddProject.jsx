@@ -448,7 +448,7 @@ export default function FormAddProject({ setIsModalOpen }) {
             </div>
           ))}
         </div> */}
-       <div className={styles.form_container__heading_block}>
+       {/* <div className={styles.form_container__heading_block}>
           <input
             type="input"
             className={styles.form_container__heading_block_input}
@@ -474,7 +474,7 @@ export default function FormAddProject({ setIsModalOpen }) {
           <div className={styles.form_container__heading_block_input_length}>
             {`${inputData.titleTextBlock.length}/56`}
           </div>
-        </div>
+        </div> */}
 {/*
         <div className={styles.form_container__description_text}>
           <div className={styles.form_container__textarea_length}>
