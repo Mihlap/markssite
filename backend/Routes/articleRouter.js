@@ -28,7 +28,7 @@ router.post(
     try {
       console.log(req.files); // Output file information to the console
       const imageTitles = req.files.dropPhoto.map((file) => file.filename).join(', ');
-      // const imageProjects = req.files.photoAva ? req.files.photoAva[0].filename : null;
+      const imageProjects = req.files.photoAva ? req.files.photoAva[0].filename : null;
       // const imageOpens = req.files.imageOpen ? req.files.imageOpen[0].filename : null;
 
       console.log(imageTitles);
@@ -39,12 +39,13 @@ router.post(
         dataMonthYear: req.body.dataMonthYear,
         imageTitle: imageTitles,
         titleTextBlock: req.body.titleTextBlock,
+        descriptionArticle: req.body.descriptionArticle,
+        imageAuthor: imageProjects,
         // selectCompetencies: req.body.selectCompetencies,
         // countryCity: req.body.countryCity,
         // monthYear: req.body.monthYear,
         // viewConstruction: req.body.viewConstruction,
         // style: req.body.radioValue,
-        // imageProject: imageProjects,
         // descriptionProject: req.body.descriptionProject,
         // totalArea: req.body.totalArea,
         // siteArea: req.body.siteArea,

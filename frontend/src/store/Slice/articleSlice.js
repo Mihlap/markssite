@@ -44,7 +44,8 @@ export const {
 
 
 export const fetchArticle =
-  (formattedData, setInputData, setPreviewPhotos) => async (dispatch) => {
+  (formattedData, setInputData, setPreviewPhotos, setPreviewPhotoAva) =>
+  async (dispatch) => {
     dispatch(fetchArticleStart());
     const formData = new FormData();
     for (const key in formattedData) {
@@ -71,8 +72,11 @@ export const fetchArticle =
         dataMonthYear: "",
         dropPhoto: [],
         titleTextBlock: "",
+        descriptionArticle: "",
+        photoAva: [],
       });
       setPreviewPhotos([]);
+      setPreviewPhotoAva([]);
       dispatch(getFetchFormArticle()); // Добавлен этот вызов для получения обновленных данных после успешной отправки формы
     });
     console.log(formattedData, "REDUX");

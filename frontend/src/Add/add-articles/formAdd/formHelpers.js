@@ -1,3 +1,4 @@
+// formHelpers.js
 export const removePreviewPhoto = (
   previewPhotos,
   setPreviewPhotos,
@@ -22,6 +23,53 @@ export const removePreviewPhoto = (
   // Обновление стиля поля ввода файлов
 };
 
+export const removePreviewPhotoAva = (
+  previewPhotoAva,
+  setPreviewPhotoAva,
+  index,
+  inputData,
+  setInputData,
+  setIsPhotoAvaVisible
+) => {
+  const updatedPreviewPhotosAva = [...previewPhotoAva];
+  updatedPreviewPhotosAva.splice(index, 1);
+  setPreviewPhotoAva(updatedPreviewPhotosAva);
+  setIsPhotoAvaVisible(true);
+
+  // Удаление фото из массива выбранных файлов
+  const updatedDropPhotosAva = [...inputData.photoAva];
+  updatedDropPhotosAva.splice(index, 1);
+  setInputData((prev) => ({
+    ...prev,
+    photoAva: updatedDropPhotosAva,
+  }));
+
+  // Обновление стиля поля ввода файлов
+};
+
+export const removePreviewPhotoOpen = (
+  previewPhotoOpen,
+  setPreviewPhotoOpen,
+  index,
+  inputData,
+  setInputData,
+  setIsPhotoOpenVisible
+) => {
+  const updatedPreviewPhotosOpen = [...previewPhotoOpen];
+  updatedPreviewPhotosOpen.splice(index, 1);
+  setPreviewPhotoOpen(updatedPreviewPhotosOpen);
+  setIsPhotoOpenVisible(true);
+
+  const updatedDropPhotoOpen = Array.from(inputData.imageOpen);
+  updatedDropPhotoOpen.splice(index, 1);
+  setInputData((prev) => ({
+    ...prev,
+    imageOpen: updatedDropPhotoOpen,
+  }));
+};
+
+// функция сборщика, тут у нас запускаются if-else на превью фото для картинок
+// функция сборщика, тут у нас запускаются if-else на превью фото для картинок
 export function changeHandler(
   event,
   inputData,
