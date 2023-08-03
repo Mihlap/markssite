@@ -9,8 +9,9 @@ const indexRouter = require('./Routes/indexRouter');
 const authRouter = require('./Routes/authRouter');
 const staffsRouter = require('./Routes/staffsRouter');
 const projectRouter = require('./Routes/projectRouter');
-const articleRouter = require('./Routes/articleRouter');
+const articleRouter = require('./Routes/Articles/articleRouter');
 const searchRouter = require('./Routes/searchRouter');
+const searchArticleLeft = require('./Routes/Articles/searchArticleLeftRouter');
 
 
 const app = express();
@@ -58,6 +59,7 @@ app.use('/api-stuffs', staffsRouter);
 app.use('/api-project', projectRouter);
 app.use('/api-article', articleRouter);
 app.use('/search', searchRouter);
+app.use('/search-article', searchArticleLeft);
 
 app.listen(PORT, () => {
   console.log(`Старт server --->🔥 ${PORT} 🔥<---`);

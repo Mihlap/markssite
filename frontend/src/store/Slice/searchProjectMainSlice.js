@@ -49,7 +49,6 @@ export const {
 export const searchProgectMainPostzapros =
   (filteredObject, setSearchId) => async (dispatch) => {
     dispatch(fetchProjectStart());
-    console.log(filteredObject.id);
     try {
       await axios.post(`${serverHost}/search/search-project`, {
         project: filteredObject,

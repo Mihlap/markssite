@@ -10,19 +10,23 @@ import { useDispatch, useSelector } from "react-redux";
 import { getFetchForm } from "../store/Slice/projectSlice";
 import { getZaprosData } from "../store/Slice/searchProjectMainSlice";
 import { getFetchFormArticle } from "../store/Slice/articleSlice";
+import { searchArticleLeftGet } from "../store/Slice/searchArticlePublicLeftSlice";
 
 export default function Add({ user, setNavBarOpen, setShowFooter }) {
   const dispatch = useDispatch();
   const project = useSelector((state) => state.project.projects);
   const projectMain = useSelector((state) => state.searchproject.projects);
   const article = useSelector((state) => state.article.article);
-
+  const articleLeft = useSelector(
+    (state) => state.searchArticlePublicLeftSlice.articleLeft
+  );
   const [arrIdProject, setArrIdProject] = useState([]);
 
    useEffect(() => {
       dispatch(getFetchForm());
      dispatch(getZaprosData());
      dispatch(getFetchFormArticle());
+     dispatch(searchArticleLeftGet())
    }, [dispatch]);
   
    useEffect(() => {
@@ -30,7 +34,8 @@ export default function Add({ user, setNavBarOpen, setShowFooter }) {
      const newIds = projectMain.map((el) => el.IdProject);
      setArrIdProject(newIds);
    }, [projectMain]);
-  console.log(article);
+  
+  console.log(articleLeft);
   return (
     <div className={styles.add_container}>
       <AddNavbar
@@ -41,7 +46,12 @@ export default function Add({ user, setNavBarOpen, setShowFooter }) {
       <Routes>
         <Route
           path="/"
-          element={<HomeAdmin projects={project} arrIdProject={arrIdProject} />}
+          element={
+            <HomeAdmin
+              projects={project}
+              articles={article}
+            />
+          }
         />
         <Route
           path="add-a-project"

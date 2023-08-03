@@ -2,8 +2,8 @@ const express = require('express');
 // eslint-disable-next-line
 const path = require("path");
 const fs = require("fs");
-const { Articles } = require("../db/models");
-const fileMiddleware = require("../middleware/fileArticle");
+const { Articles } = require("../../db/models");
+const fileMiddleware = require("../../middleware/fileArticle");
 
 const router = express.Router();
 
