@@ -9,6 +9,7 @@ import {
 } from "../../store/Slice/searchProjectMainSlice";
 import { useSelector } from "react-redux";
 import { arrIdProjectSelector } from "./utils/HomeAdminSelectors";
+import { arrIdArticlesLeftSelector } from "./utils/ArticleLeftSelectors";
 import DraggableProject from "./DraggableProject";
 import { searchArticleLeftMain } from "../../store/Slice/searchArticlePublicLeftSlice";
 
@@ -34,6 +35,9 @@ export default function HomeAdmin({ projects, articles }) {
   
 
   const arrIdProject = useSelector(arrIdProjectSelector);
+  const arrIdArticleLeft = useSelector(arrIdArticlesLeftSelector);
+
+  console.log(arrIdArticleLeft);
 
   const dispatch = useDispatch();
 
@@ -181,6 +185,11 @@ export default function HomeAdmin({ projects, articles }) {
       <div className={styles.home_admin_section__title}>Публикации</div>
       <div className={styles.home_admin_section__article_container}>
         <div className={styles.home_admin_section__block_search}>
+          <div className={styles.home_admin_section__id_container}>
+            {arrIdArticleLeft?.map((el) => (
+              <div key={el.id}>{el.id}</div>
+            ))}
+          </div>
           <div className={`${styles.form__group} ${styles.field}`}>
             <input
               type="number"
