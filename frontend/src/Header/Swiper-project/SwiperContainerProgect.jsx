@@ -1,4 +1,5 @@
 import { useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwipeCore, { Navigation, Pagination, Autoplay } from "swiper";
 import "swiper/css";
@@ -58,6 +59,7 @@ const MapProject = NewProject.map((el) =>
           {MapProject?.map((project) => {
               return (
                 <SwiperSlide key={project.id}>
+                  <Link key={project.id} to={`/projects/${project.id}`}>
                   <SliderItemProject
                     title={project.title}
                     src={`${Host}/images/imageAdd/${
@@ -117,6 +119,7 @@ const MapProject = NewProject.map((el) =>
                     countryCity={project.countryCity}
                     monthYear={project.monthYear}
                   />
+                </Link>
                 </SwiperSlide>
               );
             })}
