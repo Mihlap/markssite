@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
+import Select  from "react-select";
 import styles from "./FormAddProject.module.scss";
 import { fetchProject } from "../../../store/Slice/projectSlice";
 import {
@@ -8,6 +9,7 @@ import {
   changeHandler,
   removePreviewPhotoOpen
 } from "./formHelpers";
+import customStyles from './customStyles';
 
 import icon from "./img/Frame4684.png";
 
@@ -28,30 +30,30 @@ export default function FormAddProject({ setIsModalOpen }) {
   const [selectedRadio, setSelectedRadio] = useState("28,28");
   const [inputData, setInputData] = useState({
     title: "",
-    // selectCompetencies: [],
-    // countryCity: "",
-    // monthYear: "",
-    // viewConstruction: [],
-    // dropPhoto: [],
+    selectCompetencies: [],
+    countryCity: "",
+    monthYear: "",
+    viewConstruction: [],
+    dropPhoto: [],
     photoAva: "",
-    // titleTextBlock: "",
-    // descriptionProject: "",
-    // totalArea: "",
-    // siteArea: "",
-    // floors: "",
-    // altitude: "",
-    // constructionVolume: "",
-    // location: "",
-    // degreeParticipation: "",
-    // statusObject: "",
-    // customer: "",
-    // publication: "",
-    // linkToPublication: "",
-    // publicationTwo: "",
-    // linkToPublicationTwo: "",
-    // awards: "",
-    // imageOpen: "",
-    // textBlock: "",
+    titleTextBlock: "",
+    descriptionProject: "",
+    totalArea: "",
+    siteArea: "",
+    floors: "",
+    altitude: "",
+    constructionVolume: "",
+    location: "",
+    degreeParticipation: "",
+    statusObject: "",
+    customer: "",
+    publication: "",
+    linkToPublication: "",
+    publicationTwo: "",
+    linkToPublicationTwo: "",
+    awards: "",
+    imageOpen: "",
+    textBlock: "",
   });
 
   // функция Удаление фото из массива превью
@@ -118,30 +120,30 @@ export default function FormAddProject({ setIsModalOpen }) {
     setPreviewPhotos([]);
     setInputData({
       title: "",
-      // selectCompetencies: "",
-      // countryCity: "",
-      // monthYear: "",
-      // viewConstruction: "",
-      // dropPhoto: [],
+      selectCompetencies: "",
+      countryCity: "",
+      monthYear: "",
+      viewConstruction: "",
+      dropPhoto: [],
       photoAva: "",
-      // titleTextBlock: "",
-      // descriptionProject: "",
-      // totalArea: "",
-      // siteArea: "",
-      // floors: "",
-      // altitude: "",
-      // constructionVolume: "",
-      // location: "",
-      // degreeParticipation: "",
-      // statusObject: "",
-      // customer: "",
-      // publication: "",
-      // linkToPublication: "",
-      // publicationTwo: "",
-      // linkToPublicationTwo: "",
-      // awards: "",
-      // imageOpen: "",
-      // textBlock: "",
+      titleTextBlock: "",
+      descriptionProject: "",
+      totalArea: "",
+      siteArea: "",
+      floors: "",
+      altitude: "",
+      constructionVolume: "",
+      location: "",
+      degreeParticipation: "",
+      statusObject: "",
+      customer: "",
+      publication: "",
+      linkToPublication: "",
+      publicationTwo: "",
+      linkToPublicationTwo: "",
+      awards: "",
+      imageOpen: "",
+      textBlock: "",
     });
     setIsModalOpen(false);
   };
@@ -180,7 +182,7 @@ export default function FormAddProject({ setIsModalOpen }) {
               Название проекта
             </label>
           </div>
-          {/* <div className={`${styles.form__group} ${styles.field}`}>
+           <div className={`${styles.form__group} ${styles.field}`}>
             <Select
               styles={customStyles}
               isMulti
@@ -197,8 +199,8 @@ export default function FormAddProject({ setIsModalOpen }) {
               value={selectedCompetencies}
               onChange={setSelectedCompetencies}
             />
-          </div> */}
-          {/* <div className={`${styles.form__group} ${styles.field}`}>
+          </div> 
+          <div className={`${styles.form__group} ${styles.field}`}>
             <input
               type="input"
               className={styles.form__field}
@@ -224,8 +226,8 @@ export default function FormAddProject({ setIsModalOpen }) {
             <label htmlFor="countryCity" className={styles.form__label}>
               Страна, город
             </label>
-          </div> */}
-          {/* <div className={`${styles.form__group} ${styles.field}`}>
+          </div> 
+          <div className={`${styles.form__group} ${styles.field}`}>
             <input
               type="input"
               className={styles.form__field}
@@ -251,8 +253,8 @@ export default function FormAddProject({ setIsModalOpen }) {
             <label htmlFor="monthYear" className={styles.form__label}>
               Месяц, год
             </label>
-          </div> */}
-          {/* <div className={`${styles.form__group} ${styles.field}`}>
+          </div> 
+          <div className={`${styles.form__group} ${styles.field}`}>
             <Select
               styles={customStyles}
               isMulti
@@ -269,7 +271,7 @@ export default function FormAddProject({ setIsModalOpen }) {
               className={styles.form__field}
               placeholder="Выберите вид строительства"
             />
-          </div> */}
+          </div>
         </div>
         <div className={styles.form_container__checkbox_block}>
           <div>
@@ -320,7 +322,7 @@ export default function FormAddProject({ setIsModalOpen }) {
             </div>
           ))}
         </div>
-        {/* 
+        
         <div className={styles.form_container__radio_container}>
           <div
             className={`${styles.form_container__radio_block_one} ${
@@ -448,8 +450,8 @@ export default function FormAddProject({ setIsModalOpen }) {
               </div>
             </div>
           ))}
-        </div>  */}
-        {/* <div className={styles.form_container__heading_block}>
+        </div> 
+        <div className={styles.form_container__heading_block}>
           <input
             type="input"
             className={styles.form_container__heading_block_input}
@@ -475,8 +477,8 @@ export default function FormAddProject({ setIsModalOpen }) {
           <div className={styles.form_container__heading_block_input_length}>
             {`${inputData.titleTextBlock.length}/56`}
           </div>
-        </div> */}
-        {/*
+        </div>
+      
         <div className={styles.form_container__description_text}>
           <div className={styles.form_container__textarea_length}>
             {`${inputData.descriptionProject.length}/260`}
@@ -902,8 +904,8 @@ export default function FormAddProject({ setIsModalOpen }) {
             </label>
           </div>
         </div>
-        */}
-        {/* <div className={styles.form_container__checkbox_block}>
+        
+         <div className={styles.form_container__checkbox_block}>
           <div>Открывающая картинка</div>
         </div>
         <label className={styles.slider_container__customFileUpload}>
@@ -979,7 +981,7 @@ export default function FormAddProject({ setIsModalOpen }) {
           >
             Текстовый блок
           </label>
-        </div> */}
+        </div>
 
         <div className={styles.form_container__button_block}>
           <button
