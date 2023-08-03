@@ -10,7 +10,6 @@ import {
   getFetchFormFilter,
   getFetchFormCityFilter,
   getFetchFormLocationFilter,
-  getFetchForm,
 } from "../store/Slice/projectSlice";
 import Company_Slider from "../UI/Company_Slider/Company_Slider";
 import { resizeImage, extractCityFromCountryCity, getUserGeolocation } from "./utils";
@@ -117,11 +116,12 @@ export default function Project() {
     setValue(address);
     setIsValid(address === "");
     setIsTyping(true);
-    dispatch(setSelectedCity(""));
     setSelectOnCompetencies("");
     if (!address) {
+      dispatch(setSelectedCity(""));
       setSelectOnCompetencies("Все");
     }
+    console.log(address);
   }
 
   const handleAddressSubmit = (event) => {
@@ -151,7 +151,8 @@ export default function Project() {
       selectedCity !== "" ||
       selectedViewConstruction !== viewConstruction ||
       selectedViewConstruction === viewConstruction
-    ) {
+    )
+     {
       dispatch(setSelectedCity(""));
       dispatch(setSelectedViewConstruction(viewConstruction));
       dispatch(
@@ -160,7 +161,8 @@ export default function Project() {
       setCurrentPage(1);
       setValue("");
       setIsTyping(false);
-      setSelectOnCompetencies(viewConstruction);
+      setSelectedViewConstruction(viewConstruction);
+      setSelectOnCompetencies("");
     } else {
       dispatch(setSelectedCity(""));
       dispatch(getFetchFormFilter(currentPage, projectsPerPage, ""));
@@ -206,7 +208,7 @@ export default function Project() {
       setSelectedCity("");
     }
      if (value.trim() === "") {
-      setSelectOnCompetencies("Все");
+      setSelectOnCompetencies("");
     }
     dispatch(setSelectedViewConstruction(viewConstruction));
   };
@@ -237,46 +239,26 @@ export default function Project() {
     };
   }, []);
 
-  // const NewProject = projects.map((el) =>
-  //   el && el.project !== undefined ? el.project : null
-  // );
-  // const MapProject = NewProject.map((el) =>
-  //   el && el.project !== undefined ? el.project : null
-  // );
-
- 
-  // const filteredProjects = projects
-  //   .filter((project) =>
-  //     selectOnCompetencies === "Все"
-  //       ? true
-  //       : project.selectCompetencies?.includes(selectOnCompetencies)
-  //   )
-  //   .filter((project) => {
-  //     const projectCity = extractCityFromCountryCity(project.countryCity);
-  //     return selectedCity === "" ? true : projectCity === selectedCity;
-  //   })
-  //   .filter((project) => {
-  //     const searchValue = value?.toLowerCase();
-  //     const projectLocation = project.location?.toLowerCase();
-  //     const projectCity = extractCityFromCountryCity(project.countryCity)?.toLowerCase();
-  //     return (
-  //       projectLocation?.includes(searchValue) &&
-  //       (selectedCity === "" || projectCity === selectedCity?.toLowerCase())
-  //     );
-  //   });
-
-  const filteredProjects = projects.filter((project) => {
-    const competencies = selectOnCompetencies?.toLowerCase();
-    const projectCity = extractCityFromCountryCity(project.countryCity)?.toLowerCase();
-    const searchValue = value?.toLowerCase();
-    return (
-      (competencies === "все" || project.selectCompetencies?.includes(competencies)) &&
-      (selectedCity === "" || projectCity === selectedCity?.toLowerCase()) &&
-      (!value.trim() || project.location?.toLowerCase()?.includes(searchValue))
-    );
-  });
-
-   
+  
+  const filteredProjects = projects
+    .filter((project) =>
+      selectOnCompetencies === "Все"
+        ? true
+        : project.selectCompetencies?.includes(selectOnCompetencies)
+    )
+    .filter((project) => {
+      const projectCity = extractCityFromCountryCity(project.countryCity);
+      return selectedCity === "" ? true : projectCity === selectedCity;
+    })
+    .filter((project) => {
+      const searchValue = value?.toLowerCase();
+      const projectLocation = project.location?.toLowerCase();
+      const projectCity = extractCityFromCountryCity(project.countryCity)?.toLowerCase();
+      return (
+        projectLocation?.includes(searchValue) &&
+        (selectedCity === "" || projectCity === selectedCity?.toLowerCase()) 
+      );
+    });
 
   console.log(projects);
   
@@ -364,7 +346,7 @@ export default function Project() {
               key={el}
               onClick={() => handleButtonClick(el)}
               className={`${styles.menu__button__allProject} ${
-                el === selectOnCompetencies ? styles.active : ""
+                el === selectedViewConstruction ? styles.active : ""
               }`}
               style={{ width: "fit-content" }}
             >
@@ -435,8 +417,9 @@ export default function Project() {
               }`}
             >
               <button
-                className={`${styles.menu__button__allProject} ${
-                  el === selectOnCompetencies ? styles.active : ""
+                className={`${styles.menu__button__allProject}
+                 ${
+                  el === selectedViewConstruction ? styles.active : ""
                 }`}
                 onClick={() => handleButtonClick(el)}
               >
