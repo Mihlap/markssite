@@ -99,6 +99,15 @@ export default function Project() {
     setLoading(false);
   }, [dispatch, projectsPerPage]);
 
+  useEffect(() => {
+    getUserGeolocation()
+      .then((geolocation) => setUserGeolocation(geolocation))
+      .catch((error) =>
+        console.error("Ошибка при получении геопозиции:", error)
+      );
+  }, []);
+
+
   function handleFocus() {
     setIsFocusedProject(true);
   }
@@ -203,16 +212,6 @@ export default function Project() {
   };
 
 
-  useEffect(() => {
-    getUserGeolocation()
-      .then((geolocation) => setUserGeolocation(geolocation))
-      .catch((error) =>
-        console.error("Ошибка при получении геопозиции:", error)
-      );
-  }, []);
-
-  
-
   const currentLocation = userGeolocation
     ? `${userGeolocation.latitude}, ${userGeolocation.longitude}`
     : "Москва";
@@ -238,26 +237,46 @@ export default function Project() {
     };
   }, []);
 
+  // const NewProject = projects.map((el) =>
+  //   el && el.project !== undefined ? el.project : null
+  // );
+  // const MapProject = NewProject.map((el) =>
+  //   el && el.project !== undefined ? el.project : null
+  // );
+
  
-  const filteredProjects = projects
-    .filter((project) =>
-      selectOnCompetencies === "Все"
-        ? true
-        : project.selectCompetencies?.includes(selectOnCompetencies)
-    )
-    .filter((project) => {
-      const projectCity = extractCityFromCountryCity(project.countryCity);
-      return selectedCity === "" ? true : projectCity === selectedCity;
-    })
-    .filter((project) => {
-      const searchValue = value.toLowerCase();
-      const projectLocation = project.location?.toLowerCase();
-      const projectCity = extractCityFromCountryCity(project.countryCity)?.toLowerCase();
-      return (
-        projectLocation?.includes(searchValue) &&
-        (selectedCity === "" || projectCity === selectedCity?.toLowerCase())
-      );
-    });
+  // const filteredProjects = projects
+  //   .filter((project) =>
+  //     selectOnCompetencies === "Все"
+  //       ? true
+  //       : project.selectCompetencies?.includes(selectOnCompetencies)
+  //   )
+  //   .filter((project) => {
+  //     const projectCity = extractCityFromCountryCity(project.countryCity);
+  //     return selectedCity === "" ? true : projectCity === selectedCity;
+  //   })
+  //   .filter((project) => {
+  //     const searchValue = value?.toLowerCase();
+  //     const projectLocation = project.location?.toLowerCase();
+  //     const projectCity = extractCityFromCountryCity(project.countryCity)?.toLowerCase();
+  //     return (
+  //       projectLocation?.includes(searchValue) &&
+  //       (selectedCity === "" || projectCity === selectedCity?.toLowerCase())
+  //     );
+  //   });
+
+  const filteredProjects = projects.filter((project) => {
+    const competencies = selectOnCompetencies?.toLowerCase();
+    const projectCity = extractCityFromCountryCity(project.countryCity)?.toLowerCase();
+    const searchValue = value?.toLowerCase();
+    return (
+      (competencies === "все" || project.selectCompetencies?.includes(competencies)) &&
+      (selectedCity === "" || projectCity === selectedCity?.toLowerCase()) &&
+      (!value.trim() || project.location?.toLowerCase()?.includes(searchValue))
+    );
+  });
+
+   
 
   console.log(projects);
   
@@ -626,7 +645,7 @@ export default function Project() {
                 project.imageWidth,
                 project.imageHeight
               );
-              console.log(project.imageProject, "++++++++++++++++++++++++++++++++++++++++++++++++");
+             
               return (
                 <Link
                   key={project.id}
@@ -646,7 +665,10 @@ export default function Project() {
                             ? project.imageProject
                             : project.imageTitle
                         }`}
-                        alt={project.imageProject}
+                        alt={project.imageProject
+                          ? project.imageProject
+                          : project.imageTitle
+                        }
                       />
                       <div className={styles.project_content__wrapper}>
                         <div className={styles.cart_project_title}>

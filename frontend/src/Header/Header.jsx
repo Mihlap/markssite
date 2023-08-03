@@ -371,15 +371,15 @@ const MapProject = NewProject.map((el) =>
             // const firstImageTitle = imageTitles.length > 0 ? imageTitles[0] : null;
             // console.log(MapProject, '++++++++++++++++++++++++++++++++++++++++');
             return (
-              <Link key={project.id} to={`/projects/${project.id}`}>
               <SwiperSlide
                key={project.id} 
                 onScroll={handleScroll}
                 id="slider_container_item_card"
                 className={`{styles.slider_container_item_card}
-             ${isCustomSize ? styles.customSize : ""}`}
+                ${isCustomSize ? styles.customSize : ""}`}
                 style={index % 2 === 1 ? { paddingTop: "10rem" } : {}}
               >
+                <Link to={`/projects/${project.id}`} key={project.id}>
                 <div className={styles.wrapper_container_item_card}>
                   <img
                     className={styles.container__imageTitle}
@@ -460,8 +460,8 @@ const MapProject = NewProject.map((el) =>
                     {project.monthYear}
                   </div>
                 </div>
-              </SwiperSlide>
               </Link>
+              </SwiperSlide>
             );
           })}
         </Swiper>
