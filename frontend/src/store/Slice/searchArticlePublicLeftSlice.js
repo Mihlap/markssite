@@ -39,22 +39,29 @@ export const {
 export const searchArticleLeftMain =
   (filterArticle, setSearcIdOne, setSaveIdOne, setIsBtnDisabledPublicOne) =>
   async (dispatch) => {
+    console.log("searchArticleLeftMain function started"); // New console.log
     dispatch(fetchArticleLeftStart());
 
     try {
-      await axios.post(`${serverHost}/search-article/left`, {
+      console.log("Starting axios request");
+      const response = await axios.post(`${serverHost}/search-article/left`, {
         publication: filterArticle,
         IdArticle: filterArticle.id,
       });
-      // стейты которые выключают всё после успешного сохранения
+      console.log(response);
+      console.log(123);
+      dispatch(searchArticleLeftGet());
       setSearcIdOne("");
       setSaveIdOne(null);
       setIsBtnDisabledPublicOne(true);
     } catch (error) {
+      console.log("Axios request error");
       console.error("Ошибка при отправке на бекенд:", error);
       dispatch(fetchArticleLeftFailure(error.message));
     }
   };
+
+
 
 export const searchArticleLeftGet = () => async (dispatch) => {
   dispatch(fetchArticleLeftStart());

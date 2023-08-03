@@ -18,7 +18,7 @@ export default function Add({ user, setNavBarOpen, setShowFooter }) {
   const projectMain = useSelector((state) => state.searchproject.projects);
   const article = useSelector((state) => state.article.article);
   const articleLeft = useSelector(
-    (state) => state.searchArticlePublicLeftSlice.articleLeft
+    (state) => state.searchArticlePublicLeft.articleLeft
   );
   const [arrIdProject, setArrIdProject] = useState([]);
 
@@ -35,7 +35,7 @@ export default function Add({ user, setNavBarOpen, setShowFooter }) {
      setArrIdProject(newIds);
    }, [projectMain]);
   
-  console.log(articleLeft);
+  // console.log(articleLeft);
   return (
     <div className={styles.add_container}>
       <AddNavbar
