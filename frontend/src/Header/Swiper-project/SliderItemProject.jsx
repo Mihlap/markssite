@@ -2,12 +2,11 @@
 import { Link } from "react-router-dom";
 import styles from "./SliderItemProject.module.css";
 
-const SliderItemProject = ({ title, src, text, id, selectCompetencies, countryCity, monthYear }) => {
+const SliderItemProject = ({ title, src, text, selectCompetencies, countryCity, monthYear }) => {
   const symbol = "•";
   return (
     <div className={`${styles.slider_item}${styles.swiper_slide}`}>
       <div className={styles.slider_image_wrapper}>
-        <Link to={`/${id}`}>
           <img className={styles.slider_image} src={src} alt="SliderImg" />
           <svg
             className={styles.icon_image}
@@ -25,8 +24,7 @@ const SliderItemProject = ({ title, src, text, id, selectCompetencies, countryCi
               strokeLinecap="square"
             />
           </svg>
-        </Link>
-      </div>
+        </div>
       <div className={styles.slider_item_content}>
         <h1 className={styles.slider_subject}>{title}</h1>
         <span className={styles.slider_text}>{text}</span>
