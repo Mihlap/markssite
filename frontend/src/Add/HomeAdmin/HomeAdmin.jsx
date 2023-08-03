@@ -9,22 +9,84 @@ import {
 } from "../../store/Slice/searchProjectMainSlice";
 import { useSelector } from "react-redux";
 import { arrIdProjectSelector } from "./utils/HomeAdminSelectors";
+import { arrIdArticlesLeftSelector } from "./utils/ArticleLeftSelectors";
 import DraggableProject from "./DraggableProject";
+import { searchArticleLeftMain } from "../../store/Slice/searchArticlePublicLeftSlice";
 
-export default function HomeAdmin({ projects }) {
+export default function HomeAdmin({ projects, articles }) {
   const [errorMessage, setErrorMessage] = useState("");
   const [showError, setShowError] = useState(false);
   const [okMessage, setOkMessage] = useState("");
   const [showOk, setShowOk] = useState(false);
-  const [replacementMessage, setReplacementMessage] = useState('');
+  const [replacementMessage, setReplacementMessage] = useState("");
   const [replacement, setReplacement] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+  const [isBtnDisabledPublicOne, setIsBtnDisabledPublicOne] = useState(true);
+  const [isBtnDisabledPublicTwo, setIsBtnDisabledPublicTwo] = useState(true);
   const [searchId, setSearchId] = useState("");
   const [savedId, setSavedId] = useState(null);
+  // константы для первой публикации 
+  const [searcIdOne, setSearcIdOne] = useState("");
+  const [saveIdOne, setSaveIdOne] = useState(null);
+  // констатнты для второй публикации
+
+  const [searcIdTwo, setSearcIdTwo] = useState("");
+  const [saveIdTwo, setSaveIdTwo] = useState(null);
+  
 
   const arrIdProject = useSelector(arrIdProjectSelector);
+  const arrIdArticleLeft = useSelector(arrIdArticlesLeftSelector);
+
+  console.log(arrIdArticleLeft);
 
   const dispatch = useDispatch();
+
+  // обработчик для инпута который ищет id для левой публикации на главной ))
+  const handleSearchOnePublic = (event) => {
+    setSearcIdOne(event.target.value);
+    setIsBtnDisabledPublicOne(event.target.value === "");
+  }
+
+  const filterArticleOnePublic = async () => {
+    const filterArticle = articles.find(
+      (article) => article.id === parseInt(searcIdOne, 10)
+    );
+
+    if (filterArticle) {
+      console.log("Найденная публикация", filterArticle);
+
+      try {
+        await dispatch(
+          searchArticleLeftMain(
+            filterArticle,
+            setSearcIdOne,
+            setSaveIdOne,
+            setIsBtnDisabledPublicOne
+          )
+        );
+      } catch (error) {
+        
+      }
+    }
+  }
+
+  // обработчик для инпута который ищет id для правой публикации на главной
+
+  const handleSearchTwoPublic = (event) => {
+    setSearcIdTwo(event.target.value);
+    setIsBtnDisabledPublicTwo(event.target.value === "");
+  }
+
+  const filterArticleTwoPublic = async () => {
+    const filterArticle = articles.find((article) => article.id === parseInt(searcIdTwo, 10));
+
+    if (filterArticle) {
+      console.log("найденная вторааааая публикация", filterArticle);
+    }
+    setIsBtnDisabledPublicTwo(true);
+
+  }
+
 
   // Обработчик изменения значения в инпуте поиска
   const handleSearchChange = (event) => {
@@ -51,11 +113,11 @@ export default function HomeAdmin({ projects }) {
       try {
         await dispatch(
           searchProgectMainPostzapros(filteredProject, setSearchId, setSavedId)
-        ); 
-
+        );
 
         setOkMessage("Проект добавлен");
         setShowOk(true);
+        setIsButtonDisabled(true);
       } catch (error) {
         console.error("Ошибка при сохранении проекта:", error);
       }
@@ -64,6 +126,7 @@ export default function HomeAdmin({ projects }) {
       setErrorMessage("Проект с таким id не найден");
       setSearchId("");
       setShowError(true); // Show the error message
+      setIsButtonDisabled(true);
     }
   };
 
@@ -110,17 +173,70 @@ export default function HomeAdmin({ projects }) {
   };
 
   const OkMessage = ({ message }) => {
-    return ( <div className={styles.home_admin_section__ok}>{message}</div>
-    );
+    return <div className={styles.home_admin_section__ok}>{message}</div>;
   };
 
   const Replacement = ({ message }) => {
     return <div className={styles.home_admin_section__ok}>{message}</div>;
   };
 
-  console.log(arrIdProject);
   return (
     <section className={styles.home_admin_section}>
+      <div className={styles.home_admin_section__title}>Публикации</div>
+      <div className={styles.home_admin_section__article_container}>
+        <div className={styles.home_admin_section__block_search}>
+          <div className={styles.home_admin_section__id_container}>
+            {arrIdArticleLeft?.map((el) => (
+              <div key={el.id}>{el.id}</div>
+            ))}
+          </div>
+          <div className={`${styles.form__group} ${styles.field}`}>
+            <input
+              type="number"
+              className={styles.form__field}
+              placeholder="idonepublic"
+              name="idonepublic"
+              id="idonepublic"
+              value={saveIdOne !== null ? saveIdOne : searcIdOne}
+              onChange={handleSearchOnePublic}
+              // onKeyPress={handleKeyPress}
+              required
+            />
+            <label htmlFor="idonepublic" className={styles.form__label}>
+              Укажите id статьи
+            </label>
+          </div>
+          <button
+            className={styles.home_admin_section__button}
+            onClick={filterArticleOnePublic}
+            disabled={isBtnDisabledPublicOne}
+          />
+        </div>
+        <div className={styles.home_admin_section__block_search}>
+          <div className={`${styles.form__group} ${styles.field}`}>
+            <input
+              type="number"
+              className={styles.form__field}
+              placeholder="idtwopublic"
+              name="idtwopublic"
+              id="idtwopublic"
+              value={saveIdTwo !== null ? saveIdTwo : searcIdTwo}
+              onChange={handleSearchTwoPublic}
+              // onKeyPress={handleKeyPress}
+              required
+            />
+            <label htmlFor="idtwopublic" className={styles.form__label}>
+              Укажите id статьи
+            </label>
+          </div>
+          <button
+            className={styles.home_admin_section__button}
+            onClick={filterArticleTwoPublic}
+            disabled={isBtnDisabledPublicTwo}
+          />
+        </div>
+      </div>
+
       <div className={styles.home_admin_section__title}>Проекты</div>
 
       <div className={styles.home_admin_section__section}>

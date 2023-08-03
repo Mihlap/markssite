@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import styles from "./AddNavbar.module.scss";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-import icon1 from './icon/cone.png';
-import icon2 from "./icon/torus.png";
-import icon3 from "./icon/icosahedron.png";
-import icon4 from "./icon/sphere.png";
+import icon1 from './icon/one.png';
+import icon2 from "./icon/three.png";
+import icon3 from "./icon/four.png";
+import icon4 from "./icon/two.png";
 
 export default function AddNavbar({ user, setNavBarOpen, setShowFooter }) {
   const [selectedItem, setSelectedItem] = useState(null);

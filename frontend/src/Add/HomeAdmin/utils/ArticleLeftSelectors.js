@@ -1,0 +1,11 @@
+import { createSelector } from "reselect";
+
+// Selector to get the projects data from the Redux state
+const searchArticlePublicLeft = (state) =>
+  state.searchArticlePublicLeft.articleLeft;
+
+// Memoized selector to extract the array of IdProject values
+export const arrIdArticlesLeftSelector = createSelector(
+  searchArticlePublicLeft,
+  (articles) => articles?.map((el) => el)
+);

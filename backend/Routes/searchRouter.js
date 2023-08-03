@@ -19,7 +19,7 @@ router.post('/search-project', async (req, res) => {
     res.status(200).json({ message: 'Данные успешно сохранены', projectId: savedProject.id });
   } catch (error) {
     console.error('Ошибка при сохранении в базе данных:', error);
-    res.status(500).json({ error: 'Ошибка при сохранении в базе данных' });
+    res.status(500).json({ error: 'Ошибка при сохранении в базу данных' });
   }
 });
 

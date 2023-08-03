@@ -14,7 +14,9 @@ module.exports = (sequelize, DataTypes) => {
     }
   }
   PublicationTwo.init({
-    publication: DataTypes.JSON
+    publication: DataTypes.JSON,
+    IdArticle: DataTypes.SMALLINT,
+
   }, {
     sequelize,
     modelName: 'PublicationTwo',
