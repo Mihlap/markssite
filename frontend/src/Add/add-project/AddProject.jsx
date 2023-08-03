@@ -117,7 +117,7 @@ export default function AddProject({ project, user }) {
           <div className={styles.card_components_admin__block_map}>
             {project &&
               project.map((el) => {
-                // const firstPhoto = el.imageTitle.split(", ")[0];
+                const firstPhoto = el.imageProject.split(", ")[0];
                 return (
                   <div
                     className={styles.section_project__block_cart}
@@ -129,11 +129,11 @@ export default function AddProject({ project, user }) {
                           className={styles.cart_project__imageContainer}
                           style={{ width: "100%", height: "100%" }}
                         >
-                          {/* <img
+                          <img
                             className={styles.cart_project__img}
                             src={`${Host}/images/imageAdd/${firstPhoto}`}
                             alt="photo"
-                          /> */}
+                          />
                           {user === "obezyankaa" ||
                           user === "Покемон" ||
                           user === "покемон" ? (
