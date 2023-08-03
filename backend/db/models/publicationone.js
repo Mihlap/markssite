@@ -13,11 +13,15 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  PublicationOne.init({
-    publication: DataTypes.JSON
-  }, {
-    sequelize,
-    modelName: 'PublicationOne',
-  });
+  PublicationOne.init(
+    {
+      publication: DataTypes.JSON,
+      IdArticle: DataTypes.SMALLINT,
+    },
+    {
+      sequelize,
+      modelName: 'PublicationOne',
+    },
+  );
   return PublicationOne;
 };

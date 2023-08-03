@@ -12,6 +12,14 @@
         font-style: normal;
         font-weight: 300;
         line-height: 40px;
+        padding-bottom: 32px;
+    }
+
+    &__article_container {
+        display: flex;
+        gap: 64px;
+        width: 62rem;
+        padding-bottom: 6rem;
     }
 
     &__section {

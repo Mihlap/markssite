@@ -34,7 +34,6 @@ const articleSlice = createSlice({
     },
   },
 });
-
 export const {
   fetchArticleStart,
   fetchArticleSuccess,

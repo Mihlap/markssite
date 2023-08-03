@@ -6,6 +6,7 @@ import counterSlice from './Slice/counterSlice';
 import authSlice from './Slice/authSlice';
 import articleSlice from "./Slice/articleSlice";
 import searchProjectMainSlice from "./Slice/searchProjectMainSlice";
+import searchArticlePublicLeftSlice from "./Slice/searchArticlePublicLeftSlice";
 
 
 export default configureStore({
@@ -17,5 +18,6 @@ export default configureStore({
     auth: authSlice,
     article: articleSlice,
     searchproject: searchProjectMainSlice,
+    searchArticlePublicLeftSlice: searchArticlePublicLeftSlice,
   },
 });
