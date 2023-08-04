@@ -20,6 +20,9 @@ import styles from "./Header.module.css";
 import LoadingCircle from "../Loading/LoadingCircle";
 import Error from "../Loading/Error/Error";
 import { getZaprosData } from "../store/Slice/searchProjectMainSlice";
+import { searchArticleLeftGet } from "../store/Slice/searchArticlePublicLeftSlice";
+
+import photoTest from "./img/project_right3.jpg";
 
 SwiperCore.use([Navigation]);
 const Host = process.env.REACT_APP_SERVER_HOST;
@@ -32,20 +35,23 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
   const [isHorizontalScroll, setIsHorizontalScroll] = useState(false);
   const [isAtRightEdge, setIsAtRightEdge] = useState(false);
   const [scrollingMode, setScrollingMode] = useState("vertical");
- 
 
   const [loadingArticle, setLoadingArticle] = useState(false);
 
   const [data, setData] = useState(null);
   const { article, loading, error } = useSelector((state) => state.article);
   const projects = useSelector((state) => state.searchproject.projects);
- 
+  const ArticleLeft = useSelector(
+    (state) => state.searchArticlePublicLeft.articleLeft
+  );
+  const MapArticle = ArticleLeft.map((el) => el.publication.publication);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getFetchFormArticle());
     dispatch(getZaprosData());
+    dispatch(searchArticleLeftGet());
   }, [dispatch]);
 
   useEffect(() => {
@@ -67,7 +73,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
       const rect = el.getBoundingClientRect();
       const isSliderInView = rect.top <= window.innerHeight && rect.bottom >= 0;
       setEnableVerticalScroll(!isSliderInView);
-  
+
       if (!loadingArticle) {
         if (isSliderInView && el.scrollLeft > 0) {
           setEnableVerticalScroll(false);
@@ -91,13 +97,12 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
         }
       }
     }
-  
+
     if (el) {
       const isRightEdge = el.scrollLeft + el.clientWidth >= el.scrollWidth;
       setIsAtRightEdge(isRightEdge);
     }
   };
-  
 
   const onVerticalScroll = (e) => {
     const el = sliderCardRef.current;
@@ -125,7 +130,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
     const isAtBottom = el.scrollTop + el.clientHeight >= el.scrollHeight;
     const isAtLeftEdge = el.scrollLeft <= 0;
     const isAtTop = el.scrollTop <= 0;
-  
+
     if (
       isScrollingRight &&
       isAtRightEdge &&
@@ -152,7 +157,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
         e.deltaY < 0 &&
         !isHorizontalScroll
       ) {
-         setIsHorizontalScroll(false); // Allow vertical scrolling
+        setIsHorizontalScroll(false); // Allow vertical scrolling
         el.scrollLeft += e.deltaY;
       } else if (
         isAtRightEdge &&
@@ -160,7 +165,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
         e.deltaY > 0 &&
         !isHorizontalScroll
       ) {
-         setIsHorizontalScroll(true); // Disable vertical scrolling
+        setIsHorizontalScroll(true); // Disable vertical scrolling
         el.scrollTo({
           top: el.scrollTop + e.deltaY,
           behavior: "smooth",
@@ -172,7 +177,6 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
       el.scrollLeft += e.deltaY;
     }
   };
-  
 
   useEffect(() => {
     const el = sliderCardRef.current;
@@ -204,14 +208,12 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
   if (loading) {
     return <LoadingCircle />;
   }
-const NewProject = projects.map((el) =>
-  el && el.project !== undefined ? el.project : null
-);
-const MapProject = NewProject.map((el) =>
-  el && el.project !== undefined ? el.project : null
-);
-
-
+  const NewProject = projects.map((el) =>
+    el && el.project !== undefined ? el.project : null
+  );
+  const MapProject = NewProject.map((el) =>
+    el && el.project !== undefined ? el.project : null
+  );
 
   return (
     <main className={styles.header}>
@@ -255,53 +257,72 @@ const MapProject = NewProject.map((el) =>
       <div className={styles.container_main}>
         <SliderHeader />
         <div className={styles.swiper_container}>
-          <SwiperContainer article={article} />
+          <SwiperContainer article={MapArticle} />
         </div>
-        <div className={styles.show_container}></div>
         <div className={styles.card_container}>
-          {article &&
-            article?.map((el, index) => (
-              <div
-                key={el.id}
-                className={
-                  index === 0 ? styles.card_item_1 : styles.card_item_2
-                }
-              >
-                <Link to={el.link}>
+          {MapArticle &&
+            MapArticle?.map((el) => {
+              const firstPhoto = el.imageTitle.split(", ")[0];
+
+              return (
+                <div className={styles.card_item_1}>
                   <div className={styles.card_img}>
                     <img
-                      className={index === 0 ? styles.img_1 : styles.img_2}
-                      src={`${Host}/images/${el.imageTitle}`}
-                      alt={el.imageTitle}
+                      className={styles.img_1}
+                      src={`${Host}/images/imageArticle/${firstPhoto}`}
+                      alt="photo"
                     />
                   </div>
-                </Link>
-                <div className={styles.card_text_container}>
-                  <h3 className={styles.card_text_heading}>{el.title}</h3>
-                  <span className={styles.card_text_description}>
-                    {el.descriptionArticle}
-                  </span>
+                  <div className={styles.card_text}>
+                    <h3>{el.title}</h3>
+                    <span>{el.dataMonthYear}</span>
+                  </div>
+                  <button className={styles.card_button}>
+                    <svg
+                      width="32"
+                      height="32"
+                      viewBox="0 0 32 32"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <circle cx="16" cy="16" r="16" fill="#566272" />
+                      <path
+                        d="M6 16H16M26 16H16M16 16V6M16 16V26"
+                        stroke="#F6F6F6"
+                        strokeWidth="2"
+                        strokeLinecap="square"
+                      />
+                    </svg>
+                  </button>
                 </div>
-                <Link to={el.link} className={styles.card_button}>
-                  <svg
-                    className={styles.card_button_link}
-                    width="40"
-                    height="40"
-                    viewBox="0 0 40 40"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <circle cx="20" cy="20" r="20" fill="#566272" />
-                    <path
-                      d="M10 20H20M30 20H20M20 20V10M20 20V30"
-                      stroke="#F6F6F6"
-                      strokeWidth="2"
-                      strokeLinecap="square"
-                    />
-                  </svg>
-                </Link>
-              </div>
-            ))}
+              );
+            })}
+          <div className={styles.card_item_2}>
+            <div className={styles.card_img}>
+              <img className={styles.img_2} src={photoTest} alt="image2" />
+            </div>
+            <div className={styles.card_text}>
+              <h3>Смотр-конкурс Стекло в архитектуре 2022</h3>
+              <span>Номинация Объект • нового строительства</span>
+            </div>
+            <button className={styles.card_button}>
+              <svg
+                width="32"
+                height="32"
+                viewBox="0 0 32 32"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <circle cx="16" cy="16" r="16" fill="#566272" />
+                <path
+                  d="M6 16H16M26 16H16M16 16V6M16 16V26"
+                  stroke="#F6F6F6"
+                  strokeWidth="2"
+                  strokeLinecap="square"
+                />
+              </svg>
+            </button>
+          </div>
         </div>
         <div className={styles.names_contents}>
           <div className={styles.name_11}>+11</div>
@@ -372,7 +393,7 @@ const MapProject = NewProject.map((el) =>
             // console.log(MapProject, '++++++++++++++++++++++++++++++++++++++++');
             return (
               <SwiperSlide
-               key={project.id} 
+                key={project.id}
                 onScroll={handleScroll}
                 id="slider_container_item_card"
                 className={`{styles.slider_container_item_card}
@@ -380,87 +401,86 @@ const MapProject = NewProject.map((el) =>
                 style={index % 2 === 1 ? { paddingTop: "10rem" } : {}}
               >
                 <Link to={`/projects/${project.id}`} key={project.id}>
-                <div className={styles.wrapper_container_item_card}>
-                  <img
-                    className={styles.container__imageTitle}
-                    src={`${Host}/images/imageAdd/${
-                      project.imageProject
-                        ? project.imageProject
-                        : project.imageTitle
-                    }`}
-                    alt={
-                      project.imageProject
-                        ? project.imageProject
-                        : project.imageTitle
-                    }
-                  />
-                </div>
-                <div className={styles.title_selectCompetencies}>
-                  <div className={styles.container__title}>
-                    {project.title}
-                  </div>
-                  <div className={styles.container__selectCompetencies}>
-                    {(() => {
-                      try {
-                        const selectCompetencies = JSON.parse(
-                          project.selectCompetencies
-                        );
-                        return selectCompetencies.map((competency) => (
-                          <div
-                            key={competency.value}
-                            className={styles.div_el_selectCompetencies}
-                            style={{
-                              color: colors[competency.value],
-                              borderColor: colors[competency.value],
-                              border: "1px solid",
-                              padding: "3px 6px",
-                              borderRadius: "34px",
-                            }}
-                          >
-                            {competency.label}
-                          </div>
-                        ));
-                      } catch (error) {
-                        if (
-                          typeof project.selectCompetencies ===
-                            "string" &&
-                          project.selectCompetencies.includes(",")
-                        ) {
-                          return project.selectCompetencies
-                            .split(",")
-                            .map((value) => {
-                              const label = value.trim();
-                              return (
-                                <div
-                                  key={value}
-                                  className={styles.div_el_selectCompetencies}
-                                  style={{
-                                    color: colors[value],
-                                    borderColor: colors[value],
-                                    border: "1px solid",
-                                    padding: "3px 6px",
-                                    borderRadius: "34px",
-                                  }}
-                                >
-                                  {label}
-                                </div>
-                              );
-                            });
-                        }
-                        return null;
+                  <div className={styles.wrapper_container_item_card}>
+                    <img
+                      className={styles.container__imageTitle}
+                      src={`${Host}/images/imageAdd/${
+                        project.imageProject
+                          ? project.imageProject
+                          : project.imageTitle
+                      }`}
+                      alt={
+                        project.imageProject
+                          ? project.imageProject
+                          : project.imageTitle
                       }
-                    })()}
+                    />
                   </div>
-                </div>
-                <div className={styles.countryCity_monthYear}>
-                  <div className={styles.container__countryCity}>
-                    {project.countryCity}
+                  <div className={styles.title_selectCompetencies}>
+                    <div className={styles.container__title}>
+                      {project.title}
+                    </div>
+                    <div className={styles.container__selectCompetencies}>
+                      {(() => {
+                        try {
+                          const selectCompetencies = JSON.parse(
+                            project.selectCompetencies
+                          );
+                          return selectCompetencies.map((competency) => (
+                            <div
+                              key={competency.value}
+                              className={styles.div_el_selectCompetencies}
+                              style={{
+                                color: colors[competency.value],
+                                borderColor: colors[competency.value],
+                                border: "1px solid",
+                                padding: "3px 6px",
+                                borderRadius: "34px",
+                              }}
+                            >
+                              {competency.label}
+                            </div>
+                          ));
+                        } catch (error) {
+                          if (
+                            typeof project.selectCompetencies === "string" &&
+                            project.selectCompetencies.includes(",")
+                          ) {
+                            return project.selectCompetencies
+                              .split(",")
+                              .map((value) => {
+                                const label = value.trim();
+                                return (
+                                  <div
+                                    key={value}
+                                    className={styles.div_el_selectCompetencies}
+                                    style={{
+                                      color: colors[value],
+                                      borderColor: colors[value],
+                                      border: "1px solid",
+                                      padding: "3px 6px",
+                                      borderRadius: "34px",
+                                    }}
+                                  >
+                                    {label}
+                                  </div>
+                                );
+                              });
+                          }
+                          return null;
+                        }
+                      })()}
+                    </div>
                   </div>
-                  <div className={styles.container__monthYear}>
-                    {project.monthYear}
+                  <div className={styles.countryCity_monthYear}>
+                    <div className={styles.container__countryCity}>
+                      {project.countryCity}
+                    </div>
+                    <div className={styles.container__monthYear}>
+                      {project.monthYear}
+                    </div>
                   </div>
-                </div>
-              </Link>
+                </Link>
               </SwiperSlide>
             );
           })}

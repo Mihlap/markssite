@@ -29,13 +29,12 @@ export default function Add({ user, setNavBarOpen, setShowFooter }) {
      dispatch(searchArticleLeftGet())
    }, [dispatch]);
   
-   useEffect(() => {
-     // Update the arrIdProject state whenever projectMain changes
-     const newIds = projectMain.map((el) => el.IdProject);
-     setArrIdProject(newIds);
-   }, [projectMain]);
+  //  useEffect(() => {
+  //    // Update the arrIdProject state whenever projectMain changes
+  //    const newIds = projectMain.map((el) => el.IdProject);
+  //    setArrIdProject(newIds);
+  //  }, [projectMain]);
   
-  // console.log(articleLeft);
   return (
     <div className={styles.add_container}>
       <AddNavbar
@@ -45,11 +44,12 @@ export default function Add({ user, setNavBarOpen, setShowFooter }) {
       />
       <Routes>
         <Route
-          path="/"
+          path="/home"
           element={
             <HomeAdmin
               projects={project}
               articles={article}
+              articleLeft={articleLeft}
             />
           }
         />
