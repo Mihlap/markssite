@@ -30,4 +30,15 @@ router.get('/left-get', async (req, res) => {
     }
 });
 
+router.delete('/left-delete/:IdArticle', async (req, res) => {
+  try {
+    const { IdArticle } = req.params;
+    await PublicationOne.destroy({ where: { IdArticle } });
+    res.sendStatus(200);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+});
+
 module.exports = router;

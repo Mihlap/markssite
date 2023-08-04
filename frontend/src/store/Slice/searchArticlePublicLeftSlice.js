@@ -23,8 +23,12 @@ const searchArticlePublicLeftSlice = createSlice({
       state.error = action.payload;
     },
     deleteArticleLeftSuccess(state, action) {
+       console.log("deleteArticleLeftSuccess called");
       const ArticleId = action.payload;
       state.articleLeft = state.articleLeft.filter((el) => el.id !== ArticleId);
+    },
+    deleteArticleLeftFailure(state, action) {
+      state.error = action.payload;
     },
   },
 });
@@ -34,16 +38,27 @@ export const {
   fetchArticleLeftSuccess,
   fetchArticleLeftFailure,
   deleteArticleLeftSuccess,
+  deleteArticleLeftFailure,
 } = searchArticlePublicLeftSlice.actions;
+
+export const getUpdatedArticles = () => async (dispatch) => {
+  dispatch(fetchArticleLeftStart());
+
+  try {
+    const response = await axios.get(`${serverHost}/search-article/left-get`);
+    const data = response.data;
+    dispatch(fetchArticleLeftSuccess(data));
+  } catch (error) {
+    dispatch(fetchArticleLeftFailure(error.message));
+  }
+};
 
 export const searchArticleLeftMain =
   (filterArticle, setSearcIdOne, setSaveIdOne, setIsBtnDisabledPublicOne) =>
   async (dispatch) => {
-    console.log("searchArticleLeftMain function started"); // New console.log
     dispatch(fetchArticleLeftStart());
 
     try {
-      console.log("Starting axios request");
       const response = await axios.post(`${serverHost}/search-article/left`, {
         publication: filterArticle,
         IdArticle: filterArticle.id,
@@ -72,6 +87,20 @@ export const searchArticleLeftGet = () => async (dispatch) => {
     dispatch(fetchArticleLeftSuccess(data));
   } catch (error) {
     dispatch(fetchArticleLeftFailure(error.message));
+  }
+};
+
+export const searchArticleLeftDelete = (IdArticle) => async (dispatch) => {
+  dispatch(fetchArticleLeftStart());
+
+  try {
+    const response = await axios.delete(
+      `${serverHost}/search-article/left-delete/${IdArticle}`
+    );
+    console.log(response.status); // Check the response status
+    dispatch(deleteArticleLeftSuccess(IdArticle));
+  } catch (error) {
+    dispatch(deleteArticleLeftFailure(error.message));
   }
 };
 
