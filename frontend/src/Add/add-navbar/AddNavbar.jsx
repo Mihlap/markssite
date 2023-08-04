@@ -63,7 +63,7 @@ const logouthandler = async () => {
                     selectedItem === "home" ? styles.active : ""
                   }`}
                   to="./"
-                  onClick={(event) => handleItemClick(event, "home", "./")}
+                  onClick={(event) => handleItemClick(event, "home", "./home")}
                 >
                   Главная
                 </Link>

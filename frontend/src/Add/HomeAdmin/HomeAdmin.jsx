@@ -11,7 +11,7 @@ import { useSelector } from "react-redux";
 import { arrIdProjectSelector } from "./utils/HomeAdminSelectors";
 import { arrIdArticlesLeftSelector } from "./utils/ArticleLeftSelectors";
 import DraggableProject from "./DraggableProject";
-import { getUpdatedArticles, searchArticleLeftDelete, searchArticleLeftMain } from "../../store/Slice/searchArticlePublicLeftSlice";
+import { getUpdatedArticles, searchArticleLeftDelete, searchArticleLeftMain, updateArticleLeft } from "../../store/Slice/searchArticlePublicLeftSlice";
 import OneCard from "./OneCard";
 
 export default function HomeAdmin({ projects, articles, articleLeft }) {
@@ -36,8 +36,6 @@ export default function HomeAdmin({ projects, articles, articleLeft }) {
 
   const arrIdProject = useSelector(arrIdProjectSelector);
   const arrIdArticleLeft = useSelector(arrIdArticlesLeftSelector);
-
-  console.log(articleLeft);
 
   const dispatch = useDispatch();
 
@@ -67,6 +65,17 @@ export default function HomeAdmin({ projects, articles, articleLeft }) {
       } catch (error) {}
     }
   };
+
+  const handlerUpdateReplacement = () => {
+      const filterArticle = articles.find(
+        (article) => article.id === parseInt(searcIdOne, 10)
+    );
+    
+    if (filterArticle) {
+      console.log("ЗАМЕНА публикации", filterArticle);
+      dispatch(updateArticleLeft(filterArticle));
+    }
+  }
 
   // обработчик для инпута который ищет id для правой публикации на главной
 
@@ -232,6 +241,7 @@ export default function HomeAdmin({ projects, articles, articleLeft }) {
           {arrIdArticleLeft?.length > 0 && (
             <button
               className={styles.home_admin_section__button_replacement}
+              onClick={handlerUpdateReplacement}
               disabled={isBtnDisabledPublicOne}
             />
           )}
