@@ -220,11 +220,21 @@ export default function HomeAdmin({ projects, articles, articleLeft }) {
               Укажите id статьи
             </label>
           </div>
-          <button
-            className={styles.home_admin_section__button}
-            onClick={filterArticleOnePublic}
-            disabled={isBtnDisabledPublicOne}
-          />
+
+          {(!arrIdArticleLeft || arrIdArticleLeft.length === 0) && (
+            <button
+              className={styles.home_admin_section__button}
+              onClick={filterArticleOnePublic}
+              disabled={isBtnDisabledPublicOne}
+            />
+          )}
+
+          {arrIdArticleLeft?.length > 0 && (
+            <button
+              className={styles.home_admin_section__button_replacement}
+              disabled={isBtnDisabledPublicOne}
+            />
+          )}
         </div>
         <div className={styles.home_admin_section__block_search}>
           <div className={`${styles.form__group} ${styles.field}`}>

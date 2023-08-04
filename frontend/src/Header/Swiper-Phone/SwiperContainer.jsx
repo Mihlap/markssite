@@ -39,11 +39,12 @@ export default function SwiperContainer({ article }) {
       >
         <div className={styles.swiper_wrapper}>
           {article && article.map((item) => {
+            const firstPhoto = item.imageTitle.split(", ")[0];
             return (
               <SwiperSlide key={item.id}>
                 <Slideritem
                   title={item.title}
-                  src={`${Host}/images/${item.imageTitle}`}
+                  src={`${Host}/images/imageArticle/${firstPhoto}`}
                   descriptionArticle={item.descriptionArticle}
                   id={item.link}
                 />
