@@ -8,8 +8,7 @@ const Company_Slider = () => {
   const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
-    // Update the width of the underline based on the activeIndex when the component mounts
-    setWidth((activeIndex + 1) * 22 + 2);
+      setWidth((activeIndex + 1) * 22 + 2);
   }, [activeIndex]);
 
    const handleButtonClick = (index) => {

@@ -59,7 +59,6 @@
   width: 88%;
 }
 
-
 @media screen and (min-width: 768px) and (max-width: 1024px) {
   .company-slider-slide img {
     height: 64vh;
