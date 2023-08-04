@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import styles from "./HomeAdmin.module.scss";
 import {
@@ -11,9 +11,10 @@ import { useSelector } from "react-redux";
 import { arrIdProjectSelector } from "./utils/HomeAdminSelectors";
 import { arrIdArticlesLeftSelector } from "./utils/ArticleLeftSelectors";
 import DraggableProject from "./DraggableProject";
-import { searchArticleLeftMain } from "../../store/Slice/searchArticlePublicLeftSlice";
+import { getUpdatedArticles, searchArticleLeftDelete, searchArticleLeftMain } from "../../store/Slice/searchArticlePublicLeftSlice";
+import OneCard from "./OneCard";
 
-export default function HomeAdmin({ projects, articles }) {
+export default function HomeAdmin({ projects, articles, articleLeft }) {
   const [errorMessage, setErrorMessage] = useState("");
   const [showError, setShowError] = useState(false);
   const [okMessage, setOkMessage] = useState("");
@@ -25,19 +26,18 @@ export default function HomeAdmin({ projects, articles }) {
   const [isBtnDisabledPublicTwo, setIsBtnDisabledPublicTwo] = useState(true);
   const [searchId, setSearchId] = useState("");
   const [savedId, setSavedId] = useState(null);
-  // константы для первой публикации 
+  // константы для первой публикации
   const [searcIdOne, setSearcIdOne] = useState("");
   const [saveIdOne, setSaveIdOne] = useState(null);
   // констатнты для второй публикации
 
   const [searcIdTwo, setSearcIdTwo] = useState("");
   const [saveIdTwo, setSaveIdTwo] = useState(null);
-  
 
   const arrIdProject = useSelector(arrIdProjectSelector);
   const arrIdArticleLeft = useSelector(arrIdArticlesLeftSelector);
 
-  console.log(arrIdArticleLeft);
+  console.log(articleLeft);
 
   const dispatch = useDispatch();
 
@@ -45,7 +45,7 @@ export default function HomeAdmin({ projects, articles }) {
   const handleSearchOnePublic = (event) => {
     setSearcIdOne(event.target.value);
     setIsBtnDisabledPublicOne(event.target.value === "");
-  }
+  };
 
   const filterArticleOnePublic = async () => {
     const filterArticle = articles.find(
@@ -64,29 +64,27 @@ export default function HomeAdmin({ projects, articles }) {
             setIsBtnDisabledPublicOne
           )
         );
-      } catch (error) {
-        
-      }
+      } catch (error) {}
     }
-  }
+  };
 
   // обработчик для инпута который ищет id для правой публикации на главной
 
   const handleSearchTwoPublic = (event) => {
     setSearcIdTwo(event.target.value);
     setIsBtnDisabledPublicTwo(event.target.value === "");
-  }
+  };
 
   const filterArticleTwoPublic = async () => {
-    const filterArticle = articles.find((article) => article.id === parseInt(searcIdTwo, 10));
+    const filterArticle = articles.find(
+      (article) => article.id === parseInt(searcIdTwo, 10)
+    );
 
     if (filterArticle) {
       console.log("найденная вторааааая публикация", filterArticle);
     }
     setIsBtnDisabledPublicTwo(true);
-
-  }
-
+  };
 
   // Обработчик изменения значения в инпуте поиска
   const handleSearchChange = (event) => {
@@ -133,6 +131,18 @@ export default function HomeAdmin({ projects, articles }) {
   const handleFormDelete = (formId) => {
     dispatch(deleteProject(formId));
   };
+
+ const handleArticleLeftDelete = (formId) => {
+   dispatch(searchArticleLeftDelete(formId))
+     .then(() => {
+       // Если запрос на удаление успешно выполнен, вызываем действие для получения обновленного списка статей
+       dispatch(getUpdatedArticles());
+     })
+     .catch((error) => {
+       // Обрабатываем ошибку, если она произойдет
+       console.error("Ошибка при удалении статьи:", error);
+     });
+ };
 
   setTimeout(() => {
     setShowError(false);
@@ -187,7 +197,11 @@ export default function HomeAdmin({ projects, articles }) {
         <div className={styles.home_admin_section__block_search}>
           <div className={styles.home_admin_section__id_container}>
             {arrIdArticleLeft?.map((el) => (
-              <div key={el.id}>{el.id}</div>
+              <OneCard
+                key={el.id}
+                article={el}
+                handleArticleLeftDelete={handleArticleLeftDelete}
+              />
             ))}
           </div>
           <div className={`${styles.form__group} ${styles.field}`}>
