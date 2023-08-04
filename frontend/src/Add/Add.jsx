@@ -35,7 +35,6 @@ export default function Add({ user, setNavBarOpen, setShowFooter }) {
   //    setArrIdProject(newIds);
   //  }, [projectMain]);
   
-  console.log(articleLeft);
   return (
     <div className={styles.add_container}>
       <AddNavbar
@@ -45,7 +44,7 @@ export default function Add({ user, setNavBarOpen, setShowFooter }) {
       />
       <Routes>
         <Route
-          path="/"
+          path="/home"
           element={
             <HomeAdmin
               projects={project}
