@@ -30,4 +30,35 @@ router.get('/left-get', async (req, res) => {
     }
 });
 
+router.delete('/left-delete/:IdArticle', async (req, res) => {
+  try {
+    const { IdArticle } = req.params;
+    await PublicationOne.destroy({ where: { IdArticle } });
+    res.sendStatus(200);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+});
+
+router.put('/left-update', async (req, res) => {
+  try {
+    const publicationData = req.body;
+    const IdArticles = publicationData.id;
+    delete publicationData.id;
+
+    const updatedPublication = await PublicationOne.update(publicationData, {
+      where: { IdArticle: IdArticles },
+      returning: true,
+    });
+
+    res.status(200).json(updatedPublication[1][0]);
+  } catch (error) {
+    console.log('Error updating the publication:', error);
+    res.status(500).json({ error: 'Error updating the publication in the database' });
+  }
+});
+
+
+
 module.exports = router;
