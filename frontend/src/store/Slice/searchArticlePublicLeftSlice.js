@@ -64,14 +64,11 @@ export const searchArticleLeftMain =
   (filterArticle, setSearcIdOne, setSaveIdOne, setIsBtnDisabledPublicOne) =>
   async (dispatch) => {
     dispatch(fetchArticleLeftStart());
-
     try {
       const response = await axios.post(`${serverHost}/search-article/left`, {
         publication: filterArticle,
         IdArticle: filterArticle.id,
       });
-      console.log(response);
-      console.log(123);
       dispatch(searchArticleLeftGet());
       setSearcIdOne("");
       setSaveIdOne(null);
@@ -110,8 +107,11 @@ export const searchArticleLeftDelete = (IdArticle) => async (dispatch) => {
 };
 
 export const updateArticleLeft = (filterArticle) => async (dispatch) => {
+  dispatch(fetchArticleLeftStart());
+  console.log(filterArticle);
+
   try {
-    const response = await axios.put(
+    const response = await axios.post(
       `${serverHost}/search-article/left-update`,
       filterArticle
     );
@@ -121,5 +121,6 @@ export const updateArticleLeft = (filterArticle) => async (dispatch) => {
     console.error("Error updating the article:", error);
   }
 };
+
 
 export default searchArticlePublicLeftSlice.reducer;
