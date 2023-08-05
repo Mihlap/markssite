@@ -260,17 +260,20 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
           <SwiperContainer article={MapArticle} />
         </div>
         <div className={styles.card_container}>
-          {MapArticle &&
-            MapArticle?.map((el) => {
+          {MapArticle && MapArticle.length > 0 ? (
+            MapArticle.map((el) => {
+              // your existing code
               const firstPhoto = el.imageTitle.split(", ")[0];
 
               return (
-                <div className={styles.card_item_1}>
+                <div
+                  key={el.id}
+                  className={styles.card_item_1}>
                   <div className={styles.card_img}>
                     <img
                       className={styles.img_1}
                       src={`${Host}/images/imageArticle/${firstPhoto}`}
-                      alt="photo"
+                      alt="photo1"
                     />
                   </div>
                   <div className={styles.card_text}>
@@ -296,7 +299,18 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
                   </button>
                 </div>
               );
-            })}
+            })
+          ) : (
+            <div className={styles.card_item_1}>
+              <div className={styles.card_img}>
+                <img
+                  className={styles.img_1}
+                  src="https://zoo69.ru/wp-content/uploads/2018/11/net-foto.png"
+                  alt="photo2"
+                />
+              </div>
+            </div>
+          )}
           <div className={styles.card_item_2}>
             <div className={styles.card_img}>
               <img className={styles.img_2} src={photoTest} alt="image2" />
