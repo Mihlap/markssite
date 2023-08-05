@@ -41,23 +41,30 @@ router.delete('/left-delete/:IdArticle', async (req, res) => {
   }
 });
 
-router.put('/left-update', async (req, res) => {
+// тут надо изменить ручку, сделать так чтоб она работала 👇
+router.post('/left-update', async (req, res) => {
   try {
     const publicationData = req.body;
-    const IdArticles = publicationData.id;
-    delete publicationData.id;
+    const IdArticles = req.body.id;
 
-    const updatedPublication = await PublicationOne.update(publicationData, {
-      where: { IdArticle: IdArticles },
-      returning: true,
+    console.log(publicationData.id);
+    console.log(IdArticles);
+
+    const newPublication = await PublicationOne.create({
+      publication: publicationData,
+      IdArticle: IdArticles,
     });
 
-    res.status(200).json(updatedPublication[1][0]);
+    res.status(200).json(newPublication);
   } catch (error) {
-    console.log('Error updating the publication:', error);
-    res.status(500).json({ error: 'Error updating the publication in the database' });
+    console.log('Ошибка при попытке записать публикацию в левую колонку', error);
+    res.status(500).json({ error: 'Ошибка при сохранении в базу данных' });
   }
 });
+
+
+
+
 
 
 
