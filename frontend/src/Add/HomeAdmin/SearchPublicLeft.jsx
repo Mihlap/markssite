@@ -68,7 +68,14 @@ export default function SearchPublicLeft({
 
     if (filterArticle) {
       console.log("ЗАМЕНА публикации", filterArticle);
-      dispatch(updateArticleLeft(filterArticle, setSaveIdOne, setSearcIdOne));
+      dispatch(
+        updateArticleLeft(
+          filterArticle,
+          setSaveIdOne,
+          setSearcIdOne,
+          setIsBtnDisabledPublicOne
+        )
+      );
     }
   };
 

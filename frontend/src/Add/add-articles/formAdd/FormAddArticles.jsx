@@ -1,10 +1,17 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import styles from "./FormAddArticles.module.scss";
-import { changeHandler, removePreviewPhoto, removePreviewPhotoAva, removePreviewPhotoClose, removePreviewPhotoOpen } from './formHelpers';
-import { fetchArticle } from '../../../store/Slice/articleSlice';
+import {
+  changeHandler,
+  removePreviewPhoto,
+  removePreviewPhotoAva,
+  removePreviewPhotoClose,
+  removePreviewPhotoOpen,
+} from "./formHelpers";
+import { fetchArticle } from "../../../store/Slice/articleSlice";
 
 import icon from "./img/Frame4684.png";
+import ConstructorPage from "../constructor/ConstructorPage";
 
 export default function FormAddArticles({ setIsModalOpen }) {
   const dispatch = useDispatch();
@@ -16,6 +23,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
   const [isPhotoOpenVisible, setIsPhotoOpenVisible] = useState(true);
   const [isPhotoAvaVisible, setIsPhotoAvaVisible] = useState(true);
   const [isDropPhotoVisible, setIsDropPhotoVisible] = useState(true);
+  const [onenConstructor, setOpenConstructor] = useState(false);
   const [inputData, setInputData] = useState({
     title: "",
     author: "",
@@ -66,17 +74,16 @@ export default function FormAddArticles({ setIsModalOpen }) {
   };
 
   // Удаление превью фото из закрывающей картинки
- const handleRemovePreviewPhotoClose = (index) => {
-   removePreviewPhotoClose(
-     previewPhotoClose,
-     setPreviewPhotoClose,
-     index,
-     inputData,
-     setInputData,
-     setIsPhotoCloseVisible
-   );
- };
-
+  const handleRemovePreviewPhotoClose = (index) => {
+    removePreviewPhotoClose(
+      previewPhotoClose,
+      setPreviewPhotoClose,
+      index,
+      inputData,
+      setInputData,
+      setIsPhotoCloseVisible
+    );
+  };
 
   // функция отправки формы на Redux
   const submitHandler = async (e) => {
@@ -100,6 +107,40 @@ export default function FormAddArticles({ setIsModalOpen }) {
 
   const closeModal = () => {
     setIsModalOpen(false);
+  };
+
+  const areAllFieldsFilled = () => {
+    const {
+      title,
+      author,
+      city,
+      dataMonthYear,
+      dropPhoto,
+      titleTextBlock,
+      descriptionArticle,
+      photoAva,
+      imageOpen,
+      textBlock,
+      imageClose,
+    } = inputData;
+
+    return (
+      title &&
+      author &&
+      city &&
+      dataMonthYear &&
+      dropPhoto.length > 0 &&
+      titleTextBlock &&
+      descriptionArticle &&
+      photoAva &&
+      imageOpen &&
+      textBlock &&
+      imageClose
+    );
+  };
+
+  const handlerOpenConstructor = () => {
+    setOpenConstructor(!onenConstructor);
   };
 
   // console.log(inputData);
@@ -465,11 +506,54 @@ export default function FormAddArticles({ setIsModalOpen }) {
           ))}
         </div>
 
+        <div className={styles.constructor_container}>
+          <div className={styles.constructor_container__block}>
+            {!onenConstructor ? (
+              <>
+                <button onClick={handlerOpenConstructor}>
+                  <svg
+                    className={styles.constructor_container__svg}
+                    width="41"
+                    height="40"
+                    viewBox="0 0 41 40"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g id="icon">
+                      <circle
+                        id="Ellipse 4"
+                        cx="20.5"
+                        cy="20"
+                        r="20"
+                        fill="#FF7F6A"
+                      />
+                      <path
+                        id="Vector 10"
+                        d="M10.5 20H20.5M30.5 20H20.5M20.5 20V10M20.5 20V30"
+                        stroke="#F6F6F6"
+                        strokeWidth="2"
+                        strokeLinecap="square"
+                      />
+                    </g>
+                  </svg>
+                </button>
+                <div className={styles.constructor_container__text}>
+                  Добавить блок из библиотеки
+                </div>
+              </>
+            ) : (
+              <ConstructorPage />
+            )}
+          </div>
+        </div>
+
         <div className={styles.form_container__button_block}>
           <button
             className={styles.form_container__button_save}
             type="submit"
+            disabled={!areAllFieldsFilled()}
           ></button>
+
           <button
             className={styles.form_container__button_cancel}
             type="submit"
