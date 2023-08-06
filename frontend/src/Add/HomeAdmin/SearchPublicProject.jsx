@@ -144,6 +144,7 @@ export default function SearchPublicProject({
             onChange={handleSearchChange}
             onKeyPress={handleKeyPress}
             required
+            autoComplete="off"
           />
           <label htmlFor="idshnik" className={styles.form__label}>
             Укажите id проекта

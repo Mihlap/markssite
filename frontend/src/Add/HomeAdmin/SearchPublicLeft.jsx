@@ -1,12 +1,8 @@
 import React from 'react'
 import styles from "./HomeAdmin.module.scss";
 import { useDispatch } from "react-redux";
-
 import IDPublicLeft from './IDPublicLeft';
 import { getUpdatedArticles, searchArticleLeftDelete, searchArticleLeftMain, updateArticleLeft } from '../../store/Slice/searchArticlePublicLeftSlice';
-
-
-
 
 export default function SearchPublicLeft({
   articles,
@@ -24,6 +20,13 @@ export default function SearchPublicLeft({
     setSearcIdOne(event.target.value);
     setIsBtnDisabledPublicOne(event.target.value === "");
   };
+
+  //  const handleKeyPress = (event) => {
+  //    // Проверяем, является ли нажатая клавиша клавишей "Enter" (код клавиши 13)
+  //    if (event.key === "Enter") {
+  //      filterArticleOnePublic(); // Выполняем поиск
+  //    }
+  //  };
 
   const filterArticleOnePublic = async () => {
     const filterArticle = articles.find(
@@ -65,7 +68,7 @@ export default function SearchPublicLeft({
 
     if (filterArticle) {
       console.log("ЗАМЕНА публикации", filterArticle);
-      dispatch(updateArticleLeft(filterArticle));
+      dispatch(updateArticleLeft(filterArticle, setSaveIdOne, setSearcIdOne));
     }
   };
 
@@ -92,6 +95,7 @@ export default function SearchPublicLeft({
           onChange={handleSearchOnePublic}
           // onKeyPress={handleKeyPress}
           required
+          autoComplete="off"
         />
         <label htmlFor="idonepublic" className={styles.form__label}>
           Укажите id статьи
