@@ -7,7 +7,8 @@ import { deleteFormArticle } from '../../store/Slice/articleSlice';
 export default function AddArticles({user, article}) {
   const Host = process.env.REACT_APP_SERVER_HOST;
   const dispatch = useDispatch();
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  // открывает модалку 
+  const [isModalOpen, setIsModalOpen] = useState(true);
   const [isCopied, setIsCopied] = useState(false);
   const [isonCopy, seticonCopy] = useState(false);
   const [copiedId, setCopiedId] = useState("");
