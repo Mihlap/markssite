@@ -102,6 +102,7 @@
         display: flex;
         flex-wrap: wrap;
         gap: 1rem;
+        padding: 10px;
     }
 
     &__id_block {
@@ -238,7 +239,7 @@
 
 .form__group {
     position: relative;
-    width: 50%;
+    width: 100%;
     padding: 15px 0 0;
     margin-top: 10px;
 }

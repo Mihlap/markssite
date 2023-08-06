@@ -34,6 +34,7 @@ export default function Add({ user, setNavBarOpen, setShowFooter }) {
   //    const newIds = projectMain.map((el) => el.IdProject);
   //    setArrIdProject(newIds);
   //  }, [projectMain]);
+
   
   return (
     <div className={styles.add_container}>
