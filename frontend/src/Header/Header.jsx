@@ -266,9 +266,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
               const firstPhoto = el.imageTitle.split(", ")[0];
 
               return (
-                <div
-                  key={el.id}
-                  className={styles.card_item_1}>
+                <div key={el.id} className={styles.card_item_1}>
                   <div className={styles.card_img}>
                     <img
                       className={styles.img_1}
@@ -285,7 +283,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
                       width="32"
                       height="32"
                       viewBox="0 0 32 32"
-                      fill="none"
+                      fill="currentColor"
                       xmlns="http://www.w3.org/2000/svg"
                     >
                       <circle cx="16" cy="16" r="16" fill="#566272" />

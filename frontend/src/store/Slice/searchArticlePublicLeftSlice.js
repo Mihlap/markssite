@@ -108,7 +108,8 @@ export const searchArticleLeftDelete = (IdArticle) => async (dispatch) => {
 };
 
 export const updateArticleLeft =
-  (filterArticle, setSaveIdOne, setSearcIdOne) => async (dispatch) => {
+  (filterArticle, setSaveIdOne, setSearcIdOne, setIsBtnDisabledPublicOne) =>
+  async (dispatch) => {
     console.log("updateArticleLeft called:", filterArticle); // Add this line for debugging
 
     dispatch(fetchArticleLeftStart());
@@ -124,8 +125,9 @@ export const updateArticleLeft =
       const updatedArticle = response.data;
       console.log("Response from the server:", updatedArticle); // Add this line for debugging
       dispatch(updateArticleLeftSuccess(updatedArticle));
+      setSearcIdOne("");
       setSaveIdOne(null);
-      setSearcIdOne('');
+      setIsBtnDisabledPublicOne(true);
       dispatch(searchArticleLeftGet());
     } catch (error) {
       console.error("Error updating the article:", error);

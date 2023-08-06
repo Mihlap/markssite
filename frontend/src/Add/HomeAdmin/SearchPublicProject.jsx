@@ -1,9 +1,13 @@
-import React from 'react'
+import React, { useEffect } from "react";
 import styles from "./HomeAdmin.module.scss";
 import { useDispatch } from "react-redux";
-import { deleteProject, searchProgectMainPostzapros, updateProjectOrderReplacement, updateProjectOrderSuccess } from '../../store/Slice/searchProjectMainSlice';
-import DraggableProject from './DraggableProject';
-
+import {
+  deleteProject,
+  searchProgectMainPostzapros,
+  updateProjectOrderReplacement,
+  updateProjectOrderSuccess,
+} from "../../store/Slice/searchProjectMainSlice";
+import DraggableProject from "./DraggableProject";
 
 export default function SearchPublicProject({
   projects,
@@ -55,18 +59,14 @@ export default function SearchPublicProject({
           searchProgectMainPostzapros(filteredProject, setSearchId, setSavedId)
         );
 
-        setOkMessage("Проект добавлен");
-        setShowOk(true);
-        setIsButtonDisabled(true);
+        showMessage("Проект добавлен", "ok");
       } catch (error) {
         console.error("Ошибка при сохранении проекта:", error);
+        showMessage("Ошибка при сохранении проекта:", "error");
       }
     } else {
       console.log("Проект с таким id не найден");
-      setErrorMessage("Проект с таким id не найден");
-      setSearchId("");
-      setShowError(true); // Show the error message
-      setIsButtonDisabled(true);
+      showMessage("Проект с таким id не найден", "error");
     }
   };
 
@@ -74,18 +74,15 @@ export default function SearchPublicProject({
     dispatch(deleteProject(formId));
   };
 
-  setTimeout(() => {
-    setShowError(false);
-    setErrorMessage("");
-  }, 5000);
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowError(false);
+      setShowOk(false);
+      setReplacement(false);
+    }, 5000);
 
-  setTimeout(() => {
-    setShowOk(false);
-  }, 5000);
-
-  setTimeout(() => {
-    setReplacement(false);
-  }, 4000);
+    return () => clearTimeout(timer);
+  }, [showError, showOk, replacement]);
 
   const updateProjectOrder = (updatedProjects) => {
     return (dispatch) => {
@@ -102,23 +99,44 @@ export default function SearchPublicProject({
     // Вызываем действие для обновления порядка элементов
     dispatch(updateProjectOrder(updatedProjects));
 
-    setReplacementMessage("Проект перемещен");
-    setReplacement(true);
+    showMessage("Проект перемещен", "replacement");
     // И тут же сохраняем новый порядок в базу данных
     dispatch(updateProjectOrderReplacement(updatedProjects));
   };
 
-  const ErrorMessage = ({ message }) => {
-    return <div className={styles.home_admin_section__error}>{message}</div>;
+  const showMessage = (message, type) => {
+    switch (type) {
+      case "error":
+        setErrorMessage(message);
+        setShowError(true);
+        break;
+      case "ok":
+        setOkMessage(message);
+        setShowOk(true);
+        break;
+      case "replacement":
+        setReplacementMessage(message);
+        setReplacement(true);
+        break;
+      default:
+        break;
+    }
   };
 
-  const OkMessage = ({ message }) => {
-    return <div className={styles.home_admin_section__ok}>{message}</div>;
+  const Message = ({ message, type }) => {
+    return (
+      <div
+        className={
+          type === "error"
+            ? styles.home_admin_section__error
+            : styles.home_admin_section__ok
+        }
+      >
+        {message}
+      </div>
+    );
   };
 
-  const Replacement = ({ message }) => {
-    return <div className={styles.home_admin_section__ok}>{message}</div>;
-  };
   return (
     <div className={styles.home_admin_section__section}>
       <div className={styles.home_admin_section__block_search}>
@@ -155,9 +173,15 @@ export default function SearchPublicProject({
           onClick={filterProjectsById}
           disabled={isButtonDisabled}
         />
-        <div>{showError && <ErrorMessage message={errorMessage} />}</div>
-        <div>{showOk && <OkMessage message={okMessage} />}</div>
-        <div>{replacement && <Replacement message={replacementMessage} />}</div>
+        <div>
+          {showError && <Message message={errorMessage} type="error" />}
+        </div>
+        <div>{showOk && <Message message={okMessage} type="ok" />}</div>
+        <div>
+          {replacement && (
+            <Message message={replacementMessage} type="replacement" />
+          )}
+        </div>
       </div>
     </div>
   );
