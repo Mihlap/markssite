@@ -1,12 +1,62 @@
 import React from 'react'
-import img from './img/image.png'
+import styles from './BlockHeadingTitle.module.scss';
 
 export default function BlockHeadingTitle() {
+  
   return (
-      <div>
-          <button>
-              <img src={img} alt="title-text" />
-          </button>
+    <div>
+      <button
+        className={styles.BlockHeadingTitle_btn}>
+        <svg
+          width="76"
+          height="50"
+          viewBox="0 0 76 50"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g id="Group 4648">
+            <rect
+              id="Rectangle 4013"
+              y="35"
+              width="76"
+              height="6"
+              rx="3"
+              fill="#F6F6F6"
+            />
+            <rect
+              id="Rectangle 4017"
+              y="26"
+              width="76"
+              height="6"
+              rx="3"
+              fill="#F6F6F6"
+            />
+            <rect
+              id="Rectangle 4018"
+              y="17"
+              width="76"
+              height="6"
+              rx="3"
+              fill="#F6F6F6"
+            />
+            <rect
+              id="Rectangle 4014"
+              y="44"
+              width="41"
+              height="6"
+              rx="3"
+              fill="#F6F6F6"
+            />
+            <rect
+              id="Rectangle 4019"
+              width="58"
+              height="12"
+              rx="6"
+              fill="#F6F6F6"
+            />
+          </g>
+        </svg>
+      </button>
     </div>
-  )
+  );
 }
