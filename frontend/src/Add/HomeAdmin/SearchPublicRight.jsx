@@ -39,6 +39,7 @@ export default function SearchPublicRight({
           onChange={handleSearchTwoPublic}
           // onKeyPress={handleKeyPress}
           required
+          autoComplete="off"
         />
         <label htmlFor="idtwopublic" className={styles.form__label}>
           Укажите id статьи

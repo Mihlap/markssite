@@ -107,25 +107,30 @@ export const searchArticleLeftDelete = (IdArticle) => async (dispatch) => {
   }
 };
 
-export const updateArticleLeft = (filterArticle) => async (dispatch) => {
-  console.log("updateArticleLeft called:", filterArticle); // Add this line for debugging
+export const updateArticleLeft =
+  (filterArticle, setSaveIdOne, setSearcIdOne) => async (dispatch) => {
+    console.log("updateArticleLeft called:", filterArticle); // Add this line for debugging
 
-  dispatch(fetchArticleLeftStart());
+    dispatch(fetchArticleLeftStart());
 
-  try {
-    const response = await axios.post(
-      `${serverHost}/search-article/left-update`,{
-        publication: filterArticle,
-        IdArticle: filterArticle.id,
-      });
-    const updatedArticle = response.data;
-    console.log("Response from the server:", updatedArticle); // Add this line for debugging
-    dispatch(updateArticleLeftSuccess(updatedArticle));
-    dispatch(searchArticleLeftGet());
-  } catch (error) {
-    console.error("Error updating the article:", error);
-  }
-};
+    try {
+      const response = await axios.put(
+        `${serverHost}/search-article/left-update`,
+        {
+          publication: filterArticle,
+          IdArticle: filterArticle.id,
+        }
+      );
+      const updatedArticle = response.data;
+      console.log("Response from the server:", updatedArticle); // Add this line for debugging
+      dispatch(updateArticleLeftSuccess(updatedArticle));
+      setSaveIdOne(null);
+      setSearcIdOne('');
+      dispatch(searchArticleLeftGet());
+    } catch (error) {
+      console.error("Error updating the article:", error);
+    }
+  };
 
 
 
