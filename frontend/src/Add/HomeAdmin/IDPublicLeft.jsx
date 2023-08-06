@@ -1,7 +1,7 @@
 import React from 'react'
 import styles from "./HomeAdmin.module.scss";
 
-export default function OneCard({ article, handleArticleLeftDelete }) {
+export default function IDPublicLeft({ article, handleArticleLeftDelete }) {
   return (
     <div className={styles.home_admin_section__id_block} key={article.id}>
       {article.IdArticle}

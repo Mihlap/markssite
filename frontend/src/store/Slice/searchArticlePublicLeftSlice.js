@@ -54,6 +54,7 @@ export const getUpdatedArticles = () => async (dispatch) => {
   try {
     const response = await axios.get(`${serverHost}/search-article/left-get`);
     const data = response.data;
+    console.log(data);
     dispatch(fetchArticleLeftSuccess(data));
   } catch (error) {
     dispatch(fetchArticleLeftFailure(error.message));
@@ -65,7 +66,7 @@ export const searchArticleLeftMain =
   async (dispatch) => {
     dispatch(fetchArticleLeftStart());
     try {
-      const response = await axios.post(`${serverHost}/search-article/left`, {
+       await axios.post(`${serverHost}/search-article/left`, {
         publication: filterArticle,
         IdArticle: filterArticle.id,
       });
@@ -107,20 +108,25 @@ export const searchArticleLeftDelete = (IdArticle) => async (dispatch) => {
 };
 
 export const updateArticleLeft = (filterArticle) => async (dispatch) => {
+  console.log("updateArticleLeft called:", filterArticle); // Add this line for debugging
+
   dispatch(fetchArticleLeftStart());
-  console.log(filterArticle);
 
   try {
     const response = await axios.post(
-      `${serverHost}/search-article/left-update`,
-      filterArticle
-    );
+      `${serverHost}/search-article/left-update`,{
+        publication: filterArticle,
+        IdArticle: filterArticle.id,
+      });
     const updatedArticle = response.data;
+    console.log("Response from the server:", updatedArticle); // Add this line for debugging
     dispatch(updateArticleLeftSuccess(updatedArticle));
+    dispatch(searchArticleLeftGet());
   } catch (error) {
     console.error("Error updating the article:", error);
   }
 };
+
 
 
 export default searchArticlePublicLeftSlice.reducer;
