@@ -21,6 +21,7 @@ import LoadingCircle from "../Loading/LoadingCircle";
 import Error from "../Loading/Error/Error";
 import { getZaprosData } from "../store/Slice/searchProjectMainSlice";
 import { searchArticleLeftGet } from "../store/Slice/searchArticlePublicLeftSlice";
+import img123 from "./img/Главная.png";
 
 import photoTest from "./img/project_right3.jpg";
 
@@ -301,11 +302,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
           ) : (
             <div className={styles.card_item_1}>
               <div className={styles.card_img}>
-                <img
-                  className={styles.img_1}
-                  src="https://zoo69.ru/wp-content/uploads/2018/11/net-foto.png"
-                  alt="photo2"
-                />
+                <img className={styles.img_1} src={img123} alt="photo2" />
               </div>
             </div>
           )}
@@ -350,7 +347,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
           ></img>
         </div>
         <BlockHeader />
-        {/* <Mapbox3D /> */}
+        <Mapbox3D />
       </div>
       <div className={styles.icon_partner}>
         <img src="./assets/D1.png" alt="logo" />
