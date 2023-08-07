@@ -24,6 +24,7 @@ import Add from "./Add/Add";
 import SignUpPage from "./Login/SignUpPage";
 import axios from "axios";
 import ProjectCard from "./Project/ProjectCard";
+import CustomCursor from "./UI/CustomCursor/CustomCursor";
 
 
 export default function App() {
@@ -138,7 +139,8 @@ export default function App() {
               </Routes>
             </CSSTransition>
           </TransitionGroup>
-          {showFooter && <Footer />}
+            {showFooter && <Footer />}
+            {/* <CustomCursor /> */}
         </>
       )}
     </>

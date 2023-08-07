@@ -29,7 +29,7 @@
 
     &__item {
         display: block;
-        width: 70%;
+        width: 100%;
         font-family: var(--font-raleway);
         font-weight: 400;
         font-size: 1.25rem;
@@ -37,6 +37,7 @@
         background-color: var(--light-gray-C0C5CB);
         border-radius: 4px;
         padding: 1.5rem 2rem;
+        white-space: nowrap;
         color: var(--black-1D2E43);
 
         &.active {
@@ -49,14 +50,14 @@
         }
     }
 
-        &__item_svg {
-            color: var(--black-1D2E43);
-    
-            &.active {
-                background-color: var(--white-F6F6F6);
-                color: var(--black-1D2E43)
-            }
+    &__item_svg {
+        display: none;
+        fill: var(--light-gray-C0C5CB);
+
+        &.activeIcon {
+            fill: var(--white-F6F6F6);
         }
+    }
 }
 
 .preview {
@@ -266,18 +267,17 @@
         }
 
         &__block {
-                padding-left: 1.5rem;
-                    padding-right: 3rem;
-                    padding-top: 2rem;
-                    padding-bottom: 2rem;
+            padding-left: 1.5rem;
+            padding-right: 3rem;
+            padding-top: 2rem;
+            padding-bottom: 2rem;
         }
 
-                &__item { 
-                    text-align: center;
-                    padding: 1.5rem 1rem;
-                }
-
-    
+        &__item {
+            width: 70%;
+            text-align: center;
+            padding: 1.5rem 1rem;
+        }
 
         &__item_li {
             display: flex;
@@ -285,10 +285,15 @@
             justify-content: space-between;
 
         }
+
+        &__item_svg {
+            display: block ;
+            fill: var(--light-gray-C0C5CB);
+
+            &.activeIcon {
+                fill: var(--white-F6F6F6);
+            }
+        }
     }
 
-        .add_navbar_container__item_svg.active {
-            fill: red;
-            /* or whichever color you want */
-        }
 }
