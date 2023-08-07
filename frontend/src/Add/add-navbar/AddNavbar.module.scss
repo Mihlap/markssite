@@ -235,3 +235,24 @@
         }
     }
 }
+
+
+@media screen and (max-width: 1000px) {
+    .add_navbar_container {
+        position: fixed;
+        top: 0;
+        left: 0;
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        width: 60px;
+        transform: none;
+        list-style-type: none;
+        overflow: hidden;
+        transition: width .3s;
+
+        &:hover {
+            width: 300px;
+        }
+    }
+}
