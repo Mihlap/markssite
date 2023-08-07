@@ -9,7 +9,9 @@
  .all_button_div {
   position: absolute;
   top: 8%;
-  left: 1.4%;
+  left: 1.69rem;
+  cursor: pointer;
+  z-index: 1;
 }
 
 .section_project__block__card {
@@ -20,85 +22,147 @@
 
  .cart_project__block__card {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  padding-top: 30%;
+  padding-left: 1.69rem;
 }
 
 
-.cart_project__container__block__card {
-  
-}
-
-.project_content__wrapper__block__card {
-  /* display: flex;
-  width: 100%;
-  gap: 10px; */
-
-}
-
-.cart_project_title {
+.cart_project_title__block__card {
   display: flex;
-  flex-wrap: wrap;
-  word-break: break-all;
-  width: 50%;
-  font-family: var(--font-raleway);
-  font-size: 14px;
+  font-family: var( --font-unbounded);
+  font-size: 3rem;
   font-style: normal;
-  font-weight: var(--fw-700);
-  line-height: 20px;
-  color: var(--black-4E4E4E);
-  padding-top: 16px;
-  padding-left: 1.69rem;
+  font-weight: var(--fw-300);
+  line-height: 4rem;
+  color: var(--white-F6F6F6);
+  padding-top: 0.5rem;
 }
 
-.cart_project__content {
-  display: flex;
-  flex: 1;
-  flex-direction: row;
-  flex-wrap: wrap;
-  width: 50%;
-}
-
-.cart_project__widget {
+.cart_project__widget__block__card {
   display: flex;
   flex-direction: row;
-  /* width: fit-content; */
-  /* flex-wrap: wrap; */
-  grid-row-gap: 8px;
-  padding-top: 10.5rem;
-  padding-left: 1.69rem;
-  padding-bottom: 16px;
   color: var(--white-F6F6F6);
   font-family: var(--font-raleway);
-  font-size: 9px;
-  font-style: normal;
+  font-size: 0.5625rem;
   font-weight: 500;
   line-height: normal;
 }
 
 
-.cart_project__address {
+.cart_project__address__block__card {
   display: flex;
-  color: var(--gray-959DA6);
-  font-family: var(--font-raleway);
-  font-size: 10px;
+  color: var(--light-light-gray-EBECEE);
+  font-family: var(--font-inter);
+  font-size: 0.875rem;
   font-style: normal;
-  font-weight: var(--fw-400);
-  line-height: normal;
-  padding-top: 0px;
+  font-weight: var(--fw-300);
+  padding-top: 1rem;
 }
 
-.cart_project__address__svg {
+.cart_project__address__svg__block__card {
   display: flex;
   margin-left: 0.5rem;
   margin-right: 0.5rem;
   align-items: center;
 }
 
-.el_project_selectCompetencies {
-  margin-right: 6px;
+.el_project_selectCompetencies__block__card {
+  margin-right: 8px;
   border: 0.5px solid var(--white-F6F6F6);
   padding: 0.1875rem 0.375rem;
   border-radius: 2.125rem;
   max-width: fit-content;
+}
+
+.header_content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 2rem;
+  padding-bottom: 5.66rem;
+}
+
+/* <<=============== левый блок контента с информацией===============>> */
+
+.header_content_left {
+  width: 65%;
+  /* overflow: hidden; */
+  padding-right: 9.25rem;
+  padding-left: 1.75rem;
+}
+
+.header_content_left_custom {
+  /* padding-right: 10rem; */
+}
+
+.title_block {
+  align-items: center;
+  justify-content: center;
+  }
+
+.left_title {
+  position: relative;
+  font-family: var(--font-unbounded);
+  font-style: normal;
+  font-weight: var(--fw-300);
+  font-size: 2rem;
+  line-height: 2.5rem;
+  color: var(--black-1D2E43);
+}
+
+.left_meta {
+  font-family: var(--font-raleway);
+  font-style: normal;
+  font-weight: var(--fw-400);
+  font-size: 0.75rem;
+  line-height: 1rem;
+  color: var(--gray-959DA6);
+  border: 1px solid var(--gray-959DA6);
+  border-radius: 2.125rem;
+  padding: 0.25rem 1rem;
+  margin-left: 0.5rem;
+  align-items: center;
+  justify-content: center;
+}
+
+.left_meta_castom {
+  display: inline-block;
+  position: absolute;
+  bottom: 5px;
+  margin-left: 10px;
+}
+
+.title_text {
+  font-family: var(--font-raleway);
+  font-style: normal;
+  font-weight: var(--fw-400);
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-feature-settings: 'pnum' on, 'lnum' on;
+  color: var(--black-1D2E43);
+  padding-top: 1rem;
+  padding-bottom: 2rem;
+}
+.result_container {
+  display: flex;
+  gap: 1.81rem;
+}
+
+.result_number {
+  font-family: var(--font-unbounded);
+  font-style: normal;
+  font-weight: var(--fw-300);
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  color: var(--dark-gray-566272);
+}
+
+.result_text {
+  font-family: var(--font-raleway);
+  font-style: normal;
+  font-weight: var(--fw-400);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-feature-settings: 'pnum' on, 'lnum' on;
+  color: var(--gray-959DA6);
 }
