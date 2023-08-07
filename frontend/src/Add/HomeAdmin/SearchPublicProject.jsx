@@ -168,11 +168,13 @@ export default function SearchPublicProject({
             Укажите id проекта
           </label>
         </div>
-        <button
-          className={styles.home_admin_section__button}
-          onClick={filterProjectsById}
-          disabled={isButtonDisabled}
-        />
+        <div className={styles.home_admin_section__button_container_project}>
+          <button
+            className={styles.home_admin_section__button}
+            onClick={filterProjectsById}
+            disabled={isButtonDisabled}
+          />
+        </div>
         <div>
           {showError && <Message message={errorMessage} type="error" />}
         </div>
