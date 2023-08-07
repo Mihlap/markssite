@@ -140,7 +140,7 @@ export default function App() {
             </CSSTransition>
           </TransitionGroup>
             {showFooter && <Footer />}
-            <CustomCursor />
+            {/* <CustomCursor /> */}
         </>
       )}
     </>
