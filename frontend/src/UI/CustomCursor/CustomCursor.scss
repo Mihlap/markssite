@@ -1,0 +1,13 @@
+@import '../../App.css';
+
+.cursor {
+    background-color: var(--black-1D2E43);
+    height: 48px;
+    width: 48px;
+    border-radius: 50%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    pointer-events: none;
+}

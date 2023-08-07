@@ -29,7 +29,7 @@
 
     &__item {
         display: block;
-        width: 70%;
+        width: 100%;
         font-family: var(--font-raleway);
         font-weight: 400;
         font-size: 1.25rem;
@@ -51,6 +51,7 @@
     }
 
     &__item_svg {
+        display: none;
         fill: var(--light-gray-C0C5CB);
 
         &.activeIcon {
@@ -273,6 +274,7 @@
         }
 
         &__item {
+            width: 70%;
             text-align: center;
             padding: 1.5rem 1rem;
         }
@@ -282,6 +284,15 @@
             align-items: center;
             justify-content: space-between;
 
+        }
+
+        &__item_svg {
+            display: block ;
+            fill: var(--light-gray-C0C5CB);
+
+            &.activeIcon {
+                fill: var(--white-F6F6F6);
+            }
         }
     }
 

@@ -13,6 +13,7 @@
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.4.0",
     "dotenv": "^16.0.3",
+    "framer-motion": "^10.15.1",
     "google-libphonenumber": "^3.2.32",
     "gsap": "^3.11.5",
     "libphonenumber-js": "^1.10.36",
