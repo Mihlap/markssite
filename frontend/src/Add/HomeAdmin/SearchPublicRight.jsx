@@ -45,11 +45,13 @@ export default function SearchPublicRight({
           Укажите id статьи
         </label>
       </div>
-      <button
-        className={styles.home_admin_section__button}
-        onClick={filterArticleTwoPublic}
-        disabled={isBtnDisabledPublicTwo}
-      />
+      <div className={styles.home_admin_section__button_container_articles}>
+        <button
+          className={styles.home_admin_section__button}
+          onClick={filterArticleTwoPublic}
+          disabled={isBtnDisabledPublicTwo}
+        />
+      </div>
     </div>
   );
 }
