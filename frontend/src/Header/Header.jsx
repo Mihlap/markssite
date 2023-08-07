@@ -24,6 +24,7 @@ import { searchArticleLeftGet } from "../store/Slice/searchArticlePublicLeftSlic
 import img123 from "./img/Главная.png";
 
 import photoTest from "./img/project_right3.jpg";
+import { textEnter, textLeave } from "../store/Slice/cursorSlice";
 
 SwiperCore.use([Navigation]);
 const Host = process.env.REACT_APP_SERVER_HOST;
@@ -40,6 +41,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
   const [loadingArticle, setLoadingArticle] = useState(false);
 
   const [data, setData] = useState(null);
+  const cursorVariant = useSelector((state) => state.cursor);
   const { article, loading, error } = useSelector((state) => state.article);
   const projects = useSelector((state) => state.searchproject.projects);
   const ArticleLeft = useSelector(
@@ -48,6 +50,14 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
   const MapArticle = ArticleLeft.map((el) => el.publication.publication);
 
   const dispatch = useDispatch();
+
+  const handleMouseEnter = () => {
+    dispatch(textEnter());
+  };
+
+  const handleMouseLeave = () => {
+    dispatch(textLeave());
+  };
 
   useEffect(() => {
     dispatch(getFetchFormArticle());
@@ -241,7 +251,13 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
         ))} */}
       </div>
       <div className={styles.header_desctop_block}>
-        <h1 className={styles.desctop_title}>Награды и публикации</h1>
+        <h1
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          className={styles.desctop_title}
+        >
+          Награды и публикации
+        </h1>
         <div className={styles.desctop_test}>
           Наша компания участвует в многочисленных выставках, конференциях
           <br /> и конкурсах. Предлагаем ознакомиться с некоторыми докладами
@@ -347,7 +363,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
           ></img>
         </div>
         <BlockHeader />
-        <Mapbox3D />
+        {/* <Mapbox3D /> */}
       </div>
       <div className={styles.icon_partner}>
         <img src="./assets/D1.png" alt="logo" />
