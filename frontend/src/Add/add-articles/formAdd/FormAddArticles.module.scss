@@ -496,7 +496,8 @@
     padding: 16px 32px;
     margin: 1rem 0rem;
     border-radius: 6px;
-    border: dashed;
+    border: dashed 1px;
+    
     color: var(--salmon-FF7F6A);
 
     &__svg {

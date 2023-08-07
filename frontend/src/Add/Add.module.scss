@@ -4,3 +4,9 @@
     padding-left: 27.5%;
     height: 100vh;
 }
+
+@media screen and (max-width: 1000px) { 
+    .add_container {
+            padding-left: 0px;
+        }
+}

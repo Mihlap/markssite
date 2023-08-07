@@ -108,22 +108,23 @@ export default function SearchPublicLeft({
           Укажите id статьи
         </label>
       </div>
+      <div className={styles.home_admin_section__button_container_articles}>
+        {(!arrIdArticleLeft || arrIdArticleLeft.length === 0) && (
+          <button
+            className={styles.home_admin_section__button}
+            onClick={filterArticleOnePublic}
+            disabled={isBtnDisabledPublicOne}
+          />
+        )}
 
-      {(!arrIdArticleLeft || arrIdArticleLeft.length === 0) && (
-        <button
-          className={styles.home_admin_section__button}
-          onClick={filterArticleOnePublic}
-          disabled={isBtnDisabledPublicOne}
-        />
-      )}
-
-      {arrIdArticleLeft?.length > 0 && (
-        <button
-          className={styles.home_admin_section__button_replacement}
-          onClick={handlerUpdateReplacement}
-          disabled={isBtnDisabledPublicOne}
-        />
-      )}
+        {arrIdArticleLeft?.length > 0 && (
+          <button
+            className={styles.home_admin_section__button_replacement}
+            onClick={handlerUpdateReplacement}
+            disabled={isBtnDisabledPublicOne}
+          />
+        )}
+      </div>
     </div>
   );
 }

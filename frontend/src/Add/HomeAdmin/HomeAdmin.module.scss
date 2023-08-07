@@ -4,6 +4,7 @@
     height: 100vh;
     padding-left: 3rem;
     padding-top: 7.5rem;
+    padding-right: 3rem;
 
     &__title {
         font-family: var(--font-unbounded);
@@ -18,7 +19,7 @@
     &__article_container {
         display: flex;
         gap: 64px;
-        width: 62rem;
+        width: 100%;
         padding-bottom: 6rem;
     }
 
@@ -28,13 +29,20 @@
 
     &__block_search {
         position: relative;
-        width: 62rem;
+        width: 100%;
         background-color: var(--light-light-gray-EBECEE);
         border-radius: 0.38rem;
         display: inline-flex;
         flex-direction: column;
         padding: 2.62rem 1.5rem 1.5rem 1.5rem;
+    }
 
+    &__button_container_project {
+        padding-right: 70%;
+    }
+
+    &__button_container_articles {
+        padding-right: 40%;
     }
 
     &__button {
@@ -43,7 +51,7 @@
         justify-content: center;
         align-items: center;
         margin-top: 2rem;
-        width: 14rem;
+        width: 100%;
         border-radius: 4.125rem;
         border: none;
         background-color: var(--dark-blue-389FFF);
@@ -69,34 +77,34 @@
 
     &__button_replacement {
         display: flex;
-            padding: 1rem 1rem;
-            justify-content: center;
-            align-items: center;
-            margin-top: 2rem;
-            width: 14rem;
-            border-radius: 4.125rem;
-            border: none;
-            background-color: var(--dark-blue-389FFF);
-        
-        
-            &::before {
-                content: "Заменить публикацию";
-                color: var(--white-F6F6F6);
-                font-variant-numeric: lining-nums proportional-nums;
-                font-family: var(--font-raleway);
-                font-size: 1rem;
-                font-style: normal;
-                font-weight: 400;
-                line-height: 1.5rem;
-            }
-        
-            &[disabled] {
-                transition: all 0.3s ease-in-out;
-                opacity: 0.3;
-                pointer-events: none;
-            }
+        padding: 1rem 1rem;
+        justify-content: center;
+        align-items: center;
+        margin-top: 2rem;
+        width: 14rem;
+        border-radius: 4.125rem;
+        border: none;
+        background-color: var(--dark-blue-389FFF);
+
+
+        &::before {
+            content: "Заменить публикацию";
+            color: var(--white-F6F6F6);
+            font-variant-numeric: lining-nums proportional-nums;
+            font-family: var(--font-raleway);
+            font-size: 1rem;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 1.5rem;
+        }
+
+        &[disabled] {
+            transition: all 0.3s ease-in-out;
+            opacity: 0.3;
+            pointer-events: none;
+        }
     }
-    
+
 
     &__id_container {
         display: flex;
@@ -121,7 +129,7 @@
     }
 
     &__circle_block {
-    display: grid;
+        display: grid;
         grid-template-columns: 1fr 1fr;
         grid-gap: 3px;
         margin-right: 0.63rem;
@@ -146,11 +154,11 @@
         border-radius: 1rem;
     }
 
-   &__moved {
-       /* Стили для элемента, который только что был перемещен */
-       /* Например, измените цвет фона */
-       background-color: var(--green-00FF00);
-   }
+    &__moved {
+        /* Стили для элемента, который только что был перемещен */
+        /* Например, измените цвет фона */
+        background-color: var(--green-00FF00);
+    }
 
     &__button_del {
         display: flex;
@@ -159,58 +167,58 @@
 
     &__ok {
         position: absolute;
-            top: -10%;
-            right: 10px;
+        top: -10%;
+        right: 10px;
         color: var(--white-F6F6F6);
-            display: inline-flex;
-            padding: 8px 19px;
-            align-items: flex-start;
-            gap: 10px;
-            background: var(--gray-959DA6);
-            border-radius: 1rem;
+        display: inline-flex;
+        padding: 8px 19px;
+        align-items: flex-start;
+        gap: 10px;
+        background: var(--gray-959DA6);
+        border-radius: 1rem;
 
-            &::after {
-                    content: "";
-                    position: absolute;
-                    font-family: var(--font-raleway);
-                    font-style: normal;
-                    font-size: 12px;
-                    font-weight: 400;
-                    line-height: 16px;
-                    bottom: -16px;
-                    left: 20px;
-                    border: 8px solid transparent;
-                    border-top-color: var(--gray-959DA6);
-            
-                }
+        &::after {
+            content: "";
+            position: absolute;
+            font-family: var(--font-raleway);
+            font-style: normal;
+            font-size: 12px;
+            font-weight: 400;
+            line-height: 16px;
+            bottom: -16px;
+            left: 20px;
+            border: 8px solid transparent;
+            border-top-color: var(--gray-959DA6);
+
+        }
     }
 
     &__error {
         position: absolute;
-            top: -10%;
-            right: 10px;
-            color: var(--white-F6F6F6);
-            display: inline-flex;
-            padding: 8px 19px;
-            align-items: flex-start;
-            gap: 10px;
-            background: var(--crimson-E00747);
-            border-radius: 1rem;
-        
-            &::after {
-                content: "";
-                position: absolute;
-                font-family: var(--font-raleway);
-                font-style: normal;
-                font-size: 12px;
-                font-weight: 400;
-                line-height: 16px;
-                bottom: -16px;
-                left: 20px;
-                border: 8px solid transparent;
-                border-top-color: var(--crimson-E00747);
-        
-            }
+        top: -10%;
+        right: 10px;
+        color: var(--white-F6F6F6);
+        display: inline-flex;
+        padding: 8px 19px;
+        align-items: flex-start;
+        gap: 10px;
+        background: var(--crimson-E00747);
+        border-radius: 1rem;
+
+        &::after {
+            content: "";
+            position: absolute;
+            font-family: var(--font-raleway);
+            font-style: normal;
+            font-size: 12px;
+            font-weight: 400;
+            line-height: 16px;
+            bottom: -16px;
+            left: 20px;
+            border: 8px solid transparent;
+            border-top-color: var(--crimson-E00747);
+
+        }
     }
 }
 
@@ -233,7 +241,7 @@
 
 /* Стили для кнопки с иконкой при наведении на неё */
 .home_admin_section__button_del:hover svg path {
-    stroke: red;
+    stroke: var(--blue-75BBFD);
     /* Здесь вы можете указать красный цвет или любой другой цвет */
 }
 
@@ -301,5 +309,15 @@
     &:required,
     &:invalid {
         box-shadow: none;
+    }
+}
+
+@media screen and (max-width: 1000px) {
+    .home_admin_section {
+        padding-left: 6rem;
+
+        &__button_container_articles {
+            padding-right: 20%;
+        }
     }
 }
