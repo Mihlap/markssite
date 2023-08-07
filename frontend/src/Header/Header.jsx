@@ -258,7 +258,11 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
         >
           Награды и публикации
         </h1>
-        <div className={styles.desctop_test}>
+        <div
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+          className={styles.desctop_test}
+        >
           Наша компания участвует в многочисленных выставках, конференциях
           <br /> и конкурсах. Предлагаем ознакомиться с некоторыми докладами
         </div>

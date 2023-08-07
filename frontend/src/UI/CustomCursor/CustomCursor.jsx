@@ -13,8 +13,8 @@ export default function CustomCursor() {
   useEffect(() => {
     const mouseMove = (e) => {
       setMousePosition({
-        x: e.clientX,
-        y: e.clientY,
+        x: e.clientX -16,
+        y: e.clientY -16,
       });
     };
 
