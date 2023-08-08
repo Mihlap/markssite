@@ -4,6 +4,7 @@ import styles from "./HomeAdmin.module.scss";
 import { useSelector } from "react-redux";
 import { arrIdProjectSelector } from "./utils/HomeAdminSelectors";
 import { arrIdArticlesLeftSelector } from "./utils/ArticleLeftSelectors";
+import { arrIdArticlesRightSelector } from "./utils/ArticleRightSelectors";
 import SearchPublicProject from "./SearchPublicProject";
 import SearchPublicLeft from "./SearchPublicLeft";
 import SearchPublicRight from "./SearchPublicRight";
@@ -35,7 +36,11 @@ export default function HomeAdmin({ projects, articles }) {
 
   const arrIdProject = useSelector(arrIdProjectSelector);
   const arrIdArticleLeft = useSelector(arrIdArticlesLeftSelector);
-  // const arrIdArticleRight = 
+  const arrIdArticleRight = useSelector(arrIdArticlesRightSelector);
+
+  console.log(arrIdArticleLeft);
+  console.log(arrIdArticleRight);
+
 
   return (
     <section className={styles.home_admin_section}>
@@ -53,6 +58,7 @@ export default function HomeAdmin({ projects, articles }) {
         />
         <SearchPublicRight
           articles={articles}
+          arrIdArticleRight={arrIdArticleRight}
           saveIdTwo={saveIdTwo}
           setSaveIdTwo={setSaveIdTwo}
           searcIdTwo={searcIdTwo}

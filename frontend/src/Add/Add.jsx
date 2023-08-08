@@ -11,6 +11,7 @@ import { getFetchForm } from "../store/Slice/projectSlice";
 import { getZaprosData } from "../store/Slice/searchProjectMainSlice";
 import { getFetchFormArticle } from "../store/Slice/articleSlice";
 import { searchArticleLeftGet } from "../store/Slice/searchArticlePublicLeftSlice";
+import { searchArticleRightGet } from "../store/Slice/searchArticlePublicRightSlice";
 
 export default function Add({ user, setNavBarOpen, setShowFooter }) {
   const dispatch = useDispatch();
@@ -26,7 +27,8 @@ export default function Add({ user, setNavBarOpen, setShowFooter }) {
       dispatch(getFetchForm());
      dispatch(getZaprosData());
      dispatch(getFetchFormArticle());
-     dispatch(searchArticleLeftGet())
+     dispatch(searchArticleLeftGet());
+     dispatch(searchArticleRightGet());
    }, [dispatch]);
   
   //  useEffect(() => {
