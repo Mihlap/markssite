@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import "./CustomCursor.scss";
 import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import { mouseDown, mouseUp } from "../../store/Slice/cursorSlice";
 
 export default function CustomCursor() {
   const [mousePosition, setMousePosition] = useState({
@@ -10,20 +12,35 @@ export default function CustomCursor() {
   });
   const cursorVariant = useSelector((state) => state.cursor);
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
     const mouseMove = (e) => {
       setMousePosition({
-        x: e.clientX -16,
-        y: e.clientY -16,
+        x: e.clientX - 16,
+        y: e.clientY - 16,
       });
     };
 
+    const handleMouseDown = () => {
+      dispatch(mouseDown());
+    };
+
+    const handleMouseUp = () => {
+      dispatch(mouseUp());
+    };
+
     window.addEventListener("mousemove", mouseMove);
+    window.addEventListener("mousedown", handleMouseDown);
+    window.addEventListener("mouseup", handleMouseUp);
 
     return () => {
       window.removeEventListener("mousemove", mouseMove);
+      window.removeEventListener("mousedown", handleMouseDown);
+      window.removeEventListener("mouseup", handleMouseUp);
     };
-  }, []);
+  }, [dispatch]);
+
 
   const variants = {
     default: {
@@ -50,6 +67,16 @@ export default function CustomCursor() {
       border: "1px solid #F6F6F6",
       backgroundColor: "rgba(255, 255, 255, 0.7)",
       animation: "gradient 5s ease infinite",
+    },
+    mouseDown: {
+      scale: 1.7,
+      x: mousePosition.x,
+      y: mousePosition.y,
+    },
+    mouseUp: {
+      scale: 1,
+      x: mousePosition.x,
+      y: mousePosition.y,
     },
   };
 
