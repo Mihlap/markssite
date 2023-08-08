@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 const serverHost = process.env.REACT_APP_SERVER_HOST;
 
-const searchArticlePublicLeftSlice = createSlice({
+const searchArticlePublicRightSlice = createSlice({
   name: "searchArticlePublicRight",
   initialState: {
     articleRight: [],
@@ -24,7 +24,9 @@ const searchArticlePublicLeftSlice = createSlice({
     },
     deleteArticleRightSuccess(state, action) {
       const ArticleId = action.payload;
-      state.articleRight = state.articleRight.filter((el) => el.id !== ArticleId);
+      state.articleRight = state.articleRight.filter(
+        (el) => el.id !== ArticleId
+      );
     },
     deleteArticleRightFailure(state, action) {
       state.error = action.payload;
@@ -45,7 +47,7 @@ export const {
   deleteArticleRightSuccess,
   deleteArticleRightFailure,
   updateArticleRightSuccess,
-} = searchArticlePublicLeftSlice.actions;
+} = searchArticlePublicRightSlice.actions;
 
 export const getUpdatedArticles = () => async (dispatch) => {
   dispatch(fetchArticleRightStart());
@@ -61,7 +63,7 @@ export const getUpdatedArticles = () => async (dispatch) => {
 };
 
 export const searchArticleRightMain =
-  (filterArticle, setSearcIdOne, setSaveIdOne, setIsBtnDisabledPublicOne) =>
+  (filterArticle, setSearcIdTwo, setSaveIdTwo, setIsBtnDisabledPublicTwo) =>
   async (dispatch) => {
     dispatch(fetchArticleRightStart());
     try {
@@ -70,9 +72,9 @@ export const searchArticleRightMain =
         IdArticle: filterArticle.id,
       });
       dispatch(searchArticleRightGet());
-      setSearcIdOne("");
-      setSaveIdOne(null);
-      setIsBtnDisabledPublicOne(true);
+      setSearcIdTwo("");
+      setSaveIdTwo(null);
+      setIsBtnDisabledPublicTwo(true);
     } catch (error) {
       console.log("Axios request error");
       console.error("Ошибка при отправке на бекенд:", error);
@@ -84,8 +86,11 @@ export const searchArticleRightGet = () => async (dispatch) => {
   dispatch(fetchArticleRightStart());
 
   try {
-    const response = await axios.get(`${serverHost}/search-articles/right-get`);
-    const data = response.data;
+    const response = await axios.get(
+      `${serverHost}/search-articles/right-get`
+    );
+      const data = response.data;
+      console.log(data);
     dispatch(fetchArticleRightSuccess(data));
   } catch (error) {
     dispatch(fetchArticleRightFailure(error.message));
@@ -133,4 +138,4 @@ export const updateArticleRight =
     }
   };
 
-export default searchArticlePublicLeftSlice.reducer;
+export default searchArticlePublicRightSlice.reducer;

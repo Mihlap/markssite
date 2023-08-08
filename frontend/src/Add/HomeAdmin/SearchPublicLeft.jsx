@@ -7,11 +7,11 @@ import { getUpdatedArticles, searchArticleLeftDelete, searchArticleLeftMain, upd
 export default function SearchPublicLeft({
   articles,
   arrIdArticleLeft,
+  saveIdOne,
+  searcIdOne,
+  setSaveIdOne,
   setSearcIdOne,
   setIsBtnDisabledPublicOne,
-  saveIdOne,
-  setSaveIdOne,
-  searcIdOne,
   isBtnDisabledPublicOne,
 }) {
   const dispatch = useDispatch();
@@ -21,12 +21,6 @@ export default function SearchPublicLeft({
     setIsBtnDisabledPublicOne(event.target.value === "");
   };
 
-  //  const handleKeyPress = (event) => {
-  //    // Проверяем, является ли нажатая клавиша клавишей "Enter" (код клавиши 13)
-  //    if (event.key === "Enter") {
-  //      filterArticleOnePublic(); // Выполняем поиск
-  //    }
-  //  };
 
   const filterArticleOnePublic = async () => {
     const filterArticle = articles.find(

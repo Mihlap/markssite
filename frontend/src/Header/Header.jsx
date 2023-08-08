@@ -25,6 +25,7 @@ import img123 from "./img/Главная.png";
 
 import photoTest from "./img/project_right3.jpg";
 import { textEnter, textLeave, imageHover } from "../store/Slice/cursorSlice";
+import { searchArticleRightGet } from "../store/Slice/searchArticlePublicRightSlice";
 
 SwiperCore.use([Navigation]);
 const Host = process.env.REACT_APP_SERVER_HOST;
@@ -44,10 +45,16 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
   const cursorVariant = useSelector((state) => state.cursor);
   const { article, loading, error } = useSelector((state) => state.article);
   const projects = useSelector((state) => state.searchproject.projects);
+
   const ArticleLeft = useSelector(
     (state) => state.searchArticlePublicLeft.articleLeft
+    );
+  const MapArticle = ArticleLeft?.map((el) => el.publication.publication);
+
+  const ArticleRight = useSelector(
+    (state) => state.searchArticlePublicRight.articleRight
   );
-  const MapArticle = ArticleLeft.map((el) => el.publication.publication);
+  const MapArticleRight = ArticleRight?.map((el) => el.publication.publication);
 
   const dispatch = useDispatch();
 
@@ -68,12 +75,15 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
     dispatch(getFetchFormArticle());
     dispatch(getZaprosData());
     dispatch(searchArticleLeftGet());
+    dispatch(searchArticleRightGet());
   }, [dispatch]);
 
   useEffect(() => {
     const storedData = localStorage.getItem("selectedItem");
     setData(storedData);
   }, []);
+    console.log(ArticleRight);
+
 
   const colors = {
     Архитектура: "#FF7F6A",
@@ -333,38 +343,54 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
               </div>
             </div>
           )}
-          <div className={styles.card_item_2}>
-            <div className={styles.card_img}>
-              <img
-                className={styles.img_2}
-                src={photoTest}
-                alt="image2"
-                onMouseEnter={handleMouseHover}
-                onMouseLeave={handleMouseLeave}
-              />
+
+          {MapArticleRight && MapArticleRight.length > 0 ? (
+            MapArticleRight.map((el) => {
+              // your existing code
+              const firstPhoto = el.imageTitle.split(", ")[0];
+
+              return (
+                <div key={el.id} className={styles.card_item_2}>
+                  <div className={styles.card_img}>
+                    <img
+                      onMouseEnter={handleMouseHover}
+                      onMouseLeave={handleMouseLeave}
+                      className={styles.img_2}
+                      src={`${Host}/images/imageArticle/${firstPhoto}`}
+                      alt="photo1"
+                    />
+                  </div>
+                  <div className={styles.card_text}>
+                    <h3>{el.title}</h3>
+                    <span>{el.dataMonthYear}</span>
+                  </div>
+                  <button className={styles.card_button}>
+                    <svg
+                      width="32"
+                      height="32"
+                      viewBox="0 0 32 32"
+                      fill="currentColor"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <circle cx="16" cy="16" r="16" fill="#566272" />
+                      <path
+                        d="M6 16H16M26 16H16M16 16V6M16 16V26"
+                        stroke="#F6F6F6"
+                        strokeWidth="2"
+                        strokeLinecap="square"
+                      />
+                    </svg>
+                  </button>
+                </div>
+              );
+            })
+          ) : (
+            <div className={styles.card_item_2}>
+              <div className={styles.card_img}>
+                <img className={styles.img_2} src={img123} alt="photo2" />
+              </div>
             </div>
-            <div className={styles.card_text}>
-              <h3>Смотр-конкурс Стекло в архитектуре 2022</h3>
-              <span>Номинация Объект • нового строительства</span>
-            </div>
-            <button className={styles.card_button}>
-              <svg
-                width="32"
-                height="32"
-                viewBox="0 0 32 32"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <circle cx="16" cy="16" r="16" fill="#566272" />
-                <path
-                  d="M6 16H16M26 16H16M16 16V6M16 16V26"
-                  stroke="#F6F6F6"
-                  strokeWidth="2"
-                  strokeLinecap="square"
-                />
-              </svg>
-            </button>
-          </div>
+          )}
         </div>
         <div className={styles.names_contents}>
           <div className={styles.name_11}>+11</div>
