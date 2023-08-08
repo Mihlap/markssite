@@ -7,6 +7,7 @@ import authSlice from './Slice/authSlice';
 import articleSlice from "./Slice/articleSlice";
 import searchProjectMainSlice from "./Slice/searchProjectMainSlice";
 import searchArticlePublicLeft from "./Slice/searchArticlePublicLeftSlice";
+import searchArticlePublicRight from "./Slice/searchArticlePublicRightSlice";
 import cursorReducer from "./Slice/cursorSlice";
 
 
@@ -20,6 +21,7 @@ export default configureStore({
     article: articleSlice,
     searchproject: searchProjectMainSlice,
     searchArticlePublicLeft: searchArticlePublicLeft,
+    searchArticlePublicRight: searchArticlePublicRight,
     cursor: cursorReducer,
   },
 });

@@ -35,6 +35,7 @@ export default function HomeAdmin({ projects, articles }) {
 
   const arrIdProject = useSelector(arrIdProjectSelector);
   const arrIdArticleLeft = useSelector(arrIdArticlesLeftSelector);
+  // const arrIdArticleRight = 
 
   return (
     <section className={styles.home_admin_section}>

@@ -24,7 +24,7 @@ import { searchArticleLeftGet } from "../store/Slice/searchArticlePublicLeftSlic
 import img123 from "./img/Главная.png";
 
 import photoTest from "./img/project_right3.jpg";
-import { textEnter, textLeave } from "../store/Slice/cursorSlice";
+import { textEnter, textLeave, imageHover } from "../store/Slice/cursorSlice";
 
 SwiperCore.use([Navigation]);
 const Host = process.env.REACT_APP_SERVER_HOST;
@@ -58,6 +58,11 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
   const handleMouseLeave = () => {
     dispatch(textLeave());
   };
+
+  const handleMouseHover = () => {
+     console.log("Mouse hovered over image");
+    dispatch(imageHover())
+  }
 
   useEffect(() => {
     dispatch(getFetchFormArticle());
@@ -290,6 +295,8 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
                 <div key={el.id} className={styles.card_item_1}>
                   <div className={styles.card_img}>
                     <img
+                      onMouseEnter={handleMouseHover}
+                      onMouseLeave={handleMouseLeave}
                       className={styles.img_1}
                       src={`${Host}/images/imageArticle/${firstPhoto}`}
                       alt="photo1"
@@ -328,7 +335,13 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
           )}
           <div className={styles.card_item_2}>
             <div className={styles.card_img}>
-              <img className={styles.img_2} src={photoTest} alt="image2" />
+              <img
+                className={styles.img_2}
+                src={photoTest}
+                alt="image2"
+                onMouseEnter={handleMouseHover}
+                onMouseLeave={handleMouseLeave}
+              />
             </div>
             <div className={styles.card_text}>
               <h3>Смотр-конкурс Стекло в архитектуре 2022</h3>
