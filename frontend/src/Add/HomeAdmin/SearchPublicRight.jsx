@@ -1,5 +1,8 @@
 import React from 'react'
 import styles from "./HomeAdmin.module.scss";
+import { useDispatch } from "react-redux";
+import { getUpdatedArticles, searchArticleRightDelete, searchArticleRightMain } from '../../store/Slice/searchArticlePublicRightSlice';
+
 
 
 export default function SearchPublicRight({
@@ -11,6 +14,8 @@ export default function SearchPublicRight({
   setIsBtnDisabledPublicTwo,
   isBtnDisabledPublicTwo,
 }) {
+  const dispatch = useDispatch();
+  
   const handleSearchTwoPublic = (event) => {
     setSearcIdTwo(event.target.value);
     setIsBtnDisabledPublicTwo(event.target.value === "");
@@ -23,9 +28,32 @@ export default function SearchPublicRight({
 
     if (filterArticle) {
       console.log("найденная вторааааая публикация", filterArticle);
+      try {
+        await dispatch(
+          searchArticleRightMain(
+            filterArticle,
+            setSearcIdTwo,
+            setSaveIdTwo,
+            searcIdTwo,
+            setIsBtnDisabledPublicTwo
+          )
+        );
+      } catch (error) {}
     }
     setIsBtnDisabledPublicTwo(true);
   };
+
+  const handleArticleRightDelete = (formId) => {
+    dispatch(searchArticleRightDelete(formId))
+      .then(() => {
+        dispatch(getUpdatedArticles());
+      })
+      .catch((error) => {
+        console.log("Ошибка при удалении второй статьи:", error);
+      });
+  }
+
+
   return (
     <div className={styles.home_admin_section__block_search}>
       <div className={`${styles.form__group} ${styles.field}`}>
