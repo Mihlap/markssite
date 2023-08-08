@@ -84,7 +84,7 @@ export default function PrimePark() {
   return (
     <section className={styles.section}>
       <img className={styles.header_img} src={img} alt="" />
-      <div className={styles.container}>
+      
         <div className={styles.header_container}>
           <div className={styles.header_img_title}>
             <AllProjectsButton />
@@ -95,6 +95,7 @@ export default function PrimePark() {
               Россия, Москва &#8226; Апрель 2021
             </div>
           </div>
+          <div className={styles.container}>
           <div className={styles.header_content}>
             <div ref={refs.blockLeft} className={styles.header_content_left}>
               <div className={styles.title_block}>
@@ -193,8 +194,8 @@ export default function PrimePark() {
             </div>
           </div>
         </div>
-      </div>
-      <div className={styles.blockImg}>
+        </div>
+        <div className={styles.blockImg}>
         <div className={styles.container}>
           <div className={styles.item}>
             <img
