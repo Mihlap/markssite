@@ -12,7 +12,7 @@ const projectRouter = require('./Routes/projectRouter');
 const articleRouter = require('./Routes/Articles/articleRouter');
 const searchRouter = require('./Routes/searchRouter');
 const searchArticleLeft = require('./Routes/Articles/searchArticleLeftRouter');
-
+const searchArticleRight = require('./Routes/Articles/searchArticleRightRouter');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -60,6 +60,7 @@ app.use('/api-project', projectRouter);
 app.use('/api-article', articleRouter);
 app.use('/search', searchRouter);
 app.use('/search-article', searchArticleLeft);
+app.use('/search-articles', searchArticleRight);
 
 app.listen(PORT, () => {
   console.log(`Старт server --->🔥 ${PORT} 🔥<---`);

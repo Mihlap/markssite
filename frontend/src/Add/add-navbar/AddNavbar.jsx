@@ -168,8 +168,8 @@ const logouthandler = async () => {
                   <g id="company">
                     <path
                       id="Subtract"
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
+                      fillRule="evenodd"
+                      clipRule="evenodd"
                       d="M25.3333 4H6.66667C5.2 4 4 5.2 4 6.66667V25.3333C4 26.8 5.2 28 6.66667 28H25.3333C26.8 28 28 26.8 28 25.3333V6.66667C28 5.2 26.8 4 25.3333 4ZM7 21H10.3105V13.1609L14.8758 21H17.0985L21.7066 13.1609V21H25V10H20.045L16.0021 16.8709L12.0236 10H7V21Z"
                     />
                   </g>

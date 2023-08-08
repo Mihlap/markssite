@@ -82,11 +82,14 @@
 
 
 .header_desctop_block {
+  display: inline-flex;
+  flex-direction: column;
   padding-left: 263px;
   padding-top: 80px;
 }
 
 .desctop_title {
+  display: inline-block;
   font-family: var(--font-unbounded);
   font-style: normal;
   font-weight: var(--fw-300);
@@ -95,6 +98,7 @@
 }
 
 .desctop_test {
+  display: inline-block;
   font-family: var(--font-raleway);
   font-style: normal;
   font-weight: var(--fw-400);
