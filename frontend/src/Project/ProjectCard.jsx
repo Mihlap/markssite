@@ -28,14 +28,18 @@ gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 const Host = process.env.REACT_APP_SERVER_HOST;
 
 const ProjectCard = () => {
-  // const [projects, setProjects] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState(null);
+  // const [currentIndex, setCurrentIndex] = useState(null);
   const { id } = useParams();
   const dispatch = useDispatch();
   const sliderCardRef = useRef(null);
   const slidesCard = useSelector((state) => state.project.projects);
   const project = slidesCard.find((item) => item.id === parseInt(`${id}`));
   const projects = useSelector((state) => state.project.projects);
+
+  const [enableVerticalScroll, setEnableVerticalScroll] = useState(true);
+  const [isHorizontalScroll, setIsHorizontalScroll] = useState(false);
+  const [isAtRightEdge, setIsAtRightEdge] = useState(false);
+  const [scrollingMode, setScrollingMode] = useState("vertical");
 
   const refs = {
     title: useRef(null),
@@ -121,9 +125,141 @@ const ProjectCard = () => {
     Инженерия: "#90B734",
   };
 
+  const handleScroll = () => {
+    const el = sliderCardRef.current;
+    if (el) {
+      const rect = el.getBoundingClientRect();
+      const isSliderInView = rect.top <= window.innerHeight && rect.bottom >= 0;
+      setEnableVerticalScroll(!isSliderInView);
 
-  console.log(project, "++++++++++++++++++++++++++++++++++");
-  console.log(projects, "=========================");
+      if (projects) {
+        if (isSliderInView && el.scrollLeft > 0) {
+          setEnableVerticalScroll(false);
+          setIsHorizontalScroll(false); // Disable vertical scrolling
+        } else if (
+          !isSliderInView &&
+          el.scrollLeft + el.clientWidth >= el.scrollWidth
+        ) {
+          setEnableVerticalScroll(true);
+          setIsHorizontalScroll(false);
+        } else if (!isSliderInView && el.scrollLeft <= 0) {
+          setEnableVerticalScroll(true);
+          setIsHorizontalScroll(false);
+        } else if (
+          !isSliderInView &&
+          el.scrollLeft + el.clientWidth >= el.scrollWidth &&
+          el.scrollTop + el.clientHeight >= el.scrollHeight
+        ) {
+          setEnableVerticalScroll(true);
+          setIsHorizontalScroll(false);
+        }
+      }
+    }
+
+    if (el) {
+      const isRightEdge = el.scrollLeft + el.clientWidth >= el.scrollWidth;
+      setIsAtRightEdge(isRightEdge);
+    }
+  };
+
+  const onVerticalScroll = (e) => {
+    const el = sliderCardRef.current;
+    const isScrollingUp = e.deltaY < 0;
+    const isAtTop = el.scrollTop <= 0;
+    const isAtBottom = el.scrollTop + el.clientHeight >= el.scrollHeight;
+
+    if (isScrollingUp && isAtTop) {
+      setEnableVerticalScroll(false);
+      el.scrollLeft += e.deltaY;
+    } else if (!isAtBottom) {
+      el.scrollTo({
+        top: el.scrollTop + e.deltaY,
+        behavior: "smooth",
+      });
+    } else {
+      e.preventDefault();
+    }
+  };
+
+  const onWheel = (e) => {
+    const el = sliderCardRef.current;
+    const isScrollingRight = e.deltaY >= 0;
+    const isAtRightEdge = el.scrollLeft + el.clientWidth >= el.scrollWidth;
+    const isAtBottom = el.scrollTop + el.clientHeight >= el.scrollHeight;
+    const isAtLeftEdge = el.scrollLeft <= 0;
+    const isAtTop = el.scrollTop <= 0;
+
+    if (
+      isScrollingRight &&
+      isAtRightEdge &&
+      isAtBottom &&
+      !isHorizontalScroll
+    ) {
+      setIsHorizontalScroll(false); // Horizontal scrolling has stopped
+      el.scrollTo({
+        top: el.scrollTop + e.deltaY,
+        behavior: "smooth",
+      });
+    } else if (enableVerticalScroll && !isScrollingRight) {
+      if (isAtLeftEdge && isAtTop) {
+        setIsHorizontalScroll(true); // Horizontal scrolling is in progress
+        el.scrollLeft += e.deltaY;
+      } else if (isAtLeftEdge && !isAtTop) {
+        el.scrollTo({
+          top: el.scrollTop + e.deltaY,
+          behavior: "smooth",
+        });
+      } else if (
+        isAtRightEdge &&
+        isAtBottom &&
+        e.deltaY < 0 &&
+        !isHorizontalScroll
+      ) {
+        setIsHorizontalScroll(false); // Allow vertical scrolling
+        el.scrollLeft += e.deltaY;
+      } else if (
+        isAtRightEdge &&
+        isAtBottom &&
+        e.deltaY > 0 &&
+        !isHorizontalScroll
+      ) {
+        setIsHorizontalScroll(true); // Disable vertical scrolling
+        el.scrollTo({
+          top: el.scrollTop + e.deltaY,
+          behavior: "smooth",
+        });
+      } else {
+        e.preventDefault();
+      }
+    } else {
+      el.scrollLeft += e.deltaY;
+    }
+  };
+  useEffect(() => {
+    const el = sliderCardRef.current;
+    if (el) {
+      el.addEventListener("wheel", onVerticalScroll, { passive: false });
+      el.addEventListener("wheel", onWheel, { passive: false });
+      el.addEventListener("scroll", handleScroll);
+      return () => {
+        el.removeEventListener("wheel", onVerticalScroll);
+        el.removeEventListener("wheel", onWheel);
+        el.removeEventListener("scroll", handleScroll);
+      };
+    }
+  }, [scrollingMode]);
+
+  // Предположим, projects - это ваш массив проектов
+  const currentIndex = projects.findIndex(p => p.id === project.id);
+
+  const previousIndex = (currentIndex - 1 + projects.length) % projects.length;
+  const nextIndex = (currentIndex + 1) % projects.length;
+  
+  const previousProject = projects[previousIndex];
+  const nextProject = projects[nextIndex];
+  
+
+ 
   return (
     <div className={styles.main_project_card}>
       {project && <ProjectCardSlider slidesCard={[project]} />}
@@ -267,18 +403,12 @@ const ProjectCard = () => {
                   </div>
                   <div>
                     <div className={styles.local_title}>Публикации</div>
-                    <Link
-                      to={project.linkToPublication}
-                      target="_blank"
-                    >
+                    <Link to={project.linkToPublication} target="_blank">
                       <div className={styles.local_text}>
                         {project.publication}
                       </div>
                     </Link>
-                    <Link
-                      to={project.linkToPublicationTwo}
-                      target="_blank"
-                    >
+                    <Link to={project.linkToPublicationTwo} target="_blank">
                       <div className={styles.local_text}>
                         {project.publicationTwo}
                       </div>
@@ -353,41 +483,37 @@ const ProjectCard = () => {
               </div>
             </div>
           </div>
-             <div className={styles.container_button_project_projectCard}>
-              <div className={styles.button_project}>
-                {project && currentIndex > 0 && (
-                  <Link
-                    className={styles.button_project_link}
-                    to={`/projects/${project[currentIndex - 1].id}`}
-                  >
-                    <div className={styles.previous_svg}>
-                      <img src={previous} alt="previous" />
-                      <span className={styles.previous_span}>
-                        {project[currentIndex - 1].title}
-                      </span>
-                    </div>
-                  </Link>
-                )}
-                {project && currentIndex < project.length - 1 && (
-                  <Link
-                    className={styles.button_project_link}
-                    to={`/projects/${project[currentIndex + 1].id}`}
-                  >
-                    <div className={styles.next_svg}>
-                      <span className={styles.next_span}>
-                        {project[currentIndex + 1].title}
-                      </span>
-                      <img src={next} alt="next" />
-                    </div>
-                  </Link>
-                )}
-              </div>
-            </div>
+          <div className={styles.button_project_projectCard}>
+            {previousProject && (
+              <Link
+                className={styles.button_project_link}
+                to={`/projects/${previousProject.id}`}
+              >
+                <div className={styles.previous_svg}>
+                  <img src={previous} alt={previous} />
+                  <span className={styles.previous__span}>
+                    {`${previousProject.title}`}
+                  </span>
+                </div>
+              </Link>
+            )}
+            {nextProject && (
+              <Link
+                className={styles.button_project_link}
+                to={`/projects/${nextProject.id}`}
+              >
+                <div className={styles.next_svg}>
+                  <span className={styles.next__span}>
+                    {`${nextProject.title}`}
+                  </span>
+                  <img src={next} alt={next} />
+                </div>
+              </Link>
+            )}
+          </div>
         </div>
       )}
-        <div id="projects" className={styles.project_name_text}>
-        Ещё по теме
-      </div>
+      <div className={styles.project_name_text}>Ещё по теме</div>
       <div className={styles.swiper_progect_container}>
         {/* <SwiperContainerProgect projects={projects} /> */}
       </div>
@@ -413,24 +539,15 @@ const ProjectCard = () => {
           }}
         >
           {projects?.map((project, index) => {
-              if (!project) {
-                return null; 
-              }
+            if (!project) {
+              return null;
+            }
             const isCustomSize = project.hasCustomSize;
 
-            // let imageTitles = [];
-            // if (project.imageTitle && /\S/.test(project.imageTitle)) {
-            //      imageTitles = project.imageTitle
-            //     .split(",")
-            //     .map((el) => el.replace(/[{}]/g, ""));
-            // }
-
-            // const firstImageTitle = imageTitles.length > 0 ? imageTitles[0] : null;
-            // console.log(MapProject, '++++++++++++++++++++++++++++++++++++++++');
             return (
               <SwiperSlide
                 key={project.id}
-                // onScroll={handleScroll}
+                onScroll={handleScroll}
                 id="slider_container_item_card"
                 className={`{styles.slider_container_item_card}
                 ${isCustomSize ? styles.customSize : ""}`}
@@ -445,9 +562,10 @@ const ProjectCard = () => {
                           ? project.imageProject
                           : project.imageTitle
                       }`}
-                      alt={project.imageProject
-                        ? project.imageProject
-                        : project.imageTitle
+                      alt={
+                        project.imageProject
+                          ? project.imageProject
+                          : project.imageTitle
                       }
                     />
                   </div>

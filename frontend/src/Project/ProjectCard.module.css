@@ -310,10 +310,13 @@
 
 
 /* Стили временно для кнопок */
-.container_button_project_projectCard {
+
+.button_project_projectCard {
   display: flex;
   flex-direction: row;
-  padding-bottom: 3rem;
+  justify-content: space-between;
+  padding-bottom: 8rem;
+ 
 }
 
 .button_project_link {
@@ -327,7 +330,6 @@
   font-weight: 400;
   line-height: 20px;
   padding: 3vh 3vw;
-  /* align-items: center; */
 }
 
 .button_link::before {
@@ -337,13 +339,6 @@
   /* Отступ между стрелкой и текстом */
 }
 
-.button_project {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  padding-bottom: 3px;
- 
-}
 
 .previous_svg,
 .next_svg {
@@ -354,36 +349,49 @@
   height: 100%;
 }
 
-.previous_span,
-.next_span {
+.previous__span,
+.next__span {
   padding-left: 0.7vw;
   font-family: var(--font-raleway);
   font-weight: var(--fw-400);
-  font-size: 0.97vw;
-  line-height: 1.38vh;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
   color: var(--black-1D2E43);
+  font-variant-numeric: lining-nums proportional-nums;
 }
 
 .next_svg span {
   padding-right: 0.7vw;
   font-family: 'Raleway';
   font-style: normal;
-  font-weight: 400;
+  font-weight: var(--fw-400);
   font-size: 0.97vw;
   line-height: 1.38vh;
   /* color: var(--black-1D2E43); */
 }
 
-.button_project :hover {
+.button_project:hover {
   background-color: var(--salmon-light-FFBFB5);
   fill: var(--salmon-light-FFBFB5);
+}
+
+.project_name_text {
+  color: var(--black-1D2E43);
+  font-family: var(--font-unbounded);
+  font-size: 2rem;
+  font-style: normal;
+  font-weight: var(--fw-300);
+  line-height: 2.5rem;
+  padding-bottom: 2rem;
+  padding-left: 14.75vw;
 }
 
 .main_project {
   display: flex;
   flex-direction: row;
-  padding-left: 2.7vw;
-  padding-bottom: 3.97rem;
+  padding-right: 1.75vw;
+  padding-left: 1.75vw;
+  padding-bottom: 5.66rem;
 }
 
 .slider_card_container_project {
@@ -395,8 +403,6 @@
 
 .slider_container_item_card {
   display: inline-block;
-  /* max-width: 29em; */
-  /* max-height: 24rem; */
 }
 
 
