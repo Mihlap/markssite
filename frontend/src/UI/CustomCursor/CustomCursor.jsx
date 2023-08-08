@@ -33,19 +33,25 @@ export default function CustomCursor() {
     text: {
       height: 64,
       width: 64,
-      x: mousePosition.x - 75,
-      y: mousePosition.y - 75,
+      x: mousePosition.x - 16,
+      y: mousePosition.y - 16,
       backgroundColor: "#F6F6F6",
       mixBlendMode: "difference",
     },
+    imageHover: {
+      height: 100,
+      width: 100,
+      x: mousePosition.x - 24,
+      y: mousePosition.y - 24,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      color: "#F6F6F6",
+      border: "1px solid #F6F6F6",
+      backgroundColor: "rgba(255, 255, 255, 0.7)",
+      animation: "gradient 5s ease infinite",
+    },
   };
-
-  // const textEnter = () => {
-  //     setCursorVariant('text')
-  // }
-  // const textLeave = () => {
-  //     setCursorVariant('default')
-  // }
 
   return (
     <>
@@ -53,7 +59,11 @@ export default function CustomCursor() {
         className="cursor"
         variants={variants}
         animate={cursorVariant}
-      />
+      >
+        {cursorVariant === "imageHover" && (
+          <span className="cursor-hover">Смотреть</span>
+        )}
+      </motion.div>
     </>
   );
 }
