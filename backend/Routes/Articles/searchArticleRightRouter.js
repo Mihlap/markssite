@@ -22,7 +22,7 @@ router.post('/right', async (req, res) => {
 
 router.get('/right-get', async (req, res) => {
   try {
-    const data = await PublicationTwo.findAll();
+      const data = await PublicationTwo.findAll();
     res.json(data);
   } catch (error) {
     console.log(error);
