@@ -22,7 +22,7 @@
 
  .cart_project__block__card {
   display: flex;
-  padding-top: 30%;
+  padding-top: 14vh;
   padding-left: 1.69rem;
 }
 
@@ -100,18 +100,22 @@
 }
 
 .title_block {
+  /* display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: center; */
   }
 
 .left_title {
-  position: relative;
+ position: relative;
   font-family: var(--font-unbounded);
   font-style: normal;
   font-weight: var(--fw-300);
   font-size: 2rem;
   line-height: 2.5rem;
   color: var(--black-1D2E43);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 
 .left_meta {
@@ -146,6 +150,9 @@
   color: var(--black-1D2E43);
   padding-top: 1rem;
   padding-bottom: 2rem;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 .result_container {
   display: flex;
@@ -159,6 +166,8 @@
   font-size: 1.25rem;
   line-height: 1.75rem;
   color: var(--dark-gray-566272);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .result_text {
@@ -169,6 +178,8 @@
   line-height: 1.25rem;
   font-feature-settings: 'pnum' on, 'lnum' on;
   color: var(--gray-959DA6);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 /* << =============== правый блок контента с информацией =============== >> */
@@ -211,6 +222,9 @@
   line-height: 1.25rem;
   font-feature-settings: 'pnum' on, 'lnum' on;
   color: var(--gray-959DA6);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
 }
 
 .blockImg {
@@ -224,8 +238,8 @@
 .item_img {
   width: 100%;
   border-radius: 1.11vw;
-  padding-right: 1.75vw;
-  padding-left: 1.75vw;
+  padding-right: 1.69rem;
+  padding-left: 1.69rem;
  }
 
 .item_img_latest {
@@ -241,8 +255,8 @@
 .quote_container,
 .description_object_container {
   display: flex;
-  justify-content: center;
-  align-items: center;
+  /* justify-content: center;
+  align-items: center; */
 }
 
 .description_object_title {
@@ -262,6 +276,9 @@
   font-size: 1rem;
   line-height: 1.5rem;
   color: var(--black-1D2E43);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
   padding-right: 14.75vw;
   padding-left: 14.75vw;
 }
@@ -316,41 +333,34 @@
   flex-direction: row;
   justify-content: space-between;
   padding-bottom: 8rem;
+  padding: 0rem 1.69rem;
  
 }
 
-.button_project_link {
+.button_project_link_projectCard {
   border: none;
   color: var(--white-F6F6F6);
-  text-align: center;
   font-size: 1.4vh;
   cursor: pointer;
   font-family: 'Raleway';
   font-style: normal;
   font-weight: 400;
   line-height: 20px;
-  padding: 3vh 3vw;
-}
+  padding: 3.5rem 1.5rem;
+  
+ }
 
-.button_link::before {
-  content: "<";
-  /* Код символа стрелки влево */
-  margin-right: 10px;
-  /* Отступ между стрелкой и текстом */
-}
-
-
-.previous_svg,
-.next_svg {
+.previous_svg_projectCard,
+.next_svg_projectCard {
   display: flex;
   border: none;
-  justify-content: center;
   align-items: center;
   height: 100%;
 }
 
-.previous__span,
-.next__span {
+.previous__span_projectCard {
+  display: flex;
+  justify-content: flex-start;
   padding-left: 0.7vw;
   font-family: var(--font-raleway);
   font-weight: var(--fw-400);
@@ -358,21 +368,57 @@
   line-height: 1.25rem;
   color: var(--black-1D2E43);
   font-variant-numeric: lining-nums proportional-nums;
+  width: 22rem;
+   
 }
 
-.next_svg span {
+.next__span_projectCard {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 0.7vw;
+  font-family: var(--font-raleway);
+  font-weight: var(--fw-400);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--black-1D2E43);
+  font-variant-numeric: lining-nums proportional-nums;
+  width: 22rem;
+}
+
+
+/* .next_svg_projectCard {
   padding-right: 0.7vw;
   font-family: 'Raleway';
   font-style: normal;
   font-weight: var(--fw-400);
   font-size: 0.97vw;
   line-height: 1.38vh;
-  /* color: var(--black-1D2E43); */
-}
 
-.button_project:hover {
+} */
+
+.button_project_link_projectCard:hover {
   background-color: var(--salmon-light-FFBFB5);
   fill: var(--salmon-light-FFBFB5);
+}
+
+.social_links_projectCard {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 1.69rem;
+  padding-top: 0.5rem;
+}
+.share_project {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 1.69rem;
+  padding-top: 0.25rem;
+  color: var(--dark-gray-566272);
+  font-variant-numeric: lining-nums proportional-nums;
+  font-family: var(--font-raleway);
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: var(--fw-400);
+  line-height: 1rem;
 }
 
 .project_name_text {
@@ -386,7 +432,7 @@
   padding-left: 14.75vw;
 }
 
-.main_project {
+.main_project_projectCard {
   display: flex;
   flex-direction: row;
   padding-right: 1.75vw;
@@ -394,79 +440,49 @@
   padding-bottom: 5.66rem;
 }
 
-.slider_card_container_project {
+.slider_card_container_project_projectCard {
   width: 100%;
   height: 100%;
   overflow-x: hidden;
 }
  
 
-.slider_container_item_card {
+.slider_container_item_card_projectCard {
   display: inline-block;
 }
 
 
-.wrapper_container_item_card {
-  width: 100%;
+.wrapper_container_item_card_projectCard {
+   width: 100%;
   height: 100%;
   overflow: hidden;
   padding-right: 1rem;
   border-radius: 1rem;
-  transition: transform 0.5s ease-in-out;
-  border: 3px solid transparent;
 }
 
- /* .customSize {
-  min-width: 43rem;
-  min-height: 24rem;
-  margin-right: -1rem;
-} */
-
-.wrapper_container_item_card .container__imageTitle {
+.wrapper_container_item_card_projectCard,
+.container__imageTitle_projectCard {
+  /* display: flex; */
   width: 100%;
   height: 100%;
-  transition: transform 0.5s ease-in-out;
+  padding-right: 1rem;
   border-radius: 1rem;
-  cursor: pointer;
-  /* backface-visibility: hidden;
-  transform-style: preserve-3d; */
- }
- .wrapper_container_item_card:hover .container__imageTitle {
-  border-right: 3px solid transparent;
-}
-
-
- .wrapper_container_item_card:hover  {
-  /* width: 99%;
-  height: 99%; */
-  justify-content: center;
-  align-items: center;
-  border-radius: 1rem;
-  transform-origin: center;
-  transform: scale(0.99);
-  transition: transform 0.5s ease-in-out;
-  border: 3px solid transparent;
-  }
-
- .wrapper_container_item_card:hover .container__imageTitle {
-  transform: scale(1.1);
-   border-radius: 1rem;
-  cursor: pointer;
  }
 
-.container__imageTitle {
+ .container__imageTitle_projectCard {
   width: auto;
   height: auto;
  }
  
 
-.title_selectCompetencies {
+
+.title_selectCompetencies_projectCard {
   display: flex;
   width: 100%;
   padding-top: 1rem;
   }
 
-.container__title {
+.container__title_projectCard {
   color: var(--black-1D2E43);
   font-family: var(--font-raleway);
   font-size: 0.875rem;
@@ -476,40 +492,32 @@
   width: 50%;
 }
 
-.container__selectCompetencies {
+.container__selectCompetencies_projectCard {
   display: flex;
   background: var(--white-F6F6F6);
-  justify-content: flex-start;
+  justify-content: flex-end;
   flex-direction: row;
   flex-wrap: wrap;
   padding-left: 1rem;
-  width: 50%;
+  width: 100%;
  }
- .div_el_selectCompetencies {
+ .div_el_selectCompetencies_projectCard {
   display: flex;
   max-width: fit-content;
-  justify-content: center;
+  /* justify-content: center; */
   align-items: center;
   margin-top: 8px;
   margin-right: 6px;
 }
- .div_el_selectCompetencies1 {
-   display: flex;
-   max-width: fit-content;
-   justify-content: center;
-   align-items: center;
-   margin-top: 6px;
-   margin-right: 6px;
- }
 
-.countryCity_monthYear {
+.countryCity_monthYear_projectCard {
   display: flex;
   justify-content: space-between;
   padding-top: 0.5rem;
-  width: 98%;
+  width: 100%;
  }
 
-.container__countryCity {
+.container__countryCity_projectCard {
   color: var(--black-4E4E4E);
   font-family: var(--font-raleway);
   font-size: 0.625rem;
@@ -518,7 +526,7 @@
   line-height: normal;
 }
 
-.container__monthYear {
+.container__monthYear_projectCard {
   color: var(--unnamed, #A7A7A7);
   text-align: right;
   font-family: var(--font-raleway);
@@ -528,12 +536,3 @@
   line-height: normal;
  }
 
-.card_img,
-.wrapper_container_item_card {
-  transition: filter 0.3s ease;
-}
-
-.card_img:hover,
-.wrapper_container_item_card:hover {
-  filter: brightness(50%);
-}

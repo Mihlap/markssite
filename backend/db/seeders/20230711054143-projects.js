@@ -4,15 +4,15 @@
 module.exports = {
   async up (queryInterface, Sequelize) {
  
-      await queryInterface.bulkInsert('Projects', [
+    //   await queryInterface.bulkInsert('Projects', [
 
-    ], {});
+    // ], {});
     
   },
 
   async down (queryInterface, Sequelize) {
    
-     await queryInterface.bulkDelete('Projects', null, {});
+    //  await queryInterface.bulkDelete('Projects', null, {});
      
   }
 };
