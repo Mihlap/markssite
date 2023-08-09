@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
+import {  HelmetProvider } from 'react-helmet-async';
 import "./App.css";
 import Company from "./Company/Company";
 import Header from "./Header/Header";
@@ -76,7 +77,7 @@ export default function App() {
 
   // console.log(`пользователь 👉${user}👈`);
   return (
-    <>
+    <HelmetProvider>
       {loading === true ? (
         <Loading />
       ) : (
@@ -143,7 +144,7 @@ export default function App() {
             {/* <CustomCursor /> */}
         </>
       )}
-    </>
+    </HelmetProvider>
   );
 };
 

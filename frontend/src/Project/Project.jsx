@@ -12,10 +12,9 @@ import {
   getFetchFormLocationFilter,
 } from "../store/Slice/projectSlice";
 import Company_Slider from "../UI/Company_Slider/Company_Slider";
-import { resizeImage, extractCityFromCountryCity, getUserGeolocation } from "./utils";
+import { extractCityFromCountryCity, getUserGeolocation } from "./utils";
 import "../UI/Company_Slider/Company_Slider.css";
 import "../UI/ButtonsProjects/AllProjectsButton.module.css";
-
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 
@@ -52,7 +51,6 @@ export default function Project() {
     Инженерия: "#90B734",
   };
 
-
   const dispatch = useDispatch();
   const projects = useSelector((state) => state.project.projects);
   const selectedViewConstruction = useSelector(
@@ -82,6 +80,7 @@ export default function Project() {
   const handleResize = () => {
     setScreenWidth(window.innerWidth);
   };
+  console.log(projects);
 
   useEffect(() => {
     window.addEventListener("resize", handleResize);
@@ -89,7 +88,6 @@ export default function Project() {
       window.removeEventListener("resize", handleResize);
     };
   }, []);
-
 
   useEffect(() => {
     dispatch(getFetchFormFilter(projectsPerPage, selectedViewConstruction));
@@ -106,12 +104,11 @@ export default function Project() {
       );
   }, []);
 
-
   function handleFocus() {
     setIsFocusedProject(true);
   }
 
-    function handleChange(event) {
+  function handleChange(event) {
     const address = event.target.value.toLowerCase();
     setValue(address);
     setIsValid(address === "");
@@ -129,7 +126,7 @@ export default function Project() {
   };
 
   function handleBlur(event) {
-       setIsFocusedProject(true);
+    setIsFocusedProject(true);
     const address = event.target.value;
     if (!address) {
       setIsFocusedProject(false);
@@ -144,15 +141,12 @@ export default function Project() {
     }
   }
 
-  
-
   const handleButtonClick = (viewConstruction) => {
     if (
       selectedCity !== "" ||
       selectedViewConstruction !== viewConstruction ||
       selectedViewConstruction === viewConstruction
-    )
-     {
+    ) {
       dispatch(setSelectedCity(""));
       dispatch(setSelectedViewConstruction(viewConstruction));
       dispatch(
@@ -171,7 +165,7 @@ export default function Project() {
       setIsTyping(false);
       setSelectOnCompetencies("Все");
     }
-  }
+  };
 
   const handleButtonCityClick = (countryCity) => {
     if (isTyping) {
@@ -207,12 +201,11 @@ export default function Project() {
     if (selectOnCompetencies === viewConstruction) {
       setSelectedCity("");
     }
-     if (value.trim() === "") {
+    if (value.trim() === "") {
       setSelectOnCompetencies("");
     }
     dispatch(setSelectedViewConstruction(viewConstruction));
   };
-
 
   const currentLocation = userGeolocation
     ? `${userGeolocation.latitude}, ${userGeolocation.longitude}`
@@ -239,7 +232,6 @@ export default function Project() {
     };
   }, []);
 
-  
   const filteredProjects = projects
     .filter((project) =>
       selectOnCompetencies === "Все"
@@ -253,16 +245,16 @@ export default function Project() {
     .filter((project) => {
       const searchValue = value?.toLowerCase();
       const projectLocation = project.location?.toLowerCase();
-      const projectCity = extractCityFromCountryCity(project.countryCity)?.toLowerCase();
+      const projectCity = extractCityFromCountryCity(
+        project.countryCity
+      )?.toLowerCase();
       return (
         projectLocation?.includes(searchValue) &&
-        (selectedCity === "" || projectCity === selectedCity?.toLowerCase()) 
+        (selectedCity === "" || projectCity === selectedCity?.toLowerCase())
       );
     });
 
-  console.log(projects);
-  
-    return (
+  return (
     <div className={styles.project_main}>
       <Company_Slider />
       <div className={styles.project_slider_text}>
@@ -270,7 +262,10 @@ export default function Project() {
         <span className={styles.projects_name_text}>Проекты</span>
       </div>
       {screenWidth && (
-      <div onSubmit={handleAddressSubmit} className={styles.searchCityAddress_wrapper}>
+        <div
+          onSubmit={handleAddressSubmit}
+          className={styles.searchCityAddress_wrapper}
+        >
           <div className={styles.searchCityAddress_location_project_group}>
             <label
               className={`${styles.searchCityAddress_label_project} ${
@@ -331,105 +326,56 @@ export default function Project() {
             </label>
           </div>
         </div>
-        )}
-        {screenWidth && (
-      <Swiper
-        onSwiper={setSwiper}
-        slidesPerView="auto"
-        spaceBetween={8}
-        className={styles.my_swiper2_button_group_project}
-        touch="true"
-      >
-        <div className={styles.button_group_project}>
-          {buttonChoose && buttonChoose?.map((el) => (
-            <SwiperSlide
-              key={el}
-              onClick={() => handleButtonClick(el)}
-              className={`${styles.menu__button__allProject} ${
-                el === selectedViewConstruction ? styles.active : ""
-              }`}
-              style={{ width: "fit-content" }}
-            >
-              <p type="button" className={styles.menu_button_items}>{el}</p>
-            </SwiperSlide>
-          ))}
-        </div>
-      </Swiper>
+      )}
+      {screenWidth && (
+        <Swiper
+          onSwiper={setSwiper}
+          slidesPerView="auto"
+          spaceBetween={8}
+          className={styles.my_swiper2_button_group_project}
+          touch="true"
+        >
+          <div className={styles.button_group_project}>
+            {buttonChoose &&
+              buttonChoose?.map((el) => (
+                <SwiperSlide
+                  key={el}
+                  onClick={() => handleButtonClick(el)}
+                  className={`${styles.menu__button__allProject} ${
+                    el === selectedViewConstruction ? styles.active : ""
+                  }`}
+                  style={{ width: "fit-content" }}
+                >
+                  <p type="button" className={styles.menu_button_items}>
+                    {el}
+                  </p>
+                </SwiperSlide>
+              ))}
+          </div>
+        </Swiper>
       )}
       <div className={styles.menu_button_group_project_wrapper_main}>
-        {/* <div className={styles.button_look_all_wrapper}>
-          <button
-            className={styles.button_look_all}
-            onClick={handleShowButtonAll}
-          >
-            {showButton ? (
-              <div className={styles.project__svg1}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg" 
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                >
-                  <rect
-                    x="24"
-                    y="24"
-                    width="24"
-                    height="24"
-                    rx="12"
-                    transform="rotate(-180 24 24)"
-                    fill="#1D2E43"
-                  />
-                  <path d="M17 14L12.5 9L8 14" stroke="#F6F6F6" />
-                </svg>
-              </div>
-            ) : (
-              <div className={styles.project__svg2}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                >
-                  <path d="M8 10L12.5 15L17 10" stroke="#1D2E43" />
-                  <rect
-                    x="23.5"
-                    y="23.5"
-                    width="23"
-                    height="23"
-                    rx="11.5"
-                    transform="rotate(-180 23.5 23.5)"
-                    stroke="#1D2E43"
-                  />
-                </svg>
-              </div>
-            )}
-          </button>
-        </div> */}
         <div className={styles.menu_button_group_project_wrapper}>
-        <div className={styles.menu_button_group_project}>
-          {buttonChoose.map((el, index) => (
-            <div
-              key={el}
-              className={`${styles.button_wrapper} ${
-                showButton ? "" : index ? styles.hidden : ""
-              }`}
-            >
-              <button
-                className={`${styles.menu__button__allProject}
-                 ${
-                  el === selectedViewConstruction ? styles.active : ""
+          <div className={styles.menu_button_group_project}>
+            {buttonChoose.map((el, index) => (
+              <div
+                key={el}
+                className={`${styles.button_wrapper} ${
+                  showButton ? "" : index ? styles.hidden : ""
                 }`}
-                onClick={() => handleButtonClick(el)}
               >
-                <p className={styles.menu_button_items}>{el}</p>
-              </button>
-            </div>
-          ))}
+                <button
+                  className={`${styles.menu__button__allProject}
+                 ${el === selectedViewConstruction ? styles.active : ""}`}
+                  onClick={() => handleButtonClick(el)}
+                >
+                  <p className={styles.menu_button_items}>{el}</p>
+                </button>
+              </div>
+            ))}
+          </div>
         </div>
-        </div>
-    
+
         <button
           className={styles.menu__button__choose__city}
           onClick={handleSelectCityClick}
@@ -472,7 +418,6 @@ export default function Project() {
           document.body.classList.remove("modal-open");
         }}
         ariaHideApp={false}
-        // categoryId={category}
         style={{
           overlay: {
             zIndex: 9999,
@@ -618,17 +563,9 @@ export default function Project() {
           {filteredProjects &&
             filteredProjects?.map((project) => {
               if (!project) {
-                return null; 
+                return null;
               }
-              // const competencies = project.selectCompetencies
-              //   .split(",")
-              //   .map((comp) => comp.trim())
-              //   .filter(Boolean);
-               const { width, height } = resizeImage(
-                project.imageWidth,
-                project.imageHeight
-              );
-             
+
               return (
                 <Link
                   key={project.id}
@@ -640,17 +577,18 @@ export default function Project() {
                       <img
                         className={styles.cart_project__img}
                         style={{
-                          height: isMobileScreen ? "auto" : `${height}rem`,
-                          width: isMobileScreen ? "100%" : `${width}rem`,
+                          height: `${project.style?.split(",")[1]}rem`,
+                          width: `${project.style?.split(",")[0]}rem`,
                         }}
                         src={`${Host}/images/imageAdd/${
                           project.imageProject
                             ? project.imageProject
                             : project.imageTitle
                         }`}
-                        alt={project.imageProject
-                          ? project.imageProject
-                          : project.imageTitle
+                        alt={
+                          project.imageProject
+                            ? project.imageProject
+                            : project.imageTitle
                         }
                       />
                       <div className={styles.project_content__wrapper}>
@@ -664,6 +602,7 @@ export default function Project() {
                                 const selectCompetencies = JSON.parse(
                                   project.selectCompetencies
                                 );
+
                                 return selectCompetencies.map((competency) => (
                                   <div
                                     key={competency.value}
@@ -680,29 +619,48 @@ export default function Project() {
                                 ));
                               } catch (error) {
                                 if (
-                                  typeof project.selectCompetencies ===
-                                    "string" &&
-                                  project.selectCompetencies.includes(",")
+                                  typeof project.selectCompetencies === "string"
                                 ) {
-                                  return project.selectCompetencies
-                                    .split(",")
-                                    .map((value) => {
-                                      const label = value.trim();
-                                      return (
-                                        <div
-                                          key={value}
-                                          className={
-                                            styles.el_project_selectCompetencies
-                                          }
-                                          style={{
-                                            color: colors[value],
-                                            borderColor: colors[value],
-                                          }}
-                                        >
-                                          {label}
-                                        </div>
-                                      );
-                                    });
+                                  if (
+                                    !project.selectCompetencies.includes(",")
+                                  ) {
+                                    const label =
+                                      project.selectCompetencies.trim();
+                                    return (
+                                      <div
+                                        key={label}
+                                        className={
+                                          styles.el_project_selectCompetencies
+                                        }
+                                        style={{
+                                          color: colors[label],
+                                          borderColor: colors[label],
+                                        }}
+                                      >
+                                        {label}
+                                      </div>
+                                    );
+                                  } else {
+                                    return project.selectCompetencies
+                                      .split(",")
+                                      .map((value) => {
+                                        const label = value.trim();
+                                        return (
+                                          <div
+                                            key={value}
+                                            className={
+                                              styles.el_project_selectCompetencies
+                                            }
+                                            style={{
+                                              color: colors[value],
+                                              borderColor: colors[value],
+                                            }}
+                                          >
+                                            {label}
+                                          </div>
+                                        );
+                                      });
+                                  }
                                 }
                                 return null;
                               }
