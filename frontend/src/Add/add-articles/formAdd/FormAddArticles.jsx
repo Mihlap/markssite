@@ -36,7 +36,10 @@ export default function FormAddArticles({ setIsModalOpen }) {
     imageOpen: "",
     textBlock: "",
     imageClose: "",
+    blockHeadingTitle: "",
+    blockHeadingText: "",
   });
+  const { blockHeadingTitle, blockHeadingText } = inputData;
 
   const handleRemovePreviewPhoto = (index) => {
     removePreviewPhoto(
@@ -109,41 +112,41 @@ export default function FormAddArticles({ setIsModalOpen }) {
     setIsModalOpen(false);
   };
 
-  const areAllFieldsFilled = () => {
-    const {
-      title,
-      author,
-      city,
-      dataMonthYear,
-      dropPhoto,
-      titleTextBlock,
-      descriptionArticle,
-      photoAva,
-      imageOpen,
-      textBlock,
-      imageClose,
-    } = inputData;
+  // const areAllFieldsFilled = () => {
+  //   const {
+  //     title,
+  //     author,
+  //     city,
+  //     dataMonthYear,
+  //     dropPhoto,
+  //     titleTextBlock,
+  //     descriptionArticle,
+  //     photoAva,
+  //     imageOpen,
+  //     textBlock,
+  //     imageClose,
+  //   } = inputData;
 
-    return (
-      title &&
-      author &&
-      city &&
-      dataMonthYear &&
-      dropPhoto.length > 0 &&
-      titleTextBlock &&
-      descriptionArticle &&
-      photoAva &&
-      imageOpen &&
-      textBlock &&
-      imageClose
-    );
-  };
+  //   return (
+  //     title &&
+  //     author &&
+  //     city &&
+  //     dataMonthYear &&
+  //     dropPhoto.length > 0 &&
+  //     titleTextBlock &&
+  //     descriptionArticle &&
+  //     photoAva &&
+  //     imageOpen &&
+  //     textBlock &&
+  //     imageClose
+  //   );
+  // };
 
   const handlerOpenConstructor = () => {
     setOpenConstructor(!onenConstructor);
   };
 
-  // console.log(inputData);
+  console.log(inputData);
   return (
     <div className={styles.form_container}>
       <div className={styles.form_container__title}>Новая публикация</div>
@@ -161,7 +164,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
               onChange={(event) =>
                 changeHandler(event, inputData, setInputData)
               }
-              required
+              // required
             />
             <label htmlFor="title" className={styles.form__label}>
               Название статьи
@@ -179,7 +182,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
               onChange={(event) =>
                 changeHandler(event, inputData, setInputData)
               }
-              required
+              // required
             />
             <label htmlFor="author" className={styles.form__label}>
               Автор статьи
@@ -197,7 +200,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
               onChange={(event) =>
                 changeHandler(event, inputData, setInputData)
               }
-              required
+              // required
             />
             <label htmlFor="city" className={styles.form__label}>
               Издание, город
@@ -215,7 +218,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
               onChange={(event) =>
                 changeHandler(event, inputData, setInputData)
               }
-              required
+              // required
             />
             <label htmlFor="dataMonthYear" className={styles.form__label}>
               Дата, месяц, год
@@ -509,7 +512,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
         <div className={styles.constructor_container}>
           <div className={styles.constructor_container__block}>
             {!onenConstructor ? (
-              <>
+              <div className={styles.constructor_container__block_btn}>
                 <button onClick={handlerOpenConstructor}>
                   <svg
                     className={styles.constructor_container__svg}
@@ -540,9 +543,14 @@ export default function FormAddArticles({ setIsModalOpen }) {
                 <div className={styles.constructor_container__text}>
                   Добавить блок из библиотеки
                 </div>
-              </>
+              </div>
             ) : (
-              <ConstructorPage />
+              <ConstructorPage
+                blockHeadingTitle={blockHeadingTitle}
+                  blockHeadingText={blockHeadingText}
+                  inputData={inputData}
+                  setInputData={setInputData}
+              />
             )}
           </div>
         </div>
@@ -551,7 +559,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
           <button
             className={styles.form_container__button_save}
             type="submit"
-            disabled={!areAllFieldsFilled()}
+            // disabled={!areAllFieldsFilled()}
           ></button>
 
           <button

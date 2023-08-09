@@ -14,13 +14,16 @@ module.exports = (sequelize, DataTypes) => {
       this.belongsTo(Articles, { foreignKey: 'idBlock' });
     }
   }
-  BlockHeadingTitle.init({
-    title: DataTypes.STRING,
-    text: DataTypes.TEXT,
-    idBlock: DataTypes.INTEGER
-  }, {
-    sequelize,
-    modelName: 'BlockHeadingTitle',
-  });
+  BlockHeadingTitle.init(
+    {
+      title: DataTypes.STRING,
+      text: DataTypes.TEXT,
+      idBlock: DataTypes.INTEGER,
+    },
+    {
+      sequelize,
+      modelName: 'BlockHeadingTitle',
+    },
+  );
   return BlockHeadingTitle;
 };
