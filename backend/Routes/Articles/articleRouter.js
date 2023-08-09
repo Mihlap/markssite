@@ -2,7 +2,7 @@ const express = require('express');
 // eslint-disable-next-line
 const path = require("path");
 const fs = require("fs");
-const { Articles } = require("../../db/models");
+const { Articles, BlockHeadingTitle } = require('../../db/models');
 const fileMiddleware = require("../../middleware/fileArticle");
 
 const router = express.Router();
@@ -14,6 +14,7 @@ router.get('/getzapros', async (req, res) => {
     res.json(data);
    } catch (error) {
     console.log(error);
+    res.sendStatus(500);
   }
 });
 
@@ -33,7 +34,8 @@ router.post(
       const imageOpens = req.files.imageOpen ? req.files.imageOpen[0].filename : null;
       const imageCloses = req.files.imageClose ? req.files.imageClose[0].filename : null;
 
-      // console.log(imageCloses);
+      const lo = req.body
+      console.log(lo);
       await Articles.create({
         title: req.body.title,
         author: req.body.author,
@@ -48,6 +50,12 @@ router.post(
         imageClose: imageCloses,
       });
 
+      await BlockHeadingTitle.create({
+        title: req.body.blockHeadingTitle,
+        text: req.body.blockHeadingText,
+      });
+
+    
       res.status(200).json({ message: 'Данные успешно сохранены' });
     } catch (error) {
       console.log(error); // Output error to the console

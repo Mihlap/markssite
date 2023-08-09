@@ -85,6 +85,8 @@ export const fetchArticle =
         imageOpen: [],
         textBlock: "",
         imageClose: [],
+        blockHeadingTitle: "",
+        blockHeadingText: "",
       });
       setPreviewPhotos([]);
       setPreviewPhotoAva([]);
@@ -92,7 +94,7 @@ export const fetchArticle =
       setPreviewPhotoClose([]);
       dispatch(getFetchFormArticle()); // Добавлен этот вызов для получения обновленных данных после успешной отправки формы
     });
-    // console.log(formattedData, "REDUX");
+    console.log(formattedData, "REDUX");
   };
 
 export const getFetchFormArticle = () => async (dispatch) => {
@@ -102,6 +104,7 @@ export const getFetchFormArticle = () => async (dispatch) => {
     const response = await axios.get(
       `${serverHost}/api-article/getzapros`
     );
+    console.log(response);
    dispatch(fetchArticleSuccess(response.data));
    
   } catch (error) {
