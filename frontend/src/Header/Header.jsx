@@ -48,7 +48,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
 
   const ArticleLeft = useSelector(
     (state) => state.searchArticlePublicLeft.articleLeft
-    );
+  );
   const MapArticle = ArticleLeft?.map((el) => el.publication.publication);
 
   const ArticleRight = useSelector(
@@ -67,9 +67,9 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
   };
 
   const handleMouseHover = () => {
-     console.log("Mouse hovered over image");
-    dispatch(imageHover())
-  }
+    console.log("Mouse hovered over image");
+    dispatch(imageHover());
+  };
 
   useEffect(() => {
     dispatch(getFetchFormArticle());
@@ -82,8 +82,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
     const storedData = localStorage.getItem("selectedItem");
     setData(storedData);
   }, []);
-    console.log(ArticleRight);
-
+  console.log(ArticleRight);
 
   const colors = {
     Архитектура: "#FF7F6A",
@@ -450,15 +449,6 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
           {MapProject?.map((project, index) => {
             const isCustomSize = project.hasCustomSize;
 
-            // let imageTitles = [];
-            // if (project.imageTitle && /\S/.test(project.imageTitle)) {
-            //      imageTitles = project.imageTitle
-            //     .split(",")
-            //     .map((el) => el.replace(/[{}]/g, ""));
-            // }
-
-            // const firstImageTitle = imageTitles.length > 0 ? imageTitles[0] : null;
-            // console.log(MapProject, '++++++++++++++++++++++++++++++++++++++++');
             return (
               <SwiperSlide
                 key={project.id}
@@ -472,6 +462,10 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
                   <div className={styles.wrapper_container_item_card}>
                     <img
                       className={styles.container__imageTitle}
+                      // style={{
+                      //   height: `${project.style?.split(",")[1]}rem`,
+                      //   width: `${project.style?.split(",")[0]}rem`,
+                      // }}
                       src={`${Host}/images/imageAdd/${
                         project.imageProject
                           ? project.imageProject
@@ -510,30 +504,51 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
                             </div>
                           ));
                         } catch (error) {
-                          if (
-                            typeof project.selectCompetencies === "string" &&
-                            project.selectCompetencies.includes(",")
-                          ) {
-                            return project.selectCompetencies
-                              .split(",")
-                              .map((value) => {
-                                const label = value.trim();
-                                return (
-                                  <div
-                                    key={value}
-                                    className={styles.div_el_selectCompetencies}
-                                    style={{
-                                      color: colors[value],
-                                      borderColor: colors[value],
-                                      border: "1px solid",
-                                      padding: "3px 6px",
-                                      borderRadius: "34px",
-                                    }}
-                                  >
-                                    {label}
-                                  </div>
-                                );
-                              });
+                          if (typeof project.selectCompetencies === "string") {
+                            // Если строка с одним значением и без запятых
+                            if (!project.selectCompetencies.includes(",")) {
+                              const label = project.selectCompetencies.trim();
+                              return (
+                                <div
+                                  key={label}
+                                  className={styles.div_el_selectCompetencies}
+                                  style={{
+                                    color: colors[label],
+                                    borderColor: colors[label],
+                                    border: "1px solid",
+                                    padding: "3px 6px",
+                                    borderRadius: "34px",
+                                  }}
+                                >
+                                  {label}
+                                </div>
+                              );
+                            }
+                            // Строка с несколькими значениями, разделенными запятыми
+                            else if (project.selectCompetencies.includes(",")) {
+                              return project.selectCompetencies
+                                .split(",")
+                                .map((value) => {
+                                  const label = value.trim();
+                                  return (
+                                    <div
+                                      key={value}
+                                      className={
+                                        styles.div_el_selectCompetencies
+                                      }
+                                      style={{
+                                        color: colors[value],
+                                        borderColor: colors[value],
+                                        border: "1px solid",
+                                        padding: "3px 6px",
+                                        borderRadius: "34px",
+                                      }}
+                                    >
+                                      {label}
+                                    </div>
+                                  );
+                                });
+                            }
                           }
                           return null;
                         }

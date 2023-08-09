@@ -19,24 +19,24 @@ export const getUserGeolocation = () => {
 };
 
 
-export const resizeImage = (width, height) => {
-  const aspectRatio = height / width;
+// export const resizeImage = (width, height) => {
+//   const aspectRatio = height / width;
 
-  if (aspectRatio >= 1.2) {
-    if (width !== 28 || height !== 48) {
-      return { width: 28.18, height: 48.18 };
-    }
-  } else if (aspectRatio < 0.8) {
-    if (width !== 28 || height !== 14) {
-      return { width: 27.62, height: 13.81 };
-    }
-  } else {
-    if (width !== 28 || height !== 28) {
-      return { width: 28.18, height: 27.62 };
-    }
-  }
-  return { width, height };
-};
+//   if (aspectRatio >= 1.2) {
+//     if (width !== 28 || height !== 48) {
+//       return { width: 28.18, height: 48.18 };
+//     }
+//   } else if (aspectRatio < 0.8) {
+//     if (width !== 28 || height !== 14) {
+//       return { width: 27.62, height: 13.81 };
+//     }
+//   } else {
+//     if (width !== 28 || height !== 28) {
+//       return { width: 28.18, height: 27.62 };
+//     }
+//   }
+//   return { width, height };
+// };
 
 export const extractCityFromCountryCity = (countryCity) => {
   if (!countryCity) return "";
@@ -49,27 +49,125 @@ export const extractCityFromCountryCity = (countryCity) => {
   return "";
 };
 
-// export const getImageUrls = (imageTitle) => {
-//   if (!imageTitle) {
-//     return [];
-//   }
+export const shareToVK = (project, Host) => {
+  const url = encodeURIComponent(window.location.href);
+  const title = encodeURIComponent(project.title);
+  const imageUrl = encodeURIComponent(`${Host}/images/imageAdd/${project.imageProject}`);
+  window.open(`https://vk.com/share.php?url=${url}&title=${title}&image=${imageUrl}`, '_blank');
+};
 
-//   const filenames = imageTitle.replace(/{|}/g, "").split(",");
+export const shareToTelegram = (project, Host) => {
+const url = encodeURIComponent(window.location.href);
+const title = encodeURIComponent(`Check out this project: ${project.title}`);
+const imageUrl = encodeURIComponent(`${Host}/images/imageAdd/${project.imageProject}`);
+window.open(`https://t.me/share/url?url=${url}&title=${title}&image=${imageUrl}`, '_blank');
+};
 
-//   const trimmedFilenames = filenames.map((filename) => filename.trim());
+export const handleScroll = (el, projects, setEnableVerticalScroll, setIsHorizontalScroll, setIsAtRightEdge) => {
+   if (el) {
+    const rect = el.getBoundingClientRect();
+    const isSliderInView = rect.top <= window.innerHeight && rect.bottom >= 0;
+    setEnableVerticalScroll(!isSliderInView);
 
-//   const imageUrls = trimmedFilenames.map((filename) => `${Host}/images/${filename}`);
-//   return imageUrls;
-// };
+    if (projects) {
+      if (isSliderInView && el.scrollLeft > 0) {
+        setEnableVerticalScroll(false);
+        setIsHorizontalScroll(false); // Disable vertical scrolling
+      } else if (
+        !isSliderInView &&
+        el.scrollLeft + el.clientWidth >= el.scrollWidth
+      ) {
+        setEnableVerticalScroll(true);
+        setIsHorizontalScroll(false);
+      } else if (!isSliderInView && el.scrollLeft <= 0) {
+        setEnableVerticalScroll(true);
+        setIsHorizontalScroll(false);
+      } else if (
+        !isSliderInView &&
+        el.scrollLeft + el.clientWidth >= el.scrollWidth &&
+        el.scrollTop + el.clientHeight >= el.scrollHeight
+      ) {
+        setEnableVerticalScroll(true);
+        setIsHorizontalScroll(false);
+      }
+    }
+  }
 
+  if (el) {
+    const isRightEdge = el.scrollLeft + el.clientWidth >= el.scrollWidth;
+    setIsAtRightEdge(isRightEdge);
+  }
+};
 
+export const onVerticalScroll = (el, e, setEnableVerticalScroll) => {
+   const isScrollingUp = e.deltaY < 0;
+  const isAtTop = el.scrollTop <= 0;
+  const isAtBottom = el.scrollTop + el.clientHeight >= el.scrollHeight;
 
-      
-      // if (screenWidth >= 1800) {
-      //   setShowButton(true);
-      // } else if (screenWidth >= 1441 && screenWidth <= 1799) {
-      //   setShowButton(false);
-      // } else if (screenWidth >= 1024 && screenWidth <= 1440) {
-      //   setShowButton(false);
-      // }
-    
+  if (isScrollingUp && isAtTop) {
+    setEnableVerticalScroll(false);
+    el.scrollLeft += e.deltaY;
+  } else if (!isAtBottom) {
+    el.scrollTo({
+      top: el.scrollTop + e.deltaY,
+      behavior: "smooth",
+    });
+  } else {
+    e.preventDefault();
+  }
+};
+
+export const onWheel = (el, e, enableVerticalScroll, isHorizontalScroll, setIsHorizontalScroll) => {
+  const isScrollingRight = e.deltaY >= 0;
+  const isAtRightEdge = el.scrollLeft + el.clientWidth >= el.scrollWidth;
+  const isAtBottom = el.scrollTop + el.clientHeight >= el.scrollHeight;
+  const isAtLeftEdge = el.scrollLeft <= 0;
+  const isAtTop = el.scrollTop <= 0;
+
+  if (
+    isScrollingRight &&
+    isAtRightEdge &&
+    isAtBottom &&
+    !isHorizontalScroll
+  ) {
+    setIsHorizontalScroll(false); // Horizontal scrolling has stopped
+    el.scrollTo({
+      top: el.scrollTop + e.deltaY,
+      behavior: "smooth",
+    });
+  } else if (enableVerticalScroll && !isScrollingRight) {
+    if (isAtLeftEdge && isAtTop) {
+      setIsHorizontalScroll(true); // Horizontal scrolling is in progress
+      el.scrollLeft += e.deltaY;
+    } else if (isAtLeftEdge && !isAtTop) {
+      el.scrollTo({
+        top: el.scrollTop + e.deltaY,
+        behavior: "smooth",
+      });
+    } else if (
+      isAtRightEdge &&
+      isAtBottom &&
+      e.deltaY < 0 &&
+      !isHorizontalScroll
+    ) {
+      setIsHorizontalScroll(false); // Allow vertical scrolling
+      el.scrollLeft += e.deltaY;
+    } else if (
+      isAtRightEdge &&
+      isAtBottom &&
+      e.deltaY > 0 &&
+      !isHorizontalScroll
+    ) {
+      setIsHorizontalScroll(true); // Disable vertical scrolling
+      el.scrollTo({
+        top: el.scrollTop + e.deltaY,
+        behavior: "smooth",
+      });
+    } else {
+      e.preventDefault();
+    }
+  } else {
+    el.scrollLeft += e.deltaY;
+  }
+};
+
