@@ -2,7 +2,7 @@ const express = require('express');
 // eslint-disable-next-line
 const path = require("path");
 const fs = require("fs");
-const { Articles, BlockHeadingTitle } = require('../../db/models');
+const { Articles, BlockHeadingTitle, TextBlockArticles } = require('../../db/models');
 const fileMiddleware = require("../../middleware/fileArticle");
 
 const router = express.Router();
@@ -11,7 +11,7 @@ const router = express.Router();
 router.get('/getzapros', async (req, res) => {
   try {
     const data = await Articles.findAll({
-      include: BlockHeadingTitle,
+      include: [BlockHeadingTitle, TextBlockArticles], // Включение двух связанных моделей
     });
     res.json(data);
   } catch (error) {
@@ -57,6 +57,11 @@ router.post(
          text: req.body.blockHeadingText,
          idBlock: createdArticle.id, // Ссылка на созданную статью
        });
+      
+      await TextBlockArticles.create({
+        text: req.body.textBlockArticles,
+        idBlock: createdArticle.id, // Ссылка на созданную статью
+      });
 
     
       res.status(200).json({ message: 'Данные успешно сохранены' });
@@ -99,6 +104,8 @@ router.delete('/deletezapros/:id', async (req, res) => {
       fs.unlinkSync(imagePath);
     }
     await BlockHeadingTitle.destroy({ where: { idBlock: id } });
+    await TextBlockArticles.destroy({ where: { idBlock: id } });
+
 
     // Удаление поста
     await Articles.destroy({ where: { id } });

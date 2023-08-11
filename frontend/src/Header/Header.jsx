@@ -82,7 +82,6 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
     const storedData = localStorage.getItem("selectedItem");
     setData(storedData);
   }, []);
-  console.log(ArticleRight);
 
   const colors = {
     Архитектура: "#FF7F6A",

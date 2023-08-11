@@ -87,6 +87,7 @@ export const fetchArticle =
         imageClose: [],
         blockHeadingTitle: "",
         blockHeadingText: "",
+        textBlockArticles: "",
       });
       setPreviewPhotos([]);
       setPreviewPhotoAva([]);
