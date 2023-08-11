@@ -146,7 +146,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
     setOpenConstructor(!onenConstructor);
   };
 
-  console.log(inputData);
+  // console.log(inputData);
   return (
     <div className={styles.form_container}>
       <div className={styles.form_container__title}>Новая публикация</div>

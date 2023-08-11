@@ -104,7 +104,7 @@ export const getFetchFormArticle = () => async (dispatch) => {
     const response = await axios.get(
       `${serverHost}/api-article/getzapros`
     );
-    console.log(response);
+    console.log(response.data);
    dispatch(fetchArticleSuccess(response.data));
    
   } catch (error) {

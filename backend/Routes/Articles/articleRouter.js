@@ -10,13 +10,16 @@ const router = express.Router();
 
 router.get('/getzapros', async (req, res) => {
   try {
-    const data = await Articles.findAll();
+    const data = await Articles.findAll({
+      include: BlockHeadingTitle,
+    });
     res.json(data);
-   } catch (error) {
+  } catch (error) {
     console.log(error);
     res.sendStatus(500);
   }
 });
+
 
 router.post(
   '/postzapros',
@@ -34,9 +37,8 @@ router.post(
       const imageOpens = req.files.imageOpen ? req.files.imageOpen[0].filename : null;
       const imageCloses = req.files.imageClose ? req.files.imageClose[0].filename : null;
 
-      const lo = req.body
-      console.log(lo);
-      await Articles.create({
+    
+      const createdArticle = await Articles.create({
         title: req.body.title,
         author: req.body.author,
         city: req.body.city,
@@ -50,10 +52,11 @@ router.post(
         imageClose: imageCloses,
       });
 
-      await BlockHeadingTitle.create({
-        title: req.body.blockHeadingTitle,
-        text: req.body.blockHeadingText,
-      });
+       await BlockHeadingTitle.create({
+         title: req.body.blockHeadingTitle,
+         text: req.body.blockHeadingText,
+         idBlock: createdArticle.id, // Ссылка на созданную статью
+       });
 
     
       res.status(200).json({ message: 'Данные успешно сохранены' });
@@ -95,6 +98,7 @@ router.delete('/deletezapros/:id', async (req, res) => {
       const imagePath = path.join(__dirname, '..', 'images/imageArticle', post.imageClose);
       fs.unlinkSync(imagePath);
     }
+    await BlockHeadingTitle.destroy({ where: { idBlock: id } });
 
     // Удаление поста
     await Articles.destroy({ where: { id } });
