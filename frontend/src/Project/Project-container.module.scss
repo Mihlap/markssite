@@ -79,9 +79,10 @@
     background-color: var(--dark-gray-566272);
     color: var(--white-F6F6F6);
 }
+
 .menu__button__allProject.active {
     background-color: var(--black-1D2E43);
-  }
+}
 
 //   .menu__button__allProject.active:hover {
 //     background-color: var(--black-1D2E43);
@@ -171,30 +172,46 @@
 
 .section_project__block {
     display: flex;
-    // justify-content: space-around;
+    justify-content: flex-start;
+    align-items: flex-start;
     flex-wrap: wrap;
-    gap: 30px;
+    gap: 2rem;
     padding-left: 1.69rem;
     padding-right: 1.13rem;
 }
 
 .section_project__block_cart {
     display: flex;
+    width: auto;
+    height: auto;
+    overflow: hidden;
 }
 
 .cart_project {
     display: flex;
-    // justify-content: center;
-    // align-items: center;
     width: 100%;
+    height: 100%;
 }
 
 .cart_project__container {
-    max-width: fit-content;
+    width: 28rem;
+    height: auto;
 }
+
+.cart_project__img {
+    max-width: 100%;
+    max-height: 100%;
+    width: 100%;
+    height: auto;
+    border-radius: 1rem;
+    object-fit: contain;
+    object-position: center;
+}
+
 
 .project_content__wrapper {
     display: flex;
+    flex-direction: row;
     width: 100%;
     gap: 10px;
 
@@ -204,7 +221,7 @@
     display: flex;
     flex-wrap: wrap;
     word-break: break-all;
-    width: 50%;
+    width: 70%;
     font-family: var(--font-raleway);
     font-size: 14px;
     font-style: normal;
@@ -212,27 +229,21 @@
     line-height: 20px;
     color: var(--black-4E4E4E);
     padding-top: 16px;
-  }
+}
 
 .cart_project__content {
-    display: flex;
-    flex: 1;
-    flex-direction: row;
-    flex-wrap: wrap;
-    width: 50%;
+    width: 100%;
 }
 
 .cart_project__widget {
     display: flex;
     flex-direction: row;
+    justify-content: flex-end;
     width: 100%;
     flex-wrap: wrap;
-    justify-content: flex-end;
     grid-row-gap: 8px;
     padding-top: 16px;
     padding-left: 8px;
-    padding-bottom: 16px;
-    flex-direction: row;
     font-family: var(--font-raleway);
     font-size: 9px;
     font-style: normal;
@@ -249,7 +260,7 @@
     font-style: normal;
     font-weight: var(--fw-400);
     line-height: normal;
-    padding-top: 0px;
+    padding-top: 0.6rem;
 }
 
 .cart_project__address__svg {
@@ -259,17 +270,11 @@
     align-items: center;
 }
 
-.cart_project__img {
-    border-radius: 1rem;
-    width: 100%;
-    height: 100%;
-}
 
 .el_project_selectCompetencies {
     margin-right: 6px;
     // margin-top: 6px;
     border: 1px solid;
-    padding: 3px 6px;
     border-radius: 34px;
     max-width: fit-content;
 }
@@ -441,16 +446,17 @@
 
 .searchCityAddress_wrapper {
     display: none;
- }
+}
 
 .my_swiper2_button_group_project {
     display: none;
- }
+}
 
 .menu_button_group_project_wrapper {
     display: flex;
     width: 100%;
 }
+
 .menu__button__modal__project {
     display: flex;
     width: 100%;
@@ -514,12 +520,12 @@
     }
 
     .searchCityAddress_wrapper {
-       display: none;
+        display: none;
     }
 
     .my_swiper2_button_group_project {
         display: none;
-     }
+    }
 
     .menu_button_group_project {
         padding-left: 3rem;
@@ -527,41 +533,41 @@
     }
 
     .modal_wrapper_project_location {
-      width: 50%;
+        width: 50%;
     }
-    
+
     .modal_project_close {
         padding-left: 90%;
     }
-    
-    
+
+
     .modal_project_container {
         display: flex;
         padding: 19.5rem 1.81rem 0rem 5.5rem;
-    
+
     }
-    
-   .location_project_group {
+
+    .location_project_group {
         display: flex;
         flex-direction: column;
         padding-top: 2.5rem;
         padding-left: 5.5rem;
         padding-right: 1.81rem;
     }
-    
+
     .label_project {
         position: relative;
     }
-    
+
     .address_and_city_choose_location {
         width: 80%;
     }
-    
+
     .line_modal_project {
         width: 30vw;
     }
 
-  
+
     .placeholder_modal_project {
         display: flex;
         position: absolute;
@@ -576,16 +582,16 @@
         transform-origin: left top;
         transition: all 0.1s ease-out;
     }
-  
-   
+
+
     .text_object_modal_project {
-       padding: 2.5rem 1.81rem 0rem 5.5rem;
-     }
-    
+        padding: 2.5rem 1.81rem 0rem 5.5rem;
+    }
+
     .modal_project_button_group {
-       padding: 1rem 2.81rem 0rem 5.5rem;
-     }
-   
+        padding: 1rem 2.81rem 0rem 5.5rem;
+    }
+
     .section_project {
         padding-top: 2rem;
         background-color: var(--white-F6F6F6);
@@ -620,20 +626,20 @@
 
     .searchCityAddress_wrapper {
         display: block;
-     }
-     
-     .searchCityAddress_location_project_group {
+    }
+
+    .searchCityAddress_location_project_group {
         display: flex;
         flex-direction: column;
         padding-top: 0rem;
         padding-left: 1rem;
         padding-right: 1rem;
-     }
+    }
 
-     .searchCityAddress_label_project {
+    .searchCityAddress_label_project {
         position: relative;
     }
-    
+
     .searchCityAddress_address_and_city_choose_location {
         border: none;
         outline: none;
@@ -647,19 +653,19 @@
         caret-color: black;
         width: 100%;
     }
-    
-     .line_modal_project {
+
+    .line_modal_project {
         bottom: 0;
         left: 0;
         width: 100%;
         height: 0.069vh;
         background-color: var(--gray-959DA6);
     }
-    
+
     .line_modal_project.focused {
         background-color: var(--salmon-FF7F6A);
     }
-    
+
     .error_line_modal_project {
         font-family: var(--font-raleway);
         font-style: normal;
@@ -668,7 +674,7 @@
         line-height: 16px;
         color: var(--crimson-E00747);
     }
-    
+
     .placeholder_modal_project {
         display: flex;
         position: absolute;
@@ -683,7 +689,7 @@
         transform-origin: left top;
         transition: all 0.1s ease-out;
     }
-    
+
     #text-input:not(:placeholder-shown)+.placeholder_modal_project,
     #text-input:empty+.placeholder_modal_project,
     .focused .placeholder_modal_project {
@@ -691,7 +697,7 @@
         font-size: 12px;
         color: var(--gray-959DA6);
     }
-    
+
     .address_and_city_choose_location:focus+.line_modal_project {
         background-color: #FF7F6A;
     }
@@ -700,49 +706,58 @@
         display: none;
     }
 
-  
+
     .my_swiper2_button_group_project {
         display: flex;
         padding-top: 2.5rem;
         bottom: 0rem;
         left: 1rem;
         width: 100%;
-       }
-       
-      .active {
+    }
+
+    .active {
         background: var(--black-1D2E43);
         color: var(--white-F6F6F6);
-      }
-   
+    }
+
     .section_project {
         display: flex;
         flex-direction: column;
         padding-top: 2rem;
         background-color: var(--white-F6F6F6);
     }
-    
+
     .section_project__block {
         display: flex;
+        justify-content: center;
         flex-direction: column;
         gap: 2rem;
-        padding-left: 1rem;
-        padding-right: 1rem;
     }
-    
+
     .section_project__block_cart {
         display: flex;
         flex-direction: column;
-     }
-    
-      .cart_project__container {
-        max-width: none;
+        width: 100%;
+        height: 100%;
+        overflow: none;
     }
-    
+
+    .cart_project__container {
+        width: 100%;
+        height: 100%;
+    }
+
+    .cart_project__img {
+        width: 100%;
+        height: 100%;
+        border-radius: 1rem;
+    }
+
     .project_content__wrapper {
         display: block;
-    
+
     }
-    
+
     .cart_project_title {
         display: block;
         width: 100%;
@@ -750,14 +765,14 @@
         line-height: 1.31rem;
         padding-top: 1rem;
     }
-    
+
     .cart_project__content {
         display: block;
         flex-direction: row;
         flex-wrap: wrap;
         width: auto
     }
-    
+
     .cart_project__widget {
         display: flex;
         flex-direction: row;
@@ -770,17 +785,17 @@
         flex-direction: row;
         font-size: 0.56rem;
         font-weight: var(--fw-500);
-       
+
     }
-    
-    
+
+
     .cart_project__address {
         display: flex;
         color: var(--gray-959DA6);
         font-size: 0.625rem;
         padding-top: 0.5rem;
     }
-    
+
     .el_project_selectCompetencies {
         margin-right: 6px;
         // margin-top: 6px;
@@ -789,9 +804,10 @@
         border-radius: 34px;
         max-width: fit-content;
     }
+
     .modal_wrapper_project_location {
         display: none;
     }
-  
+
 
 }

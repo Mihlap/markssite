@@ -572,14 +572,19 @@ export default function Project() {
                   to={`/projects/${project.id}`}
                   className={styles.section_project__block_cart}
                 >
-                  <div className={styles.cart_project}>
+                  <div className={styles.cart_project}
+                   // style={{
+                    //   height: `${project.style?.split(",")[1]}rem`,
+                    //   width: `${project.style?.split(",")[0]}rem`,
+                    // }}
+                  >
                     <div className={styles.cart_project__container}>
                       <img
                         className={styles.cart_project__img}
-                        style={{
-                          height: `${project.style?.split(",")[1]}rem`,
-                          width: `${project.style?.split(",")[0]}rem`,
-                        }}
+                         // style={{
+                        //   height: `${project.style?.split(",")[1]}rem`,
+                        //   width: `${project.style?.split(",")[0]}rem`,
+                        //   }}
                         src={`${Host}/images/imageAdd/${
                           project.imageProject
                             ? project.imageProject
@@ -612,6 +617,9 @@ export default function Project() {
                                     style={{
                                       color: colors[competency.value],
                                       borderColor: colors[competency.value],
+                                      border: "1px solid",
+                                      padding: "3px 6px",
+                                      borderRadius: "34px",
                                     }}
                                   >
                                     {competency.label}
@@ -635,6 +643,9 @@ export default function Project() {
                                         style={{
                                           color: colors[label],
                                           borderColor: colors[label],
+                                          border: "1px solid",
+                                          padding: "3px 6px",
+                                          borderRadius: "34px",
                                         }}
                                       >
                                         {label}
@@ -654,6 +665,9 @@ export default function Project() {
                                             style={{
                                               color: colors[value],
                                               borderColor: colors[value],
+                                              border: "1px solid",
+                                              padding: "3px 6px",
+                                              borderRadius: "34px",
                                             }}
                                           >
                                             {label}
