@@ -8,7 +8,7 @@
         height: 100%;
         border-radius: 1rem;
         padding: 5rem 2.7vw 0rem 2.7vw;
-       }
+    }
 
     .swiper_wrapper {
         width: 100%;
@@ -19,6 +19,11 @@
     }
 
     .div_el_selectCompetencies {
+        font-family: var(--font-raleway);
+        font-size: 9px;
+        font-style: normal;
+        font-weight: var(--fw-500);
+        line-height: normal;
         display: flex;
         max-width: fit-content;
         justify-content: center;
@@ -26,14 +31,15 @@
         margin-top: 8px;
         margin-right: 6px;
         padding-left: 0px;
- }
+    }
 
-   .swiper_pagination {
+    .swiper_pagination {
         display: flex;
         justify-content: center;
-        margin-top: 30px;
+        margin-top: 1.5rem;
         padding-bottom: 3.5rem;
     }
+
     .swiper_pagination_bullet {
         width: 20px;
         height: 4px;

@@ -1,4 +1,4 @@
-const Host = process.env.REACT_APP_SERVER_HOST;
+// const Host = process.env.REACT_APP_SERVER_HOST;
 
 export const getUserGeolocation = () => {
   return new Promise((resolve, reject) => {
@@ -23,15 +23,15 @@ export const getUserGeolocation = () => {
 //   const aspectRatio = height / width;
 
 //   if (aspectRatio >= 1.2) {
-//     if (width !== 28 || height !== 48) {
-//       return { width: 28.18, height: 48.18 };
+//     if (width !== '28rem' || height !== '48rem') {
+//       return { width: '28.18rem', height: '48.18rem' };
 //     }
 //   } else if (aspectRatio < 0.8) {
-//     if (width !== 28 || height !== 14) {
+//     if (width !== '28rem' || height !== '14rem') {
 //       return { width: 27.62, height: 13.81 };
 //     }
 //   } else {
-//     if (width !== 28 || height !== 28) {
+//     if (width !== '28rem' || height !== '28rem') {
 //       return { width: 28.18, height: 27.62 };
 //     }
 //   }
@@ -53,14 +53,29 @@ export const shareToVK = (project, Host) => {
   const url = encodeURIComponent(window.location.href);
   const title = encodeURIComponent(project.title);
   const imageUrl = encodeURIComponent(`${Host}/images/imageAdd/${project.imageProject}`);
-  window.open(`https://vk.com/share.php?url=${url}&title=${title}&image=${imageUrl}`, '_blank');
+  window.open(`https://vk.com/share.php?url=${url}&title=${title}&image=${encodeURIComponent(imageUrl)}`, '_blank');
 };
 
 export const shareToTelegram = (project, Host) => {
 const url = encodeURIComponent(window.location.href);
-const title = encodeURIComponent(`Check out this project: ${project.title}`);
+const title = encodeURIComponent(project.title);
 const imageUrl = encodeURIComponent(`${Host}/images/imageAdd/${project.imageProject}`);
-window.open(`https://t.me/share/url?url=${url}&title=${title}&image=${imageUrl}`, '_blank');
+window.open(`https://t.me/share/url?url=${url}&text=${title}&image=${encodeURIComponent(imageUrl)}`, '_blank');
+};
+
+export const shareToWhatsApp = (project, Host) => {
+  const title = encodeURIComponent(`Check out this project: ${project.title}`);
+  const imageUrl = `${Host}/images/imageAdd/${project.imageProject}`;
+  const message = `${title}%0A${window.location.href}%0A${imageUrl}`;
+  const whatsappUrl = `https://wa.me/?text=${message}`;
+  window.open(whatsappUrl, '_blank');
+};
+
+export const shareToViber = (project, Host) => {
+  const url = encodeURIComponent(window.location.href);
+  const text = encodeURIComponent(project.title);
+  const imageUrl = encodeURIComponent(`${Host}/images/imageAdd/${project.imageProject}`);
+  window.open(`viber://forward?text=${text}%0A${url}%0A${encodeURIComponent(imageUrl)}`, '_blank');
 };
 
 export const handleScroll = (el, projects, setEnableVerticalScroll, setIsHorizontalScroll, setIsAtRightEdge) => {

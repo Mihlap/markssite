@@ -61,7 +61,7 @@ const ProjectCardSlider = ({ slidesCard }) => {
 
 
     
-console.log(slidesCard, '++++++++++++++++++++++++++');
+// console.log(slidesCard, '++++++++++++++++++++++++++');
   return (
     <div className="company-slider-container">
 

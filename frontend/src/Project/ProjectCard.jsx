@@ -9,6 +9,7 @@ import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 import ProjectCardSlider from "../UI/ProjectCardSlider/ProjectCardSlider";
 import styles from "./ProjectCard.module.css";
 import { getFetchForm } from "../store/Slice/projectSlice";
+import SliderContainerProjectCard from "../UI/ProjectCardSlider/SliderContainerProjectCard";
 import AllProjectsButton from "../UI/ButtonsProjects/AllProjectsButton";
 import {
   handleScroll,
@@ -16,6 +17,8 @@ import {
   onWheel,
   shareToVK,
   shareToTelegram,
+  shareToWhatsApp,
+  shareToViber,
 } from "./utils";
 
 import next from ".././icons/next.svg";
@@ -185,6 +188,8 @@ const ProjectCard = () => {
   const previousProject = projects[previousIndex];
   const nextProject = projects[nextIndex];
 
+  console.log(project, 'wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww');
+
   return (
     <>
       <Helmet>
@@ -208,78 +213,80 @@ const ProjectCard = () => {
                 <div className={styles.project_content__wrapper__block__card}>
                   <div className={styles.cart_project__content__block__card}>
                     <div className={styles.cart_project__widget__block__card}>
-                    {(() => {
-                           try {
-                            const selectCompetencies = JSON.parse(
-                              project.selectCompetencies
-                            );
-                            return selectCompetencies.map((competency) => (
-                              <div
-                                key={competency.value}
-                                className={styles.el_project_selectCompetencies__block__card}
-                                style={{
-                                  // color: colors[competency.value],
-                                  // borderColor: colors[competency.value],
-                                  border: "1px solid",
-                                  padding: "3px 6px",
-                                  borderRadius: "34px",
-                                }}
-                              >
-                                {competency.label}
-                              </div>
-                            ));
-                          } catch (error) {
-                            if (
-                              typeof project.selectCompetencies === "string"
-                            ) {
-                              // Если строка с одним значением и без запятых
-                              if (!project.selectCompetencies.includes(",")) {
-                                const label = project.selectCompetencies.trim();
-                                return (
-                                  <div
-                                    key={label}
-                                    className={styles.el_project_selectCompetencies__block__card}
-                                    style={{
-                                      // color: colors[label],
-                                      // borderColor: colors[label],
-                                      border: "1px solid",
-                                      padding: "3px 6px",
-                                      borderRadius: "34px",
-                                    }}
-                                  >
-                                    {label}
-                                  </div>
-                                );
+                      {(() => {
+                        try {
+                          const selectCompetencies = JSON.parse(
+                            project.selectCompetencies
+                          );
+                          return selectCompetencies.map((competency) => (
+                            <div
+                              key={competency.value}
+                              className={
+                                styles.el_project_selectCompetencies__block__card
                               }
-                              // Строка с несколькими значениями, разделенными запятыми
-                              else {
-                                return project.selectCompetencies
-                                  .split(",")
-                                  .map((value) => {
-                                    const label = value.trim();
-                                    return (
-                                      <div
-                                        key={value}
-                                        className={
-                                          styles.el_project_selectCompetencies__block__card
-                                        }
-                                        style={{
-                                          // color: colors[value],
-                                          // borderColor: colors[value],
-                                          border: "1px solid",
-                                          padding: "3px 6px",
-                                          borderRadius: "34px",
-                                        }}
-                                      >
-                                        {label}
-                                      </div>
-                                    );
-                                  });
-                              }
+                              style={{
+                                // color: colors[competency.value],
+                                // borderColor: colors[competency.value],
+                                border: "1px solid",
+                                padding: "3px 6px",
+                                borderRadius: "34px",
+                              }}
+                            >
+                              {competency.label}
+                            </div>
+                          ));
+                        } catch (error) {
+                          if (typeof project.selectCompetencies === "string") {
+                            // Если строка с одним значением и без запятых
+                            if (!project.selectCompetencies.includes(",")) {
+                              const label = project.selectCompetencies.trim();
+                              return (
+                                <div
+                                  key={label}
+                                  className={
+                                    styles.el_project_selectCompetencies__block__card
+                                  }
+                                  style={{
+                                    // color: colors[label],
+                                    // borderColor: colors[label],
+                                    border: "1px solid",
+                                    padding: "3px 6px",
+                                    borderRadius: "34px",
+                                  }}
+                                >
+                                  {label}
+                                </div>
+                              );
                             }
-                            return null;
+                            // Строка с несколькими значениями, разделенными запятыми
+                            else {
+                              return project.selectCompetencies
+                                .split(",")
+                                .map((value) => {
+                                  const label = value.trim();
+                                  return (
+                                    <div
+                                      key={value}
+                                      className={
+                                        styles.el_project_selectCompetencies__block__card
+                                      }
+                                      style={{
+                                        // color: colors[value],
+                                        // borderColor: colors[value],
+                                        border: "1px solid",
+                                        padding: "3px 6px",
+                                        borderRadius: "34px",
+                                      }}
+                                    >
+                                      {label}
+                                    </div>
+                                  );
+                                });
+                            }
                           }
-                        })()}
+                          return null;
+                        }
+                      })()}
                     </div>
                     <div
                       className={styles.cart_project_title__block__card}
@@ -330,7 +337,7 @@ const ProjectCard = () => {
                 <div className={styles.title_text}>
                   {project.descriptionProject}
                 </div>
-
+                
                 <div className={styles.result_container}>
                   {[
                     { value: project.siteArea, text: "Общая площадь" },
@@ -362,6 +369,19 @@ const ProjectCard = () => {
                 ref={refs.blockRight}
                 className={styles.header_content_right}
               >
+                <div className={styles.title_block_mobile}>
+                  <div className={styles.left_title}>
+                    {project.titleTextBlock}
+                    <div
+                      className={`${styles.left_meta} ${styles.left_meta_castom}`}
+                    >
+                      {project.viewConstruction}
+                    </div>
+                  </div>
+                </div>
+                <div className={styles.title_text_mobile}>
+                  {project.descriptionProject}
+                </div>
                 <div className={styles.local_container}>
                   <div className={styles.local_ritgh}>
                     <div>
@@ -412,6 +432,7 @@ const ProjectCard = () => {
                   </div>
                 </div>
               </div>
+
             </div>
             <div className={styles.blockImg}>
               <div className={styles.container}>
@@ -436,14 +457,14 @@ const ProjectCard = () => {
                     </div>
                   </div>
                 </div>
-                <div className={styles.item}>
+                {/* <div className={styles.item}>
                   <img
                     ref={refs.leftImg2}
                     className={styles.item_img}
                     // src={img2}
                     alt=""
                   />
-                </div>
+                </div> */}
                 <div className={styles.item}>
                   <img
                     ref={refs.leftImg3}
@@ -491,7 +512,7 @@ const ProjectCard = () => {
               )}
             </div>
             <div id="projects" className={styles.social_links_projectCard}>
-              <button onClick={shareToVK}>
+            <button onClick={() => shareToVK(project, Host)}>
                 <span
                   className={styles.social_links_item}
                   style={{ marginRight: "21px", color: "#FF7F6A" }}
@@ -499,31 +520,23 @@ const ProjectCard = () => {
                   VK
                 </span>
               </button>
-              <Link
-                to="https://www.instagram.com"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <button onClick={() => shareToWhatsApp(project, Host)}>
                 <span
                   className={styles.social_links_item}
                   style={{ marginRight: "25px", color: "#FF7F6A" }}
                 >
-                  IG
+                  WA
                 </span>
-              </Link>
-              <Link
-                to="https://www.youtube.com"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              </button>
+              <button onClick={() => shareToViber(project, Host)}>
                 <span
                   className={styles.social_links_item}
                   style={{ marginRight: "22px", color: "#FF7F6A" }}
                 >
-                  YT
+                  VB
                 </span>
-              </Link>
-              <button onClick={shareToTelegram}>
+              </button>
+              <button onClick={() => shareToTelegram(project, Host)}>
                 <span
                   className={styles.social_links_item}
                   style={{ color: "#FF7F6A" }}
@@ -539,7 +552,7 @@ const ProjectCard = () => {
         <div className={styles.swiper_progect_container}>
           {/* <SwiperContainerProgect projects={projects} /> */}
         </div>
-        <div className={styles.main_project_projectCard}>
+         <div className={styles.main_project_projectCard}>
           <Swiper
             className={styles.slider_card_container_project_projectCard}
             id="slider_card_container_project"
@@ -550,7 +563,7 @@ const ProjectCard = () => {
             loop={false}
             breakpoints={{
               2000: {
-                slidesPerView: 4.2,
+                slidesPerView: 4.1,
               },
               1440: {
                 slidesPerView: 3.2,
@@ -567,14 +580,14 @@ const ProjectCard = () => {
               if (!project) {
                 return null;
               }
-          
+
               return (
                 <SwiperSlide
                   key={project.id}
                   onScroll={handleScroll}
                   id="slider_container_item_card"
                   className={styles.slider_container_item_card_projectCard}
-                   style={index % 2 === 1 ? { paddingTop: "10rem" } : {}}
+                  style={index % 2 === 1 ? { paddingTop: "10rem" } : {}}
                 >
                   <Link to={`/projects/${project.id}`} key={project.id}>
                     <div
@@ -598,26 +611,31 @@ const ProjectCard = () => {
                         }
                       />
                     </div>
-                    <div className={styles.title_selectCompetencies_projectCard}>
+                    <div
+                      className={styles.title_selectCompetencies_projectCard}
+                    >
                       <div className={styles.container__title_projectCard}>
                         {project.title}
-                        </div>
-                        <div className={styles.container__selectCompetencies_projectCard}>
-                          {(() => {
-                           try {
+                      </div>
+                      <div
+                        className={
+                          styles.container__selectCompetencies_projectCard
+                        }
+                      >
+                        {(() => {
+                          try {
                             const selectCompetencies = JSON.parse(
                               project.selectCompetencies
                             );
                             return selectCompetencies.map((competency) => (
                               <div
                                 key={competency.value}
-                                className={styles.div_el_selectCompetencies_projectCard}
+                                className={
+                                  styles.div_el_selectCompetencies_projectCard
+                                }
                                 style={{
                                   color: colors[competency.value],
                                   borderColor: colors[competency.value],
-                                  border: "1px solid",
-                                  padding: "3px 6px",
-                                  borderRadius: "34px",
                                 }}
                               >
                                 {competency.label}
@@ -633,13 +651,12 @@ const ProjectCard = () => {
                                 return (
                                   <div
                                     key={label}
-                                    className={styles.div_el_selectCompetencies_projectCard}
+                                    className={
+                                      styles.div_el_selectCompetencies_projectCard
+                                    }
                                     style={{
                                       color: colors[label],
                                       borderColor: colors[label],
-                                      border: "1px solid",
-                                      padding: "3px 6px",
-                                      borderRadius: "34px",
                                     }}
                                   >
                                     {label}
@@ -661,9 +678,6 @@ const ProjectCard = () => {
                                         style={{
                                           color: colors[value],
                                           borderColor: colors[value],
-                                          border: "1px solid",
-                                          padding: "3px 6px",
-                                          borderRadius: "34px",
                                         }}
                                       >
                                         {label}
@@ -683,6 +697,21 @@ const ProjectCard = () => {
                       >
                         {project.countryCity}
                       </div>
+                      <div
+                        className={
+                          styles.cart_project__address__svg_projectCard
+                        }
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="2"
+                          height="2"
+                          viewBox="0 0 2 2"
+                          fill="none"
+                        >
+                          <circle cx="1" cy="1" r="1" fill="#959DA6" />
+                        </svg>{" "}
+                      </div>
                       <div className={styles.container__monthYear_projectCard}>
                         {project.monthYear}
                       </div>
@@ -693,6 +722,9 @@ const ProjectCard = () => {
             })}
           </Swiper>
         </div>
+        <div className={styles.swiper_progect_container_projectCard}>
+        <SliderContainerProjectCard projects={projects} />
+      </div>
       </div>
     </>
   );

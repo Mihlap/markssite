@@ -402,7 +402,7 @@ svg path {
 
 .title_selectCompetencies {
   display: flex;
-  width: 100%;
+   width: 100%;
   padding-top: 1rem;
   }
 
@@ -413,38 +413,35 @@ svg path {
   font-style: normal;
   font-weight: var(--fw-700);
   line-height: 1.125rem;
-  width: 50%;
+  width: 60%;
 }
 
 .container__selectCompetencies {
   display: flex;
   background: var(--white-F6F6F6);
+  font-size: 9px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
   justify-content: flex-end;
   flex-direction: row;
   flex-wrap: wrap;
   padding-left: 1rem;
   width: 100%;
+  max-width: 40%;
  }
  .div_el_selectCompetencies {
   display: flex;
   max-width: fit-content;
   justify-content: center;
   align-items: center;
-  margin-top: 8px;
+  margin-top: 6px;
   margin-right: 6px;
 }
- .div_el_selectCompetencies1 {
-   display: flex;
-   max-width: fit-content;
-   justify-content: center;
-   align-items: center;
-   margin-top: 6px;
-   margin-right: 6px;
- }
+
 
 .countryCity_monthYear {
   display: flex;
-  justify-content: space-between;
   padding-top: 0.5rem;
   width: 98%;
  }
@@ -456,6 +453,13 @@ svg path {
   font-style: normal;
   font-weight: var(--fw-400);
   line-height: normal;
+}
+
+.project__address__svg {
+  display: flex;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  align-items: center;
 }
 
 .container__monthYear {

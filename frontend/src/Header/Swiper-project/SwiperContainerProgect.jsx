@@ -57,6 +57,7 @@ const MapProject = NewProject.map((el) =>
       >
         <div className="swiper_wrapper">
           {MapProject?.map((project) => {
+              if (project) {
               return (
                 <SwiperSlide key={project.id}>
                   <Link key={project.id} to={`/projects/${project.id}`}>
@@ -69,32 +70,32 @@ const MapProject = NewProject.map((el) =>
                     id={project.link}
                     selectCompetencies={(() => {
                       try {
-                        const selectCompetencies = JSON.parse(
-                          project.selectCompetencies
-                        );
-                        return selectCompetencies.map((competency) => (
-                          <div
-                            key={competency.value}
-                            className="div_el_selectCompetencies"
-                            style={{
-                              color: colors[competency.value],
-                              borderColor: colors[competency.value],
-                              border: "1px solid",
-                              padding: "3px 6px",
-                              borderRadius: "34px",
-                            }}
-                          >
-                            {competency.label}
-                          </div>
-                        ));
-                      } catch (error) {
-                        if (
-                          typeof project.selectCompetencies === "string" &&
-                          project.selectCompetencies.includes(",")
-                        ) {
-                          return project.selectCompetencies
-                            .split(",")
-                            .map((value) => {
+                        const selectCompetencies = project.selectCompetencies;
+                    
+                        if (Array.isArray(selectCompetencies)) {
+                          // ... (то же, что и в предыдущем коде)
+                        } else if (typeof project.selectCompetencies === "string") {
+                          // Если строка с одним значением и без запятых, отобразить компетенцию
+                          if (!project.selectCompetencies.includes(",")) {
+                            const label = project.selectCompetencies.trim();
+                            return (
+                              <div
+                                key={label}
+                                className="div_el_selectCompetencies"
+                                style={{
+                                  color: colors[label],
+                                  borderColor: colors[label],
+                                  border: "0.5px solid",
+                                  padding: "3px 6px",
+                                  borderRadius: "34px",
+                                }}
+                              >
+                                {label}
+                              </div>
+                            );
+                          } else {
+                            // Строка с несколькими значениями, разделенными запятыми
+                            return project.selectCompetencies.split(",").map((value) => {
                               const label = value.trim();
                               return (
                                 <div
@@ -103,7 +104,7 @@ const MapProject = NewProject.map((el) =>
                                   style={{
                                     color: colors[value],
                                     borderColor: colors[value],
-                                    border: "1px solid",
+                                    border: "0.5px solid",
                                     padding: "3px 6px",
                                     borderRadius: "34px",
                                   }}
@@ -112,16 +113,22 @@ const MapProject = NewProject.map((el) =>
                                 </div>
                               );
                             });
+                          }
                         }
+                      } catch (error) {
                         return null;
                       }
                     })()}
+                    
                     countryCity={project.countryCity}
                     monthYear={project.monthYear}
                   />
                 </Link>
                 </SwiperSlide>
               );
+            } else {
+              return null; 
+            }
             })}
         </div>
       </Swiper>

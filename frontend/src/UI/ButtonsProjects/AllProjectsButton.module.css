@@ -70,16 +70,17 @@ color: var(--black-1D2E43);
   }
 
 
-/* Стили для мобильной версии сайта блока WinePark начинаются тут */
-@media screen and (max-width: 700px) {
+/* Стили для мобильной версии сайта блока AllProjectButton начинаются тут */
+@media screen and (max-width: 767px) {
 
-.button_link {
-     padding: 0.5vh 3vw;
-     border-radius: 14px;
-    }  
+  .button_link {
+  font-size: 14px;
+  padding: 0.5vh 3vw;
+  border-radius: 14px;
+}
 
-    .button_project {
-      display: none;
-    } 
+.button_project {
+  display: none;
+}
 }
 
