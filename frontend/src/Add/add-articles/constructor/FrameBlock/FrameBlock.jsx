@@ -17,8 +17,8 @@ export default function FrameBlock({
   return (
     <div>
       {!openInput ? (
-        <div className={styles.QuoteBlock_btn} onClick={handlerOpenInput}>
-          <div className={styles.QuoteBlock_btn__border}>
+        <div className={styles.FrameBlock_btn} onClick={handlerOpenInput}>
+          <div className={styles.FrameBlock_btn__border}>
             <svg
               width="76"
               height="33"
@@ -63,29 +63,26 @@ export default function FrameBlock({
           </div>
         </div>
       ) : (
-        <div className={styles.BlockHeadingTitle_btn__description_text}>
-          <div className={styles.BlockHeadingTitle_btn__textarea_length}>
-            {`${inputData.blockHeadingText.length}/260`}
+        <div className={styles.FrameBlock_btn__description_text}>
+          <div className={styles.FrameBlock_btn__textarea_length}>
+            {`${inputData.frameBlock.length}/260`}
           </div>
           <textarea
-            className={styles.BlockHeadingTitle_btn__textarea}
-            name="blockHeadingText"
-            id="blockHeadingText"
+            className={styles.FrameBlock_btn__textarea}
+            name="frameBlock"
+            id="frameBlock"
             cols="30"
             rows="10"
             placeholder="Текст"
-            value={inputData.blockHeadingText}
+            value={inputData.frameBlock}
             onChange={(event) => {
               const value = event.target.value;
               if (value.length <= 260) {
-                setInputData({ ...inputData, blockHeadingText: value });
+                setInputData({ ...inputData, frameBlock: value });
               }
             }}
           ></textarea>
-          <label
-            htmlFor=""
-            className={styles.BlockHeadingTitle_btn__textarea_label}
-          >
+          <label htmlFor="" className={styles.FrameBlock_btn__textarea_label}>
             Текст
           </label>
         </div>

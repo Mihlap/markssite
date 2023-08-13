@@ -2,7 +2,7 @@ const express = require('express');
 // eslint-disable-next-line
 const path = require("path");
 const fs = require("fs");
-const { Articles, BlockHeadingTitle, TextBlockArticles } = require('../../db/models');
+const { Articles, BlockHeadingTitle, TextBlockArticles, FrameBlock } = require('../../db/models');
 const fileMiddleware = require("../../middleware/fileArticle");
 
 const router = express.Router();
@@ -61,6 +61,11 @@ router.post(
       await TextBlockArticles.create({
         text: req.body.textBlockArticles,
         idBlock: createdArticle.id, // Ссылка на созданную статью
+      });
+
+      await FrameBlock.create({
+        text: req.body.frameBlock,
+        idBlock: createdArticle.id,
       });
 
     
