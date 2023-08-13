@@ -39,6 +39,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
     blockHeadingTitle: "",
     blockHeadingText: "",
     textBlockArticles: "",
+    frameBlock: "",
   });
 
   console.log(inputData);
