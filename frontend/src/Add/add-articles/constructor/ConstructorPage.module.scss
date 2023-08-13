@@ -4,11 +4,14 @@
     width: 100%;
 }
 
-.BlockHeadingTitle_btn, .TextBlockArticles_btn {
+.BlockHeadingTitle_btn,
+.TextBlockArticles_btn,
+.QuoteBlock_btn {
     background-color: var(--salmon-light-FFBFB5);
     border-radius: 6px;
     padding: 25px 30px 40px 30px;
     transition: all 0.3s ease-in-out;
+        cursor: pointer;
 
     &:hover {
         background-color: var(--salmon-FF7F6A);
@@ -118,8 +121,32 @@
     border-radius: 6px;
     padding: 42px 30px 40px 30px;
     transition: all 0.3s ease-in-out;
+        cursor: pointer;
 
     &:hover {
         background-color: var(--salmon-FF7F6A);
     }
+}
+
+.QuoteBlock_btn {
+    background-color: var(--salmon-light-FFBFB5);
+    border-radius: 6px;
+    padding: 1rem;
+    padding: 22px 19px 34px 19px;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+
+    &:hover {
+        background-color: var(--salmon-FF7F6A);
+    }
+
+    &__border {
+        padding: 7px 5px;
+        border: 6px solid var(--white-F6F6F6);
+        border-radius: 1rem;
+    }
+}
+
+.FrameBlock_btn {
+    color: red;
 }

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import BlockHeadingTitle from "./BlockHeadingTitle/BlockHeadingTitle";
 import TextBlockArticles from "./TextBlockArticles/TextBlockArticles";
+import QuoteBlock from "./QuoteBlock/QuoteBlock";
+import FrameBlock from "./FrameBlock/FrameBlock";
 
 export default function ConstructorPage({
   inputData,
@@ -8,15 +10,19 @@ export default function ConstructorPage({
 }) {
   // Создаем стейт и функцию для его обновления
   const [isFullWidth, setIsFullWidth] = useState(false);
-    const [isFullWidth2, setIsFullWidth2] = useState(false);
+  const [isFullWidth2, setIsFullWidth2] = useState(false);
+  const [isFullWidth3, setIsFullWidth3] = useState(false);
+
 
 
   // Определяем стиль на основе значения стейта
   const divStyle = isFullWidth ? { width: "100%" } : {};
   const divStyle2 = isFullWidth2 ? { width: "100%" } : {};
+  const divStyle3 = isFullWidth3 ? { width: "100%" } : {};
+
 
   return (
-    <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+    <div style={{ display: "flex", gap: "19px", flexWrap: "wrap" }}>
       <div style={divStyle}>
         <BlockHeadingTitle
           setIsFullWidth={setIsFullWidth}
@@ -34,6 +40,24 @@ export default function ConstructorPage({
           setInputData={setInputData}
         />
       </div>
+
+      <div style={divStyle3}>
+        <FrameBlock
+          setIsFullWidth3={setIsFullWidth3}
+          isFullWidth3={isFullWidth3}
+          inputData={inputData}
+          setInputData={setInputData}
+        />
+      </div>
+
+      {/* <div style={divStyle3}>
+        <QuoteBlock
+          setIsFullWidth3={setIsFullWidth3}
+          isFullWidth3={isFullWidth3}
+          inputData={inputData}
+          setInputData={setInputData}
+        />
+      </div> */}
     </div>
   );
 }
