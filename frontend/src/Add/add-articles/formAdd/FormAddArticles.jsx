@@ -40,6 +40,8 @@ export default function FormAddArticles({ setIsModalOpen }) {
     blockHeadingText: "",
     textBlockArticles: "",
     frameBlock: "",
+    imageToDescriptionArticlesText: "",
+    imageToDescriptionArticlesImg: "",
   });
 
   console.log(inputData);

@@ -6,7 +6,9 @@
 
 .BlockHeadingTitle_btn,
 .TextBlockArticles_btn,
-.QuoteBlock_btn {
+.FrameBlock_btn,
+.QuoteBlock_btn,
+.ImageToDescriptionArticles_btn {
     background-color: var(--salmon-light-FFBFB5);
     border-radius: 6px;
     padding: 25px 30px 40px 30px;
@@ -114,6 +116,72 @@
         font-weight: 400;
         line-height: 16px;
     }
+
+        &__checkbox_block {
+            color: var(--light-gray-C0C5CB);
+            font-size: 0.75rem;
+            font-family: Raleway;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 1rem;
+            margin-top: 2rem;
+    
+            span {
+                color: var(--salmon-FF7F6A);
+            }
+        }
+}
+
+.slider_container {
+    &__title {
+        color: var(--light-gray-C0C5CB);
+        font-size: 0.75rem;
+        font-family: Raleway;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 1rem;
+        padding-bottom: 0.5rem;
+    }
+
+    &__customFileUpload {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        padding: 0.5rem 1rem;
+        margin: 10px 0px 15px 0px;
+        background-color: var(--light-light-gray-EBECEE);
+        border-radius: 20px;
+        cursor: pointer;
+
+        &:hover {
+            background-color: var(--salmon-light-FFBFB5);
+            box-shadow: 0px 0px 6px 0px var(--salmon-light-FFBFB5);
+        }
+    }
+
+    &__uploadIcon {
+        display: inline-block;
+        margin-right: 8px;
+        font-size: 14px;
+        color: #888;
+    }
+
+    &__uploadText {
+        display: inline-block;
+        font-size: 0.875rem;
+        font-family: var(--font-raleway);
+        font-style: normal;
+        font-weight: 400;
+        line-height: 1.25rem;
+        color: var(--secondary-dark-gray-525459);
+    }
+
+    /* Скрыть стандартную фразу "файл не выбран" */
+    &__customFileUpload input[type="file"] {
+        position: absolute;
+        left: -9999px;
+    }
 }
 
 .TextBlockArticles_btn {
@@ -128,7 +196,7 @@
     }
 }
 
-.QuoteBlock_btn {
+.FrameBlock_btn {
     background-color: var(--salmon-light-FFBFB5);
     border-radius: 6px;
     padding: 1rem;
@@ -147,6 +215,16 @@
     }
 }
 
-.FrameBlock_btn {
-    color: red;
+.ImageToDescriptionArticles_btn {
+    background-color: var(--salmon-light-FFBFB5);
+        border-radius: 6px;
+        padding: 1rem;
+        padding: 22px 32px;
+        transition: all 0.3s ease-in-out;
+        cursor: pointer;
+    
+        &:hover {
+            background-color: var(--salmon-FF7F6A);
+        }
+
 }
