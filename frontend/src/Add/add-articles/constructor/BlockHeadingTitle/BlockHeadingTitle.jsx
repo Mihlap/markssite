@@ -1,13 +1,11 @@
 import React, { useState } from "react";
-import styles from "./BlockHeadingTitle.module.scss";
+import styles from "../ConstructorPage.module.scss"
 
 export default function BlockHeadingTitle({
   isFullWidth,
   setIsFullWidth,
   inputData,
   setInputData,
-  blockHeadingTitle,
-  blockHeadingText,
 }) {
   const [openInput, setOpenInput] = useState(false);
 
