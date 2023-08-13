@@ -38,8 +38,13 @@ export default function FormAddArticles({ setIsModalOpen }) {
     imageClose: "",
     blockHeadingTitle: "",
     blockHeadingText: "",
+    textBlockArticles: "",
+    frameBlock: "",
+    imageToDescriptionArticlesText: "",
+    imageToDescriptionArticlesImg: "",
   });
-  const { blockHeadingTitle, blockHeadingText } = inputData;
+
+  console.log(inputData);
 
   const handleRemovePreviewPhoto = (index) => {
     removePreviewPhoto(
@@ -146,7 +151,6 @@ export default function FormAddArticles({ setIsModalOpen }) {
     setOpenConstructor(!onenConstructor);
   };
 
-  console.log(inputData);
   return (
     <div className={styles.form_container}>
       <div className={styles.form_container__title}>Новая публикация</div>
@@ -546,10 +550,8 @@ export default function FormAddArticles({ setIsModalOpen }) {
               </div>
             ) : (
               <ConstructorPage
-                blockHeadingTitle={blockHeadingTitle}
-                  blockHeadingText={blockHeadingText}
-                  inputData={inputData}
-                  setInputData={setInputData}
+                inputData={inputData}
+                setInputData={setInputData}
               />
             )}
           </div>

@@ -59,6 +59,8 @@ export default function AddArticles({user, article}) {
        return () => clearTimeout(timer);
      }
    }, [isCopied]);
+  
+  console.log(article);
 
   return (
     <section className={styles.card_components_admin}>
