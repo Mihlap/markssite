@@ -109,7 +109,8 @@
 }
 
 .title_block_mobile,
-.title_text_mobile {
+.title_text_mobile,
+.project_container_projectCard_sliderMobile {
   display: none;
 }
 
@@ -1085,7 +1086,7 @@
    display: none;
   }
 
-  .swiper_progect_container_projectCard {
+  .project_container_projectCard_sliderMobile {
     display: block;
   }
   

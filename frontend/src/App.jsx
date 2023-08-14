@@ -25,6 +25,7 @@ import Add from "./Add/Add";
 import SignUpPage from "./Login/SignUpPage";
 import axios from "axios";
 import ProjectCard from "./Project/ProjectCard";
+import ArticleCard from "./Publics/ArticleCard";
 import CustomCursor from "./UI/CustomCursor/CustomCursor";
 
 
@@ -105,6 +106,7 @@ export default function App() {
                 <Route path="/projects/:id" element={<ProjectCard />} />
                 <Route path="/company" element={<Company />} />
                 <Route path="/publication" element={<Publics />} />
+                <Route path="/publication/:id" element={<ArticleCard />} />
                 <Route path="/contacts" element={<Contacts />} />
                 <Route path="/portal" element={<Portal />} />
                 <Route path="*" element={<NotFound />} />

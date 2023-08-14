@@ -434,6 +434,9 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
           direction="horizontal"
           loop={false}
           breakpoints={{
+            2000: {
+              slidesPerView: 4.1,
+            },
             1440: {
               slidesPerView: 3.2,
             },
