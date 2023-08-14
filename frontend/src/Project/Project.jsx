@@ -94,7 +94,12 @@ export default function Project() {
     dispatch(getFetchFormCityFilter(projectsPerPage, selectedCity));
     dispatch(getFetchFormLocationFilter(projectsPerPage, selectedLocation));
     setLoading(false);
-  }, [dispatch, projectsPerPage]);
+   }, [dispatch, projectsPerPage]);
+
+  // useEffect(() => {
+  //   setSelectOnCompetencies("Все");
+  // }, []);
+
 
   useEffect(() => {
     getUserGeolocation()
@@ -103,6 +108,7 @@ export default function Project() {
         console.error("Ошибка при получении геопозиции:", error)
       );
   }, []);
+
 
   function handleFocus() {
     setIsFocusedProject(true);

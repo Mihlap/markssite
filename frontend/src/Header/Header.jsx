@@ -300,6 +300,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
               const firstPhoto = el.imageTitle.split(", ")[0];
 
               return (
+                  <Link  to={`/publication/${article.id}`} key={article.id}>
                 <div key={el.id} className={styles.card_item_1}>
                   <div className={styles.card_img}>
                     <img
@@ -332,6 +333,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
                     </svg>
                   </button>
                 </div>
+                </Link>
               );
             })
           ) : (
@@ -348,6 +350,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
               const firstPhoto = el.imageTitle.split(", ")[0];
 
               return (
+                <Link  to={`/publication/${article.id}`} key={article.id}>
                 <div key={el.id} className={styles.card_item_2}>
                   <div className={styles.card_img}>
                     <img
@@ -380,6 +383,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
                     </svg>
                   </button>
                 </div>
+                </Link>
               );
             })
           ) : (
@@ -562,16 +566,16 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
                       {project.countryCity}
                     </div>
                     <div className={styles.project__address__svg}>
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="2"
-                            height="2"
-                            viewBox="0 0 2 2"
-                            fill="none"
-                          >
-                            <circle cx="1" cy="1" r="1" fill="#959DA6" />
-                          </svg>{" "}
-                        </div>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="2"
+                        height="2"
+                        viewBox="0 0 2 2"
+                        fill="none"
+                      >
+                        <circle cx="1" cy="1" r="1" fill="#959DA6" />
+                      </svg>{" "}
+                    </div>
                     <div className={styles.container__monthYear}>
                       {project.monthYear}
                     </div>

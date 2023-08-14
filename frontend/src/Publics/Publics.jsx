@@ -124,8 +124,7 @@ console.log(articles, "+++++++++++++++++++++++++++++++++++++++++++++");
               if (!article) {
                 return null;
               }
-
-              return (
+             return (
                 <Link
                   key={article.id}
                   to={`/publication/${article.id}`}
