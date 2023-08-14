@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import styles from "../style/style-card.module.scss";
 import FormAddArticles from './formAdd/FormAddArticles';
 import { deleteFormArticle } from '../../store/Slice/articleSlice';
+import Loading from './loading/Loading';
 
 export default function AddArticles({user, article}) {
   const Host = process.env.REACT_APP_SERVER_HOST;
@@ -11,6 +12,7 @@ export default function AddArticles({user, article}) {
   const [isModalOpen, setIsModalOpen] = useState(true);
   const [isCopied, setIsCopied] = useState(false);
   const [isonCopy, seticonCopy] = useState(false);
+  const [isImageLoaded, setImageLoaded] = useState(false);
   const [copiedId, setCopiedId] = useState("");
   const [deleteModalState, setDeleteModalState] = useState({});
   
@@ -133,10 +135,12 @@ export default function AddArticles({user, article}) {
                           className={styles.cart_project__imageContainer}
                           style={{ width: "100%", height: "100%" }}
                         >
+                          {!isImageLoaded && <Loading />}
                           <img
                             className={styles.cart_project__img}
                             src={`${Host}/images/imageArticle/${firstPhoto}`}
-                            alt="photo"
+                            alt="ptoho articles"
+                            onLoad={() => setImageLoaded(true)}
                           />
                           {user === "obezyankaa" ||
                           user === "Покемон" ||

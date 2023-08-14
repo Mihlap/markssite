@@ -1,12 +1,11 @@
 const express = require('express');
 // eslint-disable-next-line
-const path = require("path");
-const fs = require("fs");
+const path = require('path');
+const fs = require('fs');
 const { Articles, BlockHeadingTitle, TextBlockArticles, FrameBlock } = require('../../db/models');
-const fileMiddleware = require("../../middleware/fileArticle");
+const fileMiddleware = require('../../middleware/fileArticle');
 
 const router = express.Router();
-
 
 router.get('/getzapros', async (req, res) => {
   try {
@@ -19,7 +18,6 @@ router.get('/getzapros', async (req, res) => {
     res.sendStatus(500);
   }
 });
-
 
 router.post(
   '/postzapros',
@@ -37,7 +35,6 @@ router.post(
       const imageOpens = req.files.imageOpen ? req.files.imageOpen[0].filename : null;
       const imageCloses = req.files.imageClose ? req.files.imageClose[0].filename : null;
 
-    
       const createdArticle = await Articles.create({
         title: req.body.title,
         author: req.body.author,
@@ -52,23 +49,27 @@ router.post(
         imageClose: imageCloses,
       });
 
-       await BlockHeadingTitle.create({
-         title: req.body.blockHeadingTitle,
-         text: req.body.blockHeadingText,
-         idBlock: createdArticle.id, // Ссылка на созданную статью
-       });
-      
-      await TextBlockArticles.create({
-        text: req.body.textBlockArticles,
-        idBlock: createdArticle.id, // Ссылка на созданную статью
-      });
+      if (req.body.blockHeadingTitle && req.body.blockHeadingText) {
+        await BlockHeadingTitle.create({
+          title: req.body.blockHeadingTitle,
+          text: req.body.blockHeadingText,
+          idBlock: createdArticle.id, // Ссылка на созданную статью
+        });
+      }
 
-      await FrameBlock.create({
-        text: req.body.frameBlock,
-        idBlock: createdArticle.id,
-      });
+      if (req.body.textBlockArticles) {
+        await TextBlockArticles.create({
+          text: req.body.textBlockArticles,
+          idBlock: createdArticle.id, // Ссылка на созданную статью
+        });
+      }
+      if (req.body.frameBlock) {
+        await FrameBlock.create({
+          text: req.body.frameBlock,
+          idBlock: createdArticle.id,
+        });
+      }
 
-    
       res.status(200).json({ message: 'Данные успешно сохранены' });
     } catch (error) {
       console.log(error); // Output error to the console
@@ -77,6 +78,14 @@ router.post(
   },
 );
 
+// эта функция нужна для того, чтоб удалять из imageTitle фотографии есть там не массив 
+const deleteImage = (imageName) => {
+  const imagePath = path.join(__dirname, '..', 'images/imageArticle', imageName);
+  console.log(`Trying to delete file: ${imagePath}`);
+  if (fs.existsSync(imagePath)) {
+    fs.unlinkSync(imagePath);
+  }
+};
 
 router.delete('/deletezapros/:id', async (req, res) => {
   try {
@@ -84,33 +93,35 @@ router.delete('/deletezapros/:id', async (req, res) => {
     const post = await Articles.findByPk(id);
 
     // Удаление фотографий из imageTitle
-    const imageNames = post.imageTitle.split(', ');
-    imageNames.forEach((imageName) => {
-      const imagePath = path.join(__dirname, '..', 'images/imageArticle', imageName);
-      fs.unlinkSync(imagePath);
-    });
+    if (post.imageTitle) {
+      const imageNames = post.imageTitle.includes(', ')
+        ? post.imageTitle.split(', ')
+        : [post.imageTitle];
+      imageNames.forEach(deleteImage);
+    }
 
     // Удаление фотографий из imageAuthor
-    const projectImageNames = post.imageAuthor.split(', ');
-    projectImageNames.forEach((imageName) => {
-      const imagePath = path.join(__dirname, '..', 'images/imageArticle', imageName);
-      fs.unlinkSync(imagePath);
-    });
+    if (post.imageAuthor) {
+      const projectImageNames = post.imageAuthor.includes(', ')
+        ? post.imageAuthor.split(', ')
+        : [post.imageAuthor];
+      projectImageNames.forEach(deleteImage);
+    }
 
     // Удаление фотографии из imageOpen
     if (post.imageOpen) {
-      const imagePath = path.join(__dirname, '..', 'images/imageArticle', post.imageOpen);
-      fs.unlinkSync(imagePath);
+      deleteImage(post.imageOpen);
     }
 
     // Удаление фотографии из imageClose
     if (post.imageClose) {
-      const imagePath = path.join(__dirname, '..', 'images/imageArticle', post.imageClose);
-      fs.unlinkSync(imagePath);
+      deleteImage(post.imageClose);
     }
+
+    // Удаление связанных элементов из других таблиц
     await BlockHeadingTitle.destroy({ where: { idBlock: id } });
     await TextBlockArticles.destroy({ where: { idBlock: id } });
-
+    await FrameBlock.destroy({ where: { idBlock: id } });
 
     // Удаление поста
     await Articles.destroy({ where: { id } });
@@ -120,7 +131,6 @@ router.delete('/deletezapros/:id', async (req, res) => {
     res.sendStatus(500);
   }
 });
-
 
 
 module.exports = router;
