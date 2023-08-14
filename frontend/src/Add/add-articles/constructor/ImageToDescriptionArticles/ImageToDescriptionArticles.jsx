@@ -1,23 +1,15 @@
 import React, { useState } from "react";
 import styles from "../ConstructorPage.module.scss";
 import icon from "../icon/Frame4684.png";
-import { changeHandler } from "../../formAdd/formHelpers";
+import { changeHandler } from "../../../add-project/formAdd/formHelpers";
 
 export default function ImageToDescriptionArticles({
   isFullWidth4,
   setIsFullWidth4,
   inputData,
   setInputData,
-  setpreviewImgConstructorVisible,
-  setPreviewImgConstructor,
-  previewImgConstructor,
-  previewImgConstructorVisible,
 }) {
-    const [openInput, setOpenInput] = useState(false);
-    
-  //   const [previewImgConstructor, setPreviewImgConstructor] = useState([]);
-  //   const [previewImgConstructorVisible, setpreviewImgConstructorVisible] =
-  //     useState(true);
+  const [openInput, setOpenInput] = useState(false);
 
   const handlerOpenInput = () => {
     setIsFullWidth4(!isFullWidth4);
@@ -84,12 +76,10 @@ export default function ImageToDescriptionArticles({
                   event,
                   inputData,
                   setInputData,
-                  setpreviewImgConstructorVisible,
-                  setPreviewImgConstructor
                 )
               }
               style={{
-                display: previewImgConstructorVisible ? "block" : "none",
+                // display: previewImgConstructorVisible ? "block" : "none",
               }}
             />
             <div className={styles.slider_container__uploadIcon}>
@@ -99,7 +89,7 @@ export default function ImageToDescriptionArticles({
               Загрузить изображения
             </div>
           </label>
-          <div className={styles.preview_photos_container}>
+          {/* <div className={styles.preview_photos_container}>
             {previewImgConstructor?.map((preview, index) => (
               <div
                 key={index}
@@ -118,7 +108,7 @@ export default function ImageToDescriptionArticles({
                 </div>
               </div>
             ))}
-          </div>
+          </div> */}
           <div className={styles.ImageToDescriptionArticles_btn__heading_block}>
             <input
               type="input"
