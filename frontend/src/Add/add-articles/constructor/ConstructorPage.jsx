@@ -8,10 +8,6 @@ import ImageToDescriptionArticles from "./ImageToDescriptionArticles/ImageToDesc
 export default function ConstructorPage({
   inputData,
   setInputData,
-  setpreviewImgConstructorVisible,
-  setPreviewImgConstructor,
-  previewImgConstructor,
-  previewImgConstructorVisible,
 }) {
   // Создаем стейт и функцию для его обновления
   const [isFullWidth, setIsFullWidth] = useState(false);
@@ -60,10 +56,6 @@ export default function ConstructorPage({
           isFullWidth4={isFullWidth4}
           inputData={inputData}
           setInputData={setInputData}
-          setpreviewImgConstructorVisible={setpreviewImgConstructorVisible}
-          setPreviewImgConstructor={setPreviewImgConstructor}
-          previewImgConstructor={previewImgConstructor}
-          previewImgConstructorVisible={previewImgConstructorVisible}
         />
       </div>
 
