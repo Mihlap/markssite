@@ -722,7 +722,7 @@ const ProjectCard = () => {
             })}
           </Swiper>
         </div>
-        <div className={styles.swiper_progect_container_projectCard}>
+        <div className={styles.project_container_projectCard_sliderMobile}>
         <SliderContainerProjectCard projects={projects} />
       </div>
       </div>
