@@ -19,6 +19,9 @@ export default function FormAddArticles({ setIsModalOpen }) {
   const [previewPhotoAva, setPreviewPhotoAva] = useState([]);
   const [previewPhotoOpen, setPreviewPhotoOpen] = useState([]);
   const [previewPhotoClose, setPreviewPhotoClose] = useState([]);
+  //   const [previewImgConstructor, setPreviewImgConstructor] = useState([]);
+  //   const [previewImgConstructorVisible, setpreviewImgConstructorVisible] =
+  //     useState(true);
   const [isPhotoCloseVisible, setIsPhotoCloseVisible] = useState(true);
   const [isPhotoOpenVisible, setIsPhotoOpenVisible] = useState(true);
   const [isPhotoAvaVisible, setIsPhotoAvaVisible] = useState(true);

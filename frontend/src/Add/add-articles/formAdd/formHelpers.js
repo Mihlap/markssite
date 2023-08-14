@@ -102,7 +102,7 @@ export function changeHandler(
   setPreviewPhotoOpen,
   setIsPhotoOpenVisible,
   setPreviewPhotoClose,
-  setIsPhotoCloseVisible
+  setIsPhotoCloseVisible,
 ) {
   if (event.target.files) {
     if (event.target.name === "dropPhoto") {
