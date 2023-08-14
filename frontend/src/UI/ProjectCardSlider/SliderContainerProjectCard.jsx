@@ -6,7 +6,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import SliderItemProject from "../../Header/Swiper-project/SliderItemProject";
-import "../../Header/Swiper-project/SwiperContainerProgect.css";
+import "../ProjectCardSlider/SliderContainerProjectCard.css";
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 
@@ -32,14 +32,14 @@ const SliderContainerProjectCard = ({ projects }) => {
   };
 
   return (
-    <div className="swiper_container">
+    <div className="swiper_container_ProjectCard">
       <Swiper
         slidesPerView={1.1}
         spaceBetween={20}
         effect={"fade"}
         loop={true}
         speed={300}
-        className="swiper_container_project"
+        className="swiper_container_project_ProjectCard"
         onSlideChange={(swiper) => setCurrentIndex(swiper.realIndex)}
         onSwiper={(swiper) => {
           if (swiperRef.current === null) {
@@ -47,7 +47,7 @@ const SliderContainerProjectCard = ({ projects }) => {
           }
         }}
       >
-        <div className="swiper_wrapper">
+        <div className="swiper_wrapper_ProjectCard">
           {projects?.map((project) => {
               if (project) {
               return (
@@ -73,7 +73,7 @@ const SliderContainerProjectCard = ({ projects }) => {
                             return (
                               <div
                                 key={label}
-                                className="div_el_selectCompetencies"
+                                className="div_el_selectCompetencies_ProjectCard"
                                 style={{
                                   color: colors[label],
                                   borderColor: colors[label],
@@ -92,7 +92,7 @@ const SliderContainerProjectCard = ({ projects }) => {
                               return (
                                 <div
                                   key={value}
-                                  className="div_el_selectCompetencies"
+                                  className="div_el_selectCompetencies_ProjectCard"
                                   style={{
                                     color: colors[value],
                                     borderColor: colors[value],
@@ -124,11 +124,11 @@ const SliderContainerProjectCard = ({ projects }) => {
             })}
         </div>
       </Swiper>
-      <div className="swiper_pagination">
+      <div className="swiper_pagination_ProjectCard">
         {projects && projects?.map((_, index) => (
             <button
               key={index}
-              className={`swiper_pagination_bullet ${
+              className={`swiper_pagination_bullet_ProjectCard ${
                 currentIndex === index ? "active" : ""
               }`}
               onClick={() => handlePageClick(index)}
