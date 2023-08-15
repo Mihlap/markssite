@@ -44,6 +44,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
   const [data, setData] = useState(null);
   const cursorVariant = useSelector((state) => state.cursor);
   const { article, loading, error } = useSelector((state) => state.article);
+  // const articles = useSelector((state) => state.article.article);
   const projects = useSelector((state) => state.searchproject.projects);
 
   const ArticleLeft = useSelector(
@@ -255,14 +256,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
       ) : null}
       <div className={styles.video_block}>
         <VideoPlayer />
-        {/* {MapProject?.map((el) => (
-          <div key={el.id}>
-            <div>
-              {el.title}
-            </div>
-          </div>
-        ))} */}
-      </div>
+        </div>
       <div className={styles.header_desctop_block}>
         <h1
           onMouseEnter={handleMouseEnter}
@@ -280,24 +274,23 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
           <br /> и конкурсах. Предлагаем ознакомиться с некоторыми докладами
         </div>
       </div>
-      <div className={styles.header_block}>
+      {/* <div className={styles.header_block}>
         <h1 className={styles.heading}>Награды проектов</h1>
         <p className={styles.heading_text}>
           Наша компания участвует в<br /> многочисленных выставках, конференциях
           <br /> и конкурсах. Предлагаем ознакомиться с<br /> некоторыми
           докладами.
         </p>
-      </div>
+      </div> */}
       <div className={styles.container_main}>
-        <SliderHeader />
+       <div className={styles.sliderHeader_container}><SliderHeader /></div>
         <div className={styles.swiper_container}>
-          <SwiperContainer article={MapArticle} />
+          <SwiperContainer article1={MapArticle} article2={MapArticleRight}/>
         </div>
         <div className={styles.card_container}>
           {MapArticle && MapArticle.length > 0 ? (
             MapArticle.map((el) => {
-              // your existing code
-              const firstPhoto = el.imageTitle.split(", ")[0];
+                const firstPhoto = el.imageTitle.split(", ")[0];
 
               return (
                   <Link  to={`/publication/${article.id}`} key={article.id}>
@@ -421,7 +414,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
         <img src="./assets/D8.png" alt="logo" />
         <img src="./assets/D9.png" alt="logo" />
       </div>
-      <SliderMobile />
+      <div className={styles.sliderMobile_container}><SliderMobile /></div>
       <div id="projects" className={styles.project_name}>
         Проекты
       </div>

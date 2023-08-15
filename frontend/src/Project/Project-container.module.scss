@@ -638,6 +638,7 @@
 
     .searchCityAddress_label_project {
         position: relative;
+        padding-top: 0.5rem;
     }
 
     .searchCityAddress_address_and_city_choose_location {
@@ -660,6 +661,7 @@
         width: 100%;
         height: 0.069vh;
         background-color: var(--gray-959DA6);
+        padding-top: 0rem;
     }
 
     .line_modal_project.focused {
