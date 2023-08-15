@@ -62,7 +62,9 @@ export default function AddArticles({user, article}) {
      }
    }, [isCopied]);
   
-  console.log(article);
+  console.log(
+    article.map((el) => el).map((el) => el.ImageToDescriptionArticles).map((el) => el)
+  );
 
   return (
     <section className={styles.card_components_admin}>

@@ -8,6 +8,7 @@ import ImageToDescriptionArticles from "./ImageToDescriptionArticles/ImageToDesc
 export default function ConstructorPage({
   inputData,
   setInputData,
+  onImageUpload,
 }) {
   // Создаем стейт и функцию для его обновления
   const [isFullWidth, setIsFullWidth] = useState(false);
@@ -56,6 +57,7 @@ export default function ConstructorPage({
           isFullWidth4={isFullWidth4}
           inputData={inputData}
           setInputData={setInputData}
+          onImageUpload={onImageUpload}
         />
       </div>
 

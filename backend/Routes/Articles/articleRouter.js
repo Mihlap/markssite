@@ -2,7 +2,13 @@ const express = require('express');
 // eslint-disable-next-line
 const path = require('path');
 const fs = require('fs');
-const { Articles, BlockHeadingTitle, TextBlockArticles, FrameBlock } = require('../../db/models');
+const {
+  Articles,
+  BlockHeadingTitle,
+  TextBlockArticles,
+  FrameBlock,
+  ImageToDescriptionArticles,
+} = require('../../db/models');
 const fileMiddleware = require('../../middleware/fileArticle');
 
 const router = express.Router();
@@ -10,7 +16,7 @@ const router = express.Router();
 router.get('/getzapros', async (req, res) => {
   try {
     const data = await Articles.findAll({
-      include: [BlockHeadingTitle, TextBlockArticles], // Включение двух связанных моделей
+      include: [BlockHeadingTitle, TextBlockArticles, FrameBlock, ImageToDescriptionArticles], // Включение двух связанных моделей
     });
     res.json(data);
   } catch (error) {
@@ -26,6 +32,7 @@ router.post(
     { name: 'photoAva', maxCount: 1 },
     { name: 'imageOpen', maxCount: 1 },
     { name: 'imageClose', maxCount: 1 },
+    { name: "imageToDescriptionArticlesImg", maxCount: 1 },
   ]),
   async (req, res) => {
     try {
@@ -34,6 +41,13 @@ router.post(
       const imageProjects = req.files.photoAva ? req.files.photoAva[0].filename : null;
       const imageOpens = req.files.imageOpen ? req.files.imageOpen[0].filename : null;
       const imageCloses = req.files.imageClose ? req.files.imageClose[0].filename : null;
+      const imageToDescriptionArticlesImgs = req.files.imageToDescriptionArticlesImg
+        ? req.files.imageToDescriptionArticlesImg[0].filename
+        : null;
+
+      
+      console.log(imageCloses, '<<--imageCloses');
+      console.log(imageToDescriptionArticlesImgs, '<<--imageToDescriptionArticlesImgs');
 
       const createdArticle = await Articles.create({
         title: req.body.title,
@@ -70,6 +84,13 @@ router.post(
           idBlock: createdArticle.id,
         });
       }
+
+        await ImageToDescriptionArticles.create({
+          image: imageToDescriptionArticlesImgs,
+          text: req.body.imageToDescriptionArticlesText,
+          idBlock: createdArticle.id,
+        });
+      
 
       res.status(200).json({ message: 'Данные успешно сохранены' });
     } catch (error) {
