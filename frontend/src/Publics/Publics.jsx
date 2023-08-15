@@ -121,6 +121,7 @@ console.log(articles, "+++++++++++++++++++++++++++++++++++++++++++++");
         <div className={styles.section_article__block}>
           {articles &&
             articles?.map((article) => {
+              const firstPhoto = article.imageTitle.split(", ")[0];
               if (!article) {
                 return null;
               }
@@ -134,7 +135,7 @@ console.log(articles, "+++++++++++++++++++++++++++++++++++++++++++++");
                     <div className={styles.cart_article__container}>
                       <img
                         className={styles.cart_article__img}
-                        src={`${Host}/images/imageArticle/${article.imageTitle}`}
+                        src={`${Host}/images/imageArticle/${firstPhoto}`}
                         alt={article.imageTitle}
                       />
                       <div className={styles.article_content__wrapper}>
