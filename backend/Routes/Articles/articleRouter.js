@@ -40,6 +40,7 @@ router.post(
         author: req.body.author,
         city: req.body.city,
         dataMonthYear: req.body.dataMonthYear,
+        selectCompetencies: req.body.selectCompetencies,
         imageTitle: imageTitles,
         titleTextBlock: req.body.titleTextBlock,
         descriptionArticle: req.body.descriptionArticle,

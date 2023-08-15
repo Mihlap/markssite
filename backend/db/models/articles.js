@@ -34,22 +34,26 @@ module.exports = (sequelize, DataTypes) => {
       this.hasMany(VideoArticles, { foreignKey: 'idBlock' });
     }
   }
-  Articles.init({
-    title: DataTypes.STRING,
-    author: DataTypes.STRING,
-    city: DataTypes.STRING,
-    dataMonthYear: DataTypes.STRING,
-    imageTitle: DataTypes.TEXT,
-    titleTextBlock: DataTypes.STRING,
-    descriptionArticle: DataTypes.STRING,
-    imageAuthor: DataTypes.TEXT,
-    imageOpen: DataTypes.STRING,
-    textBlock: DataTypes.TEXT,
-    imageClose: DataTypes.STRING,
-    authorId: DataTypes.INTEGER
-  }, {
-    sequelize,
-    modelName: 'Articles',
-  });
+  Articles.init(
+    {
+      title: DataTypes.STRING,
+      author: DataTypes.STRING,
+      city: DataTypes.STRING,
+      dataMonthYear: DataTypes.STRING,
+      selectCompetencies: DataTypes.STRING,
+      imageTitle: DataTypes.TEXT,
+      titleTextBlock: DataTypes.STRING,
+      descriptionArticle: DataTypes.STRING,
+      imageAuthor: DataTypes.TEXT,
+      imageOpen: DataTypes.STRING,
+      textBlock: DataTypes.TEXT,
+      imageClose: DataTypes.STRING,
+      authorId: DataTypes.INTEGER,
+    },
+    {
+      sequelize,
+      modelName: 'Articles',
+    },
+  );
   return Articles;
 };
