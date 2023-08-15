@@ -78,6 +78,7 @@ export const fetchArticle =
         author: "",
         city: "",
         dataMonthYear: "",
+        selectCompetencies: "",
         dropPhoto: [],
         titleTextBlock: "",
         descriptionArticle: "",

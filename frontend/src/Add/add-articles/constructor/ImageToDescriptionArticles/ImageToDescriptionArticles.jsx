@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import styles from "../ConstructorPage.module.scss";
 import icon from "../icon/Frame4684.png";
-import { changeHandler } from "../../../add-project/formAdd/formHelpers";
 
 export default function ImageToDescriptionArticles({
   isFullWidth4,
@@ -62,25 +61,18 @@ export default function ImageToDescriptionArticles({
         </div>
       ) : (
         <>
-          <div
-            className={styles.ImageToDescriptionArticles_btn__checkbox_block}
-          >
-            <div>Картинка с описанием</div>
-          </div>
-          <label className={styles.slider_container__customFileUpload}>
+          <label className={styles.ImageToDescriptionArticles_btn}>
             <input
               type="file"
-              name="imageToDescriptionArticlesImg"
-              onChange={(event) =>
-                changeHandler(
-                  event,
-                  inputData,
-                  setInputData,
-                )
-              }
-              style={{
-                // display: previewImgConstructorVisible ? "block" : "none",
-              }}
+              name="photoAva"
+            //   onChange={(event) =>
+            //     changeHandler(
+            //       event,
+            //       inputData,
+            //       setInputData,
+            //     )
+            //   }
+              //   style={{ display: isPhotoAvaVisible ? "block" : "none" }}
             />
             <div className={styles.slider_container__uploadIcon}>
               <img src={icon} alt="icon" />
@@ -90,7 +82,7 @@ export default function ImageToDescriptionArticles({
             </div>
           </label>
           {/* <div className={styles.preview_photos_container}>
-            {previewImgConstructor?.map((preview, index) => (
+            {previewPhotoAva?.map((preview, index) => (
               <div
                 key={index}
                 className={styles.preview_photos_container__block}
@@ -102,13 +94,14 @@ export default function ImageToDescriptionArticles({
                 />
                 <div
                   className={styles.preview_photos_container__remove_icon}
-                  //   onClick={() => handleRemovePreviewPhotoClose(index)}
+                  onClick={() => handleRemovePreviewPhotoAva(index)}
                 >
                   <span></span>
                 </div>
               </div>
             ))}
           </div> */}
+
           <div className={styles.ImageToDescriptionArticles_btn__heading_block}>
             <input
               type="input"

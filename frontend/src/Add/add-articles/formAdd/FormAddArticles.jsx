@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Select from "react-select";
 import { useDispatch } from "react-redux";
 import styles from "./FormAddArticles.module.scss";
 import {
@@ -9,12 +10,14 @@ import {
   removePreviewPhotoOpen,
 } from "./formHelpers";
 import { fetchArticle } from "../../../store/Slice/articleSlice";
+import customStyles from "../../add-project/formAdd/customStyles";
 
 import icon from "./img/Frame4684.png";
 import ConstructorPage from "../constructor/ConstructorPage";
 
 export default function FormAddArticles({ setIsModalOpen }) {
   const dispatch = useDispatch();
+  const [selectedCompetencies, setSelectedCompetencies] = useState([]);
   const [previewPhotos, setPreviewPhotos] = useState([]);
   const [previewPhotoAva, setPreviewPhotoAva] = useState([]);
   const [previewPhotoOpen, setPreviewPhotoOpen] = useState([]);
@@ -32,6 +35,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
     author: "",
     city: "",
     dataMonthYear: "",
+    selectCompetencies: [],
     dropPhoto: [],
     titleTextBlock: "",
     descriptionArticle: "",
@@ -101,6 +105,9 @@ export default function FormAddArticles({ setIsModalOpen }) {
     e.preventDefault();
     const formattedData = {
       ...inputData,
+      selectCompetencies: selectedCompetencies
+        .map((option) => option.label)
+        .join(",")
     };
     dispatch(
       fetchArticle(
@@ -112,6 +119,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
         setPreviewPhotoClose
       )
     );
+    setSelectedCompetencies([]);
     setIsModalOpen(false);
     // console.log(formattedData, "<<<----консоль на фронте");
   };
@@ -231,6 +239,27 @@ export default function FormAddArticles({ setIsModalOpen }) {
               Дата, месяц, год
             </label>
           </div>
+          <Select
+            styles={customStyles}
+            isMulti
+            name="selectCompetencies"
+            value={selectedCompetencies}
+            onChange={setSelectedCompetencies}
+            options={[
+              { value: "Научные", label: "Научные" },
+              { value: "Апробации", label: "Апробации" },
+              { value: "Интервью", label: "Интервью" },
+              { value: "Литература", label: "Литература" },
+              { value: "Научно-популярные", label: "Научно-популярные" },
+              { value: "Инженерия", label: "Инженерия" },
+              { value: "Архитектура", label: "Архитектура" },
+              { value: "Конструкции", label: "Конструкции" },
+              { value: "BIM", label: "BIM" },
+              { value: "Digital", label: "Digital" },
+            ]}
+            className={styles.form__field}
+            placeholder="Выбрать компетенции"
+          />
         </div>
         <div className={styles.slider_container}>
           <div className={styles.form_container__checkbox_block}>
