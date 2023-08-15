@@ -101,7 +101,7 @@ export default function App() {
                     />
                   }
                 />
-                <Route path="/competention" element={<Competentions />} />
+                {/* <Route path="/competention" element={<Competentions />} /> */}
                 <Route path="/project" element={<Project />} />
                 <Route path="/projects/:id" element={<ProjectCard />} />
                 <Route path="/company" element={<Company />} />
