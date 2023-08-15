@@ -21,6 +21,9 @@ module.exports = {
       dataMonthYear: {
         type: Sequelize.STRING,
       },
+      selectCompetencies: {
+        type: Sequelize.STRING,
+      },
       imageTitle: {
         type: Sequelize.TEXT,
       },
