@@ -440,6 +440,7 @@
 .main_project_projectCard {
   position: relative;
   width: 100%;
+  height: 100%;
   padding-right: 1.75vw;
   padding-left: 1.75vw;
   padding-bottom: 5.66rem;
@@ -470,14 +471,16 @@
 .wrapper_container_item_card_projectCard,
 .container__imageTitle_projectCard {
   width: 100%;
-  height: 100%;
+  /* height: 100%; */
   border-radius: 1rem;
   cursor: pointer;
 }
 
 .container__imageTitle_projectCard {
   width: 100%;
-  height: 100%;
+  max-width: 45rem;
+  height: 24.2rem;
+  object-position: center;
 }
 
 
