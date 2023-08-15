@@ -90,7 +90,6 @@ export const searchArticleRightGet = () => async (dispatch) => {
       `${serverHost}/search-articles/right-get`
     );
       const data = response.data;
-      console.log(data);
     dispatch(fetchArticleRightSuccess(data));
   } catch (error) {
     dispatch(fetchArticleRightFailure(error.message));

@@ -53,6 +53,14 @@ export default function FormAddArticles({ setIsModalOpen }) {
 
   console.log(inputData);
 
+  const handleImageUpload = (selectedFile) => {
+    // Here you can update the state with the selected image file
+    setInputData((prevInputData) => ({
+      ...prevInputData,
+      imageToDescriptionArticlesImg: selectedFile,
+    }));
+  };
+
   const handleRemovePreviewPhoto = (index) => {
     removePreviewPhoto(
       previewPhotos,
@@ -105,9 +113,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
     e.preventDefault();
     const formattedData = {
       ...inputData,
-      selectCompetencies: selectedCompetencies
-        .map((option) => option.label)
-        .join(",")
+      selectCompetencies: selectedCompetencies.label,
     };
     dispatch(
       fetchArticle(
@@ -241,7 +247,6 @@ export default function FormAddArticles({ setIsModalOpen }) {
           </div>
           <Select
             styles={customStyles}
-            isMulti
             name="selectCompetencies"
             value={selectedCompetencies}
             onChange={setSelectedCompetencies}
@@ -584,6 +589,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
               <ConstructorPage
                 inputData={inputData}
                 setInputData={setInputData}
+                onImageUpload={handleImageUpload}
               />
             )}
           </div>

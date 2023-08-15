@@ -3,6 +3,7 @@ import styles from "../ConstructorPage.module.scss";
 import icon from "../icon/Frame4684.png";
 
 export default function ImageToDescriptionArticles({
+  onImageUpload,
   isFullWidth4,
   setIsFullWidth4,
   inputData,
@@ -14,6 +15,13 @@ export default function ImageToDescriptionArticles({
     setIsFullWidth4(!isFullWidth4);
     setOpenInput(!openInput);
   };
+    
+     const handleImageUpload = (event) => {
+       const selectedFile = event.target.files[0];
+       if (selectedFile) {
+         onImageUpload(selectedFile);
+       }
+     };
 
   // console.log(previewImgConstructorVisible);
   return (
@@ -61,17 +69,11 @@ export default function ImageToDescriptionArticles({
         </div>
       ) : (
         <>
-          <label className={styles.ImageToDescriptionArticles_btn}>
+          <label className={styles.slider_container__customFileUpload}>
             <input
               type="file"
-              name="photoAva"
-            //   onChange={(event) =>
-            //     changeHandler(
-            //       event,
-            //       inputData,
-            //       setInputData,
-            //     )
-            //   }
+              name="imageToDescriptionArticlesText"
+              onChange={handleImageUpload}
               //   style={{ display: isPhotoAvaVisible ? "block" : "none" }}
             />
             <div className={styles.slider_container__uploadIcon}>
