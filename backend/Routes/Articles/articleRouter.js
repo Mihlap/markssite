@@ -144,6 +144,7 @@ router.delete('/deletezapros/:id', async (req, res) => {
     await BlockHeadingTitle.destroy({ where: { idBlock: id } });
     await TextBlockArticles.destroy({ where: { idBlock: id } });
     await FrameBlock.destroy({ where: { idBlock: id } });
+     await ImageToDescriptionArticles.destroy({ where: { idBlock: id } });
 
     // Удаление поста
     await Articles.destroy({ where: { id } });

@@ -62,9 +62,14 @@ export default function AddArticles({user, article}) {
      }
    }, [isCopied]);
   
-  console.log(
-    article.map((el) => el).map((el) => el.ImageToDescriptionArticles).map((el) => el)
-  );
+  console.log(article);
+
+  const imageDescription = article.map((el) => el.ImageToDescriptionArticles);
+  for (let innerArray of imageDescription) {
+    for (let item of innerArray) {
+      console.log(item.image);
+    }
+  }
 
   return (
     <section className={styles.card_components_admin}>
@@ -125,7 +130,7 @@ export default function AddArticles({user, article}) {
           <div className={styles.card_components_admin__block_map}>
             {article &&
               article.map((el) => {
-                 const firstPhoto = el.imageTitle.split(", ")[0];
+                const firstPhoto = el.imageTitle.split(", ")[0];
                 return (
                   <div
                     className={styles.section_project__block_cart}
