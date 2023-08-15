@@ -6,13 +6,16 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import Slideritem from "./SliderItem";
 import styles from "./SwiperContainer.css";
+import { Link } from "react-router-dom";
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 
-export default function SwiperContainer({ article }) {
+export default function SwiperContainer({ article1, article2 }) {
   const [currentIndexContainer, setCurrentIndexContainer] = useState(0);
   const swiperContainerRef = useRef(null);
   SwipeCore.use([Navigation, Pagination, Autoplay]);
+
+  const combinedArticles = [...article1, ...article2];
 
   const handleContainerClick = (index) => {
     setCurrentIndexContainer(index);
@@ -38,24 +41,26 @@ export default function SwiperContainer({ article }) {
         }}
       >
         <div className={styles.swiper_wrapper}>
-          {article && article.map((item) => {
+          {combinedArticles && combinedArticles.map((item) => {
             const firstPhoto = item.imageTitle.split(", ")[0];
             return (
               <SwiperSlide key={item.id}>
+                 <Link key={item.id}  to={`/publication/${item.id}`}>
                 <Slideritem
                   title={item.title}
                   src={`${Host}/images/imageArticle/${firstPhoto}`}
                   descriptionArticle={item.descriptionArticle}
                   id={item.link}
                 />
+                </Link>
               </SwiperSlide>
-            );
+           );
           })}
         </div>
       </Swiper>
       <div className="swiper_pagination_container">
-        {article &&
-          article.map((_, index) => (
+        {combinedArticles &&
+          combinedArticles.map((_, index) => (
             <button
               key={index}
               className={`swiper_pagination_bullet_container ${

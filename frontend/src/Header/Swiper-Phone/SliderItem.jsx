@@ -7,8 +7,7 @@ const Slideritem = ({ title, src, descriptionArticle, id }) => {
   return (
     <div className={`${styles.slider_item}${styles.swiper_slide}`}>
       <div className={styles.slider_image_wrapper}>
-        <Link to={`/${id}`}>
-          <img className={styles.slider_image} src={src} alt="SliderImg" />
+       <img className={styles.slider_image} src={src} alt="SliderImg" />
           <svg
             className={styles.icon_image}
             width="40"
@@ -25,8 +24,7 @@ const Slideritem = ({ title, src, descriptionArticle, id }) => {
               strokeLinecap="square"
             />
           </svg>
-        </Link>
-      </div>
+          </div>
       <div className={styles.slider_item_content}>
         <h1 className={styles.slider_subject}>{title}</h1>
         <span className={styles.slider_text}>{descriptionArticle}</span>
