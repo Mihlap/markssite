@@ -55,22 +55,27 @@ export const fetchArticle =
   ) =>
   async (dispatch) => {
     dispatch(fetchArticleStart());
+    console.log(formattedData, "<<---");
     const formData = new FormData();
-    for (const key in formattedData) {
-      if (typeof formattedData[key] === "object") {
-        if (key === "photoAva" && formattedData[key].length > 0) {
-          formData.append("photoAva", formattedData[key][0]);
-        } else if (key === "imageOpen" && formattedData[key].length > 0) {
-          formData.append("imageOpen", formattedData[key][0]);
-        } else {
-          for (const file of formattedData[key]) {
-            formData.append(key, file);
-          }
-        }
-      } else {
-        formData.append(key, formattedData[key]);
-      }
-    }
+   for (const key in formattedData) {
+     if (key === "imageToDescriptionArticlesImg") {
+       if (formattedData[key]) {
+         formData.append(key, formattedData[key]);
+       }
+     } else if (typeof formattedData[key] === "object") {
+       if (key === "photoAva" && formattedData[key].length > 0) {
+         formData.append("photoAva", formattedData[key][0]);
+       } else if (key === "imageOpen" && formattedData[key].length > 0) {
+         formData.append("imageOpen", formattedData[key][0]);
+       } else {
+         for (const file of formattedData[key]) {
+           formData.append(key, file);
+         }
+       }
+     } else {
+       formData.append(key, formattedData[key]);
+     }
+   }
 
     axios.post(`${serverHost}/api-article/postzapros`, formData).then(() => {
       setInputData({
@@ -90,6 +95,8 @@ export const fetchArticle =
         blockHeadingText: "",
         textBlockArticles: "",
         frameBlock: "",
+        imageToDescriptionArticlesText: "",
+        imageToDescriptionArticlesImg: "",
       });
       setPreviewPhotos([]);
       setPreviewPhotoAva([]);
