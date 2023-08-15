@@ -1,0 +1,69 @@
+@import "../App.css";
+
+.main_article_card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+}
+
+.all_button_div {
+  position: absolute;
+  top: 8%;
+  left: 1.69rem;
+  cursor: pointer;
+  z-index: 1;
+}
+
+.section_project__block__card {
+  display: flex;
+  flex-direction: row;
+  position: absolute;
+}
+
+.cart_project__block__card {
+  display: flex;
+  padding-top: 14vh;
+  padding-left: 1.69rem;
+}
+
+
+.cart_project_title__block__card {
+  display: flex;
+  font-family: var(--font-unbounded);
+  font-size: 3rem;
+  font-style: normal;
+  font-weight: var(--fw-300);
+  line-height: 4rem;
+  color: var(--white-F6F6F6);
+  padding-top: 0.5rem;
+}
+
+.cart_project__widget__block__card {
+  display: flex;
+  flex-direction: row;
+  color: var(--white-F6F6F6);
+  font-family: var(--font-raleway);
+  font-size: 0.5625rem;
+  font-weight: 500;
+  line-height: normal;
+  padding-top: 2rem;
+}
+
+
+.cart_project__address__block__card {
+  display: flex;
+  color: var(--light-light-gray-EBECEE);
+  font-family: var(--font-inter);
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: var(--fw-300);
+  padding-top: 1rem;
+}
+
+.cart_project__address__svg__block__card {
+  display: flex;
+  margin-left: 0.5rem;
+  margin-right: 0.5rem;
+  align-items: center;
+}

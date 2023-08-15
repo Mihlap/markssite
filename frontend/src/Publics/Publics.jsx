@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useDispatch, useSelector } from "react-redux";
-import { getFetchFormArticle } from "../store/Slice/articleSlice";
+import { getFetchFormArticle, setSelectedType } from "../store/Slice/articleSlice";
 import styles from "./Publics.module.css";
 
 const Host = process.env.REACT_APP_SERVER_HOST;
@@ -32,29 +32,23 @@ export default function Publics() {
     dispatch(getFetchFormArticle());
   }, [dispatch]);
 
-  useEffect(() => {
-    setSelectArticle("Все"); 
-  }, []);
-
-  const handleButtonClick = (selected) => {
-    setSelectArticle(selected);
+   const handleButtonClick = (selected) => {
     if (selected === "Все") {
-      dispatch(getFetchFormArticle()); 
+      setSelectArticle(selected);
+      dispatch(setSelectedType(selected));
+      dispatch(getFetchFormArticle());  
     } else {
-      // Здесь вы можете использовать фильтр для запроса статей по типу
-      // Например, если у статьи есть поле "type", вы можете запросить статьи только этого типа
-      // dispatch(fetchArticleByType(selected));
+       if (selected !== selectArticle) {
+        setSelectArticle(selected);
+        dispatch(setSelectedType(selected));
+        dispatch(getFetchFormArticle());
+        // You can potentially fetch filtered articles here
+      }
     }
   };
-
-  // const filteredPublics = articles
-  // .filter((article) =>
-  //   selectOnCompetencies === "Все"
-  //     ? true
-  //     : article.selectCompetencies?.includes(selectOnCompetencies)
-  // );
   
 
+ 
 console.log(articles, "+++++++++++++++++++++++++++++++++++++++++++++");
   return (
     <div className={styles.public_container_main}>

@@ -171,7 +171,7 @@ export default function Project() {
       setIsTyping(false);
       setSelectOnCompetencies("Все");
     }
-  };
+   };
 
   const handleButtonCityClick = (countryCity) => {
     if (isTyping) {
@@ -372,7 +372,8 @@ export default function Project() {
               >
                 <button
                   className={`${styles.menu__button__allProject}
-                 ${el === selectedViewConstruction ? styles.active : ""}`}
+                  ${el === selectedViewConstruction ? styles.active : ""}`}
+                  // ${el === selectedViewConstruction || (index === 0 && !selectedViewConstruction) ? styles.active : ""}`}
                   onClick={() => handleButtonClick(el)}
                 >
                   <p className={styles.menu_button_items}>{el}</p>
@@ -403,7 +404,7 @@ export default function Project() {
               </g>
             </svg>
           </div>
-          <span className={styles.button_choose_city}>Выбрать город</span>
+          <div className={styles.button_choose_city}>Выбрать город</div>
         </button>
       </div>
       <Modal
