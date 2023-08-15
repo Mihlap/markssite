@@ -293,7 +293,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
                 const firstPhoto = el.imageTitle.split(", ")[0];
 
               return (
-                  <Link  to={`/publication/${article.id}`} key={article.id}>
+                  <Link to={`/publication/${el.id}`} key={el.id}>
                 <div key={el.id} className={styles.card_item_1}>
                   <div className={styles.card_img}>
                     <img
@@ -343,7 +343,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
               const firstPhoto = el.imageTitle.split(", ")[0];
 
               return (
-                <Link  to={`/publication/${article.id}`} key={article.id}>
+                <Link  to={`/publication/${el.id}`} key={el.id}>
                 <div key={el.id} className={styles.card_item_2}>
                   <div className={styles.card_img}>
                     <img

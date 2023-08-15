@@ -13,7 +13,7 @@ const ArticleCardSlider = ({ slidesCard }) => {
 
   const imagePaths = slidesCard && slidesCard.length > 0
   ? slidesCard.flatMap(slide =>
-      slide.imageTitle.split(",").map((el) => `${Host}/images/imageAdd/${el.trim()}`)
+      slide.imageTitle.split(",").map((el) => `${Host}/images/imageArticle/${el.trim()}`)
     )
   : [];
 
@@ -61,7 +61,7 @@ const ArticleCardSlider = ({ slidesCard }) => {
 
 
     
-console.log(slidesCard, '===========================================================================');
+console.log(slidesCard, '');
   return (
     <div className="company-slider-container">
 

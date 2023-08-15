@@ -81,7 +81,7 @@ export default function Navbar() {
             >
               <div>login</div>
             </Link>
-            <Link
+            {/* <Link
               className={`${styles.navbar__item} ${
                 activeClass === "/competention" ? styles.navbar__item_open : ""
               }`}
@@ -89,7 +89,7 @@ export default function Navbar() {
               onClick={() => handleItemClick("/competention")}
             >
               <div>Компетенции</div>
-            </Link>
+            </Link> */}
             <Link
               className={`${styles.navbar__item} ${
                 activeClass === "/project" ? styles.navbar__item_open : ""

@@ -10,6 +10,7 @@ const articleSlice = createSlice({
     article: [],
     loading: false,
     error: null,
+    selectedType: "Все",
   },
   reducers: {
     fetchArticleStart(state) {
@@ -25,6 +26,9 @@ const articleSlice = createSlice({
       state.loading = false;
       state.error = action.payload;
     },
+    setSelectedType(state, action) {
+      state.selectedType = action.payload;
+    },
     deleteArticleSuccess(state, action) {
       const articleId = action.payload;
       state.article = state.article.filter((el) => el.id !== articleId);
@@ -38,6 +42,7 @@ export const {
   fetchArticleStart,
   fetchArticleSuccess,
   fetchArticleFailure,
+  setSelectedType,
   deleteArticleSuccess,
   deleteArticleFailure,
 } = articleSlice.actions;
@@ -100,15 +105,21 @@ export const fetchArticle =
     console.log(formattedData, "REDUX");
   };
 
-export const getFetchFormArticle = () => async (dispatch) => {
+export const getFetchFormArticle = () => async (dispatch, getState) => {
   dispatch(fetchArticleStart());
+  const selectedType = getState().article.selectedType;
 
   try {
     const response = await axios.get(
       `${serverHost}/api-article/getzapros`
     );
-    console.log(response.data);
-   dispatch(fetchArticleSuccess(response.data));
+    let filteredArticles = response.data;
+    
+    if (selectedType !== "Все") {
+      filteredArticles = filteredArticles.filter(article => article.selectCompetencies === selectedType);
+    }
+    
+   dispatch(fetchArticleSuccess(filteredArticles));
    
   } catch (error) {
     dispatch(fetchArticleFailure(error.message));
