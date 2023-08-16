@@ -11,7 +11,7 @@ import {
 } from "./formHelpers";
 import customStyles from './customStyles';
 
-import icon from "./img/Frame4684.png";
+import icon from "./img/Frame4684.svg";
 
 export default function FormAddProject({ setIsModalOpen }) {
   const dispatch = useDispatch();

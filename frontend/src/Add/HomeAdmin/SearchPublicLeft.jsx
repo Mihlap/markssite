@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from "./HomeAdmin.module.scss";
 import { useDispatch } from "react-redux";
 import IDPublicLeft from './IDPublicLeft';
@@ -12,24 +12,34 @@ export default function SearchPublicLeft({
   setSaveIdOne,
   setSearcIdOne,
   setIsBtnDisabledPublicOne,
-  isBtnDisabledPublicOne,
+  isBtnDisabledPublicOne
 }) {
   const dispatch = useDispatch();
+   const [errorMessage, setErrorMessage] = useState("");
+   const [showError, setShowError] = useState(false);
+   const [okMessage, setOkMessage] = useState("");
+   const [showOk, setShowOk] = useState(false);
 
   const handleSearchOnePublic = (event) => {
     setSearcIdOne(event.target.value);
     setIsBtnDisabledPublicOne(event.target.value === "");
   };
 
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setShowError(false);
+      setShowOk(false);
+    }, 5000);
 
-  const filterArticleOnePublic = async () => {
+    return () => clearTimeout(timer);
+  }, [showError, showOk]);
+
+  const filterArticleOnePublic = async (event) => {
     const filterArticle = articles.find(
       (article) => article.id === parseInt(searcIdOne, 10)
     );
 
     if (filterArticle) {
-      console.log("Найденная публикация", filterArticle);
-
       try {
         await dispatch(
           searchArticleLeftMain(
@@ -39,7 +49,33 @@ export default function SearchPublicLeft({
             setIsBtnDisabledPublicOne
           )
         );
-      } catch (error) {}
+        showMessage("Публикация добавлена", "ok");
+        setShowError(false);
+      } catch (error) {
+        console.error("Ошибка при сохранении проекта:", error);
+        showMessage("Ошибка при сохранении проекта:", "error");
+      }
+    } else {
+      console.log("Публикация с таким id не найдена");
+      showMessage("Публикация с таким id не найдена", "error");
+      setSearcIdOne("");
+      setShowOk(false);
+      setIsBtnDisabledPublicOne(event.target.value === "");
+    }
+  };
+
+  const showMessage = (message, type) => {
+    switch (type) {
+      case "error":
+        setErrorMessage(message);
+        setShowError(true);
+        break;
+      case "ok":
+        setOkMessage(message);
+        setShowOk(true);
+        break;
+      default:
+        break;
     }
   };
 
@@ -61,7 +97,6 @@ export default function SearchPublicLeft({
     );
 
     if (filterArticle) {
-      console.log("ЗАМЕНА публикации", filterArticle);
       dispatch(
         updateArticleLeft(
           filterArticle,
@@ -71,6 +106,20 @@ export default function SearchPublicLeft({
         )
       );
     }
+  };
+
+  const Message = ({ message, type }) => {
+    return (
+      <div
+        className={
+          type === "error"
+            ? styles.home_admin_section__error
+            : styles.home_admin_section__ok
+        }
+      >
+        {message}
+      </div>
+    );
   };
 
   return (
@@ -119,6 +168,8 @@ export default function SearchPublicLeft({
           />
         )}
       </div>
+      <div>{showError && <Message message={errorMessage} type="error" />}</div>
+      <div>{showOk && <Message message={okMessage} type="ok" />}</div>
     </div>
   );
 }

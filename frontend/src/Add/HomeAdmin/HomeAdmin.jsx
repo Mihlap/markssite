@@ -38,9 +38,6 @@ export default function HomeAdmin({ projects, articles }) {
   const arrIdArticleLeft = useSelector(arrIdArticlesLeftSelector);
   const arrIdArticleRight = useSelector(arrIdArticlesRightSelector);
 
-  console.log(arrIdArticleLeft);
-  console.log(arrIdArticleRight);
-
 
   return (
     <section className={styles.home_admin_section}>
@@ -55,6 +52,15 @@ export default function HomeAdmin({ projects, articles }) {
           setSaveIdOne={setSaveIdOne}
           searcIdOne={searcIdOne}
           isBtnDisabledPublicOne={isBtnDisabledPublicOne}
+          showError={showError}
+          errorMessage={errorMessage}
+          showOk={showOk}
+          okMessage={okMessage}
+          setErrorMessage={setErrorMessage}
+          setShowError={setShowError}
+          setOkMessage={setOkMessage}
+          setShowOk={setShowOk}
+          
         />
         <SearchPublicRight
           articles={articles}

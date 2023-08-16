@@ -1,5 +1,12 @@
 @import '../../../App.css';
 
+.constructor_container_item {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    grid-column-gap: 20px;
+}
+
 .BlockHeadingTitle_btn_container {
     width: 100%;
 }
@@ -13,7 +20,7 @@
     border-radius: 6px;
     padding: 25px 30px 40px 30px;
     transition: all 0.3s ease-in-out;
-        cursor: pointer;
+    cursor: pointer;
 
     &:hover {
         background-color: var(--salmon-FF7F6A);
@@ -117,19 +124,19 @@
         line-height: 16px;
     }
 
-        &__checkbox_block {
-            color: var(--light-gray-C0C5CB);
-            font-size: 0.75rem;
-            font-family: Raleway;
-            font-style: normal;
-            font-weight: 400;
-            line-height: 1rem;
-            margin-top: 2rem;
-    
-            span {
-                color: var(--salmon-FF7F6A);
-            }
+    &__checkbox_block {
+        color: var(--light-gray-C0C5CB);
+        font-size: 0.75rem;
+        font-family: Raleway;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 1rem;
+        margin-top: 2rem;
+
+        span {
+            color: var(--salmon-FF7F6A);
         }
+    }
 }
 
 .slider_container {
@@ -189,7 +196,7 @@
     border-radius: 6px;
     padding: 42px 30px 40px 30px;
     transition: all 0.3s ease-in-out;
-        cursor: pointer;
+    cursor: pointer;
 
     &:hover {
         background-color: var(--salmon-FF7F6A);
@@ -217,15 +224,15 @@
 
 .ImageToDescriptionArticles_btn {
     background-color: var(--salmon-light-FFBFB5);
-        border-radius: 6px;
-        padding: 1rem;
-        padding: 22px 32px;
-        transition: all 0.3s ease-in-out;
-        cursor: pointer;
-    
-        &:hover {
-            background-color: var(--salmon-FF7F6A);
-        }
+    border-radius: 6px;
+    padding: 1rem;
+    padding: 22px 30px;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+
+    &:hover {
+        background-color: var(--salmon-FF7F6A);
+    }
 }
 
 .preview_photos_container {
@@ -288,5 +295,24 @@
                 transform: rotate(-45deg);
             }
         }
+    }
+}
+
+.QuoteBlock_btn {
+    padding: 43.8px 12.5px;
+}
+
+.QuoteBlock_btn_block {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &__svg_one {
+            margin-top: -30px;
+            margin-right: 3px;
+        }
+
+    &__svg_two {
+            margin-bottom: -31px;
     }
 }
