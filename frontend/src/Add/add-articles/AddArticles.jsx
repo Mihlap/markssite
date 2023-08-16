@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from "react-redux";
 import styles from "../style/style-card.module.scss";
+import customScroll from "../style/CustomScrollbar.module.scss";
 import FormAddArticles from './formAdd/FormAddArticles';
 import { deleteFormArticle } from '../../store/Slice/articleSlice';
 import Loading from './loading/Loading';
@@ -74,9 +75,7 @@ export default function AddArticles({user, article}) {
   return (
     <section className={styles.card_components_admin}>
       <div className={styles.card_components_admin__block}>
-        <div className={styles.card_components_admin__title}>
-          Публикации
-        </div>
+        <div className={styles.card_components_admin__title}>Публикации</div>
         <div
           className={styles.card_components_admin__button_block}
           onClick={handleOpenModal}
@@ -116,7 +115,9 @@ export default function AddArticles({user, article}) {
         </div>
         {isModalOpen && (
           <div className={styles.card_components_admin__modal_container}>
-            <div className={styles.card_components_admin__modal_block}>
+            <div
+              className={`${styles.card_components_admin__modal_block} ${customScroll.scrollableContent}`}
+            >
               <FormAddArticles setIsModalOpen={setIsModalOpen} />
               <button
                 className={styles.card_components_admin__close_button}

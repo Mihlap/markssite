@@ -10,18 +10,29 @@ export default function ImageToDescriptionArticles({
   setInputData,
 }) {
   const [openInput, setOpenInput] = useState(false);
+  const [previewImage, setPreviewImage] = useState(null);
 
   const handlerOpenInput = () => {
     setIsFullWidth4(!isFullWidth4);
     setOpenInput(!openInput);
   };
-    
-     const handleImageUpload = (event) => {
-       const selectedFile = event.target.files[0];
-       if (selectedFile) {
-         onImageUpload(selectedFile);
-       }
-     };
+
+  const handleImageUpload = (event) => {
+    const selectedFile = event.target.files[0];
+    if (selectedFile) {
+      const imageUrl = URL.createObjectURL(selectedFile);
+      setPreviewImage(imageUrl);
+      onImageUpload(selectedFile);
+    }
+  };
+
+  const handleRemovePreview = () => {
+    setPreviewImage(null);
+    document.querySelector(
+      'input[name="imageToDescriptionArticlesText"]'
+    ).value = "";
+    onImageUpload("");
+  };
 
   // console.log(previewImgConstructorVisible);
   return (
@@ -83,26 +94,23 @@ export default function ImageToDescriptionArticles({
               Загрузить изображения
             </div>
           </label>
-          {/* <div className={styles.preview_photos_container}>
-            {previewPhotoAva?.map((preview, index) => (
-              <div
-                key={index}
-                className={styles.preview_photos_container__block}
-              >
+          {previewImage && (
+            <div className={styles.preview_photos_container}>
+              <div className={styles.preview_photos_container__block}>
                 <img
                   className={styles.preview_photos_container__img}
-                  src={preview}
-                  alt={`Preview ${index}`}
+                  src={previewImage}
+                  alt="Preview"
                 />
                 <div
+                  onClick={handleRemovePreview}
                   className={styles.preview_photos_container__remove_icon}
-                  onClick={() => handleRemovePreviewPhotoAva(index)}
                 >
                   <span></span>
                 </div>
               </div>
-            ))}
-          </div> */}
+            </div>
+          )}
 
           <div className={styles.ImageToDescriptionArticles_btn__heading_block}>
             <input
