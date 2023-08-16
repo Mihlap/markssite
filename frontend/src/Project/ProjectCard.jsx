@@ -486,7 +486,7 @@ const ProjectCard = () => {
             <div className={styles.button_project_projectCard}>
               {previousProject && (
                 <Link
-                  className={styles.button_project_link_projectCard}
+                  className={styles.button_project_link_projectCard1}
                   to={`/projects/${previousProject.id}`}
                 >
                   <div className={styles.previous_svg_projectCard}>
@@ -499,7 +499,7 @@ const ProjectCard = () => {
               )}
               {nextProject && (
                 <Link
-                  className={styles.button_project_link_projectCard}
+                  className={styles.button_project_link_projectCard2}
                   to={`/projects/${nextProject.id}`}
                 >
                   <div className={styles.next_svg_projectCard}>

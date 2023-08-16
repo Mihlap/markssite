@@ -19,24 +19,24 @@ export const getUserGeolocation = () => {
 };
 
 
-// export const resizeImage = (width, height) => {
-//   const aspectRatio = height / width;
+export const resizeImage = (width, height) => {
+  const aspectRatio = height / width;
 
-//   if (aspectRatio >= 1.2) {
-//     if (width !== '28rem' || height !== '48rem') {
-//       return { width: '28.18rem', height: '48.18rem' };
-//     }
-//   } else if (aspectRatio < 0.8) {
-//     if (width !== '28rem' || height !== '14rem') {
-//       return { width: 27.62, height: 13.81 };
-//     }
-//   } else {
-//     if (width !== '28rem' || height !== '28rem') {
-//       return { width: 28.18, height: 27.62 };
-//     }
-//   }
-//   return { width, height };
-// };
+  if (aspectRatio >= 1.2) {
+    if (width !== '28rem' || height !== '48rem') {
+      return { width: '28.18rem', height: '48.18rem' };
+    }
+  } else if (aspectRatio < 0.8) {
+    if (width !== '28rem' || height !== '14rem') {
+      return { width: 27.62, height: 13.81 };
+    }
+  } else {
+    if (width !== '28rem' || height !== '28rem') {
+      return { width: 28.18, height: 27.62 };
+    }
+  }
+  return { width, height };
+};
 
 export const extractCityFromCountryCity = (countryCity) => {
   if (!countryCity) return "";
