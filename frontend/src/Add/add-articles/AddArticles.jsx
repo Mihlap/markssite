@@ -64,12 +64,12 @@ export default function AddArticles({user, article}) {
   
   console.log(article);
 
-  const imageDescription = article.map((el) => el.ImageToDescriptionArticles);
-  for (let innerArray of imageDescription) {
-    for (let item of innerArray) {
-      console.log(item.image);
-    }
-  }
+  // const imageDescription = article.map((el) => el.ImageToDescriptionArticles);
+  // for (let innerArray of imageDescription) {
+  //   for (let item of innerArray) {
+  //     console.log(item.image);
+  //   }
+  // }
 
   return (
     <section className={styles.card_components_admin}>
