@@ -21,6 +21,7 @@ import LoadingCircle from "../Loading/LoadingCircle";
 import Error from "../Loading/Error/Error";
 import { getZaprosData } from "../store/Slice/searchProjectMainSlice";
 import { searchArticleLeftGet } from "../store/Slice/searchArticlePublicLeftSlice";
+import { resizeImage } from '../Project/utils'; 
 import img123 from "./img/Главная.png";
 
 import photoTest from "./img/project_right3.jpg";
@@ -403,7 +404,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
         <BlockHeader />
         {/* <Mapbox3D /> */}
       </div>
-      <div className={styles.icon_partner}>
+      {/* <div className={styles.icon_partner}>
         <img src="./assets/D1.png" alt="logo" />
         <img src="./assets/D2.png" alt="logo" />
         <img src="./assets/D3.png" alt="logo" />
@@ -413,7 +414,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
         <img src="./assets/D7.png" alt="logo" />
         <img src="./assets/D8.png" alt="logo" />
         <img src="./assets/D9.png" alt="logo" />
-      </div>
+      </div> */}
       <div className={styles.sliderMobile_container}><SliderMobile /></div>
       <div id="projects" className={styles.project_name}>
         Проекты
@@ -448,6 +449,11 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
           {MapProject?.map((project, index) => {
             const isCustomSize = project.hasCustomSize;
 
+            // const { width, height } = resizeImage(
+            //   project.style?.split(",")[0],
+            //   project.style?.split(",")[1]
+            // );
+
             return (
               <SwiperSlide
                 key={project.id}
@@ -461,7 +467,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
                   <div className={styles.wrapper_container_item_card}>
                     <img
                       className={styles.container__imageTitle}
-                      // style={{
+                       // style={{
                       //   height: `${project.style?.split(",")[1]}rem`,
                       //   width: `${project.style?.split(",")[0]}rem`,
                       // }}
