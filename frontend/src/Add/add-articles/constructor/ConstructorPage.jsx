@@ -4,26 +4,30 @@ import TextBlockArticles from "./TextBlockArticles/TextBlockArticles";
 import QuoteBlock from "./QuoteBlock/QuoteBlock";
 import FrameBlock from "./FrameBlock/FrameBlock";
 import ImageToDescriptionArticles from "./ImageToDescriptionArticles/ImageToDescriptionArticles";
+import styles from "./ConstructorPage.module.scss";
 
 export default function ConstructorPage({
   inputData,
   setInputData,
   onImageUpload,
+  handleImageUploadQuote,
 }) {
   // Создаем стейт и функцию для его обновления
   const [isFullWidth, setIsFullWidth] = useState(false);
   const [isFullWidth2, setIsFullWidth2] = useState(false);
   const [isFullWidth3, setIsFullWidth3] = useState(false);
   const [isFullWidth4, setIsFullWidth4] = useState(false);
+  const [isFullWidth5, setIsFullWidth5] = useState(false);
 
   // Определяем стиль на основе значения стейта
   const divStyle = isFullWidth ? { width: "100%" } : {};
   const divStyle2 = isFullWidth2 ? { width: "100%" } : {};
   const divStyle3 = isFullWidth3 ? { width: "100%" } : {};
   const divStyle4 = isFullWidth4 ? { width: "100%" } : {};
+  const divStyle5 = isFullWidth5 ? { width: "100%" } : {};
 
   return (
-    <div style={{ display: "flex", gap: "19px", flexWrap: "wrap" }}>
+    <div className={styles.constructor_container_item}>
       <div style={divStyle}>
         <BlockHeadingTitle
           setIsFullWidth={setIsFullWidth}
@@ -61,14 +65,15 @@ export default function ConstructorPage({
         />
       </div>
 
-      {/* <div style={divStyle3}>
+      <div style={divStyle5}>
         <QuoteBlock
-          setIsFullWidth3={setIsFullWidth3}
-          isFullWidth3={isFullWidth3}
+          setIsFullWidth5={setIsFullWidth5}
+          isFullWidth5={isFullWidth5}
           inputData={inputData}
           setInputData={setInputData}
+          handleImageUploadQuote={handleImageUploadQuote}
         />
-      </div> */}
+      </div>
     </div>
   );
 }

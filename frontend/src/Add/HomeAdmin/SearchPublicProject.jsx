@@ -52,8 +52,6 @@ export default function SearchPublicProject({
       (project) => project.id === parseInt(searchId, 10)
     );
     if (filteredProject) {
-      console.log("Найденный проект:", filteredProject);
-
       try {
         await dispatch(
           searchProgectMainPostzapros(filteredProject, setSearchId, setSavedId)

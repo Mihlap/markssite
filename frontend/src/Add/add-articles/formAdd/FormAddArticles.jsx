@@ -12,7 +12,7 @@ import {
 import { fetchArticle } from "../../../store/Slice/articleSlice";
 import customStyles from "../../add-project/formAdd/customStyles";
 
-import icon from "./img/Frame4684.png";
+import icon from "./img/Frame4684.svg";
 import ConstructorPage from "../constructor/ConstructorPage";
 
 export default function FormAddArticles({ setIsModalOpen }) {
@@ -49,17 +49,28 @@ export default function FormAddArticles({ setIsModalOpen }) {
     frameBlock: "",
     imageToDescriptionArticlesText: "",
     imageToDescriptionArticlesImg: "",
+    quoteBlockTitle: "",
+    quoteBlockText: "",
+    quoteBlockAvatar: "",
   });
 
   console.log(inputData);
 
   const handleImageUpload = (selectedFile) => {
-    // Here you can update the state with the selected image file
+    // функция которая запускает превью для фото из компонента ImageToDescriptionArticles
     setInputData((prevInputData) => ({
       ...prevInputData,
       imageToDescriptionArticlesImg: selectedFile,
     }));
   };
+
+   const handleImageUploadQuote = (selectedFile) => {
+     // функция которая запускает превью для фото из компонента ImageToDescriptionArticles
+     setInputData((prevInputData) => ({
+       ...prevInputData,
+       quoteBlockAvatar: selectedFile,
+     }));
+   };
 
   const handleRemovePreviewPhoto = (index) => {
     removePreviewPhoto(
@@ -590,6 +601,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
                 inputData={inputData}
                 setInputData={setInputData}
                 onImageUpload={handleImageUpload}
+                handleImageUploadQuote={handleImageUploadQuote}
               />
             )}
           </div>

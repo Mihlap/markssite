@@ -3,6 +3,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;700;900&family=Unbounded:wght@300&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;700;900&display=swap');
+
 /* это шрифт для прелоудера  */
 @font-face {
   font-family: 'MyCustomFont';
@@ -11,7 +12,7 @@
   font-weight: normal;
   font-style: normal;
 }
- 
+
 /* * {
   cursor: none;
 } */
@@ -38,7 +39,7 @@
   --blue-light-BADDFE: #BADDFE;
   --salmon-light-FFBFB5: #FFBFB5;
   --crimson-light-F39CB5: #F39CB5;
- }
+}
 
 /* Fonts */
 :root {
@@ -64,10 +65,12 @@
 }
 
 * {
-  box-sizing: border-box;
   padding: 0;
   margin: 0;
-  font-variant-numeric: lining-nums;
+  border: 0;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 body {
@@ -76,27 +79,36 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: var( --white-F6F6F6);
+  background-color: var(--white-F6F6F6);
   overflow-x: hidden;
 }
-
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
 
-h1,h2,h3,h4,h5,h6 {
-  margin: 0;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+ font-weight: inherit;
+ font-size: inherit;
 }
 
-ul {
+ul,ol,li {
   list-style: none;
-  margin: 0;
+}
+
+img {
+  vertical-align: top;
 }
 
 a {
   text-decoration: none;
+  color: inherit;
 }
 
 button {
@@ -134,16 +146,17 @@ input[type="radio"]:checked {
   border-color: #007bff;
 }
 
-    /* Скрыть стрелки управления для input number */
-    input[type="number"]::-webkit-inner-spin-button,
-    input[type="number"]::-webkit-outer-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
-    }
-  
-    input[type="number"] {
-      -moz-appearance: textfield;
-    }
+/* Скрыть стрелки управления для input number */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
 /* Стили для мобильной версии сайта блока NavBar начинаются тут */
 @media screen and (max-width: 700px) {
   .body {
@@ -178,17 +191,19 @@ input[type="radio"]:checked {
 }
 
 .App-link {
-  color: #61dafb;
+  color: var(--blue-75BBFD);
 }
 
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
   }
+
   to {
     transform: rotate(360deg);
   }
 }
+
 .fade-enter {
   opacity: 0;
 }
