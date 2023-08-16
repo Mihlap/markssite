@@ -73,7 +73,7 @@ export default function FrameBlock({
             id="frameBlock"
             cols="30"
             rows="10"
-            placeholder="Текст"
+            placeholder="Текст в рамочке"
             value={inputData.frameBlock}
             onChange={(event) => {
               const value = event.target.value;
@@ -83,7 +83,7 @@ export default function FrameBlock({
             }}
           ></textarea>
           <label htmlFor="" className={styles.FrameBlock_btn__textarea_label}>
-            Текст
+            Текст в рамочке
           </label>
         </div>
       )}
