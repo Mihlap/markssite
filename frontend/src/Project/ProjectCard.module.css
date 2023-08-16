@@ -342,13 +342,12 @@
 
 .button_project_projectCard {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin: 0rem 1.69rem;
-  background: var(--light-light-gray-EBECEE);
+  padding-right: 1.69rem;
+  padding-left: 1.69rem;
+  width: 100%;
 }
 
-.button_project_link_projectCard {
+.button_project_link_projectCard1 {
   border: none;
   color: var(--white-F6F6F6);
   font-size: 1.4vh;
@@ -357,11 +356,32 @@
   font-style: normal;
   font-weight: 400;
   line-height: 20px;
-  padding: 3.5rem 1.62rem;
+  padding: 3rem 1.69rem;
   word-wrap: break-word;
   overflow-wrap: break-word;
   hyphens: auto;
   word-break: break-all;
+  background: var(--light-light-gray-EBECEE);
+  width: 78%;
+}
+.button_project_link_projectCard2 {
+  display: flex;
+  justify-content: end;
+  border: none;
+  color: var(--white-F6F6F6);
+  font-size: 1.4vh;
+  cursor: pointer;
+  font-family: 'Raleway';
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  padding: 3rem 1.69rem;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  word-break: break-all;
+  background: var(--salmon-light-FFBFB5);
+  width: 22%;
 }
 
 .previous_svg_projectCard,
@@ -369,7 +389,7 @@
   display: flex;
   border: none;
   align-items: center;
-  height: 100%;
+  height: 1vh;
 }
 
 .previous__span_projectCard {
@@ -382,9 +402,7 @@
   line-height: 1.25rem;
   color: var(--black-1D2E43);
   font-variant-numeric: lining-nums proportional-nums;
-  width: 22rem;
-
-}
+ }
 
 .next__span_projectCard {
   display: flex;
@@ -396,13 +414,18 @@
   line-height: 1.25rem;
   color: var(--black-1D2E43);
   font-variant-numeric: lining-nums proportional-nums;
-  width: 22rem;
+  flex: 2; /* 20% width */
 }
 
 
-.button_project_link_projectCard:hover {
-  background-color: var(--salmon-light-FFBFB5);
-  fill: var(--salmon-light-FFBFB5);
+.button_project_link_projectCard1:hover {
+  background-color: var(--light-gray-C0C5CB);
+  fill: var(--light-gray-C0C5CB);
+}
+
+.button_project_link_projectCard2:hover {
+  background-color: var(--salmon-FF7F6A);
+  fill: var(--salmon-FF7F6A);
 }
 
 .social_links_projectCard {
@@ -440,6 +463,7 @@
 .main_project_projectCard {
   position: relative;
   width: 100%;
+  height: 100%;
   padding-right: 1.75vw;
   padding-left: 1.75vw;
   padding-bottom: 5.66rem;
@@ -470,14 +494,16 @@
 .wrapper_container_item_card_projectCard,
 .container__imageTitle_projectCard {
   width: 100%;
-  height: 100%;
+  /* height: 100%; */
   border-radius: 1rem;
   cursor: pointer;
 }
 
 .container__imageTitle_projectCard {
   width: 100%;
-  height: 100%;
+  max-width: 45rem;
+  height: 24.2rem;
+  object-position: center;
 }
 
 

@@ -2,7 +2,6 @@ import React, { useRef, useState, useEffect } from "react";
 import Slider from "react-slick";
 
 import ".././Company_Slider/Company_Slider.css";
-import AllProjectsButton from "../ButtonsProjects/AllProjectsButton";
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 

@@ -27,7 +27,7 @@ export default function SwiperContainer({ article1, article2 }) {
   return (
     <div className="swiper_container_wrapper">
       <Swiper
-         slidesPerView={1}
+         slidesPerView={1.1}
         spaceBetween={20}
         effect={"fade"}
         loop={true}
