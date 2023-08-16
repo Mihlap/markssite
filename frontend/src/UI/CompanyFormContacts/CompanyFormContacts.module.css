@@ -1,7 +1,17 @@
+.border_line_con {
+ box-shadow:
+ -2px 0 0 #fff,
+ 2px 0 0 #f6f7f7,
+ 0 -2px 0 #f6f7f7,
+ 0 2px 0 #f6f7f7,
+ 0 0 16px rgba(0, 0, 0, 0.1);
+border-radius: 16px;
+border-radius: 16px;
+}
 
 .form_left_wrapper {
   display: flex;
-  width: 35rem;
+  width: 38rem;
   /* height: 35rem; */
   border-radius: 1rem;
   background: linear-gradient(261.46deg, rgba(255, 203, 193, 0.09) -4.67%, rgba(117, 187, 253, 0.09) 44.63%, rgba(188, 188, 188, 0.09) 103.07%);
@@ -12,7 +22,7 @@
 .form_left_main {
   display: flex;
   flex-direction: column;
-  padding: 2.5rem;
+  padding: 2.8vw;
  }
 
 .title {
@@ -40,7 +50,7 @@
     flex-direction: column;
     padding-top: 2.91vh;
     /* width: 29.3rem; */
-    padding-bottom: 2.5rem;
+    /* padding-bottom: 3.5vh; */
    }
 
    .label1 {
@@ -68,6 +78,7 @@
   height: 0.069vh;
   margin-top: 0.55vh;
   background-color: var(--gray-959DA6);
+  width: 28rem;
 }
 
 .error_line {
@@ -87,6 +98,7 @@
   font-size: 16px;
   transform-origin: left top;
   transition: all 0.1s ease-out;
+  padding-top: 2px;
  }
 
 .input_tel_form_contacts:not(:placeholder-shown)+.placeholder,
@@ -115,7 +127,7 @@
 }
 
 .button_hover:hover {
-  background: linear-gradient(278.5deg, rgba(220, 238, 255, 0.53) -49.88%, rgba(255, 127, 106, 0.53) 108.02%);
+  background: linear-gradient(133deg, rgba(123, 191, 255, 0.55) 0%, rgba(240, 248, 255, 0.55) 100%);
   color: var(--black-1D2E43);
   border: 0px solid transparent;
 }
