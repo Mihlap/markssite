@@ -23,15 +23,15 @@ const CompanySubscriptionForm = () => {
     }
     setValue(email);
     setIsValid(isValid);
+    setIsMatching(isValid);
     }
 
   function handleChange(event) {
   const email = event.target.value.toLowerCase();
-  const isValid = isValidRegex.test(email);
+  const isValidEmail= isValidRegex.test(email);
   // const button = document.querySelector('#submit-button');
   setValue(email);
-  setIsValid(isValid);
-  setIsMatching(true);
+  setIsValid(isValidEmail);
 }
 
 function checkMatching(event) {
@@ -43,6 +43,7 @@ function checkMatching(event) {
 }
 
  return (
+        <div className={styles.border_line_sub}>
     <div className={styles.form_right_wrapper}>
       <div className={styles.form_right_main}>
         <div className={styles.title1}>
@@ -85,7 +86,7 @@ function checkMatching(event) {
             </label>
           </div>
           <button
-          className={`${styles.button_hover1} ${(!isValid || !isMatching || !value) ? styles.disabled : ''}`}
+          className={`${styles.button_hover11} ${(!isValid || !isMatching || !value) ? styles.disabled : ''}`}
           id="submit-button"
           disabled={!isValid || !isMatching || !value}
           type="submit"
@@ -95,6 +96,7 @@ function checkMatching(event) {
         </form>
       </div>
     </div>
+        </div>
   );
 }
 

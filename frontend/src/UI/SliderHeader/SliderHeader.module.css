@@ -1,12 +1,19 @@
 .item img {
-  padding-left: 9vw;
+  padding-left: 4rem;
   height: 40px;
 }
+
 .logo {
   padding-top: 56px;
 }
+
 .icon_partner_phone {
-  display: none;
+  display: block;
+  padding-top: 0rem;
+}
+.item_mobile img {
+  padding-left: 2.75rem;
+  height: 40px;
 }
 
 /* Стили для планшетной версии сайта блока SliderHeader начинаются тут */
@@ -14,39 +21,45 @@
   .item img {
     height: 30px;
     padding-left: 3rem;
-   }
-   .item_mobile img{
-     padding-left: 2.81rem;
-     height: 26px;
-   }
-   .icon_partner_phone {
-     padding-top: 40px;
-     display: block;
-   }
-      .logo {
-        position: relative;
-          z-index: 0;
-       padding-top: 40px;
-   }
+  }
+
+  .item_mobile img {
+    padding-left: 2.81rem;
+    height: 26px;
+  }
+
+  .icon_partner_phone {
+    padding-top: 40px;
+    display: block;
+  }
+
+  .logo {
+    position: relative;
+    z-index: 0;
+    padding-top: 40px;
+  }
 }
 
 /* Стили для мобильной версии сайта блока SliderHeader начинаются тут */
 @media only screen and (max-width: 700px) {
   .item img {
-   height: 30px;
+    height: 30px;
   }
-  .item_mobile img{
+
+  .item_mobile img {
     padding-left: 10vw;
     height: 26px;
   }
+
   .icon_partner_phone {
     padding-top: 40px;
     display: block;
   }
-     .logo {
-          position: relative;
-            z-index: 0;
-      padding-top: 40px;
+
+  .logo {
+    position: relative;
+    z-index: 0;
+    padding-top: 40px;
   }
-    
-  }
+
+}
