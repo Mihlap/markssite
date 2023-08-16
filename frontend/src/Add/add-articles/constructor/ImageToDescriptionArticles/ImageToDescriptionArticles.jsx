@@ -80,12 +80,16 @@ export default function ImageToDescriptionArticles({
         </div>
       ) : (
         <>
+          <div
+            className={styles.ImageToDescriptionArticles_btn__textarea_label}
+          >
+            <span>Картинка с описанием</span>
+          </div>
           <label className={styles.slider_container__customFileUpload}>
             <input
               type="file"
               name="imageToDescriptionArticlesText"
               onChange={handleImageUpload}
-              //   style={{ display: isPhotoAvaVisible ? "block" : "none" }}
             />
             <div className={styles.slider_container__uploadIcon}>
               <img src={icon} alt="icon" />

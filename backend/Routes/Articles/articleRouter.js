@@ -32,7 +32,8 @@ router.post(
     { name: 'photoAva', maxCount: 1 },
     { name: 'imageOpen', maxCount: 1 },
     { name: 'imageClose', maxCount: 1 },
-    { name: "imageToDescriptionArticlesImg", maxCount: 1 },
+    { name: 'imageToDescriptionArticlesImg', maxCount: 1 },
+    { name: 'quoteBlockAvatar', maxCount: 1 },
   ]),
   async (req, res) => {
     try {
@@ -44,10 +45,12 @@ router.post(
       const imageToDescriptionArticlesImgs = req.files.imageToDescriptionArticlesImg
         ? req.files.imageToDescriptionArticlesImg[0].filename
         : null;
+       const quoteBlockAvatars = req.files.quoteBlockAvatar
+         ? req.files.quoteBlockAvatar[0].filename
+         : null;
 
-      
       console.log(imageCloses, '<<--imageCloses');
-      console.log(imageToDescriptionArticlesImgs, '<<--imageToDescriptionArticlesImgs');
+      console.log(quoteBlockAvatars, '<<--quoteBlockAvatars');
 
       const createdArticle = await Articles.create({
         title: req.body.title,
@@ -85,12 +88,11 @@ router.post(
         });
       }
 
-        await ImageToDescriptionArticles.create({
-          image: imageToDescriptionArticlesImgs,
-          text: req.body.imageToDescriptionArticlesText,
-          idBlock: createdArticle.id,
-        });
-      
+      await ImageToDescriptionArticles.create({
+        image: imageToDescriptionArticlesImgs,
+        text: req.body.imageToDescriptionArticlesText,
+        idBlock: createdArticle.id,
+      });
 
       res.status(200).json({ message: 'Данные успешно сохранены' });
     } catch (error) {

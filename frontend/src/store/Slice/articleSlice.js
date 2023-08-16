@@ -3,7 +3,6 @@ import axios from "axios";
 
 const serverHost = process.env.REACT_APP_SERVER_HOST;
 
-
 const articleSlice = createSlice({
   name: "article",
   initialState: {
@@ -42,8 +41,6 @@ export const {
   deleteArticleFailure,
 } = articleSlice.actions;
 
-
-
 export const fetchArticle =
   (
     formattedData,
@@ -57,25 +54,29 @@ export const fetchArticle =
     dispatch(fetchArticleStart());
     console.log(formattedData, "<<---");
     const formData = new FormData();
-   for (const key in formattedData) {
-     if (key === "imageToDescriptionArticlesImg") {
-       if (formattedData[key]) {
-         formData.append(key, formattedData[key]);
-       }
-     } else if (typeof formattedData[key] === "object") {
-       if (key === "photoAva" && formattedData[key].length > 0) {
-         formData.append("photoAva", formattedData[key][0]);
-       } else if (key === "imageOpen" && formattedData[key].length > 0) {
-         formData.append("imageOpen", formattedData[key][0]);
-       } else {
-         for (const file of formattedData[key]) {
-           formData.append(key, file);
-         }
-       }
-     } else {
-       formData.append(key, formattedData[key]);
-     }
-   }
+    for (const key in formattedData) {
+      if (key === "imageToDescriptionArticlesImg") {
+        if (formattedData[key]) {
+          formData.append(key, formattedData[key]);
+        }
+      } else if (key === "quoteBlockAvatar") {
+        if (formattedData[key]) {
+          formData.append(key, formattedData[key]);
+        }
+      } else if (typeof formattedData[key] === "object") {
+        if (key === "photoAva" && formattedData[key].length > 0) {
+          formData.append("photoAva", formattedData[key][0]);
+        } else if (key === "imageOpen" && formattedData[key].length > 0) {
+          formData.append("imageOpen", formattedData[key][0]);
+        } else {
+          for (const file of formattedData[key]) {
+            formData.append(key, file);
+          }
+        }
+      } else {
+        formData.append(key, formattedData[key]);
+      }
+    }
 
     axios.post(`${serverHost}/api-article/postzapros`, formData).then(() => {
       setInputData({
@@ -97,6 +98,9 @@ export const fetchArticle =
         frameBlock: "",
         imageToDescriptionArticlesText: "",
         imageToDescriptionArticlesImg: "",
+        quoteBlockTitle: "",
+        quoteBlockText: "",
+        quoteBlockAvatar: "",
       });
       setPreviewPhotos([]);
       setPreviewPhotoAva([]);
@@ -111,17 +115,13 @@ export const getFetchFormArticle = () => async (dispatch) => {
   dispatch(fetchArticleStart());
 
   try {
-    const response = await axios.get(
-      `${serverHost}/api-article/getzapros`
-    );
+    const response = await axios.get(`${serverHost}/api-article/getzapros`);
     console.log(response.data);
-   dispatch(fetchArticleSuccess(response.data));
-   
+    dispatch(fetchArticleSuccess(response.data));
   } catch (error) {
     dispatch(fetchArticleFailure(error.message));
   }
 };
-
 
 export const deleteFormArticle = (id) => async (dispatch) => {
   try {
@@ -131,6 +131,5 @@ export const deleteFormArticle = (id) => async (dispatch) => {
     dispatch(deleteArticleFailure(error.message));
   }
 };
-
 
 export default articleSlice.reducer;
