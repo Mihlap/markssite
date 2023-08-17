@@ -139,11 +139,11 @@ export default function Company({ userId }) {
   ]);
 
   useEffect(() => {
-    gsap.registerPlugin(ScrollTrigger);
+    gsap?.registerPlugin(ScrollTrigger);
 
     const { elementsRight } = { elementsRight: [blockSlider.current] };
 
-    gsap.from(elementsRight, {
+    gsap?.from(elementsRight, {
       x: "-100%",
       opacity: 0,
       duration: 1.5,
@@ -167,7 +167,7 @@ export default function Company({ userId }) {
         if (scrollTop > thisBlockRect.top && screenWidth >= 2000) {
           const translateYValue = nameCompanyRect.height + 112;
           nameCompanyRef.current.style.transform = `translateY(${translateYValue}px)`;
-          thisBlockRef.current.style.transform = `translateY(240px) translateX(-50px) rotate(-90deg)`;
+          thisBlockRef.current.style.transform = `translateY(40px) translateX(10vw) rotate(-90deg)`;
         } else if (
           scrollTop > thisBlockRect.top &&
           screenWidth < 1999 &&
@@ -175,11 +175,11 @@ export default function Company({ userId }) {
         ) {
           const translateYValue = nameCompanyRect.height + 212;
           nameCompanyRef.current.style.transform = `translateY(${translateYValue}px)`;
-          thisBlockRef.current.style.transform = `translateY(260px) translateX(40px) rotate(-90deg)`;
-        } else if (scrollTop > thisBlockRect.top && screenWidth < 1480) {
+          thisBlockRef.current.style.transform = `translateY(120px) translateX(10vw) rotate(-90deg)`;
+        } else if (scrollTop > thisBlockRect.top && screenWidth <= 1480) {
           const translateYValue = nameCompanyRect.height + 262;
           nameCompanyRef.current.style.transform = `translateY(${translateYValue}px)`;
-          thisBlockRef.current.style.transform = `translateY(280px) translateX(80px) rotate(-90deg)`;
+          thisBlockRef.current.style.transform = `translateY(180px) translateX(10vw) rotate(-90deg)`;
         } else {
           nameCompanyRef.current.style.transform = "none";
           thisBlockRef.current.style.transform = "rotate(-180deg)";
@@ -208,17 +208,17 @@ export default function Company({ userId }) {
     { name: "HR", onClick: handleButtonClick },
   ];
 
-  if (error) {
-    return (
-      <div>
-        {" "}
-        <Error error={error.message} />
-      </div>
-    );
-  }
-  if (loading) {
-    return <LoadingCircle />;
-  }
+  // if (error) {
+  //   return (
+  //     <div>
+  //       {" "}
+  //       <Error error={error.message} />
+  //     </div>
+  //   );
+  // }
+  // if (loading) {
+  //   return <LoadingCircle />;
+  // }
 
   return (
     <div className={styles.company_main}>
