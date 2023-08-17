@@ -87,8 +87,8 @@ const CompanyFormContacts = () => {
 
   
   return (
-    <div className={styles.border_line_con}>
     <div className={styles.form_left_wrapper}>
+      <div className={styles.border_line_con}>
       <div className={styles.form_left_main}>
         <div className={styles.title}>Свяжитесь с нами</div>
         <span className={styles.span_text}>

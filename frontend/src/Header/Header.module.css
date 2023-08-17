@@ -84,7 +84,7 @@
 .header_desctop_block {
   display: inline-flex;
   flex-direction: column;
-  padding-left: 263px;
+  padding-left: 18.26vw;
   padding-top: 80px;
 }
 
@@ -322,10 +322,11 @@ svg path {
  } */
 .sliderMobile_container {
   padding-top: 2.31rem;
+  padding-left: 1.875vw;
 }
 
 .project_name {
-  padding: 11rem 0rem 2.5rem 2.7vw;
+  padding: 11rem 0rem 2.5rem 1.875vw;
   font-family: var(--font-unbounded);
   font-style: normal;
   font-weight: var(--fw-300);
@@ -342,7 +343,7 @@ svg path {
 .main_project {
   display: flex;
   flex-direction: row;
-  padding-left: 2.7vw;
+  padding-left: 1.875vw;
   padding-bottom: 3.97rem;
 }
 
@@ -498,37 +499,34 @@ svg path {
 
 .card_container {
   display: flex;
-  box-sizing: border-box;
+  flex-direction: row;
   width: 100%;
-  z-index: 1;
+  min-height: 36vh;
+  padding-top: 0em;
+  margin-bottom: 4vh;
   margin-top: 56px;
 }
 
 .card_item_1 {
-  box-sizing: border-box;
-  z-index: 0;
-  height: auto;
-  min-height: 33rem;
-  width: 95%;
-  max-width: 50vw;
-  flex-grow: 0;
-  padding-left: 2.7vw;
-}
+  height: 50vh;
+  width: 40vw;
+  padding-left: 1.875vw;
+  cursor: auto;
+  }
 
 .card_item_2 {
   margin-top: 145px;
-  box-sizing: border-box;
-  z-index: 0;
-  padding-right: 2.7vw;
-  height: auto;
-  min-height: 33rem;
-  max-width: 70vw;
-  width: 100%;
-  flex-grow: 1;
+  padding-left: 2vw;
+  padding-right: 1.875vw;
+  height: 56vh;
+  width: 60vw;
+  cursor: auto;
 }
 
 .card_img {
   height: 100%;
+  border-radius: 20px;
+  overflow: hidden;
   cursor: pointer;
 }
 
@@ -541,25 +539,24 @@ svg path {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  border-radius: 20px;
 }
 
 
 .card_text h3 {
   display: flex;
   flex-direction: column;
-  font-family: "Raleway", sans-serif;
+  font-family: var(--font-raleway);
   font-style: normal;
-  font-weight: 700;
+  font-weight: var(--fw-700);
   font-size: 16px;
   line-height: 24px;
   padding-top: 1rem;
 }
 
 span {
-  font-family: 'Raleway';
+  font-family: var(--font-raleway);
   font-style: normal;
-  font-weight: 400;
+  font-weight: var(--fw-400);
   font-size: 14px;
   line-height: 20px;
   padding-top: 0.5rem;
@@ -588,7 +585,7 @@ span {
 
   .header_desctop_block {
     width: fit-content;
-    padding-left: 3.69rem;
+    padding-left: 3.69vw;
     padding-top: 3rem;
   }
 
@@ -608,7 +605,7 @@ span {
   }
 
   .sliderHeader_container {
-    padding-left: 3.69rem;
+    padding-left: 3.69vw;
   }
 
   .card_container {
@@ -616,31 +613,27 @@ span {
     box-sizing: border-box;
     flex-direction: row;
     width: 100%;
+    min-height: 36vh;
     z-index: 1;
     padding-top: 0rem;
-    padding-left: 3.69rem;
-    padding-right: 3.69rem
-  }
+   }
 
 
-  .card_item_1 {
-    min-height: 33rem;
-    width: 95%;
-    max-width: 100%;
-    flex-grow: 1;
-    padding-left: 0vw;
-  }
-
-  .card_item_2 {
-    margin-top: 0px;
-   padding-right: 0vw;
-   padding-left: 1rem;
-    min-height: 33rem;
-    max-width: 100%;
-    width: 100%;
-    flex-grow: 1;
-  }
-
+    .card_item_1 {
+      height: 36vh;
+      width: 40vw;
+      flex-grow: 1;
+      padding-left: 3.69vw;
+    }
+  
+    .card_item_2 {
+      height: 36vh;
+      width: 60vw;
+      margin-top: 0px;
+      padding-right: 3.69vw;
+      padding-left: 1rem;
+      flex-grow: 1;
+    }
   .card_text h3 {
     font-size: 1rem;
     line-height: 1.5rem;
@@ -698,12 +691,12 @@ span {
   }
 
   .sliderMobile_container {
-    padding-left: 3.69rem;
+    padding-left: 3.69vw;
     padding-top: 0rem;
   }
 
   .project_name {
-    padding: 5.1rem 2rem 2rem 3.69rem;
+    padding: 5.1rem 2rem 2rem 3.69vw;
     font-size: 2rem;
     line-height: 2.5rem;
     width: fit-content;
@@ -712,7 +705,7 @@ span {
   .main_project {
     display: flex;
     flex-direction: row;
-    padding-left: 3.69rem;
+    padding-left: 3.69vw;
     padding-bottom: 3.22rem;
   }
 
