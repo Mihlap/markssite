@@ -1,21 +1,22 @@
 .border_line_con {
- box-shadow:
- -2px 0 0 #fff,
- 2px 0 0 #f6f7f7,
- 0 -2px 0 #f6f7f7,
- 0 2px 0 #f6f7f7,
- 0 0 16px rgba(0, 0, 0, 0.1);
-border-radius: 16px;
-border-radius: 16px;
+  box-shadow:
+  -1px 0 0 #F6F6F6,
+  1px 0 0 #F6F6F6,
+  0 -1px 0 #F6F6F6,
+  0 1px 0 #F6F6F6,
+  0 0 16px rgba(0, 0, 0, 0.1);
+ border-radius: 16px;
+ border-radius: 16px;
+ width: 100%;
 }
 
 .form_left_wrapper {
   display: flex;
   width: 38rem;
-  /* height: 35rem; */
+  height: fit-content;
   border-radius: 1rem;
-  background: linear-gradient(261.46deg, rgba(255, 203, 193, 0.09) -4.67%, rgba(117, 187, 253, 0.09) 44.63%, rgba(188, 188, 188, 0.09) 103.07%);
-  box-shadow: 0px 0px 37px rgba(44, 59, 68, 0.05);
+  background: linear-gradient(221deg, rgba(255, 203, 193, 0.09) 0%, rgba(117, 187, 253, 0.09) 45.75%, rgba(188, 188, 188, 0.09) 100%);
+  box-shadow: 0px 4px 37px 0px rgba(44, 59, 68, 0.05);
   backdrop-filter: blur(14.5px);
 }
 
@@ -41,17 +42,15 @@ border-radius: 16px;
   font-size: 16px;
   line-height: 24px;
   color: var(--black-3C3C3C);
-  padding-top: 1.66vh;
-  padding-right: 3.2vw;
+  /* white-space: nowrap; */
+  margin-right: 2rem;
   }
 
   .form_form_wrapper {
     display: flex;
     flex-direction: column;
-    padding-top: 2.91vh;
-    /* width: 29.3rem; */
-    /* padding-bottom: 3.5vh; */
-   }
+    padding-top: 3vh;
+  }
 
    .label1 {
     position: relative;
@@ -64,7 +63,7 @@ border-radius: 16px;
   border: none;
   outline: none;
   background-color: transparent;
-  padding-top: 2.36vh;
+  padding-top: 2.7vh;
   font-family: var(--font-raleway);
   font-style: normal;
   font-weight: var(--fw-400);

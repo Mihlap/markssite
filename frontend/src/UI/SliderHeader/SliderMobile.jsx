@@ -14,7 +14,7 @@ const SliderMobile = () => {
     return (
     <div className={styles.icon_partner_phone}>
     {show && (
-    <Marquee
+     <Marquee
     gradient={true}
     speed={70}
     direction="left"

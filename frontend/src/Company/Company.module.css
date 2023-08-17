@@ -104,8 +104,7 @@
   font-family: var(--font-unbounded);
   font-style: normal;
   font-weight: var(--fw-300);
-  padding-bottom: 400px;
-  padding-left: 1.87vw;
+  padding-left: 6.87vw;
   margin-right: 6vw;
   white-space: nowrap;
   width: 23vw;
@@ -116,20 +115,20 @@
 }
 
 .name_company {
-  font-size: 53px;
+  font-size: 4vw;
   line-height: 48px;
   color: var(--gray-959DA6);
   transition: 0.5s;
 }
 
 .this_block {
-  font-size: 48px;
+  font-size: 2.5vw;
   line-height: 64px;
   color: var(--black-1D2E43);
   writing-mode: vertical-rl;
   transition: 0.5s;
-  margin-top: 40px;
-  margin-left: 300px;
+  margin-top: 10vh;
+  margin-left: 20vw;
 }
 
 
@@ -217,7 +216,7 @@
   padding-left: 1.87vw;
   align-items: center;
   padding-bottom: 80px;
-  padding-top: 120px;
+  padding-top: 7.5rem;
 }
 
 .plus_nine {
@@ -402,16 +401,19 @@
 .form_wrapper {
   display: flex;
   flex-direction: row;
-}
+  padding-top: 6.44rem;
+  padding-bottom: 3.37rem;
+ }
 
 .company_form_contacts_wrapper {
   display: flex;
-  padding: 6.43rem 0vw 3.37rem 1.87vw;
+  padding-left: 1.87vw;
 }
 
 .companySubscriptionForm_wrapper {
   display: flex;
-  padding: 18.43rem 1.87vw 3.37rem 1.87vw;
+  padding:0rem 1.87vw 0vh 1.87vw;
+  margin-top: auto; 
  }
 
 .modal_wrapper {
@@ -676,6 +678,8 @@
 
   .companySubscriptionForm_wrapper {
     padding-top: 3.6rem;
+    height: 50%;
+    margin-top: 0;
   }
 
   .modal_wrapper {

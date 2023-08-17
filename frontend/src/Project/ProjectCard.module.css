@@ -25,6 +25,8 @@
   display: flex;
   padding-top: 14vh;
   padding-left: 1.69rem;
+  padding-right: 1.69rem;
+  word-break: break-word;
 }
 
 
@@ -165,9 +167,9 @@
 
 .result_container {
   display: flex;
-  width: fit-content;
+  width: 100%;
   gap: 4.17vw;
-
+  word-break: break-word;
 }
 
 .result_number {
@@ -177,8 +179,6 @@
   font-size: 1.25rem;
   line-height: 1.75rem;
   color: var(--dark-gray-566272);
-  word-wrap: break-word;
-  overflow-wrap: break-word;
   hyphens: auto;
 }
 
@@ -190,10 +190,9 @@
   line-height: 1.25rem;
   font-feature-settings: 'pnum' on, 'lnum' on;
   color: var(--gray-959DA6);
-  word-wrap: break-word;
   overflow-wrap: break-word;
   white-space: normal;
-}
+ }
 
 /* << =============== правый блок контента с информацией =============== >> */
 
