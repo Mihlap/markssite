@@ -223,17 +223,17 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
     setShowFooter(false);
   };
 
-  if (error) {
-    return (
-      <div>
-        {" "}
-        <Error error={error.message} />
-      </div>
-    );
-  }
-  if (loading) {
-    return <LoadingCircle />;
-  }
+  // if (error) {
+  //   return (
+  //     <div>
+  //       {" "}
+  //       <Error error={error.message} />
+  //     </div>
+  //   );
+  // }
+  // if (loading) {
+  //   return <LoadingCircle />;
+  // }
   const NewProject = projects.map((el) =>
     el && el.project !== undefined ? el.project : null
   );

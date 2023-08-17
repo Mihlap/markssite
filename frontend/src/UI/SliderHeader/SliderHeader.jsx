@@ -26,7 +26,7 @@ const SliderHeader = () => {
   return (
     <div className={styles.logo}>
       {show && (
-        <Marquee {...marqueeProps}>
+         <Marquee {...marqueeProps} style={{ paddingLeft: '18.26vw', width: "calc(100% - 18.26vw) *100%"  }}>
           <div className={styles.item}>
             <img src="./assets/1.png" alt="image1" />
           </div>
@@ -45,8 +45,8 @@ const SliderHeader = () => {
           <div className={styles.item}>
             <img src="./assets/6.png" alt="image6" />
           </div>
-        </Marquee>
-      )}
+         </Marquee>
+        )}
     </div>
   );
 };
