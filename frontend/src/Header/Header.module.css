@@ -553,13 +553,13 @@ svg path {
   padding-top: 1rem;
 }
 
-span {
+.span_dataMonthYear {
   font-family: var(--font-raleway);
   font-style: normal;
   font-weight: var(--fw-400);
   font-size: 14px;
   line-height: 20px;
-  /* padding-top: 0.5rem; */
+  padding-top: 0.5rem;
 }
 
 .card_button {
@@ -640,12 +640,12 @@ span {
     line-height: 1.5rem;
     padding-top: 1rem;
   }
-/* 
-  span {
+
+  .span_dataMonthYear {
     font-size: 0.875rem;
     line-height: 1.25rem;
     padding-top: 0.5rem;
-  } */
+  } 
 
   .card_button {
     margin-top: 1rem;
@@ -758,7 +758,8 @@ span {
   .header_desctop_block,
   .card_container,
   .most,
-  .icon_partner {
+  .icon_partner,
+  .preview_mode {
     display: none;
   }
 
