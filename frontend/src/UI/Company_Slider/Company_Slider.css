@@ -72,7 +72,7 @@
 
 @media screen and (max-width: 767px) {
   .company-slider-slide img {
-    height: 45vh;
+    min-height: 45vh;
   
   }
   .navigation_slider {
