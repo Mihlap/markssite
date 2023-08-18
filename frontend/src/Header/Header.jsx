@@ -402,7 +402,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
           ></img>
         </div>
         <BlockHeader />
-        {/* <Mapbox3D /> */}
+        <Mapbox3D />
       </div>
       {/* <div className={styles.icon_partner}>
         <img src="./assets/D1.png" alt="logo" />
@@ -467,7 +467,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
                   <div className={styles.wrapper_container_item_card}>
                     <img
                       className={styles.container__imageTitle}
-                       // style={{
+                      //  style={{
                       //   height: `${project.style?.split(",")[1]}rem`,
                       //   width: `${project.style?.split(",")[0]}rem`,
                       // }}

@@ -55,7 +55,7 @@ console.log(articles, "+++++++++++++++++++++++++++++++++++++++++++++");
       <div className={styles.public_image_header}>
         <img
           className={styles.public_image_header_img}
-          src={`${Host}/images/imageArticle/image_publicPage.png`}
+          src={`${Host}/images/imageAdd/image_publicPage.png`}
           alt="image_publicPage"
         />
         <div className={styles.text_container_publics}>
