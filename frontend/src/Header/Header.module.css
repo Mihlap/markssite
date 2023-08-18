@@ -399,10 +399,10 @@ svg path {
 }
 
 .container__imageTitle {
+  max-width: 100%;
   width: 100%;
-  max-width: auto;
-  max-height: 40vh;
-  object-position: center;
+  height: auto;
+   object-position: center;
 }
 
 
@@ -624,6 +624,7 @@ span {
       width: 40vw;
       flex-grow: 1;
       padding-left: 3.69vw;
+    padding-top: 9rem;
     }
   
     .card_item_2 {
@@ -708,6 +709,13 @@ span {
     padding-left: 3.69vw;
     padding-bottom: 3.22rem;
   }
+   
+  .container__imageTitle {
+   max-width: 100%;
+   width: auto;
+   height: auto;
+    object-position: center;
+  }
 
  }
 
@@ -728,6 +736,10 @@ span {
   .image {
     display: none;
   }
+  /* .video_block {
+    height: auto;
+  }
+   */
 
   .image_phone {
     display: block;
