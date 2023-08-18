@@ -268,17 +268,7 @@ export default function Company({ userId }) {
         )}
       </div>
       <div className={styles.sliderMobile_wrapper}>
-        <div className={styles.icon_partner}>
-          <img src="./assets/D1.png" alt="logo" />
-          <img src="./assets/D2.png" alt="logo" />
-          <img src="./assets/D3.png" alt="logo" />
-          <img src="./assets/D4.png" alt="logo" />
-          <img src="./assets/D5.png" alt="logo" />
-          <img src="./assets/D6.png" alt="logo" />
-          <img src="./assets/D7.png" alt="logo" />
-          <img src="./assets/D8.png" alt="logo" />
-          <img src="./assets/D9.png" alt="logo" />
-        </div>
+      <SliderMobile/>
       </div>
       <div className={styles.about_main}>
         <div className={styles.left_about}>
@@ -482,8 +472,9 @@ export default function Company({ userId }) {
           {staff &&
             staff?.map((el) => (
               <li
-                key={el.id}
-                {...el}
+              key={el.id}
+              data-user-id={el.id}
+                // {...el}
                 className={styles.container__item_stuff}
                 onClick={() => handleButtonClick(category, el.id)}
               >
@@ -630,7 +621,8 @@ export default function Company({ userId }) {
           >
             {staff?.map((el) => (
               <SwiperSlide
-                key={el.id}
+              key={el.id}
+              data-user-id={el.id}
                 className={styles.slide_container_item_stuff}
                 onClick={() => handleButtonClick(category, el.id)}
               >
@@ -675,7 +667,8 @@ export default function Company({ userId }) {
           >
             {staff?.map((el) => (
               <SwiperSlide
-                key={el.id}
+              key={el.id}
+              data-user-id={el.id}
                 className={styles.slide_container_item_stuff}
                 onClick={() => handleButtonClick(category, el.id)}
               >
