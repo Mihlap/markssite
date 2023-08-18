@@ -15,14 +15,10 @@ export default function SearchPublicLeft({
   isBtnDisabledPublicOne
 }) {
   const dispatch = useDispatch();
-   const [errorMessage, setErrorMessage] = useState("");
-   const [showError, setShowError] = useState(false);
-   const [okMessage, setOkMessage] = useState("");
-  const [showOk, setShowOk] = useState(false);
-  const [deleteMessage, setDeleteMessage] = useState("");
-  const [deleteOk, setDeleteOk] = useState(false);
-  const [updateMessage, setUpdateMessage] = useState("");
-  const [updateOk, setUpdateOk] = useState(false);
+    const [message, setMessage] = useState({
+      text: "",
+      type: null,
+    });
 
 
   const handleSearchOnePublic = (event) => {
@@ -30,16 +26,14 @@ export default function SearchPublicLeft({
     setIsBtnDisabledPublicOne(event.target.value === "");
   };
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowError(false);
-      setShowOk(false);
-      setDeleteOk(false);
-      setUpdateOk(false);
-    }, 3000);
-
-    return () => clearTimeout(timer);
-  }, [showError, showOk, deleteOk, updateOk]);
+     useEffect(() => {
+       if (message.type) {
+         const timer = setTimeout(() => {
+           setMessage({ text: "", type: null });
+         }, 3000);
+         return () => clearTimeout(timer);
+       }
+     }, [message]);
 
   const filterArticleOnePublic = async (event) => {
     const filterArticle = articles.find(
@@ -57,57 +51,35 @@ export default function SearchPublicLeft({
           )
         );
         showMessage("Публикация добавлена", "ok");
-        setShowError(false);
-        setDeleteOk(false);
-        setUpdateOk(false);
       } catch (error) {
-        console.error("Ошибка при сохранении проекта:", error);
         showMessage("Ошибка при сохранении проекта:", "error");
       }
     } else {
-      console.log("Публикация с таким id не найдена");
       showMessage("Публикация с таким id не найдена", "error");
       setSearcIdOne("");
-      setShowOk(false);
-      setDeleteOk(false);
-      setUpdateOk(false);
       setIsBtnDisabledPublicOne(event.target.value === "");
     }
   };
 
-  const showMessage = (message, type) => {
-    switch (type) {
-      case "error":
-        setErrorMessage(message);
-        setShowError(true);
-        break;
-      case "ok":
-        setOkMessage(message);
-        setShowOk(true);
-        break;
-      case "delete":
-        setDeleteMessage(message);
-        setDeleteOk(true);
-        break;
-      case "update":
-        setUpdateMessage(message);
-        setUpdateOk(true);
-        break;
-      default:
-        break;
-    }
+ const showMessage = (text, type) => {
+    setMessage({ text, type });
+ };
+  
+  const Message = ({ text, type }) => {
+    const typesToStyles = {
+      error: styles.home_admin_section__error,
+      ok: styles.home_admin_section__ok,
+      delete: styles.home_admin_section__delete,
+      update: styles.home_admin_section__update
+    };
+    return <div className={typesToStyles[type] || styles.home_admin_section__ok}>{text}</div>;
   };
 
 const handleArticleLeftDelete = (formId) => {
   dispatch(searchArticleLeftDelete(formId))
     .then(() => {
       dispatch(getUpdatedArticles());
-      setDeleteMessage("Публикация удалена");
-      setDeleteOk(true);
-      setShowError(false);
-      setShowOk(false);
-      setUpdateOk(false);
-
+      showMessage("Публикация удалена", "delete");
     })
     .catch((error) => {
       console.error("Ошибка при удалении статьи:", error);
@@ -128,27 +100,9 @@ const handleArticleLeftDelete = (formId) => {
           setIsBtnDisabledPublicOne
         )
       );
-       setUpdateMessage("Публикация заменена");
-       setUpdateOk(true);
-       setDeleteOk(false);
-       setShowError(false);
-       setShowOk(false);
+      showMessage("Публикация заменена", "update");
     }
   };
-
-const Message = ({ message, type }) => {
-  let className = styles.home_admin_section__ok; // Default class for other types
-
-  if (type === "error") {
-    className = styles.home_admin_section__error;
-  } else if (type === "delete") {
-    className = styles.home_admin_section__delete;
-  } else if (type === "update") {
-    className = styles.home_admin_section__update;
-  }
-
-  return <div className={className}>{message}</div>;
-};
 
   return (
     <div className={styles.home_admin_section__block_search}>
@@ -196,10 +150,7 @@ const Message = ({ message, type }) => {
           />
         )}
       </div>
-      <div>{showError && <Message message={errorMessage} type="error" />}</div>
-      <div>{showOk && <Message message={okMessage} type="ok" />}</div>
-      <div>{deleteOk && <Message message={deleteMessage} type="delete" />}</div>
-      <div>{updateOk && <Message message={updateMessage} type="update" />}</div>
+        {message.type && <Message text={message.text} type={message.type} />}
     </div>
   );
 }
