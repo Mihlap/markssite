@@ -307,7 +307,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
                   </div>
                   <div className={styles.card_text}>
                     <h3>{el.title}</h3>
-                    <span>{el.dataMonthYear}</span>
+                    <span className={styles.span_dataMonthYear}>{el.dataMonthYear}</span>
                   </div>
                   <button className={styles.card_button}>
                     <svg
@@ -357,7 +357,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
                   </div>
                   <div className={styles.card_text}>
                     <h3>{el.title}</h3>
-                    <span>{el.dataMonthYear}</span>
+                    <span className={styles.span_dataMonthYear}>{el.dataMonthYear}</span>
                   </div>
                   <button className={styles.card_button}>
                     <svg
