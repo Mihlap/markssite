@@ -263,7 +263,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
             onChange={setSelectedCompetencies}
             options={[
               { value: "Научные", label: "Научные" },
-              { value: "Апробации", label: "Апробации" },
+              { value: "Опробации", label: "Опробации" },
               { value: "Интервью", label: "Интервью" },
               { value: "Литература", label: "Литература" },
               { value: "Научно-популярные", label: "Научно-популярные" },
