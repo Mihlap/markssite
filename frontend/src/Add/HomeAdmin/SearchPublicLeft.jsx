@@ -21,6 +21,8 @@ export default function SearchPublicLeft({
   const [showOk, setShowOk] = useState(false);
   const [deleteMessage, setDeleteMessage] = useState("");
   const [deleteOk, setDeleteOk] = useState(false);
+  const [updateMessage, setUpdateMessage] = useState("");
+  const [updateOk, setUpdateOk] = useState(false);
 
 
   const handleSearchOnePublic = (event) => {
@@ -33,10 +35,11 @@ export default function SearchPublicLeft({
       setShowError(false);
       setShowOk(false);
       setDeleteOk(false);
+      setUpdateOk(false);
     }, 3000);
 
     return () => clearTimeout(timer);
-  }, [showError, showOk, deleteOk]);
+  }, [showError, showOk, deleteOk, updateOk]);
 
   const filterArticleOnePublic = async (event) => {
     const filterArticle = articles.find(
@@ -56,6 +59,7 @@ export default function SearchPublicLeft({
         showMessage("Публикация добавлена", "ok");
         setShowError(false);
         setDeleteOk(false);
+        setUpdateOk(false);
       } catch (error) {
         console.error("Ошибка при сохранении проекта:", error);
         showMessage("Ошибка при сохранении проекта:", "error");
@@ -66,6 +70,7 @@ export default function SearchPublicLeft({
       setSearcIdOne("");
       setShowOk(false);
       setDeleteOk(false);
+      setUpdateOk(false);
       setIsBtnDisabledPublicOne(event.target.value === "");
     }
   };
@@ -84,6 +89,10 @@ export default function SearchPublicLeft({
         setDeleteMessage(message);
         setDeleteOk(true);
         break;
+      case "update":
+        setUpdateMessage(message);
+        setUpdateOk(true);
+        break;
       default:
         break;
     }
@@ -97,6 +106,8 @@ const handleArticleLeftDelete = (formId) => {
       setDeleteOk(true);
       setShowError(false);
       setShowOk(false);
+      setUpdateOk(false);
+
     })
     .catch((error) => {
       console.error("Ошибка при удалении статьи:", error);
@@ -117,6 +128,11 @@ const handleArticleLeftDelete = (formId) => {
           setIsBtnDisabledPublicOne
         )
       );
+       setUpdateMessage("Публикация заменена");
+       setUpdateOk(true);
+       setDeleteOk(false);
+       setShowError(false);
+       setShowOk(false);
     }
   };
 
@@ -127,6 +143,8 @@ const Message = ({ message, type }) => {
     className = styles.home_admin_section__error;
   } else if (type === "delete") {
     className = styles.home_admin_section__delete;
+  } else if (type === "update") {
+    className = styles.home_admin_section__update;
   }
 
   return <div className={className}>{message}</div>;
@@ -181,6 +199,7 @@ const Message = ({ message, type }) => {
       <div>{showError && <Message message={errorMessage} type="error" />}</div>
       <div>{showOk && <Message message={okMessage} type="ok" />}</div>
       <div>{deleteOk && <Message message={deleteMessage} type="delete" />}</div>
+      <div>{updateOk && <Message message={updateMessage} type="update" />}</div>
     </div>
   );
 }
