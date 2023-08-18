@@ -1,43 +1,44 @@
 import { useNavigate } from "react-router-dom";
 import styles from "./Login.module.scss";
 import { useEffect, useState } from "react";
-import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "../store/Slice/authSlice";
+import LoadingCircle from "../Loading/LoadingCircle";
 
 export default function Login({ setUser }) {
-  const serverHost = process.env.REACT_APP_SERVER_HOST;
-  const navigate = useNavigate(); // Хук для перенаправления пользователя
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [inputGroup, setInputGroup] = useState({
     userName: "",
     password: "",
   });
+  const [showLoader, setShowLoader] = useState(false);
   const [errorDiv, setErrorDiv] = useState(false);
-
+const status = useSelector((state) => state.auth.status);
   const changeHandler = (event) =>
     setInputGroup((prev) => ({
       ...prev,
       [event.target.name]: event.target.value,
     }));
 
-  const submitHandler = async (event) => {
-    event.preventDefault();
-    try {
-      const response = await axios.post(
-        `${serverHost}/api/auth/login`,
-        inputGroup,
-        { withCredentials: true }
-      );
+const submitHandler = (event) => {
+  event.preventDefault();
 
-      if (response.status === 200) {
-        console.log("тут");
-        setUser(response.data.name);
-        navigate("/");
-        window.location.reload();
-      }
+  // Показать лоудер
+  setShowLoader(true);
+
+  // Задержка перед входом
+  setTimeout(async () => {
+    try {
+      await dispatch(loginUser(inputGroup)).unwrap();
+      navigate("/");
+      window.location.reload();
     } catch (error) {
       setErrorDiv(true);
-      console.error("Ошибка при попытке войти в систему", error);
+      setShowLoader(false); // Скрыть лоудер, если произошла ошибка
     }
-  };
+  }, 2500); // Задержка в 2 секунды
+};
 
   useEffect(() => {
     if (errorDiv) {
@@ -47,6 +48,10 @@ export default function Login({ setUser }) {
       return () => clearTimeout(timer);
     }
   });
+
+  if (showLoader) {
+    return <LoadingCircle />;
+  }
 
   return (
     <section className={styles.login_container}>

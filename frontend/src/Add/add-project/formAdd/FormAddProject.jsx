@@ -555,7 +555,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                   setIsPhotoOpenVisible
                 )
               }
-              required
+              
             />
             <label htmlFor="siteArea" className={styles.form__label}>
               Площадь участка
@@ -582,7 +582,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                   setIsPhotoOpenVisible
                 )
               }
-              required
+             
             />
             <label htmlFor="floors" className={styles.form__label}>
               Этажность
@@ -609,7 +609,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                   setIsPhotoOpenVisible
                 )
               }
-              required
+              
             />
             <label htmlFor="altitude" className={styles.form__label}>
               Высотность
@@ -636,7 +636,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                   setIsPhotoOpenVisible
                 )
               }
-              required
+              
             />
             <label htmlFor="constructionVolume" className={styles.form__label}>
               Строительный объем
@@ -668,7 +668,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                   setIsPhotoOpenVisible
                 )
               }
-              required
+              
             />
             <label htmlFor="location" className={styles.form__label}>
               Расположение: Город, улица, номер дома
@@ -779,7 +779,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                       setIsPhotoOpenVisible
                     )
                   }
-                  required
+                  
                 />
                 <label htmlFor="publication" className={styles.form__label}>
                   Публикация
@@ -806,7 +806,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                       setIsPhotoOpenVisible
                     )
                   }
-                  required
+                  
                 />
                 <label
                   htmlFor="linkToPublication"
@@ -838,7 +838,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                       setIsPhotoOpenVisible
                     )
                   }
-                  required
+                 
                 />
                 <label htmlFor="publicationTwo" className={styles.form__label}>
                   Публикация
@@ -865,7 +865,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                       setIsPhotoOpenVisible
                     )
                   }
-                  required
+                 
                 />
                 <label
                   htmlFor="linkToPublicationTwo"
@@ -897,7 +897,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                   setIsPhotoOpenVisible
                 )
               }
-              required
+              
             />
             <label htmlFor="awards" className={styles.form__label}>
               Награды
