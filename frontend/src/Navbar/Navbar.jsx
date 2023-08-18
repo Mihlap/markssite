@@ -14,17 +14,20 @@ export default function Navbar() {
     const [prevScrollPos, setPrevScrollPos] = useState(0);
     const [visible, setVisible] = useState(true);
 
-    const handleScroll = () => {
-      const currentScrollPos = window.pageYOffset;
+   const handleScroll = () => {
+     const currentScrollPos = window.pageYOffset;
 
-      if (prevScrollPos > currentScrollPos) {
-        setVisible(true);
-      } else {
-        setVisible(false);
-      }
+     // Если ширина экрана больше 768px (не мобильное устройство)
+     if (window.innerWidth > 1024) {
+       if (prevScrollPos > currentScrollPos) {
+         setVisible(true);
+       } else {
+         setVisible(false);
+       }
+     }
 
-      setPrevScrollPos(currentScrollPos);
-    };
+     setPrevScrollPos(currentScrollPos);
+   };
 
     useEffect(() => {
     window.addEventListener("scroll", handleScroll);

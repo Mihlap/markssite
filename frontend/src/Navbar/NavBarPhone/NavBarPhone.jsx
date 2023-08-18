@@ -62,7 +62,7 @@ const [isMenuActive, setMenuActive] = useState(false);
                   Главная
                 </Link>
               </li>
-              <li className={styles["menu-item"]}>
+              {/* <li className={styles["menu-item"]}>
                 <Link
                   onClick={handleBurgerClick}
                   to="/competention"
@@ -70,7 +70,7 @@ const [isMenuActive, setMenuActive] = useState(false);
                 >
                   Компетенции
                 </Link>
-              </li>
+              </li> */}
               <li className={styles["menu-item"]}>
                 <Link
                   onClick={handleBurgerClick}

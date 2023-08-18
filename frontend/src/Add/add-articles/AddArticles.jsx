@@ -10,7 +10,7 @@ export default function AddArticles({user, article}) {
   const Host = process.env.REACT_APP_SERVER_HOST;
   const dispatch = useDispatch();
   // открывает модалку 
-  const [isModalOpen, setIsModalOpen] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
   const [isonCopy, seticonCopy] = useState(false);
   const [isImageLoaded, setImageLoaded] = useState(false);
