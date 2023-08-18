@@ -132,7 +132,7 @@ export default function AddProject({ project, user }) {
                           <img
                             className={styles.cart_project__img}
                             src={`${Host}/images/imageAdd/${firstPhoto}`}
-                            alt="photo"
+                            alt="photo1"
                           />
                           {user === "obezyankaa" ||
                           user === "Покемон" ||
