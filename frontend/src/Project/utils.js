@@ -23,15 +23,15 @@ export const resizeImage = (width, height) => {
   const aspectRatio = height / width;
 
   if (aspectRatio >= 1.2) {
-    if (width !== '28rem' || height !== '48rem') {
-      return { width: '28.18rem', height: '48.18rem' };
+    if (width !== '28vw' || height !== '48vh') {
+      return { width: '28.18vw', height: '48.18vh' };
     }
   } else if (aspectRatio < 0.8) {
-    if (width !== '28rem' || height !== '14rem') {
+    if (width !== '28vw' || height !== '14vh') {
       return { width: 27.62, height: 13.81 };
     }
   } else {
-    if (width !== '28rem' || height !== '28rem') {
+    if (width !== '28vw' || height !== '28vh') {
       return { width: 28.18, height: 27.62 };
     }
   }

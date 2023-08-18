@@ -726,7 +726,7 @@
 
   .underSlider_text_wrapper {
     left: 1.3rem;
-    bottom: 56vh;
+    bottom: 16vh;
     /* max-width: 100%; */
     word-wrap: break-word;
    }
@@ -736,7 +736,7 @@
     font-weight: var(--fw-700);
     font-size: 1.125rem;
     line-height: 1.5rem;
-    margin-right: 10rem;
+    margin-right: 1rem;
     max-width: 100%;
     word-wrap: break-word;
 

@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import gsap from "gsap";
+import { Swiper, SwiperSlide } from "swiper/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 import AllArticlesButton from '../UI/ButtonsArticles/AllArticlesButton';
@@ -20,6 +21,7 @@ import styles from "./ArticleCard.module.css";
 
 import next from ".././icons/next.svg";
 import previous from ".././icons/previous.svg";
+import SliderContainerProjectCard from '../UI/ProjectCardSlider/SliderContainerProjectCard';
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
@@ -28,7 +30,7 @@ const Host = process.env.REACT_APP_SERVER_HOST;
 const ArticleCard = () => {
   const { id } = useParams();
   const dispatch = useDispatch();
-  const sliderCardRef = useRef(null);
+  const sliderArticleCardRef = useRef(null);
   const slidesCard = useSelector((state) => state.article.article);
   const article = slidesCard.find((item) => item.id === parseInt(`${id}`));
   const articles = useSelector((state) => state.article.article);
@@ -40,7 +42,7 @@ const ArticleCard = () => {
 
   const refs = {
     title: useRef(null),
-    address: useRef(null),
+    city: useRef(null),
     author: useRef(null),
     blockLeft: useRef(null),
     blockRight: useRef(null),
@@ -54,15 +56,15 @@ const ArticleCard = () => {
 
   const {
     title,
-    address,
+    city,
     author,
     blockLeft,
     blockRight,
     blockDescription,
     // blockRightPhone,
     leftImg1,
-    // leftImg2,
-    // leftImg3,
+    leftImg2,
+    leftImg3,
     leftImg4,
   } = refs;
 
@@ -72,8 +74,8 @@ const ArticleCard = () => {
     blockLeft.current,
     blockRight.current,
     leftImg1.current,
-    // leftImg2.current,
-    // leftImg3.current,
+    leftImg2.current,
+    leftImg3.current,
     leftImg4.current,
   ];
 
@@ -85,14 +87,14 @@ const ArticleCard = () => {
     window.scrollTo(20, 0);
 
     // Скрываем заголовок, ссылку и описание перед анимацией
-    if (title.current && address.current) {
-      gsap.set([title.current, address.current], { opacity: 0 });
+    if (title.current && city.current) {
+      gsap.set([title.current, city.current], { opacity: 0 });
     }
 
     // Анимируем появление заголовка, затем ссылки, затем описания
     gsap?.to(title?.current, { duration: 1, opacity: 1, delay: 0.5 });
     gsap.to(author?.current, { duration: 1, opacity: 1, delay: 1 });
-    gsap?.to(address?.current, { duration: 1, opacity: 1, delay: 0.7 });
+    gsap?.to(city?.current, { duration: 1, opacity: 1, delay: 0.7 });
 
     const animateElement = (element) => {
       if (element) {
@@ -116,7 +118,7 @@ const ArticleCard = () => {
 
 
   useEffect(() => {
-    const el = sliderCardRef.current;
+    const el = sliderArticleCardRef.current;
     if (el) {
       el.addEventListener(
         "wheel",
@@ -178,6 +180,7 @@ const ArticleCard = () => {
   const previousProject = articles[previousIndex];
   const nextProject = articles[nextIndex];
 
+  console.log(article, "===========================================");
 
   return (
     <div className={styles.main_article_card}>
@@ -185,31 +188,33 @@ const ArticleCard = () => {
     <div className={styles.all_button_div}>
       <AllArticlesButton />
     </div>
-    <div className={styles.main_project_card}>
-       <div className={styles.section_project__block__card}>
+    <div className={styles.main_article_card}>
+       <div className={styles.section_article__block__card}>
           {article && (
-            <div className={styles.cart_project__block__card}>
-              <div className={styles.cart_project__container__block__card}>
-                <div className={styles.project_content__wrapper__block__card}>
+            <div className={styles.cart_article__block__card}>
+              <div className={styles.cart_article__container__block__card}>
+                <div className={styles.article_content__wrapper__block__card}>
                   <div className={styles.cart_project__content__block__card}>
-                    <div className={styles.cart_project__widget__block__card}>
-                     
-                    </div>
                     <div
-                      className={styles.cart_project_title__block__card}
+                      className={styles.cart_article_title__block__card}
                       ref={refs.title}
                     >
-                      {article.title}
+                      {article.tittle}
+                    </div>
+                    <div className={styles.cart_article__author__block__card}
+                    ref={refs.author}
+                    >
+                     {article.author}
                     </div>
                   </div>
                 </div>
                 <div
-                  className={styles.cart_project__address__block__card}
-                  ref={refs.address}
+                  className={styles.cart_article__address__block__card}
+                  ref={refs.city}
                 >
                   {article.city}{" "}
                   <div
-                    className={styles.cart_project__address__svg__block__card}
+                    className={styles.cart_article__address__svg__block__card}
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -455,15 +460,15 @@ const ArticleCard = () => {
             <div className={styles.share_project}>Поделиться проектом</div>
           </div>
         )}
-        {/* <div className={styles.project_name_text}>Ещё по теме</div>
-        <div className={styles.swiper_progect_container}> */}
+        <div className={styles.project_name_text}>Ещё по теме</div>
+        <div className={styles.swiper_progect_container}>
           {/* <SwiperContainerProgect projects={projects} /> */}
         </div>
-         {/* <div className={styles.main_project_projectCard}>
+         <div className={styles.main_project_projectCard}>
           <Swiper
             className={styles.slider_card_container_project_projectCard}
             id="slider_card_container_project"
-            ref={sliderCardRef}
+            ref={sliderArticleCardRef}
             spaceBetween={30}
             touch="true"
             direction="horizontal"
@@ -483,7 +488,7 @@ const ArticleCard = () => {
               },
             }}
           >
-            {projects?.map((project, index) => {
+            {articles?.map((project, index) => {
               if (!project) {
                 return null;
               }
@@ -524,7 +529,7 @@ const ArticleCard = () => {
                       <div className={styles.container__title_projectCard}>
                         {project.title}
                       </div>
-                      <div
+                      {/* <div
                         className={
                           styles.container__selectCompetencies_projectCard
                         }
@@ -596,7 +601,7 @@ const ArticleCard = () => {
                             return null;
                           }
                         })()}
-                      </div>
+                      </div> */}
                     </div>
                     <div className={styles.countryCity_monthYear_projectCard}>
                       <div
@@ -628,9 +633,9 @@ const ArticleCard = () => {
               );
             })}
           </Swiper>
-        </div> */}
+        </div>
         <div className={styles.project_container_projectCard_sliderMobile}>
-        {/* <SliderContainerProjectCard projects={projects} /> */}
+        <SliderContainerProjectCard articles={articles} />
       </div>
       </div>
     // </div>
