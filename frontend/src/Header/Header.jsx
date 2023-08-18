@@ -69,7 +69,6 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
   };
 
   const handleMouseHover = () => {
-    console.log("Mouse hovered over image");
     dispatch(imageHover());
   };
 
