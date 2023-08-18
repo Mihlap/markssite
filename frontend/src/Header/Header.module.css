@@ -559,7 +559,7 @@ span {
   font-weight: var(--fw-400);
   font-size: 14px;
   line-height: 20px;
-  padding-top: 0.5rem;
+  /* padding-top: 0.5rem; */
 }
 
 .card_button {
@@ -639,12 +639,12 @@ span {
     line-height: 1.5rem;
     padding-top: 1rem;
   }
-
+/* 
   span {
     font-size: 0.875rem;
     line-height: 1.25rem;
     padding-top: 0.5rem;
-  }
+  } */
 
   .card_button {
     margin-top: 1rem;

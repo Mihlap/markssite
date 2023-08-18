@@ -32,9 +32,9 @@ import CustomCursor from "./UI/CustomCursor/CustomCursor";
 export default function App() {
   const serverHost = process.env.REACT_APP_SERVER_HOST;
   const location = useLocation();
-  const [user, setUser] = useState(false);
-  const [isUserChecked, setIsUserChecked] = useState(false);
-  const [isLoadingUser, setIsLoadingUser] = useState(true);
+  const [user, setUser] = useState(true);
+  const [isUserChecked, setIsUserChecked] = useState(true);
+  const [isLoadingUser, setIsLoadingUser] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showNavbar, setNavBarOpen] = useState(true);
   const [showFooter, setShowFooter] = useState(true);
