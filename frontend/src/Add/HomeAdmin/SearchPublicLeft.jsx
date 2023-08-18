@@ -18,7 +18,10 @@ export default function SearchPublicLeft({
    const [errorMessage, setErrorMessage] = useState("");
    const [showError, setShowError] = useState(false);
    const [okMessage, setOkMessage] = useState("");
-   const [showOk, setShowOk] = useState(false);
+  const [showOk, setShowOk] = useState(false);
+  const [deleteMessage, setDeleteMessage] = useState("");
+  const [deleteOk, setDeleteOk] = useState(false);
+
 
   const handleSearchOnePublic = (event) => {
     setSearcIdOne(event.target.value);
@@ -29,10 +32,11 @@ export default function SearchPublicLeft({
     const timer = setTimeout(() => {
       setShowError(false);
       setShowOk(false);
-    }, 5000);
+      setDeleteOk(false);
+    }, 3000);
 
     return () => clearTimeout(timer);
-  }, [showError, showOk]);
+  }, [showError, showOk, deleteOk]);
 
   const filterArticleOnePublic = async (event) => {
     const filterArticle = articles.find(
@@ -51,6 +55,7 @@ export default function SearchPublicLeft({
         );
         showMessage("Публикация добавлена", "ok");
         setShowError(false);
+        setDeleteOk(false);
       } catch (error) {
         console.error("Ошибка при сохранении проекта:", error);
         showMessage("Ошибка при сохранении проекта:", "error");
@@ -60,6 +65,7 @@ export default function SearchPublicLeft({
       showMessage("Публикация с таким id не найдена", "error");
       setSearcIdOne("");
       setShowOk(false);
+      setDeleteOk(false);
       setIsBtnDisabledPublicOne(event.target.value === "");
     }
   };
@@ -74,22 +80,28 @@ export default function SearchPublicLeft({
         setOkMessage(message);
         setShowOk(true);
         break;
+      case "delete":
+        setDeleteMessage(message);
+        setDeleteOk(true);
+        break;
       default:
         break;
     }
   };
 
-  const handleArticleLeftDelete = (formId) => {
-    dispatch(searchArticleLeftDelete(formId))
-      .then(() => {
-        // Если запрос на удаление успешно выполнен, вызываем действие для получения обновленного списка статей
-        dispatch(getUpdatedArticles());
-      })
-      .catch((error) => {
-        // Обрабатываем ошибку, если она произойдет
-        console.error("Ошибка при удалении статьи:", error);
-      });
-  };
+const handleArticleLeftDelete = (formId) => {
+  dispatch(searchArticleLeftDelete(formId))
+    .then(() => {
+      dispatch(getUpdatedArticles());
+      setDeleteMessage("Публикация удалена");
+      setDeleteOk(true);
+      setShowError(false);
+      setShowOk(false);
+    })
+    .catch((error) => {
+      console.error("Ошибка при удалении статьи:", error);
+    });
+};
 
   const handlerUpdateReplacement = () => {
     const filterArticle = articles.find(
@@ -108,19 +120,17 @@ export default function SearchPublicLeft({
     }
   };
 
-  const Message = ({ message, type }) => {
-    return (
-      <div
-        className={
-          type === "error"
-            ? styles.home_admin_section__error
-            : styles.home_admin_section__ok
-        }
-      >
-        {message}
-      </div>
-    );
-  };
+const Message = ({ message, type }) => {
+  let className = styles.home_admin_section__ok; // Default class for other types
+
+  if (type === "error") {
+    className = styles.home_admin_section__error;
+  } else if (type === "delete") {
+    className = styles.home_admin_section__delete;
+  }
+
+  return <div className={className}>{message}</div>;
+};
 
   return (
     <div className={styles.home_admin_section__block_search}>
@@ -170,6 +180,7 @@ export default function SearchPublicLeft({
       </div>
       <div>{showError && <Message message={errorMessage} type="error" />}</div>
       <div>{showOk && <Message message={okMessage} type="ok" />}</div>
+      <div>{deleteOk && <Message message={deleteMessage} type="delete" />}</div>
     </div>
   );
 }
