@@ -171,9 +171,9 @@ export default function AddArticles({user, article}) {
                             alt="ptoho articles"
                             onLoad={() => setImageLoaded(true)}
                           />
-                          {user === "obezyankaa" ||
-                          user === "Покемон" ||
-                          user === "покемон" ? (
+                          {user?.name === "obezyankaa" ||
+                          user?.name === "Покемон" ||
+                          user?.name === "покемон" ? (
                             <div className={styles.del_block}>
                               <button
                                 className={styles.buttom_del}

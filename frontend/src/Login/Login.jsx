@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../store/Slice/authSlice";
 import LoadingCircle from "../Loading/LoadingCircle";
 
-export default function Login({ setUser }) {
+export default function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [inputGroup, setInputGroup] = useState({
@@ -32,7 +32,7 @@ const submitHandler = (event) => {
     try {
       await dispatch(loginUser(inputGroup)).unwrap();
       navigate("/");
-      window.location.reload();
+      // window.location.reload();
     } catch (error) {
       setErrorDiv(true);
       setShowLoader(false); // Скрыть лоудер, если произошла ошибка

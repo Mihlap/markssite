@@ -256,7 +256,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
       ) : null}
       <div className={styles.video_block}>
         <VideoPlayer />
-        </div>
+      </div>
       <div className={styles.header_desctop_block}>
         <h1
           onMouseEnter={handleMouseEnter}
@@ -283,49 +283,53 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
         </p>
       </div> */}
       <div className={styles.container_main}>
-       <div className={styles.sliderHeader_container}><SliderHeader /></div>
+        <div className={styles.sliderHeader_container}>
+          <SliderHeader />
+        </div>
         <div className={styles.swiper_container}>
-          <SwiperContainer article1={MapArticle} article2={MapArticleRight}/>
+          <SwiperContainer article1={MapArticle} article2={MapArticleRight} />
         </div>
         <div className={styles.card_container}>
           {MapArticle && MapArticle.length > 0 ? (
             MapArticle.map((el) => {
-                const firstPhoto = el.imageTitle.split(", ")[0];
+              const firstPhoto = el.imageTitle.split(", ")[0];
 
               return (
-                  <Link to={`/publication/${el.id}`} key={el.id}>
-                <div key={el.id} className={styles.card_item_1}>
-                  <div className={styles.card_img}>
-                    <img
-                      onMouseEnter={handleMouseHover}
-                      onMouseLeave={handleMouseLeave}
-                      className={styles.img_1}
-                      src={`${Host}/images/imageArticle/${firstPhoto}`}
-                      alt="photo1"
-                    />
-                  </div>
-                  <div className={styles.card_text}>
-                    <h3>{el.title}</h3>
-                    <span className={styles.span_dataMonthYear}>{el.dataMonthYear}</span>
-                  </div>
-                  <button className={styles.card_button}>
-                    <svg
-                      width="32"
-                      height="32"
-                      viewBox="0 0 32 32"
-                      fill="currentColor"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <circle cx="16" cy="16" r="16" fill="#566272" />
-                      <path
-                        d="M6 16H16M26 16H16M16 16V6M16 16V26"
-                        stroke="#F6F6F6"
-                        strokeWidth="2"
-                        strokeLinecap="square"
+                <Link to={`/publication/${el.id}`} key={el.id}>
+                  <div key={el.id} className={styles.card_item_1}>
+                    <div className={styles.card_img}>
+                      <img
+                        onMouseEnter={handleMouseHover}
+                        onMouseLeave={handleMouseLeave}
+                        className={styles.img_1}
+                        src={`${Host}/images/imageArticle/${firstPhoto}`}
+                        alt="photo1"
                       />
-                    </svg>
-                  </button>
-                </div>
+                    </div>
+                    <div className={styles.card_text}>
+                      <h3>{el.title}</h3>
+                      <span className={styles.span_dataMonthYear}>
+                        {el.dataMonthYear}
+                      </span>
+                    </div>
+                    <button className={styles.card_button}>
+                      <svg
+                        width="32"
+                        height="32"
+                        viewBox="0 0 32 32"
+                        fill="currentColor"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <circle cx="16" cy="16" r="16" fill="#566272" />
+                        <path
+                          d="M6 16H16M26 16H16M16 16V6M16 16V26"
+                          stroke="#F6F6F6"
+                          strokeWidth="2"
+                          strokeLinecap="square"
+                        />
+                      </svg>
+                    </button>
+                  </div>
                 </Link>
               );
             })
@@ -343,39 +347,41 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
               const firstPhoto = el.imageTitle.split(", ")[0];
 
               return (
-                <Link  to={`/publication/${el.id}`} key={el.id}>
-                <div key={el.id} className={styles.card_item_2}>
-                  <div className={styles.card_img}>
-                    <img
-                      onMouseEnter={handleMouseHover}
-                      onMouseLeave={handleMouseLeave}
-                      className={styles.img_2}
-                      src={`${Host}/images/imageArticle/${firstPhoto}`}
-                      alt="photo1"
-                    />
-                  </div>
-                  <div className={styles.card_text}>
-                    <h3>{el.title}</h3>
-                    <span className={styles.span_dataMonthYear}>{el.dataMonthYear}</span>
-                  </div>
-                  <button className={styles.card_button}>
-                    <svg
-                      width="32"
-                      height="32"
-                      viewBox="0 0 32 32"
-                      fill="currentColor"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <circle cx="16" cy="16" r="16" fill="#566272" />
-                      <path
-                        d="M6 16H16M26 16H16M16 16V6M16 16V26"
-                        stroke="#F6F6F6"
-                        strokeWidth="2"
-                        strokeLinecap="square"
+                <Link to={`/publication/${el.id}`} key={el.id}>
+                  <div key={el.id} className={styles.card_item_2}>
+                    <div className={styles.card_img}>
+                      <img
+                        onMouseEnter={handleMouseHover}
+                        onMouseLeave={handleMouseLeave}
+                        className={styles.img_2}
+                        src={`${Host}/images/imageArticle/${firstPhoto}`}
+                        alt="photo1"
                       />
-                    </svg>
-                  </button>
-                </div>
+                    </div>
+                    <div className={styles.card_text}>
+                      <h3>{el.title}</h3>
+                      <span className={styles.span_dataMonthYear}>
+                        {el.dataMonthYear}
+                      </span>
+                    </div>
+                    <button className={styles.card_button}>
+                      <svg
+                        width="32"
+                        height="32"
+                        viewBox="0 0 32 32"
+                        fill="currentColor"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <circle cx="16" cy="16" r="16" fill="#566272" />
+                        <path
+                          d="M6 16H16M26 16H16M16 16V6M16 16V26"
+                          stroke="#F6F6F6"
+                          strokeWidth="2"
+                          strokeLinecap="square"
+                        />
+                      </svg>
+                    </button>
+                  </div>
                 </Link>
               );
             })
@@ -414,7 +420,9 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
         <img src="./assets/D8.png" alt="logo" />
         <img src="./assets/D9.png" alt="logo" />
       </div> */}
-      <div className={styles.sliderMobile_container}><SliderMobile /></div>
+      <div className={styles.sliderMobile_container}>
+        <SliderMobile />
+      </div>
       <div id="projects" className={styles.project_name}>
         Проекты
       </div>
