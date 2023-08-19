@@ -3,7 +3,7 @@ import axios from 'axios';
 import styles from "./Login.module.scss";
 import { useNavigate } from 'react-router-dom';
 
-export default function SignUpPage({ setUser, setName }) {
+export default function SignUpPage() {
   const navigate = useNavigate(); // Хук для перенаправления пользователя
 
   const serverHost = process.env.REACT_APP_SERVER_HOST;
@@ -18,7 +18,6 @@ export default function SignUpPage({ setUser, setName }) {
         });
 
         if (response.status === 200) {
-          setName(response.data.name); // Устанавливаем имя пользователя вместо boolean значения
           // Здесь вы можете обновить ваш стейт, чтобы отразить, что пользователь зарегистрирован
           console.log("cooki");
         }
@@ -44,7 +43,6 @@ export default function SignUpPage({ setUser, setName }) {
 
       if (response.status === 200) {
         console.log("зашел сюда");
-        setUser(true);
         navigate("/admin");
       }
     } catch (error) {
