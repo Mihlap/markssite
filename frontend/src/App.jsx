@@ -27,67 +27,41 @@ import axios from "axios";
 import ProjectCard from "./Project/ProjectCard";
 import ArticleCard from "./Publics/ArticleCard";
 import CustomCursor from "./UI/CustomCursor/CustomCursor";
+import { useDispatch, useSelector } from "react-redux";
+import { checkUserAuth } from "./store/Slice/authSlice";
 
 
 export default function App() {
-  const serverHost = process.env.REACT_APP_SERVER_HOST;
+  const user = useSelector((state) => state.auth.user);
   const location = useLocation();
-  const [user, setUser] = useState(false);
-  const [isUserChecked, setIsUserChecked] = useState(false);
-  const [isLoadingUser, setIsLoadingUser] = useState(true);
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const [showNavbar, setNavBarOpen] = useState(true);
   const [showFooter, setShowFooter] = useState(true);
 
 
-  useEffect(() => {
-    const checkUser = async () => {
-      setIsLoadingUser(true);
-      try {
-        const response = await axios({
-          method: "get",
-          url: `${serverHost}/api/auth/user`,
-          withCredentials: true, // Включает отправку кук с запросом
-        });
 
-        if (response.status === 200) {
-
-          setUser(response.data.name);
-          setIsUserChecked(true);
-          setNavBarOpen(false); // скрываем навбар
-          setShowFooter(false); // скрываем футер
-        }
-        setIsLoadingUser(false);
-      } catch (error) {
-        console.log(error);
-        setIsUserChecked(true); // Добавьте эту строку
-      }
-    };
-
-    if (!isUserChecked) {
-      checkUser();
-    }
-  }, [isUserChecked]);
+useEffect(() => {
+  dispatch(checkUserAuth());
+}, [dispatch]);
 
 // console.log(isUserChecked);
   // таймаут для прелоудера на сайте
-  // setTimeout(() => {
-  //   setLoading(false);
-  // }, 3500);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setLoading(false);
+  //   }, 3500);
+  // }, []);
 
 
-  // console.log(`пользователь 👉${user}👈`);
+  // console.log(`пользователь 👉${user.name}👈`);
   return (
     <HelmetProvider>
       {loading === true ? (
         <Loading />
       ) : (
         <>
-          {showNavbar && (
-            <Navbar
-              user={user}
-            />
-          )}
+          {showNavbar && <Navbar />}
           <TransitionGroup>
             <CSSTransition key={location.key} classNames="fade" timeout={300}>
               <Routes location={location}>
@@ -119,14 +93,11 @@ export default function App() {
                 {/* <Route path="/slava" element={<Slava />} /> */}
                 <Route path="/prime-park" element={<PrimePark />} />
                 {/* <Route path="/hotel-appart" element={<HotelAppart />} /> */}
-                <Route path="/login" element={<Login setUser={setUser} />} />
-                <Route
-                  path="/signup"
-                  element={<SignUpPage setUser={setUser} />}
-                />
+                <Route path="/login" element={<Login />} />
+                <Route path="/signup" element={<SignUpPage />} />
                 <Route path="/information" element={<Information />} />
 
-                {user && !isLoadingUser ? (
+                {user ? (
                   <Route
                     path="/admin/*"
                     element={
@@ -136,14 +107,13 @@ export default function App() {
                         user={user}
                       />
                     }
-                  >
-                  </Route>
+                  ></Route>
                 ) : null}
               </Routes>
             </CSSTransition>
           </TransitionGroup>
-            {showFooter && <Footer />}
-            {/* <CustomCursor /> */}
+          {showFooter && <Footer />}
+          {/* <CustomCursor /> */}
         </>
       )}
     </HelmetProvider>

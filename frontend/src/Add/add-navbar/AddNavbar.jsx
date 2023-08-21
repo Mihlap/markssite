@@ -191,7 +191,7 @@ const logouthandler = async () => {
           </div>
           <div className={styles.exit_container}>
             <div className={styles.exit_container__user}>
-              Пользователь cookies <strong>{user}👋</strong>
+              Пользователь cookies <strong>{user?.name}👋</strong>
             </div>
             <button
               className={styles.btn_exit}
