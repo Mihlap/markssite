@@ -562,14 +562,29 @@ const ProjectCard = () => {
             direction="horizontal"
             loop={false}
             breakpoints={{
+              2500: {
+                slidesPerView: 4.9,
+              },
               2000: {
-                slidesPerView: 4.1,
+                slidesPerView: 4.2,
+              },
+              1750: {
+                slidesPerView: 3.5,
               },
               1440: {
-                slidesPerView: 3.2,
+                slidesPerView: 2.7,
+              },
+              1300: {
+                slidesPerView: 2.7,
+              },
+              1200: {
+                slidesPerView: 2.5,
               },
               1024: {
                 slidesPerView: 2.3,
+              },
+              900: {
+                slidesPerView: 2.1,
               },
               700: {
                 slidesPerView: 2.1,
