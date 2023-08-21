@@ -19,11 +19,12 @@
   display: flex;
   flex-direction: row;
   position: absolute;
+
 }
 
 .cart_article__block__card {
   display: flex;
-  padding-top: 1vh;
+  padding-top: 14vh;
   padding-left: 1.69rem;
   padding-right: 1.69rem;
   word-break: break-word;
@@ -38,7 +39,7 @@
   font-weight: var(--fw-300);
   line-height: 4rem;
   color: var(--white-F6F6F6);
-  padding-top: 0.5rem;
+  padding-top: 4rem;
 }
 
 .cart_article__author__block__card {
@@ -49,7 +50,7 @@
   font-size: 0.5625rem;
   font-weight: 500;
   line-height: normal;
-  padding-top: 2rem;
+  padding-top: 1rem;
 }
 
 
@@ -60,7 +61,7 @@
   font-size: 0.875rem;
   font-style: normal;
   font-weight: var(--fw-300);
-  padding-top: 1rem;
+  padding-top: 0.5rem;
 }
 
 .cart_article__address__svg__block__card {
@@ -80,4 +81,287 @@
   justify-content: space-between;
   padding-top: 2rem;
   padding-bottom: 5.66rem;
+}
+
+
+/* <<=============== левый блок контента с информацией===============>> */
+
+.header_content_left {
+  width: 80%;
+  /* overflow: hidden; */
+  padding-right: 6vw;
+  padding-left: 1.94vw;
+  white-space: normal;
+}
+
+.header_content_left_custom {
+  /* padding-right: 10rem; */
+}
+
+.title_block {
+  /* display: flex;
+  align-items: center;
+  justify-content: center; */
+}
+
+.title_block_mobile,
+.title_text_mobile,
+.project_container_projectCard_sliderMobile {
+  display: none;
+}
+
+.left_title {
+  position: relative;
+  font-family: var(--font-unbounded);
+  font-style: normal;
+  font-weight: var(--fw-300);
+  font-size: 2rem;
+  line-height: 2.5rem;
+  color: var(--black-1D2E43);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+ }
+
+
+.title_text {
+  font-family: var(--font-raleway);
+  font-style: normal;
+  font-weight: var(--fw-400);
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-feature-settings: 'pnum' on, 'lnum' on;
+  color: var(--black-1D2E43);
+  padding-top: 1rem;
+  padding-bottom: 4rem;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+/* << =============== правый блок контента с информацией =============== >> */
+
+.header_content_right {
+  width: 15%;
+  padding-right: 1vw;
+}
+
+.local_container_photo_author {
+  display: flex;
+ flex-direction: column; 
+}
+
+.container__imageAuthor_articleCard {
+  font-variant-numeric: lining-nums proportional-nums;
+  font-family: var(--font-raleway);
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: var(--fw-400);
+  line-height: 1.25rem;
+  width: 100%;
+  height: 100%;
+  border-radius: 146.5vw;
+}
+.author_name {
+  display: flex;
+  color: var(--dark-gray-566272);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  word-break: break-all;
+  padding-top: 1rem;
+}
+
+.text_author {
+  color: var(--gray-959DA6);
+  padding-top: 0.5rem;
+}
+
+.blockImg {
+  width: 80%;
+  height: 100%;
+}
+
+.item:not(:last-child) {
+  padding-bottom: 2.5rem;
+}
+
+.item_img {
+  width: 100%;
+  height: 100%;
+  max-height: 50rem;
+  border-radius: 1.11vw;
+  padding-left: 1.94vw;
+}
+
+.item_img_latest {
+  border-radius: 1.11vw 1.11vw 0vw 0vw;
+}
+
+
+.item_photo_together {
+  display: flex;
+  gap: 2.08vw;
+}
+
+.quote_container,
+.description_object_container {
+  display: flex;
+}
+
+.description_object_title {
+  font-family: var(--font-unbounded);
+  font-style: normal;
+  font-weight: var(--fw-300);
+  font-size: 1.67vw;
+  line-height: 2.22vw;
+  /* padding-right: 22.19vw;
+  padding-left: 16.44vw; */
+}
+
+.description_object_text1 {
+  font-variant-numeric: lining-nums;
+  font-family: var(--font-raleway);
+  font-style: normal;
+  font-weight: var(--fw-400);
+  font-size: 1rem;
+  line-height: 1.5rem;
+  color: var(--black-1D2E43);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  /* padding-right: 22.19rem;
+  padding-left: 16.44rem; */
+  word-break: break-all;
+}
+
+.quote_block,
+.description_object_block {
+  /* width: 100%; */
+
+}
+
+.description_object_block {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 0rem 22.19rem 0rem 16.44rem;
+}
+
+.quote_text {
+  font-weight: var(--fw-400);
+  font-size: 1.11vw;
+  line-height: 1.67vw;
+  padding-bottom: 30px;
+}
+
+.quote {
+  background-color: var(--light-light-gray-EBECEE);
+  border-radius: 16px;
+  font-weight: var(--fw-400);
+  font-size: 1.11vw;
+  line-height: 1.67vw;
+  padding: 20px;
+  margin-bottom: 40px;
+}
+
+.quote_director {
+  font-weight: var(--fw-400);
+  font-size: 1.11vw;
+  line-height: 1.39vw;
+  color: var(--gray-959DA6);
+  padding-top: 24px;
+}
+
+
+
+
+/* Стили временно для кнопок */
+
+.button_project_projectCard {
+  display: flex;
+  padding-right: 1.69rem;
+  padding-left: 1.69rem;
+  width: 100%;
+}
+
+.button_project_link_projectCard1 {
+  border: none;
+  color: var(--white-F6F6F6);
+  font-size: 1.4vh;
+  cursor: pointer;
+  font-family: 'Raleway';
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  padding: 3rem 1.69rem;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  word-break: break-all;
+  background: var(--light-light-gray-EBECEE);
+  width: 78%;
+}
+.button_project_link_projectCard2 {
+  display: flex;
+  justify-content: end;
+  border: none;
+  color: var(--white-F6F6F6);
+  font-size: 1.4vh;
+  cursor: pointer;
+  font-family: 'Raleway';
+  font-style: normal;
+  font-weight: 400;
+  line-height: 20px;
+  padding: 3rem 1.69rem;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  word-break: break-all;
+  background: var(--salmon-light-FFBFB5);
+  width: 22%;
+}
+
+.previous_svg_projectCard,
+.next_svg_projectCard {
+  display: flex;
+  border: none;
+  align-items: center;
+  height: 1vh;
+}
+
+.previous__span_projectCard {
+  display: flex;
+  justify-content: flex-start;
+  padding-left: 0.7vw;
+  font-family: var(--font-raleway);
+  font-weight: var(--fw-400);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--black-1D2E43);
+  font-variant-numeric: lining-nums proportional-nums;
+ }
+
+.next__span_projectCard {
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 0.7vw;
+  font-family: var(--font-raleway);
+  font-weight: var(--fw-400);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  color: var(--black-1D2E43);
+  font-variant-numeric: lining-nums proportional-nums;
+  flex: 2; /* 20% width */
+}
+
+
+.button_project_link_projectCard1:hover {
+  background-color: var(--light-gray-C0C5CB);
+  fill: var(--light-gray-C0C5CB);
+}
+
+.button_project_link_projectCard2:hover {
+  background-color: var(--salmon-FF7F6A);
+  fill: var(--salmon-FF7F6A);
 }

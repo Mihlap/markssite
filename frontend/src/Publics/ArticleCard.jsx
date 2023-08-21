@@ -177,10 +177,11 @@ const ArticleCard = () => {
   const previousIndex = (currentIndex - 1 + articles.length) % articles.length;
   const nextIndex = (currentIndex + 1) % articles.length;
 
-  const previousProject = articles[previousIndex];
-  const nextProject = articles[nextIndex];
+  const previousArticle = articles[previousIndex];
+  const nextArticle = articles[nextIndex];
 
   console.log(article, "===========================================");
+  console.log(articles, "+++++++++++++++++++++++++++++++++++++++++");
 
   return (
     <div className={styles.main_article_card}>
@@ -188,26 +189,26 @@ const ArticleCard = () => {
     <div className={styles.all_button_div}>
       <AllArticlesButton />
     </div>
-    <div className={styles.main_article_card}>
+   
        <div className={styles.section_article__block__card}>
           {article && (
             <div className={styles.cart_article__block__card}>
               <div className={styles.cart_article__container__block__card}>
                 <div className={styles.article_content__wrapper__block__card}>
-                  <div className={styles.cart_project__content__block__card}>
+                  <div className={styles.cart_article__content__block__card}>
                     <div
                       className={styles.cart_article_title__block__card}
                       ref={refs.title}
                     >
-                      {article.tittle}
+                      {article.title}
                     </div>
+                  </div>
+                </div>
                     <div className={styles.cart_article__author__block__card}
                     ref={refs.author}
                     >
                      {article.author}
                     </div>
-                  </div>
-                </div>
                 <div
                   className={styles.cart_article__address__block__card}
                   ref={refs.city}
@@ -239,122 +240,44 @@ const ArticleCard = () => {
                 <div className={styles.title_block}>
                   <div className={styles.left_title}>
                     {article.titleTextBlock}
-                    <div
-                      className={`${styles.left_meta} ${styles.left_meta_castom}`}
-                    >
-                      {/* {article.viewConstruction} */}
-                    </div>
                   </div>
                 </div>
                 <div className={styles.title_text}>
-                  {article.descriptionProject}
+                  {article.descriptionArticle}
                 </div>
-                
-                {/* <div className={styles.result_container}>
-                  {[
-                    { value: project.siteArea, text: "Общая площадь" },
-                    { value: project.totalArea, text: "Площадь участка" },
-                    { value: project.floors, text: "Этажность" },
-                    { value: project.altitude, text: "Высотность" },
-                    {
-                      value: project.constructionVolume,
-                      text: "Строительный объем",
-                    },
-                  ]
-                    .filter((item) => item.value) // фильтрация по наличию значения
-                    .slice(0, 3) // берём первые три объекта
-                    .map(
-                      (
-                        item // отрисовываем
-                      ) => (
-                        <div key={item.text} className={styles.result_block}>
-                          <div className={styles.result_number}>
-                            {item.value}
-                          </div>
-                          <div className={styles.result_text}>{item.text}</div>
-                        </div>
-                      )
-                    )}
-                </div> */}
+                <div className={styles.result_container}>
+         
+                </div>
               </div>
               <div
                 ref={refs.blockRight}
                 className={styles.header_content_right}
               >
-                <div className={styles.title_block_mobile}>
-                  <div className={styles.left_title}>
-                    {article.titleTextBlock}
-                    <div
-                      className={`${styles.left_meta} ${styles.left_meta_castom}`}
-                    >
-                      {article.viewConstruction}
-                    </div>
-                  </div>
-                </div>
+                {/* <div className={styles.title_block_mobile}>
+                 </div>
                 <div className={styles.title_text_mobile}>
                   {article.descriptionProject}
-                </div>
-                <div className={styles.local_container}>
-                  <div className={styles.local_ritgh}>
-                    <div>
-                      <div className={styles.local_title}>Расположение</div>
-                      <div className={styles.local_text}>
-                        {article.location}
-                      </div>
-                    </div>
-                    <div>
-                      <div className={styles.local_title}>Статус</div>
-                      <div className={styles.local_text}>
-                        {" "}
-                        {article.statusObject}
-                      </div>
-                    </div>
-                    <div>
-                      <div className={styles.local_title}>Публикации</div>
-                      <Link to={article.linkToPublication} target="_blank">
-                        <div className={styles.local_text}>
-                          {article.publication}
-                        </div>
-                      </Link>
-                      <Link to={article.linkToPublicationTwo} target="_blank">
-                        <div className={styles.local_text}>
-                          {article.publicationTwo}
-                        </div>
-                      </Link>
-                    </div>
-                  </div>
-                  <div className={styles.local_left}>
-                    <div>
-                      <div className={styles.local_title}>Степень участия</div>
-                      <div className={styles.local_text}>
-                        {article.degreeParticipation}
-                      </div>
-                    </div>
-                    <div>
-                      <div className={styles.local_title}>Заказчик</div>
-                      <div className={styles.local_text}>
-                        {" "}
-                        {article.customer}
-                      </div>
-                    </div>
-                    <div>
-                      <div className={styles.local_title}>Награды</div>
-                      <div className={styles.local_text}>{article.awards}</div>
-                    </div>
-                  </div>
+                </div> */}
+                <div className={styles.local_container_photo_author}>
+                <img
+                        className={styles.container__imageAuthor_articleCard}
+                        src={`${Host}/images/imageArticle/${article.imageAuthor}`}
+                        alt={article.imageAuthor}
+                      />
+                      <div className={styles.author_name}>{article.author}</div>
+                      <div className={styles.text_author}>Автор статьи</div>
                 </div>
               </div>
-
             </div>
             <div className={styles.blockImg}>
               <div className={styles.container}>
                 <div className={styles.item}>
-                  {/* <img
+                  <img
                     ref={refs.leftImg1}
                     className={styles.item_img}
-                    src={`${Host}/images/imageAdd/${project.imageOpen}`}
-                    alt={project.imageOpen}
-                  /> */}
+                    src={`${Host}/images/imageArticle/${article.imageOpen}`}
+                    alt={article.imageOpen}
+                  />
                 </div>
                 <div
                   ref={refs.blockDescription}
@@ -396,27 +319,27 @@ const ArticleCard = () => {
               </div>
             </div>
             <div className={styles.button_project_projectCard}>
-              {previousProject && (
+              {previousArticle && (
                 <Link
                   className={styles.button_project_link_projectCard}
-                  to={`/projects/${previousProject.id}`}
+                  to={`/publication/${previousArticle.id}`}
                 >
                   <div className={styles.previous_svg_projectCard}>
                     <img src={previous} alt={previous} />
                     <span className={styles.previous__span_projectCard}>
-                      {`${previousProject.title}`}
+                      {`${previousArticle.title}`}
                     </span>
                   </div>
                 </Link>
               )}
-              {nextProject && (
+              {nextArticle && (
                 <Link
                   className={styles.button_project_link_projectCard}
-                  to={`/projects/${nextProject.id}`}
+                  to={`/publication/${nextArticle.id}`}
                 >
                   <div className={styles.next_svg_projectCard}>
                     <span className={styles.next__span_projectCard}>
-                      {`${nextProject.title}`}
+                      {`${nextArticle.title}`}
                     </span>
                     <img src={next} alt={next} />
                   </div>
@@ -637,7 +560,7 @@ const ArticleCard = () => {
         <div className={styles.project_container_projectCard_sliderMobile}>
         <SliderContainerProjectCard articles={articles} />
       </div>
-      </div>
+      
     // </div>
   )
 }
