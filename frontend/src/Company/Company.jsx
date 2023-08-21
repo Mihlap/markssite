@@ -220,6 +220,8 @@ export default function Company({ userId }) {
   //   return <LoadingCircle />;
   // }
 
+  console.log(staff, "персонал");
+
   return (
     <div className={styles.company_main}>
       <Company_Slider />
