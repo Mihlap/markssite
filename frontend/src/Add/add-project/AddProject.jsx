@@ -154,9 +154,9 @@ export default function AddProject({ project, user }) {
                             src={`${Host}/images/imageAdd/${firstPhoto}`}
                             alt="photo1"
                           />
-                          {user === "obezyankaa" ||
-                          user === "Покемон" ||
-                          user === "покемон" ? (
+                          {user?.name === "obezyankaa" ||
+                          user?.name === "Покемон" ||
+                          user?.name === "покемон" ? (
                             <div className={styles.del_block}>
                               <button
                                 className={styles.buttom_del}

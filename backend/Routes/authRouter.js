@@ -18,7 +18,6 @@ authRouter.post('/signup', async(req, res) => {
       hashpass,
     },
   });
-
   const sessionData = {
     name: currentUser.userName,
     id: currentUser.id,
