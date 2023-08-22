@@ -29,21 +29,31 @@ import ArticleCard from "./Publics/ArticleCard";
 import CustomCursor from "./UI/CustomCursor/CustomCursor";
 import { useDispatch, useSelector } from "react-redux";
 import { checkUserAuth } from "./store/Slice/authSlice";
+import { resetCurrentPage, setCurrentPage } from "./store/Slice/userSlice";
+import ButtonAdmin from "./UI/ButtonAdmin/ButtonAdmin";
 
 
 export default function App() {
   const user = useSelector((state) => state.auth.user);
+   const currentPage = useSelector((state) => state.user.currentPage);
+   const showNavbarFooter = useSelector((state) => state.user.showNavbarFooter);
   const location = useLocation();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
-  const [showNavbar, setNavBarOpen] = useState(true);
-  const [showFooter, setShowFooter] = useState(true);
 
 
 
 useEffect(() => {
   dispatch(checkUserAuth());
 }, [dispatch]);
+  
+  const handlePageChange = (page) => {
+    dispatch(setCurrentPage(page));
+  };
+
+  const handleReturn = () => {
+    dispatch(resetCurrentPage()); // Сбрасываем currentPage
+  };
 
 // console.log(isUserChecked);
   // таймаут для прелоудера на сайте
@@ -61,20 +71,14 @@ useEffect(() => {
         <Loading />
       ) : (
         <>
-          {showNavbar && <Navbar />}
+          {showNavbarFooter && currentPage !== "add" && <Navbar />}
+          {showNavbarFooter && currentPage !== "add" && (
+            <ButtonAdmin user={user} />
+          )}
           <TransitionGroup>
             <CSSTransition key={location.key} classNames="fade" timeout={300}>
               <Routes location={location}>
-                <Route
-                  path="/"
-                  element={
-                    <Header
-                      user={user}
-                      setNavBarOpen={setNavBarOpen}
-                      setShowFooter={setShowFooter}
-                    />
-                  }
-                />
+                <Route path="/" element={<Header user={user} />} />
                 {/* <Route path="/competention" element={<Competentions />} /> */}
                 <Route path="/project" element={<Project />} />
                 <Route path="/projects/:id" element={<ProjectCard />} />
@@ -101,18 +105,20 @@ useEffect(() => {
                   <Route
                     path="/admin/*"
                     element={
-                      <Add
-                        setNavBarOpen={setNavBarOpen}
-                        setShowFooter={setShowFooter}
-                        user={user}
-                      />
+                      <>
+                        <Add
+                          user={user}
+                          onPageChange={handlePageChange}
+                          handleReturn={handleReturn}
+                        />
+                      </>
                     }
                   ></Route>
                 ) : null}
               </Routes>
             </CSSTransition>
           </TransitionGroup>
-          {showFooter && <Footer />}
+          {showNavbarFooter && currentPage !== "add" && <Footer />}
           {/* <CustomCursor /> */}
         </>
       )}
