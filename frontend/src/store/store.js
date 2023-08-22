@@ -8,12 +8,14 @@ import searchProjectMainSlice from "./Slice/searchProjectMainSlice";
 import searchArticlePublicLeft from "./Slice/searchArticlePublicLeftSlice";
 import searchArticlePublicRightReducer from "./Slice/searchArticlePublicRightSlice";
 import authReducer from "./Slice/authSlice";
+import userReducer from "./Slice/userSlice";
 import cursorReducer from "./Slice/cursorSlice";
 
 
 export default configureStore({
   reducer: {
     // добавьте все ваши редьюсеры здесь
+    user: userReducer,
     auth: authReducer,
     project: projectSlice,
     staff: staffSlice,

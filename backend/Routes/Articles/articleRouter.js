@@ -8,6 +8,7 @@ const {
   TextBlockArticles,
   FrameBlock,
   ImageToDescriptionArticles,
+  QuoteBlock
 } = require('../../db/models');
 const fileMiddleware = require('../../middleware/fileArticle');
 
@@ -16,7 +17,7 @@ const router = express.Router();
 router.get('/getzapros', async (req, res) => {
   try {
     const data = await Articles.findAll({
-      include: [BlockHeadingTitle, TextBlockArticles, FrameBlock, ImageToDescriptionArticles], // Включение двух связанных моделей
+      include: [BlockHeadingTitle, TextBlockArticles, FrameBlock, ImageToDescriptionArticles, QuoteBlock], // Включение двух связанных моделей
     });
     res.json(data);
   } catch (error) {
@@ -87,14 +88,24 @@ router.post(
           idBlock: createdArticle.id,
         });
       }
-
-      await ImageToDescriptionArticles.create({
-        image: imageToDescriptionArticlesImgs,
-        text: req.body.imageToDescriptionArticlesText,
-        idBlock: createdArticle.id,
-      });
-
-      res.status(200).json({ message: 'Данные успешно сохранены' });
+      if (req.body.imageToDescriptionArticlesText) {
+        await ImageToDescriptionArticles.create({
+          image: imageToDescriptionArticlesImgs,
+          text: req.body.imageToDescriptionArticlesText,
+          idBlock: createdArticle.id,
+        });
+      }
+      if (req.body.quoteBlockTitle && req.body.quoteBlockText) {
+        await QuoteBlock.create({
+          title: req.body.quoteBlockTitle,
+          text: req.body.quoteBlockText,
+          avatar: quoteBlockAvatars,
+          idBlock: createdArticle.id,
+        });
+      }
+      
+        
+        res.status(200).json({ message: 'Данные успешно сохранены' });
     } catch (error) {
       console.log(error); // Output error to the console
       res.status(500).json({ message: 'Произошла ошибка при сохранении данных' });
@@ -146,7 +157,8 @@ router.delete('/deletezapros/:id', async (req, res) => {
     await BlockHeadingTitle.destroy({ where: { idBlock: id } });
     await TextBlockArticles.destroy({ where: { idBlock: id } });
     await FrameBlock.destroy({ where: { idBlock: id } });
-     await ImageToDescriptionArticles.destroy({ where: { idBlock: id } });
+    await ImageToDescriptionArticles.destroy({ where: { idBlock: id } });
+    await QuoteBlock.destroy({ where: { idBlock: id } });
 
     // Удаление поста
     await Articles.destroy({ where: { id } });
