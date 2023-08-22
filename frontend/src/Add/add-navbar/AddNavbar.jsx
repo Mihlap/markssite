@@ -6,8 +6,11 @@ import icon1 from './icon/one.png';
 import icon2 from "./icon/three.png";
 import icon3 from "./icon/four.png";
 import icon4 from "./icon/two.png";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleNavbarFooter } from "../../store/Slice/userSlice";
 
-export default function AddNavbar({ user, setNavBarOpen, setShowFooter }) {
+export default function AddNavbar({ user, handleReturn }) {
+  const dispatch = useDispatch();
   const [selectedItem, setSelectedItem] = useState(null);
   const serverHost = process.env.REACT_APP_SERVER_HOST;
   const navigate = useNavigate();
@@ -26,27 +29,20 @@ export default function AddNavbar({ user, setNavBarOpen, setShowFooter }) {
     navigate(itemPath); // Выполняем переход по ссылке
   };
 
-  const openNavbarHandler = () => {
-    setNavBarOpen(true);
-    setShowFooter(true);
-  }
+  const logouthandler = async () => {
+    try {
+      const response = await axios.get(`${serverHost}/api/auth/logout`, {
+        withCredentials: true,
+      }); // Убедитесь, что вы отправляете запрос с куками
 
-const logouthandler = async () => {
-  try {
-    const response = await axios.get(`${serverHost}/api/auth/logout`, {
-      withCredentials: true,
-    }); // Убедитесь, что вы отправляете запрос с куками
-
-    if (response.status === 200) {
-      navigate("/"); // Перенаправьте пользователя на страницу входа
-      setNavBarOpen(true);
-      setShowFooter(true);
-      window.location.reload();
+      if (response.status === 200) {
+        navigate("/"); // Перенаправьте пользователя на страницу входа
+        window.location.reload();
+      }
+    } catch (error) {
+      console.error("Ошибка при выходе из системы", error);
     }
-  } catch (error) {
-    console.error("Ошибка при выходе из системы", error);
-  }
-};
+  };
 
   return (
     <>
@@ -205,11 +201,7 @@ const logouthandler = async () => {
       </nav>
       <div className={styles.button_position}>
         <div className={styles.button_container}>
-          <Link
-            className={styles.button}
-            to="/"
-            onClick={() => openNavbarHandler()}
-          >
+          <Link className={styles.button} to="/" onClick={handleReturn}>
             <span className={styles.button__text}>Предпросмотр</span>
             <img src={icon1} alt="1" className={styles.button__cone} />
             <img src={icon2} alt="2" className={styles.button__torus} />
