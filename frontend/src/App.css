@@ -81,6 +81,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--white-F6F6F6);
   overflow-x: hidden;
+  font-variant-numeric:lining-nums;
 }
 
 code {

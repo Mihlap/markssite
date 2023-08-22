@@ -16,7 +16,7 @@ module.exports = {
         type: Sequelize.TEXT,
       },
       avatar: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
       },
       idBlock: {
         type: Sequelize.INTEGER,
