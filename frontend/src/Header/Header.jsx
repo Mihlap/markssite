@@ -33,7 +33,7 @@ const Host = process.env.REACT_APP_SERVER_HOST;
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
-export default function Header({ user, setNavBarOpen, setShowFooter }) {
+export default function Header() {
   const sliderCardRef = useRef(null);
   const [enableVerticalScroll, setEnableVerticalScroll] = useState(true);
   const [isHorizontalScroll, setIsHorizontalScroll] = useState(false);
@@ -42,7 +42,6 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
 
   const [loadingArticle, setLoadingArticle] = useState(false);
 
-  const [data, setData] = useState(null);
   const cursorVariant = useSelector((state) => state.cursor);
   const { article, loading, error } = useSelector((state) => state.article);
   // const articles = useSelector((state) => state.article.article);
@@ -79,10 +78,6 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
     dispatch(searchArticleRightGet());
   }, [dispatch]);
 
-  useEffect(() => {
-    const storedData = localStorage.getItem("selectedItem");
-    setData(storedData);
-  }, []);
 
   const colors = {
     Архитектура: "#FF7F6A",
@@ -217,11 +212,6 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
     }
   }, [loading, loadingArticle, scrollingMode]);
 
-  const closeNavbarHandler = () => {
-    setNavBarOpen(false);
-    setShowFooter(false);
-  };
-
   // if (error) {
   //   return (
   //     <div>
@@ -242,18 +232,6 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
 
   return (
     <main className={styles.header}>
-      {user ? (
-        <NavLink
-          className={styles.preview_mode}
-          to={`/admin/${data}`}
-          onClick={() => closeNavbarHandler()}
-        >
-          <img src={actively} alt="icon" />
-          <div className={styles.preview_title}>
-            Вернуться в кабинет редактора
-          </div>
-        </NavLink>
-      ) : null}
       <div className={styles.video_block}>
         <VideoPlayer />
       </div>
