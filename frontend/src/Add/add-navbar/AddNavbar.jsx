@@ -14,6 +14,7 @@ export default function AddNavbar({ user, handleReturn }) {
   const [selectedItem, setSelectedItem] = useState(null);
   const serverHost = process.env.REACT_APP_SERVER_HOST;
   const navigate = useNavigate();
+  console.log(user);
 
   useEffect(() => {
     const storedSelectedItem = localStorage.getItem("selectedItem");
@@ -182,6 +183,25 @@ export default function AddNavbar({ user, handleReturn }) {
                 >
                   О компании
                 </Link>
+              </li>
+              {user?.name === "obezyankaa" ? (
+                <Link
+                  className={`${styles.add_navbar_container__item} ${
+                    selectedItem === "add-a-applications" ? styles.active : ""
+                  }`}
+                  to="./add-a-applications"
+                  onClick={(event) =>
+                    handleItemClick(
+                      event,
+                      "add-a-applications",
+                      "./add-a-applications"
+                    )
+                  }
+                >
+                  Заявки
+                </Link>
+              ) : null}
+              <li>
               </li>
             </ul>
           </div>

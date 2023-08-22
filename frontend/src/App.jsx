@@ -35,8 +35,8 @@ import ButtonAdmin from "./UI/ButtonAdmin/ButtonAdmin";
 
 export default function App() {
   const user = useSelector((state) => state.auth.user);
-   const currentPage = useSelector((state) => state.user.currentPage);
-   const showNavbarFooter = useSelector((state) => state.user.showNavbarFooter);
+  const currentPage = useSelector((state) => state.user.currentPage);
+  const showNavbarFooter = useSelector((state) => state.user.showNavbarFooter);
   const location = useLocation();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
@@ -64,7 +64,7 @@ useEffect(() => {
   // }, []);
 
 
-  // console.log(`пользователь 👉${user.name}👈`);
+  console.log(`пользователь 👉${user?.name}👈`);
   return (
     <HelmetProvider>
       {loading === true ? (
