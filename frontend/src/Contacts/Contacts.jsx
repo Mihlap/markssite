@@ -31,7 +31,7 @@ const cityInfo = {
   },
   Ташкент: {
     address: 'Tashkent, Oybek Street, 18/1',
-    phone: '+9 (989) 935 39 90',
+    phone: '+998 99 353 96 90',
     mail: 'mail@marksgroup.ru',
   },
 };

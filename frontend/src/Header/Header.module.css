@@ -322,7 +322,7 @@ svg path {
  } */
 .sliderMobile_container {
   padding-top: 2.31rem;
-  padding-left: 1.875vw;
+  padding-left: 0;
 }
 
 .project_name {
@@ -366,7 +366,7 @@ svg path {
   padding-right: 1rem;
   border-radius: 1rem;
   transition: transform 0.5s ease-in-out;
-  border: 3px solid transparent;
+  /* border: 3px solid transparent; */
 }
 
 .wrapper_container_item_card .container__imageTitle {
@@ -377,9 +377,9 @@ svg path {
   cursor: pointer;
 }
 
-.wrapper_container_item_card:hover .container__imageTitle {
+/* .wrapper_container_item_card:hover .container__imageTitle {
   border-right: 3px solid transparent;
-}
+} */
 
 
 .wrapper_container_item_card:hover {
@@ -402,7 +402,7 @@ svg path {
   max-width: 100%;
   width: 100%;
   height: auto;
-   object-position: center;
+  object-position: center;
 }
 
 

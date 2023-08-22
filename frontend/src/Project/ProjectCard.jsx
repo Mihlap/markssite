@@ -563,7 +563,7 @@ const ProjectCard = () => {
             loop={false}
             breakpoints={{
               2500: {
-                slidesPerView: 4.9,
+                slidesPerView: 4.7,
               },
               2000: {
                 slidesPerView: 4.2,
