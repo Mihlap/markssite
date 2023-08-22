@@ -169,7 +169,7 @@ export default function QuoteBlock({
 
           <div className={styles.QuoteBlock_btn__description_text}>
             <div className={styles.QuoteBlock_btn__textarea_length}>
-              {`${inputData.blockHeadingText.length}/260`}
+              {`${inputData.quoteBlockText.length}/260`}
             </div>
             <textarea
               className={styles.QuoteBlock_btn__textarea}
@@ -187,7 +187,7 @@ export default function QuoteBlock({
               }}
             ></textarea>
             <label htmlFor="" className={styles.QuoteBlock_btn__textarea_label}>
-              Текст цитаты
+                Текст цитаты
             </label>
           </div>
 

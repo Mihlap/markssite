@@ -17,7 +17,7 @@ module.exports = (sequelize, DataTypes) => {
   QuoteBlock.init({
     title: DataTypes.STRING,
     text: DataTypes.TEXT,
-    avatar: DataTypes.STRING,
+    avatar: DataTypes.TEXT,
     idBlock: DataTypes.INTEGER
   }, {
     sequelize,
