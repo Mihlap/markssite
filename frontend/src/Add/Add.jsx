@@ -13,6 +13,7 @@ import { getFetchFormArticle } from "../store/Slice/articleSlice";
 import { searchArticleLeftGet } from "../store/Slice/searchArticlePublicLeftSlice";
 import { searchArticleRightGet } from "../store/Slice/searchArticlePublicRightSlice";
 import { clearCurrentPage } from "../store/Slice/userSlice";
+import Applications from "./applications/Applications";
 
 export default function Add({ user, onPageChange, handleReturn }) {
   const dispatch = useDispatch();
@@ -65,6 +66,7 @@ export default function Add({ user, onPageChange, handleReturn }) {
           element={<AddArticles user={user} article={article} />}
         />
         <Route path="add-a-company" element={<AddCompany />} />
+        <Route path="add-a-applications" element={<Applications />} />
       </Routes>
     </div>
   );
