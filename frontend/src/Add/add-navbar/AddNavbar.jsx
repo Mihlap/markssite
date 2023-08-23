@@ -6,14 +6,16 @@ import icon1 from './icon/one.png';
 import icon2 from "./icon/three.png";
 import icon3 from "./icon/four.png";
 import icon4 from "./icon/two.png";
-import { useDispatch, useSelector } from "react-redux";
-import { toggleNavbarFooter } from "../../store/Slice/userSlice";
+import { useDispatch } from "react-redux";
+import { logoutUser } from "../../store/Slice/authSlice";
+import { resetCurrentPage } from "../../store/Slice/userSlice";
 
 export default function AddNavbar({ user, handleReturn }) {
   const dispatch = useDispatch();
   const [selectedItem, setSelectedItem] = useState(null);
   const serverHost = process.env.REACT_APP_SERVER_HOST;
   const navigate = useNavigate();
+  // console.log(user);
 
   useEffect(() => {
     const storedSelectedItem = localStorage.getItem("selectedItem");
@@ -31,14 +33,9 @@ export default function AddNavbar({ user, handleReturn }) {
 
   const logouthandler = async () => {
     try {
-      const response = await axios.get(`${serverHost}/api/auth/logout`, {
-        withCredentials: true,
-      }); // Убедитесь, что вы отправляете запрос с куками
-
-      if (response.status === 200) {
-        navigate("/"); // Перенаправьте пользователя на страницу входа
-        window.location.reload();
-      }
+      dispatch(logoutUser());
+      dispatch(resetCurrentPage()); // Сбрасываем currentPage
+      navigate("/"); // Перенаправьте пользователя на страницу входа
     } catch (error) {
       console.error("Ошибка при выходе из системы", error);
     }
@@ -182,6 +179,25 @@ export default function AddNavbar({ user, handleReturn }) {
                 >
                   О компании
                 </Link>
+              </li>
+              {user?.name === "obezyankaa" ? (
+                <Link
+                  className={`${styles.add_navbar_container__item} ${
+                    selectedItem === "add-a-applications" ? styles.active : ""
+                  }`}
+                  to="./add-a-applications"
+                  onClick={(event) =>
+                    handleItemClick(
+                      event,
+                      "add-a-applications",
+                      "./add-a-applications"
+                    )
+                  }
+                >
+                  Заявки
+                </Link>
+              ) : null}
+              <li>
               </li>
             </ul>
           </div>
