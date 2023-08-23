@@ -7,6 +7,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
 import AllArticlesButton from "../UI/ButtonsArticles/AllArticlesButton";
 import ArticleCardSlider from "../UI/ArticleCardSlider.jsx/ArticleCardSlider";
+import SliderContainerArticleCard from "../UI/Project&ArticleCardSlider/SlideContainerArticleCard";
 import { getFetchFormArticle } from "../store/Slice/articleSlice";
 import {
   handleScroll,
@@ -21,7 +22,6 @@ import styles from "./ArticleCard.module.css";
 
 import next from ".././icons/next.svg";
 import previous from ".././icons/previous.svg";
-import SliderContainerProjectCard from "../UI/ProjectCardSlider/SliderContainerProjectCard";
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
@@ -254,12 +254,7 @@ const ArticleCard = () => {
                 <div className={styles.author_name}>{article.author}</div>
                 <div className={styles.text_author}>Автор статьи</div>
               </div>
-              {/* <div className={styles.title_block_mobile}>
-                 </div>
-                <div className={styles.title_text_mobile}>
-                  {article.descriptionProject}
-                </div> */}
-            </div>
+             </div>
           </div>
           <div className={styles.blockImg}>
             <div className={styles.container}>
@@ -416,7 +411,7 @@ const ArticleCard = () => {
               const encodedFileName = encodeURIComponent(imagePathsForArticle[0]);
               const firstImagePath = `${Host}/images/imageArticle/${encodedFileName}`;
                 
-                 console.log(firstImagePath, "))))))))))))))))))))))))))");
+                //  console.log(firstImagePath, "))))))))))))))))))))))))))");
             return (
               <SwiperSlide
                 key={article.id}
@@ -468,7 +463,7 @@ const ArticleCard = () => {
         </Swiper>
       </div>
       <div className={styles.article_container_articleCard_sliderMobile}>
-        <SliderContainerProjectCard articles={articles} />
+        <SliderContainerArticleCard articles={articles} />
       </div>
       {" "}
     </div>

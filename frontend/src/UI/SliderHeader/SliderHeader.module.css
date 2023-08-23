@@ -11,9 +11,14 @@
   display: block;
   padding-top: 0rem;
 }
-.item_mobile img {
+.item_mobile {
   padding-left: 2.75rem;
-  height: 35px;
+  height: 100%;
+  width: 100%;
+}
+
+.item_mobile_img {
+  height: 26px;
 }
 
 /* Стили для планшетной версии сайта блока SliderHeader начинаются тут */
@@ -23,13 +28,17 @@
     padding-left: 3rem;
   }
 
-  .item_mobile img {
+   .item_mobile {
     padding-left: 2.81rem;
+    height: 100%;
+    width: 100%;
+  }
+  
+  .item_mobile_img {
     height: 26px;
   }
 
   .icon_partner_phone {
-    padding-top: 40px;
     display: block;
   }
 
@@ -46,14 +55,18 @@
     height: 30px;
   }
 
-  .item_mobile img {
+  .item_mobile {
     padding-left: 10vw;
+    height: 100%;
+    width: 100%;
+  }
+  
+  .item_mobile_img {
     height: 26px;
   }
 
   .icon_partner_phone {
-    padding-top: 40px;
-    display: block;
+     display: block;
   }
 
   .logo {
