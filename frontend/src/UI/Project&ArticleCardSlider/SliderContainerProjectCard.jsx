@@ -6,7 +6,7 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 import SliderItemProject from "../../Header/Swiper-project/SliderItemProject";
-import "../ProjectCardSlider/SliderContainerProjectCard.css";
+import "./SliderContainerProjectCard.css";
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 

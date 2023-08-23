@@ -21,7 +21,7 @@ import LoadingCircle from "../Loading/LoadingCircle";
 import Error from "../Loading/Error/Error";
 import { getZaprosData } from "../store/Slice/searchProjectMainSlice";
 import { searchArticleLeftGet } from "../store/Slice/searchArticlePublicLeftSlice";
-import { resizeImage } from '../Project/utils'; 
+import { resizeImage } from "../Project/utils";
 import img123 from "./img/Главная.png";
 
 import photoTest from "./img/project_right3.jpg";
@@ -409,17 +409,6 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
         <BlockHeader />
         {/* <Mapbox3D /> */}
       </div>
-      {/* <div className={styles.icon_partner}>
-        <img src="./assets/D1.png" alt="logo" />
-        <img src="./assets/D2.png" alt="logo" />
-        <img src="./assets/D3.png" alt="logo" />
-        <img src="./assets/D4.png" alt="logo" />
-        <img src="./assets/D5.png" alt="logo" />
-        <img src="./assets/D6.png" alt="logo" />
-        <img src="./assets/D7.png" alt="logo" />
-        <img src="./assets/D8.png" alt="logo" />
-        <img src="./assets/D9.png" alt="logo" />
-      </div> */}
       <div className={styles.sliderMobile_container}>
         <SliderMobile />
       </div>
@@ -439,14 +428,29 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
           direction="horizontal"
           loop={false}
           breakpoints={{
+            2500: {
+              slidesPerView: 4.7,
+            },
             2000: {
-              slidesPerView: 4.1,
+              slidesPerView: 4.2,
+            },
+            1750: {
+              slidesPerView: 3.5,
             },
             1440: {
-              slidesPerView: 3.2,
+              slidesPerView: 2.7,
+            },
+            1300: {
+              slidesPerView: 2.7,
+            },
+            1200: {
+              slidesPerView: 2.5,
             },
             1024: {
               slidesPerView: 2.3,
+            },
+            900: {
+              slidesPerView: 2.1,
             },
             700: {
               slidesPerView: 2.1,
@@ -454,7 +458,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
           }}
         >
           {MapProject?.map((project, index) => {
-            const isCustomSize = project.hasCustomSize;
+            // const isCustomSize = project.hasCustomSize;
 
             // const { width, height } = resizeImage(
             //   project.style?.split(",")[0],
@@ -466,8 +470,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
                 key={project.id}
                 onScroll={handleScroll}
                 id="slider_container_item_card"
-                className={`{styles.slider_container_item_card}
-                ${isCustomSize ? styles.customSize : ""}`}
+                className={styles.slider_container_item_card}
                 style={index % 2 === 1 ? { paddingTop: "10rem" } : {}}
               >
                 <Link to={`/projects/${project.id}`} key={project.id}>
@@ -490,100 +493,116 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
                       }
                     />
                   </div>
-                  <div className={styles.title_selectCompetencies}>
-                    <div className={styles.container__title}>
-                      {project.title}
+                  <div
+                    className={
+                      styles.wrapper_container_title_selectCompetencies
+                    }
+                  >
+                    <div
+                      className={styles.container_wrapper_title_city_data_block}
+                    >
+                      <div className={styles.container__title}>
+                        {project.title}
+                      </div>
+                      <div className={styles.countryCity_monthYear}>
+                        <div className={styles.container__countryCity}>
+                          {project.countryCity}
+                        </div>
+                        <div className={styles.project__address__svg}>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="2"
+                            height="2"
+                            viewBox="0 0 2 2"
+                            fill="none"
+                          >
+                            <circle cx="1" cy="1" r="1" fill="#959DA6" />
+                          </svg>{" "}
+                        </div>
+                        <div className={styles.container__monthYear}>
+                          {project.monthYear}
+                        </div>
+                      </div>
                     </div>
-                    <div className={styles.container__selectCompetencies}>
-                      {(() => {
-                        try {
-                          const selectCompetencies = JSON.parse(
-                            project.selectCompetencies
-                          );
-                          return selectCompetencies.map((competency) => (
-                            <div
-                              key={competency.value}
-                              className={styles.div_el_selectCompetencies}
-                              style={{
-                                color: colors[competency.value],
-                                borderColor: colors[competency.value],
-                                border: "1px solid",
-                                padding: "3px 6px",
-                                borderRadius: "34px",
-                              }}
-                            >
-                              {competency.label}
-                            </div>
-                          ));
-                        } catch (error) {
-                          if (typeof project.selectCompetencies === "string") {
-                            // Если строка с одним значением и без запятых
-                            if (!project.selectCompetencies.includes(",")) {
-                              const label = project.selectCompetencies.trim();
-                              return (
-                                <div
-                                  key={label}
-                                  className={styles.div_el_selectCompetencies}
-                                  style={{
-                                    color: colors[label],
-                                    borderColor: colors[label],
-                                    border: "1px solid",
-                                    padding: "3px 6px",
-                                    borderRadius: "34px",
-                                  }}
-                                >
-                                  {label}
-                                </div>
-                              );
+                    <div
+                      className={styles.wrapper_container__selectCompetencies}
+                    >
+                      <div className={styles.container__selectCompetencies}>
+                        {(() => {
+                          try {
+                            const selectCompetencies = JSON.parse(
+                              project.selectCompetencies
+                            );
+                            return selectCompetencies.map((competency) => (
+                              <div
+                                key={competency.value}
+                                className={styles.div_el_selectCompetencies}
+                                style={{
+                                  color: colors[competency.value],
+                                  borderColor: colors[competency.value],
+                                  border: "1px solid",
+                                  padding: "3px 6px",
+                                  borderRadius: "34px",
+                                }}
+                              >
+                                {competency.label}
+                              </div>
+                            ));
+                          } catch (error) {
+                            if (
+                              typeof project.selectCompetencies === "string"
+                            ) {
+                              // Если строка с одним значением и без запятых
+                              if (!project.selectCompetencies.includes(",")) {
+                                const label = project.selectCompetencies.trim();
+                                return (
+                                  <div
+                                    key={label}
+                                    className={styles.div_el_selectCompetencies}
+                                    style={{
+                                      color: colors[label],
+                                      borderColor: colors[label],
+                                      border: "1px solid",
+                                      padding: "3px 6px",
+                                      borderRadius: "34px",
+                                    }}
+                                  >
+                                    {label}
+                                  </div>
+                                );
+                              }
+                              // Строка с несколькими значениями, разделенными запятыми
+                              else if (
+                                project.selectCompetencies.includes(",")
+                              ) {
+                                return project.selectCompetencies
+                                  .split(",")
+                                  .map((value) => {
+                                    const label = value.trim();
+                                    return (
+                                      <div
+                                        key={value}
+                                        className={
+                                          styles.div_el_selectCompetencies
+                                        }
+                                        style={{
+                                          color: colors[value],
+                                          borderColor: colors[value],
+                                          border: "1px solid",
+                                          padding: "3px 6px",
+                                          borderRadius: "34px",
+                                        }}
+                                      >
+                                        {label}
+                                      </div>
+                                    );
+                                  });
+                              }
                             }
-                            // Строка с несколькими значениями, разделенными запятыми
-                            else if (project.selectCompetencies.includes(",")) {
-                              return project.selectCompetencies
-                                .split(",")
-                                .map((value) => {
-                                  const label = value.trim();
-                                  return (
-                                    <div
-                                      key={value}
-                                      className={
-                                        styles.div_el_selectCompetencies
-                                      }
-                                      style={{
-                                        color: colors[value],
-                                        borderColor: colors[value],
-                                        border: "1px solid",
-                                        padding: "3px 6px",
-                                        borderRadius: "34px",
-                                      }}
-                                    >
-                                      {label}
-                                    </div>
-                                  );
-                                });
-                            }
+                            return null;
                           }
-                          return null;
-                        }
-                      })()}
-                    </div>
-                  </div>
-                  <div className={styles.countryCity_monthYear}>
-                    <div className={styles.container__countryCity}>
-                      {project.countryCity}
-                    </div>
-                    <div className={styles.project__address__svg}>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="2"
-                        height="2"
-                        viewBox="0 0 2 2"
-                        fill="none"
-                      >
-                        <circle cx="1" cy="1" r="1" fill="#959DA6" />
-                      </svg>{" "}
-                    </div>
-                    <div className={styles.container__monthYear}>
-                      {project.monthYear}
+                        })()}
+                      </div>
                     </div>
                   </div>
                 </Link>
@@ -592,7 +611,6 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
           })}
         </Swiper>
       </div>
-      <div id="preFooter"></div>
     </main>
   );
 }

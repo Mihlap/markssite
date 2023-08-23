@@ -105,7 +105,7 @@
 
 .title_block_mobile,
 .title_text_mobile,
-.project_container_projectCard_sliderMobile {
+.article_container_articleCard_sliderMobile {
   display: none;
 }
 
@@ -191,6 +191,9 @@
   height: 100%;
   padding-left: 1.75rem;
 }
+.item {
+  border-radius: 1.11vw;
+}
 
 .item:not(:last-child) {
   padding-bottom: 2.5rem;
@@ -224,8 +227,6 @@
   font-weight: var(--fw-300);
   font-size: 1.67vw;
   line-height: 2.22vw;
-  /* padding-right: 22.19vw;
-  padding-left: 16.44vw; */
 }
 
 .description_object_text1 {
@@ -239,8 +240,6 @@
   word-wrap: break-word;
   overflow-wrap: break-word;
   hyphens: auto;
-  /* padding-right: 22.19rem;
-  padding-left: 16.44rem; */
   word-break: break-all;
 }
 
@@ -384,7 +383,7 @@
   line-height: 1.25rem;
   color: var(--black-1D2E43);
   font-variant-numeric: lining-nums proportional-nums;
-  flex: 2; /* 20% width */
+  flex: 2; 
   text-align: right;
 }
 
@@ -418,8 +417,7 @@
   padding-right: 1.87rem;
   padding-left: 1.87rem;
   padding-bottom: 5.38rem;
-  /* overflow: hidden; */
-}
+ }
 
 .slider_card_container_article_articleCard {
   display: flex;
@@ -437,7 +435,6 @@
 
 .wrapper_container_item_card_articleCard {
   width: 100%;
-  /* min-height: 26rem;            */
   border-radius: 1rem;
   gap: 1.88rem;
   overflow: hidden;
@@ -455,7 +452,7 @@
 .container__imageTitle_articleCard {
   display: flex;
    width: 100%;
-   min-height: max-content;
+   height: fit-content;
    border-radius: 1rem;
   object-position: center;
   transition: transform 0.5s ease-in-out;
@@ -573,17 +570,96 @@
     max-width: 100%;
     width: 40vw;
   }
+
+  .container__imageTitle_articleCard {
+    display: flex;
+     width: 100%;
+     height: auto;
+     min-height: 100%;
+     border-radius: 1rem;
+    object-position: center;
+    transition: transform 0.5s ease-in-out;
+   }
   
   
  }
 
 /* Стили для мобильной версии сайта блока ArticleCard начинаются тут */
 @media screen and (max-width: 767px) {
+  
 
   .share_article,
-  .social_links_articleCard {
+  .social_links_articleCard,
+  .cart_article__author__block__card,
+  .cart_article__address__block__card,
+  .cart_article__address__svg__block__card,
+  .header_content_right,
+  .main_article_articleCard {
     display: none;
    }
+
+   .all_button_div {
+    top: 7%;
+    left: 1rem;
+   }
+
+   .cart_article__block__card {
+    padding-top: 13vh;
+    padding-left: 1rem;
+    padding-right: 1rem;
+   }
+  
+
+   .cart_article_title__block__card {
+    font-size: 1.5rem;
+    line-height: 2rem;
+    padding-top: 0rem;
+  }
+
+  .header_content {
+   padding-bottom: 0rem;
+  }
+
+  .header_content_left {
+    max-width: 100%;
+    padding-right: 1rem;
+    padding-left: 1rem;
+   }
+
+   .left_title {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+   }
+
+   .title_text {
+    padding-top: 1rem;
+    padding-bottom: 2rem;
+   }
+
+   .blockImg {
+    width: 100%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .item:not(:last-child) {
+    padding-bottom: 3.5rem;
+  }
+
+   .quote_container,
+.description_object_container {
+  padding-left: 0rem;
+  padding-right: 0rem;
+}
+
+.description_object_block {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 0rem 0rem 0rem 0rem;
+}
+
+
    .button_article_articleCard {
     display: flex;
     padding-right: 0rem;
@@ -631,8 +707,11 @@
     width: 100%;
   }
 
-  .main_article_articleCard {
-    display: none;
+  .article_name_text {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-top: 2.5rem;
+    padding-bottom: 0rem;
   }
 
   .article_container_articleCard_sliderMobile {
