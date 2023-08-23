@@ -9,6 +9,7 @@
     flex-direction: column;
     flex-shrink: 0;
     cursor: grab;
+    
 }
 
 .slider_item_content {
@@ -17,6 +18,8 @@
     flex-direction: column;
     justify-content: center;
     transition: 0.4s;
+    word-wrap: break-word;
+    white-space: normal;
 }
 
 .slider_image_wrapper {
@@ -59,7 +62,7 @@
     line-height: 20px;
     font-feature-settings: 'pnum' on, 'lnum' on;
     color: var(--black-1D2E43);
-
+    
     @media screen and (max-width: 520px) {
         & {
             font-size: 14px;

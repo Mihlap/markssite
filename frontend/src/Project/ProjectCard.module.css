@@ -94,21 +94,11 @@
 
 .header_content_left {
   width: 60%;
-  /* overflow: hidden; */
   padding-right: 8rem;
   padding-left: 14.75vw;
   white-space: normal;
 }
 
-.header_content_left_custom {
-  /* padding-right: 10rem; */
-}
-
-.title_block {
-  /* display: flex;
-  align-items: center;
-  justify-content: center; */
-}
 
 .title_block_mobile,
 .title_text_mobile,
@@ -244,22 +234,21 @@
   width: 100%;
   height: 100%;
 }
-
 .item:not(:last-child) {
   padding-bottom: 3.75rem;
 }
 
 .item_img {
   width: 100%;
-  border-radius: 1.11vw;
+  border-radius: 1rem;
   padding-right: 1.69rem;
   padding-left: 1.69rem;
-}
+  object-position: center;
+ }
 
 .item_img_latest {
   border-radius: 1.11vw 1.11vw 0vw 0vw;
 }
-
 
 .item_photo_together {
   display: flex;
@@ -347,6 +336,7 @@
 }
 
 .button_project_link_projectCard1 {
+  display: flex;
   border: none;
   color: var(--white-F6F6F6);
   font-size: 1.4vh;
@@ -354,14 +344,16 @@
   font-family: 'Raleway';
   font-style: normal;
   font-weight: 400;
-  line-height: 20px;
-  padding: 3rem 1.69rem;
+  line-height: 1.25rem;
+  padding: 1.8rem 1.69rem;
+  align-items: center;
   word-wrap: break-word;
   overflow-wrap: break-word;
   hyphens: auto;
   word-break: break-all;
   background: var(--light-light-gray-EBECEE);
   width: 78%;
+  
 }
 .button_project_link_projectCard2 {
   display: flex;
@@ -373,8 +365,9 @@
   font-family: 'Raleway';
   font-style: normal;
   font-weight: 400;
-  line-height: 20px;
-  padding: 3rem 1.69rem;
+  line-height: 1.25rem;
+  padding: 1.8rem 1.69rem;
+  align-items: center;
   word-wrap: break-word;
   overflow-wrap: break-word;
   hyphens: auto;
@@ -414,6 +407,8 @@
   color: var(--black-1D2E43);
   font-variant-numeric: lining-nums proportional-nums;
   flex: 2; /* 20% width */
+  text-align: right;
+ 
 }
 
 
@@ -426,6 +421,7 @@
   background-color: var(--salmon-FF7F6A);
   fill: var(--salmon-FF7F6A);
 }
+/* ___________________________________________ */
 
 .social_links_projectCard {
   display: flex;
@@ -455,77 +451,98 @@
   font-style: normal;
   font-weight: var(--fw-300);
   line-height: 2.5rem;
+  padding-top: 5rem;
   padding-bottom: 2rem;
-  padding-left: 14.75vw;
+  padding-left: 1.69rem;
 }
 
 .main_project_projectCard {
   position: relative;
   width: 100%;
   height: 100%;
-  padding-right: 1.75vw;
-  padding-left: 1.75vw;
+  /* padding-right: 1.69rem; */
+  padding-left: 1.69rem;
+  padding-right: 1.69rem;
   padding-bottom: 5.66rem;
   overflow: hidden;
 }
 
 .slider_card_container_project_projectCard {
   display: flex;
-  overflow-x: hidden;
-  width: 100%;
+  /* overflow-x: hidden; */
+  /* width: 100%; */
   height: 100%;
+  min-height: 24rem;
  }
 
 
 .slider_container_item_card_projectCard {
   display: flex;
-  min-width: 24rem;
+  /* min-width: 24rem; */
   width: 100%;
-  min-height: 24rem;
+  /* min-height: 24rem; */
   height: 100%;
-}
+ }
 
 
 .wrapper_container_item_card_projectCard {
   display: flex;
-  min-width: 24rem;
+  min-width: 24rem;           
   width: 100%;
   max-height: 24rem;
   height: 100%;
-  padding-right: 1rem;
+  /* padding-right: 1rem; */
   border-radius: 1rem;
   gap: 1.88rem;
+  overflow: hidden;
+  transition: transform 0.5s ease-in-out;
+  cursor: pointer;
+  transition: filter 0.5s ease;
 }
 
 .wrapper_container_item_card_projectCard,
 .container__imageTitle_projectCard {
-  /* width: 100%;
-  height: 100%;
-  max-height: 24rem; */
+  border-radius: 1rem;
+  cursor: pointer;
+  transition: transform 0.5s ease-in-out;
+}
+
+.wrapper_container_item_card_projectCard:hover {
+  justify-content: center;
+  align-items: center;
+  border-radius: 1rem;
+  transform-origin: center;
+  transform: scale(0.98);
+  transition: transform 0.5s ease-in-out;
+  filter: brightness(50%);
+ }
+
+ .wrapper_container_item_card_projectCard:hover .container__imageTitle_projectCard {
+  transform: scale(1.2);
   border-radius: 1rem;
   cursor: pointer;
 }
 
+
 .container__imageTitle_projectCard {
    width: 100%;
    height: 100%;
+   min-height: 24rem;
    object-fit: cover;
    object-position: center;
+   transition: transform 0.5s ease-in-out;
 }
 
-
-
-.title_selectCompetencies_projectCard {
+.wrapper_container_title_selectCompetencies_projectCard {
   display: flex;
-  flex-direction: row;
   width: 100%;
   padding-top: 1rem;
 }
 
 .container__title_projectCard {
-  /* display: flex;
+  display: flex;
   flex-wrap: wrap;
-  word-break: break-all; */
+  word-break: break-all;
   color: var(--black-1D2E43);
   font-family: var(--font-raleway);
   font-size: 0.875rem;
@@ -533,32 +550,6 @@
   font-weight: var(--fw-700);
   line-height: 1.125rem;
   width: 100%;
-}
-
-.container__selectCompetencies_projectCard {
-  display: flex;
-  background: var(--white-F6F6F6);
-  justify-content: flex-end;
-  flex-direction: row;
-  flex-wrap: wrap;
-  grid-row-gap: 8px;
-  padding-left: 1rem;
-  font-family: var(--font-raleway);
-  font-size: 9px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: normal;
-  width: 100%;
-  max-width: 40%;
-}
-
-.div_el_selectCompetencies_projectCard {
-  display: flex;
-  max-width: min-content;
-  margin-right: 6px;
-  border: 1px solid;
-  padding: 3px 6px;
-  border-radius: 34px;
 }
 
 .countryCity_monthYear_projectCard {
@@ -586,13 +577,42 @@
 
 .container__monthYear_projectCard {
   color: var(--unnamed, #A7A7A7);
-  text-align: right;
+  /* text-align: right; */
   font-family: var(--font-raleway);
   font-size: 0.625rem;
   font-style: normal;
   font-weight: var(--fw-400);
   line-height: normal;
 }
+
+.wrapper_container__selectCompetencies_projectCard {
+  display: flex;
+  justify-content: flex-end;
+  width: 50%;
+}
+
+.container__selectCompetencies_projectCard {
+  display: block;
+  /* justify-content: flex-end; */
+  background: var(--white-F6F6F6);
+  flex-wrap: wrap;
+  padding-left: 2rem;
+  font-family: var(--font-raleway);
+  font-size: 9px;
+  font-style: normal;
+  font-weight: var(--fw-500);
+  line-height: normal;
+}
+
+.div_el_selectCompetencies_projectCard {
+  display: inline-flex;
+  width: fit-content;
+  margin-right: 6px; 
+  margin-bottom: 6px;
+ 
+}
+
+
 
 /* Стили для desctop версии +1 сайта блока ProjectCard начинаются тут */
 
@@ -720,15 +740,7 @@
     padding-bottom: 0rem;
   }
 
-  .container__imageTitle_projectCard {
-    max-width: 100%;
-    width: auto;
-    height: auto;
-    object-position: center;
-  }
-
-
-  /* << =============== правый блок контента с информацией =============== >> */
+   /* << =============== правый блок контента с информацией =============== >> */
 
   .header_content_right {
     width: 100%;
@@ -802,8 +814,9 @@
     margin: 0rem 0rem;
   }
 
-  .button_project_link_projectCard {
-    padding: 3rem 1rem;
+  .button_project_link_projectCard1,
+  .button_project_link_projectCard2 {
+    padding: 1.8rem 1rem;
   }
 
   .previous_svg_projectCard,
@@ -1095,15 +1108,11 @@
     padding: 0rem 1rem 0rem 1rem;
   }
 
-  .button_project_projectCard {
+   .button_project_projectCard {
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin: 0rem 0rem;
-  }
-
-  .button_project_link_projectCard {
-    padding: 2rem 1rem;
+    padding-right: 0rem;
+    padding-left: 0rem;
+    width: 100%;
   }
 
   .previous_svg_projectCard,
@@ -1111,6 +1120,31 @@
     width: 100%;
   }
 
+  .button_project_link_projectCard1,
+  .button_project_link_projectCard2 {
+    width: 50%;
+  }
+  
+  .previous_svg_projectCard,
+  .next_svg_projectCard {
+    display: flex;
+    border: none;
+    align-items: center;
+    height: 0vh;
+  }
+  
+  .previous__span_projectCard {
+    display: flex;
+    justify-content: flex-start;
+    padding-left: 0.7vw;
+    font-family: var(--font-raleway);
+    font-weight: var(--fw-400);
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    color: var(--black-1D2E43);
+    font-variant-numeric: lining-nums proportional-nums;
+   }
+  
     .previous__span_projectCard {
       color: var(--black-1D2E43);
       font-variant-numeric: lining-nums proportional-nums;
@@ -1119,7 +1153,7 @@
       font-style: normal;
       font-weight: var(--fw-400);
       line-height: 1rem;
-      padding-left: 0.37rem;
+      padding-left: 0.87rem;
       max-width: 100%;
       width: 100%;
     }
@@ -1133,7 +1167,7 @@
       font-weight: var(--fw-400);
       line-height: 1rem;
       justify-content: flex-end;
-      padding-right: 0.37rem;
+      padding-right: 0.87rem;
       max-width: 100%;
       width: 100%;
     }
