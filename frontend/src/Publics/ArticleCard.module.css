@@ -202,8 +202,9 @@
 .item_img {
   width: 100%;
   height: 100%;
-  max-height: 50rem;
+  max-height: 50vw;
   border-radius: 1.11vw;
+  object-position: center;
  }
 
 .item_img_latest {
@@ -451,12 +452,12 @@
 
 .container__imageTitle_articleCard {
   display: flex;
-   width: 100%;
-   height: fit-content;
-   border-radius: 1rem;
+  width: 100%;
+  height: fit-content;
+  border-radius: 1rem;
   object-position: center;
   transition: transform 0.5s ease-in-out;
- }
+}
 
  .wrapper_container_item_card_articleCard:hover {
   justify-content: center;
