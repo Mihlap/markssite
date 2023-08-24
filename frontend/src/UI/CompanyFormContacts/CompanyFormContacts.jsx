@@ -85,6 +85,17 @@ const CompanyFormContacts = () => {
     }
   }
 
+  function handleSubmit(event) {
+    // event.preventDefault(); 
+    
+    console.log("Данные формы:", {
+      name: value1,
+      phone: value2,
+      task: value3,
+      consentGiven: isConsentGiven,
+    });
+  }
+
   
   return (
     <div className={styles.form_left_wrapper}>
@@ -95,7 +106,7 @@ const CompanyFormContacts = () => {
           Мы будем рады ответить на все интересующие вас
           вопросы..........................
         </span>
-        <form className={styles.form_form_wrapper}>
+        <form className={styles.form_form_wrapper} onSubmit={handleSubmit}>
           <div className={`${styles.group} some-unique-class`}>
             <label
               className={`${styles.label1} ${
@@ -177,7 +188,7 @@ const CompanyFormContacts = () => {
               <a href="./Information">&nbsp;персональных данных</a>
             </label>
           </div>
-          <button className={styles.button_hover} disabled={!isConsentGiven || !value2 || !isValid || !isMatching}>
+          <button  type="submit" className={styles.button_hover} disabled={!isConsentGiven || !value2 || !isValid || !isMatching}>
             <p className={styles.button_name}>Отправить</p>
           </button>
         </form>

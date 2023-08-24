@@ -4,19 +4,24 @@ import gsap from "gsap";
 import { Link } from "react-router-dom";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
-import AllProjectsButton from "../../UI/ButtonsProjects/AllProjectsButton";
+import AllProjectsButton from "../../../UI/ButtonsProjects/AllProjectsButton";
 // import PreviousNextButton from "../../UI/ButtonsProjects/PreviousNextButton";
 
+
 // импортируем фото
-import img from "./img/Slava.jpg";
-import img1 from "./img/Slava2.jpg";
-import img2 from "./img/Slava3.jpg";
-import img3 from "./img/Slava4.jpg";
+import img from "./img/Hotel_appart.jpg";
+import img1 from "./img/Hotel_appart1.jpg";
+import img2 from "./img/Hotel_appart2.jpg";
+import img3 from "./img/Hotel_appart3.jpg";
+import img4 from "./img/Hotel_appart4.jpg";
+import img5 from "./img/Hotel_appart5.jpg";
+import img6 from "./img/Hotel_appart6.jpg";
 import next from "../../icons/next.svg";
 import previous from "../../icons/previous.svg";
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
-export default function Slava() {
+
+export default function HotelAppart() {
  const refs = {
    title: useRef(null),
    link: useRef(null),
@@ -28,6 +33,7 @@ export default function Slava() {
    leftImg1: useRef(null),
    leftImg2: useRef(null),
    leftImg3: useRef(null),
+   leftImg4: useRef(null),
  };
 
  useEffect(() => {
@@ -51,6 +57,7 @@ export default function Slava() {
      leftImg1,
      leftImg2,
      leftImg3,
+     leftImg4,
    } = refs;
 
    const elementsRight = [
@@ -61,7 +68,7 @@ export default function Slava() {
      leftImg1.current,
      leftImg2.current,
      leftImg3.current,
-    
+     leftImg4.current,
    ];
 
    const animateElement = (element) => {
@@ -73,7 +80,7 @@ export default function Slava() {
        ease: "power4.out",
        scrollTrigger: {
          trigger: element,
-        },
+         },
      });
      gsap.from(element, { duration: 1, clipPath: { start: "110%" } })
    };
@@ -89,42 +96,41 @@ export default function Slava() {
           <div className={styles.header_img_title}>
             <AllProjectsButton />
             <h1 ref={refs.title} className={styles.header_title}>
-              МФК Комплекс апартаментов «Slava»
+              Гостиничный комплекс с апартаментами
             </h1>
             <div ref={refs.desc} className={styles.header_desc}>
-              Россия, Москва, р-н Беговой &#8226; 2020
+              г. Москва, наб. Космодамианская &#8226; Апрель 2021
             </div>
           </div>
           <div className={styles.header_content}>
-            <div
-              ref={refs.blockLeft}
-              className={`${styles.header_content_left} ${styles.header_content_left_custom}`}
-            >
+            <div ref={refs.blockLeft} className={styles.header_content_left}>
               <div className={styles.title_block}>
-                <h2 className={styles.left_title}>МФК на сложном рельефе</h2>
-                <div className={styles.left_meta}>
-                  Генеральное проектирование
+                <div className={styles.left_title}>
+                  Сохранение градоформирующего облика среды
+                  <div
+                    className={`${styles.left_meta} ${styles.left_meta_castom}`}
+                  >
+                    Генеральное проектирование
+                  </div>
                 </div>
               </div>
               <div className={styles.title_text}>
-                Участок многофункционального комплекса расположен в САО г.
-                Москвы в районе «Беговой», на территории Второго часового завода
-                «Слава». Рельеф со стороны 1-ой улицы Ямского поля – спокойный,
-                идущий на повышение в сторону существующей застройки, перепад
-                рельефа составляет около 3,5 м.
+                Проектом предусматривается строительство гостиничного комплекса
+                с апартаментами и подземной автостоянкой при условии сохранения
+                градоформирующего облика существующей застройки.
               </div>
 
               <div className={styles.result_container}>
                 <div className={styles.result_block}>
-                  <div className={styles.result_number}>1,218 га</div>
-                  <div className={styles.result_text}>Общая площадь</div>
+                  <div className={styles.result_number}>10 653,41 м²</div>
+                  <div className={styles.result_text}>Общая площадь здания</div>
                 </div>
                 <div className={styles.result_block}>
-                  <div className={styles.result_number}>4394,7 м²</div>
-                  <div className={styles.result_text}>Площадь застройки</div>
+                  <div className={styles.result_number}>2 359 м²</div>
+                  <div className={styles.result_text}>Площадь участка</div>
                 </div>
                 <div className={styles.result_block}>
-                  <div className={styles.result_number}>8 — 17</div>
+                  <div className={styles.result_number}>9</div>
                   <div className={styles.result_text}>Этажность</div>
                 </div>
               </div>
@@ -135,23 +141,22 @@ export default function Slava() {
                   <div>
                     <div className={styles.local_title}>Расположение</div>
                     <div className={styles.local_text}>
-                      Москва, Ленинградский пр-т 8
+                      Наб. Космодамианская, вл 4/22, стр.8, 9 г. Москва
                     </div>
                   </div>
 
                   <div>
                     <div className={styles.local_title}>Заказчик</div>
-                    <div className={styles.local_text}>MR Group</div>
+                    <div className={styles.local_text}>ГАЛС</div>
                   </div>
                   <div>
                     <div className={styles.local_title}>Публикации</div>
                     <Link
-                      to="https://realty.rbc.ru/news/6380ab7d9a79474428aef71a"
+                      to="https://www.interior.ru/architecture/15062-fasadi-ruchnoi-raboti-sovremennaya-arhitektura-v-istoricheskom-kontekste.html"
                       target="_blank"
                     >
                       <div className={styles.local_text}>
-                        РБК Недвижимость &quot;Каким будет квартал SLAVA:
-                        апартаменты с&nbsp;видом на&nbsp;Москву
+                        Статья в «Интерьер+Дизайн» «Фасады «ручной работы»
                       </div>
                     </Link>
                   </div>
@@ -165,7 +170,7 @@ export default function Slava() {
                   </div>
                   <div>
                     <div className={styles.local_title}>Статус</div>
-                    <div className={styles.local_text}>Строительство</div>
+                    <div className={styles.local_text}>Старт продаж</div>
                   </div>
                   <div>
                     <div className={styles.local_title}>Награды</div>
@@ -179,17 +184,15 @@ export default function Slava() {
               className={styles.result_container_phone}
             >
               <div className={styles.result_block}>
-                <div className={styles.result_number}>1,218 га</div>
-                <div className={styles.result_text}>Общая площадь</div>
-              </div>
-              <div
-                className={`${styles.result_block} ${styles.result_number_block}`}
-              >
-                <div className={styles.result_number}>4394,7 м²</div>
-                <div className={styles.result_text}>Площадь застройки</div>
+                <div className={styles.result_number}>10653,41 м²</div>
+                <div className={styles.result_text}>Общая площадь здания</div>
               </div>
               <div className={styles.result_block}>
-                <div className={styles.result_number}>8 — 17</div>
+                <div className={styles.result_number}>2359 м²</div>
+                <div className={styles.result_text}>Площадь участка</div>
+              </div>
+              <div className={styles.result_block}>
+                <div className={styles.result_number}>9</div>
                 <div className={styles.result_text}>Этажность</div>
               </div>
             </div>
@@ -198,13 +201,13 @@ export default function Slava() {
       </div>
       <div className={styles.blockImg}>
         <div className={styles.container}>
-          <div className={styles.item}>
-            <img
-              ref={refs.leftImg1}
-              className={styles.item_img}
-              src={img1}
-              alt=""
-            />
+          <div ref={refs.leftImg1} className={styles.item_photo_together}>
+            <div className={styles.item}>
+              <img className={styles.item_img} src={img1} alt="" />
+            </div>
+            <div className={styles.item}>
+              <img className={styles.item_img} src={img2} alt="" />
+            </div>
           </div>
           <div
             ref={refs.blockDescription}
@@ -212,13 +215,17 @@ export default function Slava() {
           >
             <div className={styles.description_object_block}>
               <div className={styles.description_object_text1}>
-                Назначение – многофункциональный комплекс, содержащий
-                апартаменты, магазины, кафе, офисы, предприятия бытового
-                обслуживания населения, подземный паркинг. МФК состоит из 6
-                секций апартаментов: 4 секции сблокированные и имеют сложную
-                П-образную форму и переменную этажность 8-10-8-15 этажей, 2
-                отдельно стоящие секции высотой 16 и 17 этажей с подземной
-                автостоянкой.
+                В рамках нового строительства планируется реконструкция
+                исторического фасада со стороны Космодамианской набережной с
+                увеличением этажности. В целях воссоздания исторического проекта
+                1901 г. архитектора И. Благовещенского архитектурные решения
+                включают в себя частичное сохранение существующей стены,
+                дополненной фасадными деталями в соответствии с архивной
+                документацией. Гостиничный комплекс с апартаментами представляет
+                собой объем из двух жилых корпусов, объединенных общей подземной
+                частью Г-образной формы. Здание включает в себя два подземных
+                этажа, цокольный этаж, 6 наземных этажей с устройствами
+                светопрозрачной конструкции фонаря.
               </div>
             </div>
           </div>
@@ -226,15 +233,23 @@ export default function Slava() {
             <img
               ref={refs.leftImg2}
               className={styles.item_img}
-              src={img2}
+              src={img3}
               alt=""
             />
           </div>
+          <div ref={refs.leftImg3} className={styles.item_photo_together}>
+            <div className={styles.item}>
+              <img className={styles.item_img} src={img4} alt="" />
+            </div>
+            <div className={styles.item}>
+              <img className={styles.item_img} src={img5} alt="" />
+            </div>
+          </div>
           <div className={styles.item}>
             <img
-              ref={refs.leftImg3}
+              ref={refs.leftImg4}
               className={`${styles.item_img} ${styles.item_img_latest}`}
-              src={img3}
+              src={img6}
               alt=""
             />
           </div>
@@ -242,7 +257,7 @@ export default function Slava() {
       </div>
       <div className={styles.container}>
         <div className={styles.button_project}>
-          <Link className={styles.button_project_link} to="/hotel-appart">
+          <Link className={styles.button_project_link} to="/prime-park">
             <div
               className={`${styles.previous_svg} ${styles.button_project_button}`}
             >
@@ -250,7 +265,7 @@ export default function Slava() {
               <span className={styles.previous_span}>Предыдущий проект</span>
             </div>
           </Link>
-          <Link className={styles.button_project_link} to="/winepark">
+          <Link className={styles.button_project_link} to="/slava">
             <div
               className={`${styles.next_svg} ${styles.button_project_button}`}
             >

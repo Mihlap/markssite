@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwipeCore, { Navigation, Pagination, Autoplay } from "swiper";
@@ -23,6 +23,7 @@ const SwiperContainerProgect = ({ projects }) => {
     Дизайн: "#FAA8BD",
     Инженерия: "#90B734",
   };
+
 
   const handlePageClick = (index) => {
     setCurrentIndex(index);
@@ -132,12 +133,12 @@ const MapProject = NewProject.map((el) =>
             })}
         </div>
       </Swiper>
-      <div className="swiper_pagination">
+      <div className="swiper_pagination_ProjectCard">
         {projects && projects?.map((_, index) => (
             <button
               key={index}
-              className={`swiper_pagination_bullet ${
-                currentIndex === index ? "active" : ""
+              className={`swiper_pagination_bullet_ProjectCard ${
+                currentIndex === index? "active" : ""
               }`}
               onClick={() => handlePageClick(index)}
             />
