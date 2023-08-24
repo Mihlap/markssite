@@ -34,14 +34,14 @@
         padding-left: 0px;
     }
 
-    .swiper_pagination {
+    .swiper_pagination_ProjectCard {
         display: flex;
         justify-content: center;
         margin-top: 1.5rem;
         padding-bottom: 3.5rem;
     }
 
-    .swiper_pagination_bullet {
+    .swiper_pagination_bullet_container {
         width: 20px;
         height: 4px;
         border: 2px solid var(--light-gray-C0C5CB);
@@ -50,7 +50,7 @@
         cursor: pointer;
     }
 
-    .swiper_pagination_bullet.active {
+    .swiper_pagination_bullet_ProjectCard.active {
         width: 4rem;
         border: 2px solid var(--salmon-FF7F6A);
     }

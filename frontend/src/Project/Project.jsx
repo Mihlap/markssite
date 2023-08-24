@@ -3,7 +3,7 @@ import Modal from "react-modal";
 import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Swiper, SwiperSlide } from "swiper/react";
-import styles from "./Project-container.module.scss";
+import styles from "./Project.module.css";
 import {
   setSelectedViewConstruction,
   setSelectedCity,
@@ -94,12 +94,7 @@ export default function Project() {
     dispatch(getFetchFormCityFilter(projectsPerPage, selectedCity));
     dispatch(getFetchFormLocationFilter(projectsPerPage, selectedLocation));
     setLoading(false);
-   }, [dispatch, projectsPerPage]);
-
-  // useEffect(() => {
-  //   setSelectOnCompetencies("Все");
-  // }, []);
-
+  }, [dispatch, projectsPerPage]);
 
   useEffect(() => {
     getUserGeolocation()
@@ -108,7 +103,6 @@ export default function Project() {
         console.error("Ошибка при получении геопозиции:", error)
       );
   }, []);
-
 
   function handleFocus() {
     setIsFocusedProject(true);
@@ -171,7 +165,7 @@ export default function Project() {
       setIsTyping(false);
       setSelectOnCompetencies("Все");
     }
-   };
+  };
 
   const handleButtonCityClick = (countryCity) => {
     if (isTyping) {
@@ -194,6 +188,7 @@ export default function Project() {
     setIsModalProjectOpen(true);
     setValue("");
     setIsTyping(false);
+    setSelectOnCompetencies("");
   };
 
   const handleModalClose = (e, viewConstruction) => {
@@ -204,13 +199,16 @@ export default function Project() {
     setIsTyping(false);
     setIsFocusedProject(false);
     setIsValid(true);
+    setSelectedCity("");
     if (selectOnCompetencies === viewConstruction) {
       setSelectedCity("");
     }
     if (value.trim() === "") {
-      setSelectOnCompetencies("");
+      setSelectOnCompetencies("Все");
     }
-    dispatch(setSelectedViewConstruction(viewConstruction));
+    dispatch(
+      setSelectedViewConstruction(selectOnCompetencies === viewConstruction)
+    );
   };
 
   const currentLocation = userGeolocation
@@ -343,12 +341,16 @@ export default function Project() {
         >
           <div className={styles.button_group_project}>
             {buttonChoose &&
-              buttonChoose?.map((el) => (
+              buttonChoose?.map((el, index) => (
                 <SwiperSlide
                   key={el}
                   onClick={() => handleButtonClick(el)}
                   className={`${styles.menu__button__allProject} ${
-                    el === selectedViewConstruction ? styles.active : ""
+                    !isModalProjectOpen &&
+                    (el === selectedViewConstruction ||
+                      (index === 0 && !selectedViewConstruction))
+                      ? styles.active
+                      : ""
                   }`}
                   style={{ width: "fit-content" }}
                 >
@@ -371,9 +373,13 @@ export default function Project() {
                 }`}
               >
                 <button
-                  className={`${styles.menu__button__allProject}
-                  ${el === selectedViewConstruction ? styles.active : ""}`}
-                  // ${el === selectedViewConstruction || (index === 0 && !selectedViewConstruction) ? styles.active : ""}`}
+                  className={`${styles.menu__button__allProject} ${
+                    !isModalProjectOpen &&
+                    (el === selectedViewConstruction ||
+                      (index === 0 && !selectedViewConstruction))
+                      ? styles.active
+                      : ""
+                  }`}
                   onClick={() => handleButtonClick(el)}
                 >
                   <p className={styles.menu_button_items}>{el}</p>
@@ -579,8 +585,9 @@ export default function Project() {
                   to={`/projects/${project.id}`}
                   className={styles.section_project__block_cart}
                 >
-                  <div className={styles.cart_project}
-                   // style={{
+                  <div
+                    className={styles.cart_project}
+                    // style={{
                     //   height: `${project.style?.split(",")[1]}rem`,
                     //   width: `${project.style?.split(",")[0]}rem`,
                     // }}
@@ -588,7 +595,7 @@ export default function Project() {
                     <div className={styles.cart_project__container}>
                       <img
                         className={styles.cart_project__img}
-                         // style={{
+                        // style={{
                         //   height: `${project.style?.split(",")[1]}rem`,
                         //   width: `${project.style?.split(",")[0]}rem`,
                         //   }}

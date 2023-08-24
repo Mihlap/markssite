@@ -33,12 +33,20 @@ const CompanySubscriptionForm = () => {
   }
 
   function handleSubmit(event) {
-    event.preventDefault();
+    // event.preventDefault();
     const email = event.target.querySelector("#email-input").value;
     const isValid = isValidRegex.test(email);
     setIsValid(isValid);
     setShowError(!isValid);
   }
+
+//   const email = "dddd1@list.com";
+
+// if (isValidRegex.test(email)) {
+//   console.log("Email корректный");
+// } else {
+//   console.log("Email некорректный");
+// }
 
   return (
     <div className={styles.form_right_wrapper}>
@@ -69,7 +77,7 @@ const CompanySubscriptionForm = () => {
                 />
                 <div className={styles.line1}></div>
                 <span className={styles.placeholder}>Ваш Email</span>
-                {/* {!isValid && showError && ( */}
+                {!isValid && showError && (
                 <span
                   className={`${styles.error_line1} ${
                     showError ? "" : styles.hidden
@@ -77,7 +85,7 @@ const CompanySubscriptionForm = () => {
                 >
                   Некорректный Email
                 </span>
-                {/* )} */}
+                )} 
               </label>
             </div>
             <button
