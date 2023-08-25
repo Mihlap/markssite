@@ -33,6 +33,12 @@ const Host = process.env.REACT_APP_SERVER_HOST;
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
+const videoSource = {
+  small: "",
+  medium: "",
+  large: "./assets/PrimePark.mp4",
+};
+
 export default function Header({ user, setNavBarOpen, setShowFooter }) {
   const sliderCardRef = useRef(null);
   const [enableVerticalScroll, setEnableVerticalScroll] = useState(true);
@@ -255,7 +261,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
         </NavLink>
       ) : null}
       <div className={styles.video_block}>
-        <VideoPlayer />
+        <VideoPlayer videoSource={videoSource} />
       </div>
       <div className={styles.header_desctop_block}>
         <h1

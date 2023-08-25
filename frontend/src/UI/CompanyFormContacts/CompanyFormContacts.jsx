@@ -87,7 +87,7 @@ const CompanyFormContacts = () => {
 
   function handleSubmit(event) {
     // event.preventDefault(); 
-    
+    const phone = event.target.querySelector("#phone-input").value;
     console.log("Данные формы:", {
       name: value1,
       phone: value2,
@@ -135,6 +135,7 @@ const CompanyFormContacts = () => {
              className={`${styles.label1} ${isFocused2 ? styles.focused1 : " "}`}
              >
               <InputMask
+               id="phone-input"
                 mask="+7 (999) 999-99-99"
                 maskChar="_"
                 name="phone"
@@ -144,6 +145,7 @@ const CompanyFormContacts = () => {
                 onChange={handleChange}
                 onFocus={handleFocus}
                 className={`${styles.input_tel_form_contacts} ${isFocused2 ? styles.focused : ''}`}
+                style={{ fontVariantNumeric: "lining-nums" }}
               />
               <div className={styles.line}
               style={{backgroundColor: (!value2 && !isFocused2) ? '' : (!value2 && isFocused2) ? '#FF7F6A' : (isValid && isMatching) ? '' : '#E00747'}}
@@ -188,8 +190,15 @@ const CompanyFormContacts = () => {
               <a href="./Information">&nbsp;персональных данных</a>
             </label>
           </div>
-          <button  type="submit" className={styles.button_hover} disabled={!isConsentGiven || !value2 || !isValid || !isMatching}>
-            <p className={styles.button_name}>Отправить</p>
+          <button
+          type="submit"
+          id="submit-button"
+           className={`${styles.button_hover10}
+            ${
+              !isValid || !value2 ? styles.disabled : ""
+            }`}
+           disabled={!value1 || !value2 || !value3}>
+            <p className={styles.button_name1}>Отправить</p>
           </button>
         </form>
       </div>

@@ -15,7 +15,7 @@ const CompanySubscriptionForm = () => {
 
   function handleBlur(event) {
     setIsFocused(true);
-    const email = event.target.value;
+    const email = event?.target?.value;
     const isValid = isValidRegex.test(email);
     if (!email) {
       setIsFocused(false);
@@ -89,7 +89,8 @@ const CompanySubscriptionForm = () => {
               </label>
             </div>
             <button
-              className={`${styles.button_hover11} ${
+              className={`${styles.button_hover11}
+               ${
                 !isValid || !value ? styles.disabled : ""
               }`}
               id="submit-button"
