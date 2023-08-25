@@ -16,7 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   }
   ImageToDescriptionArticles.init({
     image: DataTypes.TEXT,
-    text: DataTypes.STRING,
+    text: DataTypes.TEXT,
     idBlock: DataTypes.INTEGER
   }, {
     sequelize,

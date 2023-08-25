@@ -13,7 +13,7 @@ module.exports = {
         type: Sequelize.TEXT,
       },
       text: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
       },
       idBlock: {
         type: Sequelize.INTEGER,
