@@ -1,43 +1,44 @@
-import React, { useEffect, useRef } from 'react';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { CSSPlugin } from 'gsap/CSSPlugin';
-import './BlockHeader.scss';
+import React, { useEffect, useRef } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { CSSPlugin } from "gsap/CSSPlugin";
+import "./BlockHeader.scss";
 
+import mySvg from '../../Header/img/slider_block_header_icon.svg';
 
 const BlockHeader = () => {
   const accordionsRef = useRef(null);
-  
+
   gsap.registerPlugin(ScrollTrigger, CSSPlugin);
-  
+
   useEffect(() => {
     const isMobileScreen = window.innerWidth < 700;
-    const accordions = document.querySelectorAll('.accordion');
+    const accordions = document.querySelectorAll(".accordion");
     let currentIndex = -1;
 
     if (isMobileScreen) {
       accordions.forEach((accordion, index) => {
-        const text = accordion.querySelector('.text_span');
-        text.classList.add('closed');
-             
+        const text = accordion.querySelector(".text_span");
+        text.classList.add("closed");
+
         gsap.set(text, {
-            maxHeight: 0,
-            overflow: 'hidden',
-            delay: 1,
+          maxHeight: 0,
+          overflow: "hidden",
+          delay: 1,
         });
-     
+
         ScrollTrigger.create({
           trigger: text,
-          start: 'bottom bottom-=15%',
-          end: 'top bottom+=10%',
+          start: "bottom bottom-=15%",
+          end: "top bottom+=10%",
           onUpdate: (self) => {
             if (self.direction === 1 && index > currentIndex) {
               gsap.to(text, {
                 maxHeight: text.scrollHeight,
                 duration: 0.3,
                 pin: true,
-            });
-              accordion.classList.add('open');
+              });
+              accordion.classList.add("open");
               currentIndex = index;
             }
           },
@@ -46,84 +47,98 @@ const BlockHeader = () => {
               maxHeight: 0,
               duration: 0.2,
             });
-            accordion.classList.remove('open');
+            accordion.classList.remove("open");
             currentIndex = index - 1;
           },
         });
       });
     } else {
       accordions.forEach((accordion, index) => {
-      const text = accordion.querySelector('.text');
-      text.classList.add('closed');
-  
-      gsap.set(text, {
-        maxHeight: 0,
-        overflow: 'hidden',
-        delay: 1,
-      });
-  
-      ScrollTrigger.create({
-        trigger: text,
-        start: 'bottom bottom-=20%',
-        end: 'top bottom+=15%',
-        onUpdate: (self) => {
-          // const scrollDistance = self.start - self.scroll();
-          const scrollDelta = self.getVelocity() * 100;
-          const shouldOpen = scrollDelta > 50;
-  
-          if (shouldOpen && index > currentIndex) {
-            gsap.to(text, {
-              maxHeight: text.scrollHeight,
-              duration: 0.3,
-            });
-          } else if (!shouldOpen && index === currentIndex) {
+        const text = accordion.querySelector(".text");
+        text.classList.add("closed");
+
+        gsap.set(text, {
+          maxHeight: 0,
+          overflow: "hidden",
+          delay: 1,
+        });
+
+        ScrollTrigger.create({
+          trigger: text,
+          start: "bottom bottom-=20%",
+          end: "top bottom+=15%",
+          onUpdate: (self) => {
+            // const scrollDistance = self.start - self.scroll();
+            const scrollDelta = self.getVelocity() * 100;
+            const shouldOpen = scrollDelta > 50;
+
+            if (shouldOpen && index > currentIndex) {
+              gsap.to(text, {
+                maxHeight: text.scrollHeight,
+                duration: 0.3,
+              });
+            } else if (!shouldOpen && index === currentIndex) {
+              gsap.to(text, {
+                maxHeight: 0,
+                duration: 0.2,
+              });
+              accordion.classList.remove("open");
+              currentIndex = index - 1;
+            }
+          },
+          onLeaveBack: () => {
             gsap.to(text, {
               maxHeight: 0,
-              duration: 0.2,
+              duration: 0.1,
             });
-            accordion.classList.remove('open');
+            accordion.classList.remove("open");
             currentIndex = index - 1;
-          }
-        },
-        onLeaveBack: () => {
-          gsap.to(text, {
-            maxHeight: 0,
-            duration: 0.1,
-          });
-          accordion.classList.remove('open');
-          currentIndex = index - 1;
-        },
+          },
+        });
       });
-    });
-  }
+    }
   }, []);
 
-
-  
- return (
+  return (
     <div className="wrapper">
       <div className="spacer"></div>
       <div className="accordions" ref={accordionsRef}>
         <div className="accordion">
           <div className="title">Архитектура</div>
-              {/* <img className="cub_img" src={cub} alt="logo"/> */}
+          {/* <img className="cub_img" src={cub} alt="logo"/> */}
           <div className="text">
             <div className="text_span">
-               Архитектура и концепции
-              <span>
-                Разработка концепции, архитектурное проектирование - от идеи до ввода объекта в эксплуатацию
+              Архитектура и концепции
+              <span className="header_slider_span">
+                <div className="icon_slider_svg">
+                <img src={mySvg} alt="My SVG" />         
+                </div>
+                Разработка концепции, архитектурное проектирование - от идеи до
+                ввода объекта в эксплуатацию
               </span>
-                Адаптация зарубежных концепций
-              <span>
-                Подготовка проектной и рабочей документации на базе архитектурного/инжинерного решения
+              Адаптация зарубежных концепций
+              <span className="header_slider_span">
+                <div className="icon_slider_svg">
+                <img src={mySvg} alt="My SVG" />         
+                </div>
+                Подготовка проектной и рабочей документации на базе
+                архитектурного/инжинерного решения
               </span>
               Дизайн-проекты
-              <span>
-                Для жилых и общественных помещений. Авторский надзор, ЗD - моделирование, VR - визуализация
+              <span className="header_slider_span">
+                <div className="icon_slider_svg">
+                <img src={mySvg} alt="My SVG" />         
+                </div>
+                Для жилых и общественных помещений. Авторский надзор, ЗD -
+                моделирование, VR - визуализация
               </span>
               Проектная и рабочая документация
-              <span>
-                Прохождение экспертизы, авторский надзор, сопровождение строительства
+              <span className="header_slider_span">
+                <div className="icon_slider_svg">
+                <img src={mySvg} alt="My SVG" />         
+                </div>
+                Прохождение экспертизы, авторский надзор, сопровождение
+                строительства
               </span>
             </div>
           </div>
@@ -131,20 +146,35 @@ const BlockHeader = () => {
         <div className="accordion">
           <div className="title">Конструктив</div>
           <div className="text">
-              <div className="text_span">
+            <div className="text_span">
               Инженерное проектирование
-              <span>
+              <span className="header_slider_span"> 
+                <div className="icon_slider_svg">
+                <img src={mySvg} alt="My SVG" />         
+                </div>
                 Разработка внутренних и наружных инженерных коммуникаций
               </span>
               Подземные транспортные сооружения
-              <span>
-                Проекты освоения подземного пространства для уникальных особо сложных объектов строительства
+              <span className="header_slider_span">
+                <div className="icon_slider_svg">
+                <img src={mySvg} alt="My SVG" />         
+                </div>
+                Проекты освоения подземного пространства для уникальных особо
+                сложных объектов строительства
               </span>
               Управление линейными объектами
-              <span>Проектирование транспортных объектов и инфраструктуры</span>
+              <div className="icon_slider_svg">
+                <img src={mySvg} alt="My SVG" />         
+                </div>
+              <span className="header_slider_span">Проектирование транспортных объектов и инфраструктуры
+              </span>
               Конструктивные решения
-              <span>
-                Разработка полного комплекса документации на всех стадиях жизненного цикла проекта
+              <span className="header_slider_span">
+                <div className="icon_slider_svg">
+                <img src={mySvg} alt="My SVG" />         
+                </div>
+                Разработка полного комплекса документации на всех стадиях
+                жизненного цикла проекта
               </span>
             </div>
           </div>
@@ -154,8 +184,12 @@ const BlockHeader = () => {
           <div className="text">
             <div className="text_span">
               Научно-техническое сопровождение
-              <span>
-                Расчетное сопровождение проектирования и строительства любой сложности
+              <span className="header_slider_span">
+                <div className="icon_slider_svg">
+                <img src={mySvg} alt="My SVG" />         
+                </div>
+                Расчетное сопровождение проектирования и строительства любой
+                сложности
               </span>
             </div>
           </div>
@@ -165,9 +199,13 @@ const BlockHeader = () => {
           <div className="text">
             <div className="text_span">
               BIM моделирование
-              <span>
-                Разработка программного обеспечения, инфраструктуры и методик в цифровой среде
-                для инженерного проектирования, девелопмента и строительства
+                <div className="icon_slider_svg">
+                <img src={mySvg} alt="My SVG" />         
+                </div>
+              <span className="header_slider_span">
+                Разработка программного обеспечения, инфраструктуры и методик в
+                цифровой среде для инженерного проектирования, девелопмента и
+                строительства
               </span>
             </div>
           </div>
@@ -179,15 +217,3 @@ const BlockHeader = () => {
 };
 
 export default BlockHeader;
-
-
-
-
-
- 
-    
-    
-
-
-
-

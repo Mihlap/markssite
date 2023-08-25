@@ -116,7 +116,7 @@
   background-color: #FF7F6A;
 }
 
-.button_hover {
+.button_hover10 {
   margin-top: 2.77vh;
   width: 145px;
   height: 56px;
@@ -125,18 +125,18 @@
   background-color: transparent;
 }
 
-.button_hover:hover {
+.button_hover10:hover {
   background: linear-gradient(133deg, rgba(123, 191, 255, 0.55) 0%, rgba(240, 248, 255, 0.55) 100%);
   color: var(--black-1D2E43);
   border: 0px solid transparent;
 }
 
-.form_left_wrapper:focus-within .button_hover {
+.form_left_wrapper:focus-within .button_hover10 {
   background-color: var(--light-light-gray-EBECEE);
   border: 1px solid var(--gray-959DA6);
 }
 
-.button_name {
+.button_name1 {
   font-family: var(--font-raleway);
   font-style: normal;
   font-weight: var(--fw-400);
@@ -144,16 +144,16 @@
   line-height: 24px;
   }
 
-  .form_left_wrapper:focus-within .button_name  {
+  .form_left_wrapper:focus-within .button_name1  {
     color: var(--gray-959DA6);
   }
 
-  .button_hover:disabled {
+  .button_hover12:disabled {
     background-color: var(--light-light-gray-EBECEE);
     pointer-events: none;
   }
 
-  .button_hover:disabled:hover {
+  .button_hover12:disabled:hover {
     background-color: var(--light-light-gray-EBECEE);
     cursor: default;
     pointer-events: none;
