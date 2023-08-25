@@ -38,8 +38,8 @@
         font-size: 1.3rem;
         border: 1px solid var(--salmon-light-FFBFB5);
         border-radius: 6px;
-        padding: 1rem;
-
+        padding: 1rem 3.5rem 1rem 1rem;
+        
         &::placeholder {
             color: var(--gray-959DA6);
             font-family: var(--font-raleway);
@@ -60,6 +60,9 @@
         font-style: normal;
         font-weight: 400;
         line-height: 16px;
+        background-color: #fff;
+            z-index: 2;
+            border-radius: 4px;
     }
 
     &__heading_block_label {

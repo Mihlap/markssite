@@ -37,13 +37,13 @@ module.exports = {
         type: Sequelize.TEXT,
       },
       imageOpen: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
       },
       textBlock: {
         type: Sequelize.TEXT,
       },
       imageClose: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
       },
       authorId: {
         type: Sequelize.INTEGER,

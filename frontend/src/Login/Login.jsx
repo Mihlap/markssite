@@ -14,7 +14,7 @@ export default function Login() {
   });
   const [showLoader, setShowLoader] = useState(false);
   const [errorDiv, setErrorDiv] = useState(false);
-const status = useSelector((state) => state.auth.status);
+  const status = useSelector((state) => state.auth.status);
   const changeHandler = (event) =>
     setInputGroup((prev) => ({
       ...prev,

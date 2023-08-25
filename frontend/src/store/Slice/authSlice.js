@@ -33,6 +33,22 @@ export const checkUserAuth = createAsyncThunk(
   }
 );
 
+export const logoutUser = createAsyncThunk(
+  "auth/logoutUser",
+  async (_, { rejectWithValue }) => {
+    try {
+      const serverHost = process.env.REACT_APP_SERVER_HOST;
+      const response = await axios.get(`${serverHost}/api/auth/logout`, {
+        withCredentials: true,
+      });
+      return response.status;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+
 const authSlice = createSlice({
   name: "auth",
   initialState: {
@@ -65,6 +81,19 @@ const authSlice = createSlice({
         state.error = null;
       })
       .addCase(checkUserAuth.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      });
+     builder
+      .addCase(logoutUser.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(logoutUser.fulfilled, (state) => {
+        state.status = "succeeded";
+        state.user = null;
+        state.error = null;
+      })
+      .addCase(logoutUser.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       });
