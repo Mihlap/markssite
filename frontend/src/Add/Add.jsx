@@ -12,8 +12,10 @@ import { getZaprosData } from "../store/Slice/searchProjectMainSlice";
 import { getFetchFormArticle } from "../store/Slice/articleSlice";
 import { searchArticleLeftGet } from "../store/Slice/searchArticlePublicLeftSlice";
 import { searchArticleRightGet } from "../store/Slice/searchArticlePublicRightSlice";
+import { clearCurrentPage } from "../store/Slice/userSlice";
+import Applications from "./applications/Applications";
 
-export default function Add({ user, setNavBarOpen, setShowFooter }) {
+export default function Add({ user, onPageChange, handleReturn }) {
   const dispatch = useDispatch();
   const project = useSelector((state) => state.project.projects);
   const projectMain = useSelector((state) => state.searchproject.projects);
@@ -23,28 +25,27 @@ export default function Add({ user, setNavBarOpen, setShowFooter }) {
   );
   const [arrIdProject, setArrIdProject] = useState([]);
 
-   useEffect(() => {
-      dispatch(getFetchForm());
-     dispatch(getZaprosData());
-     dispatch(getFetchFormArticle());
-     dispatch(searchArticleLeftGet());
-     dispatch(searchArticleRightGet());
-   }, [dispatch]);
-  
+  useEffect(() => {
+    dispatch(getFetchForm());
+    dispatch(getZaprosData());
+    dispatch(getFetchFormArticle());
+    dispatch(searchArticleLeftGet());
+    dispatch(searchArticleRightGet());
+  }, [dispatch]);
+
+  useEffect(() => {
+    onPageChange("add"); // Передайте имя страницы в onPageChange
+  }, [onPageChange]);
+
   //  useEffect(() => {
   //    // Update the arrIdProject state whenever projectMain changes
   //    const newIds = projectMain.map((el) => el.IdProject);
   //    setArrIdProject(newIds);
   //  }, [projectMain]);
 
-  
   return (
     <div className={styles.add_container}>
-      <AddNavbar
-        setNavBarOpen={setNavBarOpen}
-        setShowFooter={setShowFooter}
-        user={user}
-      />
+      <AddNavbar handleReturn={handleReturn} user={user} />
       <Routes>
         <Route
           path="/home"
@@ -65,6 +66,7 @@ export default function Add({ user, setNavBarOpen, setShowFooter }) {
           element={<AddArticles user={user} article={article} />}
         />
         <Route path="add-a-company" element={<AddCompany />} />
+        <Route path="add-a-applications" element={<Applications />} />
       </Routes>
     </div>
   );

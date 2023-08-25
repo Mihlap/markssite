@@ -45,9 +45,9 @@ module.exports = (sequelize, DataTypes) => {
       titleTextBlock: DataTypes.STRING,
       descriptionArticle: DataTypes.STRING,
       imageAuthor: DataTypes.TEXT,
-      imageOpen: DataTypes.STRING,
+      imageOpen: DataTypes.TEXT,
       textBlock: DataTypes.TEXT,
-      imageClose: DataTypes.STRING,
+      imageClose: DataTypes.TEXT,
       authorId: DataTypes.INTEGER,
     },
     {

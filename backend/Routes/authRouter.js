@@ -59,7 +59,7 @@ authRouter.post('/login', async(req, res) => {
 
         req.session.user = sessionData; 
 
-        return res.sendStatus(200);
+        return res.status(200).json(sessionData);
     }
 
     return res.status(401).json({ message: 'неправильный name пользователя или пароль' });

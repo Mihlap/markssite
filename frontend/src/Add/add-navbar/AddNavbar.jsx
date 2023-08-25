@@ -6,11 +6,16 @@ import icon1 from './icon/one.png';
 import icon2 from "./icon/three.png";
 import icon3 from "./icon/four.png";
 import icon4 from "./icon/two.png";
+import { useDispatch } from "react-redux";
+import { logoutUser } from "../../store/Slice/authSlice";
+import { resetCurrentPage } from "../../store/Slice/userSlice";
 
-export default function AddNavbar({ user, setNavBarOpen, setShowFooter }) {
+export default function AddNavbar({ user, handleReturn }) {
+  const dispatch = useDispatch();
   const [selectedItem, setSelectedItem] = useState(null);
   const serverHost = process.env.REACT_APP_SERVER_HOST;
   const navigate = useNavigate();
+  // console.log(user);
 
   useEffect(() => {
     const storedSelectedItem = localStorage.getItem("selectedItem");
@@ -26,27 +31,15 @@ export default function AddNavbar({ user, setNavBarOpen, setShowFooter }) {
     navigate(itemPath); // Выполняем переход по ссылке
   };
 
-  const openNavbarHandler = () => {
-    setNavBarOpen(true);
-    setShowFooter(true);
-  }
-
-const logouthandler = async () => {
-  try {
-    const response = await axios.get(`${serverHost}/api/auth/logout`, {
-      withCredentials: true,
-    }); // Убедитесь, что вы отправляете запрос с куками
-
-    if (response.status === 200) {
+  const logouthandler = async () => {
+    try {
+      dispatch(logoutUser());
+      dispatch(resetCurrentPage()); // Сбрасываем currentPage
       navigate("/"); // Перенаправьте пользователя на страницу входа
-      setNavBarOpen(true);
-      setShowFooter(true);
-      window.location.reload();
+    } catch (error) {
+      console.error("Ошибка при выходе из системы", error);
     }
-  } catch (error) {
-    console.error("Ошибка при выходе из системы", error);
-  }
-};
+  };
 
   return (
     <>
@@ -187,6 +180,25 @@ const logouthandler = async () => {
                   О компании
                 </Link>
               </li>
+              {user?.name === "obezyankaa" ? (
+                <Link
+                  className={`${styles.add_navbar_container__item} ${
+                    selectedItem === "add-a-applications" ? styles.active : ""
+                  }`}
+                  to="./add-a-applications"
+                  onClick={(event) =>
+                    handleItemClick(
+                      event,
+                      "add-a-applications",
+                      "./add-a-applications"
+                    )
+                  }
+                >
+                  Заявки
+                </Link>
+              ) : null}
+              <li>
+              </li>
             </ul>
           </div>
           <div className={styles.exit_container}>
@@ -205,11 +217,7 @@ const logouthandler = async () => {
       </nav>
       <div className={styles.button_position}>
         <div className={styles.button_container}>
-          <Link
-            className={styles.button}
-            to="/"
-            onClick={() => openNavbarHandler()}
-          >
+          <Link className={styles.button} to="/" onClick={handleReturn}>
             <span className={styles.button__text}>Предпросмотр</span>
             <img src={icon1} alt="1" className={styles.button__cone} />
             <img src={icon2} alt="2" className={styles.button__torus} />
