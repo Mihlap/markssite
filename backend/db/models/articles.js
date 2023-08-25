@@ -43,7 +43,7 @@ module.exports = (sequelize, DataTypes) => {
       selectCompetencies: DataTypes.STRING,
       imageTitle: DataTypes.TEXT,
       titleTextBlock: DataTypes.STRING,
-      descriptionArticle: DataTypes.STRING,
+      descriptionArticle: DataTypes.TEXT,
       imageAuthor: DataTypes.TEXT,
       imageOpen: DataTypes.TEXT,
       textBlock: DataTypes.TEXT,

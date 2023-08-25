@@ -53,6 +53,7 @@ useEffect(() => {
 
   const handleReturn = () => {
     dispatch(resetCurrentPage()); // Сбрасываем currentPage
+    localStorage.removeItem("activeClass");
   };
 
 // console.log(isUserChecked);

@@ -8,6 +8,8 @@ import LoadingCircle from "../Loading/LoadingCircle";
 export default function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [isFormFilled, setIsFormFilled] = useState(false);
+
   const [inputGroup, setInputGroup] = useState({
     userName: "",
     password: "",
@@ -15,39 +17,64 @@ export default function Login() {
   const [showLoader, setShowLoader] = useState(false);
   const [errorDiv, setErrorDiv] = useState(false);
   const status = useSelector((state) => state.auth.status);
-  const changeHandler = (event) =>
+  const changeHandler = (event) => {
+    const { name, value } = event.target;
     setInputGroup((prev) => ({
       ...prev,
-      [event.target.name]: event.target.value,
+      [name]: value,
     }));
 
-const submitHandler = (event) => {
-  event.preventDefault();
+    setIsFormFilled((prev) => {
+      return (
+        prev.userName !== "" &&
+        prev.password !== "" &&
+        (name !== "userName" || value !== "") &&
+        (name !== "password" || value !== "")
+      );
+    });
+  };
 
-  // Показать лоудер
-  setShowLoader(true);
+  const submitHandler = (event) => {
+    event.preventDefault();
 
-  // Задержка перед входом
-  setTimeout(async () => {
-    try {
-      await dispatch(loginUser(inputGroup)).unwrap();
-      navigate("/");
-      // window.location.reload();
-    } catch (error) {
-      setErrorDiv(true);
-      setShowLoader(false); // Скрыть лоудер, если произошла ошибка
-    }
-  }, 2500); // Задержка в 2 секунды
-};
+    // Показать лоудер
+    setShowLoader(true);
+
+    // Задержка перед входом
+    setTimeout(async () => {
+      try {
+        await dispatch(loginUser(inputGroup)).unwrap();
+        localStorage.removeItem("activeClass");
+        navigate("/");
+        // window.location.reload();
+      } catch (error) {
+        setErrorDiv(true);
+        setShowLoader(false); // Скрыть лоудер, если произошла ошибка
+      }
+    }, 2500); // Задержка в 2 секунды
+  };
 
   useEffect(() => {
     if (errorDiv) {
       const timer = setTimeout(() => {
         setErrorDiv(false);
       }, 6000);
-      return () => clearTimeout(timer);
+
+      // Убрать класс ошибки через 2.5 секунды
+      const errorField = document.querySelector(`.${styles.error_text}`);
+      if (errorField) {
+        errorField.classList.remove(styles.error_text);
+        const classRemovalTimer = setTimeout(() => {
+          errorField.classList.add(styles.error_text);
+        }, 2500);
+        return () => clearTimeout(classRemovalTimer);
+      }
+
+      return () => {
+        clearTimeout(timer);
+      };
     }
-  });
+  }, [errorDiv]);
 
   if (showLoader) {
     return <LoadingCircle />;
@@ -65,7 +92,9 @@ const submitHandler = (event) => {
             <div className={`${styles.form__group} ${styles.field}`}>
               <input
                 type="input"
-                className={styles.form__field}
+                className={`${styles.form__field} ${
+                  errorDiv ? styles.error_text : ""
+                }`}
                 value={inputGroup.userName}
                 onChange={changeHandler}
                 placeholder="userName"
@@ -77,11 +106,16 @@ const submitHandler = (event) => {
                 Введите рабочий E-mail
               </label>
             </div>
+            {errorDiv && (
+              <div className={styles.error_div}>Не корректный E-mail</div>
+            )}
 
             <div className={`${styles.form__group} ${styles.field}`}>
               <input
                 type="password"
-                className={styles.form__field}
+                className={`${styles.form__field} ${
+                  errorDiv ? styles.error_text : ""
+                }`}
                 value={inputGroup.password}
                 onChange={changeHandler}
                 placeholder="password"
@@ -93,16 +127,20 @@ const submitHandler = (event) => {
                 Введите пароль
               </label>
             </div>
+            {errorDiv && (
+              <div className={styles.error_div}>Не корректный пароль</div>
+            )}
 
             <div className={styles.error_bnt_block}>
-              <button className={styles.form_button} type="submit">
+              <button
+                className={`${styles.form_button} ${
+                  !isFormFilled ? styles.disabled_button : ""
+                }`}
+                type="submit"
+                disabled={!isFormFilled}
+              >
                 Войти
               </button>
-              {errorDiv && (
-                <div className={styles.error_div}>
-                  Hеверный E-mail или пароль 😔
-                </div>
-              )}
             </div>
           </form>
         </div>
