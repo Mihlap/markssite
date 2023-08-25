@@ -34,6 +34,7 @@ import CompanySubscriptionForm from "../UI/CompanySubscriptionForm/CompanySubscr
 import CounterCompanyMobile from "../UI/CounterCompanyMobile";
 import CounterCompanyMobile2 from "../UI/CounterCompanyMobile2";
 import CompanyGroupSlider from "../UI/CompanyGroupSlider/CompanyGroupSlider";
+import VideoPlayer from "../UI/Videoplayer/VideoPlayer";
 
 export default function Company({ userId }) {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -43,6 +44,7 @@ export default function Company({ userId }) {
   const [swiper, setSwiper] = useState(null);
   const [currentIndexCompany, setCurrentIndexCompany] = useState(0);
   const swiperCompanyRef = useRef(null);
+  const videoRef = useRef(null);
 
   const [showCards, setShowCards] = useState(false);
   const [activeButton, setActiveButton] = useState("Руководство");
@@ -67,6 +69,12 @@ export default function Company({ userId }) {
   const [ref, inView] = useInView({
     threshold: 0.5,
   });
+
+  const videoSource = {
+    large: "./assets/company_full.mp4",
+    medium: "./assets/company_ipad.mp4",
+    small: "./assets/company_mob.mp4",
+    };
 
   const isMobile = windowWidth <= 767;
   const symbol = "•";
@@ -194,6 +202,21 @@ export default function Company({ userId }) {
     };
   }, []);
 
+  useEffect(() => {
+    const video = videoRef.current;
+
+    const handleVideoEnded = () => {
+      video.currentTime = 3;
+      video.play();
+    };
+
+    video?.addEventListener("ended", handleVideoEnded);
+
+    return () => {
+      video?.removeEventListener("ended", handleVideoEnded);
+    };
+  }, []);
+
   const handlePCardCompanyClick = (index) => {
     setCurrentIndexCompany(index);
     if (swiperCompanyRef.current && swiperCompanyRef.current.slideTo) {
@@ -270,7 +293,7 @@ export default function Company({ userId }) {
         )}
       </div>
       <div className={styles.sliderMobile_wrapper}>
-      <SliderMobile/>
+        <SliderMobile />
       </div>
       <div className={styles.about_main}>
         <div className={styles.left_about}>
@@ -382,35 +405,36 @@ export default function Company({ userId }) {
       <div className={styles.specialist_wrapper}>
         <div className={styles.specialist}>Специалисты</div>
         {isMobile && (
-      <Swiper
-        onSwiper={setSwiper}
-        slidesPerView="auto"
-        spaceBetween={0}
-        // pagination={{
-        //   clickable: true,
-        // }}
-        className={styles.my_swiper_button_group}
-        touch="true"
-      >
-        <div className={styles.button_group}>
-          {buttonsStuff && buttonsStuff?.map((button) => (
-            <SwiperSlide
-              key={button.name}
-              onClick={(e) => {
-                e.preventDefault();
-                button.onClick(button.name);
-              }}
-              className={`${styles.button_hover} ${
-                activeButton === button.name ? styles.active : ""
-              }`}
-              style={{ width: "fit-content" }}
-            >
-              <p type="button">{button.name}</p>
-            </SwiperSlide>
-          ))}
-        </div>
-      </Swiper>
-    )}
+          <Swiper
+            onSwiper={setSwiper}
+            slidesPerView="auto"
+            spaceBetween={0}
+            // pagination={{
+            //   clickable: true,
+            // }}
+            className={styles.my_swiper_button_group}
+            touch="true"
+          >
+            <div className={styles.button_group}>
+              {buttonsStuff &&
+                buttonsStuff?.map((button) => (
+                  <SwiperSlide
+                    key={button.name}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      button.onClick(button.name);
+                    }}
+                    className={`${styles.button_hover} ${
+                      activeButton === button.name ? styles.active : ""
+                    }`}
+                    style={{ width: "fit-content" }}
+                  >
+                    <p type="button">{button.name}</p>
+                  </SwiperSlide>
+                ))}
+            </div>
+          </Swiper>
+        )}
         {!isMobile && (
           <div className={styles.button_group}>
             <button
@@ -474,8 +498,8 @@ export default function Company({ userId }) {
           {staff &&
             staff?.map((el) => (
               <li
-              key={el.id}
-              data-user-id={el.id}
+                key={el.id}
+                data-user-id={el.id}
                 // {...el}
                 className={styles.container__item_stuff}
                 onClick={() => handleButtonClick(category, el.id)}
@@ -623,8 +647,8 @@ export default function Company({ userId }) {
           >
             {staff?.map((el) => (
               <SwiperSlide
-              key={el.id}
-              data-user-id={el.id}
+                key={el.id}
+                data-user-id={el.id}
                 className={styles.slide_container_item_stuff}
                 onClick={() => handleButtonClick(category, el.id)}
               >
@@ -646,18 +670,21 @@ export default function Company({ userId }) {
           </Swiper>
         </div>
       )}
-          <div className="swiper_pagination" style={{paddingLeft: '1rem', paddingRight: '1rem'}}>
-            {staff &&
-              staff.map((_, index) => (
-                <button
-                  key={index}
-                  className={`swiper_pagination_bullet ${
-                    currentIndexCompany === index ? "active" : ""
-                  }`}
-                  onClick={() => handlePCardCompanyClick(index)}
-                />
-              ))}
-          </div>
+      <div
+        className="swiper_pagination"
+        style={{ paddingLeft: "1rem", paddingRight: "1rem" }}
+      >
+        {staff &&
+          staff.map((_, index) => (
+            <button
+              key={index}
+              className={`swiper_pagination_bullet ${
+                currentIndexCompany === index ? "active" : ""
+              }`}
+              onClick={() => handlePCardCompanyClick(index)}
+            />
+          ))}
+      </div>
       {!isMobile && (
         <div className={styles.slider_card_wrapper}>
           <Swiper
@@ -669,8 +696,8 @@ export default function Company({ userId }) {
           >
             {staff?.map((el) => (
               <SwiperSlide
-              key={el.id}
-              data-user-id={el.id}
+                key={el.id}
+                data-user-id={el.id}
                 className={styles.slide_container_item_stuff}
                 onClick={() => handleButtonClick(category, el.id)}
               >
@@ -692,7 +719,22 @@ export default function Company({ userId }) {
           </Swiper>
         </div>
       )}
-      <div className={styles.fon}>
+      <div className={styles.fon} ref={videoRef}>
+        {/* <video autoPlay loop muted className={styles.background_video}>
+          <source
+            src={videoSource.small}
+            type="video/mp4"
+            media="(max-width: 767px)"
+          />
+          <source
+            src={videoSource.medium}
+            type="video/mp4"
+            media="(max-width: 1024px)"
+          />
+          <source src={videoSource.large} type="video/mp4" />
+        </video> */}
+        <VideoPlayer videoSource={videoSource} />
+
         <div className={styles.form_wrapper}>
           <div className={styles.company_form_contacts_wrapper}>
             <CompanyFormContacts />

@@ -4,6 +4,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { useDispatch, useSelector } from "react-redux";
 import { getFetchFormArticle, setSelectedType } from "../store/Slice/articleSlice";
 import styles from "./Publics.module.css";
+import VideoPlayer from "../UI/Videoplayer/VideoPlayer";
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 
@@ -13,6 +14,12 @@ export default function Publics() {
   const [selectArticle, setSelectArticle] = useState("Все");
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [swiper, setSwiper] = useState(null);
+
+  const videoSource = {
+    small: "./assets/public_mob.mp4",
+    medium: "./assets/public_ipad.mp4",
+    large: "./assets/public_full.mp4",
+  };
 
   const buttonChoose1 = [
     "Все",
@@ -53,11 +60,7 @@ console.log(articles, "+++++++++++++++++++++++++++++++++++++++++++++");
   return (
     <div className={styles.public_container_main}>
       <div className={styles.public_image_header}>
-        <img
-          className={styles.public_image_header_img}
-          src={`${Host}/images/imageAdd/image_publicPage.png`}
-          alt="image_publicPage"
-        />
+      <VideoPlayer videoSource={videoSource} />
         <div className={styles.text_container_publics}>
           <span className={styles.text1_publics}>
             Наша команда ведет активную научную жизнь!
@@ -68,8 +71,8 @@ console.log(articles, "+++++++++++++++++++++++++++++++++++++++++++++");
       <div className={styles.menu_button_group_articles_wrapper_main}>
         <div className={styles.menu_button_group_articles_wrapper}>
           <div className={styles.menu_button_group_articles}>
-            {buttonChoose1.map((el) => (
-              <div key={el.id} className={styles.button_wrapper_articles}>
+            {buttonChoose1.map((el, index) => (
+              <div key={index} className={styles.button_wrapper_articles}>
                 <button
                   className={
                     el === selectArticle
