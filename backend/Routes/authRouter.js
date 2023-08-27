@@ -22,10 +22,8 @@ authRouter.post('/signup', async(req, res) => {
     name: currentUser.userName,
     id: currentUser.id,
     };
-    
   req.session.user = sessionData; // Используйте ту же переменную сессии, которую вы пытаетесь получить позже
   // вот тут вы вкладываем в сессию данные пользователя и его id из объекта sessionData
-
   if (!created) {
     return res.status(401).json({
       message: 'этот name уже используется!',
