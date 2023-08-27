@@ -153,6 +153,7 @@ export default function FormAddProject({ setIsModalOpen }) {
     <div className={styles.form_container}>
       <div className={styles.form_container__title}>Новый проект</div>
 
+      <div className={styles.form_container__block_form}>
       <form onSubmit={submitHandler}>
         <div className={styles.form_container__block_gray_one}>
           <div className={`${styles.form__group} ${styles.field}`}>
@@ -982,19 +983,19 @@ export default function FormAddProject({ setIsModalOpen }) {
             Текстовый блок
           </label>
         </div>
-
         <div className={styles.form_container__button_block}>
           <button
             className={styles.form_container__button_save}
             type="submit"
-          ></button>
+            ></button>
           <button
             className={styles.form_container__button_cancel}
             type="submit"
             onClick={closeModal}
-          ></button>
+            ></button>
         </div>
       </form>
+      </div>
     </div>
   );
 }

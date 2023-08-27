@@ -182,7 +182,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
   return (
     <div className={styles.form_container}>
       <div className={styles.form_container__title}>Новая публикация</div>
-
+      <div className={styles.form_container__block_form}>   
       <form onSubmit={submitHandler}>
         <div className={styles.form_container__block_gray_one}>
           <div className={`${styles.form__group} ${styles.field}`}>
@@ -311,6 +311,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
         </div>
 
         <div className={styles.preview_photos_container}>
+          <div className={styles.preview_photos_container__preview_block}>
           {previewPhotos.map((preview, index) => (
             <div key={index} className={styles.preview_photos_container__block}>
               <img
@@ -326,6 +327,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
               </div>
             </div>
           ))}
+          </div>
         </div>
         <div className={styles.form_container__heading_block}>
           <input
@@ -621,6 +623,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
           ></button>
         </div>
       </form>
+</div>
     </div>
   );
 }
