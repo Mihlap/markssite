@@ -124,7 +124,10 @@ export default function AddProject({ project, user }) {
         {isModalOpen && (
           <div className={styles.card_components_admin__modal_container}>
             <div className={styles.card_components_admin__modal_block}>
-              <FormAddProject setIsModalOpen={setIsModalOpen} />
+              <FormAddProject
+                className={styles.formAddProjectClass}
+                setIsModalOpen={setIsModalOpen}
+              />
               <button
                 className={styles.card_components_admin__close_button}
                 onClick={handleCloseModal}

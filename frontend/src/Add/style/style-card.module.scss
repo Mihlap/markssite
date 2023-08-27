@@ -113,6 +113,11 @@
         cursor: pointer;
     }
 
+        .formAddProjectClass {
+            max-height: 400px;
+            /* например, 400px */
+            overflow-y: auto;
+        }
 
     &__modal_container {
         position: fixed;
@@ -131,12 +136,13 @@
 
     &__modal_block {
         position: relative; // Add position: relative to the modal block
+        max-height: 900px;
+        overflow: hidden;
         background-color: #fff;
         padding: 20px;
         border-radius: 1rem;
         box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-        height: 88vh;
-        overflow-y: auto;
+        height: 100%;
     }
 
     // &__modal_block::-webkit-scrollbar {
@@ -169,7 +175,7 @@
 
     &__close_button {
         position: absolute;
-        top: 0;
+        top: 15px;
         right: 0;
         width: 66px;
         height: 66px;
