@@ -14,6 +14,12 @@
         margin-bottom: 2.5rem;
     }
 
+    &__block_form {
+        height: 88vh;
+        padding-bottom: 6rem;
+        overflow-y: auto;
+    }
+
     &__radio_container {
         display: flex;
         gap: 1rem;
@@ -132,8 +138,11 @@
     }
 
     &__button_block {
+        position: fixed;
+        bottom: 8%;
         display: flex;
         gap: 7px;
+        z-index: 9;
     }
 
     &__button_save {
@@ -457,7 +466,7 @@
 
         span {
         position: absolute;
-            top: 35%;
+            top: 52%;
             left: 50%;
             width: 2px;
             height: 23px;
