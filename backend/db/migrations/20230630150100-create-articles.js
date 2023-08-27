@@ -31,7 +31,7 @@ module.exports = {
         type: Sequelize.STRING,
       },
       descriptionArticle: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
       },
       imageAuthor: {
         type: Sequelize.TEXT,
