@@ -33,7 +33,7 @@ const CompanySubscriptionForm = () => {
   }
 
   function handleSubmit(event) {
-    // event.preventDefault();
+    event.preventDefault();
     const email = event.target.querySelector("#email-input").value;
     const isValid = isValidRegex.test(email);
     setIsValid(isValid);

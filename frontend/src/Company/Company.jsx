@@ -720,6 +720,7 @@ export default function Company({ userId }) {
         </div>
       )}
       <div className={styles.fon} ref={videoRef}>
+        <div className={styles.video_wrapper}>
         {/* <video autoPlay loop muted className={styles.background_video}>
           <source
             src={videoSource.small}
@@ -734,7 +735,6 @@ export default function Company({ userId }) {
           <source src={videoSource.large} type="video/mp4" />
         </video> */}
         <VideoPlayer videoSource={videoSource} />
-
         <div className={styles.form_wrapper}>
           <div className={styles.company_form_contacts_wrapper}>
             <CompanyFormContacts />
@@ -742,6 +742,7 @@ export default function Company({ userId }) {
           <div className={styles.companySubscriptionForm_wrapper}>
             <CompanySubscriptionForm />
           </div>
+        </div>
         </div>
       </div>
     </div>
