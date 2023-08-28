@@ -9,62 +9,79 @@ import Loading from './loading/Loading';
 export default function AddArticles({user, article}) {
   const Host = process.env.REACT_APP_SERVER_HOST;
   const dispatch = useDispatch();
-    const [isActive, setIsActive] = useState(false);
+  const [isActive, setIsActive] = useState(false);
+  const [modalBlockHeight, setModalBlockHeight] = useState("auto"); // Изначально высота будет автоматически рассчитываться
 
-  // открывает модалку 
+  // открывает модалку
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
   const [isonCopy, seticonCopy] = useState(false);
   const [isImageLoaded, setImageLoaded] = useState(false);
   const [copiedId, setCopiedId] = useState("");
   const [deleteModalState, setDeleteModalState] = useState({});
+
+const updateModalBlockHeight = () => {
+  const windowHeight = window.innerHeight;
+  const maxHeight = Math.min(windowHeight - 100, 1900); // Примерное максимальное значение высоты
+
+  setModalBlockHeight(`${maxHeight}px`);
+  };
   
-   const handleOpenModal = () => {
-     setIsModalOpen(true);
-   };
+  useEffect(() => {
+    updateModalBlockHeight();
+    window.addEventListener("resize", updateModalBlockHeight);
+    return () => {
+      window.removeEventListener("resize", updateModalBlockHeight);
+    };
+  }, []);
 
-   const handleCloseModal = () => {
-     setIsModalOpen(false);
-   };
 
-   const handleDeleteModalOpen = (id) => {
-     setDeleteModalState((prevState) => ({
-       ...prevState,
-       [id]: true,
-     }));
-   };
 
-   const handleDeleteModalClose = (id) => {
-     setDeleteModalState((prevState) => {
-       const newState = { ...prevState };
-       delete newState[id];
-       return newState;
-     });
-   };
+  const handleOpenModal = () => {
+    setIsModalOpen(true);
+  };
 
-   const handleCopyClick = (id) => {
-     navigator.clipboard.writeText(id);
-     setIsCopied(true);
-     seticonCopy(true);
-     setCopiedId(id);
-   };
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+  };
 
-   const handleFormDelete = (formId) => {
-     dispatch(deleteFormArticle(formId));
-     handleDeleteModalClose();
-   };
+  const handleDeleteModalOpen = (id) => {
+    setDeleteModalState((prevState) => ({
+      ...prevState,
+      [id]: true,
+    }));
+  };
 
-   useEffect(() => {
-     if (isCopied) {
-       const timer = setTimeout(() => {
-         setIsCopied(false);
-         seticonCopy(false);
-         setCopiedId("");
-       }, 3000);
-       return () => clearTimeout(timer);
-     }
-   }, [isCopied]);
-  
+  const handleDeleteModalClose = (id) => {
+    setDeleteModalState((prevState) => {
+      const newState = { ...prevState };
+      delete newState[id];
+      return newState;
+    });
+  };
+
+  const handleCopyClick = (id) => {
+    navigator.clipboard.writeText(id);
+    setIsCopied(true);
+    seticonCopy(true);
+    setCopiedId(id);
+  };
+
+  const handleFormDelete = (formId) => {
+    dispatch(deleteFormArticle(formId));
+    handleDeleteModalClose();
+  };
+
+  useEffect(() => {
+    if (isCopied) {
+      const timer = setTimeout(() => {
+        setIsCopied(false);
+        seticonCopy(false);
+        setCopiedId("");
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [isCopied]);
 
   // const imageDescription = article.map((el) => el.ImageToDescriptionArticles);
   // for (let innerArray of imageDescription) {
@@ -137,6 +154,7 @@ export default function AddArticles({user, article}) {
         {isModalOpen && (
           <div className={styles.card_components_admin__modal_container}>
             <div
+              style={{ maxHeight: modalBlockHeight }}
               className={`${styles.card_components_admin__modal_block} ${customScroll.scrollableContent}`}
             >
               <FormAddArticles setIsModalOpen={setIsModalOpen} />
