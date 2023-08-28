@@ -86,14 +86,36 @@ const CompanyFormContacts = () => {
   }
 
   function handleSubmit(event) {
-    // event.preventDefault(); 
-    const phone = event.target.querySelector("#phone-input").value;
-    console.log("Данные формы:", {
+    event.preventDefault(); 
+    const formData = {
       name: value1,
       phone: value2,
       task: value3,
       consentGiven: isConsentGiven,
-    });
+    };
+    fetch('/api-mail/submitForm', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+    })
+      .then(response => {
+        if (response.ok) {
+          
+          console.log('Form submitted successfully');
+          setValue1("");
+          setValue2("");
+          setValue3("");
+          setIsConsentGiven(false);
+        
+        } else {
+             console.error('Form submission failed');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
   }
 
   

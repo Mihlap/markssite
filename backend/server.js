@@ -1,6 +1,8 @@
 const express = require('express');
 require('dotenv').config();
+// const nodemailer = require("nodemailer");
 const morgan = require('morgan');
+// const axios = require('axios');
 const cors = require('cors');
 const path = require('path');
 const session = require('express-session');
@@ -13,6 +15,7 @@ const articleRouter = require('./routes/Articles/articleRouter');
 const searchRouter = require('./routes/searchRouter');
 const searchArticleLeft = require('./routes/Articles/searchArticleLeftRouter');
 const searchArticleRight = require('./routes/Articles/searchArticleRightRouter');
+const mailRouter = require('./routes/mailRouter');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -40,6 +43,7 @@ app.use(
   }),
 );
 
+
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -48,11 +52,13 @@ app.use('/images/imageAdd', express.static(path.join(__dirname, 'images/imageAdd
 app.use(session(sessionConfig));
 // app.use(express.static(path.join(__dirname, 'build')));
 
+
 // Добавьте этот блок кода здесь
 app.use((req, res, next) => {
   // console.log('Session: ', req.session);
   next();
 });
+
 
 app.get('/', indexRouter);
 app.use('/api/auth', authRouter);
@@ -62,6 +68,7 @@ app.use('/api-article', articleRouter);
 app.use('/search', searchRouter);
 app.use('/search-article', searchArticleLeft);
 app.use('/search-articles', searchArticleRight);
+app.use('/api-mail', mailRouter);
 
 app.listen(PORT, () => {
   console.log(`Старт server --->🔥 ${PORT} 🔥<---`);
