@@ -15,7 +15,16 @@ const CompanyFormContacts = () => {
   const [isMatching, setIsMatching] = useState(true);
   const [isConsentGiven, setIsConsentGiven] = useState(false);
   const [phoneClicked, setPhoneClicked] = useState(false);
+  const [inputLineColor, setInputLineColor] = useState('#959DA6');
 
+  // const [showError, setShowError] = useState(false);
+ 
+  
+
+
+
+
+  const Host = process.env.REACT_APP_SERVER_HOST;
  
 
   function handleFocus(event) {
@@ -27,9 +36,11 @@ const CompanyFormContacts = () => {
       setIsFocused2(true);
       setValue2("");
       setPhoneClicked(true);
+      setInputLineColor('#FF7F6A');
     } else if (name === "task") {
       setIsFocused3(true);
       setPhoneClicked(false);
+      setInputLineColor('#959DA6'); 
     }
   }
 
@@ -37,6 +48,7 @@ const CompanyFormContacts = () => {
     const name = event?.target?.name;
     if (!event.target.value && name !== "phone") {
       event.target.placeholder = "";
+      // setShowError(false);
       if (name === "name") {
         setIsFocused1(false);
       } else if (name === "task") {
@@ -52,11 +64,15 @@ const CompanyFormContacts = () => {
       if (name === "phone") {
         const phoneNumberRegex = /^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/;
         if (phoneNumberRegex.test(value2)) {
+          // setIsFocused2(true);
           setIsValid(true);
           setIsMatching(true);
+         
         } else {
           setIsValid(false);
           setIsMatching(false);
+          setIsFocused2(false);
+          setInputLineColor('#959DA6');
         }
       }
     }
@@ -76,6 +92,11 @@ const CompanyFormContacts = () => {
       setValue2(value);
       if (!value) {
         setIsFocused2(false);
+        // setInputLineColor('#959DA6'); 
+      }
+      // setShowError(false);
+      if (!value) {
+        setIsFocused2(false);
       }
     } else if (name === "task") {
       setValue3(value);
@@ -87,13 +108,17 @@ const CompanyFormContacts = () => {
 
   function handleSubmit(event) {
     event.preventDefault(); 
+    if (!isConsentGiven) {
+      console.log('Согласие не установлено, форма не будет отправлена.');
+      return;
+    }
     const formData = {
       name: value1,
       phone: value2,
       task: value3,
       consentGiven: isConsentGiven,
     };
-    fetch('/api-mail/submitForm', {
+    fetch(`${Host}/api-mail/submitForm`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -109,6 +134,7 @@ const CompanyFormContacts = () => {
           setValue3("");
           setIsConsentGiven(false);
         
+        
         } else {
              console.error('Form submission failed');
         }
@@ -116,7 +142,7 @@ const CompanyFormContacts = () => {
       .catch(error => {
         console.error('Error:', error);
       });
-  }
+      }
 
   
   return (
@@ -167,10 +193,12 @@ const CompanyFormContacts = () => {
                 onChange={handleChange}
                 onFocus={handleFocus}
                 className={`${styles.input_tel_form_contacts} ${isFocused2 ? styles.focused : ''}`}
+                // className={styles.input_tel_form_contacts}
                 style={{ fontVariantNumeric: "lining-nums" }}
               />
               <div className={styles.line}
-              style={{backgroundColor: (!value2 && !isFocused2) ? '' : (!value2 && isFocused2) ? '#FF7F6A' : (isValid && isMatching) ? '' : '#E00747'}}
+           style={{ backgroundColor: inputLineColor }}
+            
               ></div>
               {!isValid && value2.length > 0 && ( <span className={styles.error_line}>Некорректный телефон</span>)}
               {/* <span className={styles.placeholder}>Номер телефона</span> */}
@@ -216,10 +244,9 @@ const CompanyFormContacts = () => {
           type="submit"
           id="submit-button"
            className={`${styles.button_hover10}
-            ${
-              !isValid || !value2 ? styles.disabled : ""
-            }`}
-           disabled={!value1 || !value2 || !value3}>
+           ${(!isValid || !value2 || !value1 || !value3 || !isConsentGiven) ? styles.disabled : ""}`}
+           disabled={!isValid || !value2 || !value1 || !value3 || !isConsentGiven}
+           >
             <p className={styles.button_name1}>Отправить</p>
           </button>
         </form>
