@@ -47,6 +47,8 @@ const ArticleCard = () => {
     blockLeft: useRef(null),
     blockRight: useRef(null),
     blockDescription: useRef(null),
+    quoteBlockLeft: useRef(null),
+    quoteBlockRight: useRef(null),
     blockRightPhone: useRef(null),
     leftImg1: useRef(null),
     leftImg2: useRef(null),
@@ -61,6 +63,8 @@ const ArticleCard = () => {
     blockLeft,
     blockRight,
     blockDescription,
+    quoteBlockLeft,
+    quoteBlockRight,
     // blockRightPhone,
     leftImg1,
     leftImg2,
@@ -71,6 +75,8 @@ const ArticleCard = () => {
   const elementsRight = [
     // blockRightPhone.current,
     blockDescription.current,
+    quoteBlockLeft.current,
+    quoteBlockRight.current,
     blockLeft.current,
     blockRight.current,
     leftImg1.current,
@@ -179,9 +185,8 @@ const ArticleCard = () => {
   const previousArticle = articles[previousIndex];
   const nextArticle = articles[nextIndex];
 
-   // console.log(article, "===========================================");
-  console.log(articles, "+++++++++++++++++++++++++++++++++++++++++");
-
+  console.log(article, "===========================================");
+  // console.log(articles, "+++++++++++++++++++++++++++++++++++++++++");
   return (
     <div className={styles.main_article_card}>
       {article && <ArticleCardSlider slidesCard={[article]} />}
@@ -254,7 +259,7 @@ const ArticleCard = () => {
                 <div className={styles.author_name}>{article.author}</div>
                 <div className={styles.text_author}>Автор статьи</div>
               </div>
-             </div>
+            </div>
           </div>
           <div className={styles.blockImg}>
             <div className={styles.container}>
@@ -266,7 +271,43 @@ const ArticleCard = () => {
                   alt={article.imageOpen}
                 />
               </div>
+              <div className={styles.header_quote_container}>
               <div
+                ref={refs.quoteBlockLeft}
+                className={styles.quoteBlock_object_container}
+              >
+                    {article.QuoteBlocks.map((block, index) => (
+                  <div key={index} className={styles.quoteBlock_object_block}>
+                    <div className={styles.quoteBlock_object_text1}>
+                      {block.text}
+                    </div>
+                    <div className={styles.quoteBlock_object_title}>
+                      {block.title}
+                    </div>
+                  </div>
+                ))}
+              </div>
+              <div
+                ref={refs.quoteBlockRight}
+                className={styles.quoteBlock_object_container_avatar}
+              >
+                    {article.QuoteBlocks.map((block, index) => (
+                  <div key={index} className={styles.quoteBlock_object_block1}>
+                    <div className={styles.quoteBlock_object_avatar}>
+                    <img
+                  className={styles.container__imageAuthor_articleCard}
+                  src={`${Host}/images/imageArticle/${article.imageAuthor}`}
+                  alt={article.imageAuthor}
+                />
+                    </div>
+                    {/* <div className={styles.quoteBlock_object_title}>
+                      {block.title}
+                    </div> */}
+                  </div>
+                ))}
+              </div>
+              </div>
+              {/* <div
                 ref={refs.blockDescription}
                 className={styles.description_object_container}
               >
@@ -278,7 +319,7 @@ const ArticleCard = () => {
                     {article.textBlock}
                   </div>
                 </div>
-              </div>
+              </div> */}
               <div className={styles.item}>
                 {/* <img
                     ref={refs.leftImg2}
@@ -340,7 +381,7 @@ const ArticleCard = () => {
               </span>
             </button>
           </div>
-         
+
           <div className={styles.button_article_articleCard}>
             {previousArticle && (
               <Link
@@ -369,7 +410,6 @@ const ArticleCard = () => {
               </Link>
             )}
           </div>
-      
         </div>
       )}
       <div className={styles.article_name_text}>Ещё по теме</div>
@@ -404,21 +444,22 @@ const ArticleCard = () => {
             if (!article) {
               return null;
             }
-            
-            const imagePathsForArticle = article.imageTitle
-              .split(",").map((el) => el.trim());
 
-              const encodedFileName = encodeURIComponent(imagePathsForArticle[0]);
-              const firstImagePath = `${Host}/images/imageArticle/${encodedFileName}`;
-                
-                //  console.log(firstImagePath, "))))))))))))))))))))))))))");
+            const imagePathsForArticle = article.imageTitle
+              .split(",")
+              .map((el) => el.trim());
+
+            const encodedFileName = encodeURIComponent(imagePathsForArticle[0]);
+            const firstImagePath = `${Host}/images/imageArticle/${encodedFileName}`;
+
+            //  console.log(firstImagePath, "))))))))))))))))))))))))))");
             return (
               <SwiperSlide
                 key={article.id}
                 onScroll={handleScroll}
                 id="slider_container_item_card"
                 className={styles.slider_container_item_card_articleCard}
-               >
+              >
                 <Link to={`/publication/${article.id}`} key={article.id}>
                   <div
                     className={styles.wrapper_container_item_card_articleCard}
@@ -433,11 +474,10 @@ const ArticleCard = () => {
                     <div className={styles.container__title_articleCard}>
                       {article.title}
                     </div>
-                   
                   </div>
                   <div className={styles.countryCity_monthYear_articleCard}>
                     <div className={styles.container__countryCity_articleCard}>
-                    {article.city}{" "}
+                      {article.city}{" "}
                     </div>
                     <div
                       className={styles.cart_article__address__svg_articleCard}
@@ -464,8 +504,7 @@ const ArticleCard = () => {
       </div>
       <div className={styles.article_container_articleCard_sliderMobile}>
         <SliderContainerArticleCard articles={articles} />
-      </div>
-      {" "}
+      </div>{" "}
     </div>
   );
 };
