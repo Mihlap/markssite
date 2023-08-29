@@ -115,6 +115,14 @@
 .input_task_form_contacts:focus + .line {
   background-color: #FF7F6A;
 }
+#phone-input:focus + .line {
+  background-color: #FF7F6A;
+}
+
+/* .hidden {
+  display: none;
+} */
+
 
 .button_hover10 {
   margin-top: 2.77vh;
@@ -122,7 +130,7 @@
   height: 56px;
   border: 1px solid var(--black-1D2E43);
   border-radius: 66px;
-  background-color: transparent;
+  background-color: transparent !important;
 }
 
 .button_hover10:hover {
@@ -148,16 +156,15 @@
     color: var(--gray-959DA6);
   }
 
-  .button_hover12:disabled {
+  .button_hover10:disabled {
     background-color: var(--light-light-gray-EBECEE);
     pointer-events: none;
   }
 
-  .button_hover12:disabled:hover {
-    background-color: var(--light-light-gray-EBECEE);
-    cursor: default;
-    pointer-events: none;
-  }
+    .button_hover10:disabled:hover {
+      background-color: var(--light-light-gray-EBECEE);
+      cursor: default;
+    }
 
 .agreement {
   font-family: var(--font-raleway);
@@ -195,6 +202,7 @@
 }
 
 /* стили checkbox */
+
 .checkbox {
   position: relative;
 }

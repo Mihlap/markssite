@@ -1,8 +1,6 @@
 const express = require('express');
 require('dotenv').config();
-// const nodemailer = require("nodemailer");
 const morgan = require('morgan');
-// const axios = require('axios');
 const cors = require('cors');
 const path = require('path');
 const session = require('express-session');
@@ -38,7 +36,7 @@ const sessionConfig = {
 
 app.use(
   cors({
-    origin: 'http://localhost:3000',
+    origin: 'http://localhost:3000' || 'http://localhost:3001',
     credentials: true,
   }),
 );
@@ -49,6 +47,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/images/imageAdd', express.static(path.join(__dirname, 'images/imageAdd')));
+app.use('/public/assets', express.static(path.join(__dirname, 'assets')));
 app.use(session(sessionConfig));
 // app.use(express.static(path.join(__dirname, 'build')));
 

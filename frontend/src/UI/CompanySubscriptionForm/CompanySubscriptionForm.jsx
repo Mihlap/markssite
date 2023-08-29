@@ -2,12 +2,14 @@ import React, { useState } from "react";
 import styles from "./CompanySubscriptionForm.module.css";
 
 const isValidRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
+const Host = process.env.REACT_APP_SERVER_HOST;
 
 const CompanySubscriptionForm = () => {
   const [isFocused, setIsFocused] = useState(false);
   const [value, setValue] = useState("");
   const [isValid, setIsValid] = useState(true);
   const [showError, setShowError] = useState(false);
+  const [message, setMessage] = useState("");
 
   function handleFocus() {
     setIsFocused(true);
@@ -32,13 +34,35 @@ const CompanySubscriptionForm = () => {
     setShowError(false);
   }
 
-  function handleSubmit(event) {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const email = event.target.querySelector("#email-input").value;
     const isValid = isValidRegex.test(email);
     setIsValid(isValid);
     setShowError(!isValid);
-  }
+    if (!isValid) {
+      setShowError(true);
+      return;
+    }
+    try {
+      const response = await fetch(`${Host}/api-mail/subscribe`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      if (response.status === 200) {
+        setMessage("Вы успешно подписались на новости.");
+      } else {
+        setMessage("Произошла ошибка при подписке.");
+      }
+    } catch (error) {
+      setMessage("Произошла ошибка при подписке.");
+    }
+  };
+  
 
 //   const email = "dddd1@list.com";
 
@@ -86,6 +110,7 @@ const CompanySubscriptionForm = () => {
                   Некорректный Email
                 </span>
                 )} 
+                {/* {message && <div className={styles.message}>{message}</div>} */}
               </label>
             </div>
             <button
