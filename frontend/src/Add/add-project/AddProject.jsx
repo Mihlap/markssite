@@ -13,6 +13,22 @@ export default function AddProject({ project, user }) {
   const [isonCopy, seticonCopy] = useState(false);
   const [copiedId, setCopiedId] = useState("");
   const [deleteModalState, setDeleteModalState] = useState({});
+  const [modalBlockHeight, setModalBlockHeight] = useState("auto"); // Изначально высота будет автоматически рассчитываться
+
+  const updateModalBlockHeight = () => {
+    const windowHeight = window.innerHeight;
+    const maxHeight = Math.min(windowHeight - 100, 1900); // Примерное максимальное значение высоты
+
+    setModalBlockHeight(`${maxHeight}px`);
+  };
+
+   useEffect(() => {
+     updateModalBlockHeight();
+     window.addEventListener("resize", updateModalBlockHeight);
+     return () => {
+       window.removeEventListener("resize", updateModalBlockHeight);
+     };
+   }, []);
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -123,7 +139,10 @@ export default function AddProject({ project, user }) {
         </div>
         {isModalOpen && (
           <div className={styles.card_components_admin__modal_container}>
-            <div className={styles.card_components_admin__modal_block}>
+            <div
+              style={{ maxHeight: modalBlockHeight }}
+              className={styles.card_components_admin__modal_block}
+            >
               <FormAddProject
                 className={styles.formAddProjectClass}
                 setIsModalOpen={setIsModalOpen}
