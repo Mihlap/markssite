@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "nodemon server.js",
     "dev": "nodemon --exec babel-node server.js",
-    "build": "src --copy-files --out-dir dist",
+    "build": "npm i",
     "lint": "eslint .",
     "pre-db": "npx sequelize-cli db:seed:undo:all && npx sequelize-cli db:migrate:undo:all && npx sequelize-cli db:migrate && npx sequelize db:seed:all",
     "back-db": "npx sequelize-cli db:seed:undo:all && npx sequelize-cli db:migrate:undo:all"
