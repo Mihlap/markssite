@@ -64,7 +64,7 @@
   font-weight: var(--fw-300);
   font-size: 32px;
   line-height: 40px;
-  color: var(--black-1D2E43);
+  color: var(--black-3C3C3C);
   padding-top: 3.2vh;
   padding-left: 2.7vw;
   padding-bottom: 3.2vh;
@@ -78,21 +78,18 @@
   font-family: var(--font-unbounded);
   font-style: normal;
   font-weight: var(--fw-300);
-  font-size: 20px;
-  line-height: 28px;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
   color: var(--black-1D2E43);
-  padding-left: 50%;
   word-wrap: break-word;
   word-break: keep-all;
   width: 100%;
- padding-right: 0%;
- }
+  padding-left: 50%;
+}
 
 
 .text_span {
-  position: relative;
   display: flex;
-  flex-direction: column;
   align-items: flex-start;
   font-family: var(--font-unbounded);
   font-style: normal;
@@ -100,39 +97,41 @@
   font-size: 20px;
   line-height: 28px;
   color: var(--black_text);
-  width: 100%;
-  max-width: 90%;
-}
+   width: 100%;
+ }
+ .text_title_span {
+  display: flex;
+  width: 80%;
+ }
 
-.text_span .header_slider_span {
-  position: relative;
+ .header_slider_span {
+  display: flex;
   font-family: var(--font-raleway);
   font-style: normal;
   font-weight: var(--fw-400);
-  font-size: 14px;
-  line-height: 20px;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
   padding-bottom: 32px;
   padding-top: 8px;
-  width: 100%;
-  max-width: 80%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  word-break: break-all;
+  width: 80%;
   padding-right: 5rem;
-}
+  }
 
 
 .icon_slider_svg {
-  position: absolute;
   display: flex;
-  left: 30vw;
-  bottom: 3rem;
-  background-color: var(--black-1D2E43);
-  width: 1.5rem;
-  height: 1.5rem;
-  border-radius: 16px;
+   background-color: var(--black-1D2E43);
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 2rem;
   text-align: center;
   align-items: center;
   justify-content: center;
-  margin-left: 5rem;
-}
+  }
 
 .cub_img {
   position: absolute;
@@ -145,68 +144,53 @@
 
 @media screen and (min-width: 768px) and (max-width: 1024px) {
   .text_span {
-     padding-right: 4vw;
-     max-width: 90%;
+     padding-right: 2rem;
   }
-  
-.text_span .header_slider_span {
-  padding-right: 0rem;
-}
+  .header_slider_span {
+      width: 90%;
+    }
+
 }
 
 /* Стили для мобильной версии сайта блока BlockHeader начинаются тут */
 
 @media screen and (max-width: 767px) {
   .title {
-    font-family: 'Unbounded';
+    font-family: var(--font-unbounded);
     font-style: normal;
     font-weight: var(--fw-300);
-    font-size: 20px;
-    line-height: 28px;
-    color: var(--black-1D2E43);
-  }
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+   }
 
   .text {
-    font-weight: var(--fw-300);
-    font-size: 20px;
-    line-height: 28px;
+    font-weight: var(--fw-400);
+    font-size: 1.125rem;
+    line-height: 1.5rem; 
     color: var(--black-1D2E43);
     padding-left: 1rem;
     padding-right: 1rem;
-    width: 100%;
-  }
+    // width: 90%;
+     }
 
    .text_span {
-    font-weight: 400;
-    font-size: 14px;
-    line-height: 20px;
+    font-weight: var(--fw-400);
+    font-size: 0.875rem;
+    line-height: 1.25rem;
     font-feature-settings: 'pnum' on, 'lnum' on;
     overflow-x: auto;
-    width: 100%;
-    max-width: 100%;
-  }
+    }
 
-  .text_span .header_slider_span {
-    width: 100%;
-    max-width: 80%;
-    padding-right: 5rem;
+  .header_slider_span {
+    padding-right: 1rem;
     color: var(--black-1D2E43);
+    width: 100%;
   }
 
   .icon_slider_svg {
-    position: absolute;
-    display: flex;
-    left: 55vw;
-    bottom: 3rem;
-    background-color: var(--black-1D2E43);
-    width: 1.5rem;
-    height: 1.5rem;
-    border-radius: 16px;
-    text-align: center;
-    align-items: center;
-    justify-content: center;
-    margin-left: 4rem;
-    }
+    width: 2rem;
+    height: 2rem;
+  }
 
 
   .cub_img {

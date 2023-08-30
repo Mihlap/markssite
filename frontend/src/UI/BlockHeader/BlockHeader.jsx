@@ -4,7 +4,8 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { CSSPlugin } from "gsap/CSSPlugin";
 import "./BlockHeader.scss";
 
-import mySvg from '../../Header/img/slider_block_header_icon.svg';
+import mySvg from "../../Header/img/slider_block_header_icon.svg";
+import { Link } from "react-router-dom";
 
 const BlockHeader = () => {
   const accordionsRef = useRef(null);
@@ -107,106 +108,127 @@ const BlockHeader = () => {
           <div className="title">Архитектура</div>
           {/* <img className="cub_img" src={cub} alt="logo"/> */}
           <div className="text">
+            <span className="text_title_span">Архитектура и концепции</span>
             <div className="text_span">
-              Архитектура и концепции
               <span className="header_slider_span">
-                <div className="icon_slider_svg">
-                <img src={mySvg} alt="My SVG" />         
-                </div>
                 Разработка концепции, архитектурное проектирование - от идеи до
                 ввода объекта в эксплуатацию
               </span>
+              <Link to={"./project"} className="icon_slider_svg">
+                <img src={mySvg} alt="My SVG" />
+              </Link>
+            </div>
+            <span className="text_title_span">
               Адаптация зарубежных концепций
+            </span>
+            <div className="text_span">
               <span className="header_slider_span">
-                <div className="icon_slider_svg">
-                <img src={mySvg} alt="My SVG" />         
-                </div>
                 Подготовка проектной и рабочей документации на базе
                 архитектурного/инжинерного решения
               </span>
-              Дизайн-проекты
+              <Link to={"./project"} className="icon_slider_svg">
+                <img src={mySvg} alt="My SVG" />
+              </Link>
+            </div>
+            <span className="text_title_span">Дизайн-проекты</span>
+            <div className="text_span">
               <span className="header_slider_span">
-                <div className="icon_slider_svg">
-                <img src={mySvg} alt="My SVG" />         
-                </div>
                 Для жилых и общественных помещений. Авторский надзор, ЗD -
                 моделирование, VR - визуализация
               </span>
+              <Link to={"./project"} className="icon_slider_svg">
+                <img src={mySvg} alt="My SVG" />
+              </Link>
+            </div>
+            <span className="text_title_span">
               Проектная и рабочая документация
+            </span>
+            <div className="text_span">
               <span className="header_slider_span">
-                <div className="icon_slider_svg">
-                <img src={mySvg} alt="My SVG" />         
-                </div>
                 Прохождение экспертизы, авторский надзор, сопровождение
                 строительства
               </span>
+              <Link to={"./project"} className="icon_slider_svg">
+                <img src={mySvg} alt="My SVG" />
+              </Link>
             </div>
           </div>
         </div>
         <div className="accordion">
           <div className="title">Конструктив</div>
           <div className="text">
+            <span className="text_title_span">Инженерное проектирование</span>
             <div className="text_span">
-              Инженерное проектирование
-              <span className="header_slider_span"> 
-                <div className="icon_slider_svg">
-                <img src={mySvg} alt="My SVG" />         
-                </div>
+              <span className="header_slider_span">
                 Разработка внутренних и наружных инженерных коммуникаций
               </span>
+              <Link to={"./project"} className="icon_slider_svg">
+                <img src={mySvg} alt="My SVG" />
+              </Link>
+            </div>
+            <span className="text_title_span">
               Подземные транспортные сооружения
+            </span>
+            <div className="text_span">
               <span className="header_slider_span">
-                <div className="icon_slider_svg">
-                <img src={mySvg} alt="My SVG" />         
-                </div>
                 Проекты освоения подземного пространства для уникальных особо
                 сложных объектов строительства
               </span>
+              <Link to={"./project"} className="icon_slider_svg">
+                <img src={mySvg} alt="My SVG" />
+              </Link>
+            </div>
+            <span className="text_title_span">
               Управление линейными объектами
-              <div className="icon_slider_svg">
-                <img src={mySvg} alt="My SVG" />         
-                </div>
-              <span className="header_slider_span">Проектирование транспортных объектов и инфраструктуры
-              </span>
-              Конструктивные решения
+            </span>
+            <div className="text_span">
               <span className="header_slider_span">
-                <div className="icon_slider_svg">
-                <img src={mySvg} alt="My SVG" />         
-                </div>
+                Проектирование транспортных объектов и инфраструктуры
+              </span>
+              <Link to={"./project"} className="icon_slider_svg">
+                <img src={mySvg} alt="My SVG" />
+              </Link>
+            </div>
+            <span className="text_title_span">Конструктивные решения</span>
+            <div className="text_span">
+              <span className="header_slider_span">
                 Разработка полного комплекса документации на всех стадиях
                 жизненного цикла проекта
               </span>
+              <Link to={"./project"} className="icon_slider_svg">
+                <img src={mySvg} alt="My SVG" />
+              </Link>
             </div>
           </div>
         </div>
         <div className="accordion">
           <div className="title">Наука</div>
           <div className="text">
+            <span className="text_title_span">Научно-техническое сопровождение</span>
             <div className="text_span">
-              Научно-техническое сопровождение
               <span className="header_slider_span">
-                <div className="icon_slider_svg">
-                <img src={mySvg} alt="My SVG" />         
-                </div>
                 Расчетное сопровождение проектирования и строительства любой
                 сложности
               </span>
+                <Link to={"./project"} className="icon_slider_svg">
+                  <img src={mySvg} alt="My SVG" />
+                </Link>
             </div>
           </div>
         </div>
         <div className="accordion">
           <div className="title">Digital</div>
           <div className="text">
+            <span className="text_title_span">BIM моделирование</span>
             <div className="text_span">
-              BIM моделирование
-                <div className="icon_slider_svg">
-                <img src={mySvg} alt="My SVG" />         
-                </div>
               <span className="header_slider_span">
                 Разработка программного обеспечения, инфраструктуры и методик в
                 цифровой среде для инженерного проектирования, девелопмента и
                 строительства
               </span>
+              <Link to={"./project"} className="icon_slider_svg">
+                <img src={mySvg} alt="My SVG" />
+              </Link>
             </div>
           </div>
         </div>
