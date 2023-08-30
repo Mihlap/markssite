@@ -46,14 +46,19 @@ const ArticleCard = () => {
     author: useRef(null),
     blockLeft: useRef(null),
     blockRight: useRef(null),
+    frameBlock: useRef(null),
+    blockHeadingTitle: useRef(null),
+    imageToDescriptionArticle: useRef(null),
+    imageClose: useRef(null),
+    address_imageClose: useRef(null),
     blockDescription: useRef(null),
     quoteBlockLeft: useRef(null),
     quoteBlockRight: useRef(null),
     blockRightPhone: useRef(null),
-    leftImg1: useRef(null),
-    leftImg2: useRef(null),
-    leftImg3: useRef(null),
-    leftImg4: useRef(null),
+    // leftImg1: useRef(null),
+    // leftImg2: useRef(null),
+    // leftImg3: useRef(null),
+    // leftImg4: useRef(null),
   };
 
   const {
@@ -65,11 +70,16 @@ const ArticleCard = () => {
     blockDescription,
     quoteBlockLeft,
     quoteBlockRight,
+    frameBlock,
+    blockHeadingTitle,
+    imageToDescriptionArticle,
+    imageClose,
+    address_imageClose,
     // blockRightPhone,
-    leftImg1,
-    leftImg2,
-    leftImg3,
-    leftImg4,
+    // leftImg1,
+    // leftImg2,
+    // leftImg3,
+    // leftImg4,
   } = refs;
 
   const elementsRight = [
@@ -77,12 +87,17 @@ const ArticleCard = () => {
     blockDescription.current,
     quoteBlockLeft.current,
     quoteBlockRight.current,
+    frameBlock.current,
+    blockHeadingTitle.current,
+    imageToDescriptionArticle.current,
+    imageClose.current,
+    address_imageClose.current,
     blockLeft.current,
     blockRight.current,
-    leftImg1.current,
-    leftImg2.current,
-    leftImg3.current,
-    leftImg4.current,
+    // leftImg1.current,
+    // leftImg2.current,
+    // leftImg3.current,
+    // leftImg4.current,
   ];
 
   useEffect(() => {
@@ -186,7 +201,7 @@ const ArticleCard = () => {
   const nextArticle = articles[nextIndex];
 
   console.log(article, "===========================================");
-  // console.log(articles, "+++++++++++++++++++++++++++++++++++++++++");
+
   return (
     <div className={styles.main_article_card}>
       {article && <ArticleCardSlider slidesCard={[article]} />}
@@ -272,81 +287,147 @@ const ArticleCard = () => {
                 />
               </div>
               <div className={styles.header_quote_container}>
-              <div
-                ref={refs.quoteBlockLeft}
-                className={styles.quoteBlock_object_container}
-              >
-                    {article.QuoteBlocks.map((block, index) => (
-                  <div key={index} className={styles.quoteBlock_object_block}>
-                    <div className={styles.quoteBlock_object_text1}>
-                      {block.text}
+                <div
+                  ref={refs.quoteBlockLeft}
+                  className={styles.quoteBlock_object_container}
+                >
+                  {article.QuoteBlocks.map((block, index) => (
+                    <div key={index} className={styles.quoteBlock_object_block}>
+                      <div className={styles.quoteBlock_object_text1}>
+                        {block.text}
+                      </div>
+                      <div className={styles.quoteBlock_object_title}>
+                        {block.title}
+                      </div>
                     </div>
-                    <div className={styles.quoteBlock_object_title}>
-                      {block.title}
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div
-                ref={refs.quoteBlockRight}
-                className={styles.quoteBlock_object_container_avatar}
-              >
-                    {article.QuoteBlocks.map((block, index) => (
-                  <div key={index} className={styles.quoteBlock_object_block1}>
-                    <div className={styles.quoteBlock_object_avatar}>
-                    <img
-                  className={styles.container__imageAuthor_articleCard}
-                  src={`${Host}/images/imageArticle/${article.imageAuthor}`}
-                  alt={article.imageAuthor}
-                />
-                    </div>
-                    {/* <div className={styles.quoteBlock_object_title}>
+                  ))}
+                </div>
+                <div
+                  ref={refs.quoteBlockRight}
+                  className={styles.quoteBlock_object_container_avatar}
+                >
+                  {article.QuoteBlocks.map((block, index) => (
+                    <div
+                      key={index}
+                      className={styles.quoteBlock_object_block1}
+                    >
+                      <div className={styles.quoteBlock_object_avatar}>
+                        <img
+                          className={styles.container__imageAuthor_articleCard}
+                          src={`${Host}/images/imageArticle/${block.avatar}`}
+                          alt={block.avatar}
+                        />
+                      </div>
+
+                      {/* <div className={styles.quoteBlock_object_title}>
                       {block.title}
                     </div> */}
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div
+                ref={refs.frameBlock}
+                className={styles.frameBlock_object_container}
+              >
+                {article.FrameBlocks.map((block, index) => (
+                  <div key={index} className={styles.frameBlock_object_block}>
+                    <div className={styles.frameBlock_object_text}>
+                      {block.text}
+                    </div>
                   </div>
                 ))}
               </div>
-              </div>
-              {/* <div
-                ref={refs.blockDescription}
-                className={styles.description_object_container}
+              <div
+                ref={refs.blockHeadingTitle}
+                className={styles.blockHeadingTitle_object_container}
               >
-                <div className={styles.description_object_block}>
-                  <div className={styles.description_object_title}>
-                    {article.title}
+                {article.BlockHeadingTitles.map((block, index) => (
+                  <div
+                    key={index}
+                    className={styles.blockHeadingTitle_object_block}
+                  >
+                    <div className={styles.blockHeadingTitle_object_title}>
+                      {block.title}
+                    </div>
+                    <div className={styles.blockHeadingTitle_object_text}>
+                      {block.text}
+                    </div>
                   </div>
-                  <div className={styles.description_object_text1}>
-                    {article.textBlock}
+                ))}
+              </div>
+              <div
+                ref={refs.imageToDescriptionArticle}
+                className={styles.imageToDescriptionArticle_container}
+              >
+                {article.ImageToDescriptionArticles.map((block, index) => (
+                  <div
+                    key={index}
+                    className={styles.imageToDescriptionArticle_block}
+                  >
+                    <div className={styles.item_imageToDescriptionArticle}>
+                      <img
+                        className={styles.item_img}
+                        src={`${Host}/images/imageArticle/${block.image}`}
+                        alt={block.image}
+                      />
+                    </div>
+
+                    <div className={styles.imageToDescriptionArticle_title}>
+                      {block.text}
+                    </div>
+                  </div>
+                ))}
+                <div
+                  className={styles.item_container_imageClose}
+                  ref={refs.imageClose}
+                >
+                  <div className={styles.item}>
+                    <img
+                      className={styles.item_img}
+                      src={`${Host}/images/imageArticle/${article.imageClose}`}
+                      alt={article.imageClose}
+                    />
                   </div>
                 </div>
-              </div> */}
-              <div className={styles.item}>
-                {/* <img
-                    ref={refs.leftImg2}
-                    className={styles.item_img}
-                    src={img2}
-                    alt=""
-                  /> */}
-              </div>
-              <div className={styles.item}>
-                {/* <img
-                    ref={refs.leftImg3}
-                    className={`${styles.item_img} ${styles.item_img_latest}`}
-                    src={img3}
-                    alt=""
-                  /> */}
-              </div>
-              <div className={styles.item}>
-                {/* <img
-                    ref={refs.leftImg4}
-                    className={styles.item_img}
-                    src={`${Host}/images/imageAdd/${project.imageClose}`}
-                    alt={project.imageClose}
-                  /> */}
               </div>
             </div>
           </div>
-          <div className={styles.share_article}>Поделиться статьёй</div>
+          <div className={styles.container_author_address_imageClose_share_article}> 
+                <div className={styles.container_author_address_imageClose} ref={refs.address_imageClose}>
+                  <div
+                    className={
+                      styles.cart_article__author__block__card_imageClose
+                    }
+                  >
+                    {article.author}
+                  </div>
+                  <div
+                    className={
+                      styles.cart_article__address__block__card_imageClose
+                    }
+                  >
+                    {article.city}{" "}
+                    <div
+                      className={
+                        styles.cart_article__address__svg__block__card_imageClose
+                      }
+                    >
+                       <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="2"
+                    height="2"
+                    viewBox="0 0 2 2"
+                    fill="none"
+                  >
+                    <circle cx="1" cy="1" r="1" fill="#959DA6" />
+                  </svg>{" "}
+                    </div>
+                    {article.dataMonthYear}
+                   </div>
+                </div>
+          <div className={styles.share_article}>Поделиться статьей</div>
+          </div>
           <div id="articles" className={styles.social_links_articleCard}>
             <button onClick={() => shareToVK(article, Host)}>
               <span
