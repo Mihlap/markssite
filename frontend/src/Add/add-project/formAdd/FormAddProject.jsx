@@ -436,7 +436,7 @@ export default function FormAddProject({ setIsModalOpen }) {
           </label>
         </div>
         <div className={styles.preview_photos_container}>
-          {previewPhotos.map((preview, index) => (
+            {previewPhotos.map((preview, index) => (
             <div key={index} className={styles.preview_photos_container__block}>
               <img
                 className={styles.preview_photos_container__img}
