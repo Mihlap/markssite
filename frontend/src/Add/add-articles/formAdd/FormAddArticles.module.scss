@@ -439,12 +439,13 @@
 
 .preview_photos_container {
 
-    // display: flex;
+    display: flex;
     flex-wrap: wrap;
     gap: 10px;
 
     &__block {
         position: relative;
+        flex-basis: 48%;
     }
 
     &__img {
@@ -474,7 +475,7 @@
 
         span {
             position: absolute;
-            top: 50%;
+            top: 52%;
             left: 50%;
             width: 2px;
             height: 23px;

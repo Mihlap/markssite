@@ -311,7 +311,6 @@ export default function FormAddArticles({ setIsModalOpen }) {
         </div>
 
         <div className={styles.preview_photos_container}>
-          <div className={styles.preview_photos_container__preview_block}>
           {previewPhotos.map((preview, index) => (
             <div key={index} className={styles.preview_photos_container__block}>
               <img
@@ -328,7 +327,6 @@ export default function FormAddArticles({ setIsModalOpen }) {
             </div>
           ))}
           </div>
-        </div>
         <div className={styles.form_container__heading_block}>
           <input
             type="input"
