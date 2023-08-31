@@ -123,7 +123,7 @@ export const getFetchForm = () => async (dispatch) => {
   }
 };
 
-export const getFetchFormFilter = (page, projectsPerPage, viewConstruction) => async (dispatch) => {
+export const getFetchFormFilter = (page, projectsPerPage, viewConstruction, competency = "") => async (dispatch) => {
   dispatch(fetchProjectStart());
 
   try {

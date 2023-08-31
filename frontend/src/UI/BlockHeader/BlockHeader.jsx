@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 
 const BlockHeader = () => {
   const accordionsRef = useRef(null);
-
+ 
   gsap.registerPlugin(ScrollTrigger, CSSPlugin);
 
   useEffect(() => {
@@ -114,7 +114,7 @@ const BlockHeader = () => {
                 Разработка концепции, архитектурное проектирование - от идеи до
                 ввода объекта в эксплуатацию
               </span>
-              <Link to={"./project"} className="icon_slider_svg">
+             <Link to={"./project?viewConstruction===Конструкции"} className="icon_slider_svg">
                 <img src={mySvg} alt="My SVG" />
               </Link>
             </div>
@@ -210,7 +210,7 @@ const BlockHeader = () => {
                 Расчетное сопровождение проектирования и строительства любой
                 сложности
               </span>
-                <Link to={"./project"} className="icon_slider_svg">
+                <Link to={"./publication"} className="icon_slider_svg">
                   <img src={mySvg} alt="My SVG" />
                 </Link>
             </div>
