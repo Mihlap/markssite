@@ -413,7 +413,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
             Загрузить изображения
           </div>
         </label>
-        <div className={styles.preview_photos_container}>
+        <div>
           {previewPhotoAva?.map((preview, index) => (
             <div key={index} className={styles.preview_photos_container__block}>
               <img
@@ -462,7 +462,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
             Загрузить изображения
           </div>
         </label>
-        <div className={styles.preview_photos_container}>
+        <div>
           {previewPhotoOpen?.map((preview, index) => (
             <div key={index} className={styles.preview_photos_container__block}>
               <img
@@ -543,7 +543,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
             Загрузить изображения
           </div>
         </label>
-        <div className={styles.preview_photos_container}>
+        <div>
           {previewPhotoClose?.map((preview, index) => (
             <div key={index} className={styles.preview_photos_container__block}>
               <img

@@ -16,13 +16,15 @@
 
     &__block_form {
         height: 88vh;
-        padding-bottom: 6rem;
+        padding-bottom: 15rem;
         overflow-y: auto;
     }
 
     &__radio_container {
         display: flex;
         gap: 1rem;
+        padding-top: 10px;
+        padding-left: 4px;
     }
 
     &__block_gray_one {
