@@ -50,8 +50,8 @@ router.post(
          ? req.files.quoteBlockAvatar[0].filename
          : null;
 
-      console.log(imageCloses, '<<--imageCloses');
-      console.log(quoteBlockAvatars, '<<--quoteBlockAvatars');
+      // console.log(imageCloses, '<<--imageCloses');
+      // console.log(quoteBlockAvatars, '<<--quoteBlockAvatars');
 
       const createdArticle = await Articles.create({
         title: req.body.title,

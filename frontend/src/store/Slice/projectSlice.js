@@ -103,6 +103,7 @@ for (const key in formattedData) {
       awards: "",
       imageOpen: [],
       textBlock: "",
+      imageClose: [],
     });
     dispatch(getFetchForm()); // Добавлен этот вызов для получения обновленных данных после успешной отправки формы
     });
