@@ -228,7 +228,7 @@
 
 .company_group_slider {
   padding-left: 1.87vw;
-  padding-right: 1.87vw;
+  /* padding-right: 1.87vw; */
 }
 
 .awards_wrapper {
@@ -621,10 +621,9 @@
   }
 
   .company_group_slider {
-    padding-left: 0;
-    padding-right: 0;
+    padding-left: 3.6vw;
+    /* padding-right: 1.87vw; */
   }
-
   .awards_wrapper {
     font-size: 32px;
     line-height: 40px;
@@ -914,7 +913,7 @@
 
   .company_group_slider {
     padding-left: 1rem;
-    padding-right: 0;
+    /* padding-right: 0; */
   }
 
   .awards_wrapper {

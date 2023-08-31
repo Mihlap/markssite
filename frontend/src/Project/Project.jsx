@@ -19,6 +19,7 @@ import "../UI/ButtonsProjects/AllProjectsButton.module.css";
 const Host = process.env.REACT_APP_SERVER_HOST;
 
 export default function Project() {
+ 
   const buttonChoose = [
     "Все",
     "Автодорожные",
@@ -51,6 +52,7 @@ export default function Project() {
     Инженерия: "#90B734",
   };
 
+
   const dispatch = useDispatch();
   const projects = useSelector((state) => state.project.projects);
   const selectedViewConstruction = useSelector(
@@ -77,7 +79,9 @@ export default function Project() {
   const projectsPerPage = 100;
   const isMobileScreen = screenWidth <= 768;
 
+ 
   const handleResize = () => {
+   
     setScreenWidth(window.innerWidth);
   };
   console.log(projects);
@@ -142,7 +146,7 @@ export default function Project() {
   }
 
   const handleButtonClick = (viewConstruction) => {
-    if (
+     if (
       selectedCity !== "" ||
       selectedViewConstruction !== viewConstruction ||
       selectedViewConstruction === viewConstruction
@@ -177,11 +181,6 @@ export default function Project() {
     setCurrentPage(1);
     setSelectOnCompetencies("");
   };
-
-  // const handleShowButtonAll = (e) => {
-  //   e.preventDefault();
-  //   setShowButton((prevShowButton) => !prevShowButton);
-  // };
 
   const handleSelectCityClick = (e) => {
     e.preventDefault();
@@ -237,7 +236,7 @@ export default function Project() {
   }, []);
 
   const filteredProjects = projects
-    .filter((project) =>
+     .filter((project) =>
       selectOnCompetencies === "Все"
         ? true
         : project.selectCompetencies?.includes(selectOnCompetencies)
@@ -257,6 +256,8 @@ export default function Project() {
         (selectedCity === "" || projectCity === selectedCity?.toLowerCase())
       );
     });
+
+    console.log(filteredProjects, "9999999999999999999999999999999999");
 
   return (
     <div className={styles.project_main}>
@@ -373,7 +374,7 @@ export default function Project() {
                 }`}
               >
                 <button
-                  className={`${styles.menu__button__allProject} ${
+                 className={`${styles.menu__button__allProject} ${
                     !isModalProjectOpen &&
                     (el === selectedViewConstruction ||
                       (index === 0 && !selectedViewConstruction))

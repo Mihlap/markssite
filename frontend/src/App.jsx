@@ -81,7 +81,7 @@ useEffect(() => {
               <Routes location={location}>
                 <Route path="/" element={<Header user={user} />} />
                 {/* <Route path="/competention" element={<Competentions />} /> */}
-                <Route path="/project" element={<Project />} />
+                <Route path="/project/" element={<Project />} />
                 <Route path="/projects/:id" element={<ProjectCard />} />
                 <Route path="/company" element={<Company />} />
                 <Route path="/publication" element={<Publics />} />
