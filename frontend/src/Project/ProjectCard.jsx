@@ -188,7 +188,7 @@ const ProjectCard = () => {
   const previousProject = projects[previousIndex];
   const nextProject = projects[nextIndex];
 
-  console.log(project, "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww");
+   console.log(project, "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww");
 
   return (
     <>
