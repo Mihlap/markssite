@@ -9,9 +9,10 @@ import { Link } from "react-router-dom";
 
 const BlockHeader = () => {
   const accordionsRef = useRef(null);
- 
+  
   gsap.registerPlugin(ScrollTrigger, CSSPlugin);
 
+ 
   useEffect(() => {
     const isMobileScreen = window.innerWidth < 700;
     const accordions = document.querySelectorAll(".accordion");
@@ -100,6 +101,7 @@ const BlockHeader = () => {
     }
   }, []);
 
+ 
   return (
     <div className="wrapper">
       <div className="spacer"></div>
@@ -114,7 +116,7 @@ const BlockHeader = () => {
                 Разработка концепции, архитектурное проектирование - от идеи до
                 ввода объекта в эксплуатацию
               </span>
-             <Link to={"./project?viewConstruction===Конструкции"} className="icon_slider_svg">
+             <Link to={`/project?viewConstruction=Архитектура`} className="icon_slider_svg">
                 <img src={mySvg} alt="My SVG" />
               </Link>
             </div>
@@ -126,7 +128,7 @@ const BlockHeader = () => {
                 Подготовка проектной и рабочей документации на базе
                 архитектурного/инжинерного решения
               </span>
-              <Link to={"./project"} className="icon_slider_svg">
+              <Link to={`/project?viewConstruction=Конструкции`} className="icon_slider_svg">
                 <img src={mySvg} alt="My SVG" />
               </Link>
             </div>
@@ -136,7 +138,7 @@ const BlockHeader = () => {
                 Для жилых и общественных помещений. Авторский надзор, ЗD -
                 моделирование, VR - визуализация
               </span>
-              <Link to={"./project"} className="icon_slider_svg">
+              <Link tto={`/project`} className="icon_slider_svg">
                 <img src={mySvg} alt="My SVG" />
               </Link>
             </div>
@@ -148,7 +150,7 @@ const BlockHeader = () => {
                 Прохождение экспертизы, авторский надзор, сопровождение
                 строительства
               </span>
-              <Link to={"./project"} className="icon_slider_svg">
+              <Link to={"./project?viewConstruction=BIM"} className="icon_slider_svg">
                 <img src={mySvg} alt="My SVG" />
               </Link>
             </div>
