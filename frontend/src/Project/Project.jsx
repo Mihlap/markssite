@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import Modal from "react-modal";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Swiper, SwiperSlide } from "swiper/react";
 import styles from "./Project.module.css";
@@ -19,8 +19,8 @@ import "../UI/ButtonsProjects/AllProjectsButton.module.css";
 const Host = process.env.REACT_APP_SERVER_HOST;
 
 export default function Project() {
- 
-  const buttonChoose = [
+
+    const buttonChoose = [
     "Все",
     "Автодорожные",
     "Тоннели",
@@ -52,6 +52,9 @@ export default function Project() {
     Инженерия: "#90B734",
   };
 
+    const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const category = queryParams.get("viewConstruction");
 
   const dispatch = useDispatch();
   const projects = useSelector((state) => state.project.projects);
@@ -72,20 +75,18 @@ export default function Project() {
   const [isTyping, setIsTyping] = useState(false);
   const [value, setValue] = useState("");
   const addressInputRef = useRef(null);
-  const [selectOnCompetencies, setSelectOnCompetencies] = useState("Все");
+  const [selectOnCompetencies, setSelectOnCompetencies] = useState(category || "Все");
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [swiper, setSwiper] = useState(null);
+  const navigate = useNavigate();
 
   const projectsPerPage = 100;
   const isMobileScreen = screenWidth <= 768;
 
- 
   const handleResize = () => {
-   
     setScreenWidth(window.innerWidth);
   };
-  console.log(projects);
-
+    
   useEffect(() => {
     window.addEventListener("resize", handleResize);
     return () => {
@@ -94,11 +95,12 @@ export default function Project() {
   }, []);
 
   useEffect(() => {
+    dispatch(setSelectedViewConstruction(category || "Все"));
     dispatch(getFetchFormFilter(projectsPerPage, selectedViewConstruction));
     dispatch(getFetchFormCityFilter(projectsPerPage, selectedCity));
     dispatch(getFetchFormLocationFilter(projectsPerPage, selectedLocation));
     setLoading(false);
-  }, [dispatch, projectsPerPage]);
+  }, [dispatch, projectsPerPage, location, category]);
 
   useEffect(() => {
     getUserGeolocation()
@@ -146,9 +148,10 @@ export default function Project() {
   }
 
   const handleButtonClick = (viewConstruction) => {
-     if (
+      if (
       selectedCity !== "" ||
-      selectedViewConstruction !== viewConstruction ||
+      selectedViewConstruction !== viewConstruction 
+      ||
       selectedViewConstruction === viewConstruction
     ) {
       dispatch(setSelectedCity(""));
@@ -156,19 +159,20 @@ export default function Project() {
       dispatch(
         getFetchFormFilter(currentPage, projectsPerPage, viewConstruction)
       );
-      setCurrentPage(1);
-      setValue("");
-      setIsTyping(false);
-      setSelectedViewConstruction(viewConstruction);
-      setSelectOnCompetencies("");
-    } else {
+     } else {
       dispatch(setSelectedCity(""));
+      dispatch(setSelectedViewConstruction("")); 
       dispatch(getFetchFormFilter(currentPage, projectsPerPage, ""));
-      setCurrentPage(1);
-      setValue("");
-      setIsTyping(false);
-      setSelectOnCompetencies("Все");
-    }
+     }
+     setCurrentPage(1);
+  setValue("");
+  setIsTyping(false);
+  setSelectOnCompetencies(viewConstruction);
+  if (viewConstruction === "Все") {
+    navigate('/project');
+  } else {
+    navigate(`/project?viewConstruction=${viewConstruction}`);
+  }
   };
 
   const handleButtonCityClick = (countryCity) => {
@@ -235,12 +239,13 @@ export default function Project() {
     };
   }, []);
 
+   
   const filteredProjects = projects
-     .filter((project) =>
-      selectOnCompetencies === "Все"
-        ? true
-        : project.selectCompetencies?.includes(selectOnCompetencies)
-    )
+   .filter((project) =>
+    selectOnCompetencies === "Все"
+      ? true
+      : project.selectCompetencies?.includes(selectOnCompetencies)
+  )
     .filter((project) => {
       const projectCity = extractCityFromCountryCity(project.countryCity);
       return selectedCity === "" ? true : projectCity === selectedCity;
@@ -255,9 +260,16 @@ export default function Project() {
         projectLocation?.includes(searchValue) &&
         (selectedCity === "" || projectCity === selectedCity?.toLowerCase())
       );
+    })
+    .filter((project) => {
+      if (!category) {
+        return true; 
+      }
+          return project.viewConstruction?.toLowerCase() === category?.toLowerCase();
     });
+ 
 
-    console.log(filteredProjects, "9999999999999999999999999999999999");
+  console.log(filteredProjects, "9999999999999999999999999999999999");
 
   return (
     <div className={styles.project_main}>
@@ -374,7 +386,7 @@ export default function Project() {
                 }`}
               >
                 <button
-                 className={`${styles.menu__button__allProject} ${
+                  className={`${styles.menu__button__allProject} ${
                     !isModalProjectOpen &&
                     (el === selectedViewConstruction ||
                       (index === 0 && !selectedViewConstruction))
