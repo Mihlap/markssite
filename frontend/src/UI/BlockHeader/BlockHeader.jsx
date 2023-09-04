@@ -110,16 +110,19 @@ const BlockHeader = () => {
           <div className="title">Архитектура</div>
           {/* <img className="cub_img" src={cub} alt="logo"/> */}
           <div className="text">
+            <Link className="text_wrapper_accordion" to={`/project?viewConstruction=Архитектура`}>
             <span className="text_title_span">Архитектура и концепции</span>
             <div className="text_span">
               <span className="header_slider_span">
                 Разработка концепции, архитектурное проектирование - от идеи до
                 ввода объекта в эксплуатацию
               </span>
-             <Link to={`/project?viewConstruction=Архитектура`} className="icon_slider_svg">
+             <div className="icon_slider_svg">
                 <img src={mySvg} alt="My SVG" />
-              </Link>
+              </div>
             </div>
+            </Link>
+            <Link className="text_wrapper_accordion" to={`/project?viewConstruction=Конструкции`}>
             <span className="text_title_span">
               Адаптация зарубежных концепций
             </span>
@@ -128,20 +131,24 @@ const BlockHeader = () => {
                 Подготовка проектной и рабочей документации на базе
                 архитектурного/инжинерного решения
               </span>
-              <Link to={`/project?viewConstruction=Конструкции`} className="icon_slider_svg">
+              <div className="icon_slider_svg">
                 <img src={mySvg} alt="My SVG" />
-              </Link>
+              </div>
             </div>
+            </Link>
+            <Link className="text_wrapper_accordion" to={`/project`}>
             <span className="text_title_span">Дизайн-проекты</span>
             <div className="text_span">
               <span className="header_slider_span">
                 Для жилых и общественных помещений. Авторский надзор, ЗD -
                 моделирование, VR - визуализация
               </span>
-              <Link tto={`/project`} className="icon_slider_svg">
+              <div className="icon_slider_svg">
                 <img src={mySvg} alt="My SVG" />
-              </Link>
+              </div>
             </div>
+            </Link>
+            <Link className="text_wrapper_accordion" to={"./project?viewConstruction=BIM"}>
             <span className="text_title_span">
               Проектная и рабочая документация
             </span>
@@ -150,24 +157,28 @@ const BlockHeader = () => {
                 Прохождение экспертизы, авторский надзор, сопровождение
                 строительства
               </span>
-              <Link to={"./project?viewConstruction=BIM"} className="icon_slider_svg">
+              <div className="icon_slider_svg">
                 <img src={mySvg} alt="My SVG" />
-              </Link>
+              </div>
             </div>
+            </Link>
           </div>
         </div>
         <div className="accordion">
           <div className="title">Конструктив</div>
           <div className="text">
+            <Link className="text_wrapper_accordion" to={"./project"}>
             <span className="text_title_span">Инженерное проектирование</span>
             <div className="text_span">
               <span className="header_slider_span">
                 Разработка внутренних и наружных инженерных коммуникаций
               </span>
-              <Link to={"./project"} className="icon_slider_svg">
+              <div className="icon_slider_svg">
                 <img src={mySvg} alt="My SVG" />
-              </Link>
+              </div>
             </div>
+            </Link>
+            <Link className="text_wrapper_accordion" to={"./project"}>
             <span className="text_title_span">
               Подземные транспортные сооружения
             </span>
@@ -176,10 +187,12 @@ const BlockHeader = () => {
                 Проекты освоения подземного пространства для уникальных особо
                 сложных объектов строительства
               </span>
-              <Link to={"./project"} className="icon_slider_svg">
+              <div className="icon_slider_svg">
                 <img src={mySvg} alt="My SVG" />
-              </Link>
+              </div>
             </div>
+            </Link>
+            <Link className="text_wrapper_accordion" to={"./project"}>
             <span className="text_title_span">
               Управление линейными объектами
             </span>
@@ -187,40 +200,46 @@ const BlockHeader = () => {
               <span className="header_slider_span">
                 Проектирование транспортных объектов и инфраструктуры
               </span>
-              <Link to={"./project"} className="icon_slider_svg">
+              <div className="icon_slider_svg">
                 <img src={mySvg} alt="My SVG" />
-              </Link>
+              </div>
             </div>
+            </Link>
+            <Link className="text_wrapper_accordion" to={"./project"}>
             <span className="text_title_span">Конструктивные решения</span>
             <div className="text_span">
               <span className="header_slider_span">
                 Разработка полного комплекса документации на всех стадиях
                 жизненного цикла проекта
               </span>
-              <Link to={"./project"} className="icon_slider_svg">
+              <div className="icon_slider_svg">
                 <img src={mySvg} alt="My SVG" />
-              </Link>
+              </div>
             </div>
+            </Link>
           </div>
         </div>
         <div className="accordion">
           <div className="title">Наука</div>
           <div className="text">
+            <Link className="text_wrapper_accordion" to={"./publication"}>
             <span className="text_title_span">Научно-техническое сопровождение</span>
             <div className="text_span">
               <span className="header_slider_span">
                 Расчетное сопровождение проектирования и строительства любой
                 сложности
               </span>
-                <Link to={"./publication"} className="icon_slider_svg">
+                <div className="icon_slider_svg">
                   <img src={mySvg} alt="My SVG" />
-                </Link>
+                </div>
             </div>
+            </Link>
           </div>
         </div>
         <div className="accordion">
           <div className="title">Digital</div>
           <div className="text">
+            <Link className="text_wrapper_accordion" to={"./project"}>
             <span className="text_title_span">BIM моделирование</span>
             <div className="text_span">
               <span className="header_slider_span">
@@ -228,10 +247,11 @@ const BlockHeader = () => {
                 цифровой среде для инженерного проектирования, девелопмента и
                 строительства
               </span>
-              <Link to={"./project"} className="icon_slider_svg">
+              <div className="icon_slider_svg">
                 <img src={mySvg} alt="My SVG" />
-              </Link>
+              </div>
             </div>
+            </Link>
           </div>
         </div>
       </div>

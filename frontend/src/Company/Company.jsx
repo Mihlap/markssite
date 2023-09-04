@@ -74,7 +74,7 @@ export default function Company({ userId }) {
     large: "./assets/company_full.mp4",
     medium: "./assets/company_ipad.mp4",
     small: "./assets/company_mob.mp4",
-    };
+  };
 
   const isMobile = windowWidth <= 767;
   const symbol = "•";
@@ -628,8 +628,8 @@ export default function Company({ userId }) {
             </Modal>
           )}
         </ul>
-      </div>
-      {isMobile && (
+       </div>
+        {isMobile && (
         <div className={styles.slider_card_wrapper}>
           <Swiper
             className={styles.slider_card_container}
@@ -669,11 +669,14 @@ export default function Company({ userId }) {
             ))}
           </Swiper>
         </div>
-      )}
-      <div
+         )}
+        <div
         className="swiper_pagination"
-        style={{ paddingLeft: "1rem", paddingRight: "1rem" }}
-      >
+        style={{
+          paddingLeft: "1rem",
+          paddingRight: "1rem",
+         }}
+        >
         {staff &&
           staff.map((_, index) => (
             <button
@@ -682,10 +685,11 @@ export default function Company({ userId }) {
                 currentIndexCompany === index ? "active" : ""
               }`}
               onClick={() => handlePCardCompanyClick(index)}
+              
             />
           ))}
-      </div>
-      {!isMobile && (
+         </div>
+         {!isMobile && (
         <div className={styles.slider_card_wrapper}>
           <Swiper
             className={styles.slider_card_container}
@@ -718,32 +722,19 @@ export default function Company({ userId }) {
             ))}
           </Swiper>
         </div>
-      )}
-      <div className={styles.fon} ref={videoRef}>
-        <div className={styles.video_wrapper}>
-        {/* <video autoPlay loop muted className={styles.background_video}>
-          <source
-            src={videoSource.small}
-            type="video/mp4"
-            media="(max-width: 767px)"
-          />
-          <source
-            src={videoSource.medium}
-            type="video/mp4"
-            media="(max-width: 1024px)"
-          />
-          <source src={videoSource.large} type="video/mp4" />
-        </video> */}
-        <VideoPlayer videoSource={videoSource} />
-        <div className={styles.form_wrapper}>
-          <div className={styles.company_form_contacts_wrapper}>
-            <CompanyFormContacts />
+        )}
+        <div className={styles.fon} ref={videoRef}>
+          <div className={styles.video_wrapper}>
+            <VideoPlayer videoSource={videoSource} />
           </div>
-          <div className={styles.companySubscriptionForm_wrapper}>
-            <CompanySubscriptionForm />
-          </div>
-        </div>
-        </div>
+            <div className={styles.form_wrapper}>
+              <div className={styles.company_form_contacts_wrapper}>
+                <CompanyFormContacts />
+              </div>
+              <div className={styles.companySubscriptionForm_wrapper}>
+                <CompanySubscriptionForm />
+              </div>
+         </div>
       </div>
     </div>
   );
