@@ -107,7 +107,7 @@ for (const key in formattedData) {
     });
     dispatch(getFetchForm()); // Добавлен этот вызов для получения обновленных данных после успешной отправки формы
     });
-  console.log(formattedData, "REDUX");
+  console.log(formattedData, "<<<---REDUX");
 };
 
 export const getFetchForm = () => async (dispatch) => {

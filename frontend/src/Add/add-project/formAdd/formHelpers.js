@@ -146,7 +146,7 @@ export function changeHandler(
       setPreviewPhotoOpen(previewArray);
 
       event.target.style.display = "none";
-    } else if (event.target.name === "imageClose") {
+    }  else if (event.target.name === "imageClose") {
       const filesArrayOpen =
         event.target.files.length > 0 ? event.target.files : null;
       setInputData((prev) => ({

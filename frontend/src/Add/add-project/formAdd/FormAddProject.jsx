@@ -13,6 +13,7 @@ import {
 import customStyles from './customStyles';
 
 import icon from "./img/Frame4684.svg";
+import ConstructorPage from "../constructor/ConstructorPage";
 
 export default function FormAddProject({ setIsModalOpen }) {
   const dispatch = useDispatch();
@@ -29,8 +30,15 @@ export default function FormAddProject({ setIsModalOpen }) {
   const [isPhotoOpenVisible, setIsPhotoOpenVisible] = useState(true);
   const [isPhotoAvaVisible, setIsPhotoAvaVisible] = useState(true);
   const [isDropPhotoVisible, setIsDropPhotoVisible] = useState(true);
+  
+
+  // << ==== КОНСТУКТОР ==== >>
+  const [onenConstructor, setOpenConstructor] = useState(false);
+  const [blocks, setBlocks] = useState([]);
 
   const [selectedRadio, setSelectedRadio] = useState("28,28");
+
+  const [dynamicData, setDynamicData] = useState([]);
   const [inputData, setInputData] = useState({
     title: "",
     selectCompetencies: [],
@@ -119,6 +127,7 @@ export default function FormAddProject({ setIsModalOpen }) {
     e.preventDefault();
     const formattedData = {
       ...inputData,
+      dynamicBlocks: dynamicData,
       selectCompetencies: selectedCompetencies
         .map((option) => option.label)
         .join(","),
@@ -166,7 +175,150 @@ export default function FormAddProject({ setIsModalOpen }) {
     setIsModalOpen(false);
   };
 
-  console.log(inputData);
+
+  // << ============ КОНСТРУКТОР ============ >>
+  const handlerOpenConstructor = () => {
+    setOpenConstructor(!onenConstructor);
+  };
+
+ const handleClick = (inputs) => {
+   const newInputs = inputs.map((input) => ({ ...input, value: "" }));
+   setBlocks((prevState) => [...prevState, newInputs]);
+   setDynamicData((prevDynamicData) => [...prevDynamicData, newInputs]);
+ };
+
+  const handleDynamicInputChange = (blockIndex, inputIndex, value) => {
+    const newDynamicData = [...dynamicData];
+
+    if (!newDynamicData[blockIndex]) {
+      newDynamicData[blockIndex] = [];
+    }
+
+    if (!newDynamicData[blockIndex][inputIndex]) {
+      newDynamicData[blockIndex][inputIndex] = {
+        type: "",
+        label: "",
+        value: "",
+      };
+    }
+    newDynamicData[blockIndex][inputIndex].value = value;
+    setDynamicData(newDynamicData);
+  };
+  
+
+
+    const renderInputWithLabel = (inputType, labelText, blockIndex, inputIndex, key) => {
+      return (
+        <div key={inputIndex}>
+          {inputType === "text" && (
+            // <input type="text" />
+            <div className={styles.form_container__heading_block}>
+              <input
+                type="input"
+                className={`${styles.form_container__heading_block_input} ${styles.orange_color}`}
+                placeholder={labelText}
+                // name="titleTextBlock"
+                onChange={(e) =>
+                  handleDynamicInputChange(
+                    blockIndex,
+                    inputIndex,
+                    e.target.value
+                  )
+                }
+                id="titleTextBlock"
+                maxLength="56"
+              />
+              <label
+                htmlFor="titleTextBlock"
+                className={styles.form_container__heading_block_label}
+              >
+                {labelText}
+              </label>
+              <div
+                className={styles.form_container__heading_block_input_length}
+              >
+                {`${inputData.titleTextBlock.length}/56`}
+              </div>
+            </div>
+          )}
+          {inputType === "file" && (
+            // <input type="file" accept="image/*" />
+            <div key={inputIndex}>
+              <div className={styles.form_container__checkbox_block}>
+                <div>{labelText}</div>
+              </div>
+              <label
+                className={styles.slider_container__customFileUploadOrangeColor}
+              >
+                <input
+                  type="file"
+                  onChange={(e) =>
+                    handleDynamicInputChange(
+                      blockIndex,
+                      inputIndex,
+                      e.target.files
+                    )
+                  }
+                  style={{ display: isPhotoOpenVisible ? "block" : "none" }}
+                />
+                <div className={styles.slider_container__uploadIcon}>
+                  <img src={icon} alt="icon" />
+                </div>
+                <div className={styles.slider_container__uploadText}>
+                  Загрузить изображения
+                </div>
+              </label>
+            </div>
+          )}
+          {inputType === "textarea" && (
+            <div
+              key={inputIndex}
+              className={styles.form_container__description_text}
+            >
+              <div className={styles.form_container__textarea_length}>
+                {/* {`${inputData.descriptionArticle.length}/260`} */}
+              </div>
+              <textarea
+                className={`${styles.form_container__textarea} ${styles.orange_color}`}
+                // name="descriptionArticle"
+                onChange={(e) =>
+                  handleDynamicInputChange(
+                    blockIndex,
+                    inputIndex,
+                    e.target.value
+                  )
+                }
+                id="descriptionArticle"
+                cols="30"
+                rows="10"
+                placeholder={labelText}
+              ></textarea>
+              <label
+                htmlFor=""
+                className={styles.form_container__textarea_label}
+              >
+                {labelText}
+              </label>
+            </div>
+          )}
+          {/* <div className={styles.slider_container__uploadText}>{labelText}</div> */}
+        </div>
+      );
+    };
+
+  const renderInputs = (inputs, blockIndex) => {
+    return inputs.map((input, inputIndex) => {
+      return renderInputWithLabel(
+        input.type,
+        input.label,
+        blockIndex,
+        inputIndex
+      );
+    });
+  };
+
+  // console.log(inputData, "<<--inputData PROJECT");
+  // console.log(dynamicData, "<<--dynamicData");
   return (
     <div className={styles.form_container}>
       <div className={styles.form_container__title}>Новый проект</div>
@@ -281,11 +433,25 @@ export default function FormAddProject({ setIsModalOpen }) {
                 value={selectedViewConstruction}
                 onChange={setSelectedViewConstruction}
                 options={[
-                  { value: "Архитектура", label: "Архитектура" },
-                  { value: "BIM", label: "BIM" },
-                  { value: "Конструкции", label: "Конструкции" },
+                  { value: "Концепция", label: "Концепция" },
+                  {
+                    value: "Адаптация концепций ",
+                    label: "Адаптация концепций ",
+                  },
+                  { value: "Дизайн-проекты", label: "Дизайн-проекты" },
+                  { value: "Документация РП П", label: "Документация РП П" },
                   { value: "Инженерия", label: "Инженерия" },
-                  { value: "Дизайн", label: "Дизайн" },
+                  {
+                    value: "Подземные сооружения",
+                    label: "Подземные сооружения",
+                  },
+                  { value: "Линейные объекты", label: "Линейные объекты" },
+                  { value: "Конструктив", label: "Конструктив" },
+                  {
+                    value: "Научно-техническое сопровождение",
+                    label: "Научно-техническое сопровождение",
+                  },
+                  { value: "BIM", label: "BIM" },
                 ]}
                 className={styles.form__field}
                 placeholder="Выберите вид строительства"
@@ -500,7 +666,7 @@ export default function FormAddProject({ setIsModalOpen }) {
               htmlFor="titleTextBlock"
               className={styles.form_container__heading_block_label}
             >
-              Название проекта
+              Описание проекта
             </label>
             <div className={styles.form_container__heading_block_input_length}>
               {`${inputData.titleTextBlock.length}/56`}
@@ -537,7 +703,7 @@ export default function FormAddProject({ setIsModalOpen }) {
           <div className={styles.form_container__block_gray_one}>
             <div className={`${styles.form__group} ${styles.field}`}>
               <input
-                type="input"
+                type="number"
                 className={styles.form__field}
                 placeholder="totalArea"
                 name="totalArea"
@@ -556,15 +722,14 @@ export default function FormAddProject({ setIsModalOpen }) {
                     setIsPhotoOpenVisible
                   )
                 }
-                required
               />
               <label htmlFor="totalArea" className={styles.form__label}>
-                Общая площадь
+                Общая площадь, м²
               </label>
             </div>
             <div className={`${styles.form__group} ${styles.field}`}>
               <input
-                type="input"
+                type="number"
                 className={styles.form__field}
                 placeholder="siteArea"
                 name="siteArea"
@@ -585,12 +750,12 @@ export default function FormAddProject({ setIsModalOpen }) {
                 }
               />
               <label htmlFor="siteArea" className={styles.form__label}>
-                Площадь участка
+                Площадь участка, га
               </label>
             </div>
             <div className={`${styles.form__group} ${styles.field}`}>
               <input
-                type="input"
+                type="number"
                 className={styles.form__field}
                 placeholder="floors"
                 name="floors"
@@ -616,7 +781,7 @@ export default function FormAddProject({ setIsModalOpen }) {
             </div>
             <div className={`${styles.form__group} ${styles.field}`}>
               <input
-                type="input"
+                type="number"
                 className={styles.form__field}
                 placeholder="altitude"
                 name="altitude"
@@ -637,12 +802,12 @@ export default function FormAddProject({ setIsModalOpen }) {
                 }
               />
               <label htmlFor="altitude" className={styles.form__label}>
-                Высотность
+                Высотность, м
               </label>
             </div>
             <div className={`${styles.form__group} ${styles.field}`}>
               <input
-                type="input"
+                type="number"
                 className={styles.form__field}
                 placeholder="constructionVolume"
                 name="constructionVolume"
@@ -666,7 +831,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                 htmlFor="constructionVolume"
                 className={styles.form__label}
               >
-                Строительный объем
+                Строительный объем, м3
               </label>
             </div>
           </div>
@@ -1015,6 +1180,55 @@ export default function FormAddProject({ setIsModalOpen }) {
             >
               Текстовый блок
             </label>
+          </div>
+
+          <div className={styles.inputsContainer}>
+            {blocks.map((blockInputs, blockIndex) => (
+              <div key={blockIndex} className={styles.inputBlock}>
+                {renderInputs(blockInputs, blockIndex)}
+              </div>
+            ))}
+          </div>
+
+          <div className={styles.constructor_container}>
+            <div className={styles.constructor_container__block}>
+              {!onenConstructor ? (
+                <div className={styles.constructor_container__block_btn}>
+                  <button onClick={handlerOpenConstructor}>
+                    <svg
+                      className={styles.constructor_container__svg}
+                      width="41"
+                      height="40"
+                      viewBox="0 0 41 40"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <g id="icon">
+                        <circle
+                          id="Ellipse 4"
+                          cx="20.5"
+                          cy="20"
+                          r="20"
+                          fill="#FF7F6A"
+                        />
+                        <path
+                          id="Vector 10"
+                          d="M10.5 20H20.5M30.5 20H20.5M20.5 20V10M20.5 20V30"
+                          stroke="#F6F6F6"
+                          strokeWidth="2"
+                          strokeLinecap="square"
+                        />
+                      </g>
+                    </svg>
+                  </button>
+                  <div className={styles.constructor_container__text}>
+                    Добавить блок из библиотеки
+                  </div>
+                </div>
+              ) : (
+                <ConstructorPage handleClick={handleClick} />
+              )}
+            </div>
           </div>
           <div className={styles.form_container__checkbox_block}>
             <div>Закрывающая картинка</div>
