@@ -228,7 +228,7 @@
 
 .company_group_slider {
   padding-left: 1.87vw;
-  /* padding-right: 1.87vw; */
+   /* padding-right: 1.87vw; */
 }
 
 .awards_wrapper {
@@ -267,7 +267,7 @@
 }
 
 .specialist_wrapper {
-  padding-top: 173px;
+  padding-top: 6.25rem;
 }
 
 .specialist {
@@ -291,8 +291,7 @@
   display: inline-block;
   margin-right: 8px;
   width: auto;
-  height: 36px;
-  background: transparent;
+   background: transparent;
   border-radius: 34px;
   border: 1px solid var(--black-1D2E43);
   text-align: center;
@@ -316,15 +315,18 @@
 }
 
 .card_container {
-  padding-left: 1.87vw;
-  padding-right: 1.87vw;
+  position: relative;
+  /* z-index: 1; */
  }
 
 .card_container_ul {
   display: flex;
+  position: relative;
   flex-wrap: wrap;
   justify-content: space-between;
   width: 100%;
+  padding-left: 1.87vw;
+  padding-right: 1.87vw;
 }
 
 .container__item_stuff {
@@ -389,27 +391,26 @@
 }
 
 .fon {
-  display: flex;
-  position: relative;
-  width: 100%;
-  height: 100%; 
- }
+position: relative;
+  }
 
 .video_wrapper {
   width: 100%;
-  height: 100%;
-  object-fit: contain;
+  height: auto;
+  position: relative;
+   object-fit: contain;
   object-position: center;
   overflow: hidden;
-  padding-top: 2rem;
+  padding-top: 0rem;
+  z-index: 0;
 }
 
 .form_wrapper {
-  display: flex;
-  bottom: 3.37rem;
-  position: absolute;
-  z-index: 1;
- }
+display: flex;
+position: absolute;
+/* padding-top: 6.44rem; */
+ bottom: 3.38rem;
+}
 
 .company_form_contacts_wrapper {
   display: flex;
@@ -534,7 +535,12 @@
 }
 
 /* стили для планшетной версии  */
-@media screen and (min-width: 1025px) and (max-width: 1430px) {
+@media screen and (min-width: 1300px) and (max-width: 1500px) {
+  .video_wrapper {
+    padding-top: 6rem;
+  }  
+}
+@media screen and (min-width: 1025px) and (max-width: 1299px) {
   .video_wrapper {
     padding-top: 9rem;
   }  
@@ -680,16 +686,17 @@
   }
 
   .video_wrapper {
-   padding-top: 4rem;
+   padding-top: 2rem;
   }
   
 
   .form_wrapper {
-    position: absolute;
-    padding: 0rem 3.4vw 3.5rem 5.4vw;
-    bottom: 0rem;
+   padding-top: 0rem;
+   padding-bottom: 0rem;
+   padding-left: 5.4vw;
+   padding-right: 3vw;
   }
-
+    
   .company_form_contacts_wrapper {
     padding: 3.6rem 1.87vw 0rem 0vw;
     margin-top: 0;
@@ -742,6 +749,15 @@
   .video_wrapper {
     padding-top: 6rem;
   } 
+  .company_form_contacts_wrapper {
+    width: 100%;
+    padding-top: 3.6rem;
+    margin-top: 0;
+  }
+  .companySubscriptionForm_wrapper {
+    display: none;
+  }
+
 }
 
 
@@ -1081,12 +1097,13 @@
 
    .form_wrapper {
   padding: 0rem 1rem 0rem 1rem;
-  bottom: 0;
+  top: 0rem;
   }
   .video_wrapper {
     padding-top: 0rem;
+    height: 100%;
+    bottom: 0;
  }
-   
 
   .company_form_contacts_wrapper {
     width: 100%;
@@ -1115,6 +1132,10 @@
 @media screen and (min-width: 200px) and (max-width: 340px) {
   .video_wrapper {
     padding-top: 8rem;
- }
+    }
+    .form_wrapper {
+      padding: 0rem 1rem 0rem 1rem;
+      top: 0rem;
+      }
 
 }
