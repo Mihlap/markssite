@@ -1,13 +1,17 @@
 import React, { useEffect, useState } from "react";
 import styles from "../style/style-card.module.scss";
 import FormAddProject from "./formAdd/FormAddProject";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { deleteForm } from "../../store/Slice/projectSlice";
+import { fetchToggleStateAsync, updateToggleStateAsync } from "../../store/Slice/toggleSlice";
 
 export default function AddProject({ project, user }) {
   const Host = process.env.REACT_APP_SERVER_HOST;
   const dispatch = useDispatch();
-  const [isActive, setIsActive] = useState(false);
+  const isActiveForButton1 = useSelector(
+    (state) => state.toggle.isActiveForButton1
+  );
+  // const [isActive, setIsActive] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
   const [isonCopy, seticonCopy] = useState(false);
@@ -22,6 +26,10 @@ export default function AddProject({ project, user }) {
     setModalBlockHeight(`${maxHeight}px`);
   };
 
+   useEffect(() => {
+     dispatch(fetchToggleStateAsync());
+   }, [dispatch]);
+   
    useEffect(() => {
      updateModalBlockHeight();
      window.addEventListener("resize", updateModalBlockHeight);
@@ -76,10 +84,11 @@ export default function AddProject({ project, user }) {
     }
   }, [isCopied]);
 
+  
   const toggleActive = () => {
-    setIsActive(!isActive);
-    console.log(!isActive); // Здесь мы выводим в консоль обратное значение, так как функция еще не обновила state
+    dispatch(updateToggleStateAsync(!isActiveForButton1));
   };
+  console.log(isActiveForButton1); // Здесь мы выводим в консоль обратное значение, так как функция еще не обновила state
 
   return (
     <section className={styles.card_components_admin}>
@@ -92,7 +101,7 @@ export default function AddProject({ project, user }) {
             </div>
             <div
               className={`${styles.toggleButton} ${
-                isActive ? styles.active : ""
+                isActiveForButton1 ? styles.active : ""
               }`}
               onClick={toggleActive}
             >

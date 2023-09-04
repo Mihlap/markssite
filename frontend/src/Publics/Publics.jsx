@@ -5,12 +5,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { getFetchFormArticle, setSelectedType } from "../store/Slice/articleSlice";
 import styles from "./Publics.module.css";
 import VideoPlayer from "../UI/Videoplayer/VideoPlayer";
+import { fetchToggleStateForButton2Async } from "../store/Slice/toggleSlice";
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 
 export default function Publics() {
   const dispatch = useDispatch();
   const articles = useSelector((state) => state.article.article);
+  const isActive = useSelector((state) => state.toggle.isActiveForButton2);
+
   const [selectArticle, setSelectArticle] = useState("Все");
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [swiper, setSwiper] = useState(null);
@@ -37,6 +40,7 @@ export default function Publics() {
 
   useEffect(() => {
     dispatch(getFetchFormArticle());
+    dispatch(fetchToggleStateForButton2Async());
   }, [dispatch]);
 
    const handleButtonClick = (selected) => {
@@ -60,7 +64,7 @@ console.log(articles, "+++++++++++++++++++++++++++++++++++++++++++++");
   return (
     <div className={styles.public_container_main}>
       <div className={styles.public_image_header}>
-      <VideoPlayer videoSource={videoSource} />
+        <VideoPlayer videoSource={videoSource} />
         <div className={styles.text_container_publics}>
           <span className={styles.text1_publics}>
             Наша команда ведет активную научную жизнь!
@@ -68,6 +72,7 @@ console.log(articles, "+++++++++++++++++++++++++++++++++++++++++++++");
           <span className={styles.text2_publics}>Публикации</span>
         </div>
       </div>
+      {!isActive && (       
       <div className={styles.menu_button_group_articles_wrapper_main}>
         <div className={styles.menu_button_group_articles_wrapper}>
           <div className={styles.menu_button_group_articles}>
@@ -88,6 +93,7 @@ console.log(articles, "+++++++++++++++++++++++++++++++++++++++++++++");
           </div>
         </div>
       </div>
+          )}
       {screenWidth && (
         <Swiper
           onSwiper={setSwiper}
@@ -103,10 +109,14 @@ console.log(articles, "+++++++++++++++++++++++++++++++++++++++++++++");
                   key={el}
                   onClick={() => handleButtonClick(el)}
                   className={`${styles.menu__button__allArticles} ${
-                    el === selectArticle ? styles.active : ""}`}
+                    el === selectArticle ? styles.active : ""
+                  }`}
                   style={{ width: "fit-content" }}
                 >
-                  <p type="button" className={styles.menu_button_item__allArticles}>
+                  <p
+                    type="button"
+                    className={styles.menu_button_item__allArticles}
+                  >
                     {el}
                   </p>
                 </SwiperSlide>
@@ -122,7 +132,7 @@ console.log(articles, "+++++++++++++++++++++++++++++++++++++++++++++");
               if (!article) {
                 return null;
               }
-             return (
+              return (
                 <Link
                   key={article.id}
                   to={`/publication/${article.id}`}

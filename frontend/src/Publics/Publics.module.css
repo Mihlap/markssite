@@ -112,8 +112,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 1.88rem;
-  padding-left: 1.69rem;
-  padding-right: 1.69rem;
+  padding: 1.69rem 1.69rem 0rem 1.69rem;
 }
 
 .section_article__block_cart {

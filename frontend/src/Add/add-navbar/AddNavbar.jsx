@@ -6,6 +6,7 @@ import icon1 from './icon/one.png';
 import icon2 from "./icon/three.png";
 import icon3 from "./icon/four.png";
 import icon4 from "./icon/two.png";
+
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../../store/Slice/authSlice";
 import { resetCurrentPage } from "../../store/Slice/userSlice";
@@ -181,24 +182,58 @@ export default function AddNavbar({ user, handleReturn }) {
                 </Link>
               </li>
               {user?.name === "obezyankaa" ? (
-                <Link
-                  className={`${styles.add_navbar_container__item} ${
-                    selectedItem === "add-a-applications" ? styles.active : ""
-                  }`}
-                  to="./add-a-applications"
-                  onClick={(event) =>
-                    handleItemClick(
-                      event,
-                      "add-a-applications",
-                      "./add-a-applications"
-                    )
-                  }
-                >
-                  Заявки
-                </Link>
+                <li className={styles.add_navbar_container__item_li}>
+                  <svg
+                    className={`${
+                      selectedItem === "add-a-company" ? styles.active : ""
+                    } ${styles.add_navbar_container__item_svg} ${
+                      selectedItem === "add-a-company" ? styles.activeIcon : ""
+                    }`}
+                    fill="none"
+                    height="32"
+                    width="32"
+                    version="1.1"
+                    id="Layer_1"
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 512 512"
+                    // stroke="#F6F6F6"
+                  >
+                    <g id="SVGRepo_bgCarrier" strokeWidth="0" />
+
+                    <g
+                      id="SVGRepo_tracerCarrier"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+
+                    <g id="SVGRepo_iconCarrier">
+                      {" "}
+                      <g>
+                        {" "}
+                        <g>
+                          {" "}
+                          <path d="M490.667,0H21.333C9.557,0,0,9.557,0,21.333v469.333C0,502.443,9.557,512,21.333,512h469.333 c11.776,0,21.333-9.557,21.333-21.333V21.333C512,9.557,502.443,0,490.667,0z M164.416,271.083l-42.667,42.667 c-4.16,4.16-9.621,6.251-15.083,6.251c-5.461,0-10.923-2.091-15.083-6.251c-8.341-8.341-8.341-21.824,0-30.165L119.168,256 l-27.584-27.584c-8.341-8.341-8.341-21.824,0-30.165c8.341-8.341,21.824-8.341,30.165,0l42.667,42.667 C172.757,249.259,172.757,262.741,164.416,271.083z M234.667,384c0,11.776-9.557,21.333-21.333,21.333S192,395.776,192,384V128 c0-11.776,9.557-21.333,21.333-21.333s21.333,9.557,21.333,21.333V384z M362.667,405.333h-85.333 C265.557,405.333,256,395.776,256,384s9.557-21.333,21.333-21.333h85.333c11.776,0,21.333,9.557,21.333,21.333 S374.443,405.333,362.667,405.333z M405.333,320h-128C265.557,320,256,310.443,256,298.667s9.557-21.333,21.333-21.333h128 c11.776,0,21.333,9.557,21.333,21.333S417.109,320,405.333,320z M256,213.333c0-11.776,9.557-21.333,21.333-21.333h64 c11.776,0,21.333,9.557,21.333,21.333s-9.557,21.333-21.333,21.333h-64C265.557,234.667,256,225.109,256,213.333z M405.333,149.333h-128C265.557,149.333,256,139.776,256,128s9.557-21.333,21.333-21.333h128c11.776,0,21.333,9.557,21.333,21.333 S417.109,149.333,405.333,149.333z" />{" "}
+                        </g>{" "}
+                      </g>{" "}
+                    </g>
+                  </svg>
+                  <Link
+                    className={`${styles.add_navbar_container__item} ${
+                      selectedItem === "add-a-applications" ? styles.active : ""
+                    }`}
+                    to="./add-a-applications"
+                    onClick={(event) =>
+                      handleItemClick(
+                        event,
+                        "add-a-applications",
+                        "./add-a-applications"
+                      )
+                    }
+                  >
+                    Заявки
+                  </Link>
+                </li>
               ) : null}
-              <li>
-              </li>
             </ul>
           </div>
           <div className={styles.exit_container}>

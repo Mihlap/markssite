@@ -113,11 +113,11 @@
         cursor: pointer;
     }
 
-        .formAddProjectClass {
-            max-height: 400px;
-            /* например, 400px */
-            overflow-y: auto;
-        }
+    .formAddProjectClass {
+        max-height: 400px;
+        /* например, 400px */
+        overflow-y: auto;
+    }
 
     &__modal_container {
         position: fixed;
@@ -139,7 +139,7 @@
         max-height: 900px;
         overflow: hidden;
         background-color: #fff;
-        padding: 20px;
+        // padding: 20px;
         border-radius: 1rem;
         box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
         height: 100%;
@@ -561,9 +561,18 @@
 
 @media screen and (max-width: 1000px) {
     .card_components_admin {
-
         &__block {
             padding: 0rem 1rem 0rem 6rem;
         }
+
+        &__block_map {
+            gap: 1.5rem;
+        }
+    }
+}
+
+@media screen and (max-width: 1200px) {
+    .cart_project {
+        width: 330px;
     }
 }
