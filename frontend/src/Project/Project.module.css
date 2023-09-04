@@ -158,8 +158,127 @@ display: inline-block;
     align-items: center;
     justify-content: center;
 }
-
 .section_project {
+    display: flex;
+    flex-direction: column;
+    background-color: var(--white-F6F6F6);
+    padding-bottom: 0rem;
+    padding-top: 2.5rem;
+   }
+
+   .section_project__block {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.88rem;
+    padding-left: 1.69rem;
+    padding-right: 1.69rem;
+    }
+  
+  .section_project__block_cart {
+    display: flex;
+  flex-direction: column;
+  width: calc(33.33% - 1.88rem);
+  max-height: 30rem;
+  margin-bottom: 3rem;
+}
+  
+  .cart_project {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+  
+  .cart_project__container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+  }
+  
+  .cart_project__img {
+    max-width: 100%;
+    max-height: 28rem;
+    min-height: 28rem;
+     border-radius: 1rem;
+     object-fit: cover;
+     object-position: center;
+  }
+
+
+.project_content__wrapper {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    gap: 10px;
+
+}
+
+.cart_project_title {
+    display: flex;
+    flex-wrap: wrap;
+    word-break: break-all;
+    width: 70%;
+    font-family: var(--font-raleway);
+    font-size: 14px;
+    font-style: normal;
+    font-weight: var(--fw-700);
+    line-height: 20px;
+    color: var(--black-4E4E4E);
+    padding-top: 16px;
+}
+
+.cart_project__content {
+    width: 100%;
+}
+
+.cart_project__widget {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    width: 100%;
+    flex-wrap: wrap;
+    grid-row-gap: 8px;
+    padding-top: 16px;
+    padding-left: 8px;
+    font-family: var(--font-raleway);
+    font-size: 9px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+
+.cart_project__address {
+    display: flex;
+    color: var(--gray-959DA6);
+    font-family: var(--font-raleway);
+    font-size: 10px;
+    font-style: normal;
+    font-weight: var(--fw-400);
+    line-height: normal;
+    padding-top: 0.6rem;
+}
+
+.cart_project__address__svg {
+    display: flex;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    align-items: center;
+}
+
+
+.el_project_selectCompetencies {
+    margin-right: 6px;
+    /* margin-top: 6px; */
+    border: 1px solid;
+    border-radius: 34px;
+    max-width: fit-content;
+}
+
+/* это стмили для карточек пректов, не стирать, временно закоментированны, потом пригодяться */
+
+/* .section_project {
     display: flex;
     flex-direction: column;
     padding-top: 2.5rem;
@@ -270,11 +389,10 @@ display: inline-block;
 
 .el_project_selectCompetencies {
     margin-right: 6px;
-    /* margin-top: 6px; */
-    border: 1px solid;
+     border: 1px solid;
     border-radius: 34px;
     max-width: fit-content;
-}
+} */
 
 .modal_wrapper_project_location {
     display: flex;
@@ -492,9 +610,22 @@ display: inline-block;
 }
 
 @media screen and (min-width: 2000px) and (max-width: 3000px) {
-    .section_project__block {
-        grid-template-columns: repeat(4, 1fr);
-    }
+    .section_project__block_cart {
+            display: flex;
+            flex-direction: column;
+            width: calc(25% - 1.88rem);
+            max-height: 30rem;
+            margin-bottom: 2rem;
+            
+        }
+    
+        .cart_project__img {
+            max-width: 100%;
+            max-height: 26rem;
+            border-radius: 1rem;
+            object-fit: cover;
+            object-position: center;
+        }
   
  }
 
@@ -597,17 +728,27 @@ display: inline-block;
     }
 
     .section_project {
-        display: flex;
-        flex-direction: column;
-        padding-top: 1.5rem;
-        padding-bottom: 2.63rem;
-        background-color: var(--white-F6F6F6);
-       
+       padding-top: 1.5rem;
+       padding-left: 1.21rem;
+       padding-right: 1.21rem;
        }
     
        .section_project__block {
-        grid-template-columns: repeat(2, 1fr);
+       justify-content: space-between;
+      }
+      
+      .section_project__block_cart {
+      width: calc(50% - 1.88rem);
+      max-height: 23rem;
+      margin-bottom: 2rem;
     }
+      
+     
+      .cart_project__img {
+        max-height: 21rem;
+        min-height: 21rem;
+      }
+ 
       
   }
 

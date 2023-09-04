@@ -261,7 +261,7 @@
 
 /* стили мобильной версии  */
 
-@media (max-width: 767px) {
+@media (max-width: 840px) {
   .form_left_wrapper {
     width: 100%;
   }
