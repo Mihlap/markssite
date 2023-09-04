@@ -10,48 +10,57 @@ import {
 import NavBarPhone from "./NavBarPhone/NavBarPhone";
 
 export default function Navbar() {
-    const [activeClass, setActiveClass] = useState("");
-    const [prevScrollPos, setPrevScrollPos] = useState(0);
-    const [visible, setVisible] = useState(true);
+  const [activeClass, setActiveClass] = useState("");
+  const [prevScrollPos, setPrevScrollPos] = useState(0);
+  const [visible, setVisible] = useState(true);
+  const [scrollDelta, setScrollDelta] = useState(0);
 
-   const handleScroll = () => {
-     const currentScrollPos = window.pageYOffset;
+  const handleScroll = () => {
+    const currentScrollPos = window.pageYOffset;
+    const delta = currentScrollPos - prevScrollPos; // Сколько пикселей прокрутились
 
-     // Если ширина экрана больше 768px (не мобильное устройство)
-     if (window.innerWidth > 1024) {
-       if (prevScrollPos > currentScrollPos) {
-         setVisible(true);
-       } else {
-         setVisible(false);
-       }
-     }
+    if (window.innerWidth > 1024) {
+      if (prevScrollPos > currentScrollPos || currentScrollPos <= 0) {
+        // Если пользователь прокручивает вверх или прокручивает в самый верх
+        setVisible(true);
+        setScrollDelta(0); // сбросите scrollDelta
+      } else {
+        // Иначе, пользователь прокручивает вниз
+        setScrollDelta((prevDelta) => prevDelta + delta); // Обновляем scrollDelta
 
-     setPrevScrollPos(currentScrollPos);
-   };
+        if (scrollDelta > 100) {
+          // Проверяем, превышает ли scrollDelta 100 пикселей
+          setVisible(false);
+        }
+      }
+    }
 
-    useEffect(() => {
+    setPrevScrollPos(currentScrollPos);
+  };
+
+  useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
   }, [prevScrollPos]);
 
-    const location = useLocation();
+  const location = useLocation();
 
-    useEffect(() => {
-      const currentPath = location.pathname;
-      setActiveClass(currentPath);
-    }, [location]);
+  useEffect(() => {
+    const currentPath = location.pathname;
+    setActiveClass(currentPath);
+  }, [location]);
 
-    const handleItemClick = (path) => {
-      setActiveClass(path);
-      localStorage.setItem("activeClass", path);
-    };
+  const handleItemClick = (path) => {
+    setActiveClass(path);
+    localStorage.setItem("activeClass", path);
+  };
 
-    useEffect(() => {
-      const storedActiveClass = localStorage.getItem("activeClass");
-      if (storedActiveClass) {
-        setActiveClass(storedActiveClass);
-      }
-    }, []);
+  useEffect(() => {
+    const storedActiveClass = localStorage.getItem("activeClass");
+    if (storedActiveClass) {
+      setActiveClass(storedActiveClass);
+    }
+  }, []);
   return (
     <header className={visible ? styles.header_visible : styles.header_hidden}>
       <nav className={styles.navbar}>

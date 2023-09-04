@@ -15,6 +15,7 @@ import Company_Slider from "../UI/Company_Slider/Company_Slider";
 import { extractCityFromCountryCity, getUserGeolocation } from "./utils";
 import "../UI/Company_Slider/Company_Slider.css";
 import "../UI/ButtonsProjects/AllProjectsButton.module.css";
+import { fetchToggleStateAsync } from "../store/Slice/toggleSlice";
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 
@@ -60,6 +61,7 @@ export default function Project() {
   const selectedLocation = useSelector(
     (state) => state.project.selectedLocation
   );
+  const isActive = useSelector((state) => state.toggle.isActiveForButton1);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [showButton, setShowButton] = useState(false);
@@ -93,6 +95,7 @@ export default function Project() {
     dispatch(getFetchFormFilter(projectsPerPage, selectedViewConstruction));
     dispatch(getFetchFormCityFilter(projectsPerPage, selectedCity));
     dispatch(getFetchFormLocationFilter(projectsPerPage, selectedLocation));
+     dispatch(fetchToggleStateAsync());
     setLoading(false);
   }, [dispatch, projectsPerPage]);
 
@@ -362,6 +365,8 @@ export default function Project() {
           </div>
         </Swiper>
       )}
+      {/* этот isActive скрывает фильтрацию  */}
+      {!isActive && (
       <div className={styles.menu_button_group_project_wrapper_main}>
         <div className={styles.menu_button_group_project_wrapper}>
           <div className={styles.menu_button_group_project}>
@@ -413,6 +418,7 @@ export default function Project() {
           <div className={styles.button_choose_city}>Выбрать город</div>
         </button>
       </div>
+      )}
       <Modal
         className={styles.modal_wrapper_project_location}
         modal={document.querySelector(".modal")}

@@ -1,15 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styles from "../style/style-card.module.scss";
 import customScroll from "../style/CustomScrollbar.module.scss";
 import FormAddArticles from './formAdd/FormAddArticles';
 import { deleteFormArticle } from '../../store/Slice/articleSlice';
 import Loading from './loading/Loading';
+import { fetchToggleStateForButton2Async, updateToggleStateForButton2Async } from '../../store/Slice/toggleSlice';
 
 export default function AddArticles({user, article}) {
   const Host = process.env.REACT_APP_SERVER_HOST;
   const dispatch = useDispatch();
-  const [isActive, setIsActive] = useState(false);
+  const isActiveForButton2 = useSelector(
+    (state) => state.toggle.isActiveForButton2
+  );
   const [modalBlockHeight, setModalBlockHeight] = useState("auto"); // Изначально высота будет автоматически рассчитываться
 
   // открывает модалку
@@ -26,6 +29,10 @@ const updateModalBlockHeight = () => {
 
   setModalBlockHeight(`${maxHeight}px`);
   };
+
+    useEffect(() => {
+      dispatch(fetchToggleStateForButton2Async());
+    }, [dispatch]);
   
   useEffect(() => {
     updateModalBlockHeight();
@@ -91,9 +98,9 @@ const updateModalBlockHeight = () => {
   // }
 
   const toggleActive = () => {
-    setIsActive(!isActive);
-    console.log(!isActive); // Здесь мы выводим в консоль обратное значение, так как функция еще не обновила state
+    dispatch(updateToggleStateForButton2Async(!isActiveForButton2));
   };
+  console.log(isActiveForButton2); // Здесь мы выводим в консоль обратное значение, так как функция еще не обновила state
 
   return (
     <section className={styles.card_components_admin}>
@@ -106,7 +113,7 @@ const updateModalBlockHeight = () => {
             </div>
             <div
               className={`${styles.toggleButton} ${
-                isActive ? styles.active : ""
+                isActiveForButton2 ? styles.active : ""
               }`}
               onClick={toggleActive}
             >

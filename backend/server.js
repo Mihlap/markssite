@@ -10,10 +10,11 @@ const authRouter = require('./routes/authRouter');
 const staffsRouter = require('./routes/staffsRouter');
 const projectRouter = require('./routes/Project/projectRouter');
 const articleRouter = require('./routes/Articles/articleRouter');
-const searchRouter = require('./routes/searchRouter');
+const searchRouter = require('./routes/Project/searchRouter');
 const searchArticleLeft = require('./routes/Articles/searchArticleLeftRouter');
 const searchArticleRight = require('./routes/Articles/searchArticleRightRouter');
 const mailRouter = require('./routes/mailRouter');
+const toggleRouter = require('./routes/toggle/toggleRouter');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -68,6 +69,7 @@ app.use('/search', searchRouter);
 app.use('/search-article', searchArticleLeft);
 app.use('/search-articles', searchArticleRight);
 app.use('/api-mail', mailRouter);
+app.use('/api/toggle', toggleRouter);
 
 app.listen(PORT, () => {
   console.log(`Старт server --->🔥 ${PORT} 🔥<---`);
