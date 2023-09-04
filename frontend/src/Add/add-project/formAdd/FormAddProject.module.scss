@@ -1,8 +1,46 @@
 @import '../../../App.css';
 
 .form_container {
-    width: 31.375rem;
-    padding: 1.62rem 1rem 1.75rem 1rem;
+    width: 33.375rem;
+    padding: 1.62rem 1rem 1.75rem 2rem;
+
+    &__block_form {
+        /* Прячем стандартный скроллбар для Firefox и IE/Edge */
+        scrollbar-width: none;
+        /* Для Firefox */
+        -ms-overflow-style: none;
+        /* Для Internet Explorer и Edge */
+
+        padding-right: 15px;
+        /* Отступ от правого края */
+
+    }
+
+    &__block_form::-webkit-scrollbar {
+        width: 5px;
+        /* Ширина скролла */
+    }
+
+    &__block_form::-webkit-scrollbar-track {
+        background-color: #F5F5F5;
+        /* Цвет фона трека */
+    }
+
+    &__block_form::-webkit-scrollbar-thumb {
+        background-color: #948e8e;
+        /* Цвет самого скролла */
+        border-radius: 10px;
+        /* Скругление углов */
+        width: 5px;
+        /* Ширина бегунка */
+        height: 30px;
+        /* Устанавливаем фиксированную высоту для бегунка */
+    }
+
+    &__block_form::-webkit-scrollbar-thumb:hover {
+        background-color: #555;
+        /* Цвет скролла при наведении */
+    }
 
 
     &__title {
@@ -16,13 +54,15 @@
 
     &__block_form {
         height: 88vh;
-        padding-bottom: 6rem;
+        padding-bottom: 15rem;
         overflow-y: auto;
     }
 
     &__radio_container {
         display: flex;
         gap: 1rem;
+        padding-top: 10px;
+        padding-left: 4px;
     }
 
     &__block_gray_one {
@@ -205,13 +245,17 @@
         display: flex;
         flex-direction: column-reverse;
         position: relative;
-        padding-bottom: 32px;
+        padding: 32px 0px;
     }
 
     &__heading_block_input {
         border: 1px solid var(--blue-75BBFD);
         border-radius: 6px;
         padding: 1rem;
+        font-family: var(--font-raleway);
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
 
         &::placeholder {
             color: var(--gray-959DA6);
@@ -226,7 +270,7 @@
     &__heading_block_input_length {
         position: absolute;
         right: 7px;
-        bottom: 47%;
+        bottom: 37%;
         color: var(--gray-959DA6);
         font-family: var(--font-raleway);
         font-size: 16px;
@@ -316,13 +360,14 @@
     margin-top: 10px;
 }
 
+
 .form__field {
     font-family: var(--font-raleway);
     width: 100%;
     border: 0;
     border-bottom: 1px solid var(--gray-959DA6);
     outline: 0;
-    font-size: 1.3rem;
+    font-size: 1rem;
     color: var(--black-1D2E43);
     padding: 7px 0;
     background: transparent;
@@ -406,6 +451,23 @@
         }
     }
 
+    &__customFileUploadOrangeColor {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        padding: 0.5rem 1rem;
+        margin: 10px 0px 15px 0px;
+        background-color: var(--light-light-gray-EBECEE);
+        border-radius: 20px;
+        cursor: pointer;
+
+        &:hover {
+            background-color: var(--salmon-light-FFBFB5);
+            box-shadow: 0px 0px 6px 0px var(--salmon-light-FFBFB5);
+        }
+    }
+
     &__uploadIcon {
         display: inline-block;
         margin-right: 8px;
@@ -425,6 +487,11 @@
 
     /* Скрыть стандартную фразу "файл не выбран" */
     &__customFileUpload input[type="file"] {
+        position: absolute;
+        left: -9999px;
+    }
+
+    &__customFileUploadOrangeColor input[type="file"] {
         position: absolute;
         left: -9999px;
     }
@@ -452,22 +519,22 @@
     }
 
     &__remove_icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: var(--white-F6F6F6);
-            position: absolute;
-            top: 35%;
-            left: 45%;
-            cursor: pointer;
-            transition: transform 0.3s ease;
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: var(--white-F6F6F6);
+        position: absolute;
+        top: 35%;
+        left: 45%;
+        cursor: pointer;
+        transition: transform 0.3s ease;
 
         &:hover {
             transform: scale(1.3);
         }
 
         span {
-        position: absolute;
+            position: absolute;
             top: 52%;
             left: 50%;
             width: 2px;
@@ -491,5 +558,61 @@
                 transform: rotate(-45deg);
             }
         }
+    }
+}
+
+// << ============ КОНСТРУКТОР ============ >>
+
+.constructor_container {
+    padding: 5px 0px;
+    margin: 1rem 0rem;
+    border-radius: 6px;
+    border: dashed 1px;
+
+    color: var(--salmon-FF7F6A);
+
+    &__svg {
+        cursor: pointer;
+    }
+
+    &__block_btn {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 1rem;
+        padding: 1rem 0rem;
+    }
+
+    &__text {
+        font-variant-numeric: lining-nums proportional-nums;
+        font-family: var(--font-raleway);
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 16px;
+        color: var(--salmon-FF7F6A);
+        /* 100% */
+    }
+}
+
+// это просто для обводки конструктора 
+.orange_color {
+    border: 1px solid var(--salmon-light-FFBFB5);
+}
+
+.orange_color_file_hover {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 0.5rem 1rem;
+    margin: 10px 0px 15px 0px;
+    background-color: var(--light-light-gray-EBECEE);
+    border-radius: 20px;
+    cursor: pointer;
+
+    :hover {
+        background-color: var(--salmon-light-FFBFB5);
+        box-shadow: 0px 0px 6px 0px var(--salmon-light-FFBFB5);
     }
 }

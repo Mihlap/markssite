@@ -2,8 +2,8 @@ const express = require('express');
 // eslint-disable-next-line
 const path = require("path");
 const fs = require("fs");
-const { Project } = require("../db/models");
-const fileMiddleware = require('../middleware/file');
+const { Project } = require("../../db/models");
+const fileMiddleware = require('../../middleware/file');
 
 const router = express.Router();
 
@@ -43,6 +43,7 @@ router.post(
     { name: 'dropPhoto', maxCount: 4 },
     { name: 'photoAva', maxCount: 1 },
     { name: 'imageOpen', maxCount: 1 },
+    { name: 'imageClose', maxCount: 1 },
   ]),
   async (req, res) => {
     try {
@@ -50,8 +51,9 @@ router.post(
       const imageTitles = req.files.dropPhoto.map((file) => file.filename).join(', ');
       const imageProjects = req.files.photoAva ? req.files.photoAva[0].filename : null;
       const imageOpens = req.files.imageOpen ? req.files.imageOpen[0].filename : null;
+      const imageCloses = req.files.imageClose ? req.files.imageClose[0].filename : null;
 
-      console.log(imageProjects);
+      // console.log(imageCloses);
       await Project.create({
         title: req.body.title,
         selectCompetencies: req.body.selectCompetencies,
@@ -60,7 +62,7 @@ router.post(
         viewConstruction: req.body.viewConstruction,
         style: req.body.radioValue,
         imageTitle: imageTitles,
-         imageProject: imageProjects,
+        imageProject: imageProjects,
         titleTextBlock: req.body.titleTextBlock,
         descriptionProject: req.body.descriptionProject,
         totalArea: req.body.totalArea,
@@ -79,6 +81,7 @@ router.post(
         awards: req.body.awards,
         imageOpen: imageOpens,
         textBlock: req.body.textBlock,
+        imageClose: imageCloses,
       });
 
       res.status(200).json({ message: 'Данные успешно сохранены' });
