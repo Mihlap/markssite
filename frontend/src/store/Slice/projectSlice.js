@@ -65,7 +65,7 @@ for (const key in formattedData) {
       formData.append("photoAva", formattedData[key][0]);
     } else if (key === "imageOpen" && formattedData[key].length > 0) {
       formData.append("imageOpen", formattedData[key][0]);
-    } else {
+    }  else {
       for (const file of formattedData[key]) {
         formData.append(key, file);
       }
