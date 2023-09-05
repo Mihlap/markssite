@@ -94,13 +94,13 @@ export default function Project() {
     };
   }, []);
 
-  useEffect(() => {
+   useEffect(() => {
     dispatch(setSelectedViewConstruction(category || "Все"));
     dispatch(getFetchFormFilter(projectsPerPage, selectedViewConstruction));
     dispatch(getFetchFormCityFilter(projectsPerPage, selectedCity));
     dispatch(getFetchFormLocationFilter(projectsPerPage, selectedLocation));
     setLoading(false);
-  }, [dispatch, projectsPerPage, location, category]);
+  }, [dispatch, projectsPerPage, location.search, category]);
 
   useEffect(() => {
     getUserGeolocation()
@@ -167,12 +167,12 @@ export default function Project() {
      setCurrentPage(1);
   setValue("");
   setIsTyping(false);
-  setSelectOnCompetencies(viewConstruction);
-  if (viewConstruction === "Все") {
-    navigate('/project');
-  } else {
-    navigate(`/project?viewConstruction=${viewConstruction}`);
-  }
+  setSelectOnCompetencies("");
+  // if (viewConstruction === "Все") {
+  //   navigate('/project');
+  // } else {
+  //   navigate(`/project?viewConstruction=${viewConstruction}`);
+  // }
   };
 
   const handleButtonCityClick = (countryCity) => {
@@ -244,7 +244,7 @@ export default function Project() {
    .filter((project) =>
     selectOnCompetencies === "Все"
       ? true
-      : project.selectCompetencies?.includes(selectOnCompetencies)
+      : project.viewConstruction?.includes(selectOnCompetencies)
   )
     .filter((project) => {
       const projectCity = extractCityFromCountryCity(project.countryCity);
@@ -261,13 +261,7 @@ export default function Project() {
         (selectedCity === "" || projectCity === selectedCity?.toLowerCase())
       );
     })
-    .filter((project) => {
-      if (!category) {
-        return true; 
-      }
-          return project.viewConstruction?.toLowerCase() === category?.toLowerCase();
-    });
- 
+   
 
   console.log(filteredProjects, "9999999999999999999999999999999999");
 
