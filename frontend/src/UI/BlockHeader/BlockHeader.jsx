@@ -136,7 +136,7 @@ const BlockHeader = () => {
               </div>
             </div>
             </Link>
-            <Link className="text_wrapper_accordion" to={`/project`}>
+            <Link className="text_wrapper_accordion" to={`/project?viewConstruction=BIM`}>
             <span className="text_title_span">Дизайн-проекты</span>
             <div className="text_span">
               <span className="header_slider_span">
@@ -148,7 +148,7 @@ const BlockHeader = () => {
               </div>
             </div>
             </Link>
-            <Link className="text_wrapper_accordion" to={"./project?viewConstruction=BIM"}>
+            <Link className="text_wrapper_accordion" to={`/project?viewConstruction=Дизайн`}>
             <span className="text_title_span">
               Проектная и рабочая документация
             </span>

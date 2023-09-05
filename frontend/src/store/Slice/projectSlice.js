@@ -12,7 +12,7 @@ const projectSlice = createSlice({
     selectedViewConstruction: "",
     selectedCity: '',
     selectedLocation: "",
-  },
+   },
   reducers: {
     fetchProjectStart(state) {
       state.loading = true;
@@ -51,9 +51,10 @@ export const {
   fetchProjectFailure,
   deleteProjectSuccess,
   deleteProjectFailure,
-  setSelectedViewConstruction,
+  setViewConstruction,
   setSelectedCity,
   setSelectedLocation,
+  setSelectedViewConstruction,
 } = projectSlice.actions;
 
 export const fetchProject = (formattedData, setInputData) => async (dispatch) => {
