@@ -44,16 +44,18 @@ router.post(
     { name: 'photoAva', maxCount: 1 },
     { name: 'imageOpen', maxCount: 1 },
     { name: 'imageClose', maxCount: 1 },
+    // { name: 'dynamicBlocks', maxCount: 20 },
   ]),
   async (req, res) => {
     try {
-      console.log(req.files); // Output file information to the console
       const imageTitles = req.files.dropPhoto.map((file) => file.filename).join(', ');
       const imageProjects = req.files.photoAva ? req.files.photoAva[0].filename : null;
       const imageOpens = req.files.imageOpen ? req.files.imageOpen[0].filename : null;
       const imageCloses = req.files.imageClose ? req.files.imageClose[0].filename : null;
 
+      console.log(req.body); // Output file information to the console
       // console.log(imageCloses);
+      console.log(req.files);
       await Project.create({
         title: req.body.title,
         selectCompetencies: req.body.selectCompetencies,
@@ -92,36 +94,45 @@ router.post(
   },
 );
 
+// эта функция нужна для того, чтоб удалять из imageTitle фотографии есть там не массив 
+const deleteImage = (imageName) => {
+  const imagePath = path.join(__dirname, '..', 'images/imageAdd', imageName);
+  console.log(`Trying to delete file: ${imagePath}`);
+  if (fs.existsSync(imagePath)) {
+    fs.unlinkSync(imagePath);
+  }
+};
+
 router.delete('/deletezapros/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const post = await Project.findByPk(id);
 
     // Удаление фотографий из imageTitle
-    const imageNames = post.imageTitle.split(', ');
-    imageNames.forEach((imageName) => {
-      const imagePath = path.join(__dirname, '..', 'images/imageAdd', imageName);
-      fs.unlinkSync(imagePath);
-    });
+    if (post.imageTitle) {
+      const imageNames = post.imageTitle.includes(', ')
+        ? post.imageTitle.split(', ')
+        : [post.imageTitle];
+      imageNames.forEach(deleteImage);
+    }
 
     // Удаление фотографий из imageProject
-    const projectImageNames = post.imageProject.split(', ');
-    projectImageNames.forEach((imageName) => {
-      const imagePath = path.join(__dirname, '..', 'images/imageAdd', imageName);
-      fs.unlinkSync(imagePath);
-    });
+    if (post.imageAuthor) {
+      const projectImageNames = post.imageProject.includes(', ')
+        ? post.imageProject.split(', ')
+        : [post.imageProject];
+      projectImageNames.forEach(deleteImage);
+    }
 
     // Удаление фотографии из imageOpen
     if (post.imageOpen) {
-      const imagePath = path.join(__dirname, '..', 'images/imageAdd', post.imageOpen);
-      fs.unlinkSync(imagePath);
+      deleteImage(post.imageOpen);
     }
 
     // Удаление фотографии из imageClose
-    // if (post.imageClose) {
-    //   const imagePath = path.join(__dirname, '..', 'images/imageAdd', post.imageClose);
-    //   fs.unlinkSync(imagePath);
-    // }
+    if (post.imageClose) {
+      deleteImage(post.imageClose);
+    }
 
     // Удаление поста
     await Project.destroy({ where: { id } });
