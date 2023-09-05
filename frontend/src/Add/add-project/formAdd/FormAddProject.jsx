@@ -259,6 +259,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                       e.target.files
                     )
                   }
+                  multiple
                   style={{ display: isPhotoOpenVisible ? "block" : "none" }}
                 />
                 <div className={styles.slider_container__uploadIcon}>
@@ -317,8 +318,8 @@ export default function FormAddProject({ setIsModalOpen }) {
     });
   };
 
-  // console.log(inputData, "<<--inputData PROJECT");
-  // console.log(dynamicData, "<<--dynamicData");
+  console.log(inputData, "<<--inputData PROJECT");
+  console.log(dynamicData, "<<--dynamicData");
   return (
     <div className={styles.form_container}>
       <div className={styles.form_container__title}>Новый проект</div>
