@@ -534,7 +534,11 @@ position: absolute;
   display: none;
 }
 
-/* стили для планшетной версии  */
+@media screen and (min-width: 1501px) and (max-width: 1800px) {
+  .video_wrapper {
+    padding-top: 6rem;
+  }  
+}
 @media screen and (min-width: 1300px) and (max-width: 1500px) {
   .video_wrapper {
     padding-top: 6rem;
