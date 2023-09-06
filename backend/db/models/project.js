@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
       ImageBlockThree,
       ImageBlockTwo,
       ImageSlider,
+      Constructor,
       Video,
     }) {
       // define association here
@@ -25,6 +26,7 @@ module.exports = (sequelize, DataTypes) => {
       this.hasMany(ImageBlockThree, { foreignKey: 'idBlock' });
       this.hasMany(ImageBlockTwo, { foreignKey: 'idBlock' });
       this.hasMany(ImageSlider, { foreignKey: 'idBlock' });
+      this.hasMany(Constructor, { foreignKey: 'idBlock' });
       this.hasMany(Video, { foreignKey: 'idBlock' });
     }
   }

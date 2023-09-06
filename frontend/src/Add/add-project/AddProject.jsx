@@ -88,7 +88,7 @@ export default function AddProject({ project, user }) {
   const toggleActive = () => {
     dispatch(updateToggleStateAsync(!isActiveForButton1));
   };
-  console.log(isActiveForButton1); // Здесь мы выводим в консоль обратное значение, так как функция еще не обновила state
+  // console.log(isActiveForButton1); // Здесь мы выводим в консоль обратное значение, так как функция еще не обновила state
 
   return (
     <section className={styles.card_components_admin}>
