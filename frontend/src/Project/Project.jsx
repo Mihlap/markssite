@@ -20,8 +20,7 @@ import { fetchToggleStateAsync } from "../store/Slice/toggleSlice";
 const Host = process.env.REACT_APP_SERVER_HOST;
 
 export default function Project() {
-
-    const buttonChoose = [
+  const buttonChoose = [
     "Все",
     "Автодорожные",
     "Тоннели",
@@ -53,7 +52,7 @@ export default function Project() {
     Инженерия: "#90B734",
   };
 
-    const location = useLocation();
+  const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const category = queryParams.get("viewConstruction");
 
@@ -77,7 +76,9 @@ export default function Project() {
   const [isTyping, setIsTyping] = useState(false);
   const [value, setValue] = useState("");
   const addressInputRef = useRef(null);
-  const [selectOnCompetencies, setSelectOnCompetencies] = useState(category || "Все");
+  const [selectOnCompetencies, setSelectOnCompetencies] = useState(
+    category || "Все"
+  );
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [swiper, setSwiper] = useState(null);
   const navigate = useNavigate();
@@ -88,7 +89,7 @@ export default function Project() {
   const handleResize = () => {
     setScreenWidth(window.innerWidth);
   };
-    
+
   useEffect(() => {
     window.addEventListener("resize", handleResize);
     return () => {
@@ -96,7 +97,7 @@ export default function Project() {
     };
   }, []);
 
-   useEffect(() => {
+  useEffect(() => {
     dispatch(setSelectedViewConstruction(category || "Все"));
     dispatch(getFetchFormFilter(projectsPerPage, selectedViewConstruction));
     dispatch(getFetchFormCityFilter(projectsPerPage, selectedCity));
@@ -151,10 +152,9 @@ export default function Project() {
   }
 
   const handleButtonClick = (viewConstruction) => {
-      if (
+    if (
       selectedCity !== "" ||
-      selectedViewConstruction !== viewConstruction 
-      ||
+      selectedViewConstruction !== viewConstruction ||
       selectedViewConstruction === viewConstruction
     ) {
       dispatch(setSelectedCity(""));
@@ -162,20 +162,15 @@ export default function Project() {
       dispatch(
         getFetchFormFilter(currentPage, projectsPerPage, viewConstruction)
       );
-     } else {
+    } else {
       dispatch(setSelectedCity(""));
-      dispatch(setSelectedViewConstruction("")); 
+      dispatch(setSelectedViewConstruction(""));
       dispatch(getFetchFormFilter(currentPage, projectsPerPage, ""));
-     }
-     setCurrentPage(1);
-  setValue("");
-  setIsTyping(false);
-  setSelectOnCompetencies("");
-  // if (viewConstruction === "Все") {
-  //   navigate('/project');
-  // } else {
-  //   navigate(`/project?viewConstruction=${viewConstruction}`);
-  // }
+    }
+    setCurrentPage(1);
+    setValue("");
+    setIsTyping(false);
+    setSelectOnCompetencies("");
   };
 
   const handleButtonCityClick = (countryCity) => {
@@ -242,13 +237,12 @@ export default function Project() {
     };
   }, []);
 
-   
   const filteredProjects = projects
-   .filter((project) =>
-    selectOnCompetencies === "Все"
-      ? true
-      : project.viewConstruction?.includes(selectOnCompetencies)
-  )
+    .filter((project) =>
+      selectOnCompetencies === "Все"
+        ? true
+        : project.viewConstruction?.includes(selectOnCompetencies)
+    )
     .filter((project) => {
       const projectCity = extractCityFromCountryCity(project.countryCity);
       return selectedCity === "" ? true : projectCity === selectedCity;
@@ -263,8 +257,7 @@ export default function Project() {
         projectLocation?.includes(searchValue) &&
         (selectedCity === "" || projectCity === selectedCity?.toLowerCase())
       );
-    })
-   
+    });
 
   console.log(filteredProjects, "9999999999999999999999999999999999");
 
@@ -583,7 +576,6 @@ export default function Project() {
           ))}
         </div>
       </Modal>
-
       <section className={styles.section_project}>
         <div className={styles.section_project__block}>
           {filteredProjects &&
