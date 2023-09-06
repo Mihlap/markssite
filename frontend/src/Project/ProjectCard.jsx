@@ -467,7 +467,7 @@ const ProjectCard = () => {
                 <div className={styles.item}>
                   <img
                     ref={refs.leftImg3}
-                    className={`${styles.item_img} ${styles.item_img_latest}`}
+                    className={styles.item_img}
                     // src={img3}
                     alt=""
                   />
@@ -475,7 +475,7 @@ const ProjectCard = () => {
                 <div className={styles.item}>
                   <img
                     ref={refs.leftImg4}
-                    className={styles.item_img}
+                    className={`${styles.item_img} ${styles.item_img_latest}`}
                     src={`${Host}/images/imageAdd/${project.imageClose}`}
                     alt={project.imageClose}
                   />

@@ -390,7 +390,7 @@
   border: none;
   align-items: center;
   height: 1vh;
-}
+  }
 
 .previous__span_projectCard {
   display: flex;
@@ -398,8 +398,8 @@
   padding-left: 0.7vw;
   font-family: var(--font-raleway);
   font-weight: var(--fw-400);
-  font-size: 0.875rem;
-  line-height: 1.25rem;
+  font-size: 0.875vw;
+  line-height: 1.25vw;
   color: var(--black-1D2E43);
   font-variant-numeric: lining-nums proportional-nums;
  }
@@ -410,14 +410,13 @@
   padding-right: 0.7vw;
   font-family: var(--font-raleway);
   font-weight: var(--fw-400);
-  font-size: 0.875rem;
-  line-height: 1.25rem;
+  font-size: 0.875vw;
+  line-height: 1.25vw;
   color: var(--black-1D2E43);
   font-variant-numeric: lining-nums proportional-nums;
   flex: 2; /* 20% width */
   text-align: right;
- 
-}
+ }
 
 
 .button_project_link_projectCard1:hover {
@@ -595,25 +594,26 @@
 
 .wrapper_container__selectCompetencies_projectCard {
   display: flex;
-  justify-content: flex-end;
-  width: 50%;
+  padding-left: 2rem;
+  /* justify-content: flex-end; */
+  width: 100%;
 }
 
 .container__selectCompetencies_projectCard {
-  display: block;
+  display: flex;
   /* justify-content: flex-end; */
   background: var(--white-F6F6F6);
   flex-wrap: wrap;
-  padding-left: 2rem;
-  font-family: var(--font-raleway);
+   font-family: var(--font-raleway);
   font-size: 9px;
   font-style: normal;
   font-weight: var(--fw-500);
   line-height: normal;
+  width: 100%;
 }
 
 .div_el_selectCompetencies_projectCard {
-  display: inline-flex;
+  /* display: inline-flex; */
   width: fit-content;
   margin-right: 6px; 
   margin-bottom: 6px;
@@ -1122,6 +1122,7 @@
     padding-right: 0rem;
     padding-left: 0rem;
     width: 100%;
+    overflow: hidden;
   }
 
   .previous_svg_projectCard,
@@ -1139,7 +1140,7 @@
     display: flex;
     border: none;
     align-items: center;
-    height: 0vh;
+    /* height: 0vh; */
   }
   
   .previous__span_projectCard {

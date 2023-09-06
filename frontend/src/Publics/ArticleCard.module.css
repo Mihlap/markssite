@@ -47,9 +47,9 @@
   flex-direction: row;
   color: var(--white-F6F6F6);
   font-family: var(--font-raleway);
-  font-size: 0.5625rem;
-  font-weight: 500;
-  line-height: normal;
+  font-size: 1.5rem;
+  font-weight: var(--fw-300);
+  line-height: 2rem;
   padding-top: 1rem;
 }
 
@@ -57,10 +57,11 @@
 .cart_article__address__block__card {
   display: flex;
   color: var(--light-light-gray-EBECEE);
-  font-family: var(--font-inter);
+  font-family: var(--font-raleway);
   font-size: 0.875rem;
   font-style: normal;
-  font-weight: var(--fw-300);
+  font-weight: var(--fw-400);
+  line-height: 1.25rem;
   padding-top: 0.5rem;
 }
 
@@ -172,12 +173,11 @@
 }
 
 .author_name {
-  display: flex;
   color: var(--dark-gray-566272);
   word-wrap: break-word;
   overflow-wrap: break-word;
   hyphens: auto;
-  word-break: break-all;
+  width: 10rem;
   padding-top: 1rem;
 }
 
@@ -188,7 +188,6 @@
 
 .blockImg {
   display: flex;
-
   height: 100%;
   padding-left: 1.75rem;
 }
@@ -212,6 +211,24 @@
 
 .item_img_latest {
   border-radius: 1.11vw 1.11vw 0vw 0vw;
+}
+
+.leftImg1_object_text1 {
+  font-family: var(--font-raleway);
+  font-style: normal;
+  font-weight: var(--fw-400);
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-feature-settings: 'pnum' on, 'lnum' on;
+  color: var(--black-1D2E43);
+  padding-top: 1rem;
+  padding-bottom: 4rem;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  width: 80%;
+  padding-top: 4rem;
+  padding-left: 1.69rem;
 }
 
 
@@ -273,7 +290,7 @@
   display: flex;
   justify-content: flex-end;
   padding-right: 1.875vw;
-  width: 20%;
+  width: 100%;
 }
 
 .quoteBlock_object_block1 {
@@ -492,8 +509,8 @@ padding-right: 0.5rem;
   padding-left: 0.7vw;
   font-family: var(--font-raleway);
   font-weight: var(--fw-400);
-  font-size: 0.875rem;
-  line-height: 1.25rem;
+  font-size: 0.875vw;
+  line-height: 1.25vw;
   color: var(--black-1D2E43);
   font-variant-numeric: lining-nums proportional-nums;
 }
@@ -504,8 +521,8 @@ padding-right: 0.5rem;
   padding-right: 0.7vw;
   font-family: var(--font-raleway);
   font-weight: var(--fw-400);
-  font-size: 0.875rem;
-  line-height: 1.25rem;
+  font-size: 0.875vw;
+  line-height: 1.25vw;
   color: var(--black-1D2E43);
   font-variant-numeric: lining-nums proportional-nums;
   flex: 2;
@@ -840,11 +857,13 @@ padding-right: 0.5rem;
     padding-right: 0rem;
     padding-left: 0rem;
     width: 100%;
+    overflow: hidden;
   }
 
   .button_article_link_articleCard1,
   .button_article_link_articleCard2 {
     width: 50%;
+   
   }
 
   .previous_svg_articleCard,
@@ -852,7 +871,8 @@ padding-right: 0.5rem;
     display: flex;
     border: none;
     align-items: center;
-    height: 0vh;
+    /* height: 0vh; */
+    width: 100%;
   }
 
   .previous__span_articleCard {
@@ -866,6 +886,8 @@ padding-right: 0.5rem;
     padding-left: 0.87rem;
     max-width: 100%;
     width: 100%;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
   }
 
   .next__span_articleCard {
@@ -873,13 +895,15 @@ padding-right: 0.5rem;
     font-variant-numeric: lining-nums proportional-nums;
     font-family: var(--font-raleway);
     font-size: 0.75rem;
+    line-height: 1rem;
     font-style: normal;
     font-weight: var(--fw-400);
-    line-height: 1rem;
     justify-content: flex-end;
     padding-right: 0.87rem;
     max-width: 100%;
     width: 100%;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
   }
 
   .article_name_text {
