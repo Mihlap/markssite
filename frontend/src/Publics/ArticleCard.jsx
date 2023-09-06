@@ -208,7 +208,7 @@ const ArticleCard = () => {
       <div className={styles.all_button_div}>
         <AllArticlesButton />
       </div>
-      <div className={styles.section_article__block__card} >
+      <div className={styles.section_article__block__card}>
         {article && (
           <div className={styles.cart_article__block__card}>
             <div className={styles.cart_article__container__block__card}>
@@ -278,13 +278,15 @@ const ArticleCard = () => {
           </div>
           <div className={styles.blockImg}>
             <div className={styles.container}>
-              <div className={styles.item}>
-                <img
-                  ref={refs.leftImg1}
+              <div className={styles.item} ref={refs.leftImg1}>
+                <img                  
                   className={styles.item_img}
                   src={`${Host}/images/imageArticle/${article.imageOpen}`}
                   alt={article.imageOpen}
                 />
+              <div className={styles.leftImg1_object_text1}>
+                {article.textBlock}
+              </div>
               </div>
               <div className={styles.header_quote_container}>
                 <div
@@ -293,11 +295,11 @@ const ArticleCard = () => {
                 >
                   {article.QuoteBlocks.map((block, index) => (
                     <div key={index} className={styles.quoteBlock_object_block}>
-                      <div className={styles.quoteBlock_object_text1}>
-                        {block.text}
-                      </div>
                       <div className={styles.quoteBlock_object_title}>
                         {block.title}
+                      </div>
+                      <div className={styles.quoteBlock_object_text1}>
+                        {block.text}
                       </div>
                     </div>
                   ))}
@@ -393,27 +395,28 @@ const ArticleCard = () => {
               </div>
             </div>
           </div>
-          <div className={styles.container_author_address_imageClose_share_article}> 
-                <div className={styles.container_author_address_imageClose} ref={refs.address_imageClose}>
-                  <div
-                    className={
-                      styles.cart_article__author__block__card_imageClose
-                    }
-                  >
-                    {article.author}
-                  </div>
-                  <div
-                    className={
-                      styles.cart_article__address__block__card_imageClose
-                    }
-                  >
-                    {article.city}{" "}
-                    <div
-                      className={
-                        styles.cart_article__address__svg__block__card_imageClose
-                      }
-                    >
-                       <svg
+          <div
+            className={styles.container_author_address_imageClose_share_article}
+          >
+            <div
+              className={styles.container_author_address_imageClose}
+              ref={refs.address_imageClose}
+            >
+              <div
+                className={styles.cart_article__author__block__card_imageClose}
+              >
+                {article.author}
+              </div>
+              <div
+                className={styles.cart_article__address__block__card_imageClose}
+              >
+                {article.city}{" "}
+                <div
+                  className={
+                    styles.cart_article__address__svg__block__card_imageClose
+                  }
+                >
+                  <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="2"
                     height="2"
@@ -422,11 +425,11 @@ const ArticleCard = () => {
                   >
                     <circle cx="1" cy="1" r="1" fill="#959DA6" />
                   </svg>{" "}
-                    </div>
-                    {article.dataMonthYear}
-                   </div>
                 </div>
-          <div className={styles.share_article}>Поделиться статьей</div>
+                {article.dataMonthYear}
+              </div>
+            </div>
+            <div className={styles.share_article}>Поделиться статьей</div>
           </div>
           <div id="articles" className={styles.social_links_articleCard}>
             <button onClick={() => shareToVK(article, Host)}>
