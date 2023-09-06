@@ -9,6 +9,13 @@ import { fetchToggleStateForButton2Async } from "../store/Slice/toggleSlice";
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 
+const videoSource = {
+  small: "./assets/public_mob.mp4",
+  medium: "./assets/public_ipad.mp4",
+  large: "./assets/public_full.mp4",
+};
+
+
 export default function Publics() {
   const dispatch = useDispatch();
   const articles = useSelector((state) => state.article.article);
@@ -17,12 +24,8 @@ export default function Publics() {
   const [selectArticle, setSelectArticle] = useState("Все");
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [swiper, setSwiper] = useState(null);
+  const [videoSrc, setVideoSrc] = useState(videoSource.large);
 
-  const videoSource = {
-    small: "./assets/public_mob.mp4",
-    medium: "./assets/public_ipad.mp4",
-    large: "./assets/public_full.mp4",
-  };
 
   const buttonChoose1 = [
     "Все",
@@ -37,6 +40,27 @@ export default function Publics() {
     "Архитектура",
     "Конструкции",
   ];
+
+  useEffect(() => {
+    const handleResize = () => {
+       const screenWidth = window.innerWidth;
+      if (screenWidth >= 1025) {
+        setVideoSrc(videoSource.large);
+      } else if (screenWidth >= 768 && screenWidth < 1025) {
+        setVideoSrc(videoSource.medium);
+      } else {
+        setVideoSrc(videoSource.small);
+        
+      }
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize); 
+
+    return () => {
+          window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   useEffect(() => {
     dispatch(getFetchFormArticle());
@@ -64,7 +88,10 @@ console.log(articles, "+++++++++++++++++++++++++++++++++++++++++++++");
   return (
     <div className={styles.public_container_main}>
       <div className={styles.public_image_header}>
-        <VideoPlayer videoSource={videoSource} />
+        {/* <VideoPlayer videoSource={videoSource} /> */}
+           <video playsInline autoPlay muted loop id="bg-video">
+            <source src={videoSrc} type="video/mp4" />
+          </video>
         <div className={styles.text_container_publics}>
           <span className={styles.text1_publics}>
             Наша команда ведет активную научную жизнь!

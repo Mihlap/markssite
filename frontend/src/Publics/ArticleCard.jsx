@@ -101,10 +101,6 @@ const ArticleCard = () => {
   ];
 
   useEffect(() => {
-    dispatch(getFetchFormArticle());
-  }, [dispatch]);
-
-  useEffect(() => {
     window.scrollTo(20, 0);
 
     // Скрываем заголовок, ссылку и описание перед анимацией
@@ -192,6 +188,10 @@ const ArticleCard = () => {
     }
   }, [scrollingMode]);
 
+  useEffect(() => {
+    dispatch(getFetchFormArticle());
+  }, [dispatch]);
+
   const currentIndex = articles.findIndex((p) => p.id === article.id);
 
   const previousIndex = (currentIndex - 1 + articles.length) % articles.length;
@@ -208,7 +208,7 @@ const ArticleCard = () => {
       <div className={styles.all_button_div}>
         <AllArticlesButton />
       </div>
-      <div className={styles.section_article__block__card}>
+      <div className={styles.section_article__block__card} >
         {article && (
           <div className={styles.cart_article__block__card}>
             <div className={styles.cart_article__container__block__card}>
