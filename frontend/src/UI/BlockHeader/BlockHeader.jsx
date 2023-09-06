@@ -110,7 +110,7 @@ const BlockHeader = () => {
           <div className="title">Архитектура</div>
           {/* <img className="cub_img" src={cub} alt="logo"/> */}
           <div className="text">
-            <Link className="text_wrapper_accordion" to={`/project?viewConstruction=Архитектура`}>
+            <Link className="text_wrapper_accordion" to={`/project?viewConstruction=Концепция`}>
             <span className="text_title_span">Архитектура и концепции</span>
             <div className="text_span">
               <span className="header_slider_span">
@@ -122,7 +122,7 @@ const BlockHeader = () => {
               </div>
             </div>
             </Link>
-            <Link className="text_wrapper_accordion" to={`/project?viewConstruction=Конструкции`}>
+            <Link className="text_wrapper_accordion" to={`/project?viewConstruction=Адаптация концепций`}>
             <span className="text_title_span">
               Адаптация зарубежных концепций
             </span>
@@ -136,7 +136,7 @@ const BlockHeader = () => {
               </div>
             </div>
             </Link>
-            <Link className="text_wrapper_accordion" to={`/project?viewConstruction=BIM`}>
+            <Link className="text_wrapper_accordion" to={`/project?viewConstruction=Дизайн-проекты`}>
             <span className="text_title_span">Дизайн-проекты</span>
             <div className="text_span">
               <span className="header_slider_span">
@@ -148,7 +148,7 @@ const BlockHeader = () => {
               </div>
             </div>
             </Link>
-            <Link className="text_wrapper_accordion" to={`/project?viewConstruction=Дизайн`}>
+            <Link className="text_wrapper_accordion" to={`/project?viewConstruction=Документация РП П`}>
             <span className="text_title_span">
               Проектная и рабочая документация
             </span>
@@ -167,7 +167,7 @@ const BlockHeader = () => {
         <div className="accordion">
           <div className="title">Конструктив</div>
           <div className="text">
-            <Link className="text_wrapper_accordion" to={"./project"}>
+            <Link className="text_wrapper_accordion" to={`/project?viewConstruction=Инженерия`}>
             <span className="text_title_span">Инженерное проектирование</span>
             <div className="text_span">
               <span className="header_slider_span">
@@ -178,7 +178,7 @@ const BlockHeader = () => {
               </div>
             </div>
             </Link>
-            <Link className="text_wrapper_accordion" to={"./project"}>
+            <Link className="text_wrapper_accordion" to={`/project?viewConstruction=Подземные сооружения`}>
             <span className="text_title_span">
               Подземные транспортные сооружения
             </span>
@@ -192,7 +192,7 @@ const BlockHeader = () => {
               </div>
             </div>
             </Link>
-            <Link className="text_wrapper_accordion" to={"./project"}>
+            <Link className="text_wrapper_accordion" to={`/project?viewConstruction=Линейные объекты`}>
             <span className="text_title_span">
               Управление линейными объектами
             </span>
@@ -205,7 +205,7 @@ const BlockHeader = () => {
               </div>
             </div>
             </Link>
-            <Link className="text_wrapper_accordion" to={"./project"}>
+            <Link className="text_wrapper_accordion" to={`/project?viewConstruction=Конструктив`}>
             <span className="text_title_span">Конструктивные решения</span>
             <div className="text_span">
               <span className="header_slider_span">
@@ -222,7 +222,7 @@ const BlockHeader = () => {
         <div className="accordion">
           <div className="title">Наука</div>
           <div className="text">
-            <Link className="text_wrapper_accordion" to={"./publication"}>
+            <Link className="text_wrapper_accordion" to={`/project?viewConstruction=Научно-техническое сопровождение`}>
             <span className="text_title_span">Научно-техническое сопровождение</span>
             <div className="text_span">
               <span className="header_slider_span">
@@ -239,7 +239,7 @@ const BlockHeader = () => {
         <div className="accordion">
           <div className="title">Digital</div>
           <div className="text">
-            <Link className="text_wrapper_accordion" to={"./project"}>
+            <Link className="text_wrapper_accordion" to={`/project?viewConstruction=BIM`}>
             <span className="text_title_span">BIM моделирование</span>
             <div className="text_span">
               <span className="header_slider_span">
