@@ -83,8 +83,13 @@ const toggleSlice = createSlice({
       console.log("Successfully fetched toggle state from server");
     },
     [fetchToggleStateAsync.rejected]: (state, action) => {
-      state.error = action.payload.message || "An unknown error occurred";
-      console.error("Error fetching toggle state:", state.error);
+      if (action.payload && action.payload.message) {
+        state.error = action.payload.message;
+        console.error("Error fetching toggle state:", action.payload.message);
+      } else {
+        state.error = "Unknown error occurred.";
+        console.error("Unknown error occurred during toggle state fetch.");
+      }
     },
     [updateToggleStateForButton2Async.pending]: (state, action) => {
       console.log("Starting API request to update toggle for button 2");
@@ -105,7 +110,7 @@ const toggleSlice = createSlice({
       console.log("Successfully fetched toggle state for button 2 from server");
     },
     [fetchToggleStateForButton2Async.rejected]: (state, action) => {
-        state.error = action.payload.message || "An unknown error occurred";
+      state.error = action.payload.message || "An unknown error occurred";
       console.error(
         "Error fetching toggle state for button 2:",
         action.payload.message

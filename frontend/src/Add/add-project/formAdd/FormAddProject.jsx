@@ -887,7 +887,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                     setIsPhotoOpenVisible
                   )
                 }
-                required
+                // required
               />
               <label
                 htmlFor="degreeParticipation"
@@ -917,7 +917,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                     setIsPhotoOpenVisible
                   )
                 }
-                required
+                // required
               />
               <label htmlFor="statusObject" className={styles.form__label}>
                 Статус объекта (например «Дом сдан»)
@@ -944,7 +944,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                     setIsPhotoOpenVisible
                   )
                 }
-                required
+                // required
               />
               <label htmlFor="customer" className={styles.form__label}>
                 Заказчик
