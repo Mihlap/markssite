@@ -2,7 +2,7 @@ const express = require('express');
 // eslint-disable-next-line
 const path = require("path");
 const fs = require("fs");
-const { Project } = require("../../db/models");
+const { Project, Constructor } = require('../../db/models');
 const fileMiddleware = require('../../middleware/file');
 
 const router = express.Router();
@@ -44,7 +44,6 @@ router.post(
     { name: 'photoAva', maxCount: 1 },
     { name: 'imageOpen', maxCount: 1 },
     { name: 'imageClose', maxCount: 1 },
-    // { name: 'dynamicBlocks', maxCount: 20 },
   ]),
   async (req, res) => {
     try {
@@ -52,39 +51,45 @@ router.post(
       const imageProjects = req.files.photoAva ? req.files.photoAva[0].filename : null;
       const imageOpens = req.files.imageOpen ? req.files.imageOpen[0].filename : null;
       const imageCloses = req.files.imageClose ? req.files.imageClose[0].filename : null;
+     
 
-      console.log(req.body); // Output file information to the console
+      console.log(req.body, '<<-- reg.BODY'); // Output file information to the console
       // console.log(imageCloses);
-      console.log(req.files);
-      await Project.create({
-        title: req.body.title,
-        selectCompetencies: req.body.selectCompetencies,
-        countryCity: req.body.countryCity,
-        monthYear: req.body.monthYear,
-        viewConstruction: req.body.viewConstruction,
-        style: req.body.radioValue,
-        imageTitle: imageTitles,
-        imageProject: imageProjects,
-        titleTextBlock: req.body.titleTextBlock,
-        descriptionProject: req.body.descriptionProject,
-        totalArea: req.body.totalArea,
-        siteArea: req.body.siteArea,
-        floors: req.body.floors,
-        altitude: req.body.altitude,
-        constructionVolume: req.body.constructionVolume,
-        location: req.body.location,
-        degreeParticipation: req.body.degreeParticipation,
-        statusObject: req.body.statusObject,
-        customer: req.body.customer,
-        publication: req.body.publication,
-        linkToPublication: req.body.linkToPublication,
-        publicationTwo: req.body.publicationTwo,
-        linkToPublicationTwo: req.body.linkToPublicationTwo,
-        awards: req.body.awards,
-        imageOpen: imageOpens,
-        textBlock: req.body.textBlock,
-        imageClose: imageCloses,
-      });
+      console.log(req.files, '<<-- reg.FILES');
+       const createdArticle = await Project.create({
+         title: req.body.title,
+         selectCompetencies: req.body.selectCompetencies,
+         countryCity: req.body.countryCity,
+         monthYear: req.body.monthYear,
+         viewConstruction: req.body.viewConstruction,
+         style: req.body.radioValue,
+         imageTitle: imageTitles,
+         imageProject: imageProjects,
+         titleTextBlock: req.body.titleTextBlock,
+         descriptionProject: req.body.descriptionProject,
+         totalArea: req.body.totalArea,
+         siteArea: req.body.siteArea,
+         floors: req.body.floors,
+         altitude: req.body.altitude,
+         constructionVolume: req.body.constructionVolume,
+         location: req.body.location,
+         degreeParticipation: req.body.degreeParticipation,
+         statusObject: req.body.statusObject,
+         customer: req.body.customer,
+         publication: req.body.publication,
+         linkToPublication: req.body.linkToPublication,
+         publicationTwo: req.body.publicationTwo,
+         linkToPublicationTwo: req.body.linkToPublicationTwo,
+         awards: req.body.awards,
+         imageOpen: imageOpens,
+         textBlock: req.body.textBlock,
+         imageClose: imageCloses,
+       });
+
+      //  await Constructor.create({
+      //    data: dynamicFiles.join(', '),
+      //    idBlock: createdArticle.id,
+      //  });
 
       res.status(200).json({ message: 'Данные успешно сохранены' });
     } catch (error) {
