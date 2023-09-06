@@ -34,9 +34,16 @@ import CompanySubscriptionForm from "../UI/CompanySubscriptionForm/CompanySubscr
 import CounterCompanyMobile from "../UI/CounterCompanyMobile";
 import CounterCompanyMobile2 from "../UI/CounterCompanyMobile2";
 import CompanyGroupSlider from "../UI/CompanyGroupSlider/CompanyGroupSlider";
-import VideoPlayer from "../UI/Videoplayer/VideoPlayer";
+
 
 export default function Company({ userId }) {
+  const videoSource = {
+    large: "./assets/company_full.mp4",
+    medium: "./assets/company_ipad.mp4",
+    small: "./assets/company_mob.mp4",
+  };
+
+
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [countPercent, setCountPercent] = useState(0);
   const [countHuman, setCountHuman] = useState(0);
@@ -44,7 +51,7 @@ export default function Company({ userId }) {
   const [swiper, setSwiper] = useState(null);
   const [currentIndexCompany, setCurrentIndexCompany] = useState(0);
   const swiperCompanyRef = useRef(null);
-  const videoRef = useRef(null);
+  const [videoSrc, setVideoSrc] = useState(videoSource.large);
 
   const [showCards, setShowCards] = useState(false);
   const [activeButton, setActiveButton] = useState("Руководство");
@@ -70,25 +77,31 @@ export default function Company({ userId }) {
     threshold: 0.5,
   });
 
-  const videoSource = {
-    large: "./assets/company_full.mp4",
-    medium: "./assets/company_ipad.mp4",
-    small: "./assets/company_mob.mp4",
-  };
-
   const isMobile = windowWidth <= 767;
   const symbol = "•";
   const Host = process.env.REACT_APP_SERVER_HOST;
 
-  useEffect(() => {
-    function handleResize() {
+   useEffect(() => {
+    const handleResize = () => {
       setWindowWidth(window.innerWidth);
-    }
-    window.addEventListener("resize", handleResize);
+      const screenWidth = window.innerWidth;
+      if (screenWidth >= 1025) {
+        setVideoSrc(videoSource.large);
+      } else if (screenWidth >= 768 && screenWidth < 1025) {
+        setVideoSrc(videoSource.medium);
+      } else {
+        setVideoSrc(videoSource.small);
+        
+      }
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize); 
+
     return () => {
       if (window) {
-        window.removeEventListener("resize", handleResize);
-      }
+      window.removeEventListener("resize", handleResize);
+    }
     };
   }, []);
 
@@ -202,22 +215,8 @@ export default function Company({ userId }) {
     };
   }, []);
 
-  useEffect(() => {
-    const video = videoRef.current;
 
-    const handleVideoEnded = () => {
-      video.currentTime = 3;
-      video.play();
-    };
-
-    video?.addEventListener("ended", handleVideoEnded);
-
-    return () => {
-      video?.removeEventListener("ended", handleVideoEnded);
-    };
-  }, []);
-
-  const handlePCardCompanyClick = (index) => {
+   const handlePCardCompanyClick = (index) => {
     setCurrentIndexCompany(index);
     if (swiperCompanyRef.current && swiperCompanyRef.current.slideTo) {
       swiperCompanyRef.current.slideTo(index);
@@ -628,8 +627,8 @@ export default function Company({ userId }) {
             </Modal>
           )}
         </ul>
-       </div>
-        {isMobile && (
+      </div>
+      {isMobile && (
         <div className={styles.slider_card_wrapper}>
           <Swiper
             className={styles.slider_card_container}
@@ -669,14 +668,14 @@ export default function Company({ userId }) {
             ))}
           </Swiper>
         </div>
-         )}
-        <div
+      )}
+      <div
         className="swiper_pagination"
         style={{
           paddingLeft: "1rem",
           paddingRight: "1rem",
-         }}
-        >
+        }}
+      >
         {staff &&
           staff.map((_, index) => (
             <button
@@ -685,11 +684,10 @@ export default function Company({ userId }) {
                 currentIndexCompany === index ? "active" : ""
               }`}
               onClick={() => handlePCardCompanyClick(index)}
-              
             />
           ))}
-         </div>
-         {!isMobile && (
+      </div>
+      {!isMobile && (
         <div className={styles.slider_card_wrapper}>
           <Swiper
             className={styles.slider_card_container}
@@ -722,19 +720,21 @@ export default function Company({ userId }) {
             ))}
           </Swiper>
         </div>
-        )}
-        <div className={styles.fon} ref={videoRef}>
-          <div className={styles.video_wrapper}>
-            <VideoPlayer videoSource={videoSource} />
+      )}
+      <div className={styles.fon}>
+        <div className={styles.video_wrapper}>
+           <video playsInline autoPlay muted loop id="bg-video">
+            <source src={videoSrc} type="video/mp4" />
+          </video>
+        </div>
+        <div className={styles.form_wrapper}>
+          <div className={styles.company_form_contacts_wrapper}>
+            <CompanyFormContacts />
           </div>
-            <div className={styles.form_wrapper}>
-              <div className={styles.company_form_contacts_wrapper}>
-                <CompanyFormContacts />
-              </div>
-              <div className={styles.companySubscriptionForm_wrapper}>
-                <CompanySubscriptionForm />
-              </div>
-         </div>
+          <div className={styles.companySubscriptionForm_wrapper}>
+            <CompanySubscriptionForm />
+          </div>
+        </div>
       </div>
     </div>
   );

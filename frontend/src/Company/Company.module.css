@@ -392,24 +392,31 @@
 
 .fon {
 position: relative;
+width: 100%;
+height: 100%;
   }
 
 .video_wrapper {
-  width: 100%;
-  height: auto;
   position: relative;
-   object-fit: contain;
-  object-position: center;
+ min-width: auto;
+  min-height: auto;
   overflow: hidden;
-  padding-top: 0rem;
-  z-index: 0;
+}
+#bg-video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top; 
+  z-index: -1; 
 }
 
 .form_wrapper {
 display: flex;
 position: absolute;
-/* padding-top: 6.44rem; */
- bottom: 3.38rem;
+top: 6.44rem;
 }
 
 .company_form_contacts_wrapper {
@@ -534,21 +541,6 @@ position: absolute;
   display: none;
 }
 
-@media screen and (min-width: 1501px) and (max-width: 1800px) {
-  .video_wrapper {
-    padding-top: 6rem;
-  }  
-}
-@media screen and (min-width: 1300px) and (max-width: 1500px) {
-  .video_wrapper {
-    padding-top: 6rem;
-  }  
-}
-@media screen and (min-width: 1025px) and (max-width: 1299px) {
-  .video_wrapper {
-    padding-top: 9rem;
-  }  
-}
 
 /* стили для планшетной версии  */
 @media screen and (min-width: 768px) and (max-width: 1024px) {
@@ -689,16 +681,10 @@ position: absolute;
     margin-right: 1.875rem;
   }
 
-  .video_wrapper {
-   padding-top: 2rem;
-  }
-  
-
   .form_wrapper {
-   padding-top: 0rem;
-   padding-bottom: 0rem;
    padding-left: 5.4vw;
    padding-right: 3vw;
+   top: 5.62rem;
   }
     
   .company_form_contacts_wrapper {
@@ -750,14 +736,19 @@ position: absolute;
 }
 
 @media screen and (min-width: 768px) and (max-width: 840px) {
-  .video_wrapper {
-    padding-top: 6rem;
-  } 
-  .company_form_contacts_wrapper {
+  .form_wrapper {
+    padding: 0rem 1rem 0rem 1rem;
+    top: 5rem;
+    }
+    .video_wrapper {
+      padding-top: 0rem;
+      height: 100%;
+      bottom: 0;
+   }
+  
+   .company_form_contacts_wrapper {
     width: 100%;
-    padding-top: 3.6rem;
-    margin-top: 0;
-  }
+   }
   .companySubscriptionForm_wrapper {
     display: none;
   }
@@ -1101,7 +1092,7 @@ position: absolute;
 
    .form_wrapper {
   padding: 0rem 1rem 0rem 1rem;
-  top: 0rem;
+  top: 5rem;
   }
   .video_wrapper {
     padding-top: 0rem;
@@ -1134,12 +1125,9 @@ position: absolute;
 }
 
 @media screen and (min-width: 200px) and (max-width: 340px) {
-  .video_wrapper {
-    padding-top: 8rem;
-    }
     .form_wrapper {
       padding: 0rem 1rem 0rem 1rem;
-      top: 0rem;
+      top: 5rem;
       }
 
 }
