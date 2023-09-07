@@ -445,7 +445,7 @@ padding-right: 0.5rem;
 }
 
 
-/* Стили временно для кнопок */
+/* Стили для кнопок */
 
 .button_article_articleCard {
   display: flex;
@@ -453,17 +453,19 @@ padding-right: 0.5rem;
   padding-left: 1.69rem;
   padding-top: 1.12rem;
   width: 100%;
+  overflow: hidden;
 }
 
 .button_article_link_articleCard1 {
+  display: flex;
   border: none;
   color: var(--white-F6F6F6);
   font-size: 1.4vh;
   cursor: pointer;
-  font-family: 'Raleway';
+  font-family: var(--font-raleway);
   font-style: normal;
-  font-weight: 400;
-  line-height: 20px;
+  font-weight: var(--fw-400);
+  line-height: 1.25rem;
   padding: 1.8rem 1.69rem;
   align-items: center;
   word-wrap: break-word;
@@ -481,10 +483,10 @@ padding-right: 0.5rem;
   color: var(--white-F6F6F6);
   font-size: 1.4vh;
   cursor: pointer;
-  font-family: 'Raleway';
+  font-family: var(--font-raleway);
   font-style: normal;
-  font-weight: 400;
-  line-height: 20px;
+  font-weight: var(--fw-400);
+  line-height: 1.25rem;
   padding: 1.8rem 1.69rem;
   align-items: center;
   word-wrap: break-word;
@@ -509,7 +511,7 @@ padding-right: 0.5rem;
   padding-left: 0.7vw;
   font-family: var(--font-raleway);
   font-weight: var(--fw-400);
-  font-size: 0.875vw;
+  font-size: 0.875rem;
   line-height: 1.25vw;
   color: var(--black-1D2E43);
   font-variant-numeric: lining-nums proportional-nums;
@@ -521,7 +523,7 @@ padding-right: 0.5rem;
   padding-right: 0.7vw;
   font-family: var(--font-raleway);
   font-weight: var(--fw-400);
-  font-size: 0.875vw;
+  font-size: 0.875rem;
   line-height: 1.25vw;
   color: var(--black-1D2E43);
   font-variant-numeric: lining-nums proportional-nums;
@@ -570,13 +572,17 @@ padding-right: 0.5rem;
 
 .slider_container_item_card_articleCard {
   display: flex;
-  max-height: 100%;
+  height: 100%;
+  width: 100%;
   border-radius: 1rem;
 }
 
 
 .wrapper_container_item_card_articleCard {
-  width: 100%;
+  display: flex;
+ width: 100%;
+  max-height: 24rem;
+  height: 100%;
   border-radius: 1rem;
   gap: 1.88rem;
   overflow: hidden;
@@ -592,10 +598,11 @@ padding-right: 0.5rem;
 }
 
 .container__imageTitle_articleCard {
-  display: flex;
   width: 100%;
-  height: fit-content;
+  height: 100%;
+  min-height: 24rem;
   border-radius: 1rem;
+  object-fit: cover;
   object-position: center;
   transition: transform 0.5s ease-in-out;
 }
@@ -728,16 +735,15 @@ padding-right: 0.5rem;
     max-width: 100%;
     width: 40vw;
   }
-
-  .container__imageTitle_articleCard {
-    display: flex;
-    width: 100%;
-    height: auto;
-    min-height: 100%;
-    border-radius: 1rem;
-    object-position: center;
-    transition: transform 0.5s ease-in-out;
+  .wrapper_container_item_card_articleCard {
+ 
   }
+  .container__imageTitle_articleCard {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+   }
 
 
 }
@@ -858,12 +864,11 @@ padding-right: 0.5rem;
     padding-left: 0rem;
     width: 100%;
     overflow: hidden;
-  }
+   }
 
   .button_article_link_articleCard1,
   .button_article_link_articleCard2 {
     width: 50%;
-   
   }
 
   .previous_svg_articleCard,
@@ -871,9 +876,8 @@ padding-right: 0.5rem;
     display: flex;
     border: none;
     align-items: center;
-    /* height: 0vh; */
     width: 100%;
-  }
+   }
 
   .previous__span_articleCard {
     color: var(--black-1D2E43);
@@ -885,9 +889,12 @@ padding-right: 0.5rem;
     line-height: 1rem;
     padding-left: 0.87rem;
     max-width: 100%;
-    width: 100%;
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
+  width: 100%;
+  margin-top: 0.5rem;
+  margin-bottom: 0.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   }
 
   .next__span_articleCard {
@@ -895,16 +902,17 @@ padding-right: 0.5rem;
     font-variant-numeric: lining-nums proportional-nums;
     font-family: var(--font-raleway);
     font-size: 0.75rem;
-    line-height: 1rem;
     font-style: normal;
     font-weight: var(--fw-400);
+    line-height: 1rem;
     justify-content: flex-end;
     padding-right: 0.87rem;
     max-width: 100%;
     width: 100%;
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
-  }
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+   }
 
   .article_name_text {
     padding-left: 1rem;
