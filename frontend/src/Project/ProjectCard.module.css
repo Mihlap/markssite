@@ -334,13 +334,14 @@
 
 
 
-/* Стили временно для кнопок */
+/* Стили для кнопок */
 
 .button_project_projectCard {
   display: flex;
   padding-right: 1.69rem;
   padding-left: 1.69rem;
   width: 100%;
+  overflow: hidden;
 }
 
 .button_project_link_projectCard1 {
@@ -349,9 +350,9 @@
   color: var(--white-F6F6F6);
   font-size: 1.4vh;
   cursor: pointer;
-  font-family: 'Raleway';
+  font-family: var(--font-raleway);
   font-style: normal;
-  font-weight: 400;
+  font-weight: var(--fw-400);
   line-height: 1.25rem;
   padding: 1.8rem 1.69rem;
   align-items: center;
@@ -370,9 +371,9 @@
   color: var(--white-F6F6F6);
   font-size: 1.4vh;
   cursor: pointer;
-  font-family: 'Raleway';
+  font-family: var(--font-raleway);
   font-style: normal;
-  font-weight: 400;
+  font-weight: var(--fw-400);
   line-height: 1.25rem;
   padding: 1.8rem 1.69rem;
   align-items: center;
@@ -398,7 +399,7 @@
   padding-left: 0.7vw;
   font-family: var(--font-raleway);
   font-weight: var(--fw-400);
-  font-size: 0.875vw;
+  font-size: 0.875rem;
   line-height: 1.25vw;
   color: var(--black-1D2E43);
   font-variant-numeric: lining-nums proportional-nums;
@@ -410,11 +411,11 @@
   padding-right: 0.7vw;
   font-family: var(--font-raleway);
   font-weight: var(--fw-400);
-  font-size: 0.875vw;
+  font-size: 0.875rem;
   line-height: 1.25vw;
   color: var(--black-1D2E43);
   font-variant-numeric: lining-nums proportional-nums;
-  flex: 2; /* 20% width */
+  flex: 2; 
   text-align: right;
  }
 
@@ -504,7 +505,6 @@
   overflow: hidden;
   transition: transform 0.5s ease-in-out;
   cursor: pointer;
-  transition: filter 0.5s ease;
 }
 
 .wrapper_container_item_card_projectCard,
@@ -595,25 +595,25 @@
 .wrapper_container__selectCompetencies_projectCard {
   display: flex;
   padding-left: 2rem;
-  /* justify-content: flex-end; */
+  justify-content: flex-end;
   width: 100%;
 }
 
 .container__selectCompetencies_projectCard {
-  display: flex;
-  /* justify-content: flex-end; */
+  display: block;
   background: var(--white-F6F6F6);
-  flex-wrap: wrap;
-   font-family: var(--font-raleway);
   font-size: 9px;
   font-style: normal;
   font-weight: var(--fw-500);
   line-height: normal;
-  width: 100%;
+  /* justify-content: flex-end; */
+  flex-direction: row;
+  flex-wrap: wrap;
+  padding-left: 2rem;
 }
 
 .div_el_selectCompetencies_projectCard {
-  /* display: inline-flex; */
+  display: inline-flex;
   width: fit-content;
   margin-right: 6px; 
   margin-bottom: 6px;
@@ -1125,11 +1125,7 @@
     overflow: hidden;
   }
 
-  .previous_svg_projectCard,
-  .next_svg_projectCard {
-    width: 100%;
-  }
-
+ 
   .button_project_link_projectCard1,
   .button_project_link_projectCard2 {
     width: 50%;
@@ -1140,20 +1136,8 @@
     display: flex;
     border: none;
     align-items: center;
-    /* height: 0vh; */
+    width: 100%;
   }
-  
-  .previous__span_projectCard {
-    display: flex;
-    justify-content: flex-start;
-    padding-left: 0.7vw;
-    font-family: var(--font-raleway);
-    font-weight: var(--fw-400);
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-    color: var(--black-1D2E43);
-    font-variant-numeric: lining-nums proportional-nums;
-   }
   
     .previous__span_projectCard {
       color: var(--black-1D2E43);
@@ -1165,7 +1149,12 @@
       line-height: 1rem;
       padding-left: 0.87rem;
       max-width: 100%;
-      width: 100%;
+    width: 100%;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     }
 
     .next__span_projectCard {
@@ -1180,6 +1169,9 @@
       padding-right: 0.87rem;
       max-width: 100%;
       width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
   .social_links_projectCard {

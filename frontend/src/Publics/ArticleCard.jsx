@@ -466,6 +466,8 @@ const ArticleCard = () => {
             </button>
           </div>
 
+        </div>
+      )}
           <div className={styles.button_article_articleCard}>
             {previousArticle && (
               <Link
@@ -494,8 +496,6 @@ const ArticleCard = () => {
               </Link>
             )}
           </div>
-        </div>
-      )}
       <div className={styles.article_name_text}>Ещё по теме</div>
       <div className={styles.swiper_article_container}>
         {/* <SwiperContainerProgect projects={projects} /> */}
@@ -510,17 +510,32 @@ const ArticleCard = () => {
           direction="horizontal"
           loop={false}
           breakpoints={{
+            2500: {
+              slidesPerView: 3.9,
+            },
             2000: {
               slidesPerView: 3.4,
+            },
+            1750: {
+              slidesPerView: 2.7,
             },
             1440: {
               slidesPerView: 2.3,
             },
-            1024: {
-              slidesPerView: 2.3,
+            1300: {
+              slidesPerView: 2.1,
             },
-            700: {
-              slidesPerView: 2.2,
+            1200: {
+              slidesPerView: 1.9,
+            },
+            1024: {
+              slidesPerView: 1.6,
+            },
+            900: {
+              slidesPerView: 1.4,
+            },
+            800: {
+              slidesPerView: 1.2
             },
           }}
         >

@@ -16,6 +16,9 @@ const BlockHeader = () => {
   useEffect(() => {
     const isMobileScreen = window.innerWidth < 700;
     const accordions = document.querySelectorAll(".accordion");
+    accordions.forEach((accordion) => {
+      accordion.classList.remove("open");
+    });
     let currentIndex = -1;
 
     if (isMobileScreen) {
