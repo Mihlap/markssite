@@ -437,8 +437,8 @@ export default function FormAddProject({ setIsModalOpen }) {
                 options={[
                   { value: "Концепция", label: "Концепция" },
                   {
-                    value: "Адаптация концепций ",
-                    label: "Адаптация концепций ",
+                    value: "Адаптация концепций",
+                    label: "Адаптация концепций",
                   },
                   { value: "Дизайн-проекты", label: "Дизайн-проекты" },
                   { value: "Документация РП П", label: "Документация РП П" },

@@ -466,7 +466,7 @@ svg path {
 .wrapper_container__selectCompetencies {
   display: flex;
   justify-content: flex-end;
-  width: 50%;
+  width: 100%;
 }
 
 .container__selectCompetencies {
@@ -505,6 +505,9 @@ svg path {
   padding-top: 0em;
   margin-bottom: 4vh;
   margin-top: 3.5rem;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  word-break: break-all;
 }
 
 .card_item_1 {
