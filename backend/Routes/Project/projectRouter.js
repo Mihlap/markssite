@@ -44,6 +44,7 @@ router.post(
     { name: 'photoAva', maxCount: 1 },
     { name: 'imageOpen', maxCount: 1 },
     { name: 'imageClose', maxCount: 1 },
+    { name: /^dynamicBlock_\d+_file_\d+$/, maxCount: 100 },
   ]),
   async (req, res) => {
     try {
@@ -51,8 +52,6 @@ router.post(
       const imageProjects = req.files.photoAva ? req.files.photoAva[0].filename : null;
       const imageOpens = req.files.imageOpen ? req.files.imageOpen[0].filename : null;
       const imageCloses = req.files.imageClose ? req.files.imageClose[0].filename : null;
-      
-     
 
       console.log(req.body, '<<-- reg.BODY'); // Output file information to the console
       // console.log(imageTitles, '<<-- imageTitles');
@@ -92,6 +91,7 @@ router.post(
       //    idBlock: createdArticle.id,
       //  });
 
+
       res.status(200).json({ message: 'Данные успешно сохранены' });
     } catch (error) {
       console.log(error); // Output error to the console
@@ -123,12 +123,12 @@ router.delete('/deletezapros/:id', async (req, res) => {
     }
 
     // Удаление фотографий из imageProject
-    if (post.imageAuthor) {
-      const projectImageNames = post.imageProject.includes(', ')
-        ? post.imageProject.split(', ')
-        : [post.imageProject];
-      projectImageNames.forEach(deleteImage);
-    }
+  if (post.imageProject) {
+   const projectImageNames = post.imageProject.includes(', ')
+     ? post.imageProject.split(', ')
+     : [post.imageProject];
+   projectImageNames.forEach(deleteImage);
+}
 
     // Удаление фотографии из imageOpen
     if (post.imageOpen) {

@@ -348,9 +348,17 @@
 
     &__block_gray_flex {
         display: flex;
-        gap: 32px;
+        justify-content: space-between;
+        // gap: 32px;
     }
 
+    &__block_public {
+        width: 45%;
+    }
+
+    &__block_public_link {
+        width: 45%;
+    }
 }
 
 
