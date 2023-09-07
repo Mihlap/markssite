@@ -144,6 +144,7 @@ export default function FormAddProject({ setIsModalOpen }) {
     setSelectedViewConstruction([]);
     setSelectedRadio("");
     setPreviewPhotos([]);
+    setDynamicData([]);
     setInputData({
       title: "",
       selectCompetencies: "",
@@ -952,7 +953,7 @@ export default function FormAddProject({ setIsModalOpen }) {
             </div>
 
             <div className={styles.form_container__block_gray_flex}>
-              <div>
+              <div className={styles.form_container__block_public}>
                 <div className={`${styles.form__group} ${styles.field}`}>
                   <input
                     type="input"
@@ -983,37 +984,6 @@ export default function FormAddProject({ setIsModalOpen }) {
                   <input
                     type="input"
                     className={styles.form__field}
-                    placeholder="linkToPublication"
-                    name="linkToPublication"
-                    id="linkToPublication"
-                    value={inputData.linkToPublication}
-                    onChange={(event) =>
-                      changeHandler(
-                        event,
-                        inputData,
-                        setInputData,
-                        setPreviewPhotos,
-                        setIsDropPhotoVisible,
-                        setPreviewPhotoAva,
-                        setIsPhotoAvaVisible,
-                        setPreviewPhotoOpen,
-                        setIsPhotoOpenVisible
-                      )
-                    }
-                  />
-                  <label
-                    htmlFor="linkToPublication"
-                    className={styles.form__label}
-                  >
-                    Ссылк на статью
-                  </label>
-                </div>
-              </div>
-              <div>
-                <div className={`${styles.form__group} ${styles.field}`}>
-                  <input
-                    type="input"
-                    className={styles.form__field}
                     placeholder="publicationTwo"
                     name="publicationTwo"
                     id="publicationTwo"
@@ -1037,6 +1007,37 @@ export default function FormAddProject({ setIsModalOpen }) {
                     className={styles.form__label}
                   >
                     Публикация
+                  </label>
+                </div>
+              </div>
+              <div className={styles.form_container__block_public_link}>
+                <div className={`${styles.form__group} ${styles.field}`}>
+                  <input
+                    type="input"
+                    className={styles.form__field}
+                    placeholder="linkToPublication"
+                    name="linkToPublication"
+                    id="linkToPublication"
+                    value={inputData.linkToPublication}
+                    onChange={(event) =>
+                      changeHandler(
+                        event,
+                        inputData,
+                        setInputData,
+                        setPreviewPhotos,
+                        setIsDropPhotoVisible,
+                        setPreviewPhotoAva,
+                        setIsPhotoAvaVisible,
+                        setPreviewPhotoOpen,
+                        setIsPhotoOpenVisible
+                      )
+                    }
+                  />
+                  <label
+                    htmlFor="linkToPublication"
+                    className={styles.form__label}
+                  >
+                    Ссылк на статью
                   </label>
                 </div>
                 <div className={`${styles.form__group} ${styles.field}`}>

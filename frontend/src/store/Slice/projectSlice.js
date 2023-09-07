@@ -61,21 +61,20 @@ export const fetchProject = (formattedData, setInputData) => async (dispatch) =>
   dispatch(fetchProjectStart());
   const formData = new FormData();
 for (const key in formattedData) {
-  if (typeof formattedData[key] === "object") {
-    if (key === "photoAva" && formattedData[key].length > 0) {
-      formData.append("photoAva", formattedData[key][0]);
-    } else if (key === "imageOpen" && formattedData[key].length > 0) {
-      formData.append("imageOpen", formattedData[key][0]);
-    } else if (key === "dynamicBlocks") {
-      formData.append(key, JSON.stringify(formattedData[key]));
-    } else {
-      for (const file of formattedData[key]) {
-        formData.append(key, file);
-      }
-    }
-  } else {
-    formData.append(key, formattedData[key]);
-  }
+ if (typeof formattedData[key] === "object") {
+     if (key === "photoAva" && formattedData[key].length > 0) {
+       formData.append("photoAva", formattedData[key][0]);
+     } else if (key === "imageOpen" && formattedData[key].length > 0) {
+       formData.append("imageOpen", formattedData[key][0]);
+     } else {
+       for (const file of formattedData[key]) {
+         formData.append(key, file);
+       }
+     }
+   } else {
+     formData.append(key, formattedData[key]);
+   }
+
 }
 
   
@@ -107,6 +106,7 @@ for (const key in formattedData) {
       imageOpen: [],
       textBlock: "",
       imageClose: [],
+      dynamicBlocks: [],
     });
     dispatch(getFetchForm()); // Добавлен этот вызов для получения обновленных данных после успешной отправки формы
     });
