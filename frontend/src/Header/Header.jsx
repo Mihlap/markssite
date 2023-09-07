@@ -391,7 +391,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
           ></img>
         </div>
         <BlockHeader />
-        {/* <Mapbox3D /> */}
+        <Mapbox3D />
       </div>
       <div className={styles.sliderMobile_container}>
         <SliderMobile />
