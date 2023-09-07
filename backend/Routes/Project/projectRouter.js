@@ -51,10 +51,11 @@ router.post(
       const imageProjects = req.files.photoAva ? req.files.photoAva[0].filename : null;
       const imageOpens = req.files.imageOpen ? req.files.imageOpen[0].filename : null;
       const imageCloses = req.files.imageClose ? req.files.imageClose[0].filename : null;
+      
      
 
       console.log(req.body, '<<-- reg.BODY'); // Output file information to the console
-      // console.log(imageCloses);
+      // console.log(imageTitles, '<<-- imageTitles');
       console.log(req.files, '<<-- reg.FILES');
        const createdArticle = await Project.create({
          title: req.body.title,
