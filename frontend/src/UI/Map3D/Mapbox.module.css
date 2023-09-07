@@ -2,8 +2,9 @@
   display: flex;
   width: auto;
   height: 64.5vh;
-  padding: 0px 1vh;
+  padding: 0px 0.5vh;
  }
+ 
 
  @media screen and (max-width: 700px) {
   .map {
