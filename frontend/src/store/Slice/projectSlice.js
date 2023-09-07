@@ -74,6 +74,7 @@ for (const key in formattedData) {
    } else {
      formData.append(key, formattedData[key]);
    }
+
 }
 
   

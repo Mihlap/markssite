@@ -53,48 +53,44 @@ router.post(
       const imageOpens = req.files.imageOpen ? req.files.imageOpen[0].filename : null;
       const imageCloses = req.files.imageClose ? req.files.imageClose[0].filename : null;
 
+      console.log(req.body, '<<-- reg.BODY'); // Output file information to the console
+      // console.log(imageTitles, '<<-- imageTitles');
+      console.log(req.files, '<<-- reg.FILES');
+       const createdArticle = await Project.create({
+         title: req.body.title,
+         selectCompetencies: req.body.selectCompetencies,
+         countryCity: req.body.countryCity,
+         monthYear: req.body.monthYear,
+         viewConstruction: req.body.viewConstruction,
+         style: req.body.radioValue,
+         imageTitle: imageTitles,
+         imageProject: imageProjects,
+         titleTextBlock: req.body.titleTextBlock,
+         descriptionProject: req.body.descriptionProject,
+         totalArea: req.body.totalArea,
+         siteArea: req.body.siteArea,
+         floors: req.body.floors,
+         altitude: req.body.altitude,
+         constructionVolume: req.body.constructionVolume,
+         location: req.body.location,
+         degreeParticipation: req.body.degreeParticipation,
+         statusObject: req.body.statusObject,
+         customer: req.body.customer,
+         publication: req.body.publication,
+         linkToPublication: req.body.linkToPublication,
+         publicationTwo: req.body.publicationTwo,
+         linkToPublicationTwo: req.body.linkToPublicationTwo,
+         awards: req.body.awards,
+         imageOpen: imageOpens,
+         textBlock: req.body.textBlock,
+         imageClose: imageCloses,
+       });
 
-      // console.log(req.body, '<<-- reg.BODY'); // Output file information to the console
-      // console.log(imageCloses);
-      // console.log(req.files, '<<-- reg.FILES');
+      //  await Constructor.create({
+      //    data: dynamicFiles.join(', '),
+      //    idBlock: createdArticle.id,
+      //  });
 
-      console.log(imageNames, '<<-- reg.imageNames');
-      console.log(req.body.dynamicBlocks, '<<-- reg.dynamicBlocks');
-      // const createdArticle =
-        await Project.create({
-        title: req.body.title,
-        selectCompetencies: req.body.selectCompetencies,
-        countryCity: req.body.countryCity,
-        monthYear: req.body.monthYear,
-        viewConstruction: req.body.viewConstruction,
-        style: req.body.radioValue,
-        imageTitle: imageTitles,
-        imageProject: imageProjects,
-        titleTextBlock: req.body.titleTextBlock,
-        descriptionProject: req.body.descriptionProject,
-        totalArea: req.body.totalArea,
-        siteArea: req.body.siteArea,
-        floors: req.body.floors,
-        altitude: req.body.altitude,
-        constructionVolume: req.body.constructionVolume,
-        location: req.body.location,
-        degreeParticipation: req.body.degreeParticipation,
-        statusObject: req.body.statusObject,
-        customer: req.body.customer,
-        publication: req.body.publication,
-        linkToPublication: req.body.linkToPublication,
-        publicationTwo: req.body.publicationTwo,
-        linkToPublicationTwo: req.body.linkToPublicationTwo,
-        awards: req.body.awards,
-        imageOpen: imageOpens,
-        textBlock: req.body.textBlock,
-        imageClose: imageCloses,
-      });
-
-      // await Constructor.create({
-      //   data: dynamicImageNames,
-      //   idBlock: createdArticle.id,
-      // });
 
       res.status(200).json({ message: 'Данные успешно сохранены' });
     } catch (error) {
