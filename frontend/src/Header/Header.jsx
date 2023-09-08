@@ -34,8 +34,8 @@ const Host = process.env.REACT_APP_SERVER_HOST;
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
 const videoSource = {
-  small: "",
-  medium: "",
+  small: "./assets/PrimePark.mp4",
+  medium: "./assets/PrimePark.mp4",
   large: "./assets/PrimePark.mp4",
 };
 

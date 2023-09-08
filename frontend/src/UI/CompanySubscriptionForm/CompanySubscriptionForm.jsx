@@ -55,6 +55,7 @@ const CompanySubscriptionForm = () => {
 
       if (response.status === 200) {
         setMessage("Вы успешно подписались на новости.");
+        setValue("");
       } else {
         setMessage("Произошла ошибка при подписке.");
       }

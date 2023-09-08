@@ -1,8 +1,60 @@
+@import "../../App.css";
+
+
 .map {
   display: flex;
   width: auto;
   height: 64.5vh;
   padding: 0px 0.5vh;
+ }
+
+ .popupImage {
+  max-width: 200px;
+  height: auto;
+}
+
+.popupTitle {
+  color: var(--black-3C3C3C);
+  font-family: var(--font-raleway);
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: var(--fw-700);
+  line-height: 1.5rem;
+  margin-top: 1rem;
+}
+
+.popupDescription {
+  color: var(--black-3C3C3C);
+  font-family: var(--font-raleway);
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: var(--fw-700);
+  line-height: 1rem;
+}
+
+.popupButton {
+  display: flex;
+  width: auto;
+  padding: 8px 24px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2.125rem;
+  border: 1px solid var(--black-1D2E43);
+  background-color: transparent;
+  white-space: nowrap;
+  font-family: var(--font-raleway);
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: var(--fw-400);
+  line-height: 1.5rem;
+  color: var(--black-1D2E43);
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+ .popupButton:hover {
+  background-color: var(--dark-gray-566272);
+  color: var(--white-F6F6F6);
  }
  
 
