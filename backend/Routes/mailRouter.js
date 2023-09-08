@@ -49,11 +49,15 @@ mailRouter.post('/submitForm', async (req, res) => {
 // ______________Подписка______________________
 
 const transporterSubscribe = nodemailer.createTransport({
-  service: "Gmail",
+  pool: true,
+  host: 'smtp.mail.ru', 
+  port: 587, 
+  secure: false,
   auth: {
-    user: "your_email@gmail.com",
-    pass: "your_password",
+    user: process.env.EMAIL_USER, 
+    pass: process.env.EMAIL_PASS
   },
+  connectionTimeout: 30000,
 });
 
 // eslint-disable-next-line consistent-return
@@ -67,10 +71,10 @@ mailRouter.post("/subscribe", (req, res) => {
   }
 
   const mailOptions = {
-    from: "your_email@gmail.com",
-    to: email,
+    from: 'mikhail.test.mail@mail.ru', 
+    to: 'mikhail.test.mail@mail.ru', 
     subject: "Подписка на новости",
-    text: "Вы успешно подписались на наши новости.",
+    text: `Подписка на новости: ${email}`,
   };
 
   transporterSubscribe.sendMail(mailOptions, (error, info) => {
@@ -78,7 +82,7 @@ mailRouter.post("/subscribe", (req, res) => {
       console.error("Ошибка отправки письма:", error);
       return res.status(500).json({ message: "Ошибка отправки письма" });
     } 
-      console.log(`Email отправлен: ${  info.response}`);
+      console.log(`Email отправлен: ${info.response}`);
       return res.status(200).json({ message: "Письмо успешно отправлено" });
     
   });
