@@ -23,7 +23,7 @@ const BlockHeader = () => {
 
     if (isMobileScreen) {
       accordions.forEach((accordion, index) => {
-        const text = accordion.querySelector(".text_span");
+        const text = accordion.querySelector(".text");
         text.classList.add("closed");
 
         gsap.set(text, {
@@ -34,8 +34,8 @@ const BlockHeader = () => {
 
         ScrollTrigger.create({
           trigger: text,
-          start: "bottom bottom-=15%",
-          end: "top bottom+=10%",
+          start: "bottom bottom-=5%",
+          end: "top bottom+=5%",
           onUpdate: (self) => {
             if (self.direction === 1 && index > currentIndex) {
               gsap.to(text, {
