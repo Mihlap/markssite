@@ -18,12 +18,12 @@ export const counterSlice = createSlice({
     },
     incrementGap: (state) => {
       if (state.countGap < 80) {
-        state.countGap += 2;
+        state.countGap += 4;
       }
     },
     incrementScient: (state) => {
       if (state.countScient < 50) {
-        state.countScient += 2;
+        state.countScient += 4;
       }
     },
     incrementScienceDegree: (state) => {

@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useInView } from "react-intersection-observer";
 import { useDispatch, useSelector } from 'react-redux';
+import gsap from "gsap";
 import styles from "../Company/Company.module.css";
 
 import {
@@ -21,6 +22,7 @@ const CounterCompanyMobile2 = () => {
   const countScienceDegree = useSelector(
     (state) => state.counter.countScienceDegree
   );
+  const blockSlider = useRef();
 
   const [ref, inView] = useInView({
     threshold: 0.5, 
@@ -58,13 +60,24 @@ const CounterCompanyMobile2 = () => {
     countScienceDegree,
     inView,
   ]);
+
+  useEffect(() => {
+    const elements = blockSlider.current.children;
+
+    gsap.from(elements, {
+      x: "-100%",
+      duration: 1,
+      stagger: 0.5,
+      ease: "power2.out"
+    });
+  }, [counting]);
   
  
   return (
-    <div ref={ref} className={styles.right_counter_wrapper}>
+    <div className={styles.right_counter_wrapper} ref={blockSlider}>
     {counting ? (
         <>
-        <div className={styles.container_text_right}>
+        <div ref={ref} className={styles.container_text_right}>
           <div className={styles.div_underSlider_text_right}>
             <div className={styles.text_svg_right}>
               <img src={bracket_dark} alt="bracket_dark" />
@@ -91,7 +104,7 @@ const CounterCompanyMobile2 = () => {
       </>
     ) : (
       <>
-        <div className={styles.container_text_right}>
+        <div ref={ref} className={styles.container_text_right}>
           <div className={styles.div_underSlider_text_right}>
             <div className={styles.text_svg_right}>
               <img src={bracket_dark} alt="bracket_dark" />
