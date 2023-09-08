@@ -84,7 +84,7 @@ export default function Publics() {
   
 
  
-console.log(articles, "+++++++++++++++++++++++++++++++++++++++++++++");
+// console.log(articles, "+++++++++++++++++++++++++++++++++++++++++++++");
   return (
     <div className={styles.public_container_main}>
       <div className={styles.public_image_header}>
