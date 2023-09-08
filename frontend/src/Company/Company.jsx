@@ -230,17 +230,17 @@ export default function Company({ userId }) {
     { name: "HR", onClick: handleButtonClick },
   ];
 
-  // if (error) {
-  //   return (
-  //     <div>
-  //       {" "}
-  //       <Error error={error.message} />
-  //     </div>
-  //   );
-  // }
-  // if (loading) {
-  //   return <LoadingCircle />;
-  // }
+  if (error) {
+    return (
+      <div>
+        {" "}
+        <Error error={error.message} />
+      </div>
+    );
+  }
+  if (loading) {
+    return <LoadingCircle />;
+  }
 
   // console.log(staff, "персонал");
 

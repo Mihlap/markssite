@@ -200,7 +200,7 @@ const ArticleCard = () => {
   const previousArticle = articles[previousIndex];
   const nextArticle = articles[nextIndex];
 
-  console.log(article, "===========================================");
+  // console.log(article, "===========================================");
 
   return (
     <div className={styles.main_article_card}>
