@@ -253,13 +253,14 @@ export default function FormAddProject({ setIsModalOpen }) {
               >
                 <input
                   type="file"
-                  onChange={(e) =>
+                  onChange={(e) => {
+                    const filesArray = Array.from(e.target.files);
                     handleDynamicInputChange(
                       blockIndex,
                       inputIndex,
-                      e.target.files
-                    )
-                  }
+                      filesArray
+                    );
+                  }}
                   multiple
                   style={{ display: isPhotoOpenVisible ? "block" : "none" }}
                 />
