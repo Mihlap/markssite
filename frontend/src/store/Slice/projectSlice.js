@@ -66,12 +66,37 @@ for (const key in formattedData) {
        formData.append("photoAva", formattedData[key][0]);
      } else if (key === "imageOpen" && formattedData[key].length > 0) {
        formData.append("imageOpen", formattedData[key][0]);
+       console.log("imageOpen", formattedData[key]);
+     } else if (key === "dynamicBlocks" && formattedData[key].length > 0) {
+       console.log("зашел сюда", formattedData[key]);
+
+       let data = formattedData[key];
+
+       let photosArray = [];
+
+       data.forEach((outerObj) => {
+         outerObj.forEach((innerObj) => {
+           if (
+             innerObj.type === "file" &&
+             Array.isArray(innerObj.value) &&
+             innerObj.value.length > 0
+           ) {
+             photosArray = photosArray.concat(innerObj.value);
+           }
+         });
+       });
+
+       console.log("консоль с trycode", photosArray);
+        formData.append("dynamicImages", photosArray);
      } else {
        for (const file of formattedData[key]) {
+         console.log("file", formattedData[key]);
          formData.append(key, file);
+         обрати внимание во сюда, тут в file лежат объекты с фотографиями! 
+         они и есть dropPhoto на бекенде
        }
      }
-   } else {
+ } else {
      formData.append(key, formattedData[key]);
    }
 
@@ -79,36 +104,7 @@ for (const key in formattedData) {
 
   
   axios.post(`${serverHost}/api-project/postzapros`, formData).then(() => {
-    setInputData({
-      title: "",
-      photoAva: [],
-      selectCompetencies: "",
-      countryCity: "",
-      monthYear: "",
-      viewConstruction: "",
-      dropPhoto: [],
-      titleTextBlock: "",
-      descriptionProject: "",
-      totalArea: "",
-      siteArea: "",
-      floors: "",
-      altitude: "",
-      constructionVolume: "",
-      location: "",
-      degreeParticipation: "",
-      statusObject: "",
-      customer: "",
-      publication: "",
-      linkToPublication: "",
-      publicationTwo: "",
-      linkToPublicationTwo: "",
-      awards: "",
-      imageOpen: [],
-      textBlock: "",
-      imageClose: [],
-      dynamicBlocks: [],
-    });
-    dispatch(getFetchForm()); // Добавлен этот вызов для получения обновленных данных после успешной отправки формы
+    dispatch(getFetchForm()); 
     });
   console.log(formattedData, "<<<---REDUX");
 };
