@@ -49,7 +49,7 @@
   .form_form_wrapper {
     display: flex;
     flex-direction: column;
-    padding-top: 3vh;
+    padding-top: 1.1vh;
     }
 
    .label1 {
@@ -235,18 +235,22 @@
  @media screen and (min-width: 768px) and (max-width: 1024px) {
    .form_left_wrapper {
      width: 27rem;
-     height: 32rem;
+     min-height: fit-content;
    }
+   .form_form_wrapper {
+    padding-top: 0px;
+    padding-bottom: 2rem;
+   }
+ 
    .form_left_main {
      padding: 2rem 2vw 0rem 2vw;
      width: 80vw;
-   }
+      }
    .title {
     width: 80vw;
    }
    .span_text {
     padding-top: 16px;
-    /* padding-right: 10vw; */
     width: 40vw;
   }
   .line {
@@ -282,8 +286,8 @@
    }
 
   .form_form_wrapper {
-    padding-top: 32px;
-    padding-bottom: 20px;
+    padding-top: 0px;
+    padding-bottom: 2rem;
    }
 
   .line {
