@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from "react";
 import { useInView } from "react-intersection-observer";
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from "react-redux";
 import gsap from "gsap";
 import styles from "../Company/Company.module.css";
 
@@ -22,36 +22,33 @@ const CounterCompanyMobile2 = () => {
   const countScienceDegree = useSelector(
     (state) => state.counter.countScienceDegree
   );
-  const blockSlider = useRef();
-
-  const [ref, inView] = useInView({
-    threshold: 0.5, 
-  });
+  
+  const [inViewRef, inView] = useInView({ threshold: 0.5 });
+  const ref1 = useRef(null);
+  const ref2 = useRef(null);
 
   useEffect(() => {
     let timer1;
     let timer2;
-    let timer3;
+       
     if (inView) {
+      
       timer1 = setTimeout(() => {
         dispatch(incrementDepartment());
         dispatch(incrementScient());
-      }, 50);
-      
+      }, 100);
+
       timer2 = setTimeout(() => {
         dispatch(incrementGap());
         dispatch(incrementScienceDegree());
         setCounting(false);
-      }, 100);
-      timer3 = setTimeout(() => {
-         }, 500); 
-      }
-          
-          return () => {
-            clearTimeout(timer1);
-            clearTimeout(timer2);
-            clearTimeout(timer3);
-          };
+       }, 100);
+     }
+
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+    };
   }, [
     dispatch,
     countDepartment,
@@ -60,81 +57,77 @@ const CounterCompanyMobile2 = () => {
     countScienceDegree,
     inView,
   ]);
-
+    
   useEffect(() => {
-    const elements = blockSlider.current.children;
-
-    gsap.from(elements, {
-      x: "-100%",
-      duration: 1,
-      stagger: 0.5,
-      ease: "power2.out"
-    });
+    if (inView) {
+      gsap.from(ref1.current, { x: -100, opacity: 0, duration: 0.5});
+      if (!counting) {
+       gsap.from(ref2.current, { x: -100, opacity: 0, duration: 0.5});
+   
+      }
+    }
   }, [counting]);
-  
+
  
   return (
-    <div className={styles.right_counter_wrapper} ref={blockSlider}>
-    {counting ? (
-        <>
-        <div ref={ref} className={styles.container_text_right}>
-          <div className={styles.div_underSlider_text_right}>
-            <div className={styles.text_svg_right}>
-              <img src={bracket_dark} alt="bracket_dark" />
+    <div className={styles.right_counter_wrapper} ref={inViewRef}>
+      {counting ? (
+        <div ref={ref1}>
+          <div className={styles.container_text_right}>
+            <div className={styles.div_underSlider_text_right}>
+              <div className={styles.text_svg_right}>
+                <img src={bracket_dark} alt="bracket_dark" />
+              </div>
+              <p className={styles.number}>{countDepartment}</p>
             </div>
-            <p className={styles.number}>{countDepartment}</p>
+            <span className={styles.span_underSlider_text_right}>
+              Департаментов
+            </span>
           </div>
-          <span className={styles.span_underSlider_text_right}>
-            Департаментов
-          </span>
-        </div>
-        <div className={styles.container_text_right}>
-          <div
-            className={`${styles.div_underSlider_text_right} ${styles.div_underSlider_text_right_last}`}
-          >
-            <div className={styles.text_svg_right}>
-              <img src={bracket_dark} alt="bracket_dark" />
+          <div className={styles.container_text_right}>
+            <div
+              className={`${styles.div_underSlider_text_right} ${styles.div_underSlider_text_right_last}`}
+            >
+              <div className={styles.text_svg_right}>
+                <img src={bracket_dark} alt="bracket_dark" />
+              </div>
+              <p className={styles.number}>{countScient}</p>
             </div>
-            <p className={styles.number}>{countScient}</p>
+            <span className={styles.span_underSlider_text_right}>
+              Научных работ
+            </span>
           </div>
-          <span className={styles.span_underSlider_text_right}>
-            Научных работ
-          </span>
         </div>
-      </>
-    ) : (
-      <>
-        <div ref={ref} className={styles.container_text_right}>
-          <div className={styles.div_underSlider_text_right}>
-            <div className={styles.text_svg_right}>
-              <img src={bracket_dark} alt="bracket_dark" />
+      ) : (
+        <div ref={ref2}>
+          <div className={styles.container_text_right}>
+            <div className={styles.div_underSlider_text_right}>
+              <div className={styles.text_svg_right}>
+                <img src={bracket_dark} alt="bracket_dark" />
+              </div>
+              <p className={styles.number}>{countGap}</p>
             </div>
-            <p className={styles.number}>{countGap}</p>
+            <span className={styles.span_underSlider_text_right}>
+              Проектов в качестве ГАП
+            </span>
           </div>
-          <span className={styles.span_underSlider_text_right}>
-            Проектов в качестве ГАП
-          </span>
-        </div>
-        <div className={styles.container_text_right}>
-          <div
-            className={`${styles.div_underSlider_text_right} ${styles.div_underSlider_text_right_last}`}
-          >
-            <div className={styles.text_svg_right}>
-              <img src={bracket_dark} alt="bracket_dark" />
+          <div className={styles.container_text_right}>
+            <div
+              className={`${styles.div_underSlider_text_right} ${styles.div_underSlider_text_right_last}`}
+            >
+              <div className={styles.text_svg_right}>
+                <img src={bracket_dark} alt="bracket_dark" />
+              </div>
+              <p className={styles.number}>{countScienceDegree}%</p>
             </div>
-            <p className={styles.number}>{countScienceDegree}%</p>
+            <span className={styles.span_underSlider_text_right}>
+              Сотрудников с научной степенью
+            </span>
           </div>
-          <span className={styles.span_underSlider_text_right}>
-            Сотрудников с научной степенью
-          </span>
-        </div>
-        </>
-        )}
-        </div>
- 
+          </div>
+      )}
+    </div>
   );
 };
 
 export default CounterCompanyMobile2;
-
-
