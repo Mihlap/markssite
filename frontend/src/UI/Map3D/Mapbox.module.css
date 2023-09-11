@@ -25,7 +25,8 @@
   font-weight: var(--fw-700);
   line-height: 1.5rem;
   margin-top: 1rem;
-  justify-content: center;
+  padding-left: 1rem;
+  /* justify-content: center; */
 }
 
 /* .popupDescription {
