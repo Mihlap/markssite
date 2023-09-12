@@ -168,8 +168,7 @@ border-radius: 16px;
 
   .form_right_wrapper {
     max-width: 100vw;
-    height: auto;
-  }
+ }
 
   .form_right_main {
     display: flex;
