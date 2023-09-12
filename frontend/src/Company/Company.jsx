@@ -147,7 +147,7 @@ export default function Company({ userId }) {
         dispatch(incrementGap());
         dispatch(incrementScient());
         dispatch(incrementScienceDegree());
-      }, 30);
+      }, 80);
       return () => clearTimeout(timer1);
     }
   }, [
@@ -157,13 +157,15 @@ export default function Company({ userId }) {
     countScient,
     countScienceDegree,
     inView,
+    ref,
   ]);
 
   useEffect(() => {
+    console.log("Inside useEffect");
     gsap?.registerPlugin(ScrollTrigger);
 
     const { elementsRight } = { elementsRight: [blockSlider.current] };
-
+ 
     gsap?.from(elementsRight, {
       x: "-100%",
       opacity: 0,
@@ -175,8 +177,12 @@ export default function Company({ userId }) {
         start: "top 80%",
       },
     });
+
   }, []);
 
+  
+
+ 
   useEffect(() => {
     function handleScroll() {
       if (nameCompanyRef.current && thisBlockRef.current) {
@@ -329,7 +335,7 @@ export default function Company({ userId }) {
             {isMobile && <CounterCompanyMobile2 />}
           </div>
           {!isMobile && (
-            <div ref={ref} className={styles.right_counter_wrapper}>
+            <div className={styles.right_counter_wrapper} ref={ref}>
               <div className={styles.container_text_right}>
                 <div className={styles.div_underSlider_text_right}>
                   <div className={styles.text_svg_right}>
