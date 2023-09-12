@@ -29,26 +29,29 @@ const CounterCompanyMobile2 = () => {
 
   useEffect(() => {
     let timer1;
-    let timer2;
-       
+  let timer2;
+  
+  const runCounters = async () => {
     if (inView) {
-      
       timer1 = setTimeout(() => {
         dispatch(incrementDepartment());
         dispatch(incrementScient());
-      }, 100);
+        
+        timer2 = setTimeout(() => {
+          dispatch(incrementGap());
+          dispatch(incrementScienceDegree());
+          setCounting(false);
+        }, 200);
+      }, 150);
+    }
+  };
 
-      timer2 = setTimeout(() => {
-        dispatch(incrementGap());
-        dispatch(incrementScienceDegree());
-        setCounting(false);
-       }, 100);
-     }
+  runCounters();
 
-    return () => {
-      clearTimeout(timer1);
-      clearTimeout(timer2);
-    };
+  return () => {
+    clearTimeout(timer1);
+    clearTimeout(timer2);
+  };
   }, [
     dispatch,
     countDepartment,
@@ -57,12 +60,14 @@ const CounterCompanyMobile2 = () => {
     countScienceDegree,
     inView,
   ]);
-    
+      
   useEffect(() => {
     if (inView) {
-      gsap.from(ref1.current, { x: -100, opacity: 0, duration: 0.5});
+      gsap.from(ref1.current, { x: -100, opacity: 0,  stagger: 0.5,
+        ease: "power2.out", duration: 0.5});
       if (!counting) {
-       gsap.from(ref2.current, { x: -100, opacity: 0, duration: 0.5});
+       gsap.from(ref2.current, { x: -100, opacity: 0, stagger: 0.5,
+        ease: "power2.out",  duration: 0.5});
    
       }
     }

@@ -1,0 +1,18 @@
+
+FROM node:18.15.0
+
+LABEL version="1.0.0"
+
+WORKDIR /app
+
+COPY package*.json ./
+
+RUN npm install
+
+COPY . .
+
+RUN npm run build
+
+# Если вам нужно указать какой-то команды для запуска приложения (например, для сервера статических файлов)
+CMD ["npm", "start"]
+
