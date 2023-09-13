@@ -107,7 +107,7 @@ export default function Project() {
     dispatch(getFetchFormFilter(projectsPerPage, selectedViewConstruction));
     dispatch(getFetchFormCityFilter(projectsPerPage, selectedCity));
     dispatch(getFetchFormLocationFilter(projectsPerPage, selectedLocation));
-     dispatch(fetchToggleStateAsync());
+    dispatch(fetchToggleStateAsync());
     setLoading(false);
   }, [dispatch, projectsPerPage, location.search, category]);
 
@@ -372,57 +372,57 @@ export default function Project() {
       )}
       {/* этот isActive скрывает фильтрацию  */}
       {!isActive && (
-      <div className={styles.menu_button_group_project_wrapper_main}>
-        <div className={styles.menu_button_group_project_wrapper}>
-          <div className={styles.menu_button_group_project}>
-            {buttonChoose.map((el, index) => (
-              <div
-                key={el}
-                className={`${styles.button_wrapper} ${
-                  showButton ? "" : index ? styles.hidden : ""
-                }`}
-              >
-                <button
-                  className={`${styles.menu__button__allProject} ${
-                    !isModalProjectOpen &&
-                    (el === selectedViewConstruction ||
-                      (index === 0 && !selectedViewConstruction))
-                      ? styles.active
-                      : ""
+        <div className={styles.menu_button_group_project_wrapper_main}>
+          <div className={styles.menu_button_group_project_wrapper}>
+            <div className={styles.menu_button_group_project}>
+              {buttonChoose.map((el, index) => (
+                <div
+                  key={el}
+                  className={`${styles.button_wrapper} ${
+                    showButton ? "" : index ? styles.hidden : ""
                   }`}
-                  onClick={() => handleButtonClick(el)}
                 >
-                  <p className={styles.menu_button_items}>{el}</p>
-                </button>
-              </div>
-            ))}
+                  <button
+                    className={`${styles.menu__button__allProject} ${
+                      !isModalProjectOpen &&
+                      (el === selectedViewConstruction ||
+                        (index === 0 && !selectedViewConstruction))
+                        ? styles.active
+                        : ""
+                    }`}
+                    onClick={() => handleButtonClick(el)}
+                  >
+                    <p className={styles.menu_button_items}>{el}</p>
+                  </button>
+                </div>
+              ))}
+            </div>
           </div>
-        </div>
 
-        <button
-          className={styles.menu__button__choose__city}
-          onClick={handleSelectCityClick}
-        >
-          <div className={styles.icon__svg_button__choose__city}>
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 16 16"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <g id="icon">
-                <path
-                  id="Vector"
-                  d="M8.00016 7.66665C7.55814 7.66665 7.13421 7.49105 6.82165 7.17849C6.50909 6.86593 6.3335 6.44201 6.3335 5.99998C6.3335 5.55795 6.50909 5.13403 6.82165 4.82147C7.13421 4.50891 7.55814 4.33331 8.00016 4.33331C8.44219 4.33331 8.86611 4.50891 9.17867 4.82147C9.49123 5.13403 9.66683 5.55795 9.66683 5.99998C9.66683 6.21885 9.62372 6.43558 9.53996 6.63779C9.4562 6.83999 9.33344 7.02373 9.17867 7.17849C9.02391 7.33326 8.84018 7.45602 8.63797 7.53978C8.43576 7.62354 8.21903 7.66665 8.00016 7.66665ZM8.00016 1.33331C6.76249 1.33331 5.5755 1.82498 4.70033 2.70015C3.82516 3.57532 3.3335 4.7623 3.3335 5.99998C3.3335 9.49998 8.00016 14.6666 8.00016 14.6666C8.00016 14.6666 12.6668 9.49998 12.6668 5.99998C12.6668 4.7623 12.1752 3.57532 11.3 2.70015C10.4248 1.82498 9.23784 1.33331 8.00016 1.33331Z"
-                  fill="#1D2E43"
-                />
-              </g>
-            </svg>
-          </div>
-          <div className={styles.button_choose_city}>Выбрать город</div>
-        </button>
-      </div>
+          <button
+            className={styles.menu__button__choose__city}
+            onClick={handleSelectCityClick}
+          >
+            <div className={styles.icon__svg_button__choose__city}>
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 16 16"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <g id="icon">
+                  <path
+                    id="Vector"
+                    d="M8.00016 7.66665C7.55814 7.66665 7.13421 7.49105 6.82165 7.17849C6.50909 6.86593 6.3335 6.44201 6.3335 5.99998C6.3335 5.55795 6.50909 5.13403 6.82165 4.82147C7.13421 4.50891 7.55814 4.33331 8.00016 4.33331C8.44219 4.33331 8.86611 4.50891 9.17867 4.82147C9.49123 5.13403 9.66683 5.55795 9.66683 5.99998C9.66683 6.21885 9.62372 6.43558 9.53996 6.63779C9.4562 6.83999 9.33344 7.02373 9.17867 7.17849C9.02391 7.33326 8.84018 7.45602 8.63797 7.53978C8.43576 7.62354 8.21903 7.66665 8.00016 7.66665ZM8.00016 1.33331C6.76249 1.33331 5.5755 1.82498 4.70033 2.70015C3.82516 3.57532 3.3335 4.7623 3.3335 5.99998C3.3335 9.49998 8.00016 14.6666 8.00016 14.6666C8.00016 14.6666 12.6668 9.49998 12.6668 5.99998C12.6668 4.7623 12.1752 3.57532 11.3 2.70015C10.4248 1.82498 9.23784 1.33331 8.00016 1.33331Z"
+                    fill="#1D2E43"
+                  />
+                </g>
+              </svg>
+            </div>
+            <div className={styles.button_choose_city}>Выбрать город</div>
+          </button>
+        </div>
       )}
       <Modal
         className={styles.modal_wrapper_project_location}
@@ -453,7 +453,9 @@ export default function Project() {
         }}
       >
         <div
-          onClick={handleModalClose}
+          onClick={(e) => {
+            handleModalClose(e, selectOnCompetencies);
+          }}
           className={`${styles.modal_project_close} ${styles.fixed_modal_project}`}
         >
           <svg
@@ -621,8 +623,29 @@ export default function Project() {
                         }
                       />
                       <div className={styles.project_content__wrapper}>
-                        <div className={styles.cart_project_title}>
-                          {project.title}
+                        <div
+                          className={
+                            styles.container_wrapper_title_city_data_block
+                          }
+                        >
+                          <div className={styles.cart_project_title}>
+                            {project.title}
+                          </div>
+                          <div className={styles.cart_project__address}>
+                            {project.countryCity}{" "}
+                            <div className={styles.cart_project__address__svg}>
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="2"
+                                height="2"
+                                viewBox="0 0 2 2"
+                                fill="none"
+                              >
+                                <circle cx="1" cy="1" r="1" fill="#959DA6" />
+                              </svg>{" "}
+                            </div>
+                            {project.monthYear}
+                          </div>
                         </div>
                         <div className={styles.cart_project__content}>
                           <div className={styles.cart_project__widget}>
@@ -705,21 +728,6 @@ export default function Project() {
                             })()}
                           </div>
                         </div>
-                      </div>
-                      <div className={styles.cart_project__address}>
-                        {project.countryCity}{" "}
-                        <div className={styles.cart_project__address__svg}>
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="2"
-                            height="2"
-                            viewBox="0 0 2 2"
-                            fill="none"
-                          >
-                            <circle cx="1" cy="1" r="1" fill="#959DA6" />
-                          </svg>{" "}
-                        </div>
-                        {project.monthYear}
                       </div>
                     </div>
                   </div>

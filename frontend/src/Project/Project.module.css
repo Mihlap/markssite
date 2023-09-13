@@ -215,12 +215,18 @@ display: inline-block;
 
 }
 
+.container_wrapper_title_city_data_block {
+    display: block;
+    width: 100%;
+}
+
 .cart_project_title {
     display: flex;
     flex-wrap: wrap;
     word-break: break-all;
+    word-wrap: break-word;
     width: 100%;
-    font-family: var(--font-raleway);
+     font-family: var(--font-raleway);
     font-size: 14px;
     font-style: normal;
     font-weight: var(--fw-700);
@@ -249,9 +255,10 @@ display: inline-block;
     width: 100%;
 }
 
-
 .cart_project__address {
     display: flex;
+    flex-wrap: wrap;
+    word-wrap: break-word;
     color: var(--gray-959DA6);
     font-family: var(--font-raleway);
     font-size: 10px;
@@ -259,7 +266,7 @@ display: inline-block;
     font-weight: var(--fw-400);
     line-height: normal;
     padding-top: 0.6rem;
-}
+  }
 
 .cart_project__address__svg {
     display: flex;
