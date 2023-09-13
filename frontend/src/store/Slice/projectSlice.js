@@ -92,8 +92,8 @@ for (const key in formattedData) {
        for (const file of formattedData[key]) {
          console.log("file", formattedData[key]);
          formData.append(key, file);
-         обрати внимание во сюда, тут в file лежат объекты с фотографиями! 
-         они и есть dropPhoto на бекенде
+        //  обрати внимание во сюда, тут в file лежат объекты с фотографиями! 
+        //  они и есть dropPhoto на бекенде
        }
      }
  } else {
