@@ -90,10 +90,10 @@ for (const key in formattedData) {
         formData.append("dynamicImages", photosArray);
      } else {
        for (const file of formattedData[key]) {
-         console.log("file", formattedData[key]);
+         console.log("file", file);
          formData.append(key, file);
-         обрати внимание во сюда, тут в file лежат объекты с фотографиями! 
-         они и есть dropPhoto на бекенде
+        //  обрати внимание во сюда, тут в file лежат объекты с фотографиями! 
+        //  они и есть dropPhoto на бекенде
        }
      }
  } else {
