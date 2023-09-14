@@ -4,6 +4,8 @@ LABEL version="1.0.0"
 
 WORKDIR /app
 
+RUN apk update && apk add postgresql-client
+
 COPY package*.json ./
 
 RUN npm cache clean --force
@@ -11,6 +13,8 @@ RUN npm install
 RUN npm install bcrypt
 
 COPY . .
+
+EXPOSE 3002
 
 RUN npm run build
 

@@ -80,7 +80,7 @@ export default function Login() {
     return <LoadingCircle />;
   }
 
-  return (
+   return (
     <section className={styles.login_container}>
       <div className={styles.border_line}>
         <div className={styles.login_block}>
