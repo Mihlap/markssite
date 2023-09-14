@@ -87,7 +87,9 @@ for (const key in formattedData) {
        });
 
        console.log("консоль с trycode", photosArray);
-        formData.append("dynamicImages", photosArray);
+        photosArray.forEach((photo) => {
+          formData.append("dynamicImages", photo);
+        });
      } else {
        for (const file of formattedData[key]) {
          console.log("file", file);
@@ -97,11 +99,10 @@ for (const key in formattedData) {
        }
      }
  } else {
-     formData.append(key, formattedData[key]);
+   formData.append(key, formattedData[key]);
    }
 
 }
-
   
   axios.post(`${serverHost}/api-project/postzapros`, formData).then(() => {
     dispatch(getFetchForm()); 
