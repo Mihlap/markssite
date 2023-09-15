@@ -244,7 +244,7 @@
  }
  
  .menu_button_group_articles {
-   padding: 2rem 10rem 2.5rem 3.44rem;
+   padding: 2rem 10rem 2.5rem 2rem;
    grid-column-gap: 6px;
  }
 
@@ -344,8 +344,8 @@
     display: flex;
     padding-top: 1.5rem;
     bottom: 0rem;
-    left: 1rem;
-    width: 100%;
+    left: 0rem;
+    width: 90%;
 }
 .menu__button__allArticles.active {
   background-color: var(--black-1D2E43);
