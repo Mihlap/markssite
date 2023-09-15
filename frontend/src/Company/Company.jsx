@@ -248,7 +248,7 @@ export default function Company({ userId }) {
   //   return <LoadingCircle />;
   // }
 
-  // console.log(staff, "персонал");
+  console.log(staff, "персонал");
 
   return (
     <div className={styles.company_main}>
