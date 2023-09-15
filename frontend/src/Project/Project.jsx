@@ -91,6 +91,8 @@ export default function Project() {
   const projectsPerPage = 100;
   const isMobileScreen = screenWidth <= 768;
 
+  // console.log(projects);
+
   const handleResize = () => {
     setScreenWidth(window.innerWidth);
   };
