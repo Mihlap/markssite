@@ -23,6 +23,7 @@ router.post(
       const dynamicImageTitles = req.files.dynamicImages
         ? req.files.dynamicImages.map((file) => file.filename).join(', ')
         : null;
+      const dynamicBlocksContent = JSON.parse(req.body.dynamicBlocksJSON);
       const imageTitles = req.files.dropPhoto.map((file) => file.filename).join(', ');
       const imageProjects = req.files.photoAva ? req.files.photoAva[0].filename : null;
       const imageOpens = req.files.imageOpen ? req.files.imageOpen[0].filename : null;
@@ -31,6 +32,7 @@ router.post(
       // console.log(req.body, '<<-- reg.BODY');
       // console.log(imageTitles, '<<-- imageTitles');
       console.log(req.files, '<<-- reg.FILES');
+      console.log(dynamicBlocksContent);
 
       const createdArticle = await Project.create({
         title: req.body.title,
@@ -62,10 +64,10 @@ router.post(
         imageClose: imageCloses,
       });
 
-      // await Constructor.create({
-      //   data: dynamicBlocksString,
-      //   idBlock: createdArticle.id,
-      // });
+      await Constructor.create({
+        data: dynamicBlocksContent,
+        idBlock: createdArticle.id,
+      });
 
       res.status(200).json({ message: 'Данные успешно сохранены' });
     } catch (error) {
@@ -77,10 +79,13 @@ router.post(
     
     router.get('/getzapros', async (req, res) => {
       try {
-        const data = await Project.findAll();
+        const data = await Project.findAll({
+          include: [Constructor],
+        });
         res.json(data);
        } catch (error) {
         console.log(error);
+        res.sendStatus(500);
       }
     });
     
@@ -124,16 +129,12 @@ router.delete('/deletezapros/:id', async (req, res) => {
     const { id } = req.params;
     const post = await Project.findByPk(id);
 
-    console.log('Значение imageTitle:', post.imageTitle);
-
-    console.log(post);
-
     // Удаление фотографий из imageTitle
     if (post.imageTitle) {
-    const imageTitleNames = post.imageTitle.includes(', ')
-      ? post.imageTitle.split(', ')
-      : [post.imageTitle];
-    imageTitleNames.forEach(deleteImage);
+      const imageTitleNames = post.imageTitle.includes(', ')
+        ? post.imageTitle.split(', ')
+        : [post.imageTitle];
+      imageTitleNames.forEach(deleteImage);
     }
 
     // Удаление фотографий из imageProject
@@ -153,6 +154,9 @@ router.delete('/deletezapros/:id', async (req, res) => {
     if (post.imageClose) {
       deleteImage(post.imageClose);
     }
+
+    // Удаление связанных элементов из других таблиц
+    await Constructor.destroy({ where: { idBlock: id } });
 
     // Удаление поста
     await Project.destroy({ where: { id } });
