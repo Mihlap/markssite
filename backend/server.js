@@ -1,4 +1,5 @@
 const express = require('express');
+// const { Pool } = require('pg');
 require('dotenv').config();
 const morgan = require('morgan');
 const cors = require('cors');
@@ -15,6 +16,7 @@ const searchArticleLeft = require('./routes/Articles/searchArticleLeftRouter');
 const searchArticleRight = require('./routes/Articles/searchArticleRightRouter');
 const mailRouter = require('./routes/mailRouter');
 const toggleRouter = require('./routes/toggle/toggleRouter');
+
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -37,7 +39,7 @@ const sessionConfig = {
 
 app.use(
   cors({
-    origin: 'http://localhost:3000' || '*',
+    origin: ['http://localhost:3000', 'http://localhost:3002', 'https://www.marksgroup.org'],
     credentials: true,
   }),
 );
