@@ -669,7 +669,7 @@ display: inline-block;
 
     .my_swiper2_button_group_project {
         display: none;
-    }
+     }
 
     .menu_button_group_project {
         padding-left: 3rem;
@@ -875,8 +875,8 @@ display: inline-block;
         display: flex;
         padding-top: 2.5rem;
         bottom: 0rem;
-        left: 1rem;
-        width: 100%;
+        left: 0rem;
+        width: 90%;
     }
 
     .active {
