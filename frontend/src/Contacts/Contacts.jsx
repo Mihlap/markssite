@@ -182,9 +182,9 @@ const Contacts = () => {
           onSwiper={setSwiper}
           slidesPerView={'auto'}
           spaceBetween={10}
-          pagination={{
-            clickable: true,
-          }}
+          // pagination={{
+          //   clickable: true,
+          // }}
           className={styles.mySwiper}
           touch={"true"}
         >
