@@ -75,7 +75,7 @@ export default function Navbar() {
             </Link>
           </div>
           <ul className={styles.navbar__list}>
-            <Link
+            {/* <Link
               className={`${styles.navbar__item} ${
                 activeClass === "/signup" ? styles.navbar__item_open : ""
               }`}
@@ -92,7 +92,7 @@ export default function Navbar() {
               onClick={() => handleItemClick("/login")}
             >
               <div>login</div>
-            </Link>
+            </Link> */}
             {/* <Link
               className={`${styles.navbar__item} ${
                 activeClass === "/competention" ? styles.navbar__item_open : ""
