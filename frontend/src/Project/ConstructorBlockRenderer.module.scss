@@ -1,0 +1,49 @@
+@import '../App.css';
+
+.containerImageToDescription {
+    &__img {
+        object-position: center;
+        width: 100%;
+        height: 100%;
+        max-height: 50vw;
+        border-radius: 1.11vw 1.11vw;
+        padding-bottom: 10px;
+    }
+
+    &__text {
+        color: var(--gray-959DA6);
+        font-variant-numeric: lining-nums proportional-nums;
+        font-family: var(--font-raleway);
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 20px;
+    }
+}
+
+.blockHeadingTitle {
+
+    display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        padding: 0rem 22.19rem 0rem 16.44rem;
+
+    &__heading {
+        color: var(--black-1D2E43);
+        font-family: var(--font-unbounded);
+        font-size: 24px;
+        font-style: normal;
+        font-weight: 300;
+        line-height: 32px;
+    }
+
+    &__text {
+        color: var(--black-1D2E43);
+        font-variant-numeric: lining-nums proportional-nums;
+        font-family: var(--font-raleway);
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 24px;
+    }
+}
