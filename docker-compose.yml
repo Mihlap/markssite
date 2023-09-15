@@ -1,6 +1,18 @@
 version: '3'
 
 services:
+  postgres:
+    image: postgres:15
+    container_name: postgres_markssite
+    ports:
+      - "5433:5432" 
+    environment:
+     - POSTGRES_DB=marks-group
+     - POSTGRES_USER=mihlap
+     - POSTGRES_PASSWORD=Simon098
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
   frontend:
     build:
       context: ./frontend
@@ -14,3 +26,6 @@ services:
       dockerfile: dockerfile.backend
     ports:
       - "3002:3002"
+
+volumes:
+  postgres_data:

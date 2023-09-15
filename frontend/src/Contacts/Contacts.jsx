@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
-import { Pagination } from "swiper";
 import mapboxgl from 'mapbox-gl';
 import { Link } from "react-router-dom";
 import '@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css';
@@ -183,11 +182,11 @@ const Contacts = () => {
           onSwiper={setSwiper}
           slidesPerView={'auto'}
           spaceBetween={10}
-          pagination={{
-            clickable: true,
-          }}
+          // pagination={{
+          //   clickable: true,
+          // }}
           className={styles.mySwiper}
-          touch={true}
+          touch={"true"}
         >
           <div className={styles.slider_menu_button_group}>
             {cities.map((city) => (

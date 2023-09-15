@@ -37,7 +37,7 @@ const sessionConfig = {
 
 app.use(
   cors({
-    origin: 'http://localhost:3000' || 'http://localhost:3001',
+    origin: 'http://localhost:3000' || '*',
     credentials: true,
   }),
 );
@@ -58,6 +58,11 @@ app.use((req, res, next) => {
   // console.log('Session: ', req.session);
   next();
 });
+
+// app.use((req, res, next) => {
+//   console.log(`Получен запрос на: ${req.method} ${req.url}`);
+//   next();
+// })
 
 
 app.get('/', indexRouter);

@@ -549,6 +549,7 @@
 .container__title_projectCard {
   display: flex;
   flex-wrap: wrap;
+  word-wrap: break-word;
   word-break: break-all;
   color: var(--black-1D2E43);
   font-family: var(--font-raleway);
@@ -557,6 +558,7 @@
   font-weight: var(--fw-700);
   line-height: 1.125rem;
   width: 100%;
+  min-width: 10rem;
 }
 
 .countryCity_monthYear_projectCard {
@@ -594,9 +596,7 @@
 
 .wrapper_container__selectCompetencies_projectCard {
   display: flex;
-  padding-left: 2rem;
   justify-content: flex-end;
-  width: 100%;
 }
 
 .container__selectCompetencies_projectCard {
