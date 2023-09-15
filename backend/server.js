@@ -1,25 +1,24 @@
 const express = require('express');
-// const { Pool } = require('pg');
 require('dotenv').config();
 const morgan = require('morgan');
 const cors = require('cors');
 const path = require('path');
 const session = require('express-session');
 const FileStore = require('session-file-store')(session);
-const indexRouter = require('./routes/indexRouter');
-const authRouter = require('./routes/authRouter');
-const staffsRouter = require('./routes/staffsRouter');
-const projectRouter = require('./routes/Project/projectRouter');
-const articleRouter = require('./routes/Articles/articleRouter');
-const searchRouter = require('./routes/Project/searchRouter');
-const searchArticleLeft = require('./routes/Articles/searchArticleLeftRouter');
-const searchArticleRight = require('./routes/Articles/searchArticleRightRouter');
-const mailRouter = require('./routes/mailRouter');
-const toggleRouter = require('./routes/toggle/toggleRouter');
+const indexRouter = require('./Routes/indexRouter');
+const authRouter = require('./Routes/authRouter');
+const staffsRouter = require('./Routes/staffsRouter');
+const projectRouter = require('./Routes/Project/projectRouter');
+const articleRouter = require('./Routes/Articles/articleRouter');
+const searchRouter = require('./Routes/Project/searchRouter');
+const searchArticleLeft = require('./Routes/Articles/searchArticleLeftRouter');
+const searchArticleRight = require('./Routes/Articles/searchArticleRightRouter');
+const mailRouter = require('./Routes/mailRouter');
+const toggleRouter = require('./Routes/toggle/toggleRouter');
 
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 
 const sessionConfig = {
   name: 'user_marks_group',
