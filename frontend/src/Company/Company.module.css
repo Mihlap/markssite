@@ -970,9 +970,9 @@ bottom: 3.38rem;
   .my_swiper_button_group {
     display: flex;
     bottom: 0rem;
-    left: 1rem;
-    width: 100%;
-  }
+    left: 0rem;
+    width: 90%;
+   }
 
   .button_hover {
     margin-right: 0.5rem;
@@ -1102,7 +1102,7 @@ bottom: 3.38rem;
  }
 
   .company_form_contacts_wrapper {
-    width: 100%;
+    width: auto;
     padding: 0rem 0rem 2.8rem 0rem;
     margin-top: 0;
   }
