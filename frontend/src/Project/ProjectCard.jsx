@@ -23,6 +23,7 @@ import {
 
 import next from ".././icons/next.svg";
 import previous from ".././icons/previous.svg";
+import ConstructorBlockRenderer from "./ConstructorBlockRenderer";
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
@@ -188,7 +189,11 @@ const ProjectCard = () => {
   const previousProject = projects[previousIndex];
   const nextProject = projects[nextIndex];
 
-   console.log(project, "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww");
+  console.log(project, "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww");
+
+  const userSelectedBlocks = project?.Constructors?.map((el) => el.data);
+
+  console.log(userSelectedBlocks, "<<--- userSelectedBlocks");
 
   return (
     <>
@@ -472,6 +477,18 @@ const ProjectCard = () => {
                     alt=""
                   />
                 </div>
+                <div className={styles.div_conteiner}>
+                  {userSelectedBlocks?.map((innerBlocks, outerIndex) => (
+                    <div key={outerIndex}>
+                      {innerBlocks?.map((block, innerIndex) => (
+                        <ConstructorBlockRenderer
+                          key={innerIndex}
+                          block={block}
+                        />
+                      ))}
+                    </div>
+                  ))}
+                </div>
                 <div className={styles.item}>
                   <img
                     ref={refs.leftImg4}
@@ -482,6 +499,7 @@ const ProjectCard = () => {
                 </div>
               </div>
             </div>
+
             <div className={styles.button_project_projectCard}>
               {previousProject && (
                 <Link

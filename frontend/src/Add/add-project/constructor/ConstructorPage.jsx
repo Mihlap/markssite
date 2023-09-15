@@ -76,7 +76,7 @@ export default function ConstructorPage({ handleClick }) {
           handleClick([
             {
               type: "file",
-              label: "Слайдер *допускается загрузка 8ми изображений",
+              label: "video",
             },
           ])
         }
