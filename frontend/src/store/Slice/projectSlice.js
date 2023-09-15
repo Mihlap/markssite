@@ -57,6 +57,7 @@ export const {
   setSelectedViewConstruction,
 } = projectSlice.actions;
 
+
 export const fetchProject =
   (formattedData, setInputData) => async (dispatch) => {
     dispatch(fetchProjectStart());
