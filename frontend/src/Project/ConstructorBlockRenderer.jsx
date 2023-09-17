@@ -1,4 +1,4 @@
-import React from 'react'
+import React from "react";
 import styles from "./ConstructorBlockRenderer.module.scss";
 
 const Host = process.env.REACT_APP_SERVER_HOST;
@@ -20,7 +20,9 @@ export default function ConstructorBlockRenderer({ block }) {
           src={`${Host}/images/imageAdd/${imageUrl}`}
           alt="Описание"
         />
-        <div className={styles.containerImageToDescription__text}>{description}</div>
+        <div className={styles.containerImageToDescription__text}>
+          {description}
+        </div>
       </div>
     );
   };
@@ -42,28 +44,26 @@ export default function ConstructorBlockRenderer({ block }) {
     );
   };
 
-const renderThreeImages = (block, index) => {
-  const images = block[0].value;
-  return (
-    <div className={styles.gridContainer}>
-      {images.slice(0, 2).map((img, index) => (
+  const renderThreeImages = (block, index) => {
+    const images = block[0].value;
+    return (
+      <div className={styles.gridContainer}>
+        {images.slice(0, 2).map((img, index) => (
+          <img
+            className={styles.horizontalImage}
+            key={index}
+            src={`${Host}/images/imageAdd/${img}`}
+            alt="Horizontal_image"
+          />
+        ))}
         <img
-          className={styles.horizontalImage}
-          key={index}
-          src={`${Host}/images/imageAdd/${img}`}
-          alt="Horizontal_image"
+          className={styles.verticalImage}
+          src={`${Host}/images/imageAdd/${images[2]}`}
+          alt="Vertical_image"
         />
-      ))}
-      <img
-        className={styles.verticalImage}
-        src={`${Host}/images/imageAdd/${images[2]}`}
-        alt="Vertical_image"
-      />
-    </div>
-  );
-};
-
-
+      </div>
+    );
+  };
 
   const renderImageSlider = (block) => {
     const images = block[0].value;
@@ -104,4 +104,3 @@ const renderThreeImages = (block, index) => {
       return null;
   }
 }
-
