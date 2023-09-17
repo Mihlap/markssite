@@ -42,18 +42,28 @@ export default function ConstructorBlockRenderer({ block }) {
     );
   };
 
-  const renderThreeImages = (block) => {
-    const images = block[0].value;
-    return (
-      <div
-        className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockThree}`}
-      >
-        {images.map((img) => (
-          <img key={img} src={img} alt="Block image" />
-        ))}
-      </div>
-    );
-  };
+const renderThreeImages = (block, index) => {
+  const images = block[0].value;
+  return (
+    <div className={styles.gridContainer}>
+      {images.slice(0, 2).map((img, index) => (
+        <img
+          className={styles.horizontalImage}
+          key={index}
+          src={`${Host}/images/imageAdd/${img}`}
+          alt="Horizontal_image"
+        />
+      ))}
+      <img
+        className={styles.verticalImage}
+        src={`${Host}/images/imageAdd/${images[2]}`}
+        alt="Vertical_image"
+      />
+    </div>
+  );
+};
+
+
 
   const renderImageSlider = (block) => {
     const images = block[0].value;

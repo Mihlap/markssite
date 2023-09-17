@@ -31,6 +31,9 @@ export default function FormAddProject({ setIsModalOpen }) {
   const [isDropPhotoVisible, setIsDropPhotoVisible] = useState(true);
 
   // << ==== КОНСТУКТОР ==== >>
+  // состояние для хранения текущего значения инпута
+  const [inputValue, setInputValue] = useState("");
+
   const [onenConstructor, setOpenConstructor] = useState(false);
   const [blocks, setBlocks] = useState([]);
   const [dynamicPreviews, setDynamicPreviews] = useState([]);
@@ -176,24 +179,27 @@ export default function FormAddProject({ setIsModalOpen }) {
 
   // << ============ КОНСТРУКТОР ============ >>
 
-  
   const handlerOpenConstructor = () => {
     setOpenConstructor(!onenConstructor);
   };
-  
+
   const handleClick = (inputs) => {
-    const newInputs = inputs.map((input) => ({ ...input, value: "" }));
+    const blockKey = Date.now().toString();
+    const newInputs = inputs.map((input) => ({
+      ...input,
+      key: blockKey + "_" + input.type,
+    }));
     setBlocks((prevState) => [...prevState, newInputs]);
     setDynamicData((prevDynamicData) => [...prevDynamicData, newInputs]);
   };
-  
+
   const handleDynamicInputChange = (blockIndex, inputIndex, value) => {
     const newDynamicData = [...dynamicData];
-    
+
     if (!newDynamicData[blockIndex]) {
       newDynamicData[blockIndex] = [];
     }
-    
+
     if (!newDynamicData[blockIndex][inputIndex]) {
       newDynamicData[blockIndex][inputIndex] = {
         type: "",
@@ -201,14 +207,14 @@ export default function FormAddProject({ setIsModalOpen }) {
         value: "",
       };
     }
-   function generateUniqueName(originalName) {
-     const timestamp = Date.now();
-     const randomNum = Math.floor(Math.random() * 10000); // 4-значное число
-     const fileExtension = originalName.split(".").pop();
-     const sliceOfOriginalName = originalName.slice(0, 5); // первые 5 символов исходного имени
+    function generateUniqueName(originalName) {
+      const timestamp = Date.now();
+      const randomNum = Math.floor(Math.random() * 10000); // 4-значное число
+      const fileExtension = originalName.split(".").pop();
+      const sliceOfOriginalName = originalName.slice(0, 5); // первые 5 символов исходного имени
 
-     return `file_${sliceOfOriginalName}_${timestamp}_${randomNum}.${fileExtension}`;
-   }
+      return `file_${sliceOfOriginalName}_${timestamp}_${randomNum}.${fileExtension}`;
+    }
 
     if (Array.isArray(value) && value[0] instanceof File) {
       // если это массив файлов
@@ -223,6 +229,12 @@ export default function FormAddProject({ setIsModalOpen }) {
       newDynamicData[blockIndex][inputIndex].value = value;
     }
 
+     if (!newDynamicData[blockIndex][inputIndex].value) {
+       newDynamicData[blockIndex][inputIndex].value = "";
+     }
+
+     newDynamicData[blockIndex][inputIndex].value = value;
+
     setDynamicData(newDynamicData);
   };
 
@@ -233,8 +245,6 @@ export default function FormAddProject({ setIsModalOpen }) {
     inputIndex,
     key
   ) => {
-
-    
     function handleDeletePreview(event, blockIndex, inputIndex, previewIndex) {
       event.preventDefault();
       setDynamicPreviews((prev) => {
@@ -261,14 +271,18 @@ export default function FormAddProject({ setIsModalOpen }) {
           <div className={styles.form_container__heading_block}>
             <input
               type="input"
+              maxLength="56" // 2. Установите атрибут maxLength
+              value={dynamicData[blockIndex][inputIndex].value || ""} // используйте значение inputValue как текущее значение инпута
               className={`${styles.form_container__heading_block_input} ${styles.orange_color}`}
               placeholder={labelText}
-              // name="titleTextBlock"
-              onChange={(e) =>
-                handleDynamicInputChange(blockIndex, inputIndex, e.target.value)
-              }
-              id="titleTextBlock"
-              maxLength="56"
+              onChange={(e) => {
+                setInputValue(e.target.value); // 4. Обновите inputValue при каждом изменении
+                handleDynamicInputChange(
+                  blockIndex,
+                  inputIndex,
+                  e.target.value
+                );
+              }}
             />
             <label
               htmlFor="titleTextBlock"
@@ -277,7 +291,7 @@ export default function FormAddProject({ setIsModalOpen }) {
               {labelText}
             </label>
             <div className={styles.form_container__heading_block_input_length}>
-              {`${inputData.titleTextBlock.length}/56`}
+              {(dynamicData[blockIndex][inputIndex].value || "").length}/56
             </div>
           </div>
         )}
@@ -756,7 +770,7 @@ export default function FormAddProject({ setIsModalOpen }) {
 
           <div className={styles.form_container__description_text}>
             <div className={styles.form_container__textarea_length}>
-              {`${inputData.descriptionProject.length}/260`}
+              {`${inputData.descriptionProject.length}/270`}
             </div>
             <textarea
               className={styles.form_container__textarea}
@@ -764,11 +778,11 @@ export default function FormAddProject({ setIsModalOpen }) {
               id="descriptionProject"
               cols="30"
               rows="10"
-              placeholder="Не более 260 символов"
+              placeholder="Не более 270 символов"
               value={inputData.descriptionProject}
               onChange={(event) => {
                 const value = event.target.value;
-                if (value.length <= 260) {
+                if (value.length <= 270) {
                   setInputData({ ...inputData, descriptionProject: value });
                 }
               }}
