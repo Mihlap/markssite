@@ -213,13 +213,11 @@
 
 .cart_project {
 
-    width: 400px;
-
     &__img {
-        object-fit: "contain";
-        object-position: "center";
-        width: 100%;
-        height: 100%;
+        object-fit: cover;
+        object-position: center;
+        width: 460px;
+        height: 260px;
         border-radius: 1rem;
     }
 
@@ -571,8 +569,19 @@
     }
 }
 
-@media screen and (max-width: 1200px) {
+@media screen and (max-width: 1465px) {
     .cart_project {
-        width: 330px;
+        &__img {
+            width: 330px;
+        }
+    }
+}
+
+@media screen and (min-width: 2000px) {
+    .cart_project {
+        &__img {
+            width: 550px;
+            height: 420px;
+        }
     }
 }

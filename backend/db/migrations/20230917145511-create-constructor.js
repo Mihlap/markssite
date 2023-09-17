@@ -12,6 +12,9 @@ module.exports = {
       data: {
         type: Sequelize.JSON,
       },
+      image: {
+        type: Sequelize.TEXT,
+      },
       idBlock: {
         type: Sequelize.INTEGER,
         references: {
