@@ -81,14 +81,9 @@ router.get('/getzapros', async (req, res) => {
     const data = await Project.findAll({
       include: [Constructor],
     });
-    res.json(data);
-  } catch (error) {
-    console.log(error);
-    res.sendStatus(500);
-  }
-});
 
-router.get('/getzapros-filter', async (req, res) => {
+    
+    router.get('/getzapros-filter', async (req, res) => {
   try {
     const { viewConstruction } = req.query;
     let data;
@@ -107,6 +102,20 @@ router.get('/getzapros-filter', async (req, res) => {
     res.status(500).json({ error: 'Произошла ошибка при получении проектов.' });
   }
 });
+
+    
+    // эта функция нужна для того, чтоб удалять из imageTitle фотографии есть там не массив 
+ const deleteImage = (imageName) => {
+   const imagePath = path.join(__dirname, '..', '..', 'images', 'imageAdd', imageName);
+
+    res.json(data);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+});
+
+
 // эта функция нужна для того, чтоб удалять из imageTitle фотографии есть там не массив
 const deleteImage = (imageName) => {
   const imagePath = path.join(__dirname, '..', '..', 'images', 'imageAdd', imageName);

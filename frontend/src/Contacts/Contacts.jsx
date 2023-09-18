@@ -47,18 +47,21 @@ const Contacts = () => {
         style: 'mapbox://styles/anna02/clgz2fy0200hg01qu5tb8a6is',
         center: getOfficeCenter(selectedMap),
         zoom: 11,
-        attributionControl: false,
+        // attributionControl: false,
         container: 'map',
         antialias: true,
+        interactive: true,
       });
+      
+      newMap.scrollZoom.disable();
 
-      if ('ontouchstart' in window) {
-        newMap.dragPan.disable();
-        newMap.touchZoomRotate.enable();
-      } else {
-        newMap.dragPan.enable();
-        newMap.scrollZoom.enable();
-      }
+      // if ('ontouchstart' in window) {
+      //   newMap.dragPan.disable();
+      //   newMap.touchZoomRotate.enable();
+      // } else {
+      //   newMap.dragPan.enable();
+      //   newMap.scrollZoom.enable();
+      // }
 
        newMap.on('load', () => {
         newMap.addSource('marker', {

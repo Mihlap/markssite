@@ -264,6 +264,7 @@ const ArticleCard = () => {
               </div>
               <div className={styles.result_container}></div>
             </div>
+            {article.imageAuthor && ( 
             <div ref={refs.blockRight} className={styles.header_content_right}>
               <div className={styles.local_container_photo_author}>
                 <img
@@ -275,6 +276,7 @@ const ArticleCard = () => {
                 <div className={styles.text_author}>Автор статьи</div>
               </div>
             </div>
+            )}
           </div>
           <div className={styles.blockImg}>
             <div className={styles.container}>
@@ -295,9 +297,9 @@ const ArticleCard = () => {
                 >
                   {article.QuoteBlocks.map((block, index) => (
                     <div key={index} className={styles.quoteBlock_object_block}>
-                      <div className={styles.quoteBlock_object_title}>
+                      {/* <div className={styles.quoteBlock_object_title}>
                         {block.title}
-                      </div>
+                      </div> */}
                       <div className={styles.quoteBlock_object_text1}>
                         {block.text}
                       </div>
@@ -309,6 +311,7 @@ const ArticleCard = () => {
                   className={styles.quoteBlock_object_container_avatar}
                 >
                   {article.QuoteBlocks.map((block, index) => (
+                     block.avatar && ( 
                     <div
                       key={index}
                       className={styles.quoteBlock_object_block1}
@@ -319,12 +322,12 @@ const ArticleCard = () => {
                           src={`${Host}/images/imageArticle/${block.avatar}`}
                           alt={block.avatar}
                         />
+                      <div className={styles.author_name_block_avatar}>
+                        {block.title}
                       </div>
-
-                      {/* <div className={styles.quoteBlock_object_title}>
-                      {block.title}
-                    </div> */}
+                      </div>
                     </div>
+                     )
                   ))}
                 </div>
               </div>
