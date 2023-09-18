@@ -222,7 +222,7 @@
   font-feature-settings: 'pnum' on, 'lnum' on;
   color: var(--black-1D2E43);
   padding-top: 1rem;
-  padding-bottom: 4rem;
+  padding-bottom: 1.5rem;
   word-wrap: break-word;
   overflow-wrap: break-word;
   hyphens: auto;
@@ -241,7 +241,7 @@
   display: flex;
   justify-content: space-between;
   padding-top: 2rem;
-  padding-bottom: 4rem;
+  padding-bottom: 2.5rem;
 }
 
 
@@ -256,7 +256,7 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  padding: 2.5rem 0rem 0rem 0rem;
+  padding: 0.5rem 0rem 0rem 0rem;
   width: 100%;
 }
 
@@ -297,6 +297,21 @@
   display: flex;
   flex-direction: column;
 
+}
+
+.author_name_block_avatar {
+font-family: var(--font-raleway);
+font-size: 12px;
+font-style: normal;
+font-weight: var(--fw-400);
+line-height: 16px;
+  color: var(--dark-gray-566272);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  width: 10rem;
+  padding-top: 0.5rem;
+  gap: 1rem;
 }
 
 .frameBlock_object_container {

@@ -16,6 +16,7 @@ const Mapbox3D = () => {
       bearing: 10,
       container: "map",
       antialias: true,
+      interactive: true,
     });
 
     map.scrollZoom.disable();

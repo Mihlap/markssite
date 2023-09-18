@@ -15,10 +15,11 @@ const searchArticleLeft = require('./Routes/Articles/searchArticleLeftRouter');
 const searchArticleRight = require('./Routes/Articles/searchArticleRightRouter');
 const mailRouter = require('./Routes/mailRouter');
 const toggleRouter = require('./Routes/toggle/toggleRouter');
+// const { createProxyMiddleware } = require('http-proxy-middleware');
 
 
 const app = express();
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT || 5000;
 
 const sessionConfig = {
   name: 'user_marks_group',
@@ -36,14 +37,26 @@ const sessionConfig = {
   },
 };
 
+
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', req.header('origin'));
+  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS'); 
+  next();
+});
+
 app.use(
   cors({
-    origin: ['http://localhost:3000', 'http://localhost:3002', 'https://www.marksgroup.org'],
+    origin: [
+    '*',
+    'https://www.marksgroup.org',
+    'http://localhost',
+   ],
     credentials: true,
   }),
-);
-
-
+  );
+  
+ 
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -60,10 +73,10 @@ app.use((req, res, next) => {
   next();
 });
 
-// app.use((req, res, next) => {
-//   console.log(`Получен запрос на: ${req.method} ${req.url}`);
-//   next();
-// })
+app.use((req, res, next) => {
+  console.log(`Получен запрос на: ${req.method} ${req.url}`);
+  next();
+})
 
 
 app.get('/', indexRouter);
@@ -76,6 +89,7 @@ app.use('/search-article', searchArticleLeft);
 app.use('/search-articles', searchArticleRight);
 app.use('/api-mail', mailRouter);
 app.use('/api/toggle', toggleRouter);
+
 
 app.listen(PORT, () => {
   console.log(`Старт server --->🔥 ${PORT} 🔥<---`);
