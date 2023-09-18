@@ -23,6 +23,7 @@ import { getZaprosData } from "../store/Slice/searchProjectMainSlice";
 import { searchArticleLeftGet } from "../store/Slice/searchArticlePublicLeftSlice";
 import { resizeImage } from "../Project/utils";
 import img123 from "./img/Главная.png";
+import notDataPhoto from "./img/notData.png";
 
 import photoTest from "./img/project_right3.jpg";
 import { textEnter, textLeave, imageHover } from "../store/Slice/cursorSlice";
@@ -475,6 +476,11 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
                           ? project.imageProject
                           : project.imageTitle
                       }
+                      onError={(e) => {
+                        e.target.src = notDataPhoto; // Заменить на URL другой фотографии
+                        e.target.alt =
+                          "Альтернативный текст для замененной фотографии"; // Заменить на альтернативный текст
+                      }}
                     />
                   </div>
                   <div

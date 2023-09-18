@@ -47,3 +47,49 @@
         line-height: 24px;
     }
 }
+
+// стили для блока у которого 2 горизонтальные картинки и 1 вертикальная картинка imageBlockThree
+
+.gridContainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    /* Здесь используем fr для автоматического распределения пространства */
+    gap: 10px;
+    height: 100vh;
+    /* 100% высоты экрана */
+    align-items: stretch;
+}
+
+.horizontalImage,
+.verticalImage {
+    width: 100%;
+    /* Для корректного отображения изображений внутри блока */
+    object-fit: cover;
+    /* Изображение будет подгоняться так, чтобы заполнить свой блок без искажений */
+    display: block;
+    /* Убираем стандартные отступы для изображений */
+}
+
+.horizontalImage {
+    grid-column: 1 / 2;
+    height: 50vh;
+    border-radius: 1rem;
+    /* 50% высоты экрана */
+}
+
+.horizontalImage:nth-child(1) {
+    grid-row: 1 / 2;
+}
+
+.horizontalImage:nth-child(2) {
+    grid-row: 2 / 3;
+}
+
+.verticalImage {
+    grid-column: 2 / 3;
+    grid-row: 1 / 3;
+    height: 100vh;
+        border-radius: 1rem;
+    /* 100% высоты экрана */
+}
