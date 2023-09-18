@@ -127,7 +127,6 @@ router.delete('/deletezapros/:id', async (req, res) => {
     const { id } = req.params;
     const post = await Project.findByPk(id);
 
-
     // Удаление фотографий из imageTitle
     if (post.imageTitle) {
       const imageTitleNames = post.imageTitle.includes(', ')

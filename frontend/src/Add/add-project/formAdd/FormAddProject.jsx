@@ -209,15 +209,16 @@ export default function FormAddProject({ setIsModalOpen }) {
     }
     function generateUniqueName(originalName) {
       const timestamp = Date.now();
-      const randomNum = Math.floor(Math.random() * 10000); // 4-значное число
+      const randomNum = Math.floor(Math.random() * 10000);
       const fileExtension = originalName.split(".").pop();
-      const sliceOfOriginalName = originalName.slice(0, 5); // первые 5 символов исходного имени
+      const sliceOfOriginalName = originalName.slice(0, 5);
+      const newName = `file_${sliceOfOriginalName}_${timestamp}_${randomNum}.${fileExtension}`;
 
-      return `file_${sliceOfOriginalName}_${timestamp}_${randomNum}.${fileExtension}`;
+      console.log("Generated name:", newName);
+
+      return newName;
     }
-
     if (Array.isArray(value) && value[0] instanceof File) {
-      // если это массив файлов
       const newFiles = value.map((originalFile) => {
         const uniqueName = generateUniqueName(originalFile.name);
         return new File([originalFile], uniqueName, {
@@ -225,15 +226,19 @@ export default function FormAddProject({ setIsModalOpen }) {
         });
       });
       newDynamicData[blockIndex][inputIndex].value = newFiles;
+      console.log(
+        "Updated files:",
+        newDynamicData[blockIndex][inputIndex].value
+      );
     } else {
       newDynamicData[blockIndex][inputIndex].value = value;
     }
 
-     if (!newDynamicData[blockIndex][inputIndex].value) {
-       newDynamicData[blockIndex][inputIndex].value = "";
-     }
+    //  if (!newDynamicData[blockIndex][inputIndex].value) {
+    //    newDynamicData[blockIndex][inputIndex].value = "";
+    //  }
 
-     newDynamicData[blockIndex][inputIndex].value = value;
+    //  newDynamicData[blockIndex][inputIndex].value = value;
 
     setDynamicData(newDynamicData);
   };
