@@ -108,6 +108,8 @@ router.post(
         res.status(500).json({ error: 'Произошла ошибка при получении проектов.' });
       }
     });
+
+    
     // эта функция нужна для того, чтоб удалять из imageTitle фотографии есть там не массив 
  const deleteImage = (imageName) => {
    const imagePath = path.join(__dirname, '..', '..', 'images', 'imageAdd', imageName);
