@@ -42,6 +42,72 @@ module.exports = {
       about5: {
         type: Sequelize.TEXT,
       },
+      about6: {
+        type: Sequelize.TEXT,
+      },
+      about7: {
+        type: Sequelize.TEXT,
+      },
+      about8: {
+        type: Sequelize.TEXT,
+      },
+      about9: {
+        type: Sequelize.TEXT,
+      },
+      about10: {
+        type: Sequelize.TEXT,
+      },
+      about11: {
+        type: Sequelize.TEXT,
+      },
+      about12: {
+        type: Sequelize.TEXT,
+      },
+      about13: {
+        type: Sequelize.TEXT,
+      },
+      about14: {
+        type: Sequelize.TEXT,
+      },
+      about15: {
+        type: Sequelize.TEXT,
+      },
+      about16: {
+        type: Sequelize.TEXT,
+      },
+      about17: {
+        type: Sequelize.TEXT,
+      },
+      about18: {
+        type: Sequelize.TEXT,
+      },
+      description1: {
+        type: Sequelize.TEXT,
+      },
+      about19: {
+        type: Sequelize.TEXT,
+      },
+      description2: {
+        type: Sequelize.TEXT,
+      },
+      about20: {
+        type: Sequelize.TEXT,
+      },
+      about21: {
+        type: Sequelize.TEXT,
+      },
+      about22: {
+        type: Sequelize.TEXT,
+      },
+      about23: {
+        type: Sequelize.TEXT,
+      },
+      about24: {
+        type: Sequelize.TEXT,
+      },
+      about25: {
+        type: Sequelize.TEXT,
+      },
       userId: {
         type: Sequelize.INTEGER,
         references: {
