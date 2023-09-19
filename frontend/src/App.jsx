@@ -39,7 +39,7 @@ export default function App() {
   const showNavbarFooter = useSelector((state) => state.user.showNavbarFooter);
   const location = useLocation();
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
 
 
@@ -58,11 +58,11 @@ useEffect(() => {
 
 // console.log(isUserChecked);
   // таймаут для прелоудера на сайте
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-    }, 3500);
-  }, []);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setLoading(false);
+  //   }, 3500);
+  // }, []);
 
 
   console.log(`пользователь 👉${user?.name}👈`);
