@@ -391,7 +391,8 @@ export default function Company({ userId }) {
       <div className={styles.company_group_name}>
         Состав группы компаний
         <p className={styles.plus_nine} style={{ verticalAlign: "top" }}>
-          <img src={plusNine} alt="plus_nine" />
+          {/* <img src={plusNine} alt="plus_nine" /> */}
+          <p>+ 5</p>
         </p>
       </div>
       <div className={styles.company_group_slider}>
