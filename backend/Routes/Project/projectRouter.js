@@ -83,9 +83,14 @@ router.get('/getzapros', async (req, res) => {
     const data = await Project.findAll({
       include: [Constructor],
     });
+    res.json(data);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
+  }
+});
 
-    
-    router.get('/getzapros-filter', async (req, res) => {
+router.get('/getzapros-filter', async (req, res) => {
   try {
     const { viewConstruction } = req.query;
     let data;
@@ -104,31 +109,17 @@ router.get('/getzapros', async (req, res) => {
     res.status(500).json({ error: 'Произошла ошибка при получении проектов.' });
   }
 });
-
-    
-    // эта функция нужна для того, чтоб удалять из imageTitle фотографии есть там не массив 
- const deleteImage = (imageName) => {
-   const imagePath = path.join(__dirname, '..', '..', 'images', 'imageAdd', imageName);
-
-    res.json(data);
-  } catch (error) {
-    console.log(error);
-    res.sendStatus(500);
-  }
-});
-
-
 // эта функция нужна для того, чтоб удалять из imageTitle фотографии есть там не массив
 const deleteImage = (imageName) => {
   const imagePath = path.join(__dirname, '..', '..', 'images', 'imageAdd', imageName);
 
-  //  console.log(`Пытаюсь удалить изображение по пути: ${imagePath}`);
+  // console.log(`Пытаюсь удалить изображение по пути: ${imagePath}`);
 
   fs.unlink(imagePath, (err) => {
     if (err) {
       console.error(`Ошибка при удалении изображения ${imageName}:`, err);
     } else {
-      //  console.log(`Изображение ${imageName} успешно удалено.`);
+      // console.log(`Изображение ${imageName} успешно удалено.`);
     }
   });
 };
@@ -137,15 +128,15 @@ router.delete('/deletezapros/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const post = await Project.findByPk(id);
-    const test = await Constructor.findByPk(id);
+    const constructor = await Constructor.findByPk(id);
 
-    if (test.image) {
-        console.log('ЗАШЕЛ СЮДА');
-        const imageConstructorNames = test.image.includes(', ')
-          ? test.image.split(', ')
-          : [test.image];
-        imageConstructorNames.forEach(deleteImage);
-      }
+    if (constructor.image) {
+      console.log('ЗАШЕЛ СЮДА');
+      const imageConstructorNames = constructor.image.includes(', ')
+        ? constructor.image.split(', ')
+        : [constructor.image];
+      imageConstructorNames.forEach(deleteImage);
+    }
 
     // Удаление фотографий из imageTitle
     if (post.imageTitle) {
