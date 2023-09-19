@@ -50,7 +50,8 @@ app.use(
     origin: [
     '*',
     'https://www.marksgroup.org',
-    'http://localhost',
+    'http://localhost:3002',
+    // 'http://localhost:3000',
    ],
     credentials: true,
   }),
