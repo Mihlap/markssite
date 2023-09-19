@@ -4,6 +4,8 @@ import styles from "./ConstructorBlockRenderer.module.scss";
 const Host = process.env.REACT_APP_SERVER_HOST;
 
 export default function ConstructorBlockRenderer({ block }) {
+
+
   const renderImageWithDescription = (block) => {
     let imageUrl = "";
     let description = "";
@@ -26,6 +28,8 @@ export default function ConstructorBlockRenderer({ block }) {
       </div>
     );
   };
+
+  
 
   const renderHeaderWithText = (block) => {
     let header = "";
@@ -65,6 +69,22 @@ export default function ConstructorBlockRenderer({ block }) {
     );
   };
 
+  const renderTwoImage = (block, index) => {
+    const images = block[0].value;
+    return (
+      <div className={styles.imageBlockTwo}>
+        {images.map((el, index) => (
+          <img
+            className={styles.imageBlockTwo__gridImage}
+            key={index}
+            src={`${Host}/images/imageAdd/${el}`}
+            alt="img_two"
+          />
+        ))}
+      </div>
+    );
+  };
+
   const renderImageSlider = (block) => {
     const images = block[0].value;
     return (
@@ -96,6 +116,8 @@ export default function ConstructorBlockRenderer({ block }) {
       return renderHeaderWithText(block);
     case "Блок 3 картинки":
       return renderThreeImages(block);
+    case "Блок 2е вертикальные картинки":
+      return renderTwoImage(block);
     case "Слайдер *допускается загрузка 8ми изображений":
       return renderImageSlider(block);
     case "video":
