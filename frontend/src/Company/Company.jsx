@@ -392,7 +392,7 @@ export default function Company({ userId }) {
         Состав группы компаний
         <p className={styles.plus_nine} style={{ verticalAlign: "top" }}>
           {/* <img src={plusNine} alt="plus_nine" /> */}
-          <p>+ 5</p>
+          <span>+ 5</span>
         </p>
       </div>
       <div className={styles.company_group_slider}>
@@ -605,29 +605,155 @@ export default function Company({ userId }) {
                     </div>
                     {selectedCard.about1}
                   </div>
-                  <div className={styles.modal_about_stuff2}>
+                  <div className={styles.modal_about_stuff1}>
                     <div className={styles.modal_about_stuff_symbol}>
                       {symbol}
                     </div>
                     {selectedCard.about2}
                   </div>
-                  <div className={styles.modal_about_stuff3}>
+                  <div className={styles.modal_about_stuff1}>
                     <div className={styles.modal_about_stuff_symbol}>
                       {symbol}
                     </div>
                     {selectedCard.about3}
                   </div>
-                  <div className={styles.modal_about_stuff4}>
+                  <div className={styles.modal_about_stuff1}>
                     <div className={styles.modal_about_stuff_symbol}>
                       {symbol}
                     </div>
                     {selectedCard.about4}
                   </div>
-                  <div className={styles.modal_about_stuff5}>
+                  <div className={styles.modal_about_stuff1}>
                     <div className={styles.modal_about_stuff_symbol}>
                       {symbol}
                     </div>
                     {selectedCard.about5}
+                  </div>
+                  <div className={styles.modal_about_stuff1}>
+                    <div className={styles.modal_about_stuff_symbol}>
+                      {symbol}
+                    </div>
+                    {selectedCard.about6}
+                  </div>
+                  <div className={styles.modal_about_stuff1}>
+                    <div className={styles.modal_about_stuff_symbol}>
+                      {symbol}
+                    </div>
+                    {selectedCard.about7}
+                  </div>
+                  <div className={styles.modal_about_stuff1}>
+                    <div className={styles.modal_about_stuff_symbol}>
+                      {symbol}
+                    </div>
+                    {selectedCard.about8}
+                  </div>
+                  <div className={styles.modal_about_stuff1}>
+                    <div className={styles.modal_about_stuff_symbol}>
+                      {symbol}
+                    </div>
+                    {selectedCard.about9}
+                  </div>
+                  <div className={styles.modal_about_stuff1}>
+                    <div className={styles.modal_about_stuff_symbol}>
+                      {symbol}
+                    </div>
+                    {selectedCard.about10}
+                  </div>
+                  <div className={styles.modal_about_stuff1}>
+                    <div className={styles.modal_about_stuff_symbol}>
+                      {symbol}
+                    </div>
+                    {selectedCard.about11}
+                  </div>
+                  <div className={styles.modal_about_stuff1}>
+                    <div className={styles.modal_about_stuff_symbol}>
+                      {symbol}
+                    </div>
+                    {selectedCard.about12}
+                  </div>
+                  <div className={styles.modal_about_stuff1}>
+                    <div className={styles.modal_about_stuff_symbol}>
+                      {symbol}
+                    </div>
+                    {selectedCard.about13}
+                  </div>
+                  <div className={styles.modal_about_stuff1}>
+                    <div className={styles.modal_about_stuff_symbol}>
+                      {symbol}
+                    </div>
+                    {selectedCard.about14}
+                  </div>
+                  <div className={styles.modal_about_stuff1}>
+                    <div className={styles.modal_about_stuff_symbol}>
+                      {symbol}
+                    </div>
+                    {selectedCard.about15}
+                  </div>
+                  <div className={styles.modal_about_stuff1}>
+                    <div className={styles.modal_about_stuff_symbol}>
+                      {symbol}
+                    </div>
+                    {selectedCard.about16}
+                  </div>
+                  <div className={styles.modal_about_stuff1}>
+                    <div className={styles.modal_about_stuff_symbol}>
+                      {symbol}
+                    </div>
+                    {selectedCard.about17}
+                  </div>
+                  <div className={styles.modal_about_stuff1}>
+                    {/* <div className={styles.modal_about_stuff_symbol}>
+                      {symbol}
+                    </div> */}
+                    {selectedCard.about18}
+                  </div>
+                  <div className={styles.modal_description_stuff}>
+                    {selectedCard.description1}
+                  </div>
+                  <div className={styles.modal_about_stuff1}>
+                    <div className={styles.modal_about_stuff_symbol}>
+                      {symbol}
+                    </div>
+                    {selectedCard.about19}
+                  </div>
+                  <div className={styles.modal_description_stuff}>
+                    {selectedCard.description2}
+                  </div>
+                  <div className={styles.modal_about_stuff1}>
+                    <div className={styles.modal_about_stuff_symbol}>
+                      {symbol}
+                    </div>
+                    {selectedCard.about20}
+                  </div>
+                  <div className={styles.modal_about_stuff1}>
+                    <div className={styles.modal_about_stuff_symbol}>
+                      {symbol}
+                    </div>
+                    {selectedCard.about21}
+                  </div>
+                  <div className={styles.modal_about_stuff1}>
+                    <div className={styles.modal_about_stuff_symbol}>
+                      {symbol}
+                    </div>
+                    {selectedCard.about22}
+                  </div>
+                  <div className={styles.modal_about_stuff1}>
+                    <div className={styles.modal_about_stuff_symbol}>
+                      {symbol}
+                    </div>
+                    {selectedCard.about23}
+                  </div>
+                  <div className={styles.modal_about_stuff1}>
+                    <div className={styles.modal_about_stuff_symbol}>
+                      {symbol}
+                    </div>
+                    {selectedCard.about24}
+                  </div>
+                  <div className={styles.modal_about_stuff1}>
+                    <div className={styles.modal_about_stuff_symbol}>
+                      {symbol}
+                    </div>
+                    {selectedCard.about25}
                   </div>
                 </div>
               )}

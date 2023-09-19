@@ -520,11 +520,7 @@ bottom: 3.38rem;
   list-style: none;
 }
 
-.modal_about_stuff1,
-.modal_about_stuff2,
-.modal_about_stuff3,
-.modal_about_stuff4,
-.modal_about_stuff5 {
+.modal_about_stuff1 {
   display: flex;
   font-family: var(--font-raleway);
   font-style: normal;

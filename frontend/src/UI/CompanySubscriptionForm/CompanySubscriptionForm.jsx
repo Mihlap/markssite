@@ -56,7 +56,8 @@ const CompanySubscriptionForm = () => {
       if (response.status === 200) {
         setMessage("Вы успешно подписались на новости.");
         setValue("");
-      } else {
+        
+       } else {
         setMessage("Произошла ошибка при подписке.");
       }
     } catch (error) {
@@ -114,11 +115,7 @@ const CompanySubscriptionForm = () => {
                 {/* {message && <div className={styles.message}>{message}</div>} */}
               </label>
             </div>
-            <button
-              className={`${styles.button_hover11}
-               ${
-                !isValid || !value ? styles.disabled : ""
-              }`}
+            <button className={`${styles.button_hover11} ${!isValid || !value ? styles.disabled : ""}`}
               id="submit-button"
               disabled={!value}
               type="submit"
