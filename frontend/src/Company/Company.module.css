@@ -209,9 +209,9 @@
   flex-direction: row;
   font-family: var(--font-unbounded);
   font-style: normal;
-  font-weight: var(--fw-300);
-  font-size: 40px;
-  line-height: 48px;
+  font-weight: var(--fw-500);
+  font-size: 2.5rem;
+  line-height: 3rem;
   color: var(--black-1D2E43);
   padding-left: 1.87vw;
   align-items: center;
@@ -224,8 +224,13 @@
   padding-left: 0.5rem;
   justify-content: center;
   align-items: flex-start;
+  font-family: var(--font-unbounded);
+  color: var(--black-1D2E43);
+  font-size: 0.85rem;
+  font-style: normal;
+  font-weight: var(--fw-700);
+  line-height: normal;
 }
-
 .company_group_slider {
   padding-left: 1.87vw;
    /* padding-right: 1.87vw; */
@@ -909,19 +914,20 @@ bottom: 3.38rem;
 
   .company_group_name {
     display: inline-block;
-    font-size: 24px;
-    line-height: 32px;
+    font-size: 1.5rem;
+    line-height: 2rem;
     padding-bottom: 3.06rem;
     padding-top: 3.06rem;
     padding-left: 1rem;
   }
 
   .plus_nine {
-    display: inline-block;
+    display: inline-flex;
     padding-left: 0.5rem;
-    line-height: 1.25rem;
+    padding-top: 0.5rem;
+    justify-content: center;
+    align-items: center;
   }
-
 
   .company_group_slider {
     padding-left: 1rem;
