@@ -9,7 +9,7 @@ module.exports = {
     const hashpassWord = await bcrypt.hash(password, 10);
     const password2 = 'Lbcrb200'
     const hashpassWord2 = await bcrypt.hash(password2, 10);
-    const password3 = 'cat';
+    const password3 = '123';
     const hashpassWord3 = await bcrypt.hash(password3, 10);
 
     await queryInterface.bulkInsert(
