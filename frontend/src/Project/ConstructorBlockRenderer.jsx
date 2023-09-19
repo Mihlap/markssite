@@ -4,6 +4,8 @@ import styles from "./ConstructorBlockRenderer.module.scss";
 const Host = process.env.REACT_APP_SERVER_HOST;
 
 export default function ConstructorBlockRenderer({ block }) {
+
+
   const renderImageWithDescription = (block) => {
     let imageUrl = "";
     let description = "";
@@ -26,6 +28,8 @@ export default function ConstructorBlockRenderer({ block }) {
       </div>
     );
   };
+
+  
 
   const renderHeaderWithText = (block) => {
     let header = "";
