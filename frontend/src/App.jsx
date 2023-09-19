@@ -100,7 +100,7 @@ useEffect(() => {
                 <Route path="/prime-park" element={<PrimePark />} />
                 {/* <Route path="/hotel-appart" element={<HotelAppart />} /> */}
                 <Route path="/login" element={<Login />} />
-                <Route path="/signup" element={<SignUpPage />} />
+                {/* <Route path="/signup" element={<SignUpPage />} /> */}
                 <Route path="/information" element={<Information />} />
 
                 {user ? (
