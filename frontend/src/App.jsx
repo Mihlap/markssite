@@ -14,10 +14,8 @@ import Portal from "./Portal/Portal";
 import Navbar from "./Navbar/Navbar";
 import Footer from "./Footer/Footer";
 import Information from "./Information/Information";
-import WinePark from "./Project/WinePark/WinePark";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import Loading from "./Loading/Loading";
-import PrimePark from "./Project/PrimePark/PrimePark";
 import WineParkArticles from "./articlesProject/WinePark/WineParkArticles";
 import Login from "./Login/Login";
 import Add from "./Add/Add";
@@ -90,15 +88,10 @@ useEffect(() => {
                 <Route path="/contacts" element={<Contacts />} />
                 <Route path="/portal" element={<Portal />} />
                 <Route path="*" element={<NotFound />} />
-                <Route path="/winepark" element={<WinePark />} />
                 <Route
                   path="/winepark-article"
                   element={<WineParkArticles />}
                 />
-                {/* <Route path="/badaevsky" element={<Badaevsky />} /> */}
-                {/* <Route path="/slava" element={<Slava />} /> */}
-                <Route path="/prime-park" element={<PrimePark />} />
-                {/* <Route path="/hotel-appart" element={<HotelAppart />} /> */}
                 <Route path="/login" element={<Login />} />
                 {/* <Route path="/signup" element={<SignUpPage />} /> */}
                 <Route path="/information" element={<Information />} />

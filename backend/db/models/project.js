@@ -11,23 +11,11 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate({
       User,
-      ImageToDescription,
-      TextBlock,
-      ImageBlockThree,
-      ImageBlockTwo,
-      ImageSlider,
       Constructor,
-      Video,
     }) {
       // define association here
       this.belongsTo(User, { foreignKey: 'authorId' });
-      this.hasMany(ImageToDescription, { foreignKey: 'idBlock' });
-      this.hasMany(TextBlock, { foreignKey: 'idBlock' });
-      this.hasMany(ImageBlockThree, { foreignKey: 'idBlock' });
-      this.hasMany(ImageBlockTwo, { foreignKey: 'idBlock' });
-      this.hasMany(ImageSlider, { foreignKey: 'idBlock' });
       this.hasMany(Constructor, { foreignKey: 'idBlock' });
-      this.hasMany(Video, { foreignKey: 'idBlock' });
     }
   }
   Project.init({
