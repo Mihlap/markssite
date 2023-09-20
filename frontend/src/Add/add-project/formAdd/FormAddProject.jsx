@@ -66,6 +66,7 @@ export default function FormAddProject({ setIsModalOpen }) {
     linkToPublicationTwo: "",
     awards: "",
     imageOpen: "",
+    headingTextBlock: "",
     textBlock: "",
     imageClose: "",
   });
@@ -1247,6 +1248,34 @@ export default function FormAddProject({ setIsModalOpen }) {
                 </div>
               </div>
             ))}
+          </div>
+
+          <div className={styles.form_container__heading_block}>
+            <input
+              type="input"
+              className={styles.form_container__heading_block_input}
+              placeholder="Не более 56 символов"
+              name="headingTextBlock"
+              id="headingTextBlock"
+              maxLength="56"
+              value={inputData.headingTextBlock}
+              onChange={(event) => {
+                const value = event.target.value;
+                if (value.length <= 56) {
+                  setInputData({ ...inputData, headingTextBlock: value });
+                }
+              }}
+              required
+            />
+            <label
+              htmlFor="headingTextBlock"
+              className={styles.form_container__heading_block_label}
+            >
+              Заголовок текстового блока
+            </label>
+            <div className={styles.form_container__heading_block_input_length}>
+              {`${inputData.headingTextBlock.length}/56`}
+            </div>
           </div>
 
           <div className={styles.form_container__description_text}>

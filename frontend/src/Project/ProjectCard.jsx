@@ -457,8 +457,14 @@ const ProjectCard = () => {
                 >
                   <div className={styles.description_object_block}>
                     <div className={styles.description_object_title}>
-                      {/* {project.title} */}
+                      {project.headingTextBlock !== null &&
+                      project.headingTextBlock !== undefined ? (
+                        <h2 className={styles.blockHeadingTitle_heading}>
+                          {project.headingTextBlock}
+                        </h2>
+                      ) : null}
                     </div>
+
                     <div className={styles.description_object_text1}>
                       {project.textBlock}
                     </div>
