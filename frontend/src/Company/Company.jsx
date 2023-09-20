@@ -244,6 +244,26 @@ export default function Company() {
     { name: "HR", onClick: handleButtonClick },
   ];
 
+  const renderAboutItem = (aboutKey, index) => (
+    <div className={styles.modal_about_stuff1} key={index}>
+      {aboutKey !== 'about' && (
+        <div className={styles.modal_about_stuff_symbol}>
+          {symbol}
+        </div>
+      )}
+      <div className={aboutKey.startsWith('description') ? styles.modal_description_stuff1 : styles.modal_about_stuff1}>
+        {selectedCard[aboutKey]}
+      </div>
+    </div>
+  );
+  
+  const aboutKeys = [
+    'about', 'about1', 'about2', 'about3', 'about4', 'about5', 'about6',
+    'about7', 'about8', 'about9', 'about10', 'about11', 'about12', 'about13',
+    'about14', 'about15', 'about16', 'about17', 'about18', 'about19', 'about20',
+    'about21', 'about22'
+  ];
+
   // if (error) {
   //   return (
   //     <div>
@@ -932,10 +952,10 @@ export default function Company() {
           <Swiper
             className={styles.slider_card_container}
             loop={true}
-            slidesPerView={3}
+            slidesPerView={2.2}
             spaceBetween={0}
             touch="true"
-          >
+           >
             {staff?.map((el) => (
               <SwiperSlide
                 key={el.id}

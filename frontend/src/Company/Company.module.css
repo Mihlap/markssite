@@ -326,10 +326,11 @@
 
 .card_container_ul {
   display: flex;
-  position: relative;
+  /* position: relative; */
   flex-wrap: wrap;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   width: 100%;
+  gap: 1.88rem;
   padding-left: 1.87vw;
   padding-right: 1.87vw;
 }
@@ -692,11 +693,14 @@ bottom: 3.38rem;
     display: flex;
     padding-left: 5.4vw;
   }
+  .slider_card_container {
+    width: 100%;
+  }
 
   .slide_container_item_stuff {
     width: 20.18rem;
     height: 20.93rem;
-    margin-right: 1.875rem;
+    padding-right: 1.875rem;
   }
 
   .form_wrapper {
