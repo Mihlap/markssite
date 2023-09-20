@@ -36,12 +36,19 @@ import CounterCompanyMobile2 from "../UI/CounterCompanyMobile2";
 import CompanyGroupSlider from "../UI/CompanyGroupSlider/CompanyGroupSlider";
 
 
-export default function Company({ userId }) {
+export default function Company() {
   const videoSource = {
     large: "./assets/company_full.mp4",
     medium: "./assets/company_ipad.mp4",
     small: "./assets/company_mob.mp4",
   };
+
+  const videoSource2 = {
+    small: "./assets/company_video.mp4",
+    medium: "./assets/company_video.mp4",
+    large: "./assets/company_video.mp4",
+  };
+  
 
 
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -52,6 +59,7 @@ export default function Company({ userId }) {
   const [currentIndexCompany, setCurrentIndexCompany] = useState(0);
   const swiperCompanyRef = useRef(null);
   const [videoSrc, setVideoSrc] = useState(videoSource.large);
+  const [videoSrc2, setVideoSrc2] = useState(videoSource2.large);
 
   const [showCards, setShowCards] = useState(false);
   const [activeButton, setActiveButton] = useState("Руководство");
@@ -220,7 +228,7 @@ export default function Company({ userId }) {
       }
     };
   }, []);
-
+  
 
    const handlePCardCompanyClick = (index) => {
     setCurrentIndexCompany(index);
@@ -248,11 +256,12 @@ export default function Company({ userId }) {
   //   return <LoadingCircle />;
   // }
 
-  // console.log(staff, "персонал");
-
   return (
     <div className={styles.company_main}>
       <Company_Slider />
+      {/* <video playsInline autoPlay muted loop id="bg-video">
+            <source src={videoSrc2} type="video/mp4" />
+          </video> */}
       <div ref={blockSlider} className={styles.underSlider_text_wrapper}>
         <span className={styles.span_underSlider_text1}>
           Самые крутые проекты! самой крутой командой
@@ -423,9 +432,9 @@ export default function Company({ userId }) {
           >
             <div className={styles.button_group}>
               {buttonsStuff &&
-                buttonsStuff?.map((button) => (
+                buttonsStuff?.map((button, index) => (
                   <SwiperSlide
-                    key={button.name}
+                    key={index}
                     onClick={(e) => {
                       e.preventDefault();
                       button.onClick(button.name);
@@ -504,18 +513,18 @@ export default function Company({ userId }) {
           {staff &&
             staff?.map((el) => (
               <li
-                key={el.id}
-                data-user-id={el.id}
-                // {...el}
-                className={styles.container__item_stuff}
-                onClick={() => handleButtonClick(category, el.id)}
+              key={el.id}
+              data-user-id={el.id}
+              // {...el}
+              className={styles.container__item_stuff}
+              onClick={() => handleButtonClick(category, el.id)}
               >
                 <div className={styles.wrapper_container_item_stuff}>
                   <img
                     className={styles.container__img_stuff}
                     src={`${Host}/images/${el.img}`}
                     alt={el.img}
-                  />
+                    />
                 </div>
                 <div className={styles.container__item_name_stuff}>
                   {el.name}
@@ -525,7 +534,7 @@ export default function Company({ userId }) {
                 </div>
               </li>
             ))}
-          {isModalOpen && selectedCard && (
+            {isModalOpen && selectedCard && (
             <Modal
               className={styles.modal_wrapper}
               const
@@ -593,168 +602,266 @@ export default function Company({ userId }) {
                   <div className={styles.modal_name_stuff}>
                     {selectedCard.name}
                   </div>
+                  {selectedCard.description && (
                   <div className={styles.modal_description_stuff}>
                     {selectedCard.description}
                   </div>
+                   )}
+                  {selectedCard.about && (
                   <div className={styles.modal_about_stuff}>
                     {selectedCard.about}
                   </div>
+                  )}
+                  {selectedCard.about1 && (
                   <div className={styles.modal_about_stuff1}>
                     <div className={styles.modal_about_stuff_symbol}>
                       {symbol}
                     </div>
                     {selectedCard.about1}
                   </div>
+                  )}
+                  {selectedCard.about2 && (
                   <div className={styles.modal_about_stuff1}>
                     <div className={styles.modal_about_stuff_symbol}>
                       {symbol}
                     </div>
                     {selectedCard.about2}
                   </div>
+                     )}
+                  {selectedCard.about3 && (
                   <div className={styles.modal_about_stuff1}>
                     <div className={styles.modal_about_stuff_symbol}>
                       {symbol}
                     </div>
                     {selectedCard.about3}
                   </div>
+                  )}
+                  {selectedCard.about4 && (
                   <div className={styles.modal_about_stuff1}>
                     <div className={styles.modal_about_stuff_symbol}>
                       {symbol}
                     </div>
                     {selectedCard.about4}
                   </div>
+                    )}
+                  {selectedCard.about5 && (
                   <div className={styles.modal_about_stuff1}>
                     <div className={styles.modal_about_stuff_symbol}>
                       {symbol}
                     </div>
                     {selectedCard.about5}
                   </div>
+                  )}
+                  {selectedCard.about6 && (
                   <div className={styles.modal_about_stuff1}>
                     <div className={styles.modal_about_stuff_symbol}>
                       {symbol}
                     </div>
                     {selectedCard.about6}
                   </div>
+                   )}
+                  {selectedCard.about7 && (
                   <div className={styles.modal_about_stuff1}>
                     <div className={styles.modal_about_stuff_symbol}>
                       {symbol}
                     </div>
                     {selectedCard.about7}
                   </div>
+                  )}
+                  {selectedCard.about8 && (
                   <div className={styles.modal_about_stuff1}>
                     <div className={styles.modal_about_stuff_symbol}>
                       {symbol}
                     </div>
                     {selectedCard.about8}
                   </div>
+                      )}
+                  {selectedCard.about9 && (
                   <div className={styles.modal_about_stuff1}>
                     <div className={styles.modal_about_stuff_symbol}>
                       {symbol}
                     </div>
                     {selectedCard.about9}
                   </div>
+                  )}
+                  {selectedCard.about10 && (
                   <div className={styles.modal_about_stuff1}>
                     <div className={styles.modal_about_stuff_symbol}>
                       {symbol}
                     </div>
                     {selectedCard.about10}
                   </div>
+                   )}
+                  {selectedCard.about11 && (
                   <div className={styles.modal_about_stuff1}>
                     <div className={styles.modal_about_stuff_symbol}>
                       {symbol}
                     </div>
                     {selectedCard.about11}
                   </div>
+                  )}
+                  {selectedCard.about12 && (
                   <div className={styles.modal_about_stuff1}>
                     <div className={styles.modal_about_stuff_symbol}>
                       {symbol}
                     </div>
                     {selectedCard.about12}
                   </div>
+                    )}
+                  {selectedCard.about13 && (
                   <div className={styles.modal_about_stuff1}>
                     <div className={styles.modal_about_stuff_symbol}>
                       {symbol}
                     </div>
                     {selectedCard.about13}
                   </div>
+                  )}
+                  {selectedCard.about14 && (
                   <div className={styles.modal_about_stuff1}>
                     <div className={styles.modal_about_stuff_symbol}>
                       {symbol}
                     </div>
                     {selectedCard.about14}
                   </div>
+                    )}
+                  {selectedCard.about15 && (
                   <div className={styles.modal_about_stuff1}>
                     <div className={styles.modal_about_stuff_symbol}>
                       {symbol}
                     </div>
                     {selectedCard.about15}
                   </div>
+                  )}
+                  {selectedCard.about16 && (
                   <div className={styles.modal_about_stuff1}>
                     <div className={styles.modal_about_stuff_symbol}>
                       {symbol}
                     </div>
                     {selectedCard.about16}
                   </div>
+                    )}
+                  {selectedCard.about17 && (
                   <div className={styles.modal_about_stuff1}>
                     <div className={styles.modal_about_stuff_symbol}>
                       {symbol}
                     </div>
                     {selectedCard.about17}
                   </div>
+                  )}
+                    {selectedCard.about18 && (
                   <div className={styles.modal_about_stuff1}>
-                    {/* <div className={styles.modal_about_stuff_symbol}>
+                    <div className={styles.modal_about_stuff_symbol}>
                       {symbol}
-                    </div> */}
+                    </div>
                     {selectedCard.about18}
                   </div>
-                  <div className={styles.modal_description_stuff}>
-                    {selectedCard.description1}
-                  </div>
+                  )}
+                    {selectedCard.about19 && (
                   <div className={styles.modal_about_stuff1}>
                     <div className={styles.modal_about_stuff_symbol}>
                       {symbol}
                     </div>
                     {selectedCard.about19}
                   </div>
-                  <div className={styles.modal_description_stuff}>
-                    {selectedCard.description2}
-                  </div>
+                  )}
+                    {selectedCard.about20 && (
                   <div className={styles.modal_about_stuff1}>
                     <div className={styles.modal_about_stuff_symbol}>
                       {symbol}
                     </div>
                     {selectedCard.about20}
                   </div>
+                  )}
+                    {selectedCard.about21 && (
                   <div className={styles.modal_about_stuff1}>
                     <div className={styles.modal_about_stuff_symbol}>
                       {symbol}
                     </div>
                     {selectedCard.about21}
                   </div>
+                  )}
+                    {selectedCard.about22 && (
                   <div className={styles.modal_about_stuff1}>
                     <div className={styles.modal_about_stuff_symbol}>
                       {symbol}
                     </div>
                     {selectedCard.about22}
                   </div>
+                  )}
+                  {selectedCard.about23 && (
                   <div className={styles.modal_about_stuff1}>
-                    <div className={styles.modal_about_stuff_symbol}>
+                    {/* <div className={styles.modal_about_stuff_symbol}>
                       {symbol}
-                    </div>
+                    </div> */}
                     {selectedCard.about23}
                   </div>
+                      )}
+                  {selectedCard.description1 && (
+                  <div className={styles.modal_description_stuff1}>
+                    {selectedCard.description1}
+                  </div>
+                     )}
+                  {selectedCard.about24 && (
                   <div className={styles.modal_about_stuff1}>
                     <div className={styles.modal_about_stuff_symbol}>
                       {symbol}
                     </div>
                     {selectedCard.about24}
                   </div>
+                  )}
+                  {selectedCard.description2 && (
+                  <div className={styles.modal_description_stuff1}>
+                    {selectedCard.description2}
+                  </div>
+                     )}
+                  {selectedCard.about25 && (
                   <div className={styles.modal_about_stuff1}>
                     <div className={styles.modal_about_stuff_symbol}>
                       {symbol}
                     </div>
                     {selectedCard.about25}
                   </div>
+                  )}
+                  {selectedCard.about26 && (
+                  <div className={styles.modal_about_stuff1}>
+                    <div className={styles.modal_about_stuff_symbol}>
+                      {symbol}
+                    </div>
+                    {selectedCard.about26}
+                  </div>
+                    )}
+                  {selectedCard.about27 && (
+                  <div className={styles.modal_about_stuff1}>
+                    <div className={styles.modal_about_stuff_symbol}>
+                      {symbol}
+                    </div>
+                    {selectedCard.about27}
+                  </div>
+                  )}
+                  {selectedCard.about28 && (
+                  <div className={styles.modal_about_stuff1}>
+                    <div className={styles.modal_about_stuff_symbol}>
+                      {symbol}
+                    </div>
+                    {selectedCard.about28}
+                  </div>
+                       )}
+                  {selectedCard.about29 && (
+                  <div className={styles.modal_about_stuff1}>
+                    <div className={styles.modal_about_stuff_symbol}>
+                      {symbol}
+                    </div>
+                    {selectedCard.about29}
+                  </div>
+                    )}
+                  {selectedCard.about30 && (
+                  <div className={styles.modal_about_stuff1}>
+                    <div className={styles.modal_about_stuff_symbol}>
+                      {symbol}
+                    </div>
+                    {selectedCard.about30}
+                  </div>
+                    )}
                 </div>
               )}
             </Modal>
