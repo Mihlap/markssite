@@ -36,18 +36,20 @@ import CounterCompanyMobile2 from "../UI/CounterCompanyMobile2";
 import CompanyGroupSlider from "../UI/CompanyGroupSlider/CompanyGroupSlider";
 
 
+
 export default function Company() {
+
   const videoSource = {
     large: "./assets/company_full.mp4",
     medium: "./assets/company_ipad.mp4",
     small: "./assets/company_mob.mp4",
   };
 
-  const videoSource2 = {
-    small: "./assets/company_video.mp4",
-    medium: "./assets/company_video.mp4",
-    large: "./assets/company_video.mp4",
-  };
+  // const videoSource2 = {
+  //   small: "./assets/company_video.mp4",
+  //   medium: "./assets/company_video.mp4",
+  //   large: "./assets/company_video.mp4",
+  // };
   
 
 
@@ -59,7 +61,8 @@ export default function Company() {
   const [currentIndexCompany, setCurrentIndexCompany] = useState(0);
   const swiperCompanyRef = useRef(null);
   const [videoSrc, setVideoSrc] = useState(videoSource.large);
-  const [videoSrc2, setVideoSrc2] = useState(videoSource2.large);
+  // const [videoSrc2, setVideoSrc2] = useState(videoSource2.large);
+
 
   const [showCards, setShowCards] = useState(false);
   const [activeButton, setActiveButton] = useState("Руководство");
@@ -228,7 +231,6 @@ export default function Company() {
       }
     };
   }, []);
-  
 
    const handlePCardCompanyClick = (index) => {
     setCurrentIndexCompany(index);
@@ -242,26 +244,6 @@ export default function Company() {
     { name: "Руководители отделов", onClick: handleButtonClick },
     { name: "Научно-техническое сопровождение", onClick: handleButtonClick },
     { name: "HR", onClick: handleButtonClick },
-  ];
-
-  const renderAboutItem = (aboutKey, index) => (
-    <div className={styles.modal_about_stuff1} key={index}>
-      {aboutKey !== 'about' && (
-        <div className={styles.modal_about_stuff_symbol}>
-          {symbol}
-        </div>
-      )}
-      <div className={aboutKey.startsWith('description') ? styles.modal_description_stuff1 : styles.modal_about_stuff1}>
-        {selectedCard[aboutKey]}
-      </div>
-    </div>
-  );
-  
-  const aboutKeys = [
-    'about', 'about1', 'about2', 'about3', 'about4', 'about5', 'about6',
-    'about7', 'about8', 'about9', 'about10', 'about11', 'about12', 'about13',
-    'about14', 'about15', 'about16', 'about17', 'about18', 'about19', 'about20',
-    'about21', 'about22'
   ];
 
   // if (error) {
