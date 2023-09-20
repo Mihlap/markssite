@@ -43,6 +43,7 @@ module.exports = (sequelize, DataTypes) => {
     linkToPublicationTwo: DataTypes.STRING,
     awards: DataTypes.STRING,
     imageOpen: DataTypes.STRING,
+    headingTextBlock: DataTypes.STRING,
     textBlock: DataTypes.TEXT,
     imageClose: DataTypes.STRING,
     authorId: DataTypes.INTEGER,

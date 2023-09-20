@@ -1,10 +1,12 @@
-import React from "react";
+import React, { useRef, useState } from "react";
+import Slider from "react-slick";
 import styles from "./ConstructorBlockRenderer.module.scss";
+import "./stylePaginationSlider.css";
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 
 export default function ConstructorBlockRenderer({ block }) {
-
+  const [activeSlide, setActiveSlide] = useState(0);
 
   const renderImageWithDescription = (block) => {
     let imageUrl = "";
@@ -28,8 +30,6 @@ export default function ConstructorBlockRenderer({ block }) {
       </div>
     );
   };
-
-  
 
   const renderHeaderWithText = (block) => {
     let header = "";
@@ -83,17 +83,150 @@ export default function ConstructorBlockRenderer({ block }) {
         ))}
       </div>
     );
-  };
+  };  
 
   const renderImageSlider = (block) => {
     const images = block[0].value;
+
+    const sliderImageContainerStyle = {
+      borderRadius: "10px",
+      overflow: "hidden",
+    };
+
+    const sliderImageStyle = {
+      width: "100%",
+      height: "810px",
+      objectFit: "cover",
+      borderRadius: "10px",
+    };
+
+    const activeDotStyle = {
+      width: "40px",
+      height: "4px",
+      backgroundColor: "rgba(255, 127, 106, 1)",
+      marginRight: "15px",
+    };
+
+    const inactiveDotStyle = {
+      width: "15px",
+      height: "4px",
+      backgroundColor: "rgba(235, 236, 238, 1)",
+    };
+
+    // Настройки слайдера
+    const settings = {
+      dots: true, // Включение пагинации
+      customPaging: (i) => (
+        <div
+          style={i === activeSlide ? activeDotStyle : inactiveDotStyle} // сравнение с активным слайдом
+        />
+      ),
+      infinite: true,
+      // speed: 500,
+      slidesToShow: 1,
+      slidesToScroll: 1,
+      arrows: true, // Включение стрелочек
+      beforeChange: (oldIndex, newIndex) => {
+        setActiveSlide(newIndex);
+      },
+      focusOnSelect: true,
+      nextArrow: (
+        <svg
+          width="42"
+          height="42"
+          viewBox="0 0 32 32"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g id="icon / 24 /  arrow /  normal">
+            <rect
+              x="32"
+              width="32"
+              height="32"
+              rx="16"
+              transform="rotate(90 32 0)"
+              fill="url(#paint0_linear_565_7000)"
+              fill-opacity="0.55"
+            />
+            <path
+              id="Vector 30"
+              d="M13.333 21.3335L19.9997 15.3335L13.333 9.3335"
+              stroke="#F6F6F6"
+              stroke-width="1.33333"
+            />
+          </g>
+          <defs>
+            <linearGradient
+              id="paint0_linear_565_7000"
+              x1="32"
+              y1="2.18182"
+              x2="87.3078"
+              y2="58.3335"
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop stop-color="#BBDEFF" />
+              <stop offset="1" stop-color="#FFBFB5" />
+            </linearGradient>
+          </defs>
+        </svg>
+      ),
+      prevArrow: (
+        <svg
+          width="32"
+          height="32"
+          viewBox="0 0 32 32"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g id="icon / 24 /  arrow /  normal">
+            <rect
+              y="32"
+              width="32"
+              height="32"
+              rx="16"
+              transform="rotate(-90 0 32)"
+              fill="url(#paint0_linear_565_7001)"
+              fill-opacity="0.55"
+            />
+            <path
+              id="Vector 30"
+              d="M18.667 10.6665L12.0003 16.6665L18.667 22.6665"
+              stroke="#F6F6F6"
+              stroke-width="1.33333"
+            />
+          </g>
+          <defs>
+            <linearGradient
+              id="paint0_linear_565_7001"
+              x1="-1.2528e-06"
+              y1="34.1818"
+              x2="55.3078"
+              y2="90.3335"
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop stop-color="#BBDEFF" />
+              <stop offset="1" stop-color="#FFBFB5" />
+            </linearGradient>
+          </defs>
+        </svg>
+      ),
+    };
+
     return (
       <div
-        className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockFive}`}
+        className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockFive} ${styles.slider_container}`}
       >
-        {images.map((img) => (
-          <img key={img} src={img} alt="Slider image" />
-        ))}
+        <Slider {...settings}>
+          {images.map((img, index) => (
+            <div key={index} style={sliderImageContainerStyle}>
+              <img
+                style={sliderImageStyle}
+                src={`${Host}/images/imageAdd/${img}`}
+                alt="Slider_image"
+              />
+            </div>
+          ))}
+        </Slider>
       </div>
     );
   };

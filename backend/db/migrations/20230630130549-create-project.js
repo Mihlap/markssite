@@ -81,6 +81,9 @@ module.exports = {
       imageOpen: {
         type: Sequelize.STRING,
       },
+      headingTextBlock: {
+        type: Sequelize.STRING,
+      },
       textBlock: {
         type: Sequelize.TEXT,
       },

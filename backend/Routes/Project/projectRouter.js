@@ -60,6 +60,7 @@ router.post(
         linkToPublicationTwo: req.body.linkToPublicationTwo,
         awards: req.body.awards,
         imageOpen: imageOpens,
+        headingTextBlock: req.body.headingTextBlock,
         textBlock: req.body.textBlock,
         imageClose: imageCloses,
       });
