@@ -804,7 +804,7 @@ export default function FormAddProject({ setIsModalOpen }) {
           <div className={styles.form_container__block_gray_one}>
             <div className={`${styles.form__group} ${styles.field}`}>
               <input
-                type="number"
+                type="text" // Измените тип на 'text', так как форматирование может включать пробелы
                 className={styles.form__field}
                 placeholder="totalArea"
                 name="totalArea"
@@ -830,7 +830,7 @@ export default function FormAddProject({ setIsModalOpen }) {
             </div>
             <div className={`${styles.form__group} ${styles.field}`}>
               <input
-                type="number"
+                type="text"
                 className={styles.form__field}
                 placeholder="siteArea"
                 name="siteArea"
@@ -854,6 +854,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                 Площадь участка, га
               </label>
             </div>
+
             <div className={`${styles.form__group} ${styles.field}`}>
               <input
                 type="number"
