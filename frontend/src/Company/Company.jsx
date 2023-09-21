@@ -34,24 +34,21 @@ import CompanySubscriptionForm from "../UI/CompanySubscriptionForm/CompanySubscr
 import CounterCompanyMobile from "../UI/CounterCompanyMobile";
 import CounterCompanyMobile2 from "../UI/CounterCompanyMobile2";
 import CompanyGroupSlider from "../UI/CompanyGroupSlider/CompanyGroupSlider";
-
-
+import VideoPlayer from "../UI/Videoplayer/VideoPlayer";
 
 export default function Company() {
-
   const videoSource = {
     large: "./assets/company_full.mp4",
     medium: "./assets/company_ipad.mp4",
     small: "./assets/company_mob.mp4",
   };
 
-  // const videoSource2 = {
-  //   small: "./assets/company_video.mp4",
-  //   medium: "./assets/company_video.mp4",
-  //   large: "./assets/company_video.mp4",
-  // };
-  
-
+  const videoSource2 = {
+    small: "./assets/header_company_mobile.mp4",
+    medium: "./assets/header_company.mp4",
+    large: "./assets/header_company.mp4",
+  };
+ 
 
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [countPercent, setCountPercent] = useState(0);
@@ -61,8 +58,7 @@ export default function Company() {
   const [currentIndexCompany, setCurrentIndexCompany] = useState(0);
   const swiperCompanyRef = useRef(null);
   const [videoSrc, setVideoSrc] = useState(videoSource.large);
-  // const [videoSrc2, setVideoSrc2] = useState(videoSource2.large);
-
+  const [videoSrc2, setVideoSrc2] = useState(videoSource2.large);
 
   const [showCards, setShowCards] = useState(false);
   const [activeButton, setActiveButton] = useState("Руководство");
@@ -92,7 +88,7 @@ export default function Company() {
   const symbol = "•";
   const Host = process.env.REACT_APP_SERVER_HOST;
 
-   useEffect(() => {
+  useEffect(() => {
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
       const screenWidth = window.innerWidth;
@@ -102,17 +98,16 @@ export default function Company() {
         setVideoSrc(videoSource.medium);
       } else {
         setVideoSrc(videoSource.small);
-        
       }
     };
 
     handleResize();
-    window.addEventListener("resize", handleResize); 
+    window.addEventListener("resize", handleResize);
 
     return () => {
       if (window) {
-      window.removeEventListener("resize", handleResize);
-    }
+        window.removeEventListener("resize", handleResize);
+      }
     };
   }, []);
 
@@ -176,7 +171,7 @@ export default function Company() {
     gsap?.registerPlugin(ScrollTrigger);
 
     const { elementsRight } = { elementsRight: [blockSlider.current] };
- 
+
     gsap?.from(elementsRight, {
       x: "-100%",
       opacity: 0,
@@ -188,12 +183,8 @@ export default function Company() {
         start: "top 80%",
       },
     });
-
   }, []);
 
-  
-
- 
   useEffect(() => {
     function handleScroll() {
       if (nameCompanyRef.current && thisBlockRef.current) {
@@ -232,7 +223,7 @@ export default function Company() {
     };
   }, []);
 
-   const handlePCardCompanyClick = (index) => {
+  const handlePCardCompanyClick = (index) => {
     setCurrentIndexCompany(index);
     if (swiperCompanyRef.current && swiperCompanyRef.current.slideTo) {
       swiperCompanyRef.current.slideTo(index);
@@ -261,9 +252,14 @@ export default function Company() {
   return (
     <div className={styles.company_main}>
       <Company_Slider />
-      {/* <video playsInline autoPlay muted loop id="bg-video">
-            <source src={videoSrc2} type="video/mp4" />
-          </video> */}
+      {/* <div className={styles.video_block}>
+        <VideoPlayer videoSource={videoSource2} />
+      </div>
+      <div className={styles.block_video_company}>
+        <video playsInline autoPlay muted loop id="bg-video">
+          <source src={videoSrc2} type="video/mp4" />
+        </video>
+      </div> */}
       <div ref={blockSlider} className={styles.underSlider_text_wrapper}>
         <span className={styles.span_underSlider_text1}>
           Самые крутые проекты! самой крутой командой
@@ -515,18 +511,18 @@ export default function Company() {
           {staff &&
             staff?.map((el) => (
               <li
-              key={el.id}
-              data-user-id={el.id}
-              // {...el}
-              className={styles.container__item_stuff}
-              onClick={() => handleButtonClick(category, el.id)}
+                key={el.id}
+                data-user-id={el.id}
+                // {...el}
+                className={styles.container__item_stuff}
+                onClick={() => handleButtonClick(category, el.id)}
               >
                 <div className={styles.wrapper_container_item_stuff}>
                   <img
                     className={styles.container__img_stuff}
                     src={`${Host}/images/${el.img}`}
                     alt={el.img}
-                    />
+                  />
                 </div>
                 <div className={styles.container__item_name_stuff}>
                   {el.name}
@@ -536,7 +532,7 @@ export default function Company() {
                 </div>
               </li>
             ))}
-            {isModalOpen && selectedCard && (
+          {isModalOpen && selectedCard && (
             <Modal
               className={styles.modal_wrapper}
               const
@@ -605,265 +601,265 @@ export default function Company() {
                     {selectedCard.name}
                   </div>
                   {selectedCard.description && (
-                  <div className={styles.modal_description_stuff}>
-                    {selectedCard.description}
-                  </div>
-                   )}
+                    <div className={styles.modal_description_stuff}>
+                      {selectedCard.description}
+                    </div>
+                  )}
                   {selectedCard.about && (
-                  <div className={styles.modal_about_stuff}>
-                    {selectedCard.about}
-                  </div>
+                    <div className={styles.modal_about_stuff}>
+                      {selectedCard.about}
+                    </div>
                   )}
                   {selectedCard.about1 && (
-                  <div className={styles.modal_about_stuff1}>
-                    <div className={styles.modal_about_stuff_symbol}>
-                      {symbol}
+                    <div className={styles.modal_about_stuff1}>
+                      <div className={styles.modal_about_stuff_symbol}>
+                        {symbol}
+                      </div>
+                      {selectedCard.about1}
                     </div>
-                    {selectedCard.about1}
-                  </div>
                   )}
                   {selectedCard.about2 && (
-                  <div className={styles.modal_about_stuff1}>
-                    <div className={styles.modal_about_stuff_symbol}>
-                      {symbol}
+                    <div className={styles.modal_about_stuff1}>
+                      <div className={styles.modal_about_stuff_symbol}>
+                        {symbol}
+                      </div>
+                      {selectedCard.about2}
                     </div>
-                    {selectedCard.about2}
-                  </div>
-                     )}
+                  )}
                   {selectedCard.about3 && (
-                  <div className={styles.modal_about_stuff1}>
-                    <div className={styles.modal_about_stuff_symbol}>
-                      {symbol}
+                    <div className={styles.modal_about_stuff1}>
+                      <div className={styles.modal_about_stuff_symbol}>
+                        {symbol}
+                      </div>
+                      {selectedCard.about3}
                     </div>
-                    {selectedCard.about3}
-                  </div>
                   )}
                   {selectedCard.about4 && (
-                  <div className={styles.modal_about_stuff1}>
-                    <div className={styles.modal_about_stuff_symbol}>
-                      {symbol}
+                    <div className={styles.modal_about_stuff1}>
+                      <div className={styles.modal_about_stuff_symbol}>
+                        {symbol}
+                      </div>
+                      {selectedCard.about4}
                     </div>
-                    {selectedCard.about4}
-                  </div>
-                    )}
+                  )}
                   {selectedCard.about5 && (
-                  <div className={styles.modal_about_stuff1}>
-                    <div className={styles.modal_about_stuff_symbol}>
-                      {symbol}
+                    <div className={styles.modal_about_stuff1}>
+                      <div className={styles.modal_about_stuff_symbol}>
+                        {symbol}
+                      </div>
+                      {selectedCard.about5}
                     </div>
-                    {selectedCard.about5}
-                  </div>
                   )}
                   {selectedCard.about6 && (
-                  <div className={styles.modal_about_stuff1}>
-                    <div className={styles.modal_about_stuff_symbol}>
-                      {symbol}
+                    <div className={styles.modal_about_stuff1}>
+                      <div className={styles.modal_about_stuff_symbol}>
+                        {symbol}
+                      </div>
+                      {selectedCard.about6}
                     </div>
-                    {selectedCard.about6}
-                  </div>
-                   )}
+                  )}
                   {selectedCard.about7 && (
-                  <div className={styles.modal_about_stuff1}>
-                    <div className={styles.modal_about_stuff_symbol}>
-                      {symbol}
+                    <div className={styles.modal_about_stuff1}>
+                      <div className={styles.modal_about_stuff_symbol}>
+                        {symbol}
+                      </div>
+                      {selectedCard.about7}
                     </div>
-                    {selectedCard.about7}
-                  </div>
                   )}
                   {selectedCard.about8 && (
-                  <div className={styles.modal_about_stuff1}>
-                    <div className={styles.modal_about_stuff_symbol}>
-                      {symbol}
+                    <div className={styles.modal_about_stuff1}>
+                      <div className={styles.modal_about_stuff_symbol}>
+                        {symbol}
+                      </div>
+                      {selectedCard.about8}
                     </div>
-                    {selectedCard.about8}
-                  </div>
-                      )}
+                  )}
                   {selectedCard.about9 && (
-                  <div className={styles.modal_about_stuff1}>
-                    <div className={styles.modal_about_stuff_symbol}>
-                      {symbol}
+                    <div className={styles.modal_about_stuff1}>
+                      <div className={styles.modal_about_stuff_symbol}>
+                        {symbol}
+                      </div>
+                      {selectedCard.about9}
                     </div>
-                    {selectedCard.about9}
-                  </div>
                   )}
                   {selectedCard.about10 && (
-                  <div className={styles.modal_about_stuff1}>
-                    <div className={styles.modal_about_stuff_symbol}>
-                      {symbol}
+                    <div className={styles.modal_about_stuff1}>
+                      <div className={styles.modal_about_stuff_symbol}>
+                        {symbol}
+                      </div>
+                      {selectedCard.about10}
                     </div>
-                    {selectedCard.about10}
-                  </div>
-                   )}
+                  )}
                   {selectedCard.about11 && (
-                  <div className={styles.modal_about_stuff1}>
-                    <div className={styles.modal_about_stuff_symbol}>
-                      {symbol}
+                    <div className={styles.modal_about_stuff1}>
+                      <div className={styles.modal_about_stuff_symbol}>
+                        {symbol}
+                      </div>
+                      {selectedCard.about11}
                     </div>
-                    {selectedCard.about11}
-                  </div>
                   )}
                   {selectedCard.about12 && (
-                  <div className={styles.modal_about_stuff1}>
-                    <div className={styles.modal_about_stuff_symbol}>
-                      {symbol}
+                    <div className={styles.modal_about_stuff1}>
+                      <div className={styles.modal_about_stuff_symbol}>
+                        {symbol}
+                      </div>
+                      {selectedCard.about12}
                     </div>
-                    {selectedCard.about12}
-                  </div>
-                    )}
+                  )}
                   {selectedCard.about13 && (
-                  <div className={styles.modal_about_stuff1}>
-                    <div className={styles.modal_about_stuff_symbol}>
-                      {symbol}
+                    <div className={styles.modal_about_stuff1}>
+                      <div className={styles.modal_about_stuff_symbol}>
+                        {symbol}
+                      </div>
+                      {selectedCard.about13}
                     </div>
-                    {selectedCard.about13}
-                  </div>
                   )}
                   {selectedCard.about14 && (
-                  <div className={styles.modal_about_stuff1}>
-                    <div className={styles.modal_about_stuff_symbol}>
-                      {symbol}
+                    <div className={styles.modal_about_stuff1}>
+                      <div className={styles.modal_about_stuff_symbol}>
+                        {symbol}
+                      </div>
+                      {selectedCard.about14}
                     </div>
-                    {selectedCard.about14}
-                  </div>
-                    )}
+                  )}
                   {selectedCard.about15 && (
-                  <div className={styles.modal_about_stuff1}>
-                    <div className={styles.modal_about_stuff_symbol}>
-                      {symbol}
+                    <div className={styles.modal_about_stuff1}>
+                      <div className={styles.modal_about_stuff_symbol}>
+                        {symbol}
+                      </div>
+                      {selectedCard.about15}
                     </div>
-                    {selectedCard.about15}
-                  </div>
                   )}
                   {selectedCard.about16 && (
-                  <div className={styles.modal_about_stuff1}>
-                    <div className={styles.modal_about_stuff_symbol}>
-                      {symbol}
+                    <div className={styles.modal_about_stuff1}>
+                      <div className={styles.modal_about_stuff_symbol}>
+                        {symbol}
+                      </div>
+                      {selectedCard.about16}
                     </div>
-                    {selectedCard.about16}
-                  </div>
-                    )}
+                  )}
                   {selectedCard.about17 && (
-                  <div className={styles.modal_about_stuff1}>
-                    <div className={styles.modal_about_stuff_symbol}>
-                      {symbol}
+                    <div className={styles.modal_about_stuff1}>
+                      <div className={styles.modal_about_stuff_symbol}>
+                        {symbol}
+                      </div>
+                      {selectedCard.about17}
                     </div>
-                    {selectedCard.about17}
-                  </div>
                   )}
-                    {selectedCard.about18 && (
-                  <div className={styles.modal_about_stuff1}>
-                    <div className={styles.modal_about_stuff_symbol}>
-                      {symbol}
+                  {selectedCard.about18 && (
+                    <div className={styles.modal_about_stuff1}>
+                      <div className={styles.modal_about_stuff_symbol}>
+                        {symbol}
+                      </div>
+                      {selectedCard.about18}
                     </div>
-                    {selectedCard.about18}
-                  </div>
                   )}
-                    {selectedCard.about19 && (
-                  <div className={styles.modal_about_stuff1}>
-                    <div className={styles.modal_about_stuff_symbol}>
-                      {symbol}
+                  {selectedCard.about19 && (
+                    <div className={styles.modal_about_stuff1}>
+                      <div className={styles.modal_about_stuff_symbol}>
+                        {symbol}
+                      </div>
+                      {selectedCard.about19}
                     </div>
-                    {selectedCard.about19}
-                  </div>
                   )}
-                    {selectedCard.about20 && (
-                  <div className={styles.modal_about_stuff1}>
-                    <div className={styles.modal_about_stuff_symbol}>
-                      {symbol}
+                  {selectedCard.about20 && (
+                    <div className={styles.modal_about_stuff1}>
+                      <div className={styles.modal_about_stuff_symbol}>
+                        {symbol}
+                      </div>
+                      {selectedCard.about20}
                     </div>
-                    {selectedCard.about20}
-                  </div>
                   )}
-                    {selectedCard.about21 && (
-                  <div className={styles.modal_about_stuff1}>
-                    <div className={styles.modal_about_stuff_symbol}>
-                      {symbol}
+                  {selectedCard.about21 && (
+                    <div className={styles.modal_about_stuff1}>
+                      <div className={styles.modal_about_stuff_symbol}>
+                        {symbol}
+                      </div>
+                      {selectedCard.about21}
                     </div>
-                    {selectedCard.about21}
-                  </div>
                   )}
-                    {selectedCard.about22 && (
-                  <div className={styles.modal_about_stuff1}>
-                    <div className={styles.modal_about_stuff_symbol}>
-                      {symbol}
+                  {selectedCard.about22 && (
+                    <div className={styles.modal_about_stuff1}>
+                      <div className={styles.modal_about_stuff_symbol}>
+                        {symbol}
+                      </div>
+                      {selectedCard.about22}
                     </div>
-                    {selectedCard.about22}
-                  </div>
                   )}
                   {selectedCard.about23 && (
-                  <div className={styles.modal_about_stuff1}>
-                    {/* <div className={styles.modal_about_stuff_symbol}>
+                    <div className={styles.modal_about_stuff1}>
+                      {/* <div className={styles.modal_about_stuff_symbol}>
                       {symbol}
                     </div> */}
-                    {selectedCard.about23}
-                  </div>
-                      )}
-                  {selectedCard.description1 && (
-                  <div className={styles.modal_description_stuff1}>
-                    {selectedCard.description1}
-                  </div>
-                     )}
-                  {selectedCard.about24 && (
-                  <div className={styles.modal_about_stuff1}>
-                    <div className={styles.modal_about_stuff_symbol}>
-                      {symbol}
+                      {selectedCard.about23}
                     </div>
-                    {selectedCard.about24}
-                  </div>
+                  )}
+                  {selectedCard.description1 && (
+                    <div className={styles.modal_description_stuff1}>
+                      {selectedCard.description1}
+                    </div>
+                  )}
+                  {selectedCard.about24 && (
+                    <div className={styles.modal_about_stuff1}>
+                      <div className={styles.modal_about_stuff_symbol}>
+                        {symbol}
+                      </div>
+                      {selectedCard.about24}
+                    </div>
                   )}
                   {selectedCard.description2 && (
-                  <div className={styles.modal_description_stuff1}>
-                    {selectedCard.description2}
-                  </div>
-                     )}
-                  {selectedCard.about25 && (
-                  <div className={styles.modal_about_stuff1}>
-                    <div className={styles.modal_about_stuff_symbol}>
-                      {symbol}
+                    <div className={styles.modal_description_stuff1}>
+                      {selectedCard.description2}
                     </div>
-                    {selectedCard.about25}
-                  </div>
+                  )}
+                  {selectedCard.about25 && (
+                    <div className={styles.modal_about_stuff1}>
+                      <div className={styles.modal_about_stuff_symbol}>
+                        {symbol}
+                      </div>
+                      {selectedCard.about25}
+                    </div>
                   )}
                   {selectedCard.about26 && (
-                  <div className={styles.modal_about_stuff1}>
-                    <div className={styles.modal_about_stuff_symbol}>
-                      {symbol}
+                    <div className={styles.modal_about_stuff1}>
+                      <div className={styles.modal_about_stuff_symbol}>
+                        {symbol}
+                      </div>
+                      {selectedCard.about26}
                     </div>
-                    {selectedCard.about26}
-                  </div>
-                    )}
+                  )}
                   {selectedCard.about27 && (
-                  <div className={styles.modal_about_stuff1}>
-                    <div className={styles.modal_about_stuff_symbol}>
-                      {symbol}
+                    <div className={styles.modal_about_stuff1}>
+                      <div className={styles.modal_about_stuff_symbol}>
+                        {symbol}
+                      </div>
+                      {selectedCard.about27}
                     </div>
-                    {selectedCard.about27}
-                  </div>
                   )}
                   {selectedCard.about28 && (
-                  <div className={styles.modal_about_stuff1}>
-                    <div className={styles.modal_about_stuff_symbol}>
-                      {symbol}
+                    <div className={styles.modal_about_stuff1}>
+                      <div className={styles.modal_about_stuff_symbol}>
+                        {symbol}
+                      </div>
+                      {selectedCard.about28}
                     </div>
-                    {selectedCard.about28}
-                  </div>
-                       )}
+                  )}
                   {selectedCard.about29 && (
-                  <div className={styles.modal_about_stuff1}>
-                    <div className={styles.modal_about_stuff_symbol}>
-                      {symbol}
+                    <div className={styles.modal_about_stuff1}>
+                      <div className={styles.modal_about_stuff_symbol}>
+                        {symbol}
+                      </div>
+                      {selectedCard.about29}
                     </div>
-                    {selectedCard.about29}
-                  </div>
-                    )}
+                  )}
                   {selectedCard.about30 && (
-                  <div className={styles.modal_about_stuff1}>
-                    <div className={styles.modal_about_stuff_symbol}>
-                      {symbol}
+                    <div className={styles.modal_about_stuff1}>
+                      <div className={styles.modal_about_stuff_symbol}>
+                        {symbol}
+                      </div>
+                      {selectedCard.about30}
                     </div>
-                    {selectedCard.about30}
-                  </div>
-                    )}
+                  )}
                 </div>
               )}
             </Modal>
@@ -937,7 +933,7 @@ export default function Company() {
             slidesPerView={2.2}
             spaceBetween={0}
             touch="true"
-           >
+          >
             {staff?.map((el) => (
               <SwiperSlide
                 key={el.id}
@@ -965,7 +961,7 @@ export default function Company() {
       )}
       <div className={styles.fon}>
         <div className={styles.video_wrapper}>
-           <video playsInline autoPlay muted loop id="bg-video">
+          <video playsInline autoPlay muted loop id="bg-video">
             <source src={videoSrc} type="video/mp4" />
           </video>
         </div>
