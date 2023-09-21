@@ -28,6 +28,7 @@
     flex-direction: column;
     gap: 1.5rem;
     padding: 0rem 22.19rem 0rem 16.44rem;
+    margin-bottom: 40px;
 
     &__heading {
         color: var(--black-1D2E43);
@@ -56,11 +57,10 @@
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
     /* Здесь используем fr для автоматического распределения пространства */
-    // gap: 10px;
+    gap: 30px;
     height: 100vh;
-    /* 100% высоты экрана */
     align-items: stretch;
-    margin-bottom: 40px;
+    margin-bottom: 70px;
 }
 
 .horizontalImage,
@@ -91,7 +91,7 @@
 .verticalImage {
     grid-column: 2 / 3;
     grid-row: 1 / 3;
-    height: 100vh;
+    // height: 100vh;
     border-radius: 1rem;
     /* 100% высоты экрана */
 }
@@ -101,7 +101,8 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 30px;
-    height: 100vh;
+    // height: 100vh;
+    padding-bottom: 40px;
 
     &__gridImage {
         width: 100%;
@@ -109,4 +110,10 @@
         object-fit: cover;
         border-radius: 16px;
     }
+}
+
+// <<< ====== стили для слайдера с картинками ====== >>>
+
+.slider_container {
+    padding-bottom: 40px;
 }

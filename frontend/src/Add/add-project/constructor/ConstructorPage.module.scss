@@ -52,12 +52,30 @@
     padding: 22px 22px 21px 33px;
 }
 
-.constructorBlockTwo {}
+.notification {
+    position: fixed;
+    top: 6%;
+    right: -330px;
+    /* Ширина вашего уведомления */
+    width: 320px;
+    padding: 10px;
+    background-color: #333;
+    color: #fff;
+    transition: right 1s;
+    box-shadow: -5px 0px 15px rgba(0, 0, 0, 0.3);
+    border-radius: 5px;
+}
 
-.constructorBlockThree {}
+.showNotification {
+    right: 20px;
+}
 
-.constructorBlockFour {}
+// .constructorBlockTwo {}
 
-.constructorBlockFive {}
+// .constructorBlockThree {}
 
-.constructorBlockSix {}
+// .constructorBlockFour {}
+
+// .constructorBlockFive {}
+
+// .constructorBlockSix {}

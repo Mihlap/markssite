@@ -90,84 +90,9 @@ export const removePreviewPhotoClose = (
   }));
 };
 
- // функция сборщика, тут у нас запускаются if-else на превью фото для картинок
-// функция сборщика, тут у нас запускаются if-else на превью фото для картинок
-// export function changeHandler(
-//   event,
-//   inputData,
-//   setInputData,
-//   setPreviewPhotos,
-//   setIsDropPhotoVisible,
-//   setPreviewPhotoAva,
-//   setIsPhotoAvaVisible,
-//   setPreviewPhotoOpen,
-//   setIsPhotoOpenVisible,
-//   setPreviewPhotoClose,
-//   setIsPhotoCloseVisible
-// ) {
-//   if (event.target.files) {
-//     if (event.target.name === "dropPhoto") {
-//       const filesArray = Array.from(event.target.files);
-//       setInputData((prev) => ({
-//         ...prev,
-//         dropPhoto: filesArray,
-//       }));
-//       setIsDropPhotoVisible(false);
-
-//       const previewArray = filesArray.map((file) => URL.createObjectURL(file));
-//       setPreviewPhotos(previewArray);
-
-//       event.target.style.display = "none";
-//     } else if (event.target.name === "photoAva") {
-//       const filesArrayAva =
-//         event.target.files.length > 0 ? event.target.files : null;
-//       setInputData((prev) => ({
-//         ...prev,
-//         photoAva: filesArrayAva,
-//       }));
-//       setIsPhotoAvaVisible(false);
-//       const previewArray = Array.from(filesArrayAva).map((file) =>
-//         URL.createObjectURL(file)
-//       );
-//       setPreviewPhotoAva(previewArray);
-
-//       event.target.style.display = "none";
-//     } else if (event.target.name === "imageOpen") {
-//       const filesArrayOpen =
-//         event.target.files.length > 0 ? event.target.files : null;
-//       setInputData((prev) => ({
-//         ...prev,
-//         imageOpen: filesArrayOpen,
-//       }));
-//       setIsPhotoOpenVisible(false);
-//       const previewArray = Array.from(filesArrayOpen).map((file) =>
-//         URL.createObjectURL(file)
-//       );
-//       setPreviewPhotoOpen(previewArray);
-
-//       event.target.style.display = "none";
-//     }  else if (event.target.name === "imageClose") {
-//       const filesArrayOpen =
-//         event.target.files.length > 0 ? event.target.files : null;
-//       setInputData((prev) => ({
-//         ...prev,
-//         imageClose: filesArrayOpen,
-//       }));
-//       setIsPhotoCloseVisible(false);
-//       const previewArray = Array.from(filesArrayOpen).map((file) =>
-//         URL.createObjectURL(file)
-//       );
-//       setPreviewPhotoClose(previewArray);
-
-//       event.target.style.display = "none";
-//     }
-//   } else {
-//     setInputData((prev) => ({
-//       ...prev,
-//       [event.target.name]: event.target.value,
-//     }));
-//   }
-// }
+function formatNumberWithThousandSeparator(number) {
+  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+}
 
 
 function generateUniqueName(originalName) {
@@ -239,6 +164,16 @@ export function changeHandler(
     }
 
     event.target.style.display = "none";
+  } else if (
+    event.target.name === "totalArea" ||
+    event.target.name === "siteArea"
+  ) {
+    const onlyDigits = event.target.value.replace(/\D+/g, "");
+    const formattedValue = formatNumberWithThousandSeparator(onlyDigits);
+    setInputData((prev) => ({
+      ...prev,
+      [event.target.name]: formattedValue,
+    }));
   } else {
     setInputData((prev) => ({
       ...prev,
