@@ -35,9 +35,9 @@ const Host = process.env.REACT_APP_SERVER_HOST;
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
 const videoSource = {
-  small: "./assets/PrimePark.mp4",
-  medium: "./assets/PrimePark.mp4",
-  large: "./assets/PrimePark.mp4",
+  small: "./assets/primePark.mp4",
+  medium: "./assets/primePark.mp4",
+  large: "./assets/primePark.mp4",
 };
 
 export default function Header({ user, setNavBarOpen, setShowFooter }) {
@@ -66,7 +66,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
 
   const dispatch = useDispatch();
 
-  const handleMouseEnter = () => {
+   const handleMouseEnter = () => {
     dispatch(textEnter());
   };
 
@@ -93,6 +93,8 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
     Дизайн: "#FAA8BD",
     Инженерия: "#90B734",
   };
+
+
 
   const handleScroll = () => {
     const el = sliderCardRef.current;
@@ -241,7 +243,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
     <main className={styles.header}>
       <div className={styles.video_block}>
         <VideoPlayer videoSource={videoSource} />
-      </div>
+       </div>
       <div className={styles.header_desctop_block}>
         <h1
           onMouseEnter={handleMouseEnter}
