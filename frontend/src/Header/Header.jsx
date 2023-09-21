@@ -35,8 +35,8 @@ const Host = process.env.REACT_APP_SERVER_HOST;
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
 const videoSource = {
-  small: "./assets/primePark.mp4",
-  medium: "./assets/primePark.mp4",
+  small: "./assets/primePark_mobile.mp4",
+  medium: "./assets/primePark_ipad.mp4",
   large: "./assets/primePark.mp4",
 };
 
@@ -65,6 +65,8 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
   const MapArticleRight = ArticleRight?.map((el) => el.publication.publication);
 
   const dispatch = useDispatch();
+
+  const [videoSrc, setVideoSrc] = useState(videoSource.large);
 
    const handleMouseEnter = () => {
     dispatch(textEnter());
@@ -243,7 +245,12 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
     <main className={styles.header}>
       <div className={styles.video_block}>
         <VideoPlayer videoSource={videoSource} />
-       </div>
+      </div>
+      <div className={styles.bg_video}>
+        <video playsInline autoPlay muted loop id="bg-video">
+            <source src={videoSrc} type="video/mp4" />
+          </video>
+          </div>
       <div className={styles.header_desctop_block}>
         <h1
           onMouseEnter={handleMouseEnter}
