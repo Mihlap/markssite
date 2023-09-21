@@ -326,10 +326,11 @@
 
 .card_container_ul {
   display: flex;
-  position: relative;
+  /* position: relative; */
   flex-wrap: wrap;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   width: 100%;
+  gap: 1.88rem;
   padding-left: 1.87vw;
   padding-right: 1.87vw;
 }
@@ -507,6 +508,19 @@ bottom: 3.38rem;
   padding-right: 46px;
 }
 
+.modal_description_stuff1 {
+  display: flex;
+  font-family: var(--font-raleway);
+  font-style: normal;
+  font-weight: var(--fw-400);
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--black-1D2E43);
+  padding-top: 26px;
+  padding-right: 46px;
+  list-style: none;
+}
+
 .modal_about_stuff {
   display: flex;
   font-family: var(--font-raleway);
@@ -532,6 +546,9 @@ bottom: 3.38rem;
   padding-right: 2.5rem;
   list-style: none;
   padding-left: 1.5rem;
+}
+.modal_about_stuff1:last-child {
+  padding-bottom: 3rem;
 }
 
 .modal_about_stuff_symbol {
@@ -676,11 +693,14 @@ bottom: 3.38rem;
     display: flex;
     padding-left: 5.4vw;
   }
+  .slider_card_container {
+    width: 100%;
+  }
 
   .slide_container_item_stuff {
     width: 20.18rem;
     height: 20.93rem;
-    margin-right: 1.875rem;
+    padding-right: 1.875rem;
   }
 
   .form_wrapper {

@@ -56,7 +56,7 @@ export const {
 
 export const fetchCategoryStaff =
   (category) => async (dispatch, getState) => {
-    // dispatch(fetchStaffStart());
+    dispatch(fetchStaffStart());
 
     try {
       const response = await axios.get(
@@ -65,8 +65,8 @@ export const fetchCategoryStaff =
      
       const staff = response.data;
       const filteredData = staff.filter(
-        (staff) => staff.category === category
-        );
+        (staff) => staff.category.includes(category)
+      );
        
     
       dispatch(setCategory(category));
@@ -77,5 +77,6 @@ export const fetchCategoryStaff =
   };
 
 export default staffSlice.reducer;
+// 7777777777777777777777777777777777777777
 
 
