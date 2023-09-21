@@ -232,16 +232,16 @@ export default function ConstructorBlockRenderer({ block }) {
     );
   };
 
-  const renderVideoBlock = (block) => {
-    return (
-      <div
-        className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockSix}`}
-      >
-        {/* Плейсхолдер для видео */}
-        <p>Видео блок</p>
-      </div>
-    );
-  };
+  // const renderVideoBlock = (block) => {
+  //   return (
+  //     <div
+  //       className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockSix}`}
+  //     >
+  //       {/* Плейсхолдер для видео */}
+  //       <p>Видео блок</p>
+  //     </div>
+  //   );
+  // };
 
   switch (block[0].label) {
     case "Картинка с описанием":
@@ -254,8 +254,8 @@ export default function ConstructorBlockRenderer({ block }) {
       return renderTwoImage(block);
     case "Слайдер *допускается загрузка 8ми изображений":
       return renderImageSlider(block);
-    case "video":
-      return renderVideoBlock(block);
+    // case "video":
+    //   return renderVideoBlock(block);
     default:
       return null;
   }

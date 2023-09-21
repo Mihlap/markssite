@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./ConstructorPage.module.scss";
 
 import svg1 from "./svg/Group4650.svg";
@@ -9,6 +9,23 @@ import svg5 from "./svg/Group4649.svg";
 import svg6 from "./svg/Group4641.svg";
 
 export default function ConstructorPage({ handleClick }) {
+  // const handleVideoClick = () => {
+  //   window.alert("Сейчас загрузка видео недоступна.");
+  // };
+
+   const [showNotification, setShowNotification] = useState(false);
+
+   useEffect(() => {
+     if (showNotification) {
+       setTimeout(() => {
+         setShowNotification(false);
+       }, 3000); // Уведомление исчезнет через 2 секунды
+     }
+   }, [showNotification]);
+
+   const handleVideoClick = () => {
+     setShowNotification(true);
+   };
   return (
     <div className={styles.div_conteiner}>
       {/* блок с картинкой и описание картинки  */}
@@ -72,16 +89,16 @@ export default function ConstructorPage({ handleClick }) {
       {/* видео */}
       <div
         className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockSix}`}
-        onClick={() =>
-          handleClick([
-            {
-              type: "file",
-              label: "video",
-            },
-          ])
-        }
+        onClick={() => handleVideoClick()}
       >
         <img src={svg6} alt="svg_three_icon" />
+      </div>
+      <div
+        className={`${styles.notification} ${
+          showNotification ? styles.showNotification : ""
+        }`}
+      >
+        Сейчас загрузка видео недоступна 😢
       </div>
     </div>
   );
