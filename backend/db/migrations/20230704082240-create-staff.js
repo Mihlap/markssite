@@ -81,13 +81,7 @@ module.exports = {
       about18: {
         type: Sequelize.TEXT,
       },
-      description1: {
-        type: Sequelize.TEXT,
-      },
       about19: {
-        type: Sequelize.TEXT,
-      },
-      description2: {
         type: Sequelize.TEXT,
       },
       about20: {
@@ -102,10 +96,31 @@ module.exports = {
       about23: {
         type: Sequelize.TEXT,
       },
+      description1: {
+        type: Sequelize.TEXT,
+      },
       about24: {
         type: Sequelize.TEXT,
       },
+      description2: {
+        type: Sequelize.TEXT,
+      },
       about25: {
+        type: Sequelize.TEXT,
+      },
+      about26: {
+        type: Sequelize.TEXT,
+      },
+      about27: {
+        type: Sequelize.TEXT,
+      },
+      about28: {
+        type: Sequelize.TEXT,
+      },
+      about29: {
+        type: Sequelize.TEXT,
+      },
+      about30: {
         type: Sequelize.TEXT,
       },
       userId: {
