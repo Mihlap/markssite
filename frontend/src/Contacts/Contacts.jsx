@@ -53,7 +53,11 @@ const Contacts = () => {
         interactive: true,
       });
       
-      newMap.scrollZoom.disable();
+      if (window.innerWidth > 768) {
+        newMap.scrollZoom.enable();
+      } else {
+        newMap.scrollZoom.disable();
+      }
 
       // if ('ontouchstart' in window) {
       //   newMap.dragPan.disable();
@@ -94,8 +98,10 @@ const Contacts = () => {
       });
 
       setMap(newMap);
+
     } else {
       map.setCenter(getOfficeCenter(selectedMap));
+
       if (map && map.getSource('marker')) {
         map.getSource('marker').setData({
           type: 'FeatureCollection',
@@ -119,6 +125,11 @@ const Contacts = () => {
       canvas.style.touchAction = 'pan-y';
       if (canvas.classList.contains('mapboxgl-touch-zoom-rotate')) {
         canvas.classList.add('pinch-zoom');
+      }
+      if (window.innerWidth > 768) {
+        map.scrollZoom.enable();
+      } else {
+        map.scrollZoom.disable();
       }
     }
   }, [map, selectedMap]);
