@@ -8,74 +8,85 @@ const fileMiddleware = require('../../middleware/file');
 const router = express.Router();
  
 router.post(
-'/postzapros',
-fileMiddleware.fields([
-{ name: 'dropPhoto', maxCount: 4 },
-{ name: 'photoAva', maxCount: 1 },
-{ name: 'imageOpen', maxCount: 1 },
-{ name: 'imageClose', maxCount: 1 },
-{ name: 'dynamicImages', maxCount: 30 },
-]),
-async (req, res) => {
-try {
-const dynamicImageTitles = req.files.dynamicImages
-? req.files.dynamicImages.map((file) => file.filename).join(', ')
-: null;
-const dynamicBlocksContent = JSON.parse(req.body.dynamicBlocksJSON);
-const imageTitles = req.files.dropPhoto
-? req.files.dropPhoto.map((file) => file.filename).join(', ')
-: null;
-const imageProjects = req.files.photoAva ? req.files.photoAva[0].filename : null;
-const imageOpens = req.files.imageOpen ? req.files.imageOpen[0].filename : null;
-const imageCloses = req.files.imageClose ? req.files.imageClose[0].filename : null;
- 
-// console.log(req.body, '<<-- reg.BODY');
-// console.log(imageTitles, '<<-- imageTitles');
-console.log(req.files, '<<-- reg.FILES');
-console.log(dynamicBlocksContent);
- 
-const createdArticle = await Project.create({
-title: req.body.title,
-selectCompetencies: req.body.selectCompetencies,
-countryCity: req.body.countryCity,
-monthYear: req.body.monthYear,
-viewConstruction: req.body.viewConstruction,
-style: req.body.radioValue,
-imageTitle: imageTitles,
-imageProject: imageProjects,
-titleTextBlock: req.body.titleTextBlock,
-descriptionProject: req.body.descriptionProject,
-totalArea: req.body.totalArea,
-siteArea: req.body.siteArea,
-floors: req.body.floors,
-altitude: req.body.altitude,
-constructionVolume: req.body.constructionVolume,
-location: req.body.location,
-degreeParticipation: req.body.degreeParticipation,
-statusObject: req.body.statusObject,
-customer: req.body.customer,
-publication: req.body.publication,
-linkToPublication: req.body.linkToPublication,
-publicationTwo: req.body.publicationTwo,
-linkToPublicationTwo: req.body.linkToPublicationTwo,
-awards: req.body.awards,
-imageOpen: imageOpens,
-textBlock: req.body.textBlock,
-imageClose: imageCloses,
-});
- 
-await Constructor.create({
-data: dynamicBlocksContent,
-image: dynamicImageTitles,
-idBlock: createdArticle.id,
-});
- 
-res.status(200).json({ message: 'Данные успешно сохранены' });
-} catch (error) {
-console.log(error); // Output error to the console
-res.status(500).json({ message: 'Произошла ошибка при сохранении данных' });
-}
-},
+  '/postzapros',
+  fileMiddleware.fields([
+    { name: 'dropPhoto', maxCount: 4 },
+    { name: 'photoAva', maxCount: 1 },
+    { name: 'imageOpen', maxCount: 1 },
+    { name: 'imageClose', maxCount: 1 },
+    { name: 'dynamicImages', maxCount: 30 },
+  ]),
+  async (req, res) => {
+    try {
+      const dynamicImageTitles = req.files.dynamicImages
+        ? req.files.dynamicImages.map((file) => file.filename).join(', ')
+        : null;
+      let dynamicBlocksContent = null;
+
+      if (req.body.dynamicBlocksJSON) {
+        try {
+          dynamicBlocksContent = JSON.parse(req.body.dynamicBlocksJSON);
+        } catch (error) {
+          console.error('Ошибка при разборе dynamicBlocksJSON:', error);
+          return res.status(400).json({ message: 'Неверный формат данных для dynamicBlocksJSON' });
+        }
+      }
+
+      const imageTitles = req.files.dropPhoto
+        ? req.files.dropPhoto.map((file) => file.filename).join(', ')
+        : null;
+      const imageProjects = req.files.photoAva ? req.files.photoAva[0].filename : null;
+      const imageOpens = req.files.imageOpen ? req.files.imageOpen[0].filename : null;
+      const imageCloses = req.files.imageClose ? req.files.imageClose[0].filename : null;
+
+      // console.log(req.body, '<<-- reg.BODY');
+      // console.log(imageTitles, '<<-- imageTitles');
+      console.log(req.files, '<<-- reg.FILES');
+      console.log(dynamicBlocksContent);
+
+      const createdArticle = await Project.create({
+        title: req.body.title,
+        selectCompetencies: req.body.selectCompetencies,
+        countryCity: req.body.countryCity,
+        monthYear: req.body.monthYear,
+        viewConstruction: req.body.viewConstruction,
+        style: req.body.radioValue,
+        imageTitle: imageTitles,
+        imageProject: imageProjects,
+        titleTextBlock: req.body.titleTextBlock,
+        descriptionProject: req.body.descriptionProject,
+        totalArea: req.body.totalArea,
+        siteArea: req.body.siteArea,
+        floors: req.body.floors,
+        altitude: req.body.altitude,
+        constructionVolume: req.body.constructionVolume,
+        location: req.body.location,
+        degreeParticipation: req.body.degreeParticipation,
+        statusObject: req.body.statusObject,
+        customer: req.body.customer,
+        publication: req.body.publication,
+        linkToPublication: req.body.linkToPublication,
+        publicationTwo: req.body.publicationTwo,
+        linkToPublicationTwo: req.body.linkToPublicationTwo,
+        awards: req.body.awards,
+        imageOpen: imageOpens,
+        headingTextBlock: req.body.headingTextBlock,
+        textBlock: req.body.textBlock,
+        imageClose: imageCloses,
+      });
+
+      await Constructor.create({
+        data: dynamicBlocksContent,
+        image: dynamicImageTitles,
+        idBlock: createdArticle.id,
+      });
+
+      res.status(200).json({ message: 'Данные успешно сохранены' });
+    } catch (error) {
+      console.log(error); // Output error to the console
+      res.status(500).json({ message: 'Произошла ошибка при сохранении данных' });
+    }
+  },
 );
  
 router.get('/getzapros', async (req, res) => {

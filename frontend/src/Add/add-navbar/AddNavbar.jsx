@@ -230,7 +230,7 @@ export default function AddNavbar({ user, handleReturn }) {
                       )
                     }
                   >
-                    Усеры
+                    Пользователи
                   </Link>
                 </li>
               ) : null}
