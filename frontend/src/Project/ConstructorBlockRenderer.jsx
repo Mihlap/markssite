@@ -147,13 +147,13 @@ export default function ConstructorBlockRenderer({ block }) {
               rx="16"
               transform="rotate(90 32 0)"
               fill="url(#paint0_linear_565_7000)"
-              fill-opacity="0.55"
+              fillOpacity="0.55"
             />
             <path
               id="Vector 30"
               d="M13.333 21.3335L19.9997 15.3335L13.333 9.3335"
               stroke="#F6F6F6"
-              stroke-width="1.33333"
+              strokeWidth="1.33333"
             />
           </g>
           <defs>
@@ -165,8 +165,8 @@ export default function ConstructorBlockRenderer({ block }) {
               y2="58.3335"
               gradientUnits="userSpaceOnUse"
             >
-              <stop stop-color="#BBDEFF" />
-              <stop offset="1" stop-color="#FFBFB5" />
+              <stop stopColor="#BBDEFF" />
+              <stop offset="1" stopColor="#FFBFB5" />
             </linearGradient>
           </defs>
         </svg>
@@ -187,13 +187,13 @@ export default function ConstructorBlockRenderer({ block }) {
               rx="16"
               transform="rotate(-90 0 32)"
               fill="url(#paint0_linear_565_7001)"
-              fill-opacity="0.55"
+              fillOpacity="0.55"
             />
             <path
               id="Vector 30"
               d="M18.667 10.6665L12.0003 16.6665L18.667 22.6665"
               stroke="#F6F6F6"
-              stroke-width="1.33333"
+              strokeWidth="1.33333"
             />
           </g>
           <defs>
@@ -205,8 +205,8 @@ export default function ConstructorBlockRenderer({ block }) {
               y2="90.3335"
               gradientUnits="userSpaceOnUse"
             >
-              <stop stop-color="#BBDEFF" />
-              <stop offset="1" stop-color="#FFBFB5" />
+              <stop stopColor="#BBDEFF" />
+              <stop offset="1" stopColor="#FFBFB5" />
             </linearGradient>
           </defs>
         </svg>
