@@ -21,7 +21,17 @@ router.post(
       const dynamicImageTitles = req.files.dynamicImages
         ? req.files.dynamicImages.map((file) => file.filename).join(', ')
         : null;
-      const dynamicBlocksContent = JSON.parse(req.body.dynamicBlocksJSON);
+      let dynamicBlocksContent = null;
+
+      if (req.body.dynamicBlocksJSON) {
+        try {
+          dynamicBlocksContent = JSON.parse(req.body.dynamicBlocksJSON);
+        } catch (error) {
+          console.error('Ошибка при разборе dynamicBlocksJSON:', error);
+          return res.status(400).json({ message: 'Неверный формат данных для dynamicBlocksJSON' });
+        }
+      }
+
       const imageTitles = req.files.dropPhoto
         ? req.files.dropPhoto.map((file) => file.filename).join(', ')
         : null;

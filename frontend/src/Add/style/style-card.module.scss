@@ -575,6 +575,10 @@
             width: 330px;
         }
     }
+
+    .section_project__block_cart {
+        width: 330px;
+    }
 }
 
 @media screen and (min-width: 2000px) {
@@ -583,5 +587,10 @@
             width: 550px;
             height: 420px;
         }
+    }
+
+    .section_project__block_cart {
+        width: 550px;
+        height: 420px;
     }
 }
