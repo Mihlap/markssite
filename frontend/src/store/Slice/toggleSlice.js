@@ -80,7 +80,7 @@ const toggleSlice = createSlice({
     },
     [fetchToggleStateAsync.fulfilled]: (state, action) => {
       state.isActiveForButton1 = action.payload;
-      console.log("Successfully fetched toggle state from server");
+      // console.log("Successfully fetched toggle state from server");
     },
     [fetchToggleStateAsync.rejected]: (state, action) => {
       if (action.payload && action.payload.message) {
@@ -107,7 +107,7 @@ const toggleSlice = createSlice({
     },
     [fetchToggleStateForButton2Async.fulfilled]: (state, action) => {
       state.isActiveForButton2 = action.payload;
-      console.log("Successfully fetched toggle state for button 2 from server");
+      // console.log("Successfully fetched toggle state for button 2 from server");
     },
     [fetchToggleStateForButton2Async.rejected]: (state, action) => {
       state.error = action.payload?.message || "An unknown error occurred";

@@ -100,7 +100,7 @@ const updateModalBlockHeight = () => {
   const toggleActive = () => {
     dispatch(updateToggleStateForButton2Async(!isActiveForButton2));
   };
-  console.log(isActiveForButton2); // Здесь мы выводим в консоль обратное значение, так как функция еще не обновила state
+  // console.log(isActiveForButton2); // Здесь мы выводим в консоль обратное значение, так как функция еще не обновила state
 
   return (
     <section className={styles.card_components_admin}>
