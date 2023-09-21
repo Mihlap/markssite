@@ -857,7 +857,7 @@ export default function FormAddProject({ setIsModalOpen }) {
 
             <div className={`${styles.form__group} ${styles.field}`}>
               <input
-                type="number"
+                type="text"
                 className={styles.form__field}
                 placeholder="floors"
                 name="floors"
@@ -883,7 +883,7 @@ export default function FormAddProject({ setIsModalOpen }) {
             </div>
             <div className={`${styles.form__group} ${styles.field}`}>
               <input
-                type="number"
+                type="text"
                 className={styles.form__field}
                 placeholder="altitude"
                 name="altitude"
@@ -909,7 +909,7 @@ export default function FormAddProject({ setIsModalOpen }) {
             </div>
             <div className={`${styles.form__group} ${styles.field}`}>
               <input
-                type="number"
+                type="text"
                 className={styles.form__field}
                 placeholder="constructionVolume"
                 name="constructionVolume"

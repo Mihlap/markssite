@@ -348,29 +348,35 @@ const ProjectCard = () => {
 
                 <div className={styles.result_container}>
                   {[
-                    { value: project.siteArea, text: "Общая площадь" },
-                    { value: project.totalArea, text: "Площадь участка" },
-                    { value: project.floors, text: "Этажность" },
-                    { value: project.altitude, text: "Высотность" },
+                    {
+                      value: project.siteArea,
+                      text: "Общая площадь",
+                      unit: "м²",
+                    },
+                    {
+                      value: project.totalArea,
+                      text: "Площадь участка",
+                      unit: "га",
+                    },
+                    { value: project.floors, text: "Этажность" }, // Если у какого-то поля нет единицы измерения, просто опустите 'unit'
+                    { value: project.altitude, text: "Высотность", unit: "м" },
                     {
                       value: project.constructionVolume,
                       text: "Строительный объем",
+                      unit: "м³",
                     },
                   ]
                     .filter((item) => item.value) // фильтрация по наличию значения
                     .slice(0, 3) // берём первые три объекта
-                    .map(
-                      (
-                        item // отрисовываем
-                      ) => (
-                        <div key={item.text} className={styles.result_block}>
-                          <div className={styles.result_number}>
-                            {item.value}
-                          </div>
-                          <div className={styles.result_text}>{item.text}</div>
+                    .map((item) => (
+                      <div key={item.text} className={styles.result_block}>
+                        <div className={styles.result_number}>
+                          {item.value}{" "}
+                          {item.unit ? <span>{item.unit}</span> : null}
                         </div>
-                      )
-                    )}
+                        <div className={styles.result_text}>{item.text}</div>
+                      </div>
+                    ))}
                 </div>
               </div>
               <div
