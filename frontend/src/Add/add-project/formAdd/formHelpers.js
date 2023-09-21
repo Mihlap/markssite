@@ -166,7 +166,10 @@ export function changeHandler(
     event.target.style.display = "none";
   } else if (
     event.target.name === "totalArea" ||
-    event.target.name === "siteArea"
+    event.target.name === "siteArea" ||
+    event.target.name === "floors" ||
+    event.target.name === "altitude" ||
+    event.target.name === "constructionVolume"
   ) {
     const onlyDigits = event.target.value.replace(/\D+/g, "");
     const formattedValue = formatNumberWithThousandSeparator(onlyDigits);
