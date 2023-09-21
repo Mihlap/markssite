@@ -9,7 +9,7 @@
 }
 
 .header {
-  /* min-width: 1024px; */
+  min-width: 1024px;
   max-width: 100%;
 }
 
@@ -78,6 +78,10 @@
 
 .video_block {
   width: 100%;
+}
+
+.bg_video {
+  display: none;
 }
 
 
@@ -590,6 +594,28 @@ svg path {
 /* Стили для планшетной версии сайта блока Header начинаются тут */
 @media screen and (min-width: 768px) and (max-width: 1024px) {
 
+  .video_block {
+    display: none;
+  }
+
+  .bg_video {
+    position: relative;
+    display: flex;
+    min-width: 100%;
+     min-height: 100%;
+     overflow: hidden;
+     object-fit: cover;
+  }
+  #bg-video {
+    top: 0;
+    left: 0;
+    min-width: 100%;
+    min-height: 100%;
+    object-fit: cover;
+    z-index: -1; 
+  }
+
+
   .header_desctop_block {
     width: fit-content;
     padding-left: 3.69vw;
@@ -761,6 +787,26 @@ svg path {
   .header {
     min-width: 0px;
   }
+  .video_block {
+    display: none;
+  }
+  .bg_video {
+    position: relative;
+    display: flex;
+    min-width: 100%;
+     min-height: 100%;
+     overflow: hidden;
+     object-fit: cover;
+  }
+  #bg-video {
+    top: 0;
+    left: 0;
+    min-width: 100%;
+    min-height: 100%;
+    object-fit: cover;
+    z-index: -1; 
+  }
+
 
   .logo_slider {
     margin-left: 0;
