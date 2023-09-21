@@ -63,7 +63,7 @@ useEffect(() => {
   // }, []);
 
 
-  console.log(`пользователь 👉${user?.name}👈`);
+  // console.log(`пользователь 👉${user?.name}👈`);
   return (
     <HelmetProvider>
       {loading === true ? (

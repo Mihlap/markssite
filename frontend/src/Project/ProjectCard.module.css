@@ -238,9 +238,6 @@
   padding-left: 1.69rem;
 }
 
-.item {
-  border-radius: 1.11vw;
-}
 
 .item:not(:last-child) {
   padding-bottom: 3.75rem;

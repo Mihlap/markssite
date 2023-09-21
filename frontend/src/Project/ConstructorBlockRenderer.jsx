@@ -105,6 +105,7 @@ export default function ConstructorBlockRenderer({ block }) {
       height: "4px",
       backgroundColor: "rgba(255, 127, 106, 1)",
       marginRight: "15px",
+      transition: "width 0.5s, background-color 0.3s",
     };
 
     const inactiveDotStyle = {
