@@ -132,9 +132,8 @@ const CompanyFormContacts = () => {
           setValue1("");
           setValue2("");
           setValue3("");
-          setIsConsentGiven(false);
-        
-        
+          setIsConsentGiven(false);   
+          
         } else {
              console.error('Form submission failed');
         }
