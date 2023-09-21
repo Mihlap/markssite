@@ -466,7 +466,7 @@ export default function Company() {
             >
               Руководство
             </button>
-            <button
+            {/* <button
               type="button"
               onClick={(e) => {
                 e.preventDefault();
@@ -477,7 +477,7 @@ export default function Company() {
               }`}
             >
               Руководители отделов
-            </button>
+            </button> */}
             <button
               type="button"
               onClick={(e) => {
@@ -492,7 +492,7 @@ export default function Company() {
             >
               Научно-техническое сопровождение
             </button>
-            <button
+            {/* <button
               type="button"
               onClick={(e) => {
                 e.preventDefault();
@@ -503,7 +503,7 @@ export default function Company() {
               }`}
             >
               HR
-            </button>
+            </button> */}
           </div>
         )}
       </div>
