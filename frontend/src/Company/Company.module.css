@@ -6,15 +6,24 @@
   height: 100%;
   width: 100%;
 }
-/* .video_block {
-  width: 100%;
+
+.block_video_company {
   position: relative;
+ display: flex;
+ min-width: 100%;
+  min-height: 100%;
   overflow: hidden;
-  object-fit: cover;
-} */
-/* .block_video_company {
-  display: none;
-} */
+}
+
+#bg-video {
+ top: 0;
+ left: 0;
+ min-width: 100%;
+ min-height: 100%;
+ object-fit: cover;
+ z-index: -1; 
+}
+
 
 /* .block_video_company {
   position: relative;
@@ -37,14 +46,13 @@
 
 /* ____этот блок для слайдера, для видео ниже ___________________ */
 
-.underSlider_text_wrapper {
+/* .underSlider_text_wrapper {
   position: absolute;
   display: flex;
   flex-direction: column;
   bottom: 10vh;
   left: 10vw;
-  /* max-width: min-content; */
-  z-index: 1;
+   z-index: 1;
 }
 
 .span_underSlider_text1 {
@@ -55,7 +63,6 @@
   line-height: 1.5rem;
   color: var(--white-F6F6F6);
   white-space: pre-wrap;
-  /* margin-right: 20rem; */
 }
 
 .span_underSlider_text2 {
@@ -106,14 +113,14 @@
   line-height: 24px;
   color: var(--white-F6F6F6);
   padding-top: 9px;
-}
+} */
 /* _____________________________________________________________________ */
 
-/* .underSlider_text_wrapper {
+.underSlider_text_wrapper {
   position: absolute;
   display: flex;
   flex-direction: column;
-  top: 50%;
+  bottom: 50%;
   left: 10vw;
   max-width: 100%;
   z-index: 1;
@@ -178,7 +185,7 @@
   line-height: 24px;
   color: var(--white-F6F6F6);
   padding-top: 9px;
-} */
+}
 
 .sliderMobile_wrapper {
   padding: 2rem 0vw 8rem 0vw;
@@ -666,18 +673,13 @@ bottom: 3.38rem;
 /* стили для планшетной версии  */
 @media screen and (min-width: 768px) and (max-width: 1024px) {
 
-  .video_block {
-    display: none;
-  }
-
   .block_video_company {
      position: relative;
     display: flex;
     min-width: 100%;
      min-height: 100%;
      overflow: hidden;
-     object-fit: cover;
-  }
+   }
   
   #bg-video {
     top: 0;
@@ -690,7 +692,7 @@ bottom: 3.38rem;
   
 
   .underSlider_text_wrapper {
-    bottom: 40vh;
+    top: 40rem;
     left: 3.5rem;
   }
 
@@ -908,31 +910,28 @@ bottom: 3.38rem;
 
 @media screen and (min-width: 200px) and (max-width: 767px) {
 
-  .video_block {
-    display: none;
-  }
-
-  .block_video_company {
+ .block_video_company {
      position: relative;
     display: flex;
     min-width: 100%;
      min-height: 100%;
      overflow: hidden;
      object-fit: cover;
+     top: 0rem;
   }
   
   #bg-video {
-    top: 0;
+    top: 0rem;
     left: 0;
+    bottom: 0;
     min-width: 100%;
     min-height: 100%;
     object-fit: cover;
-    z-index: -1; 
-  }
+     }
 
   .underSlider_text_wrapper {
     left: 1.3rem;
-    bottom: 16vh;
+    top: 44rem;
     /* max-width: 100%; */
     word-wrap: break-word;
    }
