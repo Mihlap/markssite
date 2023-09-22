@@ -72,7 +72,11 @@ export const fetchCategoryStaff =
       dispatch(setCategory(category));
      dispatch(fetchStaffSuccess(filteredData));
        } catch (error) {
-      dispatch(fetchStaffFailure(error.message));
+        if (error.code === 'ECONNABORTED') {
+          dispatch(fetchStaffFailure('Время ожидания запроса истекло'));
+        } else {
+          dispatch(fetchStaffFailure(error.message));
+        }
     }
   };
 
