@@ -232,9 +232,9 @@ export default function Company() {
 
   const buttonsStuff = [
     { name: "Руководство", onClick: handleButtonClick },
-    { name: "Руководители отделов", onClick: handleButtonClick },
+    // { name: "Руководители отделов", onClick: handleButtonClick },
     { name: "Научно-техническое сопровождение", onClick: handleButtonClick },
-    { name: "HR", onClick: handleButtonClick },
+    // { name: "HR", onClick: handleButtonClick },
   ];
 
   // if (error) {
