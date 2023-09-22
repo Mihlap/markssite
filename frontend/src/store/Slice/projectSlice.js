@@ -107,13 +107,13 @@ export const fetchProject =
             JSON.stringify(cloneDynamicBlocks)
           );
 
-          console.log("консоль с trycode", photosArray);
+          // console.log("консоль с trycode", photosArray);
           photosArray.forEach((photo) => {
             formData.append("dynamicImages", photo);
           });
         } else {
           for (const file of formattedData[key]) {
-            console.log("file", file);
+            // console.log("file", file);
             formData.append(key, file);
             //  обрати внимание во сюда, тут в file лежат объекты с фотографиями!
             //  они и есть dropPhoto на бекенде
@@ -127,7 +127,7 @@ export const fetchProject =
     axios.post(`${serverHost}/api-project/postzapros`, formData).then(() => {
       dispatch(getFetchForm());
     });
-    console.log(formattedData, "<<<---REDUX");
+    // console.log(formattedData, "<<<---REDUX");
   };
 
 export const getFetchForm = () => async (dispatch) => {
