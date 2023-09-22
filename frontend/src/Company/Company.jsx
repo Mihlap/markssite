@@ -45,8 +45,8 @@ export default function Company() {
 
   const videoSource2 = {
     small: "./assets/header_company_mobile.mp4",
-    medium: "./assets/header_company.mp4",
-    large: "./assets/header_company.mp4",
+    medium: "./assets/site_Company_ipad.mp4",
+    large: "./assets/site_Company_full.mp4",
   };
  
 
@@ -278,15 +278,12 @@ export default function Company() {
 
   return (
     <div className={styles.company_main}>
-      <Company_Slider />
-      {/* <div className={styles.video_block}>
-        <VideoPlayer videoSource={videoSource2} />
-      </div>
-      <div className={styles.block_video_company}>
+      {/* <Company_Slider /> */}
+       <div className={styles.block_video_company}>
         <video playsInline autoPlay muted loop id="bg-video">
           <source src={videoSrc2} type="video/mp4" />
         </video>
-      </div> */}
+      </div>
       <div ref={blockSlider} className={styles.underSlider_text_wrapper}>
         <span className={styles.span_underSlider_text1}>
           Самые крутые проекты! самой крутой командой
