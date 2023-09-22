@@ -2,6 +2,7 @@
   border-collapse: collapse;
   margin-left: 1.87vw;
   margin-right: 1.87vw;
+  width: auto
 }
 
 .thStyle {
@@ -37,8 +38,8 @@
   line-height: 28px;
   color: var(--black-1D2E43);
   text-align: left;
-  max-width: 40.97vw;
-  width: 40.97vw;
+  max-width: 40.97vw; 
+  /* width: 40.97vw; */
   padding-right: 30px;
 }
 
@@ -52,7 +53,7 @@
   text-align: left;
   border-top: "1px solid black";
   max-width: 30.69vw;
-  width: 30.69vw;
+  /* width: 30.69vw; */
   padding-right: 30px;
 }
 
@@ -65,7 +66,7 @@
   color: var(--dark-gray-566272);
   text-align: left;
   max-width: 16.3vw;
-  width: 16.3vw;
+  /* width: 16.3vw; */
 }
 
 .tdStyle4 {
@@ -76,7 +77,7 @@
   line-height: 24px;
   color: var(--dark-gray-566272);
   text-align: right;
-}
+ }
 
 .button_table {
   display: flex;
@@ -113,15 +114,75 @@
     margin-left: 3.37rem;
     margin-right: 3.37rem;
   }
-  .tdStyle1 {
+
+   
+ .thStyle4 {
+    text-align: right;
+    border-bottom: 1px solid black;
+    padding-bottom: 16px;
+    padding-right: 82px;
     font-family: var(--font-raleway);
+    font-style: normal;
+    font-weight: var(--fw-400);
+    color: var(--gray-959DA6);
+    font-size: 14px;
+    line-height: 20px;
+  }
+  
+  .tdStyle1 {
+    font-family: var(--font-unbounded);
+    font-style: normal;
     font-weight: var(--fw-300);
-    font-size: 18px;
-    line-height: 24px;
+    font-size: 20px;
+    line-height: 28px;
+    color: var(--black-1D2E43);
     text-align: left;
-    width: 90%;
-    padding-right: 3rem;
-    padding-left: 1rem;
+    max-width: 30.97vw; 
+    /* width: 40.97vw; */
+    padding-right: 26px;
+  }
+  
+  .tdStyle2 {
+    font-family: var(--font-raleway);
+    font-style: normal;
+    font-weight: var(--fw-400);
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--black-1D2E43);
+    text-align: left;
+    border-top: "1px solid black";
+    max-width: 20vw;
+    padding-right: 24px;
+  }
+  
+  .tdStyle3 {
+    font-family: var(--font-raleway);
+    font-style: normal;
+    font-weight: var(--fw-400);
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--dark-gray-566272);
+    text-align: left;
+    max-width: 8vw;
+    padding-right: 0px;
+    /* width: 16.3vw; */
+  }
+  
+  .tdStyle4 {
+    font-family: var(--font-raleway);
+    font-style: normal;
+    font-weight: var(--fw-400);
+    font-size: 16px;
+    line-height: 24px;
+    color: var(--dark-gray-566272);
+    padding-right: 0px;
+   }
+  
+  .button_table {
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 3.37rem;
+    padding-top: 13px;
   }
 }
 
