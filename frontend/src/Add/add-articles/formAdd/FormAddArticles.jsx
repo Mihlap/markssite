@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Select from "react-select";
 import { useDispatch } from "react-redux";
-import styles from "./FormAddArticles.module.scss";
+import styles from "../../add-project/formAdd/FormAddProject.module.scss";
 import {
   changeHandler,
   removePreviewPhoto,
@@ -29,7 +29,6 @@ export default function FormAddArticles({ setIsModalOpen }) {
   const [isPhotoOpenVisible, setIsPhotoOpenVisible] = useState(true);
   const [isPhotoAvaVisible, setIsPhotoAvaVisible] = useState(true);
   const [isDropPhotoVisible, setIsDropPhotoVisible] = useState(true);
-  const [onenConstructor, setOpenConstructor] = useState(false);
   const [inputData, setInputData] = useState({
     title: "",
     author: "",
@@ -54,7 +53,14 @@ export default function FormAddArticles({ setIsModalOpen }) {
     quoteBlockAvatar: "",
   });
 
-  console.log(inputData);
+  // << ==== КОНСТУКТОР ==== >>
+  // состояние для хранения текущего значения инпута
+  const [inputValue, setInputValue] = useState("");
+
+  const [onenConstructor, setOpenConstructor] = useState(false);
+  const [blocks, setBlocks] = useState([]);
+  const [dynamicPreviews, setDynamicPreviews] = useState([]);
+  const [dynamicData, setDynamicData] = useState([]);
 
   const handleImageUpload = (selectedFile) => {
     // функция которая запускает превью для фото из компонента ImageToDescriptionArticles
@@ -64,13 +70,13 @@ export default function FormAddArticles({ setIsModalOpen }) {
     }));
   };
 
-   const handleImageUploadQuote = (selectedFile) => {
-     // функция которая запускает превью для фото из компонента ImageToDescriptionArticles
-     setInputData((prevInputData) => ({
-       ...prevInputData,
-       quoteBlockAvatar: selectedFile,
-     }));
-   };
+  const handleImageUploadQuote = (selectedFile) => {
+    // функция которая запускает превью для фото из компонента ImageToDescriptionArticles
+    setInputData((prevInputData) => ({
+      ...prevInputData,
+      quoteBlockAvatar: selectedFile,
+    }));
+  };
 
   const handleRemovePreviewPhoto = (index) => {
     removePreviewPhoto(
@@ -175,10 +181,248 @@ export default function FormAddArticles({ setIsModalOpen }) {
   //   );
   // };
 
+  // << ============ КОНСТРУКТОР ============ >>
+
   const handlerOpenConstructor = () => {
     setOpenConstructor(!onenConstructor);
   };
 
+  const handleClick = (inputs) => {
+    const blockKey = Date.now().toString();
+    const newInputs = inputs.map((input) => ({
+      ...input,
+      key: blockKey + "_" + input.type,
+    }));
+    setBlocks((prevState) => [...prevState, newInputs]);
+    setDynamicData((prevDynamicData) => [...prevDynamicData, newInputs]);
+  };
+
+  const handleDynamicInputChange = (blockIndex, inputIndex, value) => {
+    const newDynamicData = [...dynamicData];
+
+    if (!newDynamicData[blockIndex]) {
+      newDynamicData[blockIndex] = [];
+    }
+
+    if (!newDynamicData[blockIndex][inputIndex]) {
+      newDynamicData[blockIndex][inputIndex] = {
+        type: "",
+        label: "",
+        value: "",
+      };
+    }
+    function generateUniqueName(originalName) {
+      const timestamp = Date.now();
+      const randomNum = Math.floor(Math.random() * 10000);
+      const fileExtension = originalName.split(".").pop();
+      const sliceOfOriginalName = originalName.slice(0, 5);
+      const newName = `file_${sliceOfOriginalName}_${timestamp}_${randomNum}.${fileExtension}`;
+
+      console.log("Generated name:", newName);
+
+      return newName;
+    }
+    if (Array.isArray(value) && value[0] instanceof File) {
+      const newFiles = value.map((originalFile) => {
+        const uniqueName = generateUniqueName(originalFile.name);
+        return new File([originalFile], uniqueName, {
+          type: originalFile.type,
+        });
+      });
+      newDynamicData[blockIndex][inputIndex].value = newFiles;
+      console.log(
+        "Updated files:",
+        newDynamicData[blockIndex][inputIndex].value
+      );
+    } else {
+      newDynamicData[blockIndex][inputIndex].value = value;
+    }
+
+    //  if (!newDynamicData[blockIndex][inputIndex].value) {
+    //    newDynamicData[blockIndex][inputIndex].value = "";
+    //  }
+
+    //  newDynamicData[blockIndex][inputIndex].value = value;
+
+    setDynamicData(newDynamicData);
+  };
+
+  const renderInputWithLabel = (
+    inputType,
+    labelText,
+    blockIndex,
+    inputIndex,
+    key
+  ) => {
+    function handleDeletePreview(event, blockIndex, inputIndex, previewIndex) {
+      event.preventDefault();
+      setDynamicPreviews((prev) => {
+        const newPreviews = [...prev];
+        if (newPreviews[blockIndex] && newPreviews[blockIndex][inputIndex]) {
+          newPreviews[blockIndex][inputIndex].splice(previewIndex, 1);
+        }
+        return newPreviews;
+      });
+
+      setDynamicData((prevData) => {
+        const newData = [...prevData];
+        if (newData[blockIndex] && newData[blockIndex][inputIndex]) {
+          newData[blockIndex][inputIndex].value.splice(previewIndex, 1);
+        }
+        return newData;
+      });
+    }
+
+    return (
+      <div key={inputIndex}>
+        {inputType === "text" && (
+          // <input type="text" />
+          <div className={styles.form_container__heading_block}>
+            <input
+              type="input"
+              maxLength="56" // 2. Установите атрибут maxLength
+              value={dynamicData[blockIndex][inputIndex].value || ""} // используйте значение inputValue как текущее значение инпута
+              className={`${styles.form_container__heading_block_input} ${styles.orange_color}`}
+              placeholder={labelText}
+              onChange={(e) => {
+                setInputValue(e.target.value); // 4. Обновите inputValue при каждом изменении
+                handleDynamicInputChange(
+                  blockIndex,
+                  inputIndex,
+                  e.target.value
+                );
+              }}
+            />
+            <label
+              htmlFor="titleTextBlock"
+              className={styles.form_container__heading_block_label}
+            >
+              {labelText}
+            </label>
+            <div className={styles.form_container__heading_block_input_length}>
+              {(dynamicData[blockIndex][inputIndex].value || "").length}/56
+            </div>
+          </div>
+        )}
+        {inputType === "file" && (
+          // <input type="file" accept="image/*" />
+          <>
+            <div key={inputIndex}>
+              <div className={styles.form_container__checkbox_block}>
+                <div>{labelText}</div>
+              </div>
+              <label
+                className={styles.slider_container__customFileUploadOrangeColor}
+              >
+                <input
+                  type="file"
+                  onChange={(e) => {
+                    const filesArray = Array.from(e.target.files);
+                    handleDynamicInputChange(
+                      blockIndex,
+                      inputIndex,
+                      filesArray
+                    );
+
+                    const previewsArray = filesArray.map((file) =>
+                      URL.createObjectURL(file)
+                    );
+                    setDynamicPreviews((prev) => {
+                      const newPreviews = [...prev];
+                      if (!newPreviews[blockIndex]) {
+                        newPreviews[blockIndex] = [];
+                      }
+                      newPreviews[blockIndex][inputIndex] = previewsArray;
+                      return newPreviews;
+                    });
+                  }}
+                  multiple
+                  style={{ display: isPhotoOpenVisible ? "block" : "none" }}
+                />
+                <div className={styles.slider_container__uploadIcon}>
+                  <img src={icon} alt="icon" />
+                </div>
+                <div className={styles.slider_container__uploadText}>
+                  Загрузить изображения
+                </div>
+              </label>
+            </div>
+            <div className={styles.previewContainer}>
+              {dynamicPreviews[blockIndex] &&
+                dynamicPreviews[blockIndex][inputIndex] &&
+                dynamicPreviews[blockIndex][inputIndex].map((src, index) => (
+                  <div
+                    key={`${blockIndex}-${inputIndex}-${index}`}
+                    className={styles.previewWrapper}
+                  >
+                    <div
+                      className={
+                        styles.preview_photos_container_block_constructor
+                      }
+                    >
+                      <img
+                        src={src}
+                        alt={`Preview ${index}`}
+                        className={styles.preview_photos_container__img}
+                      />
+                      <div
+                        className={
+                          styles.preview_photos_container_block_constructor__remove_icon
+                        }
+                        onClick={(e) =>
+                          handleDeletePreview(e, blockIndex, inputIndex, index)
+                        }
+                      >
+                        <span></span>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+            </div>
+          </>
+        )}
+        {inputType === "textarea" && (
+          <div
+            key={inputIndex}
+            className={styles.form_container__description_text}
+          >
+            <div className={styles.form_container__textarea_length}>
+              {/* {`${inputData.descriptionArticle.length}/260`} */}
+            </div>
+            <textarea
+              className={`${styles.form_container__textarea} ${styles.orange_color}`}
+              // name="descriptionArticle"
+              onChange={(e) =>
+                handleDynamicInputChange(blockIndex, inputIndex, e.target.value)
+              }
+              id="descriptionArticle"
+              cols="30"
+              rows="10"
+              placeholder={labelText}
+            ></textarea>
+            <label htmlFor="" className={styles.form_container__textarea_label}>
+              {labelText}
+            </label>
+          </div>
+        )}
+        {/* <div className={styles.slider_container__uploadText}>{labelText}</div> */}
+      </div>
+    );
+  };
+
+  const renderInputs = (inputs, blockIndex) => {
+    return inputs.map((input, inputIndex) => {
+      return renderInputWithLabel(
+        input.type,
+        input.label,
+        blockIndex,
+        inputIndex
+      );
+    });
+  };
+
+  // console.log(inputData, "<<--inputData ARTICLE");
+  // console.log(dynamicData, "<<--dynamicData");
   return (
     <div className={styles.form_container}>
       <div className={styles.form_container__title}>Новая публикация</div>
@@ -522,6 +766,14 @@ export default function FormAddArticles({ setIsModalOpen }) {
             </label>
           </div>
 
+          <div className={styles.inputsContainer}>
+            {blocks.map((blockInputs, blockIndex) => (
+              <div key={blockIndex} className={styles.inputBlock}>
+                {renderInputs(blockInputs, blockIndex)}
+              </div>
+            ))}
+          </div>
+
           <div className={styles.constructor_container}>
             <div className={styles.constructor_container__block}>
               {!onenConstructor ? (
@@ -558,12 +810,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
                   </div>
                 </div>
               ) : (
-                <ConstructorPage
-                  inputData={inputData}
-                  setInputData={setInputData}
-                  onImageUpload={handleImageUpload}
-                  handleImageUploadQuote={handleImageUploadQuote}
-                />
+                <ConstructorPage handleClick={handleClick} />
               )}
             </div>
           </div>
