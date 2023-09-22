@@ -238,14 +238,14 @@ export default function AddNavbar({ user, handleReturn }) {
           </div>
           <div className={styles.exit_container}>
             <div className={styles.exit_container__user}>
-              Пользователь cookies <strong>{user?.name}👋</strong>
+              {/* Пользователь <strong>{user?.name}👋</strong> */}
             </div>
             <button
               className={styles.btn_exit}
               type="button"
               onClick={() => logouthandler()}
             >
-              Выход
+              Выйти из личного кабинета
             </button>
           </div>
         </div>
