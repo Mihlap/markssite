@@ -12,6 +12,10 @@
     z-index: 999;
 
     &__block {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: 100%;
         padding: 3rem;
     }
 
@@ -89,13 +93,9 @@
 }
 
 .exit_container {
-    // position: fixed;
-    // right: 145px;
-    padding-left: 1rem;
     bottom: 26px;
     display: flex;
     align-items: center;
-    gap: 1rem;
 
     &__user {
         color: var(--black-1D2E43);
@@ -111,18 +111,18 @@
 
 .btn_exit {
     display: inline-flex;
-    padding: 1rem 2rem;
+    padding: 1rem 1rem;
     justify-content: center;
     align-items: center;
     z-index: 9999;
     border: none;
-    border-radius: 2rem;
+    border-radius: 4px;
     color: var(--white-F6F6F6);
-    background-color: var(--blue-75BBFD);
+    background-color: #37404a;
     transition: all 0.3s ease-in-out;
 
     &:hover {
-        background-color: var(--dark-blue-389FFF);
+        background-color: #222426;
     }
 }
 
@@ -288,7 +288,7 @@
         }
 
         &__item_svg {
-            display: block ;
+            display: block;
             fill: var(--light-gray-C0C5CB);
 
             &.activeIcon {
