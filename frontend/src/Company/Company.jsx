@@ -249,6 +249,33 @@ export default function Company() {
   //   return <LoadingCircle />;
   // }
 
+  // кнопки временно закоменчены, будут в дальнейшем использованы
+        //  {/* <button
+        //       type="button"
+        //       onClick={(e) => {
+        //         e.preventDefault();
+        //         handleButtonClick("Руководители отделов");
+        //       }}
+        //       className={`${styles.button_department} ${styles.button_hover} ${
+        //         activeButton === "Руководители отделов" ? styles.active : ""
+        //       }`}
+        //     >
+        //       Руководители отделов
+        //     </button> */}
+
+            //            {/* <button
+            //   type="button"
+            //   onClick={(e) => {
+            //     e.preventDefault();
+            //     handleButtonClick("HR");
+            //   }}
+            //   className={`${styles.button_hr} ${styles.button_hover} ${
+            //     activeButton === "HR" ? styles.active : ""
+            //   }`}
+            // >
+            //   HR
+            // </button> */}
+
   return (
     <div className={styles.company_main}>
       <Company_Slider />
@@ -462,18 +489,6 @@ export default function Company() {
             >
               Руководство
             </button>
-            {/* <button
-              type="button"
-              onClick={(e) => {
-                e.preventDefault();
-                handleButtonClick("Руководители отделов");
-              }}
-              className={`${styles.button_department} ${styles.button_hover} ${
-                activeButton === "Руководители отделов" ? styles.active : ""
-              }`}
-            >
-              Руководители отделов
-            </button> */}
             <button
               type="button"
               onClick={(e) => {
@@ -488,19 +503,7 @@ export default function Company() {
             >
               Научно-техническое сопровождение
             </button>
-            {/* <button
-              type="button"
-              onClick={(e) => {
-                e.preventDefault();
-                handleButtonClick("HR");
-              }}
-              className={`${styles.button_hr} ${styles.button_hover} ${
-                activeButton === "HR" ? styles.active : ""
-              }`}
-            >
-              HR
-            </button> */}
-          </div>
+           </div>
         )}
       </div>
       <div
@@ -977,3 +980,4 @@ export default function Company() {
     </div>
   );
 }
+
