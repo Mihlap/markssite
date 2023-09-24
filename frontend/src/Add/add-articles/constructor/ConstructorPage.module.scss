@@ -47,9 +47,26 @@
         padding: 32px;
     }
     
-        &__blockSeven {
-            padding: 42px 32px 41px 33px;
-        }
+    &__blockSeven {
+        padding: 42px 32px 41px 33px;
+    }
+
+    &__blockEight {
+        padding: 24px 23px 26px 22px;
+    }
+    &__blockEight_img {
+        padding: 10px 5px;
+        border-radius: 18px;
+        border: 6px solid var(--white-F6F6F6);
+    }
+
+    &__blockNine {
+        padding: 37px 26px 26px 17px;
+    }
+
+    &__blockTen {
+        padding: 43px 27px;
+    }
 }
 
 .constructorBlockOne {
@@ -74,6 +91,21 @@
     right: 20px;
 }
 
+// стили для блока с цитатой
+
+.block_quote_img {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.div_conteiner__blockNine_imgLeft {
+    margin-bottom: 32px;
+}
+
+.div_conteiner__blockNine_imgRight {
+    margin-top: 30px;
+}
 // .constructorBlockTwo {}
 
 // .constructorBlockThree {}

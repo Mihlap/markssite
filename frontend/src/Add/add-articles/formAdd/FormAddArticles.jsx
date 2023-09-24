@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Select from "react-select";
+import { transliterate } from "transliteration";
 import { useDispatch } from "react-redux";
 import styles from "../../add-project/formAdd/FormAddProject.module.scss";
 import {
@@ -42,15 +43,6 @@ export default function FormAddArticles({ setIsModalOpen }) {
     imageOpen: "",
     textBlock: "",
     imageClose: "",
-    blockHeadingTitle: "",
-    blockHeadingText: "",
-    textBlockArticles: "",
-    frameBlock: "",
-    imageToDescriptionArticlesText: "",
-    imageToDescriptionArticlesImg: "",
-    quoteBlockTitle: "",
-    quoteBlockText: "",
-    quoteBlockAvatar: "",
   });
 
   // << ==== КОНСТУКТОР ==== >>
@@ -130,6 +122,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
     e.preventDefault();
     const formattedData = {
       ...inputData,
+      dynamicBlocks: dynamicData,
       selectCompetencies: selectedCompetencies.label,
     };
     dispatch(
@@ -211,17 +204,20 @@ export default function FormAddArticles({ setIsModalOpen }) {
         value: "",
       };
     }
-    function generateUniqueName(originalName) {
-      const timestamp = Date.now();
-      const randomNum = Math.floor(Math.random() * 10000);
-      const fileExtension = originalName.split(".").pop();
-      const sliceOfOriginalName = originalName.slice(0, 5);
-      const newName = `file_${sliceOfOriginalName}_${timestamp}_${randomNum}.${fileExtension}`;
+  function generateUniqueName(originalName) {
+    const timestamp = Date.now();
+    const randomNum = Math.floor(Math.random() * 10000);
+    const fileExtension = originalName.split(".").pop();
 
-      console.log("Generated name:", newName);
+    // Транслитерация части оригинального имени файла
+    const sliceOfOriginalName = transliterate(originalName.slice(0, 5));
 
-      return newName;
-    }
+    const newName = `file_${sliceOfOriginalName}_${timestamp}_${randomNum}.${fileExtension}`;
+
+    console.log("Generated name:", newName);
+
+    return newName;
+  }
     if (Array.isArray(value) && value[0] instanceof File) {
       const newFiles = value.map((originalFile) => {
         const uniqueName = generateUniqueName(originalFile.name);
@@ -421,8 +417,8 @@ export default function FormAddArticles({ setIsModalOpen }) {
     });
   };
 
-  // console.log(inputData, "<<--inputData ARTICLE");
-  // console.log(dynamicData, "<<--dynamicData");
+  console.log(inputData, "<<--inputData ARTICLE");
+  console.log(dynamicData, "<<--dynamicData");
   return (
     <div className={styles.form_container}>
       <div className={styles.form_container__title}>Новая публикация</div>
@@ -604,7 +600,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
 
           <div className={styles.form_container__description_text}>
             <div className={styles.form_container__textarea_length}>
-              {`${inputData.descriptionArticle.length}/260`}
+              {`${inputData.descriptionArticle.length}/565`}
             </div>
             <textarea
               className={styles.form_container__textarea}
@@ -612,11 +608,11 @@ export default function FormAddArticles({ setIsModalOpen }) {
               id="descriptionArticle"
               cols="30"
               rows="10"
-              placeholder="Не более 260 символов"
+              placeholder="Не более 565 символов"
               value={inputData.descriptionArticle}
               onChange={(event) => {
                 const value = event.target.value;
-                if (value.length <= 260) {
+                if (value.length <= 565) {
                   setInputData({ ...inputData, descriptionArticle: value });
                 }
               }}
