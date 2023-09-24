@@ -56,6 +56,20 @@ export default function ConstructorPage({ handleClick }) {
         <img src={svg7} alt="svg_two_icon" />
       </div>
 
+      {/* Текст в рамочке */}
+      <div
+        className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockEight}`}
+        onClick={() =>
+          handleClick([{ type: "textarea", label: "Текст в рамочке" }])
+        }
+      >
+        <img
+          className={styles.div_conteiner__blockEight_img}
+          src={svg7}
+          alt="svg_two_icon"
+        />
+      </div>
+
       {/* блок с картинкой и описание картинки  */}
       <div
         className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockOne}`}
@@ -68,15 +82,47 @@ export default function ConstructorPage({ handleClick }) {
       >
         <img src={svg1} alt="svg_one_icon" />
       </div>
-      {/* блок с тремя картинками где горизонтальные, одна вертикальная  */}
+
+      {/* блок с цитала с фио, описание, картинка  */}
       <div
-        className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockThree}`}
+        className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockNine}`}
         onClick={() =>
-          handleClick([{ type: "file", label: "Блок 3 картинки" }])
+          handleClick([
+            { type: "text", label: "Автор цитаты ( ФИО должность )" },
+            { type: "textarea", label: "Текст цитаты" },
+            { type: "file", label: "Фото автора статьи" },
+          ])
         }
       >
-        <img src={svg3} alt="svg_three_icon" />
+        <div className={styles.block_quote_img}>
+          <img
+            className={styles.div_conteiner__blockNine_imgLeft}
+            src={quoteLeft}
+            alt="ковычки вверх"
+          />
+          <img src={svg8} alt="svg_one_icon" />
+          <img
+            src={quoteRight}
+            className={styles.div_conteiner__blockNine_imgRight}
+            alt="ковычки вниз"
+          />
+        </div>
       </div>
+
+      {/* Текст заметки */}
+      <div
+        className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockTen}`}
+        onClick={() =>
+          handleClick([{ type: "textarea", label: "Текст заметки" }])
+        }
+      >
+        <img
+          // className={styles.div_conteiner__blockEight_img}
+          src={svg9}
+          alt="svg_two_icon"
+        />
+      </div>
+
       {/* блок с двумя вертикальными картинками  */}
       <div
         className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockFour}`}

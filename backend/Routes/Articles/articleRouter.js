@@ -2,29 +2,11 @@ const express = require('express');
 // eslint-disable-next-line
 const path = require('path');
 const fs = require('fs');
-const {
-  Articles,
-  BlockHeadingTitle,
-  TextBlockArticles,
-  FrameBlock,
-  ImageToDescriptionArticles,
-  QuoteBlock
-} = require('../../db/models');
+const { Articles, ConstructorArticles } = require('../../db/models');
 const fileMiddleware = require('../../middleware/fileArticle');
 
 const router = express.Router();
 
-router.get('/getzapros', async (req, res) => {
-  try {
-    const data = await Articles.findAll({
-      include: [BlockHeadingTitle, TextBlockArticles, FrameBlock, ImageToDescriptionArticles, QuoteBlock], // Включение двух связанных моделей
-    });
-    res.json(data);
-  } catch (error) {
-    console.log(error);
-    res.sendStatus(500);
-  }
-});
 
 router.post(
   '/postzapros',
@@ -33,79 +15,58 @@ router.post(
     { name: 'photoAva', maxCount: 1 },
     { name: 'imageOpen', maxCount: 1 },
     { name: 'imageClose', maxCount: 1 },
-    { name: 'imageToDescriptionArticlesImg', maxCount: 1 },
-    { name: 'quoteBlockAvatar', maxCount: 1 },
+    { name: 'dynamicImages', maxCount: 30 },
   ]),
   async (req, res) => {
     try {
-      console.log(req.files); // Output file information to the console
-      const imageTitles = req.files.dropPhoto.map((file) => file.filename).join(', ');
+      const dynamicImageTitles = req.files.dynamicImages
+        ? req.files.dynamicImages.map((file) => file.filename).join(', ')
+        : null;
+      let dynamicBlocksContent = null;
+
+      if (req.body.dynamicBlocksJSON) {
+        try {
+          dynamicBlocksContent = JSON.parse(req.body.dynamicBlocksJSON);
+        } catch (error) {
+          console.error('Ошибка при разборе dynamicBlocksJSON:', error);
+          return res.status(400).json({ message: 'Неверный формат данных для dynamicBlocksJSON' });
+        }
+      }
+
+      const imageTitles = req.files.dropPhoto
+        ? req.files.dropPhoto.map((file) => file.filename).join(', ')
+        : null;
       const imageProjects = req.files.photoAva ? req.files.photoAva[0].filename : null;
       const imageOpens = req.files.imageOpen ? req.files.imageOpen[0].filename : null;
       const imageCloses = req.files.imageClose ? req.files.imageClose[0].filename : null;
-      const imageToDescriptionArticlesImgs = req.files.imageToDescriptionArticlesImg
-        ? req.files.imageToDescriptionArticlesImg[0].filename
-        : null;
-       const quoteBlockAvatars = req.files.quoteBlockAvatar
-         ? req.files.quoteBlockAvatar[0].filename
-         : null;
 
-      // console.log(imageCloses, '<<--imageCloses');
-      // console.log(quoteBlockAvatars, '<<--quoteBlockAvatars');
+      // console.log(req.body, '<<-- reg.BODY');
+      // console.log(imageTitles, '<<-- imageTitles');
+      console.log(req.files, '<<-- reg.FILES');
+      console.log(dynamicBlocksContent);
 
-      const createdArticle = await Articles.create({
-        title: req.body.title,
-        author: req.body.author,
-        city: req.body.city,
-        dataMonthYear: req.body.dataMonthYear,
-        selectCompetencies: req.body.selectCompetencies,
-        imageTitle: imageTitles,
-        titleTextBlock: req.body.titleTextBlock,
-        descriptionArticle: req.body.descriptionArticle,
-        imageAuthor: imageProjects,
-        imageOpen: imageOpens,
-        textBlock: req.body.textBlock,
-        imageClose: imageCloses,
+        const createdArticle = await Articles.create({
+          title: req.body.title,
+          author: req.body.author,
+          city: req.body.city,
+          dataMonthYear: req.body.dataMonthYear,
+          selectCompetencies: req.body.selectCompetencies,
+          imageTitle: imageTitles,
+          titleTextBlock: req.body.titleTextBlock,
+          descriptionArticle: req.body.descriptionArticle,
+          imageAuthor: imageProjects,
+          imageOpen: imageOpens,
+          textBlock: req.body.textBlock,
+          imageClose: imageCloses,
+        });
+
+      await ConstructorArticles.create({
+        data: dynamicBlocksContent,
+        image: dynamicImageTitles,
+        idBlock: createdArticle.id,
       });
 
-      if (req.body.blockHeadingTitle && req.body.blockHeadingText) {
-        await BlockHeadingTitle.create({
-          title: req.body.blockHeadingTitle,
-          text: req.body.blockHeadingText,
-          idBlock: createdArticle.id, // Ссылка на созданную статью
-        });
-      }
-
-      if (req.body.textBlockArticles) {
-        await TextBlockArticles.create({
-          text: req.body.textBlockArticles,
-          idBlock: createdArticle.id, // Ссылка на созданную статью
-        });
-      }
-      if (req.body.frameBlock) {
-        await FrameBlock.create({
-          text: req.body.frameBlock,
-          idBlock: createdArticle.id,
-        });
-      }
-      if (req.body.imageToDescriptionArticlesText) {
-        await ImageToDescriptionArticles.create({
-          image: imageToDescriptionArticlesImgs,
-          text: req.body.imageToDescriptionArticlesText,
-          idBlock: createdArticle.id,
-        });
-      }
-      if (req.body.quoteBlockTitle && req.body.quoteBlockText) {
-        await QuoteBlock.create({
-          title: req.body.quoteBlockTitle,
-          text: req.body.quoteBlockText,
-          avatar: quoteBlockAvatars,
-          idBlock: createdArticle.id,
-        });
-      }
-      
-        
-        res.status(200).json({ message: 'Данные успешно сохранены' });
+      res.status(200).json({ message: 'Данные успешно сохранены' });
     } catch (error) {
       console.log(error); // Output error to the console
       res.status(500).json({ message: 'Произошла ошибка при сохранении данных' });
@@ -113,16 +74,28 @@ router.post(
   },
 );
 
-// эта функция нужна для того, чтоб удалять из imageTitle фотографии есть там не массив 
-const deleteImage = (imageName) => {
-  const imagePath = path.join(__dirname, '..', 'images/imageArticle', imageName);
-  console.log(`Trying to delete file: ${imagePath}`);
-  if (fs.existsSync(imagePath)) {
-    fs.unlinkSync(imagePath);
+router.get('/getzapros', async (req, res) => {
+  try {
+    const data = await Articles.findAll({
+      include: [ConstructorArticles],
+    });
+    res.json(data);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(500);
   }
-};
+});
 
-router.delete('/deletezapros/:id', async (req, res) => {
+  // эта функция нужна для того, чтоб удалять из imageTitle фотографии есть там не массив 
+  const deleteImage = (imageName) => {
+    const imagePath = path.join(__dirname, '..', 'images/imageArticle', imageName);
+    console.log(`Trying to delete file: ${imagePath}`);
+    if (fs.existsSync(imagePath)) {
+      fs.unlinkSync(imagePath);
+    }
+  };
+  
+  router.delete('/deletezapros/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const post = await Articles.findByPk(id);
