@@ -3,7 +3,7 @@ import Modal from "react-modal";
 import { useInView } from "react-intersection-observer";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./Company.module.css";
-import Company_Slider from "../UI/Company_Slider/Company_Slider";
+// import Company_Slider from "../UI/Company_Slider/Company_Slider";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -18,23 +18,18 @@ import {
   incrementScienceDegree,
 } from "../store/Slice/counterSlice";
 
-import {
-  fetchCategoryStaff,
-  selectCard,
-  setCategory,
-} from "../store/Slice/StaffSlice";
+import { fetchCategoryStaff, selectCard, setCategory } from "../store/Slice/StaffSlice";
 import LoadingCircle from "../Loading/LoadingCircle";
 import Error from "../Loading/Error/Error";
 
 import bracket from "../icons/bracket.svg";
 import bracket_dark from "../icons/bracket_dark.svg";
-import plusNine from "../icons/+9.svg";
 import CompanyFormContacts from "../UI/CompanyFormContacts/CompanyFormContacts";
 import CompanySubscriptionForm from "../UI/CompanySubscriptionForm/CompanySubscriptionForm";
 import CounterCompanyMobile from "../UI/CounterCompanyMobile";
 import CounterCompanyMobile2 from "../UI/CounterCompanyMobile2";
 import CompanyGroupSlider from "../UI/CompanyGroupSlider/CompanyGroupSlider";
-import VideoPlayer from "../UI/Videoplayer/VideoPlayer";
+
 
 export default function Company() {
   const videoSource = {
@@ -50,6 +45,7 @@ export default function Company() {
   };
  
 
+  const dispatch = useDispatch();
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [countPercent, setCountPercent] = useState(0);
   const [countHuman, setCountHuman] = useState(0);
@@ -64,7 +60,6 @@ export default function Company() {
   const [activeButton, setActiveButton] = useState("Руководство");
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const dispatch = useDispatch();
   const { selectedCard, category, staff, loading, error } = useSelector(
     (state) => state.staff
   );
@@ -237,17 +232,17 @@ export default function Company() {
     // { name: "HR", onClick: handleButtonClick },
   ];
 
-  // if (error) {
-  //   return (
-  //     <div>
-  //       {" "}
-  //       <Error error={error.message} />
-  //     </div>
-  //   );
-  // }
-  // if (loading) {
-  //   return <LoadingCircle />;
-  // }
+  if (error) {
+    return (
+      <div>
+        {" "}
+        <Error error={error.message} />
+      </div>
+    );
+  }
+  if (loading) {
+    return <LoadingCircle />;
+  }
 
   // кнопки временно закоменчены, будут в дальнейшем использованы
         //  {/* <button
