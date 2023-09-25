@@ -8,13 +8,18 @@ const Host = process.env.REACT_APP_SERVER_HOST;
 export default function ConstructorBlockRenderer({ block }) {
   const [activeSlide, setActiveSlide] = useState(0);
 
+  if (!block || !Array.isArray(block) || block.length === 0) {
+    return null; 
+  }
+  
+
   const renderImageWithDescription = (block) => {
     let imageUrl = "";
     let description = "";
 
-    block.forEach((item) => {
-      if (item.label === "Картинка с описанием") imageUrl = item.value[0];
-      if (item.label === "Описание картинки") description = item.value;
+    block?.forEach((item) => {
+      if (item?.label === "Картинка с описанием") imageUrl = item.value?.[0] || "";
+      if (item?.label === "Описание картинки") description = item.value || "";
     });
 
     return (
@@ -52,7 +57,7 @@ export default function ConstructorBlockRenderer({ block }) {
     const images = block[0].value;
     return (
       <div className={styles.gridContainer}>
-        {images.slice(0, 2).map((img, index) => (
+        {images?.slice(0, 2).map((img, index) => (
           <img
             className={styles.horizontalImage}
             key={index}
@@ -73,7 +78,7 @@ export default function ConstructorBlockRenderer({ block }) {
     const images = block[0].value;
     return (
       <div className={styles.imageBlockTwo}>
-        {images.map((el, index) => (
+        {images?.map((el, index) => (
           <img
             className={styles.imageBlockTwo__gridImage}
             key={index}
@@ -213,6 +218,9 @@ export default function ConstructorBlockRenderer({ block }) {
       ),
     };
 
+    console.log('Block:', block);
+
+
     return (
       <div
         className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockFive} ${styles.slider_container}`}
@@ -243,7 +251,7 @@ export default function ConstructorBlockRenderer({ block }) {
   //   );
   // };
 
-  switch (block[0].label) {
+  switch (block[0]?.label) {
     case "Картинка с описанием":
       return renderImageWithDescription(block);
     case "Заголовок":
