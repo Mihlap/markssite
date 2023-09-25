@@ -22,6 +22,7 @@ import styles from "./ArticleCard.module.css";
 
 import next from ".././icons/next.svg";
 import previous from ".././icons/previous.svg";
+import ConstructorBlockRenderer from "./ConstructorArticle/ConstructorBlockRender";
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
@@ -199,6 +200,9 @@ const ArticleCard = () => {
 
   const previousArticle = articles[previousIndex];
   const nextArticle = articles[nextIndex];
+  const userSelectedBlocks = article?.ConstructorArticles?.map((el) => el.data);
+
+  console.log(userSelectedBlocks, "<<--- userSelectedBlocks");
 
   console.log(article, "===========================================");
 
@@ -264,139 +268,46 @@ const ArticleCard = () => {
               </div>
               <div className={styles.result_container}></div>
             </div>
-            {article.imageAuthor && ( 
-            <div ref={refs.blockRight} className={styles.header_content_right}>
-              <div className={styles.local_container_photo_author}>
-                <img
-                  className={styles.container__imageAuthor_articleCard}
-                  src={`${Host}/images/imageArticle/${article.imageAuthor}`}
-                  alt={article.imageAuthor}
-                />
-                <div className={styles.author_name}>{article.author}</div>
-                <div className={styles.text_author}>Автор статьи</div>
+            {article.imageAuthor && (
+              <div
+                ref={refs.blockRight}
+                className={styles.header_content_right}
+              >
+                <div className={styles.local_container_photo_author}>
+                  <img
+                    className={styles.container__imageAuthor_articleCard}
+                    src={`${Host}/images/imageArticle/${article.imageAuthor}`}
+                    alt={article.imageAuthor}
+                  />
+                  <div className={styles.author_name}>{article.author}</div>
+                  <div className={styles.text_author}>Автор статьи</div>
+                </div>
               </div>
-            </div>
             )}
           </div>
           <div className={styles.blockImg}>
             <div className={styles.container}>
               <div className={styles.item} ref={refs.leftImg1}>
-                <img                  
+                <img
                   className={styles.item_img}
                   src={`${Host}/images/imageArticle/${article.imageOpen}`}
                   alt={article.imageOpen}
                 />
-              <div className={styles.leftImg1_object_text1}>
-                {article.textBlock}
-              </div>
-              </div>
-              <div className={styles.header_quote_container}>
-                <div
-                  ref={refs.quoteBlockLeft}
-                  className={styles.quoteBlock_object_container}
-                >
-                  {article.QuoteBlocks.map((block, index) => (
-                    <div key={index} className={styles.quoteBlock_object_block}>
-                      {/* <div className={styles.quoteBlock_object_title}>
-                        {block.title}
-                      </div> */}
-                      <div className={styles.quoteBlock_object_text1}>
-                        {block.text}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <div
-                  ref={refs.quoteBlockRight}
-                  className={styles.quoteBlock_object_container_avatar}
-                >
-                  {article.QuoteBlocks.map((block, index) => (
-                     block.avatar && ( 
-                    <div
-                      key={index}
-                      className={styles.quoteBlock_object_block1}
-                    >
-                      <div className={styles.quoteBlock_object_avatar}>
-                        <img
-                          className={styles.container__imageAuthor_articleCard}
-                          src={`${Host}/images/imageArticle/${block.avatar}`}
-                          alt={block.avatar}
-                        />
-                      <div className={styles.author_name_block_avatar}>
-                        {block.title}
-                      </div>
-                      </div>
-                    </div>
-                     )
-                  ))}
-                </div>
-              </div>
-              <div
-                ref={refs.frameBlock}
-                className={styles.frameBlock_object_container}
-              >
-                {article.FrameBlocks.map((block, index) => (
-                  <div key={index} className={styles.frameBlock_object_block}>
-                    <div className={styles.frameBlock_object_text}>
-                      {block.text}
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div
-                ref={refs.blockHeadingTitle}
-                className={styles.blockHeadingTitle_object_container}
-              >
-                {article.BlockHeadingTitles.map((block, index) => (
-                  <div
-                    key={index}
-                    className={styles.blockHeadingTitle_object_block}
-                  >
-                    <div className={styles.blockHeadingTitle_object_title}>
-                      {block.title}
-                    </div>
-                    <div className={styles.blockHeadingTitle_object_text}>
-                      {block.text}
-                    </div>
-                  </div>
-                ))}
-              </div>
-              <div
-                ref={refs.imageToDescriptionArticle}
-                className={styles.imageToDescriptionArticle_container}
-              >
-                {article.ImageToDescriptionArticles.map((block, index) => (
-                  <div
-                    key={index}
-                    className={styles.imageToDescriptionArticle_block}
-                  >
-                    <div className={styles.item_imageToDescriptionArticle}>
-                      <img
-                        className={styles.item_img}
-                        src={`${Host}/images/imageArticle/${block.image}`}
-                        alt={block.image}
-                      />
-                    </div>
-
-                    <div className={styles.imageToDescriptionArticle_title}>
-                      {block.text}
-                    </div>
-                  </div>
-                ))}
-                <div
-                  className={styles.item_container_imageClose}
-                  ref={refs.imageClose}
-                >
-                  <div className={styles.item}>
-                    <img
-                      className={styles.item_img}
-                      src={`${Host}/images/imageArticle/${article.imageClose}`}
-                      alt={article.imageClose}
-                    />
-                  </div>
+                <div className={styles.leftImg1_object_text1}>
+                  {article.textBlock}
                 </div>
               </div>
             </div>
+          </div>
+
+          <div style={{ width: "80%", paddingLeft: "1.75rem"}} className={styles.div_conteiner}>
+            {userSelectedBlocks?.map((innerBlocks, outerIndex) => (
+              <div key={outerIndex}>
+                {innerBlocks?.map((block, innerIndex) => (
+                  <ConstructorBlockRenderer key={innerIndex} block={block} />
+                ))}
+              </div>
+            ))}
           </div>
           <div
             className={styles.container_author_address_imageClose_share_article}
@@ -468,37 +379,36 @@ const ArticleCard = () => {
               </span>
             </button>
           </div>
-
         </div>
       )}
-          <div className={styles.button_article_articleCard}>
-            {previousArticle && (
-              <Link
-                className={styles.button_article_link_articleCard1}
-                to={`/publication/${previousArticle.id}`}
-              >
-                <div className={styles.previous_svg_articleCard}>
-                  <img src={previous} alt={previous} />
-                  <span className={styles.previous__span_articleCard}>
-                    {`${previousArticle.title}`}
-                  </span>
-                </div>
-              </Link>
-            )}
-            {nextArticle && (
-              <Link
-                className={styles.button_article_link_articleCard2}
-                to={`/publication/${nextArticle.id}`}
-              >
-                <div className={styles.next_svg_articleCard}>
-                  <span className={styles.next__span_articleCard}>
-                    {`${nextArticle.title}`}
-                  </span>
-                  <img src={next} alt={next} />
-                </div>
-              </Link>
-            )}
-          </div>
+      <div className={styles.button_article_articleCard}>
+        {previousArticle && (
+          <Link
+            className={styles.button_article_link_articleCard1}
+            to={`/publication/${previousArticle.id}`}
+          >
+            <div className={styles.previous_svg_articleCard}>
+              <img src={previous} alt={previous} />
+              <span className={styles.previous__span_articleCard}>
+                {`${previousArticle.title}`}
+              </span>
+            </div>
+          </Link>
+        )}
+        {nextArticle && (
+          <Link
+            className={styles.button_article_link_articleCard2}
+            to={`/publication/${nextArticle.id}`}
+          >
+            <div className={styles.next_svg_articleCard}>
+              <span className={styles.next__span_articleCard}>
+                {`${nextArticle.title}`}
+              </span>
+              <img src={next} alt={next} />
+            </div>
+          </Link>
+        )}
+      </div>
       <div className={styles.article_name_text}>Ещё по теме</div>
       <div className={styles.swiper_article_container}>
         {/* <SwiperContainerProgect projects={projects} /> */}
@@ -538,7 +448,7 @@ const ArticleCard = () => {
               slidesPerView: 1.4,
             },
             800: {
-              slidesPerView: 1.2
+              slidesPerView: 1.2,
             },
           }}
         >
