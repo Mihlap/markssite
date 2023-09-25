@@ -50,7 +50,7 @@ export default function ConstructorPage({ handleClick }) {
       <div
         className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockSeven}`}
         onClick={() =>
-          handleClick([{ type: "textarea", label: "блок описание" }])
+          handleClick([{ type: "textarea", label: "Блок описание" }])
         }
       >
         <img src={svg7} alt="svg_two_icon" />
