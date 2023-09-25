@@ -1,4 +1,4 @@
-
+const { transliterate } = require("transliteration");
 // formHelpers.js
 export const removePreviewPhoto = (
   previewPhotos,
@@ -94,14 +94,19 @@ function formatNumberWithThousandSeparator(number) {
   return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
 }
 
-
 function generateUniqueName(originalName) {
   const timestamp = Date.now();
-  const randomNum = Math.floor(Math.random() * 10000); // 4-значное число
+  const randomNum = Math.floor(Math.random() * 10000);
   const fileExtension = originalName.split(".").pop();
-  const sliceOfOriginalName = originalName.slice(0, 5); // первые 5 символов исходного имени
 
-  return `file_${sliceOfOriginalName}_${timestamp}_${randomNum}.${fileExtension}`;
+  // Транслитерация части оригинального имени файла
+  const sliceOfOriginalName = transliterate(originalName.slice(0, 5));
+
+  const newName = `file_${sliceOfOriginalName}_${timestamp}_${randomNum}.${fileExtension}`;
+
+  console.log("Generated name:", newName);
+
+  return newName;
 }
 
 export function changeHandler(

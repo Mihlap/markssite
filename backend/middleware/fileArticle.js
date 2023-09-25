@@ -1,17 +1,15 @@
 const multer = require('multer');
-const { v4: uuidv4 } = require('uuid');
 
 const storage = multer.diskStorage({
   destination(req, file, cb) {
     cb(null, 'images/imageArticle/');
   },
   filename(req, file, cb) {
-    const uniqueSuffix = uuidv4();
-    cb(null, `${uniqueSuffix}-${file.originalname}`);
+    cb(null, `${file.originalname}`);
   },
 });
 
-const types = ['image/png', 'image/jpeg', 'image/jpg', 'image/HEIC', 'image/mp4'];
+const types = ['image/png', 'image/jpeg', 'image/jpg', 'image/HEIC'];
 
 const fileFilter = (req, file, cb) => {
   if (types.includes(file.mimetype)) {
@@ -22,3 +20,4 @@ const fileFilter = (req, file, cb) => {
 };
 
 module.exports = multer({ storage, fileFilter });
+

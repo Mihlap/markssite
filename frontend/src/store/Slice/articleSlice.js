@@ -59,29 +59,73 @@ export const fetchArticle =
     dispatch(fetchArticleStart());
     console.log(formattedData, "<<---");
     const formData = new FormData();
-    for (const key in formattedData) {
-      if (key === "imageToDescriptionArticlesImg") {
-        if (formattedData[key]) {
-          formData.append(key, formattedData[key]);
-        }
-      } else if (key === "quoteBlockAvatar") {
-        if (formattedData[key]) {
-          formData.append(key, formattedData[key]);
-        }
-      } else if (typeof formattedData[key] === "object") {
-        if (key === "photoAva" && formattedData[key].length > 0) {
-          formData.append("photoAva", formattedData[key][0]);
-        } else if (key === "imageOpen" && formattedData[key].length > 0) {
-          formData.append("imageOpen", formattedData[key][0]);
-        } else {
-          for (const file of formattedData[key]) {
-            formData.append(key, file);
+        for (const key in formattedData) {
+          if (typeof formattedData[key] === "object") {
+            if (key === "photoAva" && formattedData[key].length > 0) {
+              formData.append("photoAva", formattedData[key][0]);
+            } else if (key === "imageOpen" && formattedData[key].length > 0) {
+              formData.append("imageOpen", formattedData[key][0]);
+              console.log("imageOpen", formattedData[key]);
+            } else if (
+              key === "dynamicBlocks" &&
+              formattedData[key].length > 0
+            ) {
+              console.log("зашел сюда", formattedData[key]);
+
+              let data = formattedData[key];
+
+              let photosArray = [];
+
+              data.forEach((outerObj) => {
+                outerObj.forEach((innerObj) => {
+                  if (
+                    innerObj.type === "file" &&
+                    Array.isArray(innerObj.value) &&
+                    innerObj.value.length > 0
+                  ) {
+                    photosArray = photosArray.concat(innerObj.value);
+                  }
+                });
+              });
+
+              const cloneDynamicBlocks = formattedData.dynamicBlocks.map(
+                (outerArray) => {
+                  return outerArray.map((obj) => {
+                    if (obj.type === "file" && Array.isArray(obj.value)) {
+                      // Делаем копию объекта и заменяем value на массив имен файлов
+                      return {
+                        ...obj,
+                        value: obj.value.map((file) =>
+                          file ? file.name : null
+                        ),
+                      };
+                    }
+                    return obj; // Если это не файл, просто возвращаем исходный объект
+                  });
+                }
+              );
+
+              formData.append(
+                "dynamicBlocksJSON",
+                JSON.stringify(cloneDynamicBlocks)
+              );
+
+              // console.log("консоль с trycode", photosArray);
+              photosArray.forEach((photo) => {
+                formData.append("dynamicImages", photo);
+              });
+            } else {
+              for (const file of formattedData[key]) {
+                // console.log("file", file);
+                formData.append(key, file);
+                //  обрати внимание во сюда, тут в file лежат объекты с фотографиями!
+                //  они и есть dropPhoto на бекенде
+              }
+            }
+          } else {
+            formData.append(key, formattedData[key]);
           }
         }
-      } else {
-        formData.append(key, formattedData[key]);
-      }
-    }
 
     axios.post(`${serverHost}/api-article/postzapros`, formData).then(() => {
       setInputData({
@@ -97,15 +141,6 @@ export const fetchArticle =
         imageOpen: [],
         textBlock: "",
         imageClose: [],
-        blockHeadingTitle: "",
-        blockHeadingText: "",
-        textBlockArticles: "",
-        frameBlock: "",
-        imageToDescriptionArticlesText: "",
-        imageToDescriptionArticlesImg: "",
-        quoteBlockTitle: "",
-        quoteBlockText: "",
-        quoteBlockAvatar: "",
       });
       setPreviewPhotos([]);
       setPreviewPhotoAva([]);
@@ -113,7 +148,7 @@ export const fetchArticle =
       setPreviewPhotoClose([]);
       dispatch(getFetchFormArticle()); // Добавлен этот вызов для получения обновленных данных после успешной отправки формы
     });
-    console.log(formattedData, "REDUX");
+    console.log(formattedData, "<<<---REDUX ARTICLES");
   };
 
 export const getFetchFormArticle = () => async (dispatch, getState) => {
@@ -121,17 +156,16 @@ export const getFetchFormArticle = () => async (dispatch, getState) => {
   const selectedType = getState().article.selectedType;
 
   try {
-    const response = await axios.get(
-      `${serverHost}/api-article/getzapros`
-    );
+    const response = await axios.get(`${serverHost}/api-article/getzapros`);
     let filteredArticles = response.data;
-    
+
     if (selectedType !== "Все") {
-      filteredArticles = filteredArticles.filter(article => article.selectCompetencies === selectedType);
+      filteredArticles = filteredArticles.filter(
+        (article) => article.selectCompetencies === selectedType
+      );
     }
-    
-   dispatch(fetchArticleSuccess(filteredArticles));
-   
+
+    dispatch(fetchArticleSuccess(filteredArticles));
   } catch (error) {
     dispatch(fetchArticleFailure(error.message));
   }

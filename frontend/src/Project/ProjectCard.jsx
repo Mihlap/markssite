@@ -23,7 +23,7 @@ import {
 
 import next from ".././icons/next.svg";
 import previous from ".././icons/previous.svg";
-import ConstructorBlockRenderer from "./ConstructorBlockRenderer";
+import ConstructorBlockRenderer from "./ConstructorProject/ConstructorBlockRenderer";
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 

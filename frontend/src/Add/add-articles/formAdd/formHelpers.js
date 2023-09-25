@@ -1,3 +1,5 @@
+const { transliterate } = require("transliteration");
+
 // formHelpers.js
 export const removePreviewPhoto = (
   previewPhotos,
@@ -89,8 +91,26 @@ export const removePreviewPhotoClose = (
   }));
 };
 
-// функция сборщика, тут у нас запускаются if-else на превью фото для картинок
-// функция сборщика, тут у нас запускаются if-else на превью фото для картинок
+
+function formatNumberWithThousandSeparator(number) {
+  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+}
+
+function generateUniqueName(originalName) {
+  const timestamp = Date.now();
+  const randomNum = Math.floor(Math.random() * 10000);
+  const fileExtension = originalName.split(".").pop();
+
+  // Транслитерация части оригинального имени файла
+  const sliceOfOriginalName = transliterate(originalName.slice(0, 5));
+
+  const newName = `file_${sliceOfOriginalName}_${timestamp}_${randomNum}.${fileExtension}`;
+
+  console.log("Generated name:", newName);
+
+  return newName;
+}
+
 export function changeHandler(
   event,
   inputData,
@@ -102,64 +122,68 @@ export function changeHandler(
   setPreviewPhotoOpen,
   setIsPhotoOpenVisible,
   setPreviewPhotoClose,
-  setIsPhotoCloseVisible,
+  setIsPhotoCloseVisible
 ) {
   if (event.target.files) {
-    if (event.target.name === "dropPhoto") {
-      const filesArray = Array.from(event.target.files);
-      setInputData((prev) => ({
-        ...prev,
-        dropPhoto: filesArray,
-      }));
-      setIsDropPhotoVisible(false);
+    const originalFiles = Array.from(event.target.files);
 
-      const previewArray = filesArray.map((file) => URL.createObjectURL(file));
-      setPreviewPhotos(previewArray);
+    let newFiles = originalFiles.map((originalFile) => {
+      const uniqueName = generateUniqueName(originalFile.name);
+      return new File([originalFile], uniqueName, { type: originalFile.type });
+    });
 
-      event.target.style.display = "none";
-    } else if (event.target.name === "photoAva") {
-      const filesArrayAva =
-        event.target.files.length > 0 ? event.target.files : null;
-      setInputData((prev) => ({
-        ...prev,
-        photoAva: filesArrayAva,
-      }));
-      setIsPhotoAvaVisible(false);
-      const previewArray = Array.from(filesArrayAva).map((file) =>
-        URL.createObjectURL(file)
-      );
-      setPreviewPhotoAva(previewArray);
-
-      event.target.style.display = "none";
-    } else if (event.target.name === "imageOpen") {
-      const filesArrayOpen =
-        event.target.files.length > 0 ? event.target.files : null;
-      setInputData((prev) => ({
-        ...prev,
-        imageOpen: filesArrayOpen,
-      }));
-      setIsPhotoOpenVisible(false);
-      const previewArray = Array.from(filesArrayOpen).map((file) =>
-        URL.createObjectURL(file)
-      );
-      setPreviewPhotoOpen(previewArray);
-
-      event.target.style.display = "none";
-    } else if (event.target.name === "imageClose") {
-      const filesArrayOpen =
-        event.target.files.length > 0 ? event.target.files : null;
-      setInputData((prev) => ({
-        ...prev,
-        imageClose: filesArrayOpen,
-      }));
-      setIsPhotoCloseVisible(false);
-      const previewArray = Array.from(filesArrayOpen).map((file) =>
-        URL.createObjectURL(file)
-      );
-      setPreviewPhotoClose(previewArray);
-
-      event.target.style.display = "none";
+    switch (event.target.name) {
+      case "dropPhoto":
+        setInputData((prev) => ({
+          ...prev,
+          dropPhoto: newFiles,
+        }));
+        setIsDropPhotoVisible(false);
+        setPreviewPhotos(newFiles.map((file) => URL.createObjectURL(file)));
+        break;
+      case "photoAva":
+        setInputData((prev) => ({
+          ...prev,
+          photoAva: newFiles,
+        }));
+        setIsPhotoAvaVisible(false);
+        setPreviewPhotoAva(newFiles.map((file) => URL.createObjectURL(file)));
+        break;
+      case "imageOpen":
+        setInputData((prev) => ({
+          ...prev,
+          imageOpen: newFiles,
+        }));
+        setIsPhotoOpenVisible(false);
+        setPreviewPhotoOpen(newFiles.map((file) => URL.createObjectURL(file)));
+        break;
+      case "imageClose":
+        setInputData((prev) => ({
+          ...prev,
+          imageClose: newFiles,
+        }));
+        setIsPhotoCloseVisible(false);
+        setPreviewPhotoClose(newFiles.map((file) => URL.createObjectURL(file)));
+        break;
+      default:
+        console.error("Unrecognized input name:", event.target.name);
+        break;
     }
+
+    event.target.style.display = "none";
+  } else if (
+    event.target.name === "totalArea" ||
+    event.target.name === "siteArea" ||
+    event.target.name === "floors" ||
+    event.target.name === "altitude" ||
+    event.target.name === "constructionVolume"
+  ) {
+    const onlyDigits = event.target.value.replace(/\D+/g, "");
+    const formattedValue = formatNumberWithThousandSeparator(onlyDigits);
+    setInputData((prev) => ({
+      ...prev,
+      [event.target.name]: formattedValue,
+    }));
   } else {
     setInputData((prev) => ({
       ...prev,

@@ -9,29 +9,10 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate({
-      User,
-      BlockHeadingTitle,
-      TextBlockArticles,
-      FrameBlock,
-      ImageToDescriptionArticles,
-      QuoteBlock,
-      NotesBlock,
-      ImageTwoArticles,
-      ImageSliderArticles,
-      VideoArticles,
-    }) {
+    static associate({ User, ConstructorArticles }) {
       // define association here
       this.belongsTo(User, { foreignKey: 'authorId' });
-      this.hasMany(BlockHeadingTitle, { foreignKey: 'idBlock' });
-      this.hasMany(TextBlockArticles, { foreignKey: 'idBlock' });
-      this.hasMany(FrameBlock, { foreignKey: 'idBlock' });
-      this.hasMany(ImageToDescriptionArticles, { foreignKey: 'idBlock' });
-      this.hasMany(QuoteBlock, { foreignKey: 'idBlock' });
-      this.hasMany(NotesBlock, { foreignKey: 'idBlock' });
-      this.hasMany(ImageTwoArticles, { foreignKey: 'idBlock' });
-      this.hasMany(ImageSliderArticles, { foreignKey: 'idBlock' });
-      this.hasMany(VideoArticles, { foreignKey: 'idBlock' });
+      this.hasMany(ConstructorArticles, { foreignKey: 'idBlock' });
     }
   }
   Articles.init(

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import Select from "react-select";
+import {transliterate} from "transliteration";
 import styles from "./FormAddProject.module.scss";
 import { fetchProject } from "../../../store/Slice/projectSlice";
 import {
@@ -29,6 +30,7 @@ export default function FormAddProject({ setIsModalOpen }) {
   const [isPhotoOpenVisible, setIsPhotoOpenVisible] = useState(true);
   const [isPhotoAvaVisible, setIsPhotoAvaVisible] = useState(true);
   const [isDropPhotoVisible, setIsDropPhotoVisible] = useState(true);
+  const [selectedRadio, setSelectedRadio] = useState("28,28");
 
   // << ==== КОНСТУКТОР ==== >>
   // состояние для хранения текущего значения инпута
@@ -38,7 +40,6 @@ export default function FormAddProject({ setIsModalOpen }) {
   const [blocks, setBlocks] = useState([]);
   const [dynamicPreviews, setDynamicPreviews] = useState([]);
 
-  const [selectedRadio, setSelectedRadio] = useState("28,28");
 
   const [dynamicData, setDynamicData] = useState([]);
   const [inputData, setInputData] = useState({
@@ -208,17 +209,21 @@ export default function FormAddProject({ setIsModalOpen }) {
         value: "",
       };
     }
-    function generateUniqueName(originalName) {
-      const timestamp = Date.now();
-      const randomNum = Math.floor(Math.random() * 10000);
-      const fileExtension = originalName.split(".").pop();
-      const sliceOfOriginalName = originalName.slice(0, 5);
-      const newName = `file_${sliceOfOriginalName}_${timestamp}_${randomNum}.${fileExtension}`;
+ function generateUniqueName(originalName) {
+   const timestamp = Date.now();
+   const randomNum = Math.floor(Math.random() * 10000);
+   const fileExtension = originalName.split(".").pop();
 
-      console.log("Generated name:", newName);
+   // Транслитерация части оригинального имени файла
+   const sliceOfOriginalName = transliterate(originalName.slice(0, 5));
 
-      return newName;
-    }
+   const newName = `file_${sliceOfOriginalName}_${timestamp}_${randomNum}.${fileExtension}`;
+
+   console.log("Generated name:", newName);
+
+   return newName;
+ }
+
     if (Array.isArray(value) && value[0] instanceof File) {
       const newFiles = value.map((originalFile) => {
         const uniqueName = generateUniqueName(originalFile.name);
@@ -418,8 +423,8 @@ export default function FormAddProject({ setIsModalOpen }) {
     });
   };
 
-  console.log(inputData, "<<--inputData PROJECT");
-  console.log(dynamicData, "<<--dynamicData");
+  // console.log(inputData, "<<--inputData PROJECT");
+  // console.log(dynamicData, "<<--dynamicData");
   return (
     <div className={styles.form_container}>
       <div className={styles.form_container__title}>Новый проект</div>
