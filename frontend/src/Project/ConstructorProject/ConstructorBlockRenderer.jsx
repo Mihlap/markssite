@@ -19,7 +19,7 @@ export default function ConstructorBlockRenderer({ block }) {
 
     block?.forEach((item) => {
       if (item?.label === "Картинка с описанием") imageUrl = item.value?.[0] || "";
-      if (item?.label === "Описание картинки") description = item.value || "";
+      if (item?.label === "Описание картинки") description = item?.value || "";
     });
 
     return (
@@ -218,7 +218,7 @@ export default function ConstructorBlockRenderer({ block }) {
       ),
     };
 
-    console.log('Block:', block);
+    // console.log('Block:', block);
 
 
     return (
