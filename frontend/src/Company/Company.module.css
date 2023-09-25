@@ -120,7 +120,7 @@
   position: absolute;
   display: flex;
   flex-direction: column;
-  bottom: 50%;
+  bottom: 30%;
   left: 10vw;
   max-width: 100%;
   z-index: 1;
