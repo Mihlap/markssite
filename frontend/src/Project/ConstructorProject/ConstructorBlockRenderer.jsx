@@ -8,11 +8,12 @@ const Host = process.env.REACT_APP_SERVER_HOST;
 export default function ConstructorBlockRenderer({ block }) {
   const [activeSlide, setActiveSlide] = useState(0);
 
-  if (!block || !Array.isArray(block) || block.length === 0) {
-    return null; 
-  }
-  
+  // if (!block || !Array.isArray(block) || block.length === 0) {
+  //   return null; 
+  // }
 
+  // console.log(block, '&&&&&&&&&&&&&&&&&&&&&&&');
+  
   const renderImageWithDescription = (block) => {
     let imageUrl = "";
     let description = "";
