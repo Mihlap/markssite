@@ -218,7 +218,7 @@ export default function ConstructorBlockRenderer({ block }) {
         className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockFive} ${styles.slider_container}`}
       >
         <Slider {...settings}>
-          {images.map((img, index) => (
+          {images?.map((img, index) => (
             <div key={index} style={sliderImageContainerStyle}>
               <img
                 style={sliderImageStyle}
