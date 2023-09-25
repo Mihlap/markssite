@@ -12,9 +12,9 @@ export default function ConstructorBlockRenderer({ block }) {
     let imageUrl = "";
     let description = "";
 
-    block.forEach((item) => {
-      if (item.label === "Картинка с описанием") imageUrl = item.value[0];
-      if (item.label === "Описание картинки") description = item.value;
+    block?.forEach((item) => {     
+    if (item?.label === "Картинка с описанием") imageUrl = item.value?.[0] || "";
+    if (item?.label === "Описание картинки") description = item?.value || "";
     });
 
     return (
@@ -35,9 +35,9 @@ export default function ConstructorBlockRenderer({ block }) {
     let header = "";
     let text = "";
 
-    block.forEach((item) => {
-      if (item.label === "Заголовок") header = item.value;
-      if (item.label === "Текстовый блок") text = item.value;
+    block?.forEach((item) => {
+      if (item?.label === "Заголовок") header = item?.value;
+      if (item?.label === "Текстовый блок") text = item?.value;
     });
 
     return (
@@ -49,10 +49,10 @@ export default function ConstructorBlockRenderer({ block }) {
   };
 
   const renderThreeImages = (block, index) => {
-    const images = block[0].value;
+    const images = block[0]?.value;
     return (
       <div className={styles.gridContainer}>
-        {images.slice(0, 2).map((img, index) => (
+        {images?.slice(0, 2).map((img, index) => (
           <img
             className={styles.horizontalImage}
             key={index}
@@ -70,10 +70,10 @@ export default function ConstructorBlockRenderer({ block }) {
   };
 
   const renderTwoImage = (block, index) => {
-    const images = block[0].value;
+    const images = block[0]?.value;
     return (
       <div className={styles.imageBlockTwo}>
-        {images.map((el, index) => (
+        {images?.map((el, index) => (
           <img
             className={styles.imageBlockTwo__gridImage}
             key={index}
@@ -86,7 +86,7 @@ export default function ConstructorBlockRenderer({ block }) {
   };
 
   const renderImageSlider = (block) => {
-    const images = block[0].value;
+    const images = block[0]?.value;
 
     const sliderImageContainerStyle = {
       borderRadius: "10px",
@@ -218,7 +218,7 @@ export default function ConstructorBlockRenderer({ block }) {
         className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockFive} ${styles.slider_container}`}
       >
         <Slider {...settings}>
-          {images.map((img, index) => (
+          {images?.map((img, index) => (
             <div key={index} style={sliderImageContainerStyle}>
               <img
                 style={sliderImageStyle}
@@ -235,7 +235,7 @@ export default function ConstructorBlockRenderer({ block }) {
   const renderTextBlock = (block) => {
     let descriptionTextBlock = "";
 
-    block.forEach((item) => {
+    block?.forEach((item) => {
       if (item.label === "Блок описание") descriptionTextBlock = item.value;
     });
 
@@ -245,7 +245,7 @@ export default function ConstructorBlockRenderer({ block }) {
   const renderTextFramed = (block) => {
     let descriptionText = "";
 
-    block.forEach((item) => {
+    block?.forEach((item) => {
       if (item.label === "Текст в рамочке") descriptionText = item.value;
     });
 
@@ -261,7 +261,7 @@ export default function ConstructorBlockRenderer({ block }) {
     let author = "";
     let imageUrl = "";
 
-    block.forEach((item) => {
+    block?.forEach((item) => {
       if (item.label === "Автор цитаты ( ФИО должность )") quote = item.value;
       if (item.label === "Текст цитаты") author = item.value;
       if (item.label === "Фото автора статьи") imageUrl = item.value[0];
@@ -289,7 +289,7 @@ export default function ConstructorBlockRenderer({ block }) {
   const renderNoteBlock = (block) => {
     let noteBlockText = "";
 
-    block.forEach((item) => {
+    block?.forEach((item) => {
       if (item.label === "Текст заметки") noteBlockText = item.value;
     });
     return (
@@ -310,7 +310,7 @@ export default function ConstructorBlockRenderer({ block }) {
   //   );
   // };
 
-  switch (block[0].label) {
+  switch (block[0]?.label) {
     case "Картинка с описанием":
       return renderImageWithDescription(block);
     case "Заголовок":
