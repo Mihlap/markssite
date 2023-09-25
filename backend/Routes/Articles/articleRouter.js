@@ -86,19 +86,33 @@ router.get('/getzapros', async (req, res) => {
   }
 });
 
-  // эта функция нужна для того, чтоб удалять из imageTitle фотографии есть там не массив 
-  const deleteImage = (imageName) => {
-    const imagePath = path.join(__dirname, '..', 'images/imageArticle', imageName);
-    console.log(`Trying to delete file: ${imagePath}`);
-    if (fs.existsSync(imagePath)) {
-      fs.unlinkSync(imagePath);
+const deleteImage = (imageName) => {
+  const imagePath = path.join(__dirname, '..', '..', 'images', 'imageArticle', imageName);
+
+  // console.log(`Пытаюсь удалить изображение по пути: ${imagePath}`);
+
+  fs.unlink(imagePath, (err) => {
+    if (err) {
+      console.error(`Ошибка при удалении изображения ${imageName}:`, err);
+    } else {
+      // console.log(`Изображение ${imageName} успешно удалено.`);
     }
-  };
+  });
+};
   
   router.delete('/deletezapros/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const post = await Articles.findByPk(id);
+    const deleteConstructorImg = await ConstructorArticles.findByPk(id);
+
+     if (deleteConstructorImg.image) {
+       console.log('ЗАШЕЛ СЮДА');
+       const imageConstructorNames = deleteConstructorImg.image.includes(', ')
+         ? deleteConstructorImg.image.split(', ')
+         : [deleteConstructorImg.image];
+       imageConstructorNames.forEach(deleteImage);
+     }
 
     // Удаление фотографий из imageTitle
     if (post.imageTitle) {
@@ -127,11 +141,7 @@ router.get('/getzapros', async (req, res) => {
     }
 
     // Удаление связанных элементов из других таблиц
-    await BlockHeadingTitle.destroy({ where: { idBlock: id } });
-    await TextBlockArticles.destroy({ where: { idBlock: id } });
-    await FrameBlock.destroy({ where: { idBlock: id } });
-    await ImageToDescriptionArticles.destroy({ where: { idBlock: id } });
-    await QuoteBlock.destroy({ where: { idBlock: id } });
+    await ConstructorArticles.destroy({ where: { idBlock: id } });
 
     // Удаление поста
     await Articles.destroy({ where: { id } });
