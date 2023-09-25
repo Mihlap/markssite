@@ -139,13 +139,13 @@ router.delete('/deletezapros/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const post = await Project.findByPk(id);
-    const test = await Constructor.findByPk(id);
+    const deleteConstructorImg = await Constructor.findByPk(id);
 
-    if (test.image) {
+    if (deleteConstructorImg.image) {
       console.log('ЗАШЕЛ СЮДА');
-      const imageConstructorNames = test.image.includes(', ')
-        ? test.image.split(', ')
-        : [test.image];
+      const imageConstructorNames = deleteConstructorImg.image.includes(', ')
+        ? deleteConstructorImg.image.split(', ')
+        : [deleteConstructorImg.image];
       imageConstructorNames.forEach(deleteImage);
     }
 

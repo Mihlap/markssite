@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import Slider from "react-slick";
-import styles from "./ConstructorBlockRenderer.module.scss";
-import "./stylePaginationSlider.css";
+import styles from "../../Project/ConstructorProject/ConstructorBlockRenderer.module.scss";
+import "../../Project/stylePaginationSlider.css";
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 
@@ -21,7 +21,7 @@ export default function ConstructorBlockRenderer({ block }) {
       <div className={styles.containerImageToDescription}>
         <img
           className={styles.containerImageToDescription__img}
-          src={`${Host}/images/imageAdd/${imageUrl}`}
+          src={`${Host}/images/imageArticle/${imageUrl}`}
           alt="Описание"
         />
         <div className={styles.containerImageToDescription__text}>
@@ -56,13 +56,13 @@ export default function ConstructorBlockRenderer({ block }) {
           <img
             className={styles.horizontalImage}
             key={index}
-            src={`${Host}/images/imageAdd/${img}`}
+            src={`${Host}/images/imageArticle/${img}`}
             alt="Horizontal_image"
           />
         ))}
         <img
           className={styles.verticalImage}
-          src={`${Host}/images/imageAdd/${images[2]}`}
+          src={`${Host}/images/imageArticle/${images[2]}`}
           alt="Vertical_image"
         />
       </div>
@@ -77,13 +77,13 @@ export default function ConstructorBlockRenderer({ block }) {
           <img
             className={styles.imageBlockTwo__gridImage}
             key={index}
-            src={`${Host}/images/imageAdd/${el}`}
+            src={`${Host}/images/imageArticle/${el}`}
             alt="img_two"
           />
         ))}
       </div>
     );
-  };  
+  };
 
   const renderImageSlider = (block) => {
     const images = block[0].value;
@@ -222,7 +222,7 @@ export default function ConstructorBlockRenderer({ block }) {
             <div key={index} style={sliderImageContainerStyle}>
               <img
                 style={sliderImageStyle}
-                src={`${Host}/images/imageAdd/${img}`}
+                src={`${Host}/images/imageArticle/${img}`}
                 alt="Slider_image"
               />
             </div>
@@ -232,6 +232,73 @@ export default function ConstructorBlockRenderer({ block }) {
     );
   };
 
+  const renderTextBlock = (block) => {
+    let descriptionTextBlock = "";
+
+    block.forEach((item) => {
+      if (item.label === "Блок описание") descriptionTextBlock = item.value;
+    });
+
+    return <div className={styles.text_block}>{descriptionTextBlock}</div>;
+  };
+
+  const renderTextFramed = (block) => {
+    let descriptionText = "";
+
+    block.forEach((item) => {
+      if (item.label === "Текст в рамочке") descriptionText = item.value;
+    });
+
+    return (
+      <div className={styles.text_framed}>
+        <div className={styles.text_framed__text}>{descriptionText}</div>
+      </div>
+    );
+  };
+
+  const renderQuoteBlock = (block) => {
+    let quote = "";
+    let author = "";
+    let imageUrl = "";
+
+    block.forEach((item) => {
+      if (item.label === "Автор цитаты ( ФИО должность )") quote = item.value;
+      if (item.label === "Текст цитаты") author = item.value;
+      if (item.label === "Фото автора статьи") imageUrl = item.value[0];
+    });
+
+    return (
+      <div className={styles.quote_block_constainer}>
+        <div className={styles.quote_block_constainer__text_block}>
+          <div className={styles.quote_block_constainer__quote_text}>
+            {quote}
+          </div>
+          <div className={styles.quote_block_constainer__quote_author}>
+            {author}
+          </div>
+        </div>
+        <div className={styles.quote_block_constainer__author_block}>
+          <img className={styles.quote_block_constainer__img} src={`${Host}/images/imageArticle/${imageUrl}`} alt={author} />
+          <div className={styles.quote_block_constainer__quote}>{quote}</div>
+          <div className={styles.quote_block_constainer__author}>{author}</div>
+        </div>
+      </div>
+    );
+  };
+
+  const renderNoteBlock = (block) => {
+    let noteBlockText = "";
+
+    block.forEach((item) => {
+      if (item.label === "Текст заметки") noteBlockText = item.value;
+    });
+    return (
+      <div className={styles.note_block}>
+        <div className={styles.note_block__bookmark} />
+        <div className={styles.note_block__text}>{noteBlockText}</div>
+      </div>
+    );
+  };
   // const renderVideoBlock = (block) => {
   //   return (
   //     <div
@@ -254,6 +321,14 @@ export default function ConstructorBlockRenderer({ block }) {
       return renderTwoImage(block);
     case "Слайдер *допускается загрузка 8ми изображений":
       return renderImageSlider(block);
+    case "Блок описание":
+      return renderTextBlock(block);
+    case "Текст в рамочке":
+      return renderTextFramed(block);
+    case "Автор цитаты ( ФИО должность )":
+      return renderQuoteBlock(block);
+    case "Текст заметки":
+      return renderNoteBlock(block);
     // case "video":
     //   return renderVideoBlock(block);
     default:
