@@ -34,7 +34,7 @@ import CompanyGroupSlider from "../UI/CompanyGroupSlider/CompanyGroupSlider";
 export default function Company() {
   
   const videoSource = {
- large: "./assets/company_full.mp4",
+  large: "./assets/company_full.mp4",
   medium: "./assets/company_ipad.mp4",
   small: "./assets/company_mob.mp4",
   };
@@ -85,31 +85,31 @@ export default function Company() {
   const symbol = "•";
   const Host = process.env.REACT_APP_SERVER_HOST;
 
-  useEffect(() => {
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-      const screenWidth = window.innerWidth;
-      if (screenWidth >= 1025) {
-        // setVideoSrc(videoSource.large);
-        // setVideoSrc2(videoSource2.large);
-      } else if (screenWidth >= 768 && screenWidth < 1025) {
-        // setVideoSrc(videoSource.medium);
-        // setVideoSrc2(videoSource2.medium);
-      } else {
-        // setVideoSrc(videoSource.small);
-        // setVideoSrc2(videoSource2.small);
-      }
-    };
+  // useEffect(() => {
+  //   const handleResize = () => {
+  //     // setWindowWidth(window.innerWidth);
+  //     const screenWidth = window.innerWidth;
+  //     if (screenWidth >= 1025) {
+  //       // setVideoSrc(videoSource.large);
+  //       // setVideoSrc2(videoSource2.large);
+  //     } else if (screenWidth >= 768 && screenWidth < 1025) {
+  //       // setVideoSrc(videoSource.medium);
+  //       // setVideoSrc2(videoSource2.medium);
+  //     } else {
+  //       // setVideoSrc(videoSource.small);
+  //       // setVideoSrc2(videoSource2.small);
+  //     }
+  //   };
 
-    handleResize();
-    window.addEventListener("resize", handleResize);
+  //   handleResize();
+  //   window.addEventListener("resize", handleResize);
 
-    return () => {
-      if (window) {
-        window.removeEventListener("resize", handleResize);
-      }
-    };
-  }, []);
+  //   return () => {
+  //     if (window) {
+  //       window.removeEventListener("resize", handleResize);
+  //     }
+  //   };
+  // }, []);
 
   useEffect(() => {
     dispatch(selectCard(null));
@@ -238,17 +238,17 @@ export default function Company() {
     // { name: "HR", onClick: handleButtonClick },
   ];
 
-  if (error) {
-    return (
-      <div>
-        {" "}
-        <Error error={error.message} />
-      </div>
-    );
-  }
-  if (loading) {
-    return <LoadingCircle />;
-  }
+  // if (error) {
+  //   return (
+  //     <div>
+  //       {" "}
+  //       <Error error={error.message} />
+  //     </div>
+  //   );
+  // }
+  // if (loading) {
+  //   return <LoadingCircle />;
+  // }
 
   // кнопки временно закоменчены, будут в дальнейшем использованы
         //  {/* <button
