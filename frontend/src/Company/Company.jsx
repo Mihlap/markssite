@@ -32,20 +32,22 @@ import CompanyGroupSlider from "../UI/CompanyGroupSlider/CompanyGroupSlider";
 
 
 export default function Company() {
+  
   const videoSource = {
-    large: "./assets/company_full.mp4",
-    medium: "./assets/company_ipad.mp4",
-    small: "./assets/company_mob.mp4",
+ large: "./assets/company_full.mp4",
+  medium: "./assets/company_ipad.mp4",
+  small: "./assets/company_mob.mp4",
   };
-
+  
   const videoSource2 = {
+    large: "./assets/header_company_full.mp4",
+    medium: "./assets/header_company_ipad.mp4",
     small: "./assets/header_company_mobile.mp4",
-    medium: "./assets/site_Company_ipad.mp4",
-    large: "./assets/site_Company_full.mp4",
   };
- 
 
-  const dispatch = useDispatch();
+  
+
+   const dispatch = useDispatch();
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [countPercent, setCountPercent] = useState(0);
   const [countHuman, setCountHuman] = useState(0);
@@ -88,11 +90,14 @@ export default function Company() {
       setWindowWidth(window.innerWidth);
       const screenWidth = window.innerWidth;
       if (screenWidth >= 1025) {
-        setVideoSrc(videoSource.large);
+        // setVideoSrc(videoSource.large);
+        // setVideoSrc2(videoSource2.large);
       } else if (screenWidth >= 768 && screenWidth < 1025) {
-        setVideoSrc(videoSource.medium);
+        // setVideoSrc(videoSource.medium);
+        // setVideoSrc2(videoSource2.medium);
       } else {
-        setVideoSrc(videoSource.small);
+        // setVideoSrc(videoSource.small);
+        // setVideoSrc2(videoSource2.small);
       }
     };
 
@@ -110,7 +115,7 @@ export default function Company() {
     dispatch(selectCard(null));
     dispatch(fetchCategoryStaff(category));
     setShowCards(true);
-  }, [dispatch, category, error]);
+  }, [dispatch]);
 
   const handleButtonClick = (category, selectedCardId) => {
     if (selectedCardId) {
@@ -119,6 +124,7 @@ export default function Company() {
     } else {
       setIsModalOpen(false);
       dispatch(selectCard(null));
+      setShowCards(true);
       dispatch(fetchCategoryStaff(category));
       setActiveButton(category);
       dispatch(setCategory(category));
@@ -513,11 +519,16 @@ export default function Company() {
                 onClick={() => handleButtonClick(category, el.id)}
               >
                 <div className={styles.wrapper_container_item_stuff}>
+                  {showCards ? (
                   <img
                     className={styles.container__img_stuff}
                     src={`${Host}/images/${el.img}`}
+                    onLoad={() => setShowCards(true)}
                     alt={el.img}
                   />
+                  ) : (
+                 <LoadingCircle/>
+                  )}
                 </div>
                 <div className={styles.container__item_name_stuff}>
                   {el.name}
@@ -956,7 +967,7 @@ export default function Company() {
       )}
       <div className={styles.fon}>
         <div className={styles.video_wrapper}>
-          <video playsInline autoPlay muted loop id="bg-video">
+          <video playsInline autoPlay muted loop id="bg-video_2">
             <source src={videoSrc} type="video/mp4" />
           </video>
         </div>

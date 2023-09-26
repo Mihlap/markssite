@@ -55,7 +55,7 @@ export const {
 } = staffSlice.actions;
 
 export const fetchCategoryStaff =
-  (category) => async (dispatch, getState) => {
+  (category) => async (dispatch) => {
     dispatch(fetchStaffStart());
 
     try {
