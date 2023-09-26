@@ -1178,12 +1178,12 @@ bottom: 3.38rem;
     line-height: 20px;
     color: var(--black-1D2E43);
     padding: 8px 24px;
-    width: 0%;
-  }
+    width: 100%;
+   }
 
-  .button_hover p {
+  .button_hover p{
     width: fit-content;
-  }
+   }
 
   .active {
     background: var(--black-1D2E43) !important;
