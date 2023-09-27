@@ -228,6 +228,7 @@
   overflow-wrap: break-word;
   hyphens: auto;
   word-break: break-all;
+  padding-bottom: 0.5rem;
 }
 
 .blockImg {
@@ -251,8 +252,12 @@
   border-radius: 1.11vw;
 }
 
-.item_img_latest {
+/* .item_img_latest {
   border-radius: 1.11vw 1.11vw 0vw 0vw;
+} */
+
+.item_img_close {
+  border-radius:1.11vw 1.11vw 0vw 0vw;
 }
 
 .item_photo_together {
@@ -269,7 +274,7 @@
   font-family: var(--font-unbounded);
   font-style: normal;
   font-weight: var(--fw-300);
-  font-size: 1.67vw;
+  font-size: 1.5rem;
   line-height: 2.22vw;
   /* padding-right: 22.19vw;
   padding-left: 16.44vw; */
@@ -788,16 +793,16 @@
   .blockImg {
     padding-right: 1rem;
     padding-left: 1rem;
+    width: 100%;
   }
 
   .item:not(:last-child) {
     padding-bottom: 2.5rem;
   }
 
-  .item_img_latest {
+  /* .item_img_latest {
     border-radius: 1.11vw 1.11vw 0vw 0vw;
-  }
-
+  } */
 
   .item_photo_together {
     gap: 2.08vw;
@@ -828,7 +833,10 @@
     flex-direction: row;
     justify-content: space-between;
     margin: 0rem 0rem;
+    padding-right: 1rem;
+    padding-left: 1rem;
   }
+
 
   .button_project_link_projectCard1,
   .button_project_link_projectCard2 {
@@ -1088,19 +1096,29 @@
   }
 
   .blockImg {
-    padding-right: 1rem;
-    padding-left: 1rem;
+    padding-right: 0rem;
+    padding-left: 0rem;
+   
   }
 
 
   .item:not(:last-child) {
     padding-bottom: 2.5rem;
   }
+  .item {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
 
   .item_img_latest {
     border-radius: 1.11vw 1.11vw 0vw 0vw;
+    padding-left: 1rem;
   }
-
+  .item_img_close {
+    border-radius: 0vw 0vw 0vw 0vw;
+    padding-right: 0rem;
+    padding: 0rem;
+   }
 
   .item_photo_together {
     gap: 2.08vw;
@@ -1108,22 +1126,27 @@
 
   .quote_container,
   .description_object_container {
-    display: flex;
+    display: block;
+   width: 100%;
   }
 
   .description_object_title {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    white-space: normal;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-bottom: 1rem;
+  }
+
+  .description_object_text1 {
     padding-left: 1rem;
     padding-right: 1rem;
   }
 
-  .description_object_text1 {
-    padding-left: 0rem;
-    padding-right: 0rem;
-  }
-
   .description_object_block {
     gap: 0rem;
-    padding: 0rem 1rem 0rem 1rem;
+    padding: 0rem 0rem 0rem 0rem;
   }
 
   .button_project_projectCard {
@@ -1201,6 +1224,7 @@
 
   .main_project_projectCard {
     display: none;
+   
   }
 
   .project_container_projectCard_sliderMobile {

@@ -443,6 +443,7 @@ svg path {
 }
 
 .container__countryCity {
+  display: flex;
   color: var(--black-4E4E4E);
   font-family: var(--font-raleway);
   font-size: 0.625rem;
