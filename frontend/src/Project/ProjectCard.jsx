@@ -504,7 +504,7 @@ const ProjectCard = () => {
                     </div>
                   ))}
                 </div>
-                <div className={styles.item}>
+                <div className={`${styles.item} ${styles.item_img_close}`}>
                   <img
                     ref={refs.leftImg4}
                     className={`${styles.item_img} ${styles.item_img_close}`}

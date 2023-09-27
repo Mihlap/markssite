@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Slider from "react-slick";
 import styles from "./ConstructorBlockRenderer.module.scss";
 import "../stylePaginationSlider.css";
@@ -7,6 +7,21 @@ const Host = process.env.REACT_APP_SERVER_HOST;
 
 export default function ConstructorBlockRenderer({ block }) {
   const [activeSlide, setActiveSlide] = useState(0);
+  const [dotsVisible, setDotsVisible] = useState(true);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setDotsVisible(window.innerWidth >= 768);
+    };
+
+    handleResize();
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
  
   const renderImageWithDescription = (block) => {
@@ -92,27 +107,41 @@ export default function ConstructorBlockRenderer({ block }) {
     const sliderImageContainerStyle = {
       borderRadius: "10px",
       overflow: "hidden",
-    };
+      };
 
-    const sliderImageStyle = {
+    let sliderImageStyle = {
       width: "100%",
       height: "810px",
       objectFit: "cover",
       borderRadius: "10px",
-    };
+      };
+
+    if (window.innerWidth <= 768) {
+      sliderImageStyle = {
+        width: "100%",
+        height: "22.6rem", 
+        objectFit: "cover",
+        borderRadius: "10px",
+      };
+    }
+  
 
     const activeDotStyle = {
-      width: "40px",
+      position: "relative", 
+      width: "50px",
       height: "4px",
       backgroundColor: "rgba(255, 127, 106, 1)",
-      marginRight: "15px",
+      right: "30px",
       transition: "width 0.5s, background-color 0.3s",
+      zIndex: "1",
     };
 
     const inactiveDotStyle = {
+      position: "relative", 
       width: "15px",
       height: "4px",
-      backgroundColor: "rgba(235, 236, 238, 1)",
+      backgroundColor: "#EBECEE",
+      zIndex: "0", 
     };
 
     // Настройки слайдера
@@ -127,12 +156,13 @@ export default function ConstructorBlockRenderer({ block }) {
       // speed: 500,
       slidesToShow: 1,
       slidesToScroll: 1,
-      arrows: true, // Включение стрелочек
-      beforeChange: (oldIndex, newIndex) => {
+      arrows: dotsVisible, // Включение стрелочек
+         // centerMode: true, 
+       beforeChange: (oldIndex, newIndex) => {
         setActiveSlide(newIndex);
       },
       focusOnSelect: true,
-      nextArrow: (
+      nextArrow: dotsVisible ? (
         <svg
           width="42"
           height="42"
@@ -171,8 +201,8 @@ export default function ConstructorBlockRenderer({ block }) {
             </linearGradient>
           </defs>
         </svg>
-      ),
-      prevArrow: (
+      ) : null,
+      prevArrow: dotsVisible ? (
         <svg
           width="32"
           height="32"
@@ -211,7 +241,7 @@ export default function ConstructorBlockRenderer({ block }) {
             </linearGradient>
           </defs>
         </svg>
-      ),
+      ) : null,
     };
 
     // console.log('Block:', block);
