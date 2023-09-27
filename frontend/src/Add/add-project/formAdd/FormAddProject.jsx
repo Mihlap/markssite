@@ -467,7 +467,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                 options={[
                   { value: "Архитектура", label: "Архитектура" },
                   { value: "BIM", label: "BIM" },
-                  { value: "Конструкции", label: "Конструкции" },
+                  { value: "Конструктив", label: "Конструктив" },
                   { value: "Инженерия", label: "Инженерия" },
                   { value: "Дизайн", label: "Дизайн" },
                 ]}
