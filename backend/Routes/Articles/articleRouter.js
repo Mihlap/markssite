@@ -2,7 +2,7 @@ const express = require('express');
 // eslint-disable-next-line
 const path = require('path');
 const fs = require('fs');
-const { Articles, ConstructorArticles } = require('../../db/models');
+const { Articles, ConstructorArticles, User } = require('../../db/models');
 const fileMiddleware = require('../../middleware/fileArticle');
 
 const router = express.Router();
@@ -58,6 +58,7 @@ router.post(
           imageOpen: imageOpens,
           textBlock: req.body.textBlock,
           imageClose: imageCloses,
+          // authorId:
         });
 
       await ConstructorArticles.create({

@@ -23,7 +23,7 @@ const PORT = process.env.PORT || 5000;
 
 const sessionConfig = {
   name: 'user_marks_group',
-  secret: process.env.SESSION_SECRET ?? 'lox',
+  secret: process.env.SESSION_SECRET ?? 'dunno',
   resave: true,
   saveUninitialized: false,
   store: new FileStore(),
