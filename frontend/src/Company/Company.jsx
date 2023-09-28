@@ -119,7 +119,7 @@ export default function Company() {
 
   const handleButtonClick = (category, selectedCardId) => {
     if (selectedCardId) {
-      dispatch(selectCard(selectedCardId));
+      // dispatch(selectCard(selectedCardId));
       setIsModalOpen(true);
     } else {
       setIsModalOpen(false);
