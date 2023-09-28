@@ -838,6 +838,8 @@ padding-right: 0.5rem;
   .item:not(:last-child) {
     padding-bottom: 3.5rem;
   }
+
+  
   .quoteBlock_object_container,
   .description_object_container {
   display: flex;
