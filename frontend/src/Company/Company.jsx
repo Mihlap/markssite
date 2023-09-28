@@ -47,7 +47,7 @@ export default function Company() {
 
   
 
-   const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [countPercent, setCountPercent] = useState(0);
   const [countHuman, setCountHuman] = useState(0);
@@ -110,6 +110,10 @@ export default function Company() {
   //     }
   //   };
   // }, []);
+
+  useEffect(() => {
+    window.scrollTo(0, 0); // Прокрутите страницу вверх при монтировании компонента
+  }, []);
 
   useEffect(() => {
     dispatch(selectCard(null));
@@ -877,10 +881,11 @@ export default function Company() {
           <Swiper
             className={styles.slider_card_container}
             loop={true}
-            slidesPerView={1.1}
+            slidesPerView={1.13}
             spaceBetween={20}
             effect={"fade"}
             touch="true"
+            centeredSlides={true}
             onSlideChange={(swiper) => setCurrentIndexCompany(swiper.realIndex)}
             onSwiper={(swiper) => {
               if (swiperCompanyRef.current === null) {
@@ -939,7 +944,7 @@ export default function Company() {
             slidesPerView={2.2}
             spaceBetween={0}
             touch="true"
-          >
+           >
             {staff?.map((el) => (
               <SwiperSlide
                 key={el.id}

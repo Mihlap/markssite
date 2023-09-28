@@ -92,6 +92,10 @@ export default function Project() {
   const isMobileScreen = screenWidth <= 768;
 
   // console.log(projects);
+  useEffect(() => {
+    window.scrollTo(0, 0); // Прокрутите страницу вверх при монтировании компонента
+  }, []);
+
 
   const handleResize = () => {
     setScreenWidth(window.innerWidth);
