@@ -60,7 +60,7 @@ export const fetchCategoryStaff =
 
     try {
       const response = await axios.get(
-        `${host}/api-stuffs/staffs`
+        `${host}/api-stuffs/stuffs`
       );
      
       const staff = response.data;
