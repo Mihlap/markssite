@@ -16,20 +16,20 @@ export default function ConstructorBlockRenderer({ block }) {
 
     handleResize();
 
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
 
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
- 
   const renderImageWithDescription = (block) => {
     let imageUrl = "";
     let description = "";
 
     block?.forEach((item) => {
-      if (item?.label === "Картинка с описанием") imageUrl = item.value?.[0] || "";
+      if (item?.label === "Картинка с описанием")
+        imageUrl = item.value?.[0] || "";
       if (item?.label === "Описание картинки") description = item?.value || "";
     });
 
@@ -88,7 +88,9 @@ export default function ConstructorBlockRenderer({ block }) {
   const renderTwoImage = (block, index) => {
     const images = block[0].value;
     return (
-      <div className={`${styles.imageBlockTwo} ${styles.imageBlockTwo_project}`}>
+      <div
+        className={`${styles.imageBlockTwo} ${styles.imageBlockTwo_project}`}
+      >
         {images?.map((el, index) => (
           <img
             className={styles.imageBlockTwo__gridImage}
@@ -99,7 +101,7 @@ export default function ConstructorBlockRenderer({ block }) {
         ))}
       </div>
     );
-  };  
+  };
 
   const renderImageSlider = (block) => {
     const images = block[0].value;
@@ -107,27 +109,26 @@ export default function ConstructorBlockRenderer({ block }) {
     const sliderImageContainerStyle = {
       borderRadius: "10px",
       overflow: "hidden",
-     };
+    };
 
     let sliderImageStyle = {
       width: "100%",
       height: "810px",
       objectFit: "cover",
       borderRadius: "10px",
-      };
+    };
 
     if (window.innerWidth <= 768) {
       sliderImageStyle = {
         width: "100%",
-        height: "22.6rem", 
+        height: "22.6rem",
         objectFit: "cover",
         borderRadius: "10px",
       };
     }
-  
 
     const activeDotStyle = {
-      position: "relative", 
+      position: "relative",
       width: "50px",
       height: "4px",
       backgroundColor: "rgba(255, 127, 106, 1)",
@@ -137,11 +138,17 @@ export default function ConstructorBlockRenderer({ block }) {
     };
 
     const inactiveDotStyle = {
-      position: "relative", 
+      position: "relative",
       width: "15px",
       height: "4px",
       backgroundColor: "#EBECEE",
-      zIndex: "0", 
+      zIndex: "0",
+    };
+
+    const styleSVG = {
+      height: "50px",
+      width: "40px",
+      maxWidth: "100%", // Чтобы сохранить пропорции
     };
 
     // Настройки слайдера
@@ -157,8 +164,8 @@ export default function ConstructorBlockRenderer({ block }) {
       slidesToShow: 1,
       slidesToScroll: 1,
       arrows: dotsVisible, // Включение стрелочек
-       beforeChange: (_, newIndex) => {
-       setActiveSlide(newIndex);
+      beforeChange: (_, newIndex) => {
+        setActiveSlide(newIndex);
       },
       // focusOnSelect: true,
       nextArrow: dotsVisible && (
@@ -168,6 +175,7 @@ export default function ConstructorBlockRenderer({ block }) {
           viewBox="0 0 32 32"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
+          style={styleSVG}
         >
           <g id="icon / 24 /  arrow /  normal">
             <rect
@@ -245,14 +253,17 @@ export default function ConstructorBlockRenderer({ block }) {
 
     // console.log('Block:', block);
 
-
     return (
       <div
         className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockFive} ${styles.slider_container}`}
       >
         <Slider {...settings}>
           {images?.map((img, index) => (
-            <div key={index} style={sliderImageContainerStyle}  className={styles.custom_slider}>
+            <div
+              key={index}
+              style={sliderImageContainerStyle}
+              className={styles.custom_slider}
+            >
               <img
                 style={sliderImageStyle}
                 src={`${Host}/images/imageAdd/${img}`}

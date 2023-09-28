@@ -55,7 +55,7 @@ export const getUpdatedArticles = () => async (dispatch) => {
   try {
     const response = await axios.get(`${serverHost}/search-articles/right-get`);
     const data = response.data;
-    console.log(data);
+    // console.log(data);
     dispatch(fetchArticleRightSuccess(data));
   } catch (error) {
     dispatch(fetchArticleRightFailure(error.message));
@@ -100,10 +100,10 @@ export const searchArticleRightDelete = (IdArticle) => async (dispatch) => {
   dispatch(fetchArticleRightStart());
 
   try {
-    const response = await axios.delete(
+     await axios.delete(
       `${serverHost}/search-articles/right-delete/${IdArticle}`
     );
-    console.log(response.status); // Check the response status
+    // console.log(response.status); // Check the response status
     dispatch(deleteArticleRightSuccess(IdArticle));
   } catch (error) {
     dispatch(deleteArticleRightFailure(error.message));
