@@ -107,7 +107,7 @@ export default function ConstructorBlockRenderer({ block }) {
     const sliderImageContainerStyle = {
       borderRadius: "10px",
       overflow: "hidden",
-      };
+     };
 
     let sliderImageStyle = {
       width: "100%",
@@ -157,9 +157,8 @@ export default function ConstructorBlockRenderer({ block }) {
       slidesToShow: 1,
       slidesToScroll: 1,
       arrows: dotsVisible, // Включение стрелочек
-         // centerMode: true, 
        beforeChange: (oldIndex, newIndex) => {
-        setActiveSlide(newIndex);
+       setActiveSlide(newIndex);
       },
       focusOnSelect: true,
       nextArrow: dotsVisible ? (
@@ -253,7 +252,7 @@ export default function ConstructorBlockRenderer({ block }) {
       >
         <Slider {...settings}>
           {images?.map((img, index) => (
-            <div key={index} style={sliderImageContainerStyle}>
+            <div key={index} style={sliderImageContainerStyle}  className={styles.custom_slider}>
               <img
                 style={sliderImageStyle}
                 src={`${Host}/images/imageAdd/${img}`}
