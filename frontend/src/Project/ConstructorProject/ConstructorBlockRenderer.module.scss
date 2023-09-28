@@ -456,8 +456,10 @@
     .slider_container {
         padding-bottom: 3.75rem;
         padding-left: 1rem;
-        padding-right: 1rem;
+        padding-right: 0rem;
     }
 
-
+    .custom_slider {
+       padding-right: 10px; 
+    }
 }
