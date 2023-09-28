@@ -54,27 +54,25 @@ export default function Login() {
     }, 2500); // Задержка в 2 секунды
   };
 
-  useEffect(() => {
-    if (errorDiv) {
-      const timer = setTimeout(() => {
-        setErrorDiv(false);
-      }, 6000);
+useEffect(() => {
+  let timer, classRemovalTimer;
+  if (errorDiv) {
+    timer = setTimeout(() => setErrorDiv(false), 6000);
 
-      // Убрать класс ошибки через 2.5 секунды
-      const errorField = document.querySelector(`.${styles.error_text}`);
-      if (errorField) {
-        errorField.classList.remove(styles.error_text);
-        const classRemovalTimer = setTimeout(() => {
-          errorField.classList.add(styles.error_text);
-        }, 2500);
-        return () => clearTimeout(classRemovalTimer);
-      }
-
-      return () => {
-        clearTimeout(timer);
-      };
+    const errorField = document.querySelector(`.${styles.error_text}`);
+    if (errorField) {
+      errorField.classList.remove(styles.error_text);
+      classRemovalTimer = setTimeout(() => {
+        errorField.classList.add(styles.error_text);
+      }, 2500);
     }
-  }, [errorDiv]);
+  }
+  return () => {
+    clearTimeout(timer);
+    clearTimeout(classRemovalTimer);
+  };
+}, [errorDiv]);
+
 
   if (showLoader) {
     return <LoadingCircle />;
