@@ -6,7 +6,7 @@ const router = express.Router();
 router.put('/project', async (req, res) => {
   try {
     const { isActiveForButton1 } = req.body;
-    console.log(isActiveForButton1);
+    // console.log(isActiveForButton1);
 
     // Удалить все записи
     await SwitchingFilterProjects.destroy({ truncate: true });
@@ -40,7 +40,7 @@ router.get('/project', async (req, res) => {
 router.put('/article', async (req, res) => {
   try {
     const { isActiveForButton2 } = req.body;
-    console.log(isActiveForButton2);
+    // console.log(isActiveForButton2);
 
     // Удалить все записи
     await SwitchingFilterArticle.destroy({ truncate: true });

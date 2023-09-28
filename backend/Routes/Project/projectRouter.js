@@ -41,8 +41,8 @@ router.post(
 
       // console.log(req.body, '<<-- reg.BODY');
       // console.log(imageTitles, '<<-- imageTitles');
-      console.log(req.files, '<<-- reg.FILES');
-      console.log(dynamicBlocksContent);
+      // console.log(req.files, '<<-- reg.FILES');
+      // console.log(dynamicBlocksContent);
 
       const createdPrpject = await Project.create({
         title: req.body.title,
@@ -142,7 +142,7 @@ router.delete('/deletezapros/:id', async (req, res) => {
     const deleteConstructorImg = await Constructor.findByPk(id);
 
     if (deleteConstructorImg.image) {
-      console.log('ЗАШЕЛ СЮДА');
+      // console.log('ЗАШЕЛ СЮДА');
       const imageConstructorNames = deleteConstructorImg.image.includes(', ')
         ? deleteConstructorImg.image.split(', ')
         : [deleteConstructorImg.image];

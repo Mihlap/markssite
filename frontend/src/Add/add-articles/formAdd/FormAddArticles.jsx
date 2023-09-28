@@ -214,7 +214,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
 
     const newName = `file_${sliceOfOriginalName}_${timestamp}_${randomNum}.${fileExtension}`;
 
-    console.log("Generated name:", newName);
+    // console.log("Generated name:", newName);
 
     return newName;
   }
@@ -417,8 +417,8 @@ export default function FormAddArticles({ setIsModalOpen }) {
     });
   };
 
-  console.log(inputData, "<<--inputData ARTICLE");
-  console.log(dynamicData, "<<--dynamicData");
+  // console.log(inputData, "<<--inputData ARTICLE");
+  // console.log(dynamicData, "<<--dynamicData");
   return (
     <div className={styles.form_container}>
       <div className={styles.form_container__title}>Новая публикация</div>

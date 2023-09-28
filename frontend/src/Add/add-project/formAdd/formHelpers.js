@@ -104,7 +104,7 @@ function generateUniqueName(originalName) {
 
   const newName = `file_${sliceOfOriginalName}_${timestamp}_${randomNum}.${fileExtension}`;
 
-  console.log("Generated name:", newName);
+  // console.log("Generated name:", newName);
 
   return newName;
 }

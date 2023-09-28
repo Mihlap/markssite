@@ -19,7 +19,6 @@ export default function SignUpPage() {
 
         if (response.status === 200) {
           // Здесь вы можете обновить ваш стейт, чтобы отразить, что пользователь зарегистрирован
-          console.log("cooki");
         }
       } catch (error) {
         console.log(error);
@@ -42,7 +41,6 @@ export default function SignUpPage() {
       });
 
       if (response.status === 200) {
-        console.log("зашел сюда");
         navigate("/admin");
       }
     } catch (error) {
