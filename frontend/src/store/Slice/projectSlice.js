@@ -67,9 +67,9 @@ export const fetchProject =
           formData.append("photoAva", formattedData[key][0]);
         } else if (key === "imageOpen" && formattedData[key].length > 0) {
           formData.append("imageOpen", formattedData[key][0]);
-          console.log("imageOpen", formattedData[key]);
+          // console.log("imageOpen", formattedData[key]);
         } else if (key === "dynamicBlocks" && formattedData[key].length > 0) {
-          console.log("зашел сюда", formattedData[key]);
+          // console.log("зашел сюда", formattedData[key]);
 
           let data = formattedData[key];
 

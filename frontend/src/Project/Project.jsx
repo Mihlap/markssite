@@ -135,7 +135,7 @@ export default function Project() {
       dispatch(setSelectedCity(""));
       setSelectOnCompetencies("Все");
     }
-    console.log(address);
+    // console.log(address);
   }
 
   const handleAddressSubmit = (event) => {

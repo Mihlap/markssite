@@ -202,9 +202,9 @@ const ArticleCard = () => {
   const nextArticle = articles[nextIndex];
   const userSelectedBlocks = article?.ConstructorArticles?.map((el) => el.data);
 
-  console.log(userSelectedBlocks, "<<--- userSelectedBlocks");
+  // console.log(userSelectedBlocks, "<<--- userSelectedBlocks");
 
-  console.log(article, "===========================================");
+  // console.log(article, "===========================================");
 
   return (
     <div className={styles.main_article_card}>
