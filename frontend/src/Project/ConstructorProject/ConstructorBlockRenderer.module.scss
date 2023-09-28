@@ -403,25 +403,43 @@
             flex-direction: column;
             align-items: center;
             gap: 30px;
-            height: 100vh;
-            overflow: hidden;
-            padding: 0rem 1rem;
-        }
+            height: 100%;
+            // overflow: hidden;
+            margin-bottom: 2.5rem;
+            padding-left: 1rem;
+            padding-right: 1rem;
+         }
+        
     
-        .horizontalImage {
-            height: 30vh;
-            border-radius: 1rem;
-        }
-
-            
+        .horizontalImage,
         .verticalImage {
-            height: 30vh;
-            /* Здесь можно задать любую высоту, чтобы показать только часть изображения */
-            overflow: hidden;
-            /* Обрезает изображение, которое не помещается */
+            width: 100%;
+            object-fit: cover;
+            display: block;
+            height: auto;
             border-radius: 1rem;
         }
 
+        .horizontalImage {
+            grid-column: 1 / 2;
+            height: 20vh;
+            border-radius: 1rem;
+            /* 50% высоты экрана */
+        }
+        
+        .horizontalImage:nth-child(1) {
+            grid-row: 1 / 2;
+        }
+        
+        .horizontalImage:nth-child(2) {
+            grid-row: 2 / 3;
+        }
+        
+        .verticalImage {
+            grid-column: 1 / 2;
+            height: 20vh;
+            border-radius: 1rem;
+        }
 
     // <<< ====== стили для блока с двумя вертикальными картинками ====== >>>
     .imageBlockTwo {
@@ -434,14 +452,14 @@
 
         &__gridImage {
             width: 100%;
-            // height: 100%;
-            max-height: 20rem;
+            height: 20vh;
             object-fit: cover;
             border-radius: 16px;
         }
     }
+ // <<< ====== стили для блока заметкой  ====== >>>
 
-   
+ 
 
     // <<< ====== стили для слайдера с картинками =) ====== >>>
 
