@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Helmet } from "react-helmet-async";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/pagination";
@@ -157,6 +158,10 @@ const Contacts = () => {
   const { address, phone, mail } = cityInfo[selectedMap];
 
   return (
+    <>
+    <Helmet>
+    <title>Marks Group</title>
+  </Helmet>
     <div className={styles.main_contact}>
       <div className={styles.menu_block}>
         <div className={styles.menu_span}>Стать клиентом или партнером</div>
@@ -228,6 +233,7 @@ const Contacts = () => {
         </Swiper>
       </div>
     </div>
+    </>
   );
 };
 

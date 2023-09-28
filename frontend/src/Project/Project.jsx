@@ -1,5 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import Modal from "react-modal";
+import { Helmet } from "react-helmet-async";
 import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -273,6 +274,10 @@ export default function Project() {
   // console.log(filteredProjects, "9999999999999999999999999999999999");
 
   return (
+    <>
+    <Helmet>
+    <title>Marks Group</title>
+  </Helmet>
     <div className={styles.project_main}>
       <Company_Slider />
       <div className={styles.project_slider_text}>
@@ -743,5 +748,6 @@ export default function Project() {
         </div>
       </section>
     </div>
+    </>
   );
 }
