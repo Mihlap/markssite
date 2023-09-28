@@ -3,14 +3,14 @@
 .containerImageToDescription {
     padding-top: 0.5rem;
     padding-bottom: 2.13rem;
-    
+
     &__img {
         object-position: center;
         width: 100%;
         height: 100%;
         max-height: 50vw;
         border-radius: 1.11vw 1.11vw;
-        }
+    }
 
     &__text {
         color: var(--gray-959DA6);
@@ -30,7 +30,7 @@
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-    padding: 0rem 22.19rem 0rem 16.44rem;
+    padding: 0rem 7.19rem 0rem 16.44rem;
     margin-bottom: 40px;
 
     &__heading {
@@ -96,7 +96,7 @@
     grid-column: 2 / 3;
     grid-row: 1 / 3;
     // height: 100vh;
-      border-radius: 1rem;
+    border-radius: 1rem;
     /* 100% высоты экрана */
 }
 
@@ -119,7 +119,7 @@
 // <<< ====== стили для слайдера с картинками ====== >>>
 
 .slider_container {
-  padding-bottom: 3.76rem;
+    padding-bottom: 3.76rem;
 }
 
 
@@ -227,22 +227,26 @@
 
     &__author_block {
         position: absolute;
-        top: -25px;
+        top: 0px;
         right: -18%;
     }
 
     &__img {
         border-radius: 50%;
+        width: 10rem;
+        height: 10rem;
+        object-fit: cover;
+        object-position: center;
     }
 
     &__quote {
-        color: var(--dark-gray-566269);
-        font-variant-numeric: lining-nums proportional-nums;
+        color: var(--dark-gray-566272);
         font-family: var(--font-raleway);
         font-size: 12px;
         font-style: normal;
         font-weight: 400;
         line-height: 16px;
+        padding-top: 10px;
     }
 
     &__author {
@@ -258,7 +262,7 @@
 
 /* Стили для планшетной версии сайта блока ProjectCardConstructor, начинаются тут */
 
-@media screen and (min-width: 768px) and (max-width: 1024px) {
+@media screen and (max-width: 1024px) {
 
     .blockHeadingTitle {
         display: flex;
@@ -266,7 +270,7 @@
         gap: 1.5rem;
         padding: 0rem 1rem 0rem 1rem;
         margin-bottom: 40px;
-    
+
         &__heading {
             color: var(--black-1D2E43);
             font-family: var(--font-unbounded);
@@ -276,7 +280,7 @@
             line-height: 32px;
             word-break: break-word;
         }
-    
+
         &__text {
             color: var(--black-1D2E43);
             font-variant-numeric: lining-nums proportional-nums;
@@ -289,54 +293,59 @@
         }
     }
 
-    
-// <<<< =========== стили для блока у которого 2 горизонтальные картинки и 1 вертикальная картинка imageBlockThree =========== >>>>
 
-.gridContainer {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
-    /* Здесь используем fr для автоматического распределения пространства */
-    gap: 30px;
-    height: 100%;
-    max-height: 48rem;
-    align-items: stretch;
-    margin-bottom: 70px;
-}
+    // <<<< =========== стили для блока у которого 2 горизонтальные картинки и 1 вертикальная картинка imageBlockThree =========== >>>>
 
-.horizontalImage,
-.verticalImage {
-    width: 100%;
-    /* Для корректного отображения изображений внутри блока */
-    object-fit: cover;
-    /* Изображение будет подгоняться так, чтобы заполнить свой блок без искажений */
-    display: block;
-    /* Убираем стандартные отступы для изображений */
-}
+    .gridContainer {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 1fr;
+        /* Здесь используем fr для автоматического распределения пространства */
+        gap: 30px;
+        height: 100%;
+        max-height: 48rem;
+        align-items: stretch;
+        margin-bottom: 70px;
+    }
 
-.horizontalImage {
-    grid-column: 1 / 2;
-    max-height: 24rem;
-    border-radius: 1rem;
-    /* 50% высоты экрана */
-}
+    .horizontalImage,
+    .verticalImage {
+        width: 100%;
+        /* Для корректного отображения изображений внутри блока */
+        object-fit: cover;
+        /* Изображение будет подгоняться так, чтобы заполнить свой блок без искажений */
+        display: block;
+        /* Убираем стандартные отступы для изображений */
+    }
 
-.horizontalImage:nth-child(1) {
-    grid-row: 1 / 2;
-}
+    .horizontalImage {
+        grid-column: 1 / 2;
+        max-height: 24rem;
+        border-radius: 1rem;
+        /* 50% высоты экрана */
+    }
 
-.horizontalImage:nth-child(2) {
-    grid-row: 2 / 3;
-}
+    .horizontalImage:nth-child(1) {
+        grid-row: 1 / 2;
+    }
 
-.verticalImage {
-    grid-column: 2 / 3;
-    grid-row: 1 / 3;
-    // height: 100vh;
-    border-radius: 1rem;
-    /* 100% высоты экрана */
-}
+    .horizontalImage:nth-child(2) {
+        grid-row: 2 / 3;
+    }
 
+    .verticalImage {
+        grid-column: 2 / 3;
+        grid-row: 1 / 3;
+        // height: 100vh;
+        border-radius: 1rem;
+        /* 100% высоты экрана */
+    }
+
+    .quote_block_constainer {
+        &__author_block {
+            display: none;
+        }
+    }
 }
 
 
@@ -346,8 +355,8 @@
     .containerImageToDescription {
         padding-top: 0.5rem;
         padding-bottom: 2.13rem;
-       padding-left: 1rem;
-       padding-right: 1rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
     }
 
     .blockHeadingTitle {
@@ -357,7 +366,7 @@
         padding: 0rem 1rem 0rem 1rem;
         margin-bottom: 2.19rem;
         align-items: 0;
-            
+
         &__heading {
             color: var(--black-1D2E43);
             font-family: var(--font-unbounded);
@@ -369,9 +378,9 @@
             overflow-wrap: break-word;
             hyphens: auto;
             white-space: normal;
-            
+
         }
-    
+
         &__text {
             color: var(--black-1D2E43);
             font-variant-numeric: lining-nums proportional-nums;
@@ -388,64 +397,64 @@
         }
     }
 
-    
-// <<<< =========== стили для блока у которого 2 горизонтальные картинки и 1 вертикальная картинка imageBlockThree =========== >>>>
 
-.gridContainer {
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-    height: 100%;
-    align-items: center;
-    margin-bottom: 2.5rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
- }
+    // <<<< =========== стили для блока у которого 2 горизонтальные картинки и 1 вертикальная картинка imageBlockThree =========== >>>>
 
-.horizontalImage,
-.verticalImage {
-    width: 100%;
-    object-fit: cover;
-    display: block;
-    height: 100%;
-    max-height: 20rem;
-    border-radius: 1rem;
-}
+    .gridContainer {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+        height: 100%;
+        align-items: center;
+        margin-bottom: 2.5rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
 
-.horizontalImage {
-    grid-column: 1 / 2;
-   
-    border-radius: 1rem;
-    /* 50% высоты экрана */
-}
-
-
-// <<< ====== стили для блока с двумя вертикальными картинками ====== >>>
-.imageBlockTwo {
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-    // height: 100vh;
-    padding-bottom: 2.5rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
-
-    &__gridImage {
+    .horizontalImage,
+    .verticalImage {
         width: 100%;
+        object-fit: cover;
+        display: block;
         height: 100%;
         max-height: 20rem;
-        object-fit: cover;
-        border-radius: 16px;
+        border-radius: 1rem;
     }
-}
 
-// <<< ====== стили для слайдера с картинками ====== >>>
+    .horizontalImage {
+        grid-column: 1 / 2;
 
-.slider_container {
-    padding-bottom: 3.75rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
-}
- 
+        border-radius: 1rem;
+        /* 50% высоты экрана */
+    }
+
+
+    // <<< ====== стили для блока с двумя вертикальными картинками ====== >>>
+    .imageBlockTwo {
+        display: flex;
+        flex-direction: column;
+        gap: 30px;
+        // height: 100vh;
+        padding-bottom: 2.5rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+
+        &__gridImage {
+            width: 100%;
+            height: 100%;
+            max-height: 20rem;
+            object-fit: cover;
+            border-radius: 16px;
+        }
+    }
+
+    // <<< ====== стили для слайдера с картинками ====== >>>
+
+    .slider_container {
+        padding-bottom: 3.75rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
 
 }

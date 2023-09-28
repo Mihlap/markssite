@@ -697,6 +697,12 @@ padding-right: 0.5rem;
   line-height: normal;
 }
 
+.div_conteiner {
+  width: 80%;
+  /* background-color: red; */
+  padding-left: 1.75rem;
+}
+
 /* Стили для planshet версии сайта блока ArticleCard начинаются тут */
 
 @media screen and (min-width: 768px) and (max-width: 1024px) {
@@ -764,7 +770,7 @@ padding-right: 0.5rem;
 }
 
 /* Стили для мобильной версии сайта блока ArticleCard начинаются тут */
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 1024px) {
 
 
   .share_article,
@@ -772,8 +778,8 @@ padding-right: 0.5rem;
   .cart_article__author__block__card,
   .cart_article__address__block__card,
   .cart_article__address__svg__block__card,
-  .header_content_right,
   .main_article_articleCard,
+  .header_content_right,
   .quoteBlock_object_container_avatar,
   .item_container_imageClose,
   .container_author_address_imageClose_share_article  {
@@ -938,6 +944,11 @@ padding-right: 0.5rem;
 
   .article_container_articleCard_sliderMobile {
     display: block;
+  }
+
+  .leftImg1_object_text1,.div_conteiner {
+    width: 100%;
+    padding: 1rem 1rem;
   }
 
 
