@@ -666,7 +666,13 @@
 
 /* Стили для planshet версии сайта блока ProjectCard начинаются тут */
 
-@media screen and (min-width: 768px) and (max-width: 1024px) {
+@media screen and (max-width: 1024px) {
+
+  .div_conteiner {
+      width: 100%;
+      padding: 1rem 1rem;
+    }
+
   .header_content {
     display: flex;
     flex-direction: column;
