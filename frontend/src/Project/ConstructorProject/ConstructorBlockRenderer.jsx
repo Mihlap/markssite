@@ -88,7 +88,7 @@ export default function ConstructorBlockRenderer({ block }) {
   const renderTwoImage = (block, index) => {
     const images = block[0].value;
     return (
-      <div className={styles.imageBlockTwo}>
+      <div className={`${styles.imageBlockTwo} ${styles.imageBlockTwo_project}`}>
         {images?.map((el, index) => (
           <img
             className={styles.imageBlockTwo__gridImage}
