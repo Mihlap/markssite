@@ -14,7 +14,7 @@ router.post(
     { name: 'photoAva', maxCount: 1 },
     { name: 'imageOpen', maxCount: 1 },
     { name: 'imageClose', maxCount: 1 },
-    { name: 'dynamicImages', maxCount: 30 },
+    { name: 'dynamicImages', maxCount: 50 },
   ]),
   async (req, res) => {
     try {
