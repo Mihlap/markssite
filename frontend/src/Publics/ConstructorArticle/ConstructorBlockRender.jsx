@@ -8,7 +8,7 @@ const Host = process.env.REACT_APP_SERVER_HOST;
 export default function ConstructorBlockRenderer({ block }) {
   const [activeSlide, setActiveSlide] = useState(0);
   const [dotsVisible, setDotsVisible] = useState(true);
-
+  
    useEffect(() => {
      const handleResize = () => {
        setDotsVisible(window.innerWidth >= 768);
@@ -101,7 +101,7 @@ export default function ConstructorBlockRenderer({ block }) {
   };
 
   const renderImageSlider = (block) => {
-    const images = block[0]?.value;
+    const images = block[0].value;
 
     const sliderImageContainerStyle = {
       borderRadius: "10px",
@@ -125,18 +125,21 @@ export default function ConstructorBlockRenderer({ block }) {
     }
 
     const activeDotStyle = {
-      width: "40px",
+      position: "relative", 
+      width: "50px",
       height: "4px",
       backgroundColor: "rgba(255, 127, 106, 1)",
-      marginRight: "15px",
+      right: "30px",
       transition: "width 0.5s, background-color 0.3s",
+      zIndex: "1",
     };
 
     const inactiveDotStyle = {
-      position: "relative",
+      position: "relative", 
       width: "15px",
       height: "4px",
-      backgroundColor: "rgba(235, 236, 238, 1)",
+      backgroundColor: "#EBECEE",
+      zIndex: "0",
     };
 
     // Настройки слайдера
@@ -152,11 +155,11 @@ export default function ConstructorBlockRenderer({ block }) {
       slidesToShow: 1,
       slidesToScroll: 1,
       arrows: dotsVisible,
-      beforeChange: (oldIndex, newIndex) => {
+      beforeChange: (_, newIndex) => {
         setActiveSlide(newIndex);
       },
-      focusOnSelect: true,
-      nextArrow: dotsVisible ? (
+      // focusOnSelect: true,
+      nextArrow: dotsVisible && (
         <svg
           width="42"
           height="42"
@@ -195,8 +198,8 @@ export default function ConstructorBlockRenderer({ block }) {
             </linearGradient>
           </defs>
         </svg>
-      ) : null,
-      prevArrow: dotsVisible ? (
+      ),
+      prevArrow: dotsVisible && (
         <svg
           width="32"
           height="32"
@@ -235,7 +238,7 @@ export default function ConstructorBlockRenderer({ block }) {
             </linearGradient>
           </defs>
         </svg>
-      ) : null,
+      ),
     };
 
     return (
@@ -244,7 +247,7 @@ export default function ConstructorBlockRenderer({ block }) {
       >
         <Slider {...settings}>
           {images?.map((img, index) => (
-            <div key={index} style={sliderImageContainerStyle}>
+            <div key={index} style={sliderImageContainerStyle} className={styles.custom_slider}>
               <img
                 style={sliderImageStyle}
                 src={`${Host}/images/imageArticle/${img}`}
