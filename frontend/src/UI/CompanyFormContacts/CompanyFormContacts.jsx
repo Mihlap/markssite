@@ -109,7 +109,7 @@ const CompanyFormContacts = () => {
   function handleSubmit(event) {
     event.preventDefault(); 
     if (!isConsentGiven) {
-      console.log('Согласие не установлено, форма не будет отправлена.');
+      // console.log('Согласие не установлено, форма не будет отправлена.');
       return;
     }
     const formData = {
@@ -128,7 +128,7 @@ const CompanyFormContacts = () => {
       .then(response => {
         if (response.ok) {
           
-          console.log('Form submitted successfully');
+          // console.log('Form submitted successfully');
           setValue1("");
           setValue2("");
           setValue3("");
