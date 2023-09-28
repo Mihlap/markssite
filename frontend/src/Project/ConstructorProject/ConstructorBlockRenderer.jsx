@@ -157,11 +157,11 @@ export default function ConstructorBlockRenderer({ block }) {
       slidesToShow: 1,
       slidesToScroll: 1,
       arrows: dotsVisible, // Включение стрелочек
-       beforeChange: (oldIndex, newIndex) => {
+       beforeChange: (_, newIndex) => {
        setActiveSlide(newIndex);
       },
-      focusOnSelect: true,
-      nextArrow: dotsVisible ? (
+      // focusOnSelect: true,
+      nextArrow: dotsVisible && (
         <svg
           width="42"
           height="42"
@@ -200,8 +200,8 @@ export default function ConstructorBlockRenderer({ block }) {
             </linearGradient>
           </defs>
         </svg>
-      ) : null,
-      prevArrow: dotsVisible ? (
+      ),
+      prevArrow: dotsVisible && (
         <svg
           width="32"
           height="32"
@@ -240,7 +240,7 @@ export default function ConstructorBlockRenderer({ block }) {
             </linearGradient>
           </defs>
         </svg>
-      ) : null,
+      ),
     };
 
     // console.log('Block:', block);
