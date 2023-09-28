@@ -63,7 +63,7 @@ export default function SearchPublicProject({
         showMessage("Ошибка при сохранении проекта:", "error");
       }
     } else {
-      console.log("Проект с таким id не найден");
+      // console.log("Проект с таким id не найден");
       showMessage("Проект с таким id не найден", "error");
     }
   };

@@ -59,7 +59,7 @@ export default function SearchPublicRight({
         showMessage("Ошибка при сохранении проекта:", "error");
       }
     } else {
-      console.log("Публикация с таким id не найдена");
+      // console.log("Публикация с таким id не найдена");
       showMessage("Публикация с таким id не найдена", "error");
       setSearcIdTwo("");
       setIsBtnDisabledPublicTwo(event.target.value === "");
@@ -102,7 +102,7 @@ export default function SearchPublicRight({
      );
 
      if (filterArticle) {
-       console.log("ЗАМЕНА публикации", filterArticle);
+      //  console.log("ЗАМЕНА публикации", filterArticle);
        dispatch(
          updateArticleRight(
            filterArticle,

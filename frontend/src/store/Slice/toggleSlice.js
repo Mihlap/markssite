@@ -72,7 +72,7 @@ const toggleSlice = createSlice({
     },
     [updateToggleStateAsync.fulfilled]: (state, action) => {
       state.isActiveForButton1 = !state.isActiveForButton1;
-      console.log("Successfully updated toggle in state");
+      // console.log("Successfully updated toggle in state");
     },
     [updateToggleStateAsync.rejected]: (state, action) => {
       state.error = action.payload?.message || "An unknown error occurred";

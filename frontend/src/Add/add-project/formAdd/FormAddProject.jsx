@@ -141,7 +141,7 @@ export default function FormAddProject({ setIsModalOpen }) {
       photoAva: inputData.photoAva, // Добавлено поле "photoAva" в объект "formattedData"
       imageOpen: inputData.imageOpen,
     };
-    console.log(formattedData, "<<<----консоль на фронте");
+    // console.log(formattedData, "<<<----консоль на фронте");
     dispatch(fetchProject(formattedData, setInputData));
     setSelectedCompetencies([]);
     setSelectedViewConstruction([]);
@@ -219,7 +219,7 @@ export default function FormAddProject({ setIsModalOpen }) {
 
    const newName = `file_${sliceOfOriginalName}_${timestamp}_${randomNum}.${fileExtension}`;
 
-   console.log("Generated name:", newName);
+  //  console.log("Generated name:", newName);
 
    return newName;
  }
@@ -232,10 +232,10 @@ export default function FormAddProject({ setIsModalOpen }) {
         });
       });
       newDynamicData[blockIndex][inputIndex].value = newFiles;
-      console.log(
-        "Updated files:",
-        newDynamicData[blockIndex][inputIndex].value
-      );
+      // console.log(
+      //   "Updated files:",
+      //   newDynamicData[blockIndex][inputIndex].value
+      // );
     } else {
       newDynamicData[blockIndex][inputIndex].value = value;
     }

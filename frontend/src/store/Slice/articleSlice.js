@@ -57,7 +57,7 @@ export const fetchArticle =
   ) =>
   async (dispatch) => {
     dispatch(fetchArticleStart());
-    console.log(formattedData, "<<---");
+    // console.log(formattedData, "<<---");
     const formData = new FormData();
         for (const key in formattedData) {
           if (typeof formattedData[key] === "object") {
@@ -65,12 +65,12 @@ export const fetchArticle =
               formData.append("photoAva", formattedData[key][0]);
             } else if (key === "imageOpen" && formattedData[key].length > 0) {
               formData.append("imageOpen", formattedData[key][0]);
-              console.log("imageOpen", formattedData[key]);
+              // console.log("imageOpen", formattedData[key]);
             } else if (
               key === "dynamicBlocks" &&
               formattedData[key].length > 0
             ) {
-              console.log("зашел сюда", formattedData[key]);
+              // console.log("зашел сюда", formattedData[key]);
 
               let data = formattedData[key];
 
@@ -148,7 +148,7 @@ export const fetchArticle =
       setPreviewPhotoClose([]);
       dispatch(getFetchFormArticle()); // Добавлен этот вызов для получения обновленных данных после успешной отправки формы
     });
-    console.log(formattedData, "<<<---REDUX ARTICLES");
+    // console.log(formattedData, "<<<---REDUX ARTICLES");
   };
 
 export const getFetchFormArticle = () => async (dispatch, getState) => {

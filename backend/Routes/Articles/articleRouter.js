@@ -42,8 +42,8 @@ router.post(
 
       // console.log(req.body, '<<-- reg.BODY');
       // console.log(imageTitles, '<<-- imageTitles');
-      console.log(req.files, '<<-- reg.FILES');
-      console.log(dynamicBlocksContent);
+      // console.log(req.files, '<<-- reg.FILES');
+      // console.log(dynamicBlocksContent);
 
         const createdArticle = await Articles.create({
           title: req.body.title,
@@ -107,7 +107,7 @@ const deleteImage = (imageName) => {
     const deleteConstructorImg = await ConstructorArticles.findByPk(id);
 
      if (deleteConstructorImg.image) {
-       console.log('ЗАШЕЛ СЮДА');
+      //  console.log('ЗАШЕЛ СЮДА');
        const imageConstructorNames = deleteConstructorImg.image.includes(', ')
          ? deleteConstructorImg.image.split(', ')
          : [deleteConstructorImg.image];
