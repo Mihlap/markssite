@@ -300,7 +300,7 @@ const ArticleCard = () => {
             </div>
           </div>
 
-          <div style={{ width: "80%", paddingLeft: "1.75rem"}} className={styles.div_conteiner}>
+          <div className={styles.div_conteiner}>
             {userSelectedBlocks?.map((innerBlocks, outerIndex) => (
               <div key={outerIndex}>
                 {innerBlocks?.map((block, innerIndex) => (
@@ -452,7 +452,7 @@ const ArticleCard = () => {
             },
           }}
         >
-          {articles?.map((article) => {
+          {articles?.map((article,index) => {
             if (!article) {
               return null;
             }
@@ -471,6 +471,7 @@ const ArticleCard = () => {
                 onScroll={handleScroll}
                 id="slider_container_item_card"
                 className={styles.slider_container_item_card_articleCard}
+                style={index % 2 === 1 ? { paddingTop: "10rem" } : {}}
               >
                 <Link to={`/publication/${article.id}`} key={article.id}>
                   <div

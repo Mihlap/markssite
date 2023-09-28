@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Slider from "react-slick";
 import styles from "../../Project/ConstructorProject/ConstructorBlockRenderer.module.scss";
 import "../../Project/stylePaginationSlider.css";
@@ -7,6 +7,21 @@ const Host = process.env.REACT_APP_SERVER_HOST;
 
 export default function ConstructorBlockRenderer({ block }) {
   const [activeSlide, setActiveSlide] = useState(0);
+  const [dotsVisible, setDotsVisible] = useState(true);
+
+   useEffect(() => {
+     const handleResize = () => {
+       setDotsVisible(window.innerWidth >= 768);
+     };
+
+     handleResize();
+
+     window.addEventListener("resize", handleResize);
+
+     return () => {
+       window.removeEventListener("resize", handleResize);
+     };
+   }, []);
 
    const renderImageWithDescription = (block) => {
     let imageUrl = "";
@@ -93,12 +108,21 @@ export default function ConstructorBlockRenderer({ block }) {
       overflow: "hidden",
     };
 
-    const sliderImageStyle = {
+    let sliderImageStyle = {
       width: "100%",
       height: "810px",
       objectFit: "cover",
       borderRadius: "10px",
     };
+
+    if (window.innerWidth <= 768) {
+      sliderImageStyle = {
+        width: "100%",
+        height: "22.6rem",
+        objectFit: "cover",
+        borderRadius: "10px",
+      };
+    }
 
     const activeDotStyle = {
       width: "40px",
@@ -109,6 +133,7 @@ export default function ConstructorBlockRenderer({ block }) {
     };
 
     const inactiveDotStyle = {
+      position: "relative",
       width: "15px",
       height: "4px",
       backgroundColor: "rgba(235, 236, 238, 1)",
@@ -126,12 +151,12 @@ export default function ConstructorBlockRenderer({ block }) {
       // speed: 500,
       slidesToShow: 1,
       slidesToScroll: 1,
-      arrows: true, // Включение стрелочек
+      arrows: dotsVisible,
       beforeChange: (oldIndex, newIndex) => {
         setActiveSlide(newIndex);
       },
       focusOnSelect: true,
-      nextArrow: (
+      nextArrow: dotsVisible ? (
         <svg
           width="42"
           height="42"
@@ -170,8 +195,8 @@ export default function ConstructorBlockRenderer({ block }) {
             </linearGradient>
           </defs>
         </svg>
-      ),
-      prevArrow: (
+      ) : null,
+      prevArrow: dotsVisible ? (
         <svg
           width="32"
           height="32"
@@ -210,7 +235,7 @@ export default function ConstructorBlockRenderer({ block }) {
             </linearGradient>
           </defs>
         </svg>
-      ),
+      ) : null,
     };
 
     return (
@@ -271,16 +296,16 @@ export default function ConstructorBlockRenderer({ block }) {
       <div className={styles.quote_block_constainer}>
         <div className={styles.quote_block_constainer__text_block}>
           <div className={styles.quote_block_constainer__quote_text}>
-            {quote}
+            {author}
           </div>
           <div className={styles.quote_block_constainer__quote_author}>
-            {author}
+            {quote}
           </div>
         </div>
         <div className={styles.quote_block_constainer__author_block}>
           <img className={styles.quote_block_constainer__img} src={`${Host}/images/imageArticle/${imageUrl}`} alt={author} />
           <div className={styles.quote_block_constainer__quote}>{quote}</div>
-          <div className={styles.quote_block_constainer__author}>{author}</div>
+          {/* <div className={styles.quote_block_constainer__author}>{author}</div> */}
         </div>
       </div>
     );
