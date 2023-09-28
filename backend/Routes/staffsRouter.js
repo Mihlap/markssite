@@ -3,7 +3,7 @@ const { Staff } = require('../db/models');
 
 const router = express.Router();
 
-router.get('/staffs', async (req, res) => {
+router.get('/stuffs', async (req, res) => {
   try {
     const data = await Staff.findAll();
     res.set('Cache-Control', 'no-store'); // Отключает кеширование
