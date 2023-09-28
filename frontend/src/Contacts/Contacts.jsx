@@ -42,6 +42,11 @@ const Contacts = () => {
   const [swiper, setSwiper] = useState(null);
 
   useEffect(() => {
+    window.scrollTo(0, 0); // Прокрутите страницу вверх при монтировании компонента
+  }, []);
+
+
+  useEffect(() => {
     if (!map) {
       const newMap = new mapboxgl.Map({
         style: 'mapbox://styles/anna02/clgz2fy0200hg01qu5tb8a6is',

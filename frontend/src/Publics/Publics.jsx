@@ -42,6 +42,11 @@ export default function Publics() {
   ];
 
   useEffect(() => {
+    window.scrollTo(0, 0); // Прокрутите страницу вверх при монтировании компонента
+  }, []);
+
+
+  useEffect(() => {
     const handleResize = () => {
        const screenWidth = window.innerWidth;
       if (screenWidth >= 1025) {
