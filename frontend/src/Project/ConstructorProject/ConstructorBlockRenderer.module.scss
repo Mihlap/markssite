@@ -400,33 +400,28 @@
 
     // <<<< =========== стили для блока у которого 2 горизонтальные картинки и 1 вертикальная картинка imageBlockThree =========== >>>>
 
-    .gridContainer {
-        display: flex;
-        flex-direction: column;
-        gap: 30px;
-        height: 100%;
-        align-items: center;
-        margin-bottom: 2.5rem;
-        padding-left: 1rem;
-        padding-right: 1rem;
-    }
-
-    .horizontalImage,
-    .verticalImage {
-        width: 100%;
-        object-fit: cover;
-        display: block;
-        height: 100%;
-        max-height: 20rem;
-        border-radius: 1rem;
-    }
-
-    .horizontalImage {
-        grid-column: 1 / 2;
-
-        border-radius: 1rem;
-        /* 50% высоты экрана */
-    }
+        .gridContainer {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 30px;
+            height: 100vh;
+            overflow: hidden;
+            padding: 0rem 1rem;
+        }
+    
+        .horizontalImage {
+            height: 30vh;
+            border-radius: 1rem;
+        }
+    
+        .verticalImage {
+            height: 30vh;
+            /* Здесь можно задать любую высоту, чтобы показать только часть изображения */
+            overflow: hidden;
+            /* Обрезает изображение, которое не помещается */
+            border-radius: 1rem;
+        }
 
 
     // <<< ====== стили для блока с двумя вертикальными картинками ====== >>>
