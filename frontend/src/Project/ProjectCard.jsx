@@ -201,7 +201,7 @@ const ProjectCard = () => {
   return (
     <>
       <Helmet>
-        <title>{project ? project.title : ""}</title>
+        <title>{project ? project.title : "Marks Group"}</title>
         <meta
           property="og:image"
           content={

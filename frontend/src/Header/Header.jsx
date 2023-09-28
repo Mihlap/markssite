@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+import { Helmet } from "react-helmet-async";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
@@ -242,6 +243,10 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
   );
 
   return (
+    <>
+    <Helmet>
+    <title>Marks Group</title>
+  </Helmet>
     <main className={styles.header}>
       <div className={styles.video_block}>
         <VideoPlayer videoSource={videoSource} />
@@ -611,5 +616,6 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
         </Swiper>
       </div>
     </main>
+    </>
   );
 }
