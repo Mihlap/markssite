@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styles from "./Company.module.css";
 // import Company_Slider from "../UI/Company_Slider/Company_Slider";
 import gsap from "gsap";
+import { Helmet } from "react-helmet-async";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -282,6 +283,10 @@ export default function Company() {
             // </button> */}
 
   return (
+    <>
+    <Helmet>
+    <title>Marks Group</title>
+  </Helmet>
     <div className={styles.company_main}>
       {/* <Company_Slider /> */}
        <div className={styles.block_video_company}>
@@ -986,6 +991,7 @@ export default function Company() {
         </div>
       </div>
     </div>
+    </>
   );
 }
 
