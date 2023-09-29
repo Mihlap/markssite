@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
+import { Helmet } from "react-helmet-async";
 import gsap from "gsap";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -207,6 +208,16 @@ const ArticleCard = () => {
   // console.log(article, "===========================================");
 
   return (
+    <>
+    <Helmet>
+      <title>{article ? article.title : "Marks Group"}</title>
+      <meta
+        property="og:image"
+        content={
+          article ? `${Host}/images/imageArticle/${article.imageOpen}` : ""
+        }
+      />
+    </Helmet>
     <div className={styles.main_article_card}>
       {article && <ArticleCardSlider slidesCard={[article]} />}
       <div className={styles.all_button_div}>
@@ -519,6 +530,7 @@ const ArticleCard = () => {
         <SliderContainerArticleCard articles={articles} />
       </div>{" "}
     </div>
+    </>
   );
 };
 
