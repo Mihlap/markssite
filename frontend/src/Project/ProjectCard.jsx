@@ -199,16 +199,16 @@ const ProjectCard = () => {
 
 
   return (
-    // <>
-    //   <Helmet>
-    //     <title>{project ? project.title : "Marks Group"}</title>
-    //     <meta
-    //       property="og:image"
-    //       content={
-    //         project ? `${Host}/images/imageAdd/${project.imageProject}` : ""
-    //       }
-    //     />
-    //   </Helmet>
+    <>
+      <Helmet>
+        <title>{project ? project.title : "Marks Group"}</title>
+        <meta
+          property="og:image"
+          content={
+            project ? `${Host}/images/imageAdd/${project.imageProject}` : ""
+          }
+        />
+      </Helmet>
       <div className={styles.main_project_card}>
         {project && <ProjectCardSlider slidesCard={[project]} />}
         <div className={styles.all_button_div}>
@@ -805,7 +805,7 @@ const ProjectCard = () => {
           <SliderContainerProjectCard projects={projects} />
         </div>
       </div>
-    // </>
+     </>
   );
 };
 
