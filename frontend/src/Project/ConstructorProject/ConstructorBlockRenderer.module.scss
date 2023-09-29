@@ -30,7 +30,7 @@
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-    padding: 0rem 7.19rem 0rem 16.44rem;
+    padding: 0rem 0rem 0rem 0rem;
     margin-bottom: 40px;
 
     &__heading {
@@ -40,6 +40,10 @@
         font-style: normal;
         font-weight: 300;
         line-height: 32px;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        hyphens: auto;
+        word-break: break-all;
     }
 
     &__text {
@@ -50,7 +54,10 @@
         font-style: normal;
         font-weight: 400;
         line-height: 24px;
-        word-break: break-word;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        hyphens: auto;
+        word-break: break-all;
     }
 }
 
@@ -151,6 +158,10 @@
     display: flex;
     gap: 1rem;
     margin-bottom: 40px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    word-break: break-all;
 
     &__bookmark {
         width: 9px;
@@ -182,6 +193,10 @@
     font-weight: 400;
     line-height: 24px;
     margin-bottom: 40px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    word-break: break-all;
 }
 
 // <<< ====== стили для блока c цитатой и автором  ====== >>>
@@ -189,6 +204,10 @@
 .quote_block_constainer {
     position: relative;
     margin-bottom: 40px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    word-break: break-all;
 
     &__text_block {
         display: flex;
@@ -227,6 +246,10 @@
         position: absolute;
         top: 0px;
         right: -21%;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        hyphens: auto;
+        word-break: break-all;
     }
 
     &__img {
@@ -245,6 +268,7 @@
         font-weight: 400;
         line-height: 16px;
         padding-top: 10px;
+        max-width: 10rem;
     }
 
     &__author {
@@ -255,6 +279,10 @@
         font-style: normal;
         font-weight: 400;
         line-height: 16px;
+        hyphens: auto;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        word-break: break-all;
     }
 }
 
@@ -347,6 +375,10 @@
      .quote_block_constainer {
         position: relative;
         margin-bottom: 40px;
+        word-wrap: break-word;
+        overflow-wrap: break-word;
+        hyphens: auto;
+        word-break: break-all;
     
         &__text_block {
             display: flex;
@@ -357,9 +389,6 @@
             gap: 24px;
             border-radius: 16px;
             background-color: var(--light-light-gray-EBECEE);
-            word-wrap: break-word;
-            overflow-wrap: break-word;
-            hyphens: auto;
         }
     
         &__quote_text {
