@@ -81,23 +81,6 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
     dispatch(imageHover());
   };
 
-  // useEffect(() => {
-//   const videoName = "header_company_full.mp4"; 
-
-//   fetch(`/api/getVideoSource/${videoName}`)
-//     .then(response => {
-//       if (!response.ok) {
-//         throw new Error('Ошибка загрузки видео');
-//       }
-//       const videoUrl = response.url;
-//       setVideoSource(videoUrl);
-//     })
-//     .catch(error => console.error('Ошибка:', error));
-// }, []);
-
-
-// console.log(videoSource, '8888888888888888888888888888888888888888');
-
   useEffect(() => {
     dispatch(getFetchFormArticle());
     dispatch(getZaprosData());
@@ -260,10 +243,10 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
   );
 
   return (
-  //   <>
-  //   <Helmet>
-  //   <title>Marks Group</title>
-  // </Helmet>
+    <>
+    <Helmet>
+    <title>Marks Group</title>
+  </Helmet>
     <main className={styles.header}>
       <div className={styles.video_block}>
         <VideoPlayer videoSource={videoSource} />
@@ -633,7 +616,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
         </Swiper>
       </div>
     </main>
-    // </>
+    </>
   );
 }
 
