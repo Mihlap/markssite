@@ -38,7 +38,7 @@
         font-family: var(--font-unbounded);
         font-size: 24px;
         font-style: normal;
-        font-weight: 300;
+        font-weight: var(--fw-300);
         line-height: 32px;
         word-wrap: break-word;
         overflow-wrap: break-word;
@@ -52,7 +52,7 @@
         font-family: var(--font-raleway);
         font-size: 16px;
         font-style: normal;
-        font-weight: 400;
+        font-weight: var(--fw-400);
         line-height: 24px;
         word-wrap: break-word;
         overflow-wrap: break-word;
@@ -146,7 +146,7 @@
         font-family: var(--font-raleway);
         font-size: 16px;
         font-style: normal;
-        font-weight: 400;
+        font-weight: var(--fw-400);
         line-height: 24px;
         overflow-wrap: anywhere;            
     }
@@ -177,7 +177,7 @@
         font-family: var(--font-raleway);
         font-size: 16px;
         font-style: normal;
-        font-weight: 700;
+        font-weight: var(--fw-700);
         line-height: 24px;
         padding: 10px 0px;
     }
@@ -190,7 +190,7 @@
     font-family: var(--font-raleway);
     font-size: 16px;
     font-style: normal;
-    font-weight: 400;
+    font-weight: var(--fw-400);
     line-height: 24px;
     margin-bottom: 40px;
     word-wrap: break-word;
@@ -227,7 +227,7 @@
         font-family: var(--font-raleway);
         font-size: 16px;
         font-style: normal;
-        font-weight: 400;
+        font-weight: var(--fw-400);
         line-height: 24px;
         /* 150% */
     }
@@ -238,7 +238,7 @@
         font-family: var(--font-raleway);
         font-size: 14px;
         font-style: normal;
-        font-weight: 400;
+        font-weight: var(--fw-400);
         line-height: 20px;
     }
 
@@ -265,7 +265,7 @@
         font-family: var(--font-raleway);
         font-size: 12px;
         font-style: normal;
-        font-weight: 400;
+        font-weight: var(--fw-400);
         line-height: 16px;
         padding-top: 10px;
         max-width: 10rem;
@@ -277,7 +277,7 @@
         font-family: var(--font-raleway);
         font-size: 12px;
         font-style: normal;
-        font-weight: 400;
+        font-weight: var(--fw-400);
         line-height: 16px;
         hyphens: auto;
         word-wrap: break-word;
@@ -399,7 +399,7 @@
             font-family: var(--font-raleway);
             font-size: 16px;
             font-style: normal;
-            font-weight: 400;
+            font-weight: var(--fw-400);
             line-height: 24px;
             /* 150% */
         }
@@ -410,7 +410,7 @@
             font-family: var(--font-raleway);
             font-size: 14px;
             font-style: normal;
-            font-weight: 400;
+            font-weight: var(--fw-400);
             line-height: 20px;
         }
     
@@ -433,7 +433,7 @@
             font-family: var(--font-raleway);
             font-size: 12px;
             font-style: normal;
-            font-weight: 400;
+            font-weight: var(--fw-400);
             line-height: 16px;
             padding-top: 10px;
         }
@@ -444,7 +444,7 @@
             font-family: var(--font-raleway);
             font-size: 12px;
             font-style: normal;
-            font-weight: 400;
+            font-weight: var(--fw-400);
             line-height: 16px;
         }
     }
