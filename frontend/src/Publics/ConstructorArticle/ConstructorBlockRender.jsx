@@ -5,6 +5,100 @@ import "../../Project/stylePaginationSlider.css";
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 
+const arrowStyles = {
+  position: "absolute",
+  top: "50%",
+  transform: "translateY(-50%)",
+  zIndex: 1,
+  cursor: "pointer",
+};
+
+const PrevArrow = (props) => (
+  <div onClick={props.onClick}  style={{ ...arrowStyles, left: "1.5rem" }}>
+  <svg
+          width="42"
+          height="42"
+          viewBox="0 0 32 32"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g id="icon / 24 /  arrow /  normal">
+            <rect
+              y="32"
+              width="32"
+              height="32"
+              rx="16"
+              transform="rotate(-90 0 32)"
+              fill="url(#paint0_linear_565_7001)"
+              fillOpacity="0.55"
+            />
+            <path
+              id="Vector 30"
+              d="M18.667 10.6665L12.0003 16.6665L18.667 22.6665"
+              stroke="#F6F6F6"
+              strokeWidth="1.33333"
+            />
+          </g>
+          <defs>
+            <linearGradient
+              id="paint0_linear_565_7001"
+              x1="-1.2528e-06"
+              y1="34.1818"
+              x2="55.3078"
+              y2="90.3335"
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop stopColor="#BBDEFF" />
+              <stop offset="1" stopColor="#FFBFB5" />
+            </linearGradient>
+          </defs>
+        </svg>
+  </div>
+);
+
+const NextArrow = (props) => (
+  <div onClick={props.onClick}  style={{ ...arrowStyles, right: "1.5rem" }}>
+     <svg
+          width="42"
+          height="42"
+          viewBox="0 0 32 32"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <g id="icon / 24 /  arrow /  normal">
+            <rect
+              x="32"
+              width="32"
+              height="32"
+              rx="16"
+              transform="rotate(90 32 0)"
+              fill="url(#paint0_linear_565_7000)"
+              fillOpacity="0.55"
+            />
+            <path
+              id="Vector 30"
+              d="M13.333 21.3335L19.9997 15.3335L13.333 9.3335"
+              stroke="#F6F6F6"
+              strokeWidth="1.33333"
+            />
+          </g>
+          <defs>
+            <linearGradient
+              id="paint0_linear_565_7000"
+              x1="32"
+              y1="2.18182"
+              x2="87.3078"
+              y2="58.3335"
+              gradientUnits="userSpaceOnUse"
+            >
+              <stop stopColor="#BBDEFF" />
+              <stop offset="1" stopColor="#FFBFB5" />
+            </linearGradient>
+          </defs>
+        </svg>
+  </div>
+);
+
 export default function ConstructorBlockRenderer({ block }) {
   const [activeSlide, setActiveSlide] = useState(0);
   const [dotsVisible, setDotsVisible] = useState(true);
@@ -144,7 +238,7 @@ export default function ConstructorBlockRenderer({ block }) {
 
     // Настройки слайдера
     const settings = {
-      dots: window.innerWidth <= 768, // Включение пагинации
+      dots: window.innerWidth <= 767, // Включение пагинации
       customPaging: (i) => (
         <div
           style={i === activeSlide ? activeDotStyle : inactiveDotStyle} // сравнение с активным слайдом
@@ -159,87 +253,9 @@ export default function ConstructorBlockRenderer({ block }) {
         setActiveSlide(newIndex);
       },
       focusOnSelect: true,
-      nextArrow: dotsVisible && (
-        <svg
-          width="42"
-          height="42"
-          viewBox="0 0 32 32"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <g id="icon / 24 /  arrow /  normal">
-            <rect
-              x="32"
-              width="32"
-              height="32"
-              rx="16"
-              transform="rotate(90 32 0)"
-              fill="url(#paint0_linear_565_7000)"
-              fillOpacity="0.55"
-            />
-            <path
-              id="Vector 30"
-              d="M13.333 21.3335L19.9997 15.3335L13.333 9.3335"
-              stroke="#F6F6F6"
-              strokeWidth="1.33333"
-            />
-          </g>
-          <defs>
-            <linearGradient
-              id="paint0_linear_565_7000"
-              x1="32"
-              y1="2.18182"
-              x2="87.3078"
-              y2="58.3335"
-              gradientUnits="userSpaceOnUse"
-            >
-              <stop stopColor="#BBDEFF" />
-              <stop offset="1" stopColor="#FFBFB5" />
-            </linearGradient>
-          </defs>
-        </svg>
-      ),
-      prevArrow: dotsVisible && (
-        <svg
-          width="32"
-          height="32"
-          viewBox="0 0 32 32"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <g id="icon / 24 /  arrow /  normal">
-            <rect
-              y="32"
-              width="32"
-              height="32"
-              rx="16"
-              transform="rotate(-90 0 32)"
-              fill="url(#paint0_linear_565_7001)"
-              fillOpacity="0.55"
-            />
-            <path
-              id="Vector 30"
-              d="M18.667 10.6665L12.0003 16.6665L18.667 22.6665"
-              stroke="#F6F6F6"
-              strokeWidth="1.33333"
-            />
-          </g>
-          <defs>
-            <linearGradient
-              id="paint0_linear_565_7001"
-              x1="-1.2528e-06"
-              y1="34.1818"
-              x2="55.3078"
-              y2="90.3335"
-              gradientUnits="userSpaceOnUse"
-            >
-              <stop stopColor="#BBDEFF" />
-              <stop offset="1" stopColor="#FFBFB5" />
-            </linearGradient>
-          </defs>
-        </svg>
-      ),
-    };
+      prevArrow: dotsVisible && <PrevArrow />,
+      nextArrow: dotsVisible && <NextArrow />,
+     };
 
     return (
       <div
