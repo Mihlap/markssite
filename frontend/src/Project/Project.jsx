@@ -274,10 +274,10 @@ export default function Project() {
   // console.log(filteredProjects, "9999999999999999999999999999999999");
 
   return (
-  //   <>
-  //   <Helmet>
-  //   <title>Marks Group</title>
-  // </Helmet>
+    <>
+    <Helmet>
+    <title>Marks Group</title>
+  </Helmet>
     <div className={styles.project_main}>
       <Company_Slider />
       <div className={styles.project_slider_text}>
@@ -748,6 +748,6 @@ export default function Project() {
         </div>
       </section>
     </div>
-    // </>
+    </>
   );
 }
