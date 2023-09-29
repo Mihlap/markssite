@@ -144,13 +144,13 @@ export default function ConstructorBlockRenderer({ block }) {
 
     // Настройки слайдера
     const settings = {
-      dots: true, // Включение пагинации
+      dots: window.innerWidth <= 768, // Включение пагинации
       customPaging: (i) => (
         <div
           style={i === activeSlide ? activeDotStyle : inactiveDotStyle} // сравнение с активным слайдом
         />
       ),
-      infinite: true,
+       infinite: true,
       // speed: 500,
       slidesToShow: 1,
       slidesToScroll: 1,
@@ -158,7 +158,7 @@ export default function ConstructorBlockRenderer({ block }) {
       beforeChange: (_, newIndex) => {
         setActiveSlide(newIndex);
       },
-      // focusOnSelect: true,
+      focusOnSelect: true,
       nextArrow: dotsVisible && (
         <svg
           width="42"
