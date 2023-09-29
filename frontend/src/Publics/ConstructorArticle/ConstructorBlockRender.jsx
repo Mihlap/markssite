@@ -16,8 +16,8 @@ const arrowStyles = {
 const PrevArrow = (props) => (
   <div onClick={props.onClick}  style={{ ...arrowStyles, left: "1.5rem" }}>
   <svg
-          width="42"
-          height="42"
+          width="32"
+          height="32"
           viewBox="0 0 32 32"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
@@ -207,7 +207,7 @@ export default function ConstructorBlockRenderer({ block }) {
       height: "810px",
       objectFit: "cover",
       borderRadius: "10px",
-    };
+    }
 
     if (window.innerWidth <= 768) {
       sliderImageStyle = {
@@ -215,8 +215,15 @@ export default function ConstructorBlockRenderer({ block }) {
         height: "22.6rem",
         objectFit: "cover",
         borderRadius: "10px",
-      };
-    }
+      }
+    } else if (window.innerWidth >= 768 && window.innerWidth <= 1024) {
+      sliderImageStyle = {
+        width: "100%",
+        height: "29rem",
+        objectFit: "cover",
+        borderRadius: "10px",
+      }
+    };
 
     const activeDotStyle = {
       position: "relative", 
@@ -255,7 +262,7 @@ export default function ConstructorBlockRenderer({ block }) {
       focusOnSelect: true,
       prevArrow: dotsVisible && <PrevArrow />,
       nextArrow: dotsVisible && <NextArrow />,
-     };
+   };
 
     return (
       <div
