@@ -770,7 +770,7 @@ padding-right: 0.5rem;
 }
 
 /* Стили для мобильной версии сайта блока ArticleCard начинаются тут */
-@media screen and (max-width: 1024px) {
+@media screen and (max-width: 768px) {
 
 
   .share_article,
