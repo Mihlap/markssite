@@ -306,7 +306,11 @@
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
-  padding: 0rem 22.19rem 0rem 16.44rem;
+  padding: 0rem 0rem 0rem 0rem;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  word-break: break-all;
 }
 
 .quote_text {
