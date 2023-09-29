@@ -92,10 +92,10 @@ export default function Publics() {
  
 // console.log(articles, "+++++++++++++++++++++++++++++++++++++++++++++");
   return (
-    <>
-    <Helmet>
-    <title>Marks Group</title>
-  </Helmet>
+  //   <>
+  //   <Helmet>
+  //   <title>Marks Group</title>
+  // </Helmet>
     <div className={styles.public_container_main}>
       <div className={styles.public_image_header}>
         {/* <VideoPlayer videoSource={videoSource} /> */}
@@ -211,6 +211,6 @@ export default function Publics() {
         </div>
       </section>
     </div>
-    </>
+    // </>
   );
 }
