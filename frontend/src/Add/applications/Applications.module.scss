@@ -37,6 +37,34 @@
         line-height: 20px;
     }
 
+    &__status_block {
+        display: flex;
+        gap: 4px;
+    }
+
+    &__status {
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background: linear-gradient(to right, #DEE6ED, #90B734, #93b543);
+        background-size: 200% 200%;
+        animation: gradient 5s ease infinite;
+
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+    }
+
     &__list_text {
         display: flex;
         flex-direction: column;
@@ -62,7 +90,8 @@
         margin-left: 10px;
 
         &:hover {
-            background-color: #e37091;;
+            background-color: #e37091;
+            ;
         }
     }
 }
