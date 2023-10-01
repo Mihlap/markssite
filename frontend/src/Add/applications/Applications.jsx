@@ -62,9 +62,12 @@ export default function Applications() {
               <span className={styles.Applications__hide_text}>
                 Текущий пользователь в админке:
               </span>{" "}
-              <span className={styles.Applications__list_text}>
-                {currentUser?.name}
-              </span>
+              <div className={styles.Applications__status_block}>
+                <span className={styles.Applications__item_text}>
+                  {currentUser?.name}
+                </span>
+                <div className={styles.Applications__status} />
+              </div>
             </div>
           ) : (
             <p>Пользователь не авторизован</p>
