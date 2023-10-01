@@ -1,7 +1,7 @@
 @import '../../App.css';
 
 
-.Applications{
+.Applications {
     height: 100vh;
     padding-left: 3rem;
     padding-top: 7.5rem;
@@ -12,5 +12,51 @@
         font-style: normal;
         font-weight: 300;
         line-height: 2.5rem;
+    }
+
+    &__hide_block {
+        display: flex;
+        text-align: center;
+        gap: 10px;
+        margin-top: 10px;
+    }
+
+    &__hide_text {
+        color: var(--gray-959DA6);
+        font-variant-numeric: lining-nums proportional-nums;
+        font-family: var(--font-raleway);
+        font-size: 14px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 20px;
+    }
+}
+
+.toggleButton {
+    width: 40px;
+    height: 24px;
+    background-color: #BADDFE;
+    border-radius: 15px;
+    position: relative;
+    cursor: pointer;
+    transition: background-color 0.3s;
+
+    .circle {
+        width: 18px;
+        height: 18px;
+        background-color: white;
+        border-radius: 50%;
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        transition: left 0.3s;
+    }
+
+    &.active {
+        background-color: var(--blue-75BBFD);
+
+        .circle {
+            left: 19px;
+        }
     }
 }
