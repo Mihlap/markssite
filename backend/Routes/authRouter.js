@@ -71,6 +71,51 @@ authRouter.get('/user', (req, res) => {
   }
 });
 
+ // Добавьте этот обработчик после существующих роутов
+authRouter.get('/allUsers', async (req, res) => {
+  try {
+    const users = await User.findAll({
+      attributes: ['id', 'userName'], // Выбираем поля id и userName
+    });
+
+    // Отправляем список пользователей (с id и userName) в виде массива в ответе JSON
+    res.status(200).json(users);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Ошибка при получении пользователей' });
+  }
+});
+
+authRouter.delete('/user/:id', async (req, res) => {
+  try {
+    const userId = req.params.id;
+    const userToDelete = await User.findByPk(userId);
+
+    // Проверьте, является ли текущий пользователь администратором или имеет доступ к удалению
+    // В зависимости от ваших требований к безопасности
+    // В примере мы запрещаем удаление пользователей "Pokemon" и "obezyankaa"
+
+    if (userToDelete.userName === 'Pokemon' || userToDelete.userName === 'obezyankaa') {
+      return res.status(403).json({ message: 'Этого пользователя нельзя удалить' });
+    }
+
+    const deletedUser = await User.destroy({
+      where: {
+        id: userId,
+      },
+    });
+
+    if (deletedUser === 0) {
+      return res.status(404).json({ message: 'Пользователь не найден' });
+    }
+
+    res.status(200).json({ message: 'Пользователь успешно удален' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Ошибка при удалении пользователя' });
+  }
+});
+
 
 authRouter.get('/logout', (req, res) => {
     req.session.destroy();
