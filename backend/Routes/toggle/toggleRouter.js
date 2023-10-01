@@ -1,5 +1,9 @@
 const express = require('express');
-const { SwitchingFilterProjects, SwitchingFilterArticle } = require('../../db/models');
+const {
+  SwitchingFilterProjects,
+  SwitchingFilterArticle,
+  SwitchingFilterRegistration,
+} = require('../../db/models');
 
 const router = express.Router();
 
@@ -69,6 +73,40 @@ router.get('/article', async (req, res) => {
   }
 });
 
+
+// << ============ SwitchingFilterRegistration ============ >>
+
+router.put('/button3', async (req, res) => {
+  try {
+    const { isActiveForButton3 } = req.body;
+    console.log(isActiveForButton3);
+
+    // Удалить все записи
+    await SwitchingFilterRegistration.destroy({ truncate: true });
+
+    // Создать новую запись с заданным значением isActive
+    await SwitchingFilterRegistration.create({
+      state: isActiveForButton3,
+    });
+
+    res.json({ success: true, message: 'Status updated successfully' });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+router.get('/button3', async (req, res) => {
+  try {
+    const record = await SwitchingFilterRegistration.findOne();
+    if (record) {
+      res.json({ success: true, isActiveForButton3: record.state });
+    } else {
+      res.status(404).json({ success: false, message: 'No records found' });
+    }
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
 
 
 
