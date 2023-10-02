@@ -36,9 +36,9 @@ const Host = process.env.REACT_APP_SERVER_HOST;
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
 const videoSource = {
-  small: "./assets/primePark_mobile.mp4",
-  medium: "./assets/primePark_ipad.mp4",
-  large: "./assets/primePark.mp4",
+  small: `${Host}/images/video/primePark_mobile.mp4`,
+  medium: `${Host}/images/video/primePark_ipad.mp4`,
+  large: `${Host}/images/video/primePark.mp4`,
 };
 
 export default function Header({ user, setNavBarOpen, setShowFooter }) {
@@ -47,28 +47,28 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
   const [isHorizontalScroll, setIsHorizontalScroll] = useState(false);
   const [isAtRightEdge, setIsAtRightEdge] = useState(false);
   const [scrollingMode, setScrollingMode] = useState("vertical");
-
+  
   const [loadingArticle, setLoadingArticle] = useState(false);
-
+  
   const cursorVariant = useSelector((state) => state.cursor);
   const { article, loading, error } = useSelector((state) => state.article);
   // const articles = useSelector((state) => state.article.article);
   const projects = useSelector((state) => state.searchproject.projects);
-
+  
   const ArticleLeft = useSelector(
     (state) => state.searchArticlePublicLeft.articleLeft
-  );
-  const MapArticle = ArticleLeft?.map((el) => el.publication.publication);
-
-  const ArticleRight = useSelector(
-    (state) => state.searchArticlePublicRight.articleRight
-  );
-  const MapArticleRight = ArticleRight?.map((el) => el.publication.publication);
-
-  const dispatch = useDispatch();
-
+    );
+    const MapArticle = ArticleLeft?.map((el) => el.publication.publication);
+    
+    const ArticleRight = useSelector(
+      (state) => state.searchArticlePublicRight.articleRight
+      );
+      const MapArticleRight = ArticleRight?.map((el) => el.publication.publication);
+      
+      const dispatch = useDispatch();
+      
   const [videoSrc, setVideoSrc] = useState(videoSource.large);
-
+ 
    const handleMouseEnter = () => {
     dispatch(textEnter());
   };
@@ -81,15 +81,61 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
     dispatch(imageHover());
   };
 
+  const fetchData = async () => {
+    try {
+      const response = await fetch('/api/videos'); 
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const videoBlob = await response.blob(); 
+  
+      const videoUrl = URL.createObjectURL(videoBlob); 
+      return videoUrl;
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      return null;
+    }
+  };
+  
   useEffect(() => {
-    dispatch(getFetchFormArticle());
-    dispatch(getZaprosData());
-    dispatch(searchArticleLeftGet());
-    dispatch(searchArticleRightGet());
+    const handleResize = () => {
+      const screenWidth = window.innerWidth;
+      if (screenWidth >= 1025) {
+        setVideoSrc(videoSource.large);
+      } else if (screenWidth >= 768 && screenWidth < 1025) {
+        setVideoSrc(videoSource.medium);
+      } else {
+        setVideoSrc(videoSource.small);
+      }
+    };
+  
+    handleResize();
+    window.addEventListener("resize", handleResize);
+  
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+  
+  useEffect(() => {
+    fetchData()
+      .then(videoUrl => {
+        if (videoUrl) {
+          setVideoSrc(videoUrl); 
+        }
+        dispatch(getFetchFormArticle());
+        dispatch(getZaprosData());
+        dispatch(searchArticleLeftGet());
+        dispatch(searchArticleRightGet());
+      })
+      .catch(error => {
+        // console.error('Error fetching data:', error);
+      });
   }, [dispatch]);
   
+  
 
-  const colors = {
+ const colors = {
     Архитектура: "#FF7F6A",
     BIM: "#75BBFD",
     Конструкции: "#566272",

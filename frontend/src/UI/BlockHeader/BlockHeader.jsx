@@ -132,7 +132,7 @@ const BlockHeader = () => {
             <div className="text_span">
               <span className="header_slider_span">
                 Подготовка проектной и рабочей документации на базе
-                архитектурного/инжинерного решения
+                архитектурного/инженерного решения
               </span>
               <div className="icon_slider_svg">
                 <img src={mySvg} alt="My SVG" />

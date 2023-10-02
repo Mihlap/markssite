@@ -31,23 +31,22 @@ import CounterCompanyMobile from "../UI/CounterCompanyMobile";
 import CounterCompanyMobile2 from "../UI/CounterCompanyMobile2";
 import CompanyGroupSlider from "../UI/CompanyGroupSlider/CompanyGroupSlider";
 
+const Host = process.env.REACT_APP_SERVER_HOST;
+
+
+const videoSource = {
+large: `${Host}/images/video/company_full.mp4`,
+medium: `${Host}/images/video/company_ipad.mp4`,
+small: `${Host}/images/video/company_mob.mp4`,
+};
+
+const videoSource2 = {
+  large: `${Host}/images/video/header_company_full.mp4`,
+  medium: `${Host}/images/video/assets/header_company_ipad.mp4`,
+  small: `${Host}/images/video/assets/header_company_mobile.mp4`,
+};
 
 export default function Company() {
-  
-  const videoSource = {
-  large: "./assets/company_full.mp4",
-  medium: "./assets/company_ipad.mp4",
-  small: "./assets/company_mob.mp4",
-  };
-  
-  const videoSource2 = {
-    large: "./assets/header_company_full.mp4",
-    medium: "./assets/header_company_ipad.mp4",
-    small: "./assets/header_company_mobile.mp4",
-  };
-
-  
-
   const dispatch = useDispatch();
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [countPercent, setCountPercent] = useState(0);
@@ -84,7 +83,6 @@ export default function Company() {
 
   const isMobile = windowWidth <= 767;
   const symbol = "•";
-  const Host = process.env.REACT_APP_SERVER_HOST;
 
   // useEffect(() => {
   //   const handleResize = () => {
@@ -116,10 +114,60 @@ export default function Company() {
     window.scrollTo(0, 0); // Прокрутите страницу вверх при монтировании компонента
   }, []);
 
+  const fetchData = async () => {
+    try {
+      const response = await fetch('/api/videos'); 
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const videoBlob = await response.blob(); 
+  
+      const videoUrl = URL.createObjectURL(videoBlob); 
+      return videoUrl;
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      return null;
+    }
+  };
+  
   useEffect(() => {
+    const handleResize = () => {
+      const screenWidth = window.innerWidth;
+      if (screenWidth >= 1025) {
+        setVideoSrc(videoSource.large);
+        setVideoSrc2(videoSource2.large);
+      } else if (screenWidth >= 768 && screenWidth < 1025) {
+        setVideoSrc(videoSource.medium);
+        setVideoSrc2(videoSource2.medium);
+
+      } else {
+        setVideoSrc(videoSource.small);
+        setVideoSrc2(videoSource2.small);
+      }
+    };
+  
+    handleResize();
+    window.addEventListener("resize", handleResize);
+  
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    fetchData()
+    .then(videoUrl => {
+      if (videoUrl) {
+        setVideoSrc(videoUrl); 
+        setVideoSrc2(videoUrl); 
     dispatch(selectCard(null));
     dispatch(fetchCategoryStaff(category));
     setShowCards(true);
+  }
+})
+.catch(error => {
+  // console.error('Error fetching data:', error);
+});
   }, [dispatch]);
 
   const handleButtonClick = (category, selectedCardId) => {
