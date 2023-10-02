@@ -15,6 +15,8 @@ const searchArticleLeft = require('./Routes/Articles/searchArticleLeftRouter');
 const searchArticleRight = require('./Routes/Articles/searchArticleRightRouter');
 const mailRouter = require('./Routes/mailRouter');
 const toggleRouter = require('./Routes/toggle/toggleRouter');
+const videoRouter = require('./Routes/videoRouter');
+
 // const { createProxyMiddleware } = require('http-proxy-middleware');
 
 
@@ -91,6 +93,7 @@ app.use('/search-article', searchArticleLeft);
 app.use('/search-articles', searchArticleRight);
 app.use('/api-mail', mailRouter);
 app.use('/api/toggle', toggleRouter);
+app.use('/api/videos', videoRouter);
 
 
 app.listen(PORT, () => {
