@@ -248,21 +248,21 @@ export default function Company() {
         const scrollTop = window.scrollY || document.documentElement.scrollTop;
 
         if (scrollTop > thisBlockRect.top && screenWidth >= 2000) {
-          const translateYValue = nameCompanyRect.height + 112;
+          const translateYValue = nameCompanyRect.height + 182;
           nameCompanyRef.current.style.transform = `translateY(${translateYValue}px)`;
-          thisBlockRef.current.style.transform = `translateY(40px) translateX(10vw) rotate(-90deg)`;
+          thisBlockRef.current.style.transform = `translateY(70px) translateX(10vw) rotate(-90deg)`;
         } else if (
           scrollTop > thisBlockRect.top &&
           screenWidth < 1999 &&
           screenWidth >= 1480
         ) {
-          const translateYValue = nameCompanyRect.height + 212;
+          const translateYValue = nameCompanyRect.height + 282;
           nameCompanyRef.current.style.transform = `translateY(${translateYValue}px)`;
-          thisBlockRef.current.style.transform = `translateY(120px) translateX(10vw) rotate(-90deg)`;
-        } else if (scrollTop > thisBlockRect.top && screenWidth <= 1480) {
-          const translateYValue = nameCompanyRect.height + 262;
+          thisBlockRef.current.style.transform = `translateY(200px) translateX(10vw) rotate(-90deg)`;
+        } else if (scrollTop > thisBlockRect.top && screenWidth <= 1479) {
+          const translateYValue = nameCompanyRect.height + 342;
           nameCompanyRef.current.style.transform = `translateY(${translateYValue}px)`;
-          thisBlockRef.current.style.transform = `translateY(180px) translateX(10vw) rotate(-90deg)`;
+          thisBlockRef.current.style.transform = `translateY(270px) translateX(10vw) rotate(-90deg)`;
         } else {
           nameCompanyRef.current.style.transform = "none";
           thisBlockRef.current.style.transform = "rotate(-180deg)";
@@ -934,11 +934,11 @@ export default function Company() {
           <Swiper
             className={styles.slider_card_container}
             loop={true}
-            slidesPerView={1.13}
-            spaceBetween={20}
+            slidesPerView={1.1}
+            spaceBetween={10}
             effect={"fade"}
             touch="true"
-            centeredSlides={true}
+            centeredSlides={"true"}
             onSlideChange={(swiper) => setCurrentIndexCompany(swiper.realIndex)}
             onSwiper={(swiper) => {
               if (swiperCompanyRef.current === null) {
