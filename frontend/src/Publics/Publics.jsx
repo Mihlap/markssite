@@ -11,9 +11,9 @@ import { fetchToggleStateForButton2Async } from "../store/Slice/toggleSlice";
 const Host = process.env.REACT_APP_SERVER_HOST;
 
 const videoSource = {
-  small: "./assets/public_mob.mp4",
-  medium: "./assets/public_ipad.mp4",
-  large: "./assets/public_full.mp4",
+  small: `${Host}/images/video/public_mob.mp4`,
+  medium: `${Host}/images/video/public_ipad.mp4`,
+  large: `${Host}/images/video/public_full.mp4`,
 };
 
 
@@ -46,6 +46,23 @@ export default function Publics() {
     window.scrollTo(0, 0); // Прокрутите страницу вверх при монтировании компонента
   }, []);
 
+  const fetchData = async () => {
+    try {
+      const response = await fetch('/api/videos'); // Вызываем endpoint для получения видео
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      const videoBlob = await response.blob(); // Получаем видео в виде Blob
+  
+      const videoUrl = URL.createObjectURL(videoBlob); // Преобразуем Blob в URL
+      return videoUrl;
+    } catch (error) {
+      console.error('Error fetching data:', error);
+      return null;
+    }
+  };
+
+
 
   useEffect(() => {
     const handleResize = () => {
@@ -68,10 +85,19 @@ export default function Publics() {
     };
   }, []);
 
-  useEffect(() => {
-    dispatch(getFetchFormArticle());
-    dispatch(fetchToggleStateForButton2Async());
-  }, [dispatch]);
+ useEffect(() => {
+  fetchData()
+    .then(videoUrl => {
+      if (videoUrl) {
+        setVideoSrc(videoUrl); 
+        dispatch(getFetchFormArticle());
+        dispatch(fetchToggleStateForButton2Async());
+      }
+    })
+    .catch(error => {
+      // console.error('Error fetching data:', error);
+    });
+}, [dispatch]);
 
    const handleButtonClick = (selected) => {
     if (selected === "Все") {
