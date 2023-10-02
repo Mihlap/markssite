@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import {  HelmetProvider } from 'react-helmet-async';
+import axios from "axios";
 import "./App.css";
 import Company from "./Company/Company";
 import Header from "./Header/Header";
@@ -21,7 +22,6 @@ import Login from "./Login/Login";
 import Add from "./Add/Add";
 
 import SignUpPage from "./Login/SignUpPage";
-import axios from "axios";
 import ProjectCard from "./Project/ProjectCard";
 import ArticleCard from "./Publics/ArticleCard";
 import CustomCursor from "./UI/CustomCursor/CustomCursor";
@@ -37,7 +37,7 @@ export default function App() {
   const showNavbarFooter = useSelector((state) => state.user.showNavbarFooter);
   const location = useLocation();
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
 
 
@@ -56,11 +56,11 @@ useEffect(() => {
 
 // console.log(isUserChecked);
   // таймаут для прелоудера на сайте
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     setLoading(false);
-  //   }, 3500);
-  // }, []);
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 3500);
+  }, []);
 
 
   // console.log(`пользователь 👉${user?.name}👈`);
@@ -114,7 +114,7 @@ useEffect(() => {
             </CSSTransition>
           </TransitionGroup>
           {showNavbarFooter && currentPage !== "add" && <Footer />}
-          {/* <CustomCursor /> */}
+          <CustomCursor />
         </>
       )}
     </HelmetProvider>

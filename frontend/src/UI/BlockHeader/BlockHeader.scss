@@ -80,8 +80,7 @@
   font-size: 1.25rem;
   line-height: 1.75rem;
   color: var(--black-1D2E43);
-  word-wrap: break-word;
-  word-break: keep-all;
+  overflow-wrap: break-word;
   width: 100%;
   padding-left: 50%;
   cursor: pointer;
@@ -112,10 +111,7 @@
   line-height: 1.25rem;
   padding-bottom: 32px;
   padding-top: 8px;
-  word-wrap: break-word;
   overflow-wrap: break-word;
-  hyphens: auto;
-  word-break: break-all;
   width: 80%;
   padding-right: 5rem;
   }
