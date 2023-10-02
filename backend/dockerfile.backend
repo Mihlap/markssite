@@ -2,21 +2,21 @@ FROM node:18-alpine
 
 LABEL version="1.0.0"
 
-WORKDIR /app
+WORKDIR /server/
 
 RUN apk update && apk add postgresql-client
 
-COPY package*.json ./
+COPY package*.json /server/
 
 RUN npm cache clean --force
 RUN npm install
 RUN npm install bcrypt
 
-COPY . .
+COPY . /server/
 
 EXPOSE 3002
 
-RUN npm run build
+RUN npm run start
 
 # Если вам нужно указать какой-то команды для запуска приложения (например, для сервера статических файлов)
 CMD ["npm", "start"]
