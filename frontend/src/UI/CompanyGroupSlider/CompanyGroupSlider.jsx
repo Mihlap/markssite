@@ -120,7 +120,6 @@ const CompanyGroupSlider = () => {
             <img src="./assets/Vector1.svg" alt="2" />
             <span className="text_slider_span">
               Комплексное проектирование интерьеров разного назначения.
-              Комплексное проектирование интерьеров
             </span>
           </div>
         </div>
