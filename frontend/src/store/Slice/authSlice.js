@@ -48,11 +48,45 @@ export const logoutUser = createAsyncThunk(
   }
 );
 
+export const getAllUserNames = createAsyncThunk(
+  "auth/getAllUserNames",
+  async (_, { rejectWithValue }) => {
+    try {
+      const serverHost = process.env.REACT_APP_SERVER_HOST;
+      const response = await axios.get(`${serverHost}/api/auth/allUsers`, {
+        withCredentials: true,
+      });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const deleteUser = createAsyncThunk(
+  "auth/deleteUser",
+  async (userId, { rejectWithValue }) => {
+    try {
+      const serverHost = process.env.REACT_APP_SERVER_HOST;
+      const response = await axios.delete(
+        `${serverHost}/api/auth/user/${userId}`,
+        {
+          withCredentials: true,
+        }
+      );
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 
 const authSlice = createSlice({
   name: "auth",
   initialState: {
     user: null,
+    userNames: [],
     error: null,
     status: "idle",
   },
@@ -84,7 +118,7 @@ const authSlice = createSlice({
         state.status = "failed";
         state.error = action.payload;
       });
-     builder
+    builder
       .addCase(logoutUser.pending, (state) => {
         state.status = "loading";
       })
@@ -96,6 +130,11 @@ const authSlice = createSlice({
       .addCase(logoutUser.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
+      })
+    .addCase(getAllUserNames.fulfilled, (state, action) => {
+        state.status = "succeeded";
+        state.userNames = action.payload; // Сохраните полученные имена пользователей в состоянии
+        state.error = null;
       });
   },
 });

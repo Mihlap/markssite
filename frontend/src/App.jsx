@@ -29,12 +29,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { checkUserAuth } from "./store/Slice/authSlice";
 import { resetCurrentPage, setCurrentPage } from "./store/Slice/userSlice";
 import ButtonAdmin from "./UI/ButtonAdmin/ButtonAdmin";
+import { fetchToggleStateForButton3Async } from "./store/Slice/toggleSlice";
 
 
 export default function App() {
   const user = useSelector((state) => state.auth.user);
   const currentPage = useSelector((state) => state.user.currentPage);
   const showNavbarFooter = useSelector((state) => state.user.showNavbarFooter);
+  const isActive = useSelector((state) => state.toggle.isActiveForButton3);
   const location = useLocation();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
@@ -43,6 +45,7 @@ export default function App() {
 
 useEffect(() => {
   dispatch(checkUserAuth());
+   dispatch(fetchToggleStateForButton3Async());
 }, [dispatch]);
   
   const handlePageChange = (page) => {
@@ -92,8 +95,10 @@ useEffect(() => {
                   path="/winepark-article"
                   element={<WineParkArticles />}
                 />
-                <Route path="/login" element={<Login />} />
-                {/* <Route path="/signup" element={<SignUpPage />} /> */}
+                  <Route path="/login" element={<Login />} />
+                  {isActive && ( 
+                 <Route path="/signup" element={<SignUpPage />} /> 
+                   )}
                 <Route path="/information" element={<Information />} />
 
                 {user ? (

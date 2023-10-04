@@ -102,6 +102,9 @@ module.exports = {
       style: {
         type: Sequelize.STRING,
       },
+      geoData: {
+        type: Sequelize.TEXT,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
