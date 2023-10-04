@@ -46,24 +46,6 @@ export default function Publics() {
     window.scrollTo(0, 0); // Прокрутите страницу вверх при монтировании компонента
   }, []);
 
-  const fetchData = async () => {
-    try {
-      const response = await fetch('/api/videos'); // Вызываем endpoint для получения видео
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const videoBlob = await response.blob(); // Получаем видео в виде Blob
-  
-      const videoUrl = URL.createObjectURL(videoBlob); // Преобразуем Blob в URL
-      return videoUrl;
-    } catch (error) {
-      console.error('Error fetching data:', error);
-      return null;
-    }
-  };
-
-
-
   useEffect(() => {
     const handleResize = () => {
        const screenWidth = window.innerWidth;
@@ -86,18 +68,9 @@ export default function Publics() {
   }, []);
 
  useEffect(() => {
-  fetchData()
-    .then(videoUrl => {
-      if (videoUrl) {
-        setVideoSrc(videoUrl); 
         dispatch(getFetchFormArticle());
         dispatch(fetchToggleStateForButton2Async());
-      }
-    })
-    .catch(error => {
-      // console.error('Error fetching data:', error);
-    });
-}, [dispatch]);
+ }, [dispatch]);
 
    const handleButtonClick = (selected) => {
     if (selected === "Все") {
@@ -124,10 +97,11 @@ export default function Publics() {
   </Helmet>
     <div className={styles.public_container_main}>
       <div className={styles.public_image_header}>
-        {/* <VideoPlayer videoSource={videoSource} /> */}
+      {videoSrc && (
            <video playsInline autoPlay muted loop id="bg-video">
             <source src={videoSrc} type="video/mp4" />
           </video>
+      )}
         <div className={styles.text_container_publics}>
           <span className={styles.text1_publics}>
             Наша команда ведет активную научную жизнь!
