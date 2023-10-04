@@ -852,12 +852,12 @@ bottom: 3.38rem;
   }
     
   .company_form_contacts_wrapper {
-    padding: 3.6rem 1.87vw 0rem 0vw;
+    padding: 0rem 1.87vw 0rem 0vw;
     margin-top: 0;
   }
 
   .companySubscriptionForm_wrapper {
-    padding-top: 3.6rem;
+    padding-top: 0rem;
     height: 50%;
     margin-top: 0;
   }
@@ -902,7 +902,7 @@ bottom: 3.38rem;
 @media screen and (min-width: 768px) and (max-width: 840px) {
   .form_wrapper {
     padding: 0rem 1rem 0rem 1rem;
-    top: 4rem;
+    top: 0rem;
     }
     .video_wrapper {
       padding-top: 0rem;
@@ -1298,7 +1298,7 @@ height: 100%;
 
   .form_wrapper {
   padding: 0rem 1rem 0rem 1rem;
-  top: 5rem;
+  top: 0rem;
   }
   
 
@@ -1329,7 +1329,7 @@ height: 100%;
 @media screen and (min-width: 200px) and (max-width: 340px) {
     .form_wrapper {
       padding: 0rem 1rem 0rem 1rem;
-      top: 5rem;
+      top: 0rem;
       }
 
 }
