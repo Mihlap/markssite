@@ -67,7 +67,12 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
       
       const dispatch = useDispatch();
       
-  const [videoSrc, setVideoSrc] = useState(videoSource.large);
+  const [videoSrc, setVideoSrc] = useState(null);
+
+  useEffect(() => {
+    window.scrollTo(0, 0); 
+  }, []);
+
  
    const handleMouseEnter = () => {
     dispatch(textEnter());
@@ -81,56 +86,32 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
     dispatch(imageHover());
   };
 
-  const fetchData = async () => {
-    try {
-      const response = await fetch('/api/videos'); 
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const videoBlob = await response.blob(); 
-  
-      const videoUrl = URL.createObjectURL(videoBlob); 
-      return videoUrl;
-    } catch (error) {
-      console.error('Error fetching data:', error);
-      return null;
-    }
-  };
-  
+
   useEffect(() => {
     const handleResize = () => {
       const screenWidth = window.innerWidth;
       if (screenWidth >= 1025) {
         setVideoSrc(videoSource.large);
-      } else if (screenWidth >= 768 && screenWidth < 1025) {
-        setVideoSrc(videoSource.medium);
-      } else {
-        setVideoSrc(videoSource.small);
+      } else if (screenWidth >= 375 && screenWidth <= 1024) {
+       setVideoSrc(videoSource.medium);
+     } else {
+       setVideoSrc(videoSource.small);
       }
     };
-  
+
     handleResize();
-    window.addEventListener("resize", handleResize);
-  
+    window.addEventListener('resize', handleResize);
+
     return () => {
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener('resize', handleResize);
     };
   }, []);
   
   useEffect(() => {
-    fetchData()
-      .then(videoUrl => {
-        if (videoUrl) {
-          setVideoSrc(videoUrl); 
-        }
         dispatch(getFetchFormArticle());
         dispatch(getZaprosData());
         dispatch(searchArticleLeftGet());
         dispatch(searchArticleRightGet());
-      })
-      .catch(error => {
-        // console.error('Error fetching data:', error);
-      });
   }, [dispatch]);
   
   
@@ -294,13 +275,12 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
     <title>Marks Group</title>
   </Helmet>
     <main className={styles.header}>
-      <div className={styles.video_block}>
-        <VideoPlayer videoSource={videoSource} />
-      </div>
       <div className={styles.bg_video}>
+      {videoSrc && (
         <video playsInline autoPlay muted loop id="bg-video">
             <source src={videoSrc} type="video/mp4" />
           </video>
+      )}
           </div>
       <div className={styles.header_desctop_block}>
         <h1
