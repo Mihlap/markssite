@@ -119,7 +119,7 @@ useEffect(() => {
             </CSSTransition>
           </TransitionGroup>
           {showNavbarFooter && currentPage !== "add" && <Footer />}
-          {/* <CustomCursor /> */}
+          <CustomCursor />
         </>
       )}
     </HelmetProvider>

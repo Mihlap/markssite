@@ -47,7 +47,8 @@ module.exports = (sequelize, DataTypes) => {
     textBlock: DataTypes.TEXT,
     imageClose: DataTypes.STRING,
     authorId: DataTypes.INTEGER,
-    style: DataTypes.STRING
+    style: DataTypes.STRING,
+    geoData: DataTypes.TEXT
   }, {
     sequelize,
     modelName: 'Project',
