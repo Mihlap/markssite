@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import {  HelmetProvider } from 'react-helmet-async';
-import axios from "axios";
+// import axios from "axios";
 import "./App.css";
 import Company from "./Company/Company";
 import Header from "./Header/Header";
 
-import Competentions from "./Competentions/Competentions";
+// import Competentions from "./Competentions/Competentions";
 import Contacts from "./Contacts/Contacts";
 import Project from "./Project/Project";
 import Publics from "./Publics/Publics";
