@@ -98,10 +98,10 @@ export default function Company() {
         setVideoSrc(videoSource.large);
       } else if (screenWidth >= 490 && screenWidth <= 1024) {
         setVideoSrc2(videoSource2.medium);
-        setVideoSrc(videoSource.large);
+        setVideoSrc(videoSource.medium);
      } else {
         setVideoSrc2(videoSource2.small);
-        setVideoSrc(videoSource.large);
+        setVideoSrc(videoSource.small);
       }
     };
 
