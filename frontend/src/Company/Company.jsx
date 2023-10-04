@@ -21,7 +21,7 @@ import {
 
 import { fetchCategoryStaff, selectCard, setCategory } from "../store/Slice/StaffSlice";
 import LoadingCircle from "../Loading/LoadingCircle";
-import Error from "../Loading/Error/Error";
+// import Error from "../Loading/Error/Error";
 
 import bracket from "../icons/bracket.svg";
 import bracket_dark from "../icons/bracket_dark.svg";
