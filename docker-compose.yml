@@ -1,45 +1,35 @@
 version: '3.8'
-
 services:
   mainServer:
-    # image: postgres:15
     container_name: mainServer
     image: backend-image
     restart: always
-    build: 
-     context: ./backend
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
     ports:
-      - "3002:3002" 
+      - "3002:3002"
     environment:
-      - DATABASE=${}
-   depends_on: 
-   - db
-  
-db:
-container_name: db
-image: postgres:15.4-alpine
-environment:
-  - POSTGRES_DB: ${marks-group}
-  - POSTGRES_USER: ${mihlap}
-  - OSTGRES_PASSWORD: ${Simon098}
-  - PGDATA=/var/lib/postgresql/data/pgdata
-volumes:
-  - /var/lib/postgresql/data
-ports:
-  - "5432:5432"
+      - DATABASE=${DATABASE}
+    depends_on:
+      - db
+  db:
+    container_name: db
+    image: postgres:15.4-alpine
+    environment:
+      - POSTGRES_DB=${DBNAME}
+      - POSTGRES_USER=${PGUSER}
+      - POSTGRES_PASSWORD=${PGPASS}
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    volumes:
+      - ${PGPATH}/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
   frontend:
     build:
       context: ./frontend
-      dockerfile: dockerfile.frontend
+      dockerfile: Dockerfile.frontend
     ports:
       - "3000:3000"
 
-  backend:
-    build:
-      context: ./backend
-      dockerfile: dockerfile.backend
-    ports:
-      - "3002:3002"
-
-volumes:
-  postgres_data:
+# запуск docker-compose --env-file composeenv up --build
