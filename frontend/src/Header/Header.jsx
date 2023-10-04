@@ -35,13 +35,13 @@ const Host = process.env.REACT_APP_SERVER_HOST;
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
-const videoSource = {
-  small: `${Host}/images/video/primePark_mobile.mp4`,
-  medium: `${Host}/images/video/primePark_ipad.mp4`,
-  large: `${Host}/images/video/primePark.mp4`,
-};
 
 export default function Header({ user, setNavBarOpen, setShowFooter }) {
+  const videoSource = {
+    small: `${Host}/images/video/primePark_mobile.mp4`,
+    medium: `${Host}/images/video/primePark_ipad.mp4`,
+    large: `${Host}/images/video/primePark.mp4`,
+  };
   const sliderCardRef = useRef(null);
   const [enableVerticalScroll, setEnableVerticalScroll] = useState(true);
   const [isHorizontalScroll, setIsHorizontalScroll] = useState(false);

@@ -6,7 +6,7 @@ const router = express.Router();
 router.get('/stuffs', async (req, res) => {
   try {
     const data = await Staff.findAll();
-    res.set('Cache-Control', 'no-store'); // Отключает кеширование
+    res.set('Cache-Control', 'no-store'); 
     res.json(data);
   } catch (error) {
     console.error('Ошибка получения данных сотрудников:', error);

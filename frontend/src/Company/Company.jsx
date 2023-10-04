@@ -33,22 +33,20 @@ import CompanyGroupSlider from "../UI/CompanyGroupSlider/CompanyGroupSlider";
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 
-
 const videoSource = {
 large: `${Host}/images/video/company_full.mp4`,
 medium: `${Host}/images/video/company_ipad.mp4`,
-small: `${Host}/images/video/company_mob.mp4`,
+small: `${Host}/images/video/company_mob.mp4`
 };
 
 const videoSource2 = {
   large: `${Host}/images/video/header_company_full.mp4`,
   medium: `${Host}/images/video/assets/header_company_ipad.mp4`,
-  small: `${Host}/images/video/assets/header_company_mobile.mp4`,
+  small: `${Host}/images/video/assets/header_company_mobile.mp4`
 };
 
 export default function Company() {
-  const dispatch = useDispatch();
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [countPercent, setCountPercent] = useState(0);
   const [countHuman, setCountHuman] = useState(0);
   const [countProject, setCountProject] = useState(0);
@@ -57,11 +55,12 @@ export default function Company() {
   const swiperCompanyRef = useRef(null);
   const [videoSrc, setVideoSrc] = useState(videoSource.large);
   const [videoSrc2, setVideoSrc2] = useState(videoSource2.large);
-
+  
   const [showCards, setShowCards] = useState(false);
   const [activeButton, setActiveButton] = useState("Руководство");
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  
+  const dispatch = useDispatch();
   const { selectedCard, category, staff, loading, error } = useSelector(
     (state) => state.staff
   );
@@ -84,36 +83,35 @@ export default function Company() {
   const isMobile = windowWidth <= 767;
   const symbol = "•";
 
-  // useEffect(() => {
-  //   const handleResize = () => {
-  //     // setWindowWidth(window.innerWidth);
-  //     const screenWidth = window.innerWidth;
-  //     if (screenWidth >= 1025) {
-  //       // setVideoSrc(videoSource.large);
-  //       // setVideoSrc2(videoSource2.large);
-  //     } else if (screenWidth >= 768 && screenWidth < 1025) {
-  //       // setVideoSrc(videoSource.medium);
-  //       // setVideoSrc2(videoSource2.medium);
-  //     } else {
-  //       // setVideoSrc(videoSource.small);
-  //       // setVideoSrc2(videoSource2.small);
-  //     }
-  //   };
-
-  //   handleResize();
-  //   window.addEventListener("resize", handleResize);
-
-  //   return () => {
-  //     if (window) {
-  //       window.removeEventListener("resize", handleResize);
-  //     }
-  //   };
-  // }, []);
-
   useEffect(() => {
-    window.scrollTo(0, 0); // Прокрутите страницу вверх при монтировании компонента
+    window.scrollTo(0, 0); 
   }, []);
 
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+      const screenWidth = window.innerWidth;
+      if (screenWidth >= 1025) {
+        setVideoSrc(videoSource.large);
+        setVideoSrc2(videoSource2.large);
+      } else if (screenWidth >= 768 && screenWidth <= 1024) {
+        setVideoSrc(videoSource.medium);
+        setVideoSrc2(videoSource2.medium);
+      } else {
+        setVideoSrc(videoSource.small);
+        setVideoSrc2(videoSource2.small);
+      }
+    };
+  
+    handleResize();
+    window.addEventListener("resize", handleResize);
+  
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [videoSource, videoSource2]);
+
+ 
   const fetchData = async () => {
     try {
       const response = await fetch('/api/videos'); 
@@ -132,11 +130,12 @@ export default function Company() {
   
   useEffect(() => {
     const handleResize = () => {
+      setWindowWidth(window.innerWidth);
       const screenWidth = window.innerWidth;
       if (screenWidth >= 1025) {
         setVideoSrc(videoSource.large);
         setVideoSrc2(videoSource2.large);
-      } else if (screenWidth >= 768 && screenWidth < 1025) {
+      } else if (screenWidth >= 768 && screenWidth <= 1024) {
         setVideoSrc(videoSource.medium);
         setVideoSrc2(videoSource2.medium);
 
@@ -152,27 +151,27 @@ export default function Company() {
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, []);
+  }, [videoSource, videoSource2]);
 
   useEffect(() => {
+    dispatch(selectCard(null));
+    dispatch(fetchCategoryStaff(category));
+    setShowCards(true);
     fetchData()
     .then(videoUrl => {
       if (videoUrl) {
         setVideoSrc(videoUrl); 
         setVideoSrc2(videoUrl); 
-    dispatch(selectCard(null));
-    dispatch(fetchCategoryStaff(category));
-    setShowCards(true);
   }
 })
 .catch(error => {
-  // console.error('Error fetching data:', error);
+  console.error('Error fetching data:', error);
 });
   }, [dispatch]);
 
   const handleButtonClick = (category, selectedCardId) => {
     if (selectedCardId) {
-      // dispatch(selectCard(selectedCardId));
+      dispatch(selectCard(selectedCardId));
       setIsModalOpen(true);
     } else {
       setIsModalOpen(false);
@@ -186,10 +185,10 @@ export default function Company() {
 
   useEffect(() => {
     const timer1 = setTimeout(() => {
-      if (countPercent < 80) {
+      if (countPercent < 96) {
         setCountPercent(countPercent + 2);
       }
-      if (countHuman < 700) {
+      if (countHuman < 1000) {
         setCountHuman(countHuman + 20);
       }
       if (countProject < 200) {
