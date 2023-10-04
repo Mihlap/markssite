@@ -52,6 +52,12 @@
         justify-content: space-between;
     }
 
+    &__hide_block {
+        display: flex;
+        text-align: center;
+        gap: 10px;
+        margin-top: 10px;
+    }
     &__hide_text {
         color: var(--gray-959DA6);
         font-variant-numeric: lining-nums proportional-nums;
@@ -62,12 +68,6 @@
         line-height: 20px;
     }
 
-    &__hide_block {
-        display: flex;
-        text-align: center;
-        gap: 10px;
-        margin-top: 10px;
-    }
 
     &__button_block {
         display: flex;

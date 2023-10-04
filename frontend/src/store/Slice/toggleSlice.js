@@ -58,11 +58,40 @@ export const fetchToggleStateForButton2Async = createAsyncThunk(
   }
 );
 
+// это отвечает за открытие и закрытия роута который даёт возможность зарегистрировать нового пользователя
+
+export const updateToggleStateForButton3Async = createAsyncThunk(
+  "toggle/updateStateForButton3",
+  async (isActiveForButton3, { rejectWithValue }) => {
+    try {
+      const response = await axios.put(`${serverHost}/api/toggle/button3`, {
+        isActiveForButton3,
+      });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data || "Unknown error occurred");
+    }
+  }
+);
+
+export const fetchToggleStateForButton3Async = createAsyncThunk(
+  "toggle/fetchStateForButton3",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`${serverHost}/api/toggle/button3`);
+      return response.data.isActiveForButton3;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data || "Unknown error occurred");
+    }
+  }
+);
+
 const toggleSlice = createSlice({
   name: "toggle",
   initialState: {
     isActiveForButton1: false,
     isActiveForButton2: false,
+    isActiveForButton3: false,
     error: null,
   },
   reducers: {},
@@ -115,6 +144,25 @@ const toggleSlice = createSlice({
         "Error fetching toggle state for button 2:",
         action.payload?.message
       );
+    },
+    [updateToggleStateForButton3Async.pending]: (state, action) => {
+      console.log("Starting API request to update toggle for button 3");
+    },
+    [updateToggleStateForButton3Async.fulfilled]: (state, action) => {
+      state.isActiveForButton3 = !state.isActiveForButton3;
+      console.log("Successfully updated toggle for button 3 in state");
+    },
+    [updateToggleStateForButton3Async.rejected]: (state, action) => {
+      state.error = action.payload?.message || "Unknown error occurred";
+      console.error("Error updating toggle for button 3:", state.error);
+    },
+    [fetchToggleStateForButton3Async.fulfilled]: (state, action) => {
+      state.isActiveForButton3 = action.payload;
+      console.log("Successfully fetched toggle state for button 3 from server");
+    },
+    [fetchToggleStateForButton3Async.rejected]: (state, action) => {
+      state.error = action.payload?.message || "Unknown error occurred";
+      console.error("Error fetching toggle state for button 3:", state.error);
     },
   },
 });
