@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import styles from "./AddNavbar.module.scss";
 import { Link, useNavigate } from "react-router-dom";
-import axios from "axios";
+// import axios from "axios";
 import icon1 from './icon/one.png';
 import icon2 from "./icon/three.png";
 import icon3 from "./icon/four.png";

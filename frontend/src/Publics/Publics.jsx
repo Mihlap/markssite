@@ -5,7 +5,6 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { useDispatch, useSelector } from "react-redux";
 import { getFetchFormArticle, setSelectedType } from "../store/Slice/articleSlice";
 import styles from "./Publics.module.css";
-import VideoPlayer from "../UI/Videoplayer/VideoPlayer";
 import { fetchToggleStateForButton2Async } from "../store/Slice/toggleSlice";
 
 const Host = process.env.REACT_APP_SERVER_HOST;

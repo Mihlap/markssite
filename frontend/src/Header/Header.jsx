@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Helmet } from "react-helmet-async";
 import gsap from "gsap";
@@ -11,22 +11,22 @@ import SwiperContainerProgect from "./Swiper-project/SwiperContainerProgect";
 import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Navigation } from "swiper";
 import SliderHeader from "../UI/SliderHeader/SliderHeader";
-import VideoPlayer from "../UI/Videoplayer/VideoPlayer";
 import Mapbox3D from "../UI/Map3D/Mapbox3D";
 import SliderMobile from "../UI/SliderHeader/SliderMobile";
-import actively from "./img/actively.svg";
-import { getFetchForm } from "../store/Slice/projectSlice";
+import VideoPlayer from "../UI/Videoplayer/VideoPlayer";
+// import actively from "./img/actively.svg";
+// import { getFetchForm } from "../store/Slice/projectSlice";
 import { getFetchFormArticle } from "../store/Slice/articleSlice";
 import styles from "./Header.module.css";
-import LoadingCircle from "../Loading/LoadingCircle";
-import Error from "../Loading/Error/Error";
+// import LoadingCircle from "../Loading/LoadingCircle";
+// import Error from "../Loading/Error/Error";
 import { getZaprosData } from "../store/Slice/searchProjectMainSlice";
 import { searchArticleLeftGet } from "../store/Slice/searchArticlePublicLeftSlice";
-import { resizeImage } from "../Project/utils";
+// import { resizeImage } from "../Project/utils";
 import img123 from "./img/Главная.png";
 import notDataPhoto from "./img/notData.png";
 
-import photoTest from "./img/project_right3.jpg";
+// import photoTest from "./img/project_right3.jpg";
 import { textEnter, textLeave, imageHover } from "../store/Slice/cursorSlice";
 import { searchArticleRightGet } from "../store/Slice/searchArticlePublicRightSlice";
 
@@ -275,6 +275,9 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
     <title>Marks Group</title>
   </Helmet>
     <main className={styles.header}>
+    <div className={styles.video_block}>
+        <VideoPlayer videoSource={videoSource} />
+      </div>
       <div className={styles.bg_video}>
       {videoSrc && (
         <video playsInline autoPlay muted loop id="bg-video">
