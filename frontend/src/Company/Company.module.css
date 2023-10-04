@@ -12,6 +12,7 @@
  display: flex;
  justify-content: center;
  align-items: center;
+ width: 100%;
  min-width: 100%;
   min-height: 100%;
   overflow: hidden;
@@ -28,37 +29,15 @@
 }
 
 #bg-video {
-  position: absolute;
+  /* position: absolute; */
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 100%; /* Задаем ширину в процентах */
-  height: auto; /* Автоматическая высота для поддержки соотношения сторон */
-  max-width: 100%; /* Ограничиваем максимальную ширину */
-  max-height: 100%; /* Ограничиваем максимальную высоту */
+  width: 100%; 
+  height: 100%; 
   object-fit: cover;
-  z-index: -1; 
+  /* z-index: -1;  */
 }
-
-
-
-/* .block_video_company {
-  position: relative;
- display: flex;
- min-width: 100%;
-  min-height: 100%;
-  overflow: hidden;
-  object-fit: cover;
-}
-
-#bg-video {
- top: 0;
- left: 0;
- min-width: 100%;
- min-height: 100%;
- object-fit: cover;
- z-index: -1; 
-} */
 
 
 /* ____этот блок для слайдера, для видео ниже ___________________ */
@@ -137,7 +116,7 @@
   position: absolute;
   display: flex;
   flex-direction: column;
-  bottom: 30%;
+  bottom: 35%;
   left: 10vw;
   max-width: 100%;
   z-index: 1;
@@ -705,7 +684,7 @@ bottom: 3.38rem;
   }
   
   .underSlider_text_wrapper {
-    top: 40rem;
+    top: 20rem;
     left: 3.5rem;
   }
 
@@ -958,7 +937,7 @@ bottom: 3.38rem;
 
   .underSlider_text_wrapper {
     left: 1.3rem;
-    top: 44rem;
+    top: 20rem;
     /* max-width: 100%; */
     word-wrap: break-word;
    }
