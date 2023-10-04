@@ -1,18 +1,32 @@
-version: '3'
+version: '3.8'
 
 services:
-  postgres:
-    image: postgres:15
-    container_name: postgres_markssite
+  mainServer:
+    # image: postgres:15
+    container_name: mainServer
+    image: backend-image
+    restart: always
+    build: 
+     context: ./backend
     ports:
-      - "5432:5432" 
+      - "3002:3002" 
     environment:
-     - POSTGRES_DB=marks-group
-     - POSTGRES_USER=mihlap
-     - POSTGRES_PASSWORD=Simon098
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-
+      - DATABASE=${}
+   depends_on: 
+   - db
+  
+db:
+container_name: db
+image: postgres:15.4-alpine
+environment:
+  - POSTGRES_DB: ${marks-group}
+  - POSTGRES_USER: ${mihlap}
+  - OSTGRES_PASSWORD: ${Simon098}
+  - PGDATA=/var/lib/postgresql/data/pgdata
+volumes:
+  - /var/lib/postgresql/data
+ports:
+  - "5432:5432"
   frontend:
     build:
       context: ./frontend
