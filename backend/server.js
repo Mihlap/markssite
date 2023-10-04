@@ -15,7 +15,7 @@ const searchArticleLeft = require('./Routes/Articles/searchArticleLeftRouter');
 const searchArticleRight = require('./Routes/Articles/searchArticleRightRouter');
 const mailRouter = require('./Routes/mailRouter');
 const toggleRouter = require('./Routes/toggle/toggleRouter');
-const videoRouter = require('./Routes/videoRouter');
+
 
 // const { createProxyMiddleware } = require('http-proxy-middleware');
 
@@ -66,7 +66,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/images/imageAdd', express.static(path.join(__dirname, 'images/imageAdd')));
 app.use('/public/assets', express.static(path.join(__dirname, 'assets')));
-app.use('/video', express.static(path.join(__dirname, 'images', 'video')));
+app.use('/images/video', express.static(path.join(__dirname, 'images/video')));
 app.use(session(sessionConfig));
 // app.use(express.static(path.join(__dirname, 'build')));
 
@@ -93,7 +93,7 @@ app.use('/search-article', searchArticleLeft);
 app.use('/search-articles', searchArticleRight);
 app.use('/api-mail', mailRouter);
 app.use('/api/toggle', toggleRouter);
-app.use('/api/videos', videoRouter);
+
 
 
 app.listen(PORT, () => {

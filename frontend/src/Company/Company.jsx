@@ -33,19 +33,20 @@ import CompanyGroupSlider from "../UI/CompanyGroupSlider/CompanyGroupSlider";
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 
-const videoSource = {
-large: `${Host}/images/video/company_full.mp4`,
-medium: `${Host}/images/video/company_ipad.mp4`,
-small: `${Host}/images/video/company_mob.mp4`
-};
 
-const videoSource2 = {
-  large: `${Host}/images/video/header_company_full.mp4`,
-  medium: `${Host}/images/video/assets/header_company_ipad.mp4`,
-  small: `${Host}/images/video/assets/header_company_mobile.mp4`
-};
 
 export default function Company() {
+  const videoSource = {
+  large: `${Host}/images/video/company_full.mp4`,
+  medium: `${Host}/images/video/company_ipad.mp4`,
+  small: `${Host}/images/video/company_mob.mp4`
+  };
+  
+  const videoSource2 = {
+    large: `${Host}/images/video/header_company_full.mp4`,
+    medium: `${Host}/images/video/header_company_ipad.mp4`,
+    small: `${Host}/images/video/header_company_mobile.mp4`
+  };
    const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [countPercent, setCountPercent] = useState(0);
   const [countHuman, setCountHuman] = useState(0);
@@ -53,8 +54,8 @@ export default function Company() {
   const [swiper, setSwiper] = useState(null);
   const [currentIndexCompany, setCurrentIndexCompany] = useState(0);
   const swiperCompanyRef = useRef(null);
-  const [videoSrc, setVideoSrc] = useState(videoSource.large);
-  const [videoSrc2, setVideoSrc2] = useState(videoSource2.large);
+  const [videoSrc, setVideoSrc] = useState(null);
+   const [videoSrc2, setVideoSrc2] = useState(null);
   
   const [showCards, setShowCards] = useState(false);
   const [activeButton, setActiveButton] = useState("Руководство");
@@ -87,86 +88,35 @@ export default function Company() {
     window.scrollTo(0, 0); 
   }, []);
 
+
+
   useEffect(() => {
     const handleResize = () => {
-      setWindowWidth(window.innerWidth);
       const screenWidth = window.innerWidth;
       if (screenWidth >= 1025) {
-        setVideoSrc(videoSource.large);
         setVideoSrc2(videoSource2.large);
-      } else if (screenWidth >= 768 && screenWidth <= 1024) {
-        setVideoSrc(videoSource.medium);
-        setVideoSrc2(videoSource2.medium);
-      } else {
-        setVideoSrc(videoSource.small);
-        setVideoSrc2(videoSource2.small);
-      }
-    };
-  
-    handleResize();
-    window.addEventListener("resize", handleResize);
-  
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, [videoSource, videoSource2]);
-
- 
-  const fetchData = async () => {
-    try {
-      const response = await fetch('/api/videos'); 
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      const videoBlob = await response.blob(); 
-  
-      const videoUrl = URL.createObjectURL(videoBlob); 
-      return videoUrl;
-    } catch (error) {
-      console.error('Error fetching data:', error);
-      return null;
-    }
-  };
-  
-  useEffect(() => {
-    const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-      const screenWidth = window.innerWidth;
-      if (screenWidth >= 1025) {
         setVideoSrc(videoSource.large);
-        setVideoSrc2(videoSource2.large);
-      } else if (screenWidth >= 768 && screenWidth <= 1024) {
-        setVideoSrc(videoSource.medium);
+      } else if (screenWidth >= 490 && screenWidth <= 1024) {
         setVideoSrc2(videoSource2.medium);
-
-      } else {
-        setVideoSrc(videoSource.small);
+        setVideoSrc(videoSource.large);
+     } else {
         setVideoSrc2(videoSource2.small);
+        setVideoSrc(videoSource.large);
       }
     };
-  
+
     handleResize();
-    window.addEventListener("resize", handleResize);
-  
+    window.addEventListener('resize', handleResize);
+
     return () => {
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener('resize', handleResize);
     };
-  }, [videoSource, videoSource2]);
+  }, []);
 
   useEffect(() => {
     dispatch(selectCard(null));
     dispatch(fetchCategoryStaff(category));
     setShowCards(true);
-    fetchData()
-    .then(videoUrl => {
-      if (videoUrl) {
-        setVideoSrc(videoUrl); 
-        setVideoSrc2(videoUrl); 
-  }
-})
-.catch(error => {
-  console.error('Error fetching data:', error);
-});
   }, [dispatch]);
 
   const handleButtonClick = (category, selectedCardId) => {
@@ -184,6 +134,7 @@ export default function Company() {
   };
 
   useEffect(() => {
+    
     const timer1 = setTimeout(() => {
       if (countPercent < 96) {
         setCountPercent(countPercent + 2);
@@ -198,6 +149,7 @@ export default function Company() {
     return () => clearTimeout(timer1);
   }, [countPercent, countHuman, countProject]);
 
+   
   useEffect(() => {
     if (inView) {
       let timer1;
@@ -206,6 +158,7 @@ export default function Company() {
         dispatch(incrementGap());
         dispatch(incrementScient());
         dispatch(incrementScienceDegree());
+        
       }, 80);
       return () => clearTimeout(timer1);
     }
@@ -337,9 +290,11 @@ export default function Company() {
     <div className={styles.company_main}>
       {/* <Company_Slider /> */}
        <div className={styles.block_video_company}>
+       {videoSrc2 && (
         <video playsInline autoPlay muted loop id="bg-video">
           <source src={videoSrc2} type="video/mp4" />
         </video>
+          )}
       </div>
       <div ref={blockSlider} className={styles.underSlider_text_wrapper}>
         <span className={styles.span_underSlider_text1}>
@@ -1024,9 +979,11 @@ export default function Company() {
       )}
       <div className={styles.fon}>
         <div className={styles.video_wrapper}>
+        {videoSrc && (
           <video playsInline autoPlay muted loop id="bg-video_2">
             <source src={videoSrc} type="video/mp4" />
           </video>
+        )}
         </div>
         <div className={styles.form_wrapper}>
           <div className={styles.company_form_contacts_wrapper}>
