@@ -41,8 +41,7 @@ export default function CustomCursor() {
     };
   }, [dispatch]);
 
-
-  const variants = {
+   const variants = {
     default: {
       x: mousePosition.x,
       y: mousePosition.y,
@@ -82,6 +81,7 @@ export default function CustomCursor() {
 
   return (
     <>
+     {window.innerWidth >= 1025 && (
       <motion.div
         className="cursor"
         variants={variants}
@@ -91,6 +91,7 @@ export default function CustomCursor() {
           <span className="cursor-hover">Смотреть</span>
         )}
       </motion.div>
+        )}
     </>
   );
 }

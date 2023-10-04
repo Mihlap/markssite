@@ -1,0 +1,5 @@
+DATABASE=postgres://mihlap:Simon098@db:5432/marks-group
+DBNAME=marks-group
+PGUSER=mihlap
+PGPASS=Simon098
+PGPATH=/laptev_local/markssite/backend/db
