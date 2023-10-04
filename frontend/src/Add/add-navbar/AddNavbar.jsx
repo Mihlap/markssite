@@ -181,13 +181,13 @@ export default function AddNavbar({ user, handleReturn }) {
                   О компании
                 </Link>
               </li>
-              {user?.name === "obezyankaa" ? (
+              {user?.name === "obezyankaa" || user?.name === "Pokemon" ? (
                 <li className={styles.add_navbar_container__item_li}>
                   <svg
                     className={`${
-                      selectedItem === "add-a-company" ? styles.active : ""
+                      selectedItem === "management" ? styles.active : ""
                     } ${styles.add_navbar_container__item_svg} ${
-                      selectedItem === "add-a-company" ? styles.activeIcon : ""
+                      selectedItem === "management" ? styles.activeIcon : ""
                     }`}
                     fill="none"
                     height="32"

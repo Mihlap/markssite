@@ -44,7 +44,7 @@ export default function Applications() {
       <div className={styles.Applications__container}>
         <div className={styles.Applications__hide_block}>
           <div className={styles.Applications__hide_text}>
-            Открыть роут для регистрации
+            Открыть окно для регистрации
           </div>
           <div
             className={`${styles.toggleButton} ${
