@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
   Constructor.init({
     data: DataTypes.JSON,
     image: DataTypes.TEXT,
+    videoPath: DataTypes.TEXT, 
     idBlock: DataTypes.INTEGER
   }, {
     sequelize,

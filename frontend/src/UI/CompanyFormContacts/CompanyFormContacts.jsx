@@ -148,10 +148,9 @@ const CompanyFormContacts = () => {
     <div className={styles.form_left_wrapper}>
       <div className={styles.border_line_con}>
       <div className={styles.form_left_main}>
-        <div className={styles.title}>Свяжитесь с нами</div>
+        <div className={styles.title}>На связи</div>
         <span className={styles.span_text}>
-          Мы будем рады ответить на все интересующие вас
-          вопросы..........................
+        Давайте проектировать будущее вместе!
         </span>
         <form className={styles.form_form_wrapper} onSubmit={handleSubmit}>
           <div className={`${styles.group} some-unique-class`}>
@@ -223,7 +222,7 @@ const CompanyFormContacts = () => {
                 className={styles.input_task_form_contacts}
               />
               <div className={styles.line}></div>
-              <span className={styles.placeholder}>Задача</span>
+              <span className={styles.placeholder}>Сообщение</span>
             </label>
           </div>
           <div className={styles.agreement}>

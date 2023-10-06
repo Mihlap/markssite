@@ -15,6 +15,9 @@ module.exports = {
       image: {
         type: Sequelize.TEXT,
       },
+      videoPath: {
+        type: Sequelize.TEXT,
+      },
       idBlock: {
         type: Sequelize.INTEGER,
         references: {

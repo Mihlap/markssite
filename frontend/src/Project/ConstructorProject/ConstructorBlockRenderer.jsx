@@ -298,16 +298,22 @@ export default function ConstructorBlockRenderer({ block }) {
     );
   };
 
-  // const renderVideoBlock = (block) => {
-  //   return (
-  //     <div
-  //       className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockSix}`}
-  //     >
-  //       {/* Плейсхолдер для видео */}
-  //       <p>Видео блок</p>
-  //     </div>
-  //   );
-  // };
+  const renderVideoBlock = (block) => {
+    const videoPath = block[0]?.value;
+    console.log(videoPath, 'Video Path');
+    console.log(block, 'Video Path');
+  
+    return (
+      <div className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockSix}`}>
+        {videoPath && (
+          <video playsInline autoPlay muted loop className="block_video">
+            <source src={`${Host}/images/video/${videoPath}`} type="video/mp4" />
+          </video>
+        )}
+      </div>
+    );
+  };
+  
 
   switch (block[0]?.label) {
     case "Картинка с описанием":
@@ -320,8 +326,8 @@ export default function ConstructorBlockRenderer({ block }) {
       return renderTwoImage(block);
     case "Слайдер *допускается загрузка 8ми изображений":
       return renderImageSlider(block);
-    // case "video":
-    //   return renderVideoBlock(block);
+    case "video":
+      return renderVideoBlock(block);
     default:
       return null;
   }
