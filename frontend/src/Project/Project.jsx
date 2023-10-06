@@ -281,7 +281,9 @@ export default function Project() {
     <div className={styles.project_main}>
       <Company_Slider />
       <div className={styles.project_slider_text}>
-        <p className={styles.actuality_text}>Актуальные кейсы MARKS GROUP</p>
+        <p className={styles.actuality_text}>
+          {/* Актуальные кейсы MARKS GROUP */}
+          </p>
         <span className={styles.projects_name_text}>Проекты</span>
       </div>
       {screenWidth && (
