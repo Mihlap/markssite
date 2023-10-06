@@ -684,7 +684,7 @@ bottom: 3.38rem;
   }
   
   .underSlider_text_wrapper {
-    top: 20rem;
+    top: 15rem;
     left: 3.5rem;
   }
 
@@ -704,6 +704,7 @@ bottom: 3.38rem;
     padding-top: 56px;
     padding-left: 5.4vw;
   }
+  
 
   .sliderMobile_wrapper {
     display: none;
