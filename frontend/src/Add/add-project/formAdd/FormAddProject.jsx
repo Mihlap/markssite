@@ -39,7 +39,7 @@ export default function FormAddProject({ setIsModalOpen }) {
   const [onenConstructor, setOpenConstructor] = useState(false);
   const [blocks, setBlocks] = useState([]);
   const [dynamicPreviews, setDynamicPreviews] = useState([]);
-
+ 
 
   const [dynamicData, setDynamicData] = useState([]);
   const [inputData, setInputData] = useState({
