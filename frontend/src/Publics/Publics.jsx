@@ -103,7 +103,7 @@ export default function Publics() {
       )}
         <div className={styles.text_container_publics}>
           <span className={styles.text1_publics}>
-            Наша команда ведет активную научную жизнь!
+          Научные достижения, интервью и статьи ведущих профессиональных и публицистических изданий
           </span>
           <span className={styles.text2_publics}>Публикации</span>
         </div>
