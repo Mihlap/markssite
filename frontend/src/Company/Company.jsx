@@ -136,16 +136,16 @@ export default function Company() {
   useEffect(() => {
     
     const timer1 = setTimeout(() => {
-      if (countPercent < 96) {
-        setCountPercent(countPercent + 2);
-      }
-      if (countHuman < 1000) {
-        setCountHuman(countHuman + 20);
+      if (countPercent < 18) {
+        setCountPercent(countPercent + 1);
       }
       if (countProject < 200) {
         setCountProject(countProject + 5);
       }
-    }, 50);
+      if (countHuman < 1000) {
+        setCountHuman(countHuman + 20);
+      }
+      }, 50);
     return () => clearTimeout(timer1);
   }, [countPercent, countHuman, countProject]);
 
@@ -298,7 +298,9 @@ export default function Company() {
       </div>
       <div ref={blockSlider} className={styles.underSlider_text_wrapper}>
         <span className={styles.span_underSlider_text1}>
-          Самые крутые проекты! самой крутой командой
+        Создаём пространства будущего.
+        <br />
+        Знаковые проекты от ведущих специалистов в области комплексного проектирования 
         </span>
         <span className={styles.span_underSlider_text2}>О компании</span>
         {isMobile && <CounterCompanyMobile />}
@@ -309,21 +311,10 @@ export default function Company() {
                 <div className={styles.text_svg}>
                   <img src={bracket} alt="bracket" />
                 </div>
-                <p>{countPercent}%</p>
+                <p>{countPercent}</p>
               </div>
               <span className={styles.span_underSlider_text}>
-                Объем работ выполняем собственными силами
-              </span>
-            </div>
-            <div className={styles.container_text}>
-              <div className={styles.div_underSlider_text}>
-                <div className={styles.text_svg}>
-                  <img src={bracket} alt="bracket" />
-                </div>
-                <p>{countHuman}</p>
-              </div>
-              <span className={styles.span_underSlider_text}>
-                Квалифицированных сотрудников
+              Лет на рынке проектирования
               </span>
             </div>
             <div className={styles.container_text}>
@@ -335,6 +326,17 @@ export default function Company() {
               </div>
               <span className={styles.span_underSlider_text}>
                 Проектов реализовано
+              </span>
+            </div>
+            <div className={styles.container_text}>
+              <div className={styles.div_underSlider_text}>
+                <div className={styles.text_svg}>
+                  <img src={bracket} alt="bracket" />
+                </div>
+                <p>{countHuman}</p>
+              </div>
+              <span className={styles.span_underSlider_text}>
+              Высококвалифицированных специалистов
               </span>
             </div>
           </div>
@@ -358,20 +360,31 @@ export default function Company() {
         </div>
         <div className={styles.right_about}>
           <div className={styles.text_right_about}>
+          <span>Креативные пространства от MARKS GROUP</span>
+            <br />
+            <br />
+            <span>От идеи до реализации – работа над проектами на всех этапах жизненного цикла</span>
+            <br />
+            <br />
             <span>
-              ГК MARKS GROUP создана на базе компании OОО «ПОДЗЕМПРОЕКТ»,
-              начавшей свою деятельность в 2005 году. Основателем является
-              академик Ильичёв Вячеслав Александрович, более 20 лет занимавший
-              пост директора НИИОСП им. Н.М. Герсеванова.
+            Генеральное проектирование, цифровые технологии в строительстве, научные исследования,
+            комплексный анализ объектов и территорий, транспортной инфраструктуры городов и мегаполисов.
             </span>
             <br />
             <br />
             <span>
-              Первым крупным объектом команды стал уникальный проект мирового
-              уровня по расширению подземного пространства Государственного
-              академического Большого Театра России (ГАБТ), г. Москва, где
-              специалисты компании отвечали за разработку конструктивных
-              решений.
+            MARKS GROUP объединяет целый ряд компаний по направлениям деятельности и ключевым компетенциям: «МАРКС Инжиниринг»,
+            «Подземпроект», «Институт науки проектирования и инжиниринга», «МАРКС Диджитал» и «МАРКС Дизайн».
+            Сегодня это более 1000 специалистов и свыше 200 реализованных проектов в Москве, Санкт-Петербурге,
+            Уфе, Омске, Грозном, Крыму и других крупных регионах страны. Работаем в партнёрстве с ведущими девелоперами,
+            крупными строительными организациями и международными архитектурными бюро.
+            В портфеле актуальных проектов Группы компаний: комплексное проектирование уникальных зданий и сооружений,
+            жилых и многофункциональных высотных комплексов, объектов рекреационно-туристического кластера,
+            комплексное развитие территорий, развитие сети аэропортов, инфраструктуры метрополитена.
+            Более 18 лет опыта проектирования как полного комплекса, так и отдельных разделов проектной
+            и рабочей документации для объектов различной сложности и функционального назначения,
+            начиная с архитектурной концепции и заканчивая авторским надзором за строительством.
+
             </span>
           </div>
           <div className={styles.main_counter_wrapper}>

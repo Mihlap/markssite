@@ -15,28 +15,28 @@ const CounterCompanyMobile = () => {
 
   useEffect(() => {
     const timer1 = setTimeout(() => {
-      if (countPercentM < 96 && activeCounter === 0) {
-        setCountPercentM(countPercentM + 2);
+      if (countPercentM < 18 && activeCounter === 0) {
+        setCountPercentM(countPercentM + 1);
       }
-      if (countHumanM < 1000 && activeCounter === 1) {
-        setCountHumanM(countHumanM + 20);
-      }
-      if (countProjectM < 200 && activeCounter === 2) {
+      if (countProjectM < 200 && activeCounter === 1) {
         setCountProjectM(countProjectM + 5);
+      }
+      if (countHumanM < 1000 && activeCounter === 2) {
+        setCountHumanM(countHumanM + 20);
       }
     }, 50);
   
    
     const delayTimer = setTimeout(() => {
-      if (countPercentM >= 96 && !finishedCounters.includes(0)) {
+      if (countPercentM >= 18 && !finishedCounters.includes(0)) {
         setActiveCounter(1);
         setFinishedCounters([...finishedCounters, 0]);
       }
-      if (countHumanM >= 1000 && !finishedCounters.includes(1)) {
+      if (countProjectM >= 200 && !finishedCounters.includes(1)) {
         setActiveCounter(2);
         setFinishedCounters([...finishedCounters, 1]);
       }
-      if (countProjectM >= 200 && !finishedCounters.includes(2)) {
+      if (countHumanM >= 1000 && !finishedCounters.includes(2)) {
         setFinishedCounters([...finishedCounters, 2]);
       }
     }, 500); 
@@ -66,14 +66,14 @@ const CounterCompanyMobile = () => {
           <div className={styles.text_svg}>
             <img src={bracket} alt="bracket" />
           </div>
-          {activeCounter === 0 && <p>{countPercentM}%</p>}
-          {activeCounter === 1 && <p>{countHumanM}</p>}
-          {activeCounter === 2 && <p>{countProjectM}</p>}
+          {activeCounter === 0 && <p>{countPercentM}</p>}
+          {activeCounter === 1 && <p>{countProjectM}</p>}
+          {activeCounter === 2 && <p>{countHumanM}</p>}
         </div>
         <span className={styles.span_underSlider_text}>
-          {activeCounter === 0 && "Объем работ выполняем собственными силами"}
-          {activeCounter === 1 && "Квалифицированных сотрудников"}
-          {activeCounter === 2 && "Проектов реализовано"}
+          {activeCounter === 0 && "Лет на рынке проектирования"}
+          {activeCounter === 1 && "Проектов реализовано"}
+          {activeCounter === 2 && " Высококвалифицированных специалистов"}
         </span>
       </div>
     </div>
