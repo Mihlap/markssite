@@ -17,7 +17,6 @@
 }
 
 .popupTitle {
-  display: flex;
   color: var(--black-3C3C3C);
   font-family: var(--font-raleway);
   font-size: 1rem;
