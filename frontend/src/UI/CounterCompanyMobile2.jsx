@@ -41,7 +41,7 @@ const CounterCompanyMobile2 = () => {
           dispatch(incrementGap());
           dispatch(incrementScienceDegree());
           setCounting(false);
-        }, 200);
+        }, 100);
       }, 150);
     }
   };
@@ -83,10 +83,10 @@ const CounterCompanyMobile2 = () => {
               <div className={styles.text_svg_right}>
                 <img src={bracket_dark} alt="bracket_dark" />
               </div>
-              <p className={styles.number}>{countDepartment}</p>
+              <p className={styles.number}>{countDepartment}%</p>
             </div>
             <span className={styles.span_underSlider_text_right}>
-              Департаментов
+            Проектных работ – с применением BIM-технологий
             </span>
           </div>
           <div className={styles.container_text_right}>
@@ -99,7 +99,7 @@ const CounterCompanyMobile2 = () => {
               <p className={styles.number}>{countScient}</p>
             </div>
             <span className={styles.span_underSlider_text_right}>
-              Научных работ
+            Положительных заключений государственной экспертизы в статусе генерального проектировщика
             </span>
           </div>
         </div>
@@ -113,7 +113,7 @@ const CounterCompanyMobile2 = () => {
               <p className={styles.number}>{countGap}</p>
             </div>
             <span className={styles.span_underSlider_text_right}>
-              Проектов в качестве ГАП
+            Объектов в статусе генерального проектировщика
             </span>
           </div>
           <div className={styles.container_text_right}>
@@ -123,10 +123,11 @@ const CounterCompanyMobile2 = () => {
               <div className={styles.text_svg_right}>
                 <img src={bracket_dark} alt="bracket_dark" />
               </div>
-              <p className={styles.number}>{countScienceDegree}%</p>
+              <p className={styles.number}>{countScienceDegree}</p>
+              <p className={styles.number_metr}>м<sup className={styles.small_sup}>2</sup></p>
             </div>
             <span className={styles.span_underSlider_text_right}>
-              Сотрудников с научной степенью
+            Площади реализованных проектов в статусе генерального проектировщика
             </span>
           </div>
           </div>
