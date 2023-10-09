@@ -178,7 +178,7 @@ const Contacts = () => {
           Режим работы &nbsp;&bull;&nbsp; Пн. &mdash; Пт. 10.00&mdash;19.00
         </div>
         <div className={styles.menu_office_name}>
-          У нас есть офисы по всему материку!
+          Наши офисы
         </div>
         <div className={styles.menu_button_group}>
           {cities.map((city) => (

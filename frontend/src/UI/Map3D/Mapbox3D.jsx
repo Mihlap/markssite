@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import mapboxgl from "mapbox-gl";
+import popupsData from "./popupsdata";
 import "@mapbox/mapbox-gl-draw/dist/mapbox-gl-draw.css";
 import styles from "./Mapbox.module.css";
 
@@ -10,8 +11,8 @@ const Mapbox3D = () => {
   useEffect(() => {
     const map = new mapboxgl.Map({
       style: "mapbox://styles/anna02/clgz2fy0200hg01qu5tb8a6is",
-      center: [37.581, 55.783],
-      zoom: 15.5,
+      center: [37.5804, 55.783],
+      zoom: window.innerWidth <= 768 ? 8.5 : 10.4,
       pitch: 45,
       bearing: 10,
       container: "map",
@@ -20,29 +21,47 @@ const Mapbox3D = () => {
     });
 
     map.scrollZoom.disable();
+    
 
-    const marker = new mapboxgl.Marker({ color: "#FF7F6A" })
-      .setLngLat([37.5804, 55.783])
-      .addTo(map);
+    const popups = []; // массив для хранения всех попапов
+    
 
-    const isMobile = window.innerWidth <= 1024;
-    const popupContent = `
-        ${
-          !isMobile
-            ? `
-            <img
-              class="${styles.popupImage}"
-              src="../assets/office.jpg"
-              alt="Центральный офис"
-            />`
-            : ""
-        }
-        <strong class="${styles.popupTitle}">
-          Marks Group
-        </strong>
-        <div class=${styles.popupCustomButton} onclick="window.open('/contacts')">
-          Смотреть контакты
-        </div>
+    popupsData.forEach((popupData) => {
+      const marker = new mapboxgl.Marker({ color: "#FF7F6A" })
+        .setLngLat(popupData.coordinates)
+        .addTo(map);
+   
+      const popup = new mapboxgl.Popup({
+        offset: 30,
+        closeButton: false,
+        maxWidth: "none",
+      });
+
+      const popupNode = document.createElement("div");
+      popupNode.style.width = "18rem";
+
+      let popupContent = `
+      <div class="${styles.popupTitle}">
+          ${popupData.title}
+        </strong>`;
+
+      if (popupData.image) {
+        popupContent += `
+          <img
+            class="${styles.popupImage}"
+            src="${popupData.image}"
+            alt="${popupData.title}"
+          />`;
+      }
+
+      if (popupData.buttonText) {
+        popupContent += `
+          <div class=${styles.popupCustomButton} onclick="window.open('/contacts')">
+            ${popupData.buttonText} 
+          </div>`;
+      }
+
+      popupContent += `
         <div class="${styles.popupCloseButton}">
           <svg
             width="16"
@@ -59,27 +78,31 @@ const Mapbox3D = () => {
             />
           </svg>
         </div>
-      `;
+        `;
 
-    let popup = new mapboxgl.Popup({ offset: 30, closeButton: false, maxWidth: 'none' });
-
-    marker.getElement().addEventListener("mouseenter", () => {
-      const popupNode = document.createElement("div");
-      popupNode.style.width = "18rem";
       popupNode.innerHTML = popupContent;
 
-      const closeButton = popupNode.querySelector(`.${styles.popupCloseButton}`);
+      const closeButton = popupNode.querySelector(
+        `.${styles.popupCloseButton}`
+      );
       closeButton.addEventListener("click", () => {
         popup.remove();
       });
 
-      popup.setLngLat(marker.getLngLat()).setDOMContent(popupNode).addTo(map);
+      popup.setLngLat(popupData.coordinates).setDOMContent(popupNode);
 
-      const popupContentElement = document.querySelector(".mapboxgl-popup-content");
-if (popupContentElement) {
-  popupContentElement.style.borderRadius = "1rem";
-}
-   
+      popups.push({ marker, popup }); // сохраняем маркер и попап в массив
+    });
+
+    // Добавляем обработчик события mouseenter ко всем маркерам
+    popups.forEach(({ marker, popup }) => {
+      marker.getElement().addEventListener("mouseenter", () => {
+        // Закрываем все другие попапы
+        popups.forEach(({ popup }) => popup.remove());
+
+        // Отображаем текущий попап
+        popup.addTo(map);
+      });
     });
 
     map.addControl(new mapboxgl.NavigationControl());
