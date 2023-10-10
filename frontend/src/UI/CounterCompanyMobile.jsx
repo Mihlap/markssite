@@ -15,20 +15,20 @@ const CounterCompanyMobile = () => {
 
   useEffect(() => {
     const timer1 = setTimeout(() => {
-      if (countPercentM < 18 && activeCounter === 0) {
-        setCountPercentM(countPercentM + 1);
+      if (countPercentM < 1000 && activeCounter === 0) {
+        setCountPercentM(countPercentM + 20);
       }
       if (countProjectM < 200 && activeCounter === 1) {
         setCountProjectM(countProjectM + 5);
       }
-      if (countHumanM < 1000 && activeCounter === 2) {
-        setCountHumanM(countHumanM + 20);
+      if (countHumanM < 18 && activeCounter === 2) {
+        setCountHumanM(countHumanM + 1);
       }
     }, 50);
   
    
     const delayTimer = setTimeout(() => {
-      if (countPercentM >= 18 && !finishedCounters.includes(0)) {
+      if (countPercentM >= 1000 && !finishedCounters.includes(0)) {
         setActiveCounter(1);
         setFinishedCounters([...finishedCounters, 0]);
       }
@@ -36,7 +36,7 @@ const CounterCompanyMobile = () => {
         setActiveCounter(2);
         setFinishedCounters([...finishedCounters, 1]);
       }
-      if (countHumanM >= 1000 && !finishedCounters.includes(2)) {
+      if (countHumanM >= 18 && !finishedCounters.includes(2)) {
         setFinishedCounters([...finishedCounters, 2]);
       }
     }, 500); 
@@ -71,9 +71,9 @@ const CounterCompanyMobile = () => {
           {activeCounter === 2 && <p>{countHumanM}</p>}
         </div>
         <span className={styles.span_underSlider_text}>
-          {activeCounter === 0 && "Лет на рынке проектирования"}
+          {activeCounter === 0 && " Квалифицированных специалистов"}
           {activeCounter === 1 && "Проектов реализовано"}
-          {activeCounter === 2 && " Высококвалифицированных специалистов"}
+          {activeCounter === 2 && "Лет на рынке проектирования"}
         </span>
       </div>
     </div>

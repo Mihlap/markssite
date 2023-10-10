@@ -80,8 +80,8 @@
 .header_content {
   display: flex;
   justify-content: space-between;
-  padding-top: 2rem;
-  padding-bottom: 4.13rem;
+  padding-top: 2.5rem;
+  padding-bottom: 0rem;
 }
 
 
@@ -89,8 +89,10 @@
 
 .header_content_left {
   max-width: 78%;
-  padding-left: 1.75rem;
   white-space: normal;
+  padding-left: 14.75vw;
+  padding-right: 14.75vw;
+  width: 100%;
 }
 
 .header_content_left_custom {
@@ -219,7 +221,7 @@
   padding-bottom: 1.5rem;
   word-wrap: break-word;
   width: 80%;
-  padding-top: 4rem;
+  padding-top: 0rem;
   /* padding-left: 1.69rem; */
 }
 
@@ -671,6 +673,42 @@ padding-right: 0.5rem;
   width: 80%;
   /* background-color: red; */
   padding-left: 1.75rem;
+}
+
+/* Стили для desctop версии +1 сайта блока ArticleCard начинаются тут */
+
+@media screen and (min-width: 1025px) and (max-width: 1600px) {
+
+  /* .header_content_left {
+    padding-left: 1.75rem;
+    padding-right: 4.65vw;
+  }
+
+  .result_container {
+    display: flex;
+    gap: 1.81rem
+  }
+
+  .header_content_right {
+    width: 40%;
+    padding-right: 1.69rem;
+    padding-left: 4.65vw;
+  }
+
+  .local_container {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 4.86vw;
+  }
+
+.quote_container,
+.description_object_container {
+  display: flex;
+  padding-left: 1.75rem;
+  padding-right: 4.65vw;
+} */
+
+
 }
 
 /* Стили для planshet версии сайта блока ArticleCard начинаются тут */
