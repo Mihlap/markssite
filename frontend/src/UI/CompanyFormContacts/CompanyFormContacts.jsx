@@ -150,7 +150,7 @@ const CompanyFormContacts = () => {
       <div className={styles.form_left_main}>
         <div className={styles.title}>На связи</div>
         <span className={styles.span_text}>
-        Давайте проектировать будущее вместе!
+        Наши специалисты ответят на все интересующие Вас вопросы
         </span>
         <form className={styles.form_form_wrapper} onSubmit={handleSubmit}>
           <div className={`${styles.group} some-unique-class`}>
