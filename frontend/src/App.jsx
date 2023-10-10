@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
-import {  HelmetProvider } from 'react-helmet-async';
-// import axios from "axios";
+import { HelmetProvider } from "react-helmet-async";
 import "./App.css";
 import Company from "./Company/Company";
 import Header from "./Header/Header";
@@ -31,7 +30,6 @@ import { resetCurrentPage, setCurrentPage } from "./store/Slice/userSlice";
 import ButtonAdmin from "./UI/ButtonAdmin/ButtonAdmin";
 import { fetchToggleStateForButton3Async } from "./store/Slice/toggleSlice";
 
-
 export default function App() {
   const user = useSelector((state) => state.auth.user);
   const currentPage = useSelector((state) => state.user.currentPage);
@@ -41,13 +39,11 @@ export default function App() {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
 
+  useEffect(() => {
+    dispatch(checkUserAuth());
+    dispatch(fetchToggleStateForButton3Async());
+  }, [dispatch]);
 
-
-useEffect(() => {
-  dispatch(checkUserAuth());
-   dispatch(fetchToggleStateForButton3Async());
-}, [dispatch]);
-  
   const handlePageChange = (page) => {
     dispatch(setCurrentPage(page));
   };
@@ -57,14 +53,13 @@ useEffect(() => {
     localStorage.removeItem("activeClass");
   };
 
-// console.log(isUserChecked);
+  // console.log(isUserChecked);
   // таймаут для прелоудера на сайте
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
     }, 3500);
   }, []);
-
 
   // console.log(`пользователь 👉${user?.name}👈`);
   return (
@@ -120,10 +115,9 @@ useEffect(() => {
             </CSSTransition>
           </TransitionGroup>
           {showNavbarFooter && currentPage !== "add" && <Footer />}
-          <CustomCursor />
+          {showNavbarFooter && currentPage !== "add" && <CustomCursor />}
         </>
       )}
     </HelmetProvider>
   );
-};
-
+}
