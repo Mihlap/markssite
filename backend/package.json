@@ -10,6 +10,7 @@
     "lint": "eslint .",
     "pre-db": "npx sequelize-cli db:seed:undo:all && npx sequelize-cli db:migrate:undo:all && npx sequelize-cli db:migrate && npx sequelize db:seed:all",
     "back-db": "npx sequelize-cli db:seed:undo:all && npx sequelize-cli db:migrate:undo:all",
+    "roll-up-db": "npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all",
     "drop-db": "npx sequelize-cli db:drop && npx sequelize-cli db:create && npx sequelize-cli db:migrate && npx sequelize-cli db:seed:all"
   },
   "keywords": [],
