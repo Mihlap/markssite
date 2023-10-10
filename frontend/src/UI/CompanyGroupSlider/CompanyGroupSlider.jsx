@@ -96,13 +96,11 @@ const CompanyGroupSlider = () => {
       },
     ],
   };
-  
 
   const handlePageClick = (page) => {
     setCurrentPage(page);
     sliderRef.current.slickGoTo(page);
   };
-  
 
   return (
     <div className="company-group-container">
@@ -111,7 +109,9 @@ const CompanyGroupSlider = () => {
           <div className="company-group-slide">
             <img src="./assets/Vector.svg" alt="1" />
             <span className="text_slider_span">
-             Институт по проектированию объектов общественного и жилого значения
+              Проектно-архитектурная компания. Генеральное проектирование,
+              научные исследования, комплексный анализ объектов и территорий
+              развития инфраструктуры городов и мегаполисов
             </span>
           </div>
         </div>
@@ -119,7 +119,8 @@ const CompanyGroupSlider = () => {
           <div className="company-group-slide">
             <img src="./assets/Vector1.svg" alt="2" />
             <span className="text_slider_span">
-            Комплексное проектирование интерьеров различных сфер применения
+              Проектирование интерьеров жилых и общественных пространств. Дизайн
+              интерьеров, брендинг и архитектурная визуализация
             </span>
           </div>
         </div>
@@ -127,11 +128,7 @@ const CompanyGroupSlider = () => {
           <div className="company-group-slide">
             <img src="./assets/Vector2.svg" alt="3" />
             <span className="text_slider_span">
-            Сопровождение информационного проектирования,
-            разработка программного обеспечения,
-            создание трёхмерных концепций
-            и визуализаций объектов строительства,
-            разработка сайтов
+              Цифровые решения в проектировании, девелопменте и строительстве
             </span>
           </div>
         </div>
@@ -139,9 +136,10 @@ const CompanyGroupSlider = () => {
           <div className="company-group-slide">
             <img src="./assets/Vector3.svg" alt="4" />
             <span className="text_slider_span">
-            Институт по проектированию объектов транспортной инфраструктуры,
-            наружных инженерных сетей, благоустройству территорий
-            и научно-техническому сопровождению
+              Научно-техническое сопровождение проектирования и строительства.
+              Проектирование, научные исследования, комплексные расчёты
+              строительных конструкций, оснований, фундаментов и подземных
+              сооружений
             </span>
           </div>
         </div>
@@ -149,11 +147,11 @@ const CompanyGroupSlider = () => {
           <div className="company-group-slide">
             <img src="./assets/Vector4.svg" alt="5" />
             <span className="text_slider_span">
-            Институт по проектированию промышленных и особо опасных объектов
+            Институт науки, проектирования и инжиниринга проектирование объектов промышленного и гражданского строительства
             </span>
           </div>
         </div>
-       </Slider>
+      </Slider>
       <div className="pagination_company_slider">
         {Array.from({ length: Math.ceil(5) }).map((_, index) => (
           <button

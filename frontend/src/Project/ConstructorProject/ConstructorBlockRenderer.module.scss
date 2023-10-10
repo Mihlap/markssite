@@ -128,14 +128,16 @@
 .text_framed {
     display: flex;
     padding: 24px;
-    margin-bottom: 40px;
+    margin-bottom: 2.5rem;
     flex-direction: column;
     align-items: flex-start;
     gap: 10px;
     border-radius: 16px;
     border: 1px solid var(--salmon-FF7F6A);
     overflow: auto;
-
+    padding-right: 14.75vw;
+    padding-left: 14.75vw;
+  
     &__text {
         color: var(--black-1D2E43);
         font-variant-numeric: lining-nums proportional-nums;
