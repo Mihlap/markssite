@@ -26,7 +26,7 @@
   padding-top: 14vh;
   padding-left: 1.69rem;
   padding-right: 1.69rem;
-  word-break: break-word;
+  word-wrap: break-word;
 }
 
 
@@ -181,6 +181,7 @@
   font-feature-settings: 'pnum' on, 'lnum' on;
   color: var(--gray-959DA6);
   overflow-wrap: break-word;
+  word-wrap: break-word;
   white-space: normal;
 }
 
@@ -226,8 +227,6 @@
   color: var(--gray-959DA6);
   word-wrap: break-word;
   overflow-wrap: break-word;
-  hyphens: auto;
-  word-break: break-all;
   padding-bottom: 0.5rem;
 }
 
@@ -290,10 +289,8 @@
   color: var(--black-1D2E43);
   word-wrap: break-word;
   overflow-wrap: break-word;
-  hyphens: auto;
-  /* padding-right: 22.19rem;
+   /* padding-right: 22.19rem;
   padding-left: 16.44rem; */
-  word-break: break-all;
 }
 
 .quote_block,
@@ -309,8 +306,6 @@
   padding: 0rem 0rem 0rem 0rem;
   word-wrap: break-word;
   overflow-wrap: break-word;
-  hyphens: auto;
-  word-break: break-all;
 }
 
 .quote_text {
@@ -364,8 +359,6 @@
   align-items: center;
   word-wrap: break-word;
   overflow-wrap: break-word;
-  hyphens: auto;
-  word-break: break-all;
   background: var(--light-light-gray-EBECEE);
   width: 78%;
 
@@ -386,8 +379,6 @@
   align-items: center;
   word-wrap: break-word;
   overflow-wrap: break-word;
-  hyphens: auto;
-  word-break: break-all;
   background: var(--salmon-light-FFBFB5);
   width: 22%;
 }
@@ -567,7 +558,6 @@
   display: flex;
   flex-wrap: wrap;
   word-wrap: break-word;
-  word-break: break-all;
   color: var(--black-1D2E43);
   font-family: var(--font-raleway);
   font-size: 0.875rem;
@@ -758,8 +748,6 @@
     padding-top: 1rem;
     padding-bottom: 1.5rem;
     word-wrap: break-word;
-    overflow-wrap: break-word;
-    hyphens: auto;
     white-space: normal;
   }
 
@@ -999,7 +987,6 @@
     display: block;
     width: 100%;
     word-wrap: break-word;
-    overflow-wrap: break-word;
   }
 
   .left_title {
@@ -1011,8 +998,6 @@
     line-height: 1.75rem;
     color: var(--black-1D2E43);
     word-wrap: break-word;
-    overflow-wrap: break-word;
-    hyphens: auto;
   }
 
   .left_meta {
@@ -1051,8 +1036,6 @@
     padding-top: 1rem;
     padding-bottom: 1.5rem;
     word-wrap: break-word;
-    overflow-wrap: break-word;
-    hyphens: auto;
     white-space: normal;
   }
 
@@ -1200,8 +1183,8 @@
     width: 100%;
     margin-top: 0.5rem;
     margin-bottom: 0.5rem;
-    white-space: nowrap;
-    overflow: hidden;
+    /* white-space: nowrap; */
+    /* overflow: hidden; */
     text-overflow: ellipsis;
   }
 
@@ -1217,8 +1200,8 @@
     padding-right: 0.87rem;
     max-width: 100%;
     width: 100%;
-    white-space: nowrap;
-    overflow: hidden;
+    /* white-space: nowrap; */
+    /* overflow: hidden; */
     text-overflow: ellipsis;
   }
 
