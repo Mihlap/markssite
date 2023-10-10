@@ -11,7 +11,7 @@ const Mapbox3D = () => {
   useEffect(() => {
     const map = new mapboxgl.Map({
       style: "mapbox://styles/anna02/clgz2fy0200hg01qu5tb8a6is",
-      center: [37.5804, 55.783],
+      center: [37.5804, 55.77],
       zoom: window.innerWidth <= 768 ? 8.5 : 10.4,
       pitch: 45,
       bearing: 10,
@@ -21,16 +21,14 @@ const Mapbox3D = () => {
     });
 
     map.scrollZoom.disable();
-    
 
-    const popups = []; // массив для хранения всех попапов
-    
+    const popups = []; 
 
     popupsData.forEach((popupData) => {
       const marker = new mapboxgl.Marker({ color: "#FF7F6A" })
         .setLngLat(popupData.coordinates)
         .addTo(map);
-   
+
       const popup = new mapboxgl.Popup({
         offset: 30,
         closeButton: false,
@@ -40,25 +38,27 @@ const Mapbox3D = () => {
       const popupNode = document.createElement("div");
       popupNode.style.width = "18rem";
 
-      let popupContent = `
-      <div class="${styles.popupTitle}">
-          ${popupData.title}
-        </strong>`;
+      let popupContent = "";
 
       if (popupData.image) {
         popupContent += `
-          <img
-            class="${styles.popupImage}"
-            src="${popupData.image}"
-            alt="${popupData.title}"
-          />`;
+    <img
+      class="${styles.popupImage}"
+      src="${popupData.image}"
+      alt="${popupData.title}"
+    />`;
       }
+
+      popupContent += `
+  <div class="${styles.popupTitle}">
+    ${popupData.title}
+  </div>`;
 
       if (popupData.buttonText) {
         popupContent += `
-          <div class=${styles.popupCustomButton} onclick="window.open('/contacts')">
-            ${popupData.buttonText} 
-          </div>`;
+    <div class=${styles.popupCustomButton} onclick="window.open('/contacts')">
+      ${popupData.buttonText} 
+    </div>`;
       }
 
       popupContent += `
@@ -91,21 +91,20 @@ const Mapbox3D = () => {
 
       popup.setLngLat(popupData.coordinates).setDOMContent(popupNode);
 
-      popups.push({ marker, popup }); // сохраняем маркер и попап в массив
+      popups.push({ marker, popup });
     });
 
-    // Добавляем обработчик события mouseenter ко всем маркерам
     popups.forEach(({ marker, popup }) => {
       marker.getElement().addEventListener("mouseenter", () => {
-        // Закрываем все другие попапы
+   
         popups.forEach(({ popup }) => popup.remove());
 
-        // Отображаем текущий попап
         popup.addTo(map);
       });
     });
 
     map.addControl(new mapboxgl.NavigationControl());
+    
   }, []);
 
   return (
