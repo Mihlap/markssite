@@ -87,7 +87,8 @@
   display: flex;
   justify-content: space-between;
   padding-top: 2rem;
-  padding-bottom: 5.66rem;
+  padding-bottom: 2rem;
+  word-wrap: break-word;
 }
 
 /* <<=============== левый блок контента с информацией===============>> */
@@ -115,8 +116,6 @@
   line-height: 2.5rem;
   color: var(--black-1D2E43);
   word-wrap: break-word;
-  overflow-wrap: break-word;
-  hyphens: auto;
 }
 
 .left_meta {
@@ -151,8 +150,6 @@
   padding-top: 1rem;
   padding-bottom: 2rem;
   word-wrap: break-word;
-  overflow-wrap: break-word;
-  hyphens: auto;
 }
 
 .result_container {
@@ -239,6 +236,7 @@
 }
 
 
+
 .item:not(:last-child) {
   padding-bottom: 3.75rem;
 }
@@ -251,9 +249,10 @@
   border-radius: 1.11vw;
 }
 
-/* .item_img_latest {
+.item_img_latest {
   border-radius: 1.11vw 1.11vw 0vw 0vw;
-} */
+  margin-top: 0;
+}
 
 .item_img_close {
   border-radius:1.11vw 1.11vw 0vw 0vw;
@@ -267,6 +266,8 @@
 .quote_container,
 .description_object_container {
   display: flex;
+  padding-right: 14.75vw;
+  padding-left: 14.75vw;
 }
 
 .description_object_title {
@@ -289,8 +290,6 @@
   color: var(--black-1D2E43);
   word-wrap: break-word;
   overflow-wrap: break-word;
-   /* padding-right: 22.19rem;
-  padding-left: 16.44rem; */
 }
 
 .quote_block,
@@ -304,8 +303,8 @@
   flex-direction: column;
   gap: 1.5rem;
   padding: 0rem 0rem 0rem 0rem;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
+  word-wrap: break-word;  
+  margin: 0 auto;
 }
 
 .quote_text {
@@ -655,6 +654,13 @@
     gap: 4.86vw;
   }
 
+.quote_container,
+.description_object_container {
+  display: flex;
+  padding-left: 1.75rem;
+  padding-right: 4.65vw;
+}
+
 
 }
 
@@ -809,10 +815,14 @@
   .quote_container,
   .description_object_container {
     display: flex;
+  padding-right: 0;
+  padding-left: 0;
+
+
   }
 
   .description_object_title {
-    padding-left: 1rem;
+    /* padding-left: 1rem; */
     padding-right: 1rem;
   }
 
@@ -822,7 +832,7 @@
   }
 
   .description_object_block {
-    gap: 0rem;
+    gap: 1.88rem;
     padding: 0rem 1rem 0rem 1rem;
   }
 
