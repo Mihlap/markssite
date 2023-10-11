@@ -560,14 +560,14 @@ const ProjectCard = () => {
                   WA
                 </span>
               </button>
-              <button onClick={() => shareToViber(project, Host)}>
+              {/* <button onClick={() => shareToViber(project, Host)}>
                 <span
                   className={styles.social_links_item}
                   style={{ marginRight: "22px", color: "#FF7F6A" }}
                 >
                   VB
                 </span>
-              </button>
+              </button> */}
               <button onClick={() => shareToTelegram(project, Host)}>
                 <span
                   className={styles.social_links_item}
