@@ -319,22 +319,27 @@ const ArticleCard = () => {
                 ))}
               </div>
             ))}
-          </div>
-          <div
-            className={styles.container_author_address_imageClose_share_article}
-          >
-            <div
-              className={styles.container_author_address_imageClose}
-              ref={refs.address_imageClose}
-            >
-              <div
-                className={styles.cart_article__author__block__card_imageClose}
-              >
+            <div className={styles.item_container_imageClose} ref={refs.imageClose}>
+                  <div className={styles.item}>
+                    <img
+                      className={styles.item_img_close}
+                      src={`${Host}/images/imageArticle/${article.imageClose}`}
+                      alt={article.imageClose}
+                    />
+                  </div>
+                </div>
+           </div>
+          <div className={styles.container_author_address_imageClose_share_article}>
+            <div className={styles.container_author_address_imageClose} ref={refs.address_imageClose}>
+            {/* <img
+                  className={styles.item_img}
+                  src={`${Host}/images/imageArticle/${article.imageClose}`}
+                  alt={article.imageClose}
+                /> */}
+              <div className={styles.cart_article__author__block__card_imageClose}>
                 {article.author}
               </div>
-              <div
-                className={styles.cart_article__address__block__card_imageClose}
-              >
+              <div className={styles.cart_article__address__block__card_imageClose}>
                 {article.city}{" "}
                 <div
                   className={
@@ -373,14 +378,14 @@ const ArticleCard = () => {
                 WA
               </span>
             </button>
-            <button onClick={() => shareToViber(article, Host)}>
+            {/* <button onClick={() => shareToViber(article, Host)}>
               <span
                 className={styles.social_links_item}
                 style={{ marginRight: "22px", color: "#FF7F6A" }}
               >
                 VB
               </span>
-            </button>
+            </button> */}
             <button onClick={() => shareToTelegram(article, Host)}>
               <span
                 className={styles.social_links_item}
