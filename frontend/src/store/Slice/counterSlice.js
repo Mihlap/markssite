@@ -12,23 +12,23 @@ export const counterSlice = createSlice({
   initialState,
   reducers: {
     incrementDepartment: (state) => {
-      if (state.countDepartment < 95) {
-        state.countDepartment += 4;
+      if (state.countDepartment < 20) {
+        state.countDepartment += 2;
       }
     },
     incrementGap: (state) => {
-      if (state.countGap < 44) {
-        state.countGap += 2;
+      if (state.countGap < 40) {
+        state.countGap += 4;
       }
     },
     incrementScient: (state) => {
-      if (state.countScient < 100) {
-        state.countScient += 4;
+      if (state.countScient < 150) {
+        state.countScient += 10;
       }
     },
     incrementScienceDegree: (state) => {
-      if (state.countScienceDegree < 3300000) {
-        state.countScienceDegree += 150000;
+      if (state.countScienceDegree < 90) {
+        state.countScienceDegree += 6;
       }
     },
   },
