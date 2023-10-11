@@ -136,14 +136,14 @@ export default function Company() {
   useEffect(() => {
     
     const timer1 = setTimeout(() => {
-      if (countPercent < 18) {
-        setCountPercent(countPercent + 1);
+      if (countPercent < 1000) {
+        setCountPercent(countPercent + 20);
       }
       if (countProject < 200) {
         setCountProject(countProject + 5);
       }
-      if (countHuman < 1000) {
-        setCountHuman(countHuman + 20);
+      if (countHuman < 18) {
+        setCountHuman(countHuman + 1);
       }
       }, 50);
     return () => clearTimeout(timer1);
@@ -182,7 +182,7 @@ export default function Company() {
       x: "-100%",
       opacity: 0,
       duration: 1.5,
-      delay: 1,
+      delay: 0.5,
       ease: "power4.out",
       scrollTrigger: {
         trigger: elementsRight,
@@ -200,21 +200,21 @@ export default function Company() {
         const scrollTop = window.scrollY || document.documentElement.scrollTop;
 
         if (scrollTop > thisBlockRect.top && screenWidth >= 2000) {
-          const translateYValue = nameCompanyRect.height + 182;
+          const translateYValue = nameCompanyRect.height + 60;
           nameCompanyRef.current.style.transform = `translateY(${translateYValue}px)`;
-          thisBlockRef.current.style.transform = `translateY(70px) translateX(10vw) rotate(-90deg)`;
+          thisBlockRef.current.style.transform = `translateY(0px) translateX(10vw) rotate(-90deg)`;
         } else if (
           scrollTop > thisBlockRect.top &&
           screenWidth < 1999 &&
           screenWidth >= 1480
         ) {
-          const translateYValue = nameCompanyRect.height + 282;
+          const translateYValue = nameCompanyRect.height + 112;
           nameCompanyRef.current.style.transform = `translateY(${translateYValue}px)`;
-          thisBlockRef.current.style.transform = `translateY(200px) translateX(10vw) rotate(-90deg)`;
+          thisBlockRef.current.style.transform = `translateY(40px) translateX(10vw) rotate(-90deg)`;
         } else if (scrollTop > thisBlockRect.top && screenWidth <= 1479) {
-          const translateYValue = nameCompanyRect.height + 342;
+          const translateYValue = nameCompanyRect.height + 262;
           nameCompanyRef.current.style.transform = `translateY(${translateYValue}px)`;
-          thisBlockRef.current.style.transform = `translateY(270px) translateX(10vw) rotate(-90deg)`;
+          thisBlockRef.current.style.transform = `translateY(180px) translateX(10vw) rotate(-90deg)`;
         } else {
           nameCompanyRef.current.style.transform = "none";
           thisBlockRef.current.style.transform = "rotate(-180deg)";
@@ -314,7 +314,7 @@ export default function Company() {
                 <p>{countPercent}</p>
               </div>
               <span className={styles.span_underSlider_text}>
-              Лет на рынке проектирования
+              Квалифицированных специалистов
               </span>
             </div>
             <div className={styles.container_text}>
@@ -335,8 +335,8 @@ export default function Company() {
                 </div>
                 <p>{countHuman}</p>
               </div>
-              <span className={styles.span_underSlider_text}>
-              Высококвалифицированных специалистов
+              <span className={styles.span_underSlider_text}>             
+              Лет на рынке проектирования
               </span>
             </div>
           </div>
@@ -398,7 +398,7 @@ export default function Company() {
                   <p className={styles.number}>{countDepartment}%</p>
                 </div>
                 <span className={styles.span_underSlider_text_right}>
-                Проектных работ – с применением BIM-технологий
+                Регионов присутствия
                 </span>
               </div>
               <div className={styles.container_text_right}>
@@ -409,7 +409,7 @@ export default function Company() {
                   <p className={styles.number}>{countGap}</p>
                 </div>
                 <span className={styles.span_underSlider_text_right}>
-                Объектов в статусе генерального проектировщика
+                Объектов транспортной инфраструктуры
                 </span>
               </div>
               <div className={styles.container_text_right}>
@@ -422,7 +422,7 @@ export default function Company() {
                   <p className={styles.number}>{countScient}</p>
                 </div>
                 <span className={styles.span_underSlider_text_right}>
-                Положительных заключений государственной экспертизы в статусе генерального проектировщика
+                Объектов жилого и общественного назначения
                 </span>
               </div>
               <div className={styles.container_text_right}>
@@ -432,11 +432,11 @@ export default function Company() {
                   <div className={styles.text_svg_right}>
                     <img src={bracket_dark} alt="bracket_dark" />
                   </div>
-                  <p className={styles.number}>{countScienceDegree}</p>
-                  <p className={styles.number_metr}>м<sup className={styles.small_sup}>2</sup></p>
+                  <p className={styles.number}>{countScienceDegree}%</p>
+                  {/* <p className={styles.number_metr}>м<sup className={styles.small_sup}>2</sup></p> */}
                 </div>
                 <span className={styles.span_underSlider_text_right}>
-                Площади реализованных проектов в статусе генерального проектировщика
+                Объёма проектирования с применением цифровых технологий
                 </span>
               </div>
             </div>

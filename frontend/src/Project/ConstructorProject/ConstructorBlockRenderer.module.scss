@@ -9,7 +9,8 @@
         width: 100%;
         height: 100%;
         max-height: 50vw;
-        border-radius: 1.11vw 1.11vw;
+        border-radius: 16px;
+        object-fit: cover;
     }
 
     &__text {
@@ -117,6 +118,7 @@
         height: 100%;
         object-fit: cover;
         border-radius: 16px;
+        object-fit: cover;
     }
 }
 
@@ -127,15 +129,14 @@
 // <<< ====== стили для блока с рамкой ====== >>>
 .text_framed {
     display: flex;
-    padding: 24px;
-    margin-bottom: 40px;
     flex-direction: column;
     align-items: flex-start;
-    gap: 10px;
-    border-radius: 16px;
-    border: 1px solid var(--salmon-FF7F6A);
+    gap: 10px;    
     overflow: auto;
-
+    margin-bottom: 3.75rem;
+    padding-right: 14.75vw;
+    padding-left: 14.75vw;
+      
     &__text {
         color: var(--black-1D2E43);
         font-variant-numeric: lining-nums proportional-nums;
@@ -145,8 +146,12 @@
         font-style: normal;
         font-weight: var(--fw-400);
         line-height: 24px;
-        word-wrap: break-word;
-    }
+        word-wrap: break-word; 
+        border-radius: 16px;
+        padding: 24px;
+        border: 1px solid var(--salmon-FF7F6A);
+      }
+
 }
 
 // <<< ====== стили для блока заметкой  ====== >>>
@@ -154,8 +159,10 @@
 .note_block {
     display: flex;
     gap: 1rem;
-    margin-bottom: 40px;
+    padding-bottom: 3.75rem;
     word-wrap: break-word;
+    padding-right: 14.75vw;
+    padding-left: 14.75vw;
 
     &__bookmark {
         width: 9px;
@@ -186,16 +193,20 @@
     font-style: normal;
     font-weight: var(--fw-400);
     line-height: 24px;
-    margin-bottom: 40px;
+    padding-bottom: 3.75rem;
     word-wrap: break-word;
+    padding-right: 14.75vw;
+    padding-left: 14.75vw;
 }
 
 // <<< ====== стили для блока c цитатой и автором  ====== >>>
 
 .quote_block_constainer {
     position: relative;
-    margin-bottom: 40px;
+    margin-bottom: 3.75rem;
     word-wrap: break-word;
+    padding-right: 14.75vw;
+    padding-left: 14.75vw;
 
     &__text_block {
         display: flex;
@@ -269,7 +280,7 @@
 }
 
 .slider_container {
-    padding-bottom: 2.75rem;
+    padding-bottom: 3.75rem;
 }
 
 .div_conteiner__blockSix {
@@ -291,8 +302,27 @@
         padding-right: 0;
         padding-left: 0;
     }
-
+    .text_framed {
+      padding-right: 0;
+      padding-left: 0;
+    
+    }
+    .note_block {
+        padding-right: 0;
+        padding-left: 0;    
+    }
+    .text_block {
+     padding-right: 0;
+     padding-left: 0;
+    }
+    .quote_block_constainer {
+        padding-right: 0;
+        padding-left: 0;
+    }
+      
 }
+
+
 
 /* Стили для планшетной версии сайта блока ProjectCardConstructor, начинаются тут */
 
@@ -379,6 +409,8 @@
         position: relative;
         margin-bottom: 40px;
         word-wrap: break-word;
+        padding-right: 0;
+        padding-left: 0;
 
         &__text_block {
             display: flex;
@@ -448,6 +480,22 @@
             line-height: 16px;
         }
     }
+    .text_framed {
+        padding-right: 0;
+        padding-left: 0;
+      
+      }
+      .note_block {
+          padding-right: 0;
+          padding-left: 0;    
+      }
+      .text_block {
+       padding-right: 0;
+       padding-left: 0;
+      }
+      .quote_block_constainer {
+        
+      }
 }
 
 
