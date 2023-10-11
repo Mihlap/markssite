@@ -2,7 +2,7 @@
 
 .containerImageToDescription {
     // padding-top: 0.5rem;
-   padding-bottom: 3.75rem;
+    padding-bottom: 3.75rem;
 
     &__img {
         object-position: center;
@@ -44,7 +44,7 @@
         font-style: normal;
         font-weight: var(--fw-300);
         line-height: 32px;
-        word-wrap: break-word;       
+        word-wrap: break-word;
     }
 
     &__text {
@@ -111,7 +111,7 @@
     grid-template-columns: 1fr 1fr;
     gap: 30px;
     // height: 100vh;
-  padding-bottom: 3.75rem;
+    padding-bottom: 3.75rem;
 
     &__gridImage {
         width: 100%;
@@ -151,6 +151,7 @@
         padding: 24px;
         border: 1px solid var(--salmon-FF7F6A);
       }
+
 }
 
 // <<< ====== стили для блока заметкой  ====== >>>
@@ -282,21 +283,15 @@
     padding-bottom: 3.75rem;
 }
 
-
 .div_conteiner__blockSix {
-    display: flex;
-    width: 500px;
-    height: 500px;
-
+    max-width: 100%;
+    padding-bottom: 40px;
 }
+
 .block_video {
-    display: flex;
-    // top: 50%;
-    // left: 50%;
-    // transform: translate(-50%, -50%);
     width: 100%;
-    height: 100%;
-    object-fit: cover;
+    height: auto;
+    border-radius: 16px;
 }
 
 
@@ -307,7 +302,6 @@
         padding-right: 0;
         padding-left: 0;
     }
-
     .text_framed {
       padding-right: 0;
       padding-left: 0;
@@ -411,13 +405,13 @@
         /* 100% высоты экрана */
     }
 
-     .quote_block_constainer {
+    .quote_block_constainer {
         position: relative;
         margin-bottom: 40px;
         word-wrap: break-word;
         padding-right: 0;
         padding-left: 0;
-    
+
         &__text_block {
             display: flex;
             padding: 24px;
@@ -428,11 +422,11 @@
             border-radius: 16px;
             background-color: var(--light-light-gray-EBECEE);
         }
-    
+
         &__quote_text {
             color: var(--black-1D2E43);
             font-variant-numeric: lining-nums proportional-nums;
-    
+
             /* Body Regular · 16 */
             font-family: var(--font-raleway);
             font-size: 16px;
@@ -441,7 +435,7 @@
             line-height: 24px;
             /* 150% */
         }
-    
+
         &__quote_author {
             color: var(--gray-959DA6);
             font-variant-numeric: lining-nums proportional-nums;
@@ -451,13 +445,13 @@
             font-weight: var(--fw-400);
             line-height: 20px;
         }
-    
+
         &__author_block {
             position: absolute;
             top: 0px;
             right: -21%;
         }
-    
+
         &__img {
             border-radius: 50%;
             width: 10rem;
@@ -465,7 +459,7 @@
             object-fit: cover;
             object-position: center;
         }
-    
+
         &__quote {
             color: var(--dark-gray-566272);
             font-family: var(--font-raleway);
@@ -475,7 +469,7 @@
             line-height: 16px;
             padding-top: 10px;
         }
-    
+
         &__author {
             color: var(--gray-959DA6);
             font-variant-numeric: lining-nums proportional-nums;
@@ -550,49 +544,49 @@
 
     // <<<< =========== стили для блока у которого 2 горизонтальные картинки и 1 вертикальная картинка imageBlockThree =========== >>>>
 
-        .gridContainer {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 24px;
-            height: 100%;
-            // overflow: hidden;
-            margin-bottom: 2.5rem;
-            // padding-left: 1rem;
-            // padding-right: 1rem;
-         }
-        
-    
-        .horizontalImage,
-        .verticalImage {
-            width: 100%;
-            object-fit: cover;
-            display: block;
-            height: auto;
-            border-radius: 1rem;
-            object-position: center;
-        }
+    .gridContainer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 24px;
+        height: 100%;
+        // overflow: hidden;
+        margin-bottom: 2.5rem;
+        // padding-left: 1rem;
+        // padding-right: 1rem;
+    }
 
-        .horizontalImage {
-            grid-column: 1 / 2;
-            height: 20vh;
-            border-radius: 1rem;
-            /* 50% высоты экрана */
-        }
-        
-        .horizontalImage:nth-child(1) {
-            grid-row: 1 / 2;
-        }
-        
-        .horizontalImage:nth-child(2) {
-            grid-row: 2 / 3;
-        }
-        
-        .verticalImage {
-            grid-column: 1 / 2;
-            height: 20vh;
-            border-radius: 1rem;
-        }
+
+    .horizontalImage,
+    .verticalImage {
+        width: 100%;
+        object-fit: cover;
+        display: block;
+        height: auto;
+        border-radius: 1rem;
+        object-position: center;
+    }
+
+    .horizontalImage {
+        grid-column: 1 / 2;
+        height: 20vh;
+        border-radius: 1rem;
+        /* 50% высоты экрана */
+    }
+
+    .horizontalImage:nth-child(1) {
+        grid-row: 1 / 2;
+    }
+
+    .horizontalImage:nth-child(2) {
+        grid-row: 2 / 3;
+    }
+
+    .verticalImage {
+        grid-column: 1 / 2;
+        height: 20vh;
+        border-radius: 1rem;
+    }
 
     // <<< ====== стили для блока с двумя вертикальными картинками ====== >>>
     .imageBlockTwo {
@@ -611,19 +605,21 @@
             border-radius: 16px;
         }
     }
- // <<< ====== стили для блока заметкой  ====== >>>
 
- .quote_block_constainer {
-     &__author_block {
-         display: none;
-     }
+    // <<< ====== стили для блока заметкой  ====== >>>
+
+    .quote_block_constainer {
+        &__author_block {
+            display: none;
+        }
 
 
-     &__text_block {
-         margin-right: 0rem;
-         word-wrap: break-word;
-     }
- }
+        &__text_block {
+            margin-right: 0rem;
+            word-wrap: break-word;
+        }
+    }
+
     // <<< ====== стили для слайдера с картинками =) ====== >>>
 
     .slider_container {
@@ -633,6 +629,6 @@
     }
 
     .custom_slider {
-       padding-right: 10px; 
+        padding-right: 10px;
     }
 }

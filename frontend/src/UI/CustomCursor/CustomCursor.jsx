@@ -15,12 +15,25 @@ export default function CustomCursor() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    const mouseMove = (e) => {
-      setMousePosition({
-        x: e.clientX - 16,
-        y: e.clientY - 16,
-      });
-    };
+ let lastMousePosition = { x: 0, y: 0 };
+ let isRequesting = false;
+
+ const mouseMove = (e) => {
+   lastMousePosition = {
+     x: e.clientX - 16,
+     y: e.clientY - 16,
+   };
+
+   if (!isRequesting) {
+     window.requestAnimationFrame(() => {
+       setMousePosition(lastMousePosition);
+       isRequesting = false;
+     });
+     isRequesting = true;
+   }
+ };
+    
+    // была проблема с браузером сафари, я чуть изменил код, сейчас всё работает 
 
     const handleMouseDown = () => {
       dispatch(mouseDown());
