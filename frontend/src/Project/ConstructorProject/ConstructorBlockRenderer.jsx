@@ -299,17 +299,25 @@ export default function ConstructorBlockRenderer({ block }) {
   };
 
   const renderVideoBlock = (block) => {
-    const videoPath = block[0]?.value;
+    const videoPath = block[0]?.value.join('');
     console.log(videoPath, 'Video Path');
-    console.log(block, 'Video Path');
   
     return (
-      <div className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockSix}`}>
-        {videoPath && (
-          <video playsInline autoPlay muted loop className="block_video">
-            <source src={`${Host}/images/video/${videoPath}`} type="video/mp4" />
-          </video>
-        )}
+      <div
+        className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockSix}`}
+      >
+        <video
+          playsInline
+          muted
+          loop
+          controls
+          className={styles.block_video}
+        >
+          <source
+            src={`${Host}/images/imageAdd/${videoPath}`}
+            type="video/mp4"
+          />
+        </video>
       </div>
     );
   };
@@ -326,7 +334,7 @@ export default function ConstructorBlockRenderer({ block }) {
       return renderTwoImage(block);
     case "Слайдер *допускается загрузка 8ми изображений":
       return renderImageSlider(block);
-    case "video":
+    case "Видеоролик":
       return renderVideoBlock(block);
     default:
       return null;
