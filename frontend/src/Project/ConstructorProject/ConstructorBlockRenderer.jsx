@@ -299,24 +299,20 @@ export default function ConstructorBlockRenderer({ block }) {
   };
 
   const renderVideoBlock = (block) => {
-    const videoPath = block[0].value.join('');
-    // const test = videoPath.join('');
-    // console.log(videoPath.join(''));
+    const videoPath = block[0]?.value.join('');
     console.log(videoPath, 'Video Path');
-    // console.log(block, 'Video Path');
-
-    // let videoUrl = "";
-    // console.log(videoUrl);
-
-    //     block?.forEach((item) => {
-    //       if (item?.label === "Видеоролик") videoUrl = item.value?.[0] || "";
-    //     });
   
     return (
       <div
         className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockSix}`}
       >
-        <video playsInline autoPlay muted loop className={styles.block_video}>
+        <video
+          playsInline
+          muted
+          loop
+          controls
+          className={styles.block_video}
+        >
           <source
             src={`${Host}/images/imageAdd/${videoPath}`}
             type="video/mp4"

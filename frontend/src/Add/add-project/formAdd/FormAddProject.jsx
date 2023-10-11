@@ -329,6 +329,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                       const previewsArray = filesArray.map((file) =>
                         URL.createObjectURL(file)
                       );
+                      // console.log(previewsArray);
                       setDynamicPreviews((prev) => {
                         const newPreviews = [...prev];
                         if (!newPreviews[blockIndex]) {
