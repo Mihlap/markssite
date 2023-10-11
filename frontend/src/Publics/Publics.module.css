@@ -119,7 +119,7 @@
   display: flex;
   flex-wrap: wrap;
   gap: 1.88rem;
-  padding: 1.69rem 1.69rem 0rem 1.69rem;
+  padding: 0rem 1.69rem 0rem 1.69rem;
 }
 
 .section_article__block_cart {
@@ -192,9 +192,9 @@
   display: flex;
   margin-left: 0.5rem;
   margin-right: 0.5rem;
-  margin-bottom: 1rem;
   align-items: center;
 }
+
 
 @media screen and (min-width: 2000px) and (max-width: 3000px) {
    .section_article__block_cart {
