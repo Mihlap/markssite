@@ -15,7 +15,7 @@ export default function Applications() {
   );
   const userNames = useSelector((state) => state.auth.userNames);
 
-  console.log(currentUser);
+  // console.log(currentUser);
 
   useEffect(() => {
     dispatch(fetchToggleStateForButton3Async());
