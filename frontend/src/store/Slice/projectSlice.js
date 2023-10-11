@@ -69,7 +69,7 @@ export const fetchProject =
           formData.append("imageOpen", formattedData[key][0]);
           // console.log("imageOpen", formattedData[key]);
         } else if (key === "dynamicBlocks" && formattedData[key].length > 0) {
-          // console.log("зашел сюда", formattedData[key]);
+          console.log("зашел сюда", formattedData[key]);
 
           let data = formattedData[key];
 
@@ -127,7 +127,7 @@ export const fetchProject =
     axios.post(`${serverHost}/api-project/postzapros`, formData).then(() => {
       dispatch(getFetchForm());
     });
-    // console.log(formattedData, "<<<---REDUX");
+    console.log(formattedData, "<<<---REDUX");
   };
 
 export const getFetchForm = () => async (dispatch) => {

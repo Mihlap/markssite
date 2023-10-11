@@ -1,27 +1,22 @@
-const multer = require("multer");
+const multer = require('multer');
 
-const videoStorage = multer.diskStorage({
+const storage = multer.diskStorage({
   destination(req, file, cb) {
-    cb(null, "images/video");
+    cb(null, 'images/video/');
   },
   filename(req, file, cb) {
     cb(null, `${file.originalname}`);
   },
 });
 
-const videoTypes = [
-  "video/mp4",
-  "video/mpeg",
-  "video/quicktime",
-  // добавьте другие поддерживаемые типы видео
-];
+const types = ['video/mp4', 'video/mpeg', 'video/quicktime'];
 
-const videoFileFilter = (req, file, cb) => {
-  if (videoTypes.includes(file.mimetype)) {
+const fileFilter = (req, file, cb) => {
+  if (types.includes(file.mimetype)) {
     cb(null, true);
   } else {
     cb(null, false);
   }
 };
 
-module.exports = multer({ storage: videoStorage, fileFilter: videoFileFilter });
+module.exports = multer({ storage, fileFilter });
