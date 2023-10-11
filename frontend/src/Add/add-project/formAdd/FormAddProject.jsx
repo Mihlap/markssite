@@ -305,82 +305,137 @@ export default function FormAddProject({ setIsModalOpen }) {
           </div>
         )}
         {inputType === "file" && (
-          // <input type="file" accept="image/*" />
           <>
-            <div key={inputIndex}>
-              <div className={styles.form_container__checkbox_block}>
-                <div>{labelText}</div>
-              </div>
-              <label
-                className={styles.slider_container__customFileUploadOrangeColor}
-              >
-                <input
-                  type="file"
-                  onChange={(e) => {
-                    const filesArray = Array.from(e.target.files);
-                    handleDynamicInputChange(
-                      blockIndex,
-                      inputIndex,
-                      filesArray
-                    );
+            {labelText === "Видеоролик" ? (
+              <div>
+                <div className={styles.form_container__checkbox_block}>
+                  <div>{labelText}</div>
+                </div>
+                <label
+                  className={
+                    styles.slider_container__customFileUploadOrangeColor
+                  }
+                >
+                  <input
+                    type="file"
+                    onChange={(e) => {
+                      const filesArray = Array.from(e.target.files);
+                      handleDynamicInputChange(
+                        blockIndex,
+                        inputIndex,
+                        filesArray
+                      );
 
-                    const previewsArray = filesArray.map((file) =>
-                      URL.createObjectURL(file)
-                    );
-                    setDynamicPreviews((prev) => {
-                      const newPreviews = [...prev];
-                      if (!newPreviews[blockIndex]) {
-                        newPreviews[blockIndex] = [];
-                      }
-                      newPreviews[blockIndex][inputIndex] = previewsArray;
-                      return newPreviews;
-                    });
-                  }}
-                  multiple
-                  style={{ display: isPhotoOpenVisible ? "block" : "none" }}
-                />
-                <div className={styles.slider_container__uploadIcon}>
-                  <img src={icon} alt="icon" />
-                </div>
-                <div className={styles.slider_container__uploadText}>
-                  Загрузить изображения
-                </div>
-              </label>
-            </div>
-            <div className={styles.previewContainer}>
-              {dynamicPreviews[blockIndex] &&
-                dynamicPreviews[blockIndex][inputIndex] &&
-                dynamicPreviews[blockIndex][inputIndex].map((src, index) => (
-                  <div
-                    key={`${blockIndex}-${inputIndex}-${index}`}
-                    className={styles.previewWrapper}
-                  >
-                    <div
-                      className={
-                        styles.preview_photos_container_block_constructor
-                      }
-                    >
-                      <img
-                        src={src}
-                        alt={`Preview ${index}`}
-                        className={styles.preview_photos_container__img}
-                      />
-                      <div
-                        className={
-                          styles.preview_photos_container_block_constructor__remove_icon
+                      const previewsArray = filesArray.map((file) =>
+                        URL.createObjectURL(file)
+                      );
+                      setDynamicPreviews((prev) => {
+                        const newPreviews = [...prev];
+                        if (!newPreviews[blockIndex]) {
+                          newPreviews[blockIndex] = [];
                         }
-                        onClick={(e) =>
-                          handleDeletePreview(e, blockIndex, inputIndex, index)
-                        }
-                      >
-                        <span></span>
-                      </div>
-                    </div>
+                        newPreviews[blockIndex][inputIndex] = previewsArray;
+                        return newPreviews;
+                      });
+                    }}
+                    style={{ display: isPhotoOpenVisible ? "block" : "none" }}
+                  />
+                  <div className={styles.slider_container__uploadIcon}>
+                    <img src={icon} alt="icon" />
                   </div>
-                ))}
-            </div>
+                  <div className={styles.slider_container__uploadText}>
+                    Загрузить видеоролик
+                  </div>
+                </label>
+              </div>
+            ) : (
+              <>
+                <div key={inputIndex}>
+                  <div className={styles.form_container__checkbox_block}>
+                    <div>{labelText}</div>
+                  </div>
+                  <label
+                    className={
+                      styles.slider_container__customFileUploadOrangeColor
+                    }
+                  >
+                    <input
+                      type="file"
+                      onChange={(e) => {
+                        const filesArray = Array.from(e.target.files);
+                        handleDynamicInputChange(
+                          blockIndex,
+                          inputIndex,
+                          filesArray
+                        );
+
+                        const previewsArray = filesArray.map((file) =>
+                          URL.createObjectURL(file)
+                        );
+                        setDynamicPreviews((prev) => {
+                          const newPreviews = [...prev];
+                          if (!newPreviews[blockIndex]) {
+                            newPreviews[blockIndex] = [];
+                          }
+                          newPreviews[blockIndex][inputIndex] = previewsArray;
+                          return newPreviews;
+                        });
+                      }}
+                      multiple
+                      style={{ display: isPhotoOpenVisible ? "block" : "none" }}
+                    />
+                    <div className={styles.slider_container__uploadIcon}>
+                      <img src={icon} alt="icon" />
+                    </div>
+                    <div className={styles.slider_container__uploadText}>
+                      Загрузить изображения
+                    </div>
+                  </label>
+                </div>
+                <div className={styles.previewContainer}>
+                  {dynamicPreviews[blockIndex] &&
+                    dynamicPreviews[blockIndex][inputIndex] &&
+                    dynamicPreviews[blockIndex][inputIndex].map(
+                      (src, index) => (
+                        <div
+                          key={`${blockIndex}-${inputIndex}-${index}`}
+                          className={styles.previewWrapper}
+                        >
+                          <div
+                            className={
+                              styles.preview_photos_container_block_constructor
+                            }
+                          >
+                            <img
+                              src={src}
+                              alt={`Preview ${index}`}
+                              className={styles.preview_photos_container__img}
+                            />
+                            <div
+                              className={
+                                styles.preview_photos_container_block_constructor__remove_icon
+                              }
+                              onClick={(e) =>
+                                handleDeletePreview(
+                                  e,
+                                  blockIndex,
+                                  inputIndex,
+                                  index
+                                )
+                              }
+                            >
+                              <span></span>
+                            </div>
+                          </div>
+                        </div>
+                      )
+                    )}
+                </div>
+              </>
+            )}
           </>
         )}
+
         {inputType === "textarea" && (
           <div
             key={inputIndex}
@@ -422,7 +477,7 @@ export default function FormAddProject({ setIsModalOpen }) {
   };
 
   // console.log(inputData, "<<--inputData PROJECT");
-  // console.log(dynamicData, "<<--dynamicData");
+  console.log(dynamicData, "<<--dynamicData");
   return (
     <div className={styles.form_container}>
       <div className={styles.form_container__title}>Новый проект</div>

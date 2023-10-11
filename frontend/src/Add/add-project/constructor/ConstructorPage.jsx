@@ -9,33 +9,33 @@ import svg4 from "./svg/Group4652.svg";
 import svg5 from "./svg/Group4649.svg";
 import svg6 from "./svg/Group4641.svg";
 
-const Host = process.env.REACT_APP_SERVER_HOST;
+// const Host = process.env.REACT_APP_SERVER_HOST;
 
 export default function ConstructorPage({ handleClick }) {
    const [showNotification, setShowNotification] = useState(false);
-   const [selectedVideo, setSelectedVideo] = useState(null);
+  //  const [selectedVideo, setSelectedVideo] = useState(null);
 
-   const handleVideoChange = (event) => {
-    setSelectedVideo(event.target.files[0]);
-    handleVideoUpload(event.target.files[0]);
-  };
+  //  const handleVideoChange = (event) => {
+  //   setSelectedVideo(event.target.files[0]);
+  //   handleVideoUpload(event.target.files[0]);
+  // };
 
-  const handleVideoUpload = async (video) => {
-    if (video) {
-      const formData = new FormData();
-      formData.append("video", video);
+  // const handleVideoUpload = async (video) => {
+  //   if (video) {
+  //     const formData = new FormData();
+  //     formData.append("video", video);
 
-      try {
-        const response = await axios.post(
-          `${Host}/api/video/upload-video`,
-          formData
-        );
-        console.log("Video uploaded successfully!", response.data);
-      } catch (error) {
-        console.error("Error uploading video:", error);
-      }
-    }
-  };
+  //     try {
+  //       const response = await axios.post(
+  //         `${Host}/api/video/upload-video`,
+  //         formData
+  //       );
+  //       console.log("Video uploaded successfully!", response.data);
+  //     } catch (error) {
+  //       console.error("Error uploading video:", error);
+  //     }
+  //   }
+  // };
 
 
  
@@ -112,22 +112,18 @@ export default function ConstructorPage({ handleClick }) {
       >
         <img src={svg5} alt="svg_three_icon" />
       </div>
-       <div
+      <div
         className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockSix}`}
-        >
-         <label>
-          <input
-            type="file"
-            accept="video/*"
-            onClick={() => handleClick([ {type: "video", label: "video"} ])}
-            onChange={handleVideoChange}
-            style={{ display: "none" }}
-          />
-          <img
-            src={svg6}
-            alt="svg_six_icon"
-          />
-        </label>
+        onClick={() =>
+          handleClick([
+            {
+              type: "file",
+              label: "Видеоролик",
+            },
+          ])
+        }
+      >
+        <img src={svg6} alt="svg_six_icon" />
       </div>
       {/* <div
         className={`${styles.notification} ${
