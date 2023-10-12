@@ -5,6 +5,8 @@ import customScroll from "../style/CustomScrollbar.module.scss";
 import FormAddArticles from './formAdd/FormAddArticles';
 import { deleteFormArticle } from '../../store/Slice/articleSlice';
 import Loading from './loading/Loading';
+import cat from "../img/cat_954.jpeg";
+
 import { fetchToggleStateForButton2Async, updateToggleStateForButton2Async } from '../../store/Slice/toggleSlice';
 
 export default function AddArticles({user, article}) {
@@ -176,8 +178,17 @@ const updateModalBlockHeight = () => {
         <div className={styles.card_components_admin__section_map}>
           <div className={styles.card_components_admin__block_map}>
             {article &&
-              article.map((el) => {
-                const firstPhoto = el.imageTitle.split(", ")[0];
+              article?.map((el) => {
+                const firstPhoto =
+                  el && el.imageTitle ? el.imageTitle.split(", ")[0] : null;
+                const defaultPhoto = cat;
+
+                const photoSrc =
+                  firstPhoto &&
+                  firstPhoto !== "null" &&
+                  firstPhoto !== "undefined"
+                    ? `${Host}/images/imageArticle/${firstPhoto}`
+                    : defaultPhoto;
                 return (
                   <div
                     className={styles.section_project__block_cart}
@@ -192,12 +203,12 @@ const updateModalBlockHeight = () => {
                           {!isImageLoaded && <Loading />}
                           <img
                             className={styles.cart_project__img}
-                            src={`${Host}/images/imageArticle/${firstPhoto}`}
-                            alt="ptoho articles"
+                            src={photoSrc}
+                            alt="photo_articles"
                             onLoad={() => setImageLoaded(true)}
                           />
                           {user?.name === "obezyankaa" ||
-                          user?.name === "Pokemon" ? (
+                          user?.name === "pokemon" ? (
                             <div className={styles.del_block}>
                               <button
                                 className={styles.buttom_del}
