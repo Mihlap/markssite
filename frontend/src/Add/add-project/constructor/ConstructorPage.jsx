@@ -12,7 +12,7 @@ import svg6 from "./svg/Group4641.svg";
 // const Host = process.env.REACT_APP_SERVER_HOST;
 
 export default function ConstructorPage({ handleClick }) {
-   const [showNotification, setShowNotification] = useState(false);
+  const [showNotification, setShowNotification] = useState(false);
   //  const [selectedVideo, setSelectedVideo] = useState(null);
 
   //  const handleVideoChange = (event) => {
@@ -36,9 +36,6 @@ export default function ConstructorPage({ handleClick }) {
   //     }
   //   }
   // };
-
-
- 
 
   useEffect(() => {
     if (showNotification) {

@@ -3,11 +3,13 @@ import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { useDispatch, useSelector } from "react-redux";
-import { getFetchFormArticle, setSelectedType } from "../store/Slice/articleSlice";
+import {
+  getFetchFormArticle,
+  setSelectedType,
+} from "../store/Slice/articleSlice";
 import styles from "./Publics.module.css";
 import { fetchToggleStateForButton2Async } from "../store/Slice/toggleSlice";
 import catPhoto from "../img/cat_954.jpeg";
-
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 
@@ -16,7 +18,6 @@ const videoSource = {
   medium: `${Host}/images/video/public_ipad.mp4`,
   large: `${Host}/images/video/public_full.mp4`,
 };
-
 
 export default function Publics() {
   const dispatch = useDispatch();
@@ -27,7 +28,6 @@ export default function Publics() {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [swiper, setSwiper] = useState(null);
   const [videoSrc, setVideoSrc] = useState(videoSource.large);
-
 
   const buttonChoose1 = [
     "Все",
@@ -49,37 +49,36 @@ export default function Publics() {
 
   useEffect(() => {
     const handleResize = () => {
-       const screenWidth = window.innerWidth;
+      const screenWidth = window.innerWidth;
       if (screenWidth >= 1025) {
         setVideoSrc(videoSource.large);
       } else if (screenWidth >= 768 && screenWidth < 1025) {
         setVideoSrc(videoSource.medium);
       } else {
         setVideoSrc(videoSource.small);
-        
       }
     };
 
     handleResize();
-    window.addEventListener("resize", handleResize); 
+    window.addEventListener("resize", handleResize);
 
     return () => {
-          window.removeEventListener("resize", handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
- useEffect(() => {
-        dispatch(getFetchFormArticle());
-        dispatch(fetchToggleStateForButton2Async());
- }, [dispatch]);
+  useEffect(() => {
+    dispatch(getFetchFormArticle());
+    dispatch(fetchToggleStateForButton2Async());
+  }, [dispatch]);
 
-   const handleButtonClick = (selected) => {
+  const handleButtonClick = (selected) => {
     if (selected === "Все") {
       setSelectArticle(selected);
       dispatch(setSelectedType(selected));
-      dispatch(getFetchFormArticle());  
+      dispatch(getFetchFormArticle());
     } else {
-       if (selected !== selectArticle) {
+      if (selected !== selectArticle) {
         setSelectArticle(selected);
         dispatch(setSelectedType(selected));
         dispatch(getFetchFormArticle());
@@ -87,10 +86,8 @@ export default function Publics() {
       }
     }
   };
-  
 
- 
-// console.log(articles, "+++++++++++++++++++++++++++++++++++++++++++++");
+  // console.log(articles, "+++++++++++++++++++++++++++++++++++++++++++++");
   return (
     <>
       <Helmet>
@@ -172,15 +169,15 @@ export default function Publics() {
                 const imagePathsForArticle = article.imageTitle
                   ? article.imageTitle.split(",").map((el) => el.trim())
                   : [];
-                
-                 const firstImageName = imagePathsForArticle[0] || null;
-                 const encodedFileName = firstImageName
-                   ? encodeURIComponent(firstImageName)
-                   : null;
-                 const defaultImagePath = catPhoto;
-                 const firstImagePath = encodedFileName
-                   ? `${Host}/images/imageArticle/${encodedFileName}`
-                   : defaultImagePath;
+
+                const firstImageName = imagePathsForArticle[0] || null;
+                const encodedFileName = firstImageName
+                  ? encodeURIComponent(firstImageName)
+                  : null;
+                const defaultImagePath = catPhoto;
+                const firstImagePath = encodedFileName
+                  ? `${Host}/images/imageArticle/${encodedFileName}`
+                  : defaultImagePath;
                 return (
                   <Link
                     key={article.id}

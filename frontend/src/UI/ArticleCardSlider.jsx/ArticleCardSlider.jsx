@@ -1,15 +1,13 @@
 import React, { useRef, useState, useEffect } from "react";
 import Slider from "react-slick";
-import catPhoto from "../../img/cat_954.jpeg"
+import catPhoto from "../../img/cat_954.jpeg";
 import ".././Company_Slider/Company_Slider.css";
-
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 
 const ArticleCardSlider = ({ slidesCard }) => {
   const sliderRef = useRef(null);
   const [activeButtonIndex, setActiveButtonIndex] = useState(0);
- 
 
   const imagePaths =
     slidesCard && slidesCard.length > 0
@@ -42,10 +40,8 @@ const ArticleCardSlider = ({ slidesCard }) => {
   const [lineWidth, setLineWidth] = useState(() => calculateLineWidth(0));
 
   useEffect(() => {
-     setLineWidth(calculateLineWidth(0));
+    setLineWidth(calculateLineWidth(0));
   }, [slidesCard]);
-
-  
 
   const handleButtonClick = (index) => {
     if (sliderRef.current) {
@@ -57,9 +53,9 @@ const ArticleCardSlider = ({ slidesCard }) => {
 
   const handleSwipe = (direction) => {
     if (direction === "left" && activeButtonIndex < slidesCard.length - 1) {
-      handleButtonClick(activeButtonIndex  + 1);
+      handleButtonClick(activeButtonIndex + 1);
     } else if (direction === "right" && activeButtonIndex > 0) {
-      handleButtonClick(activeButtonIndex  - 1);
+      handleButtonClick(activeButtonIndex - 1);
     }
   };
 
@@ -68,9 +64,7 @@ const ArticleCardSlider = ({ slidesCard }) => {
     setLineWidth(calculateLineWidth(newIndex));
   };
 
-
-    
-// console.log(slidesCard, '');
+  // console.log(slidesCard, '');
   return (
     <div className="company-slider-container">
       <Slider
