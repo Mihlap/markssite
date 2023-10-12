@@ -7,6 +7,8 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import SliderItemProject from "../../Header/Swiper-project/SliderItemProject";
 import "./SliderContainerProjectCard.css";
+import catPhoto from "../../img/cat_954.jpeg";
+
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 
@@ -35,7 +37,7 @@ const SliderContainerArticleCard = ({ articles }) => {
         loop={true}
         speed={300}
         className="swiper_container_project_ProjectCard"
-        style={{paddingTop: '1.5rem'}}
+        style={{ paddingTop: "1.5rem" }}
         onSlideChange={(swiper) => setCurrentIndex(swiper.realIndex)}
         onSwiper={(swiper) => {
           if (swiperRef.current === null) {
@@ -45,37 +47,41 @@ const SliderContainerArticleCard = ({ articles }) => {
       >
         <div className="swiper_wrapper_ProjectCard">
           {articles?.map((article) => {
-              if (article) {
+            if (!article) return null;
 
-                const imagePathsForArticle = article.imageTitle
-                .split(",").map((el) => el.trim());
-  
-                const encodedFileName = encodeURIComponent(imagePathsForArticle[0]);
-                const firstImagePath = `${Host}/images/imageArticle/${encodedFileName}`;
+            const imagePathsForArticle = article.imageTitle
+              ? article.imageTitle.split(",").map((el) => el.trim())
+              : [];
 
+            const firstImageName = imagePathsForArticle[0] || null;
+            const encodedFileName = firstImageName
+              ? encodeURIComponent(firstImageName)
+              : null;
+            const defaultImagePath = `${catPhoto}`;
+            const firstImagePath = encodedFileName
+              ? `${Host}/images/imageArticle/${encodedFileName}`
+              : defaultImagePath;
 
-              return (
-                <SwiperSlide key={article.id}>
-                  <Link key={article.id} to={`/publication/${article.id}`}>
+            return (
+              <SwiperSlide key={article.id}>
+                <Link key={article.id} to={`/publication/${article.id}`}>
                   <SliderItemProject
                     src={firstImagePath}
-                      alt={firstImagePath}
+                    alt={firstImagePath}
                     title={article.title}
-                    id={article.link}                      
+                    id={article.link}
                     countryCity={article.city}
                     monthYear={article.dataMonthYear}
                   />
                 </Link>
-                </SwiperSlide>
-              );
-            } else {
-              return null; 
-            }
-            })}
+              </SwiperSlide>
+            );
+          })}
         </div>
       </Swiper>
       <div className="swiper_pagination_ProjectCard">
-        {articles && articles?.map((_, index) => (
+        {articles &&
+          articles?.map((_, index) => (
             <button
               key={index}
               className={`swiper_pagination_bullet_ProjectCard ${
