@@ -20,6 +20,7 @@ import {
   shareToViber,
 } from "../Project/utils";
 import styles from "./ArticleCard.module.css";
+import catPhoto from "./img/cat_954.jpeg";
 
 import next from ".././icons/next.svg";
 import previous from ".././icons/previous.svg";
@@ -209,176 +210,216 @@ const ArticleCard = () => {
 
   return (
     <>
-    <Helmet>
-      <title>{article ? article.title : "Marks Group"}</title>
-      <meta
-        property="og:image"
-        content={
-          article ? `${Host}/images/imageArticle/${article.imageOpen}` : ""
-        }
-      />
-    </Helmet>
-    <div className={styles.main_article_card}>
-      {article && <ArticleCardSlider slidesCard={[article]} />}
-      <div className={styles.all_button_div}>
-        <AllArticlesButton />
-      </div>
-      <div className={styles.section_article__block__card}>
-        {article && (
-          <div className={styles.cart_article__block__card}>
-            <div className={styles.cart_article__container__block__card}>
-              <div className={styles.article_content__wrapper__block__card}>
-                <div className={styles.cart_article__content__block__card}>
+      <Helmet>
+        <title>{article ? article.title : "Marks Group"}</title>
+        <meta
+          property="og:image"
+          content={
+            article ? `${Host}/images/imageArticle/${article.imageOpen}` : ""
+          }
+        />
+      </Helmet>
+      <div className={styles.main_article_card}>
+        {article && <ArticleCardSlider slidesCard={[article]} />}
+        <div className={styles.all_button_div}>
+          <AllArticlesButton />
+        </div>
+        <div className={styles.section_article__block__card}>
+          {article && (
+            <div className={styles.cart_article__block__card}>
+              <div className={styles.cart_article__container__block__card}>
+                <div className={styles.article_content__wrapper__block__card}>
+                  <div className={styles.cart_article__content__block__card}>
+                    <div
+                      className={styles.cart_article_title__block__card}
+                      ref={refs.title}
+                    >
+                      {article.title}
+                    </div>
+                  </div>
+                </div>
+                <div
+                  className={styles.cart_article__author__block__card}
+                  ref={refs.author}
+                >
+                  {article.author}
+                </div>
+                <div
+                  className={styles.cart_article__address__block__card}
+                  ref={refs.city}
+                >
+                  {article.city}{" "}
                   <div
-                    className={styles.cart_article_title__block__card}
-                    ref={refs.title}
+                    className={styles.cart_article__address__svg__block__card}
                   >
-                    {article.title}
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="2"
+                      height="2"
+                      viewBox="0 0 2 2"
+                      fill="none"
+                    >
+                      <circle cx="1" cy="1" r="1" fill="#F6F6F6" />
+                    </svg>{" "}
+                  </div>
+                  {article.dataMonthYear}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+        {article && (
+          <div className={styles.container}>
+            <div className={styles.header_content}>
+              <div ref={refs.blockLeft} className={styles.header_content_left}>
+                <div className={styles.title_block}>
+                  <div className={styles.left_title}>
+                    {article.titleTextBlock}
                   </div>
                 </div>
-              </div>
-              <div
-                className={styles.cart_article__author__block__card}
-                ref={refs.author}
-              >
-                {article.author}
-              </div>
-              <div
-                className={styles.cart_article__address__block__card}
-                ref={refs.city}
-              >
-                {article.city}{" "}
-                <div className={styles.cart_article__address__svg__block__card}>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="2"
-                    height="2"
-                    viewBox="0 0 2 2"
-                    fill="none"
-                  >
-                    <circle cx="1" cy="1" r="1" fill="#F6F6F6" />
-                  </svg>{" "}
+                <div className={styles.title_text}>
+                  {article.descriptionArticle}
                 </div>
-                {article.dataMonthYear}
+                <div className={styles.result_container}></div>
               </div>
-            </div>
-          </div>
-        )}
-      </div>
-      {article && (
-        <div className={styles.container}>
-          <div className={styles.header_content}>
-            <div ref={refs.blockLeft} className={styles.header_content_left}>
-              <div className={styles.title_block}>
-                <div className={styles.left_title}>
-                  {article.titleTextBlock}
-                </div>
-              </div>
-              <div className={styles.title_text}>
-                {article.descriptionArticle}
-              </div>
-              <div className={styles.result_container}></div>
-            </div>
-            {article.imageAuthor && (
-              <div
-                ref={refs.blockRight}
-                className={styles.header_content_right}
-              >
-                <div className={styles.local_container_photo_author}>
-                  <img
-                    className={styles.container__imageAuthor_articleCard}
-                    src={`${Host}/images/imageArticle/${article.imageAuthor}`}
-                    alt={article.imageAuthor}
-                  />
-                  <div className={styles.author_name}>{article.author}</div>
-                  <div className={styles.text_author}>Автор статьи</div>
-                </div>
-              </div>
-            )}
-          </div>
-          <div className={styles.blockImg}>
-            <div className={styles.container}>
-              <div className={styles.item} ref={refs.leftImg1}>
-                <img
-                  className={styles.item_img}
-                  src={`${Host}/images/imageArticle/${article.imageOpen}`}
-                  alt={article.imageOpen}
-                />
-                <div className={styles.leftImg1_object_text1}>
-                  {article.textBlock}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className={styles.div_conteiner}>
-            {userSelectedBlocks?.map((innerBlocks, outerIndex) => (
-              <div key={outerIndex}>
-                {innerBlocks?.map((block, innerIndex) => (
-                  <ConstructorBlockRenderer key={innerIndex} block={block} />
-                ))}
-              </div>
-            ))}
-            <div className={styles.item_container_imageClose} ref={refs.imageClose}>
-                  <div className={styles.item}>
+              {article && article.imageAuthor ? (
+                <div
+                  ref={refs.blockRight}
+                  className={styles.header_content_right}
+                >
+                  <div className={styles.local_container_photo_author}>
                     <img
-                      className={styles.item_img_close}
-                      src={`${Host}/images/imageArticle/${article.imageClose}`}
-                      alt={article.imageClose}
+                      className={styles.container__imageAuthor_articleCard}
+                      src={
+                        article.imageAuthor
+                          ? `${Host}/images/imageArticle/${article.imageAuthor}`
+                          : `${catPhoto}`
+                      }
+                      alt={article.imageAuthor || "Default Alt Text"}
                     />
+                    <div className={styles.author_name}>{article.author}</div>
+                    <div className={styles.text_author}>Автор статьи</div>
                   </div>
                 </div>
-           </div>
-          <div className={styles.container_author_address_imageClose_share_article}>
-            <div className={styles.container_author_address_imageClose} ref={refs.address_imageClose}>
-            {/* <img
+              ) : null}
+            </div>
+            <div className={styles.blockImg}>
+              <div className={styles.container}>
+                <div className={styles.item} ref={refs.leftImg1}>
+                  <img
+                    className={styles.item_img}
+                    src={
+                      article && article.imageOpen
+                        ? `${Host}/images/imageArticle/${article.imageOpen}`
+                        : `${catPhoto}`
+                    }
+                    alt={
+                      article && article.imageOpen
+                        ? article.imageOpen
+                        : "Default Alt Text"
+                    }
+                  />
+                  <div className={styles.leftImg1_object_text1}>
+                    {article.textBlock}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className={styles.div_conteiner}>
+              {userSelectedBlocks?.map((innerBlocks, outerIndex) => (
+                <div key={outerIndex}>
+                  {innerBlocks?.map((block, innerIndex) => (
+                    <ConstructorBlockRenderer key={innerIndex} block={block} />
+                  ))}
+                </div>
+              ))}
+              <div
+                className={styles.item_container_imageClose}
+                ref={refs.imageClose}
+              >
+                <div className={styles.item}>
+                  <img
+                    className={styles.item_img_close}
+                    src={
+                      article && article.imageClose
+                        ? `${Host}/images/imageArticle/${article.imageClose}`
+                        : `${catPhoto}`
+                    }
+                    alt={
+                      article && article.imageClose
+                        ? article.imageClose
+                        : "Default Alt Text"
+                    }
+                  />
+                </div>
+              </div>
+            </div>
+            <div
+              className={
+                styles.container_author_address_imageClose_share_article
+              }
+            >
+              <div
+                className={styles.container_author_address_imageClose}
+                ref={refs.address_imageClose}
+              >
+                {/* <img
                   className={styles.item_img}
                   src={`${Host}/images/imageArticle/${article.imageClose}`}
                   alt={article.imageClose}
                 /> */}
-              <div className={styles.cart_article__author__block__card_imageClose}>
-                {article.author}
-              </div>
-              <div className={styles.cart_article__address__block__card_imageClose}>
-                {article.city}{" "}
                 <div
                   className={
-                    styles.cart_article__address__svg__block__card_imageClose
+                    styles.cart_article__author__block__card_imageClose
                   }
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="2"
-                    height="2"
-                    viewBox="0 0 2 2"
-                    fill="none"
-                  >
-                    <circle cx="1" cy="1" r="1" fill="#959DA6" />
-                  </svg>{" "}
+                  {article.author}
                 </div>
-                {article.dataMonthYear}
+                <div
+                  className={
+                    styles.cart_article__address__block__card_imageClose
+                  }
+                >
+                  {article.city}{" "}
+                  <div
+                    className={
+                      styles.cart_article__address__svg__block__card_imageClose
+                    }
+                  >
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="2"
+                      height="2"
+                      viewBox="0 0 2 2"
+                      fill="none"
+                    >
+                      <circle cx="1" cy="1" r="1" fill="#959DA6" />
+                    </svg>{" "}
+                  </div>
+                  {article.dataMonthYear}
+                </div>
               </div>
+              <div className={styles.share_article}>Поделиться статьей</div>
             </div>
-            <div className={styles.share_article}>Поделиться статьей</div>
-          </div>
-          <div id="articles" className={styles.social_links_articleCard}>
-            <button onClick={() => shareToVK(article, Host)}>
-              <span
-                className={styles.social_links_item}
-                style={{ marginRight: "21px", color: "#FF7F6A" }}
-              >
-                VK
-              </span>
-            </button>
-            <button onClick={() => shareToWhatsApp(article, Host)}>
-              <span
-                className={styles.social_links_item}
-                style={{ marginRight: "25px", color: "#FF7F6A" }}
-              >
-                WA
-              </span>
-            </button>
-            {/* <button onClick={() => shareToViber(article, Host)}>
+            <div id="articles" className={styles.social_links_articleCard}>
+              <button onClick={() => shareToVK(article, Host)}>
+                <span
+                  className={styles.social_links_item}
+                  style={{ marginRight: "21px", color: "#FF7F6A" }}
+                >
+                  VK
+                </span>
+              </button>
+              <button onClick={() => shareToWhatsApp(article, Host)}>
+                <span
+                  className={styles.social_links_item}
+                  style={{ marginRight: "25px", color: "#FF7F6A" }}
+                >
+                  WA
+                </span>
+              </button>
+              {/* <button onClick={() => shareToViber(article, Host)}>
               <span
                 className={styles.social_links_item}
                 style={{ marginRight: "22px", color: "#FF7F6A" }}
@@ -386,155 +427,164 @@ const ArticleCard = () => {
                 VB
               </span>
             </button> */}
-            <button onClick={() => shareToTelegram(article, Host)}>
-              <span
-                className={styles.social_links_item}
-                style={{ color: "#FF7F6A" }}
-              >
-                TG
-              </span>
-            </button>
+              <button onClick={() => shareToTelegram(article, Host)}>
+                <span
+                  className={styles.social_links_item}
+                  style={{ color: "#FF7F6A" }}
+                >
+                  TG
+                </span>
+              </button>
+            </div>
           </div>
+        )}
+        <div className={styles.button_article_articleCard}>
+          {previousArticle && (
+            <Link
+              className={styles.button_article_link_articleCard1}
+              to={`/publication/${previousArticle.id}`}
+            >
+              <div className={styles.previous_svg_articleCard}>
+                <img src={previous} alt={previous} />
+                <span className={styles.previous__span_articleCard}>
+                  {`${previousArticle.title}`}
+                </span>
+              </div>
+            </Link>
+          )}
+          {nextArticle && (
+            <Link
+              className={styles.button_article_link_articleCard2}
+              to={`/publication/${nextArticle.id}`}
+            >
+              <div className={styles.next_svg_articleCard}>
+                <span className={styles.next__span_articleCard}>
+                  {`${nextArticle.title}`}
+                </span>
+                <img src={next} alt={next} />
+              </div>
+            </Link>
+          )}
         </div>
-      )}
-      <div className={styles.button_article_articleCard}>
-        {previousArticle && (
-          <Link
-            className={styles.button_article_link_articleCard1}
-            to={`/publication/${previousArticle.id}`}
+        <div className={styles.article_name_text}>Ещё по теме</div>
+        <div className={styles.swiper_article_container}>
+          {/* <SwiperContainerProgect projects={projects} /> */}
+        </div>
+        <div className={styles.main_article_articleCard}>
+          <Swiper
+            className={styles.slider_card_container_article_articleCard}
+            id="slider_card_container_article"
+            ref={sliderArticleCardRef}
+            spaceBetween={30}
+            touch="true"
+            direction="horizontal"
+            loop={false}
+            breakpoints={{
+              2500: {
+                slidesPerView: 3.9,
+              },
+              2000: {
+                slidesPerView: 3.4,
+              },
+              1750: {
+                slidesPerView: 2.7,
+              },
+              1440: {
+                slidesPerView: 2.3,
+              },
+              1300: {
+                slidesPerView: 2.1,
+              },
+              1200: {
+                slidesPerView: 1.9,
+              },
+              1024: {
+                slidesPerView: 1.6,
+              },
+              900: {
+                slidesPerView: 1.4,
+              },
+              800: {
+                slidesPerView: 1.2,
+              },
+            }}
           >
-            <div className={styles.previous_svg_articleCard}>
-              <img src={previous} alt={previous} />
-              <span className={styles.previous__span_articleCard}>
-                {`${previousArticle.title}`}
-              </span>
-            </div>
-          </Link>
-        )}
-        {nextArticle && (
-          <Link
-            className={styles.button_article_link_articleCard2}
-            to={`/publication/${nextArticle.id}`}
-          >
-            <div className={styles.next_svg_articleCard}>
-              <span className={styles.next__span_articleCard}>
-                {`${nextArticle.title}`}
-              </span>
-              <img src={next} alt={next} />
-            </div>
-          </Link>
-        )}
-      </div>
-      <div className={styles.article_name_text}>Ещё по теме</div>
-      <div className={styles.swiper_article_container}>
-        {/* <SwiperContainerProgect projects={projects} /> */}
-      </div>
-      <div className={styles.main_article_articleCard}>
-        <Swiper
-          className={styles.slider_card_container_article_articleCard}
-          id="slider_card_container_article"
-          ref={sliderArticleCardRef}
-          spaceBetween={30}
-          touch="true"
-          direction="horizontal"
-          loop={false}
-          breakpoints={{
-            2500: {
-              slidesPerView: 3.9,
-            },
-            2000: {
-              slidesPerView: 3.4,
-            },
-            1750: {
-              slidesPerView: 2.7,
-            },
-            1440: {
-              slidesPerView: 2.3,
-            },
-            1300: {
-              slidesPerView: 2.1,
-            },
-            1200: {
-              slidesPerView: 1.9,
-            },
-            1024: {
-              slidesPerView: 1.6,
-            },
-            900: {
-              slidesPerView: 1.4,
-            },
-            800: {
-              slidesPerView: 1.2,
-            },
-          }}
-        >
-          {articles?.map((article,index) => {
-            if (!article) {
-              return null;
-            }
+            {articles?.map((article, index) => {
+              if (!article) {
+                return null;
+              }
 
-            const imagePathsForArticle = article.imageTitle
-              .split(",")
-              .map((el) => el.trim());
+              const imagePathsForArticle = article.imageTitle
+                ? article.imageTitle.split(",").map((el) => el.trim())
+                : [];
+              const firstImageName = imagePathsForArticle[0] || null;
 
-            const encodedFileName = encodeURIComponent(imagePathsForArticle[0]);
-            const firstImagePath = `${Host}/images/imageArticle/${encodedFileName}`;
+              const encodedFileName = firstImageName
+                ? encodeURIComponent(firstImageName)
+                : null;
+              const defaultImagePath = `${catPhoto}`; // Путь к запасному изображению.
+              const firstImagePath = encodedFileName
+                ? `${Host}/images/imageArticle/${encodedFileName}`
+                : defaultImagePath;
 
-            //  console.log(firstImagePath, "))))))))))))))))))))))))))");
-            return (
-              <SwiperSlide
-                key={article.id}
-                onScroll={handleScroll}
-                id="slider_container_item_card"
-                className={styles.slider_container_item_card_articleCard}
-                style={index % 2 === 1 ? { paddingTop: "10rem" } : {}}
-              >
-                <Link to={`/publication/${article.id}`} key={article.id}>
-                  <div
-                    className={styles.wrapper_container_item_card_articleCard}
-                  >
-                    <img
-                      className={styles.container__imageTitle_articleCard}
-                      src={firstImagePath}
-                      alt={firstImagePath}
-                    />
-                  </div>
-                  <div className={styles.title_articleCard}>
-                    <div className={styles.container__title_articleCard}>
-                      {article.title}
-                    </div>
-                  </div>
-                  <div className={styles.countryCity_monthYear_articleCard}>
-                    <div className={styles.container__countryCity_articleCard}>
-                      {article.city}{" "}
-                    </div>
+              return (
+                <SwiperSlide
+                  key={article.id}
+                  onScroll={handleScroll}
+                  id="slider_container_item_card"
+                  className={styles.slider_container_item_card_articleCard}
+                  style={index % 2 === 1 ? { paddingTop: "10rem" } : {}}
+                >
+                  <Link to={`/publication/${article.id}`} key={article.id}>
                     <div
-                      className={styles.cart_article__address__svg_articleCard}
+                      className={styles.wrapper_container_item_card_articleCard}
                     >
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="2"
-                        height="2"
-                        viewBox="0 0 2 2"
-                        fill="none"
+                      <img
+                        className={styles.container__imageTitle_articleCard}
+                        src={firstImagePath}
+                        alt={firstImagePath}
+                      />
+                    </div>
+                    <div className={styles.title_articleCard}>
+                      <div className={styles.container__title_articleCard}>
+                        {article.title}
+                      </div>
+                    </div>
+                    <div className={styles.countryCity_monthYear_articleCard}>
+                      <div
+                        className={styles.container__countryCity_articleCard}
                       >
-                        <circle cx="1" cy="1" r="1" fill="#959DA6" />
-                      </svg>{" "}
+                        {article.city}{" "}
+                      </div>
+                      <div
+                        className={
+                          styles.cart_article__address__svg_articleCard
+                        }
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="2"
+                          height="2"
+                          viewBox="0 0 2 2"
+                          fill="none"
+                        >
+                          <circle cx="1" cy="1" r="1" fill="#959DA6" />
+                        </svg>{" "}
+                      </div>
+                      <div className={styles.container__monthYear_articleCard}>
+                        {article.dataMonthYear}
+                      </div>
                     </div>
-                    <div className={styles.container__monthYear_articleCard}>
-                      {article.dataMonthYear}
-                    </div>
-                  </div>
-                </Link>
-              </SwiperSlide>
-            );
-          })}
-        </Swiper>
+                  </Link>
+                </SwiperSlide>
+              );
+            })}
+          </Swiper>
+        </div>
+        <div className={styles.article_container_articleCard_sliderMobile}>
+          <SliderContainerArticleCard articles={articles} />
+        </div>{" "}
       </div>
-      <div className={styles.article_container_articleCard_sliderMobile}>
-        <SliderContainerArticleCard articles={articles} />
-      </div>{" "}
-    </div>
     </>
   );
 };
