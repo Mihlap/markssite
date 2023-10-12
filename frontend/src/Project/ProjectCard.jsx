@@ -182,21 +182,15 @@ const ProjectCard = () => {
   }, [scrollingMode]);
 
   const currentIndex = projects.findIndex((p) => p.id === project.id);
-
   const previousIndex = (currentIndex - 1 + projects.length) % projects.length;
   const nextIndex = (currentIndex + 1) % projects.length;
-
   const previousProject = projects[previousIndex];
   const nextProject = projects[nextIndex];
-
-
-  //  console.log(project, "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww");
-
-
+  const firstValue = (projects[0]?.viewConstruction ?? "").split(",")[0];
   const userSelectedBlocks = project?.Constructors?.map((el) => el.data);
-
+  
+  //  console.log(project, "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww");
   // console.log(userSelectedBlocks, "<<--- userSelectedBlocks");
-
 
   return (
     <>
@@ -338,7 +332,8 @@ const ProjectCard = () => {
                     <div
                       className={`${styles.left_meta} ${styles.left_meta_castom}`}
                     >
-                      {project.viewConstruction}
+                      {firstValue}
+                      {/* {project.viewConstruction} */}
                     </div>
                   </div>
                 </div>
@@ -805,7 +800,7 @@ const ProjectCard = () => {
           <SliderContainerProjectCard projects={projects} />
         </div>
       </div>
-     </>
+    </>
   );
 };
 
