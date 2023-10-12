@@ -9,7 +9,6 @@ import SliderItemProject from "../../Header/Swiper-project/SliderItemProject";
 import "./SliderContainerProjectCard.css";
 import catPhoto from "../../img/cat_954.jpeg";
 
-
 const Host = process.env.REACT_APP_SERVER_HOST;
 
 const SliderContainerArticleCard = ({ articles }) => {
@@ -18,15 +17,12 @@ const SliderContainerArticleCard = ({ articles }) => {
 
   SwipeCore.use([Navigation, Pagination, Autoplay]);
 
-
   const handlePageClick = (index) => {
     setCurrentIndex(index);
     if (swiperRef.current && swiperRef.current.slideTo) {
       swiperRef.current.slideTo(index);
     }
   };
-
-
 
   return (
     <div className="swiper_container_ProjectCard">

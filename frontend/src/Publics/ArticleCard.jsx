@@ -20,7 +20,7 @@ import {
   shareToViber,
 } from "../Project/utils";
 import styles from "./ArticleCard.module.css";
-import catPhoto from "./img/cat_954.jpeg"
+import catPhoto from "./img/cat_954.jpeg";
 
 import next from ".././icons/next.svg";
 import previous from ".././icons/previous.svg";

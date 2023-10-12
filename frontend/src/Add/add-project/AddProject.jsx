@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import styles from "../style/style-card.module.scss";
 import FormAddProject from "./formAdd/FormAddProject";
-import cat from "../img/cat_954.jpeg"
+import cat from "../img/cat_954.jpeg";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteForm } from "../../store/Slice/projectSlice";
-import { fetchToggleStateAsync, updateToggleStateAsync } from "../../store/Slice/toggleSlice";
+import {
+  fetchToggleStateAsync,
+  updateToggleStateAsync,
+} from "../../store/Slice/toggleSlice";
 
 export default function AddProject({ project, user }) {
   const Host = process.env.REACT_APP_SERVER_HOST;
@@ -19,7 +22,7 @@ export default function AddProject({ project, user }) {
   const [copiedId, setCopiedId] = useState("");
   const [deleteModalState, setDeleteModalState] = useState({});
   const [modalBlockHeight, setModalBlockHeight] = useState("auto"); // Изначально высота будет автоматически рассчитываться
-  
+
   const updateModalBlockHeight = () => {
     const windowHeight = window.innerHeight;
     const maxHeight = Math.min(windowHeight - 100, 1900); // Примерное максимальное значение высоты
@@ -27,17 +30,17 @@ export default function AddProject({ project, user }) {
     setModalBlockHeight(`${maxHeight}px`);
   };
 
-   useEffect(() => {
-     dispatch(fetchToggleStateAsync());
-   }, [dispatch]);
-   
-   useEffect(() => {
-     updateModalBlockHeight();
-     window.addEventListener("resize", updateModalBlockHeight);
-     return () => {
-       window.removeEventListener("resize", updateModalBlockHeight);
-     };
-   }, []);
+  useEffect(() => {
+    dispatch(fetchToggleStateAsync());
+  }, [dispatch]);
+
+  useEffect(() => {
+    updateModalBlockHeight();
+    window.addEventListener("resize", updateModalBlockHeight);
+    return () => {
+      window.removeEventListener("resize", updateModalBlockHeight);
+    };
+  }, []);
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -85,7 +88,6 @@ export default function AddProject({ project, user }) {
     }
   }, [isCopied]);
 
-  
   const toggleActive = () => {
     dispatch(updateToggleStateAsync(!isActiveForButton1));
   };
@@ -169,16 +171,16 @@ export default function AddProject({ project, user }) {
           <div className={styles.card_components_admin__block_map}>
             {project &&
               project?.map((el) => {
-                   const firstPhoto =
-                     el && el.imageTitle ? el.imageTitle.split(", ")[0] : null;
-                   const defaultPhoto = cat;
+                const firstPhoto =
+                  el && el.imageTitle ? el.imageTitle.split(", ")[0] : null;
+                const defaultPhoto = cat;
 
-                   const photoSrc =
-                     firstPhoto &&
-                     firstPhoto !== "null" &&
-                     firstPhoto !== "undefined"
-                       ? `${Host}/images/imageAdd/${firstPhoto}`
-                       : defaultPhoto;
+                const photoSrc =
+                  firstPhoto &&
+                  firstPhoto !== "null" &&
+                  firstPhoto !== "undefined"
+                    ? `${Host}/images/imageAdd/${firstPhoto}`
+                    : defaultPhoto;
                 return (
                   <div
                     className={styles.section_project__block_cart}
@@ -190,7 +192,7 @@ export default function AddProject({ project, user }) {
                           className={styles.cart_project__imageContainer}
                           style={{ width: "100%", height: "100%" }}
                         >
-                            <img
+                          <img
                             className={styles.cart_project__img}
                             src={photoSrc}
                             alt="photo_project"
