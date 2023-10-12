@@ -134,7 +134,8 @@ export default function FormAddProject({ setIsModalOpen }) {
       selectCompetencies: selectedCompetencies
         .map((option) => option.label)
         .join(","),
-      viewConstruction: selectedViewConstruction.label,
+      viewConstruction: selectedViewConstruction.map((option) => option.label)
+        .join(","),
       radioValue: selectedRadio,
       photoAva: inputData.photoAva, // Добавлено поле "photoAva" в объект "formattedData"
       imageOpen: inputData.imageOpen,
@@ -588,7 +589,7 @@ export default function FormAddProject({ setIsModalOpen }) {
             <div className={`${styles.form__group} ${styles.field}`}>
               <Select
                 styles={customStyles}
-                // isMulti
+                isMulti
                 name="viewConstruction"
                 value={selectedViewConstruction}
                 onChange={setSelectedViewConstruction}
