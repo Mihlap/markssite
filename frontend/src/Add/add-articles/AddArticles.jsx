@@ -1,13 +1,18 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "../style/style-card.module.scss";
 import customScroll from "../style/CustomScrollbar.module.scss";
-import FormAddArticles from './formAdd/FormAddArticles';
-import { deleteFormArticle } from '../../store/Slice/articleSlice';
-import Loading from './loading/Loading';
-import { fetchToggleStateForButton2Async, updateToggleStateForButton2Async } from '../../store/Slice/toggleSlice';
+import FormAddArticles from "./formAdd/FormAddArticles";
+import { deleteFormArticle } from "../../store/Slice/articleSlice";
+import Loading from "./loading/Loading";
+import cat from "../img/cat_954.jpeg";
 
-export default function AddArticles({user, article}) {
+import {
+  fetchToggleStateForButton2Async,
+  updateToggleStateForButton2Async,
+} from "../../store/Slice/toggleSlice";
+
+export default function AddArticles({ user, article }) {
   const Host = process.env.REACT_APP_SERVER_HOST;
   const dispatch = useDispatch();
   const isActiveForButton2 = useSelector(
@@ -23,17 +28,17 @@ export default function AddArticles({user, article}) {
   const [copiedId, setCopiedId] = useState("");
   const [deleteModalState, setDeleteModalState] = useState({});
 
-const updateModalBlockHeight = () => {
-  const windowHeight = window.innerHeight;
-  const maxHeight = Math.min(windowHeight - 100, 1900); // Примерное максимальное значение высоты
+  const updateModalBlockHeight = () => {
+    const windowHeight = window.innerHeight;
+    const maxHeight = Math.min(windowHeight - 100, 1900); // Примерное максимальное значение высоты
 
-  setModalBlockHeight(`${maxHeight}px`);
+    setModalBlockHeight(`${maxHeight}px`);
   };
 
-    useEffect(() => {
-      dispatch(fetchToggleStateForButton2Async());
-    }, [dispatch]);
-  
+  useEffect(() => {
+    dispatch(fetchToggleStateForButton2Async());
+  }, [dispatch]);
+
   useEffect(() => {
     updateModalBlockHeight();
     window.addEventListener("resize", updateModalBlockHeight);
@@ -41,8 +46,6 @@ const updateModalBlockHeight = () => {
       window.removeEventListener("resize", updateModalBlockHeight);
     };
   }, []);
-
-
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -176,8 +179,17 @@ const updateModalBlockHeight = () => {
         <div className={styles.card_components_admin__section_map}>
           <div className={styles.card_components_admin__block_map}>
             {article &&
-              article.map((el) => {
-                const firstPhoto = el.imageTitle.split(", ")[0];
+              article?.map((el) => {
+                const firstPhoto =
+                  el && el.imageTitle ? el.imageTitle.split(", ")[0] : null;
+                const defaultPhoto = cat;
+
+                const photoSrc =
+                  firstPhoto &&
+                  firstPhoto !== "null" &&
+                  firstPhoto !== "undefined"
+                    ? `${Host}/images/imageArticle/${firstPhoto}`
+                    : defaultPhoto;
                 return (
                   <div
                     className={styles.section_project__block_cart}
@@ -192,12 +204,12 @@ const updateModalBlockHeight = () => {
                           {!isImageLoaded && <Loading />}
                           <img
                             className={styles.cart_project__img}
-                            src={`${Host}/images/imageArticle/${firstPhoto}`}
-                            alt="ptoho articles"
+                            src={photoSrc}
+                            alt="photo_articles"
                             onLoad={() => setImageLoaded(true)}
                           />
                           {user?.name === "obezyankaa" ||
-                          user?.name === "Pokemon" ? (
+                          user?.name === "pokemon" ? (
                             <div className={styles.del_block}>
                               <button
                                 className={styles.buttom_del}
