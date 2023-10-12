@@ -20,6 +20,7 @@ import {
   shareToWhatsApp,
   shareToViber,
 } from "./utils";
+import catPhoto from "../img/cat_954.jpeg";
 
 import next from ".././icons/next.svg";
 import previous from ".././icons/previous.svg";
@@ -188,7 +189,27 @@ const ProjectCard = () => {
   const nextProject = projects[nextIndex];
   const firstValue = (projects[0]?.viewConstruction ?? "").split(",")[0];
   const userSelectedBlocks = project?.Constructors?.map((el) => el.data);
-  
+  const imageOpenSource =
+    project && project.imageOpen
+      ? `${Host}/images/imageAdd/${project.imageOpen}`
+      : catPhoto;
+  const altTextOpen = (project && project.imageOpen) || "Default Alt Text";
+  const imageCloseSource =
+    project && project.imageClose
+      ? `${Host}/images/imageAdd/${project.imageClose}`
+      : catPhoto;
+  const altTextClose = (project && project.imageClose) || "Default Alt Text";
+
+  const imageSrc =
+    project?.imageProject || project?.imageTitle
+      ? `${Host}/images/imageAdd/${
+          project?.imageProject || project?.imageTitle
+        }`
+      : catPhoto;
+
+  const altText =
+    project?.imageProject || project?.imageTitle || "Default Alt Text";
+
   //  console.log(project, "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww");
   // console.log(userSelectedBlocks, "<<--- userSelectedBlocks");
 
@@ -448,8 +469,8 @@ const ProjectCard = () => {
                   <img
                     ref={refs.leftImg1}
                     className={styles.item_img}
-                    src={`${Host}/images/imageAdd/${project.imageOpen}`}
-                    alt={project.imageOpen}
+                    src={imageOpenSource}
+                    alt={altTextOpen}
                   />
                 </div>
                 <div
@@ -503,8 +524,8 @@ const ProjectCard = () => {
                   <img
                     ref={refs.leftImg4}
                     className={`${styles.item_img} ${styles.item_img_close}`}
-                    src={`${Host}/images/imageAdd/${project.imageClose}`}
-                    alt={project.imageClose}
+                    src={imageCloseSource}
+                    alt={altTextClose}
                   />
                 </div>
               </div>
@@ -637,20 +658,8 @@ const ProjectCard = () => {
                     >
                       <img
                         className={styles.container__imageTitle_projectCard}
-                        // style={{
-                        //   height: `${project.style?.split(",")[1]}rem`,
-                        //   width: `${project.style?.split(",")[0]}rem`,
-                        // }}
-                        src={`${Host}/images/imageAdd/${
-                          project.imageProject
-                            ? project.imageProject
-                            : project.imageTitle
-                        }`}
-                        alt={
-                          project.imageProject
-                            ? project.imageProject
-                            : project.imageTitle
-                        }
+                        src={imageSrc}
+                        alt={altText}
                       />
                     </div>
                     <div

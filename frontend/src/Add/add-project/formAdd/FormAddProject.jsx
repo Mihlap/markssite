@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import Select from "react-select";
-import {transliterate} from "transliteration";
+import { transliterate } from "transliteration";
 import styles from "./FormAddProject.module.scss";
 import { fetchProject } from "../../../store/Slice/projectSlice";
 import {
@@ -39,7 +39,6 @@ export default function FormAddProject({ setIsModalOpen }) {
   const [onenConstructor, setOpenConstructor] = useState(false);
   const [blocks, setBlocks] = useState([]);
   const [dynamicPreviews, setDynamicPreviews] = useState([]);
- 
 
   const [dynamicData, setDynamicData] = useState([]);
   const [inputData, setInputData] = useState({
@@ -134,7 +133,8 @@ export default function FormAddProject({ setIsModalOpen }) {
       selectCompetencies: selectedCompetencies
         .map((option) => option.label)
         .join(","),
-      viewConstruction: selectedViewConstruction.map((option) => option.label)
+      viewConstruction: selectedViewConstruction
+        .map((option) => option.label)
         .join(","),
       radioValue: selectedRadio,
       photoAva: inputData.photoAva, // Добавлено поле "photoAva" в объект "formattedData"
@@ -208,20 +208,20 @@ export default function FormAddProject({ setIsModalOpen }) {
         value: "",
       };
     }
- function generateUniqueName(originalName) {
-   const timestamp = Date.now();
-   const randomNum = Math.floor(Math.random() * 10000);
-   const fileExtension = originalName.split(".").pop();
+    function generateUniqueName(originalName) {
+      const timestamp = Date.now();
+      const randomNum = Math.floor(Math.random() * 10000);
+      const fileExtension = originalName.split(".").pop();
 
-   // Транслитерация части оригинального имени файла
-   const sliceOfOriginalName = transliterate(originalName.slice(0, 5));
+      // Транслитерация части оригинального имени файла
+      const sliceOfOriginalName = transliterate(originalName.slice(0, 5));
 
-   const newName = `file_${sliceOfOriginalName}_${timestamp}_${randomNum}.${fileExtension}`;
+      const newName = `file_${sliceOfOriginalName}_${timestamp}_${randomNum}.${fileExtension}`;
 
-  //  console.log("Generated name:", newName);
+      //  console.log("Generated name:", newName);
 
-   return newName;
- }
+      return newName;
+    }
 
     if (Array.isArray(value) && value[0] instanceof File) {
       const newFiles = value.map((originalFile) => {

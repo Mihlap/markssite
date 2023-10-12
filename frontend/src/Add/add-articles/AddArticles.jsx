@@ -1,15 +1,18 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "../style/style-card.module.scss";
 import customScroll from "../style/CustomScrollbar.module.scss";
-import FormAddArticles from './formAdd/FormAddArticles';
-import { deleteFormArticle } from '../../store/Slice/articleSlice';
-import Loading from './loading/Loading';
+import FormAddArticles from "./formAdd/FormAddArticles";
+import { deleteFormArticle } from "../../store/Slice/articleSlice";
+import Loading from "./loading/Loading";
 import cat from "../img/cat_954.jpeg";
 
-import { fetchToggleStateForButton2Async, updateToggleStateForButton2Async } from '../../store/Slice/toggleSlice';
+import {
+  fetchToggleStateForButton2Async,
+  updateToggleStateForButton2Async,
+} from "../../store/Slice/toggleSlice";
 
-export default function AddArticles({user, article}) {
+export default function AddArticles({ user, article }) {
   const Host = process.env.REACT_APP_SERVER_HOST;
   const dispatch = useDispatch();
   const isActiveForButton2 = useSelector(
@@ -25,17 +28,17 @@ export default function AddArticles({user, article}) {
   const [copiedId, setCopiedId] = useState("");
   const [deleteModalState, setDeleteModalState] = useState({});
 
-const updateModalBlockHeight = () => {
-  const windowHeight = window.innerHeight;
-  const maxHeight = Math.min(windowHeight - 100, 1900); // Примерное максимальное значение высоты
+  const updateModalBlockHeight = () => {
+    const windowHeight = window.innerHeight;
+    const maxHeight = Math.min(windowHeight - 100, 1900); // Примерное максимальное значение высоты
 
-  setModalBlockHeight(`${maxHeight}px`);
+    setModalBlockHeight(`${maxHeight}px`);
   };
 
-    useEffect(() => {
-      dispatch(fetchToggleStateForButton2Async());
-    }, [dispatch]);
-  
+  useEffect(() => {
+    dispatch(fetchToggleStateForButton2Async());
+  }, [dispatch]);
+
   useEffect(() => {
     updateModalBlockHeight();
     window.addEventListener("resize", updateModalBlockHeight);
@@ -43,8 +46,6 @@ const updateModalBlockHeight = () => {
       window.removeEventListener("resize", updateModalBlockHeight);
     };
   }, []);
-
-
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
