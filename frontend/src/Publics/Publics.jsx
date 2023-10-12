@@ -164,7 +164,10 @@ export default function Publics() {
         <div className={styles.section_article__block}>
           {articles &&
             articles?.map((article) => {
-              const firstPhoto = article.imageTitle.split(", ")[0];
+               const firstPhoto =
+                 article && article.imageTitle
+                   ? article.imageTitle.split(", ")[0]
+                   : null;
               if (!article) {
                 return null;
               }
