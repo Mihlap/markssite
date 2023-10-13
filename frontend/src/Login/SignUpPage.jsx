@@ -52,7 +52,7 @@ export default function SignUpPage() {
       <div className={styles.login_block}>
         <div className={styles.login_block__title}>MARKS GROUP</div>
         <div className={styles.login_block__subtitle}>
-          <strong>Регистрация</strong> в административную панель
+          <strong>Регистрация</strong> в&nbsp;административную панель
         </div>
         <form className={styles.login_form} onSubmit={sumbitHandler}>
           <div className={`${styles.form__group} ${styles.field}`}>

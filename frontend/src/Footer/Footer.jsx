@@ -25,14 +25,14 @@ const Footer = () => {
             className={styles.tel}
             style={{ fontVariantNumeric: "lining-nums" }}
           >
-            +7(495) 120-12-26
+            +7(495)&nbsp;120-12-26
           </Link>
           <span
             // to={"https://yandex.ru/maps/-/CCUgmThXKA"}
             className={styles.address}
             onClick={mapHendler}
           >
-            Москва З-я ул. Ямского Поля, дом 20 строение 1 офис 704
+            Москва З-я&nbsp;ул.&nbsp;Ямского Поля, дом&nbsp;20 строение 1 офис&nbsp;704
           </span>
         </div>
         {/* правая сторона  */}
@@ -82,7 +82,7 @@ const Footer = () => {
             <Link className={styles.job_link} to="/">
               Документы
             </Link> */}
-            <div className={styles.job_link}>© MARKSLAB</div>
+            <div className={styles.job_link}>©&nbsp;MARKSLAB</div>
           </div>
         </div>
       </div>
