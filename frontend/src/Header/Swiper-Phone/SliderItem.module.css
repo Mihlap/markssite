@@ -41,10 +41,11 @@
 .slider_subject {
     font-style: normal;
     font-weight: var(--fw-700);
-    font-size: 16px;
-    line-height: 24px;
+    font-size: 1rem;
+    line-height: 1.5rem;
     font-feature-settings: 'pnum' on, 'lnum' on;
     color: var(--black-1D2E43);
+    word-wrap: break-word;
 
     @media screen and (max-width: 520px) {
         & {
@@ -53,6 +54,65 @@
         }
     }
 }
+
+.slider_city_dataMonthYear_wrapper {
+    display: flex;
+    padding-top: 0.5rem;
+    word-wrap: break-word;
+
+    @media screen and (max-width: 520px) {
+        & {
+            font-size: 14px;
+            line-height: 20px;
+        }
+    }
+   }
+  
+  .slider_text_city {
+    font-family: var(--font-raleway);
+    font-style: normal;
+    font-weight: var(--fw-400);
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+
+    @media screen and (max-width: 520px) {
+        & {
+            font-size: 14px;
+            line-height: 20px;
+        }
+    }
+    
+  }
+  
+  .slider_text_svg {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+
+    @media screen and (max-width: 520px) {
+        & {
+            font-size: 14px;
+            line-height: 20px;
+        }
+    }
+   }
+  
+  .slider_text_dataMonthYear {
+    font-family: var(--font-raleway);
+    font-style: normal;
+    font-weight: var(--fw-400);
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+
+    @media screen and (max-width: 520px) {
+        & {
+            font-size: 14px;
+            line-height: 20px;
+        }
+    }
+   }
 
 .slider_text {
     font-style: normal;
