@@ -127,7 +127,7 @@ const [isMenuActive, setMenuActive] = useState(false);
                   className={styles.contact_info_phone}
                   style={{ fontVariantNumeric: "lining-nums" }}
                 >
-                  +7(495) 120-12-26
+                  +7(495)&nbsp;120-12-26
                 </Link>
               </div>
             </div>

@@ -99,7 +99,7 @@ const CounterCompanyMobile2 = () => {
               <p className={styles.number}>{countScient}</p>
             </div>
             <span className={styles.span_underSlider_text_right}>
-            Положительных заключений государственной экспертизы в статусе генерального проектировщика
+            Положительных заключений государственной экспертизы в&nbsp;статусе генерального проектировщика
             </span>
           </div>
         </div>
@@ -127,7 +127,7 @@ const CounterCompanyMobile2 = () => {
               {/* <p className={styles.number_metr}>м<sup className={styles.small_sup}>2</sup></p> */}
             </div>
             <span className={styles.span_underSlider_text_right}>
-            Объёма проектирования с применением цифровых технологий
+            Объёма проектирования с&nbsp;применением цифровых технологий
             </span>
           </div>
           </div>
