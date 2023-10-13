@@ -827,7 +827,7 @@ export default function FormAddProject({ setIsModalOpen }) {
               htmlFor="titleTextBlock"
               className={styles.form_container__heading_block_label}
             >
-              Описание проекта
+              Заголовок текстового блока
             </label>
             <div className={styles.form_container__heading_block_input_length}>
               {`${inputData.titleTextBlock.length}/56`}
