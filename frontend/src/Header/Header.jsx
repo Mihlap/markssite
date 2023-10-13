@@ -284,15 +284,15 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
             onMouseLeave={handleMouseLeave}
             className={styles.desctop_title}
           >
-            Награды и публикации
+            Награды и&nbsp;публикации
           </h1>
           <div
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             className={styles.desctop_test}
           >
-            Наша компания участвует в многочисленных выставках, конференциях
-            <br /> и конкурсах. Предлагаем ознакомиться с некоторыми докладами
+            Наша компания участвует в&nbsp;многочисленных выставках, конференциях
+            <br /> и&nbsp;конкурсах. Предлагаем ознакомиться с&nbsp;некоторыми докладами
           </div>
         </div>
         {/* <div className={styles.header_block}>

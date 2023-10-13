@@ -51,14 +51,14 @@ const NotFound = () => {
 
         <div className={styles.error_text_block}>
           <div ref={errorTitleRef} className={styles.error_title}>
-            К сожалению страница не найдена
+            К&nbsp;сожалению страница не&nbsp;найдена
           </div>
           <div className={styles.error_text}>
-            Возможно вы неправильно набрали URL-адрес или страница была удалена
+            Возможно вы&nbsp;неправильно набрали URL-адрес или&nbsp;страница была удалена
           </div>
         </div>
         <Link className={styles.error_link} to="/">
-          Вернуться на главную
+          Вернуться на&nbsp;главную
         </Link>
       </div>
     </section>

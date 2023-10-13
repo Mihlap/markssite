@@ -39,6 +39,9 @@
   line-height: 4rem;
   color: var(--white-F6F6F6);
   padding-top: 0.5rem;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
 }
 
 .cart_project__widget__block__card {
@@ -115,7 +118,9 @@
   font-size: 2rem;
   line-height: 2.5rem;
   color: var(--black-1D2E43);
+  overflow-wrap: break-word;
   word-wrap: break-word;
+  word-break: break-word;
 }
 
 .left_meta {
@@ -151,13 +156,17 @@
   color: var(--black-1D2E43);
   padding-top: 1rem;
   padding-bottom: 2rem;
+  overflow-wrap: break-word;
   word-wrap: break-word;
+  word-break: break-word;
 }
 
 .result_container {
   display: flex;
   width: 100%;
   gap: 4.17vw;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
   word-break: break-word;
 }
 
@@ -181,6 +190,7 @@
   color: var(--gray-959DA6);
   overflow-wrap: break-word;
   word-wrap: break-word;
+  word-break: break-word;
   white-space: normal;
 }
 
@@ -224,8 +234,9 @@
   line-height: 1.25rem;
   font-feature-settings: 'pnum' on, 'lnum' on;
   color: var(--gray-959DA6);
-  word-wrap: break-word;
   overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
   padding-bottom: 0.5rem;
 }
 
@@ -244,12 +255,12 @@
 }
 
 .item_img {
- object-fit: cover;
+  object-fit: cover;
   width: 100%;
   height: auto;
   max-height: 50vw;
   border-radius: 1.11vw;
-  
+
 }
 
 .item_img_latest {
@@ -258,7 +269,7 @@
 }
 
 .item_img_close {
-  border-radius:1.11vw 1.11vw 0vw 0vw;
+  border-radius: 1.11vw 1.11vw 0vw 0vw;
   object-fit: cover;
 }
 
@@ -293,7 +304,10 @@
   line-height: 1.5rem;
   color: var(--black-1D2E43);
   word-wrap: break-word;
-  overflow-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: anywhere; 
+  white-space: pre-line;
+  hyphens: auto;
 }
 
 .quote_block,
@@ -307,7 +321,9 @@
   flex-direction: column;
   gap: 1.5rem;
   padding: 0rem 0rem 0rem 0rem;
-  word-wrap: break-word;  
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
   margin: 0 auto;
 }
 
@@ -371,8 +387,9 @@
   line-height: 1.25rem;
   padding: 1.8rem 1.69rem;
   align-items: center;
-  word-wrap: break-word;
   overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
   background: var(--light-light-gray-EBECEE);
   width: 78vw;
 
@@ -391,8 +408,9 @@
   line-height: 1.25rem;
   padding: 1.8rem 1.69rem;
   align-items: center;
-  word-wrap: break-word;
   overflow-wrap: break-word;
+  word-wrap: break-word;
+  word-break: break-word;
   background: var(--salmon-light-FFBFB5);
   width: 22vw;
 }
@@ -556,14 +574,17 @@
   width: 100%;
   padding-top: 1rem;
 }
-.container_wrapper_title_city_data_block_projectCard{
+
+.container_wrapper_title_city_data_block_projectCard {
   width: 100%;
 }
 
 .container__title_projectCard {
   display: flex;
   flex-wrap: wrap;
+  overflow-wrap: break-word;
   word-wrap: break-word;
+  word-break: break-word;
   color: var(--black-1D2E43);
   font-family: var(--font-raleway);
   font-size: 0.875rem;
@@ -662,12 +683,12 @@
     gap: 4.86vw;
   }
 
-.quote_container,
-.description_object_container {
-  display: flex;
-  padding-left: 1.75rem;
-  padding-right: 4.65vw;
-}
+  .quote_container,
+  .description_object_container {
+    display: flex;
+    padding-left: 1.75rem;
+    padding-right: 4.65vw;
+  }
 
 
 }
@@ -677,9 +698,9 @@
 @media screen and (max-width: 1024px) {
 
   .div_conteiner {
-      width: 100%;
-      padding: 1rem 1rem;
-    }
+    width: 100%;
+    padding: 1rem 1rem;
+  }
 
   .header_content {
     display: flex;
@@ -800,8 +821,8 @@
   .quote_container,
   .description_object_container {
     display: flex;
-  padding-right: 0;
-  padding-left: 0;
+    padding-right: 0;
+    padding-left: 0;
 
 
   }
@@ -1062,13 +1083,14 @@
   .blockImg {
     padding-right: 0rem;
     padding-left: 0rem;
-   
+
   }
 
 
   .item:not(:last-child) {
     padding-bottom: 2.5rem;
   }
+
   .item {
     padding-left: 1rem;
     padding-right: 1rem;
@@ -1078,17 +1100,18 @@
     width: 100%;
     height: 100%;
     max-height: 100%;
-   }
+  }
 
   .item_img_latest {
     border-radius: 1.11vw 1.11vw 0vw 0vw;
     padding-left: 1rem;
   }
+
   .item_img_close {
     border-radius: 0vw 0vw 0vw 0vw;
     padding-right: 0rem;
     padding: 0rem;
-   }
+  }
 
   .item_photo_together {
     gap: 2.08vw;
@@ -1097,7 +1120,7 @@
   .quote_container,
   .description_object_container {
     display: block;
-   width: 100%;
+    width: 100%;
   }
 
   .description_object_title {
@@ -1194,7 +1217,7 @@
 
   .main_project_projectCard {
     display: none;
-   
+
   }
 
   .project_container_projectCard_sliderMobile {

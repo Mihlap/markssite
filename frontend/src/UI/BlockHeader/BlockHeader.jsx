@@ -114,11 +114,10 @@ const BlockHeader = () => {
           {/* <img className="cub_img" src={cub} alt="logo"/> */}
           <div className="text">
             <Link className="text_wrapper_accordion" to={`/project?viewConstruction=Концепция`}>
-            <span className="text_title_span">Архитектура и концепции</span>
+            <span className="text_title_span">Архитектура и&nbsp;концепции</span>
             <div className="text_span">
               <span className="header_slider_span">
-                Разработка концепции, архитектурное проектирование - от идеи до
-                ввода объекта в эксплуатацию
+                Разработка концепции, архитектурное проектирование -&nbsp;от&nbsp;идеи до&nbsp;ввода объекта в&nbsp;эксплуатацию
               </span>
              <div className="icon_slider_svg">
                 <img src={mySvg} alt="My SVG" />
@@ -131,7 +130,7 @@ const BlockHeader = () => {
             </span>
             <div className="text_span">
               <span className="header_slider_span">
-                Подготовка проектной и рабочей документации на базе
+                Подготовка проектной и&nbsp;рабочей документации на&nbsp;базе
                 архитектурного/инженерного решения
               </span>
               <div className="icon_slider_svg">
@@ -143,8 +142,7 @@ const BlockHeader = () => {
             <span className="text_title_span">Дизайн-проекты</span>
             <div className="text_span">
               <span className="header_slider_span">
-                Для жилых и общественных помещений. Авторский надзор, ЗD -
-                моделирование, VR - визуализация
+                Для жилых и&nbsp;общественных помещений. Авторский надзор, ЗD&nbsp;-&nbsp;моделирование, VR&nbsp;-&nbsp;визуализация
               </span>
               <div className="icon_slider_svg">
                 <img src={mySvg} alt="My SVG" />
@@ -153,7 +151,7 @@ const BlockHeader = () => {
             </Link>
             <Link className="text_wrapper_accordion" to={`/project?viewConstruction=Документация РП П`}>
             <span className="text_title_span">
-              Проектная и рабочая документация
+              Проектная и&nbsp;рабочая документация
             </span>
             <div className="text_span">
               <span className="header_slider_span">
@@ -174,7 +172,7 @@ const BlockHeader = () => {
             <span className="text_title_span">Инженерное проектирование</span>
             <div className="text_span">
               <span className="header_slider_span">
-                Разработка внутренних и наружных инженерных коммуникаций
+                Разработка внутренних и&nbsp;наружных инженерных коммуникаций
               </span>
               <div className="icon_slider_svg">
                 <img src={mySvg} alt="My SVG" />
@@ -187,7 +185,7 @@ const BlockHeader = () => {
             </span>
             <div className="text_span">
               <span className="header_slider_span">
-                Проекты освоения подземного пространства для уникальных особо
+                Проекты освоения подземного пространства для&nbsp;уникальных особо
                 сложных объектов строительства
               </span>
               <div className="icon_slider_svg">
@@ -201,7 +199,7 @@ const BlockHeader = () => {
             </span>
             <div className="text_span">
               <span className="header_slider_span">
-                Проектирование транспортных объектов и инфраструктуры
+                Проектирование транспортных объектов и&nbsp;инфраструктуры
               </span>
               <div className="icon_slider_svg">
                 <img src={mySvg} alt="My SVG" />
@@ -212,7 +210,7 @@ const BlockHeader = () => {
             <span className="text_title_span">Конструктивные решения</span>
             <div className="text_span">
               <span className="header_slider_span">
-                Разработка полного комплекса документации на всех стадиях
+                Разработка полного комплекса документации на&nbsp;всех стадиях
                 жизненного цикла проекта
               </span>
               <div className="icon_slider_svg">
@@ -229,7 +227,7 @@ const BlockHeader = () => {
             <span className="text_title_span">Научно-техническое сопровождение</span>
             <div className="text_span">
               <span className="header_slider_span">
-                Расчетное сопровождение проектирования и строительства любой
+                Расчетное сопровождение проектирования и&nbsp;строительства любой
                 сложности
               </span>
                 <div className="icon_slider_svg">
@@ -246,8 +244,7 @@ const BlockHeader = () => {
             <span className="text_title_span">BIM моделирование</span>
             <div className="text_span">
               <span className="header_slider_span">
-                Разработка программного обеспечения, инфраструктуры и методик в
-                цифровой среде для инженерного проектирования, девелопмента и
+                Разработка программного обеспечения, инфраструктуры и&nbsp;методик в&nbsp;цифровой среде для&nbsp;инженерного проектирования, девелопмента и
                 строительства
               </span>
               <div className="icon_slider_svg">
