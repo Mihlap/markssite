@@ -150,7 +150,7 @@ const CompanyFormContacts = () => {
       <div className={styles.form_left_main}>
         <div className={styles.title}>На связи</div>
         <span className={styles.span_text}>
-        Наши специалисты ответят на все интересующие Вас вопросы
+        Наши специалисты ответят на&nbsp;все интересующие Вас вопросы
         </span>
         <form className={styles.form_form_wrapper} onSubmit={handleSubmit}>
           <div className={`${styles.group} some-unique-class`}>
@@ -234,7 +234,7 @@ const CompanyFormContacts = () => {
                 checked={isConsentGiven}
                 onChange={(e) => setIsConsentGiven(e.target.checked)}
               />
-              Подтвердите согласие на обработку
+              Подтвердите согласие на&nbsp;обработку
               <a href="./Information">&nbsp;персональных данных</a>
             </label>
           </div>
