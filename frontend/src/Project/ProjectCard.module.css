@@ -136,6 +136,8 @@
 .left_meta_castom {
   display: inline-flex;
   flex-wrap: wrap;
+  position: relative;
+  bottom: 5px;
   margin-left: 10px;
 }
 
@@ -308,6 +310,17 @@
   word-wrap: break-word;  
   margin: 0 auto;
 }
+
+
+.blockHeadingTitle_heading {
+  color: var(--black-1D2E43);
+  font-family: var(--font-unbounded);
+  font-size: 24px;
+  font-style: normal;
+  font-weight: var(--fw-300);
+  line-height: 32px;
+}
+
 
 .quote_text {
   font-weight: var(--fw-400);
@@ -486,9 +499,7 @@
 
 .slider_container_item_card_projectCard {
   display: flex;
-  /* min-width: 24rem; */
   width: 100%;
-  /* min-height: 24rem; */
   height: 100%;
 }
 
@@ -535,24 +546,18 @@
   width: 100%;
   height: 100%;
   min-height: 24rem;
-  object-fit: cover;
+  /* object-fit: cover; */
   object-position: center;
   transition: transform 0.5s ease-in-out;
-}
-
-.blockHeadingTitle_heading {
-  color: var(--black-1D2E43);
-  font-family: var(--font-unbounded);
-  font-size: 24px;
-  font-style: normal;
-  font-weight: 300;
-  line-height: 32px;
 }
 
 .wrapper_container_title_selectCompetencies_projectCard {
   display: flex;
   width: 100%;
   padding-top: 1rem;
+}
+.container_wrapper_title_city_data_block_projectCard{
+  width: 100%;
 }
 
 .container__title_projectCard {
@@ -605,6 +610,7 @@
 .wrapper_container__selectCompetencies_projectCard {
   display: flex;
   justify-content: flex-end;
+  width: 100%;
 }
 
 .container__selectCompetencies_projectCard {
@@ -718,29 +724,6 @@
     word-wrap: break-word;
     overflow-wrap: break-word;
     hyphens: auto;
-  }
-
-  .left_meta {
-    font-family: var(--font-raleway);
-    font-style: normal;
-    font-weight: var(--fw-400);
-    font-size: 0.75rem;
-    line-height: 1rem;
-    color: var(--gray-959DA6);
-    border: 1px solid var(--gray-959DA6);
-    border-radius: 2.125rem;
-    padding: 0.25rem 1rem;
-    margin-left: 0.5rem;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .left_meta_castom {
-    display: inline-flex;
-    flex-wrap: wrap;
-    position: relative;
-    bottom: 5px;
-    margin-left: 10px;
   }
 
 
@@ -1011,30 +994,6 @@
     color: var(--black-1D2E43);
     word-wrap: break-word;
   }
-
-  .left_meta {
-    font-family: var(--font-raleway);
-    font-style: normal;
-    font-weight: var(--fw-400);
-    font-size: 0.75rem;
-    line-height: 1rem;
-    color: var(--gray-959DA6);
-    border: 1px solid var(--gray-959DA6);
-    border-radius: 2.125rem;
-    padding: 0.25rem 1rem;
-    margin-left: 0.5rem;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .left_meta_castom {
-    display: inline-flex;
-    flex-wrap: wrap;
-    position: relative;
-    bottom: 5px;
-    margin-left: 10px;
-  }
-
 
   .title_text_mobile {
     display: block;
