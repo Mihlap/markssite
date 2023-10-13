@@ -380,55 +380,42 @@
     padding: 7px 0;
     background: transparent;
     transition: border-color 0.2s;
+    position: relative;
+    caret-color: var(--salmon-FF7F6A);
+}
 
-    &::placeholder {
-        color: transparent;
-    }
+.form__field:focus {
+    border-color: var(--salmon-FF7F6A);
+    /* Замените var(--your-focus-color) на цвет, который вы хотите использовать при фокусе */
+}
 
-    &:placeholder-shown~.form__label {
-        font-size: 1rem;
-        cursor: text;
-        top: 20px;
-        font-weight: var(--fw-400);
-    }
+.form__field:focus::caret {
+    color: var(--your-caret-color);
+    /* Замените var(--your-caret-color) на желаемый цвет */
+}
+
+.form__field::placeholder {
+    color: transparent;
+}
+
+.form__field:not(:placeholder-shown)~.form__label {
+    font-size: 0.8rem;
+    /* Уменьшите размер метки */
+    cursor: text;
+    top: 5px;
+    /* Уменьшите отступ сверху */
+    font-weight: var(--fw-400);
+    color: var(--light-gray-C0C5CB);
 }
 
 .form__label {
     position: absolute;
-    top: 0;
+    top: 20px;
     display: block;
     transition: 0.2s;
     font-size: 1rem;
     color: var(--gray-959DA6);
 }
-
-.form__field:focus {
-    ~.form__label {
-        position: absolute;
-        top: 0;
-        display: block;
-        transition: 0.2s;
-        font-size: 0.70rem;
-        color: var(--gray-959DA6);
-        font-weight: 400;
-    }
-
-    padding-bottom: 6px;
-    font-weight: 400;
-    border-width: 3px;
-    border-image: linear-gradient(to right, var(--salmon-FF7F6A), var(--salmon-FF7F6A)) 1 / 0 0 1px 0 stretch;
-    border-image-slice: 2;
-}
-
-/* reset input */
-.form__field {
-
-    &:required,
-    &:invalid {
-        box-shadow: none;
-    }
-}
-
 
 
 .slider_container {
