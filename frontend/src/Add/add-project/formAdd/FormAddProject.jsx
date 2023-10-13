@@ -479,7 +479,7 @@ export default function FormAddProject({ setIsModalOpen }) {
   };
 
   // console.log(inputData, "<<--inputData PROJECT");
-  console.log(dynamicData, "<<--dynamicData");
+  // console.log(dynamicData, "<<--dynamicData");
   return (
     <div className={styles.form_container}>
       <div className={styles.form_container__title}>Новый проект</div>
@@ -621,41 +621,62 @@ export default function FormAddProject({ setIsModalOpen }) {
             </div>
           </div>
           {/* блок для выбора оринтации  */}
-          <div className={styles.photo_orientation_selector}>
+          <div
+            className={`${styles.photo_orientation_selector} ${styles.flex_block_gap}`}
+          >
             <div className={styles.form_container__checkbox_block}>
               <div>
                 Загрузите фото и выберете ориентацию
                 <span> для отображения на странице «Проекты»</span>
               </div>
             </div>
-            <label className={styles.slider_container__customFileUpload}>
-              <input
-                type="file"
-                name="photoAva"
-                onChange={(event) =>
-                  changeHandler(
-                    event,
-                    inputData,
-                    setInputData,
-                    setPreviewPhotos,
-                    setIsDropPhotoVisible,
-                    setPreviewPhotoAva,
-                    setIsPhotoAvaVisible,
-                    setPreviewPhotoOpen,
-                    setIsPhotoOpenVisible,
-                    setPreviewPhotoClose,
-                    setIsPhotoCloseVisible
-                  )
-                }
-                style={{ display: isPhotoAvaVisible ? "block" : "none" }}
-              />
-              <div className={styles.slider_container__uploadIcon}>
-                <img src={icon} alt="icon" />
-              </div>
-              <div className={styles.slider_container__uploadText}>
-                Загрузить изображения
-              </div>
-            </label>
+            <div
+              style={{ display: isPhotoAvaVisible ? "inline-block" : "none" }}
+            >
+              <label className={styles.slider_container__customFileUpload}>
+                <input
+                  type="file"
+                  name="photoAva"
+                  onChange={(event) =>
+                    changeHandler(
+                      event,
+                      inputData,
+                      setInputData,
+                      setPreviewPhotos,
+                      setIsDropPhotoVisible,
+                      setPreviewPhotoAva,
+                      setIsPhotoAvaVisible,
+                      setPreviewPhotoOpen,
+                      setIsPhotoOpenVisible,
+                      setPreviewPhotoClose,
+                      setIsPhotoCloseVisible
+                    )
+                  }
+                />
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g id="Frame 4684">
+                    <path
+                      id="Vector"
+                      d="M11.8349 7.54949L5.64223 7.54949C5.46569 7.54642 5.2903 7.57854 5.1263 7.64398C4.96231 7.70942 4.81299 7.80686 4.68705 7.93062C4.56112 8.05439 4.4611 8.20199 4.39282 8.36483C4.32454 8.52766 4.28938 8.70246 4.28938 8.87903C4.28937 9.0556 4.32454 9.2304 4.39282 9.39323C4.4611 9.55607 4.56112 9.70367 4.68705 9.82744C4.81299 9.9512 4.96231 10.0486 5.1263 10.1141C5.2903 10.1795 5.46569 10.2116 5.64223 10.2086L11.754 10.1277C12.4512 10.1156 13.1158 9.83011 13.6046 9.33275C14.0934 8.8354 14.3673 8.16596 14.3673 7.46862C14.3673 6.77129 14.0934 6.10185 13.6046 5.60449C13.1158 5.10713 12.4512 4.82165 11.754 4.80953L5.64223 4.88946C4.58413 4.88946 3.56936 5.30979 2.82117 6.05798C2.07298 6.80617 1.65265 7.82093 1.65265 8.87903C1.65265 9.93713 2.07298 10.9519 2.82117 11.7001C3.56936 12.4483 4.58413 12.8686 5.64223 12.8686L11.5189 12.8752"
+                      stroke="currentColor"
+                      stroke-width="0.8"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </g>
+                </svg>
+
+                <div className={styles.slider_container__uploadText}>
+                  Загрузить изображения
+                </div>
+              </label>
+            </div>
             <div>
               {previewPhotoAva?.map((preview, index) => (
                 <div
@@ -753,44 +774,65 @@ export default function FormAddProject({ setIsModalOpen }) {
             </div>
           </div>
           {/* блок где загружаются 4 картинки, они отображаются в шапке слайдера  */}
-          <div className={styles.image_four}>
-            <div className={styles.slider_container}>
+          <div className={`${styles.image_four} ${styles.flex_block_gap}`}>
+            <div
+              className={`${styles.slider_container} ${styles.flex_block_gap}`}
+            >
               <div className={styles.form_container__checkbox_block}>
                 <div>
                   Слайдер
                   <span> *допускается загрузка 4х изображений</span>
                 </div>
               </div>
-
-              <label className={styles.slider_container__customFileUpload}>
-                <input
-                  type="file"
-                  name="dropPhoto"
-                  onChange={(event) =>
-                    changeHandler(
-                      event,
-                      inputData,
-                      setInputData,
-                      setPreviewPhotos,
-                      setIsDropPhotoVisible,
-                      setPreviewPhotoAva,
-                      setIsPhotoAvaVisible,
-                      setPreviewPhotoOpen,
-                      setIsPhotoOpenVisible,
-                      setPreviewPhotoClose,
-                      setIsPhotoCloseVisible
-                    )
-                  }
-                  multiple
-                  style={{ display: isDropPhotoVisible ? "block" : "none" }}
-                />
-                <div className={styles.slider_container__uploadIcon}>
-                  <img src={icon} alt="icon" />
-                </div>
-                <div className={styles.slider_container__uploadText}>
-                  Загрузить изображения
-                </div>
-              </label>
+              <div
+                style={{
+                  display: isDropPhotoVisible ? "inline-block" : "none",
+                }}
+              >
+                <label className={styles.slider_container__customFileUpload}>
+                  <input
+                    type="file"
+                    name="dropPhoto"
+                    onChange={(event) =>
+                      changeHandler(
+                        event,
+                        inputData,
+                        setInputData,
+                        setPreviewPhotos,
+                        setIsDropPhotoVisible,
+                        setPreviewPhotoAva,
+                        setIsPhotoAvaVisible,
+                        setPreviewPhotoOpen,
+                        setIsPhotoOpenVisible,
+                        setPreviewPhotoClose,
+                        setIsPhotoCloseVisible
+                      )
+                    }
+                    multiple
+                  />
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g id="Frame 4684">
+                      <path
+                        id="Vector"
+                        d="M11.8349 7.54949L5.64223 7.54949C5.46569 7.54642 5.2903 7.57854 5.1263 7.64398C4.96231 7.70942 4.81299 7.80686 4.68705 7.93062C4.56112 8.05439 4.4611 8.20199 4.39282 8.36483C4.32454 8.52766 4.28938 8.70246 4.28938 8.87903C4.28937 9.0556 4.32454 9.2304 4.39282 9.39323C4.4611 9.55607 4.56112 9.70367 4.68705 9.82744C4.81299 9.9512 4.96231 10.0486 5.1263 10.1141C5.2903 10.1795 5.46569 10.2116 5.64223 10.2086L11.754 10.1277C12.4512 10.1156 13.1158 9.83011 13.6046 9.33275C14.0934 8.8354 14.3673 8.16596 14.3673 7.46862C14.3673 6.77129 14.0934 6.10185 13.6046 5.60449C13.1158 5.10713 12.4512 4.82165 11.754 4.80953L5.64223 4.88946C4.58413 4.88946 3.56936 5.30979 2.82117 6.05798C2.07298 6.80617 1.65265 7.82093 1.65265 8.87903C1.65265 9.93713 2.07298 10.9519 2.82117 11.7001C3.56936 12.4483 4.58413 12.8686 5.64223 12.8686L11.5189 12.8752"
+                        stroke="currentColor"
+                        stroke-width="0.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
+                    </g>
+                  </svg>
+                  <div className={styles.slider_container__uploadText}>
+                    Загрузить изображения
+                  </div>
+                </label>
+              </div>
             </div>
             <div className={styles.preview_photos_container}>
               {inputData.dropPhoto.map((preview, index) => (
@@ -1271,38 +1313,54 @@ export default function FormAddProject({ setIsModalOpen }) {
             </div>
           </div>
           {/* блок с картинкой открывающейся */}
-          <div className={styles.imageOpen_block}>
+          <div className={`${styles.imageOpen_block} ${styles.flex_block_gap}`}>
             <div className={styles.form_container__checkbox_block}>
               <div>Открывающая картинка</div>
             </div>
-            <label className={styles.slider_container__customFileUpload}>
-              <input
-                type="file"
-                name="imageOpen"
-                onChange={(event) =>
-                  changeHandler(
-                    event,
-                    inputData,
-                    setInputData,
-                    setPreviewPhotos,
-                    setIsDropPhotoVisible,
-                    setPreviewPhotoAva,
-                    setIsPhotoAvaVisible,
-                    setPreviewPhotoOpen,
-                    setIsPhotoOpenVisible,
-                    setPreviewPhotoClose,
-                    setIsPhotoCloseVisible
-                  )
-                }
-                style={{ display: isPhotoOpenVisible ? "block" : "none" }}
-              />
-              <div className={styles.slider_container__uploadIcon}>
-                <img src={icon} alt="icon" />
-              </div>
-              <div className={styles.slider_container__uploadText}>
-                Загрузить изображения
-              </div>
-            </label>
+            <div style={{ display: isPhotoOpenVisible ? "block" : "none" }}>
+              <label className={styles.slider_container__customFileUpload}>
+                <input
+                  type="file"
+                  name="imageOpen"
+                  onChange={(event) =>
+                    changeHandler(
+                      event,
+                      inputData,
+                      setInputData,
+                      setPreviewPhotos,
+                      setIsDropPhotoVisible,
+                      setPreviewPhotoAva,
+                      setIsPhotoAvaVisible,
+                      setPreviewPhotoOpen,
+                      setIsPhotoOpenVisible,
+                      setPreviewPhotoClose,
+                      setIsPhotoCloseVisible
+                    )
+                  }
+                />
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g id="Frame 4684">
+                    <path
+                      id="Vector"
+                      d="M11.8349 7.54949L5.64223 7.54949C5.46569 7.54642 5.2903 7.57854 5.1263 7.64398C4.96231 7.70942 4.81299 7.80686 4.68705 7.93062C4.56112 8.05439 4.4611 8.20199 4.39282 8.36483C4.32454 8.52766 4.28938 8.70246 4.28938 8.87903C4.28937 9.0556 4.32454 9.2304 4.39282 9.39323C4.4611 9.55607 4.56112 9.70367 4.68705 9.82744C4.81299 9.9512 4.96231 10.0486 5.1263 10.1141C5.2903 10.1795 5.46569 10.2116 5.64223 10.2086L11.754 10.1277C12.4512 10.1156 13.1158 9.83011 13.6046 9.33275C14.0934 8.8354 14.3673 8.16596 14.3673 7.46862C14.3673 6.77129 14.0934 6.10185 13.6046 5.60449C13.1158 5.10713 12.4512 4.82165 11.754 4.80953L5.64223 4.88946C4.58413 4.88946 3.56936 5.30979 2.82117 6.05798C2.07298 6.80617 1.65265 7.82093 1.65265 8.87903C1.65265 9.93713 2.07298 10.9519 2.82117 11.7001C3.56936 12.4483 4.58413 12.8686 5.64223 12.8686L11.5189 12.8752"
+                      stroke="currentColor"
+                      stroke-width="0.8"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </g>
+                </svg>
+                <div className={styles.slider_container__uploadText}>
+                  Загрузить изображения
+                </div>
+              </label>
+            </div>
             <div>
               {previewPhotoOpen?.map((preview, index) => (
                 <div
@@ -1441,39 +1499,56 @@ export default function FormAddProject({ setIsModalOpen }) {
             </div>
           </div>
           {/* КОНСТРУКТОР */}
-          <div className={styles.imageClose_block}>
+          <div
+            className={`${styles.imageClose_block} ${styles.flex_block_gap}`}
+          >
             <div className={styles.form_container__checkbox_block}>
               <div>Закрывающая картинка</div>
             </div>
-
-            <label className={styles.slider_container__customFileUpload}>
-              <input
-                type="file"
-                name="imageClose"
-                onChange={(event) =>
-                  changeHandler(
-                    event,
-                    inputData,
-                    setInputData,
-                    setPreviewPhotos,
-                    setIsDropPhotoVisible,
-                    setPreviewPhotoAva,
-                    setIsPhotoAvaVisible,
-                    setPreviewPhotoOpen,
-                    setIsPhotoOpenVisible,
-                    setPreviewPhotoClose,
-                    setIsPhotoCloseVisible
-                  )
-                }
-                style={{ display: isPhotoCloseVisible ? "block" : "none" }}
-              />
-              <div className={styles.slider_container__uploadIcon}>
-                <img src={icon} alt="icon" />
-              </div>
-              <div className={styles.slider_container__uploadText}>
-                Загрузить изображения
-              </div>
-            </label>
+            <div style={{ display: isPhotoCloseVisible ? "block" : "none" }}>
+              <label className={styles.slider_container__customFileUpload}>
+                <input
+                  type="file"
+                  name="imageClose"
+                  onChange={(event) =>
+                    changeHandler(
+                      event,
+                      inputData,
+                      setInputData,
+                      setPreviewPhotos,
+                      setIsDropPhotoVisible,
+                      setPreviewPhotoAva,
+                      setIsPhotoAvaVisible,
+                      setPreviewPhotoOpen,
+                      setIsPhotoOpenVisible,
+                      setPreviewPhotoClose,
+                      setIsPhotoCloseVisible
+                    )
+                  }
+                />
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g id="Frame 4684">
+                    <path
+                      id="Vector"
+                      d="M11.8349 7.54949L5.64223 7.54949C5.46569 7.54642 5.2903 7.57854 5.1263 7.64398C4.96231 7.70942 4.81299 7.80686 4.68705 7.93062C4.56112 8.05439 4.4611 8.20199 4.39282 8.36483C4.32454 8.52766 4.28938 8.70246 4.28938 8.87903C4.28937 9.0556 4.32454 9.2304 4.39282 9.39323C4.4611 9.55607 4.56112 9.70367 4.68705 9.82744C4.81299 9.9512 4.96231 10.0486 5.1263 10.1141C5.2903 10.1795 5.46569 10.2116 5.64223 10.2086L11.754 10.1277C12.4512 10.1156 13.1158 9.83011 13.6046 9.33275C14.0934 8.8354 14.3673 8.16596 14.3673 7.46862C14.3673 6.77129 14.0934 6.10185 13.6046 5.60449C13.1158 5.10713 12.4512 4.82165 11.754 4.80953L5.64223 4.88946C4.58413 4.88946 3.56936 5.30979 2.82117 6.05798C2.07298 6.80617 1.65265 7.82093 1.65265 8.87903C1.65265 9.93713 2.07298 10.9519 2.82117 11.7001C3.56936 12.4483 4.58413 12.8686 5.64223 12.8686L11.5189 12.8752"
+                      stroke="currentColor"
+                      stroke-width="0.8"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                    />
+                  </g>
+                </svg>
+                <div className={styles.slider_container__uploadText}>
+                  Загрузить изображения
+                </div>
+              </label>
+            </div>
             <div>
               {previewPhotoClose?.map((preview, index) => (
                 <div
