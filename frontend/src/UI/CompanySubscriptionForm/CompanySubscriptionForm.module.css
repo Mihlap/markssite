@@ -35,9 +35,8 @@ border-radius: 16px;
   font-size: 20px;
   line-height: 28px;
   color: var(--black-1D2E43);
-  word-wrap: break-word;
   overflow-wrap: break-word;
-  hyphens: auto;
+  word-wrap: break-word; 
 }
 
 

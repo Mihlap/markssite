@@ -164,7 +164,7 @@ const Contacts = () => {
   </Helmet>
     <div className={styles.main_contact}>
       <div className={styles.menu_block}>
-        <div className={styles.menu_span}>Стать клиентом или партнером</div>
+        <div className={styles.menu_span}>Стать клиентом или&nbsp;партнером</div>
         <div className={styles.menu_mail}>{mail}</div>
         <div className={styles.menu_tel}>{phone}</div>
         <Link to={`mailto:${mail}`} className={styles.link_mail}>
@@ -175,7 +175,7 @@ const Contacts = () => {
         </Link>
         <div className={styles.menu_address}>{address}</div>
         <div className={styles.menu_work}>
-          Режим работы &nbsp;&bull;&nbsp; Пн. &mdash; Пт. 10.00&mdash;19.00
+          Режим работы &nbsp;&bull;&nbsp; Пн.&nbsp;&mdash; Пт.&nbsp;10.00&mdash;19.00
         </div>
         <div className={styles.menu_office_name}>
           Наши офисы
