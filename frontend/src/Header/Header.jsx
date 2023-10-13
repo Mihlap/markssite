@@ -35,7 +35,6 @@ const Host = process.env.REACT_APP_SERVER_HOST;
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
-
 export default function Header({ user, setNavBarOpen, setShowFooter }) {
   const videoSource = {
     small: `${Host}/images/video/primePark_mobile.mp4`,
@@ -47,34 +46,33 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
   const [isHorizontalScroll, setIsHorizontalScroll] = useState(false);
   const [isAtRightEdge, setIsAtRightEdge] = useState(false);
   const [scrollingMode, setScrollingMode] = useState("vertical");
-  
+
   const [loadingArticle, setLoadingArticle] = useState(false);
-  
+
   const cursorVariant = useSelector((state) => state.cursor);
   const { article, loading, error } = useSelector((state) => state.article);
   // const articles = useSelector((state) => state.article.article);
   const projects = useSelector((state) => state.searchproject.projects);
-  
+
   const ArticleLeft = useSelector(
     (state) => state.searchArticlePublicLeft.articleLeft
-    );
-    const MapArticle = ArticleLeft?.map((el) => el.publication.publication);
-    
-    const ArticleRight = useSelector(
-      (state) => state.searchArticlePublicRight.articleRight
-      );
-      const MapArticleRight = ArticleRight?.map((el) => el.publication.publication);
-      
-      const dispatch = useDispatch();
-      
+  );
+  const MapArticle = ArticleLeft?.map((el) => el.publication.publication);
+
+  const ArticleRight = useSelector(
+    (state) => state.searchArticlePublicRight.articleRight
+  );
+  const MapArticleRight = ArticleRight?.map((el) => el.publication.publication);
+
+  const dispatch = useDispatch();
+
   const [videoSrc, setVideoSrc] = useState(null);
 
   useEffect(() => {
-    window.scrollTo(0, 0); 
+    window.scrollTo(0, 0);
   }, []);
 
- 
-   const handleMouseEnter = () => {
+  const handleMouseEnter = () => {
     dispatch(textEnter());
   };
 
@@ -86,45 +84,40 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
     dispatch(imageHover());
   };
 
-
   useEffect(() => {
     const handleResize = () => {
       const screenWidth = window.innerWidth;
       if (screenWidth >= 1025) {
         setVideoSrc(videoSource.large);
       } else if (screenWidth >= 375 && screenWidth <= 1024) {
-       setVideoSrc(videoSource.medium);
-     } else {
-       setVideoSrc(videoSource.small);
+        setVideoSrc(videoSource.medium);
+      } else {
+        setVideoSrc(videoSource.small);
       }
     };
 
     handleResize();
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
 
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
-  
-  useEffect(() => {
-        dispatch(getFetchFormArticle());
-        dispatch(getZaprosData());
-        dispatch(searchArticleLeftGet());
-        dispatch(searchArticleRightGet());
-  }, [dispatch]);
-  
-  
 
- const colors = {
+  useEffect(() => {
+    dispatch(getFetchFormArticle());
+    dispatch(getZaprosData());
+    dispatch(searchArticleLeftGet());
+    dispatch(searchArticleRightGet());
+  }, [dispatch]);
+
+  const colors = {
     Архитектура: "#FF7F6A",
     BIM: "#75BBFD",
     Конструкции: "#566272",
     Дизайн: "#FAA8BD",
     Инженерия: "#90B734",
   };
-
-
 
   const handleScroll = () => {
     const el = sliderCardRef.current;
@@ -336,10 +329,24 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
                       </div>
                       <div className={styles.card_text}>
                         <h3>{el.title}</h3>
-                        <span className={styles.span_dataMonthYear}>
+                      </div>
+                      <div className={styles.city_dataMonthYear_wrapper}>
+                        <span className={styles.card_text_city}>{el.city}</span>
+                        <span className={styles.card_text_svg}>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="4"
+                            height="4"
+                            viewBox="0 0 4 4"
+                            fill="none"
+                          >
+                            <circle cx="2" cy="2" r="2" fill="#566272" />
+                          </svg>
+                        </span>
+                        <span className={styles.card_text_dataMonthYear}>
                           {el.dataMonthYear}
                         </span>
-                      </div>
+                        </div>
                       <button className={styles.card_button}>
                         <svg
                           width="32"
@@ -388,7 +395,19 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
                       </div>
                       <div className={styles.card_text}>
                         <h3>{el.title}</h3>
-                        <span className={styles.span_dataMonthYear}>
+                        <span className={styles.card_text_city}>{el.city}</span>
+                        <span className={styles.card_text_svg}>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="4"
+                            height="4"
+                            viewBox="0 0 4 4"
+                            fill="none"
+                          >
+                            <circle cx="2" cy="2" r="2" fill="#566272" />
+                          </svg>
+                        </span>
+                        <span className={styles.card_text_dataMonthYear}>
                           {el.dataMonthYear}
                         </span>
                       </div>
@@ -663,5 +682,3 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
     </>
   );
 }
-
-

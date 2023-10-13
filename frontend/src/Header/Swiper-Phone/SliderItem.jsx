@@ -2,8 +2,9 @@
 import { Link } from "react-router-dom";
 import styles from './SliderItem.module.css';
 
-const Slideritem = ({ title, src, descriptionArticle, id }) => {
+const Slideritem = ({ title, src, descriptionArticle, city, dataMonthYear,  id }) => {
 
+ 
   return (
     <div className={`${styles.slider_item}${styles.swiper_slide}`}>
       <div className={styles.slider_image_wrapper}>
@@ -27,6 +28,23 @@ const Slideritem = ({ title, src, descriptionArticle, id }) => {
           </div>
       <div className={styles.slider_item_content}>
         <h1 className={styles.slider_subject}>{title}</h1>
+        <div className={styles.slider_city_dataMonthYear_wrapper}>
+                        <span className={styles.slider_text_city}>{city}</span>
+                        <span className={styles.slider_text_svg}>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="4"
+                            height="4"
+                            viewBox="0 0 4 4"
+                            fill="none"
+                          >
+                            <circle cx="2" cy="2" r="2" fill="#566272" />
+                          </svg>
+                        </span>
+                        <span className={styles.slider_text_dataMonthYear}>
+                          {dataMonthYear}
+                        </span>
+                        </div>
         <span className={styles.slider_text}>{descriptionArticle}</span>
       </div>
     </div>

@@ -219,15 +219,15 @@
   cursor: pointer;
 }
 
-.card_text_container {
+/* .card_text_container {
   padding-top: 1rem;
   padding-bottom: 1rem;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
-}
+} */
 
-.card_text_heading {
+/* .card_text_heading {
   font-family: var(--font-raleway);
   font-style: normal;
   font-weight: var(--fw-700);
@@ -235,9 +235,9 @@
   line-height: 1.5rem;
   font-feature-settings: 'pnum' on, 'lnum' on;
   color: var(--black-1D2E43);
-}
+} */
 
-.card_text_description {
+/* .card_text_description {
   display: flex;
   align-items: center;
   font-family: var(--font-raleway);
@@ -247,14 +247,14 @@
   line-height: 1.25rem;
   font-feature-settings: 'pnum' on, 'lnum' on;
   color: var(--black-1D2E43);
-}
+} */
 
-.card_text_description svg {
+/* .card_text_description svg {
   margin-left: 0.5rem;
   margin-right: 0.5rem;
-}
+} */
 
-.card_text_title {
+/* .card_text_title {
   display: flex;
   flex-direction: column;
   font-family: var(--font-raleway);
@@ -265,8 +265,8 @@
   font-feature-settings: 'pnum' on, 'lnum' on;
   color: var(--black-1D2E43);
   padding: 1rem 0px;
-}
-
+} */
+/* 
 .card_text_local {
   font-family: var(--font-raleway);
   font-style: normal;
@@ -274,15 +274,15 @@
   font-size: 0.625rem;
   line-height: 0.75rem;
   color: var(--gray-959DA6);
-}
+} */
 
-.card_text_span {
+/* .card_text_span {
   font-family: var(--font-raleway);
   font-style: normal;
   font-weight: var(--fw-400);
   font-size: 14px;
   line-height: 20px;
-}
+} */
 
 .card_button_link circle,
 svg path {
@@ -348,7 +348,7 @@ svg path {
 }
 
 .card_text h3 {
-  padding-bottom: 8px;
+  /* padding-bottom: 8px; */
 }
 
 .main_project {
@@ -425,12 +425,14 @@ svg path {
   width: 100%;
   padding-top: 1rem;
 }
+.container_wrapper_title_city_data_block {
+  width: 100%;
+}
 
 .container__title {
   display: flex;
   flex-wrap: wrap;
   word-wrap: break-word;
-  word-break: break-all;
   color: var(--black-1D2E43);
   font-family: var(--font-raleway);
   font-size: 0.875rem;
@@ -517,7 +519,6 @@ svg path {
   margin-bottom: 4vh;
   margin-top: 3.5rem;
   overflow-wrap: break-word;
-  hyphens: auto;
   word-break: break-all;
 }
 
@@ -558,25 +559,48 @@ svg path {
 }
 
 
-.card_text h3 {
+.card_text {
   display: flex;
-  flex-direction: column;
   font-family: var(--font-raleway);
-  font-style: normal;
+  font-style: normal;  
+  color: var(--black-1D2E43);
   font-weight: var(--fw-700);
-  font-size: 16px;
-  line-height: 24px;
+  font-size: 1rem;
+  line-height: 1.5rem;
   padding-top: 1rem;
-}
+  word-wrap: break-word;
+ }
 
-.span_dataMonthYear {
+ .city_dataMonthYear_wrapper {
+  display: flex;
+  padding-top: 0.5rem;
+  word-wrap: break-word;
+ }
+
+.card_text_city {
   font-family: var(--font-raleway);
   font-style: normal;
   font-weight: var(--fw-400);
-  font-size: 14px;
-  line-height: 20px;
-  padding-top: 0.5rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  
 }
+
+.card_text_svg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+ }
+
+.card_text_dataMonthYear {
+  font-family: var(--font-raleway);
+  font-style: normal;
+  font-weight: var(--fw-400);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+ }
 
 .card_button {
   background-color: transparent;
@@ -653,18 +677,11 @@ svg path {
     padding-top: 0rem;
   }
 
-  .card_text h3 {
-    font-size: 1rem;
-    line-height: 1.5rem;
-    padding-top: 1rem;
-  }
 
-  .span_dataMonthYear {
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-    padding-top: 0.5rem;
-  }
-
+  .card_text {
+    padding-top: 0.85rem;
+   }
+  
   .card_button {
     margin-top: 1rem;
   }
@@ -674,7 +691,7 @@ svg path {
     display: none;
   }
 
-  .card_text_container {
+  /* .card_text_container {
     padding-top: 1rem;
     padding-bottom: 1rem;
     display: flex;
@@ -689,7 +706,7 @@ svg path {
   .card_text_description svg {
     margin-left: 0.5rem;
     margin-right: 0.5rem;
-  }
+  } */
 
   .names_contents {
     padding-top: 5.5rem;
@@ -814,6 +831,7 @@ svg path {
   .sliderHeader_container {
     padding-left: 0rem;
   }
+  
 
   .names_contents {
     width: 100%;

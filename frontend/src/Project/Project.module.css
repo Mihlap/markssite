@@ -223,7 +223,6 @@ display: inline-block;
 .cart_project_title {
     display: flex;
     flex-wrap: wrap;
-    word-break: break-all;
     word-wrap: break-word;
     width: 100%;
      font-family: var(--font-raleway);
