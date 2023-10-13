@@ -67,6 +67,7 @@
     &__radio_container {
         display: flex;
         gap: 1rem;
+        padding-top: 8px;
         padding-left: 4px;
     }
 
@@ -273,7 +274,7 @@
     &__heading_block_input_length {
         position: absolute;
         right: 7px;
-        bottom: 37%;
+        bottom: 25%;
         color: var(--gray-959DA6);
         font-family: var(--font-raleway);
         font-size: 16px;
@@ -344,8 +345,7 @@
         line-height: 16px;
     }
 
-    &__three_grey_block {
-    }
+    &__three_grey_block {}
 
     &__block_gray_flex {
         display: flex;
@@ -360,6 +360,12 @@
     &__block_public_link {
         width: 45%;
     }
+}
+
+.flex_block_gap {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
 }
 
 .form__group {
@@ -433,15 +439,18 @@
         display: inline-flex;
         align-items: center;
         justify-content: center;
+        gap: 4px;
         position: relative;
         padding: 0.5rem 1rem;
         background-color: var(--light-light-gray-EBECEE);
+        color: var(--secondary-dark-gray-525459);
         border-radius: 20px;
         cursor: pointer;
+        transition: color 0.3s, background-color 0.3s, color 0.3s;
 
         &:hover {
             background-color: var(--blue-75BBFD);
-            box-shadow: 0px 0px 6px 0px var(--blue-75BBFD);
+            color: var(--light-light-gray-EBECEE);
         }
     }
 
@@ -462,11 +471,15 @@
         }
     }
 
-    &__uploadIcon {
-        display: inline-block;
-        margin-right: 8px;
-        font-size: 14px;
-        color: #888;
+
+    .slider_container__customFileUpload {
+        color: var(--secondary-dark-gray-525459);
+
+    }
+
+    .slider_container__customFileUpload:hover {
+        color: var(--light-light-gray-EBECEE);
+
     }
 
     &__uploadText {
@@ -476,7 +489,6 @@
         font-style: normal;
         font-weight: 400;
         line-height: 1.25rem;
-        color: var(--secondary-dark-gray-525459);
     }
 
     /* Скрыть стандартную фразу "файл не выбран" */
@@ -616,48 +628,46 @@
     padding: 5px 0px;
 
     &__remove_icon {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            background-color: var(--white-F6F6F6);
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: var(--white-F6F6F6);
+        position: absolute;
+        top: 35%;
+        left: 45%;
+        cursor: pointer;
+        transition: transform 0.3s ease;
+
+        &:hover {
+            transform: scale(1.3);
+        }
+
+        span {
             position: absolute;
-            top: 35%;
-            left: 45%;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-    
-            &:hover {
-                transform: scale(1.3);
-            }
-    
-            span {
+            top: 52%;
+            left: 50%;
+            width: 2px;
+            height: 23px;
+            transform: translate(-50%, -50%);
+
+            &::before,
+            &::after {
+                content: '';
                 position: absolute;
-                top: 52%;
-                left: 50%;
-                width: 2px;
-                height: 23px;
-                transform: translate(-50%, -50%);
-    
-                &::before,
-                &::after {
-                    content: '';
-                    position: absolute;
-                    width: 3px;
-                    height: 20px;
-                    background-color: var(--salmon-light-FFBFB5);
-                }
-    
-                &::before {
-                    transform: rotate(45deg);
-                }
-    
-                &::after {
-                    transform: rotate(-45deg);
-                }
+                width: 3px;
+                height: 20px;
+                background-color: var(--salmon-light-FFBFB5);
+            }
+
+            &::before {
+                transform: rotate(45deg);
+            }
+
+            &::after {
+                transform: rotate(-45deg);
             }
         }
+    }
 }
 
-.preview_photos_container__remove_icon {
-
-}
+.preview_photos_container__remove_icon {}
