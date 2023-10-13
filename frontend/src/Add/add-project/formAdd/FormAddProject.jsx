@@ -1451,9 +1451,9 @@ export default function FormAddProject({ setIsModalOpen }) {
           </div>
 
           {/* КОНСТРУКТОР */}
-          <div className={styles.inputsContainer}>
+          <div className={styles.inputs_container}>
             {blocks.map((blockInputs, blockIndex) => (
-              <div key={blockIndex} className={styles.inputBlock}>
+              <div key={blockIndex} className={styles.input_block}>
                 {renderInputs(blockInputs, blockIndex)}
               </div>
             ))}
