@@ -312,44 +312,45 @@ export default function FormAddProject({ setIsModalOpen }) {
                 <div className={styles.form_container__checkbox_block}>
                   <div>{labelText}</div>
                 </div>
-                <label
-                  className={
-                    styles.slider_container__customFileUploadOrangeColor
-                  }
-                >
-                  <input
-                    type="file"
-                    onChange={(e) => {
-                      const filesArray = Array.from(e.target.files);
-                      handleDynamicInputChange(
-                        blockIndex,
-                        inputIndex,
-                        filesArray
-                      );
+                {/* <div style={{ display: isPhotoOpenVisible ? "block" : "none" }}> */}
+                  <label
+                    className={
+                      styles.slider_container__customFileUploadOrangeColor
+                    }
+                  >
+                    <input
+                      type="file"
+                      onChange={(e) => {
+                        const filesArray = Array.from(e.target.files);
+                        handleDynamicInputChange(
+                          blockIndex,
+                          inputIndex,
+                          filesArray
+                        );
 
-                      const previewsArray = filesArray.map((file) =>
-                        URL.createObjectURL(file)
-                      );
-                      // console.log(previewsArray);
-                      setDynamicPreviews((prev) => {
-                        const newPreviews = [...prev];
-                        if (!newPreviews[blockIndex]) {
-                          newPreviews[blockIndex] = [];
-                        }
-                        newPreviews[blockIndex][inputIndex] = previewsArray;
-                        return newPreviews;
-                      });
-                    }}
-                    style={{ display: isPhotoOpenVisible ? "block" : "none" }}
-                  />
-                  <div className={styles.slider_container__uploadIcon}>
-                    <img src={icon} alt="icon" />
-                  </div>
-                  <div className={styles.slider_container__uploadText}>
-                    Загрузить видеоролик
-                  </div>
-                </label>
-              </div>
+                        const previewsArray = filesArray.map((file) =>
+                          URL.createObjectURL(file)
+                        );
+                        // console.log(previewsArray);
+                        setDynamicPreviews((prev) => {
+                          const newPreviews = [...prev];
+                          if (!newPreviews[blockIndex]) {
+                            newPreviews[blockIndex] = [];
+                          }
+                          newPreviews[blockIndex][inputIndex] = previewsArray;
+                          return newPreviews;
+                        });
+                      }}
+                    />
+                    <div className={styles.slider_container__uploadIcon}>
+                      <img src={icon} alt="icon" />
+                    </div>
+                    <div className={styles.slider_container__uploadText}>
+                      Загрузить видеоролик
+                    </div>
+                  </label>
+                </div>
+              // </div>
             ) : (
               <>
                 <div key={inputIndex}>
@@ -479,13 +480,14 @@ export default function FormAddProject({ setIsModalOpen }) {
   };
 
   // console.log(inputData, "<<--inputData PROJECT");
-  console.log(dynamicData, "<<--dynamicData");
+  // console.log(dynamicData, "<<--dynamicData");
   return (
     <div className={styles.form_container}>
       <div className={styles.form_container__title}>Новый проект</div>
 
       <div className={styles.form_container__block_form}>
-        <form onSubmit={submitHandler}>
+        <form className={styles.form_container__form} onSubmit={submitHandler}>
+          {/* первый серый блок с инфой  */}
           <div className={styles.form_container__block_gray_one}>
             <div className={`${styles.form__group} ${styles.field}`}>
               <input
@@ -619,193 +621,242 @@ export default function FormAddProject({ setIsModalOpen }) {
               />
             </div>
           </div>
-          <div className={styles.form_container__checkbox_block}>
-            <div>
-              Загрузите фото и выберете ориентацию
-              <span> для отображения на странице «Проекты»</span>
-            </div>
-          </div>
-          <label className={styles.slider_container__customFileUpload}>
-            <input
-              type="file"
-              name="photoAva"
-              onChange={(event) =>
-                changeHandler(
-                  event,
-                  inputData,
-                  setInputData,
-                  setPreviewPhotos,
-                  setIsDropPhotoVisible,
-                  setPreviewPhotoAva,
-                  setIsPhotoAvaVisible,
-                  setPreviewPhotoOpen,
-                  setIsPhotoOpenVisible,
-                  setPreviewPhotoClose,
-                  setIsPhotoCloseVisible
-                )
-              }
-              style={{ display: isPhotoAvaVisible ? "block" : "none" }}
-            />
-            <div className={styles.slider_container__uploadIcon}>
-              <img src={icon} alt="icon" />
-            </div>
-            <div className={styles.slider_container__uploadText}>
-              Загрузить изображения
-            </div>
-          </label>
-          <div>
-            {previewPhotoAva?.map((preview, index) => (
-              <div
-                key={index}
-                className={styles.preview_photos_container__block}
-              >
-                <img
-                  className={styles.preview_photos_container__img}
-                  src={preview}
-                  alt={`Preview ${index}`}
-                />
-                <div
-                  className={styles.preview_photos_container__remove_icon}
-                  onClick={() => handleRemovePreviewPhotoAva(index)}
-                >
-                  <span></span>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          <div className={styles.form_container__radio_container}>
-            <div
-              className={`${styles.form_container__radio_block_one} ${
-                selectedRadio === "28,28"
-                  ? styles.form_container__radio_activ_block
-                  : ""
-              }`}
-            >
-              <label
-                className={`${styles.form_container__radio_label_one} ${
-                  selectedRadio === "28,28"
-                    ? styles.form_container__radio_activ_label
-                    : ""
-                }`}
-              >
-                <input
-                  className={styles.form_container__radio_input}
-                  type="radio"
-                  name="radioGroup"
-                  value="28,28"
-                  checked={selectedRadio === "28,28"}
-                  onChange={(e) => setSelectedRadio(e.target.value)}
-                />
-              </label>
-            </div>
-            <div
-              className={`${styles.form_container__radio_block_two} ${
-                selectedRadio === "28,14"
-                  ? styles.form_container__radio_activ_block
-                  : ""
-              }`}
-            >
-              <label
-                className={`${styles.form_container__radio_label_two} ${
-                  selectedRadio === "28,14"
-                    ? styles.form_container__radio_activ_label
-                    : ""
-                }`}
-              >
-                <input
-                  className={styles.form_container__radio_input}
-                  type="radio"
-                  name="radioGroup"
-                  value="28,14"
-                  checked={selectedRadio === "28,14"}
-                  onChange={(e) => setSelectedRadio(e.target.value)}
-                />
-              </label>
-            </div>
-            <div
-              className={`${styles.form_container__radio_block_three} ${
-                selectedRadio === "28,48"
-                  ? styles.form_container__radio_activ_block
-                  : ""
-              }`}
-            >
-              <label
-                className={`${styles.form_container__radio_label_three} ${
-                  selectedRadio === "28,48"
-                    ? styles.form_container__radio_activ_label
-                    : ""
-                }`}
-              >
-                <input
-                  className={styles.form_container__radio_input}
-                  type="radio"
-                  name="radioGroup"
-                  value="28,48"
-                  checked={selectedRadio === "28,48"}
-                  onChange={(e) => setSelectedRadio(e.target.value)}
-                />
-              </label>
-            </div>
-          </div>
-          <div className={styles.slider_container}>
+          {/* блок для выбора оринтации  */}
+          <div
+            className={`${styles.photo_orientation_selector} ${styles.flex_block_gap}`}
+          >
             <div className={styles.form_container__checkbox_block}>
               <div>
-                Слайдер
-                <span> *допускается загрузка 4х изображений</span>
+                Загрузите фото и выберете ориентацию
+                <span> для отображения на странице «Проекты»</span>
               </div>
             </div>
-
-            <label className={styles.slider_container__customFileUpload}>
-              <input
-                type="file"
-                name="dropPhoto"
-                onChange={(event) =>
-                  changeHandler(
-                    event,
-                    inputData,
-                    setInputData,
-                    setPreviewPhotos,
-                    setIsDropPhotoVisible,
-                    setPreviewPhotoAva,
-                    setIsPhotoAvaVisible,
-                    setPreviewPhotoOpen,
-                    setIsPhotoOpenVisible,
-                    setPreviewPhotoClose,
-                    setIsPhotoCloseVisible
-                  )
-                }
-                multiple
-                style={{ display: isDropPhotoVisible ? "block" : "none" }}
-              />
-              <div className={styles.slider_container__uploadIcon}>
-                <img src={icon} alt="icon" />
-              </div>
-              <div className={styles.slider_container__uploadText}>
-                Загрузить изображения
-              </div>
-            </label>
-          </div>
-          <div className={styles.preview_photos_container}>
-            {inputData.dropPhoto.map((preview, index) => (
-              <div
-                key={index}
-                className={styles.preview_photos_container__block}
-              >
-                <img
-                  className={styles.preview_photos_container__img}
-                  src={URL.createObjectURL(preview)}
-                  alt={`Preview ${index}`}
+            <div
+              style={{ display: isPhotoAvaVisible ? "inline-block" : "none" }}
+            >
+              <label className={styles.slider_container__customFileUpload}>
+                <input
+                  type="file"
+                  name="photoAva"
+                  onChange={(event) =>
+                    changeHandler(
+                      event,
+                      inputData,
+                      setInputData,
+                      setPreviewPhotos,
+                      setIsDropPhotoVisible,
+                      setPreviewPhotoAva,
+                      setIsPhotoAvaVisible,
+                      setPreviewPhotoOpen,
+                      setIsPhotoOpenVisible,
+                      setPreviewPhotoClose,
+                      setIsPhotoCloseVisible
+                    )
+                  }
                 />
-                <div
-                  className={styles.preview_photos_container__remove_icon}
-                  onClick={() => handleRemovePreviewPhoto(index)}
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
-                  <span></span>
+                  <g id="Frame 4684">
+                    <path
+                      id="Vector"
+                      d="M11.8349 7.54949L5.64223 7.54949C5.46569 7.54642 5.2903 7.57854 5.1263 7.64398C4.96231 7.70942 4.81299 7.80686 4.68705 7.93062C4.56112 8.05439 4.4611 8.20199 4.39282 8.36483C4.32454 8.52766 4.28938 8.70246 4.28938 8.87903C4.28937 9.0556 4.32454 9.2304 4.39282 9.39323C4.4611 9.55607 4.56112 9.70367 4.68705 9.82744C4.81299 9.9512 4.96231 10.0486 5.1263 10.1141C5.2903 10.1795 5.46569 10.2116 5.64223 10.2086L11.754 10.1277C12.4512 10.1156 13.1158 9.83011 13.6046 9.33275C14.0934 8.8354 14.3673 8.16596 14.3673 7.46862C14.3673 6.77129 14.0934 6.10185 13.6046 5.60449C13.1158 5.10713 12.4512 4.82165 11.754 4.80953L5.64223 4.88946C4.58413 4.88946 3.56936 5.30979 2.82117 6.05798C2.07298 6.80617 1.65265 7.82093 1.65265 8.87903C1.65265 9.93713 2.07298 10.9519 2.82117 11.7001C3.56936 12.4483 4.58413 12.8686 5.64223 12.8686L11.5189 12.8752"
+                      stroke="currentColor"
+                      strokeWidth="0.8"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </g>
+                </svg>
+
+                <div className={styles.slider_container__uploadText}>
+                  Загрузить изображения
+                </div>
+              </label>
+            </div>
+            <div>
+              {previewPhotoAva?.map((preview, index) => (
+                <div
+                  key={index}
+                  className={styles.preview_photos_container__block}
+                >
+                  <img
+                    className={styles.preview_photos_container__img}
+                    src={preview}
+                    alt={`Preview ${index}`}
+                  />
+                  <div
+                    className={styles.preview_photos_container__remove_icon}
+                    onClick={() => handleRemovePreviewPhotoAva(index)}
+                  >
+                    <span></span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            <div className={styles.form_container__radio_container}>
+              <div
+                className={`${styles.form_container__radio_block_one} ${
+                  selectedRadio === "28,28"
+                    ? styles.form_container__radio_activ_block
+                    : ""
+                }`}
+              >
+                <label
+                  className={`${styles.form_container__radio_label_one} ${
+                    selectedRadio === "28,28"
+                      ? styles.form_container__radio_activ_label
+                      : ""
+                  }`}
+                >
+                  <input
+                    className={styles.form_container__radio_input}
+                    type="radio"
+                    name="radioGroup"
+                    value="28,28"
+                    checked={selectedRadio === "28,28"}
+                    onChange={(e) => setSelectedRadio(e.target.value)}
+                  />
+                </label>
+              </div>
+              <div
+                className={`${styles.form_container__radio_block_two} ${
+                  selectedRadio === "28,14"
+                    ? styles.form_container__radio_activ_block
+                    : ""
+                }`}
+              >
+                <label
+                  className={`${styles.form_container__radio_label_two} ${
+                    selectedRadio === "28,14"
+                      ? styles.form_container__radio_activ_label
+                      : ""
+                  }`}
+                >
+                  <input
+                    className={styles.form_container__radio_input}
+                    type="radio"
+                    name="radioGroup"
+                    value="28,14"
+                    checked={selectedRadio === "28,14"}
+                    onChange={(e) => setSelectedRadio(e.target.value)}
+                  />
+                </label>
+              </div>
+              <div
+                className={`${styles.form_container__radio_block_three} ${
+                  selectedRadio === "28,48"
+                    ? styles.form_container__radio_activ_block
+                    : ""
+                }`}
+              >
+                <label
+                  className={`${styles.form_container__radio_label_three} ${
+                    selectedRadio === "28,48"
+                      ? styles.form_container__radio_activ_label
+                      : ""
+                  }`}
+                >
+                  <input
+                    className={styles.form_container__radio_input}
+                    type="radio"
+                    name="radioGroup"
+                    value="28,48"
+                    checked={selectedRadio === "28,48"}
+                    onChange={(e) => setSelectedRadio(e.target.value)}
+                  />
+                </label>
+              </div>
+            </div>
+          </div>
+          {/* блок где загружаются 4 картинки, они отображаются в шапке слайдера  */}
+          <div className={`${styles.image_four} ${styles.flex_block_gap}`}>
+            <div
+              className={`${styles.slider_container} ${styles.flex_block_gap}`}
+            >
+              <div className={styles.form_container__checkbox_block}>
+                <div>
+                  Слайдер
+                  <span> *допускается загрузка 4х изображений</span>
                 </div>
               </div>
-            ))}
+              <div
+                style={{
+                  display: isDropPhotoVisible ? "inline-block" : "none",
+                }}
+              >
+                <label className={styles.slider_container__customFileUpload}>
+                  <input
+                    type="file"
+                    name="dropPhoto"
+                    onChange={(event) =>
+                      changeHandler(
+                        event,
+                        inputData,
+                        setInputData,
+                        setPreviewPhotos,
+                        setIsDropPhotoVisible,
+                        setPreviewPhotoAva,
+                        setIsPhotoAvaVisible,
+                        setPreviewPhotoOpen,
+                        setIsPhotoOpenVisible,
+                        setPreviewPhotoClose,
+                        setIsPhotoCloseVisible
+                      )
+                    }
+                    multiple
+                  />
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g id="Frame 4684">
+                      <path
+                        id="Vector"
+                        d="M11.8349 7.54949L5.64223 7.54949C5.46569 7.54642 5.2903 7.57854 5.1263 7.64398C4.96231 7.70942 4.81299 7.80686 4.68705 7.93062C4.56112 8.05439 4.4611 8.20199 4.39282 8.36483C4.32454 8.52766 4.28938 8.70246 4.28938 8.87903C4.28937 9.0556 4.32454 9.2304 4.39282 9.39323C4.4611 9.55607 4.56112 9.70367 4.68705 9.82744C4.81299 9.9512 4.96231 10.0486 5.1263 10.1141C5.2903 10.1795 5.46569 10.2116 5.64223 10.2086L11.754 10.1277C12.4512 10.1156 13.1158 9.83011 13.6046 9.33275C14.0934 8.8354 14.3673 8.16596 14.3673 7.46862C14.3673 6.77129 14.0934 6.10185 13.6046 5.60449C13.1158 5.10713 12.4512 4.82165 11.754 4.80953L5.64223 4.88946C4.58413 4.88946 3.56936 5.30979 2.82117 6.05798C2.07298 6.80617 1.65265 7.82093 1.65265 8.87903C1.65265 9.93713 2.07298 10.9519 2.82117 11.7001C3.56936 12.4483 4.58413 12.8686 5.64223 12.8686L11.5189 12.8752"
+                        stroke="currentColor"
+                        strokeWidth="0.8"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
+                    </g>
+                  </svg>
+                  <div className={styles.slider_container__uploadText}>
+                    Загрузить изображения
+                  </div>
+                </label>
+              </div>
+            </div>
+            <div className={styles.preview_photos_container}>
+              {inputData.dropPhoto.map((preview, index) => (
+                <div
+                  key={index}
+                  className={styles.preview_photos_container__block}
+                >
+                  <img
+                    className={styles.preview_photos_container__img}
+                    src={URL.createObjectURL(preview)}
+                    alt={`Preview ${index}`}
+                  />
+                  <div
+                    className={styles.preview_photos_container__remove_icon}
+                    onClick={() => handleRemovePreviewPhoto(index)}
+                  >
+                    <span></span>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
+          {/* блок и инпутом ( Заголовок текстового блока ) */}
           <div className={styles.form_container__heading_block}>
             <input
               type="input"
@@ -827,13 +878,13 @@ export default function FormAddProject({ setIsModalOpen }) {
               htmlFor="titleTextBlock"
               className={styles.form_container__heading_block_label}
             >
-              Описание проекта
+              Заголовок текстового блока
             </label>
             <div className={styles.form_container__heading_block_input_length}>
               {`${inputData.titleTextBlock.length}/56`}
             </div>
           </div>
-
+          {/* блок и текстерией ( Описание проекта ) */}
           <div className={styles.form_container__description_text}>
             <div className={styles.form_container__textarea_length}>
               {`${inputData.descriptionProject.length}/270`}
@@ -857,529 +908,557 @@ export default function FormAddProject({ setIsModalOpen }) {
               Описание проекта
             </label>
           </div>
-
-          <div className={styles.form_container__textarea_label}>
-            Заполните 3 значения на выбор
-          </div>
-          <div className={styles.form_container__block_gray_one}>
-            <div className={`${styles.form__group} ${styles.field}`}>
-              <input
-                type="text" // Измените тип на 'text', так как форматирование может включать пробелы
-                className={styles.form__field}
-                placeholder="totalArea"
-                name="totalArea"
-                id="totalArea"
-                value={inputData.totalArea}
-                onChange={(event) =>
-                  changeHandler(
-                    event,
-                    inputData,
-                    setInputData,
-                    setPreviewPhotos,
-                    setIsDropPhotoVisible,
-                    setPreviewPhotoAva,
-                    setIsPhotoAvaVisible,
-                    setPreviewPhotoOpen,
-                    setIsPhotoOpenVisible
-                  )
-                }
-              />
-              <label htmlFor="totalArea" className={styles.form__label}>
-                Общая площадь, м²
-              </label>
+          {/* блок Заполните 3 значения на выбор ( метры, мысота, этажность) */}
+          <div className={styles.measure_container}>
+            <div className={styles.form_container__textarea_label}>
+              Заполните 3 значения на выбор
             </div>
-            <div className={`${styles.form__group} ${styles.field}`}>
-              <input
-                type="text"
-                className={styles.form__field}
-                placeholder="siteArea"
-                name="siteArea"
-                id="siteArea"
-                value={inputData.siteArea}
-                onChange={(event) =>
-                  changeHandler(
-                    event,
-                    inputData,
-                    setInputData,
-                    setPreviewPhotos,
-                    setIsDropPhotoVisible,
-                    setPreviewPhotoAva,
-                    setIsPhotoAvaVisible,
-                    setPreviewPhotoOpen,
-                    setIsPhotoOpenVisible
-                  )
-                }
-              />
-              <label htmlFor="siteArea" className={styles.form__label}>
-                Площадь участка, га
-              </label>
-            </div>
-
-            <div className={`${styles.form__group} ${styles.field}`}>
-              <input
-                type="text"
-                className={styles.form__field}
-                placeholder="floors"
-                name="floors"
-                id="floors"
-                value={inputData.floors}
-                onChange={(event) =>
-                  changeHandler(
-                    event,
-                    inputData,
-                    setInputData,
-                    setPreviewPhotos,
-                    setIsDropPhotoVisible,
-                    setPreviewPhotoAva,
-                    setIsPhotoAvaVisible,
-                    setPreviewPhotoOpen,
-                    setIsPhotoOpenVisible
-                  )
-                }
-              />
-              <label htmlFor="floors" className={styles.form__label}>
-                Этажность
-              </label>
-            </div>
-            <div className={`${styles.form__group} ${styles.field}`}>
-              <input
-                type="text"
-                className={styles.form__field}
-                placeholder="altitude"
-                name="altitude"
-                id="altitude"
-                value={inputData.altitude}
-                onChange={(event) =>
-                  changeHandler(
-                    event,
-                    inputData,
-                    setInputData,
-                    setPreviewPhotos,
-                    setIsDropPhotoVisible,
-                    setPreviewPhotoAva,
-                    setIsPhotoAvaVisible,
-                    setPreviewPhotoOpen,
-                    setIsPhotoOpenVisible
-                  )
-                }
-              />
-              <label htmlFor="altitude" className={styles.form__label}>
-                Высотность, м
-              </label>
-            </div>
-            <div className={`${styles.form__group} ${styles.field}`}>
-              <input
-                type="text"
-                className={styles.form__field}
-                placeholder="constructionVolume"
-                name="constructionVolume"
-                id="constructionVolume"
-                value={inputData.constructionVolume}
-                onChange={(event) =>
-                  changeHandler(
-                    event,
-                    inputData,
-                    setInputData,
-                    setPreviewPhotos,
-                    setIsDropPhotoVisible,
-                    setPreviewPhotoAva,
-                    setIsPhotoAvaVisible,
-                    setPreviewPhotoOpen,
-                    setIsPhotoOpenVisible
-                  )
-                }
-              />
-              <label
-                htmlFor="constructionVolume"
-                className={styles.form__label}
-              >
-                Строительный объем, м3
-              </label>
-            </div>
-          </div>
-
-          <div
-            className={`${styles.form_container__block_gray_one} ${styles.form_container__three_grey_block}`}
-          >
-            <div className={`${styles.form__group} ${styles.field}`}>
-              <input
-                type="input"
-                className={styles.form__field}
-                placeholder="location"
-                name="location"
-                id="location"
-                value={inputData.location}
-                onChange={(event) =>
-                  changeHandler(
-                    event,
-                    inputData,
-                    setInputData,
-                    setPreviewPhotos,
-                    setIsDropPhotoVisible,
-                    setPreviewPhotoAva,
-                    setIsPhotoAvaVisible,
-                    setPreviewPhotoOpen,
-                    setIsPhotoOpenVisible
-                  )
-                }
-              />
-              <label htmlFor="location" className={styles.form__label}>
-                Расположение: Город, улица, номер дома
-              </label>
-            </div>
-            <div className={`${styles.form__group} ${styles.field}`}>
-              <input
-                type="input"
-                className={styles.form__field}
-                placeholder="degreeParticipation"
-                name="degreeParticipation"
-                id="degreeParticipation"
-                value={inputData.degreeParticipation}
-                onChange={(event) =>
-                  changeHandler(
-                    event,
-                    inputData,
-                    setInputData,
-                    setPreviewPhotos,
-                    setIsDropPhotoVisible,
-                    setPreviewPhotoAva,
-                    setIsPhotoAvaVisible,
-                    setPreviewPhotoOpen,
-                    setIsPhotoOpenVisible
-                  )
-                }
-                // required
-              />
-              <label
-                htmlFor="degreeParticipation"
-                className={styles.form__label}
-              >
-                Степень участия
-              </label>
-            </div>
-            <div className={`${styles.form__group} ${styles.field}`}>
-              <input
-                type="input"
-                className={styles.form__field}
-                placeholder="statusObject"
-                name="statusObject"
-                id="statusObject"
-                value={inputData.statusObject}
-                onChange={(event) =>
-                  changeHandler(
-                    event,
-                    inputData,
-                    setInputData,
-                    setPreviewPhotos,
-                    setIsDropPhotoVisible,
-                    setPreviewPhotoAva,
-                    setIsPhotoAvaVisible,
-                    setPreviewPhotoOpen,
-                    setIsPhotoOpenVisible
-                  )
-                }
-                // required
-              />
-              <label htmlFor="statusObject" className={styles.form__label}>
-                Статус объекта (например «Дом сдан»)
-              </label>
-            </div>
-            <div className={`${styles.form__group} ${styles.field}`}>
-              <input
-                type="input"
-                className={styles.form__field}
-                placeholder="customer"
-                name="customer"
-                id="customer"
-                value={inputData.customer}
-                onChange={(event) =>
-                  changeHandler(
-                    event,
-                    inputData,
-                    setInputData,
-                    setPreviewPhotos,
-                    setIsDropPhotoVisible,
-                    setPreviewPhotoAva,
-                    setIsPhotoAvaVisible,
-                    setPreviewPhotoOpen,
-                    setIsPhotoOpenVisible
-                  )
-                }
-                // required
-              />
-              <label htmlFor="customer" className={styles.form__label}>
-                Заказчик
-              </label>
-            </div>
-
-            <div className={styles.form_container__block_gray_flex}>
-              <div className={styles.form_container__block_public}>
-                <div className={`${styles.form__group} ${styles.field}`}>
-                  <input
-                    type="input"
-                    className={styles.form__field}
-                    placeholder="publication"
-                    name="publication"
-                    id="publication"
-                    value={inputData.publication}
-                    onChange={(event) =>
-                      changeHandler(
-                        event,
-                        inputData,
-                        setInputData,
-                        setPreviewPhotos,
-                        setIsDropPhotoVisible,
-                        setPreviewPhotoAva,
-                        setIsPhotoAvaVisible,
-                        setPreviewPhotoOpen,
-                        setIsPhotoOpenVisible
-                      )
-                    }
-                  />
-                  <label htmlFor="publication" className={styles.form__label}>
-                    Публикация
-                  </label>
-                </div>
-                <div className={`${styles.form__group} ${styles.field}`}>
-                  <input
-                    type="input"
-                    className={styles.form__field}
-                    placeholder="publicationTwo"
-                    name="publicationTwo"
-                    id="publicationTwo"
-                    value={inputData.publicationTwo}
-                    onChange={(event) =>
-                      changeHandler(
-                        event,
-                        inputData,
-                        setInputData,
-                        setPreviewPhotos,
-                        setIsDropPhotoVisible,
-                        setPreviewPhotoAva,
-                        setIsPhotoAvaVisible,
-                        setPreviewPhotoOpen,
-                        setIsPhotoOpenVisible
-                      )
-                    }
-                  />
-                  <label
-                    htmlFor="publicationTwo"
-                    className={styles.form__label}
-                  >
-                    Публикация
-                  </label>
-                </div>
-              </div>
-              <div className={styles.form_container__block_public_link}>
-                <div className={`${styles.form__group} ${styles.field}`}>
-                  <input
-                    type="input"
-                    className={styles.form__field}
-                    placeholder="linkToPublication"
-                    name="linkToPublication"
-                    id="linkToPublication"
-                    value={inputData.linkToPublication}
-                    onChange={(event) =>
-                      changeHandler(
-                        event,
-                        inputData,
-                        setInputData,
-                        setPreviewPhotos,
-                        setIsDropPhotoVisible,
-                        setPreviewPhotoAva,
-                        setIsPhotoAvaVisible,
-                        setPreviewPhotoOpen,
-                        setIsPhotoOpenVisible
-                      )
-                    }
-                  />
-                  <label
-                    htmlFor="linkToPublication"
-                    className={styles.form__label}
-                  >
-                    Ссылк на статью
-                  </label>
-                </div>
-                <div className={`${styles.form__group} ${styles.field}`}>
-                  <input
-                    type="input"
-                    className={styles.form__field}
-                    placeholder="linkToPublicationTwo"
-                    name="linkToPublicationTwo"
-                    id="linkToPublicationTwo"
-                    value={inputData.linkToPublicationTwo}
-                    onChange={(event) =>
-                      changeHandler(
-                        event,
-                        inputData,
-                        setInputData,
-                        setPreviewPhotos,
-                        setIsDropPhotoVisible,
-                        setPreviewPhotoAva,
-                        setIsPhotoAvaVisible,
-                        setPreviewPhotoOpen,
-                        setIsPhotoOpenVisible
-                      )
-                    }
-                  />
-                  <label
-                    htmlFor="linkToPublicationTwo"
-                    className={styles.form__label}
-                  >
-                    Ссылк на статью
-                  </label>
-                </div>
-              </div>
-            </div>
-            <div className={`${styles.form__group} ${styles.field}`}>
-              <input
-                type="input"
-                className={styles.form__field}
-                placeholder="awards"
-                name="awards"
-                id="awards"
-                value={inputData.awards}
-                onChange={(event) =>
-                  changeHandler(
-                    event,
-                    inputData,
-                    setInputData,
-                    setPreviewPhotos,
-                    setIsDropPhotoVisible,
-                    setPreviewPhotoAva,
-                    setIsPhotoAvaVisible,
-                    setPreviewPhotoOpen,
-                    setIsPhotoOpenVisible
-                  )
-                }
-              />
-              <label htmlFor="awards" className={styles.form__label}>
-                Награды
-              </label>
-            </div>
-          </div>
-
-          <div className={styles.form_container__checkbox_block}>
-            <div>Открывающая картинка</div>
-          </div>
-          <label className={styles.slider_container__customFileUpload}>
-            <input
-              type="file"
-              name="imageOpen"
-              onChange={(event) =>
-                changeHandler(
-                  event,
-                  inputData,
-                  setInputData,
-                  setPreviewPhotos,
-                  setIsDropPhotoVisible,
-                  setPreviewPhotoAva,
-                  setIsPhotoAvaVisible,
-                  setPreviewPhotoOpen,
-                  setIsPhotoOpenVisible,
-                  setPreviewPhotoClose,
-                  setIsPhotoCloseVisible
-                )
-              }
-              style={{ display: isPhotoOpenVisible ? "block" : "none" }}
-            />
-            <div className={styles.slider_container__uploadIcon}>
-              <img src={icon} alt="icon" />
-            </div>
-            <div className={styles.slider_container__uploadText}>
-              Загрузить изображения
-            </div>
-          </label>
-          <div>
-            {previewPhotoOpen?.map((preview, index) => (
-              <div
-                key={index}
-                className={styles.preview_photos_container__block}
-              >
-                <img
-                  className={styles.preview_photos_container__img}
-                  src={preview}
-                  alt={`Preview ${index}`}
+            <div className={styles.form_container__block_gray_one}>
+              <div className={`${styles.form__group} ${styles.field}`}>
+                <input
+                  type="text" // Измените тип на 'text', так как форматирование может включать пробелы
+                  className={styles.form__field}
+                  placeholder="totalArea"
+                  name="totalArea"
+                  id="totalArea"
+                  value={inputData.totalArea}
+                  onChange={(event) =>
+                    changeHandler(
+                      event,
+                      inputData,
+                      setInputData,
+                      setPreviewPhotos,
+                      setIsDropPhotoVisible,
+                      setPreviewPhotoAva,
+                      setIsPhotoAvaVisible,
+                      setPreviewPhotoOpen,
+                      setIsPhotoOpenVisible
+                    )
+                  }
                 />
-                <div
-                  className={styles.preview_photos_container__remove_icon}
-                  onClick={() => handleRemovePreviewPhotoOpen(index)}
+                <label htmlFor="totalArea" className={styles.form__label}>
+                  Общая площадь, м²
+                </label>
+              </div>
+              <div className={`${styles.form__group} ${styles.field}`}>
+                <input
+                  type="text"
+                  className={styles.form__field}
+                  placeholder="siteArea"
+                  name="siteArea"
+                  id="siteArea"
+                  value={inputData.siteArea}
+                  onChange={(event) =>
+                    changeHandler(
+                      event,
+                      inputData,
+                      setInputData,
+                      setPreviewPhotos,
+                      setIsDropPhotoVisible,
+                      setPreviewPhotoAva,
+                      setIsPhotoAvaVisible,
+                      setPreviewPhotoOpen,
+                      setIsPhotoOpenVisible
+                    )
+                  }
+                />
+                <label htmlFor="siteArea" className={styles.form__label}>
+                  Площадь участка, га
+                </label>
+              </div>
+
+              <div className={`${styles.form__group} ${styles.field}`}>
+                <input
+                  type="text"
+                  className={styles.form__field}
+                  placeholder="floors"
+                  name="floors"
+                  id="floors"
+                  value={inputData.floors}
+                  onChange={(event) =>
+                    changeHandler(
+                      event,
+                      inputData,
+                      setInputData,
+                      setPreviewPhotos,
+                      setIsDropPhotoVisible,
+                      setPreviewPhotoAva,
+                      setIsPhotoAvaVisible,
+                      setPreviewPhotoOpen,
+                      setIsPhotoOpenVisible
+                    )
+                  }
+                />
+                <label htmlFor="floors" className={styles.form__label}>
+                  Этажность
+                </label>
+              </div>
+              <div className={`${styles.form__group} ${styles.field}`}>
+                <input
+                  type="text"
+                  className={styles.form__field}
+                  placeholder="altitude"
+                  name="altitude"
+                  id="altitude"
+                  value={inputData.altitude}
+                  onChange={(event) =>
+                    changeHandler(
+                      event,
+                      inputData,
+                      setInputData,
+                      setPreviewPhotos,
+                      setIsDropPhotoVisible,
+                      setPreviewPhotoAva,
+                      setIsPhotoAvaVisible,
+                      setPreviewPhotoOpen,
+                      setIsPhotoOpenVisible
+                    )
+                  }
+                />
+                <label htmlFor="altitude" className={styles.form__label}>
+                  Высотность, м
+                </label>
+              </div>
+              <div className={`${styles.form__group} ${styles.field}`}>
+                <input
+                  type="text"
+                  className={styles.form__field}
+                  placeholder="constructionVolume"
+                  name="constructionVolume"
+                  id="constructionVolume"
+                  value={inputData.constructionVolume}
+                  onChange={(event) =>
+                    changeHandler(
+                      event,
+                      inputData,
+                      setInputData,
+                      setPreviewPhotos,
+                      setIsDropPhotoVisible,
+                      setPreviewPhotoAva,
+                      setIsPhotoAvaVisible,
+                      setPreviewPhotoOpen,
+                      setIsPhotoOpenVisible
+                    )
+                  }
+                />
+                <label
+                  htmlFor="constructionVolume"
+                  className={styles.form__label}
                 >
-                  <span></span>
+                  Строительный объем, м3
+                </label>
+              </div>
+            </div>
+          </div>
+          {/* блок где мы вводим адрес объекта если есть награды и статьи */}
+          <div className={styles.measure_location_container}>
+            <div
+              className={`${styles.form_container__block_gray_one} ${styles.form_container__three_grey_block}`}
+            >
+              <div className={`${styles.form__group} ${styles.field}`}>
+                <input
+                  type="input"
+                  className={styles.form__field}
+                  placeholder="location"
+                  name="location"
+                  id="location"
+                  value={inputData.location}
+                  onChange={(event) =>
+                    changeHandler(
+                      event,
+                      inputData,
+                      setInputData,
+                      setPreviewPhotos,
+                      setIsDropPhotoVisible,
+                      setPreviewPhotoAva,
+                      setIsPhotoAvaVisible,
+                      setPreviewPhotoOpen,
+                      setIsPhotoOpenVisible
+                    )
+                  }
+                />
+                <label htmlFor="location" className={styles.form__label}>
+                  Расположение: Город, улица, номер дома
+                </label>
+              </div>
+              <div className={`${styles.form__group} ${styles.field}`}>
+                <input
+                  type="input"
+                  className={styles.form__field}
+                  placeholder="degreeParticipation"
+                  name="degreeParticipation"
+                  id="degreeParticipation"
+                  value={inputData.degreeParticipation}
+                  onChange={(event) =>
+                    changeHandler(
+                      event,
+                      inputData,
+                      setInputData,
+                      setPreviewPhotos,
+                      setIsDropPhotoVisible,
+                      setPreviewPhotoAva,
+                      setIsPhotoAvaVisible,
+                      setPreviewPhotoOpen,
+                      setIsPhotoOpenVisible
+                    )
+                  }
+                  // required
+                />
+                <label
+                  htmlFor="degreeParticipation"
+                  className={styles.form__label}
+                >
+                  Степень участия
+                </label>
+              </div>
+              <div className={`${styles.form__group} ${styles.field}`}>
+                <input
+                  type="input"
+                  className={styles.form__field}
+                  placeholder="statusObject"
+                  name="statusObject"
+                  id="statusObject"
+                  value={inputData.statusObject}
+                  onChange={(event) =>
+                    changeHandler(
+                      event,
+                      inputData,
+                      setInputData,
+                      setPreviewPhotos,
+                      setIsDropPhotoVisible,
+                      setPreviewPhotoAva,
+                      setIsPhotoAvaVisible,
+                      setPreviewPhotoOpen,
+                      setIsPhotoOpenVisible
+                    )
+                  }
+                  // required
+                />
+                <label htmlFor="statusObject" className={styles.form__label}>
+                  Статус объекта (например «Дом сдан»)
+                </label>
+              </div>
+              <div className={`${styles.form__group} ${styles.field}`}>
+                <input
+                  type="input"
+                  className={styles.form__field}
+                  placeholder="customer"
+                  name="customer"
+                  id="customer"
+                  value={inputData.customer}
+                  onChange={(event) =>
+                    changeHandler(
+                      event,
+                      inputData,
+                      setInputData,
+                      setPreviewPhotos,
+                      setIsDropPhotoVisible,
+                      setPreviewPhotoAva,
+                      setIsPhotoAvaVisible,
+                      setPreviewPhotoOpen,
+                      setIsPhotoOpenVisible
+                    )
+                  }
+                  // required
+                />
+                <label htmlFor="customer" className={styles.form__label}>
+                  Заказчик
+                </label>
+              </div>
+
+              <div className={styles.form_container__block_gray_flex}>
+                <div className={styles.form_container__block_public}>
+                  <div className={`${styles.form__group} ${styles.field}`}>
+                    <input
+                      type="input"
+                      className={styles.form__field}
+                      placeholder="publication"
+                      name="publication"
+                      id="publication"
+                      value={inputData.publication}
+                      onChange={(event) =>
+                        changeHandler(
+                          event,
+                          inputData,
+                          setInputData,
+                          setPreviewPhotos,
+                          setIsDropPhotoVisible,
+                          setPreviewPhotoAva,
+                          setIsPhotoAvaVisible,
+                          setPreviewPhotoOpen,
+                          setIsPhotoOpenVisible
+                        )
+                      }
+                    />
+                    <label htmlFor="publication" className={styles.form__label}>
+                      Публикация
+                    </label>
+                  </div>
+                  <div className={`${styles.form__group} ${styles.field}`}>
+                    <input
+                      type="input"
+                      className={styles.form__field}
+                      placeholder="publicationTwo"
+                      name="publicationTwo"
+                      id="publicationTwo"
+                      value={inputData.publicationTwo}
+                      onChange={(event) =>
+                        changeHandler(
+                          event,
+                          inputData,
+                          setInputData,
+                          setPreviewPhotos,
+                          setIsDropPhotoVisible,
+                          setPreviewPhotoAva,
+                          setIsPhotoAvaVisible,
+                          setPreviewPhotoOpen,
+                          setIsPhotoOpenVisible
+                        )
+                      }
+                    />
+                    <label
+                      htmlFor="publicationTwo"
+                      className={styles.form__label}
+                    >
+                      Публикация
+                    </label>
+                  </div>
+                </div>
+                <div className={styles.form_container__block_public_link}>
+                  <div className={`${styles.form__group} ${styles.field}`}>
+                    <input
+                      type="input"
+                      className={styles.form__field}
+                      placeholder="linkToPublication"
+                      name="linkToPublication"
+                      id="linkToPublication"
+                      value={inputData.linkToPublication}
+                      onChange={(event) =>
+                        changeHandler(
+                          event,
+                          inputData,
+                          setInputData,
+                          setPreviewPhotos,
+                          setIsDropPhotoVisible,
+                          setPreviewPhotoAva,
+                          setIsPhotoAvaVisible,
+                          setPreviewPhotoOpen,
+                          setIsPhotoOpenVisible
+                        )
+                      }
+                    />
+                    <label
+                      htmlFor="linkToPublication"
+                      className={styles.form__label}
+                    >
+                      Ссылк на статью
+                    </label>
+                  </div>
+                  <div className={`${styles.form__group} ${styles.field}`}>
+                    <input
+                      type="input"
+                      className={styles.form__field}
+                      placeholder="linkToPublicationTwo"
+                      name="linkToPublicationTwo"
+                      id="linkToPublicationTwo"
+                      value={inputData.linkToPublicationTwo}
+                      onChange={(event) =>
+                        changeHandler(
+                          event,
+                          inputData,
+                          setInputData,
+                          setPreviewPhotos,
+                          setIsDropPhotoVisible,
+                          setPreviewPhotoAva,
+                          setIsPhotoAvaVisible,
+                          setPreviewPhotoOpen,
+                          setIsPhotoOpenVisible
+                        )
+                      }
+                    />
+                    <label
+                      htmlFor="linkToPublicationTwo"
+                      className={styles.form__label}
+                    >
+                      Ссылк на статью
+                    </label>
+                  </div>
                 </div>
               </div>
-            ))}
+              <div className={`${styles.form__group} ${styles.field}`}>
+                <input
+                  type="input"
+                  className={styles.form__field}
+                  placeholder="awards"
+                  name="awards"
+                  id="awards"
+                  value={inputData.awards}
+                  onChange={(event) =>
+                    changeHandler(
+                      event,
+                      inputData,
+                      setInputData,
+                      setPreviewPhotos,
+                      setIsDropPhotoVisible,
+                      setPreviewPhotoAva,
+                      setIsPhotoAvaVisible,
+                      setPreviewPhotoOpen,
+                      setIsPhotoOpenVisible
+                    )
+                  }
+                />
+                <label htmlFor="awards" className={styles.form__label}>
+                  Награды
+                </label>
+              </div>
+            </div>
           </div>
-
-          <div className={styles.form_container__heading_block}>
-            <input
-              type="input"
-              className={styles.form_container__heading_block_input}
-              placeholder="Не более 56 символов"
-              name="headingTextBlock"
-              id="headingTextBlock"
-              maxLength="56"
-              value={inputData.headingTextBlock}
-              onChange={(event) => {
-                const value = event.target.value;
-                if (value.length <= 56) {
-                  setInputData({ ...inputData, headingTextBlock: value });
+          {/* блок с картинкой открывающейся */}
+          <div className={`${styles.imageOpen_block} ${styles.flex_block_gap}`}>
+            <div className={styles.form_container__checkbox_block}>
+              <div>Открывающая картинка</div>
+            </div>
+            <div style={{ display: isPhotoOpenVisible ? "block" : "none" }}>
+              <label className={styles.slider_container__customFileUpload}>
+                <input
+                  type="file"
+                  name="imageOpen"
+                  onChange={(event) =>
+                    changeHandler(
+                      event,
+                      inputData,
+                      setInputData,
+                      setPreviewPhotos,
+                      setIsDropPhotoVisible,
+                      setPreviewPhotoAva,
+                      setIsPhotoAvaVisible,
+                      setPreviewPhotoOpen,
+                      setIsPhotoOpenVisible,
+                      setPreviewPhotoClose,
+                      setIsPhotoCloseVisible
+                    )
+                  }
+                />
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <g id="Frame 4684">
+                    <path
+                      id="Vector"
+                      d="M11.8349 7.54949L5.64223 7.54949C5.46569 7.54642 5.2903 7.57854 5.1263 7.64398C4.96231 7.70942 4.81299 7.80686 4.68705 7.93062C4.56112 8.05439 4.4611 8.20199 4.39282 8.36483C4.32454 8.52766 4.28938 8.70246 4.28938 8.87903C4.28937 9.0556 4.32454 9.2304 4.39282 9.39323C4.4611 9.55607 4.56112 9.70367 4.68705 9.82744C4.81299 9.9512 4.96231 10.0486 5.1263 10.1141C5.2903 10.1795 5.46569 10.2116 5.64223 10.2086L11.754 10.1277C12.4512 10.1156 13.1158 9.83011 13.6046 9.33275C14.0934 8.8354 14.3673 8.16596 14.3673 7.46862C14.3673 6.77129 14.0934 6.10185 13.6046 5.60449C13.1158 5.10713 12.4512 4.82165 11.754 4.80953L5.64223 4.88946C4.58413 4.88946 3.56936 5.30979 2.82117 6.05798C2.07298 6.80617 1.65265 7.82093 1.65265 8.87903C1.65265 9.93713 2.07298 10.9519 2.82117 11.7001C3.56936 12.4483 4.58413 12.8686 5.64223 12.8686L11.5189 12.8752"
+                      stroke="currentColor"
+                      strokeWidth="0.8"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </g>
+                </svg>
+                <div className={styles.slider_container__uploadText}>
+                  Загрузить изображения
+                </div>
+              </label>
+            </div>
+            <div>
+              {previewPhotoOpen?.map((preview, index) => (
+                <div
+                  key={index}
+                  className={styles.preview_photos_container__block}
+                >
+                  <img
+                    className={styles.preview_photos_container__img}
+                    src={preview}
+                    alt={`Preview ${index}`}
+                  />
+                  <div
+                    className={styles.preview_photos_container__remove_icon}
+                    onClick={() => handleRemovePreviewPhotoOpen(index)}
+                  >
+                    <span></span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+          {/* блок куда вводиться инфа (Заголовок текстового блока ) */}
+          <div className={styles.container__heading_block}>
+            <div className={styles.form_container__heading_block}>
+              <input
+                type="input"
+                className={styles.form_container__heading_block_input}
+                placeholder="Не более 56 символов"
+                name="headingTextBlock"
+                id="headingTextBlock"
+                maxLength="56"
+                value={inputData.headingTextBlock}
+                onChange={(event) => {
+                  const value = event.target.value;
+                  if (value.length <= 56) {
+                    setInputData({ ...inputData, headingTextBlock: value });
+                  }
+                }}
+                required
+              />
+              <label
+                htmlFor="headingTextBlock"
+                className={styles.form_container__heading_block_label}
+              >
+                Заголовок текстового блока
+              </label>
+              <div
+                className={styles.form_container__heading_block_input_length}
+              >
+                {`${inputData.headingTextBlock.length}/56`}
+              </div>
+            </div>
+          </div>
+          {/* блок куда вводиться инфа (textarea Заголовока текстового блока ) */}
+          <div className={styles.heading_textarea}>
+            <div className={styles.form_container__description_text}>
+              <textarea
+                className={styles.form_container__textarea}
+                name="textBlock"
+                id="textBlock"
+                cols="30"
+                rows="10"
+                placeholder="Дополнительный текстовый блок"
+                value={inputData.textBlock}
+                onChange={(event) =>
+                  changeHandler(
+                    event,
+                    inputData,
+                    setInputData,
+                    setPreviewPhotos,
+                    setIsDropPhotoVisible,
+                    setPreviewPhotoAva,
+                    setIsPhotoAvaVisible,
+                    setPreviewPhotoOpen,
+                    setIsPhotoOpenVisible,
+                    setPreviewPhotoClose,
+                    setIsPhotoCloseVisible
+                  )
                 }
-              }}
-              required
-            />
-            <label
-              htmlFor="headingTextBlock"
-              className={styles.form_container__heading_block_label}
-            >
-              Заголовок текстового блока
-            </label>
-            <div className={styles.form_container__heading_block_input_length}>
-              {`${inputData.headingTextBlock.length}/56`}
+              ></textarea>
+              <label
+                htmlFor="textBlock"
+                className={styles.form_container__textarea_label}
+              >
+                Текстовый блок
+              </label>
             </div>
           </div>
 
-          <div className={styles.form_container__description_text}>
-            <textarea
-              className={styles.form_container__textarea}
-              name="textBlock"
-              id="textBlock"
-              cols="30"
-              rows="10"
-              placeholder="Дополнительный текстовый блок"
-              value={inputData.textBlock}
-              onChange={(event) =>
-                changeHandler(
-                  event,
-                  inputData,
-                  setInputData,
-                  setPreviewPhotos,
-                  setIsDropPhotoVisible,
-                  setPreviewPhotoAva,
-                  setIsPhotoAvaVisible,
-                  setPreviewPhotoOpen,
-                  setIsPhotoOpenVisible,
-                  setPreviewPhotoClose,
-                  setIsPhotoCloseVisible
-                )
-              }
-            ></textarea>
-            <label
-              htmlFor="textBlock"
-              className={styles.form_container__textarea_label}
-            >
-              Текстовый блок
-            </label>
-          </div>
-
-          <div className={styles.inputsContainer}>
+          {/* КОНСТРУКТОР */}
+          <div className={styles.inputs_container}>
             {blocks.map((blockInputs, blockIndex) => (
-              <div key={blockIndex} className={styles.inputBlock}>
+              <div key={blockIndex} className={styles.input_block}>
                 {renderInputs(blockInputs, blockIndex)}
               </div>
             ))}
           </div>
-
           <div className={styles.constructor_container}>
             <div className={styles.constructor_container__block}>
               {!onenConstructor ? (
@@ -1420,58 +1499,79 @@ export default function FormAddProject({ setIsModalOpen }) {
               )}
             </div>
           </div>
-          <div className={styles.form_container__checkbox_block}>
-            <div>Закрывающая картинка</div>
-          </div>
-          <label className={styles.slider_container__customFileUpload}>
-            <input
-              type="file"
-              name="imageClose"
-              onChange={(event) =>
-                changeHandler(
-                  event,
-                  inputData,
-                  setInputData,
-                  setPreviewPhotos,
-                  setIsDropPhotoVisible,
-                  setPreviewPhotoAva,
-                  setIsPhotoAvaVisible,
-                  setPreviewPhotoOpen,
-                  setIsPhotoOpenVisible,
-                  setPreviewPhotoClose,
-                  setIsPhotoCloseVisible
-                )
-              }
-              style={{ display: isPhotoCloseVisible ? "block" : "none" }}
-            />
-            <div className={styles.slider_container__uploadIcon}>
-              <img src={icon} alt="icon" />
+          {/* КОНСТРУКТОР */}
+          {/* блок с картинкой закрывающейся */}
+          <div
+            className={`${styles.imageClose_block} ${styles.flex_block_gap}`}
+          >
+            <div className={styles.form_container__checkbox_block}>
+              <div>Закрывающая картинка</div>
             </div>
-            <div className={styles.slider_container__uploadText}>
-              Загрузить изображения
-            </div>
-          </label>
-          <div>
-            {previewPhotoClose?.map((preview, index) => (
-              <div
-                key={index}
-                className={styles.preview_photos_container__block}
-              >
-                <img
-                  className={styles.preview_photos_container__img}
-                  src={preview}
-                  alt={`Preview ${index}`}
+            <div style={{ display: isPhotoCloseVisible ? "block" : "none" }}>
+              <label className={styles.slider_container__customFileUpload}>
+                <input
+                  type="file"
+                  name="imageClose"
+                  onChange={(event) =>
+                    changeHandler(
+                      event,
+                      inputData,
+                      setInputData,
+                      setPreviewPhotos,
+                      setIsDropPhotoVisible,
+                      setPreviewPhotoAva,
+                      setIsPhotoAvaVisible,
+                      setPreviewPhotoOpen,
+                      setIsPhotoOpenVisible,
+                      setPreviewPhotoClose,
+                      setIsPhotoCloseVisible
+                    )
+                  }
                 />
-                <div
-                  className={styles.preview_photos_container__remove_icon}
-                  onClick={() => handleRemovePreviewPhotoClose(index)}
+                <svg
+                  width="16"
+                  height="16"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
-                  <span></span>
+                  <g id="Frame 4684">
+                    <path
+                      id="Vector"
+                      d="M11.8349 7.54949L5.64223 7.54949C5.46569 7.54642 5.2903 7.57854 5.1263 7.64398C4.96231 7.70942 4.81299 7.80686 4.68705 7.93062C4.56112 8.05439 4.4611 8.20199 4.39282 8.36483C4.32454 8.52766 4.28938 8.70246 4.28938 8.87903C4.28937 9.0556 4.32454 9.2304 4.39282 9.39323C4.4611 9.55607 4.56112 9.70367 4.68705 9.82744C4.81299 9.9512 4.96231 10.0486 5.1263 10.1141C5.2903 10.1795 5.46569 10.2116 5.64223 10.2086L11.754 10.1277C12.4512 10.1156 13.1158 9.83011 13.6046 9.33275C14.0934 8.8354 14.3673 8.16596 14.3673 7.46862C14.3673 6.77129 14.0934 6.10185 13.6046 5.60449C13.1158 5.10713 12.4512 4.82165 11.754 4.80953L5.64223 4.88946C4.58413 4.88946 3.56936 5.30979 2.82117 6.05798C2.07298 6.80617 1.65265 7.82093 1.65265 8.87903C1.65265 9.93713 2.07298 10.9519 2.82117 11.7001C3.56936 12.4483 4.58413 12.8686 5.64223 12.8686L11.5189 12.8752"
+                      stroke="currentColor"
+                      strokeWidth="0.8"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </g>
+                </svg>
+                <div className={styles.slider_container__uploadText}>
+                  Загрузить изображения
                 </div>
-              </div>
-            ))}
+              </label>
+            </div>
+            <div>
+              {previewPhotoClose?.map((preview, index) => (
+                <div
+                  key={index}
+                  className={styles.preview_photos_container__block}
+                >
+                  <img
+                    className={styles.preview_photos_container__img}
+                    src={preview}
+                    alt={`Preview ${index}`}
+                  />
+                  <div
+                    className={styles.preview_photos_container__remove_icon}
+                    onClick={() => handleRemovePreviewPhotoClose(index)}
+                  >
+                    <span></span>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
-
           <div className={styles.form_container__button_block}>
             <button
               className={styles.form_container__button_save}

@@ -271,12 +271,11 @@ export default function Project() {
       );
     });
 
-  const imageSrc =
-    projects?.imageProject || projects?.imageTitle
-      ? `${Host}/images/imageAdd/${
-          projects?.imageProject || projects?.imageTitle
-        }`
-      : catPhoto;
+  const imageSlider = projects[0]?.imageOpen;
+
+  const imageSrc = imageSlider
+    ? `${Host}/images/imageAdd/${imageSlider}`
+    : catPhoto;
 
   const altText =
     projects?.imageProject || projects?.imageTitle || "Default Alt Text";

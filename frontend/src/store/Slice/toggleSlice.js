@@ -158,7 +158,7 @@ const toggleSlice = createSlice({
     },
     [fetchToggleStateForButton3Async.fulfilled]: (state, action) => {
       state.isActiveForButton3 = action.payload;
-      console.log("Successfully fetched toggle state for button 3 from server");
+      // console.log("Successfully fetched toggle state for button 3 from server");
     },
     [fetchToggleStateForButton3Async.rejected]: (state, action) => {
       state.error = action.payload?.message || "Unknown error occurred";

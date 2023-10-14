@@ -300,8 +300,6 @@ export default function ConstructorBlockRenderer({ block }) {
 
   const renderVideoBlock = (block) => {
     const videoPath = block[0]?.value.join("");
-    console.log(videoPath, "Video Path");
-
     return (
       <div
         className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockSix}`}
