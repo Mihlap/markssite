@@ -272,6 +272,9 @@ export default function FormAddProject({ setIsModalOpen }) {
         }
         return newData;
       });
+
+      const fileInputs = document.querySelectorAll('input[type="file"]');
+      fileInputs.forEach((input) => (input.value = "")); // это очищает значение всех инпутов типа file
     }
 
     return (
