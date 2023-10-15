@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from "react";
-import axios from "axios";
+import React from "react";
 import styles from "./ConstructorPage.module.scss";
 
 import svg1 from "./svg/Group4650.svg";
@@ -9,45 +8,8 @@ import svg4 from "./svg/Group4652.svg";
 import svg5 from "./svg/Group4649.svg";
 import svg6 from "./svg/Group4641.svg";
 
-// const Host = process.env.REACT_APP_SERVER_HOST;
 
 export default function ConstructorPage({ handleClick }) {
-  const [showNotification, setShowNotification] = useState(false);
-  //  const [selectedVideo, setSelectedVideo] = useState(null);
-
-  //  const handleVideoChange = (event) => {
-  //   setSelectedVideo(event.target.files[0]);
-  //   handleVideoUpload(event.target.files[0]);
-  // };
-
-  // const handleVideoUpload = async (video) => {
-  //   if (video) {
-  //     const formData = new FormData();
-  //     formData.append("video", video);
-
-  //     try {
-  //       const response = await axios.post(
-  //         `${Host}/api/video/upload-video`,
-  //         formData
-  //       );
-  //       console.log("Video uploaded successfully!", response.data);
-  //     } catch (error) {
-  //       console.error("Error uploading video:", error);
-  //     }
-  //   }
-  // };
-
-  useEffect(() => {
-    if (showNotification) {
-      setTimeout(() => {
-        setShowNotification(false);
-      }, 3000); // Уведомление исчезнет через 2 секунды
-    }
-  }, [showNotification]);
-
-  // const handleVideoClick = () => {
-  //   setShowNotification(true);
-  // };
 
   return (
     <div className={styles.div_conteiner}>
@@ -122,13 +84,6 @@ export default function ConstructorPage({ handleClick }) {
       >
         <img src={svg6} alt="svg_six_icon" />
       </div>
-      {/* <div
-        className={`${styles.notification} ${
-          showNotification ? styles.showNotification : ""
-        }`}
-      >
-        Сейчас загрузка видео недоступна 😢
-      </div> */}
     </div>
   );
 }
