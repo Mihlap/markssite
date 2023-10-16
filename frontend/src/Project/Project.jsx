@@ -130,6 +130,7 @@ export default function Project() {
       .catch((error) =>
         console.error("Ошибка при получении геопозиции:", error)
       );
+      // setCurLocation("Москва");
   }, []);
 
   const currentLocation = userGeolocation
