@@ -500,14 +500,14 @@ const ProjectCard = () => {
                     alt=""
                   />
                 </div> */}
-                <div className={styles.item}>
+                {/* <div className={styles.item}>
                   <img
                     ref={refs.leftImg3}
                     className={styles.item_img}
                     // src={img3}
                     alt=""
                   />
-                </div>
+                </div> */}
                 <div className={styles.div_conteiner}>
                   {userSelectedBlocks?.map((innerBlocks, outerIndex) => (
                     <div key={outerIndex}>

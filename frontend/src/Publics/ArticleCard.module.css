@@ -687,7 +687,7 @@ padding-right: 0.5rem;
 }
 
 /* Стили для desctop версии +1 сайта блока ArticleCard начинаются тут */
-
+/* 
 @media screen and (min-width: 1025px) and (max-width: 1600px) {
 
   .header_content_left {
@@ -697,7 +697,7 @@ padding-right: 0.5rem;
     padding-right: 1.75rem;
     width: 100%;
   }
-}
+} */
 
 /* Стили для planshet версии сайта блока ArticleCard начинаются тут */
 
