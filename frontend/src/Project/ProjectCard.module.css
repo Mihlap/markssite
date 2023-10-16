@@ -259,7 +259,7 @@
   width: 100%;
   height: auto;
   max-height: 50vw;
-  border-radius: 1.11vw;
+  border-radius: 1rem;
 
 }
 
@@ -268,8 +268,11 @@
   margin-top: 0;
 }
 
-.item_img_close {
-  border-radius: 1.11vw 1.11vw 0vw 0vw;
+.item_img_close img{
+  width: 100%;
+  height: auto;
+  max-height: 50vw;
+  border-radius: 1rem 1rem 0vw 0vw;
   object-fit: cover;
 }
 
@@ -308,6 +311,7 @@
   overflow-wrap: anywhere; 
   white-space: pre-line;
   hyphens: auto;
+  padding-bottom: 3.75rem;
 }
 
 .quote_block,
@@ -659,7 +663,7 @@
 
 /* Стили для desctop версии +1 сайта блока ProjectCard начинаются тут */
 
-@media screen and (min-width: 1025px) and (max-width: 1600px) {
+/* @media screen and (min-width: 1025px) and (max-width: 1600px) {
 
   .header_content_left {
     padding-left: 1.75rem;
@@ -691,7 +695,7 @@
   }
 
 
-}
+} */
 
 /* Стили для planshet версии сайта блока ProjectCard начинаются тут */
 
