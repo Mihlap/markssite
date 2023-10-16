@@ -1,5 +1,5 @@
-DATABASE=postgres://mihlap:Simon098@db:5432/marks-group
+DATABASE=postgres://mihlap:Simon098@localhost:5432/marks-group
 DBNAME=marks-group
 PGUSER=mihlap
 PGPASS=Simon098
-PGPATH=/users/markssite/backend/db
+PGPATH=/users/markssite/db
