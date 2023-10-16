@@ -6,7 +6,25 @@ export const getUserGeolocation = () => {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
-          resolve({ latitude, longitude });
+
+          const apiUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=10`;
+
+          fetch(apiUrl)
+            .then(response => {
+              if (!response.ok) {
+                throw new Error('Ошибка сети или неверный ответ сервера');
+              }
+              return response.json();
+            })
+            .then(data => {
+              const city = data.address.city || data.address.town || data.address.village || data.address.county;
+              if (city) {
+                resolve({ latitude, longitude, city });
+              } else {
+                resolve({ latitude, longitude, city: "Москва" });
+              }
+            })
+            .catch(error => reject(error));
         },
         (error) => {
           reject(error);
@@ -17,6 +35,7 @@ export const getUserGeolocation = () => {
     }
   });
 };
+
 
 
 export const resizeImage = (width, height) => {
