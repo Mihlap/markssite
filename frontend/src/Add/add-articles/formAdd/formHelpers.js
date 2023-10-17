@@ -23,6 +23,10 @@ export const removePreviewPhoto = (
   }));
 
   // Обновление стиля поля ввода файлов
+
+   if (updatedPreviewPhotos.length === 0) {
+     setIsDropPhotoVisible(true);
+   }
 };
 
 export const removePreviewPhotoAva = (
