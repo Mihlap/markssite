@@ -28,6 +28,7 @@
   padding-left: 1.69rem;
   padding-right: 1.69rem;
   word-break: break-word;
+  width: 70%;
 }
 
 
@@ -40,7 +41,7 @@
   line-height: 4rem;
   color: var(--white-F6F6F6);
   padding-top: 4rem;
-}
+ }
 
 .cart_article__author__block__card {
   display: flex;
@@ -703,6 +704,10 @@ padding-right: 0.5rem;
 
 @media screen and (min-width: 768px) and (max-width: 1024px) {
 
+  .cart_article__block__card {  
+    width: 100%;
+  }
+  
   .share_article,
   .social_links_articleCard {
     display: none;
@@ -818,8 +823,8 @@ padding-right: 0.5rem;
     padding-top: 13vh;
     padding-left: 1rem;
     padding-right: 1rem;
+    width: 100%;
   }
-
 
   .cart_article_title__block__card {
     font-size: 1.5rem;

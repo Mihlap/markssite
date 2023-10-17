@@ -73,7 +73,9 @@ const ArticleCardSlider = ({ slidesCard }) => {
         ref={sliderRef}
         slidesToScroll={1}
         onSwipe={handleSwipe}
-        infinite={false}
+        infinite={true}
+        autoplay={true}
+        autoplaySpeed={3000}
         beforeChange={handleBeforeChange}
       >
         {imagePaths?.map((path, index) => (
