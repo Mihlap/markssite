@@ -575,8 +575,8 @@
 
 .wrapper_container_title_selectCompetencies_projectCard {
   display: flex;
-  width: 100%;
   padding-top: 1rem;
+  width: 100%;
 }
 
 .container_wrapper_title_city_data_block_projectCard {
@@ -633,30 +633,30 @@
 }
 
 .wrapper_container__selectCompetencies_projectCard {
-  display: flex;
-  justify-content: flex-end;
+  /* display: flex;
+  justify-content: flex-end; */
   width: 100%;
 }
 
 .container__selectCompetencies_projectCard {
-  display: block;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  flex-wrap: wrap;
   background: var(--white-F6F6F6);
   font-size: 9px;
   font-style: normal;
   font-weight: var(--fw-500);
   line-height: normal;
-  /* justify-content: flex-end; */
-  flex-direction: row;
-  flex-wrap: wrap;
   padding-left: 2rem;
 }
 
 .div_el_selectCompetencies_projectCard {
-  display: inline-flex;
-  width: fit-content;
-  margin-right: 6px;
+  border: 1px solid;
+  border-radius: 34px;
+  max-width: fit-content;
   margin-bottom: 6px;
-
+  margin-right: 6px;
 }
 
 
