@@ -328,9 +328,9 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
                         />
                       </div>
                       <div className={styles.card_text}>
-                        <h3>{el.title}</h3>
+                        <span className={styles.card_text_title}>{el.title}</span>
                       </div>
-                      <div className={styles.city_dataMonthYear_wrapper}>
+                      <div className={styles.wrapper_card_text_svg}>
                         <span className={styles.card_text_city}>{el.city}</span>
                         <span className={styles.card_text_svg}>
                           <svg
@@ -394,7 +394,9 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
                         />
                       </div>
                       <div className={styles.card_text}>
-                        <h3>{el.title}</h3>
+                        <span className={styles.card_text_title}>{el.title}</span>
+                      </div>
+                        <div className={styles.wrapper_card_text_svg}>
                         <span className={styles.card_text_city}>{el.city}</span>
                         <span className={styles.card_text_svg}>
                           <svg
@@ -410,7 +412,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
                         <span className={styles.card_text_dataMonthYear}>
                           {el.dataMonthYear}
                         </span>
-                      </div>
+                        </div>
                       <button className={styles.card_button}>
                         <svg
                           width="32"
