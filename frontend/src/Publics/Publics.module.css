@@ -199,7 +199,7 @@
     flex-direction: column;
     width: calc(25% - 1.88rem);
     height: 29rem;
-    margin-bottom: 2rem;
+    margin-bottom: 0rem;
   }
  
 }

@@ -896,7 +896,7 @@ display: inline-block;
         display: flex;
         justify-content: center;
         flex-direction: column;
-        gap: 2rem;
+        gap: 0rem;
     }
 
     .section_project__block_cart {
@@ -946,7 +946,7 @@ display: inline-block;
         grid-row-gap: 0.25rem;
         padding-top: 0.38rem;
         padding-left: 0px;
-        padding-bottom: 0.5rem;
+        padding-bottom: 0rem;
         flex-direction: row;
         font-size: 0.56rem;
         font-weight: var(--fw-500);
