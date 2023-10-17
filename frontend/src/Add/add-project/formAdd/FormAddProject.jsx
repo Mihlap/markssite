@@ -929,7 +929,7 @@ export default function FormAddProject({ setIsModalOpen }) {
           {/* блок и текстерией ( Описание проекта ) */}
           <div className={styles.form_container__description_text}>
             <div className={styles.form_container__textarea_length}>
-              {`${inputData.descriptionProject.length}/270`}
+              {`${inputData.descriptionProject.length}/260`}
             </div>
             <textarea
               className={styles.form_container__textarea}
@@ -937,11 +937,11 @@ export default function FormAddProject({ setIsModalOpen }) {
               id="descriptionProject"
               cols="30"
               rows="10"
-              placeholder="Не более 270 символов"
+              placeholder="Не более 260 символов"
               value={inputData.descriptionProject}
               onChange={(event) => {
                 const value = event.target.value;
-                if (value.length <= 270) {
+                if (value.length <= 260) {
                   setInputData({ ...inputData, descriptionProject: value });
                 }
               }}
