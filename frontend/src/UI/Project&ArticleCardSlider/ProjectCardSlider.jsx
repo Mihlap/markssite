@@ -70,7 +70,7 @@ const ProjectCardSlider = ({ slidesCard }) => {
         onSwipe={handleSwipe}
         infinite={true}
         autoplay={true}
-        autoplaySpeed={3000}
+        autoplaySpeed={6000}
         beforeChange={handleBeforeChange}
       >
         {imagePaths?.map((path, index) => (

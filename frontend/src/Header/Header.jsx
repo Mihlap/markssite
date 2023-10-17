@@ -37,9 +37,9 @@ gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
 export default function Header({ user, setNavBarOpen, setShowFooter }) {
   const videoSource = {
-    small: `${Host}/images/video/primePark_mobile.mp4`,
-    medium: `${Host}/images/video/primePark_ipad.mp4`,
-    large: `${Host}/images/video/primePark.mp4`,
+    large: `${Host}/images/video/header_company_full.mp4`,
+    medium: `${Host}/images/video/header_company_ipad.mp4`,
+    small: `${Host}/images/video/header_company_mobile.mp4`
   };
   const sliderCardRef = useRef(null);
   const [enableVerticalScroll, setEnableVerticalScroll] = useState(true);
