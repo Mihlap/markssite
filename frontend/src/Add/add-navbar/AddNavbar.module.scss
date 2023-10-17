@@ -247,6 +247,44 @@
     }
 }
 
+.button_xren {
+    position: relative;
+    background-color: var(--blue-75BBFD);
+    color: #fff;
+    padding: 1rem 2rem;
+    border-radius: 3rem;
+    transition: .4s;
+
+    &::after {
+        content: '';
+        width: 80%;
+        height: 40%;
+        background: linear-gradient(80deg,
+                hsl(217, 80%, 80%) 10%,
+                hsl(217, 85%, 70%) 48%);
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: -4px;
+        margin: 0 auto;
+        border-radius: 3rem;
+        filter: blur(12px);
+        z-index: -1;
+        opacity: 0;
+        transition: opacity .4s;
+    }
+
+    &__text {
+        position: relative;
+        z-index: 10;
+    }
+
+    /* View shadow gradient */
+    &:hover {
+        background-color: var(--dark-blue-389FFF);
+    }
+}
+
 
 @media screen and (max-width: 1000px) {
     .add_navbar_container {
