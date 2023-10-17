@@ -212,7 +212,7 @@ display: inline-block;
     display: flex;
     flex-direction: row;
     width: 100%;
-    gap: 10px;
+    /* gap: 10px; */
 
 }
 
@@ -246,7 +246,7 @@ display: inline-block;
     flex-wrap: wrap;
     grid-row-gap: 8px;
     padding-top: 16px;
-    padding-left: 8px;
+    padding-left: 6px;
     font-family: var(--font-raleway);
     font-size: 9px;
     font-style: normal;
@@ -258,7 +258,6 @@ display: inline-block;
 .cart_project__address {
     display: flex;
     flex-wrap: wrap;
-    word-wrap: break-word;
     color: var(--gray-959DA6);
     font-family: var(--font-raleway);
     font-size: 10px;
@@ -266,6 +265,7 @@ display: inline-block;
     font-weight: var(--fw-400);
     line-height: normal;
     padding-top: 0.6rem;
+    width: max-content;
   }
 
 .cart_project__address__svg {
@@ -278,7 +278,6 @@ display: inline-block;
 
 .el_project_selectCompetencies {
     margin-right: 6px;
-    /* margin-top: 6px; */
     border: 1px solid;
     border-radius: 34px;
     max-width: fit-content;
