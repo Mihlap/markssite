@@ -585,7 +585,7 @@ padding-right: 0.5rem;
   border-radius: 1rem;
   gap: 1.88rem;
   overflow: hidden;
-  transition: transform 0.5s ease-in-out;
+  transition: transform 0.8s ease-in-out;
   cursor: pointer;
 }
 
@@ -593,7 +593,7 @@ padding-right: 0.5rem;
 .container__imageTitle_particleCard {
   border-radius: 1rem;
   cursor: pointer;
-  transition: transform 0.5s ease-in-out;
+  transition: transform 0.8s ease-in-out;
 }
 
 .container__imageTitle_articleCard {
@@ -603,7 +603,7 @@ padding-right: 0.5rem;
   border-radius: 1rem;
   object-fit: cover;
   object-position: center;
-  transition: transform 0.5s ease-in-out;
+  transition: transform 0.8s ease-in-out;
 }
 
 .wrapper_container_item_card_articleCard:hover {
@@ -612,7 +612,7 @@ padding-right: 0.5rem;
   border-radius: 1rem;
   transform-origin: center;
   transform: scale(0.98);
-  transition: transform 0.5s ease-in-out;
+  transition: transform 085s ease-in-out;
 }
 
 .wrapper_container_item_card_articleCard:hover .container__imageTitle_articleCard {
@@ -622,7 +622,7 @@ padding-right: 0.5rem;
 }
 
 .wrapper_container_item_card_articleCard {
-  transition: filter 0.5s ease;
+  transition: filter 0.8s ease;
 }
 
 .wrapper_container_item_card_articleCard:hover {

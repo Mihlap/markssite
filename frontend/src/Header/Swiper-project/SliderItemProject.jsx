@@ -8,7 +8,7 @@ const SliderItemProject = ({ title, src, text, selectCompetencies, countryCity, 
     <div className={`${styles.slider_item}${styles.swiper_slide}`}>
       <div className={styles.slider_image_wrapper}>
           <img className={styles.slider_image} src={src} alt="SliderImg" />
-          <svg
+          {/* <svg
             className={styles.icon_image}
             width="40"
             height="40"
@@ -23,7 +23,7 @@ const SliderItemProject = ({ title, src, text, selectCompetencies, countryCity, 
               strokeWidth="2"
               strokeLinecap="square"
             />
-          </svg>
+          </svg> */}
         </div>
       <div className={styles.slider_item_content}>
         <h1 className={styles.slider_subject}>{title}</h1>
