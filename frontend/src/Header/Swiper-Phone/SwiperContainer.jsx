@@ -51,7 +51,6 @@ export default function SwiperContainer({ article1, article2 }) {
                   src={`${Host}/images/imageArticle/${firstPhoto}`}
                   city={item.city}
                   dataMonthYear={item.dataMonthYear}
-                  descriptionArticle={item.descriptionArticle}
                   id={item.link}
                 />
                 </Link>
