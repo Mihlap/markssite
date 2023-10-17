@@ -16,7 +16,9 @@ export default function AddNavbar({ user, handleReturn }) {
   const [selectedItem, setSelectedItem] = useState(null);
   const serverHost = process.env.REACT_APP_SERVER_HOST;
   const navigate = useNavigate();
-  // console.log(user);
+   const isObezyankaaUser = user.name === "obezyankaa";
+  console.log(user);
+  console.log(isObezyankaaUser);
 
   useEffect(() => {
     const storedSelectedItem = localStorage.getItem("selectedItem");
@@ -252,13 +254,20 @@ export default function AddNavbar({ user, handleReturn }) {
       </nav>
       <div className={styles.button_position}>
         <div className={styles.button_container}>
-          <Link className={styles.button} to="/" onClick={handleReturn}>
-            <span className={styles.button__text}>Предпросмотр</span>
-            <img src={icon1} alt="1" className={styles.button__cone} />
-            <img src={icon2} alt="2" className={styles.button__torus} />
-            <img src={icon3} alt="3" className={styles.button__icosahedron} />
-            <img src={icon4} alt="4" className={styles.button__sphere} />
-          </Link>
+          {!isObezyankaaUser ? (
+            <Link className={styles.button_xren} to="/" onClick={handleReturn}>
+              <span className={styles.button_xren__text}>Предпросмотр</span>
+            </Link>
+          ) : (
+            // Обычная кнопка для других пользователей
+            <Link className={styles.button} to="/" onClick={handleReturn}>
+              <span className={styles.button__text}>Предпросмотр</span>
+              <img src={icon1} alt="1" className={styles.button__cone} />
+              <img src={icon2} alt="2" className={styles.button__torus} />
+              <img src={icon3} alt="3" className={styles.button__icosahedron} />
+              <img src={icon4} alt="4" className={styles.button__sphere} />
+            </Link>
+          )}
         </div>
       </div>
     </>
