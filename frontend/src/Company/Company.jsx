@@ -101,7 +101,7 @@ export default function Company() {
         setVideoSrc(videoSource.medium);
      } else {
         setVideoSrc2(videoSource2.small);
-        setVideoSrc(videoSource.small);
+        setVideoSrc(videoSource.medium);
       }
     };
 
@@ -336,7 +336,7 @@ export default function Company() {
                 <p>{countHuman}</p>
               </div>
               <span className={styles.span_underSlider_text}>             
-              Лет на&nbsp;рынке проектирования
+              Лет на&nbsp;рынке
               </span>
             </div>
           </div>
@@ -381,7 +381,7 @@ export default function Company() {
             <span>В&nbsp;портфеле актуальных проектов Группы компаний: комплексное проектирование уникальных зданий и&nbsp;сооружений,
             жилых и&nbsp;многофункциональных высотных комплексов, объектов рекреационно-туристического кластера,
             комплексное развитие территорий, развитие сети аэропортов, инфраструктуры метрополитена.</span>
-            <span>Более 18 лет опыта проектирования как&nbsp;полного комплекса, так&nbsp;и&nbsp;отдельных разделов проектной
+            <span> Более 18 лет опыта проектирования как&nbsp;полного комплекса, так&nbsp;и&nbsp;отдельных разделов проектной
             и&nbsp;рабочей документации для&nbsp;объектов различной сложности и&nbsp;функционального назначения,
             начиная с&nbsp;архитектурной концепции и&nbsp;заканчивая авторским надзором за&nbsp;строительством.</span>
           </div>
@@ -395,7 +395,7 @@ export default function Company() {
                   <div className={styles.text_svg_right}>
                     <img src={bracket_dark} alt="bracket_dark" />
                   </div>
-                  <p className={styles.number}>{countDepartment}%</p>
+                  <p className={styles.number}>{countDepartment}</p>
                 </div>
                 <span className={styles.span_underSlider_text_right}>
                 Регионов присутствия
