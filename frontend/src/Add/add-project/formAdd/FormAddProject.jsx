@@ -251,7 +251,6 @@ export default function FormAddProject({ setIsModalOpen }) {
   const getPreviewClassName = (label) => {
     switch (label) {
       case "Картинка с описанием":
-        console.log("Картинка с описанием");
         return {
           outerDiv: styles.imgWithDescriptionPreview,
           innerDiv: styles.someInnerDivStyle,
@@ -434,8 +433,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                     </div>
                   </label>
                 </div>
-                <label>{labelText}</label>
-                {console.log(getPreviewClassName(labelText))}
+                {/* <label>{labelText}</label> */}
 
                 <div
                   className={`${styles.previewContainer} ${classNames.outerDiv}`}
