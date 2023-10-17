@@ -285,46 +285,47 @@
 
 .div_conteiner__blockSix {
     max-width: 100%;
-    padding-bottom: 40px;
+    padding-bottom: 2.75rem;
 }
 
 .block_video {
     width: 100%;
     height: auto;
+    max-height: 50vw;
     border-radius: 16px;
 }
 
 
 /* Стили для desctop версии +1 сайта блока ProjectCard начинаются тут */
 
-@media screen and (min-width: 1025px) and (max-width: 1600px) {
-    .blockHeadingTitle {
-        padding-right: 0;
-        padding-left: 0;
-    }
+// @media screen and (min-width: 1025px) and (max-width: 1600px) {
+//     .blockHeadingTitle {
+//         padding-right: 0;
+//         padding-left: 0;
+//     }
 
-    .text_framed {
-        padding-right: 0;
-        padding-left: 0;
+//     .text_framed {
+//         padding-right: 0;
+//         padding-left: 0;
 
-    }
+//     }
 
-    .note_block {
-        padding-right: 0;
-        padding-left: 0;
-    }
+//     .note_block {
+//         padding-right: 0;
+//         padding-left: 0;
+//     }
 
-    .text_block {
-        padding-right: 0;
-        padding-left: 0;
-    }
+//     .text_block {
+//         padding-right: 0;
+//         padding-left: 0;
+//     }
 
-    .quote_block_constainer {
-        padding-right: 0;
-        padding-left: 0;
-    }
+//     .quote_block_constainer {
+//         padding-right: 0;
+//         padding-left: 0;
+//     }
 
-}
+// }
 
 
 

@@ -20,6 +20,7 @@ import { fetchToggleStateAsync } from "../store/Slice/toggleSlice";
 import catPhoto from "../img/cat_954.jpeg";
 
 const Host = process.env.REACT_APP_SERVER_HOST;
+const apiKey = process.env.REACT_APP_API_KEY;
 
 export default function Project() {
   const buttonChoose = [
@@ -78,6 +79,7 @@ export default function Project() {
   const [showButton, setShowButton] = useState(false);
   const [isModalProjectOpen, setIsModalProjectOpen] = useState(false);
   const [userGeolocation, setUserGeolocation] = useState(null);
+  const [curLocation, setCurLocation] = useState("Москва");
   const [isFocusedProject, setIsFocusedProject] = useState(false);
   const [isValid, setIsValid] = useState(true);
   const [isTyping, setIsTyping] = useState(false);
@@ -120,13 +122,21 @@ export default function Project() {
 
   useEffect(() => {
     getUserGeolocation()
-      .then((geolocation) => setUserGeolocation(geolocation))
+      .then((geolocation) => {
+        setUserGeolocation(geolocation);
+        const city = geolocation.city || "Москва";
+        setCurLocation(city);
+      })
       .catch((error) =>
         console.error("Ошибка при получении геопозиции:", error)
       );
+      // setCurLocation("Москва");
   }, []);
 
-  function handleFocus() {
+  const currentLocation = userGeolocation
+  ? userGeolocation.city : "Москва";
+
+   function handleFocus() {
     setIsFocusedProject(true);
   }
 
@@ -224,9 +234,6 @@ export default function Project() {
     );
   };
 
-  const currentLocation = userGeolocation
-    ? `${userGeolocation.latitude}, ${userGeolocation.longitude}`
-    : "Москва";
 
   const handleScroll = () => {
     const isAtBottom =
@@ -497,7 +504,7 @@ export default function Project() {
           </div>
           <div className={styles.modal_project_container}>
             <div className={styles.modal_project_description}>
-              Вы здесь:
+              Вы&nbsp;здесь:
               <div className={styles.modal_pointer_location}>
                 <svg
                   width="28"

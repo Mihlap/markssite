@@ -40,7 +40,6 @@
     "react-phone-number-input": "^3.2.23",
     "react-redux": "^8.0.5",
     "react-router-dom": "^6.10.0",
-    "react-scripts": "^5.0.1",
     "react-select": "^5.7.3",
     "react-slick": "^0.29.0",
     "react-slider-swiper": "^2.0.6",
@@ -58,7 +57,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "react-scripts start --config-overrides.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
@@ -86,6 +85,9 @@
     ]
   },
   "devDependencies": {
-    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "react-app-rewired": "^2.2.1",
+    "react-scripts": "^5.0.1",
+    "webpack-obfuscator": "^3.5.1"
   }
 }
