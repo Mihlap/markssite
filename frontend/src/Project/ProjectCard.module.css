@@ -536,7 +536,7 @@
   border-radius: 1rem;
   gap: 1.88rem;
   overflow: hidden;
-  transition: transform 0.5s ease-in-out;
+  transition: transform 0.8s ease-in-out;
   cursor: pointer;
 }
 
@@ -544,7 +544,7 @@
 .container__imageTitle_projectCard {
   border-radius: 1rem;
   cursor: pointer;
-  transition: transform 0.5s ease-in-out;
+  transition: transform 0.8s ease-in-out;
 }
 
 .wrapper_container_item_card_projectCard:hover {
@@ -553,7 +553,7 @@
   border-radius: 1rem;
   transform-origin: center;
   transform: scale(0.98);
-  transition: transform 0.5s ease-in-out;
+  transition: transform 0.8s ease-in-out;
   filter: brightness(50%);
 }
 
@@ -570,7 +570,7 @@
   min-height: 24rem;
   /* object-fit: cover; */
   object-position: center;
-  transition: transform 0.5s ease-in-out;
+  transition: transform 0.8s ease-in-out;
 }
 
 .wrapper_container_title_selectCompetencies_projectCard {

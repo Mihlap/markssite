@@ -246,7 +246,7 @@ display: inline-block;
     flex-wrap: wrap;
     grid-row-gap: 8px;
     padding-top: 16px;
-    padding-left: 6px;
+    padding-left: 8px;
     font-family: var(--font-raleway);
     font-size: 9px;
     font-style: normal;

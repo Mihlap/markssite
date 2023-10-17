@@ -73,7 +73,7 @@ const CounterCompanyMobile = () => {
         <span className={styles.span_underSlider_text}>
           {activeCounter === 0 && " Квалифицированных специалистов"}
           {activeCounter === 1 && "Проектов реализовано"}
-          {activeCounter === 2 && "Лет на рынке проектирования"}
+          {activeCounter === 2 && "Лет на рынке"}
         </span>
       </div>
     </div>
