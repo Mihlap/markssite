@@ -608,7 +608,7 @@ const ProjectCard = () => {
             spaceBetween={30}
             touch="true"
             direction="horizontal"
-            loop={false}
+            loop={true}
             breakpoints={{
               2500: {
                 slidesPerView: 4.7,

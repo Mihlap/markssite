@@ -12,7 +12,7 @@ const Mapbox3D = () => {
     const map = new mapboxgl.Map({
       style: "mapbox://styles/anna02/clgz2fy0200hg01qu5tb8a6is",
       center: [37.5804, 55.77],
-      zoom: window.innerWidth <= 768 ? 8.5 : 10.4,
+      zoom: window.innerWidth <= 767 ? 8.8 : (window.innerWidth <= 1024 ? 9.6 : 10.4),
       pitch: 45,
       bearing: 10,
       container: "map",
@@ -21,6 +21,7 @@ const Mapbox3D = () => {
     });
 
     map.scrollZoom.disable();
+    
 
     const popups = []; 
 
@@ -96,7 +97,8 @@ const Mapbox3D = () => {
 
     popups.forEach(({ marker, popup }) => {
       marker.getElement().addEventListener("mouseenter", () => {
-   
+
+       
         popups.forEach(({ popup }) => popup.remove());
 
         popup.addTo(map);

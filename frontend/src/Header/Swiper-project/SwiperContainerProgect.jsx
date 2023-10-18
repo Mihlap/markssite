@@ -28,7 +28,7 @@ const SwiperContainerProgect = ({ projects }) => {
   const handlePageClick = (index) => {
     setCurrentIndex(index);
     if (swiperRef.current && swiperRef.current.slideTo) {
-      swiperRef.current.slideTo(index);
+      swiperRef.current.slideTo(index + 1);
     }
   };
 
@@ -43,11 +43,11 @@ const MapProject = NewProject.map((el) =>
   return (
     <div className="swiper_container">
       <Swiper
-        slidesPerView={1.1}
+        slidesPerView={1}
+        centeredSlides={true}
         spaceBetween={20}
-        effect={"fade"}
         loop={true}
-        speed={300}
+        // speed={300}
         className="swiper_container_project"
         onSlideChange={(swiper) => setCurrentIndex(swiper.realIndex)}
         onSwiper={(swiper) => {
