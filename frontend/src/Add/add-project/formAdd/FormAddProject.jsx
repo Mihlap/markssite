@@ -741,7 +741,7 @@ export default function FormAddProject({ setIsModalOpen }) {
               ))}
             </div>
 
-            <div className={styles.form_container__radio_container}>
+            {/* <div className={styles.form_container__radio_container}>
               <div
                 className={`${styles.form_container__radio_block_one} ${
                   selectedRadio === "28,28"
@@ -814,7 +814,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                   />
                 </label>
               </div>
-            </div>
+            </div> */}
           </div>
           {/* блок где загружаются 4 картинки, они отображаются в шапке слайдера  */}
           <div className={`${styles.image_four} ${styles.flex_block_gap}`}>
