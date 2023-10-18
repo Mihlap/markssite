@@ -299,28 +299,38 @@
   .form_form_wrapper {
     padding-top: 0px;
     padding-bottom: 2rem;
-  }
+    width: 95%;
+   }
 
   .line {
-    width: 84vw;
-  }
-
-  .some-unique-class input[name="task"] {
-    width: 55%;
-  }
-
-  .input_name_form_contacts {
     width: 100%;
   }
 
-  .agreement {
-    width: 80vw;
+  .some-unique-class input[name="task"] {
+    width: 50%;
+  }
+
+  .input_name_form_contacts {
+    padding-top: 2.6rem;
+    width: 100%;
+  }
+
+  .agreement label{
+    display: flex;
+    width: max-content;
     padding-top: 1.5rem;
+    padding-right: 0.5rem;
+    flex-wrap: wrap;
   }
 
   .input_task_form_contacts {
     width: 100%;
   }
+
+  
+.button_hover10 {
+  margin-top: 2rem;
+}
 
 
 }

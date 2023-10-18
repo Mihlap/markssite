@@ -11,7 +11,7 @@
 .project_slider_text {
     font-family: var(--font-unbounded);
     position: absolute;
-    bottom: 8.44vh;
+    bottom: 10vh;
     left: 9.06vw;
     z-index: 1;
     color: var(--white-F6F6F6);

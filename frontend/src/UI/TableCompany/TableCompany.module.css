@@ -34,8 +34,8 @@
   font-family: var(--font-unbounded);
   font-style: normal;
   font-weight: var(--fw-300);
-  font-size: 20px;
-  line-height: 28px;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
   color: var(--black-1D2E43);
   text-align: left;
   max-width: 40.97vw; 
@@ -130,11 +130,11 @@
   }
   
   .tdStyle1 {
-    font-family: var(--font-unbounded);
+    font-family: var(--font-raleway);
     font-style: normal;
-    font-weight: var(--fw-300);
-    font-size: 20px;
-    line-height: 28px;
+    font-weight: var(--fw-400);
+    font-size: 1.125rem;
+    line-height: 1.5rem;
     color: var(--black-1D2E43);
     text-align: left;
     max-width: 30.97vw; 
@@ -146,8 +146,8 @@
     font-family: var(--font-raleway);
     font-style: normal;
     font-weight: var(--fw-400);
-    font-size: 16px;
-    line-height: 24px;
+    font-size: 1rem;
+    line-height: 1.5rem; 
     color: var(--black-1D2E43);
     text-align: left;
     border-top: "1px solid black";
@@ -159,8 +159,8 @@
     font-family: var(--font-raleway);
     font-style: normal;
     font-weight: var(--fw-400);
-    font-size: 16px;
-    line-height: 24px;
+    font-size: 0.875rem;
+    line-height: 1.25rem; 
     color: var(--dark-gray-566272);
     text-align: left;
     max-width: 8vw;
@@ -198,8 +198,8 @@
   .tdStyle1 {
     font-family: var(--font-raleway);
     font-weight: var(--fw-300);
-    font-size: 18px;
-    line-height: 24px;
+    font-size: 1.125rem;
+    line-height: 1.5rem;
     text-align: left;
     width: 100%;
     padding-right: 3rem;
