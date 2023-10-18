@@ -27,11 +27,10 @@ export default function SwiperContainer({ article1, article2 }) {
   return (
     <div className="swiper_container_wrapper">
       <Swiper
-         slidesPerView={1.1}
+         slidesPerView={1}
+         centeredSlides={true}
         spaceBetween={20}
-        effect={"fade"}
         loop={true}
-        speed={300}
         className="swiper_container_articles"
         onSlideChange={(swiper) => setCurrentIndexContainer(swiper.realIndex)}
         onSwiper={(swiper) => {

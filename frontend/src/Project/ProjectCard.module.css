@@ -536,7 +536,7 @@
   border-radius: 1rem;
   gap: 1.88rem;
   overflow: hidden;
-  transition: transform 0.5s ease-in-out;
+  transition: transform 0.8s ease-in-out;
   cursor: pointer;
 }
 
@@ -544,7 +544,7 @@
 .container__imageTitle_projectCard {
   border-radius: 1rem;
   cursor: pointer;
-  transition: transform 0.5s ease-in-out;
+  transition: transform 0.8s ease-in-out;
 }
 
 .wrapper_container_item_card_projectCard:hover {
@@ -553,7 +553,7 @@
   border-radius: 1rem;
   transform-origin: center;
   transform: scale(0.98);
-  transition: transform 0.5s ease-in-out;
+  transition: transform 0.8s ease-in-out;
   filter: brightness(50%);
 }
 
@@ -570,13 +570,13 @@
   min-height: 24rem;
   /* object-fit: cover; */
   object-position: center;
-  transition: transform 0.5s ease-in-out;
+  transition: transform 0.8s ease-in-out;
 }
 
 .wrapper_container_title_selectCompetencies_projectCard {
   display: flex;
-  width: 100%;
   padding-top: 1rem;
+  width: 100%;
 }
 
 .container_wrapper_title_city_data_block_projectCard {
@@ -633,30 +633,30 @@
 }
 
 .wrapper_container__selectCompetencies_projectCard {
-  display: flex;
-  justify-content: flex-end;
+  /* display: flex;
+  justify-content: flex-end; */
   width: 100%;
 }
 
 .container__selectCompetencies_projectCard {
-  display: block;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  flex-wrap: wrap;
   background: var(--white-F6F6F6);
   font-size: 9px;
   font-style: normal;
   font-weight: var(--fw-500);
   line-height: normal;
-  /* justify-content: flex-end; */
-  flex-direction: row;
-  flex-wrap: wrap;
   padding-left: 2rem;
 }
 
 .div_el_selectCompetencies_projectCard {
-  display: inline-flex;
-  width: fit-content;
-  margin-right: 6px;
+  border: 1px solid;
+  border-radius: 34px;
+  max-width: fit-content;
   margin-bottom: 6px;
-
+  margin-right: 6px;
 }
 
 
