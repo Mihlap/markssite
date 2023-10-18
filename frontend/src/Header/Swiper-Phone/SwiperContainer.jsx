@@ -29,7 +29,7 @@ export default function SwiperContainer({ article1, article2 }) {
       <Swiper
          slidesPerView={1}
          centeredSlides={true}
-        spaceBetween={10}
+        spaceBetween={20}
         loop={true}
         className="swiper_container_articles"
         onSlideChange={(swiper) => setCurrentIndexContainer(swiper.realIndex)}
@@ -40,7 +40,7 @@ export default function SwiperContainer({ article1, article2 }) {
         }}
       >
         <div className={styles.swiper_wrapper}>
-          {combinedArticles && combinedArticles.map((item, index) => {
+          {combinedArticles && combinedArticles.map((item) => {
             const firstPhoto = item.imageTitle.split(", ")[0];
             return (
               <SwiperSlide key={item.id}>
