@@ -78,10 +78,10 @@ const Footer = () => {
           <div className={styles.job}>
             {/* <Link className={styles.job_link} to="/">
               Сотрудникам
-            </Link>
-            <Link className={styles.job_link} to="/">
-              Документы
             </Link> */}
+            <Link className={styles.job_link} to="./Information">
+              Документы
+            </Link>
             <div className={styles.job_link}>©&nbsp;MARKSLAB</div>
           </div>
         </div>

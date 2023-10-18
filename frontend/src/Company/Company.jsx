@@ -8,7 +8,7 @@ import gsap from "gsap";
 import { Helmet } from "react-helmet-async";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Swiper, SwiperSlide } from "swiper/react";
-
+import "swiper/css";
 import SliderMobile from "../UI/SliderHeader/SliderMobile";
 import TableCompany from "../UI/TableCompany/TableCompany";
 import TableCompanyMobile from "../UI/TableCompany/TableCompanyMobile";
@@ -19,7 +19,11 @@ import {
   incrementScienceDegree,
 } from "../store/Slice/counterSlice";
 
-import { fetchCategoryStaff, selectCard, setCategory } from "../store/Slice/StaffSlice";
+import {
+  fetchCategoryStaff,
+  selectCard,
+  setCategory,
+} from "../store/Slice/StaffSlice";
 import LoadingCircle from "../Loading/LoadingCircle";
 // import Error from "../Loading/Error/Error";
 
@@ -33,21 +37,19 @@ import CompanyGroupSlider from "../UI/CompanyGroupSlider/CompanyGroupSlider";
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 
-
-
 export default function Company() {
   const videoSource = {
-  large: `${Host}/images/video/company_full.mp4`,
-  medium: `${Host}/images/video/company_ipad.mp4`,
-  small: `${Host}/images/video/company_mob.mp4`
+    large: `${Host}/images/video/company_full.mp4`,
+    medium: `${Host}/images/video/company_ipad.mp4`,
+    small: `${Host}/images/video/company_mob.mp4`,
   };
-  
+
   const videoSource2 = {
     large: `${Host}/images/video/header_company_full.mp4`,
     medium: `${Host}/images/video/header_company_ipad.mp4`,
-    small: `${Host}/images/video/header_company_mobile.mp4`
+    small: `${Host}/images/video/header_company_mobile.mp4`,
   };
-   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [countPercent, setCountPercent] = useState(0);
   const [countHuman, setCountHuman] = useState(0);
   const [countProject, setCountProject] = useState(0);
@@ -55,12 +57,12 @@ export default function Company() {
   const [currentIndexCompany, setCurrentIndexCompany] = useState(0);
   const swiperCompanyRef = useRef(null);
   const [videoSrc, setVideoSrc] = useState(null);
-   const [videoSrc2, setVideoSrc2] = useState(null);
-  
+  const [videoSrc2, setVideoSrc2] = useState(null);
+
   const [showCards, setShowCards] = useState(false);
   const [activeButton, setActiveButton] = useState("Руководство");
   const [isModalOpen, setIsModalOpen] = useState(false);
-  
+
   const dispatch = useDispatch();
   const { selectedCard, category, staff, loading, error } = useSelector(
     (state) => state.staff
@@ -85,10 +87,8 @@ export default function Company() {
   const symbol = "•";
 
   useEffect(() => {
-    window.scrollTo(0, 0); 
+    window.scrollTo(0, 0);
   }, []);
-
-
 
   useEffect(() => {
     const handleResize = () => {
@@ -99,17 +99,17 @@ export default function Company() {
       } else if (screenWidth >= 490 && screenWidth <= 1024) {
         setVideoSrc2(videoSource2.medium);
         setVideoSrc(videoSource.medium);
-     } else {
+      } else {
         setVideoSrc2(videoSource2.small);
-        setVideoSrc(videoSource.small);
+        setVideoSrc(videoSource.medium);
       }
     };
 
     handleResize();
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
 
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
@@ -134,7 +134,6 @@ export default function Company() {
   };
 
   useEffect(() => {
-    
     const timer1 = setTimeout(() => {
       if (countPercent < 1000) {
         setCountPercent(countPercent + 20);
@@ -145,11 +144,10 @@ export default function Company() {
       if (countHuman < 18) {
         setCountHuman(countHuman + 1);
       }
-      }, 50);
+    }, 50);
     return () => clearTimeout(timer1);
   }, [countPercent, countHuman, countProject]);
 
-   
   useEffect(() => {
     if (inView) {
       let timer1;
@@ -158,7 +156,6 @@ export default function Company() {
         dispatch(incrementGap());
         dispatch(incrementScient());
         dispatch(incrementScienceDegree());
-        
       }, 80);
       return () => clearTimeout(timer1);
     }
@@ -256,111 +253,112 @@ export default function Company() {
   // }
 
   // кнопки временно закоменчены, будут в дальнейшем использованы
-        //  {/* <button
-        //       type="button"
-        //       onClick={(e) => {
-        //         e.preventDefault();
-        //         handleButtonClick("Руководители отделов");
-        //       }}
-        //       className={`${styles.button_department} ${styles.button_hover} ${
-        //         activeButton === "Руководители отделов" ? styles.active : ""
-        //       }`}
-        //     >
-        //       Руководители отделов
-        //     </button> */}
+  //  {/* <button
+  //       type="button"
+  //       onClick={(e) => {
+  //         e.preventDefault();
+  //         handleButtonClick("Руководители отделов");
+  //       }}
+  //       className={`${styles.button_department} ${styles.button_hover} ${
+  //         activeButton === "Руководители отделов" ? styles.active : ""
+  //       }`}
+  //     >
+  //       Руководители отделов
+  //     </button> */}
 
-            //            {/* <button
-            //   type="button"
-            //   onClick={(e) => {
-            //     e.preventDefault();
-            //     handleButtonClick("HR");
-            //   }}
-            //   className={`${styles.button_hr} ${styles.button_hover} ${
-            //     activeButton === "HR" ? styles.active : ""
-            //   }`}
-            // >
-            //   HR
-            // </button> */}
+  //            {/* <button
+  //   type="button"
+  //   onClick={(e) => {
+  //     e.preventDefault();
+  //     handleButtonClick("HR");
+  //   }}
+  //   className={`${styles.button_hr} ${styles.button_hover} ${
+  //     activeButton === "HR" ? styles.active : ""
+  //   }`}
+  // >
+  //   HR
+  // </button> */}
 
   return (
     <>
-    <Helmet>
-    <title>Marks Group</title>
-  </Helmet>
-    <div className={styles.company_main}>
-      {/* <Company_Slider /> */}
-       <div className={styles.block_video_company}>
-       {videoSrc2 && (
-        <video playsInline autoPlay muted loop id="bg-video">
-          <source src={videoSrc2} type="video/mp4" />
-        </video>
+      <Helmet>
+        <title>Marks Group</title>
+      </Helmet>
+      <div className={styles.company_main}>
+        {/* <Company_Slider /> */}
+        <div className={styles.block_video_company}>
+          {videoSrc2 && (
+            <video playsInline autoPlay muted loop id="bg-video">
+              <source src={videoSrc2} type="video/mp4" />
+            </video>
           )}
-      </div>
-      <div ref={blockSlider} className={styles.underSlider_text_wrapper}>
-        <span className={styles.span_underSlider_text1}>
-        Создаём пространства будущего.
-        <br />
-        Знаковые проекты от&nbsp;ведущих специалистов в&nbsp;области комплексного проектирования 
-        </span>
-        <span className={styles.span_underSlider_text2}>О&nbsp;компании</span>
-        {isMobile && <CounterCompanyMobile />}
-        {!isMobile && (
-          <div className={styles.div_counter_wrapper}>
-            <div className={styles.container_text}>
-              <div className={styles.div_underSlider_text}>
-                <div className={styles.text_svg}>
-                  <img src={bracket} alt="bracket" />
-                </div>
-                <p>{countPercent}</p>
-              </div>
-              <span className={styles.span_underSlider_text}>
-              Квалифицированных специалистов
-              </span>
-            </div>
-            <div className={styles.container_text}>
-              <div className={styles.div_underSlider_text}>
-                <div className={styles.text_svg}>
-                  <img src={bracket} alt="bracket" />
-                </div>
-                <p>{countProject}</p>
-              </div>
-              <span className={styles.span_underSlider_text}>
-                Проектов реализовано
-              </span>
-            </div>
-            <div className={styles.container_text}>
-              <div className={styles.div_underSlider_text}>
-                <div className={styles.text_svg}>
-                  <img src={bracket} alt="bracket" />
-                </div>
-                <p>{countHuman}</p>
-              </div>
-              <span className={styles.span_underSlider_text}>             
-              Лет на&nbsp;рынке проектирования
-              </span>
-            </div>
-          </div>
-        )}
-      </div>
-      <div className={styles.sliderMobile_wrapper}>
-        <SliderMobile />
-      </div>
-      <div className={styles.about_main}>
-        <div className={styles.left_about}>
-          <div ref={nameCompanyRef} className={styles.name_company}>
-            MARKS GROUP
-          </div>
-          <div ref={thisBlockRef} className={styles.this_block}>
-            &mdash; ЭТО
-          </div>
         </div>
-        <div className={styles.left_about_mobile}>
-          <div className={styles.name_company}>MARKS GROUP</div>
-          <div className={styles.this_block}>&mdash; ЭТО</div>
+        <div ref={blockSlider} className={styles.underSlider_text_wrapper}>
+          <span className={styles.span_underSlider_text1}>
+            Создаём пространства будущего.
+            <br />
+            Знаковые проекты от&nbsp;ведущих специалистов <br />
+            в&nbsp;области комплексного проектирования
+          </span>
+          <span className={styles.span_underSlider_text2}>О&nbsp;компании</span>
+          {isMobile && <CounterCompanyMobile />}
+          {!isMobile && (
+            <div className={styles.div_counter_wrapper}>
+              <div className={styles.container_text}>
+                <div className={styles.div_underSlider_text}>
+                  <div className={styles.text_svg}>
+                    <img src={bracket} alt="bracket" />
+                  </div>
+                  <p>{countPercent}</p>
+                </div>
+                <span className={styles.span_underSlider_text}>
+                  Квалифицированных специалистов
+                </span>
+              </div>
+              <div className={styles.container_text}>
+                <div className={styles.div_underSlider_text}>
+                  <div className={styles.text_svg}>
+                    <img src={bracket} alt="bracket" />
+                  </div>
+                  <p>{countProject}</p>
+                </div>
+                <span className={styles.span_underSlider_text}>
+                  Проектов реализовано
+                </span>
+              </div>
+              <div className={styles.container_text}>
+                <div className={styles.div_underSlider_text}>
+                  <div className={styles.text_svg}>
+                    <img src={bracket} alt="bracket" />
+                  </div>
+                  <p>{countHuman}</p>
+                </div>
+                <span className={styles.span_underSlider_text}>
+                  Лет на&nbsp;рынке
+                </span>
+              </div>
+            </div>
+          )}
         </div>
-        <div className={styles.right_about}>
-          <div className={styles.text_right_about}>
-            {/* <span>От идеи до реализации – работа над проектами на всех этапах жизненного цикла</span>
+        <div className={styles.sliderMobile_wrapper}>
+          <SliderMobile />
+        </div>
+        <div className={styles.about_main}>
+          <div className={styles.left_about}>
+            <div ref={nameCompanyRef} className={styles.name_company}>
+              MARKS GROUP
+            </div>
+            <div ref={thisBlockRef} className={styles.this_block}>
+              &mdash; ЭТО
+            </div>
+          </div>
+          <div className={styles.left_about_mobile}>
+            <div className={styles.name_company}>MARKS GROUP</div>
+            <div className={styles.this_block}>&mdash; ЭТО</div>
+          </div>
+          <div className={styles.right_about}>
+            <div className={styles.text_right_about}>
+              {/* <span>От идеи до реализации – работа над проектами на всех этапах жизненного цикла</span>
             <br />
             <br />
             <span>
@@ -369,644 +367,678 @@ export default function Company() {
             </span>
             <br />
             <br /> */}
-            <span>MARKS&nbsp;GROUP объединяет целый ряд компаний по&nbsp;направлениям деятельности и&nbsp;ключевым компетенциям: «МАРКС&nbsp;Инжиниринг»,
-            «Подземпроект», «Институт&nbsp;науки&nbsp;проектирования и&nbsp;инжиниринга», «МАРКС&nbsp;Диджитал» и&nbsp;«МАРКС&nbsp;Дизайн».</span>
-            <br />
-            <br />
-            <span>Сегодня это более 1000 специалистов и&nbsp;свыше 200 реализованных проектов в&nbsp;Москве, Санкт-Петербурге,
-            Уфе, Омске, Грозном, Крыму и&nbsp;других крупных регионах страны. Работаем в&nbsp;партнёрстве с&nbsp;ведущими девелоперами,
-            крупными строительными организациями и&nbsp;международными архитектурными бюро.</span>
-            <br />
-            <br />
-            <span>В&nbsp;портфеле актуальных проектов Группы компаний: комплексное проектирование уникальных зданий и&nbsp;сооружений,
-            жилых и&nbsp;многофункциональных высотных комплексов, объектов рекреационно-туристического кластера,
-            комплексное развитие территорий, развитие сети аэропортов, инфраструктуры метрополитена.</span>
-            <span>Более 18 лет опыта проектирования как&nbsp;полного комплекса, так&nbsp;и&nbsp;отдельных разделов проектной
-            и&nbsp;рабочей документации для&nbsp;объектов различной сложности и&nbsp;функционального назначения,
-            начиная с&nbsp;архитектурной концепции и&nbsp;заканчивая авторским надзором за&nbsp;строительством.</span>
+              <span>
+                MARKS&nbsp;GROUP объединяет целый ряд компаний
+                по&nbsp;направлениям деятельности и&nbsp;ключевым компетенциям:
+                «МАРКС&nbsp;Инжиниринг», «Подземпроект»,
+                «Институт&nbsp;науки&nbsp;проектирования и&nbsp;инжиниринга»,
+                «МАРКС&nbsp;Диджитал» и&nbsp;«МАРКС&nbsp;Дизайн».
+              </span>
+              <br />
+              <br />
+              <span>
+                Сегодня это более 1000 специалистов и&nbsp;свыше 200
+                реализованных проектов в&nbsp;Москве, Санкт-Петербурге, Уфе,
+                Омске, Грозном, Крыму и&nbsp;других крупных регионах страны.
+                Работаем в&nbsp;партнёрстве с&nbsp;ведущими девелоперами,
+                крупными строительными организациями и&nbsp;международными
+                архитектурными бюро.
+              </span>
+              <br />
+              <br />
+              <span>
+                В&nbsp;портфеле актуальных проектов Группы компаний: комплексное
+                проектирование уникальных зданий и&nbsp;сооружений, жилых
+                и&nbsp;многофункциональных высотных комплексов, объектов
+                рекреационно-туристического кластера, комплексное развитие
+                территорий, развитие сети аэропортов, инфраструктуры
+                метрополитена.
+              </span>
+              <span>
+                {" "}
+                Более 18 лет опыта проектирования как&nbsp;полного комплекса,
+                так&nbsp;и&nbsp;отдельных разделов проектной и&nbsp;рабочей
+                документации для&nbsp;объектов различной сложности
+                и&nbsp;функционального назначения, начиная с&nbsp;архитектурной
+                концепции и&nbsp;заканчивая авторским надзором
+                за&nbsp;строительством.
+              </span>
+            </div>
+            <div className={styles.main_counter_wrapper}>
+              {isMobile && <CounterCompanyMobile2 />}
+            </div>
+            {!isMobile && (
+              <div className={styles.right_counter_wrapper} ref={ref}>
+                <div className={styles.container_text_right}>
+                  <div className={styles.div_underSlider_text_right}>
+                    <div className={styles.text_svg_right}>
+                      <img src={bracket_dark} alt="bracket_dark" />
+                    </div>
+                    <p className={styles.number}>{countDepartment}</p>
+                  </div>
+                  <span className={styles.span_underSlider_text_right}>
+                    Регионов присутствия
+                  </span>
+                </div>
+                <div className={styles.container_text_right}>
+                  <div className={styles.div_underSlider_text_right}>
+                    <div className={styles.text_svg_right}>
+                      <img src={bracket_dark} alt="bracket_dark" />
+                    </div>
+                    <p className={styles.number}>{countGap}</p>
+                  </div>
+                  <span className={styles.span_underSlider_text_right}>
+                    Объектов транспортной инфраструктуры
+                  </span>
+                </div>
+                <div className={styles.container_text_right}>
+                  <div
+                    className={`${styles.div_underSlider_text_right} ${styles.div_underSlider_text_right_last}`}
+                  >
+                    <div className={styles.text_svg_right}>
+                      <img src={bracket_dark} alt="bracket_dark" />
+                    </div>
+                    <p className={styles.number}>{countScient}</p>
+                  </div>
+                  <span className={styles.span_underSlider_text_right}>
+                    Объектов жилого и&nbsp;общественного назначения
+                  </span>
+                </div>
+                <div className={styles.container_text_right}>
+                  <div
+                    className={`${styles.div_underSlider_text_right} ${styles.div_underSlider_text_right_last}`}
+                  >
+                    <div className={styles.text_svg_right}>
+                      <img src={bracket_dark} alt="bracket_dark" />
+                    </div>
+                    <p className={styles.number}>{countScienceDegree}%</p>
+                    {/* <p className={styles.number_metr}>м<sup className={styles.small_sup}>2</sup></p> */}
+                  </div>
+                  <span className={styles.span_underSlider_text_right}>
+                    Объёма проектирования с&nbsp;применением цифровых технологий
+                  </span>
+                </div>
+              </div>
+            )}
           </div>
-          <div className={styles.main_counter_wrapper}>
-            {isMobile && <CounterCompanyMobile2 />}
-          </div>
+        </div>
+        <div className={styles.company_group_name}>
+          Состав группы компаний
+          <p className={styles.plus_nine} style={{ verticalAlign: "top" }}>
+            {/* <img src={plusNine} alt="plus_nine" /> */}
+            <span>+ 5</span>
+          </p>
+        </div>
+        <div className={styles.company_group_slider}>
+          <CompanyGroupSlider />
+        </div>
+        <div className={styles.awards_wrapper}>
+          Награды и&nbsp;премии
+          <div className={styles.years_div}>/2005-2022/</div>
+        </div>
+        <div className={styles.list_project}>
+          Список проектов, которые были отмечены конкурсами в&nbsp;разных
+          номинациях за&nbsp;годы практики с&nbsp;2005&nbsp;года
+        </div>
+        {isMobile && <TableCompanyMobile />}
+        {!isMobile && <TableCompany />}
+        <div className={styles.specialist_wrapper}>
+          <div className={styles.specialist}>Специалисты</div>
+          {isMobile && (
+            <Swiper
+              onSwiper={setSwiper}
+              slidesPerView="auto"
+              spaceBetween={0}
+              // pagination={{
+              //   clickable: true,
+              // }}
+              className={styles.my_swiper_button_group}
+              touch="true"
+            >
+              <div className={styles.button_group}>
+                {buttonsStuff &&
+                  buttonsStuff?.map((button, index) => (
+                    <SwiperSlide
+                      key={index}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        button.onClick(button.name);
+                      }}
+                      className={`${styles.button_hover} ${
+                        activeButton === button.name ? styles.active : ""
+                      }`}
+                      style={{ width: "fit-content" }}
+                    >
+                      <p type="button">{button.name}</p>
+                    </SwiperSlide>
+                  ))}
+              </div>
+            </Swiper>
+          )}
           {!isMobile && (
-            <div className={styles.right_counter_wrapper} ref={ref}>
-              <div className={styles.container_text_right}>
-                <div className={styles.div_underSlider_text_right}>
-                  <div className={styles.text_svg_right}>
-                    <img src={bracket_dark} alt="bracket_dark" />
-                  </div>
-                  <p className={styles.number}>{countDepartment}%</p>
-                </div>
-                <span className={styles.span_underSlider_text_right}>
-                Регионов присутствия
-                </span>
-              </div>
-              <div className={styles.container_text_right}>
-                <div className={styles.div_underSlider_text_right}>
-                  <div className={styles.text_svg_right}>
-                    <img src={bracket_dark} alt="bracket_dark" />
-                  </div>
-                  <p className={styles.number}>{countGap}</p>
-                </div>
-                <span className={styles.span_underSlider_text_right}>
-                Объектов транспортной инфраструктуры
-                </span>
-              </div>
-              <div className={styles.container_text_right}>
-                <div
-                  className={`${styles.div_underSlider_text_right} ${styles.div_underSlider_text_right_last}`}
-                >
-                  <div className={styles.text_svg_right}>
-                    <img src={bracket_dark} alt="bracket_dark" />
-                  </div>
-                  <p className={styles.number}>{countScient}</p>
-                </div>
-                <span className={styles.span_underSlider_text_right}>
-                Объектов жилого и&nbsp;общественного назначения
-                </span>
-              </div>
-              <div className={styles.container_text_right}>
-                <div
-                  className={`${styles.div_underSlider_text_right} ${styles.div_underSlider_text_right_last}`}
-                >
-                  <div className={styles.text_svg_right}>
-                    <img src={bracket_dark} alt="bracket_dark" />
-                  </div>
-                  <p className={styles.number}>{countScienceDegree}%</p>
-                  {/* <p className={styles.number_metr}>м<sup className={styles.small_sup}>2</sup></p> */}
-                </div>
-                <span className={styles.span_underSlider_text_right}>
-                Объёма проектирования с&nbsp;применением цифровых технологий
-                </span>
-              </div>
+            <div className={styles.button_group}>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleButtonClick("Руководство");
+                }}
+                className={`${styles.button_leader} ${styles.button_hover} ${
+                  activeButton === "Руководство" ? styles.active : ""
+                }`}
+              >
+                Руководство
+              </button>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.preventDefault();
+                  handleButtonClick("Научно-техническое сопровождение");
+                }}
+                className={`${styles.button_support} ${styles.button_hover} ${
+                  activeButton === "Научно-техническое сопровождение"
+                    ? styles.active
+                    : ""
+                }`}
+              >
+                Научно-техническое сопровождение
+              </button>
             </div>
           )}
         </div>
-      </div>
-      <div className={styles.company_group_name}>
-        Состав группы компаний
-        <p className={styles.plus_nine} style={{ verticalAlign: "top" }}>
-          {/* <img src={plusNine} alt="plus_nine" /> */}
-          <span>+ 5</span>
-        </p>
-      </div>
-      <div className={styles.company_group_slider}>
-        <CompanyGroupSlider />
-      </div>
-      <div className={styles.awards_wrapper}>
-        Награды и&nbsp;премии
-        <div className={styles.years_div}>/2005-2022/</div>
-      </div>
-      <div className={styles.list_project}>
-        Список проектов, которые были отмечены конкурсами в&nbsp;разных номинациях за&nbsp;годы практики с&nbsp;2005&nbsp;года
-      </div>
-      {isMobile && <TableCompanyMobile />}
-      {!isMobile && <TableCompany />}
-      <div className={styles.specialist_wrapper}>
-        <div className={styles.specialist}>Специалисты</div>
-        {isMobile && (
-          <Swiper
-            onSwiper={setSwiper}
-            slidesPerView="auto"
-            spaceBetween={0}
-            // pagination={{
-            //   clickable: true,
-            // }}
-            className={styles.my_swiper_button_group}
-            touch="true"
-          >
-            <div className={styles.button_group}>
-              {buttonsStuff &&
-                buttonsStuff?.map((button, index) => (
-                  <SwiperSlide
-                    key={index}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      button.onClick(button.name);
-                    }}
-                    className={`${styles.button_hover} ${
-                      activeButton === button.name ? styles.active : ""
-                    }`}
-                    style={{ width: "fit-content" }}
-                  >
-                    <p type="button">{button.name}</p>
-                  </SwiperSlide>
-                ))}
-            </div>
-          </Swiper>
-        )}
-        {!isMobile && (
-          <div className={styles.button_group}>
-            <button
-              type="button"
-              onClick={(e) => {
-                e.preventDefault();
-                handleButtonClick("Руководство");
-              }}
-              className={`${styles.button_leader} ${styles.button_hover} ${
-                activeButton === "Руководство" ? styles.active : ""
-              }`}
-            >
-              Руководство
-            </button>
-            <button
-              type="button"
-              onClick={(e) => {
-                e.preventDefault();
-                handleButtonClick("Научно-техническое сопровождение");
-              }}
-              className={`${styles.button_support} ${styles.button_hover} ${
-                activeButton === "Научно-техническое сопровождение"
-                  ? styles.active
-                  : ""
-              }`}
-            >
-              Научно-техническое сопровождение
-            </button>
-           </div>
-        )}
-      </div>
-      <div
-        className={styles.card_container}
-        style={{ opacity: showCards ? 1 : 0 }}
-      >
-        <ul className={styles.card_container_ul}>
-          {staff &&
-            staff?.map((el) => (
-              <li
-                key={el.id}
-                data-user-id={el.id}
-                // {...el}
-                className={styles.container__item_stuff}
-                onClick={() => handleButtonClick(category, el.id)}
-              >
-                <div className={styles.wrapper_container_item_stuff}>
-                  {showCards ? (
-                  <img
-                    className={styles.container__img_stuff}
-                    src={`${Host}/images/${el.img}`}
-                    onLoad={() => setShowCards(true)}
-                    alt={el.img}
-                  />
-                  ) : (
-                 <LoadingCircle/>
-                  )}
-                </div>
-                <div className={styles.container__item_name_stuff}>
-                  {el.name}
-                </div>
-                <div className={styles.container__item_position_stuff}>
-                  {el.position}
-                </div>
-              </li>
-            ))}
-          {isModalOpen && selectedCard && (
-            <Modal
-              className={styles.modal_wrapper}
-              const
-              modal={document.querySelector(".modal")}
-              modalStyleZIndex={9999}
-              isOpen={isModalOpen}
-              onRequestClose={() => {
-                dispatch(selectCard(null));
-                setIsModalOpen(false);
-              }}
-              onAfterOpen={() => {
-                setIsModalOpen(true);
-                document.body.style.overflow = "hidden";
-                document.body.classList.add("modal-open");
-              }}
-              onAfterClose={() => {
-                document.body.style.overflow = "";
-                document.body.classList.remove("modal-open");
-              }}
-              ariaHideApp={false}
-              categoryId={category}
-              style={{
-                overlay: {
-                  zIndex: 9999,
-                  backgroundColor: "#2C3B447A",
-                },
-                content: {
-                  zIndex: 9999,
-                },
-              }}
-            >
-              {selectedCard && (
-                <div key={selectedCard.id} className={styles.modal_context}>
-                  <div
-                    className={`${styles.modal_close} ${styles.fixed}`}
-                    onClick={() => {
-                      setIsModalOpen(false);
-                      dispatch(selectCard(null));
-                    }}
-                  >
-                    <svg
-                      width="16"
-                      height="16"
-                      viewBox="0 0 16 16"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        clipRule="evenodd"
-                        d="M8.00025 8.70733L0.707107 16.0005L0 15.2934L7.29314 8.00023L2.41697e-05 0.707107L0.707131 0L8.00025 7.29312L15.2934 0L16.0005 0.707107L8.70736 8.00023L16.0005 15.2934L15.2934 16.0005L8.00025 8.70733Z"
-                        fill="black"
-                      />
-                    </svg>
-                  </div>
-                  <div className={styles.modal_container}>
-                    <div className={styles.modal}>
+        <div
+          className={styles.card_container}
+          style={{ opacity: showCards ? 1 : 0 }}
+        >
+          <ul className={styles.card_container_ul}>
+            {staff &&
+              staff?.map((el) => (
+                <li
+                  key={el.id}
+                  data-user-id={el.id}
+                  // {...el}
+                  className={styles.container__item_stuff}
+                  onClick={() => handleButtonClick(category, el.id)}
+                >
+                  <div className={styles.wrapper_container_item_stuff}>
+                    {showCards ? (
                       <img
-                        className={styles.modal_img_stuff}
-                        src={`${Host}/images/${selectedCard.img}`}
-                        alt={selectedCard.img}
+                        className={styles.container__img_stuff}
+                        src={`${Host}/images/${el.img}`}
+                        onLoad={() => setShowCards(true)}
+                        alt={el.img}
                       />
-                    </div>
+                    ) : (
+                      <LoadingCircle />
+                    )}
                   </div>
-                  <div className={styles.modal_name_stuff}>
-                    {selectedCard.name}
+                  <div className={styles.container__item_name_stuff}>
+                    {el.name}
                   </div>
-                  {selectedCard.description && (
-                    <div className={styles.modal_description_stuff}>
-                      {selectedCard.description}
+                  <div className={styles.container__item_position_stuff}>
+                    {el.position}
+                  </div>
+                </li>
+              ))}
+            {isModalOpen && selectedCard && (
+              <Modal
+                className={styles.modal_wrapper}
+                const
+                modal={document.querySelector(".modal")}
+                modalStyleZIndex={9999}
+                isOpen={isModalOpen}
+                onRequestClose={() => {
+                  dispatch(selectCard(null));
+                  setIsModalOpen(false);
+                }}
+                onAfterOpen={() => {
+                  setIsModalOpen(true);
+                  document.body.style.overflow = "hidden";
+                  document.body.classList.add("modal-open");
+                }}
+                onAfterClose={() => {
+                  document.body.style.overflow = "";
+                  document.body.classList.remove("modal-open");
+                }}
+                ariaHideApp={false}
+                categoryId={category}
+                style={{
+                  overlay: {
+                    zIndex: 9999,
+                    backgroundColor: "#2C3B447A",
+                  },
+                  content: {
+                    zIndex: 9999,
+                  },
+                }}
+              >
+                {selectedCard && (
+                  <div key={selectedCard.id} className={styles.modal_context}>
+                    <div
+                      className={`${styles.modal_close} ${styles.fixed}`}
+                      onClick={() => {
+                        setIsModalOpen(false);
+                        dispatch(selectCard(null));
+                      }}
+                    >
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          fillRule="evenodd"
+                          clipRule="evenodd"
+                          d="M8.00025 8.70733L0.707107 16.0005L0 15.2934L7.29314 8.00023L2.41697e-05 0.707107L0.707131 0L8.00025 7.29312L15.2934 0L16.0005 0.707107L8.70736 8.00023L16.0005 15.2934L15.2934 16.0005L8.00025 8.70733Z"
+                          fill="black"
+                        />
+                      </svg>
                     </div>
-                  )}
-                  {selectedCard.about && (
-                    <div className={styles.modal_about_stuff}>
-                      {selectedCard.about}
-                    </div>
-                  )}
-                  {selectedCard.about1 && (
-                    <div className={styles.modal_about_stuff1}>
-                      <div className={styles.modal_about_stuff_symbol}>
-                        {symbol}
+                    <div className={styles.modal_container}>
+                      <div className={styles.modal}>
+                        <img
+                          className={styles.modal_img_stuff}
+                          src={`${Host}/images/${selectedCard.img}`}
+                          alt={selectedCard.img}
+                        />
                       </div>
-                      {selectedCard.about1}
                     </div>
-                  )}
-                  {selectedCard.about2 && (
-                    <div className={styles.modal_about_stuff1}>
-                      <div className={styles.modal_about_stuff_symbol}>
-                        {symbol}
+                    <div className={styles.modal_name_stuff}>
+                      {selectedCard.name}
+                    </div>                    
+                    {/* {selectedCard.description && (
+                      <div className={styles.modal_description_stuff}>
+                        {selectedCard.description
+                          .split(".")
+                          .map((sentence, index) => (
+                            <span key={index}>
+                              {sentence.trim()}
+                              {index !==
+                              selectedCard.description.split(".").length - 1 ? (
+                                <br />
+                              ) : null}
+                            </span>
+                          ))}
                       </div>
-                      {selectedCard.about2}
-                    </div>
-                  )}
-                  {selectedCard.about3 && (
-                    <div className={styles.modal_about_stuff1}>
-                      <div className={styles.modal_about_stuff_symbol}>
-                        {symbol}
+                    )} */}
+                       {selectedCard.description && (
+                      <div className={styles.modal_description_stuff}>
+                        {selectedCard.description}
                       </div>
-                      {selectedCard.about3}
-                    </div>
-                  )}
-                  {selectedCard.about4 && (
-                    <div className={styles.modal_about_stuff1}>
-                      <div className={styles.modal_about_stuff_symbol}>
-                        {symbol}
+                    )}
+                    {selectedCard.about && (
+                      <div className={styles.modal_about_stuff}>
+                        {selectedCard.about}
                       </div>
-                      {selectedCard.about4}
-                    </div>
-                  )}
-                  {selectedCard.about5 && (
-                    <div className={styles.modal_about_stuff1}>
-                      <div className={styles.modal_about_stuff_symbol}>
-                        {symbol}
+                    )}
+                    {selectedCard.about1 && (
+                      <div className={styles.modal_about_stuff1}>
+                        <div className={styles.modal_about_stuff_symbol}>
+                          {symbol}
+                        </div>
+                        {selectedCard.about1}
                       </div>
-                      {selectedCard.about5}
-                    </div>
-                  )}
-                  {selectedCard.about6 && (
-                    <div className={styles.modal_about_stuff1}>
-                      <div className={styles.modal_about_stuff_symbol}>
-                        {symbol}
+                    )}
+                    {selectedCard.about2 && (
+                      <div className={styles.modal_about_stuff1}>
+                        <div className={styles.modal_about_stuff_symbol}>
+                          {symbol}
+                        </div>
+                        {selectedCard.about2}
                       </div>
-                      {selectedCard.about6}
-                    </div>
-                  )}
-                  {selectedCard.about7 && (
-                    <div className={styles.modal_about_stuff1}>
-                      <div className={styles.modal_about_stuff_symbol}>
-                        {symbol}
+                    )}
+                    {selectedCard.about3 && (
+                      <div className={styles.modal_about_stuff1}>
+                        <div className={styles.modal_about_stuff_symbol}>
+                          {symbol}
+                        </div>
+                        {selectedCard.about3}
                       </div>
-                      {selectedCard.about7}
-                    </div>
-                  )}
-                  {selectedCard.about8 && (
-                    <div className={styles.modal_about_stuff1}>
-                      <div className={styles.modal_about_stuff_symbol}>
-                        {symbol}
+                    )}
+                    {selectedCard.about4 && (
+                      <div className={styles.modal_about_stuff1}>
+                        <div className={styles.modal_about_stuff_symbol}>
+                          {symbol}
+                        </div>
+                        {selectedCard.about4}
                       </div>
-                      {selectedCard.about8}
-                    </div>
-                  )}
-                  {selectedCard.about9 && (
-                    <div className={styles.modal_about_stuff1}>
-                      <div className={styles.modal_about_stuff_symbol}>
-                        {symbol}
+                    )}
+                    {selectedCard.about5 && (
+                      <div className={styles.modal_about_stuff1}>
+                        <div className={styles.modal_about_stuff_symbol}>
+                          {symbol}
+                        </div>
+                        {selectedCard.about5}
                       </div>
-                      {selectedCard.about9}
-                    </div>
-                  )}
-                  {selectedCard.about10 && (
-                    <div className={styles.modal_about_stuff1}>
-                      <div className={styles.modal_about_stuff_symbol}>
-                        {symbol}
+                    )}
+                    {selectedCard.about6 && (
+                      <div className={styles.modal_about_stuff1}>
+                        <div className={styles.modal_about_stuff_symbol}>
+                          {symbol}
+                        </div>
+                        {selectedCard.about6}
                       </div>
-                      {selectedCard.about10}
-                    </div>
-                  )}
-                  {selectedCard.about11 && (
-                    <div className={styles.modal_about_stuff1}>
-                      <div className={styles.modal_about_stuff_symbol}>
-                        {symbol}
+                    )}
+                    {selectedCard.about7 && (
+                      <div className={styles.modal_about_stuff1}>
+                        <div className={styles.modal_about_stuff_symbol}>
+                          {symbol}
+                        </div>
+                        {selectedCard.about7}
                       </div>
-                      {selectedCard.about11}
-                    </div>
-                  )}
-                  {selectedCard.about12 && (
-                    <div className={styles.modal_about_stuff1}>
-                      <div className={styles.modal_about_stuff_symbol}>
-                        {symbol}
+                    )}
+                    {selectedCard.about8 && (
+                      <div className={styles.modal_about_stuff1}>
+                        <div className={styles.modal_about_stuff_symbol}>
+                          {symbol}
+                        </div>
+                        {selectedCard.about8}
                       </div>
-                      {selectedCard.about12}
-                    </div>
-                  )}
-                  {selectedCard.about13 && (
-                    <div className={styles.modal_about_stuff1}>
-                      <div className={styles.modal_about_stuff_symbol}>
-                        {symbol}
+                    )}
+                    {selectedCard.about9 && (
+                      <div className={styles.modal_about_stuff1}>
+                        <div className={styles.modal_about_stuff_symbol}>
+                          {symbol}
+                        </div>
+                        {selectedCard.about9}
                       </div>
-                      {selectedCard.about13}
-                    </div>
-                  )}
-                  {selectedCard.about14 && (
-                    <div className={styles.modal_about_stuff1}>
-                      <div className={styles.modal_about_stuff_symbol}>
-                        {symbol}
+                    )}
+                    {selectedCard.about10 && (
+                      <div className={styles.modal_about_stuff1}>
+                        <div className={styles.modal_about_stuff_symbol}>
+                          {symbol}
+                        </div>
+                        {selectedCard.about10}
                       </div>
-                      {selectedCard.about14}
-                    </div>
-                  )}
-                  {selectedCard.about15 && (
-                    <div className={styles.modal_about_stuff1}>
-                      <div className={styles.modal_about_stuff_symbol}>
-                        {symbol}
+                    )}
+                    {selectedCard.about11 && (
+                      <div className={styles.modal_about_stuff1}>
+                        <div className={styles.modal_about_stuff_symbol}>
+                          {symbol}
+                        </div>
+                        {selectedCard.about11}
                       </div>
-                      {selectedCard.about15}
-                    </div>
-                  )}
-                  {selectedCard.about16 && (
-                    <div className={styles.modal_about_stuff1}>
-                      <div className={styles.modal_about_stuff_symbol}>
-                        {symbol}
+                    )}
+                    {selectedCard.about12 && (
+                      <div className={styles.modal_about_stuff1}>
+                        <div className={styles.modal_about_stuff_symbol}>
+                          {symbol}
+                        </div>
+                        {selectedCard.about12}
                       </div>
-                      {selectedCard.about16}
-                    </div>
-                  )}
-                  {selectedCard.about17 && (
-                    <div className={styles.modal_about_stuff1}>
-                      <div className={styles.modal_about_stuff_symbol}>
-                        {symbol}
+                    )}
+                    {selectedCard.about13 && (
+                      <div className={styles.modal_about_stuff1}>
+                        <div className={styles.modal_about_stuff_symbol}>
+                          {symbol}
+                        </div>
+                        {selectedCard.about13}
                       </div>
-                      {selectedCard.about17}
-                    </div>
-                  )}
-                  {selectedCard.about18 && (
-                    <div className={styles.modal_about_stuff1}>
-                      <div className={styles.modal_about_stuff_symbol}>
-                        {symbol}
+                    )}
+                    {selectedCard.about14 && (
+                      <div className={styles.modal_about_stuff1}>
+                        <div className={styles.modal_about_stuff_symbol}>
+                          {symbol}
+                        </div>
+                        {selectedCard.about14}
                       </div>
-                      {selectedCard.about18}
-                    </div>
-                  )}
-                  {selectedCard.about19 && (
-                    <div className={styles.modal_about_stuff1}>
-                      <div className={styles.modal_about_stuff_symbol}>
-                        {symbol}
+                    )}
+                    {selectedCard.about15 && (
+                      <div className={styles.modal_about_stuff1}>
+                        <div className={styles.modal_about_stuff_symbol}>
+                          {symbol}
+                        </div>
+                        {selectedCard.about15}
                       </div>
-                      {selectedCard.about19}
-                    </div>
-                  )}
-                  {selectedCard.about20 && (
-                    <div className={styles.modal_about_stuff1}>
-                      <div className={styles.modal_about_stuff_symbol}>
-                        {symbol}
+                    )}
+                    {selectedCard.about16 && (
+                      <div className={styles.modal_about_stuff1}>
+                        <div className={styles.modal_about_stuff_symbol}>
+                          {symbol}
+                        </div>
+                        {selectedCard.about16}
                       </div>
-                      {selectedCard.about20}
-                    </div>
-                  )}
-                  {selectedCard.about21 && (
-                    <div className={styles.modal_about_stuff1}>
-                      <div className={styles.modal_about_stuff_symbol}>
-                        {symbol}
+                    )}
+                    {selectedCard.about17 && (
+                      <div className={styles.modal_about_stuff1}>
+                        <div className={styles.modal_about_stuff_symbol}>
+                          {symbol}
+                        </div>
+                        {selectedCard.about17}
                       </div>
-                      {selectedCard.about21}
-                    </div>
-                  )}
-                  {selectedCard.about22 && (
-                    <div className={styles.modal_about_stuff1}>
-                      <div className={styles.modal_about_stuff_symbol}>
-                        {symbol}
+                    )}
+                    {selectedCard.about18 && (
+                      <div className={styles.modal_about_stuff1}>
+                        <div className={styles.modal_about_stuff_symbol}>
+                          {symbol}
+                        </div>
+                        {selectedCard.about18}
                       </div>
-                      {selectedCard.about22}
-                    </div>
-                  )}
-                  {selectedCard.about23 && (
-                    <div className={styles.modal_about_stuff1}>
-                      {/* <div className={styles.modal_about_stuff_symbol}>
+                    )}
+                    {selectedCard.about19 && (
+                      <div className={styles.modal_about_stuff1}>
+                        <div className={styles.modal_about_stuff_symbol}>
+                          {symbol}
+                        </div>
+                        {selectedCard.about19}
+                      </div>
+                    )}
+                    {selectedCard.about20 && (
+                      <div className={styles.modal_about_stuff1}>
+                        <div className={styles.modal_about_stuff_symbol}>
+                          {symbol}
+                        </div>
+                        {selectedCard.about20}
+                      </div>
+                    )}
+                    {selectedCard.about21 && (
+                      <div className={styles.modal_about_stuff1}>
+                        <div className={styles.modal_about_stuff_symbol}>
+                          {symbol}
+                        </div>
+                        {selectedCard.about21}
+                      </div>
+                    )}
+                    {selectedCard.about22 && (
+                      <div className={styles.modal_about_stuff1}>
+                        <div className={styles.modal_about_stuff_symbol}>
+                          {symbol}
+                        </div>
+                        {selectedCard.about22}
+                      </div>
+                    )}
+                    {selectedCard.about23 && (
+                      <div className={styles.modal_about_stuff1}>
+                        {/* <div className={styles.modal_about_stuff_symbol}>
                       {symbol}
                     </div> */}
-                      {selectedCard.about23}
-                    </div>
-                  )}
-                  {selectedCard.description1 && (
-                    <div className={styles.modal_description_stuff1}>
-                      {selectedCard.description1}
-                    </div>
-                  )}
-                  {selectedCard.about24 && (
-                    <div className={styles.modal_about_stuff1}>
-                      <div className={styles.modal_about_stuff_symbol}>
-                        {symbol}
+                        {selectedCard.about23}
                       </div>
-                      {selectedCard.about24}
-                    </div>
-                  )}
-                  {selectedCard.description2 && (
-                    <div className={styles.modal_description_stuff1}>
-                      {selectedCard.description2}
-                    </div>
-                  )}
-                  {selectedCard.about25 && (
-                    <div className={styles.modal_about_stuff1}>
-                      <div className={styles.modal_about_stuff_symbol}>
-                        {symbol}
+                    )}
+                    {selectedCard.description1 && (
+                      <div className={styles.modal_description_stuff1}>
+                        {selectedCard.description1}
                       </div>
-                      {selectedCard.about25}
-                    </div>
-                  )}
-                  {selectedCard.about26 && (
-                    <div className={styles.modal_about_stuff1}>
-                      <div className={styles.modal_about_stuff_symbol}>
-                        {symbol}
+                    )}
+                    {selectedCard.about24 && (
+                      <div className={styles.modal_about_stuff1}>
+                        <div className={styles.modal_about_stuff_symbol}>
+                          {symbol}
+                        </div>
+                        {selectedCard.about24}
                       </div>
-                      {selectedCard.about26}
-                    </div>
-                  )}
-                  {selectedCard.about27 && (
-                    <div className={styles.modal_about_stuff1}>
-                      <div className={styles.modal_about_stuff_symbol}>
-                        {symbol}
+                    )}
+                    {selectedCard.description2 && (
+                      <div className={styles.modal_description_stuff1}>
+                        {selectedCard.description2}
                       </div>
-                      {selectedCard.about27}
-                    </div>
-                  )}
-                  {selectedCard.about28 && (
-                    <div className={styles.modal_about_stuff1}>
-                      <div className={styles.modal_about_stuff_symbol}>
-                        {symbol}
+                    )}
+                    {selectedCard.about25 && (
+                      <div className={styles.modal_about_stuff1}>
+                        <div className={styles.modal_about_stuff_symbol}>
+                          {symbol}
+                        </div>
+                        {selectedCard.about25}
                       </div>
-                      {selectedCard.about28}
-                    </div>
-                  )}
-                  {selectedCard.about29 && (
-                    <div className={styles.modal_about_stuff1}>
-                      <div className={styles.modal_about_stuff_symbol}>
-                        {symbol}
+                    )}
+                    {selectedCard.about26 && (
+                      <div className={styles.modal_about_stuff1}>
+                        <div className={styles.modal_about_stuff_symbol}>
+                          {symbol}
+                        </div>
+                        {selectedCard.about26}
                       </div>
-                      {selectedCard.about29}
-                    </div>
-                  )}
-                  {selectedCard.about30 && (
-                    <div className={styles.modal_about_stuff1}>
-                      <div className={styles.modal_about_stuff_symbol}>
-                        {symbol}
+                    )}
+                    {selectedCard.about27 && (
+                      <div className={styles.modal_about_stuff1}>
+                        <div className={styles.modal_about_stuff_symbol}>
+                          {symbol}
+                        </div>
+                        {selectedCard.about27}
                       </div>
-                      {selectedCard.about30}
-                    </div>
-                  )}
-                </div>
-              )}
-            </Modal>
-          )}
-        </ul>
-      </div>
-      {isMobile && (
-        <div className={styles.slider_card_wrapper}>
-          <Swiper
-            className={styles.slider_card_container}
-            loop={true}
-            slidesPerView={1.1}
-            spaceBetween={10}
-            effect={"fade"}
-            touch="true"
-            centeredSlides={"true"}
-            onSlideChange={(swiper) => setCurrentIndexCompany(swiper.realIndex)}
-            onSwiper={(swiper) => {
-              if (swiperCompanyRef.current === null) {
-                swiperCompanyRef.current = swiper;
+                    )}
+                    {selectedCard.about28 && (
+                      <div className={styles.modal_about_stuff1}>
+                        <div className={styles.modal_about_stuff_symbol}>
+                          {symbol}
+                        </div>
+                        {selectedCard.about28}
+                      </div>
+                    )}
+                    {selectedCard.about29 && (
+                      <div className={styles.modal_about_stuff1}>
+                        <div className={styles.modal_about_stuff_symbol}>
+                          {symbol}
+                        </div>
+                        {selectedCard.about29}
+                      </div>
+                    )}
+                    {selectedCard.about30 && (
+                      <div className={styles.modal_about_stuff1}>
+                        <div className={styles.modal_about_stuff_symbol}>
+                          {symbol}
+                        </div>
+                        {selectedCard.about30}
+                      </div>
+                    )}
+                  </div>
+                )}
+              </Modal>
+            )}
+          </ul>
+        </div>
+       {isMobile && (
+          <div className={styles.slider_card_wrapper}>
+            <Swiper
+              className={styles.slider_card_container}
+              loop={true}
+              slidesPerView={1.1}
+              spaceBetween={0}
+              effect={"fade"}
+              touch="true"
+              // centeredSlides={"true"}
+              onSlideChange={(swiper) =>
+                setCurrentIndexCompany(swiper.realIndex)
               }
-            }}
-          >
-            {staff?.map((el) => (
-              <SwiperSlide
-                key={el.id}
-                data-user-id={el.id}
-                className={styles.slide_container_item_stuff}
-                onClick={() => handleButtonClick(category, el.id)}
-              >
-                <div className={styles.wrapper_container_item_stuff}>
-                  <img
-                    className={styles.container__img_stuff}
-                    src={`${Host}/images/${el.img}`}
-                    alt={el.img}
-                  />
-                </div>
-                <div className={styles.container__item_name_stuff}>
-                  {el.name}
-                </div>
-                <div className={styles.container__item_position_stuff}>
-                  {el.position}
-                </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </div>
-      )}
-      <div
-        className="swiper_pagination"
-        style={{
-          paddingLeft: "1rem",
-          paddingRight: "1rem",
-        }}
-      >
-        {staff &&
-          staff.map((_, index) => (
-            <button
-              key={index}
-              className={`swiper_pagination_bullet ${
-                currentIndexCompany === index ? "active" : ""
-              }`}
-              onClick={() => handlePCardCompanyClick(index)}
-            />
-          ))}
-      </div>
-      {!isMobile && (
-        <div className={styles.slider_card_wrapper}>
-          <Swiper
-            className={styles.slider_card_container}
-            loop={true}
-            slidesPerView={2.2}
-            spaceBetween={0}
-            touch="true"
-           >
-            {staff?.map((el) => (
-              <SwiperSlide
-                key={el.id}
-                data-user-id={el.id}
-                className={styles.slide_container_item_stuff}
-                onClick={() => handleButtonClick(category, el.id)}
-              >
-                <div className={styles.wrapper_container_item_stuff}>
-                  <img
-                    className={styles.container__img_stuff}
-                    src={`${Host}/images/${el.img}`}
-                    alt={el.img}
-                  />
-                </div>
-                <div className={styles.container__item_name_stuff}>
-                  {el.name}
-                </div>
-                <div className={styles.container__item_position_stuff}>
-                  {el.position}
-                </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
-        </div>
-      )}
-      <div className={styles.fon}>
-        <div className={styles.video_wrapper}>
-        {videoSrc && (
-          <video playsInline autoPlay muted loop id="bg-video_2">
-            <source src={videoSrc} type="video/mp4" />
-          </video>
+              onSwiper={(swiper) => {
+                if (swiperCompanyRef.current === null) {
+                  swiperCompanyRef.current = swiper;
+                }
+              }}
+            >
+              {staff?.map((el) => (
+                <SwiperSlide
+                  key={el.id}
+                  data-user-id={el.id}
+                  className={styles.slide_container_item_stuff}
+                  onClick={() => handleButtonClick(category, el.id)}
+                >
+                  <div className={styles.wrapper_container_item_stuff}>
+                    <img
+                      className={styles.container__img_stuff}
+                      src={`${Host}/images/${el.img}`}
+                      alt={el.img}
+                    />
+                  </div>
+                  <div className={styles.container__item_name_stuff}>
+                    {el.name}
+                  </div>
+                  <div className={styles.container__item_position_stuff}>
+                    {el.position}
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
         )}
-        </div>
-        <div className={styles.form_wrapper}>
-          <div className={styles.company_form_contacts_wrapper}>
-            <CompanyFormContacts />
+        {/* <div
+          className="swiper_pagination_container"
+        >
+          {staff &&
+            staff.map((_, index) => (
+              <button
+                key={index}
+                className={`swiper_pagination_bullet_container ${
+                  currentIndexCompany === index ? "active" : ""
+                }`}
+                onClick={() => handlePCardCompanyClick(index)}
+              />
+            ))}
+        </div> */}
+       {!isMobile && (
+          <div className={styles.slider_card_wrapper}>
+            <Swiper
+              className={styles.slider_card_container}
+              loop={true}
+              slidesPerView={2.2}
+              spaceBetween={0}
+              touch="true"
+            >
+              {staff?.map((el) => (
+                <SwiperSlide
+                  key={el.id}
+                  data-user-id={el.id}
+                  className={styles.slide_container_item_stuff}
+                  onClick={() => handleButtonClick(category, el.id)}
+                >
+                  <div className={styles.wrapper_container_item_stuff}>
+                    <img
+                      className={styles.container__img_stuff}
+                      src={`${Host}/images/${el.img}`}
+                      alt={el.img}
+                    />
+                  </div>
+                  <div className={styles.container__item_name_stuff}>
+                    {el.name}
+                  </div>
+                  <div className={styles.container__item_position_stuff}>
+                    {el.position}
+                  </div>
+                </SwiperSlide>
+              ))}
+            </Swiper>
           </div>
-          <div className={styles.companySubscriptionForm_wrapper}>
-            <CompanySubscriptionForm />
+        )}
+        <div className={styles.fon}>
+          <div className={styles.video_wrapper}>
+            {videoSrc && (
+              <video playsInline autoPlay muted loop id="bg-video_2">
+                <source src={videoSrc} type="video/mp4" />
+              </video>
+            )}
+          </div>
+          <div className={styles.form_wrapper}>
+            <div className={styles.company_form_contacts_wrapper}>
+              <CompanyFormContacts />
+            </div>
+            <div className={styles.companySubscriptionForm_wrapper}>
+              <CompanySubscriptionForm />
+            </div>
           </div>
         </div>
       </div>
-    </div>
     </>
   );
 }
-

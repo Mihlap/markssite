@@ -11,7 +11,7 @@
 .project_slider_text {
     font-family: var(--font-unbounded);
     position: absolute;
-    bottom: 8.44vh;
+    bottom: 10vh;
     left: 9.06vw;
     z-index: 1;
     color: var(--white-F6F6F6);
@@ -212,7 +212,7 @@ display: inline-block;
     display: flex;
     flex-direction: row;
     width: 100%;
-    gap: 10px;
+    /* gap: 10px; */
 
 }
 
@@ -258,7 +258,6 @@ display: inline-block;
 .cart_project__address {
     display: flex;
     flex-wrap: wrap;
-    word-wrap: break-word;
     color: var(--gray-959DA6);
     font-family: var(--font-raleway);
     font-size: 10px;
@@ -266,6 +265,7 @@ display: inline-block;
     font-weight: var(--fw-400);
     line-height: normal;
     padding-top: 0.6rem;
+    width: max-content;
   }
 
 .cart_project__address__svg {
@@ -278,7 +278,6 @@ display: inline-block;
 
 .el_project_selectCompetencies {
     margin-right: 6px;
-    /* margin-top: 6px; */
     border: 1px solid;
     border-radius: 34px;
     max-width: fit-content;
@@ -896,7 +895,7 @@ display: inline-block;
         display: flex;
         justify-content: center;
         flex-direction: column;
-        gap: 2rem;
+        gap: 0rem;
     }
 
     .section_project__block_cart {
@@ -946,7 +945,7 @@ display: inline-block;
         grid-row-gap: 0.25rem;
         padding-top: 0.38rem;
         padding-left: 0px;
-        padding-bottom: 0.5rem;
+        padding-bottom: 0rem;
         flex-direction: row;
         font-size: 0.56rem;
         font-weight: var(--fw-500);

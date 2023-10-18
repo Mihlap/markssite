@@ -1,29 +1,67 @@
 import React, { useRef, useState, useEffect } from "react";
 import Slider from "react-slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
 import "./Company_Slider.css";
 
-const Company_Slider = () => {
+
+const catPhoto = "../../img/cat_954.jpeg";
+
+const CompanySlider = () => {
   const sliderRef = useRef(null);
-  const [width, setWidth] = useState(22);
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeButtonIndex, setActiveButtonIndex] = useState(0);
+  const [lineWidth, setLineWidth] = useState(22);
+
+  const slidesCard = [
+    { imageTitle: "company_slider.png" },
+    { imageTitle: "company_slider.png" },
+    { imageTitle: "company_slider.png" },
+    { imageTitle: "company_slider.png" },
+  ];
+
+  const imagePaths = slidesCard.flatMap((slide) => {
+    if (!slide.imageTitle) return catPhoto;
+    return slide.imageTitle
+      .split(",")
+      .map((el) => `./assets/${el.trim()}`);
+  });
 
   useEffect(() => {
-      setWidth((activeIndex + 1) * 22 + 2);
-  }, [activeIndex]);
+    setLineWidth(calculateLineWidth(activeButtonIndex));
+  }, [activeButtonIndex]);
 
-   const handleButtonClick = (index) => {
-     if (sliderRef.current) {
-       sliderRef.current.slickGoTo(index);
-       setActiveIndex(index);
-     }
-   };
+  const calculateLineWidth = (index) => {
+    const count = imagePaths.length;
+    if (sliderRef.current && count === 4) {
+      return (index + 1) * 22;
+    } else if (sliderRef.current && count === 3) {
+      return (index + 1) * 30;
+    } else if (sliderRef.current && count === 2) {
+      return (index + 1) * 45;
+    } else {
+      return index;
+    }
+  };
+
+  const handleButtonClick = (index) => {
+    if (sliderRef.current) {
+      sliderRef.current.slickGoTo(index);
+      setActiveButtonIndex(index);
+      setLineWidth(calculateLineWidth(index));
+    }
+  };
 
   const handleSwipe = (direction) => {
-    if (direction === "left" && activeIndex < 3) {
-      handleButtonClick(activeIndex + 1);
-    } else if (direction === "right" && activeIndex > 0) {
-      handleButtonClick(activeIndex - 1);
+    if (direction === "left" && activeButtonIndex < slidesCard.length - 1) {
+      handleButtonClick(activeButtonIndex + 1);
+    } else if (direction === "right" && activeButtonIndex > 0) {
+      handleButtonClick(activeButtonIndex - 1);
     }
+  };
+
+  const handleBeforeChange = (_, newIndex) => {
+    setActiveButtonIndex(newIndex);
+    setLineWidth(calculateLineWidth(newIndex));
   };
 
   const settings = {
@@ -32,60 +70,44 @@ const Company_Slider = () => {
     ref: sliderRef,
     slidesToScroll: 1,
     onSwipe: handleSwipe,
-    infinite: false,
-    // swipeToSlide: true,
+    infinite: true,
+    autoplay: true,
+    autoplaySpeed: 6000,
+    beforeChange: handleBeforeChange,
   };
 
   return (
     <div className="company-slider-container">
       <Slider {...settings}>
-        <div className="company-slider-slide">
-          <img src="./assets/company_slider.png" alt="111" />
-        </div>
-        <div className="company-slider-slide">
-          <img src="./assets/company_slider.png" alt="111" />
-        </div>
-        <div className="company-slider-slide">
-          <img src="./assets/company_slider.png" alt="111" />
-        </div>
-        <div className="company-slider-slide">
-          <img src="./assets/company_slider.png" alt="111" />
-        </div>
+        {imagePaths.map((path, index) => (
+          <div key={index} className="company-slider-slide">
+            <img
+              className="company-slider-slide-img"
+              src={path}
+              alt={`Slide ${index + 1}`}
+            />
+          </div>
+        ))}
       </Slider>
-      {/* {window.innerWidth > 1024 ? ( */}
       <div className="navigation_slider">
         <div className="button_slider_wrapper">
-          <button
-            className={`button_slider ${activeIndex === 0 ? "active" : ""}`}
-            onClick={() => handleButtonClick(0)}
-          >
-            01
-          </button>
-          <button
-            className={`button_slider ${activeIndex === 1 ? "active" : ""}`}
-            onClick={() => handleButtonClick(1)}
-          >
-            02
-          </button>
-          <button
-            className={`button_slider ${activeIndex === 2 ? "active" : ""}`}
-            onClick={() => handleButtonClick(2)}
-          >
-            03
-          </button>
-          <button
-            className={`button_slider ${activeIndex === 3 ? "active" : ""}`}
-            onClick={() => handleButtonClick(3)}
-          >
-            04
-          </button>
-          <div className="underline" style={{ width: `${width}%` }}></div>
+          {imagePaths.map((_, index) => (
+            <button
+              key={index}
+              className={`button_slider ${
+                activeButtonIndex === index ? "active" : ""
+              }`}
+              onClick={() => handleButtonClick(index)}
+            >
+              {String(index + 1).padStart(2, "0")}
+            </button>
+          ))}
+          <div className="underline" style={{ width: `${lineWidth}%` }}></div>
         </div>
         <div className="gray-underline"></div>
       </div>
-      {/* ) : null} */}
     </div>
   );
 };
 
-export default Company_Slider;
+export default CompanySlider;
