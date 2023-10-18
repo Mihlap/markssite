@@ -21,6 +21,7 @@ const Mapbox3D = () => {
     });
 
     map.scrollZoom.disable();
+    
 
     const popups = []; 
 
@@ -96,7 +97,8 @@ const Mapbox3D = () => {
 
     popups.forEach(({ marker, popup }) => {
       marker.getElement().addEventListener("mouseenter", () => {
-   
+
+       
         popups.forEach(({ popup }) => popup.remove());
 
         popup.addTo(map);

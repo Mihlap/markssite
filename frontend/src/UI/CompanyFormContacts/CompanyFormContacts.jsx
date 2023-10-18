@@ -150,7 +150,7 @@ const CompanyFormContacts = () => {
       <div className={styles.form_left_main}>
         <div className={styles.title}>На связи</div>
         <span className={styles.span_text}>
-        Наши специалисты ответят на&nbsp;все интересующие Вас вопросы
+        Наши специалисты ответят на&nbsp;все интересующие вас вопросы
         </span>
         <form className={styles.form_form_wrapper} onSubmit={handleSubmit}>
           <div className={`${styles.group} some-unique-class`}>
@@ -173,7 +173,7 @@ const CompanyFormContacts = () => {
                 className={styles.input_name_form_contacts}
               />
               <div className={styles.line}></div>
-              <span className={styles.placeholder}>Ваше Имя</span>
+              <span className={styles.placeholder}>Ваше&nbsp;Имя</span>
             </label>
           </div>
           <div className={styles.group}>
