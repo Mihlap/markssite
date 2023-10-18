@@ -1,5 +1,4 @@
 const { transliterate } = require("transliteration");
-
 // formHelpers.js
 export const removePreviewPhoto = (
   previewPhotos,
@@ -12,7 +11,6 @@ export const removePreviewPhoto = (
   const updatedPreviewPhotos = [...previewPhotos];
   updatedPreviewPhotos.splice(index, 1);
   setPreviewPhotos(updatedPreviewPhotos);
-  setIsDropPhotoVisible(true);
 
   // Удаление фото из массива выбранных файлов
   const updatedDropPhotos = [...inputData.dropPhoto];
@@ -22,11 +20,10 @@ export const removePreviewPhoto = (
     dropPhoto: updatedDropPhotos,
   }));
 
-  // Обновление стиля поля ввода файлов
-
-   if (updatedPreviewPhotos.length === 0) {
-     setIsDropPhotoVisible(true);
-   }
+  // Возвращаем label, если все фотографии удалены
+  if (updatedPreviewPhotos.length === 0) {
+    setIsDropPhotoVisible(true);
+  }
 };
 
 export const removePreviewPhotoAva = (
@@ -173,7 +170,7 @@ export function changeHandler(
         console.error("Unrecognized input name:", event.target.name);
         break;
     }
-
+    event.target.value = null;
     event.target.style.display = "none";
   } else if (
     event.target.name === "totalArea" ||

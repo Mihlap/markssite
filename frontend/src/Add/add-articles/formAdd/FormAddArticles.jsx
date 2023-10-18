@@ -54,21 +54,21 @@ export default function FormAddArticles({ setIsModalOpen }) {
   const [dynamicPreviews, setDynamicPreviews] = useState([]);
   const [dynamicData, setDynamicData] = useState([]);
 
-  const handleImageUpload = (selectedFile) => {
-    // функция которая запускает превью для фото из компонента ImageToDescriptionArticles
-    setInputData((prevInputData) => ({
-      ...prevInputData,
-      imageToDescriptionArticlesImg: selectedFile,
-    }));
-  };
+  // const handleImageUpload = (selectedFile) => {
+  //   // функция которая запускает превью для фото из компонента ImageToDescriptionArticles
+  //   setInputData((prevInputData) => ({
+  //     ...prevInputData,
+  //     imageToDescriptionArticlesImg: selectedFile,
+  //   }));
+  // };
 
-  const handleImageUploadQuote = (selectedFile) => {
-    // функция которая запускает превью для фото из компонента ImageToDescriptionArticles
-    setInputData((prevInputData) => ({
-      ...prevInputData,
-      quoteBlockAvatar: selectedFile,
-    }));
-  };
+  // const handleImageUploadQuote = (selectedFile) => {
+  //   // функция которая запускает превью для фото из компонента ImageToDescriptionArticles
+  //   setInputData((prevInputData) => ({
+  //     ...prevInputData,
+  //     quoteBlockAvatar: selectedFile,
+  //   }));
+  // };
 
   const handleRemovePreviewPhoto = (index) => {
     removePreviewPhoto(
@@ -267,6 +267,9 @@ export default function FormAddArticles({ setIsModalOpen }) {
         }
         return newData;
       });
+
+      const fileInputs = document.querySelectorAll('input[type="file"]');
+      fileInputs.forEach((input) => (input.value = "")); // это очищает значение всех инпутов типа file
     }
 
     return (
@@ -417,7 +420,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
     });
   };
 
-  // console.log(inputData, "<<--inputData ARTICLE");
+  console.log(inputData, "<<--inputData ARTICLE");
   // console.log(dynamicData, "<<--dynamicData");
   return (
     <div className={styles.form_container}>
@@ -567,14 +570,14 @@ export default function FormAddArticles({ setIsModalOpen }) {
               </label>
             </div>
             <div className={styles.preview_photos_container}>
-              {previewPhotos.map((preview, index) => (
+              {inputData.dropPhoto.map((preview, index) => (
                 <div
                   key={index}
                   className={styles.preview_photos_container__block}
                 >
                   <img
                     className={styles.preview_photos_container__img}
-                    src={preview}
+                    src={URL.createObjectURL(preview)}
                     alt={`Preview ${index}`}
                   />
                   <div
