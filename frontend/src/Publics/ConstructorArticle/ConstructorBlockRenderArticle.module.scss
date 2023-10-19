@@ -1,0 +1,657 @@
+@import '../../App.css';
+
+.containerImageToDescription {
+    padding-bottom: 3.75rem;
+    padding-left: 13.75vw;
+  
+
+    &__img {
+        object-position: center;
+        width: 100%;
+        height: 100%;
+        max-height: 50vw;
+        border-radius: 16px;
+        object-fit: cover;
+    }
+
+    &__text {
+        color: var(--gray-959DA6);
+        font-variant-numeric: lining-nums proportional-nums;
+        font-family: var(--font-raleway);
+        font-size: 0.875rem;
+        font-style: normal;
+        font-weight: var(--fw-400);
+        line-height: 1.25rem;
+        padding-top: 0.5rem;
+        word-wrap: break-word;
+     }
+}
+
+// ваыаываы
+
+.blockHeadingTitle {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding-bottom: 3.75rem;
+    padding-left: 13.75vw;
+    padding-right: 12.75vw;
+
+
+    &__heading {
+        color: var(--black-1D2E43);
+        font-family: var(--font-unbounded);
+        font-size: 24px;
+        font-style: normal;
+        font-weight: var(--fw-300);
+        line-height: 32px;
+        word-wrap: break-word;
+    }
+
+    &__text {
+        color: var(--black-1D2E43);
+        font-variant-numeric: lining-nums proportional-nums;
+        font-family: var(--font-raleway);
+        font-size: 16px;
+        font-style: normal;
+        font-weight: var(--fw-400);
+        line-height: 24px;
+        word-wrap: break-word;
+    }
+}
+
+// <<<< =========== стили для блока у которого 2 горизонтальные картинки и 1 вертикальная картинка imageBlockThree =========== >>>>
+
+.gridContainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    /* Здесь используем fr для автоматического распределения пространства */
+    gap: 30px;
+    height: 100%;
+    min-height: 50vh;
+    align-items: stretch;
+    margin-bottom: 90px;
+    
+}
+
+.horizontalImage,
+.verticalImage {
+    width: 100%;
+    /* Для корректного отображения изображений внутри блока */
+    object-fit: cover;
+    /* Изображение будет подгоняться так, чтобы заполнить свой блок без искажений */
+    display: block;
+    /* Убираем стандартные отступы для изображений */
+}
+
+.horizontalImage {
+    grid-column: 1 / 2;
+    height: 50vh;
+    border-radius: 1rem;
+    /* 50% высоты экрана */
+}
+
+.horizontalImage:nth-child(1) {
+    grid-row: 1 / 2;
+}
+
+.horizontalImage:nth-child(2) {
+    grid-row: 2 / 3;
+}
+
+.verticalImage {
+    grid-column: 2 / 3;
+    grid-row: 1 / 3;
+    // height: 100vh;
+    border-radius: 1rem;
+    /* 100% высоты экрана */
+}
+
+// <<< ====== стили для блока с двумя вертикальными картинками ====== >>>
+.imageBlockTwo {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    // height: 100vh;
+    padding-bottom: 3.75rem;
+    padding-left: 13.75vw;
+        
+
+    &__gridImage {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: 16px;
+        object-fit: cover;
+    }
+}
+
+// <<< ====== стили для слайдера с картинками ====== >>>
+
+
+
+// <<< ====== стили для блока с рамкой ====== >>>
+.text_framed {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    overflow: auto;
+    margin-bottom: 3.75rem;
+    padding-left: 13.75vw;
+
+    &__text {
+        color: var(--black-1D2E43);
+        font-variant-numeric: lining-nums proportional-nums;
+        /* Body Regular · 16 */
+        font-family: var(--font-raleway);
+        font-size: 16px;
+        font-style: normal;
+        font-weight: var(--fw-400);
+        line-height: 24px;
+        word-wrap: break-word;
+        border-radius: 16px;
+        padding: 24px;
+        border: 1px solid var(--salmon-FF7F6A);
+    }
+
+}
+
+// <<< ====== стили для блока заметкой  ====== >>>
+
+.note_block {
+    display: flex;
+    gap: 1rem;
+    padding-bottom: 3.75rem;
+    word-wrap: break-word;
+    padding-left: 13.75vw;
+
+    &__bookmark {
+        width: 9px;
+        height: auto;
+        flex-shrink: 0;
+        background: var(--salmon-FF7F6A);
+    }
+
+    &__text {
+        color: var(--black-1D2E43);
+        text-align: start;
+        font-variant-numeric: lining-nums proportional-nums;
+        font-family: var(--font-raleway);
+        font-size: 16px;
+        font-style: normal;
+        font-weight: var(--fw-700);
+        line-height: 24px;
+        padding: 10px 0px;
+    }
+}
+
+
+// <<< ====== стили для блока c текстом  ====== >>>
+.text_block {
+    color: var(--black-1D2E43);
+    font-family: var(--font-raleway);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: var(--fw-400);
+    line-height: 24px;
+    padding-bottom: 3.75rem;
+    word-wrap: break-word;
+     padding-left: 13.75vw;
+}
+
+// <<< ====== стили для блока c цитатой и автором  ====== >>>
+
+.quote_block_constainer {
+    position: relative;
+    margin-bottom: 3.75rem;
+    word-wrap: break-word;
+    padding-left: 13.75vw;
+
+    &__text_block {
+        display: flex;
+        padding: 24px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 24px;
+        border-radius: 16px;
+        background-color: var(--light-light-gray-EBECEE);
+    }
+
+    &__quote_text {
+        color: var(--black-1D2E43);
+        font-variant-numeric: lining-nums proportional-nums;
+
+        /* Body Regular · 16 */
+        font-family: var(--font-raleway);
+        font-size: 16px;
+        font-style: normal;
+        font-weight: var(--fw-400);
+        line-height: 24px;
+        /* 150% */
+    }
+
+    &__quote_author {
+        color: var(--gray-959DA6);
+        font-variant-numeric: lining-nums proportional-nums;
+        font-family: var(--font-raleway);
+        font-size: 14px;
+        font-style: normal;
+        font-weight: var(--fw-400);
+        line-height: 20px;
+    }
+
+    &__author_block {
+        position: absolute;
+        top: 0px;
+        right: -21%;
+        word-wrap: break-word;
+    }
+
+    &__img {
+        border-radius: 50%;
+        width: 10rem;
+        height: 10rem;
+        object-fit: cover;
+        object-position: center;
+    }
+
+    &__quote {
+        color: var(--dark-gray-566272);
+        font-family: var(--font-raleway);
+        font-size: 12px;
+        font-style: normal;
+        font-weight: var(--fw-400);
+        line-height: 16px;
+        padding-top: 10px;
+        max-width: 10rem;
+    }
+
+    &__author {
+        color: var(--gray-959DA6);
+        font-variant-numeric: lining-nums proportional-nums;
+        font-family: var(--font-raleway);
+        font-size: 12px;
+        font-style: normal;
+        font-weight: var(--fw-400);
+        line-height: 16px;
+        word-wrap: break-word;
+    }
+}
+
+.slider_container {
+    padding-bottom: 3.75rem;
+    padding-left: 13.75vw;
+}
+
+.div_conteiner__blockSix {
+    max-width: 100%;
+    padding-bottom: 2.75rem;
+}
+
+.block_video {
+    width: 100%;
+    height: auto;
+    max-height: 50vw;
+    border-radius: 16px;
+}
+
+
+/* Стили для desctop версии +1 сайта блока ProjectCard начинаются тут */
+
+@media screen and (min-width: 1025px) and (max-width: 1600px) {
+    .blockHeadingTitle {
+        padding-right: 0;
+        padding-left: 0;
+      }
+      .containerImageToDescription {
+        padding-left: 0;
+      }    
+
+    .text_framed {
+        padding-right: 0;
+        padding-left: 0;
+
+    }
+
+    .note_block {
+        padding-right: 0;
+        padding-left: 0;
+    }
+
+    .text_block {
+        padding-right: 0;
+        padding-left: 0;
+    }
+
+    .quote_block_constainer {
+        padding-right: 0;
+        padding-left: 0;
+    }
+    .imageBlockTwo {
+       padding-left: 0; 
+    }
+    .slider_container {
+      padding-left: 0;
+    }
+
+}
+
+
+
+/* Стили для планшетной версии сайта блока ProjectCardConstructor, начинаются тут */
+
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+
+    .blockHeadingTitle {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        padding: 0rem 0rem 0rem 0rem;
+        margin-bottom: 40px;
+
+        &__heading {
+            color: var(--black-1D2E43);
+            font-family: var(--font-unbounded);
+            font-size: 24px;
+            font-style: normal;
+            font-weight: var(--fw-300);
+            line-height: 32px;
+            word-break: break-word;
+        }
+
+        &__text {
+            color: var(--black-1D2E43);
+            font-variant-numeric: lining-nums proportional-nums;
+            font-family: var(--font-raleway);
+            font-size: 16px;
+            font-style: normal;
+            font-weight: var(--fw-400);
+            line-height: 24px;
+            word-break: break-word;
+        }
+    }
+
+
+    // <<<< =========== стили для блока у которого 2 горизонтальные картинки и 1 вертикальная картинка imageBlockThree =========== >>>>
+
+    .gridContainer {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 1fr;
+        /* Здесь используем fr для автоматического распределения пространства */
+        gap: 30px;
+        height: 100%;
+        max-height: 48rem;
+        align-items: stretch;
+        margin-bottom: 70px;
+    }
+
+    .horizontalImage,
+    .verticalImage {
+        width: 100%;
+        /* Для корректного отображения изображений внутри блока */
+        object-fit: cover;
+        /* Изображение будет подгоняться так, чтобы заполнить свой блок без искажений */
+        display: block;
+        /* Убираем стандартные отступы для изображений */
+    }
+
+    .horizontalImage {
+        grid-column: 1 / 2;
+        max-height: 24rem;
+        border-radius: 1rem;
+        /* 50% высоты экрана */
+    }
+
+    .horizontalImage:nth-child(1) {
+        grid-row: 1 / 2;
+    }
+
+    .horizontalImage:nth-child(2) {
+        grid-row: 2 / 3;
+    }
+
+    .verticalImage {
+        grid-column: 2 / 3;
+        grid-row: 1 / 3;
+        // height: 100vh;
+        border-radius: 1rem;
+        /* 100% высоты экрана */
+    }
+
+    .quote_block_constainer {
+        position: relative;
+        margin-bottom: 40px;
+        word-wrap: break-word;
+        padding-right: 0;
+        padding-left: 0;
+
+        &__text_block {
+            display: flex;
+            padding: 24px;
+            margin-right: 3rem;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 24px;
+            border-radius: 16px;
+            background-color: var(--light-light-gray-EBECEE);
+        }
+
+        &__quote_text {
+            color: var(--black-1D2E43);
+            font-variant-numeric: lining-nums proportional-nums;
+
+            /* Body Regular · 16 */
+            font-family: var(--font-raleway);
+            font-size: 16px;
+            font-style: normal;
+            font-weight: var(--fw-400);
+            line-height: 24px;
+            /* 150% */
+        }
+
+        &__quote_author {
+            color: var(--gray-959DA6);
+            font-variant-numeric: lining-nums proportional-nums;
+            font-family: var(--font-raleway);
+            font-size: 14px;
+            font-style: normal;
+            font-weight: var(--fw-400);
+            line-height: 20px;
+        }
+
+        &__author_block {
+            position: absolute;
+            top: 0px;
+            right: -21%;
+        }
+
+        &__img {
+            border-radius: 50%;
+            width: 10rem;
+            height: 10rem;
+            object-fit: cover;
+            object-position: center;
+        }
+
+        &__quote {
+            color: var(--dark-gray-566272);
+            font-family: var(--font-raleway);
+            font-size: 12px;
+            font-style: normal;
+            font-weight: var(--fw-400);
+            line-height: 16px;
+            padding-top: 10px;
+        }
+
+        &__author {
+            color: var(--gray-959DA6);
+            font-variant-numeric: lining-nums proportional-nums;
+            font-family: var(--font-raleway);
+            font-size: 12px;
+            font-style: normal;
+            font-weight: var(--fw-400);
+            line-height: 16px;
+        }
+    }
+
+    .text_framed {
+        padding-right: 0;
+        padding-left: 0;
+
+    }
+
+    .note_block {
+        padding-right: 0;
+        padding-left: 0;
+    }
+
+    .text_block {
+        padding-right: 0;
+        padding-left: 0;
+    }
+
+    .quote_block_constainer {}
+}
+
+
+/* Стили для мобильной версии сайта блока ProjectCardConstructor, начинаются тут */
+@media screen and (max-width: 767px) {
+
+    .containerImageToDescription {
+        padding-top: 0.5rem;
+        padding-bottom: 2.13rem;
+        // padding-left: 1rem;
+        // padding-right: 1rem;
+    }
+
+    .blockHeadingTitle {
+        display: flex;
+        flex-direction: column;
+        gap: 1.5rem;
+        padding-bottom: 2.5rem;
+        padding-left: 1vw;
+        padding-right: 1vw;
+   
+        
+        &__heading {
+            color: var(--black-1D2E43);
+            font-family: var(--font-unbounded);
+            font-size: 24px;
+            font-style: normal;
+            font-weight: var(--fw-300);
+            line-height: 32px;
+            word-wrap: break-word;
+            white-space: normal;
+
+        }
+
+        &__text {
+            color: var(--black-1D2E43);
+            font-variant-numeric: lining-nums proportional-nums;
+            font-family: var(--font-raleway);
+            font-size: 16px;
+            font-style: normal;
+            font-weight: var(--fw-400);
+            line-height: 24px;
+            word-wrap: break-word;
+            white-space: normal;
+        }
+    }
+
+
+    // <<<< =========== стили для блока у которого 2 горизонтальные картинки и 1 вертикальная картинка imageBlockThree =========== >>>>
+
+    .gridContainer {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 16px;
+        height: 100%;
+        height: 100%;
+        // min-height: 60vh;
+        // overflow: hidden;
+        margin-bottom: 2.5rem;
+        // padding-left: 1rem;
+        // padding-right: 1rem;
+    }
+
+
+    .horizontalImage,
+    .verticalImage {
+        width: 100%;
+        object-fit: cover;
+        display: block;
+        height: auto;
+        border-radius: 1rem;
+        object-position: center;
+    }
+
+    .horizontalImage {
+        grid-column: 1 / 2;
+        height: 20vh;
+        border-radius: 1rem;
+        /* 50% высоты экрана */
+    }
+
+    .horizontalImage:nth-child(1) {
+        grid-row: 1 / 2;
+    }
+
+    .horizontalImage:nth-child(2) {
+        grid-row: 2 / 3;
+    }
+
+    .verticalImage {
+        grid-column: 1 / 2;
+        height: 20vh;
+        border-radius: 1rem;
+    }
+
+    // <<< ====== стили для блока с двумя вертикальными картинками ====== >>>
+    .imageBlockTwo {
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        padding-bottom: 2.5rem;
+        // padding-left: 1rem;
+        // padding-right: 1rem;
+        // padding-top: 10rem;
+
+        &__gridImage {
+            width: 100%;
+            height: 20vh;
+            object-fit: cover;
+            object-position: center;
+            border-radius: 16px;
+        }
+    }
+
+    // <<< ====== стили для блока заметкой  ====== >>>
+
+    .quote_block_constainer {
+        &__author_block {
+            display: none;
+        }
+
+
+        &__text_block {
+            margin-right: 0rem;
+            word-wrap: break-word;
+        }
+    }
+
+    // <<< ====== стили для слайдера с картинками =) ====== >>>
+
+    .slider_container {
+        padding-bottom: 2.75rem;
+        padding-left: 0rem;
+        padding-right: 0rem;
+    }
+
+    .custom_slider {
+        padding-right: 10px;
+    }
+}
