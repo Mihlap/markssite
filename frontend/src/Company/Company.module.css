@@ -1420,7 +1420,8 @@ bottom: 3.38rem;
     padding-left: 1rem;
   }
 
-  .modal_description_stuff {
+  .modal_description_stuff,
+  .modal_description_stuff1 {
     padding-top: 0.5rem;
     padding-right: 2rem;
     padding-left: 1rem;
