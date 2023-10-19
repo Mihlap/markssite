@@ -79,7 +79,7 @@ const Footer = () => {
             {/* <Link className={styles.job_link} to="/">
               Сотрудникам
             </Link> */}
-            <Link className={styles.job_link} to="./Information">
+            <Link className={styles.job_link} to="./Information" target="_blank">
               Документы
             </Link>
             <div className={styles.job_link}>©&nbsp;MARKSLAB</div>
