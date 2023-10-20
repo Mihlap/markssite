@@ -152,6 +152,7 @@ export const getFetchFormFilter =
         `${serverHost}/api-project/getzapros-filter?page=${page}&viewConstruction=${viewConstruction}&limit=${projectsPerPage}`
       );
       dispatch(fetchProjectSuccess(response.data));
+     
     } catch (error) {
       dispatch(fetchProjectFailure(error.message));
     }
