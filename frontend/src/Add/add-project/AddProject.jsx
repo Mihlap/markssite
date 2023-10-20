@@ -171,15 +171,12 @@ export default function AddProject({ project, user }) {
           <div className={styles.card_components_admin__block_map}>
             {project &&
               project?.map((el) => {
-                const firstPhoto =
-                  el && el.imageTitle ? el.imageTitle.split(", ")[0] : null;
-                const defaultPhoto = cat;
+                const photoName = el && el.imageProject;
+                const defaultPhoto = cat; 
 
                 const photoSrc =
-                  firstPhoto &&
-                  firstPhoto !== "null" &&
-                  firstPhoto !== "undefined"
-                    ? `${Host}/images/imageAdd/${firstPhoto}`
+                  photoName && photoName !== "null" && photoName !== "undefined"
+                    ? `${Host}/images/imageAdd/${photoName}`
                     : defaultPhoto;
                 return (
                   <div

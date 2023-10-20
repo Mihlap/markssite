@@ -130,13 +130,12 @@ export default function Project() {
       .catch((error) =>
         console.error("Ошибка при получении геопозиции:", error)
       );
-      // setCurLocation("Москва");
+    // setCurLocation("Москва");
   }, []);
 
-  const currentLocation = userGeolocation
-  ? userGeolocation.city : "Москва";
+  const currentLocation = userGeolocation ? userGeolocation.city : "Москва";
 
-   function handleFocus() {
+  function handleFocus() {
     setIsFocusedProject(true);
   }
 
@@ -234,7 +233,6 @@ export default function Project() {
     );
   };
 
-
   const handleScroll = () => {
     const isAtBottom =
       window.innerHeight + window.scrollY >= document.body.offsetHeight;
@@ -278,14 +276,18 @@ export default function Project() {
       );
     });
 
-  const imageSlider = projects[0]?.imageOpen;
+  // Получение массива изображений
+  const imageSliders = projects?.map((el) => el.imageProject) || [];
 
-  const imageSrc = imageSlider
-    ? `${Host}/images/imageAdd/${imageSlider}`
+  // Пока я не уверен, что вы хотели сделать с imageSrc, так как imageSliders это массив.
+  // Если вы хотите получить первое изображение из массива:
+  const imageSrc = imageSliders[0]
+    ? `${Host}/images/imageAdd/${imageSliders[0]}`
     : catPhoto;
 
+  // Для altText мы также возьмем первый элемент (если это ваше намерение):
   const altText =
-    projects?.imageProject || projects?.imageTitle || "Default Alt Text";
+    imageSliders[0] || projects[0]?.imageTitle || "Default Alt Text";
 
   // console.log(filteredProjects, "9999999999999999999999999999999999");
 
@@ -616,6 +618,14 @@ export default function Project() {
           <div className={styles.section_project__block}>
             {filteredProjects &&
               filteredProjects.map((project) => {
+                console.log(project);
+                const photoName = project && project.imageProject;
+                const defaultPhoto = catPhoto;
+
+                const photoSrc =
+                  photoName && photoName !== "null" && photoName !== "undefined"
+                    ? `${Host}/images/imageAdd/${photoName}`
+                    : defaultPhoto;
                 if (!project) {
                   return null;
                 }
@@ -635,8 +645,8 @@ export default function Project() {
                       <div className={styles.cart_project__container}>
                         <img
                           className={styles.container__imageTitle_projectCard}
-                          src={imageSrc}
-                          alt={altText}
+                          src={photoSrc}
+                          alt="photo_project"
                         />
                         <div className={styles.project_content__wrapper}>
                           <div
