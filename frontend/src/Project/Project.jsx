@@ -287,9 +287,7 @@ export default function Project() {
   const altText =
     projects?.imageProject || projects?.imageTitle || "Default Alt Text";
 
-  // console.log(filteredProjects, "9999999999999999999999999999999999");
-
-  return (
+   return (
     <>
       <Helmet>
         <title>Marks Group</title>
