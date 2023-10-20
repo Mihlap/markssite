@@ -643,6 +643,14 @@ const ProjectCard = () => {
             }}
           >
             {projects?.map((project, index) => {
+
+               const photoName = project && project.imageProject;
+               const defaultPhoto = catPhoto;
+
+               const photoSrc =
+                 photoName && photoName !== "null" && photoName !== "undefined"
+                   ? `${Host}/images/imageAdd/${photoName}`
+                   : defaultPhoto;
               if (!project) {
                 return null;
               }
@@ -661,8 +669,8 @@ const ProjectCard = () => {
                     >
                       <img
                         className={styles.container__imageTitle_projectCard}
-                        src={imageSrc}
-                        alt={altText}
+                        src={photoSrc}
+                        alt={project.imageProject}
                       />
                     </div>
                     <div
