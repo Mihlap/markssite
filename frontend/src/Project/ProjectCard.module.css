@@ -1011,6 +1011,12 @@
     order: 2;
   }
 
+ .left_meta_castom {
+    bottom: 2px;
+    margin-left: 0;
+  }
+  
+
   .title_block,
   .title_text {
     display: none;

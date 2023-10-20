@@ -132,6 +132,7 @@ export default function Publics() {
             </div>
           </div>
         )}
+         <div className={styles.menu_button_group_articles1}>
         {screenWidth && (
           <Swiper
             onSwiper={setSwiper}
@@ -162,6 +163,7 @@ export default function Publics() {
             </div>
           </Swiper>
         )}
+        </div>
         <section className={styles.section_article}>
           <div className={styles.section_article__block}>
             {articles &&

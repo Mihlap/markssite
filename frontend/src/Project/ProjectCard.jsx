@@ -357,8 +357,7 @@ const ProjectCard = () => {
                       className={`${styles.left_meta} ${styles.left_meta_castom}`}
                     >
                       {firstValue}
-                      {/* {project.viewConstruction} */}
-                    </div>
+                      </div>
                   </div>
                 </div>
                 <div className={styles.title_text}>
@@ -408,7 +407,7 @@ const ProjectCard = () => {
                     <div
                       className={`${styles.left_meta} ${styles.left_meta_castom}`}
                     >
-                      {project.viewConstruction}
+                     {firstValue}
                     </div>
                   </div>
                 </div>

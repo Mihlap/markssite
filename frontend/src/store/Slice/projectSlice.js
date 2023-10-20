@@ -146,22 +146,22 @@ export const getFetchFormFilter =
   (page, projectsPerPage, viewConstruction, competency = "") =>
   async (dispatch) => {
     dispatch(fetchProjectStart());
+
     try {
       const response = await axios.get(
         `${serverHost}/api-project/getzapros-filter?page=${page}&limit=${projectsPerPage}`
       );
-
       const filteredData = response.data.filter(item => {
         const itemConstructionList = item.viewConstruction.split(',');
-        return itemConstructionList.some(construction => viewConstruction.includes(construction.trim()));
+        return viewConstruction.includes("Все") || itemConstructionList.some(construction => viewConstruction.includes(construction.trim()));
       });
-
+  
       dispatch(fetchProjectSuccess(filteredData));
-      console.log(filteredData);
+      
     } catch (error) {
       dispatch(fetchProjectFailure(error.message));
     }
-  };;
+  };
 
 export const getFetchFormCityFilter =
   (page, projectsPerPage, countryCity) => async (dispatch) => {
