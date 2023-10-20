@@ -146,7 +146,6 @@ export const getFetchFormFilter =
   (page, projectsPerPage, viewConstruction, competency = "") =>
   async (dispatch) => {
     dispatch(fetchProjectStart());
-
     try {
       const response = await axios.get(
         `${serverHost}/api-project/getzapros-filter?page=${page}&viewConstruction=${viewConstruction}&limit=${projectsPerPage}`
