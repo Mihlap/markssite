@@ -130,12 +130,13 @@ export default function Project() {
       .catch((error) =>
         console.error("Ошибка при получении геопозиции:", error)
       );
-    // setCurLocation("Москва");
+      // setCurLocation("Москва");
   }, []);
 
-  const currentLocation = userGeolocation ? userGeolocation.city : "Москва";
+  const currentLocation = userGeolocation
+  ? userGeolocation.city : "Москва";
 
-  function handleFocus() {
+   function handleFocus() {
     setIsFocusedProject(true);
   }
 
@@ -233,6 +234,7 @@ export default function Project() {
     );
   };
 
+
   const handleScroll = () => {
     const isAtBottom =
       window.innerHeight + window.scrollY >= document.body.offsetHeight;
@@ -276,8 +278,18 @@ export default function Project() {
       );
     });
 
+  const imageSlider = projects[0]?.imageOpen;
 
-   return (
+  const imageSrc = imageSlider
+    ? `${Host}/images/imageAdd/${imageSlider}`
+    : catPhoto;
+
+  const altText =
+    projects?.imageProject || projects?.imageTitle || "Default Alt Text";
+
+  // console.log(filteredProjects, "9999999999999999999999999999999999");
+
+  return (
     <>
       <Helmet>
         <title>Marks Group</title>
@@ -604,14 +616,6 @@ export default function Project() {
           <div className={styles.section_project__block}>
             {filteredProjects &&
               filteredProjects.map((project) => {
-                // console.log(project);
-                const photoName = project && project.imageProject;
-                const defaultPhoto = catPhoto;
-
-                const photoSrc =
-                  photoName && photoName !== "null" && photoName !== "undefined"
-                    ? `${Host}/images/imageAdd/${photoName}`
-                    : defaultPhoto;
                 if (!project) {
                   return null;
                 }
@@ -631,8 +635,8 @@ export default function Project() {
                       <div className={styles.cart_project__container}>
                         <img
                           className={styles.container__imageTitle_projectCard}
-                          src={photoSrc}
-                          alt="photo_project"
+                          src={imageSrc}
+                          alt={altText}
                         />
                         <div className={styles.project_content__wrapper}>
                           <div
