@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import Select from "react-select";
+import Select, { components } from "react-select";
+
 import { transliterate } from "transliteration";
 import styles from "./FormAddProject.module.scss";
 import { fetchProject } from "../../../store/Slice/projectSlice";
@@ -12,6 +13,12 @@ import {
   removePreviewPhotoClose,
 } from "./formHelpers";
 import customStyles from "./customStyles";
+import {
+  DropdownIndicator,
+  ValueContainer,
+  AnotherDropdownIndicator,
+  AnotherValueContainer,
+} from './CustomSelectComponents';  // путь до вашего файла
 
 import icon from "./img/Frame4684.svg";
 import ConstructorPage from "../constructor/ConstructorPage";
@@ -31,6 +38,7 @@ export default function FormAddProject({ setIsModalOpen }) {
   const [isPhotoAvaVisible, setIsPhotoAvaVisible] = useState(true);
   const [isDropPhotoVisible, setIsDropPhotoVisible] = useState(true);
   const [selectedRadio, setSelectedRadio] = useState("28,28");
+  const [isFocused, setIsFocused] = useState(false);
 
   // << ==== КОНСТУКТОР ==== >>
   // состояние для хранения текущего значения инпута
@@ -231,19 +239,9 @@ export default function FormAddProject({ setIsModalOpen }) {
         });
       });
       newDynamicData[blockIndex][inputIndex].value = newFiles;
-      // console.log(
-      //   "Updated files:",
-      //   newDynamicData[blockIndex][inputIndex].value
-      // );
     } else {
       newDynamicData[blockIndex][inputIndex].value = value;
     }
-
-    //  if (!newDynamicData[blockIndex][inputIndex].value) {
-    //    newDynamicData[blockIndex][inputIndex].value = "";
-    //  }
-
-    //  newDynamicData[blockIndex][inputIndex].value = value;
 
     setDynamicData(newDynamicData);
   };
@@ -256,16 +254,16 @@ export default function FormAddProject({ setIsModalOpen }) {
           innerDiv: styles.someInnerDivStyle,
         };
       case "Слайдер *допускается загрузка 8ми изображений":
-      return {
-        outerDiv: styles.sliderPreview,
-        innerDiv: styles.sliderPreviewDiv, 
-      };
-      case "Блок 2е вертикальные картинки":      
-       return {
-         outerDiv: styles.verticallyBlock,
-         innerDiv: styles.previewWerticallyBlock,
-         verticalImgTwo: styles.verticalTwoImg,
-       };
+        return {
+          outerDiv: styles.sliderPreview,
+          innerDiv: styles.sliderPreviewDiv,
+        };
+      case "Блок 2е вертикальные картинки":
+        return {
+          outerDiv: styles.verticallyBlock,
+          innerDiv: styles.previewWerticallyBlock,
+          verticalImgTwo: styles.verticalTwoImg,
+        };
       case "Блок 3 картинки":
         return {
           outerDiv: styles.horizontalImage,
@@ -574,6 +572,9 @@ export default function FormAddProject({ setIsModalOpen }) {
                 placeholder="Выбрать компетенции"
                 value={selectedCompetencies}
                 onChange={setSelectedCompetencies}
+                components={{ DropdownIndicator, ValueContainer }}
+                onFocus={() => setIsFocused(true)}
+                onBlur={() => setIsFocused(false)}
               />
             </div>
             <div className={`${styles.form__group} ${styles.field}`}>
@@ -638,13 +639,30 @@ export default function FormAddProject({ setIsModalOpen }) {
                 value={selectedViewConstruction}
                 onChange={setSelectedViewConstruction}
                 options={[
-                  { value: "Концепция", label: "Концепция" },
+                  { value: "Автодорожные", label: "Автодорожные" },
+                  {
+                    value: "Уникальные объекты",
+                    label: "Уникальные объекты",
+                  },
+                  { value: "Аэропорты", label: "Аэропорты" },
+                  {
+                    value: "Жилищное строительство",
+                    label: "Жилищное строительство",
+                  },
+                  { value: "Архитектура", label: "Архитектура" },
+                  {
+                    value: "Концепция",
+                    label: "Концепция",
+                  },
                   {
                     value: "Адаптация концепций",
                     label: "Адаптация концепций",
                   },
                   { value: "Дизайн-проекты", label: "Дизайн-проекты" },
-                  { value: "Документация РП П", label: "Документация РП П" },
+                  {
+                    value: "Документация РП П",
+                    label: "Документация РП П",
+                  },
                   { value: "Инженерия", label: "Инженерия" },
                   {
                     value: "Подземные сооружения",
@@ -660,6 +678,12 @@ export default function FormAddProject({ setIsModalOpen }) {
                 ]}
                 className={styles.form__field}
                 placeholder="Выберите вид строительства"
+                components={{
+                  DropdownIndicator: AnotherDropdownIndicator,
+                  ValueContainer: AnotherValueContainer,
+                }}
+                onFocus={() => setIsFocused(true)}
+                onBlur={() => setIsFocused(false)}
               />
             </div>
           </div>
@@ -828,9 +852,9 @@ export default function FormAddProject({ setIsModalOpen }) {
                 </div>
               </div>
               <div
-                style={{
-                  display: isDropPhotoVisible ? "inline-block" : "none",
-                }}
+              // style={{
+              //   display: isDropPhotoVisible ? "inline-block" : "none",
+              // }}
               >
                 <label className={styles.slider_container__customFileUpload}>
                   <input
