@@ -166,8 +166,8 @@ export default function Publics() {
           <div className={styles.section_article__block}>
             {articles &&
               articles?.map((article) => {
-                const imagePathsForArticle = article.imageTitle
-                  ? article.imageTitle.split(",").map((el) => el.trim())
+                const imagePathsForArticle = article?.imageTitle
+                  ? article?.imageTitle.split(",").map((el) => el.trim())
                   : [];
 
                 const firstImageName = imagePathsForArticle[0] || null;

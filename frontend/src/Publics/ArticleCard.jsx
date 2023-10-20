@@ -478,34 +478,34 @@ const ArticleCard = () => {
             spaceBetween={30}
             touch="true"
             direction="horizontal"
-            loop={false}
+            loop={true}
             breakpoints={{
               2500: {
-                slidesPerView: 3.9,
+                slidesPerView: 4.7,
               },
               2000: {
-                slidesPerView: 3.4,
+                slidesPerView: 4.2,
               },
               1750: {
-                slidesPerView: 2.7,
+                slidesPerView: 3.5,
               },
               1440: {
-                slidesPerView: 2.3,
+                slidesPerView: 2.7,
               },
               1300: {
-                slidesPerView: 2.1,
+                slidesPerView: 2.7,
               },
               1200: {
-                slidesPerView: 1.9,
+                slidesPerView: 2.5,
               },
               1024: {
-                slidesPerView: 1.6,
+                slidesPerView: 2.3,
               },
               900: {
-                slidesPerView: 1.4,
+                slidesPerView: 2.1,
               },
-              800: {
-                slidesPerView: 1.2,
+              700: {
+                slidesPerView: 2.1,
               },
             }}
           >

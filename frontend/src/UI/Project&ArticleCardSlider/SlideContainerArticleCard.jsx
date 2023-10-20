@@ -75,7 +75,7 @@ const SliderContainerArticleCard = ({ articles }) => {
           })}
         </div>
       </Swiper>
-      <div className="swiper_pagination_ProjectCard">
+      {/* <div className="swiper_pagination_ProjectCard">
         {articles &&
           articles?.map((_, index) => (
             <button
@@ -86,7 +86,7 @@ const SliderContainerArticleCard = ({ articles }) => {
               onClick={() => handlePageClick(index)}
             />
           ))}
-      </div>
+      </div> */}
     </div>
   );
 };

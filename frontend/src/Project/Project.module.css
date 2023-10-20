@@ -170,9 +170,8 @@ display: inline-block;
     display: flex;
     flex-wrap: wrap;
     gap: 1.88rem;
-    padding-left: 1.69rem;
-    padding-right: 1.69rem;
-    }
+    padding-left: 1.88rem;
+  }
   
   .section_project__block_cart {
     display: flex;
@@ -634,6 +633,10 @@ display: inline-block;
             object-fit: cover;
             object-position: center;
         }
+
+        .modal_wrapper_project_location {
+            width: 30%;
+          }
   
  }
 
@@ -738,7 +741,7 @@ display: inline-block;
     .section_project {
        padding-top: 1.5rem;
        padding-left: 1.21rem;
-       padding-right: 1.21rem;
+       padding-right: 1.9rem;
        }
     
        .section_project__block {
@@ -766,6 +769,10 @@ display: inline-block;
 
 /* Стили для мобильной версии сайта блока Project начинаются тут */
 @media screen and (max-width: 767px) {
+    .project_main {
+       padding-bottom: 0rem;
+    }
+
     .project_slider_text {
         bottom: 24vh;
         left: 1.31rem;
@@ -874,19 +881,22 @@ display: inline-block;
         display: flex;
         padding-top: 2.5rem;
         bottom: 0rem;
-        left: 0rem;
-        width: 90%;
-    }
+        left: 1rem;
+        right: 0rem;
+        width: 100%;
+     }
 
     .active {
         background: var(--black-1D2E43);
         color: var(--white-F6F6F6);
     }
 
-    .section_project {
+       .section_project {
         display: flex;
         flex-direction: column;
         padding-top: 2rem;
+        padding-left: -1rem;
+        padding-right: 1rem;
         padding-bottom: 0rem;
         background-color: var(--white-F6F6F6);
     }
@@ -896,6 +906,7 @@ display: inline-block;
         justify-content: center;
         flex-direction: column;
         gap: 0rem;
+        padding-left: 1rem;
     }
 
     .section_project__block_cart {
