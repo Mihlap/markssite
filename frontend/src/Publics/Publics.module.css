@@ -342,7 +342,9 @@
    .menu_button_group_articles_wrapper_main {
     display: none;
    }
-
+   .menu_button_group_articles1 {
+    padding-left: 1.67rem;
+   }
    .my_swiper3_button_group_article {
     display: flex;
     padding-top: 1.5rem;
@@ -353,8 +355,7 @@
 
 .menu__button__allArticles.active {
   background-color: var(--black-1D2E43);
-  color: var(--white-F6F6F6);
-  margin-left: 1.67rem;
+  color: var(--white-F6F6F6); 
 }
 
 .section_article {
