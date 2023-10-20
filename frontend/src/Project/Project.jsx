@@ -276,18 +276,6 @@ export default function Project() {
       );
     });
 
-  // Получение массива изображений
-  const imageSliders = projects?.map((el) => el.imageProject) || [];
-
-  // Пока я не уверен, что вы хотели сделать с imageSrc, так как imageSliders это массив.
-  // Если вы хотите получить первое изображение из массива:
-  const imageSrc = imageSliders[0]
-    ? `${Host}/images/imageAdd/${imageSliders[0]}`
-    : catPhoto;
-
-  // Для altText мы также возьмем первый элемент (если это ваше намерение):
-  const altText =
-    imageSliders[0] || projects[0]?.imageTitle || "Default Alt Text";
 
   // console.log(filteredProjects, "9999999999999999999999999999999999");
 
@@ -618,7 +606,7 @@ export default function Project() {
           <div className={styles.section_project__block}>
             {filteredProjects &&
               filteredProjects.map((project) => {
-                console.log(project);
+                // console.log(project);
                 const photoName = project && project.imageProject;
                 const defaultPhoto = catPhoto;
 
