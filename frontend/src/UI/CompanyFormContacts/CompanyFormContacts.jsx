@@ -19,12 +19,7 @@ const CompanyFormContacts = () => {
 
   // const [showError, setShowError] = useState(false);
  
-  
-
-
-
-
-  const Host = process.env.REACT_APP_SERVER_HOST;
+    const Host = process.env.REACT_APP_SERVER_HOST;
  
 
   function handleFocus(event) {
