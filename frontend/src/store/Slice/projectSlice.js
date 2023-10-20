@@ -149,14 +149,20 @@ export const getFetchFormFilter =
 
     try {
       const response = await axios.get(
-        `${serverHost}/api-project/getzapros-filter?page=${page}&viewConstruction=${viewConstruction}&limit=${projectsPerPage}`
+        `${serverHost}/api-project/getzapros-filter?page=${page}&limit=${projectsPerPage}`
       );
-      dispatch(fetchProjectSuccess(response.data));
-     
+
+      const filteredData = response.data.filter(item => {
+        const itemConstructionList = item.viewConstruction.split(',');
+        return itemConstructionList.some(construction => viewConstruction.includes(construction.trim()));
+      });
+
+      dispatch(fetchProjectSuccess(filteredData));
+      console.log(filteredData);
     } catch (error) {
       dispatch(fetchProjectFailure(error.message));
     }
-  };
+  };;
 
 export const getFetchFormCityFilter =
   (page, projectsPerPage, countryCity) => async (dispatch) => {
