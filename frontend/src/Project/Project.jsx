@@ -368,6 +368,7 @@ export default function Project() {
             </div>
           </div>
         )}
+        <div className={styles.menu_button_group_project_wrapper_main1}>
         {screenWidth && (
           <Swiper
             onSwiper={setSwiper}
@@ -399,6 +400,7 @@ export default function Project() {
             </div>
           </Swiper>
         )}
+        </div>
         {/* этот isActive скрывает фильтрацию  */}
         {!isActive && (
           <div className={styles.menu_button_group_project_wrapper_main}>
