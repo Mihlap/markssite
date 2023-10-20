@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import Slider from "react-slick";
-import styles from "../../Project/ConstructorProject/ConstructorBlockRenderer.module.scss";
+import styles from "../ConstructorArticle/ConstructorBlockRenderArticle.module.scss";
 import "../../Project/stylePaginationSlider.css";
 
 const Host = process.env.REACT_APP_SERVER_HOST;
@@ -308,17 +308,29 @@ export default function ConstructorBlockRenderer({ block }) {
   };
 
   const renderQuoteBlock = (block) => {
+    if (!block || block?.length === 0 || !block[0] || !block[0].label) {
+      return null; 
+    }
+    
     let quote = "";
     let author = "";
     let imageUrl = "";
 
-    block?.forEach((item) => {
-      if (item.label === "Автор цитаты ( ФИО должность )") quote = item.value;
-      if (item.label === "Текст цитаты") author = item.value;
-      if (item.label === "Фото автора статьи") imageUrl = item.value[0];
+    block.forEach((item) => {
+      if (item && item.label && item.value) {
+        if (item.label === "Автор цитаты ( ФИО должность )") quote = item.value;
+        if (item.label === "Текст цитаты") author = item.value;
+        if (item.label === "Фото автора статьи" && Array.isArray(item.value) && item.value.length > 0) {
+          imageUrl = item.value[0];
+        }
+      }
     });
-
-    return (
+  
+    if (!quote || !author) {
+      return null;
+    }
+  
+     return (
       <div className={styles.quote_block_constainer}>
         <div className={styles.quote_block_constainer__text_block}>
           <div className={styles.quote_block_constainer__quote_text}>
@@ -341,7 +353,7 @@ export default function ConstructorBlockRenderer({ block }) {
     let noteBlockText = "";
 
     block?.forEach((item) => {
-      if (item.label === "Текст заметки") noteBlockText = item.value;
+      if (item.label === "Текст заметки") noteBlockText = item?.value;
     });
     return (
       <div className={styles.note_block}>
