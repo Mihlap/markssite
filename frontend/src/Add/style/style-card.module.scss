@@ -220,6 +220,12 @@
 
 .cart_project {
 
+    &__container {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
     &__img {
         object-fit: cover;
         object-position: center;
@@ -247,7 +253,7 @@
         background-color: var(--light-light-gray-EBECEE);
         color: var(--black-1D2E43);
         padding: 8px 20px;
-        border-radius: 1rem;
+        border-radius: 2rem;
         width: 150px;
         display: flex;
         align-items: center;
