@@ -20,6 +20,8 @@ import {
   AnotherValueContainer,
   SelectDegreeParticipationDropdownIndicator,
   SelectDegreeParticipationValueContainer,
+  SelectStatusObjectDropdownIndicator,
+  SelectStatusObjectValueContainer,
 } from "./CustomSelectComponents";  // путь до вашего файла
 
 import icon from "./img/Frame4684.svg";
@@ -29,6 +31,7 @@ export default function FormAddProject({ setIsModalOpen }) {
   const dispatch = useDispatch();
   const [selectedCompetencies, setSelectedCompetencies] = useState([]);
   const [selectDegreeParticipation, setSelectDegreeParticipation] = useState("");
+  const [selectStatusObject, setSelectStatusObject] = useState("");
   const [selectedViewConstruction, setSelectedViewConstruction] = useState([]);
 
   const [previewPhotos, setPreviewPhotos] = useState([]);
@@ -146,6 +149,7 @@ export default function FormAddProject({ setIsModalOpen }) {
         .map((option) => option.label)
         .join(","),
       degreeParticipation: selectDegreeParticipation.label,
+      statusObject: selectStatusObject.label,
       viewConstruction: selectedViewConstruction
         .map((option) => option.label)
         .join(","),
@@ -156,6 +160,7 @@ export default function FormAddProject({ setIsModalOpen }) {
     dispatch(fetchProject(formattedData, setInputData));
     setSelectedCompetencies([]);
     setSelectDegreeParticipation("");
+    setSelectStatusObject("");
     setSelectedViewConstruction([]);
     setSelectedRadio("");
     setPreviewPhotos([]);
@@ -1212,7 +1217,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                   onBlur={() => setIsFocused(false)}
                 />
               </div>
-              <div className={`${styles.form__group} ${styles.field}`}>
+              {/* <div className={`${styles.form__group} ${styles.field}`}>
                 <input
                   type="input"
                   className={styles.form__field}
@@ -1238,6 +1243,33 @@ export default function FormAddProject({ setIsModalOpen }) {
                 <label htmlFor="statusObject" className={styles.form__label}>
                   Статус объекта (например «Дом сдан»)
                 </label>
+              </div> */}
+              <div className={`${styles.form__group} ${styles.field}`}>
+                <Select
+                  styles={customStyles}
+                  // isMulti
+                  name="statusObject"
+                  options={[
+                    {
+                      value: "Завершен",
+                      label: "Завершен",
+                    },
+                    {
+                      value: "В работе",
+                      label: "В работе",
+                    },
+                  ]}
+                  className={styles.form__field}
+                  placeholder="Статус объекта"
+                  value={selectStatusObject}
+                  onChange={setSelectStatusObject}
+                  components={{
+                    DropdownIndicator: SelectStatusObjectDropdownIndicator,
+                    ValueContainer: SelectStatusObjectValueContainer,
+                  }}
+                  onFocus={() => setIsFocused(true)}
+                  onBlur={() => setIsFocused(false)}
+                />
               </div>
               <div className={`${styles.form__group} ${styles.field}`}>
                 <input
