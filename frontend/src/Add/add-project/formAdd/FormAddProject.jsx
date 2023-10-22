@@ -1159,36 +1159,6 @@ export default function FormAddProject({ setIsModalOpen }) {
                   Расположение: Город, улица, номер дома
                 </label>
               </div>
-              {/* <div className={`${styles.form__group} ${styles.field}`}>
-                <input
-                  type="input"
-                  className={styles.form__field}
-                  placeholder="degreeParticipation"
-                  name="degreeParticipation"
-                  id="degreeParticipation"
-                  value={inputData.degreeParticipation}
-                  onChange={(event) =>
-                    changeHandler(
-                      event,
-                      inputData,
-                      setInputData,
-                      setPreviewPhotos,
-                      setIsDropPhotoVisible,
-                      setPreviewPhotoAva,
-                      setIsPhotoAvaVisible,
-                      setPreviewPhotoOpen,
-                      setIsPhotoOpenVisible
-                    )
-                  }
-                  // required
-                />
-                <label
-                  htmlFor="degreeParticipation"
-                  className={styles.form__label}
-                >
-                  Степень участия
-                </label>
-              </div> */}
               <div className={`${styles.form__group} ${styles.field}`}>
                 <Select
                   styles={customStyles}
@@ -1217,33 +1187,6 @@ export default function FormAddProject({ setIsModalOpen }) {
                   onBlur={() => setIsFocused(false)}
                 />
               </div>
-              {/* <div className={`${styles.form__group} ${styles.field}`}>
-                <input
-                  type="input"
-                  className={styles.form__field}
-                  placeholder="statusObject"
-                  name="statusObject"
-                  id="statusObject"
-                  value={inputData.statusObject}
-                  onChange={(event) =>
-                    changeHandler(
-                      event,
-                      inputData,
-                      setInputData,
-                      setPreviewPhotos,
-                      setIsDropPhotoVisible,
-                      setPreviewPhotoAva,
-                      setIsPhotoAvaVisible,
-                      setPreviewPhotoOpen,
-                      setIsPhotoOpenVisible
-                    )
-                  }
-                  // required
-                />
-                <label htmlFor="statusObject" className={styles.form__label}>
-                  Статус объекта (например «Дом сдан»)
-                </label>
-              </div> */}
               <div className={`${styles.form__group} ${styles.field}`}>
                 <Select
                   styles={customStyles}
