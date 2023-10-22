@@ -618,6 +618,15 @@ export default function Project() {
           <div className={styles.section_project__block}>
             {filteredProjects &&
               filteredProjects.map((project) => {
+                   const photoName = project && project.imageProject;
+                   const defaultPhoto = catPhoto; // Убедитесь, что catPhoto существует и содержит правильный путь к изображению по умолчанию
+
+                   const photoSrc =
+                     photoName &&
+                     photoName !== "null" &&
+                     photoName !== "undefined"
+                       ? `${Host}/images/imageAdd/${photoName}`
+                       : defaultPhoto;
                 if (!project) {
                   return null;
                 }
@@ -637,8 +646,8 @@ export default function Project() {
                       <div className={styles.cart_project__container}>
                         <img
                           className={styles.container__imageTitle_projectCard}
-                          src={imageSrc}
-                          alt={altText}
+                          src={photoSrc}
+                          alt={project.imageProject || "Default Alt Text"}
                         />
                         <div className={styles.project_content__wrapper}>
                           <div
