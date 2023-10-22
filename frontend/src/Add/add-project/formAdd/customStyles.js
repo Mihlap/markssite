@@ -44,7 +44,12 @@ const customStyles = {
     color: "#27292F",
     marginTop: "13px",
   }),
-
+   singleValue: (provided, state) => ({
+    ...provided,
+    fontSize: '0.8rem',
+    top: '13px',
+    position: 'absolute',
+  }),
   multiValueGeneric: (provided, state) => ({
     ...provided,
     padding: 0

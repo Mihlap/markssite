@@ -18,7 +18,9 @@ import {
   ValueContainer,
   AnotherDropdownIndicator,
   AnotherValueContainer,
-} from './CustomSelectComponents';  // путь до вашего файла
+  SelectDegreeParticipationDropdownIndicator,
+  SelectDegreeParticipationValueContainer,
+} from "./CustomSelectComponents";  // путь до вашего файла
 
 import icon from "./img/Frame4684.svg";
 import ConstructorPage from "../constructor/ConstructorPage";
@@ -26,6 +28,7 @@ import ConstructorPage from "../constructor/ConstructorPage";
 export default function FormAddProject({ setIsModalOpen }) {
   const dispatch = useDispatch();
   const [selectedCompetencies, setSelectedCompetencies] = useState([]);
+  const [selectDegreeParticipation, setSelectDegreeParticipation] = useState("");
   const [selectedViewConstruction, setSelectedViewConstruction] = useState([]);
 
   const [previewPhotos, setPreviewPhotos] = useState([]);
@@ -128,6 +131,7 @@ export default function FormAddProject({ setIsModalOpen }) {
     );
   };
 
+  // закрывает модалкку формы
   const closeModal = () => {
     setIsModalOpen(false);
   };
@@ -141,16 +145,17 @@ export default function FormAddProject({ setIsModalOpen }) {
       selectCompetencies: selectedCompetencies
         .map((option) => option.label)
         .join(","),
+      degreeParticipation: selectDegreeParticipation.label,
       viewConstruction: selectedViewConstruction
         .map((option) => option.label)
         .join(","),
       radioValue: selectedRadio,
-      photoAva: inputData.photoAva, // Добавлено поле "photoAva" в объект "formattedData"
+      photoAva: inputData.photoAva,
       imageOpen: inputData.imageOpen,
     };
-    // console.log(formattedData, "<<<----консоль на фронте");
     dispatch(fetchProject(formattedData, setInputData));
     setSelectedCompetencies([]);
+    setSelectDegreeParticipation("");
     setSelectedViewConstruction([]);
     setSelectedRadio("");
     setPreviewPhotos([]);
@@ -186,7 +191,7 @@ export default function FormAddProject({ setIsModalOpen }) {
     setIsModalOpen(false);
   };
 
-  // << ============ КОНСТРУКТОР ============ >>
+  // << ============ функции КОНСТРУКТОРА ============ >>
 
   const handlerOpenConstructor = () => {
     setOpenConstructor(!onenConstructor);
@@ -519,7 +524,9 @@ export default function FormAddProject({ setIsModalOpen }) {
     });
   };
 
-  // console.log(inputData, "<<--inputData PROJECT");
+  // << ============ функции КОНСТРУКТОРА ============ >>
+
+  console.log(inputData, "<<--inputData PROJECT");
   // console.log(dynamicData, "<<--dynamicData");
   return (
     <div className={styles.form_container}>
@@ -693,8 +700,8 @@ export default function FormAddProject({ setIsModalOpen }) {
           >
             <div className={styles.form_container__checkbox_block}>
               <div>
-                Загрузите фото и выберете ориентацию
-                <span> для отображения на странице «Проекты»</span>
+                Выберете фото
+                <span> для отображения на странице “Проекты”</span>
               </div>
             </div>
             <div
@@ -1147,7 +1154,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                   Расположение: Город, улица, номер дома
                 </label>
               </div>
-              <div className={`${styles.form__group} ${styles.field}`}>
+              {/* <div className={`${styles.form__group} ${styles.field}`}>
                 <input
                   type="input"
                   className={styles.form__field}
@@ -1176,6 +1183,34 @@ export default function FormAddProject({ setIsModalOpen }) {
                 >
                   Степень участия
                 </label>
+              </div> */}
+              <div className={`${styles.form__group} ${styles.field}`}>
+                <Select
+                  styles={customStyles}
+                  // isMulti
+                  name="degreeParticipation"
+                  options={[
+                    {
+                      value: "Генеральное проектирование",
+                      label: "Генеральное проектирование",
+                    },
+                    {
+                      value: "Проектирование отдельных разделов",
+                      label: "Проектирование отдельных разделов",
+                    },
+                  ]}
+                  className={styles.form__field}
+                  placeholder="Степень участия"
+                  value={selectDegreeParticipation}
+                  onChange={setSelectDegreeParticipation}
+                  components={{
+                    DropdownIndicator:
+                      SelectDegreeParticipationDropdownIndicator,
+                    ValueContainer: SelectDegreeParticipationValueContainer,
+                  }}
+                  onFocus={() => setIsFocused(true)}
+                  onBlur={() => setIsFocused(false)}
+                />
               </div>
               <div className={`${styles.form__group} ${styles.field}`}>
                 <input
