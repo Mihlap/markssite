@@ -3,15 +3,16 @@ import styles from "../style/style-card.module.scss";
 import FormAddProject from "./formAdd/FormAddProject";
 import cat from "../img/cat_954.jpeg";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteForm } from "../../store/Slice/projectSlice";
+import { deleteForm, getFetchForm } from "../../store/Slice/projectSlice";
 import {
   fetchToggleStateAsync,
   updateToggleStateAsync,
 } from "../../store/Slice/toggleSlice";
 
-export default function AddProject({ project, user }) {
+export default function AddProject({ user }) {
   const Host = process.env.REACT_APP_SERVER_HOST;
   const dispatch = useDispatch();
+  const project = useSelector((state) => state.project.projects);
   const isActiveForButton1 = useSelector(
     (state) => state.toggle.isActiveForButton1
   );
@@ -23,6 +24,22 @@ export default function AddProject({ project, user }) {
   const [deleteModalState, setDeleteModalState] = useState({});
   const [modalBlockHeight, setModalBlockHeight] = useState("auto"); // Изначально высота будет автоматически рассчитываться
 
+
+   const [isLoaderVisible, setIsLoaderVisible] = useState(false); // новое состояние
+   const loading = useSelector((state) => state.project.loading);
+
+   useEffect(() => {
+     if (loading) {
+       setIsLoaderVisible(true);
+     } else {
+       // Добавляем задержку в 2 секунды перед тем как скрыть индикатор загрузки
+       setTimeout(() => {
+         setIsLoaderVisible(false);
+       }, 0);
+     }
+   }, [loading]);
+  
+  
   const updateModalBlockHeight = () => {
     const windowHeight = window.innerHeight;
     const maxHeight = Math.min(windowHeight - 100, 1900); // Примерное максимальное значение высоты
@@ -31,6 +48,7 @@ export default function AddProject({ project, user }) {
   };
 
   useEffect(() => {
+    dispatch(getFetchForm());
     dispatch(fetchToggleStateAsync());
   }, [dispatch]);
 
@@ -93,6 +111,7 @@ export default function AddProject({ project, user }) {
   };
   // console.log(isActiveForButton1); // Здесь мы выводим в консоль обратное значение, так как функция еще не обновила state
 
+  console.log(project);
   return (
     <section className={styles.card_components_admin}>
       <div className={styles.card_components_admin__block}>
@@ -168,133 +187,187 @@ export default function AddProject({ project, user }) {
         )}
 
         <div className={styles.card_components_admin__section_map}>
-          <div className={styles.card_components_admin__block_map}>
-            {project &&
-              project?.map((el) => {
-                const photoName = el && el.imageProject;
-                const defaultPhoto = cat; 
-
-                const photoSrc =
-                  photoName && photoName !== "null" && photoName !== "undefined"
-                    ? `${Host}/images/imageAdd/${photoName}`
-                    : defaultPhoto;
-                return (
+          {isLoaderVisible ? (
+            <div className={styles.card_components_admin__loading_section}>
+              <div className={styles.card_components_admin__loading_list}>
+                <div className={styles.card_components_admin__loading_item}>
+                  <div className={styles.card_components_admin__loading_img} />
                   <div
-                    className={styles.section_project__block_cart}
-                    key={el.id}
-                  >
-                    <div className={styles.cart_project}>
-                      <div className={styles.cart_project__container}>
-                        <div
-                          className={styles.cart_project__imageContainer}
-                          style={{ width: "100%", height: "100%" }}
-                        >
-                          <img
-                            className={styles.cart_project__img}
-                            src={photoSrc}
-                            alt="photo_project"
-                          />
-                          {user?.name === "obezyankaa" ||
-                          user?.name === "Pokemon" ||
-                          user?.name === "pokemon" ? (
-                            <div className={styles.del_block}>
-                              <button
-                                className={styles.buttom_del}
-                                onClick={() => handleDeleteModalOpen(el.id)}
-                              >
-                                <label
-                                  htmlFor="delete"
-                                  className={styles.label}
-                                >
-                                  <div className={`${styles.wrapper}`}>
-                                    <div className={`${styles.lid}`}>
-                                      <div className={styles.container_vedro}>
-                                        <div
-                                          className={styles.triangle_left}
-                                        ></div>
-                                        <div className={styles.rectangle}></div>
-                                        <div
-                                          className={styles.triangle_right}
-                                        ></div>
+                    className={styles.card_components_admin__loading_block_one}
+                  />
+                  <div
+                    className={styles.card_components_admin__loading_block_two}
+                  />
+                </div>
+                <div className={styles.card_components_admin__loading_item}>
+                  <div className={styles.card_components_admin__loading_img} />
+                  <div
+                    className={styles.card_components_admin__loading_block_one}
+                  />
+                  <div
+                    className={styles.card_components_admin__loading_block_two}
+                  />
+                </div>
+                <div className={styles.card_components_admin__loading_item}>
+                  <div className={styles.card_components_admin__loading_img} />
+                  <div
+                    className={styles.card_components_admin__loading_block_one}
+                  />
+                  <div
+                    className={styles.card_components_admin__loading_block_two}
+                  />
+                </div>
+                <div className={styles.card_components_admin__loading_item}>
+                  <div className={styles.card_components_admin__loading_img} />
+                  <div
+                    className={styles.card_components_admin__loading_block_one}
+                  />
+                  <div
+                    className={styles.card_components_admin__loading_block_two}
+                  />
+                </div>
+              </div>
+            </div>
+          ) : (
+            <>
+              <div className={styles.card_components_admin__block_map}>
+                {project &&
+                  project?.map((el) => {
+                    const photoName = el && el.imageProject;
+                    const defaultPhoto = cat;
+
+                    const photoSrc =
+                      photoName &&
+                      photoName !== "null" &&
+                      photoName !== "undefined"
+                        ? `${Host}/images/imageAdd/${photoName}`
+                        : defaultPhoto;
+                    return (
+                      <div
+                        className={styles.section_project__block_cart}
+                        key={el.id}
+                      >
+                        <div className={styles.cart_project}>
+                          <div className={styles.cart_project__container}>
+                            <div
+                              className={styles.cart_project__imageContainer}
+                              style={{ width: "100%", height: "100%" }}
+                            >
+                              <img
+                                className={styles.cart_project__img}
+                                src={photoSrc}
+                                alt="photo_project"
+                              />
+                              {user?.name === "obezyankaa" ||
+                              user?.name === "Pokemon" ||
+                              user?.name === "pokemon" ? (
+                                <div className={styles.del_block}>
+                                  <button
+                                    className={styles.buttom_del}
+                                    onClick={() => handleDeleteModalOpen(el.id)}
+                                  >
+                                    <label
+                                      htmlFor="delete"
+                                      className={styles.label}
+                                    >
+                                      <div className={`${styles.wrapper}`}>
+                                        <div className={`${styles.lid}`}>
+                                          <div
+                                            className={styles.container_vedro}
+                                          >
+                                            <div
+                                              className={styles.triangle_left}
+                                            ></div>
+                                            <div
+                                              className={styles.rectangle}
+                                            ></div>
+                                            <div
+                                              className={styles.triangle_right}
+                                            ></div>
+                                          </div>
+                                        </div>
+                                        <div className={`${styles.can}`}></div>
+                                        <span>delete</span>
                                       </div>
-                                    </div>
-                                    <div className={`${styles.can}`}></div>
-                                    <span>delete</span>
+                                    </label>
+                                  </button>
+                                </div>
+                              ) : null}
+                            </div>
+                            <div className={styles.cart_project__content}>
+                              <span className={styles.cart_project__title}>
+                                {el.title}
+                              </span>
+                            </div>
+                            <div className={styles.cart_project__id_block}>
+                              <div className={styles.cart_project__id_text}>
+                                id: {el.id}
+                              </div>
+                              {isCopied && el.id === copiedId && (
+                                <>
+                                  <div
+                                    className={styles.cart_project__copyMessage}
+                                  >
+                                    id скопирован
                                   </div>
-                                </label>
+                                  <div
+                                    className={
+                                      styles.cart_project__copyButton_img_copu_deffalt
+                                    }
+                                  />
+                                </>
+                              )}
+                              <button
+                                className={styles.cart_project__copyButton}
+                                onClick={() => handleCopyClick(el.id)}
+                              >
+                                <div
+                                  className={
+                                    styles.cart_project__copyButton_img_copu_ok
+                                  }
+                                />
                               </button>
                             </div>
-                          ) : null}
-                        </div>
-                        <div className={styles.cart_project__content}>
-                          <span className={styles.cart_project__title}>
-                            {el.title}
-                          </span>
-                        </div>
-                        <div className={styles.cart_project__id_block}>
-                          <div className={styles.cart_project__id_text}>
-                            id: {el.id}
                           </div>
-                          {isCopied && el.id === copiedId && (
-                            <>
-                              <div className={styles.cart_project__copyMessage}>
-                                id скопирован
+                        </div>
+                        {/* Модальное окно подтверждения удаления */}
+                        {deleteModalState[el.id] && (
+                          <div className={styles.delete_modal_container}>
+                            <div className={styles.delete_modal_block}>
+                              <div className={styles.delete_modal_block__title}>
+                                Вы точно хотите удалить проект <br /> «
+                                {el.title}»
                               </div>
-                              <div
+                              <p className={styles.delete_modal_block__text}>
+                                Удаленный проект нельзя будет вернуть
+                              </p>
+
+                              <div className={styles.button_block}>
+                                <button
+                                  className={`${styles.button_block__cancel} ${styles.delete_modal_button_cancel}`}
+                                  onClick={() => handleDeleteModalClose(el.id)}
+                                />
+                                <button
+                                  className={`${styles.button_block__save} ${styles.delete_modal_button_delete}`}
+                                  onClick={() => handleFormDelete(el.id)}
+                                />
+                              </div>
+
+                              <button
                                 className={
-                                  styles.cart_project__copyButton_img_copu_deffalt
+                                  styles.card_components_admin__close_button
                                 }
-                              />
-                            </>
-                          )}
-                          <button
-                            className={styles.cart_project__copyButton}
-                            onClick={() => handleCopyClick(el.id)}
-                          >
-                            <div
-                              className={
-                                styles.cart_project__copyButton_img_copu_ok
-                              }
-                            />
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                    {/* Модальное окно подтверждения удаления */}
-                    {deleteModalState[el.id] && (
-                      <div className={styles.delete_modal_container}>
-                        <div className={styles.delete_modal_block}>
-                          <div className={styles.delete_modal_block__title}>
-                            Вы точно хотите удалить проект <br /> «{el.title}»
+                                onClick={() => handleDeleteModalClose(el.id)}
+                              ></button>
+                            </div>
                           </div>
-                          <p className={styles.delete_modal_block__text}>
-                            Удаленный проект нельзя будет вернуть
-                          </p>
-
-                          <div className={styles.button_block}>
-                            <button
-                              className={`${styles.button_block__cancel} ${styles.delete_modal_button_cancel}`}
-                              onClick={() => handleDeleteModalClose(el.id)}
-                            />
-                            <button
-                              className={`${styles.button_block__save} ${styles.delete_modal_button_delete}`}
-                              onClick={() => handleFormDelete(el.id)}
-                            />
-                          </div>
-
-                          <button
-                            className={
-                              styles.card_components_admin__close_button
-                            }
-                            onClick={() => handleDeleteModalClose(el.id)}
-                          ></button>
-                        </div>
+                        )}
                       </div>
-                    )}
-                  </div>
-                );
-              })}
-          </div>
+                    );
+                  })}
+              </div>
+            </>
+          )}
         </div>
       </div>
     </section>
