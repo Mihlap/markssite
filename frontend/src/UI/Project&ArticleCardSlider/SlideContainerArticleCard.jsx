@@ -27,11 +27,11 @@ const SliderContainerArticleCard = ({ articles }) => {
   return (
     <div className="swiper_container_ProjectCard">
       <Swiper
-        slidesPerView={1.1}
-        spaceBetween={20}
-        effect={"fade"}
-        loop={true}
-        speed={300}
+     loop={true}
+     slidesPerView={1.1}
+     spaceBetween={0}
+     effect={"fade"}
+     touch="true"
         className="swiper_container_project_ProjectCard"
         style={{ paddingTop: "1.5rem" }}
         onSlideChange={(swiper) => setCurrentIndex(swiper.realIndex)}
@@ -59,7 +59,7 @@ const SliderContainerArticleCard = ({ articles }) => {
               : defaultImagePath;
 
             return (
-              <SwiperSlide key={article.id}>
+              <SwiperSlide className="swiper_container_item" key={article.id}>
                 <Link key={article.id} to={`/publication/${article.id}`}>
                   <SliderItemProject
                     src={firstImagePath}

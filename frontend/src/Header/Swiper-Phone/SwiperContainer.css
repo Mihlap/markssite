@@ -1,13 +1,14 @@
 @import '../../App.css';
 
 @media screen and (max-width: 767px) {
+  .swiper_container_wrapper {
+    display: flex;
+  }
 
   .swiper_container_articles {
     width: 100%;
-    position: relative;
     border-radius: 1rem;
-    padding: 3.75rem 2.7vw 0rem 2.7vw;
-  }
+   }
 
   .swiper_wrapper {
     width: 100%;
@@ -17,7 +18,13 @@
     position: relative;
   }
 
-  .swiper_pagination_container {
+  .swiper_container_item_articles {
+    height: 100%;
+    padding-left: 1rem;
+    margin-right: 0rem; 
+  }
+
+  /* .swiper_pagination_container {
     display: flex;
     justify-content: center;
     margin-top: 30px;
@@ -36,6 +43,6 @@
   .swiper_pagination_bullet_container.active {
     width: 4rem;
     border: 2px solid var(--salmon-FF7F6A);
-  }
+  } */
 
 }
