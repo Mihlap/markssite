@@ -1245,6 +1245,7 @@
 
   .project_container_projectCard_sliderMobile {
     display: block;
-    padding-bottom: 4.5rem;
+    padding-top: 2rem;
+    padding-bottom: 5rem;
   }
 }

@@ -35,11 +35,11 @@ const SliderContainerProjectCard = ({ projects }) => {
   return (
     <div className="swiper_container_ProjectCard">
       <Swiper
-        slidesPerView={1.1}
-        spaceBetween={20}
-        effect={"fade"}
-        loop={true}
-        speed={300}
+     loop={true}
+     slidesPerView={1.1}
+     spaceBetween={0}
+     effect={"fade"}
+     touch="true"
         className="swiper_container_project_ProjectCard"
         onSlideChange={(swiper) => setCurrentIndex(swiper.realIndex)}
         onSwiper={(swiper) => {
@@ -52,7 +52,7 @@ const SliderContainerProjectCard = ({ projects }) => {
           {projects?.map((project) => {
               if (project) {
               return (
-                <SwiperSlide key={project.id}>
+                <SwiperSlide className="swiper_container_item" key={project.id}>
                   <Link key={project.id} to={`/projects/${project.id}`}>
                   <SliderItemProject
                     title={project.title}
