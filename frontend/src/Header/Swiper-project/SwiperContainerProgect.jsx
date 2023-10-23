@@ -43,11 +43,11 @@ const MapProject = NewProject.map((el) =>
   return (
     <div className="swiper_container">
       <Swiper
-        slidesPerView={1}
-        centeredSlides={true}
-        spaceBetween={20}
         loop={true}
-        // speed={300}
+        slidesPerView={1.1}
+        spaceBetween={0}
+        effect={"fade"}
+        touch="true"
         className="swiper_container_project"
         onSlideChange={(swiper) => setCurrentIndex(swiper.realIndex)}
         onSwiper={(swiper) => {
@@ -60,7 +60,7 @@ const MapProject = NewProject.map((el) =>
           {MapProject?.map((project) => {
               if (project) {
               return (
-                <SwiperSlide key={project.id}>
+                <SwiperSlide className="swiper_container_item_projects" key={project.id}>
                   <Link key={project.id} to={`/projects/${project.id}`}>
                   <SliderItemProject
                     title={project.title}
