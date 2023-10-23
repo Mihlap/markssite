@@ -30,6 +30,7 @@ const SliderContainerProjectCard = ({ projects }) => {
       swiperRef.current.slideTo(index);
     }
   };
+  
 
   return (
     <div className="swiper_container_ProjectCard">
