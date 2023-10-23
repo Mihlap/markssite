@@ -2,13 +2,13 @@
 
 
 @media screen and (max-width: 767px) {
+    .swiper_container {
+        display: flex;
+    }
 
     .swiper_container_project {
-        position: relative;
         width: 100%;
-        height: 100%;
         border-radius: 1rem;
-        padding: 0rem 2.7vw 0rem 2.7vw;
     }
 
     .swiper_wrapper {
@@ -33,8 +33,13 @@
         margin-right: 6px;
         padding-left: 0px;
     }
+    .swiper_container_item_projects {
+      height: 100%;
+      padding-left: 1rem;
+      margin-right: 0rem; 
+    }
 
-    .swiper_pagination_ProjectCard {
+    /* .swiper_pagination_ProjectCard {
         display: flex;
         justify-content: center;
         margin-top: 1.5rem;
@@ -53,7 +58,7 @@
     .swiper_pagination_bullet_ProjectCard.active {
         width: 4rem;
         border: 2px solid var(--salmon-FF7F6A);
-    }
+    } */
 
 
 }

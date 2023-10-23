@@ -27,10 +27,11 @@ export default function SwiperContainer({ article1, article2 }) {
   return (
     <div className="swiper_container_wrapper">
       <Swiper
-         slidesPerView={1}
-         centeredSlides={true}
-        spaceBetween={20}
-        loop={true}
+       loop={true}
+       slidesPerView={1.1}
+       spaceBetween={0}
+       effect={"fade"}
+       touch="true"
         className="swiper_container_articles"
         onSlideChange={(swiper) => setCurrentIndexContainer(swiper.realIndex)}
         onSwiper={(swiper) => {
@@ -43,7 +44,7 @@ export default function SwiperContainer({ article1, article2 }) {
           {combinedArticles && combinedArticles.map((item) => {
             const firstPhoto = item.imageTitle.split(", ")[0];
             return (
-              <SwiperSlide key={item.id}>
+              <SwiperSlide className="swiper_container_item_articles" key={item.id}>
                  <Link key={item.id}  to={`/publication/${item.id}`}>
                 <Slideritem
                   title={item.title}
@@ -58,7 +59,7 @@ export default function SwiperContainer({ article1, article2 }) {
           })}
         </div>
       </Swiper>
-      <div className="swiper_pagination_container">
+      {/* <div className="swiper_pagination_container">
         {combinedArticles &&
           combinedArticles.map((_, index) => (
             <button
@@ -69,7 +70,7 @@ export default function SwiperContainer({ article1, article2 }) {
               onClick={() => handleContainerClick(index)}
             />
           ))}
-      </div>
+      </div> */}
     </div>
   );
 }
