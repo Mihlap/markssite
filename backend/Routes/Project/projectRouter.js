@@ -73,6 +73,7 @@ router.post(
         headingTextBlock: req.body.headingTextBlock,
         textBlock: req.body.textBlock,
         imageClose: imageCloses,
+        test: req.body.title,
       });
 
       await Constructor.create({
