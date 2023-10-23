@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import styles from "../style/style-card.module.scss";
 import customScroll from "../style/CustomScrollbar.module.scss";
 import FormAddArticles from "./formAdd/FormAddArticles";
-import { deleteFormArticle } from "../../store/Slice/articleSlice";
+import { deleteFormArticle, getFetchFormArticle } from "../../store/Slice/articleSlice";
 import Loading from "./loading/Loading";
 import cat from "../img/cat_954.jpeg";
 
@@ -12,9 +12,11 @@ import {
   updateToggleStateForButton2Async,
 } from "../../store/Slice/toggleSlice";
 
-export default function AddArticles({ user, article }) {
+export default function AddArticles({ user }) {
   const Host = process.env.REACT_APP_SERVER_HOST;
   const dispatch = useDispatch();
+  const article = useSelector((state) => state.article.article);
+
   const isActiveForButton2 = useSelector(
     (state) => state.toggle.isActiveForButton2
   );
@@ -36,6 +38,7 @@ export default function AddArticles({ user, article }) {
   };
 
   useEffect(() => {
+    dispatch(getFetchFormArticle());
     dispatch(fetchToggleStateForButton2Async());
   }, [dispatch]);
 
@@ -104,7 +107,6 @@ export default function AddArticles({ user, article }) {
     dispatch(updateToggleStateForButton2Async(!isActiveForButton2));
   };
   // console.log(isActiveForButton2); // Здесь мы выводим в консоль обратное значение, так как функция еще не обновила state
-
   return (
     <section className={styles.card_components_admin}>
       <div className={styles.card_components_admin__block}>

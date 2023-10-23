@@ -1,15 +1,23 @@
-import React, {useState } from "react";
+import React, {useEffect, useState } from "react";
 import styles from "./HomeAdmin.module.scss";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { arrIdProjectSelector } from "./utils/HomeAdminSelectors";
 import { arrIdArticlesLeftSelector } from "./utils/ArticleLeftSelectors";
 import { arrIdArticlesRightSelector } from "./utils/ArticleRightSelectors";
 import SearchPublicProject from "./SearchPublicProject";
 import SearchPublicLeft from "./SearchPublicLeft";
 import SearchPublicRight from "./SearchPublicRight";
+import { getZaprosData } from "../../store/Slice/searchProjectMainSlice";
+import { searchArticleLeftGet } from "../../store/Slice/searchArticlePublicLeftSlice";
+import { searchArticleRightGet } from "../../store/Slice/searchArticlePublicRightSlice";
 
-export default function HomeAdmin({ projects, articles }) {
+export default function HomeAdmin() {
+
+  const dispatch = useDispatch();
+  const projects = useSelector((state) => state.project.projects);
+  const articles = useSelector((state) => state.article.article);
+
   // стейты для инпута ПРОЕТЫ
   const [errorMessage, setErrorMessage] = useState("");
   const [showError, setShowError] = useState(false);
@@ -37,6 +45,12 @@ export default function HomeAdmin({ projects, articles }) {
   const arrIdProject = useSelector(arrIdProjectSelector);
   const arrIdArticleLeft = useSelector(arrIdArticlesLeftSelector);
   const arrIdArticleRight = useSelector(arrIdArticlesRightSelector);
+
+  useEffect(() => {
+    dispatch(getZaprosData());
+    dispatch(searchArticleLeftGet());
+    dispatch(searchArticleRightGet());
+  }, [dispatch]);
 
 
   return (
