@@ -767,6 +767,8 @@ svg path {
 
   .swiper_container {
     display: block;
+    padding-top: 3.75rem;
+    padding-bottom: 5rem;
   }
 
   .sliderHeader_container {
@@ -793,17 +795,19 @@ svg path {
     font-weight: 300;
     font-size: 1.5rem;
     line-height: 2rem;
-    padding: 5.88rem 0rem 2.5rem 2.7vw;
+    padding: 5.88rem 0rem 0rem 2.7vw;
   }
 
   .swiper_progect_container {
     display: block;
+    padding-top: 5rem;
+    padding-bottom: 3.5rem;
   }
 
   .sliderMobile_container {
     padding-left: 0rem;
     padding-top: 2rem;
-  }
+   }
 
   .main_project {
     display: none;
