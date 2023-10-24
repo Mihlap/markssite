@@ -127,7 +127,7 @@ export const fetchProject =
     axios.post(`${serverHost}/api-project/postzapros`, formData).then(() => {
       dispatch(getFetchForm());
     });
-    console.log(formattedData, "<<<---REDUX");
+    // console.log(formattedData, "<<<---REDUX");
   };
 
 export const getFetchForm = () => async (dispatch) => {
