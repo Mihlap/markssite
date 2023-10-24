@@ -357,7 +357,7 @@ const ProjectCard = () => {
                       className={`${styles.left_meta} ${styles.left_meta_castom}`}
                     >
                       {firstValue}
-                      </div>
+                    </div>
                   </div>
                 </div>
                 <div className={styles.title_text}>
@@ -407,7 +407,7 @@ const ProjectCard = () => {
                     <div
                       className={`${styles.left_meta} ${styles.left_meta_castom}`}
                     >
-                     {firstValue}
+                      {firstValue}
                     </div>
                   </div>
                 </div>
@@ -473,6 +473,7 @@ const ProjectCard = () => {
                     className={styles.item_img}
                     src={imageOpenSource}
                     alt={altTextOpen}
+                    loading="lazy"
                   />
                 </div>
                 <div
@@ -528,6 +529,7 @@ const ProjectCard = () => {
                     className={`${styles.item_img} ${styles.item_img_close}`}
                     src={imageCloseSource}
                     alt={altTextClose}
+                    loading="lazy"
                   />
                 </div>
               </div>
@@ -642,14 +644,13 @@ const ProjectCard = () => {
             }}
           >
             {projects?.map((project, index) => {
+              const photoName = project && project.imageProject;
+              const defaultPhoto = catPhoto;
 
-               const photoName = project && project.imageProject;
-               const defaultPhoto = catPhoto;
-
-               const photoSrc =
-                 photoName && photoName !== "null" && photoName !== "undefined"
-                   ? `${Host}/images/imageAdd/${photoName}`
-                   : defaultPhoto;
+              const photoSrc =
+                photoName && photoName !== "null" && photoName !== "undefined"
+                  ? `${Host}/images/imageAdd/${photoName}`
+                  : defaultPhoto;
               if (!project) {
                 return null;
               }
@@ -670,6 +671,7 @@ const ProjectCard = () => {
                         className={styles.container__imageTitle_projectCard}
                         src={photoSrc}
                         alt={project.imageProject}
+                        loading="lazy"
                       />
                     </div>
                     <div
