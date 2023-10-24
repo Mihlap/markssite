@@ -8,6 +8,7 @@ import {
   fetchToggleStateAsync,
   updateToggleStateAsync,
 } from "../../store/Slice/toggleSlice";
+import MiniLoading from "./loading/MiniLoading";
 
 export default function AddProject({ user }) {
   const Host = process.env.REACT_APP_SERVER_HOST;
@@ -35,7 +36,7 @@ export default function AddProject({ user }) {
        // Добавляем задержку в 2 секунды перед тем как скрыть индикатор загрузки
        setTimeout(() => {
          setIsLoaderVisible(false);
-       }, 0);
+       }, 2000);
      }
    }, [loading]);
   
@@ -191,39 +192,55 @@ export default function AddProject({ user }) {
             <div className={styles.card_components_admin__loading_section}>
               <div className={styles.card_components_admin__loading_list}>
                 <div className={styles.card_components_admin__loading_item}>
-                  <div className={styles.card_components_admin__loading_img} />
                   <div
-                    className={styles.card_components_admin__loading_block_one}
+                    className={`${styles.card_components_admin__loading_img} ${styles.card_components_admin__gradient}`}
+                  >
+                    <MiniLoading />
+                  </div>
+                  <div
+                    className={`${styles.card_components_admin__loading_block_one} ${styles.card_components_admin__gradient}`}
                   />
                   <div
-                    className={styles.card_components_admin__loading_block_two}
-                  />
-                </div>
-                <div className={styles.card_components_admin__loading_item}>
-                  <div className={styles.card_components_admin__loading_img} />
-                  <div
-                    className={styles.card_components_admin__loading_block_one}
-                  />
-                  <div
-                    className={styles.card_components_admin__loading_block_two}
+                    className={`${styles.card_components_admin__loading_block_two} ${styles.card_components_admin__gradient}`}
                   />
                 </div>
                 <div className={styles.card_components_admin__loading_item}>
-                  <div className={styles.card_components_admin__loading_img} />
                   <div
-                    className={styles.card_components_admin__loading_block_one}
+                    className={`${styles.card_components_admin__loading_img} ${styles.card_components_admin__gradient}`}
+                  >
+                    <MiniLoading />
+                  </div>
+                  <div
+                    className={`${styles.card_components_admin__loading_block_one} ${styles.card_components_admin__gradient}`}
                   />
                   <div
-                    className={styles.card_components_admin__loading_block_two}
+                    className={`${styles.card_components_admin__loading_block_two} ${styles.card_components_admin__gradient}`}
                   />
                 </div>
                 <div className={styles.card_components_admin__loading_item}>
-                  <div className={styles.card_components_admin__loading_img} />
                   <div
-                    className={styles.card_components_admin__loading_block_one}
+                    className={`${styles.card_components_admin__loading_img} ${styles.card_components_admin__gradient}`}
+                  >
+                    <MiniLoading />
+                  </div>
+                  <div
+                    className={`${styles.card_components_admin__loading_block_one} ${styles.card_components_admin__gradient}`}
                   />
                   <div
-                    className={styles.card_components_admin__loading_block_two}
+                    className={`${styles.card_components_admin__loading_block_two} ${styles.card_components_admin__gradient}`}
+                  />
+                </div>
+                <div className={styles.card_components_admin__loading_item}>
+                  <div
+                    className={`${styles.card_components_admin__loading_img} ${styles.card_components_admin__gradient}`}
+                  >
+                    <MiniLoading />
+                  </div>
+                  <div
+                    className={`${styles.card_components_admin__loading_block_one} ${styles.card_components_admin__gradient}`}
+                  />
+                  <div
+                    className={`${styles.card_components_admin__loading_block_two} ${styles.card_components_admin__gradient}`}
                   />
                 </div>
               </div>
