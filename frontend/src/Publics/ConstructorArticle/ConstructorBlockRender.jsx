@@ -16,8 +16,8 @@ const arrowStyles = {
 const PrevArrow = (props) => (
   <div onClick={props.onClick}  style={{ ...arrowStyles, left: "1.5rem" }}>
   <svg
-          width="32"
-          height="32"
+          width="42"
+          height="42"
           viewBox="0 0 32 32"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
@@ -198,7 +198,7 @@ export default function ConstructorBlockRenderer({ block }) {
     const images = block[0].value;
 
     const sliderImageContainerStyle = {
-      borderRadius: "10px",
+      borderRadius: "1rem",
       overflow: "hidden",
     };
 
@@ -206,7 +206,7 @@ export default function ConstructorBlockRenderer({ block }) {
       width: "100%",
       height: "810px",
       objectFit: "cover",
-      borderRadius: "10px",
+      borderRadius: "1rem",
     }
 
     if (window.innerWidth <= 768) {
@@ -214,14 +214,14 @@ export default function ConstructorBlockRenderer({ block }) {
         width: "100%",
         height: "22.6rem",
         objectFit: "cover",
-        borderRadius: "10px",
+        borderRadius: "1rem",
       }
     } else if (window.innerWidth >= 768 && window.innerWidth <= 1024) {
       sliderImageStyle = {
         width: "100%",
         height: "29rem",
         objectFit: "cover",
-        borderRadius: "10px",
+        borderRadius: "1rem",
       }
     };
 

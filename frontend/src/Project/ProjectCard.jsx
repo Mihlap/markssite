@@ -215,7 +215,9 @@ const ProjectCard = () => {
   //  console.log(project, "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww");
   // console.log(userSelectedBlocks, "<<--- userSelectedBlocks");
 
-
+  // console.log('Host:', Host);
+  // console.log('project.imageProject:', project.imageProject);
+  
   return (
     <>
       <Helmet>
@@ -526,7 +528,7 @@ const ProjectCard = () => {
                 <div className={`${styles.item} ${styles.item_img_close}`}>
                   <img
                     ref={refs.leftImg4}
-                    className={`${styles.item_img} ${styles.item_img_close}`}
+                    className={`${styles.item_img} ${styles.item_img_close1}`}
                     src={imageCloseSource}
                     alt={altTextClose}
                     loading="lazy"
