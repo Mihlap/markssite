@@ -98,7 +98,7 @@ router.get('/getzapros', async (req, res) => {
     res.json(data);
   } catch (error) {
     console.log(error);
-    res.sendStatus(500);
+    res.status(500).json({ error: 'Внутренняя ошибка сервера. Пожалуйста, попробуйте позже.' });
   }
 });
 

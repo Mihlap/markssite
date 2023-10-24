@@ -133,6 +133,7 @@ export default function ConstructorBlockRenderer({ block }) {
           className={styles.containerImageToDescription__img}
           src={`${Host}/images/imageAdd/${imageUrl}`}
           alt="Описание"
+          loading="lazy"
         />
         <div className={styles.containerImageToDescription__text}>
           {description}
@@ -168,12 +169,14 @@ export default function ConstructorBlockRenderer({ block }) {
             key={index}
             src={`${Host}/images/imageAdd/${img}`}
             alt="Horizontal_image"
+            loading="lazy"
           />
         ))}
         <img
           className={styles.verticalImage}
           src={`${Host}/images/imageAdd/${images[2]}`}
           alt="Vertical_image"
+          loading="lazy"
         />
       </div>
     );
@@ -191,6 +194,7 @@ export default function ConstructorBlockRenderer({ block }) {
             key={index}
             src={`${Host}/images/imageAdd/${el}`}
             alt="img_two"
+            loading="lazy"
           />
         ))}
       </div>
@@ -246,12 +250,6 @@ export default function ConstructorBlockRenderer({ block }) {
       zIndex: "0",
     };
 
-    const styleSVG = {
-      height: "50px",
-      width: "40px",
-      maxWidth: "100%", // Чтобы сохранить пропорции
-    };
-
     // Настройки слайдера
     const settings = {
       dots: true, // Включение пагинации
@@ -290,6 +288,7 @@ export default function ConstructorBlockRenderer({ block }) {
                 style={sliderImageStyle}
                 src={`${Host}/images/imageAdd/${img}`}
                 alt="Slider_image"
+                loading="lazy"
               />
             </div>
           ))}
