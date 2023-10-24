@@ -44,8 +44,9 @@ const MapProject = NewProject.map((el) =>
     <div className="swiper_container">
       <Swiper
         loop={false}
-        slidesPerView={1}
-       spaceBetween={-30}
+        slidesPerView={1.1}
+     spaceBetween={-2}
+     centeredSlides={true}
         // effect={"fade"}
         touch="true"
         className="swiper_container_project"
