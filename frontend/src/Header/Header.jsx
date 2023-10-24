@@ -325,6 +325,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
                           className={styles.img_1}
                           src={`${Host}/images/imageArticle/${firstPhoto}`}
                           alt="photo1"
+                          loading="lazy"
                         />
                       </div>
                       <div className={styles.card_text}>
@@ -555,6 +556,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
                           e.target.alt =
                             "Альтернативный текст для замененной фотографии"; // Заменить на альтернативный текст
                         }}
+                        loading="lazy"
                       />
                     </div>
                     <div

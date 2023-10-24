@@ -16,8 +16,8 @@ const arrowStyles = {
 const PrevArrow = (props) => (
   <div onClick={props.onClick} style={{ ...arrowStyles, left: "1.5rem" }}>
     <svg
-      width="32"
-      height="32"
+      width="42"
+      height="42"
       viewBox="0 0 32 32"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"

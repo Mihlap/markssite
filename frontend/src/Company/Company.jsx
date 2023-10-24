@@ -567,6 +567,7 @@ export default function Company() {
                         src={`${Host}/images/${el.img}`}
                         onLoad={() => setShowCards(true)}
                         alt={el.img}
+                        loading="lazy"
                       />
                     ) : (
                       <LoadingCircle />
@@ -960,6 +961,7 @@ export default function Company() {
                       className={styles.container__img_stuff}
                       src={`${Host}/images/${el.img}`}
                       alt={el.img}
+                      loading="lazy"
                     />
                   </div>
                   <div className={styles.container__item_name_stuff}>
@@ -1008,6 +1010,7 @@ export default function Company() {
                       className={styles.container__img_stuff}
                       src={`${Host}/images/${el.img}`}
                       alt={el.img}
+                      loading="lazy"
                     />
                   </div>
                   <div className={styles.container__item_name_stuff}>
