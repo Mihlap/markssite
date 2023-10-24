@@ -35,11 +35,10 @@ const SliderContainerProjectCard = ({ projects }) => {
   return (
     <div className="swiper_container_ProjectCard">
       <Swiper
-     loop={true}
-     slidesPerView={1.1}
-     spaceBetween={0}
-     effect={"fade"}
-     touch="true"
+     loop={false}
+     slidesPerView={1}
+     spaceBetween={-30}
+    touch="true"
         className="swiper_container_project_ProjectCard"
         onSlideChange={(swiper) => setCurrentIndex(swiper.realIndex)}
         onSwiper={(swiper) => {
