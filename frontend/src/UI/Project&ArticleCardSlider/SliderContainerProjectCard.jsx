@@ -36,8 +36,9 @@ const SliderContainerProjectCard = ({ projects }) => {
     <div className="swiper_container_ProjectCard">
       <Swiper
      loop={false}
-     slidesPerView={1}
-     spaceBetween={-30}
+     slidesPerView={1.1}
+     spaceBetween={0}
+     centeredSlides={true}
     touch="true"
         className="swiper_container_project_ProjectCard"
         onSlideChange={(swiper) => setCurrentIndex(swiper.realIndex)}
@@ -54,6 +55,7 @@ const SliderContainerProjectCard = ({ projects }) => {
                 <SwiperSlide className="swiper_container_item" key={project.id}>
                   <Link key={project.id} to={`/projects/${project.id}`}>
                   <SliderItemProject
+                   className="swiper_item_image"
                     title={project.title}
                     src={`${Host}/images/imageAdd/${
                       project.imageProject ? project.imageProject : project.imageTitle

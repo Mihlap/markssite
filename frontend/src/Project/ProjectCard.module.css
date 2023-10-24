@@ -1130,10 +1130,17 @@
     border-radius: 1.11vw 1.11vw 0vw 0vw;
     padding-left: 1rem;
   }
+  .item_img_close1 {
+    padding-right: 0rem;
+    padding-left: 0rem; 
+  border-radius: 0;
+  }
 
   .item_img_close {
-    border-radius: 0vw 0vw 0vw 0vw;
+    width: 100%;
+    border-radius: 0;
     padding-right: 0rem;
+    padding-left: 0rem;
     padding: 0rem;
   }
 
@@ -1247,6 +1254,6 @@
   .project_container_projectCard_sliderMobile {
     display: block;
     padding-top: 2rem;
-    padding-bottom: 5rem;
+    padding-bottom: 4rem;
   }
 }
