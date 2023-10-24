@@ -420,7 +420,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
     });
   };
 
-  console.log(inputData, "<<--inputData ARTICLE");
+  // console.log(inputData, "<<--inputData ARTICLE");
   // console.log(dynamicData, "<<--dynamicData");
   return (
     <div className={styles.form_container}>
