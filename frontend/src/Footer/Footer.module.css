@@ -109,6 +109,8 @@
   padding-right: 20px;
 }
 
+
+
 /* Стили для планшетной версии сайта блока Footer начинаются тут */
 @media screen and (min-width: 700px) and (max-width: 1024px) {
   .footer_container {

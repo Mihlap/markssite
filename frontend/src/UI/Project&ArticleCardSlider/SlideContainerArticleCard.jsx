@@ -28,8 +28,9 @@ const SliderContainerArticleCard = ({ articles }) => {
     <div className="swiper_container_ProjectCard">
       <Swiper
      loop={false}
-     slidesPerView={1}
-     spaceBetween={-30}
+     slidesPerView={1.1}
+     spaceBetween={0}
+     centeredSlides={true}
      touch="true"
         className="swiper_container_project_ProjectCard"
         style={{ paddingTop: "1.5rem" }}
