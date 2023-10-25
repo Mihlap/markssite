@@ -11,8 +11,8 @@ import {
   changeHandler,
   removePreviewPhotoOpen,
   removePreviewPhotoClose,
-} from "./formHelpers";
-import customStyles from "./customStyles";
+} from "./utils/formHelpers";
+import customStyles from "./utils/customStyles";
 import {
   DropdownIndicator,
   ValueContainer,
@@ -22,10 +22,15 @@ import {
   SelectDegreeParticipationValueContainer,
   SelectStatusObjectDropdownIndicator,
   SelectStatusObjectValueContainer,
-} from "./CustomSelectComponents";  // путь до вашего файла
+  MonthDropdownIndicator,
+  MonthValueContainer,
+  YearDropdownIndicator,
+  YearValueContainer,
+} from "./utils/CustomSelectComponents";  // путь до вашего файла
 
 import icon from "./img/Frame4684.svg";
 import ConstructorPage from "../constructor/ConstructorPage";
+import { monthOptions, yearOptions } from "./utils/Time";
 
 export default function FormAddProject({ setIsModalOpen }) {
   const dispatch = useDispatch();
@@ -529,6 +534,29 @@ export default function FormAddProject({ setIsModalOpen }) {
     });
   };
 
+  const [selectedMonth, setSelectedMonth] = useState(null);
+  const [selectedYear, setSelectedYear] = useState(null);
+
+  const handleMonthChange = (selectedOption) => {
+    setSelectedMonth(selectedOption);
+    if (selectedYear) {
+      setInputData({
+        ...inputData,
+        monthYear: `${selectedOption.value} ${selectedYear.value}`,
+      });
+    }
+  };
+
+  const handleYearChange = (selectedOption) => {
+    setSelectedYear(selectedOption);
+    if (selectedMonth) {
+      setInputData({
+        ...inputData,
+        monthYear: `${selectedMonth.value} ${selectedOption.value}`,
+      });
+    }
+  };
+
   // << ============ функции КОНСТРУКТОРА ============ >>
 
   // console.log(inputData, "<<--inputData PROJECT");
@@ -616,7 +644,54 @@ export default function FormAddProject({ setIsModalOpen }) {
                 Страна, город
               </label>
             </div>
-            <div className={`${styles.form__group} ${styles.field}`}>
+            <div className={styles.form_container__time_block}>
+              <div
+                className={`${styles.form__group} ${styles.form_container__month_block}`}
+              >
+                <label htmlFor="month" className={styles.form__label}>
+                  Месяц
+                </label>
+                <Select
+                  id="month"
+                  styles={customStyles}
+                  className={styles.form__field}
+                  value={selectedMonth}
+                  onChange={handleMonthChange}
+                  options={monthOptions}
+                  placeholder="Месяц"
+                  components={{
+                    DropdownIndicator: MonthDropdownIndicator,
+                    ValueContainer: MonthValueContainer,
+                  }}
+                  onFocus={() => setIsFocused(true)}
+                  onBlur={() => setIsFocused(false)}
+                />
+              </div>
+
+              <div
+                className={`${styles.form__group} ${styles.form_container__year_block}`}
+              >
+                <label htmlFor="year" className={styles.form__label}>
+                  Год
+                </label>
+                <Select
+                  id="year"
+                  styles={customStyles}
+                  className={styles.form__field}
+                  value={selectedYear}
+                  onChange={handleYearChange}
+                  options={yearOptions}
+                  placeholder="Год"
+                  components={{
+                    DropdownIndicator: YearDropdownIndicator,
+                    ValueContainer: YearValueContainer,
+                  }}
+                  onFocus={() => setIsFocused(true)}
+                  onBlur={() => setIsFocused(false)}
+                />
+              </div>
+            </div>
+            {/* <div className={`${styles.form__group} ${styles.field}`}>
               <input
                 type="input"
                 className={styles.form__field}
@@ -642,7 +717,7 @@ export default function FormAddProject({ setIsModalOpen }) {
               <label htmlFor="monthYear" className={styles.form__label}>
                 Месяц, год
               </label>
-            </div>
+            </div> */}
             <div className={`${styles.form__group} ${styles.field}`}>
               <Select
                 styles={customStyles}
