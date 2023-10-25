@@ -42,6 +42,7 @@ const ProjectCard = () => {
   const [isHorizontalScroll, setIsHorizontalScroll] = useState(false);
   const [isAtRightEdge, setIsAtRightEdge] = useState(false);
   const [scrollingMode, setScrollingMode] = useState("vertical");
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   const refs = {
     title: useRef(null),
@@ -209,6 +210,21 @@ const ProjectCard = () => {
 
   const altText =
     project?.imageProject || project?.imageTitle || "Default Alt Text";
+
+      // Обработчик изменения размера окна
+  const handleResize = () => {
+    setWindowWidth(window.innerWidth);
+  };
+
+  // Подписка на событие изменения размера окна
+  useEffect(() => {
+    window.addEventListener('resize', handleResize);
+
+    // Отписка от события при размонтировании компонента
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
     // const randomProjects = projects.slice().sort(() => Math.random() - 0.5).slice(0, 20);
 
@@ -398,6 +414,40 @@ const ProjectCard = () => {
                       </div>
                     ))}
                 </div>
+                {windowWidth < 767 && (
+                <div className={styles.result_container_mobile}>
+                  {[
+                    {
+                      value: project.siteArea,
+                      text: "Общая площадь",
+                      unit: "м²",
+                    },
+                    {
+                      value: project.totalArea,
+                      text: "Площадь участка",
+                      unit: "га",
+                    },
+                    { value: project.floors, text: "Этажность" },
+                    { value: project.altitude, text: "Высотность", unit: "м" },
+                    {
+                      value: project.constructionVolume,
+                      text: "Строительный объем",
+                      unit: "м³",
+                    },
+                  ]
+                    .filter((item) => item.value)
+                    .slice(0, 3) 
+                    .map((item) => (
+                      <div key={item.text} className={styles.result_block}>
+                        <div className={styles.result_number_mobile}>
+                          {item.value}
+                          {item.unit ? <span>{item.unit}</span> : null}
+                        </div>
+                        <div className={styles.result_text_mobile}>{item.text}</div>
+                      </div>
+                    ))}
+                </div>
+                )} 
               </div>
               <div
                 ref={refs.blockRight}
@@ -444,7 +494,7 @@ const ProjectCard = () => {
                         </div>
                       </Link>
                     </div>
-                  </div>
+                    </div>
                   <div className={styles.local_left}>
                     <div>
                       <div className={styles.local_title}>Степень участия</div>
