@@ -158,7 +158,8 @@
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
-  /* width: 13rem; */
+  max-width: 14rem;
+  width: 100%;
 }
 
 .div_underSlider_text {
@@ -169,6 +170,7 @@
   font-size: 48px;
   line-height: 64px;
   color: var(--white-F6F6F6);
+  width: 100%;
  }
 
 .text_svg {
@@ -186,7 +188,7 @@
   line-height: 24px;
   color: var(--white-F6F6F6);
   padding-top: 9px;
-  width: 90%
+   width: 100%
 }
 
 .sliderMobile_wrapper {
@@ -381,7 +383,7 @@
   font-size: 40px;
   line-height: 48px;
   color: var(--black-1D2E43);
-  padding-left: 42.84vw;
+  padding-left: 39.84vw;
   padding-right: 15rem;
   padding-bottom: 24px;
   white-space: nowrap;
@@ -402,7 +404,7 @@
   font-size: 20px;
   line-height: 28px;
   color: var(--black-1D2E43);
-  padding-left: 42.84vw;
+  padding-left: 39.84vw;
   padding-right: 1.87vw;
   padding-bottom: 84px;
 }
@@ -743,6 +745,15 @@ bottom: 3.38rem;
     padding-top: 56px;
     padding-left: 5.4vw;
   }
+
+  .container_text {
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    max-width: 13rem;
+    width: 100%;
+  }
+  
   
 
   .sliderMobile_wrapper {
