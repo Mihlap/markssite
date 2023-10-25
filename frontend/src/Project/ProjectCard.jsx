@@ -374,7 +374,7 @@ const ProjectCard = () => {
                     <div
                       className={`${styles.left_meta} ${styles.left_meta_castom}`}
                     >
-                      {firstValue}
+                      {project.degreeParticipation}
                     </div>
                   </div>
                 </div>
