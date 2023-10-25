@@ -334,6 +334,7 @@ const ArticleCard = () => {
                   ))}
                 </div>
               ))}
+            </div>
               <div
                 className={styles.item_container_imageClose}
                 ref={refs.imageClose}
@@ -354,7 +355,6 @@ const ArticleCard = () => {
                   />
                 </div>
               </div>
-            </div>
             <div
               className={
                 styles.container_author_address_imageClose_share_article

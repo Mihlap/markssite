@@ -1055,26 +1055,41 @@
     white-space: normal;
   }
 
-  .result_container {
+  .result_container_mobile {
     display: flex;
-    flex-wrap: wrap;
-    width: fit-content;
-    gap: 4.17vw;
-    padding-bottom: 0rem;
-  }
+      flex-wrap: wrap;
+      width: 100%;
+      row-gap: 1.5rem;
+      column-gap: 19.5vw;
+      padding-bottom: 0rem;
+    }
 
-  .result_number {
-    font-family: var(--font-unbounded);
-    font-style: normal;
-    font-weight: var(--fw-300);
-    font-size: 1.25rem;
-    line-height: 1.75rem;
-    color: var(--dark-gray-566272);
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    max-width: fit-content;
-  }
+    .result_number_mobile {
+      font-family: var(--font-unbounded);
+      font-style: normal;
+      font-weight: var(--fw-300);
+      font-size: 1.25rem;
+      line-height: 1.75rem;
+      color: var(--dark-gray-566272);
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      max-width: fit-content;
+      }
+    
+    .result_text_mobile {
+      color: var(--gray-959DA6);
+      font-variant-numeric: lining-nums proportional-nums;
+      font-family: var(--font-raleway);
+      font-size: 0.875rem;
+      font-style: normal;
+      font-weight: var(--fw-400);
+      line-height: 1.25rem;
+    }
 
+   
+    .result_container {
+      display: none;
+    }
 
   /* << =============== правый блок контента с информацией =============== >> */
 
@@ -1142,8 +1157,13 @@
     padding-right: 0rem;
     padding-left: 0rem;
     padding: 0rem;
+    object-fit: cover;
   }
 
+  .item_img_close img{
+    border-radius: 0;
+  }
+  
   .item_photo_together {
     gap: 2.08vw;
   }
@@ -1242,7 +1262,7 @@
     font-size: 1.5rem;
     line-height: 2rem;
     padding-bottom: 0rem;
-    padding-left: 1rem;
+    padding-left: 5vw;
     padding-top: 2.5rem;
   }
 
