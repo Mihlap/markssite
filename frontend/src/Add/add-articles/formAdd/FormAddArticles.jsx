@@ -11,7 +11,7 @@ import {
   removePreviewPhotoOpen,
 } from "./formHelpers";
 import { fetchArticle } from "../../../store/Slice/articleSlice";
-import customStyles from "../../add-project/formAdd/customStyles";
+import customStyles from "../../add-project/formAdd/utils/customStyles";
 
 import icon from "./img/Frame4684.svg";
 import ConstructorPage from "../constructor/ConstructorPage";
