@@ -174,7 +174,10 @@ export default function AddProject({ user }) {
 
         <div className={styles.card_components_admin__section_map}>
           {error ? (
-            <div>нажмите на кнопку Проекты</div>
+            <div className={styles.card_components_admin__errore_div}>
+              Нажмите на кнопку Проекты,{' '}
+              <span>это позволит серверу сделать запрос ещё раз.</span>
+            </div>
           ) : loading ? (
             <Loading />
           ) : (
@@ -343,7 +346,7 @@ export default function AddProject({ user }) {
 
                                   <button
                                     className={
-                                      styles.card_components_admin__close_button
+                                      styles.delete_modal_block__close_button
                                     }
                                     onClick={() =>
                                       handleDeleteModalClose(el.id)
