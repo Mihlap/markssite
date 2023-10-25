@@ -42,7 +42,7 @@ router.post(
       // console.log(req.body, '<<-- reg.BODY');
       // console.log(imageTitles, '<<-- imageTitles');
       // console.log(req.files, '<<-- reg.FILES');
-      console.log(dynamicBlocksContent);
+      // console.log(dynamicBlocksContent);
 
       const createdPrpject = await Project.create({
         title: req.body.title,
