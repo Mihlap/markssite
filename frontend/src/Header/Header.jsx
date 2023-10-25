@@ -291,8 +291,10 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
             onMouseLeave={handleMouseLeave}
             className={styles.desctop_test}
           >
-            Наша компания участвует в&nbsp;многочисленных выставках, конференциях
-            <br /> и&nbsp;конкурсах. Предлагаем ознакомиться с&nbsp;некоторыми докладами
+            Наша компания участвует в&nbsp;многочисленных выставках,
+            конференциях
+            <br /> и&nbsp;конкурсах. Предлагаем ознакомиться с&nbsp;некоторыми
+            докладами
           </div>
         </div>
         {/* <div className={styles.header_block}>
@@ -329,7 +331,9 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
                         />
                       </div>
                       <div className={styles.card_text}>
-                        <span className={styles.card_text_title}>{el.title}</span>
+                        <span className={styles.card_text_title}>
+                          {el.title}
+                        </span>
                       </div>
                       <div className={styles.wrapper_card_text_svg}>
                         <span className={styles.card_text_city}>{el.city}</span>
@@ -347,7 +351,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
                         <span className={styles.card_text_dataMonthYear}>
                           {el.dataMonthYear}
                         </span>
-                        </div>
+                      </div>
                       <button className={styles.card_button}>
                         <svg
                           width="32"
@@ -390,14 +394,17 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
                           onMouseEnter={handleMouseHover}
                           onMouseLeave={handleMouseLeave}
                           className={styles.img_2}
+                          loading="lazy"
                           src={`${Host}/images/imageArticle/${firstPhoto}`}
                           alt="photo1"
                         />
                       </div>
                       <div className={styles.card_text}>
-                        <span className={styles.card_text_title}>{el.title}</span>
+                        <span className={styles.card_text_title}>
+                          {el.title}
+                        </span>
                       </div>
-                        <div className={styles.wrapper_card_text_svg}>
+                      <div className={styles.wrapper_card_text_svg}>
                         <span className={styles.card_text_city}>{el.city}</span>
                         <span className={styles.card_text_svg}>
                           <svg
@@ -413,7 +420,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
                         <span className={styles.card_text_dataMonthYear}>
                           {el.dataMonthYear}
                         </span>
-                        </div>
+                      </div>
                       <button className={styles.card_button}>
                         <svg
                           width="32"
@@ -457,6 +464,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
           <div className={styles.most}>
             <img
               className={styles.image_most}
+              loading="lazy"
               src="./assets/most.png"
               alt=""
             ></img>
@@ -541,6 +549,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
                         //   height: `${project.style?.split(",")[1]}rem`,
                         //   width: `${project.style?.split(",")[0]}rem`,
                         // }}
+                        loading="lazy"
                         src={`${Host}/images/imageAdd/${
                           project.imageProject
                             ? project.imageProject
@@ -556,7 +565,6 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
                           e.target.alt =
                             "Альтернативный текст для замененной фотографии"; // Заменить на альтернативный текст
                         }}
-                        loading="lazy"
                       />
                     </div>
                     <div

@@ -78,6 +78,20 @@
         border-radius: 6px;
     }
 
+    &__time_block {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    &__month_block {
+        width: 45%;
+    }
+
+    &__year_block {
+        width: 45%;
+    }
+
     &__checkbox_block {
         color: var(--light-gray-C0C5CB);
         font-size: 0.75rem;
@@ -201,6 +215,7 @@
         background-color: var(--blue-75BBFD);
         color: var(--white-F6F6F6);
         border: none;
+        transition: background-color 0.3s;
 
         &::before {
             content: "Сохранить";
@@ -229,6 +244,7 @@
         background-color: var(--light-light-gray-EBECEE);
         color: var(--black-1D2E43);
         border: none;
+        transition: background-color 0.3s;
 
         &::before {
             content: "Отменить";

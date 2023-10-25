@@ -214,8 +214,8 @@ export default function AddProject({ user }) {
                               >
                                 <img
                                   className={styles.cart_project_container__img}
-                                  src={photoSrc}
                                   loading="lazy"
+                                  src={photoSrc}
                                   alt="photo_project"
                                 />
                                 {user?.name === "obezyankaa" ||
