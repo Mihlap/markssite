@@ -430,6 +430,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
           <div className={styles.form_container__block_gray_one}>
             <div className={`${styles.form__group} ${styles.field}`}>
               <input
+                required
                 type="text"
                 className={styles.form__field}
                 placeholder="title"
@@ -448,6 +449,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
 
             <div className={`${styles.form__group} ${styles.field}`}>
               <input
+                required
                 type="text"
                 className={styles.form__field}
                 placeholder="author"
@@ -457,7 +459,6 @@ export default function FormAddArticles({ setIsModalOpen }) {
                 onChange={(event) =>
                   changeHandler(event, inputData, setInputData)
                 }
-                // required
               />
               <label htmlFor="author" className={styles.form__label}>
                 Автор статьи
@@ -466,6 +467,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
 
             <div className={`${styles.form__group} ${styles.field}`}>
               <input
+                required
                 type="text"
                 className={styles.form__field}
                 placeholder="city"
@@ -475,7 +477,6 @@ export default function FormAddArticles({ setIsModalOpen }) {
                 onChange={(event) =>
                   changeHandler(event, inputData, setInputData)
                 }
-                // required
               />
               <label htmlFor="city" className={styles.form__label}>
                 Издание, город
@@ -485,6 +486,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
             <div className={`${styles.form__group} ${styles.field}`}>
               <input
                 type="text"
+                required
                 className={styles.form__field}
                 placeholder="dataMonthYear"
                 name="dataMonthYear"
@@ -493,7 +495,6 @@ export default function FormAddArticles({ setIsModalOpen }) {
                 onChange={(event) =>
                   changeHandler(event, inputData, setInputData)
                 }
-                // required
               />
               <label htmlFor="dataMonthYear" className={styles.form__label}>
                 Дата, месяц, год
@@ -593,20 +594,29 @@ export default function FormAddArticles({ setIsModalOpen }) {
           {/* блок и инпутом ( Заголовок текстового блока ) */}
           <div className={styles.form_container__heading_block}>
             <input
+              required
               type="input"
               className={styles.form_container__heading_block_input}
-              placeholder="Не более 56 символов"
+              placeholder="Нет ограничения по символам"
               name="titleTextBlock"
               id="titleTextBlock"
-              maxLength="56"
+              // maxLength="56"
               value={inputData.titleTextBlock}
-              onChange={(event) => {
-                const value = event.target.value;
-                if (value.length <= 56) {
-                  setInputData({ ...inputData, titleTextBlock: value });
-                }
-              }}
-              required
+              onChange={(event) =>
+                changeHandler(
+                  event,
+                  inputData,
+                  setInputData,
+                  setPreviewPhotos,
+                  setIsDropPhotoVisible,
+                  setPreviewPhotoAva,
+                  setIsPhotoAvaVisible,
+                  setPreviewPhotoOpen,
+                  setIsPhotoOpenVisible,
+                  setPreviewPhotoClose,
+                  setIsPhotoCloseVisible
+                )
+              }
             />
             <label
               htmlFor="titleTextBlock"
@@ -614,29 +624,39 @@ export default function FormAddArticles({ setIsModalOpen }) {
             >
               Заголовок текстового блока
             </label>
-            <div className={styles.form_container__heading_block_input_length}>
+            {/* <div className={styles.form_container__heading_block_input_length}>
               {`${inputData.titleTextBlock.length}/56`}
-            </div>
+            </div> */}
           </div>
           {/* блок и текстерией ( Описание статьи ) */}
           <div className={styles.form_container__description_text}>
-            <div className={styles.form_container__textarea_length}>
+            {/* <div className={styles.form_container__textarea_length}>
               {`${inputData.descriptionArticle.length}/260`}
-            </div>
+            </div> */}
             <textarea
               className={styles.form_container__textarea}
+              required
               name="descriptionArticle"
               id="descriptionArticle"
               cols="30"
               rows="10"
-              placeholder="Не более 260 символов"
+              placeholder="Нет ограничения по символам"
               value={inputData.descriptionArticle}
-              onChange={(event) => {
-                const value = event.target.value;
-                if (value.length <= 260) {
-                  setInputData({ ...inputData, descriptionArticle: value });
-                }
-              }}
+              onChange={(event) =>
+                changeHandler(
+                  event,
+                  inputData,
+                  setInputData,
+                  setPreviewPhotos,
+                  setIsDropPhotoVisible,
+                  setPreviewPhotoAva,
+                  setIsPhotoAvaVisible,
+                  setPreviewPhotoOpen,
+                  setIsPhotoOpenVisible,
+                  setPreviewPhotoClose,
+                  setIsPhotoCloseVisible
+                )
+              }
             ></textarea>
             <label htmlFor="" className={styles.form_container__textarea_label}>
               Текст статьи
