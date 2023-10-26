@@ -44,20 +44,44 @@ const customStyles = {
     color: "#27292F",
     marginTop: "13px",
   }),
-   singleValue: (provided, state) => ({
+  singleValue: (provided, state) => ({
     ...provided,
-    fontSize: '0.8rem',
-    top: '13px',
-    position: 'absolute',
+    fontSize: "0.8rem",
+    top: "13px",
+    position: "absolute",
   }),
   multiValueGeneric: (provided, state) => ({
     ...provided,
-    padding: 0
+    padding: 0,
   }),
   valueContainer: (provided, state) => ({
     ...provided,
     paddingLeft: 0, // remove left-side padding
     // other valueContainer styles
+  }),
+  menuList: (provided) => ({
+    ...provided,
+    // CSS для кастомного скролла
+    overflowY: "scroll",
+    scrollbarWidth: "thin",
+    scrollbarColor: "rgba(155, 155, 155, 0.7) white", // цвет полосы прокрутки и ползунка
+    "&::-webkit-scrollbar": {
+      width: "9px", // ширина для вертикального ползунка
+      height: "9px", // высота для горизонтального ползунка
+    },
+    "&::-webkit-scrollbar-track": {
+      background: "white", // цвет дорожки скролла
+      borderRadius: "10px",
+    },
+    "&::-webkit-scrollbar-thumb": {
+      backgroundColor: "rgba(155, 155, 155, 0.7)", // цвет вашего ползунка
+      borderRadius: "20px", // скругление углов ползунка
+      border: "2px solid transparent", // границы ползунка
+      backgroundClip: "content-box", // отображение фона в пределах границы/отступа/содержимого
+    },
+    "&::-webkit-scrollbar-thumb:hover": {
+      backgroundColor: "rgba(155, 155, 155, 0.7)", // цвет ползунка при наведении
+    },
   }),
   // dropdownIndicator: (provided, state) => ({
   //   ...provided,
