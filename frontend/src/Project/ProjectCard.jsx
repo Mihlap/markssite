@@ -386,12 +386,12 @@ const ProjectCard = () => {
                       unit: "м³",
                     },
                     {
-                      value: project.constructionVolume,
+                      value: project.numberOfLanes,
                       text: "Количество полос",
                     },
                     {
-                      value: project.constructionVolume,
-                      text: "Строительный объем",
+                      value: project.long,
+                      text: "Длинна",
                       unit: "км",
                     },
                   ]
