@@ -210,7 +210,6 @@ export default function AddProject({ user }) {
                                 className={
                                   styles.cart_project_container__imageContainer
                                 }
-                                // style={{ width: "100%", height: "100%" }}
                               >
                                 <img
                                   className={styles.cart_project_container__img}
@@ -219,7 +218,6 @@ export default function AddProject({ user }) {
                                   alt="photo_project"
                                 />
                                 {user?.name === "obezyankaa" ||
-                                user?.name === "Pokemon" ||
                                 user?.name === "pokemon" ? (
                                   <div className={styles.del_block}>
                                     <button

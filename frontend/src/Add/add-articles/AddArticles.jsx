@@ -4,18 +4,20 @@ import styles from "../style/style-card.module.scss";
 import customScroll from "../style/CustomScrollbar.module.scss";
 import FormAddArticles from "./formAdd/FormAddArticles";
 import { deleteFormArticle, getFetchFormArticle } from "../../store/Slice/articleSlice";
-import Loading from "./loading/Loading";
 import cat from "../img/cat_954.jpeg";
 
 import {
   fetchToggleStateForButton2Async,
   updateToggleStateForButton2Async,
 } from "../../store/Slice/toggleSlice";
+import Loading from "../add-project/loading/Loading";
 
 export default function AddArticles({ user }) {
   const Host = process.env.REACT_APP_SERVER_HOST;
   const dispatch = useDispatch();
   const article = useSelector((state) => state.article.article);
+  const loading = useSelector((state) => state.article.loading);
+  const error = useSelector((state) => state.article.error);
 
   const isActiveForButton2 = useSelector(
     (state) => state.toggle.isActiveForButton2
@@ -179,138 +181,202 @@ export default function AddArticles({ user }) {
         )}
 
         <div className={styles.card_components_admin__section_map}>
-          <div className={styles.card_components_admin__block_map}>
-            {article &&
-              article?.map((el) => {
-                const firstPhoto =
-                  el && el.imageTitle ? el.imageTitle.split(", ")[0] : null;
-                const defaultPhoto = cat;
-
-                const photoSrc =
-                  firstPhoto &&
-                  firstPhoto !== "null" &&
-                  firstPhoto !== "undefined"
-                    ? `${Host}/images/imageArticle/${firstPhoto}`
-                    : defaultPhoto;
-                return (
-                  <div
-                    className={styles.section_project__block_cart}
-                    key={el.id}
-                  >
-                    <div className={styles.cart_project}>
-                      <div className={styles.cart_project__container}>
-                        <div
-                          className={styles.cart_project__imageContainer}
-                          style={{ width: "100%", height: "100%" }}
-                        >
-                          {!isImageLoaded && <Loading />}
-                          <img
-                            className={styles.cart_project__img}
-                            src={photoSrc}
-                            alt="photo_articles"
-                            onLoad={() => setImageLoaded(true)}
-                          />
-                          {user?.name === "obezyankaa" ||
-                          user?.name === "pokemon" ? (
-                            <div className={styles.del_block}>
-                              <button
-                                className={styles.buttom_del}
-                                onClick={() => handleDeleteModalOpen(el.id)}
-                              >
-                                <label
-                                  htmlFor="delete"
-                                  className={styles.label}
-                                >
-                                  <div className={`${styles.wrapper}`}>
-                                    <div className={`${styles.lid}`}>
-                                      <div className={styles.container_vedro}>
-                                        <div
-                                          className={styles.triangle_left}
-                                        ></div>
-                                        <div className={styles.rectangle}></div>
-                                        <div
-                                          className={styles.triangle_right}
-                                        ></div>
-                                      </div>
-                                    </div>
-                                    <div className={`${styles.can}`}></div>
-                                    <span>delete</span>
-                                  </div>
-                                </label>
-                              </button>
-                            </div>
-                          ) : null}
-                        </div>
-                        <div className={styles.cart_project__content}>
-                          <span className={styles.cart_project__title}>
-                            {el.title}
-                          </span>
-                        </div>
-                        <div className={styles.cart_project__id_block}>
-                          <div className={styles.cart_project__id_text}>
-                            id: {el.id}
-                          </div>
-                          {isCopied && el.id === copiedId && (
-                            <>
-                              <div className={styles.cart_project__copyMessage}>
-                                id скопирован
-                              </div>
-                              <div
-                                className={
-                                  styles.cart_project__copyButton_img_copu_deffalt
-                                }
-                              />
-                            </>
-                          )}
-                          <button
-                            className={styles.cart_project__copyButton}
-                            onClick={() => handleCopyClick(el.id)}
-                          >
-                            <div
-                              className={
-                                styles.cart_project__copyButton_img_copu_ok
-                              }
-                            />
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                    {deleteModalState[el.id] && (
-                      <div className={styles.delete_modal_container}>
-                        <div className={styles.delete_modal_block}>
-                          <div className={styles.delete_modal_block__title}>
-                            Вы точно хотите удалить проект <br /> «{el.title}»
-                          </div>
-                          <p className={styles.delete_modal_block__text}>
-                            Удаленный проект нельзя будет вернуть
-                          </p>
-
-                          <div className={styles.button_block}>
-                            <button
-                              className={`${styles.button_block__cancel} ${styles.delete_modal_button_cancel}`}
-                              onClick={() => handleDeleteModalClose(el.id)}
-                            />
-                            <button
-                              className={`${styles.button_block__save} ${styles.delete_modal_button_delete}`}
-                              onClick={() => handleFormDelete(el.id)}
-                            />
-                          </div>
-
-                          <button
-                            className={
-                              styles.card_components_admin__close_button
-                            }
-                            onClick={() => handleDeleteModalClose(el.id)}
-                          ></button>
-                        </div>
-                      </div>
-                    )}
+            {error ? (
+              <div className={styles.card_components_admin__errore_div}>
+                Нажмите на кнопку Публикации,{" "}
+                <span>это позволит серверу сделать запрос ещё раз.</span>
+              </div>
+            ) : loading ? (
+              <Loading />
+            ) : (
+              <>
+                {article && article.length === 0 ? (
+                  <div className={styles.card_components_admin__null_project}>
+                    Публикаций сейчас нет, добавьте свою первую публикацию!
                   </div>
-                );
-              })}
+                ) : (
+                  <>
+                    <div className={styles.card_components_admin__block_map}>
+                      {article &&
+                        article?.map((el) => {
+                          const firstPhoto =
+                            el && el.imageTitle
+                              ? el.imageTitle.split(", ")[0]
+                              : null;
+                          const defaultPhoto = cat;
+
+                          const photoSrc =
+                            firstPhoto &&
+                            firstPhoto !== "null" &&
+                            firstPhoto !== "undefined"
+                              ? `${Host}/images/imageArticle/${firstPhoto}`
+                              : defaultPhoto;
+                          return (
+                            <React.Fragment key={el.id}>
+                              <div
+                                key={el.id}
+                                className={styles.cart_project_container}
+                              >
+                                <div
+                                  className={
+                                    styles.cart_project_container__imageContainer
+                                  }
+                                >
+                                  <img
+                                    className={
+                                      styles.cart_project_container__img
+                                    }
+                                    loading="lazy"
+                                    src={photoSrc}
+                                    alt="photo_articles"
+                                    onLoad={() => setImageLoaded(true)}
+                                  />
+                                  {user?.name === "obezyankaa" ||
+                                  user?.name === "pokemon" ? (
+                                    <div className={styles.del_block}>
+                                      <button
+                                        className={styles.buttom_del}
+                                        onClick={() =>
+                                          handleDeleteModalOpen(el.id)
+                                        }
+                                      >
+                                        <label
+                                          htmlFor="delete"
+                                          className={styles.label}
+                                        >
+                                          <div className={`${styles.wrapper}`}>
+                                            <div className={`${styles.lid}`}>
+                                              <div
+                                                className={
+                                                  styles.container_vedro
+                                                }
+                                              >
+                                                <div
+                                                  className={
+                                                    styles.triangle_left
+                                                  }
+                                                ></div>
+                                                <div
+                                                  className={styles.rectangle}
+                                                ></div>
+                                                <div
+                                                  className={
+                                                    styles.triangle_right
+                                                  }
+                                                ></div>
+                                              </div>
+                                            </div>
+                                            <div
+                                              className={`${styles.can}`}
+                                            ></div>
+                                            <span>delete</span>
+                                          </div>
+                                        </label>
+                                      </button>
+                                    </div>
+                                  ) : null}
+                                </div>
+                                <div className={styles.cart_project__content}>
+                                  <span className={styles.cart_project__title}>
+                                    {el.title}
+                                  </span>
+                                </div>
+                                <div
+                                  className={
+                                    styles.cart_project_container__id_block
+                                  }
+                                >
+                                  <div
+                                    className={
+                                      styles.cart_project_container__id_text
+                                    }
+                                  >
+                                    id: {el.id}
+                                  </div>
+                                  {isCopied && el.id === copiedId && (
+                                    <>
+                                      <div
+                                        className={
+                                          styles.cart_project_container__copyMessage
+                                        }
+                                      >
+                                        id скопирован
+                                      </div>
+                                      <div
+                                        className={
+                                          styles.cart_project_container__copyButton_img_copu_deffalt
+                                        }
+                                      />
+                                    </>
+                                  )}
+                                  <button
+                                    className={
+                                      styles.cart_project_container__copyButton
+                                    }
+                                    onClick={() => handleCopyClick(el.id)}
+                                  >
+                                    <div
+                                      className={
+                                        styles.cart_project_container__copyButton_img_copu_ok
+                                      }
+                                    />
+                                  </button>
+                                </div>
+                              </div>
+
+                              {deleteModalState[el.id] && (
+                                <div className={styles.delete_modal_container}>
+                                  <div className={styles.delete_modal_block}>
+                                    <div
+                                      className={
+                                        styles.delete_modal_block__title
+                                      }
+                                    >
+                                      Вы точно хотите удалить проект <br /> «
+                                      {el.title}»
+                                    </div>
+                                    <p
+                                      className={
+                                        styles.delete_modal_block__text
+                                      }
+                                    >
+                                      Удаленный проект нельзя будет вернуть
+                                    </p>
+
+                                    <div className={styles.button_block}>
+                                      <button
+                                        className={`${styles.button_block__cancel} ${styles.delete_modal_button_cancel}`}
+                                        onClick={() =>
+                                          handleDeleteModalClose(el.id)
+                                        }
+                                      />
+                                      <button
+                                        className={`${styles.button_block__save} ${styles.delete_modal_button_delete}`}
+                                        onClick={() => handleFormDelete(el.id)}
+                                      />
+                                    </div>
+
+                                    <button
+                                      className={
+                                        styles.card_components_admin__close_button
+                                      }
+                                      onClick={() =>
+                                        handleDeleteModalClose(el.id)
+                                      }
+                                    ></button>
+                                  </div>
+                                </div>
+                              )}
+                            </React.Fragment>
+                          );
+                        })}
+                    </div>
+                  </>
+                )}
+              </>
+            )}
           </div>
         </div>
-      </div>
     </section>
   );
 }

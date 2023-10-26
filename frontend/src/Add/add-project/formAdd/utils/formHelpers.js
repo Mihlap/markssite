@@ -176,7 +176,9 @@ export function changeHandler(
     event.target.name === "siteArea" ||
     event.target.name === "floors" ||
     event.target.name === "altitude" ||
-    event.target.name === "constructionVolume"
+    event.target.name === "constructionVolume" ||
+    event.target.name === "numberOfLanes" ||
+    event.target.name === "long"
   ) {
     const onlyDigits = event.target.value.replace(/\D+/g, "");
     const formattedValue = formatNumberWithThousandSeparator(onlyDigits);
