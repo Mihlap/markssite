@@ -431,6 +431,21 @@
     color: var(--light-gray-C0C5CB);
 }
 
+.measurement {
+    position: absolute;
+    right: 10px;
+    top: 65%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    font-family: Raleway;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+    color: var(--gray-959DA6);
+
+}
+
 .form__label {
     position: absolute;
     top: 20px;
@@ -438,6 +453,10 @@
     transition: 0.2s;
     font-size: 1rem;
     color: var(--gray-959DA6);
+}
+
+.disabledLabel {
+    color: var(--light-gray-C0C5CB);
 }
 
 
@@ -719,12 +738,12 @@
 
 .horizontalImage {
     display: grid;
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: 1fr 1fr;
-        gap: 16px;
-        // height: 25vh;
-        align-items: stretch;
-        // margin-bottom: 90px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 16px;
+    // height: 25vh;
+    align-items: stretch;
+    // margin-bottom: 90px;
 }
 
 .horizontalImage>div:nth-child(1) {
@@ -744,7 +763,7 @@
 }
 
 .horizontalImage>div:nth-child(2)>div>img {
-grid-column: 1/2;
+    grid-column: 1/2;
     height: 15vh;
     border-radius: 1rem;
 }

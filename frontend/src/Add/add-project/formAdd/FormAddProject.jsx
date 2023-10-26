@@ -51,6 +51,20 @@ export default function FormAddProject({ setIsModalOpen }) {
   const [selectedRadio, setSelectedRadio] = useState("28,28");
   const [isFocused, setIsFocused] = useState(false);
 
+  const countFilledInputs = () => {
+    const inputsToCheck = [
+      "totalArea",
+      "siteArea",
+      "floors",
+      "altitude",
+      "constructionVolume",
+      "numberOfLanes",
+      "long",
+    ];
+    return inputsToCheck.filter((input) => inputData[input]).length;
+  };
+
+
   // << ==== КОНСТУКТОР ==== >>
   // состояние для хранения текущего значения инпута
   const [inputValue, setInputValue] = useState("");
@@ -88,6 +102,8 @@ export default function FormAddProject({ setIsModalOpen }) {
     headingTextBlock: "",
     textBlock: "",
     imageClose: "",
+    numberOfLanes: "",
+    long: "",
   });
 
   // функция Удаление фото из массива превью
@@ -559,7 +575,7 @@ export default function FormAddProject({ setIsModalOpen }) {
 
   // << ============ функции КОНСТРУКТОРА ============ >>
 
-  // console.log(inputData, "<<--inputData PROJECT");
+  console.log(inputData, "<<--inputData PROJECT");
   // console.log(dynamicData, "<<--dynamicData");
   return (
     <div className={styles.form_container}>
@@ -1088,8 +1104,19 @@ export default function FormAddProject({ setIsModalOpen }) {
                       setIsPhotoOpenVisible
                     )
                   }
+                  disabled={countFilledInputs() >= 3 && !inputData.totalArea}
                 />
-                <label htmlFor="totalArea" className={styles.form__label}>
+                {inputData.totalArea && (
+                  <span className={styles.measurement}>м²</span>
+                )}
+                <label
+                  htmlFor="totalArea"
+                  className={`${styles.form__label} ${
+                    countFilledInputs() >= 3 && !inputData.totalArea
+                      ? styles.disabledLabel
+                      : ""
+                  }`}
+                >
                   Общая площадь, м²
                 </label>
               </div>
@@ -1114,8 +1141,19 @@ export default function FormAddProject({ setIsModalOpen }) {
                       setIsPhotoOpenVisible
                     )
                   }
+                  disabled={countFilledInputs() >= 3 && !inputData.siteArea}
                 />
-                <label htmlFor="siteArea" className={styles.form__label}>
+                {inputData.siteArea && (
+                  <span className={styles.measurement}>га</span>
+                )}
+                <label
+                  htmlFor="siteArea"
+                  className={`${styles.form__label} ${
+                    countFilledInputs() >= 3 && !inputData.siteArea
+                      ? styles.disabledLabel
+                      : ""
+                  }`}
+                >
                   Площадь участка, га
                 </label>
               </div>
@@ -1141,8 +1179,16 @@ export default function FormAddProject({ setIsModalOpen }) {
                       setIsPhotoOpenVisible
                     )
                   }
+                  disabled={countFilledInputs() >= 3 && !inputData.floors}
                 />
-                <label htmlFor="floors" className={styles.form__label}>
+                <label
+                  htmlFor="floors"
+                  className={`${styles.form__label} ${
+                    countFilledInputs() >= 3 && !inputData.floors
+                      ? styles.disabledLabel
+                      : ""
+                  }`}
+                >
                   Этажность
                 </label>
               </div>
@@ -1167,8 +1213,19 @@ export default function FormAddProject({ setIsModalOpen }) {
                       setIsPhotoOpenVisible
                     )
                   }
+                  disabled={countFilledInputs() >= 3 && !inputData.altitude}
                 />
-                <label htmlFor="altitude" className={styles.form__label}>
+                {inputData.altitude && (
+                  <span className={styles.measurement}>м</span>
+                )}
+                <label
+                  htmlFor="altitude"
+                  className={`${styles.form__label} ${
+                    countFilledInputs() >= 3 && !inputData.altitude
+                      ? styles.disabledLabel
+                      : ""
+                  }`}
+                >
                   Высотность, м
                 </label>
               </div>
@@ -1193,12 +1250,95 @@ export default function FormAddProject({ setIsModalOpen }) {
                       setIsPhotoOpenVisible
                     )
                   }
+                  disabled={
+                    countFilledInputs() >= 3 && !inputData.constructionVolume
+                  }
                 />
+                {inputData.constructionVolume && (
+                  <span className={styles.measurement}>м³</span>
+                )}
                 <label
                   htmlFor="constructionVolume"
-                  className={styles.form__label}
+                  className={`${styles.form__label} ${
+                    countFilledInputs() >= 3 && !inputData.constructionVolume
+                      ? styles.disabledLabel
+                      : ""
+                  }`}
                 >
-                  Строительный объем, м3
+                  Строительный объем, м³
+                </label>
+              </div>
+              <div className={`${styles.form__group} ${styles.field}`}>
+                <input
+                  type="text"
+                  className={styles.form__field}
+                  placeholder="numberOfLanes"
+                  name="numberOfLanes"
+                  id="numberOfLanes"
+                  value={inputData.numberOfLanes}
+                  onChange={(event) =>
+                    changeHandler(
+                      event,
+                      inputData,
+                      setInputData,
+                      setPreviewPhotos,
+                      setIsDropPhotoVisible,
+                      setPreviewPhotoAva,
+                      setIsPhotoAvaVisible,
+                      setPreviewPhotoOpen,
+                      setIsPhotoOpenVisible
+                    )
+                  }
+                  disabled={
+                    countFilledInputs() >= 3 && !inputData.numberOfLanes
+                  }
+                />
+                <label
+                  htmlFor="numberOfLanes"
+                  className={`${styles.form__label} ${
+                    countFilledInputs() >= 3 && !inputData.numberOfLanes
+                      ? styles.disabledLabel
+                      : ""
+                  }`}
+                >
+                  Количество полос
+                </label>
+              </div>
+              <div className={`${styles.form__group} ${styles.field}`}>
+                <input
+                  type="text"
+                  className={styles.form__field}
+                  placeholder="long"
+                  name="long"
+                  id="long"
+                  value={inputData.long}
+                  onChange={(event) =>
+                    changeHandler(
+                      event,
+                      inputData,
+                      setInputData,
+                      setPreviewPhotos,
+                      setIsDropPhotoVisible,
+                      setPreviewPhotoAva,
+                      setIsPhotoAvaVisible,
+                      setPreviewPhotoOpen,
+                      setIsPhotoOpenVisible
+                    )
+                  }
+                  disabled={countFilledInputs() >= 3 && !inputData.long}
+                />
+                {inputData.long && (
+                  <span className={styles.measurement}>км</span>
+                )}
+                <label
+                  htmlFor="long"
+                  className={`${styles.form__label} ${
+                    countFilledInputs() >= 3 && !inputData.long
+                      ? styles.disabledLabel
+                      : ""
+                  }`}
+                >
+                  Длинна, км
                 </label>
               </div>
             </div>

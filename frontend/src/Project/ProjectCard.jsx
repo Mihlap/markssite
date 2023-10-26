@@ -401,6 +401,15 @@ const ProjectCard = () => {
                       text: "Строительный объем",
                       unit: "м³",
                     },
+                    {
+                      value: project.numberOfLanes,
+                      text: "Количество полос",
+                    },
+                    {
+                      value: project.long,
+                      text: "Длинна",
+                      unit: "км",
+                    },
                   ]
                     .filter((item) => item.value) // фильтрация по наличию значения
                     .slice(0, 3) // берём первые три объекта

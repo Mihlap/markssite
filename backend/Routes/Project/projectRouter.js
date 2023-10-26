@@ -39,7 +39,7 @@ router.post(
       const imageOpens = req.files.imageOpen ? req.files.imageOpen[0].filename : null;
       const imageCloses = req.files.imageClose ? req.files.imageClose[0].filename : null;
 
-      // console.log(req.body, '<<-- reg.BODY');
+      console.log(req.body, '<<-- reg.BODY');
       // console.log(imageTitles, '<<-- imageTitles');
       // console.log(req.files, '<<-- reg.FILES');
       // console.log(dynamicBlocksContent);
@@ -73,7 +73,8 @@ router.post(
         headingTextBlock: req.body.headingTextBlock,
         textBlock: req.body.textBlock,
         imageClose: imageCloses,
-        test: req.body.title,
+        numberOfLanes: req.body.numberOfLanes,
+        long: req.body.long,
       });
 
       await Constructor.create({
