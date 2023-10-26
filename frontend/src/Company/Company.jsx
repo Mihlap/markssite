@@ -938,7 +938,6 @@ export default function Company() {
               spaceBetween={0}
               effect={"fade"}
               touch="true"
-              // centeredSlides={"true"}
               onSlideChange={(swiper) =>
                 setCurrentIndexCompany(swiper.realIndex)
               }
