@@ -68,24 +68,45 @@ export const extractCityFromCountryCity = (countryCity) => {
   return "";
 };
 
+// export const shareToVK = (project, Host) => {
+//   const url = encodeURIComponent(window.location.href);
+//   const title = encodeURIComponent(project.title);
+//   const imageUrl = encodeURIComponent(`${Host}/images/imageAdd/${project.imageProject}`);
+//   window.open(`https://vk.com/share.php?url=${url}&title=${title}&image=${encodeURIComponent(imageUrl)}`, '_blank');
+// };
+
+// vk-api
+
 export const shareToVK = (project, Host) => {
   const url = encodeURIComponent(window.location.href);
   const title = encodeURIComponent(project.title);
   const imageUrl = encodeURIComponent(`${Host}/images/imageAdd/${project.imageProject}`);
-  window.open(`https://vk.com/share.php?url=${url}&title=${title}&image=${encodeURIComponent(imageUrl)}`, '_blank');
+  window.open(`https://vk.com/share.php?url=${url}&title=${title}&image=${imageUrl}`, '_blank');
 };
 
+
+// export const shareToTelegram = (project, Host) => {
+// const url = encodeURIComponent(window.location.href);
+// const title = encodeURIComponent(project.title);
+// const imageUrl = encodeURIComponent(`${Host}/images/imageAdd/${project.imageProject}`);
+// window.open(`https://t.me/share/url?url=${url}&text=${title}&image=${encodeURIComponent(imageUrl)}`, '_blank');
+// };
+
+
+// node-telegram-bot-api
 export const shareToTelegram = (project, Host) => {
-const url = encodeURIComponent(window.location.href);
-const title = encodeURIComponent(project.title);
-const imageUrl = encodeURIComponent(`${Host}/images/imageAdd/${project.imageProject}`);
-window.open(`https://t.me/share/url?url=${url}&text=${title}&image=${encodeURIComponent(imageUrl)}`, '_blank');
+  const url = encodeURIComponent(window.location.href);
+  const title = encodeURIComponent(project.title);
+  const imageUrl = encodeURIComponent(`${Host}/images/imageAdd/${project.imageProject}`);
+  window.open(`https://t.me/share/url?url=${url}&text=${title}&image=${imageUrl}`, '_blank');
 };
+
 
 export const shareToWhatsApp = (project, Host) => {
   const title = encodeURIComponent(`Check out this project: ${project.title}`);
   const imageUrl = `${Host}/images/imageAdd/${project.imageProject}`;
-  const message = `${title}%0A${window.location.href}%0A${imageUrl}`;
+  const imageTag = `<img src="${imageUrl}" alt="Project Image">`;
+  const message = `${title}%0A${window.location.href}%0A${imageTag}`;
   const whatsappUrl = `https://wa.me/?text=${message}`;
   window.open(whatsappUrl, '_blank');
 };
@@ -205,3 +226,44 @@ export const onWheel = (el, e, enableVerticalScroll, isHorizontalScroll, setIsHo
   }
 };
 
+
+
+// const userId = 123456789; // ID пользователя VK
+// const accessToken = 'your_access_token'; // Ваш access token
+// const groupId = 0; // ID группы, если вы хотите опубликовать в группе
+
+// // Шаг 1: Получаем URL сервера для загрузки фото
+// fetch(`https://api.vk.com/method/photos.getWallUploadServer?user_id=${userId}&group_id=${groupId}&access_token=${accessToken}&v=5.131`)
+//   .then(response => response.json())
+//   .then(data => {
+//     // Шаг 2: Загружаем фото на сервер
+//     const formData = new FormData();
+//     formData.append('file', yourImageFile); // yourImageFile - это файл, который вы хотите загрузить
+
+//     fetch(data.response.upload_url, {
+//       method: 'POST',
+//       body: formData
+//     })
+//     .then(response => response.json())
+//     .then(data => {
+//       // Шаг 3: Сохраняем фото на стене пользователя или группы
+//       const photoData = JSON.parse(data.photo);
+//       const savePhotoUrl = `https://api.vk.com/method/photos.saveWallPhoto?user_id=${userId}&group_id=${groupId}&photo=${photoData.photo}&server=${photoData.server}&hash=${photoData.hash}&access_token=${accessToken}&v=5.131`;
+
+//       fetch(savePhotoUrl)
+//         .then(response => response.json())
+//         .then(data => {
+//           const photoId = data.response[0].id;
+//           const ownerId = data.response[0].owner_id;
+
+//           // Шаг 4: Публикуем фото на стене пользователя или группы
+//           const postUrl = `https://api.vk.com/method/wall.post?owner_id=${ownerId}&attachments=photo${ownerId}_${photoId}&access_token=${accessToken}&v=5.131`;
+          
+//           fetch(postUrl)
+//             .then(response => response.json())
+//             .then(data => {
+//               console.log(data);
+//             });
+//         });
+//     });
+//   });

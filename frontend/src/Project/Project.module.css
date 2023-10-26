@@ -177,8 +177,9 @@ display: inline-block;
     display: flex;
   flex-direction: column;
   width: calc(33.33% - 1.88rem);
-  max-height: 30rem;
-  margin-bottom: 3rem;
+   max-height: 30rem;
+  /* height: calc(30rem - 2rem); */
+  padding-bottom: 1rem;
 }
   
   .cart_project {
@@ -907,8 +908,9 @@ display: inline-block;
         display: flex;
         justify-content: center;
         flex-direction: column;
-        gap: 0rem;
+        gap: 1.88rem;
         padding-left: 1rem;
+        padding-bottom: 2rem;
     }
 
     .section_project__block_cart {

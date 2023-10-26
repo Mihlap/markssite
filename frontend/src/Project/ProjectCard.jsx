@@ -42,6 +42,7 @@ const ProjectCard = () => {
   const [isHorizontalScroll, setIsHorizontalScroll] = useState(false);
   const [isAtRightEdge, setIsAtRightEdge] = useState(false);
   const [scrollingMode, setScrollingMode] = useState("vertical");
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   const refs = {
     title: useRef(null),
@@ -210,12 +211,29 @@ const ProjectCard = () => {
   const altText =
     project?.imageProject || project?.imageTitle || "Default Alt Text";
 
+      // Обработчик изменения размера окна
+  const handleResize = () => {
+    setWindowWidth(window.innerWidth);
+  };
+
+  // Подписка на событие изменения размера окна
+  useEffect(() => {
+    window.addEventListener('resize', handleResize);
+
+    // Отписка от события при размонтировании компонента
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
     // const randomProjects = projects.slice().sort(() => Math.random() - 0.5).slice(0, 20);
 
   //  console.log(project, "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww");
   // console.log(userSelectedBlocks, "<<--- userSelectedBlocks");
 
-
+  // console.log('Host:', Host);
+  // console.log('project.imageProject:', project.imageProject);
+  
   return (
     <>
       <Helmet>
@@ -357,7 +375,7 @@ const ProjectCard = () => {
                       className={`${styles.left_meta} ${styles.left_meta_castom}`}
                     >
                       {firstValue}
-                      </div>
+                    </div>
                   </div>
                 </div>
                 <div className={styles.title_text}>
@@ -396,6 +414,40 @@ const ProjectCard = () => {
                       </div>
                     ))}
                 </div>
+                {windowWidth < 767 && (
+                <div className={styles.result_container_mobile}>
+                  {[
+                    {
+                      value: project.siteArea,
+                      text: "Общая площадь",
+                      unit: "м²",
+                    },
+                    {
+                      value: project.totalArea,
+                      text: "Площадь участка",
+                      unit: "га",
+                    },
+                    { value: project.floors, text: "Этажность" },
+                    { value: project.altitude, text: "Высотность", unit: "м" },
+                    {
+                      value: project.constructionVolume,
+                      text: "Строительный объем",
+                      unit: "м³",
+                    },
+                  ]
+                    .filter((item) => item.value)
+                    .slice(0, 3) 
+                    .map((item) => (
+                      <div key={item.text} className={styles.result_block}>
+                        <div className={styles.result_number_mobile}>
+                          {item.value}
+                          {item.unit ? <span>{item.unit}</span> : null}
+                        </div>
+                        <div className={styles.result_text_mobile}>{item.text}</div>
+                      </div>
+                    ))}
+                </div>
+                )} 
               </div>
               <div
                 ref={refs.blockRight}
@@ -407,7 +459,7 @@ const ProjectCard = () => {
                     <div
                       className={`${styles.left_meta} ${styles.left_meta_castom}`}
                     >
-                     {firstValue}
+                      {firstValue}
                     </div>
                   </div>
                 </div>
@@ -442,7 +494,7 @@ const ProjectCard = () => {
                         </div>
                       </Link>
                     </div>
-                  </div>
+                    </div>
                   <div className={styles.local_left}>
                     <div>
                       <div className={styles.local_title}>Степень участия</div>
@@ -473,6 +525,7 @@ const ProjectCard = () => {
                     className={styles.item_img}
                     src={imageOpenSource}
                     alt={altTextOpen}
+                    loading="lazy"
                   />
                 </div>
                 <div
@@ -525,9 +578,10 @@ const ProjectCard = () => {
                 <div className={`${styles.item} ${styles.item_img_close}`}>
                   <img
                     ref={refs.leftImg4}
-                    className={`${styles.item_img} ${styles.item_img_close}`}
+                    className={`${styles.item_img} ${styles.item_img_close1}`}
                     src={imageCloseSource}
                     alt={altTextClose}
+                    loading="lazy"
                   />
                 </div>
               </div>
@@ -642,14 +696,13 @@ const ProjectCard = () => {
             }}
           >
             {projects?.map((project, index) => {
+              const photoName = project && project.imageProject;
+              const defaultPhoto = catPhoto;
 
-               const photoName = project && project.imageProject;
-               const defaultPhoto = catPhoto;
-
-               const photoSrc =
-                 photoName && photoName !== "null" && photoName !== "undefined"
-                   ? `${Host}/images/imageAdd/${photoName}`
-                   : defaultPhoto;
+              const photoSrc =
+                photoName && photoName !== "null" && photoName !== "undefined"
+                  ? `${Host}/images/imageAdd/${photoName}`
+                  : defaultPhoto;
               if (!project) {
                 return null;
               }
@@ -670,6 +723,7 @@ const ProjectCard = () => {
                         className={styles.container__imageTitle_projectCard}
                         src={photoSrc}
                         alt={project.imageProject}
+                        loading="lazy"
                       />
                     </div>
                     <div
