@@ -1106,6 +1106,9 @@ export default function FormAddProject({ setIsModalOpen }) {
                   }
                   disabled={countFilledInputs() >= 3 && !inputData.totalArea}
                 />
+                {inputData.totalArea && (
+                  <span className={styles.measurement}>м²</span>
+                )}
                 <label
                   htmlFor="totalArea"
                   className={`${styles.form__label} ${
@@ -1140,6 +1143,9 @@ export default function FormAddProject({ setIsModalOpen }) {
                   }
                   disabled={countFilledInputs() >= 3 && !inputData.siteArea}
                 />
+                {inputData.siteArea && (
+                  <span className={styles.measurement}>га</span>
+                )}
                 <label
                   htmlFor="siteArea"
                   className={`${styles.form__label} ${
@@ -1209,6 +1215,9 @@ export default function FormAddProject({ setIsModalOpen }) {
                   }
                   disabled={countFilledInputs() >= 3 && !inputData.altitude}
                 />
+                {inputData.altitude && (
+                  <span className={styles.measurement}>м</span>
+                )}
                 <label
                   htmlFor="altitude"
                   className={`${styles.form__label} ${
@@ -1245,6 +1254,9 @@ export default function FormAddProject({ setIsModalOpen }) {
                     countFilledInputs() >= 3 && !inputData.constructionVolume
                   }
                 />
+                {inputData.constructionVolume && (
+                  <span className={styles.measurement}>м³</span>
+                )}
                 <label
                   htmlFor="constructionVolume"
                   className={`${styles.form__label} ${
@@ -1253,7 +1265,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                       : ""
                   }`}
                 >
-                  Строительный объем, м3
+                  Строительный объем, м³
                 </label>
               </div>
               <div className={`${styles.form__group} ${styles.field}`}>
@@ -1315,6 +1327,9 @@ export default function FormAddProject({ setIsModalOpen }) {
                   }
                   disabled={countFilledInputs() >= 3 && !inputData.long}
                 />
+                {inputData.long && (
+                  <span className={styles.measurement}>км</span>
+                )}
                 <label
                   htmlFor="long"
                   className={`${styles.form__label} ${
