@@ -96,6 +96,7 @@ router.put('/button3', async (req, res) => {
 });
 
 router.get('/button3', async (req, res) => {
+  console.log('GET request to /button3 received');
   try {
     const record = await SwitchingFilterRegistration.findOne();
     if (record) {
@@ -104,6 +105,7 @@ router.get('/button3', async (req, res) => {
       res.status(404).json({ success: false, message: 'No records found' });
     }
   } catch (error) {
+      console.error('Error while processing /button3:', error);
     res.status(500).json({ success: false, message: error.message });
   }
 });
