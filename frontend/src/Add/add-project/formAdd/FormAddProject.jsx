@@ -88,6 +88,8 @@ export default function FormAddProject({ setIsModalOpen }) {
     headingTextBlock: "",
     textBlock: "",
     imageClose: "",
+    numberOfLanes: "",
+    long: "",
   });
 
   // функция Удаление фото из массива превью
@@ -559,7 +561,7 @@ export default function FormAddProject({ setIsModalOpen }) {
 
   // << ============ функции КОНСТРУКТОРА ============ >>
 
-  // console.log(inputData, "<<--inputData PROJECT");
+  console.log(inputData, "<<--inputData PROJECT");
   // console.log(dynamicData, "<<--dynamicData");
   return (
     <div className={styles.form_container}>
@@ -1199,6 +1201,58 @@ export default function FormAddProject({ setIsModalOpen }) {
                   className={styles.form__label}
                 >
                   Строительный объем, м3
+                </label>
+              </div>
+              <div className={`${styles.form__group} ${styles.field}`}>
+                <input
+                  type="text"
+                  className={styles.form__field}
+                  placeholder="numberOfLanes"
+                  name="numberOfLanes"
+                  id="numberOfLanes"
+                  value={inputData.numberOfLanes}
+                  onChange={(event) =>
+                    changeHandler(
+                      event,
+                      inputData,
+                      setInputData,
+                      setPreviewPhotos,
+                      setIsDropPhotoVisible,
+                      setPreviewPhotoAva,
+                      setIsPhotoAvaVisible,
+                      setPreviewPhotoOpen,
+                      setIsPhotoOpenVisible
+                    )
+                  }
+                />
+                <label htmlFor="numberOfLanes" className={styles.form__label}>
+                  Количество полос
+                </label>
+              </div>
+              <div className={`${styles.form__group} ${styles.field}`}>
+                <input
+                  type="text"
+                  className={styles.form__field}
+                  placeholder="long"
+                  name="long"
+                  id="long"
+                  value={inputData.long}
+                  onChange={(event) =>
+                    changeHandler(
+                      event,
+                      inputData,
+                      setInputData,
+                      setPreviewPhotos,
+                      setIsDropPhotoVisible,
+                      setPreviewPhotoAva,
+                      setIsPhotoAvaVisible,
+                      setPreviewPhotoOpen,
+                      setIsPhotoOpenVisible
+                    )
+                  }
+                />
+                <label htmlFor="long" className={styles.form__label}>
+                  Длинна, км
                 </label>
               </div>
             </div>

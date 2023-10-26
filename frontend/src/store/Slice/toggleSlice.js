@@ -97,7 +97,7 @@ const toggleSlice = createSlice({
   reducers: {},
   extraReducers: {
     [updateToggleStateAsync.pending]: (state, action) => {
-      console.log("Starting API request to update toggle");
+      // console.log("Starting API request to update toggle");
     },
     [updateToggleStateAsync.fulfilled]: (state, action) => {
       state.isActiveForButton1 = !state.isActiveForButton1;
@@ -105,7 +105,7 @@ const toggleSlice = createSlice({
     },
     [updateToggleStateAsync.rejected]: (state, action) => {
       state.error = action.payload?.message || "An unknown error occurred";
-      console.error("Error updating toggle:", state.error);
+      // console.error("Error updating toggle:", state.error);
     },
     [fetchToggleStateAsync.fulfilled]: (state, action) => {
       state.isActiveForButton1 = action.payload;
@@ -114,25 +114,25 @@ const toggleSlice = createSlice({
     [fetchToggleStateAsync.rejected]: (state, action) => {
       if (action.payload && action.payload.message) {
         state.error = action.payload?.message;
-        console.error("Error fetching toggle state:", action.payload.message);
+        // console.error("Error fetching toggle state:", action.payload.message);
       } else {
         state.error = "Unknown error occurred.";
-        console.error("Unknown error occurred during toggle state fetch.");
+        // console.error("Unknown error occurred during toggle state fetch.");
       }
     },
     [updateToggleStateForButton2Async.pending]: (state, action) => {
-      console.log("Starting API request to update toggle for button 2");
+      // console.log("Starting API request to update toggle for button 2");
     },
     [updateToggleStateForButton2Async.fulfilled]: (state, action) => {
       state.isActiveForButton2 = !state.isActiveForButton2;
-      console.log("Successfully updated toggle for button 2 in state");
+      // console.log("Successfully updated toggle for button 2 in state");
     },
     [updateToggleStateForButton2Async.rejected]: (state, action) => {
       state.error = action.payload?.message || "An unknown error occurred";
-      console.error(
-        "Error updating toggle for button 2:",
-        action.payload?.message
-      );
+      // console.error(
+      //   "Error updating toggle for button 2:",
+      //   action.payload?.message
+      // );
     },
     [fetchToggleStateForButton2Async.fulfilled]: (state, action) => {
       state.isActiveForButton2 = action.payload;
@@ -146,15 +146,15 @@ const toggleSlice = createSlice({
       );
     },
     [updateToggleStateForButton3Async.pending]: (state, action) => {
-      console.log("Starting API request to update toggle for button 3");
+      // console.log("Starting API request to update toggle for button 3");
     },
     [updateToggleStateForButton3Async.fulfilled]: (state, action) => {
       state.isActiveForButton3 = !state.isActiveForButton3;
-      console.log("Successfully updated toggle for button 3 in state");
+      // console.log("Successfully updated toggle for button 3 in state");
     },
     [updateToggleStateForButton3Async.rejected]: (state, action) => {
       state.error = action.payload?.message || "Unknown error occurred";
-      console.error("Error updating toggle for button 3:", state.error);
+      // console.error("Error updating toggle for button 3:", state.error);
     },
     [fetchToggleStateForButton3Async.fulfilled]: (state, action) => {
       state.isActiveForButton3 = action.payload;
@@ -162,7 +162,7 @@ const toggleSlice = createSlice({
     },
     [fetchToggleStateForButton3Async.rejected]: (state, action) => {
       state.error = action.payload?.message || "Unknown error occurred";
-      console.error("Error fetching toggle state for button 3:", state.error);
+      // console.error("Error fetching toggle state for button 3:", state.error);
     },
   },
 });
