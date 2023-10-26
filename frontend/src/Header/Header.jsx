@@ -29,6 +29,7 @@ import notDataPhoto from "./img/notData.png";
 // import photoTest from "./img/project_right3.jpg";
 import { textEnter, textLeave, imageHover } from "../store/Slice/cursorSlice";
 import { searchArticleRightGet } from "../store/Slice/searchArticlePublicRightSlice";
+import BlockHeaderMain from "../UI/BlockHeader/BlockHeaderMain";
 
 SwiperCore.use([Navigation]);
 const Host = process.env.REACT_APP_SERVER_HOST;
@@ -470,6 +471,13 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
             ></img>
           </div>
           <BlockHeader />
+          {/* <div className={styles.block_header_maim_wrapper}
+          id="blockHeaderMain"
+           onMouseEnter={handleMouseEnter}
+           onMouseLeave={handleMouseLeave}
+          >
+            <BlockHeaderMain/>
+          </div> */}
           <Mapbox3D />
         </div>
         <div className={styles.sliderMobile_container}>
