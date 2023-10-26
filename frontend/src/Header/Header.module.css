@@ -352,6 +352,7 @@ svg path {
 тут можно покрасить плюсик иконки  
 } */
 
+
 .names_contents {
   display: flex;
   float: right;
@@ -376,6 +377,14 @@ svg path {
   line-height: 64px;
   margin-right: 16px;
 }
+
+.block_header_maim_wrapper {
+  display: block;
+  max-width: 100vw;
+  width: 100%;
+  /* z-index: 3; */
+}
+
 
 /* .icon_partner {
   display: flex;
