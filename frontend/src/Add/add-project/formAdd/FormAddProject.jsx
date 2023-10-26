@@ -51,6 +51,20 @@ export default function FormAddProject({ setIsModalOpen }) {
   const [selectedRadio, setSelectedRadio] = useState("28,28");
   const [isFocused, setIsFocused] = useState(false);
 
+  const countFilledInputs = () => {
+    const inputsToCheck = [
+      "totalArea",
+      "siteArea",
+      "floors",
+      "altitude",
+      "constructionVolume",
+      "numberOfLanes",
+      "long",
+    ];
+    return inputsToCheck.filter((input) => inputData[input]).length;
+  };
+
+
   // << ==== КОНСТУКТОР ==== >>
   // состояние для хранения текущего значения инпута
   const [inputValue, setInputValue] = useState("");
@@ -1090,8 +1104,16 @@ export default function FormAddProject({ setIsModalOpen }) {
                       setIsPhotoOpenVisible
                     )
                   }
+                  disabled={countFilledInputs() >= 3 && !inputData.totalArea}
                 />
-                <label htmlFor="totalArea" className={styles.form__label}>
+                <label
+                  htmlFor="totalArea"
+                  className={`${styles.form__label} ${
+                    countFilledInputs() >= 3 && !inputData.totalArea
+                      ? styles.disabledLabel
+                      : ""
+                  }`}
+                >
                   Общая площадь, м²
                 </label>
               </div>
@@ -1116,8 +1138,16 @@ export default function FormAddProject({ setIsModalOpen }) {
                       setIsPhotoOpenVisible
                     )
                   }
+                  disabled={countFilledInputs() >= 3 && !inputData.siteArea}
                 />
-                <label htmlFor="siteArea" className={styles.form__label}>
+                <label
+                  htmlFor="siteArea"
+                  className={`${styles.form__label} ${
+                    countFilledInputs() >= 3 && !inputData.siteArea
+                      ? styles.disabledLabel
+                      : ""
+                  }`}
+                >
                   Площадь участка, га
                 </label>
               </div>
@@ -1143,8 +1173,16 @@ export default function FormAddProject({ setIsModalOpen }) {
                       setIsPhotoOpenVisible
                     )
                   }
+                  disabled={countFilledInputs() >= 3 && !inputData.floors}
                 />
-                <label htmlFor="floors" className={styles.form__label}>
+                <label
+                  htmlFor="floors"
+                  className={`${styles.form__label} ${
+                    countFilledInputs() >= 3 && !inputData.floors
+                      ? styles.disabledLabel
+                      : ""
+                  }`}
+                >
                   Этажность
                 </label>
               </div>
@@ -1169,8 +1207,16 @@ export default function FormAddProject({ setIsModalOpen }) {
                       setIsPhotoOpenVisible
                     )
                   }
+                  disabled={countFilledInputs() >= 3 && !inputData.altitude}
                 />
-                <label htmlFor="altitude" className={styles.form__label}>
+                <label
+                  htmlFor="altitude"
+                  className={`${styles.form__label} ${
+                    countFilledInputs() >= 3 && !inputData.altitude
+                      ? styles.disabledLabel
+                      : ""
+                  }`}
+                >
                   Высотность, м
                 </label>
               </div>
@@ -1195,10 +1241,17 @@ export default function FormAddProject({ setIsModalOpen }) {
                       setIsPhotoOpenVisible
                     )
                   }
+                  disabled={
+                    countFilledInputs() >= 3 && !inputData.constructionVolume
+                  }
                 />
                 <label
                   htmlFor="constructionVolume"
-                  className={styles.form__label}
+                  className={`${styles.form__label} ${
+                    countFilledInputs() >= 3 && !inputData.constructionVolume
+                      ? styles.disabledLabel
+                      : ""
+                  }`}
                 >
                   Строительный объем, м3
                 </label>
@@ -1224,8 +1277,18 @@ export default function FormAddProject({ setIsModalOpen }) {
                       setIsPhotoOpenVisible
                     )
                   }
+                  disabled={
+                    countFilledInputs() >= 3 && !inputData.numberOfLanes
+                  }
                 />
-                <label htmlFor="numberOfLanes" className={styles.form__label}>
+                <label
+                  htmlFor="numberOfLanes"
+                  className={`${styles.form__label} ${
+                    countFilledInputs() >= 3 && !inputData.numberOfLanes
+                      ? styles.disabledLabel
+                      : ""
+                  }`}
+                >
                   Количество полос
                 </label>
               </div>
@@ -1250,8 +1313,16 @@ export default function FormAddProject({ setIsModalOpen }) {
                       setIsPhotoOpenVisible
                     )
                   }
+                  disabled={countFilledInputs() >= 3 && !inputData.long}
                 />
-                <label htmlFor="long" className={styles.form__label}>
+                <label
+                  htmlFor="long"
+                  className={`${styles.form__label} ${
+                    countFilledInputs() >= 3 && !inputData.long
+                      ? styles.disabledLabel
+                      : ""
+                  }`}
+                >
                   Длинна, км
                 </label>
               </div>
