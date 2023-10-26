@@ -9,11 +9,10 @@ module.exports = (sequelize, DataTypes) => {
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
-    static associate({ User, Constructor, NewTable }) {
+    static associate({ User, Constructor }) {
       // define association here
       this.belongsTo(User, { foreignKey: 'authorId' });
       this.hasMany(Constructor, { foreignKey: 'idBlock' });
-      this.hasMany(NewTable, { foreignKey: 'projectId' });
     }
   }
   Project.init(
@@ -48,7 +47,8 @@ module.exports = (sequelize, DataTypes) => {
       authorId: DataTypes.INTEGER,
       style: DataTypes.STRING,
       geoData: DataTypes.TEXT,
-      test: DataTypes.STRING,
+      numberOfLanes: DataTypes.STRING,
+      long: DataTypes.STRING,
     },
     {
       sequelize,
