@@ -431,6 +431,21 @@
     color: var(--light-gray-C0C5CB);
 }
 
+.measurement {
+    position: absolute;
+    right: 10px;
+    top: 65%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    font-family: Raleway;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+    color: var(--gray-959DA6);
+
+}
+
 .form__label {
     position: absolute;
     top: 20px;
