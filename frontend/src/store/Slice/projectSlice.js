@@ -127,14 +127,14 @@ export const fetchProject =
     axios.post(`${serverHost}/api-project/postzapros`, formData).then(() => {
       dispatch(getFetchForm());
     });
-    console.log(formattedData, "<<<---REDUX");
+    // console.log(formattedData, "<<<---REDUX");
   };
 
 export const getFetchForm = () => async (dispatch) => {
   dispatch(fetchProjectStart());
 
   try {
-    const response = await axios.get(`${serverHost}/api-project/getzapros`);
+    const response = await axios.get(`${serverHost}/api-project/getzapros`, { timeout: 10000 });
 
     dispatch(fetchProjectSuccess(response.data));
   } catch (error) {

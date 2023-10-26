@@ -16,8 +16,8 @@ const arrowStyles = {
 const PrevArrow = (props) => (
   <div onClick={props.onClick} style={{ ...arrowStyles, left: "1.5rem" }}>
     <svg
-      width="32"
-      height="32"
+      width="42"
+      height="42"
       viewBox="0 0 32 32"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
@@ -133,6 +133,7 @@ export default function ConstructorBlockRenderer({ block }) {
           className={styles.containerImageToDescription__img}
           src={`${Host}/images/imageAdd/${imageUrl}`}
           alt="Описание"
+          loading="lazy"
         />
         <div className={styles.containerImageToDescription__text}>
           {description}
@@ -168,12 +169,14 @@ export default function ConstructorBlockRenderer({ block }) {
             key={index}
             src={`${Host}/images/imageAdd/${img}`}
             alt="Horizontal_image"
+            loading="lazy"
           />
         ))}
         <img
           className={styles.verticalImage}
           src={`${Host}/images/imageAdd/${images[2]}`}
           alt="Vertical_image"
+          loading="lazy"
         />
       </div>
     );
@@ -191,6 +194,7 @@ export default function ConstructorBlockRenderer({ block }) {
             key={index}
             src={`${Host}/images/imageAdd/${el}`}
             alt="img_two"
+            loading="lazy"
           />
         ))}
       </div>
@@ -209,7 +213,7 @@ export default function ConstructorBlockRenderer({ block }) {
       width: "100%",
       height: "810px",
       objectFit: "cover",
-      borderRadius: "10px",
+      borderRadius: "16px",
     };
 
     if (window.innerWidth <= 768) {
@@ -217,14 +221,14 @@ export default function ConstructorBlockRenderer({ block }) {
         width: "100%",
         height: "22.6rem",
         objectFit: "cover",
-        borderRadius: "10px",
+        borderRadius: "16px",
       };
     } else if (window.innerWidth >= 768 && window.innerWidth <= 1024) {
       sliderImageStyle = {
         width: "100%",
         height: "29rem",
         objectFit: "cover",
-        borderRadius: "10px",
+        borderRadius: "16px",
       };
     }
 
@@ -244,12 +248,6 @@ export default function ConstructorBlockRenderer({ block }) {
       height: "4px",
       backgroundColor: "#EBECEE",
       zIndex: "0",
-    };
-
-    const styleSVG = {
-      height: "50px",
-      width: "40px",
-      maxWidth: "100%", // Чтобы сохранить пропорции
     };
 
     // Настройки слайдера
@@ -290,6 +288,7 @@ export default function ConstructorBlockRenderer({ block }) {
                 style={sliderImageStyle}
                 src={`${Host}/images/imageAdd/${img}`}
                 alt="Slider_image"
+                loading="lazy"
               />
             </div>
           ))}
@@ -300,11 +299,21 @@ export default function ConstructorBlockRenderer({ block }) {
 
   const renderVideoBlock = (block) => {
     const videoPath = block[0]?.value.join("");
+
+    const videoStyle = {
+      WebkitAppearance: "none",
+      appearance: "none",
+     border: "none",
+      opacity: 1, 
+      outline: "none",
+      controls: "controls",
+    };
+
     return (
       <div
-        className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockSix}`}
+      className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockSix}`}
       >
-        <video playsInline muted loop controls className={styles.block_video}>
+       <video playsInline muted loop controls className={styles.block_video} style={videoStyle}>
           <source
             src={`${Host}/images/imageAdd/${videoPath}`}
             type="video/mp4"

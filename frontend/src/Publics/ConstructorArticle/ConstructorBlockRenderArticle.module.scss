@@ -533,7 +533,7 @@
 
     .containerImageToDescription {
         padding-top: 0.5rem;
-        padding-bottom: 2.13rem;
+        padding-bottom: 40px;
         // padding-left: 1rem;
         // padding-right: 1rem;
     }
@@ -542,9 +542,7 @@
         display: flex;
         flex-direction: column;
         gap: 1.5rem;
-        padding-bottom: 2.5rem;
-        padding-left: 1vw;
-        padding-right: 1vw;
+        padding: 0px 1vw 2.5rem 1vw;
    
         
         &__heading {
@@ -691,13 +689,14 @@
         padding-top: 0;
      }
 
-    
-    .text_framed {
-        padding-right: 0;
+     .text_framed {
+        margin-bottom: 40px;
         padding-left: 0;
-     }
+        padding-right: 0;
+    
+    }
 
-     .note_block {
+      .note_block {
         display: flex;
         gap: 1rem;
         word-wrap: break-word;
@@ -727,13 +726,13 @@
     // <<< ====== стили для слайдера с картинками =) ====== >>>
 
     .slider_container {
-        padding-bottom: 2.75rem;
+        padding-bottom: 56px;
         padding-left: 0rem;
         padding-right: 0rem;
         width: 100%;
     }
 
     .custom_slider {
-        padding-right: 10px;
+        padding-right: 0px;
     }
 }

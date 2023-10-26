@@ -35,8 +35,7 @@
     }
     .swiper_container_item_projects {
       height: 100%;
-      padding-left: 1rem;
-      margin-right: 0rem; 
+      padding-left: 0rem;
     }
 
     /* .swiper_pagination_ProjectCard {
