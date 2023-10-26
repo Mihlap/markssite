@@ -30,7 +30,7 @@ export default function SwiperContainer({ article1, article2 }) {
        loop={true}
        slidesPerView={1.1}
        spaceBetween={0}
-       effect={"fade"}
+      //  effect={"fade"}
        touch="true"
         className="swiper_container_articles"
         onSlideChange={(swiper) => setCurrentIndexContainer(swiper.realIndex)}
