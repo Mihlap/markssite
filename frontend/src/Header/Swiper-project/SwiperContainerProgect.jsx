@@ -43,10 +43,16 @@ const MapProject = NewProject.map((el) =>
   return (
     <div className="swiper_container">
       <Swiper
-        loop={true}
+        loop={false}
         slidesPerView={1.1}
+<<<<<<< HEAD
         spaceBetween={0}
         effect="fade"
+=======
+     spaceBetween={-2}
+     centeredSlides={true}
+        // effect={"fade"}
+>>>>>>> 4b972538591361633f14f35880c95e1afb25f262
         touch="true"
         className="swiper_container_project"
         onSlideChange={(swiper) => setCurrentIndex(swiper.realIndex)}
