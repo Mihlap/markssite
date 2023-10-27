@@ -32,7 +32,7 @@ const CompanySubscriptionForm = () => {
     setValue(email);
     setIsValid(isValid);
     setShowError(false);
-  }
+}
 
   const handleSubmit = async (event) => {
     event.preventDefault();
