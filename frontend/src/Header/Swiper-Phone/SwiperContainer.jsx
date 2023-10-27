@@ -30,12 +30,8 @@ export default function SwiperContainer({ article1, article2 }) {
       <Swiper
        loop={false}
        slidesPerView={1.1}
-<<<<<<< HEAD
-       spaceBetween={0}
-=======
      spaceBetween={-2}
      centeredSlides={true}
->>>>>>> 4b972538591361633f14f35880c95e1afb25f262
       //  effect={"fade"}
        touch="true"
         className="swiper_container_articles"

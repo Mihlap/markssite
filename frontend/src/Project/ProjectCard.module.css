@@ -906,15 +906,15 @@
     font-size: 1.5rem;
     line-height: 2rem;
     padding-bottom: 1.87rem;
-    padding-left: 1rem;
+    padding-left: 1.75rem;
     padding-top: 2.5rem;
   }
 
   .main_project_projectCard {
     position: relative;
     width: 100%;
-    padding-right: 1.75vw;
-    padding-left: 1.75vw;
+    padding-right: 0vw;
+    padding-left: 0vw;
     padding-bottom: 3rem;
     overflow: hidden;
   }
