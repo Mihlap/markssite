@@ -1,6 +1,5 @@
 @import '../../App.css';
 
-
 @media screen and (max-width: 767px) {
     .swiper_container_ProjectCard {
     display: flex;

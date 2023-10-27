@@ -58,6 +58,7 @@ const ArticleCard = () => {
     quoteBlockLeft: useRef(null),
     quoteBlockRight: useRef(null),
     blockRightPhone: useRef(null),
+    constructorBlock: useRef(null),
     // leftImg1: useRef(null),
     // leftImg2: useRef(null),
     // leftImg3: useRef(null),
@@ -78,6 +79,7 @@ const ArticleCard = () => {
     imageToDescriptionArticle,
     imageClose,
     address_imageClose,
+    constructorBlock,
     // blockRightPhone,
     // leftImg1,
     // leftImg2,
@@ -97,6 +99,7 @@ const ArticleCard = () => {
     address_imageClose.current,
     blockLeft.current,
     blockRight.current,
+    constructorBlock.current,
     // leftImg1.current,
     // leftImg2.current,
     // leftImg3.current,
@@ -326,7 +329,7 @@ const ArticleCard = () => {
               </div>
             </div>
 
-            <div className={styles.div_conteiner}>
+            <div className={styles.div_conteiner} ref={refs.constructorBlock}>
               {userSelectedBlocks?.map((innerBlocks, outerIndex) => (
                 <div key={outerIndex}>
                   {innerBlocks?.map((block, innerIndex) => (

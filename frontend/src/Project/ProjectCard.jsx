@@ -56,6 +56,7 @@ const ProjectCard = () => {
     leftImg2: useRef(null),
     leftImg3: useRef(null),
     leftImg4: useRef(null),
+    constructorBlock: useRef(null),
   };
 
   const {
@@ -70,6 +71,7 @@ const ProjectCard = () => {
     leftImg2,
     leftImg3,
     leftImg4,
+    constructorBlock,
   } = refs;
 
   const elementsRight = [
@@ -81,6 +83,7 @@ const ProjectCard = () => {
     leftImg2.current,
     leftImg3.current,
     leftImg4.current,
+    constructorBlock.current,
   ];
 
   useEffect(() => {
@@ -572,7 +575,7 @@ const ProjectCard = () => {
                     alt=""
                   />
                 </div> */}
-                <div className={styles.div_conteiner}>
+                <div className={styles.div_conteiner}  ref={refs.constructorBlock}>
                   {userSelectedBlocks?.map((innerBlocks, outerIndex) => (
                     <div key={outerIndex}>
                       {innerBlocks?.map((block, innerIndex) => (
@@ -662,9 +665,9 @@ const ProjectCard = () => {
           </div>
         )}
         <div className={styles.project_name_text}>Ещё по теме</div>
-        <div className={styles.swiper_progect_container}>
+        {/* <div className={styles.swiper_progect_container}> */}
           {/* <SwiperContainerProgect projects={projects} /> */}
-        </div>
+        {/* </div> */}
         <div className={styles.main_project_projectCard}>
           <Swiper
             className={styles.slider_card_container_project_projectCard}

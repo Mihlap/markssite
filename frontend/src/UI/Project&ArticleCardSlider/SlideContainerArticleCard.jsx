@@ -29,7 +29,7 @@ const SliderContainerArticleCard = ({ articles }) => {
       <Swiper
      loop={false}
      slidesPerView={1.1}
-     spaceBetween={0}
+     spaceBetween={-2}
      centeredSlides={true}
      touch="true"
         className="swiper_container_project_ProjectCard"

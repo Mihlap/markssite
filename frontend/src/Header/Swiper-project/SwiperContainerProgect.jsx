@@ -45,14 +45,9 @@ const MapProject = NewProject.map((el) =>
       <Swiper
         loop={false}
         slidesPerView={1.1}
-<<<<<<< HEAD
-        spaceBetween={0}
-        effect="fade"
-=======
      spaceBetween={-2}
      centeredSlides={true}
         // effect={"fade"}
->>>>>>> 4b972538591361633f14f35880c95e1afb25f262
         touch="true"
         className="swiper_container_project"
         onSlideChange={(swiper) => setCurrentIndex(swiper.realIndex)}
