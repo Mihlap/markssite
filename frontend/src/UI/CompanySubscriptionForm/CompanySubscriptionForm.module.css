@@ -147,16 +147,15 @@ border-radius: 16px;
   color: var(--gray-959DA6);
 }
 
-.button_hover11:disabled {
+/* .button_hover11:disabled {
   background-color: var(--light-light-gray-EBECEE);
   pointer-events: none;
-}
+} */
 
 .button_hover11:disabled:hover {
   background-color: var(--light-light-gray-EBECEE);
   cursor: default;
-  /* cursor: not-allowed; */
-}
+ }
 
 
 
