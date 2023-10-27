@@ -343,11 +343,12 @@
     display: none;
    }
    .menu_button_group_articles1 {
-    padding-left: 1.67rem;
+    padding-left: 0rem;
    }
    .my_swiper3_button_group_article {
     display: flex;
     padding-top: 1.5rem;
+    padding-left: 1.67rem;
     bottom: 0rem;
     left: 0rem;
     width: 100%;

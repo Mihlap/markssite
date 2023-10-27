@@ -452,7 +452,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
             )}
           </div>
           <div className={styles.names_contents}>
-            <div className={styles.name_11}>+11</div>
+            <div className={styles.name_11}>+8</div>
             <div
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}

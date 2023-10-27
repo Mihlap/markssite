@@ -1309,13 +1309,18 @@ bottom: 3.38rem;
   .my_swiper_button_group {
     display: flex;
     bottom: 0rem;
-    left: 0.5rem;
-    width: 94%;
+    left: 0rem;
+    width: 100%;
    }
 
-  .button_hover {
-    margin-right: 0.5rem;
-    background: transparent;
+   .button_group {
+
+   }
+
+   .button_hover {
+    margin-left: 1rem;
+    margin-right: -0.5rem;
+     background: transparent;
     border-radius: 34px;
     border: 1px solid var(--black-1D2E43);
     text-align: center;

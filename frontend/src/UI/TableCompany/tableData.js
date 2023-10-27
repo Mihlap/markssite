@@ -27,7 +27,7 @@ const tableData = [
     title: "European Property Awards",
     nomination: "Лучшая архитектура, Лучшее ландшафтное благоустройство, Лучший интерьер",
     prize: "Победитель",
-    year: "/_2021-2022/",
+    year: "/_2022/",
    },
    {
     title: "Стекло в архитектуре",
