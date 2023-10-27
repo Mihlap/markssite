@@ -115,7 +115,7 @@ export default function App() {
             </CSSTransition>
           </TransitionGroup>
           {showNavbarFooter && currentPage !== "add" && <Footer />}
-          {/* {showNavbarFooter && currentPage !== "add" && <CustomCursor />} */}
+          {showNavbarFooter && currentPage !== "add" && <CustomCursor />}
         </>
       )}
     </HelmetProvider>
