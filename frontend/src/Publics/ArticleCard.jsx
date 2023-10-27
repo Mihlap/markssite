@@ -328,8 +328,7 @@ const ArticleCard = () => {
                 </div>
               </div>
             </div>
-
-            <div className={styles.div_conteiner} ref={refs.constructorBlock}>
+           <div className={styles.div_conteiner} ref={refs.constructorBlock}>
               {userSelectedBlocks?.map((innerBlocks, outerIndex) => (
                 <div key={outerIndex}>
                   {innerBlocks?.map((block, innerIndex) => (
