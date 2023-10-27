@@ -158,10 +158,10 @@
   color: var(--gray-959DA6);
 }
 
-.button_hover10:disabled {
+/* .button_hover10:disabled {
   background-color: var(--light-light-gray-EBECEE);
   pointer-events: none;
-}
+} */
 
 .button_hover10:disabled:hover {
   background-color: var(--light-light-gray-EBECEE);

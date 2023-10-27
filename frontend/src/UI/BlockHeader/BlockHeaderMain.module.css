@@ -1,24 +1,93 @@
 @import "../../App.css";
 
-/* Стили для блока */
-.block {
+
+.block_blockHeader {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   width: 100%;
-  border: 1px solid #ccc;
-  padding: 20px;
 }
 
-/* Стили для иконки */
-.toggle {
+.blockNumber_blockHeader {
+  display: flex;
+  color: var(--dark-gray-566272);
+  font-family: var(--font-unbounded);
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: var(--fw-300);
+  line-height: 2rem;
+  padding: 0.5rem 2.81rem 0rem 2.81rem;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.line_blockHeader {
+  position: absolute;
+  left: 2.81rem;
+  right: 2.81rem;
+  margin-top: 0.5rem;
+  border-top: 1px solid var(--light-light-gray-EBECEE);
+  backdrop-filter: blur(4.5px);
+}
+
+
+.toggle_blockHeader {
+  display: flex;
   cursor: pointer;
-  margin-bottom: 5px;
   margin-left: auto;
+  margin-right: 2.44rem;
+  padding-top: 2.06rem;
 }
 
-/* Стили для содержимого блока */
-.content {
-  padding: 10px;
-  background-color: #f9f9f9;
+.blockTitle_blockHeader {
+  display: flex;
+  align-items: center;
+  padding: 2.06rem 2.81rem 2.13rem 2.81rem;
+  color: var(--black-3C3C3C);
+  font-family: var(--font-unbounded);
+  font-size: 2rem;
+  font-style: normal;
+  font-weight: var(--fw-300);
+  line-height: 2.5rem;
 }
+
+
+.content_blockHeader {
+  position: absolute;
+  left: 40vw;
+  color: var(--dark-gray-566272);
+  font-variant-numeric: lining-nums proportional-nums;
+  font-family: var(--font-raleway);
+  font-size: 1.25rem;
+  font-style: normal;
+  font-weight: var(--fw-400);
+  line-height: 1.75rem;
+  margin-top: 3.75rem;
+  max-width: 31rem;
+  width: 100%;
+}
+.contentOpen_blockHeader {
+  animation: slideOut 1s ease;
+}
+.content_blockHeader, .contentOpen_blockHeader {
+  animation-fill-mode: forwards;
+}
+@keyframes slideOut {
+  0% {
+    transform: translateX(0);
+    
+    animation-timing-function: cubic-bezier(0.0, 0.0, 0.2, 1);
+  }
+  100% {
+    transform: translateX(60rem);
+    animation-timing-function: cubic-bezier(0.4, 0.0, 2, 1);
+  }
+}
+@keyframes slideIn {
+  0% {
+    transform: translateX(0rem);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
