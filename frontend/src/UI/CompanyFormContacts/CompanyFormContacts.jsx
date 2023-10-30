@@ -240,7 +240,7 @@ const CompanyFormContacts = () => {
            ${(!isValid || !value2 || !value1 || !value3 || !isConsentGiven) ? styles.disabled : ""}`}
            disabled={!isValid || !value2 || !value1 || !value3 || !isConsentGiven}
            >
-            <p className={styles.button_name1}>Отправить</p>
+            <div className={styles.button_name1}>Отправить</div>
           </button>
         </form>
       </div>
