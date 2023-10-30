@@ -130,8 +130,40 @@
   width: 145px;
   height: 56px;
   border: 1px solid var(--black-1D2E43);
-  border-radius: 66px;
+   border-radius: 66px;
   background-color: transparent !important;
+}
+
+.button_name1 {
+  font-family: var(--font-raleway);
+  font-style: normal;
+  font-weight: var(--fw-400);
+  font-size: 16px;
+  line-height: 24px;
+  color: var(--black-1D2E43);
+ }
+
+.form_left_wrapper:focus-within .button_hover10 {
+  background-color: var(--light-light-gray-EBECEE);
+  border: 1px solid var(--gray-959DA6);
+}
+
+.form_left_wrapper:focus-within .button_name1 {
+  color: var(--gray-959DA6);
+}
+
+.form_left_wrapper:has(.input_name_form_contacts:not(:placeholder-shown)) 
+                  :has(.input_tel_form_contacts:not(:placeholder-shown)) 
+                  :has(.input_task_form_contacts:not(:placeholder-shown)) 
+                  .button_hover10 {
+    border: 1px solid var(--black-1D2E43);
+}
+
+.form_left_wrapper:has(.input_name_form_contacts:not(:placeholder-shown)) 
+                  :has(.input_tel_form_contacts:not(:placeholder-shown)) 
+                  :has(.input_task_form_contacts:not(:placeholder-shown)) 
+                  .button_name1 {
+    color: var(--black-1D2E43);
 }
 
 
@@ -141,32 +173,16 @@
   border: 0px solid transparent;
 }
 
-.form_left_wrapper:focus-within .button_hover10 {
-  background-color: var(--light-light-gray-EBECEE);
-  border: 1px solid var(--gray-959DA6);
-}
-
-.button_name1 {
-  font-family: var(--font-raleway);
-  font-style: normal;
-  font-weight: var(--fw-400);
-  font-size: 16px;
-  line-height: 24px;
-}
-
-.form_left_wrapper:focus-within .button_name1 {
-  color: var(--gray-959DA6);
-}
 
 /* .button_hover10:disabled {
   background-color: var(--light-light-gray-EBECEE);
   pointer-events: none;
 } */
 
-.button_hover10:disabled:hover {
+/* .button_hover10:disabled:hover {
   background-color: var(--light-light-gray-EBECEE);
   cursor: default;
-}
+} */
 
 .agreement {
   font-family: var(--font-raleway);
