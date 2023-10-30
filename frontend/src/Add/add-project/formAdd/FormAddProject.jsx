@@ -575,7 +575,7 @@ export default function FormAddProject({ setIsModalOpen }) {
 
   // << ============ функции КОНСТРУКТОРА ============ >>
 
-  console.log(inputData, "<<--inputData PROJECT");
+  // console.log(inputData, "<<--inputData PROJECT");
   // console.log(dynamicData, "<<--dynamicData");
   return (
     <div className={styles.form_container}>
@@ -742,42 +742,38 @@ export default function FormAddProject({ setIsModalOpen }) {
                 value={selectedViewConstruction}
                 onChange={setSelectedViewConstruction}
                 options={[
-                  { value: "Автодорожные", label: "Автодорожные" },
                   {
-                    value: "Уникальные объекты",
-                    label: "Уникальные объекты",
-                  },
-                  { value: "Аэропорты", label: "Аэропорты" },
-                  {
-                    value: "Жилищное строительство",
-                    label: "Жилищное строительство",
-                  },
-                  { value: "Архитектура", label: "Архитектура" },
-                  {
-                    value: "Концепция",
-                    label: "Концепция",
+                    value: "Архитектура и концепция",
+                    label: "Архитектура и концепция",
                   },
                   {
-                    value: "Адаптация концепций",
-                    label: "Адаптация концепций",
+                    value: "Градостроительство и генплан",
+                    label: "Градостроительство и генплан",
                   },
-                  { value: "Дизайн-проекты", label: "Дизайн-проекты" },
                   {
-                    value: "Документация РП П",
-                    label: "Документация РП П",
+                    value: "Конструктив",
+                    label: "Конструктив",
                   },
-                  { value: "Инженерия", label: "Инженерия" },
                   {
-                    value: "Подземные сооружения",
-                    label: "Подземные сооружения",
+                    value: "Инженерия",
+                    label: "Инженерия",
                   },
-                  { value: "Линейные объекты", label: "Линейные объекты" },
-                  { value: "Конструктив", label: "Конструктив" },
                   {
-                    value: "Научно-техническое сопровождение",
-                    label: "Научно-техническое сопровождение",
+                    value: "Геотехника",
+                    label: "Геотехника",
                   },
-                  { value: "BIM", label: "BIM" },
+                  {
+                    value: "Наука",
+                    label: "Наука",
+                  },
+                  {
+                    value: "Специальные разделы",
+                    label: "Специальные разделы",
+                  },
+                  {
+                    value: "Цифровое проектирование",
+                    label: "Цифровое проектирование",
+                  },
                 ]}
                 className={styles.form__field}
                 placeholder="Выберите вид строительства"
