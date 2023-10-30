@@ -90,11 +90,11 @@
     animation-timing-function: cubic-bezier(0.0, 0.0, 0.2, 1);
   }
   70% {
-    transform: translateX(40vw);
+    transform: translateX(34vw);
     animation-timing-function: cubic-bezier(0.4, 0.0, 2, 1);
   }
   100% {
-    transform: translateX(38vw); /* Немного вернулся назад */
+    transform: translateX(32vw); /* Немного вернулся назад */
     animation-timing-function: cubic-bezier(0.4, 0.0, 2, 1);
   }
 }
