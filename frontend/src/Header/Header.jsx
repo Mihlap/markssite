@@ -470,14 +470,14 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
               alt=""
             ></img>
           </div>
-          <BlockHeader />
-          {/* <div className={styles.block_header_maim_wrapper}
+          {/* <BlockHeader /> */}
+          <div className={styles.block_header_maim_wrapper}
           id="blockHeaderMain"
            onMouseEnter={handleMouseEnter}
            onMouseLeave={handleMouseLeave}
           >
             <BlockHeaderMain/>
-          </div> */}
+          </div>
           <Mapbox3D />
         </div>
         <div className={styles.sliderMobile_container}>
