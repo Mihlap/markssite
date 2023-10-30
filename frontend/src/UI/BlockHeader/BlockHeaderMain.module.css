@@ -65,7 +65,7 @@
 
 .content_blockHeader {
   position: absolute;
-  left: 40vw;
+  left: 45vw;
   color: var(--dark-gray-566272);
   font-variant-numeric: lining-nums proportional-nums;
   font-family: var(--font-raleway);
