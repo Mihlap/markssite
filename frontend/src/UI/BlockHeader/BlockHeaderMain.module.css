@@ -1,10 +1,14 @@
 @import "../../App.css";
 
+.blockMainContainer {
+
+}
 
 .block_blockHeader {
   display: flex;
   align-items: center;
   width: 100%;
+  /* border: 1px solid black; */
 }
 
 .blockNumber_blockHeader {
@@ -31,11 +35,19 @@
 
 
 .toggle_blockHeader {
+ position: absolute;
+ right: 2.44rem;
+ cursor: pointer;
+}
+
+.blockTitleContentWrapper {
   display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.toggle_blockHeader {
   cursor: pointer;
-  margin-left: auto;
-  margin-right: 2.44rem;
-  padding-top: 2.06rem;
 }
 
 .blockTitle_blockHeader {
@@ -53,7 +65,7 @@
 
 .content_blockHeader {
   position: absolute;
-  left: 40vw;
+  left: 45vw;
   color: var(--dark-gray-566272);
   font-variant-numeric: lining-nums proportional-nums;
   font-family: var(--font-raleway);
@@ -61,9 +73,10 @@
   font-style: normal;
   font-weight: var(--fw-400);
   line-height: 1.75rem;
-  margin-top: 3.75rem;
-  max-width: 31rem;
+  margin-top: 2.06rem;
+  max-width: 20%;
   width: 100%;
+  padding-right: 3%;
 }
 .contentOpen_blockHeader {
   animation: slideOut 1s ease;
@@ -74,14 +87,18 @@
 @keyframes slideOut {
   0% {
     transform: translateX(0);
-    
     animation-timing-function: cubic-bezier(0.0, 0.0, 0.2, 1);
   }
+  70% {
+    transform: translateX(40vw);
+    animation-timing-function: cubic-bezier(0.4, 0.0, 2, 1);
+  }
   100% {
-    transform: translateX(60rem);
+    transform: translateX(38vw); /* Немного вернулся назад */
     animation-timing-function: cubic-bezier(0.4, 0.0, 2, 1);
   }
 }
+
 @keyframes slideIn {
   0% {
     transform: translateX(0rem);
@@ -91,3 +108,77 @@
   }
 }
 
+.blocksContainer {
+  display: flex;
+  width: 100%;
+  /* max-height: 100vh; */
+  padding: 0rem 20% 3.5rem 2.81rem;
+  flex-wrap: wrap;
+}
+
+.block_content_name_wrapper {
+  display: flex;
+  flex-direction: column;
+  width: calc(33.33% - 1.88rem);
+  margin-top: 3.44rem;
+}
+
+
+.block_name_content {
+  display: flex;
+  flex-direction: column;
+  padding-right: 4rem;
+}
+
+.blockName {
+  width: 70%;
+  color: var(--dark-gray-566272);
+  font-family: var(--font-unbounded);
+  font-size: 1.125rem;
+  font-style: normal;
+  font-weight: var(--fw-300);
+  line-height: 1.75rem;
+}
+
+.blockContent {
+  max-width: 20vw;
+  width: 100%;
+  color: var(--dark-gray-566272);
+  font-variant-numeric: lining-nums proportional-nums;
+  font-family: var(--font-raleway);
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: var(--fw-400);
+  line-height: 1.5rem;
+  padding-top: 0.5rem;
+}
+
+.button_block_wrapper {
+  position: absolute;
+  right: 5%;
+  padding-top: 4%;
+  text-align: center;
+  justify-content: center;
+}
+
+.button_block {
+  display: flex;
+  width: 11.4375rem;
+  height: 11.4375rem;
+  border: 1px solid var(--dark-gray-566272);
+  border-radius: 50%;
+
+}
+
+.button_block_name {
+  display: flex;
+  color: var(--dark-gray-566272);
+  font-variant-numeric: lining-nums proportional-nums;
+  font-family: var(--font-raleway);
+  font-size: 1.2rem;
+  font-style: normal;
+  font-weight: var(--fw-400);
+  line-height: 1.8rem;
+  align-items: center; 
+  transform: translateX(50%);
+}
