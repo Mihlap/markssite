@@ -26,7 +26,7 @@ import {
   MonthValueContainer,
   YearDropdownIndicator,
   YearValueContainer,
-} from "./utils/CustomSelectComponents";  // путь до вашего файла
+} from "./utils/CustomSelectComponents"; // путь до вашего файла
 
 import icon from "./img/Frame4684.svg";
 import ConstructorPage from "../constructor/ConstructorPage";
@@ -35,7 +35,8 @@ import { monthOptions, yearOptions } from "./utils/Time";
 export default function FormAddProject({ setIsModalOpen }) {
   const dispatch = useDispatch();
   const [selectedCompetencies, setSelectedCompetencies] = useState([]);
-  const [selectDegreeParticipation, setSelectDegreeParticipation] = useState("");
+  const [selectDegreeParticipation, setSelectDegreeParticipation] =
+    useState("");
   const [selectStatusObject, setSelectStatusObject] = useState("");
   const [selectedViewConstruction, setSelectedViewConstruction] = useState([]);
 
@@ -63,7 +64,6 @@ export default function FormAddProject({ setIsModalOpen }) {
     ];
     return inputsToCheck.filter((input) => inputData[input]).length;
   };
-
 
   // << ==== КОНСТУКТОР ==== >>
   // состояние для хранения текущего значения инпута
@@ -305,6 +305,13 @@ export default function FormAddProject({ setIsModalOpen }) {
             styles.verticalImage,
           ],
         };
+
+      case "Видеоролик":
+        return {
+          outerDiv: styles.videoPreview,
+          innerDiv: styles.videoInnerDiv,
+          videoStyles: styles.videoStyle, // этот стиль можно использовать для видеотега
+        };
       default:
         return "";
     }
@@ -379,7 +386,6 @@ export default function FormAddProject({ setIsModalOpen }) {
                 <div className={styles.form_container__checkbox_block}>
                   <div>{labelText}</div>
                 </div>
-                {/* <div style={{ display: isPhotoOpenVisible ? "block" : "none" }}> */}
                 <label
                   className={
                     styles.slider_container__customFileUploadOrangeColor
@@ -387,6 +393,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                 >
                   <input
                     type="file"
+                    accept="video/*" // Это будет принимать только видеофайлы
                     onChange={(e) => {
                       const filesArray = Array.from(e.target.files);
                       handleDynamicInputChange(
@@ -398,7 +405,6 @@ export default function FormAddProject({ setIsModalOpen }) {
                       const previewsArray = filesArray.map((file) =>
                         URL.createObjectURL(file)
                       );
-                      // console.log(previewsArray);
                       setDynamicPreviews((prev) => {
                         const newPreviews = [...prev];
                         if (!newPreviews[blockIndex]) {
@@ -416,6 +422,45 @@ export default function FormAddProject({ setIsModalOpen }) {
                     Загрузить видеоролик
                   </div>
                 </label>
+                {/* Добавляем блок превью видео ниже */}
+                {dynamicPreviews[blockIndex] &&
+                  dynamicPreviews[blockIndex][inputIndex] &&
+                  dynamicPreviews[blockIndex][inputIndex].map((src, index) => (
+                    <div
+                      key={`${blockIndex}-${inputIndex}-${index}`}
+                      className={classNames.innerDiv}
+                    >
+                      <div
+                        className={
+                          styles.preview_photos_container_block_constructor
+                        }
+                      >
+                        <video
+                          key={index}
+                          src={src}
+                          muted
+                          loop
+                          autoPlay
+                          className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
+                        />
+                        <div
+                          className={
+                            styles.preview_photos_container_block_constructor__remove_icon
+                          }
+                          onClick={(e) =>
+                            handleDeletePreview(
+                              e,
+                              blockIndex,
+                              inputIndex,
+                              index
+                            )
+                          }
+                        >
+                          <span></span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
               </div>
             ) : (
               // </div>
@@ -470,39 +515,41 @@ export default function FormAddProject({ setIsModalOpen }) {
                   {dynamicPreviews[blockIndex] &&
                     dynamicPreviews[blockIndex][inputIndex] &&
                     dynamicPreviews[blockIndex][inputIndex].map(
-                      (src, index) => (
-                        <div
-                          key={`${blockIndex}-${inputIndex}-${index}`}
-                          className={classNames.innerDiv}
-                        >
+                      (src, index) => {
+                        return (
                           <div
-                            className={
-                              styles.preview_photos_container_block_constructor
-                            }
+                            key={`${blockIndex}-${inputIndex}-${index}`}
+                            className={classNames.innerDiv}
                           >
-                            <img
-                              src={src}
-                              alt={`Preview ${index}`}
-                              className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
-                            />
                             <div
                               className={
-                                styles.preview_photos_container_block_constructor__remove_icon
-                              }
-                              onClick={(e) =>
-                                handleDeletePreview(
-                                  e,
-                                  blockIndex,
-                                  inputIndex,
-                                  index
-                                )
+                                styles.preview_photos_container_block_constructor
                               }
                             >
-                              <span></span>
+                              <img
+                                src={src}
+                                alt={`Preview ${index}`}
+                                className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
+                              />
+                              <div
+                                className={
+                                  styles.preview_photos_container_block_constructor__remove_icon
+                                }
+                                onClick={(e) =>
+                                  handleDeletePreview(
+                                    e,
+                                    blockIndex,
+                                    inputIndex,
+                                    index
+                                  )
+                                }
+                              >
+                                <span></span>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      )
+                        );
+                      }
                     )}
                 </div>
               </>

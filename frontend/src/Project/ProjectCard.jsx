@@ -232,7 +232,7 @@ const ProjectCard = () => {
     // const randomProjects = projects.slice().sort(() => Math.random() - 0.5).slice(0, 20);
 
 
-  //  console.log(project, "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww");
+   console.log(projects, " << --- projects");
   // console.log(userSelectedBlocks, "<<--- userSelectedBlocks");
 
   // console.log('Host:', Host);
