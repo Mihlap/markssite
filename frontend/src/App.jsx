@@ -16,7 +16,6 @@ import Footer from "./Footer/Footer";
 import Information from "./Information/Information";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import Loading from "./Loading/Loading";
-import WineParkArticles from "./articlesProject/WinePark/WineParkArticles";
 import Login from "./Login/Login";
 import Add from "./Add/Add";
 
@@ -89,10 +88,6 @@ export default function App() {
                 <Route path="/contacts" element={<Contacts />} />
                 <Route path="/portal" element={<Portal />} />
                 <Route path="*" element={<NotFound />} />
-                <Route
-                  path="/winepark-article"
-                  element={<WineParkArticles />}
-                />
                 <Route path="/login" element={<Login />} />
                 {isActive && <Route path="/signup" element={<SignUpPage />} />}
                 <Route path="/information" element={<Information />} />

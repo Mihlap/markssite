@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import Select, { components } from "react-select";
+import Select from "react-select";
 
 import { transliterate } from "transliteration";
 import styles from "./FormAddProject.module.scss";
@@ -26,7 +26,7 @@ import {
   MonthValueContainer,
   YearDropdownIndicator,
   YearValueContainer,
-} from "./utils/CustomSelectComponents";  // путь до вашего файла
+} from "./utils/CustomSelectComponents";
 
 import icon from "./img/Frame4684.svg";
 import ConstructorPage from "../constructor/ConstructorPage";
@@ -34,10 +34,14 @@ import { monthOptions, yearOptions } from "./utils/Time";
 
 export default function FormAddProject({ setIsModalOpen }) {
   const dispatch = useDispatch();
+
   const [selectedCompetencies, setSelectedCompetencies] = useState([]);
-  const [selectDegreeParticipation, setSelectDegreeParticipation] = useState("");
-  const [selectStatusObject, setSelectStatusObject] = useState("");
   const [selectedViewConstruction, setSelectedViewConstruction] = useState([]);
+  const [selectDegreeParticipation, setSelectDegreeParticipation] =
+    useState("");
+  const [selectStatusObject, setSelectStatusObject] = useState("");
+  const [isFocused, setIsFocused] = useState(false);
+  // const [selectedRadio, setSelectedRadio] = useState("28,28");
 
   const [previewPhotos, setPreviewPhotos] = useState([]);
   const [previewPhotoAva, setPreviewPhotoAva] = useState([]);
@@ -48,32 +52,7 @@ export default function FormAddProject({ setIsModalOpen }) {
   const [isPhotoOpenVisible, setIsPhotoOpenVisible] = useState(true);
   const [isPhotoAvaVisible, setIsPhotoAvaVisible] = useState(true);
   const [isDropPhotoVisible, setIsDropPhotoVisible] = useState(true);
-  const [selectedRadio, setSelectedRadio] = useState("28,28");
-  const [isFocused, setIsFocused] = useState(false);
 
-  const countFilledInputs = () => {
-    const inputsToCheck = [
-      "totalArea",
-      "siteArea",
-      "floors",
-      "altitude",
-      "constructionVolume",
-      "numberOfLanes",
-      "long",
-    ];
-    return inputsToCheck.filter((input) => inputData[input]).length;
-  };
-
-
-  // << ==== КОНСТУКТОР ==== >>
-  // состояние для хранения текущего значения инпута
-  const [inputValue, setInputValue] = useState("");
-
-  const [onenConstructor, setOpenConstructor] = useState(false);
-  const [blocks, setBlocks] = useState([]);
-  const [dynamicPreviews, setDynamicPreviews] = useState([]);
-
-  const [dynamicData, setDynamicData] = useState([]);
   const [inputData, setInputData] = useState({
     title: "",
     selectCompetencies: [],
@@ -105,6 +84,27 @@ export default function FormAddProject({ setIsModalOpen }) {
     numberOfLanes: "",
     long: "",
   });
+
+  // << ==== useStates для конструктора ==== >>
+  const [inputValue, setInputValue] = useState("");
+
+  const [onenConstructor, setOpenConstructor] = useState(false);
+  const [blocks, setBlocks] = useState([]);
+  const [dynamicPreviews, setDynamicPreviews] = useState([]);
+  const [dynamicData, setDynamicData] = useState([]);
+
+  const countFilledInputs = () => {
+    const inputsToCheck = [
+      "totalArea",
+      "siteArea",
+      "floors",
+      "altitude",
+      "constructionVolume",
+      "numberOfLanes",
+      "long",
+    ];
+    return inputsToCheck.filter((input) => inputData[input]).length;
+  };
 
   // функция Удаление фото из массива превью
   // Удаление фото из массива превью
@@ -174,7 +174,7 @@ export default function FormAddProject({ setIsModalOpen }) {
       viewConstruction: selectedViewConstruction
         .map((option) => option.label)
         .join(","),
-      radioValue: selectedRadio,
+      // radioValue: selectedRadio,
       photoAva: inputData.photoAva,
       imageOpen: inputData.imageOpen,
     };
@@ -183,7 +183,7 @@ export default function FormAddProject({ setIsModalOpen }) {
     setSelectDegreeParticipation("");
     setSelectStatusObject("");
     setSelectedViewConstruction([]);
-    setSelectedRadio("");
+    // setSelectedRadio("");
     setPreviewPhotos([]);
     setDynamicData([]);
     setInputData({
@@ -223,7 +223,26 @@ export default function FormAddProject({ setIsModalOpen }) {
     setOpenConstructor(!onenConstructor);
   };
 
+  // функция которая не даёт создать новый диманический блок, пока не заполнены value предыдущего
+  const areAllBlocksFilled = () => {
+    for (let block of dynamicData) {
+      for (let input of block) {
+        if (!input.value || input.value === "") {
+          return false;
+        }
+      }
+    }
+    return true;
+  };
+  // функция которая срабатывает в случае если мы всё-таки пытаемся создать блок выдает ( алерт ), в случае успеза проходит в дальше и создаёт новый динамический блок
   const handleClick = (inputs) => {
+    if (!areAllBlocksFilled()) {
+      alert(
+        "Предже чем добавить новый блок, пожалуйста заполните предыдущий блок полностью❗"
+      );
+      return;
+    }
+
     const blockKey = Date.now().toString();
     const newInputs = inputs.map((input) => ({
       ...input,
@@ -231,8 +250,10 @@ export default function FormAddProject({ setIsModalOpen }) {
     }));
     setBlocks((prevState) => [...prevState, newInputs]);
     setDynamicData((prevDynamicData) => [...prevDynamicData, newInputs]);
+    //  handlerOpenConstructor();
   };
 
+  // обработчик динамических значений
   const handleDynamicInputChange = (blockIndex, inputIndex, value) => {
     const newDynamicData = [...dynamicData];
 
@@ -247,6 +268,8 @@ export default function FormAddProject({ setIsModalOpen }) {
         value: "",
       };
     }
+
+    // эта функция генерирует случайное число и присваивает его имени для того, чтоб было уникальное имя 
     function generateUniqueName(originalName) {
       const timestamp = Date.now();
       const randomNum = Math.floor(Math.random() * 10000);
@@ -277,6 +300,7 @@ export default function FormAddProject({ setIsModalOpen }) {
     setDynamicData(newDynamicData);
   };
 
+  // этот цикл сделан для присвоения разных стилей для одной конструкции превью
   const getPreviewClassName = (label) => {
     switch (label) {
       case "Картинка с описанием":
@@ -304,6 +328,13 @@ export default function FormAddProject({ setIsModalOpen }) {
             styles.horizontalImage2,
             styles.verticalImage,
           ],
+        };
+
+      case "Видеоролик":
+        return {
+          outerDiv: styles.videoPreview,
+          innerDiv: styles.videoInnerDiv,
+          videoStyles: styles.videoStyle, // этот стиль можно использовать для видеотега
         };
       default:
         return "";
@@ -379,7 +410,6 @@ export default function FormAddProject({ setIsModalOpen }) {
                 <div className={styles.form_container__checkbox_block}>
                   <div>{labelText}</div>
                 </div>
-                {/* <div style={{ display: isPhotoOpenVisible ? "block" : "none" }}> */}
                 <label
                   className={
                     styles.slider_container__customFileUploadOrangeColor
@@ -387,6 +417,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                 >
                   <input
                     type="file"
+                    accept="video/*" // Это будет принимать только видеофайлы
                     onChange={(e) => {
                       const filesArray = Array.from(e.target.files);
                       handleDynamicInputChange(
@@ -398,7 +429,6 @@ export default function FormAddProject({ setIsModalOpen }) {
                       const previewsArray = filesArray.map((file) =>
                         URL.createObjectURL(file)
                       );
-                      // console.log(previewsArray);
                       setDynamicPreviews((prev) => {
                         const newPreviews = [...prev];
                         if (!newPreviews[blockIndex]) {
@@ -416,9 +446,47 @@ export default function FormAddProject({ setIsModalOpen }) {
                     Загрузить видеоролик
                   </div>
                 </label>
+                {/* Добавляем блок превью видео ниже */}
+                {dynamicPreviews[blockIndex] &&
+                  dynamicPreviews[blockIndex][inputIndex] &&
+                  dynamicPreviews[blockIndex][inputIndex].map((src, index) => (
+                    <div
+                      key={`${blockIndex}-${inputIndex}-${index}`}
+                      className={classNames.innerDiv}
+                    >
+                      <div
+                        className={
+                          styles.preview_photos_container_block_constructor
+                        }
+                      >
+                        <video
+                          key={index}
+                          src={src}
+                          muted
+                          loop
+                          autoPlay
+                          className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
+                        />
+                        <div
+                          className={
+                            styles.preview_photos_container_block_constructor__remove_icon
+                          }
+                          onClick={(e) =>
+                            handleDeletePreview(
+                              e,
+                              blockIndex,
+                              inputIndex,
+                              index
+                            )
+                          }
+                        >
+                          <span></span>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
               </div>
             ) : (
-              // </div>
               <>
                 <div key={inputIndex}>
                   <div className={styles.form_container__checkbox_block}>
@@ -452,7 +520,6 @@ export default function FormAddProject({ setIsModalOpen }) {
                         });
                       }}
                       multiple
-                      style={{ display: isPhotoOpenVisible ? "block" : "none" }}
                     />
                     <div className={styles.slider_container__uploadIcon}>
                       <img src={icon} alt="icon" />
@@ -462,47 +529,47 @@ export default function FormAddProject({ setIsModalOpen }) {
                     </div>
                   </label>
                 </div>
-                {/* <label>{labelText}</label> */}
-
                 <div
                   className={`${styles.previewContainer} ${classNames.outerDiv}`}
                 >
                   {dynamicPreviews[blockIndex] &&
                     dynamicPreviews[blockIndex][inputIndex] &&
                     dynamicPreviews[blockIndex][inputIndex].map(
-                      (src, index) => (
-                        <div
-                          key={`${blockIndex}-${inputIndex}-${index}`}
-                          className={classNames.innerDiv}
-                        >
+                      (src, index) => {
+                        return (
                           <div
-                            className={
-                              styles.preview_photos_container_block_constructor
-                            }
+                            key={`${blockIndex}-${inputIndex}-${index}`}
+                            className={classNames.innerDiv}
                           >
-                            <img
-                              src={src}
-                              alt={`Preview ${index}`}
-                              className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
-                            />
                             <div
                               className={
-                                styles.preview_photos_container_block_constructor__remove_icon
-                              }
-                              onClick={(e) =>
-                                handleDeletePreview(
-                                  e,
-                                  blockIndex,
-                                  inputIndex,
-                                  index
-                                )
+                                styles.preview_photos_container_block_constructor
                               }
                             >
-                              <span></span>
+                              <img
+                                src={src}
+                                alt={`Preview ${index}`}
+                                className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
+                              />
+                              <div
+                                className={
+                                  styles.preview_photos_container_block_constructor__remove_icon
+                                }
+                                onClick={(e) =>
+                                  handleDeletePreview(
+                                    e,
+                                    blockIndex,
+                                    inputIndex,
+                                    index
+                                  )
+                                }
+                              >
+                                <span></span>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                      )
+                        );
+                      }
                     )}
                 </div>
               </>
@@ -707,33 +774,6 @@ export default function FormAddProject({ setIsModalOpen }) {
                 />
               </div>
             </div>
-            {/* <div className={`${styles.form__group} ${styles.field}`}>
-              <input
-                type="input"
-                className={styles.form__field}
-                placeholder="monthYear"
-                name="monthYear"
-                id="monthYear"
-                value={inputData.monthYear}
-                onChange={(event) =>
-                  changeHandler(
-                    event,
-                    inputData,
-                    setInputData,
-                    setPreviewPhotos,
-                    setIsDropPhotoVisible,
-                    setPreviewPhotoAva,
-                    setIsPhotoAvaVisible,
-                    setPreviewPhotoOpen,
-                    setIsPhotoOpenVisible
-                  )
-                }
-                required
-              />
-              <label htmlFor="monthYear" className={styles.form__label}>
-                Месяц, год
-              </label>
-            </div> */}
             <div className={`${styles.form__group} ${styles.field}`}>
               <Select
                 styles={customStyles}
@@ -1056,6 +1096,7 @@ export default function FormAddProject({ setIsModalOpen }) {
             </div>
             <textarea
               className={styles.form_container__textarea}
+              required
               name="descriptionProject"
               id="descriptionProject"
               cols="30"
@@ -1687,7 +1728,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                     setInputData({ ...inputData, headingTextBlock: value });
                   }
                 }}
-                required
+                // required
               />
               <label
                 htmlFor="headingTextBlock"
@@ -1728,6 +1769,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                     setIsPhotoCloseVisible
                   )
                 }
+                required
               ></textarea>
               <label
                 htmlFor="textBlock"
