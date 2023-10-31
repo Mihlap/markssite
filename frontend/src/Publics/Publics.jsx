@@ -9,7 +9,7 @@ import {
 } from "../store/Slice/articleSlice";
 import styles from "./Publics.module.css";
 import { fetchToggleStateForButton2Async } from "../store/Slice/toggleSlice";
-import catPhoto from "../img/cat_954.jpeg";
+import catPhoto from "../img/default-photo.jpeg";
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 
