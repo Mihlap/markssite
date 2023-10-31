@@ -17,7 +17,7 @@ import { extractCityFromCountryCity, getUserGeolocation } from "./utils";
 import "../UI/Company_Slider/Company_Slider.css";
 import "../UI/ButtonsProjects/AllProjectsButton.module.css";
 import { fetchToggleStateAsync } from "../store/Slice/toggleSlice";
-import catPhoto from "../img/cat_954.jpeg";
+import catPhoto from "../img/default-photo.jpeg";
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 const apiKey = process.env.REACT_APP_API_KEY;

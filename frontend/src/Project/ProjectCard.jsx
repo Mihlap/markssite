@@ -20,7 +20,7 @@ import {
   shareToWhatsApp,
   shareToViber,
 } from "./utils";
-import catPhoto from "../img/cat_954.jpeg";
+import catPhoto from "../img/default-photo.jpeg";
 
 import next from ".././icons/next.svg";
 import previous from ".././icons/previous.svg";
@@ -203,16 +203,6 @@ const ProjectCard = () => {
       ? `${Host}/images/imageAdd/${project.imageClose}`
       : catPhoto;
   const altTextClose = (project && project.imageClose) || "Default Alt Text";
-
-  const imageSrc =
-    project?.imageProject || project?.imageTitle
-      ? `${Host}/images/imageAdd/${
-          project?.imageProject || project?.imageTitle
-        }`
-      : catPhoto;
-
-  const altText =
-    project?.imageProject || project?.imageTitle || "Default Alt Text";
 
       // Обработчик изменения размера окна
   const handleResize = () => {
