@@ -359,7 +359,7 @@ svg path {
   max-width: 100vw;
   box-sizing: border-box;
   padding-top: 12rem;
-  margin-bottom: 2.19rem;
+  margin-bottom: 5rem;
   padding-right: 2.8rem;
   font-family: var(--font-unbounded);
   font-style: normal;
@@ -569,6 +569,13 @@ svg path {
   display: none;
 }
 
+@media screen and (min-width: 2000px) and (max-width: 3000px) {
+  .card_item_2 {
+     height: 68vh;  
+  }
+  
+}
+
 
 
 /* Стили для планшетной версии сайта блока Header начинаются тут */
@@ -661,8 +668,8 @@ svg path {
 
   .names_contents {
     padding-top: 5.5rem;
-    margin-bottom: 2.5rem;
-    padding-right: 7.1rem;
+    margin-bottom: 5rem;
+    padding-right: 3.44rem;
     font-size: 2.5rem;
     line-height: 3rem;
   }
@@ -671,9 +678,13 @@ svg path {
     font-family: var(--font-unbounded);
     font-style: normal;
     font-weight: var(--fw-400);
-    font-size: 12px;
+    font-size: 0.75rem;
     line-height: 64px;
     margin-right: 16px;
+  }
+
+  .block_header_maim_wrapper {
+    padding-bottom: 2.62rem;
   }
 
   .sliderMobile_container {
@@ -683,8 +694,8 @@ svg path {
 
   .project_name {
     padding: 5.5rem 2rem 2rem 3.69vw;
-    font-size: 2rem;
-    line-height: 2.5rem;
+    font-size: 2.5rem;
+    line-height: 3rem;
     width: fit-content;
   }
 
@@ -802,11 +813,17 @@ svg path {
   }
 
   .project_name {
-    font-weight: 300;
-    font-size: 1.5rem;
-    line-height: 2rem;
+    font-family: var(--font-unbounded);
+    font-weight: var(--fw-300);
+    font-size: 2rem;
+    line-height: 2.5rem;
     padding: 5.88rem 0rem 0rem 1rem;
   }
+
+  .block_header_maim_wrapper {
+    padding-bottom: 2.5rem;
+  }
+  
 
   .swiper_progect_container {
     display: block;
