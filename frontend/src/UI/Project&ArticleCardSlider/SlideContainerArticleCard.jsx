@@ -7,7 +7,7 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import SliderItemProject from "../../Header/Swiper-project/SliderItemProject";
 import "./SliderContainerProjectCard.css";
-import catPhoto from "../../img/cat_954.jpeg";
+import catPhoto from "../../img/default-photo.jpeg";
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 
