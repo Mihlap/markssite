@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from "react";
 import Slider from "react-slick";
-import catPhoto from "../../img/cat_954.jpeg";
+import catPhoto from "../../img/default-photo.jpeg";
 import ".././Company_Slider/Company_Slider.css";
 
 const Host = process.env.REACT_APP_SERVER_HOST;

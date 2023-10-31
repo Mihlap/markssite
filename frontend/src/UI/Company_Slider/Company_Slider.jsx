@@ -5,7 +5,7 @@ import "slick-carousel/slick/slick-theme.css";
 import "./Company_Slider.css";
 
 
-const catPhoto = "../../img/cat_954.jpeg";
+const catPhoto = "../../img/default-photo.jpeg";
 
 const CompanySlider = () => {
   const sliderRef = useRef(null);

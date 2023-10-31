@@ -20,7 +20,7 @@ import {
   shareToWhatsApp,
   shareToViber,
 } from "./utils";
-import catPhoto from "../img/cat_954.jpeg";
+import catPhoto from "../img/default-photo.jpeg";
 
 import next from ".././icons/next.svg";
 import previous from ".././icons/previous.svg";
@@ -204,16 +204,6 @@ const ProjectCard = () => {
       : catPhoto;
   const altTextClose = (project && project.imageClose) || "Default Alt Text";
 
-  const imageSrc =
-    project?.imageProject || project?.imageTitle
-      ? `${Host}/images/imageAdd/${
-          project?.imageProject || project?.imageTitle
-        }`
-      : catPhoto;
-
-  const altText =
-    project?.imageProject || project?.imageTitle || "Default Alt Text";
-
       // Обработчик изменения размера окна
   const handleResize = () => {
     setWindowWidth(window.innerWidth);
@@ -232,7 +222,7 @@ const ProjectCard = () => {
     // const randomProjects = projects.slice().sort(() => Math.random() - 0.5).slice(0, 20);
 
 
-  //  console.log(project, "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww");
+   console.log(projects, " << --- projects");
   // console.log(userSelectedBlocks, "<<--- userSelectedBlocks");
 
   // console.log('Host:', Host);

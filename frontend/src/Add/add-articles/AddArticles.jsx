@@ -4,7 +4,7 @@ import styles from "../style/style-card.module.scss";
 import customScroll from "../style/CustomScrollbar.module.scss";
 import FormAddArticles from "./formAdd/FormAddArticles";
 import { deleteFormArticle, getFetchFormArticle } from "../../store/Slice/articleSlice";
-import cat from "../img/cat_954.jpeg";
+import cat from "../../img/default-photo.jpeg";
 
 import {
   fetchToggleStateForButton2Async,
