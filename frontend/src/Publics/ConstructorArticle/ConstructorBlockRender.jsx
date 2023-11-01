@@ -362,6 +362,39 @@ export default function ConstructorBlockRenderer({ block }) {
       </div>
     );
   };
+
+    const renderVideoBlock = (block) => {
+      const videoPath = block[0]?.value.join("");
+
+      const videoStyle = {
+        WebkitAppearance: "none",
+        appearance: "none",
+        border: "none",
+        opacity: 1,
+        outline: "none",
+        controls: "controls",
+      };
+
+      return (
+        <div
+          className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockSix}`}
+        >
+          <video
+            playsInline
+            muted
+            loop
+            controls
+            className={styles.block_video}
+            style={videoStyle}
+          >
+            <source
+              src={`${Host}/images/imageArticle/${videoPath}`}
+              type="video/mp4"
+            />
+          </video>
+        </div>
+      );
+    };
  
 
   // const renderVideoBlock = (block) => {
@@ -410,8 +443,8 @@ export default function ConstructorBlockRenderer({ block }) {
       return renderQuoteBlock(block);
     case "Текст заметки":
       return renderNoteBlock(block);
-    // case "video":
-    //   return renderVideoBlock(block);
+    case "Видеоролик":
+      return renderVideoBlock(block);
     default:
       return null;
   }

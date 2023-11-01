@@ -151,16 +151,16 @@ export default function ConstructorPage({ handleClick }) {
       {/* видео */}
       <div
         className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockSix}`}
-        onClick={() => handleVideoClick()}
+        onClick={() =>
+          handleClick([
+            {
+              type: "file",
+              label: "Видеоролик",
+            },
+          ])
+        }
       >
-        <img src={svg6} alt="svg_three_icon" />
-      </div>
-      <div
-        className={`${styles.notification} ${
-          showNotification ? styles.showNotification : ""
-        }`}
-      >
-        Сейчас загрузка видео недоступна 😢
+        <img src={svg6} alt="svg_six_icon" />
       </div>
     </div>
   );
