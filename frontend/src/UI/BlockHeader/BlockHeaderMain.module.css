@@ -63,7 +63,7 @@
 
 .content_blockHeader {
   position: absolute;
-  left: 45vw;
+  left: 45%;
   color: var(--dark-gray-566272);
   font-variant-numeric: lining-nums proportional-nums;
   font-family: var(--font-raleway);
@@ -72,9 +72,8 @@
   font-weight: var(--fw-400);
   line-height: 1.75rem;
   margin-top: 2.06rem;
-  max-width: 20vw;
-  width: 100%;
-  padding-right: 2rem;
+  width: 25%;
+  padding-right: 2%;
 }
 .contentOpen_blockHeader {
   animation: slideOut 1s ease;
@@ -88,23 +87,23 @@
     animation-timing-function: cubic-bezier(0.0, 0.0, 0.2, 1);
   }
   70% {
-    transform: translateX(34vw);
+    transform: translateX(30vw);
     animation-timing-function: cubic-bezier(0.4, 0.0, 2, 1);
   }
   100% {
-    transform: translateX(32vw); /* Немного вернулся назад */
+    transform: translateX(28vw); /* Немного вернулся назад */
     animation-timing-function: cubic-bezier(0.4, 0.0, 2, 1);
   }
 }
 
-@keyframes slideIn {
+/* @keyframes slideIn {
   0% {
     transform: translateX(0rem);
   }
   100% {
     transform: translateX(0);
   }
-}
+} */
 
 .blocksContainer {
   display: flex;
@@ -180,6 +179,26 @@
   line-height: 1.8rem;
   align-items: center; 
 }
+}
+@media screen and (min-width: 1600px) and (max-width: 1793px) {
+  .content_blockHeader {
+    left: 50%;
+    width: 30%;
+   }
+   @keyframes slideOut {
+    0% {
+      transform: translateX(0);
+      animation-timing-function: cubic-bezier(0.0, 0.0, 0.2, 1);
+    }
+    70% {
+      transform: translateX(20vw);
+      animation-timing-function: cubic-bezier(0.4, 0.0, 2, 1);
+    }
+    100% {
+      transform: translateX(18vw); /* Немного вернулся назад */
+      animation-timing-function: cubic-bezier(0.4, 0.0, 2, 1);
+    }
+  }
 }
 
 
@@ -258,7 +277,7 @@
     font-weight: var(--fw-400);
     line-height: 1.625rem;
     margin-top: 2.06rem;
-    max-width: 60%;
+    max-width: 70%;
     width: 100%;
     padding-right: 2rem;
     padding-left: 40vw;
@@ -317,7 +336,7 @@
     display: flex;
     width: 100%;
     /* max-height: 100vh; */
-    padding: 0rem 20% 3.5rem 2.81rem;
+    padding: 0rem 10% 3.5rem 2.81rem;
     flex-wrap: wrap;
   }
   
@@ -397,17 +416,19 @@
   .content_blockHeader {
     font-size: 1.125rem;
     line-height: 1.625rem;
-     max-width: 70vw;
+     max-width: 80vw;
      padding-left: 46vw;
+     padding-right: 0;
   }
 
 }
-@media screen and (min-width: 1025px) and (max-width: 1149px) {
+@media screen and (min-width: 1025px) and (max-width: 1189px) {
   .content_blockHeader {
     font-size: 1.125rem;
     line-height: 1.625rem;
-    max-width: 80vw;
+    max-width: 85vw;
     padding-left: 32rem;
+    padding-right: 0;
   }
 
 }
@@ -485,10 +506,10 @@
     font-weight: var(--fw-400);
     line-height: 1.5rem;
     margin-top: 2.06rem;
-    max-width: 75%;
+    max-width: 84%;
     width: 100%;
-    padding-right: 2rem;
-    padding-left: 26rem;
+    padding-right: 1rem;
+    padding-left: 29rem;
   }
   .contentOpen_blockHeader {
     animation: slideOut 1s ease;
@@ -544,7 +565,7 @@
     display: flex;
     width: 100%;
     /* max-height: 100vh; */
-    padding: 0rem 20% 3.5rem 2.81rem;
+    padding: 0rem 15% 3.5rem 2.81rem;
     flex-wrap: wrap;
   }
   
@@ -559,21 +580,21 @@
   .block_name_content {
     display: flex;
     flex-direction: column;
-    padding-right: 4rem;
+    padding-right: 2rem;
   }
   
   .blockName {
     width: 70%;
     color: var(--dark-gray-566272);
     font-family: var(--font-unbounded);
-    font-size: 1.125rem;
+    font-size: 1rem;
     font-style: normal;
     font-weight: var(--fw-300);
     line-height: 1.75rem;
   }
   
   .blockContent {
-    max-width: 30vw;
+    max-width: 40vw;
     width: 100%;
     color: var(--dark-gray-566272);
     font-variant-numeric: lining-nums proportional-nums;
@@ -587,12 +608,13 @@
   
   .button_block_wrapper {
     position: absolute;
-    right: 5%;
+    right: 3%;
     top: auto;
     padding-top: 14vh;
     text-align: center;
     justify-content: center;
-  }
+    /* padding-left: 2rem; */
+    }
   
   .button_block {
     display: flex;
@@ -603,12 +625,12 @@
     height: 7.125rem;
     border: 1px solid var(--dark-gray-566272);
     border-radius: 50%;
-    background-color: var(--black-1D2E43);
+    /* background-color: var(--black-1D2E43); */
   }
   
   .button_block_name {
     display: flex;
-    color: var(--white-F6F6F6);
+    color: var(--dark-gray-566272);
     font-variant-numeric: lining-nums proportional-nums;
     font-family: var(--font-raleway);
     font-size: 1rem;
@@ -725,7 +747,7 @@
       font-style: normal;
       font-weight: var(--fw-400);
       line-height: 1.75rem;
-    }
+     }
     
     .blockContent {
        width: 100%;
@@ -737,6 +759,7 @@
       font-weight: var(--fw-400);
       line-height: 1.5rem;
       padding-top: 0.5rem;
+      padding-bottom: 1.37rem;
     }
 
     .button_block_wrapper {
