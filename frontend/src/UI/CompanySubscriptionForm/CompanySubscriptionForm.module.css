@@ -1,3 +1,6 @@
+@import "../../App.css";
+
+
 .form_right_wrapper {
   display: flex;
   width: 100%;
@@ -121,7 +124,7 @@ border-radius: 16px;
   border: 1px solid var(--black-1D2E43);
   border-radius: 66px;
   background-color: transparent !important;
-}
+ }
 
 
 .button_hover11:hover {
@@ -130,10 +133,6 @@ border-radius: 16px;
   border: 0px solid transparent;
 }
 
-.form_right_wrapper:focus-within .button_hover11 {
-  background-color: var(--light-light-gray-EBECEE);
-  border: 1px solid var(--gray-959DA6);
-}
 
 .button_name {
   font-family: var(--font-raleway);
@@ -144,6 +143,10 @@ border-radius: 16px;
   color: var(--black-1D2E43);
 }
 
+.form_right_wrapper:focus-within .button_hover11 {
+  background-color: var(--light-light-gray-EBECEE);
+  border: 1px solid var(--gray-959DA6);
+}
 .form_right_wrapper:focus-within .button_name {
   color: var(--gray-959DA6);
 }
@@ -155,6 +158,11 @@ border-radius: 16px;
 .form_right_wrapper:has(.email_input_form:not(:placeholder-shown)) .button_name {
   color: var(--black-1D2E43);
 }
+
+.form_right_wrapper:has(.email_input_form:not(:placeholder-shown)) .disabled {
+  color: var(--black-1D2E43);
+}
+
 
 
 
