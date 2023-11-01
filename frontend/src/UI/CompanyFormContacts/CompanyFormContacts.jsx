@@ -98,7 +98,7 @@ const CompanyFormContacts = () => {
       if (!value) {
         setIsFocused3(false);
       }
-    }
+    } 
   }
 
   function handleSubmit(event) {
@@ -127,7 +127,7 @@ const CompanyFormContacts = () => {
           setValue1("");
           setValue2("");
           setValue3("");
-          setIsConsentGiven(false);   
+         setIsConsentGiven(false);   
           
         } else {
              console.error('Form submission failed');
@@ -234,13 +234,13 @@ const CompanyFormContacts = () => {
             </label>
           </div>
           <button
+          className={`${styles.button_hover10}
+          ${!isValid || !value2 || !value1 || !value3 || !isConsentGiven ? styles.disabled : ""}`}
+          disabled={!isValid || !value2 || !value1 || !value3 || !isConsentGiven}
           type="submit"
           id="submit-button"
-           className={`${styles.button_hover10}
-           ${(!isValid || !value2 || !value1 || !value3 || !isConsentGiven) ? styles.disabled : ""}`}
-           disabled={!isValid || !value2 || !value1 || !value3 || !isConsentGiven}
            >
-            <div className={styles.button_name1}>Отправить</div>
+            <p className={styles.button_name10}>Отправить</p>
           </button>
         </form>
       </div>
