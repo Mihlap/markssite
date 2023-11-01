@@ -52,7 +52,6 @@ export default function FormAddArticles({ setIsModalOpen }) {
   const [dynamicPreviews, setDynamicPreviews] = useState([]);
   const [dynamicData, setDynamicData] = useState([]);
 
-
   const handleRemovePreviewPhoto = (index) => {
     removePreviewPhoto(
       previewPhotos,
@@ -106,7 +105,8 @@ export default function FormAddArticles({ setIsModalOpen }) {
     const formattedData = {
       ...inputData,
       dynamicBlocks: dynamicData,
-      selectCompetencies: selectedCompetencies.map((option) => option.label)
+      selectCompetencies: selectedCompetencies
+        .map((option) => option.label)
         .join(","),
     };
     dispatch(
@@ -134,7 +134,27 @@ export default function FormAddArticles({ setIsModalOpen }) {
     setOpenConstructor(!onenConstructor);
   };
 
+  // функция которая не даёт создать новый диманический блок, пока не заполнены value предыдущего
+  const areAllBlocksFilled = () => {
+    for (let block of dynamicData) {
+      for (let input of block) {
+        if (!input.value || input.value === "") {
+          return false;
+        }
+      }
+    }
+    return true;
+  };
+
   const handleClick = (inputs) => {
+     
+    if (!areAllBlocksFilled()) {
+       alert(
+         "Предже чем добавить новый блок, пожалуйста заполните предыдущий блок полностью❗"
+       );
+       return;
+     }
+     
     const blockKey = Date.now().toString();
     const newInputs = inputs.map((input) => ({
       ...input,
@@ -158,19 +178,18 @@ export default function FormAddArticles({ setIsModalOpen }) {
         value: "",
       };
     }
-  function generateUniqueName(originalName) {
-    const timestamp = Date.now();
-    const randomNum = Math.floor(Math.random() * 10000);
-    const fileExtension = originalName.split(".").pop();
+    function generateUniqueName(originalName) {
+      const timestamp = Date.now();
+      const randomNum = Math.floor(Math.random() * 10000);
+      const fileExtension = originalName.split(".").pop();
 
-    // Транслитерация части оригинального имени файла
-    const sliceOfOriginalName = transliterate(originalName.slice(0, 5));
+      // Транслитерация части оригинального имени файла
+      const sliceOfOriginalName = transliterate(originalName.slice(0, 5));
 
-    const newName = `file_${sliceOfOriginalName}_${timestamp}_${randomNum}.${fileExtension}`;
+      const newName = `file_${sliceOfOriginalName}_${timestamp}_${randomNum}.${fileExtension}`;
 
-
-    return newName;
-  }
+      return newName;
+    }
     if (Array.isArray(value) && value[0] instanceof File) {
       const newFiles = value.map((originalFile) => {
         const uniqueName = generateUniqueName(originalFile.name);
@@ -187,8 +206,37 @@ export default function FormAddArticles({ setIsModalOpen }) {
       newDynamicData[blockIndex][inputIndex].value = value;
     }
 
-
     setDynamicData(newDynamicData);
+  };
+
+  // этот цикл сделан для присвоения разных стилей для одной конструкции превью
+  const getPreviewClassName = (label) => {
+    switch (label) {
+      case "Картинка с описанием":
+        return {
+          outerDiv: styles.imgWithDescriptionPreview,
+          innerDiv: styles.someInnerDivStyle,
+        };
+      case "Слайдер *допускается загрузка 8ми изображений":
+        return {
+          outerDiv: styles.sliderPreview,
+          innerDiv: styles.sliderPreviewDiv,
+        };
+      case "Блок 2е вертикальные картинки":
+        return {
+          outerDiv: styles.verticallyBlock,
+          innerDiv: styles.previewWerticallyBlock,
+          verticalImgTwo: styles.verticalTwoImg,
+        };
+      case "Видеоролик":
+        return {
+          outerDiv: styles.videoPreview,
+          innerDiv: styles.videoInnerDiv,
+          videoStyles: styles.videoStyle, // этот стиль можно использовать для видеотега
+        };
+      default:
+        return "";
+    }
   };
 
   const renderInputWithLabel = (
@@ -219,6 +267,8 @@ export default function FormAddArticles({ setIsModalOpen }) {
       const fileInputs = document.querySelectorAll('input[type="file"]');
       fileInputs.forEach((input) => (input.value = "")); // это очищает значение всех инпутов типа file
     }
+
+    const classNames = getPreviewClassName(labelText);
 
     return (
       <div key={inputIndex}>
@@ -252,95 +302,206 @@ export default function FormAddArticles({ setIsModalOpen }) {
           </div>
         )}
         {inputType === "file" && (
-          // <input type="file" accept="image/*" />
           <>
-            <div key={inputIndex}>
-              <div className={styles.form_container__checkbox_block}>
-                <div>{labelText}</div>
-              </div>
-              <label
-                className={styles.slider_container__customFileUploadOrangeColor}
-              >
-                <input
-                  type="file"
-                  onChange={(e) => {
-                    const filesArray = Array.from(e.target.files);
-                    handleDynamicInputChange(
-                      blockIndex,
-                      inputIndex,
-                      filesArray
-                    );
-
-                    const previewsArray = filesArray.map((file) =>
-                      URL.createObjectURL(file)
-                    );
-                    setDynamicPreviews((prev) => {
-                      const newPreviews = [...prev];
-                      if (!newPreviews[blockIndex]) {
-                        newPreviews[blockIndex] = [];
-                      }
-                      newPreviews[blockIndex][inputIndex] = previewsArray;
-                      return newPreviews;
-                    });
-                  }}
-                  multiple
-                  style={{ display: isPhotoOpenVisible ? "block" : "none" }}
-                />
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 16 16"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <g id="Frame 4684">
-                    <path
-                      id="Vector"
-                      d="M11.8349 7.54949L5.64223 7.54949C5.46569 7.54642 5.2903 7.57854 5.1263 7.64398C4.96231 7.70942 4.81299 7.80686 4.68705 7.93062C4.56112 8.05439 4.4611 8.20199 4.39282 8.36483C4.32454 8.52766 4.28938 8.70246 4.28938 8.87903C4.28937 9.0556 4.32454 9.2304 4.39282 9.39323C4.4611 9.55607 4.56112 9.70367 4.68705 9.82744C4.81299 9.9512 4.96231 10.0486 5.1263 10.1141C5.2903 10.1795 5.46569 10.2116 5.64223 10.2086L11.754 10.1277C12.4512 10.1156 13.1158 9.83011 13.6046 9.33275C14.0934 8.8354 14.3673 8.16596 14.3673 7.46862C14.3673 6.77129 14.0934 6.10185 13.6046 5.60449C13.1158 5.10713 12.4512 4.82165 11.754 4.80953L5.64223 4.88946C4.58413 4.88946 3.56936 5.30979 2.82117 6.05798C2.07298 6.80617 1.65265 7.82093 1.65265 8.87903C1.65265 9.93713 2.07298 10.9519 2.82117 11.7001C3.56936 12.4483 4.58413 12.8686 5.64223 12.8686L11.5189 12.8752"
-                      stroke="currentColor"
-                      strokeWidth="0.8"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </g>
-                </svg>
-                <div className={styles.slider_container__uploadText}>
-                  Загрузить изображения
+            {labelText === "Видеоролик" ? (
+              <div>
+                <div className={styles.form_container__checkbox_block}>
+                  <div>{labelText}</div>
                 </div>
-              </label>
-            </div>
-            <div className={styles.previewContainer}>
-              {dynamicPreviews[blockIndex] &&
-                dynamicPreviews[blockIndex][inputIndex] &&
-                dynamicPreviews[blockIndex][inputIndex].map((src, index) => (
-                  <div
-                    key={`${blockIndex}-${inputIndex}-${index}`}
-                    className={styles.previewWrapper}
+                <label
+                  className={
+                    styles.slider_container__customFileUploadOrangeColor
+                  }
+                >
+                  <input
+                    type="file"
+                    accept="video/*" // Это будет принимать только видеофайлы
+                    onChange={(e) => {
+                      const filesArray = Array.from(e.target.files);
+                      handleDynamicInputChange(
+                        blockIndex,
+                        inputIndex,
+                        filesArray
+                      );
+
+                      const previewsArray = filesArray.map((file) =>
+                        URL.createObjectURL(file)
+                      );
+                      setDynamicPreviews((prev) => {
+                        const newPreviews = [...prev];
+                        if (!newPreviews[blockIndex]) {
+                          newPreviews[blockIndex] = [];
+                        }
+                        newPreviews[blockIndex][inputIndex] = previewsArray;
+                        return newPreviews;
+                      });
+                    }}
+                  />
+                  <svg
+                    width="16"
+                    height="16"
+                    viewBox="0 0 16 16"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
                   >
-                    <div
-                      className={
-                        styles.preview_photos_container_block_constructor
-                      }
-                    >
-                      <img
-                        src={src}
-                        alt={`Preview ${index}`}
-                        className={styles.preview_photos_container__img}
+                    <g id="Frame 4684">
+                      <path
+                        id="Vector"
+                        d="M11.8349 7.54949L5.64223 7.54949C5.46569 7.54642 5.2903 7.57854 5.1263 7.64398C4.96231 7.70942 4.81299 7.80686 4.68705 7.93062C4.56112 8.05439 4.4611 8.20199 4.39282 8.36483C4.32454 8.52766 4.28938 8.70246 4.28938 8.87903C4.28937 9.0556 4.32454 9.2304 4.39282 9.39323C4.4611 9.55607 4.56112 9.70367 4.68705 9.82744C4.81299 9.9512 4.96231 10.0486 5.1263 10.1141C5.2903 10.1795 5.46569 10.2116 5.64223 10.2086L11.754 10.1277C12.4512 10.1156 13.1158 9.83011 13.6046 9.33275C14.0934 8.8354 14.3673 8.16596 14.3673 7.46862C14.3673 6.77129 14.0934 6.10185 13.6046 5.60449C13.1158 5.10713 12.4512 4.82165 11.754 4.80953L5.64223 4.88946C4.58413 4.88946 3.56936 5.30979 2.82117 6.05798C2.07298 6.80617 1.65265 7.82093 1.65265 8.87903C1.65265 9.93713 2.07298 10.9519 2.82117 11.7001C3.56936 12.4483 4.58413 12.8686 5.64223 12.8686L11.5189 12.8752"
+                        stroke="currentColor"
+                        strokeWidth="0.8"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
                       />
+                    </g>
+                  </svg>
+                  <div className={styles.slider_container__uploadText}>
+                    Загрузить видеоролик
+                  </div>
+                </label>
+                {/* Добавляем блок превью видео ниже */}
+                {dynamicPreviews[blockIndex] &&
+                  dynamicPreviews[blockIndex][inputIndex] &&
+                  dynamicPreviews[blockIndex][inputIndex].map((src, index) => (
+                    <div
+                      key={`${blockIndex}-${inputIndex}-${index}`}
+                      className={classNames.innerDiv}
+                    >
                       <div
                         className={
-                          styles.preview_photos_container_block_constructor__remove_icon
-                        }
-                        onClick={(e) =>
-                          handleDeletePreview(e, blockIndex, inputIndex, index)
+                          styles.preview_photos_container_block_constructor
                         }
                       >
-                        <span></span>
+                        <video
+                          key={index}
+                          src={src}
+                          muted
+                          loop
+                          autoPlay
+                          className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
+                        />
+                        <div
+                          className={
+                            styles.preview_photos_container_block_constructor__remove_icon
+                          }
+                          onClick={(e) =>
+                            handleDeletePreview(
+                              e,
+                              blockIndex,
+                              inputIndex,
+                              index
+                            )
+                          }
+                        >
+                          <span></span>
+                        </div>
                       </div>
                     </div>
+                  ))}
+              </div>
+            ) : (
+              <>
+                <div key={inputIndex}>
+                  <div className={styles.form_container__checkbox_block}>
+                    <div>{labelText}</div>
                   </div>
-                ))}
-            </div>
+                  <label
+                    className={
+                      styles.slider_container__customFileUploadOrangeColor
+                    }
+                  >
+                    <input
+                      type="file"
+                      onChange={(e) => {
+                        const filesArray = Array.from(e.target.files);
+                        handleDynamicInputChange(
+                          blockIndex,
+                          inputIndex,
+                          filesArray
+                        );
+
+                        const previewsArray = filesArray.map((file) =>
+                          URL.createObjectURL(file)
+                        );
+                        setDynamicPreviews((prev) => {
+                          const newPreviews = [...prev];
+                          if (!newPreviews[blockIndex]) {
+                            newPreviews[blockIndex] = [];
+                          }
+                          newPreviews[blockIndex][inputIndex] = previewsArray;
+                          return newPreviews;
+                        });
+                      }}
+                      multiple
+                    />
+                    <svg
+                      width="16"
+                      height="16"
+                      viewBox="0 0 16 16"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <g id="Frame 4684">
+                        <path
+                          id="Vector"
+                          d="M11.8349 7.54949L5.64223 7.54949C5.46569 7.54642 5.2903 7.57854 5.1263 7.64398C4.96231 7.70942 4.81299 7.80686 4.68705 7.93062C4.56112 8.05439 4.4611 8.20199 4.39282 8.36483C4.32454 8.52766 4.28938 8.70246 4.28938 8.87903C4.28937 9.0556 4.32454 9.2304 4.39282 9.39323C4.4611 9.55607 4.56112 9.70367 4.68705 9.82744C4.81299 9.9512 4.96231 10.0486 5.1263 10.1141C5.2903 10.1795 5.46569 10.2116 5.64223 10.2086L11.754 10.1277C12.4512 10.1156 13.1158 9.83011 13.6046 9.33275C14.0934 8.8354 14.3673 8.16596 14.3673 7.46862C14.3673 6.77129 14.0934 6.10185 13.6046 5.60449C13.1158 5.10713 12.4512 4.82165 11.754 4.80953L5.64223 4.88946C4.58413 4.88946 3.56936 5.30979 2.82117 6.05798C2.07298 6.80617 1.65265 7.82093 1.65265 8.87903C1.65265 9.93713 2.07298 10.9519 2.82117 11.7001C3.56936 12.4483 4.58413 12.8686 5.64223 12.8686L11.5189 12.8752"
+                          stroke="currentColor"
+                          strokeWidth="0.8"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </g>
+                    </svg>
+                    <div className={styles.slider_container__uploadText}>
+                      Загрузить изображения
+                    </div>
+                  </label>
+                </div>
+                <div
+                  className={`${styles.previewContainer} ${classNames.outerDiv}`}
+                >
+                  {dynamicPreviews[blockIndex] &&
+                    dynamicPreviews[blockIndex][inputIndex] &&
+                    dynamicPreviews[blockIndex][inputIndex].map(
+                      (src, index) => {
+                        return (
+                          <div
+                            key={`${blockIndex}-${inputIndex}-${index}`}
+                            className={classNames.innerDiv}
+                          >
+                            <div
+                              className={
+                                styles.preview_photos_container_block_constructor
+                              }
+                            >
+                              <img
+                                src={src}
+                                alt={`Preview ${index}`}
+                                className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
+                              />
+                              <div
+                                className={
+                                  styles.preview_photos_container_block_constructor__remove_icon
+                                }
+                                onClick={(e) =>
+                                  handleDeletePreview(
+                                    e,
+                                    blockIndex,
+                                    inputIndex,
+                                    index
+                                  )
+                                }
+                              >
+                                <span></span>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      }
+                    )}
+                </div>
+              </>
+            )}
           </>
         )}
         {inputType === "textarea" && (
@@ -817,7 +978,8 @@ export default function FormAddArticles({ setIsModalOpen }) {
             </label>
           </div>
 
-          <div className={styles.inputsContainer}>
+          {/* КОНСТРУКТОР */}
+          <div className={styles.inputs_container}>
             {blocks.map((blockInputs, blockIndex) => (
               <div key={blockIndex} className={styles.inputBlock}>
                 {renderInputs(blockInputs, blockIndex)}

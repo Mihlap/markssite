@@ -277,7 +277,11 @@ export default function AddArticles({ user }) {
                                   ) : null}
                                 </div>
                                 <div className={styles.cart_project__content}>
-                                  <span className={styles.cart_project__title}>
+                                  <span
+                                    className={
+                                      styles.cart_project_container__title
+                                    }
+                                  >
                                     {el.title}
                                   </span>
                                 </div>
