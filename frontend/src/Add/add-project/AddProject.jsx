@@ -219,7 +219,7 @@ export default function AddProject({ user }) {
                                   alt="photo_project"
                                 />
                                 {user?.name === "obezyankaa" ||
-                                user?.name === "pokemon" ? (
+                                user?.name === "Pokemon" ? (
                                   <div className={styles.del_block}>
                                     <button
                                       className={styles.buttom_del}
