@@ -232,7 +232,7 @@ export default function AddArticles({ user }) {
                                     onLoad={() => setImageLoaded(true)}
                                   />
                                   {user?.name === "obezyankaa" ||
-                                  user?.name === "pokemon" ? (
+                                  user?.name === "Pokemon" ? (
                                     <div className={styles.del_block}>
                                       <button
                                         className={styles.buttom_del}
