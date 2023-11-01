@@ -271,15 +271,6 @@ export default function Project() {
       );
     });
 
-  const imageSlider = projects[0]?.imageOpen;
-
-  const imageSrc = imageSlider
-    ? `${Host}/images/imageAdd/${imageSlider}`
-    : catPhoto;
-
-  const altText =
-    projects?.imageProject || projects?.imageTitle || "Default Alt Text";
-
   // console.log(filteredProjects, "9999999999999999999999999999999999");
 
   return (
