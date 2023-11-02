@@ -70,7 +70,7 @@
 .menu_button_group_articles {
   display: flex;
   flex-wrap: wrap;
-  padding: 2rem 5rem 2.5rem 1.69rem;
+  padding: 2rem 5rem 2.5rem 1.88rem;
   grid-column-gap: 8px;
   grid-row-gap: 16px;
   width: 100%;
@@ -121,14 +121,14 @@
   display: flex;
   flex-wrap: wrap;
   gap: 1.88rem;
-  padding: 0rem 0rem 0rem 1.69rem;
+  padding-left: 1.88rem;
 }
 
 .section_article__block_cart {
   display: flex;
   flex-direction: column;
   width: calc(33.33% - 1.88rem);
-  /* max-height: 29rem; */
+  max-height: 30rem;
   }
 
 .cart_article {
@@ -147,13 +147,13 @@
 
 .cart_article__img {
   max-width: 100%;
-  max-height: 28rem;
-  height: auto;
+  max-height: 24rem;
+  min-height: 21rem;
+  height: 100%;
   border-radius: 1rem;
   object-fit: cover;
   object-position: center;
 }
-
 
 .article_content__wrapper {
   display: flex;
@@ -243,7 +243,7 @@
  }
  
  .menu_button_group_articles {
-   padding: 2rem 10rem 2.5rem 2rem;
+   padding: 2rem 10rem 2.5rem 3.44rem;
    grid-column-gap: 6px;
  }
 
@@ -252,26 +252,23 @@
   display: flex;
   flex-direction: column;
   padding-top: 0rem;
-  padding-bottom: 0rem;
-  background-color: var(--white-F6F6F6);
-  padding-bottom: 3.94rem;
+    background-color: var(--white-F6F6F6);
+  padding-bottom: 3.06rem;
  }
 
 .section_article__block {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
-   gap: 0rem;
-  padding-left: 1.69rem;
-  padding-right: 1.69rem;
+   gap: 1.88rem;
+  padding-left: 3.44rem;
+  padding-right: 3.44rem;
 }
 
 .section_article__block_cart {
-  display: flex;
-  flex-direction: column;
-  width: calc(50% - 1.88rem);
-  min-height: 21rem;
-  margin-bottom: 4rem;
+  max-height: auto;
+  width: calc(50% - 1.88rem); 
+  margin-bottom: 1rem;
 }
 
 .cart_article {
@@ -291,6 +288,8 @@
 
 .cart_article__img {
   min-height: 21rem;
+  max-height: 21rem;
+  height: 100%;
   border-radius: 1rem;
   object-fit: cover;
   object-position: center;
@@ -348,7 +347,7 @@
    .my_swiper3_button_group_article {
     display: flex;
     padding-top: 1.5rem;
-    padding-left: 1.67rem;
+    padding-left: 1rem;
     bottom: 0rem;
     left: 0rem;
     width: 100%;
@@ -363,8 +362,8 @@
   display: flex;
   flex-direction: column;
   padding-top: 2rem;
-  padding-right: 1.67rem;
   background-color: var(--white-F6F6F6);
+  padding-bottom: 2.5rem;
 }
 
 .section_article__block {
@@ -372,6 +371,8 @@
   justify-content: center;
   flex-direction: column;
   gap: 2rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
 }
 
 .section_article__block_cart {
