@@ -63,11 +63,13 @@ const BlockHeaderMain = () => {
               </div>
             )}
          {/* <div className={styles.block_hover}> */}
-            <div className={styles.blockTitle_blockHeader}>
+            <div
+             className={styles.blockTitle_blockHeader} 
+             >
               {blockData[index].title}
               <div
                 className={`${styles.content_blockHeader} ${
-                  isOpen ? styles.contentOpen_blockHeader : ""
+                  isOpen ? styles.contentOpen_blockHeader : styles.contentClose_blockHeader
                 }`}
               >
                 {blockData[index].content}
@@ -99,7 +101,11 @@ const BlockHeaderMain = () => {
               <div className={styles.blocksContainer}>
                 {blockData[index].blocks.map((block, blockIndex) => (
                   <div
-                    className={styles.block_content_name_wrapper}
+                  className={`${styles.block_content_name_wrapper} ${
+                    isOpen
+                      ? styles.contentOpen_block_content_name_wrapper
+                      : styles.contentClose_block_content_name_wrapper
+                  }`}                  
                     key={blockIndex}
                   >
                     {isMobileScreen && (
