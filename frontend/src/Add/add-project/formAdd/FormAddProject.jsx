@@ -836,8 +836,8 @@ export default function FormAddProject({ setIsModalOpen }) {
                     label: "Наука",
                   },
                   {
-                    value: "Специальные разделы",
-                    label: "Специальные разделы",
+                    value: "Технологии",
+                    label: "Технологии",
                   },
                   {
                     value: "Цифровое проектирование",
