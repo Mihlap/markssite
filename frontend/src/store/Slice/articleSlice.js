@@ -27,7 +27,7 @@ const articleSlice = createSlice({
     },
     setSelectedType(state, action) {
       state.selectedType = action.payload;
-    },
+    },  
     deleteArticleSuccess(state, action) {
       const articleId = action.payload;
       state.article = state.article.filter((el) => el.id !== articleId);
@@ -151,25 +151,28 @@ export const fetchArticle =
     // console.log(formattedData, "<<<---REDUX ARTICLES");
   };
 
-export const getFetchFormArticle = () => async (dispatch, getState) => {
-  dispatch(fetchArticleStart());
-  const selectedType = getState().article.selectedType;
-
-  try {
-    const response = await axios.get(`${serverHost}/api-article/getzapros`);
-    let filteredArticles = response.data;
-
-    if (selectedType !== "Все") {
-      filteredArticles = filteredArticles.filter(
-        (article) => article.selectCompetencies === selectedType
-      );
+  export const getFetchFormArticle = () => async (dispatch, getState) => {
+    dispatch(fetchArticleStart());
+    const selectedType = getState().article.selectedType;
+     
+    try {
+      const response = await axios.get(`${serverHost}/api-article/getzapros`);
+      let filteredArticles = response.data;
+  
+         
+      if (selectedType !== "Все") {
+        const selectedTypes = selectedType.split(',');
+        filteredArticles = filteredArticles.filter(
+          (article) => 
+            selectedTypes.some(type => article.selectCompetencies.includes(type.trim()))
+        );
+      }  
+         
+      dispatch(fetchArticleSuccess(filteredArticles));
+    } catch (error) {
+      dispatch(fetchArticleFailure(error.message));
     }
-
-    dispatch(fetchArticleSuccess(filteredArticles));
-  } catch (error) {
-    dispatch(fetchArticleFailure(error.message));
-  }
-};
+  };
 
 export const deleteFormArticle = (id) => async (dispatch) => {
   try {
