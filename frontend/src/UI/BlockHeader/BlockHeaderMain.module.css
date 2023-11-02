@@ -50,6 +50,7 @@ background-color: bisque;
   transform: rotate(360deg);
   transition: transform 0.3s ease-in-out;
 }
+
 .blockTitleContentWrapper {
   display: flex;
   justify-content: space-between;
@@ -90,17 +91,18 @@ background-color: bisque;
 .content_blockHeader, .contentOpen_blockHeader {
   animation-fill-mode: forwards;
 }
+
 @keyframes slideContentIn {
   0% {
     transform: translateX(0);
     animation-timing-function: cubic-bezier(0.0, 0.0, 0.2, 1);
   }
   70% {
-    transform: translateX(30vw);
+    transform: translateX(28vw);
     animation-timing-function: cubic-bezier(0.4, 0.0, 2, 1);
   }
   100% {
-    transform: translateX(28vw); 
+    transform: translateX(26vw); 
     animation-timing-function: cubic-bezier(0.4, 0.0, 2, 1);
   }
 }
@@ -120,6 +122,8 @@ background-color: bisque;
   flex-direction: column;
   width: calc(33.33% - 1.88rem);
   margin-top: 3.44rem;
+}
+.contentOpen_block_content_name_wrapper {
   animation: slideNameIn 0.5s ease-in-out;
 }
 
@@ -134,6 +138,23 @@ background-color: bisque;
     opacity: 1;
   }
 }
+
+.contentClose_block_content_name_wrapper {
+  animation: slideNameOut 0.5s ease-in-out;
+}
+
+@keyframes slideNameOut {
+  0% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+}
+
+
 
 .block_name_content {
   display: flex;
