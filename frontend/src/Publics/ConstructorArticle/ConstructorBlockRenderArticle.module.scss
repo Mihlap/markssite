@@ -287,7 +287,8 @@
 
 .div_conteiner__blockSix {
     max-width: 100%;
-    padding-bottom: 2.75rem;
+    padding-left: 13.75vw;
+    padding-bottom: 3.75rem;
 }
 
 .block_video {
@@ -334,6 +335,12 @@
     }
     .slider_container {
       padding-left: 0;
+    }
+
+    .div_conteiner__blockSix {
+        max-width: 100%;
+        padding-left: 0;
+        padding-bottom: 3.75rem;
     }
 
 }
@@ -525,6 +532,13 @@
     .slider_container {
         padding-left: 0;
       }
+
+      .div_conteiner__blockSix {
+        max-width: 100%;
+        padding-left: 0;
+        padding-bottom: 3.75rem;
+    }
+
 }
 
 
@@ -735,4 +749,10 @@
     .custom_slider {
         padding-right: 0px;
     }
+    .div_conteiner__blockSix {
+        max-width: 100%;
+        padding-left: 0;
+        padding-bottom: 40px;
+    }
+
 }
