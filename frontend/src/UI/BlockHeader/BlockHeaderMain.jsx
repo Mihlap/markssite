@@ -43,7 +43,9 @@ const BlockHeaderMain = () => {
             <div className={styles.line_blockHeader}></div>
             {isMobileScreen && (
               <div
-                className={styles.toggle_blockHeader}
+              className={`${styles.toggle_blockHeader} ${
+                isOpen ? styles.rotate180 : ""
+              }`}
                 onClick={() => toggleBlock(index)}
               >
                 <svg
@@ -60,6 +62,7 @@ const BlockHeaderMain = () => {
                 </svg>
               </div>
             )}
+         {/* <div className={styles.block_hover}> */}
             <div className={styles.blockTitle_blockHeader}>
               {blockData[index].title}
               <div
@@ -71,7 +74,9 @@ const BlockHeaderMain = () => {
               </div>
               {!isMobileScreen && (
                 <div
-                  className={styles.toggle_blockHeader}
+                  className={`${styles.toggle_blockHeader} ${
+                    isOpen ? styles.rotate180 : ""
+                  }`}
                   onClick={() => toggleBlock(index)}
                 >
                   <svg
@@ -89,6 +94,7 @@ const BlockHeaderMain = () => {
                 </div>
               )}
             </div>
+          {/* </div>    */}
             {isOpen && (
               <div className={styles.blocksContainer}>
                 {blockData[index].blocks.map((block, blockIndex) => (
@@ -98,16 +104,16 @@ const BlockHeaderMain = () => {
                   >
                     {isMobileScreen && (
                       <div className={styles.block_content_tochka}>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="4"
-                        height="4"
-                        viewBox="0 0 4 4"
-                        fill="none"
-                      >
-                        <circle cx="2" cy="2" r="2" fill="#566272" />
-                      </svg>
-                    </div>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="4"
+                          height="4"
+                          viewBox="0 0 4 4"
+                          fill="none"
+                        >
+                          <circle cx="2" cy="2" r="2" fill="#566272" />
+                        </svg>
+                      </div>
                     )}{" "}
                     <div className={styles.block_name_content}>
                       <div className={styles.blockName}>{block.block_name}</div>
@@ -131,8 +137,8 @@ const BlockHeaderMain = () => {
                 </div>
               </div>
             )}
-          </div>
-        </div>
+            </div>
+            </div>       
       ))}
     </div>
   );
