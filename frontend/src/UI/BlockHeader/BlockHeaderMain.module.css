@@ -1,13 +1,13 @@
 @import "../../App.css";
 
-@media screen and (min-width: 1600px) and (max-width: 3000px) {
+@media screen and (min-width: 1600px) {
 
 
 .block_blockHeader {
-  display: flex;
+  /* display: flex;
   align-items: center;
-  width: 100%;
-}
+  width: 100%; */
+ } 
 
 
 .blockNumber_blockHeader {
@@ -32,23 +32,43 @@
   backdrop-filter: blur(4.5px);
 }
 
-/* .block_hover:hover{
-width: 100%;
-background-color: bisque;
-} */
+.block_hover {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  margin-top: 0.5rem;
+  cursor: pointer;
+}
+
+.block_hover::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  background: linear-gradient(180deg, #EFF1F2 0%, rgba(235, 245, 255, 0.94) 0.01%, rgba(236, 242, 246, 0.00) 100%);
+  transition: opacity 0.6s ease;
+  z-index: -1;
+}
+
+.block_hover:hover::before {
+  opacity: 1;
+}
 
 
 .toggle_blockHeader {
  position: absolute;
  right: 2.44rem;
  cursor: pointer;
- transition: transform 0.3s ease-in-out;
+ transition: transform 0.5s ease-in-out;
 }
 
 
 .rotate180 {
   transform: rotate(360deg);
-  transition: transform 0.3s ease-in-out;
+  transition: transform 0.5s ease-in-out;
 }
 
 .blockTitleContentWrapper {
@@ -60,7 +80,7 @@ background-color: bisque;
 .blockTitle_blockHeader {
   display: flex;
   align-items: center;
-  padding: 2.06rem 2.81rem 2.13rem 2.81rem;
+  padding: 1.56rem 2.81rem 2.13rem 2.81rem;
   color: var(--black-3C3C3C);
   font-family: var(--font-unbounded);
   font-size: 2rem;
@@ -72,7 +92,7 @@ background-color: bisque;
 
 .content_blockHeader {
   position: absolute;
-  left: 45%;
+  left: 44%;
   color: var(--dark-gray-566272);
   font-variant-numeric: lining-nums proportional-nums;
   font-family: var(--font-raleway);
@@ -81,9 +101,9 @@ background-color: bisque;
   font-weight: var(--fw-400);
   line-height: 1.75rem;
   margin-top: 2.06rem;
-  width: 25%;
-  padding-right: 2%;
-  opacity: 1;
+  width: 26%;
+  padding-right: 3%;
+  backdrop-filter: blur(4.5px);
 }
 .contentOpen_blockHeader {
   animation: slideContentIn 1s ease-in-out;
@@ -112,21 +132,22 @@ background-color: bisque;
   width: 100%;
   padding: 0rem 20% 3.5rem 2.81rem;
   flex-wrap: wrap;
-  /* background-image: linear-gradient(to bottom, #F6F6F6, rgba(40, 50, 60, 0.03)); 
-   box-shadow: 0px -16px 27px 0px rgba(40, 50, 60, 0.03) inset;
-   background: var(--, linear-gradient(261deg, rgba(255, 203, 193, 0.09) -4.67%, rgba(117, 187, 253, 0.09) 44.63%, rgba(188, 188, 188, 0.09) 103.07%)); */
+  backdrop-filter: blur(4.5px);
 }
+/* .blocksContainer:hover {
+  background: var(--, linear-gradient(261deg, rgba(255, 203, 193, 0.09) -4.67%, rgba(117, 187, 253, 0.09) 44.63%, rgba(188, 188, 188, 0.09) 103.07%));
+} */
 
 .block_content_name_wrapper {
   display: flex;
   flex-direction: column;
   width: calc(33.33% - 1.88rem);
   margin-top: 3.44rem;
-}
+ }
+
 .contentOpen_block_content_name_wrapper {
   animation: slideNameIn 0.5s ease-in-out;
 }
-
 
 @keyframes slideNameIn {
   0% {
@@ -140,7 +161,7 @@ background-color: bisque;
 }
 
 .contentClose_block_content_name_wrapper {
-  animation: slideNameOut 0.5s ease-in-out;
+  animation: slideNameOut 2s ease-in-out;
 }
 
 @keyframes slideNameOut {
@@ -153,7 +174,6 @@ background-color: bisque;
     opacity: 0;
   }
 }
-
 
 
 .block_name_content {
@@ -240,11 +260,9 @@ background-color: bisque;
 @media screen and (min-width: 1025px) and (max-width: 1599px) {
   
   .block_blockHeader {
-    display: flex;
     align-items: center;
     width: 100%;
-    /* border: 1px solid black; */
-  }
+   }
   
   .blockNumber_blockHeader {
     display: flex;
@@ -268,7 +286,30 @@ background-color: bisque;
     backdrop-filter: blur(4.5px);
   }
   
+  .block_hover {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    margin-top: 0.5rem;
+    cursor: pointer;
+  }
   
+  .block_hover::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    background: linear-gradient(180deg, #EFF1F2 0%, rgba(235, 245, 255, 0.94) 0.01%, rgba(236, 242, 246, 0.00) 100%);
+    transition: opacity 0.6s ease;
+    z-index: -1;
+  }
+  
+  .block_hover:hover::before {
+    opacity: 1;
+  }
 
   .toggle_blockHeader {
     position: absolute;
@@ -295,7 +336,7 @@ background-color: bisque;
   .blockTitle_blockHeader {
     display: flex;
     align-items: center;
-    padding: 2.06rem 2.81rem 2.13rem 2.81rem;
+    padding: 1.56rem 2.81rem 2.13rem 2.81rem;
     color: var(--black-3C3C3C);
     font-family: var(--font-unbounded);
     font-size: 1.5rem;
@@ -307,7 +348,6 @@ background-color: bisque;
   
   .content_blockHeader {
     position: absolute;
-    /* left: 50vw; */
     color: var(--dark-gray-566272);
     font-variant-numeric: lining-nums proportional-nums;
     font-family: var(--font-raleway);
@@ -320,8 +360,9 @@ background-color: bisque;
     width: 100%;
     padding-right: 2rem;
     padding-left: 40vw;
-    opacity: 1;
+    /* backdrop-filter: blur(4.5px); */
     }
+
   .contentOpen_blockHeader {
     animation: slideContentIn 1s ease;
   }
@@ -362,10 +403,13 @@ background-color: bisque;
   .blocksContainer {
     display: flex;
     width: 100%;
-    /* max-height: 100vh; */
     padding: 0rem 10% 3.5rem 2.81rem;
     flex-wrap: wrap;
+    /* backdrop-filter: blur(4.5px); */
   }
+  /* .blocksContainer:hover {
+    background: var(--, linear-gradient(261deg, rgba(255, 203, 193, 0.09) -4.67%, rgba(117, 187, 253, 0.09) 44.63%, rgba(188, 188, 188, 0.09) 103.07%));
+  } */
   
   .block_content_name_wrapper {
     display: flex;
@@ -460,6 +504,7 @@ background-color: bisque;
      max-width: 80vw;
      padding-left: 46vw;
      padding-right: 0;
+     /* backdrop-filter: blur(4.5px); */
   }
 
 }
@@ -478,10 +523,8 @@ background-color: bisque;
 @media screen and (min-width: 768px) and (max-width: 1024px) {
 
   .block_blockHeader {
-    display: flex;
     align-items: center;
     width: 100%;
-    /* border: 1px solid black; */
   }
   
   .blockNumber_blockHeader {
@@ -505,12 +548,36 @@ background-color: bisque;
     border-top: 1px solid var(--light-light-gray-EBECEE);
     backdrop-filter: blur(4.5px);
   }
+
+  .block_hover {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    margin-top: 0.5rem;
+    cursor: pointer;
+  }
   
+  .block_hover::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    background: linear-gradient(180deg, #EFF1F2 0%, rgba(235, 245, 255, 0.94) 0.01%, rgba(236, 242, 246, 0.00) 100%);
+    transition: opacity 0.6s ease;
+    z-index: -1;
+  }
+  
+  .block_hover:hover::before {
+    opacity: 1;
+  }
   
 
   .toggle_blockHeader {
     position: absolute;
-    right: 2.44rem;
+    right: 3vw;
     cursor: pointer;
     transition: transform 0.3s ease-in-out;
    }
@@ -529,7 +596,7 @@ background-color: bisque;
   .blockTitle_blockHeader {
     display: flex;
     align-items: center;
-    padding: 2.06rem 2.81rem 2.13rem 2.81rem;
+    padding: 1.56rem 2.81rem 2.13rem 2.81rem;
     color: var(--black-3C3C3C);
     font-family: var(--font-unbounded);
     font-size: 1.25rem;
@@ -541,11 +608,10 @@ background-color: bisque;
   
   .content_blockHeader {
     position: absolute;
-    /* left: 50vw; */
     color: var(--dark-gray-566272);
     font-variant-numeric: lining-nums proportional-nums;
     font-family: var(--font-raleway);
-    font-size: 1rem;
+    font-size: 1.5vw;
     font-style: normal;
     font-weight: var(--fw-400);
     line-height: 1.5rem;
@@ -554,6 +620,7 @@ background-color: bisque;
     width: 100%;
     padding-right: 1rem;
     padding-left: 29rem;
+    opacity: 1;
   }
   .contentOpen_blockHeader {
     animation: slideOut 1s ease;
@@ -585,11 +652,7 @@ background-color: bisque;
     }
   } */
 
-  .content_blockHeader {
-    opacity: 1;
-  }
-
-  .blockOpen_blockHeader .content_blockHeader {
+   .blockOpen_blockHeader .content_blockHeader {
     animation: slideOut 1s ease forwards;
   }
 
@@ -608,11 +671,14 @@ background-color: bisque;
   .blocksContainer {
     display: flex;
     width: 100%;
-    /* max-height: 100vh; */
     padding: 0rem 15% 3.5rem 2.81rem;
     flex-wrap: wrap;
   }
-  
+
+  /* .blocksContainer:hover {
+    background: var(--, linear-gradient(261deg, rgba(255, 203, 193, 0.09) -4.67%, rgba(117, 187, 253, 0.09) 44.63%, rgba(188, 188, 188, 0.09) 103.07%));
+  }
+   */
   .block_content_name_wrapper {
     display: flex;
     flex-direction: column;
@@ -700,9 +766,13 @@ background-color: bisque;
 
 @media screen and (min-width: 768px) and (max-width: 862px) {
   .content_blockHeader {
-    max-width: 85%;
+    font-size: 1.5vw;
+    font-style: normal;
+    font-weight: var(--fw-400);
+    line-height: 1.5rem;
+    width: 100%;
     padding-left: 25rem;
-  }
+   }
 }
 
 
@@ -710,9 +780,9 @@ background-color: bisque;
 
 @media screen and (max-width: 767px) {
   .block_blockHeader {
-    display: flex;
+    /* display: flex;
     align-items: center;
-    width: 100%;
+    width: 100%; */
   }
   
   .blockNumber_blockHeader {
@@ -730,10 +800,34 @@ background-color: bisque;
     border-top: 1px solid var(--light-light-gray-EBECEE);
     backdrop-filter: blur(4.5px);
   }
+  .block_hover {
+    position: relative;
+    overflow: hidden;
+    width: 100%;
+    margin-top: 0.5rem;
+    cursor: pointer;
+  }
+  
+  .block_hover::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    background: linear-gradient(180deg, #EFF1F2 0%, rgba(235, 245, 255, 0.94) 0.01%, rgba(236, 242, 246, 0.00) 100%);
+    transition: opacity 0.6s ease;
+    z-index: -1;
+  }
+  
+  .block_hover:hover::before {
+    opacity: 1;
+  }
 
   .toggle_blockHeader {
     position: absolute;
-    right: 2.44rem;
+    right: 1rem;
     padding-top: 1.5rem;
     cursor: pointer;
     transition: transform 0.3s ease-in-out;
@@ -754,13 +848,14 @@ background-color: bisque;
    .blockTitle_blockHeader {
      display: flex;
      flex-direction: column;
-     padding: 1.5rem 2rem 1.5rem 1rem;
+     padding: 1rem 2rem 1.5rem 1rem;
      color: var(--black-3C3C3C);
      font-family: var(--font-unbounded);
      font-size: 1.125rem;
      font-style: normal;
      font-weight: var(--fw-300);
      line-height: 1.75rem;
+     margin-right: 1rem;
    }
 
    .content_blockHeader {
@@ -785,6 +880,9 @@ background-color: bisque;
       padding-right: 1rem;
       flex-wrap: wrap;
     }
+    /* .blocksContainer:hover {
+      background: var(--, linear-gradient(261deg, rgba(255, 203, 193, 0.09) -4.67%, rgba(117, 187, 253, 0.09) 44.63%, rgba(188, 188, 188, 0.09) 103.07%));
+    } */
     
     .block_content_name_wrapper {
       display: flex;
