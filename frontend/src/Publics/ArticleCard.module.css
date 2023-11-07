@@ -215,12 +215,12 @@
   font-family: var(--font-raleway);
   font-style: normal;
   font-weight: var(--fw-400);
-  font-size: 0.875rem;
-  line-height: 1.25rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
   font-variant-numeric: lining-nums proportional-nums;
   font-feature-settings: 'pnum' on, 'lnum' on;
-  color: var(--gray-959DA6);
-  padding-top: 0.5rem;
+  color: var(--black-1D2E43);
+  padding-top: 3.75rem;
   padding-bottom: 3.75rem;
   word-wrap: break-word;
   width: 80%;
@@ -987,7 +987,7 @@ padding-right: 0.5rem;
     padding-top: 1rem;
     padding-bottom: 2.5rem;
   }
-
+ 
 
   .blockImg {
     width: 100%;
@@ -1179,17 +1179,19 @@ padding-right: 0.5rem;
 
   .leftImg1_object_text1,.div_conteiner {
     width: 100%;
-    padding: 1rem 1rem;
+    padding: 1rem 0rem;
   }
 
     .header_content_left {
       width: 100%;
     }
 
-  .leftImg1_object_text1 {
-        padding: 1rem 0rem;
-  }
 
+  .leftImg1_object_text1 {
+    padding-top: 2.5rem;
+    width: 100%;
+  
+  }
   .div_conteiner {
     width: 100%;
     padding-left: 1rem;

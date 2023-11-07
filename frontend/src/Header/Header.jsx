@@ -272,13 +272,13 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
         <div className={styles.video_block}>
           <VideoPlayer videoSource={videoSource} />
         </div>
-        <div className={styles.bg_video}>
+        {/* <div className={styles.bg_video}>
           {videoSrc && (
             <video playsInline autoPlay muted loop id="bg-video">
               <source src={videoSrc} type="video/mp4" />
             </video>
           )}
-        </div>
+        </div> */}
         <div className={styles.header_desctop_block}>
           <h1
             onMouseEnter={handleMouseEnter}

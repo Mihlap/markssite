@@ -31,17 +31,12 @@ export default function Publics() {
 
   const buttonChoose1 = [
     "Все",
-    "Научные",
-    "Опробации",
+    "Выступления",
     "Интервью",
-    "Литература",
-    "Научно-популярные",
-    "Инженерия",
-    "BIM",
-    "Дизайн",
-    "Архитектура",
-    "Конструкции",
-  ];
+    "Новости",
+    "Статьи",
+    "Научные публикации",
+   ];
 
   useEffect(() => {
     window.scrollTo(0, 0); // Прокрутите страницу вверх при монтировании компонента
@@ -195,7 +190,7 @@ export default function Publics() {
                         />
                         <div className={styles.article_content__wrapper}>
                           <div className={styles.cart_article_title}>
-                            {article.titleTextBlock}
+                            {article.title}
                           </div>
                           <div className={styles.cart_article__content}></div>
                         </div>
