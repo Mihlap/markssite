@@ -631,16 +631,11 @@ export default function FormAddArticles({ setIsModalOpen }) {
               value={selectedCompetencies}
               onChange={setSelectedCompetencies}
               options={[
-                { value: "Научные", label: "Научные" },
-                { value: "Опробации", label: "Опробации" },
+                { value: "Выступления", label: "Выступления" },
                 { value: "Интервью", label: "Интервью" },
-                { value: "Литература", label: "Литература" },
-                { value: "Научно-популярные", label: "Научно-популярные" },
-                { value: "Инженерия", label: "Инженерия" },
-                { value: "Архитектура", label: "Архитектура" },
-                { value: "Конструкции", label: "Конструкции" },
-                { value: "BIM", label: "BIM" },
-                { value: "Digital", label: "Digital" },
+                { value: "Новости", label: "Новости" },
+                { value: "Статьи", label: "Статьи" },
+                { value: "Научные публикации", label: "Научные публикации" },
               ]}
               className={styles.form__field}
               placeholder="Выбрать компетенции"
