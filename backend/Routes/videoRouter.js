@@ -28,4 +28,23 @@ router.post(`/upload-video`, videoUpload.single("video"), async (req, res) => {
   }
 });
 
+
+router.get('/:videoName', async (req, res) => {
+  const { videoName } = req.params;
+  const videoPath = path.join(__dirname, 'images/video', videoName);
+
+  try {
+    const stats = await fs.promises.stat(videoPath);
+
+    if (stats.isFile()) {
+      const stream = fs.createReadStream(videoPath);
+      stream.pipe(res);
+    } else {
+      res.status(404).send('File not found');
+    }
+  } catch (error) {
+    res.status(500).send('Internal Server Error');
+  }
+});
+
 module.exports = router;

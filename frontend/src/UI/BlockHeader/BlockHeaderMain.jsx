@@ -17,7 +17,8 @@ const BlockHeaderMain = () => {
       return newState;
     });
   };
-    
+
+      
   useEffect(() => {
     const handleResize = () => {
       setScreenWidth(window.innerWidth);
