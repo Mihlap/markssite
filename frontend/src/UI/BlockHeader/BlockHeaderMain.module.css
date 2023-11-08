@@ -101,14 +101,14 @@
   font-weight: var(--fw-400);
   line-height: 1.75rem;
   margin-top: 2.06rem;
-  width: 26%;
+  width: 27%;
   padding-right: 3%;
   backdrop-filter: blur(4.5px);
 }
 .contentOpen_blockHeader {
   animation: slideContentIn 1s ease-in-out;
 }
-.content_blockHeader, .contentOpen_blockHeader {
+.content_blockHeader, .contentOpen_blockHeader, .contentClose_blockHeader {
   animation-fill-mode: forwards;
 }
 
@@ -124,6 +124,21 @@
   100% {
     transform: translateX(26vw); 
     animation-timing-function: cubic-bezier(0.4, 0.0, 2, 1);
+  }
+}
+
+.contentClose_blockHeader {
+  animation: slideContentOut 0.2s ease-in-out;
+}
+
+@keyframes slideContentOut {
+  0% {
+    transform: translateX(26vw); 
+    animation-timing-function: cubic-bezier(0.4, 0.0, 2, 1);
+  }
+  100% {
+      transform: translateX(0);
+    animation-timing-function: cubic-bezier(0.0, 0.0, 0.2, 1);
   }
 }
 
@@ -146,7 +161,7 @@
  }
 
 .contentOpen_block_content_name_wrapper {
-  animation: slideNameIn 0.5s ease-in-out;
+  animation: slideNameIn 0.7s ease-in-out;
 }
 
 @keyframes slideNameIn {
@@ -161,7 +176,7 @@
 }
 
 .contentClose_block_content_name_wrapper {
-  animation: slideNameOut 2s ease-in-out;
+  animation: slideNameOut 0.3s ease-in-out;
 }
 
 @keyframes slideNameOut {
@@ -171,7 +186,7 @@
   }
   100% {
     transform: translateY(-100%);
-    opacity: 0;
+    opacity: 0.7;
   }
 }
 
@@ -238,7 +253,7 @@
 @media screen and (min-width: 1600px) and (max-width: 1793px) {
   .content_blockHeader {
     left: 50%;
-    width: 30%;
+    width: 35%;
    }
    @keyframes slideContentIn {
     0% {
@@ -246,12 +261,23 @@
       animation-timing-function: cubic-bezier(0.0, 0.0, 0.2, 1);
     }
     70% {
-      transform: translateX(20vw);
+      transform: translateX(16vw);
       animation-timing-function: cubic-bezier(0.4, 0.0, 2, 1);
     }
     100% {
-      transform: translateX(18vw); 
+      transform: translateX(14vw); 
       animation-timing-function: cubic-bezier(0.4, 0.0, 2, 1);
+    }
+  }
+
+  @keyframes slideContentOut {
+    0% {
+      transform: translateX(26vw); 
+      animation-timing-function: cubic-bezier(0.4, 0.0, 2, 1);
+    }
+    100% {
+        transform: translateX(0);
+      animation-timing-function: cubic-bezier(0.0, 0.0, 0.2, 1);
     }
   }
 }
@@ -356,7 +382,7 @@
     font-weight: var(--fw-400);
     line-height: 1.625rem;
     margin-top: 2.06rem;
-    max-width: 70%;
+    max-width: 80%;
     width: 100%;
     padding-right: 2rem;
     padding-left: 40vw;
@@ -364,7 +390,7 @@
     }
 
   .contentOpen_blockHeader {
-    animation: slideContentIn 1s ease;
+    animation: slideContentIn 1s ease forwards;
   }
   .content_blockHeader, .contentOpen_blockHeader {
     animation-fill-mode: forwards;
@@ -398,6 +424,21 @@
       opacity: 0;
     }
   }
+
+  .contentClose_blockHeader {
+    animation: slideContentOut 0.2s ease-in-out;
+  }
+  
+  @keyframes slideContentOut {
+    0% {
+      transform: translateX(26vw); 
+      animation-timing-function: cubic-bezier(0.4, 0.0, 2, 1);
+    }
+    100% {
+        transform: translateX(0);
+      animation-timing-function: cubic-bezier(0.0, 0.0, 0.2, 1);
+    }
+  }
   
    
   .blocksContainer {
@@ -416,7 +457,7 @@
     flex-direction: column;
     width: calc(50% - 0rem);
     margin-top: 3.44rem;
-    animation: slideNameIn 0.5s ease-in-out;
+    animation: slideNameIn 0.7s ease-in-out;
   }
 
   
@@ -430,8 +471,8 @@
       opacity: 1;
     }
   }
-  
-  
+
+ 
   
   .block_name_content {
     display: flex;
@@ -501,7 +542,7 @@
   .content_blockHeader {
     font-size: 1.125rem;
     line-height: 1.625rem;
-     max-width: 80vw;
+     max-width: 85vw;
      padding-left: 46vw;
      padding-right: 0;
      /* backdrop-filter: blur(4.5px); */
@@ -512,7 +553,7 @@
   .content_blockHeader {
     font-size: 1.125rem;
     line-height: 1.625rem;
-    max-width: 85vw;
+    max-width: 87vw;
     padding-left: 32rem;
     padding-right: 0;
   }
@@ -667,6 +708,21 @@
     }
   }
 
+  .contentClose_blockHeader {
+    animation: slideContentOut 0.5s ease-in-out;
+  }
+  
+  @keyframes slideContentOut {
+    0% {
+      transform: translateX(26vw); 
+      animation-timing-function: cubic-bezier(0.4, 0.0, 2, 1);
+    }
+    100% {
+        transform: translateX(0);
+      animation-timing-function: cubic-bezier(0.0, 0.0, 0.2, 1);
+    }
+  }
+
   
   .blocksContainer {
     display: flex;
@@ -684,7 +740,7 @@
     flex-direction: column;
     width: calc(50% - 0rem);
     margin-top: 3.44rem;
-    animation: slideNameIn 0.5s ease-in-out;
+    animation: slideNameIn 0.7s ease-in-out;
   }
 
   @keyframes slideNameIn {
@@ -901,9 +957,7 @@
         opacity: 1;
       }
     }
-
-     
-    
+        
     .block_name_content {
       display: flex;
       flex-direction: column;

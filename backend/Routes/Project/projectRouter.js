@@ -91,6 +91,14 @@ router.post(
   },
 );
 
+router.get('/getimage/:imageName', (req, res) => {
+  const { imageName } = req.params;
+  const imagePath = path.join(__dirname, 'images/projectFoto', imageName);
+
+  res.sendFile(imagePath);
+});
+
+
 router.get('/getzapros', async (req, res) => {
   try {
     const data = await Project.findAll({
