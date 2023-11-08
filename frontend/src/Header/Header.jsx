@@ -85,25 +85,25 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
     dispatch(imageHover());
   };
 
-  useEffect(() => {
-    const handleResize = () => {
-      const screenWidth = window.innerWidth;
-      if (screenWidth >= 1025) {
-        setVideoSrc(videoSource.large);
-      } else if (screenWidth >= 375 && screenWidth <= 1024) {
-        setVideoSrc(videoSource.medium);
-      } else {
-        setVideoSrc(videoSource.small);
-      }
-    };
+  // useEffect(() => {
+  //   const handleResize = () => {
+  //     const screenWidth = window.innerWidth;
+  //     if (screenWidth >= 1025) {
+  //       setVideoSrc(videoSource.large);
+  //     } else if (screenWidth >= 375 && screenWidth <= 1024) {
+  //       setVideoSrc(videoSource.medium);
+  //     } else {
+  //       setVideoSrc(videoSource.small);
+  //     }
+  //   };
 
-    handleResize();
-    window.addEventListener("resize", handleResize);
+  //   handleResize();
+  //   window.addEventListener("resize", handleResize);
 
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener("resize", handleResize);
+  //   };
+  // }, []);
 
   useEffect(() => {
     dispatch(getFetchFormArticle());

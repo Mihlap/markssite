@@ -92,7 +92,7 @@ export default function Publics() {
         <div className={styles.public_image_header}>
           {videoSrc && (
             <video playsInline autoPlay muted loop id="bg-video">
-              <source src={videoSrc} type="video/mp4" />
+              <source src={videoSrc} type="video/mp4" preload="auto" />
             </video>
           )}
           <div className={styles.text_container_publics}>
