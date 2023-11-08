@@ -134,7 +134,7 @@ export const getFetchForm = () => async (dispatch) => {
   dispatch(fetchProjectStart());
 
   try {
-    const response = await axios.get(`${serverHost}/api-project/getzapros`, { timeout: 10000 });
+    const response = await axios.get(`${serverHost}/api-project/getzapros`);
 
     dispatch(fetchProjectSuccess(response.data));
   } catch (error) {

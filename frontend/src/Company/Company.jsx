@@ -289,7 +289,7 @@ export default function Company() {
         <div className={styles.block_video_company}>
           {videoSrc2 && (
             <video playsInline autoPlay muted loop id="bg-video">
-              <source src={videoSrc2} type="video/mp4" />
+              <source src={videoSrc2} type="video/mp4" preload="auto" />
             </video>
           )}
         </div>
@@ -1027,7 +1027,7 @@ export default function Company() {
           <div className={styles.video_wrapper}>
             {videoSrc && (
               <video playsInline autoPlay muted loop id="bg-video_2">
-                <source src={videoSrc} type="video/mp4" />
+                <source src={videoSrc} type="video/mp4" preload="auto" />
               </video>
             )}
           </div>

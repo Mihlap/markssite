@@ -45,6 +45,7 @@ app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', req.header('origin'));
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS'); 
+  res.header('Content-Type', 'application/json; charset=utf-8');
   next();
 });
 
@@ -66,8 +67,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/images', express.static(path.join(__dirname, 'images')));
 app.use('/images/imageAdd', express.static(path.join(__dirname, 'images/imageAdd')));
-app.use('/public/assets', express.static(path.join(__dirname, 'assets')));
-app.use('/images/video', express.static(path.join(__dirname, 'images/video')));
+app.use('/images/projectFoto', express.static(path.join(__dirname, 'images/projectFoto'), { maxAge: '180d' }));
+app.use('/public/assets', express.static(path.join(__dirname, 'assets'), { maxAge: '180d' }));
+app.use('/images/video', express.static(path.join(__dirname, 'images/video'), { maxAge: '180d' }));
 app.use(session(sessionConfig));
 // app.use(express.static(path.join(__dirname, 'build')));
 
