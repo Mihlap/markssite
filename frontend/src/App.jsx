@@ -28,6 +28,7 @@ import { checkUserAuth } from "./store/Slice/authSlice";
 import { resetCurrentPage, setCurrentPage } from "./store/Slice/userSlice";
 import ButtonAdmin from "./UI/ButtonAdmin/ButtonAdmin";
 import { fetchToggleStateForButton3Async } from "./store/Slice/toggleSlice";
+import LoadingModal from "./Add/add-project/loading/LoadingModal";
 
 export default function App() {
   const user = useSelector((state) => state.auth.user);
@@ -91,6 +92,7 @@ export default function App() {
                 <Route path="/login" element={<Login />} />
                 {isActive && <Route path="/signup" element={<SignUpPage />} />}
                 <Route path="/information" element={<Information />} />
+                <Route path="/test" element={<LoadingModal />} />
 
                 {user ? (
                   <Route

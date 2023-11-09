@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "../style/style-card.module.scss";
-import customScroll from "../style/CustomScrollbar.module.scss";
 import FormAddArticles from "./formAdd/FormAddArticles";
 import { deleteFormArticle, getFetchFormArticle } from "../../store/Slice/articleSlice";
 import cat from "../../img/default-photo.jpeg";
@@ -169,7 +168,7 @@ export default function AddArticles({ user }) {
           <div className={styles.card_components_admin__modal_container}>
             <div
               style={{ maxHeight: modalBlockHeight }}
-              className={`${styles.card_components_admin__modal_block} ${customScroll.scrollableContent}`}
+              className={styles.card_components_admin__modal_block}
             >
               <FormAddArticles setIsModalOpen={setIsModalOpen} />
               <button
@@ -181,24 +180,26 @@ export default function AddArticles({ user }) {
         )}
 
         <div className={styles.card_components_admin__section_map}>
-            {error ? (
-              <div className={styles.card_components_admin__errore_div}>
-                Нажмите на кнопку Публикации,{" "}
-                <span>это позволит серверу сделать запрос ещё раз.</span>
-              </div>
-            ) : loading ? (
-              <Loading />
-            ) : (
-              <>
-                {article && article.length === 0 ? (
-                  <div className={styles.card_components_admin__null_project}>
-                    Публикаций сейчас нет, добавьте свою первую публикацию!
-                  </div>
-                ) : (
-                  <>
-                    <div className={styles.card_components_admin__block_map}>
-                      {article &&
-                        article?.map((el) => {
+          {error ? (
+            <div className={styles.card_components_admin__errore_div}>
+              Нажмите на кнопку Публикации,{" "}
+              <span>это позволит серверу сделать запрос ещё раз.</span>
+            </div>
+          ) : loading ? (
+            <Loading />
+          ) : (
+            <>
+              {article && article.length === 0 ? (
+                <div className={styles.card_components_admin__null_project}>
+                  Публикаций сейчас нет, добавьте свою первую публикацию!
+                </div>
+              ) : (
+                <>
+                  <div className={styles.card_components_admin__block_map}>
+                    {article &&
+                      [...article]
+                        .reverse() 
+                        .map((el) => {
                           const firstPhoto =
                             el && el.imageTitle
                               ? el.imageTitle.split(", ")[0]
@@ -374,13 +375,13 @@ export default function AddArticles({ user }) {
                             </React.Fragment>
                           );
                         })}
-                    </div>
-                  </>
-                )}
-              </>
-            )}
-          </div>
+                  </div>
+                </>
+              )}
+            </>
+          )}
         </div>
+      </div>
     </section>
   );
 }
