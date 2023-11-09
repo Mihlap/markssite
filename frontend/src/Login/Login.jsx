@@ -79,70 +79,72 @@ useEffect(() => {
   }
 
    return (
-    <section className={styles.login_container}>
-      <div className={styles.border_line}>
-        <div className={styles.login_block}>
-          <div className={styles.login_block__title}>MARKS GROUP</div>
-          <div className={styles.login_block__subtitle}>
-            Вход в административную панель
-          </div>
-          <form className={styles.login_form} onSubmit={submitHandler}>
-            <div className={`${styles.form__group} ${styles.field}`}>
-              <input
-                type="input"
-                className={`${styles.form__field} ${
-                  errorDiv ? styles.error_text : ""
-                }`}
-                value={inputGroup.userName}
-                onChange={changeHandler}
-                placeholder="userName"
-                name="userName"
-                id="userName"
-                required
-              />
-              <label htmlFor="userName" className={styles.form__label}>
-                Введите рабочий E-mail
-              </label>
-            </div>
-            {errorDiv && (
-              <div className={styles.error_div}>Не корректный E-mail</div>
-            )}
+     <section className={styles.login_container}>
+       <div className={styles.border_line}>
+         <div className={styles.login_block}>
+           <div className={styles.login_block__title}>MARKS GROUP</div>
+           <div className={styles.login_block__subtitle}>
+             Вход в административную панель
+           </div>
+           <form className={styles.login_form} onSubmit={submitHandler}>
+             <div className={`${styles.form__group} ${styles.field}`}>
+               <input
+                 type="input"
+                 className={`${styles.form__field} ${
+                   errorDiv ? styles.error_text : ""
+                 }`}
+                 value={inputGroup.userName}
+                 onChange={changeHandler}
+                 placeholder="userName"
+                 name="userName"
+                 id="userName"
+                 autoComplete="off"
+                 required
+               />
+               <label htmlFor="userName" className={styles.form__label}>
+                 Введите рабочий E-mail
+               </label>
+             </div>
+             {errorDiv && (
+               <div className={styles.error_div}>Не корректный E-mail</div>
+             )}
 
-            <div className={`${styles.form__group} ${styles.field}`}>
-              <input
-                type="password"
-                className={`${styles.form__field} ${
-                  errorDiv ? styles.error_text : ""
-                }`}
-                value={inputGroup.password}
-                onChange={changeHandler}
-                placeholder="password"
-                name="password"
-                id="password"
-                required
-              />
-              <label htmlFor="password" className={styles.form__label}>
-                Введите пароль
-              </label>
-            </div>
-            {errorDiv && (
-              <div className={styles.error_div}>Не корректный пароль</div>
-            )}
+             <div className={`${styles.form__group} ${styles.field}`}>
+               <input
+                 type="password"
+                 className={`${styles.form__field} ${
+                   errorDiv ? styles.error_text : ""
+                 }`}
+                 value={inputGroup.password}
+                 onChange={changeHandler}
+                 placeholder="password"
+                 name="password"
+                 autoComplete="off"
+                 id="password"
+                 required
+               />
+               <label htmlFor="password" className={styles.form__label}>
+                 Введите пароль
+               </label>
+             </div>
+             {errorDiv && (
+               <div className={styles.error_div}>Не корректный пароль</div>
+             )}
 
-            <div className={styles.error_bnt_block}>
-              <button
-                className={`${styles.form_button} ${
-                  !isFormFilled ? styles.disabled_button : ""
-                }`}
-                type="submit"
-                disabled={!isFormFilled}
-              >
-                Войти
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </section>
-  );
+             <div className={styles.error_bnt_block}>
+               <button
+                 className={`${styles.form_button} ${
+                   !isFormFilled ? styles.disabled_button : ""
+                 }`}
+                 type="submit"
+                 disabled={!isFormFilled}
+               >
+                 Войти
+               </button>
+             </div>
+           </form>
+         </div>
+       </div>
+     </section>
+   );
 }
