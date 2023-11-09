@@ -285,6 +285,10 @@
     padding-left: 13.75vw;
 }
 
+.wrapper_conteiner__item {
+   display: flex;
+}
+
 .div_conteiner__blockSix {
     max-width: 100%;
     padding-left: 13.75vw;
@@ -297,6 +301,40 @@
     max-height: 50vw;
     border-radius: 16px;
 }
+.buttonWrapperBlock {
+    position: relative;
+    bottom: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+   }
+
+  .buttonPlayBlock {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 7.225rem;
+    height: 7.225rem;
+    border-radius: 7.225rem;
+    background: var(--, linear-gradient(135deg, rgba(187, 222, 255, 0.55) 3.43%, rgba(255, 191, 181, 0.55) 177.6%));
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .buttonPause {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 7.225rem;
+    height: 7.225rem;
+    border-radius: 7.225rem;
+    background: var(--, linear-gradient(135deg, rgba(187, 222, 255, 0.55) 3.43%, rgba(255, 191, 181, 0.55) 177.6%));
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
 
 
 /* Стили для desctop версии +1 сайта блока ProjectCard начинаются тут */

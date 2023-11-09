@@ -3,6 +3,16 @@ import Slider from "react-slick";
 import styles from "../ConstructorArticle/ConstructorBlockRenderArticle.module.scss";
 import "../../Project/stylePaginationSlider.css";
 
+import playIcon from "../../icons/play.svg";
+import pauseIcon from "../../icons/pause.svg";
+import playIconMobile from "../../icons/playMobile.svg";
+import pauseIconMobile from "../../icons/pauseMobile.svg";
+
+const isMobileScreen = window.innerWidth <= 1024;
+
+const playIconToUse = isMobileScreen ? playIconMobile : playIcon;
+const pauseIconToUse = isMobileScreen ? pauseIconMobile : pauseIcon;
+
 const Host = process.env.REACT_APP_SERVER_HOST;
 
 const arrowStyles = {
@@ -102,6 +112,8 @@ const NextArrow = (props) => (
 export default function ConstructorBlockRenderer({ block }) {
   const [activeSlide, setActiveSlide] = useState(0);
   const [dotsVisible, setDotsVisible] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   
    useEffect(() => {
      const handleResize = () => {
@@ -372,26 +384,58 @@ export default function ConstructorBlockRenderer({ block }) {
         border: "none",
         opacity: 1,
         outline: "none",
-        controls: "controls",
+        // controls: "controls",
+      };
+
+      const handlePlay = () => {
+        const videoElement = document.querySelector("video");
+        videoElement.play();
+          setIsPlaying(true);
+          setIsHovered(false);
+          };
+    
+      const handlePause = () => {
+        const videoElement = document.querySelector("video");
+        videoElement.pause();
+          setIsPlaying(false);
+          setIsHovered(false);
       };
 
       return (
+        <div className={styles.wrapper_conteiner__item}>
         <div
           className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockSix}`}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
         >
           <video
-            playsInline
-            muted
-            loop
-            controls
-            className={styles.block_video}
-            style={videoStyle}
+           playsInline
+           muted
+           loop
+           className={styles.block_video}
+           style={videoStyle}
+           onPlay={() => setIsPlaying(true)}
+           onPause={() => setIsPlaying(false)}
           >
             <source
               src={`${Host}/images/imageArticle/${videoPath}`}
               type="video/mp4"
             />
           </video>
+          <div className={styles.buttonWrapperBlock}>         
+          {isPlaying ? (
+          isHovered && (
+                <button className={styles.buttonPause} onClick={handlePause}>
+               <img src={pauseIconToUse} alt={pauseIconToUse} />               
+              </button>  
+          )
+          ) : (
+             <button className={styles.buttonPlayBlock} onClick={handlePlay}>
+                <img src={playIconToUse} alt={playIconToUse}/>
+             </button>            
+              )}
+          </div>
+        </div>
         </div>
       );
     };

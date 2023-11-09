@@ -915,6 +915,7 @@ bottom: 3.38rem;
   .slider_card_wrapper {
     display: flex;
     padding-left: 5.4vw;
+    /* padding-bottom: 5rem; */
   }
   .slider_card_container {
     width: 100%;
@@ -1033,6 +1034,7 @@ bottom: 3.38rem;
   
    .company_form_contacts_wrapper {
     width: 100%;
+    padding-top: 5rem;
    }
   .companySubscriptionForm_wrapper {
     display: none;

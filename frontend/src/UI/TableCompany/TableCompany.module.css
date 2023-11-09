@@ -1,9 +1,26 @@
+/* .tableContainer {
+  overflow: hidden;
+  max-height: 2300px;
+  transition: max-height 0.5s ease-in-out;
+} */
+
 .tableStyle {
   border-collapse: collapse;
   margin-left: 1.87vw;
   margin-right: 1.87vw;
-  width: auto
+  width: auto;
+ }
+
+.slideDown {
+  /* max-height: 2300px; */
+  transition: max-height 0.5s ease-in-out;
 }
+
+.slideUp {
+  /* max-height: 700px; */
+  transition: max-height 0.2s ease-in-out;
+}
+
 
 .thStyle {
   text-align: left;
@@ -106,6 +123,7 @@
 .button_look_all:hover {
   background: var(--light-gray-C0C5CB);
 }
+
 
 /* стили для планшетной версии  */
 @media screen and (min-width: 768px) and (max-width: 1024px) {

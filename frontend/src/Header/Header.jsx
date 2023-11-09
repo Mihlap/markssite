@@ -25,6 +25,7 @@ import { searchArticleLeftGet } from "../store/Slice/searchArticlePublicLeftSlic
 // import { resizeImage } from "../Project/utils";
 import img123 from "./img/Главная.png";
 import notDataPhoto from "./img/notData.png";
+import nameCompany from "../icons/nameCompany.svg"
 
 // import photoTest from "./img/project_right3.jpg";
 import { textEnter, textLeave, imageHover } from "../store/Slice/cursorSlice";
@@ -37,10 +38,15 @@ const Host = process.env.REACT_APP_SERVER_HOST;
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
 export default function Header({ user, setNavBarOpen, setShowFooter }) {
+  // const videoSource = {
+  //   large: `${Host}/images/video/header_company_full.mp4`,
+  //   medium: `${Host}/images/video/header_company_ipad.mp4`,
+  //   small: `${Host}/images/video/header_company_mobile.mp4`
+  // };
   const videoSource = {
     large: `${Host}/images/video/header_company_full.mp4`,
     medium: `${Host}/images/video/header_company_ipad.mp4`,
-    small: `${Host}/images/video/header_company_mobile.mp4`
+    small: `${Host}/images/video/header_company_mobile.mp4`,
   };
   const sliderCardRef = useRef(null);
   const [enableVerticalScroll, setEnableVerticalScroll] = useState(true);
@@ -85,25 +91,25 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
     dispatch(imageHover());
   };
 
-  // useEffect(() => {
-  //   const handleResize = () => {
-  //     const screenWidth = window.innerWidth;
-  //     if (screenWidth >= 1025) {
-  //       setVideoSrc(videoSource.large);
-  //     } else if (screenWidth >= 375 && screenWidth <= 1024) {
-  //       setVideoSrc(videoSource.medium);
-  //     } else {
-  //       setVideoSrc(videoSource.small);
-  //     }
-  //   };
+  useEffect(() => {
+    const handleResize = () => {
+      const screenWidth = window.innerWidth;
+      if (screenWidth >= 1025) {
+        setVideoSrc(videoSource.large);
+      } else if (screenWidth >= 400 && screenWidth <= 1024) {
+        setVideoSrc(videoSource.medium);
+      } else {
+        setVideoSrc(videoSource.small);
+      }
+    };
 
-  //   handleResize();
-  //   window.addEventListener("resize", handleResize);
+    handleResize();
+    window.addEventListener("resize", handleResize);
 
-  //   return () => {
-  //     window.removeEventListener("resize", handleResize);
-  //   };
-  // }, []);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   useEffect(() => {
     dispatch(getFetchFormArticle());
@@ -269,16 +275,21 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
         <title>Marks Group</title>
       </Helmet>
       <main className={styles.header}>
-        <div className={styles.video_block}>
+        {/* <div className={styles.video_block}>
           <VideoPlayer videoSource={videoSource} />
-        </div>
-        {/* <div className={styles.bg_video}>
+        </div> */}
+        <div className={styles.wrapper_nameCompanyMainHeader}>
+        <div className={styles.block_video_company}>
           {videoSrc && (
             <video playsInline autoPlay muted loop id="bg-video">
-              <source src={videoSrc} type="video/mp4" />
+              <source src={videoSrc} type="video/mp4" preload="auto"/>
             </video>
           )}
-        </div> */}
+        </div>
+        <div className={styles.nameCompanyMainHeader}>
+        <img src={nameCompany} alt={nameCompany} />
+        </div>
+        </div>
         <div className={styles.header_desctop_block}>
           <h1
             onMouseEnter={handleMouseEnter}
