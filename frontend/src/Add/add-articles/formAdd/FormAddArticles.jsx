@@ -573,7 +573,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
 
             <div className={`${styles.form__group} ${styles.field}`}>
               <input
-                required
+                // required
                 type="text"
                 className={styles.form__field}
                 placeholder="author"
@@ -638,7 +638,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
                 { value: "Научные публикации", label: "Научные публикации" },
               ]}
               className={styles.form__field}
-              placeholder="Выбрать компетенции"
+              placeholder="Выберите табы фильтрации"
               components={{
                 DropdownIndicator: PublicationIndicator,
                 ValueContainer: PublicationContainer,

@@ -52,6 +52,10 @@ export default function FormAddProject({ setIsModalOpen }) {
   const [isPhotoAvaVisible, setIsPhotoAvaVisible] = useState(true);
   const [isDropPhotoVisible, setIsDropPhotoVisible] = useState(true);
 
+const [isMonthValid, setIsMonthValid] = useState(true);
+const [isYearValid, setIsYearValid] = useState(true);
+const [errorMessage, setErrorMessage] = useState("");
+
   const [inputData, setInputData] = useState({
     title: "",
     selectCompetencies: [],
@@ -86,7 +90,6 @@ export default function FormAddProject({ setIsModalOpen }) {
 
   // << ==== useStates для конструктора ==== >>
   const [inputValue, setInputValue] = useState("");
-
   const [onenConstructor, setOpenConstructor] = useState(false);
   const [blocks, setBlocks] = useState([]);
   const [dynamicPreviews, setDynamicPreviews] = useState([]);
@@ -154,6 +157,38 @@ export default function FormAddProject({ setIsModalOpen }) {
     );
   };
 
+const validateForm = () => {
+  let isValid = true;
+  let errors = [];
+
+  // Проверяем, был ли выбран месяц
+  if (!selectedMonth) {
+    setIsMonthValid(false);
+    isValid = false;
+    errors.push("Месяц");
+  } else {
+    setIsMonthValid(true);
+  }
+
+  // Проверяем, был ли выбран год
+  if (!selectedYear) {
+    setIsYearValid(false);
+    isValid = false;
+    errors.push("Год");
+  } else {
+    setIsYearValid(true);
+  }
+
+  // Сохраняем сообщение об ошибке
+  if (!isValid) {
+    setErrorMessage(
+      `Пожалуйста, заполните следующие обязательные поля: ${errors.join(", ")}.`
+    );
+  }
+
+  return isValid;
+};
+
   // закрывает модалкку формы
   const closeModal = () => {
     setIsModalOpen(false);
@@ -162,58 +197,68 @@ export default function FormAddProject({ setIsModalOpen }) {
   // функция отправки формы на Redux
   const submitHandler = async (e) => {
     e.preventDefault();
-    const formattedData = {
-      ...inputData,
-      dynamicBlocks: dynamicData,
-      selectCompetencies: selectedCompetencies
-        .map((option) => option.label)
-        .join(","),
-      degreeParticipation: selectDegreeParticipation.label,
-      statusObject: selectStatusObject.label,
-      viewConstruction: selectedViewConstruction
-        .map((option) => option.label)
-        .join(","),
-      // radioValue: selectedRadio,
-      photoAva: inputData.photoAva,
-      imageOpen: inputData.imageOpen,
-    };
-    dispatch(fetchProject(formattedData, setInputData));
-    setSelectedCompetencies([]);
-    setSelectDegreeParticipation("");
-    setSelectStatusObject("");
-    setSelectedViewConstruction([]);
-    // setSelectedRadio("");
-    setPreviewPhotos([]);
-    setDynamicData([]);
-    setInputData({
-      title: "",
-      selectCompetencies: "",
-      countryCity: "",
-      monthYear: "",
-      viewConstruction: "",
-      dropPhoto: [],
-      photoAva: "",
-      titleTextBlock: "",
-      descriptionProject: "",
-      totalArea: "",
-      siteArea: "",
-      floors: "",
-      altitude: "",
-      constructionVolume: "",
-      location: "",
-      degreeParticipation: "",
-      statusObject: "",
-      customer: "",
-      publication: "",
-      linkToPublication: "",
-      publicationTwo: "",
-      linkToPublicationTwo: "",
-      awards: "",
-      imageOpen: "",
-      textBlock: "",
-      imageClose: "",
-    });
-    setIsModalOpen(false);
+
+    const isFormValid = validateForm();
+
+     if (!isFormValid) {
+       // Обрабатываем ошибку
+     } else {
+          const formattedData = {
+            ...inputData,
+            dynamicBlocks: dynamicData,
+            selectCompetencies: selectedCompetencies
+              .map((option) => option.label)
+              .join(","),
+            degreeParticipation: selectDegreeParticipation.label,
+            statusObject: selectStatusObject.label,
+            viewConstruction: selectedViewConstruction
+              .map((option) => option.label)
+              .join(","),
+            // radioValue: selectedRadio,
+            photoAva: inputData.photoAva,
+            imageOpen: inputData.imageOpen,
+          };
+          dispatch(fetchProject(formattedData, setInputData));
+          setSelectedCompetencies([]);
+          setSelectDegreeParticipation("");
+          setSelectStatusObject("");
+          setSelectedViewConstruction([]);
+          // setSelectedRadio("");
+          setPreviewPhotos([]);
+          setDynamicData([]);
+          setInputData({
+            title: "",
+            selectCompetencies: "",
+            countryCity: "",
+            monthYear: "",
+            viewConstruction: "",
+            dropPhoto: [],
+            photoAva: "",
+            titleTextBlock: "",
+            descriptionProject: "",
+            totalArea: "",
+            siteArea: "",
+            floors: "",
+            altitude: "",
+            constructionVolume: "",
+            location: "",
+            degreeParticipation: "",
+            statusObject: "",
+            customer: "",
+            publication: "",
+            linkToPublication: "",
+            publicationTwo: "",
+            linkToPublicationTwo: "",
+            awards: "",
+            imageOpen: "",
+            textBlock: "",
+            imageClose: "",
+          });
+       setErrorMessage(""); // Очищаем ошибки
+       setIsModalOpen(false);
+       
+       console.log("Форма отправлена.");
+     }
   };
 
   // << ============ функции КОНСТРУКТОРА ============ >>
@@ -702,6 +747,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                     setIsPhotoOpenVisible
                   )
                 }
+                autoComplete="off"
                 required
               />
               <label htmlFor="title" className={styles.form__label}>
@@ -750,6 +796,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                     setIsPhotoOpenVisible
                   )
                 }
+                autoComplete="off"
                 required
               />
               <label htmlFor="countryCity" className={styles.form__label}>
@@ -802,6 +849,20 @@ export default function FormAddProject({ setIsModalOpen }) {
                   onBlur={() => setIsFocused(false)}
                 />
               </div>
+              {errorMessage && (
+                <div className={styles.form_error_message}>
+                  <div className={styles.form_error_message_div}>
+                    <button
+                      onClick={() => setErrorMessage("")}
+                      className={styles.form_error_close_button}
+                      aria-label="Закрыть"
+                    >
+                      ✕
+                    </button>
+                    {errorMessage}
+                  </div>
+                </div>
+              )}
             </div>
             <div className={`${styles.form__group} ${styles.field}`}>
               <Select
@@ -845,7 +906,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                   },
                 ]}
                 className={styles.form__field}
-                placeholder="Выберите вид строительства"
+                placeholder="Выберите табы фильтрации"
                 components={{
                   DropdownIndicator: AnotherDropdownIndicator,
                   ValueContainer: AnotherValueContainer,
@@ -1106,6 +1167,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                   setInputData({ ...inputData, titleTextBlock: value });
                 }
               }}
+              autoComplete="off"
               required
             />
             <label
@@ -1125,6 +1187,7 @@ export default function FormAddProject({ setIsModalOpen }) {
             </div>
             <textarea
               className={styles.form_container__textarea}
+              autoComplete="off"
               required
               name="descriptionProject"
               id="descriptionProject"
@@ -1155,6 +1218,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                   className={styles.form__field}
                   placeholder="totalArea"
                   name="totalArea"
+                  autoComplete="off"
                   id="totalArea"
                   value={inputData.totalArea}
                   onChange={(event) =>
@@ -1192,6 +1256,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                   className={styles.form__field}
                   placeholder="siteArea"
                   name="siteArea"
+                  autoComplete="off"
                   id="siteArea"
                   value={inputData.siteArea}
                   onChange={(event) =>
@@ -1230,6 +1295,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                   className={styles.form__field}
                   placeholder="floors"
                   name="floors"
+                  autoComplete="off"
                   id="floors"
                   value={inputData.floors}
                   onChange={(event) =>
@@ -1264,6 +1330,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                   className={styles.form__field}
                   placeholder="altitude"
                   name="altitude"
+                  autoComplete="off"
                   id="altitude"
                   value={inputData.altitude}
                   onChange={(event) =>
@@ -1301,6 +1368,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                   className={styles.form__field}
                   placeholder="constructionVolume"
                   name="constructionVolume"
+                  autoComplete="off"
                   id="constructionVolume"
                   value={inputData.constructionVolume}
                   onChange={(event) =>
@@ -1340,6 +1408,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                   className={styles.form__field}
                   placeholder="numberOfLanes"
                   name="numberOfLanes"
+                  autoComplete="off"
                   id="numberOfLanes"
                   value={inputData.numberOfLanes}
                   onChange={(event) =>
@@ -1376,6 +1445,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                   className={styles.form__field}
                   placeholder="long"
                   name="long"
+                  autoComplete="off"
                   id="long"
                   value={inputData.long}
                   onChange={(event) =>
@@ -1420,6 +1490,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                   className={styles.form__field}
                   placeholder="location"
                   name="location"
+                  autoComplete="off"
                   id="location"
                   value={inputData.location}
                   onChange={(event) =>
@@ -1501,6 +1572,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                   className={styles.form__field}
                   placeholder="customer"
                   name="customer"
+                  autoComplete="off"
                   id="customer"
                   value={inputData.customer}
                   onChange={(event) =>
@@ -1531,6 +1603,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                       className={styles.form__field}
                       placeholder="publication"
                       name="publication"
+                      autoComplete="off"
                       id="publication"
                       value={inputData.publication}
                       onChange={(event) =>
@@ -1558,6 +1631,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                       placeholder="publicationTwo"
                       name="publicationTwo"
                       id="publicationTwo"
+                      autoComplete="off"
                       value={inputData.publicationTwo}
                       onChange={(event) =>
                         changeHandler(
@@ -1589,6 +1663,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                       placeholder="linkToPublication"
                       name="linkToPublication"
                       id="linkToPublication"
+                      autoComplete="off"
                       value={inputData.linkToPublication}
                       onChange={(event) =>
                         changeHandler(
@@ -1618,6 +1693,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                       placeholder="linkToPublicationTwo"
                       name="linkToPublicationTwo"
                       id="linkToPublicationTwo"
+                      autoComplete="off"
                       value={inputData.linkToPublicationTwo}
                       onChange={(event) =>
                         changeHandler(
@@ -1648,6 +1724,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                   className={styles.form__field}
                   placeholder="awards"
                   name="awards"
+                  autoComplete="off"
                   id="awards"
                   value={inputData.awards}
                   onChange={(event) =>
@@ -1747,6 +1824,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                 type="input"
                 className={styles.form_container__heading_block_input}
                 placeholder="Не более 56 символов"
+                autoComplete="off"
                 name="headingTextBlock"
                 id="headingTextBlock"
                 maxLength="56"
@@ -1779,6 +1857,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                 className={styles.form_container__textarea}
                 name="textBlock"
                 id="textBlock"
+                autoComplete="off"
                 cols="30"
                 rows="10"
                 placeholder="Дополнительный текстовый блок"
