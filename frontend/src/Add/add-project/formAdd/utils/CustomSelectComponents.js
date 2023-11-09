@@ -49,7 +49,7 @@ export const ValueContainer = ({ children, ...props }) => {
                 transition: "opacity 0.3s ease", // плавный переход
               }}
             >
-              Выбрать компетенции
+              Nабы фильтрации
             </div>
             {children}
           </>
@@ -413,7 +413,7 @@ export const PublicationContainer = ({ children, ...props }) => {
               transition: "opacity 0.3s ease", // плавный переход
             }}
           >
-            Выбрать компетенции
+            Табы фильтрации
           </div>
           {children}
         </>
