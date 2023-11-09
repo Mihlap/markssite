@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import styles from "./TableCompany.module.css";
 import tableData from "./tableData";
 
@@ -20,14 +20,17 @@ const TableCompany = () => {
     borderTop: "1px solid var(--dark-gray-566272)",
   };
  
-  const handleShowAllClick = (e) => {
-    e.preventDefault();
-    setShowAll(!showAll);
-  };
+  const handleShowAllClick = () => {
+     setShowAll(!showAll);
+   };
 
-  return (
+   return (
     <>
-      <table className={styles.tableStyle}>
+    {/* <div className={`${styles.tableContainer} ${showAll ? styles.slideDown : styles.slideUp}`}> */}
+      <table
+      //  className={styles.tableStyle}
+       className={`${styles.tableStyle} ${showAll ? styles.slideDown : styles.slideUp}`}
+       >
         <thead>
           <tr>
             <th className={styles.thStyle}>Конкурс</th>
@@ -56,7 +59,9 @@ const TableCompany = () => {
         </tbody>
       </table>
       <div className={styles.button_table}>
-        <button className={styles.button_look_all} onClick={handleShowAllClick}>
+        <button
+         className={styles.button_look_all}
+          onClick={handleShowAllClick}>
           {showAll ? "Скрыть все" : "Смотреть все"}
           <svg
             width="24"
@@ -72,6 +77,7 @@ const TableCompany = () => {
           </svg>
         </button>
       </div>
+      {/* </div> */}
     </>
   );
 };
