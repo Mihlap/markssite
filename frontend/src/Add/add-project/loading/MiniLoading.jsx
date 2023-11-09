@@ -6,7 +6,7 @@ export default function MiniLoading() {
     <div
       style={{
         position: "absolute",
-        top: "45%",
+        top: "55%",
         right: "45%",
       }}
     >
