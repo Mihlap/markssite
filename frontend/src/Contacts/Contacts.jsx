@@ -22,21 +22,21 @@ const cityInfo = {
   },
   Оренбург: {
     address: "г. Оренбург, проезд Нижний, 17, офис 305",
-    phone: "+7 (495) 120-12-26",
+    phone: "+7 (3532) 22-86-96",
     mail: "mail@marksgroup.ru",
-    hour: "2 МСК",
+    hour: "+ 2 МСК",
   },
   Челябинск: {
     address: "г. Челябинск, ул. Северная дом 52/3",
-    phone: "+7 (495) 120-12-26",
+    phone: "+7 (968) 110-11-30",
     mail: "mail@marksgroup.ru",
-    hour: "2 МСК",
+    hour: "+ 2 МСК",
   },
   Ташкент: {
     address: "Tashkent, Oybek Street, 18/1",
     phone: "+998 99 353 96 90",
     mail: "mail@marksgroup.ru",
-    hour: "2 МСК",
+    hour: "+ 2 МСК",
   },
 };
 
