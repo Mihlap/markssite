@@ -45,9 +45,9 @@ export default function Company() {
   };
 
   const videoSource2 = {
-    large: `${Host}/images/video/header_company_full.mp4`,
-    medium: `${Host}/images/video/header_company_ipad.mp4`,
-    small: `${Host}/images/video/header_company_mobile.mp4`,
+    large: `${Host}/images/video/header_company_full.webm`,
+    medium: `${Host}/images/video/header_company_ipad.webm`,
+    small: `${Host}/images/video/header_company_mobile.webm`,
   };
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [countPercent, setCountPercent] = useState(0);
@@ -96,7 +96,7 @@ export default function Company() {
       if (screenWidth >= 1025) {
         setVideoSrc2(videoSource2.large);
         setVideoSrc(videoSource.large);
-      } else if (screenWidth >= 490 && screenWidth <= 1024) {
+      } else if (screenWidth >= 768 && screenWidth <= 1024) {
         setVideoSrc2(videoSource2.medium);
         setVideoSrc(videoSource.medium);
       } else {
@@ -288,8 +288,8 @@ export default function Company() {
         {/* <Company_Slider /> */}
         <div className={styles.block_video_company}>
           {videoSrc2 && (
-            <video playsInline autoPlay muted loop id="bg-video">
-              <source src={videoSrc2} type="video/mp4" preload="auto" />
+            <video playsInline autoPlay muted loop id="bg-video" className={styles.bg_video}>
+              <source src={videoSrc2} type="video/webm" preload="auto" />
             </video>
           )}
         </div>
