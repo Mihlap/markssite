@@ -27,7 +27,7 @@ export default function Publics() {
   const [selectArticle, setSelectArticle] = useState("Все");
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [swiper, setSwiper] = useState(null);
-  const [videoSrc, setVideoSrc] = useState(videoSource.large);
+  const [videoSrc, setVideoSrc] = useState(null);
 
   const buttonChoose1 = [
     "Все",
@@ -50,7 +50,7 @@ export default function Publics() {
       } else if (screenWidth >= 768 && screenWidth < 1025) {
         setVideoSrc(videoSource.medium);
       } else {
-        setVideoSrc(videoSource.small);
+        setVideoSrc(videoSource.medium);
       }
     };
 
@@ -91,7 +91,7 @@ export default function Publics() {
       <div className={styles.public_container_main}>
         <div className={styles.public_image_header}>
           {videoSrc && (
-            <video playsInline autoPlay muted loop id="bg-video">
+            <video playsInline autoPlay muted loop id="bg-video" className={styles.bg_video}>
               <source src={videoSrc} type="video/mp4" preload="auto" />
             </video>
           )}
