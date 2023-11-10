@@ -44,9 +44,9 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
   //   small: `${Host}/images/video/header_company_mobile.mp4`
   // };
   const videoSource = {
-    large: `${Host}/images/video/header_company_full.mp4`,
-    medium: `${Host}/images/video/header_company_ipad.mp4`,
-    small: `${Host}/images/video/header_company_mobile.mp4`,
+    large: `${Host}/images/video/main_company_full.mp4`,
+    medium: `${Host}/images/video/main_company_ipad.mp4`,
+    small: `${Host}/images/video/main_company_mobile.mp4`,
   };
   const sliderCardRef = useRef(null);
   const [enableVerticalScroll, setEnableVerticalScroll] = useState(true);
@@ -96,7 +96,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
       const screenWidth = window.innerWidth;
       if (screenWidth >= 1025) {
         setVideoSrc(videoSource.large);
-      } else if (screenWidth >= 400 && screenWidth <= 1024) {
+      } else if (screenWidth >= 768 && screenWidth <= 1024) {
         setVideoSrc(videoSource.medium);
       } else {
         setVideoSrc(videoSource.small);
@@ -281,16 +281,18 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
         <div className={styles.wrapper_nameCompanyMainHeader}>
         <div className={styles.block_video_company}>
           {videoSrc && (
-            <video playsInline autoPlay muted loop id="bg-video">
+            <video playsInline autoPlay muted loop id="bg-video" className={styles.bg_video}>
               <source src={videoSrc} type="video/mp4" preload="auto"/>
             </video>
           )}
         </div>
-        <div className={styles.nameCompanyMainHeader}>
+         <div className={styles.nameCompanyContainer}>
         <img src={nameCompany} alt={nameCompany} />
+        <span className={styles.span_nameCompany}>Генеральное проектирование</span>
+        <span className={styles.span_nameCompany11}>Реализация всех типов объектов «под ключ»</span>
         </div>
         </div>
-        <div className={styles.header_desctop_block}>
+         <div className={styles.header_desctop_block}>
           <h1
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
