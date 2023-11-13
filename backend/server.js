@@ -66,6 +66,7 @@ app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/images', express.static(path.join(__dirname, 'images')));
+app.use('/images/imageStuff', express.static(path.join(__dirname, 'images/imageStuff'), { maxAge: '180d' }));
 app.use('/images/imageAdd', express.static(path.join(__dirname, 'images/imageAdd')));
 app.use('/images/projectFoto', express.static(path.join(__dirname, 'images/projectFoto'), { maxAge: '180d' }));
 app.use('/public/assets', express.static(path.join(__dirname, 'assets'), { maxAge: '180d' }));

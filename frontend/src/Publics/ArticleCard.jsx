@@ -511,7 +511,7 @@ const ArticleCard = () => {
               },
             }}
           >
-            {articles?.map((article, index) => {
+            {articles?.slice(0, 20).map((article, index) => {
               if (!article) {
                 return null;
               }
