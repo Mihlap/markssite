@@ -18,8 +18,8 @@ export default function ConstructorPage({ handleClick }) {
         className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockOne}`}
         onClick={() =>
           handleClick([
-            { type: "file", label: "Картинка с описанием" },
-            { type: "text", label: "Описание картинки" },
+            { type: "file", label: "Картинка с описанием", required: true },
+            { type: "text", label: "Описание картинки", required: false },
           ])
         }
       >
@@ -30,8 +30,8 @@ export default function ConstructorPage({ handleClick }) {
         className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockTwo}`}
         onClick={() =>
           handleClick([
-            { type: "text", label: "Заголовок" },
-            { type: "textarea", label: "Текстовый блок" },
+            { type: "text", label: "Заголовок", required: false },
+            { type: "textarea", label: "Текстовый блок", required: true },
           ])
         }
       >
@@ -41,7 +41,9 @@ export default function ConstructorPage({ handleClick }) {
       <div
         className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockThree}`}
         onClick={() =>
-          handleClick([{ type: "file", label: "Блок 3 картинки" }])
+          handleClick([
+            { type: "file", label: "Блок 3 картинки", required: true },
+          ])
         }
       >
         <img src={svg3} alt="svg_three_icon" />
@@ -51,7 +53,11 @@ export default function ConstructorPage({ handleClick }) {
         className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockFour}`}
         onClick={() =>
           handleClick([
-            { type: "file", label: "Блок 2е вертикальные картинки" },
+            {
+              type: "file",
+              label: "Блок 2е вертикальные картинки",
+              required: true,
+            },
           ])
         }
       >
@@ -65,6 +71,7 @@ export default function ConstructorPage({ handleClick }) {
             {
               type: "file",
               label: "Слайдер *допускается загрузка 8ми изображений",
+              required: true
             },
           ])
         }
@@ -78,6 +85,7 @@ export default function ConstructorPage({ handleClick }) {
             {
               type: "file",
               label: "Видеоролик",
+              required: true
             },
           ])
         }
