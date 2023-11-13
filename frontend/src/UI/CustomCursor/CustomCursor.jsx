@@ -76,7 +76,7 @@ export default function CustomCursor() {
        alignItems: "center",
        justifyContent: "center",
        color: "#ffffff",
-       opacity: 0.90,
+       opacity: 0.9,
        stroke: "var(--white-F6F6F6, #F6F6F6)",
        strokeWidth: "1px",
        filter: "drop-shadow(0px 0px 7px rgba(44, 59, 68, 0.25))",
