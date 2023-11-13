@@ -322,10 +322,9 @@ position: relative;
   transition: filter 0.3s ease;
 }
 
-.card_img:hover {
+/* .card_img:hover {
   filter: brightness(50%);
-}
-
+} */
 
 .img_1,
 .img_2 {
