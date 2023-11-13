@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styles from "./ConstructorPage.module.scss";
 
 import svg1 from "./svg/Group4650.svg";
@@ -14,23 +14,8 @@ import svg8 from "./svg/Group4348.svg";
 import svg9 from "./svg/Group46412.svg";
 
 export default function ConstructorPage({ handleClick }) {
-  // const handleVideoClick = () => {
-  //   window.alert("Сейчас загрузка видео недоступна.");
-  // };
+  
 
-  const [showNotification, setShowNotification] = useState(false);
-
-  useEffect(() => {
-    if (showNotification) {
-      setTimeout(() => {
-        setShowNotification(false);
-      }, 3000); // Уведомление исчезнет через 2 секунды
-    }
-  }, [showNotification]);
-
-  const handleVideoClick = () => {
-    setShowNotification(true);
-  };
   return (
     <div className={styles.div_conteiner}>
       {/* блок заголовок и описание  */}
@@ -38,8 +23,8 @@ export default function ConstructorPage({ handleClick }) {
         className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockTwo}`}
         onClick={() =>
           handleClick([
-            { type: "text", label: "Заголовок" },
-            { type: "textarea", label: "Текстовый блок" },
+            { type: "text", label: "Заголовок", required: false },
+            { type: "textarea", label: "Текстовый блок", required: true },
           ])
         }
       >
@@ -50,7 +35,9 @@ export default function ConstructorPage({ handleClick }) {
       <div
         className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockSeven}`}
         onClick={() =>
-          handleClick([{ type: "textarea", label: "Блок описание" }])
+          handleClick([
+            { type: "textarea", label: "Блок описание", required: true },
+          ])
         }
       >
         <img src={svg7} alt="svg_two_icon" />
@@ -60,7 +47,9 @@ export default function ConstructorPage({ handleClick }) {
       <div
         className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockEight}`}
         onClick={() =>
-          handleClick([{ type: "textarea", label: "Текст в рамочке" }])
+          handleClick([
+            { type: "textarea", label: "Текст в рамочке", required: true },
+          ])
         }
       >
         <img
@@ -75,8 +64,8 @@ export default function ConstructorPage({ handleClick }) {
         className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockOne}`}
         onClick={() =>
           handleClick([
-            { type: "file", label: "Картинка с описанием" },
-            { type: "text", label: "Описание картинки" },
+            { type: "file", label: "Картинка с описанием", required: true },
+            { type: "text", label: "Описание картинки", required: false },
           ])
         }
       >
@@ -88,9 +77,13 @@ export default function ConstructorPage({ handleClick }) {
         className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockNine}`}
         onClick={() =>
           handleClick([
-            { type: "text", label: "Автор цитаты ( ФИО должность )" },
-            { type: "textarea", label: "Текст цитаты" },
-            { type: "file", label: "Фото автора статьи" },
+            {
+              type: "text",
+              label: "Автор цитаты ( ФИО должность )",
+              required: true,
+            },
+            { type: "textarea", label: "Текст цитаты", required: true },
+            { type: "file", label: "Фото автора статьи", required: false },
           ])
         }
       >
@@ -113,7 +106,9 @@ export default function ConstructorPage({ handleClick }) {
       <div
         className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockTen}`}
         onClick={() =>
-          handleClick([{ type: "textarea", label: "Текст заметки" }])
+          handleClick([
+            { type: "textarea", label: "Текст заметки", required: true },
+          ])
         }
       >
         <img
@@ -128,7 +123,11 @@ export default function ConstructorPage({ handleClick }) {
         className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockFour}`}
         onClick={() =>
           handleClick([
-            { type: "file", label: "Блок 2е вертикальные картинки" },
+            {
+              type: "file",
+              label: "Блок 2е вертикальные картинки",
+              required: true,
+            },
           ])
         }
       >
@@ -142,6 +141,7 @@ export default function ConstructorPage({ handleClick }) {
             {
               type: "file",
               label: "Слайдер *допускается загрузка 8ми изображений",
+              required: true,
             },
           ])
         }
@@ -156,6 +156,7 @@ export default function ConstructorPage({ handleClick }) {
             {
               type: "file",
               label: "Видеоролик",
+              required: true,
             },
           ])
         }
