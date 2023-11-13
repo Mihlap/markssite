@@ -38,13 +38,14 @@ const Mapbox3D = () => {
       });
 
       const popupNode = document.createElement("div");
-      popupNode.style.width = "18rem";
+      popupNode.style.width = window.innerWidth > 767 ? "18rem" : "10rem";
 
       let popupContent = "";
 
-      if (popupData.image) {
+      if (window.innerWidth > 767 && popupData.image) {
         const imageUrl = `${popupData.image}`;
-
+      
+  
         if (!imageUrl) {
           try {
             const response = await fetch(imageUrl);
