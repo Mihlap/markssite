@@ -109,6 +109,7 @@
   line-height: 20px;
   width: fit-content;
   align-items: center;
+  transition: background-color 0.8s ease, color 0.8s ease;
   }
 
 .menu_button:hover {
@@ -116,6 +117,7 @@
   border: 1px solid transparent;
   color: var(--white-F6F6F6);
   font-weight: var(--fw-300);
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 .menu_button_active {
@@ -220,6 +222,8 @@
     align-items: center;
     justify-content: center;
     width: fit-content;
+    cursor: pointer;
+    transition: background-color 0.4s ease, color 0.4s ease;
    }
   .slider_menu_button_active {
     color: var(--white-F6F6F6);
@@ -299,12 +303,15 @@
 
   .menu_button {
     background-color: var(--white-F6F6F6);
+    transition: background-color 0.4s ease, color 0.4s ease;
   }
 
-  .menu_button:hover {
-    background-color: var(--black-1D2E43);
-  }
-
+    .menu_button:hover {
+      background: var(--white-F6F6F6);
+      color: var(--black-1D2E43);
+      border: 1px solid var(--black-1D2E43);
+      transition: none;
+    }
   .menu_button_active {
     color: var(--white-F6F6F6);
     background-color: var(--black-1D2E43);

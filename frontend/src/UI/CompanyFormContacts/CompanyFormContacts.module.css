@@ -134,12 +134,18 @@
   border: 1px solid var(--black-1D2E43);
    border-radius: 66px;
   background-color: transparent !important;
+  transition: background-color 0.4s ease, color 0.4s ease, border 0.4s ease;
 }
 
 .button_hover10:hover {
   background: linear-gradient(133deg, rgba(123, 191, 255, 0.55) 0%, rgba(240, 248, 255, 0.55) 100%);
   color: var(--black-1D2E43);
   border: 0px solid transparent;
+  
+}
+
+.button_hover10:hover:not(:hover) {
+  transition: background-color 0.4s ease, color 0.4s ease, border 0.4s ease;
 }
 
 .button_name10 {
@@ -300,6 +306,11 @@
   .some-unique-class input[name="task"] {
     width: 70%;
   }
+  .button_hover10:hover {
+    background: transparent !important;
+    color: var(--black-1D2E43);
+    border: 1px solid var(--black-1D2E43);
+  }
 
 }
 
@@ -360,6 +371,11 @@
   
 .button_hover10 {
   margin-top: 2rem;
+}
+.button_hover10:hover {
+  background: transparent !important;
+  color: var(--black-1D2E43);
+  border: 1px solid var(--black-1D2E43);
 }
 
 

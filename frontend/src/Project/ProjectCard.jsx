@@ -698,7 +698,8 @@ const ProjectCard = () => {
               },
             }}
           >
-            {projects?.map((project, index) => {
+            
+            {projects?.slice(0, 20).map((project, index) => {
               const photoName = project && project.imageProject;
               const defaultPhoto = catPhoto;
 
