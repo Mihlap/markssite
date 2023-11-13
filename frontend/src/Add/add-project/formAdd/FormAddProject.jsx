@@ -268,16 +268,17 @@ const validateForm = () => {
   };
 
   // функция которая не даёт создать новый диманический блок, пока не заполнены value предыдущего
-  const areAllBlocksFilled = () => {
-    for (let block of dynamicData) {
-      for (let input of block) {
-        if (!input.value || input.value === "") {
-          return false;
-        }
+const areAllBlocksFilled = () => {
+  for (let block of dynamicData) {
+    for (let input of block) {
+      // Проверяем только обязательные поля
+      if (input.required && (!input.value || input.value === "")) {
+        return false;
       }
     }
-    return true;
-  };
+  }
+  return true;
+};
   // функция которая срабатывает в случае если мы всё-таки пытаемся создать блок выдает ( алерт ), в случае успеза проходит в дальше и создаёт новый динамический блок
   const handleClick = (inputs) => {
     if (!areAllBlocksFilled()) {
