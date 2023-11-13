@@ -477,6 +477,7 @@ padding-right: 0.5rem;
   /* word-break: break-all; */
   background: var(--light-light-gray-EBECEE);
   width: 75%;
+  transition: background-color 0.4s ease;
 }
 
 .button_article_link_articleCard2 {
@@ -495,6 +496,7 @@ padding-right: 0.5rem;
   /* word-break: break-all; */
   background: var(--salmon-light-FFBFB5);
   width: 25%;
+  transition: background-color 0.4s ease;
 }
 
 .previous_svg_articleCard,
@@ -616,12 +618,12 @@ padding-right: 0.5rem;
   align-items: center;
   border-radius: 1rem;
   transform-origin: center;
-  transform: scale(0.98);
+  /* transform: scale(0.98); */
   transition: transform 0.8s ease-in-out;
 }
 
 .wrapper_container_item_card_articleCard:hover .container__imageTitle_articleCard {
-  transform: scale(1.2);
+  transform: scale(1.1);
   border-radius: 1rem;
   cursor: pointer;
 }
@@ -908,6 +910,16 @@ padding-right: 0.5rem;
       text-overflow: ellipsis;
       overflow-wrap: break-word;
     }
+
+    .button_article_link_articleCard1:hover {
+      background: var(--light-light-gray-EBECEE);
+      fill: var(--light-gray-C0C5CB);
+    }
+    
+    .button_article_link_articleCard2:hover {
+      background: var(--salmon-light-FFBFB5);
+      fill: var(--salmon-FF7F6A);
+    }
   .container__imageTitle_articleCard {
     width: 100%;
     height: 100%;
@@ -1168,6 +1180,16 @@ padding-right: 0.5rem;
     text-overflow: ellipsis;
     overflow-wrap: break-word;
    }
+
+   .button_article_link_articleCard1:hover {
+    background: var(--light-light-gray-EBECEE);
+    fill: var(--light-gray-C0C5CB);
+  }
+  
+  .button_article_link_articleCard2:hover {
+    background: var(--salmon-light-FFBFB5);
+    fill: var(--salmon-FF7F6A);
+  }
 
   .article_name_text {
     padding-left: 5vw;
