@@ -564,7 +564,7 @@ export default function Company() {
                     {showCards ? (
                       <img
                         className={styles.container__img_stuff}
-                        src={`${Host}/images/${el.img}`}
+                        src={`${Host}/images/imageStuff/${el.img}`}
                         onLoad={() => setShowCards(true)}
                         alt={el.img}
                         loading="lazy"
@@ -641,7 +641,7 @@ export default function Company() {
                       <div className={styles.modal}>
                         <img
                           className={styles.modal_img_stuff}
-                          src={`${Host}/images/${selectedCard.img}`}
+                          src={`${Host}/images/imageStuff/${selectedCard.img}`}
                           alt={selectedCard.img}
                         />
                       </div>
@@ -958,7 +958,7 @@ export default function Company() {
                   <div className={styles.wrapper_container_item_stuff}>
                     <img
                       className={styles.container__img_stuff}
-                      src={`${Host}/images/${el.img}`}
+                      src={`${Host}/images/imageStuff/${el.img}`}
                       alt={el.img}
                       loading="lazy"
                     />
@@ -1007,7 +1007,7 @@ export default function Company() {
                   <div className={styles.wrapper_container_item_stuff}>
                     <img
                       className={styles.container__img_stuff}
-                      src={`${Host}/images/${el.img}`}
+                      src={`${Host}/images/imageStuff/${el.img}`}
                       alt={el.img}
                       loading="lazy"
                     />

@@ -124,6 +124,7 @@ border-radius: 16px;
   border: 1px solid var(--black-1D2E43);
   border-radius: 66px;
   background-color: transparent !important;
+  transition: background-color 0.4s ease, color 0.4s ease, border 0.4s ease;
  }
 
 
@@ -131,6 +132,10 @@ border-radius: 16px;
   background: linear-gradient(133deg, rgba(123, 191, 255, 0.55) 0%, rgba(240, 248, 255, 0.55) 100%);
   color: var(--black-1D2E43);
   border: 0px solid transparent;
+}
+
+.button_hover11:hover:not(:hover) {
+  transition: background-color 0.4s ease, color 0.4s ease, border 0.4s ease;
 }
 
 
@@ -209,6 +214,11 @@ border-radius: 16px;
 
   .email_input_form {
     width: 65%;
+  }
+  .button_hover11:hover {
+    background: transparent !important;
+    color: var(--black-1D2E43);
+    border: 1px solid var(--black-1D2E43);
   }
 
 }
