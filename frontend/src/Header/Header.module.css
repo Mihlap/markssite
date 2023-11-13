@@ -319,11 +319,16 @@ position: relative;
   border-radius: 20px;
   overflow: hidden;
   cursor: pointer;
-  transition: filter 0.3s ease;
+  transition: filter 0.8s ease;
 }
 
 .card_img:hover {
+  transition: filter 0.8s ease-in-out;
   filter: brightness(50%);
+}
+.card_img:not(:hover) {
+  filter: brightness(100%); 
+  transition: transform 0.8s ease-in-out, filter 0.8s ease-in-out;
 }
 
 
@@ -519,7 +524,7 @@ svg path {
   cursor: pointer;
 }
 
-.wrapper_container_item_card .container__imageTitle {
+.wrapper_container_item_card, .container__imageTitle {
   border-radius: 1rem;
   cursor: pointer;
   transition: transform 0.8s ease-in-out;
@@ -532,7 +537,6 @@ svg path {
   transform-origin: center;
   transform: scale(0.98);
   transition: transform 0.8s ease-in-out;
-  filter: brightness(50%);
 }
 
 .wrapper_container_item_card:hover .container__imageTitle {
@@ -541,6 +545,7 @@ svg path {
   cursor: pointer;
 }
 
+
 .container__imageTitle {
   width: 100%;
   height: 100%;
@@ -548,6 +553,17 @@ svg path {
   /* object-fit: cover; */
   object-position: center;
   transition: transform 0.8s ease-in-out;
+}
+
+.wrapper_container_item_card:hover {
+  filter: brightness(50%);
+  transition: transform 0.8s ease-in-out, filter 0.8s ease-in-out;
+}
+
+
+.wrapper_container_item_card:not(:hover) {
+  filter: brightness(100%); 
+  transition: transform 0.8s ease-in-out, filter 0.8s ease-in-out;
 }
 
 .wrapper_container_title_selectCompetencies {

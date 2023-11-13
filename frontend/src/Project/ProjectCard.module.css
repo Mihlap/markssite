@@ -515,7 +515,9 @@
 
 .slider_container_item_card_projectCard {
   display: flex;
+  min-width: 24rem;
   width: 100%;
+  min-height: 24rem;
   height: 100%;
 }
 
@@ -530,7 +532,7 @@
   border-radius: 1rem;
   gap: 1.88rem;
   overflow: hidden;
-  transition: transform 0.8s ease-in-out;
+  transition: transform 0.8s ease-in-out, filter 0.8s ease-in-out; 
   cursor: pointer;
 }
 
@@ -541,23 +543,6 @@
   transition: transform 0.8s ease-in-out;
 }
 
-.wrapper_container_item_card_projectCard:hover {
-  justify-content: center;
-  align-items: center;
-  border-radius: 1rem;
-  transform-origin: center;
-  transform: scale(0.98);
-  transition: transform 0.8s ease-in-out;
-  filter: brightness(50%);
-}
-
-.wrapper_container_item_card_projectCard:hover .container__imageTitle_projectCard {
-  transform: scale(1.2);
-  border-radius: 1rem;
-  cursor: pointer;
-}
-
-
 .container__imageTitle_projectCard {
   width: 100%;
   height: 100%;
@@ -565,6 +550,31 @@
   /* object-fit: cover; */
   object-position: center;
   transition: transform 0.8s ease-in-out;
+}
+
+.wrapper_container_item_card_projectCard:hover {
+  justify-content: center;
+  align-items: center;
+  border-radius: 1rem;
+  transform-origin: center;
+  transform: scale(0.98);
+  transition: transform 0.8s ease-in-out;
+ }
+
+.wrapper_container_item_card_projectCard:hover .container__imageTitle_projectCard {
+  transform: scale(1.2);
+  border-radius: 1rem;
+  cursor: pointer;
+}
+
+.wrapper_container_item_card_projectCard:hover {
+  filter: brightness(50%);
+  transition: transform 0.8s ease-in-out, filter 0.8s ease-in-out;
+}
+
+.wrapper_container_item_card_projectCard:not(:hover) {
+  filter: brightness(100%); 
+  transition: transform 0.8s ease-in-out, filter 0.8s ease-in-out;
 }
 
 .wrapper_container_title_selectCompetencies_projectCard {
