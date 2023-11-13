@@ -28,7 +28,7 @@ import notDataPhoto from "./img/notData.png";
 import nameCompany from "../icons/nameCompany.svg"
 
 // import photoTest from "./img/project_right3.jpg";
-import { textEnter, textLeave, imageHover } from "../store/Slice/cursorSlice";
+import { textEnter, textLeave, imageHover, specialHover } from "../store/Slice/cursorSlice";
 import { searchArticleRightGet } from "../store/Slice/searchArticlePublicRightSlice";
 import BlockHeaderMain from "../UI/BlockHeader/BlockHeaderMain";
 
@@ -37,7 +37,7 @@ const Host = process.env.REACT_APP_SERVER_HOST;
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
-export default function Header({ user, setNavBarOpen, setShowFooter }) {
+export default function Header() {
   // const videoSource = {
   //   large: `${Host}/images/video/header_company_full.mp4`,
   //   medium: `${Host}/images/video/header_company_ipad.mp4`,
@@ -89,6 +89,10 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
 
   const handleMouseHover = () => {
     dispatch(imageHover());
+  };
+
+  const handleSpecialHover = () => {
+    dispatch(specialHover());
   };
 
   useEffect(() => {
@@ -279,20 +283,31 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
           <VideoPlayer videoSource={videoSource} />
         </div> */}
         <div className={styles.wrapper_nameCompanyMainHeader}>
-        <div className={styles.block_video_company}>
-          {videoSrc && (
-            <video playsInline autoPlay muted loop id="bg-video" className={styles.bg_video}>
-              <source src={videoSrc} type="video/mp4" preload="auto"/>
-            </video>
-          )}
+          <div className={styles.block_video_company}>
+            {videoSrc && (
+              <video
+                playsInline
+                autoPlay
+                muted
+                loop
+                id="bg-video"
+                className={styles.bg_video}
+              >
+                <source src={videoSrc} type="video/mp4" preload="auto" />
+              </video>
+            )}
+          </div>
+          <div className={styles.nameCompanyContainer}>
+            <img src={nameCompany} alt={nameCompany} />
+            <span className={styles.span_nameCompany}>
+              Генеральное проектирование
+            </span>
+            <span className={styles.span_nameCompany11}>
+              Реализация всех типов объектов «под ключ»
+            </span>
+          </div>
         </div>
-         <div className={styles.nameCompanyContainer}>
-        <img src={nameCompany} alt={nameCompany} />
-        <span className={styles.span_nameCompany}>Генеральное проектирование</span>
-        <span className={styles.span_nameCompany11}>Реализация всех типов объектов «под ключ»</span>
-        </div>
-        </div>
-         <div className={styles.header_desctop_block}>
+        <div className={styles.header_desctop_block}>
           <h1
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
@@ -320,7 +335,11 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
         </p>
       </div> */}
         <div className={styles.container_main}>
-          <div className={styles.sliderHeader_container}>
+          <div
+            onMouseEnter={handleSpecialHover}
+            onMouseLeave={handleMouseLeave}
+            className={styles.sliderHeader_container}
+          >
             <SliderHeader />
           </div>
           <div className={styles.swiper_container}>
@@ -484,12 +503,13 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
             ></img>
           </div>
           {/* <BlockHeader /> */}
-          <div className={styles.block_header_maim_wrapper}
-          id="blockHeaderMain"
-           onMouseEnter={handleMouseEnter}
-           onMouseLeave={handleMouseLeave}
+          <div
+            className={styles.block_header_maim_wrapper}
+            id="blockHeaderMain"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
           >
-            <BlockHeaderMain/>
+            <BlockHeaderMain />
           </div>
           <Mapbox3D />
         </div>
