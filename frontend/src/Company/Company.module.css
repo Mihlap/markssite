@@ -442,6 +442,7 @@
   line-height: 20px;
   color: var(--black-1D2E43);
   padding: 8px 24px;
+  transition: background-color 0.8s ease, color 0.8s ease;
 }
 
 .active {
@@ -452,6 +453,7 @@
 .button_hover:hover {
   background: var(--dark-gray-566272);
   color: var(--white-F6F6F6);
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 .card_container {
@@ -589,7 +591,17 @@ bottom: 3.38rem;
   box-shadow: -2px 4px 22px 0px rgba(29, 46, 67, 0.46);
   backdrop-filter: blur(8.5px);
   overflow-y: auto;
-  
+  opacity: 0; 
+  animation: fadeInOut 0.4s ease-out forwards;
+}
+
+@keyframes fadeInOut {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 .modal_context {
@@ -906,10 +918,19 @@ bottom: 3.38rem;
   .button_group button {
     font-size: 12px;
     padding: 8px 24px;
+    transition: background-color 0.4s ease, color 0.4s ease;
   }
 
   .button_hover {
     width: fit-content;
+  }
+
+  .button_hover:hover,
+  .button_group button.active {
+    background: transparent;
+    color: var(--black-1D2E43);
+    transition: none; 
+    cursor: pointer;
   }
 
   .card_container {
@@ -1327,11 +1348,7 @@ bottom: 3.38rem;
     width: 100%;
    }
 
-   .button_group {
-
-   }
-
-   .button_hover {
+    .button_hover {
     margin-left: 1rem;
     margin-right: -0.5rem;
      background: transparent;
@@ -1356,6 +1373,15 @@ bottom: 3.38rem;
     background: var(--black-1D2E43) !important;
     color: var(--white-F6F6F6) !important;
   }
+  .button_hover:hover,
+  .button_group button.active {
+    background: transparent;
+    color: var(--black-1D2E43);
+    transition: none; 
+    cursor: pointer;
+    transition: background-color 0.4s ease, color 0.4s ease;
+  }
+
 
   .card_container {
     display: none;
