@@ -1,11 +1,11 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Helmet } from "react-helmet-async";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
-import BlockHeader from "../UI/BlockHeader/BlockHeader";
+// import BlockHeader from "../UI/BlockHeader/BlockHeader";
 import SwiperContainer from "./Swiper-Phone/SwiperContainer";
 import SwiperContainerProgect from "./Swiper-project/SwiperContainerProgect";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -13,7 +13,7 @@ import SwiperCore, { Navigation } from "swiper";
 import SliderHeader from "../UI/SliderHeader/SliderHeader";
 import Mapbox3D from "../UI/Map3D/Mapbox3D";
 import SliderMobile from "../UI/SliderHeader/SliderMobile";
-import VideoPlayer from "../UI/Videoplayer/VideoPlayer";
+// import VideoPlayer from "../UI/Videoplayer/VideoPlayer";
 // import actively from "./img/actively.svg";
 // import { getFetchForm } from "../store/Slice/projectSlice";
 import { getFetchFormArticle } from "../store/Slice/articleSlice";
@@ -258,6 +258,7 @@ export default function Header({ handleMouseEnter,
     }
   }, [loading, loadingArticle, scrollingMode]);
 
+ 
   // if (error) {
   //   return (
   //     <div>
@@ -333,7 +334,9 @@ export default function Header({ handleMouseEnter,
             onMouseLeave={handleMouseLeave}
             className={styles.sliderHeader_container}
           >
+            <NavLink to="/company#table-header-anchor">
             <SliderHeader />
+            </NavLink>
           </div>
           <div className={styles.swiper_container}>
             <SwiperContainer article1={MapArticle} article2={MapArticleRight} />

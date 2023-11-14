@@ -1,7 +1,8 @@
 import React from "react";
 import styles from "./Information.module.css";
 
-const Information = () => {
+const Information = () => { 
+
   return (
     <div className={styles.information_wrapper}>
       <h1 className={styles.information_h1}>
