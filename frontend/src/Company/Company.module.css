@@ -24,14 +24,14 @@
   top: 0;
   left: 0;
   width: 100%;
-  height: 100%;
+  height: 100vh;
   background-color: rgb(44, 59, 68, 0.39); 
 }
 
 .bg_video {
   width: 100%; 
   height: 100%; 
-  min-height: 70vh;
+  min-height: 100vh;
   object-fit: cover;
   object-position: center;
 }
@@ -113,10 +113,10 @@
   position: absolute;
   display: flex;
   flex-direction: column;
-  top: 40vh;
+  top: 60rem;
   left: 10vw;
   max-width: 100%;
-  z-index: 1;
+  /* z-index: 10; */
 }
 
 .span_underSlider_text1 {
@@ -713,7 +713,7 @@ bottom: 3.38rem;
   position: absolute;
   display: flex;
   flex-direction: column;
-  top: 30vh;
+  top: 60rem;
   left: 10vw;
   max-width: 100%;
   z-index: 1;
@@ -734,14 +734,14 @@ bottom: 3.38rem;
   }
   .bg_video {
     width: 100%; 
-    height: 100%; 
+    height: 100vh; 
     min-height: 0;
     object-fit: cover;
     object-position: center;
   }
   
   .underSlider_text_wrapper {
-    top: 15rem;
+    top: 60rem;
     left: 3.5rem;
   }
 
@@ -1085,14 +1085,15 @@ bottom: 3.38rem;
   .bg_video {
     width: 100%; 
     height: 100%; 
-    /* min-height: 100vh; */
+    min-height: 100vh;
     object-fit: cover;
     object-position: center;
   }
 
+
   .underSlider_text_wrapper {
     left: 1.3rem;
-    bottom: 16rem;
+    top: 65rem;
     /* max-width: 100%; */
     word-wrap: break-word;
    }

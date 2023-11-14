@@ -420,8 +420,10 @@
   display: flex;
   flex-direction: column;
   padding-top: 2rem;
+  padding-left: -1rem;
+  padding-right: 1rem;
   background-color: var(--white-F6F6F6);
-  padding-bottom: 2.5rem;
+ 
 }
 
 .section_article__block {
@@ -430,7 +432,7 @@
   flex-direction: column;
   gap: 2rem;
   padding-left: 1rem;
-  padding-right: 1rem;
+  padding-bottom: 2.5rem;
 }
 
 .section_article__block_cart {
