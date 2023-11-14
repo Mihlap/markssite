@@ -29,6 +29,7 @@ import { resetCurrentPage, setCurrentPage } from "./store/Slice/userSlice";
 import ButtonAdmin from "./UI/ButtonAdmin/ButtonAdmin";
 import { fetchToggleStateForButton3Async } from "./store/Slice/toggleSlice";
 import LoadingModal from "./Add/add-project/loading/LoadingModal";
+import { imageHover, specialHover, textEnter, textLeave } from "./store/Slice/cursorSlice";
 
 export default function App() {
   const user = useSelector((state) => state.auth.user);
@@ -47,6 +48,22 @@ export default function App() {
   const handlePageChange = (page) => {
     dispatch(setCurrentPage(page));
   };
+
+   const handleMouseEnter = () => {
+     dispatch(textEnter());
+   };
+
+   const handleMouseLeave = () => {
+     dispatch(textLeave());
+   };
+
+   const handleMouseHover = () => {
+     dispatch(imageHover());
+   };
+
+   const handleSpecialHover = () => {
+     dispatch(specialHover());
+   };
 
   const handleReturn = () => {
     dispatch(resetCurrentPage()); // Сбрасываем currentPage
@@ -68,14 +85,33 @@ export default function App() {
         <Loading />
       ) : (
         <>
-          {showNavbarFooter && currentPage !== "add" && <Navbar />}
           {showNavbarFooter && currentPage !== "add" && (
-            <ButtonAdmin user={user} />
+            <Navbar
+              handleMouseEnter={handleMouseEnter}
+              handleMouseLeave={handleMouseLeave}
+            />
+          )}
+          {showNavbarFooter && currentPage !== "add" && (
+            <ButtonAdmin
+              user={user}
+              handleMouseEnter={handleMouseEnter}
+              handleMouseLeave={handleMouseLeave}
+            />
           )}
           <TransitionGroup>
             <CSSTransition key={location.key} classNames="fade" timeout={300}>
               <Routes location={location}>
-                <Route path="/" element={<Header user={user} />} />
+                <Route
+                  path="/"
+                  element={
+                    <Header
+                      handleMouseEnter={handleMouseEnter}
+                      handleMouseLeave={handleMouseLeave}
+                      handleMouseHover={handleMouseHover}
+                      handleSpecialHover={handleSpecialHover}
+                    />
+                  }
+                />
                 {/* <Route path="/competention" element={<Competentions />} /> */}
                 <Route path="/project" element={<Project />} />
                 <Route

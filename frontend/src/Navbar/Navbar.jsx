@@ -9,7 +9,7 @@ import {
 } from "./utils/navbarUtils";
 import NavBarPhone from "./NavBarPhone/NavBarPhone";
 
-export default function Navbar() {
+export default function Navbar({ handleMouseEnter, handleMouseLeave }) {
   const [activeClass, setActiveClass] = useState("");
   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [visible, setVisible] = useState(true);
@@ -67,6 +67,8 @@ export default function Navbar() {
         <div className={styles.navbar__container}>
           <div className={styles.navbar__title_block}>
             <Link
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
               className={`${styles.navbar__title} ${activeClass === "/"}`}
               to="/"
               onClick={() => handleItemClick("/")}
@@ -112,6 +114,8 @@ export default function Navbar() {
               <div>Главная</div>
             </Link>
             <Link
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
               className={`${styles.navbar__item} ${
                 activeClass === "/project" ? styles.navbar__item_open : ""
               }`}
@@ -121,6 +125,8 @@ export default function Navbar() {
               <div>Проекты</div>
             </Link>
             <Link
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
               className={`${styles.navbar__item} ${
                 activeClass === "/publication" ? styles.navbar__item_open : ""
               }`}
@@ -130,6 +136,8 @@ export default function Navbar() {
               <div>Публикации</div>
             </Link>
             <Link
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
               className={`${styles.navbar__item} ${
                 activeClass === "/company" ? styles.navbar__item_open : ""
               }`}
@@ -139,6 +147,8 @@ export default function Navbar() {
               <div>О Компании</div>
             </Link>
             <Link
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
               className={`${styles.navbar__item} ${
                 activeClass === "/contacts" ? styles.navbar__item_open : ""
               }`}

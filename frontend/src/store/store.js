@@ -10,6 +10,7 @@ import searchArticlePublicRightReducer from "./Slice/searchArticlePublicRightSli
 import authReducer from "./Slice/authSlice";
 import userReducer from "./Slice/userSlice";
 import cursorReducer from "./Slice/cursorSlice";
+import cursorAdminReducer from "./Slice/CustomCursorAdminSlice";
 import toggleSlice from "./Slice/toggleSlice";
 
 
@@ -26,6 +27,7 @@ export default configureStore({
     searchArticlePublicLeft: searchArticlePublicLeft,
     searchArticlePublicRight: searchArticlePublicRightReducer,
     cursor: cursorReducer,
+    cursorAdmin: cursorAdminReducer,
     toggle: toggleSlice,
   },
 });
