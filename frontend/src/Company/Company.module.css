@@ -713,7 +713,7 @@ bottom: 3.38rem;
   position: absolute;
   display: flex;
   flex-direction: column;
-  top: 60rem;
+  top: 55rem;
   left: 10vw;
   max-width: 100%;
   z-index: 1;
@@ -734,14 +734,14 @@ bottom: 3.38rem;
   }
   .bg_video {
     width: 100%; 
-    height: 100vh; 
+    height: 70vh; 
     min-height: 0;
     object-fit: cover;
     object-position: center;
   }
   
   .underSlider_text_wrapper {
-    top: 60rem;
+    top: 40rem;
     left: 3.5rem;
   }
 
@@ -1093,7 +1093,7 @@ bottom: 3.38rem;
 
   .underSlider_text_wrapper {
     left: 1.3rem;
-    top: 65rem;
+    top: 60rem;
     /* max-width: 100%; */
     word-wrap: break-word;
    }
@@ -1118,7 +1118,6 @@ bottom: 3.38rem;
 
   .div_counter_wrapper {
     padding-top: 1.90vh;
-    transition: all 2s ease-in-out;
   }
 
   .container_text {
