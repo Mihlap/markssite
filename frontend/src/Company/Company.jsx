@@ -94,7 +94,8 @@ export default function Company() {
     const scrollToTableHeader = () => {
       const element = document.getElementById('table-header-anchor');
       if (element) {
-        element.scrollIntoView({ behavior: 'smooth' });
+        // element.scrollIntoView({ behavior: 'smooth' });
+        window.location.replace('#table-header-anchor');
       }
     };
 
@@ -493,7 +494,7 @@ export default function Company() {
         <div className={styles.company_group_slider}>
           <CompanyGroupSlider />
         </div>
-        <div className={styles.awards_wrapper}>
+        <div className={styles.awards_wrapper} id="table-header-anchor">
           Награды и&nbsp;премии
           <div className={styles.years_div}>/2005-2022/</div>
         </div>
@@ -503,7 +504,7 @@ export default function Company() {
         </div>
         {isMobile && <TableCompanyMobile />}
         {!isMobile && <TableCompany />}
-        <div className={styles.specialist_wrapper} id="table-header-anchor">
+        <div className={styles.specialist_wrapper}>
           <div className={styles.specialist}>Специалисты</div>
           {isMobile && (
             <Swiper
