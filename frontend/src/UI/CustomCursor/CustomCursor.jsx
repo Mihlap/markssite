@@ -64,8 +64,6 @@ export default function CustomCursor() {
       width: 64,
       x: mousePosition.x - 16,
       y: mousePosition.y - 16,
-      backgroundColor: "#F6F6F6",
-      mixBlendMode: "difference",
     },
     imageHover: {
       height: 100,
@@ -76,15 +74,8 @@ export default function CustomCursor() {
       alignItems: "center",
       justifyContent: "center",
       color: "#ffffff",
-      opacity: 0.9,
-      stroke: "var(--white-F6F6F6, #F6F6F6)",
-      strokeWidth: "1px",
-      filter: "drop-shadow(0px 0px 7px rgba(44, 59, 68, 0.25))",
-      backdropFilter: "blur(4px)",
-      background:
-        "linear-gradient(140deg, #FFF 3.57%, #C5D8E9 18.7%, #E4DEE3 61.44%, #EAD2D1 77.32%, #FFF 101.9%)",
+      backgroundColor: "#1D2E43",
     },
-
     specialHover: {
       height: 100,
       width: 100,
@@ -93,15 +84,8 @@ export default function CustomCursor() {
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
-      color: "#F6F6F6",
-      border: "1px solid #F6F6F6",
-      backgroundColor: "rgba(255, 255, 255, 0.7)",
-      animation: "gradient 5s ease infinite",
-      background:
-        "linear-gradient(140deg, #FFF 3.57%, #C5D8E9 18.7%, #E4DEE3 61.44%, #EAD2D1 77.32%, #FFF 101.9%)",
-      opacity: 0.76,
-      boxShadow: "0px 0px 7px rgba(44, 59, 68, 0.25)",
-      backdropFilter: "blur(4px)",
+      color: "#ffffff",
+      backgroundColor: "#1D2E43",
     },
 
     mouseDown: {

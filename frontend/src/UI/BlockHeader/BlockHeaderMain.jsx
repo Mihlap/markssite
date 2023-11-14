@@ -3,7 +3,7 @@ import { blockData } from "./utils.js";
 import styles from "./BlockHeaderMain.module.css";
 import { Link } from "react-router-dom";
 
-const BlockHeaderMain = () => {
+const BlockHeaderMain = ({ handleMouseEnter, handleMouseLeave }) => {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [blockStates, setBlockStates] = useState(
     Array(blockData.length).fill(false)
@@ -18,7 +18,6 @@ const BlockHeaderMain = () => {
     });
   };
 
-      
   useEffect(() => {
     const handleResize = () => {
       setScreenWidth(window.innerWidth);
@@ -44,6 +43,8 @@ const BlockHeaderMain = () => {
             <div className={styles.line_blockHeader}></div>
             <div
               className={styles.block_hover}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
               onClick={() => toggleBlock(index)}
             >
               {isMobileScreen && (
@@ -141,6 +142,8 @@ const BlockHeaderMain = () => {
                     <Link
                       to={`/project?${blockData[index].path}`}
                       className={styles.button_block}
+                      onMouseEnter={handleMouseEnter}
+                      onMouseLeave={handleMouseLeave}
                     >
                       <div className={styles.button_block_name}>
                         Смотреть
