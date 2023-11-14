@@ -1,30 +1,31 @@
-/* .tableContainer {
+.tableContainer {
   overflow: hidden;
-  max-height: 2300px;
+  height: auto;
+  /* max-width: 100vw; */
+  /* width: 100%; */
   transition: max-height 0.5s ease-in-out;
-} */
+  padding-left: 1.87vw;
+  padding-right: 1.87vw;
+ }
 
 .tableStyle {
   border-collapse: collapse;
-  margin-left: 1.87vw;
-  margin-right: 1.87vw;
-  width: auto;
+  width: 100%;
  }
 
 .slideDown {
-  /* max-height: 2300px; */
+  max-height: 2800px;
   transition: max-height 0.5s ease-in-out;
 }
 
 .slideUp {
-  /* max-height: 700px; */
-  transition: max-height 0.2s ease-in-out;
+  max-height: 700px;
+  transition: max-height 0.5s ease-in-out;
 }
 
 
 .thStyle {
   text-align: left;
-  border-bottom: 1px solid black;
   padding-bottom: 16px;
   font-family: var(--font-raleway);
   font-style: normal;
@@ -32,19 +33,19 @@
   color: var(--gray-959DA6);
   font-size: 14px;
   line-height: 20px;
+  /* width: 100%; */
 }
 
 .thStyle4 {
   text-align: right;
-  border-bottom: 1px solid black;
   padding-bottom: 16px;
-  padding-right: 82px;
-  font-family: var(--font-raleway);
+   font-family: var(--font-raleway);
   font-style: normal;
   font-weight: var(--fw-400);
   color: var(--gray-959DA6);
   font-size: 14px;
   line-height: 20px;
+  padding-right: 60px;
 }
 
 .tdStyle1 {
@@ -55,9 +56,8 @@
   line-height: 1.75rem;
   color: var(--black-1D2E43);
   text-align: left;
-  max-width: 40.97vw; 
-  /* width: 40.97vw; */
-  padding-right: 30px;
+  max-width: 17rem; 
+  padding-right: 20px;
 }
 
 .tdStyle2 {
@@ -68,10 +68,8 @@
   line-height: 24px;
   color: var(--black-1D2E43);
   text-align: left;
-  border-top: "1px solid black";
-  max-width: 30.69vw;
-  /* width: 30.69vw; */
-  padding-right: 30px;
+  max-width: 16rem;
+  padding-right: 20px;
 }
 
 .tdStyle3 {
@@ -82,8 +80,9 @@
   line-height: 24px;
   color: var(--dark-gray-566272);
   text-align: left;
-  max-width: 16.3vw;
-  /* width: 16.3vw; */
+  max-width: 0rem;
+  min-width: 4rem;
+  /* padding-right: 10px; */
 }
 
 .tdStyle4 {
@@ -94,13 +93,15 @@
   line-height: 24px;
   color: var(--dark-gray-566272);
   text-align: right;
+  padding-right: 20px;
  }
 
 .button_table {
+  position: absolute;
+  right: 2%;
   display: flex;
   justify-content: flex-end;
-  padding-right: 1.87vw;
-  padding-top: 13px;
+   padding-top: 13px;
 }
 
 .button_look_all {

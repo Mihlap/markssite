@@ -39,7 +39,7 @@ const CounterCompanyMobile = () => {
       if (countHumanM >= 18 && !finishedCounters.includes(2)) {
         setFinishedCounters([...finishedCounters, 2]);
       }
-    }, 500); 
+    }, 600); 
   
     return () => {
       clearTimeout(timer1);
