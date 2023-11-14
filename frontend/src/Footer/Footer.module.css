@@ -15,6 +15,14 @@
   line-height: 48px;
   cursor: pointer;
 }
+.mail_link:hover {
+  /* color: var(--salmon-light-FFBFB5); */
+  transition: color 0.4s ease;
+}
+.mail_link:active {
+  transform: scale(0.95);
+  transition: transform 0.2s ease;
+}
 
 .mail_link:visited {
   color: var(--color-link-active);
@@ -45,6 +53,7 @@
 .tel:hover {
   color: var(--salmon-light-FFBFB5);
   cursor: pointer;
+  transition: color 0.4s ease;
 }
 
 
@@ -61,6 +70,7 @@
 
 .block_lang:hover {
   color: var(--salmon-light-FFBFB5);
+  transition: color 0.4s ease;
 }
 
 .social_links {
@@ -77,6 +87,7 @@
 
 .social_links_item:hover {
   color: var(--salmon-light-FFBFB5);
+  transition: color 0.4s ease;
 }
 
 .job {
@@ -92,9 +103,11 @@
   line-height: 14px;
   padding-left: 24px;
 }
-.job .job_link:hover {
+.job .job_link:hover,
+.job .job_link:active {
   color: var(--salmon-light-FFBFB5);
   cursor: pointer;
+  transition: color 0.4s ease;
 }
 
 /* .job_link:visited {
@@ -116,6 +129,19 @@
   .footer_container {
     min-width: 0px;
    
+   }
+   .mail_link:hover,
+   .tel:hover,
+   .block_lang:hover,
+   .social_links_item:hover {
+    color: var(--white-F6F6F6);
+     transition: none;
+   }
+   
+   .job .job_link:hover,
+   .job_link:not(:last-child):hover {
+    color: var(--light-gray-C0C5CB);
+     transition: none;
    }
 
 }
@@ -166,6 +192,20 @@
 
   .job_link {
     padding: 0;
+  }
+
+  .mail_link:hover,
+  .tel:hover,
+  .block_lang:hover,
+  .social_links_item:hover {
+   color: var(--white-F6F6F6);
+    transition: none;
+  }
+  
+  .job .job_link:hover,
+  .job_link:not(:last-child):hover {
+   color: var(--light-gray-C0C5CB);
+    transition: none;
   }
 
 }

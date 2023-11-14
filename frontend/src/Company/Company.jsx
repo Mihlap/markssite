@@ -45,9 +45,9 @@ export default function Company() {
   };
 
   const videoSource2 = {
-    large: `${Host}/images/video/header_company_full.webm`,
-    medium: `${Host}/images/video/header_company_ipad.webm`,
-    small: `${Host}/images/video/header_company_mobile.webm`,
+    large: `${Host}/images/video/main_company_full.mp4`,
+    medium: `${Host}/images/video/main_company_ipad.mp4`,
+    small: `${Host}/images/video/main_company_mobile.mp4`,
   };
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [countPercent, setCountPercent] = useState(0);
@@ -87,7 +87,28 @@ export default function Company() {
   const symbol = "•";
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    const scrollToTop = () => {
+      window.scrollTo(0, 0);
+    };
+
+    const scrollToTableHeader = () => {
+      const element = document.getElementById('table-header-anchor');
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth' });
+      }
+    };
+
+     const hash = window.location.hash;
+    if (hash === '#table-header-anchor') {
+      scrollToTableHeader();
+    } else {
+      scrollToTop();
+    }
+
+     return () => {
+      window.removeEventListener('scroll', scrollToTop);
+      window.removeEventListener('scroll', scrollToTableHeader);
+    };
   }, []);
 
   useEffect(() => {
@@ -482,7 +503,7 @@ export default function Company() {
         </div>
         {isMobile && <TableCompanyMobile />}
         {!isMobile && <TableCompany />}
-        <div className={styles.specialist_wrapper}>
+        <div className={styles.specialist_wrapper} id="table-header-anchor">
           <div className={styles.specialist}>Специалисты</div>
           {isMobile && (
             <Swiper
