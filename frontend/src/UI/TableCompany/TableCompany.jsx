@@ -9,16 +9,19 @@ const TableCompany = () => {
     paddingTop: "36px",
     paddingBottom: "36px",
     borderTop: "1px solid var(--dark-gray-566272)",
-    whiteSpace: 'nowrap',
+    whiteSpace: 'wrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
     wordWrap: 'break-word',
    };
 
   const tdStyle4 = {
-    padding: "36px 45px 36px 30px",
     borderTop: "1px solid var(--dark-gray-566272)",
-  };
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    wordWrap: 'break-word',
+   };
  
   const handleShowAllClick = () => {
      setShowAll(!showAll);
@@ -26,10 +29,10 @@ const TableCompany = () => {
 
    return (
     <>
-    {/* <div className={`${styles.tableContainer} ${showAll ? styles.slideDown : styles.slideUp}`}> */}
+    <div className={`${styles.tableContainer} ${showAll ? styles.slideDown : styles.slideUp}`}>
       <table
-      //  className={styles.tableStyle}
-       className={`${styles.tableStyle} ${showAll ? styles.slideDown : styles.slideUp}`}
+       className={styles.tableStyle}
+      //  className={`${styles.tableStyle} ${showAll ? styles.slideDown : styles.slideUp}`}
        >
         <thead>
           <tr>
@@ -77,7 +80,7 @@ const TableCompany = () => {
           </svg>
         </button>
       </div>
-      {/* </div> */}
+      </div>
     </>
   );
 };
