@@ -37,7 +37,10 @@ const Host = process.env.REACT_APP_SERVER_HOST;
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
-export default function Header() {
+export default function Header({ handleMouseEnter,
+  handleMouseLeave,
+  handleMouseHover,
+  handleSpecialHover }) {
   // const videoSource = {
   //   large: `${Host}/images/video/header_company_full.mp4`,
   //   medium: `${Host}/images/video/header_company_ipad.mp4`,
@@ -79,21 +82,21 @@ export default function Header() {
     window.scrollTo(0, 0);
   }, []);
 
-  const handleMouseEnter = () => {
-    dispatch(textEnter());
-  };
+  // const handleMouseEnter = () => {
+  //   dispatch(textEnter());
+  // };
 
-  const handleMouseLeave = () => {
-    dispatch(textLeave());
-  };
+  // const handleMouseLeave = () => {
+  //   dispatch(textLeave());
+  // };
 
-  const handleMouseHover = () => {
-    dispatch(imageHover());
-  };
+  // const handleMouseHover = () => {
+  //   dispatch(imageHover());
+  // };
 
-  const handleSpecialHover = () => {
-    dispatch(specialHover());
-  };
+  // const handleSpecialHover = () => {
+  //   dispatch(specialHover());
+  // };
 
   useEffect(() => {
     const handleResize = () => {
@@ -308,18 +311,8 @@ export default function Header() {
           </div>
         </div>
         <div className={styles.header_desctop_block}>
-          <h1
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-            className={styles.desctop_title}
-          >
-            Награды и&nbsp;публикации
-          </h1>
-          <div
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-            className={styles.desctop_test}
-          >
+          <h1 className={styles.desctop_title}>Награды и&nbsp;публикации</h1>
+          <div className={styles.desctop_test}>
             Наша компания участвует в&nbsp;многочисленных выставках,
             конференциях
             <br /> и&nbsp;конкурсах. Предлагаем ознакомиться с&nbsp;некоторыми
@@ -485,12 +478,7 @@ export default function Header() {
           </div>
           <div className={styles.names_contents}>
             <div className={styles.name_11}>+8</div>
-            <div
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
-              id="competencies"
-              className={styles.name_competencies}
-            >
+            <div id="competencies" className={styles.name_competencies}>
               Компетенции
             </div>
           </div>
@@ -506,22 +494,18 @@ export default function Header() {
           <div
             className={styles.block_header_maim_wrapper}
             id="blockHeaderMain"
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
           >
-            <BlockHeaderMain />
+            <BlockHeaderMain
+              handleMouseEnter={handleMouseEnter}
+              handleMouseLeave={handleMouseLeave}
+            />
           </div>
           <Mapbox3D />
         </div>
         <div className={styles.sliderMobile_container}>
           <SliderMobile />
         </div>
-        <div
-          id="projects"
-          className={styles.project_name}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-        >
+        <div id="projects" className={styles.project_name}>
           Проекты
         </div>
         <div className={styles.swiper_progect_container}>
@@ -585,6 +569,8 @@ export default function Header() {
                   <Link to={`/projects/${project.id}`} key={project.id}>
                     <div className={styles.wrapper_container_item_card}>
                       <img
+                        onMouseEnter={handleMouseHover}
+                        onMouseLeave={handleMouseLeave}
                         className={styles.container__imageTitle}
                         //  style={{
                         //   height: `${project.style?.split(",")[1]}rem`,
