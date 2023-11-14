@@ -149,9 +149,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
   const handleClick = (inputs) => {
      
     if (!areAllBlocksFilled()) {
-       alert(
-         "Предже чем добавить новый блок, пожалуйста заполните предыдущий блок полностью❗"
-       );
+       alert("Сначала заполните все обязательные поля в предыдущем блоке❗");
        return;
      }
      
