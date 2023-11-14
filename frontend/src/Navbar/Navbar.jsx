@@ -102,6 +102,15 @@ export default function Navbar() {
             >
               <div>Компетенции</div>
             </Link> */}
+              <Link
+              className={`${styles.navbar__item} ${
+                activeClass === "/" ? styles.navbar__item_open : ""
+              }`}
+              to="/"
+              onClick={() => handleItemClick("/")}
+            >
+              <div>Главная</div>
+            </Link>
             <Link
               className={`${styles.navbar__item} ${
                 activeClass === "/project" ? styles.navbar__item_open : ""
