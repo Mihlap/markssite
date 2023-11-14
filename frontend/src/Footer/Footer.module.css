@@ -8,9 +8,14 @@
   background-color: var(--black-1D2E43);
  }
 
+ .mail_block {
+  padding-bottom: 40px;
+ }
+
 .mail_link {
   color: var(--white-F6F6F6);
   font-weight: var(--fw-400);
+  font-family: var(--font-raleway);
   font-size: 48px;
   line-height: 48px;
   cursor: pointer;
@@ -30,7 +35,7 @@
 
 .office {
   color: var(--white-F6F6F6);
-  padding-top: 40px;
+  /* padding-top: 40px; */
   padding-bottom: 14px;
   font-weight: var(--fw-700);
   font-size: 18px;
@@ -38,22 +43,36 @@
   font-family: var(--font-raleway);
 }
 
+.office_contact {
+  display: inline-flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.office_tel {
+
+}
+
 .tel,
 .address {
-  display: block;
   color: var(--white-F6F6F6);
   font-family: var(--font-raleway);
   font-size: 14px;
-  font-weight: var(--fw-400);
-  line-height: 20px;
   padding-top: 4px;
-  font-feature-settings: 'pnum' on, 'lnum' on;
+  cursor: default;
+}
+
+.tel,.address {
+  cursor: pointer;
 }
 
 .tel:hover {
   color: var(--salmon-light-FFBFB5);
-  cursor: pointer;
-  transition: color 0.4s ease;
+}
+
+.address:hover {
+  color: var(--salmon-light-FFBFB5);
+
 }
 
 

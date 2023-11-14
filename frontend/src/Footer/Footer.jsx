@@ -3,12 +3,12 @@ import styles from "./Footer.module.css";
 import { Link } from "react-router-dom";
 
 const Footer = () => {
-   function mapToLink(link) {
-     window.location.href = link;
-   }
-   const mapHendler = () => {
-     mapToLink("https://yandex.ru/maps/-/CCUgmThXKA");
-   };
+  function mapToLink(link) {
+    window.location.href = link;
+  }
+  const mapHendler = () => {
+    mapToLink("https://yandex.ru/maps/-/CCUgmThXKA");
+  };
 
   return (
     <footer>
@@ -19,21 +19,31 @@ const Footer = () => {
               mail@marksgroup.ru
             </Link>
           </div>
-          <div className={styles.office}>Офис Москва</div>
-          <Link
-            to={"tel:+74951201226"}
-            className={styles.tel}
-            style={{ fontVariantNumeric: "lining-nums" }}
-          >
-            +7(495)&nbsp;120-12-26
-          </Link>
-          <span
-            // to={"https://yandex.ru/maps/-/CCUgmThXKA"}
-            className={styles.address}
-            onClick={mapHendler}
-          >
-            Москва З-я&nbsp;ул.&nbsp;Ямского Поля, дом&nbsp;20 строение 1 офис&nbsp;704
-          </span>
+          <div className={styles.office}>
+            <p>Офис Москва</p>
+          </div>
+          <div className={styles.office_contact}>
+            <div className={styles.office_tel}>
+              <Link
+                to={"tel:+74951201226"}
+                className={styles.tel}
+                style={{ fontVariantNumeric: "lining-nums" }}
+              >
+                +7(495)&nbsp;120-12-26
+              </Link>
+            </div>
+              <div
+                // to={"https://yandex.ru/maps/-/CCUgmThXKA"}
+                className={styles.address}
+                >
+                <div
+                onClick={mapHendler}
+                >
+                  Москва З-я&nbsp;ул.&nbsp;Ямского Поля, дом&nbsp;20 строение 1
+                  офис&nbsp;704
+                </div>
+              </div>
+          </div>
         </div>
         {/* правая сторона  */}
         <div className={styles.footer_block_right}>
@@ -50,7 +60,10 @@ const Footer = () => {
                 VK
               </span>
             </Link>
-            <Link to="https://instagram.com/marks_group?igshid=YmMyMTA2M2Y=" target="_blank">
+            <Link
+              to="https://instagram.com/marks_group?igshid=YmMyMTA2M2Y="
+              target="_blank"
+            >
               <span
                 className={styles.social_links_item}
                 style={{ marginRight: "25px" }}
@@ -79,7 +92,11 @@ const Footer = () => {
             {/* <Link className={styles.job_link} to="/">
               Сотрудникам
             </Link> */}
-            <Link className={styles.job_link} to="./Information" >
+            <Link
+              className={styles.job_link}
+              to="./Information"
+              target="_blank"
+            >
               Документы
             </Link>
             <div className={styles.job_link}>©&nbsp;MARKSLAB</div>
