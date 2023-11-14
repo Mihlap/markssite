@@ -53,6 +53,7 @@
     padding-right: 1.53vw;
     border-left: 1px solid var(--black-1D2E43);
     white-space: nowrap;
+    transition: background 0.3s ease, backdrop-filter 0.3s ease;
     
     &:hover {
       background: rgb(246 246 246 / 60%);
@@ -83,6 +84,7 @@
     white-space: nowrap;
     background: rgba(212, 237, 251, 0.60);
     backdrop-filter: blur(3px);
+    transition: background 0.3s ease, backdrop-filter 0.3s ease;
   }
   
 }
