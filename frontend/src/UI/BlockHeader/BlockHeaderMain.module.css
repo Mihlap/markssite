@@ -270,6 +270,7 @@
   height: 0;
   background: radial-gradient(circle, var(--black-1D2E43) 0%, var(--black-1D2E43) 100%);
   transform: translate(-50%, -50%);
+  border-radius: 50%;
   z-index: -1;
   transition: width 0.3s ease, height 0.3s ease;
 }
@@ -579,6 +580,7 @@
     height: 0;
     background: radial-gradient(circle, var(--black-1D2E43) 0%, var(--black-1D2E43) 100%);
     transform: translate(-50%, -50%);
+    border-radius: 50%;
     z-index: -1;
     transition: width 0.3s ease, height 0.3s ease;
   }
@@ -885,6 +887,7 @@
     height: 0;
     background: radial-gradient(circle, var(--black-1D2E43) 0%, var(--black-1D2E43) 100%);
     transform: translate(-50%, -50%);
+    border-radius: 50%;
     z-index: -1;
     transition: width 0.3s ease, height 0.3s ease;
   }
