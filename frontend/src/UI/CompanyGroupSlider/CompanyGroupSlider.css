@@ -33,6 +33,10 @@
 }
 
 @media screen and (min-width: 768px) and (max-width: 1024px) {
+  .company-group-container {
+    padding-bottom: 7.5rem;
+   
+    }
 
 
 }
@@ -40,7 +44,7 @@
     /* стили для планшетной версии  */
     @media screen and (min-width: 768px) and (max-width: 1024px) {
       .company-group-container {
-        padding-left: 1.67vw;
+        padding-left: 0rem;
         padding-bottom: 6.25rem;
       }
       }
@@ -48,6 +52,11 @@
       /* стили мобильной версии  */
 
 @media screen and (max-width: 767px) {
+
+  .company-group-container {
+    padding-bottom: 5rem;
+    padding-left: 0rem;
+    }
 
   .pagination_company_slider {
       display: flex;
