@@ -20,20 +20,21 @@ export default function CustomCursor() {
       y: window.innerHeight / 2,
     });
 
-    const mouseMove = (e) => {
-      const newPosition = {
-        x: e.clientX - 16,
-        y: e.clientY - 16,
-      };
+   const mouseMove = (e) => {
+     const newPosition = {
+       x: e.clientX - 16,
+       y: e.clientY - 16,
+     };
 
-      // Изменяем позицию курсора только если она отличается
-      if (
-        newPosition.x !== mousePosition.x ||
-        newPosition.y !== mousePosition.y
-      ) {
-        setMousePosition(newPosition);
-      }
-    };
+     window.requestAnimationFrame(() => {
+       if (
+         newPosition.x !== mousePosition.x ||
+         newPosition.y !== mousePosition.y
+       ) {
+         setMousePosition(newPosition);
+       }
+     });
+   };
 
     const handleMouseDown = () => {
       dispatch(mouseDown());
