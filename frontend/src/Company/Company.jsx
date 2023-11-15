@@ -37,7 +37,7 @@ import CompanyGroupSlider from "../UI/CompanyGroupSlider/CompanyGroupSlider";
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 
-export default function Company() {
+export default function Company({ handleMouseEnter, handleMouseLeave, handleMouseHover }) {
   const videoSource = {
     large: `${Host}/images/video/company_full.mp4`,
     medium: `${Host}/images/video/company_ipad.mp4`,
@@ -92,23 +92,23 @@ export default function Company() {
     };
 
     const scrollToTableHeader = () => {
-      const element = document.getElementById('table-header-anchor');
+      const element = document.getElementById("table-header-anchor");
       if (element) {
         // element.scrollIntoView({ behavior: 'smooth' });
-        window.location.replace('#table-header-anchor');
+        window.location.replace("#table-header-anchor");
       }
     };
 
-     const hash = window.location.hash;
-    if (hash === '#table-header-anchor') {
+    const hash = window.location.hash;
+    if (hash === "#table-header-anchor") {
       scrollToTableHeader();
     } else {
       scrollToTop();
     }
 
-     return () => {
-      window.removeEventListener('scroll', scrollToTop);
-      window.removeEventListener('scroll', scrollToTableHeader);
+    return () => {
+      window.removeEventListener("scroll", scrollToTop);
+      window.removeEventListener("scroll", scrollToTableHeader);
     };
   }, []);
 
@@ -310,7 +310,14 @@ export default function Company() {
         {/* <Company_Slider /> */}
         <div className={styles.block_video_company}>
           {videoSrc2 && (
-            <video playsInline autoPlay muted loop id="bg-video" className={styles.bg_video}>
+            <video
+              playsInline
+              autoPlay
+              muted
+              loop
+              id="bg-video"
+              className={styles.bg_video}
+            >
               <source src={videoSrc2} type="video/webm" preload="auto" />
             </video>
           )}
@@ -503,7 +510,13 @@ export default function Company() {
           номинациях за&nbsp;годы практики с&nbsp;2005&nbsp;года
         </div>
         {isMobile && <TableCompanyMobile />}
-        {!isMobile && <TableCompany />}
+        {!isMobile && (
+          <TableCompany
+            handleMouseEnter={handleMouseEnter}
+            handleMouseLeave={handleMouseLeave}
+            handleMouseHover={handleMouseHover}
+          />
+        )}
         <div className={styles.specialist_wrapper}>
           <div className={styles.specialist}>Специалисты</div>
           {isMobile && (
@@ -548,6 +561,8 @@ export default function Company() {
                 className={`${styles.button_leader} ${styles.button_hover} ${
                   activeButton === "Руководство" ? styles.active : ""
                 }`}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
               >
                 Руководство
               </button>
@@ -562,6 +577,8 @@ export default function Company() {
                     ? styles.active
                     : ""
                 }`}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
               >
                 Научно-техническое сопровождение
               </button>
@@ -581,6 +598,8 @@ export default function Company() {
                   // {...el}
                   className={styles.container__item_stuff}
                   onClick={() => handleButtonClick(category, el.id)}
+                  onMouseEnter={handleMouseHover}
+                  onMouseLeave={handleMouseLeave}
                 >
                   <div className={styles.wrapper_container_item_stuff}>
                     {showCards ? (
@@ -608,7 +627,7 @@ export default function Company() {
                 className={styles.modal_wrapper}
                 const
                 modal={document.querySelector(".modal")}
-                modalStyleZIndex={9999}
+                modalStyleZIndex={10}
                 isOpen={isModalOpen}
                 onRequestClose={() => {
                   dispatch(selectCard(null));
@@ -627,11 +646,11 @@ export default function Company() {
                 categoryId={category}
                 style={{
                   overlay: {
-                    zIndex: 9999,
+                    zIndex: 10,
                     backgroundColor: "#2C3B447A",
                   },
                   content: {
-                    zIndex: 9999,
+                    zIndex: 10,
                   },
                 }}
               >
@@ -643,6 +662,8 @@ export default function Company() {
                         setIsModalOpen(false);
                         dispatch(selectCard(null));
                       }}
+                      onMouseEnter={handleMouseEnter}
+                      onMouseLeave={handleMouseLeave}
                     >
                       <svg
                         width="16"
@@ -670,7 +691,7 @@ export default function Company() {
                     </div>
                     <div className={styles.modal_name_stuff}>
                       {selectedCard.name}
-                    </div>                    
+                    </div>
                     {/* {selectedCard.description && (
                       <div className={styles.modal_description_stuff}>
                         {selectedCard.description
@@ -686,7 +707,7 @@ export default function Company() {
                           ))}
                       </div>
                     )} */}
-                       {selectedCard.description && (
+                    {selectedCard.description && (
                       <div className={styles.modal_description_stuff}>
                         {selectedCard.description}
                       </div>
@@ -952,7 +973,7 @@ export default function Company() {
             )}
           </ul>
         </div>
-       {isMobile && (
+        {isMobile && (
           <div className={styles.slider_card_wrapper}>
             <Swiper
               className={styles.slider_card_container}
@@ -1010,7 +1031,7 @@ export default function Company() {
               />
             ))}
         </div> */}
-       {!isMobile && (
+        {!isMobile && (
           <div className={styles.slider_card_wrapper}>
             <Swiper
               className={styles.slider_card_container}

@@ -30,7 +30,11 @@ gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 
-const ArticleCard = () => {
+const ArticleCard = ({
+  handleMouseEnter,
+  handleMouseLeave,
+  handleMouseHover,
+}) => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const sliderArticleCardRef = useRef(null);
@@ -224,7 +228,11 @@ const ArticleCard = () => {
       </Helmet>
       <div className={styles.main_article_card}>
         {article && <ArticleCardSlider slidesCard={[article]} />}
-        <div className={styles.all_button_div}>
+        <div
+          className={styles.all_button_div}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        >
           <AllArticlesButton />
         </div>
         <div className={styles.section_article__block__card}>
@@ -328,7 +336,7 @@ const ArticleCard = () => {
                 </div>
               </div>
             </div>
-           <div className={styles.div_conteiner} ref={refs.constructorBlock}>
+            <div className={styles.div_conteiner} ref={refs.constructorBlock}>
               {userSelectedBlocks?.map((innerBlocks, outerIndex) => (
                 <div key={outerIndex}>
                   {innerBlocks?.map((block, innerIndex) => (
@@ -337,26 +345,26 @@ const ArticleCard = () => {
                 </div>
               ))}
             </div>
-              <div
-                className={styles.item_container_imageClose}
-                ref={refs.imageClose}
-              >
-                <div className={styles.item}>
-                  <img
-                    className={styles.item_img_close}
-                    src={
-                      article && article.imageClose
-                        ? `${Host}/images/imageArticle/${article.imageClose}`
-                        : `${catPhoto}`
-                    }
-                    alt={
-                      article && article.imageClose
-                        ? article.imageClose
-                        : "Default Alt Text"
-                    }
-                  />
-                </div>
+            <div
+              className={styles.item_container_imageClose}
+              ref={refs.imageClose}
+            >
+              <div className={styles.item}>
+                <img
+                  className={styles.item_img_close}
+                  src={
+                    article && article.imageClose
+                      ? `${Host}/images/imageArticle/${article.imageClose}`
+                      : `${catPhoto}`
+                  }
+                  alt={
+                    article && article.imageClose
+                      ? article.imageClose
+                      : "Default Alt Text"
+                  }
+                />
               </div>
+            </div>
             <div
               className={
                 styles.container_author_address_imageClose_share_article
@@ -445,6 +453,8 @@ const ArticleCard = () => {
             <Link
               className={styles.button_article_link_articleCard1}
               to={`/publication/${previousArticle.id}`}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
             >
               <div className={styles.previous_svg_articleCard}>
                 <img src={previous} alt={previous} />
@@ -458,6 +468,8 @@ const ArticleCard = () => {
             <Link
               className={styles.button_article_link_articleCard2}
               to={`/publication/${nextArticle.id}`}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
             >
               <div className={styles.next_svg_articleCard}>
                 <span className={styles.next__span_articleCard}>
@@ -545,6 +557,8 @@ const ArticleCard = () => {
                         className={styles.container__imageTitle_articleCard}
                         src={firstImagePath}
                         alt={firstImagePath}
+                        onMouseEnter={handleMouseHover}
+                        onMouseLeave={handleMouseLeave}
                       />
                     </div>
                     <div className={styles.title_articleCard}>
