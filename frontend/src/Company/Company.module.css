@@ -900,7 +900,7 @@ bottom: 3.38rem;
   }
 
   .specialist_wrapper {
-    padding-top: 9.25rem;
+    padding-top: 5rem;
   }
 
   .specialist {
@@ -1092,8 +1092,11 @@ bottom: 3.38rem;
 
 
   .underSlider_text_wrapper {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
     left: 1.3rem;
-    top: 60rem;
+    top: 50%;
     /* max-width: 100%; */
     word-wrap: break-word;
    }
@@ -1298,7 +1301,7 @@ bottom: 3.38rem;
 
   .company_group_slider {
     padding-left: 1rem;
-    /* padding-right: 0; */
+      /* padding-right: 0; */
   }
 
   .awards_wrapper {
@@ -1330,7 +1333,7 @@ bottom: 3.38rem;
   }
 
   .specialist_wrapper {
-    padding-top: 3rem;
+    padding-top: 5rem;
   }
 
   .specialist {
