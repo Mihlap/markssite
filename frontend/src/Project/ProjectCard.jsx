@@ -30,7 +30,11 @@ gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 
-const ProjectCard = () => {
+const ProjectCard = ({
+  handleMouseEnter,
+  handleMouseLeave,
+  handleMouseHover,
+}) => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const sliderCardRef = useRef(null);
@@ -204,30 +208,29 @@ const ProjectCard = () => {
       : catPhoto;
   const altTextClose = (project && project.imageClose) || "Default Alt Text";
 
-      // Обработчик изменения размера окна
+  // Обработчик изменения размера окна
   const handleResize = () => {
     setWindowWidth(window.innerWidth);
   };
 
   // Подписка на событие изменения размера окна
   useEffect(() => {
-    window.addEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
 
     // Отписка от события при размонтировании компонента
     return () => {
-      window.removeEventListener('resize', handleResize);
+      window.removeEventListener("resize", handleResize);
     };
   }, []);
 
-    // const randomProjects = projects.slice().sort(() => Math.random() - 0.5).slice(0, 20);
-
+  // const randomProjects = projects.slice().sort(() => Math.random() - 0.5).slice(0, 20);
 
   //  console.log(projects, " << --- projects");
   // console.log(userSelectedBlocks, "<<--- userSelectedBlocks");
 
   // console.log('Host:', Host);
   // console.log('project.imageProject:', project.imageProject);
-  
+
   return (
     <>
       <Helmet>
@@ -241,7 +244,11 @@ const ProjectCard = () => {
       </Helmet>
       <div className={styles.main_project_card}>
         {project && <ProjectCardSlider slidesCard={[project]} />}
-        <div className={styles.all_button_div}>
+        <div
+          className={styles.all_button_div}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        >
           <AllProjectsButton />
         </div>
         <div className={styles.section_project__block__card}>
@@ -418,39 +425,45 @@ const ProjectCard = () => {
                     ))}
                 </div>
                 {windowWidth < 767 && (
-                <div className={styles.result_container_mobile}>
-                  {[
-                    {
-                      value: project.siteArea,
-                      text: "Общая площадь",
-                      unit: "м²",
-                    },
-                    {
-                      value: project.totalArea,
-                      text: "Площадь участка",
-                      unit: "га",
-                    },
-                    { value: project.floors, text: "Этажность" },
-                    { value: project.altitude, text: "Высотность", unit: "м" },
-                    {
-                      value: project.constructionVolume,
-                      text: "Строительный объем",
-                      unit: "м³",
-                    },
-                  ]
-                    .filter((item) => item.value)
-                    .slice(0, 3) 
-                    .map((item) => (
-                      <div key={item.text} className={styles.result_block}>
-                        <div className={styles.result_number_mobile}>
-                          {item.value}
-                          {item.unit ? <span>{item.unit}</span> : null}
+                  <div className={styles.result_container_mobile}>
+                    {[
+                      {
+                        value: project.siteArea,
+                        text: "Общая площадь",
+                        unit: "м²",
+                      },
+                      {
+                        value: project.totalArea,
+                        text: "Площадь участка",
+                        unit: "га",
+                      },
+                      { value: project.floors, text: "Этажность" },
+                      {
+                        value: project.altitude,
+                        text: "Высотность",
+                        unit: "м",
+                      },
+                      {
+                        value: project.constructionVolume,
+                        text: "Строительный объем",
+                        unit: "м³",
+                      },
+                    ]
+                      .filter((item) => item.value)
+                      .slice(0, 3)
+                      .map((item) => (
+                        <div key={item.text} className={styles.result_block}>
+                          <div className={styles.result_number_mobile}>
+                            {item.value}
+                            {item.unit ? <span>{item.unit}</span> : null}
+                          </div>
+                          <div className={styles.result_text_mobile}>
+                            {item.text}
+                          </div>
                         </div>
-                        <div className={styles.result_text_mobile}>{item.text}</div>
-                      </div>
-                    ))}
-                </div>
-                )} 
+                      ))}
+                  </div>
+                )}
               </div>
               <div
                 ref={refs.blockRight}
@@ -497,7 +510,7 @@ const ProjectCard = () => {
                         </div>
                       </Link>
                     </div>
-                    </div>
+                  </div>
                   <div className={styles.local_left}>
                     <div>
                       <div className={styles.local_title}>Степень участия</div>
@@ -566,7 +579,10 @@ const ProjectCard = () => {
                     alt=""
                   />
                 </div> */}
-                <div className={styles.div_conteiner}  ref={refs.constructorBlock}>
+                <div
+                  className={styles.div_conteiner}
+                  ref={refs.constructorBlock}
+                >
                   {userSelectedBlocks?.map((innerBlocks, outerIndex) => (
                     <div key={outerIndex}>
                       {innerBlocks?.map((block, innerIndex) => (
@@ -593,6 +609,8 @@ const ProjectCard = () => {
             <div className={styles.button_project_projectCard}>
               {previousProject && (
                 <Link
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
                   className={styles.button_project_link_projectCard1}
                   to={`/projects/${previousProject.id}`}
                 >
@@ -606,6 +624,8 @@ const ProjectCard = () => {
               )}
               {nextProject && (
                 <Link
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
                   className={styles.button_project_link_projectCard2}
                   to={`/projects/${nextProject.id}`}
                 >
@@ -657,7 +677,7 @@ const ProjectCard = () => {
         )}
         <div className={styles.project_name_text}>Ещё по теме</div>
         {/* <div className={styles.swiper_progect_container}> */}
-          {/* <SwiperContainerProgect projects={projects} /> */}
+        {/* <SwiperContainerProgect projects={projects} /> */}
         {/* </div> */}
         <div className={styles.main_project_projectCard}>
           <Swiper
@@ -698,7 +718,6 @@ const ProjectCard = () => {
               },
             }}
           >
-            
             {projects?.slice(0, 20).map((project, index) => {
               const photoName = project && project.imageProject;
               const defaultPhoto = catPhoto;
@@ -727,6 +746,8 @@ const ProjectCard = () => {
                         className={styles.container__imageTitle_projectCard}
                         src={photoSrc}
                         alt={project.imageProject}
+                        onMouseEnter={handleMouseHover}
+                        onMouseLeave={handleMouseLeave}
                         loading="lazy"
                       />
                     </div>

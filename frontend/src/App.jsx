@@ -38,7 +38,7 @@ export default function App() {
   const isActive = useSelector((state) => state.toggle.isActiveForButton3);
   const location = useLocation();
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     dispatch(checkUserAuth());
@@ -113,16 +113,69 @@ export default function App() {
                   }
                 />
                 {/* <Route path="/competention" element={<Competentions />} /> */}
-                <Route path="/project" element={<Project />} />
+                <Route
+                  path="/project"
+                  element={
+                    <Project
+                      handleMouseEnter={handleMouseEnter}
+                      handleMouseLeave={handleMouseLeave}
+                      handleMouseHover={handleMouseHover}
+                    />
+                  }
+                />
                 <Route
                   path="/project/:viewConstruction?"
                   component={<Project />}
                 />
-                <Route path="/projects/:id" element={<ProjectCard />} />
-                <Route path="/company" element={<Company />} />
-                <Route path="/publication" element={<Publics />} />
-                <Route path="/publication/:id" element={<ArticleCard />} />
-                <Route path="/contacts" element={<Contacts />} />
+                <Route
+                  path="/projects/:id"
+                  element={
+                    <ProjectCard
+                      handleMouseEnter={handleMouseEnter}
+                      handleMouseLeave={handleMouseLeave}
+                      handleMouseHover={handleMouseHover}
+                    />
+                  }
+                />
+                <Route
+                  path="/company"
+                  element={
+                    <Company
+                      handleMouseEnter={handleMouseEnter}
+                      handleMouseLeave={handleMouseLeave}
+                      handleMouseHover={handleMouseHover}
+                    />
+                  }
+                />
+                <Route
+                  path="/publication"
+                  element={
+                    <Publics
+                      handleMouseEnter={handleMouseEnter}
+                      handleMouseLeave={handleMouseLeave}
+                      handleMouseHover={handleMouseHover}
+                    />
+                  }
+                />
+                <Route
+                  path="/publication/:id"
+                  element={
+                    <ArticleCard
+                      handleMouseEnter={handleMouseEnter}
+                      handleMouseLeave={handleMouseLeave}
+                      handleMouseHover={handleMouseHover}
+                    />
+                  }
+                />
+                <Route
+                  path="/contacts"
+                  element={
+                    <Contacts
+                      handleMouseEnter={handleMouseEnter}
+                      handleMouseLeave={handleMouseLeave}
+                    />
+                  }
+                />
                 <Route path="/portal" element={<Portal />} />
                 <Route path="*" element={<NotFound />} />
                 <Route path="/login" element={<Login />} />
