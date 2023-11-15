@@ -40,7 +40,7 @@ const cityInfo = {
   },
 };
 
-const Contacts = () => {
+const Contacts = ({ handleMouseEnter, handleMouseLeave }) => {
   const [map, setMap] = useState(null);
   const [selectedMap, setSelectedMap] = useState("Москва");
   const [marker, setMarker] = useState(null);
@@ -184,13 +184,9 @@ const Contacts = () => {
           <div className={styles.menu_work}>
             Режим работы &nbsp;&bull;&nbsp; Пн.&nbsp;&mdash;
             Пт.&nbsp;10.00&mdash;19.00
-            {selectedMap !== "Москва" && (
-           <> &nbsp;&bull;&nbsp; {hour}</>
-           )}
+            {selectedMap !== "Москва" && <> &nbsp;&bull;&nbsp; {hour}</>}
           </div>
-          <div className={styles.menu_hour}>
-           
-          </div>
+          <div className={styles.menu_hour}></div>
           <div className={styles.menu_office_name}>Наши офисы</div>
           <div className={styles.menu_button_group}>
             {cities.map((city) => (
@@ -200,6 +196,8 @@ const Contacts = () => {
                   selectedMap === city ? styles.menu_button_active : ""
                 }`}
                 onClick={() => setSelectedMap(city)}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
               >
                 <p className={styles.menu_button_city}>{city}</p>
               </button>
