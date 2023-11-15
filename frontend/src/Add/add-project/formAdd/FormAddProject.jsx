@@ -900,8 +900,8 @@ const areAllBlocksFilled = () => {
                     label: "Технологии",
                   },
                   {
-                    value: "Цифровое проектирование",
-                    label: "Цифровое проектирование",
+                    value: "Цифровые технологии",
+                    label: "Цифровые технологии",
                   },
                 ]}
                 className={styles.form__field}
