@@ -27,7 +27,7 @@ const TableCompanyMobile = () => {
 
   return (
     <>
-      <table className={styles.tableStyle}>
+         <table className={styles.tableStyle}>
         <tbody>
           {tableData.map((el, index) => (
             <React.Fragment key={index}>
