@@ -37,7 +37,11 @@ import CompanyGroupSlider from "../UI/CompanyGroupSlider/CompanyGroupSlider";
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 
-export default function Company({ handleMouseEnter, handleMouseLeave, handleMouseHover }) {
+export default function Company({
+  handleMouseEnter,
+  handleMouseLeave,
+  handleMouseHover,
+}) {
   const videoSource = {
     large: `${Host}/images/video/company_full.mp4`,
     medium: `${Host}/images/video/company_ipad.mp4`,
