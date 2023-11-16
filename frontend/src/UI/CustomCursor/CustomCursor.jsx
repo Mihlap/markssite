@@ -141,7 +141,7 @@ export default function CustomCursor() {
   };
 
   return (
-    <>
+    <div className="cursor-container">
       {window.innerWidth >= 1025 && (
         <motion.div
           className="cursor"
@@ -154,6 +154,6 @@ export default function CustomCursor() {
           )}
         </motion.div>
       )}
-    </>
+    </div>
   );
 }
