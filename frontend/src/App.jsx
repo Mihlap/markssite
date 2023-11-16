@@ -29,7 +29,7 @@ import { resetCurrentPage, setCurrentPage } from "./store/Slice/userSlice";
 import ButtonAdmin from "./UI/ButtonAdmin/ButtonAdmin";
 import { fetchToggleStateForButton3Async } from "./store/Slice/toggleSlice";
 import LoadingModal from "./Add/add-project/loading/LoadingModal";
-import { imageHover, specialHover, textEnter, textLeave } from "./store/Slice/cursorSlice";
+import { imageHover, specialHover, textEnter, textFooter, textFooterEnter, textLeave, textLeaveFooter } from "./store/Slice/cursorSlice";
 
 export default function App() {
   const user = useSelector((state) => state.auth.user);
@@ -52,6 +52,19 @@ export default function App() {
    const handleMouseEnter = () => {
      dispatch(textEnter());
    };
+  
+  const handleMouseEnterFooter = () => {
+    dispatch(textFooter());
+  }
+
+  const handleMouseEnterFooterMore = () => {
+    dispatch(textFooterEnter());
+  };
+
+     const handleMouseLeaveFooter = () => {
+       dispatch(textLeaveFooter());
+     };
+
 
    const handleMouseLeave = () => {
      dispatch(textLeave());
@@ -200,7 +213,14 @@ export default function App() {
               </Routes>
             </CSSTransition>
           </TransitionGroup>
-          {showNavbarFooter && currentPage !== "add" && <Footer />}
+          {showNavbarFooter && currentPage !== "add" && (
+            <Footer
+              handleMouseEnterFooter={handleMouseEnterFooter}
+              handleMouseEnterFooterMore={handleMouseEnterFooterMore}
+              handleMouseLeaveFooter={handleMouseLeaveFooter}
+              handleMouseLeave={handleMouseLeave}
+            />
+          )}
           {showNavbarFooter && currentPage !== "add" && <CustomCursor />}
         </>
       )}
