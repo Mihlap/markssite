@@ -14,7 +14,6 @@ import { resetCurrentPage } from "../../store/Slice/userSlice";
 export default function AddNavbar({ user, handleReturn }) {
   const dispatch = useDispatch();
   const [selectedItem, setSelectedItem] = useState(null);
-  const serverHost = process.env.REACT_APP_SERVER_HOST;
   const navigate = useNavigate();
    const isObezyankaaUser = user.name === "obezyankaa";
   // console.log(user);
