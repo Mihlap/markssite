@@ -44,10 +44,15 @@
         padding: 1.5rem 2rem;
         white-space: nowrap;
         color: var(--black-1D2E43);
+        transition: all 0.4s ease-in-out;
 
         &.active {
             background-color: var(--white-F6F6F6);
             color: var(--black-1D2E43)
+        }
+        
+        &:hover {
+            background-color: var(--gray-959DA6);
         }
 
         a {
