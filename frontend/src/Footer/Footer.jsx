@@ -2,7 +2,12 @@ import React from "react";
 import styles from "./Footer.module.css";
 import { Link } from "react-router-dom";
 
-const Footer = () => {
+const Footer = ({
+  handleMouseEnterFooter,
+  handleMouseEnterFooterMore,
+  handleMouseLeaveFooter,
+  handleMouseLeave,
+}) => {
   function mapToLink(link) {
     window.location.href = link;
   }
@@ -11,12 +16,20 @@ const Footer = () => {
   };
 
   return (
-    <footer>
+    <footer
+      onMouseEnter={handleMouseEnterFooter}
+      onMouseLeave={handleMouseLeave}
+    >
       <div id="contacts" className={styles.footer_container}>
         <div className={styles.footer_block_left}>
           <div className={styles.mail_block}>
-            <Link className={styles.mail_link} to="mailto:mail@marksgroup.ru">
-              mail@marksgroup.ru
+            <Link
+              className={styles.mail_link}
+              to="mailto:mail@marksgroup.ru"
+              onMouseEnter={handleMouseEnterFooterMore}
+              onMouseLeave={handleMouseLeaveFooter}
+            >
+              <span>mail@marksgroup.ru</span>
             </Link>
           </div>
           <div className={styles.office}>
@@ -28,21 +41,27 @@ const Footer = () => {
                 to={"tel:+74951201226"}
                 className={styles.tel}
                 style={{ fontVariantNumeric: "lining-nums" }}
+                onMouseEnter={handleMouseEnterFooterMore}
+                onMouseLeave={handleMouseLeaveFooter}
               >
-                +7(495)&nbsp;120-12-26
+                <span>+7(495)&nbsp;120-12-26</span>
               </Link>
             </div>
+            <div
+              // to={"https://yandex.ru/maps/-/CCUgmThXKA"}
+              className={styles.address}
+            >
               <div
-                // to={"https://yandex.ru/maps/-/CCUgmThXKA"}
-                className={styles.address}
-                >
-                <div
                 onClick={mapHendler}
-                >
+                onMouseEnter={handleMouseEnterFooterMore}
+                onMouseLeave={handleMouseLeaveFooter}
+              >
+                <span>
                   Москва З-я&nbsp;ул.&nbsp;Ямского Поля, дом&nbsp;20 строение 1
                   офис&nbsp;704
-                </div>
+                </span>
               </div>
+            </div>
           </div>
         </div>
         {/* правая сторона  */}
@@ -51,7 +70,12 @@ const Footer = () => {
             <span className={styles.en}>EN</span>
           </div> */}
           <div id="projects" className={styles.social_links}>
-            <Link to="https://vk.com/marks_group_vk" target="_blank">
+            <Link
+              to="https://vk.com/marks_group_vk"
+              target="_blank"
+              onMouseEnter={handleMouseEnterFooterMore}
+              onMouseLeave={handleMouseLeaveFooter}
+            >
               <span
                 className={styles.social_links_item}
                 // onClick={vkHendler}
@@ -63,6 +87,8 @@ const Footer = () => {
             <Link
               to="https://instagram.com/marks_group?igshid=YmMyMTA2M2Y="
               target="_blank"
+              onMouseEnter={handleMouseEnterFooterMore}
+              onMouseLeave={handleMouseLeaveFooter}
             >
               <span
                 className={styles.social_links_item}
@@ -75,11 +101,18 @@ const Footer = () => {
               <span
                 className={styles.social_links_item}
                 style={{ marginRight: "22px" }}
+                onMouseEnter={handleMouseEnterFooterMore}
+                onMouseLeave={handleMouseLeaveFooter}
               >
                 YT
               </span>
             </Link>
-            <Link to="https://t.me/marks_group" target="_blank">
+            <Link
+              to="https://t.me/marks_group"
+              target="_blank"
+              onMouseEnter={handleMouseEnterFooterMore}
+              onMouseLeave={handleMouseLeaveFooter}
+            >
               <span
                 className={styles.social_links_item}
                 // onClick={telegramHendler}
@@ -96,8 +129,10 @@ const Footer = () => {
               className={styles.job_link}
               to="./Information"
               target="_blank"
+              onMouseEnter={handleMouseEnterFooterMore}
+              onMouseLeave={handleMouseLeaveFooter}
             >
-              Документы
+              <span>Документы</span>
             </Link>
             <div className={styles.job_link}>©&nbsp;MARKSLAB</div>
           </div>

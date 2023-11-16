@@ -73,7 +73,9 @@ export default function Navbar({ handleMouseEnter, handleMouseLeave }) {
               to="/"
               onClick={() => handleItemClick("/")}
             >
-              <h1 className={styles.navbar__title}>MARKS GROUP</h1>
+              <h1 className={styles.navbar__title}>
+                <span>MARKS GROUP</span>
+              </h1>
             </Link>
           </div>
           <ul className={styles.navbar__list}>
@@ -104,7 +106,7 @@ export default function Navbar({ handleMouseEnter, handleMouseLeave }) {
             >
               <div>Компетенции</div>
             </Link> */}
-              <Link
+            <Link
               className={`${styles.navbar__item} ${
                 activeClass === "/" ? styles.navbar__item_open : ""
               }`}
