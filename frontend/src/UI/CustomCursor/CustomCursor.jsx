@@ -20,21 +20,21 @@ export default function CustomCursor() {
       y: window.innerHeight / 2,
     });
 
-   const mouseMove = (e) => {
-     const newPosition = {
-       x: e.clientX - 16,
-       y: e.clientY - 16,
-     };
+    const mouseMove = (e) => {
+      const newPosition = {
+        x: e.clientX - 16,
+        y: e.clientY - 16,
+      };
 
-     window.requestAnimationFrame(() => {
-       if (
-         newPosition.x !== mousePosition.x ||
-         newPosition.y !== mousePosition.y
-       ) {
-         setMousePosition(newPosition);
-       }
-     });
-   };
+      window.requestAnimationFrame(() => {
+        if (
+          newPosition.x !== mousePosition.x ||
+          newPosition.y !== mousePosition.y
+        ) {
+          setMousePosition(newPosition);
+        }
+      });
+    };
 
     const handleMouseDown = () => {
       dispatch(mouseDown());
@@ -59,12 +59,62 @@ export default function CustomCursor() {
     default: {
       x: mousePosition.x,
       y: mousePosition.y,
+      height: 24,
+      width: 24,
+    },
+
+    mouseDown: {
+      scale: 1.7,
+      x: mousePosition.x,
+      y: mousePosition.y,
+    },
+    mouseUp: {
+      scale: 1,
+      x: mousePosition.x,
+      y: mousePosition.y,
     },
     text: {
       height: 64,
       width: 64,
       x: mousePosition.x - 16,
       y: mousePosition.y - 16,
+      backgroundColor: "transparent", // Установка фона как прозрачного
+      border: "2px solid #1D2E43", // Установка синей границы, замените #1D2E43 на ваш код цвета
+    },
+    textFooter: {
+      zIndex: 2,
+      height: 24,
+      width: 24,
+      x: mousePosition.x - 0,
+      y: mousePosition.y - 0,
+      backgroundColor: "#F6F6F6",
+    },
+    textFooterEnter: {
+      zIndex: 2,
+      height: 64,
+      width: 64,
+      x: mousePosition.x - 16,
+      y: mousePosition.y - 16,
+      backgroundColor: "#F6F6F6",
+    },
+
+    textLeaveFooter: {
+      x: mousePosition.x,
+      y: mousePosition.y,
+      backgroundColor: "#F6F6F6",
+    },
+
+    mouseDownFooter: {
+      scale: 1.7,
+      x: mousePosition.x,
+      y: mousePosition.y,
+      backgroundColor: "#F6F6F6",
+    },
+    mouseUpFooter: {
+      scale: 1,
+      x: mousePosition.x,
+      y: mousePosition.y,
+      backgroundColor: "#F6F6F6",
     },
     imageHover: {
       height: 100,
@@ -87,17 +137,6 @@ export default function CustomCursor() {
       justifyContent: "center",
       color: "#ffffff",
       backgroundColor: "#1D2E43",
-    },
-
-    mouseDown: {
-      scale: 1.7,
-      x: mousePosition.x,
-      y: mousePosition.y,
-    },
-    mouseUp: {
-      scale: 1,
-      x: mousePosition.x,
-      y: mousePosition.y,
     },
   };
 
