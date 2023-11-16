@@ -278,7 +278,20 @@ const areAllBlocksFilled = () => {
     }
   }
   return true;
-};
+  };
+  
+  const handleRemoveBlock = (blockIndex) => {
+    setDynamicData((prevDynamicData) =>
+      prevDynamicData.filter((_, index) => index !== blockIndex)
+    );
+    // Обновление других связанных состояний...
+    setBlocks((prevBlocks) =>
+      prevBlocks.filter((_, index) => index !== blockIndex)
+    );
+    setDynamicPreviews((prevPreviews) =>
+      prevPreviews.filter((_, index) => index !== blockIndex)
+    );
+  };
   // функция которая срабатывает в случае если мы всё-таки пытаемся создать блок выдает ( алерт ), в случае успеза проходит в дальше и создаёт новый динамический блок
   const handleClick = (inputs) => {
     if (!areAllBlocksFilled()) {
@@ -679,16 +692,19 @@ const areAllBlocksFilled = () => {
     );
   };
 
-  const renderInputs = (inputs, blockIndex) => {
-    return inputs.map((input, inputIndex) => {
-      return renderInputWithLabel(
-        input.type,
-        input.label,
-        blockIndex,
-        inputIndex
-      );
-    });
-  };
+ const renderInputs = (inputs, blockIndex) => {
+   return (
+     <div key={blockIndex} className={styles.blockContainer}>
+       {inputs.map((input, inputIndex) =>
+         renderInputWithLabel(input.type, input.label, blockIndex, inputIndex)
+       )}
+       <div onClick={() => handleRemoveBlock(blockIndex)}>
+         Удалить блок
+       </div>
+     </div>
+   );
+ };
+
 
   const [selectedMonth, setSelectedMonth] = useState(null);
   const [selectedYear, setSelectedYear] = useState(null);
