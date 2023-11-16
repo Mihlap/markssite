@@ -227,6 +227,8 @@
 .button_block_wrapper {
   position: absolute;
   right: 5%;
+  top: 40%;
+  transform: translateY(-50%);
   text-align: center;
   justify-content: center;
   padding-top: 5rem;
@@ -535,11 +537,13 @@
   .button_block_wrapper {
     position: absolute;
     right: 5%;
-    top: auto;
-    padding-top: 14vh;
+    top: 50%;
+    transform: translateY(-50%);
     text-align: center;
     justify-content: center;
+    padding-top: 5rem;
   }
+  
   
   .button_block {
     display: flex;
@@ -840,12 +844,12 @@
   .button_block_wrapper {
     position: absolute;
     right: 3%;
-    top: auto;
-    padding-top: 14vh;
+    top: 50%;
+    transform: translateY(-50%);
     text-align: center;
     justify-content: center;
-    /* padding-left: 2rem; */
-    }
+    padding-top: 5rem;
+  }
   
   .button_block {
     display: flex;
