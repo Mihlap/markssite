@@ -36,7 +36,7 @@ export default function Add({ user, onPageChange, handleReturn }) {
         <Route path="add-a-company" element={<AddCompany />} />
         <Route path="add-a-applications" element={<Applications />} />
       </Routes>
-      <CustomCursorAdmin />
+      {/* <CustomCursorAdmin /> */}
     </div>
   );
 }
