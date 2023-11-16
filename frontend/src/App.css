@@ -74,6 +74,13 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+video {
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+
+
 /* *::-webkit-scrollbar {
   width: 5px;
 }
