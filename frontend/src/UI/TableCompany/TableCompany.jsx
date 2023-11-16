@@ -13,11 +13,11 @@ const TableCompany = ({
     paddingTop: "36px",
     paddingBottom: "36px",
     borderTop: "1px solid var(--dark-gray-566272)",
-    whiteSpace: "wrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    wordWrap: "break-word",
-  };
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    wordWrap: 'break-word',
+   };
 
   const tdStyle4 = {
     borderTop: "1px solid var(--dark-gray-566272)",
@@ -33,21 +33,34 @@ const TableCompany = ({
 
   return (
     <>
-      <div
-        className={`${styles.tableContainer} ${
-          showAll ? styles.slideDown : styles.slideUp
-        }`}
-      >
-        <table
-          className={styles.tableStyle}
-          //  className={`${styles.tableStyle} ${showAll ? styles.slideDown : styles.slideUp}`}
-        >
-          <thead>
-            <tr>
-              <th className={styles.thStyle}>Конкурс</th>
-              <th className={styles.thStyle}>Номинация</th>
-              <th className={styles.thStyle}>Приз</th>
-              <th className={styles.thStyle4}>Дата</th>
+    <div className={`${styles.tableContainer} ${showAll ? styles.visible : ''}`}>
+      <table
+       className={styles.tableStyle}
+      //  className={`${styles.tableStyle} ${showAll ? styles.slideDown : styles.slideUp}`}
+       >
+        <thead>
+          <tr>
+            <th className={styles.thStyle}>Конкурс</th>
+            <th className={styles.thStyle}>Номинация</th>
+            <th className={styles.thStyle}>Приз</th>
+            <th className={styles.thStyle4}>Дата</th>
+          </tr>
+        </thead>
+        <tbody>
+          {tableData.slice(0, showAll ? tableData.length : 6).map((el, index) => (
+            <tr key={index}>
+              <td className={styles.tdStyle1} style={tdStyle}>
+                {el.title}
+              </td>
+              <td className={styles.tdStyle2} style={tdStyle}>
+                {el.nomination}
+              </td>
+              <td className={styles.tdStyle3} style={tdStyle}>
+              {el.prize}
+              </td>
+              <td className={styles.tdStyle4} style={tdStyle4}>
+               {el.year}
+              </td>
             </tr>
           </thead>
           <tbody>
