@@ -30,6 +30,7 @@ import ButtonAdmin from "./UI/ButtonAdmin/ButtonAdmin";
 import { fetchToggleStateForButton3Async } from "./store/Slice/toggleSlice";
 import LoadingModal from "./Add/add-project/loading/LoadingModal";
 import { imageHover, specialHover, textEnter, textFooter, textFooterEnter, textLeave, textLeaveFooter } from "./store/Slice/cursorSlice";
+import CookieComponent from "./UI/CookieComponent/CookieComponent";
 
 export default function App() {
   const user = useSelector((state) => state.auth.user);
@@ -213,6 +214,7 @@ export default function App() {
               </Routes>
             </CSSTransition>
           </TransitionGroup>
+          <CookieComponent/>
           {showNavbarFooter && currentPage !== "add" && (
             <Footer
               handleMouseEnterFooter={handleMouseEnterFooter}

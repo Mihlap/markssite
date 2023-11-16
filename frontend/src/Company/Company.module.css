@@ -113,7 +113,7 @@
   position: absolute;
   display: flex;
   flex-direction: column;
-  top: 60rem;
+  bottom: 10%;
   left: 10vw;
   max-width: 100%;
   /* z-index: 10; */
@@ -741,7 +741,7 @@ bottom: 3.38rem;
   }
   
   .underSlider_text_wrapper {
-    top: 40rem;
+    top: 40%;
     left: 3.5rem;
   }
 

@@ -26,7 +26,7 @@
   color: var(--gray-959DA6);
   font-size: 14px;
   line-height: 20px;
-  width: 40%;
+  width: 41%;
 }
 
 .thStyle4 {
@@ -162,7 +162,7 @@
     color: var(--gray-959DA6);
     font-size: 14px;
     line-height: 20px;
-    width: 100%;
+    width: 50%;
   }
      
  .thStyle4 {
@@ -202,7 +202,7 @@
     border-top: "1px solid black";
     max-width: 26vw;
     min-width: 2rem;
-    padding-right: 10px;
+    padding-right: 20px;
   }
   
   .tdStyle3 {
