@@ -221,7 +221,7 @@ export default function App() {
               handleMouseLeave={handleMouseLeave}
             />
           )}
-          {showNavbarFooter && currentPage !== "add" && <CustomCursor />}
+          {/* {showNavbarFooter && currentPage !== "add" && <CustomCursor />} */}
         </>
       )}
     </HelmetProvider>
