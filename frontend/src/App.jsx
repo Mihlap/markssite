@@ -29,7 +29,7 @@ import { resetCurrentPage, setCurrentPage } from "./store/Slice/userSlice";
 import ButtonAdmin from "./UI/ButtonAdmin/ButtonAdmin";
 import { fetchToggleStateForButton3Async } from "./store/Slice/toggleSlice";
 import LoadingModal from "./Add/add-project/loading/LoadingModal";
-import { imageHover, specialHover, textEnter, textLeave } from "./store/Slice/cursorSlice";
+import { imageHover, specialHover, textEnter, textFooter, textFooterEnter, textLeave, textLeaveFooter } from "./store/Slice/cursorSlice";
 
 export default function App() {
   const user = useSelector((state) => state.auth.user);
@@ -52,6 +52,19 @@ export default function App() {
    const handleMouseEnter = () => {
      dispatch(textEnter());
    };
+  
+  const handleMouseEnterFooter = () => {
+    dispatch(textFooter());
+  }
+
+  const handleMouseEnterFooterMore = () => {
+    dispatch(textFooterEnter());
+  };
+
+     const handleMouseLeaveFooter = () => {
+       dispatch(textLeaveFooter());
+     };
+
 
    const handleMouseLeave = () => {
      dispatch(textLeave());
@@ -113,16 +126,69 @@ export default function App() {
                   }
                 />
                 {/* <Route path="/competention" element={<Competentions />} /> */}
-                <Route path="/project" element={<Project />} />
+                <Route
+                  path="/project"
+                  element={
+                    <Project
+                      handleMouseEnter={handleMouseEnter}
+                      handleMouseLeave={handleMouseLeave}
+                      handleMouseHover={handleMouseHover}
+                    />
+                  }
+                />
                 <Route
                   path="/project/:viewConstruction?"
                   component={<Project />}
                 />
-                <Route path="/projects/:id" element={<ProjectCard />} />
-                <Route path="/company" element={<Company />} />
-                <Route path="/publication" element={<Publics />} />
-                <Route path="/publication/:id" element={<ArticleCard />} />
-                <Route path="/contacts" element={<Contacts />} />
+                <Route
+                  path="/projects/:id"
+                  element={
+                    <ProjectCard
+                      handleMouseEnter={handleMouseEnter}
+                      handleMouseLeave={handleMouseLeave}
+                      handleMouseHover={handleMouseHover}
+                    />
+                  }
+                />
+                <Route
+                  path="/company"
+                  element={
+                    <Company
+                      handleMouseEnter={handleMouseEnter}
+                      handleMouseLeave={handleMouseLeave}
+                      handleMouseHover={handleMouseHover}
+                    />
+                  }
+                />
+                <Route
+                  path="/publication"
+                  element={
+                    <Publics
+                      handleMouseEnter={handleMouseEnter}
+                      handleMouseLeave={handleMouseLeave}
+                      handleMouseHover={handleMouseHover}
+                    />
+                  }
+                />
+                <Route
+                  path="/publication/:id"
+                  element={
+                    <ArticleCard
+                      handleMouseEnter={handleMouseEnter}
+                      handleMouseLeave={handleMouseLeave}
+                      handleMouseHover={handleMouseHover}
+                    />
+                  }
+                />
+                <Route
+                  path="/contacts"
+                  element={
+                    <Contacts
+                      handleMouseEnter={handleMouseEnter}
+                      handleMouseLeave={handleMouseLeave}
+                    />
+                  }
+                />
                 <Route path="/portal" element={<Portal />} />
                 <Route path="*" element={<NotFound />} />
                 <Route path="/login" element={<Login />} />
@@ -147,7 +213,14 @@ export default function App() {
               </Routes>
             </CSSTransition>
           </TransitionGroup>
-          {showNavbarFooter && currentPage !== "add" && <Footer />}
+          {showNavbarFooter && currentPage !== "add" && (
+            <Footer
+              handleMouseEnterFooter={handleMouseEnterFooter}
+              handleMouseEnterFooterMore={handleMouseEnterFooterMore}
+              handleMouseLeaveFooter={handleMouseLeaveFooter}
+              handleMouseLeave={handleMouseLeave}
+            />
+          )}
           {showNavbarFooter && currentPage !== "add" && <CustomCursor />}
         </>
       )}
