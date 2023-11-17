@@ -340,7 +340,12 @@ const ArticleCard = ({
               {userSelectedBlocks?.map((innerBlocks, outerIndex) => (
                 <div key={outerIndex}>
                   {innerBlocks?.map((block, innerIndex) => (
-                    <ConstructorBlockRenderer key={innerIndex} block={block} />
+                    <ConstructorBlockRenderer
+                      handleMouseEnter={handleMouseEnter}
+                      handleMouseLeave={handleMouseLeave}
+                      key={innerIndex}
+                      block={block}
+                    />
                   ))}
                 </div>
               ))}
@@ -413,7 +418,11 @@ const ArticleCard = ({
               <div className={styles.share_article}>Поделиться статьей</div>
             </div>
             <div id="articles" className={styles.social_links_articleCard}>
-              <button onClick={() => shareToVK(article, Host)}>
+              <button
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                onClick={() => shareToVK(article, Host)}
+              >
                 <span
                   className={styles.social_links_item}
                   style={{ marginRight: "21px", color: "#FF7F6A" }}
@@ -421,7 +430,11 @@ const ArticleCard = ({
                   VK
                 </span>
               </button>
-              <button onClick={() => shareToWhatsApp(article, Host)}>
+              <button
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                onClick={() => shareToWhatsApp(article, Host)}
+              >
                 <span
                   className={styles.social_links_item}
                   style={{ marginRight: "25px", color: "#FF7F6A" }}
@@ -437,7 +450,11 @@ const ArticleCard = ({
                 VB
               </span>
             </button> */}
-              <button onClick={() => shareToTelegram(article, Host)}>
+              <button
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                onClick={() => shareToTelegram(article, Host)}
+              >
                 <span
                   className={styles.social_links_item}
                   style={{ color: "#FF7F6A" }}
