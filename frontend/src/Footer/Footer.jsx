@@ -33,7 +33,7 @@ const Footer = ({
             </Link>
           </div>
           <div className={styles.office}>
-            <p>Офис Москва</p>
+            <p>Офис&nbsp;·&nbsp;Москва</p>
           </div>
           <div className={styles.office_contact}>
             <div className={styles.office_tel}>
@@ -44,7 +44,7 @@ const Footer = ({
                 onMouseEnter={handleMouseEnterFooterMore}
                 onMouseLeave={handleMouseLeaveFooter}
               >
-                <span>+7(495)&nbsp;120-12-26</span>
+                <span>+7&nbsp;(495)&nbsp;120-12-26</span>
               </Link>
             </div>
             <div
@@ -57,7 +57,7 @@ const Footer = ({
                 onMouseLeave={handleMouseLeaveFooter}
               >
                 <span>
-                  Москва З-я&nbsp;ул.&nbsp;Ямского Поля, дом&nbsp;20 строение 1
+                  Москва З-я&nbsp;ул.&nbsp;Ямского Поля, д.&nbsp;20, с. 1,
                   офис&nbsp;704
                 </span>
               </div>

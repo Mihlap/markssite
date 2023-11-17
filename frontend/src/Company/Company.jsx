@@ -267,7 +267,7 @@ export default function Company({
   ];
 
   const handleImageLoad = () => {
-    console.log('Image loaded!');
+    // console.log('Image loaded!');
     setShowCards(true);
   };
 
