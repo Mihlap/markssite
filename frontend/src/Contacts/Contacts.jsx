@@ -15,19 +15,19 @@ const cities = ["Москва", "Оренбург", "Челябинск", "Та�
 
 const cityInfo = {
   Москва: {
-    address: "Москва, 3-я Ямского Поля, дом 20, строение 1, офис 704",
+    address: "Москва, 3-я ул. Ямского Поля, д. 20, с. 1, офис 704",
     phone: "+7 (495) 120-12-26",
     mail: "mail@marksgroup.ru",
     hour: "",
   },
   Оренбург: {
-    address: "г. Оренбург, проезд Нижний, 17, офис 305",
+    address: "Оренбург, пр. Нижний, д. 17, офис 305",
     phone: "+7 (3532) 22-86-96",
     mail: "mail@marksgroup.ru",
     hour: "+ 2 МСК",
   },
   Челябинск: {
-    address: "г. Челябинск, ул. Северная дом 52/3",
+    address: "Челябинск, ул. Северная, д. 52/3",
     phone: "+7 (968) 110-11-30",
     mail: "mail@marksgroup.ru",
     hour: "+ 2 МСК",
@@ -170,7 +170,7 @@ const Contacts = ({ handleMouseEnter, handleMouseLeave }) => {
       <div className={styles.main_contact}>
         <div className={styles.menu_block}>
           <div className={styles.menu_span}>
-            Стать клиентом или&nbsp;партнером
+            Стать клиентом или&nbsp;партнёром
           </div>
           <div className={styles.menu_mail}>{mail}</div>
           <div className={styles.menu_tel}>{phone}</div>
