@@ -14,9 +14,9 @@ import catPhoto from "../img/default-photo.jpeg";
 const Host = process.env.REACT_APP_SERVER_HOST;
 
 const videoSource = {
-  small: `${Host}/images/video/public_mob.mp4`,
-  medium: `${Host}/images/video/public_ipad.mp4`,
-  large: `${Host}/images/video/public_full.mp4`,
+  small: `${Host}/videos/public_mob.mp4`,
+  medium: `${Host}/videos/public_ipad.mp4`,
+  large: `${Host}/videos/public_full.mp4`,
 };
 
 export default function Publics({ handleMouseEnter, handleMouseLeave, handleMouseHover }) {
