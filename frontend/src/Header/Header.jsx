@@ -26,6 +26,7 @@ import { searchArticleLeftGet } from "../store/Slice/searchArticlePublicLeftSlic
 import img123 from "./img/Главная.png";
 import notDataPhoto from "./img/notData.png";
 import nameCompany from "../icons/nameCompany.svg"
+import nameCompany1 from "../icons/nameCompany1.svg"
 
 // import photoTest from "./img/project_right3.jpg";
 import { textEnter, textLeave, imageHover, specialHover } from "../store/Slice/cursorSlice";
@@ -41,15 +42,11 @@ export default function Header({ handleMouseEnter,
   handleMouseLeave,
   handleMouseHover,
   handleSpecialHover }) {
-  // const videoSource = {
-  //   large: `${Host}/images/video/header_company_full.mp4`,
-  //   medium: `${Host}/images/video/header_company_ipad.mp4`,
-  //   small: `${Host}/images/video/header_company_mobile.mp4`
-  // };
+ 
   const videoSource = {
-    large: `${Host}/images/video/main_company_full.mp4`,
-    medium: `${Host}/images/video/main_company_ipad.mp4`,
-    small: `${Host}/images/video/main_company_mobile.mp4`,
+    large: `${Host}/videos/main_company_full.mp4`,
+    medium: `${Host}/videos/main_company_ipad.mp4`,
+    small: `${Host}/videos/main_company_mobile.mp4`,
   };
   const sliderCardRef = useRef(null);
   const [enableVerticalScroll, setEnableVerticalScroll] = useState(true);
@@ -77,6 +74,13 @@ export default function Header({ handleMouseEnter,
   const dispatch = useDispatch();
 
   const [videoSrc, setVideoSrc] = useState(null);
+
+  const isMobile = window.innerWidth <= 767;
+
+  const imageSrc = isMobile ? nameCompany1 : nameCompany;
+  
+
+
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -302,7 +306,7 @@ export default function Header({ handleMouseEnter,
             )}
           </div>
           <div className={styles.nameCompanyContainer}>
-            <img src={nameCompany} alt={nameCompany} />
+            <img src={imageSrc} alt={nameCompany} />
             <span className={styles.span_nameCompany}>
               Генеральное проектирование
             </span>

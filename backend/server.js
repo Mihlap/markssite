@@ -42,10 +42,18 @@ const sessionConfig = {
 
 
 app.use((req, res, next) => {
-  res.header('Access-Control-Allow-Origin', req.header('origin'));
+  // res.header('Access-Control-Allow-Origin', req.header('origin'));
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS'); 
   res.header('Content-Type', 'application/json; charset=utf-8');
+  res.header('Content-Type', 'video/mp4');
+  res.header('Accept-Ranges', 'bytes');
+  next();
+});
+
+app.use((req, res, next) => {
+  res.header('Cross-Origin-Opener-Policy', 'same-origin');
+  res.header('Cross-Origin-Embedder-Policy', 'require-corp');
   next();
 });
 
@@ -60,17 +68,19 @@ app.use(
     credentials: true,
   }),
   );
-  
+
+const videoPath = path.join(__dirname, 'images/video');
+const imagesPath = path.join(__dirname, 'images');  
  
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use('/images', express.static(path.join(__dirname, 'images')));
-app.use('/images/imageStuff', express.static(path.join(__dirname, 'images/imageStuff'), { maxAge: '180d' }));
-app.use('/images/imageAdd', express.static(path.join(__dirname, 'images/imageAdd')));
-app.use('/images/projectFoto', express.static(path.join(__dirname, 'images/projectFoto'), { maxAge: '180d' }));
-app.use('/public/assets', express.static(path.join(__dirname, 'assets'), { maxAge: '180d' }));
-app.use('/images/video', express.static(path.join(__dirname, 'images/video'), { maxAge: '180d' }));
+app.use('/images', express.static(imagesPath, { maxAge: '5d' }));
+app.use('/images/imageStuff', express.static(path.join(imagesPath, 'imageStuff'), { maxAge: '5d' }));
+app.use('/images/imageAdd', express.static(path.join(imagesPath, 'imageAdd')));
+app.use('/images/projectFoto', express.static(path.join(imagesPath, 'projectFoto'), { maxAge: '5d' }));
+app.use('/videos', express.static(videoPath, { maxAge: '5d', immutable: true, }));
+app.use('/public/assets', express.static(path.join(__dirname, 'assets'), { maxAge: '5d' }));
 app.use(session(sessionConfig));
 // app.use(express.static(path.join(__dirname, 'build')));
 

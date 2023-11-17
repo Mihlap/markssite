@@ -47,5 +47,33 @@ router.get('/:videoName', async (req, res) => {
   }
 });
 
+router.get('/:filename', async (req, res) => {
+  const { filename } = req.params;
+
+  console.log('Запрос на имя файла в роутере:', filename);
+
+  const videoPath = path.join(destinationPath, filename);
+
+  try {
+    const stats = await fs.promises.stat(videoPath);
+
+    if (stats.isFile()) {
+     
+      res.sendFile(videoPath, {
+        maxAge: '5d', // Время кэширования
+        headers: {
+          'Cache-Control': 'public, max-age=432000', // 432000 секунд = 5 дней
+        },
+      });
+    } else {
+      res.status(404).send('File not found');
+    }
+  } catch (error) {
+    console.error('ошибка запроса в роутере', error);
+
+    res.status(500).send('Internal Server Error');
+  }
+});
+
 
 module.exports = router;
