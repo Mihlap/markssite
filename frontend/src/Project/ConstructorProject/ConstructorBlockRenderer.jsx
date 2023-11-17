@@ -337,6 +337,10 @@ export default function ConstructorBlockRenderer({
   const renderVideoBlock = (block) => {
     const videoPath = block[0]?.value.join("");
 
+    if (!videoPath) {
+      return null; // или просто return; если вы предпочитаете не возвращать явно null
+    }
+
     const videoStyle = {
       WebkitAppearance: "none",
       appearance: "none",

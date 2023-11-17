@@ -415,6 +415,10 @@ export default function ConstructorBlockRenderer({
   const renderVideoBlock = (block) => {
     const videoPath = block[0]?.value.join("");
 
+    if (!videoPath) {
+      return null; // или просто return; если вы предпочитаете не возвращать явно null
+    }
+
     const videoStyle = {
       WebkitAppearance: "none",
       appearance: "none",
@@ -477,32 +481,6 @@ export default function ConstructorBlockRenderer({
     );
   };
 
-  // const renderVideoBlock = (block) => {
-  //   const videoPath = block[0]?.value.join("");
-
-  //   const videoStyle = {
-  //     WebkitAppearance: "none",
-  //     appearance: "none",
-  //     backgroundColor: "transparent",
-  //     border: "none",
-  //     opacity: 0.5, /* Устанавливаем желаемую непрозрачность */
-  //     outline: "none",
-  //     controls: "controls",
-  //   };
-
-  //   return (
-  //     <div
-  //       className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockSix}`}
-  //     >
-  //       <video playsInline muted loop controls className={styles.block_video} style={videoStyle}>
-  //         <source
-  //           src={`${Host}/images/imageArticle/${videoPath}`}
-  //           type="video/mp4"
-  //         />
-  //       </video>
-  //     </div>
-  //   );
-  // };
 
   switch (block[0]?.label) {
     case "Картинка с описанием":
