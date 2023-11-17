@@ -509,6 +509,29 @@
   max-width: 100%;
 }
 
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.container__item_stuff {
+  animation: fadeIn 0.5s ease; 
+}
+
+
+.container__img_stuff {
+  opacity: 1;
+}
+
+Покажите изображение, когда оно загружено
+.container__img_stuff.loaded {
+  opacity: 0.5;
+}
+
 
 .container__item_name_stuff {
   font-family: var(--font-raleway);
@@ -951,7 +974,26 @@ bottom: 3.38rem;
     height: 20.93rem;
     padding-right: 1.875rem;
   }
-  .fon {
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+  
+  .slide_container_item_stuff {
+    animation: fadeIn 0.4s ease; 
+  }
+  
+
+  .container__img_stuff {
+    opacity: 1;
+  }
+  
+  
+ .fon {
     position: relative;
     width: 100%;
     height: 100%;
@@ -1411,6 +1453,25 @@ bottom: 3.38rem;
       padding-left: 1rem;
       margin-right: 0rem;    
     }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+      to {
+        opacity: 1;
+      }
+    }
+    
+    .slide_container_item_stuff {
+      animation: fadeIn 0.4s ease; 
+    }
+    
+  
+    .container__img_stuff {
+      opacity: 1;
+    }
+    
    
     .swiper_pagination_container {
      justify-content: center;

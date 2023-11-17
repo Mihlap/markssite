@@ -25,7 +25,7 @@ import {
   setCategory,
 } from "../store/Slice/StaffSlice";
 import LoadingCircle from "../Loading/LoadingCircle";
-// import Error from "../Loading/Error/Error";
+import Error from "../Loading/Error/Error";
 
 import bracket from "../icons/bracket.svg";
 import bracket_dark from "../icons/bracket_dark.svg";
@@ -265,6 +265,11 @@ export default function Company({
     { name: "Научно-техническое сопровождение", onClick: handleButtonClick },
     // { name: "HR", onClick: handleButtonClick },
   ];
+
+  const handleImageLoad = () => {
+    console.log('Image loaded!');
+    setShowCards(true);
+  };
 
   // if (error) {
   //   return (
@@ -599,24 +604,24 @@ export default function Company({
                 <li
                   key={el.id}
                   data-user-id={el.id}
-                  // {...el}
                   className={styles.container__item_stuff}
                   onClick={() => handleButtonClick(category, el.id)}
                   onMouseEnter={handleMouseHover}
                   onMouseLeave={handleMouseLeave}
                 >
                   <div className={styles.wrapper_container_item_stuff}>
-                    {showCards ? (
-                      <img
-                        className={styles.container__img_stuff}
-                        src={`${Host}/images/imageStuff/${el.img}`}
-                        onLoad={() => setShowCards(true)}
-                        alt={el.img}
-                        loading="lazy"
-                      />
-                    ) : (
-                      <LoadingCircle />
-                    )}
+                    <img
+                      className={`${styles.container__img_stuff} ${
+                        showCards ? "loaded" : ""
+                      }`}
+                      src={`${Host}/images/imageStuff/${el.img}`}
+                      onLoad={handleImageLoad}
+                      onError={(e) => {
+                        e.target.src = `${Host}/images/imageStuff/no_photo.png`;
+                      }}
+                      alt={el.img}
+                      loading="lazy"
+                    />
                   </div>
                   <div className={styles.container__item_name_stuff}>
                     {el.name}
@@ -1004,8 +1009,14 @@ export default function Company({
                 >
                   <div className={styles.wrapper_container_item_stuff}>
                     <img
-                      className={styles.container__img_stuff}
+                        className={`${styles.container__img_stuff} ${
+                          showCards ? "loaded" : ""
+                        }`}
                       src={`${Host}/images/imageStuff/${el.img}`}
+                      onLoad={handleImageLoad}
+                      onError={(e) => {
+                        e.target.src = `${Host}/images/imageStuff/no_photo.png`;
+                      }}
                       alt={el.img}
                       loading="lazy"
                     />
@@ -1051,10 +1062,16 @@ export default function Company({
                   className={styles.slide_container_item_stuff}
                   onClick={() => handleButtonClick(category, el.id)}
                 >
-                  <div className={styles.wrapper_container_item_stuff}>
+                  <div className={styles.wrapper_container_item_stuff} >
                     <img
-                      className={styles.container__img_stuff}
+                         className={`${styles.container__img_stuff} ${
+                          showCards ? "loaded" : ""
+                        }`}
                       src={`${Host}/images/imageStuff/${el.img}`}
+                      onLoad={handleImageLoad}
+                      onError={(e) => {
+                        e.target.src = `${Host}/images/imageStuff/no_photo.png`;
+                      }}
                       alt={el.img}
                       loading="lazy"
                     />
