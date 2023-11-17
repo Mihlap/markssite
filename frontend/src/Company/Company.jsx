@@ -43,15 +43,15 @@ export default function Company({
   handleMouseHover,
 }) {
   const videoSource = {
-    large: `${Host}/images/video/company_full.mp4`,
-    medium: `${Host}/images/video/company_ipad.mp4`,
-    small: `${Host}/images/video/company_mob.mp4`,
+    large: `${Host}/videos/company_full.mp4`,
+    medium: `${Host}/videos/company_ipad.mp4`,
+    small: `${Host}/videos/company_mob.mp4`,
   };
 
   const videoSource2 = {
-    large: `${Host}/images/video/main_company_full.mp4`,
-    medium: `${Host}/images/video/main_company_ipad.mp4`,
-    small: `${Host}/images/video/main_company_mobile.mp4`,
+    large: `${Host}/videos/main_company_full.mp4`,
+    medium: `${Host}/videos/main_company_ipad.mp4`,
+    small: `${Host}/videos/main_company_mobile.mp4`,
   };
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [countPercent, setCountPercent] = useState(0);
@@ -196,7 +196,7 @@ export default function Company({
   ]);
 
   useEffect(() => {
-    console.log("Inside useEffect");
+    // console.log("Inside useEffect");
     gsap?.registerPlugin(ScrollTrigger);
 
     const { elementsRight } = { elementsRight: [blockSlider.current] };
@@ -322,7 +322,7 @@ export default function Company({
               id="bg-video"
               className={styles.bg_video}
             >
-              <source src={videoSrc2} type="video/webm" preload="auto" />
+              <source src={videoSrc2} type="video/mp4" preload="auto" />
             </video>
           )}
         </div>

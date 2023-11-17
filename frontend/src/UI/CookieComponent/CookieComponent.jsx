@@ -23,7 +23,7 @@ const CookieComponent = () => {
       <CookieConsent
         location="bottom"
         cookieName="myCookieConsent"
-        buttonText="Хорошо"
+        buttonText="Принять"
         style={{
           display: "flex",
           justifyContent: 'center',
@@ -54,7 +54,7 @@ const CookieComponent = () => {
         }}
         expires={10}
       >
-       Мы используем файлы cookie и инструменты аналитики     
+       Мы используем файлы cookie и&nbsp;инструменты аналитики     
       </CookieConsent>
     </div>
   );

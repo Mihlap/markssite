@@ -80,6 +80,9 @@ router.get('/getzapros', async (req, res) => {
     const data = await Articles.findAll({
       include: [ConstructorArticles],
     });
+
+    //  res.set('Cache-Control', 'public, max-age=432000'); // 432000 секунд = 5 дней
+
     res.json(data);
   } catch (error) {
     console.log(error);
