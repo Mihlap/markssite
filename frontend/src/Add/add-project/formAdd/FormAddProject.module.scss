@@ -59,6 +59,24 @@
         margin-bottom: 2.5rem;
     }
 
+    &__notification {
+        position: fixed;
+            top: 20px;
+            right: 12px; // начальная позиция справа за пределами экрана
+            font-family: var(--font-raleway);
+            background-color: var(--white-F6F6F6);
+            color: var(--black-1D2E43);
+            padding: 10px 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            transition: right 0.5s;
+        
+            &.show {
+                right: 20px; // конечная позиция в пределах экрана
+            }
+    }
+
     &__block_form {
         // height: 88vh;
         // padding-bottom: 15rem;
@@ -523,11 +541,11 @@
 
     &__uploadTextForm {
         display: inline-block;
-            font-size: 0.875rem;
-            font-family: var(--font-raleway);
-            font-style: normal;
-            font-weight: 400;
-            line-height: 1.25rem;
+        font-size: 0.875rem;
+        font-family: var(--font-raleway);
+        font-style: normal;
+        font-weight: 400;
+        line-height: 1.25rem;
     }
 
     &__uploadText {
@@ -749,7 +767,7 @@
         outline: none;
         transition: transform 0.3s ease;
     }
-    
+
     &__close_button::after,
     &__close_button::before {
         content: '';
@@ -765,6 +783,7 @@
     &__close_button::after {
         transform: translate(-50%, -50%) rotate(-45deg);
     }
+
     &__close_button:hover {
         transform: scale(1.2);
         /* Увеличиваем размер кнопки при наведении в 1.2 раза */
@@ -842,45 +861,45 @@
 
 .form_error_message {
     position: fixed;
-        z-index: 9999;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.6);
-        font-family: var(--font-raleway);
-        color: var(--black-1D2E43);
-        display: flex;
-        justify-content: center;
-        align-items: center;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    font-family: var(--font-raleway);
+    color: var(--black-1D2E43);
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .form_error_message_div {
     position: relative;
-        display: flex;
-        flex-direction: column;
-        background-color: #fff;
-        width: 534px;
-        height: auto;
-        padding: 32px 32px 32px 32px;
-        border-radius: 1rem;
-        box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-        overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    width: 534px;
+    height: auto;
+    padding: 32px 32px 32px 32px;
+    border-radius: 1rem;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
 }
 
 .form_error_close_button {
     position: absolute;
-        top: 15px;
-        right: 20px;
-        width: 25px;
-        height: 25px;
-        background-color: transparent;
-        border: none;
-        cursor: pointer;
-        outline: none;
-        transition: transform 0.3s ease;
+    top: 15px;
+    right: 20px;
+    width: 25px;
+    height: 25px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    transition: transform 0.3s ease;
 
-        &:hover {
-            transform: scale(1.2);
-        }
+    &:hover {
+        transform: scale(1.2);
+    }
 }
