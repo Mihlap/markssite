@@ -79,8 +79,7 @@ const CompanySubscriptionForm = () => {
       <div className={styles.border_line_sub}>
         <div className={styles.form_right_main}>
           <div className={styles.title1}>
-            Что бы всегда быть в&nbsp;курсе новых направлений и&nbsp;наших проектов
-            подпишитесь на&nbsp;рассылку/альманах
+            Что бы всегда быть в&nbsp;курсе новых направлений и&nbsp;наших проектов, подпишитесь на&nbsp;рассылку/альманах
           </div>
           <form className={styles.form_form_wrapper1} onSubmit={handleSubmit}>
             <div className={styles.group}>
