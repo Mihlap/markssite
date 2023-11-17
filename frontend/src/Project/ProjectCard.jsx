@@ -589,6 +589,8 @@ const ProjectCard = ({
                         <ConstructorBlockRenderer
                           key={innerIndex}
                           block={block}
+                          handleMouseEnter={handleMouseEnter}
+                          handleMouseLeave={handleMouseLeave}
                         />
                       ))}
                     </div>
@@ -639,7 +641,11 @@ const ProjectCard = ({
               )}
             </div>
             <div id="projects" className={styles.social_links_projectCard}>
-              <button onClick={() => shareToVK(project, Host)}>
+              <button
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                onClick={() => shareToVK(project, Host)}
+              >
                 <span
                   className={styles.social_links_item}
                   style={{ marginRight: "21px", color: "#FF7F6A" }}
@@ -647,7 +653,11 @@ const ProjectCard = ({
                   VK
                 </span>
               </button>
-              <button onClick={() => shareToWhatsApp(project, Host)}>
+              <button
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                onClick={() => shareToWhatsApp(project, Host)}
+              >
                 <span
                   className={styles.social_links_item}
                   style={{ marginRight: "25px", color: "#FF7F6A" }}
@@ -663,7 +673,11 @@ const ProjectCard = ({
                   VB
                 </span>
               </button> */}
-              <button onClick={() => shareToTelegram(project, Host)}>
+              <button
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                onClick={() => shareToTelegram(project, Host)}
+              >
                 <span
                   className={styles.social_links_item}
                   style={{ color: "#FF7F6A" }}
