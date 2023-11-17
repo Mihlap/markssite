@@ -496,13 +496,13 @@
         position: relative;
         padding: 0.5rem 1rem;
         margin: 8px 0px 15px 0px;
-        background-color: var(--light-light-gray-EBECEE);
+        background-color: var(--salmon-light-FFBFB5);
         transition: color 0.3s, background-color 0.3s, color 0.3s;
         border-radius: 20px;
         cursor: pointer;
 
         &:hover {
-            background-color: var(--salmon-light-FFBFB5);
+            background-color: var(--salmon-FF7F6A);
         }
     }
 
@@ -517,6 +517,19 @@
 
     }
 
+    &__svg {
+        color: var(--secondary-dark-gray-525459);
+    }
+
+    &__uploadTextForm {
+        display: inline-block;
+            font-size: 0.875rem;
+            font-family: var(--font-raleway);
+            font-style: normal;
+            font-weight: 400;
+            line-height: 1.25rem;
+    }
+
     &__uploadText {
         display: inline-block;
         font-size: 0.875rem;
@@ -524,6 +537,7 @@
         font-style: normal;
         font-weight: 400;
         line-height: 1.25rem;
+        color: var(--secondary-dark-gray-525459);
     }
 
     /* Скрыть стандартную фразу "файл не выбран" */
@@ -709,12 +723,54 @@
     flex-direction: column;
     gap: 32px;
     border-radius: 6px;
-    background-color: gre;
+    // padding: 32px 15px;
+    // background-color: var(--light-light-gray-EBECEE);
 }
 
 .imgWithDescriptionPreview {
     /* Ваши стили для превью "Картинка с описанием" */
 }
+
+.blockContainer {
+    position: relative;
+    border-radius: 6px;
+    padding: 32px 16px;
+    background-color: var(--light-light-gray-EBECEE);
+
+    &__close_button {
+        position: absolute;
+        top: 15px;
+        right: 20px;
+        width: 25px;
+        height: 25px;
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
+        outline: none;
+        transition: transform 0.3s ease;
+    }
+    
+    &__close_button::after,
+    &__close_button::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 16px;
+        height: 1px;
+        background-color: #000;
+        transform: translate(-50%, -50%) rotate(45deg);
+    }
+
+    &__close_button::after {
+        transform: translate(-50%, -50%) rotate(-45deg);
+    }
+    &__close_button:hover {
+        transform: scale(1.2);
+        /* Увеличиваем размер кнопки при наведении в 1.2 раза */
+    }
+}
+
 
 .sliderPreview {
     display: flex;
