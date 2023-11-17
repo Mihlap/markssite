@@ -28,6 +28,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
   const [isPhotoAvaVisible, setIsPhotoAvaVisible] = useState(true);
   const [isDropPhotoVisible, setIsDropPhotoVisible] = useState(true);
   const [isFocused, setIsFocused] = useState(false);
+   const [showNotification, setShowNotification] = useState(false);
   const [inputData, setInputData] = useState({
     title: "",
     author: "",
@@ -135,21 +136,36 @@ export default function FormAddArticles({ setIsModalOpen }) {
   };
 
   // функция которая не даёт создать новый диманический блок, пока не заполнены value предыдущего
-  const areAllBlocksFilled = () => {
-    for (let block of dynamicData) {
-      for (let input of block) {
-        if (!input.value || input.value === "") {
-          return false;
-        }
-      }
-    }
-    return true;
+ const areAllBlocksFilled = () => {
+   for (let block of dynamicData) {
+     for (let input of block) {
+       // Проверяем только обязательные поля
+       if (input.required && (!input.value || input.value === "")) {
+         return false;
+       }
+     }
+   }
+   return true;
   };
+  
+    const handleRemoveBlock = (blockIndex) => {
+      setDynamicData((prevDynamicData) =>
+        prevDynamicData.filter((_, index) => index !== blockIndex)
+      );
+      // Обновление других связанных состояний...
+      setBlocks((prevBlocks) =>
+        prevBlocks.filter((_, index) => index !== blockIndex)
+      );
+      setDynamicPreviews((prevPreviews) =>
+        prevPreviews.filter((_, index) => index !== blockIndex)
+      );
+    };
 
   const handleClick = (inputs) => {
      
-    if (!areAllBlocksFilled()) {
-       alert("Сначала заполните все обязательные поля в предыдущем блоке❗");
+     if (!areAllBlocksFilled()) {
+       setShowNotification(true);
+       setTimeout(() => setShowNotification(false), 5000);
        return;
      }
      
@@ -532,20 +548,28 @@ export default function FormAddArticles({ setIsModalOpen }) {
   };
 
   const renderInputs = (inputs, blockIndex) => {
-    return inputs.map((input, inputIndex) => {
-      return renderInputWithLabel(
-        input.type,
-        input.label,
-        blockIndex,
-        inputIndex
-      );
-    });
+    return (
+      <div key={blockIndex} className={styles.blockContainer}>
+        {inputs.map((input, inputIndex) =>
+          renderInputWithLabel(input.type, input.label, blockIndex, inputIndex)
+        )}
+        <div
+          className={styles.blockContainer__close_button}
+          onClick={() => handleRemoveBlock(blockIndex)}
+        ></div>
+      </div>
+    );
   };
 
   // console.log(inputData, "<<--inputData ARTICLE");
   // console.log(dynamicData, "<<--dynamicData");
   return (
     <div className={styles.form_container}>
+      {showNotification && (
+        <div className={styles.form_container__notification}>
+          Сначала заполните все обязательные поля в предыдущем блоке❗
+        </div>
+      )}
       <div className={styles.form_container__title}>Новая публикация</div>
       <div className={styles.form_container__block_form}>
         <form className={styles.form_container__form} onSubmit={submitHandler}>
@@ -691,7 +715,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
                     />
                   </g>
                 </svg>
-                <div className={styles.slider_container__uploadText}>
+                <div className={styles.slider_container__uploadTextForm}>
                   Загрузить изображения
                 </div>
               </label>
@@ -837,7 +861,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
                     />
                   </g>
                 </svg>
-                <div className={styles.slider_container__uploadText}>
+                <div className={styles.slider_container__uploadTextForm}>
                   Загрузить изображения
                 </div>
               </label>
@@ -911,7 +935,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
                     />
                   </g>
                 </svg>
-                <div className={styles.slider_container__uploadText}>
+                <div className={styles.slider_container__uploadTextForm}>
                   Загрузить изображения
                 </div>
               </label>
@@ -1066,7 +1090,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
                     />
                   </g>
                 </svg>
-                <div className={styles.slider_container__uploadText}>
+                <div className={styles.slider_container__uploadTextForm}>
                   Загрузить изображения
                 </div>
               </label>

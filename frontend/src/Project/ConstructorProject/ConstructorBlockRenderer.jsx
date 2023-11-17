@@ -24,15 +24,20 @@ const arrowStyles = {
   cursor: "pointer",
 };
 
-const PrevArrow = (props) => (
-  <div onClick={props.onClick} style={{ ...arrowStyles, left: "1.5rem" }}>
+const PrevArrow = ({ props, onClick, onMouseEnter, onMouseLeave }) => (
+  <div
+    onMouseEnter={onMouseEnter}
+    onMouseLeave={onMouseLeave}
+    onClick={onClick}
+    style={{ ...arrowStyles, left: "1.5rem" }}
+  >
     <svg
       width="42"
       height="42"
       viewBox="0 0 32 32"
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
-      >
+    >
       <g id="icon / 24 /  arrow /  normal">
         <rect
           y="32"
@@ -42,13 +47,13 @@ const PrevArrow = (props) => (
           transform="rotate(-90 0 32)"
           fill="url(#paint0_linear_565_7001)"
           fillOpacity="0.55"
-          />
+        />
         <path
           id="Vector 30"
           d="M18.667 10.6665L12.0003 16.6665L18.667 22.6665"
           stroke="#F6F6F6"
           strokeWidth="1.33333"
-          />
+        />
       </g>
       <defs>
         <linearGradient
@@ -58,7 +63,7 @@ const PrevArrow = (props) => (
           x2="55.3078"
           y2="90.3335"
           gradientUnits="userSpaceOnUse"
-          >
+        >
           <stop stopColor="#BBDEFF" />
           <stop offset="1" stopColor="#FFBFB5" />
         </linearGradient>
@@ -67,8 +72,13 @@ const PrevArrow = (props) => (
   </div>
 );
 
-const NextArrow = (props) => (
-  <div onClick={props.onClick} style={{ ...arrowStyles, right: "1.5rem" }}>
+const NextArrow = ({ props,onClick, onMouseEnter, onMouseLeave }) => (
+  <div
+    onMouseEnter={onMouseEnter}
+    onMouseLeave={onMouseLeave}
+    onClick={onClick}
+    style={{ ...arrowStyles, right: "1.5rem" }}
+  >
     <svg
       width="42"
       height="42"
@@ -85,13 +95,13 @@ const NextArrow = (props) => (
           transform="rotate(90 32 0)"
           fill="url(#paint0_linear_565_7000)"
           fillOpacity="0.55"
-          />
+        />
         <path
           id="Vector 30"
           d="M13.333 21.3335L19.9997 15.3335L13.333 9.3335"
           stroke="#F6F6F6"
           strokeWidth="1.33333"
-          />
+        />
       </g>
       <defs>
         <linearGradient
@@ -101,7 +111,7 @@ const NextArrow = (props) => (
           x2="87.3078"
           y2="58.3335"
           gradientUnits="userSpaceOnUse"
-          >
+        >
           <stop stopColor="#BBDEFF" />
           <stop offset="1" stopColor="#FFBFB5" />
         </linearGradient>
@@ -110,7 +120,11 @@ const NextArrow = (props) => (
   </div>
 );
 
-export default function ConstructorBlockRenderer({ block }) {
+export default function ConstructorBlockRenderer({
+  block,
+  handleMouseLeave,
+  handleMouseEnter,
+}) {
   const [activeSlide, setActiveSlide] = useState(0);
   const [dotsVisible, setDotsVisible] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -280,8 +294,18 @@ export default function ConstructorBlockRenderer({ block }) {
         setActiveSlide(newIndex);
       },
       focusOnSelect: true,
-      prevArrow: dotsVisible && <PrevArrow />,
-      nextArrow: dotsVisible && <NextArrow />,
+      prevArrow: dotsVisible && (
+        <PrevArrow
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        />
+      ),
+      nextArrow: dotsVisible && (
+        <NextArrow
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        />
+      ),
     };
 
     // console.log('Block:', block);
@@ -321,19 +345,19 @@ export default function ConstructorBlockRenderer({ block }) {
       outline: "none",
       // controls: "controls",
     };
-  
+
     const handlePlay = () => {
       const videoElement = document.querySelector("video");
       videoElement.play();
-        setIsPlaying(true);
-        setIsHovered(false);
-        };
-  
+      setIsPlaying(true);
+      setIsHovered(false);
+    };
+
     const handlePause = () => {
       const videoElement = document.querySelector("video");
       videoElement.pause();
-        setIsPlaying(false);
-        setIsHovered(false);
+      setIsPlaying(false);
+      setIsHovered(false);
     };
 
     return (
@@ -357,18 +381,18 @@ export default function ConstructorBlockRenderer({ block }) {
               type="video/mp4"
             />
           </video>
-          <div className={styles.buttonWrapperBlock}>         
-          {isPlaying ? (
-          isHovered && (
+          <div className={styles.buttonWrapperBlock}>
+            {isPlaying ? (
+              isHovered && (
                 <button className={styles.buttonPause} onClick={handlePause}>
-               <img src={pauseIconToUse} alt={pauseIconToUse} />
-              </button>  
-          )
-          ) : (
-             <button className={styles.buttonPlayBlock} onClick={handlePlay}>
-               <img src={playIconToUse} alt={playIconToUse}/>
-             </button>            
-              )}
+                  <img src={pauseIconToUse} alt={pauseIconToUse} />
+                </button>
+              )
+            ) : (
+              <button className={styles.buttonPlayBlock} onClick={handlePlay}>
+                <img src={playIconToUse} alt={playIconToUse} />
+              </button>
+            )}
           </div>
         </div>
       </div>
