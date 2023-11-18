@@ -449,6 +449,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
                       multiple
                     />
                     <svg
+                      className={styles.slider_container__svg}
                       width="16"
                       height="16"
                       viewBox="0 0 16 16"
