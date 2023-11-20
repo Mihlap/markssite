@@ -225,7 +225,9 @@ const ProjectCard = ({
 
 
  // Получаем 20 рандомных проектов
-  const randomProjects = projects.sort(() => 0.5 - Math.random()).slice(0, 20)
+ const randomProjects = projects
+ ? [...projects].sort(() => 0.5 - Math.random()).slice(0, 20)
+ : [];
 
   // const randomProjects = projects.slice().sort(() => Math.random() - 0.5).slice(0, 20);
 
@@ -913,7 +915,7 @@ const ProjectCard = ({
           </Swiper>
         </div>
         <div className={styles.project_container_projectCard_sliderMobile}>
-          <SliderContainerProjectCard projects={projects} />
+          <SliderContainerProjectCard projects={randomProjects} />
         </div>
       </div>
     </>
