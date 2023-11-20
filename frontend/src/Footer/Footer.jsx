@@ -6,14 +6,16 @@ const Footer = ({
   handleMouseEnterFooter,
   handleMouseEnterFooterMore,
   handleMouseLeaveFooter,
-  handleMouseLeave,
+  handleMouseLeave, 
 }) => {
-  function mapToLink(link) {
+  function mapToLink(link, event) {
+    event.preventDefault();
     window.location.href = link;
   }
-  const mapHendler = () => {
+  const mapHendler = (event) => {
     mapToLink("https://yandex.ru/maps/-/CCUgmThXKA");
   };
+  
 
   return (
     <footer
@@ -128,10 +130,10 @@ const Footer = ({
             <Link
               className={styles.job_link}
               to="./Information"
-              // target="_blank"
+              target="_blank"
               onMouseEnter={handleMouseEnterFooterMore}
               onMouseLeave={handleMouseLeaveFooter}
-            >
+             >
               <span>Документы</span>
             </Link>
             <div className={styles.job_link}>©&nbsp;MARKSLAB</div>
