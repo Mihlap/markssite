@@ -92,7 +92,7 @@ export default function App() {
     }, 3500);
   }, []);
 
-  console.log(location.pathname)
+  // console.log(location.pathname)
   // console.log(`пользователь 👉${user?.name}👈`);
   return (
     <HelmetProvider>
