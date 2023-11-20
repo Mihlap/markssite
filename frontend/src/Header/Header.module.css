@@ -255,10 +255,12 @@ position: relative;
 .most {
   position: absolute;
   right: 0;
-  /* background-image: url("/public/assets/most.png"); */
+   /* top: 27%; */
+  /* background-image: url("/public/assets/most2.png"); */
   background-repeat: no-repeat;
   background-position: right;
   z-index: -1;
+  opacity: 70%;
 }
 
 .image_most {
@@ -659,6 +661,21 @@ svg path {
 @media screen and (min-width: 2000px) and (max-width: 3000px) {
   .card_item_2 {
      height: 68vh;  
+  }
+  .most {
+    position: absolute;
+    right: 28%;
+    top: 32%;
+    /* background-image: url("/public/assets/most2.png"); */
+    background-repeat: no-repeat;
+    background-position: right;
+    z-index: -1;
+    opacity: 70%;
+  }
+
+  .image_most {
+    width: 160%;
+    height: 100%;
   }
   
 }
