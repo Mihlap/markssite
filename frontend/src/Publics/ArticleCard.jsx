@@ -210,10 +210,12 @@ const ArticleCard = ({
   const previousArticle = articles[previousIndex];
   const nextArticle = articles[nextIndex];
   const userSelectedBlocks = article?.ConstructorArticles?.map((el) => el.data);
-  
+
 
   // Получаем 20 рандомных статей
-  const randomArticles = articles.sort(() => 0.5 - Math.random()).slice(0, 20)
+  const randomArticles = articles
+  ? [...articles].sort(() => 0.5 - Math.random()).slice(0, 20)
+  : [];
 
   // console.log(userSelectedBlocks, "<<--- userSelectedBlocks");
 
@@ -619,7 +621,7 @@ const ArticleCard = ({
           </Swiper>
         </div>
         <div className={styles.article_container_articleCard_sliderMobile}>
-          <SliderContainerArticleCard articles={articles} />
+          <SliderContainerArticleCard articles={randomArticles} />
         </div>{" "}
       </div>
     </>
