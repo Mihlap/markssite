@@ -196,8 +196,7 @@ export default function Company({
   ]);
 
   useEffect(() => {
-    // console.log("Inside useEffect");
-    gsap?.registerPlugin(ScrollTrigger);
+     gsap?.registerPlugin(ScrollTrigger);
 
     const { elementsRight } = { elementsRight: [blockSlider.current] };
 
