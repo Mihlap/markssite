@@ -190,11 +190,19 @@ export default function App() {
                     />
                   }
                 />
+                <Route
+                   path="/information"
+                    element={
+                    <Information
+                    handleMouseEnter={handleMouseEnter}
+                    handleMouseLeave={handleMouseLeave}
+                     />
+                     } 
+                     />
                 <Route path="/portal" element={<Portal />} />
                 <Route path="*" element={<NotFound />} />
                 <Route path="/login" element={<Login />} />
                 {isActive && <Route path="/signup" element={<SignUpPage />} />}
-                <Route path="/information" element={<Information />} />
                 <Route path="/test" element={<LoadingModal />} />
 
                 {user ? (
