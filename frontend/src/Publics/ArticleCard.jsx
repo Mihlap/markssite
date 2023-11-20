@@ -210,6 +210,10 @@ const ArticleCard = ({
   const previousArticle = articles[previousIndex];
   const nextArticle = articles[nextIndex];
   const userSelectedBlocks = article?.ConstructorArticles?.map((el) => el.data);
+  
+
+  // Получаем 20 рандомных статей
+  const randomArticles = articles.sort(() => 0.5 - Math.random()).slice(0, 20)
 
   // console.log(userSelectedBlocks, "<<--- userSelectedBlocks");
 
@@ -540,7 +544,7 @@ const ArticleCard = ({
               },
             }}
           >
-            {articles?.slice(0, 20).map((article, index) => {
+            {randomArticles?.map((article, index) => {
               if (!article) {
                 return null;
               }
