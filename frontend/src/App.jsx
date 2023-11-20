@@ -92,10 +92,11 @@ export default function App() {
     }, 3500);
   }, []);
 
+  console.log(location.pathname)
   // console.log(`пользователь 👉${user?.name}👈`);
   return (
     <HelmetProvider>
-      {loading === true ? (
+      {loading === true && location.pathname.toLowerCase() !== "/information" ? (
         <Loading />
       ) : (
         <>
@@ -196,7 +197,7 @@ export default function App() {
                     <Information
                     handleMouseEnter={handleMouseEnter}
                     handleMouseLeave={handleMouseLeave}
-                     />
+                    />
                      } 
                      />
                 <Route path="/portal" element={<Portal />} />
