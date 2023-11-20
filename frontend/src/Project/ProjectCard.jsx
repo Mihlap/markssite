@@ -223,6 +223,12 @@ const ProjectCard = ({
     };
   }, []);
 
+
+ // Получаем 20 рандомных проектов
+ const randomProjects = projects
+ ? [...projects].sort(() => 0.5 - Math.random()).slice(0, 20)
+ : [];
+
   // const randomProjects = projects.slice().sort(() => Math.random() - 0.5).slice(0, 20);
 
   //  console.log(projects, " << --- projects");
@@ -732,7 +738,7 @@ const ProjectCard = ({
               },
             }}
           >
-            {projects?.slice(0, 20).map((project, index) => {
+            {randomProjects?.map((project, index) => {
               const photoName = project && project.imageProject;
               const defaultPhoto = catPhoto;
 
@@ -909,7 +915,7 @@ const ProjectCard = ({
           </Swiper>
         </div>
         <div className={styles.project_container_projectCard_sliderMobile}>
-          <SliderContainerProjectCard projects={projects} />
+          <SliderContainerProjectCard projects={randomProjects} />
         </div>
       </div>
     </>
