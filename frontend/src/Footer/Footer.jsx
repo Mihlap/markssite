@@ -128,7 +128,7 @@ const Footer = ({
             <Link
               className={styles.job_link}
               to="./Information"
-              target="_blank"
+              // target="_blank"
               onMouseEnter={handleMouseEnterFooterMore}
               onMouseLeave={handleMouseLeaveFooter}
             >
