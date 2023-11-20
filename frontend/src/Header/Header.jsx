@@ -493,7 +493,7 @@ export default function Header({ handleMouseEnter,
             <img
               className={styles.image_most}
               loading="lazy"
-              src="./assets/most.png"
+              src="./assets/most2.png"
               alt=""
             ></img>
           </div>
