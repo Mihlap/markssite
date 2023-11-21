@@ -7,6 +7,7 @@
 
 .logo {
   padding-top: 56px;
+  cursor: none !important;
 }
 
 .icon_partner_phone {

@@ -13,9 +13,14 @@
   font-style: normal;
 }
 
-* {
+/* a,
+button {
+  cursor: none !important;
+} */
+
+/* * {
   cursor: none;
-}
+} */
 /* это может выключить мышку во всех браузерах, и будет только колесик */
 
 /* Colors */
