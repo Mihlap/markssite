@@ -319,7 +319,9 @@ export default function FormAddArticles({ setIsModalOpen }) {
           <>
             {labelText === "Видеоролик" ? (
               <div>
-                <div className={styles.form_container__checkbox_block}>
+                <div
+                  className={styles.form_container__checkbox_block_constructor}
+                >
                   <div>{labelText}</div>
                 </div>
                 <label
@@ -416,7 +418,11 @@ export default function FormAddArticles({ setIsModalOpen }) {
             ) : (
               <>
                 <div key={inputIndex}>
-                  <div className={styles.form_container__checkbox_block}>
+                  <div
+                    className={
+                      styles.form_container__checkbox_block_constructor
+                    }
+                  >
                     <div>{labelText}</div>
                   </div>
                   <label
@@ -538,7 +544,10 @@ export default function FormAddArticles({ setIsModalOpen }) {
               rows="10"
               placeholder={labelText}
             ></textarea>
-            <label htmlFor="" className={styles.form_container__textarea_label}>
+            <label
+              htmlFor=""
+              className={styles.form_container__textarea_label_constructor}
+            >
               {labelText}
             </label>
           </div>
