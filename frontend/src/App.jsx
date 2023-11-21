@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import "./App.css";
@@ -10,7 +10,6 @@ import Contacts from "./Contacts/Contacts";
 import Project from "./Project/Project";
 import Publics from "./Publics/Publics";
 import NotFound from "./NotFound/NotFound";
-import Portal from "./Portal/Portal";
 import Navbar from "./Navbar/Navbar";
 import Footer from "./Footer/Footer";
 import Information from "./Information/Information";
@@ -29,8 +28,21 @@ import { resetCurrentPage, setCurrentPage } from "./store/Slice/userSlice";
 import ButtonAdmin from "./UI/ButtonAdmin/ButtonAdmin";
 import { fetchToggleStateForButton3Async } from "./store/Slice/toggleSlice";
 import LoadingModal from "./Add/add-project/loading/LoadingModal";
-import { imageHover, specialHover, textEnter, textFooter, textFooterEnter, textLeave, textLeaveFooter } from "./store/Slice/cursorSlice";
+import {
+  imageHover,
+  specialHover,
+  textEnter,
+  textFooter,
+  textFooterEnter,
+  textLeave,
+  textLeaveFooter,
+} from "./store/Slice/cursorSlice";
 import CookieComponent from "./UI/CookieComponent/CookieComponent";
+import Internships from "./Portal/Internships/Internships";
+import Office from "./Portal/Office/Office";
+import PortalMenu from "./Navbar/PortalMenu";
+import Vacancies from "./Portal/Vacancies/Vacancies";
+
 
 export default function App() {
   const user = useSelector((state) => state.auth.user);
@@ -40,6 +52,15 @@ export default function App() {
   const location = useLocation();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
+  const [showPortalMenu, setShowPortalMenu] = useState(false);
+ 
+  useEffect(() => {
+       setShowPortalMenu(
+      location.pathname === "/vacancies" ||
+        location.pathname === "/internships" ||
+        location.pathname === "/office"
+        );
+  }, [location.pathname]);
 
   useEffect(() => {
     dispatch(checkUserAuth());
@@ -50,34 +71,33 @@ export default function App() {
     dispatch(setCurrentPage(page));
   };
 
-   const handleMouseEnter = () => {
-     dispatch(textEnter());
-   };
-  
+  const handleMouseEnter = () => {
+    dispatch(textEnter());
+  };
+
   const handleMouseEnterFooter = () => {
     dispatch(textFooter());
-  }
+  };
 
   const handleMouseEnterFooterMore = () => {
     dispatch(textFooterEnter());
   };
 
-     const handleMouseLeaveFooter = () => {
-       dispatch(textLeaveFooter());
-     };
+  const handleMouseLeaveFooter = () => {
+    dispatch(textLeaveFooter());
+  };
 
+  const handleMouseLeave = () => {
+    dispatch(textLeave());
+  };
 
-   const handleMouseLeave = () => {
-     dispatch(textLeave());
-   };
+  const handleMouseHover = () => {
+    dispatch(imageHover());
+  };
 
-   const handleMouseHover = () => {
-     dispatch(imageHover());
-   };
-
-   const handleSpecialHover = () => {
-     dispatch(specialHover());
-   };
+  const handleSpecialHover = () => {
+    dispatch(specialHover());
+  };
 
   const handleReturn = () => {
     dispatch(resetCurrentPage()); // Сбрасываем currentPage
@@ -96,15 +116,26 @@ export default function App() {
   // console.log(`пользователь 👉${user?.name}👈`);
   return (
     <HelmetProvider>
-      {loading === true && location.pathname.toLowerCase() !== "/information" ? (
+      {loading === true &&
+      location.pathname.toLowerCase() !== "/information" ? (
         <Loading />
       ) : (
         <>
-          {showNavbarFooter && currentPage !== "add" && (
-            <Navbar
-              handleMouseEnter={handleMouseEnter}
-              handleMouseLeave={handleMouseLeave}
-            />
+        {showNavbarFooter && currentPage !== "add" && (
+            <>
+              {showPortalMenu ? (
+                <PortalMenu
+                  user={user}
+                  handleMouseEnter={handleMouseEnter}
+                  handleMouseLeave={handleMouseLeave}
+                />
+              ) : (
+                <Navbar
+                  handleMouseEnter={handleMouseEnter}
+                  handleMouseLeave={handleMouseLeave}
+                />
+              )}
+            </>
           )}
           {showNavbarFooter && currentPage !== "add" && (
             <ButtonAdmin
@@ -127,7 +158,6 @@ export default function App() {
                     />
                   }
                 />
-                {/* <Route path="/competention" element={<Competentions />} /> */}
                 <Route
                   path="/project"
                   element={
@@ -188,24 +218,54 @@ export default function App() {
                     <Contacts
                       handleMouseEnter={handleMouseEnter}
                       handleMouseLeave={handleMouseLeave}
+                      handleMouseHover={handleMouseHover}
                     />
                   }
                 />
                 <Route
-                   path="/information"
-                    element={
+                  path="/information"
+                  element={
                     <Information
-                    handleMouseEnter={handleMouseEnter}
-                    handleMouseLeave={handleMouseLeave}
+                      handleMouseEnter={handleMouseEnter}
+                      handleMouseLeave={handleMouseLeave}
+                      handleMouseHover={handleMouseHover}
                     />
-                     } 
-                     />
-                <Route path="/portal" element={<Portal />} />
+                  }
+                />
+                <Route
+                  path="/vacancies"
+                  element={
+                    <Vacancies
+                      handleMouseEnter={handleMouseEnter}
+                      handleMouseLeave={handleMouseLeave}
+                      handleMouseHover={handleMouseHover}
+                    />
+                  }
+                />
+                <Route
+                  path="/internships"
+                  element={
+                    <Internships
+                      handleMouseEnter={handleMouseEnter}
+                      handleMouseLeave={handleMouseLeave}
+                      handleMouseHover={handleMouseHover}
+                    />
+                  }
+                />
+                <Route
+                  path="/office"
+                  element={
+                    <Office
+                      handleMouseEnter={handleMouseEnter}
+                      handleMouseLeave={handleMouseLeave}
+                      handleMouseHover={handleMouseHover}
+                    />
+                  }
+                />
                 <Route path="*" element={<NotFound />} />
                 <Route path="/login" element={<Login />} />
                 {isActive && <Route path="/signup" element={<SignUpPage />} />}
                 <Route path="/test" element={<LoadingModal />} />
-
                 {user ? (
                   <Route
                     path="/admin/*"
@@ -223,7 +283,7 @@ export default function App() {
               </Routes>
             </CSSTransition>
           </TransitionGroup>
-          <CookieComponent/>
+          <CookieComponent />
           {showNavbarFooter && currentPage !== "add" && (
             <Footer
               handleMouseEnterFooter={handleMouseEnterFooter}
@@ -238,3 +298,5 @@ export default function App() {
     </HelmetProvider>
   );
 }
+
+
