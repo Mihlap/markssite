@@ -107,6 +107,8 @@ export default function Navbar({ handleMouseEnter, handleMouseLeave }) {
               <div>Компетенции</div>
             </Link> */}
             <Link
+               onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
               className={`${styles.navbar__item} ${
                 activeClass === "/" ? styles.navbar__item_open : ""
               }`}
