@@ -43,7 +43,6 @@ import Office from "./Portal/Office/Office";
 import PortalMenu from "./Navbar/PortalMenu";
 import Vacancies from "./Portal/Vacancies/Vacancies";
 
-
 export default function App() {
   const user = useSelector((state) => state.auth.user);
   const currentPage = useSelector((state) => state.user.currentPage);
@@ -53,14 +52,22 @@ export default function App() {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [showPortalMenu, setShowPortalMenu] = useState(false);
- 
+
   useEffect(() => {
-       setShowPortalMenu(
+    setShowPortalMenu(
       location.pathname === "/vacancies" ||
         location.pathname === "/internships" ||
         location.pathname === "/office"
-        );
+    );
   }, [location.pathname]);
+
+   useEffect(() => {
+     // Проверяем, находимся ли мы на административном маршруте
+     const isAdminRoute = location.pathname.startsWith("/admin/");
+
+     // Устанавливаем стиль для курсора в зависимости от маршрута
+     document.body.style.cursor = isAdminRoute ? "auto" : "none";
+   }, [location.pathname]);
 
   useEffect(() => {
     dispatch(checkUserAuth());
@@ -121,7 +128,7 @@ export default function App() {
         <Loading />
       ) : (
         <>
-        {showNavbarFooter && currentPage !== "add" && (
+          {showNavbarFooter && currentPage !== "add" && (
             <>
               {showPortalMenu ? (
                 <PortalMenu
@@ -147,125 +154,127 @@ export default function App() {
           <TransitionGroup>
             <CSSTransition key={location.key} classNames="fade" timeout={300}>
               <Routes location={location}>
-                <Route
-                  path="/"
-                  element={
-                    <Header
-                      handleMouseEnter={handleMouseEnter}
-                      handleMouseLeave={handleMouseLeave}
-                      handleMouseHover={handleMouseHover}
-                      handleSpecialHover={handleSpecialHover}
-                    />
-                  }
-                />
-                <Route
-                  path="/project"
-                  element={
-                    <Project
-                      handleMouseEnter={handleMouseEnter}
-                      handleMouseLeave={handleMouseLeave}
-                      handleMouseHover={handleMouseHover}
-                    />
-                  }
-                />
-                <Route
-                  path="/project/:viewConstruction?"
-                  component={<Project />}
-                />
-                <Route
-                  path="/projects/:id"
-                  element={
-                    <ProjectCard
-                      handleMouseEnter={handleMouseEnter}
-                      handleMouseLeave={handleMouseLeave}
-                      handleMouseHover={handleMouseHover}
-                    />
-                  }
-                />
-                <Route
-                  path="/company"
-                  element={
-                    <Company
-                      handleMouseEnter={handleMouseEnter}
-                      handleMouseLeave={handleMouseLeave}
-                      handleMouseHover={handleMouseHover}
-                    />
-                  }
-                />
-                <Route
-                  path="/publication"
-                  element={
-                    <Publics
-                      handleMouseEnter={handleMouseEnter}
-                      handleMouseLeave={handleMouseLeave}
-                      handleMouseHover={handleMouseHover}
-                    />
-                  }
-                />
-                <Route
-                  path="/publication/:id"
-                  element={
-                    <ArticleCard
-                      handleMouseEnter={handleMouseEnter}
-                      handleMouseLeave={handleMouseLeave}
-                      handleMouseHover={handleMouseHover}
-                    />
-                  }
-                />
-                <Route
-                  path="/contacts"
-                  element={
-                    <Contacts
-                      handleMouseEnter={handleMouseEnter}
-                      handleMouseLeave={handleMouseLeave}
-                      handleMouseHover={handleMouseHover}
-                    />
-                  }
-                />
-                <Route
-                  path="/information"
-                  element={
-                    <Information
-                      handleMouseEnter={handleMouseEnter}
-                      handleMouseLeave={handleMouseLeave}
-                      handleMouseHover={handleMouseHover}
-                    />
-                  }
-                />
-                <Route
-                  path="/vacancies"
-                  element={
-                    <Vacancies
-                      handleMouseEnter={handleMouseEnter}
-                      handleMouseLeave={handleMouseLeave}
-                      handleMouseHover={handleMouseHover}
-                    />
-                  }
-                />
-                <Route
-                  path="/internships"
-                  element={
-                    <Internships
-                      handleMouseEnter={handleMouseEnter}
-                      handleMouseLeave={handleMouseLeave}
-                      handleMouseHover={handleMouseHover}
-                    />
-                  }
-                />
-                <Route
-                  path="/office"
-                  element={
-                    <Office
-                      handleMouseEnter={handleMouseEnter}
-                      handleMouseLeave={handleMouseLeave}
-                      handleMouseHover={handleMouseHover}
-                    />
-                  }
-                />
-                <Route path="*" element={<NotFound />} />
-                <Route path="/login" element={<Login />} />
-                {isActive && <Route path="/signup" element={<SignUpPage />} />}
-                <Route path="/test" element={<LoadingModal />} />
+                  <Route
+                    path="/"
+                    element={
+                      <Header
+                        handleMouseEnter={handleMouseEnter}
+                        handleMouseLeave={handleMouseLeave}
+                        handleMouseHover={handleMouseHover}
+                        handleSpecialHover={handleSpecialHover}
+                      />
+                    }
+                  />
+                  <Route
+                    path="/project"
+                    element={
+                      <Project
+                        handleMouseEnter={handleMouseEnter}
+                        handleMouseLeave={handleMouseLeave}
+                        handleMouseHover={handleMouseHover}
+                      />
+                    }
+                  />
+                  <Route
+                    path="/project/:viewConstruction?"
+                    component={<Project />}
+                  />
+                  <Route
+                    path="/projects/:id"
+                    element={
+                      <ProjectCard
+                        handleMouseEnter={handleMouseEnter}
+                        handleMouseLeave={handleMouseLeave}
+                        handleMouseHover={handleMouseHover}
+                      />
+                    }
+                  />
+                  <Route
+                    path="/company"
+                    element={
+                      <Company
+                        handleMouseEnter={handleMouseEnter}
+                        handleMouseLeave={handleMouseLeave}
+                        handleMouseHover={handleMouseHover}
+                      />
+                    }
+                  />
+                  <Route
+                    path="/publication"
+                    element={
+                      <Publics
+                        handleMouseEnter={handleMouseEnter}
+                        handleMouseLeave={handleMouseLeave}
+                        handleMouseHover={handleMouseHover}
+                      />
+                    }
+                  />
+                  <Route
+                    path="/publication/:id"
+                    element={
+                      <ArticleCard
+                        handleMouseEnter={handleMouseEnter}
+                        handleMouseLeave={handleMouseLeave}
+                        handleMouseHover={handleMouseHover}
+                      />
+                    }
+                  />
+                  <Route
+                    path="/contacts"
+                    element={
+                      <Contacts
+                        handleMouseEnter={handleMouseEnter}
+                        handleMouseLeave={handleMouseLeave}
+                        handleMouseHover={handleMouseHover}
+                      />
+                    }
+                  />
+                  <Route
+                    path="/information"
+                    element={
+                      <Information
+                        handleMouseEnter={handleMouseEnter}
+                        handleMouseLeave={handleMouseLeave}
+                        handleMouseHover={handleMouseHover}
+                      />
+                    }
+                  />
+                  <Route
+                    path="/vacancies"
+                    element={
+                      <Vacancies
+                        handleMouseEnter={handleMouseEnter}
+                        handleMouseLeave={handleMouseLeave}
+                        handleMouseHover={handleMouseHover}
+                      />
+                    }
+                  />
+                  <Route
+                    path="/internships"
+                    element={
+                      <Internships
+                        handleMouseEnter={handleMouseEnter}
+                        handleMouseLeave={handleMouseLeave}
+                        handleMouseHover={handleMouseHover}
+                      />
+                    }
+                  />
+                  <Route
+                    path="/office"
+                    element={
+                      <Office
+                        handleMouseEnter={handleMouseEnter}
+                        handleMouseLeave={handleMouseLeave}
+                        handleMouseHover={handleMouseHover}
+                      />
+                    }
+                  />
+                  <Route path="*" element={<NotFound />} />
+                  <Route path="/login" element={<Login />} />
+                  {isActive && (
+                    <Route path="/signup" element={<SignUpPage />} />
+                  )}
+                  <Route path="/test" element={<LoadingModal />} />
                 {user ? (
                   <Route
                     path="/admin/*"
@@ -298,5 +307,3 @@ export default function App() {
     </HelmetProvider>
   );
 }
-
-

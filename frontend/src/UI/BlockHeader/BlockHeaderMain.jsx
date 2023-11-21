@@ -55,6 +55,8 @@ const BlockHeaderMain = ({ handleMouseEnter, handleMouseLeave }) => {
                   // onClick={() => toggleBlock(index)}
                 >
                   <svg
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
                     width="32"
                     height="32"
                     viewBox="0 0 24 24"
