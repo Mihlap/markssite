@@ -89,7 +89,7 @@ const [isMenuActive, setMenuActive] = useState(false);
                   О компании
                 </Link>
               </li>
-              {/* <li className={styles["menu-item"]}>
+              <li className={styles["menu-item"]}>
                 <Link
                   onClick={handleBurgerClick}
                   // target="_blank"
@@ -98,7 +98,7 @@ const [isMenuActive, setMenuActive] = useState(false);
                 >
                   HR портал
                 </Link>
-              </li> */}
+              </li>
               <li className={styles["menu-item"]}>
                 <Link
                   onClick={handleBurgerClick}
