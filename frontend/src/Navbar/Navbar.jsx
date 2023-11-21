@@ -16,7 +16,7 @@ export default function Navbar({ handleMouseEnter, handleMouseLeave }) {
   const [scrollDelta, setScrollDelta] = useState(0);
 
   const handleScroll = () => {
-    const currentScrollPos = window.pageYOffset;
+    const currentScrollPos = window.scrollY;
     const delta = currentScrollPos - prevScrollPos; // Сколько пикселей прокрутились
 
     if (window.innerWidth > 1024) {
@@ -148,6 +148,18 @@ export default function Navbar({ handleMouseEnter, handleMouseLeave }) {
             >
               <div>О Компании</div>
             </Link>
+            {/* <Link
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+              className={`${styles.navbar__item} ${
+                activeClass === "/vacancies" ? styles.navbar__item_open : ""
+              }`}
+              to="/vacancies"
+              // target="_blank"
+              onClick={() => handleItemClick("/vacancies")}
+            >
+              <div>HR портал</div>
+            </Link> */}
             <Link
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
