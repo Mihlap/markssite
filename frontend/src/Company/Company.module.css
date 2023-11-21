@@ -1036,6 +1036,7 @@ bottom: 3.38rem;
   .modal_wrapper {
     width: 29rem;
     height: auto;
+    top: 40px;
   }
 
   .modal_context {
@@ -1496,6 +1497,7 @@ bottom: 3.38rem;
     width: auto;
     height: auto;
     overflow-y: scroll;
+    top: 40px;
   }
 
   .modal_context {
@@ -1537,20 +1539,20 @@ bottom: 3.38rem;
 
   .modal_name_stuff {
     padding-top: 1.5rem;
-    padding-left: 1rem;
+    padding-left: 2rem;
   }
 
   .modal_description_stuff,
   .modal_description_stuff1 {
     padding-top: 0.5rem;
     padding-right: 2rem;
-    padding-left: 1rem;
+    padding-left: 2rem;
   }
 
   .modal_about_stuff {
     padding-top: 2.5rem;
     padding-right: 2rem;
-    padding-left: 1rem;
+    padding-left: 2rem;
   }
 
   .modal_about_stuff1,
