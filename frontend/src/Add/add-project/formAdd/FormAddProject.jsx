@@ -680,7 +680,10 @@ const areAllBlocksFilled = () => {
               rows="10"
               placeholder={labelText}
             ></textarea>
-            <label htmlFor="" className={styles.form_container__textarea_label}>
+            <label
+              htmlFor=""
+              className={styles.form_container__textarea_label_constructor}
+            >
               {labelText}
             </label>
           </div>
