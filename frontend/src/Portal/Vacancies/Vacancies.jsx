@@ -4,7 +4,9 @@ import styles from './Vacancies.module.css';
 const Vacancies = () => {
   return (
     <div className={styles.main_vacancies}>
-      Здесь будет страница Вакансий
+     <div className={styles.wrapper_vacancies}>
+
+     </div>
     </div>
   )
 }
