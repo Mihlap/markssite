@@ -37,7 +37,7 @@
   overflow: hidden;
   width: 100%;
   margin-top: 0.5rem;
-  cursor: pointer;
+    cursor: none !important;
 }
 
 .block_hover::before {
@@ -348,7 +348,6 @@
     overflow: hidden;
     width: 100%;
     margin-top: 0.5rem;
-    cursor: pointer;
   }
   
   .block_hover::before {
@@ -387,7 +386,7 @@
   }
   
   .toggle_blockHeader {
-    cursor: pointer;
+        cursor: none !important;
   }
   
   .blockTitle_blockHeader {
@@ -557,6 +556,7 @@
     position: relative;
     overflow: hidden;
     text-decoration: none;
+    cursor: none !important;
   }
   
   .button_block_name {

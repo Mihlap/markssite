@@ -385,7 +385,11 @@ export default function Header({ handleMouseEnter,
                           {el.dataMonthYear}
                         </span>
                       </div>
-                      <button className={styles.card_button}>
+                      <button
+                        handleMouseEnter={handleMouseEnter}
+                        handleMouseLeave={handleMouseLeave}
+                        className={styles.card_button}
+                      >
                         <svg
                           width="32"
                           height="32"
@@ -620,6 +624,7 @@ export default function Header({ handleMouseEnter,
                           </div>
                           <div className={styles.project__address__svg}>
                             <svg
+                              
                               xmlns="http://www.w3.org/2000/svg"
                               width="2"
                               height="2"
