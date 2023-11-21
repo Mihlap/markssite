@@ -31,6 +31,7 @@
     cursor: pointer;
     width: 100%;
     padding-left: 34px;
+        cursor: none !important;
   }
   
   &__list {
@@ -54,16 +55,17 @@
     border-left: 1px solid var(--black-1D2E43);
     white-space: nowrap;
     transition: background 0.3s ease, backdrop-filter 0.3s ease;
+    cursor: none !important;
     
     &:hover {
       background: rgb(246 246 246 / 60%);
       backdrop-filter: blur(3px);
-      cursor: pointer;
+      // cursor: pointer;
     }
     
     &:active {
       background: rgba(212, 237, 251, 0.6);
-      cursor: pointer;
+      // cursor: pointer;
     }
     
     
