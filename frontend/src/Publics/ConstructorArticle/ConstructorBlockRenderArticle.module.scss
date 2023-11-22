@@ -467,80 +467,62 @@
     }
 
     .quote_block_constainer {
-        display: none;
-        // position: relative;
-        // margin-bottom: 40px;
-        // word-wrap: break-word;
-        // padding-right: 0;
-        // padding-left: 0;
+        position: relative;
+        margin-bottom: 40px;
+        word-wrap: break-word;
+        padding-right: 0;
+        padding-left: 0;
 
-        // &__text_block {
-        //     display: flex;
-        //     padding: 24px;
-        //     margin-right: 3rem;
-        //     flex-direction: column;
-        //     align-items: flex-start;
-        //     gap: 24px;
-        //     border-radius: 16px;
-        //     background-color: var(--light-light-gray-EBECEE);
-        // }
+        &__text_block {
+            display: flex;
+            width: 100%;
+            padding: 24px;
+            margin-right: 3rem;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 16px;
+            border-radius: 16px;
+            background-color: var(--light-light-gray-EBECEE);
+        }
 
-        // &__quote_text {
-        //     color: var(--black-1D2E43);
-        //     font-variant-numeric: lining-nums proportional-nums;
+        &__quote_text {
+            color: var(--black-1D2E43);
+            font-variant-numeric: lining-nums proportional-nums;
 
-        //     /* Body Regular · 16 */
-        //     font-family: var(--font-raleway);
-        //     font-size: 16px;
-        //     font-style: normal;
-        //     font-weight: var(--fw-400);
-        //     line-height: 24px;
-        //     /* 150% */
-        // }
+            /* Body Regular · 16 */
+            font-family: var(--font-raleway);
+            font-size: 16px;
+            font-style: normal;
+            font-weight: var(--fw-400);
+            line-height: 24px;
+            /* 150% */
+        }
 
-        // &__quote_author {
-        //     color: var(--gray-959DA6);
-        //     font-variant-numeric: lining-nums proportional-nums;
-        //     font-family: var(--font-raleway);
-        //     font-size: 14px;
-        //     font-style: normal;
-        //     font-weight: var(--fw-400);
-        //     line-height: 20px;
-        // }
+        &__quote_author {
+            color: var(--gray-959DA6);
+            font-variant-numeric: lining-nums proportional-nums;
+            font-family: var(--font-raleway);
+            font-size: 14px;
+            font-style: normal;
+            font-weight: var(--fw-400);
+            line-height: 20px;
+        }
 
-        // &__author_block {
-        //     position: absolute;
-        //     top: 0px;
-        //     right: -21%;
-        // }
+        &__author_block {
+          display: none;
+        }
 
-        // &__img {
-        //     border-radius: 50%;
-        //     width: 10rem;
-        //     height: 10rem;
-        //     object-fit: cover;
-        //     object-position: center;
-        // }
+        &__img {
+            display: none;
+        }
 
-        // &__quote {
-        //     color: var(--dark-gray-566272);
-        //     font-family: var(--font-raleway);
-        //     font-size: 12px;
-        //     font-style: normal;
-        //     font-weight: var(--fw-400);
-        //     line-height: 16px;
-        //     padding-top: 10px;
-        // }
+        &__quote {
+            display: none;
+        }
 
-        // &__author {
-        //     color: var(--gray-959DA6);
-        //     font-variant-numeric: lining-nums proportional-nums;
-        //     font-family: var(--font-raleway);
-        //     font-size: 12px;
-        //     font-style: normal;
-        //     font-weight: var(--fw-400);
-        //     line-height: 16px;
-        // }
+        &__author {
+            display: none;
+        }
     }
     .containerImageToDescription {
         padding-left: 0;
@@ -720,8 +702,14 @@
           }
     
         &__quote_author {
-        display: none;
-        }
+            color: var(--gray-959DA6);
+            font-variant-numeric: lining-nums proportional-nums;
+            font-family: var(--font-raleway);
+            font-size: 0.875rem;
+            font-style: normal;
+            font-weight: var(--fw-400);
+            line-height: 1.25rem;
+         }
     
         &__author_block {
             display: none;
