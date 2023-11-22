@@ -1,44 +1,261 @@
 @import "../../App.css";
 
-.main_vacancies {
-  display: flex;
+.main_vacancies_block {
   width: 100%;
   height: 100%;
-  min-height: 80vh;
+  min-height: 81vh;
 }
 
 .wrapper_vacancies {
-  display: flex;
-  width: 100%;
-  height: 24rem;
-  padding-right: 0px;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
   border-top: 1px solid var(--light-light-gray-EBECEE);
   border-bottom: 1px solid var(--light-light-gray-EBECEE);
   background: linear-gradient(261deg, rgba(255, 203, 193, 0.09) -4.67%, rgba(117, 187, 253, 0.09) 44.63%, rgba(188, 188, 188, 0.09) 103.07%);
   backdrop-filter: blur(7px);
-}
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-width: 100%;
+   min-height: 100%;
+   height: 41vh;
+   z-index: -1;
+ }
+
 .rocket_image {
-  padding-top: 2rem;
-  width: auto; 
-  height: auto;
-}
+  position: absolute;
+  display: flex;
+  justify-content: flex-end;
+  width: 100%; 
+  height: 110%;
+  object-fit: cover;
+  object-position: center;
+ }
 
 .vacancies_header_wrapper {
-  color: var( --black-1D2E43);
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  color: var(--black-1D2E43);
   font-family: var(--font-unbounded);
   font-style: normal;
   font-weight: var(--fw-300);
-  padding-left: 3.87rem;
+  top: 50%;
+  left: 9vw;
+  padding-right: 1rem;
 }
+
 .vacancies_header1 {
-font-size: 20px;
-line-height: 28px;
+  font-size: 20px;
+  line-height: 28px;
 }
 
 .vacancies_header2 {
-font-size: 48px;
-line-height: 64px;
+  font-size: 48px;
+  line-height: 64px;
+}
+
+.vacancies_advertisingBlock {
+  width: 100%;
+  padding-top: 5rem;
+  padding-left: 9vw;
+}
+
+.vacancies_advertisingBlock_text1 {
+  color: var(--black-1D2E43);
+  font-family: var(--font-unbounded);
+  font-size: 1.25rem;
+  font-style: normal;
+  font-weight: var(--fw-300);
+  line-height: 1.75rem;
+}
+
+.vacancies_advertisingBlock_text2 {
+  color: var(--black-1D2E43, #1D2E43);
+  font-variant-numeric: lining-nums proportional-nums;
+  font-family: var(--font-raleway);
+  font-size: 1.125rem;
+  font-style: normal;
+  font-weight: var(--fw-400);
+  line-height: 1.625rem;
+  padding-top: 1rem;
+}
+
+.vacancies_section {
+  font-display: flex;
+  padding-left: 9vw;
+  padding-top: 2.5rem;
+}
+
+.vacancies_list {
+  display: flex;
+  flex-direction: column;
+  color: red;
+}
+
+.vacancies_text_for_email {
+  color: var(--black-1D2E43);
+  font-family: var(--font-unbounded);
+  font-size: 1.5rem;
+  font-style: normal;
+  font-weight: var(--fw-300);
+  line-height: 2rem;
+  padding: 2.5rem 1rem 6.5rem 9vw;
+}
+
+.span_mail_vacancies {
+  color: var(--blue-75BBFD);
+  font-family: var(--font-unbounded);
+  font-size: 1.5rem;
+  font-style: normal;
+  font-weight: var(--fw-300);
+  line-height: 2rem;
+  text-decoration-line: underline;
+  padding-left: 0.5rem;
+}
+
+@media screen and (min-width: 1025px) and (max-width: 1600px) {
+  .wrapper_vacancies {
+     height: 36Vh;
+   }
+  }
+
+  /* стили для планшетной версии  */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .wrapper_vacancies {
+      height: 32Vh; 
+    }
+   .vacancies_header_wrapper {
+     
+  }
+  
+.vacancies_header_wrapper {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  color: var(--black-1D2E43);
+  font-family: var(--font-unbounded);
+  font-style: normal;
+  font-weight: var(--fw-300);
+  top: 40%;
+  left: 9vw;
+  padding-right: 1rem;
+  max-width: 42vw;
+}
+
+ .vacancies_advertisingBlock {
+  padding-right: 1rem;
+  max-width: 40rem;
+}
+
+.vacancies_text_for_email {
+  padding: 2.5rem 1rem 2rem 9vw;
+  max-width: 40rem;
+  width: 100%;
+}
+
+}
+
+/* стили мобильной версии  */
+
+@media screen and (max-width: 767px) {
+  .wrapper_vacancies {
+    height: 34vh;
+  }
+
+  .rocket_image {
+    display: none;
+  }
+
+  .vacancies_header_wrapper {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    color: var(--black-1D2E43);
+    font-family: var(--font-unbounded);
+    font-style: normal;
+    font-weight: var(--fw-300);
+    top: 40%;
+    left: 9vw;
+    padding-right: 1rem;
+    /* max-width: 21rem; */
+  }
+
+  .vacancies_header1 {
+    font-family: var(--font-raleway);
+    font-weight: var(--fw-400);
+    font-size: 1.125rem;
+    line-height: 1.625rem;
+  }
+  
+  .vacancies_header2 {
+    font-size: 2rem;
+    line-height: 2.5rem;
+  }
+
+  .vacancies_advertisingBlock {
+    width: 100%;
+    padding-top: 5rem;
+    padding-left: 9vw;
+    padding-right: 1rem;
+    /* max-width: 21rem; */
+  }
+  
+  .vacancies_advertisingBlock_text1 {
+    color: var(--black-1D2E43);
+    font-family: var(--font-unbounded);
+    font-size: 1.25rem;
+    font-style: normal;
+    font-weight: var(--fw-300);
+    line-height: 1.75rem;
+  }
+  
+  .vacancies_advertisingBlock_text2 {
+    color: var(--black-1D2E43, #1D2E43);
+    font-variant-numeric: lining-nums proportional-nums;
+    font-family: var(--font-raleway);
+    font-size: 1.125rem;
+    font-style: normal;
+    font-weight: var(--fw-400);
+    line-height: 1.625rem;
+    padding-top: 1rem;
+  }
+  
+  .vacancies_section {
+    font-display: flex;
+    padding-left: 9vw;
+    padding-top: 2.5rem;
+  }
+  
+  .vacancies_list {
+    display: flex;
+    flex-direction: column;
+    color: red;
+  }
+  
+  .vacancies_text_for_email {
+    color: var(--black-1D2E43);
+    font-family: var(--font-unbounded);
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: var(--fw-300);
+    line-height: 2rem;
+    padding: 2.5rem 1rem 2.5rem 9vw;
+    /* max-width: 21rem; */
+    }
+  
+  .span_mail_vacancies {
+    display: flex;
+    color: var(--blue-75BBFD);
+    font-family: var(--font-unbounded);
+    font-size: 1.5rem;
+    font-style: normal;
+    font-weight: var(--fw-300);
+    line-height: 2rem;
+    text-decoration-line: underline;
+    padding-left: 0rem;
+  }
+  
+  
+
 }
