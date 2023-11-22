@@ -150,7 +150,7 @@ export default function Navbar({ handleMouseEnter, handleMouseLeave }) {
             >
               <div>О Компании</div>
             </Link>
-            <Link
+            {/* <Link
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
               className={`${styles.navbar__item} ${
@@ -161,7 +161,7 @@ export default function Navbar({ handleMouseEnter, handleMouseLeave }) {
               onClick={() => handleItemClick("/vacancies")}
             >
               <div>HR портал</div>
-            </Link>
+            </Link> */}
             <Link
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
