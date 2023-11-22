@@ -73,8 +73,9 @@ export default function PortalMenu({ handleMouseEnter, handleMouseLeave }) {
               to="/"
               onClick={() => handleItemClick("/")}
             >
-              <h1 className={styles.navbar__title}>
+              <h1 className={styles.navbar__title} style={{display: 'flex', alignItems: 'center'}}>
                 <span>MARKS GROUP</span>
+                <p className={styles.navbar__title__hr} style={{marginLeft: '0.5rem'}}>HR</p>
               </h1>
             </Link>
           </div>
