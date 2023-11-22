@@ -47,6 +47,8 @@ const ArticleCard = ({
   const [isAtRightEdge, setIsAtRightEdge] = useState(false);
   const [scrollingMode, setScrollingMode] = useState("vertical");
 
+  const isMobile = window.innerWidth <= 767;
+
   const refs = {
     title: useRef(null),
     city: useRef(null),
@@ -482,7 +484,7 @@ const ArticleCard = ({
               <div className={styles.previous_svg_articleCard}>
                 <img src={previous} alt={previous} />
                 <span className={styles.previous__span_articleCard}>
-                  {`${previousArticle.title}`}
+                {isMobile ? "Предыдущая статья" : `${previousArticle.title}`}
                 </span>
               </div>
             </Link>
@@ -496,7 +498,7 @@ const ArticleCard = ({
             >
               <div className={styles.next_svg_articleCard}>
                 <span className={styles.next__span_articleCard}>
-                  {`${nextArticle.title}`}
+                {isMobile ? "Следующая статья" : `${nextArticle.title}`}
                 </span>
                 <img src={next} alt={next} />
               </div>

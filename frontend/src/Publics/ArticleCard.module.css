@@ -1179,6 +1179,7 @@ padding-right: 0.5rem;
     /* overflow: hidden; */
     text-overflow: ellipsis;
     overflow-wrap: break-word;
+    text-align: right;
    }
 
    .button_article_link_articleCard1:hover {
