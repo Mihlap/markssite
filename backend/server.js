@@ -62,6 +62,7 @@ app.use(
     origin: [
     '*',
     'https://www.marksgroup.org',
+    'http://91.186.198.87',
     'http://localhost:3002',
     'http://localhost:3000',
    ],
