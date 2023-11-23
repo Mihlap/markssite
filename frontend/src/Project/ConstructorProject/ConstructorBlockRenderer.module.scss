@@ -76,25 +76,28 @@
 .verticalImage {
     width: 100%;
     /* Для корректного отображения изображений внутри блока */
-    object-fit: cover;
+    // object-fit: cover;
     /* Изображение будет подгоняться так, чтобы заполнить свой блок без искажений */
     display: block;
     /* Убираем стандартные отступы для изображений */
 }
 
-.horizontalImage {
+.horizontalImage img {
     grid-column: 1 / 2;
     height: 50vh;
     border-radius: 1rem;
+    object-fit: cover;
     /* 50% высоты экрана */
 }
 
 .horizontalImage:nth-child(1) {
     grid-row: 1 / 2;
+    border-radius: 1rem;
 }
 
 .horizontalImage:nth-child(2) {
     grid-row: 2 / 3;
+    border-radius: 1rem;
 }
 
 .verticalImage {
@@ -117,7 +120,6 @@
     &__gridImage {
         width: 100%;
         height: 100%;
-        object-fit: cover;
         border-radius: 16px;
         object-fit: cover;
     }
@@ -480,7 +482,8 @@
 
     .horizontalImage {
         grid-column: 1 / 2;
-        height: 20vh;
+        min-height: 20vh;
+        height: 100%;
         border-radius: 1rem;
         /* 50% высоты экрана */
     }
@@ -495,7 +498,8 @@
 
     .verticalImage {
         grid-column: 1 / 2;
-        height: 20vh;
+        min-height: 20vh;
+        height: 100%;
         border-radius: 1rem;
     }
 
@@ -511,7 +515,8 @@
 
         &__gridImage {
             width: 100%;
-            height: 20vh;
+            min-height: 20vh;
+            height: 100%;
             object-fit: cover;
             object-position: center;
             border-radius: 16px;

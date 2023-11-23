@@ -58,7 +58,7 @@
 .vacancies_advertisingBlock {
   width: 100%;
   padding-top: 5rem;
-  padding-left: 9vw;
+  padding-left: 15vw;
 }
 
 .vacancies_advertisingBlock_text1 {
@@ -83,14 +83,38 @@
 
 .vacancies_section {
   font-display: flex;
-  padding-left: 9vw;
+  padding-left: 15vw;
   padding-top: 2.5rem;
 }
+
+.vacancies_list_container {
+  display: inline-flex;
+  padding: 2rem 1.88rem;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.625rem;
+  border-radius: 1rem;
+  border: 1px solid var(--blue-75BBFD);
+}
+
 
 .vacancies_list {
   display: flex;
   flex-direction: column;
-  color: red;
+  gap: 3rem;
+}
+
+.vacancia_name {
+color: var(--black-1D2E43);
+font-variant-numeric: lining-nums proportional-nums;
+font-family: var(--font-raleway);
+font-size: 1.125rem;
+font-style: normal;
+font-weight: var(--fw-400);
+/* line-height: 3.5rem; */
+text-decoration: underline;
+/* width: 55rem; */
 }
 
 .vacancies_text_for_email {
@@ -100,7 +124,7 @@
   font-style: normal;
   font-weight: var(--fw-300);
   line-height: 2rem;
-  padding: 2.5rem 1rem 6.5rem 9vw;
+  padding: 2.5rem 1rem 6.5rem 15vw;
 }
 
 .span_mail_vacancies {
@@ -146,10 +170,17 @@
  .vacancies_advertisingBlock {
   padding-right: 1rem;
   max-width: 40rem;
+  padding-left: 9vw;
+  padding-right: 9vw;
 }
 
+.vacancies_section {
+  padding-left: 9vw;
+  padding-right: 9vw;
+ }
+
 .vacancies_text_for_email {
-  padding: 2.5rem 1rem 2rem 9vw;
+  padding: 2.5rem 9vw 2rem 9vw;
   max-width: 40rem;
   width: 100%;
 }
@@ -176,7 +207,7 @@
     font-style: normal;
     font-weight: var(--fw-300);
     top: 40%;
-    left: 9vw;
+    left: 1rem;
     padding-right: 1rem;
     /* max-width: 21rem; */
   }
@@ -196,7 +227,7 @@
   .vacancies_advertisingBlock {
     width: 100%;
     padding-top: 5rem;
-    padding-left: 9vw;
+    padding-left: 1rem;
     padding-right: 1rem;
     /* max-width: 21rem; */
   }
@@ -223,14 +254,15 @@
   
   .vacancies_section {
     font-display: flex;
-    padding-left: 9vw;
+    padding-left: 1rem;
+    padding-right: 1rem;
     padding-top: 2.5rem;
   }
   
   .vacancies_list {
     display: flex;
-    flex-direction: column;
-    color: red;
+    flex-direction: column; 
+    gap: 2rem;  
   }
   
   .vacancies_text_for_email {
@@ -240,7 +272,7 @@
     font-style: normal;
     font-weight: var(--fw-300);
     line-height: 2rem;
-    padding: 2.5rem 1rem 2.5rem 9vw;
+    padding: 2.5rem 1rem 2.5rem 1rem;
     /* max-width: 21rem; */
     }
   
