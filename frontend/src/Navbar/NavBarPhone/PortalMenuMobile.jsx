@@ -74,30 +74,30 @@ const [isMenuActive, setMenuActive] = useState(false);
               <li className={styles["menu-item"]}>
                 <Link
                   onClick={handleBurgerClick}
-                  to="/portal/vacancies"
+                  to="/vacancies"
                   className={styles["menu-link"]}
                 >
                   Вакансии
                 </Link>
               </li>
-              <li className={styles["menu-item"]}>
+              {/* <li className={styles["menu-item"]}>
                 <Link
                   onClick={handleBurgerClick}
-                  to="/portal/internships"
+                  to="/internships"
                   className={styles["menu-link"]}
                 >
                   Стажировки
                 </Link>
-              </li>
-              <li className={styles["menu-item"]}>
+              </li> */}
+              {/* <li className={styles["menu-item"]}>
                 <Link
                   onClick={handleBurgerClick}
-                  to="/portal/office"
+                  to="/office"
                   className={styles["menu-link"]}
                 >
                   Офис
                 </Link>
-              </li>
+              </li> */}
               </ul>
             <div className={styles.contact_info}>
               <div className={styles.contact_info_block}>

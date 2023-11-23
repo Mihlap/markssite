@@ -50,7 +50,7 @@ export default function App() {
   const isActive = useSelector((state) => state.toggle.isActiveForButton3);
   const location = useLocation();
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [showPortalMenu, setShowPortalMenu] = useState(false);
 
   useEffect(() => {
@@ -130,18 +130,19 @@ export default function App() {
         <>
           {showNavbarFooter && currentPage !== "add" && (
             <>
-              {showPortalMenu ? (
+            {/* для 2-й итерации !!!! не стирать */}
+              {/* {showPortalMenu ? (
                 <PortalMenu
                   user={user}
                   handleMouseEnter={handleMouseEnter}
                   handleMouseLeave={handleMouseLeave}
                 />
-              ) : (
+              ) : ( */}
                 <Navbar
                   handleMouseEnter={handleMouseEnter}
                   handleMouseLeave={handleMouseLeave}
                 />
-              )}
+              {/* )} */}
             </>
           )}
           {showNavbarFooter && currentPage !== "add" && (

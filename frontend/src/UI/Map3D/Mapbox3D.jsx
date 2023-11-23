@@ -9,6 +9,7 @@ const Mapbox3D = () => {
   mapboxgl.accessToken = apiKey;
 
   const [images, setImages] = useState({});
+  const imageUrl = "/assets/house.svg";
 
   useEffect(() => {
     const map = new mapboxgl.Map({
@@ -27,9 +28,20 @@ const Mapbox3D = () => {
     const popups = [];
 
      const addPopup = async (popupData) => {
-      const marker = new mapboxgl.Marker({ color: "#FF7F6A" })
+      const marker = new mapboxgl.Marker({ element: createMarkerElement(imageUrl) })
         .setLngLat(popupData.coordinates)
         .addTo(map);
+
+        function createMarkerElement(imageUrl) {
+          const element = document.createElement("div");
+          element.style.backgroundImage = `url(${imageUrl})`;
+          element.style.width = "35px";
+          element.style.height = "40px";
+          element.style.backgroundSize = "cover";
+          element.style.objectPosition = "center";
+        
+          return element;
+        }
 
       const popup = new mapboxgl.Popup({
         offset: 30,
