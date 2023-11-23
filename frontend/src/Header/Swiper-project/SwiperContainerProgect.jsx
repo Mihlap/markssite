@@ -58,10 +58,10 @@ const MapProject = NewProject.map((el) =>
         }}
       >
         <div className="swiper_wrapper">
-          {MapProject?.map((project) => {
+          {MapProject?.map((project, index) => {
               if (project) {
               return (
-                <SwiperSlide className="swiper_container_item_projects" key={project.id}>
+                <SwiperSlide className="swiper_container_item_projects" key={`${project.id}_${index}`}>
                   <Link key={project.id} to={`/projects/${project.id}`}>
                   <SliderItemProject
                     title={project.title}
