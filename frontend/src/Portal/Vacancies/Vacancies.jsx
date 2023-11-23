@@ -1,8 +1,33 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./Vacancies.module.css";
 import { Link } from "react-router-dom";
+import LoadingCircle from "../../Loading/LoadingCircle";
 
 const Vacancies = ({ handleMouseEnter, handleMouseLeave }) => {
+  const [vacancies, setVacancies] = useState([]);
+  const [loading, setLoading] = useState(true); 
+
+  useEffect(() => {
+    const fetchVacancies = async () => {
+      try {
+        const response = await fetch(
+          "https://api.hh.ru/vacancies?employer_id=1098613"
+        );
+        if (response.ok) {
+          const data = await response.json();
+          setVacancies(data.items);
+          setLoading(false);
+        } else {
+          console.error("Failed to fetch vacancies");
+        }
+      } catch (error) {
+        console.error("Error fetching vacancies:", error);
+      }
+    };
+
+    fetchVacancies();
+  }, []);
+
   return (
     <div className={styles.main_vacancies_block}>
       <div className={styles.wrapper_vacancies}>
@@ -24,9 +49,23 @@ const Vacancies = ({ handleMouseEnter, handleMouseLeave }) => {
           Возможно у вас включен блокировщик рекламы
         </div>
       </div>
-      <section className={styles.vacancies_section}>
-        <div className={styles.vacancies_list}>Будут вкансии</div>
-      </section>
+      {loading ? ( 
+        <div className={styles.loader}>
+          <LoadingCircle/>
+        </div>
+      ) : (
+        <section className={styles.vacancies_section}>
+          <div className={styles.vacancies_list_container}>
+            <div className={styles.vacancies_list}>
+              {vacancies.map((vacancy) => (
+                <div className={styles.vacancia_name} key={vacancy.id}>
+                  {vacancy.name}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
       <div className={styles.vacancies_text_for_email}>
         Вы можете отправить резюме на&nbsp;почту:
         <Link
@@ -43,3 +82,6 @@ const Vacancies = ({ handleMouseEnter, handleMouseLeave }) => {
 };
 
 export default Vacancies;
+
+
+{/* <script class="hh-script" src="https://api.hh.ru/widgets/vacancies/employer?employer_id=1098613&locale=RU&links_color=1560b2&border_color=1560b2"></script> */}
