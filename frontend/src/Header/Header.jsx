@@ -5,7 +5,6 @@ import { Helmet } from "react-helmet-async";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
-// import BlockHeader from "../UI/BlockHeader/BlockHeader";
 import SwiperContainer from "./Swiper-Phone/SwiperContainer";
 import SwiperContainerProgect from "./Swiper-project/SwiperContainerProgect";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -13,23 +12,17 @@ import SwiperCore, { Navigation } from "swiper";
 import SliderHeader from "../UI/SliderHeader/SliderHeader";
 import Mapbox3D from "../UI/Map3D/Mapbox3D";
 import SliderMobile from "../UI/SliderHeader/SliderMobile";
-// import VideoPlayer from "../UI/Videoplayer/VideoPlayer";
-// import actively from "./img/actively.svg";
-// import { getFetchForm } from "../store/Slice/projectSlice";
 import { getFetchFormArticle } from "../store/Slice/articleSlice";
 import styles from "./Header.module.css";
-// import LoadingCircle from "../Loading/LoadingCircle";
-// import Error from "../Loading/Error/Error";
 import { getZaprosData } from "../store/Slice/searchProjectMainSlice";
 import { searchArticleLeftGet } from "../store/Slice/searchArticlePublicLeftSlice";
-// import { resizeImage } from "../Project/utils";
 import img123 from "./img/Главная.png";
 import notDataPhoto from "./img/notData.png";
 import nameCompany from "../icons/nameCompany.svg"
 import nameCompany1 from "../icons/nameCompany1.svg"
 
-// import photoTest from "./img/project_right3.jpg";
-import { textEnter, textLeave, imageHover, specialHover } from "../store/Slice/cursorSlice";
+
+// import { textEnter, textLeave, imageHover, specialHover } from "../store/Slice/cursorSlice";
 import { searchArticleRightGet } from "../store/Slice/searchArticlePublicRightSlice";
 import BlockHeaderMain from "../UI/BlockHeader/BlockHeaderMain";
 
@@ -386,8 +379,8 @@ export default function Header({ handleMouseEnter,
                         </span>
                       </div>
                       <button
-                        handleMouseEnter={handleMouseEnter}
-                        handleMouseLeave={handleMouseLeave}
+                        onMouseEnter={handleMouseEnter}
+                        onMouseLeave={handleMouseLeave}
                         className={styles.card_button}
                       >
                         <svg
@@ -571,7 +564,7 @@ export default function Header({ handleMouseEnter,
 
               return (
                 <SwiperSlide
-                  key={project.id}
+                  key={index}
                   onScroll={handleScroll}
                   id="slider_container_item_card"
                   className={styles.slider_container_item_card}
