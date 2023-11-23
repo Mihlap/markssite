@@ -8,7 +8,7 @@ export default function LoadingModal() {
     <div className={styles.modal_section}>
       <div className={styles.modal_section__container}>
         <div className={styles.modal_section__text}>
-          Проект загружается, не обновляйте страницу
+          Проект загружается,<br/> не обновляйте страницу
         </div>
         <div>
           <MiniLoading />
