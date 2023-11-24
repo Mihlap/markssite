@@ -1,4 +1,6 @@
+import compressImageFile from "browser-image-compression";
 const { transliterate } = require("transliteration");
+
 // formHelpers.js
 export const removePreviewPhoto = (
   previewPhotos,
@@ -111,7 +113,7 @@ function generateUniqueName(originalName) {
   return newName;
 }
 
-export function changeHandler(
+export async function changeHandler(
   event,
   inputData,
   setInputData,
@@ -122,15 +124,65 @@ export function changeHandler(
   setPreviewPhotoOpen,
   setIsPhotoOpenVisible,
   setPreviewPhotoClose,
-  setIsPhotoCloseVisible
+  setIsPhotoCloseVisible,
+  setIsLoading, 
+  setIsLoadingDropPhoto,
+  setIsLoadingOpenImage,
+  setIsLoadingCloseImage
 ) {
   if (event.target.files) {
     const originalFiles = Array.from(event.target.files);
 
-    let newFiles = originalFiles.map((originalFile) => {
-      const uniqueName = generateUniqueName(originalFile.name);
-      return new File([originalFile], uniqueName, { type: originalFile.type });
-    });
+    const inputName = event.target.name;
+    let isLoadingState;
+    switch (inputName) {
+      case "dropPhoto":
+        isLoadingState = setIsLoadingDropPhoto;
+        break;
+      case "photoAva":
+        isLoadingState = setIsLoading;
+        break;
+      case "imageOpen":
+        isLoadingState = setIsLoadingOpenImage;
+        break;
+      case "imageClose":
+        isLoadingState = setIsLoadingCloseImage;
+        break;
+      // Добавьте другие case для других input элементов, если они есть
+      default:
+        console.error("Unrecognized input name:", inputName);
+        return;
+    }
+
+    isLoadingState(true);
+    let newFiles = await Promise.all(
+      originalFiles.map(async (originalFile) => {
+        const uniqueName = generateUniqueName(originalFile.name);
+
+        // Сжимаем изображение, если его размер больше 4MB
+        if (originalFile.size > 4 * 1024 * 1024) {
+          try {
+            const compressedFile = await compressImageFile(originalFile, {
+              maxSizeMB: 4,
+              maxWidthOrHeight: 1920,
+            });
+            return new File([compressedFile], uniqueName, {
+              type: compressedFile.type,
+            });
+          } catch (error) {
+            console.error("Ошибка при сжатии файла:", error);
+            return null; // В случае ошибки сжатия, вернуть null
+          }
+        } else {
+          return new File([originalFile], uniqueName, {
+            type: originalFile.type,
+          });
+        }
+      })
+    );
+
+    // Отфильтровать null значения, если есть ошибки сжатия
+    newFiles = newFiles.filter((file) => file !== null);
 
     switch (event.target.name) {
       case "dropPhoto":
@@ -169,6 +221,7 @@ export function changeHandler(
         console.error("Unrecognized input name:", event.target.name);
         break;
     }
+    isLoadingState(false);
     event.target.value = null;
     event.target.style.display = "none";
   } else if (
@@ -193,3 +246,86 @@ export function changeHandler(
     }));
   }
 }
+
+// export function changeHandler(
+//   event,
+//   inputData,
+//   setInputData,
+//   setPreviewPhotos,
+//   setIsDropPhotoVisible,
+//   setPreviewPhotoAva,
+//   setIsPhotoAvaVisible,
+//   setPreviewPhotoOpen,
+//   setIsPhotoOpenVisible,
+//   setPreviewPhotoClose,
+//   setIsPhotoCloseVisible
+// ) {
+//   if (event.target.files) {
+//     const originalFiles = Array.from(event.target.files);
+
+//     let newFiles = originalFiles.map((originalFile) => {
+//       const uniqueName = generateUniqueName(originalFile.name);
+//       return new File([originalFile], uniqueName, { type: originalFile.type });
+//     });
+
+//     switch (event.target.name) {
+//       case "dropPhoto":
+//         setInputData((prev) => ({
+//           ...prev,
+//           dropPhoto: newFiles,
+//         }));
+//         setIsDropPhotoVisible(false);
+//         setPreviewPhotos(newFiles.map((file) => URL.createObjectURL(file)));
+//         break;
+//       case "photoAva":
+//         setInputData((prev) => ({
+//           ...prev,
+//           photoAva: newFiles,
+//         }));
+//         setIsPhotoAvaVisible(false);
+//         setPreviewPhotoAva(newFiles.map((file) => URL.createObjectURL(file)));
+//         break;
+//       case "imageOpen":
+//         setInputData((prev) => ({
+//           ...prev,
+//           imageOpen: newFiles,
+//         }));
+//         setIsPhotoOpenVisible(false);
+//         setPreviewPhotoOpen(newFiles.map((file) => URL.createObjectURL(file)));
+//         break;
+//       case "imageClose":
+//         setInputData((prev) => ({
+//           ...prev,
+//           imageClose: newFiles,
+//         }));
+//         setIsPhotoCloseVisible(false);
+//         setPreviewPhotoClose(newFiles.map((file) => URL.createObjectURL(file)));
+//         break;
+//       default:
+//         console.error("Unrecognized input name:", event.target.name);
+//         break;
+//     }
+//     event.target.value = null;
+//     event.target.style.display = "none";
+//   } else if (
+//     event.target.name === "totalArea" ||
+//     event.target.name === "siteArea" ||
+//     event.target.name === "floors" ||
+//     event.target.name === "altitude" ||
+//     event.target.name === "constructionVolume" ||
+//     event.target.name === "numberOfLanes" ||
+//     event.target.name === "long"
+//   ) {
+//     const onlyDigits = event.target.value.replace(/\D+/g, "");
+//     const formattedValue = formatNumberWithThousandSeparator(onlyDigits);
+//     setInputData((prev) => ({
+//       ...prev,
+//       [event.target.name]: formattedValue,
+//     }));
+//   } else {
+//     setInputData((prev) => ({
+//       ...prev,
+//       [event.target.name]: event.target.value,
+//     }));
+//   }
+// }
