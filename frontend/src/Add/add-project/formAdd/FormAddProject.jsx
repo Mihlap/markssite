@@ -57,6 +57,13 @@ const [isYearValid, setIsYearValid] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
   const [showNotification, setShowNotification] = useState(false);
 
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingDropPhoto, setIsLoadingDropPhoto] = useState(false);
+ const [isLoadingOpenImage, setIsLoadingOpenImage] = useState(false);
+ const [isLoadingCloseImage, setIsLoadingCloseImage] = useState(false);
+
+
+
   const [inputData, setInputData] = useState({
     title: "",
     selectCompetencies: [],
@@ -968,7 +975,11 @@ const areAllBlocksFilled = () => {
                       setPreviewPhotoOpen,
                       setIsPhotoOpenVisible,
                       setPreviewPhotoClose,
-                      setIsPhotoCloseVisible
+                      setIsPhotoCloseVisible,
+                      setIsLoading,
+                      setIsLoadingDropPhoto,
+                      setIsLoadingOpenImage,
+                      setIsLoadingCloseImage
                     )
                   }
                 />
@@ -995,6 +1006,7 @@ const areAllBlocksFilled = () => {
                   Загрузить изображения
                 </div>
               </label>
+              {isLoading && <div className="loader">Загрузка...</div>}
             </div>
             <div>
               {previewPhotoAva?.map((preview, index) => (
@@ -1124,7 +1136,11 @@ const areAllBlocksFilled = () => {
                         setPreviewPhotoOpen,
                         setIsPhotoOpenVisible,
                         setPreviewPhotoClose,
-                        setIsPhotoCloseVisible
+                        setIsPhotoCloseVisible,
+                        setIsLoading,
+                        setIsLoadingDropPhoto,
+                        setIsLoadingOpenImage,
+                        setIsLoadingCloseImage
                       )
                     }
                     multiple
@@ -1151,6 +1167,9 @@ const areAllBlocksFilled = () => {
                     Загрузить изображения
                   </div>
                 </label>
+                {isLoadingDropPhoto && (
+                  <div className="loader">Загрузка...</div>
+                )}
               </div>
             </div>
             <div className={styles.preview_photos_container}>
@@ -1792,7 +1811,11 @@ const areAllBlocksFilled = () => {
                       setPreviewPhotoOpen,
                       setIsPhotoOpenVisible,
                       setPreviewPhotoClose,
-                      setIsPhotoCloseVisible
+                      setIsPhotoCloseVisible,
+                      setIsLoading,
+                      setIsLoadingDropPhoto,
+                      setIsLoadingOpenImage,
+                      setIsLoadingCloseImage
                     )
                   }
                 />
@@ -1816,6 +1839,7 @@ const areAllBlocksFilled = () => {
                   Загрузить изображения
                 </div>
               </label>
+              {isLoadingOpenImage && <div className="loader">Загрузка...</div>}
             </div>
             <div>
               {previewPhotoOpen?.map((preview, index) => (
@@ -1982,7 +2006,11 @@ const areAllBlocksFilled = () => {
                       setPreviewPhotoOpen,
                       setIsPhotoOpenVisible,
                       setPreviewPhotoClose,
-                      setIsPhotoCloseVisible
+                      setIsPhotoCloseVisible,
+                      setIsLoading,
+                      setIsLoadingDropPhoto,
+                      setIsLoadingOpenImage,
+                      setIsLoadingCloseImage
                     )
                   }
                 />
@@ -2008,6 +2036,7 @@ const areAllBlocksFilled = () => {
                   Загрузить изображения
                 </div>
               </label>
+              {isLoadingCloseImage && <div className="loader">Загрузка...</div>}
             </div>
             <div>
               {previewPhotoClose?.map((preview, index) => (
