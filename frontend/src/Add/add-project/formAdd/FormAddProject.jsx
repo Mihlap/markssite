@@ -1006,7 +1006,11 @@ const areAllBlocksFilled = () => {
                   Загрузить изображения
                 </div>
               </label>
-              {isLoading && <div className="loader">Загрузка...</div>}
+              {isLoading && (
+                <div className={styles.preview_photos_container__loading}>
+                  Загрузка . . .
+                </div>
+              )}
             </div>
             <div>
               {previewPhotoAva?.map((preview, index) => (
@@ -1168,7 +1172,9 @@ const areAllBlocksFilled = () => {
                   </div>
                 </label>
                 {isLoadingDropPhoto && (
-                  <div className="loader">Загрузка...</div>
+                  <div className={styles.preview_photos_container__loading}>
+                    Загрузка . . .
+                  </div>
                 )}
               </div>
             </div>
@@ -1839,7 +1845,11 @@ const areAllBlocksFilled = () => {
                   Загрузить изображения
                 </div>
               </label>
-              {isLoadingOpenImage && <div className="loader">Загрузка...</div>}
+              {isLoadingOpenImage && (
+                <div className={styles.preview_photos_container__loading}>
+                  Загрузка . . .
+                </div>
+              )}
             </div>
             <div>
               {previewPhotoOpen?.map((preview, index) => (
@@ -2036,7 +2046,11 @@ const areAllBlocksFilled = () => {
                   Загрузить изображения
                 </div>
               </label>
-              {isLoadingCloseImage && <div className="loader">Загрузка...</div>}
+              {isLoadingCloseImage && (
+                <div className={styles.preview_photos_container__loading}>
+                  Загрузка . . .
+                </div>
+              )}
             </div>
             <div>
               {previewPhotoClose?.map((preview, index) => (
