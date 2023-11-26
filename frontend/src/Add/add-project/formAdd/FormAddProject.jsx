@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import Select from "react-select";
+import compressImageFile from "browser-image-compression";
 
 import { transliterate } from "transliteration";
 import styles from "./FormAddProject.module.scss";
@@ -318,52 +319,74 @@ const areAllBlocksFilled = () => {
     //  handlerOpenConstructor();
   };
 
+  async function compressImage(file) {
+    const options = {
+      maxSizeMB: 4, // максимальный размер файла в MB
+      maxWidthOrHeight: 1920, // максимальная ширина или высота
+      useWebWorker: true,
+    };
+
+    try {
+      return await compressImageFile(file, options);
+    } catch (error) {
+      console.error("Ошибка при сжатии изображения:", error);
+    }
+  }
+
+
   // обработчик динамических значений
-  const handleDynamicInputChange = async (blockIndex, inputIndex, value) => {
-    const newDynamicData = [...dynamicData];
-    
-    if (!newDynamicData[blockIndex]) {
-      newDynamicData[blockIndex] = [];
-    }
+ const handleDynamicInputChange = async (blockIndex, inputIndex, value) => {
+   const newDynamicData = [...dynamicData];
 
-    if (!newDynamicData[blockIndex][inputIndex]) {
-      newDynamicData[blockIndex][inputIndex] = {
-        type: "",
-        label: "",
-        value: "",
-      };
-    }
+   if (!newDynamicData[blockIndex]) {
+     newDynamicData[blockIndex] = [];
+   }
 
-    // эта функция генерирует случайное число и присваивает его имени для того, чтоб было уникальное имя
-    function generateUniqueName(originalName) {
-      const timestamp = Date.now();
-      const randomNum = Math.floor(Math.random() * 10000);
-      const fileExtension = originalName.split(".").pop();
+   if (!newDynamicData[blockIndex][inputIndex]) {
+     newDynamicData[blockIndex][inputIndex] = {
+       type: "",
+       label: "",
+       value: "",
+     };
+   }
 
-      // Транслитерация части оригинального имени файла
-      const sliceOfOriginalName = transliterate(originalName.slice(0, 5));
+   function generateUniqueName(originalName) {
+     const timestamp = Date.now();
+     const randomNum = Math.floor(Math.random() * 10000);
+     const fileExtension = originalName.split(".").pop();
+     const sliceOfOriginalName = transliterate(originalName.slice(0, 5));
+     const newName = `file_${sliceOfOriginalName}_${timestamp}_${randomNum}.${fileExtension}`;
+     return newName;
+   }
 
-      const newName = `file_${sliceOfOriginalName}_${timestamp}_${randomNum}.${fileExtension}`;
+   if (Array.isArray(value) && value[0] instanceof File) {
+     const newFiles = await Promise.all(
+       value.map(async (originalFile) => {
+         if (originalFile.type.startsWith("image/")) {
+           // Сжимаем только изображения
+           const compressedFile = await compressImage(originalFile);
+           const uniqueName = generateUniqueName(compressedFile.name);
+           return new File([compressedFile], uniqueName, {
+             type: compressedFile.type,
+           });
+         } else {
+           // Если файл не является изображением, возвращаем его без изменений
+           const uniqueName = generateUniqueName(originalFile.name);
+           return new File([originalFile], uniqueName, {
+             type: originalFile.type,
+           });
+         }
+       })
+     );
 
-      //  console.log("Generated name:", newName);
+     
+     newDynamicData[blockIndex][inputIndex].value = newFiles;
+   } else {
+     newDynamicData[blockIndex][inputIndex].value = value;
+   }
 
-      return newName;
-    }
-
-    if (Array.isArray(value) && value[0] instanceof File) {
-      const newFiles = value.map((originalFile) => {
-        const uniqueName = generateUniqueName(originalFile.name);
-        return new File([originalFile], uniqueName, {
-          type: originalFile.type,
-        });
-      });
-      newDynamicData[blockIndex][inputIndex].value = newFiles;
-    } else {
-      newDynamicData[blockIndex][inputIndex].value = value;
-    }
-
-    setDynamicData(newDynamicData);
-  };
+   setDynamicData(newDynamicData);
+ };
 
   // этот цикл сделан для присвоения разных стилей для одной конструкции превью
   const getPreviewClassName = (label) => {
