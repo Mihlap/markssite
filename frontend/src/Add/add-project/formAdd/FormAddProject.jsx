@@ -319,9 +319,9 @@ const areAllBlocksFilled = () => {
   };
 
   // обработчик динамических значений
-  const handleDynamicInputChange = (blockIndex, inputIndex, value) => {
+  const handleDynamicInputChange = async (blockIndex, inputIndex, value) => {
     const newDynamicData = [...dynamicData];
-
+    
     if (!newDynamicData[blockIndex]) {
       newDynamicData[blockIndex] = [];
     }
@@ -334,7 +334,7 @@ const areAllBlocksFilled = () => {
       };
     }
 
-    // эта функция генерирует случайное число и присваивает его имени для того, чтоб было уникальное имя 
+    // эта функция генерирует случайное число и присваивает его имени для того, чтоб было уникальное имя
     function generateUniqueName(originalName) {
       const timestamp = Date.now();
       const randomNum = Math.floor(Math.random() * 10000);
