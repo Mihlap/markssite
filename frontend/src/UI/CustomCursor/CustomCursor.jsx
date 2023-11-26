@@ -78,7 +78,7 @@ export default function CustomCursor() {
       width: 64,
       x: mousePosition.x - 16,
       y: mousePosition.y - 16,
-      backgroundColor: "transparent", // Установка фона как прозрачного
+      backgroundColor: "rgba(29, 46, 67, 0)", // Установка фона как прозрачного
       border: "2px solid #1D2E43", // Установка синей границы, замените #1D2E43 на ваш код цвета
     },
     textFooter: {
