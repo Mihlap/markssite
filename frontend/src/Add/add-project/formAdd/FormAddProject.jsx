@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import Select from "react-select";
+import compressImageFile from "browser-image-compression";
 
 import { transliterate } from "transliteration";
 import styles from "./FormAddProject.module.scss";
@@ -56,6 +57,13 @@ const [isMonthValid, setIsMonthValid] = useState(true);
 const [isYearValid, setIsYearValid] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
   const [showNotification, setShowNotification] = useState(false);
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingDropPhoto, setIsLoadingDropPhoto] = useState(false);
+ const [isLoadingOpenImage, setIsLoadingOpenImage] = useState(false);
+ const [isLoadingCloseImage, setIsLoadingCloseImage] = useState(false);
+
+
 
   const [inputData, setInputData] = useState({
     title: "",
@@ -311,52 +319,74 @@ const areAllBlocksFilled = () => {
     //  handlerOpenConstructor();
   };
 
+  async function compressImage(file) {
+    const options = {
+      maxSizeMB: 4, // максимальный размер файла в MB
+      maxWidthOrHeight: 1920, // максимальная ширина или высота
+      useWebWorker: true,
+    };
+
+    try {
+      return await compressImageFile(file, options);
+    } catch (error) {
+      console.error("Ошибка при сжатии изображения:", error);
+    }
+  }
+
+
   // обработчик динамических значений
-  const handleDynamicInputChange = (blockIndex, inputIndex, value) => {
-    const newDynamicData = [...dynamicData];
+ const handleDynamicInputChange = async (blockIndex, inputIndex, value) => {
+   const newDynamicData = [...dynamicData];
 
-    if (!newDynamicData[blockIndex]) {
-      newDynamicData[blockIndex] = [];
-    }
+   if (!newDynamicData[blockIndex]) {
+     newDynamicData[blockIndex] = [];
+   }
 
-    if (!newDynamicData[blockIndex][inputIndex]) {
-      newDynamicData[blockIndex][inputIndex] = {
-        type: "",
-        label: "",
-        value: "",
-      };
-    }
+   if (!newDynamicData[blockIndex][inputIndex]) {
+     newDynamicData[blockIndex][inputIndex] = {
+       type: "",
+       label: "",
+       value: "",
+     };
+   }
 
-    // эта функция генерирует случайное число и присваивает его имени для того, чтоб было уникальное имя 
-    function generateUniqueName(originalName) {
-      const timestamp = Date.now();
-      const randomNum = Math.floor(Math.random() * 10000);
-      const fileExtension = originalName.split(".").pop();
+   function generateUniqueName(originalName) {
+     const timestamp = Date.now();
+     const randomNum = Math.floor(Math.random() * 10000);
+     const fileExtension = originalName.split(".").pop();
+     const sliceOfOriginalName = transliterate(originalName.slice(0, 5));
+     const newName = `file_${sliceOfOriginalName}_${timestamp}_${randomNum}.${fileExtension}`;
+     return newName;
+   }
 
-      // Транслитерация части оригинального имени файла
-      const sliceOfOriginalName = transliterate(originalName.slice(0, 5));
+   if (Array.isArray(value) && value[0] instanceof File) {
+     const newFiles = await Promise.all(
+       value.map(async (originalFile) => {
+         if (originalFile.type.startsWith("image/")) {
+           // Сжимаем только изображения
+           const compressedFile = await compressImage(originalFile);
+           const uniqueName = generateUniqueName(compressedFile.name);
+           return new File([compressedFile], uniqueName, {
+             type: compressedFile.type,
+           });
+         } else {
+           // Если файл не является изображением, возвращаем его без изменений
+           const uniqueName = generateUniqueName(originalFile.name);
+           return new File([originalFile], uniqueName, {
+             type: originalFile.type,
+           });
+         }
+       })
+     );
 
-      const newName = `file_${sliceOfOriginalName}_${timestamp}_${randomNum}.${fileExtension}`;
+     
+     newDynamicData[blockIndex][inputIndex].value = newFiles;
+   } else {
+     newDynamicData[blockIndex][inputIndex].value = value;
+   }
 
-      //  console.log("Generated name:", newName);
-
-      return newName;
-    }
-
-    if (Array.isArray(value) && value[0] instanceof File) {
-      const newFiles = value.map((originalFile) => {
-        const uniqueName = generateUniqueName(originalFile.name);
-        return new File([originalFile], uniqueName, {
-          type: originalFile.type,
-        });
-      });
-      newDynamicData[blockIndex][inputIndex].value = newFiles;
-    } else {
-      newDynamicData[blockIndex][inputIndex].value = value;
-    }
-
-    setDynamicData(newDynamicData);
-  };
+   setDynamicData(newDynamicData);
+ };
 
   // этот цикл сделан для присвоения разных стилей для одной конструкции превью
   const getPreviewClassName = (label) => {
@@ -968,7 +998,11 @@ const areAllBlocksFilled = () => {
                       setPreviewPhotoOpen,
                       setIsPhotoOpenVisible,
                       setPreviewPhotoClose,
-                      setIsPhotoCloseVisible
+                      setIsPhotoCloseVisible,
+                      setIsLoading,
+                      setIsLoadingDropPhoto,
+                      setIsLoadingOpenImage,
+                      setIsLoadingCloseImage
                     )
                   }
                 />
@@ -995,6 +1029,11 @@ const areAllBlocksFilled = () => {
                   Загрузить изображения
                 </div>
               </label>
+              {isLoading && (
+                <div className={styles.preview_photos_container__loading}>
+                  Загрузка . . .
+                </div>
+              )}
             </div>
             <div>
               {previewPhotoAva?.map((preview, index) => (
@@ -1124,7 +1163,11 @@ const areAllBlocksFilled = () => {
                         setPreviewPhotoOpen,
                         setIsPhotoOpenVisible,
                         setPreviewPhotoClose,
-                        setIsPhotoCloseVisible
+                        setIsPhotoCloseVisible,
+                        setIsLoading,
+                        setIsLoadingDropPhoto,
+                        setIsLoadingOpenImage,
+                        setIsLoadingCloseImage
                       )
                     }
                     multiple
@@ -1151,6 +1194,11 @@ const areAllBlocksFilled = () => {
                     Загрузить изображения
                   </div>
                 </label>
+                {isLoadingDropPhoto && (
+                  <div className={styles.preview_photos_container__loading}>
+                    Загрузка . . .
+                  </div>
+                )}
               </div>
             </div>
             <div className={styles.preview_photos_container}>
@@ -1792,7 +1840,11 @@ const areAllBlocksFilled = () => {
                       setPreviewPhotoOpen,
                       setIsPhotoOpenVisible,
                       setPreviewPhotoClose,
-                      setIsPhotoCloseVisible
+                      setIsPhotoCloseVisible,
+                      setIsLoading,
+                      setIsLoadingDropPhoto,
+                      setIsLoadingOpenImage,
+                      setIsLoadingCloseImage
                     )
                   }
                 />
@@ -1816,6 +1868,11 @@ const areAllBlocksFilled = () => {
                   Загрузить изображения
                 </div>
               </label>
+              {isLoadingOpenImage && (
+                <div className={styles.preview_photos_container__loading}>
+                  Загрузка . . .
+                </div>
+              )}
             </div>
             <div>
               {previewPhotoOpen?.map((preview, index) => (
@@ -1982,7 +2039,11 @@ const areAllBlocksFilled = () => {
                       setPreviewPhotoOpen,
                       setIsPhotoOpenVisible,
                       setPreviewPhotoClose,
-                      setIsPhotoCloseVisible
+                      setIsPhotoCloseVisible,
+                      setIsLoading,
+                      setIsLoadingDropPhoto,
+                      setIsLoadingOpenImage,
+                      setIsLoadingCloseImage
                     )
                   }
                 />
@@ -2008,6 +2069,11 @@ const areAllBlocksFilled = () => {
                   Загрузить изображения
                 </div>
               </label>
+              {isLoadingCloseImage && (
+                <div className={styles.preview_photos_container__loading}>
+                  Загрузка . . .
+                </div>
+              )}
             </div>
             <div>
               {previewPhotoClose?.map((preview, index) => (

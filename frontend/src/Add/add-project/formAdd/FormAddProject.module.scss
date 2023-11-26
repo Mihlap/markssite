@@ -61,20 +61,20 @@
 
     &__notification {
         position: fixed;
-            top: 20px;
-            right: 12px; // начальная позиция справа за пределами экрана
-            font-family: var(--font-raleway);
-            background-color: var(--white-F6F6F6);
-            color: var(--black-1D2E43);
-            padding: 10px 20px;
-            border-radius: 5px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-            z-index: 1000;
-            transition: right 0.5s;
-        
-            &.show {
-                right: 20px; // конечная позиция в пределах экрана
-            }
+        top: 20px;
+        right: 12px; // начальная позиция справа за пределами экрана
+        font-family: var(--font-raleway);
+        background-color: var(--white-F6F6F6);
+        color: var(--black-1D2E43);
+        padding: 10px 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        transition: right 0.5s;
+
+        &.show {
+            right: 20px; // конечная позиция в пределах экрана
+        }
     }
 
     &__block_form {
@@ -110,18 +110,18 @@
         width: 45%;
     }
 
-         &__checkbox_block {
-             color: var(--light-gray-C0C5CB);
-             font-size: 0.75rem;
-             font-family: Raleway;
-             font-style: normal;
-             font-weight: 400;
-             line-height: 1rem;
-    
-             span {
-                 color: var(--salmon-FF7F6A);
-             }
-         }
+    &__checkbox_block {
+        color: var(--light-gray-C0C5CB);
+        font-size: 0.75rem;
+        font-family: Raleway;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 1rem;
+
+        span {
+            color: var(--salmon-FF7F6A);
+        }
+    }
 
 
     &__checkbox_block_constructor {
@@ -381,16 +381,16 @@
         margin-bottom: 4px;
     }
 
-          &__textarea_label_constructor {
-              color: var(--light-gray-C0C5CB);
-              font-family: var(--font-raleway);
-              font-size: 12px;
-              font-style: normal;
-              font-weight: 400;
-              line-height: 16px;
-              margin-bottom: 4px;
-              margin-top: 16px;
-          }
+    &__textarea_label_constructor {
+        color: var(--light-gray-C0C5CB);
+        font-family: var(--font-raleway);
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 16px;
+        margin-bottom: 4px;
+        margin-top: 16px;
+    }
 
     &__textarea_length {
         position: absolute;
@@ -615,6 +615,26 @@
         /* Обрезать изображение, сохраняя его пропорции */
         object-position: center;
         /* Центрировать изображение в контейнере */
+    }
+
+    @keyframes wave {
+        0% {
+            transform: translateY(0);
+        }
+
+        50% {
+            transform: translateY(-5px);
+        }
+
+        100% {
+            transform: translateY(0);
+        }
+    }
+
+    &__loading {
+        font-family: var(--font-raleway);
+        color: var(--black-1D2E43);
+        animation: wave 1s infinite;
     }
 
     &__remove_icon {
