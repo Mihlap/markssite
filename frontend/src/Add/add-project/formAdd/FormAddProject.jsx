@@ -53,17 +53,15 @@ export default function FormAddProject({ setIsModalOpen }) {
   const [isPhotoAvaVisible, setIsPhotoAvaVisible] = useState(true);
   const [isDropPhotoVisible, setIsDropPhotoVisible] = useState(true);
 
-const [isMonthValid, setIsMonthValid] = useState(true);
-const [isYearValid, setIsYearValid] = useState(true);
+  const [isMonthValid, setIsMonthValid] = useState(true);
+  const [isYearValid, setIsYearValid] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
   const [showNotification, setShowNotification] = useState(false);
 
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingDropPhoto, setIsLoadingDropPhoto] = useState(false);
- const [isLoadingOpenImage, setIsLoadingOpenImage] = useState(false);
- const [isLoadingCloseImage, setIsLoadingCloseImage] = useState(false);
-
-
+  const [isLoadingOpenImage, setIsLoadingOpenImage] = useState(false);
+  const [isLoadingCloseImage, setIsLoadingCloseImage] = useState(false);
 
   const [inputData, setInputData] = useState({
     title: "",
@@ -166,37 +164,39 @@ const [isYearValid, setIsYearValid] = useState(true);
     );
   };
 
-const validateForm = () => {
-  let isValid = true;
-  let errors = [];
+  const validateForm = () => {
+    let isValid = true;
+    let errors = [];
 
-  // Проверяем, был ли выбран месяц
-  if (!selectedMonth) {
-    setIsMonthValid(false);
-    isValid = false;
-    errors.push("Месяц");
-  } else {
-    setIsMonthValid(true);
-  }
+    // Проверяем, был ли выбран месяц
+    if (!selectedMonth) {
+      setIsMonthValid(false);
+      isValid = false;
+      errors.push("Месяц");
+    } else {
+      setIsMonthValid(true);
+    }
 
-  // Проверяем, был ли выбран год
-  if (!selectedYear) {
-    setIsYearValid(false);
-    isValid = false;
-    errors.push("Год");
-  } else {
-    setIsYearValid(true);
-  }
+    // Проверяем, был ли выбран год
+    if (!selectedYear) {
+      setIsYearValid(false);
+      isValid = false;
+      errors.push("Год");
+    } else {
+      setIsYearValid(true);
+    }
 
-  // Сохраняем сообщение об ошибке
-  if (!isValid) {
-    setErrorMessage(
-      `Пожалуйста, заполните следующие обязательные поля: ${errors.join(", ")}.`
-    );
-  }
+    // Сохраняем сообщение об ошибке
+    if (!isValid) {
+      setErrorMessage(
+        `Пожалуйста, заполните следующие обязательные поля: ${errors.join(
+          ", "
+        )}.`
+      );
+    }
 
-  return isValid;
-};
+    return isValid;
+  };
 
   // закрывает модалкку формы
   const closeModal = () => {
@@ -209,65 +209,65 @@ const validateForm = () => {
 
     const isFormValid = validateForm();
 
-     if (!isFormValid) {
-       // Обрабатываем ошибку
-     } else {
-          const formattedData = {
-            ...inputData,
-            dynamicBlocks: dynamicData,
-            selectCompetencies: selectedCompetencies
-              .map((option) => option.label)
-              .join(","),
-            degreeParticipation: selectDegreeParticipation.label,
-            statusObject: selectStatusObject.label,
-            viewConstruction: selectedViewConstruction
-              .map((option) => option.label)
-              .join(","),
-            // radioValue: selectedRadio,
-            photoAva: inputData.photoAva,
-            imageOpen: inputData.imageOpen,
-          };
-          dispatch(fetchProject(formattedData, setInputData));
-          setSelectedCompetencies([]);
-          setSelectDegreeParticipation("");
-          setSelectStatusObject("");
-          setSelectedViewConstruction([]);
-          // setSelectedRadio("");
-          setPreviewPhotos([]);
-          setDynamicData([]);
-          setInputData({
-            title: "",
-            selectCompetencies: "",
-            countryCity: "",
-            monthYear: "",
-            viewConstruction: "",
-            dropPhoto: [],
-            photoAva: "",
-            titleTextBlock: "",
-            descriptionProject: "",
-            totalArea: "",
-            siteArea: "",
-            floors: "",
-            altitude: "",
-            constructionVolume: "",
-            location: "",
-            degreeParticipation: "",
-            statusObject: "",
-            customer: "",
-            publication: "",
-            linkToPublication: "",
-            publicationTwo: "",
-            linkToPublicationTwo: "",
-            awards: "",
-            imageOpen: "",
-            textBlock: "",
-            imageClose: "",
-          });
-       setErrorMessage(""); // Очищаем ошибки
-       setIsModalOpen(false);
-       
-       console.log("Форма отправлена.");
-     }
+    if (!isFormValid) {
+      // Обрабатываем ошибку
+    } else {
+      const formattedData = {
+        ...inputData,
+        dynamicBlocks: dynamicData,
+        selectCompetencies: selectedCompetencies
+          .map((option) => option.label)
+          .join(","),
+        degreeParticipation: selectDegreeParticipation.label,
+        statusObject: selectStatusObject.label,
+        viewConstruction: selectedViewConstruction
+          .map((option) => option.label)
+          .join(","),
+        // radioValue: selectedRadio,
+        photoAva: inputData.photoAva,
+        imageOpen: inputData.imageOpen,
+      };
+      dispatch(fetchProject(formattedData, setInputData));
+      setSelectedCompetencies([]);
+      setSelectDegreeParticipation("");
+      setSelectStatusObject("");
+      setSelectedViewConstruction([]);
+      // setSelectedRadio("");
+      setPreviewPhotos([]);
+      setDynamicData([]);
+      setInputData({
+        title: "",
+        selectCompetencies: "",
+        countryCity: "",
+        monthYear: "",
+        viewConstruction: "",
+        dropPhoto: [],
+        photoAva: "",
+        titleTextBlock: "",
+        descriptionProject: "",
+        totalArea: "",
+        siteArea: "",
+        floors: "",
+        altitude: "",
+        constructionVolume: "",
+        location: "",
+        degreeParticipation: "",
+        statusObject: "",
+        customer: "",
+        publication: "",
+        linkToPublication: "",
+        publicationTwo: "",
+        linkToPublicationTwo: "",
+        awards: "",
+        imageOpen: "",
+        textBlock: "",
+        imageClose: "",
+      });
+      setErrorMessage(""); // Очищаем ошибки
+      setIsModalOpen(false);
+
+      console.log("Форма отправлена.");
+    }
   };
 
   // << ============ функции КОНСТРУКТОРА ============ >>
@@ -277,18 +277,18 @@ const validateForm = () => {
   };
 
   // функция которая не даёт создать новый диманический блок, пока не заполнены value предыдущего
-const areAllBlocksFilled = () => {
-  for (let block of dynamicData) {
-    for (let input of block) {
-      // Проверяем только обязательные поля
-      if (input.required && (!input.value || input.value === "")) {
-        return false;
+  const areAllBlocksFilled = () => {
+    for (let block of dynamicData) {
+      for (let input of block) {
+        // Проверяем только обязательные поля
+        if (input.required && (!input.value || input.value === "")) {
+          return false;
+        }
       }
     }
-  }
-  return true;
+    return true;
   };
-  
+
   const handleRemoveBlock = (blockIndex) => {
     setDynamicData((prevDynamicData) =>
       prevDynamicData.filter((_, index) => index !== blockIndex)
@@ -333,60 +333,58 @@ const areAllBlocksFilled = () => {
     }
   }
 
-
   // обработчик динамических значений
- const handleDynamicInputChange = async (blockIndex, inputIndex, value) => {
-   const newDynamicData = [...dynamicData];
+  const handleDynamicInputChange = async (blockIndex, inputIndex, value) => {
+    const newDynamicData = [...dynamicData];
 
-   if (!newDynamicData[blockIndex]) {
-     newDynamicData[blockIndex] = [];
-   }
+    if (!newDynamicData[blockIndex]) {
+      newDynamicData[blockIndex] = [];
+    }
 
-   if (!newDynamicData[blockIndex][inputIndex]) {
-     newDynamicData[blockIndex][inputIndex] = {
-       type: "",
-       label: "",
-       value: "",
-     };
-   }
+    if (!newDynamicData[blockIndex][inputIndex]) {
+      newDynamicData[blockIndex][inputIndex] = {
+        type: "",
+        label: "",
+        value: "",
+      };
+    }
 
-   function generateUniqueName(originalName) {
-     const timestamp = Date.now();
-     const randomNum = Math.floor(Math.random() * 10000);
-     const fileExtension = originalName.split(".").pop();
-     const sliceOfOriginalName = transliterate(originalName.slice(0, 5));
-     const newName = `file_${sliceOfOriginalName}_${timestamp}_${randomNum}.${fileExtension}`;
-     return newName;
-   }
+    function generateUniqueName(originalName) {
+      const timestamp = Date.now();
+      const randomNum = Math.floor(Math.random() * 10000);
+      const fileExtension = originalName.split(".").pop();
+      const sliceOfOriginalName = transliterate(originalName.slice(0, 5));
+      const newName = `file_${sliceOfOriginalName}_${timestamp}_${randomNum}.${fileExtension}`;
+      return newName;
+    }
 
-   if (Array.isArray(value) && value[0] instanceof File) {
-     const newFiles = await Promise.all(
-       value.map(async (originalFile) => {
-         if (originalFile.type.startsWith("image/")) {
-           // Сжимаем только изображения
-           const compressedFile = await compressImage(originalFile);
-           const uniqueName = generateUniqueName(compressedFile.name);
-           return new File([compressedFile], uniqueName, {
-             type: compressedFile.type,
-           });
-         } else {
-           // Если файл не является изображением, возвращаем его без изменений
-           const uniqueName = generateUniqueName(originalFile.name);
-           return new File([originalFile], uniqueName, {
-             type: originalFile.type,
-           });
-         }
-       })
-     );
+    if (Array.isArray(value) && value[0] instanceof File) {
+      const newFiles = await Promise.all(
+        value.map(async (originalFile) => {
+          if (originalFile.type.startsWith("image/")) {
+            // Сжимаем только изображения
+            const compressedFile = await compressImage(originalFile);
+            const uniqueName = generateUniqueName(compressedFile.name);
+            return new File([compressedFile], uniqueName, {
+              type: compressedFile.type,
+            });
+          } else {
+            // Если файл не является изображением, возвращаем его без изменений
+            const uniqueName = generateUniqueName(originalFile.name);
+            return new File([originalFile], uniqueName, {
+              type: originalFile.type,
+            });
+          }
+        })
+      );
 
-     
-     newDynamicData[blockIndex][inputIndex].value = newFiles;
-   } else {
-     newDynamicData[blockIndex][inputIndex].value = value;
-   }
+      newDynamicData[blockIndex][inputIndex].value = newFiles;
+    } else {
+      newDynamicData[blockIndex][inputIndex].value = value;
+    }
 
-   setDynamicData(newDynamicData);
- };
+    setDynamicData(newDynamicData);
+  };
 
   // этот цикл сделан для присвоения разных стилей для одной конструкции превью
   const getPreviewClassName = (label) => {
@@ -723,21 +721,19 @@ const areAllBlocksFilled = () => {
     );
   };
 
- const renderInputs = (inputs, blockIndex) => {
-   return (
-     <div key={blockIndex} className={styles.blockContainer}>
-       {inputs.map((input, inputIndex) =>
-         renderInputWithLabel(input.type, input.label, blockIndex, inputIndex)
-       )}
-       <div
-         className={styles.blockContainer__close_button}
-         onClick={() => handleRemoveBlock(blockIndex)}
-       >
-       </div>
-     </div>
-   );
- };
-
+  const renderInputs = (inputs, blockIndex) => {
+    return (
+      <div key={blockIndex} className={styles.blockContainer}>
+        {inputs.map((input, inputIndex) =>
+          renderInputWithLabel(input.type, input.label, blockIndex, inputIndex)
+        )}
+        <div
+          className={styles.blockContainer__close_button}
+          onClick={() => handleRemoveBlock(blockIndex)}
+        ></div>
+      </div>
+    );
+  };
 
   const [selectedMonth, setSelectedMonth] = useState(null);
   const [selectedYear, setSelectedYear] = useState(null);
