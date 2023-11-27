@@ -41,7 +41,7 @@
   font-style: normal;
   font-weight: var(--fw-300);
   top: 50%;
-  left: 9vw;
+  left: 4vw;
   padding-right: 1rem;
 }
 
@@ -55,10 +55,18 @@
   line-height: 64px;
 }
 
+.vacancy_section_block {
+  display: block;
+  justify-content: center;
+  align-items: center;
+  text-align: left;
+  padding: 5rem 1rem;
+  margin: 0 auto; 
+  max-width: 700px;
+}
+
 .vacancies_advertisingBlock {
   width: 100%;
-  padding-top: 5rem;
-  padding-left: 15vw;
 }
 
 .vacancies_advertisingBlock_text1 {
@@ -83,7 +91,6 @@
 
 .vacancies_section {
   font-display: flex;
-  padding-left: 15vw;
   padding-top: 2.5rem;
 }
 
@@ -96,7 +103,7 @@
   gap: 0.625rem;
   border-radius: 1rem;
   border: 1px solid var(--blue-75BBFD);
-}
+ }
 
 
 .vacancies_list {
@@ -105,17 +112,20 @@
   gap: 3rem;
 }
 
-.vacancia_name {
+.vacancy_name {
 color: var(--black-1D2E43);
 font-variant-numeric: lining-nums proportional-nums;
 font-family: var(--font-raleway);
 font-size: 1.125rem;
 font-style: normal;
 font-weight: var(--fw-400);
-/* line-height: 3.5rem; */
 text-decoration: underline;
-/* width: 55rem; */
 }
+
+.vacancy_name:hover {
+  color: var(--blue-75BBFD);
+}
+
 
 .vacancies_text_for_email {
   color: var(--black-1D2E43);
@@ -124,7 +134,8 @@ text-decoration: underline;
   font-style: normal;
   font-weight: var(--fw-300);
   line-height: 2rem;
-  padding: 2.5rem 1rem 6.5rem 15vw;
+  padding: 2.5rem 2rem 6.5rem 0rem;
+  width: max-content;
 }
 
 .span_mail_vacancies {
@@ -179,6 +190,11 @@ text-decoration: underline;
   padding-right: 9vw;
  }
 
+ .vacancy_name:hover {
+  color: var(--black-1D2E43);
+}
+
+
 .vacancies_text_for_email {
   padding: 2.5rem 9vw 2rem 9vw;
   max-width: 40rem;
@@ -226,7 +242,6 @@ text-decoration: underline;
 
   .vacancies_advertisingBlock {
     width: 100%;
-    padding-top: 5rem;
     padding-left: 1rem;
     padding-right: 1rem;
     /* max-width: 21rem; */
@@ -264,6 +279,11 @@ text-decoration: underline;
     flex-direction: column; 
     gap: 2rem;  
   }
+
+  .vacancy_name:hover {
+    color: var(--black-1D2E43);
+  }
+  
   
   .vacancies_text_for_email {
     color: var(--black-1D2E43);
@@ -273,7 +293,7 @@ text-decoration: underline;
     font-weight: var(--fw-300);
     line-height: 2rem;
     padding: 2.5rem 1rem 2.5rem 1rem;
-    /* max-width: 21rem; */
+    width: 100%;
     }
   
   .span_mail_vacancies {
