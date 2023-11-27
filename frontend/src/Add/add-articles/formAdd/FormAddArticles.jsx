@@ -12,6 +12,7 @@ import {
 } from "./utils/formHelpers";
 import { fetchArticle } from "../../../store/Slice/articleSlice";
 import customStyles from "../../add-project/formAdd/utils/customStyles";
+import compressImageFile from "browser-image-compression";
 
 import ConstructorPage from "../constructor/ConstructorPage";
 import { PublicationContainer, PublicationIndicator } from "../../add-project/formAdd/utils/CustomSelectComponents";
@@ -28,7 +29,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
   const [isPhotoAvaVisible, setIsPhotoAvaVisible] = useState(true);
   const [isDropPhotoVisible, setIsDropPhotoVisible] = useState(true);
   const [isFocused, setIsFocused] = useState(false);
-   const [showNotification, setShowNotification] = useState(false);
+  const [showNotification, setShowNotification] = useState(false);
   const [inputData, setInputData] = useState({
     title: "",
     author: "",
@@ -43,6 +44,11 @@ export default function FormAddArticles({ setIsModalOpen }) {
     textBlock: "",
     imageClose: "",
   });
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingDropPhoto, setIsLoadingDropPhoto] = useState(false);
+  const [isLoadingOpenImage, setIsLoadingOpenImage] = useState(false);
+  const [isLoadingCloseImage, setIsLoadingCloseImage] = useState(false);
 
   // << ==== КОНСТУКТОР ==== >>
   // состояние для хранения текущего значения инпута
@@ -178,7 +184,21 @@ export default function FormAddArticles({ setIsModalOpen }) {
     setDynamicData((prevDynamicData) => [...prevDynamicData, newInputs]);
   };
 
-  const handleDynamicInputChange = (blockIndex, inputIndex, value) => {
+    async function compressImage(file) {
+      const options = {
+        maxSizeMB: 4, // максимальный размер файла в MB
+        maxWidthOrHeight: 1920, // максимальная ширина или высота
+        useWebWorker: true,
+      };
+
+      try {
+        return await compressImageFile(file, options);
+      } catch (error) {
+        console.error("Ошибка при сжатии изображения:", error);
+      }
+    }
+
+  const handleDynamicInputChange = async (blockIndex, inputIndex, value) => {
     const newDynamicData = [...dynamicData];
 
     if (!newDynamicData[blockIndex]) {
@@ -196,30 +216,36 @@ export default function FormAddArticles({ setIsModalOpen }) {
       const timestamp = Date.now();
       const randomNum = Math.floor(Math.random() * 10000);
       const fileExtension = originalName.split(".").pop();
-
       // Транслитерация части оригинального имени файла
       const sliceOfOriginalName = transliterate(originalName.slice(0, 5));
-
       const newName = `file_${sliceOfOriginalName}_${timestamp}_${randomNum}.${fileExtension}`;
-
       return newName;
     }
+  
     if (Array.isArray(value) && value[0] instanceof File) {
-      const newFiles = value.map((originalFile) => {
-        const uniqueName = generateUniqueName(originalFile.name);
-        return new File([originalFile], uniqueName, {
-          type: originalFile.type,
-        });
-      });
-      newDynamicData[blockIndex][inputIndex].value = newFiles;
-      console.log(
-        "Updated files:",
-        newDynamicData[blockIndex][inputIndex].value
+      const newFiles = await Promise.all(
+        value.map(async (originalFile) => {
+          if (originalFile.type.startsWith("image/")) {
+            // Сжимаем только изображения
+            const compressedFile = await compressImage(originalFile);
+            const uniqueName = generateUniqueName(compressedFile.name);
+            return new File([compressedFile], uniqueName, {
+              type: compressedFile.type,
+            });
+          } else {
+            // Если файл не является изображением, возвращаем его без изменений
+            const uniqueName = generateUniqueName(originalFile.name);
+            return new File([originalFile], uniqueName, {
+              type: originalFile.type,
+            });
+          }
+        })
       );
+
+      newDynamicData[blockIndex][inputIndex].value = newFiles;
     } else {
       newDynamicData[blockIndex][inputIndex].value = value;
     }
-
     setDynamicData(newDynamicData);
   };
 
@@ -354,6 +380,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
                     }}
                   />
                   <svg
+                    className={styles.slider_container__svg}
                     width="16"
                     height="16"
                     viewBox="0 0 16 16"
@@ -702,7 +729,17 @@ export default function FormAddArticles({ setIsModalOpen }) {
                       inputData,
                       setInputData,
                       setPreviewPhotos,
-                      setIsDropPhotoVisible
+                      setIsDropPhotoVisible,
+                      setPreviewPhotoAva,
+                      setIsPhotoAvaVisible,
+                      setPreviewPhotoOpen,
+                      setIsPhotoOpenVisible,
+                      setPreviewPhotoClose,
+                      setIsPhotoCloseVisible,
+                      setIsLoading,
+                      setIsLoadingDropPhoto,
+                      setIsLoadingOpenImage,
+                      setIsLoadingCloseImage
                     )
                   }
                   multiple
@@ -729,6 +766,11 @@ export default function FormAddArticles({ setIsModalOpen }) {
                   Загрузить изображения
                 </div>
               </label>
+              {isLoadingDropPhoto && (
+                <div className={styles.preview_photos_container__loading}>
+                  Загрузка . . .
+                </div>
+              )}
             </div>
             <div className={styles.preview_photos_container}>
               {inputData.dropPhoto.map((preview, index) => (
@@ -849,7 +891,11 @@ export default function FormAddArticles({ setIsModalOpen }) {
                       setPreviewPhotoOpen,
                       setIsPhotoOpenVisible,
                       setPreviewPhotoClose,
-                      setIsPhotoCloseVisible
+                      setIsPhotoCloseVisible,
+                      setIsLoading,
+                      setIsLoadingDropPhoto,
+                      setIsLoadingOpenImage,
+                      setIsLoadingCloseImage
                     )
                   }
                 />
@@ -875,6 +921,11 @@ export default function FormAddArticles({ setIsModalOpen }) {
                   Загрузить изображения
                 </div>
               </label>
+              {isLoading && (
+                <div className={styles.preview_photos_container__loading}>
+                  Загрузка . . .
+                </div>
+              )}
             </div>
             <div>
               {previewPhotoAva?.map((preview, index) => (
@@ -922,7 +973,11 @@ export default function FormAddArticles({ setIsModalOpen }) {
                       setPreviewPhotoOpen,
                       setIsPhotoOpenVisible,
                       setPreviewPhotoClose,
-                      setIsPhotoCloseVisible
+                      setIsPhotoCloseVisible,
+                      setIsLoading,
+                      setIsLoadingDropPhoto,
+                      setIsLoadingOpenImage,
+                      setIsLoadingCloseImage
                     )
                   }
                   style={{ display: isPhotoOpenVisible ? "block" : "none" }}
@@ -949,6 +1004,11 @@ export default function FormAddArticles({ setIsModalOpen }) {
                   Загрузить изображения
                 </div>
               </label>
+              {isLoadingOpenImage && (
+                <div className={styles.preview_photos_container__loading}>
+                  Загрузка . . .
+                </div>
+              )}
             </div>
             <div>
               {previewPhotoOpen?.map((preview, index) => (
@@ -993,7 +1053,11 @@ export default function FormAddArticles({ setIsModalOpen }) {
                   setPreviewPhotoOpen,
                   setIsPhotoOpenVisible,
                   setPreviewPhotoClose,
-                  setIsPhotoCloseVisible
+                  setIsPhotoCloseVisible,
+                  setIsLoading,
+                  setIsLoadingDropPhoto,
+                  setIsLoadingOpenImage,
+                  setIsLoadingCloseImage
                 )
               }
             ></textarea>
@@ -1078,7 +1142,11 @@ export default function FormAddArticles({ setIsModalOpen }) {
                       setPreviewPhotoOpen,
                       setIsPhotoOpenVisible,
                       setPreviewPhotoClose,
-                      setIsPhotoCloseVisible
+                      setIsPhotoCloseVisible,
+                      setIsLoading,
+                      setIsLoadingDropPhoto,
+                      setIsLoadingOpenImage,
+                      setIsLoadingCloseImage
                     )
                   }
                 />
@@ -1104,6 +1172,11 @@ export default function FormAddArticles({ setIsModalOpen }) {
                   Загрузить изображения
                 </div>
               </label>
+              {isLoadingCloseImage && (
+                <div className={styles.preview_photos_container__loading}>
+                  Загрузка . . .
+                </div>
+              )}
             </div>
             <div>
               {previewPhotoClose?.map((preview, index) => (
