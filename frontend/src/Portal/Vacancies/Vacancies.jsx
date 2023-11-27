@@ -41,6 +41,7 @@ const Vacancies = ({ handleMouseEnter, handleMouseLeave }) => {
           <span className={styles.vacancies_header2}>Вакансии</span>
         </div>
       </div>
+        <div className={styles.vacancy_section_block}>
       <div className={styles.vacancies_advertisingBlock}>
         <div className={styles.vacancies_advertisingBlock_text1}>
           Не отображаются вакансии?
@@ -57,10 +58,18 @@ const Vacancies = ({ handleMouseEnter, handleMouseLeave }) => {
         <section className={styles.vacancies_section}>
           <div className={styles.vacancies_list_container}>
             <div className={styles.vacancies_list}>
-              {vacancies.map((vacancy) => (
-                <div className={styles.vacancia_name} key={vacancy.id}>
+            {vacancies.map((vacancy) => (
+                <a
+                  href={vacancy.alternate_url} 
+                  className={styles.vacancy_name}
+                  key={vacancy.id}
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
+                >
                   {vacancy.name}
-                </div>
+                </a>
               ))}
             </div>
           </div>
@@ -76,6 +85,7 @@ const Vacancies = ({ handleMouseEnter, handleMouseLeave }) => {
         >
           <span className={styles.span_mail_vacancies}>ok@marksgroup.ru</span>
         </Link>
+      </div>
       </div>
     </div>
   );
