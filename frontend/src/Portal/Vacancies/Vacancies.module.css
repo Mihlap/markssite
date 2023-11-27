@@ -124,6 +124,7 @@ text-decoration: underline;
 
 .vacancy_name:hover {
   color: var(--blue-75BBFD);
+  cursor: none;
 }
 
 
@@ -136,7 +137,7 @@ text-decoration: underline;
   line-height: 2rem;
   padding: 2.5rem 2rem 6.5rem 0rem;
   width: max-content;
-}
+ }
 
 .span_mail_vacancies {
   color: var(--blue-75BBFD);
@@ -147,12 +148,16 @@ text-decoration: underline;
   line-height: 2rem;
   text-decoration-line: underline;
   padding-left: 0.5rem;
+  cursor: none;
 }
 
 @media screen and (min-width: 1025px) and (max-width: 1600px) {
   .wrapper_vacancies {
      height: 36Vh;
    }
+   /* .vacancies_text_for_email {
+     width: fit-content;
+  } */
   }
 
   /* стили для планшетной версии  */
