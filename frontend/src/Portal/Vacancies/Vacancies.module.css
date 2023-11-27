@@ -120,6 +120,7 @@ font-size: 1.125rem;
 font-style: normal;
 font-weight: var(--fw-400);
 text-decoration: underline;
+transition: color 0.4s ease;
 }
 
 .vacancy_name:hover {
@@ -292,6 +293,7 @@ text-decoration: underline;
   .vacancy_name:hover {
     color: var(--black-1D2E43);
     cursor: pointer;
+
   }
   
   
