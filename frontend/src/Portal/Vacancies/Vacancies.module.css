@@ -155,6 +155,7 @@ text-decoration: underline;
   .wrapper_vacancies {
      height: 36Vh;
    }
+ 
    /* .vacancies_text_for_email {
      width: fit-content;
   } */
@@ -165,9 +166,6 @@ text-decoration: underline;
   .wrapper_vacancies {
       height: 32Vh; 
     }
-   .vacancies_header_wrapper {
-     
-  }
   
 .vacancies_header_wrapper {
   position: absolute;
@@ -195,8 +193,10 @@ text-decoration: underline;
   padding-right: 9vw;
  }
 
+
  .vacancy_name:hover {
   color: var(--black-1D2E43);
+  cursor: pointer;
 }
 
 
@@ -205,6 +205,10 @@ text-decoration: underline;
   max-width: 40rem;
   width: 100%;
 }
+.span_mail_vacancies {
+  cursor: pointer;
+}
+
 
 }
 
@@ -287,6 +291,7 @@ text-decoration: underline;
 
   .vacancy_name:hover {
     color: var(--black-1D2E43);
+    cursor: pointer;
   }
   
   
@@ -311,6 +316,7 @@ text-decoration: underline;
     line-height: 2rem;
     text-decoration-line: underline;
     padding-left: 0rem;
+    cursor: pointer;
   }
   
   
