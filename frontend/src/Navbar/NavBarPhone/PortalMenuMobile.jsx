@@ -27,7 +27,7 @@ const [isMenuActive, setMenuActive] = useState(false);
     <div className={styles.navbar_block}>
       <div className={styles.container}>
         <section className={styles.wrapper}>
-          <Link to="/" className={styles.brand}>
+          <Link to="/portal/vacancies" className={styles.brand}>
             MARKS GROUP
           </Link>
           <button
@@ -53,7 +53,7 @@ const [isMenuActive, setMenuActive] = useState(false);
             }
           >
             <ul className={styles["menu-inner"]}>
-              <li className={styles["menu-item"]}>
+              {/* <li className={styles["menu-item"]}>
                 <Link
                   onClick={handleBurgerClick}
                   to="/"
@@ -61,43 +61,34 @@ const [isMenuActive, setMenuActive] = useState(false);
                 >
                   Главная
                 </Link>
-              </li>
-              {/* <li className={styles["menu-item"]}>
-                <Link
-                  onClick={handleBurgerClick}
-                  to="/competention"
-                  className={styles["menu-link"]}
-                >
-                  Компетенции
-                </Link>
               </li> */}
-              <li className={styles["menu-item"]}>
+                <li className={styles["menu-item"]}>
                 <Link
                   onClick={handleBurgerClick}
-                  to="/vacancies"
+                  to="/portal/vacancies"
                   className={styles["menu-link"]}
                 >
                   Вакансии
                 </Link>
               </li>
-              {/* <li className={styles["menu-item"]}>
+              <li className={styles["menu-item"]}>
                 <Link
                   onClick={handleBurgerClick}
-                  to="/internships"
+                  to="/portal/internships"
                   className={styles["menu-link"]}
                 >
                   Стажировки
                 </Link>
-              </li> */}
-              {/* <li className={styles["menu-item"]}>
+              </li>
+              <li className={styles["menu-item"]}>
                 <Link
                   onClick={handleBurgerClick}
-                  to="/office"
+                  to="/portal/office"
                   className={styles["menu-link"]}
                 >
                   Офис
                 </Link>
-              </li> */}
+              </li>
               </ul>
             <div className={styles.contact_info}>
               <div className={styles.contact_info_block}>
