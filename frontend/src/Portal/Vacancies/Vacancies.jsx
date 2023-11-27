@@ -8,6 +8,11 @@ const Vacancies = ({ handleMouseEnter, handleMouseLeave }) => {
   const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+
+  useEffect(() => {
     const fetchVacancies = async () => {
       try {
         const response = await fetch(
