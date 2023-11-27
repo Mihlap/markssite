@@ -63,7 +63,7 @@
   padding: 5rem 1rem;
   margin: 0 auto; 
   max-width: 700px;
-}
+ }
 
 .vacancies_advertisingBlock {
   width: 100%;
@@ -92,7 +92,7 @@
 .vacancies_section {
   font-display: flex;
   padding-top: 2.5rem;
-}
+ }
 
 .vacancies_list_container {
   display: inline-flex;
@@ -102,7 +102,8 @@
   align-items: center;
   gap: 0.625rem;
   border-radius: 1rem;
-  border: 1px solid var(--blue-75BBFD);
+  border: 1px solid var(--blue-75BBFD); 
+  
  }
 
 
@@ -110,6 +111,7 @@
   display: flex;
   flex-direction: column;
   gap: 3rem;
+  min-width: 30vw;
 }
 
 .vacancy_name {
@@ -121,6 +123,7 @@ font-style: normal;
 font-weight: var(--fw-400);
 text-decoration: underline;
 transition: color 0.4s ease;
+width: 100%;
 }
 
 .vacancy_name:hover {
@@ -152,14 +155,19 @@ transition: color 0.4s ease;
   cursor: none;
 }
 
+
 @media screen and (min-width: 1025px) and (max-width: 1600px) {
   .wrapper_vacancies {
      height: 36Vh;
    }
  
-   /* .vacancies_text_for_email {
-     width: fit-content;
-  } */
+   .vacancies_text_for_email {
+    min-width: 70vw;
+     width: 100%;
+  }
+  .vacancies_list {
+    min-width: 50vw;
+  }
   }
 
   /* стили для планшетной версии  */
@@ -182,17 +190,29 @@ transition: color 0.4s ease;
   max-width: 42vw;
 }
 
+.vacancy_section_block {
+  padding: 5rem 2rem;
+}
+
+
  .vacancies_advertisingBlock {
-  padding-right: 1rem;
+  padding-right: 0rem;
   max-width: 40rem;
-  padding-left: 9vw;
-  padding-right: 9vw;
+  /* padding-left: 9vw;
+  padding-right: 9vw; */
 }
 
 .vacancies_section {
-  padding-left: 9vw;
-  padding-right: 9vw;
+  /* padding-left: 9vw;
+  padding-right: 9vw; */
  }
+
+ .vacancies_list {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  min-width: 40vw;
+}
 
 
  .vacancy_name:hover {
@@ -202,15 +222,12 @@ transition: color 0.4s ease;
 
 
 .vacancies_text_for_email {
-  padding: 2.5rem 9vw 2rem 9vw;
-  max-width: 40rem;
-  width: 100%;
+  /* padding: 0rem 0vw 0rem 0vw; */
+  width: fit-content;
 }
 .span_mail_vacancies {
   cursor: pointer;
 }
-
-
 }
 
 /* стили мобильной версии  */
@@ -250,10 +267,14 @@ transition: color 0.4s ease;
     line-height: 2.5rem;
   }
 
+  .vacancy_section_block {
+    padding: 2.5rem 1rem;
+  }
+
   .vacancies_advertisingBlock {
     width: 100%;
-    padding-left: 1rem;
-    padding-right: 1rem;
+    padding-left: 0rem;
+    padding-right: 0rem;
     /* max-width: 21rem; */
   }
   
@@ -279,15 +300,14 @@ transition: color 0.4s ease;
   
   .vacancies_section {
     font-display: flex;
-    padding-left: 1rem;
-    padding-right: 1rem;
-    padding-top: 2.5rem;
+    padding: 2.5rem 0rem 0rem 0rem;
   }
   
   .vacancies_list {
     display: flex;
     flex-direction: column; 
-    gap: 2rem;  
+    gap: 2rem; 
+    min-width: 100%; 
   }
 
   .vacancy_name:hover {
@@ -304,7 +324,7 @@ transition: color 0.4s ease;
     font-style: normal;
     font-weight: var(--fw-300);
     line-height: 2rem;
-    padding: 2.5rem 1rem 2.5rem 1rem;
+    padding: 2.5rem 0rem 2.5rem 0rem;
     width: 100%;
     }
   
