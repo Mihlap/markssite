@@ -53,11 +53,13 @@ export default function App() {
   const [loading, setLoading] = useState(false);
   const [showPortalMenu, setShowPortalMenu] = useState(false);
 
+  const isMobile = window.innerWidth <= 768;
+
   useEffect(() => {
     setShowPortalMenu(
-      location.pathname === "/vacancies" ||
-        location.pathname === "/internships" ||
-        location.pathname === "/office"
+      location.pathname === "/portal/vacancies" ||
+        location.pathname === "/portal/internships" ||
+        location.pathname === "/portal/office"
     );
   }, [location.pathname]);
 
@@ -131,18 +133,18 @@ export default function App() {
           {showNavbarFooter && currentPage !== "add" && (
             <>
             {/* для 2-й итерации !!!! не стирать */}
-              {/* {showPortalMenu ? (
+              {showPortalMenu ? (
                 <PortalMenu
                   user={user}
                   handleMouseEnter={handleMouseEnter}
                   handleMouseLeave={handleMouseLeave}
                 />
-              ) : ( */}
+              ) : (
                 <Navbar
                   handleMouseEnter={handleMouseEnter}
                   handleMouseLeave={handleMouseLeave}
                 />
-              {/* )} */}
+               )} 
             </>
           )}
           {showNavbarFooter && currentPage !== "add" && (
@@ -241,7 +243,7 @@ export default function App() {
                     }
                   />
                   <Route
-                    path="/vacancies"
+                    path="/portal/vacancies"
                     element={
                       <Vacancies
                         handleMouseEnter={handleMouseEnter}
@@ -251,7 +253,7 @@ export default function App() {
                     }
                   />
                   <Route
-                    path="/internships"
+                    path="/portal/internships"
                     element={
                       <Internships
                         handleMouseEnter={handleMouseEnter}
@@ -261,7 +263,7 @@ export default function App() {
                     }
                   />
                   <Route
-                    path="/office"
+                    path="/portal/office"
                     element={
                       <Office
                         handleMouseEnter={handleMouseEnter}
