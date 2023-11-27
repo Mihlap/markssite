@@ -50,7 +50,7 @@ export default function App() {
   const isActive = useSelector((state) => state.toggle.isActiveForButton3);
   const location = useLocation();
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [showPortalMenu, setShowPortalMenu] = useState(false);
 
   useEffect(() => {
