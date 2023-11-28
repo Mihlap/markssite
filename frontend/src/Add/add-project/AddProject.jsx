@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "../style/style-card.module.scss";
 import FormAddProject from "./formAdd/FormAddProject";
 // import cat from "../img/default-photo.jpeg";
@@ -29,6 +29,7 @@ export default function AddProject({ user }) {
   const [deleteModalState, setDeleteModalState] = useState({});
   const [modalBlockHeight, setModalBlockHeight] = useState("auto"); // Изначально высота будет автоматически рассчитываться
 
+  const isMountedRef = useRef(true);
   const updateModalBlockHeight = () => {
     const windowHeight = window.innerHeight;
     const maxHeight = Math.min(windowHeight - 100, 1900); // Примерное максимальное значение высоты
@@ -46,8 +47,14 @@ export default function AddProject({ user }) {
     window.addEventListener("resize", updateModalBlockHeight);
     return () => {
       window.removeEventListener("resize", updateModalBlockHeight);
+      checkIsMounted();
     };
   }, []);
+
+  const checkIsMounted = () => {
+    isMountedRef.current = false;
+  };
+
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -72,11 +79,20 @@ export default function AddProject({ user }) {
     });
   };
 
-  const handleCopyClick = (id) => {
-    navigator.clipboard.writeText(id);
-    setIsCopied(true);
-    // seticonCopy(true);
-    setCopiedId(id);
+  const handleCopyClick = async (id) => {
+    // navigator.clipboard.writeText(id);
+    // setIsCopied(true);
+    // // seticonCopy(true);
+    // setCopiedId(id);
+    try {
+      await navigator.clipboard.writeText(id);
+      if (isMountedRef.current) {
+      setIsCopied(true);
+      setCopiedId(id);
+    }
+    } catch (err) {
+      console.error("Unable to copy project to clipboard:", err);
+    }
   };
 
   const handleFormDelete = (formId) => {

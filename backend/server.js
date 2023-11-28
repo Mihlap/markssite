@@ -54,7 +54,7 @@ app.use((req, res, next) => {
 app.use((req, res, next) => {
   res.header('Cross-Origin-Opener-Policy', 'same-origin');
   res.header('Cross-Origin-Embedder-Policy', 'require-corp');
-  // res.header('Content-Security-Policy', "img-src 'self' data:");
+  res.header('Content-Security-Policy', "img-src 'self' data:; script-src 'self';");
   next();
 });
 
