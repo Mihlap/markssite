@@ -1,37 +1,19 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styles from "./Vacancies.module.css";
 import { Link } from "react-router-dom";
 import LoadingCircle from "../../Loading/LoadingCircle";
+import { fetchVacancies } from "../../store/Slice/vacanciesSlice";
 
 const Vacancies = ({ handleMouseEnter, handleMouseLeave }) => {
-  const [vacancies, setVacancies] = useState([]);
-  const [loading, setLoading] = useState(true); 
+  const dispatch = useDispatch();
+  const { vacancies, loading } = useSelector((state) => state.vacancies); 
 
   useEffect(() => {
     window.scrollTo(0, 0);
-  }, []);
+    dispatch(fetchVacancies());
+  }, [dispatch]);
 
-
-  useEffect(() => {
-    const fetchVacancies = async () => {
-      try {
-        const response = await fetch(
-          "https://api.hh.ru/vacancies?employer_id=1098613"
-        );
-        if (response.ok) {
-          const data = await response.json();
-          setVacancies(data.items);
-          setLoading(false);
-        } else {
-          console.error("Failed to fetch vacancies");
-        }
-      } catch (error) {
-        console.error("Error fetching vacancies:", error);
-      }
-    };
-
-    fetchVacancies();
-  }, []);
 
   return (
     <div className={styles.main_vacancies_block}>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "../style/style-card.module.scss";
 import FormAddArticles from "./formAdd/FormAddArticles";
@@ -31,6 +31,8 @@ export default function AddArticles({ user }) {
   const [copiedId, setCopiedId] = useState("");
   const [deleteModalState, setDeleteModalState] = useState({});
 
+  const isMountedRef = useRef(true);
+
   const updateModalBlockHeight = () => {
     const windowHeight = window.innerHeight;
     const maxHeight = Math.min(windowHeight - 100, 1900); // Примерное максимальное значение высоты
@@ -48,8 +50,13 @@ export default function AddArticles({ user }) {
     window.addEventListener("resize", updateModalBlockHeight);
     return () => {
       window.removeEventListener("resize", updateModalBlockHeight);
+      checkIsMounted();
     };
   }, []);
+
+  const checkIsMounted = () => {
+    isMountedRef.current = false;
+  };
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
@@ -74,11 +81,17 @@ export default function AddArticles({ user }) {
     });
   };
 
-  const handleCopyClick = (id) => {
-    navigator.clipboard.writeText(id);
+  const handleCopyClick = async (id) => {
+    try {
+    await navigator.clipboard.writeText(id);
+    if (isMountedRef.current) {
     setIsCopied(true);
     seticonCopy(true);
     setCopiedId(id);
+  }
+  } catch (err) {
+    console.error("Unable to copy article to clipboard:", err);
+  }
   };
 
   const handleFormDelete = (formId) => {
