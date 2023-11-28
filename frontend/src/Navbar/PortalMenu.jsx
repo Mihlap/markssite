@@ -9,7 +9,7 @@ import {
 } from "./utils/navbarUtils";
 import PortalMenuMobile from "./NavBarPhone/PortalMenuMobile";
 
-export default function PortalMenu({ handleMouseEnter, handleMouseLeave }) {
+export default function PortalMenu({ user, handleMouseEnter, handleMouseLeave }) {
   const [activeClass, setActiveClass] = useState("");
   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [visible, setVisible] = useState(true);
