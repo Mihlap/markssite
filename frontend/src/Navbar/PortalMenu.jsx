@@ -102,7 +102,7 @@ export default function PortalMenu({ handleMouseEnter, handleMouseLeave }) {
               >
               <div>Вакансии</div>
             </Link>
-            <Link
+            {/* <Link
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
               className={`${styles.navbar__item} ${
@@ -123,7 +123,7 @@ export default function PortalMenu({ handleMouseEnter, handleMouseLeave }) {
               onClick={() => handleItemClick("/portal/office")}
             >
               <div>Офис</div>
-            </Link>
+            </Link> */}
            </ul>
         </div>
       </nav>

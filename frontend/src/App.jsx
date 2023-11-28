@@ -50,7 +50,7 @@ export default function App() {
   const isActive = useSelector((state) => state.toggle.isActiveForButton3);
   const location = useLocation();
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [showPortalMenu, setShowPortalMenu] = useState(false);
 
   const isMobile = window.innerWidth <= 768;
@@ -133,18 +133,18 @@ export default function App() {
           {showNavbarFooter && currentPage !== "add" && (
             <>
             {/* для 2-й итерации !!!! не стирать */}
-              {showPortalMenu ? (
+              {/* {showPortalMenu ? (
                 <PortalMenu
                   user={user}
                   handleMouseEnter={handleMouseEnter}
                   handleMouseLeave={handleMouseLeave}
                 />
-              ) : (
+              ) : ( */}
                 <Navbar
                   handleMouseEnter={handleMouseEnter}
                   handleMouseLeave={handleMouseLeave}
                 />
-               )} 
+               {/* )}  */}
             </>
           )}
           {showNavbarFooter && currentPage !== "add" && (
