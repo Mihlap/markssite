@@ -4,7 +4,11 @@ import InputMask from 'react-input-mask';
 import styles from "./CompanyFormContacts.module.css";
 import 'react-phone-number-input/style.css';
 
-const CompanyFormContacts = () => {
+const CompanyFormContacts = ({
+  handleMouseEnter,
+  handleMouseLeave,
+  handleMouseHover,
+}) => {
   const [isFocused1, setIsFocused1] = useState(false);
   const [value1, setValue1] = useState("");
   const [isFocused2, setIsFocused2] = useState(false);
@@ -166,6 +170,8 @@ const CompanyFormContacts = () => {
                 size="65"
                 autoComplete="off"
                 className={styles.input_name_form_contacts}
+                onMouseOver={handleMouseEnter}
+                onMouseOut={handleMouseLeave}
               />
               <div className={styles.line}></div>
               <span className={styles.placeholder}>Ваше&nbsp;Имя</span>
@@ -188,6 +194,8 @@ const CompanyFormContacts = () => {
                 className={`${styles.input_tel_form_contacts} ${isFocused2 ? styles.focused : ''}`}
                 // className={styles.input_tel_form_contacts}
                 style={{ fontVariantNumeric: "lining-nums" }}
+                onMouseOver={handleMouseEnter}
+                onMouseOut={handleMouseLeave}
               />
               <div className={styles.line}
            style={{ backgroundColor: inputLineColor }}
@@ -215,6 +223,8 @@ const CompanyFormContacts = () => {
                 size="55"
                 autoComplete="off"
                 className={styles.input_task_form_contacts}
+                onMouseOver={handleMouseEnter}
+                onMouseOut={handleMouseLeave}
               />
               <div className={styles.line}></div>
               <span className={styles.placeholder}>Сообщение</span>
@@ -228,9 +238,14 @@ const CompanyFormContacts = () => {
                 className={`${styles.checkbox} checkbox-input`}
                 checked={isConsentGiven}
                 onChange={(e) => setIsConsentGiven(e.target.checked)}
+                onMouseOver={handleMouseEnter}
+                onMouseOut={handleMouseLeave}
               />
               Подтвердите согласие на&nbsp;обработку
-              <a href="./Information">&nbsp;персональных данных</a>
+              <a href="./Information"
+              onMouseOver={handleMouseEnter}
+              onMouseOut={handleMouseLeave}
+              >&nbsp;персональных данных</a>
             </label>
           </div>
           <button
@@ -239,6 +254,9 @@ const CompanyFormContacts = () => {
           disabled={!isValid || !value2 || !value1 || !value3 || !isConsentGiven}
           type="submit"
           id="submit-button"
+          onMouseOver={handleMouseEnter}
+          onMouseOut={handleMouseLeave}
+          onMouseHover={handleMouseHover}
            >
             <p className={styles.button_name10}>Отправить</p>
           </button>
