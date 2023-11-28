@@ -4,16 +4,16 @@ import styles from "./Vacancies.module.css";
 import { Link } from "react-router-dom";
 import LoadingCircle from "../../Loading/LoadingCircle";
 import { fetchVacancies } from "../../store/Slice/vacanciesSlice";
+import VacancyFormContact from "../../UI/VacancyFormContact/VacancyFormContact";
 
 const Vacancies = ({ handleMouseEnter, handleMouseLeave }) => {
   const dispatch = useDispatch();
-  const { vacancies, loading } = useSelector((state) => state.vacancies); 
+  const { vacancies, loading } = useSelector((state) => state.vacancies);
 
   useEffect(() => {
     window.scrollTo(0, 0);
     dispatch(fetchVacancies());
   }, [dispatch]);
-
 
   return (
     <div className={styles.main_vacancies_block}>
@@ -28,57 +28,61 @@ const Vacancies = ({ handleMouseEnter, handleMouseLeave }) => {
           <span className={styles.vacancies_header2}>Вакансии</span>
         </div>
       </div>
-        <div className={styles.vacancy_section_block}>
-      <div className={styles.vacancies_advertisingBlock}>
-        <div className={styles.vacancies_advertisingBlock_text1}>
-          Не отображаются вакансии?
-        </div>
-        <div className={styles.vacancies_advertisingBlock_text2}>
-          Возможно у вас включен блокировщик рекламы
-        </div>
-      </div>
-      {loading ? ( 
-        <div className={styles.loader}>
-          <LoadingCircle/>
-        </div>
-      ) : (
-        <section className={styles.vacancies_section}>
-          <div className={styles.vacancies_list_container}>
-            <div className={styles.vacancies_list}>
-            {vacancies.map((vacancy) => (
-                <a
-                  href={vacancy.alternate_url} 
-                  className={styles.vacancy_name}
-                  key={vacancy.id}
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  onMouseEnter={handleMouseEnter}
-                  onMouseLeave={handleMouseLeave}
-                >
-                  {vacancy.name}
-                </a>
-              ))}
-            </div>
+      <div className={styles.vacancy_section_block}>
+        <div className={styles.vacancies_advertisingBlock}>
+          <div className={styles.vacancies_advertisingBlock_text1}>
+            Не отображаются вакансии?
           </div>
-        </section>
-      )}
-      <div className={styles.vacancies_text_for_email}>
-        Вы можете отправить резюме на&nbsp;почту:
-        <Link
-          className={styles.mail_link}
-          to="mailto:ok@marksgroup.ru"
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-        >
-          <span className={styles.span_mail_vacancies}>ok@marksgroup.ru</span>
-        </Link>
-      </div>
-      </div>
+          <div className={styles.vacancies_advertisingBlock_text2}>
+            Возможно у вас включен блокировщик рекламы
+          </div>
+        </div>
+        {loading ? (
+          <div className={styles.loader}>
+            <LoadingCircle />
+          </div>
+        ) : (
+          <section className={styles.vacancies_section}>
+            <div className={styles.vacancies_list_container}>
+              <div className={styles.vacancies_list}>
+                {vacancies.map((vacancy) => (
+                  <a
+                    href={vacancy.alternate_url}
+                    className={styles.vacancy_name}
+                    key={vacancy.id}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
+                  >
+                    {vacancy.name}
+                  </a>
+                ))}
+              </div>
+            </div>
+          </section>
+        )}
+        <div className={styles.vacancies_text_for_email}>
+          Вы можете отправить резюме на&nbsp;почту:
+          <Link
+            className={styles.mail_link}
+            to="mailto:ok@marksgroup.ru"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+          >
+            <span className={styles.span_mail_vacancies}>ok@marksgroup.ru</span>
+          </Link>
+        </div>
+      </div>      
+        <div className={styles.temporaryText}>Не нашли подходящую вакансию?</div>
+        <div className={styles.textUnderForm}>Оставьте ваши контакты, мы всегда в поиске талантлевых профессионалов</div> 
+        <div className={styles.vacancyFormWrapper}><VacancyFormContact/></div>
     </div>
   );
 };
 
 export default Vacancies;
 
-
-{/* <script class="hh-script" src="https://api.hh.ru/widgets/vacancies/employer?employer_id=1098613&locale=RU&links_color=1560b2&border_color=1560b2"></script> */}
+{
+  /* <script class="hh-script" src="https://api.hh.ru/widgets/vacancies/employer?employer_id=1098613&locale=RU&links_color=1560b2&border_color=1560b2"></script> */
+}
