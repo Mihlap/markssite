@@ -61,6 +61,7 @@
   align-items: center;
   text-align: left;
   padding: 5rem 1rem;
+  padding-bottom: 0rem;
   margin: 0 auto; 
   max-width: 700px;
  }
@@ -139,7 +140,7 @@ width: 100%;
   font-style: normal;
   font-weight: var(--fw-300);
   line-height: 2rem;
-  padding: 2.5rem 2rem 6.5rem 0rem;
+  padding: 2.5rem 2rem 0rem 0rem;
   width: max-content;
  }
 
@@ -155,6 +156,35 @@ width: 100%;
   cursor: none;
 }
 
+.temporaryText {
+  max-width: 47rem;
+  color: var(--black-1D2E43);
+  font-family: var(--font-unbounded);
+  font-size: 2.5rem;
+  font-style: normal;
+  font-weight: var(--fw-300);
+  line-height: 3rem;
+  padding-left: 7rem;
+  padding-top: 2.5rem;
+}
+
+.textUnderForm {
+  max-width: 47rem;
+  color: var(--black-1D2E43);
+  font-variant-numeric: lining-nums proportional-nums;
+  font-family: var(--font-raleway);
+  font-size: 1.125rem;
+  font-style: normal;
+  font-weight: var(--fw-400);
+  line-height: 1.625rem;
+  padding-left: 7rem;
+  padding-top: 1.5rem;
+}
+
+.vacancyFormWrapper {
+  padding: 3.5rem 0rem 5rem 7rem;
+}
+
 
 @media screen and (min-width: 1025px) and (max-width: 1600px) {
   .wrapper_vacancies {
@@ -168,6 +198,18 @@ width: 100%;
   .vacancies_list {
     min-width: 50vw;
   }
+  .temporaryText {
+    padding-left: 4rem;
+  }
+  
+  .textUnderForm {
+   padding-left: 4rem;
+ }
+  
+  .vacancyFormWrapper {
+    padding: 2.75rem 0rem 6rem 4rem;
+  }
+  
   }
 
   /* стили для планшетной версии  */
@@ -213,21 +255,33 @@ width: 100%;
   gap: 3rem;
   min-width: 40vw;
 }
-
-
  .vacancy_name:hover {
   color: var(--black-1D2E43);
   cursor: pointer;
 }
-
-
 .vacancies_text_for_email {
-  /* padding: 0rem 0vw 0rem 0vw; */
   width: fit-content;
 }
 .span_mail_vacancies {
   cursor: pointer;
 }
+
+.temporaryText {
+  max-width: 44rem;
+  padding-left: 3.5rem;
+  padding-top: 2.5rem;
+}
+
+.textUnderForm {
+  max-width: 44rem;
+  padding-left: 3.5rem;
+  padding-top: 1.5rem;
+}
+
+.vacancyFormWrapper {
+  padding: 2.75rem 0rem 4.2rem 3.5rem;
+}
+
 }
 
 /* стили мобильной версии  */
@@ -269,6 +323,7 @@ width: 100%;
 
   .vacancy_section_block {
     padding: 2.5rem 1rem;
+    padding-bottom: 0rem;
   }
 
   .vacancies_advertisingBlock {
@@ -324,7 +379,7 @@ width: 100%;
     font-style: normal;
     font-weight: var(--fw-300);
     line-height: 2rem;
-    padding: 2.5rem 0rem 2.5rem 0rem;
+    padding: 2.5rem 0rem 0rem 0rem;
     width: 100%;
     }
   
@@ -339,6 +394,25 @@ width: 100%;
     text-decoration-line: underline;
     padding-left: 0rem;
     cursor: pointer;
+  }
+  
+  .temporaryText {
+    max-width: 100%;
+    font-size: 1.5rem;
+     line-height: 2rem;
+    padding: 3.75rem 1rem 0rem 1rem; 
+  }
+  
+  .textUnderForm {
+    max-width: 100%;
+    padding: 1rem 1rem 0rem 1rem; 
+  }
+  .vacancyFormWrapper {
+    padding: 3.5rem 0rem 5rem 7rem;
+  }
+  
+  .vacancyFormWrapper {
+    padding: 3rem 1rem 3.75rem 1rem;
   }
   
   
