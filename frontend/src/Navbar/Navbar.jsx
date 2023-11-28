@@ -157,7 +157,7 @@ export default function Navbar({ handleMouseEnter, handleMouseLeave }) {
                 activeClass === "/portal/vacancies" ? styles.navbar__item_open : ""
               }`}
               to="/portal/vacancies"
-              // target="_blank"
+              target="_blank"
               onClick={() => handleItemClick("/portal/vacancies")}
             >
               <div>HR портал</div>

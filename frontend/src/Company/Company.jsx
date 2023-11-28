@@ -1096,10 +1096,18 @@ export default function Company({
           </div>
           <div className={styles.form_wrapper}>
             <div className={styles.company_form_contacts_wrapper}>
-              <CompanyFormContacts />
+              <CompanyFormContacts 
+               handleMouseEnter={handleMouseEnter}
+               handleMouseLeave={handleMouseLeave}
+               handleMouseHover={handleMouseHover}
+              />
             </div>
             <div className={styles.companySubscriptionForm_wrapper}>
-              <CompanySubscriptionForm />
+              <CompanySubscriptionForm 
+               handleMouseEnter={handleMouseEnter}
+               handleMouseLeave={handleMouseLeave}
+               handleMouseHover={handleMouseHover}
+              />
             </div>
           </div>
         </div>
