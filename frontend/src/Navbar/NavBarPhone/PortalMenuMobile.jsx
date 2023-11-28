@@ -71,7 +71,7 @@ const [isMenuActive, setMenuActive] = useState(false);
                   Вакансии
                 </Link>
               </li>
-              <li className={styles["menu-item"]}>
+              {/* <li className={styles["menu-item"]}>
                 <Link
                   onClick={handleBurgerClick}
                   to="/portal/internships"
@@ -88,7 +88,7 @@ const [isMenuActive, setMenuActive] = useState(false);
                 >
                   Офис
                 </Link>
-              </li>
+              </li> */}
               </ul>
             <div className={styles.contact_info}>
               <div className={styles.contact_info_block}>
