@@ -126,25 +126,27 @@ export default function App() {
   return (
     <HelmetProvider>
       {loading === true &&
-      location.pathname.toLowerCase() !== "/information" ? (
+      location.pathname.toLowerCase() !== "/information" &&
+      location.pathname.toLowerCase() !== "/portal/vacancies"
+      ? (
         <Loading />
       ) : (
         <>
           {showNavbarFooter && currentPage !== "add" && (
             <>
             {/* для 2-й итерации !!!! не стирать */}
-              {/* {showPortalMenu ? (
-                <PortalMenu
+              {showPortalMenu ? (
+              <PortalMenu
                   user={user}
                   handleMouseEnter={handleMouseEnter}
                   handleMouseLeave={handleMouseLeave}
                 />
-              ) : ( */}
+             ) : (
                 <Navbar
                   handleMouseEnter={handleMouseEnter}
                   handleMouseLeave={handleMouseLeave}
                 />
-               {/* )}  */}
+               )} 
             </>
           )}
           {showNavbarFooter && currentPage !== "add" && (
