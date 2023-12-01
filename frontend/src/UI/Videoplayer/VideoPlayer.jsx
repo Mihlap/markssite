@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./Videoplayer.module.css";
 
-const VideoPlayer = React.memo(({ videoSource }) => {
+const VideoPlayer = (({ videoSource }) => {
   let sourceURL = videoSource.large; 
 
   if (window.matchMedia("(max-width: 767px)").matches) {
@@ -21,3 +21,47 @@ const VideoPlayer = React.memo(({ videoSource }) => {
 });
 
 export default VideoPlayer;
+
+// import React, { useState } from 'react';
+
+// const VideoPlayer = ({ videoSource }) => {
+//   const [videoUrl, setVideoUrl] = useState(null);
+
+//    const getVideoUrl = async () => {
+//     try {
+//       const response = await fetch(videoSource.large);
+//       if (!response.ok) {
+//         throw new Error('Network response was not ok');
+//       }
+//       const videoBlob = await response.blob();
+//       const url = URL.createObjectURL(videoBlob);
+//       setVideoUrl(url);
+//     } catch (error) {
+//       console.error('Error fetching video:', error);
+//     }
+//   };
+
+//   if (!videoUrl) {
+//     getVideoUrl();
+//     return null; 
+//   }
+
+//   return (
+//     <div>
+//       {videoUrl && (
+//         <video className={styles.video_player}>
+//           <source src={videoUrl} type="video/mp4" className={styles.video_header} />
+//         </video>
+//       )}
+//     </div>
+//   );
+// };
+
+// export default VideoPlayer;
+
+
+
+
+
+
+
