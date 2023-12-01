@@ -45,6 +45,16 @@ app.use((req, res, next) => {
   res.header('Access-Control-Allow-Origin', req.header('origin'));
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
   res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS'); 
+  res.header('Content-Type', 'application/json; charset=utf-8');
+  res.header('Content-Type', 'video/mp4');
+  res.header('Accept-Ranges', 'bytes');
+  next();
+});
+
+app.use((req, res, next) => {
+  res.header('Cross-Origin-Opener-Policy', 'same-origin');
+  res.header('Cross-Origin-Embedder-Policy', 'require-corp');
+  res.header('Content-Security-Policy', "img-src 'self' data:; script-src 'self';");
   next();
 });
 
@@ -53,21 +63,27 @@ app.use(
     origin: [
     '*',
     'https://www.marksgroup.org',
+    'http://91.186.198.87',
     'http://localhost:3002',
     'http://localhost:3000',
    ],
     credentials: true,
   }),
   );
-  
+
+const videoPath = path.join(__dirname, 'images/video');
+const imagesPath = path.join(__dirname, 'images');  
  
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use('/images', express.static(path.join(__dirname, 'images')));
-app.use('/images/imageAdd', express.static(path.join(__dirname, 'images/imageAdd')));
-app.use('/public/assets', express.static(path.join(__dirname, 'assets')));
-app.use('/images/video', express.static(path.join(__dirname, 'images/video')));
+app.use('/images', express.static(imagesPath, { maxAge: '5d' }));
+app.use('/images/imageStuff', express.static(path.join(imagesPath, 'imageStuff'), { maxAge: '5d' }));
+app.use('/images/imageAdd', express.static(path.join(imagesPath, 'imageAdd')));
+app.use('/images/imageArticle', express.static(path.join(imagesPath, 'imageAdd')));
+app.use('/images/projectFoto', express.static(path.join(imagesPath, 'projectFoto'), { maxAge: '5d' }));
+app.use('/videos', express.static(videoPath, { maxAge: '5d', immutable: true, }));
+app.use('/public/assets', express.static(path.join(__dirname, 'assets'), { maxAge: '5d' }));
 app.use(session(sessionConfig));
 // app.use(express.static(path.join(__dirname, 'build')));
 

@@ -72,12 +72,14 @@ display: inline-block;
     white-space: nowrap;
     color: var(--black-1D2E43);
     cursor: pointer;
+    transition: background-color 0.8s ease, color 0.8s ease;
 }
 
 
 .menu__button__allProject:hover {
     background-color: var(--dark-gray-566272);
     color: var(--white-F6F6F6);
+    transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 .menu__button__allProject.active {
@@ -139,6 +141,12 @@ display: inline-block;
     border-radius: 2.125rem;
     background-color: var(--light-light-gray-EBECEE);
     border: none;
+    transition: background-color 0.4s ease, color 0.4s ease;
+}
+.menu__button__choose__city:hover {
+    background: var(--light-gray-C0C5CB);
+    color: var(--white-F6F6F6);
+    transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 
@@ -198,7 +206,7 @@ display: inline-block;
   
   .container__imageTitle_projectCard {
     max-width: 100%;
-    max-height: 24rem;
+    max-height: 21rem;
     min-height: 21rem;
     height: 100%;
      border-radius: 1rem;
@@ -589,7 +597,7 @@ display: inline-block;
     background-color: transparent;
     white-space: wrap;
     color: var(--black-1D2E43);
-
+    transition: background-color 0.8s ease, color 0.8s ease;
 }
 
 .active {
@@ -598,9 +606,14 @@ display: inline-block;
     pointer-events: none;
 }
 
+.menu__button__modal__project.active:hover {
+    background-color: var(--black-1D2E43);
+}
+
 .menu__button__modal__project:hover {
     background-color: var(--dark-gray-566272);
     color: var(--white-F6F6F6);
+    transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 .menu_button_items {
@@ -611,9 +624,6 @@ display: inline-block;
     line-height: 1.25rem;
 }
 
-.menu__button__modal__project.active:hover {
-    background-color: var(--black-1D2E43);
-}
 
 @media screen and (min-width: 2000px) and (max-width: 3000px) {
     .section_project__block_cart {
@@ -625,7 +635,7 @@ display: inline-block;
             
         }
     
-        .cart_project__img {
+        .container__imageTitle_projectCard {
             max-width: 100%;
             max-height: 26rem;
             min-height: 26rem;
@@ -677,6 +687,25 @@ display: inline-block;
         padding-left: 3rem;
         padding-right: 3rem;
     }
+    .menu__button__allProject {
+      transition: background-color 0.4s ease, color 0.4s ease;
+    }
+
+       .menu__button__allProject:hover {
+        background-color: transparent;
+        color: var(--black-1D2E43);
+        transition: none;
+    }
+
+    .menu__button__allProject.active {
+        background-color: var(--black-1D2E43);
+        color: var(--white-F6F6F6);
+    }
+    
+    .menu__button__choose__city:hover {
+        background-color: var(--light-light-gray-EBECEE);
+     }
+    
 
     .modal_wrapper_project_location {
         width: 50%;
@@ -738,6 +767,23 @@ display: inline-block;
         padding: 1rem 2.81rem 0rem 5.5rem;
     }
 
+    .menu__button__modal__project.active {
+        background-color: var(--black-1D2E43);
+        color: var(--white-F6F6F6);
+        pointer-events: none;
+    }
+    
+    .menu__button__modal__project.active:hover {
+        background-color: var(--black-1D2E43);
+        color: var(--white-F6F6F6);
+        transition: none;
+    }
+    
+    .menu__button__modal__project:hover {
+        background-color: transparent;
+        color: var(--black-1D2E43);
+        transition: none;
+   }
     .section_project {
        padding-top: 1.5rem;
        padding-left: 1.21rem;
@@ -754,7 +800,7 @@ display: inline-block;
       margin-bottom: 1rem;
     }
       
-    .cart_project__img {
+    .container__imageTitle_projectCard {
         max-width: 100%;
         max-height: 21rem;
         min-height: 21rem;
@@ -784,7 +830,20 @@ display: inline-block;
         font-weight: var(--fw-700);
         line-height: 1.5rem;
     }
+    .menu__button__allProject {
+        transition: background-color 0.4s ease, color 0.4s ease;
+      }
 
+    .menu__button__allProject:hover {
+        background-color: transparent;
+        color: var(--black-1D2E43);
+        transition: none;
+    }
+
+    .menu__button__allProject.active {
+        background-color: var(--black-1D2E43);
+        color: var(--white-F6F6F6);
+    }
     .projects_name_text {
         font-size: 2rem;
         font-weight: var(--fw-600);
@@ -928,9 +987,21 @@ display: inline-block;
 
     .cart_project__img {
         width: 100%;
+        min-height: 21rem;
+        max-height: 21rem;
         height: 100%;
         border-radius: 1rem;
     }
+    .container__imageTitle_projectCard {
+        max-width: 100%;
+        max-height: 21rem;
+        min-height: 21rem;
+        height: 100%;
+         border-radius: 1rem;
+         object-fit: cover;
+         object-position: center;
+      }
+    
 
     .project_content__wrapper {
         display: block;

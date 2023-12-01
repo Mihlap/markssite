@@ -31,10 +31,11 @@
 .slider_image {
     max-height: 100%;
     width: 100%;
-    height: 24rem;
-    object-fit: cover;
+    height: 20.37rem;
     transition: 0.2s;
     border-radius: 16px;
+    object-fit: cover;
+    /* object-fit: contain; */
     object-position: center;
 }
 

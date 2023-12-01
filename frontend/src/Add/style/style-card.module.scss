@@ -122,7 +122,7 @@
 
     &__modal_container {
         position: fixed;
-        z-index: 9999;
+        z-index: 9997;
         top: 0;
         left: 0;
         width: 100%;
@@ -244,6 +244,7 @@
         flex-wrap: wrap;
         gap: 40px 56px;
         padding-top: 32px;
+        padding-bottom: 80px;
     }
 
     &__errore_div {

@@ -14,12 +14,12 @@ import catPhoto from "../img/default-photo.jpeg";
 const Host = process.env.REACT_APP_SERVER_HOST;
 
 const videoSource = {
-  small: `${Host}/images/video/public_mob.mp4`,
-  medium: `${Host}/images/video/public_ipad.mp4`,
-  large: `${Host}/images/video/public_full.mp4`,
+  small: `${Host}/videos/public_mob.mp4`,
+  medium: `${Host}/videos/public_ipad.mp4`,
+  large: `${Host}/videos/public_full.mp4`,
 };
 
-export default function Publics() {
+export default function Publics({ handleMouseEnter, handleMouseLeave, handleMouseHover }) {
   const dispatch = useDispatch();
   const articles = useSelector((state) => state.article.article);
   const isActive = useSelector((state) => state.toggle.isActiveForButton2);
@@ -27,20 +27,15 @@ export default function Publics() {
   const [selectArticle, setSelectArticle] = useState("Все");
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [swiper, setSwiper] = useState(null);
-  const [videoSrc, setVideoSrc] = useState(videoSource.large);
+  const [videoSrc, setVideoSrc] = useState(null);
 
   const buttonChoose1 = [
     "Все",
-    "Научные",
-    "Опробации",
+    "Выступления",
     "Интервью",
-    "Литература",
-    "Научно-популярные",
-    "Инженерия",
-    "BIM",
-    "Дизайн",
-    "Архитектура",
-    "Конструкции",
+    "Новости",
+    "Статьи",
+    "Научные публикации",
   ];
 
   useEffect(() => {
@@ -55,7 +50,7 @@ export default function Publics() {
       } else if (screenWidth >= 768 && screenWidth < 1025) {
         setVideoSrc(videoSource.medium);
       } else {
-        setVideoSrc(videoSource.small);
+        setVideoSrc(videoSource.medium);
       }
     };
 
@@ -96,14 +91,21 @@ export default function Publics() {
       <div className={styles.public_container_main}>
         <div className={styles.public_image_header}>
           {videoSrc && (
-            <video playsInline autoPlay muted loop id="bg-video">
-              <source src={videoSrc} type="video/mp4" />
+            <video
+              playsInline
+              autoPlay
+              muted
+              loop
+              id="bg-video"
+              className={styles.bg_video}
+            >
+              <source src={videoSrc} type="video/mp4" preload="auto" />
             </video>
           )}
           <div className={styles.text_container_publics}>
             <span className={styles.text1_publics}>
-              Научные достижения, интервью и&nbsp;статьи ведущих профессиональных и&nbsp;публицистических
-              изданий
+              Научные достижения, интервью и&nbsp;статьи ведущих
+              профессиональных и&nbsp;публицистических изданий
             </span>
             <span className={styles.text2_publics}>Публикации</span>
           </div>
@@ -115,6 +117,8 @@ export default function Publics() {
                 {buttonChoose1.map((el, index) => (
                   <div key={index} className={styles.button_wrapper_articles}>
                     <button
+                      onMouseEnter={handleMouseEnter}
+                      onMouseLeave={handleMouseLeave}
                       className={
                         el === selectArticle
                           ? styles.menu__button__allArticles_active
@@ -132,37 +136,37 @@ export default function Publics() {
             </div>
           </div>
         )}
-         <div className={styles.menu_button_group_articles1}>
-        {screenWidth && (
-          <Swiper
-            onSwiper={setSwiper}
-            slidesPerView="auto"
-            spaceBetween={8}
-            className={styles.my_swiper3_button_group_article}
-            touch="true"
-          >
-            <div className={styles.button_group_article}>
-              {buttonChoose1 &&
-                buttonChoose1?.map((el) => (
-                  <SwiperSlide
-                    key={el}
-                    onClick={() => handleButtonClick(el)}
-                    className={`${styles.menu__button__allArticles} ${
-                      el === selectArticle ? styles.active : ""
-                    }`}
-                    style={{ width: "fit-content" }}
-                  >
-                    <p
-                      type="button"
-                      className={styles.menu_button_item__allArticles}
+        <div className={styles.menu_button_group_articles1}>
+          {screenWidth && (
+            <Swiper
+              onSwiper={setSwiper}
+              slidesPerView="auto"
+              spaceBetween={8}
+              className={styles.my_swiper3_button_group_article}
+              touch="true"
+            >
+              <div className={styles.button_group_article}>
+                {buttonChoose1 &&
+                  buttonChoose1?.map((el) => (
+                    <SwiperSlide
+                      key={el}
+                      onClick={() => handleButtonClick(el)}
+                      className={`${styles.menu__button__allArticles} ${
+                        el === selectArticle ? styles.active : ""
+                      }`}
+                      style={{ width: "fit-content" }}
                     >
-                      {el}
-                    </p>
-                  </SwiperSlide>
-                ))}
-            </div>
-          </Swiper>
-        )}
+                      <p
+                        type="button"
+                        className={styles.menu_button_item__allArticles}
+                      >
+                        {el}
+                      </p>
+                    </SwiperSlide>
+                  ))}
+              </div>
+            </Swiper>
+          )}
         </div>
         <section className={styles.section_article}>
           <div className={styles.section_article__block}>
@@ -192,10 +196,12 @@ export default function Publics() {
                           className={styles.cart_article__img}
                           src={firstImagePath}
                           alt={article.imageTitle || "Default Alt Text"}
+                          onMouseEnter={handleMouseHover}
+                          onMouseLeave={handleMouseLeave}
                         />
                         <div className={styles.article_content__wrapper}>
                           <div className={styles.cart_article_title}>
-                            {article.titleTextBlock}
+                            {article.title}
                           </div>
                           <div className={styles.cart_article__content}></div>
                         </div>

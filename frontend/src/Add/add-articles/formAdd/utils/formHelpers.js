@@ -1,3 +1,4 @@
+import compressImageFile from "browser-image-compression";
 const { transliterate } = require("transliteration");
 // formHelpers.js
 export const removePreviewPhoto = (
@@ -92,7 +93,6 @@ export const removePreviewPhotoClose = (
   }));
 };
 
-
 function formatNumberWithThousandSeparator(number) {
   return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
 }
@@ -112,7 +112,7 @@ function generateUniqueName(originalName) {
   return newName;
 }
 
-export function changeHandler(
+export async function changeHandler(
   event,
   inputData,
   setInputData,
@@ -123,15 +123,66 @@ export function changeHandler(
   setPreviewPhotoOpen,
   setIsPhotoOpenVisible,
   setPreviewPhotoClose,
-  setIsPhotoCloseVisible
+  setIsPhotoCloseVisible,
+  setIsLoading,
+  setIsLoadingDropPhoto,
+  setIsLoadingOpenImage,
+  setIsLoadingCloseImage
 ) {
   if (event.target.files) {
     const originalFiles = Array.from(event.target.files);
 
-    let newFiles = originalFiles.map((originalFile) => {
-      const uniqueName = generateUniqueName(originalFile.name);
-      return new File([originalFile], uniqueName, { type: originalFile.type });
-    });
+        const inputName = event.target.name;
+        let isLoadingState;
+        switch (inputName) {
+          case "dropPhoto":
+            isLoadingState = setIsLoadingDropPhoto;
+            break;
+          case "photoAva":
+            isLoadingState = setIsLoading;
+            break;
+          case "imageOpen":
+            isLoadingState = setIsLoadingOpenImage;
+            break;
+          case "imageClose":
+            isLoadingState = setIsLoadingCloseImage;
+            break;
+          // Добавьте другие case для других input элементов, если они есть
+          default:
+            console.error("Unrecognized input name:", inputName);
+            return;
+        }
+
+
+     isLoadingState(true);
+    let newFiles = await Promise.all(
+      originalFiles.map(async (originalFile) => {
+        const uniqueName = generateUniqueName(originalFile.name);
+
+        // Сжимаем изображение, если его размер больше 4MB
+        if (originalFile.size > 4 * 1024 * 1024) {
+          try {
+            const compressedFile = await compressImageFile(originalFile, {
+              maxSizeMB: 4,
+              maxWidthOrHeight: 1920,
+            });
+            return new File([compressedFile], uniqueName, {
+              type: compressedFile.type,
+            });
+          } catch (error) {
+            console.error("Ошибка при сжатии файла:", error);
+            return null; // В случае ошибки сжатия, вернуть null
+          }
+        } else {
+          return new File([originalFile], uniqueName, {
+            type: originalFile.type,
+          });
+        }
+      })
+    );
+
+    // Отфильтровать null значения, если есть ошибки сжатия
+    newFiles = newFiles.filter((file) => file !== null);
 
     switch (event.target.name) {
       case "dropPhoto":
@@ -170,6 +221,7 @@ export function changeHandler(
         console.error("Unrecognized input name:", event.target.name);
         break;
     }
+    isLoadingState(false);
     event.target.value = null;
     event.target.style.display = "none";
   } else if (

@@ -147,7 +147,7 @@ const CompanyGroupSlider = () => {
           <div className="company-group-slide">
             <img src="./assets/Vector4.svg" alt="5" />
             <span className="text_slider_span">
-            Институт науки, проектирования и&nbsp;инжиниринга проектирование объектов промышленного и&nbsp;гражданского строительства
+            Институт науки, проектирования и&nbsp;инжиниринга. Проектирование объектов промышленного и&nbsp;гражданского строительства
             </span>
           </div>
         </div>

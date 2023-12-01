@@ -5,14 +5,27 @@ const cursorSlice = createSlice({
   initialState: "default",
   reducers: {
     textEnter: () => "text",
+    textFooter: () => "textFooter",
+    textFooterEnter: () => "textFooterEnter",
     imageHover: () => "imageHover",
+    specialHover: () => "specialHover",
     textLeave: () => "default",
+    textLeaveFooter: () => "textLeaveFooter",
     mouseDown: () => "mouseDown",
     mouseUp: () => "mouseUp",
   },
 });
 
-export const { textEnter, textLeave, imageHover, mouseDown, mouseUp } =
-  cursorSlice.actions;
+export const {
+  textEnter,
+  textFooter,
+  textFooterEnter,
+  textLeave,
+  imageHover,
+  specialHover,
+  textLeaveFooter,
+  mouseDown,
+  mouseUp,
+} = cursorSlice.actions;
 
-  export default cursorSlice.reducer;
+export default cursorSlice.reducer;

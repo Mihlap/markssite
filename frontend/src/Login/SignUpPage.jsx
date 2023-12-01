@@ -61,6 +61,7 @@ export default function SignUpPage() {
               className={styles.form__field}
               placeholder="userName"
               name="userName"
+              autoComplete="off"
               id="userName"
               required
             />
@@ -74,6 +75,7 @@ export default function SignUpPage() {
               className={styles.form__field}
               placeholder="password"
               name="password"
+              autoComplete="off"
               id="password"
               required
             />

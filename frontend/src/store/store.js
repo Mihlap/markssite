@@ -11,6 +11,7 @@ import authReducer from "./Slice/authSlice";
 import userReducer from "./Slice/userSlice";
 import cursorReducer from "./Slice/cursorSlice";
 import toggleSlice from "./Slice/toggleSlice";
+import vacanciesSlice from "./Slice/vacanciesSlice";
 
 
 export default configureStore({
@@ -27,5 +28,6 @@ export default configureStore({
     searchArticlePublicRight: searchArticlePublicRightReducer,
     cursor: cursorReducer,
     toggle: toggleSlice,
+    vacancies: vacanciesSlice,
   },
 });

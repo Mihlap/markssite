@@ -1,7 +1,8 @@
 import React from "react";
 import styles from "./Information.module.css";
 
-const Information = () => {
+const Information = () => { 
+
   return (
     <div className={styles.information_wrapper}>
       <h1 className={styles.information_h1}>
@@ -120,7 +121,7 @@ const Information = () => {
       <p className={styles.information_p}>
         Персональные данные Пользователя хранятся в&nbsp;течение всего срока действия
         пользовательских соглашений с&nbsp;данным Пользователем, а&nbsp;также в&nbsp;течение 10&nbsp;лет
-        после прекращения их &nbsp;ействия, если персональные данные не&nbsp;были
+        после прекращения их &nbsp;действия, если персональные данные не&nbsp;были
         отозваны лично Пользователем.
       </p>
       {/* <p className={styles.information_p}>

@@ -4,7 +4,11 @@ import styles from "./CompanySubscriptionForm.module.css";
 const isValidRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
 const Host = process.env.REACT_APP_SERVER_HOST;
 
-const CompanySubscriptionForm = () => {
+const CompanySubscriptionForm = ({
+  handleMouseEnter,
+  handleMouseLeave,
+  handleMouseHover,
+}) => {
   const [isFocused, setIsFocused] = useState(false);
   const [value, setValue] = useState("");
   const [isValid, setIsValid] = useState(true);
@@ -79,8 +83,7 @@ const CompanySubscriptionForm = () => {
       <div className={styles.border_line_sub}>
         <div className={styles.form_right_main}>
           <div className={styles.title1}>
-            Что бы всегда быть в&nbsp;курсе новых направлений и&nbsp;наших проектов
-            подпишитесь на&nbsp;рассылку/альманах
+            Что бы всегда быть в&nbsp;курсе новых направлений и&nbsp;наших проектов, подпишитесь на&nbsp;рассылку/альманах
           </div>
           <form className={styles.form_form_wrapper1} onSubmit={handleSubmit}>
             <div className={styles.group}>
@@ -100,6 +103,8 @@ const CompanySubscriptionForm = () => {
                   size="70"
                   style={{ borderColor: isValid ? "" : "#E00747" }}
                   autoComplete="off"
+                  onMouseOver={handleMouseEnter}
+                  onMouseOut={handleMouseLeave}
                 />
                 <div className={styles.line1}></div>
                 <span className={styles.placeholder}>Ваш Email</span>
@@ -119,6 +124,9 @@ const CompanySubscriptionForm = () => {
               id="submit-button"
               disabled={!value}
               type="submit"
+              onMouseOver={handleMouseEnter}
+              onMouseOut={handleMouseLeave}
+              onMouseHover={handleMouseHover}
             >
               <p className={styles.button_name}>Подписаться</p>
             </button>

@@ -1,11 +1,10 @@
 import React, { useEffect, useRef, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Helmet } from "react-helmet-async";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { MotionPathPlugin } from "gsap/MotionPathPlugin";
-import BlockHeader from "../UI/BlockHeader/BlockHeader";
 import SwiperContainer from "./Swiper-Phone/SwiperContainer";
 import SwiperContainerProgect from "./Swiper-project/SwiperContainerProgect";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -13,21 +12,17 @@ import SwiperCore, { Navigation } from "swiper";
 import SliderHeader from "../UI/SliderHeader/SliderHeader";
 import Mapbox3D from "../UI/Map3D/Mapbox3D";
 import SliderMobile from "../UI/SliderHeader/SliderMobile";
-import VideoPlayer from "../UI/Videoplayer/VideoPlayer";
-// import actively from "./img/actively.svg";
-// import { getFetchForm } from "../store/Slice/projectSlice";
 import { getFetchFormArticle } from "../store/Slice/articleSlice";
 import styles from "./Header.module.css";
-// import LoadingCircle from "../Loading/LoadingCircle";
-// import Error from "../Loading/Error/Error";
 import { getZaprosData } from "../store/Slice/searchProjectMainSlice";
 import { searchArticleLeftGet } from "../store/Slice/searchArticlePublicLeftSlice";
-// import { resizeImage } from "../Project/utils";
 import img123 from "./img/Главная.png";
 import notDataPhoto from "./img/notData.png";
+import nameCompany from "../icons/nameCompany.svg"
+import nameCompany1 from "../icons/nameCompany1.svg"
 
-// import photoTest from "./img/project_right3.jpg";
-import { textEnter, textLeave, imageHover } from "../store/Slice/cursorSlice";
+
+// import { textEnter, textLeave, imageHover, specialHover } from "../store/Slice/cursorSlice";
 import { searchArticleRightGet } from "../store/Slice/searchArticlePublicRightSlice";
 import BlockHeaderMain from "../UI/BlockHeader/BlockHeaderMain";
 
@@ -36,11 +31,15 @@ const Host = process.env.REACT_APP_SERVER_HOST;
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
-export default function Header({ user, setNavBarOpen, setShowFooter }) {
+export default function Header({ handleMouseEnter,
+  handleMouseLeave,
+  handleMouseHover,
+  handleSpecialHover }) {
+ 
   const videoSource = {
-    large: `${Host}/images/video/header_company_full.mp4`,
-    medium: `${Host}/images/video/header_company_ipad.mp4`,
-    small: `${Host}/images/video/header_company_mobile.mp4`
+    large: `${Host}/videos/main_company_full.mp4`,
+    medium: `${Host}/videos/main_company_ipad.mp4`,
+    small: `${Host}/videos/main_company_mobile.mp4`,
   };
   const sliderCardRef = useRef(null);
   const [enableVerticalScroll, setEnableVerticalScroll] = useState(true);
@@ -69,41 +68,52 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
 
   const [videoSrc, setVideoSrc] = useState(null);
 
+  const isMobile = window.innerWidth <= 767;
+
+  const imageSrc = isMobile ? nameCompany1 : nameCompany;
+  
+
+
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, []);
 
-  const handleMouseEnter = () => {
-    dispatch(textEnter());
-  };
+  // const handleMouseEnter = () => {
+  //   dispatch(textEnter());
+  // };
 
-  const handleMouseLeave = () => {
-    dispatch(textLeave());
-  };
+  // const handleMouseLeave = () => {
+  //   dispatch(textLeave());
+  // };
 
-  const handleMouseHover = () => {
-    dispatch(imageHover());
-  };
+  // const handleMouseHover = () => {
+  //   dispatch(imageHover());
+  // };
 
-  // useEffect(() => {
-  //   const handleResize = () => {
-  //     const screenWidth = window.innerWidth;
-  //     if (screenWidth >= 1025) {
-  //       setVideoSrc(videoSource.large);
-  //     } else if (screenWidth >= 375 && screenWidth <= 1024) {
-  //       setVideoSrc(videoSource.medium);
-  //     } else {
-  //       setVideoSrc(videoSource.small);
-  //     }
-  //   };
+  // const handleSpecialHover = () => {
+  //   dispatch(specialHover());
+  // };
 
-  //   handleResize();
-  //   window.addEventListener("resize", handleResize);
+  useEffect(() => {
+    const handleResize = () => {
+      const screenWidth = window.innerWidth;
+      if (screenWidth >= 1025) {
+        setVideoSrc(videoSource.large);
+      } else if (screenWidth >= 768 && screenWidth <= 1024) {
+        setVideoSrc(videoSource.medium);
+      } else {
+        setVideoSrc(videoSource.small);
+      }
+    };
 
-  //   return () => {
-  //     window.removeEventListener("resize", handleResize);
-  //   };
-  // }, []);
+    handleResize();
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   useEffect(() => {
     dispatch(getFetchFormArticle());
@@ -245,6 +255,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
     }
   }, [loading, loadingArticle, scrollingMode]);
 
+ 
   // if (error) {
   //   return (
   //     <div>
@@ -269,29 +280,37 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
         <title>Marks Group</title>
       </Helmet>
       <main className={styles.header}>
-        <div className={styles.video_block}>
+        {/* <div className={styles.video_block}>
           <VideoPlayer videoSource={videoSource} />
-        </div>
-        {/* <div className={styles.bg_video}>
-          {videoSrc && (
-            <video playsInline autoPlay muted loop id="bg-video">
-              <source src={videoSrc} type="video/mp4" />
-            </video>
-          )}
         </div> */}
+        <div className={styles.wrapper_nameCompanyMainHeader}>
+          <div className={styles.block_video_company}>
+            {videoSrc && (
+              <video
+                playsInline
+                autoPlay
+                muted
+                loop
+                id="bg-video"
+                className={styles.bg_video}
+              >
+                <source src={videoSrc} type="video/mp4" preload="auto" />
+              </video>
+            )}
+          </div>
+          <div className={styles.nameCompanyContainer}>
+            <img src={imageSrc} alt={nameCompany} />
+            <span className={styles.span_nameCompany}>
+              Генеральное проектирование
+            </span>
+            <span className={styles.span_nameCompany11}>
+              Реализация всех типов объектов «под ключ»
+            </span>
+          </div>
+        </div>
         <div className={styles.header_desctop_block}>
-          <h1
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-            className={styles.desctop_title}
-          >
-            Награды и&nbsp;публикации
-          </h1>
-          <div
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-            className={styles.desctop_test}
-          >
+          <h1 className={styles.desctop_title}>Награды и&nbsp;публикации</h1>
+          <div className={styles.desctop_test}>
             Наша компания участвует в&nbsp;многочисленных выставках,
             конференциях
             <br /> и&nbsp;конкурсах. Предлагаем ознакомиться с&nbsp;некоторыми
@@ -307,8 +326,14 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
         </p>
       </div> */}
         <div className={styles.container_main}>
-          <div className={styles.sliderHeader_container}>
+          <div
+            onMouseEnter={handleSpecialHover}
+            onMouseLeave={handleMouseLeave}
+            className={styles.sliderHeader_container}
+          >
+            <NavLink to="/company#table-header-anchor">
             <SliderHeader />
+            </NavLink>
           </div>
           <div className={styles.swiper_container}>
             <SwiperContainer article1={MapArticle} article2={MapArticleRight} />
@@ -353,7 +378,11 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
                           {el.dataMonthYear}
                         </span>
                       </div>
-                      <button className={styles.card_button}>
+                      <button
+                        onMouseEnter={handleMouseEnter}
+                        onMouseLeave={handleMouseLeave}
+                        className={styles.card_button}
+                      >
                         <svg
                           width="32"
                           height="32"
@@ -453,12 +482,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
           </div>
           <div className={styles.names_contents}>
             <div className={styles.name_11}>+8</div>
-            <div
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
-              id="competencies"
-              className={styles.name_competencies}
-            >
+            <div id="competencies" className={styles.name_competencies}>
               Компетенции
             </div>
           </div>
@@ -466,29 +490,26 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
             <img
               className={styles.image_most}
               loading="lazy"
-              src="./assets/most.png"
+              src="./assets/most2.png"
               alt=""
             ></img>
           </div>
           {/* <BlockHeader /> */}
-          <div className={styles.block_header_maim_wrapper}
-          id="blockHeaderMain"
-           onMouseEnter={handleMouseEnter}
-           onMouseLeave={handleMouseLeave}
+          <div
+            className={styles.block_header_maim_wrapper}
+            id="blockHeaderMain"
           >
-            <BlockHeaderMain/>
+            <BlockHeaderMain
+              handleMouseEnter={handleMouseEnter}
+              handleMouseLeave={handleMouseLeave}
+            />
           </div>
           <Mapbox3D />
         </div>
         <div className={styles.sliderMobile_container}>
           <SliderMobile />
         </div>
-        <div
-          id="projects"
-          className={styles.project_name}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-        >
+        <div id="projects" className={styles.project_name}>
           Проекты
         </div>
         <div className={styles.swiper_progect_container}>
@@ -543,7 +564,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
 
               return (
                 <SwiperSlide
-                  key={project.id}
+                  key={index}
                   onScroll={handleScroll}
                   id="slider_container_item_card"
                   className={styles.slider_container_item_card}
@@ -552,6 +573,8 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
                   <Link to={`/projects/${project.id}`} key={project.id}>
                     <div className={styles.wrapper_container_item_card}>
                       <img
+                        onMouseEnter={handleMouseHover}
+                        onMouseLeave={handleMouseLeave}
                         className={styles.container__imageTitle}
                         //  style={{
                         //   height: `${project.style?.split(",")[1]}rem`,
@@ -594,6 +617,7 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
                           </div>
                           <div className={styles.project__address__svg}>
                             <svg
+                              
                               xmlns="http://www.w3.org/2000/svg"
                               width="2"
                               height="2"
