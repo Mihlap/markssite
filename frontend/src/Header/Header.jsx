@@ -85,25 +85,25 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
     dispatch(imageHover());
   };
 
-  useEffect(() => {
-    const handleResize = () => {
-      const screenWidth = window.innerWidth;
-      if (screenWidth >= 1025) {
-        setVideoSrc(videoSource.large);
-      } else if (screenWidth >= 375 && screenWidth <= 1024) {
-        setVideoSrc(videoSource.medium);
-      } else {
-        setVideoSrc(videoSource.small);
-      }
-    };
+  // useEffect(() => {
+  //   const handleResize = () => {
+  //     const screenWidth = window.innerWidth;
+  //     if (screenWidth >= 1025) {
+  //       setVideoSrc(videoSource.large);
+  //     } else if (screenWidth >= 375 && screenWidth <= 1024) {
+  //       setVideoSrc(videoSource.medium);
+  //     } else {
+  //       setVideoSrc(videoSource.small);
+  //     }
+  //   };
 
-    handleResize();
-    window.addEventListener("resize", handleResize);
+  //   handleResize();
+  //   window.addEventListener("resize", handleResize);
 
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
-  }, []);
+  //   return () => {
+  //     window.removeEventListener("resize", handleResize);
+  //   };
+  // }, []);
 
   useEffect(() => {
     dispatch(getFetchFormArticle());
@@ -272,13 +272,13 @@ export default function Header({ user, setNavBarOpen, setShowFooter }) {
         <div className={styles.video_block}>
           <VideoPlayer videoSource={videoSource} />
         </div>
-        <div className={styles.bg_video}>
+        {/* <div className={styles.bg_video}>
           {videoSrc && (
             <video playsInline autoPlay muted loop id="bg-video">
               <source src={videoSrc} type="video/mp4" />
             </video>
           )}
-        </div>
+        </div> */}
         <div className={styles.header_desctop_block}>
           <h1
             onMouseEnter={handleMouseEnter}
