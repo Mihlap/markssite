@@ -13,6 +13,11 @@
   font-style: normal;
 }
 
+/* a,
+button {
+  cursor: none !important;
+} */
+
 /* * {
   cursor: none;
 } */
@@ -73,6 +78,13 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+video {
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+
 
 /* *::-webkit-scrollbar {
   width: 5px;

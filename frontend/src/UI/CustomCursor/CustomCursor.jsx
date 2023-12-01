@@ -15,25 +15,26 @@ export default function CustomCursor() {
   const dispatch = useDispatch();
 
   useEffect(() => {
- let lastMousePosition = { x: 0, y: 0 };
- let isRequesting = false;
+    setMousePosition({
+      x: window.innerWidth / 2,
+      y: window.innerHeight / 2,
+    });
 
- const mouseMove = (e) => {
-   lastMousePosition = {
-     x: e.clientX - 16,
-     y: e.clientY - 16,
-   };
+    const mouseMove = (e) => {
+      const newPosition = {
+        x: e.clientX - 16,
+        y: e.clientY - 16,
+      };
 
-   if (!isRequesting) {
-     window.requestAnimationFrame(() => {
-       setMousePosition(lastMousePosition);
-       isRequesting = false;
-     });
-     isRequesting = true;
-   }
- };
-    
-    // была проблема с браузером сафари, я чуть изменил код, сейчас всё работает 
+      window.requestAnimationFrame(() => {
+        if (
+          newPosition.x !== mousePosition.x ||
+          newPosition.y !== mousePosition.y
+        ) {
+          setMousePosition(newPosition);
+        }
+      });
+    };
 
     const handleMouseDown = () => {
       dispatch(mouseDown());
@@ -54,32 +55,14 @@ export default function CustomCursor() {
     };
   }, [dispatch]);
 
-   const variants = {
+  const variants = {
     default: {
       x: mousePosition.x,
       y: mousePosition.y,
+      height: 24,
+      width: 24,
     },
-    text: {
-      height: 64,
-      width: 64,
-      x: mousePosition.x - 16,
-      y: mousePosition.y - 16,
-      backgroundColor: "#F6F6F6",
-      mixBlendMode: "difference",
-    },
-    imageHover: {
-      height: 100,
-      width: 100,
-      x: mousePosition.x - 24,
-      y: mousePosition.y - 24,
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      color: "#F6F6F6",
-      border: "1px solid #F6F6F6",
-      backgroundColor: "rgba(255, 255, 255, 0.7)",
-      animation: "gradient 5s ease infinite",
-    },
+
     mouseDown: {
       scale: 1.7,
       x: mousePosition.x,
@@ -90,21 +73,87 @@ export default function CustomCursor() {
       x: mousePosition.x,
       y: mousePosition.y,
     },
+    text: {
+      height: 64,
+      width: 64,
+      x: mousePosition.x - 16,
+      y: mousePosition.y - 16,
+      backgroundColor: "rgba(29, 46, 67, 0)", // Установка фона как прозрачного
+      border: "2px solid #1D2E43", // Установка синей границы, замените #1D2E43 на ваш код цвета
+    },
+    textFooter: {
+      zIndex: 2,
+      height: 24,
+      width: 24,
+      x: mousePosition.x - 0,
+      y: mousePosition.y - 0,
+      backgroundColor: "#F6F6F6",
+    },
+    textFooterEnter: {
+      zIndex: 2,
+      height: 64,
+      width: 64,
+      x: mousePosition.x - 16,
+      y: mousePosition.y - 16,
+      backgroundColor: "#F6F6F6",
+    },
+
+    textLeaveFooter: {
+      x: mousePosition.x,
+      y: mousePosition.y,
+      backgroundColor: "#F6F6F6",
+    },
+
+    mouseDownFooter: {
+      scale: 1.7,
+      x: mousePosition.x,
+      y: mousePosition.y,
+      backgroundColor: "#F6F6F6",
+    },
+    mouseUpFooter: {
+      scale: 1,
+      x: mousePosition.x,
+      y: mousePosition.y,
+      backgroundColor: "#F6F6F6",
+    },
+    imageHover: {
+      height: 100,
+      width: 100,
+      x: mousePosition.x - 24,
+      y: mousePosition.y - 24,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      color: "#ffffff",
+      backgroundColor: "#1D2E43",
+    },
+    specialHover: {
+      height: 100,
+      width: 100,
+      x: mousePosition.x - 24,
+      y: mousePosition.y - 24,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      color: "#ffffff",
+      backgroundColor: "#1D2E43",
+    },
   };
 
   return (
-    <>
-     {window.innerWidth >= 1025 && (
-      <motion.div
-        className="cursor"
-        variants={variants}
-        animate={cursorVariant}
-      >
-        {cursorVariant === "imageHover" && (
-          <span className="cursor-hover">Смотреть</span>
-        )}
-      </motion.div>
-        )}
-    </>
+    <div className="cursor-container">
+      {window.innerWidth >= 1025 && (
+        <motion.div
+          className="cursor"
+          variants={variants}
+          animate={cursorVariant}
+        >
+          {cursorVariant === "imageHover" && <span>Смотреть</span>}
+          {cursorVariant === "specialHover" && (
+            <div className="cursor-hover">Все Конкурсы</div>
+          )}
+        </motion.div>
+      )}
+    </div>
   );
 }

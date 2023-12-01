@@ -85,7 +85,7 @@ $radius: 0.25rem;
     width: 40.625px; // уменьшено ещё в 2 раза
     margin: 0em;
     border-radius: 50%;
-    background: none repeat scroll 0 0 rgb(216, 223, 234);
+    background: none repeat scroll 0 0 rgb(231 235 240);
     overflow: hidden;
 }
 
@@ -97,7 +97,7 @@ $radius: 0.25rem;
     display: block;
     height: 25px; // уменьшено ещё в 2 раза
     width: 25px; // уменьшено ещё в 2 раза
-    background: none repeat scroll 0 0 var(--light-light-gray-EBECEE);
+    background: none repeat scroll 0 0 var(--white-F6F6F6);
     border-radius: 50%;
     box-shadow: 0 0 2.5px rgba(0, 0, 0, 0.1); // уменьшено ещё в 2 раза
 }

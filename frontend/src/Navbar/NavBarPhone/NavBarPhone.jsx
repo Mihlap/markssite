@@ -62,15 +62,6 @@ const [isMenuActive, setMenuActive] = useState(false);
                   Главная
                 </Link>
               </li>
-              {/* <li className={styles["menu-item"]}>
-                <Link
-                  onClick={handleBurgerClick}
-                  to="/competention"
-                  className={styles["menu-link"]}
-                >
-                  Компетенции
-                </Link>
-              </li> */}
               <li className={styles["menu-item"]}>
                 <Link
                   onClick={handleBurgerClick}
@@ -101,17 +92,22 @@ const [isMenuActive, setMenuActive] = useState(false);
               <li className={styles["menu-item"]}>
                 <Link
                   onClick={handleBurgerClick}
+                  target="_blank"
+                  to="/portal/vacancies"
+                  className={styles["menu-link"]}
+                >
+                  HR портал
+                </Link>
+              </li>
+              <li className={styles["menu-item"]}>
+                <Link
+                  onClick={handleBurgerClick}
                   to="/contacts"
                   className={styles["menu-link"]}
                 >
                   Контакты
                 </Link>
               </li>
-              {/* <li className={styles["menu-item"]}>
-                <Link to="#" className={styles["menu-link"]}>
-                  HR портал
-                </Link>
-              </li> */}
             </ul>
             <div className={styles.contact_info}>
               <div className={styles.contact_info_block}>

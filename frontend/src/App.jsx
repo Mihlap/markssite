@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import { HelmetProvider } from "react-helmet-async";
 import "./App.css";
@@ -10,7 +10,6 @@ import Contacts from "./Contacts/Contacts";
 import Project from "./Project/Project";
 import Publics from "./Publics/Publics";
 import NotFound from "./NotFound/NotFound";
-import Portal from "./Portal/Portal";
 import Navbar from "./Navbar/Navbar";
 import Footer from "./Footer/Footer";
 import Information from "./Information/Information";
@@ -28,6 +27,21 @@ import { checkUserAuth } from "./store/Slice/authSlice";
 import { resetCurrentPage, setCurrentPage } from "./store/Slice/userSlice";
 import ButtonAdmin from "./UI/ButtonAdmin/ButtonAdmin";
 import { fetchToggleStateForButton3Async } from "./store/Slice/toggleSlice";
+import LoadingModal from "./Add/add-project/loading/LoadingModal";
+import {
+  imageHover,
+  specialHover,
+  textEnter,
+  textFooter,
+  textFooterEnter,
+  textLeave,
+  textLeaveFooter,
+} from "./store/Slice/cursorSlice";
+import CookieComponent from "./UI/CookieComponent/CookieComponent";
+import Internships from "./Portal/Internships/Internships";
+import Office from "./Portal/Office/Office";
+import PortalMenu from "./Navbar/PortalMenu";
+import Vacancies from "./Portal/Vacancies/Vacancies";
 
 export default function App() {
   const user = useSelector((state) => state.auth.user);
@@ -36,7 +50,26 @@ export default function App() {
   const isActive = useSelector((state) => state.toggle.isActiveForButton3);
   const location = useLocation();
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [showPortalMenu, setShowPortalMenu] = useState(false);
+
+  const isMobile = window.innerWidth <= 768;
+
+  useEffect(() => {
+    setShowPortalMenu(
+      location.pathname === "/portal/vacancies" ||
+        location.pathname === "/portal/internships" ||
+        location.pathname === "/portal/office"
+    );
+  }, [location.pathname]);
+
+   useEffect(() => {
+     // Проверяем, находимся ли мы на административном маршруте
+     const isAdminRoute = location.pathname.startsWith("/admin/");
+
+     // Устанавливаем стиль для курсора в зависимости от маршрута
+     document.body.style.cursor = isAdminRoute ? "auto" : "none";
+   }, [location.pathname]);
 
   useEffect(() => {
     dispatch(checkUserAuth());
@@ -45,6 +78,34 @@ export default function App() {
 
   const handlePageChange = (page) => {
     dispatch(setCurrentPage(page));
+  };
+
+  const handleMouseEnter = () => {
+    dispatch(textEnter());
+  };
+
+  const handleMouseEnterFooter = () => {
+    dispatch(textFooter());
+  };
+
+  const handleMouseEnterFooterMore = () => {
+    dispatch(textFooterEnter());
+  };
+
+  const handleMouseLeaveFooter = () => {
+    dispatch(textLeaveFooter());
+  };
+
+  const handleMouseLeave = () => {
+    dispatch(textLeave());
+  };
+
+  const handleMouseHover = () => {
+    dispatch(imageHover());
+  };
+
+  const handleSpecialHover = () => {
+    dispatch(specialHover());
   };
 
   const handleReturn = () => {
@@ -60,38 +121,165 @@ export default function App() {
     }, 3500);
   }, []);
 
+  // console.log(location.pathname)
   // console.log(`пользователь 👉${user?.name}👈`);
   return (
     <HelmetProvider>
-      {loading === true ? (
+      {loading === true &&
+      location.pathname.toLowerCase() !== "/information" &&
+      location.pathname.toLowerCase() !== "/portal/vacancies"
+      ? (
         <Loading />
       ) : (
         <>
-          {showNavbarFooter && currentPage !== "add" && <Navbar />}
           {showNavbarFooter && currentPage !== "add" && (
-            <ButtonAdmin user={user} />
+            <>
+            {/* для 2-й итерации !!!! не стирать */}
+              {showPortalMenu ? (
+              <PortalMenu
+                  user={user}
+                  handleMouseEnter={handleMouseEnter}
+                  handleMouseLeave={handleMouseLeave}
+                />
+             ) : (
+                <Navbar
+                  handleMouseEnter={handleMouseEnter}
+                  handleMouseLeave={handleMouseLeave}
+                />
+               )} 
+            </>
+          )}
+          {showNavbarFooter && currentPage !== "add" && (
+            <ButtonAdmin
+              user={user}
+              handleMouseEnter={handleMouseEnter}
+              handleMouseLeave={handleMouseLeave}
+            />
           )}
           <TransitionGroup>
             <CSSTransition key={location.key} classNames="fade" timeout={300}>
               <Routes location={location}>
-                <Route path="/" element={<Header user={user} />} />
-                {/* <Route path="/competention" element={<Competentions />} /> */}
-                <Route path="/project" element={<Project />} />
-                <Route
-                  path="/project/:viewConstruction?"
-                  component={<Project />}
-                />
-                <Route path="/projects/:id" element={<ProjectCard />} />
-                <Route path="/company" element={<Company />} />
-                <Route path="/publication" element={<Publics />} />
-                <Route path="/publication/:id" element={<ArticleCard />} />
-                <Route path="/contacts" element={<Contacts />} />
-                <Route path="/portal" element={<Portal />} />
-                <Route path="*" element={<NotFound />} />
-                <Route path="/login" element={<Login />} />
-                {isActive && <Route path="/signup" element={<SignUpPage />} />}
-                <Route path="/information" element={<Information />} />
-
+                  <Route
+                    path="/"
+                    element={
+                      <Header
+                        handleMouseEnter={handleMouseEnter}
+                        handleMouseLeave={handleMouseLeave}
+                        handleMouseHover={handleMouseHover}
+                        handleSpecialHover={handleSpecialHover}
+                      />
+                    }
+                  />
+                  <Route
+                    path="/project"
+                    element={
+                      <Project
+                        handleMouseEnter={handleMouseEnter}
+                        handleMouseLeave={handleMouseLeave}
+                        handleMouseHover={handleMouseHover}
+                      />
+                    }
+                  />
+                  <Route
+                    path="/project/:viewConstruction?"
+                    component={<Project />}
+                  />
+                  <Route
+                    path="/projects/:id"
+                    element={
+                      <ProjectCard
+                        handleMouseEnter={handleMouseEnter}
+                        handleMouseLeave={handleMouseLeave}
+                        handleMouseHover={handleMouseHover}
+                      />
+                    }
+                  />
+                  <Route
+                    path="/company"
+                    element={
+                      <Company
+                        handleMouseEnter={handleMouseEnter}
+                        handleMouseLeave={handleMouseLeave}
+                        handleMouseHover={handleMouseHover}
+                      />
+                    }
+                  />
+                  <Route
+                    path="/publication"
+                    element={
+                      <Publics
+                        handleMouseEnter={handleMouseEnter}
+                        handleMouseLeave={handleMouseLeave}
+                        handleMouseHover={handleMouseHover}
+                      />
+                    }
+                  />
+                  <Route
+                    path="/publication/:id"
+                    element={
+                      <ArticleCard
+                        handleMouseEnter={handleMouseEnter}
+                        handleMouseLeave={handleMouseLeave}
+                        handleMouseHover={handleMouseHover}
+                      />
+                    }
+                  />
+                  <Route
+                    path="/contacts"
+                    element={
+                      <Contacts
+                        handleMouseEnter={handleMouseEnter}
+                        handleMouseLeave={handleMouseLeave}
+                        handleMouseHover={handleMouseHover}
+                      />
+                    }
+                  />
+                  <Route
+                    path="/information"
+                    element={
+                      <Information
+                        handleMouseEnter={handleMouseEnter}
+                        handleMouseLeave={handleMouseLeave}
+                        handleMouseHover={handleMouseHover}
+                      />
+                    }
+                  />
+                  <Route
+                    path="/portal/vacancies"
+                    element={
+                      <Vacancies
+                        handleMouseEnter={handleMouseEnter}
+                        handleMouseLeave={handleMouseLeave}
+                        handleMouseHover={handleMouseHover}
+                      />
+                    }
+                  />
+                  <Route
+                    path="/portal/internships"
+                    element={
+                      <Internships
+                        handleMouseEnter={handleMouseEnter}
+                        handleMouseLeave={handleMouseLeave}
+                        handleMouseHover={handleMouseHover}
+                      />
+                    }
+                  />
+                  <Route
+                    path="/portal/office"
+                    element={
+                      <Office
+                        handleMouseEnter={handleMouseEnter}
+                        handleMouseLeave={handleMouseLeave}
+                        handleMouseHover={handleMouseHover}
+                      />
+                    }
+                  />
+                  <Route path="*" element={<NotFound />} />
+                  <Route path="/login" element={<Login />} />
+                  {isActive && (
+                    <Route path="/signup" element={<SignUpPage />} />
+                  )}
+                  <Route path="/test" element={<LoadingModal />} />
                 {user ? (
                   <Route
                     path="/admin/*"
@@ -109,8 +297,16 @@ export default function App() {
               </Routes>
             </CSSTransition>
           </TransitionGroup>
-          {showNavbarFooter && currentPage !== "add" && <Footer />}
-          {/* {showNavbarFooter && currentPage !== "add" && <CustomCursor />} */}
+          <CookieComponent />
+          {showNavbarFooter && currentPage !== "add" && (
+            <Footer
+              handleMouseEnterFooter={handleMouseEnterFooter}
+              handleMouseEnterFooterMore={handleMouseEnterFooterMore}
+              handleMouseLeaveFooter={handleMouseLeaveFooter}
+              handleMouseLeave={handleMouseLeave}
+            />
+          )}
+          {showNavbarFooter && currentPage !== "add" && <CustomCursor />}
         </>
       )}
     </HelmetProvider>

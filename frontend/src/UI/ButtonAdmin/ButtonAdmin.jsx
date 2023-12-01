@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom';
 import styles from "../../Header/Header.module.css";
 
-export default function ButtonAdmin({ user }) {
+export default function ButtonAdmin({ user, handleMouseEnter, handleMouseLeave }) {
     const [data, setData] = useState(null);
 
   useEffect(() => {
@@ -12,7 +12,12 @@ export default function ButtonAdmin({ user }) {
     return (
       <>
         {user ? (
-          <NavLink className={styles.preview_mode} to={`/admin/${data}`}>
+          <NavLink
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            className={styles.preview_mode}
+            to={`/admin/${data}`}
+          >
             <div className={styles.preview_title}>Режим предпросмотра</div>
             <svg
               width="24"

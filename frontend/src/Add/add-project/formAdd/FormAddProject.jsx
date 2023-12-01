@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import Select from "react-select";
+import compressImageFile from "browser-image-compression";
 
 import { transliterate } from "transliteration";
 import styles from "./FormAddProject.module.scss";
@@ -52,6 +53,16 @@ export default function FormAddProject({ setIsModalOpen }) {
   const [isPhotoAvaVisible, setIsPhotoAvaVisible] = useState(true);
   const [isDropPhotoVisible, setIsDropPhotoVisible] = useState(true);
 
+  const [isMonthValid, setIsMonthValid] = useState(true);
+  const [isYearValid, setIsYearValid] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [showNotification, setShowNotification] = useState(false);
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingDropPhoto, setIsLoadingDropPhoto] = useState(false);
+  const [isLoadingOpenImage, setIsLoadingOpenImage] = useState(false);
+  const [isLoadingCloseImage, setIsLoadingCloseImage] = useState(false);
+
   const [inputData, setInputData] = useState({
     title: "",
     selectCompetencies: [],
@@ -86,7 +97,6 @@ export default function FormAddProject({ setIsModalOpen }) {
 
   // << ==== useStates для конструктора ==== >>
   const [inputValue, setInputValue] = useState("");
-
   const [onenConstructor, setOpenConstructor] = useState(false);
   const [blocks, setBlocks] = useState([]);
   const [dynamicPreviews, setDynamicPreviews] = useState([]);
@@ -154,6 +164,40 @@ export default function FormAddProject({ setIsModalOpen }) {
     );
   };
 
+  const validateForm = () => {
+    let isValid = true;
+    let errors = [];
+
+    // Проверяем, был ли выбран месяц
+    if (!selectedMonth) {
+      setIsMonthValid(false);
+      isValid = false;
+      errors.push("Месяц");
+    } else {
+      setIsMonthValid(true);
+    }
+
+    // Проверяем, был ли выбран год
+    if (!selectedYear) {
+      setIsYearValid(false);
+      isValid = false;
+      errors.push("Год");
+    } else {
+      setIsYearValid(true);
+    }
+
+    // Сохраняем сообщение об ошибке
+    if (!isValid) {
+      setErrorMessage(
+        `Пожалуйста, заполните следующие обязательные поля: ${errors.join(
+          ", "
+        )}.`
+      );
+    }
+
+    return isValid;
+  };
+
   // закрывает модалкку формы
   const closeModal = () => {
     setIsModalOpen(false);
@@ -162,58 +206,68 @@ export default function FormAddProject({ setIsModalOpen }) {
   // функция отправки формы на Redux
   const submitHandler = async (e) => {
     e.preventDefault();
-    const formattedData = {
-      ...inputData,
-      dynamicBlocks: dynamicData,
-      selectCompetencies: selectedCompetencies
-        .map((option) => option.label)
-        .join(","),
-      degreeParticipation: selectDegreeParticipation.label,
-      statusObject: selectStatusObject.label,
-      viewConstruction: selectedViewConstruction
-        .map((option) => option.label)
-        .join(","),
-      // radioValue: selectedRadio,
-      photoAva: inputData.photoAva,
-      imageOpen: inputData.imageOpen,
-    };
-    dispatch(fetchProject(formattedData, setInputData));
-    setSelectedCompetencies([]);
-    setSelectDegreeParticipation("");
-    setSelectStatusObject("");
-    setSelectedViewConstruction([]);
-    // setSelectedRadio("");
-    setPreviewPhotos([]);
-    setDynamicData([]);
-    setInputData({
-      title: "",
-      selectCompetencies: "",
-      countryCity: "",
-      monthYear: "",
-      viewConstruction: "",
-      dropPhoto: [],
-      photoAva: "",
-      titleTextBlock: "",
-      descriptionProject: "",
-      totalArea: "",
-      siteArea: "",
-      floors: "",
-      altitude: "",
-      constructionVolume: "",
-      location: "",
-      degreeParticipation: "",
-      statusObject: "",
-      customer: "",
-      publication: "",
-      linkToPublication: "",
-      publicationTwo: "",
-      linkToPublicationTwo: "",
-      awards: "",
-      imageOpen: "",
-      textBlock: "",
-      imageClose: "",
-    });
-    setIsModalOpen(false);
+
+    const isFormValid = validateForm();
+
+    if (!isFormValid) {
+      // Обрабатываем ошибку
+    } else {
+      const formattedData = {
+        ...inputData,
+        dynamicBlocks: dynamicData,
+        selectCompetencies: selectedCompetencies
+          .map((option) => option.label)
+          .join(","),
+        degreeParticipation: selectDegreeParticipation.label,
+        statusObject: selectStatusObject.label,
+        viewConstruction: selectedViewConstruction
+          .map((option) => option.label)
+          .join(","),
+        // radioValue: selectedRadio,
+        photoAva: inputData.photoAva,
+        imageOpen: inputData.imageOpen,
+      };
+      dispatch(fetchProject(formattedData, setInputData));
+      setSelectedCompetencies([]);
+      setSelectDegreeParticipation("");
+      setSelectStatusObject("");
+      setSelectedViewConstruction([]);
+      // setSelectedRadio("");
+      setPreviewPhotos([]);
+      setDynamicData([]);
+      setInputData({
+        title: "",
+        selectCompetencies: "",
+        countryCity: "",
+        monthYear: "",
+        viewConstruction: "",
+        dropPhoto: [],
+        photoAva: "",
+        titleTextBlock: "",
+        descriptionProject: "",
+        totalArea: "",
+        siteArea: "",
+        floors: "",
+        altitude: "",
+        constructionVolume: "",
+        location: "",
+        degreeParticipation: "",
+        statusObject: "",
+        customer: "",
+        publication: "",
+        linkToPublication: "",
+        publicationTwo: "",
+        linkToPublicationTwo: "",
+        awards: "",
+        imageOpen: "",
+        textBlock: "",
+        imageClose: "",
+      });
+      setErrorMessage(""); // Очищаем ошибки
+      setIsModalOpen(false);
+
+      console.log("Форма отправлена.");
+    }
   };
 
   // << ============ функции КОНСТРУКТОРА ============ >>
@@ -226,19 +280,32 @@ export default function FormAddProject({ setIsModalOpen }) {
   const areAllBlocksFilled = () => {
     for (let block of dynamicData) {
       for (let input of block) {
-        if (!input.value || input.value === "") {
+        // Проверяем только обязательные поля
+        if (input.required && (!input.value || input.value === "")) {
           return false;
         }
       }
     }
     return true;
   };
+
+  const handleRemoveBlock = (blockIndex) => {
+    setDynamicData((prevDynamicData) =>
+      prevDynamicData.filter((_, index) => index !== blockIndex)
+    );
+    // Обновление других связанных состояний...
+    setBlocks((prevBlocks) =>
+      prevBlocks.filter((_, index) => index !== blockIndex)
+    );
+    setDynamicPreviews((prevPreviews) =>
+      prevPreviews.filter((_, index) => index !== blockIndex)
+    );
+  };
   // функция которая срабатывает в случае если мы всё-таки пытаемся создать блок выдает ( алерт ), в случае успеза проходит в дальше и создаёт новый динамический блок
   const handleClick = (inputs) => {
     if (!areAllBlocksFilled()) {
-      alert(
-        "Предже чем добавить новый блок, пожалуйста заполните предыдущий блок полностью❗"
-      );
+      setShowNotification(true);
+      setTimeout(() => setShowNotification(false), 5000);
       return;
     }
 
@@ -252,8 +319,22 @@ export default function FormAddProject({ setIsModalOpen }) {
     //  handlerOpenConstructor();
   };
 
+  async function compressImage(file) {
+    const options = {
+      maxSizeMB: 4, // максимальный размер файла в MB
+      maxWidthOrHeight: 1920, // максимальная ширина или высота
+      useWebWorker: true,
+    };
+
+    try {
+      return await compressImageFile(file, options);
+    } catch (error) {
+      console.error("Ошибка при сжатии изображения:", error);
+    }
+  }
+
   // обработчик динамических значений
-  const handleDynamicInputChange = (blockIndex, inputIndex, value) => {
+  const handleDynamicInputChange = async (blockIndex, inputIndex, value) => {
     const newDynamicData = [...dynamicData];
 
     if (!newDynamicData[blockIndex]) {
@@ -268,29 +349,35 @@ export default function FormAddProject({ setIsModalOpen }) {
       };
     }
 
-    // эта функция генерирует случайное число и присваивает его имени для того, чтоб было уникальное имя 
     function generateUniqueName(originalName) {
       const timestamp = Date.now();
       const randomNum = Math.floor(Math.random() * 10000);
       const fileExtension = originalName.split(".").pop();
-
-      // Транслитерация части оригинального имени файла
       const sliceOfOriginalName = transliterate(originalName.slice(0, 5));
-
       const newName = `file_${sliceOfOriginalName}_${timestamp}_${randomNum}.${fileExtension}`;
-
-      //  console.log("Generated name:", newName);
-
       return newName;
     }
 
     if (Array.isArray(value) && value[0] instanceof File) {
-      const newFiles = value.map((originalFile) => {
-        const uniqueName = generateUniqueName(originalFile.name);
-        return new File([originalFile], uniqueName, {
-          type: originalFile.type,
-        });
-      });
+      const newFiles = await Promise.all(
+        value.map(async (originalFile) => {
+          if (originalFile.type.startsWith("image/")) {
+            // Сжимаем только изображения
+            const compressedFile = await compressImage(originalFile);
+            const uniqueName = generateUniqueName(compressedFile.name);
+            return new File([compressedFile], uniqueName, {
+              type: compressedFile.type,
+            });
+          } else {
+            // Если файл не является изображением, возвращаем его без изменений
+            const uniqueName = generateUniqueName(originalFile.name);
+            return new File([originalFile], uniqueName, {
+              type: originalFile.type,
+            });
+          }
+        })
+      );
+
       newDynamicData[blockIndex][inputIndex].value = newFiles;
     } else {
       newDynamicData[blockIndex][inputIndex].value = value;
@@ -439,22 +526,20 @@ export default function FormAddProject({ setIsModalOpen }) {
                     }}
                   />
                   <svg
+                    className={styles.slider_container__svg}
+                    xmlns="http://www.w3.org/2000/svg"
                     width="16"
                     height="16"
                     viewBox="0 0 16 16"
                     fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
                   >
-                    <g id="Frame 4684">
-                      <path
-                        id="Vector"
-                        d="M11.8349 7.54949L5.64223 7.54949C5.46569 7.54642 5.2903 7.57854 5.1263 7.64398C4.96231 7.70942 4.81299 7.80686 4.68705 7.93062C4.56112 8.05439 4.4611 8.20199 4.39282 8.36483C4.32454 8.52766 4.28938 8.70246 4.28938 8.87903C4.28937 9.0556 4.32454 9.2304 4.39282 9.39323C4.4611 9.55607 4.56112 9.70367 4.68705 9.82744C4.81299 9.9512 4.96231 10.0486 5.1263 10.1141C5.2903 10.1795 5.46569 10.2116 5.64223 10.2086L11.754 10.1277C12.4512 10.1156 13.1158 9.83011 13.6046 9.33275C14.0934 8.8354 14.3673 8.16596 14.3673 7.46862C14.3673 6.77129 14.0934 6.10185 13.6046 5.60449C13.1158 5.10713 12.4512 4.82165 11.754 4.80953L5.64223 4.88946C4.58413 4.88946 3.56936 5.30979 2.82117 6.05798C2.07298 6.80617 1.65265 7.82093 1.65265 8.87903C1.65265 9.93713 2.07298 10.9519 2.82117 11.7001C3.56936 12.4483 4.58413 12.8686 5.64223 12.8686L11.5189 12.8752"
-                        stroke="currentColor"
-                        strokeWidth="0.8"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </g>
+                    <path
+                      d="M11.8346 7.54949L5.64198 7.54949C5.46544 7.54642 5.29006 7.57854 5.12606 7.64398C4.96206 7.70942 4.81274 7.80686 4.68681 7.93062C4.56088 8.05439 4.46085 8.20199 4.39257 8.36483C4.3243 8.52766 4.28913 8.70246 4.28913 8.87903C4.28913 9.0556 4.3243 9.2304 4.39257 9.39323C4.46085 9.55607 4.56088 9.70367 4.68681 9.82744C4.81274 9.9512 4.96206 10.0486 5.12606 10.1141C5.29006 10.1795 5.46544 10.2116 5.64198 10.2086L11.7538 10.1277C12.451 10.1156 13.1156 9.83011 13.6043 9.33275C14.0931 8.8354 14.367 8.16596 14.367 7.46862C14.367 6.77129 14.0931 6.10185 13.6043 5.60449C13.1156 5.10713 12.451 4.82165 11.7538 4.80953L5.64198 4.88946C4.58388 4.88946 3.56912 5.30979 2.82093 6.05798C2.07274 6.80617 1.65241 7.82093 1.65241 8.87903C1.65241 9.93713 2.07274 10.9519 2.82093 11.7001C3.56912 12.4483 4.58388 12.8686 5.64198 12.8686L11.5187 12.8752"
+                      stroke="currentColor"
+                      strokeWidth="0.8"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
                   </svg>
                   <div className={styles.slider_container__uploadText}>
                     Загрузить видеоролик
@@ -536,22 +621,20 @@ export default function FormAddProject({ setIsModalOpen }) {
                       multiple
                     />
                     <svg
+                      className={styles.slider_container__svg}
+                      xmlns="http://www.w3.org/2000/svg"
                       width="16"
                       height="16"
                       viewBox="0 0 16 16"
                       fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
                     >
-                      <g id="Frame 4684">
-                        <path
-                          id="Vector"
-                          d="M11.8349 7.54949L5.64223 7.54949C5.46569 7.54642 5.2903 7.57854 5.1263 7.64398C4.96231 7.70942 4.81299 7.80686 4.68705 7.93062C4.56112 8.05439 4.4611 8.20199 4.39282 8.36483C4.32454 8.52766 4.28938 8.70246 4.28938 8.87903C4.28937 9.0556 4.32454 9.2304 4.39282 9.39323C4.4611 9.55607 4.56112 9.70367 4.68705 9.82744C4.81299 9.9512 4.96231 10.0486 5.1263 10.1141C5.2903 10.1795 5.46569 10.2116 5.64223 10.2086L11.754 10.1277C12.4512 10.1156 13.1158 9.83011 13.6046 9.33275C14.0934 8.8354 14.3673 8.16596 14.3673 7.46862C14.3673 6.77129 14.0934 6.10185 13.6046 5.60449C13.1158 5.10713 12.4512 4.82165 11.754 4.80953L5.64223 4.88946C4.58413 4.88946 3.56936 5.30979 2.82117 6.05798C2.07298 6.80617 1.65265 7.82093 1.65265 8.87903C1.65265 9.93713 2.07298 10.9519 2.82117 11.7001C3.56936 12.4483 4.58413 12.8686 5.64223 12.8686L11.5189 12.8752"
-                          stroke="currentColor"
-                          strokeWidth="0.8"
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                        />
-                      </g>
+                      <path
+                        d="M11.8346 7.54949L5.64198 7.54949C5.46544 7.54642 5.29006 7.57854 5.12606 7.64398C4.96206 7.70942 4.81274 7.80686 4.68681 7.93062C4.56088 8.05439 4.46085 8.20199 4.39257 8.36483C4.3243 8.52766 4.28913 8.70246 4.28913 8.87903C4.28913 9.0556 4.3243 9.2304 4.39257 9.39323C4.46085 9.55607 4.56088 9.70367 4.68681 9.82744C4.81274 9.9512 4.96206 10.0486 5.12606 10.1141C5.29006 10.1795 5.46544 10.2116 5.64198 10.2086L11.7538 10.1277C12.451 10.1156 13.1156 9.83011 13.6043 9.33275C14.0931 8.8354 14.367 8.16596 14.367 7.46862C14.367 6.77129 14.0931 6.10185 13.6043 5.60449C13.1156 5.10713 12.451 4.82165 11.7538 4.80953L5.64198 4.88946C4.58388 4.88946 3.56912 5.30979 2.82093 6.05798C2.07274 6.80617 1.65241 7.82093 1.65241 8.87903C1.65241 9.93713 2.07274 10.9519 2.82093 11.7001C3.56912 12.4483 4.58388 12.8686 5.64198 12.8686L11.5187 12.8752"
+                        stroke="currentColor"
+                        strokeWidth="0.8"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                      />
                     </svg>
                     <div className={styles.slider_container__uploadText}>
                       Загрузить изображения
@@ -625,7 +708,10 @@ export default function FormAddProject({ setIsModalOpen }) {
               rows="10"
               placeholder={labelText}
             ></textarea>
-            <label htmlFor="" className={styles.form_container__textarea_label}>
+            <label
+              htmlFor=""
+              className={styles.form_container__textarea_label_constructor}
+            >
               {labelText}
             </label>
           </div>
@@ -636,14 +722,17 @@ export default function FormAddProject({ setIsModalOpen }) {
   };
 
   const renderInputs = (inputs, blockIndex) => {
-    return inputs.map((input, inputIndex) => {
-      return renderInputWithLabel(
-        input.type,
-        input.label,
-        blockIndex,
-        inputIndex
-      );
-    });
+    return (
+      <div key={blockIndex} className={styles.blockContainer}>
+        {inputs.map((input, inputIndex) =>
+          renderInputWithLabel(input.type, input.label, blockIndex, inputIndex)
+        )}
+        <div
+          className={styles.blockContainer__close_button}
+          onClick={() => handleRemoveBlock(blockIndex)}
+        ></div>
+      </div>
+    );
   };
 
   const [selectedMonth, setSelectedMonth] = useState(null);
@@ -675,6 +764,11 @@ export default function FormAddProject({ setIsModalOpen }) {
   // console.log(dynamicData, "<<--dynamicData");
   return (
     <div className={styles.form_container}>
+      {showNotification && (
+        <div className={styles.form_container__notification}>
+          Сначала заполните все обязательные поля в предыдущем блоке❗
+        </div>
+      )}
       <div className={styles.form_container__title}>Новый проект</div>
 
       <div className={styles.form_container__block_form}>
@@ -702,6 +796,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                     setIsPhotoOpenVisible
                   )
                 }
+                autoComplete="off"
                 required
               />
               <label htmlFor="title" className={styles.form__label}>
@@ -750,6 +845,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                     setIsPhotoOpenVisible
                   )
                 }
+                autoComplete="off"
                 required
               />
               <label htmlFor="countryCity" className={styles.form__label}>
@@ -802,6 +898,20 @@ export default function FormAddProject({ setIsModalOpen }) {
                   onBlur={() => setIsFocused(false)}
                 />
               </div>
+              {errorMessage && (
+                <div className={styles.form_error_message}>
+                  <div className={styles.form_error_message_div}>
+                    <button
+                      onClick={() => setErrorMessage("")}
+                      className={styles.form_error_close_button}
+                      aria-label="Закрыть"
+                    >
+                      ✕
+                    </button>
+                    {errorMessage}
+                  </div>
+                </div>
+              )}
             </div>
             <div className={`${styles.form__group} ${styles.field}`}>
               <Select
@@ -840,12 +950,12 @@ export default function FormAddProject({ setIsModalOpen }) {
                     label: "Технологии",
                   },
                   {
-                    value: "Цифровое проектирование",
-                    label: "Цифровое проектирование",
+                    value: "Цифровые технологии",
+                    label: "Цифровые технологии",
                   },
                 ]}
                 className={styles.form__field}
-                placeholder="Выберите вид строительства"
+                placeholder="Выберите табы фильтрации"
                 components={{
                   DropdownIndicator: AnotherDropdownIndicator,
                   ValueContainer: AnotherValueContainer,
@@ -884,7 +994,11 @@ export default function FormAddProject({ setIsModalOpen }) {
                       setPreviewPhotoOpen,
                       setIsPhotoOpenVisible,
                       setPreviewPhotoClose,
-                      setIsPhotoCloseVisible
+                      setIsPhotoCloseVisible,
+                      setIsLoading,
+                      setIsLoadingDropPhoto,
+                      setIsLoadingOpenImage,
+                      setIsLoadingCloseImage
                     )
                   }
                 />
@@ -907,10 +1021,15 @@ export default function FormAddProject({ setIsModalOpen }) {
                   </g>
                 </svg>
 
-                <div className={styles.slider_container__uploadText}>
+                <div className={styles.slider_container__uploadTextForm}>
                   Загрузить изображения
                 </div>
               </label>
+              {isLoading && (
+                <div className={styles.preview_photos_container__loading}>
+                  Загрузка . . .
+                </div>
+              )}
             </div>
             <div>
               {previewPhotoAva?.map((preview, index) => (
@@ -1040,7 +1159,11 @@ export default function FormAddProject({ setIsModalOpen }) {
                         setPreviewPhotoOpen,
                         setIsPhotoOpenVisible,
                         setPreviewPhotoClose,
-                        setIsPhotoCloseVisible
+                        setIsPhotoCloseVisible,
+                        setIsLoading,
+                        setIsLoadingDropPhoto,
+                        setIsLoadingOpenImage,
+                        setIsLoadingCloseImage
                       )
                     }
                     multiple
@@ -1063,10 +1186,15 @@ export default function FormAddProject({ setIsModalOpen }) {
                       />
                     </g>
                   </svg>
-                  <div className={styles.slider_container__uploadText}>
+                  <div className={styles.slider_container__uploadTextForm}>
                     Загрузить изображения
                   </div>
                 </label>
+                {isLoadingDropPhoto && (
+                  <div className={styles.preview_photos_container__loading}>
+                    Загрузка . . .
+                  </div>
+                )}
               </div>
             </div>
             <div className={styles.preview_photos_container}>
@@ -1106,6 +1234,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                   setInputData({ ...inputData, titleTextBlock: value });
                 }
               }}
+              autoComplete="off"
               required
             />
             <label
@@ -1125,6 +1254,7 @@ export default function FormAddProject({ setIsModalOpen }) {
             </div>
             <textarea
               className={styles.form_container__textarea}
+              autoComplete="off"
               required
               name="descriptionProject"
               id="descriptionProject"
@@ -1155,6 +1285,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                   className={styles.form__field}
                   placeholder="totalArea"
                   name="totalArea"
+                  autoComplete="off"
                   id="totalArea"
                   value={inputData.totalArea}
                   onChange={(event) =>
@@ -1192,6 +1323,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                   className={styles.form__field}
                   placeholder="siteArea"
                   name="siteArea"
+                  autoComplete="off"
                   id="siteArea"
                   value={inputData.siteArea}
                   onChange={(event) =>
@@ -1230,6 +1362,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                   className={styles.form__field}
                   placeholder="floors"
                   name="floors"
+                  autoComplete="off"
                   id="floors"
                   value={inputData.floors}
                   onChange={(event) =>
@@ -1264,6 +1397,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                   className={styles.form__field}
                   placeholder="altitude"
                   name="altitude"
+                  autoComplete="off"
                   id="altitude"
                   value={inputData.altitude}
                   onChange={(event) =>
@@ -1301,6 +1435,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                   className={styles.form__field}
                   placeholder="constructionVolume"
                   name="constructionVolume"
+                  autoComplete="off"
                   id="constructionVolume"
                   value={inputData.constructionVolume}
                   onChange={(event) =>
@@ -1340,6 +1475,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                   className={styles.form__field}
                   placeholder="numberOfLanes"
                   name="numberOfLanes"
+                  autoComplete="off"
                   id="numberOfLanes"
                   value={inputData.numberOfLanes}
                   onChange={(event) =>
@@ -1376,6 +1512,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                   className={styles.form__field}
                   placeholder="long"
                   name="long"
+                  autoComplete="off"
                   id="long"
                   value={inputData.long}
                   onChange={(event) =>
@@ -1420,6 +1557,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                   className={styles.form__field}
                   placeholder="location"
                   name="location"
+                  autoComplete="off"
                   id="location"
                   value={inputData.location}
                   onChange={(event) =>
@@ -1501,6 +1639,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                   className={styles.form__field}
                   placeholder="customer"
                   name="customer"
+                  autoComplete="off"
                   id="customer"
                   value={inputData.customer}
                   onChange={(event) =>
@@ -1531,6 +1670,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                       className={styles.form__field}
                       placeholder="publication"
                       name="publication"
+                      autoComplete="off"
                       id="publication"
                       value={inputData.publication}
                       onChange={(event) =>
@@ -1558,6 +1698,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                       placeholder="publicationTwo"
                       name="publicationTwo"
                       id="publicationTwo"
+                      autoComplete="off"
                       value={inputData.publicationTwo}
                       onChange={(event) =>
                         changeHandler(
@@ -1589,6 +1730,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                       placeholder="linkToPublication"
                       name="linkToPublication"
                       id="linkToPublication"
+                      autoComplete="off"
                       value={inputData.linkToPublication}
                       onChange={(event) =>
                         changeHandler(
@@ -1618,6 +1760,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                       placeholder="linkToPublicationTwo"
                       name="linkToPublicationTwo"
                       id="linkToPublicationTwo"
+                      autoComplete="off"
                       value={inputData.linkToPublicationTwo}
                       onChange={(event) =>
                         changeHandler(
@@ -1648,6 +1791,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                   className={styles.form__field}
                   placeholder="awards"
                   name="awards"
+                  autoComplete="off"
                   id="awards"
                   value={inputData.awards}
                   onChange={(event) =>
@@ -1692,32 +1836,39 @@ export default function FormAddProject({ setIsModalOpen }) {
                       setPreviewPhotoOpen,
                       setIsPhotoOpenVisible,
                       setPreviewPhotoClose,
-                      setIsPhotoCloseVisible
+                      setIsPhotoCloseVisible,
+                      setIsLoading,
+                      setIsLoadingDropPhoto,
+                      setIsLoadingOpenImage,
+                      setIsLoadingCloseImage
                     )
                   }
                 />
+
                 <svg
+                  xmlns="http://www.w3.org/2000/svg"
                   width="16"
                   height="16"
                   viewBox="0 0 16 16"
                   fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
                 >
-                  <g id="Frame 4684">
-                    <path
-                      id="Vector"
-                      d="M11.8349 7.54949L5.64223 7.54949C5.46569 7.54642 5.2903 7.57854 5.1263 7.64398C4.96231 7.70942 4.81299 7.80686 4.68705 7.93062C4.56112 8.05439 4.4611 8.20199 4.39282 8.36483C4.32454 8.52766 4.28938 8.70246 4.28938 8.87903C4.28937 9.0556 4.32454 9.2304 4.39282 9.39323C4.4611 9.55607 4.56112 9.70367 4.68705 9.82744C4.81299 9.9512 4.96231 10.0486 5.1263 10.1141C5.2903 10.1795 5.46569 10.2116 5.64223 10.2086L11.754 10.1277C12.4512 10.1156 13.1158 9.83011 13.6046 9.33275C14.0934 8.8354 14.3673 8.16596 14.3673 7.46862C14.3673 6.77129 14.0934 6.10185 13.6046 5.60449C13.1158 5.10713 12.4512 4.82165 11.754 4.80953L5.64223 4.88946C4.58413 4.88946 3.56936 5.30979 2.82117 6.05798C2.07298 6.80617 1.65265 7.82093 1.65265 8.87903C1.65265 9.93713 2.07298 10.9519 2.82117 11.7001C3.56936 12.4483 4.58413 12.8686 5.64223 12.8686L11.5189 12.8752"
-                      stroke="currentColor"
-                      strokeWidth="0.8"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </g>
+                  <path
+                    d="M11.8346 7.54949L5.64198 7.54949C5.46544 7.54642 5.29006 7.57854 5.12606 7.64398C4.96206 7.70942 4.81274 7.80686 4.68681 7.93062C4.56088 8.05439 4.46085 8.20199 4.39257 8.36483C4.3243 8.52766 4.28913 8.70246 4.28913 8.87903C4.28913 9.0556 4.3243 9.2304 4.39257 9.39323C4.46085 9.55607 4.56088 9.70367 4.68681 9.82744C4.81274 9.9512 4.96206 10.0486 5.12606 10.1141C5.29006 10.1795 5.46544 10.2116 5.64198 10.2086L11.7538 10.1277C12.451 10.1156 13.1156 9.83011 13.6043 9.33275C14.0931 8.8354 14.367 8.16596 14.367 7.46862C14.367 6.77129 14.0931 6.10185 13.6043 5.60449C13.1156 5.10713 12.451 4.82165 11.7538 4.80953L5.64198 4.88946C4.58388 4.88946 3.56912 5.30979 2.82093 6.05798C2.07274 6.80617 1.65241 7.82093 1.65241 8.87903C1.65241 9.93713 2.07274 10.9519 2.82093 11.7001C3.56912 12.4483 4.58388 12.8686 5.64198 12.8686L11.5187 12.8752"
+                    stroke="currentColor"
+                    strokeWidth="0.8"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
                 </svg>
-                <div className={styles.slider_container__uploadText}>
+                <div className={styles.slider_container__uploadTextForm}>
                   Загрузить изображения
                 </div>
               </label>
+              {isLoadingOpenImage && (
+                <div className={styles.preview_photos_container__loading}>
+                  Загрузка . . .
+                </div>
+              )}
             </div>
             <div>
               {previewPhotoOpen?.map((preview, index) => (
@@ -1747,6 +1898,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                 type="input"
                 className={styles.form_container__heading_block_input}
                 placeholder="Не более 56 символов"
+                autoComplete="off"
                 name="headingTextBlock"
                 id="headingTextBlock"
                 maxLength="56"
@@ -1779,6 +1931,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                 className={styles.form_container__textarea}
                 name="textBlock"
                 id="textBlock"
+                autoComplete="off"
                 cols="30"
                 rows="10"
                 placeholder="Дополнительный текстовый блок"
@@ -1882,7 +2035,11 @@ export default function FormAddProject({ setIsModalOpen }) {
                       setPreviewPhotoOpen,
                       setIsPhotoOpenVisible,
                       setPreviewPhotoClose,
-                      setIsPhotoCloseVisible
+                      setIsPhotoCloseVisible,
+                      setIsLoading,
+                      setIsLoadingDropPhoto,
+                      setIsLoadingOpenImage,
+                      setIsLoadingCloseImage
                     )
                   }
                 />
@@ -1904,10 +2061,15 @@ export default function FormAddProject({ setIsModalOpen }) {
                     />
                   </g>
                 </svg>
-                <div className={styles.slider_container__uploadText}>
+                <div className={styles.slider_container__uploadTextForm}>
                   Загрузить изображения
                 </div>
               </label>
+              {isLoadingCloseImage && (
+                <div className={styles.preview_photos_container__loading}>
+                  Загрузка . . .
+                </div>
+              )}
             </div>
             <div>
               {previewPhotoClose?.map((preview, index) => (
