@@ -43,10 +43,10 @@ export default function SwiperContainer({ article1, article2 }) {
         // }}
       >
         <div className={styles.swiper_wrapper}>
-          {combinedArticles && combinedArticles.map((item) => {
+          {combinedArticles && combinedArticles.map((item, index) => {
             const firstPhoto = item.imageTitle.split(", ")[0];
             return (
-              <SwiperSlide className="swiper_container_item_articles" key={item.id}
+              <SwiperSlide className="swiper_container_item_articles"  key={`${item.id}_${index}`}
               >
                  <Link key={item.id}  to={`/publication/${item.id}`}>
                 <Slideritem

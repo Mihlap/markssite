@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import Modal from "react-modal";
 import { Helmet } from "react-helmet-async";
-import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Swiper, SwiperSlide } from "swiper/react";
 import styles from "./Project.module.css";
@@ -22,7 +22,11 @@ import catPhoto from "../img/default-photo.jpeg";
 const Host = process.env.REACT_APP_SERVER_HOST;
 const apiKey = process.env.REACT_APP_API_KEY;
 
-export default function Project() {
+export default function Project({
+  handleMouseEnter,
+  handleMouseLeave,
+  handleMouseHover,
+}) {
   const buttonChoose = [
     "Все",
     "Архитектура и концепция",
@@ -32,7 +36,7 @@ export default function Project() {
     "Геотехника",
     "Наука",
     "Технологии",
-    "Цифровое проектирование",
+    "Цифровые технологии",
     ];
 
   const buttonCity = [
@@ -123,13 +127,12 @@ export default function Project() {
       .catch((error) =>
         console.error("Ошибка при получении геопозиции:", error)
       );
-      // setCurLocation("Москва");
+    // setCurLocation("Москва");
   }, []);
 
-  const currentLocation = userGeolocation
-  ? userGeolocation.city : "Москва";
+  const currentLocation = userGeolocation ? userGeolocation.city : "Москва";
 
-   function handleFocus() {
+  function handleFocus() {
     setIsFocusedProject(true);
   }
 
@@ -226,7 +229,6 @@ export default function Project() {
       setSelectedViewConstruction(selectOnCompetencies === viewConstruction)
     );
   };
-
 
   const handleScroll = () => {
     const isAtBottom =
@@ -353,37 +355,37 @@ export default function Project() {
           </div>
         )}
         <div className={styles.menu_button_group_project_wrapper_main1}>
-        {screenWidth && (
-          <Swiper
-            onSwiper={setSwiper}
-            slidesPerView="auto"
-            spaceBetween={8}
-            className={styles.my_swiper2_button_group_project}
-            touch="true"
-          >
-            <div className={styles.button_group_project}>
-              {buttonChoose &&
-                buttonChoose?.map((el, index) => (
-                  <SwiperSlide
-                    key={el}
-                    onClick={() => handleButtonClick(el)}
-                    className={`${styles.menu__button__allProject} ${
-                      !isModalProjectOpen &&
-                      (el === selectedViewConstruction ||
-                        (index === 0 && !selectedViewConstruction))
-                        ? styles.active
-                        : ""
-                    }`}
-                    style={{ width: "fit-content" }}
-                  >
-                    <p type="button" className={styles.menu_button_items}>
-                      {el}
-                    </p>
-                  </SwiperSlide>
-                ))}
-            </div>
-          </Swiper>
-        )}
+          {screenWidth && (
+            <Swiper
+              onSwiper={setSwiper}
+              slidesPerView="auto"
+              spaceBetween={8}
+              className={styles.my_swiper2_button_group_project}
+              touch="true"
+            >
+              <div className={styles.button_group_project}>
+                {buttonChoose &&
+                  buttonChoose?.map((el, index) => (
+                    <SwiperSlide
+                      key={el}
+                      onClick={() => handleButtonClick(el)}
+                      className={`${styles.menu__button__allProject} ${
+                        !isModalProjectOpen &&
+                        (el === selectedViewConstruction ||
+                          (index === 0 && !selectedViewConstruction))
+                          ? styles.active
+                          : ""
+                      }`}
+                      style={{ width: "fit-content" }}
+                    >
+                      <p type="button" className={styles.menu_button_items}>
+                        {el}
+                      </p>
+                    </SwiperSlide>
+                  ))}
+              </div>
+            </Swiper>
+          )}
         </div>
         {/* этот isActive скрывает фильтрацию  */}
         {!isActive && (
@@ -398,6 +400,8 @@ export default function Project() {
                     }`}
                   >
                     <button
+                      onMouseEnter={handleMouseEnter}
+                      onMouseLeave={handleMouseLeave}
                       className={`${styles.menu__button__allProject} ${
                         !isModalProjectOpen &&
                         (el === selectedViewConstruction ||
@@ -415,6 +419,8 @@ export default function Project() {
             </div>
 
             <button
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
               className={styles.menu__button__choose__city}
               onClick={handleSelectCityClick}
             >
@@ -602,15 +608,13 @@ export default function Project() {
           <div className={styles.section_project__block}>
             {filteredProjects &&
               filteredProjects.map((project) => {
-                   const photoName = project && project.imageProject;
-                   const defaultPhoto = catPhoto; // Убедитесь, что catPhoto существует и содержит правильный путь к изображению по умолчанию
+                const photoName = project && project.imageProject;
+                const defaultPhoto = catPhoto; // Убедитесь, что catPhoto существует и содержит правильный путь к изображению по умолчанию
 
-                   const photoSrc =
-                     photoName &&
-                     photoName !== "null" &&
-                     photoName !== "undefined"
-                       ? `${Host}/images/imageAdd/${photoName}`
-                       : defaultPhoto;
+                const photoSrc =
+                  photoName && photoName !== "null" && photoName !== "undefined"
+                    ? `${Host}/images/imageAdd/${photoName}`
+                    : defaultPhoto;
                 if (!project) {
                   return null;
                 }
@@ -631,6 +635,8 @@ export default function Project() {
                         <img
                           className={styles.container__imageTitle_projectCard}
                           src={photoSrc}
+                          onMouseEnter={handleMouseHover}
+                          onMouseLeave={handleMouseLeave}
                           alt={project.imageProject || "Default Alt Text"}
                         />
                         <div className={styles.project_content__wrapper}>

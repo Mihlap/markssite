@@ -7,6 +7,8 @@ const fileMiddleware = require('../../middleware/file');
 
 const router = express.Router();
 
+const projectImagesPath = path.join(__dirname, 'images/projectFoto');
+
 router.post(
   '/postzapros',
   fileMiddleware.fields([
@@ -91,11 +93,23 @@ router.post(
   },
 );
 
+router.get('/getimage/:imageName', (req, res) => {
+  const { imageName } = req.params;
+  const imagePath = path.join(projectImagesPath, imageName);
+
+ res.set('Cache-Control', 'public, max-age=432000'); // 432000 секунд = 5 дней
+
+  res.sendFile(imagePath);
+});
+
 router.get('/getzapros', async (req, res) => {
   try {
     const data = await Project.findAll({
       include: [Constructor],
     });
+
+    // res.set('Cache-Control', 'public, max-age=432000'); // 432000 секунд = 5 дней
+
     res.json(data);
   } catch (error) {
     console.log(error);
@@ -116,12 +130,16 @@ router.get('/getzapros-filter', async (req, res) => {
       data = await Project.findAll();
     }
 
+    // res.set('Cache-Control', 'public, max-age=432000'); // 432000 секунд = 5 дней
+
     res.json(data);
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: 'Произошла ошибка при получении проектов.' });
   }
 });
+
+
 // эта функция нужна для того, чтоб удалять из imageTitle фотографии есть там не массив
 const deleteImage = (imageName) => {
   const imagePath = path.join(__dirname, '..', '..', 'images', 'imageAdd', imageName);

@@ -25,7 +25,7 @@ import {
   setCategory,
 } from "../store/Slice/StaffSlice";
 import LoadingCircle from "../Loading/LoadingCircle";
-// import Error from "../Loading/Error/Error";
+import Error from "../Loading/Error/Error";
 
 import bracket from "../icons/bracket.svg";
 import bracket_dark from "../icons/bracket_dark.svg";
@@ -37,17 +37,21 @@ import CompanyGroupSlider from "../UI/CompanyGroupSlider/CompanyGroupSlider";
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 
-export default function Company() {
+export default function Company({
+  handleMouseEnter,
+  handleMouseLeave,
+  handleMouseHover,
+}) {
   const videoSource = {
-    large: `${Host}/images/video/company_full.mp4`,
-    medium: `${Host}/images/video/company_ipad.mp4`,
-    small: `${Host}/images/video/company_mob.mp4`,
+    large: `${Host}/videos/company_full.mp4`,
+    medium: `${Host}/videos/company_ipad.mp4`,
+    small: `${Host}/videos/company_mob.mp4`,
   };
 
   const videoSource2 = {
-    large: `${Host}/images/video/header_company_full.mp4`,
-    medium: `${Host}/images/video/header_company_ipad.mp4`,
-    small: `${Host}/images/video/header_company_mobile.mp4`,
+    large: `${Host}/videos/main_company_full.mp4`,
+    medium: `${Host}/videos/main_company_ipad.mp4`,
+    small: `${Host}/videos/main_company_mobile.mp4`,
   };
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [countPercent, setCountPercent] = useState(0);
@@ -87,7 +91,29 @@ export default function Company() {
   const symbol = "•";
 
   useEffect(() => {
-    window.scrollTo(0, 0);
+    const scrollToTop = () => {
+      window.scrollTo(0, 0);
+    };
+
+    const scrollToTableHeader = () => {
+      const element = document.getElementById("table-header-anchor");
+      if (element) {
+        // element.scrollIntoView({ behavior: 'smooth' });
+        window.location.replace("#table-header-anchor");
+      }
+    };
+
+    const hash = window.location.hash;
+    if (hash === "#table-header-anchor") {
+      scrollToTableHeader();
+    } else {
+      scrollToTop();
+    }
+
+    return () => {
+      window.removeEventListener("scroll", scrollToTop);
+      window.removeEventListener("scroll", scrollToTableHeader);
+    };
   }, []);
 
   useEffect(() => {
@@ -96,7 +122,7 @@ export default function Company() {
       if (screenWidth >= 1025) {
         setVideoSrc2(videoSource2.large);
         setVideoSrc(videoSource.large);
-      } else if (screenWidth >= 490 && screenWidth <= 1024) {
+      } else if (screenWidth >= 768 && screenWidth <= 1024) {
         setVideoSrc2(videoSource2.medium);
         setVideoSrc(videoSource.medium);
       } else {
@@ -170,8 +196,7 @@ export default function Company() {
   ]);
 
   useEffect(() => {
-    console.log("Inside useEffect");
-    gsap?.registerPlugin(ScrollTrigger);
+     gsap?.registerPlugin(ScrollTrigger);
 
     const { elementsRight } = { elementsRight: [blockSlider.current] };
 
@@ -240,6 +265,11 @@ export default function Company() {
     // { name: "HR", onClick: handleButtonClick },
   ];
 
+  const handleImageLoad = () => {
+    // console.log('Image loaded!');
+    setShowCards(true);
+  };
+
   // if (error) {
   //   return (
   //     <div>
@@ -288,8 +318,15 @@ export default function Company() {
         {/* <Company_Slider /> */}
         <div className={styles.block_video_company}>
           {videoSrc2 && (
-            <video playsInline autoPlay muted loop id="bg-video">
-              <source src={videoSrc2} type="video/mp4" />
+            <video
+              playsInline
+              autoPlay
+              muted
+              loop
+              id="bg-video"
+              className={styles.bg_video}
+            >
+              <source src={videoSrc2} type="video/mp4" preload="auto" />
             </video>
           )}
         </div>
@@ -472,7 +509,7 @@ export default function Company() {
         <div className={styles.company_group_slider}>
           <CompanyGroupSlider />
         </div>
-        <div className={styles.awards_wrapper}>
+        <div className={styles.awards_wrapper} id="table-header-anchor">
           Награды и&nbsp;премии
           <div className={styles.years_div}>/2005-2022/</div>
         </div>
@@ -481,7 +518,13 @@ export default function Company() {
           номинациях за&nbsp;годы практики с&nbsp;2005&nbsp;года
         </div>
         {isMobile && <TableCompanyMobile />}
-        {!isMobile && <TableCompany />}
+        {!isMobile && (
+          <TableCompany
+            handleMouseEnter={handleMouseEnter}
+            handleMouseLeave={handleMouseLeave}
+            handleMouseHover={handleMouseHover}
+          />
+        )}
         <div className={styles.specialist_wrapper}>
           <div className={styles.specialist}>Специалисты</div>
           {isMobile && (
@@ -526,6 +569,8 @@ export default function Company() {
                 className={`${styles.button_leader} ${styles.button_hover} ${
                   activeButton === "Руководство" ? styles.active : ""
                 }`}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
               >
                 Руководство
               </button>
@@ -540,6 +585,8 @@ export default function Company() {
                     ? styles.active
                     : ""
                 }`}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
               >
                 Научно-техническое сопровождение
               </button>
@@ -556,22 +603,24 @@ export default function Company() {
                 <li
                   key={el.id}
                   data-user-id={el.id}
-                  // {...el}
                   className={styles.container__item_stuff}
                   onClick={() => handleButtonClick(category, el.id)}
+                  onMouseEnter={handleMouseHover}
+                  onMouseLeave={handleMouseLeave}
                 >
                   <div className={styles.wrapper_container_item_stuff}>
-                    {showCards ? (
-                      <img
-                        className={styles.container__img_stuff}
-                        src={`${Host}/images/${el.img}`}
-                        onLoad={() => setShowCards(true)}
-                        alt={el.img}
-                        loading="lazy"
-                      />
-                    ) : (
-                      <LoadingCircle />
-                    )}
+                    <img
+                      className={`${styles.container__img_stuff} ${
+                        showCards ? "loaded" : ""
+                      }`}
+                      src={`${Host}/images/imageStuff/${el.img}`}
+                      onLoad={handleImageLoad}
+                      onError={(e) => {
+                        e.target.src = `${Host}/images/imageStuff/no_photo.png`;
+                      }}
+                      alt={el.img}
+                      loading="lazy"
+                    />
                   </div>
                   <div className={styles.container__item_name_stuff}>
                     {el.name}
@@ -586,7 +635,7 @@ export default function Company() {
                 className={styles.modal_wrapper}
                 const
                 modal={document.querySelector(".modal")}
-                modalStyleZIndex={9999}
+                modalStyleZIndex={10}
                 isOpen={isModalOpen}
                 onRequestClose={() => {
                   dispatch(selectCard(null));
@@ -605,11 +654,11 @@ export default function Company() {
                 categoryId={category}
                 style={{
                   overlay: {
-                    zIndex: 9999,
+                    zIndex: 10,
                     backgroundColor: "#2C3B447A",
                   },
                   content: {
-                    zIndex: 9999,
+                    zIndex: 10,
                   },
                 }}
               >
@@ -621,6 +670,8 @@ export default function Company() {
                         setIsModalOpen(false);
                         dispatch(selectCard(null));
                       }}
+                      onMouseEnter={handleMouseEnter}
+                      onMouseLeave={handleMouseLeave}
                     >
                       <svg
                         width="16"
@@ -641,14 +692,14 @@ export default function Company() {
                       <div className={styles.modal}>
                         <img
                           className={styles.modal_img_stuff}
-                          src={`${Host}/images/${selectedCard.img}`}
+                          src={`${Host}/images/imageStuff/${selectedCard.img}`}
                           alt={selectedCard.img}
                         />
                       </div>
                     </div>
                     <div className={styles.modal_name_stuff}>
                       {selectedCard.name}
-                    </div>                    
+                    </div>
                     {/* {selectedCard.description && (
                       <div className={styles.modal_description_stuff}>
                         {selectedCard.description
@@ -664,7 +715,7 @@ export default function Company() {
                           ))}
                       </div>
                     )} */}
-                       {selectedCard.description && (
+                    {selectedCard.description && (
                       <div className={styles.modal_description_stuff}>
                         {selectedCard.description}
                       </div>
@@ -930,7 +981,7 @@ export default function Company() {
             )}
           </ul>
         </div>
-       {isMobile && (
+        {isMobile && (
           <div className={styles.slider_card_wrapper}>
             <Swiper
               className={styles.slider_card_container}
@@ -957,8 +1008,14 @@ export default function Company() {
                 >
                   <div className={styles.wrapper_container_item_stuff}>
                     <img
-                      className={styles.container__img_stuff}
-                      src={`${Host}/images/${el.img}`}
+                        className={`${styles.container__img_stuff} ${
+                          showCards ? "loaded" : ""
+                        }`}
+                      src={`${Host}/images/imageStuff/${el.img}`}
+                      onLoad={handleImageLoad}
+                      onError={(e) => {
+                        e.target.src = `${Host}/images/imageStuff/no_photo.png`;
+                      }}
                       alt={el.img}
                       loading="lazy"
                     />
@@ -988,7 +1045,7 @@ export default function Company() {
               />
             ))}
         </div> */}
-       {!isMobile && (
+        {!isMobile && (
           <div className={styles.slider_card_wrapper}>
             <Swiper
               className={styles.slider_card_container}
@@ -1004,10 +1061,16 @@ export default function Company() {
                   className={styles.slide_container_item_stuff}
                   onClick={() => handleButtonClick(category, el.id)}
                 >
-                  <div className={styles.wrapper_container_item_stuff}>
+                  <div className={styles.wrapper_container_item_stuff} >
                     <img
-                      className={styles.container__img_stuff}
-                      src={`${Host}/images/${el.img}`}
+                         className={`${styles.container__img_stuff} ${
+                          showCards ? "loaded" : ""
+                        }`}
+                      src={`${Host}/images/imageStuff/${el.img}`}
+                      onLoad={handleImageLoad}
+                      onError={(e) => {
+                        e.target.src = `${Host}/images/imageStuff/no_photo.png`;
+                      }}
                       alt={el.img}
                       loading="lazy"
                     />
@@ -1027,16 +1090,24 @@ export default function Company() {
           <div className={styles.video_wrapper}>
             {videoSrc && (
               <video playsInline autoPlay muted loop id="bg-video_2">
-                <source src={videoSrc} type="video/mp4" />
+                <source src={videoSrc} type="video/mp4" preload="auto" />
               </video>
             )}
           </div>
           <div className={styles.form_wrapper}>
             <div className={styles.company_form_contacts_wrapper}>
-              <CompanyFormContacts />
+              <CompanyFormContacts 
+               handleMouseEnter={handleMouseEnter}
+               handleMouseLeave={handleMouseLeave}
+               handleMouseHover={handleMouseHover}
+              />
             </div>
             <div className={styles.companySubscriptionForm_wrapper}>
-              <CompanySubscriptionForm />
+              <CompanySubscriptionForm 
+               handleMouseEnter={handleMouseEnter}
+               handleMouseLeave={handleMouseLeave}
+               handleMouseHover={handleMouseHover}
+              />
             </div>
           </div>
         </div>

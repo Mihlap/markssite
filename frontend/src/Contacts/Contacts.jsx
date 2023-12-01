@@ -15,32 +15,32 @@ const cities = ["Москва", "Оренбург", "Челябинск", "Та�
 
 const cityInfo = {
   Москва: {
-    address: "Москва, 3-я Ямского Поля, дом 20, строение 1, офис 704",
+    address: "Москва, 3-я ул. Ямского Поля, д. 20, с. 1, офис 704",
     phone: "+7 (495) 120-12-26",
     mail: "mail@marksgroup.ru",
     hour: "",
   },
   Оренбург: {
-    address: "г. Оренбург, проезд Нижний, 17, офис 305",
-    phone: "+7 (495) 120-12-26",
+    address: "Оренбург, пр. Нижний, д. 17, офис 305",
+    phone: "+7 (3532) 22-86-96",
     mail: "mail@marksgroup.ru",
-    hour: "2 МСК",
+    hour: "+ 2 МСК",
   },
   Челябинск: {
-    address: "г. Челябинск, ул. Северная дом 52/3",
-    phone: "+7 (495) 120-12-26",
+    address: "Челябинск, ул. Северная, д. 52/3",
+    phone: "+7 (968) 110-11-30",
     mail: "mail@marksgroup.ru",
-    hour: "2 МСК",
+    hour: "+ 2 МСК",
   },
   Ташкент: {
     address: "Tashkent, Oybek Street, 18/1",
     phone: "+998 99 353 96 90",
     mail: "mail@marksgroup.ru",
-    hour: "2 МСК",
+    hour: "+ 2 МСК",
   },
 };
 
-const Contacts = () => {
+const Contacts = ({ handleMouseEnter, handleMouseLeave }) => {
   const [map, setMap] = useState(null);
   const [selectedMap, setSelectedMap] = useState("Москва");
   const [marker, setMarker] = useState(null);
@@ -170,7 +170,7 @@ const Contacts = () => {
       <div className={styles.main_contact}>
         <div className={styles.menu_block}>
           <div className={styles.menu_span}>
-            Стать клиентом или&nbsp;партнером
+            Стать клиентом или&nbsp;партнёром
           </div>
           <div className={styles.menu_mail}>{mail}</div>
           <div className={styles.menu_tel}>{phone}</div>
@@ -184,13 +184,9 @@ const Contacts = () => {
           <div className={styles.menu_work}>
             Режим работы &nbsp;&bull;&nbsp; Пн.&nbsp;&mdash;
             Пт.&nbsp;10.00&mdash;19.00
-            {selectedMap !== "Москва" && (
-           <> &nbsp;&bull;&nbsp; {hour}</>
-           )}
+            {selectedMap !== "Москва" && <> &nbsp;&bull;&nbsp; {hour}</>}
           </div>
-          <div className={styles.menu_hour}>
-           
-          </div>
+          <div className={styles.menu_hour}></div>
           <div className={styles.menu_office_name}>Наши офисы</div>
           <div className={styles.menu_button_group}>
             {cities.map((city) => (
@@ -200,6 +196,8 @@ const Contacts = () => {
                   selectedMap === city ? styles.menu_button_active : ""
                 }`}
                 onClick={() => setSelectedMap(city)}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
               >
                 <p className={styles.menu_button_city}>{city}</p>
               </button>

@@ -9,14 +9,14 @@ import {
 } from "./utils/navbarUtils";
 import NavBarPhone from "./NavBarPhone/NavBarPhone";
 
-export default function Navbar() {
+export default function Navbar({ handleMouseEnter, handleMouseLeave }) {
   const [activeClass, setActiveClass] = useState("");
   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [visible, setVisible] = useState(true);
   const [scrollDelta, setScrollDelta] = useState(0);
 
   const handleScroll = () => {
-    const currentScrollPos = window.pageYOffset;
+    const currentScrollPos = window.scrollY;
     const delta = currentScrollPos - prevScrollPos; // Сколько пикселей прокрутились
 
     if (window.innerWidth > 1024) {
@@ -67,11 +67,15 @@ export default function Navbar() {
         <div className={styles.navbar__container}>
           <div className={styles.navbar__title_block}>
             <Link
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
               className={`${styles.navbar__title} ${activeClass === "/"}`}
               to="/"
               onClick={() => handleItemClick("/")}
             >
-              <h1 className={styles.navbar__title}>MARKS GROUP</h1>
+              <h1 className={styles.navbar__title}>
+                <span>MARKS GROUP</span>
+              </h1>
             </Link>
           </div>
           <ul className={styles.navbar__list}>
@@ -103,6 +107,19 @@ export default function Navbar() {
               <div>Компетенции</div>
             </Link> */}
             <Link
+               onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+              className={`${styles.navbar__item} ${
+                activeClass === "/" ? styles.navbar__item_open : ""
+              }`}
+              to="/"
+              onClick={() => handleItemClick("/")}
+            >
+              <div>Главная</div>
+            </Link>
+            <Link
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
               className={`${styles.navbar__item} ${
                 activeClass === "/project" ? styles.navbar__item_open : ""
               }`}
@@ -112,6 +129,8 @@ export default function Navbar() {
               <div>Проекты</div>
             </Link>
             <Link
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
               className={`${styles.navbar__item} ${
                 activeClass === "/publication" ? styles.navbar__item_open : ""
               }`}
@@ -121,6 +140,8 @@ export default function Navbar() {
               <div>Публикации</div>
             </Link>
             <Link
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
               className={`${styles.navbar__item} ${
                 activeClass === "/company" ? styles.navbar__item_open : ""
               }`}
@@ -130,12 +151,26 @@ export default function Navbar() {
               <div>О Компании</div>
             </Link>
             <Link
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+              className={`${styles.navbar__item} ${
+                activeClass === "/portal/vacancies" ? styles.navbar__item_open : ""
+              }`}
+              to="/portal/vacancies"
+              target="_blank"
+              onClick={() => handleItemClick("/portal/vacancies")}
+            >
+              <div>HR портал</div>
+            </Link>
+            <Link
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
               className={`${styles.navbar__item} ${
                 activeClass === "/contacts" ? styles.navbar__item_open : ""
               }`}
               to="/contacts"
               onClick={() => handleItemClick("/contacts")}
-            >
+             >
               <div>Контакты</div>
             </Link>
           </ul>

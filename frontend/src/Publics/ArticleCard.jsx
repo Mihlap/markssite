@@ -30,7 +30,11 @@ gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 
-const ArticleCard = () => {
+const ArticleCard = ({
+  handleMouseEnter,
+  handleMouseLeave,
+  handleMouseHover,
+}) => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const sliderArticleCardRef = useRef(null);
@@ -42,6 +46,8 @@ const ArticleCard = () => {
   const [isHorizontalScroll, setIsHorizontalScroll] = useState(false);
   const [isAtRightEdge, setIsAtRightEdge] = useState(false);
   const [scrollingMode, setScrollingMode] = useState("vertical");
+
+  const isMobile = window.innerWidth <= 767;
 
   const refs = {
     title: useRef(null),
@@ -207,6 +213,12 @@ const ArticleCard = () => {
   const nextArticle = articles[nextIndex];
   const userSelectedBlocks = article?.ConstructorArticles?.map((el) => el.data);
 
+
+  // Получаем 20 рандомных статей
+  const randomArticles = articles
+  ? [...articles].sort(() => 0.5 - Math.random()).slice(0, 20)
+  : [];
+
   // console.log(userSelectedBlocks, "<<--- userSelectedBlocks");
 
   // console.log(article, "===========================================");
@@ -224,7 +236,11 @@ const ArticleCard = () => {
       </Helmet>
       <div className={styles.main_article_card}>
         {article && <ArticleCardSlider slidesCard={[article]} />}
-        <div className={styles.all_button_div}>
+        <div
+          className={styles.all_button_div}
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        >
           <AllArticlesButton />
         </div>
         <div className={styles.section_article__block__card}>
@@ -328,35 +344,40 @@ const ArticleCard = () => {
                 </div>
               </div>
             </div>
-           <div className={styles.div_conteiner} ref={refs.constructorBlock}>
+            <div className={styles.div_conteiner} ref={refs.constructorBlock}>
               {userSelectedBlocks?.map((innerBlocks, outerIndex) => (
                 <div key={outerIndex}>
                   {innerBlocks?.map((block, innerIndex) => (
-                    <ConstructorBlockRenderer key={innerIndex} block={block} />
+                    <ConstructorBlockRenderer
+                      handleMouseEnter={handleMouseEnter}
+                      handleMouseLeave={handleMouseLeave}
+                      key={innerIndex}
+                      block={block}
+                    />
                   ))}
                 </div>
               ))}
             </div>
-              <div
-                className={styles.item_container_imageClose}
-                ref={refs.imageClose}
-              >
-                <div className={styles.item}>
-                  <img
-                    className={styles.item_img_close}
-                    src={
-                      article && article.imageClose
-                        ? `${Host}/images/imageArticle/${article.imageClose}`
-                        : `${catPhoto}`
-                    }
-                    alt={
-                      article && article.imageClose
-                        ? article.imageClose
-                        : "Default Alt Text"
-                    }
-                  />
-                </div>
+            <div
+              className={styles.item_container_imageClose}
+              ref={refs.imageClose}
+            >
+              <div className={styles.item}>
+                <img
+                  className={styles.item_img_close}
+                  src={
+                    article && article.imageClose
+                      ? `${Host}/images/imageArticle/${article.imageClose}`
+                      : `${catPhoto}`
+                  }
+                  alt={
+                    article && article.imageClose
+                      ? article.imageClose
+                      : "Default Alt Text"
+                  }
+                />
               </div>
+            </div>
             <div
               className={
                 styles.container_author_address_imageClose_share_article
@@ -405,7 +426,11 @@ const ArticleCard = () => {
               <div className={styles.share_article}>Поделиться статьей</div>
             </div>
             <div id="articles" className={styles.social_links_articleCard}>
-              <button onClick={() => shareToVK(article, Host)}>
+              <button
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                onClick={() => shareToVK(article, Host)}
+              >
                 <span
                   className={styles.social_links_item}
                   style={{ marginRight: "21px", color: "#FF7F6A" }}
@@ -413,7 +438,11 @@ const ArticleCard = () => {
                   VK
                 </span>
               </button>
-              <button onClick={() => shareToWhatsApp(article, Host)}>
+              <button
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                onClick={() => shareToWhatsApp(article, Host)}
+              >
                 <span
                   className={styles.social_links_item}
                   style={{ marginRight: "25px", color: "#FF7F6A" }}
@@ -429,7 +458,11 @@ const ArticleCard = () => {
                 VB
               </span>
             </button> */}
-              <button onClick={() => shareToTelegram(article, Host)}>
+              <button
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                onClick={() => shareToTelegram(article, Host)}
+              >
                 <span
                   className={styles.social_links_item}
                   style={{ color: "#FF7F6A" }}
@@ -445,11 +478,13 @@ const ArticleCard = () => {
             <Link
               className={styles.button_article_link_articleCard1}
               to={`/publication/${previousArticle.id}`}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
             >
               <div className={styles.previous_svg_articleCard}>
                 <img src={previous} alt={previous} />
                 <span className={styles.previous__span_articleCard}>
-                  {`${previousArticle.title}`}
+                {isMobile ? "Предыдущая статья" : `${previousArticle.title}`}
                 </span>
               </div>
             </Link>
@@ -458,10 +493,12 @@ const ArticleCard = () => {
             <Link
               className={styles.button_article_link_articleCard2}
               to={`/publication/${nextArticle.id}`}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
             >
               <div className={styles.next_svg_articleCard}>
                 <span className={styles.next__span_articleCard}>
-                  {`${nextArticle.title}`}
+                {isMobile ? "Следующая статья" : `${nextArticle.title}`}
                 </span>
                 <img src={next} alt={next} />
               </div>
@@ -511,7 +548,7 @@ const ArticleCard = () => {
               },
             }}
           >
-            {articles?.map((article, index) => {
+            {randomArticles?.map((article, index) => {
               if (!article) {
                 return null;
               }
@@ -545,6 +582,8 @@ const ArticleCard = () => {
                         className={styles.container__imageTitle_articleCard}
                         src={firstImagePath}
                         alt={firstImagePath}
+                        onMouseEnter={handleMouseHover}
+                        onMouseLeave={handleMouseLeave}
                       />
                     </div>
                     <div className={styles.title_articleCard}>
@@ -584,7 +623,7 @@ const ArticleCard = () => {
           </Swiper>
         </div>
         <div className={styles.article_container_articleCard_sliderMobile}>
-          <SliderContainerArticleCard articles={articles} />
+          <SliderContainerArticleCard articles={randomArticles} />
         </div>{" "}
       </div>
     </>

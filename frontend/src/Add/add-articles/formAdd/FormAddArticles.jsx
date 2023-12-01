@@ -12,6 +12,7 @@ import {
 } from "./utils/formHelpers";
 import { fetchArticle } from "../../../store/Slice/articleSlice";
 import customStyles from "../../add-project/formAdd/utils/customStyles";
+import compressImageFile from "browser-image-compression";
 
 import ConstructorPage from "../constructor/ConstructorPage";
 import { PublicationContainer, PublicationIndicator } from "../../add-project/formAdd/utils/CustomSelectComponents";
@@ -28,6 +29,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
   const [isPhotoAvaVisible, setIsPhotoAvaVisible] = useState(true);
   const [isDropPhotoVisible, setIsDropPhotoVisible] = useState(true);
   const [isFocused, setIsFocused] = useState(false);
+  const [showNotification, setShowNotification] = useState(false);
   const [inputData, setInputData] = useState({
     title: "",
     author: "",
@@ -42,6 +44,11 @@ export default function FormAddArticles({ setIsModalOpen }) {
     textBlock: "",
     imageClose: "",
   });
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingDropPhoto, setIsLoadingDropPhoto] = useState(false);
+  const [isLoadingOpenImage, setIsLoadingOpenImage] = useState(false);
+  const [isLoadingCloseImage, setIsLoadingCloseImage] = useState(false);
 
   // << ==== КОНСТУКТОР ==== >>
   // состояние для хранения текущего значения инпута
@@ -135,23 +142,36 @@ export default function FormAddArticles({ setIsModalOpen }) {
   };
 
   // функция которая не даёт создать новый диманический блок, пока не заполнены value предыдущего
-  const areAllBlocksFilled = () => {
-    for (let block of dynamicData) {
-      for (let input of block) {
-        if (!input.value || input.value === "") {
-          return false;
-        }
-      }
-    }
-    return true;
+ const areAllBlocksFilled = () => {
+   for (let block of dynamicData) {
+     for (let input of block) {
+       // Проверяем только обязательные поля
+       if (input.required && (!input.value || input.value === "")) {
+         return false;
+       }
+     }
+   }
+   return true;
   };
+  
+    const handleRemoveBlock = (blockIndex) => {
+      setDynamicData((prevDynamicData) =>
+        prevDynamicData.filter((_, index) => index !== blockIndex)
+      );
+      // Обновление других связанных состояний...
+      setBlocks((prevBlocks) =>
+        prevBlocks.filter((_, index) => index !== blockIndex)
+      );
+      setDynamicPreviews((prevPreviews) =>
+        prevPreviews.filter((_, index) => index !== blockIndex)
+      );
+    };
 
   const handleClick = (inputs) => {
      
-    if (!areAllBlocksFilled()) {
-       alert(
-         "Предже чем добавить новый блок, пожалуйста заполните предыдущий блок полностью❗"
-       );
+     if (!areAllBlocksFilled()) {
+       setShowNotification(true);
+       setTimeout(() => setShowNotification(false), 5000);
        return;
      }
      
@@ -164,7 +184,21 @@ export default function FormAddArticles({ setIsModalOpen }) {
     setDynamicData((prevDynamicData) => [...prevDynamicData, newInputs]);
   };
 
-  const handleDynamicInputChange = (blockIndex, inputIndex, value) => {
+    async function compressImage(file) {
+      const options = {
+        maxSizeMB: 4, // максимальный размер файла в MB
+        maxWidthOrHeight: 1920, // максимальная ширина или высота
+        useWebWorker: true,
+      };
+
+      try {
+        return await compressImageFile(file, options);
+      } catch (error) {
+        console.error("Ошибка при сжатии изображения:", error);
+      }
+    }
+
+  const handleDynamicInputChange = async (blockIndex, inputIndex, value) => {
     const newDynamicData = [...dynamicData];
 
     if (!newDynamicData[blockIndex]) {
@@ -182,30 +216,36 @@ export default function FormAddArticles({ setIsModalOpen }) {
       const timestamp = Date.now();
       const randomNum = Math.floor(Math.random() * 10000);
       const fileExtension = originalName.split(".").pop();
-
       // Транслитерация части оригинального имени файла
       const sliceOfOriginalName = transliterate(originalName.slice(0, 5));
-
       const newName = `file_${sliceOfOriginalName}_${timestamp}_${randomNum}.${fileExtension}`;
-
       return newName;
     }
+  
     if (Array.isArray(value) && value[0] instanceof File) {
-      const newFiles = value.map((originalFile) => {
-        const uniqueName = generateUniqueName(originalFile.name);
-        return new File([originalFile], uniqueName, {
-          type: originalFile.type,
-        });
-      });
-      newDynamicData[blockIndex][inputIndex].value = newFiles;
-      console.log(
-        "Updated files:",
-        newDynamicData[blockIndex][inputIndex].value
+      const newFiles = await Promise.all(
+        value.map(async (originalFile) => {
+          if (originalFile.type.startsWith("image/")) {
+            // Сжимаем только изображения
+            const compressedFile = await compressImage(originalFile);
+            const uniqueName = generateUniqueName(compressedFile.name);
+            return new File([compressedFile], uniqueName, {
+              type: compressedFile.type,
+            });
+          } else {
+            // Если файл не является изображением, возвращаем его без изменений
+            const uniqueName = generateUniqueName(originalFile.name);
+            return new File([originalFile], uniqueName, {
+              type: originalFile.type,
+            });
+          }
+        })
       );
+
+      newDynamicData[blockIndex][inputIndex].value = newFiles;
     } else {
       newDynamicData[blockIndex][inputIndex].value = value;
     }
-
     setDynamicData(newDynamicData);
   };
 
@@ -305,7 +345,9 @@ export default function FormAddArticles({ setIsModalOpen }) {
           <>
             {labelText === "Видеоролик" ? (
               <div>
-                <div className={styles.form_container__checkbox_block}>
+                <div
+                  className={styles.form_container__checkbox_block_constructor}
+                >
                   <div>{labelText}</div>
                 </div>
                 <label
@@ -338,6 +380,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
                     }}
                   />
                   <svg
+                    className={styles.slider_container__svg}
                     width="16"
                     height="16"
                     viewBox="0 0 16 16"
@@ -402,7 +445,11 @@ export default function FormAddArticles({ setIsModalOpen }) {
             ) : (
               <>
                 <div key={inputIndex}>
-                  <div className={styles.form_container__checkbox_block}>
+                  <div
+                    className={
+                      styles.form_container__checkbox_block_constructor
+                    }
+                  >
                     <div>{labelText}</div>
                   </div>
                   <label
@@ -435,6 +482,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
                       multiple
                     />
                     <svg
+                      className={styles.slider_container__svg}
                       width="16"
                       height="16"
                       viewBox="0 0 16 16"
@@ -523,7 +571,10 @@ export default function FormAddArticles({ setIsModalOpen }) {
               rows="10"
               placeholder={labelText}
             ></textarea>
-            <label htmlFor="" className={styles.form_container__textarea_label}>
+            <label
+              htmlFor=""
+              className={styles.form_container__textarea_label_constructor}
+            >
               {labelText}
             </label>
           </div>
@@ -534,20 +585,28 @@ export default function FormAddArticles({ setIsModalOpen }) {
   };
 
   const renderInputs = (inputs, blockIndex) => {
-    return inputs.map((input, inputIndex) => {
-      return renderInputWithLabel(
-        input.type,
-        input.label,
-        blockIndex,
-        inputIndex
-      );
-    });
+    return (
+      <div key={blockIndex} className={styles.blockContainer}>
+        {inputs.map((input, inputIndex) =>
+          renderInputWithLabel(input.type, input.label, blockIndex, inputIndex)
+        )}
+        <div
+          className={styles.blockContainer__close_button}
+          onClick={() => handleRemoveBlock(blockIndex)}
+        ></div>
+      </div>
+    );
   };
 
   // console.log(inputData, "<<--inputData ARTICLE");
   // console.log(dynamicData, "<<--dynamicData");
   return (
     <div className={styles.form_container}>
+      {showNotification && (
+        <div className={styles.form_container__notification}>
+          Сначала заполните все обязательные поля в предыдущем блоке❗
+        </div>
+      )}
       <div className={styles.form_container__title}>Новая публикация</div>
       <div className={styles.form_container__block_form}>
         <form className={styles.form_container__form} onSubmit={submitHandler}>
@@ -573,7 +632,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
 
             <div className={`${styles.form__group} ${styles.field}`}>
               <input
-                required
+                // required
                 type="text"
                 className={styles.form__field}
                 placeholder="author"
@@ -631,19 +690,14 @@ export default function FormAddArticles({ setIsModalOpen }) {
               value={selectedCompetencies}
               onChange={setSelectedCompetencies}
               options={[
-                { value: "Научные", label: "Научные" },
-                { value: "Опробации", label: "Опробации" },
+                { value: "Выступления", label: "Выступления" },
                 { value: "Интервью", label: "Интервью" },
-                { value: "Литература", label: "Литература" },
-                { value: "Научно-популярные", label: "Научно-популярные" },
-                { value: "Инженерия", label: "Инженерия" },
-                { value: "Архитектура", label: "Архитектура" },
-                { value: "Конструкции", label: "Конструкции" },
-                { value: "BIM", label: "BIM" },
-                { value: "Digital", label: "Digital" },
+                { value: "Новости", label: "Новости" },
+                { value: "Статьи", label: "Статьи" },
+                { value: "Научные публикации", label: "Научные публикации" },
               ]}
               className={styles.form__field}
-              placeholder="Выбрать компетенции"
+              placeholder="Выберите табы фильтрации"
               components={{
                 DropdownIndicator: PublicationIndicator,
                 ValueContainer: PublicationContainer,
@@ -675,7 +729,17 @@ export default function FormAddArticles({ setIsModalOpen }) {
                       inputData,
                       setInputData,
                       setPreviewPhotos,
-                      setIsDropPhotoVisible
+                      setIsDropPhotoVisible,
+                      setPreviewPhotoAva,
+                      setIsPhotoAvaVisible,
+                      setPreviewPhotoOpen,
+                      setIsPhotoOpenVisible,
+                      setPreviewPhotoClose,
+                      setIsPhotoCloseVisible,
+                      setIsLoading,
+                      setIsLoadingDropPhoto,
+                      setIsLoadingOpenImage,
+                      setIsLoadingCloseImage
                     )
                   }
                   multiple
@@ -698,10 +762,15 @@ export default function FormAddArticles({ setIsModalOpen }) {
                     />
                   </g>
                 </svg>
-                <div className={styles.slider_container__uploadText}>
+                <div className={styles.slider_container__uploadTextForm}>
                   Загрузить изображения
                 </div>
               </label>
+              {isLoadingDropPhoto && (
+                <div className={styles.preview_photos_container__loading}>
+                  Загрузка . . .
+                </div>
+              )}
             </div>
             <div className={styles.preview_photos_container}>
               {inputData.dropPhoto.map((preview, index) => (
@@ -822,7 +891,11 @@ export default function FormAddArticles({ setIsModalOpen }) {
                       setPreviewPhotoOpen,
                       setIsPhotoOpenVisible,
                       setPreviewPhotoClose,
-                      setIsPhotoCloseVisible
+                      setIsPhotoCloseVisible,
+                      setIsLoading,
+                      setIsLoadingDropPhoto,
+                      setIsLoadingOpenImage,
+                      setIsLoadingCloseImage
                     )
                   }
                 />
@@ -844,10 +917,15 @@ export default function FormAddArticles({ setIsModalOpen }) {
                     />
                   </g>
                 </svg>
-                <div className={styles.slider_container__uploadText}>
+                <div className={styles.slider_container__uploadTextForm}>
                   Загрузить изображения
                 </div>
               </label>
+              {isLoading && (
+                <div className={styles.preview_photos_container__loading}>
+                  Загрузка . . .
+                </div>
+              )}
             </div>
             <div>
               {previewPhotoAva?.map((preview, index) => (
@@ -895,7 +973,11 @@ export default function FormAddArticles({ setIsModalOpen }) {
                       setPreviewPhotoOpen,
                       setIsPhotoOpenVisible,
                       setPreviewPhotoClose,
-                      setIsPhotoCloseVisible
+                      setIsPhotoCloseVisible,
+                      setIsLoading,
+                      setIsLoadingDropPhoto,
+                      setIsLoadingOpenImage,
+                      setIsLoadingCloseImage
                     )
                   }
                   style={{ display: isPhotoOpenVisible ? "block" : "none" }}
@@ -918,10 +1000,15 @@ export default function FormAddArticles({ setIsModalOpen }) {
                     />
                   </g>
                 </svg>
-                <div className={styles.slider_container__uploadText}>
+                <div className={styles.slider_container__uploadTextForm}>
                   Загрузить изображения
                 </div>
               </label>
+              {isLoadingOpenImage && (
+                <div className={styles.preview_photos_container__loading}>
+                  Загрузка . . .
+                </div>
+              )}
             </div>
             <div>
               {previewPhotoOpen?.map((preview, index) => (
@@ -966,7 +1053,11 @@ export default function FormAddArticles({ setIsModalOpen }) {
                   setPreviewPhotoOpen,
                   setIsPhotoOpenVisible,
                   setPreviewPhotoClose,
-                  setIsPhotoCloseVisible
+                  setIsPhotoCloseVisible,
+                  setIsLoading,
+                  setIsLoadingDropPhoto,
+                  setIsLoadingOpenImage,
+                  setIsLoadingCloseImage
                 )
               }
             ></textarea>
@@ -1051,7 +1142,11 @@ export default function FormAddArticles({ setIsModalOpen }) {
                       setPreviewPhotoOpen,
                       setIsPhotoOpenVisible,
                       setPreviewPhotoClose,
-                      setIsPhotoCloseVisible
+                      setIsPhotoCloseVisible,
+                      setIsLoading,
+                      setIsLoadingDropPhoto,
+                      setIsLoadingOpenImage,
+                      setIsLoadingCloseImage
                     )
                   }
                 />
@@ -1073,10 +1168,15 @@ export default function FormAddArticles({ setIsModalOpen }) {
                     />
                   </g>
                 </svg>
-                <div className={styles.slider_container__uploadText}>
+                <div className={styles.slider_container__uploadTextForm}>
                   Загрузить изображения
                 </div>
               </label>
+              {isLoadingCloseImage && (
+                <div className={styles.preview_photos_container__loading}>
+                  Загрузка . . .
+                </div>
+              )}
             </div>
             <div>
               {previewPhotoClose?.map((preview, index) => (

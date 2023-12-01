@@ -3,6 +3,17 @@ import Slider from "react-slick";
 import styles from "./ConstructorBlockRenderer.module.scss";
 import "../stylePaginationSlider.css";
 
+import playIcon from "../../icons/play.svg";
+import pauseIcon from "../../icons/pause.svg";
+import playIconMobile from "../../icons/playMobile.svg";
+import pauseIconMobile from "../../icons/pauseMobile.svg";
+
+const isMobileScreen = window.innerWidth <= 1024;
+
+const playIconToUse = isMobileScreen ? playIconMobile : playIcon;
+const pauseIconToUse = isMobileScreen ? pauseIconMobile : pauseIcon;
+
+
 const Host = process.env.REACT_APP_SERVER_HOST;
 
 const arrowStyles = {
@@ -13,8 +24,13 @@ const arrowStyles = {
   cursor: "pointer",
 };
 
-const PrevArrow = (props) => (
-  <div onClick={props.onClick} style={{ ...arrowStyles, left: "1.5rem" }}>
+const PrevArrow = ({ props, onClick, onMouseEnter, onMouseLeave }) => (
+  <div
+    onMouseEnter={onMouseEnter}
+    onMouseLeave={onMouseLeave}
+    onClick={onClick}
+    style={{ ...arrowStyles, left: "1.5rem" }}
+  >
     <svg
       width="42"
       height="42"
@@ -56,8 +72,13 @@ const PrevArrow = (props) => (
   </div>
 );
 
-const NextArrow = (props) => (
-  <div onClick={props.onClick} style={{ ...arrowStyles, right: "1.5rem" }}>
+const NextArrow = ({ props,onClick, onMouseEnter, onMouseLeave }) => (
+  <div
+    onMouseEnter={onMouseEnter}
+    onMouseLeave={onMouseLeave}
+    onClick={onClick}
+    style={{ ...arrowStyles, right: "1.5rem" }}
+  >
     <svg
       width="42"
       height="42"
@@ -99,9 +120,15 @@ const NextArrow = (props) => (
   </div>
 );
 
-export default function ConstructorBlockRenderer({ block }) {
+export default function ConstructorBlockRenderer({
+  block,
+  handleMouseLeave,
+  handleMouseEnter,
+}) {
   const [activeSlide, setActiveSlide] = useState(0);
   const [dotsVisible, setDotsVisible] = useState(true);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
     const handleResize = () => {
@@ -267,8 +294,18 @@ export default function ConstructorBlockRenderer({ block }) {
         setActiveSlide(newIndex);
       },
       focusOnSelect: true,
-      prevArrow: dotsVisible && <PrevArrow />,
-      nextArrow: dotsVisible && <NextArrow />,
+      prevArrow: dotsVisible && (
+        <PrevArrow
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        />
+      ),
+      nextArrow: dotsVisible && (
+        <NextArrow
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        />
+      ),
     };
 
     // console.log('Block:', block);
@@ -300,25 +337,68 @@ export default function ConstructorBlockRenderer({ block }) {
   const renderVideoBlock = (block) => {
     const videoPath = block[0]?.value.join("");
 
+    if (!videoPath) {
+      return null; // или просто return; если вы предпочитаете не возвращать явно null
+    }
+
     const videoStyle = {
       WebkitAppearance: "none",
       appearance: "none",
-     border: "none",
-      opacity: 1, 
+      border: "none",
+      opacity: 1,
       outline: "none",
-      controls: "controls",
+      // controls: "controls",
+    };
+
+    const handlePlay = () => {
+      const videoElement = document.querySelector("video");
+      videoElement.play();
+      setIsPlaying(true);
+      setIsHovered(false);
+    };
+
+    const handlePause = () => {
+      const videoElement = document.querySelector("video");
+      videoElement.pause();
+      setIsPlaying(false);
+      setIsHovered(false);
     };
 
     return (
-      <div
-      className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockSix}`}
-      >
-       <video playsInline muted loop controls className={styles.block_video} style={videoStyle}>
-          <source
-            src={`${Host}/images/imageAdd/${videoPath}`}
-            type="video/mp4"
-          />
-        </video>
+      <div className={styles.wrapper_conteiner__item}>
+        <div
+          className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockSix}`}
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
+          <video
+            playsInline
+            muted
+            loop
+            className={styles.block_video}
+            style={videoStyle}
+            onPlay={() => setIsPlaying(true)}
+            onPause={() => setIsPlaying(false)}
+          >
+            <source
+              src={`${Host}/images/imageAdd/${videoPath}`}
+              type="video/mp4"
+            />
+          </video>
+          <div className={styles.buttonWrapperBlock}>
+            {isPlaying ? (
+              isHovered && (
+                <button className={styles.buttonPause} onClick={handlePause}>
+                  <img src={pauseIconToUse} alt={pauseIconToUse} />
+                </button>
+              )
+            ) : (
+              <button className={styles.buttonPlayBlock} onClick={handlePlay}>
+                <img src={playIconToUse} alt={playIconToUse} />
+              </button>
+            )}
+          </div>
+        </div>
       </div>
     );
   };
