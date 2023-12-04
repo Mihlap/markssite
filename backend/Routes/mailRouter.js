@@ -88,4 +88,46 @@ mailRouter.post("/subscribe", (req, res) => {
   });
 });
 
+// ______________HR portal______________________
+
+const transportPortal = nodemailer.createTransport({
+  pool: true,
+  host: 'smtp.mail.ru', 
+  port: 587, 
+  secure: false,
+  auth: {
+    user: process.env.EMAIL_USER, 
+    pass: process.env.EMAIL_PASS
+  },
+  connectionTimeout: 30000,
+});
+
+// eslint-disable-next-line consistent-return
+mailRouter.post("/portalSubmitForm", (req, res) => {
+  const { email } = req.body;
+
+   const isValidEmail = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/.test(email);
+
+  if (!isValidEmail) {
+    return res.status(400).json({ message: "Некорректный Email" });
+  }
+
+  const mailOptions = {
+    from: '', 
+    to: '', 
+    subject: "Прикрепленный файл",
+    // text: `Подписка на новости: ${email}`,
+  };
+
+  transportPortal.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.error("Ошибка отправки письма:", error);
+      return res.status(500).json({ message: "Ошибка отправки письма" });
+    } 
+      console.log(`Email отправлен: ${info.response}`);
+      return res.status(200).json({ message: "Письмо успешно отправлено" });
+    
+  });
+});
+
 module.exports = mailRouter;

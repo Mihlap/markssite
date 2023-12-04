@@ -89,6 +89,8 @@ const CompanySubscriptionForm = ({
             <div className={styles.group}>
               <label
                 className={`${styles.label} ${isFocused ? styles.focused : ""}`}
+                onMouseOver={handleMouseEnter}
+                onMouseOut={handleMouseLeave}
               >
                 <input
                   id="email-input"
@@ -102,9 +104,7 @@ const CompanySubscriptionForm = ({
                   maxLength="70"
                   size="70"
                   style={{ borderColor: isValid ? "" : "#E00747" }}
-                  autoComplete="off"
-                  onMouseOver={handleMouseEnter}
-                  onMouseOut={handleMouseLeave}
+                  autoComplete="off"              
                 />
                 <div className={styles.line1}></div>
                 <span className={styles.placeholder}>Ваш Email</span>

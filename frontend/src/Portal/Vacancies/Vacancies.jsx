@@ -6,7 +6,7 @@ import LoadingCircle from "../../Loading/LoadingCircle";
 import { fetchVacancies } from "../../store/Slice/vacanciesSlice";
 import VacancyFormContact from "../../UI/VacancyFormContact/VacancyFormContact";
 
-const Vacancies = ({ handleMouseEnter, handleMouseLeave }) => {
+const Vacancies = ({ handleMouseEnter, handleMouseLeave, handleMouseHover }) => {
   const dispatch = useDispatch();
   const { vacancies, loading } = useSelector((state) => state.vacancies);
 
@@ -76,7 +76,11 @@ const Vacancies = ({ handleMouseEnter, handleMouseLeave }) => {
       </div>      
         <div className={styles.temporaryText}>Не нашли подходящую вакансию?</div>
         <div className={styles.textUnderForm}>Оставьте ваши контакты, мы всегда в поиске талантлевых профессионалов</div> 
-        <div className={styles.vacancyFormWrapper}><VacancyFormContact/></div>
+        <div className={styles.vacancyFormWrapper}><VacancyFormContact
+         handleMouseEnter={handleMouseEnter}
+         handleMouseLeave={handleMouseLeave}
+         handleMouseHover={handleMouseHover}
+        /></div>
     </div>
   );
 };
