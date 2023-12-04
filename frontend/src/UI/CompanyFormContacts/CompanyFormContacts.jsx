@@ -157,6 +157,8 @@ const CompanyFormContacts = ({
               className={`${styles.label1} ${
                 isFocused1 ? styles.focused1 : " "
               }`}
+              onMouseOver={handleMouseEnter}
+              onMouseOut={handleMouseLeave}
             >
                <input
                 type="text"
@@ -169,9 +171,7 @@ const CompanyFormContacts = ({
                 maxLength="30"
                 size="65"
                 autoComplete="off"
-                className={styles.input_name_form_contacts}
-                onMouseOver={handleMouseEnter}
-                onMouseOut={handleMouseLeave}
+                className={styles.input_name_form_contacts}                
               />
               <div className={styles.line}></div>
               <span className={styles.placeholder}>Ваше&nbsp;Имя</span>
@@ -180,6 +180,8 @@ const CompanyFormContacts = ({
           <div className={styles.group}>
             <label
              className={`${styles.label1} ${isFocused2 ? styles.focused1 : " "}`}
+             onMouseOver={handleMouseEnter}
+             onMouseOut={handleMouseLeave}
              >
               <InputMask
                id="phone-input"
@@ -193,9 +195,7 @@ const CompanyFormContacts = ({
                 onFocus={handleFocus}
                 className={`${styles.input_tel_form_contacts} ${isFocused2 ? styles.focused : ''}`}
                 // className={styles.input_tel_form_contacts}
-                style={{ fontVariantNumeric: "lining-nums" }}
-                onMouseOver={handleMouseEnter}
-                onMouseOut={handleMouseLeave}
+                style={{ fontVariantNumeric: "lining-nums" }}                
               />
               <div className={styles.line}
            style={{ backgroundColor: inputLineColor }}
@@ -210,6 +210,8 @@ const CompanyFormContacts = ({
               className={`${styles.label1} ${
                 isFocused3 ? styles.focused1 : " "
               }`}
+              onMouseOver={handleMouseEnter}
+              onMouseOut={handleMouseLeave}
             >
               <input
                 type="text"
@@ -222,16 +224,17 @@ const CompanyFormContacts = ({
                 maxLength="300"
                 size="55"
                 autoComplete="off"
-                className={styles.input_task_form_contacts}
-                onMouseOver={handleMouseEnter}
-                onMouseOut={handleMouseLeave}
+                className={styles.input_task_form_contacts}               
               />
               <div className={styles.line}></div>
               <span className={styles.placeholder}>Сообщение</span>
             </label>
           </div>
           <div className={styles.agreement}>
-            <label>
+            <label
+              onMouseOver={handleMouseEnter}
+              onMouseOut={handleMouseLeave}
+              >
               <input
                 type="checkbox"
                 id="checkbox"
@@ -243,9 +246,7 @@ const CompanyFormContacts = ({
               />
               Подтвердите согласие на&nbsp;обработку
               <a href="./Information"
-              onMouseOver={handleMouseEnter}
-              onMouseOut={handleMouseLeave}
-              >&nbsp;персональных данных</a>
+             >&nbsp;персональных данных</a>
             </label>
           </div>
           <button
