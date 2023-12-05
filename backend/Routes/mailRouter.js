@@ -1,33 +1,42 @@
 const express = require('express');
 const nodemailer = require('nodemailer');
+const multer = require('multer');
+
+const storage = multer.memoryStorage();
+
+const upload = multer({
+  storage,
+  limits: {
+    fileSize: 5 * 1024 * 1024, 
+  },
+});
 
 const dotenv = require('dotenv');
 
-dotenv.config();
 
+dotenv.config();
 
 const mailRouter = express.Router();
 
 const transporter = nodemailer.createTransport({
   pool: true,
-  host: 'smtp.mail.ru', 
-  port: 587, 
+  host: 'smtp.mail.ru',
+  port: 587,
   secure: false,
   auth: {
-    user: process.env.EMAIL_USER, 
-    pass: process.env.EMAIL_PASS
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
   },
   connectionTimeout: 30000,
 });
 
-
 mailRouter.post('/submitForm', async (req, res) => {
   const formData = req.body;
-  
+
   const mailOptions = {
-    from: 'mikhail.test.mail@mail.ru', 
-    to: 'mikhail.test.mail@mail.ru', 
-    subject: 'Новая форма от клиента', 
+    from: 'mikhail.test.mail@mail.ru',
+    to: 'mikhail.test.mail@mail.ru',
+    subject: 'Новая форма от клиента',
     text: `
     Имя: ${formData.name}
     Телефон: ${formData.phone}
@@ -35,8 +44,7 @@ mailRouter.post('/submitForm', async (req, res) => {
     Согласие на обработку данных: ${formData.consentGiven ? 'Да' : 'Нет'}
     `,
   };
-  
-  
+
   try {
     await transporter.sendMail(mailOptions);
     res.status(200).send('Форма успешно отправлена');
@@ -50,41 +58,94 @@ mailRouter.post('/submitForm', async (req, res) => {
 
 const transporterSubscribe = nodemailer.createTransport({
   pool: true,
-  host: 'smtp.mail.ru', 
-  port: 587, 
+  host: 'smtp.mail.ru',
+  port: 587,
   secure: false,
   auth: {
-    user: process.env.EMAIL_USER, 
-    pass: process.env.EMAIL_PASS
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASS,
   },
   connectionTimeout: 30000,
 });
 
 // eslint-disable-next-line consistent-return
-mailRouter.post("/subscribe", (req, res) => {
+mailRouter.post('/subscribe', (req, res) => {
   const { email } = req.body;
 
-   const isValidEmail = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/.test(email);
+  const isValidEmail = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/.test(email);
 
   if (!isValidEmail) {
-    return res.status(400).json({ message: "Некорректный Email" });
+    return res.status(400).json({ message: 'Некорректный Email' });
   }
 
   const mailOptions = {
-    from: 'mikhail.test.mail@mail.ru', 
-    to: 'mikhail.test.mail@mail.ru', 
-    subject: "Подписка на новости",
+    from: 'mikhail.test.mail@mail.ru',
+    to: 'mikhail.test.mail@mail.ru',
+    subject: 'Подписка на новости',
     text: `Подписка на новости: ${email}`,
   };
 
   transporterSubscribe.sendMail(mailOptions, (error, info) => {
     if (error) {
-      console.error("Ошибка отправки письма:", error);
-      return res.status(500).json({ message: "Ошибка отправки письма" });
-    } 
-      console.log(`Email отправлен: ${info.response}`);
-      return res.status(200).json({ message: "Письмо успешно отправлено" });
-    
+      console.error('Ошибка отправки письма:', error);
+      return res.status(500).json({ message: 'Ошибка отправки письма' });
+    }
+    console.log(`Email отправлен: ${info.response}`);
+    return res.status(200).json({ message: 'Письмо успешно отправлено' });
+  });
+});
+
+// ______________HR portal______________________
+
+const transportPortal = nodemailer.createTransport({
+  pool: true,
+  host: 'smtp.mail.ru',
+  port: 587,
+  secure: false,
+  auth: {
+    user: process.env.EMAIL_PORTAL_USER,
+    pass: process.env.EMAIL_PORTAL_PASS,
+  },
+  connectionTimeout: 500,
+});
+
+mailRouter.post('/portalSubmitForm', upload.single('resumeFile'), (req, res) => {
+
+  const formData = req.body;
+  const resumeFile = req.file;
+
+  const emailBody = `
+    Имя: ${formData.name}
+    Телефон: ${formData.phone}
+    Город: ${formData.city}
+    Выбранная вакансия: ${formData.choose}
+    Сопроводительное письмо: ${formData.letter}
+    Ссылка на резюме/портфолио: ${formData.resume}
+  `;
+
+  const mailOptions = {
+    from: 'ok.test.mikhail@mail.ru',
+    to: 'ok.test.mikhail@mail.ru',
+    subject: 'Прикрепленный файл',
+    text: emailBody,   
+  };
+
+  if (resumeFile) {
+    mailOptions.attachments = [
+      {
+        filename: 'resume.pdf',
+        content: resumeFile.buffer,
+      },
+    ];
+  }
+
+  transportPortal.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.error('Ошибка отправки письма:', error);
+      return res.status(500).json({ message: 'Ошибка отправки письма' });
+    }
+    console.log(`Email отправлен: ${info.response}`);
+    return res.status(200).json({ message: 'Письмо успешно отправлено' });
   });
 });
 
