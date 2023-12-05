@@ -24,31 +24,36 @@ const Host = process.env.REACT_APP_SERVER_HOST;
 const VacancyFormContact = ({
   handleMouseEnter,
   handleMouseLeave,
-  handleMouseHover,
+  // handleMouseHover,
 }) => {
-  const [isFocused1, setIsFocused1] = useState(false);
-  const [value1, setValue1] = useState("");
-  const [isFocused2, setIsFocused2] = useState(false);
-  const [value2, setValue2] = useState("");
-  const [isFocused3, setIsFocused3] = useState(false);
-  const [value3, setValue3] = useState("");
-  const [isFocused4, setIsFocused4] = useState(false);
-  const [value4, setValue4] = useState("");
-  const [isFocused5, setIsFocused5] = useState(false);
-  const [value5, setValue5] = useState("");
-  const [isFocused6, setIsFocused6] = useState(false);
-  const [value6, setValue6] = useState("");
-
+  const [isFocused, setIsFocused] = useState({
+    name: false,
+    phone: false,
+    city: false,
+    choose: false,
+    letter: false,
+    resume: false,
+  });
+ 
   const [isValid, setIsValid] = useState(true);
   const [isMatching, setIsMatching] = useState(true);
-  const [isConsentGiven, setIsConsentGiven] = useState(false);
   const [phoneClicked, setPhoneClicked] = useState(false);
   const [inputLineColor, setInputLineColor] = useState("#959DA6");
   const [selectedOptions, setSelectedOptions] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [fileAttached, setFileAttached] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    phone: "",
+    city: "",
+    choose: "",
+    letter: "",
+    resume: "",
+  });
+
 
   const fileInputRef = useRef(null);
+  const isFilled = (name) => !!formData[name];
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];
@@ -59,7 +64,7 @@ const VacancyFormContact = ({
         file.type === "application/pdf" ||
         file.type.includes("application/")
       ) {
-        console.log("Selected file:", file);
+        // console.log("Selected file:", file);
         setSelectedFile(file);
         setFileAttached(true);
       } else {
@@ -78,175 +83,108 @@ const VacancyFormContact = ({
   const handleChangeVacancy = (selectedValues) => {
     setSelectedOptions(selectedValues);
   };
-  // const [showError, setShowError] = useState(false);
+ 
 
   function handleFocus(event) {
     const name = event?.target?.name;
-    if (name === "name") {
-      setIsFocused1(true);
-      setPhoneClicked(false);
-    } else if (name === "phone") {
-      setIsFocused2(true);
-      setValue2("");
-      setPhoneClicked(true);
-      setInputLineColor("#FF7F6A");
-    } else if (name === "city") {
-      setIsFocused3(true);
-      setPhoneClicked(false);
-      setInputLineColor("#959DA6");
-    } else if (name === "choose") {
-      setIsFocused4(true);
-      setPhoneClicked(false);
-      setInputLineColor("#959DA6");
-    } else if (name === "letter") {
-      setIsFocused5(true);
-      setPhoneClicked(false);
-      setInputLineColor("#959DA6");
-    } else if (name === "resume") {
-      setIsFocused6(true);
-      setPhoneClicked(false);
-      setInputLineColor("#959DA6");
-    }
+    setPhoneClicked(false);
+    setInputLineColor("#959DA6");
+    setIsFocused((prev) => ({ ...prev, [name]: true }));
   }
 
   function handleBlur(event) {
     const name = event?.target?.name;
+    setIsFocused((prev) => ({ ...prev, [name]: false }));
+
     if (!event.target.value && name !== "phone") {
       event.target.placeholder = "";
-      // setShowError(false);
-      if (name === "name") {
-        setIsFocused1(false);
-      } else if (
-        name === "city" ||
-        name === "choose" ||
-        name === "letter" ||
-        name === "resume"
-      ) {
-        setIsFocused3(false);
-        setIsFocused4(false);
-        setIsFocused5(false);
-        setIsFocused6(false);
-      }
     } else {
-      if (name === "name") {
-        setIsFocused1(true);
-      } else if (
-        name === "city" ||
-        name === "choose" ||
-        name === "letter" ||
-        name === "resume"
-      ) {
-        setIsFocused3(true);
-        setIsFocused4(false);
-        setIsFocused5(true);
-        setIsFocused6(true);
-      }
-
       if (name === "phone") {
         const phoneNumberRegex = /^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/;
-        if (phoneNumberRegex.test(value2)) {
-          // setIsFocused2(true);
+        if (phoneNumberRegex.test(formData.phone)) {
           setIsValid(true);
           setIsMatching(true);
         } else {
           setIsValid(false);
           setIsMatching(false);
-          setIsFocused2(false);
           setInputLineColor("#959DA6");
         }
       }
     }
   }
 
-  function handleChange(event) {
-    const name = event?.target?.name;
-    const value = event?.target?.value;
-    // console.log(name, value);
-    if (name === "name") {
-      setValue1(value);
-      if (!value) {
-        setIsFocused1(false);
-      }
-    } else if (name === "phone") {
-      setValue2(value);
-      if (!value) {
-        setIsFocused2(false);
-        // setInputLineColor('#959DA6');
-      }
-      // setShowError(false);
-      if (!value) {
-        setIsFocused2(false);
-      }
-    } else if (name === "city") {
-      setValue3(value);
-      if (!value) {
-        setIsFocused3(false);
-      }
-    } else if (name === "letter") {
-      setValue4(value);
-      if (!value) {
-        setIsFocused4(false);
-      }
-    } else if (name === "letter") {
-      setValue5(value);
-      if (!value) {
-        setIsFocused5(false);
-      }
-    } else if (name === "resume") {
-      setValue6(value);
-      if (!value) {
-        setIsFocused6(false);
-      }
-    }
-  }
+  const handleChange = (event) => {
+    const { name, value } = event.target;
+    setFormData(prevData => ({ ...prevData, [name]: value }));
+  };
+
+
 
   function handleSubmit(event) {
     event.preventDefault();
-      const formData = {
-      name: value1,
-      phone: value2,
-      city: value3,
-      choose: value4,
-      letter: value5,
-      resume: value6,
-    };
+    const formDataCopy = { ...formData };
 
-    fetch(`${Host}/api-mail/portalSubmitForm`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(formData),
+    formDataCopy.choose = selectedOptions ? selectedOptions.value : '';
+  
+  const formDataToSend = new FormData();
+  formDataToSend.append('name', formDataCopy.name);
+  formDataToSend.append('phone', formDataCopy.phone);
+  formDataToSend.append('city', formDataCopy.city);
+  formDataToSend.append('choose', formDataCopy.choose);
+  formDataToSend.append('letter', formDataCopy.letter);
+  formDataToSend.append('resume', formDataCopy.resume);
+  
+  if (selectedFile) {
+    formDataToSend.append('resumeFile', selectedFile);
+  }
+  
+  fetch(`${Host}/api-mail/portalSubmitForm`, {
+    method: 'POST',
+    body: formDataToSend,
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      console.log('Server response:', data);
+  
+      if (data && data.message === 'Письмо успешно отправлено') {
+        setFormData({ 
+          name: "",
+          phone: "",
+          city: "",
+          choose: "",
+          letter: "",
+          resume: "",
+        });
+        setSelectedFile(null);
+        setFileAttached(false);
+        setSelectedOptions(null);
+      } else {
+        // Вывод ошибки только в случае неудачи
+        console.error('Form submission failed:', data.message || 'Unknown error');
+      }
     })
-      .then((response) => {
-        if (response.ok) {
-    
-          setValue1("");
-          setValue2("");
-          setValue3("");
-          setValue4("");
-          setValue5("");
-          setValue6("");
-          setIsConsentGiven(false);
-        } else {
-          console.error("Form submission failed");
-        }
-      })
-      .catch((error) => {
-        console.error("Error:", error);
-      });
+    .catch((error) => {
+      // Логировать только фактические ошибки, а не успешные ответы
+      if (!error.response || error.response.status !== 200) {
+        console.error('Error:', error);
+      }
+    });
+  
   }
 
+ 
+  
+
   return (
+    <form className={styles.form_form_wrapper} onSubmit={handleSubmit}>
     <div className={styles.form_vacancy_wrapper}>
       <div className={styles.form_vacancy_block}>
         <div className={styles.form_vacancy_left}>
-          <form className={styles.form_form_wrapper} onSubmit={handleSubmit}>
-            <div className={`${styles.group} some-unique-class`}>
+          <div className={`${styles.group} some-unique-class`}>
               <label
-                className={`${styles.label1} ${
-                  isFocused1 ? styles.focused1 : " "
-                }`}
+                  className={`${styles.label1} ${
+                    isFocused.name || isFilled("name") ? styles.focused1 : ""
+                  }`}
                 onMouseOver={handleMouseEnter}
                 onMouseOut={handleMouseLeave}
               >
@@ -254,12 +192,12 @@ const VacancyFormContact = ({
                   type="text"
                   name="name"
                   placeholder=""
-                  value={value1}
+                  value={formData.name}
                   onChange={handleChange}
                   onFocus={handleFocus}
                   onBlur={handleBlur}
-                  maxLength="30"
-                  size="65"
+                  maxLength="150"
+                  size="55"
                   autoComplete="off"
                   className={styles.input_name_form_contacts}
                 />
@@ -271,8 +209,8 @@ const VacancyFormContact = ({
             </div>
             <div className={styles.group}>
               <label
-                className={`${styles.label1} ${
-                  isFocused2 ? styles.focused1 : " "
+                  className={`${styles.label1} ${
+                  isFocused.phone || isFilled("phone") ? styles.focused1 : ""
                 }`}
                 onMouseOver={handleMouseEnter}
                 onMouseOut={handleMouseLeave}
@@ -280,35 +218,36 @@ const VacancyFormContact = ({
                 <InputMask
                   id="phone-input"
                   mask="+7 (999) 999-99-99"
-                  maskChar="_"
+                  maskChar=""
                   name="phone"
-                  placeholder="+7 (___) ___-__-__"
-                  value={value2}
+                  placeholder=""
+                  value={formData.phone}
                   onBlur={handleBlur}
                   onChange={handleChange}
                   onFocus={handleFocus}
                   className={`${styles.input_tel_form_contacts} ${
-                    isFocused2 ? styles.focused : ""
+                    isFocused.phone ? styles.focused : ""
                   }`}
-                  // className={styles.input_tel_form_contacts}
-                  style={{ fontVariantNumeric: "lining-nums" }}
+                   style={{ fontVariantNumeric: "lining-nums" }}
                 />
                 <div
                   className={styles.line}
                   style={{ backgroundColor: inputLineColor }}
                 ></div>
-                {!isValid && value2.length > 0 && (
+                  <span className={styles.placeholder}>
+                  Номер&nbsp;телефона
+                </span>
+                {!isValid && formData.phone.length > 0 && (
                   <span className={styles.error_line}>
                     Некорректный телефон
                   </span>
                 )}
-                {/* <span className={styles.placeholder}>Номер телефона</span> */}
               </label>
             </div>
             <div className={styles.group}>
               <label
-                className={`${styles.label1} ${
-                  isFocused3 ? styles.focused1 : " "
+                  className={`${styles.label1} ${
+                  isFocused.city || isFilled("city") ? styles.focused1 : ""
                 }`}
                 onMouseOver={handleMouseEnter}
                 onMouseOut={handleMouseLeave}
@@ -317,11 +256,11 @@ const VacancyFormContact = ({
                   type="text"
                   name="city"
                   placeholder=""
-                  value={value3}
+                  value={formData.city}
                   onChange={handleChange}
                   onFocus={handleFocus}
                   onBlur={handleBlur}
-                  maxLength="300"
+                  maxLength="100"
                   size="55"
                   autoComplete="off"
                   className={styles.input_city_form_contacts}
@@ -330,14 +269,12 @@ const VacancyFormContact = ({
                 <span className={styles.placeholder}>Город</span>
               </label>
             </div>
-          </form>
-        </div>
+         </div>
         <div className={styles.form_vacancy_right}>
-          <form className={styles.form_form_wrapper} onSubmit={handleSubmit}>
-            <div className={`${styles.group} some-unique-class`}>
-              <label
+             <div className={`${styles.group} some-unique-class`}>
+              <label               
                 className={`${styles.label1} ${
-                  isFocused4 ? styles.focused1 : " "
+                  isFocused.choose || isFilled("choose") ? styles.focused1 : ""
                 }`}
                 onMouseOver={handleMouseEnter}
                 onMouseOut={handleMouseLeave}
@@ -398,9 +335,9 @@ const VacancyFormContact = ({
               </label>
             </div>
             <div className={`${styles.group} some-unique-class`}>
-              <label
+              <label               
                 className={`${styles.label1} ${
-                  isFocused5 ? styles.focused1 : " "
+                  isFocused.letter || isFilled("letter") ? styles.focused1 : ""
                 }`}
                 onMouseOver={handleMouseEnter}
                 onMouseOut={handleMouseLeave}
@@ -409,12 +346,12 @@ const VacancyFormContact = ({
                   type="text"
                   name="letter"
                   placeholder=""
-                  value={value5}
+                  value={formData.letter}
                   onChange={handleChange}
                   onFocus={handleFocus}
                   onBlur={handleBlur}
-                  maxLength="30"
-                  size="65"
+                  maxLength="500"
+                  size="55"
                   autoComplete="off"
                   className={styles.input_letter_form_contacts}
                 />
@@ -426,8 +363,8 @@ const VacancyFormContact = ({
             </div>
             <div className={styles.group}>
               <label
-                className={`${styles.label1} ${
-                  isFocused6 ? styles.focused1 : " "
+                  className={`${styles.label1} ${
+                  isFocused.resume || isFilled("resume") ? styles.focused1 : ""
                 }`}
                 onMouseOver={handleMouseEnter}
                 onMouseOut={handleMouseLeave}
@@ -436,11 +373,11 @@ const VacancyFormContact = ({
                   type="text"
                   name="resume"
                   placeholder=""
-                  value={value6}
+                  value={formData.resume}
                   onChange={handleChange}
                   onFocus={handleFocus}
                   onBlur={handleBlur}
-                  maxLength="300"
+                  maxLength="200"
                   size="55"
                   autoComplete="off"
                   className={styles.input_resume_form_contacts}
@@ -460,8 +397,7 @@ const VacancyFormContact = ({
                 className={styles.button_resume_file}
                 onMouseOver={handleMouseEnter}
                 onMouseOut={handleMouseLeave}
-                onMouseHover={handleMouseHover}
-                onClick={() => fileInputRef.current.click()}
+               onClick={() => fileInputRef.current.click()}
               >
                 {fileAttached ? (
                   <div className={styles.fileAttached}>
@@ -478,8 +414,7 @@ const VacancyFormContact = ({
                 )}
               </div>
             </div>
-          </form>
-        </div>
+          </div>
         <div className={styles.agreement_vacancy}>
           Нажав на кнопку, соглашаюсь на обработку{" "}
           <Link
@@ -494,19 +429,18 @@ const VacancyFormContact = ({
           <button
             className={`${styles.button_vacancy}
           ${
-            !isValid || !value2 || !value1 || !value3 || !value5 || !value6
+            !isValid || !formData
               ? styles.disabled
               : ""
           }`}
             disabled={
-              !isValid || !value2 || !value1 || !value3 || !value5 || !value6
+              !isValid || !formData
             }
             type="submit"
             id="submit-button"
-            onMouseOver={handleMouseEnter}
-            onMouseOut={handleMouseLeave}
-            onMouseHover={handleMouseHover}
-          >
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            >
             <p className={styles.button_name_vacancy}>
               Откликнутся на вакансию
             </p>
@@ -514,6 +448,7 @@ const VacancyFormContact = ({
         </div>
       </div>
     </div>
+    </form>
   );
 };
 
