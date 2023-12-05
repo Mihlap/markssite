@@ -54,7 +54,6 @@ padding-top: 1.6rem;
   font-weight: var(--fw-400);
   font-size: 16px;
   line-height: 16px;
- 
 }
 
 .line {
@@ -84,7 +83,7 @@ padding-top: 1.6rem;
   color: var(--gray-959DA6);
   font-size: 16px;
   transform-origin: left top;
-  transition: all 0.1s ease-out;
+  transition: all 0.3s ease-out;
   padding-top: 0;
 }
 
@@ -102,7 +101,7 @@ padding-top: 1.6rem;
 .input_letter_form_contacts:focus + .line,
 .input_resume_form_contacts:focus + .line,
 #phone-input:focus + .line {
-  background-color: #FF7F6A;
+  background-color: var(--blue-75BBFD);
 }
 /* .hidden {
   display: none;
@@ -132,6 +131,11 @@ padding-top: 1.6rem;
   line-height: 1rem;
   text-decoration-line: underline;
   cursor: none;
+  transition: color 0.4s ease; 
+}
+
+.agreement_vacancy_link:hover {
+  color:var(--blue-75BBFD);  
 }
 
 .button_vacancy {
@@ -141,9 +145,14 @@ padding-top: 1.6rem;
   align-items: center;
   border-radius: 4.125rem;
   border: 1px solid #C7E4FF;  
-  background: var(--blue-75BBFD);
+  background-color: var(--blue-75BBFD);
   margin-top: 1.44rem;
   cursor: none;
+  transition: background-color 0.4s ease; 
+}
+
+.button_vacancy:hover {
+  background: var(--dark-blue-389FFF);
 }
 
 .button_name_vacancy {
@@ -161,7 +170,7 @@ display: flex;
 padding: 0.5rem 0.8125rem;
 align-items: flex-start;
 border-radius: 2.5rem;
-background: var(--light-light-gray-EBECEE, #EBECEE);
+background-color: var(--light-light-gray-EBECEE);
 font-family: var(--font-raleway);
 font-size: 0.625rem;
 font-style: normal;
@@ -169,18 +178,23 @@ font-weight: var(--fw-400);
 line-height: 0.875rem;
 width: fit-content;
 margin-top: 1rem;
+transition: background-color 0.4s ease; 
  }
+
+ .button_resume_file:hover {
+   background: var(--light-gray-C0C5CB);
+ }
+
 
  .fileAttached {
   display: flex;
-  /* align-items: center; */
-  /* justify-content: flex-end; */
 }
+
 
 .removeFile {
   display: flex;
   cursor: pointer;
-  color: #FF7F6A;
+  color:  var(--blue-75BBFD);
   font-size: 30px;
   margin-left: 8px;
 }
