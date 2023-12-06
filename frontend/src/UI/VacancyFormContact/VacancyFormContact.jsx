@@ -34,13 +34,14 @@ const VacancyFormContact = ({
     letter: false,
     resume: false,
   });
- 
+
   const [isValid, setIsValid] = useState(true);
   const [isMatching, setIsMatching] = useState(true);
   const [phoneClicked, setPhoneClicked] = useState(false);
   const [inputLineColor, setInputLineColor] = useState("#959DA6");
   const [selectedOptions, setSelectedOptions] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
+  const [selectedFiles, setSelectedFiles] = useState([]);
   const [fileAttached, setFileAttached] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
@@ -51,39 +52,12 @@ const VacancyFormContact = ({
     resume: "",
   });
 
-
   const fileInputRef = useRef(null);
   const isFilled = (name) => !!formData[name];
-
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-
-    if (file) {
-      if (
-        file.type.includes("image/") ||
-        file.type === "application/pdf" ||
-        file.type.includes("application/")
-      ) {
-        // console.log("Selected file:", file);
-        setSelectedFile(file);
-        setFileAttached(true);
-      } else {
-        console.error(
-          "Invalid file type. Please select an image, PDF, or other document."
-        );
-      }
-    }
-  };
-
-  const handleRemoveFile = () => {
-    setSelectedFile(null);
-    setFileAttached(false);
-  };
 
   const handleChangeVacancy = (selectedValues) => {
     setSelectedOptions(selectedValues);
   };
- 
 
   function handleFocus(event) {
     const name = event?.target?.name;
@@ -115,76 +89,109 @@ const VacancyFormContact = ({
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    setFormData(prevData => ({ ...prevData, [name]: value }));
+    setFormData((prevData) => ({ ...prevData, [name]: value }));
   };
-
-
 
   function handleSubmit(event) {
     event.preventDefault();
+
+    const formDataToSend = new FormData();
     const formDataCopy = { ...formData };
 
-    formDataCopy.choose = selectedOptions ? selectedOptions.value : '';
-  
-  const formDataToSend = new FormData();
-  formDataToSend.append('name', formDataCopy.name);
-  formDataToSend.append('phone', formDataCopy.phone);
-  formDataToSend.append('city', formDataCopy.city);
-  formDataToSend.append('choose', formDataCopy.choose);
-  formDataToSend.append('letter', formDataCopy.letter);
-  formDataToSend.append('resume', formDataCopy.resume);
-  
-  if (selectedFile) {
-    formDataToSend.append('resumeFile', selectedFile);
-  }
-  
-  fetch(`${Host}/api-mail/portalSubmitForm`, {
-    method: 'POST',
-    body: formDataToSend,
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      console.log('Server response:', data);
-  
-      if (data && data.message === 'Письмо успешно отправлено') {
-        setFormData({ 
-          name: "",
-          phone: "",
-          city: "",
-          choose: "",
-          letter: "",
-          resume: "",
-        });
-        setSelectedFile(null);
-        setFileAttached(false);
-        setSelectedOptions(null);
-      } else {
-        // Вывод ошибки только в случае неудачи
-        console.error('Form submission failed:', data.message || 'Unknown error');
-      }
+    formDataCopy.choose = selectedOptions ? selectedOptions.value : "";
+
+    formDataToSend.append("name", formDataCopy.name);
+    formDataToSend.append("phone", formDataCopy.phone);
+    formDataToSend.append("city", formDataCopy.city);
+    formDataToSend.append("choose", formDataCopy.choose);
+    formDataToSend.append("letter", formDataCopy.letter);
+    formDataToSend.append("resume", formDataCopy.resume);
+
+    if (selectedFiles.length > 0) {
+      selectedFiles.forEach((file) => {
+        formDataToSend.append("resumeFiles", file);
+      });
+    }
+
+    fetch(`${Host}/api-mail/portalSubmitForm`, {
+      method: "POST",
+      body: formDataToSend,
     })
-    .catch((error) => {
-      // Логировать только фактические ошибки, а не успешные ответы
-      if (!error.response || error.response.status !== 200) {
-        console.error('Error:', error);
-      }
-    });
-  
+      .then((response) => response.json())
+      .then((data) => {
+        console.log("Server response:", data);
+
+        if (data && data.message === "Письмо успешно отправлено") {
+          setFormData({
+            name: "",
+            phone: "",
+            city: "",
+            choose: "",
+            letter: "",
+            resume: "",
+          });
+          setSelectedFile(null);
+          setFileAttached(false);
+          setSelectedOptions(null);
+          setSelectedFiles([]);
+        } else {
+          console.error(
+            "Form submission failed:",
+            data.message || "Unknown error"
+          );
+        }
+      })
+      .catch((error) => {
+        if (!error.response || error.response.status !== 200) {
+          console.error("Error:", error);
+        }
+      });
   }
 
- 
-  
+  const handleFileChange = (event) => {
+    const files = event.target.files;
+
+    if (files.length > 0) {
+      const newFiles = Array.from(files);
+
+      if (
+        newFiles.every(
+          (file) =>
+            file.type.includes("image/") ||
+            file.type === "application/pdf" ||
+            file.type.includes("application/")
+        )
+      ) {
+        setSelectedFiles((prevFiles) => [...prevFiles, ...newFiles]);
+        setFileAttached(true);
+      } else {
+        console.error(
+          "Invalid file type. Please select an image, PDF, or other document."
+        );
+      }
+    }
+  };
+
+  const handleRemoveFile = (index) => {
+    const updatedFiles = [...selectedFiles];
+    updatedFiles.splice(index, 1);
+    setSelectedFiles(updatedFiles);
+
+    if (updatedFiles.length === 0) {
+      setFileAttached(false);
+    }
+  };
 
   return (
     <form className={styles.form_form_wrapper} onSubmit={handleSubmit}>
-    <div className={styles.form_vacancy_wrapper}>
-      <div className={styles.form_vacancy_block}>
-        <div className={styles.form_vacancy_left}>
-          <div className={`${styles.group} some-unique-class`}>
+      <div className={styles.form_vacancy_wrapper}>
+        <div className={styles.form_vacancy_block}>
+          <div className={styles.form_vacancy_left}>
+            <div className={`${styles.group} some-unique-class`}>
               <label
-                  className={`${styles.label1} ${
-                    isFocused.name || isFilled("name") ? styles.focused1 : ""
-                  }`}
+                className={`${styles.label1} ${
+                  isFocused.name || isFilled("name") ? styles.focused1 : ""
+                }`}
                 onMouseOver={handleMouseEnter}
                 onMouseOut={handleMouseLeave}
               >
@@ -196,8 +203,8 @@ const VacancyFormContact = ({
                   onChange={handleChange}
                   onFocus={handleFocus}
                   onBlur={handleBlur}
-                  maxLength="150"
-                  size="55"
+                  maxLength="100"
+                  // size="50"
                   autoComplete="off"
                   className={styles.input_name_form_contacts}
                 />
@@ -209,7 +216,7 @@ const VacancyFormContact = ({
             </div>
             <div className={styles.group}>
               <label
-                  className={`${styles.label1} ${
+                className={`${styles.label1} ${
                   isFocused.phone || isFilled("phone") ? styles.focused1 : ""
                 }`}
                 onMouseOver={handleMouseEnter}
@@ -225,18 +232,17 @@ const VacancyFormContact = ({
                   onBlur={handleBlur}
                   onChange={handleChange}
                   onFocus={handleFocus}
+                  autoComplete="off"
                   className={`${styles.input_tel_form_contacts} ${
                     isFocused.phone ? styles.focused : ""
                   }`}
-                   style={{ fontVariantNumeric: "lining-nums" }}
+                  style={{ fontVariantNumeric: "lining-nums" }}
                 />
                 <div
                   className={styles.line}
                   style={{ backgroundColor: inputLineColor }}
                 ></div>
-                  <span className={styles.placeholder}>
-                  Номер&nbsp;телефона
-                </span>
+                <span className={styles.placeholder}>Номер&nbsp;телефона</span>
                 {!isValid && formData.phone.length > 0 && (
                   <span className={styles.error_line}>
                     Некорректный телефон
@@ -246,7 +252,7 @@ const VacancyFormContact = ({
             </div>
             <div className={styles.group}>
               <label
-                  className={`${styles.label1} ${
+                className={`${styles.label1} ${
                   isFocused.city || isFilled("city") ? styles.focused1 : ""
                 }`}
                 onMouseOver={handleMouseEnter}
@@ -261,7 +267,7 @@ const VacancyFormContact = ({
                   onFocus={handleFocus}
                   onBlur={handleBlur}
                   maxLength="100"
-                  size="55"
+                  // size="50"
                   autoComplete="off"
                   className={styles.input_city_form_contacts}
                 />
@@ -269,10 +275,10 @@ const VacancyFormContact = ({
                 <span className={styles.placeholder}>Город</span>
               </label>
             </div>
-         </div>
-        <div className={styles.form_vacancy_right}>
-             <div className={`${styles.group} some-unique-class`}>
-              <label               
+          </div>
+          <div className={styles.form_vacancy_right}>
+            <div className={`${styles.group} some-unique-class`}>
+              <label
                 className={`${styles.label1} ${
                   isFocused.choose || isFilled("choose") ? styles.focused1 : ""
                 }`}
@@ -335,7 +341,7 @@ const VacancyFormContact = ({
               </label>
             </div>
             <div className={`${styles.group} some-unique-class`}>
-              <label               
+              <label
                 className={`${styles.label1} ${
                   isFocused.letter || isFilled("letter") ? styles.focused1 : ""
                 }`}
@@ -351,7 +357,7 @@ const VacancyFormContact = ({
                   onFocus={handleFocus}
                   onBlur={handleBlur}
                   maxLength="500"
-                  size="55"
+                  // size="50"
                   autoComplete="off"
                   className={styles.input_letter_form_contacts}
                 />
@@ -363,7 +369,7 @@ const VacancyFormContact = ({
             </div>
             <div className={styles.group}>
               <label
-                  className={`${styles.label1} ${
+                className={`${styles.label1} ${
                   isFocused.resume || isFilled("resume") ? styles.focused1 : ""
                 }`}
                 onMouseOver={handleMouseEnter}
@@ -378,7 +384,7 @@ const VacancyFormContact = ({
                   onFocus={handleFocus}
                   onBlur={handleBlur}
                   maxLength="200"
-                  size="55"
+                  // size="50"
                   autoComplete="off"
                   className={styles.input_resume_form_contacts}
                 />
@@ -387,69 +393,98 @@ const VacancyFormContact = ({
                   Ссылка на резюме/портфолио
                 </span>
               </label>
-              <input
-                type="file"
-                onChange={handleFileChange}
-                style={{ display: "none" }}
-                ref={fileInputRef}
-              />
-              <div
-                className={styles.button_resume_file}
-                onMouseOver={handleMouseEnter}
-                onMouseOut={handleMouseLeave}
-               onClick={() => fileInputRef.current.click()}
-              >
-                {fileAttached ? (
-                  <div className={styles.fileAttached}>
-                    <span>Файл прикреплен</span>
-                    <span
-                      className={styles.removeFile}
-                      onClick={handleRemoveFile}
-                    >
-                      &times;
+              <div className={styles.resumeFiles}>
+                {selectedFiles.map((file, index) => (
+                  <div
+                    key={index}
+                    className={styles.fileContainer_resumeFiles}
+                    onMouseOver={handleMouseEnter}
+                    onMouseOut={handleMouseLeave}
+                    onClick={() => handleRemoveFile(index)}
+                  >
+                    <span className={styles.removeFile_resumeFiles}>
+                      <span className={styles.removeFile_resumeFiles_remove}>
+                        &times;
+                      </span>
+                    </span>
+                    <span className={styles.fileName_resumeFiles}>
+                      {file.name}
                     </span>
                   </div>
-                ) : (
-                  "Прикрепить файл"
-                )}
+                ))}
               </div>
+              {selectedFiles.length < 2 && (
+                <div>
+                  <input
+                    type="file"
+                    name="resumeFile"
+                    onChange={handleFileChange}
+                    style={{ display: "none" }}
+                    ref={fileInputRef}
+                  />
+                  <div
+                    className={styles.button_resume_file}
+                    onMouseOver={handleMouseEnter}
+                    onMouseOut={handleMouseLeave}
+                    onClick={() => fileInputRef.current.click()}
+                  >
+                    {fileAttached ? "Прикрепить файл" : "Прикрепить файл"}
+                  </div>
+                </div>
+              )}
             </div>
           </div>
-        <div className={styles.agreement_vacancy}>
-          Нажав на кнопку, соглашаюсь на обработку{" "}
-          <Link
-            to="../Information"
-            target="blank"
-            className={styles.agreement_vacancy_link}
-            onMouseOver={handleMouseEnter}
-            onMouseOut={handleMouseLeave}
-          >
-            персональных данных
-          </Link>
-          <button
-            className={`${styles.button_vacancy}
-          ${
-            !isValid || !formData
-              ? styles.disabled
-              : ""
-          }`}
-            disabled={
-              !isValid || !formData
-            }
-            type="submit"
-            id="submit-button"
+          <div className={styles.agreement_vacancy}>
+            Нажав на кнопку, соглашаюсь на обработку{" "}
+            <Link
+              to="../Information"
+              target="blank"
+              className={styles.agreement_vacancy_link}
+              onMouseOver={handleMouseEnter}
+              onMouseOut={handleMouseLeave}
+            >
+              персональных данных
+            </Link>
+            <button
+              className={`${styles.button_vacancy}
+              ${!isValid || !formData ? styles.disabled : ""}`}
+              disabled={!isValid || !formData}
+              type="submit"
+              id="submit-button"
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+            >
+              <p className={styles.button_name_vacancy}>
+                Откликнутся на вакансию
+              </p>
+            </button>
+          </div>
+        </div>
+          <div className={styles.for_applicants_wrapper}>
+            <div className={styles.for_applicants}>Для соискателей</div>
+            <Link
+            to="mailto:mail@marksgroup.ru"
+            className={styles.for_applicants_mail}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             >
-            <p className={styles.button_name_vacancy}>
-              Откликнутся на вакансию
-            </p>
-          </button>
-        </div>
+              mail@marksgroup.ru
+            </Link>
+            <Link
+            to={"tel:+74951201226"}
+            className={styles.for_applicants_tel}
+            style={{ fontVariantNumeric: "lining-nums" }}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            >
+              +7&nbsp;(495)&nbsp;120-12-26
+            </Link>
+          </div>
       </div>
-    </div>
     </form>
   );
 };
 
 export default VacancyFormContact;
+
+
