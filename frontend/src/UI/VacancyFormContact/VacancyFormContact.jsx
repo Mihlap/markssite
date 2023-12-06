@@ -6,7 +6,7 @@ import styles from "./VacancyFormContact.module.css";
 import "react-phone-number-input/style.css";
 
 const options = [
-  { value: " ", label: " " },
+  { value: "Другая вакансия", label: "Другая вакансия" },
   { value: "Архитектура", label: "Архитектура" },
   { value: "Конструкции", label: "Конструкции" },
   { value: "Инженерия", label: "Инженерия" },
@@ -298,6 +298,7 @@ const VacancyFormContact = ({
                   onChange={handleChangeVacancy}
                   isSearchable={false}
                   isClearable={false}
+                  menuShouldScrollIntoView={false}
                   styles={{
                     container: (provided) => ({
                       ...provided,
@@ -334,7 +335,42 @@ const VacancyFormContact = ({
                         : "transparent",
                       color: state.isFocused ? "white" : "inherit",
                     }),
-                  }}
+                    dropdownIndicator: (provided, state) => ({
+                      ...provided,
+                      transform: state.selectProps.menuIsOpen ? 'rotate(180deg)' : null,
+                      transition: 'transform 0.3s ease-in-out',
+                    }),
+                    menuList: (provided) => ({
+                      ...provided,
+                      '&::-webkit-scrollbar': {
+                        width: '4px',
+                      },
+                      '&::-webkit-scrollbar-thumb': {
+                        backgroundColor: '#C0C5CB',
+                        borderRadius: '4px',
+                      },
+                      '&::-webkit-scrollbar-track': {
+                        backgroundColor: 'transparent',
+                      },
+                      // Для Microsoft Edge
+                      '&::-ms-scrollbar': {
+                        width: '4px',
+                      },
+                      '&::-ms-scrollbar-thumb': {
+                        backgroundColor: '#C0C5CB',
+                        borderRadius: '4px',
+                       },
+                      '&::-ms-scrollbar-track': {
+                        backgroundColor: 'transparent',
+                      },
+                      margin: '6px',
+                     }),
+                     menu: (provided) => ({
+                      ...provided,
+                      boxShadow: 'none',
+                     backgroundColor: '#EBECEE'
+                    }),
+                   }}                                 
                 />
                 <div className={`${styles.line} ${styles.line_select}`}></div>
                 {/* <span className={styles.placeholder}>Выбрать вакансию</span> */}
