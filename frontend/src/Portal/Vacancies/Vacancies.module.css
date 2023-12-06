@@ -227,7 +227,7 @@ width: 100%;
   font-style: normal;
   font-weight: var(--fw-300);
   top: 40%;
-  left: 9vw;
+  left: 4vw;
   padding-right: 1rem;
   max-width: 42vw;
 }
@@ -240,13 +240,10 @@ width: 100%;
  .vacancies_advertisingBlock {
   padding-right: 0rem;
   max-width: 40rem;
-  /* padding-left: 9vw;
-  padding-right: 9vw; */
 }
 
 .vacancies_section {
-  /* padding-left: 9vw;
-  padding-right: 9vw; */
+  min-width: 100%;
  }
 
  .vacancies_list {
@@ -279,7 +276,7 @@ width: 100%;
 }
 
 .vacancyFormWrapper {
-  padding: 2.75rem 0rem 4.2rem 3.5rem;
+  padding: 2.75rem 3.44rem 4.2rem 3.44rem;
 }
 
 }
@@ -412,7 +409,7 @@ width: 100%;
   }
   
   .vacancyFormWrapper {
-    padding: 3rem 1rem 3.75rem 1rem;
+    padding: 0rem 1rem 3.75rem 1rem;
   }
   
   
