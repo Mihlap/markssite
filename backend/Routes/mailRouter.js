@@ -1,15 +1,26 @@
 const express = require('express');
 const nodemailer = require('nodemailer');
-const multer = require('multer');
+const multer = require("multer");
 
 const storage = multer.memoryStorage();
+const fileFilter = (req, file, cb) => {
+  if (
+    file.mimetype.startsWith("image/") ||
+    file.mimetype === "application/pdf" ||
+    file.mimetype.startsWith("application/")
+  ) {
+    cb(null, true);
+  } else {
+    cb(new Error("Недопустимый тип файла"));
+  }
+};
 
-const upload = multer({
-  storage,
-  limits: {
-    fileSize: 5 * 1024 * 1024, 
-  },
+const upload = multer({ 
+  storage, 
+  fileFilter,
+  limits: { fileSize: 5 * 1024 * 1024 }, 
 });
+
 
 const dotenv = require('dotenv');
 
@@ -109,10 +120,10 @@ const transportPortal = nodemailer.createTransport({
   connectionTimeout: 500,
 });
 
-mailRouter.post('/portalSubmitForm', upload.single('resumeFile'), (req, res) => {
+mailRouter.post('/portalSubmitForm', upload.array('resumeFiles', 2), (req, res) => {
 
   const formData = req.body;
-  const resumeFile = req.file;
+  const resumeFiles = req.files;
 
   const emailBody = `
     Имя: ${formData.name}
@@ -126,19 +137,21 @@ mailRouter.post('/portalSubmitForm', upload.single('resumeFile'), (req, res) => 
   const mailOptions = {
     from: 'ok.test.mikhail@mail.ru',
     to: 'ok.test.mikhail@mail.ru',
-    subject: 'Прикрепленный файл',
-    text: emailBody,   
+    subject: 'Заявка на вакансию',
+    text: emailBody,  
+    attachments: [], 
   };
 
-  if (resumeFile) {
-    mailOptions.attachments = [
-      {
-        filename: 'resume.pdf',
-        content: resumeFile.buffer,
-      },
-    ];
-  }
-
+  if (resumeFiles) {
+    resumeFiles.forEach((file, index) => {
+      mailOptions.attachments.push({
+        filename: `${index + 1}.pdf`,
+        content: file.buffer,
+      });
+      delete resumeFiles[index].buffer;
+    });
+   }
+  
   transportPortal.sendMail(mailOptions, (error, info) => {
     if (error) {
       console.error('Ошибка отправки письма:', error);
