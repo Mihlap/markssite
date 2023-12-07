@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import Select from "react-select";
 import compressImageFile from "browser-image-compression";
@@ -32,7 +32,7 @@ import {
 import ConstructorPage from "../constructor/ConstructorPage";
 import { monthOptions, yearOptions } from "./utils/Time";
 
-export default function FormAddProject({ setIsModalOpen }) {
+export default function FormAddProject({ setIsModalOpen, editProjectData }) {
   const dispatch = useDispatch();
 
   const [selectedCompetencies, setSelectedCompetencies] = useState([]);
@@ -101,6 +101,7 @@ export default function FormAddProject({ setIsModalOpen }) {
   const [blocks, setBlocks] = useState([]);
   const [dynamicPreviews, setDynamicPreviews] = useState([]);
   const [dynamicData, setDynamicData] = useState([]);
+  
 
   const countFilledInputs = () => {
     const inputsToCheck = [
@@ -114,7 +115,59 @@ export default function FormAddProject({ setIsModalOpen }) {
     ];
     return inputsToCheck.filter((input) => inputData[input]).length;
   };
+  
+  useEffect(() => {
+    console.log("Изменены данные проекта:", editProjectData);
+    if (editProjectData) {
+      // Выведите в консоль данные, чтобы проверить, соответствуют ли они ожидаемым
+      console.log("Установка данных формы из editProjectData:", editProjectData);
+  
+      // Установка данных формы из editProjectData
+      setSelectedCompetencies(editProjectData.selectCompetencies);
+      setSelectedViewConstruction(editProjectData.viewConstruction);
+      setSelectDegreeParticipation({ label: editProjectData.degreeParticipation });
+      setSelectStatusObject({ label: editProjectData.statusObject });
+  
+      setInputData((prevInputData) => ({
+        ...prevInputData,
+        title: editProjectData.title || "",
+        selectCompetencies: editProjectData.selectCompetencies || [],
+        countryCity: editProjectData.countryCity || "",
+        monthYear: editProjectData.monthYear || "",
+        dropPhoto: editProjectData.dropPhoto || [],
+        photoAva: editProjectData.photoAva !== undefined ? editProjectData.photoAva : "",
+        titleTextBlock: editProjectData.titleTextBlock || "",
+        descriptionProject: editProjectData.descriptionProject || "",
+        totalArea: editProjectData.totalArea || "",
+        siteArea: editProjectData.siteArea || "",
+        floors: editProjectData.floors || "",
+        altitude: editProjectData.altitude || "",
+        constructionVolume: editProjectData.constructionVolume || "",
+        location: editProjectData.location || "",
+        degreeParticipation: editProjectData.degreeParticipation || "",
+        statusObject: editProjectData.statusObject || "",
+        customer: editProjectData.customer || "",
+        publication: editProjectData.publication || "",
+        linkToPublication: editProjectData.linkToPublication || "",
+        publicationTwo: editProjectData.publicationTwo || "",
+        linkToPublicationTwo: editProjectData.linkToPublicationTwo || "",
+        awards: editProjectData.awards || "",
+        imageOpen: editProjectData.imageOpen !== undefined ? editProjectData.imageOpen : "",
+        textBlock: editProjectData.textBlock || "",
+        imageClose: editProjectData.imageClose !== undefined ? editProjectData.imageClose : "",
+        numberOfLanes: editProjectData.numberOfLanes || "",
+        long: editProjectData.long || "",
+      }));
+      console.log("Состояние inputData после установки:", inputData);
+      console.log("editProjectData.imageClose:", editProjectData.imageClose);
+      }
+      console.log("editProjectData:", editProjectData);
 
+  }, [editProjectData]);
+  
+  
+  
+  
   // функция Удаление фото из массива превью
   // Удаление фото из массива превью
   const handleRemovePreviewPhoto = (index) => {
@@ -127,6 +180,7 @@ export default function FormAddProject({ setIsModalOpen }) {
       setIsDropPhotoVisible
     );
   };
+  
 
   // Удаление фото из массива превью который с одной фоткой
   const handleRemovePreviewPhotoAva = (index) => {
@@ -769,8 +823,9 @@ export default function FormAddProject({ setIsModalOpen }) {
           Сначала заполните все обязательные поля в предыдущем блоке❗
         </div>
       )}
-      <div className={styles.form_container__title}>Новый проект</div>
-
+      <div className={styles.form_container__title}>
+      {editProjectData ? 'Редактирование проекта' : 'Новый проект'}
+        </div>
       <div className={styles.form_container__block_form}>
         <form className={styles.form_container__form} onSubmit={submitHandler}>
           {/* первый серый блок с инфой  */}
