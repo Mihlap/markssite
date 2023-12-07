@@ -119,7 +119,7 @@ const VacancyFormContact = ({
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log("Server response:", data);
+        // console.log("Server response:", data);
 
         if (data && data.message === "Письмо успешно отправлено") {
           setFormData({

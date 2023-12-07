@@ -257,7 +257,7 @@ const CompanyFormContacts = ({
           id="submit-button"
           onMouseOver={handleMouseEnter}
           onMouseOut={handleMouseLeave}
-          onMouseHover={handleMouseHover}
+          // onMouseHover={handleMouseHover}
            >
             <p className={styles.button_name10}>Отправить</p>
           </button>

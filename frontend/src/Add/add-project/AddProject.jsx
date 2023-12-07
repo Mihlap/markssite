@@ -12,6 +12,7 @@ import {
 
 // import Loading from "./loading/Loading";
 import LoadingModal from "./loading/LoadingModal";
+import Edit from '../icon/Edit.svg';
 
 export default function AddProject({ user }) {
   const Host = process.env.REACT_APP_SERVER_HOST;
@@ -28,6 +29,7 @@ export default function AddProject({ user }) {
   const [copiedId, setCopiedId] = useState("");
   const [deleteModalState, setDeleteModalState] = useState({});
   const [modalBlockHeight, setModalBlockHeight] = useState("auto"); // Изначально высота будет автоматически рассчитываться
+  const [editProjectData, setEditProjectData] = useState(null);
 
   const isMountedRef = useRef(true);
   const updateModalBlockHeight = () => {
@@ -43,7 +45,7 @@ export default function AddProject({ user }) {
   }, [dispatch]);
 
   useEffect(() => {
-    updateModalBlockHeight();
+      updateModalBlockHeight();
     window.addEventListener("resize", updateModalBlockHeight);
     return () => {
       window.removeEventListener("resize", updateModalBlockHeight);
@@ -58,6 +60,9 @@ export default function AddProject({ user }) {
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
+    if (editProjectData) {
+      setEditProjectData(null);
+    }
   };
 
   const handleCloseModal = () => {
@@ -90,6 +95,23 @@ export default function AddProject({ user }) {
       setIsCopied(true);
       setCopiedId(id);
     }
+    } catch (err) {
+      console.error("Unable to copy project to clipboard:", err);
+    }
+  };
+
+  const handleEditClick = async (id) => {
+        try {
+      await navigator.clipboard.writeText(id);  
+      if (isMountedRef.current) {
+        // setIsCopied(true);
+        setCopiedId(id);
+  
+        const projectToEdit = project.find((el) => el.id === id);
+      
+        setEditProjectData(projectToEdit);
+        setIsModalOpen(true);
+      }
     } catch (err) {
       console.error("Unable to copy project to clipboard:", err);
     }
@@ -179,6 +201,7 @@ export default function AddProject({ user }) {
               <FormAddProject
                 className={styles.formAddProjectClass}
                 setIsModalOpen={setIsModalOpen}
+                editProjectData={editProjectData}              
               />
               <button
                 className={styles.card_components_admin__close_button}
@@ -280,7 +303,28 @@ export default function AddProject({ user }) {
                                           </div>
                                         </label>
                                       </button>
-                                    </div>
+                                    </div>                                    
+                                  ) : null}
+                                    {user?.name === "obezyankaa" ||
+                                  user?.name === "Pokemon" ? (
+                                    <div className={styles.edit_block}>
+                                      <button
+                                        className={styles.buttom_edit}
+                                        // onClick={() =>
+                                        //   handleEditClick(el.id)
+                                        // }
+                                      >
+                                        <label
+                                          htmlFor="edit"
+                                          className={styles.label}
+                                        >
+                                          <div className={`${styles.wrapper}`}>
+                                               <img src={Edit} alt={Edit}/>
+                                            {/* <span>Edit</span> */}
+                                          </div>
+                                        </label>
+                                      </button>
+                                    </div>                                    
                                   ) : null}
                                 </div>
                                 <div
