@@ -12,6 +12,34 @@ const projectSlice = createSlice({
     selectedViewConstruction: "",
     selectedCity: "",
     selectedLocation: "",
+    formData: {
+      title: "",
+      selectCompetencies: "",
+      countryCity: "",
+      monthYear: "",
+      viewConstruction: "",
+      dropPhoto: [],
+      photoAva: "",
+      titleTextBlock: "",
+      descriptionProject: "",
+      totalArea: "",
+      siteArea: "",
+      floors: "",
+      altitude: "",
+      constructionVolume: "",
+      location: "",
+      degreeParticipation: "",
+      statusObject: "",
+      customer: "",
+      publication: "",
+      linkToPublication: "",
+      publicationTwo: "",
+      linkToPublicationTwo: "",
+      awards: "",
+      imageOpen: "",
+      textBlock: "",
+      imageClose: "",
+    },
   },
   reducers: {
     fetchProjectStart(state) {
@@ -42,6 +70,36 @@ const projectSlice = createSlice({
     setSelectedLocation(state, action) {
       state.selectedLocation = action.payload;
     },
+    clearFormData(state) {
+      state.formData = {
+        title: "",
+        selectCompetencies: "",
+        countryCity: "",
+        monthYear: "",
+        viewConstruction: "",
+        dropPhoto: [],
+        photoAva: "",
+        titleTextBlock: "",
+        descriptionProject: "",
+        totalArea: "",
+        siteArea: "",
+        floors: "",
+        altitude: "",
+        constructionVolume: "",
+        location: "",
+        degreeParticipation: "",
+        statusObject: "",
+        customer: "",
+        publication: "",
+        linkToPublication: "",
+        publicationTwo: "",
+        linkToPublicationTwo: "",
+        awards: "",
+        imageOpen: "",
+        textBlock: "",
+        imageClose: "",
+      };
+    },
   },
 });
 
@@ -55,10 +113,12 @@ export const {
   setSelectedCity,
   setSelectedLocation,
   setSelectedViewConstruction,
+  clearFormData,
 } = projectSlice.actions;
 
 export const fetchProject =
   (formattedData, setInputData) => async (dispatch) => {
+    console.log('formattedData7777777777777777777777777:', formattedData);
     dispatch(fetchProjectStart());
     const formData = new FormData();
     for (const key in formattedData) {
@@ -124,10 +184,28 @@ export const fetchProject =
       }
     }
 
-    axios.post(`${serverHost}/api-project/postzapros`, formData).then(() => {
-      dispatch(getFetchForm());
-    });
-    // console.log(formattedData, "<<<---REDUX");
+    try {
+      if (formattedData.projectId !== undefined && formattedData.projectId !== null)  {
+    
+        await axios.put(
+          `${serverHost}/api-project/updatezapros/${formattedData.projectId}`,
+          formData
+        );
+        dispatch(getFetchForm());
+      } else {
+  
+        await axios.post(`${serverHost}/api-project/postzapros`, formData);
+        dispatch(getFetchForm());
+      }
+      
+
+      dispatch(clearFormData());
+
+      console.log("Проект успешно отправлен.");
+    } catch (error) {
+      console.error("Ошибка при отправке проекта:", error);
+      dispatch(fetchProjectFailure(error.message));
+    }
   };
 
 export const getFetchForm = () => async (dispatch) => {
