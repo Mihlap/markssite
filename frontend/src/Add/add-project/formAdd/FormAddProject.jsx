@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import Select from "react-select";
 import compressImageFile from "browser-image-compression";
 
 import { transliterate } from "transliteration";
 import styles from "./FormAddProject.module.scss";
-import { fetchProject } from "../../../store/Slice/projectSlice";
+import { clearFormData, fetchProject } from "../../../store/Slice/projectSlice";
 import {
   removePreviewPhoto,
   removePreviewPhotoAva,
@@ -32,7 +32,7 @@ import {
 import ConstructorPage from "../constructor/ConstructorPage";
 import { monthOptions, yearOptions } from "./utils/Time";
 
-export default function FormAddProject({ setIsModalOpen }) {
+export default function FormAddProject({ setIsModalOpen, editProjectData }) {
   const dispatch = useDispatch();
 
   const [selectedCompetencies, setSelectedCompetencies] = useState([]);
@@ -101,6 +101,7 @@ export default function FormAddProject({ setIsModalOpen }) {
   const [blocks, setBlocks] = useState([]);
   const [dynamicPreviews, setDynamicPreviews] = useState([]);
   const [dynamicData, setDynamicData] = useState([]);
+  
 
   const countFilledInputs = () => {
     const inputsToCheck = [
@@ -114,7 +115,60 @@ export default function FormAddProject({ setIsModalOpen }) {
     ];
     return inputsToCheck.filter((input) => inputData[input]).length;
   };
+  
+  useEffect(() => {
+  
+    if (editProjectData) {
+      // Выведите в консоль данные, чтобы проверить, соответствуют ли они ожидаемым
+      // console.log("Установка данных формы из editProjectData:", editProjectData);
+  
+      // Установка данных формы из editProjectData
+      setSelectedCompetencies(editProjectData.selectCompetencies);
+      setSelectedViewConstruction(editProjectData.viewConstruction);
+      setSelectDegreeParticipation({ label: editProjectData.degreeParticipation });
+      setSelectStatusObject({ label: editProjectData.statusObject });
+  
+      setInputData((prevInputData) => ({
+        ...prevInputData,
+        title: editProjectData.title !== undefined ? editProjectData.title : "",
+        selectCompetencies: editProjectData.selectCompetencies !== undefined ? editProjectData.selectCompetencies : [],
+        countryCity: editProjectData.countryCity !== undefined ? editProjectData.countryCity : "",
+        monthYear: editProjectData.monthYear !== undefined ? editProjectData.monthYear : "",
+        dropPhoto: editProjectData.dropPhoto !== undefined ? editProjectData.dropPhoto : [],
+        photoAva: editProjectData.photoAva !== undefined ? editProjectData.photoAva : "",
+        titleTextBlock: editProjectData.titleTextBlock !== undefined ? editProjectData.titleTextBlock : "",
+        descriptionProject: editProjectData.descriptionProject !== undefined ? editProjectData.descriptionProject : "",
+        totalArea: editProjectData.totalArea !== undefined ? editProjectData.totalArea : "",
+        siteArea: editProjectData.siteArea !== undefined ? editProjectData.siteArea : "",
+        floors: editProjectData.floors !== undefined ? editProjectData.floors : "",
+        altitude: editProjectData.altitude !== undefined ? editProjectData.altitude : "",
+        constructionVolume: editProjectData.constructionVolume !== undefined ? editProjectData.constructionVolume : "",
+        location: editProjectData.location !== undefined ? editProjectData.location : "",
+        degreeParticipation: editProjectData.degreeParticipation !== undefined ? editProjectData.degreeParticipation : "",
+        statusObject: editProjectData.statusObject !== undefined ? editProjectData.statusObject : "",
+        customer: editProjectData.customer !== undefined ? editProjectData.customer : "",
+        publication: editProjectData.publication !== undefined ? editProjectData.publication : "",
+        linkToPublication: editProjectData.linkToPublication !== undefined ? editProjectData.linkToPublication : "",
+        publicationTwo: editProjectData.publicationTwo !== undefined ? editProjectData.publicationTwo : "",
+        linkToPublicationTwo: editProjectData.linkToPublicationTwo !== undefined ? editProjectData.linkToPublicationTwo : "",
+        awards: editProjectData.awards !== undefined ? editProjectData.awards : "",
+        imageOpen: editProjectData.imageOpen !== undefined ? editProjectData.imageOpen : "",
+        textBlock: editProjectData.textBlock !== undefined ? editProjectData.textBlock : "",
+        imageClose: editProjectData.imageClose !== undefined ? editProjectData.imageClose : "",
+        numberOfLanes: editProjectData.numberOfLanes !== undefined ? editProjectData.numberOfLanes : "",
+        long: editProjectData.long !== undefined ? editProjectData.long : "",
+      }));
+      
+      // console.log("Состояние inputData после установки:", inputData);
+      // console.log("editProjectData.imageClose:", editProjectData.imageClose);
+      }
+      // console.log("editProjectData:", editProjectData);
 
+  }, [editProjectData]);
+  
+  
+  
+  
   // функция Удаление фото из массива превью
   // Удаление фото из массива превью
   const handleRemovePreviewPhoto = (index) => {
@@ -127,6 +181,7 @@ export default function FormAddProject({ setIsModalOpen }) {
       setIsDropPhotoVisible
     );
   };
+  
 
   // Удаление фото из массива превью который с одной фоткой
   const handleRemovePreviewPhotoAva = (index) => {
@@ -227,7 +282,18 @@ export default function FormAddProject({ setIsModalOpen }) {
         photoAva: inputData.photoAva,
         imageOpen: inputData.imageOpen,
       };
+
+      // console.log('editProjectData11111111111111111111:', editProjectData);
+      // console.log('editProjectData.projectId22222222222222222222222:', editProjectData.projectId);
+
+      // if (editProjectData && editProjectData.projectId) {
+      //   formattedData.projectId = editProjectData.projectId;
+      // }
+
       dispatch(fetchProject(formattedData, setInputData));
+
+      // dispatch(clearFormData());
+
       setSelectedCompetencies([]);
       setSelectDegreeParticipation("");
       setSelectStatusObject("");
@@ -769,8 +835,9 @@ export default function FormAddProject({ setIsModalOpen }) {
           Сначала заполните все обязательные поля в предыдущем блоке❗
         </div>
       )}
-      <div className={styles.form_container__title}>Новый проект</div>
-
+      <div className={styles.form_container__title}>
+      {editProjectData ? 'Редактирование проекта' : 'Новый проект'}
+        </div>
       <div className={styles.form_container__block_form}>
         <form className={styles.form_container__form} onSubmit={submitHandler}>
           {/* первый серый блок с инфой  */}

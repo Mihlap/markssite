@@ -405,7 +405,7 @@
 // стили помойного ведра 
 .del_block {
     position: absolute;
-    right: 70px;
+    right: 80px;
     bottom: 16px;
     display: flex;
     align-items: center;
@@ -511,6 +511,35 @@
 
     }
 }
+
+// стили редактирования проекта
+
+.edit_block {
+    position: absolute;
+    right: 20px;
+    bottom: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background-color: var(--blue-75BBFD);
+    cursor: pointer;
+
+    &:hover {
+        background-color: var(--dark-blue-389FFF);
+    }
+}
+
+.buttom_edit { 
+     .wrapper {
+        position: relative;
+        cursor: pointer;
+    }
+}
+
+// ______________________________________
 
 .delete_modal_container {
     position: fixed;
