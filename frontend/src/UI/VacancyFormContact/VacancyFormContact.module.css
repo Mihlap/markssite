@@ -137,7 +137,7 @@
     border: 1px solid #C7E4FF;
     background-color: var(--blue-75BBFD);
     margin-top: 1.44rem;
-    cursor: none;
+    /* cursor: none; */
     transition: background-color 0.4s ease;
   }
 
@@ -169,6 +169,7 @@
     line-height: 0.875rem;
     width: fit-content;
     margin-top: 1rem;
+    cursor: pointer;
     transition: background-color 0.4s ease;
   }
 
@@ -210,11 +211,12 @@
   .fileName_resumeFiles {
     display: flex;
     margin-right: 6px;
+    cursor: pointer;
   }
 
   .removeFile_resumeFiles_remove {
     font-size: 24px;
-    cursor: pointer;
+    /* cursor: pointer; */
     margin-top: -1.5px;
   }
 

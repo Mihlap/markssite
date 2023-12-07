@@ -126,7 +126,7 @@ const CompanySubscriptionForm = ({
               type="submit"
               onMouseOver={handleMouseEnter}
               onMouseOut={handleMouseLeave}
-              onMouseHover={handleMouseHover}
+              // onMouseHover={handleMouseHover}
             >
               <p className={styles.button_name}>Подписаться</p>
             </button>
