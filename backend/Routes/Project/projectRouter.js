@@ -208,3 +208,160 @@ router.delete('/deletezapros/:id', async (req, res) => {
 });
 
 module.exports = router;
+
+
+
+
+
+
+
+// router.post(
+//   '/postzapros',
+//   fileMiddleware.fields([
+//     { name: 'dropPhoto', maxCount: 4 },
+//     { name: 'photoAva', maxCount: 1 },
+//     { name: 'imageOpen', maxCount: 1 },
+//     { name: 'imageClose', maxCount: 1 },
+//     { name: 'dynamicImages', maxCount: 50 },
+//   ]),
+//   async (req, res) => {
+//     try {
+//       const dynamicImageTitles = req.files.dynamicImages
+//         ? req.files.dynamicImages.map((file) => file.filename).join(', ')
+//         : null;
+//       let dynamicBlocksContent = null;
+
+//       if (req.body.dynamicBlocksJSON) {
+//         try {
+//           dynamicBlocksContent = JSON.parse(req.body.dynamicBlocksJSON);
+//         } catch (error) {
+//           console.error('Ошибка при разборе dynamicBlocksJSON:', error);
+//           return res.status(400).json({ message: 'Неверный формат данных для dynamicBlocksJSON' });
+//         }
+//       }
+
+//       const imageTitles = req.files.dropPhoto
+//         ? req.files.dropPhoto.map((file) => file.filename).join(', ')
+//         : null;
+//       const imageProjects = req.files.photoAva ? req.files.photoAva[0].filename : null;
+//       const imageOpens = req.files.imageOpen ? req.files.imageOpen[0].filename : null;
+//       const imageCloses = req.files.imageClose ? req.files.imageClose[0].filename : null;
+
+//       let projectToUpdate; // Переменная для хранения проекта, который нужно обновить
+
+//       if (req.body.projectId) {
+//         // Редактирование существующего проекта
+//         projectToUpdate = await Project.findByPk(req.body.projectId);
+
+//         if (!projectToUpdate) {
+//           return res.status(404).json({ message: 'Проект не найден' });
+//         }
+
+//         try {
+//           console.log('Received projectId99999999999999999999999999999999999999999:', req.body.projectId);
+
+//           console.log('Updating project with data:', {
+//             title: req.body.title,
+//             // ... другие поля......
+//           });
+
+//           await projectToUpdate.update({
+//             title: req.body.title,
+//             selectCompetencies: req.body.selectCompetencies,
+//             countryCity: req.body.countryCity,
+//             monthYear: req.body.monthYear,
+//             viewConstruction: req.body.viewConstruction,
+//             style: req.body.radioValue,
+//             imageTitle: imageTitles,
+//             imageProject: imageProjects,
+//             titleTextBlock: req.body.titleTextBlock,
+//             descriptionProject: req.body.descriptionProject,
+//             totalArea: req.body.totalArea,
+//             siteArea: req.body.siteArea,
+//             floors: req.body.floors,
+//             altitude: req.body.altitude,
+//             constructionVolume: req.body.constructionVolume,
+//             location: req.body.location,
+//             degreeParticipation: req.body.degreeParticipation,
+//             statusObject: req.body.statusObject,
+//             customer: req.body.customer,
+//             publication: req.body.publication,
+//             linkToPublication: req.body.linkToPublication,
+//             publicationTwo: req.body.publicationTwo,
+//             linkToPublicationTwo: req.body.linkToPublicationTwo,
+//             awards: req.body.awards,
+//             imageOpen: imageOpens,
+//             headingTextBlock: req.body.headingTextBlock,
+//             textBlock: req.body.textBlock,
+//             imageClose: imageCloses,
+//             numberOfLanes: req.body.numberOfLanes,
+//             long: req.body.long,
+//           });
+
+//           const existingConstructor = await Constructor.findOne({ where: { idBlock: req.body.projectId } });
+
+//           if (existingConstructor) {
+//             await existingConstructor.update({
+//               data: dynamicBlocksContent,
+//               image: dynamicImageTitles,
+//             });
+//           }
+
+//           console.log('Updated project:', projectToUpdate.toJSON());
+
+//           res.status(200).json({ message: 'Данные успешно сохранены' });
+//         } catch (error) {
+//           console.error('Error updating project:', error);
+//           res.status(500).json({ message: 'Произошла ошибка при сохранении данных' });
+//         }
+//       } else {
+//         // Создание нового проекта
+//         projectToUpdate = await Project.create({
+//           title: req.body.title,
+//           selectCompetencies: req.body.selectCompetencies,
+//           countryCity: req.body.countryCity,
+//           monthYear: req.body.monthYear,
+//           viewConstruction: req.body.viewConstruction,
+//           style: req.body.radioValue,
+//           imageTitle: imageTitles,
+//           imageProject: imageProjects,
+//           titleTextBlock: req.body.titleTextBlock,
+//           descriptionProject: req.body.descriptionProject,
+//           totalArea: req.body.totalArea,
+//           siteArea: req.body.siteArea,
+//           floors: req.body.floors,
+//           altitude: req.body.altitude,
+//           constructionVolume: req.body.constructionVolume,
+//           location: req.body.location,
+//           degreeParticipation: req.body.degreeParticipation,
+//           statusObject: req.body.statusObject,
+//           customer: req.body.customer,
+//           publication: req.body.publication,
+//           linkToPublication: req.body.linkToPublication,
+//           publicationTwo: req.body.publicationTwo,
+//           linkToPublicationTwo: req.body.linkToPublicationTwo,
+//           awards: req.body.awards,
+//           imageOpen: imageOpens,
+//           headingTextBlock: req.body.headingTextBlock,
+//           textBlock: req.body.textBlock,
+//           imageClose: imageCloses,
+//           numberOfLanes: req.body.numberOfLanes,
+//           long: req.body.long,
+//         });
+
+//         await Constructor.create({
+//           data: dynamicBlocksContent,
+//           image: dynamicImageTitles,
+//           idBlock: projectToUpdate.id,
+//         });
+
+//         res.status(200).json({ message: 'Данные успешно сохранены' });
+//       }
+//     } catch (error) {
+//       console.log(error); // Output error to the console
+//       res.status(500).json({ message: 'Произошла ошибка при сохранении данных' });
+//     }
+//   },
+// );
+
+
