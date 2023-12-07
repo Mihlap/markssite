@@ -45,8 +45,7 @@ export default function AddProject({ user }) {
   }, [dispatch]);
 
   useEffect(() => {
-    console.log(isModalOpen);
-    updateModalBlockHeight();
+      updateModalBlockHeight();
     window.addEventListener("resize", updateModalBlockHeight);
     return () => {
       window.removeEventListener("resize", updateModalBlockHeight);
@@ -108,8 +107,8 @@ export default function AddProject({ user }) {
         // setIsCopied(true);
         setCopiedId(id);
   
-        // Найдите данные проекта с соответствующим ID и установите их в состояние
         const projectToEdit = project.find((el) => el.id === id);
+      
         setEditProjectData(projectToEdit);
         setIsModalOpen(true);
       }
@@ -311,9 +310,9 @@ export default function AddProject({ user }) {
                                     <div className={styles.edit_block}>
                                       <button
                                         className={styles.buttom_edit}
-                                        onClick={() =>
-                                          handleEditClick(el.id)
-                                        }
+                                        // onClick={() =>
+                                        //   handleEditClick(el.id)
+                                        // }
                                       >
                                         <label
                                           htmlFor="edit"
