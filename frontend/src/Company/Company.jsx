@@ -659,7 +659,19 @@ export default function Company({
                   },
                   content: {
                     zIndex: 10,
-                  },
+                    overflow: 'auto',
+                    WebkitOverflowScrolling: 'touch', // Для плавной прокрутки в Safari
+                    '&::WebkitScrollbar': {
+                      width: '12px',
+                    },
+                    '&::WebkitScrollbarTrack': {
+                      backgroundColor: '#75BBFD',
+                      borderRadius: '6px',
+                    },
+                    '&::WebkitScrollbarTrack': {
+                      backgroundColor: 'transparent',
+                    },
+                  },                
                 }}
               >
                 {selectedCard && (

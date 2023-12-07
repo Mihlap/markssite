@@ -85,6 +85,23 @@ video {
   padding: 0;
 }
 
+body .ReactModal__Content {
+  overflow: auto;
+}
+
+body .ReactModal__Content::-webkit-scrollbar {
+  width: 6px;
+}
+
+body .ReactModal__Content::-webkit-scrollbar-thumb {
+  background-color: #C0C5CB;
+  border-radius: 4px;
+}
+
+body .ReactModal__Content::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
 
 /* *::-webkit-scrollbar {
   width: 5px;
