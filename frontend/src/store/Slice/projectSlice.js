@@ -39,6 +39,7 @@ const projectSlice = createSlice({
       imageOpen: "",
       textBlock: "",
       imageClose: "",
+      projectId: null,
     },
   },
   reducers: {
@@ -69,6 +70,9 @@ const projectSlice = createSlice({
     },
     setSelectedLocation(state, action) {
       state.selectedLocation = action.payload;
+    },
+    setProjectId(state, action) {
+      state.projectId = action.payload;
     },
     clearFormData(state) {
       state.formData = {
@@ -113,26 +117,30 @@ export const {
   setSelectedCity,
   setSelectedLocation,
   setSelectedViewConstruction,
+  setProjectId,
   clearFormData,
 } = projectSlice.actions;
 
 export const fetchProject =
-  (formattedData, setInputData) => async (dispatch) => {
-    console.log('formattedData7777777777777777777777777:', formattedData);
+  (formattedData, setInputData) => async (dispatch, getState) => {
     dispatch(fetchProjectStart());
     const formData = new FormData();
+    const projectId = getState().project.projectId;
+
+    // Используйте PUT запрос, если у вас есть projectId
+    const requestMethod = projectId ? "PUT" : "POST";
+    const requestUrl = projectId
+      ? `${serverHost}/api-project/updatezapros/${projectId}`
+      : `${serverHost}/api-project/postzapros`;
+
     for (const key in formattedData) {
       if (typeof formattedData[key] === "object") {
         if (key === "photoAva" && formattedData[key].length > 0) {
           formData.append("photoAva", formattedData[key][0]);
         } else if (key === "imageOpen" && formattedData[key].length > 0) {
           formData.append("imageOpen", formattedData[key][0]);
-          // console.log("imageOpen", formattedData[key]);
         } else if (key === "dynamicBlocks" && formattedData[key].length > 0) {
-          console.log("зашел сюда", formattedData[key]);
-
           let data = formattedData[key];
-
           let photosArray = [];
 
           data.forEach((outerObj) => {
@@ -151,13 +159,12 @@ export const fetchProject =
             (outerArray) => {
               return outerArray.map((obj) => {
                 if (obj.type === "file" && Array.isArray(obj.value)) {
-                  // Делаем копию объекта и заменяем value на массив имен файлов
                   return {
                     ...obj,
                     value: obj.value.map((file) => (file ? file.name : null)),
                   };
                 }
-                return obj; // Если это не файл, просто возвращаем исходный объект
+                return obj;
               });
             }
           );
@@ -167,16 +174,12 @@ export const fetchProject =
             JSON.stringify(cloneDynamicBlocks)
           );
 
-          // console.log("консоль с trycode", photosArray);
           photosArray.forEach((photo) => {
             formData.append("dynamicImages", photo);
           });
         } else {
           for (const file of formattedData[key]) {
-            // console.log("file", file);
             formData.append(key, file);
-            //  обрати внимание во сюда, тут в file лежат объекты с фотографиями!
-            //  они и есть dropPhoto на бекенде
           }
         }
       } else {
@@ -185,28 +188,22 @@ export const fetchProject =
     }
 
     try {
-      if (formattedData.projectId !== undefined && formattedData.projectId !== null)  {
-    
-        await axios.put(
-          `${serverHost}/api-project/updatezapros/${formattedData.projectId}`,
-          formData
-        );
-        dispatch(getFetchForm());
-      } else {
-  
-        await axios.post(`${serverHost}/api-project/postzapros`, formData);
-        dispatch(getFetchForm());
-      }
-      
+      await axios({
+        method: requestMethod,
+        url: requestUrl,
+        data: formData,
+        headers: { "Content-Type": "multipart/form-data" },
+      });
 
       dispatch(clearFormData());
-
-      console.log("Проект успешно отправлен.");
+      // Опционально: обновить список проектов
+      dispatch(getFetchForm());
     } catch (error) {
       console.error("Ошибка при отправке проекта:", error);
       dispatch(fetchProjectFailure(error.message));
     }
   };
+
 
 export const getFetchForm = () => async (dispatch) => {
   dispatch(fetchProjectStart());

@@ -13,6 +13,7 @@ import {
 // import Loading from "./loading/Loading";
 import LoadingModal from "./loading/LoadingModal";
 import Edit from '../icon/Edit.svg';
+import FormEditProject from "./formAdd/FormEditProject";
 
 export default function AddProject({ user }) {
   const Host = process.env.REACT_APP_SERVER_HOST;
@@ -101,21 +102,22 @@ export default function AddProject({ user }) {
   };
 
   const handleEditClick = async (id) => {
-        try {
-      await navigator.clipboard.writeText(id);  
-      if (isMountedRef.current) {
-        // setIsCopied(true);
-        setCopiedId(id);
+    try {
+  await navigator.clipboard.writeText(id);  
+  if (isMountedRef.current) {
+    // setIsCopied(true);
+    // setCopiedId(id);
+
+    const projectToEdit = project.find((el) => el.id === id);
+    // console.log('Project to edit111111111111111111111:', projectToEdit);
   
-        const projectToEdit = project.find((el) => el.id === id);
-      
-        setEditProjectData(projectToEdit);
-        setIsModalOpen(true);
-      }
-    } catch (err) {
-      console.error("Unable to copy project to clipboard:", err);
-    }
-  };
+    setEditProjectData(projectToEdit);
+    setIsModalOpen(true);
+  }
+} catch (err) {
+  console.error("Unable to copy project to clipboard:", err);
+}
+};
 
   const handleFormDelete = (formId) => {
     dispatch(deleteForm(formId));
@@ -198,11 +200,18 @@ export default function AddProject({ user }) {
               style={{ maxHeight: modalBlockHeight }}
               className={styles.card_components_admin__modal_block}
             >
-              <FormAddProject
-                className={styles.formAddProjectClass}
-                setIsModalOpen={setIsModalOpen}
-                editProjectData={editProjectData}              
-              />
+              {editProjectData ? (
+                <FormEditProject
+                  setIsModalOpen={setIsModalOpen}
+                  editProjectData={editProjectData}
+                  className={styles.formAddProjectClass}
+                />
+              ) : (
+                <FormAddProject
+                  className={styles.formAddProjectClass}
+                  setIsModalOpen={setIsModalOpen}
+                />
+              )}
               <button
                 className={styles.card_components_admin__close_button}
                 onClick={handleCloseModal}
@@ -210,7 +219,6 @@ export default function AddProject({ user }) {
             </div>
           </div>
         )}
-
         <div className={styles.card_components_admin__section_map}>
           {error ? (
             <div className={styles.card_components_admin__errore_div}>
@@ -305,26 +313,24 @@ export default function AddProject({ user }) {
                                       </button>
                                     </div>                                    
                                   ) : null}
-                                    {user?.name === "obezyankaa" ||
+                                       {user?.name === "obezyankaa" ||
                                   user?.name === "Pokemon" ? (
                                     <div className={styles.edit_block}>
                                       <button
                                         className={styles.buttom_edit}
-                                        // onClick={() =>
-                                        //   handleEditClick(el.id)
-                                        // }
+                                        onClick={() => handleEditClick(el.id)}
                                       >
                                         <label
                                           htmlFor="edit"
                                           className={styles.label}
                                         >
                                           <div className={`${styles.wrapper}`}>
-                                               <img src={Edit} alt={Edit}/>
+                                            <img src={Edit} alt={Edit} />
                                             {/* <span>Edit</span> */}
                                           </div>
                                         </label>
                                       </button>
-                                    </div>                                    
+                                    </div>
                                   ) : null}
                                 </div>
                                 <div
