@@ -32,7 +32,7 @@ import {
 import ConstructorPage from "../constructor/ConstructorPage";
 import { monthOptions, yearOptions } from "./utils/Time";
 
-export default function FormAddProject({ setIsModalOpen, editProjectData }) {
+export default function FormAddProject({ setIsModalOpen }) {
   const dispatch = useDispatch();
 
   const [selectedCompetencies, setSelectedCompetencies] = useState([]);
@@ -116,59 +116,7 @@ export default function FormAddProject({ setIsModalOpen, editProjectData }) {
     return inputsToCheck.filter((input) => inputData[input]).length;
   };
   
-  useEffect(() => {
-  
-    if (editProjectData) {
-      // Выведите в консоль данные, чтобы проверить, соответствуют ли они ожидаемым
-      // console.log("Установка данных формы из editProjectData:", editProjectData);
-  
-      // Установка данных формы из editProjectData
-      setSelectedCompetencies(editProjectData.selectCompetencies);
-      setSelectedViewConstruction(editProjectData.viewConstruction);
-      setSelectDegreeParticipation({ label: editProjectData.degreeParticipation });
-      setSelectStatusObject({ label: editProjectData.statusObject });
-  
-      setInputData((prevInputData) => ({
-        ...prevInputData,
-        title: editProjectData.title !== undefined ? editProjectData.title : "",
-        selectCompetencies: editProjectData.selectCompetencies !== undefined ? editProjectData.selectCompetencies : [],
-        countryCity: editProjectData.countryCity !== undefined ? editProjectData.countryCity : "",
-        monthYear: editProjectData.monthYear !== undefined ? editProjectData.monthYear : "",
-        dropPhoto: editProjectData.dropPhoto !== undefined ? editProjectData.dropPhoto : [],
-        photoAva: editProjectData.photoAva !== undefined ? editProjectData.photoAva : "",
-        titleTextBlock: editProjectData.titleTextBlock !== undefined ? editProjectData.titleTextBlock : "",
-        descriptionProject: editProjectData.descriptionProject !== undefined ? editProjectData.descriptionProject : "",
-        totalArea: editProjectData.totalArea !== undefined ? editProjectData.totalArea : "",
-        siteArea: editProjectData.siteArea !== undefined ? editProjectData.siteArea : "",
-        floors: editProjectData.floors !== undefined ? editProjectData.floors : "",
-        altitude: editProjectData.altitude !== undefined ? editProjectData.altitude : "",
-        constructionVolume: editProjectData.constructionVolume !== undefined ? editProjectData.constructionVolume : "",
-        location: editProjectData.location !== undefined ? editProjectData.location : "",
-        degreeParticipation: editProjectData.degreeParticipation !== undefined ? editProjectData.degreeParticipation : "",
-        statusObject: editProjectData.statusObject !== undefined ? editProjectData.statusObject : "",
-        customer: editProjectData.customer !== undefined ? editProjectData.customer : "",
-        publication: editProjectData.publication !== undefined ? editProjectData.publication : "",
-        linkToPublication: editProjectData.linkToPublication !== undefined ? editProjectData.linkToPublication : "",
-        publicationTwo: editProjectData.publicationTwo !== undefined ? editProjectData.publicationTwo : "",
-        linkToPublicationTwo: editProjectData.linkToPublicationTwo !== undefined ? editProjectData.linkToPublicationTwo : "",
-        awards: editProjectData.awards !== undefined ? editProjectData.awards : "",
-        imageOpen: editProjectData.imageOpen !== undefined ? editProjectData.imageOpen : "",
-        textBlock: editProjectData.textBlock !== undefined ? editProjectData.textBlock : "",
-        imageClose: editProjectData.imageClose !== undefined ? editProjectData.imageClose : "",
-        numberOfLanes: editProjectData.numberOfLanes !== undefined ? editProjectData.numberOfLanes : "",
-        long: editProjectData.long !== undefined ? editProjectData.long : "",
-      }));
-      
-      // console.log("Состояние inputData после установки:", inputData);
-      // console.log("editProjectData.imageClose:", editProjectData.imageClose);
-      }
-      // console.log("editProjectData:", editProjectData);
-
-  }, [editProjectData]);
-  
-  
-  
-  
+    
   // функция Удаление фото из массива превью
   // Удаление фото из массива превью
   const handleRemovePreviewPhoto = (index) => {
@@ -261,78 +209,77 @@ export default function FormAddProject({ setIsModalOpen, editProjectData }) {
   // функция отправки формы на Redux
   const submitHandler = async (e) => {
     e.preventDefault();
-
+  
     const isFormValid = validateForm();
-
+  
     if (!isFormValid) {
       // Обрабатываем ошибку
+      console.error("Форма не прошла валидацию. Работа функции submitHandler прервана.");
     } else {
-      const formattedData = {
-        ...inputData,
-        dynamicBlocks: dynamicData,
-        selectCompetencies: selectedCompetencies
-          .map((option) => option.label)
-          .join(","),
-        degreeParticipation: selectDegreeParticipation.label,
-        statusObject: selectStatusObject.label,
-        viewConstruction: selectedViewConstruction
-          .map((option) => option.label)
-          .join(","),
-        // radioValue: selectedRadio,
-        photoAva: inputData.photoAva,
-        imageOpen: inputData.imageOpen,
-      };
-
-      // console.log('editProjectData11111111111111111111:', editProjectData);
-      // console.log('editProjectData.projectId22222222222222222222222:', editProjectData.projectId);
-
-      // if (editProjectData && editProjectData.projectId) {
-      //   formattedData.projectId = editProjectData.projectId;
-      // }
-
-      dispatch(fetchProject(formattedData, setInputData));
-
-      // dispatch(clearFormData());
-
-      setSelectedCompetencies([]);
-      setSelectDegreeParticipation("");
-      setSelectStatusObject("");
-      setSelectedViewConstruction([]);
-      // setSelectedRadio("");
-      setPreviewPhotos([]);
-      setDynamicData([]);
-      setInputData({
-        title: "",
-        selectCompetencies: "",
-        countryCity: "",
-        monthYear: "",
-        viewConstruction: "",
-        dropPhoto: [],
-        photoAva: "",
-        titleTextBlock: "",
-        descriptionProject: "",
-        totalArea: "",
-        siteArea: "",
-        floors: "",
-        altitude: "",
-        constructionVolume: "",
-        location: "",
-        degreeParticipation: "",
-        statusObject: "",
-        customer: "",
-        publication: "",
-        linkToPublication: "",
-        publicationTwo: "",
-        linkToPublicationTwo: "",
-        awards: "",
-        imageOpen: "",
-        textBlock: "",
-        imageClose: "",
-      });
-      setErrorMessage(""); // Очищаем ошибки
-      setIsModalOpen(false);
-
-      console.log("Форма отправлена.");
+      try {
+        const formattedData = {
+          ...inputData,
+          dynamicBlocks: dynamicData,
+          selectCompetencies: Array.isArray(selectedCompetencies)
+            ? selectedCompetencies.map((option) => option.label).join(",")
+            : "",
+          degreeParticipation: selectDegreeParticipation.label,
+          statusObject: selectStatusObject.label,
+          viewConstruction: Array.isArray(selectedViewConstruction)
+            ? selectedViewConstruction.map((option) => option.label).join(",")
+            : "",
+          // radioValue: selectedRadio,
+          photoAva: inputData.photoAva,
+          imageOpen: inputData.imageOpen,
+        };
+  
+        await dispatch(fetchProject(formattedData, setInputData));
+  
+        dispatch(clearFormData());
+  
+        setSelectedCompetencies([]);
+        setSelectDegreeParticipation("");
+        setSelectStatusObject("");
+        setSelectedViewConstruction([]);
+        // setSelectedRadio("");
+        setPreviewPhotos([]);
+        setDynamicData([]);
+        setInputData({
+          title: "",
+          selectCompetencies: "",
+          countryCity: "",
+          monthYear: "",
+          viewConstruction: "",
+          dropPhoto: [],
+          photoAva: "",
+          titleTextBlock: "",
+          descriptionProject: "",
+          totalArea: "",
+          siteArea: "",
+          floors: "",
+          altitude: "",
+          constructionVolume: "",
+          location: "",
+          degreeParticipation: "",
+          statusObject: "",
+          customer: "",
+          publication: "",
+          linkToPublication: "",
+          publicationTwo: "",
+          linkToPublicationTwo: "",
+          awards: "",
+          imageOpen: "",
+          textBlock: "",
+          imageClose: "",
+        });
+  
+        setErrorMessage(""); // Очищаем ошибки
+        setIsModalOpen(false);
+  
+        } catch (error) {
+        console.error("Произошла ошибка при отправке формы:", error);
+        // Обработка ошибки, например, вывод сообщения об ошибке пользователю
+      }
     }
   };
 
@@ -835,8 +782,8 @@ export default function FormAddProject({ setIsModalOpen, editProjectData }) {
           Сначала заполните все обязательные поля в предыдущем блоке❗
         </div>
       )}
-      <div className={styles.form_container__title}>
-      {editProjectData ? 'Редактирование проекта' : 'Новый проект'}
+       <div className={styles.form_container__title}>
+        Новый проект
         </div>
       <div className={styles.form_container__block_form}>
         <form className={styles.form_container__form} onSubmit={submitHandler}>
