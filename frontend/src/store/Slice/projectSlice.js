@@ -37,6 +37,7 @@ const projectSlice = createSlice({
       linkToPublicationTwo: "",
       awards: "",
       imageOpen: "",
+      headingTextBlock: "",
       textBlock: "",
       imageClose: "",
       projectId: null,
@@ -100,6 +101,7 @@ const projectSlice = createSlice({
         linkToPublicationTwo: "",
         awards: "",
         imageOpen: "",
+        headingTextBlock: "",
         textBlock: "",
         imageClose: "",
       };
@@ -121,29 +123,30 @@ export const {
   clearFormData,
 } = projectSlice.actions;
 
-export const fetchProject =
-  (formattedData, setInputData) => async (dispatch, getState) => {
-    dispatch(fetchProjectStart());
-    const formData = new FormData();
-    const projectId = getState().project.projectId;
+export const fetchProject = (formattedData) => async (dispatch, getState) => {
+  dispatch(fetchProjectStart());
+  const formData = new FormData();
+  const projectId = getState().project.projectId;
 
-    // Используйте PUT запрос, если у вас есть projectId
-    const requestMethod = projectId ? "PUT" : "POST";
-    const requestUrl = projectId
-      ? `${serverHost}/api-project/updatezapros/${projectId}`
-      : `${serverHost}/api-project/postzapros`;
+  // Используйте PUT запрос, если у вас есть projectId
+  const requestMethod = projectId ? "PUT" : "POST";
+  const requestUrl = projectId
+    ? `${serverHost}/api-project/updatezapros/${projectId}`
+    : `${serverHost}/api-project/postzapros`;
 
-    for (const key in formattedData) {
-      if (typeof formattedData[key] === "object") {
-        if (key === "photoAva" && formattedData[key].length > 0) {
-          formData.append("photoAva", formattedData[key][0]);
-        } else if (key === "imageOpen" && formattedData[key].length > 0) {
-          formData.append("imageOpen", formattedData[key][0]);
-        } else if (key === "dynamicBlocks" && formattedData[key].length > 0) {
-          let data = formattedData[key];
+  for (const key in formattedData) {
+    if (formattedData.hasOwnProperty(key)) {
+      const value = formattedData[key];
+
+      if (value !== null && typeof value === "object") {
+        if (key === "photoAva" && value?.length > 0) {
+          formData.append("photoAva", value[0]);
+        } else if (key === "imageOpen" && value?.length > 0) {
+          formData.append("imageOpen", value[0]);
+        } else if (key === "dynamicBlocks" && value?.length > 0) {
           let photosArray = [];
 
-          data.forEach((outerObj) => {
+          value.forEach((outerObj) => {
             outerObj.forEach((innerObj) => {
               if (
                 innerObj.type === "file" &&
@@ -155,54 +158,51 @@ export const fetchProject =
             });
           });
 
-          const cloneDynamicBlocks = formattedData.dynamicBlocks.map(
-            (outerArray) => {
-              return outerArray.map((obj) => {
-                if (obj.type === "file" && Array.isArray(obj.value)) {
-                  return {
-                    ...obj,
-                    value: obj.value.map((file) => (file ? file.name : null)),
-                  };
-                }
-                return obj;
-              });
-            }
-          );
+          const cloneDynamicBlocks = value.map((outerArray) => {
+            return outerArray.map((obj) => {
+              if (obj.type === "file" && Array.isArray(obj.value)) {
+                return {
+                  ...obj,
+                  value: obj.value.map((file) => (file ? file.name : null)),
+                };
+              }
+              return obj;
+            });
+          });
 
-          formData.append(
-            "dynamicBlocksJSON",
-            JSON.stringify(cloneDynamicBlocks)
-          );
+          formData.append("dynamicBlocksJSON", JSON.stringify(cloneDynamicBlocks));
 
           photosArray.forEach((photo) => {
             formData.append("dynamicImages", photo);
           });
         } else {
-          for (const file of formattedData[key]) {
+          for (const file of value) {
             formData.append(key, file);
           }
         }
       } else {
-        formData.append(key, formattedData[key]);
+        formData.append(key, value);
       }
     }
+  }
 
-    try {
-      await axios({
-        method: requestMethod,
-        url: requestUrl,
-        data: formData,
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+  try {
+    await axios({
+      method: requestMethod,
+      url: requestUrl,
+      data: formData,
+      headers: { "Content-Type": "multipart/form-data" },
+    });
 
-      dispatch(clearFormData());
-      // Опционально: обновить список проектов
-      dispatch(getFetchForm());
-    } catch (error) {
-      console.error("Ошибка при отправке проекта:", error);
-      dispatch(fetchProjectFailure(error.message));
-    }
-  };
+    dispatch(clearFormData());
+    // Опционально: обновить список проектов
+    dispatch(getFetchForm());
+  } catch (error) {
+    console.error("Ошибка при отправке проекта:", error);
+    dispatch(fetchProjectFailure(error.message));
+  }
+};
+
 
 
 export const getFetchForm = () => async (dispatch) => {
