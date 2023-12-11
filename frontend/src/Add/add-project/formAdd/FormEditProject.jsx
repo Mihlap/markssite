@@ -1,12 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useParams } from 'react-router-dom';
+import { useParams } from "react-router-dom";
 import Select from "react-select";
 import compressImageFile from "browser-image-compression";
 
 import { transliterate } from "transliteration";
 import styles from "./FormAddProject.module.scss";
-import { clearFormData, fetchProject, setProjectId } from "../../../store/Slice/projectSlice";
+import {
+  clearFormData,
+  fetchProject,
+  setProjectId,
+} from "../../../store/Slice/projectSlice";
 import {
   removePreviewPhoto,
   removePreviewPhotoAva,
@@ -33,9 +37,11 @@ import {
 import ConstructorPage from "../constructor/ConstructorPage";
 import { monthOptions, yearOptions } from "./utils/Time";
 
+const Host = process.env.REACT_APP_SERVER_HOST;
+
 export default function FormEditProject({ setIsModalOpen, editProjectData }) {
   const dispatch = useDispatch();
- 
+
   const [inputData, setInputData] = useState({
     title: "",
     selectCompetencies: [],
@@ -68,10 +74,10 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
     long: "",
   });
 
-
   const [selectedCompetencies, setSelectedCompetencies] = useState([]);
   const [selectedViewConstruction, setSelectedViewConstruction] = useState([]);
-  const [selectDegreeParticipation, setSelectDegreeParticipation] =  useState(null);
+  const [selectDegreeParticipation, setSelectDegreeParticipation] =
+    useState(null);
   const [selectStatusObject, setSelectStatusObject] = useState(null);
 
   const [isFocused, setIsFocused] = useState(false);
@@ -97,14 +103,12 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
   const [isLoadingOpenImage, setIsLoadingOpenImage] = useState(false);
   const [isLoadingCloseImage, setIsLoadingCloseImage] = useState(false);
 
-
   // << ==== useStates для конструктора ==== >>
   const [inputValue, setInputValue] = useState("");
-  const [onenConstructor, setOpenConstructor] = useState(false);
+  const [openConstructor, setOpenConstructor] = useState(false);
   const [blocks, setBlocks] = useState([]);
   const [dynamicPreviews, setDynamicPreviews] = useState([]);
   const [dynamicData, setDynamicData] = useState([]);
-  
 
   const countFilledInputs = () => {
     const inputsToCheck = [
@@ -118,59 +122,174 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
     ];
     return inputsToCheck.filter((input) => inputData[input]).length;
   };
-  
+
   useEffect(() => {
     if (editProjectData) {
-      console.log('Received data in FormEditProject222222222222222222222:', editProjectData);
-      console.log("Setting form data from editProjectData3333333333333333:", inputData);
-  
+      console.log("editProjectData:", editProjectData);
+      console.log("Images:", editProjectData.imageOpen, editProjectData.imageClose);
+
+      const initialSelectedCompetencies = editProjectData.selectCompetencies
+        ? editProjectData.selectCompetencies
+            .split(",")
+            .map((item) => ({ value: item.trim(), label: item.trim() }))
+        : [];
+      const [selectedMonth, selectedYear] = (
+        editProjectData.monthYear || ""
+      ).split(" ");
+
+      const initialViewConstruction = editProjectData.viewConstruction
+        ? editProjectData.viewConstruction
+            .split(",")
+            .map((item) => ({ value: item.trim(), label: item.trim() }))
+        : [];
+
+      // console.log('initialViewConstruction:', initialViewConstruction);
+
       // Set form data from editProjectData
-      setSelectedCompetencies(editProjectData.selectCompetencies);
-      setSelectedViewConstruction(editProjectData.viewConstruction);
-      setSelectDegreeParticipation(editProjectData.degreeParticipation ? { label: editProjectData.degreeParticipation } : null);
-      setSelectStatusObject(editProjectData.statusObject ? { label: editProjectData.statusObject } : null);
-  
+      setSelectedCompetencies(initialSelectedCompetencies);
+      setSelectedMonth({ value: selectedMonth, label: selectedMonth });
+      setSelectedYear({ value: selectedYear, label: selectedYear });
+      setSelectedViewConstruction(initialViewConstruction);
+      setSelectDegreeParticipation(
+        editProjectData.degreeParticipation
+          ? { label: editProjectData.degreeParticipation }
+          : null
+      );
+      setSelectStatusObject(
+        editProjectData.statusObject
+          ? { label: editProjectData.statusObject }
+          : null
+      );
+
       setInputData((prevInputData) => {
         const updatedInputData = {
           ...prevInputData,
-          title: editProjectData.title !== undefined ? editProjectData.title : "",
-          selectCompetencies: editProjectData.selectCompetencies !== undefined
-            ? editProjectData.selectCompetencies.split(',').map(item => item.trim())
-            : [],
-          countryCity: editProjectData.countryCity !== undefined ? editProjectData.countryCity : "",
-          monthYear: editProjectData.monthYear !== undefined ? editProjectData.monthYear : "",
-          dropPhoto: editProjectData.dropPhoto !== undefined ? editProjectData.dropPhoto : [],
-          photoAva: editProjectData.photoAva !== undefined ? editProjectData.photoAva : "",
-          titleTextBlock: editProjectData.titleTextBlock !== undefined ? editProjectData.titleTextBlock : "",
-          descriptionProject: editProjectData.descriptionProject !== undefined ? editProjectData.descriptionProject : "",
-          totalArea: editProjectData.totalArea !== undefined ? editProjectData.totalArea : "",
-          siteArea: editProjectData.siteArea !== undefined ? editProjectData.siteArea : "",
-          floors: editProjectData.floors !== undefined ? editProjectData.floors : "",
-          altitude: editProjectData.altitude !== undefined ? editProjectData.altitude : "",
-          constructionVolume: editProjectData.constructionVolume !== undefined ? editProjectData.constructionVolume : "",
-          location: editProjectData.location !== undefined ? editProjectData.location : "",
-          degreeParticipation: editProjectData.degreeParticipation !== undefined ? editProjectData.degreeParticipation : "",
-          statusObject: editProjectData.statusObject !== undefined ? editProjectData.statusObject : "",
-          customer: editProjectData.customer !== undefined ? editProjectData.customer : "",
-          publication: editProjectData.publication !== undefined ? editProjectData.publication : "",
-          linkToPublication: editProjectData.linkToPublication !== undefined ? editProjectData.linkToPublication : "",
-          publicationTwo: editProjectData.publicationTwo !== undefined ? editProjectData.publicationTwo : "",
-          linkToPublicationTwo: editProjectData.linkToPublicationTwo !== undefined ? editProjectData.linkToPublicationTwo : "",
-          awards: editProjectData.awards !== undefined ? editProjectData.awards : "",
-          imageOpen: editProjectData.imageOpen !== undefined ? editProjectData.imageOpen : "",
-          textBlock: editProjectData.textBlock !== undefined ? editProjectData.textBlock : "",
-          imageClose: editProjectData.imageClose !== undefined ? editProjectData.imageClose : "",
-          numberOfLanes: editProjectData.numberOfLanes !== undefined ? editProjectData.numberOfLanes : "",
+          title:
+            editProjectData.title !== undefined ? editProjectData.title : "",
+          selectCompetencies: initialSelectedCompetencies,
+          countryCity:
+            editProjectData.countryCity !== undefined
+              ? editProjectData.countryCity
+              : "",
+          monthYear:
+            editProjectData.monthYear !== undefined
+              ? editProjectData.monthYear
+              : "",
+          viewConstruction: initialViewConstruction,
+          dropPhoto:
+            editProjectData.dropPhoto !== undefined
+              ? editProjectData.dropPhoto
+              : [],
+          photoAva:
+            editProjectData.photoAva !== undefined
+              ? editProjectData.photoAva
+              : "",
+          titleTextBlock:
+            editProjectData.titleTextBlock !== undefined
+              ? editProjectData.titleTextBlock
+              : "",
+          descriptionProject:
+            editProjectData.descriptionProject !== undefined
+              ? editProjectData.descriptionProject
+              : "",
+          totalArea:
+            editProjectData.totalArea !== undefined
+              ? editProjectData.totalArea
+              : "",
+          siteArea:
+            editProjectData.siteArea !== undefined
+              ? editProjectData.siteArea
+              : "",
+          floors:
+            editProjectData.floors !== undefined ? editProjectData.floors : "",
+          altitude:
+            editProjectData.altitude !== undefined
+              ? editProjectData.altitude
+              : "",
+          constructionVolume:
+            editProjectData.constructionVolume !== undefined
+              ? editProjectData.constructionVolume
+              : "",
+          location:
+            editProjectData.location !== undefined
+              ? editProjectData.location
+              : "",
+          degreeParticipation:
+            editProjectData.degreeParticipation !== undefined
+              ? editProjectData.degreeParticipation
+              : "",
+          statusObject:
+            editProjectData.statusObject !== undefined
+              ? editProjectData.statusObject
+              : "",
+          customer:
+            editProjectData.customer !== undefined
+              ? editProjectData.customer
+              : "",
+          publication:
+            editProjectData.publication !== undefined
+              ? editProjectData.publication
+              : "",
+          linkToPublication:
+            editProjectData.linkToPublication !== undefined
+              ? editProjectData.linkToPublication
+              : "",
+          publicationTwo:
+            editProjectData.publicationTwo !== undefined
+              ? editProjectData.publicationTwo
+              : "",
+          linkToPublicationTwo:
+            editProjectData.linkToPublicationTwo !== undefined
+              ? editProjectData.linkToPublicationTwo
+              : "",
+          awards:
+            editProjectData.awards !== undefined ? editProjectData.awards : "",
+          imageOpen:
+            editProjectData.imageOpen !== undefined
+              ? editProjectData.imageOpen
+              : "",
+          headingTextBlock:
+            editProjectData.headingTextBlock !== undefined
+              ? editProjectData.headingTextBlock
+              : "",
+          textBlock:
+            editProjectData.textBlock !== undefined
+              ? editProjectData.textBlock
+              : "",
+          imageClose:
+            editProjectData.imageClose !== undefined
+              ? editProjectData.imageClose
+              : "",
+          numberOfLanes:
+            editProjectData.numberOfLanes !== undefined
+              ? editProjectData.numberOfLanes
+              : "",
           long: editProjectData.long !== undefined ? editProjectData.long : "",
+          dynamicDataFromEditProject:
+            editProjectData.dynamicDataFromEditProject !== undefined
+              ? editProjectData.dynamicDataFromEditProject
+              : "",
         };
-        console.log("Updated inputData:", updatedInputData);
+        console.log("Обновленные данные формы:", updatedInputData);
         return updatedInputData;
       });
+
+      const dynamicDataFromEditProject = editProjectData.dynamicData;
+
+      if (
+        editProjectData.dynamicDataFromEditProject &&
+        editProjectData.dynamicDataFromEditProject.length > 0
+      ) {
+        setDynamicData(editProjectData.dynamicDataFromEditProject);
+        const previewsArray = dynamicDataFromEditProject.map((block) =>
+          block.map((input) => input.value)
+        );
+
+        setDynamicPreviews(previewsArray);
+      }
     }
   }, [editProjectData]);
 
- 
-  
   // функция Удаление фото из массива превью
   // Удаление фото из массива превью
   const handleRemovePreviewPhoto = (index) => {
@@ -183,7 +302,6 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
       setIsDropPhotoVisible
     );
   };
-  
 
   // Удаление фото из массива превью который с одной фоткой
   const handleRemovePreviewPhotoAva = (index) => {
@@ -263,14 +381,16 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
   // функция отправки формы на Redux
   const submitHandler = async (e) => {
     e.preventDefault();
-  
+
     const isFormValid = validateForm();
-  
+
     if (!isFormValid) {
-      console.error("Форма не прошла валидацию. Работа функции submitHandler прервана.");
+      console.error(
+        "Форма не прошла валидацию. Работа функции submitHandler прервана."
+      );
       return;
     }
-  
+
     try {
       const formattedData = {
         ...inputData,
@@ -286,32 +406,48 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
         photoAva: inputData.photoAva,
         imageOpen: inputData.imageOpen,
       };
-  
+
       // Добавим проверки на пустоту перед маппингом
-      if (formattedData.selectCompetencies && formattedData.selectCompetencies !== "") {
-        formattedData.selectCompetencies = Array.isArray(formattedData.selectCompetencies)
-          ? formattedData.selectCompetencies.map((option) => option.label).join(",")
+      if (
+        formattedData.selectCompetencies &&
+        formattedData.selectCompetencies !== ""
+      ) {
+        formattedData.selectCompetencies = Array.isArray(
+          formattedData.selectCompetencies
+        )
+          ? formattedData.selectCompetencies
+              .map((option) => option.label)
+              .join(",")
           : formattedData.selectCompetencies;
       }
-  
-      if (formattedData.viewConstruction && formattedData.viewConstruction !== "") {
-        formattedData.viewConstruction = Array.isArray(formattedData.viewConstruction)
-          ? formattedData.viewConstruction.map((option) => option.label).join(",")
+
+      if (
+        formattedData.viewConstruction &&
+        formattedData.viewConstruction !== ""
+      ) {
+        formattedData.viewConstruction = Array.isArray(
+          formattedData.viewConstruction
+        )
+          ? formattedData.viewConstruction
+              .map((option) => option.label)
+              .join(",")
           : formattedData.viewConstruction;
       }
-  
+
       // Определение, создаем новый проект или обновляем существующий
       if (editProjectData && editProjectData.id) {
         dispatch(setProjectId(editProjectData.id));
         // Обновление существующего проекта
-        await dispatch(fetchProject(formattedData, setInputData, editProjectData.id));
+        await dispatch(
+          fetchProject(formattedData, setInputData, editProjectData.id)
+        );
       } else {
         // Создание нового проекта
         await dispatch(fetchProject(formattedData, setInputData));
       }
-  
+
       dispatch(clearFormData());
-  
+
       // Очищаем состояния
       setSelectedCompetencies([]);
       setSelectDegreeParticipation("");
@@ -344,25 +480,23 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
         linkToPublicationTwo: "",
         awards: "",
         imageOpen: "",
+        headingTextBlock: "",
         textBlock: "",
         imageClose: "",
       });
-  
+
       setErrorMessage(""); // Очищаем ошибки
       setIsModalOpen(false);
     } catch (error) {
       console.error("Произошла ошибка при отправке формы:", error);
       // Обработка ошибки, например, вывод сообщения об ошибке пользователю
     }
-  }; 
-  
-  
-  
+  };
 
   // << ============ функции КОНСТРУКТОРА ============ >>
 
   const handlerOpenConstructor = () => {
-    setOpenConstructor(!onenConstructor);
+    setOpenConstructor(!openConstructor);
   };
 
   // функция которая не даёт создать новый диманический блок, пока не заполнены value предыдущего
@@ -814,7 +948,13 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
     return (
       <div key={blockIndex} className={styles.blockContainer}>
         {inputs.map((input, inputIndex) =>
-          renderInputWithLabel(input.type, input.label, blockIndex, inputIndex)
+          renderInputWithLabel(
+            input.type,
+            input.label,
+            blockIndex,
+            inputIndex,
+            input.key
+          )
         )}
         <div
           className={styles.blockContainer__close_button}
@@ -859,8 +999,8 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
         </div>
       )}
       <div className={styles.form_container__title}>
-      {editProjectData ? 'Редактирование проекта' : 'Новый проект'}
-        </div>
+        {editProjectData ? "Редактирование проекта" : "Новый проект"}
+      </div>
       <div className={styles.form_container__block_form}>
         <form className={styles.form_container__form} onSubmit={submitHandler}>
           {/* первый серый блок с инфой  */}
@@ -1685,8 +1825,24 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                   ]}
                   className={styles.form__field}
                   placeholder="Степень участия"
-                  value={selectDegreeParticipation ? { value: selectDegreeParticipation.value, label: selectDegreeParticipation.label } : null}
-                  onChange={(selectedOption) => setSelectDegreeParticipation(selectedOption ? { value: selectedOption.value, label: selectedOption.label } : null)}
+                  value={
+                    selectDegreeParticipation
+                      ? {
+                          value: selectDegreeParticipation.value,
+                          label: selectDegreeParticipation.label,
+                        }
+                      : null
+                  }
+                  onChange={(selectedOption) =>
+                    setSelectDegreeParticipation(
+                      selectedOption
+                        ? {
+                            value: selectedOption.value,
+                            label: selectedOption.label,
+                          }
+                        : null
+                    )
+                  }
                   components={{
                     DropdownIndicator:
                       SelectDegreeParticipationDropdownIndicator,
@@ -1713,8 +1869,24 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                   ]}
                   className={styles.form__field}
                   placeholder="Статус объекта"
-                  value={selectStatusObject ? { value: selectStatusObject.value, label: selectStatusObject.label } : null}
-                  onChange={(selectedOption) => setSelectStatusObject(selectedOption ? { value: selectedOption.value, label: selectedOption.label } : null)}
+                  value={
+                    selectStatusObject
+                      ? {
+                          value: selectStatusObject.value,
+                          label: selectStatusObject.label,
+                        }
+                      : null
+                  }
+                  onChange={(selectedOption) =>
+                    setSelectStatusObject(
+                      selectedOption
+                        ? {
+                            value: selectedOption.value,
+                            label: selectedOption.label,
+                          }
+                        : null
+                    )
+                  }
                   components={{
                     DropdownIndicator: SelectStatusObjectDropdownIndicator,
                     ValueContainer: SelectStatusObjectValueContainer,
@@ -1961,6 +2133,22 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
               )}
             </div>
             <div>
+              {inputData.imageOpen && previewPhotoOpen.length === 0 && (
+                <div className={styles.preview_photos_container__block}>
+                  <img
+                    className={styles.preview_photos_container__img}
+                    src={`${Host}/images/imageAdd/${inputData.imageOpen}`}
+                    alt="Preview"
+                  />
+                  <div
+                    className={styles.preview_photos_container__remove_icon}
+                    onClick={() => handleRemovePreviewPhotoOpen()}
+                  >
+                    <span></span>
+                  </div>
+                </div>
+              )}
+
               {previewPhotoOpen?.map((preview, index) => (
                 <div
                   key={index}
@@ -2062,7 +2250,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
           </div>
           <div className={styles.constructor_container}>
             <div className={styles.constructor_container__block}>
-              {!onenConstructor ? (
+              {!openConstructor ? (
                 <div className={styles.constructor_container__block_btn}>
                   <button onClick={handlerOpenConstructor}>
                     <svg
@@ -2161,15 +2349,15 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                 </div>
               )}
             </div>
-            <div>
-              {previewPhotoClose?.map((preview, index) => (
+            <div>         
+              {previewPhotoClose.map((preview, index) => (
                 <div
                   key={index}
                   className={styles.preview_photos_container__block}
                 >
                   <img
                     className={styles.preview_photos_container__img}
-                    src={preview}
+                    src={preview || ''} 
                     alt={`Preview ${index}`}
                   />
                   <div
@@ -2180,6 +2368,21 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                   </div>
                 </div>
               ))}
+              {inputData.imageClose !== null && (
+                <div className={styles.preview_photos_container__block}>
+                  <img
+                    className={styles.preview_photos_container__img}
+                    src={`${Host}/images/imageAdd/${inputData.imageClose}`}
+                    alt="Preview"
+                  />
+                  <div
+                    className={styles.preview_photos_container__remove_icon}
+                    onClick={() => handleRemovePreviewPhotoClose()}
+                  >
+                    <span></span>
+                  </div>
+                </div>
+              )}
             </div>
           </div>
           <div className={styles.form_container__button_block}>
