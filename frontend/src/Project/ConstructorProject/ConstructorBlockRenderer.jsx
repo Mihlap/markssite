@@ -389,12 +389,22 @@ export default function ConstructorBlockRenderer({
             {isPlaying ? (
               isHovered && (
                 <button className={styles.buttonPause} onClick={handlePause}>
-                  <img src={pauseIconToUse} alt={pauseIconToUse} />
+                  <img
+                  src={pauseIconToUse}
+                  alt={pauseIconToUse}
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
+                  />
                 </button>
               )
             ) : (
               <button className={styles.buttonPlayBlock} onClick={handlePlay}>
-                <img src={playIconToUse} alt={playIconToUse} />
+                <img
+                src={playIconToUse}
+                alt={playIconToUse}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                />
               </button>
             )}
           </div>
