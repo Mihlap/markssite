@@ -127,11 +127,26 @@ const Mapbox3D = () => {
       addPopup(popupData);
     });
 
+    // popups.forEach(({ marker, popup }) => {
+    //   marker.getElement().addEventListener("mouseenter", () => {
+    //     popups.forEach(({ popup }) => popup.remove());
+    //     popup.addTo(map);
+    //   });
+    // });
+
     popups.forEach(({ marker, popup }) => {
-      marker.getElement().addEventListener("mouseenter", () => {
-        popups.forEach(({ popup }) => popup.remove());
-        popup.addTo(map);
-      });
+       
+      if (window.innerWidth > 1024) {
+         marker.getElement().addEventListener("mouseenter", () => {
+          popups.forEach(({ popup }) => popup.remove());
+          popup.addTo(map);
+        });
+      } else {
+          marker.getElement().addEventListener("click", () => {
+           popups.forEach(({ popup }) => popup.remove());
+          setTimeout(() => popup.addTo(map), 100);
+        });
+      }
     });
 
     map.addControl(new mapboxgl.NavigationControl());
