@@ -276,7 +276,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
               ? editProjectData.dynamicDataFromEditProject
               : "",
         };
-        console.log("Обновленные данные формы:", updatedInputData);
+        // console.log("Обновленные данные формы:", updatedInputData);
         return updatedInputData;
       });
 
