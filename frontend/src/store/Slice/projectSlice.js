@@ -1,4 +1,4 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
 
 const serverHost = process.env.REACT_APP_SERVER_HOST;
@@ -75,6 +75,12 @@ const projectSlice = createSlice({
     setProjectId(state, action) {
       state.projectId = action.payload;
     },
+    setDynamicData(state, action) {
+      state.dynamicData = action.payload;
+    },
+    setDynamicImages(state, action) {
+      state.dynamicImages = action.payload;
+    },
     clearFormData(state) {
       state.formData = {
         title: "",
@@ -120,10 +126,14 @@ export const {
   setSelectedLocation,
   setSelectedViewConstruction,
   setProjectId,
+  setDynamicData,
+  setDynamicImages,
   clearFormData,
 } = projectSlice.actions;
 
-export const fetchProject = (formattedData) => async (dispatch, getState) => {
+export const fetchProject = createAsyncThunk(
+  'project/fetchProject',
+  async (formattedData, { dispatch, getState }) => {
   dispatch(fetchProjectStart());
   const formData = new FormData();
   const projectId = getState().project.projectId;
@@ -197,8 +207,25 @@ export const fetchProject = (formattedData) => async (dispatch, getState) => {
     dispatch(clearFormData());
     // Опционально: обновить список проектов
     dispatch(getFetchForm());
+   // Опционально: получение динамических данных
+   if (projectId) {
+    dispatch(getDynamicData(projectId));
+  }
   } catch (error) {
     console.error("Ошибка при отправке проекта:", error);
+    dispatch(fetchProjectFailure(error.message));
+  }
+}
+);
+
+export const getDynamicData = (projectId) => async (dispatch) => {
+  dispatch(fetchProjectStart());
+
+  try {
+    const response = await axios.get(`${serverHost}/api-project/getdynamicdata/${projectId}`);
+    dispatch(setDynamicData(response.data.dynamicData));
+    dispatch(setDynamicImages(response.data.dynamicImages));
+  } catch (error) {
     dispatch(fetchProjectFailure(error.message));
   }
 };
