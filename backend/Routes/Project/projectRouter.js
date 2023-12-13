@@ -243,6 +243,30 @@ router.get('/getzapros-filter', async (req, res) => {
   }
 });
 
+router.get('/getdynamicdata/:projectId', async (req, res) => {
+  try {
+    const { projectId } = req.params;
+
+    // Найти данные конструктора по id проекта
+    const constructorData = await Constructor.findOne({
+      where: { idBlock: projectId },
+    });
+
+    if (!constructorData) {
+      return res.status(404).json({ message: 'Динамические данные не найдены' });
+    }
+
+    // Отправить данные в ответ
+    res.json({
+      dynamicData: constructorData.data,
+      dynamicImages: constructorData.image,
+    });
+  } catch (error) {
+    console.error('Ошибка при получении динамических данных:', error);
+    res.status(500).json({ message: 'Произошла ошибка при получении динамических данных' });
+  }
+});
+
 
 // эта функция нужна для того, чтоб удалять из imageTitle фотографии есть там не массив
 const deleteImage = (imageName) => {
