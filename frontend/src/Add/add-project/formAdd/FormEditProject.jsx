@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
 import Select from "react-select";
 import compressImageFile from "browser-image-compression";
 
@@ -541,6 +540,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
     );
   };
   // функция которая срабатывает в случае если мы всё-таки пытаемся создать блок выдает ( алерт ), в случае успеза проходит в дальше и создаёт новый динамический блок
+
   const handleClick = (inputs, blockIndex) => {
     // if (!areAllBlocksFilled()) {
     //   setShowNotification(true);
@@ -553,16 +553,21 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
       ...input,
       key: blockKey + "_" + input.type,
     }));
+    setDynamicData((prevDynamicData) => {
+      const newDynamicData = [...prevDynamicData];
+      newDynamicData[blockIndex] = newInputs;
+      return newDynamicData;
+    });
+  
     setBlocks((prevState) => [...prevState, newInputs]);
-    setDynamicData((prevDynamicData) => [...prevDynamicData, newInputs]);
-
     const editData =
-    editProjectData &&
-    editProjectData.dynamicData &&
-    editProjectData.dynamicData[blockIndex]
-      ? editProjectData.dynamicData[blockIndex]
-      : [];
-  setDynamicPreviews((prevPreviews) => [...prevPreviews, editData]);
+      editProjectData &&
+      editProjectData.dynamicDataFromEditProject &&
+      editProjectData.dynamicDataFromEditProject[blockIndex]
+        ? editProjectData.dynamicDataFromEditProject[blockIndex]
+        : [];
+  
+    setDynamicPreviews((prevPreviews) => [...prevPreviews, editData]);
     //  handlerOpenConstructor();
   };
 
@@ -580,9 +585,14 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
     }
   }
 
+  // debugger;
+
   // обработчик динамических значений
-  const handleDynamicInputChange = async (blockIndex, inputIndex, value, previewIndex) => {
-    const newDynamicData = [...dynamicData];
+  const handleDynamicInputChange = async (blockIndex, inputIndex, value) => {
+    console.log("Block Index:", blockIndex);
+    console.log("Input Index:", inputIndex);
+    console.log("Value:", value);
+   const newDynamicData = dynamicData.map((item) => (item ? [...item] : null));
 
     if (!newDynamicData[blockIndex]) {
       newDynamicData[blockIndex] = [];
@@ -629,19 +639,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
     } else {
       newDynamicData[blockIndex][inputIndex].value = value;
     }
-
-    setDynamicPreviews((prev) => {
-      const newPreviews = [...prev];
-      if (
-        newPreviews[blockIndex] &&
-        newPreviews[blockIndex][inputIndex] &&
-        previewIndex !== undefined
-      ) {
-        newPreviews[blockIndex][inputIndex][previewIndex] = value;
-      }
-      return newPreviews;
-    });
-
+  
     setDynamicData(newDynamicData);
   };
 
@@ -716,18 +714,20 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
     }
 
     const classNames = getPreviewClassName(labelText);
+
+    console.log("Данные для отображения:", dynamicData);
    
       return (
       <div key={inputIndex}>
-        {inputType === "text" && (
+        {/* {inputType === "text" && (
           // <input type="text" />
           <div className={styles.form_container__heading_block}>
             <input
               type="input"
               maxLength="56" // 2. Установите атрибут maxLength
-              value={dynamicData[blockIndex][inputIndex]?.value || ""} // используйте значение inputValue как текущее значение инпута
               className={`${styles.form_container__heading_block_input} ${styles.orange_color}`}
               placeholder={labelText}
+              value={dynamicData[blockIndex][inputIndex]?.value || ""} // используйте значение inputValue как текущее значение инпута
               onChange={(e) => {
                 setInputValue(e.target.value); // 4. Обновите inputValue при каждом изменении
                 handleDynamicInputChange(
@@ -747,7 +747,47 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
               {(dynamicData[blockIndex][inputIndex]?.value || "").length}/56
             </div>
           </div>
-        )}
+        )} */}
+{dynamicData.map((item, itemIndex) => (
+  <div key={itemIndex}>
+    {item && item.data && item.data.map((block, blockIndex) => (
+      <div key={blockIndex}>
+        {block && Array.isArray(block) && block.map((input, inputIndex) => (
+          <div key={input.key}>
+            {input && input.type === "text" && (
+              <div className={styles.form_container__heading_block}>
+                <input
+                  type="text"
+                  maxLength="56"
+                  className={`${styles.form_container__heading_block_input} ${styles.orange_color}`}
+                  placeholder={input.label}
+                  value={input.value || ""}
+                  onChange={(e) =>
+                    handleDynamicInputChange(
+                      blockIndex,
+                      inputIndex,
+                      e.target.value
+                    )
+                  }
+                />
+                <label
+                  htmlFor={input.key}
+                  className={styles.form_container__heading_block_label}
+                >
+                  {input.label}
+                </label>
+                <div className={styles.form_container__heading_block_input_length}>
+                  {(input.value || "").length}/56
+                </div>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    ))}
+  </div>
+))}
+
         {inputType === "file" && (
           <>
             {labelText === "Видеоролик" ? (
@@ -2385,7 +2425,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                   </div>
                 </div>
               ) : (
-                <ConstructorPage 
+                <ConstructorPage
                 handleClick={handleClick}
             />
               )}
