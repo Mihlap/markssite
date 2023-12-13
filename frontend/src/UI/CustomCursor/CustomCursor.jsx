@@ -59,8 +59,8 @@ export default function CustomCursor() {
     default: {
       x: mousePosition.x,
       y: mousePosition.y,
-      height: 24,
-      width: 24,
+      // height: 24,
+      // width: 24,
     },
 
     mouseDown: {
@@ -87,7 +87,7 @@ export default function CustomCursor() {
       width: 24,
       x: mousePosition.x - 0,
       y: mousePosition.y - 0,
-      backgroundColor: "#F6F6F6",
+      // backgroundColor: "#F6F6F6",
     },
     textFooterEnter: {
       zIndex: 2,
@@ -101,7 +101,7 @@ export default function CustomCursor() {
     textLeaveFooter: {
       x: mousePosition.x,
       y: mousePosition.y,
-      backgroundColor: "#F6F6F6",
+      // backgroundColor: "#F6F6F6",
     },
 
     mouseDownFooter: {
