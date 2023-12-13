@@ -63,13 +63,13 @@ export default function App() {
     );
   }, [location.pathname]);
 
-   useEffect(() => {
-     // Проверяем, находимся ли мы на административном маршруте
-     const isAdminRoute = location.pathname.startsWith("/admin/");
+  //  useEffect(() => {
+  //    // Проверяем, находимся ли мы на административном маршруте
+  //    const isAdminRoute = location.pathname.startsWith("/admin/");
 
-     // Устанавливаем стиль для курсора в зависимости от маршрута
-     document.body.style.cursor = isAdminRoute ? "auto" : "none";
-   }, [location.pathname]);
+  //    // Устанавливаем стиль для курсора в зависимости от маршрута
+  //    document.body.style.cursor = isAdminRoute ? "auto" : "none";
+  //  }, [location.pathname]);
 
   useEffect(() => {
     dispatch(checkUserAuth());
