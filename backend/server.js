@@ -35,10 +35,10 @@ const sessionConfig = {
   cookie: {
     maxAge: 10 * 24 * 60 * 60 * 1000, // 10 дней в миллисекундах
     httpOnly: true,
-    sameSite: 'lax', // 'lax' или 'strict' для HTTP
-    secure: false, // false для HTTP
-    // sameSite: 'none', // 'none' для HTTPS
-    // secure: true, // true для HTTPS
+    // sameSite: 'lax', // 'lax' или 'strict' для HTTP
+    // secure: false, // false для HTTP
+    sameSite: 'none', // 'none' для HTTPS
+    secure: true, // true для HTTPS
   },
 };
 
@@ -115,25 +115,25 @@ app.use('/api-mail', mailRouter);
 app.use('/api/toggle', toggleRouter);
 app.use('/api/video', videoRouter);
 
-// const sslKeyPath = path.join(__dirname, './SSL Marksgroup/marksgroup.ru.key');
-// const sslCertPath = path.join(__dirname, './SSL Marksgroup/certificate.crt');
+const sslKeyPath = path.join(__dirname, './SSL Marksgroup/marksgroup.ru.key');
+const sslCertPath = path.join(__dirname, './SSL Marksgroup/certificate.crt');
 
-// const credentials = {
-//   key: fs.readFileSync(sslKeyPath),
-//   cert: fs.readFileSync(sslCertPath),
-// };
+const credentials = {
+  key: fs.readFileSync(sslKeyPath),
+  cert: fs.readFileSync(sslCertPath),
+};
 
 // const httpServer = http.createServer(app);
-// const httpsServer = https.createServer(credentials, app);
+const httpsServer = https.createServer(credentials, app);
 
 // app.listen(PORT, () => {
 //   console.log(`HTTP server started on port ${PORT}`);
 // });
 
-// httpsServer.listen(PORT, () => {
-//   console.log(`HTTP server started on port ${PORT}`);
-// });
-
-app.listen(PORT, () => {
-  console.log(`Старт server --->🔥 ${PORT} 🔥<---`);
+httpsServer.listen(PORT, () => {
+  console.log(`HTTP server started on port ${PORT}`);
 });
+
+// app.listen(PORT, () => {
+//   console.log(`Старт server --->🔥 ${PORT} 🔥<---`);
+// });
