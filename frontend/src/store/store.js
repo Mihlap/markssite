@@ -30,4 +30,4 @@ export default configureStore({
     toggle: toggleSlice,
     vacancies: vacanciesSlice,
   },
-});
+ });
