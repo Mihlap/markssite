@@ -211,7 +211,7 @@ router.get('/getzapros', async (req, res) => {
     const data = await Project.findAll({
       include: [Constructor],
     });
-
+   
     // res.set('Cache-Control', 'public, max-age=432000'); // 432000 секунд = 5 дней
 
     res.json(data);

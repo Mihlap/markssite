@@ -320,6 +320,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
       setIsPhotoAvaVisible
     );
   };
+  
 
   // Удаление превью фото перед основным текстом
   const handleRemovePreviewPhotoOpen = (index) => {
@@ -1055,8 +1056,9 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                 ]}
                 className={styles.form__field}
                 placeholder="Выбрать компетенции"
-                value={selectedCompetencies}
+                value={selectedCompetencies || []} 
                 onChange={setSelectedCompetencies}
+                // onChange={(selectedOptions) => setSelectedCompetencies(selectedOptions || [])} 
                 components={{ DropdownIndicator, ValueContainer }}
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
@@ -1101,7 +1103,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                   id="month"
                   styles={customStyles}
                   className={styles.form__field}
-                  value={selectedMonth}
+                  value={selectedMonth || []}  
                   onChange={handleMonthChange}
                   options={monthOptions}
                   placeholder="Месяц"
@@ -1124,7 +1126,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                   id="year"
                   styles={customStyles}
                   className={styles.form__field}
-                  value={selectedYear}
+                  value={selectedYear || []}
                   onChange={handleYearChange}
                   options={yearOptions}
                   placeholder="Год"
@@ -1156,7 +1158,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                 styles={customStyles}
                 isMulti
                 name="viewConstruction"
-                value={selectedViewConstruction}
+                value={selectedViewConstruction || []}
                 onChange={setSelectedViewConstruction}
                 options={[
                   {
@@ -1270,7 +1272,40 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
               )}
             </div>
             <div>
+            {inputData.imageProject !== null && (
+                <div className={styles.preview_photos_container__block}>
+                  <img
+                    className={styles.preview_photos_container__img}
+                    src={`${Host}/images/imageAdd/${inputData.imageProject}`}
+                    alt="Preview"
+                  />
+                  {/* <div
+                  className={styles.preview_photos_container__remove_icon}
+                    onClick={() => handleRemovePreviewPhotoClose()}
+                   >
+                   <span></span>
+                   </div> */}
+                </div>
+              )}
               {previewPhotoAva?.map((preview, index) => (
+                <div
+                  key={index}
+                  className={styles.preview_photos_container__block}
+                >
+                  <img
+                    className={styles.preview_photos_container__img}
+                    src={preview || ''} 
+                    alt={`Preview ${index}`}
+                  />
+                  <div
+                    className={styles.preview_photos_container__remove_icon}
+                    onClick={() => handleRemovePreviewPhotoAva(index)}
+                  >
+                    <span></span>
+                  </div>
+                </div>
+              ))}
+              {/* {previewPhotoAva?.map((preview, index) => (
                 <div
                   key={index}
                   className={styles.preview_photos_container__block}
@@ -1295,14 +1330,14 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                     src={`${Host}/images/imageAdd/${inputData.imageProject}`}
                     alt="Preview"
                   />
-                  {/* <div
+                  <div
                     className={styles.preview_photos_container__remove_icon}
                     onClick={() => handleRemovePreviewPhotoClose()}
                   >
                     <span></span>
-                  </div> */}
+                  </div>
                 </div>
-              )}
+              )} */}
             </div>
             {/* <div className={styles.form_container__radio_container}>
               <div
