@@ -50,7 +50,7 @@ export default function App() {
   const isActive = useSelector((state) => state.toggle.isActiveForButton3);
   const location = useLocation();
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [showPortalMenu, setShowPortalMenu] = useState(false);
 
   const isMobile = window.innerWidth <= 768;
@@ -63,13 +63,13 @@ export default function App() {
     );
   }, [location.pathname]);
 
-   useEffect(() => {
-     // Проверяем, находимся ли мы на административном маршруте
-     const isAdminRoute = location.pathname.startsWith("/admin/");
+  //  useEffect(() => {
+  //    // Проверяем, находимся ли мы на административном маршруте
+  //    const isAdminRoute = location.pathname.startsWith("/admin/");
 
-     // Устанавливаем стиль для курсора в зависимости от маршрута
-     document.body.style.cursor = isAdminRoute ? "auto" : "none";
-   }, [location.pathname]);
+  //    // Устанавливаем стиль для курсора в зависимости от маршрута
+  //    document.body.style.cursor = isAdminRoute ? "auto" : "none";
+  //  }, [location.pathname]);
 
   useEffect(() => {
     dispatch(checkUserAuth());
