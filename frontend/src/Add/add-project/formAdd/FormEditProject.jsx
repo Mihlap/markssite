@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import Select from "react-select";
 import compressImageFile from "browser-image-compression";
@@ -10,6 +10,8 @@ import {
   clearFormData,
   fetchProject,
   setProjectId,
+  setDynamicData,
+  setDynamicImages,
 } from "../../../store/Slice/projectSlice";
 import {
   removePreviewPhoto,
@@ -41,6 +43,7 @@ const Host = process.env.REACT_APP_SERVER_HOST;
 
 export default function FormEditProject({ setIsModalOpen, editProjectData }) {
   const dispatch = useDispatch();
+  const projectState = useSelector((state) => state.project);
 
   const [inputData, setInputData] = useState({
     title: "",
@@ -280,19 +283,23 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
         return updatedInputData;
       });
 
-      const dynamicDataFromEditProject = editProjectData.dynamicData;
+      const dynamicDataFromEditProject = editProjectData.Constructors || [];
 
-      if (
-        editProjectData.dynamicDataFromEditProject &&
-        editProjectData.dynamicDataFromEditProject.length > 0
-      ) {
-        setDynamicData(editProjectData.dynamicDataFromEditProject);
-        const previewsArray = dynamicDataFromEditProject.map((block) =>
-          block.map((input) => input.value)
-        );
-
+      if (dynamicDataFromEditProject.length > 0) {
+        setDynamicData(dynamicDataFromEditProject);
+  
+        const previewsArray = dynamicDataFromEditProject.map((block) => {
+          if (Array.isArray(block)) {
+            return block.map((input) => input.value);
+          } else {
+            return []; // Возвращаем пустой массив, если block не является массивом
+          }
+        });
+  
         setDynamicPreviews(previewsArray);
       }
+      console.log("1111111editProjectData:", editProjectData);
+      console.log("22222222dynamicDataFromEditProject:", dynamicDataFromEditProject);
     }
   }, [editProjectData]);
 
@@ -534,12 +541,12 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
     );
   };
   // функция которая срабатывает в случае если мы всё-таки пытаемся создать блок выдает ( алерт ), в случае успеза проходит в дальше и создаёт новый динамический блок
-  const handleClick = (inputs) => {
-    if (!areAllBlocksFilled()) {
-      setShowNotification(true);
-      setTimeout(() => setShowNotification(false), 5000);
-      return;
-    }
+  const handleClick = (inputs, blockIndex) => {
+    // if (!areAllBlocksFilled()) {
+    //   setShowNotification(true);
+    //   setTimeout(() => setShowNotification(false), 5000);
+    //   return;
+    // }
 
     const blockKey = Date.now().toString();
     const newInputs = inputs.map((input) => ({
@@ -548,6 +555,14 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
     }));
     setBlocks((prevState) => [...prevState, newInputs]);
     setDynamicData((prevDynamicData) => [...prevDynamicData, newInputs]);
+
+    const editData =
+    editProjectData &&
+    editProjectData.dynamicData &&
+    editProjectData.dynamicData[blockIndex]
+      ? editProjectData.dynamicData[blockIndex]
+      : [];
+  setDynamicPreviews((prevPreviews) => [...prevPreviews, editData]);
     //  handlerOpenConstructor();
   };
 
@@ -566,7 +581,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
   }
 
   // обработчик динамических значений
-  const handleDynamicInputChange = async (blockIndex, inputIndex, value) => {
+  const handleDynamicInputChange = async (blockIndex, inputIndex, value, previewIndex) => {
     const newDynamicData = [...dynamicData];
 
     if (!newDynamicData[blockIndex]) {
@@ -614,6 +629,18 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
     } else {
       newDynamicData[blockIndex][inputIndex].value = value;
     }
+
+    setDynamicPreviews((prev) => {
+      const newPreviews = [...prev];
+      if (
+        newPreviews[blockIndex] &&
+        newPreviews[blockIndex][inputIndex] &&
+        previewIndex !== undefined
+      ) {
+        newPreviews[blockIndex][inputIndex][previewIndex] = value;
+      }
+      return newPreviews;
+    });
 
     setDynamicData(newDynamicData);
   };
@@ -689,7 +716,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
     }
 
     const classNames = getPreviewClassName(labelText);
-
+   
       return (
       <div key={inputIndex}>
         {inputType === "text" && (
@@ -698,7 +725,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
             <input
               type="input"
               maxLength="56" // 2. Установите атрибут maxLength
-              value={dynamicData[blockIndex][inputIndex].value || ""} // используйте значение inputValue как текущее значение инпута
+              value={dynamicData[blockIndex][inputIndex]?.value || ""} // используйте значение inputValue как текущее значение инпута
               className={`${styles.form_container__heading_block_input} ${styles.orange_color}`}
               placeholder={labelText}
               onChange={(e) => {
@@ -717,7 +744,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
               {labelText}
             </label>
             <div className={styles.form_container__heading_block_input_length}>
-              {(dynamicData[blockIndex][inputIndex].value || "").length}/56
+              {(dynamicData[blockIndex][inputIndex]?.value || "").length}/56
             </div>
           </div>
         )}
@@ -2358,7 +2385,9 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                   </div>
                 </div>
               ) : (
-                <ConstructorPage handleClick={handleClick} />
+                <ConstructorPage 
+                handleClick={handleClick}
+            />
               )}
             </div>
           </div>
