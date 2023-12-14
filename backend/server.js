@@ -44,9 +44,12 @@ const sessionConfig = {
 
 
 app.use((req, res, next) => {
+  // res.header('Access-Control-Allow-Origin', '*');
+  // res.header('Access-Control-Allow-Origin', 'https://marksgroup.ru'); 
   res.header('Access-Control-Allow-Origin', req.header('origin'));
   res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS'); 
+  res.header('Access-Control-Allow-Methods', 'HEAD, GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Credentials', 'true'); 
   res.header('Content-Type', 'application/json; charset=utf-8');
   res.header('Content-Type', 'video/mp4');
   res.header('Accept-Ranges', 'bytes');
@@ -60,15 +63,15 @@ app.use((req, res, next) => {
   next();
 });
 
-app.use(
-  cors({
+app.use(cors({
     origin: [
     '*',
-    'https://www.marksgroup.org',
     'https://www.marksgroup.ru',
     'http://91.186.198.87',
     'http://localhost:3002',
+    'https://localhost:3002',
     'http://localhost:3000',
+    'https://localhost:3000',
    ],
     credentials: true,
   }),
