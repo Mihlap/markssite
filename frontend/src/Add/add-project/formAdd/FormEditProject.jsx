@@ -992,7 +992,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
     <div className={styles.form_container}>
       {showNotification && (
         <div className={styles.form_container__notification}>
-          Сначала заполните все обязательные поля в предыдущем блоке или дождитесь загркузки изображений❗
+          Заполните предыдущий блок или дождитесь загркузки изображений❗
         </div>
       )}
       <div className={styles.form_container__title}>
