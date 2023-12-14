@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
 import Select from "react-select";
 import compressImageFile from "browser-image-compression";
 
@@ -43,8 +42,6 @@ const Host = process.env.REACT_APP_SERVER_HOST;
 
 export default function FormEditProject({ setIsModalOpen, editProjectData }) {
   const dispatch = useDispatch();
-  const projectState = useSelector((state) => state.project);
-
   const [inputData, setInputData] = useState({
     title: "",
     selectCompetencies: [],
@@ -78,43 +75,35 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
     numberOfLanes: "",
     long: "",
   });
-
   const [selectedCompetencies, setSelectedCompetencies] = useState([]);
   const [selectedViewConstruction, setSelectedViewConstruction] = useState([]);
   const [selectDegreeParticipation, setSelectDegreeParticipation] =
     useState(null);
   const [selectStatusObject, setSelectStatusObject] = useState(null);
-
   const [isFocused, setIsFocused] = useState(false);
   // const [selectedRadio, setSelectedRadio] = useState("28,28");
-
   const [previewPhotos, setPreviewPhotos] = useState([]);
   const [previewPhotoAva, setPreviewPhotoAva] = useState([]);
   const [previewPhotoOpen, setPreviewPhotoOpen] = useState([]);
   const [previewPhotoClose, setPreviewPhotoClose] = useState([]);
-
   const [isPhotoCloseVisible, setIsPhotoCloseVisible] = useState(true);
   const [isPhotoOpenVisible, setIsPhotoOpenVisible] = useState(true);
   const [isPhotoAvaVisible, setIsPhotoAvaVisible] = useState(true);
   const [isDropPhotoVisible, setIsDropPhotoVisible] = useState(true);
-
   const [isMonthValid, setIsMonthValid] = useState(true);
   const [isYearValid, setIsYearValid] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
   const [showNotification, setShowNotification] = useState(false);
-
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingDropPhoto, setIsLoadingDropPhoto] = useState(false);
   const [isLoadingOpenImage, setIsLoadingOpenImage] = useState(false);
   const [isLoadingCloseImage, setIsLoadingCloseImage] = useState(false);
-
   // << ==== useStates для конструктора ==== >>
   const [inputValue, setInputValue] = useState("");
   const [openConstructor, setOpenConstructor] = useState(false);
   const [blocks, setBlocks] = useState([]);
   const [dynamicPreviews, setDynamicPreviews] = useState([]);
   const [dynamicData, setDynamicData] = useState([]);
-
   const countFilledInputs = () => {
     const inputsToCheck = [
       "totalArea",
@@ -127,7 +116,6 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
     ];
     return inputsToCheck.filter((input) => inputData[input]).length;
   };
-
   useEffect(() => {
     if (editProjectData) {
        
@@ -139,7 +127,6 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
       const [selectedMonth, selectedYear] = (
         editProjectData.monthYear || ""
       ).split(" ");
-
       const initialViewConstruction = editProjectData.viewConstruction
         ? editProjectData.viewConstruction
             .split(",")
@@ -161,7 +148,6 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
           ? { label: editProjectData.statusObject }
           : null
       );
-
       setInputData((prevInputData) => {
         const updatedInputData = {
           ...prevInputData,
@@ -282,27 +268,19 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
         // console.log("Обновленные данные формы:", updatedInputData);
         return updatedInputData;
       });
-
-      const dynamicDataFromEditProject = editProjectData.Constructors || [];
-
-      if (dynamicDataFromEditProject.length > 0) {
-        setDynamicData(dynamicDataFromEditProject);
-  
-        const previewsArray = dynamicDataFromEditProject.map((block) => {
-          if (Array.isArray(block)) {
-            return block.map((input) => input.value);
-          } else {
-            return []; // Возвращаем пустой массив, если block не является массивом
-          }
-        });
-  
+      const dynamicDataFromEditProject = editProjectData.dynamicData;
+      if (
+        editProjectData.dynamicDataFromEditProject &&
+        editProjectData.dynamicDataFromEditProject.length > 0
+      ) {
+        setDynamicData(editProjectData.dynamicDataFromEditProject);
+        const previewsArray = dynamicDataFromEditProject.map((block) =>
+          block.map((input) => input.value)
+        );
         setDynamicPreviews(previewsArray);
       }
-      console.log("1111111editProjectData:", editProjectData);
-      console.log("22222222dynamicDataFromEditProject:", dynamicDataFromEditProject);
     }
   }, [editProjectData]);
-
   // функция Удаление фото из массива превью
   // Удаление фото из массива превью
   const handleRemovePreviewPhoto = (index) => {
@@ -315,7 +293,6 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
       setIsDropPhotoVisible
     );
   };
-
   // Удаление фото из массива превью который с одной фоткой
   const handleRemovePreviewPhotoAva = (index) => {
     removePreviewPhotoAva(
@@ -327,7 +304,6 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
       setIsPhotoAvaVisible
     );
   };
-  
 
   // Удаление превью фото перед основным текстом
   const handleRemovePreviewPhotoOpen = (index) => {
@@ -340,7 +316,6 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
       setIsPhotoOpenVisible
     );
   };
-
   // Удаление превью фото из закрывающей картинки
   const handleRemovePreviewPhotoClose = (index) => {
     removePreviewPhotoClose(
@@ -352,11 +327,9 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
       setIsPhotoCloseVisible
     );
   };
-
   const validateForm = () => {
     let isValid = true;
     let errors = [];
-
     // Проверяем, был ли выбран месяц
     if (!selectedMonth) {
       setIsMonthValid(false);
@@ -365,7 +338,6 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
     } else {
       setIsMonthValid(true);
     }
-
     // Проверяем, был ли выбран год
     if (!selectedYear) {
       setIsYearValid(false);
@@ -374,7 +346,6 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
     } else {
       setIsYearValid(true);
     }
-
     // Сохраняем сообщение об ошибке
     if (!isValid) {
       setErrorMessage(
@@ -383,28 +354,22 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
         )}.`
       );
     }
-
     return isValid;
   };
-
   // закрывает модалкку формы
   const closeModal = () => {
     setIsModalOpen(false);
   };
-
   // функция отправки формы на Redux
   const submitHandler = async (e) => {
     e.preventDefault();
-
     const isFormValid = validateForm();
-
     if (!isFormValid) {
       console.error(
         "Форма не прошла валидацию. Работа функции submitHandler прервана."
       );
       return;
     }
-
     try {
       const formattedData = {
         ...inputData,
@@ -420,7 +385,6 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
         photoAva: inputData.photoAva,
         imageOpen: inputData.imageOpen,
       };
-
       // Добавим проверки на пустоту перед маппингом
       if (
         formattedData.selectCompetencies &&
@@ -434,7 +398,6 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
               .join(",")
           : formattedData.selectCompetencies;
       }
-
       if (
         formattedData.viewConstruction &&
         formattedData.viewConstruction !== ""
@@ -447,7 +410,6 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
               .join(",")
           : formattedData.viewConstruction;
       }
-
       // Определение, создаем новый проект или обновляем существующий
       if (editProjectData && editProjectData.id) {
         dispatch(setProjectId(editProjectData.id));
@@ -459,9 +421,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
         // Создание нового проекта
         await dispatch(fetchProject(formattedData, setInputData));
       }
-
       dispatch(clearFormData());
-
       // Очищаем состояния
       setSelectedCompetencies([]);
       setSelectDegreeParticipation("");
@@ -500,7 +460,6 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
         textBlock: "",
         imageClose: "",
       });
-
       setErrorMessage(""); // Очищаем ошибки
       setIsModalOpen(false);
     } catch (error) {
@@ -508,13 +467,10 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
       // Обработка ошибки, например, вывод сообщения об ошибке пользователю
     }
   };
-
   // << ============ функции КОНСТРУКТОРА ============ >>
-
   const handlerOpenConstructor = () => {
     setOpenConstructor(!openConstructor);
   };
-
   // функция которая не даёт создать новый диманический блок, пока не заполнены value предыдущего
   const areAllBlocksFilled = () => {
     for (let block of dynamicData) {
@@ -527,7 +483,6 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
     }
     return true;
   };
-
   const handleRemoveBlock = (blockIndex) => {
     setDynamicData((prevDynamicData) =>
       prevDynamicData.filter((_, index) => index !== blockIndex)
@@ -541,13 +496,12 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
     );
   };
   // функция которая срабатывает в случае если мы всё-таки пытаемся создать блок выдает ( алерт ), в случае успеза проходит в дальше и создаёт новый динамический блок
-  const handleClick = (inputs, blockIndex) => {
-    // if (!areAllBlocksFilled()) {
-    //   setShowNotification(true);
-    //   setTimeout(() => setShowNotification(false), 5000);
-    //   return;
-    // }
-
+  const handleClick = (inputs) => {
+    if (!areAllBlocksFilled()) {
+      setShowNotification(true);
+      setTimeout(() => setShowNotification(false), 5000);
+      return;
+    }
     const blockKey = Date.now().toString();
     const newInputs = inputs.map((input) => ({
       ...input,
@@ -555,39 +509,26 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
     }));
     setBlocks((prevState) => [...prevState, newInputs]);
     setDynamicData((prevDynamicData) => [...prevDynamicData, newInputs]);
-
-    const editData =
-    editProjectData &&
-    editProjectData.dynamicData &&
-    editProjectData.dynamicData[blockIndex]
-      ? editProjectData.dynamicData[blockIndex]
-      : [];
-  setDynamicPreviews((prevPreviews) => [...prevPreviews, editData]);
     //  handlerOpenConstructor();
   };
-
   async function compressImage(file) {
     const options = {
       maxSizeMB: 4, // максимальный размер файла в MB
       maxWidthOrHeight: 1920, // максимальная ширина или высота
       useWebWorker: true,
     };
-
     try {
       return await compressImageFile(file, options);
     } catch (error) {
       console.error("Ошибка при сжатии изображения:", error);
     }
   }
-
   // обработчик динамических значений
-  const handleDynamicInputChange = async (blockIndex, inputIndex, value, previewIndex) => {
+  const handleDynamicInputChange = async (blockIndex, inputIndex, value) => {
     const newDynamicData = [...dynamicData];
-
     if (!newDynamicData[blockIndex]) {
       newDynamicData[blockIndex] = [];
     }
-
     if (!newDynamicData[blockIndex][inputIndex]) {
       newDynamicData[blockIndex][inputIndex] = {
         type: "",
@@ -595,7 +536,6 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
         value: "",
       };
     }
-
     function generateUniqueName(originalName) {
       const timestamp = Date.now();
       const randomNum = Math.floor(Math.random() * 10000);
@@ -604,7 +544,6 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
       const newName = `file_${sliceOfOriginalName}_${timestamp}_${randomNum}.${fileExtension}`;
       return newName;
     }
-
     if (Array.isArray(value) && value[0] instanceof File) {
       const newFiles = await Promise.all(
         value.map(async (originalFile) => {
@@ -624,27 +563,12 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
           }
         })
       );
-
       newDynamicData[blockIndex][inputIndex].value = newFiles;
     } else {
       newDynamicData[blockIndex][inputIndex].value = value;
     }
-
-    setDynamicPreviews((prev) => {
-      const newPreviews = [...prev];
-      if (
-        newPreviews[blockIndex] &&
-        newPreviews[blockIndex][inputIndex] &&
-        previewIndex !== undefined
-      ) {
-        newPreviews[blockIndex][inputIndex][previewIndex] = value;
-      }
-      return newPreviews;
-    });
-
     setDynamicData(newDynamicData);
   };
-
   // этот цикл сделан для присвоения разных стилей для одной конструкции превью
   const getPreviewClassName = (label) => {
     switch (label) {
@@ -674,7 +598,6 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
             styles.verticalImage,
           ],
         };
-
       case "Видеоролик":
         return {
           outerDiv: styles.videoPreview,
@@ -685,7 +608,6 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
         return "";
     }
   };
-
   const renderInputWithLabel = (
     inputType,
     labelText,
@@ -702,7 +624,6 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
         }
         return newPreviews;
       });
-
       setDynamicData((prevData) => {
         const newData = [...prevData];
         if (newData[blockIndex] && newData[blockIndex][inputIndex]) {
@@ -710,12 +631,12 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
         }
         return newData;
       });
-
       const fileInputs = document.querySelectorAll('input[type="file"]');
       fileInputs.forEach((input) => (input.value = "")); // это очищает значение всех инпутов типа file
     }
-
     const classNames = getPreviewClassName(labelText);
+
+    // console.log("Данные для отображения:", dynamicData);
    
       return (
       <div key={inputIndex}>
@@ -725,9 +646,9 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
             <input
               type="input"
               maxLength="56" // 2. Установите атрибут maxLength
-              value={dynamicData[blockIndex][inputIndex]?.value || ""} // используйте значение inputValue как текущее значение инпута
               className={`${styles.form_container__heading_block_input} ${styles.orange_color}`}
               placeholder={labelText}
+              value={dynamicData[blockIndex][inputIndex]?.value || ""} // используйте значение inputValue как текущее значение инпута
               onChange={(e) => {
                 setInputValue(e.target.value); // 4. Обновите inputValue при каждом изменении
                 handleDynamicInputChange(
@@ -748,6 +669,46 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
             </div>
           </div>
         )}
+{/* {dynamicData.map((item, itemIndex) => (
+  <div key={itemIndex}>
+    {item && item.data && item.data.map((block, blockIndex) => (
+      <div key={blockIndex}>
+        {block && Array.isArray(block) && block.map((input, inputIndex) => (
+          <div key={input.key}>
+            {input && input.type === "text" && (
+              <div className={styles.form_container__heading_block}>
+                <input
+                  type="text"
+                  maxLength="56"
+                  className={`${styles.form_container__heading_block_input} ${styles.orange_color}`}
+                  placeholder={input.label}
+                  value={input.value || ""}
+                  onChange={(e) =>
+                    handleDynamicInputChange(
+                      blockIndex,
+                      inputIndex,
+                      e.target.value
+                    )
+                  }
+                />
+                <label
+                  htmlFor={input.key}
+                  className={styles.form_container__heading_block_label}
+                >
+                  {input.label}
+                </label>
+                <div className={styles.form_container__heading_block_input_length}>
+                  {(input.value || "").length}/56
+                </div>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    ))}
+  </div>
+))} */}
+
         {inputType === "file" && (
           <>
             {labelText === "Видеоролик" ? (
@@ -1031,7 +992,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
     <div className={styles.form_container}>
       {showNotification && (
         <div className={styles.form_container__notification}>
-          Сначала заполните все обязательные поля в предыдущем блоке❗
+          Заполните предыдущий блок или дождитесь загркузки изображений❗
         </div>
       )}
       <div className={styles.form_container__title}>
@@ -2385,7 +2346,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                   </div>
                 </div>
               ) : (
-                <ConstructorPage 
+                <ConstructorPage
                 handleClick={handleClick}
             />
               )}
