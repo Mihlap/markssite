@@ -160,10 +160,10 @@ export async function changeHandler(
         const uniqueName = generateUniqueName(originalFile.name);
 
         // Сжимаем изображение, если его размер больше 4MB
-        if (originalFile.size > 4 * 1024 * 1024) {
+        if (originalFile.size > 2 * 1024 * 1024) {
           try {
             const compressedFile = await compressImageFile(originalFile, {
-              maxSizeMB: 4,
+              maxSizeMB: 2,
               maxWidthOrHeight: 1920,
             });
             return new File([compressedFile], uniqueName, {
