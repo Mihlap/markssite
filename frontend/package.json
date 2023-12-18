@@ -9,6 +9,7 @@
     "axios": "^1.4.0",
     "browser-image-compression": "^2.0.2",
     "dotenv": "^16.0.3",
+    "eruda": "^3.0.1",
     "framer-motion": "^10.15.1",
     "gsap": "^3.11.5",
     "localStorage": "^1.0.4",

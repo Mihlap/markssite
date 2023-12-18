@@ -42,6 +42,7 @@ import Internships from "./Portal/Internships/Internships";
 import Office from "./Portal/Office/Office";
 import PortalMenu from "./Navbar/PortalMenu";
 import Vacancies from "./Portal/Vacancies/Vacancies";
+// import eruda from 'eruda';
 
 export default function App() {
   const user = useSelector((state) => state.auth.user);
@@ -50,7 +51,7 @@ export default function App() {
   const isActive = useSelector((state) => state.toggle.isActiveForButton3);
   const location = useLocation();
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [showPortalMenu, setShowPortalMenu] = useState(false);
 
   const isMobile = window.innerWidth <= 768;
@@ -74,6 +75,7 @@ export default function App() {
   useEffect(() => {
     dispatch(checkUserAuth());
     dispatch(fetchToggleStateForButton3Async());
+    // eruda.init();
   }, [dispatch]);
 
   const handlePageChange = (page) => {
