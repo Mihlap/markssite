@@ -5,6 +5,7 @@
   "proxy": "http://localhost:8080",
   "dependencies": {
     "@mapbox/mapbox-gl-draw": "^1.4.1",
+    "@pbe/react-yandex-maps": "^1.2.5",
     "@reduxjs/toolkit": "^1.9.5",
     "axios": "^1.4.0",
     "browser-image-compression": "^2.0.2",
