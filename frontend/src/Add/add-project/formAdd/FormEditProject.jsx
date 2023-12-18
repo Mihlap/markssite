@@ -118,7 +118,6 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
   };
   useEffect(() => {
     if (editProjectData) {
-       
       const initialSelectedCompetencies = editProjectData.selectCompetencies
         ? editProjectData.selectCompetencies
             .split(",")
@@ -132,7 +131,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
             .split(",")
             .map((item) => ({ value: item.trim(), label: item.trim() }))
         : [];
-      
+
       // Set form data from editProjectData
       setSelectedCompetencies(initialSelectedCompetencies);
       setSelectedMonth({ value: selectedMonth, label: selectedMonth });
@@ -173,12 +172,12 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
               : "",
           imageProject:
             editProjectData.imageProject !== undefined
-                ? editProjectData.imageProject
-                : "",
+              ? editProjectData.imageProject
+              : "",
           imageTitle:
             editProjectData.imageTitle !== undefined
-                ? editProjectData.imageTitle
-                : "",
+              ? editProjectData.imageTitle
+              : "",
           titleTextBlock:
             editProjectData.titleTextBlock !== undefined
               ? editProjectData.titleTextBlock
@@ -293,17 +292,6 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
       setIsDropPhotoVisible
     );
   };
-  // Удаление фото из массива превью который с одной фоткой
-  const handleRemovePreviewPhotoAva = (index) => {
-    removePreviewPhotoAva(
-      previewPhotoAva,
-      setPreviewPhotoAva,
-      index,
-      inputData,
-      setInputData,
-      setIsPhotoAvaVisible
-    );
-  };
 
   // Удаление превью фото перед основным текстом
   const handleRemovePreviewPhotoOpen = (index) => {
@@ -314,6 +302,17 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
       inputData,
       setInputData,
       setIsPhotoOpenVisible
+    );
+  };
+  // Удаление фото из массива превью который с одной фоткой
+  const handleRemovePreviewPhotoAva = (index) => {
+    removePreviewPhotoAva(
+      previewPhotoAva,
+      setPreviewPhotoAva,
+      index,
+      inputData,
+      setInputData,
+      setIsPhotoAvaVisible
     );
   };
   // Удаление превью фото из закрывающей картинки
@@ -637,8 +636,8 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
     const classNames = getPreviewClassName(labelText);
 
     // console.log("Данные для отображения:", dynamicData);
-   
-      return (
+
+    return (
       <div key={inputIndex}>
         {inputType === "text" && (
           // <input type="text" />
@@ -669,7 +668,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
             </div>
           </div>
         )}
-{/* {dynamicData.map((item, itemIndex) => (
+        {/* {dynamicData.map((item, itemIndex) => (
   <div key={itemIndex}>
     {item && item.data && item.data.map((block, blockIndex) => (
       <div key={blockIndex}>
@@ -1044,9 +1043,9 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                 ]}
                 className={styles.form__field}
                 placeholder="Выбрать компетенции"
-                value={selectedCompetencies || []} 
+                value={selectedCompetencies || []}
                 onChange={setSelectedCompetencies}
-                // onChange={(selectedOptions) => setSelectedCompetencies(selectedOptions || [])} 
+                // onChange={(selectedOptions) => setSelectedCompetencies(selectedOptions || [])}
                 components={{ DropdownIndicator, ValueContainer }}
                 onFocus={() => setIsFocused(true)}
                 onBlur={() => setIsFocused(false)}
@@ -1091,7 +1090,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                   id="month"
                   styles={customStyles}
                   className={styles.form__field}
-                  value={selectedMonth || []}  
+                  value={selectedMonth || []}
                   onChange={handleMonthChange}
                   options={monthOptions}
                   placeholder="Месяц"
@@ -1260,21 +1259,22 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
               )}
             </div>
             <div>
-            {inputData.imageProject !== null && (
-                <div className={styles.preview_photos_container__block}>
-                  <img
-                    className={styles.preview_photos_container__img}
-                    src={`${Host}/images/imageAdd/${inputData.imageProject}`}
-                    alt="Preview"
-                  />
-                  {/* <div
-                  className={styles.preview_photos_container__remove_icon}
-                    onClick={() => handleRemovePreviewPhotoClose()}
-                   >
-                   <span></span>
+              {inputData.imageProject !== null &&
+                previewPhotoAva.length === 0 && (
+                  <div className={styles.preview_photos_container__block}>
+                    <img
+                      className={styles.preview_photos_container__img}
+                      src={`${Host}/images/imageAdd/${inputData.imageProject}`}
+                      alt="Preview"
+                    />
+                    {/* <div
+                    className={styles.preview_photos_container__remove_icon}
+                  onClick={() => handleRemovePreviewPhotoAva()}
+                      >
+                 <span></span>
                    </div> */}
-                </div>
-              )}
+                  </div>
+                )}
               {previewPhotoAva?.map((preview, index) => (
                 <div
                   key={index}
@@ -1282,7 +1282,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                 >
                   <img
                     className={styles.preview_photos_container__img}
-                    src={preview || ''} 
+                    src={preview || ""}
                     alt={`Preview ${index}`}
                   />
                   <div
@@ -1293,39 +1293,6 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                   </div>
                 </div>
               ))}
-              {/* {previewPhotoAva?.map((preview, index) => (
-                <div
-                  key={index}
-                  className={styles.preview_photos_container__block}
-                >
-                  <img
-                    className={styles.preview_photos_container__img}
-                    src={preview || ''} 
-                    alt={`Preview ${index}`}
-                    />
-                  <div
-                    className={styles.preview_photos_container__remove_icon}
-                    onClick={() => handleRemovePreviewPhotoAva(index)}
-                  >
-                    <span></span>
-                  </div>
-                </div>
-              ))}
-               {inputData.imageProject !== null && (
-                <div className={styles.preview_photos_container__block}>
-                  <img
-                    className={styles.preview_photos_container__img}
-                    src={`${Host}/images/imageAdd/${inputData.imageProject}`}
-                    alt="Preview"
-                  />
-                  <div
-                    className={styles.preview_photos_container__remove_icon}
-                    onClick={() => handleRemovePreviewPhotoClose()}
-                  >
-                    <span></span>
-                  </div>
-                </div>
-              )} */}
             </div>
             {/* <div className={styles.form_container__radio_container}>
               <div
@@ -1473,42 +1440,46 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
               </div>
             </div>
             <div className={styles.preview_photos_container}>
-              {inputData.dropPhoto && inputData.dropPhoto.map((preview, index) => (
-                <div
-                  key={index}
-                  className={styles.preview_photos_container__block}
-                >
-                  <img
-                    className={styles.preview_photos_container__img}
-                    src={URL.createObjectURL(preview)}
-                    alt={`Preview ${index}`}
-                  />
+              {inputData.dropPhoto &&
+                inputData.dropPhoto.map((preview, index) => (
                   <div
-                    className={styles.preview_photos_container__remove_icon}
-                    onClick={() => handleRemovePreviewPhoto(index)}
+                    key={index}
+                    className={styles.preview_photos_container__block}
                   >
-                    <span></span>
+                    <img
+                      className={styles.preview_photos_container__img}
+                      src={URL.createObjectURL(preview)}
+                      alt={`Preview ${index}`}
+                    />
+                    <div
+                      className={styles.preview_photos_container__remove_icon}
+                      onClick={() => handleRemovePreviewPhoto(index)}
+                    >
+                      <span></span>
+                    </div>
                   </div>
-                </div>
-              ))}
-            {inputData.imageTitle && inputData.imageTitle.split(',').map((imageFileName, index) => (
-                <div
-                  key={index}
-                  className={styles.preview_photos_container__block}
-                >
-                  <img
-                    className={styles.preview_photos_container__img}
-                    src={`${Host}/images/imageAdd/${imageFileName.trim()}`}
-                    alt={`Preview ${index}`}
-                  />
-                  {/* <div
+                ))}
+              {/* {inputData.imageTitle &&
+                inputData.imageTitle.split(",").map((imageFileName, index) => ( */}
+             {inputData.imageTitle !== null && inputData.dropPhoto.length === 0 &&
+                inputData.imageTitle.split(",").map((imageFileName, index) => (
+                  <div
+                    key={index}
+                    className={styles.preview_photos_container__block}
+                  >
+                    <img
+                      className={styles.preview_photos_container__img}
+                      src={`${Host}/images/imageAdd/${imageFileName.trim()}`}
+                      alt={`Preview ${index}`}
+                    />
+                    {/* <div
                     className={styles.preview_photos_container__remove_icon}
                     onClick={() => handleRemovePreviewPhoto(index)}
                   >
                     <span></span>
                   </div> */}
-                </div>
-              ))}
+                  </div>
+                ))}
             </div>
           </div>
           {/* блок и инпутом ( Заголовок текстового блока ) */}
@@ -2198,23 +2169,24 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
             <div>
               {previewPhotoOpen?.map((preview, index) => (
                 <div
-                key={index}
-                className={styles.preview_photos_container__block}
+                  key={index}
+                  className={styles.preview_photos_container__block}
                 >
                   <img
                     className={styles.preview_photos_container__img}
                     src={preview}
                     alt={`Preview ${index}`}
-                    />
+                  />
                   <div
                     className={styles.preview_photos_container__remove_icon}
                     onClick={() => handleRemovePreviewPhotoOpen(index)}
-                    >
+                  >
                     <span></span>
                   </div>
                 </div>
-              ))}
-              {inputData.imageOpen && previewPhotoOpen.length === 0 && (
+              ))}            
+              {inputData.imageOpen !== null &&
+                  previewPhotoOpen.length === 0 && (
                 <div className={styles.preview_photos_container__block}>
                   <img
                     className={styles.preview_photos_container__img}
@@ -2346,9 +2318,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                   </div>
                 </div>
               ) : (
-                <ConstructorPage
-                handleClick={handleClick}
-            />
+                <ConstructorPage handleClick={handleClick} />
               )}
             </div>
           </div>
@@ -2413,7 +2383,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                 </div>
               )}
             </div>
-            <div>         
+            <div>
               {previewPhotoClose.map((preview, index) => (
                 <div
                   key={index}
@@ -2421,7 +2391,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                 >
                   <img
                     className={styles.preview_photos_container__img}
-                    src={preview || ''} 
+                    src={preview || ""}
                     alt={`Preview ${index}`}
                   />
                   <div
@@ -2431,8 +2401,9 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                     <span></span>
                   </div>
                 </div>
-              ))}
-              {inputData.imageClose !== null && (
+              ))}           
+                {inputData.imageClose !== null &&
+                  previewPhotoClose.length === 0 && (
                 <div className={styles.preview_photos_container__block}>
                   <img
                     className={styles.preview_photos_container__img}
