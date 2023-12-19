@@ -5,13 +5,40 @@ import styles from "./Mapbox.module.css";
 
 const Mapbox3D = () => {
   const [selectedPopup, setSelectedPopup] = useState(null);
+  const [activeMarkerIndex, setActiveMarkerIndex] = useState(null);
 
-  const handleMarkerClick = (popupData) => {
+  const handleMarkerClick = (popupData, index) => {
     setSelectedPopup(popupData);
+    setActiveMarkerIndex(index);
   };
- 
+
+  const handleMarkerHover = (popupData, index) => {
+    if (window.innerWidth > 1025) {
+      setSelectedPopup(popupData);
+      setActiveMarkerIndex(index);
+    }
+  };
+
+  const handleMarkerLeave = () => {
+    if (window.innerWidth > 1025 && !selectedPopup) {
+      setSelectedPopup(null);
+      setActiveMarkerIndex(null);
+    }
+  };
+
+  const handleMapTouchStart = () => {
+    // Включить прокрутку при касании карты на мобильных устройствах
+    document.body.style.overflow = "auto";
+  };
+
+  const handleMapTouchEnd = () => {
+    // Отключить прокрутку при завершении взаимодействия с картой
+    document.body.style.overflow = "hidden";
+  };
+
   useEffect(() => {
     setSelectedPopup(null);
+    setActiveMarkerIndex(null);
   }, []);
 
   return (
@@ -20,34 +47,38 @@ const Mapbox3D = () => {
         <Map
           defaultState={{
             center: [55.77, 37.5804],
-            zoom: window.innerWidth <= 767 ? 8.8 : window.innerWidth <= 1024 ? 9.6 : 10.4,
+            zoom: window.innerWidth <= 767 ? 8.8 : window.innerWidth <= 1024 ? 9.6 : 10.5,
           }}
           width="100%"
-          height="100%" 
+          height="100%"
           options={{
-            suppressMapOpenBlock: true, // Скрывает надпись "Создай свою карту"
+            suppressMapOpenBlock: true,
             suppressMapOpenBlockKey: "ctrlKey",
-          }}     
+          }}
+          onTouchStart={handleMapTouchStart}
+          onTouchEnd={handleMapTouchEnd}
         >
           {popupsData.map((marker, index) => (
-            <Placemark
+            <Placemark 
               key={index}
               geometry={marker.coordinates}
-              onClick={() => handleMarkerClick(marker)}
+              onClick={() => handleMarkerClick(marker, index)}
+              onMouseEnter={() => handleMarkerHover(marker, index)}
+              onMouseLeave={handleMarkerLeave}
               options={{
                 iconLayout: "default#image",
                 iconImageHref: "/assets/house.svg",
-                iconImageSize: [40, 45],
+                iconImageSize: activeMarkerIndex === index ? [50, 55] : [40, 45],
+                hintPane: activeMarkerIndex === index ? 'islands#groundPane' : 'islands#floatPane',
               }}
             />
           ))}
         </Map>
       </YMaps>
-
       {selectedPopup && (
         <div className={styles.popup}>
           <div className={styles.popupContent}>
-            {selectedPopup.image && window.innerWidth > 767 && (
+            {selectedPopup.image && window.innerWidth >= 76 && (
               <img
                 className={styles.popupImage}
                 src={selectedPopup.image}
@@ -66,7 +97,10 @@ const Mapbox3D = () => {
           </div>
           <div
             className={styles.popupCloseButton}
-            onClick={() => setSelectedPopup(null)}
+            onClick={() => {
+              setSelectedPopup(null);
+              setActiveMarkerIndex(null);
+            }}
           >
             <svg
               width="16"
@@ -92,11 +126,11 @@ const Mapbox3D = () => {
             filter: brightness(95%) hue-rotate(500deg) saturate(100%) !important;
           }
 
-          @media (max-width: 768px) {
+          @media (max-width: 767px) {
             .${styles.popupImage} {
               display: none;
-            }     
-          }      
+            }
+          }
         `}
       </style>
     </div>
@@ -104,12 +138,6 @@ const Mapbox3D = () => {
 };
 
 export default Mapbox3D;
-
-
-
-
-
-
 
 
 
