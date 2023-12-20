@@ -53,20 +53,18 @@ app.use((req, res, next) => {
   // res.header('Content-Type', 'application/json; charset=utf-8');
   // res.header('Content-Type', 'video/mp4');
   // res.header('Accept-Ranges', 'bytes');
+  // res.header('Cross-Origin-Opener-Policy', 'same-origin');
+  // res.header('Cross-Origin-Embedder-Policy', 'require-corp');
+  // res.header('Content-Security-Policy', "img-src 'self' data:; script-src 'self';");
   next();
 });
 
-// app.use((req, res, next) => {
-//   res.header('Cross-Origin-Opener-Policy', 'same-origin');
-//   res.header('Cross-Origin-Embedder-Policy', 'require-corp');
-//   res.header('Content-Security-Policy', "img-src 'self' data:; script-src 'self';");
-//   next();
-// });
 
 app.use(cors({
     origin: [
     '*',
-    'https://www.marksgroup.ru',  
+    'https://www.marksgroup.ru',
+    'https://marksgroup.ru',   
     'http://localhost:3002',  
     'http://localhost:3000',  
    ],

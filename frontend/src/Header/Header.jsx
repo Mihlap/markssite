@@ -294,7 +294,7 @@ export default function Header({ handleMouseEnter,
                 id="bg-video"
                 className={styles.bg_video}
               >
-                <source src={videoSrc} type="video/mp4" preload="auto" />
+                <source src={videoSrc} type="video/mp4"/>
               </video>
             )}
           </div>
