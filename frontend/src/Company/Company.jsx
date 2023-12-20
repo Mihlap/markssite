@@ -68,7 +68,7 @@ export default function Company({
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const dispatch = useDispatch();
-  const { selectedCard, category, staff, loading, error } = useSelector(
+  const { selectedCard, category, staff, loading, error, allImagesLoaded } = useSelector(
     (state) => state.staff
   );
 
@@ -143,7 +143,7 @@ export default function Company({
     dispatch(selectCard(null));
     dispatch(fetchCategoryStaff(category));
     setShowCards(true);
-  }, [dispatch]);
+  }, [category, dispatch]);
 
   const handleButtonClick = (category, selectedCardId) => {
     if (selectedCardId) {
@@ -266,21 +266,23 @@ export default function Company({
   ];
 
   const handleImageLoad = () => {
-    // console.log('Image loaded!');
-    setShowCards(true);
+    if (allImagesLoaded) {
+      // Все изображения загружены, выполняем нужные действия
+      setShowCards(true);
+    }
   };
 
-  // if (error) {
-  //   return (
-  //     <div>
-  //       {" "}
-  //       <Error error={error.message} />
-  //     </div>
-  //   );
-  // }
-  // if (loading) {
-  //   return <LoadingCircle />;
-  // }
+  if (error) {
+    return (
+      <div>
+        {" "}
+        <Error error={error.message} />
+      </div>
+    );
+  }
+  if (loading) {
+    return <LoadingCircle />;
+  }
 
   // кнопки временно закоменчены, будут в дальнейшем использованы
   //  {/* <button
@@ -617,6 +619,7 @@ export default function Company({
                       onLoad={handleImageLoad}
                       onError={(e) => {
                         e.target.src = `${Host}/images/imageStuff/no_photo.png`;
+                        // el.imgLoaded = false;
                       }}
                       alt={el.img}
                       loading="lazy"
