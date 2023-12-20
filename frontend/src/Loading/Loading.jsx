@@ -14,7 +14,7 @@ export default function Loading() {
         setPercent((prevPercent) => prevPercent + 2);
         setProgressWidth((prevWidth) => prevWidth + 4);
       }
-    }, 50);
+    }, 40);
 // testfdfd
     // sdfsdf
     return () => clearInterval(loading);
