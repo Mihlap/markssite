@@ -37,7 +37,8 @@
     "sass": "1.62.0",
     "slick-carousel": "^1.8.1",
     "swiper": "^9.4.1",
-    "transliteration": "^2.3.5"
+    "transliteration": "^2.3.5",
+    "web-vitals": "^2.1.4"
   },
   "scripts": {
     "start": "react-scripts start --config-overrides.js",
@@ -57,6 +58,7 @@
       ">0.2%",
       "not dead",
       "not op_mini all",
+      "last 2 Safari versions", 
       "not safari < 10",
       "not chrome < 51",
       "not android < 5",
@@ -64,8 +66,8 @@
     ],
     "development": [
       "last 1 chrome version",
-      "last 1 firefox version",
-      "last 1 safari version"
+      "last 2 Safari versions", 
+      "last 1 firefox version"    
     ]
   },
   "devDependencies": {
