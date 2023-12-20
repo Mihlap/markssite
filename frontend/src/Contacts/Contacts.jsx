@@ -120,8 +120,8 @@ const Contacts = ({ handleMouseEnter, handleMouseLeave }) => {
               key={mapKey}
               defaultState={{
                 center: isLargeScreen
-                  ? [mapCenter[0], mapCenter[1] - 0.2]
-                  : mapCenter,
+                ? [mapCenter[0], mapCenter[1] - 0.15]
+                : [mapCenter[0] + 0.05, mapCenter[1] + 0.05],
                 zoom: 11,
               }}
               width="100%"

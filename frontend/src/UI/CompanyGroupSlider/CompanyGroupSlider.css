@@ -7,7 +7,7 @@
  .image-wrapper {
    display: flex;
   width: fit-content;
-  padding-right: 3rem;
+  padding-right: 0rem;
  }
 
 .company-group-slide {
@@ -29,7 +29,7 @@
   font-weight: var(--fw-400);
   line-height: 1.25rem;
   padding-top: 1.5rem;
-  /* padding-right: 1.94rem; */
+  padding-right: 10rem;
 }
 
 @media screen and (min-width: 768px) and (max-width: 1024px) {
@@ -47,6 +47,9 @@
         padding-left: 0rem;
         padding-bottom: 6.25rem;
       }
+      .text_slider_span {
+        padding-right: 3rem;
+       }
       }
 
       /* стили мобильной версии  */
@@ -56,6 +59,9 @@
   .company-group-container {
     padding-bottom: 5rem;
     padding-left: 0rem;
+    }
+    .text_slider_span {
+     padding-right: 3rem;
     }
 
   .pagination_company_slider {
