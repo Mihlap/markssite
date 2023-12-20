@@ -9,7 +9,7 @@ const CompanyGroupSlider = () => {
   const settings = {
     infinite: true,
     speed: 700,
-    slidesToShow: 5,
+    slidesToShow: 4,
     slidesToScroll: 0,
     arrows: false,
     centerPadding: "0",
@@ -19,7 +19,7 @@ const CompanyGroupSlider = () => {
       {
         breakpoint: 2000,
         settings: {
-          slidesToShow: 5,
+          slidesToShow: 4,
           slidesToScroll: 0,
           centerPadding: "0",
           autoplay: false,
@@ -28,7 +28,7 @@ const CompanyGroupSlider = () => {
       {
         breakpoint: 1600,
         settings: {
-          slidesToShow: 4,
+          slidesToShow: 3,
           slidesToScroll: 2,
           // centerPadding: "60px",
           autoplay: false,
@@ -37,7 +37,7 @@ const CompanyGroupSlider = () => {
       {
         breakpoint: 1440,
         settings: {
-          slidesToShow: 4,
+          slidesToShow: 3,
           slidesToScroll: 2,
           // centerPadding: "60px",
           autoplay: false,
@@ -55,7 +55,7 @@ const CompanyGroupSlider = () => {
       {
         breakpoint: 1024,
         settings: {
-          slidesToShow: 3,
+          slidesToShow: 2,
           slidesToScroll: 1,
           // centerPadding: "40px",
           autoplay: true,
@@ -115,7 +115,7 @@ const CompanyGroupSlider = () => {
             </span>
           </div>
         </div>
-        <div className="image-wrapper">
+        {/* <div className="image-wrapper">
           <div className="company-group-slide">
             <img src="./assets/Vector1.svg" alt="2" />
             <span className="text_slider_span">
@@ -123,7 +123,7 @@ const CompanyGroupSlider = () => {
               интерьеров, брендинг и&nbsp;архитектурная визуализация
             </span>
           </div>
-        </div>
+        </div> */}
         <div className="image-wrapper">
           <div className="company-group-slide">
             <img src="./assets/Vector2.svg" alt="3" />
@@ -153,7 +153,7 @@ const CompanyGroupSlider = () => {
         </div>
       </Slider>
       <div className="pagination_company_slider">
-        {Array.from({ length: Math.ceil(5) }).map((_, index) => (
+        {Array.from({ length: Math.ceil(4) }).map((_, index) => (
           <button
             key={index}
             className={`pagination_company_slider-dot ${
