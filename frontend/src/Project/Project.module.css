@@ -179,7 +179,7 @@ display: inline-block;
     flex-wrap: wrap;
     gap: 1.88rem;
     padding-left: 1.88rem;
-  }
+   }
   
   .section_project__block_cart {
       display: flex;
@@ -957,8 +957,8 @@ display: inline-block;
         display: flex;
         flex-direction: column;
         padding-top: 2rem;
-        padding-left: -1rem;
-        padding-right: 1rem;
+        /* padding-left: -1rem;
+        padding-right: 1rem; */
         padding-bottom: 0rem;
         background-color: var(--white-F6F6F6);
     }
@@ -969,7 +969,8 @@ display: inline-block;
         flex-direction: column;
         gap: 1.88rem;
         padding-left: 1rem;
-        padding-bottom: 2rem;
+        padding-right: 1rem;  /* добавил это, убрал выше */
+       padding-bottom: 2rem;
     }
 
     .section_project__block_cart {
