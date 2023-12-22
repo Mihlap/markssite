@@ -62,7 +62,7 @@ app.use((req, res, next) => {
 
 app.use(cors({
     origin: [
-    '*',
+    // '*',
     'https://www.marksgroup.ru',
     'https://marksgroup.ru',   
     'http://localhost:3002',  

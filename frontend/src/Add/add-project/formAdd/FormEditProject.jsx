@@ -75,6 +75,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
     numberOfLanes: "",
     long: "",
   });
+  
   const [selectedCompetencies, setSelectedCompetencies] = useState([]);
   const [selectedViewConstruction, setSelectedViewConstruction] = useState([]);
   const [selectDegreeParticipation, setSelectDegreeParticipation] =
@@ -116,7 +117,18 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
     ];
     return inputsToCheck.filter((input) => inputData[input]).length;
   };
+
   useEffect(() => {
+    if (editProjectData && !inputData.imageClose) {
+      // Устанавливаем начальные значения только при монтировании компонента
+      // Это предотвратит случайные перезаписи данных при каждом рендере
+      // Ваши текущие операции по установке начальных значений здесь
+    }
+  }, [editProjectData, inputData.imageClose]);
+
+  useEffect(() => {
+    console.log("editProjectData:", editProjectData);
+    console.log("inputData:", inputData); 
     if (editProjectData) {
       const initialSelectedCompetencies = editProjectData.selectCompetencies
         ? editProjectData.selectCompetencies
@@ -147,6 +159,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
           ? { label: editProjectData.statusObject }
           : null
       );
+      
       setInputData((prevInputData) => {
         const updatedInputData = {
           ...prevInputData,
@@ -250,10 +263,10 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
             editProjectData.textBlock !== undefined
               ? editProjectData.textBlock
               : "",
-          imageClose:
-            editProjectData.imageClose !== undefined
-              ? editProjectData.imageClose
-              : "",
+              imageClose:
+              editProjectData.imageClose !== undefined
+                ? editProjectData.imageClose
+                : "",
           numberOfLanes:
             editProjectData.numberOfLanes !== undefined
               ? editProjectData.numberOfLanes
@@ -483,6 +496,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
     }
     return true;
   };
+
   const handleRemoveBlock = (blockIndex) => {
     setDynamicData((prevDynamicData) =>
       prevDynamicData.filter((_, index) => index !== blockIndex)
@@ -495,6 +509,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
       prevPreviews.filter((_, index) => index !== blockIndex)
     );
   };
+
   // функция которая срабатывает в случае если мы всё-таки пытаемся создать блок выдает ( алерт ), в случае успеза проходит в дальше и создаёт новый динамический блок
   const handleClick = (inputs) => {
     if (!areAllBlocksFilled()) {
@@ -989,8 +1004,8 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
   // console.log(inputData, "<<--inputData PROJECT");
   // console.log(dynamicData, "<<--dynamicData");
 
-//   console.log('previewPhotoClose:', previewPhotoClose);
-// console.log('inputData.imageClose:', inputData.imageClose);
+  console.log('previewPhotoClose:', previewPhotoClose);
+console.log('inputData.imageClose:', inputData.imageClose);
   return (
     <div className={styles.form_container}>
       {showNotification && (
@@ -2387,32 +2402,41 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                 </div>
               )}
             </div>
-            <div>
-            {previewPhotoClose.map((preview, index) => (
-    <div key={index} className={styles.preview_photos_container__block}>
-      <img
-        className={styles.preview_photos_container__img}
-        src={preview || ""}
-        alt={`Preview ${index}`}
-      />
-      <div
-        className={styles.preview_photos_container__remove_icon}
-        onClick={() => handleRemovePreviewPhotoClose(index)}
-      >
-        <span></span>
-      </div>
-    </div>
-  ))}
-  {inputData.imageClose !== null && previewPhotoClose.length === 0 ? (
-    <div className={styles.preview_photos_container__block}>
-      <img
-        className={styles.preview_photos_container__img}
-        src={`${Host}/images/imageAdd/${inputData.imageClose}`}
-        alt="Preview"
-      />
-      {/* Разместите иконку удаления, если это необходимо */}
-    </div>
-  ) : null}
+            <div>         
+             {previewPhotoClose?.map((preview, index) => (
+                <div
+                  key={index}
+                  className={styles.preview_photos_container__block}
+                >
+                  <img
+                    className={styles.preview_photos_container__img}
+                    src={preview}
+                    alt={`Preview ${index}`}
+                  />
+                  <div
+                    className={styles.preview_photos_container__remove_icon}
+                    onClick={() => handleRemovePreviewPhotoClose(index)}
+                  >
+                    <span></span>
+                  </div>
+                </div>
+              ))}            
+              {!inputData.imageClose !== null &&
+                  previewPhotoClose.length === 0 && (
+                <div className={styles.preview_photos_container__block}>
+                  <img
+                    className={styles.preview_photos_container__img}
+                    src={`${Host}/images/imageAdd/${inputData.imageClose}`}
+                    alt="Preview"
+                  />
+                  {/* <div
+                    className={styles.preview_photos_container__remove_icon}
+                    onClick={() => handleRemovePreviewPhotoOpen()}
+                  >
+                    <span></span>
+                  </div> */}
+                </div>
+              )}
             </div>
           </div>
           <div className={styles.form_container__button_block}>
