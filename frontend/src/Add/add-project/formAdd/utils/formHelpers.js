@@ -81,18 +81,19 @@ export const removePreviewPhotoClose = (
   setInputData,
   setIsPhotoCloseVisible
 ) => {
-  const updatedPreviewPhotosOpen = [...previewPhotoClose];
-  updatedPreviewPhotosOpen.splice(index, 1);
-  setPreviewPhotoClose(updatedPreviewPhotosOpen);
+  const updatedPreviewPhotosClose = [...previewPhotoClose];
+  updatedPreviewPhotosClose.splice(index, 1);
+  setPreviewPhotoClose(updatedPreviewPhotosClose);
   setIsPhotoCloseVisible(true);
 
-  const updatedDropPhotoClose = Array.from(inputData.imageOpen);
+  const updatedDropPhotoClose = Array.from(inputData.imageClose);
   updatedDropPhotoClose.splice(index, 1);
   setInputData((prev) => ({
     ...prev,
-    imageOpen: updatedDropPhotoClose,
+    imageClose: updatedDropPhotoClose,
   }));
 };
+
 
 function formatNumberWithThousandSeparator(number) {
   return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
