@@ -15,6 +15,7 @@ import LoadingModal from "./loading/LoadingModal";
 import Edit from '../icon/Edit.svg';
 import FormEditProject from "./formAdd/FormEditProject";
 
+
 export default function AddProject({ user }) {
   const Host = process.env.REACT_APP_SERVER_HOST;
   const dispatch = useDispatch();
@@ -31,7 +32,7 @@ export default function AddProject({ user }) {
   const [deleteModalState, setDeleteModalState] = useState({});
   const [modalBlockHeight, setModalBlockHeight] = useState("auto"); // Изначально высота будет автоматически рассчитываться
   const [editProjectData, setEditProjectData] = useState(null);
-
+ 
   const isMountedRef = useRef(true);
   const updateModalBlockHeight = () => {
     const windowHeight = window.innerHeight;
@@ -62,9 +63,10 @@ export default function AddProject({ user }) {
   const handleOpenModal = () => {
     setIsModalOpen(true);
     if (editProjectData) {
-      setEditProjectData(null);
+      setEditProjectData(null);     
     }
   };
+  
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
