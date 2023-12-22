@@ -24,7 +24,7 @@ const CookieComponent = () => {
         location="bottom"
         cookieName="myCookieConsent"
         buttonText="Принять"
-        style={{
+         style={{
           display: "flex",
           justifyContent: 'center',
           alignItems: "center",
