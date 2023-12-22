@@ -70,7 +70,7 @@ const Vacancies = ({ handleMouseEnter, handleMouseLeave, handleMouseHover }) => 
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
           >
-            <span className={styles.span_mail_vacancies}>ok@marksgroup.ru</span>
+            <span className={styles.span_mail_vacancies}>hr@marksgroup.ru</span>
           </Link>
         </div>
       </div>      
