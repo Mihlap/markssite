@@ -119,16 +119,8 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
   };
 
   useEffect(() => {
-    if (editProjectData && !inputData.imageClose) {
-      // Устанавливаем начальные значения только при монтировании компонента
-      // Это предотвратит случайные перезаписи данных при каждом рендере
-      // Ваши текущие операции по установке начальных значений здесь
-    }
-  }, [editProjectData, inputData.imageClose]);
-
-  useEffect(() => {
-    console.log("editProjectData:", editProjectData);
-    console.log("inputData:", inputData); 
+    // console.log("editProjectData:", editProjectData);
+    // console.log("inputData:", inputData); 
     if (editProjectData) {
       const initialSelectedCompetencies = editProjectData.selectCompetencies
         ? editProjectData.selectCompetencies
@@ -295,50 +287,50 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
   }, [editProjectData]);
   // функция Удаление фото из массива превью
   // Удаление фото из массива превью
-  const handleRemovePreviewPhoto = (index) => {
-    removePreviewPhoto(
-      previewPhotos,
-      setPreviewPhotos,
-      index,
-      inputData,
-      setInputData,
-      setIsDropPhotoVisible
-    );
-  };
+  // const handleRemovePreviewPhoto = (index) => {
+  //   removePreviewPhoto(
+  //     previewPhotos,
+  //     setPreviewPhotos,
+  //     index,
+  //     inputData,
+  //     setInputData,
+  //     setIsDropPhotoVisible
+  //   );
+  // };
 
-  // Удаление превью фото перед основным текстом
-  const handleRemovePreviewPhotoOpen = (index) => {
-    removePreviewPhotoOpen(
-      previewPhotoOpen,
-      setPreviewPhotoOpen,
-      index,
-      inputData,
-      setInputData,
-      setIsPhotoOpenVisible
-    );
-  };
-  // Удаление фото из массива превью который с одной фоткой
-  const handleRemovePreviewPhotoAva = (index) => {
-    removePreviewPhotoAva(
-      previewPhotoAva,
-      setPreviewPhotoAva,
-      index,
-      inputData,
-      setInputData,
-      setIsPhotoAvaVisible
-    );
-  };
-  // Удаление превью фото из закрывающей картинки
-  const handleRemovePreviewPhotoClose = (index) => {
-    removePreviewPhotoClose(
-      previewPhotoClose,
-      setPreviewPhotoClose,
-      index,
-      inputData,
-      setInputData,
-      setIsPhotoCloseVisible
-    );
-  };
+  // // Удаление превью фото перед основным текстом
+  // const handleRemovePreviewPhotoOpen = (index) => {
+  //   removePreviewPhotoOpen(
+  //     previewPhotoOpen,
+  //     setPreviewPhotoOpen,
+  //     index,
+  //     inputData,
+  //     setInputData,
+  //     setIsPhotoOpenVisible
+  //   );
+  // };
+  // // Удаление фото из массива превью который с одной фоткой
+  // const handleRemovePreviewPhotoAva = (index) => {
+  //   removePreviewPhotoAva(
+  //     previewPhotoAva,
+  //     setPreviewPhotoAva,
+  //     index,
+  //     inputData,
+  //     setInputData,
+  //     setIsPhotoAvaVisible
+  //   );
+  // };
+  // // Удаление превью фото из закрывающей картинки
+  // const handleRemovePreviewPhotoClose = (index) => {
+  //   removePreviewPhotoClose(
+  //     previewPhotoClose,
+  //     setPreviewPhotoClose,
+  //     index,
+  //     inputData,
+  //     setInputData,
+  //     setIsPhotoCloseVisible
+  //   );
+  // };
   const validateForm = () => {
     let isValid = true;
     let errors = [];
@@ -651,7 +643,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
     }
     const classNames = getPreviewClassName(labelText);
 
-    // console.log("Данные для отображения:", dynamicData);
+    console.log("Данные для отображения:", dynamicData);
 
     return (
       <div key={inputIndex}>
@@ -1004,8 +996,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
   // console.log(inputData, "<<--inputData PROJECT");
   // console.log(dynamicData, "<<--dynamicData");
 
-  console.log('previewPhotoClose:', previewPhotoClose);
-console.log('inputData.imageClose:', inputData.imageClose);
+
   return (
     <div className={styles.form_container}>
       {showNotification && (
@@ -1222,7 +1213,7 @@ console.log('inputData.imageClose:', inputData.imageClose);
               </div>
             </div>
             <div
-              style={{ display: isPhotoAvaVisible ? "inline-block" : "none" }}
+              // style={{ display: isPhotoAvaVisible ? "inline-block" : "none" }}
             >
               <label className={styles.slider_container__customFileUpload}>
                 <input
@@ -1304,12 +1295,12 @@ console.log('inputData.imageClose:', inputData.imageClose);
                     src={preview || ""}
                     alt={`Preview ${index}`}
                   />
-                  <div
+                  {/* <div
                     className={styles.preview_photos_container__remove_icon}
                     onClick={() => handleRemovePreviewPhotoAva(index)}
                   >
                     <span></span>
-                  </div>
+                  </div> */}
                 </div>
               ))}
             </div>
@@ -1470,12 +1461,12 @@ console.log('inputData.imageClose:', inputData.imageClose);
                       src={URL.createObjectURL(preview)}
                       alt={`Preview ${index}`}
                     />
-                    <div
+                    {/* <div
                       className={styles.preview_photos_container__remove_icon}
                       onClick={() => handleRemovePreviewPhoto(index)}
                     >
                       <span></span>
-                    </div>
+                    </div> */}
                   </div>
                 ))}
               {/* {inputData.imageTitle &&
@@ -2134,7 +2125,9 @@ console.log('inputData.imageClose:', inputData.imageClose);
             <div className={styles.form_container__checkbox_block}>
               <div>Открывающая картинка</div>
             </div>
-            <div style={{ display: isPhotoOpenVisible ? "block" : "none" }}>
+            <div
+            //  style={{ display: isPhotoOpenVisible ? "block" : "none" }}
+             >
               <label className={styles.slider_container__customFileUpload}>
                 <input
                   type="file"
@@ -2196,12 +2189,12 @@ console.log('inputData.imageClose:', inputData.imageClose);
                     src={preview}
                     alt={`Preview ${index}`}
                   />
-                  <div
+                  {/* <div
                     className={styles.preview_photos_container__remove_icon}
                     onClick={() => handleRemovePreviewPhotoOpen(index)}
                   >
                     <span></span>
-                  </div>
+                  </div> */}
                 </div>
               ))}            
               {inputData.imageOpen !== null &&
@@ -2349,7 +2342,9 @@ console.log('inputData.imageClose:', inputData.imageClose);
             <div className={styles.form_container__checkbox_block}>
               <div>Закрывающая картинка</div>
             </div>
-            <div style={{ display: isPhotoCloseVisible ? "block" : "none" }}>
+            <div 
+            // style={{ display: isPhotoCloseVisible ? "block" : "none" }}
+            >
               <label className={styles.slider_container__customFileUpload}>
                 <input
                   type="file"
@@ -2413,12 +2408,12 @@ console.log('inputData.imageClose:', inputData.imageClose);
                     src={preview}
                     alt={`Preview ${index}`}
                   />
-                  <div
+                  {/* <div
                     className={styles.preview_photos_container__remove_icon}
                     onClick={() => handleRemovePreviewPhotoClose(index)}
                   >
                     <span></span>
-                  </div>
+                  </div> */}
                 </div>
               ))}            
               {!inputData.imageClose !== null &&
