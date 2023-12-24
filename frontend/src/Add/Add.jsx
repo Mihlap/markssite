@@ -7,6 +7,7 @@ import AddProject from "./add-project/AddProject";
 import AddArticles from "./add-articles/AddArticles";
 import AddCompany from "./add-about-the-company/AddCompany";
 import Applications from "./applications/Applications";
+import Snowfall from "./Snowfall/Snowfall";
 
 export default function Add({ user, onPageChange, handleReturn }) {
 
@@ -15,26 +16,18 @@ export default function Add({ user, onPageChange, handleReturn }) {
   }, [onPageChange]);
 
   return (
+    <>
+    <Snowfall />
     <div className={styles.add_container}>
       <AddNavbar handleReturn={handleReturn} user={user} />
       <Routes>
-        <Route
-          path="/home"
-          element={
-            <HomeAdmin />
-          }
-        />
-        <Route
-          path="add-a-project"
-          element={<AddProject user={user} />}
-        />
-        <Route
-          path="add-a-articles"
-          element={<AddArticles user={user} />}
-        />
+        <Route path="/home" element={<HomeAdmin />} />
+        <Route path="add-a-project" element={<AddProject user={user} />} />
+        <Route path="add-a-articles" element={<AddArticles user={user} />} />
         <Route path="add-a-company" element={<AddCompany />} />
         <Route path="add-a-applications" element={<Applications />} />
       </Routes>
     </div>
+    </>
   );
 }
