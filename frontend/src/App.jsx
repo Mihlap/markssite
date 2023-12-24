@@ -282,7 +282,7 @@ export default function App() {
                     <Route path="/signup" element={<SignUpPage />} />
                   )}
                   <Route path="/test" element={<LoadingModal />} />
-                {user ? (
+                  {user ? (
                   <Route
                     path="/admin/*"
                     element={
