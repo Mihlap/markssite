@@ -19,6 +19,10 @@
   .form_vacancy_right {
     width: 100%;
   }
+  .form_vacancy_left {
+    padding-top: 0.3rem;
+  }
+
 
    .label1 {
     position: relative;
