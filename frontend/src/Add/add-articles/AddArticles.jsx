@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "../style/style-card.module.scss";
 import FormAddArticles from "./formAdd/FormAddArticles";
+import FormEditArticles from "./formAdd/FormEditArticles";
 import { deleteFormArticle, getFetchFormArticle } from "../../store/Slice/articleSlice";
 import cat from "../../img/default-photo.jpeg";
 
@@ -10,6 +11,7 @@ import {
   updateToggleStateForButton2Async,
 } from "../../store/Slice/toggleSlice";
 import LoadingModal from "../add-project/loading/LoadingModal";
+import Edit from '../icon/Edit.svg';
 
 export default function AddArticles({ user }) {
   const Host = process.env.REACT_APP_SERVER_HOST;
@@ -30,6 +32,7 @@ export default function AddArticles({ user }) {
   const [isImageLoaded, setImageLoaded] = useState(false);
   const [copiedId, setCopiedId] = useState("");
   const [deleteModalState, setDeleteModalState] = useState({});
+  const [editArticleData, setEditArticleData] = useState(null);
 
   const isMountedRef = useRef(true);
 
@@ -93,6 +96,24 @@ export default function AddArticles({ user }) {
     console.error("Unable to copy article to clipboard:", err);
   }
   };
+
+  const handleEditClick = async (id) => {
+    try {
+  await navigator.clipboard.writeText(id);  
+  if (isMountedRef.current) {
+    // setIsCopied(true);
+    // setCopiedId(id);
+
+    const articleToEdit = article.find((el) => el.id === id);
+    // console.log('Project to edit111111111111111111111:', projectToEdit);
+  
+    setEditArticleData(articleToEdit);
+    setIsModalOpen(true);
+  }
+} catch (err) {
+  console.error("Unable to copy project to clipboard:", err);
+}
+};
 
   const handleFormDelete = (formId) => {
     dispatch(deleteFormArticle(formId));
@@ -183,7 +204,18 @@ export default function AddArticles({ user }) {
               style={{ maxHeight: modalBlockHeight }}
               className={styles.card_components_admin__modal_block}
             >
-              <FormAddArticles setIsModalOpen={setIsModalOpen} />
+              {editArticleData ? (
+                <FormEditArticles
+                  setIsModalOpen={setIsModalOpen}
+                  editArticleData={editArticleData}
+                  className={styles.formAddProjectClass}
+                />
+              ) : (
+                <FormAddArticles
+                  className={styles.formAddProjectClass}
+                  setIsModalOpen={setIsModalOpen}
+                />
+              )}
               <button
                 className={styles.card_components_admin__close_button}
                 onClick={handleCloseModal}
@@ -191,7 +223,6 @@ export default function AddArticles({ user }) {
             </div>
           </div>
         )}
-
         <div className={styles.card_components_admin__section_map}>
           {error ? (
             <div className={styles.card_components_admin__errore_div}>
@@ -281,6 +312,25 @@ export default function AddArticles({ user }) {
                                     </button>
                                   </div>
                                 ) : null}
+                                 {user?.name === "obezyankaa" ||
+                                  user?.name === "Pokemon" ? (
+                                    <div className={styles.edit_block}>
+                                      <button
+                                        className={styles.buttom_edit}
+                                        // onClick={() => handleEditClick(el.id)}
+                                      >
+                                        <label
+                                          htmlFor="edit"
+                                          className={styles.label}
+                                        >
+                                          <div className={`${styles.wrapper}`}>
+                                            <img src={Edit} alt={Edit} />
+                                            {/* <span>Edit</span> */}
+                                          </div>
+                                        </label>
+                                      </button>
+                                    </div>
+                                  ) : null}
                               </div>
                               <div className={styles.cart_project__content}>
                                 <span
