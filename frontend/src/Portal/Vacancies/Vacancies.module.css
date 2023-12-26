@@ -203,11 +203,12 @@ width: 100%;
   }
   
   .textUnderForm {
+    max-width: 40rem;
    padding-left: 4rem;
  }
   
   .vacancyFormWrapper {
-    padding: 2.75rem 0rem 6rem 4rem;
+    padding: 0rem 0rem 6rem 4rem;
   }
   
   }
@@ -276,7 +277,7 @@ width: 100%;
 }
 
 .vacancyFormWrapper {
-  padding: 2.75rem 3.44rem 4.2rem 3.44rem;
+  padding: 0rem 3.44rem 4.2rem 3.44rem;
 }
 
 }
