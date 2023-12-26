@@ -299,7 +299,7 @@ export default function App() {
               </Routes>
             </CSSTransition>
           </TransitionGroup>
-          {/* <CookieComponent /> */}
+          <CookieComponent />
           {showNavbarFooter && currentPage !== "add" && (
             <Footer
               handleMouseEnterFooter={handleMouseEnterFooter}

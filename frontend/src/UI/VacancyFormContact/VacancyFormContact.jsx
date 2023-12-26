@@ -303,6 +303,7 @@ const VacancyFormContact = ({
                     container: (provided) => ({
                       ...provided,
                       border: "none",
+                      width: '100%',                   
                     }),
                     control: (provided, state) => ({
                       ...provided,
@@ -312,8 +313,8 @@ const VacancyFormContact = ({
                     }),
                     indicatorSeparator: (provided) => ({
                       ...provided,
-                      display: "none",
-                    }),
+                      display: "none",                    
+                    }),                                 
                     multiValue: (provided) => ({
                       ...provided,
                       backgroundColor: "transparent",
