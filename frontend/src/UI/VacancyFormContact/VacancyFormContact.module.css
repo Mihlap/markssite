@@ -1,26 +1,28 @@
 @import "../../App.css";
 
-@media screen and (min-width: 1601px) and (max-width: 3000px) {
+/* @media screen and (min-width: 1601px) and (max-width: 3000px) { */
 
   .form_vacancy_wrapper {
     display: flex;
      height: fit-content;
     position: relative;
-  }
+   }
 
   .form_vacancy_block {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     column-gap: 3rem;
     width: 46%;
-  }
+   }
 
   .form_vacancy_left,
   .form_vacancy_right {
     width: 100%;
+    display: flex;
+    flex-direction: column; 
   }
-  .form_vacancy_left {
-    padding-top: 0.3rem;
+  .form_vacancy_right {
+    /* padding-top: 0.1rem; */
   }
 
 
@@ -48,13 +50,13 @@
   }
 
   .input_choose_form_contacts {
-    padding-top: 2vh;
+    padding-top: 2.1vh;
    }
 
 
   .line {
     height: 0.069vh;
-    margin-top: 0.8vh;
+    margin-top: 12px;
     background-color: var(--gray-959DA6);
     max-width: 34rem;
     width: 100%;
@@ -89,7 +91,7 @@
   .input_tel_form_contacts:empty+.placeholder,
   .focused1 .placeholder {
     transform: translateY(-150%) scale(1);
-    font-size: 12px;
+    font-size: 10px;
     color: var(--gray-959DA6);
   }
 
@@ -277,9 +279,9 @@
   .for_applicants_tel:hover {
     color: var(--blue-75BBFD);
   }
-}
+/* } */
 
-@media screen and (min-width: 1024px) and (max-width: 1600px) {
+@media screen and (min-width: 1025px) and (max-width: 1600px) {
 
   .form_vacancy_wrapper {
     display: flex;
@@ -291,16 +293,18 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     column-gap: 3rem;
-  }
+       }
 
   .form_vacancy_left,
   .form_vacancy_right {
+    display: flex;
+    flex-direction: column; 
     width: 100%;
-  }
+      }
 
-  .form_vacancy_left {
+  /* .form_vacancy_left {
     padding-top: 0.5rem;
-  }
+  } */
 
   .label1 {
     position: relative;
@@ -325,15 +329,16 @@
   }
 
   .input_choose_form_contacts {
-    padding-top: 2vh;
+    padding-top: 2.2vh;
    }
 
 
   .line {
     height: 0.069vh;
-    margin-top: 0.8vh;
+    margin-top: 12px;
     background-color: var(--gray-959DA6);
     max-width: 28rem;
+    min-width: 20rem;
   }
 
   .line_select {
@@ -573,15 +578,15 @@
     grid-template-columns: repeat(2, 1fr);
     column-gap: 1.78rem;
     width: 100%;
-  }
+   }
 
   .form_vacancy_left,
   .form_vacancy_right {
     width: 100%;
   }
 
-  .form_vacancy_right {
-    padding-top: 1.4rem;
+  .form_vacancy_left {
+    padding-top: 0.1rem;
   }
 
   .group {
@@ -601,7 +606,7 @@
     border: none;
     outline: none;
     background-color: transparent;
-    padding-top: 2.7vh;
+    /* padding-top: 2.7vh; */
     font-family: var(--font-raleway);
     font-style: normal;
     font-weight: var(--fw-400);
@@ -610,9 +615,14 @@
     width: 100%;
   }
 
+  .input_choose_form_contacts {
+    /* padding-top: 1.8vh; */
+   }
+
+
   .line {
     height: 0.069vh;
-    margin-top: 0.8vh;
+    margin-top: 10px;
     background-color: var(--gray-959DA6);
     max-width: 27rem;
     width: 100%;
