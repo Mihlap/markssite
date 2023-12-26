@@ -42,38 +42,43 @@ const sessionConfig = {
   },
 };
 
+app.use(cors({
+  origin: [
+    'https://www.marksgroup.ru',
+    'https://marksgroup.ru',
+    'http://localhost:3002',
+    'http://localhost:3000',
+  ],
+  credentials: true,
+}));
+
+// app.use((req, res, next) => {
+//   res.header('Access-Control-Allow-Origin', '*');
+//   // res.header('Access-Control-Allow-Origin', 'https://marksgroup.ru'); 
+//   res.header('Access-Control-Allow-Origin', req.header('origin'));
+//   // res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+//   res.header('Access-Control-Allow-Methods', 'HEAD, GET, POST, PUT, DELETE, OPTIONS');
+//   res.header('Access-Control-Allow-Credentials', 'true'); 
+//   // res.header('Content-Type', 'application/json; charset=utf-8');
+//   // res.header('Content-Type', 'video/mp4');
+//   // res.header('Accept-Ranges', 'bytes');
+//   // res.header('Cross-Origin-Opener-Policy', 'same-origin');
+//   // res.header('Cross-Origin-Embedder-Policy', 'require-corp');
+//   res.header('Content-Security-Policy', 'default-src *');
+//   next();
+// });
 
 app.use((req, res, next) => {
-  // res.header('Access-Control-Allow-Origin', '*');
-  // res.header('Access-Control-Allow-Origin', 'https://marksgroup.ru'); 
-  res.header('Access-Control-Allow-Origin', req.header('origin'));
-  // res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
   res.header('Access-Control-Allow-Methods', 'HEAD, GET, POST, PUT, DELETE, OPTIONS');
-  res.header('Access-Control-Allow-Credentials', 'true'); 
-  // res.header('Content-Type', 'application/json; charset=utf-8');
-  // res.header('Content-Type', 'video/mp4');
-  // res.header('Accept-Ranges', 'bytes');
-  // res.header('Cross-Origin-Opener-Policy', 'same-origin');
-  // res.header('Cross-Origin-Embedder-Policy', 'require-corp');
-  // res.header('Content-Security-Policy', "img-src 'self' data:; script-src 'self';");
+  res.header('Access-Control-Allow-Credentials', 'true');
+  res.header('Content-Security-Policy', 'default-src \'self\'');
   next();
 });
 
 
-app.use(cors({
-    origin: [
-    // '*',
-    'https://www.marksgroup.ru',
-    'https://marksgroup.ru',   
-    'http://localhost:3002',  
-    'http://localhost:3000',  
-   ],
-    credentials: true,
-  }),
-  );
 
-const videoPath = path.join(__dirname, 'images/video');
 const imagesPath = path.join(__dirname, 'images');  
+const videoPath = path.join(__dirname, 'images/video');
  
 app.use(morgan('dev'));
 app.use(express.json());
@@ -89,16 +94,12 @@ app.use(session(sessionConfig));
 // app.use(express.static(path.join(__dirname, 'build')));
 
 
-// Добавьте этот блок кода здесь
-app.use((req, res, next) => {
-  // console.log('Session: ', req.session);
-  next();
+// Обработчик ошибок
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send('Something went wrong!');
 });
 
-app.use((req, res, next) => {
-  // console.log(`Получен запрос на: ${req.method} ${req.url}`);
-  next();
-})
 
 
 app.get('/', indexRouter);
@@ -113,8 +114,9 @@ app.use('/api-mail', mailRouter);
 app.use('/api/toggle', toggleRouter);
 app.use('/api/video', videoRouter);
 
-// const sslKeyPath = path.join(__dirname, './SSL Marksgroup/marksgroup.ru.key');
-// const sslCertPath = path.join(__dirname, './SSL Marksgroup/certificate.crt');
+// const sslKeyPath = './SSL Marksgroup/marksgroup.ru.key';
+// const sslCertPath = './SSL Marksgroup/certificate.crt';
+
 
 // const credentials = {
 //   key: fs.readFileSync(sslKeyPath),
