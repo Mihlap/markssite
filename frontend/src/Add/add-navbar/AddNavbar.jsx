@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import styles from "./AddNavbar.module.scss";
 import { Link, useNavigate } from "react-router-dom";
 // import axios from "axios";
-import icon1 from './icon/one.png';
+import icon1 from "./icon/one.png";
 import icon2 from "./icon/three.png";
 import icon3 from "./icon/four.png";
 import icon4 from "./icon/two.png";
+import ChristmasTree from "./icon/ChristmastreewithbulbandsnowPNGImage.png";
 
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../../store/Slice/authSlice";
@@ -15,7 +16,7 @@ export default function AddNavbar({ user, handleReturn }) {
   const dispatch = useDispatch();
   const [selectedItem, setSelectedItem] = useState(null);
   const navigate = useNavigate();
-   const isObezyankaaUser = user.name === "obezyankaa";
+  const isObezyankaaUser = user.name === "obezyankaa";
   // console.log(user);
   // console.log(isObezyankaaUser);
 
@@ -269,6 +270,17 @@ export default function AddNavbar({ user, handleReturn }) {
           )}
         </div>
       </div>
+      <img
+        style={{
+          position: "absolute",
+          bottom: 0,
+          left: "10px",
+          zIndex: "999",
+          width: "10rem",
+        }}
+        src={ChristmasTree}
+        alt="ChristmasTree"
+      />
     </>
   );
 }

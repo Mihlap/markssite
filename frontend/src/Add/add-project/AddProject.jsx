@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import styles from "../style/style-card.module.scss";
 import FormAddProject from "./formAdd/FormAddProject";
+import FormEditProject from "./formAdd/FormEditProject";
 // import cat from "../img/default-photo.jpeg";
 import cat from "../../img/default-photo.jpeg";
 import { useDispatch, useSelector } from "react-redux";
@@ -13,7 +14,6 @@ import {
 // import Loading from "./loading/Loading";
 import LoadingModal from "./loading/LoadingModal";
 import Edit from '../icon/Edit.svg';
-import FormEditProject from "./formAdd/FormEditProject";
 
 
 export default function AddProject({ user }) {
