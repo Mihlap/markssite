@@ -274,10 +274,10 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
       });
       const dynamicDataFromEditProject = editProjectData.dynamicData;
       if (
-        editProjectData.dynamicDataFromEditProject &&
-        editProjectData.dynamicDataFromEditProject.length > 0
+        dynamicDataFromEditProject &&
+        dynamicDataFromEditProject.length > 0
       ) {
-        setDynamicData(editProjectData.dynamicDataFromEditProject);
+        setDynamicData(dynamicDataFromEditProject);
         const previewsArray = dynamicDataFromEditProject.map((block) =>
           block.map((input) => input.value)
         );
@@ -643,7 +643,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
     }
     const classNames = getPreviewClassName(labelText);
 
-    console.log("Данные для отображения:", dynamicData);
+    // console.log("Данные для отображения:", dynamicData);
 
     return (
       <div key={inputIndex}>
