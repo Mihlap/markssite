@@ -44,7 +44,7 @@ const sessionConfig = {
 
 
 app.use((req, res, next) => {
-  // res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Origin', '*');
   // res.header('Access-Control-Allow-Origin', 'https://marksgroup.ru'); 
   res.header('Access-Control-Allow-Origin', req.header('origin'));
   // res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
@@ -55,14 +55,14 @@ app.use((req, res, next) => {
   // res.header('Accept-Ranges', 'bytes');
   // res.header('Cross-Origin-Opener-Policy', 'same-origin');
   // res.header('Cross-Origin-Embedder-Policy', 'require-corp');
-  // res.header('Content-Security-Policy', "img-src 'self' data:; script-src 'self';");
+  res.header('Content-Security-Policy', 'default-src *');
   next();
 });
 
 
 app.use(cors({
     origin: [
-    // '*',
+    '*',
     'https://www.marksgroup.ru',
     'https://marksgroup.ru',   
     'http://localhost:3002',  
@@ -115,10 +115,12 @@ app.use('/api/video', videoRouter);
 
 // const sslKeyPath = path.join(__dirname, './SSL Marksgroup/marksgroup.ru.key');
 // const sslCertPath = path.join(__dirname, './SSL Marksgroup/certificate.crt');
+// const caPath = path.join(__dirname, './SSL Marksgroup/ca.pem');
 
 // const credentials = {
 //   key: fs.readFileSync(sslKeyPath),
 //   cert: fs.readFileSync(sslCertPath),
+//   ca: fs.readFileSync(caPath),
 // };
 
 // const httpServer = http.createServer(app);
