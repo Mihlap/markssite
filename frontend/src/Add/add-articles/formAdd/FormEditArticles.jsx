@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Select from "react-select";
 import { transliterate } from "transliteration";
 import { useDispatch } from "react-redux";
@@ -49,6 +49,90 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
   const [isLoadingDropPhoto, setIsLoadingDropPhoto] = useState(false);
   const [isLoadingOpenImage, setIsLoadingOpenImage] = useState(false);
   const [isLoadingCloseImage, setIsLoadingCloseImage] = useState(false);
+
+  useEffect(() => {
+    // console.log("editProjectData:", editProjectData);
+    // console.log("inputData:", inputData); 
+    if (editArticleData) {
+      const initialSelectedCompetencies = editArticleData.selectCompetencies
+        ? editArticleData.selectCompetencies
+            .split(",")
+            .map((item) => ({ value: item.trim(), label: item.trim() }))
+        : [];   
+
+      setSelectedCompetencies(initialSelectedCompetencies);
+        
+      setInputData((prevInputData) => {
+        const updatedInputData = {
+          ...prevInputData,
+          title:
+          editArticleData.title !== undefined ? editArticleData.title : "",
+          selectCompetencies: initialSelectedCompetencies,
+          author:
+          editArticleData.author !== undefined
+              ? editArticleData.author
+              : "",
+          city:
+          editArticleData.city !== undefined
+              ? editArticleData.city
+              : "",
+          dataMonthYear:
+          editArticleData.dataMonthYear !== undefined
+              ? editArticleData.dataMonthYear
+              : "", 
+          // dropPhoto:
+          // editArticleData.dropPhoto !== undefined
+          //     ? editArticleData.dropPhoto
+          //     : "",               
+          photoAva:
+          editArticleData.photoAva !== undefined
+              ? editArticleData.photoAva
+              : "",
+          titleTextBlock:
+          editArticleData.titleTextBlock !== undefined
+              ? editArticleData.titleTextBlock
+              : "",
+          descriptionArticle:
+          editArticleData.descriptionArticle !== undefined
+              ? editArticleData.descriptionArticle
+              : "",         
+          publication:
+          editArticleData.publication !== undefined
+              ? editArticleData.publication
+              : "",        
+          linkToPublicationTwo:
+          editArticleData.linkToPublicationTwo !== undefined
+              ? editArticleData.linkToPublicationTwo
+              : "",
+          imageOpen:
+          editArticleData.imageOpen !== undefined
+              ? editArticleData.imageOpen
+              : "",
+          textBlock:
+          editArticleData.textBlock !== undefined
+              ? editArticleData.textBlock
+              : "",
+          imageClose:
+          editArticleData.imageClose !== undefined
+          ? editArticleData.imageClose
+          : "",        
+        };
+        // console.log("Обновленные данные формы:", updatedInputData);
+        return updatedInputData;
+      });
+      const dynamicDataFromEditProject = editArticleData.dynamicData;
+      if (
+        dynamicDataFromEditProject &&
+        dynamicDataFromEditProject.length > 0
+      ) {
+        setDynamicData(dynamicDataFromEditProject);
+        const previewsArray = dynamicDataFromEditProject.map((block) =>
+          block.map((input) => input.value)
+        );
+        setDynamicPreviews(previewsArray);
+      }
+    }
+  }, [editArticleData]);
 
   // << ==== КОНСТУКТОР ==== >>
   // состояние для хранения текущего значения инпута
@@ -126,6 +210,19 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
         setPreviewPhotoClose
       )
     );
+
+        // // Определение, создаем новую статью или обновляем существующию
+        // if (editProjectData && editProjectData.id) {
+        //   dispatch(setProjectId(editProjectData.id));
+        //   // Обновление существующей статьи
+        //   await dispatch(
+        //     fetchProject(formattedData, setInputData, editProjectData.id)
+        //   );
+        // } else {
+        //   // Создание нового проекта
+        //   await dispatch(fetchProject(formattedData, setInputData));
+        // }
+        // dispatch(clearFormData());
     setSelectedCompetencies([]);
     setIsModalOpen(false);
     // console.log(formattedData, "<<<----консоль на фронте");

@@ -40,7 +40,7 @@ const projectSlice = createSlice({
       headingTextBlock: "",
       textBlock: "",
       imageClose: "",
-      projectId: null,
+      // projectId: "",
     },
   },
   reducers: {
