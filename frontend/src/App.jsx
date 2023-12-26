@@ -51,7 +51,7 @@ export default function App() {
   const isActive = useSelector((state) => state.toggle.isActiveForButton3);
   const location = useLocation();
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [showPortalMenu, setShowPortalMenu] = useState(false);
 
   const isMobile = window.innerWidth <= 768;
@@ -299,7 +299,7 @@ export default function App() {
               </Routes>
             </CSSTransition>
           </TransitionGroup>
-          {/* <CookieComponent /> */}
+          <CookieComponent />
           {showNavbarFooter && currentPage !== "add" && (
             <Footer
               handleMouseEnterFooter={handleMouseEnterFooter}
