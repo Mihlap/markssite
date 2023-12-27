@@ -30,7 +30,7 @@
 .blockHeadingTitle {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    // gap: 1.5rem;
     padding-bottom: 3.75rem;
     padding-left: 12.75vw;
     padding-right: 14.75vw;
@@ -44,6 +44,7 @@
         font-weight: var(--fw-300);
         line-height: 32px;
         word-wrap: break-word;
+        padding-bottom: 24px;
     }
 
     &__text {
@@ -76,7 +77,7 @@
 .verticalImage {
     width: 100%;
     /* Для корректного отображения изображений внутри блока */
-    // object-fit: cover;
+    object-fit: cover;
     /* Изображение будет подгоняться так, чтобы заполнить свой блок без искажений */
     display: block;
     /* Убираем стандартные отступы для изображений */
