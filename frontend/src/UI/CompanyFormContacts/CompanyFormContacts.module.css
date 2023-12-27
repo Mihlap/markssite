@@ -62,6 +62,7 @@
 .input_name_form_contacts,
 .input_task_form_contacts,
 .input_tel_form_contacts {
+  -webkit-appearance: none;
   border: none;
   outline: none;
   background-color: transparent;
@@ -71,6 +72,7 @@
   font-weight: var(--fw-400);
   font-size: 16px;
   line-height: 16px;
+  position: relative;
 }
 
 .line {
@@ -100,6 +102,7 @@
   transform-origin: left top;
   transition: all 0.3s ease-out;
   padding-top: 2px;
+  pointer-events: none;
 }
 
 .input_tel_form_contacts:not(:placeholder-shown)+.placeholder,
@@ -128,7 +131,7 @@
   width: 145px;
   height: 56px;
   border: 1px solid var(--black-1D2E43);
-   border-radius: 66px;
+  border-radius: 66px;
   background-color: transparent !important;
   transition: background-color 0.4s ease, color 0.4s ease, border 0.4s ease;
 }
@@ -137,7 +140,7 @@
   background: linear-gradient(133deg, rgba(123, 191, 255, 0.55) 0%, rgba(240, 248, 255, 0.55) 100%);
   color: var(--black-1D2E43);
   border: 0px solid transparent;
-  
+
 }
 
 .button_hover10:hover:not(:hover) {
@@ -151,7 +154,7 @@
   font-size: 16px;
   line-height: 24px;
   color: var(--black-1D2E43);
- }
+}
 
 .form_left_wrapper:focus-within .button_hover10 {
   background-color: var(--light-light-gray-EBECEE);
@@ -163,30 +166,21 @@
 }
 
 
-.form_left_wrapper:has(.input_name_form_contacts:not(:placeholder-shown)) 
-:has(.input_tel_form_contacts:not(:placeholder-shown)) 
-:has(.input_task_form_contacts:not(:placeholder-shown))              
-.button_hover10 {
+.form_left_wrapper:has(.input_name_form_contacts:not(:placeholder-shown)):has(.input_tel_form_contacts:not(:placeholder-shown)):has(.input_task_form_contacts:not(:placeholder-shown)) .button_hover10 {
   border: 1px solid var(--black-1D2E43);
   color: var(--black-1D2E43);
 }
 
-.form_left_wrapper:has(.input_name_form_contacts:not(:placeholder-shown)) 
-                  :has(.input_tel_form_contacts:not(:placeholder-shown)) 
-                  :has(.input_task_form_contacts:not(:placeholder-shown))                  
-                  .button_name10 {
-    color: var(--black-1D2E43);
+.form_left_wrapper:has(.input_name_form_contacts:not(:placeholder-shown)) :has(.input_tel_form_contacts:not(:placeholder-shown)) :has(.input_task_form_contacts:not(:placeholder-shown)) .button_name10 {
+  color: var(--black-1D2E43);
 }
 
-.form_left_wrapper:has(.input_name_form_contacts:not(:placeholder-shown)) 
-                  :has(.input_tel_form_contacts:not(:placeholder-shown)) 
-                  :has(.input_task_form_contacts:not(:placeholder-shown)) 
-                  .disabled {
-    color: var(--black-1D2E43);
+.form_left_wrapper:has(.input_name_form_contacts:not(:placeholder-shown)) :has(.input_tel_form_contacts:not(:placeholder-shown)) :has(.input_task_form_contacts:not(:placeholder-shown)) .disabled {
+  color: var(--black-1D2E43);
 }
 
-.checkbox-input[type=checkbox]:checked ~ .button_hover10 {
-   color: var(--black-1D2E43);
+.checkbox-input[type=checkbox]:checked~.button_hover10 {
+  color: var(--black-1D2E43);
 }
 
 
@@ -207,7 +201,7 @@
   font-size: 10px;
   line-height: 14px;
   color: var(--black-1D2E43);
-  padding-top: 1.11vh;
+  padding-top: 16px;
 }
 
 .agreement label {
@@ -217,12 +211,12 @@
 
 .agreement input[type="checkbox"] {
   margin-right: 8px;
-  margin-top: -2px;
+  margin-top:-2px;
   ;
 }
 
 .agreement a {
-  text-decoration: underline;
+  /* text-decoration: underline; */
   font-family: var(--font-raleway);
   font-style: normal;
   font-weight: var(--fw-400);
@@ -302,6 +296,7 @@
   .some-unique-class input[name="task"] {
     width: 70%;
   }
+
   .button_hover10:hover {
     background: transparent !important;
     color: var(--black-1D2E43);
@@ -337,7 +332,44 @@
     padding-top: 0px;
     padding-bottom: 2rem;
     width: 95%;
-   }
+  }
+
+  .input_name_form_contacts,
+  .input_task_form_contacts,
+  .input_tel_form_contacts {
+    -webkit-appearance: none;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    font-family: var(--font-raleway);
+    font-style: normal;
+    font-weight: var(--fw-400);
+    font-size: 16px;
+    line-height: normal;
+    padding-top: 2.7rem;
+    position: relative;
+  }
+
+  .placeholder {
+    position: absolute;
+    top: 0;
+    left: 0;
+    color: var(--gray-959DA6);
+    font-size: normal;
+    transform-origin: left top;
+    transition: all 0.3s ease-out;
+    padding-top: 0;
+    pointer-events: none;
+  }
+
+  .input_tel_form_contacts:not(:placeholder-shown) + .placeholder,
+  .input_tel_form_contacts:empty + .placeholder,
+  .focused1 .placeholder,
+  .input_tel_form_contacts:focus + .placeholder {
+    transform: translateY(-120%) scale(0.75);
+    font-size: 16px;
+    color: var(--gray-959DA6);
+  }
 
   .line {
     width: 100%;
@@ -352,27 +384,73 @@
     width: 100%;
   }
 
-  .agreement label{
+
+  .agreement label {
     display: flex;
-    width: max-content;
-    padding-top: 1.5rem;
+    max-width: fit-content;
+    width: 100%;
+    padding-top: 0.5rem;
     padding-right: 0.5rem;
     flex-wrap: wrap;
   }
 
+  .agreement {
+    display: flex;
+   flex-direction: row;
+ 
+   }
+   .agreement_label_text_block {
+   flex: 1 0 0;
+   padding-top: 0.5rem;
+   }
+
+  
   .input_task_form_contacts {
     width: 100%;
   }
 
+
+  .button_hover10 {
+    margin-top: 2rem;
+  }
+
+  .button_hover10:hover {
+    background: transparent !important;
+    color: var(--black-1D2E43);
+    border: 1px solid var(--black-1D2E43);
+  }
+
+  .checkbox {
+    position: relative; 
+ 
+  }
   
-.button_hover10 {
-  margin-top: 2rem;
-}
-.button_hover10:hover {
-  background: transparent !important;
-  color: var(--black-1D2E43);
-  border: 1px solid var(--black-1D2E43);
-}
+  .checkbox::before {
+    content: "";
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    border: 0px solid var(--white-F6F6F6);
+    margin-right: 10px;
+  }
+  
+  .checkbox::after {
+    content: "\2713";
+    position: absolute;
+    top: 45%;
+    left: 60%;
+    transform: translate(-50%, -50%);
+    display: none;
+  }
+  
+  .checkbox:checked::before {
+    background-color: #FF7F6A;
+  }
+  
+  .checkbox:checked::after {
+    display: block;
+    color: var(--white-F6F6F6);
+  }
 
 
 }

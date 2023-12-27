@@ -11,8 +11,8 @@
   .form_vacancy_block {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    column-gap: 3rem;
-    width: 46%;
+    column-gap: 88px;
+    width: fit-content;
    }
 
   .form_vacancy_left,
@@ -37,6 +37,7 @@
   .input_letter_form_contacts,
   .input_resume_form_contacts,
   .input_choose_form_contacts {
+    -webkit-appearance: none;
     border: none;
     outline: none;
     background-color: transparent;
@@ -47,18 +48,19 @@
     font-size: 16px;
     line-height: 16px;
     width: 100%;
+    position: relative;
   }
 
   .input_choose_form_contacts {
     padding-top: 2.1vh;
-   }
+  }
 
 
   .line {
     height: 0.069vh;
     margin-top: 12px;
     background-color: var(--gray-959DA6);
-    max-width: 34rem;
+    max-width: 28rem;
     width: 100%;
   }
 
@@ -84,14 +86,14 @@
     font-size: 16px;
     transform-origin: left top;
     transition: all 0.3s ease-out;
-    padding-top: 0;
+    pointer-events: none;
   }
 
   .input_tel_form_contacts:not(:placeholder-shown)+.placeholder,
   .input_tel_form_contacts:empty+.placeholder,
   .focused1 .placeholder {
     transform: translateY(-150%) scale(1);
-    font-size: 10px;
+    font-size: 12px;
     color: var(--gray-959DA6);
   }
 
@@ -112,7 +114,7 @@
     font-style: normal;
     font-weight: var(--fw-400);
     line-height: 1rem;
-    padding-top: 4.38rem;
+    padding-top: 4rem;
     max-width: 20rem;
 
   }
@@ -142,7 +144,7 @@
     border-radius: 4.125rem;
     border: 1px solid #C7E4FF;
     background-color: var(--blue-75BBFD);
-    margin-top: 1.44rem;
+    margin-top: 1rem;
     /* cursor: none; */
     transition: background-color 0.4s ease;
   }
@@ -292,8 +294,9 @@
   .form_vacancy_block {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    column-gap: 3rem;
-       }
+    column-gap: 88px;
+    width: fit-content;
+  }
 
   .form_vacancy_left,
   .form_vacancy_right {
@@ -338,7 +341,7 @@
     margin-top: 12px;
     background-color: var(--gray-959DA6);
     max-width: 28rem;
-    min-width: 20rem;
+    width: 100%;
   }
 
   .line_select {
@@ -396,7 +399,7 @@
     font-style: normal;
     font-weight: var(--fw-400);
     line-height: 1rem;
-    padding-top: 4.38rem;
+    padding-top: 4rem;
     max-width: 20rem;
 
   }
@@ -426,7 +429,7 @@
     border-radius: 4.125rem;
     border: 1px solid #C7E4FF;
     background-color: var(--blue-75BBFD);
-    margin-top: 1.44rem;
+    margin-top: 1rem;
     cursor: none;
     transition: background-color 0.4s ease;
   }
@@ -576,7 +579,7 @@
   .form_vacancy_block {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    column-gap: 1.78rem;
+    column-gap: 88px;
     width: 100%;
    }
 
@@ -795,11 +798,13 @@
 
   .form_vacancy_left,
   .form_vacancy_right {
+    display: flex;
+    flex-direction: column; 
     width: 100%;
   }
 
   .form_vacancy_right {
-    padding-top: 1.6rem;
+    padding-top: 0rem;
   }
 
   .group {
@@ -810,29 +815,11 @@
     position: relative;
   }
 
-
-  .input_name_form_contacts,
-  .input_tel_form_contacts,
-  .input_city_form_contacts,
-  .input_letter_form_contacts,
-  .input_resume_form_contacts {
-    border: none;
-    outline: none;
-    background-color: transparent;
-    padding-top: 3rem;
-    font-family: var(--font-raleway);
-    font-style: normal;
-    font-weight: var(--fw-400);
-    font-size: 16px;
-    line-height: 16px;
-    width: 100%;
-  }
-
   .line {
     height: 0.069vh;
-    margin-top: 0.8vh;
+    margin-top: 12px;
     background-color: var(--gray-959DA6);
-    /* max-width: 27rem; */
+    max-width: 100%;
     width: 100%;
   }
 
@@ -850,22 +837,48 @@
     color: var(--crimson-E00747);
   }
 
+  .input_name_form_contacts,
+  .input_tel_form_contacts,
+  .input_city_form_contacts,
+  .input_letter_form_contacts,
+  .input_resume_form_contacts {
+    -webkit-appearance: none;
+    border: none;
+    outline: none;
+    background-color: transparent;
+    font-family: var(--font-raleway);
+    font-style: normal;
+    font-weight: var(--fw-400);
+    font-size: 16px;
+    line-height: normal; 
+    padding-top: 3rem;
+    width: 100%;
+    position: relative; 
+  }
+
+  .input_choose_form_contacts {
+    padding-top: 3.2rem;
+   }
+
   .placeholder {
     position: absolute;
     top: 0;
     left: 0;
     color: var(--gray-959DA6);
-    font-size: 16px;
+    font-size: normal;
     transform-origin: left top;
     transition: all 0.3s ease-out;
     padding-top: 0;
+    pointer-events: none;
+    font-weight: var(--fw-400);
   }
 
-  .input_tel_form_contacts:not(:placeholder-shown)+.placeholder,
-  .input_tel_form_contacts:empty+.placeholder,
-  .focused1 .placeholder {
-    transform: translateY(-150%) scale(1);
-    font-size: 12px;
+  .input_tel_form_contacts:not(:placeholder-shown) + .placeholder,
+  .input_tel_form_contacts:empty + .placeholder,
+  .focused1 .placeholder,
+  .input_tel_form_contacts:focus + .placeholder {
+    transform: translateY(-120%) scale(0.75);
+    font-size: 16px;
     color: var(--gray-959DA6);
   }
 
