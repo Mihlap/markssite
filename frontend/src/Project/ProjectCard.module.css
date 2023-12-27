@@ -294,7 +294,7 @@
 .description_object_block {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  /* gap: 1.5rem; */
   padding: 0rem 0rem 0rem 0rem;
   overflow-wrap: break-word;
   word-wrap: break-word;
@@ -337,6 +337,7 @@
   font-style: normal;
   font-weight: var(--fw-300);
   line-height: 32px;
+  padding-bottom: 24px;
 }
 
 
@@ -831,6 +832,14 @@
 
   .local_ritgh {
     margin-right: -10.5rem;
+  }
+
+  .local_text {
+    overflow-wrap: break-word;
+    word-break: break-word;
+    hyphens: auto;
+  -webkit-hyphens: auto;
+  -ms-hyphens: auto;
   }
 
   .publicationLink:hover {
