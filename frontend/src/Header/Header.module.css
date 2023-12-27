@@ -760,6 +760,7 @@ svg path {
     z-index: 1;
     padding-top: 2.5rem;
     margin-top: 0rem;
+    gap: 12px;
   }
 
   .card_item_1 {
