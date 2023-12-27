@@ -133,7 +133,7 @@ display: inline-block;
     align-items: center;
     justify-content: center;
     white-space: nowrap;
-    margin-right: 3.31rem;
+    margin-right: 1.688rem;
     margin-top: 2rem;
     margin-left: 0.5rem;
     width: auto;
@@ -486,17 +486,20 @@ display: inline-block;
 }
 
 .address_and_city_choose_location {
+    -webkit-appearance: none;
     border: none;
     outline: none;
     background-color: transparent;
-    padding-top: 2.36vh;
+    padding-top: 2.7rem;
     font-family: var(--font-raleway);
     font-style: normal;
     font-weight: var(--fw-400);
     font-size: 16px;
-    line-height: 16px;
+    line-height: normal; 
     caret-color: black;
     width: 65%;
+    position: relative;
+    margin-bottom: 0.5rem; 
 }
 
 .line_modal_project {
@@ -523,16 +526,17 @@ display: inline-block;
 .placeholder_modal_project {
     display: flex;
     position: absolute;
-    top: 1.5rem;
+    bottom: 0.5rem;
     left: 0;
     color: var(--gray-959DA6);
-    font-size: 16px;
-    line-height: 16px;
+    font-size: normal;
+    /* line-height: 16px; */
     font-weight: var(--fw-400);
     font-family: var(--font-raleway);
     font-style: normal;
     transform-origin: left top;
     transition: all 0.1s ease-out;
+    pointer-events: none;
 }
 
 #text-input:not(:placeholder-shown)+.placeholder_modal_project,
@@ -566,7 +570,7 @@ display: inline-block;
 .modal_project_button_group {
     display: flex;
     flex-wrap: wrap;
-    padding: 1rem 6.81rem 0rem 7.5rem;
+    padding: 0rem 6.81rem 0rem 7.5rem;
     grid-column-gap: 8px;
     grid-row-gap: 16px;
     width: 100%;
@@ -746,7 +750,7 @@ display: inline-block;
     .placeholder_modal_project {
         display: flex;
         position: absolute;
-        top: 1rem;
+        bottom: 0.5rem;
         left: 0;
         color: var(--gray-959DA6);
         font-size: 16px;
@@ -907,7 +911,7 @@ display: inline-block;
     .placeholder_modal_project {
         display: flex;
         position: absolute;
-        top: 2.5vh;
+        bottom: 0.5rem;
         left: 0;
         color: var(--gray-959DA6);
         font-size: 16px;

@@ -71,6 +71,10 @@ const Contacts = ({ handleMouseEnter, handleMouseLeave }) => {
 
   const { address, phone, mail, hour } = cityInfo[selectedMap];
   const isLargeScreen = window.innerWidth >= 1024;
+  const mapOptions = window.innerWidth <= 767 ? {
+    suppressMapOpenBlock: true,
+    suppressMapOpenBlockKey: "ctrlKey",
+  } : {};
 
   return (
     <>
@@ -127,6 +131,7 @@ const Contacts = ({ handleMouseEnter, handleMouseLeave }) => {
               width="100%"
               height="100%"
               query={{ apiKey: apiKey }}
+              options={mapOptions}
             >
               <Placemark
                 geometry={mapCenter}

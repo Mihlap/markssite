@@ -505,7 +505,7 @@ export default function Company({
           Состав группы компаний
           <p className={styles.plus_nine} style={{ verticalAlign: "top" }}>
             {/* <img src={plusNine} alt="plus_nine" /> */}
-            <span>+ 5</span>
+            <span>+ 4</span>
           </p>
         </div>
         <div className={styles.company_group_slider}>
@@ -513,7 +513,7 @@ export default function Company({
         </div>
         <div className={styles.awards_wrapper} id="table-header-anchor">
           Награды и&nbsp;премии
-          <div className={styles.years_div}>/2005-2022/</div>
+          <div className={styles.years_div}>/2005-2024/</div>
         </div>
         <div className={styles.list_project}>
           Список проектов, которые были отмечены конкурсами в&nbsp;разных
