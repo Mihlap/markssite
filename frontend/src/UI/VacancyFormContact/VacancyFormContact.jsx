@@ -303,7 +303,8 @@ const VacancyFormContact = ({
                     container: (provided) => ({
                       ...provided,
                       border: "none",
-                      width: '100%',                   
+                      width: '100%',  
+                      // maxWidth: '28rem',                
                     }),
                     control: (provided, state) => ({
                       ...provided,
@@ -340,6 +341,7 @@ const VacancyFormContact = ({
                       ...provided,
                       transform: state.selectProps.menuIsOpen ? 'rotate(180deg)' : null,
                       transition: 'transform 0.3s ease-in-out',
+                      color: state.isFocused ? '#75BBFD' : '#C0C5CB',
                     }),
                     menuList: (provided) => ({
                       ...provided,

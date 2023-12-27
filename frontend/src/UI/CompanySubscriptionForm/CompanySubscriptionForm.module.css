@@ -54,16 +54,18 @@ border-radius: 16px;
 }
 
 .email_input_form {
+  -webkit-appearance: none;
   border: none;
   outline: none;
   background-color: transparent;
-  padding-top: 2.36vh;
+  padding-top: 2.7rem;
   font-family: var(--font-raleway);
   font-style: normal;
   font-weight: var(--fw-400);
   font-size: 16px;
-  line-height: 16px;
+  line-height: normal;
   max-width: 28vw;
+  position: relative;
  }
 
 .line1 {
@@ -93,17 +95,18 @@ border-radius: 16px;
   top: 0;
   left: 0;
   color: var(--gray-959DA6);
-  font-size: 16px;
+  font-size: normal;
   transform-origin: left top;
   transition: all 0.3s ease-out;
-  padding-top: 2px;
+  padding-top: 0;
+  pointer-events: none;
 }
 
 .email_input_form:not(:placeholder-shown)+.placeholder,
 .email_input_form:empty+.placeholder,
 .focused .placeholder {
-  transform: translateY(-100%) scale(1);
-  font-size: 12px;
+  transform: translateY(-120%) scale(0.75);
+  font-size: 16px;
   color: var(--gray-959DA6);
 }
 

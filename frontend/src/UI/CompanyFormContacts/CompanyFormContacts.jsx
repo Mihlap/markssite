@@ -244,9 +244,9 @@ const CompanyFormContacts = ({
                 onMouseOver={handleMouseEnter}
                 onMouseOut={handleMouseLeave}
               />
-              Подтвердите согласие на&nbsp;обработку
+              <p className={styles.agreement_label_text_block}>Подтвердите согласие на&nbsp;обработку
               <a href="./Information"
-             >&nbsp;персональных данных</a>
+             >&nbsp;<u>персональных&nbsp;данных</u></a></p>
             </label>
           </div>
           <button
