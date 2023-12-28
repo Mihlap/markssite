@@ -38,7 +38,6 @@ const VacancyFormContact = ({
   const [isValid, setIsValid] = useState(true);
   const [isMatching, setIsMatching] = useState(true);
   const [phoneClicked, setPhoneClicked] = useState(false);
-  const [inputLineColor, setInputLineColor] = useState("#959DA6");
   const [selectedOptions, setSelectedOptions] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectedFiles, setSelectedFiles] = useState([]);
@@ -61,14 +60,15 @@ const VacancyFormContact = ({
 
   function handleFocus(event) {
     const name = event?.target?.name;
-    setPhoneClicked(false);
-    setInputLineColor("#959DA6");
+    // setPhoneClicked(false);
+    setPhoneClicked(name === "phone");
     setIsFocused((prev) => ({ ...prev, [name]: true }));
   }
 
   function handleBlur(event) {
     const name = event?.target?.name;
     setIsFocused((prev) => ({ ...prev, [name]: false }));
+    
 
     if (!event.target.value && name !== "phone") {
       event.target.placeholder = "";
@@ -81,7 +81,6 @@ const VacancyFormContact = ({
         } else {
           setIsValid(false);
           setIsMatching(false);
-          setInputLineColor("#959DA6");
         }
       }
     }
@@ -182,6 +181,27 @@ const VacancyFormContact = ({
     }
   };
 
+  const handlePaste = (event) => {
+    event.preventDefault(); // Предотвращаем стандартное вставление
+  
+    const pastedData = event.clipboardData.getData("text");
+    const cleanedValue = pastedData.replace(/\D/g, ""); // Убираем все символы, кроме цифр
+    
+  
+    if (cleanedValue.length >= 10) {
+      const formattedValue = `+7 (${cleanedValue.slice(-10, -7)}) ${cleanedValue.slice(-7, -4)}-${cleanedValue.slice(-4, -2)}-${cleanedValue.slice(-2)}`;
+      setFormData((prevData) => ({ ...prevData, phone: formattedValue }));
+      setIsValid(true);
+      setIsMatching(true);
+    } else {
+      setIsValid(false);
+      setIsMatching(false);
+      // setInputLineColor("#959DA6");
+    }
+  };
+  
+
+
   return (
     <form className={styles.form_form_wrapper} onSubmit={handleSubmit}>
       <div className={styles.form_vacancy_wrapper}>
@@ -233,6 +253,7 @@ const VacancyFormContact = ({
                   onChange={handleChange}
                   onFocus={handleFocus}
                   autoComplete="off"
+                  onPaste={handlePaste}
                   className={`${styles.input_tel_form_contacts} ${
                     isFocused.phone ? styles.focused : ""
                   }`}
@@ -240,7 +261,7 @@ const VacancyFormContact = ({
                 />
                 <div
                   className={styles.line}
-                  style={{ backgroundColor: inputLineColor }}
+                  // style={{ backgroundColor: inputLineColor }}
                 ></div>
                 <span className={styles.placeholder}>Номер&nbsp;телефона</span>
                 {!isValid && formData.phone.length > 0 && (
