@@ -20,6 +20,11 @@ const CompanyFormContacts = ({
   const [isConsentGiven, setIsConsentGiven] = useState(false);
   const [phoneClicked, setPhoneClicked] = useState(false);
   const [inputLineColor, setInputLineColor] = useState('#959DA6');
+  const [formData, setFormData] = useState({
+  
+    phone: "",
+
+  });
 
   // const [showError, setShowError] = useState(false);
  
@@ -142,6 +147,25 @@ const CompanyFormContacts = ({
       });
       }
 
+      const handlePaste = (event) => {
+        event.preventDefault(); // Предотвращаем стандартное вставление
+      
+        const pastedData = event.clipboardData.getData("text");
+        const cleanedValue = pastedData.replace(/\D/g, ""); // Убираем все символы, кроме цифр
+        
+      
+        if (cleanedValue.length >= 10) {
+          const formattedValue = `+7 (${cleanedValue.slice(-10, -7)}) ${cleanedValue.slice(-7, -4)}-${cleanedValue.slice(-4, -2)}-${cleanedValue.slice(-2)}`;
+          setValue2(formattedValue);
+          setIsValid(true);
+          setIsMatching(true);
+        } else {
+          setIsValid(false);
+          setIsMatching(false);
+          setInputLineColor("#959DA6");
+        }
+      };
+
   
   return (
     <div className={styles.form_left_wrapper}>
@@ -186,13 +210,15 @@ const CompanyFormContacts = ({
               <InputMask
                id="phone-input"
                 mask="+7 (999) 999-99-99"
-                maskChar="_"
+                maskChar=""
                 name="phone"
-                placeholder="+7 (___) ___-__-__"
+                placeholder=""
                 value={value2}
                 onBlur={handleBlur}
                 onChange={handleChange}
                 onFocus={handleFocus}
+                autoComplete="off"
+                onPaste={handlePaste}
                 className={`${styles.input_tel_form_contacts} ${isFocused2 ? styles.focused : ''}`}
                 // className={styles.input_tel_form_contacts}
                 style={{ fontVariantNumeric: "lining-nums" }}                
