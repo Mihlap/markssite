@@ -434,12 +434,12 @@ const ProjectCard = ({
                   <div className={styles.result_container_mobile}>
                     {[
                       {
-                        value: project.siteArea,
+                        value: project.totalArea,
                         text: "Общая площадь",
                         unit: "м²",
                       },
                       {
-                        value: project.totalArea,
+                        value: project.siteArea,
                         text: "Площадь участка",
                         unit: "га",
                       },
