@@ -199,12 +199,12 @@
 } */
 
 .item_img {
-  object-fit: cover;
   width: 100%;
   height: auto;
   max-height: 50vw;
   border-radius: 16px;
   width: 80%;
+  object-fit: cover;
 }
 
 .item_img_latest {
@@ -394,6 +394,7 @@ line-height: 16px;
   max-height: 50vw;
   border-radius: 16px;
   object-position: center;
+  object-fit: cover;
 }
 .container_author_address_imageClose_share_article {
   display: flex;
