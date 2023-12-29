@@ -228,7 +228,7 @@ const CompanyFormContacts = ({
             
               ></div>
               {!isValid && value2.length > 0 && ( <span className={styles.error_line}>Некорректный телефон</span>)}
-              {/* <span className={styles.placeholder}>Номер телефона</span> */}
+              <span className={styles.placeholder}>Номер телефона</span>
             </label>
           </div>
           <div className={styles.group}>
