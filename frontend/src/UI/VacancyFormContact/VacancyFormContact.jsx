@@ -36,8 +36,6 @@ const VacancyFormContact = ({
   });
 
   const [isValid, setIsValid] = useState(true);
-  const [isMatching, setIsMatching] = useState(true);
-  const [phoneClicked, setPhoneClicked] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
   const [selectedFiles, setSelectedFiles] = useState([]);
@@ -60,28 +58,36 @@ const VacancyFormContact = ({
 
   function handleFocus(event) {
     const name = event?.target?.name;
-    // setPhoneClicked(false);
-    setPhoneClicked(name === "phone");
     setIsFocused((prev) => ({ ...prev, [name]: true }));
   }
 
+  const handlePaste = (event) => {
+    event.preventDefault(); // Предотвращаем стандартное вставление
+  
+    const pastedData = event.clipboardData.getData("text");
+    const cleanedValue = pastedData.replace(/\D/g, ""); // Убираем все символы, кроме цифр
+    
+  
+    if (cleanedValue.length >= 10) {
+      const formattedValue = `+7 (${cleanedValue.slice(-10, -7)}) ${cleanedValue.slice(-7, -4)}-${cleanedValue.slice(-4, -2)}-${cleanedValue.slice(-2)}`;
+      setFormData((prevData) => ({ ...prevData, phone: formattedValue }));
+      setIsValid(true);
+    } else {
+      setIsValid(false);
+    }
+  };
+
+  
   function handleBlur(event) {
     const name = event?.target?.name;
     setIsFocused((prev) => ({ ...prev, [name]: false }));
-    
-
-    if (!event.target.value && name !== "phone") {
-      event.target.placeholder = "";
-    } else {
-      if (name === "phone") {
-        const phoneNumberRegex = /^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/;
-        if (phoneNumberRegex.test(formData.phone)) {
-          setIsValid(true);
-          setIsMatching(true);
-        } else {
-          setIsValid(false);
-          setIsMatching(false);
-        }
+  
+    if (name === "phone") {
+      const phoneNumberRegex = /^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/;
+      if (phoneNumberRegex.test(formData.phone)) {
+        setIsValid(true);
+       } else {
+       setIsValid(false);
       }
     }
   }
@@ -89,6 +95,10 @@ const VacancyFormContact = ({
   const handleChange = (event) => {
     const { name, value } = event.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
+  
+    if (name === "phone") {
+      setIsValid(true); 
+   }
   };
 
   function handleSubmit(event) {
@@ -180,27 +190,6 @@ const VacancyFormContact = ({
       setFileAttached(false);
     }
   };
-
-  const handlePaste = (event) => {
-    event.preventDefault(); // Предотвращаем стандартное вставление
-  
-    const pastedData = event.clipboardData.getData("text");
-    const cleanedValue = pastedData.replace(/\D/g, ""); // Убираем все символы, кроме цифр
-    
-  
-    if (cleanedValue.length >= 10) {
-      const formattedValue = `+7 (${cleanedValue.slice(-10, -7)}) ${cleanedValue.slice(-7, -4)}-${cleanedValue.slice(-4, -2)}-${cleanedValue.slice(-2)}`;
-      setFormData((prevData) => ({ ...prevData, phone: formattedValue }));
-      setIsValid(true);
-      setIsMatching(true);
-    } else {
-      setIsValid(false);
-      setIsMatching(false);
-      // setInputLineColor("#959DA6");
-    }
-  };
-  
-
 
   return (
     <form className={styles.form_form_wrapper} onSubmit={handleSubmit}>
@@ -332,7 +321,12 @@ const VacancyFormContact = ({
                       border: "none",
                       backgroundColor: "transparent",
                       boxShadow: state.isFocused ? "none" : provided.boxShadow,
-                    }),
+                      borderBottom: `1px solid ${state.isFocused ? '#75BBFD' : '#959DA6'}`,
+                      borderColor: 'transparent',
+                      '&:hover': {
+                        borderBottomColor: '1px solid',
+                      },
+                     }),
                     indicatorSeparator: (provided) => ({
                       ...provided,
                       display: "none",                    
@@ -396,7 +390,7 @@ const VacancyFormContact = ({
                     }),
                    }}                                 
                 />
-                <div className={`${styles.line} ${styles.line_select}`}></div>
+                {/* <div className={`${styles.line} ${styles.line_select}`}></div> */}
                 {/* <span className={styles.placeholder}>Выбрать вакансию</span> */}
               </label>
             </div>
