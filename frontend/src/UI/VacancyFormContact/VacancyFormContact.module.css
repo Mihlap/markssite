@@ -97,20 +97,16 @@
     color: var(--gray-959DA6);
   }
 
-  .input_name_form_contacts:focus + .line,
-  .input_city_form_contacts:focus + .line,
-  .input_choose_form_contacts:focus + .line,
-  .input_letter_form_contacts:focus + .line,
-  .input_resume_form_contacts:focus + .line,
-  .input_tel_form_contacts:focus + .line,
-  #phone-input.input_tel_form_contacts.focus + .line {
-    background-color: var(--blue-75BBFD);
-  }
-  
-  
-  
-
-  .agreement_vacancy {
+    .input_name_form_contacts:focus+.line,
+    .input_city_form_contacts:focus+.line,
+    .input_letter_form_contacts:focus+.line,
+    .input_resume_form_contacts:focus+.line,
+    .input_tel_form_contacts:focus+.line,
+    #phone-input.input_tel_form_contacts.focus+.line {
+      background-color: var(--blue-75BBFD);
+    }
+    
+   .agreement_vacancy {
     color: var(--gray-959DA6);
     font-variant-numeric: lining-nums proportional-nums;
     font-family: var(--font-raleway);
@@ -846,8 +842,8 @@
   .input_tel_form_contacts,
   .input_city_form_contacts,
   .input_letter_form_contacts,
-  .input_resume_form_contacts {
-    -webkit-appearance: none;
+  .input_resume_form_contacts,
+  .input_choose_form_contacts {
     border: none;
     outline: none;
     background-color: transparent;
@@ -861,16 +857,12 @@
     position: relative; 
   }
 
-  .input_choose_form_contacts {
-    padding-top: 3.2rem;
-   }
-
-  .placeholder {
+   .placeholder {
     position: absolute;
     top: 0;
     left: 0;
     color: var(--gray-959DA6);
-    font-size: normal;
+    font-size: 16px;
     transform-origin: left top;
     transition: all 0.3s ease-out;
     padding-top: 0;
@@ -947,6 +939,7 @@
 
   .button_resume_file {
     position: absolute;
+    right: 0;
     display: flex;
     padding: 0.5rem 0.8125rem;
     align-items: flex-start;
@@ -1002,3 +995,42 @@
   }
   
 }  
+
+/* Стили для Safari на экранах 767 и меньше */
+@media (max-width: 767px) {
+  @supports (-webkit-appearance: none) {
+    .input_name_form_contacts,
+    .input_tel_form_contacts,
+    .input_city_form_contacts,
+    .input_letter_form_contacts,
+    .input_resume_form_contacts {
+      position: relative;
+    }
+
+    .input_name_form_contacts::-webkit-input-placeholder,
+    .input_tel_form_contacts::-webkit-input-placeholder,
+    .input_city_form_contacts::-webkit-input-placeholder,
+    .input_letter_form_contacts::-webkit-input-placeholder,
+    .input_resume_form_contacts::-webkit-input-placeholder {
+      position: absolute;
+      top: 0;
+      left: 0;
+      color: var(--gray-959DA6);
+      font-size: 16px;
+      transform-origin: left top;
+      transition: all 0.3s ease-out;
+      padding-top: 0;
+      pointer-events: none;
+      font-weight: var(--fw-400);
+    }
+    .input_name_form_contacts:focus::-webkit-input-placeholder,
+    .input_tel_form_contacts:focus::-webkit-input-placeholder,
+    .input_city_form_contacts:focus::-webkit-input-placeholder,
+    .input_letter_form_contacts:focus::-webkit-input-placeholder,
+    .input_resume_form_contacts:focus::-webkit-input-placeholder {
+      transform: translateY(-120%) scale(0.75);
+      font-size: 16px;
+      color: var(--gray-959DA6);
+    }
+  }
+}
