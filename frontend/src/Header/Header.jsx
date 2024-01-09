@@ -186,60 +186,60 @@ export default function Header({ handleMouseEnter,
     }
   };
 
-  const onWheel = (e) => {
-    const el = sliderCardRef.current;
-    const isScrollingRight = e.deltaY >= 0;
-    const isAtRightEdge = el.scrollLeft + el.clientWidth >= el.scrollWidth;
-    const isAtBottom = el.scrollTop + el.clientHeight >= el.scrollHeight;
-    const isAtLeftEdge = el.scrollLeft <= 0;
-    const isAtTop = el.scrollTop <= 0;
+const onWheel = (e) => {
+  const el = sliderCardRef.current;
+  const isScrollingRight = e.deltaY >= 0;
+  const isAtRightEdge = el.scrollLeft + el.clientWidth >= el.scrollWidth;
+  const isAtBottom = el.scrollTop + el.clientHeight >= el.scrollHeight;
+  const isAtLeftEdge = el.scrollLeft <= 0;
+  const isAtTop = el.scrollTop <= 0;
 
-    if (
-      isScrollingRight &&
-      isAtRightEdge &&
-      isAtBottom &&
-      !isHorizontalScroll
-    ) {
-      setIsHorizontalScroll(false); // Horizontal scrolling has stopped
+  if (isScrollingRight && isAtRightEdge && isAtBottom && !isHorizontalScroll) {
+    setIsHorizontalScroll(false); // Horizontal scrolling has stopped
+    el.scrollTo({
+      top: el.scrollTop + e.deltaY,
+      behavior: "smooth",
+    });
+    setEnableVerticalScroll(true);    
+  } else if (enableVerticalScroll && !isScrollingRight) {
+    if (isAtLeftEdge && isAtTop) {
+      setIsHorizontalScroll(true); // Horizontal scrolling is in progress
+      el.scrollLeft += e.deltaY;
+      setEnableVerticalScroll(false);      
+    } else if (isAtLeftEdge && !isAtTop) {
       el.scrollTo({
         top: el.scrollTop + e.deltaY,
         behavior: "smooth",
       });
-    } else if (enableVerticalScroll && !isScrollingRight) {
-      if (isAtLeftEdge && isAtTop) {
-        setIsHorizontalScroll(true); // Horizontal scrolling is in progress
-        el.scrollLeft += e.deltaY;
-      } else if (isAtLeftEdge && !isAtTop) {
-        el.scrollTo({
-          top: el.scrollTop + e.deltaY,
-          behavior: "smooth",
-        });
-      } else if (
-        isAtRightEdge &&
-        isAtBottom &&
-        e.deltaY < 0 &&
-        !isHorizontalScroll
-      ) {
-        setIsHorizontalScroll(false); // Allow vertical scrolling
-        el.scrollLeft += e.deltaY;
-      } else if (
-        isAtRightEdge &&
-        isAtBottom &&
-        e.deltaY > 0 &&
-        !isHorizontalScroll
-      ) {
-        setIsHorizontalScroll(true); // Disable vertical scrolling
-        el.scrollTo({
-          top: el.scrollTop + e.deltaY,
-          behavior: "smooth",
-        });
-      } else {
-        e.preventDefault();
-      }
-    } else {
+    } else if (
+      isAtRightEdge &&
+      isAtBottom &&
+      e.deltaY < 0 &&
+      !isHorizontalScroll
+    ) {
+      setIsHorizontalScroll(false); // Allow vertical scrolling
       el.scrollLeft += e.deltaY;
+      setEnableVerticalScroll(true);    
+    } else if (
+      isAtRightEdge &&
+      isAtBottom &&
+      e.deltaY > 0 &&
+      !isHorizontalScroll
+    ) {
+      setIsHorizontalScroll(true); // Disable vertical scrolling
+      el.scrollTo({
+        top: el.scrollTop + e.deltaY,
+        behavior: "smooth",
+      });
+      setEnableVerticalScroll(false);
+    } else {
+      e.preventDefault();
     }
-  };
+  } else {
+    el.scrollLeft += e.deltaY;
+  }
+};
+
 
   useEffect(() => {
     const el = sliderCardRef.current;
@@ -451,7 +451,7 @@ export default function Header({ handleMouseEnter,
                           {el.dataMonthYear}
                         </span>
                       </div>
-                      <button className={styles.card_button}>
+                      <button className={`${styles.card_button} ${styles.extra_button_class}`}>
                         <svg
                           width="32"
                           height="32"

@@ -171,7 +171,9 @@ export default function Publics({ handleMouseEnter, handleMouseLeave, handleMous
         <section className={styles.section_article}>
           <div className={styles.section_article__block}>
             {articles &&
-              articles?.map((article) => {
+              articles?.slice() 
+              .reverse()
+              .map((article) => {
                 const imagePathsForArticle = article?.imageTitle
                   ? article?.imageTitle.split(",").map((el) => el.trim())
                   : [];
