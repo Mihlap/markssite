@@ -765,6 +765,7 @@ svg path {
   }
 
   .card_item_1 {
+    position: relative;
     height: 29vh;
     width: 50vw;
     flex-grow: 1;
@@ -773,6 +774,7 @@ svg path {
   }
 
   .card_item_2 {
+    position: relative;
     height: 29vh;
     width: 50vw;
     margin-top: 0px;
@@ -788,7 +790,17 @@ svg path {
    }
   
   .card_button {
-    margin-top: 1rem;
+    /* margin-top: 1rem; */
+    position: absolute;
+    bottom: 1rem;
+    right: 2rem;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+  }
+
+  .extra_button_class {
+    right: 4rem;
   }
 
   .most,
