@@ -19,6 +19,7 @@ import {
   ValueContainer,
   AnotherDropdownIndicator,
   AnotherValueContainer,
+  AnotherStagesProject,
   SelectDegreeParticipationDropdownIndicator,
   SelectDegreeParticipationValueContainer,
   SelectStatusObjectDropdownIndicator,
@@ -37,6 +38,7 @@ export default function FormAddProject({ setIsModalOpen }) {
 
   const [selectedCompetencies, setSelectedCompetencies] = useState([]);
   const [selectedViewConstruction, setSelectedViewConstruction] = useState([]);
+  const [selectedProjectStages, setSelectedProjectStages] = useState([]);
   const [selectDegreeParticipation, setSelectDegreeParticipation] =
     useState("");
   const [selectStatusObject, setSelectStatusObject] = useState("");
@@ -69,6 +71,7 @@ export default function FormAddProject({ setIsModalOpen }) {
     countryCity: "",
     monthYear: "",
     viewConstruction: [],
+    projectStages: [],
     dropPhoto: [],
     photoAva: "",
     titleTextBlock: "",
@@ -86,7 +89,7 @@ export default function FormAddProject({ setIsModalOpen }) {
     linkToPublication: "",
     publicationTwo: "",
     linkToPublicationTwo: "",
-    awards: "",
+    awards: [],
     imageOpen: "",
     headingTextBlock: "",
     textBlock: "",
@@ -228,6 +231,9 @@ export default function FormAddProject({ setIsModalOpen }) {
           viewConstruction: Array.isArray(selectedViewConstruction)
             ? selectedViewConstruction.map((option) => option.label).join(",")
             : "",
+            awards: Array.isArray(selectedProjectStages)
+            ? selectedProjectStages.map((option) => option.label).join(",")
+            : "",  
           // radioValue: selectedRadio,
           photoAva: inputData.photoAva,
           imageOpen: inputData.imageOpen,
@@ -241,6 +247,7 @@ export default function FormAddProject({ setIsModalOpen }) {
         setSelectDegreeParticipation("");
         setSelectStatusObject("");
         setSelectedViewConstruction([]);
+        setSelectedProjectStages([]);
         // setSelectedRadio("");
         setPreviewPhotos([]);
         setDynamicData([]);
@@ -774,7 +781,7 @@ export default function FormAddProject({ setIsModalOpen }) {
   // << ============ функции КОНСТРУКТОРА ============ >>
 
   // console.log(inputData, "<<--inputData PROJECT");
-  // console.log(dynamicData, "<<--dynamicData");
+  console.log(selectedProjectStages, "<<--selectedProjectStages");
   return (
     <div className={styles.form_container}>
       {showNotification && (
@@ -1799,7 +1806,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                   </div>
                 </div>
               </div>
-              <div className={`${styles.form__group} ${styles.field}`}>
+              {/* <div className={`${styles.form__group} ${styles.field}`}>
                 <input
                   type="input"
                   className={styles.form__field}
@@ -1825,7 +1832,38 @@ export default function FormAddProject({ setIsModalOpen }) {
                 <label htmlFor="awards" className={styles.form__label}>
                   Награды
                 </label>
-              </div>
+              </div> */}
+              <div className={`${styles.form__group} ${styles.field}`}>
+              <Select
+                styles={customStyles}
+                isMulti
+                name="awards"
+                value={selectedProjectStages}
+                onChange={setSelectedProjectStages}
+                options={[
+                  {
+                    value: "АФК",
+                    label: "АФК",
+                  },
+                  {
+                    value: "ПД",
+                    label: "ПД",
+                  },
+                  {
+                    value: "РД",
+                    label: "РД",
+                  }                  
+                ]}
+                className={styles.form__field}
+                placeholder="Выберите стадии проекта"
+                components={{
+                  DropdownIndicator: AnotherDropdownIndicator,
+                  ValueContainer: AnotherStagesProject,
+                }}
+                onFocus={() => setIsFocused(true)}
+                onBlur={() => setIsFocused(false)}
+              />
+            </div>
             </div>
           </div>
           {/* блок с картинкой открывающейся */}

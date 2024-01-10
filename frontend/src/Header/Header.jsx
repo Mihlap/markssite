@@ -46,6 +46,7 @@ export default function Header({ handleMouseEnter,
   const [isHorizontalScroll, setIsHorizontalScroll] = useState(false);
   const [isAtRightEdge, setIsAtRightEdge] = useState(false);
   const [scrollingMode, setScrollingMode] = useState("vertical");
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
 
   const [loadingArticle, setLoadingArticle] = useState(false);
 
@@ -129,22 +130,23 @@ export default function Header({ handleMouseEnter,
     Дизайн: "#FAA8BD",
     Инженерия: "#90B734",
   };
-
   const handleScroll = () => {
     const el = sliderCardRef.current;
+
+    // Проверяем, виден ли элемент слайдера
     if (el) {
       const rect = el.getBoundingClientRect();
       const isSliderInView = rect.top <= window.innerHeight && rect.bottom >= 0;
+
+    // Обновляем состояние для включения/отключения вертикального скролла в зависимости от видимости слайдера
       setEnableVerticalScroll(!isSliderInView);
 
+    // Проверяем различные условия скролла и обновляем состояние соответственно
       if (!loadingArticle) {
         if (isSliderInView && el.scrollLeft > 0) {
           setEnableVerticalScroll(false);
-          setIsHorizontalScroll(false); // Disable vertical scrolling
-        } else if (
-          !isSliderInView &&
-          el.scrollLeft + el.clientWidth >= el.scrollWidth
-        ) {
+          setIsHorizontalScroll(false);
+        } else if (!isSliderInView && el.scrollLeft + el.clientWidth >= el.scrollWidth) {
           setEnableVerticalScroll(true);
           setIsHorizontalScroll(false);
         } else if (!isSliderInView && el.scrollLeft <= 0) {
@@ -160,7 +162,7 @@ export default function Header({ handleMouseEnter,
         }
       }
     }
-
+     // Проверяем, находится ли элемент слайдера у края справа
     if (el) {
       const isRightEdge = el.scrollLeft + el.clientWidth >= el.scrollWidth;
       setIsAtRightEdge(isRightEdge);
@@ -172,16 +174,19 @@ export default function Header({ handleMouseEnter,
     const isScrollingUp = e.deltaY < 0;
     const isAtTop = el.scrollTop <= 0;
     const isAtBottom = el.scrollTop + el.clientHeight >= el.scrollHeight;
-
+  
+    // Если скроллим вверх и достигли верхней границы
     if (isScrollingUp && isAtTop) {
       setEnableVerticalScroll(false);
       el.scrollLeft += e.deltaY;
     } else if (!isAtBottom) {
+      // В противном случае прокручиваем содержимое
       el.scrollTo({
         top: el.scrollTop + e.deltaY,
         behavior: "smooth",
       });
     } else {
+      // В противном случае предотвращаем дальнейший скролл
       e.preventDefault();
     }
   };
@@ -193,53 +198,48 @@ export default function Header({ handleMouseEnter,
     const isAtBottom = el.scrollTop + el.clientHeight >= el.scrollHeight;
     const isAtLeftEdge = el.scrollLeft <= 0;
     const isAtTop = el.scrollTop <= 0;
-
-    if (
-      isScrollingRight &&
-      isAtRightEdge &&
-      isAtBottom &&
-      !isHorizontalScroll
-    ) {
-      setIsHorizontalScroll(false); // Horizontal scrolling has stopped
+    
+  
+    // Проверяем различные условия скролла и обновляем состояние соответственно
+    if (isScrollingRight && isAtRightEdge && isAtBottom && !isHorizontalScroll) {
+      setIsHorizontalScroll(false); // Горизонтальный скроллинг завершился
       el.scrollTo({
         top: el.scrollTop + e.deltaY,
         behavior: "smooth",
       });
+      setEnableVerticalScroll(true);
     } else if (enableVerticalScroll && !isScrollingRight) {
       if (isAtLeftEdge && isAtTop) {
-        setIsHorizontalScroll(true); // Horizontal scrolling is in progress
+        setIsHorizontalScroll(true); // Идет горизонтальный скроллинг
         el.scrollLeft += e.deltaY;
+        setEnableVerticalScroll(false);
       } else if (isAtLeftEdge && !isAtTop) {
+        // Прокручиваем содержимое вверх/вниз с плавным эффектом
         el.scrollTo({
           top: el.scrollTop + e.deltaY,
           behavior: "smooth",
         });
-      } else if (
-        isAtRightEdge &&
-        isAtBottom &&
-        e.deltaY < 0 &&
-        !isHorizontalScroll
-      ) {
-        setIsHorizontalScroll(false); // Allow vertical scrolling
+      } else if (isAtRightEdge && isAtBottom && e.deltaY < 0 && !isHorizontalScroll) {
+        setIsHorizontalScroll(false); // Разрешаем вертикальный скроллинг
         el.scrollLeft += e.deltaY;
-      } else if (
-        isAtRightEdge &&
-        isAtBottom &&
-        e.deltaY > 0 &&
-        !isHorizontalScroll
-      ) {
-        setIsHorizontalScroll(true); // Disable vertical scrolling
+        setEnableVerticalScroll(true);    
+      } else if (isAtRightEdge && isAtBottom && e.deltaY > 0 && !isHorizontalScroll) {
+        setIsHorizontalScroll(true); // Отключаем вертикальный скроллинг
         el.scrollTo({
           top: el.scrollTop + e.deltaY,
           behavior: "smooth",
         });
+        setEnableVerticalScroll(false);   
       } else {
+        // В противном случае предотвращаем дальнейший скролл
         e.preventDefault();
       }
     } else {
+      // Прокручиваем содержимое влево/вправо
       el.scrollLeft += e.deltaY;
     }
   };
+
 
   useEffect(() => {
     const el = sliderCardRef.current;
@@ -451,7 +451,7 @@ export default function Header({ handleMouseEnter,
                           {el.dataMonthYear}
                         </span>
                       </div>
-                      <button className={styles.card_button}>
+                      <button className={`${styles.card_button} ${styles.extra_button_class}`}>
                         <svg
                           width="32"
                           height="32"
@@ -517,6 +517,7 @@ export default function Header({ handleMouseEnter,
         </div>
         <div className={styles.main_project}>
           <Swiper
+           onSlideChange={(swiper) => setCurrentSlideIndex(swiper.activeIndex)}
             className={styles.slider_card_container_project}
             id="slider_card_container_project"
             ref={sliderCardRef}

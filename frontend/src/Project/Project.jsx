@@ -93,8 +93,34 @@ export default function Project({
   const isMobileScreen = screenWidth <= 768;
 
   // console.log(projects);
+  // useEffect(() => {
+  //   window.scrollTo(0, 0); // Прокрутите страницу вверх при монтировании компонента
+  // }, []);
+
   useEffect(() => {
-    window.scrollTo(0, 0); // Прокрутите страницу вверх при монтировании компонента
+    const scrollToTop = () => {
+      window.scrollTo(0, 0);
+    };
+
+    const scrollToTableHeader = () => {
+      const element = document.getElementById("block-header-anchorr");
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        window.location.replace("#block-header-anchor");
+      }
+    };
+
+    const hash = window.location.hash;
+    if (hash === "#block-header-anchor") {
+      scrollToTableHeader();
+    } else {
+      scrollToTop();
+    }
+
+    return () => {
+      window.removeEventListener("scroll", scrollToTop);
+      window.removeEventListener("scroll", scrollToTableHeader);
+    };
   }, []);
 
   const handleResize = () => {
@@ -607,7 +633,9 @@ export default function Project({
         <section className={styles.section_project}>
           <div className={styles.section_project__block}>
             {filteredProjects &&
-              filteredProjects.map((project) => {
+              filteredProjects.slice() 
+              .reverse()
+              .map((project) => {
                 const photoName = project && project.imageProject;
                 const defaultPhoto = catPhoto; // Убедитесь, что catPhoto существует и содержит правильный путь к изображению по умолчанию
 

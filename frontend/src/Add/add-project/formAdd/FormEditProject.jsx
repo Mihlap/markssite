@@ -25,6 +25,7 @@ import {
   ValueContainer,
   AnotherDropdownIndicator,
   AnotherValueContainer,
+  AnotherStagesProject,
   SelectDegreeParticipationDropdownIndicator,
   SelectDegreeParticipationValueContainer,
   SelectStatusObjectDropdownIndicator,
@@ -67,7 +68,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
     linkToPublication: "",
     publicationTwo: "",
     linkToPublicationTwo: "",
-    awards: "",
+    awards: [],
     imageOpen: "",
     headingTextBlock: "",
     textBlock: "",
@@ -75,9 +76,10 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
     numberOfLanes: "",
     long: "",
   });
-  
+
   const [selectedCompetencies, setSelectedCompetencies] = useState([]);
   const [selectedViewConstruction, setSelectedViewConstruction] = useState([]);
+  const [selectedProjectStages, setSelectedProjectStages] = useState([]);
   const [selectDegreeParticipation, setSelectDegreeParticipation] =
     useState(null);
   const [selectStatusObject, setSelectStatusObject] = useState(null);
@@ -120,7 +122,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
 
   useEffect(() => {
     // console.log("editProjectData:", editProjectData);
-    // console.log("inputData:", inputData); 
+    // console.log("inputData:", inputData);
     if (editProjectData) {
       const initialSelectedCompetencies = editProjectData.selectCompetencies
         ? editProjectData.selectCompetencies
@@ -135,12 +137,18 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
             .split(",")
             .map((item) => ({ value: item.trim(), label: item.trim() }))
         : [];
+      const initialProjectStages = editProjectData.awards
+        ? editProjectData.awards
+            .split(",")
+            .map((item) => ({ value: item.trim(), label: item.trim() }))
+        : [];
 
       // Set form data from editProjectData
       setSelectedCompetencies(initialSelectedCompetencies);
       setSelectedMonth({ value: selectedMonth, label: selectedMonth });
       setSelectedYear({ value: selectedYear, label: selectedYear });
       setSelectedViewConstruction(initialViewConstruction);
+      setSelectedProjectStages(initialProjectStages);
       setSelectDegreeParticipation(
         editProjectData.degreeParticipation
           ? { label: editProjectData.degreeParticipation }
@@ -151,7 +159,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
           ? { label: editProjectData.statusObject }
           : null
       );
-      
+
       setInputData((prevInputData) => {
         const updatedInputData = {
           ...prevInputData,
@@ -241,8 +249,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
             editProjectData.linkToPublicationTwo !== undefined
               ? editProjectData.linkToPublicationTwo
               : "",
-          awards:
-            editProjectData.awards !== undefined ? editProjectData.awards : "",
+          awards: initialProjectStages,
           imageOpen:
             editProjectData.imageOpen !== undefined
               ? editProjectData.imageOpen
@@ -255,10 +262,10 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
             editProjectData.textBlock !== undefined
               ? editProjectData.textBlock
               : "",
-              imageClose:
-              editProjectData.imageClose !== undefined
-                ? editProjectData.imageClose
-                : "",
+          imageClose:
+            editProjectData.imageClose !== undefined
+              ? editProjectData.imageClose
+              : "",
           numberOfLanes:
             editProjectData.numberOfLanes !== undefined
               ? editProjectData.numberOfLanes
@@ -273,10 +280,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
         return updatedInputData;
       });
       const dynamicDataFromEditProject = editProjectData.dynamicData;
-      if (
-        dynamicDataFromEditProject &&
-        dynamicDataFromEditProject.length > 0
-      ) {
+      if (dynamicDataFromEditProject && dynamicDataFromEditProject.length > 0) {
         setDynamicData(dynamicDataFromEditProject);
         const previewsArray = dynamicDataFromEditProject.map((block) =>
           block.map((input) => input.value)
@@ -386,6 +390,9 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
         viewConstruction: Array.isArray(selectedViewConstruction)
           ? selectedViewConstruction.map((option) => option.label).join(",")
           : "",
+        awards: Array.isArray(selectedProjectStages)
+          ? selectedProjectStages.map((option) => option.label).join(",")
+          : "",
         photoAva: inputData.photoAva,
         imageOpen: inputData.imageOpen,
         imageClose: inputData.imageClose,
@@ -415,6 +422,11 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
               .join(",")
           : formattedData.viewConstruction;
       }
+      if (formattedData.awards && formattedData.awards !== "") {
+        formattedData.awards = Array.isArray(formattedData.awards)
+          ? formattedData.awards.map((option) => option.label).join(",")
+          : formattedData.awards;
+      }
       // Определение, создаем новый проект или обновляем существующий
       if (editProjectData && editProjectData.id) {
         dispatch(setProjectId(editProjectData.id));
@@ -432,6 +444,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
       setSelectDegreeParticipation("");
       setSelectStatusObject("");
       setSelectedViewConstruction([]);
+      setSelectedProjectStages([]);
       setPreviewPhotos([]);
       setDynamicData([]);
       setInputData({
@@ -996,7 +1009,6 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
   // console.log(inputData, "<<--inputData PROJECT");
   // console.log(dynamicData, "<<--dynamicData");
 
-
   return (
     <div className={styles.form_container}>
       {showNotification && (
@@ -1213,7 +1225,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
               </div>
             </div>
             <div
-              // style={{ display: isPhotoAvaVisible ? "inline-block" : "none" }}
+            // style={{ display: isPhotoAvaVisible ? "inline-block" : "none" }}
             >
               <label className={styles.slider_container__customFileUpload}>
                 <input
@@ -1471,7 +1483,8 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                 ))}
               {/* {inputData.imageTitle &&
                 inputData.imageTitle.split(",").map((imageFileName, index) => ( */}
-             {inputData.imageTitle !== null && inputData.dropPhoto.length === 0 &&
+              {inputData.imageTitle !== null &&
+                inputData.dropPhoto.length === 0 &&
                 inputData.imageTitle.split(",").map((imageFileName, index) => (
                   <div
                     key={index}
@@ -2091,7 +2104,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                   </div>
                 </div>
               </div>
-              <div className={`${styles.form__group} ${styles.field}`}>
+              {/* <div className={`${styles.form__group} ${styles.field}`}>
                 <input
                   type="input"
                   className={styles.form__field}
@@ -2117,6 +2130,37 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                 <label htmlFor="awards" className={styles.form__label}>
                   Награды
                 </label>
+              </div> */}
+              <div className={`${styles.form__group} ${styles.field}`}>
+                <Select
+                  styles={customStyles}
+                  isMulti
+                  name="awards"
+                  value={selectedProjectStages || []}
+                  onChange={setSelectedProjectStages}
+                  options={[
+                    {
+                      value: "АФК",
+                      label: "АФК",
+                    },
+                    {
+                      value: "ПД",
+                      label: "ПД",
+                    },
+                    {
+                      value: "РД",
+                      label: "РД",
+                    },
+                  ]}
+                  className={styles.form__field}
+                  placeholder="Выберите стадии проекта"
+                  components={{
+                    DropdownIndicator: AnotherDropdownIndicator,
+                    ValueContainer: AnotherStagesProject,
+                  }}
+                  onFocus={() => setIsFocused(true)}
+                  onBlur={() => setIsFocused(false)}
+                />
               </div>
             </div>
           </div>
@@ -2127,7 +2171,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
             </div>
             <div
             //  style={{ display: isPhotoOpenVisible ? "block" : "none" }}
-             >
+            >
               <label className={styles.slider_container__customFileUpload}>
                 <input
                   type="file"
@@ -2196,23 +2240,23 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                     <span></span>
                   </div> */}
                 </div>
-              ))}            
+              ))}
               {inputData.imageOpen !== null &&
-                  previewPhotoOpen.length === 0 && (
-                <div className={styles.preview_photos_container__block}>
-                  <img
-                    className={styles.preview_photos_container__img}
-                    src={`${Host}/images/imageAdd/${inputData.imageOpen}`}
-                    alt="Preview"
-                  />
-                  {/* <div
+                previewPhotoOpen.length === 0 && (
+                  <div className={styles.preview_photos_container__block}>
+                    <img
+                      className={styles.preview_photos_container__img}
+                      src={`${Host}/images/imageAdd/${inputData.imageOpen}`}
+                      alt="Preview"
+                    />
+                    {/* <div
                     className={styles.preview_photos_container__remove_icon}
                     onClick={() => handleRemovePreviewPhotoOpen()}
                   >
                     <span></span>
                   </div> */}
-                </div>
-              )}
+                  </div>
+                )}
             </div>
           </div>
           {/* блок куда вводиться инфа (Заголовок текстового блока ) */}
@@ -2342,7 +2386,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
             <div className={styles.form_container__checkbox_block}>
               <div>Закрывающая картинка</div>
             </div>
-            <div 
+            <div
             // style={{ display: isPhotoCloseVisible ? "block" : "none" }}
             >
               <label className={styles.slider_container__customFileUpload}>
@@ -2397,8 +2441,8 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                 </div>
               )}
             </div>
-            <div>         
-             {previewPhotoClose?.map((preview, index) => (
+            <div>
+              {previewPhotoClose?.map((preview, index) => (
                 <div
                   key={index}
                   className={styles.preview_photos_container__block}
@@ -2415,23 +2459,23 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                     <span></span>
                   </div> */}
                 </div>
-              ))}            
+              ))}
               {!inputData.imageClose !== null &&
-                  previewPhotoClose.length === 0 && (
-                <div className={styles.preview_photos_container__block}>
-                  <img
-                    className={styles.preview_photos_container__img}
-                    src={`${Host}/images/imageAdd/${inputData.imageClose}`}
-                    alt="Preview"
-                  />
-                  {/* <div
+                previewPhotoClose.length === 0 && (
+                  <div className={styles.preview_photos_container__block}>
+                    <img
+                      className={styles.preview_photos_container__img}
+                      src={`${Host}/images/imageAdd/${inputData.imageClose}`}
+                      alt="Preview"
+                    />
+                    {/* <div
                     className={styles.preview_photos_container__remove_icon}
                     onClick={() => handleRemovePreviewPhotoOpen()}
                   >
                     <span></span>
                   </div> */}
-                </div>
-              )}
+                  </div>
+                )}
             </div>
           </div>
           <div className={styles.form_container__button_block}>
