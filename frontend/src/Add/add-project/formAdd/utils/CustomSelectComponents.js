@@ -120,6 +120,35 @@ export const AnotherValueContainer = ({ children, ...props }) => {
     );
 };
 
+export const AnotherStagesProject = ({ children, ...props }) => {
+  // ... содержимое компонента ...
+  return (
+    <components.ValueContainer {...props}>
+      {props.hasValue ? (
+        <>
+          <div
+            style={{
+              position: "absolute",
+              top: "-1px",
+              left: "2px",
+              fontSize: "0.8rem",
+              fontWeight: "var(--fw-400)",
+              color: "var(--light-gray-C0C5CB)",
+              opacity: props.hasValue ? 1 : 0, // изменение прозрачности в зависимости от наличия значения
+              transition: "opacity 0.3s ease", // плавный переход
+            }}
+          >
+            Выберите стадии проекта
+          </div>
+          {children}
+        </>
+      ) : (
+        children
+      )}
+    </components.ValueContainer>
+  );
+};
+
 export const SelectDegreeParticipationDropdownIndicator = (props) => {
   // ... содержимое компонента ...
   return (

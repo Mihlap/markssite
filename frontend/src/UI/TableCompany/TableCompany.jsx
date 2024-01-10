@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./TableCompany.module.css";
 import tableData from "./tableData";
 
@@ -30,10 +30,35 @@ const TableCompany = ({
   const handleShowAllClick = () => {
     setShowAll(!showAll);
   };
+  useEffect(() => {
+    const scrollToTop = () => {
+      window.scrollTo(0, 0);
+    };
+
+    const scrollToTableHeader = () => {
+      const element = document.getElementById("table-header-anchor");
+      if (element) {
+        // element.scrollIntoView({ behavior: 'smooth' });
+        window.location.replace("#table-header-anchor");
+      }
+    };
+
+    const hash = window.location.hash;
+    if (hash === "#table-header-anchor") {
+      scrollToTableHeader();
+    } else {
+      scrollToTop();
+    }
+
+    return () => {
+      window.removeEventListener("scroll", scrollToTop);
+      window.removeEventListener("scroll", scrollToTableHeader);
+    };
+  }, []);
 
   return (
     <div>
-      <div className={`${styles.tableContainer} ${showAll ? styles.visible : ''}`}>
+      <div id="table-header-anchor" className={`${styles.tableContainer} ${showAll ? styles.visible : ''}`}>
         <table className={styles.tableStyle}>
           <thead>
             <tr>
