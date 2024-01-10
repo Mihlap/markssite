@@ -223,11 +223,10 @@ const ProjectCard = ({
     };
   }, []);
 
-
- // Получаем 20 рандомных проектов
- const randomProjects = projects
- ? [...projects].sort(() => 0.5 - Math.random()).slice(0, 20)
- : [];
+  // Получаем 20 рандомных проектов
+  const randomProjects = projects
+    ? [...projects].sort(() => 0.5 - Math.random()).slice(0, 20)
+    : [];
 
   // const randomProjects = projects.slice().sort(() => Math.random() - 0.5).slice(0, 20);
 
@@ -506,12 +505,16 @@ const ProjectCard = ({
                     <div>
                       <div className={styles.local_title}>Публикации</div>
                       <Link to={project.linkToPublication} target="_blank">
-                        <div  className={`${styles.publicationLink} ${styles.local_text}`}>
+                        <div
+                          className={`${styles.publicationLink} ${styles.local_text}`}
+                        >
                           {project.publication}
                         </div>
                       </Link>
                       <Link to={project.linkToPublicationTwo} target="_blank">
-                        <div  className={`${styles.publicationLink} ${styles.local_text}`}>
+                        <div
+                          className={`${styles.publicationLink} ${styles.local_text}`}
+                        >
                           {project.publicationTwo}
                         </div>
                       </Link>
@@ -532,8 +535,18 @@ const ProjectCard = ({
                       </div>
                     </div>
                     <div>
-                      <div className={styles.local_title}>Награды</div>
-                      <div className={styles.local_text}>{project.awards}</div>
+                      <div className={styles.local_title}>Стадии проекта</div>
+                      <div className={styles.local_text}>
+                        {" "}
+                        {project.awards
+                          .split(",")
+                          .map((award, index, array) => (
+                            <span key={index}>
+                              {award.trim()}{" "}
+                              {index < array.length - 1 ? ", " : ""}
+                            </span>
+                          ))}
+                      </div>
                     </div>
                   </div>
                 </div>

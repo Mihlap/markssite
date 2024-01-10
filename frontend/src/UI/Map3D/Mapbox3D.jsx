@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { YMaps, Map, Placemark } from "@pbe/react-yandex-maps";
+import { YMaps, Map, Placemark, ZoomControl } from "@pbe/react-yandex-maps";
 import popupsData from "./popupsdata";
 import styles from "./Mapbox.module.css";
 
@@ -35,11 +35,13 @@ const Mapbox3D = () => {
     // Отключить прокрутку при завершении взаимодействия с картой
     document.body.style.overflow = "hidden";
   };
+  
 
   useEffect(() => {
     setSelectedPopup(null);
     setActiveMarkerIndex(null);
   }, []);
+  
 
   return (
     <div className={styles.map}>
@@ -54,10 +56,12 @@ const Mapbox3D = () => {
           options={{
             suppressMapOpenBlock: true,
             suppressMapOpenBlockKey: "ctrlKey",
+            behaviors: ["disableScrollZoom"],             
           }}
           onTouchStart={handleMapTouchStart}
           onTouchEnd={handleMapTouchEnd}
         >
+          {window.innerWidth > 1025 && <ZoomControl options={{ position: { top: 20, right: 20 } }} />}
           {popupsData.map((marker, index) => (
             <Placemark 
               key={index}

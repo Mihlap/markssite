@@ -75,6 +75,7 @@ export default function Company({
   const blockSlider = useRef(null);
   const nameCompanyRef = useRef(null);
   const thisBlockRef = useRef(null);
+  const anchorRef = useRef(null);
 
   const countDepartment = useSelector((state) => state.counter.countDepartment);
   const countGap = useSelector((state) => state.counter.countGap);
@@ -95,25 +96,9 @@ export default function Company({
       window.scrollTo(0, 0);
     };
 
-    const scrollToTableHeader = () => {
-      const element = document.getElementById("table-header-anchor");
-      if (element) {
-        // element.scrollIntoView({ behavior: 'smooth' });
-        window.location.replace("#table-header-anchor");
-      }
-    };
-
-    const hash = window.location.hash;
-    if (hash === "#table-header-anchor") {
-      scrollToTableHeader();
-    } else {
-      scrollToTop();
-    }
-
     return () => {
       window.removeEventListener("scroll", scrollToTop);
-      window.removeEventListener("scroll", scrollToTableHeader);
-    };
+     };
   }, []);
 
   useEffect(() => {
@@ -511,7 +496,7 @@ export default function Company({
         <div className={styles.company_group_slider}>
           <CompanyGroupSlider />
         </div>
-        <div className={styles.awards_wrapper} id="table-header-anchor">
+        <div className={styles.awards_wrapper}>
           Награды и&nbsp;премии
           <div className={styles.years_div}>/2005-2024/</div>
         </div>
