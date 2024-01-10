@@ -32,7 +32,7 @@ const TableCompanyMobile = () => {
     const scrollToTableHeader = () => {
       const element = document.getElementById("table-header-anchor");
       if (element) {
-        // element.scrollIntoView({ behavior: 'smooth' });
+        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
         window.location.replace("#table-header-anchor");
       }
     };

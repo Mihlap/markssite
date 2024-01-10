@@ -46,6 +46,7 @@ export default function Header({ handleMouseEnter,
   const [isHorizontalScroll, setIsHorizontalScroll] = useState(false);
   const [isAtRightEdge, setIsAtRightEdge] = useState(false);
   const [scrollingMode, setScrollingMode] = useState("vertical");
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
 
   const [loadingArticle, setLoadingArticle] = useState(false);
 
@@ -197,6 +198,7 @@ export default function Header({ handleMouseEnter,
     const isAtBottom = el.scrollTop + el.clientHeight >= el.scrollHeight;
     const isAtLeftEdge = el.scrollLeft <= 0;
     const isAtTop = el.scrollTop <= 0;
+    
   
     // Проверяем различные условия скролла и обновляем состояние соответственно
     if (isScrollingRight && isAtRightEdge && isAtBottom && !isHorizontalScroll) {
@@ -515,6 +517,7 @@ export default function Header({ handleMouseEnter,
         </div>
         <div className={styles.main_project}>
           <Swiper
+           onSlideChange={(swiper) => setCurrentSlideIndex(swiper.activeIndex)}
             className={styles.slider_card_container_project}
             id="slider_card_container_project"
             ref={sliderCardRef}
