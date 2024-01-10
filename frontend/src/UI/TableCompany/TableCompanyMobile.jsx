@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./TableCompany.module.css";
 import tableData from "./tableData";
 
@@ -24,10 +24,35 @@ const TableCompanyMobile = () => {
     setShowTable(index === showTable ? null : index);
   };
 
+  useEffect(() => {
+    const scrollToTop = () => {
+      window.scrollTo(0, 0);
+    };
+
+    const scrollToTableHeader = () => {
+      const element = document.getElementById("table-header-anchor");
+      if (element) {
+        // element.scrollIntoView({ behavior: 'smooth' });
+        window.location.replace("#table-header-anchor");
+      }
+    };
+
+    const hash = window.location.hash;
+    if (hash === "#table-header-anchor") {
+      scrollToTableHeader();
+    } else {
+      scrollToTop();
+    }
+
+    return () => {
+      window.removeEventListener("scroll", scrollToTop);
+      window.removeEventListener("scroll", scrollToTableHeader);
+    };
+  }, []);
 
   return (
     <>
-         <table className={styles.tableStyle}>
+         <table className={styles.tableStyle} id="table-header-anchor">
         <tbody>
           {tableData.map((el, index) => (
             <React.Fragment key={index}>
