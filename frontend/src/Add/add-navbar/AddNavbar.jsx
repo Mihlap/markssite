@@ -6,7 +6,7 @@ import icon1 from "./icon/one.png";
 import icon2 from "./icon/three.png";
 import icon3 from "./icon/four.png";
 import icon4 from "./icon/two.png";
-import ChristmasTree from "./icon/ChristmastreewithbulbandsnowPNGImage.png";
+// import ChristmasTree from "./icon/ChristmastreewithbulbandsnowPNGImage.png";
 
 import { useDispatch } from "react-redux";
 import { logoutUser } from "../../store/Slice/authSlice";
@@ -270,7 +270,7 @@ export default function AddNavbar({ user, handleReturn }) {
           )}
         </div>
       </div>
-      <img
+      {/* <img
         style={{
           position: "absolute",
           bottom: 0,
@@ -280,7 +280,7 @@ export default function AddNavbar({ user, handleReturn }) {
         }}
         src={ChristmasTree}
         alt="ChristmasTree"
-      />
+      /> */}
     </>
   );
 }
