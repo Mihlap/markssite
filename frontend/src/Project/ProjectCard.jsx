@@ -535,7 +535,7 @@ const ProjectCard = ({
                       </div>
                     </div>
                     <div>
-                      <div className={styles.local_title}>Стадии проекта</div>
+                      <div className={styles.local_title}>Стадии</div>
                       <div className={styles.local_text}>
                         {" "}
                         {project.awards
