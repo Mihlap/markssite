@@ -2153,7 +2153,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                     },
                   ]}
                   className={styles.form__field}
-                  placeholder="Выберите стадии проекта"
+                  placeholder="Выберите стадии"
                   components={{
                     DropdownIndicator: AnotherDropdownIndicator,
                     ValueContainer: AnotherStagesProject,
