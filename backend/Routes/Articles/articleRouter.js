@@ -75,6 +75,97 @@ router.post(
   },
 );
 
+router.put(
+  '/editzapros/:articleId',
+  fileMiddleware.fields([
+    { name: 'dropPhoto', maxCount: 4 },
+    { name: 'photoAva', maxCount: 1 },
+    { name: 'imageOpen', maxCount: 1 },
+    { name: 'imageClose', maxCount: 1 },
+    { name: 'dynamicImages', maxCount: 50 },
+  ]),
+  async (req, res) => {
+    try {
+      const { articleId } = req.params;
+      console.log('Received PUT request to update article with ID:', articleId);
+      const articleToUpdate = await Articles.findByPk(articleId);
+
+      if (!articleToUpdate) {
+        console.error('Article not found for ID:', articleId);
+        return res.status(404).json({ message: 'Статья не найдена' });
+      }
+
+      const dynamicImageTitles = req.files.dynamicImages
+      ? req.files.dynamicImages.map((file) => file.filename).join(', ')
+      : null;
+    let dynamicBlocksContent = null;
+
+    if (req.body.dynamicBlocksJSON) {
+      try {
+        dynamicBlocksContent = JSON.parse(req.body.dynamicBlocksJSON);
+      } catch (error) {
+        console.error('Ошибка при разборе dynamicBlocksJSON:', error);
+        return res.status(400).json({ message: 'Неверный формат данных для dynamicBlocksJSON' });
+      }
+    }
+
+      // Обработка загрузки файлов и других данных также, как в маршруте POST
+
+      const imageTitles = req.files.dropPhoto
+      ? req.files.dropPhoto.map((file) => file.filename).join(', ')
+      : null;
+    const imageProjects = req.files.photoAva ? req.files.photoAva[0].filename : null;
+    const imageOpens = req.files.imageOpen ? req.files.imageOpen[0].filename : null;
+    const imageCloses = req.files.imageClose ? req.files.imageClose[0].filename : null;
+
+      // Обновление существующей статьи
+      await articleToUpdate.update({
+        title: req.body.title,
+        author: req.body.author,
+        city: req.body.city,
+        dataMonthYear: req.body.dataMonthYear,
+        selectCompetencies: req.body.selectCompetencies,
+        imageTitle: imageTitles,
+        titleTextBlock: req.body.titleTextBlock,
+        descriptionArticle: req.body.descriptionArticle,
+        imageAuthor: imageProjects,
+        imageOpen: imageOpens,
+        textBlock: req.body.textBlock,
+        imageClose: imageCloses,
+      });
+      
+      console.log('Article updated successfully:', articleToUpdate.toJSON());
+
+   // Поиск или создание данных конструктора
+   let existingConstructor = await ConstructorArticles.findOne({ where: { idBlock: articleId } });
+
+   if (existingConstructor) {
+    console.log('Found existing constructor for article with ID:', articleId);
+     // Если конструктор существует, обновляем данные
+     await existingConstructor.update({
+       data: dynamicBlocksContent,
+       image: dynamicImageTitles,
+     });
+   } else {
+    console.log('No existing constructor found for article with ID:', articleId);
+     // Если конструктор не существует, создаем новый
+     existingConstructor = await ConstructorArticles.create({
+       data: dynamicBlocksContent,
+       image: dynamicImageTitles,
+       idBlock: articleId,
+     });
+   }
+
+   // остальной код обработки...
+
+      res.status(200).json({ message: 'Статья успешно обновлена' });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: 'Ошибка при обновлении статьи' });
+    }
+  }
+);
+
 router.get('/getzapros', async (req, res) => {
   try {
     const data = await Articles.findAll({
