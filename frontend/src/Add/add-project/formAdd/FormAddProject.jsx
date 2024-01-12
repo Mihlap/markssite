@@ -781,7 +781,7 @@ export default function FormAddProject({ setIsModalOpen }) {
   // << ============ функции КОНСТРУКТОРА ============ >>
 
   // console.log(inputData, "<<--inputData PROJECT");
-  console.log(selectedProjectStages, "<<--selectedProjectStages");
+  // console.log(selectedProjectStages, "<<--selectedProjectStages");
   return (
     <div className={styles.form_container}>
       {showNotification && (
