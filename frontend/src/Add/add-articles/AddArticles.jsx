@@ -240,7 +240,7 @@ export default function AddArticles({ user }) {
               ) : (
                 <>
                   <div className={styles.card_components_admin__block_map}>
-                    {article &&
+                    {Array.isArray(article) &&
                       [...article].reverse().map((el) => {
                         const firstPhoto =
                           el && el.imageTitle
@@ -317,7 +317,7 @@ export default function AddArticles({ user }) {
                                     <div className={styles.edit_block}>
                                       <button
                                         className={styles.buttom_edit}
-                                        // onClick={() => handleEditClick(el.id)}
+                                        onClick={() => handleEditClick(el.id)}
                                       >
                                         <label
                                           htmlFor="edit"
