@@ -32,7 +32,7 @@ router.post(
           return res.status(400).json({ message: 'Неверный формат данных для dynamicBlocksJSON' });
         }
       }
-
+      
       const imageTitles = req.files.dropPhoto
         ? req.files.dropPhoto.map((file) => file.filename).join(', ')
         : null;
@@ -87,7 +87,7 @@ router.put(
   async (req, res) => {
     try {
       const { articleId } = req.params;
-      console.log('Received PUT request to update article with ID:', articleId);
+      // console.log('Received PUT request to update article with ID:', articleId);
       const articleToUpdate = await Articles.findByPk(articleId);
 
       if (!articleToUpdate) {
@@ -117,6 +117,10 @@ router.put(
     const imageProjects = req.files.photoAva ? req.files.photoAva[0].filename : null;
     const imageOpens = req.files.imageOpen ? req.files.imageOpen[0].filename : null;
     const imageCloses = req.files.imageClose ? req.files.imageClose[0].filename : null;
+    const currentImageTitles = articleToUpdate.imageTitle ? articleToUpdate.imageTitle.split(', ') : [];
+    const currentImageProjects = articleToUpdate.imageAuthor ? articleToUpdate.imageAuthor.split(', ') : [];
+    const currentImageOpens = articleToUpdate.imageOpen ? [articleToUpdate.imageOpen] : [];
+    const currentImageCloses = articleToUpdate.imageClose ? [articleToUpdate.imageClose] : [];
 
       // Обновление существующей статьи
       await articleToUpdate.update({
@@ -125,29 +129,31 @@ router.put(
         city: req.body.city,
         dataMonthYear: req.body.dataMonthYear,
         selectCompetencies: req.body.selectCompetencies,
-        imageTitle: imageTitles,
+        // imageTitle: imageTitles,
         titleTextBlock: req.body.titleTextBlock,
         descriptionArticle: req.body.descriptionArticle,
-        imageAuthor: imageProjects,
-        imageOpen: imageOpens,
+        // imageAuthor: imageProjects,
+        // imageOpen: imageOpens,
         textBlock: req.body.textBlock,
-        imageClose: imageCloses,
+        // imageClose: imageCloses,
+        imageTitle: imageTitles || currentImageTitles.join(', '),
+        imageAuthor: imageProjects || currentImageProjects.join(', '),
+        imageOpen: imageOpens || (currentImageOpens && currentImageOpens[0] ? currentImageOpens[0] : null),
+        imageClose: imageCloses || (currentImageCloses && currentImageCloses[0] ? currentImageCloses[0] : null),
+        
       });
       
-      console.log('Article updated successfully:', articleToUpdate.toJSON());
-
+   
    // Поиск или создание данных конструктора
    let existingConstructor = await ConstructorArticles.findOne({ where: { idBlock: articleId } });
 
    if (existingConstructor) {
-    console.log('Found existing constructor for article with ID:', articleId);
      // Если конструктор существует, обновляем данные
      await existingConstructor.update({
        data: dynamicBlocksContent,
        image: dynamicImageTitles,
      });
    } else {
-    console.log('No existing constructor found for article with ID:', articleId);
      // Если конструктор не существует, создаем новый
      existingConstructor = await ConstructorArticles.create({
        data: dynamicBlocksContent,
@@ -155,13 +161,10 @@ router.put(
        idBlock: articleId,
      });
    }
-
-   // остальной код обработки...
-
       res.status(200).json({ message: 'Статья успешно обновлена' });
     } catch (error) {
-      console.log(error);
-      res.status(500).json({ message: 'Ошибка при обновлении статьи' });
+      console.error('Error while updating article:', error);
+      res.status(500).json({ message: 'Ошибка при обновлении статьи', error: error.message });
     }
   }
 );
