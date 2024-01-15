@@ -63,6 +63,9 @@ export default function AddArticles({ user }) {
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
+    if (editArticleData) {
+      setEditArticleData(null);     
+    }
   };
 
   const handleCloseModal = () => {
@@ -89,7 +92,7 @@ export default function AddArticles({ user }) {
     await navigator.clipboard.writeText(id);
     if (isMountedRef.current) {
     setIsCopied(true);
-    seticonCopy(true);
+    // seticonCopy(true);
     setCopiedId(id);
   }
   } catch (err) {
@@ -124,7 +127,7 @@ export default function AddArticles({ user }) {
     if (isCopied) {
       const timer = setTimeout(() => {
         setIsCopied(false);
-        seticonCopy(false);
+        // seticonCopy(false);
         setCopiedId("");
       }, 3000);
       return () => clearTimeout(timer);
@@ -241,9 +244,8 @@ export default function AddArticles({ user }) {
                 <>
                   <div className={styles.card_components_admin__block_map}>
                     {Array.isArray(article) &&
-                      [...article].reverse().map((el) => {
-                        const firstPhoto =
-                          el && el.imageTitle
+                      [...article]?.reverse().map((el) => {
+                        const firstPhoto = el && el.imageTitle
                             ? el.imageTitle.split(", ")[0]
                             : null;
                         const defaultPhoto = cat;

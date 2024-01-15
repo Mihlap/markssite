@@ -149,11 +149,10 @@ export const fetchArticle = createAsyncThunk(
         },
       });
 
-      // Additional logic after successful response, if needed
       await dispatch(getFetchFormArticle());
     } catch (error) {
       console.error("Error while fetching or processing article:", error);
-      dispatch(fetchArticleFailure(error.message));
+      dispatch(fetchArticleFailure(error.response?.data?.message || error.message));
     }
   }
 );
