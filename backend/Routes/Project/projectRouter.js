@@ -134,6 +134,11 @@ router.put(
       const imageProjects = req.files.photoAva ? req.files.photoAva[0].filename : null;
       const imageOpens = req.files.imageOpen ? req.files.imageOpen[0].filename : null;
       const imageCloses = req.files.imageClose ? req.files.imageClose[0].filename : null;
+      const currentImageTitles = projectToUpdate.imageTitle ? projectToUpdate.imageTitle.split(', ') : [];
+      const currentImageProjects = projectToUpdate.imageProject ? projectToUpdate.imageProject.split(', ') : [];
+      const currentImageOpens = projectToUpdate.imageOpen ? [projectToUpdate.imageOpen] : [];
+      const currentImageCloses = projectToUpdate.imageClose ? [projectToUpdate.imageClose] : [];
+      
 
       // Обновление данных проекта
       await projectToUpdate.update({
@@ -143,8 +148,8 @@ router.put(
         monthYear: req.body.monthYear,
         viewConstruction: req.body.viewConstruction,
         style: req.body.radioValue,
-        imageTitle: imageTitles,
-        imageProject: imageProjects,
+        // imageTitle: imageTitles,
+        // imageProject: imageProjects,
         titleTextBlock: req.body.titleTextBlock,
         descriptionProject: req.body.descriptionProject,
         totalArea: req.body.totalArea,
@@ -161,12 +166,16 @@ router.put(
         publicationTwo: req.body.publicationTwo,
         linkToPublicationTwo: req.body.linkToPublicationTwo,
         awards: req.body.awards,
-        imageOpen: imageOpens,
+        // imageOpen: imageOpens,
         headingTextBlock: req.body.headingTextBlock,
         textBlock: req.body.textBlock,
-        imageClose: imageCloses,
+        // imageClose: imageCloses,
         numberOfLanes: req.body.numberOfLanes,
         long: req.body.long,
+        imageTitle: imageTitles || currentImageTitles.join(', '),
+        imageProject: imageProjects || currentImageProjects.join(', '),
+        imageOpen: imageOpens || (currentImageOpens && currentImageOpens[0] ? currentImageOpens[0] : null),
+        imageClose: imageCloses || (currentImageCloses && currentImageCloses[0] ? currentImageCloses[0] : null),
       });
 
       // Поиск или создание данных конструктора

@@ -10,7 +10,7 @@ import {
   removePreviewPhotoClose,
   removePreviewPhotoOpen,
 } from "./utils/formHelpers";
-import { fetchArticle, setArticleId, clearFormData } from "../../../store/Slice/articleSlice";
+import { fetchArticle, setArticleId, clearFormData, getFetchFormArticle } from "../../../store/Slice/articleSlice";
 import customStyles from "../../add-project/formAdd/utils/customStyles";
 import compressImageFile from "browser-image-compression";
 
@@ -118,8 +118,8 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
           ? editArticleData.imageClose
           : "",
           imageTitle:
-          editArticleData.imageTitle !== undefined
-            ? editArticleData.imageTitle.split(",") 
+          editArticleData.imageTitle && typeof editArticleData.imageTitle === 'string'
+            ? editArticleData.imageTitle.split(",")
             : [],        
         };
         // console.log("Обновленные данные формы:", updatedInputData);
@@ -199,6 +199,10 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
+      const previewPhotosCopy = [...previewPhotos];
+    const previewPhotoAvaCopy = [...previewPhotoAva];
+    const previewPhotoOpenCopy = [...previewPhotoOpen];
+    const previewPhotoCloseCopy = [...previewPhotoClose];
       const formattedData = {
         ...inputData,
         dynamicBlocks: dynamicData,
@@ -218,10 +222,15 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
           setPreviewPhotos,
           setPreviewPhotoAva,
           setPreviewPhotoOpen,
-          setPreviewPhotoClose
+          setPreviewPhotoClose,
+          previewPhotosCopy,        // Передаем копии массивов с изображениями
+          previewPhotoAvaCopy,
+          previewPhotoOpenCopy,
+          previewPhotoCloseCopy,
         )
       )
       dispatch(clearFormData());
+      dispatch(getFetchFormArticle());
   
       // Ваши дополнительные действия после успешного сохранения статьи
       // Например, закрытие модального окна и сброс состояний
