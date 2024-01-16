@@ -138,7 +138,7 @@ export const AnotherStagesProject = ({ children, ...props }) => {
               transition: "opacity 0.3s ease", // плавный переход
             }}
           >
-            Выберите стадии
+            Выберите стадию
           </div>
           {children}
         </>
