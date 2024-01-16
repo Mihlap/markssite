@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import Select from "react-select";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 import { transliterate } from "transliteration";
 import { useDispatch } from "react-redux";
 import styles from "../../add-project/formAdd/FormAddProject.module.scss";
@@ -835,31 +837,51 @@ export default function FormAddArticles({ setIsModalOpen }) {
             {/* <div className={styles.form_container__textarea_length}>
               {`${inputData.descriptionArticle.length}/260`}
             </div> */}
-            <textarea
+           <ReactQuill
+              modules={{
+                toolbar: [
+                  ['bold', 'italic', 'underline'], 
+                  [{ list: 'bullet' }], 
+                 ],
+                clipboard: {
+                  matchVisual: false,
+                },
+              }}
+              formats={[
+                'bold',
+                'italic',
+                'underline',                            
+                'list',
+               ]}
               className={styles.form_container__textarea}
+              style={{
+                // resize: "none",
+                padding: "0rem",
+                border: "1px solid var(--blue-75BBFD)",
+                fontFamily: "var(--font-raleway)",
+                borderRadius: "6px",
+                fontFamily: "var(--font-raleway)",
+                fontSize: "16px",
+                fontStyle: "normal",
+                fontWeight: "var(--fw-400)",
+                lineHeight: "16px",
+                fontSize: "1rem",
+                color: "var(---black-1D2E43)",
+                boxSizing: "border-box",
+                paddingBottom: "2.5rem",
+              }}
               required
               name="descriptionArticle"
               id="descriptionArticle"
-              cols="30"
-              rows="10"
-              placeholder="Нет ограничения по символам"
               value={inputData.descriptionArticle}
-              onChange={(event) =>
-                changeHandler(
-                  event,
-                  inputData,
-                  setInputData,
-                  setPreviewPhotos,
-                  setIsDropPhotoVisible,
-                  setPreviewPhotoAva,
-                  setIsPhotoAvaVisible,
-                  setPreviewPhotoOpen,
-                  setIsPhotoOpenVisible,
-                  setPreviewPhotoClose,
-                  setIsPhotoCloseVisible
-                )
-              }
-            ></textarea>
+              onChange={(value) => {
+                setInputData((prevInputData) => ({
+                  ...prevInputData,
+                  descriptionArticle: value,
+                }));
+              }}
+              placeholder="Нет ограничения по символам"
+            />
             <label htmlFor="" className={styles.form_container__textarea_label}>
               Текст статьи
             </label>
@@ -1033,34 +1055,51 @@ export default function FormAddArticles({ setIsModalOpen }) {
           </div>
 
           <div className={styles.form_container__description_text}>
-            <textarea
+          <ReactQuill
+              modules={{
+                toolbar: [
+                  ['bold', 'italic', 'underline'], 
+                  [{ list: 'bullet' }], 
+                 ],
+                clipboard: {
+                  matchVisual: false,
+                },
+              }}
+              formats={[
+                'bold',
+                'italic',
+                'underline',                            
+                'list',
+               ]}
               className={styles.form_container__textarea}
+              style={{
+                // resize: "none",
+                padding: "0rem",
+                border: "1px solid var(--blue-75BBFD)",
+                fontFamily: "var(--font-raleway)",
+                borderRadius: "6px",
+                fontFamily: "var(--font-raleway)",
+                fontSize: "16px",
+                fontStyle: "normal",
+                fontWeight: "var(--fw-400)",
+                lineHeight: "16px",
+                fontSize: "1rem",
+                color: "var(---black-1D2E43)",
+                boxSizing: "border-box",
+                paddingBottom: "2.5rem",
+              }}
+              required
               name="textBlock"
               id="textBlock"
-              cols="30"
-              rows="10"
-              placeholder="Дополнительный текстовый блок"
               value={inputData.textBlock}
-              onChange={(event) =>
-                changeHandler(
-                  event,
-                  inputData,
-                  setInputData,
-                  setPreviewPhotos,
-                  setIsDropPhotoVisible,
-                  setPreviewPhotoAva,
-                  setIsPhotoAvaVisible,
-                  setPreviewPhotoOpen,
-                  setIsPhotoOpenVisible,
-                  setPreviewPhotoClose,
-                  setIsPhotoCloseVisible,
-                  setIsLoading,
-                  setIsLoadingDropPhoto,
-                  setIsLoadingOpenImage,
-                  setIsLoadingCloseImage
-                )
-              }
-            ></textarea>
+              onChange={(value) => {
+                setInputData((prevInputData) => ({
+                  ...prevInputData,
+                  textBlock: value,
+                }));
+              }}
+              placeholder="Нет ограничения по символам"
+            />
             <label
               htmlFor="textBlock"
               className={styles.form_container__textarea_label}

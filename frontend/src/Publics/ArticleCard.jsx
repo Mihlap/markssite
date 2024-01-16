@@ -219,6 +219,26 @@ const ArticleCard = ({
   ? [...articles].sort(() => 0.5 - Math.random()).slice(0, 20)
   : [];
 
+  function containsListTags(htmlString) {
+    return /<ul\b[\s\S]*?<li\b[\s\S]*?>[\s\S]*?<\/li>[\s\S]*?<\/ul>/i.test(htmlString);
+  }
+  
+  function renderListWithDots(htmlString) {
+    // Заменяем каждую метку <li> на <li>&middot; 
+    // с пробелом после &middot; и учитываем пробелы перед текстом
+    const newListHTML = htmlString.replace(/<li\b([^>]*)>([\s\S]*?)<\/li>/gi, (match, p1, p2) => {
+      const spacesBefore = p1.match(/^( *)/)[1]; // Получаем пробелы перед <li>
+      const middleDot = '	&bull;';
+      return `<li>${spacesBefore}${middleDot} ${p2}</li>`;
+    });
+  
+    // Добавляем обработку пробелов
+    const withSpaces = newListHTML.replace(/&nbsp;/g, ' ');
+  
+    return `<ul>${withSpaces}</ul>`;
+  }
+  
+
   // console.log(userSelectedBlocks, "<<--- userSelectedBlocks");
 
   // console.log(article, "===========================================");
@@ -297,7 +317,19 @@ const ArticleCard = ({
                   </div>
                 </div>
                 <div className={styles.title_text}>
-                  {article.descriptionArticle}
+                  {containsListTags(article.descriptionArticle) ? (
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: renderListWithDots(article.descriptionArticle),
+                      }}
+                    />
+                  ) : (
+                    <div
+                    dangerouslySetInnerHTML={{
+                      __html: renderListWithDots(article.descriptionArticle),
+                    }}
+                  />
+                  )}
                 </div>
                 <div className={styles.result_container}></div>
               </div>
@@ -339,7 +371,20 @@ const ArticleCard = ({
                     }
                   />
                   <div className={styles.leftImg1_object_text1}>
-                    {article.textBlock}
+                    {/* {article.textBlock} */}
+                    {containsListTags(article.textBlock) ? (
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: renderListWithDots(article.textBlock),
+                      }}
+                    />
+                  ) : (
+                    <div
+                    dangerouslySetInnerHTML={{
+                      __html: renderListWithDots(article.textBlock),
+                    }}
+                  />
+                  )}
                   </div>
                 </div>
               </div>
@@ -484,7 +529,7 @@ const ArticleCard = ({
               <div className={styles.previous_svg_articleCard}>
                 <img src={previous} alt={previous} />
                 <span className={styles.previous__span_articleCard}>
-                {isMobile ? "Предыдущая статья" : `${previousArticle.title}`}
+                  {isMobile ? "Предыдущая статья" : `${previousArticle.title}`}
                 </span>
               </div>
             </Link>
@@ -498,7 +543,7 @@ const ArticleCard = ({
             >
               <div className={styles.next_svg_articleCard}>
                 <span className={styles.next__span_articleCard}>
-                {isMobile ? "Следующая статья" : `${nextArticle.title}`}
+                  {isMobile ? "Следующая статья" : `${nextArticle.title}`}
                 </span>
                 <img src={next} alt={next} />
               </div>
