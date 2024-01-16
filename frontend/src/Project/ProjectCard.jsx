@@ -503,7 +503,7 @@ const ProjectCard = ({
                       </div>
                     </div>
                     <div>
-                      <div className={styles.local_title}>Публикации</div>
+                      <div className={styles.local_title}>Публикация</div>
                       <Link to={project.linkToPublication} target="_blank">
                         <div
                           className={`${styles.publicationLink} ${styles.local_text}`}
@@ -535,7 +535,7 @@ const ProjectCard = ({
                       </div>
                     </div>
                     <div>
-                      <div className={styles.local_title}>Стадии</div>
+                      <div className={styles.local_title}>Стадия</div>
                       <div className={styles.local_text}>
                         {" "}
                         {project.awards

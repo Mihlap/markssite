@@ -3,19 +3,29 @@ import Select from "react-select";
 import { transliterate } from "transliteration";
 import { useDispatch } from "react-redux";
 import styles from "../../add-project/formAdd/FormAddProject.module.scss";
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 import {
   changeHandler,
-   removePreviewPhoto,
+  removePreviewPhoto,
   removePreviewPhotoAva,
   removePreviewPhotoClose,
   removePreviewPhotoOpen,
 } from "./utils/formHelpers";
-import { fetchArticle, setArticleId, clearFormData, getFetchFormArticle } from "../../../store/Slice/articleSlice";
+import {
+  fetchArticle,
+  setArticleId,
+  clearFormData,
+  getFetchFormArticle,
+} from "../../../store/Slice/articleSlice";
 import customStyles from "../../add-project/formAdd/utils/customStyles";
 import compressImageFile from "browser-image-compression";
 
 import ConstructorPage from "../constructor/ConstructorPage";
-import { PublicationContainer, PublicationIndicator } from "../../add-project/formAdd/utils/CustomSelectComponents";
+import {
+  PublicationContainer,
+  PublicationIndicator,
+} from "../../add-project/formAdd/utils/CustomSelectComponents";
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 
@@ -54,82 +64,75 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
   const [isLoadingCloseImage, setIsLoadingCloseImage] = useState(false);
 
   useEffect(() => {
-      if (editArticleData) {
+    if (editArticleData) {
       const initialSelectedCompetencies = editArticleData.selectCompetencies
         ? editArticleData.selectCompetencies
             .split(",")
             .map((item) => ({ value: item.trim(), label: item.trim() }))
-        : [];   
+        : [];
 
       setSelectedCompetencies(initialSelectedCompetencies);
-        
+
       setInputData((prevInputData) => {
         const updatedInputData = {
           ...prevInputData,
           title:
-          editArticleData.title !== undefined ? editArticleData.title : "",
+            editArticleData.title !== undefined ? editArticleData.title : "",
           selectCompetencies: initialSelectedCompetencies,
           author:
-          editArticleData.author !== undefined
-              ? editArticleData.author
-              : "",
-          city:
-          editArticleData.city !== undefined
-              ? editArticleData.city
-              : "",
+            editArticleData.author !== undefined ? editArticleData.author : "",
+          city: editArticleData.city !== undefined ? editArticleData.city : "",
           dataMonthYear:
-          editArticleData.dataMonthYear !== undefined
+            editArticleData.dataMonthYear !== undefined
               ? editArticleData.dataMonthYear
-              : "", 
+              : "",
           dropPhoto:
-          editArticleData.dropPhoto !== undefined
-          ? editArticleData.dropPhoto.split(",") 
-          : [],               
+            editArticleData.dropPhoto !== undefined
+              ? editArticleData.dropPhoto.split(",")
+              : [],
           photoAva:
-          editArticleData.photoAva !== undefined
+            editArticleData.photoAva !== undefined
               ? editArticleData.photoAva
               : "",
           titleTextBlock:
-          editArticleData.titleTextBlock !== undefined
+            editArticleData.titleTextBlock !== undefined
               ? editArticleData.titleTextBlock
               : "",
           descriptionArticle:
-          editArticleData.descriptionArticle !== undefined
+            editArticleData.descriptionArticle !== undefined
               ? editArticleData.descriptionArticle
-              : "",         
+              : "",
           publication:
-          editArticleData.publication !== undefined
+            editArticleData.publication !== undefined
               ? editArticleData.publication
-              : "",        
+              : "",
           linkToPublicationTwo:
-          editArticleData.linkToPublicationTwo !== undefined
+            editArticleData.linkToPublicationTwo !== undefined
               ? editArticleData.linkToPublicationTwo
               : "",
           imageOpen:
-          editArticleData.imageOpen !== undefined
+            editArticleData.imageOpen !== undefined
               ? editArticleData.imageOpen
               : "",
           textBlock:
-          editArticleData.textBlock !== undefined
+            editArticleData.textBlock !== undefined
               ? editArticleData.textBlock
               : "",
           imageClose:
-          editArticleData.imageClose !== undefined
-          ? editArticleData.imageClose
-          : "",
+            editArticleData.imageClose !== undefined
+              ? editArticleData.imageClose
+              : "",
           imageTitle:
-          editArticleData.imageTitle && typeof editArticleData.imageTitle === 'string'
-            ? editArticleData.imageTitle.split(",")
-            : [],        
+            editArticleData.imageTitle &&
+            typeof editArticleData.imageTitle === "string"
+              ? editArticleData.imageTitle.split(",")
+              : [],
         };
         // console.log("Обновленные данные формы:", updatedInputData);
         return updatedInputData;
       });
       const dynamicDataFromEditProject = editArticleData.dynamicData;
-      if (
-        dynamicDataFromEditProject &&
-        dynamicDataFromEditProject.length > 0
-      ) {
+      if (dynamicDataFromEditProject && dynamicDataFromEditProject.length > 0) {
         setDynamicData(dynamicDataFromEditProject);
         const previewsArray = dynamicDataFromEditProject.map((block) =>
           block.map((input) => input.value)
@@ -200,15 +203,17 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
     e.preventDefault();
     try {
       const previewPhotosCopy = [...previewPhotos];
-    const previewPhotoAvaCopy = [...previewPhotoAva];
-    const previewPhotoOpenCopy = [...previewPhotoOpen];
-    const previewPhotoCloseCopy = [...previewPhotoClose];
+      const previewPhotoAvaCopy = [...previewPhotoAva];
+      const previewPhotoOpenCopy = [...previewPhotoOpen];
+      const previewPhotoCloseCopy = [...previewPhotoClose];
       const formattedData = {
         ...inputData,
         dynamicBlocks: dynamicData,
-        selectCompetencies: selectedCompetencies.map((option) => option.label).join(","),
+        selectCompetencies: selectedCompetencies
+          .map((option) => option.label)
+          .join(","),
       };
-  
+
       // Если есть данные об редактируемой статье, устанавливаем articleId
       if (editArticleData && editArticleData.id) {
         dispatch(setArticleId(editArticleData.id));
@@ -223,32 +228,30 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
           setPreviewPhotoAva,
           setPreviewPhotoOpen,
           setPreviewPhotoClose,
-          previewPhotosCopy,        // Передаем копии массивов с изображениями
+          previewPhotosCopy, // Передаем копии массивов с изображениями
           previewPhotoAvaCopy,
           previewPhotoOpenCopy,
-          previewPhotoCloseCopy,
+          previewPhotoCloseCopy
         )
-      )
+      );
       dispatch(clearFormData());
       dispatch(getFetchFormArticle());
-  
+
       // Ваши дополнительные действия после успешного сохранения статьи
       // Например, закрытие модального окна и сброс состояний
       setSelectedCompetencies([]);
       setIsModalOpen(false);
       // console.log('Статья успешно сохранена');
-  
+
       // Дополнительные действия, если необходимо
       // ...
-  
     } catch (error) {
       // Обработка ошибки, если сохранение не удалось
-      console.error('Ошибка при сохранении статьи:', error);
+      console.error("Ошибка при сохранении статьи:", error);
       // Можно предпринять меры по обработке ошибки, например, показ сообщения пользователю
       // ...
     }
   };
-  
 
   const closeModal = () => {
     setIsModalOpen(false);
@@ -261,39 +264,38 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
   };
 
   // функция которая не даёт создать новый диманический блок, пока не заполнены value предыдущего
- const areAllBlocksFilled = () => {
-   for (let block of dynamicData) {
-     for (let input of block) {
-       // Проверяем только обязательные поля
-       if (input.required && (!input.value || input.value === "")) {
-         return false;
-       }
-     }
-   }
-   return true;
+  const areAllBlocksFilled = () => {
+    for (let block of dynamicData) {
+      for (let input of block) {
+        // Проверяем только обязательные поля
+        if (input.required && (!input.value || input.value === "")) {
+          return false;
+        }
+      }
+    }
+    return true;
   };
-  
-    const handleRemoveBlock = (blockIndex) => {
-      setDynamicData((prevDynamicData) =>
-        prevDynamicData.filter((_, index) => index !== blockIndex)
-      );
-      // Обновление других связанных состояний...
-      setBlocks((prevBlocks) =>
-        prevBlocks.filter((_, index) => index !== blockIndex)
-      );
-      setDynamicPreviews((prevPreviews) =>
-        prevPreviews.filter((_, index) => index !== blockIndex)
-      );
-    };
+
+  const handleRemoveBlock = (blockIndex) => {
+    setDynamicData((prevDynamicData) =>
+      prevDynamicData.filter((_, index) => index !== blockIndex)
+    );
+    // Обновление других связанных состояний...
+    setBlocks((prevBlocks) =>
+      prevBlocks.filter((_, index) => index !== blockIndex)
+    );
+    setDynamicPreviews((prevPreviews) =>
+      prevPreviews.filter((_, index) => index !== blockIndex)
+    );
+  };
 
   const handleClick = (inputs) => {
-     
-     if (!areAllBlocksFilled()) {
-       setShowNotification(true);
-       setTimeout(() => setShowNotification(false), 5000);
-       return;
-     }
-     
+    if (!areAllBlocksFilled()) {
+      setShowNotification(true);
+      setTimeout(() => setShowNotification(false), 5000);
+      return;
+    }
+
     const blockKey = Date.now().toString();
     const newInputs = inputs.map((input) => ({
       ...input,
@@ -303,19 +305,19 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
     setDynamicData((prevDynamicData) => [...prevDynamicData, newInputs]);
   };
 
-    async function compressImage(file) {
-      const options = {
-        maxSizeMB: 3, // максимальный размер файла в MB
-        maxWidthOrHeight: 1920, // максимальная ширина или высота
-        useWebWorker: true,
-      };
+  async function compressImage(file) {
+    const options = {
+      maxSizeMB: 3, // максимальный размер файла в MB
+      maxWidthOrHeight: 1920, // максимальная ширина или высота
+      useWebWorker: true,
+    };
 
-      try {
-        return await compressImageFile(file, options);
-      } catch (error) {
-        console.error("Ошибка при сжатии изображения:", error);
-      }
+    try {
+      return await compressImageFile(file, options);
+    } catch (error) {
+      console.error("Ошибка при сжатии изображения:", error);
     }
+  }
 
   const handleDynamicInputChange = async (blockIndex, inputIndex, value) => {
     const newDynamicData = [...dynamicData];
@@ -340,7 +342,7 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
       const newName = `file_${sliceOfOriginalName}_${timestamp}_${randomNum}.${fileExtension}`;
       return newName;
     }
-  
+
     if (Array.isArray(value) && value[0] instanceof File) {
       const newFiles = await Promise.all(
         value.map(async (originalFile) => {
@@ -893,46 +895,48 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
               )}
             </div>
             <div className={styles.preview_photos_container}>
-              {Array.isArray(inputData.dropPhoto)
-              && inputData.dropPhoto.length > 0
-              && inputData.dropPhoto.map((preview, index) => (
-                 <div
-                   key={index}
-                   className={styles.preview_photos_container__block}
-                 >
-                   <img
-                     className={styles.preview_photos_container__img}
-                     src={URL.createObjectURL(preview)}
-                     alt={`Preview ${index}`}
-                   />
-                   {/* <div
-                     className={styles.preview_photos_container__remove_icon}
-                     onClick={() => handleRemovePreviewPhoto(index)}
-                   >
-                     <span></span>
-                   </div> */}
-                 </div>
-               ))}
-            {editArticleData.imageTitle !== null &&
-                inputData.dropPhoto.length === 0 &&
-                editArticleData.imageTitle.split(",").map((imageFileName, index) => (
+              {Array.isArray(inputData.dropPhoto) &&
+                inputData.dropPhoto.length > 0 &&
+                inputData.dropPhoto.map((preview, index) => (
                   <div
                     key={index}
                     className={styles.preview_photos_container__block}
                   >
                     <img
                       className={styles.preview_photos_container__img}
-                      src={`${Host}/images/imageArticle/${imageFileName.trim()}`}
+                      src={URL.createObjectURL(preview)}
                       alt={`Preview ${index}`}
                     />
                     {/* <div
+                     className={styles.preview_photos_container__remove_icon}
+                     onClick={() => handleRemovePreviewPhoto(index)}
+                   >
+                     <span></span>
+                   </div> */}
+                  </div>
+                ))}
+              {editArticleData.imageTitle !== null &&
+                inputData.dropPhoto.length === 0 &&
+                editArticleData.imageTitle
+                  .split(",")
+                  .map((imageFileName, index) => (
+                    <div
+                      key={index}
+                      className={styles.preview_photos_container__block}
+                    >
+                      <img
+                        className={styles.preview_photos_container__img}
+                        src={`${Host}/images/imageArticle/${imageFileName.trim()}`}
+                        alt={`Preview ${index}`}
+                      />
+                      {/* <div
                     className={styles.preview_photos_container__remove_icon}
                     onClick={() => handleRemovePreviewPhoto(index)}
                   >
                     <span></span>
                   </div> */}
-                  </div>
-                ))}
+                    </div>
+                  ))}
             </div>
           </div>
           {/* блок и инпутом ( Заголовок текстового блока ) */}
@@ -977,36 +981,55 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
             {/* <div className={styles.form_container__textarea_length}>
               {`${inputData.descriptionArticle.length}/260`}
             </div> */}
-            <textarea
+            <ReactQuill
+              modules={{
+                toolbar: [
+                  ['bold', 'italic', 'underline'], 
+                  [{ list: 'bullet' }], 
+                 ],
+                clipboard: {
+                  matchVisual: false,
+                },
+              }}
+              formats={[
+                'bold',
+                'italic',
+                'underline',                            
+                'list',
+               ]}
               className={styles.form_container__textarea}
+              style={{
+                // resize: "none",
+                padding: "0rem",
+                border: "1px solid var(--blue-75BBFD)",
+                fontFamily: "var(--font-raleway)",
+                borderRadius: "6px",
+                fontFamily: "var(--font-raleway)",
+                fontSize: "16px",
+                fontStyle: "normal",
+                fontWeight: "var(--fw-400)",
+                lineHeight: "16px",
+                fontSize: "1rem",
+                color: "var(---black-1D2E43)",
+                boxSizing: "border-box",
+                paddingBottom: "2.5rem",
+              }}
               required
               name="descriptionArticle"
               id="descriptionArticle"
-              cols="30"
-              rows="10"
-              placeholder="Нет ограничения по символам"
               value={inputData.descriptionArticle}
-              onChange={(event) =>
-                changeHandler(
-                  event,
-                  inputData,
-                  setInputData,
-                  setPreviewPhotos,
-                  setIsDropPhotoVisible,
-                  setPreviewPhotoAva,
-                  setIsPhotoAvaVisible,
-                  setPreviewPhotoOpen,
-                  setIsPhotoOpenVisible,
-                  setPreviewPhotoClose,
-                  setIsPhotoCloseVisible
-                )
-              }
-            ></textarea>
+              onChange={(value) => {
+                setInputData((prevInputData) => ({
+                  ...prevInputData,
+                  descriptionArticle: value,
+                }));
+              }}
+              placeholder="Нет ограничения по символам"
+            />
             <label htmlFor="" className={styles.form_container__textarea_label}>
               Текст статьи
             </label>
           </div>
-
           <div
             className={`${styles.photo_orientation_selector} ${styles.flex_block_gap}`}
           >
@@ -1070,7 +1093,7 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
               )}
             </div>
             <div>
-            {editArticleData.imageAuthor !== null &&
+              {editArticleData.imageAuthor !== null &&
                 previewPhotoAva.length === 0 && (
                   <div className={styles.preview_photos_container__block}>
                     <img
@@ -1085,7 +1108,7 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
                  <span></span>
                    </div> */}
                   </div>
-              )}
+                )}
               {previewPhotoAva?.map((preview, index) => (
                 <div
                   key={index}
@@ -1207,34 +1230,51 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
           </div>
 
           <div className={styles.form_container__description_text}>
-            <textarea
+          <ReactQuill
+              modules={{
+                toolbar: [
+                  ['bold', 'italic', 'underline'], 
+                  [{ list: 'bullet' }], 
+                 ],
+                clipboard: {
+                  matchVisual: false,
+                },
+              }}
+              formats={[
+                'bold',
+                'italic',
+                'underline',                            
+                'list',
+               ]}
               className={styles.form_container__textarea}
+              style={{
+                // resize: "none",
+                padding: "0rem",
+                border: "1px solid var(--blue-75BBFD)",
+                fontFamily: "var(--font-raleway)",
+                borderRadius: "6px",
+                fontFamily: "var(--font-raleway)",
+                fontSize: "16px",
+                fontStyle: "normal",
+                fontWeight: "var(--fw-400)",
+                lineHeight: "16px",
+                fontSize: "1rem",
+                color: "var(---black-1D2E43)",
+                boxSizing: "border-box",
+                paddingBottom: "2.5rem",
+              }}
+              required
               name="textBlock"
               id="textBlock"
-              cols="30"
-              rows="10"
-              placeholder="Дополнительный текстовый блок"
               value={inputData.textBlock}
-              onChange={(event) =>
-                changeHandler(
-                  event,
-                  inputData,
-                  setInputData,
-                  setPreviewPhotos,
-                  setIsDropPhotoVisible,
-                  setPreviewPhotoAva,
-                  setIsPhotoAvaVisible,
-                  setPreviewPhotoOpen,
-                  setIsPhotoOpenVisible,
-                  setPreviewPhotoClose,
-                  setIsPhotoCloseVisible,
-                  setIsLoading,
-                  setIsLoadingDropPhoto,
-                  setIsLoadingOpenImage,
-                  setIsLoadingCloseImage
-                )
-              }
-            ></textarea>
+              onChange={(value) => {
+                setInputData((prevInputData) => ({
+                  ...prevInputData,
+                  textBlock: value,
+                }));
+              }}
+              placeholder="Нет ограничения по символам"
+            />
             <label
               htmlFor="textBlock"
               className={styles.form_container__textarea_label}
@@ -1371,7 +1411,7 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
                   </div> */}
                 </div>
               ))}
-               {!editArticleData.imageClose !== null &&
+              {!editArticleData.imageClose !== null &&
                 previewPhotoClose.length === 0 && (
                   <div className={styles.preview_photos_container__block}>
                     <img
