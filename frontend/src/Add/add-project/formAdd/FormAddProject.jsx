@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import Select from "react-select";
 import compressImageFile from "browser-image-compression";
-
+import ReactQuill from "react-quill";
+import "react-quill/dist/quill.snow.css";
 import { transliterate } from "transliteration";
 import styles from "./FormAddProject.module.scss";
 import { clearFormData, fetchProject } from "../../../store/Slice/projectSlice";
@@ -1979,7 +1980,50 @@ export default function FormAddProject({ setIsModalOpen }) {
           {/* блок куда вводиться инфа (textarea Заголовока текстового блока ) */}
           <div className={styles.heading_textarea}>
             <div className={styles.form_container__description_text}>
-              <textarea
+            <ReactQuill
+              modules={{
+                toolbar: [
+                  ['bold', 'italic', 'underline'], 
+                  [{ list: 'bullet' }, { list: 'ordered' }], 
+                 ],
+                clipboard: {
+                  matchVisual: false,
+                },
+              }}
+              formats={[
+                'bold',
+                'italic',
+                'underline',                            
+                'list',
+               ]}
+              className={styles.form_container__textarea}
+              style={{
+                // resize: "none",
+                padding: "0rem",
+                border: "1px solid var(--blue-75BBFD)",
+                fontFamily: "var(--font-raleway)",
+                borderRadius: "6px",
+                fontSize: "16px",
+                fontStyle: "normal",
+                fontWeight: "var(--fw-400)",
+                lineHeight: "16px",
+                color: "var(---black-1D2E43)",
+                boxSizing: "border-box",
+                paddingBottom: "2.5rem",
+              }}
+              required
+              name="textBlock"
+              id="textBlock"
+              value={inputData.textBlock}
+              onChange={(value) => {
+                setInputData((prevInputData) => ({
+                  ...prevInputData,
+                  textBlock: value,
+                }));
+              }}
+              placeholder="Дополнительный текстовый блок"
+            />
+              {/* <textarea
                 className={styles.form_container__textarea}
                 name="textBlock"
                 id="textBlock"
@@ -2004,7 +2048,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                   )
                 }
                 required
-              ></textarea>
+              ></textarea> */}
               <label
                 htmlFor="textBlock"
                 className={styles.form_container__textarea_label}

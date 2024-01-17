@@ -25,6 +25,8 @@ import catPhoto from "../img/default-photo.jpeg";
 import next from ".././icons/next.svg";
 import previous from ".././icons/previous.svg";
 import ConstructorBlockRenderer from "./ConstructorProject/ConstructorBlockRenderer";
+import { containsListTags } from "../Project/utils";
+import { renderListWithDots } from "../Project/utils";
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
@@ -578,7 +580,20 @@ const ProjectCard = ({
                     </div>
 
                     <div className={styles.description_object_text1}>
-                      {project.textBlock}
+                      {/* {project.textBlock} */}
+                      {containsListTags(project.textBlock) ? (
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: renderListWithDots(project.textBlock),
+                      }}
+                    />
+                  ) : (
+                    <div
+                    dangerouslySetInnerHTML={{
+                      __html: renderListWithDots(project.textBlock),
+                    }}
+                  />
+                  )}
                     </div>
                   </div>
                 </div>
