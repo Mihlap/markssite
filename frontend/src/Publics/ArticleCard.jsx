@@ -25,6 +25,8 @@ import catPhoto from "../img/default-photo.jpeg";
 import next from ".././icons/next.svg";
 import previous from ".././icons/previous.svg";
 import ConstructorBlockRenderer from "./ConstructorArticle/ConstructorBlockRender";
+import { containsListTags } from "../Project/utils";
+import { renderListWithDots } from "../Project/utils";
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
@@ -218,30 +220,6 @@ const ArticleCard = ({
   const randomArticles = articles
   ? [...articles].sort(() => 0.5 - Math.random()).slice(0, 20)
   : [];
-
-  function containsListTags(htmlString) {
-    return /<ul\b[\s\S]*?<li\b[\s\S]*?>[\s\S]*?<\/li>[\s\S]*?<\/ul>/i.test(htmlString);
-  }
-  
-  function renderListWithDots(htmlString) {
-    // Заменяем каждую метку <li> на <li>&middot; 
-    // с пробелом после &middot; и учитываем пробелы перед текстом
-    const newListHTML = htmlString.replace(/<li\b([^>]*)>([\s\S]*?)<\/li>/gi, (match, p1, p2) => {
-      const spacesBefore = p1.match(/^( *)/)[1]; // Получаем пробелы перед <li>
-      const middleDot = '	&bull;';
-      return `<li>${spacesBefore}${middleDot} ${p2}</li>`;
-    });
-  
-    // Добавляем обработку пробелов
-    const withSpaces = newListHTML.replace(/&nbsp;/g, ' ');
-  
-    return `<ul>${withSpaces}</ul>`;
-  }
-  
-
-  // console.log(userSelectedBlocks, "<<--- userSelectedBlocks");
-
-  // console.log(article, "===========================================");
 
   return (
     <>

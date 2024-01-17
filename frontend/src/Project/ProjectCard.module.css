@@ -328,6 +328,8 @@
   white-space: pre-line;
   hyphens: auto;
   padding-bottom: 3.75rem;
+  white-space: pre-wrap;
+  word-break: break-word;
 }
 
 .blockHeadingTitle_heading {
@@ -882,7 +884,9 @@
   .description_object_text1 {
     padding-left: 0rem;
     padding-right: 0rem;
-    padding-bottom: 40px
+    padding-bottom: 40px;
+    white-space: pre-wrap;
+    word-break: break-word;
   }
 
   .description_object_block {
@@ -1233,6 +1237,8 @@
   .description_object_text1 {
     padding-left: 1rem;
     padding-right: 1rem;
+    white-space: pre-wrap;
+    word-break: break-word;
   }
 
   .description_object_block {
