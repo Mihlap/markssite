@@ -985,7 +985,7 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
               modules={{
                 toolbar: [
                   ['bold', 'italic', 'underline'], 
-                  [{ list: 'bullet' }], 
+                  [{ list: 'bullet' }, { list: 'ordered' }], 
                  ],
                 clipboard: {
                   matchVisual: false,
@@ -1002,14 +1002,12 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
                 // resize: "none",
                 padding: "0rem",
                 border: "1px solid var(--blue-75BBFD)",
-                fontFamily: "var(--font-raleway)",
                 borderRadius: "6px",
                 fontFamily: "var(--font-raleway)",
                 fontSize: "16px",
                 fontStyle: "normal",
                 fontWeight: "var(--fw-400)",
                 lineHeight: "16px",
-                fontSize: "1rem",
                 color: "var(---black-1D2E43)",
                 boxSizing: "border-box",
                 paddingBottom: "2.5rem",
@@ -1231,15 +1229,15 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
 
           <div className={styles.form_container__description_text}>
           <ReactQuill
-              modules={{
-                toolbar: [
-                  ['bold', 'italic', 'underline'], 
-                  [{ list: 'bullet' }], 
-                 ],
-                clipboard: {
-                  matchVisual: false,
-                },
-              }}
+             modules={{
+              toolbar: [
+                ['bold', 'italic', 'underline'], 
+                [{ list: 'bullet' }, { list: 'ordered' }], 
+               ],
+              clipboard: {
+                matchVisual: false,
+              },
+            }}
               formats={[
                 'bold',
                 'italic',
@@ -1253,12 +1251,10 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
                 border: "1px solid var(--blue-75BBFD)",
                 fontFamily: "var(--font-raleway)",
                 borderRadius: "6px",
-                fontFamily: "var(--font-raleway)",
                 fontSize: "16px",
                 fontStyle: "normal",
                 fontWeight: "var(--fw-400)",
                 lineHeight: "16px",
-                fontSize: "1rem",
                 color: "var(---black-1D2E43)",
                 boxSizing: "border-box",
                 paddingBottom: "2.5rem",

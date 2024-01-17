@@ -227,6 +227,46 @@ export const onWheel = (el, e, enableVerticalScroll, isHorizontalScroll, setIsHo
 };
 
 
+ // Функция проверки наличия тегов списка в HTML строке
+ export const containsListTags = (htmlString) => {
+  // Проверяем наличие тегов <ul> и <li> для неупорядоченного списка
+  // или <ol> и <li> для упорядоченного списка
+  return /<ul\b[\s\S]*?<li\b[\s\S]*?>[\s\S]*?<\/li>[\s\S]*?<\/ul>/i.test(htmlString) ||
+         /<ol\b[\s\S]*?<li\b[\s\S]*?>[\s\S]*?<\/li>[\s\S]*?<\/ol>/i.test(htmlString);
+}
+
+// Функция преобразования тегов списка с точками и номерами
+export const renderListWithDots = (htmlString) => {
+  // Заменяем неразрывные пробелы на обычные пробелы
+  const withSpaces = htmlString.replace(/&nbsp;/g, ' ');
+
+  // Заменяем теги <ul> и <li> для неупорядоченного списка
+  let newListHTML = withSpaces.replace(/<ul\b[^>]*>[\s\S]*?<\/ul>/gi, (ulMatch) => {
+      return ulMatch.replace(/<li\b([^>]*)>([\s\S]*?)<\/li>/gi, (liMatch, p1, p2) => {
+          const spacesBefore = p1.match(/^( *)/)[1];
+          // Маркер для неупорядоченного списка (точка)
+          const marker = `${spacesBefore}&bull;`;
+          return `<li>${marker} ${p2}</li>`;
+      });
+  });
+
+  // Заменяем теги <ol> и <li> для упорядоченного списка
+  newListHTML = newListHTML.replace(/<ol\b[^>]*>[\s\S]*?<\/ol>/gi, (olMatch) => {
+      let order = 1;
+      return olMatch.replace(/<li\b([^>]*)>([\s\S]*?)<\/li>/gi, (liMatch, p1, p2) => {
+          const spacesBefore = p1.match(/^( *)/)[1];
+          // Маркер для упорядоченного списка (номер)
+          const marker = `${spacesBefore}${order}.`;
+          order++;
+          return `<li>${marker} ${p2}</li>`;
+      });
+  });
+
+  // Возвращаем обработанную строку
+  return newListHTML;
+}
+
+
 
 // const userId = 123456789; // ID пользователя VK
 // const accessToken = 'your_access_token'; // Ваш access token
