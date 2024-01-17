@@ -311,6 +311,11 @@ export default function FormAddArticles({ setIsModalOpen }) {
     }
 
     const classNames = getPreviewClassName(labelText);
+    // // Проверка наличия Quill в проекте
+    // const isQuillAvailable = typeof require.resolve("quill") !== "undefined";
+
+    // // Далее используйте переменную в вашем JSX
+    // const useQuill = isQuillAvailable ? true : false;
 
     return (
       <div key={inputIndex}>
@@ -586,6 +591,8 @@ export default function FormAddArticles({ setIsModalOpen }) {
     );
   };
 
+  // value={dynamicData[blockIndex][inputIndex].value || ""}
+
   const renderInputs = (inputs, blockIndex) => {
     return (
       <div key={blockIndex} className={styles.blockContainer}>
@@ -599,6 +606,55 @@ export default function FormAddArticles({ setIsModalOpen }) {
       </div>
     );
   };
+
+  // const renderInputsQuill = (inputs, blockIndex) => {
+  //   return (
+  //     <div key={blockIndex} className={styles.blockContainer}>
+  //       {inputs.map((input, inputIndex) => {
+  //         if (input.type === "textarea") {
+  //           // Если тип поля - textarea, используем ReactQuill
+  //           return (
+  //             <div key={inputIndex} className={styles.textareaContainer}>
+  //               <ReactQuill
+  //                 modules={{
+  //                   toolbar: [
+  //                     ['bold', 'italic', 'underline'],
+  //                     [{ list: 'bullet' }, { list: 'ordered' }],
+  //                   ],
+  //                   clipboard: {
+  //                     matchVisual: false,
+  //                   },
+  //                 }}
+  //                 formats={['bold', 'italic', 'underline', 'list']}
+  //                 className={styles.form_container__textarea}
+  //                 style={{
+  //                   // Устанавливайте стили здесь, если необходимо
+  //                 }}
+  //                 value={inputData.descriptionArticle} // Используйте значение из вашего состояния
+  //                 onChange={(value) => {
+  //                   setInputData((prevInputData) => ({
+  //                     ...prevInputData,
+  //                     descriptionArticle: value,
+  //                   }));
+  //                 }}
+  //                 placeholder="Нет ограничения по символам"
+  //               />
+  //             </div>
+  //           );
+  //         } else {
+  //           // В противном случае используйте другие типы полей
+  //           return renderInputWithLabel(input.type, input.label, blockIndex, inputIndex);
+  //         }
+  //       })}
+  //       <div
+  //         className={styles.blockContainer__close_button}
+  //         onClick={() => handleRemoveBlock(blockIndex)}
+  //       ></div>
+  //     </div>
+  //   );
+  // };
+  
+  
 
   // console.log(inputData, "<<--inputData ARTICLE");
   // console.log(dynamicData, "<<--dynamicData");
@@ -841,7 +897,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
               modules={{
                 toolbar: [
                   ['bold', 'italic', 'underline'], 
-                  [{ list: 'bullet' }], 
+                  [{ list: 'bullet' }, { list: 'ordered' }], 
                  ],
                 clipboard: {
                   matchVisual: false,
@@ -860,12 +916,10 @@ export default function FormAddArticles({ setIsModalOpen }) {
                 border: "1px solid var(--blue-75BBFD)",
                 fontFamily: "var(--font-raleway)",
                 borderRadius: "6px",
-                fontFamily: "var(--font-raleway)",
                 fontSize: "16px",
                 fontStyle: "normal",
                 fontWeight: "var(--fw-400)",
                 lineHeight: "16px",
-                fontSize: "1rem",
                 color: "var(---black-1D2E43)",
                 boxSizing: "border-box",
                 paddingBottom: "2.5rem",
@@ -1059,7 +1113,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
               modules={{
                 toolbar: [
                   ['bold', 'italic', 'underline'], 
-                  [{ list: 'bullet' }], 
+                  [{ list: 'bullet' }, { list: 'ordered' }], 
                  ],
                 clipboard: {
                   matchVisual: false,
@@ -1078,12 +1132,10 @@ export default function FormAddArticles({ setIsModalOpen }) {
                 border: "1px solid var(--blue-75BBFD)",
                 fontFamily: "var(--font-raleway)",
                 borderRadius: "6px",
-                fontFamily: "var(--font-raleway)",
                 fontSize: "16px",
                 fontStyle: "normal",
                 fontWeight: "var(--fw-400)",
                 lineHeight: "16px",
-                fontSize: "1rem",
                 color: "var(---black-1D2E43)",
                 boxSizing: "border-box",
                 paddingBottom: "2.5rem",
