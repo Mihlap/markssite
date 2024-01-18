@@ -174,7 +174,7 @@ export default function Header({ handleMouseEnter,
     const isScrollingUp = e.deltaY < 0;
     const isAtTop = el.scrollTop <= 0;
     const isAtBottom = el.scrollTop + el.clientHeight >= el.scrollHeight;
-  
+    
     // Если скроллим вверх и достигли верхней границы
     if (isScrollingUp && isAtTop) {
       setEnableVerticalScroll(false);
@@ -186,10 +186,42 @@ export default function Header({ handleMouseEnter,
         behavior: "smooth",
       });
     } else {
-      // В противном случае предотвращаем дальнейший скролл
-      e.preventDefault();
+      // // Если достигнут конец слайдера, прокручиваем вниз до конца страницы
+      // if (isHorizontalScroll) {
+      //   setIsHorizontalScroll(false);
+      //   window.scrollTo({
+      //     top: document.body.scrollHeight,
+      //     behavior: "smooth",
+      //   });
+        e.preventDefault(); // Предотвращаем дальнейший скролл
+      // }
     }
   };
+  
+  // // Добавьте обработчик события прокрутки для горизонтального скроллинга
+  // const onHorizontalScroll = (e) => {
+  //   const el = sliderCardRef.current;
+  //   const isScrollingLeft = e.deltaX < 0;
+  //   const isAtLeft = el.scrollLeft <= 0;
+  //   const isAtRight = el.scrollLeft + el.clientWidth >= el.scrollWidth;
+  
+  //   // Если скроллим влево и достигли левой границы
+  //   if (isScrollingLeft && isAtLeft) {
+  //     // Включаем горизонтальный скролл
+  //     setIsHorizontalScroll(true);
+  //     el.scrollTop += e.deltaX;
+  //   } else if (!isAtRight) {
+  //     // В противном случае прокручиваем содержимое
+  //     el.scrollTo({
+  //       left: el.scrollLeft + e.deltaX,
+  //       behavior: "smooth",
+  //     });
+  //   } else {
+  //     // Если достигнут конец слайдера, предотвращаем дальнейший скролл
+  //     e.preventDefault();
+  //   }
+  // };
+  
 
   const onWheel = (e) => {
     const el = sliderCardRef.current;
@@ -244,11 +276,13 @@ export default function Header({ handleMouseEnter,
   useEffect(() => {
     const el = sliderCardRef.current;
     if (el) {
+      // el.addEventListener("wheel", onHorizontalScroll, { passive: false });
       el.addEventListener("wheel", onVerticalScroll, { passive: false });
       el.addEventListener("wheel", onWheel, { passive: false });
       el.addEventListener("scroll", handleScroll);
       return () => {
         el.removeEventListener("wheel", onVerticalScroll);
+        // el.removeEventListener("wheel", onHorizontalScroll);
         el.removeEventListener("wheel", onWheel);
         el.removeEventListener("scroll", handleScroll);
       };

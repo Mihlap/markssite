@@ -7,6 +7,8 @@ import playIcon from "../../icons/play.svg";
 import pauseIcon from "../../icons/pause.svg";
 import playIconMobile from "../../icons/playMobile.svg";
 import pauseIconMobile from "../../icons/pauseMobile.svg";
+import { containsListTags } from "../../Project/utils";
+import { renderListWithDots } from "../../Project/utils";
 
 const isMobileScreen = window.innerWidth <= 1024;
 
@@ -179,7 +181,22 @@ export default function ConstructorBlockRenderer({
     return (
       <div className={styles.blockHeadingTitle}>
         <h2 className={styles.blockHeadingTitle__heading}>{header}</h2>
-        <p className={styles.blockHeadingTitle__text}>{text}</p>
+        <p className={styles.blockHeadingTitle__text}>
+        {containsListTags(text) ? (
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: renderListWithDots(text),
+                      }}
+                    />
+                  ) : (
+                    <div
+                    dangerouslySetInnerHTML={{
+                      __html: renderListWithDots(text),
+                    }}
+                  />
+                  )}
+          {/* {text} */}
+          </p>
       </div>
     );
   };
@@ -331,7 +348,22 @@ export default function ConstructorBlockRenderer({
       if (item.label === "Блок описание") descriptionTextBlock = item.value;
     });
 
-    return <div className={styles.text_block}>{descriptionTextBlock}</div>;
+    return <div className={styles.text_block}>
+       {containsListTags(descriptionTextBlock) ? (
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: renderListWithDots(descriptionTextBlock),
+                      }}
+                    />
+                  ) : (
+                    <div
+                    dangerouslySetInnerHTML={{
+                      __html: renderListWithDots(descriptionTextBlock),
+                    }}
+                  />
+                  )}
+      {/* {descriptionTextBlock} */}
+      </div>;
   };
 
   const renderTextFramed = (block) => {
@@ -343,7 +375,22 @@ export default function ConstructorBlockRenderer({
 
     return (
       <div className={styles.text_framed}>
-        <div className={styles.text_framed__text}>{descriptionText}</div>
+        <div className={styles.text_framed__text}>
+        {containsListTags(descriptionText) ? (
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: renderListWithDots(descriptionText),
+                      }}
+                    />
+                  ) : (
+                    <div
+                    dangerouslySetInnerHTML={{
+                      __html: renderListWithDots(descriptionText),
+                    }}
+                  />
+                  )}
+          {/* {descriptionText} */}
+          </div>
       </div>
     );
   };
@@ -378,7 +425,22 @@ export default function ConstructorBlockRenderer({
  return (
    <div className={styles.quote_block_constainer}>
      <div className={styles.quote_block_constainer__text_block}>
-       <div className={styles.quote_block_constainer__quote_text}>{author}</div>
+       <div className={styles.quote_block_constainer__quote_text}>
+       {containsListTags(author) ? (
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: renderListWithDots(author),
+                      }}
+                    />
+                  ) : (
+                    <div
+                    dangerouslySetInnerHTML={{
+                      __html: renderListWithDots(author),
+                    }}
+                  />
+                  )}
+        {/* {author} */}
+        </div>
        <div className={styles.quote_block_constainer__quote_author}>
          {quote}
        </div>
@@ -390,7 +452,9 @@ export default function ConstructorBlockRenderer({
            src={`${Host}/images/imageArticle/${imageUrl}`}
            alt={author}
          />
-         <div className={styles.quote_block_constainer__quote}>{quote}</div>
+         <div className={styles.quote_block_constainer__quote}>
+          {quote}
+          </div>
          {/* <div className={styles.quote_block_constainer__author}>{author}</div> */}
        </div>
      )}
@@ -407,11 +471,25 @@ export default function ConstructorBlockRenderer({
     return (
       <div className={styles.note_block}>
         <div className={styles.note_block__bookmark} />
-        <div className={styles.note_block__text}>{noteBlockText}</div>
+        <div className={styles.note_block__text}>
+        {/* {containsListTags(noteBlockText) ? (
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: renderListWithDots(noteBlockText),
+                      }}
+                    />
+                  ) : (
+                    <div
+                    dangerouslySetInnerHTML={{
+                      __html: renderListWithDots(noteBlockText),
+                    }}
+                  />
+                  )} */}
+          {noteBlockText}
+          </div>
       </div>
     );
   };
-
   const renderVideoBlock = (block) => {
     const videoPath = block[0]?.value.join("");
 
