@@ -567,7 +567,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
             <div className={styles.form_container__textarea_length}>
               {/* {`${inputData.descriptionArticle.length}/260`} */}
             </div>
-            <textarea
+            {/* <textarea
               className={`${styles.form_container__textarea} ${styles.orange_color}`}
               // name="descriptionArticle"
               onChange={(e) =>
@@ -577,7 +577,42 @@ export default function FormAddArticles({ setIsModalOpen }) {
               cols="30"
               rows="10"
               placeholder={labelText}
-            ></textarea>
+            ></textarea> */}
+            <ReactQuill
+              modules={{
+                toolbar: [
+                  ["bold", "italic", "underline"],
+                  [{ list: "bullet" }, { list: "ordered" }],
+                ],
+                clipboard: {
+                  matchVisual: false,
+                },
+              }}
+              formats={["bold", "italic", "underline", "list"]}
+              className={`${styles.form_container__textarea} ${styles.orange_color}`}
+              style={{
+                // resize: "none",
+                padding: "0rem",
+                border: "1px solid var(--blue-75BBFD)",
+                fontFamily: "var(--font-raleway)",
+                borderRadius: "6px",
+                fontSize: "16px",
+                fontStyle: "normal",
+                fontWeight: "var(--fw-400)",
+                lineHeight: "16px",
+                color: "var(---black-1D2E43)",
+                boxSizing: "border-box",
+                paddingBottom: "2.5rem",
+              }}
+              required
+              name={key}
+              id={key}
+              value={dynamicData[blockIndex][inputIndex].value}
+              onChange={(value) => {
+                handleDynamicInputChange(blockIndex, inputIndex, value);
+              }}
+              placeholder={labelText}
+            />
             <label
               htmlFor=""
               className={styles.form_container__textarea_label_constructor}
@@ -607,55 +642,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
     );
   };
 
-  // const renderInputsQuill = (inputs, blockIndex) => {
-  //   return (
-  //     <div key={blockIndex} className={styles.blockContainer}>
-  //       {inputs.map((input, inputIndex) => {
-  //         if (input.type === "textarea") {
-  //           // Если тип поля - textarea, используем ReactQuill
-  //           return (
-  //             <div key={inputIndex} className={styles.textareaContainer}>
-  //               <ReactQuill
-  //                 modules={{
-  //                   toolbar: [
-  //                     ['bold', 'italic', 'underline'],
-  //                     [{ list: 'bullet' }, { list: 'ordered' }],
-  //                   ],
-  //                   clipboard: {
-  //                     matchVisual: false,
-  //                   },
-  //                 }}
-  //                 formats={['bold', 'italic', 'underline', 'list']}
-  //                 className={styles.form_container__textarea}
-  //                 style={{
-  //                   // Устанавливайте стили здесь, если необходимо
-  //                 }}
-  //                 value={inputData.descriptionArticle} // Используйте значение из вашего состояния
-  //                 onChange={(value) => {
-  //                   setInputData((prevInputData) => ({
-  //                     ...prevInputData,
-  //                     descriptionArticle: value,
-  //                   }));
-  //                 }}
-  //                 placeholder="Нет ограничения по символам"
-  //               />
-  //             </div>
-  //           );
-  //         } else {
-  //           // В противном случае используйте другие типы полей
-  //           return renderInputWithLabel(input.type, input.label, blockIndex, inputIndex);
-  //         }
-  //       })}
-  //       <div
-  //         className={styles.blockContainer__close_button}
-  //         onClick={() => handleRemoveBlock(blockIndex)}
-  //       ></div>
-  //     </div>
-  //   );
-  // };
-  
-  
-
+ 
   // console.log(inputData, "<<--inputData ARTICLE");
   // console.log(dynamicData, "<<--dynamicData");
   return (
