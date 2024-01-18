@@ -681,7 +681,42 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
             <div className={styles.form_container__textarea_length}>
               {/* {`${inputData.descriptionArticle.length}/260`} */}
             </div>
-            <textarea
+            <ReactQuill
+              modules={{
+                toolbar: [
+                  ["bold", "italic", "underline"],
+                  [{ list: "bullet" }, { list: "ordered" }],
+                ],
+                clipboard: {
+                  matchVisual: false,
+                },
+              }}
+              formats={["bold", "italic", "underline", "list"]}
+              className={`${styles.form_container__textarea} ${styles.orange_color}`}
+              style={{
+                // resize: "none",
+                padding: "0rem",
+                border: "1px solid var(--blue-75BBFD)",
+                fontFamily: "var(--font-raleway)",
+                borderRadius: "6px",
+                fontSize: "16px",
+                fontStyle: "normal",
+                fontWeight: "var(--fw-400)",
+                lineHeight: "16px",
+                color: "var(---black-1D2E43)",
+                boxSizing: "border-box",
+                paddingBottom: "2.5rem",
+              }}
+              required
+              name={key}
+              id={key}
+              value={dynamicData[blockIndex][inputIndex].value}
+              onChange={(value) => {
+                handleDynamicInputChange(blockIndex, inputIndex, value);
+              }}
+              placeholder={labelText}
+            />
+            {/* <textarea
               className={`${styles.form_container__textarea} ${styles.orange_color}`}
               // name="descriptionArticle"
               onChange={(e) =>
@@ -691,7 +726,7 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
               cols="30"
               rows="10"
               placeholder={labelText}
-            ></textarea>
+            ></textarea> */}
             <label
               htmlFor=""
               className={styles.form_container__textarea_label_constructor}
