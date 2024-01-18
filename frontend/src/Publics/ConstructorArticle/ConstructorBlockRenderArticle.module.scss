@@ -57,6 +57,8 @@
         font-weight: var(--fw-400);
         line-height: 24px;
         word-wrap: break-word;
+        white-space: pre-wrap;
+        word-break: break-word;
     }
 }
 
@@ -159,6 +161,8 @@
         border-radius: 16px;
         padding: 24px;
         border: 1px solid var(--salmon-FF7F6A);
+        white-space: pre-wrap;
+        word-break: break-word;
     }
 
 }
@@ -189,6 +193,8 @@
         font-weight: var(--fw-700);
         line-height: 24px;
         padding: 10px 0px;
+        white-space: pre-wrap;
+        word-break: break-word;
     }
 }
 
@@ -204,6 +210,8 @@
     padding-bottom: 3.75rem;
     word-wrap: break-word;
      padding-left: 13.75vw;
+     white-space: pre-wrap;
+     word-break: break-word;
 }
 
 // <<< ====== стили для блока c цитатой и автором  ====== >>>
@@ -234,6 +242,8 @@
         font-style: normal;
         font-weight: var(--fw-400);
         line-height: 24px;
+        white-space: pre-wrap;
+        word-break: break-word;
         /* 150% */
     }
 
@@ -348,6 +358,8 @@
     .blockHeadingTitle {
         padding-right: 0;
         padding-left: 0;
+        white-space: pre-wrap;
+        word-break: break-word;
       }
       .containerImageToDescription {
         padding-left: 0;
@@ -356,17 +368,22 @@
     .text_framed {
         padding-right: 0;
         padding-left: 0;
-
+        white-space: pre-wrap;
+        word-break: break-word;
     }
 
     .note_block {
         padding-right: 0;
         padding-left: 0;
+        white-space: pre-wrap;
+        word-break: break-word;
     }
 
     .text_block {
         padding-right: 0;
         padding-left: 0;
+        white-space: pre-wrap;
+        word-break: break-word;
     }
 
     .quote_block_constainer {
@@ -419,6 +436,8 @@
             font-style: normal;
             font-weight: var(--fw-400);
             line-height: 24px;
+            word-break: break-word;
+            white-space: pre-wrap;
             word-break: break-word;
         }
     }
@@ -500,6 +519,8 @@
             font-style: normal;
             font-weight: var(--fw-400);
             line-height: 24px;
+            white-space: pre-wrap;
+            word-break: break-word;
             /* 150% */
         }
 
@@ -537,17 +558,23 @@
     .text_framed {
         padding-right: 0;
         padding-left: 0;
+        white-space: pre-wrap;
+        word-break: break-word;
 
     }
 
     .note_block {
         padding-right: 0;
         padding-left: 0;
+        white-space: pre-wrap;
+        word-break: break-word;
     }
 
     .text_block {
         padding-right: 0;
         padding-left: 0;
+        white-space: pre-wrap;
+        word-break: break-word;
     }
 
     .imageBlockTwo {
@@ -606,6 +633,8 @@
             line-height: 24px;
             word-wrap: break-word;
             white-space: normal;
+            white-space: pre-wrap;
+            word-break: break-word;
         }
     }
 
@@ -705,6 +734,8 @@
             font-style: normal;
             font-weight: var(--fw-400);
             line-height: 24px;
+            white-space: pre-wrap;
+            word-break: break-word;
           }
     
         &__quote_author {
@@ -739,7 +770,8 @@
         margin-bottom: 40px;
         padding-left: 0;
         padding-right: 0;
-    
+        white-space: pre-wrap;
+        word-break: break-word;
     }
 
       .note_block {
@@ -759,6 +791,8 @@
     
         &__text {
          padding: 2px 0px;
+         white-space: pre-wrap;
+         word-break: break-word;
         }
     }    
 
@@ -766,6 +800,8 @@
         padding-right: 0;
         padding-left: 0;
         padding-bottom: 40px;
+        white-space: pre-wrap;
+        word-break: break-word;
     }
 
 

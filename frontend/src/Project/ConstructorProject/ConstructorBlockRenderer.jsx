@@ -7,6 +7,8 @@ import playIcon from "../../icons/play.svg";
 import pauseIcon from "../../icons/pause.svg";
 import playIconMobile from "../../icons/playMobile.svg";
 import pauseIconMobile from "../../icons/pauseMobile.svg";
+import { containsListTags } from "../../Project/utils";
+import { renderListWithDots } from "../../Project/utils";
 
 const isMobileScreen = window.innerWidth <= 1024;
 
@@ -181,7 +183,22 @@ export default function ConstructorBlockRenderer({
     return (
       <div className={styles.blockHeadingTitle}>
         <h2 className={styles.blockHeadingTitle__heading}>{header}</h2>
-        <p className={styles.blockHeadingTitle__text}>{text}</p>
+        <p className={styles.blockHeadingTitle__text}>
+        {containsListTags(text) ? (
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: renderListWithDots(text),
+                      }}
+                    />
+                  ) : (
+                    <div
+                    dangerouslySetInnerHTML={{
+                      __html: renderListWithDots(text),
+                    }}
+                  />
+                  )}
+          {/* {text} */}
+          </p>
       </div>
     );
   };
