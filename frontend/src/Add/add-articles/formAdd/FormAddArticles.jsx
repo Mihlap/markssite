@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Select from "react-select";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -51,6 +51,29 @@ export default function FormAddArticles({ setIsModalOpen }) {
   const [isLoadingDropPhoto, setIsLoadingDropPhoto] = useState(false);
   const [isLoadingOpenImage, setIsLoadingOpenImage] = useState(false);
   const [isLoadingCloseImage, setIsLoadingCloseImage] = useState(false);
+
+  const quillRef1 = useRef(null);
+  const quillRef2 = useRef(null);
+
+  // Стили для eact-quill
+  const quillRefs = [quillRef1, quillRef2];
+  const applyStylesToQuillEditor = (quillRef) => {
+    if (quillRef && quillRef.current) {
+      const editor = quillRef.current.getEditor();
+      const editorElement = editor.root;
+      
+      // Применение стилей к нужному элементу
+      editorElement.style.fontSize = '16px';
+      editorElement.style.fontFamily = 'Raleway, sans-serif';
+      editorElement.style.color = 'var(--black-1D2E43)';
+      editorElement.style.border = 'none';
+    }
+  }; 
+  
+  useEffect(() => {
+    // Применение стилей для каждого quillRef
+    quillRefs.forEach((quillRef) => applyStylesToQuillEditor(quillRef));
+  }, [quillRef1, quillRef2]);
 
   // << ==== КОНСТУКТОР ==== >>
   // состояние для хранения текущего значения инпута
@@ -579,7 +602,23 @@ export default function FormAddArticles({ setIsModalOpen }) {
               placeholder={labelText}
             ></textarea> */}
             <ReactQuill
-              modules={{
+             ref={(el) => {
+              if (el) {
+                const editor = el.getEditor();
+                const editorElement = editor.root;
+            
+                editorElement.style.fontSize = '16px';
+                editorElement.style.fontFamily = 'Raleway, sans-serif';
+                editorElement.style.color = 'var(--black-1D2E43)';
+                editorElement.style.padding = "1rem";
+                editorElement.style.borderRadius = "6px";
+                editorElement.style.fontWeight = "var(--fw-400)";
+                editorElement.style.lineHeight = "16px";
+                editorElement.style.boxSizing = "border-box";
+                editorElement.style.paddingBottom = "2.5rem";
+              }
+            }}
+                modules={{
                 toolbar: [
                   ["bold", "italic", "underline"],
                   [{ list: "bullet" }, { list: "ordered" }],
@@ -588,12 +627,9 @@ export default function FormAddArticles({ setIsModalOpen }) {
                   matchVisual: false,
                 },
               }}
-              formats={["bold", "italic", "underline", "list"]}
-              className={`${styles.form_container__textarea} ${styles.orange_color}`}
               style={{
                 // resize: "none",
                 padding: "0rem",
-                border: "1px solid var(--blue-75BBFD)",
                 fontFamily: "var(--font-raleway)",
                 borderRadius: "6px",
                 fontSize: "16px",
@@ -604,6 +640,8 @@ export default function FormAddArticles({ setIsModalOpen }) {
                 boxSizing: "border-box",
                 paddingBottom: "2.5rem",
               }}
+              formats={["bold", "italic", "underline", "list"]}
+              className={`${styles.form_container__textarea} ${styles.orange_color}`}
               required
               name={key}
               id={key}
@@ -625,8 +663,6 @@ export default function FormAddArticles({ setIsModalOpen }) {
       </div>
     );
   };
-
-  // value={dynamicData[blockIndex][inputIndex].value || ""}
 
   const renderInputs = (inputs, blockIndex) => {
     return (
@@ -839,6 +875,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
             </div>
           </div>
           {/* блок и инпутом ( Заголовок текстового блока ) */}
+          <div className={styles.blockContainer}>
           <div className={styles.form_container__heading_block}>
             <input
               required
@@ -877,10 +914,11 @@ export default function FormAddArticles({ setIsModalOpen }) {
           </div>
           {/* блок и текстерией ( Описание статьи ) */}
           <div className={styles.form_container__description_text}>
-            {/* <div className={styles.form_container__textarea_length}>
-              {`${inputData.descriptionArticle.length}/260`}
-            </div> */}
+            <div className={styles.form_container__textarea_length}>
+              {/* {`${inputData.descriptionArticle.length}/260`} */}
+            </div>
            <ReactQuill
+           ref={quillRef1}
               modules={{
                 toolbar: [
                   ['bold', 'italic', 'underline'], 
@@ -923,9 +961,10 @@ export default function FormAddArticles({ setIsModalOpen }) {
               }}
               placeholder="Нет ограничения по символам"
             />
-            <label htmlFor="" className={styles.form_container__textarea_label}>
+            <label htmlFor="" className={styles.form_container__textarea_label_constructor}>
               Текст статьи
             </label>
+          </div>
           </div>
 
           <div
@@ -1094,9 +1133,10 @@ export default function FormAddArticles({ setIsModalOpen }) {
               ))}
             </div>
           </div>
-
+          <div className={styles.blockContainer}>
           <div className={styles.form_container__description_text}>
           <ReactQuill
+          ref={quillRef2}
               modules={{
                 toolbar: [
                   ['bold', 'italic', 'underline'], 
@@ -1146,7 +1186,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
               Текстовый блок
             </label>
           </div>
-
+          </div>
           {/* КОНСТРУКТОР */}
           <div className={styles.inputs_container}>
             {blocks.map((blockInputs, blockIndex) => (
