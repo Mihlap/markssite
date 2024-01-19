@@ -376,21 +376,21 @@ export default function ConstructorBlockRenderer({
     return (
       <div className={styles.text_framed}>
         <div className={styles.text_framed__text}>
-        {containsListTags(descriptionText) ? (
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: renderListWithDots(descriptionText),
-                      }}
-                    />
-                  ) : (
-                    <div
-                    dangerouslySetInnerHTML={{
-                      __html: renderListWithDots(descriptionText),
-                    }}
-                  />
-                  )}
+          {containsListTags(descriptionText) ? (
+            <div
+              dangerouslySetInnerHTML={{
+                __html: renderListWithDots(descriptionText),
+              }}
+            />
+          ) : (
+            <div
+              dangerouslySetInnerHTML={{
+                __html: renderListWithDots(descriptionText),
+              }}
+            />
+          )}
           {/* {descriptionText} */}
-          </div>
+        </div>
       </div>
     );
   };
@@ -472,7 +472,7 @@ export default function ConstructorBlockRenderer({
       <div className={styles.note_block}>
         <div className={styles.note_block__bookmark} />
         <div className={styles.note_block__text}>
-        {/* {containsListTags(noteBlockText) ? (
+        {containsListTags(noteBlockText) ? (
                     <div
                       dangerouslySetInnerHTML={{
                         __html: renderListWithDots(noteBlockText),
@@ -484,8 +484,8 @@ export default function ConstructorBlockRenderer({
                       __html: renderListWithDots(noteBlockText),
                     }}
                   />
-                  )} */}
-          {noteBlockText}
+                  )}
+          {/* {noteBlockText} */}
           </div>
       </div>
     );
