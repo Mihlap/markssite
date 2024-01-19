@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
 import compressImageFile from "browser-image-compression";
@@ -102,6 +102,30 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
   const [isLoadingDropPhoto, setIsLoadingDropPhoto] = useState(false);
   const [isLoadingOpenImage, setIsLoadingOpenImage] = useState(false);
   const [isLoadingCloseImage, setIsLoadingCloseImage] = useState(false);
+
+  const quillRef1 = useRef(null);
+ 
+  // Стили для eact-quill
+  const quillRefs = [quillRef1];
+  const applyStylesToQuillEditor = (quillRef) => {
+    if (quillRef && quillRef.current) {
+      const editor = quillRef.current.getEditor();
+      const editorElement = editor.root;
+      
+      // Применение стилей к нужному элементу
+      editorElement.style.fontSize = '16px';
+      editorElement.style.fontFamily = 'Raleway, sans-serif';
+      editorElement.style.color = 'var(--black-1D2E43)';
+      editorElement.style.border = 'none';
+    }
+  }; 
+  
+  useEffect(() => {
+    // Применение стилей для каждого quillRef
+    quillRefs.forEach((quillRef) => applyStylesToQuillEditor(quillRef));
+  }, [quillRef1]);
+
+
   // << ==== useStates для конструктора ==== >>
   const [inputValue, setInputValue] = useState("");
   const [openConstructor, setOpenConstructor] = useState(false);
@@ -950,6 +974,22 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
               placeholder={labelText}
             ></textarea> */}
               <ReactQuill
+                ref={(el) => {
+                  if (el) {
+                    const editor = el.getEditor();
+                    const editorElement = editor.root;
+                
+                    editorElement.style.fontSize = '16px';
+                    editorElement.style.fontFamily = 'Raleway, sans-serif';
+                    editorElement.style.color = 'var(--black-1D2E43)';
+                    editorElement.style.padding = "1rem";
+                    editorElement.style.borderRadius = "6px";
+                    editorElement.style.fontWeight = "var(--fw-400)";
+                    editorElement.style.lineHeight = "16px";
+                    editorElement.style.boxSizing = "border-box";
+                    editorElement.style.paddingBottom = "2.5rem";
+                  }
+                }}
               modules={{
                 toolbar: [
                   ["bold", "italic", "underline"],
@@ -964,7 +1004,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
               style={{
                 // resize: "none",
                 padding: "0rem",
-                border: "1px solid var(--blue-75BBFD)",
+                // border: "1px solid var(--blue-75BBFD)",
                 fontFamily: "var(--font-raleway)",
                 borderRadius: "6px",
                 fontSize: "16px",
@@ -1542,6 +1582,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
             </div>
           </div>
           {/* блок и инпутом ( Заголовок текстового блока ) */}
+          <div className={styles.form_container__block_gray_one}>
           <div className={styles.form_container__heading_block}>
             <input
               type="input"
@@ -1592,9 +1633,10 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                 }
               }}
             ></textarea>
-            <label htmlFor="" className={styles.form_container__textarea_label}>
+            <label htmlFor="" className={styles.form_container__textarea_label_constructor}>
               Описание проекта
             </label>
+          </div>
           </div>
           {/* блок Заполните 3 значения на выбор ( метры, мысота, этажность) */}
           <div className={styles.measure_container}>
@@ -2296,6 +2338,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
             </div>
           </div>
           {/* блок куда вводиться инфа (Заголовок текстового блока ) */}
+          <div className={styles.form_container__block_gray_one}>
           <div className={styles.container__heading_block}>
             <div className={styles.form_container__heading_block}>
               <input
@@ -2332,6 +2375,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
           <div className={styles.heading_textarea}>
             <div className={styles.form_container__description_text}>
             <ReactQuill
+               ref={quillRef1}
               modules={{
                 toolbar: [
                   ['bold', 'italic', 'underline'], 
@@ -2402,13 +2446,13 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
               ></textarea> */}
               <label
                 htmlFor="textBlock"
-                className={styles.form_container__textarea_label}
+                className={styles.form_container__textarea_label_constructor}
               >
                 Текстовый блок
               </label>
             </div>
           </div>
-
+          </div>
           {/* КОНСТРУКТОР */}
           <div className={styles.inputs_container}>
             {blocks.map((blockInputs, blockIndex) => (

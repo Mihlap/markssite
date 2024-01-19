@@ -1022,13 +1022,16 @@
       padding-top: 0;
       pointer-events: none;
       font-weight: var(--fw-400);
-    }
+      -webkit-transition: -webkit-transform 0.3s;
+      transition: transform 0.3s;
+     }
     .input_name_form_contacts:focus::-webkit-input-placeholder,
     .input_tel_form_contacts:focus::-webkit-input-placeholder,
     .input_city_form_contacts:focus::-webkit-input-placeholder,
     .input_letter_form_contacts:focus::-webkit-input-placeholder,
     .input_resume_form_contacts:focus::-webkit-input-placeholder {
       transform: translateY(-120%) scale(0.75);
+      -webkit-transform: translateY(-120%) scale(0.75);
       font-size: 16px;
       color: var(--gray-959DA6);
     }
