@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Select from "react-select";
 import { transliterate } from "transliteration";
 import { useDispatch } from "react-redux";
 import styles from "../../add-project/formAdd/FormAddProject.module.scss";
 import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
+// import "react-quill/dist/quill.snow.css";
 import {
   changeHandler,
   removePreviewPhoto,
@@ -62,6 +62,31 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
   const [isLoadingDropPhoto, setIsLoadingDropPhoto] = useState(false);
   const [isLoadingOpenImage, setIsLoadingOpenImage] = useState(false);
   const [isLoadingCloseImage, setIsLoadingCloseImage] = useState(false);
+
+  const quillRef1 = useRef(null);
+  const quillRef2 = useRef(null);
+
+  // Стили для eact-quill
+  const quillRefs = [quillRef1, quillRef2];
+  const applyStylesToQuillEditor = (quillRef) => {
+    if (quillRef && quillRef.current) {
+      const editor = quillRef.current.getEditor();
+      const editorElement = editor.root;
+      
+      // Применение стилей к нужному элементу
+      editorElement.style.fontSize = '16px';
+      editorElement.style.fontFamily = 'Raleway, sans-serif';
+      editorElement.style.color = 'var(--black-1D2E43)';
+      editorElement.style.border = 'none';
+    }
+  }; 
+  
+  useEffect(() => {
+    // Применение стилей для каждого quillRef
+    quillRefs.forEach((quillRef) => applyStylesToQuillEditor(quillRef));
+  }, [quillRef1, quillRef2]);
+  
+  
 
   useEffect(() => {
     if (editArticleData) {
@@ -682,6 +707,36 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
               {/* {`${inputData.descriptionArticle.length}/260`} */}
             </div>
             <ReactQuill
+              ref={(el) => {
+                if (el) {
+                  const editor = el.getEditor();
+                  const editorElement = editor.root;
+                  editorElement.style.border = "none";
+              
+                  editorElement.style.fontSize = '16px';
+                  editorElement.style.fontFamily = 'Raleway, sans-serif';
+                  editorElement.style.color = 'var(--black-1D2E43)';
+                  editorElement.style.padding = "1rem";
+                  editorElement.style.borderRadius = "6px";
+                  editorElement.style.fontWeight = "var(--fw-400)";
+                  editorElement.style.lineHeight = "16px";
+                  editorElement.style.boxSizing = "border-box";
+                  editorElement.style.paddingBottom = "2.5rem";
+                }
+              }}
+              style={{
+                  // resize: "none",
+                  padding: "0rem",
+                  fontFamily: "var(--font-raleway)",
+                  borderRadius: "6px",
+                  fontSize: "16px",
+                  fontStyle: "normal",
+                  fontWeight: "var(--fw-400)",
+                  lineHeight: "16px",
+                  color: "var(---black-1D2E43)",
+                  boxSizing: "border-box",
+                  paddingBottom: "2.5rem",
+                }}
               modules={{
                 toolbar: [
                   ["bold", "italic", "underline"],
@@ -693,20 +748,6 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
               }}
               formats={["bold", "italic", "underline", "list"]}
               className={`${styles.form_container__textarea} ${styles.orange_color}`}
-              style={{
-                // resize: "none",
-                padding: "0rem",
-                border: "1px solid var(--blue-75BBFD)",
-                fontFamily: "var(--font-raleway)",
-                borderRadius: "6px",
-                fontSize: "16px",
-                fontStyle: "normal",
-                fontWeight: "var(--fw-400)",
-                lineHeight: "16px",
-                color: "var(---black-1D2E43)",
-                boxSizing: "border-box",
-                paddingBottom: "2.5rem",
-              }}
               required
               name={key}
               id={key}
@@ -975,6 +1016,7 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
             </div>
           </div>
           {/* блок и инпутом ( Заголовок текстового блока ) */}
+          <div className={styles.blockContainer}>
           <div className={styles.form_container__heading_block}>
             <input
               required
@@ -1017,6 +1059,7 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
               {`${inputData.descriptionArticle.length}/260`}
             </div> */}
             <ReactQuill
+              ref={quillRef1}
               modules={{
                 toolbar: [
                   ['bold', 'italic', 'underline'], 
@@ -1039,7 +1082,7 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
                 border: "1px solid var(--blue-75BBFD)",
                 borderRadius: "6px",
                 fontFamily: "var(--font-raleway)",
-                fontSize: "16px",
+                fontSize: "36px",
                 fontStyle: "normal",
                 fontWeight: "var(--fw-400)",
                 lineHeight: "16px",
@@ -1059,9 +1102,10 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
               }}
               placeholder="Нет ограничения по символам"
             />
-            <label htmlFor="" className={styles.form_container__textarea_label}>
+            <label htmlFor="" className={styles.form_container__textarea_label_constructor}>
               Текст статьи
             </label>
+          </div>
           </div>
           <div
             className={`${styles.photo_orientation_selector} ${styles.flex_block_gap}`}
@@ -1261,9 +1305,10 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
                 )}
             </div>
           </div>
-
+          <div className={styles.blockContainer}>
           <div className={styles.form_container__description_text}>
           <ReactQuill
+          ref={quillRef2}
              modules={{
               toolbar: [
                 ['bold', 'italic', 'underline'], 
@@ -1313,7 +1358,7 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
               Текстовый блок
             </label>
           </div>
-
+          </div>
           {/* КОНСТРУКТОР */}
           <div className={styles.inputs_container}>
             {blocks.map((blockInputs, blockIndex) => (
