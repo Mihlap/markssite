@@ -1,10 +1,13 @@
 import compressImageFile from "browser-image-compression";
 const { transliterate } = require("transliteration");
 
+const Host = process.env.REACT_APP_SERVER_HOST;
+
 // formHelpers.js
 export const removePreviewPhoto = (
   previewPhotos,
   setPreviewPhotos,
+  imageFileName,
   index,
   inputData,
   setInputData,
@@ -17,9 +20,15 @@ export const removePreviewPhoto = (
   // Удаление фото из массива выбранных файлов
   const updatedDropPhotos = [...inputData.dropPhoto];
   updatedDropPhotos.splice(index, 1);
+  
+    // Замена изображения в строке imageTitle на новое, если оно есть
+  // const newImageTitle = updatedDropPhotos.length > 0
+  // ? updatedDropPhotos.map(file => file.name).join(",")
+  // : "";
   setInputData((prev) => ({
     ...prev,
     dropPhoto: updatedDropPhotos,
+    // imageTitle: newImageTitle,
   }));
 
   // Возвращаем label, если все фотографии удалены
