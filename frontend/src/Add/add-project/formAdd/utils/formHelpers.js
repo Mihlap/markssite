@@ -17,9 +17,17 @@ export const removePreviewPhoto = (
   // Удаление фото из массива выбранных файлов
   const updatedDropPhotos = [...inputData.dropPhoto];
   updatedDropPhotos.splice(index, 1);
-  setInputData((prev) => ({
+
+  
+  const updatedImageTitle = inputData.imageTitle ? inputData.imageTitle.split(",") : [];
+  if (updatedImageTitle.length > index) {
+    updatedImageTitle.splice(index, 1);
+  }
+  
+   setInputData((prev) => ({
     ...prev,
     dropPhoto: updatedDropPhotos,
+    imageTitle: updatedImageTitle.join(","),
   }));
 
   // Возвращаем label, если все фотографии удалены

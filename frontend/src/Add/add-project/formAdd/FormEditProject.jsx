@@ -316,16 +316,16 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
   }, [editProjectData]);
   // функция Удаление фото из массива превью
   // Удаление фото из массива превью
-  // const handleRemovePreviewPhoto = (index) => {
-  //   removePreviewPhoto(
-  //     previewPhotos,
-  //     setPreviewPhotos,
-  //     index,
-  //     inputData,
-  //     setInputData,
-  //     setIsDropPhotoVisible
-  //   );
-  // };
+  const handleRemovePreviewPhoto = (index) => {    
+    removePreviewPhoto(
+      previewPhotos,
+      setPreviewPhotos,
+      index,
+      inputData,
+      setInputData,
+      setIsDropPhotoVisible
+    );
+  };  
 
   // // Удаление превью фото перед основным текстом
   // const handleRemovePreviewPhotoOpen = (index) => {
@@ -962,18 +962,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
             <div className={styles.form_container__textarea_length}>
               {/* {`${inputData.descriptionArticle.length}/260`} */}
             </div>
-            {/* <textarea
-              className={`${styles.form_container__textarea} ${styles.orange_color}`}
-              // name="descriptionArticle"
-              onChange={(e) =>
-                handleDynamicInputChange(blockIndex, inputIndex, e.target.value)
-              }
-              id="descriptionArticle"
-              cols="30"
-              rows="10"
-              placeholder={labelText}
-            ></textarea> */}
-              <ReactQuill
+            <ReactQuill
                 ref={(el) => {
                   if (el) {
                     const editor = el.getEditor();
@@ -1002,9 +991,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
               formats={["bold", "italic", "underline", "list"]}
               className={`${styles.form_container__textarea} ${styles.orange_color}`}
               style={{
-                // resize: "none",
                 padding: "0rem",
-                // border: "1px solid var(--blue-75BBFD)",
                 fontFamily: "var(--font-raleway)",
                 borderRadius: "6px",
                 fontSize: "16px",
@@ -1549,34 +1536,32 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                       src={URL.createObjectURL(preview)}
                       alt={`Preview ${index}`}
                     />
-                    {/* <div
+                    <div
                       className={styles.preview_photos_container__remove_icon}
                       onClick={() => handleRemovePreviewPhoto(index)}
                     >
                       <span></span>
-                    </div> */}
+                    </div>
                   </div>
                 ))}
-              {/* {inputData.imageTitle &&
-                inputData.imageTitle.split(",").map((imageFileName, index) => ( */}
-              {inputData.imageTitle !== null &&
+                {inputData.imageTitle !== null &&
                 inputData.dropPhoto.length === 0 &&
-                inputData.imageTitle.split(",").map((imageFileName, index) => (
+                inputData.imageTitle.split(",").map((preview, index) => (
                   <div
-                    key={index}
+                  key={index} 
                     className={styles.preview_photos_container__block}
                   >
                     <img
                       className={styles.preview_photos_container__img}
-                      src={`${Host}/images/imageAdd/${imageFileName.trim()}`}
+                      src={`${Host}/images/imageAdd/${preview.trim()}`}
                       alt={`Preview ${index}`}
                     />
-                    {/* <div
+                    <div
                     className={styles.preview_photos_container__remove_icon}
                     onClick={() => handleRemovePreviewPhoto(index)}
                   >
                     <span></span>
-                  </div> */}
+                  </div>
                   </div>
                 ))}
             </div>

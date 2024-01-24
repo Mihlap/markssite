@@ -37,7 +37,6 @@
   .input_letter_form_contacts,
   .input_resume_form_contacts,
   .input_choose_form_contacts {
-    -webkit-appearance: none;
     border: none;
     outline: none;
     background-color: transparent;
@@ -77,23 +76,27 @@
     line-height: 16px;
     color: var(--crimson-E00747);
   }
-
+  
   .placeholder {
     position: absolute;
-    top: 0;
+    top: 90%; 
     left: 0;
     color: var(--gray-959DA6);
     font-size: 16px;
+    transform: translateY(-100%);
     transform-origin: left top;
     transition: all 0.3s ease-out;
-    pointer-events: none;
+    padding-bottom: 10px;
+    width: 100%;
+    white-space: nowrap;
   }
 
-  .input_tel_form_contacts:not(:placeholder-shown)+.placeholder,
-  .input_tel_form_contacts:empty+.placeholder,
+  .input_tel_form_contacts:not(:placeholder-shown) + .placeholder,
+  .input_tel_form_contacts:empty + .placeholder,
   .focused1 .placeholder {
-    transform: translateY(-150%) scale(1);
-    font-size: 12px;
+    transform: translateY(-200%) scale(0.75);
+    -webkit-transform: translateY(-200%) scale(0.75);
+    font-size: 16px;
     color: var(--gray-959DA6);
   }
 
@@ -361,20 +364,24 @@
 
   .placeholder {
     position: absolute;
-    top: 0;
+    top: 90%; 
     left: 0;
     color: var(--gray-959DA6);
     font-size: 16px;
+    transform: translateY(-100%);
     transform-origin: left top;
     transition: all 0.3s ease-out;
-    padding-top: 0;
+    padding-bottom: 10px;
+    width: 100%;
+    white-space: nowrap;
   }
 
-  .input_tel_form_contacts:not(:placeholder-shown)+.placeholder,
-  .input_tel_form_contacts:empty+.placeholder,
+  .input_tel_form_contacts:not(:placeholder-shown) + .placeholder,
+  .input_tel_form_contacts:empty + .placeholder,
   .focused1 .placeholder {
-    transform: translateY(-100%) scale(1);
-    font-size: 12px;
+    transform: translateY(-180%) scale(0.75);
+    -webkit-transform: translateY(-180%) scale(0.75);
+    font-size: 16px;
     color: var(--gray-959DA6);
   }
 
@@ -648,20 +655,24 @@
 
   .placeholder {
     position: absolute;
-    top: 0;
+    top: 90%; 
     left: 0;
     color: var(--gray-959DA6);
     font-size: 16px;
+    transform: translateY(-100%);
     transform-origin: left top;
     transition: all 0.3s ease-out;
-    padding-top: 0;
+    padding-bottom: 10px;
+    width: 100%;
+    white-space: nowrap;
   }
-
-  .input_tel_form_contacts:not(:placeholder-shown)+.placeholder,
-  .input_tel_form_contacts:empty+.placeholder,
+  
+  .input_tel_form_contacts:not(:placeholder-shown) + .placeholder,
+  .input_tel_form_contacts:empty + .placeholder,
   .focused1 .placeholder {
-    transform: translateY(-150%) scale(1);
-    font-size: 12px;
+    transform: translateY(-180%) scale(0.75);
+    -webkit-transform: translateY(-180%) scale(0.75);
+    font-size: 16px;
     color: var(--gray-959DA6);
   }
 
@@ -857,24 +868,25 @@
     position: relative; 
   }
 
-   .placeholder {
+  .placeholder {
     position: absolute;
-    top: 0;
+    top: 90%; 
     left: 0;
     color: var(--gray-959DA6);
     font-size: 16px;
+    transform: translateY(-100%);
     transform-origin: left top;
     transition: all 0.3s ease-out;
-    padding-top: 0;
-    pointer-events: none;
-    font-weight: var(--fw-400);
+    padding-bottom: 10px;
+    width: 100%;
+    white-space: nowrap;
   }
 
   .input_tel_form_contacts:not(:placeholder-shown) + .placeholder,
   .input_tel_form_contacts:empty + .placeholder,
-  .focused1 .placeholder,
-  .input_tel_form_contacts:focus + .placeholder {
-    transform: translateY(-120%) scale(0.75);
+  .focused1 .placeholder {
+    transform: translateY(-200%) scale(0.75);
+    -webkit-transform: translateY(-200%) scale(0.75);
     font-size: 16px;
     color: var(--gray-959DA6);
   }
@@ -939,7 +951,7 @@
 
   .button_resume_file {
     position: absolute;
-    right: 0;
+    left: 0;
     display: flex;
     padding: 0.5rem 0.8125rem;
     align-items: flex-start;
@@ -996,44 +1008,36 @@
   
 }  
 
-/* Стили для Safari на экранах 767 и меньше */
-@media (max-width: 767px) {
-  @supports (-webkit-appearance: none) {
-    .input_name_form_contacts,
-    .input_tel_form_contacts,
-    .input_city_form_contacts,
-    .input_letter_form_contacts,
-    .input_resume_form_contacts {
-      position: relative;
-    }
 
-    .input_name_form_contacts::-webkit-input-placeholder,
-    .input_tel_form_contacts::-webkit-input-placeholder,
-    .input_city_form_contacts::-webkit-input-placeholder,
-    .input_letter_form_contacts::-webkit-input-placeholder,
-    .input_resume_form_contacts::-webkit-input-placeholder {
-      position: absolute;
-      top: 0;
-      left: 0;
-      color: var(--gray-959DA6);
-      font-size: 16px;
-      transform-origin: left top;
-      transition: all 0.3s ease-out;
-      padding-top: 0;
-      pointer-events: none;
-      font-weight: var(--fw-400);
-      -webkit-transition: -webkit-transform 0.3s;
-      transition: transform 0.3s;
-     }
-    .input_name_form_contacts:focus::-webkit-input-placeholder,
-    .input_tel_form_contacts:focus::-webkit-input-placeholder,
-    .input_city_form_contacts:focus::-webkit-input-placeholder,
-    .input_letter_form_contacts:focus::-webkit-input-placeholder,
-    .input_resume_form_contacts:focus::-webkit-input-placeholder {
-      transform: translateY(-120%) scale(0.75);
-      -webkit-transform: translateY(-120%) scale(0.75);
-      font-size: 16px;
-      color: var(--gray-959DA6);
-    }
+
+/* Медиа-запросы */
+/* @media screen and (-webkit-min-device-pixel-ratio: 0) and (min-resolution: .001dpcm) {
+  .form_vacancy_wrapper {
+    display: flex;
+    height: fit-content;
+    position: relative;
   }
-}
+ 
+} */
+
+/* Для Firefox */
+/* @-moz-document url-prefix() {
+  .form_vacancy_wrapper {
+    display: flex;
+    height: fit-content;
+    position: relative;
+  }
+ 
+} */
+
+/* Для Internet Explorer */
+/* @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+  .form_vacancy_wrapper {
+    display: flex;
+    height: fit-content;
+    position: relative;
+  }
+
+} */
+
+
