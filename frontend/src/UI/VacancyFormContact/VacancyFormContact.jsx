@@ -444,7 +444,7 @@ const VacancyFormContact = ({
                 />
                 <div className={styles.line}></div>
                 <span className={styles.placeholder}>
-                  Ссылка на резюме/портфолио
+                Ссылка&nbsp;на&nbsp;резюме/портфолио
                 </span>
               </label>
               <div className={styles.resumeFiles}>

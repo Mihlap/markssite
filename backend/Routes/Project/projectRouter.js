@@ -334,6 +334,7 @@ router.delete('/deletezapros/:id', async (req, res) => {
 
     // Удаление связанных элементов из других таблиц
     await Constructor.destroy({ where: { idBlock: id } });
+    
 
     // Удаление поста
     await Project.destroy({ where: { id } });
