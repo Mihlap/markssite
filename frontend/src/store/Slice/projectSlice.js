@@ -40,6 +40,7 @@ const projectSlice = createSlice({
       headingTextBlock: "",
       textBlock: "",
       imageClose: "",
+      imageTitle: "",
       // projectId: "",
     },
   },
@@ -110,6 +111,7 @@ const projectSlice = createSlice({
         headingTextBlock: "",
         textBlock: "",
         imageClose: "",
+        imageTitle: "",
       };
     },
   },
