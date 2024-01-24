@@ -54,7 +54,6 @@ border-radius: 16px;
 }
 
 .email_input_form {
-  -webkit-appearance: none;
   border: none;
   outline: none;
   background-color: transparent;
@@ -92,23 +91,27 @@ border-radius: 16px;
 
 .placeholder {
   position: absolute;
-  top: 0;
+  top: 90%; 
   left: 0;
   color: var(--gray-959DA6);
-  font-size: normal;
+  font-size: 16px;
+  transform: translateY(-100%);
   transform-origin: left top;
   transition: all 0.3s ease-out;
-  padding-top: 0;
-  pointer-events: none;
+  padding-bottom: 10px;
+  width: 100%;
+  white-space: nowrap;
 }
 
-.email_input_form:not(:placeholder-shown)+.placeholder,
-.email_input_form:empty+.placeholder,
+.email_input_form:not(:placeholder-shown) + .placeholder,
+.email_input_form:empty + .placeholder,
 .focused .placeholder {
-  transform: translateY(-120%) scale(0.75);
-  font-size: 16px;
-  color: var(--gray-959DA6);
+  transform: translateY(-180%) scale(0.75);
+    -webkit-transform: translateY(-180%) scale(0.75);
+    font-size: 16px;
+    color: var(--gray-959DA6);
 }
+
 
 .email_input_form:focus + .line1 {
   background-color: #FF7F6A;
