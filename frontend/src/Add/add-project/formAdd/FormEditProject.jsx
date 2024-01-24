@@ -316,11 +316,10 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
   }, [editProjectData]);
   // функция Удаление фото из массива превью
   // Удаление фото из массива превью
-  const handleRemovePreviewPhoto = (imageFileName, index) => {    
+  const handleRemovePreviewPhoto = (index) => {    
     removePreviewPhoto(
       previewPhotos,
       setPreviewPhotos,
-      imageFileName,
       index,
       inputData,
       setInputData,
@@ -1537,24 +1536,24 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                       src={URL.createObjectURL(preview)}
                       alt={`Preview ${index}`}
                     />
-                    {/* <div
+                    <div
                       className={styles.preview_photos_container__remove_icon}
                       onClick={() => handleRemovePreviewPhoto(index)}
                     >
                       <span></span>
-                    </div> */}
+                    </div>
                   </div>
                 ))}
                 {inputData.imageTitle !== null &&
                 inputData.dropPhoto.length === 0 &&
-                inputData.imageTitle.split(",").map((imageFileName, index) => (
+                inputData.imageTitle.split(",").map((preview, index) => (
                   <div
                   key={index} 
                     className={styles.preview_photos_container__block}
                   >
                     <img
                       className={styles.preview_photos_container__img}
-                      src={`${Host}/images/imageAdd/${imageFileName.trim()}`}
+                      src={`${Host}/images/imageAdd/${preview.trim()}`}
                       alt={`Preview ${index}`}
                     />
                     <div
