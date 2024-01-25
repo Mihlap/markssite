@@ -176,16 +176,16 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
   const [dynamicPreviews, setDynamicPreviews] = useState([]);
   const [dynamicData, setDynamicData] = useState([]);
 
-  // const handleRemovePreviewPhoto = (index) => {
-  //   removePreviewPhoto(
-  //     previewPhotos,
-  //     setPreviewPhotos,
-  //     index,
-  //     inputData,
-  //     setInputData,
-  //     setIsDropPhotoVisible
-  //   );
-  // };
+  const handleRemovePreviewPhoto = (index) => {
+    removePreviewPhoto(
+      previewPhotos,
+      setPreviewPhotos,
+      index,
+      inputData,
+      setInputData,
+      setIsDropPhotoVisible
+    );
+  };
 
   // Удаление фото из массива превью который с одной фоткой
   // const handleRemovePreviewPhotoAva = (index) => {
@@ -983,12 +983,12 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
                       src={URL.createObjectURL(preview)}
                       alt={`Preview ${index}`}
                     />
-                    {/* <div
+                    <div
                      className={styles.preview_photos_container__remove_icon}
                      onClick={() => handleRemovePreviewPhoto(index)}
                    >
                      <span></span>
-                   </div> */}
+                   </div>
                   </div>
                 ))}
               {editArticleData.imageTitle !== null &&
@@ -1005,12 +1005,12 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
                         src={`${Host}/images/imageArticle/${imageFileName.trim()}`}
                         alt={`Preview ${index}`}
                       />
-                      {/* <div
+                      <div
                     className={styles.preview_photos_container__remove_icon}
                     onClick={() => handleRemovePreviewPhoto(index)}
                   >
                     <span></span>
-                  </div> */}
+                  </div>
                     </div>
                   ))}
             </div>
