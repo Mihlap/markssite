@@ -147,7 +147,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
 
   useEffect(() => {
     // console.log("editProjectData:", editProjectData);
-    // console.log("inputData:", inputData);
+    console.log("inputData:", inputData);
     if (editProjectData) {
       const initialSelectedCompetencies = editProjectData.selectCompetencies
         ? editProjectData.selectCompetencies
@@ -186,6 +186,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
       );
 
       setInputData((prevInputData) => {
+        console.log("editProjectData:", editProjectData);
         const updatedInputData = {
           ...prevInputData,
           title:
@@ -301,7 +302,8 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
               ? editProjectData.dynamicDataFromEditProject
               : "",
         };
-        // console.log("Обновленные данные формы:", updatedInputData);
+      
+        console.log("Обновленные данные формы:", updatedInputData);
         return updatedInputData;
       });
       const dynamicDataFromEditProject = editProjectData.dynamicData;
@@ -314,6 +316,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
       }
     }
   }, [editProjectData]);
+
   // функция Удаление фото из массива превью
   // Удаление фото из массива превью
   const handleRemovePreviewPhoto = (index) => {    
@@ -324,42 +327,42 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
       inputData,
       setInputData,
       setIsDropPhotoVisible
-    );
+    );  
   };  
 
-  // // Удаление превью фото перед основным текстом
-  // const handleRemovePreviewPhotoOpen = (index) => {
-  //   removePreviewPhotoOpen(
-  //     previewPhotoOpen,
-  //     setPreviewPhotoOpen,
-  //     index,
-  //     inputData,
-  //     setInputData,
-  //     setIsPhotoOpenVisible
-  //   );
-  // };
-  // // Удаление фото из массива превью который с одной фоткой
-  // const handleRemovePreviewPhotoAva = (index) => {
-  //   removePreviewPhotoAva(
-  //     previewPhotoAva,
-  //     setPreviewPhotoAva,
-  //     index,
-  //     inputData,
-  //     setInputData,
-  //     setIsPhotoAvaVisible
-  //   );
-  // };
-  // // Удаление превью фото из закрывающей картинки
-  // const handleRemovePreviewPhotoClose = (index) => {
-  //   removePreviewPhotoClose(
-  //     previewPhotoClose,
-  //     setPreviewPhotoClose,
-  //     index,
-  //     inputData,
-  //     setInputData,
-  //     setIsPhotoCloseVisible
-  //   );
-  // };
+  // Удаление превью фото перед основным текстом
+  const handleRemovePreviewPhotoOpen = (index) => {
+    removePreviewPhotoOpen(
+      previewPhotoOpen,
+      setPreviewPhotoOpen,
+      index,
+      inputData,
+      setInputData,
+      setIsPhotoOpenVisible
+    );
+  };
+  // Удаление фото из массива превью который с одной фоткой
+  const handleRemovePreviewPhotoAva = (index) => {
+    removePreviewPhotoAva(
+      previewPhotoAva,
+      setPreviewPhotoAva,
+      index,
+      inputData,
+      setInputData,
+      setIsPhotoAvaVisible
+    );
+  };
+  // Удаление превью фото из закрывающей картинки
+  const handleRemovePreviewPhotoClose = (index) => {
+    removePreviewPhotoClose(
+      previewPhotoClose,
+      setPreviewPhotoClose,
+      index,
+      inputData,
+      setInputData,
+      setIsPhotoCloseVisible
+    );
+  };
   const validateForm = () => {
     let isValid = true;
     let errors = [];
@@ -418,6 +421,8 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
         awards: Array.isArray(selectedProjectStages)
           ? selectedProjectStages.map((option) => option.label).join(",")
           : "",
+          dropPhoto: inputData.dropPhoto,
+          imageTitle: inputData.imageTitle,
         photoAva: inputData.photoAva,
         imageOpen: inputData.imageOpen,
         imageClose: inputData.imageClose,
@@ -478,10 +483,8 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
         countryCity: "",
         monthYear: "",
         viewConstruction: "",
-        dropPhoto: [],
         photoAva: "",
         imageProject: "",
-        imageTitle: "",
         titleTextBlock: "",
         descriptionProject: "",
         totalArea: "",
@@ -502,6 +505,8 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
         headingTextBlock: "",
         textBlock: "",
         imageClose: "",
+        dropPhoto: [],
+        imageTitle: "",
       });
       setErrorMessage(""); // Очищаем ошибки
       setIsModalOpen(false);
@@ -1526,6 +1531,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
             </div>
             <div className={styles.preview_photos_container}>
               {inputData.dropPhoto &&
+              inputData.dropPhoto.length > 0 &&
                 inputData.dropPhoto.map((preview, index) => (
                   <div
                     key={index}
@@ -1546,14 +1552,14 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                 ))}
                 {inputData.imageTitle !== null &&
                 inputData.dropPhoto.length === 0 &&
-                inputData.imageTitle.split(",").map((preview, index) => (
+                inputData.imageTitle.split(",").map((imageFileName, index) => (
                   <div
                   key={index} 
                     className={styles.preview_photos_container__block}
                   >
                     <img
                       className={styles.preview_photos_container__img}
-                      src={`${Host}/images/imageAdd/${preview.trim()}`}
+                      src={`${Host}/images/imageAdd/${imageFileName.trim()}`}
                       alt={`Preview ${index}`}
                     />
                     <div
@@ -2560,12 +2566,12 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                     src={preview}
                     alt={`Preview ${index}`}
                   />
-                  {/* <div
+                  <div
                     className={styles.preview_photos_container__remove_icon}
                     onClick={() => handleRemovePreviewPhotoClose(index)}
                   >
                     <span></span>
-                  </div> */}
+                  </div>
                 </div>
               ))}
               {!inputData.imageClose !== null &&
@@ -2576,12 +2582,12 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                       src={`${Host}/images/imageAdd/${inputData.imageClose}`}
                       alt="Preview"
                     />
-                    {/* <div
+                    <div
                     className={styles.preview_photos_container__remove_icon}
                     onClick={() => handleRemovePreviewPhotoOpen()}
                   >
                     <span></span>
-                  </div> */}
+                  </div>
                   </div>
                 )}
             </div>

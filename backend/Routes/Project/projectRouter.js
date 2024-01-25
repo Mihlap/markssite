@@ -105,7 +105,7 @@ router.put(
   async (req, res) => {
     try {
       const { projectId } = req.params;
-      // console.log('projectIdйййййййййййййййййййййййййййййййй:', projectId);
+      console.log(`projectId: ${projectId}`);
 
       // Поиск проекта по id
       const projectToUpdate = await Project.findByPk(projectId);
@@ -139,6 +139,20 @@ router.put(
       const currentImageOpens = projectToUpdate.imageOpen ? [projectToUpdate.imageOpen] : [];
       const currentImageCloses = projectToUpdate.imageClose ? [projectToUpdate.imageClose] : [];
       
+      
+      console.log('Изображения для обновления:', {
+        imageTitles,
+        imageProjects,
+        imageOpens,
+        imageCloses,
+      });
+
+      console.log('Текущие изображения в проекте:', {
+        currentImageTitles,
+        currentImageProjects,
+        currentImageOpens,
+        currentImageCloses,
+      });
 
       // Обновление данных проекта
       await projectToUpdate.update({
@@ -172,21 +186,34 @@ router.put(
         // imageClose: imageCloses,
         numberOfLanes: req.body.numberOfLanes,
         long: req.body.long,
-        imageTitle: imageTitles || currentImageTitles.join(', '),
+        imageTitle: currentImageTitles.join(', ') || imageTitles,
         imageProject: imageProjects || currentImageProjects.join(', '),
         imageOpen: imageOpens || (currentImageOpens && currentImageOpens[0] ? currentImageOpens[0] : null),
         imageClose: imageCloses || (currentImageCloses && currentImageCloses[0] ? currentImageCloses[0] : null),
       });
 
+      console.log('Обновленные данные проекта:', projectToUpdate.get());
+      console.log('imageTitle:', projectToUpdate.imageTitle);
+      console.log('imageProject:', projectToUpdate.imageProject);
+      console.log('imageOpen:', projectToUpdate.imageOpen);
+      console.log('imageClose:', projectToUpdate.imageClose);
+
       // Поиск или создание данных конструктора
       let existingConstructor = await Constructor.findOne({ where: { idBlock: projectId } });
 
       if (existingConstructor) {
+        console.log('Найден существующий конструктор:', existingConstructor.toJSON());
         // Если конструктор существует, обновляем данные
         await existingConstructor.update({
           data: dynamicBlocksContent,
           image: dynamicImageTitles,
         });
+        console.log('Данные конструктора успешно обновлены:', existingConstructor.toJSON());
+
+        if (existingConstructor.image) {
+          const deletedImages = existingConstructor.image.split(', ').filter(img => !dynamicImageTitles.includes(img));
+          console.log('Удаленные изображения из конструктора:', deletedImages);
+        }
       } else {
         // Если конструктор не существует, создаем новый
         existingConstructor = await Constructor.create({
@@ -194,8 +221,9 @@ router.put(
           image: dynamicImageTitles,
           idBlock: projectId,
         });
+        console.log('Создан новый конструктор:', existingConstructor.toJSON());
       }
-
+      console.log('Данные конструктора:', existingConstructor.get());
       // остальной код обработки...
 
       res.status(200).json({ message: 'Данные успешно обновлены' });
