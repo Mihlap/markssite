@@ -155,6 +155,10 @@ export const fetchProject = createAsyncThunk(
           formData.append("photoAva", value[0]);
         } else if (key === "imageOpen" && value?.length > 0) {
           formData.append("imageOpen", value[0]);
+        // } else if (key === "dropPhoto" && value?.length > 0) {
+        //   formData.append("dropPhoto", value[0]);
+        // } else if (key === "imageTitle" && value?.length > 0) {
+        //   formData.append("imageTitle", value[0]);
         } else if (key === "dynamicBlocks" && value?.length > 0) {
           let photosArray = [];
 
