@@ -10,6 +10,7 @@ export const removePreviewPhoto = (
   setInputData,
   setIsDropPhotoVisible
 ) => {
+  console.log("Before removal - inputData.imageTitle:", inputData.imageTitle);
   const updatedPreviewPhotos = [...previewPhotos];
   updatedPreviewPhotos.splice(index, 1);
   setPreviewPhotos(updatedPreviewPhotos);
@@ -19,21 +20,28 @@ export const removePreviewPhoto = (
   updatedDropPhotos.splice(index, 1);
 
   
-  const updatedImageTitle = inputData.imageTitle ? inputData.imageTitle.split(",") : [];
-  if (updatedImageTitle.length > index) {
-    updatedImageTitle.splice(index, 1);
-  }
-  
-   setInputData((prev) => ({
+  // const updatedImageTitle = inputData.imageTitle ? inputData.imageTitle.split(",") : [];
+  // if (updatedImageTitle.length > index) {
+  //   updatedImageTitle.splice(index, 1);
+  // }
+
+  // const updatedImageTitle = inputData.imageTitle ? inputData.imageTitle.split(",").map(item => item.trim()) : [];
+  // if (updatedImageTitle.length > index) {
+  //   updatedImageTitle.splice(index, 1);
+  // }
+
+  setInputData((prev) => ({
     ...prev,
     dropPhoto: updatedDropPhotos,
-    imageTitle: updatedImageTitle.join(","),
+    // imageTitle: updatedImageTitle.join(","),
   }));
 
+  
   // Возвращаем label, если все фотографии удалены
   if (updatedPreviewPhotos.length === 0) {
     setIsDropPhotoVisible(true);
   }
+  console.log("After removal - inputData.imageTitle:", inputData.imageTitle);
 };
 
 export const removePreviewPhotoAva = (
