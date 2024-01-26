@@ -15,6 +15,7 @@ import Footer from "./Footer/Footer";
 import Information from "./Information/Information";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 import Loading from "./Loading/Loading";
+import LoadingNew from "./Loading/LoadingNew";
 import Login from "./Login/Login";
 import Add from "./Add/Add";
 
@@ -51,7 +52,7 @@ export default function App() {
   const isActive = useSelector((state) => state.toggle.isActiveForButton3);
   const location = useLocation();
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const [showPortalMenu, setShowPortalMenu] = useState(false);
 
   const isMobile = window.innerWidth <= 768;
@@ -120,7 +121,7 @@ export default function App() {
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-    }, 3500);
+    }, 4500);
   }, []);
 
   // console.log(location.pathname)
@@ -131,7 +132,7 @@ export default function App() {
       location.pathname.toLowerCase() !== "/information" &&
       location.pathname.toLowerCase() !== "/portal/vacancies"
       ? (
-        <Loading />
+        <LoadingNew />
       ) : (
         <>
           {showNavbarFooter && currentPage !== "add" && (
