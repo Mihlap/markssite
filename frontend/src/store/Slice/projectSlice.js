@@ -40,7 +40,7 @@ const projectSlice = createSlice({
       headingTextBlock: "",
       textBlock: "",
       imageClose: "",
-      imageTitle: "",
+      // imageTitle: "",
       // projectId: "",
     },
   },
@@ -155,10 +155,6 @@ export const fetchProject = createAsyncThunk(
           formData.append("photoAva", value[0]);
         } else if (key === "imageOpen" && value?.length > 0) {
           formData.append("imageOpen", value[0]);
-        // } else if (key === "dropPhoto" && value?.length > 0) {
-        //   formData.append("dropPhoto", value[0]);
-        // } else if (key === "imageTitle" && value?.length > 0) {
-        //   formData.append("imageTitle", value[0]);
         } else if (key === "dynamicBlocks" && value?.length > 0) {
           let photosArray = [];
 
@@ -202,6 +198,13 @@ export const fetchProject = createAsyncThunk(
     }
   }
 
+  // for (var pair of formData.entries()) {
+  //   console.log(pair[0] + ', ' + pair[1]);
+  // }
+
+  // console.log("Request Method:", requestMethod);
+  //   console.log("Request URL:", requestUrl);
+
   try {
     await axios({
       method: requestMethod,
@@ -210,6 +213,8 @@ export const fetchProject = createAsyncThunk(
       headers: { "Content-Type": "multipart/form-data" },
     });
 
+    // console.log('Успешно обновлено на сервере');
+
     dispatch(clearFormData());
     // Опционально: обновить список проектов
     dispatch(getFetchForm());
@@ -217,6 +222,7 @@ export const fetchProject = createAsyncThunk(
    if (projectId) {
     dispatch(getDynamicData(projectId));
   }
+  dispatch(setProjectId(null));
   } catch (error) {
     console.error("Ошибка при отправке проекта:", error);
     dispatch(fetchProjectFailure(error.message));
