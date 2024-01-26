@@ -10,7 +10,7 @@ export const removePreviewPhoto = (
   setInputData,
   setIsDropPhotoVisible
 ) => {
-  console.log("Before removal - inputData.imageTitle:", inputData.imageTitle);
+  // console.log("Before removal - inputData.imageTitle:", inputData.imageTitle);
   const updatedPreviewPhotos = [...previewPhotos];
   updatedPreviewPhotos.splice(index, 1);
   setPreviewPhotos(updatedPreviewPhotos);
@@ -41,7 +41,6 @@ export const removePreviewPhoto = (
   if (updatedPreviewPhotos.length === 0) {
     setIsDropPhotoVisible(true);
   }
-  console.log("After removal - inputData.imageTitle:", inputData.imageTitle);
 };
 
 export const removePreviewPhotoAva = (
