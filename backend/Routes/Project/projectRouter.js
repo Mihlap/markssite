@@ -20,6 +20,9 @@ router.post(
   ]),
   async (req, res) => {
     try {
+      console.log('Received request body:', req.body);
+      console.log('Received files:', req.files);
+
       const dynamicImageTitles = req.files.dynamicImages
         ? req.files.dynamicImages.map((file) => file.filename).join(', ')
         : null;
@@ -46,7 +49,7 @@ router.post(
       // console.log(req.files, '<<-- reg.FILES');
       // console.log(dynamicBlocksContent);
 
-      const createdPrpject = await Project.create({
+      const createdProject = await Project.create({
         title: req.body.title,
         selectCompetencies: req.body.selectCompetencies,
         countryCity: req.body.countryCity,
@@ -82,8 +85,10 @@ router.post(
       await Constructor.create({
         data: dynamicBlocksContent,
         image: dynamicImageTitles,
-        idBlock: createdPrpject.id,
+        idBlock: createdProject.id,
       });
+
+      console.log('Created project:', createdProject);
 
       res.status(200).json({ message: 'Данные успешно сохранены' });
     } catch (error) {
@@ -105,7 +110,7 @@ router.put(
   async (req, res) => {
     try {
       const { projectId } = req.params;
-      console.log(`projectId: ${projectId}`);
+      // console.log(`Обновление данных для проекта с ID ${projectId}`);
 
       // Поиск проекта по id
       const projectToUpdate = await Project.findByPk(projectId);
@@ -127,34 +132,30 @@ router.put(
           return res.status(400).json({ message: 'Неверный формат данных для dynamicBlocksJSON' });
         }
       }
+      // не удалять -------------------------------
+      // const imageTitlesFromClient = req.body.imageTitle;
+      // const imageTitlesArrayFromClient = imageTitlesFromClient ? imageTitlesFromClient.split(',').map(item => item.trim()) : [];
+      // const imageTitles = imageTitlesArrayFromClient.length > 0
+      //   ? imageTitlesArrayFromClient.join(', ')
+      //   : null;
 
+      // -------------------------------------------------
+      
       const imageTitles = req.files.dropPhoto
-        ? req.files.dropPhoto.map((file) => file.filename).join(', ')
-        : null;
+      ? req.files.dropPhoto.map((file) => file.filename).join(', ')
+      : null;
+      // console.log('imageTitles:', imageTitles);
       const imageProjects = req.files.photoAva ? req.files.photoAva[0].filename : null;
       const imageOpens = req.files.imageOpen ? req.files.imageOpen[0].filename : null;
       const imageCloses = req.files.imageClose ? req.files.imageClose[0].filename : null;
       const currentImageTitles = projectToUpdate.imageTitle ? projectToUpdate.imageTitle.split(', ') : [];
       const currentImageProjects = projectToUpdate.imageProject ? projectToUpdate.imageProject.split(', ') : [];
       const currentImageOpens = projectToUpdate.imageOpen ? [projectToUpdate.imageOpen] : [];
-      const currentImageCloses = projectToUpdate.imageClose ? [projectToUpdate.imageClose] : [];
-      
-      
-      console.log('Изображения для обновления:', {
-        imageTitles,
-        imageProjects,
-        imageOpens,
-        imageCloses,
-      });
+      const currentImageCloses = projectToUpdate.imageClose ? [projectToUpdate.imageClose] : [];     
 
-      console.log('Текущие изображения в проекте:', {
-        currentImageTitles,
-        currentImageProjects,
-        currentImageOpens,
-        currentImageCloses,
-      });
-
-      // Обновление данных проекта
+      // console.log('Current imageTitle:', projectToUpdate.imageTitle);     
+      
+         // Обновление данных проекта
       await projectToUpdate.update({
         title: req.body.title,
         selectCompetencies: req.body.selectCompetencies,
@@ -186,44 +187,36 @@ router.put(
         // imageClose: imageCloses,
         numberOfLanes: req.body.numberOfLanes,
         long: req.body.long,
-        imageTitle: currentImageTitles.join(', ') || imageTitles,
+        imageTitle: imageTitles || currentImageTitles.join(', '),
         imageProject: imageProjects || currentImageProjects.join(', '),
         imageOpen: imageOpens || (currentImageOpens && currentImageOpens[0] ? currentImageOpens[0] : null),
         imageClose: imageCloses || (currentImageCloses && currentImageCloses[0] ? currentImageCloses[0] : null),
       });
+      // console.log('Updating project with data:', {
+      // imageTitle: imageTitles || currentImageTitles.join(', '),
+      // });
 
-      console.log('Обновленные данные проекта:', projectToUpdate.get());
-      console.log('imageTitle:', projectToUpdate.imageTitle);
-      console.log('imageProject:', projectToUpdate.imageProject);
-      console.log('imageOpen:', projectToUpdate.imageOpen);
-      console.log('imageClose:', projectToUpdate.imageClose);
-
-      // Поиск или создание данных конструктора
+         // Поиск или создание данных конструктора
       let existingConstructor = await Constructor.findOne({ where: { idBlock: projectId } });
 
       if (existingConstructor) {
-        console.log('Найден существующий конструктор:', existingConstructor.toJSON());
+        // console.log('Найден существующий конструктор:', existingConstructor.toJSON());
         // Если конструктор существует, обновляем данные
         await existingConstructor.update({
           data: dynamicBlocksContent,
           image: dynamicImageTitles,
         });
-        console.log('Данные конструктора успешно обновлены:', existingConstructor.toJSON());
-
-        if (existingConstructor.image) {
-          const deletedImages = existingConstructor.image.split(', ').filter(img => !dynamicImageTitles.includes(img));
-          console.log('Удаленные изображения из конструктора:', deletedImages);
-        }
-      } else {
+     
+       } else {
         // Если конструктор не существует, создаем новый
         existingConstructor = await Constructor.create({
           data: dynamicBlocksContent,
           image: dynamicImageTitles,
           idBlock: projectId,
         });
-        console.log('Создан новый конструктор:', existingConstructor.toJSON());
+        // console.log('Создан новый конструктор:', existingConstructor.toJSON());
       }
-      console.log('Данные конструктора:', existingConstructor.get());
+      // console.log('Данные конструктора:', existingConstructor.get());
       // остальной код обработки...
 
       res.status(200).json({ message: 'Данные успешно обновлены' });
