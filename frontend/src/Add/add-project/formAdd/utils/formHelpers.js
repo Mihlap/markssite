@@ -25,15 +25,15 @@ export const removePreviewPhoto = (
   //   updatedImageTitle.splice(index, 1);
   // }
 
-  // const updatedImageTitle = inputData.imageTitle ? inputData.imageTitle.split(",").map(item => item.trim()) : [];
-  // if (updatedImageTitle.length > index) {
-  //   updatedImageTitle.splice(index, 1);
-  // }
+  const updatedImageTitle = inputData.imageTitle ? inputData.imageTitle.split(",").map(item => item.trim()) : [];
+  if (updatedImageTitle.length > index) {
+    updatedImageTitle.splice(index, 1);
+  }
 
   setInputData((prev) => ({
     ...prev,
     dropPhoto: updatedDropPhotos,
-    // imageTitle: updatedImageTitle.join(","),
+    imageTitle: updatedImageTitle.join(","),
   }));
 
   
