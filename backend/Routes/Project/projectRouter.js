@@ -102,6 +102,7 @@ router.put(
   '/updatezapros/:projectId',
   fileMiddleware.fields([
     { name: 'dropPhoto', maxCount: 4 },
+    { name: 'imageTitle', maxCount: 4 },
     { name: 'photoAva', maxCount: 1 },
     { name: 'imageOpen', maxCount: 1 },
     { name: 'imageClose', maxCount: 1 },
@@ -132,19 +133,20 @@ router.put(
           return res.status(400).json({ message: 'Неверный формат данных для dynamicBlocksJSON' });
         }
       }
-      // не удалять -------------------------------
-      // const imageTitlesFromClient = req.body.imageTitle;
-      // const imageTitlesArrayFromClient = imageTitlesFromClient ? imageTitlesFromClient.split(',').map(item => item.trim()) : [];
-      // const imageTitles = imageTitlesArrayFromClient.length > 0
-      //   ? imageTitlesArrayFromClient.join(', ')
-      //   : null;
 
-      // -------------------------------------------------
-      
+
+    
       const imageTitles = req.files.dropPhoto
       ? req.files.dropPhoto.map((file) => file.filename).join(', ')
-      : null;
-      // console.log('imageTitles:', imageTitles);
+      : null; 
+   
+      const imageTitlesFromClient = req.body.imageTitle;
+      const imageTitlesArrayFromClient = imageTitlesFromClient ? imageTitlesFromClient.split(',').map(item => item.trim()) : [];
+      const imageTitlesNew = imageTitlesArrayFromClient.length > 0
+        ? imageTitlesArrayFromClient.join(', ')
+        : null;       
+
+
       const imageProjects = req.files.photoAva ? req.files.photoAva[0].filename : null;
       const imageOpens = req.files.imageOpen ? req.files.imageOpen[0].filename : null;
       const imageCloses = req.files.imageClose ? req.files.imageClose[0].filename : null;
@@ -163,7 +165,6 @@ router.put(
         monthYear: req.body.monthYear,
         viewConstruction: req.body.viewConstruction,
         style: req.body.radioValue,
-        // imageTitle: imageTitles,
         // imageProject: imageProjects,
         titleTextBlock: req.body.titleTextBlock,
         descriptionProject: req.body.descriptionProject,
@@ -187,7 +188,7 @@ router.put(
         // imageClose: imageCloses,
         numberOfLanes: req.body.numberOfLanes,
         long: req.body.long,
-        imageTitle: imageTitles || currentImageTitles.join(', '),
+        imageTitle: imageTitles || imageTitlesNew || currentImageTitles.join(', '),
         imageProject: imageProjects || currentImageProjects.join(', '),
         imageOpen: imageOpens || (currentImageOpens && currentImageOpens[0] ? currentImageOpens[0] : null),
         imageClose: imageCloses || (currentImageCloses && currentImageCloses[0] ? currentImageCloses[0] : null),
