@@ -1541,12 +1541,12 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                       src={URL.createObjectURL(preview)}
                       alt={`Preview ${index}`}
                     />
-                    {/* <div
+                    <div
                       className={styles.preview_photos_container__remove_icon}
                       onClick={() => handleRemovePreviewPhoto(index)}
                     >
                       <span></span>
-                    </div> */}
+                    </div>
                   </div>
                 ))}
                 {inputData.imageTitle !== null &&
@@ -1561,12 +1561,12 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                       src={`${Host}/images/imageAdd/${imageFileName.trim()}`}
                       alt={`Preview ${index}`}
                     />
-                    {/* <div
+                    <div
                     className={styles.preview_photos_container__remove_icon}
                     onClick={() => handleRemovePreviewPhoto(index)}
                   >
                     <span></span>
-                  </div> */}
+                  </div>
                   </div>
                 ))}
             </div>
@@ -2301,12 +2301,12 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                     src={preview}
                     alt={`Preview ${index}`}
                   />
-                  {/* <div
+                  <div
                     className={styles.preview_photos_container__remove_icon}
                     onClick={() => handleRemovePreviewPhotoOpen(index)}
                   >
                     <span></span>
-                  </div> */}
+                  </div>
                 </div>
               ))}
               {inputData.imageOpen !== null &&
@@ -2317,12 +2317,12 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                       src={`${Host}/images/imageAdd/${inputData.imageOpen}`}
                       alt="Preview"
                     />
-                    {/* <div
+                    <div
                     className={styles.preview_photos_container__remove_icon}
                     onClick={() => handleRemovePreviewPhotoOpen()}
                   >
                     <span></span>
-                  </div> */}
+                  </div>
                   </div>
                 )}
             </div>
