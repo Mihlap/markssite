@@ -2565,12 +2565,12 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                     src={preview}
                     alt={`Preview ${index}`}
                   />
-                  {/* <div
+                  <div
                     className={styles.preview_photos_container__remove_icon}
                     onClick={() => handleRemovePreviewPhotoClose(index)}
                   >
                     <span></span>
-                  </div> */}
+                  </div>
                 </div>
               ))}
               {!inputData.imageClose !== null &&
@@ -2581,12 +2581,12 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                       src={`${Host}/images/imageAdd/${inputData.imageClose}`}
                       alt="Preview"
                     />
-                    {/* <div
+                    <div
                     className={styles.preview_photos_container__remove_icon}
-                    onClick={() => handleRemovePreviewPhotoOpen()}
+                    onClick={() => handleRemovePreviewPhotoClose()}
                   >
                     <span></span>
-                  </div> */}
+                  </div>
                   </div>
                 )}
             </div>
