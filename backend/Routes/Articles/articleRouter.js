@@ -114,13 +114,42 @@ router.put(
       const imageTitles = req.files.dropPhoto
       ? req.files.dropPhoto.map((file) => file.filename).join(', ')
       : null;
-    const imageProjects = req.files.photoAva ? req.files.photoAva[0].filename : null;
-    const imageOpens = req.files.imageOpen ? req.files.imageOpen[0].filename : null;
-    const imageCloses = req.files.imageClose ? req.files.imageClose[0].filename : null;
+
+       let imageTitlesFromClient = req.body.imageTitle;
+      if (Array.isArray(imageTitlesFromClient)) {
+        imageTitlesFromClient = imageTitlesFromClient.join(', '); // Если это массив, объедините его в строку
+      };
+      const imageAuthorFromClient = req.body.imageAuthor; 
+      const imageOpensFromClient = req.body.imageOpen;
+      let imageClosesFromClient = req.body.imageClose;
+      if (Array.isArray(imageClosesFromClient)) {
+        imageClosesFromClient = imageClosesFromClient.join(', '); // Если это массив, объедините его в строку
+      };
+      
+      const imageTitlesArrayFromClient = imageTitlesFromClient ? imageTitlesFromClient.split(',').map(item => item.trim()) : [];
+      const imageTitlesNew = imageTitlesArrayFromClient.length > 0
+        ? imageTitlesArrayFromClient.join(', ')
+        : null;     
+
+
+    const imageAuthors = req.files.photoAva ? req.files.photoAva.filename : imageAuthorFromClient;
+    const imageOpens = req.files.imageOpen ? req.files.imageOpen[0].filename : imageOpensFromClient;
+    const imageCloses = req.files.imageClose ? req.files.imageClose[0].filename : imageClosesFromClient;
     const currentImageTitles = articleToUpdate.imageTitle ? articleToUpdate.imageTitle.split(', ') : [];
-    const currentImageProjects = articleToUpdate.imageAuthor ? articleToUpdate.imageAuthor.split(', ') : [];
+    const currentImageAuthors = articleToUpdate.imageAuthor ? [articleToUpdate.imageAuthor] : [];
     const currentImageOpens = articleToUpdate.imageOpen ? [articleToUpdate.imageOpen] : [];
-    const currentImageCloses = articleToUpdate.imageClose ? [articleToUpdate.imageClose] : [];
+    const currentImageCloses = articleToUpdate.imageClose ? [articleToUpdate.imageClose] : [];   
+    
+    console.log('Before update:', {
+      imageTitles,
+      imageAuthors,
+      imageOpens,
+      imageCloses,
+      currentImageTitles,
+      currentImageAuthors,
+      currentImageOpens,
+      currentImageCloses,
+    });
 
       // Обновление существующей статьи
       await articleToUpdate.update({
@@ -136,11 +165,18 @@ router.put(
         // imageOpen: imageOpens,
         textBlock: req.body.textBlock,
         // imageClose: imageCloses,
-        imageTitle: imageTitles || currentImageTitles.join(', '),
-        imageAuthor: imageProjects || currentImageProjects.join(', '),
+        imageTitle: imageTitles || imageTitlesNew || currentImageTitles.join(', '),
+        imageAuthor: imageAuthors || (currentImageAuthors && currentImageAuthors[0]) || null,
         imageOpen: imageOpens || (currentImageOpens && currentImageOpens[0] ? currentImageOpens[0] : null),
         imageClose: imageCloses || (currentImageCloses && currentImageCloses[0] ? currentImageCloses[0] : null),
         
+      });
+
+         console.log('After update:', {
+        imageTitle: articleToUpdate.imageTitle,
+        imageAuthor: articleToUpdate.imageAuthor,
+        imageOpen: articleToUpdate.imageOpen,
+        imageClose: articleToUpdate.imageClose,
       });
       
    

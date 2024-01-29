@@ -10,7 +10,6 @@ export const removePreviewPhoto = (
   setInputData,
   setIsDropPhotoVisible
 ) => {
-  // console.log("Before removal - inputData.imageTitle:", inputData.imageTitle);
   const updatedPreviewPhotos = [...previewPhotos];
   updatedPreviewPhotos.splice(index, 1);
   setPreviewPhotos(updatedPreviewPhotos);
@@ -18,18 +17,11 @@ export const removePreviewPhoto = (
   // Удаление фото из массива выбранных файлов
   const updatedDropPhotos = [...inputData.dropPhoto];
   updatedDropPhotos.splice(index, 1);
-
   
-  // const updatedImageTitle = inputData.imageTitle ? inputData.imageTitle.split(",") : [];
-  // if (updatedImageTitle.length > index) {
-  //   updatedImageTitle.splice(index, 1);
-  // }
-
   const updatedImageTitle = inputData.imageTitle ? inputData.imageTitle.split(",").map(item => item.trim()) : [];
   if (updatedImageTitle.length > index) {
     updatedImageTitle.splice(index, 1);
   }
-
   setInputData((prev) => ({
     ...prev,
     dropPhoto: updatedDropPhotos,
