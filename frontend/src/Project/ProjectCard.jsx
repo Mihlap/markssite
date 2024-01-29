@@ -561,7 +561,7 @@ const ProjectCard = ({
                     ref={refs.leftImg1}
                     className={styles.item_img}
                     src={imageOpenSource}
-                    alt={altTextOpen}
+                    alt=""
                     loading="lazy"
                   />
                 </div>
@@ -635,7 +635,7 @@ const ProjectCard = ({
                     ref={refs.leftImg4}
                     className={`${styles.item_img} ${styles.item_img_close1}`}
                     src={imageCloseSource}
-                    alt={altTextClose}
+                    alt=""
                     loading="lazy"
                   />
                 </div>
