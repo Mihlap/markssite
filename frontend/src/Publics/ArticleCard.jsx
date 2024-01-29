@@ -398,6 +398,7 @@ const ArticleCard = ({
                       ? article.imageClose
                       : "Default Alt Text"
                   }
+                  //  alt=""
                 />
               </div>
             </div>
