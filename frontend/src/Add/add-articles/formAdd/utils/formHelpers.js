@@ -17,15 +17,15 @@ export const removePreviewPhoto = (
   const updatedDropPhotos = [...inputData.dropPhoto];
   updatedDropPhotos.splice(index, 1);
 
-  // const updatedImageTitle = inputData.imageTitle ? inputData.imageTitle.split(",") : [];
-  // if (updatedImageTitle.length > index) {
-  //   updatedImageTitle.splice(index, 1);
-  // }
+  const updatedImageTitle = inputData.imageTitle ? inputData.imageTitle : [];
+  if (updatedImageTitle.length > index) {
+    updatedImageTitle.splice(index, 1);
+  }
 
   setInputData((prev) => ({
     ...prev,
     dropPhoto: updatedDropPhotos,
-    // imageTitle: updatedImageTitle.join(","),
+    imageTitle: updatedImageTitle,
   }));
 
   // Возвращаем label, если все фотографии удалены
@@ -45,17 +45,36 @@ export const removePreviewPhotoAva = (
   const updatedPreviewPhotosAva = [...previewPhotoAva];
   updatedPreviewPhotosAva.splice(index, 1);
   setPreviewPhotoAva(updatedPreviewPhotosAva);
-  setIsPhotoAvaVisible(true);
+  setIsPhotoAvaVisible(updatedPreviewPhotosAva.length > 0);
+
+  console.log("Before removePreviewPhotoAva:", {
+    previewPhotoAva,
+    index,
+    inputData,
+  });
 
   // Удаление фото из массива выбранных файлов
-  const updatedDropPhotosAva = [...inputData.photoAva];
-  updatedDropPhotosAva.splice(index, 1);
+  const updatedDropPhotosAva = Array.isArray(inputData.photoAva)
+  ? [...inputData.photoAva]
+  : [];
+updatedDropPhotosAva.splice(index, 1);
+
+  let updatedImageAuthor = "";
+  if (typeof inputData.imageAuthor === "string") {
+    const imageAuthorArray = inputData.imageAuthor.split(", ");
+    imageAuthorArray.splice(index, 1);
+    updatedImageAuthor = imageAuthorArray.join(", ");
+  }
   setInputData((prev) => ({
     ...prev,
     photoAva: updatedDropPhotosAva,
+    imageAuthor: updatedImageAuthor,
   }));
-
-  // Обновление стиля поля ввода файлов
+  console.log("After removePreviewPhotoAva:", {
+    updatedPreviewPhotosAva,
+    updatedDropPhotosAva,
+    updatedImageAuthor,
+  });
 };
 
 export const removePreviewPhotoOpen = (
@@ -92,11 +111,11 @@ export const removePreviewPhotoClose = (
   setPreviewPhotoClose(updatedPreviewPhotosOpen);
   setIsPhotoCloseVisible(true);
 
-  const updatedDropPhotoClose = Array.from(inputData.imageOpen);
+  const updatedDropPhotoClose = Array.from(inputData.imageClose);
   updatedDropPhotoClose.splice(index, 1);
   setInputData((prev) => ({
     ...prev,
-    imageOpen: updatedDropPhotoClose,
+    imageClose: updatedDropPhotoClose,
   }));
 };
 

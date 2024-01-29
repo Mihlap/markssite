@@ -56,6 +56,7 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
     textBlock: "",
     imageClose: "",
     imageTitle: "",
+    imageAuthor: "",
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -147,6 +148,11 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
             editArticleData.imageClose !== undefined
               ? editArticleData.imageClose
               : "",
+          imageAuthor:
+              editArticleData.imageAuthor &&
+              typeof editArticleData.imageAuthor === "string"
+                ? editArticleData.imageAuthor.split(",")
+                : [],
           imageTitle:
             editArticleData.imageTitle &&
             typeof editArticleData.imageTitle === "string"
@@ -188,40 +194,40 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
   };
 
   // Удаление фото из массива превью который с одной фоткой
-  // const handleRemovePreviewPhotoAva = (index) => {
-  //   removePreviewPhotoAva(
-  //     previewPhotoAva,
-  //     setPreviewPhotoAva,
-  //     index,
-  //     inputData,
-  //     setInputData,
-  //     setIsPhotoAvaVisible
-  //   );
-  // };
+  const handleRemovePreviewPhotoAva = (index) => {
+    removePreviewPhotoAva(
+      previewPhotoAva,
+      setPreviewPhotoAva,
+      index,
+      inputData,
+      setInputData,
+      setIsPhotoAvaVisible
+    );
+  };
 
   // Удаление превью фото перед основным текстом
-  // const handleRemovePreviewPhotoOpen = (index) => {
-  //   removePreviewPhotoOpen(
-  //     previewPhotoOpen,
-  //     setPreviewPhotoOpen,
-  //     index,
-  //     inputData,
-  //     setInputData,
-  //     setIsPhotoOpenVisible
-  //   );
-  // };
+  const handleRemovePreviewPhotoOpen = (index) => {
+    removePreviewPhotoOpen(
+      previewPhotoOpen,
+      setPreviewPhotoOpen,
+      index,
+      inputData,
+      setInputData,
+      setIsPhotoOpenVisible
+    );
+  };
 
   // Удаление превью фото из закрывающей картинки
-  // const handleRemovePreviewPhotoClose = (index) => {
-  //   removePreviewPhotoClose(
-  //     previewPhotoClose,
-  //     setPreviewPhotoClose,
-  //     index,
-  //     inputData,
-  //     setInputData,
-  //     setIsPhotoCloseVisible
-  //   );
-  // };
+  const handleRemovePreviewPhotoClose = (index) => {
+    removePreviewPhotoClose(
+      previewPhotoClose,
+      setPreviewPhotoClose,
+      index,
+      inputData,
+      setInputData,
+      setIsPhotoCloseVisible
+    );
+  };
 
   // функция отправки формы на Redux
   const submitHandler = async (e) => {
@@ -983,36 +989,39 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
                       src={URL.createObjectURL(preview)}
                       alt={`Preview ${index}`}
                     />
-                    {/* <div
+                    <div
                      className={styles.preview_photos_container__remove_icon}
                      onClick={() => handleRemovePreviewPhoto(index)}
                    >
                      <span></span>
-                   </div> */}
+                   </div>
                   </div>
                 ))}
-              {editArticleData.imageTitle !== null &&
+              {inputData.imageTitle !== null &&
                 inputData.dropPhoto.length === 0 &&
-                editArticleData.imageTitle
-                  .split(",")
-                  .map((imageFileName, index) => (
+                ([] // Создаем новый массив
+                .concat(inputData.imageTitle) // Преобразуем inputData.imageTitle в массив
+                .filter(Boolean) // Убираем пустые значения
+                .map((imageFileName, index) => (
                     <div
                       key={index}
                       className={styles.preview_photos_container__block}
                     >
+                    {console.log('imageFileName:', imageFileName)}
                       <img
                         className={styles.preview_photos_container__img}
                         src={`${Host}/images/imageArticle/${imageFileName.trim()}`}
                         alt={`Preview ${index}`}
                       />
-                      {/* <div
+                      <div
                     className={styles.preview_photos_container__remove_icon}
                     onClick={() => handleRemovePreviewPhoto(index)}
                   >
                     <span></span>
-                  </div> */}
+                  </div>
                     </div>
-                  ))}
+                     ))
+                     )}
             </div>
           </div>
           {/* блок и инпутом ( Заголовок текстового блока ) */}
@@ -1170,20 +1179,20 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
               )}
             </div>
             <div>
-              {editArticleData.imageAuthor !== null &&
+              {inputData.imageAuthor !== null &&
                 previewPhotoAva.length === 0 && (
                   <div className={styles.preview_photos_container__block}>
                     <img
                       className={styles.preview_photos_container__img}
-                      src={`${Host}/images/imageArticle/${editArticleData.imageAuthor}`}
+                      src={`${Host}/images/imageArticle/${inputData.imageAuthor}`}
                       alt="Preview"
                     />
-                    {/* <div
+                    <div
                     className={styles.preview_photos_container__remove_icon}
-                  onClick={() => handleRemovePreviewPhotoAva()}
-                      >
+                    onClick={() => handleRemovePreviewPhotoAva(0)}
+                    >
                  <span></span>
-                   </div> */}
+                   </div>
                   </div>
                 )}
               {previewPhotoAva?.map((preview, index) => (
@@ -1196,12 +1205,12 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
                     src={preview}
                     alt={`Preview ${index}`}
                   />
-                  {/* <div
+                  <div
                     className={styles.preview_photos_container__remove_icon}
                     onClick={() => handleRemovePreviewPhotoAva(index)}
                   >
                     <span></span>
-                  </div> */}
+                  </div>
                 </div>
               ))}
             </div>
@@ -1279,28 +1288,28 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
                     src={preview}
                     alt={`Preview ${index}`}
                   />
-                  {/* <div
+                  <div
                     className={styles.preview_photos_container__remove_icon}
                     onClick={() => handleRemovePreviewPhotoOpen(index)}
                   >
                     <span></span>
-                  </div> */}
+                  </div>
                 </div>
               ))}
-              {editArticleData.imageOpen !== null &&
+              {inputData.imageOpen !== null &&
                 previewPhotoOpen.length === 0 && (
                   <div className={styles.preview_photos_container__block}>
                     <img
                       className={styles.preview_photos_container__img}
-                      src={`${Host}/images/imageArticle/${editArticleData.imageOpen}`}
+                      src={`${Host}/images/imageArticle/${inputData.imageOpen}`}
                       alt="Preview"
                     />
-                    {/* <div
+                    <div
                     className={styles.preview_photos_container__remove_icon}
                     onClick={() => handleRemovePreviewPhotoOpen()}
                   >
                     <span></span>
-                  </div> */}
+                  </div>
                   </div>
                 )}
             </div>
@@ -1479,28 +1488,28 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
                     src={preview}
                     alt={`Preview ${index}`}
                   />
-                  {/* <div
+                  <div
                     className={styles.preview_photos_container__remove_icon}
                     onClick={() => handleRemovePreviewPhotoClose(index)}
                   >
                     <span></span>
-                  </div> */}
+                  </div>
                 </div>
               ))}
-              {!editArticleData.imageClose !== null &&
+              {!inputData.imageClose !== null &&
                 previewPhotoClose.length === 0 && (
                   <div className={styles.preview_photos_container__block}>
                     <img
                       className={styles.preview_photos_container__img}
-                      src={`${Host}/images/imageArticle/${editArticleData.imageClose}`}
+                      src={`${Host}/images/imageArticle/${inputData.imageClose}`}
                       alt="Preview"
                     />
-                    {/* <div
+                    <div
                     className={styles.preview_photos_container__remove_icon}
-                    onClick={() => handleRemovePreviewPhotoOpen()}
+                    onClick={() => handleRemovePreviewPhotoClose()}
                   >
                     <span></span>
-                  </div> */}
+                  </div>
                   </div>
                 )}
             </div>
