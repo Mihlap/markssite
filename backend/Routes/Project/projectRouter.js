@@ -141,15 +141,21 @@ router.put(
       : null; 
    
       const imageTitlesFromClient = req.body.imageTitle;
+      const imageOpensFromClient = req.body.imageOpen;
+      let imageClosesFromClient = req.body.imageClose;
+      if (Array.isArray(imageClosesFromClient)) {
+        imageClosesFromClient = imageClosesFromClient.join(', '); // Если это массив, объедините его в строку
+      }   
+
       const imageTitlesArrayFromClient = imageTitlesFromClient ? imageTitlesFromClient.split(',').map(item => item.trim()) : [];
       const imageTitlesNew = imageTitlesArrayFromClient.length > 0
         ? imageTitlesArrayFromClient.join(', ')
-        : null;       
+        : null;     
 
 
       const imageProjects = req.files.photoAva ? req.files.photoAva[0].filename : null;
-      const imageOpens = req.files.imageOpen ? req.files.imageOpen[0].filename : null;
-      const imageCloses = req.files.imageClose ? req.files.imageClose[0].filename : null;
+      const imageOpens = req.files.imageOpen ? req.files.imageOpen[0].filename : imageOpensFromClient;
+      const imageCloses = req.files.imageClose ? req.files.imageClose[0].filename : imageClosesFromClient;
       const currentImageTitles = projectToUpdate.imageTitle ? projectToUpdate.imageTitle.split(', ') : [];
       const currentImageProjects = projectToUpdate.imageProject ? projectToUpdate.imageProject.split(', ') : [];
       const currentImageOpens = projectToUpdate.imageOpen ? [projectToUpdate.imageOpen] : [];
@@ -190,8 +196,8 @@ router.put(
         long: req.body.long,
         imageTitle: imageTitles || imageTitlesNew || currentImageTitles.join(', '),
         imageProject: imageProjects || currentImageProjects.join(', '),
-        imageOpen: imageOpens || (currentImageOpens && currentImageOpens[0] ? currentImageOpens[0] : null),
-        imageClose: imageCloses || (currentImageCloses && currentImageCloses[0] ? currentImageCloses[0] : null),
+        imageOpen: imageOpens || currentImageOpens,
+        imageClose: imageCloses || currentImageCloses,
       });
       // console.log('Updating project with data:', {
       // imageTitle: imageTitles || currentImageTitles.join(', '),
