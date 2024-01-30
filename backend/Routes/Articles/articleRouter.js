@@ -119,11 +119,12 @@ router.put(
       if (Array.isArray(imageTitlesFromClient)) {
         imageTitlesFromClient = imageTitlesFromClient.join(', '); // Если это массив, объедините его в строку
       };
-      const imageAuthorFromClient = req.body.imageAuthor; 
+     
       const imageOpensFromClient = req.body.imageOpen;
+      const imageAuthorFromClient = req.body.imageAuthor;
       let imageClosesFromClient = req.body.imageClose;
       if (Array.isArray(imageClosesFromClient)) {
-        imageClosesFromClient = imageClosesFromClient.join(', '); // Если это массив, объедините его в строку
+        imageClosesFromClient = imageClosesFromClient.join(); // Если это массив, объедините его в строку
       };
       
       const imageTitlesArrayFromClient = imageTitlesFromClient ? imageTitlesFromClient.split(',').map(item => item.trim()) : [];
@@ -132,25 +133,14 @@ router.put(
         : null;     
 
 
-    const imageAuthors = req.files.photoAva ? req.files.photoAva.filename : imageAuthorFromClient;
+    const imageAuthors = req.files.photoAva ? req.files.photoAva[0].filename : imageAuthorFromClient;
     const imageOpens = req.files.imageOpen ? req.files.imageOpen[0].filename : imageOpensFromClient;
     const imageCloses = req.files.imageClose ? req.files.imageClose[0].filename : imageClosesFromClient;
     const currentImageTitles = articleToUpdate.imageTitle ? articleToUpdate.imageTitle.split(', ') : [];
-    const currentImageAuthors = articleToUpdate.imageAuthor ? [articleToUpdate.imageAuthor] : [];
     const currentImageOpens = articleToUpdate.imageOpen ? [articleToUpdate.imageOpen] : [];
     const currentImageCloses = articleToUpdate.imageClose ? [articleToUpdate.imageClose] : [];   
     
-    console.log('Before update:', {
-      imageTitles,
-      imageAuthors,
-      imageOpens,
-      imageCloses,
-      currentImageTitles,
-      currentImageAuthors,
-      currentImageOpens,
-      currentImageCloses,
-    });
-
+   
       // Обновление существующей статьи
       await articleToUpdate.update({
         title: req.body.title,
@@ -158,27 +148,16 @@ router.put(
         city: req.body.city,
         dataMonthYear: req.body.dataMonthYear,
         selectCompetencies: req.body.selectCompetencies,
-        // imageTitle: imageTitles,
         titleTextBlock: req.body.titleTextBlock,
         descriptionArticle: req.body.descriptionArticle,
-        // imageAuthor: imageProjects,
-        // imageOpen: imageOpens,
         textBlock: req.body.textBlock,
-        // imageClose: imageCloses,
         imageTitle: imageTitles || imageTitlesNew || currentImageTitles.join(', '),
-        imageAuthor: imageAuthors || (currentImageAuthors && currentImageAuthors[0]) || null,
-        imageOpen: imageOpens || (currentImageOpens && currentImageOpens[0] ? currentImageOpens[0] : null),
-        imageClose: imageCloses || (currentImageCloses && currentImageCloses[0] ? currentImageCloses[0] : null),
-        
+        imageAuthor: imageAuthors || null,
+        imageOpen: imageOpens || currentImageOpens,
+        imageClose: imageCloses || currentImageCloses,        
       });
 
-         console.log('After update:', {
-        imageTitle: articleToUpdate.imageTitle,
-        imageAuthor: articleToUpdate.imageAuthor,
-        imageOpen: articleToUpdate.imageOpen,
-        imageClose: articleToUpdate.imageClose,
-      });
-      
+          
    
    // Поиск или создание данных конструктора
    let existingConstructor = await ConstructorArticles.findOne({ where: { idBlock: articleId } });
@@ -238,6 +217,7 @@ const deleteImage = (imageName) => {
   try {
     const { id } = req.params;
     const post = await Articles.findByPk(id);
+      
     const deleteConstructorImg = await ConstructorArticles.findByPk(id);
 
      if (deleteConstructorImg.image) {
@@ -264,7 +244,7 @@ const deleteImage = (imageName) => {
       projectImageNames.forEach(deleteImage);
     }
 
-    // Удаление фотографии из imageOpen
+       // Удаление фотографии из imageOpen
     if (post.imageOpen) {
       deleteImage(post.imageOpen);
     }
@@ -274,7 +254,7 @@ const deleteImage = (imageName) => {
       deleteImage(post.imageClose);
     }
 
-    // Удаление связанных элементов из других таблиц
+      // Удаление связанных элементов из других таблиц
     await ConstructorArticles.destroy({ where: { idBlock: id } });
 
     // Удаление поста

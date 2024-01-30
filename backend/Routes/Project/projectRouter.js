@@ -20,9 +20,6 @@ router.post(
   ]),
   async (req, res) => {
     try {
-      console.log('Received request body:', req.body);
-      console.log('Received files:', req.files);
-
       const dynamicImageTitles = req.files.dynamicImages
         ? req.files.dynamicImages.map((file) => file.filename).join(', ')
         : null;
@@ -88,9 +85,7 @@ router.post(
         idBlock: createdProject.id,
       });
 
-      console.log('Created project:', createdProject);
-
-      res.status(200).json({ message: 'Данные успешно сохранены' });
+         res.status(200).json({ message: 'Данные успешно сохранены' });
     } catch (error) {
       console.log(error); // Output error to the console
       res.status(500).json({ message: 'Произошла ошибка при сохранении данных' });
@@ -109,6 +104,22 @@ router.put(
     { name: 'dynamicImages', maxCount: 50 },
   ]),
   async (req, res) => {
+    const deleteImageEdit = async (imageName) => {
+      const imagePath = path.join(__dirname, '..', '..', 'images', 'imageAdd', imageName);
+    
+      try {
+        await fs.promises.unlink(imagePath);
+        console.log(`Изображение ${imageName} успешно удалено.`);
+      } catch (error) {
+        if (error.code === 'ENOENT') {
+          console.log(`Файл ${imageName} не найден, возможно, уже удален.`);
+        } else {
+          console.error(`Ошибка при удалении изображения ${imageName}:`, error);
+        }
+      }
+    };
+    
+
     try {
       const { projectId } = req.params;
       // console.log(`Обновление данных для проекта с ID ${projectId}`);
@@ -134,36 +145,60 @@ router.put(
         }
       }
 
-
-    
       const imageTitles = req.files.dropPhoto
-      ? req.files.dropPhoto.map((file) => file.filename).join(', ')
-      : null; 
-   
+        ? req.files.dropPhoto.map((file) => file.filename).join(', ')
+        : null;
+
       const imageTitlesFromClient = req.body.imageTitle;
       const imageOpensFromClient = req.body.imageOpen;
       let imageClosesFromClient = req.body.imageClose;
       if (Array.isArray(imageClosesFromClient)) {
         imageClosesFromClient = imageClosesFromClient.join(', '); // Если это массив, объедините его в строку
-      }   
+      }
 
-      const imageTitlesArrayFromClient = imageTitlesFromClient ? imageTitlesFromClient.split(',').map(item => item.trim()) : [];
-      const imageTitlesNew = imageTitlesArrayFromClient.length > 0
-        ? imageTitlesArrayFromClient.join(', ')
-        : null;     
-
+      const imageTitlesArrayFromClient = imageTitlesFromClient
+        ? imageTitlesFromClient.split(',').map((item) => item.trim())
+        : [];
+      const imageTitlesNew =
+        imageTitlesArrayFromClient.length > 0 ? imageTitlesArrayFromClient.join(', ') : null;
 
       const imageProjects = req.files.photoAva ? req.files.photoAva[0].filename : null;
-      const imageOpens = req.files.imageOpen ? req.files.imageOpen[0].filename : imageOpensFromClient;
-      const imageCloses = req.files.imageClose ? req.files.imageClose[0].filename : imageClosesFromClient;
-      const currentImageTitles = projectToUpdate.imageTitle ? projectToUpdate.imageTitle.split(', ') : [];
-      const currentImageProjects = projectToUpdate.imageProject ? projectToUpdate.imageProject.split(', ') : [];
+      const imageOpens = req.files.imageOpen
+        ? req.files.imageOpen[0].filename
+        : imageOpensFromClient;
+      const imageCloses = req.files.imageClose
+        ? req.files.imageClose[0].filename
+        : imageClosesFromClient;
+      const currentImageTitles = projectToUpdate.imageTitle
+        ? projectToUpdate.imageTitle.split(', ')
+        : [];
+      const currentImageProjects = projectToUpdate.imageProject
+        ? projectToUpdate.imageProject.split(', ')
+        : [];
       const currentImageOpens = projectToUpdate.imageOpen ? [projectToUpdate.imageOpen] : [];
-      const currentImageCloses = projectToUpdate.imageClose ? [projectToUpdate.imageClose] : [];     
+      const currentImageCloses = projectToUpdate.imageClose ? [projectToUpdate.imageClose] : [];
 
-      // console.log('Current imageTitle:', projectToUpdate.imageTitle);     
       
-         // Обновление данных проекта
+      // Получение изображений для сохранения
+      const imagesToKeep = [
+        ...imageTitlesArrayFromClient,
+        imageProjects,
+        imageOpens,
+        imageCloses,
+      ].filter(Boolean);
+      
+      // Получение изображений для удаления
+      const imagesToDelete = [
+        ...currentImageTitles,
+        ...currentImageProjects,
+        ...currentImageOpens,
+        ...currentImageCloses,
+      ];
+      // Получение изображений для удаления (те, которые больше не используются)
+      const imagesToRemove = imagesToDelete.filter((image) => !imagesToKeep.includes(image));
+      const oldImageTitles = projectToUpdate.imageTitle ? projectToUpdate.imageTitle.split(', ') : [];
+
+           // Обновление данных проекта
       await projectToUpdate.update({
         title: req.body.title,
         selectCompetencies: req.body.selectCompetencies,
@@ -171,7 +206,6 @@ router.put(
         monthYear: req.body.monthYear,
         viewConstruction: req.body.viewConstruction,
         style: req.body.radioValue,
-        // imageProject: imageProjects,
         titleTextBlock: req.body.titleTextBlock,
         descriptionProject: req.body.descriptionProject,
         totalArea: req.body.totalArea,
@@ -188,10 +222,8 @@ router.put(
         publicationTwo: req.body.publicationTwo,
         linkToPublicationTwo: req.body.linkToPublicationTwo,
         awards: req.body.awards,
-        // imageOpen: imageOpens,
         headingTextBlock: req.body.headingTextBlock,
         textBlock: req.body.textBlock,
-        // imageClose: imageCloses,
         numberOfLanes: req.body.numberOfLanes,
         long: req.body.long,
         imageTitle: imageTitles || imageTitlesNew || currentImageTitles.join(', '),
@@ -199,11 +231,19 @@ router.put(
         imageOpen: imageOpens || currentImageOpens,
         imageClose: imageCloses || currentImageCloses,
       });
+
+      const updatedImageTitles = projectToUpdate.imageTitle ? projectToUpdate.imageTitle.split(', ') : [];
+
+
+      const imagesToRemoveAfterUpdate = oldImageTitles.filter((image) => !updatedImageTitles.includes(image));
+
+      imagesToRemove.forEach(deleteImageEdit);
+      imagesToRemoveAfterUpdate.forEach(deleteImageEdit);
       // console.log('Updating project with data:', {
       // imageTitle: imageTitles || currentImageTitles.join(', '),
       // });
 
-         // Поиск или создание данных конструктора
+      // Поиск или создание данных конструктора
       let existingConstructor = await Constructor.findOne({ where: { idBlock: projectId } });
 
       if (existingConstructor) {
@@ -213,8 +253,7 @@ router.put(
           data: dynamicBlocksContent,
           image: dynamicImageTitles,
         });
-     
-       } else {
+      } else {
         // Если конструктор не существует, создаем новый
         existingConstructor = await Constructor.create({
           data: dynamicBlocksContent,
