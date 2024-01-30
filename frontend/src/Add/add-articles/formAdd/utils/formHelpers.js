@@ -47,12 +47,6 @@ export const removePreviewPhotoAva = (
   setPreviewPhotoAva(updatedPreviewPhotosAva);
   setIsPhotoAvaVisible(updatedPreviewPhotosAva.length > 0);
 
-  console.log("Before removePreviewPhotoAva:", {
-    previewPhotoAva,
-    index,
-    inputData,
-  });
-
   // Удаление фото из массива выбранных файлов
   const updatedDropPhotosAva = Array.isArray(inputData.photoAva)
   ? [...inputData.photoAva]
@@ -65,16 +59,13 @@ updatedDropPhotosAva.splice(index, 1);
     imageAuthorArray.splice(index, 1);
     updatedImageAuthor = imageAuthorArray.join(", ");
   }
+
   setInputData((prev) => ({
     ...prev,
     photoAva: updatedDropPhotosAva,
     imageAuthor: updatedImageAuthor,
   }));
-  console.log("After removePreviewPhotoAva:", {
-    updatedPreviewPhotosAva,
-    updatedDropPhotosAva,
-    updatedImageAuthor,
-  });
+
 };
 
 export const removePreviewPhotoOpen = (

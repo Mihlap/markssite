@@ -7,7 +7,7 @@
     "@mapbox/mapbox-gl-draw": "^1.4.1",
     "@pbe/react-yandex-maps": "^1.2.5",
     "@reduxjs/toolkit": "^1.9.5",
-    "axios": "^1.4.0",
+    "axios": "^1.6.7",
     "browser-image-compression": "^2.0.2",
     "dotenv": "^16.0.3",
     "eruda": "^3.0.1",
