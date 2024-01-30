@@ -1007,7 +1007,6 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
                       key={index}
                       className={styles.preview_photos_container__block}
                     >
-                    {console.log('imageFileName:', imageFileName)}
                       <img
                         className={styles.preview_photos_container__img}
                         src={`${Host}/images/imageArticle/${imageFileName.trim()}`}
@@ -1189,7 +1188,7 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
                     />
                     <div
                     className={styles.preview_photos_container__remove_icon}
-                    onClick={() => handleRemovePreviewPhotoAva(0)}
+                    onClick={() => handleRemovePreviewPhotoAva()}
                     >
                  <span></span>
                    </div>
