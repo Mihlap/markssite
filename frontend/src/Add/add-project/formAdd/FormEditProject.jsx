@@ -2573,8 +2573,8 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                   </div>
                 </div>
               ))}
-              {!inputData.imageClose !== null &&
-                previewPhotoClose.length === 0 && (
+              {inputData.imageClose &&
+            (
                   <div className={styles.preview_photos_container__block}>
                     <img
                       className={styles.preview_photos_container__img}
