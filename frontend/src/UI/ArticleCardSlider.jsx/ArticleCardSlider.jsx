@@ -64,7 +64,23 @@ const ArticleCardSlider = ({ slidesCard }) => {
     setLineWidth(calculateLineWidth(newIndex));
   };
 
-  // console.log(slidesCard, '');
+  if (imagePaths.length <= 1) {
+    return (
+      <div className="company-slider-container">
+        {imagePaths?.map((path, index) => (
+          <div key={index} className="company-slider-slide">
+            <img
+              className="company-slider-slide-img"
+              src={path}
+              alt={`Slide ${index + 1}`}
+            />
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  
   return (
     <div className="company-slider-container">
       <Slider

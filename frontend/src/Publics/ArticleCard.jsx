@@ -215,6 +215,17 @@ const ArticleCard = ({
   const nextArticle = articles[nextIndex];
   const userSelectedBlocks = article?.ConstructorArticles?.map((el) => el.data);
 
+  const imageOpenSource =
+  article && article.imageOpen
+    ? `${Host}/images/imageArticle/${article.imageOpen}`
+    : catPhoto;
+  const altTextOpen = (article && article.imageOpen) || "Default Alt Text";
+  const imageCloseSource =
+  article && article.imageClose
+      ? `${Host}/images/imageArticle/${article.imageClose}`
+      : catPhoto;
+  const altTextClose = (article && article.imageClose) || "Default Alt Text";
+
 
   // Получаем 20 рандомных статей
   const randomArticles = articles
@@ -337,16 +348,19 @@ const ArticleCard = ({
                 <div className={styles.item} ref={refs.leftImg1}>
                   <img
                     className={styles.item_img}
-                    src={
-                      article && article.imageOpen
-                        ? `${Host}/images/imageArticle/${article.imageOpen}`
-                        : `${catPhoto}`
-                    }
-                    alt={
-                      article && article.imageOpen
-                        ? article.imageOpen
-                        : "Default Alt Text"
-                    }
+                    src={imageOpenSource}
+                    alt=""
+                    loading="lazy"
+                    // src={
+                    //   article && article.imageOpen
+                    //     ? `${Host}/images/imageArticle/${article.imageOpen}`
+                    //     : `${catPhoto}`
+                    // }
+                    // alt={
+                    //   article && article.imageOpen
+                    //     ? article.imageOpen
+                    //     : "Default Alt Text"
+                    // }
                   />
                   <div className={styles.leftImg1_object_text1}>
                     {/* {article.textBlock} */}
@@ -388,18 +402,20 @@ const ArticleCard = ({
               <div className={styles.item}>
                 <img
                   className={styles.item_img_close}
-                  src={
-                    article && article.imageClose
-                      ? `${Host}/images/imageArticle/${article.imageClose}`
-                      : `${catPhoto}`
-                  }
-                  alt={
-                    article && article.imageClose
-                      ? article.imageClose
-                      : "Default Alt Text"
-                  }
-                  //  alt=""
-                />
+                  src={imageCloseSource}
+                    alt=""
+                    loading="lazy"
+                  // src={
+                  //   article && article.imageClose
+                  //     ? `${Host}/images/imageArticle/${article.imageClose}`
+                  //     : `${catPhoto}`
+                  // }
+                  // alt={
+                  //   article && article.imageClose
+                  //     ? article.imageClose
+                  //     : "Default Alt Text"
+                  // }
+                 />
               </div>
             </div>
             <div
