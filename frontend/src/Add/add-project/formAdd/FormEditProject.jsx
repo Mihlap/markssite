@@ -718,46 +718,6 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
             </div>
           </div>
         )}
-        {/* {dynamicData.map((item, itemIndex) => (
-  <div key={itemIndex}>
-    {item && item.data && item.data.map((block, blockIndex) => (
-      <div key={blockIndex}>
-        {block && Array.isArray(block) && block.map((input, inputIndex) => (
-          <div key={input.key}>
-            {input && input.type === "text" && (
-              <div className={styles.form_container__heading_block}>
-                <input
-                  type="text"
-                  maxLength="56"
-                  className={`${styles.form_container__heading_block_input} ${styles.orange_color}`}
-                  placeholder={input.label}
-                  value={input.value || ""}
-                  onChange={(e) =>
-                    handleDynamicInputChange(
-                      blockIndex,
-                      inputIndex,
-                      e.target.value
-                    )
-                  }
-                />
-                <label
-                  htmlFor={input.key}
-                  className={styles.form_container__heading_block_label}
-                >
-                  {input.label}
-                </label>
-                <div className={styles.form_container__heading_block_input_length}>
-                  {(input.value || "").length}/56
-                </div>
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
-    ))}
-  </div>
-))} */}
-
         {inputType === "file" && (
           <>
             {labelText === "Видеоролик" ? (
@@ -2301,12 +2261,12 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                     src={preview}
                     alt={`Preview ${index}`}
                   />
-                  <div
+                  {/* <div
                     className={styles.preview_photos_container__remove_icon}
                     onClick={() => handleRemovePreviewPhotoOpen(index)}
                   >
                     <span></span>
-                  </div>
+                  </div> */}
                 </div>
               ))}
               {inputData.imageOpen !== null &&
@@ -2317,12 +2277,12 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                       src={`${Host}/images/imageAdd/${inputData.imageOpen}`}
                       alt="Preview"
                     />
-                    <div
+                    {/* <div
                     className={styles.preview_photos_container__remove_icon}
                     onClick={() => handleRemovePreviewPhotoOpen()}
                   >
                     <span></span>
-                  </div>
+                  </div> */}
                   </div>
                 )}
             </div>
@@ -2565,12 +2525,12 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                     src={preview}
                     alt={`Preview ${index}`}
                   />
-                  <div
+                  {/* <div
                     className={styles.preview_photos_container__remove_icon}
                     onClick={() => handleRemovePreviewPhotoClose(index)}
                   >
                     <span></span>
-                  </div>
+                  </div> */}
                 </div>
               ))}
               {inputData.imageClose &&
@@ -2581,12 +2541,12 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                       src={`${Host}/images/imageAdd/${inputData.imageClose}`}
                       alt="Preview"
                     />
-                    <div
+                    {/* <div
                     className={styles.preview_photos_container__remove_icon}
                     onClick={() => handleRemovePreviewPhotoClose()}
                   >
                     <span></span>
-                  </div>
+                  </div> */}
                   </div>
                 )}
             </div>

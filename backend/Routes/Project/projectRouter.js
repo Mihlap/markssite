@@ -112,7 +112,7 @@ router.put(
         console.log(`Изображение ${imageName} успешно удалено.`);
       } catch (error) {
         if (error.code === 'ENOENT') {
-          console.log(`Файл ${imageName} не найден, возможно, уже удален.`);
+          // console.log(`Файл ${imageName} не найден, возможно, уже удален.`);
         } else {
           console.error(`Ошибка при удалении изображения ${imageName}:`, error);
         }
@@ -149,6 +149,7 @@ router.put(
         ? req.files.dropPhoto.map((file) => file.filename).join(', ')
         : null;
 
+      const imageProjectFromClient = req.body.imageProject; 
       const imageTitlesFromClient = req.body.imageTitle;
       const imageOpensFromClient = req.body.imageOpen;
       let imageClosesFromClient = req.body.imageClose;
@@ -162,7 +163,7 @@ router.put(
       const imageTitlesNew =
         imageTitlesArrayFromClient.length > 0 ? imageTitlesArrayFromClient.join(', ') : null;
 
-      const imageProjects = req.files.photoAva ? req.files.photoAva[0].filename : null;
+      const imageProjects = req.files.photoAva ? req.files.photoAva[0].filename : imageProjectFromClient;
       const imageOpens = req.files.imageOpen
         ? req.files.imageOpen[0].filename
         : imageOpensFromClient;
@@ -172,9 +173,7 @@ router.put(
       const currentImageTitles = projectToUpdate.imageTitle
         ? projectToUpdate.imageTitle.split(', ')
         : [];
-      const currentImageProjects = projectToUpdate.imageProject
-        ? projectToUpdate.imageProject.split(', ')
-        : [];
+      const currentImageProjects = projectToUpdate.imageProject ? [projectToUpdate.imageProject] : [];
       const currentImageOpens = projectToUpdate.imageOpen ? [projectToUpdate.imageOpen] : [];
       const currentImageCloses = projectToUpdate.imageClose ? [projectToUpdate.imageClose] : [];
 
@@ -227,7 +226,7 @@ router.put(
         numberOfLanes: req.body.numberOfLanes,
         long: req.body.long,
         imageTitle: imageTitles || imageTitlesNew || currentImageTitles.join(', '),
-        imageProject: imageProjects || currentImageProjects.join(', '),
+        imageProject: imageProjects || currentImageProjects,
         imageOpen: imageOpens || currentImageOpens,
         imageClose: imageCloses || currentImageCloses,
       });
