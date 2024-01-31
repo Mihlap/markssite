@@ -85,6 +85,21 @@ router.put(
     { name: 'dynamicImages', maxCount: 50 },
   ]),
   async (req, res) => {
+    const deleteImageEdit = async (imageName) => {
+      const imagePath = path.join(__dirname, '..', '..', 'images', 'imageArticle', imageName);
+    
+      try {
+        await fs.promises.unlink(imagePath);
+        console.log(`Изображение ${imageName} успешно удалено.`);
+      } catch (error) {
+        if (error.code === 'ENOENT') {
+          // console.log(`Файл ${imageName} не найден, возможно, уже удален.`);
+        } else {
+          console.error(`Ошибка при удалении изображения ${imageName}:`, error);
+        }
+      }
+    };
+    
     try {
       const { articleId } = req.params;
       // console.log('Received PUT request to update article with ID:', articleId);
@@ -120,8 +135,8 @@ router.put(
         imageTitlesFromClient = imageTitlesFromClient.join(', '); // Если это массив, объедините его в строку
       };
      
-      const imageOpensFromClient = req.body.imageOpen;
       const imageAuthorFromClient = req.body.imageAuthor;
+      const imageOpensFromClient = req.body.imageOpen;
       let imageClosesFromClient = req.body.imageClose;
       if (Array.isArray(imageClosesFromClient)) {
         imageClosesFromClient = imageClosesFromClient.join(); // Если это массив, объедините его в строку
@@ -136,9 +151,31 @@ router.put(
     const imageAuthors = req.files.photoAva ? req.files.photoAva[0].filename : imageAuthorFromClient;
     const imageOpens = req.files.imageOpen ? req.files.imageOpen[0].filename : imageOpensFromClient;
     const imageCloses = req.files.imageClose ? req.files.imageClose[0].filename : imageClosesFromClient;
+    const currentImageAuthors = articleToUpdate.imageAuthor ? [articleToUpdate.imageAuthor] : [];
     const currentImageTitles = articleToUpdate.imageTitle ? articleToUpdate.imageTitle.split(', ') : [];
     const currentImageOpens = articleToUpdate.imageOpen ? [articleToUpdate.imageOpen] : [];
-    const currentImageCloses = articleToUpdate.imageClose ? [articleToUpdate.imageClose] : [];   
+    const currentImageCloses = articleToUpdate.imageClose ? [articleToUpdate.imageClose] : [];  
+    
+  
+     // Получение изображений для сохранения
+     const imagesToKeep = [
+      ...imageTitlesArrayFromClient,
+      currentImageAuthors,
+      imageOpens,
+      imageCloses,
+    ].filter(Boolean);
+    
+    // Получение изображений для удаления
+    const imagesToDelete = [
+      ...currentImageTitles,
+      ...currentImageAuthors,
+      ...currentImageOpens,
+      ...currentImageCloses,
+    ];
+    // Получение изображений для удаления (те, которые больше не используются)
+    const imagesToRemove = imagesToDelete.filter((image) => !imagesToKeep.includes(image));
+    const oldImageTitles = articleToUpdate.imageTitle ? articleToUpdate.imageTitle.split(', ') : [];
+
     
    
       // Обновление существующей статьи
@@ -156,6 +193,14 @@ router.put(
         imageOpen: imageOpens || currentImageOpens,
         imageClose: imageCloses || currentImageCloses,        
       });
+
+      const updatedImageTitles = articleToUpdate.imageTitle ? articleToUpdate.imageTitle.split(', ') : [];
+
+
+      const imagesToRemoveAfterUpdate = oldImageTitles.filter((image) => !updatedImageTitles.includes(image));
+
+      imagesToRemove.forEach(deleteImageEdit);
+      imagesToRemoveAfterUpdate.forEach(deleteImageEdit);
 
           
    

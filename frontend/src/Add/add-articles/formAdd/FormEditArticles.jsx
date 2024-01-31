@@ -1184,7 +1184,7 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
                     <img
                       className={styles.preview_photos_container__img}
                       src={`${Host}/images/imageArticle/${inputData.imageAuthor}`}
-                      alt="Preview"
+                      alt=""
                     />
                     <div
                     className={styles.preview_photos_container__remove_icon}
@@ -1287,12 +1287,12 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
                     src={preview}
                     alt={`Preview ${index}`}
                   />
-                  <div
+                  {/* <div
                     className={styles.preview_photos_container__remove_icon}
                     onClick={() => handleRemovePreviewPhotoOpen(index)}
                   >
                     <span></span>
-                  </div>
+                  </div> */}
                 </div>
               ))}
               {inputData.imageOpen !== null &&
@@ -1303,12 +1303,12 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
                       src={`${Host}/images/imageArticle/${inputData.imageOpen}`}
                       alt="Preview"
                     />
-                    <div
+                    {/* <div
                     className={styles.preview_photos_container__remove_icon}
                     onClick={() => handleRemovePreviewPhotoOpen()}
                   >
                     <span></span>
-                  </div>
+                  </div> */}
                   </div>
                 )}
             </div>
@@ -1487,12 +1487,12 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
                     src={preview}
                     alt={`Preview ${index}`}
                   />
-                  <div
+                  {/* <div
                     className={styles.preview_photos_container__remove_icon}
                     onClick={() => handleRemovePreviewPhotoClose(index)}
                   >
                     <span></span>
-                  </div>
+                  </div> */}
                 </div>
               ))}
               {!inputData.imageClose !== null &&
@@ -1503,12 +1503,12 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
                       src={`${Host}/images/imageArticle/${inputData.imageClose}`}
                       alt="Preview"
                     />
-                    <div
+                    {/* <div
                     className={styles.preview_photos_container__remove_icon}
                     onClick={() => handleRemovePreviewPhotoClose()}
                   >
                     <span></span>
-                  </div>
+                  </div> */}
                   </div>
                 )}
             </div>
