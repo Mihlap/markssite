@@ -97,12 +97,12 @@ export const removePreviewPhotoClose = (
   setInputData,
   setIsPhotoCloseVisible
 ) => {
-  const updatedPreviewPhotosOpen = [...previewPhotoClose];
-  updatedPreviewPhotosOpen.splice(index, 1);
-  setPreviewPhotoClose(updatedPreviewPhotosOpen);
+  const updatedPreviewPhotosClose = [...previewPhotoClose];
+  updatedPreviewPhotosClose.splice(index, 1);
+  setPreviewPhotoClose(updatedPreviewPhotosClose);
   setIsPhotoCloseVisible(true);
 
-  const updatedDropPhotoClose = Array.from(inputData.imageClose);
+  const updatedDropPhotoClose = [...inputData.imageClose];
   updatedDropPhotoClose.splice(index, 1);
   setInputData((prev) => ({
     ...prev,
