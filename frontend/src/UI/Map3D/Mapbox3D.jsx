@@ -3,6 +3,8 @@ import { YMaps, Map, Placemark, ZoomControl } from "@pbe/react-yandex-maps";
 import popupsData from "./popupsdata";
 import styles from "./Mapbox.module.css";
 
+const apiKey = process.env.REACT_APP_API_KEY;
+
 const Mapbox3D = () => {
   const [selectedPopup, setSelectedPopup] = useState(null);
   const [activeMarkerIndex, setActiveMarkerIndex] = useState(null);
@@ -35,13 +37,11 @@ const Mapbox3D = () => {
     // Отключить прокрутку при завершении взаимодействия с картой
     document.body.style.overflow = "hidden";
   };
-  
 
   useEffect(() => {
     setSelectedPopup(null);
     setActiveMarkerIndex(null);
   }, []);
-  
 
   return (
     <div className={styles.map}>
@@ -49,21 +49,29 @@ const Mapbox3D = () => {
         <Map
           defaultState={{
             center: [55.77, 37.5804],
-            zoom: window.innerWidth <= 767 ? 8.8 : window.innerWidth <= 1024 ? 9.6 : 10.5,
+            zoom:
+              window.innerWidth <= 767
+                ? 8.8
+                : window.innerWidth <= 1024
+                ? 9.6
+                : 10.5,
           }}
           width="100%"
           height="100%"
+          query={{ apiKey: apiKey }}
           options={{
             suppressMapOpenBlock: true,
             suppressMapOpenBlockKey: "ctrlKey",
-            behaviors: ["disableScrollZoom"],             
+            behaviors: ["disableScrollZoom"],
           }}
           onTouchStart={handleMapTouchStart}
           onTouchEnd={handleMapTouchEnd}
         >
-          {window.innerWidth > 1025 && <ZoomControl options={{ position: { top: 20, right: 20 } }} />}
+          {window.innerWidth > 1025 && (
+            <ZoomControl options={{ position: { top: 20, right: 20 } }} />
+          )}
           {popupsData.map((marker, index) => (
-            <Placemark 
+            <Placemark
               key={index}
               geometry={marker.coordinates}
               onClick={() => handleMarkerClick(marker, index)}
@@ -72,8 +80,12 @@ const Mapbox3D = () => {
               options={{
                 iconLayout: "default#image",
                 iconImageHref: "/assets/house.svg",
-                iconImageSize: activeMarkerIndex === index ? [50, 55] : [40, 45],
-                hintPane: activeMarkerIndex === index ? 'islands#groundPane' : 'islands#floatPane',
+                iconImageSize:
+                  activeMarkerIndex === index ? [50, 55] : [40, 45],
+                hintPane:
+                  activeMarkerIndex === index
+                    ? "islands#groundPane"
+                    : "islands#floatPane",
               }}
             />
           ))}
@@ -125,12 +137,19 @@ const Mapbox3D = () => {
       )}
       <style>
         {`
+    [class*="ymaps-2"][class*="-ground-pane"] {    
+      -webkit-filter: grayscale(88%) brightness(100%);
+    }
+  `}
+      </style>
+      {/* <style>
+        {`
           [class*="ymaps-2"][class*="-ground-pane"] {
             filter: grayscale(98%) brightness(100%);
           }      
         `}
-      </style>
-       {/* <style>
+      </style> */}
+      {/* <style>
     [class*="ymaps-2"][class*="-ground-pane"] {
         filter: url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\'><filter id=\'grayscale\'><feColorMatrix type=\'matrix\' values=\'0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0.3333 0.3333 0.3333 0 0 0 0 0 1 0\'/></filter></svg>#grayscale");
         -webkit-filter: grayscale(100%);
@@ -141,9 +160,6 @@ const Mapbox3D = () => {
 };
 
 export default Mapbox3D;
-
-
-
 
 // import React, { useEffect, useState } from "react";
 // import mapboxgl from "mapbox-gl";
@@ -186,7 +202,7 @@ export default Mapbox3D;
 //           element.style.height = "40px";
 //           element.style.backgroundSize = "cover";
 //           element.style.objectPosition = "center";
-        
+
 //           return element;
 //         }
 
@@ -203,8 +219,7 @@ export default Mapbox3D;
 
 //       if (window.innerWidth > 767 && popupData.image) {
 //         const imageUrl = `${popupData.image}`;
-      
-  
+
 //         if (!imageUrl) {
 //           try {
 //             const response = await fetch(imageUrl);
@@ -236,7 +251,7 @@ export default Mapbox3D;
 //       if (popupData.buttonText) {
 //         popupContent += `
 //           <div class=${styles.popupCustomButton} onclick="window.open('/contacts')">
-//             ${popupData.buttonText} 
+//             ${popupData.buttonText}
 //           </div>`;
 //       }
 
@@ -282,7 +297,7 @@ export default Mapbox3D;
 //     // });
 
 //     popups.forEach(({ marker, popup }) => {
-       
+
 //       if (window.innerWidth > 1024) {
 //          marker.getElement().addEventListener("mouseenter", () => {
 //           popups.forEach(({ popup }) => popup.remove());
