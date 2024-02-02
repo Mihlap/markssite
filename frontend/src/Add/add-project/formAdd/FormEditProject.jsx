@@ -144,10 +144,10 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
     ];
     return inputsToCheck.filter((input) => inputData[input]).length;
   };
-
+  const data = editProjectData?.Constructors?.[0]?.data;
   useEffect(() => {
      if (editProjectData) {
-      const initialSelectedCompetencies = editProjectData.selectCompetencies
+     const initialSelectedCompetencies = editProjectData.selectCompetencies
         ? editProjectData.selectCompetencies
             .split(",")
             .map((item) => ({ value: item.trim(), label: item.trim() }))
@@ -182,9 +182,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
           ? { label: editProjectData.statusObject }
           : null
       );
-
       setInputData((prevInputData) => {
-        // console.log("editProjectData:", editProjectData);
         const updatedInputData = {
           ...prevInputData,
           title:
@@ -303,18 +301,41 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
     
         return updatedInputData;
       });
-      const dynamicDataFromEditProject = editProjectData.dynamicData;
-      if (dynamicDataFromEditProject && dynamicDataFromEditProject.length > 0) {
-        setDynamicData(dynamicDataFromEditProject);
-        const previewsArray = dynamicDataFromEditProject.map((block) =>
-          block.map((input) => input.value)
-        );
-        setDynamicPreviews(previewsArray);
-      }
+
+  
+    // console.log(data, '9999999999999999999999999999');
+
+    //   if (data && data.length > 0) {
+    //     for (let index = 0; index < data.length; index++) {
+    //       const block = data[index];
+    //       const dynamicDataFromEditProject = block.map(input => input.value) || [];
+  
+    //       if (dynamicDataFromEditProject.length > 0) {
+    //         const dynamicData = block.map(input => ({
+    //           id: input.id, 
+    //           type: input.type,
+    //           label: input.label,
+    //           value: input.value,
+    //           key: input.key,
+    //           // Другие свойства, если они необходимы
+    //         }));
+  
+    //         setDynamicData((prevDynamicData) => {
+    //           return [...prevDynamicData.slice(0, index), dynamicData, ...prevDynamicData.slice(index + 1)];
+    //         });
+  
+    //         const previewsArray = dynamicData.map((input) => input.value);
+  
+    //         setDynamicPreviews((prev) => {
+    //           const newPreviews = [...prev];
+    //           newPreviews[index] = previewsArray;
+    //           return newPreviews;
+    //         });
+    //       }
+    //     }
+    //   }
     }
   }, [editProjectData]);
-
-
 
   // функция Удаление фото из массива превью
   // Удаление фото из массива превью
@@ -329,39 +350,39 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
     );  
   };  
 
-  // Удаление превью фото перед основным текстом
-  const handleRemovePreviewPhotoOpen = (index) => {
-    removePreviewPhotoOpen(
-      previewPhotoOpen,
-      setPreviewPhotoOpen,
-      index,
-      inputData,
-      setInputData,
-      setIsPhotoOpenVisible
-    );
-  };
-  // Удаление фото из массива превью который с одной фоткой
-  const handleRemovePreviewPhotoAva = (index) => {
-    removePreviewPhotoAva(
-      previewPhotoAva,
-      setPreviewPhotoAva,
-      index,
-      inputData,
-      setInputData,
-      setIsPhotoAvaVisible
-    );
-  };
-  // Удаление превью фото из закрывающей картинки
-  const handleRemovePreviewPhotoClose = (index) => {
-    removePreviewPhotoClose(
-      previewPhotoClose,
-      setPreviewPhotoClose,
-      index,
-      inputData,
-      setInputData,
-      setIsPhotoCloseVisible
-    );
-  };
+  // Удаление превью фото перед основным текстом НЕ УДАЛЯТЬ!!!!!
+  // const handleRemovePreviewPhotoOpen = (index) => {
+  //   removePreviewPhotoOpen(
+  //     previewPhotoOpen,
+  //     setPreviewPhotoOpen,
+  //     index,
+  //     inputData,
+  //     setInputData,
+  //     setIsPhotoOpenVisible
+  //   );
+  // };
+  // Удаление фото из массива превью который с одной фоткой НЕ УДАЛЯТЬ!!!!!
+  // const handleRemovePreviewPhotoAva = (index) => {
+  //   removePreviewPhotoAva(
+  //     previewPhotoAva,
+  //     setPreviewPhotoAva,
+  //     index,
+  //     inputData,
+  //     setInputData,
+  //     setIsPhotoAvaVisible
+  //   );
+  // };
+  // Удаление превью фото из закрывающей картинки НЕ УДАЛЯТЬ!!!!!
+  // const handleRemovePreviewPhotoClose = (index) => {
+  //   removePreviewPhotoClose(
+  //     previewPhotoClose,
+  //     setPreviewPhotoClose,
+  //     index,
+  //     inputData,
+  //     setInputData,
+  //     setIsPhotoCloseVisible
+  //   );
+  // };
   const validateForm = () => {
     let isValid = true;
     let errors = [];
@@ -456,17 +477,19 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
           ? formattedData.awards.map((option) => option.label).join(",")
           : formattedData.awards;
       }
+   
       // Определение, создаем новый проект или обновляем существующий
       if (editProjectData && editProjectData.id) {
-        dispatch(setProjectId(editProjectData.id));
+        dispatch(setProjectId(editProjectData.id)); 
         // Обновление существующего проекта
         await dispatch(
           fetchProject(formattedData, setInputData, editProjectData.id)
         );
       } else {
-        // Создание нового проекта
+        // Создание нового проекта 
         await dispatch(fetchProject(formattedData, setInputData));
       }
+
       dispatch(clearFormData());
       // Очищаем состояния
       setSelectedCompetencies([]);
@@ -476,6 +499,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
       setSelectedProjectStages([]);
       setPreviewPhotos([]);
       setDynamicData([]);
+  
       setInputData({
         title: "",
         selectCompetencies: "",
@@ -509,7 +533,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
       });
       setErrorMessage(""); // Очищаем ошибки
       setIsModalOpen(false);
-    } catch (error) {
+     } catch (error) {
       console.error("Произошла ошибка при отправке формы:", error);
       // Обработка ошибки, например, вывод сообщения об ошибке пользователю
     }
@@ -551,13 +575,16 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
       setTimeout(() => setShowNotification(false), 5000);
       return;
     }
-    const blockKey = Date.now().toString();
+     const blockKey = Date.now().toString();
     const newInputs = inputs.map((input) => ({
       ...input,
       key: blockKey + "_" + input.type,
     }));
     setBlocks((prevState) => [...prevState, newInputs]);
-    setDynamicData((prevDynamicData) => [...prevDynamicData, newInputs]);
+    setDynamicData((prevDynamicData) => [
+      ...prevDynamicData,
+      newInputs.map(() => ({ value: "" })), // Инициализация значений для нового блока
+    ]);
     //  handlerOpenConstructor();
   };
   async function compressImage(file) {
@@ -573,11 +600,12 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
     }
   }
   // обработчик динамических значений
-  const handleDynamicInputChange = async (blockIndex, inputIndex, value) => {
+  const handleDynamicInputChange = async (blockIndex, inputIndex, value) => {    
     const newDynamicData = [...dynamicData];
     if (!newDynamicData[blockIndex]) {
       newDynamicData[blockIndex] = [];
     }
+    
     if (!newDynamicData[blockIndex][inputIndex]) {
       newDynamicData[blockIndex][inputIndex] = {
         type: "",
@@ -585,6 +613,8 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
         value: "",
       };
     }
+
+ 
     function generateUniqueName(originalName) {
       const timestamp = Date.now();
       const randomNum = Math.floor(Math.random() * 10000);
@@ -616,6 +646,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
     } else {
       newDynamicData[blockIndex][inputIndex].value = value;
     }
+    console.log("New Dynamic Data After:", newDynamicData);
     setDynamicData(newDynamicData);
   };
   // этот цикл сделан для присвоения разных стилей для одной конструкции превью
@@ -664,60 +695,69 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
     inputIndex,
     key
   ) => {
-    function handleDeletePreview(event, blockIndex, inputIndex, previewIndex) {
+    
+    function handleDeletePreview(event, previewIndex) {
       event.preventDefault();
       setDynamicPreviews((prev) => {
         const newPreviews = [...prev];
-        if (newPreviews[blockIndex] && newPreviews[blockIndex][inputIndex]) {
+        if (
+          newPreviews[blockIndex] &&
+          newPreviews[blockIndex][inputIndex] &&
+          newPreviews[blockIndex][inputIndex][previewIndex]
+        ) {
           newPreviews[blockIndex][inputIndex].splice(previewIndex, 1);
         }
         return newPreviews;
       });
       setDynamicData((prevData) => {
         const newData = [...prevData];
-        if (newData[blockIndex] && newData[blockIndex][inputIndex]) {
+        if (
+          newData[blockIndex] &&
+          newData[blockIndex][inputIndex] &&
+          newData[blockIndex][inputIndex].value &&
+          newData[blockIndex][inputIndex].value[previewIndex]
+        ) {
           newData[blockIndex][inputIndex].value.splice(previewIndex, 1);
         }
         return newData;
       });
+  
       const fileInputs = document.querySelectorAll('input[type="file"]');
-      fileInputs.forEach((input) => (input.value = "")); // это очищает значение всех инпутов типа file
+      fileInputs.forEach((input) => (input.value = ""));
     }
     const classNames = getPreviewClassName(labelText);
 
-    // console.log("Данные для отображения:", dynamicData);    
-
     return (
-      <div key={inputIndex}>
-        {inputType === "text" && (
-          // <input type="text" />
-          <div className={styles.form_container__heading_block}>
-            <input
-              type="input"
-              maxLength="56" // 2. Установите атрибут maxLength
-              className={`${styles.form_container__heading_block_input} ${styles.orange_color}`}
-              placeholder={labelText}
-              value={dynamicData[blockIndex][inputIndex]?.value || ""} // используйте значение inputValue как текущее значение инпута
-              onChange={(e) => {
-                setInputValue(e.target.value); // 4. Обновите inputValue при каждом изменении
-                handleDynamicInputChange(
-                  blockIndex,
-                  inputIndex,
-                  e.target.value
-                );
-              }}
-            />
-            <label
-              htmlFor="titleTextBlock"
-              className={styles.form_container__heading_block_label}
-            >
-              {labelText}
-            </label>
-            <div className={styles.form_container__heading_block_input_length}>
-              {(dynamicData[blockIndex][inputIndex]?.value || "").length}/56
-            </div>
+      <div key={key}>
+      {inputType === "text" && (
+        <div className={styles.form_container__heading_block}>
+          <input
+            type="input"
+            maxLength="56"
+            className={`${styles.form_container__heading_block_input} ${styles.orange_color}`}
+            placeholder={labelText}
+            value={
+              dynamicData[blockIndex]?.[inputIndex]?.value || ""
+            } // Обновлено: исправлен доступ к данным
+            onChange={(e) => {
+              handleDynamicInputChange(
+                blockIndex,
+                inputIndex,
+                e.target.value
+              );
+            }}
+          />
+          <label
+            htmlFor={`input-${blockIndex}-${inputIndex}`}
+            className={styles.form_container__heading_block_label}
+          >
+            {labelText}
+          </label>
+          <div className={styles.form_container__heading_block_input_length}>
+            {(dynamicData[blockIndex]?.[inputIndex]?.value || "").length}/56
           </div>
-        )}
+        </div>
+      )}
         {inputType === "file" && (
           <>
             {labelText === "Видеоролик" ? (
@@ -2447,7 +2487,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                   </div>
                 </div>
               ) : (
-                <ConstructorPage handleClick={handleClick} />
+                <ConstructorPage handleClick={handleClick}  data={data}  />
               )}
             </div>
           </div>
