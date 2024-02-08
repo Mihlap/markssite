@@ -359,6 +359,10 @@ export default function FormAddProject({ setIsModalOpen }) {
     }));
     setBlocks((prevState) => [...prevState, newInputs]);
     setDynamicData((prevDynamicData) => [...prevDynamicData, newInputs]);
+    setDynamicPreviews((prevPreviews) => [
+      ...prevPreviews,
+      new Array(newInputs.length).fill([]),
+    ]);
     //  handlerOpenConstructor();
   };
 
