@@ -236,8 +236,8 @@ router.put(
 
       const imagesToRemoveAfterUpdate = oldImageTitles.filter((image) => !updatedImageTitles.includes(image));
 
-      imagesToRemove.forEach(deleteImageEdit);
-      imagesToRemoveAfterUpdate.forEach(deleteImageEdit);
+      await Promise.all(imagesToRemove.map(deleteImageEdit));
+      await Promise.all(imagesToRemoveAfterUpdate.map(deleteImageEdit));      
       // console.log('Updating project with data:', {
       // imageTitle: imageTitles || currentImageTitles.join(', '),
       // });
