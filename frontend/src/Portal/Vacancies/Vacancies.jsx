@@ -75,7 +75,7 @@ const Vacancies = ({ handleMouseEnter, handleMouseLeave, handleMouseHover }) => 
         </div>
       </div>      
         <div className={styles.temporaryText}>Не нашли подходящую вакансию?</div>
-        <div className={styles.textUnderForm}>Оставьте ваши контакты, мы всегда в поиске талантлевых профессионалов</div> 
+        <div className={styles.textUnderForm}>Оставьте ваши контакты, мы всегда в поиске талантливых профессионалов</div> 
         <div className={styles.vacancyFormWrapper}><VacancyFormContact
          handleMouseEnter={handleMouseEnter}
          handleMouseLeave={handleMouseLeave}
