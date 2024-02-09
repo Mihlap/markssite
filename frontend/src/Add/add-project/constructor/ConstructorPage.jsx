@@ -8,17 +8,17 @@ import svg4 from "./svg/Group4652.svg";
 import svg5 from "./svg/Group4649.svg";
 import svg6 from "./svg/Group4641.svg";
 
-export default function ConstructorPage({ data, blocks, handleClick, handleBlockClick }) {
-  return (
+export default function ConstructorPage({ blocks, handleClick, handleBlockClick }) {
+ return (
     <div className={styles.div_conteiner}>
       {/* блок с картинкой и описание картинки  */}
-      {data && data[0]?.length === 2 ? (
+      {blocks && blocks[0]?.length === 2 ? (
         <div
           className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockOne}`}
           onClick={() =>
             handleBlockClick([
-              { key: data[0][0].key, type: "file", label: "Картинка с описанием", required: true },
-              { key: data[0][1].key, type: "text", label: "Описание картинки", required: false },
+              { key: blocks[0][0].key, type: "file", label: "Картинка с описанием", required: true },
+              { key: blocks[0][1].key, type: "text", label: "Описание картинки", required: false },
             ], blocks, 0)
           }
         >
@@ -39,13 +39,13 @@ export default function ConstructorPage({ data, blocks, handleClick, handleBlock
       )}
 
       {/* блок заголовок и описание  */}
-      {data && data[1]?.length === 2 ? (
+      {blocks && blocks[1]?.length === 2 ? (
         <div
           className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockTwo}`}
           onClick={() =>
             handleBlockClick([
-              { key: data[1][0].key, type: "text", label: "Заголовок", required: false },
-              { key: data[1][1].key, type: "textarea", label: "Текстовый блок", required: true },
+              { key: blocks[1][0].key, type: "text", label: "Заголовок", required: false },
+              { key: blocks[1][1].key, type: "textarea", label: "Текстовый блок", required: true },
             ], blocks, 1)
           }
         >
@@ -66,12 +66,12 @@ export default function ConstructorPage({ data, blocks, handleClick, handleBlock
       )}
 
       {/* блок с тремя картинками где горизонтальные, одна вертикальная  */}
-      {data && data[2]?.length === 1 ? (
+      {blocks && blocks[2]?.length === 1 ? (
         <div
           className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockThree}`}
           onClick={() =>
             handleBlockClick([
-              { key: data[2][0].key, type: "file", label: "Блок 3 картинки", required: true },
+              { key: blocks[2][0].key, type: "file", label: "Блок 3 картинки", required: true },
             ], blocks, 2)
           }
         >
@@ -91,13 +91,13 @@ export default function ConstructorPage({ data, blocks, handleClick, handleBlock
       )}
 
       {/* блок с двумя вертикальными картинками  */}
-      {data && data[3]?.length === 1 ? (
+      {blocks && blocks[3]?.length === 1 ? (
         <div
           className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockFour}`}
           onClick={() =>
             handleBlockClick([
               {
-                key: data[3][0].key,
+                key: blocks[3][0].key,
                 type: "file",
                 label: "Блок 2е вертикальные картинки",
                 required: true,
@@ -125,13 +125,13 @@ export default function ConstructorPage({ data, blocks, handleClick, handleBlock
       )}
 
       {/* слайдер с картинками  */}
-      {data && data[4]?.length === 1 ? (
+      {blocks && blocks[4]?.length === 1 ? (
         <div
           className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockFive}`}
           onClick={() =>
             handleBlockClick([
               {
-                key: data[4][0].key,
+                key: blocks[4][0].key,
                 type: "file",
                 label: "Слайдер *допускается загрузка 8ми изображений",
                 required: true
@@ -159,13 +159,13 @@ export default function ConstructorPage({ data, blocks, handleClick, handleBlock
       )}
 
       {/* блок с видеороликом */}
-      {data && data[5]?.length === 1 ? (
+      {blocks && blocks[5]?.length === 1 ? (
         <div
           className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockSix}`}
           onClick={() =>
             handleBlockClick([
               {
-                key: data[5][0].key,
+                key: blocks[5][0].key,
                 type: "file",
                 label: "Видеоролик",
                 required: true

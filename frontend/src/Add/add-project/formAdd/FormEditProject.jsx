@@ -128,15 +128,12 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
 
 
   // << ==== useStates для конструктора ==== >>
-  const [inputValue, setInputValue] = useState("");
   const [openConstructor, setOpenConstructor] = useState(false);
   const [blocks, setBlocks] = useState([]);
   const [dynamicPreviews, setDynamicPreviews] = useState([]);
   const [dynamicData, setDynamicData] = useState([]);
-  const [selectedBlockData, setSelectedBlockData] = useState(null)
   const [openBlockIndex, setOpenBlockIndex] = useState(null);
-  // const [blockData, setBlockData] = useState(null);
-  
+   
   const countFilledInputs = () => {
     const inputsToCheck = [
       "totalArea",
@@ -307,9 +304,6 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
         return updatedInputData;
       });
 
-  
-    // console.log(data, '9999999999999999999999999999');
-
       if (data && data.length > 0) {
         for (let index = 0; index < data.length; index++) {
           const block = data[index];
@@ -335,7 +329,6 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
               newPreviews[index] = previewsArray;
               return newPreviews;
             });
-            console.log(dynamicData, 'Updated Dynamic Data');
           }
         }
       }
@@ -550,16 +543,21 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
   };
   // функция которая не даёт создать новый диманический блок, пока не заполнены value предыдущего
   const areAllBlocksFilled = () => {
+    // Проверяем каждый блок в dynamicData
     for (let block of dynamicData) {
+      // Проверяем каждое поле в блоке
       for (let input of block) {
         // Проверяем только обязательные поля
-        if (input.required && (!input.value || input.value === "")) {
+        if (input.required && (!input.value || input.value.trim() === "")) {
+          // Если обязательное поле пустое, возвращаем false
           return false;
         }
       }
     }
+    // Если все обязательные поля заполнены, возвращаем true
     return true;
   };
+  
 
   const handleRemoveBlock = (blockIndex) => {
     setDynamicData((prevDynamicData) =>
@@ -576,12 +574,11 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
 
   // функция которая срабатывает в случае если мы всё-таки пытаемся создать блок выдает ( алерт ), в случае успеза проходит в дальше и создаёт новый динамический блок
   const handleClick = (inputs) => {
-    console.log("handleClick triggered with inputs:", inputs);
-    if (!areAllBlocksFilled()) {
-      setShowNotification(true);
-      setTimeout(() => setShowNotification(false), 5000);
-      return;
-    }
+     // if (!areAllBlocksFilled()) {
+    //   setShowNotification(true);
+    //   setTimeout(() => setShowNotification(false), 5000);
+    //   return;
+    // }
     if (!inputs || !Array.isArray(inputs)) {
       console.error('Invalid inputs:', inputs);
       return;
@@ -609,30 +606,22 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
   //   setSelectedBlockData(blocks);
   // };
 
-  const handleBlockClick = (inputs, blocks, blockIndex) => {
-    console.log("Clicked block data:", blocks);
-    console.log("Clicked block index:", blockIndex);
-  
-    // Проверяем, заполнены ли все блоки
+  const handleBlockClick = (inputs, blocks, blockIndex) => {   
+         // Проверяем, заполнены ли все блоки
     if (!areAllBlocksFilled()) {
       // Если не заполнены, показываем уведомление
       setShowNotification(true);
       // Закрываем уведомление через 5 секунд
-      setTimeout(() => setShowNotification(false), 5000);
+      setTimeout(() => setShowNotification(false), 4000);
       return;
     }
-  
     // Проверяем валидность входных данных
     if (!inputs || !Array.isArray(inputs)) {
       console.error('Invalid inputs:', inputs);
       return;
     }
-    console.log("Clicked block inputs:", inputs);
-    console.log("Clicked block blocks:", blocks);
-
     // Генерируем ключ блока
     const blockKey = Date.now().toString();
-  
     // Создаем новые входные данные с уникальными ключами
     const newInputs = inputs.map((input) => ({
       ...input,
@@ -646,19 +635,23 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
       updatedBlocks[blockIndex] = newInputs;
       // Возвращаем обновленное состояние блоков
       return updatedBlocks;
-    });
+    }); 
+ 
     // Инициализируем значения для нового блока в динамических данных
-    setDynamicData((prevDynamicData) => [
-      ...prevDynamicData,
-      newInputs?.map(() => ({ value: "" })), // Инициализация значений для нового блока
-    ]);
+    setDynamicData((prevDynamicData) => {
+      const newData = [...prevDynamicData];
+      newData[blockIndex] = newInputs.map(() => ({ value: "" }));
+      return newData;
+    });
   
     // Инициализируем предварительные данные для нового блока
-    setDynamicPreviews((prevPreviews) => [
-      ...prevPreviews,
-      new Array(newInputs.length).fill([]),
-    ]);
-  };
+    setDynamicPreviews((prevPreviews) => {
+      const newPreviews = [...prevPreviews];
+      newPreviews[blockIndex] = new Array(newInputs.length).fill([]);
+      return newPreviews;
+    });
+    // handlerOpenConstructor()
+   };
     
   async function compressImage(file) {
     const options = {
@@ -723,8 +716,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
       } else {
       newDynamicData[blockIndex][inputIndex].value = value;
       }
-    console.log("New Dynamic Data After:", newDynamicData);
-    setDynamicData(newDynamicData);
+     setDynamicData(newDynamicData);
    };
   // этот цикл сделан для присвоения разных стилей для одной конструкции превью
   const getPreviewClassName = (label) => {
@@ -762,7 +754,11 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
           videoStyles: styles.videoStyle, // этот стиль можно использовать для видеотега
         };
       default:
-        return "";
+        return {
+          outerDiv: "", 
+          innerDiv: "",
+          imageStyles: [], 
+        }
     }
   };
   const renderInputWithLabel = (
@@ -772,7 +768,10 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
     inputIndex,
     key,
   ) => {
-    
+    if (!inputType || !labelText) {
+      return null;
+  }
+
     function handleDeletePreview(event, previewIndex) {
       event.preventDefault();
       setDynamicPreviews((prev) => {
@@ -813,9 +812,10 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
             maxLength="56"
             className={`${styles.form_container__heading_block_input} ${styles.orange_color}`}
             placeholder={labelText}
-            value={
-              dynamicData[blockIndex]?.[inputIndex]?.value || ""
-            } // Обновлено: исправлен доступ к данным
+            // value={
+            //   dynamicData[blockIndex]?.[inputIndex]?.value || ""
+            // } // Обновлено: исправлен доступ к данным
+            value={dynamicData[blockIndex][inputIndex]?.value ? dynamicData[blockIndex][inputIndex].value : ''}
             onChange={(e) => {
               handleDynamicInputChange(
                 blockIndex,
@@ -1083,7 +1083,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
               required
               name={key}
               id={key}
-              value={dynamicData[blockIndex][inputIndex].value}
+              value={dynamicData[blockIndex][inputIndex]?.value ? dynamicData[blockIndex][inputIndex]?.value : ''}
               onChange={(value) => {
                 handleDynamicInputChange(blockIndex, inputIndex, value);
               }}
@@ -1109,9 +1109,10 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
     return (
       <div key={blockIndex} className={styles.blockContainer}>
         {inputs.map((input, inputIndex) =>
-          renderInputWithLabel(input.type, input.label, blockIndex, inputIndex)
+         renderInputWithLabel(input.type, input.label, blockIndex, inputIndex, `${blockIndex}-${inputIndex}`) // добавлен динамический ключ  
         )}
         <div
+          key={`close-${blockIndex}`}  // добавлен динамический ключ для кнопки      
           className={styles.blockContainer__close_button}
           onClick={() => handleRemoveBlock(blockIndex)}
         ></div>
