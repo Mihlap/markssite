@@ -355,13 +355,13 @@ export default function FormAddProject({ setIsModalOpen }) {
     const blockKey = Date.now().toString();
     const newInputs = inputs.map((input) => ({
       ...input,
-      key: blockKey + "_" + input.type,
+       key: blockKey + "_" + input.type,
     }));
-    setBlocks((prevState) => [...prevState, newInputs]);
+    setBlocks((prevBlocks) => [...prevBlocks, newInputs]);
     setDynamicData((prevDynamicData) => [...prevDynamicData, newInputs]);
     setDynamicPreviews((prevPreviews) => [
-      ...prevPreviews,
-      new Array(newInputs.length).fill([]),
+        ...prevPreviews,
+        new Array(newInputs.length).fill([]),
     ]);
     //  handlerOpenConstructor();
   };
@@ -390,6 +390,7 @@ export default function FormAddProject({ setIsModalOpen }) {
 
     if (!newDynamicData[blockIndex][inputIndex]) {
       newDynamicData[blockIndex][inputIndex] = {
+        id: "",
         type: "",
         label: "",
         value: "",
@@ -429,7 +430,6 @@ export default function FormAddProject({ setIsModalOpen }) {
     } else {
       newDynamicData[blockIndex][inputIndex].value = value;
     }
-
     setDynamicData(newDynamicData);
   };
 
