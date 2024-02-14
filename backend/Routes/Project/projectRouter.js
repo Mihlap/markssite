@@ -47,7 +47,7 @@ router.post(
       // console.log(dynamicBlocksContent);
 
       const createdProject = await Project.create({
-        title: req.body.title,
+         title: req.body.title,
         selectCompetencies: req.body.selectCompetencies,
         countryCity: req.body.countryCity,
         monthYear: req.body.monthYear,
@@ -108,8 +108,10 @@ router.put(
       const imagePath = path.join(__dirname, '..', '..', 'images', 'imageAdd', imageName);
     
       try {
+        
         await fs.promises.unlink(imagePath);
-        console.log(`Изображение ${imageName} успешно удалено.`);
+        // console.log(`Изображение ${imageName} успешно удалено.`);
+        
       } catch (error) {
         if (error.code === 'ENOENT') {
           // console.log(`Файл ${imageName} не найден, возможно, уже удален.`);
