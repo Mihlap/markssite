@@ -102,38 +102,35 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
   const [isLoadingDropPhoto, setIsLoadingDropPhoto] = useState(false);
   const [isLoadingOpenImage, setIsLoadingOpenImage] = useState(false);
   const [isLoadingCloseImage, setIsLoadingCloseImage] = useState(false);
- 
 
   const quillRef1 = useRef(null);
- 
+
   // Стили для eact-quill
   const quillRefs = [quillRef1];
   const applyStylesToQuillEditor = (quillRef) => {
     if (quillRef && quillRef.current) {
       const editor = quillRef.current.getEditor();
       const editorElement = editor.root;
-      
+
       // Применение стилей к нужному элементу
-      editorElement.style.fontSize = '16px';
-      editorElement.style.fontFamily = 'Raleway, sans-serif';
-      editorElement.style.color = 'var(--black-1D2E43)';
-      editorElement.style.border = 'none';
+      editorElement.style.fontSize = "16px";
+      editorElement.style.fontFamily = "Raleway, sans-serif";
+      editorElement.style.color = "var(--black-1D2E43)";
+      editorElement.style.border = "none";
     }
-  }; 
-  
+  };
+
   useEffect(() => {
     // Применение стилей для каждого quillRef
     quillRefs.forEach((quillRef) => applyStylesToQuillEditor(quillRef));
   }, [quillRef1]);
 
-
   // << ==== useStates для конструктора ==== >>
   const [openConstructor, setOpenConstructor] = useState(false);
-  const [blocks, setBlocks] = useState([]);
+  // const [blocks, setBlocks] = useState([]);
   const [dynamicPreviews, setDynamicPreviews] = useState([]);
   const [dynamicData, setDynamicData] = useState([]);
-  const [blockVisibility, setBlockVisibility] = useState([]);
-      
+ 
   const countFilledInputs = () => {
     const inputsToCheck = [
       "totalArea",
@@ -148,8 +145,8 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
   };
   const data = editProjectData?.Constructors?.[0]?.data;
   useEffect(() => {
-     if (editProjectData) {
-     const initialSelectedCompetencies = editProjectData.selectCompetencies
+    if (editProjectData) {
+      const initialSelectedCompetencies = editProjectData.selectCompetencies
         ? editProjectData.selectCompetencies
             .split(",")
             .map((item) => ({ value: item.trim(), label: item.trim() }))
@@ -299,32 +296,36 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
             editProjectData.dynamicDataFromEditProject !== undefined
               ? editProjectData.dynamicDataFromEditProject
               : "",
-        };    
-    
+        };
         return updatedInputData;
       });
 
       if (data && data.length > 0) {
         for (let index = 0; index < data.length; index++) {
           const block = data[index];
-          const dynamicDataFromEditProject = block.map(input => input.value) || [];
-  
+          const dynamicDataFromEditProject =
+            block.map((input) => input.value) || [];
+
           if (dynamicDataFromEditProject.length > 0) {
-            const dynamicData = block.map(input => ({
-              // id: input.id, 
+            const dynamicData = block.map((input) => ({
+              // id: input.id,
               type: input.type,
               label: input.label,
               value: input.value,
               key: input.key,
               blockIndex: index,
-           }));
-  
+            }));
+
             setDynamicData((prevDynamicData) => {
-              return [...prevDynamicData.slice(0, index), dynamicData, ...prevDynamicData.slice(index + 1)];
+              return [
+                ...prevDynamicData.slice(0, index),
+                dynamicData,
+                ...prevDynamicData.slice(index + 1),
+              ];
             });
-  
+
             const previewsArray = dynamicData.map((input) => input.value);
-  
+
             setDynamicPreviews((prev) => {
               const newPreviews = [...prev];
               newPreviews[index] = previewsArray;
@@ -338,16 +339,16 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
 
   // функция Удаление фото из массива превью
   // Удаление фото из массива превью
-  const handleRemovePreviewPhoto = (index) => {    
+  const handleRemovePreviewPhoto = (index) => {
     removePreviewPhoto(
       previewPhotos,
       setPreviewPhotos,
       index,
       inputData,
       setInputData,
-      setIsDropPhotoVisible,
-    );  
-  };  
+      setIsDropPhotoVisible
+    );
+  };
 
   // Удаление превью фото перед основным текстом НЕ УДАЛЯТЬ!!!!!
   // const handleRemovePreviewPhotoOpen = (index) => {
@@ -440,8 +441,8 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
         awards: Array.isArray(selectedProjectStages)
           ? selectedProjectStages.map((option) => option.label).join(",")
           : "",
-          // dropPhoto: inputData.dropPhoto,
-          // imageTitle: inputData.imageTitle,
+        // dropPhoto: inputData.dropPhoto,
+        // imageTitle: inputData.imageTitle,
         photoAva: inputData.photoAva,
         imageOpen: inputData.imageOpen,
         imageClose: inputData.imageClose,
@@ -476,16 +477,16 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
           ? formattedData.awards.map((option) => option.label).join(",")
           : formattedData.awards;
       }
-   
+
       // Определение, создаем новый проект или обновляем существующий
       if (editProjectData && editProjectData.id) {
-        dispatch(setProjectId(editProjectData.id)); 
+        dispatch(setProjectId(editProjectData.id));
         // Обновление существующего проекта
         await dispatch(
           fetchProject(formattedData, setInputData, editProjectData.id)
         );
       } else {
-        // Создание нового проекта 
+        // Создание нового проекта
         await dispatch(fetchProject(formattedData, setInputData));
       }
 
@@ -498,7 +499,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
       setSelectedProjectStages([]);
       setPreviewPhotos([]);
       setDynamicData([]);
-  
+
       setInputData({
         title: "",
         selectCompetencies: "",
@@ -532,8 +533,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
       });
       setErrorMessage(""); // Очищаем ошибки
       setIsModalOpen(false);
-      
-     } catch (error) {
+    } catch (error) {
       console.error("Произошла ошибка при отправке формы:", error);
       // Обработка ошибки, например, вывод сообщения об ошибке пользователю
     }
@@ -542,7 +542,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
   const handlerOpenConstructor = () => {
     setOpenConstructor(!openConstructor);
   };
-  
+
   // функция которая не даёт создать новый диманический блок, пока не заполнены value предыдущего
   const areAllBlocksFilled = () => {
     // Проверяем каждый блок в dynamicData
@@ -550,7 +550,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
       // Проверяем каждое поле в блоке
       for (let input of block) {
         // Проверяем только обязательные поля
-        if (input.required && (!input.value || input.value.trim() === "")) {
+        if (input.required && (!input.value || input.value === "")) {
           // Если обязательное поле пустое, возвращаем false
           return false;
         }
@@ -559,22 +559,20 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
     // Если все обязательные поля заполнены, возвращаем true
     return true;
   };
-  
 
   const handleRemoveBlock = (blockIndex) => {
     setDynamicData((prevDynamicData) =>
       prevDynamicData.filter((_, index) => index !== blockIndex)
     );
     // Обновление других связанных состояний...
-    setBlocks((prevBlocks) =>
-      prevBlocks.filter((_, index) => index !== blockIndex)
-    );
+    // setBlocks((prevBlocks) =>
+    //   prevBlocks.filter((_, index) => index !== blockIndex)
+    // );
     setDynamicPreviews((prevPreviews) =>
       prevPreviews.filter((_, index) => index !== blockIndex)
     );
   };
 
-  
   const handleClick = (inputs, blockIndex) => {
     if (!areAllBlocksFilled()) {
       setShowNotification(true);
@@ -583,47 +581,21 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
     }
     const blockKey = Date.now().toString();
     const newInputs = inputs.map((input) => ({
-        ...input,
-     key: blockKey + "_" + input.type,
-     blockIndex: blockIndex,
+      ...input,
+      key: blockKey + "_" + input.type,
+      blockIndex: blockIndex,
     }));
-   setBlocks((prevBlocks) => [...prevBlocks, newInputs]);
+    // setBlocks((prevBlocks) => [...prevBlocks, newInputs]);
+    
     setDynamicData((prevDynamicData) => [...prevDynamicData, newInputs]);
-    
+
     setDynamicPreviews((prevPreviews) => [
-        ...prevPreviews,
-        new Array(newInputs.length).fill([]),
+      ...prevPreviews,
+      new Array(newInputs.length).fill([]),
     ]);
-        //  handlerOpenConstructor();
-};
+    //  handlerOpenConstructor();
+  };
 
-// const handleClick = () => {
-//   const blocksToAdd = [];
-
-//   // Проходим по всем блокам в dynamicData
-//   dynamicData.forEach((blockData, blockIndex) => {
-//     // Проверяем, есть ли данные в текущем блоке
-//     if (blockData.some(input => input.value)) {
-//       // Если есть данные, добавляем все блоки этого блока
-//       const blockKey = Date.now().toString();
-//       const newInputs = blockData.map((input, index) => ({
-//         ...input,
-//         key: blockKey + "_" + input.type + "_" + index,
-//       }));
-
-//       blocksToAdd.push(newInputs);
-
-//       // Создаем превью для каждого нового блока
-//       const newPreviews = blockData.map(() => []);
-//       setDynamicPreviews((prevPreviews) => [...prevPreviews, ...newPreviews]);
-//     }
-//   });
-
-//   // Добавляем все блоки, которые нужно добавить, в состояние
-//   setBlocks((prevBlocks) => [...prevBlocks, ...blocksToAdd]);
-// };
-
-    
   async function compressImage(file) {
     const options = {
       maxSizeMB: 3, // максимальный размер файла в MB
@@ -637,17 +609,17 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
     }
   }
   // обработчик динамических значений
-  const handleDynamicInputChange = async (blockIndex, inputIndex, value) => { 
-  //   if (!Array.isArray(inputs)) {
-  //     console.error('Inputs is not an array:', inputs);
-  //     return;
-  // }
+  const handleDynamicInputChange = async (blockIndex, inputIndex, value) => {
+    //   if (!Array.isArray(inputs)) {
+    //     console.error('Inputs is not an array:', inputs);
+    //     return;
+    // }
     const newDynamicData = [...dynamicData];
 
     if (!newDynamicData[blockIndex]) {
       newDynamicData[blockIndex] = [];
     }
-    
+
     if (!newDynamicData[blockIndex][inputIndex]) {
       newDynamicData[blockIndex][inputIndex] = {
         id: "",
@@ -657,7 +629,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
         key: "",
       };
     }
- 
+
     function generateUniqueName(originalName) {
       const timestamp = Date.now();
       const randomNum = Math.floor(Math.random() * 10000);
@@ -665,8 +637,8 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
       const sliceOfOriginalName = transliterate(originalName.slice(0, 5));
       const newName = `file_${sliceOfOriginalName}_${timestamp}_${randomNum}.${fileExtension}`;
       return newName;
-      }
-      if (Array.isArray(value) && value[0] instanceof File) {
+    }
+    if (Array.isArray(value) && value[0] instanceof File) {
       const newFiles = await Promise.all(
         value.map(async (originalFile) => {
           if (originalFile.type.startsWith("image/")) {
@@ -686,11 +658,11 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
         })
       );
       newDynamicData[blockIndex][inputIndex].value = newFiles;
-      } else {
+    } else {
       newDynamicData[blockIndex][inputIndex].value = value;
-      }
-     setDynamicData(newDynamicData);
-   };
+    }
+    setDynamicData(newDynamicData);
+  };
   // этот цикл сделан для присвоения разных стилей для одной конструкции превью
   const getPreviewClassName = (label) => {
     switch (label) {
@@ -728,33 +700,31 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
         };
       default:
         return {
-          outerDiv: "", 
+          outerDiv: "",
           innerDiv: "",
-          imageStyles: [], 
-        }
+          imageStyles: [],
+        };
     }
   };
-  
+
   const renderInputWithLabel = (
     inputType,
     labelText,
     blockIndex,
     inputIndex,
-    key,
+    key
   ) => {
-    
-  //   const blockData = dynamicData[blockIndex]?.[inputIndex];
-  //   const blockLabel = blockData?.label;
-  //   const blockType = blockData?.type;
-  
+    //   const blockData = dynamicData[blockIndex]?.[inputIndex];
+    //   const blockLabel = blockData?.label;
+    //   const blockType = blockData?.type;
 
-  // // Проверка наличия данных в блоке, установленного флага о наличии данных и совпадения меток
-  // if (!blockData || !blockType || blockType !== inputType || !blockLabel || blockLabel !== labelText) {
-  //   return []; // Если нет данных, пустая метка или метка не совпадает, возвращаем null
-  // }
-  
-  // Получаем классы стилей для блока
- 
+    // // Проверка наличия данных в блоке, установленного флага о наличии данных и совпадения меток
+    // if (!blockData || !blockType || blockType !== inputType || !blockLabel || blockLabel !== labelText) {
+    //   return []; // Если нет данных, пустая метка или метка не совпадает, возвращаем null
+    // }
+
+    // Получаем классы стилей для блока
+
     function handleDeletePreview(event, blockIndex, inputIndex, previewIndex) {
       event.preventDefault();
       setDynamicPreviews((prev) => {
@@ -764,7 +734,9 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
           newPreviews[blockIndex][inputIndex] &&
           newPreviews[blockIndex][inputIndex][previewIndex]
         ) {
-          newPreviews[blockIndex][inputIndex] = newPreviews[blockIndex][inputIndex].filter((_, index) => index !== previewIndex);
+          newPreviews[blockIndex][inputIndex] = newPreviews[blockIndex][
+            inputIndex
+          ].filter((_, index) => index !== previewIndex);
         }
         return newPreviews;
       });
@@ -780,44 +752,48 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
         }
         return newData;
       });
-  
+
       const fileInputs = document.querySelectorAll('input[type="file"]');
       fileInputs.forEach((input) => (input.value = ""));
     }
     const classNames = getPreviewClassName(labelText);
-  
+
     return (
       <div key={key}>
-      {inputType === "text" && (
-        <div className={styles.form_container__heading_block}>
-          <input
-            type="input"
-            maxLength="56"
-            className={`${styles.form_container__heading_block_input} ${styles.orange_color}`}
-            placeholder={labelText}
-            // value={
-            //   dynamicData[blockIndex]?.[inputIndex]?.value || ""
-            // } // Обновлено: исправлен доступ к данным
-            value={dynamicData[blockIndex][inputIndex]?.value ? dynamicData[blockIndex][inputIndex].value : ''}
-            onChange={(e) => {
-              handleDynamicInputChange(
-                blockIndex,
-                inputIndex,
-                e.target.value
-              );
-            }}
-          />
-          <label
-            htmlFor={`input-${blockIndex}-${inputIndex}`}
-            className={styles.form_container__heading_block_label}
-          >
-            {labelText}
-          </label>
-          <div className={styles.form_container__heading_block_input_length}>
-            {(dynamicData[blockIndex]?.[inputIndex]?.value || "").length}/56
+        {inputType === "text" && (
+          <div className={styles.form_container__heading_block}>
+            <input
+              type="input"
+              maxLength="56"
+              className={`${styles.form_container__heading_block_input} ${styles.orange_color}`}
+              placeholder={labelText}
+              // value={
+              //   dynamicData[blockIndex]?.[inputIndex]?.value || ""
+              // } // Обновлено: исправлен доступ к данным
+              value={
+                dynamicData[blockIndex][inputIndex]?.value
+                  ? dynamicData[blockIndex][inputIndex].value
+                  : ""
+              }
+              onChange={(e) => {
+                handleDynamicInputChange(
+                  blockIndex,
+                  inputIndex,
+                  e.target.value
+                );
+              }}
+            />
+            <label
+              htmlFor={`input-${blockIndex}-${inputIndex}`}
+              className={styles.form_container__heading_block_label}
+            >
+              {labelText}
+            </label>
+            <div className={styles.form_container__heading_block_input_length}>
+              {(dynamicData[blockIndex]?.[inputIndex]?.value || "").length}/56
+            </div>
           </div>
-        </div>
-      )}
+        )}
         {inputType === "file" && (
           <>
             {labelText === "Видеоролик" ? (
@@ -876,7 +852,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                 </label>
                 {/* Добавляем блок превью видео ниже */}
                 {Array.isArray(dynamicPreviews[blockIndex]?.[inputIndex]) &&
-                    dynamicPreviews[blockIndex][inputIndex].map((src, index) => (
+                  dynamicPreviews[blockIndex][inputIndex].map((src, index) => (
                     <div
                       key={`${blockIndex}-${inputIndex}-${index}`}
                       className={classNames.innerDiv}
@@ -886,14 +862,26 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                           styles.preview_photos_container_block_constructor
                         }
                       >
-                        <video
-                          key={index}
-                          src={`${Host}/images/imageAdd/${src}`}
-                          muted
-                          loop
-                          autoPlay
-                          className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
-                        />
+                        {src && src.startsWith("blob:") ? ( // Проверяем, является ли src временным URL
+                          <video
+                            key={index}
+                            src={src}
+                            muted
+                            loop
+                            autoPlay
+                            className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
+                          />
+                        ) : (
+                          <video
+                            key={index}
+                            src={`${Host}/images/imageAdd/${src}`}
+                            muted
+                            loop
+                            autoPlay
+                            className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
+                          />
+                        )}
+
                         <div
                           className={
                             styles.preview_photos_container_block_constructor__remove_icon
@@ -973,7 +961,8 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                   className={`${styles.previewContainer} ${classNames.outerDiv}`}
                 >
                   {Array.isArray(dynamicPreviews[blockIndex]?.[inputIndex]) &&
-                    dynamicPreviews[blockIndex][inputIndex].map((src, index) => {
+                    dynamicPreviews[blockIndex][inputIndex].map(
+                      (src, index) => {
                         return (
                           <div
                             key={`${blockIndex}-${inputIndex}-${index}`}
@@ -984,11 +973,19 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                                 styles.preview_photos_container_block_constructor
                               }
                             >
-                              <img
-                                 src={`${Host}/images/imageAdd/${src}`}
-                                alt={`Preview ${index}`}
-                                className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
-                              />
+                              {src && src.startsWith("blob:") ? ( // Проверяем, является ли src временным URL
+                                <img
+                                  src={src}
+                                  alt={`Preview ${index}`}
+                                  className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
+                                />
+                              ) : (
+                                <img
+                                  src={`${Host}/images/imageAdd/${src}`}
+                                  alt={`Preview ${index}`}
+                                  className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
+                                />
+                              )}
                               <div
                                 className={
                                   styles.preview_photos_container_block_constructor__remove_icon
@@ -1023,22 +1020,22 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
               {/* {`${inputData.descriptionArticle.length}/260`} */}
             </div>
             <ReactQuill
-                ref={(el) => {
-                  if (el) {
-                    const editor = el.getEditor();
-                    const editorElement = editor.root;
-                
-                    editorElement.style.fontSize = '16px';
-                    editorElement.style.fontFamily = 'Raleway, sans-serif';
-                    editorElement.style.color = 'var(--black-1D2E43)';
-                    editorElement.style.padding = "1rem";
-                    editorElement.style.borderRadius = "6px";
-                    editorElement.style.fontWeight = "var(--fw-400)";
-                    editorElement.style.lineHeight = "16px";
-                    editorElement.style.boxSizing = "border-box";
-                    editorElement.style.paddingBottom = "2.5rem";
-                  }
-                }}
+              ref={(el) => {
+                if (el) {
+                  const editor = el.getEditor();
+                  const editorElement = editor.root;
+
+                  editorElement.style.fontSize = "16px";
+                  editorElement.style.fontFamily = "Raleway, sans-serif";
+                  editorElement.style.color = "var(--black-1D2E43)";
+                  editorElement.style.padding = "1rem";
+                  editorElement.style.borderRadius = "6px";
+                  editorElement.style.fontWeight = "var(--fw-400)";
+                  editorElement.style.lineHeight = "16px";
+                  editorElement.style.boxSizing = "border-box";
+                  editorElement.style.paddingBottom = "2.5rem";
+                }
+              }}
               modules={{
                 toolbar: [
                   ["bold", "italic", "underline"],
@@ -1065,7 +1062,11 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
               required
               name={key}
               id={key}
-              value={dynamicData[blockIndex][inputIndex]?.value ? dynamicData[blockIndex][inputIndex]?.value : ''}
+              value={
+                dynamicData[blockIndex][inputIndex]?.value
+                  ? dynamicData[blockIndex][inputIndex]?.value
+                  : ""
+              }
               onChange={(value) => {
                 handleDynamicInputChange(blockIndex, inputIndex, value);
               }}
@@ -1087,14 +1088,21 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
   const renderInputs = (inputs, blockIndex) => {
     if (!Array.isArray(inputs)) {
       return null;
-  }
+    }
     return (
       <div key={blockIndex} className={styles.blockContainer}>
-        {inputs.map((input, inputIndex) =>
-         renderInputWithLabel(input.type, input.label, blockIndex, inputIndex, `${blockIndex}-${inputIndex}`) // добавлен динамический ключ  
+        {inputs.map(
+          (input, inputIndex) =>
+            renderInputWithLabel(
+              input.type,
+              input.label,
+              blockIndex,
+              inputIndex,
+              `${blockIndex}-${inputIndex}`
+            ) // добавлен динамический ключ
         )}
         <div
-          key={`close-${blockIndex}`}  // добавлен динамический ключ для кнопки      
+          key={`close-${blockIndex}`} // добавлен динамический ключ для кнопки
           className={styles.blockContainer__close_button}
           onClick={() => handleRemoveBlock(blockIndex)}
         ></div>
@@ -2498,13 +2506,14 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
           </div>
           {/* КОНСТРУКТОР */}
           {dynamicData && (
-          <div className={styles.inputs_container}>
-            {dynamicData.map((blockInputs, blockIndex) => (
-              <div key={blockIndex} className={styles.input_block}>
-                 {Array.isArray(blockInputs) && renderInputs(blockInputs, blockIndex)}
-              </div>
-            ))}
-          </div>
+            <div className={styles.inputs_container}>
+              {dynamicData.map((blockInputs, blockIndex) => (
+                <div key={blockIndex} className={styles.input_block}>
+                  {Array.isArray(blockInputs) &&
+                    renderInputs(blockInputs, blockIndex)}
+                </div>
+              ))}
+            </div>
           )}
           <div className={styles.constructor_container}>
             <div className={styles.constructor_container__block}>
@@ -2545,10 +2554,8 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                 <ConstructorPage
                   data={data}
                   handleClick={handleClick}
-                  // handleBlockClick={handleBlockClick}
-                  // handleBlockData={handleBlockData}
-                  blocks={blocks}
-               />
+                  // blocks={blocks}
+                />
               )}
             </div>
           </div>
