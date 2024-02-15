@@ -243,7 +243,7 @@ router.put(
       // console.log('Updating project with data:', {
       // imageTitle: imageTitles || currentImageTitles.join(', '),
       // });
-
+      
       // Поиск или создание данных конструктора
       let existingConstructor = await Constructor.findOne({ where: { idBlock: projectId } });
 
