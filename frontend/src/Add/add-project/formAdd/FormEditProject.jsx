@@ -300,7 +300,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
         return updatedInputData;
       });
 
-      if (data && data.length > 0) {
+      if (Array.isArray(data) && data.length > 0) {
         for (let index = 0; index < data.length; index++) {
           const block = data[index];
           const dynamicDataFromEditProject =
@@ -745,10 +745,12 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
         if (
           newData[blockIndex] &&
           newData[blockIndex][inputIndex] &&
-          newData[blockIndex][inputIndex].value &&
+          Array.isArray(newData[blockIndex][inputIndex].value) &&
           newData[blockIndex][inputIndex].value[previewIndex]
         ) {
-          newData[blockIndex][inputIndex].value.splice(previewIndex, 1);
+          const updatedValue = [...newData[blockIndex][inputIndex].value];
+          updatedValue.splice(previewIndex, 1);
+          newData[blockIndex][inputIndex].value = updatedValue;
         }
         return newData;
       });
