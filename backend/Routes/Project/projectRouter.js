@@ -133,9 +133,7 @@ router.put(
         return res.status(404).json({ message: 'Проект не найден' });
       }
 
-      const dynamicImageTitles = req.files.dynamicImages
-        ? req.files.dynamicImages.map((file) => file.filename).join(', ')
-        : null;
+   
       let dynamicBlocksContent = null;
 
       if (req.body.dynamicBlocksJSON) {
@@ -235,7 +233,6 @@ router.put(
 
       const updatedImageTitles = projectToUpdate.imageTitle ? projectToUpdate.imageTitle.split(', ') : [];
 
-
       const imagesToRemoveAfterUpdate = oldImageTitles.filter((image) => !updatedImageTitles.includes(image));
 
       await Promise.all(imagesToRemove.map(deleteImageEdit));
@@ -243,6 +240,9 @@ router.put(
       // console.log('Updating project with data:', {
       // imageTitle: imageTitles || currentImageTitles.join(', '),
       // });
+      const dynamicImageTitles = req.files.dynamicImages
+      ? req.files.dynamicImages.map((file) => file.filename)
+      : [];
       
       // Поиск или создание данных конструктора
       let existingConstructor = await Constructor.findOne({ where: { idBlock: projectId } });
@@ -258,11 +258,27 @@ router.put(
         // Если конструктор не существует, создаем новый
         existingConstructor = await Constructor.create({
           data: dynamicBlocksContent,
-          image: dynamicImageTitles,
+          image: dynamicImageTitles ,
           idBlock: projectId,
         });
         // console.log('Создан новый конструктор:', existingConstructor.toJSON());
       }
+    //   if (existingConstructor) {
+    //     let currentImageTitles = existingConstructor.image ? existingConstructor.image.split(', ') : [];
+    //     let updatedImageTitles = [...currentImageTitles, ...dynamicImageTitles]; // Добавляем новые имена к текущим
+    //     updatedImageTitles = [...new Set(updatedImageTitles)]; // Убираем возможные дубликаты
+    
+    //     await existingConstructor.update({
+    //         data: dynamicBlocksContent,
+    //         image: updatedImageTitles.join(', '), // Объединяем в строку с разделителем
+    //     });
+    // } else {
+    //     existingConstructor = await Constructor.create({
+    //         data: dynamicBlocksContent,
+    //         image: dynamicImageTitles.join(', '), // Просто сохраняем новые имена
+    //         idBlock: projectId,
+    //     });
+    // }
       // console.log('Данные конструктора:', existingConstructor.get());
       // остальной код обработки...
 
@@ -366,7 +382,7 @@ router.delete('/deletezapros/:id', async (req, res) => {
     const post = await Project.findByPk(id);
     const deleteConstructorImg = await Constructor.findByPk(id);
 
-    if (deleteConstructorImg.image) {
+    if (deleteConstructorImg?.image) {
       // console.log('ЗАШЕЛ СЮДА');
       const imageConstructorNames = deleteConstructorImg.image.includes(', ')
         ? deleteConstructorImg.image.split(', ')
