@@ -236,53 +236,59 @@ router.put(
       const imagesToRemoveAfterUpdate = oldImageTitles.filter((image) => !updatedImageTitles.includes(image));
 
       await Promise.all(imagesToRemove.map(deleteImageEdit));
-      await Promise.all(imagesToRemoveAfterUpdate.map(deleteImageEdit));      
-      // console.log('Updating project with data:', {
-      // imageTitle: imageTitles || currentImageTitles.join(', '),
-      // });
-      const dynamicImageTitles = req.files.dynamicImages
-      ? req.files.dynamicImages.map((file) => file.filename)
-      : [];
+      await Promise.all(imagesToRemoveAfterUpdate.map(deleteImageEdit));  
       
-      // Поиск или создание данных конструктора
-      let existingConstructor = await Constructor.findOne({ where: { idBlock: projectId } });
+         
+      // const dynamicImageTitles = req.files.dynamicImages
+      // ? req.files.dynamicImages.map((file) => file.filename).join(', ')
+      // : [];
 
-      if (existingConstructor) {
-        // console.log('Найден существующий конструктор:', existingConstructor.toJSON());
-        // Если конструктор существует, обновляем данные
-        await existingConstructor.update({
-          data: dynamicBlocksContent,
-          image: dynamicImageTitles,
-        });
-      } else {
-        // Если конструктор не существует, создаем новый
-        existingConstructor = await Constructor.create({
-          data: dynamicBlocksContent,
-          image: dynamicImageTitles ,
-          idBlock: projectId,
-        });
-        // console.log('Создан новый конструктор:', existingConstructor.toJSON());
-      }
-    //   if (existingConstructor) {
-    //     let currentImageTitles = existingConstructor.image ? existingConstructor.image.split(', ') : [];
-    //     let updatedImageTitles = [...currentImageTitles, ...dynamicImageTitles]; // Добавляем новые имена к текущим
-    //     updatedImageTitles = [...new Set(updatedImageTitles)]; // Убираем возможные дубликаты
+      // const dynamicImageTitlesFromClient = typeof dynamicImageTitles === 'string' ? [dynamicImageTitles] : Array.isArray(dynamicImageTitles);
     
-    //     await existingConstructor.update({
-    //         data: dynamicBlocksContent,
-    //         image: updatedImageTitles.join(', '), // Объединяем в строку с разделителем
-    //     });
-    // } else {
-    //     existingConstructor = await Constructor.create({
-    //         data: dynamicBlocksContent,
-    //         image: dynamicImageTitles.join(', '), // Просто сохраняем новые имена
-    //         idBlock: projectId,
-    //     });
-    // }
-      // console.log('Данные конструктора:', existingConstructor.get());
-      // остальной код обработки...
 
-      res.status(200).json({ message: 'Данные успешно обновлены' });
+      // const newDynamicImageTitles =
+      // dynamicImageTitlesFromClient.length > 0 ? dynamicImageTitlesFromClient.join(', ') : null;
+      
+      // const newDynamicImageTitlesArray = typeof newDynamicImageTitles === 'string'
+      // ? [newDynamicImageTitles]
+      // : newDynamicImageTitles || [];
+
+
+      // const allImageTitles = [
+      //   ...newDynamicImageTitlesArray,
+      //   ...dynamicImageTitlesFromClient,
+      // ];
+
+      // console.log(allImageTitles, 'wwwwwwwwwwwwwwwwwwww');
+
+      // Поиск или создание данных конструктора
+  // Получение изображений из базы данных
+const existingConstructor = await Constructor.findOne({ where: { idBlock: projectId } });
+console.log(existingConstructor, '11111111111111111111');
+const existingImageTitles = existingConstructor ? existingConstructor.image.split(', ') : [];
+console.log(existingImageTitles, '222222222222222');
+// Получение новых изображений из запроса
+const dynamicImageTitles = req.files.dynamicImages ? req.files.dynamicImages.map((file) => file.filename) : [];
+console.log(dynamicImageTitles, '33333333333333');
+// Объединение старых и новых изображений
+const allImageTitles = [...existingImageTitles, ...dynamicImageTitles].filter(Boolean);
+console.log(allImageTitles, '444444444444444444');
+// Обновление данных конструктора
+if (existingConstructor) {
+  const allImageTitlesString = allImageTitles.join(', ');
+  await existingConstructor.update({
+    data: dynamicBlocksContent,
+    image: allImageTitlesString,
+  });
+} else {
+  // Создание нового конструктора, если его не существует
+  await Constructor.create({
+    data: dynamicBlocksContent,
+    image: dynamicImageTitles,
+    idBlock: projectId,
+  });
+}
+res.status(200).json({ message: 'Данные успешно обновлены' });
     } catch (error) {
       console.error('Ошибка при обновлении проекта:', error);
       res.status(500).json({ message: 'Произошла ошибка при обновлении данных' });

@@ -809,7 +809,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                   }
                 >
                   <input
-                    type="file"
+                   type="file"
                     accept="video/*" // Это будет принимать только видеофайлы
                     onChange={(e) => {
                       const filesArray = Array.from(e.target.files);
