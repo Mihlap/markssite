@@ -284,7 +284,7 @@ if (existingConstructor) {
   // Создание нового конструктора, если его не существует
   await Constructor.create({
     data: dynamicBlocksContent,
-    image: dynamicImageTitles,
+    image: allImageTitles.join(', '),
     idBlock: projectId,
   });
 }
@@ -354,11 +354,9 @@ router.get('/getdynamicdata/:projectId', async (req, res) => {
     if (!constructorData) {
       return res.status(404).json({ message: 'Динамические данные не найдены' });
     }
-
-    // Отправить данные в ответ
-    res.json({
+   res.json({
       dynamicData: constructorData.data,
-      dynamicImages: constructorData.image,
+      dynamicImages: constructorData.image.split(', '),
     });
   } catch (error) {
     console.error('Ошибка при получении динамических данных:', error);
