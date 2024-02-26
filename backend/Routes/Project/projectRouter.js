@@ -144,6 +144,7 @@ router.put(
           return res.status(400).json({ message: 'Неверный формат данных для dynamicBlocksJSON' });
         }
       }
+      
 
       const imageTitles = req.files.dropPhoto
         ? req.files.dropPhoto.map((file) => file.filename).join(', ')
@@ -225,6 +226,7 @@ router.put(
         textBlock: req.body.textBlock,
         numberOfLanes: req.body.numberOfLanes,
         long: req.body.long,
+        data: dynamicBlocksContent, 
         imageTitle: imageTitles || imageTitlesNew || currentImageTitles.join(', '),
         imageProject: imageProjects || currentImageProjects,
         imageOpen: imageOpens || currentImageOpens,
@@ -266,7 +268,6 @@ router.put(
 const existingConstructor = await Constructor.findOne({ where: { idBlock: projectId } });
 console.log(existingConstructor, '11111111111111111111');
 const existingImageTitles = existingConstructor ? (existingConstructor.image ? existingConstructor.image.split(', ') : []) : [];
-
 console.log(existingImageTitles, '222222222222222');
 // Получение новых изображений из запроса
 const dynamicImageTitles = req.files.dynamicImages ? req.files.dynamicImages.map((file) => file.filename) : [];
@@ -274,9 +275,11 @@ console.log(dynamicImageTitles, '33333333333333');
 // Объединение старых и новых изображений
 const allImageTitles = [...existingImageTitles, ...dynamicImageTitles].filter(Boolean);
 console.log(allImageTitles, '444444444444444444');
+
 // Обновление данных конструктора
 if (existingConstructor) {
   const allImageTitlesString = allImageTitles.join(', ');
+  
   await existingConstructor.update({
     data: dynamicBlocksContent,
     image: allImageTitlesString,
