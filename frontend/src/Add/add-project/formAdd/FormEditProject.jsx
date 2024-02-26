@@ -303,8 +303,8 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
       if (Array.isArray(data) && data.length > 0) {
         for (let index = 0; index < data.length; index++) {
           const block = data[index];
-          const dynamicDataFromEditProject =
-            block.map((input) => input.value) || [];
+          if (Array.isArray(block)) {
+            const dynamicDataFromEditProject = block.map((input) => input.value) || [];
 
           if (dynamicDataFromEditProject.length > 0) {
             const dynamicData = block.map((input) => ({
@@ -333,6 +333,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
             });
           }
         }
+      }
       }
     }
   }, [editProjectData]);
@@ -930,7 +931,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                         setDynamicPreviews((prev) => {
                           const newPreviews = [...prev];
                           if (!newPreviews[blockIndex]) {
-                            newPreviews[blockIndex] = [];
+                            newPreviews[blockIndex] = [...prev];
                           }
                           newPreviews[blockIndex][inputIndex] = previewsArray;
                           return newPreviews;
