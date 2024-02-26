@@ -265,7 +265,8 @@ router.put(
   // Получение изображений из базы данных
 const existingConstructor = await Constructor.findOne({ where: { idBlock: projectId } });
 console.log(existingConstructor, '11111111111111111111');
-const existingImageTitles = existingConstructor ? existingConstructor.image.split(', ') : [];
+const existingImageTitles = existingConstructor ? (existingConstructor.image ? existingConstructor.image.split(', ') : []) : [];
+
 console.log(existingImageTitles, '222222222222222');
 // Получение новых изображений из запроса
 const dynamicImageTitles = req.files.dynamicImages ? req.files.dynamicImages.map((file) => file.filename) : [];
