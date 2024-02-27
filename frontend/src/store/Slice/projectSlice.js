@@ -172,17 +172,28 @@ export const fetchProject = createAsyncThunk(
 
           const cloneDynamicBlocks = value.map((outerArray) => {
             return outerArray.map((obj) => {
-              if (obj.type === "file" && Array.isArray(obj.value)) {
+              // Проверяем, что значение value не равно undefined и не пустой массив
+              if (obj.type === "file" && Array.isArray(obj.value) && obj.value.length > 0) {
+                // Обработка значений типа file
+                const processedFiles = obj.value.map((file) => {
+                  // Проверяем, что файл не равен undefined
+                  // Если значение не равно undefined, возвращаем имя файла, иначе возвращаем null
+                  return file ? file.name : null;
+                });
+          
+                // Возвращаем обновленный объект с обработанными значениями value
                 return {
                   ...obj,
-                  value: obj.value.map((file) => (file ? file.name : null)),
+                  value: processedFiles,
                 };
               }
+              // Возвращаем объект без изменений, если тип не file или значение value пустой массив или undefined
               return obj;
             });
           });
-
+          
           formData.append("dynamicBlocksJSON", JSON.stringify(cloneDynamicBlocks));
+          console.log(cloneDynamicBlocks, '44444444444444444444444');
 
           photosArray.forEach((photo) => {
             formData.append("dynamicImages", photo);
