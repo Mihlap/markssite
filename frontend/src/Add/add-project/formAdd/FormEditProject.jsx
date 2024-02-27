@@ -478,6 +478,25 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
           ? formattedData.awards.map((option) => option.label).join(",")
           : formattedData.awards;
       }
+     
+        // formattedData.dynamicBlocks.forEach((block) => {
+        //   if (block.value === undefined || !Array.isArray(block.value)) {
+        //     block.value = []; // Если значение не определено или не является массивом, создаем новый пустой массив
+        //   } else {
+        //     // Преобразуем значение в массив, если оно не массив объектов
+        //     block.value = block.value.map((item) => (typeof item === 'object' ? item : { label: item }));
+        //   }
+        // });
+
+         // Добавим проверку значений value для dynamicBlocks
+         formattedData.dynamicBlocks.forEach((block) => {
+          if (block.value === undefined) {
+            console.error("Значение value в блоке", block, "не определено или равно undefined");
+          }
+        });
+
+        console.log(formattedData, ',,,,,,,,,,,,,,,,,,,,,,,,,,,,,,');
+        
 
       // Определение, создаем новый проект или обновляем существующий
       if (editProjectData && editProjectData.id) {
@@ -491,7 +510,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
         await dispatch(fetchProject(formattedData, setInputData));
       }
 
-      dispatch(clearFormData());
+      // dispatch(clearFormData());
       // Очищаем состояния
       setSelectedCompetencies([]);
       setSelectDegreeParticipation("");
