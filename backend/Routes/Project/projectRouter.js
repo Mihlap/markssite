@@ -131,19 +131,7 @@ router.put(
 
       if (!projectToUpdate) {
         return res.status(404).json({ message: 'Проект не найден' });
-      }
-
-   
-      let dynamicBlocksContent = null;
-
-      if (req.body.dynamicBlocksJSON) {
-        try {
-          dynamicBlocksContent = JSON.parse(req.body.dynamicBlocksJSON);
-        } catch (error) {
-          console.error('Ошибка при разборе dynamicBlocksJSON:', error);
-          return res.status(400).json({ message: 'Неверный формат данных для dynamicBlocksJSON' });
-        }
-      }
+      } 
       
 
       const imageTitles = req.files.dropPhoto
@@ -226,12 +214,12 @@ router.put(
         textBlock: req.body.textBlock,
         numberOfLanes: req.body.numberOfLanes,
         long: req.body.long,
-        data: dynamicBlocksContent, 
+        // data: dynamicBlocksContent, 
         imageTitle: imageTitles || imageTitlesNew || currentImageTitles.join(', '),
         imageProject: imageProjects || currentImageProjects,
         imageOpen: imageOpens || currentImageOpens,
         imageClose: imageCloses || currentImageCloses,
-      });
+       });
 
       const updatedImageTitles = projectToUpdate.imageTitle ? projectToUpdate.imageTitle.split(', ') : [];
 
@@ -268,18 +256,42 @@ router.put(
 const existingConstructor = await Constructor.findOne({ where: { idBlock: projectId } });
 console.log(existingConstructor, '11111111111111111111');
 const existingImageTitles = existingConstructor ? (existingConstructor.image ? existingConstructor.image.split(', ') : []) : [];
-console.log(existingImageTitles, '222222222222222');
+// console.log(existingImageTitles, '222222222222222');
 // Получение новых изображений из запроса
 const dynamicImageTitles = req.files.dynamicImages ? req.files.dynamicImages.map((file) => file.filename) : [];
-console.log(dynamicImageTitles, '33333333333333');
+// console.log(dynamicImageTitles, '33333333333333');
 // Объединение старых и новых изображений
 const allImageTitles = [...existingImageTitles, ...dynamicImageTitles].filter(Boolean);
-console.log(allImageTitles, '444444444444444444');
+// console.log(allImageTitles, '444444444444444444');
+
+let dynamicBlocksContent = [];
+
+if (req.body.dynamicBlocksJSON) {
+try {
+  dynamicBlocksContent = JSON.parse(req.body.dynamicBlocksJSON);
+} catch (error) {
+  console.error('Ошибка при разборе dynamicBlocksJSON:', error);
+  return res.status(400).json({ message: 'Неверный формат данных для dynamicBlocksJSON' });
+}
+}
 
 // Обновление данных конструктора
 if (existingConstructor) {
-  const allImageTitlesString = allImageTitles.join(', ');
+  // let previousImageValue = null;
   
+  // const updatedDynamicBlocksContent = dynamicBlocksContent.map((block) => {
+  //   return block.map((obj) => {
+  //     if (obj.type === 'file' && obj.value && obj.value[0] === null) {
+  //       if (previousImageValue) {
+  //         obj.value[0] = previousImageValue;
+  //       }
+  //     }
+  //     // console.log(`Block ${blockIndex + 1}, Type: ${obj.type}, Value:`, obj.value);
+  //     return obj;
+  //   });
+  // });
+
+  const allImageTitlesString = allImageTitles.join(', ');  
   await existingConstructor.update({
     data: dynamicBlocksContent,
     image: allImageTitlesString,
