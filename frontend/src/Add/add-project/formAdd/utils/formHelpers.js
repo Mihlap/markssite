@@ -225,7 +225,7 @@ export async function changeHandler(
         setIsPhotoCloseVisible(false);
         setPreviewPhotoClose(newFiles.map((file) => URL.createObjectURL(file)));
         break;
-      default:
+       default:
         console.error("Unrecognized input name:", event.target.name);
         break;
     }

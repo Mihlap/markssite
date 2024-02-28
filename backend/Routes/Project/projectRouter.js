@@ -47,7 +47,7 @@ router.post(
       // console.log(dynamicBlocksContent);
 
       const createdProject = await Project.create({
-        title: req.body.title,
+         title: req.body.title,
         selectCompetencies: req.body.selectCompetencies,
         countryCity: req.body.countryCity,
         monthYear: req.body.monthYear,
@@ -108,8 +108,10 @@ router.put(
       const imagePath = path.join(__dirname, '..', '..', 'images', 'imageAdd', imageName);
     
       try {
+        
         await fs.promises.unlink(imagePath);
-        console.log(`Изображение ${imageName} успешно удалено.`);
+        // console.log(`Изображение ${imageName} успешно удалено.`);
+        
       } catch (error) {
         if (error.code === 'ENOENT') {
           // console.log(`Файл ${imageName} не найден, возможно, уже удален.`);
@@ -129,21 +131,8 @@ router.put(
 
       if (!projectToUpdate) {
         return res.status(404).json({ message: 'Проект не найден' });
-      }
-
-      const dynamicImageTitles = req.files.dynamicImages
-        ? req.files.dynamicImages.map((file) => file.filename).join(', ')
-        : null;
-      let dynamicBlocksContent = null;
-
-      if (req.body.dynamicBlocksJSON) {
-        try {
-          dynamicBlocksContent = JSON.parse(req.body.dynamicBlocksJSON);
-        } catch (error) {
-          console.error('Ошибка при разборе dynamicBlocksJSON:', error);
-          return res.status(400).json({ message: 'Неверный формат данных для dynamicBlocksJSON' });
-        }
-      }
+      } 
+      
 
       const imageTitles = req.files.dropPhoto
         ? req.files.dropPhoto.map((file) => file.filename).join(', ')
@@ -225,46 +214,94 @@ router.put(
         textBlock: req.body.textBlock,
         numberOfLanes: req.body.numberOfLanes,
         long: req.body.long,
+        // data: dynamicBlocksContent, 
         imageTitle: imageTitles || imageTitlesNew || currentImageTitles.join(', '),
         imageProject: imageProjects || currentImageProjects,
         imageOpen: imageOpens || currentImageOpens,
         imageClose: imageCloses || currentImageCloses,
-      });
+       });
 
       const updatedImageTitles = projectToUpdate.imageTitle ? projectToUpdate.imageTitle.split(', ') : [];
 
-
       const imagesToRemoveAfterUpdate = oldImageTitles.filter((image) => !updatedImageTitles.includes(image));
 
-      imagesToRemove.forEach(deleteImageEdit);
-      imagesToRemoveAfterUpdate.forEach(deleteImageEdit);
-      // console.log('Updating project with data:', {
-      // imageTitle: imageTitles || currentImageTitles.join(', '),
-      // });
+      await Promise.all(imagesToRemove.map(deleteImageEdit));
+      await Promise.all(imagesToRemoveAfterUpdate.map(deleteImageEdit));  
+      
+         
+      // const dynamicImageTitles = req.files.dynamicImages
+      // ? req.files.dynamicImages.map((file) => file.filename).join(', ')
+      // : [];
+
+      // const dynamicImageTitlesFromClient = typeof dynamicImageTitles === 'string' ? [dynamicImageTitles] : Array.isArray(dynamicImageTitles);
+    
+
+      // const newDynamicImageTitles =
+      // dynamicImageTitlesFromClient.length > 0 ? dynamicImageTitlesFromClient.join(', ') : null;
+      
+      // const newDynamicImageTitlesArray = typeof newDynamicImageTitles === 'string'
+      // ? [newDynamicImageTitles]
+      // : newDynamicImageTitles || [];
+
+
+      // const allImageTitles = [
+      //   ...newDynamicImageTitlesArray,
+      //   ...dynamicImageTitlesFromClient,
+      // ];
+
+      // console.log(allImageTitles, 'wwwwwwwwwwwwwwwwwwww');
 
       // Поиск или создание данных конструктора
-      let existingConstructor = await Constructor.findOne({ where: { idBlock: projectId } });
+  // Получение изображений из базы данных
+const existingConstructor = await Constructor.findOne({ where: { idBlock: projectId } });
+// console.log(existingConstructor, '11111111111111111111');
+const existingImageTitles = existingConstructor ? (existingConstructor.image ? existingConstructor.image.split(', ') : []) : [];
+// console.log(existingImageTitles, '222222222222222');
+// Получение новых изображений из запроса
+const dynamicImageTitles = req.files.dynamicImages ? req.files.dynamicImages.map((file) => file.filename) : [];
+// console.log(dynamicImageTitles, '33333333333333');
+// Объединение старых и новых изображений
+const allImageTitles = [...existingImageTitles, ...dynamicImageTitles].filter(Boolean);
+// console.log(allImageTitles, '444444444444444444');
 
-      if (existingConstructor) {
-        // console.log('Найден существующий конструктор:', existingConstructor.toJSON());
-        // Если конструктор существует, обновляем данные
-        await existingConstructor.update({
-          data: dynamicBlocksContent,
-          image: dynamicImageTitles,
-        });
-      } else {
-        // Если конструктор не существует, создаем новый
-        existingConstructor = await Constructor.create({
-          data: dynamicBlocksContent,
-          image: dynamicImageTitles,
-          idBlock: projectId,
-        });
-        // console.log('Создан новый конструктор:', existingConstructor.toJSON());
-      }
-      // console.log('Данные конструктора:', existingConstructor.get());
-      // остальной код обработки...
 
-      res.status(200).json({ message: 'Данные успешно обновлены' });
+let dynamicBlocksContent = [];
+
+if (req.body.dynamicBlocksJSON) {
+try {
+  dynamicBlocksContent = JSON.parse(req.body.dynamicBlocksJSON);
+  console.log('dynamicBlocksContent:', dynamicBlocksContent);
+} catch (error) {
+  console.error('Ошибка при разборе dynamicBlocksJSON:', error);
+  return res.status(400).json({ message: 'Неверный формат данных для dynamicBlocksJSON' });
+}
+}
+
+if (!existingConstructor) {
+  console.log('existingConstructor не найден или равен null');
+  // Дополнительные действия, если existingConstructor не найден
+} else {
+  console.log('existingConstructor найден:', existingConstructor);
+  // Дополнительные действия, если existingConstructor найден
+}
+
+// Обновление данных конструктора
+if (existingConstructor) {
+ const allImageTitlesString = allImageTitles.join(', ');  
+  await existingConstructor.update({
+    data: dynamicBlocksContent,
+    image: allImageTitlesString,
+  });
+} else {
+  // Создание нового конструктора, если его не существует
+  await Constructor.create({
+    data: dynamicBlocksContent,
+    image: allImageTitles.join(', '),
+    idBlock: projectId,
+  });
+}
+
+res.status(200).json({ message: 'Данные успешно обновлены' });
     } catch (error) {
       console.error('Ошибка при обновлении проекта:', error);
       res.status(500).json({ message: 'Произошла ошибка при обновлении данных' });
@@ -330,11 +367,9 @@ router.get('/getdynamicdata/:projectId', async (req, res) => {
     if (!constructorData) {
       return res.status(404).json({ message: 'Динамические данные не найдены' });
     }
-
-    // Отправить данные в ответ
-    res.json({
+   res.json({
       dynamicData: constructorData.data,
-      dynamicImages: constructorData.image,
+      dynamicImages: constructorData.image.split(', '),
     });
   } catch (error) {
     console.error('Ошибка при получении динамических данных:', error);
@@ -364,7 +399,7 @@ router.delete('/deletezapros/:id', async (req, res) => {
     const post = await Project.findByPk(id);
     const deleteConstructorImg = await Constructor.findByPk(id);
 
-    if (deleteConstructorImg.image) {
+    if (deleteConstructorImg?.image) {
       // console.log('ЗАШЕЛ СЮДА');
       const imageConstructorNames = deleteConstructorImg.image.includes(', ')
         ? deleteConstructorImg.image.split(', ')
