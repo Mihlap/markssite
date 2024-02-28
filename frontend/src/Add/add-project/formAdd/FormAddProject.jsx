@@ -355,10 +355,14 @@ export default function FormAddProject({ setIsModalOpen }) {
     const blockKey = Date.now().toString();
     const newInputs = inputs.map((input) => ({
       ...input,
-      key: blockKey + "_" + input.type,
+       key: blockKey + "_" + input.type,
     }));
-    setBlocks((prevState) => [...prevState, newInputs]);
+    setBlocks((prevBlocks) => [...prevBlocks, newInputs]);
     setDynamicData((prevDynamicData) => [...prevDynamicData, newInputs]);
+    setDynamicPreviews((prevPreviews) => [
+        ...prevPreviews,
+        new Array(newInputs.length).fill([]),
+    ]);
     //  handlerOpenConstructor();
   };
 
@@ -386,6 +390,7 @@ export default function FormAddProject({ setIsModalOpen }) {
 
     if (!newDynamicData[blockIndex][inputIndex]) {
       newDynamicData[blockIndex][inputIndex] = {
+        id: "",
         type: "",
         label: "",
         value: "",
@@ -425,7 +430,6 @@ export default function FormAddProject({ setIsModalOpen }) {
     } else {
       newDynamicData[blockIndex][inputIndex].value = value;
     }
-
     setDynamicData(newDynamicData);
   };
 
@@ -509,7 +513,8 @@ export default function FormAddProject({ setIsModalOpen }) {
             <input
               type="input"
               maxLength="56" // 2. Установите атрибут maxLength
-              value={dynamicData[blockIndex][inputIndex].value || ""} // используйте значение inputValue как текущее значение инпута
+              value={dynamicData[blockIndex][inputIndex]?.value ? dynamicData[blockIndex][inputIndex].value : ''}
+              // value={dynamicData[blockIndex][inputIndex].value || ""} // используйте значение inputValue как текущее значение инпута
               className={`${styles.form_container__heading_block_input} ${styles.orange_color}`}
               placeholder={labelText}
               onChange={(e) => {
@@ -784,7 +789,7 @@ export default function FormAddProject({ setIsModalOpen }) {
               required
               name={key}
               id={key}
-              value={dynamicData[blockIndex][inputIndex].value}
+              value={dynamicData[blockIndex][inputIndex]?.value ? dynamicData[blockIndex][inputIndex]?.value : ''}
               onChange={(value) => {
                 handleDynamicInputChange(blockIndex, inputIndex, value);
               }}
@@ -807,9 +812,10 @@ export default function FormAddProject({ setIsModalOpen }) {
     return (
       <div key={blockIndex} className={styles.blockContainer}>
         {inputs.map((input, inputIndex) =>
-          renderInputWithLabel(input.type, input.label, blockIndex, inputIndex)
+          renderInputWithLabel(input.type, input.label, blockIndex, inputIndex, `${blockIndex}-${inputIndex}`)  // добавлен динамический ключ  
         )}
         <div
+          key={`close-${blockIndex}`}  // добавлен динамический ключ для кнопки  
           className={styles.blockContainer__close_button}
           onClick={() => handleRemoveBlock(blockIndex)}
         ></div>
