@@ -254,7 +254,7 @@ router.put(
       // Поиск или создание данных конструктора
   // Получение изображений из базы данных
 const existingConstructor = await Constructor.findOne({ where: { idBlock: projectId } });
-console.log(existingConstructor, '11111111111111111111');
+// console.log(existingConstructor, '11111111111111111111');
 const existingImageTitles = existingConstructor ? (existingConstructor.image ? existingConstructor.image.split(', ') : []) : [];
 // console.log(existingImageTitles, '222222222222222');
 // Получение новых изображений из запроса
@@ -264,34 +264,30 @@ const dynamicImageTitles = req.files.dynamicImages ? req.files.dynamicImages.map
 const allImageTitles = [...existingImageTitles, ...dynamicImageTitles].filter(Boolean);
 // console.log(allImageTitles, '444444444444444444');
 
+
 let dynamicBlocksContent = [];
 
 if (req.body.dynamicBlocksJSON) {
 try {
   dynamicBlocksContent = JSON.parse(req.body.dynamicBlocksJSON);
+  console.log('dynamicBlocksContent:', dynamicBlocksContent);
 } catch (error) {
   console.error('Ошибка при разборе dynamicBlocksJSON:', error);
   return res.status(400).json({ message: 'Неверный формат данных для dynamicBlocksJSON' });
 }
 }
 
+if (!existingConstructor) {
+  console.log('existingConstructor не найден или равен null');
+  // Дополнительные действия, если existingConstructor не найден
+} else {
+  console.log('existingConstructor найден:', existingConstructor);
+  // Дополнительные действия, если existingConstructor найден
+}
+
 // Обновление данных конструктора
 if (existingConstructor) {
-  // let previousImageValue = null;
-  
-  // const updatedDynamicBlocksContent = dynamicBlocksContent.map((block) => {
-  //   return block.map((obj) => {
-  //     if (obj.type === 'file' && obj.value && obj.value[0] === null) {
-  //       if (previousImageValue) {
-  //         obj.value[0] = previousImageValue;
-  //       }
-  //     }
-  //     // console.log(`Block ${blockIndex + 1}, Type: ${obj.type}, Value:`, obj.value);
-  //     return obj;
-  //   });
-  // });
-
-  const allImageTitlesString = allImageTitles.join(', ');  
+ const allImageTitlesString = allImageTitles.join(', ');  
   await existingConstructor.update({
     data: dynamicBlocksContent,
     image: allImageTitlesString,
@@ -304,6 +300,7 @@ if (existingConstructor) {
     idBlock: projectId,
   });
 }
+
 res.status(200).json({ message: 'Данные успешно обновлены' });
     } catch (error) {
       console.error('Ошибка при обновлении проекта:', error);
