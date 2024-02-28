@@ -40,6 +40,7 @@ const projectSlice = createSlice({
       headingTextBlock: "",
       textBlock: "",
       imageClose: "",
+      dynamicData: [],
       // imageTitle: "",
       // projectId: "",
     },
@@ -112,6 +113,7 @@ const projectSlice = createSlice({
         textBlock: "",
         imageClose: "",
         imageTitle: "",
+        dynamicData: [],
       };
     },
   },
@@ -136,6 +138,7 @@ export const {
 export const fetchProject = createAsyncThunk(
   'project/fetchProject',
   async (formattedData, { dispatch, getState }) => {
+    console.log("Formatted data:", formattedData);
   dispatch(fetchProjectStart());
   const formData = new FormData();
   const projectId = getState().project.projectId;
@@ -144,7 +147,7 @@ export const fetchProject = createAsyncThunk(
   const requestMethod = projectId ? "PUT" : "POST";
   const requestUrl = projectId
     ? `${serverHost}/api-project/updatezapros/${projectId}`
-    : `${serverHost}/api-project/postzapros`;
+    : `${serverHost}/api-project/postzapros`;     
 
   for (const key in formattedData) {
     if (formattedData.hasOwnProperty(key)) {
@@ -160,11 +163,13 @@ export const fetchProject = createAsyncThunk(
 
           value.forEach((outerObj) => {
             outerObj.forEach((innerObj) => {
+              console.log("Inner object:", innerObj);
               if (
                 innerObj.type === "file" &&
                 Array.isArray(innerObj.value) &&
                 innerObj.value.length > 0
               ) {
+                console.log("Files to add:", innerObj.value);
                 photosArray = photosArray.concat(innerObj.value);
               }
             });
@@ -173,14 +178,19 @@ export const fetchProject = createAsyncThunk(
           const cloneDynamicBlocks = value.map((outerArray) => {
             return outerArray.map((obj) => {
               // Проверяем, что значение value не равно undefined и не пустой массив
-              if (obj.type === "file" && Array.isArray(obj.value) && obj.value.length > 0) {
+              if (
+                obj.type === "file" &&
+                Array.isArray(obj.value) &&
+                obj.value.length > 0
+              ) {
                 // Обработка значений типа file
                 const processedFiles = obj.value.map((file) => {
                   // Проверяем, что файл не равен undefined
                   // Если значение не равно undefined, возвращаем имя файла, иначе возвращаем null
                   return file ? file.name : null;
+                  // return file ? file : { name: null };
                 });
-          
+
                 // Возвращаем обновленный объект с обработанными значениями value
                 return {
                   ...obj,
@@ -191,9 +201,10 @@ export const fetchProject = createAsyncThunk(
               return obj;
             });
           });
-          
+
+                 
           formData.append("dynamicBlocksJSON", JSON.stringify(cloneDynamicBlocks));
-          console.log(cloneDynamicBlocks, '44444444444444444444444');
+          console.log(cloneDynamicBlocks, '<----cloneDynamicBlocks');
 
           photosArray.forEach((photo) => {
             formData.append("dynamicImages", photo);

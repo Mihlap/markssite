@@ -430,7 +430,20 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
     try {
       const formattedData = {
         ...inputData,
-        dynamicBlocks: dynamicData,
+        // dynamicBlocks: dynamicData,
+        dynamicBlocks: Array.isArray(dynamicData)
+        ? dynamicData
+        : dynamicData.map((blockArray) =>
+            blockArray.map((block) => {
+              if (!block.value || block.value.length === 0 || block.value[0] === null) {
+                return [];
+              } else if (Array.isArray(block.value)) {
+                return block.value.map((file) => ({ name: file }));
+              } else {
+                return [{ name: block.value.name }];
+              }
+            })
+          ),
         selectCompetencies: Array.isArray(selectedCompetencies)
           ? selectedCompetencies.map((option) => option.label).join(",")
           : "",
@@ -479,23 +492,15 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
           : formattedData.awards;
       }
      
-        // formattedData.dynamicBlocks.forEach((block) => {
-        //   if (block.value === undefined || !Array.isArray(block.value)) {
-        //     block.value = []; // Если значение не определено или не является массивом, создаем новый пустой массив
-        //   } else {
-        //     // Преобразуем значение в массив, если оно не массив объектов
-        //     block.value = block.value.map((item) => (typeof item === 'object' ? item : { label: item }));
-        //   }
-        // });
-
-         // Добавим проверку значений value для dynamicBlocks
-         formattedData.dynamicBlocks.forEach((block) => {
-          if (block.value === undefined) {
-            console.error("Значение value в блоке", block, "не определено или равно undefined");
-          }
-        });
-
-        console.log(formattedData, ',,,,,,,,,,,,,,,,,,,,,,,,,,,,,,');
+   
+    // console.log(formattedData.dynamicBlocks);
+   
+    // // Ваша текущая итерация по formattedData.dynamicBlocks
+    // formattedData.dynamicBlocks.forEach((block) => {
+    //   if (block.value === undefined) {
+    //     console.error("Значение value в блоке", block, "не определено или равно undefined");
+    //   }
+    // });
         
 
       // Определение, создаем новый проект или обновляем существующий
@@ -558,6 +563,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
       // Обработка ошибки, например, вывод сообщения об ошибке пользователю
     }
   };
+  
   // << ============ функции КОНСТРУКТОРА ============ >>
   const handlerOpenConstructor = () => {
     setOpenConstructor(!openConstructor);
@@ -884,7 +890,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                           styles.preview_photos_container_block_constructor
                         }
                       >
-                        {src && src.startsWith("blob:") ? ( // Проверяем, является ли src временным URL
+                        {typeof src === 'string' && src.startsWith("blob:") ? ( // Проверяем, является ли src временным URL
                           <video
                             key={index}
                             src={src}
@@ -903,7 +909,38 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                             className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
                           />
                         )}
-
+                         {/* {Array.isArray(src) ? (
+                          // Если src является массивом, используем имя первого файла
+                          <video
+                            key={index}
+                            src={`${Host}/images/imageAdd/${src[0].name}`}
+                            muted
+                            loop
+                            autoPlay
+                            className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
+                          />
+                        ) : // Если src не является массивом, проверяем его тип и используем его соответственно
+                        typeof src === "string" && src.startsWith("blob:") ? (
+                          // Если src является временным URL, используем его напрямую
+                          <video
+                            key={index}
+                            src={src}
+                            muted
+                            loop
+                            autoPlay
+                            className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
+                          />
+                        ) : (
+                          // Иначе, считаем src за обычную строку и добавляем путь к хосту
+                          <video
+                            key={index}
+                            src={`${Host}/images/imageAdd/${src}`}
+                            muted
+                            loop
+                            autoPlay
+                            className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
+                          />
+                        )} */}
                         <div
                           className={
                             styles.preview_photos_container_block_constructor__remove_icon
@@ -995,7 +1032,8 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                                 styles.preview_photos_container_block_constructor
                               }
                             >
-                              {src && src.startsWith("blob:") ? ( // Проверяем, является ли src временным URL
+                              {typeof src === "string" &&
+                              src.startsWith("blob:") ? ( // Проверяем, является ли src временным URL
                                 <img
                                   src={src}
                                   alt={`Preview ${index}`}
@@ -1008,6 +1046,30 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                                   className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
                                 />
                               )}
+                              {/* {Array.isArray(src) ? (
+                                // Если src является массивом, используем имя первого файла
+                                <img
+                                  src={`${Host}/images/imageAdd/${src[0].name}`}
+                                  alt={`Preview ${index}`}
+                                  className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
+                                />
+                              ) : // Если src не является массивом, проверяем его тип и используем его соответственно
+                              typeof src === "string" &&
+                                src.startsWith("blob:") ? (
+                                // Если src является временным URL, используем его напрямую
+                                <img
+                                  src={src}
+                                  alt={`Preview ${index}`}
+                                  className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
+                                />
+                              ) : (
+                                // Иначе, считаем src за обычную строку и добавляем путь к хосту
+                                <img
+                                  src={`${Host}/images/imageAdd/${src}`}
+                                  alt={`Preview ${index}`}
+                                  className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
+                                />
+                              )} */}
                               <div
                                 className={
                                   styles.preview_photos_container_block_constructor__remove_icon
