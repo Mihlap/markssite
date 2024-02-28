@@ -10,7 +10,7 @@ import {
   clearFormData,
   fetchProject,
   setProjectId,
-  setDynamicData,
+  setDynamicaData,
   setDynamicImages,
 } from "../../../store/Slice/projectSlice";
 import {
@@ -104,34 +104,33 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
   const [isLoadingCloseImage, setIsLoadingCloseImage] = useState(false);
 
   const quillRef1 = useRef(null);
- 
+
   // Стили для eact-quill
   const quillRefs = [quillRef1];
   const applyStylesToQuillEditor = (quillRef) => {
     if (quillRef && quillRef.current) {
       const editor = quillRef.current.getEditor();
       const editorElement = editor.root;
-      
+
       // Применение стилей к нужному элементу
-      editorElement.style.fontSize = '16px';
-      editorElement.style.fontFamily = 'Raleway, sans-serif';
-      editorElement.style.color = 'var(--black-1D2E43)';
-      editorElement.style.border = 'none';
+      editorElement.style.fontSize = "16px";
+      editorElement.style.fontFamily = "Raleway, sans-serif";
+      editorElement.style.color = "var(--black-1D2E43)";
+      editorElement.style.border = "none";
     }
-  }; 
-  
+  };
+
   useEffect(() => {
     // Применение стилей для каждого quillRef
     quillRefs.forEach((quillRef) => applyStylesToQuillEditor(quillRef));
   }, [quillRef1]);
 
-
   // << ==== useStates для конструктора ==== >>
-  const [inputValue, setInputValue] = useState("");
   const [openConstructor, setOpenConstructor] = useState(false);
-  const [blocks, setBlocks] = useState([]);
+  // const [blocks, setBlocks] = useState([]);
   const [dynamicPreviews, setDynamicPreviews] = useState([]);
   const [dynamicData, setDynamicData] = useState([]);
+ 
   const countFilledInputs = () => {
     const inputsToCheck = [
       "totalArea",
@@ -144,9 +143,9 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
     ];
     return inputsToCheck.filter((input) => inputData[input]).length;
   };
-
+  const data = editProjectData?.Constructors?.[0]?.data;
   useEffect(() => {
-     if (editProjectData) {
+    if (editProjectData) {
       const initialSelectedCompetencies = editProjectData.selectCompetencies
         ? editProjectData.selectCompetencies
             .split(",")
@@ -182,9 +181,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
           ? { label: editProjectData.statusObject }
           : null
       );
-
       setInputData((prevInputData) => {
-        // console.log("editProjectData:", editProjectData);
         const updatedInputData = {
           ...prevInputData,
           title:
@@ -299,69 +296,94 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
             editProjectData.dynamicDataFromEditProject !== undefined
               ? editProjectData.dynamicDataFromEditProject
               : "",
-        };    
-    
+        };
         return updatedInputData;
       });
-      const dynamicDataFromEditProject = editProjectData.dynamicData;
-      if (dynamicDataFromEditProject && dynamicDataFromEditProject.length > 0) {
-        setDynamicData(dynamicDataFromEditProject);
-        const previewsArray = dynamicDataFromEditProject.map((block) =>
-          block.map((input) => input.value)
-        );
-        setDynamicPreviews(previewsArray);
+
+      if (Array.isArray(data) && data.length > 0) {
+        for (let index = 0; index < data.length; index++) {
+          const block = data[index];
+          if (Array.isArray(block)) {
+            const dynamicDataFromEditProject = block.map((input) => input.value) || [];
+
+          if (dynamicDataFromEditProject.length > 0) {
+            const dynamicData = block.map((input) => ({
+              // id: input.id,
+              type: input.type,
+              label: input.label,
+              value: input.value,
+              key: input.key,
+              blockIndex: index,
+            }));
+
+            setDynamicData((prevDynamicData) => {
+              return [
+                ...prevDynamicData.slice(0, index),
+                dynamicData,
+                ...prevDynamicData.slice(index + 1),
+              ];
+            });
+
+            const previewsArray = dynamicData.map((input) => input.value);
+
+            setDynamicPreviews((prev) => {
+              const newPreviews = [...prev];
+              newPreviews[index] = previewsArray;
+              return newPreviews;
+            });
+          }
+        }
+      }
       }
     }
   }, [editProjectData]);
 
-
-
   // функция Удаление фото из массива превью
   // Удаление фото из массива превью
-  const handleRemovePreviewPhoto = (index) => {    
+  const handleRemovePreviewPhoto = (index) => {
     removePreviewPhoto(
       previewPhotos,
       setPreviewPhotos,
       index,
       inputData,
       setInputData,
-      setIsDropPhotoVisible,
-    );  
-  };  
+      setIsDropPhotoVisible
+    );
+  };
 
-  // Удаление превью фото перед основным текстом
-  const handleRemovePreviewPhotoOpen = (index) => {
-    removePreviewPhotoOpen(
-      previewPhotoOpen,
-      setPreviewPhotoOpen,
-      index,
-      inputData,
-      setInputData,
-      setIsPhotoOpenVisible
-    );
-  };
-  // Удаление фото из массива превью который с одной фоткой
-  const handleRemovePreviewPhotoAva = (index) => {
-    removePreviewPhotoAva(
-      previewPhotoAva,
-      setPreviewPhotoAva,
-      index,
-      inputData,
-      setInputData,
-      setIsPhotoAvaVisible
-    );
-  };
-  // Удаление превью фото из закрывающей картинки
-  const handleRemovePreviewPhotoClose = (index) => {
-    removePreviewPhotoClose(
-      previewPhotoClose,
-      setPreviewPhotoClose,
-      index,
-      inputData,
-      setInputData,
-      setIsPhotoCloseVisible
-    );
-  };
+  // Удаление превью фото перед основным текстом НЕ УДАЛЯТЬ!!!!!
+  // const handleRemovePreviewPhotoOpen = (index) => {
+  //   removePreviewPhotoOpen(
+  //     previewPhotoOpen,
+  //     setPreviewPhotoOpen,
+  //     index,
+  //     inputData,
+  //     setInputData,
+  //     setIsPhotoOpenVisible
+  //   );
+  // };
+  // Удаление фото из массива превью который с одной фоткой НЕ УДАЛЯТЬ!!!!!
+  // const handleRemovePreviewPhotoAva = (index) => {
+  //   removePreviewPhotoAva(
+  //     previewPhotoAva,
+  //     setPreviewPhotoAva,
+  //     index,
+  //     inputData,
+  //     setInputData,
+  //     setIsPhotoAvaVisible
+  //   );
+  // };
+  // Удаление превью фото из закрывающей картинки НЕ УДАЛЯТЬ!!!!!
+  // const handleRemovePreviewPhotoClose = (index) => {
+  //   removePreviewPhotoClose(
+  //     previewPhotoClose,
+  //     setPreviewPhotoClose,
+  //     index,
+  //     inputData,
+  //     setInputData,
+  //     setIsPhotoCloseVisible
+  //   );
+  // };
   const validateForm = () => {
     let isValid = true;
     let errors = [];
@@ -408,7 +430,20 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
     try {
       const formattedData = {
         ...inputData,
-        dynamicBlocks: dynamicData,
+        // dynamicBlocks: dynamicData,
+        dynamicBlocks: Array.isArray(dynamicData)
+        ? dynamicData
+        : dynamicData.map((blockArray) =>
+            blockArray.map((block) => {
+              if (!block.value || block.value.length === 0 || block.value[0] === null) {
+                return [];
+              } else if (Array.isArray(block.value)) {
+                return block.value.map((file) => ({ name: file }));
+              } else {
+                return [{ name: block.value.name }];
+              }
+            })
+          ),
         selectCompetencies: Array.isArray(selectedCompetencies)
           ? selectedCompetencies.map((option) => option.label).join(",")
           : "",
@@ -420,8 +455,8 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
         awards: Array.isArray(selectedProjectStages)
           ? selectedProjectStages.map((option) => option.label).join(",")
           : "",
-          // dropPhoto: inputData.dropPhoto,
-          // imageTitle: inputData.imageTitle,
+        // dropPhoto: inputData.dropPhoto,
+        // imageTitle: inputData.imageTitle,
         photoAva: inputData.photoAva,
         imageOpen: inputData.imageOpen,
         imageClose: inputData.imageClose,
@@ -456,6 +491,18 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
           ? formattedData.awards.map((option) => option.label).join(",")
           : formattedData.awards;
       }
+     
+   
+    // console.log(formattedData.dynamicBlocks);
+   
+    // // Ваша текущая итерация по formattedData.dynamicBlocks
+    // formattedData.dynamicBlocks.forEach((block) => {
+    //   if (block.value === undefined) {
+    //     console.error("Значение value в блоке", block, "не определено или равно undefined");
+    //   }
+    // });
+        
+
       // Определение, создаем новый проект или обновляем существующий
       if (editProjectData && editProjectData.id) {
         dispatch(setProjectId(editProjectData.id));
@@ -467,7 +514,8 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
         // Создание нового проекта
         await dispatch(fetchProject(formattedData, setInputData));
       }
-      dispatch(clearFormData());
+
+      // dispatch(clearFormData());
       // Очищаем состояния
       setSelectedCompetencies([]);
       setSelectDegreeParticipation("");
@@ -476,6 +524,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
       setSelectedProjectStages([]);
       setPreviewPhotos([]);
       setDynamicData([]);
+
       setInputData({
         title: "",
         selectCompetencies: "",
@@ -514,20 +563,26 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
       // Обработка ошибки, например, вывод сообщения об ошибке пользователю
     }
   };
+  
   // << ============ функции КОНСТРУКТОРА ============ >>
   const handlerOpenConstructor = () => {
     setOpenConstructor(!openConstructor);
   };
+
   // функция которая не даёт создать новый диманический блок, пока не заполнены value предыдущего
   const areAllBlocksFilled = () => {
+    // Проверяем каждый блок в dynamicData
     for (let block of dynamicData) {
+      // Проверяем каждое поле в блоке
       for (let input of block) {
         // Проверяем только обязательные поля
         if (input.required && (!input.value || input.value === "")) {
+          // Если обязательное поле пустое, возвращаем false
           return false;
         }
       }
     }
+    // Если все обязательные поля заполнены, возвращаем true
     return true;
   };
 
@@ -536,16 +591,15 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
       prevDynamicData.filter((_, index) => index !== blockIndex)
     );
     // Обновление других связанных состояний...
-    setBlocks((prevBlocks) =>
-      prevBlocks.filter((_, index) => index !== blockIndex)
-    );
+    // setBlocks((prevBlocks) =>
+    //   prevBlocks.filter((_, index) => index !== blockIndex)
+    // );
     setDynamicPreviews((prevPreviews) =>
       prevPreviews.filter((_, index) => index !== blockIndex)
     );
   };
 
-  // функция которая срабатывает в случае если мы всё-таки пытаемся создать блок выдает ( алерт ), в случае успеза проходит в дальше и создаёт новый динамический блок
-  const handleClick = (inputs) => {
+  const handleClick = (inputs, blockIndex) => {
     if (!areAllBlocksFilled()) {
       setShowNotification(true);
       setTimeout(() => setShowNotification(false), 5000);
@@ -555,11 +609,19 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
     const newInputs = inputs.map((input) => ({
       ...input,
       key: blockKey + "_" + input.type,
+      blockIndex: blockIndex,
     }));
-    setBlocks((prevState) => [...prevState, newInputs]);
+    // setBlocks((prevBlocks) => [...prevBlocks, newInputs]);
+    
     setDynamicData((prevDynamicData) => [...prevDynamicData, newInputs]);
+
+    setDynamicPreviews((prevPreviews) => [
+      ...prevPreviews,
+      new Array(newInputs.length).fill([]),
+    ]);
     //  handlerOpenConstructor();
   };
+
   async function compressImage(file) {
     const options = {
       maxSizeMB: 3, // максимальный размер файла в MB
@@ -574,17 +636,26 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
   }
   // обработчик динамических значений
   const handleDynamicInputChange = async (blockIndex, inputIndex, value) => {
+    //   if (!Array.isArray(inputs)) {
+    //     console.error('Inputs is not an array:', inputs);
+    //     return;
+    // }
     const newDynamicData = [...dynamicData];
+
     if (!newDynamicData[blockIndex]) {
       newDynamicData[blockIndex] = [];
     }
+
     if (!newDynamicData[blockIndex][inputIndex]) {
       newDynamicData[blockIndex][inputIndex] = {
+        id: "",
         type: "",
         label: "",
         value: "",
+        key: "",
       };
     }
+
     function generateUniqueName(originalName) {
       const timestamp = Date.now();
       const randomNum = Math.floor(Math.random() * 10000);
@@ -654,9 +725,14 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
           videoStyles: styles.videoStyle, // этот стиль можно использовать для видеотега
         };
       default:
-        return "";
+        return {
+          outerDiv: "",
+          innerDiv: "",
+          imageStyles: [],
+        };
     }
   };
+
   const renderInputWithLabel = (
     inputType,
     labelText,
@@ -664,42 +740,70 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
     inputIndex,
     key
   ) => {
+    //   const blockData = dynamicData[blockIndex]?.[inputIndex];
+    //   const blockLabel = blockData?.label;
+    //   const blockType = blockData?.type;
+
+    // // Проверка наличия данных в блоке, установленного флага о наличии данных и совпадения меток
+    // if (!blockData || !blockType || blockType !== inputType || !blockLabel || blockLabel !== labelText) {
+    //   return []; // Если нет данных, пустая метка или метка не совпадает, возвращаем null
+    // }
+
+    // Получаем классы стилей для блока
+
     function handleDeletePreview(event, blockIndex, inputIndex, previewIndex) {
       event.preventDefault();
       setDynamicPreviews((prev) => {
         const newPreviews = [...prev];
-        if (newPreviews[blockIndex] && newPreviews[blockIndex][inputIndex]) {
-          newPreviews[blockIndex][inputIndex].splice(previewIndex, 1);
+        if (
+          newPreviews[blockIndex] &&
+          newPreviews[blockIndex][inputIndex] &&
+          newPreviews[blockIndex][inputIndex][previewIndex]
+        ) {
+          newPreviews[blockIndex][inputIndex] = newPreviews[blockIndex][
+            inputIndex
+          ].filter((_, index) => index !== previewIndex);
         }
         return newPreviews;
       });
       setDynamicData((prevData) => {
         const newData = [...prevData];
-        if (newData[blockIndex] && newData[blockIndex][inputIndex]) {
-          newData[blockIndex][inputIndex].value.splice(previewIndex, 1);
+        if (
+          newData[blockIndex] &&
+          newData[blockIndex][inputIndex] &&
+          Array.isArray(newData[blockIndex][inputIndex].value) &&
+          newData[blockIndex][inputIndex].value[previewIndex]
+        ) {
+          const updatedValue = [...newData[blockIndex][inputIndex].value];
+          updatedValue.splice(previewIndex, 1);
+          newData[blockIndex][inputIndex].value = updatedValue;
         }
         return newData;
       });
+
       const fileInputs = document.querySelectorAll('input[type="file"]');
-      fileInputs.forEach((input) => (input.value = "")); // это очищает значение всех инпутов типа file
+      fileInputs.forEach((input) => (input.value = ""));
     }
     const classNames = getPreviewClassName(labelText);
 
-    // console.log("Данные для отображения:", dynamicData);    
-
     return (
-      <div key={inputIndex}>
+      <div key={key}>
         {inputType === "text" && (
-          // <input type="text" />
           <div className={styles.form_container__heading_block}>
             <input
               type="input"
-              maxLength="56" // 2. Установите атрибут maxLength
+              maxLength="56"
               className={`${styles.form_container__heading_block_input} ${styles.orange_color}`}
               placeholder={labelText}
-              value={dynamicData[blockIndex][inputIndex]?.value || ""} // используйте значение inputValue как текущее значение инпута
+              // value={
+              //   dynamicData[blockIndex]?.[inputIndex]?.value || ""
+              // } // Обновлено: исправлен доступ к данным
+              value={
+                dynamicData[blockIndex][inputIndex]?.value
+                  ? dynamicData[blockIndex][inputIndex].value
+                  : ""
+              }
               onChange={(e) => {
-                setInputValue(e.target.value); // 4. Обновите inputValue при каждом изменении
                 handleDynamicInputChange(
                   blockIndex,
                   inputIndex,
@@ -708,13 +812,13 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
               }}
             />
             <label
-              htmlFor="titleTextBlock"
+              htmlFor={`input-${blockIndex}-${inputIndex}`}
               className={styles.form_container__heading_block_label}
             >
               {labelText}
             </label>
             <div className={styles.form_container__heading_block_input_length}>
-              {(dynamicData[blockIndex][inputIndex]?.value || "").length}/56
+              {(dynamicData[blockIndex]?.[inputIndex]?.value || "").length}/56
             </div>
           </div>
         )}
@@ -731,7 +835,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                   }
                 >
                   <input
-                    type="file"
+                   type="file"
                     accept="video/*" // Это будет принимать только видеофайлы
                     onChange={(e) => {
                       const filesArray = Array.from(e.target.files);
@@ -775,8 +879,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                   </div>
                 </label>
                 {/* Добавляем блок превью видео ниже */}
-                {dynamicPreviews[blockIndex] &&
-                  dynamicPreviews[blockIndex][inputIndex] &&
+                {Array.isArray(dynamicPreviews[blockIndex]?.[inputIndex]) &&
                   dynamicPreviews[blockIndex][inputIndex].map((src, index) => (
                     <div
                       key={`${blockIndex}-${inputIndex}-${index}`}
@@ -787,14 +890,57 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                           styles.preview_photos_container_block_constructor
                         }
                       >
-                        <video
-                          key={index}
-                          src={src}
-                          muted
-                          loop
-                          autoPlay
-                          className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
-                        />
+                        {typeof src === 'string' && src.startsWith("blob:") ? ( // Проверяем, является ли src временным URL
+                          <video
+                            key={index}
+                            src={src}
+                            muted
+                            loop
+                            autoPlay
+                            className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
+                          />
+                        ) : (
+                          <video
+                            key={index}
+                            src={`${Host}/images/imageAdd/${src}`}
+                            muted
+                            loop
+                            autoPlay
+                            className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
+                          />
+                        )}
+                         {/* {Array.isArray(src) ? (
+                          // Если src является массивом, используем имя первого файла
+                          <video
+                            key={index}
+                            src={`${Host}/images/imageAdd/${src[0].name}`}
+                            muted
+                            loop
+                            autoPlay
+                            className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
+                          />
+                        ) : // Если src не является массивом, проверяем его тип и используем его соответственно
+                        typeof src === "string" && src.startsWith("blob:") ? (
+                          // Если src является временным URL, используем его напрямую
+                          <video
+                            key={index}
+                            src={src}
+                            muted
+                            loop
+                            autoPlay
+                            className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
+                          />
+                        ) : (
+                          // Иначе, считаем src за обычную строку и добавляем путь к хосту
+                          <video
+                            key={index}
+                            src={`${Host}/images/imageAdd/${src}`}
+                            muted
+                            loop
+                            autoPlay
+                            className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
+                          />
+                        )} */}
                         <div
                           className={
                             styles.preview_photos_container_block_constructor__remove_icon
@@ -841,7 +987,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                         setDynamicPreviews((prev) => {
                           const newPreviews = [...prev];
                           if (!newPreviews[blockIndex]) {
-                            newPreviews[blockIndex] = [];
+                            newPreviews[blockIndex] = [...prev];
                           }
                           newPreviews[blockIndex][inputIndex] = previewsArray;
                           return newPreviews;
@@ -873,8 +1019,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                 <div
                   className={`${styles.previewContainer} ${classNames.outerDiv}`}
                 >
-                  {dynamicPreviews[blockIndex] &&
-                    dynamicPreviews[blockIndex][inputIndex] &&
+                  {Array.isArray(dynamicPreviews[blockIndex]?.[inputIndex]) &&
                     dynamicPreviews[blockIndex][inputIndex].map(
                       (src, index) => {
                         return (
@@ -887,11 +1032,44 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                                 styles.preview_photos_container_block_constructor
                               }
                             >
-                              <img
-                                src={src}
-                                alt={`Preview ${index}`}
-                                className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
-                              />
+                              {typeof src === "string" &&
+                              src.startsWith("blob:") ? ( // Проверяем, является ли src временным URL
+                                <img
+                                  src={src}
+                                  alt={`Preview ${index}`}
+                                  className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
+                                />
+                              ) : (
+                                <img
+                                  src={`${Host}/images/imageAdd/${src}`}
+                                  alt={`Preview ${index}`}
+                                  className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
+                                />
+                              )}
+                              {/* {Array.isArray(src) ? (
+                                // Если src является массивом, используем имя первого файла
+                                <img
+                                  src={`${Host}/images/imageAdd/${src[0].name}`}
+                                  alt={`Preview ${index}`}
+                                  className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
+                                />
+                              ) : // Если src не является массивом, проверяем его тип и используем его соответственно
+                              typeof src === "string" &&
+                                src.startsWith("blob:") ? (
+                                // Если src является временным URL, используем его напрямую
+                                <img
+                                  src={src}
+                                  alt={`Preview ${index}`}
+                                  className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
+                                />
+                              ) : (
+                                // Иначе, считаем src за обычную строку и добавляем путь к хосту
+                                <img
+                                  src={`${Host}/images/imageAdd/${src}`}
+                                  alt={`Preview ${index}`}
+                                  className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
+                                />
+                              )} */}
                               <div
                                 className={
                                   styles.preview_photos_container_block_constructor__remove_icon
@@ -917,7 +1095,6 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
             )}
           </>
         )}
-
         {inputType === "textarea" && (
           <div
             key={inputIndex}
@@ -927,22 +1104,22 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
               {/* {`${inputData.descriptionArticle.length}/260`} */}
             </div>
             <ReactQuill
-                ref={(el) => {
-                  if (el) {
-                    const editor = el.getEditor();
-                    const editorElement = editor.root;
-                
-                    editorElement.style.fontSize = '16px';
-                    editorElement.style.fontFamily = 'Raleway, sans-serif';
-                    editorElement.style.color = 'var(--black-1D2E43)';
-                    editorElement.style.padding = "1rem";
-                    editorElement.style.borderRadius = "6px";
-                    editorElement.style.fontWeight = "var(--fw-400)";
-                    editorElement.style.lineHeight = "16px";
-                    editorElement.style.boxSizing = "border-box";
-                    editorElement.style.paddingBottom = "2.5rem";
-                  }
-                }}
+              ref={(el) => {
+                if (el) {
+                  const editor = el.getEditor();
+                  const editorElement = editor.root;
+
+                  editorElement.style.fontSize = "16px";
+                  editorElement.style.fontFamily = "Raleway, sans-serif";
+                  editorElement.style.color = "var(--black-1D2E43)";
+                  editorElement.style.padding = "1rem";
+                  editorElement.style.borderRadius = "6px";
+                  editorElement.style.fontWeight = "var(--fw-400)";
+                  editorElement.style.lineHeight = "16px";
+                  editorElement.style.boxSizing = "border-box";
+                  editorElement.style.paddingBottom = "2.5rem";
+                }
+              }}
               modules={{
                 toolbar: [
                   ["bold", "italic", "underline"],
@@ -969,7 +1146,11 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
               required
               name={key}
               id={key}
-              value={dynamicData[blockIndex][inputIndex].value}
+              value={
+                dynamicData[blockIndex][inputIndex]?.value
+                  ? dynamicData[blockIndex][inputIndex]?.value
+                  : ""
+              }
               onChange={(value) => {
                 handleDynamicInputChange(blockIndex, inputIndex, value);
               }}
@@ -989,25 +1170,29 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
   };
 
   const renderInputs = (inputs, blockIndex) => {
+    if (!Array.isArray(inputs)) {
+      return null;
+    }
     return (
       <div key={blockIndex} className={styles.blockContainer}>
-        {inputs.map((input, inputIndex) =>
-          renderInputWithLabel(
-            input.type,
-            input.label,
-            blockIndex,
-            inputIndex,
-            input.key
-          )
+        {inputs.map(
+          (input, inputIndex) =>
+            renderInputWithLabel(
+              input.type,
+              input.label,
+              blockIndex,
+              inputIndex,
+              `${blockIndex}-${inputIndex}`
+            ) // добавлен динамический ключ
         )}
         <div
+          key={`close-${blockIndex}`} // добавлен динамический ключ для кнопки
           className={styles.blockContainer__close_button}
           onClick={() => handleRemoveBlock(blockIndex)}
         ></div>
       </div>
     );
   };
-
   const [selectedMonth, setSelectedMonth] = useState(null);
   const [selectedYear, setSelectedYear] = useState(null);
 
@@ -1490,7 +1675,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
             </div>
             <div className={styles.preview_photos_container}>
               {inputData.dropPhoto &&
-              inputData.dropPhoto.length > 0 &&
+                inputData.dropPhoto.length > 0 &&
                 inputData.dropPhoto.map((preview, index) => (
                   <div
                     key={index}
@@ -1509,11 +1694,11 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                     </div>
                   </div>
                 ))}
-                {inputData.imageTitle !== null &&
+              {inputData.imageTitle !== null &&
                 inputData.dropPhoto.length === 0 &&
                 inputData.imageTitle.split(",").map((imageFileName, index) => (
                   <div
-                  key={index} 
+                    key={index}
                     className={styles.preview_photos_container__block}
                   >
                     <img
@@ -1522,71 +1707,76 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                       alt={`Preview ${index}`}
                     />
                     <div
-                    className={styles.preview_photos_container__remove_icon}
-                    onClick={() => handleRemovePreviewPhoto(index)}
-                  >
-                    <span></span>
-                  </div>
+                      className={styles.preview_photos_container__remove_icon}
+                      onClick={() => handleRemovePreviewPhoto(index)}
+                    >
+                      <span></span>
+                    </div>
                   </div>
                 ))}
             </div>
           </div>
           {/* блок и инпутом ( Заголовок текстового блока ) */}
           <div className={styles.form_container__block_gray_one}>
-          <div className={styles.form_container__heading_block}>
-            <input
-              type="input"
-              className={styles.form_container__heading_block_input}
-              placeholder="Не более 56 символов"
-              name="titleTextBlock"
-              id="titleTextBlock"
-              maxLength="56"
-              value={inputData.titleTextBlock}
-              onChange={(event) => {
-                const value = event.target.value;
-                if (value.length <= 56) {
-                  setInputData({ ...inputData, titleTextBlock: value });
-                }
-              }}
-              autoComplete="off"
-              required
-            />
-            <label
-              htmlFor="titleTextBlock"
-              className={styles.form_container__heading_block_label}
-            >
-              Заголовок текстового блока
-            </label>
-            <div className={styles.form_container__heading_block_input_length}>
-              {`${inputData.titleTextBlock.length}/56`}
+            <div className={styles.form_container__heading_block}>
+              <input
+                type="input"
+                className={styles.form_container__heading_block_input}
+                placeholder="Не более 56 символов"
+                name="titleTextBlock"
+                id="titleTextBlock"
+                maxLength="56"
+                value={inputData.titleTextBlock}
+                onChange={(event) => {
+                  const value = event.target.value;
+                  if (value.length <= 56) {
+                    setInputData({ ...inputData, titleTextBlock: value });
+                  }
+                }}
+                autoComplete="off"
+                required
+              />
+              <label
+                htmlFor="titleTextBlock"
+                className={styles.form_container__heading_block_label}
+              >
+                Заголовок текстового блока
+              </label>
+              <div
+                className={styles.form_container__heading_block_input_length}
+              >
+                {`${inputData.titleTextBlock.length}/56`}
+              </div>
             </div>
-          </div>
-          {/* блок и текстерией ( Описание проекта ) */}
-          <div className={styles.form_container__description_text}>
-            <div className={styles.form_container__textarea_length}>
-              {`${inputData.descriptionProject.length}/260`}
+            {/* блок и текстерией ( Описание проекта ) */}
+            <div className={styles.form_container__description_text}>
+              <div className={styles.form_container__textarea_length}>
+                {`${inputData.descriptionProject.length}/260`}
+              </div>
+              <textarea
+                className={styles.form_container__textarea}
+                autoComplete="off"
+                required
+                name="descriptionProject"
+                id="descriptionProject"
+                cols="30"
+                rows="10"
+                placeholder="Не более 260 символов"
+                value={inputData.descriptionProject}
+                onChange={(event) => {
+                  const value = event.target.value;
+                  if (value.length <= 260) {
+                    setInputData({ ...inputData, descriptionProject: value });
+                  }
+                }}
+              ></textarea>
+              <label
+                htmlFor=""
+                className={styles.form_container__textarea_label_constructor}
+              >
+                Описание проекта
+              </label>
             </div>
-            <textarea
-              className={styles.form_container__textarea}
-              autoComplete="off"
-              required
-              name="descriptionProject"
-              id="descriptionProject"
-              cols="30"
-              rows="10"
-              placeholder="Не более 260 символов"
-              value={inputData.descriptionProject}
-              onChange={(event) => {
-                const value = event.target.value;
-                if (value.length <= 260) {
-                  setInputData({ ...inputData, descriptionProject: value });
-                }
-              }}
-            ></textarea>
-            <label htmlFor="" className={styles.form_container__textarea_label_constructor}>
-              Описание проекта
-            </label>
-          </div>
           </div>
           {/* блок Заполните 3 значения на выбор ( метры, мысота, этажность) */}
           <div className={styles.measure_container}>
@@ -2289,86 +2479,81 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
           </div>
           {/* блок куда вводиться инфа (Заголовок текстового блока ) */}
           <div className={styles.form_container__block_gray_one}>
-          <div className={styles.container__heading_block}>
-            <div className={styles.form_container__heading_block}>
-              <input
-                type="input"
-                className={styles.form_container__heading_block_input}
-                placeholder="Не более 56 символов"
-                autoComplete="off"
-                name="headingTextBlock"
-                id="headingTextBlock"
-                maxLength="56"
-                value={inputData.headingTextBlock}
-                onChange={(event) => {
-                  const value = event.target.value;
-                  if (value.length <= 56) {
-                    setInputData({ ...inputData, headingTextBlock: value });
-                  }
-                }}
-                // required
-              />
-              <label
-                htmlFor="headingTextBlock"
-                className={styles.form_container__heading_block_label}
-              >
-                Заголовок текстового блока
-              </label>
-              <div
-                className={styles.form_container__heading_block_input_length}
-              >
-                {`${inputData.headingTextBlock.length}/56`}
+            <div className={styles.container__heading_block}>
+              <div className={styles.form_container__heading_block}>
+                <input
+                  type="input"
+                  className={styles.form_container__heading_block_input}
+                  placeholder="Не более 56 символов"
+                  autoComplete="off"
+                  name="headingTextBlock"
+                  id="headingTextBlock"
+                  maxLength="56"
+                  value={inputData.headingTextBlock}
+                  onChange={(event) => {
+                    const value = event.target.value;
+                    if (value.length <= 56) {
+                      setInputData({ ...inputData, headingTextBlock: value });
+                    }
+                  }}
+                  // required
+                />
+                <label
+                  htmlFor="headingTextBlock"
+                  className={styles.form_container__heading_block_label}
+                >
+                  Заголовок текстового блока
+                </label>
+                <div
+                  className={styles.form_container__heading_block_input_length}
+                >
+                  {`${inputData.headingTextBlock.length}/56`}
+                </div>
               </div>
             </div>
-          </div>
-          {/* блок куда вводиться инфа (textarea Заголовока текстового блока ) */}
-          <div className={styles.heading_textarea}>
-            <div className={styles.form_container__description_text}>
-            <ReactQuill
-               ref={quillRef1}
-              modules={{
-                toolbar: [
-                  ['bold', 'italic', 'underline'], 
-                  [{ list: 'bullet' }, { list: 'ordered' }], 
-                 ],
-                clipboard: {
-                  matchVisual: false,
-                },
-              }}
-              formats={[
-                'bold',
-                'italic',
-                'underline',                            
-                'list',
-               ]}
-              className={styles.form_container__textarea}
-              style={{
-                // resize: "none",
-                padding: "0rem",
-                border: "1px solid var(--blue-75BBFD)",
-                fontFamily: "var(--font-raleway)",
-                borderRadius: "6px",
-                fontSize: "16px",
-                fontStyle: "normal",
-                fontWeight: "var(--fw-400)",
-                lineHeight: "16px",
-                color: "var(---black-1D2E43)",
-                boxSizing: "border-box",
-                paddingBottom: "2.5rem",
-              }}
-              required
-              name="textBlock"
-              id="textBlock"
-              value={inputData.textBlock}
-              onChange={(value) => {
-                setInputData((prevInputData) => ({
-                  ...prevInputData,
-                  textBlock: value,
-                }));
-              }}
-              placeholder="Дополнительный текстовый блок"
-            />
-              {/* <textarea
+            {/* блок куда вводиться инфа (textarea Заголовока текстового блока ) */}
+            <div className={styles.heading_textarea}>
+              <div className={styles.form_container__description_text}>
+                <ReactQuill
+                  ref={quillRef1}
+                  modules={{
+                    toolbar: [
+                      ["bold", "italic", "underline"],
+                      [{ list: "bullet" }, { list: "ordered" }],
+                    ],
+                    clipboard: {
+                      matchVisual: false,
+                    },
+                  }}
+                  formats={["bold", "italic", "underline", "list"]}
+                  className={styles.form_container__textarea}
+                  style={{
+                    // resize: "none",
+                    padding: "0rem",
+                    border: "1px solid var(--blue-75BBFD)",
+                    fontFamily: "var(--font-raleway)",
+                    borderRadius: "6px",
+                    fontSize: "16px",
+                    fontStyle: "normal",
+                    fontWeight: "var(--fw-400)",
+                    lineHeight: "16px",
+                    color: "var(---black-1D2E43)",
+                    boxSizing: "border-box",
+                    paddingBottom: "2.5rem",
+                  }}
+                  required
+                  name="textBlock"
+                  id="textBlock"
+                  value={inputData.textBlock}
+                  onChange={(value) => {
+                    setInputData((prevInputData) => ({
+                      ...prevInputData,
+                      textBlock: value,
+                    }));
+                  }}
+                  placeholder="Дополнительный текстовый блок"
+                />
+                {/* <textarea
                 className={styles.form_container__textarea}
                 name="textBlock"
                 id="textBlock"
@@ -2394,26 +2579,29 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                 }
                 required
               ></textarea> */}
-              <label
-                htmlFor="textBlock"
-                className={styles.form_container__textarea_label_constructor}
-              >
-                Текстовый блок
-              </label>
+                <label
+                  htmlFor="textBlock"
+                  className={styles.form_container__textarea_label_constructor}
+                >
+                  Текстовый блок
+                </label>
+              </div>
             </div>
           </div>
-          </div>
           {/* КОНСТРУКТОР */}
-          <div className={styles.inputs_container}>
-            {blocks.map((blockInputs, blockIndex) => (
-              <div key={blockIndex} className={styles.input_block}>
-                {renderInputs(blockInputs, blockIndex)}
-              </div>
-            ))}
-          </div>
+          {dynamicData && (
+            <div className={styles.inputs_container}>
+              {dynamicData.map((blockInputs, blockIndex) => (
+                <div key={blockIndex} className={styles.input_block}>
+                  {Array.isArray(blockInputs) &&
+                    renderInputs(blockInputs, blockIndex)}
+                </div>
+              ))}
+            </div>
+          )}
           <div className={styles.constructor_container}>
             <div className={styles.constructor_container__block}>
-              {!openConstructor ? (
+              {openConstructor ? (
                 <div className={styles.constructor_container__block_btn}>
                   <button onClick={handlerOpenConstructor}>
                     <svg
@@ -2447,7 +2635,11 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                   </div>
                 </div>
               ) : (
-                <ConstructorPage handleClick={handleClick} />
+                <ConstructorPage
+                  data={data}
+                  handleClick={handleClick}
+                  // blocks={blocks}
+                />
               )}
             </div>
           </div>
@@ -2533,22 +2725,21 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                   </div> */}
                 </div>
               ))}
-              {inputData.imageClose &&
-            (
-                  <div className={styles.preview_photos_container__block}>
-                    <img
-                      className={styles.preview_photos_container__img}
-                      src={`${Host}/images/imageAdd/${inputData.imageClose}`}
-                      alt="Preview"
-                    />
-                    {/* <div
+              {inputData.imageClose && (
+                <div className={styles.preview_photos_container__block}>
+                  <img
+                    className={styles.preview_photos_container__img}
+                    src={`${Host}/images/imageAdd/${inputData.imageClose}`}
+                    alt="Preview"
+                  />
+                  {/* <div
                     className={styles.preview_photos_container__remove_icon}
                     onClick={() => handleRemovePreviewPhotoClose()}
                   >
                     <span></span>
                   </div> */}
-                  </div>
-                )}
+                </div>
+              )}
             </div>
           </div>
           <div className={styles.form_container__button_block}>
