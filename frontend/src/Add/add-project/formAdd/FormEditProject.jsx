@@ -524,7 +524,6 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
       setSelectedProjectStages([]);
       setPreviewPhotos([]);
       setDynamicData([]);
-
       setInputData({
         title: "",
         selectCompetencies: "",
@@ -786,6 +785,8 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
     }
     const classNames = getPreviewClassName(labelText);
 
+    // console.log(dynamicPreviews, '<-----------dynamicPreviews');
+
     return (
       <div key={key}>
         {inputType === "text" && (
@@ -908,39 +909,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                             autoPlay
                             className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
                           />
-                        )}
-                         {/* {Array.isArray(src) ? (
-                          // Если src является массивом, используем имя первого файла
-                          <video
-                            key={index}
-                            src={`${Host}/images/imageAdd/${src[0].name}`}
-                            muted
-                            loop
-                            autoPlay
-                            className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
-                          />
-                        ) : // Если src не является массивом, проверяем его тип и используем его соответственно
-                        typeof src === "string" && src.startsWith("blob:") ? (
-                          // Если src является временным URL, используем его напрямую
-                          <video
-                            key={index}
-                            src={src}
-                            muted
-                            loop
-                            autoPlay
-                            className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
-                          />
-                        ) : (
-                          // Иначе, считаем src за обычную строку и добавляем путь к хосту
-                          <video
-                            key={index}
-                            src={`${Host}/images/imageAdd/${src}`}
-                            muted
-                            loop
-                            autoPlay
-                            className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
-                          />
-                        )} */}
+                        )}                      
                         <div
                           className={
                             styles.preview_photos_container_block_constructor__remove_icon
@@ -1045,31 +1014,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                                   alt={`Preview ${index}`}
                                   className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
                                 />
-                              )}
-                              {/* {Array.isArray(src) ? (
-                                // Если src является массивом, используем имя первого файла
-                                <img
-                                  src={`${Host}/images/imageAdd/${src[0].name}`}
-                                  alt={`Preview ${index}`}
-                                  className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
-                                />
-                              ) : // Если src не является массивом, проверяем его тип и используем его соответственно
-                              typeof src === "string" &&
-                                src.startsWith("blob:") ? (
-                                // Если src является временным URL, используем его напрямую
-                                <img
-                                  src={src}
-                                  alt={`Preview ${index}`}
-                                  className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
-                                />
-                              ) : (
-                                // Иначе, считаем src за обычную строку и добавляем путь к хосту
-                                <img
-                                  src={`${Host}/images/imageAdd/${src}`}
-                                  alt={`Preview ${index}`}
-                                  className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
-                                />
-                              )} */}
+                              )}                        
                               <div
                                 className={
                                   styles.preview_photos_container_block_constructor__remove_icon
