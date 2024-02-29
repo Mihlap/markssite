@@ -317,10 +317,11 @@ export default function AddProject({ user }) {
                                   ) : null}
                                        {user?.name === "obezyankaa" ||
                                   user?.name === "Pokemon" ? (
-                                    <div className={styles.edit_block}>
+                                      <div className={styles.edit_block}
+                                        onClick={() => handleEditClick(el.id)}
+                                      >
                                       <button
                                         className={styles.buttom_edit}
-                                        onClick={() => handleEditClick(el.id)}
                                       >
                                         <label
                                           htmlFor="edit"
@@ -332,7 +333,7 @@ export default function AddProject({ user }) {
                                           </div>
                                         </label>
                                       </button>
-                                    </div>
+                                   </div>
                                   ) : null}
                                 </div>
                                 <div
