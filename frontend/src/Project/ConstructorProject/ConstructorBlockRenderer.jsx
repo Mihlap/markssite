@@ -149,24 +149,30 @@ export default function ConstructorBlockRenderer({
   const renderImageWithDescription = (block) => {
     let imageUrl = "";
     let description = "";
-
+  
     block?.forEach((item) => {
-      if (item?.label === "Картинка с описанием")
-        imageUrl = item.value?.[0] || "";
+      if (item?.label === "Картинка с описанием") imageUrl = item.value?.[0] || "";
       if (item?.label === "Описание картинки") description = item?.value || "";
     });
-
+  
+    // Проверяем, есть ли imageUrl или description, если нет, то не отображаем блок
+    if (!imageUrl && !description) return null;
+  
     return (
       <div className={styles.containerImageToDescription}>
-        <img
-          className={styles.containerImageToDescription__img}
-          src={`${Host}/images/imageAdd/${imageUrl}`}
-          alt="Описание"
-          loading="lazy"
-        />
-        <div className={styles.containerImageToDescription__text}>
-          {description}
-        </div>
+        {imageUrl && (
+          <img
+            className={styles.containerImageToDescription__img}
+            src={`${Host}/images/imageAdd/${imageUrl}`}
+            alt="Описание"
+            loading="lazy"
+          />
+        )}
+        {description && (
+          <div className={styles.containerImageToDescription__text}>
+            {description}
+          </div>
+        )}
       </div>
     );
   };
