@@ -108,8 +108,7 @@ router.put(
       const imagePath = path.join(__dirname, '..', '..', 'images', 'imageAdd', imageName);
       try {
         await fs.promises.unlink(imagePath);
-        // console.log(`Изображение ${imageName} успешно удалено.`);
-      } catch (error) {
+       } catch (error) {
         if (error.code === 'ENOENT') {
           // console.log(`Файл ${imageName} не найден, возможно, уже удален.`);
         } else {
@@ -235,9 +234,7 @@ router.put(
       // Получение изображений из базы данных
       const existingConstructor = await Constructor.findOne({ where: { idBlock: projectId } });
       const allImageTitlesStringToDelete = existingConstructor ? existingConstructor.image : '';
-
-    
-      
+ 
       
       // eslint-disable-next-line no-nested-ternary
       const existingImageTitles = existingConstructor
@@ -252,20 +249,20 @@ router.put(
       // Объединение старых и новых изображений
       const allImageTitles = [...existingImageTitles, ...dynamicImageTitles].filter(Boolean);
       
-      // Удаление изображений из папки imageAdd
+         // Удаление изображений из папки imageAdd
       const allImageToRemove = allImageTitlesStringToDelete ? allImageTitlesStringToDelete.split(', ')
       .filter(image => allImageTitles.includes(image))
       : [];
+      
+      // console.log('Изображения для удаления из базы данных:', allImageToRemove);  
       await Promise.all(allImageToRemove.map(deleteImageEdit));
-
 
       let dynamicBlocksContent = [];
 
       if (req.body.dynamicBlocksJSON) {
         try {
           dynamicBlocksContent = JSON.parse(req.body.dynamicBlocksJSON);
-          // console.log('dynamicBlocksContent:', dynamicBlocksContent);
-        } catch (error) {
+          } catch (error) {
           console.error('Ошибка при разборе dynamicBlocksJSON:', error);
           return res.status(400).json({ message: 'Неверный формат данных для dynamicBlocksJSON' });
         }
@@ -277,7 +274,19 @@ router.put(
           data: dynamicBlocksContent,
           image: allImageTitlesString,
         });
-      } else {
+      //       // Удаление изображений из базы данных
+      // await existingConstructor.destroy({
+      //   where: {
+      //       image: allImageTitlesString
+      //     }
+      // })
+      // .then(numDeleted => {
+      //   console.log(`Успешно удалено изображений из базы данных: ${numDeleted}`);
+      // })
+      // .catch(err => {
+      //   console.error('Ошибка при удалении изображений из базы данных:', err);
+      // });
+       } else {
         // Создание нового конструктора, если его не существует
         await Constructor.create({
           data: dynamicBlocksContent,
@@ -362,7 +371,7 @@ router.get('/getdynamicdata/:projectId', async (req, res) => {
   }
 });
 
-// эта функция нужна для того, чтоб удалять из imageTitle фотографии есть там не массив
+// // эта функция нужна для того, чтоб удалять из imageTitle фотографии есть там не массив
 const deleteImage = (imageName) => {
   const imagePath = path.join(__dirname, '..', '..', 'images', 'imageAdd', imageName);
 
