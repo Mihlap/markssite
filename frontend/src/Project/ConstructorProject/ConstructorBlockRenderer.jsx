@@ -211,44 +211,85 @@ export default function ConstructorBlockRenderer({
 
   const renderThreeImages = (block, index) => {
     const images = block[0].value;
-    return (
-      <div className={styles.gridContainer}>
-        {images?.slice(0, 2).map((img, index) => (
-          <img
-            className={styles.horizontalImage}
-            key={index}
-            src={`${Host}/images/imageAdd/${img}`}
-            alt="Horizontal_image"
-            loading="lazy"
-          />
-        ))}
+    //  Проверяем, есть ли картинки в блоке
+  if (!images || images.length < 1) {
+    return null; // Если картинок нет или их не три, не рендерим блок
+  }
+
+  return (
+    <div className={styles.gridContainer}>
+      {/* Рендерим первые две горизонтальные картинки, если они существуют */}
+      {images.length >= 1 && (
+        <img
+          className={styles.horizontalImage}
+          src={`${Host}/images/imageAdd/${images[0]}`}
+          alt="Horizontal_image1"
+          loading="lazy"
+        />
+      )}
+      {images.length >= 2 && (
+        <img
+          className={styles.horizontalImage}
+          src={`${Host}/images/imageAdd/${images[1]}`}
+          alt="Horizontal_image2"
+          loading="lazy"
+        />
+      )}
+
+      {/* Рендерим вертикальную картинку, если она существует */}
+      {images.length >= 3 && (
         <img
           className={styles.verticalImage}
           src={`${Host}/images/imageAdd/${images[2]}`}
           alt="Vertical_image"
           loading="lazy"
         />
-      </div>
-    );
-  };
+      )}
+    </div>
+  );
+};
+
+
+  // const renderThreeImages = (block, index) => {
+  //   const images = block[0].value;
+  //   return (
+  //     <div className={styles.gridContainer}>
+  //       {images?.slice(0, 2).map((img, index) => (
+  //         <img
+  //           className={styles.horizontalImage}
+  //           key={index}
+  //           src={`${Host}/images/imageAdd/${img}`}
+  //           alt="Horizontal_image"
+  //           loading="lazy"
+  //         />
+  //       ))}
+  //       <img
+  //         className={styles.verticalImage}
+  //         src={`${Host}/images/imageAdd/${images[2]}`}
+  //         alt="Vertical_image"
+  //         loading="lazy"
+  //       />
+  //     </div>
+  //   );
+  // };
 
   const renderTwoImage = (block, index) => {
-    const images = block[0].value;
+    const images = block[0].value; 
     return (
       <div
         className={`${styles.imageBlockTwo} ${styles.imageBlockTwo_project}`}
       >
-        {images?.map((el, index) => (
-          <img
-            className={styles.imageBlockTwo__gridImage}
-            key={index}
-            src={`${Host}/images/imageAdd/${el}`}
-            alt="img_two"
-            loading="lazy"
-          />
-        ))}
-      </div>
-    );
+        {images.map((el, index) => (
+            <img
+              className={styles.imageBlockTwo__gridImage}
+              key={index}
+              src={`${Host}/images/imageAdd/${el}`}
+              alt={`img_${index}`}
+              loading="lazy"
+            />
+          ))}
+        </div>
+     );
   };
 
   const renderImageSlider = (block) => {
