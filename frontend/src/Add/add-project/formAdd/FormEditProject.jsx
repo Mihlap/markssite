@@ -430,20 +430,20 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
     try {
       const formattedData = {
         ...inputData,
-        // dynamicBlocks: dynamicData,
-        dynamicBlocks: Array.isArray(dynamicData)
-        ? dynamicData
-        : dynamicData.map((blockArray) =>
-            blockArray.map((block) => {
-              if (!block.value || block.value.length === 0 || block.value[0] === null) {
-                return [];
-              } else if (Array.isArray(block.value)) {
-                return block.value.map((file) => ({ name: file }));
-              } else {
-                return [{ name: block.value.name }];
-              }
-            })
-          ),
+        dynamicBlocks: dynamicData,
+        // dynamicBlocks: Array.isArray(dynamicData)
+        // ? dynamicData
+        // : dynamicData.map((blockArray) =>
+        //     blockArray.map((block) => {
+        //       if (!block.value || block.value.length === 0 || block.value[0] === null) {
+        //         return [];
+        //       } else if (Array.isArray(block.value)) {
+        //         return block.value.map((file) => ({ name: file }));
+        //       } else {
+        //         return [{ name: block.value.name }];
+        //       }
+        //     })
+        //   ),
         selectCompetencies: Array.isArray(selectedCompetencies)
           ? selectedCompetencies.map((option) => option.label).join(",")
           : "",
@@ -492,18 +492,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
           : formattedData.awards;
       }
      
-   
-    // console.log(formattedData.dynamicBlocks);
-   
-    // // Ваша текущая итерация по formattedData.dynamicBlocks
-    // formattedData.dynamicBlocks.forEach((block) => {
-    //   if (block.value === undefined) {
-    //     console.error("Значение value в блоке", block, "не определено или равно undefined");
-    //   }
-    // });
-        
-
-      // Определение, создаем новый проект или обновляем существующий
+         // Определение, создаем новый проект или обновляем существующий
       if (editProjectData && editProjectData.id) {
         dispatch(setProjectId(editProjectData.id));
         // Обновление существующего проекта
