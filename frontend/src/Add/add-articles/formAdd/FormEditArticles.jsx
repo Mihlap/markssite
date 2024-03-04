@@ -16,7 +16,9 @@ import {
   fetchArticle,
   setArticleId,
   clearFormData,
-  getFetchFormArticle,
+  // getFetchFormArticle,
+  setDynamicaData,
+  setDynamicImages,
 } from "../../../store/Slice/articleSlice";
 import customStyles from "../../add-project/formAdd/utils/customStyles";
 import compressImageFile from "browser-image-compression";
@@ -86,8 +88,17 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
     // Применение стилей для каждого quillRef
     quillRefs.forEach((quillRef) => applyStylesToQuillEditor(quillRef));
   }, [quillRef1, quillRef2]);
+
+   // состояние для хранения текущего значения инпута
+   const [inputValue, setInputValue] = useState("");
+
+   const [openConstructor, setOpenConstructor] = useState(false);
+   // const [blocks, setBlocks] = useState([]);
+   const [dynamicPreviews, setDynamicPreviews] = useState([]);
+   const [dynamicData, setDynamicData] = useState([]);
   
   
+  const data = editArticleData?.ConstructorArticles?.[0]?.data;
 
   useEffect(() => {
     if (editArticleData) {
@@ -158,31 +169,62 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
             typeof editArticleData.imageTitle === "string"
               ? editArticleData.imageTitle.split(",")
               : [],
+              dynamicDataFromEditArticle:
+              editArticleData.dynamicDataFromEditProject !== undefined
+              ? editArticleData.dynamicDataFromEditProject
+              : "",
         };
         // console.log("Обновленные данные формы:", updatedInputData);
         return updatedInputData;
       });
-      const dynamicDataFromEditProject = editArticleData.dynamicData;
-      if (dynamicDataFromEditProject && dynamicDataFromEditProject.length > 0) {
-        setDynamicData(dynamicDataFromEditProject);
-        const previewsArray = dynamicDataFromEditProject.map((block) =>
-          block.map((input) => input.value)
-        );
-        setDynamicPreviews(previewsArray);
+      // const dynamicDataFromEditProject = editArticleData.dynamicData;
+      // if (dynamicDataFromEditProject && dynamicDataFromEditProject.length > 0) {
+      //   setDynamicData(dynamicDataFromEditProject);
+      //   const previewsArray = dynamicDataFromEditProject.map((block) =>
+      //     block.map((input) => input.value)
+      //   );
+      //   setDynamicPreviews(previewsArray);
+      // }
+      if (Array.isArray(data) && data.length > 0) {
+        for (let index = 0; index < data.length; index++) {
+          const block = data[index];
+          if (Array.isArray(block)) {
+            const dynamicDataFromEditArticle = block.map((input) => input.value) || [];
+
+          if (dynamicDataFromEditArticle.length > 0) {
+            const dynamicData = block.map((input) => ({
+              // id: input.id,
+              type: input.type,
+              label: input.label,
+              value: input.value,
+              key: input.key,
+              blockIndex: index,
+            }));
+
+            setDynamicData((prevDynamicData) => {
+              return [
+                ...prevDynamicData.slice(0, index),
+                dynamicData,
+                ...prevDynamicData.slice(index + 1),
+              ];
+            });
+
+            const previewsArray = dynamicData.map((input) => input.value);
+
+            setDynamicPreviews((prev) => {
+              const newPreviews = [...prev];
+              newPreviews[index] = previewsArray;
+              return newPreviews;
+            });
+          }
+        }
+      }
       }
     }
   }, [editArticleData]);
 
   // << ==== КОНСТУКТОР ==== >>
-  // состояние для хранения текущего значения инпута
-  const [inputValue, setInputValue] = useState("");
-
-  const [onenConstructor, setOpenConstructor] = useState(false);
-  const [blocks, setBlocks] = useState([]);
-  const [dynamicPreviews, setDynamicPreviews] = useState([]);
-  const [dynamicData, setDynamicData] = useState([]);
-
-  const handleRemovePreviewPhoto = (index) => {
+   const handleRemovePreviewPhoto = (index) => {
     removePreviewPhoto(
       previewPhotos,
       setPreviewPhotos,
@@ -204,29 +246,34 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
       setIsPhotoAvaVisible
     );
   };
-
+// Удаление превью фото перед основным текстом НЕ УДАЛЯТЬ!!!!!
   // Удаление превью фото перед основным текстом
-  const handleRemovePreviewPhotoOpen = (index) => {
-    removePreviewPhotoOpen(
-      previewPhotoOpen,
-      setPreviewPhotoOpen,
-      index,
-      inputData,
-      setInputData,
-      setIsPhotoOpenVisible
-    );
-  };
+  // const handleRemovePreviewPhotoOpen = (index) => {
+  //   removePreviewPhotoOpen(
+  //     previewPhotoOpen,
+  //     setPreviewPhotoOpen,
+  //     index,
+  //     inputData,
+  //     setInputData,
+  //     setIsPhotoOpenVisible
+  //   );
+  // };
 
-  // Удаление превью фото из закрывающей картинки
-  const handleRemovePreviewPhotoClose = (index) => {
-    removePreviewPhotoClose(
-      previewPhotoClose,
-      setPreviewPhotoClose,
-      index,
-      inputData,
-      setInputData,
-      setIsPhotoCloseVisible
-    );
+  // // Удаление превью фото из закрывающей картинки
+  // const handleRemovePreviewPhotoClose = (index) => {
+  //   removePreviewPhotoClose(
+  //     previewPhotoClose,
+  //     setPreviewPhotoClose,
+  //     index,
+  //     inputData,
+  //     setInputData,
+  //     setIsPhotoCloseVisible
+  //   );
+  // };
+
+  
+  const closeModal = () => {
+    setIsModalOpen(false);
   };
 
   // функция отправки формы на Redux
@@ -265,17 +312,17 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
           previewPhotoCloseCopy
         )
       );
-      dispatch(clearFormData());
-      dispatch(getFetchFormArticle());
+      // dispatch(clearFormData());
+      // dispatch(getFetchFormArticle());
 
       // Ваши дополнительные действия после успешного сохранения статьи
       // Например, закрытие модального окна и сброс состояний
       setSelectedCompetencies([]);
-      setIsModalOpen(false);
       // console.log('Статья успешно сохранена');
-
+      
       // Дополнительные действия, если необходимо
       // ...
+      setIsModalOpen(false);
     } catch (error) {
       // Обработка ошибки, если сохранение не удалось
       console.error("Ошибка при сохранении статьи:", error);
@@ -284,14 +331,11 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
     }
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-
+ 
   // << ============ КОНСТРУКТОР ============ >>
 
   const handlerOpenConstructor = () => {
-    setOpenConstructor(!onenConstructor);
+    setOpenConstructor(!openConstructor);
   };
 
   // функция которая не даёт создать новый диманический блок, пока не заполнены value предыдущего
@@ -312,15 +356,15 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
       prevDynamicData.filter((_, index) => index !== blockIndex)
     );
     // Обновление других связанных состояний...
-    setBlocks((prevBlocks) =>
-      prevBlocks.filter((_, index) => index !== blockIndex)
-    );
+    // setBlocks((prevBlocks) =>
+    //   prevBlocks.filter((_, index) => index !== blockIndex)
+    // );
     setDynamicPreviews((prevPreviews) =>
       prevPreviews.filter((_, index) => index !== blockIndex)
     );
   };
 
-  const handleClick = (inputs) => {
+  const handleClick = (inputs, blockIndex) => {
     if (!areAllBlocksFilled()) {
       setShowNotification(true);
       setTimeout(() => setShowNotification(false), 5000);
@@ -331,9 +375,16 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
     const newInputs = inputs.map((input) => ({
       ...input,
       key: blockKey + "_" + input.type,
+      blockIndex: blockIndex,
     }));
-    setBlocks((prevState) => [...prevState, newInputs]);
+    // setBlocks((prevState) => [...prevState, newInputs]);
     setDynamicData((prevDynamicData) => [...prevDynamicData, newInputs]);
+
+    setDynamicPreviews((prevPreviews) => [
+      ...prevPreviews,
+      new Array(newInputs.length).fill([]),
+    ]);
+    //  handlerOpenConstructor();
   };
 
   async function compressImage(file) {
@@ -359,9 +410,11 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
 
     if (!newDynamicData[blockIndex][inputIndex]) {
       newDynamicData[blockIndex][inputIndex] = {
+        id: "",
         type: "",
         label: "",
         value: "",
+        key: "",
       };
     }
     function generateUniqueName(originalName) {
@@ -441,20 +494,46 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
     function handleDeletePreview(event, blockIndex, inputIndex, previewIndex) {
       event.preventDefault();
       setDynamicPreviews((prev) => {
-        const newPreviews = [...prev];
-        if (newPreviews[blockIndex] && newPreviews[blockIndex][inputIndex]) {
-          newPreviews[blockIndex][inputIndex].splice(previewIndex, 1);
-        }
-        return newPreviews;
-      });
+      //   const newPreviews = [...prev];
+      //   if (newPreviews[blockIndex] && newPreviews[blockIndex][inputIndex]) {
+      //     newPreviews[blockIndex][inputIndex].splice(previewIndex, 1);
+      //   }
+      //   return newPreviews;
+      // });
 
-      setDynamicData((prevData) => {
-        const newData = [...prevData];
-        if (newData[blockIndex] && newData[blockIndex][inputIndex]) {
-          newData[blockIndex][inputIndex].value.splice(previewIndex, 1);
-        }
-        return newData;
-      });
+      // setDynamicData((prevData) => {
+      //   const newData = [...prevData];
+      //   if (newData[blockIndex] && newData[blockIndex][inputIndex]) {
+      //     newData[blockIndex][inputIndex].value.splice(previewIndex, 1);
+      //   }
+      //   return newData;
+      // });
+      const newPreviews = [...prev];
+      if (
+        newPreviews[blockIndex] &&
+        newPreviews[blockIndex][inputIndex] &&
+        newPreviews[blockIndex][inputIndex][previewIndex]
+      ) {
+        newPreviews[blockIndex][inputIndex] = newPreviews[blockIndex][
+          inputIndex
+        ].filter((_, index) => index !== previewIndex);
+      }
+      return newPreviews;
+    });
+    setDynamicData((prevData) => {
+      const newData = [...prevData];
+      if (
+        newData[blockIndex] &&
+        newData[blockIndex][inputIndex] &&
+        Array.isArray(newData[blockIndex][inputIndex].value) &&
+        newData[blockIndex][inputIndex].value[previewIndex]
+      ) {
+        const updatedValue = [...newData[blockIndex][inputIndex].value];
+        updatedValue.splice(previewIndex, 1);
+        newData[blockIndex][inputIndex].value = updatedValue;
+      }
+      return newData;
+    });
 
       const fileInputs = document.querySelectorAll('input[type="file"]');
       fileInputs.forEach((input) => (input.value = "")); // это очищает значение всех инпутов типа file
@@ -463,18 +542,23 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
     const classNames = getPreviewClassName(labelText);
 
     return (
-      <div key={inputIndex}>
+      <div key={key}>
         {inputType === "text" && (
           // <input type="text" />
           <div className={styles.form_container__heading_block}>
             <input
               type="input"
               maxLength="56" // 2. Установите атрибут maxLength
-              value={dynamicData[blockIndex][inputIndex].value || ""} // используйте значение inputValue как текущее значение инпута
               className={`${styles.form_container__heading_block_input} ${styles.orange_color}`}
+              // value={dynamicData[blockIndex][inputIndex].value || ""} // используйте значение inputValue как текущее значение инпута
               placeholder={labelText}
+              value={
+                dynamicData[blockIndex][inputIndex]?.value
+                  ? dynamicData[blockIndex][inputIndex].value
+                  : ""
+              }
               onChange={(e) => {
-                setInputValue(e.target.value); // 4. Обновите inputValue при каждом изменении
+                // setInputValue(e.target.value); // 4. Обновите inputValue при каждом изменении
                 handleDynamicInputChange(
                   blockIndex,
                   inputIndex,
@@ -483,13 +567,13 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
               }}
             />
             <label
-              htmlFor="titleTextBlock"
+              htmlFor={`input-${blockIndex}-${inputIndex}`}
               className={styles.form_container__heading_block_label}
             >
               {labelText}
             </label>
             <div className={styles.form_container__heading_block_input_length}>
-              {(dynamicData[blockIndex][inputIndex].value || "").length}/56
+              {(dynamicData[blockIndex]?.[inputIndex]?.value || "").length}/56
             </div>
           </div>
         )}
@@ -555,8 +639,10 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
                   </div>
                 </label>
                 {/* Добавляем блок превью видео ниже */}
-                {dynamicPreviews[blockIndex] &&
+                {/* {dynamicPreviews[blockIndex] &&
                   dynamicPreviews[blockIndex][inputIndex] &&
+                  dynamicPreviews[blockIndex][inputIndex].map((src, index) => ( */}
+                {Array.isArray(dynamicPreviews[blockIndex]?.[inputIndex]) &&
                   dynamicPreviews[blockIndex][inputIndex].map((src, index) => (
                     <div
                       key={`${blockIndex}-${inputIndex}-${index}`}
@@ -567,14 +653,33 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
                           styles.preview_photos_container_block_constructor
                         }
                       >
-                        <video
+                        {/* <video
                           key={index}
                           src={src}
                           muted
                           loop
                           autoPlay
                           className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
-                        />
+                        /> */}
+                          {typeof src === 'string' && src.startsWith("blob:") ? ( // Проверяем, является ли src временным URL
+                          <video
+                            key={index}
+                            src={src}
+                            muted
+                            loop
+                            autoPlay
+                            className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
+                          />
+                        ) : (
+                          <video
+                            key={index}
+                            src={`${Host}/images/imageArticle/${src}`}
+                            muted
+                            loop
+                            autoPlay
+                            className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
+                          />
+                        )} 
                         <div
                           className={
                             styles.preview_photos_container_block_constructor__remove_icon
@@ -599,7 +704,7 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
                 <div key={inputIndex}>
                   <div
                     className={
-                      styles.form_container__checkbox_block_constructor
+                      styles.form_container__checkbox_block
                     }
                   >
                     <div>{labelText}</div>
@@ -625,7 +730,7 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
                         setDynamicPreviews((prev) => {
                           const newPreviews = [...prev];
                           if (!newPreviews[blockIndex]) {
-                            newPreviews[blockIndex] = [];
+                            newPreviews[blockIndex] = [...prev];
                           }
                           newPreviews[blockIndex][inputIndex] = previewsArray;
                           return newPreviews;
@@ -660,8 +765,11 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
                 <div
                   className={`${styles.previewContainer} ${classNames.outerDiv}`}
                 >
-                  {dynamicPreviews[blockIndex] &&
+                  {/* {dynamicPreviews[blockIndex] &&
                     dynamicPreviews[blockIndex][inputIndex] &&
+                    dynamicPreviews[blockIndex][inputIndex].map(
+                      (src, index) => { */}
+                  {Array.isArray(dynamicPreviews[blockIndex]?.[inputIndex]) &&
                     dynamicPreviews[blockIndex][inputIndex].map(
                       (src, index) => {
                         return (
@@ -674,11 +782,25 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
                                 styles.preview_photos_container_block_constructor
                               }
                             >
-                              <img
+                              {/* <img
                                 src={src}
                                 alt={`Preview ${index}`}
                                 className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
-                              />
+                              /> */}
+                              {typeof src === "string" &&
+                              src.startsWith("blob:") ? ( // Проверяем, является ли src временным URL
+                                <img
+                                  src={src}
+                                  alt={`Preview ${index}`}
+                                  className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
+                                />
+                              ) : (
+                                <img
+                                  src={`${Host}/images/imageArticle/${src}`}
+                                  alt={`Preview ${index}`}
+                                  className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
+                                />
+                              )} 
                               <div
                                 className={
                                   styles.preview_photos_container_block_constructor__remove_icon
@@ -757,7 +879,12 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
               required
               name={key}
               id={key}
-              value={dynamicData[blockIndex][inputIndex].value}
+              // value={dynamicData[blockIndex][inputIndex].value}
+              value={
+                dynamicData[blockIndex][inputIndex]?.value
+                  ? dynamicData[blockIndex][inputIndex]?.value
+                  : ""
+              }
               onChange={(value) => {
                 handleDynamicInputChange(blockIndex, inputIndex, value);
               }}
@@ -788,12 +915,22 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
   };
 
   const renderInputs = (inputs, blockIndex) => {
+    if (!Array.isArray(inputs)) {
+      return null;
+    }
     return (
       <div key={blockIndex} className={styles.blockContainer}>
         {inputs.map((input, inputIndex) =>
-          renderInputWithLabel(input.type, input.label, blockIndex, inputIndex)
-        )}
+           renderInputWithLabel(
+            input.type,
+            input.label,
+            blockIndex,
+            inputIndex,
+            `${blockIndex}-${inputIndex}`  // добавлен динамический ключ
+          )             
+      )}
         <div
+        key={`close-${blockIndex}`} // добавлен динамический ключ для кнопки
           className={styles.blockContainer__close_button}
           onClick={() => handleRemoveBlock(blockIndex)}
         ></div>
@@ -1368,17 +1505,20 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
           </div>
           </div>
           {/* КОНСТРУКТОР */}
+          {dynamicData && (
           <div className={styles.inputs_container}>
-            {blocks.map((blockInputs, blockIndex) => (
-              <div key={blockIndex} className={styles.inputBlock}>
-                {renderInputs(blockInputs, blockIndex)}
+            {dynamicData.map((blockInputs, blockIndex) => (
+              <div key={blockIndex} className={styles.input_block}>
+                {/* {renderInputs(blockInputs, blockIndex)} */}
+                {Array.isArray(blockInputs) &&
+                    renderInputs(blockInputs, blockIndex)}
               </div>
             ))}
           </div>
-
+             )}
           <div className={styles.constructor_container}>
             <div className={styles.constructor_container__block}>
-              {!onenConstructor ? (
+              {openConstructor ? (
                 <div className={styles.constructor_container__block_btn}>
                   <button onClick={handlerOpenConstructor}>
                     <svg
@@ -1411,12 +1551,15 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
                     Добавить блок из библиотеки
                   </div>
                 </div>
-              ) : (
-                <ConstructorPage handleClick={handleClick} />
-              )}
+                ) : (
+                  <ConstructorPage
+                    data={data}
+                    handleClick={handleClick}
+                    // blocks={blocks}
+                  />
+                )}
             </div>
           </div>
-
           <div
             className={`${styles.imageClose_block} ${styles.flex_block_gap}`}
           >
