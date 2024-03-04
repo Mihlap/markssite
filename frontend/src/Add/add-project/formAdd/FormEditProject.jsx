@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import Select from "react-select";
 import compressImageFile from "browser-image-compression";
 import ReactQuill from "react-quill";
@@ -144,6 +144,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
     return inputsToCheck.filter((input) => inputData[input]).length;
   };
   const data = editProjectData?.Constructors?.[0]?.data;
+
   useEffect(() => {
     if (editProjectData) {
       const initialSelectedCompetencies = editProjectData.selectCompetencies
@@ -1116,8 +1117,8 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
               input.label,
               blockIndex,
               inputIndex,
-              `${blockIndex}-${inputIndex}`
-            ) // добавлен динамический ключ
+              `${blockIndex}-${inputIndex}`  // добавлен динамический ключ
+            )             
         )}
         <div
           key={`close-${blockIndex}`} // добавлен динамический ключ для кнопки
