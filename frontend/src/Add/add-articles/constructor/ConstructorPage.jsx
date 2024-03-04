@@ -25,7 +25,9 @@ export default function ConstructorPage({ handleClick }) {
           handleClick([
             { type: "text", label: "Заголовок", required: false },
             { type: "textarea", label: "Текстовый блок", required: true },
-          ])
+          ],
+          0
+          )
         }
       >
         <img src={svg2} alt="svg_two_icon" />
@@ -37,7 +39,9 @@ export default function ConstructorPage({ handleClick }) {
         onClick={() =>
           handleClick([
             { type: "textarea", label: "Блок описание", required: true },
-          ])
+          ],
+          1
+        )
         }
       >
         <img src={svg7} alt="svg_two_icon" />
@@ -49,7 +53,9 @@ export default function ConstructorPage({ handleClick }) {
         onClick={() =>
           handleClick([
             { type: "textarea", label: "Текст в рамочке", required: true },
-          ])
+          ],
+          2
+          )
         }
       >
         <img
@@ -66,7 +72,9 @@ export default function ConstructorPage({ handleClick }) {
           handleClick([
             { type: "file", label: "Картинка с описанием", required: true },
             { type: "text", label: "Описание картинки", required: false },
-          ])
+          ],
+          3
+          )
         }
       >
         <img src={svg1} alt="svg_one_icon" />
@@ -84,7 +92,9 @@ export default function ConstructorPage({ handleClick }) {
             },
             { type: "textarea", label: "Текст цитаты", required: true },
             { type: "file", label: "Фото автора статьи", required: false },
-          ])
+          ],
+          4
+          )
         }
       >
         <div className={styles.block_quote_img}>
@@ -108,7 +118,9 @@ export default function ConstructorPage({ handleClick }) {
         onClick={() =>
           handleClick([
             { type: "textarea", label: "Текст заметки", required: true },
-          ])
+          ],
+          5
+          )
         }
       >
         <img
@@ -128,7 +140,9 @@ export default function ConstructorPage({ handleClick }) {
               label: "Блок 2е вертикальные картинки",
               required: true,
             },
-          ])
+          ],
+          6
+          )
         }
       >
         <img src={svg4} alt="svg_three_icon" />
@@ -143,7 +157,9 @@ export default function ConstructorPage({ handleClick }) {
               label: "Слайдер *допускается загрузка 8ми изображений",
               required: true,
             },
-          ])
+          ],
+          7
+          )
         }
       >
         <img src={svg5} alt="svg_three_icon" />
@@ -158,7 +174,9 @@ export default function ConstructorPage({ handleClick }) {
               label: "Видеоролик",
               required: true,
             },
-          ])
+          ],
+          8
+          )
         }
       >
         <img src={svg6} alt="svg_six_icon" />

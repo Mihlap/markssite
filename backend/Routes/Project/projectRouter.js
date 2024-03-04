@@ -253,10 +253,9 @@ router.put(
       const allImageToRemove = allImageTitlesStringToDelete ? allImageTitlesStringToDelete.split(', ')
       .filter(image => allImageTitles.includes(image))
       : [];
-      
-      // console.log('Изображения для удаления из базы данных:', allImageToRemove);  
-      await Promise.all(allImageToRemove.map(deleteImageEdit));
 
+      await Promise.all(allImageToRemove.map(deleteImageEdit));
+    
       let dynamicBlocksContent = [];
 
       if (req.body.dynamicBlocksJSON) {
@@ -274,19 +273,7 @@ router.put(
           data: dynamicBlocksContent,
           image: allImageTitlesString,
         });
-      //       // Удаление изображений из базы данных
-      // await existingConstructor.destroy({
-      //   where: {
-      //       image: allImageTitlesString
-      //     }
-      // })
-      // .then(numDeleted => {
-      //   console.log(`Успешно удалено изображений из базы данных: ${numDeleted}`);
-      // })
-      // .catch(err => {
-      //   console.error('Ошибка при удалении изображений из базы данных:', err);
-      // });
-       } else {
+      } else {
         // Создание нового конструктора, если его не существует
         await Constructor.create({
           data: dynamicBlocksContent,
@@ -294,7 +281,6 @@ router.put(
           idBlock: projectId,
         });
       }
-
       res.status(200).json({ message: 'Данные успешно обновлены' });
     } catch (error) {
       console.error('Ошибка при обновлении проекта:', error);
