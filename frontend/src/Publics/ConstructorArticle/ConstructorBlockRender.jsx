@@ -157,14 +157,19 @@ export default function ConstructorBlockRenderer({
 
     return (
       <div className={styles.containerImageToDescription}>
+          {imageUrl && (
         <img
           className={styles.containerImageToDescription__img}
           src={`${Host}/images/imageArticle/${imageUrl}`}
           alt="Описание"
+          loading="lazy"
         />
-        <div className={styles.containerImageToDescription__text}>
-          {description}
-        </div>
+        )}
+         {description && (
+          <div className={styles.containerImageToDescription__text}>
+            {description}
+          </div>
+        )}
       </div>
     );
   };

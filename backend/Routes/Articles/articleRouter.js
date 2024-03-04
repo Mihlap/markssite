@@ -2,7 +2,7 @@ const express = require('express');
 // eslint-disable-next-line
 const path = require('path');
 const fs = require('fs');
-const { Articles, ConstructorArticles, User } = require('../../db/models');
+const { Articles, ConstructorArticles } = require('../../db/models');
 const fileMiddleware = require('../../middleware/fileArticle');
 
 const router = express.Router();
@@ -109,21 +109,7 @@ router.put(
         console.error('Article not found for ID:', articleId);
         return res.status(404).json({ message: 'Статья не найдена' });
       }
-
-      const dynamicImageTitles = req.files.dynamicImages
-      ? req.files.dynamicImages.map((file) => file.filename).join(', ')
-      : null;
-    let dynamicBlocksContent = null;
-
-    if (req.body.dynamicBlocksJSON) {
-      try {
-        dynamicBlocksContent = JSON.parse(req.body.dynamicBlocksJSON);
-      } catch (error) {
-        console.error('Ошибка при разборе dynamicBlocksJSON:', error);
-        return res.status(400).json({ message: 'Неверный формат данных для dynamicBlocksJSON' });
-      }
-    }
-
+    
       // Обработка загрузки файлов и других данных также, как в маршруте POST
 
       const imageTitles = req.files.dropPhoto
@@ -199,25 +185,58 @@ router.put(
 
       const imagesToRemoveAfterUpdate = oldImageTitles.filter((image) => !updatedImageTitles.includes(image));
 
-      imagesToRemove.forEach(deleteImageEdit);
-      imagesToRemoveAfterUpdate.forEach(deleteImageEdit);
-
+      await Promise.all(imagesToRemove.map(deleteImageEdit));
+      await Promise.all(imagesToRemoveAfterUpdate.map(deleteImageEdit));
           
    
    // Поиск или создание данных конструктора
    let existingConstructor = await ConstructorArticles.findOne({ where: { idBlock: articleId } });
+   const allImageTitlesStringToDelete = existingConstructor ? existingConstructor.image : '';
+
+     // eslint-disable-next-line no-nested-ternary
+     const existingImageTitles = existingConstructor
+     ? existingConstructor.image
+     ? existingConstructor.image.split(', ')
+     : []
+     : [];
+   // Получение новых изображений из запроса
+   const dynamicImageTitles = req.files.dynamicImages
+   ? req.files.dynamicImages.map((file) => file.filename)
+   : [];
+   // Объединение старых и новых изображений
+   const allImageTitles = [...existingImageTitles, ...dynamicImageTitles].filter(Boolean);
+   
+      // Удаление изображений из папки imageAdd
+   const allImageToRemove = allImageTitlesStringToDelete ? allImageTitlesStringToDelete.split(', ')
+   .filter(image => allImageTitles.includes(image))
+   : [];
+
+   await Promise.all(allImageToRemove.map(deleteImageEdit));
+
+ let dynamicBlocksContent = null;
+
+ if (req.body.dynamicBlocksJSON) {
+   try {
+     dynamicBlocksContent = JSON.parse(req.body.dynamicBlocksJSON);
+   } catch (error) {
+     console.error('Ошибка при разборе dynamicBlocksJSON:', error);
+     return res.status(400).json({ message: 'Неверный формат данных для dynamicBlocksJSON' });
+   }
+ }
+
 
    if (existingConstructor) {
+    const allImageTitlesString = allImageTitles.join(', ');
      // Если конструктор существует, обновляем данные
      await existingConstructor.update({
        data: dynamicBlocksContent,
-       image: dynamicImageTitles,
+       image: allImageTitlesString,
      });
    } else {
      // Если конструктор не существует, создаем новый
      existingConstructor = await ConstructorArticles.create({
        data: dynamicBlocksContent,
-       image: dynamicImageTitles,
+       image: allImageTitles.join(', '),
        idBlock: articleId,
      });
    }
@@ -241,6 +260,28 @@ router.get('/getzapros', async (req, res) => {
   } catch (error) {
     console.log(error);
     res.sendStatus(500);
+  }
+});
+
+router.get('/getdynamicdata/:articleId', async (req, res) => {
+  try {
+    const { articleId } = req.params;
+
+    // Найти данные конструктора по id проекта
+    const constructorData = await ConstructorArticles.findOne({
+      where: { idBlock: articleId },
+    });
+
+    if (!constructorData) {
+      return res.status(404).json({ message: 'Динамические данные не найдены' });
+    }
+    res.json({
+      dynamicData: constructorData.data,
+      dynamicImages: constructorData.image.split(', '),
+    });
+  } catch (error) {
+    console.error('Ошибка при получении динамических данных:', error);
+    res.status(500).json({ message: 'Произошла ошибка при получении динамических данных' });
   }
 });
 
