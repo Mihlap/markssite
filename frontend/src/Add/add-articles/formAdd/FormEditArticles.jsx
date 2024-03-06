@@ -1127,19 +1127,19 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
                       alt={`Preview ${index}`}
                     />
                     <div
-                     className={styles.preview_photos_container__remove_icon}
-                     onClick={() => handleRemovePreviewPhoto(index)}
-                   >
-                     <span></span>
-                   </div>
+                      className={styles.preview_photos_container__remove_icon}
+                      onClick={() => handleRemovePreviewPhoto(index)}
+                    >
+                      <span></span>
+                    </div>
                   </div>
                 ))}
               {inputData.imageTitle !== null &&
                 inputData.dropPhoto.length === 0 &&
-                ([] // Создаем новый массив
-                .concat(inputData.imageTitle) // Преобразуем inputData.imageTitle в массив
-                .filter(Boolean) // Убираем пустые значения
-                .map((imageFileName, index) => (
+                [] // Создаем новый массив
+                  .concat(inputData.imageTitle) // Преобразуем inputData.imageTitle в массив
+                  .filter(Boolean) // Убираем пустые значения
+                  .map((imageFileName, index) => (
                     <div
                       key={index}
                       className={styles.preview_photos_container__block}
@@ -1150,107 +1150,104 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
                         alt={`Preview ${index}`}
                       />
                       <div
-                    className={styles.preview_photos_container__remove_icon}
-                    onClick={() => handleRemovePreviewPhoto(index)}
-                  >
-                    <span></span>
-                  </div>
+                        className={styles.preview_photos_container__remove_icon}
+                        onClick={() => handleRemovePreviewPhoto(index)}
+                      >
+                        <span></span>
+                      </div>
                     </div>
-                     ))
-                     )}
+                  ))}
             </div>
           </div>
           {/* блок и инпутом ( Заголовок текстового блока ) */}
           <div className={styles.blockContainer}>
-          <div className={styles.form_container__heading_block}>
-            <input
-              required
-              type="input"
-              className={styles.form_container__heading_block_input}
-              placeholder="Нет ограничения по символам"
-              name="titleTextBlock"
-              id="titleTextBlock"
-              // maxLength="56"
-              value={inputData.titleTextBlock}
-              onChange={(event) =>
-                changeHandler(
-                  event,
-                  inputData,
-                  setInputData,
-                  setPreviewPhotos,
-                  setIsDropPhotoVisible,
-                  setPreviewPhotoAva,
-                  setIsPhotoAvaVisible,
-                  setPreviewPhotoOpen,
-                  setIsPhotoOpenVisible,
-                  setPreviewPhotoClose,
-                  setIsPhotoCloseVisible
-                )
-              }
-            />
-            <label
-              htmlFor="titleTextBlock"
-              className={styles.form_container__heading_block_label}
-            >
-              Заголовок текстового блока
-            </label>
-            {/* <div className={styles.form_container__heading_block_input_length}>
+            <div className={styles.form_container__heading_block}>
+              <input
+                required
+                type="input"
+                className={styles.form_container__heading_block_input}
+                placeholder="Нет ограничения по символам"
+                name="titleTextBlock"
+                id="titleTextBlock"
+                // maxLength="56"
+                value={inputData.titleTextBlock}
+                onChange={(event) =>
+                  changeHandler(
+                    event,
+                    inputData,
+                    setInputData,
+                    setPreviewPhotos,
+                    setIsDropPhotoVisible,
+                    setPreviewPhotoAva,
+                    setIsPhotoAvaVisible,
+                    setPreviewPhotoOpen,
+                    setIsPhotoOpenVisible,
+                    setPreviewPhotoClose,
+                    setIsPhotoCloseVisible
+                  )
+                }
+              />
+              <label
+                htmlFor="titleTextBlock"
+                className={styles.form_container__heading_block_label}
+              >
+                Заголовок текстового блока
+              </label>
+              {/* <div className={styles.form_container__heading_block_input_length}>
               {`${inputData.titleTextBlock.length}/56`}
             </div> */}
-          </div>
-          {/* блок и текстерией ( Описание статьи ) */}
-          <div className={styles.form_container__description_text}>
-            {/* <div className={styles.form_container__textarea_length}>
+            </div>
+            {/* блок и текстерией ( Описание статьи ) */}
+            <div className={styles.form_container__description_text}>
+              {/* <div className={styles.form_container__textarea_length}>
               {`${inputData.descriptionArticle.length}/260`}
             </div> */}
-            <ReactQuill
-              ref={quillRef1}
-              modules={{
-                toolbar: [
-                  ['bold', 'italic', 'underline'], 
-                  [{ list: 'bullet' }, { list: 'ordered' }], 
-                 ],
-                clipboard: {
-                  matchVisual: false,
-                },
-              }}
-              formats={[
-                'bold',
-                'italic',
-                'underline',                            
-                'list',
-               ]}
-              className={styles.form_container__textarea}
-              style={{
-                // resize: "none",
-                padding: "0rem",
-                border: "1px solid var(--blue-75BBFD)",
-                borderRadius: "6px",
-                fontFamily: "var(--font-raleway)",
-                fontSize: "36px",
-                fontStyle: "normal",
-                fontWeight: "var(--fw-400)",
-                lineHeight: "16px",
-                color: "var(---black-1D2E43)",
-                boxSizing: "border-box",
-                paddingBottom: "2.5rem",
-              }}
-              required
-              name="descriptionArticle"
-              id="descriptionArticle"
-              value={inputData.descriptionArticle}
-              onChange={(value) => {
-                setInputData((prevInputData) => ({
-                  ...prevInputData,
-                  descriptionArticle: value,
-                }));
-              }}
-              placeholder="Нет ограничения по символам"
-            />
-            <label htmlFor="" className={styles.form_container__textarea_label_constructor}>
-              Текст статьи
-            </label>
-          </div>
+              <ReactQuill
+                ref={quillRef1}
+                modules={{
+                  toolbar: [
+                    ["bold", "italic", "underline"],
+                    [{ list: "bullet" }, { list: "ordered" }],
+                  ],
+                  clipboard: {
+                    matchVisual: false,
+                  },
+                }}
+                formats={["bold", "italic", "underline", "list"]}
+                className={styles.form_container__textarea}
+                style={{
+                  // resize: "none",
+                  padding: "0rem",
+                  border: "1px solid var(--blue-75BBFD)",
+                  borderRadius: "6px",
+                  fontFamily: "var(--font-raleway)",
+                  fontSize: "36px",
+                  fontStyle: "normal",
+                  fontWeight: "var(--fw-400)",
+                  lineHeight: "16px",
+                  color: "var(---black-1D2E43)",
+                  boxSizing: "border-box",
+                  paddingBottom: "2.5rem",
+                }}
+                required
+                name="descriptionArticle"
+                id="descriptionArticle"
+                value={inputData.descriptionArticle}
+                onChange={(value) => {
+                  setInputData((prevInputData) => ({
+                    ...prevInputData,
+                    descriptionArticle: value,
+                  }));
+                }}
+                placeholder="Нет ограничения по символам"
+              />
+              <label
+                htmlFor=""
+                className={styles.form_container__textarea_label_constructor}
+              >
+                Текст статьи
+              </label>
+            </div>
           </div>
           <div
             className={`${styles.photo_orientation_selector} ${styles.flex_block_gap}`}
@@ -1261,7 +1258,10 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
                 {/* <span> для отображения на странице «Проекты»</span> */}
               </div>
             </div>
-            <div style={{ display: isPhotoAvaVisible ? "block" : "none" }}>
+            <div
+            // style={{ display: isPhotoAvaVisible ? "block" : "none" }}
+            >
+               {!isLoading && (
               <label className={styles.slider_container__customFileUpload}>
                 <input
                   type="file"
@@ -1308,6 +1308,7 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
                   Загрузить изображения
                 </div>
               </label>
+               )}
               {isLoading && (
                 <div className={styles.preview_photos_container__loading}>
                   Загрузка . . .
@@ -1315,22 +1316,25 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
               )}
             </div>
             <div>
-              {inputData.imageAuthor !== null &&
-                previewPhotoAva.length === 0 && (
-                  <div className={styles.preview_photos_container__block}>
+              {inputData.imageAuthor &&
+                inputData.imageAuthor.map((image, index) => (
+                  <div
+                    key={index}
+                    className={styles.preview_photos_container__block}
+                  >
                     <img
                       className={styles.preview_photos_container__img}
-                      src={`${Host}/images/imageArticle/${inputData.imageAuthor}`}
-                      alt=""
+                      src={`${Host}/images/imageArticle/${image}`}
+                      alt={`Preview ${index}`}
                     />
                     <div
-                    className={styles.preview_photos_container__remove_icon}
-                    onClick={() => handleRemovePreviewPhotoAva()}
+                      className={styles.preview_photos_container__remove_icon}
+                      onClick={() => handleRemovePreviewPhotoAva(index)}
                     >
-                 <span></span>
-                   </div>
+                      <span></span>
+                    </div>
                   </div>
-                )}
+                ))}
               {previewPhotoAva?.map((preview, index) => (
                 <div
                   key={index}
@@ -1451,71 +1455,66 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
             </div>
           </div>
           <div className={styles.blockContainer}>
-          <div className={styles.form_container__description_text}>
-          <ReactQuill
-          ref={quillRef2}
-             modules={{
-              toolbar: [
-                ['bold', 'italic', 'underline'], 
-                [{ list: 'bullet' }, { list: 'ordered' }], 
-               ],
-              clipboard: {
-                matchVisual: false,
-              },
-            }}
-              formats={[
-                'bold',
-                'italic',
-                'underline',                            
-                'list',
-               ]}
-              className={styles.form_container__textarea}
-              style={{
-                // resize: "none",
-                padding: "0rem",
-                border: "1px solid var(--blue-75BBFD)",
-                fontFamily: "var(--font-raleway)",
-                borderRadius: "6px",
-                fontSize: "16px",
-                fontStyle: "normal",
-                fontWeight: "var(--fw-400)",
-                lineHeight: "16px",
-                color: "var(---black-1D2E43)",
-                boxSizing: "border-box",
-                paddingBottom: "2.5rem",
-              }}
-              required
-              name="textBlock"
-              id="textBlock"
-              value={inputData.textBlock}
-              onChange={(value) => {
-                setInputData((prevInputData) => ({
-                  ...prevInputData,
-                  textBlock: value,
-                }));
-              }}
-              placeholder="Нет ограничения по символам"
-            />
-            <label
-              htmlFor="textBlock"
-              className={styles.form_container__textarea_label}
-            >
-              Текстовый блок
-            </label>
-          </div>
+            <div className={styles.form_container__description_text}>
+              <ReactQuill
+                ref={quillRef2}
+                modules={{
+                  toolbar: [
+                    ["bold", "italic", "underline"],
+                    [{ list: "bullet" }, { list: "ordered" }],
+                  ],
+                  clipboard: {
+                    matchVisual: false,
+                  },
+                }}
+                formats={["bold", "italic", "underline", "list"]}
+                className={styles.form_container__textarea}
+                style={{
+                  // resize: "none",
+                  padding: "0rem",
+                  border: "1px solid var(--blue-75BBFD)",
+                  fontFamily: "var(--font-raleway)",
+                  borderRadius: "6px",
+                  fontSize: "16px",
+                  fontStyle: "normal",
+                  fontWeight: "var(--fw-400)",
+                  lineHeight: "16px",
+                  color: "var(---black-1D2E43)",
+                  boxSizing: "border-box",
+                  paddingBottom: "2.5rem",
+                }}
+                required
+                name="textBlock"
+                id="textBlock"
+                value={inputData.textBlock}
+                onChange={(value) => {
+                  setInputData((prevInputData) => ({
+                    ...prevInputData,
+                    textBlock: value,
+                  }));
+                }}
+                placeholder="Нет ограничения по символам"
+              />
+              <label
+                htmlFor="textBlock"
+                className={styles.form_container__textarea_label}
+              >
+                Текстовый блок
+              </label>
+            </div>
           </div>
           {/* КОНСТРУКТОР */}
           {dynamicData && (
-          <div className={styles.inputs_container}>
-            {dynamicData.map((blockInputs, blockIndex) => (
-              <div key={blockIndex} className={styles.input_block}>
-                {/* {renderInputs(blockInputs, blockIndex)} */}
-                {Array.isArray(blockInputs) &&
+            <div className={styles.inputs_container}>
+              {dynamicData.map((blockInputs, blockIndex) => (
+                <div key={blockIndex} className={styles.input_block}>
+                  {/* {renderInputs(blockInputs, blockIndex)} */}
+                  {Array.isArray(blockInputs) &&
                     renderInputs(blockInputs, blockIndex)}
-              </div>
-            ))}
-          </div>
-             )}
+                </div>
+              ))}
+            </div>
+          )}
           <div className={styles.constructor_container}>
             <div className={styles.constructor_container__block}>
               {openConstructor ? (
@@ -1551,13 +1550,13 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
                     Добавить блок из библиотеки
                   </div>
                 </div>
-                ) : (
-                  <ConstructorPage
-                    data={data}
-                    handleClick={handleClick}
-                    // blocks={blocks}
-                  />
-                )}
+              ) : (
+                <ConstructorPage
+                  data={data}
+                  handleClick={handleClick}
+                  // blocks={blocks}
+                />
+              )}
             </div>
           </div>
           <div
