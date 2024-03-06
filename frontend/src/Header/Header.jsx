@@ -18,9 +18,8 @@ import { getZaprosData } from "../store/Slice/searchProjectMainSlice";
 import { searchArticleLeftGet } from "../store/Slice/searchArticlePublicLeftSlice";
 import img123 from "./img/Главная.png";
 import notDataPhoto from "./img/notData.png";
-import nameCompany from "../icons/nameCompany.svg"
-import nameCompany1 from "../icons/nameCompany1.svg"
-
+import nameCompany from "../icons/nameCompany.svg";
+import nameCompany1 from "../icons/nameCompany1.svg";
 
 // import { textEnter, textLeave, imageHover, specialHover } from "../store/Slice/cursorSlice";
 import { searchArticleRightGet } from "../store/Slice/searchArticlePublicRightSlice";
@@ -31,11 +30,12 @@ const Host = process.env.REACT_APP_SERVER_HOST;
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
-export default function Header({ handleMouseEnter,
+export default function Header({
+  handleMouseEnter,
   handleMouseLeave,
   handleMouseHover,
-  handleSpecialHover }) {
- 
+  handleSpecialHover,
+}) {
   const videoSource = {
     large: `${Host}/videos/main_company_full.mp4`,
     medium: `${Host}/videos/main_company_ipad.mp4`,
@@ -51,8 +51,11 @@ export default function Header({ handleMouseEnter,
   const [loadingArticle, setLoadingArticle] = useState(false);
 
   const cursorVariant = useSelector((state) => state.cursor);
+
   const { article, loading, error } = useSelector((state) => state.article);
-  // const articles = useSelector((state) => state.article.article);
+
+  const articles = useSelector((state) => state.article.article);
+
   const projects = useSelector((state) => state.searchproject.projects);
 
   const ArticleLeft = useSelector(
@@ -72,9 +75,6 @@ export default function Header({ handleMouseEnter,
   const isMobile = window.innerWidth <= 767;
 
   const imageSrc = isMobile ? nameCompany1 : nameCompany;
-  
-
-
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -138,15 +138,18 @@ export default function Header({ handleMouseEnter,
       const rect = el.getBoundingClientRect();
       const isSliderInView = rect.top <= window.innerHeight && rect.bottom >= 0;
 
-    // Обновляем состояние для включения/отключения вертикального скролла в зависимости от видимости слайдера
+      // Обновляем состояние для включения/отключения вертикального скролла в зависимости от видимости слайдера
       setEnableVerticalScroll(!isSliderInView);
 
-    // Проверяем различные условия скролла и обновляем состояние соответственно
+      // Проверяем различные условия скролла и обновляем состояние соответственно
       if (!loadingArticle) {
         if (isSliderInView && el.scrollLeft > 0) {
           setEnableVerticalScroll(false);
           setIsHorizontalScroll(false);
-        } else if (!isSliderInView && el.scrollLeft + el.clientWidth >= el.scrollWidth) {
+        } else if (
+          !isSliderInView &&
+          el.scrollLeft + el.clientWidth >= el.scrollWidth
+        ) {
           setEnableVerticalScroll(true);
           setIsHorizontalScroll(false);
         } else if (!isSliderInView && el.scrollLeft <= 0) {
@@ -162,7 +165,7 @@ export default function Header({ handleMouseEnter,
         }
       }
     }
-     // Проверяем, находится ли элемент слайдера у края справа
+    // Проверяем, находится ли элемент слайдера у края справа
     if (el) {
       const isRightEdge = el.scrollLeft + el.clientWidth >= el.scrollWidth;
       setIsAtRightEdge(isRightEdge);
@@ -174,7 +177,7 @@ export default function Header({ handleMouseEnter,
     const isScrollingUp = e.deltaY < 0;
     const isAtTop = el.scrollTop <= 0;
     const isAtBottom = el.scrollTop + el.clientHeight >= el.scrollHeight;
-    
+
     // Если скроллим вверх и достигли верхней границы
     if (isScrollingUp && isAtTop) {
       setEnableVerticalScroll(false);
@@ -193,18 +196,18 @@ export default function Header({ handleMouseEnter,
       //     top: document.body.scrollHeight,
       //     behavior: "smooth",
       //   });
-        e.preventDefault(); // Предотвращаем дальнейший скролл
+      e.preventDefault(); // Предотвращаем дальнейший скролл
       // }
     }
   };
-  
+
   // // Добавьте обработчик события прокрутки для горизонтального скроллинга
   // const onHorizontalScroll = (e) => {
   //   const el = sliderCardRef.current;
   //   const isScrollingLeft = e.deltaX < 0;
   //   const isAtLeft = el.scrollLeft <= 0;
   //   const isAtRight = el.scrollLeft + el.clientWidth >= el.scrollWidth;
-  
+
   //   // Если скроллим влево и достигли левой границы
   //   if (isScrollingLeft && isAtLeft) {
   //     // Включаем горизонтальный скролл
@@ -221,7 +224,6 @@ export default function Header({ handleMouseEnter,
   //     e.preventDefault();
   //   }
   // };
-  
 
   const onWheel = (e) => {
     const el = sliderCardRef.current;
@@ -230,10 +232,14 @@ export default function Header({ handleMouseEnter,
     const isAtBottom = el.scrollTop + el.clientHeight >= el.scrollHeight;
     const isAtLeftEdge = el.scrollLeft <= 0;
     const isAtTop = el.scrollTop <= 0;
-    
-  
+
     // Проверяем различные условия скролла и обновляем состояние соответственно
-    if (isScrollingRight && isAtRightEdge && isAtBottom && !isHorizontalScroll) {
+    if (
+      isScrollingRight &&
+      isAtRightEdge &&
+      isAtBottom &&
+      !isHorizontalScroll
+    ) {
       setIsHorizontalScroll(false); // Горизонтальный скроллинг завершился
       el.scrollTo({
         top: el.scrollTop + e.deltaY,
@@ -251,17 +257,27 @@ export default function Header({ handleMouseEnter,
           top: el.scrollTop + e.deltaY,
           behavior: "smooth",
         });
-      } else if (isAtRightEdge && isAtBottom && e.deltaY < 0 && !isHorizontalScroll) {
+      } else if (
+        isAtRightEdge &&
+        isAtBottom &&
+        e.deltaY < 0 &&
+        !isHorizontalScroll
+      ) {
         setIsHorizontalScroll(false); // Разрешаем вертикальный скроллинг
         el.scrollLeft += e.deltaY;
-        setEnableVerticalScroll(true);    
-      } else if (isAtRightEdge && isAtBottom && e.deltaY > 0 && !isHorizontalScroll) {
+        setEnableVerticalScroll(true);
+      } else if (
+        isAtRightEdge &&
+        isAtBottom &&
+        e.deltaY > 0 &&
+        !isHorizontalScroll
+      ) {
         setIsHorizontalScroll(true); // Отключаем вертикальный скроллинг
         el.scrollTo({
           top: el.scrollTop + e.deltaY,
           behavior: "smooth",
         });
-        setEnableVerticalScroll(false);   
+        setEnableVerticalScroll(false);
       } else {
         // В противном случае предотвращаем дальнейший скролл
         e.preventDefault();
@@ -271,7 +287,6 @@ export default function Header({ handleMouseEnter,
       el.scrollLeft += e.deltaY;
     }
   };
-
 
   useEffect(() => {
     const el = sliderCardRef.current;
@@ -289,7 +304,6 @@ export default function Header({ handleMouseEnter,
     }
   }, [loading, loadingArticle, scrollingMode]);
 
- 
   // if (error) {
   //   return (
   //     <div>
@@ -328,7 +342,7 @@ export default function Header({ handleMouseEnter,
                 id="bg-video"
                 className={styles.bg_video}
               >
-                <source src={videoSrc} type="video/mp4"/>
+                <source src={videoSrc} type="video/mp4" />
               </video>
             )}
           </div>
@@ -366,77 +380,123 @@ export default function Header({ handleMouseEnter,
             className={styles.sliderHeader_container}
           >
             <NavLink to="/company#table-header-anchor">
-            <SliderHeader />
+              <SliderHeader />
             </NavLink>
           </div>
           <div className={styles.swiper_container}>
-            <SwiperContainer article1={MapArticle} article2={MapArticleRight} />
+            <SwiperContainer
+              article1={articles.filter((article) =>
+                MapArticle.some((el) => el.id === article.id)
+              )}
+              article2={articles.filter((article) =>
+                MapArticleRight.some((el) => el.id === article.id)
+              )}
+            />
           </div>
           <div className={styles.card_container}>
-            {MapArticle && MapArticle.length > 0 ? (
+            {/* {MapArticle && MapArticle.length > 0 ? (
               MapArticle.map((el) => {
-                const firstPhoto = el.imageTitle.split(", ")[0];
+                const firstPhoto = el.imageTitle.split(", ")[0]; */}
+            {articles && articles.length > 0 ? (
+              <>
+                {articles
+                  .slice()
+                  .reverse()
+                  .map((article) => {
+                    const isArticleLeft = MapArticle.some(
+                      (el) => el.id === article.id
+                    );
+                    // Если статья соответствует ArticleLeft, то отображаем ее
+                    if (isArticleLeft) {
+                      const imagePathsForArticle = article.imageTitle
+                        ? article.imageTitle.split(",").map((el) => el.trim())
+                        : [];
+                      const firstPhoto = imagePathsForArticle[0] || null;
+                      const encodedFileName = firstPhoto
+                        ? encodeURIComponent(firstPhoto)
+                        : null;
+                      const defaultImagePath = img123;
+                      const firstImagePath = encodedFileName
+                        ? `${Host}/images/imageArticle/${encodedFileName}`
+                        : defaultImagePath;
 
-                return (
-                  <Link to={`/publication/${el.id}`} key={el.id}>
-                    <div key={el.id} className={styles.card_item_1}>
-                      <div className={styles.card_img}>
-                        <img
-                          onMouseEnter={handleMouseHover}
-                          onMouseLeave={handleMouseLeave}
-                          className={styles.img_1}
-                          src={`${Host}/images/imageArticle/${firstPhoto}`}
-                          alt="photo1"
-                          loading="lazy"
-                        />
-                      </div>
-                      <div className={styles.card_text}>
-                        <span className={styles.card_text_title}>
-                          {el.title}
-                        </span>
-                      </div>
-                      <div className={styles.wrapper_card_text_svg}>
-                        <span className={styles.card_text_city}>{el.city}</span>
-                        <span className={styles.card_text_svg}>
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="4"
-                            height="4"
-                            viewBox="0 0 4 4"
-                            fill="none"
-                          >
-                            <circle cx="2" cy="2" r="2" fill="#566272" />
-                          </svg>
-                        </span>
-                        <span className={styles.card_text_dataMonthYear}>
-                          {el.dataMonthYear}
-                        </span>
-                      </div>
-                      <button
-                        onMouseEnter={handleMouseEnter}
-                        onMouseLeave={handleMouseLeave}
-                        className={styles.card_button}
-                      >
-                        <svg
-                          width="32"
-                          height="32"
-                          viewBox="0 0 32 32"
-                          fill="currentColor"
-                          xmlns="http://www.w3.org/2000/svg"
+                      return (
+                        <Link
+                          to={`/publication/${article.id}`}
+                          key={article.id}
                         >
-                          <circle cx="16" cy="16" r="16" fill="#566272" />
-                          <path
-                            d="M6 16H16M26 16H16M16 16V6M16 16V26"
-                            stroke="#F6F6F6"
-                            strokeWidth="2"
-                            strokeLinecap="square"
-                          />
-                        </svg>
-                      </button>
+                          <div key={article.id} className={styles.card_item_1}>
+                            <div className={styles.card_img}>
+                              <img
+                                onMouseEnter={handleMouseHover}
+                                onMouseLeave={handleMouseLeave}
+                                className={styles.img_1}
+                                // src={`${Host}/images/imageArticle/${firstPhoto}`}
+                                src={firstImagePath}
+                                alt="photo1"
+                                loading="lazy"
+                              />
+                            </div>
+                            <div className={styles.card_text}>
+                              <span className={styles.card_text_title}>
+                                {article.title}
+                              </span>
+                            </div>
+                            <div className={styles.wrapper_card_text_svg}>
+                              <span className={styles.card_text_city}>
+                                {article.city}
+                              </span>
+                              <span className={styles.card_text_svg}>
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  width="4"
+                                  height="4"
+                                  viewBox="0 0 4 4"
+                                  fill="none"
+                                >
+                                  <circle cx="2" cy="2" r="2" fill="#566272" />
+                                </svg>
+                              </span>
+                              <span className={styles.card_text_dataMonthYear}>
+                                {article.dataMonthYear}
+                              </span>
+                            </div>
+                            <button
+                              onMouseEnter={handleMouseEnter}
+                              onMouseLeave={handleMouseLeave}
+                              className={styles.card_button}
+                            >
+                              <svg
+                                width="32"
+                                height="32"
+                                viewBox="0 0 32 32"
+                                fill="currentColor"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <circle cx="16" cy="16" r="16" fill="#566272" />
+                                <path
+                                  d="M6 16H16M26 16H16M16 16V6M16 16V26"
+                                  stroke="#F6F6F6"
+                                  strokeWidth="2"
+                                  strokeLinecap="square"
+                                />
+                              </svg>
+                            </button>
+                          </div>
+                        </Link>
+                      );
+                    } else {
+                      return null; // Не отображаем ничего, если статья не соответствует ArticleLeft
+                    }
+                  })}
+                {MapArticle.length === 0 && ( // Отображаем заглушку, если MapArticle пустой
+                  <div className={styles.card_item_1}>
+                    <div className={styles.card_img}>
+                      <img className={styles.img_1} src={img123} alt="photo2" />
                     </div>
-                  </Link>
-                );
-              })
+                  </div>
+                )}
+              </>
             ) : (
               <div className={styles.card_item_1}>
                 <div className={styles.card_img}>
@@ -444,68 +504,107 @@ export default function Header({ handleMouseEnter,
                 </div>
               </div>
             )}
+            {articles && articles.length > 0 ? (
+              <>
+                {articles
+                  .slice()
+                  .reverse()
+                  .map((article) => {
+                    const isArticRight = MapArticleRight.some(
+                      (el) => el.id === article.id
+                    );
+                    // Если статья соответствует ArticleRight, то отображаем ее
+                    if (isArticRight) {
+                      const imagePathsForArticleRight = article.imageTitle
+                        ? article.imageTitle.split(",").map((el) => el.trim())
+                        : [];
+                      const firstPhotoRight =
+                        imagePathsForArticleRight[0] || null;
+                      const encodedFileName = firstPhotoRight
+                        ? encodeURIComponent(firstPhotoRight)
+                        : null;
+                      const defaultImagePath = img123;
+                      const firstImagePathRight = encodedFileName
+                        ? `${Host}/images/imageArticle/${encodedFileName}`
+                        : defaultImagePath;
 
-            {MapArticleRight && MapArticleRight.length > 0 ? (
-              MapArticleRight.map((el) => {
-                // your existing code
-                const firstPhoto = el.imageTitle.split(", ")[0];
-
-                return (
-                  <Link to={`/publication/${el.id}`} key={el.id}>
-                    <div key={el.id} className={styles.card_item_2}>
-                      <div className={styles.card_img}>
-                        <img
-                          onMouseEnter={handleMouseHover}
-                          onMouseLeave={handleMouseLeave}
-                          className={styles.img_2}
-                          loading="lazy"
-                          src={`${Host}/images/imageArticle/${firstPhoto}`}
-                          alt="photo1"
-                        />
-                      </div>
-                      <div className={styles.card_text}>
-                        <span className={styles.card_text_title}>
-                          {el.title}
-                        </span>
-                      </div>
-                      <div className={styles.wrapper_card_text_svg}>
-                        <span className={styles.card_text_city}>{el.city}</span>
-                        <span className={styles.card_text_svg}>
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="4"
-                            height="4"
-                            viewBox="0 0 4 4"
-                            fill="none"
-                          >
-                            <circle cx="2" cy="2" r="2" fill="#566272" />
-                          </svg>
-                        </span>
-                        <span className={styles.card_text_dataMonthYear}>
-                          {el.dataMonthYear}
-                        </span>
-                      </div>
-                      <button className={`${styles.card_button} ${styles.extra_button_class}`}>
-                        <svg
-                          width="32"
-                          height="32"
-                          viewBox="0 0 32 32"
-                          fill="currentColor"
-                          xmlns="http://www.w3.org/2000/svg"
+                      return (
+                        <Link
+                          to={`/publication/${article.id}`}
+                          key={article.id}
                         >
-                          <circle cx="16" cy="16" r="16" fill="#566272" />
-                          <path
-                            d="M6 16H16M26 16H16M16 16V6M16 16V26"
-                            stroke="#F6F6F6"
-                            strokeWidth="2"
-                            strokeLinecap="square"
-                          />
-                        </svg>
-                      </button>
+                          <div key={article.id} className={styles.card_item_2}>
+                            <div className={styles.card_img}>
+                              <img
+                                onMouseEnter={handleMouseHover}
+                                onMouseLeave={handleMouseLeave}
+                                className={styles.img_2}
+                                // src={`${Host}/images/imageArticle/${firstPhoto}`}
+                                src={firstImagePathRight}
+                                alt="photo2"
+                                loading="lazy"
+                              />
+                            </div>
+                            <div className={styles.card_text}>
+                              <span className={styles.card_text_title}>
+                                {article.title}
+                              </span>
+                            </div>
+                            <div className={styles.wrapper_card_text_svg}>
+                              <span className={styles.card_text_city}>
+                                {article.city}
+                              </span>
+                              <span className={styles.card_text_svg}>
+                                <svg
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  width="4"
+                                  height="4"
+                                  viewBox="0 0 4 4"
+                                  fill="none"
+                                >
+                                  <circle cx="2" cy="2" r="2" fill="#566272" />
+                                </svg>
+                              </span>
+                              <span className={styles.card_text_dataMonthYear}>
+                                {article.dataMonthYear}
+                              </span>
+                            </div>
+                            <button
+                              onMouseEnter={handleMouseEnter}
+                              onMouseLeave={handleMouseLeave}
+                              className={`${styles.card_button} ${styles.extra_button_class}`}
+                            >
+                              <svg
+                                width="32"
+                                height="32"
+                                viewBox="0 0 32 32"
+                                fill="currentColor"
+                                xmlns="http://www.w3.org/2000/svg"
+                              >
+                                <circle cx="16" cy="16" r="16" fill="#566272" />
+                                <path
+                                  d="M6 16H16M26 16H16M16 16V6M16 16V26"
+                                  stroke="#F6F6F6"
+                                  strokeWidth="2"
+                                  strokeLinecap="square"
+                                />
+                              </svg>
+                            </button>
+                          </div>
+                        </Link>
+                      );
+                    } else {
+                      return null; // Не отображаем ничего, если статья не соответствует ArticRight
+                    }
+                  })}
+                {MapArticleRight.length === 0 && ( // Отображаем заглушку, если MapArticleRight пустой
+                  <div className={styles.card_item_2}>
+                    <div className={styles.card_img}>
+                      <img className={styles.img_2} src={img123} alt="photo2" />
                     </div>
-                  </Link>
-                );
-              })
+                  </div>
+                )}
+              </>
             ) : (
               <div className={styles.card_item_2}>
                 <div className={styles.card_img}>
@@ -551,7 +650,7 @@ export default function Header({ handleMouseEnter,
         </div>
         <div className={styles.main_project}>
           <Swiper
-           onSlideChange={(swiper) => setCurrentSlideIndex(swiper.activeIndex)}
+            onSlideChange={(swiper) => setCurrentSlideIndex(swiper.activeIndex)}
             className={styles.slider_card_container_project}
             id="slider_card_container_project"
             ref={sliderCardRef}
@@ -652,7 +751,6 @@ export default function Header({ handleMouseEnter,
                           </div>
                           <div className={styles.project__address__svg}>
                             <svg
-                              
                               xmlns="http://www.w3.org/2000/svg"
                               width="2"
                               height="2"
