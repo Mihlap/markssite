@@ -44,6 +44,10 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
   const [isDropPhotoVisible, setIsDropPhotoVisible] = useState(true);
   const [isFocused, setIsFocused] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingDropPhoto, setIsLoadingDropPhoto] = useState(false);
+  const [isLoadingOpenImage, setIsLoadingOpenImage] = useState(false);
+  const [isLoadingCloseImage, setIsLoadingCloseImage] = useState(false);
   const [inputData, setInputData] = useState({
     title: "",
     author: "",
@@ -61,12 +65,7 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
     imageAuthor: "",
   });
 
-  const [isLoading, setIsLoading] = useState(false);
-  const [isLoadingDropPhoto, setIsLoadingDropPhoto] = useState(false);
-  const [isLoadingOpenImage, setIsLoadingOpenImage] = useState(false);
-  const [isLoadingCloseImage, setIsLoadingCloseImage] = useState(false);
-
-  const quillRef1 = useRef(null);
+   const quillRef1 = useRef(null);
   const quillRef2 = useRef(null);
 
   // Стили для eact-quill
@@ -160,10 +159,9 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
               ? editArticleData.imageClose
               : "",
           imageAuthor:
-              editArticleData.imageAuthor &&
-              typeof editArticleData.imageAuthor === "string"
-                ? editArticleData.imageAuthor.split(",")
-                : [],
+              editArticleData.imageAuthor !== undefined
+              ? editArticleData.imageAuthor
+              : "",
           imageTitle:
             editArticleData.imageTitle &&
             typeof editArticleData.imageTitle === "string"
@@ -937,8 +935,8 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
       </div>
     );
   };
-
   // console.log(editArticleData, "<<--editArticleData");
+
   return (
     <div className={styles.form_container}>
       {showNotification && (
@@ -1261,7 +1259,7 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
             <div
             // style={{ display: isPhotoAvaVisible ? "block" : "none" }}
             >
-               {!isLoading && (
+               {/* {!isLoading && ( */}
               <label className={styles.slider_container__customFileUpload}>
                 <input
                   type="file"
@@ -1308,7 +1306,7 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
                   Загрузить изображения
                 </div>
               </label>
-               )}
+              {/* //  )}  */}
               {isLoading && (
                 <div className={styles.preview_photos_container__loading}>
                   Загрузка . . .
@@ -1316,15 +1314,31 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
               )}
             </div>
             <div>
-              {inputData.imageAuthor &&
-                inputData.imageAuthor.map((image, index) => (
+            {inputData.imageAuthor && previewPhotoAva.length === 0 && inputData.imageAuthor.length > 0 && (
+                <div              
+                  className={styles.preview_photos_container__block}
+                >
+                  <img
+                    className={styles.preview_photos_container__img}
+                    src={`${Host}/images/imageArticle/${inputData.imageAuthor}`}
+                    alt=""
+                  />
                   <div
-                    key={index}
-                    className={styles.preview_photos_container__block}
+                    className={styles.preview_photos_container__remove_icon}
+                    onClick={() => handleRemovePreviewPhotoAva()}
+                  >
+                    <span></span>
+                  </div>
+                </div>
+              )}
+              {previewPhotoAva?.map((preview, index) => (
+               <div
+                  key={index}
+                  className={styles.preview_photos_container__block}
                   >
                     <img
                       className={styles.preview_photos_container__img}
-                      src={`${Host}/images/imageArticle/${image}`}
+                      src={preview || ""}
                       alt={`Preview ${index}`}
                     />
                     <div
@@ -1334,25 +1348,7 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
                       <span></span>
                     </div>
                   </div>
-                ))}
-              {previewPhotoAva?.map((preview, index) => (
-                <div
-                  key={index}
-                  className={styles.preview_photos_container__block}
-                >
-                  <img
-                    className={styles.preview_photos_container__img}
-                    src={preview}
-                    alt={`Preview ${index}`}
-                  />
-                  <div
-                    className={styles.preview_photos_container__remove_icon}
-                    onClick={() => handleRemovePreviewPhotoAva(index)}
-                  >
-                    <span></span>
-                  </div>
-                </div>
-              ))}
+                ))}               
             </div>
           </div>
           <div

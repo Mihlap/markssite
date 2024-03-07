@@ -62,10 +62,9 @@ updatedDropPhotosAva.splice(index, 1);
 
   setInputData((prev) => ({
     ...prev,
-    photoAva: updatedDropPhotosAva,
-    imageAuthor: updatedImageAuthor,
+    // photoAva: updatedDropPhotosAva,
+    imageAuthor: updatedImageAuthor || [],
   }));
-
 };
 
 export const removePreviewPhotoOpen = (
