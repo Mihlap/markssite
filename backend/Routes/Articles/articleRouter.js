@@ -146,7 +146,7 @@ router.put(
      // Получение изображений для сохранения
      const imagesToKeep = [
       ...imageTitlesArrayFromClient,
-      currentImageAuthors,
+      imageAuthors,
       imageOpens,
       imageCloses,
     ].filter(Boolean);
