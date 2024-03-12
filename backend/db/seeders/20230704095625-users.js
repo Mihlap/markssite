@@ -11,6 +11,8 @@ module.exports = {
     const hashpassWord2 = await bcrypt.hash(password2, 10);
     const password3 = 'Pirlo21';
     const hashpassWord3 = await bcrypt.hash(password3, 10);
+    const password4 = 'Portal@2112!';
+    const hashpassWord4 = await bcrypt.hash(password4, 10);
 
     await queryInterface.bulkInsert(
       'Users',
@@ -30,6 +32,12 @@ module.exports = {
         {
           userName: 'manager',
           hashpass: hashpassWord3,
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          userName: 'hr778',
+          hashpass: hashpassWord4,
           createdAt: new Date(),
           updatedAt: new Date(),
         },
