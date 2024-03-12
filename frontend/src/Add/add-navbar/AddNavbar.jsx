@@ -13,13 +13,17 @@ import { logoutUser } from "../../store/Slice/authSlice";
 import { resetCurrentPage } from "../../store/Slice/userSlice";
 
 export default function AddNavbar({ user, handleReturn }) {
+  
   const dispatch = useDispatch();
-  const [selectedItem, setSelectedItem] = useState(null);
-  const navigate = useNavigate();
-  const isObezyankaaUser = user.name === "obezyankaa";
-  // console.log(user);
-  // console.log(isObezyankaaUser);
 
+  const [selectedItem, setSelectedItem] = useState(null);  
+  const navigate = useNavigate();
+
+  const isObezyankaaUser = user?.name === "obezyankaa";
+  const isPokemonUser = user?.name === "Pokemon";
+  const isHr778User = user?.name === "hr778";
+  const isManagerUser = user?.name === "manager";
+ 
   useEffect(() => {
     const storedSelectedItem = localStorage.getItem("selectedItem");
     if (storedSelectedItem) {
@@ -42,7 +46,7 @@ export default function AddNavbar({ user, handleReturn }) {
     } catch (error) {
       console.error("Ошибка при выходе из системы", error);
     }
-  };
+  }; 
 
   return (
     <>
@@ -53,6 +57,8 @@ export default function AddNavbar({ user, handleReturn }) {
               MARKS GROUP
             </div>
             <ul className={styles.add_navbar_container__list}>
+            {isPokemonUser || isObezyankaaUser || isManagerUser ? (
+                <>
               <li className={styles.add_navbar_container__item_li}>
                 <svg
                   width="32"
@@ -183,7 +189,47 @@ export default function AddNavbar({ user, handleReturn }) {
                   О компании
                 </Link>
               </li>
-              {user?.name === "obezyankaa" || user?.name === "Pokemon" ? (
+              </>
+              ) : null}
+              {(isPokemonUser || isObezyankaaUser || isHr778User) && (
+                <li className={styles.add_navbar_container__item_li}>
+                  <svg
+                    width="32"
+                    height="32"
+                    viewBox="0 0 32 32"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className={`${
+                      selectedItem === "add-hr-portal" ? styles.active : ""
+                    } 
+                    ${styles.add_navbar_container__item_svg} ${
+                      selectedItem === "add-hr-portal" ? styles.activeIcon : ""
+                    }`}
+                  >
+                    <g id="hr">
+                      <path
+                        id="Subtract"
+                        fillRule="evenodd"
+                        clipRule="evenodd"
+                        d="M25.3333 4H6.66667C5.2 4 4 5.2 4 6.66667V25.3333C4 26.8 5.2 28 6.66667 28H25.3333C26.8 28 28 26.8 28 25.3333V6.66667C28 5.2 26.8 4 25.3333 4ZM7 21H10.3105V13.1609L14.8758 21H17.0985L21.7066 13.1609V21H25V10H20.045L16.0021 16.8709L12.0236 10H7V21Z"
+                      />
+                    </g>
+                  </svg>
+
+                  <Link
+                    className={`${styles.add_navbar_container__item} ${
+                      selectedItem === "add-hr-portal" ? styles.active : ""
+                    }`}
+                    to="./add-hr-portal"
+                    onClick={(event) =>
+                      handleItemClick(event, "add-hr-portal", "./add-hr-portal")
+                    }
+                  >
+                    HR портал
+                  </Link>
+                </li>
+              )}
+              {isPokemonUser || isObezyankaaUser ? (
                 <li className={styles.add_navbar_container__item_li}>
                   <svg
                     className={`${
