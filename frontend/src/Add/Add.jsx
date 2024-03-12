@@ -7,6 +7,7 @@ import AddProject from "./add-project/AddProject";
 import AddArticles from "./add-articles/AddArticles";
 import AddCompany from "./add-about-the-company/AddCompany";
 import Applications from "./applications/Applications";
+import AddHRPortal from "./add-hr-portal/AddHRPortal";
 
 export default function Add({ user, onPageChange, handleReturn }) {
 
@@ -22,6 +23,7 @@ export default function Add({ user, onPageChange, handleReturn }) {
         <Route path="/home" element={<HomeAdmin />} />
         <Route path="add-a-project" element={<AddProject user={user} />} />
         <Route path="add-a-articles" element={<AddArticles user={user} />} />
+        <Route path="add-hr-portal" element={<AddHRPortal user={user} />} />
         <Route path="add-a-company" element={<AddCompany />} />
         <Route path="add-a-applications" element={<Applications />} />
       </Routes>
