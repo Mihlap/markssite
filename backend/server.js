@@ -18,6 +18,7 @@ const searchArticleRight = require('./Routes/Articles/searchArticleRightRouter')
 const mailRouter = require('./Routes/mailRouter');
 const toggleRouter = require('./Routes/toggle/toggleRouter');
 const videoRouter = require('./Routes/videoRouter');
+const vacancyRouter = require('./Routes/vacancyRouter');
 
 
 // const { createProxyMiddleware } = require('http-proxy-middleware');
@@ -113,6 +114,7 @@ app.use('/search-articles', searchArticleRight);
 app.use('/api-mail', mailRouter);
 app.use('/api/toggle', toggleRouter);
 app.use('/api/video', videoRouter);
+app.use('/api-vacancy', vacancyRouter);
 
 // const sslKeyPath = './SSL Marksgroup/marksgroup.ru.key';
 // const sslCertPath = './SSL Marksgroup/certificate.crt';
