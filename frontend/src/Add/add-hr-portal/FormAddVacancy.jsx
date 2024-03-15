@@ -9,7 +9,7 @@ import { selectBlocks } from "./utils.js";
 import styles from "./FormAddVacancy.module.scss";
 // import customStyles from "../add-project/formAdd/utils/customStyles.js";
 
-import { changeHandler } from "../add-project/formAdd/utils/formHelpers";
+// import { changeHandler } from "../add-project/formAdd/utils/formHelpers";
 
 export default function FormAddVacancy({ setIsModalOpen }) {
   const [showNotification, setShowNotification] = useState(false);
@@ -30,7 +30,7 @@ export default function FormAddVacancy({ setIsModalOpen }) {
     busyness: "",
     workMode: "",
     skills: "",
-    benefits: [],
+    benefits: "",
   });
 
   const [isFocused, setIsFocused] = useState({
@@ -75,11 +75,6 @@ export default function FormAddVacancy({ setIsModalOpen }) {
     event.preventDefault();
     setLoading(true);
     try {
-    //       // Преобразуем массив benefits в строку, разделенную запятыми
-    // const benefitsValue = formData.benefits.join(", ");
-    // // Обновляем объект формы данных перед отправкой на сервер
-    // const updatedFormData = { ...formData, benefits: benefitsValue };
-    // await dispatch(addVacancy(updatedFormData));
       await dispatch(addVacancy(formData));
       // Очищаем форму после успешной отправки
       setFormData({
@@ -92,7 +87,7 @@ export default function FormAddVacancy({ setIsModalOpen }) {
         location: "",
         busyness: "",
         workMode: "",
-        skills: "",
+        skills: [],
         benefits: [],
       });
       setIsModalOpen(false); // Закрываем модальное окно
@@ -114,9 +109,18 @@ export default function FormAddVacancy({ setIsModalOpen }) {
   }
 
   const handleChangeSelect = (value, name) => {
+    let selectedValue;
+    if (Array.isArray(value)) {
+      // Преобразуем массив объектов в массив строк значений value
+      const selectedValues = value.map((option) => option.value);
+      // Преобразуем массив строк значений в строку, разделенную запятыми
+      selectedValue = selectedValues.join(", ");
+    } else {
+      selectedValue = value;
+    }
     setFormData((prev) => ({
       ...prev,
-      [name]: value.value, // Обновляем значение соответствующего поля в состоянии formData
+      [name]: selectedValue,
     }));
   };
 
@@ -135,10 +139,7 @@ export default function FormAddVacancy({ setIsModalOpen }) {
       <div className={styles.form_container__title}>Новая вакансия</div>
 
       <div className={styles.form_container__block_form}>
-        <form
-          className={styles.form_container__form}
-           onSubmit={handleSubmit}
-        >
+        <form className={styles.form_container__form} onSubmit={handleSubmit}>
           {/* первый серый блок с инфой  */}
           <div className={styles.form_container__block_gray_one}>
             <div className={`${styles.form__group} ${styles.field}`}>
@@ -156,7 +157,7 @@ export default function FormAddVacancy({ setIsModalOpen }) {
                     [name]: value,
                   }));
                 }}
-                oComplete="off"
+                oтComplete="off"
                 required
               />
               <label htmlFor="title" className={styles.form__label}>
@@ -172,224 +173,112 @@ export default function FormAddVacancy({ setIsModalOpen }) {
                       : ""
                   }`}
                 >
-                  {block.name === "benefits" ? (
-                    <Select
-                      className={`${styles.form__group} ${styles.field}`}
-                      id={`${block.name}-input`}
-                      name={block.name}
-                      onFocus={handleFocus}
-                      onBlur={handleBlur}
-                      isMulti={true}
-                      options={block.options}
-                      required
-                      value={block.options.find(
-                        (option) => option.value === formData[block.name]
-                      )}
-                      placeholder={block.label}
-                      onChange={(selectedOptions) => {
-                        const selectedValues = selectedOptions.map(
-                          (option) => option.value
-                        );
-                        handleChangeSelect(selectedValues, block.name);
-                      }}
-                      isSearchable={false}
-                      isClearable={false}
-                      menuShouldScrollIntoView={false}
-                      styles={{
-                        container: (provided) => ({
-                          ...provided,
-                          border: "none",
-                          width: "100%",
-                          // maxWidth: '28rem',
-                        }),
-                        control: (provided, state) => ({
-                          ...provided,
-                          border: "none",
+                  <Select
+                    className={`${styles.form__group} ${styles.field}`}
+                    id={`${block.name}-input`}
+                    name={block.name}
+                    onFocus={handleFocus}
+                    onBlur={handleBlur}
+                    isMulti={
+                      block.name === "benefits" || block.name === "skills"
+                    }
+                    options={block.options}
+                    required
+                    value={block.options.find(
+                      (option) => option.value === formData[block.name]
+                    )}
+                    placeholder={block.label}
+                    onChange={(value) => handleChangeSelect(value, block.name)}
+                    isSearchable={false}
+                    isClearable={false}
+                    menuShouldScrollIntoView={false}
+                    styles={{
+                      container: (provided) => ({
+                        ...provided,
+                        border: "none",
+                        width: "100%",
+                        // maxWidth: '28rem',
+                      }),
+                      control: (provided, state) => ({
+                        ...provided,
+                        border: "none",
+                        backgroundColor: "transparent",
+                        boxShadow: state.isFocused
+                          ? "none"
+                          : provided.boxShadow,
+                        borderBottom: `1px solid ${
+                          state.isFocused ? "#75BBFD" : "#959DA6"
+                        }`,
+                        borderColor: "transparent",
+                        "&:hover": {
+                          borderBottomColor: "1px solid",
+                        },
+                      }),
+                      indicatorSeparator: (provided) => ({
+                        ...provided,
+                        display: "none",
+                      }),
+                      multiValue: (provided) => ({
+                        ...provided,
+                        backgroundColor: "transparent",
+                      }),
+                      singleValue: (provided) => ({
+                        ...provided,
+                        color: "#959DA6",
+                        marginLeft: -5,
+                      }),
+                      placeholder: (provided) => ({
+                        ...provided,
+                        marginLeft: -5,
+                        color: "#959DA6",
+                      }),
+                      option: (provided, state) => ({
+                        ...provided,
+                        backgroundColor: state.isFocused
+                          ? "#75BBFD"
+                          : "transparent",
+                        color: state.isFocused ? "white" : "inherit",
+                      }),
+                      dropdownIndicator: (provided, state) => ({
+                        ...provided,
+                        transform: state.selectProps.menuIsOpen
+                          ? "rotate(180deg)"
+                          : null,
+                        transition: "transform 0.3s ease-in-out",
+                        color: state.isFocused ? "#75BBFD" : "#C0C5CB",
+                      }),
+                      menuList: (provided) => ({
+                        ...provided,
+                        "&::-webkit-scrollbar": {
+                          width: "4px",
+                        },
+                        "&::-webkit-scrollbar-thumb": {
+                          backgroundColor: "#C0C5CB",
+                          borderRadius: "4px",
+                        },
+                        "&::-webkit-scrollbar-track": {
                           backgroundColor: "transparent",
-                          boxShadow: state.isFocused
-                            ? "none"
-                            : provided.boxShadow,
-                          borderBottom: `1px solid ${
-                            state.isFocused ? "#75BBFD" : "#959DA6"
-                          }`,
-                          borderColor: "transparent",
-                          "&:hover": {
-                            borderBottomColor: "1px solid",
-                          },
-                        }),
-                        indicatorSeparator: (provided) => ({
-                          ...provided,
-                          display: "none",
-                        }),
-                        multiValue: (provided) => ({
-                          ...provided,
+                        },
+                        // Для Microsoft Edge
+                        "&::-ms-scrollbar": {
+                          width: "4px",
+                        },
+                        "&::-ms-scrollbar-thumb": {
+                          backgroundColor: "#C0C5CB",
+                          borderRadius: "4px",
+                        },
+                        "&::-ms-scrollbar-track": {
                           backgroundColor: "transparent",
-                        }),
-                        singleValue: (provided) => ({
-                          ...provided,
-                          color: "#959DA6",
-                          marginLeft: -5,
-                        }),
-                        placeholder: (provided) => ({
-                          ...provided,
-                          marginLeft: -5,
-                          color: "#959DA6",
-                        }),
-                        option: (provided, state) => ({
-                          ...provided,
-                          backgroundColor: state.isFocused
-                            ? "#75BBFD"
-                            : "transparent",
-                          color: state.isFocused ? "white" : "inherit",
-                        }),
-                        dropdownIndicator: (provided, state) => ({
-                          ...provided,
-                          transform: state.selectProps.menuIsOpen
-                            ? "rotate(180deg)"
-                            : null,
-                          transition: "transform 0.3s ease-in-out",
-                          color: state.isFocused ? "#75BBFD" : "#C0C5CB",
-                        }),
-                        menuList: (provided) => ({
-                          ...provided,
-                          "&::-webkit-scrollbar": {
-                            width: "4px",
-                          },
-                          "&::-webkit-scrollbar-thumb": {
-                            backgroundColor: "#C0C5CB",
-                            borderRadius: "4px",
-                          },
-                          "&::-webkit-scrollbar-track": {
-                            backgroundColor: "transparent",
-                          },
-                          // Для Microsoft Edge
-                          "&::-ms-scrollbar": {
-                            width: "4px",
-                          },
-                          "&::-ms-scrollbar-thumb": {
-                            backgroundColor: "#C0C5CB",
-                            borderRadius: "4px",
-                          },
-                          "&::-ms-scrollbar-track": {
-                            backgroundColor: "transparent",
-                          },
-                          margin: "6px",
-                        }),
-                        menu: (provided) => ({
-                          ...provided,
-                          boxShadow: "none",
-                          backgroundColor: "#EBECEE",
-                        }),
-                      }}
-                    />
-                  ) : (
-                    <Select
-                      className={`${styles.form__group} ${styles.field}`}
-                      id={`${block.name}-input`}
-                      name={block.name}
-                      onFocus={handleFocus}
-                      onBlur={handleBlur}
-                      isMulti={false}
-                      options={block.options}
-                      required
-                      value={block.options.find(
-                        (option) => option.value === formData[block.name]
-                      )}
-                      placeholder={block.label}
-                      onChange={(value) =>
-                        handleChangeSelect(value, block.name)
-                      }
-                      isSearchable={false}
-                      isClearable={false}
-                      menuShouldScrollIntoView={false}
-                      styles={{
-                        container: (provided) => ({
-                          ...provided,
-                          border: "none",
-                          width: "100%",
-                          // maxWidth: '28rem',
-                        }),
-                        control: (provided, state) => ({
-                          ...provided,
-                          border: "none",
-                          backgroundColor: "transparent",
-                          boxShadow: state.isFocused
-                            ? "none"
-                            : provided.boxShadow,
-                          borderBottom: `1px solid ${
-                            state.isFocused ? "#75BBFD" : "#959DA6"
-                          }`,
-                          borderColor: "transparent",
-                          "&:hover": {
-                            borderBottomColor: "1px solid",
-                          },
-                        }),
-                        indicatorSeparator: (provided) => ({
-                          ...provided,
-                          display: "none",
-                        }),
-                        multiValue: (provided) => ({
-                          ...provided,
-                          backgroundColor: "transparent",
-                        }),
-                        singleValue: (provided) => ({
-                          ...provided,
-                          color: "#959DA6",
-                          marginLeft: -5,
-                        }),
-                        placeholder: (provided) => ({
-                          ...provided,
-                          marginLeft: -5,
-                          color: "#959DA6",
-                        }),
-                        option: (provided, state) => ({
-                          ...provided,
-                          backgroundColor: state.isFocused
-                            ? "#75BBFD"
-                            : "transparent",
-                          color: state.isFocused ? "white" : "inherit",
-                        }),
-                        dropdownIndicator: (provided, state) => ({
-                          ...provided,
-                          transform: state.selectProps.menuIsOpen
-                            ? "rotate(180deg)"
-                            : null,
-                          transition: "transform 0.3s ease-in-out",
-                          color: state.isFocused ? "#75BBFD" : "#C0C5CB",
-                        }),
-                        menuList: (provided) => ({
-                          ...provided,
-                          "&::-webkit-scrollbar": {
-                            width: "4px",
-                          },
-                          "&::-webkit-scrollbar-thumb": {
-                            backgroundColor: "#C0C5CB",
-                            borderRadius: "4px",
-                          },
-                          "&::-webkit-scrollbar-track": {
-                            backgroundColor: "transparent",
-                          },
-                          // Для Microsoft Edge
-                          "&::-ms-scrollbar": {
-                            width: "4px",
-                          },
-                          "&::-ms-scrollbar-thumb": {
-                            backgroundColor: "#C0C5CB",
-                            borderRadius: "4px",
-                          },
-                          "&::-ms-scrollbar-track": {
-                            backgroundColor: "transparent",
-                          },
-                          margin: "6px",
-                        }),
-                        menu: (provided) => ({
-                          ...provided,
-                          boxShadow: "none",
-                          backgroundColor: "#EBECEE",
-                        }),
-                      }}
-                    />
-                  )}
+                        },
+                        margin: "6px",
+                      }),
+                      menu: (provided) => ({
+                        ...provided,
+                        boxShadow: "none",
+                        backgroundColor: "#EBECEE",
+                      }),
+                    }}
+                  />
                 </label>
               </div>
             ))}
@@ -400,9 +289,7 @@ export default function FormAddVacancy({ setIsModalOpen }) {
                 <ReactQuill
                   ref={quillRef1}
                   modules={{
-                    toolbar: [
-                      ["bold", "underline", { list: "bullet" }]
-                    ],
+                    toolbar: [["bold", "underline", { list: "bullet" }]],
                     clipboard: {
                       matchVisual: false,
                     },
@@ -443,16 +330,14 @@ export default function FormAddVacancy({ setIsModalOpen }) {
                 </label>
               </div>
             </div>
-            </div>
-            <div className={styles.form_container__block_gray_one}>
+          </div>
+          <div className={styles.form_container__block_gray_one}>
             <div className={styles.heading_textarea}>
               <div className={styles.form_container__description_text}>
                 <ReactQuill
                   ref={quillRef2}
                   modules={{
-                    toolbar: [
-                      ["bold", "underline", { list: "bullet" }]
-                    ],
+                    toolbar: [["bold", "underline", { list: "bullet" }]],
                     clipboard: {
                       matchVisual: false,
                     },
@@ -493,16 +378,14 @@ export default function FormAddVacancy({ setIsModalOpen }) {
                 </label>
               </div>
             </div>
-            </div>
-            <div className={styles.form_container__block_gray_one}>
+          </div>
+          <div className={styles.form_container__block_gray_one}>
             <div className={styles.heading_textarea}>
               <div className={styles.form_container__description_text}>
                 <ReactQuill
                   ref={quillRef3}
                   modules={{
-                    toolbar: [
-                      ["bold", "underline", { list: "bullet" }]
-                    ],
+                    toolbar: [["bold", "underline", { list: "bullet" }]],
                     clipboard: {
                       matchVisual: false,
                     },
@@ -543,7 +426,7 @@ export default function FormAddVacancy({ setIsModalOpen }) {
                 </label>
               </div>
             </div>
-            </div>
+          </div>
           <div className={styles.form_container__button_block}>
             <button
               className={styles.form_container__button_save}

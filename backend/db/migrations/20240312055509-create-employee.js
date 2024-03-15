@@ -27,10 +27,10 @@ module.exports = {
         type: Sequelize.STRING,
       },     
       skills: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
       },
       advantages: {
-        type: Sequelize.STRING,
+        type: Sequelize.TEXT,
       },
       searchStaff: {
         type: Sequelize.TEXT,
