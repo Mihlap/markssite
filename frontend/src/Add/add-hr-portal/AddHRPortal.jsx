@@ -102,7 +102,7 @@ const checkIsMounted = () => {
     
        <div
           className={styles.card_components_admin__button_block}
-          // onClick={handleOpenModal}
+          onClick={handleOpenModal}
         >
           <button className={styles.card_components_admin__button}>
             <div>
