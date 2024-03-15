@@ -18,7 +18,7 @@ const vacanciesSlice = createSlice({
     location: "",
     busyness: "",
     workMode: "",
-    skills: "",
+    skills: [],
     benefits: [],
     },
     loading: true,
@@ -53,7 +53,7 @@ const vacanciesSlice = createSlice({
         location: "",
         busyness: "",
         workMode: "",
-        skills: "",
+        skills: [],
         benefits: [],
       };
     })
@@ -82,14 +82,14 @@ export const addVacancy = createAsyncThunk(
   'vacancies/addVacancy',
   async (formData, thunkAPI) => {
     try {
-         // Преобразуем значение benefits в строку, если это массив
+         // Преобразуем значение benefits, skills в строку, если это массив
          const benefitsValue = Array.isArray(formData.benefits) ? formData.benefits.join(", ") : formData.benefits;
+         const skillsValue = Array.isArray(formData.skills) ? formData.skills.join(", ") : formData.skills;
+                  
          // Отправляем POST-запрос на сервер для добавления вакансии
-         const response = await axios.post(`${serverHost}/api-vacancy/addVacancy`, { ...formData, benefits: benefitsValue});
+         const response = await axios.post(`${serverHost}/api-vacancy/addVacancy`, { ...formData,skills: skillsValue, benefits: benefitsValue});
          
-         console.log('Response from server:', response.data);
-
-      // Возвращаем данные о вакансии в случае успешного добавления
+         // Возвращаем данные о вакансии в случае успешного добавления
       return response.data;
     } catch (error) {
       // Возвращаем ошибку в случае неудачного добавления вакансии
@@ -97,6 +97,5 @@ export const addVacancy = createAsyncThunk(
     }
   }
 );
-
 
 export default vacanciesSlice.reducer;

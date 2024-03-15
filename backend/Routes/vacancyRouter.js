@@ -8,23 +8,21 @@ router.post('/addVacancy', async (req, res) => {
   try {
     // Получаем данные формы из запроса
     const formData = req.body;
-
+    
     // Создаем новую запись в базе данных с использованием модели вакансии
     const newVacancy = new Employee({
       title: formData.title,
-      direction: formData.direction,
-      experience: formData.experience,
-      locationStaff: formData.location,
-      busyness: formData.busyness,
-      modeOperating: formData.workMode,
+      direction: formData.direction.value,
+      experience: formData.experience.value,
+      locationStaff: formData.location.value,
+      busyness: formData.busyness.value,
+      modeOperating: formData.workMode.value,
       skills: formData.skills,
       advantages: formData.benefits,
       searchStaff: formData.textBlock1,
       haveToWork: formData.textBlock2,
-      requirements: formData.textBlock3
+      requirements: formData.textBlock3,
     });
-
-    console.log('New vacancy object:', newVacancy.toJSON());
 
     // Сохраняем новую вакансию в базе данных
     await newVacancy.save();
@@ -37,5 +35,6 @@ router.post('/addVacancy', async (req, res) => {
     res.status(500).json({ message: 'Ошибка сервера при добавлении вакансии' });
   }
 });
+
 
 module.exports = router;
