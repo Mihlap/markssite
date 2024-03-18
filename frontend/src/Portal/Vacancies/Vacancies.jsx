@@ -87,6 +87,3 @@ const Vacancies = ({ handleMouseEnter, handleMouseLeave, handleMouseHover }) => 
 
 export default Vacancies;
 
-{
-  /* <script class="hh-script" src="https://api.hh.ru/widgets/vacancies/employer?employer_id=1098613&locale=RU&links_color=1560b2&border_color=1560b2"></script> */
-}
