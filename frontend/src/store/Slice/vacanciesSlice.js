@@ -3,11 +3,30 @@ import axios from "axios";
 
 const serverHost = process.env.REACT_APP_SERVER_HOST;
 
+export const fetchVacancies = createAsyncThunk(
+  'vacancies/fetchVacancies',
+  async () => {
+    try {
+      const response = await fetch("https://api.hh.ru/vacancies?employer_id=1098613");
+      if (response.ok) {
+        const data = await response.json();
+        return data.items;
+      } else {
+        throw new Error("Failed to fetch vacancies");
+      }
+    } catch (error) {
+      throw new Error(`Error fetching vacancies: ${error}`);
+    }
+  }
+);
+
 
 const vacanciesSlice = createSlice({
   name: 'vacancies',
   initialState: {
     vacancies: [],
+    loading: false,
+    error: null,
     formData: {
     title: "",
     textBlock1: "",
@@ -21,29 +40,32 @@ const vacanciesSlice = createSlice({
     skills: [],
     benefits: [],
     },
-    loading: true,
-    error: null,
   },
-  reducers: {},
-  extraReducers: (builder) => {
-    builder
-    .addCase(fetchVacancies.pending, (state) => {
+  reducers: {
+    fetchVacancyStart(state) {
       state.loading = true;
-    })
-    .addCase(fetchVacancies.fulfilled, (state, action) => {
+      state.error = null;
+    },
+    fetchVacancySuccess(state, action) {
       state.loading = false;
       state.vacancies = action.payload;
-    })
-    .addCase(fetchVacancies.rejected, (state) => {
+    },
+    fetchVacancyFailure(state, action) {
       state.loading = false;
-    })
-    .addCase(addVacancy.pending, (state) => {
-      state.loading = true;
-    })
-    .addCase(addVacancy.fulfilled, (state, action) => {
-      state.loading = false;
+      state.error = action.payload;
+    },
+    deleteVacancySuccess(state, action) {
+      const vacanciesId = action.payload;
+      state.vacancies = state.vacancies.filter((el) => el.id !== vacanciesId);
+    },
+    deleteVacancyFailure(state, action) {
+      state.error = action.payload;
+    },
+    setVacancyId(state, action) {
+      state.vacanciesId = action.payload;
+    },
+    clearFormData(state) {
       state.formData = {
-        ...state.formData,
         title: "",
         textBlock1: "",
         textBlock2: "",
@@ -56,46 +78,78 @@ const vacanciesSlice = createSlice({
         skills: [],
         benefits: [],
       };
-    })
-    .addCase(addVacancy.rejected, (state, action) => {
+    },
+  },
+  extraReducers: {
+    [fetchVacancies.pending]: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    [fetchVacancies.fulfilled]: (state, action) => {
       state.loading = false;
-      state.error = action.payload;
-    });
+      state.vacancies = action.payload;
+    },
+    [fetchVacancies.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.error.message;
+    },
   },
 });
 
-export const fetchVacancies = createAsyncThunk('vacancies/fetchVacancies', async () => {
-  try {
-    const response = await fetch("https://api.hh.ru/vacancies?employer_id=1098613");
-    if (response.ok) {
-      const data = await response.json();
-      return data.items;
-    } else {
-      throw new Error("Failed to fetch vacancies");
-    }
-  } catch (error) {
-    throw new Error(`Error fetching vacancies: ${error}`);
-  }
-});
+export const {
+  fetchVacancyStart,
+  fetchVacancySuccess,
+  fetchVacancyFailure,
+  deleteVacancySuccess,
+  deleteVacancyFailure,
+  setVacancyId,
+  clearFormData, 
+} = vacanciesSlice.actions;
+
 
 export const addVacancy = createAsyncThunk(
   'vacancies/addVacancy',
-  async (formData, thunkAPI) => {
+  async (formData, { dispatch, getState }) => {
+    dispatch(fetchVacancyStart());
+    const benefitsValue = Array.isArray(formData.benefits) ? formData.benefits.join(", ") : formData.benefits;
+    const skillsValue = Array.isArray(formData.skills) ? formData.skills.join(", ") : formData.skills;
+    
     try {
-         // Преобразуем значение benefits, skills в строку, если это массив
-         const benefitsValue = Array.isArray(formData.benefits) ? formData.benefits.join(", ") : formData.benefits;
-         const skillsValue = Array.isArray(formData.skills) ? formData.skills.join(", ") : formData.skills;
-                  
-         // Отправляем POST-запрос на сервер для добавления вакансии
-         const response = await axios.post(`${serverHost}/api-vacancy/addVacancy`, { ...formData,skills: skillsValue, benefits: benefitsValue});
-         
-         // Возвращаем данные о вакансии в случае успешного добавления
+      const response = await axios.post(`${serverHost}/api-vacancy/addVacancy`, { ...formData, skills: skillsValue, benefits: benefitsValue });
+      
+      dispatch(clearFormData());
+      dispatch(getFetchForm());
+      
       return response.data;
     } catch (error) {
-      // Возвращаем ошибку в случае неудачного добавления вакансии
-      return thunkAPI.rejectWithValue(error.response.data);
+      console.error("Ошибка при добавлении вакансии:", error);
+      dispatch(fetchVacancyFailure(error.message));
+    
     }
   }
 );
+
+export const getFetchForm = () => async (dispatch) => {
+  dispatch(fetchVacancyStart());
+
+  try {
+    const response = await axios.get(`${serverHost}/api-vacancy/getzapros`);
+
+    dispatch(fetchVacancySuccess(response.data));
+  } catch (error) {
+    dispatch(fetchVacancyFailure(error.message));
+  }
+};
+
+export const deleteForm = (id) => async (dispatch, getState) => {
+  try {
+    await axios.delete(`${serverHost}/api-vacancy/deletezapros/${id}`);
+    
+    const updatedVacancies = getState().vacancies.vacancies.filter((el) => el.id !== id);
+    dispatch(fetchVacancySuccess(updatedVacancies));
+  } catch (error) {
+    dispatch(fetchVacancyFailure(error.message));
+  }
+};
 
 export default vacanciesSlice.reducer;
