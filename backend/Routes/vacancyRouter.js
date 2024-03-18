@@ -36,5 +36,29 @@ router.post('/addVacancy', async (req, res) => {
   }
 });
 
+// Маршрут для получения данных формы
+router.get('/getzapros', async (req, res) => {
+  try {
+    const data = await Employee.findAll({});
+    res.json(data);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Произошла ошибка при получении данных формы.' });
+  }
+});
+
+// Маршрут для удаления вакансии
+router.delete('/deletezapros/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    await Employee.destroy({ where: { id } });
+    res.json({ id });
+  } catch (error) {
+    console.error('Ошибка при удалении вакансии:', error);
+    res.status(500).json({ error: 'Произошла ошибка при удалении вакансии.' });
+  }
+});
+
+
 
 module.exports = router;
