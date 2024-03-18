@@ -157,7 +157,7 @@ export default function FormAddVacancy({ setIsModalOpen }) {
                     [name]: value,
                   }));
                 }}
-                oтComplete="off"
+                onComplete="off"
                 required
               />
               <label htmlFor="title" className={styles.form__label}>
@@ -207,7 +207,7 @@ export default function FormAddVacancy({ setIsModalOpen }) {
                           ? "none"
                           : provided.boxShadow,
                         borderBottom: `1px solid ${
-                          state.isFocused ? "#75BBFD" : "#959DA6"
+                        state.isFocused ? "#75BBFD" : "#959DA6"
                         }`,
                         borderColor: "transparent",
                         "&:hover": {

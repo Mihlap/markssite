@@ -3,11 +3,14 @@ import React, { useEffect, useRef, useState } from 'react';
 import styles from "../style/style-card.module.scss";
 import FormEditVacancy from './FormEditVacancy';
 import FormAddVacancy from './FormAddVacancy';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { deleteForm, getFetchForm } from '../../store/Slice/vacanciesSlice';
+
 import LoadingModal from '../add-project/loading/LoadingModal';
+import Edit from '../icon/Edit.svg';
 
 export default function AddHRPortal({ user }) {
-  const Host = process.env.REACT_APP_SERVER_HOST;
+  // const Host = process.env.REACT_APP_SERVER_HOST;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editVacancyData, setEditVacancyData] = useState(null);
   const [modalBlockHeight, setModalBlockHeight] = useState("auto");
@@ -15,9 +18,10 @@ export default function AddHRPortal({ user }) {
   const [isCopied, setIsCopied] = useState(false);
   const [copiedId, setCopiedId] = useState("");
 
-  const error = useSelector((state) => state.project.error);
-  const loading = useSelector((state) => state.project.loading);
-  const project = useSelector((state) => state.project.projects);
+  const dispatch = useDispatch();
+  const error = useSelector((state) => state.vacancies.error);
+  const loading = useSelector((state) => state.vacancies.loading);
+  const vacanciesAdd = useSelector(state => state.vacancies.vacancies);
   
   const isMountedRef = useRef(true);
 
@@ -27,6 +31,10 @@ export default function AddHRPortal({ user }) {
 
     setModalBlockHeight(`${maxHeight}px`);
   };
+
+  useEffect(() => {
+    dispatch(getFetchForm());
+  }, [dispatch]);
 
   useEffect(() => {
     updateModalBlockHeight();
@@ -60,6 +68,14 @@ const checkIsMounted = () => {
     }));
   };
 
+  const handleDeleteModalClose = (id) => {
+    setDeleteModalState((prevState) => {
+      const newState = { ...prevState };
+      delete newState[id];
+      return newState;
+    });
+  };
+
     const handleCopyClick = async (id) => {
     // navigator.clipboard.writeText(id);
     // setIsCopied(true);
@@ -83,16 +99,30 @@ const checkIsMounted = () => {
     // setIsCopied(true);
     // setCopiedId(id);
 
-    const projectToEdit = project.find((el) => el.id === id);
-    // console.log('Project to edit111111111111111111111:', projectToEdit);
-  
-    // setEditProjectData(projectToEdit);
+    const vacancyToEdit = vacanciesAdd.find((el) => el.id === id);
+   
+    setEditVacancyData(vacancyToEdit);
     setIsModalOpen(true);
   }
 } catch (err) {
-  console.error("Unable to copy project to clipboard:", err);
+  console.error("Unable to copy vacancy to clipboard:", err);
 }
 };
+
+const handleFormDelete = (formId) => {
+  dispatch(deleteForm(formId));
+  handleDeleteModalClose();
+};
+
+useEffect(() => {
+  if (isCopied) {
+    const timer = setTimeout(() => {
+      setIsCopied(false);
+      setCopiedId("");
+    }, 3000);
+    return () => clearTimeout(timer);
+  }
+}, [isCopied])
 
 
   return (
@@ -173,48 +203,107 @@ const checkIsMounted = () => {
             <LoadingModal />
           ) : (
             <>
-              {project && project.length === 0 ? (
+              {vacanciesAdd && vacanciesAdd.length === 0 ? (
                 <div className={styles.card_components_admin__null_project}>
                   Вакансии сейчас отсутствуют. Добавьте вакансию!
                 </div>
               ) : (
                 <>
                   <div className={styles.card_components_admin__block_map}>
-                    {project &&
-                      [...project] // Создаем копию массива project, чтобы не мутировать оригинальный массив
+                    {Array.isArray(vacanciesAdd) &&
+                      [...vacanciesAdd] // Создаем копию массива вакансий, чтобы не мутировать оригинальный массив
                         .reverse() // Переворачиваем массив
                         .map((el) => {
-                          const photoName = el && el.imageProject;
-                          const defaultPhoto = '';
-
-                          const photoSrc =
-                            photoName &&
-                            photoName !== "null" &&
-                            photoName !== "undefined"
-                              ? `${Host}/images/imageAdd/${photoName}`
-                              : defaultPhoto;
                           return (
                             <React.Fragment key={el.id}>
                               <div
                                 key={el.id}
-                                className={styles.cart_project_container}
-                              >
+                                className={styles.cart_vacancy_container}
+                              >       
+                                                     
                                 <div
                                   className={
-                                    styles.cart_project_container__imageContainer
+                                    styles.cart_vacancy_container__content
                                   }
                                 >
-                                  <img
+                                  <span
                                     className={
-                                      styles.cart_project_container__img
+                                      styles.cart_vacancy_container__title
                                     }
-                                    loading="lazy"
-                                    src={photoSrc}
-                                    alt="photo_project"
-                                  />
-                                  {user?.name === "obezyankaa" ||
+                                  >
+                                    {el.title}
+                                  </span>
+                                </div>
+                                  <div
+                                    className={
+                                      styles.cart_vacancy_container__department
+                                    }
+                                  >
+                                    {el.direction}
+                                  </div>
+                                <div
+                                  className={
+                                    styles.cart_vacancy_container__id_block
+                                  }
+                                >
+                                  <div
+                                    className={
+                                      styles.cart_vacancy_container__id_text
+                                    }
+                                  >
+                                    id: {el.id}
+                                  </div>
+                                  {isCopied && el.id === copiedId && (
+                                    <>
+                                      <div
+                                        className={
+                                          styles.cart_vacancy_container__copyMessage
+                                        }
+                                      >
+                                        id скопирован
+                                      </div>
+                                      <div
+                                        className={
+                                          styles.cart_vacancy_container__copyButton_img_copy_deffalt
+                                        }
+                                      />
+                                    </>
+                                  )}
+                                  <button
+                                    className={
+                                      styles.cart_vacancy_container__copyButton
+                                    }
+                                    onClick={() => handleCopyClick(el.id)}
+                                  >
+                                    <div
+                                      className={
+                                        styles.cart_vacancy_container__copyButton_img_copy_ok
+                                      }
+                                    />
+                                  </button>
+                                </div>
+                                {user?.name === "obezyankaa" ||
                                   user?.name === "Pokemon" ? (
-                                    <div className={styles.del_block}>
+                                      <div className={styles.edit_block_vacancy}
+                                        onClick={() => handleEditClick(el.id)}
+                                      >
+                                      <button
+                                        className={styles.buttom_edit}
+                                      >
+                                        <label
+                                          htmlFor="edit"
+                                          className={styles.label}
+                                        >
+                                          <div className={`${styles.wrapper}`}>
+                                            <img src={Edit} alt={Edit} />
+                                          </div>
+                                        </label>
+                                      </button>
+                                   </div>
+                                  ) : null}
+                                 {user?.name === "obezyankaa" ||
+                                  user?.name === "Pokemon" ? (
+                                    <div className={styles.del_block_vacancy}>
                                       <button
                                         className={styles.buttom_del}
                                         onClick={() =>
@@ -255,82 +344,7 @@ const checkIsMounted = () => {
                                         </label>
                                       </button>
                                     </div>                                    
-                                  ) : null}
-                                       {user?.name === "obezyankaa" ||
-                                  user?.name === "Pokemon" ? (
-                                      <div className={styles.edit_block}
-                                        onClick={() => handleEditClick(el.id)}
-                                      >
-                                      <button
-                                        className={styles.buttom_edit}
-                                      >
-                                        <label
-                                          htmlFor="edit"
-                                          className={styles.label}
-                                        >
-                                          <div className={`${styles.wrapper}`}>
-                                            {/* <img src={Edit} alt={Edit} /> */}
-                                            {/* <span>Edit</span> */}
-                                          </div>
-                                        </label>
-                                      </button>
-                                   </div>
-                                  ) : null}
-                                </div>
-                                <div
-                                  className={
-                                    styles.cart_project_container__content
-                                  }
-                                >
-                                  <span
-                                    className={
-                                      styles.cart_project_container__title
-                                    }
-                                  >
-                                    {el.title}
-                                  </span>
-                                </div>
-                                <div
-                                  className={
-                                    styles.cart_project_container__id_block
-                                  }
-                                >
-                                  <div
-                                    className={
-                                      styles.cart_project_container__id_text
-                                    }
-                                  >
-                                    id: {el.id}
-                                  </div>
-                                  {isCopied && el.id === copiedId && (
-                                    <>
-                                      <div
-                                        className={
-                                          styles.cart_project_container__copyMessage
-                                        }
-                                      >
-                                        id скопирован
-                                      </div>
-                                      <div
-                                        className={
-                                          styles.cart_project_container__copyButton_img_copu_deffalt
-                                        }
-                                      />
-                                    </>
-                                  )}
-                                  <button
-                                    className={
-                                      styles.cart_project_container__copyButton
-                                    }
-                                    onClick={() => handleCopyClick(el.id)}
-                                  >
-                                    <div
-                                      className={
-                                        styles.cart_project_container__copyButton_img_copu_ok
-                                      }
-                                    />
-                                  </button>
-                                </div>
+                                  ) : null}  
                               </div>
                               {/* Модальное окно подтверждения удаления */}
                               {deleteModalState[el.id] && (
@@ -341,27 +355,26 @@ const checkIsMounted = () => {
                                         styles.delete_modal_block__title
                                       }
                                     >
-                                      Вы точно хотите удалить проект <br /> «
-                                      {el.title}»
+                                      Вы точно хотите удалить вакансию<br /> «{el.title}»?
                                     </div>
                                     <p
                                       className={
                                         styles.delete_modal_block__text
                                       }
                                     >
-                                      Удаленный проект нельзя будет вернуть
+                                      Удаленную вакансию вернуть будет невозможно
                                     </p>
 
                                     <div className={styles.button_block}>
                                       <button
                                         className={`${styles.button_block__cancel} ${styles.delete_modal_button_cancel}`}
-                                        // onClick={() =>
-                                        //   handleDeleteModalClose(el.id)
-                                        // }
+                                        onClick={() =>
+                                          handleDeleteModalClose(el.id)
+                                        }
                                       />
                                       <button
                                         className={`${styles.button_block__save} ${styles.delete_modal_button_delete}`}
-                                        // onClick={() => handleFormDelete(el.id)}
+                                        onClick={() => handleFormDelete(el.id)}
                                       />
                                     </div>
 
@@ -369,9 +382,9 @@ const checkIsMounted = () => {
                                       className={
                                         styles.delete_modal_block__close_button
                                       }
-                                      // onClick={() =>
-                                      //   handleDeleteModalClose(el.id)
-                                      // }
+                                      onClick={() =>
+                                        handleDeleteModalClose(el.id)
+                                      }
                                     ></button>
                                   </div>
                                 </div>
