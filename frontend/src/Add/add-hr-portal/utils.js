@@ -37,7 +37,11 @@ export const selectBlocks = [
   ] },
   { name: 'skills', label: 'Ключевые навыки', options: [
     { value: "?", label: "?" },
-    { value: "?", label: "?" },
+    { value: "!", label: "!" },
+    { value: "[", label: "[" },
+    { value: "(", label: "(" },
+    { value: ")", label: ")" },
+    { value: "{", label: "{" },
   ] },
   { name: 'benefits', label: 'Плюсы работы', options: [
     { value: "Менторство и наставничество", label: "Менторство и наставничество" },
