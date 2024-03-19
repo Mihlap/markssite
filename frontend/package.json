@@ -1,8 +1,7 @@
 {
   "name": "markssite",
   "version": "0.1.0",
-  "private": true,  
-  "proxy": "http://localhost:8080",
+  "private": true, 
   "dependencies": {
     "@mapbox/mapbox-gl-draw": "^1.4.1",
     "@pbe/react-yandex-maps": "^1.2.5",
