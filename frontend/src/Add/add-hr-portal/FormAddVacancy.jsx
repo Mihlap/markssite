@@ -157,7 +157,7 @@ export default function FormAddVacancy({ setIsModalOpen }) {
                     [name]: value,
                   }));
                 }}
-                onComplete="off"
+                // onComplete="off"
                 required
               />
               <label htmlFor="title" className={styles.form__label}>
@@ -165,7 +165,7 @@ export default function FormAddVacancy({ setIsModalOpen }) {
               </label>
             </div>
             {selectBlocks.map((block, index) => (
-              <div key={index} className={`${styles.group} some-unique-class`}>
+              <div key={`${block.name}_${index}`} className={`${styles.group} some-unique-class`}>
                 <label
                   className={`${styles.label1} ${
                     isFocused[block.name] || formData[block.name]
