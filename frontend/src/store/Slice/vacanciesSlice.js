@@ -129,6 +129,44 @@ export const addVacancy = createAsyncThunk(
   }
 );
 
+export const editVacancy = createAsyncThunk(
+  'vacancies/editVacancy',
+  async ({ id, formData }, { dispatch, getState }) => {
+    dispatch(fetchVacancyStart());
+
+    const directionValue = Array.isArray(formData.direction) ? formData.direction.join(", ") : formData.direction;
+    const experienceValue = Array.isArray(formData.experience) ? formData.experience.join(", ") : formData.experience;
+    const locationValue = Array.isArray(formData.location) ? formData.location.join(", ") : formData.location;
+    const busynessValue = Array.isArray(formData.busyness) ? formData.busyness.join(", ") : formData.busyness;
+    const workModeValue = Array.isArray(formData.workMode) ? formData.workMode.join(", ") : formData.workMode;
+    const benefitsValue = Array.isArray(formData.benefits) ? formData.benefits.join(", ") : formData.benefits;
+    const skillsValue = Array.isArray(formData.skills) ? formData.skills.join(", ") : formData.skills;
+
+    try {
+   
+      const response = await axios.put(`${serverHost}/api-vacancy/editVacancy/${id}`, {
+        ...formData,
+        direction: directionValue,
+        experience: experienceValue,
+        location: locationValue,
+        busyness: busynessValue,
+        workMode: workModeValue,
+        skills: skillsValue,
+        benefits: benefitsValue
+      });
+
+      dispatch(clearFormData());
+      dispatch(getFetchForm());
+
+      return response.data;
+    } catch (error) {
+      console.error("Error editing vacancy:", error);
+      dispatch(fetchVacancyFailure(error.message));
+      throw error; 
+    }
+  }
+);
+
 export const getFetchForm = () => async (dispatch) => {
   dispatch(fetchVacancyStart());
 
