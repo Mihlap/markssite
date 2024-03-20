@@ -36,6 +36,41 @@ router.post('/addVacancy', async (req, res) => {
   }
 });
 
+
+// изменяем  данные вакансии
+router.put('/editVacancy/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const formData = req.body;
+
+    const existingVacancy = await Employee.findByPk(id);
+
+    if (!existingVacancy) {
+      return res.status(404).json({ error: 'Vacancy not found' });
+    }
+
+    await Employee.update({
+      title: formData.title,
+      direction: formData.direction,
+      experience: formData.experience,
+      locationStaff: formData.location,
+      busyness: formData.busyness,
+      modeOperating: formData.workMode,
+      skills: formData.skills,
+      advantages: formData.benefits,
+      searchStaff: formData.textBlock1,
+      haveToWork: formData.textBlock2,
+      requirements: formData.textBlock3,
+    }, { where: { id } });
+
+    res.json({ message: 'Vacancy successfully updated' });
+  } catch (error) {
+    console.error('Error updating vacancy:', error);
+    res.status(500).json({ message: 'Server error while updating vacancy' });
+  }
+});
+
+
 // Маршрут для получения данных формы
 router.get('/getzapros', async (req, res) => {
   try {
