@@ -3,7 +3,7 @@ import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import Select from "react-select";
 import { useDispatch, useSelector } from "react-redux";
-import { addVacancy } from "../../store/Slice/vacanciesSlice.js";
+import { editVacancy } from "../../store/Slice/vacanciesSlice.js";
 import { selectBlocks } from "./utils.js";
 
 import styles from "./FormAddVacancy.module.scss"
@@ -26,8 +26,8 @@ export default function FormEditVacancy({ setIsModalOpen, editVacancyData }) {
     location: "",
     busyness: "",
     workMode: "",
-    skills: "",
-    benefits: "",
+    skills: [],
+    benefits: [],
   });
 
   const [isFocused, setIsFocused] = useState({
@@ -70,7 +70,7 @@ export default function FormEditVacancy({ setIsModalOpen, editVacancyData }) {
 
 
   useEffect(() => {
-    if (editVacancyData) {
+   if (editVacancyData) {
       const skillsArray = editVacancyData.skills ? editVacancyData.skills.split(",") : [];
       const advantagesArray = editVacancyData.advantages ? editVacancyData.advantages.split(",") : [];
       const directionArray = editVacancyData.direction ? editVacancyData.direction.split(",") : [];
@@ -100,18 +100,18 @@ export default function FormEditVacancy({ setIsModalOpen, editVacancyData }) {
     event.preventDefault();
     setLoading(true);
     try {
-      await dispatch(addVacancy(formData));
+        await dispatch(editVacancy({ id: editVacancyData.id, formData }));
       // Очищаем форму после успешной отправки
       setFormData({
         title: "",
         textBlock1: "",
         textBlock2: "",
         textBlock3: "",
-        department: "",
-        experience: "",
-        location: "",
-        busyness: "",
-        workMode: "",
+        department: [],
+        experience: [],
+        location: [],
+        busyness: [],
+        workMode: [],
         skills: [],
         benefits: [],
       });
@@ -134,18 +134,21 @@ export default function FormEditVacancy({ setIsModalOpen, editVacancyData }) {
   }
 
   const handleChangeSelect = (selectedOptions, name) => {
-    let selectedValues;
-    if (selectedOptions) {
+   let selectedValues;
+    if (Array.isArray(selectedOptions)) {
+      // Если selectedOptions является массивом, значит это множественный выбор
       selectedValues = selectedOptions.map(option => option.value);
+    } else if (selectedOptions) {
+      // Если selectedOptions не является массивом, значит это одиночный выбор
+      selectedValues = [selectedOptions.value];
     } else {
       selectedValues = [];
-    }
+    }    
     setFormData(prev => ({
       ...prev,
       [name]: selectedValues
     }));
   };
-
   
 
   // закрывает модалкку формы
@@ -181,7 +184,7 @@ export default function FormEditVacancy({ setIsModalOpen, editVacancyData }) {
                     [name]: value,
                   }));
                 }}
-                onComplete="off"
+                // onComplete="off"
                 required
               />
               <label htmlFor="title" className={styles.form__label}>
@@ -189,7 +192,7 @@ export default function FormEditVacancy({ setIsModalOpen, editVacancyData }) {
               </label>
             </div>
             {selectBlocks.map((block, index) => (
-              <div key={index} className={`${styles.group} some-unique-class`}>
+               <div key={`${block.id}_${block.name}_${index}`} className={`${styles.group} some-unique-class`}>
                 <label
                   className={`${styles.label1} ${
                     isFocused[block.name] || formData[block.name]
@@ -206,8 +209,8 @@ export default function FormEditVacancy({ setIsModalOpen, editVacancyData }) {
                     isMulti={
                       block.name === "benefits" || block.name === "skills"
                     }
-                    options={block.options}
                     required
+                    options={block.options}
                     value={Array.isArray(formData[block.name]) ? formData[block.name].map(value => ({
                       label: value,
                       value: value
@@ -335,6 +338,7 @@ export default function FormEditVacancy({ setIsModalOpen, editVacancyData }) {
                     boxSizing: "border-box",
                     paddingBottom: "2.5rem",
                   }}
+                  strict={false}
                   required
                   name="textBlock1"
                   id="textBlock1"
@@ -367,7 +371,7 @@ export default function FormEditVacancy({ setIsModalOpen, editVacancyData }) {
                       matchVisual: false,
                     },
                   }}
-                  formats={["bold", "italic", "list"]}
+                  formats={["bold", "underline", "list"]}
                   className={styles.form_container__textarea}
                   style={{
                     // resize: "none",
@@ -383,6 +387,7 @@ export default function FormEditVacancy({ setIsModalOpen, editVacancyData }) {
                     boxSizing: "border-box",
                     paddingBottom: "2.5rem",
                   }}
+                  strict={false}
                   required
                   name="textBlock2"
                   id="textBlock2"
@@ -415,7 +420,7 @@ export default function FormEditVacancy({ setIsModalOpen, editVacancyData }) {
                       matchVisual: false,
                     },
                   }}
-                  formats={["bold", "italic", "list"]}
+                  formats={["bold", "underline", "list"]}
                   className={styles.form_container__textarea}
                   style={{
                     // resize: "none",
@@ -431,6 +436,7 @@ export default function FormEditVacancy({ setIsModalOpen, editVacancyData }) {
                     boxSizing: "border-box",
                     paddingBottom: "2.5rem",
                   }}
+                  strict={false}
                   required
                   name="textBlock3"
                   id="textBlock3"
