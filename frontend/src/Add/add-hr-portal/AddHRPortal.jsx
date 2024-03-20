@@ -129,7 +129,12 @@ useEffect(() => {
     <section className={styles.card_components_admin}>
     <div className={styles.card_components_admin__block}>
       <div className={styles.card_components_admin__title}>HR портал</div>
-    
+     <div className={styles.card_components_admin__buttonFilter}>
+     <button className={styles.card_components_admin__buttonFilter__group}>Вакансии</button>
+     <button className={styles.card_components_admin__buttonFilter__group}>Стажировки</button>
+     <button className={styles.card_components_admin__buttonFilter__group}>Главная</button>
+     <button className={styles.card_components_admin__buttonFilter__group}>Офис</button>
+     </div>
        <div
           className={styles.card_components_admin__button_block}
           onClick={handleOpenModal}
@@ -209,7 +214,7 @@ useEffect(() => {
                 </div>
               ) : (
                 <>
-                  <div className={styles.card_components_admin__block_map}>
+                  <div className={styles.card_components_admin__block__vacancy}>
                     {Array.isArray(vacanciesAdd) &&
                       [...vacanciesAdd] // Создаем копию массива вакансий, чтобы не мутировать оригинальный массив
                         .reverse() // Переворачиваем массив
@@ -282,6 +287,9 @@ useEffect(() => {
                                     />
                                   </button>
                                 </div>
+                                <div className={
+                                    styles.cart_vacancy_container_buttonClick
+                                  }>
                                 {user?.name === "obezyankaa" ||
                                   user?.name === "Pokemon" ? (
                                       <div className={styles.edit_block_vacancy}
@@ -345,6 +353,7 @@ useEffect(() => {
                                       </button>
                                     </div>                                    
                                   ) : null}  
+                                  </div>
                               </div>
                               {/* Модальное окно подтверждения удаления */}
                               {deleteModalState[el.id] && (
