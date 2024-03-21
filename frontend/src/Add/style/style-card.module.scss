@@ -80,7 +80,7 @@
         background-color: var(--blue-75BBFD);
         border: 0;
         border-radius: 6px;
-        margin-top: 32px;
+        margin-top: 25px;
         transition: background-color 0.3s;
         cursor: pointer;
 
@@ -251,9 +251,9 @@
         display: flex;
         flex-direction: column;
         flex-wrap: nowrap;
-        gap: 40px 0px;
-        padding-top: 32px;
-        padding-bottom: 30px;
+        gap: 16px 0px;
+        padding-top: 25px;
+        padding-bottom: 25px;
     }
 
     &__errore_div {
@@ -288,24 +288,31 @@
     &__buttonFilter {
         display: flex;
         width: 100%;
-        padding-top: 2rem;
+        padding-top: 21px;
         border-radius: 1rem;
        
         
         
         &__group {
             width: 50rem;
-            height: 50px; 
+            height: 3.125rem; 
             background: var(--light-light-gray-EBECEE); 
+            border-radius: 0.5rem;
             
                         
             &:hover, &:focus {
-                background: var(--dark-blue-389FFF); 
-                border-radius: 1rem;
+                border-radius: 0.5rem;
+                background: var(--super-dark-blue-345374);
+                color: var(--white-F6F6F6);
             }
         }
     }
 
+}
+
+.activeButtonVacancy {
+    background: var(--super-dark-blue-345374);
+    color: var(--white-F6F6F6);
 }
 
 .cart_project_container {
@@ -435,7 +442,7 @@
 
 .cart_vacancy_container {
     display: flex;
-    height: 80px;
+    height: 4.625rem;
     border-radius: 1rem;
     background-color: var(--light-light-gray-EBECEE);
     color: var(--black-1D2E43);
@@ -470,7 +477,7 @@
         line-height: 20px;
         color: var(--black-4E4E4E);
         padding-left: 2rem;
-        max-width: 40%;
+        max-width: 30%;
         width: 50%;
         white-space: nowrap; 
         overflow: hidden; 
@@ -685,8 +692,6 @@
     }
 }
 
-// стили редактирования вакансии
-
 .edit_block {
     position: absolute;
     right: 20px;
@@ -725,7 +730,7 @@
         background-color: var(--blue-75BBFD);
         cursor: pointer;
         margin-left: auto;
-        margin-right: 1rem;
+        margin-right: 2rem;
         
     
         &:hover {
@@ -743,12 +748,37 @@
         height: 42px;
         border-radius: 50%;
         background-color: var(--blue-75BBFD);
-        margin-right: 2rem;
+        margin-right: 1rem;
         margin-left: auto;
        
     }
-}
 
+    .look_block_vacancy {
+        display: flex;   
+        align-items: center;
+        justify-content: center;
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        background-color: var(--blue-75BBFD);
+        cursor: pointer;
+        margin-left: auto;
+        margin-right: 1rem;
+        transition: background-color 0.4s;
+        
+        &:hover {
+            background-color: var(--dark-blue-389FFF);
+        }
+        
+    }
+
+    .buttom_look{ 
+        .wrapper {
+           position: relative;
+           cursor: pointer;
+       }
+   }
+}
 
 // ______________________________________
 
