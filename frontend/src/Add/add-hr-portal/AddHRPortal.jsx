@@ -1,13 +1,16 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from "react";
 // import styles from "./AddHRPortal.module.scss";
 import styles from "../style/style-card.module.scss";
-import FormEditVacancy from './FormEditVacancy';
-import FormAddVacancy from './FormAddVacancy';
-import { useDispatch, useSelector } from 'react-redux';
-import { deleteForm, getFetchForm } from '../../store/Slice/vacanciesSlice';
+import FormEditVacancy from "./FormEditVacancy";
+import FormAddVacancy from "./FormAddVacancy";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteForm, getFetchForm } from "../../store/Slice/vacanciesSlice";
+import { buttonsFilter }  from "./utils.js";
 
-import LoadingModal from '../add-project/loading/LoadingModal';
-import Edit from '../icon/Edit.svg';
+import LoadingModal from "../add-project/loading/LoadingModal";
+import Edit from "../icon/Edit.svg";
+import Look from "../icon/eye.svg";
+import noLook from "../icon/eye2.svg";
 
 export default function AddHRPortal({ user }) {
   // const Host = process.env.REACT_APP_SERVER_HOST;
@@ -21,10 +24,13 @@ export default function AddHRPortal({ user }) {
   const dispatch = useDispatch();
   const error = useSelector((state) => state.vacancies.error);
   const loading = useSelector((state) => state.vacancies.loading);
-  const vacanciesAdd = useSelector(state => state.vacancies.vacancies);
-  
-  const isMountedRef = useRef(true);
+  const vacanciesAdd = useSelector((state) => state.vacancies.vacancies);
 
+  const isMountedRef = useRef(true);
+  const [lookEnabledIds, setLookEnabledIds] = useState([]);
+  const [activeButtonIndex, setActiveButtonIndex] = useState(0);
+
+  
   const updateModalBlockHeight = () => {
     const windowHeight = window.innerHeight;
     const maxHeight = Math.min(windowHeight - 100, 1900); // Примерное максимальное значение высоты
@@ -38,22 +44,21 @@ export default function AddHRPortal({ user }) {
 
   useEffect(() => {
     updateModalBlockHeight();
-  window.addEventListener("resize", updateModalBlockHeight);
-  return () => {
-    window.removeEventListener("resize", updateModalBlockHeight);
-    checkIsMounted();
+    window.addEventListener("resize", updateModalBlockHeight);
+    return () => {
+      window.removeEventListener("resize", updateModalBlockHeight);
+      checkIsMounted();
+    };
+  }, []);
+
+  const checkIsMounted = () => {
+    isMountedRef.current = false;
   };
-}, []);
-
-const checkIsMounted = () => {
-  isMountedRef.current = false;
-};
-
 
   const handleOpenModal = () => {
     setIsModalOpen(true);
     if (editVacancyData) {
-      setEditVacancyData(null);     
+      setEditVacancyData(null);
     }
   };
 
@@ -76,7 +81,11 @@ const checkIsMounted = () => {
     });
   };
 
-    const handleCopyClick = async (id) => {
+  const handleButtonsFilterClick = (index) => {
+    setActiveButtonIndex(index);
+  };
+
+  const handleCopyClick = async (id) => {
     // navigator.clipboard.writeText(id);
     // setIsCopied(true);
     // // seticonCopy(true);
@@ -84,9 +93,9 @@ const checkIsMounted = () => {
     try {
       await navigator.clipboard.writeText(id);
       if (isMountedRef.current) {
-      setIsCopied(true);
-      setCopiedId(id);
-    }
+        setIsCopied(true);
+        setCopiedId(id);
+      }
     } catch (err) {
       console.error("Unable to copy project to clipboard:", err);
     }
@@ -94,48 +103,61 @@ const checkIsMounted = () => {
 
   const handleEditClick = async (id) => {
     try {
-  await navigator.clipboard.writeText(id);  
-  if (isMountedRef.current) {
-    // setIsCopied(true);
-    // setCopiedId(id);
+      await navigator.clipboard.writeText(id);
+      if (isMountedRef.current) {
+        // setIsCopied(true);
+        // setCopiedId(id);
 
-    const vacancyToEdit = vacanciesAdd.find((el) => el.id === id);
-   
-    setEditVacancyData(vacancyToEdit);
-    setIsModalOpen(true);
-  }
-} catch (err) {
-  console.error("Unable to copy vacancy to clipboard:", err);
-}
-};
+        const vacancyToEdit = vacanciesAdd.find((el) => el.id === id);
 
-const handleFormDelete = (formId) => {
-  dispatch(deleteForm(formId));
-  handleDeleteModalClose();
-};
+        setEditVacancyData(vacancyToEdit);
+        setIsModalOpen(true);
+      }
+    } catch (err) {
+      console.error("Unable to copy vacancy to clipboard:", err);
+    }
+  };
 
-useEffect(() => {
-  if (isCopied) {
-    const timer = setTimeout(() => {
-      setIsCopied(false);
-      setCopiedId("");
-    }, 3000);
-    return () => clearTimeout(timer);
-  }
-}, [isCopied])
+  const handleFormDelete = (formId) => {
+    dispatch(deleteForm(formId));
+    handleDeleteModalClose();
+  };
 
+  useEffect(() => {
+    if (isCopied) {
+      const timer = setTimeout(() => {
+        setIsCopied(false);
+        setCopiedId("");
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [isCopied]);
+
+  const handleLookClick = (id) => {
+    setLookEnabledIds((prevIds) =>
+      prevIds.includes(id)
+        ? prevIds.filter((itemId) => itemId !== id)
+        : [...prevIds, id]
+    );
+  };
 
   return (
     <section className={styles.card_components_admin}>
-    <div className={styles.card_components_admin__block}>
-      <div className={styles.card_components_admin__title}>HR портал</div>
-     <div className={styles.card_components_admin__buttonFilter}>
-     <button className={styles.card_components_admin__buttonFilter__group}>Вакансии</button>
-     <button className={styles.card_components_admin__buttonFilter__group}>Стажировки</button>
-     <button className={styles.card_components_admin__buttonFilter__group}>Главная</button>
-     <button className={styles.card_components_admin__buttonFilter__group}>Офис</button>
-     </div>
-       <div
+      <div className={styles.card_components_admin__block}>
+        <div className={styles.card_components_admin__title}>HR портал</div>
+        <div className={styles.card_components_admin__buttonFilter}>
+          {buttonsFilter.map((button, index) => (
+            <button
+              key={index}
+              className={`${styles.card_components_admin__buttonFilter__group}
+            ${activeButtonIndex === index ? styles.activeButtonVacancy : ""}`}
+              onClick={() => handleButtonsFilterClick(index)}
+            >
+              {button}
+            </button>
+          ))}
+        </div>
+        <div
           className={styles.card_components_admin__button_block}
           onClick={handleOpenModal}
         >
@@ -197,7 +219,7 @@ useEffect(() => {
             </div>
           </div>
         )}
-             <div className={styles.card_components_admin__section_map}>
+        <div className={styles.card_components_admin__section_map}>
           {error ? (
             <div className={styles.card_components_admin__errore_div}>
               Нажмите на HR Портал,{" "}
@@ -224,8 +246,7 @@ useEffect(() => {
                               <div
                                 key={el.id}
                                 className={styles.cart_vacancy_container}
-                              >       
-                                                     
+                              >
                                 <div
                                   className={
                                     styles.cart_vacancy_container__content
@@ -239,13 +260,13 @@ useEffect(() => {
                                     {el.title}
                                   </span>
                                 </div>
-                                  <div
-                                    className={
-                                      styles.cart_vacancy_container__department
-                                    }
-                                  >
-                                    {el.direction}
-                                  </div>
+                                <div
+                                  className={
+                                    styles.cart_vacancy_container__department
+                                  }
+                                >
+                                  {el.direction}
+                                </div>
                                 <div
                                   className={
                                     styles.cart_vacancy_container__id_block
@@ -287,30 +308,14 @@ useEffect(() => {
                                     />
                                   </button>
                                 </div>
-                                <div className={
+                                <div
+                                  className={
                                     styles.cart_vacancy_container_buttonClick
-                                  }>
-                                {user?.name === "obezyankaa" ||
-                                  user?.name === "Pokemon" ? (
-                                      <div className={styles.edit_block_vacancy}
-                                        onClick={() => handleEditClick(el.id)}
-                                      >
-                                      <button
-                                        className={styles.buttom_edit}
-                                      >
-                                        <label
-                                          htmlFor="edit"
-                                          className={styles.label}
-                                        >
-                                          <div className={`${styles.wrapper}`}>
-                                            <img src={Edit} alt={Edit} />
-                                          </div>
-                                        </label>
-                                      </button>
-                                   </div>
-                                  ) : null}
-                                 {user?.name === "obezyankaa" ||
-                                  user?.name === "Pokemon" ? (
+                                  }
+                                >
+                                  {user?.name === "obezyankaa" ||
+                                  user?.name === "Pokemon" ||
+                                  user?.name === "hr778" ? (
                                     <div className={styles.del_block_vacancy}>
                                       <button
                                         className={styles.buttom_del}
@@ -351,9 +356,58 @@ useEffect(() => {
                                           </div>
                                         </label>
                                       </button>
-                                    </div>                                    
-                                  ) : null}  
-                                  </div>
+                                    </div>
+                                  ) : null}
+                                  {user?.name === "obezyankaa" ||
+                                  user?.name === "Pokemon" ||
+                                  user?.name === "hr778" ? (
+                                    <div
+                                      className={`${styles.look_block_vacancy}`}
+                                      onClick={() => handleLookClick(el.id)}
+                                    >
+                                      <button className={styles.buttom_look}>
+                                        <label
+                                          htmlFor="look"
+                                          className={styles.label}
+                                        >
+                                          <div className={`${styles.wrapper}`}>
+                                            <img
+                                              src={
+                                                lookEnabledIds.includes(el.id)
+                                                  ? noLook
+                                                  : Look
+                                              }
+                                              alt={
+                                                lookEnabledIds.includes(el.id)
+                                                  ? "Look"
+                                                  : "No look"
+                                              }
+                                            />
+                                          </div>
+                                        </label>
+                                      </button>
+                                    </div>
+                                  ) : null}
+                                  {user?.name === "obezyankaa" ||
+                                  user?.name === "Pokemon" ||
+                                  user?.name === "hr778" ? (
+                                    <div
+                                      className={styles.edit_block_vacancy}
+                                      onClick={() => handleEditClick(el.id)}
+                                    >
+                                      <button className={styles.buttom_edit}>
+                                        <label
+                                          htmlFor="edit"
+                                          className={styles.label}
+                                        >
+                                          <div className={`${styles.wrapper}`}>
+                                            <img src={Edit} alt={Edit} />
+                                          </div>
+                                        </label>
+                                      </button>
+                                    </div>
+                                  ) : null}
+                                </div>
                               </div>
                               {/* Модальное окно подтверждения удаления */}
                               {deleteModalState[el.id] && (
@@ -364,14 +418,16 @@ useEffect(() => {
                                         styles.delete_modal_block__title
                                       }
                                     >
-                                      Вы точно хотите удалить вакансию<br /> «{el.title}»?
+                                      Вы точно хотите удалить вакансию
+                                      <br /> «{el.title}»?
                                     </div>
                                     <p
                                       className={
                                         styles.delete_modal_block__text
                                       }
                                     >
-                                      Удаленную вакансию вернуть будет невозможно
+                                      Удаленную вакансию вернуть будет
+                                      невозможно
                                     </p>
 
                                     <div className={styles.button_block}>
@@ -407,8 +463,7 @@ useEffect(() => {
             </>
           )}
         </div>
-        </div>
+      </div>
     </section>
   );
 }
-

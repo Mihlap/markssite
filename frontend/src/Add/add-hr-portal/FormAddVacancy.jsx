@@ -291,7 +291,7 @@ export default function FormAddVacancy({ setIsModalOpen }) {
                   modules={{
                     toolbar: [["bold", "underline", { list: "bullet" }]],
                     clipboard: {
-                      matchVisual: false,
+                    matchVisual: false,
                     },
                   }}
                   formats={["bold", "underline", "list"]}
@@ -339,10 +339,10 @@ export default function FormAddVacancy({ setIsModalOpen }) {
                   modules={{
                     toolbar: [["bold", "underline", { list: "bullet" }]],
                     clipboard: {
-                      matchVisual: false,
+                    matchVisual: false,
                     },
                   }}
-                  formats={["bold", "italic", "list"]}
+                  formats={["bold", "underline", "list"]}
                   className={styles.form_container__textarea}
                   style={{
                     // resize: "none",
@@ -390,7 +390,7 @@ export default function FormAddVacancy({ setIsModalOpen }) {
                       matchVisual: false,
                     },
                   }}
-                  formats={["bold", "italic", "list"]}
+                  formats={["bold", "underline", "list"]}
                   className={styles.form_container__textarea}
                   style={{
                     // resize: "none",

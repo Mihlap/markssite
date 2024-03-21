@@ -61,3 +61,6 @@ export const selectBlocks = [
     { value: "Новогодние подарки детям", label: "Новогодние подарки детям" },
   ] },
 ];
+
+
+export const buttonsFilter = ["Вакансии", "Стажировки", "Главная", "Офис"];
