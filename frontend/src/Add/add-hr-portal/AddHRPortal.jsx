@@ -4,13 +4,18 @@ import styles from "../style/style-card.module.scss";
 import FormEditVacancy from "./FormEditVacancy";
 import FormAddVacancy from "./FormAddVacancy";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteForm, getFetchForm } from "../../store/Slice/vacanciesSlice";
-import { buttonsFilter }  from "./utils.js";
+import {
+  deleteForm,
+  getFetchForm,
+  sendCopiedVacancyToServer,
+} from "../../store/Slice/vacanciesSlice";
+import { buttonsFilter } from "./utils.js";
 
 import LoadingModal from "../add-project/loading/LoadingModal";
 import Edit from "../icon/Edit.svg";
 import Look from "../icon/eye.svg";
 import noLook from "../icon/eye2.svg";
+import copyIcon from "../icon/copyIcon.svg";
 
 export default function AddHRPortal({ user }) {
   // const Host = process.env.REACT_APP_SERVER_HOST;
@@ -20,6 +25,8 @@ export default function AddHRPortal({ user }) {
   const [deleteModalState, setDeleteModalState] = useState({});
   const [isCopied, setIsCopied] = useState(false);
   const [copiedId, setCopiedId] = useState("");
+  const [copiedVacancyId, setCopiedVacancyId] = useState(null);
+
 
   const dispatch = useDispatch();
   const error = useSelector((state) => state.vacancies.error);
@@ -30,7 +37,6 @@ export default function AddHRPortal({ user }) {
   const [lookEnabledIds, setLookEnabledIds] = useState([]);
   const [activeButtonIndex, setActiveButtonIndex] = useState(0);
 
-  
   const updateModalBlockHeight = () => {
     const windowHeight = window.innerHeight;
     const maxHeight = Math.min(windowHeight - 100, 1900); // Примерное максимальное значение высоты
@@ -100,6 +106,28 @@ export default function AddHRPortal({ user }) {
       console.error("Unable to copy project to clipboard:", err);
     }
   };
+
+  const handleCopyVacancyClick = async (id) => {
+    try {
+      await navigator.clipboard.writeText(id);
+      if (isMountedRef.current) {
+        const vacancyToCopy = vacanciesAdd.find((el) => el.id === id);
+        const copiedVacancy = { ...vacancyToCopy, id };
+        dispatch(sendCopiedVacancyToServer(copiedVacancy)).then((response) => {
+          const copiedId = response.data.copiedId;
+          setCopiedVacancyId(copiedId); // Устанавливаем copiedId
+          setTimeout(() => {
+            setCopiedVacancyId(null); // Сбрасываем copiedId после 5 секунд
+          }, 5000);
+          dispatch(getFetchForm()); 
+        });
+      }
+    } catch (err) {
+      console.error("Unable to copy vacancy:", err);
+    }
+  };
+  
+  
 
   const handleEditClick = async (id) => {
     try {
@@ -245,7 +273,7 @@ export default function AddHRPortal({ user }) {
                             <React.Fragment key={el.id}>
                               <div
                                 key={el.id}
-                                className={styles.cart_vacancy_container}
+                                className={`${styles.cart_vacancy_container} ${copiedVacancyId === el.id ? styles.copiedVacancy : ""}`}                              
                               >
                                 <div
                                   className={
@@ -316,6 +344,31 @@ export default function AddHRPortal({ user }) {
                                   {user?.name === "obezyankaa" ||
                                   user?.name === "Pokemon" ||
                                   user?.name === "hr778" ? (
+                                    <div
+                                      className={styles.copyIcon_block_vacancy}
+                                      onClick={() =>
+                                        handleCopyVacancyClick(el.id)
+                                      }
+                                    >
+                                      <button
+                                        className={styles.buttom_copyIcon}
+                                      >
+                                        <label
+                                          htmlFor="copyIcon"
+                                          className={styles.label}
+                                        >
+                                          <div className={`${styles.wrapper}`}>
+                                            <img
+                                              src={copyIcon}
+                                              alt={copyIcon}
+                                            />
+                                          </div>
+                                        </label>
+                                      </button>
+                                    </div>
+                                  ) : null}
+                                  {user?.name === "obezyankaa" ||
+                                  user?.name === "Pokemon" ? (
                                     <div className={styles.del_block_vacancy}>
                                       <button
                                         className={styles.buttom_del}
@@ -362,7 +415,13 @@ export default function AddHRPortal({ user }) {
                                   user?.name === "Pokemon" ||
                                   user?.name === "hr778" ? (
                                     <div
-                                      className={`${styles.look_block_vacancy}`}
+                                      className={`${
+                                        styles.look_block_vacancy
+                                      } ${
+                                        lookEnabledIds.includes(el.id)
+                                          ? styles.disabled
+                                          : ""
+                                      }`}
                                       onClick={() => handleLookClick(el.id)}
                                     >
                                       <button className={styles.buttom_look}>
@@ -379,8 +438,8 @@ export default function AddHRPortal({ user }) {
                                               }
                                               alt={
                                                 lookEnabledIds.includes(el.id)
-                                                  ? "Look"
-                                                  : "No look"
+                                                  ? "No look"
+                                                  : "Look"
                                               }
                                             />
                                           </div>

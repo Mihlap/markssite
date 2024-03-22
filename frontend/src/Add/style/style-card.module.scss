@@ -289,23 +289,23 @@
         display: flex;
         width: 100%;
         padding-top: 21px;
-        border-radius: 1rem;
-       
-        
+        border-radius: 1rem;      
+   
         
         &__group {
             width: 50rem;
             height: 3.125rem; 
             background: var(--light-light-gray-EBECEE); 
             border-radius: 0.5rem;
-            
+                  
                         
             &:hover, &:focus {
                 border-radius: 0.5rem;
-                background: var(--super-dark-blue-345374);
+                background: var(--light-gray-C0C5CB);
                 color: var(--white-F6F6F6);
             }
         }
+        
     }
 
 }
@@ -313,7 +313,15 @@
 .activeButtonVacancy {
     background: var(--super-dark-blue-345374);
     color: var(--white-F6F6F6);
+    transition: background-color 0.5s ease-in-out;
+    
+
+    &:hover, &:focus {
+        background: var(--super-dark-blue-345374);
+     }
 }
+
+
 
 .cart_project_container {
     display: flex;
@@ -579,7 +587,12 @@
         background-image: url("../icon/Vector.svg");
         background-repeat: no-repeat;
     }
+    
 }
+.copiedVacancy {
+    background-color: var(--light-gray-C0C5CB); 
+  }
+
 
 
 // стили помойного ведра 
@@ -760,19 +773,52 @@
         width: 42px;
         height: 42px;
         border-radius: 50%;
-        background-color: var(--blue-75BBFD);
+        background: var(--blue-75BBFD);
         cursor: pointer;
         margin-left: auto;
         margin-right: 1rem;
         transition: background-color 0.4s;
         
         &:hover {
-            background-color: var(--dark-blue-389FFF);
+            background: var(--dark-blue-389FFF);
         }
         
     }
 
     .buttom_look{ 
+        .wrapper {
+           position: relative;
+           cursor: pointer;
+       }
+   }
+
+   .disabled {
+    background: var(--light-gray-C0C5CB); 
+
+    &:hover {
+         background: var(--light-gray-C0C5CB); 
+    }
+    }
+
+    .copyIcon_block_vacancy {
+        display: flex;   
+        align-items: center;
+        justify-content: center;
+        width: 42px;
+        height: 42px;
+        border-radius: 50%;
+        background: var(--blue-75BBFD);
+        cursor: pointer;
+        margin-left: auto;
+        margin-right: 1rem;
+        transition: background-color 0.4s;
+
+        &:hover {
+            background: var(--dark-blue-389FFF);
+        }
+    }
+
+    .buttom_copyIcon{ 
         .wrapper {
            position: relative;
            cursor: pointer;
