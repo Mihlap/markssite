@@ -36,6 +36,38 @@ router.post('/addVacancy', async (req, res) => {
   }
 });
 
+router.post('/copyVacancy/:id', async (req, res) => {
+  try {
+    // Получаем идентификатор вакансии для копирования из параметров запроса
+    const { id } = req.params;
+
+    // Находим вакансию по идентификатору
+    const vacancyToCopy = await Employee.findByPk(id);
+
+    // Если вакансия не найдена, возвращаем ошибку 404
+    if (!vacancyToCopy) {
+      return res.status(404).json({ error: 'Вакансия для копирования не найдена' });
+    }
+
+ // Создаем копию вакансии
+ const copiedVacancyData = { ...vacancyToCopy.toJSON(), id: null }; // Копируем все поля, кроме идентификатора
+
+ // Сохраняем копию вакансии в базе данных
+ const newVacancy = await Employee.create(copiedVacancyData);
+
+ if (!newVacancy) {
+  throw new Error('Не удалось создать копию вакансии');
+}
+    // Отправляем ответ об успешном копировании вакансии
+    res.status(201).json({ message: 'Вакансия успешно скопирована', copiedId: newVacancy.id });
+
+  } catch (error) {
+    console.error('Ошибка при копировании вакансии:', error);
+    res.status(500).json({ message: 'Ошибка сервера при копировании вакансии' });
+  }
+});
+
+
 
 // изменяем  данные вакансии
 router.put('/editVacancy/:id', async (req, res) => {
