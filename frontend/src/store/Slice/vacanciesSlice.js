@@ -63,7 +63,7 @@ const vacanciesSlice = createSlice({
     },
     setVacancyId(state, action) {
       state.vacanciesId = action.payload;
-    },
+    },   
     clearFormData(state) {
       state.formData = {
         title: "",
@@ -119,7 +119,8 @@ export const addVacancy = createAsyncThunk(
       
       dispatch(clearFormData());
       dispatch(getFetchForm());
-      
+
+        
       return response.data;
     } catch (error) {
       console.error("Ошибка при добавлении вакансии:", error);
@@ -128,6 +129,25 @@ export const addVacancy = createAsyncThunk(
     }
   }
 );
+
+export const sendCopiedVacancyToServer = (copiedVacancy) => {
+  return async (dispatch) => {
+    try {
+      // Отправляем скопированную вакансию на сервер
+      const response = await axios.post(`${serverHost}/api-vacancy/copyVacancy/${copiedVacancy.id}`, copiedVacancy);
+      // const copiedId = response.data.id;
+      // Вызовите другие действия Redux, если необходимо
+      dispatch(clearFormData());
+      dispatch(getFetchForm());
+    
+      return response;
+    } catch (error) {
+      console.error('Ошибка при отправке скопированной вакансии на сервер:', error);
+      dispatch(fetchVacancyFailure(error.message));
+    }
+  };
+};
+
 
 export const editVacancy = createAsyncThunk(
   'vacancies/editVacancy',
