@@ -2,6 +2,7 @@
 
 .card_components_admin {
     height: 100vh;
+    padding-left: 27.5%;
     padding-top: 7.5rem;
  
     &__block {
@@ -124,7 +125,7 @@
         position: fixed;
         z-index: 9997;
         top: 0;
-        left: 0;
+        left: 20%;
         width: 100%;
         height: 100%;
         background-color: rgba(0, 0, 0, 0.6);
@@ -285,43 +286,107 @@
         line-height: 2.5rem;
     }
 
-    &__buttonFilter {
-        display: flex;
-        width: 100%;
-        padding-top: 21px;
-        border-radius: 1rem;      
+    // &__buttonFilter {
+    //     display: flex;
+    //     width: 100%;
+    //     padding-top: 21px;
+    //     border-radius: 1rem;      
    
         
-        &__group {
-            width: 50rem;
-            height: 3.125rem; 
-            background: var(--light-light-gray-EBECEE); 
-            border-radius: 0.5rem;
-                  
+    //     &__group {
+    //         position: relative;
+    //         width: 50rem;
+    //         height: 3.125rem; 
+    //         background: var(--light-light-gray-EBECEE); 
+    //         border-radius: 0.5rem;
+    //         overflow: hidden; 
+    //         transition: background-color 0.3s, color 0.3s;
+                                    
                         
-            &:hover, &:focus {
-                border-radius: 0.5rem;
-                background: var(--light-gray-C0C5CB);
-                color: var(--white-F6F6F6);
-            }
-        }
+    //         &:hover, &:focus {
+    //             border-radius: 0.5rem;
+    //             background: var(--light-gray-C0C5CB);
+    //             color: var(--white-F6F6F6);
+    //         }
+
+    //         &::after {
+    //             content: '';
+    //             position: absolute;
+    //             top: 0;
+    //             left: 100%; 
+    //             width: 100%;
+    //             height: 100%;
+    //             background: var(--super-dark-blue-345374);  
+    //             color: var(--white-F6F6F6);                      
+    //             transition: left 0.3s;       
+    //         }    
+            
+
+    //     }        
+    //     .activeButtonVacancy {
+    //         // background: var(--super-dark-blue-345374);
+    //         color: var(--white-F6F6F6);
+    //     }
         
-    }
+    //     /* Стили для активной кнопки с анимацией */
+    //     .activeButtonVacancy::after {
+    //         left: 0;      
+    //         color: var(--white-F6F6F6);
+    //     }  
+
+        
+    // }
 
 }
 
-.activeButtonVacancy {
-    background: var(--super-dark-blue-345374);
+
+
+
+.card_components_admin__buttonFilter {
+    display: flex;
+    padding-top: 21px;   
+}
+
+.card_components_admin__buttonFilter__group {
+    position: relative;
+    cursor: pointer;
+    background: var(--light-light-gray-EBECEE);
+    color: var(--black-1D2E43); 
+    width: 50rem;
+    height: 50px;
+    border-radius: 0.5rem;  
+}
+
+.card_components_admin__buttonFilter__group:hover {
+    background: var(--light-gray-C0C5CB); 
     color: var(--white-F6F6F6);
-    transition: background-color 0.5s ease-in-out;
-    
+    transition: background-color 0.4s ease, color 0.4s ease; 
+}
 
-    &:hover, &:focus {
-        background: var(--super-dark-blue-345374);
-     }
+.card_components_admin__buttonFilter__group.activeButtonVacancy {
+    color: var(--white-F6F6F6); 
+    position: relative; 
+    background: var(--super-dark-blue-345374);
+    animation: fillShift 0.5s ease forwards;
 }
 
 
+@keyframes fillShift {
+    from {
+        left: -20%; 
+    }
+    to {
+        left: 0%; 
+    }
+}
+
+  
+
+
+
+
+  
+  
 
 .cart_project_container {
     display: flex;
