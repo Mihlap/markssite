@@ -181,7 +181,7 @@ export default function AddHRPortal({ user }) {
             ${activeButtonIndex === index ? styles.activeButtonVacancy : ""}`}
               onClick={() => handleButtonsFilterClick(index)}
             >
-              {button}
+            {button}
             </button>
           ))}
         </div>
