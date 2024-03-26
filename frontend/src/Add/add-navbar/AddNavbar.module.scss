@@ -290,6 +290,13 @@
 }
 
 
+@media screen and (min-width: 1001px) and (max-width: 1600px) {
+.add_navbar_container {
+    left: 0%;    
+}
+}
+
+
 @media screen and (max-width: 1000px) {
     .add_navbar_container {
         position: fixed;

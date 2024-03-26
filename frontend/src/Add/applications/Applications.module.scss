@@ -125,6 +125,12 @@
     }
 }
 
+@media screen and (min-width: 1001px) and (max-width: 1600px) {  
+    .Applications {     
+       padding-left: 2rem;      
+    }
+}
+
 @media (max-width: 1000px) {
     .Applications {
         padding-left: 6.5rem;
