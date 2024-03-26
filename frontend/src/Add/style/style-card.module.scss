@@ -378,14 +378,7 @@
     to {
         left: 0%; 
     }
-}
-
-  
-
-
-
-
-  
+} 
   
 
 .cart_project_container {
@@ -1039,6 +1032,12 @@
 }
 
 // стили адаптив
+
+@media screen and (min-width: 1001px) and (max-width: 1600px) {    
+.card_components_admin {
+    padding-left: 0;
+}
+}
 
 @media (max-width: 1000px) {
     .card_components_admin {
