@@ -43,6 +43,7 @@ import Internships from "./Portal/Internships/Internships";
 import Office from "./Portal/Office/Office";
 import PortalMenu from "./Navbar/PortalMenu";
 import Vacancies from "./Portal/Vacancies/Vacancies";
+import VacanciesMain from "./Portal/Vacancies/VacanciesMain";
 // import eruda from 'eruda';
 
 export default function App() {
@@ -250,7 +251,7 @@ export default function App() {
                   <Route
                     path="/portal/vacancies"
                     element={
-                      <Vacancies
+                      <VacanciesMain
                         handleMouseEnter={handleMouseEnter}
                         handleMouseLeave={handleMouseLeave}
                         handleMouseHover={handleMouseHover}
