@@ -55,6 +55,113 @@
   line-height: 64px;
 }
 
+/* стили для кнопок фильтрации */
+.menu_button_group_vacancy_wrapper_main {
+  display: flex;
+  align-items: flex-start;
+}
+
+.menu_button_group_vacancy_wrapper {
+  display: flex;
+  width: 100%;
+}
+
+.menu_button_group_vacancy {
+  display: flex;
+  flex-wrap: wrap;
+  padding-top: 2rem;
+  padding-left: 1.69rem;
+  grid-column-gap: 8px;
+  grid-row-gap: 16px;
+  width: 100%;
+  cursor: pointer;
+}
+
+/* .button_wrapper {
+display: inline-block;
+
+} */
+
+.menu__button__allVacancy {
+  display: flex;
+  width: auto;
+  padding: 8px 24px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2.125rem;
+  border: 1px solid var(--black-1D2E43);
+  background-color: transparent;
+  white-space: nowrap;
+  color: var(--black-1D2E43);
+  cursor: pointer;
+  transition: background-color 0.8s ease, color 0.8s ease;
+}
+
+
+.menu__button__allVacancy:hover {
+  background-color: var(--dark-gray-566272);
+  color: var(--white-F6F6F6);
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+.menu__button__allVacancy.active {
+  background-color: var(--black-1D2E43);
+}
+
+/* .menu__button__allProject.active:hover {
+  background-color: var(--black-1D2E43);
+} */
+
+.menu_button_items_vacancy {
+  font-family: var(--font-raleway);
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: var(--fw-400);
+  line-height: 1.25rem;
+}
+
+.menu__button__choose__vacancyFilter {
+  display: inline-flex;
+  padding: 0.7rem 1rem;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  margin-right: 1.688rem;
+  margin-top: 2rem;
+  margin-left: 0.5rem;
+  width: auto;
+  gap: 0.5rem;
+  border-radius: 2.125rem;
+  background-color: var(--light-light-gray-EBECEE);
+  border: none;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+.menu__button__choose__vacancyFilter:hover {
+  background: var(--light-gray-C0C5CB);
+  color: var(--white-F6F6F6);
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+
+.icon__svg_button__choose__vacancyFilter {
+  width: 1rem;
+  height: 1rem;
+}
+
+.button_choose_vacancyFilter {
+  border: none;
+  font-family: var(--font-raleway);
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: var(--fw-400);
+  line-height: 1.25rem;
+  color: var(--black-1D2E43);
+  align-items: center;
+  justify-content: center;
+}
+
+/* ----------------------------------------------- */
+
 .vacancy_section_block {
   display: block;
   justify-content: center;

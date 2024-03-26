@@ -299,8 +299,6 @@ export default function Project({
       );
     });
 
-  // console.log(filteredProjects, "9999999999999999999999999999999999");
-
   return (
     <>
       <Helmet>
@@ -443,7 +441,6 @@ export default function Project({
                 ))}
               </div>
             </div>
-
             <button
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
