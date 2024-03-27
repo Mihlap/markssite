@@ -11,6 +11,7 @@ const apiKey = process.env.REACT_APP_API_KEY;
 
 const cities = [
   { name: "Москва", coords: [55.783, 37.5804] },
+  { name: "Воронеж", coords: [51.653696, 39.178566] },
   { name: "Оренбург", coords: [51.804, 55.1053] },
   { name: "Челябинск", coords: [55.1566, 61.3018] },
   { name: "Ташкент", coords: [41.2964, 69.275] },
@@ -19,6 +20,12 @@ const cities = [
 const cityInfo = {
   Москва: {
     address: "Москва, 3-я ул. Ямского Поля, д. 20, с. 1, офис 704",
+    phone: "+7 (495) 120-12-26",
+    mail: "mail@marksgroup.ru",
+    hour: "",
+  },
+    Воронеж: {
+    address: "Воронеж, ул. Ворошилова, д. 1а",
     phone: "+7 (495) 120-12-26",
     mail: "mail@marksgroup.ru",
     hour: "",
@@ -98,7 +105,7 @@ const Contacts = ({ handleMouseEnter, handleMouseLeave }) => {
           <div className={styles.menu_work}>
             Режим работы &nbsp;&bull;&nbsp; Пн.&nbsp;&mdash;
             Пт.&nbsp;10.00&mdash;19.00
-            {selectedMap !== "Москва" && <> &nbsp;&bull;&nbsp; {hour}</>}
+            {(selectedMap !== "Москва" && selectedMap !== "Воронеж")  && <> &nbsp;&bull;&nbsp; {hour}</>}
           </div>
           <div className={styles.menu_hour}></div>
           <div className={styles.menu_office_name}>Наши офисы</div>
