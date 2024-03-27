@@ -20,6 +20,15 @@ export const fetchVacancies = createAsyncThunk(
   }
 );
 
+// const countVacanciesByDirection = (vacancies) => {
+//   const counts = {};
+//   vacancies.forEach((vacancy) => {
+//     const { direction } = vacancy;
+//     counts[direction] = counts[direction] ? counts[direction] + 1 : 1;
+//   });
+//   return counts;
+// };
+
 
 const vacanciesSlice = createSlice({
   name: 'vacancies',
@@ -40,6 +49,8 @@ const vacanciesSlice = createSlice({
     skills: [],
     benefits: [],
     },
+    selectedFilter: "Все",
+    vacancyCountsByDirection: {},
   },
   reducers: {
     fetchVacancyStart(state) {
@@ -48,7 +59,7 @@ const vacanciesSlice = createSlice({
     },
     fetchVacancySuccess(state, action) {
       state.loading = false;
-      state.vacancies = action.payload;
+      state.vacancies = action.payload;   
     },
     fetchVacancyFailure(state, action) {
       state.loading = false;
@@ -63,7 +74,10 @@ const vacanciesSlice = createSlice({
     },
     setVacancyId(state, action) {
       state.vacanciesId = action.payload;
-    },   
+    },  
+    setSelectedFilter(state, action) {
+      state.selectedFilter = action.payload;
+    }, 
     clearFormData(state) {
       state.formData = {
         title: "",
@@ -101,8 +115,9 @@ export const {
   fetchVacancySuccess,
   fetchVacancyFailure,
   deleteVacancySuccess,
-  deleteVacancyFailure,
+  deleteVacancyFailure, 
   setVacancyId,
+  setSelectedFilter,
   clearFormData, 
 } = vacanciesSlice.actions;
 
@@ -192,8 +207,24 @@ export const getFetchForm = () => async (dispatch) => {
 
   try {
     const response = await axios.get(`${serverHost}/api-vacancy/getzapros`);
-
+ 
     dispatch(fetchVacancySuccess(response.data));
+  } catch (error) {
+    dispatch(fetchVacancyFailure(error.message));
+  }
+};
+
+export const getFetchFormFilter = (direction) => async (dispatch, getState) => {
+  dispatch(fetchVacancyStart());
+
+  try {
+    const response = await axios.get(`${serverHost}/api-vacancy/getzapros-filter`, {
+      params: {
+        direction,
+      },
+    });
+    dispatch(fetchVacancySuccess(response.data)); 
+  
   } catch (error) {
     dispatch(fetchVacancyFailure(error.message));
   }
