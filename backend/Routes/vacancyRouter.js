@@ -114,6 +114,27 @@ router.get('/getzapros', async (req, res) => {
   }
 });
 
+
+router.get('/getzapros-filter', async (req, res) => {
+  try {
+    const { direction } = req.query;
+    let data;
+
+    if (direction && direction !== 'Все') {
+      data = await Employee.findAll({
+        where: { direction },
+      });
+    } else {
+      data = await Employee.findAll();
+    }
+
+     res.json(data);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ error: 'Произошла ошибка при получении вакансий.' });
+  }
+});
+
 // Маршрут для удаления вакансии
 router.delete('/deletezapros/:id', async (req, res) => {
   try {

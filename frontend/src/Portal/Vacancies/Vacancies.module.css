@@ -17,20 +17,20 @@
   align-items: center;
   width: 100%;
   min-width: 100%;
-   min-height: 100%;
-   height: 41vh;
-   z-index: -1;
- }
+  min-height: 100%;
+  height: 41vh;
+  z-index: -1;
+}
 
 .rocket_image {
   position: absolute;
   display: flex;
   justify-content: flex-end;
-  width: 100%; 
+  width: 100%;
   height: 110%;
   object-fit: cover;
   object-position: center;
- }
+}
 
 .vacancies_header_wrapper {
   position: absolute;
@@ -84,7 +84,7 @@ display: inline-block;
 
 .menu__button__allVacancy {
   display: flex;
-  width: auto;
+  width: fit-content;
   padding: 8px 24px;
   align-items: center;
   justify-content: center;
@@ -106,18 +106,29 @@ display: inline-block;
 
 .menu__button__allVacancy.active {
   background-color: var(--black-1D2E43);
+  color: var(--white-F6F6F6);
 }
 
 /* .menu__button__allProject.active:hover {
   background-color: var(--black-1D2E43);
 } */
 
-.menu_button_items_vacancy {
-  font-family: var(--font-raleway);
+/* .menu_button_items_vacancy {
+display: flex;
+font-family: var(--font-raleway);
+} */
+
+.menu_button_items_vacancyText { 
   font-size: 0.875rem;
   font-style: normal;
   font-weight: var(--fw-400);
   line-height: 1.25rem;
+}
+
+.menu_button_items_vacancyCount {
+font-size: 1rem;
+font-weight: var(--fw-400);
+line-height: 1.75rem;
 }
 
 .menu__button__choose__vacancyFilter {
@@ -136,6 +147,7 @@ display: inline-block;
   border: none;
   transition: background-color 0.4s ease, color 0.4s ease;
 }
+
 .menu__button__choose__vacancyFilter:hover {
   background: var(--light-gray-C0C5CB);
   color: var(--white-F6F6F6);
@@ -162,6 +174,77 @@ display: inline-block;
 
 /* ----------------------------------------------- */
 
+.vacancy_section_block_vacancy {
+  display: flex;
+  padding-top: 50px;
+}
+
+.section_block_vacancy {
+  display: flex;
+  padding-left: 1.69rem;
+  padding-right: 1.688rem;
+  width: 100%;
+}
+
+.vacancy_item {
+   width: 50%;
+  font-family: var(--font-raleway);
+  font-size: 0.875rem;
+  font-weight: var(--fw-400);
+  line-height: 1.25rem;
+  color: var(--light-gray-C0C5CB);
+}
+
+.vacancy_item2 {
+  width: 20%;
+  font-family: var(--font-raleway);
+  font-size: 0.875rem;
+  font-weight: var(--fw-400);
+  line-height: 1.25rem;
+  color: var(--light-gray-C0C5CB);
+}
+
+.vacancy_item_title {
+  padding-bottom: 18px;
+  padding-left: 2.31rem;
+}
+
+
+.vacancy_item_title2 {
+  padding-bottom: 18px;
+  padding-left: 2rem;
+}
+
+.vacancy_item_content_wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 16px;  
+  height: 112px;
+  /* background-color: white; */
+  color: var(--black-1D2E43);
+  align-items: center;
+  /* border-radius: 0.5rem; */
+  background-color: var(--light-light-gray-EDEDED);
+}
+
+.vacancy_item_content {
+  font-family: var(--font-unbounded);
+  font-weight: var(--fw-300);
+  font-size: 1.75rem;
+  line-height: 1.75rem;
+  padding-left: 2.31rem;
+}
+
+.vacancy_item_content2 {
+  font-family: var(--font-raleway);
+  font-weight: var(--fw-400); 
+  font-size: 1rem;
+  line-height: 1.5rem;
+  padding-left: 2rem;
+}
+
+
+/* стили для страницы Vacancies пока она работает не удалять!!!!!!! */
 .vacancy_section_block {
   display: block;
   justify-content: center;
@@ -169,9 +252,9 @@ display: inline-block;
   text-align: left;
   padding: 5rem 1rem;
   padding-bottom: 0rem;
-  margin: 0 auto; 
+  margin: 0 auto;
   max-width: 700px;
- }
+}
 
 .vacancies_advertisingBlock {
   width: 100%;
@@ -200,7 +283,7 @@ display: inline-block;
 .vacancies_section {
   font-display: flex;
   padding-top: 2.5rem;
- }
+}
 
 .vacancies_list_container {
   display: inline-flex;
@@ -210,9 +293,9 @@ display: inline-block;
   align-items: center;
   gap: 0.625rem;
   border-radius: 1rem;
-  border: 1px solid var(--blue-75BBFD); 
-  
- }
+  border: 1px solid var(--blue-75BBFD);
+
+}
 
 
 .vacancies_list {
@@ -223,15 +306,15 @@ display: inline-block;
 }
 
 .vacancy_name {
-color: var(--black-1D2E43);
-font-variant-numeric: lining-nums proportional-nums;
-font-family: var(--font-raleway);
-font-size: 1.125rem;
-font-style: normal;
-font-weight: var(--fw-400);
-text-decoration: underline;
-transition: color 0.4s ease;
-width: 100%;
+  color: var(--black-1D2E43);
+  font-variant-numeric: lining-nums proportional-nums;
+  font-family: var(--font-raleway);
+  font-size: 1.125rem;
+  font-style: normal;
+  font-weight: var(--fw-400);
+  text-decoration: underline;
+  transition: color 0.4s ease;
+  width: 100%;
 }
 
 .vacancy_name:hover {
@@ -249,7 +332,7 @@ width: 100%;
   line-height: 2rem;
   padding: 2.5rem 2rem 0rem 0rem;
   width: max-content;
- }
+}
 
 .span_mail_vacancies {
   color: var(--blue-75BBFD);
@@ -262,6 +345,8 @@ width: 100%;
   padding-left: 0.5rem;
   cursor: none;
 }
+
+/* ----------------------------------------------- */
 
 .temporaryText {
   max-width: 47rem;
@@ -295,112 +380,117 @@ width: 100%;
 
 @media screen and (min-width: 1025px) and (max-width: 1600px) {
   .wrapper_vacancies {
-     height: 36Vh;
-   }
- 
-   .vacancies_text_for_email {
-    min-width: 70vw;
-     width: 100%;
+    height: 36Vh;
   }
+
+  .vacancies_text_for_email {
+    min-width: 70vw;
+    width: 100%;
+  }
+
   .vacancies_list {
     min-width: 50vw;
   }
+
   .temporaryText {
     padding-left: 4rem;
   }
-  
+
   .textUnderForm {
     max-width: 40rem;
-   padding-left: 4rem;
- }
-  
+    padding-left: 4rem;
+  }
+
   .vacancyFormWrapper {
     padding: 0rem 0rem 6rem 4rem;
   }
-  
-  }
 
-  /* стили для планшетной версии  */
+}
+
+/* стили для планшетной версии  */
 @media screen and (min-width: 768px) and (max-width: 1024px) {
   .wrapper_vacancies {
-      height: 32Vh; 
-    }
-  
-.vacancies_header_wrapper {
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  color: var(--black-1D2E43);
-  font-family: var(--font-unbounded);
-  font-style: normal;
-  font-weight: var(--fw-300);
-  top: 40%;
-  left: 4vw;
-  padding-right: 1rem;
-  max-width: 42vw;
-}
+    height: 32Vh;
+  }
 
-.vacancy_section_block {
-  display: inline-flex;
-  flex-direction: column;
-  padding: 5rem 4vw;
- }
+  .vacancies_header_wrapper {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    color: var(--black-1D2E43);
+    font-family: var(--font-unbounded);
+    font-style: normal;
+    font-weight: var(--fw-300);
+    top: 40%;
+    left: 4vw;
+    padding-right: 1rem;
+    max-width: 42vw;
+  }
+
+  .vacancy_section_block {
+    display: inline-flex;
+    flex-direction: column;
+    padding: 5rem 4vw;
+  }
 
 
- .vacancies_advertisingBlock {
-  padding-right: 0rem;
-  max-width: 40rem;
-}
+  .vacancies_advertisingBlock {
+    padding-right: 0rem;
+    max-width: 40rem;
+  }
 
-.vacancies_section {
-  width: 100%;
- }
+  .vacancies_section {
+    width: 100%;
+  }
 
- .vacancies_list_container {
-  display: inline-flex;
-  padding: 2rem 1.88rem;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  gap: 0.625rem;
-  border-radius: 1rem;
-  border: 1px solid var(--blue-75BBFD); 
-  width: 100%;
- }
+  .vacancies_list_container {
+    display: inline-flex;
+    padding: 2rem 1.88rem;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 0.625rem;
+    border-radius: 1rem;
+    border: 1px solid var(--blue-75BBFD);
+    width: 100%;
+  }
 
- .vacancies_list {
-  display: flex;
-  flex-direction: column;
-  gap: 3rem;
-  width: 100%;  
-}
- .vacancy_name:hover {
-  color: var(--black-1D2E43);
-  cursor: pointer;
-}
-.vacancies_text_for_email {
-  width: fit-content;
-}
-.span_mail_vacancies {
-  cursor: pointer;
-}
+  .vacancies_list {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    width: 100%;
+  }
 
-.temporaryText {
-  max-width: 44rem;
-  padding-left: 4vw;
-  padding-top: 2.5rem;
-}
+  .vacancy_name:hover {
+    color: var(--black-1D2E43);
+    cursor: pointer;
+  }
 
-.textUnderForm {
-  max-width: 44rem;
-  padding-left: 4vw;
-  padding-right: 4vw;
-  padding-top: 1.5rem;
-}
+  .vacancies_text_for_email {
+    width: fit-content;
+  }
 
-.vacancyFormWrapper {
-  padding: 0rem 4vw 4.2rem 4vw;
-}
+  .span_mail_vacancies {
+    cursor: pointer;
+  }
+
+  .temporaryText {
+    max-width: 44rem;
+    padding-left: 4vw;
+    padding-top: 2.5rem;
+  }
+
+  .textUnderForm {
+    max-width: 44rem;
+    padding-left: 4vw;
+    padding-right: 4vw;
+    padding-top: 1.5rem;
+  }
+
+  .vacancyFormWrapper {
+    padding: 0rem 4vw 4.2rem 4vw;
+  }
 
 }
 
@@ -435,7 +525,7 @@ width: 100%;
     font-size: 1.125rem;
     line-height: 1.625rem;
   }
-  
+
   .vacancies_header2 {
     font-size: 2rem;
     line-height: 2.5rem;
@@ -452,7 +542,7 @@ width: 100%;
     padding-right: 0rem;
     /* max-width: 21rem; */
   }
-  
+
   .vacancies_advertisingBlock_text1 {
     color: var(--black-1D2E43);
     font-family: var(--font-unbounded);
@@ -461,7 +551,7 @@ width: 100%;
     font-weight: var(--fw-300);
     line-height: 1.75rem;
   }
-  
+
   .vacancies_advertisingBlock_text2 {
     color: var(--black-1D2E43, #1D2E43);
     font-variant-numeric: lining-nums proportional-nums;
@@ -472,17 +562,17 @@ width: 100%;
     line-height: 1.625rem;
     padding-top: 1rem;
   }
-  
+
   .vacancies_section {
     font-display: flex;
     padding: 2.5rem 0rem 0rem 0rem;
   }
-  
+
   .vacancies_list {
     display: flex;
-    flex-direction: column; 
-    gap: 2rem; 
-    width: 100%; 
+    flex-direction: column;
+    gap: 2rem;
+    width: 100%;
   }
 
   .vacancy_name:hover {
@@ -490,8 +580,8 @@ width: 100%;
     cursor: pointer;
 
   }
-  
-  
+
+
   .vacancies_text_for_email {
     color: var(--black-1D2E43);
     font-family: var(--font-unbounded);
@@ -501,8 +591,8 @@ width: 100%;
     line-height: 2rem;
     padding: 2.5rem 0rem 0rem 0rem;
     width: 100%;
-    }
-  
+  }
+
   .span_mail_vacancies {
     display: flex;
     color: var(--blue-75BBFD);
@@ -515,26 +605,27 @@ width: 100%;
     padding-left: 0rem;
     cursor: pointer;
   }
-  
+
   .temporaryText {
     max-width: 100%;
     font-size: 1.5rem;
-     line-height: 2rem;
-    padding: 3.75rem 1rem 0rem 1rem; 
+    line-height: 2rem;
+    padding: 3.75rem 1rem 0rem 1rem;
   }
-  
+
   .textUnderForm {
     max-width: 100%;
-    padding: 1rem 1rem 0rem 1rem; 
+    padding: 1rem 1rem 0rem 1rem;
   }
+
   .vacancyFormWrapper {
     padding: 3.5rem 0rem 5rem 7rem;
   }
-  
+
   .vacancyFormWrapper {
     padding: 0rem 1rem 3.75rem 1rem;
   }
-  
-  
+
+
 
 }
