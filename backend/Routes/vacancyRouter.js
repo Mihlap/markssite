@@ -135,6 +135,8 @@ router.get('/getzapros-filter', async (req, res) => {
   }
 });
 
+
+
 // Маршрут для удаления вакансии
 router.delete('/deletezapros/:id', async (req, res) => {
   try {
