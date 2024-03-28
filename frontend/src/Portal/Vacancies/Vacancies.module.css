@@ -71,6 +71,7 @@
   flex-wrap: wrap;
   padding-top: 2rem;
   padding-left: 1.69rem;
+  padding-right: 5rem;
   grid-column-gap: 8px;
   grid-row-gap: 16px;
   width: 100%;
@@ -126,9 +127,11 @@ font-family: var(--font-raleway);
 }
 
 .menu_button_items_vacancyCount {
-font-size: 1rem;
-font-weight: var(--fw-400);
-line-height: 1.75rem;
+  margin-left: 3px;
+  transform: translateY(-20%);
+  font-size: 0.6rem;
+  font-weight: var(--fw-400);
+  line-height: 1.75rem;
 }
 
 .menu__button__choose__vacancyFilter {
@@ -170,6 +173,27 @@ line-height: 1.75rem;
   color: var(--black-1D2E43);
   align-items: center;
   justify-content: center;
+}
+
+/* Ваш файл Vacancies.module.css */
+
+.showManyButton {
+  background-color: var(--blue-color); 
+  color: var(--white-color); 
+  padding: 10px 20px; 
+  border: none; 
+  border-radius: 5px; 
+  cursor: pointer; 
+  transition: background-color 0.3s, color 0.3s; 
+}
+
+.showManyButton:hover {
+  background-color: var(--dark-blue-color); 
+  color: var(--white-color); 
+}
+
+.hidden {
+  display: none;
 }
 
 /* ----------------------------------------------- */
