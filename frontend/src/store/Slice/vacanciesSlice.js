@@ -20,16 +20,6 @@ export const fetchVacancies = createAsyncThunk(
   }
 );
 
-// const countVacanciesByDirection = (vacancies) => {
-//   const counts = {};
-//   vacancies.forEach((vacancy) => {
-//     const { direction } = vacancy;
-//     counts[direction] = counts[direction] ? counts[direction] + 1 : 1;
-//   });
-//   return counts;
-// };
-
-
 const vacanciesSlice = createSlice({
   name: 'vacancies',
   initialState: {
@@ -59,8 +49,8 @@ const vacanciesSlice = createSlice({
     },
     fetchVacancySuccess(state, action) {
       state.loading = false;
-      state.vacancies = action.payload;   
-    },
+      state.vacancies = action.payload; 
+     },
     fetchVacancyFailure(state, action) {
       state.loading = false;
       state.error = action.payload;
@@ -78,6 +68,9 @@ const vacanciesSlice = createSlice({
     setSelectedFilter(state, action) {
       state.selectedFilter = action.payload;
     }, 
+    setVacancyCountsByDirection(state, action) {
+      state.vacancyCountsByDirection = { ...state.vacancyCountsByDirection, ...action.payload };
+    },   
     clearFormData(state) {
       state.formData = {
         title: "",
@@ -118,6 +111,7 @@ export const {
   deleteVacancyFailure, 
   setVacancyId,
   setSelectedFilter,
+  setVacancyCountsByDirection,
   clearFormData, 
 } = vacanciesSlice.actions;
 
@@ -150,7 +144,7 @@ export const sendCopiedVacancyToServer = (copiedVacancy) => {
     try {
       // Отправляем скопированную вакансию на сервер
       const response = await axios.post(`${serverHost}/api-vacancy/copyVacancy/${copiedVacancy.id}`, copiedVacancy);
-      // const copiedId = response.data.id;
+
       // Вызовите другие действия Redux, если необходимо
       dispatch(clearFormData());
       dispatch(getFetchForm());
@@ -224,11 +218,33 @@ export const getFetchFormFilter = (direction) => async (dispatch, getState) => {
       },
     });
     dispatch(fetchVacancySuccess(response.data)); 
-  
+ 
   } catch (error) {
     dispatch(fetchVacancyFailure(error.message));
   }
 };
+
+export const getVacanciesByDirection = () => async (dispatch) => {
+  try {
+    const response = await axios.get(`${serverHost}/api-vacancy/getzapros`);
+    const vacancies = response.data;
+    
+    // Создаем объект для хранения количества вакансий по направлениям
+    const counts = {};
+
+    // Проходим по каждой вакансии и считаем их по направлениям
+    vacancies.forEach((vacancy) => {
+      const { direction } = vacancy;
+      counts[direction] = counts[direction] ? counts[direction] + 1 : 1;
+    });
+
+    // Обновляем состояние в Redux Store с полученными данными
+    dispatch(setVacancyCountsByDirection(counts));
+  } catch (error) {
+    console.error("Error fetching vacancies count by direction:", error);
+  }
+};
+
 
 export const deleteForm = (id) => async (dispatch, getState) => {
   try {
@@ -236,6 +252,7 @@ export const deleteForm = (id) => async (dispatch, getState) => {
     
     const updatedVacancies = getState().vacancies.vacancies.filter((el) => el.id !== id);
     dispatch(fetchVacancySuccess(updatedVacancies));
+
   } catch (error) {
     dispatch(fetchVacancyFailure(error.message));
   }
