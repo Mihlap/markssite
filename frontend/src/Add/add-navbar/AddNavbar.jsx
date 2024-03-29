@@ -6,6 +6,13 @@ import icon1 from "./icon/one.png";
 import icon2 from "./icon/three.png";
 import icon3 from "./icon/four.png";
 import icon4 from "./icon/two.png";
+import caseIcon from "./icon/case.svg";
+import fireIcon from "./icon/fire.svg";
+import hrIcon from "./icon/hr.svg";
+import pencilIcon from "./icon/pencil.svg";
+import projectorIcon from "./icon/projector.svg";
+import settingIcon from "./icon/setting.svg";
+
 // import ChristmasTree from "./icon/ChristmastreewithbulbandsnowPNGImage.png";
 
 import { useDispatch } from "react-redux";
@@ -77,7 +84,6 @@ export default function AddNavbar({ user, handleReturn }) {
                     />
                   </g>
                 </svg>
-
                 <Link
                   className={`${styles.add_navbar_container__item} ${
                     selectedItem === "home" ? styles.active : ""
@@ -85,6 +91,7 @@ export default function AddNavbar({ user, handleReturn }) {
                   to="./"
                   onClick={(event) => handleItemClick(event, "home", "./home")}
                 >
+                  <img className={styles.add_navbar_container__item__icons} src={pencilIcon} alt={pencilIcon} />
                   Главная
                 </Link>
               </li>
@@ -118,6 +125,7 @@ export default function AddNavbar({ user, handleReturn }) {
                     handleItemClick(event, "add-a-project", "./add-a-project")
                   }
                 >
+                   <img className={styles.add_navbar_container__item__icons} src={fireIcon} alt={fireIcon} />
                   Проекты
                 </Link>
               </li>
@@ -151,6 +159,7 @@ export default function AddNavbar({ user, handleReturn }) {
                     handleItemClick(event, "add-a-articles", "./add-a-articles")
                   }
                 >
+                   <img className={styles.add_navbar_container__item__icons} src={projectorIcon} alt={projectorIcon} />
                   Публикации
                 </Link>
               </li>
@@ -186,6 +195,7 @@ export default function AddNavbar({ user, handleReturn }) {
                     handleItemClick(event, "add-a-company", "./add-a-company")
                   }
                 >
+                   <img className={styles.add_navbar_container__item__icons} src={caseIcon} alt={caseIcon} />
                   О компании
                 </Link>
               </li>
@@ -225,6 +235,7 @@ export default function AddNavbar({ user, handleReturn }) {
                       handleItemClick(event, "add-hr-portal", "./add-hr-portal")
                     }
                   >
+                     <img className={styles.add_navbar_container__item__icons} src={hrIcon} alt={hrIcon} />
                     HR портал
                   </Link>
                 </li>
@@ -278,6 +289,7 @@ export default function AddNavbar({ user, handleReturn }) {
                       )
                     }
                   >
+                     <img className={styles.add_navbar_container__item__icons} src={settingIcon} alt={settingIcon} />
                     Управление
                   </Link>
                 </li>
@@ -293,7 +305,7 @@ export default function AddNavbar({ user, handleReturn }) {
               type="button"
               onClick={() => logouthandler()}
             >
-              Выйти из личного кабинета
+              Выйти из аккакунта
             </button>
           </div>
         </div>
