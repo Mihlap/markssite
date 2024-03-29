@@ -16,6 +16,7 @@ import Edit from "../icon/Edit.svg";
 import Look from "../icon/eye.svg";
 import noLook from "../icon/eye2.svg";
 import copyIcon from "../icon/copyIcon.svg";
+import pencilIcon from "../add-navbar/icon/pencil.svg";
 
 export default function AddHRPortal({ user }) {
   // const Host = process.env.REACT_APP_SERVER_HOST;
@@ -27,7 +28,6 @@ export default function AddHRPortal({ user }) {
   const [copiedId, setCopiedId] = useState("");
   const [copiedVacancyId, setCopiedVacancyId] = useState(null);
 
-
   const dispatch = useDispatch();
   const error = useSelector((state) => state.vacancies.error);
   const loading = useSelector((state) => state.vacancies.loading);
@@ -36,6 +36,7 @@ export default function AddHRPortal({ user }) {
   const isMountedRef = useRef(true);
   const [lookEnabledIds, setLookEnabledIds] = useState([]);
   const [activeButtonIndex, setActiveButtonIndex] = useState(0);
+  const [selectedFilter, setSelectedFilter] = useState("Вакансии");
 
   const updateModalBlockHeight = () => {
     const windowHeight = window.innerHeight;
@@ -61,9 +62,15 @@ export default function AddHRPortal({ user }) {
     isMountedRef.current = false;
   };
 
-  const handleOpenModal = () => {
+  const handleOpenModal = (type) => {
     setIsModalOpen(true);
     if (editVacancyData) {
+      setEditVacancyData(null);
+    }
+
+    if (selectedFilter === "Вакансии") {
+      setEditVacancyData(null);
+    } else if (selectedFilter === "Стажировки") {
       setEditVacancyData(null);
     }
   };
@@ -87,8 +94,9 @@ export default function AddHRPortal({ user }) {
     });
   };
 
-  const handleButtonsFilterClick = (index) => {
-    setActiveButtonIndex(index);
+  const handleButtonsFilterClick = (filter) => {
+    setActiveButtonIndex(filter);
+    setSelectedFilter(buttonsFilter[filter]);
   };
 
   const handleCopyClick = async (id) => {
@@ -119,15 +127,13 @@ export default function AddHRPortal({ user }) {
           setTimeout(() => {
             setCopiedVacancyId(null); // Сбрасываем copiedId после 5 секунд
           }, 5000);
-          dispatch(getFetchForm()); 
+          dispatch(getFetchForm());
         });
       }
     } catch (err) {
       console.error("Unable to copy vacancy:", err);
     }
   };
-  
-  
 
   const handleEditClick = async (id) => {
     try {
@@ -169,6 +175,14 @@ export default function AddHRPortal({ user }) {
     );
   };
 
+  const filteredVacancies = vacanciesAdd.filter((vacancy) => {
+    if (selectedFilter === "Вакансии") {
+      return vacancy.type === "вакансия";
+    } else if (selectedFilter === "Стажировки") {
+      return vacancy.type === "стажировка";
+    }
+  });
+
   return (
     <section className={styles.card_components_admin}>
       <div className={styles.card_components_admin__block}>
@@ -181,13 +195,27 @@ export default function AddHRPortal({ user }) {
             ${activeButtonIndex === index ? styles.activeButtonVacancy : ""}`}
               onClick={() => handleButtonsFilterClick(index)}
             >
-            {button}
+              <img
+                className={`${
+                  styles.card_components_admin__buttonFilter__icons
+                } ${activeButtonIndex === index ? styles.activeIcon : ""}`}
+                src={pencilIcon}
+                alt={pencilIcon}
+              />
+              {button}
             </button>
           ))}
         </div>
         <div
           className={styles.card_components_admin__button_block}
-          onClick={handleOpenModal}
+          onClick={() => {
+            if (
+              selectedFilter === "Вакансии" ||
+              selectedFilter === "Стажировки"
+            ) {
+              handleOpenModal(selectedFilter);
+            }
+          }}
         >
           <button className={styles.card_components_admin__button}>
             <div>
@@ -218,7 +246,15 @@ export default function AddHRPortal({ user }) {
               </svg>
             </div>
             <div className={styles.card_components_admin__button_text}>
-              Добавить вакансию
+              {selectedFilter === "Вакансии"
+                ? "Добавить вакансию"
+                : selectedFilter === "Стажировки"
+                ? "Добавить стажировку"
+                : selectedFilter === "Офис"
+                ? "Офис"
+                : selectedFilter === "Главная"
+                ? "Добавить на главную страницу"
+                : "Добавить вакансию"}
             </div>
           </button>
         </div>
@@ -232,12 +268,14 @@ export default function AddHRPortal({ user }) {
                 <FormEditVacancy
                   setIsModalOpen={setIsModalOpen}
                   editVacancyData={editVacancyData}
+                  selectedFilter={selectedFilter}
                   className={styles.formAddProjectClass}
                 />
               ) : (
                 <FormAddVacancy
                   className={styles.formAddProjectClass}
                   setIsModalOpen={setIsModalOpen}
+                  selectedFilter={selectedFilter}
                 />
               )}
               <button
@@ -258,22 +296,26 @@ export default function AddHRPortal({ user }) {
             <LoadingModal />
           ) : (
             <>
-              {vacanciesAdd && vacanciesAdd.length === 0 ? (
+              {filteredVacancies && filteredVacancies.length === 0 ? (
                 <div className={styles.card_components_admin__null_project}>
                   Вакансии сейчас отсутствуют. Добавьте вакансию!
                 </div>
               ) : (
                 <>
                   <div className={styles.card_components_admin__block__vacancy}>
-                    {Array.isArray(vacanciesAdd) &&
-                      [...vacanciesAdd] // Создаем копию массива вакансий, чтобы не мутировать оригинальный массив
+                    {Array.isArray(filteredVacancies) &&
+                      [...filteredVacancies] // Создаем копию массива вакансий, чтобы не мутировать оригинальный массив
                         .reverse() // Переворачиваем массив
                         .map((el) => {
                           return (
                             <React.Fragment key={el.id}>
                               <div
                                 key={el.id}
-                                className={`${styles.cart_vacancy_container} ${copiedVacancyId === el.id ? styles.copiedVacancy : ""}`}                              
+                                className={`${styles.cart_vacancy_container} ${
+                                  copiedVacancyId === el.id
+                                    ? styles.copiedVacancy
+                                    : ""
+                                }`}
                               >
                                 <div
                                   className={
@@ -477,7 +519,12 @@ export default function AddHRPortal({ user }) {
                                         styles.delete_modal_block__title
                                       }
                                     >
-                                      Вы точно хотите удалить вакансию
+                                      {selectedFilter === "Вакансии"
+                                        ? `Вы точно хотите удалить вакансию`
+                                        : selectedFilter === "Стажировки"
+                                        ? `Вы точно хотите удалить стажировку`
+                                        : `Вы точно хотите удалить вакансию`}
+                                      {/* Вы точно хотите удалить вакансию */}
                                       <br /> «{el.title}»?
                                     </div>
                                     <p
@@ -485,8 +532,11 @@ export default function AddHRPortal({ user }) {
                                         styles.delete_modal_block__text
                                       }
                                     >
-                                      Удаленную вакансию вернуть будет
-                                      невозможно
+                                      Удаленную{" "}
+                                      {selectedFilter === "Вакансии"
+                                        ? "вакансию"
+                                        : "стажировку"}{" "}
+                                      вернуть будет невозможно
                                     </p>
 
                                     <div className={styles.button_block}>

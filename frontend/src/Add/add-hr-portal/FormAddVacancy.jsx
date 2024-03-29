@@ -11,13 +11,15 @@ import styles from "./FormAddVacancy.module.scss";
 
 // import { changeHandler } from "../add-project/formAdd/utils/formHelpers";
 
-export default function FormAddVacancy({ setIsModalOpen }) {
+export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
   const [showNotification, setShowNotification] = useState(false);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const dispatch = useDispatch();
+
+  const type = selectedFilter === "Вакансии" ? "вакансия" : "стажировка";
 
   const [formData, setFormData] = useState({
     title: "",
@@ -31,6 +33,7 @@ export default function FormAddVacancy({ setIsModalOpen }) {
     workMode: "",
     skills: "",
     benefits: "",
+    type: type,
   });
 
   const [isFocused, setIsFocused] = useState({
@@ -136,8 +139,10 @@ export default function FormAddVacancy({ setIsModalOpen }) {
           Заполните предыдущий блок или дождитесь загркузки изображений❗
         </div>
       )}
-      <div className={styles.form_container__title}>Новая вакансия</div>
-
+      {/* <div className={styles.form_container__title}>Новая вакансия</div> */}
+      <div className={styles.form_container__title}>
+      Новая {selectedFilter === "Вакансии" ? "вакансия" : "стажировка"}
+      </div>
       <div className={styles.form_container__block_form}>
         <form className={styles.form_container__form} onSubmit={handleSubmit}>
           {/* первый серый блок с инфой  */}
