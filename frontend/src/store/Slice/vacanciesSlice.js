@@ -38,6 +38,7 @@ const vacanciesSlice = createSlice({
     workMode: "",
     skills: [],
     benefits: [],
+    type: "",
     },
     selectedFilter: "Все",
     vacancyCountsByDirection: {},
@@ -84,6 +85,7 @@ const vacanciesSlice = createSlice({
         workMode: "",
         skills: [],
         benefits: [],
+        type: "",
       };
     },
   },
@@ -201,7 +203,7 @@ export const getFetchForm = () => async (dispatch) => {
 
   try {
     const response = await axios.get(`${serverHost}/api-vacancy/getzapros`);
- 
+  
     dispatch(fetchVacancySuccess(response.data));
   } catch (error) {
     dispatch(fetchVacancyFailure(error.message));
@@ -214,7 +216,7 @@ export const getFetchFormFilter = (direction) => async (dispatch, getState) => {
   try {
     const response = await axios.get(`${serverHost}/api-vacancy/getzapros-filter`, {
       params: {
-        direction,
+        direction,    
       },
     });
     dispatch(fetchVacancySuccess(response.data)); 

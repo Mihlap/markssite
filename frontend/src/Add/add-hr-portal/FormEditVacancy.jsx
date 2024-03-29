@@ -8,13 +8,15 @@ import { selectBlocks } from "./utils.js";
 
 import styles from "./FormAddVacancy.module.scss"
 
-export default function FormEditVacancy({ setIsModalOpen, editVacancyData }) {
+export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVacancyData }) {
   const [showNotification, setShowNotification] = useState(false);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const dispatch = useDispatch();
+
+  const type = selectedFilter === "Вакансии" ? "вакансия" : "стажировка";
 
   const [formData, setFormData] = useState({
     title: "",
@@ -28,6 +30,7 @@ export default function FormEditVacancy({ setIsModalOpen, editVacancyData }) {
     workMode: "",
     skills: [],
     benefits: [],
+    type: type,
   });
 
   const [isFocused, setIsFocused] = useState({
@@ -114,6 +117,7 @@ export default function FormEditVacancy({ setIsModalOpen, editVacancyData }) {
         workMode: [],
         skills: [],
         benefits: [],
+        type: type,
       });
       setIsModalOpen(false); // Закрываем модальное окно
     } catch (err) {
@@ -163,8 +167,10 @@ export default function FormEditVacancy({ setIsModalOpen, editVacancyData }) {
           Заполните предыдущий блок или дождитесь загркузки изображений❗
         </div>
       )}
-      <div className={styles.form_container__title}>Редактирование вакансии</div>
-
+      {/* <div className={styles.form_container__title}>Редактирование вакансии</div> */}
+      <div className={styles.form_container__title}>
+      Редактирование {selectedFilter === "Вакансии" ? "вакансии" : "стажировки"}
+      </div>
       <div className={styles.form_container__block_form}>
         <form className={styles.form_container__form} onSubmit={handleSubmit}>
           {/* первый серый блок с инфой  */}
