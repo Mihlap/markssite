@@ -53,6 +53,9 @@ module.exports = {
       style: {
         type: Sequelize.STRING,
       },
+      type: {
+        type: Sequelize.STRING,
+      },
       geoData: {
         type: Sequelize.TEXT,
       },
