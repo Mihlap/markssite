@@ -22,6 +22,7 @@ router.post('/addVacancy', async (req, res) => {
       searchStaff: formData.textBlock1,
       haveToWork: formData.textBlock2,
       requirements: formData.textBlock3,
+      type: formData.type,
     });
 
     // Сохраняем новую вакансию в базе данных
@@ -93,6 +94,7 @@ router.put('/editVacancy/:id', async (req, res) => {
       searchStaff: formData.textBlock1,
       haveToWork: formData.textBlock2,
       requirements: formData.textBlock3,
+      type: formData.type,
     }, { where: { id } });
 
     res.json({ message: 'Vacancy successfully updated' });

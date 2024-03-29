@@ -34,6 +34,7 @@ module.exports = (sequelize, DataTypes) => {
     requirements: DataTypes.TEXT,
     authorId: DataTypes.INTEGER,
     style: DataTypes.STRING,
+    type: DataTypes.STRING,
     geoData: DataTypes.TEXT,
     createdAt: {
       allowNull: false,
