@@ -1057,13 +1057,18 @@
 
 // стили адаптив
 
-@media screen and (min-width: 1001px) and (max-width: 1600px) {    
+@media screen and (min-width: 1024px) and (max-width: 1600px) {    
 .card_components_admin {
     padding-left: 0;
-}
+
+    &__modal_container {
+           left: 12%;
+         }
+   }
+
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 1023px) {
     .card_components_admin {
         padding-left: 3.5rem;
     }
