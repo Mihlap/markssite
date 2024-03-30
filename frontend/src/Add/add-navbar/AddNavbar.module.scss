@@ -63,7 +63,7 @@
 
         &__icons {
             padding-right: 10px;
-         }
+        }
 
     }
 
@@ -80,8 +80,8 @@
 
 .add_navbar_container__item.active .add_navbar_container__item__icons {
     filter: brightness(0) invert(1);
-  }
-  
+}
+
 
 
 .preview {
@@ -311,11 +311,26 @@
 }
 
 
-@media screen and (min-width: 1004px) and (max-width: 1600px) {
+@media screen and (min-width: 1024px) and (max-width: 1600px) {
     .add_navbar_container {
         left: 0%;
+
+        &__title {
+        font-size: 1.5rem;                  
+                }
+
+        &__list {
+            padding-top: 100px;
+        
+        }
+
+        &__item {
+            padding: 1rem 2.2rem;
+        }
     }
+
 }
+
 
 
 @media screen and (max-width: 1023px) {
