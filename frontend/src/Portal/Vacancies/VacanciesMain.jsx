@@ -26,12 +26,7 @@ const Vacancies = ({
   const selectedFilter = useSelector((state) => state.vacancies.selectedFilter);
 
   const [showManyVacancies, setShowManyVacancies] = useState(false);
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-    dispatch(getFetchForm());
-    dispatch(getVacanciesByDirection());
-  }, [dispatch]);
+  const [totalDisplayedVacancies, setTotalDisplayedVacancies] = useState(6);
 
   const buttonVacancyChoose = [
     "Все",
@@ -49,9 +44,28 @@ const Vacancies = ({
     "Стажировки",
   ];
 
+  const vacanciesList = [
+    {title: "Специальность", field: "title", className: styles.vacancy_item},
+    {title: "Направление", field1: "direction", className: styles.vacancy_item2},
+    {title: "Занятость", field1: "busyness", className: styles.vacancy_item2},
+    {title: "Локация", field1: "locationStaff", className: styles.vacancy_item2},
+  ];
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    dispatch(getFetchForm());
+    dispatch(getVacanciesByDirection());
+  }, [dispatch]);
+
+  useEffect(() => {
+    setTotalDisplayedVacancies(showManyVacancies ? vacancies.length : 6);
+  }, [showManyVacancies, vacancies]);
+
+  
   const handleButtonClick = (direction) => {
     dispatch(setSelectedFilter(direction));
     dispatch(getFetchFormFilter(direction));
+    setTotalDisplayedVacancies(6);
   };
 
   const toggleShowAllVacancies = () => {
@@ -117,145 +131,54 @@ const Vacancies = ({
           <LoadingCircle />
         </div>
       ) : (
+      //   <div className={styles.section_block_vacancy}>
+      //   <div className={styles.vacancy_item_container_title}>
+      //     <div className={styles.vacancy_item_title}>Специальность</div>
+      //     <div className={styles.vacancy_item_title}>Направление</div>
+      //     <div className={styles.vacancy_item_title}>Занятость</div>
+      //     <div className={styles.vacancy_item_title}>Локация</div>
+      //   </div>
+      //   {vacancies.slice(0, showManyVacancies ? vacancies.length : 6).map((vacancy) => (
+      //     <div key={vacancy.id} className={styles.vacancy_item_container_content}>
+      //       <div className={styles.vacancy_item_content}>{vacancy.title}</div>
+      //       <div className={styles.vacancy_item_content}>{vacancy.direction}</div>
+      //       <div className={styles.vacancy_item_content}>{vacancy.busyness}</div>
+      //       <div className={styles.vacancy_item_content}>{vacancy.locationStaff}</div>
+      //     </div>
+      //   ))}
+      // </div>
         <div className={styles.vacancy_section_block_vacancy}>
           <div className={styles.section_block_vacancy}>
-            <div className={styles.vacancy_item}>
-              <div className={styles.vacancy_item_title}>Специальность</div>
-              {vacancies.map((vacancy) => (
-                <div
-                  key={vacancy.id}
-                  className={styles.vacancy_item_content_wrapper}
-                >
-                  <div className={styles.vacancy_item_content}>
-                    {vacancy.title}
+            {vacanciesList.map((item, index) => (
+              <div key={index} className={`${item.className} ${styles.vacancy_item_container}`}>
+                <div className={styles.vacancy_item_title}>{item.title}</div>
+                {vacancies.slice(0, showManyVacancies ? vacancies.length : 6).map((vacancy) => (
+                  <div key={vacancy.id} className={styles.vacancy_item_content_wrapper}      >
+                    <div className={styles.vacancy_item_content}>
+                      {vacancy[item.field]}
+                    </div>
+                    <div className={styles.vacancy_item_content2}>
+                      {vacancy[item.field1]}
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
-            <div className={styles.vacancy_item2}>
-              <div className={styles.vacancy_item_title2}>Направление</div>
-              {vacancies.map((vacancy) => (
-                <div
-                  key={vacancy.id}
-                  className={styles.vacancy_item_content_wrapper}
-                >
-                  <div className={styles.vacancy_item_content2}>
-                    {vacancy.direction}
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className={styles.vacancy_item2}>
-              <div className={styles.vacancy_item_title2}>Занятость</div>
-              {vacancies.map((vacancy) => (
-                <div
-                  key={vacancy.id}
-                  className={styles.vacancy_item_content_wrapper}
-                >
-                  <div className={styles.vacancy_item_content2}>
-                    {vacancy.busyness}
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            <div className={styles.vacancy_item2}>
-              <div className={styles.vacancy_item_title2}>Локация</div>
-              {vacancies.map((vacancy) => (
-                <div
-                  key={vacancy.id}
-                  className={styles.vacancy_item_content_wrapper}
-                >
-                  <div className={styles.vacancy_item_content2}>
-                    {vacancy.locationStaff}
-                  </div>
-                </div>
-              ))}
-            </div>
+                ))}
+              </div>
+            ))}
           </div>
-          </div>
-          
-        //   <div className={styles.vacancy_section_block_vacancy}>
-        //   <div className={styles.section_block_vacancy}>
-        //     {[
-        //       {
-        //         title: "Специальность",
-        //         field: "title",
-        //         className: styles.vacancy_item,
-        //       },
-        //       {
-        //         title: "Направление",
-        //         field: "direction",
-        //         className: styles.vacancy_item2,
-        //       },
-        //       {
-        //         title: "Занятость",
-        //         field: "busyness",
-        //         className: styles.vacancy_item2,
-        //       },
-        //       {
-        //         title: "Локация",
-        //         field: "locationStaff",
-        //         className: styles.vacancy_item2,
-        //       },
-        //     ].map((item, index) => (
-        //       <div key={index} className={item.className}>
-        //         <div className={styles.vacancy_item_title}>{item.title}</div>
-        //         {vacancies.map((vacancy) => (
-        //           <div
-        //             key={vacancy.id}
-        //             className={styles.vacancy_item_content_wrapper}
-        //           >
-        //             <div className={styles.vacancy_item_content}>
-        //               {vacancy[item.field]}
-        //             </div>
-        //           </div>
-        //         ))}
-        //       </div>
-        //     ))}
-        //   </div>
-        // </div>
-
+        </div>
       )}
-      {!showManyVacancies && (
-        <button
-          className={styles.showManyButton}
-          onClick={toggleShowAllVacancies}
-        >
-          Показать все вакансии
-        </button>
-      )}
-      {/* <div className={styles.vacancy_section_block_vacancy}>
-  <div className={styles.section_block_vacancy}>
-    <div className={styles.vacancy_item}>
-      <div className={styles.vacancy_item_title}>Специальность</div>
-      <div className={styles.vacancy_item_title2}>Направление</div>
-      <div className={styles.vacancy_item_title2}>Занятость</div>
-      <div className={styles.vacancy_item_title2}>Локация</div>
-    </div>
-
-    {vacancies.map((vacancy) => (
-      <div key={vacancy.id} className={styles.vacancy_item}>
-        <div className={styles.vacancy_item_content_wrapper}>
-          <div className={styles.vacancy_item_content}>{vacancy.title}</div>
-        </div>
-
-        <div className={styles.vacancy_item_content_wrapper}>
-          <div className={styles.vacancy_item_content2}>{vacancy.direction}</div>
-        </div>
-
-        <div className={styles.vacancy_item_content_wrapper}>
-          <div className={styles.vacancy_item_content2}>{vacancy.busyness}</div>
-        </div>
-
-        <div className={styles.vacancy_item_content_wrapper}>
-          <div className={styles.vacancy_item_content2}>{vacancy.locationStaff}</div>
-        </div>
-      </div>
-    ))}
+      <div className={styles.showVacanciesOfTotalVacancies}> 
+           {!showManyVacancies && vacancies.length > 6 && (
+    <span className={styles.showManyVacanciesCount}>
+      {totalDisplayedVacancies} вакансий из {vacancies.length}
+      </span>
+  )}
   </div>
-</div> */}
+      <div className={styles.showManyButtonWrapper}> 
+  <button className={styles.showManyButton} onClick={toggleShowAllVacancies}>
+    {showManyVacancies ? "Скрыть вакансии" : "Показать все вакансии"}
+  </button>
+</div>
       <div className={styles.temporaryText}>Не нашли подходящую вакансию?</div>
       <div className={styles.textUnderForm}>
         Оставьте ваши контакты, мы всегда в поиске талантливых профессионалов
