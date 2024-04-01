@@ -119,7 +119,7 @@ display: flex;
 font-family: var(--font-raleway);
 } */
 
-.menu_button_items_vacancyText { 
+.menu_button_items_vacancyText {
   font-size: 0.875rem;
   font-style: normal;
   font-weight: var(--fw-400);
@@ -178,18 +178,18 @@ font-family: var(--font-raleway);
 /* Ваш файл Vacancies.module.css */
 
 .showManyButton {
-  background-color: var(--blue-color); 
-  color: var(--white-color); 
-  padding: 10px 20px; 
-  border: none; 
-  border-radius: 5px; 
-  cursor: pointer; 
-  transition: background-color 0.3s, color 0.3s; 
+  background-color: var(--blue-color);
+  color: var(--white-color);
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, color 0.3s;
 }
 
 .showManyButton:hover {
-  background-color: var(--dark-blue-color); 
-  color: var(--white-color); 
+  background-color: var(--dark-blue-color);
+  color: var(--white-color);
 }
 
 .hidden {
@@ -197,6 +197,52 @@ font-family: var(--font-raleway);
 }
 
 /* ----------------------------------------------- */
+
+/* .section_block_vacancy {
+  display: flex;
+  flex-direction: column;
+  padding-top: 50px;
+
+  width: 100%;
+}
+
+.vacancy_item_container_title {
+  display: flex;
+  flex-direction: row;
+  font-family: var(--font-raleway);
+  font-size: 0.875rem;
+  font-weight: var(--fw-400);
+  line-height: 1.25rem;
+  color: var(--light-gray-C0C5CB);
+  gap: 20%;
+  padding: 0 0 1.125rem 3.69rem;
+}
+
+.vacancy_item_container_content {
+  display: flex;
+  flex-direction: row;
+
+  background-color: var(--light-light-gray-EDEDED);
+  padding: 42px 0px;
+  margin: 0rem 0rem 1.125rem 1.69rem;
+  border-radius: 0.5rem;
+  gap: 10%;
+}
+
+.vacancy_item_content {
+  flex: 1;
+  padding-left: 2.24rem;
+  padding-right: 3rem;
+
+
+} */
+
+/* .vacancy_item_content1 {
+  flex: 1;
+  padding-left: 1.25rem;
+
+} */
+
 
 .vacancy_section_block_vacancy {
   display: flex;
@@ -211,7 +257,7 @@ font-family: var(--font-raleway);
 }
 
 .vacancy_item {
-   width: 50%;
+  width: 50%;
   font-family: var(--font-raleway);
   font-size: 0.875rem;
   font-weight: var(--fw-400);
@@ -222,10 +268,15 @@ font-family: var(--font-raleway);
 .vacancy_item2 {
   width: 20%;
   font-family: var(--font-raleway);
-  font-size: 0.875rem;
   font-weight: var(--fw-400);
+  font-size: 0.875rem;
   line-height: 1.25rem;
   color: var(--light-gray-C0C5CB);
+}
+
+.vacancy_container {
+  width: 100%;
+  /* border-radius: 8px; */
 }
 
 .vacancy_item_title {
@@ -242,13 +293,14 @@ font-family: var(--font-raleway);
 .vacancy_item_content_wrapper {
   display: flex;
   flex-wrap: wrap;
-  margin-bottom: 16px;  
+  margin-bottom: 16px;
   height: 112px;
   /* background-color: white; */
   color: var(--black-1D2E43);
   align-items: center;
   /* border-radius: 0.5rem; */
-  background-color: var(--light-light-gray-EDEDED);
+  /* background-color: var(--light-light-gray-EDEDED); */
+  background-color: #f0f0f0;
 }
 
 .vacancy_item_content {
@@ -257,14 +309,50 @@ font-family: var(--font-raleway);
   font-size: 1.75rem;
   line-height: 1.75rem;
   padding-left: 2.31rem;
+  /* border-radius: 0.5rem; */
 }
 
 .vacancy_item_content2 {
   font-family: var(--font-raleway);
-  font-weight: var(--fw-400); 
+  font-weight: var(--fw-400);
   font-size: 1rem;
   line-height: 1.5rem;
-  padding-left: 2rem;
+}
+
+/* Стили для кнопки "Показать все" */
+
+.showVacanciesOfTotalVacancies {
+  display: flex;
+  justify-content: center;
+  padding-top: 56px;
+  color: var(--gray-959DA6);
+  font-family: var(--font-raleway);
+  font-size: 14px;
+  font-weight: var(--fw-400);
+  line-height: 20px;
+}
+
+.showManyButtonWrapper {
+  display: flex;
+  justify-content: center;
+  padding-top: 8px;
+ }
+
+
+.showManyButton {
+  align-items: center;
+  padding: 16px 32px;
+  background-color: var(--blue-75BBFD);
+  color: var(--white-F6F6F6);
+  border: none;
+  border-radius: 24px;
+  cursor: pointer;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+.showManyButton:hover {
+  background-color: var(--dark-blue-389FFF);
+  color: var(--white-F6F6F6);
 }
 
 

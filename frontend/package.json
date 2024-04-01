@@ -1,7 +1,7 @@
 {
   "name": "markssite",
   "version": "0.1.0",
-  "private": true, 
+  "private": true,
   "proxy": "http://localhost:8080",
   "dependencies": {
     "@mapbox/mapbox-gl-draw": "^1.4.1",
