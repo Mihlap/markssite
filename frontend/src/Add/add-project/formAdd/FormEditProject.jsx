@@ -62,7 +62,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
     altitude: "",
     constructionVolume: "",
     location: "",
-    degreeParticipation: "",
+    degreeParticipation: [],
     statusObject: "",
     customer: "",
     publication: "",
@@ -81,8 +81,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
   const [selectedCompetencies, setSelectedCompetencies] = useState([]);
   const [selectedViewConstruction, setSelectedViewConstruction] = useState([]);
   const [selectedProjectStages, setSelectedProjectStages] = useState([]);
-  const [selectDegreeParticipation, setSelectDegreeParticipation] =
-    useState(null);
+  const [selectedDegreeParticipation, setSelectedDegreeParticipation] = useState([]);
   const [selectStatusObject, setSelectStatusObject] = useState(null);
   const [isFocused, setIsFocused] = useState(false);
   // const [selectedRadio, setSelectedRadio] = useState("28,28");
@@ -160,6 +159,11 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
             .split(",")
             .map((item) => ({ value: item.trim(), label: item.trim() }))
         : [];
+        const initialDegreeParticipation = editProjectData.degreeParticipation
+        ? editProjectData.degreeParticipation
+            .split(",")
+            .map((item) => ({ value: item.trim(), label: item.trim() }))
+        : [];
       const initialProjectStages = editProjectData.awards
         ? editProjectData.awards
             .split(",")
@@ -172,11 +176,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
       setSelectedYear({ value: selectedYear, label: selectedYear });
       setSelectedViewConstruction(initialViewConstruction);
       setSelectedProjectStages(initialProjectStages);
-      setSelectDegreeParticipation(
-        editProjectData.degreeParticipation
-          ? { label: editProjectData.degreeParticipation }
-          : null
-      );
+      setSelectedDegreeParticipation(initialDegreeParticipation);
       setSelectStatusObject(
         editProjectData.statusObject
           ? { label: editProjectData.statusObject }
@@ -243,10 +243,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
             editProjectData.location !== undefined
               ? editProjectData.location
               : "",
-          degreeParticipation:
-            editProjectData.degreeParticipation !== undefined
-              ? editProjectData.degreeParticipation
-              : "",
+          degreeParticipation: initialDegreeParticipation,           
           statusObject:
             editProjectData.statusObject !== undefined
               ? editProjectData.statusObject
@@ -448,7 +445,9 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
         selectCompetencies: Array.isArray(selectedCompetencies)
           ? selectedCompetencies.map((option) => option.label).join(",")
           : "",
-        degreeParticipation: selectDegreeParticipation.label,
+          degreeParticipation: Array.isArray(selectedDegreeParticipation)
+          ? selectedDegreeParticipation.map((option) => option.label).join(",")
+          : "",
         statusObject: selectStatusObject.label,
         viewConstruction: Array.isArray(selectedViewConstruction)
           ? selectedViewConstruction.map((option) => option.label).join(",")
@@ -492,6 +491,11 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
           ? formattedData.awards.map((option) => option.label).join(",")
           : formattedData.awards;
       }
+      if (formattedData.degreeParticipation && formattedData.degreeParticipation !== "") {
+        formattedData.degreeParticipation = Array.isArray(formattedData.degreeParticipation)
+          ? formattedData.degreeParticipation.map((option) => option.label).join(",")
+          : formattedData.degreeParticipation;
+      }
      
          // Определение, создаем новый проект или обновляем существующий
       if (editProjectData && editProjectData.id) {
@@ -508,7 +512,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
       // dispatch(clearFormData());
       // Очищаем состояния
       setSelectedCompetencies([]);
-      setSelectDegreeParticipation("");
+      setSelectedDegreeParticipation([]);
       setSelectStatusObject("");
       setSelectedViewConstruction([]);
       setSelectedProjectStages([]);
@@ -2021,8 +2025,10 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
               <div className={`${styles.form__group} ${styles.field}`}>
                 <Select
                   styles={customStyles}
-                  // isMulti
+                  isMulti
                   name="degreeParticipation"
+                  value={selectedDegreeParticipation || []}
+                  onChange={setSelectedDegreeParticipation}
                   options={[
                     {
                       value: "Генеральное проектирование",
@@ -2032,31 +2038,16 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                       value: "Проектирование отдельных разделов",
                       label: "Проектирование отдельных разделов",
                     },
+                    {
+                      value: "Адаптация зарубежной концепции",
+                      label: "Адаптация зарубежной концепции",
+                    },
                   ]}
                   className={styles.form__field}
                   placeholder="Степень участия"
-                  value={
-                    selectDegreeParticipation
-                      ? {
-                          value: selectDegreeParticipation.value,
-                          label: selectDegreeParticipation.label,
-                        }
-                      : null
-                  }
-                  onChange={(selectedOption) =>
-                    setSelectDegreeParticipation(
-                      selectedOption
-                        ? {
-                            value: selectedOption.value,
-                            label: selectedOption.label,
-                          }
-                        : null
-                    )
-                  }
                   components={{
-                    DropdownIndicator:
-                      SelectDegreeParticipationDropdownIndicator,
-                    ValueContainer: SelectDegreeParticipationValueContainer,
+                    DropdownIndicator: AnotherDropdownIndicator,
+                    ValueContainer: AnotherValueContainer,
                   }}
                   onFocus={() => setIsFocused(true)}
                   onBlur={() => setIsFocused(false)}
