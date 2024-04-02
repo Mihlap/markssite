@@ -526,7 +526,16 @@ const ProjectCard = ({
                     <div>
                       <div className={styles.local_title}>Степень участия</div>
                       <div className={styles.local_text}>
-                        {project.degreeParticipation}
+                      {" "}
+                        {/* {project.degreeParticipation} */}
+                        {project.degreeParticipation
+                          .split(",")
+                          .map((elem, index, array) => (
+                            <span key={index}>
+                              {elem.trim()}{" "}
+                              {index < array.length - 1 ? ", " : ""}
+                            </span>
+                          ))}
                       </div>
                     </div>
                     <div>

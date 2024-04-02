@@ -205,14 +205,14 @@
 .local_container {
   display: flex;
   flex-wrap: nowrap;
-  gap: 4.86vw;
+  gap: 1rem;
 }
 
 .local_ritgh,
 .local_left {
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1rem;
   width: 100%;
 }
 
@@ -694,12 +694,6 @@
     padding-left: 4.65vw;
   }
 
-  .local_container {
-    display: flex;
-    flex-wrap: nowrap;
-    gap: 4.86vw;
-  }
-
   .blockImg {
     display: flex;
     width: 100%;
@@ -830,6 +824,7 @@
     flex-direction: column;
     gap: 1.5rem;
     width: 100%;
+    /* max-width: 80%; */
   }
 
   .local_ritgh {
@@ -837,6 +832,7 @@
   }
 
   .local_text {
+    width: 80%;
     overflow-wrap: break-word;
     word-break: break-word;
     hyphens: auto;
