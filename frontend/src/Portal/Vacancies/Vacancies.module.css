@@ -175,74 +175,76 @@ font-family: var(--font-raleway);
   justify-content: center;
 }
 
-/* Ваш файл Vacancies.module.css */
-
-.showManyButton {
-  background-color: var(--blue-color);
-  color: var(--white-color);
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s, color 0.3s;
-}
-
-.showManyButton:hover {
-  background-color: var(--dark-blue-color);
-  color: var(--white-color);
-}
-
 .hidden {
   display: none;
 }
 
-/* ----------------------------------------------- */
 
-/* .section_block_vacancy {
+
+.modalFilterOverlay {
   display: flex;
   flex-direction: column;
-  padding-top: 50px;
-
-  width: 100%;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 35%;
+  height: 100%;
+  margin-top: 0px;
+  border: none !important;
+  outline: none;
+  border-radius: none;
+  background-color: rgba(246, 246, 246, 0.92);
+  box-shadow: -2px 4px 22px 0px rgba(29, 46, 67, 0.46);
+  backdrop-filter: blur(8.5px);
+  overflow-y: auto;
 }
 
-.vacancy_item_container_title {
+.modal_vacancy_close {
+  padding-top: 2rem;
+  padding-left: 93%;
+  cursor: pointer;
+}
+
+.fixed_modal_vacancy {
+  position: sticky;
+  top: 0rem;
+  right: 0rem;
+}
+
+.filterModalContent {
   display: flex;
-  flex-direction: row;
-  font-family: var(--font-raleway);
-  font-size: 0.875rem;
-  font-weight: var(--fw-400);
-  line-height: 1.25rem;
-  color: var(--light-gray-C0C5CB);
-  gap: 20%;
-  padding: 0 0 1.125rem 3.69rem;
+  padding: 11.25rem 1.81rem 0rem 7.5rem;
+
 }
 
-.vacancy_item_container_content {
+.modal_project_description {
   display: flex;
-  flex-direction: row;
-
-  background-color: var(--light-light-gray-EDEDED);
-  padding: 42px 0px;
-  margin: 0rem 0rem 1.125rem 1.69rem;
-  border-radius: 0.5rem;
-  gap: 10%;
+  color: var(--black-1D2E43);
+  font-family: var(--font-unbounded);
+  font-size: 1.25rem;
+  font-style: normal;
+  font-weight: var(--fw-700);
+  line-height: 1.75rem;
 }
 
-.vacancy_item_content {
-  flex: 1;
-  padding-left: 2.24rem;
-  padding-right: 3rem;
+.modal_pointer_location {
+  display: flex;
+  padding-left: 0.5rem;
+  align-items: center;
+}
 
-
-} */
-
-/* .vacancy_item_content1 {
-  flex: 1;
-  padding-left: 1.25rem;
-
-} */
-
+.modal_project_city_location {
+  display: flex;
+  align-items: center;
+  color: var(--black-1D2E43);
+  font-family: var(--font-unbounded);
+  font-size: 1.25rem;
+  font-style: normal;
+  font-weight: var(--fw-300);
+  line-height: 1.75rem;
+  padding-left: 0.25rem;
+}
 
 .vacancy_section_block_vacancy {
   display: flex;
@@ -312,6 +314,7 @@ font-family: var(--font-raleway);
   /* border-radius: 0.5rem; */
 }
 
+
 .vacancy_item_content2 {
   font-family: var(--font-raleway);
   font-weight: var(--fw-400);
@@ -319,25 +322,44 @@ font-family: var(--font-raleway);
   line-height: 1.5rem;
 }
 
+/* .border_left_radius {
+  border-top-left-radius: 0.5rem;
+  border-bottom-left-radius: 0.5rem;
+}
+
+.border_right_radius {
+  border-top-right-radius: 0.5rem;
+  border-bottom-right-radius: 0.5rem;
+} */
+
 /* Стили для кнопки "Показать все" */
 
+.showVacanciesOfTotalVacanciesContainer {
+   padding-left: 46.5%;
+}
 .showVacanciesOfTotalVacancies {
   display: flex;
-  justify-content: center;
+  /* justify-content: center; */
   padding-top: 56px;
   color: var(--gray-959DA6);
   font-family: var(--font-raleway);
   font-size: 14px;
   font-weight: var(--fw-400);
   line-height: 20px;
+  padding-left: 120px;
 }
 
 .showManyButtonWrapper {
   display: flex;
-  justify-content: center;
+  /* justify-content: center; */
   padding-top: 8px;
+  /* padding-left: 5%; */
+  transition: margin-top 0.4s ease;
  }
 
+ .showManyButtonWrapperShifted {
+  margin-top: -50px; 
+}
 
 .showManyButton {
   align-items: center;
@@ -354,6 +376,7 @@ font-family: var(--font-raleway);
   background-color: var(--dark-blue-389FFF);
   color: var(--white-F6F6F6);
 }
+
 
 
 /* стили для страницы Vacancies пока она работает не удалять!!!!!!! */

@@ -39,9 +39,10 @@ const vacanciesSlice = createSlice({
     skills: [],
     benefits: [],
     type: "",
-    },
-    selectedFilter: "Все",
-    vacancyCountsByDirection: {},
+  },
+  selectedFilter: "Все",
+  vacancyCountsByDirection: {},
+  lookEnabledIds: [],
   },
   reducers: {
     fetchVacancyStart(state) {
@@ -71,7 +72,19 @@ const vacanciesSlice = createSlice({
     }, 
     setVacancyCountsByDirection(state, action) {
       state.vacancyCountsByDirection = { ...state.vacancyCountsByDirection, ...action.payload };
-    },   
+    },
+    toggleLookEnabledId(state, action) {
+      const id = action.payload;
+      const index = state.lookEnabledIds.indexOf(id);
+      if (index !== -1) {
+        state.lookEnabledIds = state.lookEnabledIds.filter(item => item !== id);
+      } else {
+        state.lookEnabledIds.push(id);
+      }
+    },
+    setLookEnabledIds(state, action) {
+      state.lookEnabledIds = action.payload;
+    },
     clearFormData(state) {
       state.formData = {
         title: "",
@@ -115,6 +128,8 @@ export const {
   setSelectedFilter,
   setVacancyCountsByDirection,
   clearFormData, 
+  toggleLookEnabledId,
+  setLookEnabledIds,
 } = vacanciesSlice.actions;
 
 
