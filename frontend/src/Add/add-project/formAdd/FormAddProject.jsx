@@ -40,8 +40,7 @@ export default function FormAddProject({ setIsModalOpen }) {
   const [selectedCompetencies, setSelectedCompetencies] = useState([]);
   const [selectedViewConstruction, setSelectedViewConstruction] = useState([]);
   const [selectedProjectStages, setSelectedProjectStages] = useState([]);
-  const [selectDegreeParticipation, setSelectDegreeParticipation] =
-    useState("");
+  const [selectedDegreeParticipation, setSelectedDegreeParticipation] = useState([]);
   const [selectStatusObject, setSelectStatusObject] = useState("");
   const [isFocused, setIsFocused] = useState(false);
   // const [selectedRadio, setSelectedRadio] = useState("28,28");
@@ -249,7 +248,10 @@ export default function FormAddProject({ setIsModalOpen }) {
           selectCompetencies: Array.isArray(selectedCompetencies)
             ? selectedCompetencies.map((option) => option.label).join(",")
             : "",
-          degreeParticipation: selectDegreeParticipation.label,
+          // degreeParticipation: selectDegreeParticipation.label,
+          degreeParticipation: Array.isArray(selectedDegreeParticipation)
+          ? selectedDegreeParticipation.map((option) => option.label).join(",")
+          : "", 
           statusObject: selectStatusObject.label,
           viewConstruction: Array.isArray(selectedViewConstruction)
             ? selectedViewConstruction.map((option) => option.label).join(",")
@@ -267,7 +269,7 @@ export default function FormAddProject({ setIsModalOpen }) {
         dispatch(clearFormData());
   
         setSelectedCompetencies([]);
-        setSelectDegreeParticipation("");
+        setSelectedDegreeParticipation([]);
         setSelectStatusObject("");
         setSelectedViewConstruction([]);
         setSelectedProjectStages([]);
@@ -1672,8 +1674,10 @@ export default function FormAddProject({ setIsModalOpen }) {
               <div className={`${styles.form__group} ${styles.field}`}>
                 <Select
                   styles={customStyles}
-                  // isMulti
+                  isMulti
                   name="degreeParticipation"
+                  value={selectedDegreeParticipation || []}
+                  onChange={setSelectedDegreeParticipation}
                   options={[
                     {
                       value: "Генеральное проектирование",
@@ -1683,15 +1687,16 @@ export default function FormAddProject({ setIsModalOpen }) {
                       value: "Проектирование отдельных разделов",
                       label: "Проектирование отдельных разделов",
                     },
+                    {
+                      value: "Адаптация зарубежной концепции",
+                      label: "Адаптация зарубежной концепции",
+                    },
                   ]}
                   className={styles.form__field}
                   placeholder="Степень участия"
-                  value={selectDegreeParticipation}
-                  onChange={setSelectDegreeParticipation}
                   components={{
-                    DropdownIndicator:
-                      SelectDegreeParticipationDropdownIndicator,
-                    ValueContainer: SelectDegreeParticipationValueContainer,
+                    DropdownIndicator: AnotherDropdownIndicator,
+                    ValueContainer: AnotherValueContainer,
                   }}
                   onFocus={() => setIsFocused(true)}
                   onBlur={() => setIsFocused(false)}
@@ -1717,8 +1722,8 @@ export default function FormAddProject({ setIsModalOpen }) {
                   value={selectStatusObject}
                   onChange={setSelectStatusObject}
                   components={{
-                    DropdownIndicator: SelectStatusObjectDropdownIndicator,
-                    ValueContainer: SelectStatusObjectValueContainer,
+                    DropdownIndicator: AnotherDropdownIndicator,
+                    ValueContainer: AnotherStagesProject,
                   }}
                   onFocus={() => setIsFocused(true)}
                   onBlur={() => setIsFocused(false)}
