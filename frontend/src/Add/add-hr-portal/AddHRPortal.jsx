@@ -35,6 +35,7 @@ export default function AddHRPortal({ user }) {
 
   const isMountedRef = useRef(true);
   const [lookEnabledIds, setLookEnabledIds] = useState([]);
+  const [hideVacancies, setHideVacancies] = useState(false);
   const [activeButtonIndex, setActiveButtonIndex] = useState(0);
   const [selectedFilter, setSelectedFilter] = useState("Вакансии");
 
