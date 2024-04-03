@@ -7,7 +7,10 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   deleteForm,
   getFetchForm,
+  getHiddenVacanciesFromDB,
   sendCopiedVacancyToServer,
+ updateVacancyLookStatusAndSaveToDB,
+  updateVacancyLookStatusSuccess,
 } from "../../store/Slice/vacanciesSlice";
 import { buttonsFilter } from "./utils.js";
 
@@ -29,13 +32,10 @@ export default function AddHRPortal({ user }) {
   const [copiedVacancyId, setCopiedVacancyId] = useState(null);
 
   const dispatch = useDispatch();
-  const error = useSelector((state) => state.vacancies.error);
-  const loading = useSelector((state) => state.vacancies.loading);
+  const { error, loading, hidden } = useSelector((state) => state.vacancies);
   const vacanciesAdd = useSelector((state) => state.vacancies.vacancies);
 
   const isMountedRef = useRef(true);
-  const [lookEnabledIds, setLookEnabledIds] = useState([]);
-  const [hideVacancies, setHideVacancies] = useState(false);
   const [activeButtonIndex, setActiveButtonIndex] = useState(0);
   const [selectedFilter, setSelectedFilter] = useState("Вакансии");
 
@@ -48,7 +48,8 @@ export default function AddHRPortal({ user }) {
 
   useEffect(() => {
     dispatch(getFetchForm());
-  }, [dispatch]);
+    dispatch(getHiddenVacanciesFromDB()); 
+ }, [dispatch]);
 
   useEffect(() => {
     updateModalBlockHeight();
@@ -169,13 +170,22 @@ export default function AddHRPortal({ user }) {
   }, [isCopied]);
 
   const handleLookClick = (id) => {
-    setLookEnabledIds((prevIds) =>
-      prevIds.includes(id)
-        ? prevIds.filter((itemId) => itemId !== id)
-        : [...prevIds, id]
-    );
-  };
-
+    const updatedHidden = { ...hidden }; // Создаем копию объекта состояния скрытости
+  
+    // Если вакансия с данным id уже есть в состоянии скрытости, инвертируем его состояние
+    if (updatedHidden[id]) {
+      updatedHidden[id] = !updatedHidden[id];
+    } else {
+      // Если вакансии с данным id еще нет в состоянии скрытости, добавляем ее и устанавливаем состояние скрытости как true
+      updatedHidden[id] = true;
+    }
+  
+    // Обновляем состояние скрытости и сохраняем его в базе данных
+    dispatch(updateVacancyLookStatusAndSaveToDB({ id, hidden: updatedHidden[id] }));
+    dispatch(updateVacancyLookStatusSuccess(updatedHidden));
+  };;
+  
+  
   const filteredVacancies = vacanciesAdd.filter((vacancy) => {
     if (selectedFilter === "Вакансии") {
       return vacancy.type === "вакансия";
@@ -454,14 +464,17 @@ export default function AddHRPortal({ user }) {
                                       </button>
                                     </div>
                                   ) : null}
-                                  {user?.name === "obezyankaa" ||
+                                 {user?.name === "obezyankaa" ||
                                   user?.name === "Pokemon" ||
                                   user?.name === "hr778" ? (
                                     <div
                                       className={`${
                                         styles.look_block_vacancy
                                       } ${
-                                        lookEnabledIds.includes(el.id)
+                                        hidden &&
+                                        typeof hidden === "object" &&
+                                        hidden[el.id] &&
+                                        hidden[el.id].hidden
                                           ? styles.disabled
                                           : ""
                                       }`}
@@ -475,12 +488,12 @@ export default function AddHRPortal({ user }) {
                                           <div className={`${styles.wrapper}`}>
                                             <img
                                               src={
-                                                lookEnabledIds.includes(el.id)
+                                                hidden && hidden[el.id]
                                                   ? noLook
                                                   : Look
                                               }
                                               alt={
-                                                lookEnabledIds.includes(el.id)
+                                                hidden && hidden[el.id]
                                                   ? "No look"
                                                   : "Look"
                                               }
