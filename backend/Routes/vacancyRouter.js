@@ -23,6 +23,7 @@ router.post('/addVacancy', async (req, res) => {
       haveToWork: formData.textBlock2,
       requirements: formData.textBlock3,
       type: formData.type,
+      hidden: formData.hidden,
     });
 
     // Сохраняем новую вакансию в базе данных
@@ -95,12 +96,56 @@ router.put('/editVacancy/:id', async (req, res) => {
       haveToWork: formData.textBlock2,
       requirements: formData.textBlock3,
       type: formData.type,
+      hidden: formData.hidden,
     }, { where: { id } });
 
     res.json({ message: 'Vacancy successfully updated' });
   } catch (error) {
     console.error('Error updating vacancy:', error);
     res.status(500).json({ message: 'Server error while updating vacancy' });
+  }
+});
+
+router.put('/updateVacancyLookStatus/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { hidden } = req.body;
+
+    const existingVacancy = await Employee.findByPk(id);
+
+    if (!existingVacancy) {
+      return res.status(404).json({ error: 'Vacancy not found' });
+    }
+
+    await Employee.update({ hidden }, { where: { id } });
+
+    res.json({ message: 'Vacancy look status successfully updated' });
+  } catch (error) {
+    console.error('Error updating vacancy look status:', error);
+    res.status(500).json({ message: 'Server error while updating vacancy look status' });
+  }
+});
+
+router.get('/getHiddenVacancies', async (req, res) => {
+  try {
+    const { hidden } = req.query;
+    let data;
+
+    if (hidden) {
+      // Здесь нужно использовать правильный способ поиска скрытых вакансий в вашей базе данных
+      data = await Employee.findAll({
+        where: { hidden: true }, // Используйте соответствующее поле, указывающее на скрытость вакансии
+      });
+    } else {
+      // Возвращаем все вакансии, если параметр hidden не указан
+      data = await Employee.findAll();
+    }
+
+    res.json(data);
+  } catch (error) {
+    // Если произошла ошибка, отправляем клиенту сообщение об ошибке
+    console.error('Error while fetching hidden vacancies:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 

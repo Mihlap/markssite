@@ -36,6 +36,10 @@ module.exports = (sequelize, DataTypes) => {
     style: DataTypes.STRING,
     type: DataTypes.STRING,
     geoData: DataTypes.TEXT,
+    hidden: { 
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
     createdAt: {
       allowNull: false,
       type: DataTypes.DATE,
