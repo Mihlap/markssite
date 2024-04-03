@@ -26,6 +26,7 @@ const vacanciesSlice = createSlice({
     vacancies: [],
     loading: false,
     error: null,
+    hidden: [],
     formData: {
     title: "",
     textBlock1: "",
@@ -39,10 +40,10 @@ const vacanciesSlice = createSlice({
     skills: [],
     benefits: [],
     type: "",
+    hidden: "",
   },
   selectedFilter: "Все",
   vacancyCountsByDirection: {},
-  lookEnabledIds: [],
   },
   reducers: {
     fetchVacancyStart(state) {
@@ -73,19 +74,22 @@ const vacanciesSlice = createSlice({
     setVacancyCountsByDirection(state, action) {
       state.vacancyCountsByDirection = { ...state.vacancyCountsByDirection, ...action.payload };
     },
-    toggleLookEnabledId(state, action) {
-      const id = action.payload;
-      const index = state.lookEnabledIds.indexOf(id);
-      if (index !== -1) {
-        state.lookEnabledIds = state.lookEnabledIds.filter(item => item !== id);
-      } else {
-        state.lookEnabledIds.push(id);
+    updateVacancyLookStatusAndSaveToDB(state, action) {
+      const { id, hidden } = action.payload;
+      const index = state.hidden.findIndex(item => item.id === id);
+      if (Array.isArray(hidden)) { 
+        if (index !== -1) {
+          state.hidden[index] = { id, hidden };
+        } else {
+          state.hidden.push({ id, hidden });
+        }
       }
     },
-    setLookEnabledIds(state, action) {
-      state.lookEnabledIds = action.payload;
-    },
-    clearFormData(state) {
+    
+    updateVacancyLookStatusSuccess(state, action) {
+      state.hidden = action.payload;
+    },   
+     clearFormData(state) {
       state.formData = {
         title: "",
         textBlock1: "",
@@ -99,6 +103,7 @@ const vacanciesSlice = createSlice({
         skills: [],
         benefits: [],
         type: "",
+        hidden: [],
       };
     },
   },
@@ -128,8 +133,8 @@ export const {
   setSelectedFilter,
   setVacancyCountsByDirection,
   clearFormData, 
-  toggleLookEnabledId,
-  setLookEnabledIds,
+  updateVacancyLookStatus,
+  updateVacancyLookStatusSuccess,
 } = vacanciesSlice.actions;
 
 
@@ -187,6 +192,7 @@ export const editVacancy = createAsyncThunk(
     const workModeValue = Array.isArray(formData.workMode) ? formData.workMode.join(", ") : formData.workMode;
     const benefitsValue = Array.isArray(formData.benefits) ? formData.benefits.join(", ") : formData.benefits;
     const skillsValue = Array.isArray(formData.skills) ? formData.skills.join(", ") : formData.skills;
+    const hiddenValue = formData.hidden;
 
     try {
    
@@ -198,7 +204,8 @@ export const editVacancy = createAsyncThunk(
         busyness: busynessValue,
         workMode: workModeValue,
         skills: skillsValue,
-        benefits: benefitsValue
+        benefits: benefitsValue,
+        hidden: hiddenValue,
       });
 
       dispatch(clearFormData());
@@ -213,17 +220,55 @@ export const editVacancy = createAsyncThunk(
   }
 );
 
-export const getFetchForm = () => async (dispatch) => {
+export const updateVacancyLookStatusAndSaveToDB = createAsyncThunk(
+  'vacancies/updateVacancyLookStatusAndSaveToDB',
+  async ({ id, hidden }) => {
+    try {
+      // Отправляем запрос на сервер для обновления данных в БД
+      const response = await axios.put(`${serverHost}/api-vacancy/updateVacancyLookStatus/${id}`, { hidden });
+      
+      // Возвращаем данные, полученные от сервера
+      return response.data;
+    } catch (error) {
+      console.error("Error updating vacancy look status:", error);
+      throw error;
+    }
+  }
+);
+
+
+
+// Добавляем новое действие для извлечения информации о скрытых вакансиях из базы данных
+export const getFetchForm = (hidden) => async (dispatch) => {
   dispatch(fetchVacancyStart());
 
   try {
-    const response = await axios.get(`${serverHost}/api-vacancy/getzapros`);
-  
+ 
+    // Запрос на получение информации о скрытых вакансиях
+    const response = await axios.get(`${serverHost}/api-vacancy/getzapros`)  
+
+    // Обновляем состояние в Redux с полученными данными
     dispatch(fetchVacancySuccess(response.data));
+   } catch (error) {
+    dispatch(fetchVacancyFailure(error.message));
+  }
+};
+
+export const getHiddenVacanciesFromDB = () => async (dispatch) => {
+  dispatch(fetchVacancyStart());
+
+  try {
+    // Отправляем запрос на получение скрытых вакансий из базы данных
+    const response = await axios.get(`${serverHost}/api-vacancy/getHiddenVacancies`);
+  
+    // Обновляем состояние в Redux с полученными скрытыми вакансиями
+    dispatch(updateVacancyLookStatusSuccess(response.data)); // Обновляем состояние скрытых вакансий
   } catch (error) {
     dispatch(fetchVacancyFailure(error.message));
   }
 };
+
+
 
 export const getFetchFormFilter = (direction) => async (dispatch, getState) => {
   dispatch(fetchVacancyStart());
@@ -235,7 +280,7 @@ export const getFetchFormFilter = (direction) => async (dispatch, getState) => {
       },
     });
     dispatch(fetchVacancySuccess(response.data)); 
- 
+  
   } catch (error) {
     dispatch(fetchVacancyFailure(error.message));
   }
