@@ -22,7 +22,7 @@ const Vacancies = ({
   hideVacancies,
 }) => {
   const dispatch = useDispatch();
-  const { vacancies, loading, vacancyCountsByDirection } = useSelector(
+  const { vacancies, loading, vacancyCountsByDirection, lookEnabledIds } = useSelector(
     (state) => state.vacancies
   );
   const selectedFilter = useSelector((state) => state.vacancies.selectedFilter);
@@ -94,6 +94,12 @@ const Vacancies = ({
     setIsModalOpen(false);
   };
 
+  const shouldDisplayVacancy = (vacancy) => {
+    const foundVacancy = lookEnabledIds.find((item) => item.id === vacancy.id);
+    return !foundVacancy || !foundVacancy.hidden;
+  };
+  
+
   const vacanciesMain = [...vacancies].reverse();
 
   return (
@@ -164,50 +170,31 @@ const Vacancies = ({
             <LoadingCircle />
           </div>
         ) : (
-          //   <div className={styles.section_block_vacancy}>
-          //   <div className={styles.vacancy_item_container_title}>
-          //     <div className={styles.vacancy_item_title}>Специальность</div>
-          //     <div className={styles.vacancy_item_title}>Направление</div>
-          //     <div className={styles.vacancy_item_title}>Занятость</div>
-          //     <div className={styles.vacancy_item_title}>Локация</div>
-          //   </div>
-          //   {vacancies.slice(0, showManyVacancies ? vacancies.length : 6).map((vacancy) => (
-          //     <div key={vacancy.id} className={styles.vacancy_item_container_content}>
-          //       <div className={styles.vacancy_item_content}>{vacancy.title}</div>
-          //       <div className={styles.vacancy_item_content}>{vacancy.direction}</div>
-          //       <div className={styles.vacancy_item_content}>{vacancy.busyness}</div>
-          //       <div className={styles.vacancy_item_content}>{vacancy.locationStaff}</div>
-          //     </div>
-          //   ))}
-          // </div>
           <div className={styles.vacancy_section_block_vacancy}>
-            <div className={styles.section_block_vacancy}>
-              {vacanciesList.map((item, index) => (
-                <div
-                  key={index}
-                  className={`${item.className} ${styles.vacancy_item_container}`}
-                >
-                  <div className={styles.vacancy_item_title}>{item.title}</div>
-                  {vacanciesMain
-                    .slice(0, showManyVacancies ? vacancies.length : 6)
-                    // .reverse()
-                    .map((vacancy) => (
-                      <div
-                        key={vacancy.id}
-                        className={styles.vacancy_item_content_wrapper}
-                      >
-                        <div className={styles.vacancy_item_content}>
-                          {vacancy[item.field]}
-                        </div>
-                        <div className={styles.vacancy_item_content2}>
-                          {vacancy[item.field1]}
-                        </div>
+          <div className={styles.section_block_vacancy}>
+            {vacanciesList.map((item, index) => (
+              <div
+                key={index}
+                className={`${item.className} ${styles.vacancy_item_container}`}
+              >
+                <div className={styles.vacancy_item_title}>{item.title}</div>
+                {vacanciesMain.map((vacancy) => (
+                  shouldDisplayVacancy(vacancy) && (
+                    <div key={vacancy.id} className={styles.vacancy_item_content_wrapper}>
+                      <div className={styles.vacancy_item_content}>
+                        {vacancy[item.field]}
                       </div>
-                    ))}
-                </div>
-              ))}
-            </div>
+                      <div className={styles.vacancy_item_content2}>
+                        {vacancy[item.field1]}
+                      </div>
+                    </div>
+                  )
+                ))}
+              </div>
+            ))}
           </div>
+        </div>
+        
         )}
         <div className={styles.showVacanciesOfTotalVacanciesContainer}>
         <div className={styles.showVacanciesOfTotalVacancies}>
