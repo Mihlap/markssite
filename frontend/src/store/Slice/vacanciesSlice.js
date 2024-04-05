@@ -73,22 +73,14 @@ const vacanciesSlice = createSlice({
     }, 
     setVacancyCountsByDirection(state, action) {
       state.vacancyCountsByDirection = { ...state.vacancyCountsByDirection, ...action.payload };
-    },
-    updateVacancyLookStatusAndSaveToDB(state, action) {
-      const { id, hidden } = action.payload;
-      const index = state.hidden.findIndex(item => item.id === id);
-      if (Array.isArray(hidden)) { 
-        if (index !== -1) {
-          state.hidden[index] = { id, hidden };
-        } else {
-          state.hidden.push({ id, hidden });
-        }
-      }
-    },
-    
+    },  
     updateVacancyLookStatusSuccess(state, action) {
-      state.hidden = action.payload;
-    },   
+      const { id, hidden } = action.payload;
+      const index = state.vacancies.findIndex(vacancy => vacancy.id === id);
+      if (index !== -1) {
+        state.vacancies[index].hidden = hidden;
+      }
+    },  
      clearFormData(state) {
       state.formData = {
         title: "",
@@ -103,7 +95,7 @@ const vacanciesSlice = createSlice({
         skills: [],
         benefits: [],
         type: "",
-        hidden: [],
+        hidden: "",
       };
     },
   },
@@ -133,7 +125,6 @@ export const {
   setSelectedFilter,
   setVacancyCountsByDirection,
   clearFormData, 
-  updateVacancyLookStatus,
   updateVacancyLookStatusSuccess,
 } = vacanciesSlice.actions;
 
@@ -143,20 +134,17 @@ export const addVacancy = createAsyncThunk(
   async (formData, { dispatch, getState }) => {
     dispatch(fetchVacancyStart());
     const benefitsValue = Array.isArray(formData.benefits) ? formData.benefits.join(", ") : formData.benefits;
-    const skillsValue = Array.isArray(formData.skills) ? formData.skills.join(", ") : formData.skills;
-    
+    const skillsValue = Array.isArray(formData.skills) ? formData.skills.join(", ") : formData.skills;    
     try {
       const response = await axios.post(`${serverHost}/api-vacancy/addVacancy`, { ...formData, skills: skillsValue, benefits: benefitsValue });
       
       dispatch(clearFormData());
       dispatch(getFetchForm());
-
         
       return response.data;
     } catch (error) {
       console.error("Ошибка при добавлении вакансии:", error);
-      dispatch(fetchVacancyFailure(error.message));
-    
+      dispatch(fetchVacancyFailure(error.message));    
     }
   }
 );
@@ -164,10 +152,8 @@ export const addVacancy = createAsyncThunk(
 export const sendCopiedVacancyToServer = (copiedVacancy) => {
   return async (dispatch) => {
     try {
-      // Отправляем скопированную вакансию на сервер
       const response = await axios.post(`${serverHost}/api-vacancy/copyVacancy/${copiedVacancy.id}`, copiedVacancy);
 
-      // Вызовите другие действия Redux, если необходимо
       dispatch(clearFormData());
       dispatch(getFetchForm());
     
@@ -213,7 +199,7 @@ export const editVacancy = createAsyncThunk(
 
       return response.data;
     } catch (error) {
-      console.error("Error editing vacancy:", error);
+      console.error("Ошибка редактирования вакансии:", error);
       dispatch(fetchVacancyFailure(error.message));
       throw error; 
     }
@@ -222,15 +208,15 @@ export const editVacancy = createAsyncThunk(
 
 export const updateVacancyLookStatusAndSaveToDB = createAsyncThunk(
   'vacancies/updateVacancyLookStatusAndSaveToDB',
-  async ({ id, hidden }) => {
+  async ({ id, hidden }, { dispatch }) => {
     try {
-      // Отправляем запрос на сервер для обновления данных в БД
       const response = await axios.put(`${serverHost}/api-vacancy/updateVacancyLookStatus/${id}`, { hidden });
-      
-      // Возвращаем данные, полученные от сервера
+      if (response.status === 200) {
+        dispatch(updateVacancyLookStatusSuccess({ id, hidden }));
+      }
       return response.data;
     } catch (error) {
-      console.error("Error updating vacancy look status:", error);
+      console.error("Ошибка обновления статуса вакансии:", error);
       throw error;
     }
   }
@@ -238,32 +224,25 @@ export const updateVacancyLookStatusAndSaveToDB = createAsyncThunk(
 
 
 
-// Добавляем новое действие для извлечения информации о скрытых вакансиях из базы данных
-export const getFetchForm = (hidden) => async (dispatch) => {
+export const getHiddenVacanciesFromDB = () => async (dispatch) => {
   dispatch(fetchVacancyStart());
-
   try {
- 
-    // Запрос на получение информации о скрытых вакансиях
-    const response = await axios.get(`${serverHost}/api-vacancy/getzapros`)  
-
-    // Обновляем состояние в Redux с полученными данными
-    dispatch(fetchVacancySuccess(response.data));
-   } catch (error) {
+    const response = await axios.get(`${serverHost}/api-vacancy/getHiddenVacancies`);
+    dispatch(updateVacancyLookStatusSuccess(response.data)); 
+  } catch (error) {
     dispatch(fetchVacancyFailure(error.message));
   }
 };
 
-export const getHiddenVacanciesFromDB = () => async (dispatch) => {
-  dispatch(fetchVacancyStart());
 
-  try {
-    // Отправляем запрос на получение скрытых вакансий из базы данных
-    const response = await axios.get(`${serverHost}/api-vacancy/getHiddenVacancies`);
-  
-    // Обновляем состояние в Redux с полученными скрытыми вакансиями
-    dispatch(updateVacancyLookStatusSuccess(response.data)); // Обновляем состояние скрытых вакансий
-  } catch (error) {
+// Добавляем новое действие для извлечения информации о скрытых вакансиях из базы данных
+export const getFetchForm = (hidden) => async (dispatch) => {
+  dispatch(fetchVacancyStart());
+  try { 
+   const response = await axios.get(`${serverHost}/api-vacancy/getzapros`)  
+    dispatch(fetchVacancySuccess(response.data));
+    dispatch(updateVacancyLookStatusSuccess(response.data)); 
+   } catch (error) {
     dispatch(fetchVacancyFailure(error.message));
   }
 };
@@ -279,31 +258,29 @@ export const getFetchFormFilter = (direction) => async (dispatch, getState) => {
         direction,    
       },
     });
-    dispatch(fetchVacancySuccess(response.data)); 
-  
+    dispatch(fetchVacancySuccess(response.data));   
   } catch (error) {
     dispatch(fetchVacancyFailure(error.message));
   }
 };
+
 
 export const getVacanciesByDirection = () => async (dispatch) => {
   try {
     const response = await axios.get(`${serverHost}/api-vacancy/getzapros`);
     const vacancies = response.data;
     
-    // Создаем объект для хранения количества вакансий по направлениям
     const counts = {};
+    const visibleVacancies = vacancies.filter(vacancy => !vacancy.hidden);
 
-    // Проходим по каждой вакансии и считаем их по направлениям
-    vacancies.forEach((vacancy) => {
+    visibleVacancies.forEach((vacancy) => {
       const { direction } = vacancy;
       counts[direction] = counts[direction] ? counts[direction] + 1 : 1;
     });
-
-    // Обновляем состояние в Redux Store с полученными данными
+    
     dispatch(setVacancyCountsByDirection(counts));
   } catch (error) {
-    console.error("Error fetching vacancies count by direction:", error);
+    console.error("Ошибка при получении количества вакансий по направлению:", error);
   }
 };
 
