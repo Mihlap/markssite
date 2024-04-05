@@ -314,7 +314,7 @@ export default function AddArticles({ user }) {
                                     </button>
                                   </div>
                                 ) : null}
-                                 {user?.name === "obezyankaa" ||
+                                 {user?.name === "obezyankaa" || user?.name === "manager" ||
                                   user?.name === "Pokemon" ? (
                                     <div className={styles.edit_block}>
                                       <button
