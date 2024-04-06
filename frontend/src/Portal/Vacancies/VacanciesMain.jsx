@@ -164,7 +164,7 @@ const Vacancies = ({
             <div className={styles.loader}>
               <LoadingCircle />
             </div>
-          ) : (
+           ) : visibleVacancies.length > 0 ? (
             <div className={styles.vacancy_section_block_vacancy}>
               <div className={styles.section_block_vacancy}>
                 {vacanciesList.map((item, index) => (
@@ -175,7 +175,7 @@ const Vacancies = ({
                     <div className={styles.vacancy_item_title}>
                       {item.title}
                     </div>
-                    {vacanciesMain
+                    {visibleVacancies
                       .filter(shouldDisplayVacancy)
                       .slice(0, showManyVacancies ? vacanciesMain.length : 6)
                       .map((vacancy) => (
@@ -195,7 +195,13 @@ const Vacancies = ({
                 ))}
               </div>
             </div>
+          ) : (
+            // Выводим сообщение, если вакансий нет
+            <div className={styles.vacancy_item_content_massage}>
+            Скоро здесь появяться вакансии
+            </div>
           )}
+            {visibleVacancies.length > 6 && (
           <div className={styles.showVacanciesOfTotalVacanciesContainer}>
             <div className={styles.showVacanciesOfTotalVacancies}>
               {!showManyVacancies && visibleVacancies.length > 6 && (
@@ -219,6 +225,7 @@ const Vacancies = ({
               </button>
             </div>
           </div>
+             )}
           <div className={styles.temporaryText}>
             Не нашли подходящую вакансию?
           </div>
