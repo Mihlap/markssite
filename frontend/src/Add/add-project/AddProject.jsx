@@ -315,7 +315,7 @@ export default function AddProject({ user }) {
                                       </button>
                                     </div>                                    
                                   ) : null}
-                                       {user?.name === "obezyankaa" ||
+                                       {user?.name === "obezyankaa" || user?.name === "manager" ||
                                   user?.name === "Pokemon" ? (
                                       <div className={styles.edit_block}
                                         onClick={() => handleEditClick(el.id)}
