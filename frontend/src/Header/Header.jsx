@@ -12,18 +12,18 @@ import SwiperCore, { Navigation } from "swiper";
 import SliderHeader from "../UI/SliderHeader/SliderHeader";
 import Mapbox3D from "../UI/Map3D/Mapbox3D";
 import SliderMobile from "../UI/SliderHeader/SliderMobile";
+import BlockHeaderMain from "../UI/BlockHeader/BlockHeaderMain";
 import { getFetchFormArticle } from "../store/Slice/articleSlice";
-import styles from "./Header.module.css";
 import { getZaprosData } from "../store/Slice/searchProjectMainSlice";
 import { searchArticleLeftGet } from "../store/Slice/searchArticlePublicLeftSlice";
-import img123 from "./img/Главная.png";
+import { searchArticleRightGet } from "../store/Slice/searchArticlePublicRightSlice";
+import styles from "./Header.module.css";
+
 import notDataPhoto from "./img/notData.png";
 import nameCompany from "../icons/nameCompany.svg";
 import nameCompany1 from "../icons/nameCompany1.svg";
-
+import img123 from "./img/Главная.png";
 // import { textEnter, textLeave, imageHover, specialHover } from "../store/Slice/cursorSlice";
-import { searchArticleRightGet } from "../store/Slice/searchArticlePublicRightSlice";
-import BlockHeaderMain from "../UI/BlockHeader/BlockHeaderMain";
 
 SwiperCore.use([Navigation]);
 const Host = process.env.REACT_APP_SERVER_HOST;
@@ -42,17 +42,13 @@ export default function Header({
     small: `${Host}/videos/main_company_mobile.mp4`,
   };
   const sliderCardRef = useRef(null);
-  const [enableVerticalScroll, setEnableVerticalScroll] = useState(true);
-  const [isHorizontalScroll, setIsHorizontalScroll] = useState(false);
-  const [isAtRightEdge, setIsAtRightEdge] = useState(false);
-  const [scrollingMode, setScrollingMode] = useState("vertical");
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
 
-  const [loadingArticle, setLoadingArticle] = useState(false);
+  // const [loadingArticle, setLoadingArticle] = useState(false);
 
-  const cursorVariant = useSelector((state) => state.cursor);
+  // const cursorVariant = useSelector((state) => state.cursor);
 
-  const { article, loading, error } = useSelector((state) => state.article);
+  // const { article, loading, error } = useSelector((state) => state.article);
 
   const articles = useSelector((state) => state.article.article);
 
@@ -130,179 +126,56 @@ export default function Header({
     Дизайн: "#FAA8BD",
     Инженерия: "#90B734",
   };
-  const handleScroll = () => {
-    const el = sliderCardRef.current;
-
-    // Проверяем, виден ли элемент слайдера
-    if (el) {
-      const rect = el.getBoundingClientRect();
-      const isSliderInView = rect.top <= window.innerHeight && rect.bottom >= 0;
-
-      // Обновляем состояние для включения/отключения вертикального скролла в зависимости от видимости слайдера
-      setEnableVerticalScroll(!isSliderInView);
-
-      // Проверяем различные условия скролла и обновляем состояние соответственно
-      if (!loadingArticle) {
-        if (isSliderInView && el.scrollLeft > 0) {
-          setEnableVerticalScroll(false);
-          setIsHorizontalScroll(false);
-        } else if (
-          !isSliderInView &&
-          el.scrollLeft + el.clientWidth >= el.scrollWidth
-        ) {
-          setEnableVerticalScroll(true);
-          setIsHorizontalScroll(false);
-        } else if (!isSliderInView && el.scrollLeft <= 0) {
-          setEnableVerticalScroll(true);
-          setIsHorizontalScroll(false);
-        } else if (
-          !isSliderInView &&
-          el.scrollLeft + el.clientWidth >= el.scrollWidth &&
-          el.scrollTop + el.clientHeight >= el.scrollHeight
-        ) {
-          setEnableVerticalScroll(true);
-          setIsHorizontalScroll(false);
-        }
-      }
-    }
-    // Проверяем, находится ли элемент слайдера у края справа
-    if (el) {
-      const isRightEdge = el.scrollLeft + el.clientWidth >= el.scrollWidth;
-      setIsAtRightEdge(isRightEdge);
-    }
-  };
-
-  const onVerticalScroll = (e) => {
-    const el = sliderCardRef.current;
-    const isScrollingUp = e.deltaY < 0;
-    const isAtTop = el.scrollTop <= 0;
-    const isAtBottom = el.scrollTop + el.clientHeight >= el.scrollHeight;
-
-    // Если скроллим вверх и достигли верхней границы
-    if (isScrollingUp && isAtTop) {
-      setEnableVerticalScroll(false);
-      el.scrollLeft += e.deltaY;
-    } else if (!isAtBottom) {
-      // В противном случае прокручиваем содержимое
-      el.scrollTo({
-        top: el.scrollTop + e.deltaY,
-        behavior: "smooth",
-      });
-    } else {
-      // // Если достигнут конец слайдера, прокручиваем вниз до конца страницы
-      // if (isHorizontalScroll) {
-      //   setIsHorizontalScroll(false);
-      //   window.scrollTo({
-      //     top: document.body.scrollHeight,
-      //     behavior: "smooth",
-      //   });
-      e.preventDefault(); // Предотвращаем дальнейший скролл
-      // }
-    }
-  };
-
-  // // Добавьте обработчик события прокрутки для горизонтального скроллинга
-  // const onHorizontalScroll = (e) => {
-  //   const el = sliderCardRef.current;
-  //   const isScrollingLeft = e.deltaX < 0;
-  //   const isAtLeft = el.scrollLeft <= 0;
-  //   const isAtRight = el.scrollLeft + el.clientWidth >= el.scrollWidth;
-
-  //   // Если скроллим влево и достигли левой границы
-  //   if (isScrollingLeft && isAtLeft) {
-  //     // Включаем горизонтальный скролл
-  //     setIsHorizontalScroll(true);
-  //     el.scrollTop += e.deltaX;
-  //   } else if (!isAtRight) {
-  //     // В противном случае прокручиваем содержимое
-  //     el.scrollTo({
-  //       left: el.scrollLeft + e.deltaX,
-  //       behavior: "smooth",
-  //     });
-  //   } else {
-  //     // Если достигнут конец слайдера, предотвращаем дальнейший скролл
-  //     e.preventDefault();
-  //   }
-  // };
-
-  const onWheel = (e) => {
-    const el = sliderCardRef.current;
-    const isScrollingRight = e.deltaY >= 0;
-    const isAtRightEdge = el.scrollLeft + el.clientWidth >= el.scrollWidth;
-    const isAtBottom = el.scrollTop + el.clientHeight >= el.scrollHeight;
-    const isAtLeftEdge = el.scrollLeft <= 0;
-    const isAtTop = el.scrollTop <= 0;
-
-    // Проверяем различные условия скролла и обновляем состояние соответственно
-    if (
-      isScrollingRight &&
-      isAtRightEdge &&
-      isAtBottom &&
-      !isHorizontalScroll
-    ) {
-      setIsHorizontalScroll(false); // Горизонтальный скроллинг завершился
-      el.scrollTo({
-        top: el.scrollTop + e.deltaY,
-        behavior: "smooth",
-      });
-      setEnableVerticalScroll(true);
-    } else if (enableVerticalScroll && !isScrollingRight) {
-      if (isAtLeftEdge && isAtTop) {
-        setIsHorizontalScroll(true); // Идет горизонтальный скроллинг
-        el.scrollLeft += e.deltaY;
-        setEnableVerticalScroll(false);
-      } else if (isAtLeftEdge && !isAtTop) {
-        // Прокручиваем содержимое вверх/вниз с плавным эффектом
-        el.scrollTo({
-          top: el.scrollTop + e.deltaY,
-          behavior: "smooth",
-        });
-      } else if (
-        isAtRightEdge &&
-        isAtBottom &&
-        e.deltaY < 0 &&
-        !isHorizontalScroll
-      ) {
-        setIsHorizontalScroll(false); // Разрешаем вертикальный скроллинг
-        el.scrollLeft += e.deltaY;
-        setEnableVerticalScroll(true);
-      } else if (
-        isAtRightEdge &&
-        isAtBottom &&
-        e.deltaY > 0 &&
-        !isHorizontalScroll
-      ) {
-        setIsHorizontalScroll(true); // Отключаем вертикальный скроллинг
-        el.scrollTo({
-          top: el.scrollTop + e.deltaY,
-          behavior: "smooth",
-        });
-        setEnableVerticalScroll(false);
-      } else {
-        // В противном случае предотвращаем дальнейший скролл
-        e.preventDefault();
-      }
-    } else {
-      // Прокручиваем содержимое влево/вправо
-      el.scrollLeft += e.deltaY;
-    }
-  };
 
   useEffect(() => {
-    const el = sliderCardRef.current;
-    if (el) {
-      // el.addEventListener("wheel", onHorizontalScroll, { passive: false });
-      el.addEventListener("wheel", onVerticalScroll, { passive: false });
-      el.addEventListener("wheel", onWheel, { passive: false });
-      el.addEventListener("scroll", handleScroll);
-      return () => {
-        el.removeEventListener("wheel", onVerticalScroll);
-        // el.removeEventListener("wheel", onHorizontalScroll);
-        el.removeEventListener("wheel", onWheel);
-        el.removeEventListener("scroll", handleScroll);
-      };
-    }
-  }, [loading, loadingArticle, scrollingMode]);
+    // Состояние для отслеживания, находится ли пользователь в процессе скроллинга к верху слайдера
+    let scrollingToTopOfSlider = false;
+  
+    const handleScroll = (e) => {
+      const el = sliderCardRef.current;
+      if (!el) return;
+  
+      const documentScrollTop = window.scrollY || document.documentElement.scrollTop;
+      const windowHeight = window.innerHeight;
+      const sliderRect = el.getBoundingClientRect();
+      const sliderTop = sliderRect.top + documentScrollTop;
+      const sliderBottom = sliderTop + el.offsetHeight;
+      const isAtEndOfSlider = el.scrollWidth - el.scrollLeft <= el.clientWidth;
+      const isAtStartOfSlider = el.scrollLeft === 0;
+  
+      // Проверяем, находимся ли мы в нижней части слайдера
+      const isAtSliderBottom = documentScrollTop + windowHeight >= sliderBottom;
+      if (isAtSliderBottom && e.deltaY > 0 && !isAtEndOfSlider) {
+        e.preventDefault();
+        el.scrollLeft += 80;
+        scrollingToTopOfSlider = false; // Сбросить, так как мы двигаемся вправо
+      }
+  
+      // Проверяем, находимся ли мы уже в процессе скроллинга к верху слайдера
+      if (e.deltaY < 0 && !isAtStartOfSlider) {
+        if (scrollingToTopOfSlider || documentScrollTop < sliderTop) {
+          e.preventDefault();
+          el.scrollLeft -= 80;
+          scrollingToTopOfSlider = true; // Обновляем, так как мы начали скроллить к верху слайдера
+        }
+      }
+  
+      // Если мы достигли начала слайдера и продолжаем скроллить вверх
+      if (isAtStartOfSlider && e.deltaY < 0 && scrollingToTopOfSlider) {
+        scrollingToTopOfSlider = false; // Позволяем обычный скролл страницы
+      }
+    };
+  
+    window.addEventListener('wheel', handleScroll, { passive: false });
+  
+    return () => {
+      window.removeEventListener('wheel', handleScroll);
+    };
+  }, []);
+  
+  
+  
+  
 
   // if (error) {
   //   return (
@@ -699,7 +572,7 @@ export default function Header({
               return (
                 <SwiperSlide
                   key={index}
-                  onScroll={handleScroll}
+                  // onScroll={handleScroll}
                   id="slider_container_item_card"
                   className={styles.slider_container_item_card}
                   style={index % 2 === 1 ? { paddingTop: "10rem" } : {}}
