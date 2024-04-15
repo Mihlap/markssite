@@ -113,3 +113,13 @@
 // .constructorBlockFive {}
 
 // .constructorBlockSix {}
+
+@media screen and (max-width: 1024px) {
+
+    .div_conteiner {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        justify-content: center;
+}
+}
