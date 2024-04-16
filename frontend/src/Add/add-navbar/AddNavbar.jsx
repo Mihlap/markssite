@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styles from "./AddNavbar.module.scss";
 import { Link, useNavigate } from "react-router-dom";
 // import axios from "axios";
@@ -23,13 +23,24 @@ import { resetCurrentPage } from "../../store/Slice/userSlice";
 export default function AddNavbar({ user, handleReturn }) {
   const dispatch = useDispatch();
 
-  const [selectedItem, setSelectedItem] = useState(null);
   const navigate = useNavigate();
+  const [selectedItem, setSelectedItem] = useState('home');
+  const [indicatorX, setIndicatorX] = useState(0);
+  const [indicatorY, setIndicatorY] = useState(0);
+  // const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
+  const itemRefs = useRef({});
+  const indicatorRef = useRef(null);
 
   const isObezyankaaUser = user?.name === "obezyankaa";
   const isPokemonUser = user?.name === "Pokemon";
   const isHr778User = user?.name === "hr778";
   const isManagerUser = user?.name === "manager";
+
+//   useEffect(() => {
+//     const handleResize = () => setIsMobile(window.innerWidth < 1024);
+//     window.addEventListener('resize', handleResize);
+//     return () => window.removeEventListener('resize', handleResize);
+// }, []);
 
   useEffect(() => {
     const storedSelectedItem = localStorage.getItem("selectedItem");
@@ -38,14 +49,38 @@ export default function AddNavbar({ user, handleReturn }) {
     }
   }, []);
 
+   
+  useEffect(() => { 
+    updateIndicatorPosition(selectedItem);
+  }, [selectedItem]);
+
+  const updateIndicatorPosition = (itemName) => {
+    const item = itemRefs.current[itemName];
+    if (item && indicatorRef.current) {
+   
+      const newIndicatorX = item.offsetLeft;
+      const newIndicatorY = item.offsetTop + item.offsetHeight - 2; // Пример отступа
+
+      setIndicatorX(newIndicatorX);
+      setIndicatorY(newIndicatorY);
+    }
+  };
+
+  useEffect(() => {
+    if (indicatorRef.current) {
+      indicatorRef.current.style.transform = `translate(${indicatorX}px, ${indicatorY}px)`;
+    }
+  }, [indicatorX, indicatorY]);
+
   const handleItemClick = (event, itemName, itemPath) => {
     event.preventDefault();
     setSelectedItem(itemName);
     localStorage.setItem("selectedItem", itemName);
-    navigate(itemPath); // Выполняем переход по ссылке
+    navigate(itemPath); 
   };
 
-  const logouthandler = async () => {
+
+ const logouthandler = async () => {
     try {
       dispatch(logoutUser());
       dispatch(resetCurrentPage()); // Сбрасываем currentPage
@@ -54,11 +89,13 @@ export default function AddNavbar({ user, handleReturn }) {
       console.error("Ошибка при выходе из системы", error);
     }
   };
+  
 
   return (
     <>
       <nav className={styles.add_navbar_container}>
-        <div className={styles.add_navbar_container__block}>
+        <div className={styles.add_navbar_container__block}>       
+            <div className={styles.selectedIndicator} ref={indicatorRef} />
           <div className={styles.add_navbar_container__management}>
             <div className={styles.add_navbar_container__title}>
               MARKS GROUP
@@ -87,12 +124,13 @@ export default function AddNavbar({ user, handleReturn }) {
                       </g>
                     </svg>
                     <Link
+                      ref={(el) => (itemRefs.current["home"] = el)}
                       className={`${styles.add_navbar_container__item} ${
                         selectedItem === "home" ? styles.active : ""
                       }`}
                       to="./"
                       onClick={(event) =>
-                        handleItemClick(event, "home", "./home")
+                        handleItemClick( event, "home", "./home")
                       }
                     >
                       <img
@@ -125,8 +163,8 @@ export default function AddNavbar({ user, handleReturn }) {
                         />
                       </g>
                     </svg>
-
                     <Link
+                      ref={(el) => (itemRefs.current["add-a-project"] = el)}
                       className={`${styles.add_navbar_container__item} ${
                         selectedItem === "add-a-project" ? styles.active : ""
                       }`}
@@ -169,8 +207,8 @@ export default function AddNavbar({ user, handleReturn }) {
                         />
                       </g>
                     </svg>
-
                     <Link
+                    ref={(el) => (itemRefs.current["add-a-articles"] = el)}
                       className={`${styles.add_navbar_container__item} ${
                         selectedItem === "add-a-articles" ? styles.active : ""
                       }`}
@@ -217,6 +255,7 @@ export default function AddNavbar({ user, handleReturn }) {
                     </svg>
 
                     <Link
+                       ref={(el) => (itemRefs.current["add-a-company"] = el)}
                       className={`${styles.add_navbar_container__item} ${
                         selectedItem === "add-a-company" ? styles.active : ""
                       }`}
@@ -265,6 +304,7 @@ export default function AddNavbar({ user, handleReturn }) {
                   </svg>
 
                   <Link
+                  ref={(el) => (itemRefs.current["add-hr-portal"] = el)}
                     className={`${styles.add_navbar_container__item} ${
                       selectedItem === "add-hr-portal" ? styles.active : ""
                     }`}
@@ -319,6 +359,7 @@ export default function AddNavbar({ user, handleReturn }) {
                     </g>
                   </svg>
                   <Link
+                    ref={(el) => (itemRefs.current["add-a-applications"] = el)}
                     className={`${styles.add_navbar_container__item} ${
                       selectedItem === "add-a-applications" ? styles.active : ""
                     }`}
@@ -360,7 +401,7 @@ export default function AddNavbar({ user, handleReturn }) {
               Выйти из аккакунта
             </button>
             </li>
-          </div>
+          </div>       
         </div>
       </nav>
       <div className={styles.button_position}>

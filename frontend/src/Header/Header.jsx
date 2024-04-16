@@ -11,6 +11,9 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Navigation } from "swiper";
 import SliderHeader from "../UI/SliderHeader/SliderHeader";
 import Mapbox3D from "../UI/Map3D/Mapbox3D";
+import LoadingCircle from "../Loading/LoadingCircle";
+import LoadingNew from "../Loading/LoadingNew";
+import Error from "../Loading/Error/Error";
 import SliderMobile from "../UI/SliderHeader/SliderMobile";
 import BlockHeaderMain from "../UI/BlockHeader/BlockHeaderMain";
 import { getFetchFormArticle } from "../store/Slice/articleSlice";
@@ -41,32 +44,26 @@ export default function Header({
     medium: `${Host}/videos/main_company_ipad.mp4`,
     small: `${Host}/videos/main_company_mobile.mp4`,
   };
-  const sliderCardRef = useRef(null);
-  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
-
   // const [loadingArticle, setLoadingArticle] = useState(false);
-
   // const cursorVariant = useSelector((state) => state.cursor);
 
-  // const { article, loading, error } = useSelector((state) => state.article);
-
+  const dispatch = useDispatch();
+  const { loading, error } = useSelector((state) => state.article);
   const articles = useSelector((state) => state.article.article);
-
   const projects = useSelector((state) => state.searchproject.projects);
-
   const ArticleLeft = useSelector(
     (state) => state.searchArticlePublicLeft.articleLeft
   );
-  const MapArticle = ArticleLeft?.map((el) => el.publication.publication);
-
   const ArticleRight = useSelector(
     (state) => state.searchArticlePublicRight.articleRight
   );
+
+  const MapArticle = ArticleLeft?.map((el) => el.publication.publication);
   const MapArticleRight = ArticleRight?.map((el) => el.publication.publication);
 
-  const dispatch = useDispatch();
-
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const [videoSrc, setVideoSrc] = useState(null);
+  const sliderCardRef = useRef(null);
 
   const isMobile = window.innerWidth <= 767;
 
@@ -171,23 +168,22 @@ export default function Header({
     return () => {
       window.removeEventListener('wheel', handleScroll);
     };
-  }, []);
-  
-  
-  
+  }, []);  
   
 
-  // if (error) {
-  //   return (
-  //     <div>
-  //       {" "}
-  //       <Error error={error.message} />
-  //     </div>
-  //   );
-  // }
-  // if (loading) {
-  //   return <LoadingCircle />;
-  // }
+  if (error) {
+    return (
+      <div>
+        {" "}
+        <Error error={error.message} />
+      </div>
+    );
+  }
+  if (loading) {
+    return <LoadingCircle />;
+    // return <LoadingNew />;
+  }
+
   const NewProject = projects.map((el) =>
     el && el.project !== undefined ? el.project : null
   );

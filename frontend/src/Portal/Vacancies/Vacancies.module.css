@@ -378,7 +378,16 @@ font-family: var(--font-raleway);
   color: var(--white-F6F6F6);
 }
 
-
+.vacancy_item_content_massage {
+  display: flex;
+  font-family: var(--font-unbounded);
+  font-weight: var(--fw-300);
+  font-size: 1.75rem;
+  line-height: 1.75rem;
+  padding-top: 3rem;
+  justify-content: center;
+  align-items: center;
+}
 
 /* стили для страницы Vacancies пока она работает не удалять!!!!!!! */
 .vacancy_section_block {

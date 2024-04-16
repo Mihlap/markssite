@@ -4,7 +4,7 @@
     height: 100vh;
     padding-left: 17%;
     padding-top: 7.5rem;
- 
+
     &__block {
         padding: 0rem 3rem;
     }
@@ -291,8 +291,8 @@
     //     width: 100%;
     //     padding-top: 21px;
     //     border-radius: 1rem;      
-   
-        
+
+
     //     &__group {
     //         position: relative;
     //         width: 50rem;
@@ -301,8 +301,8 @@
     //         border-radius: 0.5rem;
     //         overflow: hidden; 
     //         transition: background-color 0.3s, color 0.3s;
-                                    
-                        
+
+
     //         &:hover, &:focus {
     //             border-radius: 0.5rem;
     //             background: var(--light-gray-C0C5CB);
@@ -320,21 +320,21 @@
     //             color: var(--white-F6F6F6);                      
     //             transition: left 0.3s;       
     //         }    
-            
+
 
     //     }        
     //     .activeButtonVacancy {
     //         // background: var(--super-dark-blue-345374);
     //         color: var(--white-F6F6F6);
     //     }
-        
+
     //     /* Стили для активной кнопки с анимацией */
     //     .activeButtonVacancy::after {
     //         left: 0;      
     //         color: var(--white-F6F6F6);
     //     }  
 
-        
+
     // }
 
 }
@@ -344,66 +344,67 @@
 
 .card_components_admin__buttonFilter {
     display: flex;
-    padding-top: 21px;  
+    padding-top: 21px;
 }
 
 .card_components_admin__buttonFilter__group {
     position: relative;
     cursor: pointer;
     background: var(--light-light-gray-EBECEE);
-    color: var(--gray-959DA6); 
+    color: var(--gray-959DA6);
     width: 50rem;
     height: 50px;
-    border-radius: 0.5rem;  
+    border-radius: 0.5rem;
     font-family: var(--font-raleway);
     font-size: 1rem;
     font-weight: var(--fw-400);
-    line-height: 1.5rem; 
+    line-height: 1.5rem;
 
     &:hover .card_components_admin__buttonFilter__icons {
         filter: brightness(0) invert(1);
-      }
-    
-      &.activeButtonVacancy .card_components_admin__buttonFilter__icons {
-        filter: brightness(0) invert(1); 
-      }
-    
+    }
+
+    &.activeButtonVacancy .card_components_admin__buttonFilter__icons {
+        filter: brightness(0) invert(1);
+    }
+
 }
 
 
 .card_components_admin__buttonFilter__group:hover {
-    background: var(--light-gray-C0C5CB); 
+    background: var(--light-gray-C0C5CB);
     color: var(--white-F6F6F6);
-    transition: background-color 0.4s ease, color 0.4s ease; 
+    transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 
 
 .card_components_admin__buttonFilter__group.activeButtonVacancy {
-    color: var(--white-F6F6F6); 
-    position: relative; 
+    color: var(--white-F6F6F6);
+    position: relative;
     background: var(--super-dark-blue-345374);
     animation: fillShift 0.5s ease forwards;
 }
 
 .card_components_admin__buttonFilter__icons {
     padding-right: 10px;
-    transition: filter 0.3s ease; 
-  
-  }
+    transition: filter 0.3s ease;
 
-  
+}
+
+
 
 
 @keyframes fillShift {
     from {
-        left: -20%; 
+        left: -20%;
     }
+
     to {
-        left: 0%; 
+        left: 0%;
     }
-} 
-  
+}
+
 
 .cart_project_container {
     display: flex;
@@ -541,14 +542,14 @@
 
     &__content {
         flex: 1;
-        white-space: nowrap; 
-        overflow: hidden; 
-        text-overflow: ellipsis;  
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
         max-width: 100%;
         width: 100%;
     }
-    
-       
+
+
     &__title {
         font-family: var(--font-raleway);
         font-size: 14px;
@@ -557,7 +558,7 @@
         line-height: 20px;
         color: var(--black-4E4E4E);
         padding-left: 2rem;
-     }
+    }
 
     &__department {
         font-family: var(--font-raleway);
@@ -569,12 +570,12 @@
         padding-left: 2rem;
         max-width: 30%;
         width: 50%;
-        white-space: nowrap; 
-        overflow: hidden; 
+        white-space: nowrap;
+        overflow: hidden;
         text-overflow: ellipsis;
-       }
+    }
 
-       &__id_block {
+    &__id_block {
         position: relative;
         display: flex;
         background-color: var(--white-F6F6F6);
@@ -584,7 +585,7 @@
         border-radius: 2rem;
         align-items: center;
         white-space: nowrap;
-      }
+    }
 
     &__id_text {
         font-family: var(--font-raleway);
@@ -669,11 +670,12 @@
         background-image: url("../icon/Vector.svg");
         background-repeat: no-repeat;
     }
-    
+
 }
+
 .copiedVacancy {
-    background-color: var(--light-gray-C0C5CB); 
-  }
+    background-color: var(--light-gray-C0C5CB);
+}
 
 
 
@@ -805,18 +807,19 @@
     }
 }
 
-.buttom_edit { 
-     .wrapper {
+.buttom_edit {
+    .wrapper {
         position: relative;
         cursor: pointer;
     }
 }
+
 .cart_vacancy_container_buttonClick {
     display: flex;
     margin-left: 2rem;
 
     .edit_block_vacancy {
-        display: flex;   
+        display: flex;
         align-items: center;
         justify-content: center;
         width: 42px;
@@ -826,15 +829,15 @@
         cursor: pointer;
         margin-left: auto;
         margin-right: 2rem;
-        
-    
+
+
         &:hover {
             background-color: var(--dark-blue-389FFF);
         }
     }
-    
+
     // стили удаления вакансии
-     
+
     .del_block_vacancy {
         display: flex;
         align-items: center;
@@ -849,7 +852,7 @@
     }
 
     .look_block_vacancy {
-        display: flex;   
+        display: flex;
         align-items: center;
         justify-content: center;
         width: 42px;
@@ -860,30 +863,30 @@
         margin-left: auto;
         margin-right: 1rem;
         transition: background-color 0.4s;
-        
+
         &:hover {
             background: var(--dark-blue-389FFF);
         }
-        
+
     }
 
-    .buttom_look{ 
+    .buttom_look {
         .wrapper {
-           position: relative;
-           cursor: pointer;
-       }
-   }
-
-   .disabled {
-    background: var(--light-gray-C0C5CB); 
-
-    &:hover {
-         background: var(--light-gray-C0C5CB); 
+            position: relative;
+            cursor: pointer;
+        }
     }
+
+    .disabled {
+        background: var(--light-gray-C0C5CB);
+
+        &:hover {
+            background: var(--light-gray-C0C5CB);
+        }
     }
 
     .copyIcon_block_vacancy {
-        display: flex;   
+        display: flex;
         align-items: center;
         justify-content: center;
         width: 42px;
@@ -900,12 +903,12 @@
         }
     }
 
-    .buttom_copyIcon{ 
+    .buttom_copyIcon {
         .wrapper {
-           position: relative;
-           cursor: pointer;
-       }
-   }
+            position: relative;
+            cursor: pointer;
+        }
+    }
 }
 
 // ______________________________________
@@ -1057,15 +1060,19 @@
 
 // стили адаптив
 
-@media screen and (min-width: 1024px) and (max-width: 1600px) {    
-.card_components_admin {
-    padding-left: 0;
+@media screen and (min-width: 1024px) and (max-width: 1600px) {
+    .card_components_admin {
+        padding-left: 0;
 
-    &__modal_container {
-           left: 21%;
-           width: 80%;
-         }
-   }
+        &__modal_container {
+            left: 21%;
+            width: 80%;
+        }
+
+        &__null_project {
+            padding-top: 20%;
+        }
+    }
 
 }
 
@@ -1074,11 +1081,11 @@
         padding-left: 3.5rem;
 
         &__modal_container {
-               left: 9%;
-               width: 98%;
-             }
-    }    
-       
+            left: 9%;
+            width: 98%;
+        }
+    }
+
 }
 
 @media (max-width: 1098px) {
@@ -1100,9 +1107,9 @@
         padding-left: 3.5rem;
 
         &__modal_container {
-               left: 12%;
-               max-width: 90%;
-             }
+            left: 12%;
+            max-width: 90%;
+        }
     }
 
     .card_components_admin__loading_item {
@@ -1119,9 +1126,9 @@
         padding-left: 3.5rem;
 
         &__modal_container {
-               left: 10%;
-               max-width: 90%;
-             }
+            left: 10%;
+            max-width: 90%;
+        }
     }
 
     .card_components_admin__loading_item {
