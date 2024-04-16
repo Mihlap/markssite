@@ -2,7 +2,7 @@
 
 .card_components_admin {
     height: 100vh;
-    padding-left: 20%;
+    padding-left: 17%;
     padding-top: 7.5rem;
  
     &__block {
@@ -125,8 +125,8 @@
         position: fixed;
         z-index: 9997;
         top: 0;
-        left: 20%;
-        width: 100%;
+        left: 37%;
+        width: 48%;
         height: 100%;
         background-color: rgba(0, 0, 0, 0.6);
         /* Затемнение фона */
@@ -1062,7 +1062,8 @@
     padding-left: 0;
 
     &__modal_container {
-           left: 12%;
+           left: 21%;
+           width: 80%;
          }
    }
 
@@ -1071,7 +1072,13 @@
 @media (max-width: 1023px) {
     .card_components_admin {
         padding-left: 3.5rem;
-    }
+
+        &__modal_container {
+               left: 9%;
+               width: 98%;
+             }
+    }    
+       
 }
 
 @media (max-width: 1098px) {
@@ -1089,6 +1096,15 @@
         width: 44%;
     }
 
+    .card_components_admin {
+        padding-left: 3.5rem;
+
+        &__modal_container {
+               left: 12%;
+               max-width: 90%;
+             }
+    }
+
     .card_components_admin__loading_item {
         width: 44%;
     }
@@ -1097,6 +1113,15 @@
 @media (max-width: 619px) {
     .cart_project_container {
         width: 42%;
+    }
+
+    .card_components_admin {
+        padding-left: 3.5rem;
+
+        &__modal_container {
+               left: 10%;
+               max-width: 90%;
+             }
     }
 
     .card_components_admin__loading_item {
