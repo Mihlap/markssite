@@ -13,6 +13,7 @@ import {
 import VacancyFormContact from "../../UI/VacancyFormContact/VacancyFormContact";
 
 import iconFilter from "./icons/filter.svg";
+import elipse232 from "./icons/ellipse232.svg"
 import FilterModalVacancies from "./FilterModalVacancies";
 
 const Vacancies = ({
