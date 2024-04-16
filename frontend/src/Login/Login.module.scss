@@ -102,9 +102,9 @@
     font-size: 1.3rem;
     color: var(--black-1D2E43);
     padding: 7px 0;
-    background: transparent;
+    background-color: rgba(0, 0, 0, 0);
     transition: border-color 0.2s;
-
+ 
     &::placeholder {
         color: transparent;
     }
@@ -143,6 +143,7 @@
     border-width: 3px;
     border-image: linear-gradient(to right, var(--blue-75BBFD), var(--blue-75BBFD)) 1 / 0 0 2px 0 stretch;
     border-image-slice: 2;
+    background-color: rgba(0, 0, 0, 0);
 }
 
 /* reset input */
@@ -210,3 +211,4 @@
     color: var(--crimson-E00747);
     border-bottom: 2px solid var(--crimson-E00747);
 }
+
