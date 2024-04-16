@@ -1,6 +1,6 @@
 @import '../../App.css';
 .form_container {
-    width: 48rem;
+    width: 44rem;
     padding: 1.62rem 1rem 1.75rem 2rem;
 
     &__block_form {
@@ -411,4 +411,14 @@
     &:hover {
         transform: scale(1.2);
     }
+}
+
+
+
+@media screen and (max-width: 1024px) {
+
+    .form_container {
+        width: 33rem;
+
+}
 }
