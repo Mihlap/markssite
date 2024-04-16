@@ -12,6 +12,7 @@ import SwiperCore, { Navigation } from "swiper";
 import SliderHeader from "../UI/SliderHeader/SliderHeader";
 import Mapbox3D from "../UI/Map3D/Mapbox3D";
 import LoadingCircle from "../Loading/LoadingCircle";
+import LoadingNew from "../Loading/LoadingNew";
 import Error from "../Loading/Error/Error";
 import SliderMobile from "../UI/SliderHeader/SliderMobile";
 import BlockHeaderMain from "../UI/BlockHeader/BlockHeaderMain";
@@ -180,6 +181,7 @@ export default function Header({
   }
   if (loading) {
     return <LoadingCircle />;
+    // return <LoadingNew />;
   }
 
   const NewProject = projects.map((el) =>
