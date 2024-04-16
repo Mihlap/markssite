@@ -20,6 +20,7 @@ import Look from "../icon/eye.svg";
 import noLook from "../icon/eye2.svg";
 import copyIcon from "../icon/copyIcon.svg";
 import pencilIcon from "../add-navbar/icon/pencil.svg";
+import LoadingCircle from "../../Loading/LoadingCircle.jsx";
 
 export default function AddHRPortal({ user }) {
   // const Host = process.env.REACT_APP_SERVER_HOST;
@@ -296,8 +297,7 @@ export default function AddHRPortal({ user }) {
               <span>это позволит серверу сделать запрос ещё раз.</span>
             </div>
           ) : loading ? (
-            // <Loading />
-            <LoadingModal />
+            <LoadingCircle />
           ) : (
             <>
               {filteredVacancies && filteredVacancies.length === 0 ? (
