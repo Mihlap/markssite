@@ -2,7 +2,7 @@
 
 .home_admin_section {
     // height: 100vh;
-   padding: 7.5rem 2.5rem 0rem 20%;
+   padding: 7.5rem 2.5rem 0rem 22%;
 
     &__title {
         font-family: var(--font-unbounded);
@@ -22,7 +22,8 @@
     }
 
     &__section {
-        padding-top: 2rem;     
+        padding-top: 2rem;
+       
     }
 
     &__block_search {
@@ -368,13 +369,13 @@
 
 @media screen and (min-width: 1024px) and (max-width: 1600px) {
     .home_admin_section {
-         padding: 7.5rem 2.5rem 0rem 2.5rem;  
+         padding: 7.5rem 2.5rem 0rem 5rem;  
     }
 }
 
 @media screen and (max-width: 1023px) {
     .home_admin_section {
-        padding-left: 6rem;
+        padding-left: 7rem;
 
         &__button_container_articles {
             padding-right: 20%;
