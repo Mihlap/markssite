@@ -36,13 +36,7 @@ export default function AddNavbar({ user, handleReturn }) {
   const isHr778User = user?.name === "hr778";
   const isManagerUser = user?.name === "manager";
 
-  //   useEffect(() => {
-  //     const handleResize = () => setIsMobile(window.innerWidth < 1024);
-  //     window.addEventListener('resize', handleResize);
-  //     return () => window.removeEventListener('resize', handleResize);
-  // }, []);
-
-  useEffect(() => {
+ useEffect(() => {
     const storedSelectedItem = localStorage.getItem("selectedItem");
     if (storedSelectedItem) {
       setSelectedItem(storedSelectedItem);
@@ -88,8 +82,8 @@ export default function AddNavbar({ user, handleReturn }) {
   const logouthandler = async () => {
     try {
       dispatch(logoutUser());
-      dispatch(resetCurrentPage()); // Сбрасываем currentPage
-      navigate("/"); // Перенаправьте пользователя на страницу входа
+      dispatch(resetCurrentPage());
+      navigate("/");
     } catch (error) {
       console.error("Ошибка при выходе из системы", error);
     }
@@ -107,7 +101,7 @@ export default function AddNavbar({ user, handleReturn }) {
             <ul className={styles.add_navbar_container__list}>
               {isPokemonUser || isObezyankaaUser || isManagerUser ? (
                 <>
-                  <li className={styles.add_navbar_container__item_li}>               
+                  <li className={styles.add_navbar_container__item_li}>
                     <Link
                       ref={(el) => (itemRefs.current["home"] = el)}
                       className={`${styles.add_navbar_container__item} ${
@@ -128,7 +122,7 @@ export default function AddNavbar({ user, handleReturn }) {
                       </p>
                     </Link>
                   </li>
-                  <li className={styles.add_navbar_container__item_li}>                
+                  <li className={styles.add_navbar_container__item_li}>
                     <Link
                       ref={(el) => (itemRefs.current["add-a-project"] = el)}
                       className={`${styles.add_navbar_container__item} ${
@@ -154,7 +148,7 @@ export default function AddNavbar({ user, handleReturn }) {
                     </Link>
                   </li>
                   <li className={styles.add_navbar_container__item_li}>
-                  <Link
+                    <Link
                       ref={(el) => (itemRefs.current["add-a-articles"] = el)}
                       className={`${styles.add_navbar_container__item} ${
                         selectedItem === "add-a-articles" ? styles.active : ""
@@ -179,7 +173,6 @@ export default function AddNavbar({ user, handleReturn }) {
                     </Link>
                   </li>
                   <li className={styles.add_navbar_container__item_li}>
-           
                     <Link
                       ref={(el) => (itemRefs.current["add-a-company"] = el)}
                       className={`${styles.add_navbar_container__item} ${
@@ -207,7 +200,7 @@ export default function AddNavbar({ user, handleReturn }) {
                 </>
               ) : null}
               {(isPokemonUser || isObezyankaaUser || isHr778User) && (
-                <li className={styles.add_navbar_container__item_li}>          
+                <li className={styles.add_navbar_container__item_li}>
                   <Link
                     ref={(el) => (itemRefs.current["add-hr-portal"] = el)}
                     className={`${styles.add_navbar_container__item} ${
@@ -258,28 +251,28 @@ export default function AddNavbar({ user, handleReturn }) {
               ) : null}
             </ul>
           </div>
-          {/* <div className={styles.exit_container}> */}
-            <li className={styles.add_navbar_container__item_li}>
+          <li className={styles.add_navbar_container__item_li}>
+            {/* <div className={styles.exit_container}>
               <div className={styles.exit_container__user}>
-                {/* Пользователь <strong>{user?.name}👋</strong> */}
+                Пользователь <strong>{user?.name}👋</strong>
               </div>
-              <button
-                className={styles.add_navbar_container__item}
-                type="button"
-                onClick={() => logouthandler()}
-              >
-                <img
-                  className={styles.add_navbar_container__item__icons_exit}
-                  src={exit}
-                  alt={exit}
-                />
-                <p className={styles.add_navbar_container__exit__ipad}>
-                  Выйти из аккакунта
-                </p>
-              </button>
-            </li>
-          </div>
-        {/* </div> */}
+            </div> */}
+            <button
+              className={styles.add_navbar_container__item_exit}
+              type="button"
+              onClick={() => logouthandler()}
+            >
+              <img
+                className={styles.add_navbar_container__item__icons_exit}
+                src={exit}
+                alt={exit}
+              />
+              <p className={styles.add_navbar_container__exit_ipad}>
+                Выйти из аккакунта
+              </p>
+            </button>
+          </li>
+        </div>
       </nav>
       <div className={styles.button_position}>
         <div className={styles.button_container}>
