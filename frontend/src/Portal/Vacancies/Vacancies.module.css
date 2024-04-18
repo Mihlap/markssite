@@ -248,7 +248,7 @@ font-family: var(--font-raleway);
 
 .vacancy_section_block_vacancy {
   display: flex;
-  padding-top: 50px;
+  padding-top: 50px;  
 }
 
 .section_block_vacancy {
@@ -292,6 +292,7 @@ font-family: var(--font-raleway);
   padding-left: 2rem;
 }
 
+
 .vacancy_item_content_wrapper {
   display: flex;
   flex-wrap: wrap;
@@ -303,6 +304,7 @@ font-family: var(--font-raleway);
   /* border-radius: 0.5rem; */
   /* background-color: var(--light-light-gray-EDEDED); */
   background-color: #f0f0f0;
+  align-content: center;
 }
 
 .vacancy_item_content {
@@ -312,7 +314,7 @@ font-family: var(--font-raleway);
   line-height: 1.75rem;
   padding-left: 2.31rem;
   /* border-radius: 0.5rem; */
-}
+ }
 
 
 .vacancy_item_content2 {
@@ -321,7 +323,7 @@ font-family: var(--font-raleway);
   font-weight: var(--fw-400);
   font-size: 1rem;
   line-height: 1.5rem;
-}
+ }
 
 /* .border_left_radius {
   border-top-left-radius: 0.5rem;
@@ -387,6 +389,50 @@ font-family: var(--font-raleway);
   padding-top: 3rem;
   justify-content: center;
   align-items: center;
+}
+
+
+/* новые стили _______________ */
+
+.vacanciesHeaders {
+  display: flex;
+  justify-content: space-between;
+  padding-left: 1.69rem;
+  padding-right: 1.688rem;
+  /* background-color: var(--light-light-gray-EBECEE); */
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+
+
+.headerCell {
+  width: 25%; 
+  font-family: var(--font-raleway);
+  font-size: 0.875rem;
+  font-weight: var(--fw-400);
+  line-height: 1.25rem;
+  text-align: left; 
+  padding: 10px; 
+}
+
+
+.vacancyContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  background-color: #f0f0f0;
+  border-radius: 20px; 
+  border: 1px solid var(--light-light-gray-EBECEE); 
+  padding-left: 1.69rem;
+  padding-right: 1.688rem;
+}
+
+.vacancyCell {
+  width: 25%; 
+  text-align: left; 
+  display: flex;
+  align-items: center; 
+  padding: 10px; 
 }
 
 /* стили для страницы Vacancies пока она работает не удалять!!!!!!! */
@@ -490,6 +536,7 @@ font-family: var(--font-raleway);
   padding-left: 0.5rem;
   cursor: none;
 }
+
 
 /* ----------------------------------------------- */
 

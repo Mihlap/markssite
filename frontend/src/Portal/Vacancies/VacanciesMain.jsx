@@ -161,7 +161,7 @@ const Vacancies = ({
               onClose={handleModalClose}
             />
           </div>
-          {loading ? (
+          {/* {loading ? (
             <div className={styles.loader}>
               <LoadingCircle />
             </div>
@@ -201,7 +201,39 @@ const Vacancies = ({
             <div className={styles.vacancy_item_content_massage}>
             Скоро здесь появяться вакансии
             </div>
-          )}
+          )} */}
+{loading ? (
+  <div className={styles.loader}>
+    <LoadingCircle />
+  </div>
+) : visibleVacancies.length > 0 ? (
+  <>
+    <div className={styles.vacanciesHeaders}>
+      {vacanciesList.map((header) => (
+        <div key={header.title} className={styles.headerCell}>
+          {header.title}
+        </div>
+      ))}
+    </div>
+    {visibleVacancies.filter(shouldDisplayVacancy)
+      .slice(0, showManyVacancies ? vacanciesMain.length : totalDisplayedVacancies)
+      .map((vacancy, index) => (
+        <div key={index} className={styles.vacancyContainer}>
+          <div className={styles.vacancyCell}>{vacancy.title}</div>
+          <div className={styles.vacancyCell}>{vacancy.direction}</div>
+          <div className={styles.vacancyCell}>{vacancy.busyness}</div>
+          <div className={styles.vacancyCell}>{vacancy.locationStaff}</div>
+        </div>
+      ))
+    }
+  </>
+) : (  
+  <div className={styles.vacancy_item_content_massage}>
+    Скоро здесь появятся вакансии
+  </div>
+)}
+
+
             {visibleVacancies.length > 6 && (
           <div className={styles.showVacanciesOfTotalVacanciesContainer}>
             <div className={styles.showVacanciesOfTotalVacancies}>
