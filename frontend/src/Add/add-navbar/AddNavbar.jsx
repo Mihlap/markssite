@@ -36,7 +36,7 @@ export default function AddNavbar({ user, handleReturn }) {
   const isHr778User = user?.name === "hr778";
   const isManagerUser = user?.name === "manager";
 
-  useEffect(() => {
+ useEffect(() => {
     const storedSelectedItem = localStorage.getItem("selectedItem");
     if (storedSelectedItem) {
       setSelectedItem(storedSelectedItem);
