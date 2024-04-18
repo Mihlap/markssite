@@ -9,13 +9,13 @@
     height: 100%;
     background: var(--super-dark-blue-345374);
     z-index: 999;
-
+   
     &__block {
         position: relative;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        height: 100%;
+        height: 100%;   
     }
 
     &__title {
@@ -33,10 +33,10 @@
         padding-top: 157px;
         display: grid;
         grid-column: auto;
-        // gap: 1rem;
     }
 
     &__item {
+        will-change: transform, opacity; 
         display: flex;
         width: 100%;
         height: 80px;
@@ -44,12 +44,10 @@
         font-weight: var(--fw-600);
         font-size: 1.25rem;
         line-height: 1.75rem;
-        // background-color: var(--light-gray-C0C5CB);
         padding: 1.5rem 2.2rem;
         white-space: nowrap;
         color: var(--gray-959DA6);
         transition: all 0.4s ease-in-out;
-        // justify-content: center;
         align-content: center;
 
         &:not(.active) {
@@ -77,11 +75,8 @@
 
     }
 
-    &__item_exit  {        
-        position: fixed;
+    &__item_exit {
         display: flex;
-        left: 10%;
-        bottom: 36px;
         align-items: center;
         justify-content: center;
         font-size: 1rem;
@@ -90,13 +85,36 @@
         white-space: nowrap;
         color: var(--gray-959DA6);
         transition: all 0.3s ease-in-out;
-     
+        will-change: transform, opacity;     
+        padding: 1.5rem 2.2rem;
+    
+        &:not(.active) {
+            opacity: 0.6;
+        }
+
+        &.active {
+           color: var(--white-F6F6F6);
+        }
+
         &:hover {
             color: var(--white-F6F6F6);
             opacity: 1;
-        }
-    }
 
+        }
+
+        a {
+            color: var(--black-1D2E43);
+        }
+
+        &__icons {
+            padding-right: 10px;
+        }
+
+        &__icons_exit {
+            padding-right: 10px;
+        }
+
+    }
 
 
     &__item_svg {
@@ -112,8 +130,8 @@
         padding-left: 1.18rem;
     }
 
-    &__exit__ipad {
-        padding-left: 1.18rem;
+    &__exit_ipad {
+        padding-left: 4px;
     }
 
 }
@@ -162,7 +180,7 @@
     position: fixed;
     display: flex;
     left: 10%;
-    bottom: 36px;
+    bottom: 56px;
     align-items: center;
     justify-content: center;
     font-size: 1rem;
@@ -181,26 +199,6 @@
     }
 }
 
-.btn_exit {
-    display: inline-flex;
-    width: 100%;
-    height: 100%;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    border: none;
-    border-radius: 4px;
-    color: var(--gray-959DA6);
-    // background-color: var(--dark-FFFFFF1A);
-    transition: all 0.3s ease-in-out;
-    // opacity: 0.6;
-
-    &:hover {
-        // background-color: var(--dark-FFFFFF1A);
-        color: var(--white-F6F6F6);
-        // opacity: 1;
-    }
-}
 
 :root {
     /*========== Colors ==========*/
@@ -211,7 +209,8 @@
 .button_position {
     position: fixed;
     top: 40px;
-    right: 45px;
+    right: 16%;
+    // right: 45px;
     z-index: 9996;
 }
 
@@ -330,7 +329,7 @@
     padding: 1rem 2rem;
     border-radius: 3rem;
     transition: .4s;
-
+   
     &::after {
         content: '';
         width: 80%;
@@ -381,13 +380,20 @@
             padding: 1.5rem 1.5rem;
         }
 
+        &__item_exit {
+            padding: 1.5rem 2rem;
+        }
+
         &__title__ipad {
             padding-left: 0.5rem;
+        }
+        &__exit_ipad {
+            padding-left: 4px;
         }
     }
 
     .exit_container {
-        bottom: 30px;
+        bottom: 56px;
     }
 
     .button_position {
@@ -482,17 +488,14 @@
         }
 
         &__item_exit {
-            width: 100%;
-            text-align: center;
-            padding: 0rem 0rem 0rem 1.5rem;
+           padding: 0rem 0rem 0rem 1.5rem;
 
             &:not(.active) {
                 opacity: 0.6;
             }
 
             &.active {
-                // background-color: var(--dark-FFFFFF1A);
-                color: var(--white-F6F6F6)
+               color: var(--white-F6F6F6)
             }
 
             &:hover {
@@ -516,7 +519,7 @@
             padding-left: 1rem;
         }
 
-        &__exit__ipad {
+        &__exit_ipad {
             padding-left: 1.2rem;
         }
     }
@@ -533,27 +536,16 @@
         transform: translateY(0);
     }
 
-
-    // .exit_container {
-    //     left: 0%;
-    //     bottom: 30px;
-    //     padding-left: 1.5rem;             
-    // }
-
-
-    // .btn_exit {
-    //     width: 100%;
-    //     text-align: center;
-    //     opacity: 0.6;
-        
-    //     &:hover {
-    //       opacity: 1;
-    //     }
-    // }
-
     .button_position {
         right: 45px;
     }
 
+    .exit_container {
+        display: none;
+    }
 
 }
+
+
+
+
