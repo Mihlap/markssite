@@ -1062,7 +1062,7 @@
 
 @media screen and (min-width: 1024px) and (max-width: 1600px) {
     .card_components_admin {
-        padding-left: 0;
+        padding-left: 2rem;
 
         &__modal_container {
             left: 21%;
@@ -1078,7 +1078,7 @@
 
 @media (max-width: 1023px) {
     .card_components_admin {
-        padding-left: 3.5rem;
+        padding-left: 4.5rem;
 
         &__modal_container {
             left: 9%;
