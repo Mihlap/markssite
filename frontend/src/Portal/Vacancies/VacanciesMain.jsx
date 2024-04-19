@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./Vacancies.module.css";
-// import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import LoadingCircle from "../../Loading/LoadingCircle";
 import {
   getFetchForm,
@@ -13,7 +13,7 @@ import {
 import VacancyFormContact from "../../UI/VacancyFormContact/VacancyFormContact";
 
 import iconFilter from "./icons/filter.svg";
-import elipse232 from "./icons/ellipse232.svg"
+import buttonLink from "./icons/buttonLink.svg";
 import FilterModalVacancies from "./FilterModalVacancies";
 
 const Vacancies = ({
@@ -46,25 +46,6 @@ const Vacancies = ({
     "Администрирование",
     "Бэк офис",
     "Стажировки",
-  ];
-
-  const vacanciesList = [
-    {
-      title: "Специальность",
-      field: "title",
-      className: `${styles.vacancy_item} ${styles.border_left_radius}`,
-    },
-    {
-      title: "Направление",
-      field1: "direction",
-      className: styles.vacancy_item2,
-    },
-    { title: "Занятость", field1: "busyness", className: styles.vacancy_item2 },
-    {
-      title: "Локация",
-      field1: "locationStaff",
-      className: `${styles.vacancy_item2} ${styles.border_right_radius}`,
-    },
   ];
 
   const vacanciesMain = [...vacancies].reverse();
@@ -154,111 +135,111 @@ const Vacancies = ({
               <div className={styles.icon__svg_button__choose__vacancyFilter}>
                 <img src={iconFilter} alt="IconFilter" />
               </div>
-              <div className={styles.button_choose_vacancyFilter}>Фильтр</div>
+              <div className={styles.button_choose_vacancyFilter}>
+                Фильтр
+                </div>
             </button>
             <FilterModalVacancies
               isOpen={isModalOpen}
               onClose={handleModalClose}
             />
           </div>
-          {/* {loading ? (
+          {loading ? (
             <div className={styles.loader}>
               <LoadingCircle />
             </div>
-           ) : visibleVacancies.length > 0 ? (
-            <div className={styles.vacancy_section_block_vacancy}>
-              <div className={styles.section_block_vacancy}>
-                {vacanciesList.map((item, index) => (
-                  <div
-                    key={index}
-                    className={`${item.className} ${styles.vacancy_item_container}`}
+          ) : visibleVacancies.length > 0 ? (
+            <>
+              <div className={styles.vacanciesHeaders}>
+                <div className={styles.headerCell_specialization}>
+                  Специальность
+                </div>
+                <div
+                  className={`${styles.headerCell} ${styles.headerCell_direction}`}
+                >
+                  Направление
+                </div>
+                <div
+                  className={`${styles.headerCell} ${styles.headerCell_busyness}`}
+                >
+                  Занятость
+                </div>
+                <div
+                  className={`${styles.headerCell} ${styles.headerCell_location}`}
+                >
+                  Локация
+                </div>
+              </div>
+              {visibleVacancies
+                .filter(shouldDisplayVacancy)
+                .slice(
+                  0,
+                  showManyVacancies
+                    ? vacanciesMain.length
+                    : totalDisplayedVacancies
+                )
+                .map((vacancy) => (
+                  <Link
+                    key={vacancy.id}
+                    to={`/vacancy/${vacancy.id}`}
+                    className={styles.vacancyContainer}
                   >
-                    <div className={styles.vacancy_item_title}>
-                      {item.title}
+                    <div
+                      className={`${styles.vacancyCell1} ${styles.vacancyCell_title}`}
+                    >
+                      {vacancy.title}
                     </div>
-                    {visibleVacancies
-                      .filter(shouldDisplayVacancy)
-                      .slice(0, showManyVacancies ? vacanciesMain.length : 6)
-                      .map((vacancy) => (
-                        <div
-                          key={vacancy.id}
-                          className={styles.vacancy_item_content_wrapper}
-                        >
-                          <div className={styles.vacancy_item_content}>
-                            {vacancy[item.field]}
-                          </div>
-                          <div className={styles.vacancy_item_content2}>
-                            {vacancy[item.field1]}
-                          </div>
-                        </div>
-                      ))}
-                  </div>
+                    <div
+                      className={`${styles.vacancyCell} ${styles.vacancyCell_direction}`}
+                    >
+                      {vacancy.direction}
+                    </div>
+                    <div
+                      className={`${styles.vacancyCell} ${styles.vacancyCell_busyness}`}
+                    >
+                      {vacancy.busyness}
+                    </div>
+                    <div
+                      className={`${styles.vacancyCell} ${styles.vacancyCell_locationStaff}`}
+                    >
+                      {vacancy.locationStaff}
+                    </div>
+                    <div className={styles.vacancyCell_buttonLink}>
+                      <img src={buttonLink} alt="buttonLink" />
+                    </div>
+                  </Link>
                 ))}
+            </>
+          ) : (
+            <div className={styles.vacancy_content_massage}>
+              Скоро здесь появятся вакансии
+            </div>
+          )}
+          {visibleVacancies.length > 6 && (
+            <div className={styles.showVacanciesOfTotalVacanciesContainer}>
+              <div className={styles.showVacanciesOfTotalVacancies}>
+                {!showManyVacancies && visibleVacancies.length > 6 && (
+                  <span className={styles.showManyVacanciesCount}>
+                    {totalDisplayedVacancies} вакансий из{" "}
+                    {visibleVacancies.length}
+                  </span>
+                )}
+              </div>
+              <div
+                className={`${styles.showManyButtonWrapper}
+           ${showManyVacancies ? styles.showManyButtonWrapperShifted : ""}`}
+              >
+                <button
+                  className={styles.showManyButton}
+                  onClick={toggleShowAllVacancies}
+                >
+                  {showManyVacancies
+                    ? "Скрыть вакансии"
+                    : "Показать все вакансии"}
+                </button>
               </div>
             </div>
-          ) : (
-            // Выводим сообщение, если вакансий нет
-            <div className={styles.vacancy_item_content_massage}>
-            Скоро здесь появяться вакансии
-            </div>
-          )} */}
-{loading ? (
-  <div className={styles.loader}>
-    <LoadingCircle />
-  </div>
-) : visibleVacancies.length > 0 ? (
-  <>
-    <div className={styles.vacanciesHeaders}>
-      {vacanciesList.map((header) => (
-        <div key={header.title} className={styles.headerCell}>
-          {header.title}
-        </div>
-      ))}
-    </div>
-    {visibleVacancies.filter(shouldDisplayVacancy)
-      .slice(0, showManyVacancies ? vacanciesMain.length : totalDisplayedVacancies)
-      .map((vacancy, index) => (
-        <div key={index} className={styles.vacancyContainer}>
-          <div className={styles.vacancyCell}>{vacancy.title}</div>
-          <div className={styles.vacancyCell}>{vacancy.direction}</div>
-          <div className={styles.vacancyCell}>{vacancy.busyness}</div>
-          <div className={styles.vacancyCell}>{vacancy.locationStaff}</div>
-        </div>
-      ))
-    }
-  </>
-) : (  
-  <div className={styles.vacancy_item_content_massage}>
-    Скоро здесь появятся вакансии
-  </div>
-)}
-
-
-            {visibleVacancies.length > 6 && (
-          <div className={styles.showVacanciesOfTotalVacanciesContainer}>
-            <div className={styles.showVacanciesOfTotalVacancies}>
-              {!showManyVacancies && visibleVacancies.length > 6 && (
-                <span className={styles.showManyVacanciesCount}>
-                  {totalDisplayedVacancies} вакансий из{" "}
-                  {visibleVacancies.length}
-                </span>
-              )}
-            </div>
-            <div
-              className={`${styles.showManyButtonWrapper}
-           ${showManyVacancies ? styles.showManyButtonWrapperShifted : ""}`}
-            >
-              <button
-                className={styles.showManyButton}
-                onClick={toggleShowAllVacancies}
-              >
-                {showManyVacancies
-                  ? "Скрыть вакансии"
-                  : "Показать все вакансии"}
-              </button>
-            </div>
-          </div>
-             )}
+          )}
           <div className={styles.temporaryText}>
             Не нашли подходящую вакансию?
           </div>
