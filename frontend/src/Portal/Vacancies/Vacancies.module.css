@@ -153,10 +153,9 @@ font-family: var(--font-raleway);
 
 .menu__button__choose__vacancyFilter:hover {
   background: var(--light-gray-C0C5CB);
-  color: var(--white-F6F6F6);
+  /* color: var(--white-F6F6F6); */
   transition: background-color 0.4s ease, color 0.4s ease;
 }
-
 
 .icon__svg_button__choose__vacancyFilter {
   width: 1rem;
@@ -181,24 +180,36 @@ font-family: var(--font-raleway);
 
 
 
-.modalFilterOverlay {
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: 35%;
-  height: 100%;
-  margin-top: 0px;
-  border: none !important;
-  outline: none;
-  border-radius: none;
-  background-color: rgba(246, 246, 246, 0.92);
-  box-shadow: -2px 4px 22px 0px rgba(29, 46, 67, 0.46);
-  backdrop-filter: blur(8.5px);
-  overflow-y: auto;
+
+.modal_wrapper_vacancy {
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 45%;
+    height: 100%;
+    margin-top: 0px;
+    border: none !important;
+    outline: none;
+    border-radius: none;
+    background-color: rgba(246, 246, 246, 0.92);
+    box-shadow: -2px 4px 22px 0px rgba(29, 46, 67, 0.46);
+    backdrop-filter: blur(8.5px);
+    overflow-y: auto;
+    animation: fadeInOut 0.4s ease-out forwards;
 }
+
+@keyframes fadeInOut {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 
 .modal_vacancy_close {
   padding-top: 2rem;
@@ -208,138 +219,227 @@ font-family: var(--font-raleway);
 
 .fixed_modal_vacancy {
   position: sticky;
-  top: 0rem;
-  right: 0rem;
+    top: 0rem;
+    right: 0rem;
 }
 
 .filterModalContent {
   display: flex;
-  padding: 11.25rem 1.81rem 0rem 7.5rem;
-
+  flex-direction: column;
+  padding: 4.5rem 6.5rem 0rem 6.5rem;
 }
 
-.modal_project_description {
+.filterName_button_modal_wrapper {
   display: flex;
+  flex-direction: column;
+   padding-bottom: 40px;
+   max-width: 33rem;
+   width: 100%;
+}
+
+.filterName {
   color: var(--black-1D2E43);
   font-family: var(--font-unbounded);
-  font-size: 1.25rem;
-  font-style: normal;
-  font-weight: var(--fw-700);
-  line-height: 1.75rem;
-}
-
-.modal_pointer_location {
-  display: flex;
-  padding-left: 0.5rem;
-  align-items: center;
-}
-
-.modal_project_city_location {
-  display: flex;
-  align-items: center;
-  color: var(--black-1D2E43);
-  font-family: var(--font-unbounded);
-  font-size: 1.25rem;
+  font-size: 20px;
   font-style: normal;
   font-weight: var(--fw-300);
-  line-height: 1.75rem;
-  padding-left: 0.25rem;
+  line-height: 28px;
+  letter-spacing: 0px;
+  text-align: left;
+  padding-bottom: 8px;
+ }
+
+.filterName_title {
+color: var(--black-1D2E43);
+font-family: var(--font-raleway);
+font-size: 18px;
+font-weight: var(--fw-400);
+line-height: 26px;
+letter-spacing: 0px;
+text-align: left;
+padding-top: 31px;
 }
 
-.vacancy_section_block_vacancy {
+.filterName_button_modal {
+ padding-top: 16px;
+}
+
+.filterName_button_modal button {
+  margin-right: 8px;
+  margin-bottom: 8px;
+}
+
+
+.filterModalButton {
+flex-direction: row;
+justify-content: center;
+align-items: center;
+padding: 8px 24px 8px 24px;
+box-sizing: border-box;
+border: 1px solid #1D2E43;
+border-radius: 2.12rem;
+}
+
+.filterModalButton:hover {
+ background-color: var(--light-gray-C0C5CB);
+ border: 1px solid var(--light-gray-C0C5CB);
+  }
+
+.applyButtonWrapper {
+  position: absolute;
+  bottom: 48px;
+}
+
+.applyButton {
+  width: 24rem;
+  padding: 16px 32px;
+  background-color: var(--blue-75BBFD);
+  color: var(--white-F6F6F6);
+  border: none;
+  border-radius: 4.12rem;
+  cursor: pointer;
+}
+
+.applyButton:hover {
+  background-color: var(--dark-blue-389FFF);
+}
+
+
+
+/* стили для блока вакансии_______________ */
+
+.vacanciesHeaders {
   display: flex;
-  padding-top: 50px;  
-}
-
-.section_block_vacancy {
-  display: flex;
-  padding-left: 1.69rem;
-  padding-right: 1.688rem;
-  width: 100%;
-}
-
-.vacancy_item {
-  width: 50%;
+  justify-content: space-between;
+  padding: 50px 0rem 18px 0rem;
   font-family: var(--font-raleway);
   font-size: 0.875rem;
   font-weight: var(--fw-400);
   line-height: 1.25rem;
   color: var(--light-gray-C0C5CB);
+  text-align: left;
 }
 
-.vacancy_item2 {
-  width: 20%;
+.headerCell {
   font-family: var(--font-raleway);
-  font-weight: var(--fw-400);
   font-size: 0.875rem;
+  font-weight: var(--fw-400);
   line-height: 1.25rem;
   color: var(--light-gray-C0C5CB);
+  text-align: left;
 }
 
-.vacancy_container {
-  width: 100%;
-  /* border-radius: 8px; */
+.headerCell_specialization {
+  width: 64%;
+  padding-left: 4.3rem;
 }
 
-.vacancy_item_title {
-  padding-bottom: 18px;
-  padding-left: 2.31rem;
+.headerCell_direction {
+  width: 25%;
+  padding-left: 0rem;
+}
+
+.headerCell_busyness {
+  width: 25%;
+  padding-left: 0rem;
+}
+
+.headerCell_location {
+  width: 25%;
 }
 
 
-.vacancy_item_title2 {
-  padding-bottom: 18px;
-  padding-left: 2rem;
-}
-
-
-.vacancy_item_content_wrapper {
+.vacancyContainer {
   display: flex;
-  flex-wrap: wrap;
+  justify-content: space-between;
   margin-bottom: 16px;
-  height: 112px;
-  /* background-color: white; */
+  background-color: #F8F8F8;
+  border-radius: 1rem;
+  /* border: 1px solid var(--light-light-gray-EBECEE); */
+  margin-right: 1.688rem;
+  margin-left: 1.69rem;
+  position: relative; 
+}
+
+.vacancyCell {
   color: var(--black-1D2E43);
-  align-items: center;
-  /* border-radius: 0.5rem; */
-  /* background-color: var(--light-light-gray-EDEDED); */
-  background-color: #f0f0f0;
+  font-family: var(--font-raleway);
+  font-size: 16px;
+  font-weight: var(--fw-400);
+  line-height: 24px;
+  letter-spacing: 0px;
+  text-align: left;
   align-content: center;
 }
 
-.vacancy_item_content {
-  font-family: var(--font-unbounded);
-  font-weight: var(--fw-300);
-  font-size: 1.75rem;
-  line-height: 1.75rem;
-  padding-left: 2.31rem;
-  /* border-radius: 0.5rem; */
- }
-
-
-.vacancy_item_content2 {
+.vacancyCell_title {
+  width: 66%;
+  text-align: left;
   display: flex;
-  font-family: var(--font-raleway);
-  font-weight: var(--fw-400);
-  font-size: 1rem;
-  line-height: 1.5rem;
- }
-
-/* .border_left_radius {
-  border-top-left-radius: 0.5rem;
-  border-bottom-left-radius: 0.5rem;
+  align-items: center;
+  padding: 42px 1rem 42px 2.5rem;
+  color: var(--black-1D2E43);
+  font-family: var(--font-unbounded);
+  font-size: 20px;
+  font-weight: var(--fw-300);
+  line-height: 28px;
+  letter-spacing: 0px;
+  text-align: left;
+  align-content: center;
+  margin-right: 2rem;
 }
 
-.border_right_radius {
-  border-top-right-radius: 0.5rem;
-  border-bottom-right-radius: 0.5rem;
-} */
+.vacancyCell_direction {
+  width: 25%;
+  margin-right: 2rem;
+}
+
+.vacancyCell_busyness {
+  width: 25%;
+  margin-right: 2rem;
+}
+
+.vacancyCell_locationStaff {
+  width: 25%;
+  margin-right: 0rem;
+}
+
+.vacancyCell_buttonLink {
+  position: absolute;
+  right: 3.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: var(--blue-75BBFD);
+  width: 41px; 
+  height: 41px; 
+  border-radius: 50%;
+}
+
+.vacancyCell_buttonLink:hover {
+   background-color: var(--dark-blue-389FFF);
+}
+
+.vacancy_content_massage {
+  display: flex;
+  font-family: var(--font-unbounded);
+  font-weight: var(--fw-300);
+  color: var(--light-gray-C0C5CB);
+  font-size: 1.75rem;
+  line-height: 1.75rem;
+  padding-top: 3rem;
+  justify-content: center;
+  align-items: center;
+}
+
+
+
 
 /* Стили для кнопки "Показать все" */
 
 .showVacanciesOfTotalVacanciesContainer {
-   padding-left: 46.5%;
+  padding-left: 46.5%;
 }
+
 .showVacanciesOfTotalVacancies {
   display: flex;
   /* justify-content: center; */
@@ -358,10 +458,10 @@ font-family: var(--font-raleway);
   padding-top: 8px;
   /* padding-left: 5%; */
   transition: margin-top 0.4s ease;
- }
+}
 
- .showManyButtonWrapperShifted {
-  margin-top: -50px; 
+.showManyButtonWrapperShifted {
+  margin-top: -50px;
 }
 
 .showManyButton {
@@ -380,62 +480,8 @@ font-family: var(--font-raleway);
   color: var(--white-F6F6F6);
 }
 
-.vacancy_item_content_massage {
-  display: flex;
-  font-family: var(--font-unbounded);
-  font-weight: var(--fw-300);
-  font-size: 1.75rem;
-  line-height: 1.75rem;
-  padding-top: 3rem;
-  justify-content: center;
-  align-items: center;
-}
-
-
-/* новые стили _______________ */
-
-.vacanciesHeaders {
-  display: flex;
-  justify-content: space-between;
-  padding-left: 1.69rem;
-  padding-right: 1.688rem;
-  /* background-color: var(--light-light-gray-EBECEE); */
-  border-top-left-radius: 20px;
-  border-top-right-radius: 20px;
-}
-
-
-.headerCell {
-  width: 25%; 
-  font-family: var(--font-raleway);
-  font-size: 0.875rem;
-  font-weight: var(--fw-400);
-  line-height: 1.25rem;
-  text-align: left; 
-  padding: 10px; 
-}
-
-
-.vacancyContainer {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 16px;
-  background-color: #f0f0f0;
-  border-radius: 20px; 
-  border: 1px solid var(--light-light-gray-EBECEE); 
-  padding-left: 1.69rem;
-  padding-right: 1.688rem;
-}
-
-.vacancyCell {
-  width: 25%; 
-  text-align: left; 
-  display: flex;
-  align-items: center; 
-  padding: 10px; 
-}
-
 /* стили для страницы Vacancies пока она работает не удалять!!!!!!! */
+
 .vacancy_section_block {
   display: block;
   justify-content: center;
@@ -536,6 +582,7 @@ font-family: var(--font-raleway);
   padding-left: 0.5rem;
   cursor: none;
 }
+
 
 
 /* ----------------------------------------------- */
