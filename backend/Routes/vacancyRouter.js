@@ -214,6 +214,28 @@ router.get('/getzapros-filter', async (req, res) => {
 });
 
 
+router.get('/getzapros-modalFilter', async (req, res) => {
+  try {
+    const filters = req.query;
+    const whereCondition = {};
+
+    Object.keys(filters).forEach((key) => {
+      if (filters[key] && filters[key] !== 'Все') {
+        whereCondition[key] = filters[key];
+      }
+    });
+
+    const filteredVacancies = await Employee.findAll({
+      where: whereCondition,
+    });
+
+    res.json(filteredVacancies);
+  } catch (error) {
+    console.error('Ошибка при фильтрации вакансий:', error);
+    res.status(500).json({ error: 'Внутренняя ошибка сервера' });
+  }
+});
+
 
 // удаление вакансии
 router.delete('/deletezapros/:id', async (req, res) => {
