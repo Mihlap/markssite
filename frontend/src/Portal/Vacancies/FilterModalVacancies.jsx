@@ -1,51 +1,76 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 import styles from "./Vacancies.module.css";
+import { setActiveFilters } from "../../store/Slice/vacanciesSlice";
+import { useDispatch } from "react-redux";
 
 Modal.setAppElement("#root");
 
 const FilterModalVacancies = ({ isOpen, onClose }) => {
-  const [selectedFilter, setSelectedFilter] = useState(""); // Состояние для выбранного фильтра
+  const dispatch = useDispatch();
 
-  const handleFilterClick = (filter) => {
-    setSelectedFilter(filter);
-   };
+  const initialFiltersState = {
+    "Требуемый опыт работы": [],
+    Локация: [],
+    "Режим работы": [],
+    Занятость: [],
+  };
+  const [localFilters, setLocalFilters] = useState(initialFiltersState);
 
-   const filterButtons = [
+  const handleFilterClick = (category, value) => {
+    setLocalFilters((prev) => {
+      const isValueIncluded = prev[category]?.includes(value);
+      const updatedArray = isValueIncluded
+        ? prev[category].filter((item) => item !== value)
+        : [...(prev[category] || []), value];
+      return { ...prev, [category]: updatedArray };
+    });
+  };
+
+  const handleApplyFilters = () => {
+    dispatch(setActiveFilters(localFilters));
+    onClose();
+  };
+
+  const filterButtons = [
     {
       name: "Требуемый опыт работы",
+      filterKey: "experience", 
       buttons: [
-        { id: "filter1-1", label: "Без опыта" },
-        { id: "filter1-2", label: "1-3 года" },
-        { id: "filter1-3", label: "3-5 лет" },
-        { id: "filter1-4", label: "5-10 лет" }
-      ]
+        { id: "experience-1", label: "Без опыта", value: "Без опыта" },
+        { id: "experience-2", label: "1-3 года", value: "1-3" },
+        { id: "experience-3", label: "3-5 лет", value: "3-5" },
+        { id: "experience-4", label: "5-10 лет", value: "5-10" },
+      ],
     },
     {
       name: "Локация",
+      filterKey: "locationStaff",
       buttons: [
-        { id: "filter2-1", label: "Москва" },
-        { id: "filter2-2", label: "Оренбург" },
-        { id: "filter2-3", label: "Челябинск" },
-        { id: "filter2-4", label: "ташкент" }
-      ]
+        { id: "locationStaff-1", label: "Москва", value: "Москва" },
+        { id: "locationStaff-2", label: "Оренбург", value: "Оренбург" },
+        { id: "locationStaff-3", label: "Челябинск", value: "Челябинск" },
+        { id: "locationStaff-4", label: "Ташкент", value: "ташкент" },
+      ],
     },
     {
       name: "Режим работы",
+      filterKey: "modeOperating",
       buttons: [
-        { id: "filter3-1", label: "Офис" },
-        { id: "filter3-2", label: "Гибрид" },
-        { id: "filter3-3", label: "Удаленно" }       
-      ]
+        { id: "modeOperating-1", label: "Офис", value: "Офис" },
+        { id: "modeOperating-2", label: "Гибрид", value: "Гибрид" },
+        { id: "modeOperating-3", label: "Удаленно", value: "Удаленно" },
+      ],
     },
     {
       name: "Занятость",
+      filterKey: "busyness",
       buttons: [
-        { id: "filter4-1", label: "Полная" },
-        { id: "filter4-2", label: "Частичная" },
-        { id: "filter4-3", label: "Проектная" }       
-      ]
-    }
+        { id: "busyness-1", label: "Полная", value: "Полная" },
+        { id: "busyness-2", label: "Частичная", value: "Частичная" },
+        { id: "busyness-3", label: "Проектная", value: "Проектная" },
+      ],
+    },
   ];
 
   return (
@@ -103,17 +128,21 @@ const FilterModalVacancies = ({ isOpen, onClose }) => {
           <h2>Фильтр</h2>
         </div>
         <div className={styles.filterName_button_modal_wrapper}>
-          {filterButtons.map((filter) => (
-            <div key={filter.name}>
-              <p className={styles.filterName_title}>{filter.name}</p>
+          {filterButtons.map((filterGroup) => (
+            <div key={filterGroup.name}>
+              <p className={styles.filterName_title}>{filterGroup.name}</p>
               <div className={styles.filterName_button_modal}>
-                {filter.buttons.map((button) => (
+                {filterGroup.buttons.map((button) => (
                   <button
                     key={button.id}
                     className={`${styles.filterModalButton} ${
-                      selectedFilter === button.id ? styles.activeFilter : ""
+                      localFilters[filterGroup.name]?.includes(button.label)
+                        ? styles.activeFilter
+                        : ""
                     }`}
-                    onClick={() => handleFilterClick(button.id)}
+                    onClick={() =>
+                      handleFilterClick(filterGroup.name, button.label)
+                    }
                   >
                     {button.label}
                   </button>
@@ -123,8 +152,10 @@ const FilterModalVacancies = ({ isOpen, onClose }) => {
           ))}
         </div>
         <div className={styles.applyButtonWrapper}>
-    <button className={styles.applyButton}>Применить</button>
-  </div>
+          <button className={styles.applyButton} onClick={handleApplyFilters}>
+            Применить
+          </button>
+        </div>
       </div>
     </Modal>
   );
