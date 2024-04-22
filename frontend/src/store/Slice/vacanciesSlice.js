@@ -24,6 +24,8 @@ const vacanciesSlice = createSlice({
   name: 'vacancies',
   initialState: {
     vacancies: [],
+    filteredVacancies: [],
+    activeFilters: {},
     loading: false,
     error: null,
     hidden: [],
@@ -81,6 +83,12 @@ const vacanciesSlice = createSlice({
         state.vacancies[index].hidden = hidden;
       }
     },  
+    setActiveFilters(state, action) {
+      state.activeFilters = action.payload;
+    },
+    setFilteredVacancies(state, action) {
+      state.filteredVacancies = action.payload;
+    },
      clearFormData(state) {
       state.formData = {
         title: "",
@@ -126,6 +134,8 @@ export const {
   setVacancyCountsByDirection,
   clearFormData, 
   updateVacancyLookStatusSuccess,
+  setActiveFilters,
+  setFilteredVacancies,
 } = vacanciesSlice.actions;
 
 
@@ -263,6 +273,30 @@ export const getFetchFormFilter = (direction) => async (dispatch, getState) => {
     dispatch(fetchVacancyFailure(error.message));
   }
 };
+
+export const fetchFilteredVacancies = createAsyncThunk(
+  'vacancies/fetchFilteredVacancies',
+  async (filters, { dispatch, rejectWithValue }) => {
+    dispatch(fetchVacancyStart());
+    try {
+      const queryParams = new URLSearchParams();
+
+      Object.keys(filters).forEach(key => {
+        filters[key].forEach(value => {
+          queryParams.append(key, value);
+        });
+      });
+
+      const response = await axios.get(`${serverHost}/api-vacancy/getzapros-modalFilter?${queryParams}`);
+      return response.data;
+    } catch (error) {
+      console.error("Ошибка при получении фильтрованных вакансий:", error);
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
+
 
 
 export const getVacanciesByDirection = () => async (dispatch) => {
