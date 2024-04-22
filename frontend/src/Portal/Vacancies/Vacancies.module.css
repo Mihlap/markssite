@@ -285,9 +285,14 @@ border-radius: 2.12rem;
  border: 1px solid var(--light-gray-C0C5CB);
   }
 
+  .activeFilter {
+    background-color: var(--black-1D2E43);
+    color: var(--white-F6F6F6);
+  }
+
 .applyButtonWrapper {
-  position: absolute;
-  bottom: 48px;
+  display: flex;
+  padding-top: 148px;
 }
 
 .applyButton {
@@ -303,6 +308,33 @@ border-radius: 2.12rem;
 .applyButton:hover {
   background-color: var(--dark-blue-389FFF);
 }
+
+/* .activeFiltersContainer {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+
+.activeFilterTag {
+  margin: 5px;
+  padding: 5px 10px;
+  background-color: #ececec; 
+  border-radius: 15px; 
+  display: flex;
+  align-items: center;
+  font-size: 0.8rem; 
+  cursor: default;
+}
+
+
+.activeFilterTag button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  margin-left: 10px;
+} */
 
 
 

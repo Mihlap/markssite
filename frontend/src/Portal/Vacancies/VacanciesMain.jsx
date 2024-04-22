@@ -5,10 +5,13 @@ import styles from "./Vacancies.module.css";
 import { Link } from "react-router-dom";
 import LoadingCircle from "../../Loading/LoadingCircle";
 import {
+  fetchFilteredVacancies,
   getFetchForm,
   getFetchFormFilter,
   getVacanciesByDirection,
   setSelectedFilter,
+  setActiveFilters,
+  setFilteredVacancies,
 } from "../../store/Slice/vacanciesSlice";
 import VacancyFormContact from "../../UI/VacancyFormContact/VacancyFormContact";
 
@@ -23,7 +26,13 @@ const Vacancies = ({
   hideVacancies,
 }) => {
   const dispatch = useDispatch();
-  const { vacancies, loading, vacancyCountsByDirection } = useSelector(
+  const {
+    vacancies,
+    loading,
+    vacancyCountsByDirection,
+    filteredVacancies,
+    activeFilters
+  } = useSelector(
     (state) => state.vacancies
   );
   const selectedFilter = useSelector((state) => state.vacancies.selectedFilter);
@@ -31,6 +40,8 @@ const Vacancies = ({
   const [showManyVacancies, setShowManyVacancies] = useState(false);
   const [totalDisplayedVacancies, setTotalDisplayedVacancies] = useState(6);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [filters, setFilters] = useState({});
+
 
   const buttonVacancyChoose = [
     "Все",
@@ -48,13 +59,43 @@ const Vacancies = ({
     "Стажировки",
   ];
 
-  const vacanciesMain = [...vacancies].reverse();
+  const filterMappings = {
+    "Требуемый опыт работы": "experience",
+    "Локация": "locationStaff",
+    "Режим работы": "modeOperating",
+    "Занятость": "busyness",
+  };
+  
+
+  const vacanciesMain = [...filteredVacancies].reverse();
 
   useEffect(() => {
     window.scrollTo(0, 0);
     dispatch(getFetchForm());
+    dispatch(fetchFilteredVacancies(filters));
     dispatch(getVacanciesByDirection());
-  }, [dispatch]);
+  }, [dispatch, filters]);
+
+  useEffect(() => {
+    const filteredVacancies = applyFilters(vacancies, activeFilters);
+     dispatch(setFilteredVacancies(filteredVacancies));
+  }, [activeFilters, dispatch, vacancies]);
+  
+  
+
+  function applyFilters(vacancies, filters) {
+    return vacancies.filter(vacancy => {
+      return Object.keys(filters).every(filterKey => {
+        const mappedKey = filterMappings[filterKey] || filterKey; 
+        const filterValues = filters[filterKey];
+
+        if (filterValues.length === 0) return true;        
+        const vacancyValue = vacancy[mappedKey]; 
+        
+        return filterValues.includes(vacancyValue);
+      });
+    });
+  }    
 
   const handleButtonClick = (direction) => {
     dispatch(setSelectedFilter(direction));
@@ -74,6 +115,7 @@ const Vacancies = ({
     setIsModalOpen(false);
   };
 
+
   const shouldDisplayVacancy = (vacancy) => {
     return !vacancy.hidden;
   };
@@ -81,6 +123,23 @@ const Vacancies = ({
   const visibleVacancies = vacanciesMain.filter((vacancy) =>
     shouldDisplayVacancy(vacancy)
   );
+
+  const clearAllFilters = () => {
+    setActiveFilters([]);
+    setFilters({});
+    dispatch(setFilteredVacancies(vacancies)); // сбрасываем фильтрованные вакансии
+  };
+
+  // Обработчик для удаления конкретного фильтра
+  const removeFilter = (category, value) => {
+    const newActiveFilters = activeFilters.filter(
+      (filter) => filter.category !== category || filter.value !== value
+    );
+    setActiveFilters(newActiveFilters);
+    
+    // Здесь обновляем `filters` для модального окна, если требуется
+    // и перефильтровываем вакансии
+  };
 
   return (
     <>
@@ -142,8 +201,25 @@ const Vacancies = ({
             <FilterModalVacancies
               isOpen={isModalOpen}
               onClose={handleModalClose}
+              setFilters={setFilters}
+              filters={filters}
             />
           </div>
+          {/* <div className={styles.activeFiltersContainer}>
+        {activeFilters.map((filter, index) => (
+          <div key={index} className={styles.activeFilterTag}>
+            {filter.label}
+            <button onClick={() => removeFilter(filter.category, filter.value)}>
+              &times;
+            </button>
+          </div>
+        ))}
+        {activeFilters.length > 0 && (
+          <button onClick={clearAllFilters}>
+            Очистить все
+          </button>
+        )}
+      </div> */}
           {loading ? (
             <div className={styles.loader}>
               <LoadingCircle />
