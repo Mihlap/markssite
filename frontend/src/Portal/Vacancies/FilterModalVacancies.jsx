@@ -1,35 +1,48 @@
 import React, { useEffect, useState } from "react";
 import Modal from "react-modal";
 import styles from "./Vacancies.module.css";
-import { setActiveFilters } from "../../store/Slice/vacanciesSlice";
-import { useDispatch } from "react-redux";
+import { fetchFilteredVacancies, setActiveFilters } from "../../store/Slice/vacanciesSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 Modal.setAppElement("#root");
 
-const FilterModalVacancies = ({ isOpen, onClose }) => {
+const FilterModalVacancies = ({ isOpen, onClose, setFilters, selectedFilter }) => {
   const dispatch = useDispatch();
+  const activeFilters = useSelector((state) => state.vacancies.activeFilters);
+  const filterKeyForSpecialty = 'direction'; // Defined here
 
-  const initialFiltersState = {
-    "Требуемый опыт работы": [],
-    Локация: [],
-    "Режим работы": [],
-    Занятость: [],
-  };
-  const [localFilters, setLocalFilters] = useState(initialFiltersState);
+  const [localFilters, setLocalFilters] = useState({ ...activeFilters });
+
+  useEffect(() => {
+      setLocalFilters(activeFilters);
+  }, [activeFilters]);
 
   const handleFilterClick = (category, value) => {
-    setLocalFilters((prev) => {
-      const isValueIncluded = prev[category]?.includes(value);
-      const updatedArray = isValueIncluded
-        ? prev[category].filter((item) => item !== value)
-        : [...(prev[category] || []), value];
-      return { ...prev, [category]: updatedArray };
-    });
+      const updatedFilters = { ...localFilters };
+      const currentValues = updatedFilters[category] || [];
+      const valueIndex = currentValues.indexOf(value);
+
+      if (valueIndex > -1) {
+          updatedFilters[category] = currentValues.filter((item) => item !== value);
+      } else {
+          updatedFilters[category] = [...currentValues, value];
+      }
+
+      if (selectedFilter !== "Все") {
+          updatedFilters[filterKeyForSpecialty] = [selectedFilter];
+      }
+
+      setLocalFilters(updatedFilters);
   };
 
   const handleApplyFilters = () => {
-    dispatch(setActiveFilters(localFilters));
-    onClose();
+      if (selectedFilter !== "Все") {
+          localFilters[filterKeyForSpecialty] = [selectedFilter];
+      }
+      setFilters(localFilters);
+      dispatch(setActiveFilters(localFilters));
+      dispatch(fetchFilteredVacancies(localFilters));
+      onClose();
   };
 
   const filterButtons = [

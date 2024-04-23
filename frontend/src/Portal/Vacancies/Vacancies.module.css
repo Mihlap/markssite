@@ -86,6 +86,7 @@ display: inline-block;
 .menu__button__allVacancy {
   display: flex;
   width: fit-content;
+  max-height: calc(100% - 8px);
   padding: 8px 24px;
   align-items: center;
   justify-content: center;
@@ -127,6 +128,7 @@ font-family: var(--font-raleway);
 }
 
 .menu_button_items_vacancyCount {
+  display: block;
   margin-left: 3px;
   transform: translateY(-20%);
   font-size: 0.6rem;
@@ -182,29 +184,30 @@ font-family: var(--font-raleway);
 
 
 .modal_wrapper_vacancy {
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    width: 45%;
-    height: 100%;
-    margin-top: 0px;
-    border: none !important;
-    outline: none;
-    border-radius: none;
-    background-color: rgba(246, 246, 246, 0.92);
-    box-shadow: -2px 4px 22px 0px rgba(29, 46, 67, 0.46);
-    backdrop-filter: blur(8.5px);
-    overflow-y: auto;
-    animation: fadeInOut 0.4s ease-out forwards;
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 45%;
+  height: 100%;
+  margin-top: 0px;
+  border: none !important;
+  outline: none;
+  border-radius: none;
+  background-color: rgba(246, 246, 246, 0.92);
+  box-shadow: -2px 4px 22px 0px rgba(29, 46, 67, 0.46);
+  backdrop-filter: blur(8.5px);
+  overflow-y: auto;
+  animation: fadeInOut 0.4s ease-out forwards;
 }
 
 @keyframes fadeInOut {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -219,8 +222,8 @@ font-family: var(--font-raleway);
 
 .fixed_modal_vacancy {
   position: sticky;
-    top: 0rem;
-    right: 0rem;
+  top: 0rem;
+  right: 0rem;
 }
 
 .filterModalContent {
@@ -232,9 +235,9 @@ font-family: var(--font-raleway);
 .filterName_button_modal_wrapper {
   display: flex;
   flex-direction: column;
-   padding-bottom: 40px;
-   max-width: 33rem;
-   width: 100%;
+  padding-bottom: 40px;
+  max-width: 33rem;
+  width: 100%;
 }
 
 .filterName {
@@ -247,21 +250,21 @@ font-family: var(--font-raleway);
   letter-spacing: 0px;
   text-align: left;
   padding-bottom: 8px;
- }
+}
 
 .filterName_title {
-color: var(--black-1D2E43);
-font-family: var(--font-raleway);
-font-size: 18px;
-font-weight: var(--fw-400);
-line-height: 26px;
-letter-spacing: 0px;
-text-align: left;
-padding-top: 31px;
+  color: var(--black-1D2E43);
+  font-family: var(--font-raleway);
+  font-size: 18px;
+  font-weight: var(--fw-400);
+  line-height: 26px;
+  letter-spacing: 0px;
+  text-align: left;
+  padding-top: 31px;
 }
 
 .filterName_button_modal {
- padding-top: 16px;
+  padding-top: 16px;
 }
 
 .filterName_button_modal button {
@@ -271,24 +274,24 @@ padding-top: 31px;
 
 
 .filterModalButton {
-flex-direction: row;
-justify-content: center;
-align-items: center;
-padding: 8px 24px 8px 24px;
-box-sizing: border-box;
-border: 1px solid #1D2E43;
-border-radius: 2.12rem;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 8px 24px 8px 24px;
+  box-sizing: border-box;
+  border: 1px solid #1D2E43;
+  border-radius: 2.12rem;
 }
 
 .filterModalButton:hover {
- background-color: var(--light-gray-C0C5CB);
- border: 1px solid var(--light-gray-C0C5CB);
-  }
+  background-color: var(--light-gray-C0C5CB);
+  border: 1px solid var(--light-gray-C0C5CB);
+}
 
-  .activeFilter {
-    background-color: var(--black-1D2E43);
-    color: var(--white-F6F6F6);
-  }
+.activeFilter {
+  background-color: var(--black-1D2E43);
+  color: var(--white-F6F6F6);
+}
 
 .applyButtonWrapper {
   display: flex;
@@ -309,33 +312,83 @@ border-radius: 2.12rem;
   background-color: var(--dark-blue-389FFF);
 }
 
-/* .activeFiltersContainer {
+.dopFilterName {
+  display: flex;
+  align-items: flex-start;
+  padding-left: 1.69rem;
+  padding-top: 24px;
+  color: var(--gray-959DA6);
+  font-family: var(--font-raleway);
+  font-size: 14px;
+  font-weight: var(--fw-400);
+  line-height: 20px;
+}
+
+.activeFiltersContainer {
   display: flex;
   flex-wrap: wrap;
-  margin-top: 20px;
-  margin-bottom: 20px;
+  height: fit-content;
+  gap: 8px;
+  padding-top: 8px;
+  padding-left: 1.69rem;
+  justify-content: start;
 }
-
 
 .activeFilterTag {
-  margin: 5px;
-  padding: 5px 10px;
-  background-color: #ececec; 
-  border-radius: 15px; 
   display: flex;
+  padding: 8px 24px;
+  background-color: var(--black-1D2E43);
+  border-radius: 2rem;
+  border: 1px solid var(--black-1D2E43);
   align-items: center;
-  font-size: 0.8rem; 
+  font-size: 0.8rem;
   cursor: default;
 }
+.dopFilterButtonName {
+color: var(--white-F6F6F6);
+font-family: var(--font-raleway);
+font-size: 14px;
+font-weight: var(--fw-400);
+line-height: 20px;
+}
 
+.xSpan {
+position: static;
+width: 14.14px;
+height: 14.14px;
+padding-left: 11px;
+color: var(--white-F6F6F6);
+}
 
-.activeFilterTag button {
-  background-color: transparent;
-  border: none;
-  cursor: pointer;
-  margin-left: 10px;
-} */
+.clearAllFiltersButton {
+  display: flex;
+  padding: 8px 24px;
+  background-color: var(--white-F6F6F6);
+  border-radius: 2rem;
+  border: 1px solid var(--black-1D2E43);
+  align-items: center;
+  font-size: 0.8rem;
+}
 
+.dopFilterButtonNameClear {
+color: var(--black-1D2E43);
+font-family: var(--font-raleway);
+font-size: 14px;
+font-weight: var(--fw-400);
+line-height: 20px;
+}
+
+.xSpanClear {
+  display: flex;
+  position: static;
+width: 14.14px;
+height: 14.14px;
+  padding-left: 11px;
+  color: var(--black-1D2E43);
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
 
 
 /* стили для блока вакансии_______________ */
@@ -390,7 +443,7 @@ border-radius: 2.12rem;
   /* border: 1px solid var(--light-light-gray-EBECEE); */
   margin-right: 1.688rem;
   margin-left: 1.69rem;
-  position: relative; 
+  position: relative;
 }
 
 .vacancyCell {
@@ -442,13 +495,13 @@ border-radius: 2.12rem;
   top: 50%;
   transform: translateY(-50%);
   background-color: var(--blue-75BBFD);
-  width: 41px; 
-  height: 41px; 
+  width: 41px;
+  height: 41px;
   border-radius: 50%;
 }
 
 .vacancyCell_buttonLink:hover {
-   background-color: var(--dark-blue-389FFF);
+  background-color: var(--dark-blue-389FFF);
 }
 
 .vacancy_content_massage {
