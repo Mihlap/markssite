@@ -19,7 +19,7 @@ import iconFilter from "./icons/filter.svg";
 import buttonLink from "./icons/buttonLink.svg";
 import FilterModalVacancies from "./FilterModalVacancies";
 
-const Vacancies = ({
+const VacanciesMain = ({
   handleMouseEnter,
   handleMouseLeave,
   handleMouseHover,
@@ -31,17 +31,14 @@ const Vacancies = ({
     loading,
     vacancyCountsByDirection,
     filteredVacancies,
-    activeFilters
-  } = useSelector(
-    (state) => state.vacancies
-  );
+    activeFilters,
+  } = useSelector((state) => state.vacancies);
   const selectedFilter = useSelector((state) => state.vacancies.selectedFilter);
 
   const [showManyVacancies, setShowManyVacancies] = useState(false);
   const [totalDisplayedVacancies, setTotalDisplayedVacancies] = useState(6);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [filters, setFilters] = useState({});
-
 
   const buttonVacancyChoose = [
     "Все",
@@ -61,11 +58,10 @@ const Vacancies = ({
 
   const filterMappings = {
     "Требуемый опыт работы": "experience",
-    "Локация": "locationStaff",
+    Локация: "locationStaff",
     "Режим работы": "modeOperating",
-    "Занятость": "busyness",
+    Занятость: "busyness",
   };
-  
 
   const vacanciesMain = [...filteredVacancies].reverse();
 
@@ -78,24 +74,22 @@ const Vacancies = ({
 
   useEffect(() => {
     const filteredVacancies = applyFilters(vacancies, activeFilters);
-     dispatch(setFilteredVacancies(filteredVacancies));
+    dispatch(setFilteredVacancies(filteredVacancies));
   }, [activeFilters, dispatch, vacancies]);
-  
-  
 
   function applyFilters(vacancies, filters) {
-    return vacancies.filter(vacancy => {
-      return Object.keys(filters).every(filterKey => {
-        const mappedKey = filterMappings[filterKey] || filterKey; 
+    return vacancies.filter((vacancy) => {
+      return Object.keys(filters).every((filterKey) => {
+        const mappedKey = filterMappings[filterKey] || filterKey;
         const filterValues = filters[filterKey];
 
-        if (filterValues.length === 0) return true;        
-        const vacancyValue = vacancy[mappedKey]; 
-        
+        if (filterValues.length === 0) return true;
+        const vacancyValue = vacancy[mappedKey];
+
         return filterValues.includes(vacancyValue);
       });
     });
-  }    
+  }
 
   const handleButtonClick = (direction) => {
     dispatch(setSelectedFilter(direction));
@@ -115,7 +109,6 @@ const Vacancies = ({
     setIsModalOpen(false);
   };
 
-
   const shouldDisplayVacancy = (vacancy) => {
     return !vacancy.hidden;
   };
@@ -124,22 +117,33 @@ const Vacancies = ({
     shouldDisplayVacancy(vacancy)
   );
 
-  const clearAllFilters = () => {
-    setActiveFilters([]);
-    setFilters({});
-    dispatch(setFilteredVacancies(vacancies)); // сбрасываем фильтрованные вакансии
+  const removeFilter = (filterCategory, filterValue) => {
+    const newFilters = { ...filters };
+    if (Array.isArray(newFilters[filterCategory])) {
+      newFilters[filterCategory] = newFilters[filterCategory].filter(
+        (value) => value !== filterValue
+      );
+      if (newFilters[filterCategory].length === 0) {
+        delete newFilters[filterCategory];
+      }
+    } else {
+      delete newFilters[filterCategory];
+    }
+    dispatch(fetchFilteredVacancies(newFilters));
+    setFilters(newFilters);
+    dispatch(setActiveFilters(newFilters));
   };
 
-  // Обработчик для удаления конкретного фильтра
-  const removeFilter = (category, value) => {
-    const newActiveFilters = activeFilters.filter(
-      (filter) => filter.category !== category || filter.value !== value
-    );
-    setActiveFilters(newActiveFilters);
-    
-    // Здесь обновляем `filters` для модального окна, если требуется
-    // и перефильтровываем вакансии
+  const clearAllFilters = () => {
+    setFilters({});
+    dispatch(setActiveFilters({}));
+    dispatch(setFilteredVacancies(vacancies));
   };
+
+  // Преобразование объекта активных фильтров в массив для рендеринга
+  const activeFiltersArray = Object.entries(filters).flatMap(([key, values]) =>
+    values.map((value) => ({ category: key, value }))
+  );
 
   return (
     <>
@@ -194,32 +198,42 @@ const Vacancies = ({
               <div className={styles.icon__svg_button__choose__vacancyFilter}>
                 <img src={iconFilter} alt="IconFilter" />
               </div>
-              <div className={styles.button_choose_vacancyFilter}>
-                Фильтр
-                </div>
+              <div className={styles.button_choose_vacancyFilter}>Фильтр</div>
             </button>
             <FilterModalVacancies
               isOpen={isModalOpen}
               onClose={handleModalClose}
               setFilters={setFilters}
-              filters={filters}
+              activeFilters={filters}
+              selectedFilter={selectedFilter}
             />
           </div>
-          {/* <div className={styles.activeFiltersContainer}>
-        {activeFilters.map((filter, index) => (
-          <div key={index} className={styles.activeFilterTag}>
-            {filter.label}
-            <button onClick={() => removeFilter(filter.category, filter.value)}>
-              &times;
-            </button>
-          </div>
-        ))}
-        {activeFilters.length > 0 && (
-          <button onClick={clearAllFilters}>
-            Очистить все
-          </button>
-        )}
-      </div> */}
+          {activeFiltersArray.length > 0 && (
+            <div>
+              <div className={styles.dopFilterName}>Доп. фильтры</div>
+              <div className={styles.activeFiltersContainer}>
+                {activeFiltersArray.map((filter) => (
+                  <div key={filter.category} className={styles.activeFilterTag}>
+                    <p className={styles.dopFilterButtonName}>{filter.value}</p>
+                    <button
+                      onClick={() =>
+                        removeFilter(filter.category, filter.value)
+                      }
+                    >
+                      <span className={styles.xSpan}>✕</span>
+                  </button>
+                  </div>
+                ))}
+                <button
+                  className={styles.clearAllFiltersButton}
+                  onClick={clearAllFilters}
+                >
+                   <p className={styles.dopFilterButtonNameClear}>Очистить все</p>
+                  <span className={styles.xSpanClear}>✕</span>
+                </button>
+              </div>
+            </div>
+          )}        
           {loading ? (
             <div className={styles.loader}>
               <LoadingCircle />
@@ -336,4 +350,4 @@ const Vacancies = ({
   );
 };
 
-export default Vacancies;
+export default VacanciesMain;
