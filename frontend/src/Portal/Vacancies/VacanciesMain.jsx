@@ -16,6 +16,7 @@ import {
 import VacancyFormContact from "../../UI/VacancyFormContact/VacancyFormContact";
 
 import iconFilter from "./icons/filter.svg";
+import iconFilterRed from "./icons/filterRed.svg";
 import buttonLink from "./icons/buttonLink.svg";
 import FilterModalVacancies from "./FilterModalVacancies";
 
@@ -34,11 +35,14 @@ const VacanciesMain = ({
     activeFilters,
   } = useSelector((state) => state.vacancies);
   const selectedFilter = useSelector((state) => state.vacancies.selectedFilter);
-
+  
+  const filterKeyForSpecialty = 'direction';
   const [showManyVacancies, setShowManyVacancies] = useState(false);
   const [totalDisplayedVacancies, setTotalDisplayedVacancies] = useState(6);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [filters, setFilters] = useState({});
+  const [modalFiltersActive, setModalFiltersActive] = useState(false); 
+
 
   const buttonVacancyChoose = [
     "Все",
@@ -75,8 +79,32 @@ const VacanciesMain = ({
   useEffect(() => {
     const filteredVacancies = applyFilters(vacancies, activeFilters);
     dispatch(setFilteredVacancies(filteredVacancies));
-  }, [activeFilters, dispatch, vacancies]);
+     setFilters(activeFilters);
+  }, [dispatch, vacancies]);
 
+  useEffect(() => {    
+    const anyActiveFilters = Object.keys(filters).some(
+      key => filters[key].length > 0
+    );
+    setModalFiltersActive(anyActiveFilters);
+  }, [filters]);
+
+  useEffect(() => {
+    if (selectedFilter === "Все") {
+      setFilters({}); 
+      dispatch(setActiveFilters({}));
+    }
+  }, [selectedFilter, dispatch]);  
+
+
+  useEffect(() => {
+    const hasActiveFilters = Object.entries(filters).some(([key, values]) => {
+      return values.length > 0 && !(key === filterKeyForSpecialty && values.includes(selectedFilter));
+    });
+    setModalFiltersActive(hasActiveFilters);
+  }, [filters, selectedFilter, filterKeyForSpecialty]);
+  
+ 
   function applyFilters(vacancies, filters) {
     return vacancies.filter((vacancy) => {
       return Object.keys(filters).every((filterKey) => {
@@ -132,19 +160,27 @@ const VacanciesMain = ({
     dispatch(fetchFilteredVacancies(newFilters));
     setFilters(newFilters);
     dispatch(setActiveFilters(newFilters));
+   };
+
+   const clearAllFilters = () => {
+    const resetFilters = selectedFilter !== "Все" ? { [filterKeyForSpecialty]: [selectedFilter] } : {};
+    setFilters(resetFilters);
+    dispatch(setActiveFilters(resetFilters));
+    dispatch(fetchFilteredVacancies(resetFilters));
+    setModalFiltersActive(Object.keys(resetFilters).length > 0 && resetFilters[filterKeyForSpecialty].length > 0);
   };
+  
 
-  const clearAllFilters = () => {
-    setFilters({});
-    dispatch(setActiveFilters({}));
-    dispatch(setFilteredVacancies(vacancies));
-  };
-
-  // Преобразование объекта активных фильтров в массив для рендеринга
-  const activeFiltersArray = Object.entries(filters).flatMap(([key, values]) =>
-    values.map((value) => ({ category: key, value }))
-  );
-
+  const activeFiltersArray = Object.entries(filters).flatMap(([key, values]) => {
+    if (Array.isArray(values)) {
+      if (key === filterKeyForSpecialty && values.includes(selectedFilter) && values.length === 1) {
+        return [];
+      }
+      return values.map(value => ({ category: key, value }));
+    }
+    return [];
+  });
+  
   return (
     <>
       <Helmet>
@@ -196,7 +232,7 @@ const VacanciesMain = ({
               onClick={handleModalOpen}
             >
               <div className={styles.icon__svg_button__choose__vacancyFilter}>
-                <img src={iconFilter} alt="IconFilter" />
+              <img src={modalFiltersActive ? iconFilterRed : iconFilter} alt="IconFilter" />
               </div>
               <div className={styles.button_choose_vacancyFilter}>Фильтр</div>
             </button>
@@ -205,7 +241,7 @@ const VacanciesMain = ({
               onClose={handleModalClose}
               setFilters={setFilters}
               activeFilters={filters}
-              selectedFilter={selectedFilter}
+              selectedFilter={selectedFilter}             
             />
           </div>
           {activeFiltersArray.length > 0 && (
