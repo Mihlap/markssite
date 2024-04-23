@@ -219,16 +219,23 @@ router.get('/getzapros-modalFilter', async (req, res) => {
     const filters = req.query;
     const whereCondition = {};
 
+    const filterMappings = {
+      "Требуемый опыт работы": "experience",
+      'Локация': 'locationStaff',
+      "Режим работы": "modeOperating",
+      "Занятость": "busyness",      
+    };
+    
     Object.keys(filters).forEach((key) => {
       if (filters[key] && filters[key] !== 'Все') {
-        whereCondition[key] = filters[key];
+        const columnName = filterMappings[key] || key;
+        whereCondition[columnName] = filters[key];
       }
     });
-
+    
     const filteredVacancies = await Employee.findAll({
       where: whereCondition,
     });
-
     res.json(filteredVacancies);
   } catch (error) {
     console.error('Ошибка при фильтрации вакансий:', error);
