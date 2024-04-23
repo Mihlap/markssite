@@ -33,6 +33,7 @@ export const selectBlocks = [
   ] },
   { name: 'workMode', label: 'Режим работы', options: [
     { value: "Офис", label: "Офис" },
+    { value: "Гибрид", label: "Гибрид" },
     { value: "Удаленно", label: "Удаленно" },
   ] },
   { name: 'skills', label: 'Ключевые навыки', options: [
