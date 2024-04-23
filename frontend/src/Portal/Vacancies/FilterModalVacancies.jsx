@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 
 Modal.setAppElement("#root");
 
-const FilterModalVacancies = ({ isOpen, onClose }) => {
+const FilterModalVacancies = ({ isOpen, onClose, setFilters }) => {
   const dispatch = useDispatch();
 
   const initialFiltersState = {
@@ -28,6 +28,7 @@ const FilterModalVacancies = ({ isOpen, onClose }) => {
   };
 
   const handleApplyFilters = () => {
+    setFilters(localFilters);
     dispatch(setActiveFilters(localFilters));
     onClose();
   };
