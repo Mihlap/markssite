@@ -491,20 +491,20 @@ const ProjectCard = ({
                 </div>
                 <div className={styles.local_container}>
                   <div className={styles.local_ritgh}>
-                    <div>
+                    <div className={styles.local_container_wrapper_block}>
                       <div className={styles.local_title}>Расположение</div>
                       <div className={styles.local_text}>
                         {project.location}
                       </div>
                     </div>
-                    <div>
+                    <div className={styles.local_container_wrapper_block1}>
                       <div className={styles.local_title}>Статус</div>
                       <div className={styles.local_text}>
                         {" "}
                         {project.statusObject}
                       </div>
                     </div>
-                    <div>
+                    <div className={styles.local_container_wrapper_block1}>
                       <div className={styles.local_title}>Публикация</div>
                       <Link to={project.linkToPublication} target="_blank">
                         <div
@@ -523,10 +523,10 @@ const ProjectCard = ({
                     </div>
                   </div>
                   <div className={styles.local_left}>
-                    <div>
+                    <div className={styles.local_container_wrapper_block}>
                       <div className={styles.local_title}>Степень участия</div>
                       <div className={styles.local_text}>
-                      {" "}
+                        {" "}
                         {/* {project.degreeParticipation} */}
                         {project.degreeParticipation
                           .split(",")
@@ -538,14 +538,14 @@ const ProjectCard = ({
                           ))}
                       </div>
                     </div>
-                    <div>
+                    <div className={styles.local_container_wrapper_block1}>
                       <div className={styles.local_title}>Заказчик</div>
                       <div className={styles.local_text}>
                         {" "}
                         {project.customer}
                       </div>
                     </div>
-                    <div>
+                    <div className={styles.local_container_wrapper_block1}>
                       <div className={styles.local_title}>Стадия</div>
                       <div className={styles.local_text}>
                         {" "}
@@ -579,30 +579,28 @@ const ProjectCard = ({
                   className={styles.description_object_container}
                 >
                   <div className={styles.description_object_block}>
-                    <div className={styles.description_object_title}>
-                      {project.headingTextBlock !== null &&
-                      project.headingTextBlock !== undefined ? (
+                    {project.headingTextBlock && (
+                      <div className={styles.description_object_title}>
                         <h2 className={styles.blockHeadingTitle_heading}>
                           {project.headingTextBlock}
                         </h2>
-                      ) : null}
-                    </div>
-
+                      </div>
+                    )}
                     <div className={styles.description_object_text1}>
                       {/* {project.textBlock} */}
                       {containsListTags(project.textBlock) ? (
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: renderListWithDots(project.textBlock),
-                      }}
-                    />
-                  ) : (
-                    <div
-                    dangerouslySetInnerHTML={{
-                      __html: renderListWithDots(project.textBlock),
-                    }}
-                  />
-                  )}
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: renderListWithDots(project.textBlock),
+                          }}
+                        />
+                      ) : (
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: renderListWithDots(project.textBlock),
+                          }}
+                        />
+                      )}
                     </div>
                   </div>
                 </div>

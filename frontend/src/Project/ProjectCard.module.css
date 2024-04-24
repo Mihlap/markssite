@@ -203,17 +203,25 @@
 }
 
 .local_container {
-  display: flex;
-  flex-wrap: nowrap;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 1rem;
+}
+
+.local_container_wrapper_block {
+  display: flex;
+  flex-direction: column;
+  min-height: 150px;
+}
+.local_container_wrapper_block1 {
+  display: flex;
+  flex-direction: column;
+  min-height: 110px;
 }
 
 .local_ritgh,
 .local_left {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  width: 100%;
+  width: 100%; 
 }
 
 .local_title {
@@ -236,11 +244,11 @@
   font-feature-settings: 'pnum' on, 'lnum' on;
   color: var(--gray-959DA6);
   overflow-wrap: break-word;
-  word-wrap: break-word;
   word-break: break-word;
-  padding-bottom: 0.5rem;
+  -webkit-hyphens: auto;
+  -ms-hyphens: auto;
+  /* padding-bottom: 0.5rem; */
 }
-
 .publicationLink:hover {
   color: var(--blue-75BBFD);
 }
@@ -390,7 +398,7 @@
   font-style: normal;
   font-weight: var(--fw-400);
   line-height: 1.25rem;
-  padding: 1.8rem 1.69rem;
+  padding: 2.5rem 1.69rem;
   align-items: center;
   overflow-wrap: break-word;
   word-wrap: break-word;
@@ -411,7 +419,7 @@
   font-style: normal;
   font-weight: var(--fw-400);
   line-height: 1.25rem;
-  padding: 1.8rem 1.69rem;
+  padding: 2.5rem 1.69rem;
   align-items: center;
   overflow-wrap: break-word;
   word-wrap: break-word;
@@ -436,9 +444,12 @@
   font-family: var(--font-raleway);
   font-weight: var(--fw-400);
   font-size: 0.875rem;
-  line-height: 1.25vw;
   color: var(--black-1D2E43);
   font-variant-numeric: lining-nums proportional-nums;
+    display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3; 
+  overflow: hidden;
 }
 
 .next__span_projectCard {
@@ -448,11 +459,15 @@
   font-family: var(--font-raleway);
   font-weight: var(--fw-400);
   font-size: 0.875rem;
-  line-height: 1.25vw;
   color: var(--black-1D2E43);
   font-variant-numeric: lining-nums proportional-nums;
   flex: 2;
   text-align: right;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3; 
+  overflow: hidden;
 }
 
 
@@ -691,8 +706,9 @@
   .header_content_right {
     width: 40%;
     padding-right: 1.69rem;
-    padding-left: 4.65vw;
-  }
+    padding-left: 1rem;
+  } 
+
 
   .blockImg {
     display: flex;
@@ -718,8 +734,7 @@
       padding-right: 1.75rem;
       padding-left: 1.75rem;;
       width: 100%;
-      overflow: hidden;
-    }
+    } 
 
 }
 
@@ -807,38 +822,37 @@
     width: 100%;
     padding-left: 1rem;
     padding-right: 1rem;
-    /* white-space: normal; */
-    order: 1;
   }
 
   .local_container {
     display: flex;
-    flex-wrap: nowrap;
-    gap: 1px;
-    padding-bottom: 2.5rem;
+     padding-bottom: 1rem;
+  }
+
+  .local_container_wrapper_block {
+    height: 110px;
+    min-height: max-content;
+  }
+  .local_container_wrapper_block1 {
+    height: 80px;
+    min-height: max-content;
   }
 
   .local_ritgh,
   .local_left {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
-    width: 100%;
-    /* max-width: 80%; */
-  }
+    gap: 1rem;
+    width: 40%;
+   }
 
-  .local_ritgh {
-    margin-right: -10.5rem;
-  }
-
-  .local_text {
-    width: 80%;
-    overflow-wrap: break-word;
-    word-break: break-word;
-    hyphens: auto;
-  -webkit-hyphens: auto;
-  -ms-hyphens: auto;
-  }
+    .local_text {
+      width: 80%;
+      overflow-wrap: break-word;
+      word-break: break-word;
+      -webkit-hyphens: auto;
+      -ms-hyphens: auto;
+    }
 
   .publicationLink:hover {
     color: var(--gray-959DA6);
@@ -902,7 +916,7 @@
 
   .button_project_link_projectCard1,
   .button_project_link_projectCard2 {
-    padding: 1.8rem 1rem;
+    padding: 2.2rem 1rem;
   }
 
   .button_project_link_projectCard1:hover {
@@ -923,18 +937,12 @@
   }
 
   .previous__span_projectCard {
-    padding-left: 0.37rem;
-    max-width: 100%;
-    width: 40vw;
-  }
+    padding-left: 0.87rem;
+   }
 
   .next__span_projectCard {
-    justify-content: flex-end;
-    padding-right: 0.37rem;
-    max-width: 100%;
-    width: 40vw;
-  }
-
+     padding-right: 0.87rem;
+   }
 
   .social_links_projectCard {
     display: none;
@@ -1139,26 +1147,26 @@
     width: 100%;
     padding-left: 1rem;
     padding-right: 1rem;
-    order: 1;
   }
 
   .local_container {
     display: flex;
-    flex-wrap: nowrap;
-    gap: 1px;
-    padding-bottom: 2rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .local_container_wrapper_block {
+    height: 130px;
+    max-height: 100%;
+  }
+  .local_container_wrapper_block1 {
+    height: 90px;
+    max-height: 100%;
   }
 
   .local_ritgh,
   .local_left {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+    gap: 1rem;
     width: 100%;
-  }
-
-  .local_ritgh {
-    margin-right: 1rem;
   }
 
   .publicationLink:hover {
@@ -1246,8 +1254,7 @@
     display: flex;
     padding-right: 0rem;
     padding-left: 0rem;
-    width: 100%;
-    overflow: hidden;
+    width: 100%;  
   }
 
 
@@ -1264,39 +1271,19 @@
     width: 100%;
   }
 
-  .previous__span_projectCard {
-    color: var(--black-1D2E43);
-    font-variant-numeric: lining-nums proportional-nums;
-    font-family: var(--font-raleway);
+  .previous__span_projectCard {  
     font-size: 0.75rem;
     font-style: normal;
     font-weight: var(--fw-400);
-    line-height: 1rem;
     padding-left: 0.87rem;
-    max-width: 100%;
-    width: 100%;
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
-    /* white-space: nowrap; */
-    /* overflow: hidden; */
-    text-overflow: ellipsis;
   }
 
-  .next__span_projectCard {
-    color: var(--black-1D2E43);
-    font-variant-numeric: lining-nums proportional-nums;
-    font-family: var(--font-raleway);
+  .next__span_projectCard { 
     font-size: 0.75rem;
     font-style: normal;
     font-weight: var(--fw-400);
-    line-height: 1rem;
     justify-content: flex-end;
     padding-right: 0.87rem;
-    max-width: 100%;
-    width: 100%;
-    /* white-space: nowrap; */
-    /* overflow: hidden; */
-    text-overflow: ellipsis;
   }
 
   .button_project_link_projectCard1:hover {
@@ -1336,5 +1323,67 @@
     display: block;
     padding-top: 2rem;
     padding-bottom: 4rem;
+  }
+}
+
+
+
+@media screen and (max-width: 520px) {
+
+ 
+
+  .header_content_right {
+    width: 100%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .local_container {
+    display: flex;
+    padding-bottom: 1rem;
+  }
+
+  .local_container_wrapper_block {
+    height: 180px;
+  }
+  .local_container_wrapper_block1 {
+    height: 150px;
+  }
+
+  .local_ritgh,
+  .local_left {
+    gap: 1rem;
+    width: 100%;
+  }
+}
+
+
+/* Стили для мобильной версии сайта блока ProjectCard начинаются тут */
+@media screen and (max-width: 350px) {
+
+ 
+
+  .header_content_right {
+    width: 100%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .local_container {
+    display: flex;
+    padding-bottom: 1.5rem;
+  }
+
+  .local_container_wrapper_block {
+    height: 200px;
+  }
+  .local_container_wrapper_block1 {
+    height: 160px;
+  }
+
+  .local_ritgh,
+  .local_left {
+    gap: 1rem;
+    width: 100%;
   }
 }
