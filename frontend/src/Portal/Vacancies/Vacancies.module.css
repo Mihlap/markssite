@@ -156,7 +156,7 @@ font-family: var(--font-raleway);
 .menu__button__choose__vacancyFilter:hover {
   background: var(--light-gray-C0C5CB);
   /* color: var(--white-F6F6F6); */
-  transition: background-color 0.4s ease, color 0.4s ease;
+  transition: background-color 0.4s ease, background-color 0.4s ease;
 }
 
 .icon__svg_button__choose__vacancyFilter {
@@ -180,8 +180,7 @@ font-family: var(--font-raleway);
   display: none;
 }
 
-
-
+/* стили для модального окна */
 
 .modal_wrapper_vacancy {
   display: flex;
@@ -312,6 +311,8 @@ font-family: var(--font-raleway);
   background-color: var(--dark-blue-389FFF);
 }
 
+/* _______________________________________________________ */
+
 .dopFilterName {
   display: flex;
   align-items: flex-start;
@@ -415,22 +416,25 @@ height: 14.14px;
 }
 
 .headerCell_specialization {
-  width: 64%;
-  padding-left: 4.3rem;
+  width: 66%;
+  padding-left: 4.3rem;  
 }
 
 .headerCell_direction {
   width: 25%;
   padding-left: 0rem;
+  margin-right: 0.5rem;
 }
 
 .headerCell_busyness {
   width: 25%;
   padding-left: 0rem;
+  margin-right: 1rem;
 }
 
 .headerCell_location {
   width: 25%;
+  margin-right: 5.5rem;
 }
 
 
@@ -443,7 +447,7 @@ height: 14.14px;
   /* border: 1px solid var(--light-light-gray-EBECEE); */
   margin-right: 1.688rem;
   margin-left: 1.69rem;
-  position: relative;
+  align-items: center;
 }
 
 .vacancyCell {
@@ -454,7 +458,6 @@ height: 14.14px;
   line-height: 24px;
   letter-spacing: 0px;
   text-align: left;
-  align-content: center;
 }
 
 .vacancyCell_title {
@@ -470,7 +473,6 @@ height: 14.14px;
   line-height: 28px;
   letter-spacing: 0px;
   text-align: left;
-  align-content: center;
   margin-right: 2rem;
 }
 
@@ -486,14 +488,10 @@ height: 14.14px;
 
 .vacancyCell_locationStaff {
   width: 25%;
-  margin-right: 0rem;
 }
 
 .vacancyCell_buttonLink {
-  position: absolute;
-  right: 3.5rem;
-  top: 50%;
-  transform: translateY(-50%);
+  margin-right: 2.25rem;
   background-color: var(--blue-75BBFD);
   width: 41px;
   height: 41px;

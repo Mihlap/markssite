@@ -390,7 +390,7 @@
   font-style: normal;
   font-weight: var(--fw-400);
   line-height: 1.25rem;
-  padding: 1.8rem 1.69rem;
+  padding: 2.5rem 1.69rem;
   align-items: center;
   overflow-wrap: break-word;
   word-wrap: break-word;
@@ -411,7 +411,7 @@
   font-style: normal;
   font-weight: var(--fw-400);
   line-height: 1.25rem;
-  padding: 1.8rem 1.69rem;
+  padding: 2.5rem 1.69rem;
   align-items: center;
   overflow-wrap: break-word;
   word-wrap: break-word;
@@ -436,9 +436,12 @@
   font-family: var(--font-raleway);
   font-weight: var(--fw-400);
   font-size: 0.875rem;
-  line-height: 1.25vw;
   color: var(--black-1D2E43);
   font-variant-numeric: lining-nums proportional-nums;
+    display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3; 
+  overflow: hidden;
 }
 
 .next__span_projectCard {
@@ -448,11 +451,15 @@
   font-family: var(--font-raleway);
   font-weight: var(--fw-400);
   font-size: 0.875rem;
-  line-height: 1.25vw;
   color: var(--black-1D2E43);
   font-variant-numeric: lining-nums proportional-nums;
   flex: 2;
   text-align: right;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3; 
+  overflow: hidden;
 }
 
 
@@ -718,8 +725,7 @@
       padding-right: 1.75rem;
       padding-left: 1.75rem;;
       width: 100%;
-      overflow: hidden;
-    }
+    } 
 
 }
 
@@ -902,7 +908,7 @@
 
   .button_project_link_projectCard1,
   .button_project_link_projectCard2 {
-    padding: 1.8rem 1rem;
+    padding: 2.2rem 1rem;
   }
 
   .button_project_link_projectCard1:hover {
@@ -923,18 +929,12 @@
   }
 
   .previous__span_projectCard {
-    padding-left: 0.37rem;
-    max-width: 100%;
-    width: 40vw;
-  }
+    padding-left: 0.87rem;
+   }
 
   .next__span_projectCard {
-    justify-content: flex-end;
-    padding-right: 0.37rem;
-    max-width: 100%;
-    width: 40vw;
-  }
-
+     padding-right: 0.87rem;
+   }
 
   .social_links_projectCard {
     display: none;
@@ -1246,8 +1246,7 @@
     display: flex;
     padding-right: 0rem;
     padding-left: 0rem;
-    width: 100%;
-    overflow: hidden;
+    width: 100%;  
   }
 
 
@@ -1264,39 +1263,19 @@
     width: 100%;
   }
 
-  .previous__span_projectCard {
-    color: var(--black-1D2E43);
-    font-variant-numeric: lining-nums proportional-nums;
-    font-family: var(--font-raleway);
+  .previous__span_projectCard {  
     font-size: 0.75rem;
     font-style: normal;
     font-weight: var(--fw-400);
-    line-height: 1rem;
     padding-left: 0.87rem;
-    max-width: 100%;
-    width: 100%;
-    margin-top: 0.5rem;
-    margin-bottom: 0.5rem;
-    /* white-space: nowrap; */
-    /* overflow: hidden; */
-    text-overflow: ellipsis;
   }
 
-  .next__span_projectCard {
-    color: var(--black-1D2E43);
-    font-variant-numeric: lining-nums proportional-nums;
-    font-family: var(--font-raleway);
+  .next__span_projectCard { 
     font-size: 0.75rem;
     font-style: normal;
     font-weight: var(--fw-400);
-    line-height: 1rem;
     justify-content: flex-end;
     padding-right: 0.87rem;
-    max-width: 100%;
-    width: 100%;
-    /* white-space: nowrap; */
-    /* overflow: hidden; */
-    text-overflow: ellipsis;
   }
 
   .button_project_link_projectCard1:hover {
