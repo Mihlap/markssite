@@ -229,7 +229,7 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
                       }),
                       singleValue: (provided) => ({
                         ...provided,
-                        color: "#959DA6",
+                        color: "#1D2E43",
                         marginLeft: -5,
                       }),
                       placeholder: (provided) => ({

@@ -125,14 +125,15 @@
         position: fixed;
         z-index: 9997;
         top: 0;
-        left: 37%;
-        width: 48%;
+        left: 0%;
+        width: 100%;
         height: 100%;
         background-color: rgba(0, 0, 0, 0.6);
         /* Затемнение фона */
         display: flex;
         justify-content: center;
         align-items: center;
+        padding-left: 5%;
     }
 
 
@@ -558,6 +559,7 @@
         line-height: 20px;
         color: var(--black-4E4E4E);
         padding-left: 2rem;
+        // margin-right: 2rem;
     }
 
     &__department {
@@ -567,12 +569,13 @@
         font-weight: var(--fw-700);
         line-height: 20px;
         color: var(--black-4E4E4E);
-        padding-left: 2rem;
+        margin-left: 0rem;
         max-width: 30%;
-        width: 50%;
+        width: 15%;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+        margin-left: 2rem;
     }
 
     &__id_block {
@@ -581,7 +584,6 @@
         background-color: var(--white-F6F6F6);
         color: var(--black-1D2E43);
         padding: 8px 20px;
-        margin-left: 2rem;
         border-radius: 2rem;
         align-items: center;
         white-space: nowrap;
@@ -1065,8 +1067,9 @@
         padding-left: 2rem;
 
         &__modal_container {
-            left: 21%;
-            width: 80%;
+            left: 0%;
+            width: 100%;
+            padding-left: 0%;
         }
 
         &__null_project {
@@ -1081,8 +1084,9 @@
         padding-left: 4.5rem;
 
         &__modal_container {
-            left: 9%;
-            width: 98%;
+            left: 0%;
+            width: 100%;
+            padding-left: 0%;
         }
     }
 
@@ -1107,8 +1111,9 @@
         padding-left: 3.5rem;
 
         &__modal_container {
-            left: 12%;
-            max-width: 90%;
+            left: 0%;
+            max-width: 100%;
+            padding-left: 0%;
         }
     }
 
@@ -1126,8 +1131,9 @@
         padding-left: 3.5rem;
 
         &__modal_container {
-            left: 10%;
-            max-width: 90%;
+            left: 0%;
+            max-width: 100%;
+            padding-left: 0%;
         }
     }
 
