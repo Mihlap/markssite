@@ -313,7 +313,7 @@ const VacanciesMain = ({
                     <div
                       className={`${styles.vacancyCell1} ${styles.vacancyCell_title}`}
                     >
-                      {vacancy.title}
+                      {vacancy.title}<div className={styles.titleZone}></div>
                     </div>
                     <div
                       className={`${styles.vacancyCell} ${styles.vacancyCell_direction}`}

@@ -203,17 +203,25 @@
 }
 
 .local_container {
-  display: flex;
-  flex-wrap: nowrap;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
   gap: 1rem;
+}
+
+.local_container_wrapper_block {
+  display: flex;
+  flex-direction: column;
+  min-height: 150px;
+}
+.local_container_wrapper_block1 {
+  display: flex;
+  flex-direction: column;
+  min-height: 110px;
 }
 
 .local_ritgh,
 .local_left {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-  width: 100%;
+  width: 100%; 
 }
 
 .local_title {
@@ -236,11 +244,11 @@
   font-feature-settings: 'pnum' on, 'lnum' on;
   color: var(--gray-959DA6);
   overflow-wrap: break-word;
-  word-wrap: break-word;
   word-break: break-word;
-  padding-bottom: 0.5rem;
+  -webkit-hyphens: auto;
+  -ms-hyphens: auto;
+  /* padding-bottom: 0.5rem; */
 }
-
 .publicationLink:hover {
   color: var(--blue-75BBFD);
 }
@@ -698,8 +706,9 @@
   .header_content_right {
     width: 40%;
     padding-right: 1.69rem;
-    padding-left: 4.65vw;
-  }
+    padding-left: 1rem;
+  } 
+
 
   .blockImg {
     display: flex;
@@ -813,38 +822,37 @@
     width: 100%;
     padding-left: 1rem;
     padding-right: 1rem;
-    /* white-space: normal; */
-    order: 1;
   }
 
   .local_container {
     display: flex;
-    flex-wrap: nowrap;
-    gap: 1px;
-    padding-bottom: 2.5rem;
+     padding-bottom: 1rem;
+  }
+
+  .local_container_wrapper_block {
+    height: 110px;
+    min-height: max-content;
+  }
+  .local_container_wrapper_block1 {
+    height: 80px;
+    min-height: max-content;
   }
 
   .local_ritgh,
   .local_left {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
-    width: 100%;
-    /* max-width: 80%; */
-  }
+    gap: 1rem;
+    width: 40%;
+   }
 
-  .local_ritgh {
-    margin-right: -10.5rem;
-  }
-
-  .local_text {
-    width: 80%;
-    overflow-wrap: break-word;
-    word-break: break-word;
-    hyphens: auto;
-  -webkit-hyphens: auto;
-  -ms-hyphens: auto;
-  }
+    .local_text {
+      width: 80%;
+      overflow-wrap: break-word;
+      word-break: break-word;
+      -webkit-hyphens: auto;
+      -ms-hyphens: auto;
+    }
 
   .publicationLink:hover {
     color: var(--gray-959DA6);
@@ -1139,26 +1147,26 @@
     width: 100%;
     padding-left: 1rem;
     padding-right: 1rem;
-    order: 1;
   }
 
   .local_container {
     display: flex;
-    flex-wrap: nowrap;
-    gap: 1px;
-    padding-bottom: 2rem;
+    padding-bottom: 1.5rem;
+  }
+
+  .local_container_wrapper_block {
+    height: 130px;
+    max-height: 100%;
+  }
+  .local_container_wrapper_block1 {
+    height: 90px;
+    max-height: 100%;
   }
 
   .local_ritgh,
   .local_left {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
+    gap: 1rem;
     width: 100%;
-  }
-
-  .local_ritgh {
-    margin-right: 1rem;
   }
 
   .publicationLink:hover {
@@ -1315,5 +1323,67 @@
     display: block;
     padding-top: 2rem;
     padding-bottom: 4rem;
+  }
+}
+
+
+
+@media screen and (max-width: 520px) {
+
+ 
+
+  .header_content_right {
+    width: 100%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .local_container {
+    display: flex;
+    padding-bottom: 1rem;
+  }
+
+  .local_container_wrapper_block {
+    height: 180px;
+  }
+  .local_container_wrapper_block1 {
+    height: 150px;
+  }
+
+  .local_ritgh,
+  .local_left {
+    gap: 1rem;
+    width: 100%;
+  }
+}
+
+
+/* Стили для мобильной версии сайта блока ProjectCard начинаются тут */
+@media screen and (max-width: 350px) {
+
+ 
+
+  .header_content_right {
+    width: 100%;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .local_container {
+    display: flex;
+    padding-bottom: 1.5rem;
+  }
+
+  .local_container_wrapper_block {
+    height: 200px;
+  }
+  .local_container_wrapper_block1 {
+    height: 160px;
+  }
+
+  .local_ritgh,
+  .local_left {
+    gap: 1rem;
+    width: 100%;
   }
 }

@@ -188,7 +188,9 @@ export default function ConstructorBlockRenderer({
 
     return (
       <div className={styles.blockHeadingTitle}>
+          {header && (
         <h2 className={styles.blockHeadingTitle__heading}>{header}</h2>
+      )}
         <p className={styles.blockHeadingTitle__text}>
         {containsListTags(text) ? (
                     <div
