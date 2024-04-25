@@ -156,7 +156,7 @@ font-family: var(--font-raleway);
 .menu__button__choose__vacancyFilter:hover {
   background: var(--light-gray-C0C5CB);
   /* color: var(--white-F6F6F6); */
-  transition: background-color 0.4s ease, background-color 0.4s ease;
+  transition: background-color 0.4s ease, color 0.4s ease;
 }
 
 .icon__svg_button__choose__vacancyFilter {
@@ -180,7 +180,8 @@ font-family: var(--font-raleway);
   display: none;
 }
 
-/* стили для модального окна */
+
+
 
 .modal_wrapper_vacancy {
   display: flex;
@@ -311,8 +312,6 @@ font-family: var(--font-raleway);
   background-color: var(--dark-blue-389FFF);
 }
 
-/* _______________________________________________________ */
-
 .dopFilterName {
   display: flex;
   align-items: flex-start;
@@ -416,25 +415,22 @@ height: 14.14px;
 }
 
 .headerCell_specialization {
-  width: 66%;
-  padding-left: 4.3rem;  
+  width: 64%;
+  padding-left: 4.3rem;
 }
 
 .headerCell_direction {
   width: 25%;
   padding-left: 0rem;
-  margin-right: 0.5rem;
 }
 
 .headerCell_busyness {
   width: 25%;
   padding-left: 0rem;
-  margin-right: 1rem;
 }
 
 .headerCell_location {
   width: 25%;
-  margin-right: 5.5rem;
 }
 
 
@@ -447,8 +443,7 @@ height: 14.14px;
   /* border: 1px solid var(--light-light-gray-EBECEE); */
   margin-right: 1.688rem;
   margin-left: 1.69rem;
-  align-items: center;
-  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.03);
+  position: relative;
 }
 
 .vacancyCell {
@@ -459,6 +454,7 @@ height: 14.14px;
   line-height: 24px;
   letter-spacing: 0px;
   text-align: left;
+  align-content: center;
 }
 
 .vacancyCell_title {
@@ -474,18 +470,8 @@ height: 14.14px;
   line-height: 28px;
   letter-spacing: 0px;
   text-align: left;
+  align-content: center;
   margin-right: 2rem;
-  position: relative;
-}
-.titleZone {
-  content: ""; 
-  position: absolute; 
-  left: 100%; 
-  height: 60px;
-  background-color: black;
-  /* margin-left: 5px; */
-  /* light light gray EBECEE */
-border: 1px solid rgb(235, 236, 238);
 }
 
 .vacancyCell_direction {
@@ -500,26 +486,22 @@ border: 1px solid rgb(235, 236, 238);
 
 .vacancyCell_locationStaff {
   width: 25%;
+  margin-right: 0rem;
 }
 
 .vacancyCell_buttonLink {
-  margin-right: 2.25rem;
+  position: absolute;
+  right: 3.5rem;
+  top: 50%;
+  transform: translateY(-50%);
   background-color: var(--blue-75BBFD);
   width: 41px;
   height: 41px;
   border-radius: 50%;
 }
 
-.vacancyContainer:hover {
-  box-shadow: 0px 0px 20px 0px rgba(196, 215, 234, 0.47);
-}
-.vacancyContainer:hover .vacancyCell_buttonLink {
+.vacancyCell_buttonLink:hover {
   background-color: var(--dark-blue-389FFF);
-}
-
-.vacancyContainer:hover .titleZone {
-  /* light blue D4EDFB */
-border: 1px solid rgb(186, 221, 254);
 }
 
 .vacancy_content_massage {

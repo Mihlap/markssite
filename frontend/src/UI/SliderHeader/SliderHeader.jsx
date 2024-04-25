@@ -14,7 +14,7 @@ const SliderHeader = () => {
            observer.disconnect();
         }
       },
-      { threshold: 0.5 } // Измените порог при необходимости
+      { threshold: 0.5 } 
     );
 
     observer.observe(marqueeRef.current);
