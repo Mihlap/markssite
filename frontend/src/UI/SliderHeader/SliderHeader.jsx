@@ -14,7 +14,7 @@ const SliderHeader = () => {
            observer.disconnect();
         }
       },
-      { threshold: 0.5 } // Измените порог при необходимости
+      { threshold: 0.5 } 
     );
 
     observer.observe(marqueeRef.current);
@@ -28,7 +28,7 @@ const SliderHeader = () => {
     spacing: 10,
     autoFill: true,
     gaps: null,
-    gradientColor: "#F6F6F6",
+    gradientColor: "transparent",
   }), []);
 
   const images = [
