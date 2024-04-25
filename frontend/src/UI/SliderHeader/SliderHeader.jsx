@@ -28,7 +28,7 @@ const SliderHeader = () => {
     spacing: 10,
     autoFill: true,
     gaps: null,
-    gradientColor: "#F6F6F6",
+    gradientColor: "transparent",
   }), []);
 
   const images = [
