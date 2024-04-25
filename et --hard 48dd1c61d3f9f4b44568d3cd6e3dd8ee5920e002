@@ -1,0 +1,244 @@
+[33mcommit 48dd1c61d3f9f4b44568d3cd6e3dd8ee5920e002[m[33m ([m[1;36mHEAD -> [m[1;32mdev_mihlap[m[33m, [m[1;31morigin/main[m[33m)[m
+Merge: 64c113e8 ad8401ea
+Author: Михаил Лаптев <106696063+Mihlap@users.noreply.github.com>
+Date:   Thu Apr 25 11:25:12 2024 +0300
+
+    Merge pull request #647 from Mihlap/dev_mihlap
+    
+    убрал градиент слайдера на главной странице
+
+[33mcommit ad8401ea9c345bcea58a11b86c75e25efa547cf1[m[33m ([m[1;31morigin/dev_mihlap[m[33m)[m
+Author: mihlap <mihlap@mail.ru>
+Date:   Thu Apr 25 11:24:00 2024 +0300
+
+    убрал градиент слайдера на главной странице
+
+[33mcommit 64c113e805a1e9168dbebda343d9763b29c97a2e[m
+Merge: 0dff2bea fb45921e
+Author: Михаил Лаптев <106696063+Mihlap@users.noreply.github.com>
+Date:   Wed Apr 24 16:44:29 2024 +0300
+
+    Merge pull request #646 from Mihlap/dev_mihlap
+    
+    Dev mihlap
+
+[33mcommit fb45921eda671c213b8749036a86394cbf939a1e[m
+Author: Mihlap <mihlap@mail.ru>
+Date:   Wed Apr 24 16:42:21 2024 +0300
+
+    правка стилей по ревью3
+
+[33mcommit 1ad090385057d20dd469362174c9bdef8404a34e[m
+Author: Mihlap <mihlap@mail.ru>
+Date:   Wed Apr 24 16:35:04 2024 +0300
+
+    правка стилей по ревью2
+
+[33mcommit a8fba546e3f30b56f2ac4839203725ef0d651afe[m
+Author: Mihlap <mihlap@mail.ru>
+Date:   Wed Apr 24 12:13:04 2024 +0300
+
+    правка стилей по ревью1
+
+[33mcommit 27e1c6f6a56902a87d0efcd2c63ee6cd94ec6e68[m
+Author: Mihlap <mihlap@mail.ru>
+Date:   Wed Apr 24 12:12:29 2024 +0300
+
+    правка стилей по ревью
+
+[33mcommit 0dff2bea0598f088fce722d2590ed3e837296476[m
+Merge: 44a760e7 3a2055e6
+Author: Михаил Лаптев <106696063+Mihlap@users.noreply.github.com>
+Date:   Tue Apr 23 21:39:52 2024 +0300
+
+    Merge pull request #645 from Mihlap/dev_mihlap
+    
+    Dev mihlap
+
+[33mcommit 3a2055e647ff96904c429202e23ac7079c34a707[m
+Author: mihlap <mihlap@mail.ru>
+Date:   Tue Apr 23 21:39:06 2024 +0300
+
+    настройка логики фильтрации модальное окно и остальных фильтров на странице вакансий
+
+[33mcommit de4a570d47bab0bee153ade0077b67aac1d13550[m
+Author: mihlap <mihlap@mail.ru>
+Date:   Tue Apr 23 12:24:23 2024 +0300
+
+    настройка логики фильтрации модальное окно2
+
+[33mcommit 44a760e77c2dc440fcda60af106a15051941404c[m
+Merge: 613752b4 ab6c98cc
+Author: Михаил Лаптев <106696063+Mihlap@users.noreply.github.com>
+Date:   Mon Apr 22 17:14:58 2024 +0300
+
+    Merge pull request #644 from Mihlap/dev_mihlap
+    
+    Dev mihlap
+
+[33mcommit ab6c98cca2e24df37b3e36bfa7fbfa3a39bafb72[m
+Author: mihlap <mihlap@mail.ru>
+Date:   Mon Apr 22 17:13:46 2024 +0300
+
+    настройка логики фильтрации модальное окно1
+
+[33mcommit 8aaebdb9663baf1fa0ebfa21e1aa2fd1514e1d95[m
+Author: mihlap <mihlap@mail.ru>
+Date:   Mon Apr 22 17:12:28 2024 +0300
+
+    настройка логики фильтрации модальное окно
+
+[33mcommit 613752b47f9a5d521ef3de53db50e470e8ed449d[m
+Merge: 3dd9f5d8 6290ef05
+Author: Михаил Лаптев <106696063+Mihlap@users.noreply.github.com>
+Date:   Fri Apr 19 17:32:08 2024 +0300
+
+    Merge pull request #643 from Mihlap/dev_mihlap
+    
+    modal_vacancyмм
+
+[33mcommit 6290ef0544a2e5c781007f7f8274572194fdf369[m
+Author: Mihlap <mihlap@mail.ru>
+Date:   Fri Apr 19 17:26:56 2024 +0300
+
+    modal_vacancyмм
+
+[33mcommit 3dd9f5d82043387a579a14d45a6c712f242b295e[m
+Merge: 12ba526c 3a0cfe39
+Author: Михаил Лаптев <106696063+Mihlap@users.noreply.github.com>
+Date:   Fri Apr 19 08:57:28 2024 +0300
+
+    Merge pull request #642 from Mihlap/dev_mihlap
+    
+    commit
+
+[33mcommit 3a0cfe39f92bdc413d09ac718e616caab154d49f[m
+Author: Mihlap <mihlap@mail.ru>
+Date:   Fri Apr 19 08:51:01 2024 +0300
+
+    commit
+
+[33mcommit 12ba526c41026271efd480c9d5c3d6092881f858[m
+Merge: 1c9afea3 37440b08
+Author: Михаил Лаптев <106696063+Mihlap@users.noreply.github.com>
+Date:   Thu Apr 18 21:53:21 2024 +0300
+
+    Merge pull request #641 from Mihlap/dev_begin
+    
+    просто коммит в dev_begin1
+
+[33mcommit 37440b08ddbdb54c51ea99acc8fbe882eebb8e33[m[33m ([m[1;31morigin/dev_begin[m[33m, [m[1;32mdev_begin[m[33m)[m
+Author: mihlap <mihlap@mail.ru>
+Date:   Thu Apr 18 21:52:42 2024 +0300
+
+    просто коммит в dev_begin1
+
+[33mcommit 1c9afea359fbb62772d085d2a75551192731f085[m
+Merge: 178e9219 bdf2d4f0
+Author: Михаил Лаптев <106696063+Mihlap@users.noreply.github.com>
+Date:   Thu Apr 18 21:46:29 2024 +0300
+
+    Merge pull request #640 from Mihlap/dev_mihlap
+    
+    новая структура разметки для вывода вакансий
+
+[33mcommit bdf2d4f0cf63e44df2ad05770bbebfdf07d8c735[m
+Author: mihlap <mihlap@mail.ru>
+Date:   Thu Apr 18 21:45:35 2024 +0300
+
+    новая структура разметки для вывода вакансий
+
+[33mcommit 178e9219bed951121d31ea0be9a4a9ba6d32acff[m
+Merge: 7a494627 f10c8bbb
+Author: Михаил Лаптев <106696063+Mihlap@users.noreply.github.com>
+Date:   Thu Apr 18 17:27:46 2024 +0300
+
+    Merge pull request #639 from Mihlap/dev_mihlap
+    
+    Dev mihlap
+
+[33mcommit f10c8bbb0e448dcdb4f37accd0c6b1d926bfec54[m
+Author: mihlap <mihlap@mail.ru>
+Date:   Thu Apr 18 17:25:49 2024 +0300
+
+    стили кнопок админки конец1
+
+[33mcommit 634f3c26156f1e659be256d4129ffdc27940b15b[m
+Author: mihlap <mihlap@mail.ru>
+Date:   Thu Apr 18 15:25:33 2024 +0300
+
+    стили кнопок админки конец
+
+[33mcommit 7a4946274a5fb4386ed6982b401d562665fe5b7c[m
+Merge: b81ef62e 6899f911
+Author: Михаил Лаптев <106696063+Mihlap@users.noreply.github.com>
+Date:   Wed Apr 17 17:07:40 2024 +0300
+
+    Merge pull request #638 from Mihlap/dev_mihlap
+    
+    админка кнопка выхода начало
+
+[33mcommit 6899f911ad0acc8690e784e7f28bc642108c2ffd[m
+Author: Mihlap <mihlap@mail.ru>
+Date:   Wed Apr 17 17:04:48 2024 +0300
+
+    админка кнопка выхода начало
+
+[33mcommit b81ef62ea58d756fbef0b7a8a9f2eb63d20b1689[m
+Merge: 0b4892fa b8b97e03
+Author: Михаил Лаптев <106696063+Mihlap@users.noreply.github.com>
+Date:   Tue Apr 16 17:47:11 2024 +0300
+
+    Merge pull request #637 from Mihlap/dev_mihlap
+    
+    Dev mihlap
+
+[33mcommit b8b97e03eaa9dc50ff724afaeb465e21241cea79[m
+Author: mihlap <mihlap@mail.ru>
+Date:   Tue Apr 16 17:46:05 2024 +0300
+
+    индикатор перехода кнопок в админке
+
+[33mcommit 604129464ca695fab76edcd8622a611ac3dd8272[m
+Merge: bfee3a6a 0b4892fa
+Author: mihlap <mihlap@mail.ru>
+Date:   Tue Apr 16 10:03:55 2024 +0300
+
+    Merge branch 'main' of github.com:mihlap/markssite into dev_mihlap
+
+[33mcommit 0b4892fa2e505ad481017d925adeb59a3b8d32bd[m
+Merge: 5022ba4f a3cbd16b
+Author: Михаил Лаптев <106696063+Mihlap@users.noreply.github.com>
+Date:   Mon Apr 15 16:48:38 2024 +0300
+
+    Merge pull request #636 from Mihlap/dev_mihlap
+    
+    Dev mihlap
+
+[33mcommit a3cbd16bafa64a9c004204d588f589709d893638[m
+Author: Mihlap <mihlap@mail.ru>
+Date:   Mon Apr 15 16:47:04 2024 +0300
+
+    настройка стилей админки
+
+[33mcommit 80e096f475d19694d056b6b48034c7f73e2c4df2[m
+Merge: f537bf2d 5022ba4f
+Author: Mihlap <mihlap@mail.ru>
+Date:   Mon Apr 15 08:24:12 2024 +0300
+
+    Merge branch 'main' of github.com:Mihlap/markssite into dev_mihlap
+
+[33mcommit bfee3a6a48439f304f0a84a129cb409880c4d0f3[m
+Author: mihlap <mihlap@mail.ru>
+Date:   Sat Apr 6 21:06:41 2024 +0300
+
+    страница hr_портал отображение надписи если нет вакансий
+
+[33mcommit 5022ba4fa4e270de4c2a3d22edfe4890a6e0ac6a[m
+Merge: a186b2d7 b2a36bde
+Author: Михаил Лаптев <106696063+Mihlap@users.noreply.github.com>
+Date:   Sat Apr 6 17:33:22 2024 +0300
+
+    Merge pull request #635 from Mihlap/dev_mihlap
+    
+    обновление поведения скрола слайдера на главной стран�
