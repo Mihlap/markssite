@@ -387,3 +387,4 @@ const VacanciesMain = ({
 };
 
 export default VacanciesMain;
+
