@@ -719,10 +719,18 @@ border: 1px solid rgb(186, 221, 254);
   padding: 1.5rem 0rem 5rem 7rem;
 }
 
+.menu_button_group_vacancy_wrapper_main_swiper {
+  display: none;
+}
+
 
 @media screen and (min-width: 1025px) and (max-width: 1600px) {
   .wrapper_vacancies {
-    height: 36Vh;
+    height: 41vh;  
+  }
+
+ .vacancies_header_wrapper {
+    max-width: 400px;
   }
 
   .vacancies_text_for_email {
@@ -752,22 +760,25 @@ border: 1px solid rgb(186, 221, 254);
 /* стили для планшетной версии  */
 @media screen and (min-width: 768px) and (max-width: 1024px) {
   .wrapper_vacancies {
-    height: 32Vh;
+    height: 330px;
   }
 
-  .vacancies_header_wrapper {
-    position: absolute;
-    display: flex;
-    flex-direction: column;
-    color: var(--black-1D2E43);
-    font-family: var(--font-unbounded);
-    font-style: normal;
-    font-weight: var(--fw-300);
-    top: 40%;
-    left: 4vw;
+  .vacancies_header_wrapper {   
+    top: 113px;
+    left: 3.43rem;
     padding-right: 1rem;
-    max-width: 42vw;
+    max-width: 420px;
   }
+
+  .vacancies_header1 {
+    font-size: 24px;
+    line-height: 32px;
+  }
+  
+  /* .vacancies_header2 {
+    font-size: 48px;
+    line-height: 64px;
+  } */
 
   .vacancy_section_block {
     display: inline-flex;
@@ -833,6 +844,61 @@ border: 1px solid rgb(186, 221, 254);
   .vacancyFormWrapper {
     padding: 0rem 4vw 4.2rem 4vw;
   }
+
+  .menu_button_group_vacancy_wrapper,
+  .menu__button__choose__vacancyFilter {
+    display: none;
+  }
+
+.menu_button_group_vacancy_wrapper_main_swiper {
+  display: flex;
+  -webkit-overflow-scrolling: touch;
+  padding-top: 30px;
+}
+
+.menu_button_group_vacancy_wrapper_swiper {
+  display: flex; 
+  overflow: hidden;
+  margin-right: 8px;
+}
+
+.menu__button__choose__vacancyFilter_mobile {
+  display: flex;
+  width: fit-content;
+  max-height: calc(100% - 8px);
+  padding: 8px 24px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 2.125rem;
+  border: 1px solid var(--black-1D2E43);
+  background-color: transparent;
+  white-space: nowrap;
+  color: var(--black-1D2E43);
+  cursor: pointer;
+  transition: background-color 0.8s ease, color 0.8s ease;
+}
+
+.menu__button__allVacancy:hover {
+  background-color: transparent;
+  color: var(--black-1D2E43);
+}
+
+.menu__button__allVacancy.active {
+  background-color: var(--black-1D2E43);
+  color: var(--white-F6F6F6);
+}
+
+.menu__button__choose__vacancyFilter_mobile {
+  margin-right: 8px;
+  margin-left: 10.8rem;
+  }
+
+
+.icon__svg_button__choose__vacancyFilter_mobile {
+  width: 1rem;
+  height: 1rem;
+}
+
 
 }
 
