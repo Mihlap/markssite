@@ -6,7 +6,6 @@ import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import LoadingCircle from "../../Loading/LoadingCircle";
-import VacanciesMainMobile from "./VacanciesMainMobile";
 import {
   fetchFilteredVacancies,
   getFetchForm,
@@ -216,7 +215,6 @@ const VacanciesMain = ({
       <Helmet>
         <title>Marks Group</title>
       </Helmet>
-      {windowWidth && <VacanciesMainMobile />}
       {!hideVacancies && (
         <div className={styles.main_vacancies_block}>
           <div className={styles.wrapper_vacancies}>
@@ -278,7 +276,63 @@ const VacanciesMain = ({
               selectedFilter={selectedFilter}
             />
           </div>
-         {activeFiltersArray.length > 0 && (
+          <div className={styles.menu_button_group_vacancy_wrapper_main_swiper}>         
+            {windowWidth && (
+              <Swiper
+                onSwiper={setSwiper}
+                slidesPerView="auto"
+                spaceBetween={8}
+                className={styles.menu_button_group_vacancy_swiper_mobile}
+                touch="true"
+              >
+               <SwiperSlide             
+                      onMouseEnter={handleMouseEnter}
+                      onMouseLeave={handleMouseLeave}
+                      className={`${styles.menu__button__choose__vacancyFilter_mobile}
+                      ${modalFiltersActive ? styles.filterWhiterBackground : ""}`}                      
+                      onClick={handleModalOpen}
+                    >
+                      <div
+                        className={
+                          styles.icon__svg_button__choose__vacancyFilter_mobile
+                        }
+                      >
+                        <img
+                          src={modalFiltersActive ? iconFilterWhiterRed : iconFilter}
+                          alt="IconFilter"
+                        />
+                      </div>               
+                    </SwiperSlide>
+                    {buttonVacancyChoose.map((el, index) =>
+                      isIpadMobile && el === "Все" ? null : (                 
+                        <SwiperSlide
+                          key={index}
+                          onMouseEnter={handleMouseEnter}
+                          onMouseLeave={handleMouseLeave}
+                          className={`${
+                            styles.menu__button__choose__vacancyFilter_mobile
+                          } ${selectedFilter === el ? styles.active : ""}`}
+                          onClick={() => handleButtonClick(el)}
+                         >
+                          <span
+                            className={styles.menu_button_items_vacancyText}
+                          >
+                            {el}
+                          </span>
+                          <span
+                            className={styles.menu_button_items_vacancyCount}
+                          >
+                            {el !== "Все" && vacancyCountsByDirection
+                              ? vacancyCountsByDirection[el] || 0
+                              : ""}
+                          </span>
+                          </SwiperSlide>
+                       )
+                    )}
+               </Swiper>
+            )}
+          </div>
+          {activeFiltersArray.length > 0 && (
             <div>
               <div className={styles.dopFilterName}>Доп. фильтры</div>
               <div className={styles.activeFiltersContainer}>
@@ -294,17 +348,17 @@ const VacanciesMain = ({
                     </button>
                   </div>
                 ))}
-                {activeFiltersArray.length > 1 && (
-                  <button
-                    className={styles.clearAllFiltersButton}
-                    onClick={clearAllFilters}
-                  >
-                    <p className={styles.dopFilterButtonNameClear}>
-                      Очистить все
-                    </p>
-                    <span className={styles.xSpanClear}>✕</span>
-                  </button>
-                )}
+                 {activeFiltersArray.length > 1 && (
+                <button
+                  className={styles.clearAllFiltersButton}
+                  onClick={clearAllFilters}
+                >
+                  <p className={styles.dopFilterButtonNameClear}>
+                    Очистить все
+                  </p>
+                  <span className={styles.xSpanClear}>✕</span>
+                </button>
+               )}
               </div>
             </div>
           )}
