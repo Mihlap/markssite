@@ -856,10 +856,14 @@ border: 1px solid rgb(186, 221, 254);
   padding-top: 30px;
 }
 
-.menu_button_group_vacancy_wrapper_swiper {
-  display: flex; 
-  overflow: hidden;
-  margin-right: 8px;
+.menu_button_group_vacancy_swiper_mobile {
+  display: flex;
+  bottom: 0rem;
+  left: 0rem;
+  right: 0rem;
+  width: 100%;
+  /* overflow-x: hidden; */
+  padding-left: 10.8rem;
 }
 
 .menu__button__choose__vacancyFilter_mobile {
@@ -875,29 +879,23 @@ border: 1px solid rgb(186, 221, 254);
   white-space: nowrap;
   color: var(--black-1D2E43);
   cursor: pointer;
-  transition: background-color 0.8s ease, color 0.8s ease;
+  transition: background-color 0.4s ease, color 0.4s ease;
+  margin-right: 8px;
 }
 
-.menu__button__allVacancy:hover {
-  background-color: transparent;
-  color: var(--black-1D2E43);
-}
-
-.menu__button__allVacancy.active {
+.menu__button__choose__vacancyFilter_mobile.active {
   background-color: var(--black-1D2E43);
   color: var(--white-F6F6F6);
 }
 
-.menu__button__choose__vacancyFilter_mobile {
-  margin-right: 8px;
-  margin-left: 10.8rem;
-  }
-
-
 .icon__svg_button__choose__vacancyFilter_mobile {
   width: 1rem;
   height: 1rem;
+ }
+ .filterWhiterBackground {
+  background-color: var(--black-1D2E43);
 }
+
 
 
 }
