@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import LoadingCircle from "../../Loading/LoadingCircle";
+import VacanciesMainMobile from "./VacanciesMainMobile";
 import {
   fetchFilteredVacancies,
   getFetchForm,
@@ -19,6 +20,7 @@ import VacancyFormContact from "../../UI/VacancyFormContact/VacancyFormContact";
 
 import iconFilter from "./icons/filter.svg";
 import iconFilterRed from "./icons/filterRed.svg";
+import iconFilterWhiterRed from "./icons/filterWhiteRed.svg";
 import buttonLink from "./icons/buttonLink.svg";
 import FilterModalVacancies from "./FilterModalVacancies";
 
@@ -74,6 +76,17 @@ const VacanciesMain = ({
 
   const vacanciesMain = [...filteredVacancies].reverse();
 
+  const handleResize = () => {
+    setWindowWidth(window.innerWidth);
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", handleResize);
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
+
   useEffect(() => {
     window.scrollTo(0, 0);
     dispatch(getFetchForm());
@@ -88,18 +101,18 @@ const VacanciesMain = ({
   }, [dispatch, vacancies]);
 
   useEffect(() => {
-    const anyActiveFilters = Object.keys(filters).some(
-      (key) => filters[key].length > 0
-    );
-    setModalFiltersActive(anyActiveFilters);
-  }, [filters]);
-
-  useEffect(() => {
     if (selectedFilter === "Все") {
       setFilters({});
       dispatch(setActiveFilters({}));
     }
   }, [selectedFilter, dispatch]);
+
+  useEffect(() => {
+    const anyActiveFilters = Object.keys(filters).some(
+      (key) => filters[key].length > 0
+    );
+    setModalFiltersActive(anyActiveFilters);
+  }, [filters]);
 
   useEffect(() => {
     const hasActiveFilters = Object.entries(filters).some(([key, values]) => {
@@ -203,6 +216,7 @@ const VacanciesMain = ({
       <Helmet>
         <title>Marks Group</title>
       </Helmet>
+      {windowWidth && <VacanciesMainMobile />}
       {!hideVacancies && (
         <div className={styles.main_vacancies_block}>
           <div className={styles.wrapper_vacancies}>
@@ -264,95 +278,7 @@ const VacanciesMain = ({
               selectedFilter={selectedFilter}
             />
           </div>
-          <div className={styles.menu_button_group_vacancy_wrapper_main_swiper}>
-            <div className={styles.menu_button_group_vacancy_wrapper_swiper}>
-              {isIpadMobile && (
-                <>
-                  {/* <button
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
-              className={styles.menu__button__choose__vacancyFilter_mobile}
-              onClick={handleModalOpen}
-            >
-              <div className={styles.icon__svg_button__choose__vacancyFilter_mobile}>
-                <img
-                  src={modalFiltersActive ? iconFilterRed : iconFilter}
-                  alt="IconFilter"
-                />
-              </div>
-             </button> */}
-                  <Swiper
-                    onSwiper={setSwiper}
-                    slidesPerView="auto"
-                    spaceBetween={0}
-                    // pagination={{
-                    //   clickable: true,
-                    // }}
-                    className={styles.menu_button_group_vacancy_swiper_mobile}
-                    touch="true"
-                  >
-                    <SwiperSlide>
-                      <button
-                        onMouseEnter={handleMouseEnter}
-                        onMouseLeave={handleMouseLeave}
-                        className={
-                          styles.menu__button__choose__vacancyFilter_mobile
-                        }
-                        onClick={handleModalOpen}
-                      >
-                        <div
-                          className={
-                            styles.icon__svg_button__choose__vacancyFilter_mobile
-                          }
-                        >
-                          <img
-                            src={
-                              modalFiltersActive ? iconFilterRed : iconFilter
-                            }
-                            alt="IconFilter"
-                          />
-                        </div>
-                      </button>
-                    </SwiperSlide>
-                    {buttonVacancyChoose.map((el, index) =>
-                      isIpadMobile && el === "Все" ? null : ( 
-                        <SwiperSlide
-                          key={index}
-                          className={`${
-                            selectedFilter === el ? styles.active : ""
-                          }`}
-                        >
-                          <button
-                            onMouseEnter={handleMouseEnter}
-                            onMouseLeave={handleMouseLeave}
-                            className={
-                              styles.menu__button__choose__vacancyFilter_mobile
-                            }
-                            onClick={() => handleButtonClick(el)}
-                          >
-                            <span
-                              className={styles.menu_button_items_vacancyText}
-                            >
-                              {el}
-                            </span>
-                            <span
-                              className={styles.menu_button_items_vacancyCount}
-                            >
-                              {el !== "Все" && vacancyCountsByDirection
-                                ? vacancyCountsByDirection[el] || 0
-                                : ""}
-                            </span>
-                          </button>
-                        </SwiperSlide>
-                      )
-                    )}
-                    {/* </div> */}
-                  </Swiper>
-                </>
-              )}
-            </div>
-          </div>
-          {activeFiltersArray.length > 0 && (
+         {activeFiltersArray.length > 0 && (
             <div>
               <div className={styles.dopFilterName}>Доп. фильтры</div>
               <div className={styles.activeFiltersContainer}>
@@ -368,15 +294,17 @@ const VacanciesMain = ({
                     </button>
                   </div>
                 ))}
-                <button
-                  className={styles.clearAllFiltersButton}
-                  onClick={clearAllFilters}
-                >
-                  <p className={styles.dopFilterButtonNameClear}>
-                    Очистить все
-                  </p>
-                  <span className={styles.xSpanClear}>✕</span>
-                </button>
+                {activeFiltersArray.length > 1 && (
+                  <button
+                    className={styles.clearAllFiltersButton}
+                    onClick={clearAllFilters}
+                  >
+                    <p className={styles.dopFilterButtonNameClear}>
+                      Очистить все
+                    </p>
+                    <span className={styles.xSpanClear}>✕</span>
+                  </button>
+                )}
               </div>
             </div>
           )}
