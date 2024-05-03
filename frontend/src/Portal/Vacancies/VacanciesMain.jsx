@@ -21,6 +21,8 @@ import iconFilter from "./icons/filter.svg";
 import iconFilterRed from "./icons/filterRed.svg";
 import iconFilterWhiterRed from "./icons/filterWhiteRed.svg";
 import buttonLink from "./icons/buttonLink.svg";
+import buttonLink_ipad from "./icons/buttonLink1.svg";
+import clearAll from './icons/clearAll.svg'
 import FilterModalVacancies from "./FilterModalVacancies";
 
 const VacanciesMain = ({
@@ -189,9 +191,23 @@ const VacanciesMain = ({
     dispatch(setActiveFilters(resetFilters));
     dispatch(fetchFilteredVacancies(resetFilters));
     setModalFiltersActive(
-      Object.keys(resetFilters).length > 0 &&
-        resetFilters[filterKeyForSpecialty].length > 0
+      Object.keys(resetFilters)?.length > 0 &&
+        resetFilters[filterKeyForSpecialty]?.length > 0
     );
+  };
+
+  const clearAllFiltersMobile = () => {
+    // const resetFilters =
+    //   selectedFilter !== "Все"
+    //     ? selectedFilter
+    //     : {};
+    // setFilters();
+    // dispatch(setActiveFilters());
+    // dispatch(fetchFilteredVacancies());
+    // setModalFiltersActive(
+    //   Object.keys(resetFilters)?.length > 0 &&
+    //     resetFilters[filterKeyForSpecialty]?.length > 0
+    // );
   };
 
   const activeFiltersArray = Object.entries(filters).flatMap(
@@ -274,9 +290,12 @@ const VacanciesMain = ({
               setFilters={setFilters}
               activeFilters={filters}
               selectedFilter={selectedFilter}
+              handleMouseEnter={handleMouseEnter}
+              handleMouseLeave={handleMouseLeave}
+              handleMouseHover={handleMouseHover}
             />
           </div>
-          <div className={styles.menu_button_group_vacancy_wrapper_main_swiper}>         
+          <div className={styles.menu_button_group_vacancy_wrapper_main_swiper}>
             {windowWidth && (
               <Swiper
                 onSwiper={setSwiper}
@@ -285,54 +304,93 @@ const VacanciesMain = ({
                 className={styles.menu_button_group_vacancy_swiper_mobile}
                 touch="true"
               >
-               <SwiperSlide             
-                      onMouseEnter={handleMouseEnter}
-                      onMouseLeave={handleMouseLeave}
-                      className={`${styles.menu__button__choose__vacancyFilter_mobile}
-                      ${modalFiltersActive ? styles.filterWhiterBackground : ""}`}                      
-                      onClick={handleModalOpen}
+                {activeFiltersArray?.length > 0 && (
+                 <div
+                    className={styles.menu__button__choose__vacancyFilter_mobile}                              
+                  >
+                    <SwiperSlide
+                    className={styles.menu_button_items_vacancyTex_clear}
+                    onClick={clearAllFiltersMobile}   
                     >
-                      <div
-                        className={
-                          styles.icon__svg_button__choose__vacancyFilter_mobile
-                        }
-                      >
-                        <img
-                          src={modalFiltersActive ? iconFilterWhiterRed : iconFilter}
-                          alt="IconFilter"
-                        />
-                      </div>               
+                      {/* ✕ */}
+                      <img src={clearAll} alt="clearAll" />
                     </SwiperSlide>
-                    {buttonVacancyChoose.map((el, index) =>
-                      isIpadMobile && el === "Все" ? null : (                 
-                        <SwiperSlide
-                          key={index}
-                          onMouseEnter={handleMouseEnter}
-                          onMouseLeave={handleMouseLeave}
-                          className={`${
-                            styles.menu__button__choose__vacancyFilter_mobile
-                          } ${selectedFilter === el ? styles.active : ""}`}
-                          onClick={() => handleButtonClick(el)}
-                         >
-                          <span
-                            className={styles.menu_button_items_vacancyText}
+                 
+                  </div> 
+                )}
+                <SwiperSlide
+                  className={`${
+                    styles.menu__button__choose__vacancyFilter_mobile
+                  }
+                      ${
+                        modalFiltersActive ? styles.filterWhiterBackground : ""
+                      }`}
+                  onClick={handleModalOpen}
+                >
+                  <div
+                    className={
+                      styles.icon__svg_button__choose__vacancyFilter_mobile
+                    }
+                  >
+                    <img
+                      src={
+                        modalFiltersActive ? iconFilterWhiterRed : iconFilter
+                      }
+                      alt="IconFilter"
+                    />
+                  </div>
+                </SwiperSlide>
+                  {activeFiltersArray.length > 0 && activeFiltersArray.map(
+                      (filter, index) =>
+                        isIpadMobile && (
+                          <SwiperSlide
+                            key={filter.category}
+                            className={styles.menu__button__choose__vacancyFilter_mobile_dop}                      
                           >
-                            {el}
-                          </span>
-                          <span
-                            className={styles.menu_button_items_vacancyCount}
-                          >
-                            {el !== "Все" && vacancyCountsByDirection
-                              ? vacancyCountsByDirection[el] || 0
-                              : ""}
-                          </span>
-                          </SwiperSlide>
-                       )
+                            <div
+                              onClick={() =>
+                                removeFilter(filter.category, filter.value)
+                              }
+                            >
+                              <div
+                                // className={styles.menu__button__choose__vacancyFilter_mobile}
+                                style={{display: 'flex'}}
+                              >
+                              <p
+                                className={styles.menu_button_items_vacancyText}
+                              >
+                                {filter.value}
+                              </p>
+                              <span className={styles.xSpan}>✕</span>
+                              </div>
+                            </div>
+                        </SwiperSlide>
+                      )
                     )}
-               </Swiper>
+                  {buttonVacancyChoose.map((el, index) =>
+                  isIpadMobile && el === "Все" ? null : (
+                    <SwiperSlide
+                      key={index}
+                      className={`${
+                        styles.menu__button__choose__vacancyFilter_mobile
+                      } ${selectedFilter === el ? styles.active : ""}`}
+                      onClick={() => handleButtonClick(el)}
+                    >
+                      <span className={styles.menu_button_items_vacancyText}>
+                        {el}
+                      </span>
+                      <span className={styles.menu_button_items_vacancyCount}>
+                        {el !== "Все" && vacancyCountsByDirection
+                          ? vacancyCountsByDirection[el] || 0
+                          : ""}
+                      </span>
+                    </SwiperSlide>
+                  )
+                )}
+              </Swiper>
             )}
           </div>
-          {activeFiltersArray.length > 0 && (
+          {!isIpadMobile && activeFiltersArray.length > 0 && (
             <div>
               <div className={styles.dopFilterName}>Доп. фильтры</div>
               <div className={styles.activeFiltersContainer}>
@@ -343,22 +401,26 @@ const VacanciesMain = ({
                       onClick={() =>
                         removeFilter(filter.category, filter.value)
                       }
+                      onMouseEnter={handleMouseEnter}
+                      onMouseLeave={handleMouseLeave}
                     >
                       <span className={styles.xSpan}>✕</span>
                     </button>
                   </div>
                 ))}
-                 {activeFiltersArray.length > 1 && (
-                <button
-                  className={styles.clearAllFiltersButton}
-                  onClick={clearAllFilters}
-                >
-                  <p className={styles.dopFilterButtonNameClear}>
-                    Очистить все
-                  </p>
-                  <span className={styles.xSpanClear}>✕</span>
-                </button>
-               )}
+                {activeFiltersArray.length > 1 && (
+                  <button
+                    className={styles.clearAllFiltersButton}
+                    onClick={clearAllFilters}
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
+                  >
+                    <p className={styles.dopFilterButtonNameClear}>
+                      Очистить все
+                    </p>
+                    <span className={styles.xSpanClear}>✕</span>
+                  </button>
+                )}
               </div>
             </div>
           )}
@@ -401,31 +463,68 @@ const VacanciesMain = ({
                     key={vacancy.id}
                     to={`/vacancy/${vacancy.id}`}
                     className={styles.vacancyContainer}
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
                   >
-                    <div
-                      className={`${styles.vacancyCell1} ${styles.vacancyCell_title}`}
-                    >
-                      {vacancy.title}
-                      <div className={styles.titleZone}></div>
-                    </div>
-                    <div
-                      className={`${styles.vacancyCell} ${styles.vacancyCell_direction}`}
-                    >
-                      {vacancy.direction}
-                    </div>
-                    <div
-                      className={`${styles.vacancyCell} ${styles.vacancyCell_busyness}`}
-                    >
-                      {vacancy.busyness}
-                    </div>
-                    <div
-                      className={`${styles.vacancyCell} ${styles.vacancyCell_locationStaff}`}
-                    >
-                      {vacancy.locationStaff}
-                    </div>
-                    <div className={styles.vacancyCell_buttonLink}>
-                      <img src={buttonLink} alt="buttonLink" />
-                    </div>
+                    {windowWidth > 1024 && (
+                      <>
+                        <div
+                          className={`${styles.vacancyCell1} ${styles.vacancyCell_title}`}
+                        >
+                          {vacancy.title}
+                          <div className={styles.titleZone}></div>
+                        </div>
+                        <div
+                          className={`${styles.vacancyCell} ${styles.vacancyCell_direction}`}
+                        >
+                          {vacancy.direction}
+                        </div>
+                        <div
+                          className={`${styles.vacancyCell} ${styles.vacancyCell_busyness}`}
+                        >
+                          {vacancy.busyness}
+                        </div>
+                        <div
+                          className={`${styles.vacancyCell} ${styles.vacancyCell_locationStaff}`}
+                        >
+                          {vacancy.locationStaff}
+                        </div>
+                        <div className={styles.vacancyCell_buttonLink}>
+                          <img src={buttonLink} alt="buttonLink" />
+                        </div>
+                      </>
+                    )}
+                    {windowWidth <= 1024 && (
+                      <>
+                        <div className={styles.vacancyContainer111}>
+                          <div
+                            className={`${styles.vacancyCell1} ${styles.vacancyCell_title}`}
+                          >
+                            {vacancy.title}
+                          </div>
+                          <div className={styles.vacancyCell_buttonLink_ipad}>
+                            <img src={buttonLink_ipad} alt="buttonLink_ipad" />
+                          </div>
+                        </div>
+                        <div className={styles.vacancyContainer222}>
+                          <div
+                            className={`${styles.vacancyCell} ${styles.vacancyCell_direction}`}
+                          >
+                            {vacancy.direction}
+                          </div>
+                          <div
+                            className={`${styles.vacancyCell} ${styles.vacancyCell_busyness}`}
+                          >
+                            {vacancy.busyness}
+                          </div>
+                          <div
+                            className={`${styles.vacancyCell} ${styles.vacancyCell_locationStaff}`}
+                          >
+                            {vacancy.locationStaff}
+                          </div>
+                        </div>
+                      </>
+                    )}
                   </Link>
                 ))}
             </>
@@ -446,11 +545,15 @@ const VacanciesMain = ({
               </div>
               <div
                 className={`${styles.showManyButtonWrapper}
-           ${showManyVacancies ? styles.showManyButtonWrapperShifted : ""}`}
+                ${
+                  showManyVacancies ? styles.showManyButtonWrapperShifted : ""
+                }`}
               >
                 <button
                   className={styles.showManyButton}
                   onClick={toggleShowAllVacancies}
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
                 >
                   {showManyVacancies
                     ? "Скрыть вакансии"
@@ -460,7 +563,9 @@ const VacanciesMain = ({
             </div>
           )}
           <div className={styles.temporaryText}>
-            Не нашли подходящую вакансию?
+            {windowWidth > 1024
+              ? "Не нашли подходящую вакансию?"
+              : "Мы ищем именно тебя!"}
           </div>
           <div className={styles.textUnderForm}>
             Оставьте ваши контакты, мы всегда в поиске талантливых
