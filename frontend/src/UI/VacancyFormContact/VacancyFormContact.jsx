@@ -442,7 +442,7 @@ const VacancyFormContact = ({
                   autoComplete="off"
                   className={styles.input_resume_form_contacts}
                 />
-                <div className={styles.line}></div>
+                <div className={`${styles.line} ${styles.line_resume}`}></div>
                 <span className={styles.placeholder}>
                 Ссылка&nbsp;на&nbsp;резюме/портфолио
                 </span>
