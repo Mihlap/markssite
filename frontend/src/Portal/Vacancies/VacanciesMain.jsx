@@ -22,6 +22,7 @@ import iconFilterRed from "./icons/filterRed.svg";
 import iconFilterWhiterRed from "./icons/filterWhiteRed.svg";
 import buttonLink from "./icons/buttonLink.svg";
 import buttonLink_ipad from "./icons/buttonLink1.svg";
+import clearAll from './icons/clearAll.svg'
 import FilterModalVacancies from "./FilterModalVacancies";
 
 const VacanciesMain = ({
@@ -190,9 +191,23 @@ const VacanciesMain = ({
     dispatch(setActiveFilters(resetFilters));
     dispatch(fetchFilteredVacancies(resetFilters));
     setModalFiltersActive(
-      Object.keys(resetFilters).length > 0 &&
-        resetFilters[filterKeyForSpecialty].length > 0
+      Object.keys(resetFilters)?.length > 0 &&
+        resetFilters[filterKeyForSpecialty]?.length > 0
     );
+  };
+
+  const clearAllFiltersMobile = () => {
+    // const resetFilters =
+    //   selectedFilter !== "Все"
+    //     ? selectedFilter
+    //     : {};
+    // setFilters();
+    // dispatch(setActiveFilters());
+    // dispatch(fetchFilteredVacancies());
+    // setModalFiltersActive(
+    //   Object.keys(resetFilters)?.length > 0 &&
+    //     resetFilters[filterKeyForSpecialty]?.length > 0
+    // );
   };
 
   const activeFiltersArray = Object.entries(filters).flatMap(
@@ -275,6 +290,9 @@ const VacanciesMain = ({
               setFilters={setFilters}
               activeFilters={filters}
               selectedFilter={selectedFilter}
+              handleMouseEnter={handleMouseEnter}
+              handleMouseLeave={handleMouseLeave}
+              handleMouseHover={handleMouseHover}
             />
           </div>
           <div className={styles.menu_button_group_vacancy_wrapper_main_swiper}>
@@ -286,9 +304,21 @@ const VacanciesMain = ({
                 className={styles.menu_button_group_vacancy_swiper_mobile}
                 touch="true"
               >
+                {activeFiltersArray?.length > 0 && (
+                 <div
+                    className={styles.menu__button__choose__vacancyFilter_mobile}                              
+                  >
+                    <SwiperSlide
+                    className={styles.menu_button_items_vacancyTex_clear}
+                    onClick={clearAllFiltersMobile}   
+                    >
+                      {/* ✕ */}
+                      <img src={clearAll} alt="clearAll" />
+                    </SwiperSlide>
+                 
+                  </div> 
+                )}
                 <SwiperSlide
-                  onMouseEnter={handleMouseEnter}
-                  onMouseLeave={handleMouseLeave}
                   className={`${
                     styles.menu__button__choose__vacancyFilter_mobile
                   }
@@ -310,12 +340,37 @@ const VacanciesMain = ({
                     />
                   </div>
                 </SwiperSlide>
-                {buttonVacancyChoose.map((el, index) =>
+                  {activeFiltersArray.length > 0 && activeFiltersArray.map(
+                      (filter, index) =>
+                        isIpadMobile && (
+                          <SwiperSlide
+                            key={filter.category}
+                            className={styles.menu__button__choose__vacancyFilter_mobile_dop}                      
+                          >
+                            <div
+                              onClick={() =>
+                                removeFilter(filter.category, filter.value)
+                              }
+                            >
+                              <div
+                                // className={styles.menu__button__choose__vacancyFilter_mobile}
+                                style={{display: 'flex'}}
+                              >
+                              <p
+                                className={styles.menu_button_items_vacancyText}
+                              >
+                                {filter.value}
+                              </p>
+                              <span className={styles.xSpan}>✕</span>
+                              </div>
+                            </div>
+                        </SwiperSlide>
+                      )
+                    )}
+                  {buttonVacancyChoose.map((el, index) =>
                   isIpadMobile && el === "Все" ? null : (
                     <SwiperSlide
                       key={index}
-                      onMouseEnter={handleMouseEnter}
-                      onMouseLeave={handleMouseLeave}
                       className={`${
                         styles.menu__button__choose__vacancyFilter_mobile
                       } ${selectedFilter === el ? styles.active : ""}`}
@@ -335,7 +390,7 @@ const VacanciesMain = ({
               </Swiper>
             )}
           </div>
-          {activeFiltersArray.length > 0 && (
+          {!isIpadMobile && activeFiltersArray.length > 0 && (
             <div>
               <div className={styles.dopFilterName}>Доп. фильтры</div>
               <div className={styles.activeFiltersContainer}>
@@ -346,6 +401,8 @@ const VacanciesMain = ({
                       onClick={() =>
                         removeFilter(filter.category, filter.value)
                       }
+                      onMouseEnter={handleMouseEnter}
+                      onMouseLeave={handleMouseLeave}
                     >
                       <span className={styles.xSpan}>✕</span>
                     </button>
@@ -355,6 +412,8 @@ const VacanciesMain = ({
                   <button
                     className={styles.clearAllFiltersButton}
                     onClick={clearAllFilters}
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
                   >
                     <p className={styles.dopFilterButtonNameClear}>
                       Очистить все
@@ -404,6 +463,8 @@ const VacanciesMain = ({
                     key={vacancy.id}
                     to={`/vacancy/${vacancy.id}`}
                     className={styles.vacancyContainer}
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
                   >
                     {windowWidth > 1024 && (
                       <>
@@ -491,6 +552,8 @@ const VacanciesMain = ({
                 <button
                   className={styles.showManyButton}
                   onClick={toggleShowAllVacancies}
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
                 >
                   {showManyVacancies
                     ? "Скрыть вакансии"

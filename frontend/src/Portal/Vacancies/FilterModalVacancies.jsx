@@ -6,10 +6,17 @@ import { useDispatch, useSelector } from "react-redux";
 
 Modal.setAppElement("#root");
 
-const FilterModalVacancies = ({ isOpen, onClose, setFilters, selectedFilter }) => {
+const FilterModalVacancies = ({
+   isOpen,
+   onClose,
+   setFilters,
+   selectedFilter,
+   handleMouseEnter,
+   handleMouseLeave,
+  }) => {
   const dispatch = useDispatch();
   const activeFilters = useSelector((state) => state.vacancies.activeFilters);
-  const filterKeyForSpecialty = 'direction'; // Defined here
+  const filterKeyForSpecialty = 'direction';
 
   const [localFilters, setLocalFilters] = useState({ ...activeFilters });
 
@@ -120,6 +127,8 @@ const FilterModalVacancies = ({ isOpen, onClose, setFilters, selectedFilter }) =
           onClose();
         }}
         className={`${styles.modal_vacancy_close} ${styles.fixed_modal_vacancy}`}
+        onMouseEnter={handleMouseEnter}
+        onMouseLeave={handleMouseLeave}
       >
         <svg
           width="16"
@@ -156,6 +165,8 @@ const FilterModalVacancies = ({ isOpen, onClose, setFilters, selectedFilter }) =
                     onClick={() =>
                       handleFilterClick(filterGroup.name, button.label)
                     }
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
                   >
                     {button.label}
                   </button>
@@ -165,7 +176,12 @@ const FilterModalVacancies = ({ isOpen, onClose, setFilters, selectedFilter }) =
           ))}
         </div>
         <div className={styles.applyButtonWrapper}>
-          <button className={styles.applyButton} onClick={handleApplyFilters}>
+          <button
+           className={styles.applyButton}
+            onClick={handleApplyFilters}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+            >
             Применить
           </button>
         </div>
