@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import styles from "./Vacancies.module.css";
+import styles from "./VacanciesList.module.css";
 import { Link } from "react-router-dom";
 import LoadingCircle from "../../Loading/LoadingCircle";
 import { fetchVacancies } from "../../store/Slice/vacanciesSlice";
