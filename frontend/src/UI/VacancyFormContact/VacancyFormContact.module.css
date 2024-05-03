@@ -726,6 +726,11 @@
     transition: background-color 0.4s ease;
   }
 
+  .button_vacancy:hover {
+    background-color: var(--blue-75BBFD);   
+  }
+
+
   .button_name_vacancy {
     color: var(--white-F6F6F6);
     font-variant-numeric: lining-nums proportional-nums;
@@ -751,7 +756,14 @@
     width: fit-content;
     margin-top: 1rem;
     transition: background-color 0.4s ease;
+    cursor: none;
   }
+
+  
+  .button_resume_file:hover {
+    background-color: var(--light-light-gray-EBECEE);
+  }
+
 
   .fileAttached {
     display: flex;
@@ -941,6 +953,11 @@
     transition: background-color 0.4s ease;
   }
 
+  .button_vacancy:hover {
+    background-color: var(--blue-75BBFD);   
+  }
+
+
   .button_name_vacancy {
     color: var(--white-F6F6F6);
     font-variant-numeric: lining-nums proportional-nums;
@@ -967,7 +984,13 @@
     width: fit-content;
     margin-top: 1rem;
     transition: background-color 0.4s ease;
+    cursor: none;
   }
+
+  .button_resume_file:hover {
+    background-color: var(--light-light-gray-EBECEE);
+  }
+
 
   .fileAttached {
     display: flex;

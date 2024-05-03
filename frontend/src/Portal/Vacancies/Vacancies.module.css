@@ -882,10 +882,38 @@ font-family: var(--font-raleway);
     background-color: transparent;
     white-space: nowrap;
     color: var(--black-1D2E43);
-    cursor: pointer;
     transition: background-color 0.4s ease, color 0.4s ease;
     margin-right: 8px;
+    cursor: none;
   }
+
+  .menu__button__choose__vacancyFilter_mobile_dop {
+    display: flex;
+    width: fit-content;
+    max-height: calc(100% - 8px);
+    padding: 8px 24px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 2.125rem;
+    border: 1px solid var(--black-1D2E43);
+    background-color: var(--black-1D2E43);
+    white-space: nowrap;
+    color: var(--white-F6F6F6);
+    transition: background-color 0.4s ease, color 0.4s ease;
+    margin-right: 8px;
+    cursor: none;
+   }
+   .menu_button_items_vacancyTex_clear {
+    display: flex;
+    width: fit-content;
+    max-height: calc(100% - 6px);
+    justify-content: center;
+    align-items: center;
+    padding: 0 3px;
+    background-color: var(--light-light-gray-EBECEE);
+    border-radius: 50%;
+  }
+
 
   .menu__button__choose__vacancyFilter_mobile.active {
     background-color: var(--black-1D2E43);
@@ -917,6 +945,7 @@ font-family: var(--font-raleway);
     box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.03);
     height: 148px;
     overflow: hidden;
+    cursor: none;
   }
 
   .vacancyContainer111 {
@@ -952,15 +981,12 @@ font-family: var(--font-raleway);
     text-align: left;
     margin-right: 0rem;
     width: 100%;
-    display: -webkit-box; 
+    display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2; 
+    -webkit-line-clamp: 2;
     overflow: hidden;
-    text-overflow: ellipsis; 
-    
+    text-overflow: ellipsis;
   }
-
-
 
   .vacancyCell_direction {
     width: fit-content;
@@ -1005,7 +1031,21 @@ font-family: var(--font-raleway);
   }
 
   .showVacanciesOfTotalVacancies {
-    padding-top: 32px;
+    padding-top: 24px;
+  }
+
+  .showManyButtonWrapperShifted {
+    margin-top: -20px;
+  }
+  
+  .showManyButton {
+  cursor: none;
+  }
+  
+  
+  .showManyButton:hover {
+    background-color: var(--blue-75BBFD);
+    color: var(--white-F6F6F6);
   }
 
   .temporaryText {
@@ -1034,13 +1074,13 @@ font-family: var(--font-raleway);
   .modal_vacancy_close {
     padding-top: 2.188rem;
     padding-left: 90%;
-    cursor: pointer;
+    cursor: none;
   }
 
   .filterModalContent {
     display: flex;
     flex-direction: column;
-    padding: 27px 2rem 0rem 2rem;
+    padding: 24px 2rem 0rem 2rem;
   }
 
   .filterName_title {
@@ -1050,6 +1090,22 @@ font-family: var(--font-raleway);
   .applyButtonWrapper {
     display: flex;
     padding-top: 16px;
+  }
+  .filterModalButton {
+     cursor: none;
+  }
+  
+  .filterModalButton:hover {
+    background-color: transparent;
+    border: 1px solid #1D2E43;
+  }
+
+  .applyButton {
+    cursor: none;
+  }
+  
+  .applyButton:hover {
+    background-color: var(--blue-75BBFD);
   }
 
 }
@@ -1158,7 +1214,7 @@ font-family: var(--font-raleway);
     text-decoration-line: underline;
     padding-left: 0rem;
     cursor: pointer;
-  } 
+  }
 
   .menu_button_group_vacancy_wrapper,
   .menu__button__choose__vacancyFilter {
@@ -1179,7 +1235,8 @@ font-family: var(--font-raleway);
     width: 100%;
     /* overflow-x: hidden; */
     padding-left: 1rem;
-  }
+    align-items: center;
+   }
 
   .menu__button__choose__vacancyFilter_mobile {
     display: flex;
@@ -1196,6 +1253,36 @@ font-family: var(--font-raleway);
     cursor: pointer;
     transition: background-color 0.4s ease, color 0.4s ease;
     margin-right: 8px;
+    cursor: none;
+  }
+
+  .menu__button__choose__vacancyFilter_mobile_dop {
+    display: flex;
+    width: fit-content;
+    max-height: calc(100% - 8px);
+    padding: 8px 24px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 2.125rem;
+    border: 1px solid var(--black-1D2E43);
+    background-color: var(--black-1D2E43);
+    white-space: nowrap;
+    color: var(--white-F6F6F6);
+    cursor: pointer;
+    transition: background-color 0.4s ease, color 0.4s ease;
+    margin-right: 8px;
+    cursor: none;
+  }
+
+  .menu_button_items_vacancyTex_clear {
+    display: flex;
+    width: fit-content;
+    max-height: calc(100% - 6px);
+    justify-content: center;
+    align-items: center;
+    padding: 0 3px;
+    background-color: var(--light-light-gray-EBECEE);
+    border-radius: 50%;
   }
 
   .menu__button__choose__vacancyFilter_mobile.active {
@@ -1228,6 +1315,7 @@ font-family: var(--font-raleway);
     box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.03);
     height: 148px;
     overflow: hidden;
+    cursor: none;
   }
 
   .vacancyContainer111 {
@@ -1249,16 +1337,16 @@ font-family: var(--font-raleway);
     letter-spacing: 0px;
     text-align: left;
     flex-wrap: wrap;
-    white-space: wrap; 
-   }
+    white-space: wrap;
+  }
 
-   .vacancyCell_title {
+  .vacancyCell_title {
     width: 100%;
-    display: -webkit-box; 
+    display: -webkit-box;
     -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2; 
+    -webkit-line-clamp: 2;
     overflow: hidden;
-    text-overflow: ellipsis;     
+    text-overflow: ellipsis;
     padding: 24px 0 0 0;
     color: var(--black-1D2E43);
     font-family: var(--font-raleway);
@@ -1268,13 +1356,13 @@ font-family: var(--font-raleway);
     letter-spacing: 0px;
     text-align: left;
     margin-right: 0.5rem;
-}
+  }
 
   .vacancyCell_direction {
     width: fit-content;
     margin-right: 0rem;
     flex-wrap: nowrap;
-    white-space: nowrap; 
+    white-space: nowrap;
   }
 
   .vacancyCell_busyness {
@@ -1343,7 +1431,63 @@ font-family: var(--font-raleway);
     padding: 0rem 1rem 60px 1rem;
   }
 
+  .modal_wrapper_vacancy {
+    width: 100%;
+  }
+
+  .modal_vacancy_close {
+    padding-top: 2.188rem;
+    padding-left: 90%;
+    cursor: none;
+  }
+
+  .filterModalContent {
+    display: flex;
+    flex-direction: column;
+    padding: 24px 2rem 0rem 2rem;
+  }
+
+  .filterName {
+    padding-bottom: 0px;
+  }
+
+  .filterName_title {
+    padding-top: 24px;
+  }
+  .filterModalButton {
+    cursor: none;
+ }
+ 
+ .filterModalButton:hover {
+   background-color: transparent;
+   border: 1px solid #1D2E43;
+ }
+
+  .applyButtonWrapper {
+    display: flex;
+    padding-top: 6px;   
+  }  
+
+.showManyButtonWrapperShifted {
+  margin-top: -20px;
+}
+
+.showManyButton {
+cursor: none;
+}
 
 
+.showManyButton:hover {
+  background-color: var(--blue-75BBFD);
+  color: var(--white-F6F6F6);
+}
+
+.applyButton {
+  cursor: none;
+}
+
+.applyButton:hover {
+  background-color: var(--blue-75BBFD);
+}
 
 }
