@@ -68,9 +68,11 @@ const FilterModalVacancies = ({
       filterKey: "locationStaff",
       buttons: [
         { id: "locationStaff-1", label: "Москва", value: "Москва" },
-        { id: "locationStaff-2", label: "Оренбург", value: "Оренбург" },
-        { id: "locationStaff-3", label: "Челябинск", value: "Челябинск" },
-        { id: "locationStaff-4", label: "Ташкент", value: "ташкент" },
+        { id: "locationStaff-2", label: "Санкт-Петербург", value: "Санкт-Петербург" },
+        { id: "locationStaff-3", label: "Воронеж", value: "Воронеж" },
+        { id: "locationStaff-4", label: "Оренбург", value: "Оренбург" },
+        { id: "locationStaff-5", label: "Челябинск", value: "Челябинск" },
+        { id: "locationStaff-6", label: "Ташкент", value: "Ташкент" },
       ],
     },
     {

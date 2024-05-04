@@ -24,6 +24,7 @@ import buttonLink from "./icons/buttonLink.svg";
 import buttonLink_ipad from "./icons/buttonLink1.svg";
 import clearAll from './icons/clearAll.svg'
 import FilterModalVacancies from "./FilterModalVacancies";
+import RocketComponent from "./RocketComponents";
 
 const VacanciesMain = ({
   handleMouseEnter,
@@ -197,18 +198,16 @@ const VacanciesMain = ({
   };
 
   const clearAllFiltersMobile = () => {
-    // const resetFilters =
-    //   selectedFilter !== "Все"
-    //     ? selectedFilter
-    //     : {};
-    // setFilters();
-    // dispatch(setActiveFilters());
-    // dispatch(fetchFilteredVacancies());
-    // setModalFiltersActive(
-    //   Object.keys(resetFilters)?.length > 0 &&
-    //     resetFilters[filterKeyForSpecialty]?.length > 0
-    // );
+    const resetFilters = {};
+  
+    setFilters(resetFilters);
+    dispatch(setActiveFilters(resetFilters));
+    dispatch(fetchFilteredVacancies(resetFilters));
+    dispatch(setSelectedFilter('Все'));  
+    setModalFiltersActive(false);
   };
+  
+  
 
   const activeFiltersArray = Object.entries(filters).flatMap(
     ([key, values]) => {
@@ -236,6 +235,7 @@ const VacanciesMain = ({
           <div className={styles.wrapper_vacancies}>
             <div className={styles.rocket_image}>
               <img src="/assets/rocket.png" alt="rocket.png" />
+              {/* <RocketComponent /> */}
             </div>
             <div className={styles.vacancies_header_wrapper}>
               <span className={styles.vacancies_header1}>
