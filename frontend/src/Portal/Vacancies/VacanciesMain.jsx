@@ -22,8 +22,9 @@ import iconFilterRed from "./icons/filterRed.svg";
 import iconFilterWhiterRed from "./icons/filterWhiteRed.svg";
 import buttonLink from "./icons/buttonLink.svg";
 import buttonLink_ipad from "./icons/buttonLink1.svg";
-import clearAll from './icons/clearAll.svg'
+import clearAll from "./icons/clearAll.svg";
 import FilterModalVacancies from "./FilterModalVacancies";
+import RocketComponent from "./RocketComponents";
 
 const VacanciesMain = ({
   handleMouseEnter,
@@ -197,17 +198,13 @@ const VacanciesMain = ({
   };
 
   const clearAllFiltersMobile = () => {
-    // const resetFilters =
-    //   selectedFilter !== "Все"
-    //     ? selectedFilter
-    //     : {};
-    // setFilters();
-    // dispatch(setActiveFilters());
-    // dispatch(fetchFilteredVacancies());
-    // setModalFiltersActive(
-    //   Object.keys(resetFilters)?.length > 0 &&
-    //     resetFilters[filterKeyForSpecialty]?.length > 0
-    // );
+    const resetFilters = {};
+
+    setFilters(resetFilters);
+    dispatch(setActiveFilters(resetFilters));
+    dispatch(fetchFilteredVacancies(resetFilters));
+    dispatch(setSelectedFilter("Все"));
+    setModalFiltersActive(false);
   };
 
   const activeFiltersArray = Object.entries(filters).flatMap(
@@ -236,6 +233,7 @@ const VacanciesMain = ({
           <div className={styles.wrapper_vacancies}>
             <div className={styles.rocket_image}>
               <img src="/assets/rocket.png" alt="rocket.png" />
+              {/* <RocketComponent /> */}
             </div>
             <div className={styles.vacancies_header_wrapper}>
               <span className={styles.vacancies_header1}>
@@ -248,7 +246,7 @@ const VacanciesMain = ({
             <div className={styles.menu_button_group_vacancy_wrapper}>
               <div className={styles.menu_button_group_vacancy}>
                 {buttonVacancyChoose.map((el, index) => (
-                  <div key={el} className={styles.button_wrapper}>
+                  <div key={`${index}-${el}`} className={styles.button_wrapper}>
                     <button
                       onMouseEnter={handleMouseEnter}
                       onMouseLeave={handleMouseLeave}
@@ -304,19 +302,23 @@ const VacanciesMain = ({
                 className={styles.menu_button_group_vacancy_swiper_mobile}
                 touch="true"
               >
-                {activeFiltersArray?.length > 0 && (
-                 <div
-                    className={styles.menu__button__choose__vacancyFilter_mobile}                              
+                {(activeFiltersArray?.length > 0 ||
+                  buttonVacancyChoose.some(
+                    (el) => selectedFilter === el && el !== "Все"
+                  )) && (
+                  <div
+                    className={
+                      styles.menu__button__choose__vacancyFilter_mobile
+                    }
                   >
                     <SwiperSlide
-                    className={styles.menu_button_items_vacancyTex_clear}
-                    onClick={clearAllFiltersMobile}   
+                      className={styles.menu_button_items_vacancyTex_clear}
+                      onClick={clearAllFiltersMobile}
                     >
                       {/* ✕ */}
                       <img src={clearAll} alt="clearAll" />
                     </SwiperSlide>
-                 
-                  </div> 
+                  </div>
                 )}
                 <SwiperSlide
                   className={`${
@@ -340,37 +342,40 @@ const VacanciesMain = ({
                     />
                   </div>
                 </SwiperSlide>
-                  {activeFiltersArray.length > 0 && activeFiltersArray.map(
-                      (filter, index) =>
-                        isIpadMobile && (
-                          <SwiperSlide
-                            key={filter.category}
-                            className={styles.menu__button__choose__vacancyFilter_mobile_dop}                      
+                {activeFiltersArray.length > 0 &&
+                  activeFiltersArray.map(
+                    (filter, index) =>
+                      isIpadMobile && (
+                        <SwiperSlide
+                          key={`${filter.category}-${index}`}
+                          className={
+                            styles.menu__button__choose__vacancyFilter_mobile_dop
+                          }
+                        >
+                          <div
+                            onClick={() =>
+                              removeFilter(filter.category, filter.value)
+                            }
                           >
                             <div
-                              onClick={() =>
-                                removeFilter(filter.category, filter.value)
-                              }
+                              // className={styles.menu__button__choose__vacancyFilter_mobile}
+                              style={{ display: "flex" }}
                             >
-                              <div
-                                // className={styles.menu__button__choose__vacancyFilter_mobile}
-                                style={{display: 'flex'}}
-                              >
                               <p
                                 className={styles.menu_button_items_vacancyText}
                               >
                                 {filter.value}
                               </p>
                               <span className={styles.xSpan}>✕</span>
-                              </div>
                             </div>
+                          </div>
                         </SwiperSlide>
                       )
-                    )}
-                  {buttonVacancyChoose.map((el, index) =>
+                  )}
+                {buttonVacancyChoose.map((el, index) =>
                   isIpadMobile && el === "Все" ? null : (
                     <SwiperSlide
-                      key={index}
+                      key={`${index}-${el}`}
                       className={`${
                         styles.menu__button__choose__vacancyFilter_mobile
                       } ${selectedFilter === el ? styles.active : ""}`}
