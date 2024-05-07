@@ -49,7 +49,7 @@ export const ValueContainer = ({ children, ...props }) => {
                 transition: "opacity 0.3s ease", // плавный переход
               }}
             >
-              Nабы фильтрации
+              Табы иконок фильтрации
             </div>
             {children}
           </>
