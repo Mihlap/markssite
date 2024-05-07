@@ -399,8 +399,8 @@ const VacanciesMain = ({
             <div>
               <div className={styles.dopFilterName}>Доп. фильтры</div>
               <div className={styles.activeFiltersContainer}>
-                {activeFiltersArray.map((filter) => (
-                  <div key={filter.category} className={styles.activeFilterTag}>
+                {activeFiltersArray.map((filter, index) => (
+                  <div key={`${filter.category}-${index}`} className={styles.activeFilterTag}>
                     <p className={styles.dopFilterButtonName}>{filter.value}</p>
                     <button
                       onClick={() =>
