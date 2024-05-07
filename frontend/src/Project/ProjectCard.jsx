@@ -382,14 +382,14 @@ const ProjectCard = ({
                     <div
                       className={`${styles.left_meta} ${styles.left_meta_castom}`}
                     >
-                      {project.degreeParticipation}
+                  {project.degreeParticipation.split(',').join(', ')}
+
                     </div>
                   </div>
                 </div>
                 <div className={styles.title_text}>
                   {project.descriptionProject}
                 </div>
-
                 <div className={styles.result_container}>
                   {[
                     {
@@ -482,7 +482,7 @@ const ProjectCard = ({
                     <div
                       className={`${styles.left_meta} ${styles.left_meta_castom}`}
                     >
-                      {project.degreeParticipation}
+                     {project.degreeParticipation.split(',').join(', ')}
                     </div>
                   </div>
                 </div>

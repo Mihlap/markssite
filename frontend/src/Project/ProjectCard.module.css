@@ -134,7 +134,7 @@
   border: 1px solid var(--gray-959DA6);
   border-radius: 2.125rem;
   padding: 0.25rem 1rem;
-  margin-left: 0.5rem;
+  /* margin-left: 0.5rem; */
   align-items: center;
   justify-content: center;
 }
@@ -144,7 +144,7 @@
   flex-wrap: wrap;
   position: relative;
   bottom: 5px;
-  margin-left: 10px;
+  margin-left: 8px;  
 }
 
 .title_text {
