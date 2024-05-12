@@ -44,11 +44,15 @@ export default function Header({
     medium: `${Host}/videos/main_company_ipad.mp4`,
     small: `${Host}/videos/main_company_mobile.mp4`,
   };
-  // const [loadingArticle, setLoadingArticle] = useState(false);
-  // const cursorVariant = useSelector((state) => state.cursor);
+  const [loadingArticle, setLoadingArticle] = useState(false);
+  const cursorVariant = useSelector((state) => state.cursor);
 
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+  const [videoSrc, setVideoSrc] = useState(null);
+  const sliderCardRef = useRef(null);
+
+  const { article, loading, error } = useSelector((state) => state.article);
   const dispatch = useDispatch();
-  const { loading, error } = useSelector((state) => state.article);
   const articles = useSelector((state) => state.article.article);
   const projects = useSelector((state) => state.searchproject.projects);
   const ArticleLeft = useSelector(
@@ -60,10 +64,6 @@ export default function Header({
 
   const MapArticle = ArticleLeft?.map((el) => el.publication.publication);
   const MapArticleRight = ArticleRight?.map((el) => el.publication.publication);
-
-  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
-  const [videoSrc, setVideoSrc] = useState(null);
-  const sliderCardRef = useRef(null);
 
   const isMobile = window.innerWidth <= 767;
 
@@ -171,18 +171,18 @@ export default function Header({
   }, []);  
   
 
-  if (error) {
-    return (
-      <div>
-        {" "}
-        <Error error={error.message} />
-      </div>
-    );
-  }
-  if (loading) {
-    return <LoadingCircle />;
-    // return <LoadingNew />;
-  }
+  // if (error) {
+  //   return (
+  //     <div>
+  //       {" "}
+  //       <Error error={error.message} />
+  //     </div>
+  //   );
+  // }
+  // if (loading) {
+  //   return <LoadingCircle />;
+  //   // return <LoadingNew />;
+  // }
 
   const NewProject = projects.map((el) =>
     el && el.project !== undefined ? el.project : null
