@@ -213,7 +213,8 @@ const ArticleCard = ({
 
   const previousArticle = articles[previousIndex];
   const nextArticle = articles[nextIndex];
-  const userSelectedBlocks = article?.ConstructorArticles?.map((el) => el.data);
+  const userSelectedBlocks = article?.ConstructorArticles?.map((el) => el.data) || [];
+
 
   const imageOpenSource =
   article && article.imageOpen
