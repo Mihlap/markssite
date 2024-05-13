@@ -7,10 +7,10 @@
 }
 
 .wrapper_vacancies {
-  border-top: 1px solid var(--light-light-gray-EBECEE);
-  border-bottom: 1px solid var(--light-light-gray-EBECEE);
-  background: linear-gradient(261deg, rgba(255, 203, 193, 0.09) -4.67%, rgba(117, 187, 253, 0.09) 44.63%, rgba(188, 188, 188, 0.09) 103.07%);
-  backdrop-filter: blur(7px);
+  border-top: 1px solid rgb(235, 236, 238);
+  border-bottom: 1px solid rgb(235, 236, 238);
+  backdrop-filter: blur(14px);
+  background: linear-gradient(221.46deg, rgba(255, 203, 193, 0.09) -4.781%, rgba(117, 187, 253, 0.09) 44.023%, rgba(188, 188, 188, 0.09) 101.891%);
   position: relative;
   display: flex;
   justify-content: center;
@@ -23,14 +23,15 @@
 }
 
 .rocket_image {
-  position: absolute;
+  position: fixed;
   display: flex;
   justify-content: flex-end;
   width: 100%;
-  height: 110%;
+  height: 100%;
   object-fit: cover;
   object-position: center;
-}
+} 
+
 
 .vacancies_header_wrapper {
   position: absolute;
