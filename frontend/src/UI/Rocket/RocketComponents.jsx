@@ -26,7 +26,7 @@ const RocketComponent = () => {
         const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
         scene.add(ambientLight);
         const pointLight = new THREE.PointLight(0xffffff, 1);
-        pointLight.position.set(25, 50, 25);
+        pointLight.position.set(25, 25, 25);
         scene.add(pointLight);
 
         const loader = new GLTFLoader();
