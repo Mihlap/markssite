@@ -232,8 +232,8 @@ const VacanciesMain = ({
         <div className={styles.main_vacancies_block}>
           <div className={styles.wrapper_vacancies}>
             <div className={styles.rocket_image}>
-              <img src="/assets/rocket.png" alt="rocket.png" />
-              {/* <RocketComponent /> */}
+              {/* <img src="/assets/rocket.png" alt="rocket.png" /> */}
+              <RocketComponent />
             </div>
             <div className={styles.vacancies_header_wrapper}>
               <span className={styles.vacancies_header1}>
