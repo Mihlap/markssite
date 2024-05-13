@@ -4,9 +4,12 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 
 const RocketComponent = () => {
     const mountRef = useRef(null);
+    const groupRef = useRef(null);
     const rocketModelRef = useRef(null);
-    const hoveredRef = useRef(false); // используем useRef для отслеживания состояния наведения
-    const rotationSpeedRef = useRef(0.01); // начальная скорость вращения также храним в useRef
+    const hoveredRef = useRef(false);
+    const rotationSpeedRef = useRef(0.01);
+    const rendererRef = useRef(null);
+    
 
     useEffect(() => {
         const width = window.innerWidth;
@@ -15,8 +18,8 @@ const RocketComponent = () => {
         const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
         camera.position.set(0, 0, 100);
 
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
-        renderer.setClearColor("#F6F6F6");
+        const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+        renderer.setClearColor(0x000000, 0);
         renderer.setSize(width, height);
         mountRef.current.appendChild(renderer.domElement);
 
@@ -27,15 +30,46 @@ const RocketComponent = () => {
         scene.add(pointLight);
 
         const loader = new GLTFLoader();
-        loader.load('/assets/rocket.gltf', gltf => {
-            const rocket = gltf.scene;
-            rocket.position.set(0, 0, 0);
-            rocket.scale.set(0.2, 0.2, 0.2);
-            scene.add(rocket);
-            rocketModelRef.current = rocket;
-        }, undefined, error => {
-            console.error('Error loading GLTF:', error);
-        });
+
+        if (window.innerWidth <= 1024) {
+            loader.load('/assets/scene.gltf', gltf => {
+                const rocket = gltf.scene;
+                rocket.position.set(0, 0, 0);
+                rocket.scale.set(130, 130, 130);
+                rocketModelRef.current = rocket;        
+    
+                groupRef.current = new THREE.Group();
+                groupRef.current.add(rocketModelRef.current);
+                if (groupRef.current) {
+                    groupRef.current.position.x += 45;
+                    groupRef.current.position.y = 50;
+                }
+                groupRef.current.rotation.z = Math.PI / 2.5;
+                scene.add(groupRef.current);           
+            }, undefined, error => {
+                console.error('Ошибка загрузки GLTF:', error);
+            })
+        } else {
+            loader.load('/assets/scene.gltf', gltf => {
+                const rocket = gltf.scene;
+                rocket.position.set(0, 0, 0);
+                rocket.scale.set(200, 200, 200);
+                rocketModelRef.current = rocket;        
+    
+                groupRef.current = new THREE.Group();
+                groupRef.current.add(rocketModelRef.current);
+                if (groupRef.current) {
+                    groupRef.current.position.x += 120;
+                    groupRef.current.position.y = 35;
+                }
+                groupRef.current.rotation.z = Math.PI / 2.5;
+                scene.add(groupRef.current);           
+            }, undefined, error => {
+                console.error('Ошибка загрузки GLTF:', error);
+            })
+        }
+      
+        
 
         const raycaster = new THREE.Raycaster();
         const mouse = new THREE.Vector2();
@@ -44,21 +78,22 @@ const RocketComponent = () => {
             mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
             mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
             raycaster.setFromCamera(mouse, camera);
-            const intersects = rocketModelRef.current ? raycaster.intersectObject(rocketModelRef.current, true) : [];
-            hoveredRef.current = intersects.length > 0;
+            hoveredRef.current = rocketModelRef.current ? raycaster.intersectObject(rocketModelRef.current, true).length > 0 : false;
         }
 
         window.addEventListener('mousemove', onMouseMove);
 
         const animate = () => {
             requestAnimationFrame(animate);
-            if (rocketModelRef.current) {
+            if (groupRef.current) {
                 if (hoveredRef.current) {
-                    rotationSpeedRef.current = Math.min(rotationSpeedRef.current + 0.005, 0.05);
+                    rotationSpeedRef.current += 0.005;
                 } else {
-                    rotationSpeedRef.current = Math.max(rotationSpeedRef.current - 0.005, 0.01);
+                   rotationSpeedRef.current = Math.max(rotationSpeedRef.current - 0.01, 0.01);
                 }
-                rocketModelRef.current.rotation.y += rotationSpeedRef.current;
+                if (rocketModelRef.current) {
+                    rocketModelRef.current.rotation.y += rotationSpeedRef.current;
+                }
             }
             renderer.render(scene, camera);
         };
@@ -67,111 +102,23 @@ const RocketComponent = () => {
 
         return () => {
             window.removeEventListener('mousemove', onMouseMove);
-            mountRef.current.removeChild(renderer.domElement);
-            scene.clear();
-            renderer.dispose();
+            if (rendererRef.current) {
+                mountRef.current.removeChild(rendererRef.current.domElement);
+            }
+          renderer.dispose();
         };
     }, []);
 
-    
-
-
-    return <div ref={mountRef} style={{ width: '100%', height: '100vh' }} />;
+    return (
+        <div className="rocket_image">
+            <div ref={mountRef} />                   
+        </div>
+    );
 };
 
 export default RocketComponent;
 
 
-// import React, { useEffect, useRef } from 'react';
-// import * as THREE from 'three';
 
-// const RocketComponent = () => {
-//   const mountRef = useRef(null);
-//   const rotationSpeedRef = useRef(0.01); // Используем useRef для скорости вращения
-//   const rocketRef = useRef();
 
-//   useEffect(() => {
-//     const width = window.innerWidth;
-//     const height = window.innerHeight;
-//     const scene = new THREE.Scene();
-//     const camera = new THREE.PerspectiveCamera(100, width / height, 0.1, 1000);
-//     camera.position.z = 3;
-
-//     const renderer = new THREE.WebGLRenderer({ antialias: true });
-//     renderer.setClearColor("#F6F6F6");
-//     renderer.setSize(width, height);
-//     mountRef.current.appendChild(renderer.domElement);
-
-//     const light = new THREE.PointLight(0xffffff, 1.5);
-//     light.position.set(0, 0, 0);
-//       scene.add(light);
-      
-//           // Создание тела ракеты
-//     const bodyGeometry = new THREE.CylinderGeometry(0.5, 0.5, 2, 32);
-//     const bodyMaterial = new THREE.MeshStandardMaterial({ color: 0xff0000 });
-//     const body = new THREE.Mesh(bodyGeometry, bodyMaterial);
-//     body.position.set(0, 1, 0); // Позиционируем тело ракеты
-
-//     // Создание носовой части ракеты
-//     const coneGeometry = new THREE.ConeGeometry(0.5, 1, 32);
-//     const coneMaterial = new THREE.MeshStandardMaterial({ color: 0xff0000 });
-//     const cone = new THREE.Mesh(coneGeometry, coneMaterial);
-//     cone.position.set(0, 2, 0); // Позиционируем носовую часть
-
-//     // Создание сопла ракеты
-//     const nozzleGeometry = new THREE.CylinderGeometry(0.5, 0.3, 0.5, 32);
-//     const nozzleMaterial = new THREE.MeshStandardMaterial({ color: 0xaaaaaa });
-//     const nozzle = new THREE.Mesh(nozzleGeometry, nozzleMaterial);
-//     nozzle.position.set(0, 0, 0); // Позиционируем сопло ракеты
-
-//     // Добавление всех частей к сцене
-//     scene.add(body);
-//     scene.add(cone);
-//     scene.add(nozzle);
-
-//     const geometry = new THREE.BoxGeometry(1, 1, 1);
-//     const material = new THREE.MeshStandardMaterial({ color: 0xff0000 });
-//     const rocket = new THREE.Mesh(geometry, material);
-//     rocket.position.set(0, 1, 0);
-//     scene.add(rocket);
-//     rocketRef.current = rocket;
-    
-
-//     const raycaster = new THREE.Raycaster();
-//     const mouse = new THREE.Vector2();
-
-//     function onMouseMove(event) {
-//       mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-//       mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-//       raycaster.setFromCamera(mouse, camera);
-//       const intersects = raycaster.intersectObjects([rocket]);
-
-//       // Изменяем скорость вращения сразу, используя ref
-//       rotationSpeedRef.current = intersects.length > 0 ? 0.05 : 0.01;
-//     }
-
-//     window.addEventListener('mousemove', onMouseMove);
-
-//     const animate = () => {
-//       requestAnimationFrame(animate);
-//       if (rocketRef.current) {
-//         rocketRef.current.rotation.y += rotationSpeedRef.current; // Используем значение из ref
-//       }
-//       renderer.render(scene, camera);
-//     };
-
-//     animate();
-
-//     return () => {
-//       window.removeEventListener('mousemove', onMouseMove);
-//       mountRef.current.removeChild(renderer.domElement);
-//       scene.clear();
-//       renderer.dispose();
-//     };
-//   }, []);
-
-//   return <div ref={mountRef} style={{ width: '100vw', height: '100vh' }} />;
-// };
-
-// export default RocketComponent;
 
