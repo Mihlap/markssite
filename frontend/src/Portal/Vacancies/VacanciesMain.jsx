@@ -24,7 +24,7 @@ import buttonLink from "./icons/buttonLink.svg";
 import buttonLink_ipad from "./icons/buttonLink1.svg";
 import clearAll from "./icons/clearAll.svg";
 import FilterModalVacancies from "./FilterModalVacancies";
-import RocketComponent from "./RocketComponents";
+import RocketComponent from "../../UI/Rocket/RocketComponents";
 
 const VacanciesMain = ({
   handleMouseEnter,
