@@ -393,8 +393,9 @@
 
 }
 
-
-
+.noAnimation {
+    animation: none !important;
+  }
 
 @keyframes fillShift {
     from {
