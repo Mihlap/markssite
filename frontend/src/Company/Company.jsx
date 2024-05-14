@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Modal from "react-modal";
 import { useInView } from "react-intersection-observer";
 import { useDispatch, useSelector } from "react-redux";
@@ -75,8 +75,7 @@ export default function Company({
   const blockSlider = useRef(null);
   const nameCompanyRef = useRef(null);
   const thisBlockRef = useRef(null);
-  const anchorRef = useRef(null);
-
+ 
   const countDepartment = useSelector((state) => state.counter.countDepartment);
   const countGap = useSelector((state) => state.counter.countGap);
   const countScient = useSelector((state) => state.counter.countScient);
@@ -125,12 +124,13 @@ export default function Company({
   }, []);
 
   useEffect(() => {
-    dispatch(selectCard(null));
-    dispatch(fetchCategoryStaff(category));
-    setShowCards(true);
+    if (category) {
+      dispatch(fetchCategoryStaff(category));
+      setShowCards(true);
+    }
   }, [category, dispatch]);
 
-  const handleButtonClick = (category, selectedCardId) => {
+  const handleButtonClick = useCallback((newCategory, selectedCardId) => {
     if (selectedCardId) {
       dispatch(selectCard(selectedCardId));
       setIsModalOpen(true);
@@ -138,12 +138,14 @@ export default function Company({
       setIsModalOpen(false);
       dispatch(selectCard(null));
       setShowCards(true);
-      dispatch(fetchCategoryStaff(category));
-      setActiveButton(category);
-      dispatch(setCategory(category));
+      if (newCategory !== category) {
+        setActiveButton(newCategory);
+        dispatch(setCategory(newCategory));
+      }
     }
-  };
+  }, [category, dispatch]);
 
+ 
   useEffect(() => {
     const timer1 = setTimeout(() => {
       if (countPercent < 1000) {
@@ -265,9 +267,9 @@ export default function Company({
       </div>
     );
   }
-  if (loading) {
-    return <LoadingCircle />;
-  }
+  // if (loading) {
+  //   return <LoadingCircle />;
+  // }
 
   // кнопки временно закоменчены, будут в дальнейшем использованы
   //  {/* <button
@@ -316,7 +318,7 @@ export default function Company({
               <source src={videoSrc2} type="video/mp4" preload="auto" />
             </video>
           )}
-        </div>
+        </div>      
         <div ref={blockSlider} className={styles.underSlider_text_wrapper}>
           <span className={styles.span_underSlider_text1}>
             Создаём пространства будущего.
@@ -512,6 +514,11 @@ export default function Company({
             handleMouseHover={handleMouseHover}
           />
         )}
+          {/* {loading && (
+          <div className={styles.loadingOverlay}>
+            <LoadingCircle />
+          </div>
+        )} */}
         <div className={styles.specialist_wrapper}>
           <div className={styles.specialist}>Специалисты</div>
           {isMobile && (
