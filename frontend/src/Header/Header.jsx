@@ -171,14 +171,14 @@ export default function Header({
   }, []);  
   
 
-  // if (error) {
-  //   return (
-  //     <div>
-  //       {" "}
-  //       <Error error={error.message} />
-  //     </div>
-  //   );
-  // }
+  if (error) {
+    return (
+      <div>
+        {" "}
+        <Error error={error.message} />
+      </div>
+    );
+  }
   // if (loading) {
   //   return <LoadingCircle />;
   //   // return <LoadingNew />;
