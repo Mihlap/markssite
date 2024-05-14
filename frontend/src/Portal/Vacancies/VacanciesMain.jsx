@@ -24,7 +24,7 @@ import buttonLink from "./icons/buttonLink.svg";
 import buttonLink_ipad from "./icons/buttonLink1.svg";
 import clearAll from "./icons/clearAll.svg";
 import FilterModalVacancies from "./FilterModalVacancies";
-import RocketComponent from "./RocketComponents";
+import RocketComponent from "../../UI/Rocket/RocketComponents";
 
 const VacanciesMain = ({
   handleMouseEnter,
@@ -464,7 +464,7 @@ const VacanciesMain = ({
                     : totalDisplayedVacancies
                 )
                 .map((vacancy) => (
-                  <Link
+                  <div
                     key={vacancy.id}
                     to={`/vacancy/${vacancy.id}`}
                     className={styles.vacancyContainer}
@@ -508,7 +508,7 @@ const VacanciesMain = ({
                             {vacancy.title}
                           </div>
                           <div className={styles.vacancyCell_buttonLink_ipad}>
-                            <img src={buttonLink_ipad} alt="buttonLink_ipad" />
+                            {/* <img src={buttonLink_ipad} alt="buttonLink_ipad" /> */}
                           </div>
                         </div>
                         <div className={styles.vacancyContainer222}>
@@ -530,7 +530,7 @@ const VacanciesMain = ({
                         </div>
                       </>
                     )}
-                  </Link>
+                  </div>
                 ))}
             </>
           ) : (
