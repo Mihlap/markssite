@@ -20,6 +20,20 @@ export const fetchVacancies = createAsyncThunk(
   }
 );
 
+export const fetchEmployees = createAsyncThunk(
+  'vacancies/fetchEmployees',
+  async (id) => {
+    try {
+      const response = await axios.get(`${serverHost}/api-vacancy/vacancies/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error('Error fetching employee:', error);
+      throw new Error(`Error fetching employee: ${error}`);
+    }
+  }
+);
+
+
 const vacanciesSlice = createSlice({
   name: 'vacancies',
   initialState: {
@@ -30,6 +44,7 @@ const vacanciesSlice = createSlice({
     error: null,
     hidden: [],
     formData: {
+    id: "",
     title: "",
     textBlock1: "",
     textBlock2: "",
@@ -117,6 +132,18 @@ const vacanciesSlice = createSlice({
       state.vacancies = action.payload;
     },
     [fetchVacancies.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.error.message;
+    },
+    [fetchEmployees.pending]: (state) => {
+      state.loading = true;
+      state.error = null;
+    },
+    [fetchEmployees.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.vacancies = [action.payload]; 
+    },      
+    [fetchEmployees.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.error.message;
     },

@@ -186,6 +186,24 @@ router.get('/getzapros', async (req, res) => {
   }
 });
 
+router.get('/vacancies/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const data = await Employee.findByPk(id);
+
+    if (!data) {
+      return res.status(404).json({
+        error: 'Вакансия с указанным идентификатором не найден.'
+      });
+    }
+    res.json(data);
+  } catch (error) {
+    res.status(500).json({
+      error: 'Произошла ошибка при получении данных.'
+    });
+  }
+});
+
 
 router.get('/getzapros-filter', async (req, res) => {
   try {
