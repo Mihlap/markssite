@@ -508,7 +508,7 @@ font-family: var(--font-raleway);
 
 .vacancyCell_buttonLink {
   margin-right: 2.25rem;
-  background-color: var(--blue-75BBFD);
+  /* background-color: var(--blue-75BBFD); */
   width: 41px;
   height: 41px;
   border-radius: 50%;
@@ -519,7 +519,7 @@ font-family: var(--font-raleway);
 }
 
 .vacancyContainer:hover .vacancyCell_buttonLink {
-  background-color: var(--dark-blue-389FFF);
+  /* background-color: var(--dark-blue-389FFF); */
 }
 
 .vacancyContainer:hover .titleZone {
@@ -1014,7 +1014,7 @@ font-family: var(--font-raleway);
     display: flex;
     margin-right: 1.5rem;
     margin-top: 24px;
-    background-color: var(--blue-75BBFD);
+    /* background-color: var(--blue-75BBFD); */
     width: 24px;
     height: 24px;
     border-radius: 50%;
@@ -1025,7 +1025,7 @@ font-family: var(--font-raleway);
   }
 
   .vacancyContainer:hover .vacancyCell_buttonLink_ipad {
-    background-color: var(--dark-blue-389FFF);
+    /* background-color: var(--dark-blue-389FFF); */
   }
 
   .showVacanciesOfTotalVacanciesContainer {
@@ -1386,7 +1386,7 @@ font-family: var(--font-raleway);
     display: flex;
     margin-right: 1.5rem;
     margin-top: 24px;
-    background-color: var(--blue-75BBFD);
+    /* background-color: var(--blue-75BBFD); */
     width: 24px;
     height: 24px;
     border-radius: 50%;
@@ -1397,7 +1397,7 @@ font-family: var(--font-raleway);
   }
 
   .vacancyContainer:hover .vacancyCell_buttonLink_ipad {
-    background-color: var(--dark-blue-389FFF);
+    /* background-color: var(--dark-blue-389FFF); */
   }
 
   .showVacanciesOfTotalVacanciesContainer {
