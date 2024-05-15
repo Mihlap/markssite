@@ -196,8 +196,11 @@ export default function AddHRPortal({ user }) {
           {buttonsFilter.map((button, index) => (
             <button
               key={index}
-              className={`${styles.card_components_admin__buttonFilter__group}
-            ${activeButtonIndex === index ? styles.activeButtonVacancy : ""}`}
+              // className={`${styles.card_components_admin__buttonFilter__group}
+              // ${activeButtonIndex === index ? styles.activeButtonVacancy : ""}`}
+              className={`${styles.card_components_admin__buttonFilter__group} ${
+                activeButtonIndex === index ? styles.activeButtonVacancy : ""
+                } ${index === 0 ? styles.noAnimation : ""}`}
               onClick={() => handleButtonsFilterClick(index)}
             >
               <img
