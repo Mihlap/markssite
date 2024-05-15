@@ -252,7 +252,7 @@ const VacancyFormContact = ({
                   className={styles.line}
                   // style={{ backgroundColor: inputLineColor }}
                 ></div>
-                <span className={styles.placeholder}>Номер&nbsp;телефона</span>
+                <span className={styles.placeholder}>Телефон</span>
                 {!isValid && formData.phone.length > 0 && (
                   <span className={styles.error_line}>
                     Некорректный телефон
