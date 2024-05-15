@@ -1,0 +1,70 @@
+@import "../../App.css";
+
+.main_vacancy_block {
+  width: 100%;
+  height: 100%;
+  min-height: 81vh;
+  position: relative;
+
+  &__wrapper {
+    display: flex;
+    border-bottom: 0.0625rem solid rgb(235, 236, 238);
+    border-top: 0.0625rem solid rgb(235, 236, 238);
+    backdrop-filter: blur(0.88rem);
+    background: linear-gradient(221.46deg, rgba(255, 203, 193, 0.09) -4.631%, rgba(117, 187, 253, 0.09) 44.805%, rgba(188, 188, 188, 0.09) 103.423%);
+    position: relative;
+    width: 100%;
+    min-width: 100%;
+    min-height: 100%;
+    height: 645px;
+    z-index: 0;
+
+    &__blockWrapper {
+      padding-left: 3.875rem;
+      padding-top: 150px;
+      max-width: 51rem;
+    }
+
+    &__vacancyTitle {
+      color: var(--black-1D2E43);
+      font-family: var(--font-unbounded);
+      font-size: 3rem;
+      font-weight: var(--fw-300);
+      line-height: 4rem;
+      letter-spacing: 0rem;
+      text-align: left;
+      // min-height: 2em;
+    }
+
+    &__vacancyTitle1 {
+      font-family: var(--font-raleway);
+      font-weight: var(--fw-400);
+      letter-spacing: 0rem;     
+      max-width: 40rem;
+
+      &__titleKey {
+        color: var(--gray-959DA6);
+        font-size: 1rem;
+        line-height: 1.5rem; 
+        padding-top: 32px;   
+      }
+
+      &__titleValue {
+        color: var(--black-1D2E43);
+        font-size: 1.25rem;
+        line-height: 1.75rem;  
+        padding-top: 8px;      
+      }
+
+    }
+
+  }
+
+  &__all_button {
+    position: absolute;
+    top: 8%;
+    left: 3.875rem;
+    cursor: pointer;
+    z-index: 1;
+  }
+}
