@@ -252,7 +252,7 @@ export default function App() {
                   <Route
                     path="/portal/vacancies"
                     element={
-                      <VacanciesMain
+                      <Vacancies
                         handleMouseEnter={handleMouseEnter}
                         handleMouseLeave={handleMouseLeave}
                         handleMouseHover={handleMouseHover}
