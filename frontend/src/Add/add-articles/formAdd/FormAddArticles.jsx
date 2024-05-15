@@ -717,6 +717,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
                 type="text"
                 className={styles.form__field}
                 placeholder="author"
+                autoComplete="off"
                 name="author"
                 id="author"
                 value={inputData.author}
@@ -734,6 +735,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
                 required
                 type="text"
                 className={styles.form__field}
+                autoComplete="off"
                 placeholder="city"
                 name="city"
                 id="city"
@@ -752,6 +754,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
                 type="text"
                 required
                 className={styles.form__field}
+                autoComplete="off"
                 placeholder="dataMonthYear"
                 name="dataMonthYear"
                 id="dataMonthYear"
