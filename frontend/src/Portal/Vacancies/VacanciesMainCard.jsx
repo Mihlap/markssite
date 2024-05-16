@@ -29,32 +29,52 @@ const VacanciesMainCard = ({
         <title>Marks Group</title>
       </Helmet>
       <div className={styles.main_vacancy_block}>
-        <div className={styles.main_vacancy_block__wrapper}>
-          {/* {loading && <LoadingCircle/>}
-          {error && <Error/>} */}
-          <ul className={styles.main_vacancy_block__wrapper__blockWrapper}>
-            {vacancies?.map((vacancy) => (
-              <li
-                key={vacancy.id}
-                className={styles.main_vacancy_block__wrapper__vacancyTitle}
-              >
-                {vacancy.title}
-                <ul className={styles.main_vacancy_block__wrapper__vacancyTitle1}>
-                  <li className={styles.main_vacancy_block__wrapper__vacancyTitle1__titleKey}>Мы ищем:</li> 
-                  <li className={styles.main_vacancy_block__wrapper__vacancyTitle1__titleValue} dangerouslySetInnerHTML={{__html: vacancy.searchStaff}}></li>
-                </ul>
-              </li>
-            ))}
-          </ul>
-        </div>
+  <div className={styles.main_vacancy_block__wrapper}>
+    <ul className={styles.main_vacancy_block__wrapper__blockWrapper}>
+      {vacancies?.map((vacancy) => (
+        <li key={vacancy.id} className={styles.main_vacancy_block__wrapper__blockWrapper__1}>
+          <div className={styles.main_vacancy_block__wrapper__left}>
+            <div className={styles.main_vacancy_block__wrapper__vacancyTitle}>
+              {vacancy.title}
+            </div>
+            <div className={styles.main_vacancy_block__wrapper__vacancyDetails}>
+              <ul className={styles.main_vacancy_block__wrapper__vacancyTitle1}>
+                <li className={styles.main_vacancy_block__wrapper__vacancyTitle1__titleKey}>Мы ищем:</li>
+                <li className={styles.main_vacancy_block__wrapper__vacancyTitle1__titleValue} dangerouslySetInnerHTML={{ __html: vacancy.searchStaff }}></li>
+              </ul>
+            </div>
+          </div>
+          <div className={styles.main_vacancy_block__wrapper__blockRight}>
+            <ul className={styles.main_vacancy_block__wrapper__vacancyTitle1}>
+              <li className={styles.main_vacancy_block__wrapper__vacancyTitle1__titleKey}>Опыт работы:</li>
+              <li className={styles.main_vacancy_block__wrapper__vacancyTitle1__titleValue}>{vacancy.experience}</li>
+            </ul>
+            <ul className={styles.main_vacancy_block__wrapper__vacancyTitle1}>
+              <li className={styles.main_vacancy_block__wrapper__vacancyTitle1__titleKey}>Локация:</li>
+              <li className={styles.main_vacancy_block__wrapper__vacancyTitle1__titleValue}>{vacancy.location}</li>
+            </ul>
+            <ul className={styles.main_vacancy_block__wrapper__vacancyTitle1}>
+              <li className={styles.main_vacancy_block__wrapper__vacancyTitle1__titleKey}>Занятость:</li>
+              <li className={styles.main_vacancy_block__wrapper__vacancyTitle1__titleValue}>{vacancy.employment}</li>
+            </ul>
+            <ul className={styles.main_vacancy_block__wrapper__vacancyTitle1}>
+              <li className={styles.main_vacancy_block__wrapper__vacancyTitle1__titleKey}>Режим работы:</li>
+              <li className={styles.main_vacancy_block__wrapper__vacancyTitle1__titleValue}>{vacancy.workingMode}</li>
+            </ul>
+          </div>
+        </li>
+      ))}
+    </ul>
+  </div>
         <div
           className={styles.main_vacancy_block__all_button}
           onMouseEnter={handleMouseEnter}
           onMouseLeave={handleMouseLeave}
         >
-          <AllVacancyButton />
-        </div>
-      </div>
+    <AllVacancyButton />
+  </div>
+</div>
+
     </>
   );
 };
