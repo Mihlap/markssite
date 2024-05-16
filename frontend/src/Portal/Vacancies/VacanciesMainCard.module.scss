@@ -18,11 +18,18 @@
     min-height: 100%;
     height: 645px;
     z-index: 0;
-
+  
     &__blockWrapper {
+      flex-direction: column;
       padding-left: 3.875rem;
       padding-top: 150px;
       max-width: 51rem;
+    }
+
+    &__blockWrapper__1 {
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
     }
 
     &__vacancyTitle {
@@ -55,7 +62,10 @@
         line-height: 1.75rem;  
         padding-top: 8px;      
       }
+    }
 
+    &__blockRight {
+      display: grid;
     }
 
   }
@@ -68,3 +78,72 @@
     z-index: 1;
   }
 }
+
+
+
+// .main_vacancy_block__wrapper {
+//   max-width: 1200px;
+//   margin: 0 auto;
+// }
+
+// .main_vacancy_block__wrapper__blockWrapper {
+//   display: flex;
+//   flex-direction: column;
+//   gap: 20px;
+// }
+
+// .main_vacancy_block__wrapper__blockWrapper__1 {
+//   display: flex;
+//   justify-content: space-between;
+//   background: #fff;
+//   padding: 20px;
+//   border: 1px solid #ddd;
+//   border-radius: 8px;
+//   flex-wrap: wrap;
+// }
+
+.main_vacancy_block__wrapper__left {
+  flex: 1;
+  min-width: 600px;
+}
+
+// .main_vacancy_block__wrapper__vacancyTitle {
+//   font-size: 24px;
+//   font-weight: bold;
+// }
+
+.main_vacancy_block__wrapper__vacancyDetails {
+  margin-top: 10px;
+}
+
+// .main_vacancy_block__wrapper__vacancyTitle1 {
+//   list-style-type: none;
+//   padding: 0;
+//   margin: 10px 0;
+// }
+
+// .main_vacancy_block__wrapper__vacancyTitle1__titleKey {
+//   font-weight: bold;
+// }
+
+// .main_vacancy_block__wrapper__vacancyTitle1__titleValue {
+//   margin-left: 10px;
+// }
+
+.main_vacancy_block__wrapper__blockRight {
+  display: flex;
+  position: absolute;
+  top: 50px;
+  right: 100px;
+  flex-wrap: wrap;
+  // gap: 20px;
+  flex: 2;
+  min-width: 200px;
+  z-index: 100;
+}
+
+.main_vacancy_block__wrapper__blockRight > ul {
+  flex: 1 1 calc(50% - 10px);
+}
+
+
