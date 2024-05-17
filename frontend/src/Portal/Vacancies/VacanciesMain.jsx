@@ -232,8 +232,8 @@ const VacanciesMain = ({
         <div className={styles.main_vacancies_block}>
           <div className={styles.wrapper_vacancies}>
             <div className={styles.rocket_image}>
-              {/* <img src="/assets/rocket.png" alt="rocket.png" /> */}
-              <RocketComponent />
+              <img src="/assets/rocket.png" alt="rocket.png" />
+              {/* <RocketComponent /> */}
             </div>
             <div className={styles.vacancies_header_wrapper}>
               <span className={styles.vacancies_header1}>
@@ -268,7 +268,7 @@ const VacanciesMain = ({
                 ))}
               </div>
             </div>
-            <button
+            {/* <button
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
               className={styles.menu__button__choose__vacancyFilter}
@@ -281,8 +281,8 @@ const VacanciesMain = ({
                 />
               </div>
               <div className={styles.button_choose_vacancyFilter}>Фильтр</div>
-            </button>
-            <FilterModalVacancies
+            </button> */}
+            {/* <FilterModalVacancies
               isOpen={isModalOpen}
               onClose={handleModalClose}
               setFilters={setFilters}
@@ -291,7 +291,7 @@ const VacanciesMain = ({
               handleMouseEnter={handleMouseEnter}
               handleMouseLeave={handleMouseLeave}
               handleMouseHover={handleMouseHover}
-            />
+            /> */}
           </div>
           <div className={styles.menu_button_group_vacancy_wrapper_main_swiper}>
             {windowWidth && (
@@ -320,7 +320,7 @@ const VacanciesMain = ({
                     </SwiperSlide>
                   </div>
                 )}
-                <SwiperSlide
+                {/* <SwiperSlide
                   className={`${
                     styles.menu__button__choose__vacancyFilter_mobile
                   }
@@ -341,7 +341,7 @@ const VacanciesMain = ({
                       alt="IconFilter"
                     />
                   </div>
-                </SwiperSlide>
+                </SwiperSlide> */}
                 {activeFiltersArray.length > 0 &&
                   activeFiltersArray.map(
                     (filter, index) =>
@@ -464,7 +464,7 @@ const VacanciesMain = ({
                     : totalDisplayedVacancies
                 )
                 .map((vacancy) => (
-                  <Link
+                  <div
                     key={vacancy.id}
                     to={`/vacancy/${vacancy.id}`}
                     className={styles.vacancyContainer}
@@ -530,7 +530,7 @@ const VacanciesMain = ({
                         </div>
                       </>
                     )}
-                  </Link>
+                  </div>
                 ))}
             </>
           ) : (

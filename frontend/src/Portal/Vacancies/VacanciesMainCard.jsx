@@ -51,15 +51,15 @@ const VacanciesMainCard = ({
             </ul>
             <ul className={styles.main_vacancy_block__wrapper__vacancyTitle1}>
               <li className={styles.main_vacancy_block__wrapper__vacancyTitle1__titleKey}>Локация:</li>
-              <li className={styles.main_vacancy_block__wrapper__vacancyTitle1__titleValue}>{vacancy.location}</li>
+              <li className={styles.main_vacancy_block__wrapper__vacancyTitle1__titleValue}>{vacancy.locationStaff}</li>
             </ul>
             <ul className={styles.main_vacancy_block__wrapper__vacancyTitle1}>
               <li className={styles.main_vacancy_block__wrapper__vacancyTitle1__titleKey}>Занятость:</li>
-              <li className={styles.main_vacancy_block__wrapper__vacancyTitle1__titleValue}>{vacancy.employment}</li>
+              <li className={styles.main_vacancy_block__wrapper__vacancyTitle1__titleValue}>{vacancy.busyness}</li>
             </ul>
             <ul className={styles.main_vacancy_block__wrapper__vacancyTitle1}>
               <li className={styles.main_vacancy_block__wrapper__vacancyTitle1__titleKey}>Режим работы:</li>
-              <li className={styles.main_vacancy_block__wrapper__vacancyTitle1__titleValue}>{vacancy.workingMode}</li>
+              <li className={styles.main_vacancy_block__wrapper__vacancyTitle1__titleValue}>{vacancy.modeOperating}</li>
             </ul>
           </div>
         </li>
