@@ -325,7 +325,6 @@ export const fetchFilteredVacancies = createAsyncThunk(
 
 
 
-
 export const getVacanciesByDirection = () => async (dispatch) => {
   try {
     const response = await axios.get(`${serverHost}/api-vacancy/getzapros`);
