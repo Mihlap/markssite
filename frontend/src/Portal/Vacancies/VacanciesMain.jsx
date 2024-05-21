@@ -14,6 +14,7 @@ import {
   setSelectedFilter,
   setActiveFilters,
   setFilteredVacancies,
+  deleteForm,
 } from "../../store/Slice/vacanciesSlice";
 import VacancyFormContact from "../../UI/VacancyFormContact/VacancyFormContact";
 
@@ -67,6 +68,7 @@ const VacanciesMain = ({
     "Администрирование",
     "Бэк офис",
     "Стажировки",
+    "Управление",
   ];
 
   const filterMappings = {
@@ -91,9 +93,9 @@ const VacanciesMain = ({
 
   useEffect(() => {
     window.scrollTo(0, 0);
+    dispatch(getVacanciesByDirection());
     dispatch(getFetchForm());
     dispatch(fetchFilteredVacancies(filters));
-    dispatch(getVacanciesByDirection());
   }, [dispatch, filters]);
 
   useEffect(() => {
@@ -125,6 +127,7 @@ const VacanciesMain = ({
     });
     setModalFiltersActive(hasActiveFilters);
   }, [filters, selectedFilter, filterKeyForSpecialty]);
+
 
   function applyFilters(vacancies, filters) {
     return vacancies.filter((vacancy) => {
