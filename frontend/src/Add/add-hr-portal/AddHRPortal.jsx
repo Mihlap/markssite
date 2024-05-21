@@ -11,6 +11,7 @@ import {
   sendCopiedVacancyToServer,
   updateVacancyLookStatusAndSaveToDB,
   updateVacancyLookStatusSuccess,
+   getVacanciesByDirection,
 } from "../../store/Slice/vacanciesSlice";
 import { buttonsFilter } from "./utils.js";
 
@@ -157,7 +158,8 @@ export default function AddHRPortal({ user }) {
 
   const handleFormDelete = (formId) => {
     dispatch(deleteForm(formId));
-    handleDeleteModalClose();
+    dispatch(getVacanciesByDirection());
+    handleDeleteModalClose(formId);
   };
 
   useEffect(() => {
