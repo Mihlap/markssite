@@ -13,6 +13,7 @@ export const selectBlocks = [
     { value: "Администрирование", label: "Администрирование" },
     { value: "Бэк офис", label: "Бэк офис" },
     { value: "Стажировки", label: "Стажировки" },
+    { value: "Управление", label: "Управление" },
   ] },
   { name: 'experience', label: 'Опыт работы', options: [
     { value: "Без опыта", label: "Без опыта" },
