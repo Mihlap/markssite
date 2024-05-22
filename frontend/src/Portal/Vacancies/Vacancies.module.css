@@ -760,7 +760,7 @@ font-family: var(--font-raleway);
 
 @media screen and (min-width: 1025px) and (max-width: 1600px) {
   .wrapper_vacancies {
-    height: 21vh;
+    height: 41vh;
   }
 
   .vacancies_header_wrapper {
@@ -794,7 +794,7 @@ font-family: var(--font-raleway);
 /* стили для планшетной версии  */
 @media screen and (min-width: 768px) and (max-width: 1024px) {
   .wrapper_vacancies {
-    height: 21vh;
+    height: 41vh;
   }
 
   .vacancies_header_wrapper {
