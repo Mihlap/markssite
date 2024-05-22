@@ -517,12 +517,12 @@ const VacancyFormContact = ({
           <div className={styles.for_applicants_wrapper}>
             <div className={styles.for_applicants}>Для соискателей</div>
             <Link
-            to="mailto:mail@marksgroup.ru"
+            to="mailto:hr@marksgroup.ru"
             className={styles.for_applicants_mail}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
             >
-              mail@marksgroup.ru
+              hr@marksgroup.ru
             </Link>
             <Link
             to={"tel:+74951201226"}
