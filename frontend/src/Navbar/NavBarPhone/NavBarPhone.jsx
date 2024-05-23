@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { memo, useEffect, useState } from 'react'
 import styles from "./NavBarPhone.module.scss";
 import { Link } from 'react-router-dom';
 
-export default function NavBarPhone() {
+const NavBarPhone = memo(() => {
 const [isMenuActive, setMenuActive] = useState(false);
     
 // этот useEffect выключает скрол и включает обратно когда ты переключаем меню бургер
@@ -107,7 +107,14 @@ const [isMenuActive, setMenuActive] = useState(false);
                 >
                   Контакты
                 </Link>
-              </li>
+                  </li>
+                  <Link
+                  onClick={handleBurgerClick}
+                  to="https://marksgroup.org/"
+                  className={styles["menu-link"]}
+                >
+                  EN
+                </Link>
             </ul>
             <div className={styles.contact_info}>
               <div className={styles.contact_info_block}>
@@ -133,4 +140,6 @@ const [isMenuActive, setMenuActive] = useState(false);
     </div>
       </nav>
   );
-};
+});
+
+export default NavBarPhone;
