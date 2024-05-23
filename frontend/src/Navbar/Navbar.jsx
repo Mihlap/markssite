@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { memo, useState, useEffect } from "react";
 import styles from "./Navbar.module.scss";
 import { Link, useLocation } from "react-router-dom";
 import {
@@ -9,7 +9,7 @@ import {
 } from "./utils/navbarUtils";
 import NavBarPhone from "./NavBarPhone/NavBarPhone";
 
-export default function Navbar({ handleMouseEnter, handleMouseLeave }) {
+const Navbar = memo(({ handleMouseEnter, handleMouseLeave }) => {
   const [activeClass, setActiveClass] = useState("");
   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [visible, setVisible] = useState(true);
@@ -107,11 +107,10 @@ export default function Navbar({ handleMouseEnter, handleMouseLeave }) {
               <div>Компетенции</div>
             </Link> */}
             <Link
-               onMouseEnter={handleMouseEnter}
+              onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
-              className={`${styles.navbar__item} ${
-                activeClass === "/" ? styles.navbar__item_open : ""
-              }`}
+              className={`${styles.navbar__item} ${activeClass === "/" ? styles.navbar__item_open : ""
+                }`}
               to="/"
               onClick={() => handleItemClick("/")}
             >
@@ -120,9 +119,8 @@ export default function Navbar({ handleMouseEnter, handleMouseLeave }) {
             <Link
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
-              className={`${styles.navbar__item} ${
-                activeClass === "/project" ? styles.navbar__item_open : ""
-              }`}
+              className={`${styles.navbar__item} ${activeClass === "/project" ? styles.navbar__item_open : ""
+                }`}
               to="/project"
               onClick={() => handleItemClick("/project")}
             >
@@ -131,9 +129,8 @@ export default function Navbar({ handleMouseEnter, handleMouseLeave }) {
             <Link
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
-              className={`${styles.navbar__item} ${
-                activeClass === "/publication" ? styles.navbar__item_open : ""
-              }`}
+              className={`${styles.navbar__item} ${activeClass === "/publication" ? styles.navbar__item_open : ""
+                }`}
               to="/publication"
               onClick={() => handleItemClick("/publication")}
             >
@@ -142,9 +139,8 @@ export default function Navbar({ handleMouseEnter, handleMouseLeave }) {
             <Link
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
-              className={`${styles.navbar__item} ${
-                activeClass === "/company" ? styles.navbar__item_open : ""
-              }`}
+              className={`${styles.navbar__item} ${activeClass === "/company" ? styles.navbar__item_open : ""
+                }`}
               to="/company"
               onClick={() => handleItemClick("/company")}
             >
@@ -153,9 +149,8 @@ export default function Navbar({ handleMouseEnter, handleMouseLeave }) {
             <Link
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
-              className={`${styles.navbar__item} ${
-                activeClass === "/portal/vacancies" ? styles.navbar__item_open : ""
-              }`}
+              className={`${styles.navbar__item} ${activeClass === "/portal/vacancies" ? styles.navbar__item_open : ""
+                }`}
               to="/portal/vacancies"
               // target="_blank"
               onClick={() => handleItemClick("/portal/vacancies")}
@@ -165,13 +160,26 @@ export default function Navbar({ handleMouseEnter, handleMouseLeave }) {
             <Link
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
-              className={`${styles.navbar__item} ${
-                activeClass === "/contacts" ? styles.navbar__item_open : ""
-              }`}
+              className={`${styles.navbar__item} ${activeClass === "/contacts" ? styles.navbar__item_open : ""
+                }`}
               to="/contacts"
               onClick={() => handleItemClick("/contacts")}
-             >
+            >
               <div>Контакты</div>
+            </Link>
+            <Link
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+              className={`${styles.navbar__item} ${
+                activeClass === "/marksgroup" ? styles.navbar__item_open : ""
+              }`}
+              to="#"
+              onClick={(e) => {
+                e.preventDefault();
+                window.location.href = "https://marksgroup.org/";
+              }}
+            >
+              <div>EN</div>
             </Link>
           </ul>
         </div>
@@ -181,4 +189,6 @@ export default function Navbar({ handleMouseEnter, handleMouseLeave }) {
       </div>
     </header>
   );
-}
+});
+
+export default Navbar;
