@@ -174,10 +174,10 @@ const Navbar = memo(({ handleMouseEnter, handleMouseLeave }) => {
                 activeClass === "/marksgroup" ? styles.navbar__item_open : ""
               }`}
               to="#"
-              onClick={(e) => {
-                e.preventDefault();
-                window.location.href = "https://marksgroup.org/";
-              }}
+              // onClick={(e) => {
+              //   e.preventDefault();
+              //   window.location.href = "https://marksgroup.org/";
+              // }}
             >
               <div>EN</div>
             </Link>
