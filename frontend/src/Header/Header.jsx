@@ -48,6 +48,8 @@ export default function Header({
   const cursorVariant = useSelector((state) => state.cursor);
 
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+  const [load, setLoad] = useState(true);
+  const [loaderShown, setLoaderShown] = useState(false);
   const [videoSrc, setVideoSrc] = useState(null);
   const sliderCardRef = useRef(null);
 
@@ -108,6 +110,17 @@ export default function Header({
       window.removeEventListener("resize", handleResize);
     };
   }, []);
+
+  useEffect(() => {
+    if (!loaderShown) {
+      setTimeout(() => {
+        setLoad(false);
+        setLoaderShown(true); // обновляем состояние, чтобы указать, что лоадер был показан
+      }, 4500);
+    } else {
+      setLoad(false);
+    }
+  }, [loaderShown]);
 
   useEffect(() => {
     dispatch(getFetchFormArticle());
@@ -200,6 +213,10 @@ export default function Header({
         {/* <div className={styles.video_block}>
           <VideoPlayer videoSource={videoSource} />
         </div> */}
+           {loading && !loaderShown ? (
+          <LoadingNew />
+        ) : (
+          <>
         <div className={styles.wrapper_nameCompanyMainHeader}>
           <div className={styles.block_video_company}>
             {videoSrc && (
@@ -723,7 +740,9 @@ export default function Header({
               );
             })}
           </Swiper>
-        </div>
+              </div>
+              </>
+        )}
       </main>
     </>
   );
