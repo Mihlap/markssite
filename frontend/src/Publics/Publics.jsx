@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -13,12 +13,6 @@ import catPhoto from "../img/default-photo.jpeg";
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 
-const videoSource = {
-  small: `${Host}/videos/public_mob.mp4`,
-  medium: `${Host}/videos/public_ipad.mp4`,
-  large: `${Host}/videos/public_full.mp4`,
-};
-
 export default function Publics({ handleMouseEnter, handleMouseLeave, handleMouseHover }) {
   const dispatch = useDispatch();
   const articles = useSelector((state) => state.article.article);
@@ -29,45 +23,51 @@ export default function Publics({ handleMouseEnter, handleMouseLeave, handleMous
   const [swiper, setSwiper] = useState(null);
   const [videoSrc, setVideoSrc] = useState(null);
 
-  const buttonChoose1 = [
+  const videoSource = useMemo(() => ({
+    small: `${Host}/videos/public_mob.mp4`,
+    medium: `${Host}/videos/public_ipad.mp4`,
+    large: `${Host}/videos/public_full.mp4`,
+  }), []);
+  
+  const buttonChoose1 = useMemo(() => [
     "Все",
     "Выступления",
     "Интервью",
     "Новости",
     "Статьи",
     "Научные публикации",
-  ];
+  ], []);
 
   useEffect(() => {
     window.scrollTo(0, 0); // Прокрутите страницу вверх при монтировании компонента
   }, []);
 
-  useEffect(() => {
-    const handleResize = () => {
-      const screenWidth = window.innerWidth;
-      if (screenWidth >= 1025) {
-        setVideoSrc(videoSource.large);
-      } else if (screenWidth >= 768 && screenWidth < 1025) {
-        setVideoSrc(videoSource.medium);
-      } else {
-        setVideoSrc(videoSource.medium);
-      }
-    };
+  const handleResize = useCallback(() => {
+    const screenWidth = window.innerWidth;
+    if (screenWidth >= 1025) {
+      setVideoSrc(videoSource.large);
+    } else if (screenWidth >= 768 && screenWidth < 1025) {
+      setVideoSrc(videoSource.medium);
+    } else {
+      setVideoSrc(videoSource.medium);
+    }
+  }, [videoSource]);
 
+  useEffect(() => {
     handleResize();
     window.addEventListener("resize", handleResize);
 
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, []);
+  }, [handleResize]);
 
   useEffect(() => {
     dispatch(getFetchFormArticle());
     dispatch(fetchToggleStateForButton2Async());
   }, [dispatch]);
 
-  const handleButtonClick = (selected) => {
+  const handleButtonClick = useCallback((selected) => {
     if (selected === "Все") {
       setSelectArticle(selected);
       dispatch(setSelectedType(selected));
@@ -77,10 +77,9 @@ export default function Publics({ handleMouseEnter, handleMouseLeave, handleMous
         setSelectArticle(selected);
         dispatch(setSelectedType(selected));
         dispatch(getFetchFormArticle());
-        // You can potentially fetch filtered articles here
       }
     }
-  };
+  }, [dispatch, selectArticle]);
 
   // console.log(articles, "+++++++++++++++++++++++++++++++++++++++++++++");
   return (

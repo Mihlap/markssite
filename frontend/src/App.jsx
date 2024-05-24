@@ -56,6 +56,7 @@ export default function App() {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [showPortalMenu, setShowPortalMenu] = useState(false);
+  const [videoLoaded, setVideoLoaded] = useState(false);
 
   const isMobile = window.innerWidth <= 768;
 
@@ -121,10 +122,18 @@ export default function App() {
   // console.log(isUserChecked);
   // таймаут для прелоудера на сайте
   useEffect(() => {
-    setTimeout(() => {
+    const timer = setTimeout(() => {
       setLoading(false);
-    }, 4500);
+    }, 3500);
+  
+    return () => clearTimeout(timer);
   }, []);
+  
+  useEffect(() => {
+    if (videoLoaded) {
+      setLoading(false);
+    }
+  }, [videoLoaded]);  
 
   // console.log(location.pathname)
   // console.log(`пользователь 👉${user?.name}👈`);
@@ -172,6 +181,7 @@ export default function App() {
                         handleMouseLeave={handleMouseLeave}
                         handleMouseHover={handleMouseHover}
                         handleSpecialHover={handleSpecialHover}
+                        setVideoLoaded={setVideoLoaded}
                       />
                     }
                   />
