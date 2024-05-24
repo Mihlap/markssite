@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Helmet } from "react-helmet-async";
@@ -11,8 +11,6 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import SwiperCore, { Navigation } from "swiper";
 import SliderHeader from "../UI/SliderHeader/SliderHeader";
 import Mapbox3D from "../UI/Map3D/Mapbox3D";
-import LoadingCircle from "../Loading/LoadingCircle";
-import LoadingNew from "../Loading/LoadingNew";
 import Error from "../Loading/Error/Error";
 import SliderMobile from "../UI/SliderHeader/SliderMobile";
 import BlockHeaderMain from "../UI/BlockHeader/BlockHeaderMain";
@@ -33,12 +31,14 @@ const Host = process.env.REACT_APP_SERVER_HOST;
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
-export default function Header({
+// export default function Header({
+  const Header = React.memo(({
   handleMouseEnter,
   handleMouseLeave,
   handleMouseHover,
   handleSpecialHover,
-}) {
+  setVideoLoaded
+}) => {
   const videoSource = {
     large: `${Host}/videos/main_company_full.mp4`,
     medium: `${Host}/videos/main_company_ipad.mp4`,
@@ -48,8 +48,6 @@ export default function Header({
   const cursorVariant = useSelector((state) => state.cursor);
 
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
-  const [load, setLoad] = useState(true);
-  const [loaderShown, setLoaderShown] = useState(false);
   const [videoSrc, setVideoSrc] = useState(null);
   const sliderCardRef = useRef(null);
 
@@ -111,16 +109,6 @@ export default function Header({
     };
   }, []);
 
-  useEffect(() => {
-    if (!loaderShown) {
-      setTimeout(() => {
-        setLoad(false);
-        setLoaderShown(true); // обновляем состояние, чтобы указать, что лоадер был показан
-      }, 4500);
-    } else {
-      setLoad(false);
-    }
-  }, [loaderShown]);
 
   useEffect(() => {
     dispatch(getFetchFormArticle());
@@ -129,15 +117,15 @@ export default function Header({
     dispatch(searchArticleRightGet());
   }, [dispatch]);
 
-  const colors = {
+  const colors = useMemo(() => ({
     Архитектура: "#FF7F6A",
     BIM: "#75BBFD",
     Конструкции: "#566272",
     Дизайн: "#FAA8BD",
     Инженерия: "#90B734",
-  };
+  }), []);
 
-  useEffect(() => {
+   useEffect(() => {
     // Состояние для отслеживания, находится ли пользователь в процессе скроллинга к верху слайдера
     let scrollingToTopOfSlider = false;
   
@@ -203,6 +191,7 @@ export default function Header({
   const MapProject = NewProject.map((el) =>
     el && el.project !== undefined ? el.project : null
   );
+  
 
   return (
     <>
@@ -212,11 +201,7 @@ export default function Header({
       <main className={styles.header}>
         {/* <div className={styles.video_block}>
           <VideoPlayer videoSource={videoSource} />
-        </div> */}
-           {loading && !loaderShown ? (
-          <LoadingNew />
-        ) : (
-          <>
+        </div> */}       
         <div className={styles.wrapper_nameCompanyMainHeader}>
           <div className={styles.block_video_company}>
             {videoSrc && (
@@ -226,9 +211,10 @@ export default function Header({
                 muted
                 loop
                 id="bg-video"
-                className={styles.bg_video}
+                onCanPlayThrough={() => setVideoLoaded(true)}
+                className={styles.bg_video}                
               >
-                <source src={videoSrc} type="video/mp4" />
+                <source src={videoSrc} type="video/mp4" preload="auto"/>
               </video>
             )}
           </div>
@@ -741,9 +727,9 @@ export default function Header({
             })}
           </Swiper>
               </div>
-              </>
-        )}
-      </main>
+        </main>
     </>
   );
-}
+})
+
+export default Header;

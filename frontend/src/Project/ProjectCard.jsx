@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useMemo, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Helmet } from "react-helmet-async";
 import { useParams, Link } from "react-router-dom";
@@ -32,7 +32,7 @@ gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 
-const ProjectCard = ({
+const ProjectCard = React.memo(({
   handleMouseEnter,
   handleMouseLeave,
   handleMouseHover,
@@ -192,7 +192,7 @@ const ProjectCard = ({
     }
   }, [scrollingMode]);
 
-  const currentIndex = projects.findIndex((p) => p.id === project.id);
+  const currentIndex = useMemo(() => projects.findIndex((p) => p.id === project.id), [projects, project]);
   const previousIndex = (currentIndex - 1 + projects.length) % projects.length;
   const nextIndex = (currentIndex + 1) % projects.length;
   const previousProject = projects[previousIndex];
@@ -211,9 +211,10 @@ const ProjectCard = ({
   const altTextClose = (project && project.imageClose) || "Default Alt Text";
 
   // Обработчик изменения размера окна
-  const handleResize = () => {
+  const handleResize = useCallback(() => {
     setWindowWidth(window.innerWidth);
-  };
+  }, []);
+
 
   // Подписка на событие изменения размера окна
   useEffect(() => {
@@ -226,10 +227,9 @@ const ProjectCard = ({
   }, []);
 
   // Получаем 20 рандомных проектов
-  const randomProjects = projects
-    ? [...projects].sort(() => 0.5 - Math.random()).slice(0, 20)
-    : [];
-
+  const randomProjects = useMemo(() => {
+    return projects ? [...projects].sort(() => 0.5 - Math.random()).slice(0, 20) : [];
+  }, [projects]);
   // const randomProjects = projects.slice().sort(() => Math.random() - 0.5).slice(0, 20);
 
   //  console.log(projects, " << --- projects");
@@ -955,6 +955,6 @@ const ProjectCard = ({
       </div>
     </>
   );
-};
+});
 
 export default ProjectCard;
