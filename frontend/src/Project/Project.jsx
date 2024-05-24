@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import Modal from "react-modal";
 import { Helmet } from "react-helmet-async";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -123,9 +123,9 @@ export default function Project({
     };
   }, []);
 
-  const handleResize = () => {
+  const handleResize = useCallback(() => {
     setScreenWidth(window.innerWidth);
-  };
+  }, []);
 
   useEffect(() => {
     window.addEventListener("resize", handleResize);
@@ -158,11 +158,12 @@ export default function Project({
 
   const currentLocation = userGeolocation ? userGeolocation.city : "Москва";
 
-  function handleFocus() {
+  const handleFocus = useCallback(() => {
     setIsFocusedProject(true);
-  }
+  }, []);
 
-  function handleChange(event) {
+
+ const handleChange = useCallback((event) => {
     const address = event.target.value.toLowerCase();
     setValue(address);
     setIsValid(address === "");
@@ -172,18 +173,16 @@ export default function Project({
       dispatch(setSelectedCity(""));
       setSelectOnCompetencies("Все");
     }
-    // console.log(address);
-  }
+  }, [dispatch]);
 
   const handleAddressSubmit = (event) => {
     event.preventDefault();
   };
 
-  function handleBlur(event) {
-    setIsFocusedProject(true);
+  const handleBlur = useCallback((event) => {
     const address = event.target.value;
+    setIsFocusedProject(false);
     if (!address) {
-      setIsFocusedProject(false);
       dispatch(setSelectedCity(""));
     }
     setValue(address);
@@ -193,9 +192,9 @@ export default function Project({
     if (value.trim() === "") {
       setSelectOnCompetencies("Все");
     }
-  }
+  }, [dispatch, isValid, value]);
 
-  const handleButtonClick = (viewConstruction) => {
+  const handleButtonClick = useCallback((viewConstruction) => {
     if (
       selectedCity !== "" ||
       selectedViewConstruction !== viewConstruction ||
@@ -215,9 +214,9 @@ export default function Project({
     setValue("");
     setIsTyping(false);
     setSelectOnCompetencies("");
-  };
+  }, [dispatch, currentPage, projectsPerPage, selectedCity, selectedViewConstruction]);
 
-  const handleButtonCityClick = (countryCity) => {
+  const handleButtonCityClick = useCallback((countryCity) => {
     if (isTyping) {
       dispatch(setSelectedCity(""));
       setIsTyping(false);
@@ -226,17 +225,17 @@ export default function Project({
     dispatch(getFetchFormCityFilter(currentPage, projectsPerPage, countryCity));
     setCurrentPage(1);
     setSelectOnCompetencies("");
-  };
+  }, [dispatch, currentPage, projectsPerPage, isTyping]);
 
-  const handleSelectCityClick = (e) => {
+  const handleSelectCityClick = useCallback((e) => {
     e.preventDefault();
     setIsModalProjectOpen(true);
     setValue("");
     setIsTyping(false);
     setSelectOnCompetencies("");
-  };
+  }, []);
 
-  const handleModalClose = (e, viewConstruction) => {
+  const handleModalClose = useCallback((e, viewConstruction) => {
     e.preventDefault();
     setIsModalProjectOpen(false);
     setSelectedViewConstruction(selectOnCompetencies);
@@ -254,7 +253,7 @@ export default function Project({
     dispatch(
       setSelectedViewConstruction(selectOnCompetencies === viewConstruction)
     );
-  };
+  }, [dispatch, selectOnCompetencies, value]);
 
   const handleScroll = () => {
     const isAtBottom =
@@ -277,27 +276,29 @@ export default function Project({
     };
   }, []);
 
-  const filteredProjects = projects
-    .filter((project) =>
-      selectOnCompetencies === "Все"
-        ? true
-        : project.viewConstruction?.includes(selectOnCompetencies)
-    )
-    .filter((project) => {
-      const projectCity = extractCityFromCountryCity(project.countryCity);
-      return selectedCity === "" ? true : projectCity === selectedCity;
-    })
-    .filter((project) => {
-      const searchValue = value?.toLowerCase();
-      const projectLocation = project.location?.toLowerCase();
-      const projectCity = extractCityFromCountryCity(
-        project.countryCity
-      )?.toLowerCase();
-      return (
-        projectLocation?.includes(searchValue) &&
-        (selectedCity === "" || projectCity === selectedCity?.toLowerCase())
-      );
-    });
+  const filteredProjects = useMemo(() => {
+    return projects
+      .filter((project) =>
+        selectOnCompetencies === "Все"
+          ? true
+          : project.viewConstruction?.includes(selectOnCompetencies)
+      )
+      .filter((project) => {
+        const projectCity = extractCityFromCountryCity(project.countryCity);
+        return selectedCity === "" ? true : projectCity === selectedCity;
+      })
+      .filter((project) => {
+        const searchValue = value?.toLowerCase();
+        const projectLocation = project.location?.toLowerCase();
+        const projectCity = extractCityFromCountryCity(
+          project.countryCity
+        )?.toLowerCase();
+        return (
+          projectLocation?.includes(searchValue) &&
+          (selectedCity === "" || projectCity === selectedCity?.toLowerCase())
+        );
+      });
+  }, [projects, selectOnCompetencies, selectedCity, value]);
 
   return (
     <>
@@ -635,7 +636,6 @@ export default function Project({
               .map((project) => {
                 const photoName = project && project.imageProject;
                 const defaultPhoto = catPhoto; // Убедитесь, что catPhoto существует и содержит правильный путь к изображению по умолчанию
-
                 const photoSrc =
                   photoName && photoName !== "null" && photoName !== "undefined"
                     ? `${Host}/images/imageAdd/${photoName}`
