@@ -1,9 +1,8 @@
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState, useMemo } from "react";
 import Modal from "react-modal";
 import { useInView } from "react-intersection-observer";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./Company.module.css";
-// import Company_Slider from "../UI/Company_Slider/Company_Slider";
 import gsap from "gsap";
 import { Helmet } from "react-helmet-async";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
@@ -42,17 +41,17 @@ export default function Company({
   handleMouseLeave,
   handleMouseHover,
 }) {
-  const videoSource = {
+  const videoSource = useMemo(() => ({
     large: `${Host}/videos/company_full.mp4`,
     medium: `${Host}/videos/company_ipad.mp4`,
     small: `${Host}/videos/company_mob.mp4`,
-  };
+  }), []);
 
-  const videoSource2 = {
+  const videoSource2 = useMemo(() => ({
     large: `${Host}/videos/main_company_full.mp4`,
     medium: `${Host}/videos/main_company_ipad.mp4`,
     small: `${Host}/videos/main_company_mobile.mp4`,
-  };
+  }), []);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [countPercent, setCountPercent] = useState(0);
   const [countHuman, setCountHuman] = useState(0);
@@ -238,26 +237,26 @@ export default function Company({
     };
   }, []);
 
-  const handlePCardCompanyClick = (index) => {
+  const handlePCardCompanyClick = useCallback((index) => {
     setCurrentIndexCompany(index);
     if (swiperCompanyRef.current && swiperCompanyRef.current.slideTo) {
       swiperCompanyRef.current.slideTo(index);
     }
-  };
+  }, []);
 
-  const buttonsStuff = [
+  const buttonsStuff = useMemo(() => [
     { name: "Руководство", onClick: handleButtonClick },
     // { name: "Руководители отделов", onClick: handleButtonClick },
     { name: "Научно-техническое сопровождение", onClick: handleButtonClick },
     // { name: "HR", onClick: handleButtonClick },
-  ];
+  ], [handleButtonClick]);
 
-  const handleImageLoad = () => {
+  const handleImageLoad = useCallback(() => {
     if (allImagesLoaded) {
       // Все изображения загружены, выполняем нужные действия
       setShowCards(true);
     }
-  };
+  }, [allImagesLoaded]);
 
   if (error) {
     return (

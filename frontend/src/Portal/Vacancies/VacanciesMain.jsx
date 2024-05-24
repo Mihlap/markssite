@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { Helmet } from "react-helmet-async";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./Vacancies.module.css";
@@ -78,18 +78,18 @@ const VacanciesMain = ({
     Занятость: "busyness",
   };
 
-  const vacanciesMain = [...filteredVacancies].reverse();
+  const vacanciesMain = useMemo(() => [...filteredVacancies].reverse(), [filteredVacancies]);
 
-  const handleResize = () => {
+  const handleResize = useCallback(() => {
     setWindowWidth(window.innerWidth);
-  };
+  }, []);
 
   useEffect(() => {
     window.addEventListener("resize", handleResize);
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, []);
+  }, [handleResize]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -102,7 +102,7 @@ const VacanciesMain = ({
     const filteredVacancies = applyFilters(vacancies, activeFilters);
     dispatch(setFilteredVacancies(filteredVacancies));
     setFilters(activeFilters);
-  }, [dispatch, vacancies]);
+  }, [dispatch, vacancies, activeFilters]);
 
   useEffect(() => {
     if (selectedFilter === "Все") {
@@ -129,7 +129,7 @@ const VacanciesMain = ({
   }, [filters, selectedFilter, filterKeyForSpecialty]);
 
 
-  function applyFilters(vacancies, filters) {
+  const applyFilters = useCallback((vacancies, filters) => {
     return vacancies.filter((vacancy) => {
       return Object.keys(filters).every((filterKey) => {
         const mappedKey = filterMappings[filterKey] || filterKey;
@@ -141,35 +141,35 @@ const VacanciesMain = ({
         return filterValues.includes(vacancyValue);
       });
     });
-  }
+  }, [filterMappings]);
 
-  const handleButtonClick = (direction) => {
+  const handleButtonClick = useCallback((direction) => {
     dispatch(setSelectedFilter(direction));
     dispatch(getFetchFormFilter(direction));
     setShowManyVacancies(false);
-  };
+  }, [dispatch]);
 
-  const toggleShowAllVacancies = () => {
+  const toggleShowAllVacancies = useCallback(() => {
     setShowManyVacancies((prev) => !prev);
-  };
+  }, []);
 
-  const handleModalOpen = () => {
+  const handleModalOpen = useCallback(() => {
     setIsModalOpen(true);
-  };
+  }, []);
 
-  const handleModalClose = () => {
+  const handleModalClose = useCallback(() => {
     setIsModalOpen(false);
-  };
+  }, []);
 
-  const shouldDisplayVacancy = (vacancy) => {
+  const shouldDisplayVacancy = useCallback((vacancy) => {
     return !vacancy.hidden;
-  };
+  }, []);
 
-  const visibleVacancies = vacanciesMain.filter((vacancy) =>
+  const visibleVacancies = useMemo(() => vacanciesMain.filter((vacancy) =>
     shouldDisplayVacancy(vacancy)
-  );
+  ), [vacanciesMain, shouldDisplayVacancy]);
 
-  const removeFilter = (filterCategory, filterValue) => {
+  const removeFilter = useCallback((filterCategory, filterValue) => {
     const newFilters = { ...filters };
     if (Array.isArray(newFilters[filterCategory])) {
       newFilters[filterCategory] = newFilters[filterCategory].filter(
@@ -184,9 +184,9 @@ const VacanciesMain = ({
     dispatch(fetchFilteredVacancies(newFilters));
     setFilters(newFilters);
     dispatch(setActiveFilters(newFilters));
-  };
+  }, [filters, dispatch]);
 
-  const clearAllFilters = () => {
+  const clearAllFilters = useCallback(() => {
     const resetFilters =
       selectedFilter !== "Все"
         ? { [filterKeyForSpecialty]: [selectedFilter] }
@@ -198,9 +198,9 @@ const VacanciesMain = ({
       Object.keys(resetFilters)?.length > 0 &&
         resetFilters[filterKeyForSpecialty]?.length > 0
     );
-  };
+  }, [selectedFilter, filterKeyForSpecialty, dispatch]);
 
-  const clearAllFiltersMobile = () => {
+  const clearAllFiltersMobile = useCallback(() => {
     const resetFilters = {};
 
     setFilters(resetFilters);
@@ -208,9 +208,9 @@ const VacanciesMain = ({
     dispatch(fetchFilteredVacancies(resetFilters));
     dispatch(setSelectedFilter("Все"));
     setModalFiltersActive(false);
-  };
+  }, [dispatch]);
 
-  const activeFiltersArray = Object.entries(filters).flatMap(
+  const activeFiltersArray = useMemo(() => Object.entries(filters).flatMap(
     ([key, values]) => {
       if (Array.isArray(values)) {
         if (
@@ -224,7 +224,7 @@ const VacanciesMain = ({
       }
       return [];
     }
-  );
+  ), [filters, filterKeyForSpecialty, selectedFilter]);
 
   return (
     <>
@@ -592,4 +592,4 @@ const VacanciesMain = ({
   );
 };
 
-export default VacanciesMain;
+export default React.memo(VacanciesMain);
