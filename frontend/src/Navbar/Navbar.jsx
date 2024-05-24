@@ -1,4 +1,4 @@
-import React, { memo, useState, useEffect } from "react";
+import React, { memo, useState, useEffect, useCallback } from "react";
 import styles from "./Navbar.module.scss";
 import { Link, useLocation } from "react-router-dom";
 import {
@@ -50,10 +50,10 @@ const Navbar = memo(({ handleMouseEnter, handleMouseLeave }) => {
     setActiveClass(currentPath);
   }, [location]);
 
-  const handleItemClick = (path) => {
+  const handleItemClick = useCallback((path) => {
     setActiveClass(path);
     localStorage.setItem("activeClass", path);
-  };
+  }, []);
 
   useEffect(() => {
     const storedActiveClass = localStorage.getItem("activeClass");

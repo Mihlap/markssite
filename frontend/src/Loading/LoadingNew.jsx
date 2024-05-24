@@ -3,7 +3,6 @@ import styles from "./LoadingNew.module.css";
 import logo from "../icons/logowhite.svg"
 
 
-
 export default function Loading() {    
   const [percent, setPercent] = useState(0);
   const [progressWidth, setProgressWidth] = useState(0);

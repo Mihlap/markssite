@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { Helmet } from "react-helmet-async";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
@@ -24,7 +24,7 @@ const cityInfo = {
     mail: "mail@marksgroup.ru",
     hour: "",
   },
-    Воронеж: {
+  Воронеж: {
     address: "Воронеж, ул. Ворошилова, д. 1а",
     phone: "+7 (495) 120-12-26",
     mail: "mail@marksgroup.ru",
@@ -76,12 +76,19 @@ const Contacts = ({ handleMouseEnter, handleMouseLeave }) => {
     setMapKey((prevKey) => prevKey + 1);
   }, [selectedMap, swiper]);
 
+  const handleCityClick = useCallback((city) => {
+    setSelectedMap(city.name);
+  }, []);
+
+  const mapOptions = useMemo(() => (
+    window.innerWidth <= 767 ? {
+      suppressMapOpenBlock: true,
+      suppressMapOpenBlockKey: "ctrlKey",
+    } : {}
+  ), []);
+
   const { address, phone, mail, hour } = cityInfo[selectedMap];
   const isLargeScreen = window.innerWidth >= 1024;
-  const mapOptions = window.innerWidth <= 767 ? {
-    suppressMapOpenBlock: true,
-    suppressMapOpenBlockKey: "ctrlKey",
-  } : {};
 
   return (
     <>
@@ -105,7 +112,7 @@ const Contacts = ({ handleMouseEnter, handleMouseLeave }) => {
           <div className={styles.menu_work}>
             Режим работы &nbsp;&bull;&nbsp; Пн.&nbsp;&mdash;
             Пт.&nbsp;10.00&mdash;19.00
-            {(selectedMap !== "Москва" && selectedMap !== "Воронеж")  && <> &nbsp;&bull;&nbsp; {hour}</>}
+            {(selectedMap !== "Москва" && selectedMap !== "Воронеж") && <> &nbsp;&bull;&nbsp; {hour}</>}
           </div>
           <div className={styles.menu_hour}></div>
           <div className={styles.menu_office_name}>Наши офисы</div>
@@ -113,10 +120,8 @@ const Contacts = ({ handleMouseEnter, handleMouseLeave }) => {
             {cities.map((city) => (
               <button
                 key={city.name}
-                className={`${styles.menu_button} ${
-                  selectedMap === city.name ? styles.menu_button_active : ""
-                }`}
-                onClick={() => setSelectedMap(city.name)}
+                className={`${styles.menu_button} ${selectedMap === city.name ? styles.menu_button_active : ""}`}
+                onClick={() => handleCityClick(city)}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
               >
@@ -130,10 +135,8 @@ const Contacts = ({ handleMouseEnter, handleMouseLeave }) => {
             <Map
               key={mapKey}
               defaultState={{
-                center: isLargeScreen
-                ? [mapCenter[0], mapCenter[1] - 0.15]
-                : [mapCenter[0] + 0.05, mapCenter[1] + 0.05],
-                zoom: 11,               
+                center: isLargeScreen ? [mapCenter[0], mapCenter[1] - 0.15] : [mapCenter[0] + 0.05, mapCenter[1] + 0.05],
+                zoom: 11,
               }}
               width="100%"
               height="100%"
@@ -144,9 +147,7 @@ const Contacts = ({ handleMouseEnter, handleMouseLeave }) => {
                 geometry={mapCenter}
                 options={{
                   iconLayout: "default#image",
-                  iconImageHref: `data:image/svg+xml,${encodeURIComponent(
-                    customMarkerSVG
-                  )}`,
+                  iconImageHref: `data:image/svg+xml,${encodeURIComponent(customMarkerSVG)}`,
                   iconImageSize: [64, 64],
                 }}
               />
@@ -163,12 +164,8 @@ const Contacts = ({ handleMouseEnter, handleMouseLeave }) => {
               {cities.map((city) => (
                 <SwiperSlide
                   key={city.name}
-                  className={`${styles.slider_menu_button} ${
-                    selectedMap === city.name
-                      ? styles.slider_menu_button_active
-                      : ""
-                  }`}
-                  onClick={() => setSelectedMap(city.name)}
+                  className={`${styles.slider_menu_button} ${selectedMap === city.name ? styles.slider_menu_button_active : ""}`}
+                  onClick={() => handleCityClick(city)}
                 >
                   <p className={styles.slider_button_city}>{city.name}</p>
                 </SwiperSlide>
@@ -178,13 +175,13 @@ const Contacts = ({ handleMouseEnter, handleMouseLeave }) => {
         </div>
       </div>
       <style>
-  {`
-    [class*="ymaps-2"][class*="-ground-pane"] {    
-      -webkit-filter: grayscale(88%) brightness(100%);
-    }
-  `}
-</style>
-      {/* <style>
+        {`
+          [class*="ymaps-2"][class*="-ground-pane"] {    
+            -webkit-filter: grayscale(88%) brightness(100%);
+          }
+        `}
+      </style>
+       {/* <style>
         {`
           [class*="ymaps-2"][class*="-ground-pane"] {
             filter: grayscale(98%) brightness(100%);
@@ -198,11 +195,12 @@ const Contacts = ({ handleMouseEnter, handleMouseLeave }) => {
           }
         `}
       </style> */}
-   </>
+    </>
   );
 };
 
-export default Contacts;
+export default React.memo(Contacts);
+
 
 
 
