@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useMemo, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
@@ -32,7 +32,7 @@ gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 
-const ArticleCard = ({
+const ArticleCard = React.memo(({ 
   handleMouseEnter,
   handleMouseLeave,
   handleMouseHover,
@@ -206,7 +206,7 @@ const ArticleCard = ({
     dispatch(getFetchFormArticle());
   }, [dispatch]);
 
-  const currentIndex = articles.findIndex((p) => p.id === article.id);
+  const currentIndex = useMemo(() => articles.findIndex((p) => p.id === article.id), [articles, article]);
 
   const previousIndex = (currentIndex - 1 + articles.length) % articles.length;
   const nextIndex = (currentIndex + 1) % articles.length;
@@ -229,10 +229,10 @@ const ArticleCard = ({
 
 
   // Получаем 20 рандомных статей
-  const randomArticles = articles
-  ? [...articles].sort(() => 0.5 - Math.random()).slice(0, 20)
-  : [];
-
+  const randomArticles = useMemo(() => {
+    return articles ? [...articles].sort(() => 0.5 - Math.random()).slice(0, 20) : [];
+  }, [articles]);
+  
   return (
     <>
       <Helmet>
@@ -669,6 +669,6 @@ const ArticleCard = ({
       </div>
     </>
   );
-};
+});
 
 export default ArticleCard;
