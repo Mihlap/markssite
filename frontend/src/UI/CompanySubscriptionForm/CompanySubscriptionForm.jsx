@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback, useMemo } from "react";
 import styles from "./CompanySubscriptionForm.module.css";
 
 const isValidRegex = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/;
@@ -15,11 +15,11 @@ const CompanySubscriptionForm = ({
   const [showError, setShowError] = useState(false);
   const [message, setMessage] = useState("");
 
-  function handleFocus() {
+  const handleFocus = useCallback(() => {
     setIsFocused(true);
-  }
+  }, []);
 
-  function handleBlur(event) {
+  const handleBlur = useCallback((event) => {
     setIsFocused(true);
     const email = event?.target?.value;
     const isValid = isValidRegex.test(email);
@@ -28,17 +28,17 @@ const CompanySubscriptionForm = ({
     }
     setValue(email);
     setIsValid(isValid);
-  }
+  }, []);
 
-  function handleChange(event) {
+  const handleChange = useCallback((event) => {
     const email = event.target.value.toLowerCase();
     const isValid = isValidRegex.test(email);
     setValue(email);
     setIsValid(isValid);
     setShowError(false);
-}
+  }, []);
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = useCallback(async (event) => {
     event.preventDefault();
     const email = event.target.querySelector("#email-input").value;
     const isValid = isValidRegex.test(email);
@@ -60,23 +60,21 @@ const CompanySubscriptionForm = ({
       if (response.status === 200) {
         setMessage("Вы успешно подписались на новости.");
         setValue("");
-        
-       } else {
+      } else {
         setMessage("Произошла ошибка при подписке.");
       }
     } catch (error) {
       setMessage("Произошла ошибка при подписке.");
     }
-  };
-  
+  }, []);
 
-//   const email = "dddd1@list.com";
+  const emailInputStyle = useMemo(() => ({
+    borderColor: isValid ? "" : "#E00747"
+  }), [isValid]);
 
-// if (isValidRegex.test(email)) {
-//   console.log("Email корректный");
-// } else {
-//   console.log("Email некорректный");
-// }
+  const submitButtonClass = useMemo(() => (
+    `${styles.button_hover11} ${!isValid || !value ? styles.disabled : ""}`
+  ), [isValid, value]);
 
   return (
     <div className={styles.form_right_wrapper}>
@@ -103,34 +101,34 @@ const CompanySubscriptionForm = ({
                   onFocus={handleFocus}
                   maxLength="70"
                   size="70"
-                  style={{ borderColor: isValid ? "" : "#E00747" }}
-                  autoComplete="off"              
+                  style={emailInputStyle}
+                  autoComplete="off"
                 />
                 <div className={styles.line1}></div>
                 <span className={styles.placeholder}>Ваш Email</span>
                 {!isValid && showError && (
-                <span
-                  className={`${styles.error_line1} ${
-                    showError ? "" : styles.hidden
-                  }`}
-                >
-                  Некорректный Email
-                </span>
-                )} 
-                {/* {message && <div className={styles.message}>{message}</div>} */}
+                  <span
+                    className={`${styles.error_line1} ${
+                      showError ? "" : styles.hidden
+                    }`}
+                  >
+                    Некорректный Email
+                  </span>
+                )}
               </label>
             </div>
-            <button className={`${styles.button_hover11} ${!isValid || !value ? styles.disabled : ""}`}
+            <button
+              className={submitButtonClass}
               id="submit-button"
               disabled={!value}
               type="submit"
               onMouseOver={handleMouseEnter}
               onMouseOut={handleMouseLeave}
-              // onMouseHover={handleMouseHover}
             >
               <p className={styles.button_name}>Подписаться</p>
             </button>
           </form>
+          {message && <div className={styles.message}>{message}</div>}
         </div>
       </div>
     </div>
