@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useMemo, useCallback } from "react";
 import InputMask from "react-input-mask";
 import Select from "react-select";
 import { Link } from "react-router-dom";
@@ -24,7 +24,6 @@ const Host = process.env.REACT_APP_SERVER_HOST;
 const VacancyFormContact = ({
   handleMouseEnter,
   handleMouseLeave,
-  // handleMouseHover,
 }) => {
   const [isFocused, setIsFocused] = useState({
     name: false,
@@ -37,7 +36,6 @@ const VacancyFormContact = ({
 
   const [isValid, setIsValid] = useState(true);
   const [selectedOptions, setSelectedOptions] = useState(null);
-  const [selectedFile, setSelectedFile] = useState(null);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [fileAttached, setFileAttached] = useState(false);
   const [formData, setFormData] = useState({
@@ -50,24 +48,22 @@ const VacancyFormContact = ({
   });
 
   const fileInputRef = useRef(null);
-  const isFilled = (name) => !!formData[name];
+  const isFilled = useCallback((name) => !!formData[name], [formData]);
 
-  const handleChangeVacancy = (selectedValues) => {
+  const handleChangeVacancy = useCallback((selectedValues) => {
     setSelectedOptions(selectedValues);
-  };
+  }, []);
 
-  function handleFocus(event) {
+  const handleFocus = useCallback((event) => {
     const name = event?.target?.name;
     setIsFocused((prev) => ({ ...prev, [name]: true }));
-  }
+  }, []);
 
-  const handlePaste = (event) => {
-    event.preventDefault(); // Предотвращаем стандартное вставление
-  
+  const handlePaste = useCallback((event) => {
+    event.preventDefault();
     const pastedData = event.clipboardData.getData("text");
-    const cleanedValue = pastedData.replace(/\D/g, ""); // Убираем все символы, кроме цифр
-    
-  
+    const cleanedValue = pastedData.replace(/\D/g, "");
+
     if (cleanedValue.length >= 10) {
       const formattedValue = `+7 (${cleanedValue.slice(-10, -7)}) ${cleanedValue.slice(-7, -4)}-${cleanedValue.slice(-4, -2)}-${cleanedValue.slice(-2)}`;
       setFormData((prevData) => ({ ...prevData, phone: formattedValue }));
@@ -75,52 +71,40 @@ const VacancyFormContact = ({
     } else {
       setIsValid(false);
     }
-  };
+  }, []);
 
-  
-  function handleBlur(event) {
+  const handleBlur = useCallback((event) => {
     const name = event?.target?.name;
     setIsFocused((prev) => ({ ...prev, [name]: false }));
-  
+
     if (name === "phone") {
       const phoneNumberRegex = /^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/;
-      if (phoneNumberRegex.test(formData.phone)) {
-        setIsValid(true);
-       } else {
-       setIsValid(false);
-      }
+      setIsValid(phoneNumberRegex.test(formData.phone));
     }
-  }
+  }, [formData.phone]);
 
-  const handleChange = (event) => {
+  const handleChange = useCallback((event) => {
     const { name, value } = event.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
-  
-    if (name === "phone") {
-      setIsValid(true); 
-   }
-  };
 
-  function handleSubmit(event) {
+    if (name === "phone") {
+      setIsValid(true);
+    }
+  }, []);
+
+  const handleSubmit = useCallback((event) => {
     event.preventDefault();
 
     const formDataToSend = new FormData();
-    const formDataCopy = { ...formData };
+    const formDataCopy = { ...formData, choose: selectedOptions ? selectedOptions.value : "" };
 
-    formDataCopy.choose = selectedOptions ? selectedOptions.value : "";
+    Object.keys(formDataCopy).forEach((key) => {
+      formDataToSend.append(key, formDataCopy[key]);
+    });
 
-    formDataToSend.append("name", formDataCopy.name);
-    formDataToSend.append("phone", formDataCopy.phone);
-    formDataToSend.append("city", formDataCopy.city);
-    formDataToSend.append("choose", formDataCopy.choose);
-    formDataToSend.append("letter", formDataCopy.letter);
-    formDataToSend.append("resume", formDataCopy.resume);
-
-    if (selectedFiles.length > 0) {
-      selectedFiles.forEach((file) => {
-        formDataToSend.append("resumeFiles", file);
-      });
-    }
+    selectedFiles.forEach((file) => {
+      formDataToSend.append("resumeFiles", file);
+    });
 
     fetch(`${Host}/api-mail/portalSubmitForm`, {
       method: "POST",
@@ -128,8 +112,6 @@ const VacancyFormContact = ({
     })
       .then((response) => response.json())
       .then((data) => {
-        // console.log("Server response:", data);
-
         if (data && data.message === "Письмо успешно отправлено") {
           setFormData({
             name: "",
@@ -139,15 +121,11 @@ const VacancyFormContact = ({
             letter: "",
             resume: "",
           });
-          setSelectedFile(null);
+          setSelectedFiles([]);
           setFileAttached(false);
           setSelectedOptions(null);
-          setSelectedFiles([]);
         } else {
-          console.error(
-            "Form submission failed:",
-            data.message || "Unknown error"
-          );
+          console.error("Form submission failed:", data.message || "Unknown error");
         }
       })
       .catch((error) => {
@@ -155,41 +133,96 @@ const VacancyFormContact = ({
           console.error("Error:", error);
         }
       });
-  }
+  }, [formData, selectedOptions, selectedFiles]);
 
-  const handleFileChange = (event) => {
-    const files = event.target.files;
+  const handleFileChange = useCallback((event) => {
+    const files = Array.from(event.target.files);
 
     if (files.length > 0) {
-      const newFiles = Array.from(files);
-
-      if (
-        newFiles.every(
-          (file) =>
-            file.type.includes("image/") ||
-            file.type === "application/pdf" ||
-            file.type.includes("application/")
-        )
-      ) {
-        setSelectedFiles((prevFiles) => [...prevFiles, ...newFiles]);
+      if (files.every((file) =>
+        file.type.includes("image/") || file.type === "application/pdf" || file.type.includes("application/")
+      )) {
+        setSelectedFiles((prevFiles) => [...prevFiles, ...files]);
         setFileAttached(true);
       } else {
-        console.error(
-          "Invalid file type. Please select an image, PDF, or other document."
-        );
+        console.error("Invalid file type. Please select an image, PDF, or other document.");
       }
     }
-  };
+  }, []);
 
-  const handleRemoveFile = (index) => {
-    const updatedFiles = [...selectedFiles];
-    updatedFiles.splice(index, 1);
-    setSelectedFiles(updatedFiles);
+  const handleRemoveFile = useCallback((index) => {
+    setSelectedFiles((prevFiles) => {
+      const updatedFiles = [...prevFiles];
+      updatedFiles.splice(index, 1);
+      return updatedFiles;
+    });
+  }, []);
 
-    if (updatedFiles.length === 0) {
-      setFileAttached(false);
-    }
-  };
+  const customStyles = useMemo(() => ({
+    container: (provided) => ({
+      ...provided,
+      border: "none",
+      width: '100%',
+    }),
+    control: (provided, state) => ({
+      ...provided,
+      border: "none",
+      backgroundColor: "transparent",
+      boxShadow: state.isFocused ? "none" : provided.boxShadow,
+      borderBottom: `1px solid ${state.isFocused ? '#75BBFD' : '#959DA6'}`,
+      borderColor: 'transparent',
+      '&:hover': {
+        borderBottomColor: '1px solid',
+      },
+    }),
+    indicatorSeparator: (provided) => ({
+      ...provided,
+      display: "none",
+    }),
+    multiValue: (provided) => ({
+      ...provided,
+      backgroundColor: "transparent",
+    }),
+    singleValue: (provided) => ({
+      ...provided,
+      color: "#959DA6",
+      marginLeft: -5,
+    }),
+    placeholder: (provided) => ({
+      ...provided,
+      marginLeft: -5,
+      color: "#959DA6",
+    }),
+    option: (provided, state) => ({
+      ...provided,
+      backgroundColor: state.isFocused ? "#75BBFD" : "transparent",
+      color: state.isFocused ? "white" : "inherit",
+    }),
+    dropdownIndicator: (provided, state) => ({
+      ...provided,
+      transform: state.selectProps.menuIsOpen ? 'rotate(180deg)' : null,
+      transition: 'transform 0.3s ease-in-out',
+      color: state.isFocused ? '#75BBFD' : '#C0C5CB',
+    }),
+    menuList: (provided) => ({
+      ...provided,
+      '&::-webkit-scrollbar': {
+        width: '4px',
+      },
+      '&::-webkit-scrollbar-thumb': {
+        backgroundColor: '#C0C5CB',
+        borderRadius: '4px',
+      },
+      '&::-webkit-scrollbar-track': {
+        backgroundColor: 'transparent',
+      },
+    }),
+    menu: (provided) => ({
+      ...provided,
+      boxShadow: 'none',
+      backgroundColor: '#EBECEE'
+    }),
+  }), []);
 
   return (
     <form className={styles.form_form_wrapper} onSubmit={handleSubmit}>
@@ -213,7 +246,6 @@ const VacancyFormContact = ({
                   onFocus={handleFocus}
                   onBlur={handleBlur}
                   maxLength="100"
-                  // size="50"
                   autoComplete="off"
                   className={styles.input_name_form_contacts}
                 />
@@ -248,10 +280,7 @@ const VacancyFormContact = ({
                   }`}
                   style={{ fontVariantNumeric: "lining-nums" }}
                 />
-                <div
-                  className={styles.line}
-                  // style={{ backgroundColor: inputLineColor }}
-                ></div>
+                <div className={styles.line}></div>
                 <span className={styles.placeholder}>Телефон</span>
                 {!isValid && formData.phone.length > 0 && (
                   <span className={styles.error_line}>
@@ -277,7 +306,6 @@ const VacancyFormContact = ({
                   onFocus={handleFocus}
                   onBlur={handleBlur}
                   maxLength="100"
-                  // size="50"
                   autoComplete="off"
                   className={styles.input_city_form_contacts}
                 />
@@ -309,89 +337,8 @@ const VacancyFormContact = ({
                   isSearchable={false}
                   isClearable={false}
                   menuShouldScrollIntoView={false}
-                  styles={{
-                    container: (provided) => ({
-                      ...provided,
-                      border: "none",
-                      width: '100%',  
-                      // maxWidth: '28rem',                
-                    }),
-                    control: (provided, state) => ({
-                      ...provided,
-                      border: "none",
-                      backgroundColor: "transparent",
-                      boxShadow: state.isFocused ? "none" : provided.boxShadow,
-                      borderBottom: `1px solid ${state.isFocused ? '#75BBFD' : '#959DA6'}`,
-                      borderColor: 'transparent',
-                      '&:hover': {
-                        borderBottomColor: '1px solid',
-                      },
-                     }),
-                    indicatorSeparator: (provided) => ({
-                      ...provided,
-                      display: "none",                    
-                    }),                                 
-                    multiValue: (provided) => ({
-                      ...provided,
-                      backgroundColor: "transparent",
-                    }),
-                    singleValue: (provided) => ({
-                      ...provided,
-                      color: "#959DA6",
-                      marginLeft: -5,
-                    }),
-                    placeholder: (provided) => ({
-                      ...provided,
-                      marginLeft: -5,
-                      color: "#959DA6",
-                    }),
-                    option: (provided, state) => ({
-                      ...provided,
-                      backgroundColor: state.isFocused
-                        ? "#75BBFD"
-                        : "transparent",
-                      color: state.isFocused ? "white" : "inherit",
-                    }),
-                    dropdownIndicator: (provided, state) => ({
-                      ...provided,
-                      transform: state.selectProps.menuIsOpen ? 'rotate(180deg)' : null,
-                      transition: 'transform 0.3s ease-in-out',
-                      color: state.isFocused ? '#75BBFD' : '#C0C5CB',
-                    }),
-                    menuList: (provided) => ({
-                      ...provided,
-                      '&::-webkit-scrollbar': {
-                        width: '4px',
-                      },
-                      '&::-webkit-scrollbar-thumb': {
-                        backgroundColor: '#C0C5CB',
-                        borderRadius: '4px',
-                      },
-                      '&::-webkit-scrollbar-track': {
-                        backgroundColor: 'transparent',
-                      },
-                      // Для Microsoft Edge
-                      '&::-ms-scrollbar': {
-                        width: '4px',
-                      },
-                      '&::-ms-scrollbar-thumb': {
-                        backgroundColor: '#C0C5CB',
-                        borderRadius: '4px',
-                       },
-                      '&::-ms-scrollbar-track': {
-                        backgroundColor: 'transparent',
-                      },
-                      margin: '6px',
-                     }),
-                     menu: (provided) => ({
-                      ...provided,
-                      boxShadow: 'none',
-                     backgroundColor: '#EBECEE'
-                    }),
-                   }}                                 
+                  styles={customStyles}
                 />
-                {/* <div className={`${styles.line} ${styles.line_select}`}></div> */}
-                {/* <span className={styles.placeholder}>Выбрать вакансию</span> */}
               </label>
             </div>
             <div className={`${styles.group} some-unique-class`}>
@@ -411,7 +358,6 @@ const VacancyFormContact = ({
                   onFocus={handleFocus}
                   onBlur={handleBlur}
                   maxLength="500"
-                  // size="50"
                   autoComplete="off"
                   className={styles.input_letter_form_contacts}
                 />
@@ -438,7 +384,6 @@ const VacancyFormContact = ({
                   onFocus={handleFocus}
                   onBlur={handleBlur}
                   maxLength="200"
-                  // size="50"
                   autoComplete="off"
                   className={styles.input_resume_form_contacts}
                 />
@@ -539,6 +484,4 @@ const VacancyFormContact = ({
   );
 };
 
-export default VacancyFormContact;
-
-
+export default React.memo(VacancyFormContact);
