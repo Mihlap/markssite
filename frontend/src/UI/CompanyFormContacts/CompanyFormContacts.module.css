@@ -58,7 +58,6 @@
   position: relative;
 }
 
-
 .input_name_form_contacts,
 .input_task_form_contacts,
 .input_tel_form_contacts {
@@ -106,7 +105,6 @@
   white-space: nowrap;
 }
 
-.input_tel_form_contacts:not(:placeholder-shown) + .placeholder,
 .input_tel_form_contacts:empty + .placeholder,
 .focused1 .placeholder {
   transform: translateY(-180%) scale(0.75);
@@ -127,7 +125,6 @@
   background-color: #FF7F6A;
 }
 
-
 .button_hover10 {
   margin-top: 2.77vh;
   width: 145px;
@@ -142,7 +139,6 @@
   background: linear-gradient(133deg, rgba(123, 191, 255, 0.55) 0%, rgba(240, 248, 255, 0.55) 100%);
   color: var(--black-1D2E43);
   border: 0px solid transparent;
-
 }
 
 .button_hover10:hover:not(:hover) {
@@ -167,7 +163,6 @@
   color: var(--gray-959DA6);
 }
 
-
 .form_left_wrapper:has(.input_name_form_contacts:not(:placeholder-shown)):has(.input_tel_form_contacts:not(:placeholder-shown)):has(.input_task_form_contacts:not(:placeholder-shown)) .button_hover10 {
   border: 1px solid var(--black-1D2E43);
   color: var(--black-1D2E43);
@@ -184,17 +179,6 @@
 .checkbox-input[type=checkbox]:checked~.button_hover10 {
   color: var(--black-1D2E43);
 }
-
-
-/* .button_hover10:disabled {
-  background-color: var(--light-light-gray-EBECEE);
-  pointer-events: none;
-} */
-
-/* .button_hover10:disabled:hover {
-  background-color: var(--light-light-gray-EBECEE);
-  cursor: default;
-} */
 
 .agreement {
   font-family: var(--font-raleway);
@@ -214,11 +198,9 @@
 .agreement input[type="checkbox"] {
   margin-right: 8px;
   margin-top:-2px;
-  ;
 }
 
 .agreement a {
-  /* text-decoration: underline; */
   font-family: var(--font-raleway);
   font-style: normal;
   font-weight: var(--fw-400);
@@ -231,8 +213,6 @@
   transform: scale(1);
   cursor: pointer;
 }
-
-/* стили checkbox */
 
 .checkbox {
   position: relative;
@@ -304,12 +284,9 @@
     color: var(--black-1D2E43);
     border: 1px solid var(--black-1D2E43);
   }
-
 }
 
-
 /* стили мобильной версии  */
-
 @media (max-width: 840px) {
   .form_left_wrapper {
     width: 100%;
@@ -365,15 +342,14 @@
     white-space: nowrap;
   }
 
-    .input_tel_form_contacts:not(:placeholder-shown) + .placeholder,
-    .input_tel_form_contacts:empty + .placeholder,
-    .focused1 .placeholder,
-    .input_tel_form_contacts:focus+.placeholder {
-      transform: translateY(-180%) scale(0.75);
-      -webkit-transform: translateY(-180%) scale(0.75);
-      font-size: 16px;
-      color: var(--gray-959DA6);
-    }
+  .input_tel_form_contacts:empty + .placeholder,
+  .focused1 .placeholder,
+  .input_tel_form_contacts:focus+.placeholder {
+    transform: translateY(-180%) scale(0.75);
+    -webkit-transform: translateY(-180%) scale(0.75);
+    font-size: 16px;
+    color: var(--gray-959DA6);
+  }
 
   .line {
     width: 100%;
@@ -388,7 +364,6 @@
     width: 100%;
   }
 
-
   .agreement label {
     display: flex;
     max-width: fit-content;
@@ -400,19 +375,17 @@
 
   .agreement {
     display: flex;
-   flex-direction: row;
- 
-   }
-   .agreement_label_text_block {
-   flex: 1 0 0;
-   padding-top: 0.5rem;
-   }
+    flex-direction: row;
+  }
 
-  
+  .agreement_label_text_block {
+    flex: 1 0 0;
+    padding-top: 0.5rem;
+  }
+
   .input_task_form_contacts {
     width: 100%;
   }
-
 
   .button_hover10 {
     margin-top: 2rem;
@@ -426,9 +399,8 @@
 
   .checkbox {
     position: relative; 
- 
   }
-  
+
   .checkbox::before {
     content: "";
     display: inline-block;
@@ -437,7 +409,7 @@
     border: 0px solid var(--white-F6F6F6);
     margin-right: 10px;
   }
-  
+
   .checkbox::after {
     content: "\2713";
     position: absolute;
@@ -446,15 +418,13 @@
     transform: translate(-50%, -50%);
     display: none;
   }
-  
+
   .checkbox:checked::before {
     background-color: #FF7F6A;
   }
-  
+
   .checkbox:checked::after {
     display: block;
     color: var(--white-F6F6F6);
   }
-
-
 }
