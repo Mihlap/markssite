@@ -180,10 +180,7 @@ gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
       </div>
     );
   }
-  // if (loading) {
-  //   return <LoadingCircle />;
-  //   // return <LoadingNew />;
-  // }
+
 
   const NewProject = projects.map((el) =>
     el && el.project !== undefined ? el.project : null
@@ -198,10 +195,7 @@ gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
       <Helmet>
         <title>Marks Group</title>
       </Helmet>
-      <main className={styles.header}>
-        {/* <div className={styles.video_block}>
-          <VideoPlayer videoSource={videoSource} />
-        </div> */}       
+      <main className={styles.header}>         
         <div className={styles.wrapper_nameCompanyMainHeader}>
           <div className={styles.block_video_company}>
             {videoSrc && (
