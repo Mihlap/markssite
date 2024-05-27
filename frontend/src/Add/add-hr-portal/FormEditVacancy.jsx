@@ -1,21 +1,19 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import Select from "react-select";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { editVacancy } from "../../store/Slice/vacanciesSlice.js";
 import { selectBlocks } from "./utils.js";
 
-import styles from "./FormAddVacancy.module.scss"
+import styles from "./FormAddVacancy.module.scss";
 
 export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVacancyData }) {
   const [showNotification, setShowNotification] = useState(false);
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const dispatch = useDispatch();
-
   const type = selectedFilter === "Вакансии" ? "вакансия" : "стажировка";
 
   const [formData, setFormData] = useState({
@@ -51,29 +49,25 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
   const quillRef2 = useRef(null);
   const quillRef3 = useRef(null);
 
-  // Стили для eact-quill
-  const quillRefs = [quillRef1, quillRef2, quillRef3];
-  const applyStylesToQuillEditor = (quillRef) => {
+  const quillRefs = useMemo(() => [quillRef1, quillRef2, quillRef3], []);
+  const applyStylesToQuillEditor = useCallback((quillRef) => {
     if (quillRef && quillRef.current) {
       const editor = quillRef.current.getEditor();
       const editorElement = editor.root;
 
-      // Применение стилей к нужному элементу
       editorElement.style.fontSize = "16px";
       editorElement.style.fontFamily = "Raleway, sans-serif";
       editorElement.style.color = "var(--black-1D2E43)";
       editorElement.style.border = "none";
     }
-  };
+  }, []);
 
   useEffect(() => {
-    // Применение стилей для каждого quillRef
     quillRefs.forEach((quillRef) => applyStylesToQuillEditor(quillRef));
-  }, [quillRefs]);
-
+  }, [applyStylesToQuillEditor, quillRefs]);
 
   useEffect(() => {
-   if (editVacancyData) {
+    if (editVacancyData) {
       const skillsArray = editVacancyData.skills ? editVacancyData.skills.split(",") : [];
       const advantagesArray = editVacancyData.advantages ? editVacancyData.advantages.split(",") : [];
       const directionArray = editVacancyData.direction ? editVacancyData.direction.split(",") : [];
@@ -98,13 +92,11 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
     }
   }, [editVacancyData]);
 
-
-    const handleSubmit = async (event) => {
+  const handleSubmit = useCallback(async (event) => {
     event.preventDefault();
     setLoading(true);
     try {
-        await dispatch(editVacancy({ id: editVacancyData.id, formData }));
-      // Очищаем форму после успешной отправки
+      await dispatch(editVacancy({ id: editVacancyData.id, formData }));
       setFormData({
         title: "",
         textBlock1: "",
@@ -119,31 +111,29 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
         benefits: [],
         type: type,
       });
-      setIsModalOpen(false); // Закрываем модальное окно
+      setIsModalOpen(false);
     } catch (err) {
       setError(err.message);
     } finally {
       setLoading(false);
     }
-  };
+  }, [dispatch, editVacancyData.id, formData, setIsModalOpen, type]);
 
-  function handleBlur(event) {
+  const handleBlur = useCallback((event) => {
     const name = event?.target?.name;
     setIsFocused((prev) => ({ ...prev, [name]: false }));
-  }
+  }, []);
 
-  function handleFocus(event) {
+  const handleFocus = useCallback((event) => {
     const name = event?.target?.name;
     setIsFocused((prev) => ({ ...prev, [name]: true }));
-  }
+  }, []);
 
-  const handleChangeSelect = (selectedOptions, name) => {
-   let selectedValues;
+  const handleChangeSelect = useCallback((selectedOptions, name) => {
+    let selectedValues;
     if (Array.isArray(selectedOptions)) {
-      // Если selectedOptions является массивом, значит это множественный выбор
       selectedValues = selectedOptions.map(option => option.value);
     } else if (selectedOptions) {
-      // Если selectedOptions не является массивом, значит это одиночный выбор
       selectedValues = [selectedOptions.value];
     } else {
       selectedValues = [];
@@ -152,28 +142,24 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
       ...prev,
       [name]: selectedValues
     }));
-  };
-  
+  }, []);
 
-  // закрывает модалкку формы
-  const closeModal = () => {
+  const closeModal = useCallback(() => {
     setIsModalOpen(false);
-  };
+  }, [setIsModalOpen]);
 
   return (
     <div className={styles.form_container}>
       {showNotification && (
         <div className={styles.form_container__notification}>
-          Заполните предыдущий блок или дождитесь загркузки изображений❗
+          Заполните предыдущий блок или дождитесь загрузки изображений❗
         </div>
       )}
-      {/* <div className={styles.form_container__title}>Редактирование вакансии</div> */}
       <div className={styles.form_container__title}>
-      Редактирование {selectedFilter === "Вакансии" ? "вакансии" : "стажировки"}
+        Редактирование {selectedFilter === "Вакансии" ? "вакансии" : "стажировки"}
       </div>
       <div className={styles.form_container__block_form}>
         <form className={styles.form_container__form} onSubmit={handleSubmit}>
-          {/* первый серый блок с инфой  */}
           <div className={styles.form_container__block_gray_one}>
             <div className={`${styles.form__group} ${styles.field}`}>
               <input
@@ -190,7 +176,6 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
                     [name]: value,
                   }));
                 }}
-                // onComplete="off"
                 required
               />
               <label htmlFor="title" className={styles.form__label}>
@@ -198,7 +183,7 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
               </label>
             </div>
             {selectBlocks.map((block, index) => (
-               <div key={`${block.id}_${block.name}_${index}`} className={`${styles.group} some-unique-class`}>
+              <div key={`${block.id}_${block.name}_${index}`} className={`${styles.group} some-unique-class`}>
                 <label
                   className={`${styles.label1} ${
                     isFocused[block.name] || formData[block.name]
@@ -212,9 +197,7 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
                     name={block.name}
                     onFocus={handleFocus}
                     onBlur={handleBlur}
-                    isMulti={
-                      block.name === "benefits" || block.name === "skills"
-                    }
+                    isMulti={block.name === "benefits" || block.name === "skills"}
                     required
                     options={block.options}
                     value={Array.isArray(formData[block.name]) ? formData[block.name].map(value => ({
@@ -231,18 +214,13 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
                         ...provided,
                         border: "none",
                         width: "100%",
-                        // maxWidth: '28rem',
                       }),
                       control: (provided, state) => ({
                         ...provided,
                         border: "none",
                         backgroundColor: "transparent",
-                        boxShadow: state.isFocused
-                          ? "none"
-                          : provided.boxShadow,
-                        borderBottom: `1px solid ${
-                        state.isFocused ? "#75BBFD" : "#959DA6"
-                        }`,
+                        boxShadow: state.isFocused ? "none" : provided.boxShadow,
+                        borderBottom: `1px solid ${state.isFocused ? "#75BBFD" : "#959DA6"}`,
                         borderColor: "transparent",
                         "&:hover": {
                           borderBottomColor: "1px solid",
@@ -268,16 +246,12 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
                       }),
                       option: (provided, state) => ({
                         ...provided,
-                        backgroundColor: state.isFocused
-                          ? "#75BBFD"
-                          : "transparent",
+                        backgroundColor: state.isFocused ? "#75BBFD" : "transparent",
                         color: state.isFocused ? "white" : "inherit",
                       }),
                       dropdownIndicator: (provided, state) => ({
                         ...provided,
-                        transform: state.selectProps.menuIsOpen
-                          ? "rotate(180deg)"
-                          : null,
+                        transform: state.selectProps.menuIsOpen ? "rotate(180deg)" : null,
                         transition: "transform 0.3s ease-in-out",
                         color: state.isFocused ? "#75BBFD" : "#C0C5CB",
                       }),
@@ -293,7 +267,6 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
                         "&::-webkit-scrollbar-track": {
                           backgroundColor: "transparent",
                         },
-                        // Для Microsoft Edge
                         "&::-ms-scrollbar": {
                           width: "4px",
                         },
@@ -331,7 +304,6 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
                   formats={["bold", "underline", "list"]}
                   className={styles.form_container__textarea}
                   style={{
-                    // resize: "none",
                     padding: "0rem",
                     border: "1px solid var(--blue-75BBFD)",
                     fontFamily: "var(--font-raleway)",
@@ -380,7 +352,6 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
                   formats={["bold", "underline", "list"]}
                   className={styles.form_container__textarea}
                   style={{
-                    // resize: "none",
                     padding: "0rem",
                     border: "1px solid var(--blue-75BBFD)",
                     fontFamily: "var(--font-raleway)",
@@ -429,7 +400,6 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
                   formats={["bold", "underline", "list"]}
                   className={styles.form_container__textarea}
                   style={{
-                    // resize: "none",
                     padding: "0rem",
                     border: "1px solid var(--blue-75BBFD)",
                     fontFamily: "var(--font-raleway)",
@@ -480,5 +450,3 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
     </div>
   );
 }
-
- 
