@@ -1,24 +1,19 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import Select from "react-select";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addVacancy } from "../../store/Slice/vacanciesSlice.js";
 import { selectBlocks } from "./utils.js";
 
 import styles from "./FormAddVacancy.module.scss";
-// import customStyles from "../add-project/formAdd/utils/customStyles.js";
-
-// import { changeHandler } from "../add-project/formAdd/utils/formHelpers";
 
 export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
   const [showNotification, setShowNotification] = useState(false);
-
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const dispatch = useDispatch();
-
   const type = selectedFilter === "Вакансии" ? "вакансия" : "стажировка";
 
   const [formData, setFormData] = useState({
@@ -54,32 +49,28 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
   const quillRef2 = useRef(null);
   const quillRef3 = useRef(null);
 
-  // Стили для eact-quill
-  const quillRefs = [quillRef1, quillRef2, quillRef3];
-  const applyStylesToQuillEditor = (quillRef) => {
+  const quillRefs = useMemo(() => [quillRef1, quillRef2, quillRef3], []);
+  const applyStylesToQuillEditor = useCallback((quillRef) => {
     if (quillRef && quillRef.current) {
       const editor = quillRef.current.getEditor();
       const editorElement = editor.root;
 
-      // Применение стилей к нужному элементу
       editorElement.style.fontSize = "16px";
       editorElement.style.fontFamily = "Raleway, sans-serif";
       editorElement.style.color = "var(--black-1D2E43)";
       editorElement.style.border = "none";
     }
-  };
+  }, []);
 
   useEffect(() => {
-    // Применение стилей для каждого quillRef
     quillRefs.forEach((quillRef) => applyStylesToQuillEditor(quillRef));
-  }, [quillRefs]);
+  }, [applyStylesToQuillEditor, quillRefs]);
 
-  const handleSubmit = async (event) => {
+  const handleSubmit = useCallback(async (event) => {
     event.preventDefault();
     setLoading(true);
     try {
       await dispatch(addVacancy(formData));
-      // Очищаем форму после успешной отправки
       setFormData({
         title: "",
         textBlock1: "",
@@ -93,30 +84,28 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
         skills: [],
         benefits: [],
       });
-      setIsModalOpen(false); // Закрываем модальное окно
+      setIsModalOpen(false);
     } catch (err) {
       setError(err.message);
     } finally {
       setLoading(false);
     }
-  };
+  }, [dispatch, formData, setIsModalOpen]);
 
-  function handleBlur(event) {
+  const handleBlur = useCallback((event) => {
     const name = event?.target?.name;
     setIsFocused((prev) => ({ ...prev, [name]: false }));
-  }
+  }, []);
 
-  function handleFocus(event) {
+  const handleFocus = useCallback((event) => {
     const name = event?.target?.name;
     setIsFocused((prev) => ({ ...prev, [name]: true }));
-  }
+  }, []);
 
-  const handleChangeSelect = (value, name) => {
+  const handleChangeSelect = useCallback((value, name) => {
     let selectedValue;
     if (Array.isArray(value)) {
-      // Преобразуем массив объектов в массив строк значений value
       const selectedValues = value.map((option) => option.value);
-      // Преобразуем массив строк значений в строку, разделенную запятыми
       selectedValue = selectedValues.join(", ");
     } else {
       selectedValue = value;
@@ -125,27 +114,24 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
       ...prev,
       [name]: selectedValue,
     }));
-  };
+  }, []);
 
-  // закрывает модалкку формы
-  const closeModal = () => {
+  const closeModal = useCallback(() => {
     setIsModalOpen(false);
-  };
+  }, [setIsModalOpen]);
 
   return (
     <div className={styles.form_container}>
       {showNotification && (
         <div className={styles.form_container__notification}>
-          Заполните предыдущий блок или дождитесь загркузки изображений❗
+          Заполните предыдущий блок или дождитесь загрузки изображений❗
         </div>
       )}
-      {/* <div className={styles.form_container__title}>Новая вакансия</div> */}
       <div className={styles.form_container__title}>
-      Новая {selectedFilter === "Вакансии" ? "вакансия" : "стажировка"}
+        Новая {selectedFilter === "Вакансии" ? "вакансия" : "стажировка"}
       </div>
       <div className={styles.form_container__block_form}>
         <form className={styles.form_container__form} onSubmit={handleSubmit}>
-          {/* первый серый блок с инфой  */}
           <div className={styles.form_container__block_gray_one}>
             <div className={`${styles.form__group} ${styles.field}`}>
               <input
@@ -162,7 +148,6 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
                     [name]: value,
                   }));
                 }}
-                // onComplete="off"
                 required
               />
               <label htmlFor="title" className={styles.form__label}>
@@ -184,9 +169,7 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
                     name={block.name}
                     onFocus={handleFocus}
                     onBlur={handleBlur}
-                    isMulti={
-                      block.name === "benefits" || block.name === "skills"
-                    }
+                    isMulti={block.name === "benefits" || block.name === "skills"}
                     options={block.options}
                     required
                     value={block.options.find(
@@ -202,18 +185,13 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
                         ...provided,
                         border: "none",
                         width: "100%",
-                        // maxWidth: '28rem',
                       }),
                       control: (provided, state) => ({
                         ...provided,
                         border: "none",
                         backgroundColor: "transparent",
-                        boxShadow: state.isFocused
-                          ? "none"
-                          : provided.boxShadow,
-                        borderBottom: `1px solid ${
-                        state.isFocused ? "#75BBFD" : "#959DA6"
-                        }`,
+                        boxShadow: state.isFocused ? "none" : provided.boxShadow,
+                        borderBottom: `1px solid ${state.isFocused ? "#75BBFD" : "#959DA6"}`,
                         borderColor: "transparent",
                         "&:hover": {
                           borderBottomColor: "1px solid",
@@ -239,16 +217,12 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
                       }),
                       option: (provided, state) => ({
                         ...provided,
-                        backgroundColor: state.isFocused
-                          ? "#75BBFD"
-                          : "transparent",
+                        backgroundColor: state.isFocused ? "#75BBFD" : "transparent",
                         color: state.isFocused ? "white" : "inherit",
                       }),
                       dropdownIndicator: (provided, state) => ({
                         ...provided,
-                        transform: state.selectProps.menuIsOpen
-                          ? "rotate(180deg)"
-                          : null,
+                        transform: state.selectProps.menuIsOpen ? "rotate(180deg)" : null,
                         transition: "transform 0.3s ease-in-out",
                         color: state.isFocused ? "#75BBFD" : "#C0C5CB",
                       }),
@@ -264,7 +238,6 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
                         "&::-webkit-scrollbar-track": {
                           backgroundColor: "transparent",
                         },
-                        // Для Microsoft Edge
                         "&::-ms-scrollbar": {
                           width: "4px",
                         },
@@ -296,13 +269,12 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
                   modules={{
                     toolbar: [["bold", "underline", { list: "bullet" }]],
                     clipboard: {
-                    matchVisual: false,
+                      matchVisual: false,
                     },
                   }}
                   formats={["bold", "underline", "list"]}
                   className={styles.form_container__textarea}
                   style={{
-                    // resize: "none",
                     padding: "0rem",
                     border: "1px solid var(--blue-75BBFD)",
                     fontFamily: "var(--font-raleway)",
@@ -328,7 +300,7 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
                   placeholder="нет ограничений по символам"
                 />
                 <label
-                  htmlFor="textBlock"
+                  htmlFor="textBlock1"
                   className={styles.form_container__textarea_label_constructor}
                 >
                   Мы ищем
@@ -344,13 +316,12 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
                   modules={{
                     toolbar: [["bold", "underline", { list: "bullet" }]],
                     clipboard: {
-                    matchVisual: false,
+                      matchVisual: false,
                     },
                   }}
                   formats={["bold", "underline", "list"]}
                   className={styles.form_container__textarea}
                   style={{
-                    // resize: "none",
                     padding: "0rem",
                     border: "1px solid var(--blue-75BBFD)",
                     fontFamily: "var(--font-raleway)",
@@ -376,7 +347,7 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
                   placeholder="нет ограничений по символам"
                 />
                 <label
-                  htmlFor="textBlock"
+                  htmlFor="textBlock2"
                   className={styles.form_container__textarea_label_constructor}
                 >
                   Вам предстоит
@@ -398,7 +369,6 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
                   formats={["bold", "underline", "list"]}
                   className={styles.form_container__textarea}
                   style={{
-                    // resize: "none",
                     padding: "0rem",
                     border: "1px solid var(--blue-75BBFD)",
                     fontFamily: "var(--font-raleway)",
@@ -424,7 +394,7 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
                   placeholder="нет ограничений по символам"
                 />
                 <label
-                  htmlFor="textBlock"
+                  htmlFor="textBlock3"
                   className={styles.form_container__textarea_label_constructor}
                 >
                   Требования
@@ -436,6 +406,7 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
             <button
               className={styles.form_container__button_save}
               type="submit"
+              disabled={loading}
             ></button>
             <button
               className={styles.form_container__button_cancel}
