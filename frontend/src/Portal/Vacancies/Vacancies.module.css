@@ -36,7 +36,8 @@
   border-top: 1px solid var(--light-light-gray-EBECEE);
   border-bottom: 1px solid var(--light-light-gray-EBECEE);
   background: linear-gradient(261deg, rgba(255, 203, 193, 0.09) -4.67%, rgba(117, 187, 253, 0.09) 44.63%, rgba(188, 188, 188, 0.09) 103.07%);
-  backdrop-filter: blur(7px);
+  backdrop-filter: blur(7px); 
+/* mix-blend-mode: light; */
   position: relative;
   display: flex;
   justify-content: center;

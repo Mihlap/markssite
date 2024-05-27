@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useMemo } from "react";
 import styles from "./ConstructorPage.module.scss";
 
 import svg1 from "./svg/Group4650.svg";
@@ -9,97 +9,90 @@ import svg5 from "./svg/Group4649.svg";
 import svg6 from "./svg/Group4641.svg";
 
 export default function ConstructorPage({ handleClick }) {
+  const items = useMemo(() => [
+    {
+      svg: svg1,
+      alt: "svg_one_icon",
+      handleClickArgs: [
+        [
+          { type: "file", label: "Картинка с описанием", required: true },
+          { type: "text", label: "Описание картинки", required: false },
+        ],
+        0
+      ],
+      styles: styles.div_conteiner__blockOne
+    },
+    {
+      svg: svg2,
+      alt: "svg_two_icon",
+      handleClickArgs: [
+        [
+          { type: "text", label: "Заголовок", required: false },
+          { type: "textarea", label: "Текстовый блок", required: true },
+        ],
+        1
+      ],
+      styles: styles.div_conteiner__blockTwo
+    },
+    {
+      svg: svg3,
+      alt: "svg_three_icon",
+      handleClickArgs: [
+        [{ type: "file", label: "Блок 3 картинки", required: true }],
+        2
+      ],
+      styles: styles.div_conteiner__blockThree
+    },
+    {
+      svg: svg4,
+      alt: "svg_four_icon",
+      handleClickArgs: [
+        [{ type: "file", label: "Блок 2е вертикальные картинки", required: true }],
+        3
+      ],
+      styles: styles.div_conteiner__blockFour
+    },
+    {
+      svg: svg5,
+      alt: "svg_five_icon",
+      handleClickArgs: [
+        [
+          {
+            type: "file",
+            label: "Слайдер *допускается загрузка 8ми изображений",
+            required: true,
+          },
+        ],
+        4
+      ],
+      styles: styles.div_conteiner__blockFive
+    },
+    {
+      svg: svg6,
+      alt: "svg_six_icon",
+      handleClickArgs: [
+        [{ type: "file", label: "Видеоролик", required: true }],
+        5
+      ],
+      styles: styles.div_conteiner__blockSix
+    }
+  ], []);
+
+  const renderItems = useCallback(() => {
+    return items.map((item, index) => (
+      <div
+        key={index}
+        className={`${styles.div_conteiner__item} ${item.styles}`}
+        onClick={() => handleClick(...item.handleClickArgs)}
+      >
+        <img src={item.svg} alt={item.alt} />
+      </div>
+    ));
+  }, [handleClick, items]);
+
   return (
     <div className={styles.div_conteiner}>
-      {/* Блок с картинкой и описанием картинки */}
-      <div
-        className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockOne}`}
-        onClick={() =>
-          handleClick(
-            [
-              { type: "file", label: "Картинка с описанием", required: true },
-              { type: "text", label: "Описание картинки", required: false },
-            ],
-            0
-          )
-        }        
-      >
-        <img src={svg1} alt="svg_one_icon" />
-      </div>
-
-      {/* Блок заголовка и описания */}
-      <div
-        className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockTwo}`}
-        onClick={() =>
-          handleClick(
-            [
-              { type: "text", label: "Заголовок", required: false },
-              { type: "textarea", label: "Текстовый блок", required: true },
-            ],
-            1
-          )
-        }        
-      >
-        <img src={svg2} alt="svg_two_icon" />
-      </div>
-
-      {/* Блок с тремя картинками (горизонтальные и вертикальная) */}
-      <div
-        className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockThree}`}
-        onClick={() =>
-          handleClick(
-            [{ type: "file", label: "Блок 3 картинки", required: true }],
-            2
-          )
-        }        
-      >
-        <img src={svg3} alt="svg_three_icon" />
-      </div>
-
-      {/* Блок с двумя вертикальными картинками */}
-      <div
-        className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockFour}`}
-        onClick={() =>
-          handleClick(
-            [{ type: "file", label: "Блок 2е вертикальные картинки", required: true }],
-            3
-          )
-        }   
-      >
-        <img src={svg4} alt="svg_four_icon" />
-      </div>
-
-      {/* Слайдер с картинками */}
-      <div
-        className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockFive}`}
-        onClick={() =>
-          handleClick(
-            [
-              {
-                type: "file",
-                label: "Слайдер *допускается загрузка 8ми изображений",
-                required: true,
-              },
-            ],
-            4
-          )
-        }        
-      >
-        <img src={svg5} alt="svg_five_icon" />
-      </div>
-
-      {/* Блок с видеороликом */}
-      <div
-        className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockSix}`}
-        onClick={() =>
-          handleClick(
-            [{ type: "file", label: "Видеоролик", required: true }],
-            5
-          )
-        }        
-      >
-        <img src={svg6} alt="svg_six_icon" />
-      </div>
+      {renderItems()}
     </div>
   );
 }
