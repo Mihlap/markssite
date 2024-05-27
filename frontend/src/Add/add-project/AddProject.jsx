@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import styles from "../style/style-card.module.scss";
 import FormAddProject from "./formAdd/FormAddProject";
 import FormEditProject from "./formAdd/FormEditProject";
@@ -34,12 +34,11 @@ export default function AddProject({ user }) {
   const [editProjectData, setEditProjectData] = useState(null);
  
   const isMountedRef = useRef(true);
-  const updateModalBlockHeight = () => {
+  const updateModalBlockHeight = useCallback(() => {
     const windowHeight = window.innerHeight;
-    const maxHeight = Math.min(windowHeight - 100, 1900); // Примерное максимальное значение высоты
-
+    const maxHeight = Math.min(windowHeight - 100, 1900);
     setModalBlockHeight(`${maxHeight}px`);
-  };
+  }, []);
 
   useEffect(() => {
     dispatch(getFetchForm());
@@ -60,71 +59,63 @@ export default function AddProject({ user }) {
   };
 
 
-  const handleOpenModal = () => {
+  const handleOpenModal = useCallback(() => {
     setIsModalOpen(true);
     if (editProjectData) {
-      setEditProjectData(null);     
+      setEditProjectData(null);
     }
-  };
+  }, [editProjectData]);
   
 
-  const handleCloseModal = () => {
+  const handleCloseModal = useCallback(() => {
     setIsModalOpen(false);
-  };
+  }, []);
 
-  const handleDeleteModalOpen = (id) => {
+  const handleDeleteModalOpen = useCallback((id) => {
     setDeleteModalState((prevState) => ({
       ...prevState,
       [id]: true,
     }));
-  };
+  }, []);
 
-  const handleDeleteModalClose = (id) => {
+  const handleDeleteModalClose = useCallback((id) => {
     setDeleteModalState((prevState) => {
       const newState = { ...prevState };
       delete newState[id];
       return newState;
     });
-  };
+  }, []);
 
-  const handleCopyClick = async (id) => {
-    // navigator.clipboard.writeText(id);
-    // setIsCopied(true);
-    // // seticonCopy(true);
-    // setCopiedId(id);
+ 
+  const handleCopyClick = useCallback(async (id) => {
     try {
       await navigator.clipboard.writeText(id);
       if (isMountedRef.current) {
-      setIsCopied(true);
-      setCopiedId(id);
-    }
+        setIsCopied(true);
+        setCopiedId(id);
+      }
     } catch (err) {
       console.error("Unable to copy project to clipboard:", err);
     }
-  };
+  }, []);
 
-  const handleEditClick = async (id) => {
+  const handleEditClick = useCallback(async (id) => {
     try {
-  await navigator.clipboard.writeText(id);  
-  if (isMountedRef.current) {
-    // setIsCopied(true);
-    // setCopiedId(id);
+      await navigator.clipboard.writeText(id);
+      if (isMountedRef.current) {
+        const projectToEdit = project.find((el) => el.id === id);
+        setEditProjectData(projectToEdit);
+        setIsModalOpen(true);
+      }
+    } catch (err) {
+      console.error("Unable to copy project to clipboard:", err);
+    }
+  }, [project]);
 
-    const projectToEdit = project.find((el) => el.id === id);
-    // console.log('Project to edit111111111111111111111:', projectToEdit);
-  
-    setEditProjectData(projectToEdit);
-    setIsModalOpen(true);
-  }
-} catch (err) {
-  console.error("Unable to copy project to clipboard:", err);
-}
-};
-
-  const handleFormDelete = (formId) => {
+  const handleFormDelete = useCallback((formId) => {
     dispatch(deleteForm(formId));
-    handleDeleteModalClose();
-  };
+    handleDeleteModalClose(formId);
+  }, [dispatch, handleDeleteModalClose]);
 
   useEffect(() => {
     if (isCopied) {
@@ -136,9 +127,13 @@ export default function AddProject({ user }) {
     }
   }, [isCopied]);
 
-  const toggleActive = () => {
+  const toggleActive = useCallback(() => {
     dispatch(updateToggleStateAsync(!isActiveForButton1));
-  };
+  }, [dispatch, isActiveForButton1]);
+
+  const sortedProjects = useMemo(() => {
+    return [...project].reverse();
+  }, [project]);
 
   return (
     <section className={styles.card_components_admin}>
@@ -238,13 +233,10 @@ export default function AddProject({ user }) {
                 </div>
               ) : (
                 <>
-                  <div className={styles.card_components_admin__block_map}>
-                    {project &&
-                      [...project] // Создаем копию массива project, чтобы не мутировать оригинальный массив
-                        .reverse() // Переворачиваем массив
-                        .map((el) => {
-                          const photoName = el && el.imageProject;
-                          const defaultPhoto = cat;
+                  <div className={styles.card_components_admin__block_map}>  
+                     {sortedProjects?.map((el) => {
+                      const photoName = el && el.imageProject;
+                      const defaultPhoto = cat;
 
                           const photoSrc =
                             photoName &&

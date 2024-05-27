@@ -1,5 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
-// import styles from "./AddHRPortal.module.scss";
+import React, { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import styles from "../style/style-card.module.scss";
 import FormEditVacancy from "./FormEditVacancy";
 import FormAddVacancy from "./FormAddVacancy";
@@ -10,8 +9,7 @@ import {
   getHiddenVacanciesFromDB,
   sendCopiedVacancyToServer,
   updateVacancyLookStatusAndSaveToDB,
-  updateVacancyLookStatusSuccess,
-   getVacanciesByDirection,
+  getVacanciesByDirection,
 } from "../../store/Slice/vacanciesSlice";
 import { buttonsFilter } from "./utils.js";
 
@@ -24,7 +22,6 @@ import pencilIcon from "../add-navbar/icon/pencil.svg";
 import LoadingCircle from "../../Loading/LoadingCircle.jsx";
 
 export default function AddHRPortal({ user }) {
-  // const Host = process.env.REACT_APP_SERVER_HOST;
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editVacancyData, setEditVacancyData] = useState(null);
   const [modalBlockHeight, setModalBlockHeight] = useState("auto");
@@ -41,12 +38,11 @@ export default function AddHRPortal({ user }) {
   const [activeButtonIndex, setActiveButtonIndex] = useState(0);
   const [selectedFilter, setSelectedFilter] = useState("Вакансии");
 
-  const updateModalBlockHeight = () => {
+  const updateModalBlockHeight = useCallback(() => {
     const windowHeight = window.innerHeight;
     const maxHeight = Math.min(windowHeight - 100, 1900); // Примерное максимальное значение высоты
-
     setModalBlockHeight(`${maxHeight}px`);
-  };
+  }, []);
 
   useEffect(() => {
     dispatch(getFetchForm());
@@ -58,56 +54,40 @@ export default function AddHRPortal({ user }) {
     window.addEventListener("resize", updateModalBlockHeight);
     return () => {
       window.removeEventListener("resize", updateModalBlockHeight);
-      checkIsMounted();
+      isMountedRef.current = false;
     };
+  }, [updateModalBlockHeight]);
+
+  const handleOpenModal = useCallback(() => {
+    setIsModalOpen(true);
+    setEditVacancyData(null);
   }, []);
 
-  const checkIsMounted = () => {
-    isMountedRef.current = false;
-  };
-
-  const handleOpenModal = (type) => {
-    setIsModalOpen(true);
-    if (editVacancyData) {
-      setEditVacancyData(null);
-    }
-
-    if (selectedFilter === "Вакансии") {
-      setEditVacancyData(null);
-    } else if (selectedFilter === "Стажировки") {
-      setEditVacancyData(null);
-    }
-  };
-
-  const handleCloseModal = () => {
+  const handleCloseModal = useCallback(() => {
     setIsModalOpen(false);
-  };
+  }, []);
 
-  const handleDeleteModalOpen = (id) => {
+  const handleDeleteModalOpen = useCallback((id) => {
     setDeleteModalState((prevState) => ({
       ...prevState,
       [id]: true,
     }));
-  };
+  }, []);
 
-  const handleDeleteModalClose = (id) => {
+  const handleDeleteModalClose = useCallback((id) => {
     setDeleteModalState((prevState) => {
       const newState = { ...prevState };
       delete newState[id];
       return newState;
     });
-  };
+  }, []);
 
-  const handleButtonsFilterClick = (filter) => {
+  const handleButtonsFilterClick = useCallback((filter) => {
     setActiveButtonIndex(filter);
     setSelectedFilter(buttonsFilter[filter]);
-  };
+  }, []);
 
-  const handleCopyClick = async (id) => {
-    // navigator.clipboard.writeText(id);
-    // setIsCopied(true);
-    // // seticonCopy(true);
-    // setCopiedId(id);
+  const handleCopyClick = useCallback(async (id) => {
     try {
       await navigator.clipboard.writeText(id);
       if (isMountedRef.current) {
@@ -117,20 +97,19 @@ export default function AddHRPortal({ user }) {
     } catch (err) {
       console.error("Unable to copy project to clipboard:", err);
     }
-  };
+  }, []);
 
-  const handleCopyVacancyClick = async (id) => {
+  const handleCopyVacancyClick = useCallback(async (id) => {
     try {
       await navigator.clipboard.writeText(id);
       if (isMountedRef.current) {
-        const vacancyToCopy =
-          vacanciesAdd && vacanciesAdd.find((el) => el.id === id);
+        const vacancyToCopy = vacanciesAdd.find((el) => el.id === id);
         const copiedVacancy = { ...vacancyToCopy, id };
         dispatch(sendCopiedVacancyToServer(copiedVacancy)).then((response) => {
           const copiedId = response.data.copiedId;
-          setCopiedVacancyId(copiedId); // Устанавливаем copiedId
+          setCopiedVacancyId(copiedId);
           setTimeout(() => {
-            setCopiedVacancyId(null); // Сбрасываем copiedId после 5 секунд
+            setCopiedVacancyId(null);
           }, 5000);
           dispatch(getFetchForm());
         });
@@ -138,15 +117,12 @@ export default function AddHRPortal({ user }) {
     } catch (err) {
       console.error("Unable to copy vacancy:", err);
     }
-  };
+  }, [dispatch, vacanciesAdd]);
 
-  const handleEditClick = async (id) => {
+  const handleEditClick = useCallback(async (id) => {
     try {
       await navigator.clipboard.writeText(id);
       if (isMountedRef.current) {
-        // setIsCopied(true);
-        // setCopiedId(id);
-
         const vacancyToEdit = vacanciesAdd.find((el) => el.id === id);
         setEditVacancyData(vacancyToEdit);
         setIsModalOpen(true);
@@ -154,13 +130,13 @@ export default function AddHRPortal({ user }) {
     } catch (err) {
       console.error("Unable to copy vacancy to clipboard:", err);
     }
-  };
+  }, [vacanciesAdd]);
 
-  const handleFormDelete = (formId) => {
+  const handleFormDelete = useCallback((formId) => {
     dispatch(deleteForm(formId));
     dispatch(getVacanciesByDirection());
     handleDeleteModalClose(formId);
-  };
+  }, [dispatch, handleDeleteModalClose]);
 
   useEffect(() => {
     if (isCopied) {
@@ -172,23 +148,23 @@ export default function AddHRPortal({ user }) {
     }
   }, [isCopied]);
 
-  const handleLookClick = async (id) => {
-   const vacancyToToggle = vacanciesAdd.find((vacancy) => vacancy.id === id);
+  const handleLookClick = useCallback((id) => {
+    const vacancyToToggle = vacanciesAdd.find((vacancy) => vacancy.id === id);
     if (!vacancyToToggle) return;
+    const updatedHiddenStatus = !vacancyToToggle.hidden;
+    dispatch(updateVacancyLookStatusAndSaveToDB({ id, hidden: updatedHiddenStatus }));
+  }, [dispatch, vacanciesAdd]);
 
-   const updatedHiddenStatus = !vacancyToToggle.hidden;
-   dispatch(
-      updateVacancyLookStatusAndSaveToDB({ id, hidden: updatedHiddenStatus })
-    );
-  };
-
-  const filteredVacancies = vacanciesAdd.filter((vacancy) => {
-    if (selectedFilter === "Вакансии") {
-      return vacancy.type === "вакансия";
-    } else if (selectedFilter === "Стажировки") {
-      return vacancy.type === "стажировка";
-    }
-  });
+  const filteredVacancies = useMemo(() => {
+    return vacanciesAdd.filter((vacancy) => {
+      if (selectedFilter === "Вакансии") {
+        return vacancy.type === "вакансия";
+      } else if (selectedFilter === "Стажировки") {
+        return vacancy.type === "стажировка";
+      }
+      return false;
+    });
+  }, [vacanciesAdd, selectedFilter]);
 
   return (
     <section className={styles.card_components_admin}>
@@ -198,17 +174,15 @@ export default function AddHRPortal({ user }) {
           {buttonsFilter.map((button, index) => (
             <button
               key={index}
-              // className={`${styles.card_components_admin__buttonFilter__group}
-              // ${activeButtonIndex === index ? styles.activeButtonVacancy : ""}`}
               className={`${styles.card_components_admin__buttonFilter__group} ${
                 activeButtonIndex === index ? styles.activeButtonVacancy : ""
-                } ${index === 0 ? styles.noAnimation : ""}`}
+              } ${index === 0 ? styles.noAnimation : ""}`}
               onClick={() => handleButtonsFilterClick(index)}
             >
               <img
-                className={`${
-                  styles.card_components_admin__buttonFilter__icons
-                } ${activeButtonIndex === index ? styles.activeIcon : ""}`}
+                className={`${styles.card_components_admin__buttonFilter__icons} ${
+                  activeButtonIndex === index ? styles.activeIcon : ""
+                }`}
                 src={pencilIcon}
                 alt={pencilIcon}
               />
@@ -218,14 +192,7 @@ export default function AddHRPortal({ user }) {
         </div>
         <div
           className={styles.card_components_admin__button_block}
-          onClick={() => {
-            if (
-              selectedFilter === "Вакансии" ||
-              selectedFilter === "Стажировки"
-            ) {
-              handleOpenModal(selectedFilter);
-            }
-          }}
+          onClick={handleOpenModal}
         >
           <button className={styles.card_components_admin__button}>
             <div>
@@ -313,259 +280,255 @@ export default function AddHRPortal({ user }) {
                 <>
                   <div className={styles.card_components_admin__block__vacancy}>
                     {Array.isArray(filteredVacancies) &&
-                      [...filteredVacancies] // Создаем копию массива вакансий, чтобы не мутировать оригинальный массив
-                        .reverse() // Переворачиваем массив
-                        .map((el) => {
-                          return (
-                            <React.Fragment key={el.id}>
+                      [...filteredVacancies].reverse().map((el) => {
+                        return (
+                          <React.Fragment key={el.id}>
+                            <div
+                              key={el.id}
+                              className={`${styles.cart_vacancy_container} ${
+                                copiedVacancyId === el.id
+                                  ? styles.copiedVacancy
+                                  : ""
+                              }`}
+                            >
                               <div
-                                key={el.id}
-                                className={`${styles.cart_vacancy_container} ${
-                                  copiedVacancyId === el.id
-                                    ? styles.copiedVacancy
-                                    : ""
-                                }`}
+                                className={
+                                  styles.cart_vacancy_container__content
+                                }
+                              >
+                                <span
+                                  className={
+                                    styles.cart_vacancy_container__title
+                                  }
+                                >
+                                  {el.title}
+                                </span>
+                              </div>
+                              <div
+                                className={
+                                  styles.cart_vacancy_container__department
+                                }
+                              >
+                                {el.direction}
+                              </div>
+                              <div
+                                className={
+                                  styles.cart_vacancy_container__id_block
+                                }
                               >
                                 <div
                                   className={
-                                    styles.cart_vacancy_container__content
+                                    styles.cart_vacancy_container__id_text
                                   }
                                 >
-                                  <span
-                                    className={
-                                      styles.cart_vacancy_container__title
-                                    }
-                                  >
-                                    {el.title}
-                                  </span>
+                                  id: {el.id}
                                 </div>
-                                <div
+                                {isCopied && el.id === copiedId && (
+                                  <>
+                                    <div
+                                      className={
+                                        styles.cart_vacancy_container__copyMessage
+                                      }
+                                    >
+                                      id скопирован
+                                    </div>
+                                    <div
+                                      className={
+                                        styles.cart_vacancy_container__copyButton_img_copy_deffalt
+                                      }
+                                    />
+                                  </>
+                                )}
+                                <button
                                   className={
-                                    styles.cart_vacancy_container__department
+                                    styles.cart_vacancy_container__copyButton
                                   }
-                                >
-                                  {el.direction}
-                                </div>
-                                <div
-                                  className={
-                                    styles.cart_vacancy_container__id_block
-                                  }
+                                  onClick={() => handleCopyClick(el.id)}
                                 >
                                   <div
                                     className={
-                                      styles.cart_vacancy_container__id_text
+                                      styles.cart_vacancy_container__copyButton_img_copy_ok
+                                    }
+                                  />
+                                </button>
+                              </div>
+                              <div
+                                className={
+                                  styles.cart_vacancy_container_buttonClick
+                                }
+                              >
+                                {user?.name === "obezyankaa" ||
+                                user?.name === "Pokemon" ||
+                                user?.name === "hr778" ? (
+                                  <div
+                                    className={styles.copyIcon_block_vacancy}
+                                    onClick={() =>
+                                      handleCopyVacancyClick(el.id)
                                     }
                                   >
-                                    id: {el.id}
-                                  </div>
-                                  {isCopied && el.id === copiedId && (
-                                    <>
-                                      <div
-                                        className={
-                                          styles.cart_vacancy_container__copyMessage
-                                        }
+                                    <button
+                                      className={styles.buttom_copyIcon}
+                                    >
+                                      <label
+                                        htmlFor="copyIcon"
+                                        className={styles.label}
                                       >
-                                        id скопирован
-                                      </div>
-                                      <div
-                                        className={
-                                          styles.cart_vacancy_container__copyButton_img_copy_deffalt
-                                        }
-                                      />
-                                    </>
-                                  )}
-                                  <button
-                                    className={
-                                      styles.cart_vacancy_container__copyButton
-                                    }
-                                    onClick={() => handleCopyClick(el.id)}
-                                  >
-                                    <div
-                                      className={
-                                        styles.cart_vacancy_container__copyButton_img_copy_ok
-                                      }
-                                    />
-                                  </button>
-                                </div>
-                                <div
-                                  className={
-                                    styles.cart_vacancy_container_buttonClick
-                                  }
-                                >
-                                  {user?.name === "obezyankaa" ||
-                                  user?.name === "Pokemon" ||
-                                  user?.name === "hr778" ? (
-                                    <div
-                                      className={styles.copyIcon_block_vacancy}
+                                        <div className={`${styles.wrapper}`}>
+                                          <img
+                                            src={copyIcon}
+                                            alt={copyIcon}
+                                          />
+                                        </div>
+                                      </label>
+                                    </button>
+                                  </div>
+                                ) : null}
+                                {user?.name === "obezyankaa" ||
+                                user?.name === "Pokemon" ? (
+                                  <div className={styles.del_block_vacancy}>
+                                    <button
+                                      className={styles.buttom_del}
                                       onClick={() =>
-                                        handleCopyVacancyClick(el.id)
+                                        handleDeleteModalOpen(el.id)
                                       }
                                     >
-                                      <button
-                                        className={styles.buttom_copyIcon}
+                                      <label
+                                        htmlFor="delete"
+                                        className={styles.label}
                                       >
-                                        <label
-                                          htmlFor="copyIcon"
-                                          className={styles.label}
-                                        >
-                                          <div className={`${styles.wrapper}`}>
-                                            <img
-                                              src={copyIcon}
-                                              alt={copyIcon}
-                                            />
-                                          </div>
-                                        </label>
-                                      </button>
-                                    </div>
-                                  ) : null}
-                                  {user?.name === "obezyankaa" ||
-                                  user?.name === "Pokemon" ? (
-                                    <div className={styles.del_block_vacancy}>
-                                      <button
-                                        className={styles.buttom_del}
-                                        onClick={() =>
-                                          handleDeleteModalOpen(el.id)
-                                        }
-                                      >
-                                        <label
-                                          htmlFor="delete"
-                                          className={styles.label}
-                                        >
-                                          <div className={`${styles.wrapper}`}>
-                                            <div className={`${styles.lid}`}>
+                                        <div className={`${styles.wrapper}`}>
+                                          <div className={`${styles.lid}`}>
+                                            <div
+                                              className={
+                                                styles.container_vedro
+                                              }
+                                            >
                                               <div
                                                 className={
-                                                  styles.container_vedro
+                                                  styles.triangle_left
                                                 }
-                                              >
-                                                <div
-                                                  className={
-                                                    styles.triangle_left
-                                                  }
-                                                ></div>
-                                                <div
-                                                  className={styles.rectangle}
-                                                ></div>
-                                                <div
-                                                  className={
-                                                    styles.triangle_right
-                                                  }
-                                                ></div>
-                                              </div>
+                                              ></div>
+                                              <div
+                                                className={styles.rectangle}
+                                              ></div>
+                                              <div
+                                                className={
+                                                  styles.triangle_right
+                                                }
+                                              ></div>
                                             </div>
-                                            <div
-                                              className={`${styles.can}`}
-                                            ></div>
-                                            <span>delete</span>
                                           </div>
-                                        </label>
-                                      </button>
-                                    </div>
-                                  ) : null}
-                                  {user?.name === "obezyankaa" ||
-                                  user?.name === "Pokemon" ||
-                                  user?.name === "hr778" ? (
-                                    <div
-                                      className={`${
-                                        styles.look_block_vacancy
-                                      } ${el.hidden ? styles.disabled : ""}`}
-                                      onClick={() => handleLookClick(el.id)}
-                                    >
-                                      <button className={styles.buttom_look}>
-                                        <label
-                                          htmlFor="look"
-                                          className={styles.label}
-                                        >
-                                          <div className={`${styles.wrapper}`}>
-                                            <img
-                                              src={el.hidden ? noLook : Look}
-                                              alt={
-                                                el.hidden ? "No look" : "Look"
-                                              }
-                                            />
-                                          </div>
-                                        </label>
-                                      </button>
-                                    </div>
-                                  ) : null}
+                                          <div
+                                            className={`${styles.can}`}
+                                          ></div>
+                                          <span>delete</span>
+                                        </div>
+                                      </label>
+                                    </button>
+                                  </div>
+                                ) : null}
+                                {user?.name === "obezyankaa" ||
+                                user?.name === "Pokemon" ||
+                                user?.name === "hr778" ? (
+                                  <div
+                                    className={`${
+                                      styles.look_block_vacancy
+                                    } ${el.hidden ? styles.disabled : ""}`}
+                                    onClick={() => handleLookClick(el.id)}
+                                  >
+                                    <button className={styles.buttom_look}>
+                                      <label
+                                        htmlFor="look"
+                                        className={styles.label}
+                                      >
+                                        <div className={`${styles.wrapper}`}>
+                                          <img
+                                            src={el.hidden ? noLook : Look}
+                                            alt={
+                                              el.hidden ? "No look" : "Look"
+                                            }
+                                          />
+                                        </div>
+                                      </label>
+                                    </button>
+                                  </div>
+                                ) : null}
 
-                                  {user?.name === "obezyankaa" ||
-                                  user?.name === "Pokemon" ||
-                                  user?.name === "hr778" ? (
-                                    <div
-                                      className={styles.edit_block_vacancy}
-                                      onClick={() => handleEditClick(el.id)}
-                                    >
-                                      <button className={styles.buttom_edit}>
-                                        <label
-                                          htmlFor="edit"
-                                          className={styles.label}
-                                        >
-                                          <div className={`${styles.wrapper}`}>
-                                            <img src={Edit} alt={Edit} />
-                                          </div>
-                                        </label>
-                                      </button>
-                                    </div>
-                                  ) : null}
-                                </div>
+                                {user?.name === "obezyankaa" ||
+                                user?.name === "Pokemon" ||
+                                user?.name === "hr778" ? (
+                                  <div
+                                    className={styles.edit_block_vacancy}
+                                    onClick={() => handleEditClick(el.id)}
+                                  >
+                                    <button className={styles.buttom_edit}>
+                                      <label
+                                        htmlFor="edit"
+                                        className={styles.label}
+                                      >
+                                        <div className={`${styles.wrapper}`}>
+                                          <img src={Edit} alt={Edit} />
+                                        </div>
+                                      </label>
+                                    </button>
+                                  </div>
+                                ) : null}
                               </div>
-                              {/* Модальное окно подтверждения удаления */}
-                              {deleteModalState[el.id] && (
-                                <div className={styles.delete_modal_container}>
-                                  <div className={styles.delete_modal_block}>
-                                    <div
-                                      className={
-                                        styles.delete_modal_block__title
-                                      }
-                                    >
-                                      {selectedFilter === "Вакансии"
-                                        ? `Вы точно хотите удалить вакансию`
-                                        : selectedFilter === "Стажировки"
-                                        ? `Вы точно хотите удалить стажировку`
-                                        : `Вы точно хотите удалить вакансию`}
-                                      {/* Вы точно хотите удалить вакансию */}
-                                      <br /> «{el.title}»?
-                                    </div>
-                                    <p
-                                      className={
-                                        styles.delete_modal_block__text
-                                      }
-                                    >
-                                      Удаленную{" "}
-                                      {selectedFilter === "Вакансии"
-                                        ? "вакансию"
-                                        : "стажировку"}{" "}
-                                      вернуть будет невозможно
-                                    </p>
+                            </div>
+                            {deleteModalState[el.id] && (
+                              <div className={styles.delete_modal_container}>
+                                <div className={styles.delete_modal_block}>
+                                  <div
+                                    className={
+                                      styles.delete_modal_block__title
+                                    }
+                                  >
+                                    {selectedFilter === "Вакансии"
+                                      ? `Вы точно хотите удалить вакансию`
+                                      : selectedFilter === "Стажировки"
+                                      ? `Вы точно хотите удалить стажировку`
+                                      : `Вы точно хотите удалить вакансию`}
+                                    <br /> «{el.title}»?
+                                  </div>
+                                  <p
+                                    className={
+                                      styles.delete_modal_block__text
+                                    }
+                                  >
+                                    Удаленную{" "}
+                                    {selectedFilter === "Вакансии"
+                                      ? "вакансию"
+                                      : "стажировку"}{" "}
+                                    вернуть будет невозможно
+                                  </p>
 
-                                    <div className={styles.button_block}>
-                                      <button
-                                        className={`${styles.button_block__cancel} ${styles.delete_modal_button_cancel}`}
-                                        onClick={() =>
-                                          handleDeleteModalClose(el.id)
-                                        }
-                                      />
-                                      <button
-                                        className={`${styles.button_block__save} ${styles.delete_modal_button_delete}`}
-                                        onClick={() => handleFormDelete(el.id)}
-                                      />
-                                    </div>
-
+                                  <div className={styles.button_block}>
                                     <button
-                                      className={
-                                        styles.delete_modal_block__close_button
-                                      }
+                                      className={`${styles.button_block__cancel} ${styles.delete_modal_button_cancel}`}
                                       onClick={() =>
                                         handleDeleteModalClose(el.id)
                                       }
-                                    ></button>
+                                    />
+                                    <button
+                                      className={`${styles.button_block__save} ${styles.delete_modal_button_delete}`}
+                                      onClick={() => handleFormDelete(el.id)}
+                                    />
                                   </div>
+
+                                  <button
+                                    className={
+                                      styles.delete_modal_block__close_button
+                                    }
+                                    onClick={() =>
+                                      handleDeleteModalClose(el.id)
+                                    }
+                                  ></button>
                                 </div>
-                              )}
-                            </React.Fragment>
-                          );
-                        })}
+                              </div>
+                            )}
+                          </React.Fragment>
+                        );
+                      })}
                   </div>
                 </>
               )}

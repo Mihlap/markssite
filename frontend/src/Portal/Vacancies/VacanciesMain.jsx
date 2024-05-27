@@ -26,6 +26,7 @@ import buttonLink_ipad from "./icons/buttonLink1.svg";
 import clearAll from "./icons/clearAll.svg";
 import FilterModalVacancies from "./FilterModalVacancies";
 import RocketComponent from "../../UI/Rocket/RocketComponents";
+import Rocket from "../../UI/Rocket/Rocket";
 
 const VacanciesMain = ({
   handleMouseEnter,
@@ -235,8 +236,9 @@ const VacanciesMain = ({
         <div className={styles.main_vacancies_block}>
           <div className={styles.wrapper_vacancies}>
             <div className={styles.rocket_image}>
-              <img src="/assets/rocket.png" alt="rocket.png" />
+              {/* <img src="/assets/rocket.png" alt="rocket.png" /> */}
               {/* <RocketComponent /> */}
+              <Rocket/>
             </div>
             <div className={styles.vacancies_header_wrapper}>
               <span className={styles.vacancies_header1}>
