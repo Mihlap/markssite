@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import Modal from "react-modal";
 import styles from "./Vacancies.module.css";
 import { fetchFilteredVacancies, setActiveFilters } from "../../store/Slice/vacanciesSlice";
@@ -24,33 +24,35 @@ const FilterModalVacancies = ({
       setLocalFilters(activeFilters);
   }, [activeFilters]);
 
-  const handleFilterClick = (category, value) => {
-      const updatedFilters = { ...localFilters };
+  const handleFilterClick = useCallback((category, value) => {
+    setLocalFilters((prevFilters) => {
+      const updatedFilters = { ...prevFilters };
       const currentValues = updatedFilters[category] || [];
       const valueIndex = currentValues.indexOf(value);
 
       if (valueIndex > -1) {
-          updatedFilters[category] = currentValues.filter((item) => item !== value);
+        updatedFilters[category] = currentValues.filter((item) => item !== value);
       } else {
-          updatedFilters[category] = [...currentValues, value];
+        updatedFilters[category] = [...currentValues, value];
       }
 
       if (selectedFilter !== "Все") {
-          updatedFilters[filterKeyForSpecialty] = [selectedFilter];
+        updatedFilters[filterKeyForSpecialty] = [selectedFilter];
       }
 
-      setLocalFilters(updatedFilters);
-  };
+      return updatedFilters;
+    });
+  }, [selectedFilter]);
 
-  const handleApplyFilters = () => {
-      if (selectedFilter !== "Все") {
-          localFilters[filterKeyForSpecialty] = [selectedFilter];
-      }
-      setFilters(localFilters);
-      dispatch(setActiveFilters(localFilters));
-      dispatch(fetchFilteredVacancies(localFilters));
-      onClose();
-  };
+  const handleApplyFilters = useCallback(() => {
+    if (selectedFilter !== "Все") {
+      localFilters[filterKeyForSpecialty] = [selectedFilter];
+    }
+    setFilters(localFilters);
+    dispatch(setActiveFilters(localFilters));
+    dispatch(fetchFilteredVacancies(localFilters));
+    onClose();
+  }, [dispatch, localFilters, onClose, selectedFilter, setFilters]);
 
   const filterButtons = [
     {
@@ -192,4 +194,4 @@ const FilterModalVacancies = ({
   );
 };
 
-export default FilterModalVacancies;
+export default React.memo(FilterModalVacancies);
