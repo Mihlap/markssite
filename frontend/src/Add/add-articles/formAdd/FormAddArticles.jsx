@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useMemo, useCallback } from "react";
 import Select from "react-select";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
@@ -55,36 +55,30 @@ export default function FormAddArticles({ setIsModalOpen }) {
   const quillRef1 = useRef(null);
   const quillRef2 = useRef(null);
 
-  // Стили для eact-quill
   const quillRefs = [quillRef1, quillRef2];
-  const applyStylesToQuillEditor = (quillRef) => {
+  const applyStylesToQuillEditor = useCallback((quillRef) => {
     if (quillRef && quillRef.current) {
       const editor = quillRef.current.getEditor();
       const editorElement = editor.root;
-      
-      // Применение стилей к нужному элементу
-      editorElement.style.fontSize = '16px';
-      editorElement.style.fontFamily = 'Raleway, sans-serif';
-      editorElement.style.color = 'var(--black-1D2E43)';
-      editorElement.style.border = 'none';
+
+      editorElement.style.fontSize = "16px";
+      editorElement.style.fontFamily = "Raleway, sans-serif";
+      editorElement.style.color = "var(--black-1D2E43)";
+      editorElement.style.border = "none";
     }
-  }; 
-  
+  }, []);
+
   useEffect(() => {
-    // Применение стилей для каждого quillRef
     quillRefs.forEach((quillRef) => applyStylesToQuillEditor(quillRef));
-  }, [quillRef1, quillRef2]);
+  }, [quillRef1, quillRef2, applyStylesToQuillEditor]);
 
-  // << ==== КОНСТУКТОР ==== >>
-  // состояние для хранения текущего значения инпута
   const [inputValue, setInputValue] = useState("");
-
   const [onenConstructor, setOpenConstructor] = useState(false);
   const [blocks, setBlocks] = useState([]);
   const [dynamicPreviews, setDynamicPreviews] = useState([]);
   const [dynamicData, setDynamicData] = useState([]);
 
-  const handleRemovePreviewPhoto = (index) => {
+  const handleRemovePreviewPhoto = useCallback((index) => {
     removePreviewPhoto(
       previewPhotos,
       setPreviewPhotos,
@@ -93,10 +87,9 @@ export default function FormAddArticles({ setIsModalOpen }) {
       setInputData,
       setIsDropPhotoVisible
     );
-  };
+  }, [previewPhotos, inputData]);
 
-  // Удаление фото из массива превью который с одной фоткой
-  const handleRemovePreviewPhotoAva = (index) => {
+  const handleRemovePreviewPhotoAva = useCallback((index) => {
     removePreviewPhotoAva(
       previewPhotoAva,
       setPreviewPhotoAva,
@@ -105,10 +98,9 @@ export default function FormAddArticles({ setIsModalOpen }) {
       setInputData,
       setIsPhotoAvaVisible
     );
-  };
+  }, [previewPhotoAva, inputData]);
 
-  // Удаление превью фото перед основным текстом
-  const handleRemovePreviewPhotoOpen = (index) => {
+  const handleRemovePreviewPhotoOpen = useCallback((index) => {
     removePreviewPhotoOpen(
       previewPhotoOpen,
       setPreviewPhotoOpen,
@@ -117,10 +109,9 @@ export default function FormAddArticles({ setIsModalOpen }) {
       setInputData,
       setIsPhotoOpenVisible
     );
-  };
+  }, [previewPhotoOpen, inputData]);
 
-  // Удаление превью фото из закрывающей картинки
-  const handleRemovePreviewPhotoClose = (index) => {
+  const handleRemovePreviewPhotoClose = useCallback((index) => {
     removePreviewPhotoClose(
       previewPhotoClose,
       setPreviewPhotoClose,
@@ -129,77 +120,66 @@ export default function FormAddArticles({ setIsModalOpen }) {
       setInputData,
       setIsPhotoCloseVisible
     );
-  };
+  }, [previewPhotoClose, inputData]);
 
-  // функция отправки формы на Redux
-  const submitHandler = async (e) => {
+  const submitHandler = useCallback(async (e) => {
     e.preventDefault();
     const formattedData = {
       ...inputData,
       dynamicBlocks: dynamicData,
-      selectCompetencies: selectedCompetencies
-        .map((option) => option.label)
-        .join(","),
+      selectCompetencies: selectedCompetencies.map((option) => option.label).join(","),
     };
-    dispatch(
-      fetchArticle(
-        formattedData,
-        setInputData,
-        setPreviewPhotos,
-        setPreviewPhotoAva,
-        setPreviewPhotoOpen,
-        setPreviewPhotoClose
-      )
-    );
+    dispatch(fetchArticle(formattedData));
+    setInputData({
+      title: "",
+      author: "",
+      city: "",
+      dataMonthYear: "",
+      selectCompetencies: [],
+      dropPhoto: [],
+      titleTextBlock: "",
+      descriptionArticle: "",
+      photoAva: "",
+      imageOpen: "",
+      textBlock: "",
+      imageClose: "",
+    });
     setSelectedCompetencies([]);
     setIsModalOpen(false);
-    // console.log(formattedData, "<<<----консоль на фронте");
-  };
+  }, [dispatch, inputData, dynamicData, selectedCompetencies, setIsModalOpen]);
 
-  const closeModal = () => {
+  const closeModal = useCallback(() => {
     setIsModalOpen(false);
-  };
+  }, [setIsModalOpen]);
 
-  // << ============ КОНСТРУКТОР ============ >>
+  const handlerOpenConstructor = useCallback(() => {
+    setOpenConstructor((prev) => !prev);
+  }, []);
 
-  const handlerOpenConstructor = () => {
-    setOpenConstructor(!onenConstructor);
-  };
+  const areAllBlocksFilled = useCallback(() => {
+    for (let block of dynamicData) {
+      for (let input of block) {
+        if (input.required && (!input.value || input.value === "")) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }, [dynamicData]);
 
-  // функция которая не даёт создать новый диманический блок, пока не заполнены value предыдущего
- const areAllBlocksFilled = () => {
-   for (let block of dynamicData) {
-     for (let input of block) {
-       // Проверяем только обязательные поля
-       if (input.required && (!input.value || input.value === "")) {
-         return false;
-       }
-     }
-   }
-   return true;
-  };
-  
-    const handleRemoveBlock = (blockIndex) => {
-      setDynamicData((prevDynamicData) =>
-        prevDynamicData.filter((_, index) => index !== blockIndex)
-      );
-      // Обновление других связанных состояний...
-      setBlocks((prevBlocks) =>
-        prevBlocks.filter((_, index) => index !== blockIndex)
-      );
-      setDynamicPreviews((prevPreviews) =>
-        prevPreviews.filter((_, index) => index !== blockIndex)
-      );
-    };
+  const handleRemoveBlock = useCallback((blockIndex) => {
+    setDynamicData((prevDynamicData) => prevDynamicData.filter((_, index) => index !== blockIndex));
+    setBlocks((prevBlocks) => prevBlocks.filter((_, index) => index !== blockIndex));
+    setDynamicPreviews((prevPreviews) => prevPreviews.filter((_, index) => index !== blockIndex));
+  }, []);
 
-  const handleClick = (inputs) => {
-     
-     if (!areAllBlocksFilled()) {
-       setShowNotification(true);
-       setTimeout(() => setShowNotification(false), 5000);
-       return;
-     }
-     
+  const handleClick = useCallback((inputs) => {
+    if (!areAllBlocksFilled()) {
+      setShowNotification(true);
+      setTimeout(() => setShowNotification(false), 5000);
+      return;
+    }
+
     const blockKey = Date.now().toString();
     const newInputs = inputs.map((input) => ({
       ...input,
@@ -207,23 +187,23 @@ export default function FormAddArticles({ setIsModalOpen }) {
     }));
     setBlocks((prevState) => [...prevState, newInputs]);
     setDynamicData((prevDynamicData) => [...prevDynamicData, newInputs]);
-  };
+  }, [areAllBlocksFilled]);
 
-    async function compressImage(file) {
-      const options = {
-        maxSizeMB: 4, // максимальный размер файла в MB
-        maxWidthOrHeight: 1920, // максимальная ширина или высота
-        useWebWorker: true,
-      };
+  const compressImage = useCallback(async (file) => {
+    const options = {
+      maxSizeMB: 4,
+      maxWidthOrHeight: 1920,
+      useWebWorker: true,
+    };
 
-      try {
-        return await compressImageFile(file, options);
-      } catch (error) {
-        console.error("Ошибка при сжатии изображения:", error);
-      }
+    try {
+      return await compressImageFile(file, options);
+    } catch (error) {
+      console.error("Ошибка при сжатии изображения:", error);
     }
+  }, []);
 
-  const handleDynamicInputChange = async (blockIndex, inputIndex, value) => {
+  const handleDynamicInputChange = useCallback(async (blockIndex, inputIndex, value) => {
     const newDynamicData = [...dynamicData];
 
     if (!newDynamicData[blockIndex]) {
@@ -237,32 +217,26 @@ export default function FormAddArticles({ setIsModalOpen }) {
         value: "",
       };
     }
-    function generateUniqueName(originalName) {
+
+    const generateUniqueName = (originalName) => {
       const timestamp = Date.now();
       const randomNum = Math.floor(Math.random() * 10000);
       const fileExtension = originalName.split(".").pop();
-      // Транслитерация части оригинального имени файла
       const sliceOfOriginalName = transliterate(originalName.slice(0, 5));
       const newName = `file_${sliceOfOriginalName}_${timestamp}_${randomNum}.${fileExtension}`;
       return newName;
-    }
-  
+    };
+
     if (Array.isArray(value) && value[0] instanceof File) {
       const newFiles = await Promise.all(
         value.map(async (originalFile) => {
           if (originalFile.type.startsWith("image/")) {
-            // Сжимаем только изображения
             const compressedFile = await compressImage(originalFile);
             const uniqueName = generateUniqueName(compressedFile.name);
-            return new File([compressedFile], uniqueName, {
-              type: compressedFile.type,
-            });
+            return new File([compressedFile], uniqueName, { type: compressedFile.type });
           } else {
-            // Если файл не является изображением, возвращаем его без изменений
             const uniqueName = generateUniqueName(originalFile.name);
-            return new File([originalFile], uniqueName, {
-              type: originalFile.type,
-            });
+            return new File([originalFile], uniqueName, { type: originalFile.type });
           }
         })
       );
@@ -271,11 +245,11 @@ export default function FormAddArticles({ setIsModalOpen }) {
     } else {
       newDynamicData[blockIndex][inputIndex].value = value;
     }
-    setDynamicData(newDynamicData);
-  };
 
-  // этот цикл сделан для присвоения разных стилей для одной конструкции превью
-  const getPreviewClassName = (label) => {
+    setDynamicData(newDynamicData);
+  }, [dynamicData, compressImage]);
+
+  const getPreviewClassName = useCallback((label) => {
     switch (label) {
       case "Картинка с описанием":
         return {
@@ -297,21 +271,21 @@ export default function FormAddArticles({ setIsModalOpen }) {
         return {
           outerDiv: styles.videoPreview,
           innerDiv: styles.videoInnerDiv,
-          videoStyles: styles.videoStyle, // этот стиль можно использовать для видеотега
+          videoStyles: styles.videoStyle,
         };
       default:
         return "";
     }
-  };
+  }, []);
 
-  const renderInputWithLabel = (
+  const renderInputWithLabel = useCallback((
     inputType,
     labelText,
     blockIndex,
     inputIndex,
     key
   ) => {
-    function handleDeletePreview(event, blockIndex, inputIndex, previewIndex) {
+    const handleDeletePreview = (event, blockIndex, inputIndex, previewIndex) => {
       event.preventDefault();
       setDynamicPreviews((prev) => {
         const newPreviews = [...prev];
@@ -330,34 +304,24 @@ export default function FormAddArticles({ setIsModalOpen }) {
       });
 
       const fileInputs = document.querySelectorAll('input[type="file"]');
-      fileInputs.forEach((input) => (input.value = "")); // это очищает значение всех инпутов типа file
-    }
+      fileInputs.forEach((input) => (input.value = ""));
+    };
 
     const classNames = getPreviewClassName(labelText);
-    // // Проверка наличия Quill в проекте
-    // const isQuillAvailable = typeof require.resolve("quill") !== "undefined";
-
-    // // Далее используйте переменную в вашем JSX
-    // const useQuill = isQuillAvailable ? true : false;
 
     return (
       <div key={inputIndex}>
         {inputType === "text" && (
-          // <input type="text" />
           <div className={styles.form_container__heading_block}>
             <input
               type="input"
-              maxLength="56" // 2. Установите атрибут maxLength
-              value={dynamicData[blockIndex][inputIndex].value || ""} // используйте значение inputValue как текущее значение инпута
+              maxLength="56"
+              value={dynamicData[blockIndex][inputIndex].value || ""}
               className={`${styles.form_container__heading_block_input} ${styles.orange_color}`}
               placeholder={labelText}
               onChange={(e) => {
-                setInputValue(e.target.value); // 4. Обновите inputValue при каждом изменении
-                handleDynamicInputChange(
-                  blockIndex,
-                  inputIndex,
-                  e.target.value
-                );
+                setInputValue(e.target.value);
+                handleDynamicInputChange(blockIndex, inputIndex, e.target.value);
               }}
             />
             <label
@@ -375,26 +339,16 @@ export default function FormAddArticles({ setIsModalOpen }) {
           <>
             {labelText === "Видеоролик" ? (
               <div>
-                <div
-                  className={styles.form_container__checkbox_block_constructor}
-                >
+                <div className={styles.form_container__checkbox_block_constructor}>
                   <div>{labelText}</div>
                 </div>
-                <label
-                  className={
-                    styles.slider_container__customFileUploadOrangeColor
-                  }
-                >
+                <label className={styles.slider_container__customFileUploadOrangeColor}>
                   <input
                     type="file"
-                    accept="video/*" // Это будет принимать только видеофайлы
+                    accept="video/*"
                     onChange={(e) => {
                       const filesArray = Array.from(e.target.files);
-                      handleDynamicInputChange(
-                        blockIndex,
-                        inputIndex,
-                        filesArray
-                      );
+                      handleDynamicInputChange(blockIndex, inputIndex, filesArray);
 
                       const previewsArray = filesArray.map((file) =>
                         URL.createObjectURL(file)
@@ -432,19 +386,11 @@ export default function FormAddArticles({ setIsModalOpen }) {
                     Загрузить видеоролик
                   </div>
                 </label>
-                {/* Добавляем блок превью видео ниже */}
                 {dynamicPreviews[blockIndex] &&
                   dynamicPreviews[blockIndex][inputIndex] &&
                   dynamicPreviews[blockIndex][inputIndex].map((src, index) => (
-                    <div
-                      key={`${blockIndex}-${inputIndex}-${index}`}
-                      className={classNames.innerDiv}
-                    >
-                      <div
-                        className={
-                          styles.preview_photos_container_block_constructor
-                        }
-                      >
+                    <div key={`${blockIndex}-${inputIndex}-${index}`} className={classNames.innerDiv}>
+                      <div className={styles.preview_photos_container_block_constructor}>
                         <video
                           key={index}
                           src={src}
@@ -454,17 +400,8 @@ export default function FormAddArticles({ setIsModalOpen }) {
                           className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
                         />
                         <div
-                          className={
-                            styles.preview_photos_container_block_constructor__remove_icon
-                          }
-                          onClick={(e) =>
-                            handleDeletePreview(
-                              e,
-                              blockIndex,
-                              inputIndex,
-                              index
-                            )
-                          }
+                          className={styles.preview_photos_container_block_constructor__remove_icon}
+                          onClick={(e) => handleDeletePreview(e, blockIndex, inputIndex, index)}
                         >
                           <span></span>
                         </div>
@@ -475,27 +412,15 @@ export default function FormAddArticles({ setIsModalOpen }) {
             ) : (
               <>
                 <div key={inputIndex}>
-                  <div
-                    className={
-                      styles.form_container__checkbox_block_constructor
-                    }
-                  >
+                  <div className={styles.form_container__checkbox_block_constructor}>
                     <div>{labelText}</div>
                   </div>
-                  <label
-                    className={
-                      styles.slider_container__customFileUploadOrangeColor
-                    }
-                  >
+                  <label className={styles.slider_container__customFileUploadOrangeColor}>
                     <input
                       type="file"
                       onChange={(e) => {
                         const filesArray = Array.from(e.target.files);
-                        handleDynamicInputChange(
-                          blockIndex,
-                          inputIndex,
-                          filesArray
-                        );
+                        handleDynamicInputChange(blockIndex, inputIndex, filesArray);
 
                         const previewsArray = filesArray.map((file) =>
                           URL.createObjectURL(file)
@@ -535,90 +460,57 @@ export default function FormAddArticles({ setIsModalOpen }) {
                     </div>
                   </label>
                 </div>
-                <div
-                  className={`${styles.previewContainer} ${classNames.outerDiv}`}
-                >
+                <div className={`${styles.previewContainer} ${classNames.outerDiv}`}>
                   {dynamicPreviews[blockIndex] &&
                     dynamicPreviews[blockIndex][inputIndex] &&
-                    dynamicPreviews[blockIndex][inputIndex].map(
-                      (src, index) => {
-                        return (
-                          <div
-                            key={`${blockIndex}-${inputIndex}-${index}`}
-                            className={classNames.innerDiv}
-                          >
+                    dynamicPreviews[blockIndex][inputIndex].map((src, index) => {
+                      return (
+                        <div
+                          key={`${blockIndex}-${inputIndex}-${index}`}
+                          className={classNames.innerDiv}
+                        >
+                          <div className={styles.preview_photos_container_block_constructor}>
+                            <img
+                              src={src}
+                              alt={`Preview ${index}`}
+                              className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
+                            />
                             <div
-                              className={
-                                styles.preview_photos_container_block_constructor
-                              }
+                              className={styles.preview_photos_container_block_constructor__remove_icon}
+                              onClick={(e) => handleDeletePreview(e, blockIndex, inputIndex, index)}
                             >
-                              <img
-                                src={src}
-                                alt={`Preview ${index}`}
-                                className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
-                              />
-                              <div
-                                className={
-                                  styles.preview_photos_container_block_constructor__remove_icon
-                                }
-                                onClick={(e) =>
-                                  handleDeletePreview(
-                                    e,
-                                    blockIndex,
-                                    inputIndex,
-                                    index
-                                  )
-                                }
-                              >
-                                <span></span>
-                              </div>
+                              <span></span>
                             </div>
                           </div>
-                        );
-                      }
-                    )}
+                        </div>
+                      );
+                    })}
                 </div>
               </>
             )}
           </>
         )}
         {inputType === "textarea" && (
-          <div
-            key={inputIndex}
-            className={styles.form_container__description_text}
-          >
-            <div className={styles.form_container__textarea_length}>
-              {/* {`${inputData.descriptionArticle.length}/260`} */}
-            </div>
-            {/* <textarea
-              className={`${styles.form_container__textarea} ${styles.orange_color}`}
-              // name="descriptionArticle"
-              onChange={(e) =>
-                handleDynamicInputChange(blockIndex, inputIndex, e.target.value)
-              }
-              id="descriptionArticle"
-              cols="30"
-              rows="10"
-              placeholder={labelText}
-            ></textarea> */}
+          <div key={inputIndex} className={styles.form_container__description_text}>
+            <div className={styles.form_container__textarea_length}></div>
             <ReactQuill
-             ref={(el) => {
-              if (el) {
-                const editor = el.getEditor();
-                const editorElement = editor.root;
-            
-                editorElement.style.fontSize = '16px';
-                editorElement.style.fontFamily = 'Raleway, sans-serif';
-                editorElement.style.color = 'var(--black-1D2E43)';
-                editorElement.style.padding = "1rem";
-                editorElement.style.borderRadius = "6px";
-                editorElement.style.fontWeight = "var(--fw-400)";
-                editorElement.style.lineHeight = "16px";
-                editorElement.style.boxSizing = "border-box";
-                editorElement.style.paddingBottom = "2.5rem";
-              }
-            }}
-                modules={{
+              ref={(el) => {
+                if (el) {
+                  const editor = el.getEditor();
+                  const editorElement = editor.root;
+
+                  editorElement.style.fontSize = "16px";
+                  editorElement.style.fontFamily = "Raleway, sans-serif";
+                  editorElement.style.color = "var(--black-1D2E43)";
+                  editorElement.style.padding = "1rem";
+                  editorElement.style.borderRadius = "6px";
+                  editorElement.style.fontWeight = "var(--fw-400)";
+                  editorElement.style.lineHeight = "16px";
+                  editorElement.style.boxSizing = "border-box";
+                  editorElement.style.paddingBottom = "2.5rem";
+                }
+              }}
+              modules={{
                 toolbar: [
                   ["bold", "italic", "underline"],
                   [{ list: "bullet" }, { list: "ordered" }],
@@ -628,7 +520,6 @@ export default function FormAddArticles({ setIsModalOpen }) {
                 },
               }}
               style={{
-                // resize: "none",
                 padding: "0rem",
                 fontFamily: "var(--font-raleway)",
                 borderRadius: "6px",
@@ -651,20 +542,16 @@ export default function FormAddArticles({ setIsModalOpen }) {
               }}
               placeholder={labelText}
             />
-            <label
-              htmlFor=""
-              className={styles.form_container__textarea_label_constructor}
-            >
+            <label htmlFor="" className={styles.form_container__textarea_label_constructor}>
               {labelText}
             </label>
           </div>
         )}
-        {/* <div className={styles.slider_container__uploadText}>{labelText}</div> */}
       </div>
     );
-  };
+  }, [dynamicData, dynamicPreviews, getPreviewClassName, handleDynamicInputChange]);
 
-  const renderInputs = (inputs, blockIndex) => {
+  const renderInputs = useCallback((inputs, blockIndex) => {
     return (
       <div key={blockIndex} className={styles.blockContainer}>
         {inputs.map((input, inputIndex) =>
@@ -676,7 +563,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
         ></div>
       </div>
     );
-  };
+  }, [renderInputWithLabel, handleRemoveBlock]);
 
  
   // console.log(inputData, "<<--inputData ARTICLE");

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useMemo, useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "../style/style-card.module.scss";
 import FormAddArticles from "./formAdd/FormAddArticles";
@@ -23,12 +23,10 @@ export default function AddArticles({ user }) {
   const isActiveForButton2 = useSelector(
     (state) => state.toggle.isActiveForButton2
   );
-  const [modalBlockHeight, setModalBlockHeight] = useState("auto"); // Изначально высота будет автоматически рассчитываться
+  const [modalBlockHeight, setModalBlockHeight] = useState("auto");
 
-  // открывает модалку
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
-  const [isonCopy, seticonCopy] = useState(false);
   const [isImageLoaded, setImageLoaded] = useState(false);
   const [copiedId, setCopiedId] = useState("");
   const [deleteModalState, setDeleteModalState] = useState({});
@@ -36,12 +34,11 @@ export default function AddArticles({ user }) {
 
   const isMountedRef = useRef(true);
 
-  const updateModalBlockHeight = () => {
+  const updateModalBlockHeight = useCallback(() => {
     const windowHeight = window.innerHeight;
-    const maxHeight = Math.min(windowHeight - 100, 1900); // Примерное максимальное значение высоты
-
+    const maxHeight = Math.min(windowHeight - 100, 1900);
     setModalBlockHeight(`${maxHeight}px`);
-  };
+  }, []);
 
   useEffect(() => {
     dispatch(getFetchFormArticle());
@@ -53,98 +50,80 @@ export default function AddArticles({ user }) {
     window.addEventListener("resize", updateModalBlockHeight);
     return () => {
       window.removeEventListener("resize", updateModalBlockHeight);
-      checkIsMounted();
+      isMountedRef.current = false;
     };
-  }, []);
+  }, [updateModalBlockHeight]);
 
-  const checkIsMounted = () => {
-    isMountedRef.current = false;
-  };
-
-  const handleOpenModal = () => {
+  const handleOpenModal = useCallback(() => {
     setIsModalOpen(true);
     if (editArticleData) {
       setEditArticleData(null);     
     }
-  };
+  }, [editArticleData]);
 
-  const handleCloseModal = () => {
+  const handleCloseModal = useCallback(() => {
     setIsModalOpen(false);
-  };
+  }, []);
 
-  const handleDeleteModalOpen = (id) => {
+  const handleDeleteModalOpen = useCallback((id) => {
     setDeleteModalState((prevState) => ({
       ...prevState,
       [id]: true,
     }));
-  };
+  }, []);
 
-  const handleDeleteModalClose = (id) => {
+  const handleDeleteModalClose = useCallback((id) => {
     setDeleteModalState((prevState) => {
       const newState = { ...prevState };
       delete newState[id];
       return newState;
     });
-  };
+  }, []);
 
-  const handleCopyClick = async (id) => {
+  const handleCopyClick = useCallback(async (id) => {
     try {
-    await navigator.clipboard.writeText(id);
-    if (isMountedRef.current) {
-    setIsCopied(true);
-    // seticonCopy(true);
-    setCopiedId(id);
-  }
-  } catch (err) {
-    console.error("Unable to copy article to clipboard:", err);
-  }
-  };
+      await navigator.clipboard.writeText(id);
+      if (isMountedRef.current) {
+        setIsCopied(true);
+        setCopiedId(id);
+      }
+    } catch (err) {
+      console.error("Unable to copy article to clipboard:", err);
+    }
+  }, []);
 
-  const handleEditClick = async (id) => {
+  const handleEditClick = useCallback(async (id) => {
     try {
-  await navigator.clipboard.writeText(id);  
-  if (isMountedRef.current) {
-    // setIsCopied(true);
-    // setCopiedId(id);
+      await navigator.clipboard.writeText(id);  
+      if (isMountedRef.current) {
+        const articleToEdit = article.find((el) => el.id === id);
+        setEditArticleData(articleToEdit);
+        setIsModalOpen(true);
+      }
+    } catch (err) {
+      console.error("Unable to copy project to clipboard:", err);
+    }
+  }, [article]);
 
-    const articleToEdit = article.find((el) => el.id === id);
-    // console.log('Project to edit111111111111111111111:', projectToEdit);
-  
-    setEditArticleData(articleToEdit);
-    setIsModalOpen(true);
-  }
-} catch (err) {
-  console.error("Unable to copy project to clipboard:", err);
-}
-};
-
-  const handleFormDelete = (formId) => {
+  const handleFormDelete = useCallback((formId) => {
     dispatch(deleteFormArticle(formId));
     handleDeleteModalClose();
-  };
+  }, [dispatch, handleDeleteModalClose]);
 
   useEffect(() => {
     if (isCopied) {
       const timer = setTimeout(() => {
         setIsCopied(false);
-        // seticonCopy(false);
         setCopiedId("");
       }, 3000);
       return () => clearTimeout(timer);
     }
   }, [isCopied]);
 
-  // const imageDescription = article.map((el) => el.ImageToDescriptionArticles);
-  // for (let innerArray of imageDescription) {
-  //   for (let item of innerArray) {
-  //     console.log(item.image);
-  //   }
-  // }
-
-  const toggleActive = () => {
+  const toggleActive = useCallback(() => {
     dispatch(updateToggleStateForButton2Async(!isActiveForButton2));
-  };
-  // console.log(isActiveForButton2); // Здесь мы выводим в консоль обратное значение, так как функция еще не обновила state
+  }, [dispatch, isActiveForButton2]);
+
   return (
     <section className={styles.card_components_admin}>
       <div className={styles.card_components_admin__block}>
@@ -327,7 +306,6 @@ export default function AddArticles({ user }) {
                                         >
                                           <div className={`${styles.wrapper}`}>
                                             <img src={Edit} alt={Edit} />
-                                            {/* <span>Edit</span> */}
                                           </div>
                                         </label>
                                       </button>
@@ -438,3 +416,5 @@ export default function AddArticles({ user }) {
     </section>
   );
 }
+
+

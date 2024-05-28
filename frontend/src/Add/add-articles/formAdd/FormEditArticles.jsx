@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback, useMemo } from "react";
 import Select from "react-select";
 import { transliterate } from "transliteration";
 import { useDispatch } from "react-redux";
@@ -31,7 +31,7 @@ import {
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 
-export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
+export default function FormEditArticles({ setIsModalOpen, editArticleData }) {
   const dispatch = useDispatch();
   const [selectedCompetencies, setSelectedCompetencies] = useState([]);
   const [previewPhotos, setPreviewPhotos] = useState([]);
@@ -69,30 +69,26 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
   const quillRef2 = useRef(null);
 
   // Стили для eact-quill
-  const quillRefs = [quillRef1, quillRef2];
   const applyStylesToQuillEditor = (quillRef) => {
     if (quillRef && quillRef.current) {
       const editor = quillRef.current.getEditor();
       const editorElement = editor.root;
       
-      // Применение стилей к нужному элементу
       editorElement.style.fontSize = '16px';
       editorElement.style.fontFamily = 'Raleway, sans-serif';
       editorElement.style.color = 'var(--black-1D2E43)';
       editorElement.style.border = 'none';
     }
-  }; 
-  
+  };
+
   useEffect(() => {
-    // Применение стилей для каждого quillRef
-    quillRefs.forEach((quillRef) => applyStylesToQuillEditor(quillRef));
-  }, [quillRef1, quillRef2]);
+    [quillRef1, quillRef2].forEach((quillRef) => applyStylesToQuillEditor(quillRef));
+  }, []);
 
    // состояние для хранения текущего значения инпута
-   const [inputValue, setInputValue] = useState("");
-
+  //  const [inputValue, setInputValue] = useState("");
+  // const [blocks, setBlocks] = useState([]);
    const [openConstructor, setOpenConstructor] = useState(false);
-   // const [blocks, setBlocks] = useState([]);
    const [dynamicPreviews, setDynamicPreviews] = useState([]);
    const [dynamicData, setDynamicData] = useState([]);
   
@@ -102,148 +98,75 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
   useEffect(() => {
     if (editArticleData) {
       const initialSelectedCompetencies = editArticleData.selectCompetencies
-        ? editArticleData.selectCompetencies
-            .split(",")
-            .map((item) => ({ value: item.trim(), label: item.trim() }))
+        ? editArticleData.selectCompetencies.split(",").map((item) => ({ value: item.trim(), label: item.trim() }))
         : [];
 
       setSelectedCompetencies(initialSelectedCompetencies);
 
-      setInputData((prevInputData) => {
-        const updatedInputData = {
-          ...prevInputData,
-          title:
-            editArticleData.title !== undefined ? editArticleData.title : "",
-          selectCompetencies: initialSelectedCompetencies,
-          author:
-            editArticleData.author !== undefined ? editArticleData.author : "",
-          city: editArticleData.city !== undefined ? editArticleData.city : "",
-          dataMonthYear:
-            editArticleData.dataMonthYear !== undefined
-              ? editArticleData.dataMonthYear
-              : "",
-          dropPhoto:
-            editArticleData.dropPhoto !== undefined
-              ? editArticleData.dropPhoto.split(",")
-              : [],
-          photoAva:
-            editArticleData.photoAva !== undefined
-              ? editArticleData.photoAva
-              : "",
-          titleTextBlock:
-            editArticleData.titleTextBlock !== undefined
-              ? editArticleData.titleTextBlock
-              : "",
-          descriptionArticle:
-            editArticleData.descriptionArticle !== undefined
-              ? editArticleData.descriptionArticle
-              : "",
-          publication:
-            editArticleData.publication !== undefined
-              ? editArticleData.publication
-              : "",
-          linkToPublicationTwo:
-            editArticleData.linkToPublicationTwo !== undefined
-              ? editArticleData.linkToPublicationTwo
-              : "",
-          imageOpen:
-            editArticleData.imageOpen !== undefined
-              ? editArticleData.imageOpen
-              : "",
-          textBlock:
-            editArticleData.textBlock !== undefined
-              ? editArticleData.textBlock
-              : "",
-          imageClose:
-            editArticleData.imageClose !== undefined
-              ? editArticleData.imageClose
-              : "",
-          imageAuthor:
-              editArticleData.imageAuthor !== undefined
-              ? editArticleData.imageAuthor
-              : "",
-          imageTitle:
-            editArticleData.imageTitle &&
-            typeof editArticleData.imageTitle === "string"
-              ? editArticleData.imageTitle.split(",")
-              : [],
-              dynamicDataFromEditArticle:
-              editArticleData.dynamicDataFromEditProject !== undefined
-              ? editArticleData.dynamicDataFromEditProject
-              : "",
-        };
-        // console.log("Обновленные данные формы:", updatedInputData);
-        return updatedInputData;
-      });
-      // const dynamicDataFromEditProject = editArticleData.dynamicData;
-      // if (dynamicDataFromEditProject && dynamicDataFromEditProject.length > 0) {
-      //   setDynamicData(dynamicDataFromEditProject);
-      //   const previewsArray = dynamicDataFromEditProject.map((block) =>
-      //     block.map((input) => input.value)
-      //   );
-      //   setDynamicPreviews(previewsArray);
-      // }
+      setInputData((prevInputData) => ({
+        ...prevInputData,
+        title: editArticleData.title ?? "",
+        selectCompetencies: initialSelectedCompetencies,
+        author: editArticleData.author ?? "",
+        city: editArticleData.city ?? "",
+        dataMonthYear: editArticleData.dataMonthYear ?? "",
+        dropPhoto: editArticleData.dropPhoto ? editArticleData.dropPhoto.split(",") : [],
+        photoAva: editArticleData.photoAva ?? "",
+        titleTextBlock: editArticleData.titleTextBlock ?? "",
+        descriptionArticle: editArticleData.descriptionArticle ?? "",
+        publication: editArticleData.publication ?? "",
+        linkToPublicationTwo: editArticleData.linkToPublicationTwo ?? "",
+        imageOpen: editArticleData.imageOpen ?? "",
+        textBlock: editArticleData.textBlock ?? "",
+        imageClose: editArticleData.imageClose ?? "",
+        imageAuthor: editArticleData.imageAuthor ?? "",
+        imageTitle: editArticleData.imageTitle ? editArticleData.imageTitle.split(",") : [],
+        dynamicDataFromEditArticle: editArticleData.dynamicDataFromEditProject ?? "",
+      }));
+
       if (Array.isArray(data) && data.length > 0) {
-        for (let index = 0; index < data.length; index++) {
-          const block = data[index];
+        data.forEach((block, index) => {
           if (Array.isArray(block)) {
             const dynamicDataFromEditArticle = block.map((input) => input.value) || [];
 
-          if (dynamicDataFromEditArticle.length > 0) {
-            const dynamicData = block.map((input) => ({
-              // id: input.id,
-              type: input.type,
-              label: input.label,
-              value: input.value,
-              key: input.key,
-              blockIndex: index,
-            }));
+            if (dynamicDataFromEditArticle.length > 0) {
+              const dynamicData = block.map((input) => ({
+                type: input.type,
+                label: input.label,
+                value: input.value,
+                key: input.key,
+                blockIndex: index,
+              }));
 
-            setDynamicData((prevDynamicData) => {
-              return [
+              setDynamicData((prevDynamicData) => [
                 ...prevDynamicData.slice(0, index),
                 dynamicData,
                 ...prevDynamicData.slice(index + 1),
-              ];
-            });
+              ]);
 
-            const previewsArray = dynamicData.map((input) => input.value);
-
-            setDynamicPreviews((prev) => {
-              const newPreviews = [...prev];
-              newPreviews[index] = previewsArray;
-              return newPreviews;
-            });
+              const previewsArray = dynamicData.map((input) => input.value);
+              setDynamicPreviews((prev) => {
+                const newPreviews = [...prev];
+                newPreviews[index] = previewsArray;
+                return newPreviews;
+              });
+            }
           }
-        }
-      }
+        });
       }
     }
   }, [editArticleData]);
 
   // << ==== КОНСТУКТОР ==== >>
-   const handleRemovePreviewPhoto = (index) => {
-    removePreviewPhoto(
-      previewPhotos,
-      setPreviewPhotos,
-      index,
-      inputData,
-      setInputData,
-      setIsDropPhotoVisible
-    );
-  };
+  const handleRemovePreviewPhoto = useCallback((index) => {
+    removePreviewPhoto(previewPhotos, setPreviewPhotos, index, inputData, setInputData, setIsDropPhotoVisible);
+  }, [previewPhotos, inputData]);
 
   // Удаление фото из массива превью который с одной фоткой
-  const handleRemovePreviewPhotoAva = (index) => {
-    removePreviewPhotoAva(
-      previewPhotoAva,
-      setPreviewPhotoAva,
-      index,
-      inputData,
-      setInputData,
-      setIsPhotoAvaVisible
-    );
-  };
+  const handleRemovePreviewPhotoAva = useCallback((index) => {
+    removePreviewPhotoAva(previewPhotoAva, setPreviewPhotoAva, index, inputData, setInputData, setIsPhotoAvaVisible);
+  }, [previewPhotoAva, inputData]);
+
 // Удаление превью фото перед основным текстом НЕ УДАЛЯТЬ!!!!!
   // Удаление превью фото перед основным текстом
   // const handleRemovePreviewPhotoOpen = (index) => {
@@ -270,12 +193,12 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
   // };
 
   
-  const closeModal = () => {
+  const closeModal = useCallback(() => {
     setIsModalOpen(false);
-  };
+  }, [setIsModalOpen]);
 
   // функция отправки формы на Redux
-  const submitHandler = async (e) => {
+  const submitHandler = useCallback(async (e) => {
     e.preventDefault();
     try {
       const previewPhotosCopy = [...previewPhotos];
@@ -285,16 +208,13 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
       const formattedData = {
         ...inputData,
         dynamicBlocks: dynamicData,
-        selectCompetencies: selectedCompetencies
-          .map((option) => option.label)
-          .join(","),
+        selectCompetencies: selectedCompetencies.map((option) => option.label).join(","),
       };
 
-      // Если есть данные об редактируемой статье, устанавливаем articleId
       if (editArticleData && editArticleData.id) {
         dispatch(setArticleId(editArticleData.id));
       }
-      // Отправляем данные
+
       await dispatch(
         fetchArticle(
           formattedData,
@@ -304,65 +224,44 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
           setPreviewPhotoAva,
           setPreviewPhotoOpen,
           setPreviewPhotoClose,
-          previewPhotosCopy, // Передаем копии массивов с изображениями
+          previewPhotosCopy,
           previewPhotoAvaCopy,
           previewPhotoOpenCopy,
           previewPhotoCloseCopy
         )
       );
-      // dispatch(clearFormData());
-      // dispatch(getFetchFormArticle());
 
-      // Ваши дополнительные действия после успешного сохранения статьи
-      // Например, закрытие модального окна и сброс состояний
       setSelectedCompetencies([]);
-      // console.log('Статья успешно сохранена');
-      
-      // Дополнительные действия, если необходимо
-      // ...
       setIsModalOpen(false);
     } catch (error) {
-      // Обработка ошибки, если сохранение не удалось
       console.error("Ошибка при сохранении статьи:", error);
-      // Можно предпринять меры по обработке ошибки, например, показ сообщения пользователю
-      // ...
     }
-  };
+  }, [dispatch, editArticleData, inputData, previewPhotos, previewPhotoAva, previewPhotoOpen, previewPhotoClose, selectedCompetencies, dynamicData]);
 
- 
+  
   // << ============ КОНСТРУКТОР ============ >>
-
-  const handlerOpenConstructor = () => {
+  const handlerOpenConstructor = useCallback(() => {
     setOpenConstructor(!openConstructor);
-  };
+  }, [openConstructor]);
 
   // функция которая не даёт создать новый диманический блок, пока не заполнены value предыдущего
-  const areAllBlocksFilled = () => {
+  const areAllBlocksFilled = useCallback(() => {
     for (let block of dynamicData) {
       for (let input of block) {
-        // Проверяем только обязательные поля
         if (input.required && (!input.value || input.value === "")) {
           return false;
         }
       }
     }
     return true;
-  };
+  }, [dynamicData]);
 
-  const handleRemoveBlock = (blockIndex) => {
-    setDynamicData((prevDynamicData) =>
-      prevDynamicData.filter((_, index) => index !== blockIndex)
-    );
-    // Обновление других связанных состояний...
-    // setBlocks((prevBlocks) =>
-    //   prevBlocks.filter((_, index) => index !== blockIndex)
-    // );
-    setDynamicPreviews((prevPreviews) =>
-      prevPreviews.filter((_, index) => index !== blockIndex)
-    );
-  };
+  const handleRemoveBlock = useCallback((blockIndex) => {
+    setDynamicData((prevDynamicData) => prevDynamicData.filter((_, index) => index !== blockIndex));
+    setDynamicPreviews((prevPreviews) => prevPreviews.filter((_, index) => index !== blockIndex));
+  }, []);
 
-  const handleClick = (inputs, blockIndex) => {
+  const handleClick = useCallback((inputs, blockIndex) => {
     if (!areAllBlocksFilled()) {
       setShowNotification(true);
       setTimeout(() => setShowNotification(false), 5000);
@@ -375,15 +274,13 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
       key: blockKey + "_" + input.type,
       blockIndex: blockIndex,
     }));
-    // setBlocks((prevState) => [...prevState, newInputs]);
-    setDynamicData((prevDynamicData) => [...prevDynamicData, newInputs]);
 
+    setDynamicData((prevDynamicData) => [...prevDynamicData, newInputs]);
     setDynamicPreviews((prevPreviews) => [
       ...prevPreviews,
       new Array(newInputs.length).fill([]),
     ]);
-    //  handlerOpenConstructor();
-  };
+  }, [areAllBlocksFilled]);
 
   async function compressImage(file) {
     const options = {
@@ -399,7 +296,7 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
     }
   }
 
-  const handleDynamicInputChange = async (blockIndex, inputIndex, value) => {
+  const handleDynamicInputChange = useCallback(async (blockIndex, inputIndex, value) => {
     const newDynamicData = [...dynamicData];
 
     if (!newDynamicData[blockIndex]) {
@@ -415,11 +312,11 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
         key: "",
       };
     }
+
     function generateUniqueName(originalName) {
       const timestamp = Date.now();
       const randomNum = Math.floor(Math.random() * 10000);
       const fileExtension = originalName.split(".").pop();
-      // Транслитерация части оригинального имени файла
       const sliceOfOriginalName = transliterate(originalName.slice(0, 5));
       const newName = `file_${sliceOfOriginalName}_${timestamp}_${randomNum}.${fileExtension}`;
       return newName;
@@ -429,18 +326,12 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
       const newFiles = await Promise.all(
         value.map(async (originalFile) => {
           if (originalFile.type.startsWith("image/")) {
-            // Сжимаем только изображения
             const compressedFile = await compressImage(originalFile);
             const uniqueName = generateUniqueName(compressedFile.name);
-            return new File([compressedFile], uniqueName, {
-              type: compressedFile.type,
-            });
+            return new File([compressedFile], uniqueName, { type: compressedFile.type });
           } else {
-            // Если файл не является изображением, возвращаем его без изменений
             const uniqueName = generateUniqueName(originalFile.name);
-            return new File([originalFile], uniqueName, {
-              type: originalFile.type,
-            });
+            return new File([originalFile], uniqueName, { type: originalFile.type });
           }
         })
       );
@@ -450,7 +341,7 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
       newDynamicData[blockIndex][inputIndex].value = value;
     }
     setDynamicData(newDynamicData);
-  };
+  }, [dynamicData]);
 
   // этот цикл сделан для присвоения разных стилей для одной конструкции превью
   const getPreviewClassName = (label) => {
@@ -482,30 +373,9 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
     }
   };
 
-  const renderInputWithLabel = (
-    inputType,
-    labelText,
-    blockIndex,
-    inputIndex,
-    key
-  ) => {
-    function handleDeletePreview(event, blockIndex, inputIndex, previewIndex) {
-      event.preventDefault();
-      setDynamicPreviews((prev) => {
-      //   const newPreviews = [...prev];
-      //   if (newPreviews[blockIndex] && newPreviews[blockIndex][inputIndex]) {
-      //     newPreviews[blockIndex][inputIndex].splice(previewIndex, 1);
-      //   }
-      //   return newPreviews;
-      // });
-
-      // setDynamicData((prevData) => {
-      //   const newData = [...prevData];
-      //   if (newData[blockIndex] && newData[blockIndex][inputIndex]) {
-      //     newData[blockIndex][inputIndex].value.splice(previewIndex, 1);
-      //   }
-      //   return newData;
-      // });
+  const handleDeletePreview = useCallback((event, blockIndex, inputIndex, previewIndex) => {
+    event.preventDefault();
+    setDynamicPreviews((prev) => {
       const newPreviews = [...prev];
       if (
         newPreviews[blockIndex] &&
@@ -518,6 +388,7 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
       }
       return newPreviews;
     });
+
     setDynamicData((prevData) => {
       const newData = [...prevData];
       if (
@@ -533,41 +404,26 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
       return newData;
     });
 
-      const fileInputs = document.querySelectorAll('input[type="file"]');
-      fileInputs.forEach((input) => (input.value = "")); // это очищает значение всех инпутов типа file
-    }
+    const fileInputs = document.querySelectorAll('input[type="file"]');
+    fileInputs.forEach((input) => (input.value = ""));
+  }, []);
 
+  const renderInputWithLabel = useCallback((inputType, labelText, blockIndex, inputIndex, key) => {
     const classNames = getPreviewClassName(labelText);
 
     return (
       <div key={key}>
         {inputType === "text" && (
-          // <input type="text" />
           <div className={styles.form_container__heading_block}>
             <input
               type="input"
-              maxLength="56" // 2. Установите атрибут maxLength
+              maxLength="56"
               className={`${styles.form_container__heading_block_input} ${styles.orange_color}`}
-              // value={dynamicData[blockIndex][inputIndex].value || ""} // используйте значение inputValue как текущее значение инпута
               placeholder={labelText}
-              value={
-                dynamicData[blockIndex][inputIndex]?.value
-                  ? dynamicData[blockIndex][inputIndex].value
-                  : ""
-              }
-              onChange={(e) => {
-                // setInputValue(e.target.value); // 4. Обновите inputValue при каждом изменении
-                handleDynamicInputChange(
-                  blockIndex,
-                  inputIndex,
-                  e.target.value
-                );
-              }}
+              value={dynamicData[blockIndex][inputIndex]?.value || ""}
+              onChange={(e) => handleDynamicInputChange(blockIndex, inputIndex, e.target.value)}
             />
-            <label
-              htmlFor={`input-${blockIndex}-${inputIndex}`}
-              className={styles.form_container__heading_block_label}
-            >
+            <label htmlFor={`input-${blockIndex}-${inputIndex}`} className={styles.form_container__heading_block_label}>
               {labelText}
             </label>
             <div className={styles.form_container__heading_block_input_length}>
@@ -579,30 +435,18 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
           <>
             {labelText === "Видеоролик" ? (
               <div>
-                <div
-                  className={styles.form_container__checkbox_block_constructor}
-                >
+                <div className={styles.form_container__checkbox_block_constructor}>
                   <div>{labelText}</div>
                 </div>
-                <label
-                  className={
-                    styles.slider_container__customFileUploadOrangeColor
-                  }
-                >
+                <label className={styles.slider_container__customFileUploadOrangeColor}>
                   <input
                     type="file"
-                    accept="video/*" // Это будет принимать только видеофайлы
+                    accept="video/*"
                     onChange={(e) => {
                       const filesArray = Array.from(e.target.files);
-                      handleDynamicInputChange(
-                        blockIndex,
-                        inputIndex,
-                        filesArray
-                      );
+                      handleDynamicInputChange(blockIndex, inputIndex, filesArray);
 
-                      const previewsArray = filesArray.map((file) =>
-                        URL.createObjectURL(file)
-                      );
+                      const previewsArray = filesArray.map((file) => URL.createObjectURL(file));
                       setDynamicPreviews((prev) => {
                         const newPreviews = [...prev];
                         if (!newPreviews[blockIndex]) {
@@ -613,14 +457,7 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
                       });
                     }}
                   />
-                  <svg
-                    className={styles.slider_container__svg}
-                    width="16"
-                    height="16"
-                    viewBox="0 0 16 16"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
+                  <svg className={styles.slider_container__svg} width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g id="Frame 4684">
                       <path
                         id="Vector"
@@ -632,34 +469,13 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
                       />
                     </g>
                   </svg>
-                  <div className={styles.slider_container__uploadText}>
-                    Загрузить видеоролик
-                  </div>
+                  <div className={styles.slider_container__uploadText}>Загрузить видеоролик</div>
                 </label>
-                {/* Добавляем блок превью видео ниже */}
-                {/* {dynamicPreviews[blockIndex] &&
-                  dynamicPreviews[blockIndex][inputIndex] &&
-                  dynamicPreviews[blockIndex][inputIndex].map((src, index) => ( */}
                 {Array.isArray(dynamicPreviews[blockIndex]?.[inputIndex]) &&
                   dynamicPreviews[blockIndex][inputIndex].map((src, index) => (
-                    <div
-                      key={`${blockIndex}-${inputIndex}-${index}`}
-                      className={classNames.innerDiv}
-                    >
-                      <div
-                        className={
-                          styles.preview_photos_container_block_constructor
-                        }
-                      >
-                        {/* <video
-                          key={index}
-                          src={src}
-                          muted
-                          loop
-                          autoPlay
-                          className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
-                        /> */}
-                          {typeof src === 'string' && src.startsWith("blob:") ? ( // Проверяем, является ли src временным URL
+                    <div key={`${blockIndex}-${inputIndex}-${index}`} className={classNames.innerDiv}>
+                      <div className={styles.preview_photos_container_block_constructor}>
+                        {typeof src === "string" && src.startsWith("blob:") ? (
                           <video
                             key={index}
                             src={src}
@@ -677,20 +493,8 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
                             autoPlay
                             className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
                           />
-                        )} 
-                        <div
-                          className={
-                            styles.preview_photos_container_block_constructor__remove_icon
-                          }
-                          onClick={(e) =>
-                            handleDeletePreview(
-                              e,
-                              blockIndex,
-                              inputIndex,
-                              index
-                            )
-                          }
-                        >
+                        )}
+                        <div className={styles.preview_photos_container_block_constructor__remove_icon} onClick={(e) => handleDeletePreview(e, blockIndex, inputIndex, index)}>
                           <span></span>
                         </div>
                       </div>
@@ -700,31 +504,17 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
             ) : (
               <>
                 <div key={inputIndex}>
-                  <div
-                    className={
-                      styles.form_container__checkbox_block
-                    }
-                  >
+                  <div className={styles.form_container__checkbox_block}>
                     <div>{labelText}</div>
                   </div>
-                  <label
-                    className={
-                      styles.slider_container__customFileUploadOrangeColor
-                    }
-                  >
+                  <label className={styles.slider_container__customFileUploadOrangeColor}>
                     <input
                       type="file"
                       onChange={(e) => {
                         const filesArray = Array.from(e.target.files);
-                        handleDynamicInputChange(
-                          blockIndex,
-                          inputIndex,
-                          filesArray
-                        );
+                        handleDynamicInputChange(blockIndex, inputIndex, filesArray);
 
-                        const previewsArray = filesArray.map((file) =>
-                          URL.createObjectURL(file)
-                        );
+                        const previewsArray = filesArray.map((file) => URL.createObjectURL(file));
                         setDynamicPreviews((prev) => {
                           const newPreviews = [...prev];
                           if (!newPreviews[blockIndex]) {
@@ -736,14 +526,7 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
                       }}
                       multiple
                     />
-                    <svg
-                      className={styles.slider_container__svg}
-                      width="16"
-                      height="16"
-                      viewBox="0 0 16 16"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
+                    <svg className={styles.slider_container__svg} width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                       <g id="Frame 4684">
                         <path
                           id="Vector"
@@ -755,93 +538,49 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
                         />
                       </g>
                     </svg>
-                    <div className={styles.slider_container__uploadText}>
-                      Загрузить изображения
-                    </div>
+                    <div className={styles.slider_container__uploadText}>Загрузить изображения</div>
                   </label>
                 </div>
-                <div
-                  className={`${styles.previewContainer} ${classNames.outerDiv}`}
-                >
-                  {/* {dynamicPreviews[blockIndex] &&
-                    dynamicPreviews[blockIndex][inputIndex] &&
-                    dynamicPreviews[blockIndex][inputIndex].map(
-                      (src, index) => { */}
+                <div className={`${styles.previewContainer} ${classNames.outerDiv}`}>
                   {Array.isArray(dynamicPreviews[blockIndex]?.[inputIndex]) &&
-                    dynamicPreviews[blockIndex][inputIndex].map(
-                      (src, index) => {
-                        return (
-                          <div
-                            key={`${blockIndex}-${inputIndex}-${index}`}
-                            className={classNames.innerDiv}
-                          >
-                            <div
-                              className={
-                                styles.preview_photos_container_block_constructor
-                              }
-                            >
-                              {/* <img
-                                src={src}
-                                alt={`Preview ${index}`}
-                                className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
-                              /> */}
-                              {typeof src === "string" &&
-                              src.startsWith("blob:") ? ( // Проверяем, является ли src временным URL
-                                <img
-                                  src={src}
-                                  alt={`Preview ${index}`}
-                                  className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
-                                />
-                              ) : (
-                                <img
-                                  src={`${Host}/images/imageArticle/${src}`}
-                                  alt={`Preview ${index}`}
-                                  className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
-                                />
-                              )} 
-                              <div
-                                className={
-                                  styles.preview_photos_container_block_constructor__remove_icon
-                                }
-                                onClick={(e) =>
-                                  handleDeletePreview(
-                                    e,
-                                    blockIndex,
-                                    inputIndex,
-                                    index
-                                  )
-                                }
-                              >
-                                <span></span>
-                              </div>
-                            </div>
+                    dynamicPreviews[blockIndex][inputIndex].map((src, index) => (
+                      <div key={`${blockIndex}-${inputIndex}-${index}`} className={classNames.innerDiv}>
+                        <div className={styles.preview_photos_container_block_constructor}>
+                          {typeof src === "string" && src.startsWith("blob:") ? (
+                            <img
+                              src={src}
+                              alt={`Preview ${index}`}
+                              className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
+                            />
+                          ) : (
+                            <img
+                              src={`${Host}/images/imageArticle/${src}`}
+                              alt={`Preview ${index}`}
+                              className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
+                            />
+                          )}
+                          <div className={styles.preview_photos_container_block_constructor__remove_icon} onClick={(e) => handleDeletePreview(e, blockIndex, inputIndex, index)}>
+                            <span></span>
                           </div>
-                        );
-                      }
-                    )}
+                        </div>
+                      </div>
+                    ))}
                 </div>
               </>
             )}
           </>
         )}
         {inputType === "textarea" && (
-          <div
-            key={inputIndex}
-            className={styles.form_container__description_text}
-          >
-            <div className={styles.form_container__textarea_length}>
-              {/* {`${inputData.descriptionArticle.length}/260`} */}
-            </div>
+          <div key={inputIndex} className={styles.form_container__description_text}>
             <ReactQuill
               ref={(el) => {
                 if (el) {
                   const editor = el.getEditor();
                   const editorElement = editor.root;
                   editorElement.style.border = "none";
-              
-                  editorElement.style.fontSize = '16px';
-                  editorElement.style.fontFamily = 'Raleway, sans-serif';
-                  editorElement.style.color = 'var(--black-1D2E43)';
+                  editorElement.style.fontSize = "16px";
+                  editorElement.style.fontFamily = "Raleway, sans-serif";
+                  editorElement.style.color = "var(--black-1D2E43)";
                   editorElement.style.padding = "1rem";
                   editorElement.style.borderRadius = "6px";
                   editorElement.style.fontWeight = "var(--fw-400)";
@@ -851,18 +590,17 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
                 }
               }}
               style={{
-                  // resize: "none",
-                  padding: "0rem",
-                  fontFamily: "var(--font-raleway)",
-                  borderRadius: "6px",
-                  fontSize: "16px",
-                  fontStyle: "normal",
-                  fontWeight: "var(--fw-400)",
-                  lineHeight: "16px",
-                  color: "var(---black-1D2E43)",
-                  boxSizing: "border-box",
-                  paddingBottom: "2.5rem",
-                }}
+                padding: "0rem",
+                fontFamily: "var(--font-raleway)",
+                borderRadius: "6px",
+                fontSize: "16px",
+                fontStyle: "normal",
+                fontWeight: "var(--fw-400)",
+                lineHeight: "16px",
+                color: "var(---black-1D2E43)",
+                boxSizing: "border-box",
+                paddingBottom: "2.5rem",
+              }}
               modules={{
                 toolbar: [
                   ["bold", "italic", "underline"],
@@ -877,65 +615,29 @@ export default function FormAddArticles({ setIsModalOpen, editArticleData }) {
               required
               name={key}
               id={key}
-              // value={dynamicData[blockIndex][inputIndex].value}
-              value={
-                dynamicData[blockIndex][inputIndex]?.value
-                  ? dynamicData[blockIndex][inputIndex]?.value
-                  : ""
-              }
-              onChange={(value) => {
-                handleDynamicInputChange(blockIndex, inputIndex, value);
-              }}
+              value={dynamicData[blockIndex][inputIndex]?.value || ""}
+              onChange={(value) => handleDynamicInputChange(blockIndex, inputIndex, value)}
               placeholder={labelText}
             />
-            {/* <textarea
-              className={`${styles.form_container__textarea} ${styles.orange_color}`}
-              // name="descriptionArticle"
-              onChange={(e) =>
-                handleDynamicInputChange(blockIndex, inputIndex, e.target.value)
-              }
-              id="descriptionArticle"
-              cols="30"
-              rows="10"
-              placeholder={labelText}
-            ></textarea> */}
-            <label
-              htmlFor=""
-              className={styles.form_container__textarea_label_constructor}
-            >
+            <label htmlFor="" className={styles.form_container__textarea_label_constructor}>
               {labelText}
             </label>
           </div>
         )}
-        {/* <div className={styles.slider_container__uploadText}>{labelText}</div> */}
       </div>
     );
-  };
+  }, [dynamicData, dynamicPreviews, handleDynamicInputChange, handleDeletePreview]);
 
-  const renderInputs = (inputs, blockIndex) => {
-    if (!Array.isArray(inputs)) {
-      return null;
-    }
+  const renderInputs = useCallback((inputs, blockIndex) => {
+    if (!Array.isArray(inputs)) return null;
+
     return (
       <div key={blockIndex} className={styles.blockContainer}>
-        {inputs.map((input, inputIndex) =>
-           renderInputWithLabel(
-            input.type,
-            input.label,
-            blockIndex,
-            inputIndex,
-            `${blockIndex}-${inputIndex}`  // добавлен динамический ключ
-          )             
-      )}
-        <div
-        key={`close-${blockIndex}`} // добавлен динамический ключ для кнопки
-          className={styles.blockContainer__close_button}
-          onClick={() => handleRemoveBlock(blockIndex)}
-        ></div>
+        {inputs.map((input, inputIndex) => renderInputWithLabel(input.type, input.label, blockIndex, inputIndex, `${blockIndex}-${inputIndex}`))}
+        <div key={`close-${blockIndex}`} className={styles.blockContainer__close_button} onClick={() => handleRemoveBlock(blockIndex)}></div>
       </div>
     );
-  };
-  // console.log(editArticleData, "<<--editArticleData");
+  }, [handleRemoveBlock, renderInputWithLabel]);
 
   return (
     <div className={styles.form_container}>
