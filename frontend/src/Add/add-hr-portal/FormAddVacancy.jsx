@@ -59,12 +59,31 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
       editorElement.style.fontFamily = "Raleway, sans-serif";
       editorElement.style.color = "var(--black-1D2E43)";
       editorElement.style.border = "none";
+      editorElement.style.lineHeight = '1'; 
     }
   }, []);
+
 
   useEffect(() => {
     quillRefs.forEach((quillRef) => applyStylesToQuillEditor(quillRef));
   }, [applyStylesToQuillEditor, quillRefs]);
+
+  useEffect(() => {
+    const quill = quillRef1.current.getEditor();
+
+    quill.on('text-change', () => {
+      const plainText = quill.getText();
+      
+      if (plainText.length > 300) {
+        const excessLength = plainText.length - 301;
+        quill.deleteText(quill.getLength() - 1 - excessLength, quill.getLength() - 1, 'silent');
+      }
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        textBlock1: quill.root.innerHTML,
+      }));
+    });
+  }, [setFormData]);
 
   const handleSubmit = useCallback(async (event) => {
     event.preventDefault();
@@ -115,7 +134,7 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
       [name]: selectedValue,
     }));
   }, []);
-
+  
   const closeModal = useCallback(() => {
     setIsModalOpen(false);
   }, [setIsModalOpen]);
@@ -264,6 +283,9 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
           <div className={styles.form_container__block_gray_one}>
             <div className={styles.heading_textarea}>
               <div className={styles.form_container__description_text}>
+            <div className={styles.form_container__textarea_length}>
+            {`${quillRef1.current ? quillRef1.current.getEditor().getText().length - 1 : 0}/300`}
+            </div>
                 <ReactQuill
                   ref={quillRef1}
                   modules={{
@@ -281,11 +303,10 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
                     borderRadius: "6px",
                     fontSize: "16px",
                     fontStyle: "normal",
-                    fontWeight: "var(--fw-400)",
-                    lineHeight: "16px",
+                    fontWeight: "var(--fw-400)",                   
                     color: "var(---black-1D2E43)",
                     boxSizing: "border-box",
-                    paddingBottom: "2.5rem",
+                    paddingBottom: "2.5rem",                  
                   }}
                   required
                   name="textBlock1"
@@ -297,7 +318,7 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
                       textBlock1: value,
                     }));
                   }}
-                  placeholder="нет ограничений по символам"
+                  placeholder="Не более 300 символов"
                 />
                 <label
                   htmlFor="textBlock1"
@@ -311,6 +332,7 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
           <div className={styles.form_container__block_gray_one}>
             <div className={styles.heading_textarea}>
               <div className={styles.form_container__description_text}>
+                
                 <ReactQuill
                   ref={quillRef2}
                   modules={{

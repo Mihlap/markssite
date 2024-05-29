@@ -287,7 +287,7 @@ const VacanciesMain = ({
               </div>
               <div className={styles.button_choose_vacancyFilter}>Фильтр</div>
             </button> */}
-            {/* <FilterModalVacancies
+            <FilterModalVacancies
               isOpen={isModalOpen}
               onClose={handleModalClose}
               setFilters={setFilters}
@@ -296,7 +296,7 @@ const VacanciesMain = ({
               handleMouseEnter={handleMouseEnter}
               handleMouseLeave={handleMouseLeave}
               handleMouseHover={handleMouseHover}
-            /> */}
+            />
           </div>
           <div className={styles.menu_button_group_vacancy_wrapper_main_swiper}>
             {windowWidth && (

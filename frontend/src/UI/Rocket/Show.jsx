@@ -7,7 +7,8 @@ function Show() {
   const rotationGroupRef = useRef();
   const [hovered, setHovered] = useState(false);
   const rotationSpeed = useRef(0.01);
-  const { camera, raycaster, pointer, size } = useThree();
+  const { camera, raycaster, pointer } = useThree();
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   const onMouseMove = useCallback((event) => {
     pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -19,14 +20,17 @@ function Show() {
       setHovered(intersects.length > 0);
     }
   }, [camera, raycaster, pointer]);
-
   useEffect(() => {
     window.addEventListener('mousemove', onMouseMove);
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+    window.addEventListener('resize', handleResize);
     return () => {
       window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('resize', handleResize);
     };
   }, [onMouseMove]);
-
 
   useFrame(() => {
     if (rotationGroupRef.current) {
@@ -40,15 +44,24 @@ function Show() {
   });
 
   const modelPosition = useMemo(() => {
-    if (size.width <= 1600) {
-      return [size.width / 24, -7, 20];
-    }
-    return [size.width / 45, -5, 20];
-  }, [size.width]);
+    const xPosition = windowWidth <= 1024 ? windowWidth / 45 - 15 : windowWidth <= 1600 ? windowWidth / 45 - 20 : windowWidth / 45 - 10;
+    const yPosition = -7;
+    const zPosition = 20;
+    return [xPosition, yPosition, zPosition];
+  }, [windowWidth]);
 
+  const modelScale = useMemo(() => {
+    if (windowWidth <= 1024) {
+      return 7;
+    } else if (windowWidth <= 1600) {
+      return 10;
+    } else {
+      return 15;
+    }
+  }, [windowWidth]);
 
   return (
-    <group position={modelPosition} scale={15} rotation={[0, 6.4, Math.PI / 3]}>
+    <group position={modelPosition} scale={modelScale} rotation={[0, 6.4, Math.PI / 3]}>
       <group ref={rotationGroupRef}>
         <primitive object={scene} dispose={null} />
       </group>
