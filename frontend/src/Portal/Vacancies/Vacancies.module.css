@@ -134,11 +134,13 @@ display: inline-block;
   background-color: var(--dark-gray-566272);
   color: var(--white-F6F6F6);
   transition: background-color 0.4s ease, color 0.4s ease;
+  border: none;
 }
 
 .menu__button__allVacancy.active {
   background-color: var(--black-1D2E43);
   color: var(--white-F6F6F6);
+  border: none;
 }
 
 /* .menu__button__allProject.active:hover {
