@@ -469,7 +469,7 @@ const VacanciesMain = ({
                     : totalDisplayedVacancies
                 )
                 .map((vacancy) => (
-                  <Link
+                  <div
                     key={vacancy.id}
                     to={`/vacancy/${vacancy.id}`}
                     className={styles.vacancyContainer}
@@ -535,7 +535,7 @@ const VacanciesMain = ({
                         </div>
                       </>
                     )}
-                  </Link>
+                  </div>
                 ))}
             </>
           ) : (
