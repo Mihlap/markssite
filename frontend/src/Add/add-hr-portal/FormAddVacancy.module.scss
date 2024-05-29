@@ -215,7 +215,7 @@
         height: auto;
         padding: 1rem 1rem 2rem 1rem;
         border: 1px solid var(--blue-75BBFD);
-        height: 175px;
+        height: 200px;
         border-radius: 6px;
         font-family: var(--font-raleway);
         font-size: 1rem;
@@ -256,10 +256,10 @@
     &__textarea_length {
         position: absolute;
         right: 10px;
-        bottom: 20%;
+        bottom: 5%;
         z-index: 9;
-        background-color: rgb(255 255 255);
-        color: var(--gray-959DA6);
+        background-color: var(--light-gray-C0C5CBB);
+        color: var(--black-1D2E43);
         font-family: var(--font-raleway);
         font-size: 16px;
         font-style: normal;
