@@ -59,12 +59,30 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
       editorElement.style.fontFamily = "Raleway, sans-serif";
       editorElement.style.color = "var(--black-1D2E43)";
       editorElement.style.border = "none";
+      editorElement.style.lineHeight = '1'; 
     }
   }, []);
 
   useEffect(() => {
     quillRefs.forEach((quillRef) => applyStylesToQuillEditor(quillRef));
   }, [applyStylesToQuillEditor, quillRefs]);
+
+  useEffect(() => {
+    const quill = quillRef1.current.getEditor();
+
+    quill.on('text-change', () => {
+      const plainText = quill.getText();
+      
+      if (plainText.length > 300) {
+        const excessLength = plainText.length - 301;
+        quill.deleteText(quill.getLength() - 1 - excessLength, quill.getLength() - 1, 'silent');
+      }
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        textBlock1: quill.root.innerHTML,
+      }));
+    });
+  }, [setFormData]);
 
   useEffect(() => {
     if (editVacancyData) {
@@ -293,6 +311,9 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
           <div className={styles.form_container__block_gray_one}>
             <div className={styles.heading_textarea}>
               <div className={styles.form_container__description_text}>
+              <div className={styles.form_container__textarea_length}>
+            {`${quillRef1.current ? quillRef1.current.getEditor().getText().length - 1 : 0}/300`}
+            </div>
                 <ReactQuill
                   ref={quillRef1}
                   modules={{
@@ -320,17 +341,17 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
                   required
                   name="textBlock1"
                   id="textBlock1"
-                  value={formData.textBlock1}
+                  value={formData.textBlock1}               
                   onChange={(value) => {
                     setFormData((prevFormData) => ({
                       ...prevFormData,
                       textBlock1: value,
                     }));
                   }}
-                  placeholder="нет ограничений по символам"
+                  placeholder="Не более 300 символов"
                 />
                 <label
-                  htmlFor="textBlock"
+                  htmlFor="textBlock1"
                   className={styles.form_container__textarea_label_constructor}
                 >
                   Мы ищем
@@ -378,7 +399,7 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
                   placeholder="нет ограничений по символам"
                 />
                 <label
-                  htmlFor="textBlock"
+                  htmlFor="textBlock2"
                   className={styles.form_container__textarea_label_constructor}
                 >
                   Вам предстоит
@@ -426,7 +447,7 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
                   placeholder="нет ограничений по символам"
                 />
                 <label
-                  htmlFor="textBlock"
+                  htmlFor="textBlock3"
                   className={styles.form_container__textarea_label_constructor}
                 >
                   Требования
