@@ -1594,7 +1594,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                       : ""
                   }`}
                 >
-                  Длинна, км
+                  Длина, км
                 </label>
               </div>
             </div>
