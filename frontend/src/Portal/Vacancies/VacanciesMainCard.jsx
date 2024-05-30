@@ -33,7 +33,8 @@ const VacanciesMainCard = ({
     <ul className={styles.main_vacancy_block__wrapper__blockWrapper}>
       {vacancies?.map((vacancy) => (
         <li key={vacancy.id} className={styles.main_vacancy_block__wrapper__blockWrapper__1}>
-          <div className={styles.main_vacancy_block__wrapper__left}>
+            <div className={styles.main_vacancy_block__wrapper__flexContainer}>
+            <div className={styles.main_vacancy_block__wrapper__blockLeft}>
             <div className={styles.main_vacancy_block__wrapper__vacancyTitle}>
               {vacancy.title}
             </div>
@@ -45,22 +46,24 @@ const VacanciesMainCard = ({
             </div>
           </div>
           <div className={styles.main_vacancy_block__wrapper__blockRight}>
-            <ul className={styles.main_vacancy_block__wrapper__vacancyTitle1}>
-              <li className={styles.main_vacancy_block__wrapper__vacancyTitle1__titleKey1}>Опыт работы:</li>
-              <li className={styles.main_vacancy_block__wrapper__vacancyTitle1__titleValue}>{vacancy.experience}</li>
-            </ul>
-            <ul className={styles.main_vacancy_block__wrapper__vacancyTitle1}>
-              <li className={styles.main_vacancy_block__wrapper__vacancyTitle1__titleKey1}>Локация:</li>
-              <li className={styles.main_vacancy_block__wrapper__vacancyTitle1__titleValue}>{vacancy.locationStaff}</li>
-            </ul>
-            <ul className={styles.main_vacancy_block__wrapper__vacancyTitle1}>
-              <li className={styles.main_vacancy_block__wrapper__vacancyTitle1__titleKey1}>Занятость:</li>
-              <li className={styles.main_vacancy_block__wrapper__vacancyTitle1__titleValue}>{vacancy.busyness}</li>
-            </ul>
-            <ul className={styles.main_vacancy_block__wrapper__vacancyTitle1}>
-              <li className={styles.main_vacancy_block__wrapper__vacancyTitle1__titleKey1}>Режим работы:</li>
-              <li className={styles.main_vacancy_block__wrapper__vacancyTitle1__titleValue}>{vacancy.modeOperating}</li>
-            </ul>
+          <ul className={`${styles.main_vacancy_block__wrapper__vacancyTitle1} ${styles.main_vacancy_block__wrapper__topLeftSquare}`}>
+             <li className={styles.main_vacancy_block__wrapper__vacancyTitle1__titleKey1}>Опыт работы:</li>
+            <li className={styles.main_vacancy_block__wrapper__vacancyTitle1__titleValue}>{vacancy.experience}</li>
+         </ul>
+         <ul className={`${styles.main_vacancy_block__wrapper__vacancyTitle1} ${styles.main_vacancy_block__wrapper__topRightSquare}`}>
+          <li className={styles.main_vacancy_block__wrapper__vacancyTitle1__titleKey1}>Локация:</li>
+           <li className={styles.main_vacancy_block__wrapper__vacancyTitle1__titleValue}>{vacancy.locationStaff}</li>
+       </ul>
+       <ul className={`${styles.main_vacancy_block__wrapper__vacancyTitle1} ${styles.main_vacancy_block__wrapper__bottomLeftSquare}`}>
+        <li className={styles.main_vacancy_block__wrapper__vacancyTitle1__titleKey1}>Занятость:</li>
+       <li className={styles.main_vacancy_block__wrapper__vacancyTitle1__titleValue}>{vacancy.busyness}</li>
+     </ul>
+      <ul className={`${styles.main_vacancy_block__wrapper__vacancyTitle1} ${styles.main_vacancy_block__wrapper__bottomRightSquare}`}>
+    <li className={styles.main_vacancy_block__wrapper__vacancyTitle1__titleKey1}>Режим работы:</li>
+    <li className={styles.main_vacancy_block__wrapper__vacancyTitle1__titleValue}>{vacancy.modeOperating}</li>
+  </ul>
+</div>
+
           </div>
         </li>
       ))}
