@@ -4,25 +4,31 @@
   width: 100%;
   height: 100%;
   min-height: 81vh;
-  position: relative;
+
+  
 
   &__wrapper {
     display: flex;
     border-bottom: 0.0625rem solid rgb(235, 236, 238);
-    border-top: 0.0625rem solid rgb(235, 236, 238);
-    backdrop-filter: blur(0.88rem);
-    background: linear-gradient(221.46deg, rgba(255, 203, 193, 0.09) -4.631%, rgba(117, 187, 253, 0.09) 44.805%, rgba(188, 188, 188, 0.09) 103.423%);
-    position: relative;
-    width: 100%;
-    min-width: 100%;
-    min-height: 100%;
-    height: 644px;
-    z-index: 0; 
-  
-    &__blockWrapper {
-      flex-direction: column;
+    // border-top: 0.0625rem solid rgb(235, 236, 238);
+   
+    &__blockLeft {
+      min-height: 100%;
+      backdrop-filter: blur(0.88rem);
+      background: linear-gradient(221.46deg, rgba(255, 203, 193, 0.09) -4.631%, rgba(117, 187, 253, 0.09) 44.805%, rgba(188, 188, 188, 0.09) 103.423%);
       padding-left: 8.37rem;
-      padding-top: 150px;     
+      padding-top: 150px; 
+    }
+
+    &__flexContainer {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+    }
+
+   
+    &__blockWrapper {
+      flex-direction: column;    
     }
 
     &__blockWrapper__1 {
@@ -39,7 +45,7 @@
       line-height: 4rem;
       letter-spacing: 0rem;
       text-align: left;
-      max-width: 60rem;
+      max-width: 80%;
       padding-top: 36px;   
       // min-height: 2em;
     }
@@ -48,8 +54,7 @@
       font-family: var(--font-raleway);
       font-weight: var(--fw-400);
       letter-spacing: 0rem;     
-      // max-width: 40rem;
-      // margin: 10px 0;
+   
 
       &__titleKey {
         color: var(--gray-959DA6);
@@ -69,54 +74,88 @@
         color: var(--black-1D2E43);
         font-size: 1.25rem;
         line-height: 1.75rem;  
-        padding-top: 8px;       
-        width: 50%;    
+        padding-top: 8px;
+        padding-bottom: 4rem;       
+        max-width: 80%;   
        }
     }
     
     &__blockRight {
       display: flex;
-      position: absolute;
-      top: 50px;
-      right: 0px;
       flex-wrap: wrap;
-      // gap: 20px;
-      flex: 2;
-      min-width: 55rem;
-      z-index: 100;
-      max-height: 592px;
-      height: 100%;
-      align-items: center;
+       width: 100%;   
+      height: 100%;  
+      padding-top: 50px;
      }
 
-    &__blockRight > ul {
+     &__vacancyTitle1 {
+      display: flex;
+      flex-direction: column;
       flex: 1 1 calc(40% - 10px);
+      box-sizing: border-box;
+      // align-items: center; 
+      // padding: 10px;
+      // margin: 5px;
+      
     }
 
-   
+    &__topLeftSquare {
+      border-left: 1px solid rgb(235, 236, 238);
+      border-top: 1px solid rgb(235, 236, 238);
+      backdrop-filter: blur(14px);
+      background: linear-gradient(221.46deg, rgba(255, 203, 193, 0.09) -4.321%, rgba(117, 187, 253, 0.09) 46.423%, rgba(188, 188, 188, 0.09) 106.591%);
+    }
 
-    &__vacancyTitle1__titleKey1 {
-      display: block;
-      color: var(--gray-959DA6);
-      font-size: 1rem;
-      line-height: 1.5rem; 
-      text-align: center;
-     }
+    &__topRightSquare {
+      border-bottom: 1px solid rgb(235, 236, 238);
+      border-left: 1px solid rgb(235, 236, 238);
+      border-top: 1px solid rgb(235, 236, 238);
+      backdrop-filter: blur(9px);
+      background: rgba(255, 255, 255, 0.7);
+    }
+
+    &__bottomLeftSquare {
+      border: 1px solid rgb(235, 236, 238);
+      backdrop-filter: blur(9px);
+      background: rgba(255, 255, 255, 0.7);
+    }
     
-    &__vacancyTitle1__titleValue {
-      // margin-left: 10px;
-      text-align: center;
-    }  
-  }
-  
-  
-    &__all_button {
-      position: absolute;
-      top: 10%;
-      padding-left: 8.37rem;
-      cursor: pointer;
-      z-index: 1;
+    &__bottomRightSquare {
+      border-bottom: 1px solid rgb(235, 236, 238);
+      backdrop-filter: blur(14px);
+      background: linear-gradient(221.46deg, rgba(255, 203, 193, 0.09) -4.33%, rgba(117, 187, 253, 0.09) 46.376%, rgba(188, 188, 188, 0.09) 106.499%);
     }
+
+        &__vacancyTitle1__titleKey1 {        
+          font-size: 1rem;
+          line-height: 1.625rem;
+          color: var(--black-1D2E43);
+          font-family: var(--font-raleway);
+          font-size: 1.125rem;
+          font-weight: var(--fw-400);
+          padding-left: 6.25rem;          
+        }
+
+        &__vacancyTitle1__titleValue {       
+          color: var(--black-1D2E43);
+          font-family: var(--font-unbounded);
+          font-size: 2rem;
+          font-weight: var(--fw-300);
+          line-height: 2.5rem;      
+          padding-left: 6.25rem;
+          padding-top: 6px;
+        }
+    
+      }
+
+
+  &__all_button {
+    position: absolute;
+    top: 10%;
+    padding-left: 8.37rem;
+    cursor: pointer;
+    z-index: 1;
+  }
 }
 
 
