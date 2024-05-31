@@ -1,6 +1,7 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
+import gsap from 'gsap';
 
 
 function lerp(start, end, t) {
@@ -8,7 +9,7 @@ function lerp(start, end, t) {
   }
 
 
-const Shoe = React.memo(() => {
+const Show = React.memo(() => {
   const { nodes } = useGLTF('/assets/rocket_01.gltf');
   const RotationRef = useRef();
   const [hovered, hover] = useState(false);
@@ -31,6 +32,16 @@ const Shoe = React.memo(() => {
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  // useEffect(() => {
+  //   if (RotationRef.current) {
+  //     gsap.fromTo(
+  //       RotationRef.current.position,
+  //       { z: -100 },
+  //       { z: -1, duration: 1.5, ease: 'power2.out' }
+  //     );
+  //   }
+  // }, []);
     
   useFrame((state, delta) => {
     const targetSpeed = hovered ? 0.12 : 0.01;
@@ -57,4 +68,8 @@ const Shoe = React.memo(() => {
   );
 });
 
-export default Shoe;
+export const preloadShoeModel = () => {
+  useGLTF.preload('/assets/rocket_01.gltf');
+};
+
+export default Show;
