@@ -13,13 +13,13 @@ const Rocket = () => {
   const [containerStyle, setContainerStyle] = useState({
     position: 'fixed',
     right: 0,
-    top: 10,
+    // top: 10,
     bottom: 0,
     width: '25%',
     height: '100%',
     display: 'flex',
     justifyContent: 'center',
-    alignItems: 'center',
+    alignItems: 'center', 
   });
 
   const handleResize = useCallback(() => {
