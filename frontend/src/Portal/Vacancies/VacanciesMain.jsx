@@ -273,7 +273,7 @@ const VacanciesMain = ({
                 ))}
               </div>
             </div>
-            {/* <button
+            <button
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
               className={styles.menu__button__choose__vacancyFilter}
@@ -286,7 +286,7 @@ const VacanciesMain = ({
                 />
               </div>
               <div className={styles.button_choose_vacancyFilter}>Фильтр</div>
-            </button> */}
+            </button>
             <FilterModalVacancies
               isOpen={isModalOpen}
               onClose={handleModalClose}
@@ -325,7 +325,7 @@ const VacanciesMain = ({
                     </SwiperSlide>
                   </div>
                 )}
-                {/* <SwiperSlide
+                <SwiperSlide
                   className={`${
                     styles.menu__button__choose__vacancyFilter_mobile
                   }
@@ -346,7 +346,7 @@ const VacanciesMain = ({
                       alt="IconFilter"
                     />
                   </div>
-                </SwiperSlide> */}
+                </SwiperSlide>
                 {activeFiltersArray.length > 0 &&
                   activeFiltersArray.map(
                     (filter, index) =>
