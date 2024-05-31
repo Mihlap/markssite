@@ -1,72 +1,75 @@
-import React, { useRef, useState, useEffect, useMemo, useCallback } from 'react';
-import { useFrame, useThree } from '@react-three/fiber';
+import React, { useRef, useState, useEffect } from 'react';
+import { useFrame } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
+import gsap from 'gsap';
 
-function Show() {
-  const { scene } = useGLTF('/assets/rocket_01.gltf');
-  const rotationGroupRef = useRef();
-  const [hovered, setHovered] = useState(false);
-  const rotationSpeed = useRef(0.01);
-  const { camera, raycaster, pointer } = useThree();
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
-  const onMouseMove = useCallback((event) => {
-    pointer.x = (event.clientX / window.innerWidth) * 2 - 1;
-    pointer.y = -(event.clientY / window.innerHeight) * 2 + 1;
-    raycaster.setFromCamera(pointer, camera);
+function lerp(start, end, t) {
+    return start * (1 - t) + end * t;
+  }
 
-    if (rotationGroupRef.current) {
-      const intersects = raycaster.intersectObjects(rotationGroupRef.current.children, true);
-      setHovered(intersects.length > 0);
-    }
-  }, [camera, raycaster, pointer]);
+
+const Show = React.memo(() => {
+  const { nodes } = useGLTF('/assets/rocket_01.gltf');
+  const RotationRef = useRef();
+  const [hovered, hover] = useState(false);
+  const [rotationSpeed, setRotationSpeed] = useState(0.01);
+  const [scale, setScale] = useState(0.2);
+
   useEffect(() => {
-    window.addEventListener('mousemove', onMouseMove);
     const handleResize = () => {
-      setWindowWidth(window.innerWidth);
-    };
-    window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('mousemove', onMouseMove);
-      window.removeEventListener('resize', handleResize);
-    };
-  }, [onMouseMove]);
-
-  useFrame(() => {
-    if (rotationGroupRef.current) {
-      if (hovered) {
-        rotationSpeed.current = Math.min(rotationSpeed.current + 0.005, 0.15);
+      const screenWidth = window.innerWidth;
+      if (screenWidth <= 1024) {
+        setScale(0.18);
+      } else if (screenWidth <= 1600) {
+        setScale(0.19);
       } else {
-        rotationSpeed.current = Math.max(rotationSpeed.current - 0.001, 0.01);
+        setScale(0.2);
       }
-      rotationGroupRef.current.rotation.y += rotationSpeed.current;
+    };
+    
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  // useEffect(() => {
+  //   if (RotationRef.current) {
+  //     gsap.fromTo(
+  //       RotationRef.current.position,
+  //       { z: -100 },
+  //       { z: -1, duration: 1.5, ease: 'power2.out' }
+  //     );
+  //   }
+  // }, []);
+    
+  useFrame((state, delta) => {
+    const targetSpeed = hovered ? 0.12 : 0.01;
+    setRotationSpeed((prev) => lerp(prev, targetSpeed, 0.01));
+    if (RotationRef.current) {
+      RotationRef.current.rotation.z += rotationSpeed * delta * 60;
     }
   });
 
-  const modelPosition = useMemo(() => {
-    const xPosition = windowWidth <= 1024 ? windowWidth / 45 - 15 : windowWidth <= 1600 ? windowWidth / 45 - 20 : windowWidth / 45 - 10;
-    const yPosition = -7;
-    const zPosition = 20;
-    return [xPosition, yPosition, zPosition];
-  }, [windowWidth]);
-
-  const modelScale = useMemo(() => {
-    if (windowWidth <= 1024) {
-      return 7;
-    } else if (windowWidth <= 1600) {
-      return 10;
-    } else {
-      return 15;
-    }
-  }, [windowWidth]);
-
   return (
-    <group position={modelPosition} scale={modelScale} rotation={[0, 6.4, Math.PI / 3]}>
-      <group ref={rotationGroupRef}>
-        <primitive object={scene} dispose={null} />
-      </group>
+    <group rotation={[-0.5, -0.95, 0]} position={[18, -2.9, 14]}>
+      <mesh
+        ref={RotationRef}
+        onPointerOver={() => hover(true)}
+        onPointerOut={() => hover(false)}
+        castShadow
+        receiveShadow
+        geometry={nodes.rocket_01.geometry}
+        scale={scale}
+      >
+        <meshPhongMaterial color={[1.8, 1.8, 1.8]} specular={[1, 1, 1]} shininess={12} />
+      </mesh>
     </group>
   );
-}
+});
 
-export default React.memo(Show);
+export const preloadShoeModel = () => {
+  useGLTF.preload('/assets/rocket_01.gltf');
+};
+
+export default Show;
