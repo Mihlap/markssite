@@ -3,16 +3,16 @@
     {
       "bufferView": 0,
       "componentType": 5126,
-      "count": 31884,
+      "count": 20194,
       "max": [
-        48.14015197753906,
-        46.162723541259766,
-        189.04527282714844
+        43.48649597167969,
+        43.48649597167969,
+        182.685302734375
       ],
       "min": [
-        -48.24552917480469,
-        -48.056365966796875,
-        -184.145751953125
+        -43.48649978637695,
+        -43.48649597167969,
+        -181.91734313964844
       ],
       "type": "VEC3"
     },
@@ -20,13 +20,13 @@
       "bufferView": 0,
       "byteOffset": 12,
       "componentType": 5126,
-      "count": 31884,
+      "count": 20194,
       "type": "VEC3"
     },
     {
       "bufferView": 1,
       "componentType": 5125,
-      "count": 152613,
+      "count": 113100,
       "type": "SCALAR"
     }
   ],
@@ -36,20 +36,20 @@
   "bufferViews": [
     {
       "buffer": 0,
-      "byteLength": 1020288,
+      "byteLength": 646208,
       "byteStride": 32,
       "target": 34962
     },
     {
       "buffer": 0,
-      "byteLength": 610452,
-      "byteOffset": 1020288,
+      "byteLength": 452400,
+      "byteOffset": 646208,
       "target": 34963
     }
   ],
   "buffers": [
     {
-      "byteLength": 1630740,
+      "byteLength": 1098608,
       "uri": "rocket_01.bin"
     }
   ],
@@ -58,9 +58,9 @@
       "name": "main",
       "pbrMetallicRoughness": {
         "baseColorFactor": [
-          0.5058820247650146,
-          0.5058820247650146,
-          0.5058820247650146,
+          0.5,
+          0.5,
+          0.5,
           1.0
         ],
         "metallicFactor": 0.0
@@ -86,17 +86,17 @@
   "nodes": [
     {
       "matrix": [
-        0.01,
+        0.001,
         0.0,
         0.0,
         0.0,
         0.0,
-        0.01,
+        0.001,
         0.0,
         0.0,
         0.0,
         0.0,
-        0.01,
+        0.001,
         0.0,
         0.0,
         0.0,
