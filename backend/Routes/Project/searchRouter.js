@@ -50,7 +50,9 @@ router.put('/search-project-replacement', async (req, res) => {
 
     // Update the order of each project in the database
     for (let i = 0; i < updatedProjects.length; i++) {
-      await ProjectMain.update({ order: i }, { where: { id: updatedProjects[i].id } });
+      await ProjectMain.update({ order: i },
+        { where: { id: updatedProjects[i].id } }
+      );
     }
 
     // Fetch the updated data from the database and send it back
