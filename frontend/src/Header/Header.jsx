@@ -31,8 +31,7 @@ const Host = process.env.REACT_APP_SERVER_HOST;
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
-// export default function Header({
-  const Header = React.memo(({
+ const Header = React.memo(({
   handleMouseEnter,
   handleMouseLeave,
   handleMouseHover,
@@ -180,7 +179,10 @@ gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
       </div>
     );
   }
-
+  // if (loading) {
+  //   return <LoadingCircle />;
+  //   // return <LoadingNew />;
+  // }
 
   const NewProject = projects.map((el) =>
     el && el.project !== undefined ? el.project : null
@@ -190,12 +192,15 @@ gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
   );
   
 
-  return (
+   return (
     <>
       <Helmet>
         <title>Marks Group</title>
       </Helmet>
-      <main className={styles.header}>         
+      <main className={styles.header}>
+        {/* <div className={styles.video_block}>
+          <VideoPlayer videoSource={videoSource} />
+        </div> */}
         <div className={styles.wrapper_nameCompanyMainHeader}>
           <div className={styles.block_video_company}>
             {videoSrc && (
@@ -206,9 +211,9 @@ gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
                 loop
                 id="bg-video"
                 onCanPlayThrough={() => setVideoLoaded(true)}
-                className={styles.bg_video}                
+                className={styles.bg_video}
               >
-                <source src={videoSrc} type="video/mp4" preload="auto"/>
+                <source src={videoSrc} type="video/mp4" />
               </video>
             )}
           </div>
@@ -564,7 +569,7 @@ gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
               return (
                 <SwiperSlide
-                  key={index}
+                  key={project.id}
                   // onScroll={handleScroll}
                   id="slider_container_item_card"
                   className={styles.slider_container_item_card}
@@ -592,9 +597,8 @@ gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
                             : project.imageTitle
                         }
                         onError={(e) => {
-                          e.target.src = notDataPhoto; // Заменить на URL другой фотографии
-                          e.target.alt =
-                            "Альтернативный текст для замененной фотографии"; // Заменить на альтернативный текст
+                          e.target.src = notDataPhoto;
+                          e.target.alt = "no Photo";
                         }}
                       />
                     </div>
@@ -720,10 +724,11 @@ gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
               );
             })}
           </Swiper>
-              </div>
-        </main>
+        </div>
+      </main>
     </>
   );
 })
 
 export default Header;
+
