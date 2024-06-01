@@ -21,7 +21,7 @@ const searchProjectMainSlice = createSlice({
     fetchProjectFailure(state, action) {
       state.loading = false;
       state.error = action.payload;
-    },
+    },   
     updateProjectOrderSuccess(state, action) {
       state.projects = action.payload;
     },
@@ -84,12 +84,14 @@ export const getZaprosData = () => async (dispatch) => {
     const response = await axios.get(
       `${serverHost}/search/search-project/getzapros`
     );
+  
     const dataFromResponse = response.data;
     dispatch(fetchProjectSuccess(dataFromResponse)); 
   } catch (error) {
     dispatch(fetchProjectFailure(error.message));
   }
 };
+
 
 export const deleteProject = (IdProject) => async (dispatch) => {
   try {
