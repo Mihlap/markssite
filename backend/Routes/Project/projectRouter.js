@@ -2,12 +2,30 @@ const express = require('express');
 // eslint-disable-next-line
 const path = require('path');
 const fs = require('fs');
-const { Project, Constructor } = require('../../db/models');
+const { Project, ProjectMain, Constructor } = require('../../db/models');
 const fileMiddleware = require('../../middleware/file');
 
 const router = express.Router();
 
 const projectImagesPath = path.join(__dirname, 'images/projectFoto');
+
+const syncProjectMain = async (projectId) => {
+  const project = await Project.findByPk(projectId);
+  if (project) {
+    const projectMainEntry = await ProjectMain.findOne({ where: { IdProject: project.id } });
+    if (projectMainEntry) {
+      await projectMainEntry.update({
+        project: project.toJSON(),
+        IdProject: project.id,
+      });
+    } else {
+      await ProjectMain.create({
+        project: project.toJSON(),
+        IdProject: project.id,
+      });
+    }
+  }
+};
 
 router.post(
   '/postzapros',
@@ -41,12 +59,7 @@ router.post(
       const imageOpens = req.files.imageOpen ? req.files.imageOpen[0].filename : null;
       const imageCloses = req.files.imageClose ? req.files.imageClose[0].filename : null;
 
-      // console.log(req.body, '<<-- reg.BODY');
-      // console.log(imageTitles, '<<-- imageTitles');
-      // console.log(req.files, '<<-- reg.FILES');
-      // console.log(dynamicBlocksContent);
-
-      const createdProject = await Project.create({
+        const createdProject = await Project.create({
         title: req.body.title,
         selectCompetencies: req.body.selectCompetencies,
         countryCity: req.body.countryCity,
@@ -212,8 +225,7 @@ router.put(
         headingTextBlock: req.body.headingTextBlock,
         textBlock: req.body.textBlock,
         numberOfLanes: req.body.numberOfLanes,
-        long: req.body.long,
-        // data: dynamicBlocksContent,
+        long: req.body.long,    
         imageTitle: imageTitles || imageTitlesNew || currentImageTitles.join(', '),
         imageProject: imageProjects || currentImageProjects,
         imageOpen: imageOpens || currentImageOpens,
@@ -281,6 +293,9 @@ router.put(
           idBlock: projectId,
         });
       }
+       
+      await syncProjectMain(projectId);
+             
       res.status(200).json({ message: 'Данные успешно обновлены' });
     } catch (error) {
       console.error('Ошибка при обновлении проекта:', error);

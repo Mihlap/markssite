@@ -111,9 +111,12 @@ gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
   useEffect(() => {
     dispatch(getFetchFormArticle());
-    dispatch(getZaprosData());
     dispatch(searchArticleLeftGet());
     dispatch(searchArticleRightGet());
+  }, [dispatch]);
+   
+  useEffect(() => {
+    dispatch(getZaprosData());
   }, [dispatch]);
 
   const colors = useMemo(() => ({
@@ -189,8 +192,16 @@ gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
   );
   const MapProject = NewProject.map((el) =>
     el && el.project !== undefined ? el.project : null
+   );
+   
+   const MapProjectToEdit = projects.map((el) => el.project);
+
+   
+   const combinedProjects = [...MapProject, ...MapProjectToEdit].filter(
+    (project, index, self) =>
+      project &&
+      index === self.findIndex((p) => p && p.id === project.id)
   );
-  
 
    return (
     <>
@@ -559,7 +570,10 @@ gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
               },
             }}
           >
-            {MapProject?.map((project, index) => {
+             {combinedProjects?.map((project, index) => {
+                if (!project || !project.id) {
+                    return null; // Пропускать проекты, у которых нет данных
+                  }
               // const isCustomSize = project.hasCustomSize;
 
               // const { width, height } = resizeImage(
@@ -569,13 +583,13 @@ gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
               return (
                 <SwiperSlide
-                  key={project.id}
+                key={`${project.IdProject}-${index}`}
                   // onScroll={handleScroll}
                   id="slider_container_item_card"
                   className={styles.slider_container_item_card}
                   style={index % 2 === 1 ? { paddingTop: "10rem" } : {}}
                 >
-                  <Link to={`/projects/${project.id}`} key={project.id}>
+                  <Link to={`/projects/${project.id}`}  key={`${project.IdProject}-${index}`}>
                     <div className={styles.wrapper_container_item_card}>
                       <img
                         onMouseEnter={handleMouseHover}
