@@ -33,11 +33,20 @@ const SwiperContainerProgect = ({ projects }) => {
   };
 
   const NewProject = projects.map((el) =>
-  el && el.project !== undefined ? el.project : null
-);
-const MapProject = NewProject.map((el) =>
-  el && el.project !== undefined ? el.project : null
-);
+    el && el.project !== undefined ? el.project : null
+  );
+  const MapProject = NewProject.map((el) =>
+    el && el.project !== undefined ? el.project : null
+   );
+   
+   const MapProjectToEdit = projects.map((el) => el.project);
+
+   
+   const combinedProjects = [...MapProject, ...MapProjectToEdit].filter(
+    (project, index, self) =>
+      project &&
+      index === self.findIndex((p) => p && p.id === project.id)
+  );
 
 
   return (
@@ -58,8 +67,10 @@ const MapProject = NewProject.map((el) =>
         }}
       >
         <div className="swiper_wrapper">
-          {MapProject?.map((project, index) => {
-              if (project) {
+          {combinedProjects?.map((project, index) => {
+            if (!project || !project.id) {
+              return null; // Пропускать проекты, у которых нет данных
+            }
               return (
                 <SwiperSlide className="swiper_container_item_projects" key={`${project.id}_${index}`}>
                   <Link key={project.id} to={`/projects/${project.id}`}>
@@ -120,30 +131,26 @@ const MapProject = NewProject.map((el) =>
                       } catch (error) {
                         return null;
                       }
-                    })()}
-                    
+                    })()}                    
                     countryCity={project.countryCity}
                     monthYear={project.monthYear}
                   />
                 </Link>
                 </SwiperSlide>
-              );
-            } else {
-              return null; 
-            }
+              );          
             })}
         </div>
       </Swiper>
       <div className="swiper_pagination_ProjectCard">
-        {projects && projects?.map((_, index) => (
-            <button
-              key={index}
-              className={`swiper_pagination_bullet_ProjectCard ${
-                currentIndex === index? "active" : ""
-              }`}
-              onClick={() => handlePageClick(index)}
-            />
-          ))}
+      {combinedProjects.map((_, index) => (
+          <button
+            key={index}
+            className={`swiper_pagination_bullet_ProjectCard ${
+              currentIndex === index ? "active" : ""
+            }`}
+            onClick={() => handlePageClick(index)}
+          />
+        ))}
       </div>
     </div>
   );
