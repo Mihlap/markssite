@@ -26,11 +26,13 @@ router.post('/search-project', async (req, res) => {
 router.get('/search-project/getzapros', async (req, res) => {
   try {
     const data = await ProjectMain.findAll();
+    
     res.json(data);
   } catch (error) {
     console.log(error);
   }
 });
+
 
 router.delete('/search-project/deletezapros/:IdProject', async (req, res) => {
   try {
