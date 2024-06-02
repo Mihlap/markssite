@@ -52,7 +52,7 @@ const Show = React.memo(() => {
   });
 
   return (
-    <group rotation={[-0.5, -0.95, 0]} position={[18, -2.9, 14]}>
+    <group rotation={[-0.5, -0.95, 0]} position={[21, -6, 16]}>
       <mesh
         ref={RotationRef}
         onPointerOver={() => hover(true)}
