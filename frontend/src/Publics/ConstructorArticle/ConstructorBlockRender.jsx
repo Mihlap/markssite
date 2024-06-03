@@ -574,6 +574,43 @@ export default function ConstructorBlockRenderer({
     );
   };
 
+  const renderVideoLinkBlock = (block) => {
+    let videoLink = "";
+  
+    block?.forEach((item) => {
+      if (item.label === "Ссылка на видеоролик") videoLink = item.value;
+    });
+  
+    if (!videoLink) return null;
+  
+    let embedLink = videoLink;
+    if (videoLink.includes("youtu.be")) {
+      embedLink = videoLink.replace("youtu.be/", "www.youtube.com/embed/");
+    } else {
+      embedLink = videoLink.replace("watch?v=", "embed/");
+    }
+  
+    const handleIframeError = (event) => {
+      const iframeContainer = event.target.closest(`.${styles.videoLinkContainer}`);
+      if (iframeContainer) {
+        iframeContainer.innerHTML = "<div>Видео по ссылке не загружено</div>";
+      }
+    };
+  
+    return (
+      <div className={styles.videoLinkContainer}>
+        <iframe
+         className={styles.block_videoLink}
+          src={embedLink}
+          title="Video Player"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+          onError={handleIframeError}
+          ></iframe>
+      </div>
+    );
+  };
+  
 
   switch (block[0]?.label) {
     case "Картинка с описанием":
@@ -596,7 +633,10 @@ export default function ConstructorBlockRenderer({
       return renderNoteBlock(block);
     case "Видеоролик":
       return renderVideoBlock(block);
+      case "Ссылка на видеоролик":
+      return renderVideoLinkBlock(block);
     default:
       return null;
+    }
   }
-}
+  

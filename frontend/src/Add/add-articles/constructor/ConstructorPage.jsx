@@ -181,6 +181,24 @@ export default function ConstructorPage({ handleClick }) {
       >
         <img src={svg6} alt="svg_six_icon" />
       </div>
+          {/* видео для ссылки */}
+          <div
+        className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockVideoFrame}`}
+        onClick={() =>
+          handleClick([
+            {
+              type: "videoLink",
+              label: "Ссылка на видеоролик",
+              required: true,
+            },
+          ],
+          8
+        )
+      }
+      >
+      <p className={styles.videoText}>Видео-ссылка</p>
+        <img src={svg6} alt="svg_six_icon" />
+      </div>
     </div>
   );
 }
