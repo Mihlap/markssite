@@ -273,6 +273,12 @@ export default function FormAddArticles({ setIsModalOpen }) {
           innerDiv: styles.videoInnerDiv,
           videoStyles: styles.videoStyle,
         };
+        case "Ссылка на видеоролик":
+          return {
+            outerDiv: styles.videoPreview,
+            innerDiv: styles.videoInnerDiv,
+            videoStyles: styles.videoStyle,
+          };
       default:
         return "";
     }
@@ -489,6 +495,38 @@ export default function FormAddArticles({ setIsModalOpen }) {
               </>
             )}
           </>
+        )} 
+        {inputType === "videoLink" && (
+          <div className={styles.form_container__heading_block}>
+            <input
+              type="url"
+              value={dynamicData[blockIndex][inputIndex].value || ""}
+              className={`${styles.form_container__heading_block_input} ${styles.orange_color}`}
+              placeholder={labelText}
+              onChange={(e) => {
+                handleDynamicInputChange(blockIndex, inputIndex, e.target.value);
+              }}
+            />
+            <label
+              htmlFor="videoLink"
+              className={styles.form_container__heading_block_label}
+            >
+              {labelText}
+            </label>
+            {dynamicData[blockIndex][inputIndex].value && (
+              <div className={classNames.outerDiv}>
+                <iframe
+                  width="560"
+                  height="315"
+                  src={dynamicData[blockIndex][inputIndex].value}
+                  title="Video Player"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
+                ></iframe>
+              </div>
+            )}
+          </div>
         )}
         {inputType === "textarea" && (
           <div key={inputIndex} className={styles.form_container__description_text}>
