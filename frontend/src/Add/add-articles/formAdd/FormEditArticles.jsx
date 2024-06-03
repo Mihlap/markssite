@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useCallback, useMemo } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import Select from "react-select";
 import { transliterate } from "transliteration";
 import { useDispatch } from "react-redux";
@@ -11,6 +11,7 @@ import {
   removePreviewPhotoAva,
   removePreviewPhotoClose,
   removePreviewPhotoOpen,
+  getEmbedLink,
 } from "./utils/formHelpers";
 import {
   fetchArticle,
@@ -48,6 +49,7 @@ export default function FormEditArticles({ setIsModalOpen, editArticleData }) {
   const [isLoadingDropPhoto, setIsLoadingDropPhoto] = useState(false);
   const [isLoadingOpenImage, setIsLoadingOpenImage] = useState(false);
   const [isLoadingCloseImage, setIsLoadingCloseImage] = useState(false);
+  const [embedLink, setEmbedLink] = useState("");
   const [inputData, setInputData] = useState({
     title: "",
     author: "",
@@ -157,6 +159,23 @@ export default function FormEditArticles({ setIsModalOpen, editArticleData }) {
     }
   }, [editArticleData]);
 
+  
+  useEffect(() => {
+    const updateEmbedLink = async () => {
+      dynamicData.forEach(async (block) => {
+        block.forEach(async (input) => {
+          if (input.type === "videoLink" && input.value) {
+            const link = await getEmbedLink(input.value);
+            setEmbedLink(link);
+          }
+        });
+      });
+    };
+
+    updateEmbedLink();
+  }, [dynamicData]);
+  
+
   // << ==== КОНСТУКТОР ==== >>
   const handleRemovePreviewPhoto = useCallback((index) => {
     removePreviewPhoto(previewPhotos, setPreviewPhotos, index, inputData, setInputData, setIsDropPhotoVisible);
@@ -260,6 +279,7 @@ export default function FormEditArticles({ setIsModalOpen, editArticleData }) {
     setDynamicData((prevDynamicData) => prevDynamicData.filter((_, index) => index !== blockIndex));
     setDynamicPreviews((prevPreviews) => prevPreviews.filter((_, index) => index !== blockIndex));
   }, []);
+  
 
   const handleClick = useCallback((inputs, blockIndex) => {
     if (!areAllBlocksFilled()) {
@@ -368,6 +388,12 @@ export default function FormEditArticles({ setIsModalOpen, editArticleData }) {
           innerDiv: styles.videoInnerDiv,
           videoStyles: styles.videoStyle, // этот стиль можно использовать для видеотега
         };
+        case "Ссылка на видеоролик":
+          return {
+            outerDiv: styles.videoPreview,
+            innerDiv: styles.videoInnerDiv,
+            videoStyles: styles.videoStyle,
+          };
       default:
         return "";
     }
@@ -569,6 +595,38 @@ export default function FormEditArticles({ setIsModalOpen, editArticleData }) {
               </>
             )}
           </>
+        )}
+          {inputType === "videoLink" && (
+          <div className={styles.form_container__heading_block}>
+            <input
+              type="url"
+              value={dynamicData[blockIndex][inputIndex].value || ""}
+              className={`${styles.form_container__heading_block_input} ${styles.orange_color}`}
+              placeholder={labelText}
+              onChange={(e) => {
+                handleDynamicInputChange(blockIndex, inputIndex, e.target.value);
+              }}
+            />
+            <label
+              htmlFor="videoLink"
+              className={styles.form_container__heading_block_label}
+            >
+              {labelText}
+            </label>
+            {embedLink && (
+            <div className={classNames.outerDiv}>
+              <iframe
+                width="560"
+                height="315"
+                className={styles.embedIframe}
+                src={embedLink}
+                title="Video Player"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
+            </div>
+          )}
+          </div>
         )}
         {inputType === "textarea" && (
           <div key={inputIndex} className={styles.form_container__description_text}>
