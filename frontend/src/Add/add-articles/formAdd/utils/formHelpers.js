@@ -260,3 +260,14 @@ export async function changeHandler(
     }));
   }
 }
+
+
+// функция подгрузки видео линк в админку
+  export async function getEmbedLink(link) {
+    if (link.includes("youtu.be")) {
+      return link.replace("youtu.be/", "www.youtube.com/embed/");
+    } else if (link.includes("watch?v=")) {
+      return link.replace("watch?v=", "embed/");
+    }
+    return link;
+  }
