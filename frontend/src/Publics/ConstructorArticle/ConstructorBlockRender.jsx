@@ -633,7 +633,7 @@ export default function ConstructorBlockRenderer({
       return renderNoteBlock(block);
     case "Видеоролик":
       return renderVideoBlock(block);
-      case "Ссылка на видеоролик":
+    case "Ссылка на видеоролик":
       return renderVideoLinkBlock(block);
     default:
       return null;
