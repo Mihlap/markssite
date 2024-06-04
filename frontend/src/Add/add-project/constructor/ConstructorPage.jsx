@@ -75,6 +75,16 @@ export default function ConstructorPage({ handleClick }) {
         5
       ],
       styles: styles.div_conteiner__blockSix
+    },
+    {
+      svg: svg6,
+      alt: "svg_six_icon",
+      handleClickArgs: [
+        [{ type: "videoLink", label: "Ссылка на видеоролик", required: true }],
+        5
+      ],
+      styles: styles.div_conteiner__blockVideoFrame,
+      additionalContent: <p className={styles.videoText}>Видео-ссылка</p>
     }
   ], []);
 
@@ -85,6 +95,7 @@ export default function ConstructorPage({ handleClick }) {
         className={`${styles.div_conteiner__item} ${item.styles}`}
         onClick={() => handleClick(...item.handleClickArgs)}
       >
+         {item.additionalContent && item.additionalContent}
         <img src={item.svg} alt={item.alt} />
       </div>
     ));

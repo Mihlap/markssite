@@ -233,7 +233,6 @@ const ArticleCard = React.memo(({
     return articles ? [...articles].sort(() => 0.5 - Math.random()).slice(0, 20) : [];
   }, [articles]);
 
-  console.log(article, "============================");
   
   return (
     <>

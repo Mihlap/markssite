@@ -45,7 +45,7 @@
         display: flex;
         flex-direction: column;
         gap: 32px;
-        height: 74vh
+        height: 72vh
     }
 
 
@@ -95,6 +95,7 @@
         display: flex;
         gap: 7px;
         z-index: 9;
+        padding-left: 90px;
     }
 
     &__button_save {
@@ -419,6 +420,12 @@
 
     .form_container {
         width: 33rem;
+
+        
+
+    &__button_block {       
+        padding-left: 0px;
+    }
 
 }
 }
