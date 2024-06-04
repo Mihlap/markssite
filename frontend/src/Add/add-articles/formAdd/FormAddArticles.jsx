@@ -513,19 +513,18 @@ export default function FormAddArticles({ setIsModalOpen }) {
             >
               {labelText}
             </label>
-            {dynamicData[blockIndex][inputIndex].value && (
+            {/* {dynamicData[blockIndex][inputIndex].value && (
               <div className={classNames.outerDiv}>
                 <iframe
                   width="560"
                   height="315"
                   src={dynamicData[blockIndex][inputIndex].value}
-                  title="Video Player"
-                  frameBorder="0"
+                  title="Video Player"                
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
                 ></iframe>
               </div>
-            )}
+            )} */}
           </div>
         )}
         {inputType === "textarea" && (
