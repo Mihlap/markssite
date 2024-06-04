@@ -159,21 +159,27 @@ export default function FormEditArticles({ setIsModalOpen, editArticleData }) {
     }
   }, [editArticleData]);
 
-  
-  useEffect(() => {
-    const updateEmbedLink = async () => {
-      dynamicData.forEach(async (block) => {
-        block.forEach(async (input) => {
-          if (input.type === "videoLink" && input.value) {
-            const link = await getEmbedLink(input.value);
-            setEmbedLink(link);
-          }
-        });
-      });
-    };
+  // useEffect(() => {
+  //   const updateEmbedLink = async () => {
+  //     dynamicData.forEach(async (block, blockIndex) => {
+  //       block.forEach(async (input, inputIndex) => {
+  //         if (input.type === "videoLink" && input.value) {
+  //           const link = await getEmbedLink(input.value);
+  //           setDynamicData((prevDynamicData) => {
+  //             const newDynamicData = [...prevDynamicData];
+  //             newDynamicData[blockIndex][inputIndex] = {
+  //               ...newDynamicData[blockIndex][inputIndex],
+  //               embedLink: link,
+  //             };
+  //             return newDynamicData;
+  //           });
+  //         }
+  //       });
+  //     });
+  //   };
 
-    updateEmbedLink();
-  }, [dynamicData]);
+  //   updateEmbedLink();
+  // }, [dynamicData]);
   
 
   // << ==== КОНСТУКТОР ==== >>
@@ -330,6 +336,7 @@ export default function FormEditArticles({ setIsModalOpen, editArticleData }) {
         label: "",
         value: "",
         key: "",
+        // embedLink: "",
       };
     }
 
@@ -359,6 +366,11 @@ export default function FormEditArticles({ setIsModalOpen, editArticleData }) {
       newDynamicData[blockIndex][inputIndex].value = newFiles;
     } else {
       newDynamicData[blockIndex][inputIndex].value = value;
+
+      // if (newDynamicData[blockIndex][inputIndex].type === "videoLink") {
+      //   const link = await getEmbedLink(value);
+      //   newDynamicData[blockIndex][inputIndex].embedLink = link;
+      // }
     }
     setDynamicData(newDynamicData);
   }, [dynamicData]);
