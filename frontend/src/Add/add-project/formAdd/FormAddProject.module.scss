@@ -45,7 +45,7 @@
         display: flex;
         flex-direction: column;
         gap: 32px;
-        height: 68vh
+        height: 72vh
     }
 
 
@@ -231,8 +231,9 @@
 
     &__button_block {
         position: fixed;
-        bottom: 8%;
         display: flex;
+        bottom: 8%;
+        padding-left: 90px;
         gap: 7px;
         z-index: 9;
     }
@@ -966,7 +967,7 @@
 @media screen and (min-width: 1025px) and (max-width: 1600px) {
 .form_container {
     &__form {
-     height: 62vh
+     height: 70vh
     }
 }
 }
@@ -976,6 +977,20 @@
 
     .form_container {
         width: 33rem;
+
+        &__form {
+            height: 70vh
+           }
+
+        
+    &__button_block {
+        position: fixed;
+        display: flex;
+        bottom: 8%;
+        padding-left: 0px;
+        gap: 7px;
+        z-index: 9;
+    }
 
 }
 }
