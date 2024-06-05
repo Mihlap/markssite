@@ -8,11 +8,25 @@
     position: relative;
    }
 
+   .form_vacancy_wrapperSimple {
+    display: flex;
+     height: fit-content;
+    position: relative;
+   }
+
+
   .form_vacancy_block {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     column-gap: 88px;
     width: fit-content;
+   }
+
+   .form_vacancy_block_simple {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    column-gap: 76px;
+    width: 100%;
    }
 
   .form_vacancy_left,
@@ -63,6 +77,13 @@
     /* width: 100%; */
   }
 
+  .lineSimple {
+    height: 1px;
+    margin-top: 12px;
+    background-color: var(--gray-959DA6);
+    width: 23rem;
+  }
+
   .line_select {
     margin-top: 0;
     background-color: var(--gray-959DA6);
@@ -106,6 +127,14 @@
     .input_resume_form_contacts:focus+.line,
     .input_tel_form_contacts:focus+.line,
     #phone-input.input_tel_form_contacts.focus+.line {
+      background-color: var(--blue-75BBFD);
+    }
+
+    .input_name_form_contacts:focus+.lineSimple,
+    .input_letter_form_contacts:focus+.lineSimple,
+    .input_resume_form_contacts:focus+.lineSimple,
+    .input_tel_form_contacts:focus+.lineSimple,
+    #phone-input.input_tel_form_contacts.focus+.lineSimple {
       background-color: var(--blue-75BBFD);
     }
     
