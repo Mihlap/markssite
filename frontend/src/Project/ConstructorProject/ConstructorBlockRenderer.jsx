@@ -15,7 +15,6 @@ const isMobileScreen = window.innerWidth <= 1024;
 const playIconToUse = isMobileScreen ? playIconMobile : playIcon;
 const pauseIconToUse = isMobileScreen ? pauseIconMobile : pauseIcon;
 
-
 const Host = process.env.REACT_APP_SERVER_HOST;
 
 const arrowStyles = {
@@ -74,7 +73,7 @@ const PrevArrow = ({ props, onClick, onMouseEnter, onMouseLeave }) => (
   </div>
 );
 
-const NextArrow = ({ props,onClick, onMouseEnter, onMouseLeave }) => (
+const NextArrow = ({ props, onClick, onMouseEnter, onMouseLeave }) => (
   <div
     onMouseEnter={onMouseEnter}
     onMouseLeave={onMouseLeave}
@@ -149,15 +148,16 @@ export default function ConstructorBlockRenderer({
   const renderImageWithDescription = (block) => {
     let imageUrl = "";
     let description = "";
-  
+
     block?.forEach((item) => {
-      if (item?.label === "Картинка с описанием") imageUrl = item.value?.[0] || "";
+      if (item?.label === "Картинка с описанием")
+        imageUrl = item.value?.[0] || "";
       if (item?.label === "Описание картинки") description = item?.value || "";
     });
-  
+
     // Проверяем, есть ли imageUrl или description, если нет, то не отображаем блок
     if (!imageUrl && !description) return null;
-  
+
     return (
       <div className={styles.containerImageToDescription}>
         {imageUrl && (
@@ -188,25 +188,25 @@ export default function ConstructorBlockRenderer({
 
     return (
       <div className={styles.blockHeadingTitle}>
-          {header && (
-        <h2 className={styles.blockHeadingTitle__heading}>{header}</h2>
-      )}
+        {header && (
+          <h2 className={styles.blockHeadingTitle__heading}>{header}</h2>
+        )}
         <p className={styles.blockHeadingTitle__text}>
-        {containsListTags(text) ? (
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: renderListWithDots(text),
-                      }}
-                    />
-                  ) : (
-                    <div
-                    dangerouslySetInnerHTML={{
-                      __html: renderListWithDots(text),
-                    }}
-                  />
-                  )}
+          {containsListTags(text) ? (
+            <div
+              dangerouslySetInnerHTML={{
+                __html: renderListWithDots(text),
+              }}
+            />
+          ) : (
+            <div
+              dangerouslySetInnerHTML={{
+                __html: renderListWithDots(text),
+              }}
+            />
+          )}
           {/* {text} */}
-          </p>
+        </p>
       </div>
     );
   };
@@ -214,43 +214,42 @@ export default function ConstructorBlockRenderer({
   const renderThreeImages = (block, index) => {
     const images = block[0].value;
     //  Проверяем, есть ли картинки в блоке
-  if (!images || images.length < 1) {
-    return null; // Если картинок нет или их не три, не рендерим блок
-  }
+    if (!images || images.length < 1) {
+      return null; // Если картинок нет или их не три, не рендерим блок
+    }
 
-  return (
-    <div className={styles.gridContainer}>
-      {/* Рендерим первые две горизонтальные картинки, если они существуют */}
-      {images.length >= 1 && (
-        <img
-          className={styles.horizontalImage}
-          src={`${Host}/images/imageAdd/${images[0]}`}
-          alt="Horizontal_image1"
-          loading="lazy"
-        />
-      )}
-      {images.length >= 2 && (
-        <img
-          className={styles.horizontalImage}
-          src={`${Host}/images/imageAdd/${images[1]}`}
-          alt="Horizontal_image2"
-          loading="lazy"
-        />
-      )}
+    return (
+      <div className={styles.gridContainer}>
+        {/* Рендерим первые две горизонтальные картинки, если они существуют */}
+        {images.length >= 1 && (
+          <img
+            className={styles.horizontalImage}
+            src={`${Host}/images/imageAdd/${images[0]}`}
+            alt="Horizontal_image1"
+            loading="lazy"
+          />
+        )}
+        {images.length >= 2 && (
+          <img
+            className={styles.horizontalImage}
+            src={`${Host}/images/imageAdd/${images[1]}`}
+            alt="Horizontal_image2"
+            loading="lazy"
+          />
+        )}
 
-      {/* Рендерим вертикальную картинку, если она существует */}
-      {images.length >= 3 && (
-        <img
-          className={styles.verticalImage}
-          src={`${Host}/images/imageAdd/${images[2]}`}
-          alt="Vertical_image"
-          loading="lazy"
-        />
-      )}
-    </div>
-  );
-};
-
+        {/* Рендерим вертикальную картинку, если она существует */}
+        {images.length >= 3 && (
+          <img
+            className={styles.verticalImage}
+            src={`${Host}/images/imageAdd/${images[2]}`}
+            alt="Vertical_image"
+            loading="lazy"
+          />
+        )}
+      </div>
+    );
+  };
 
   // const renderThreeImages = (block, index) => {
   //   const images = block[0].value;
@@ -276,22 +275,22 @@ export default function ConstructorBlockRenderer({
   // };
 
   const renderTwoImage = (block, index) => {
-    const images = block[0].value; 
+    const images = block[0].value;
     return (
       <div
         className={`${styles.imageBlockTwo} ${styles.imageBlockTwo_project}`}
       >
         {images.map((el, index) => (
-            <img
-              className={styles.imageBlockTwo__gridImage}
-              key={index}
-              src={`${Host}/images/imageAdd/${el}`}
-              alt={`img_${index}`}
-              loading="lazy"
-            />
-          ))}
-        </div>
-     );
+          <img
+            className={styles.imageBlockTwo__gridImage}
+            key={index}
+            src={`${Host}/images/imageAdd/${el}`}
+            alt={`img_${index}`}
+            loading="lazy"
+          />
+        ))}
+      </div>
+    );
   };
 
   const renderImageSlider = (block) => {
@@ -456,20 +455,20 @@ export default function ConstructorBlockRenderer({
               isHovered && (
                 <button className={styles.buttonPause} onClick={handlePause}>
                   <img
-                  src={pauseIconToUse}
-                  alt={pauseIconToUse}
-                  onMouseEnter={handleMouseEnter}
-                  onMouseLeave={handleMouseLeave}
+                    src={pauseIconToUse}
+                    alt={pauseIconToUse}
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
                   />
                 </button>
               )
             ) : (
               <button className={styles.buttonPlayBlock} onClick={handlePlay}>
                 <img
-                src={playIconToUse}
-                alt={playIconToUse}
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
+                  src={playIconToUse}
+                  alt={playIconToUse}
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
                 />
               </button>
             )}
@@ -481,37 +480,39 @@ export default function ConstructorBlockRenderer({
 
   const renderVideoLinkBlock = (block) => {
     let videoLink = "";
-  
+
     block?.forEach((item) => {
       if (item.label === "Ссылка на видеоролик") videoLink = item.value;
     });
-  
+
     if (!videoLink) return null;
-  
+
     let embedLink = videoLink;
     if (videoLink.includes("youtu.be")) {
       embedLink = videoLink.replace("youtu.be/", "www.youtube.com/embed/");
     } else {
       embedLink = videoLink.replace("watch?v=", "embed/");
     }
-  
+
     const handleIframeError = (event) => {
-      const iframeContainer = event.target.closest(`.${styles.videoLinkContainer}`);
+      const iframeContainer = event.target.closest(
+        `.${styles.videoLinkContainer}`
+      );
       if (iframeContainer) {
         iframeContainer.innerHTML = "<div>Видео по ссылке не загружено</div>";
       }
     };
-  
+
     return (
       <div className={styles.videoLinkContainer}>
         <iframe
-         className={styles.block_videoLink}
+          className={styles.block_videoLink}
           src={embedLink}
           title="Video Player"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
           onError={handleIframeError}
-          ></iframe>
+        ></iframe>
       </div>
     );
   };
@@ -530,7 +531,7 @@ export default function ConstructorBlockRenderer({
     case "Видеоролик":
       return renderVideoBlock(block);
     case "Ссылка на видеоролик":
-      return renderVideoLinkBlock(block); 
+      return renderVideoLinkBlock(block);
     default:
       return null;
   }

@@ -157,15 +157,15 @@ export default function ConstructorBlockRenderer({
 
     return (
       <div className={styles.containerImageToDescription}>
-          {imageUrl && (
-        <img
-          className={styles.containerImageToDescription__img}
-          src={`${Host}/images/imageArticle/${imageUrl}`}
-          alt="Описание"
-          loading="lazy"
-        />
+        {imageUrl && (
+          <img
+            className={styles.containerImageToDescription__img}
+            src={`${Host}/images/imageArticle/${imageUrl}`}
+            alt="Описание"
+            loading="lazy"
+          />
         )}
-         {description && (
+        {description && (
           <div className={styles.containerImageToDescription__text}>
             {description}
           </div>
@@ -187,21 +187,21 @@ export default function ConstructorBlockRenderer({
       <div className={styles.blockHeadingTitle}>
         <h2 className={styles.blockHeadingTitle__heading}>{header}</h2>
         <p className={styles.blockHeadingTitle__text}>
-        {containsListTags(text) ? (
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: renderListWithDots(text),
-                      }}
-                    />
-                  ) : (
-                    <div
-                    dangerouslySetInnerHTML={{
-                      __html: renderListWithDots(text),
-                    }}
-                  />
-                  )}
+          {containsListTags(text) ? (
+            <div
+              dangerouslySetInnerHTML={{
+                __html: renderListWithDots(text),
+              }}
+            />
+          ) : (
+            <div
+              dangerouslySetInnerHTML={{
+                __html: renderListWithDots(text),
+              }}
+            />
+          )}
           {/* {text} */}
-          </p>
+        </p>
       </div>
     );
   };
@@ -353,22 +353,24 @@ export default function ConstructorBlockRenderer({
       if (item.label === "Блок описание") descriptionTextBlock = item.value;
     });
 
-    return <div className={styles.text_block}>
-       {containsListTags(descriptionTextBlock) ? (
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: renderListWithDots(descriptionTextBlock),
-                      }}
-                    />
-                  ) : (
-                    <div
-                    dangerouslySetInnerHTML={{
-                      __html: renderListWithDots(descriptionTextBlock),
-                    }}
-                  />
-                  )}
-      {/* {descriptionTextBlock} */}
-      </div>;
+    return (
+      <div className={styles.text_block}>
+        {containsListTags(descriptionTextBlock) ? (
+          <div
+            dangerouslySetInnerHTML={{
+              __html: renderListWithDots(descriptionTextBlock),
+            }}
+          />
+        ) : (
+          <div
+            dangerouslySetInnerHTML={{
+              __html: renderListWithDots(descriptionTextBlock),
+            }}
+          />
+        )}
+        {/* {descriptionTextBlock} */}
+      </div>
+    );
   };
 
   const renderTextFramed = (block) => {
@@ -427,44 +429,42 @@ export default function ConstructorBlockRenderer({
       return null;
     }
 
- return (
-   <div className={styles.quote_block_constainer}>
-     <div className={styles.quote_block_constainer__text_block}>
-       <div className={styles.quote_block_constainer__quote_text}>
-       {containsListTags(author) ? (
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: renderListWithDots(author),
-                      }}
-                    />
-                  ) : (
-                    <div
-                    dangerouslySetInnerHTML={{
-                      __html: renderListWithDots(author),
-                    }}
-                  />
-                  )}
-        {/* {author} */}
-        </div>
-       <div className={styles.quote_block_constainer__quote_author}>
-         {quote}
-       </div>
-     </div>
-     {imageUrl && (
-       <div className={styles.quote_block_constainer__author_block}>
-         <img
-           className={styles.quote_block_constainer__img}
-           src={`${Host}/images/imageArticle/${imageUrl}`}
-           alt={author}
-         />
-         <div className={styles.quote_block_constainer__quote}>
-          {quote}
+    return (
+      <div className={styles.quote_block_constainer}>
+        <div className={styles.quote_block_constainer__text_block}>
+          <div className={styles.quote_block_constainer__quote_text}>
+            {containsListTags(author) ? (
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: renderListWithDots(author),
+                }}
+              />
+            ) : (
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: renderListWithDots(author),
+                }}
+              />
+            )}
+            {/* {author} */}
           </div>
-         {/* <div className={styles.quote_block_constainer__author}>{author}</div> */}
-       </div>
-     )}
-   </div>
- );
+          <div className={styles.quote_block_constainer__quote_author}>
+            {quote}
+          </div>
+        </div>
+        {imageUrl && (
+          <div className={styles.quote_block_constainer__author_block}>
+            <img
+              className={styles.quote_block_constainer__img}
+              src={`${Host}/images/imageArticle/${imageUrl}`}
+              alt={author}
+            />
+            <div className={styles.quote_block_constainer__quote}>{quote}</div>
+            {/* <div className={styles.quote_block_constainer__author}>{author}</div> */}
+          </div>
+        )}
+      </div>
+    );
   };
 
   const renderNoteBlock = (block) => {
@@ -477,21 +477,21 @@ export default function ConstructorBlockRenderer({
       <div className={styles.note_block}>
         <div className={styles.note_block__bookmark} />
         <div className={styles.note_block__text}>
-        {containsListTags(noteBlockText) ? (
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: renderListWithDots(noteBlockText),
-                      }}
-                    />
-                  ) : (
-                    <div
-                    dangerouslySetInnerHTML={{
-                      __html: renderListWithDots(noteBlockText),
-                    }}
-                  />
-                  )}
+          {containsListTags(noteBlockText) ? (
+            <div
+              dangerouslySetInnerHTML={{
+                __html: renderListWithDots(noteBlockText),
+              }}
+            />
+          ) : (
+            <div
+              dangerouslySetInnerHTML={{
+                __html: renderListWithDots(noteBlockText),
+              }}
+            />
+          )}
           {/* {noteBlockText} */}
-          </div>
+        </div>
       </div>
     );
   };
@@ -551,20 +551,20 @@ export default function ConstructorBlockRenderer({
               isHovered && (
                 <button className={styles.buttonPause} onClick={handlePause}>
                   <img
-                  src={pauseIconToUse}
-                  alt={pauseIconToUse}
-                  onMouseEnter={handleMouseEnter}
-                  onMouseLeave={handleMouseLeave}
+                    src={pauseIconToUse}
+                    alt={pauseIconToUse}
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
                   />
                 </button>
               )
             ) : (
               <button className={styles.buttonPlayBlock} onClick={handlePlay}>
                 <img
-                src={playIconToUse}
-                alt={playIconToUse}
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
+                  src={playIconToUse}
+                  alt={playIconToUse}
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
                 />
               </button>
             )}
@@ -576,41 +576,42 @@ export default function ConstructorBlockRenderer({
 
   const renderVideoLinkBlock = (block) => {
     let videoLink = "";
-  
+
     block?.forEach((item) => {
       if (item.label === "Ссылка на видеоролик") videoLink = item.value;
     });
-  
+
     if (!videoLink) return null;
-  
+
     let embedLink = videoLink;
     if (videoLink.includes("youtu.be")) {
       embedLink = videoLink.replace("youtu.be/", "www.youtube.com/embed/");
     } else {
       embedLink = videoLink.replace("watch?v=", "embed/");
     }
-  
+
     const handleIframeError = (event) => {
-      const iframeContainer = event.target.closest(`.${styles.videoLinkContainer}`);
+      const iframeContainer = event.target.closest(
+        `.${styles.videoLinkContainer}`
+      );
       if (iframeContainer) {
         iframeContainer.innerHTML = "<div>Видео по ссылке не загружено</div>";
       }
     };
-  
+
     return (
       <div className={styles.videoLinkContainer}>
         <iframe
-         className={styles.block_videoLink}
+          className={styles.block_videoLink}
           src={embedLink}
           title="Video Player"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
           onError={handleIframeError}
-          ></iframe>
+        ></iframe>
       </div>
     );
   };
-  
 
   switch (block[0]?.label) {
     case "Картинка с описанием":
@@ -637,6 +638,5 @@ export default function ConstructorBlockRenderer({
       return renderVideoLinkBlock(block);
     default:
       return null;
-    }
   }
-  
+}
