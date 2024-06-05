@@ -17,7 +17,6 @@ import {
   fetchArticle,
   setArticleId,
   clearFormData,
-  // getFetchFormArticle,
   setDynamicaData,
   setDynamicImages,
 } from "../../../store/Slice/articleSlice";
@@ -159,6 +158,8 @@ export default function FormEditArticles({ setIsModalOpen, editArticleData }) {
     }
   }, [editArticleData]);
 
+
+  // НЕ УДАЛЯТЬ!!!! _______________________________________________
   // useEffect(() => {
   //   const updateEmbedLink = async () => {
   //     dynamicData.forEach(async (block, blockIndex) => {
@@ -180,7 +181,7 @@ export default function FormEditArticles({ setIsModalOpen, editArticleData }) {
 
   //   updateEmbedLink();
   // }, [dynamicData]);
-  
+  // _____________________________________________________________________________
 
   // << ==== КОНСТУКТОР ==== >>
   const handleRemovePreviewPhoto = useCallback((index) => {
@@ -205,7 +206,7 @@ export default function FormEditArticles({ setIsModalOpen, editArticleData }) {
   //   );
   // };
 
-  // // Удаление превью фото из закрывающей картинки
+  // Удаление превью фото из закрывающей картинки
   // const handleRemovePreviewPhotoClose = (index) => {
   //   removePreviewPhotoClose(
   //     previewPhotoClose,
@@ -400,12 +401,12 @@ export default function FormEditArticles({ setIsModalOpen, editArticleData }) {
           innerDiv: styles.videoInnerDiv,
           videoStyles: styles.videoStyle, // этот стиль можно использовать для видеотега
         };
-        case "Ссылка на видеоролик":
-          return {
-            outerDiv: styles.videoPreview,
-            innerDiv: styles.videoInnerDiv,
-            videoStyles: styles.videoStyle,
-          };
+      case "Ссылка на видеоролик":
+        return {
+          outerDiv: styles.videoPreview,
+          innerDiv: styles.videoInnerDiv,
+          videoStyles: styles.videoStyle,
+        };
       default:
         return "";
     }

@@ -18,12 +18,13 @@ const syncProjectMain = async (projectId) => {
         project: project.toJSON(),
         IdProject: project.id,
       });
-    } else {
-      await ProjectMain.create({
-        project: project.toJSON(),
-        IdProject: project.id,
-      });
     }
+    // else {
+    //   await ProjectMain.create({
+    //     project: project.toJSON(),
+    //     IdProject: project.id,
+    //   });
+    // }
   }
 };
 
