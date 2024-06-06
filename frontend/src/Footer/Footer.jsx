@@ -86,7 +86,7 @@ const Footer = ({
                 VK
               </span>
             </Link>
-            <Link
+            {/* <Link
               to="https://instagram.com/marks_group?igshid=YmMyMTA2M2Y="
               target="_blank"
               onMouseEnter={handleMouseEnterFooterMore}
@@ -98,8 +98,8 @@ const Footer = ({
               >
                 IG
               </span>
-            </Link>
-            <Link to="https://youtube.com/@marksgroup5338" target="_blank">
+            </Link> */}
+            <Link to="https://www.youtube.com/@marks_group" target="_blank">
               <span
                 className={styles.social_links_item}
                 style={{ marginRight: "22px" }}

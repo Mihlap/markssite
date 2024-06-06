@@ -414,6 +414,14 @@
     }
 }
 
+@media screen and (min-width: 1025px) and (max-width: 1600px) {
+    .form_container {
+        &__form {
+            height: 60vh
+        }
+    }
+}
+
 
 
 @media screen and (max-width: 1024px) {

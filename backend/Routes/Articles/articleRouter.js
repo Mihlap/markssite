@@ -252,6 +252,7 @@ router.get('/getzapros', async (req, res) => {
   try {
     const data = await Articles.findAll({
       include: [ConstructorArticles],
+      order: [['id', 'DESC']]
     });
 
     //  res.set('Cache-Control', 'public, max-age=432000'); // 432000 секунд = 5 дней
