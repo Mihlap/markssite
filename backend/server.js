@@ -36,10 +36,10 @@ const sessionConfig = {
   cookie: {
     maxAge: 10 * 24 * 60 * 60 * 1000, // 10 дней в миллисекундах
     httpOnly: true,
-    sameSite: 'lax', // 'lax' или 'strict' для HTTP
-    secure: false, // false для HTTP
-    // sameSite: 'none', // 'none' для HTTPS
-    // secure: true, // true для HTTPS
+    // sameSite: 'lax', // 'lax' или 'strict' для HTTP
+    // secure: false, // false для HTTP
+    sameSite: 'none', // 'none' для HTTPS
+    secure: true, // true для HTTPS
   },
 };
 
