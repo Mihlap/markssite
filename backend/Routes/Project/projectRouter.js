@@ -19,12 +19,6 @@ const syncProjectMain = async (projectId) => {
         IdProject: project.id,
       });
     }
-    // else {
-    //   await ProjectMain.create({
-    //     project: project.toJSON(),
-    //     IdProject: project.id,
-    //   });
-    // }
   }
 };
 
@@ -318,6 +312,7 @@ router.get('/getzapros', async (req, res) => {
   try {
     const data = await Project.findAll({
       include: [Constructor],
+      order: [['id', 'DESC']]
     });
 
     // res.set('Cache-Control', 'public, max-age=432000'); // 432000 секунд = 5 дней
