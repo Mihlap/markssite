@@ -9,6 +9,7 @@ const Host = process.env.REACT_APP_SERVER_HOST;
 const VacancyFormContactSimple = ({
   handleMouseEnter,
   handleMouseLeave,
+  
 }) => {
   const [isFocused, setIsFocused] = useState({
     name: false,

@@ -631,9 +631,7 @@ export default function Project({
         <section className={styles.section_project}>
           <div className={styles.section_project__block}>
             {filteredProjects &&
-              filteredProjects.slice() 
-              .reverse()
-              .map((project) => {
+              filteredProjects.slice().map((project) => {
                 const photoName = project && project.imageProject;
                 const defaultPhoto = catPhoto; // Убедитесь, что catPhoto существует и содержит правильный путь к изображению по умолчанию
                 const photoSrc =
