@@ -132,7 +132,7 @@ export default function AddProject({ user }) {
   }, [dispatch, isActiveForButton1]);
 
   const sortedProjects = useMemo(() => {
-    return [...project].reverse();
+    return [...project];
   }, [project]);
 
   return (
