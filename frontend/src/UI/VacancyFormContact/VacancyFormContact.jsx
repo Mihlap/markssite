@@ -4,7 +4,7 @@ import Select from "react-select";
 import { Link } from "react-router-dom";
 import styles from "./VacancyFormContact.module.css";
 import "react-phone-number-input/style.css";
-import icon_tg from "../../img/icon_tg.png";
+import icon_tg from "../../Portal/Vacancies/icons/icon_tg.png";
 
 const options = [
   { value: "Другая вакансия", label: "Другая вакансия" },
@@ -497,6 +497,7 @@ const VacancyFormContact = ({ handleMouseEnter, handleMouseLeave }) => {
           </Link>
           <Link
             to="https://t.me/marks_career"
+            target="_blank"
             className={styles.for_applicants_tg}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
