@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import styles from "./VacanciesMainCard.module.scss";
 import AllVacancyButton from "../../UI/ButtonVacancy/AllVacancyButton";
@@ -22,11 +22,31 @@ const VacanciesMainCard = ({
   const { id } = useParams();
   const vacancies = useSelector((state) => state.vacancies.vacancies);
   const loading = useSelector((state) => state.vacancies.loading);
-  const error = useSelector((state) => state.vacancies.error);
+  const error = useSelector((state) => state.vacancies.error);  
+  const [buttonTop, setButtonTop] = useState(0);
+  const formRef = React.createRef();
 
   useEffect(() => {
     dispatch(fetchEmployees(id));
-  }, [dispatch, id]);
+ }, [dispatch, id]);
+ 
+ useEffect(() => {
+  const updateButtonPosition = () => {
+    if (formRef.current) {
+      const formRect = formRef.current.getBoundingClientRect();
+      if (formRect.bottom < window.innerHeight) {
+        setButtonTop(window.scrollY + window.innerHeight - formRect.height);
+      } else {
+        setButtonTop(0);
+      }
+    }
+  };
+
+  window.addEventListener('scroll', updateButtonPosition);
+  return () => {
+    window.removeEventListener('scroll', updateButtonPosition);
+  };
+}, []);
 
   return (
     <>
@@ -124,6 +144,8 @@ const VacanciesMainCard = ({
               handleMouseEnter={handleMouseEnter}
               handleMouseLeave={handleMouseLeave}
               handleMouseHover={handleMouseHover}
+              formRef={formRef}
+              buttonTop={buttonTop}
             />
           </div>
           <div

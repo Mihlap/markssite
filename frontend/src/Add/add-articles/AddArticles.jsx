@@ -223,7 +223,7 @@ export default function AddArticles({ user }) {
                 <>
                   <div className={styles.card_components_admin__block_map}>
                     {Array.isArray(article) &&
-                      [...article]?.reverse().map((el) => {
+                      [...article]?.map((el) => {
                         const firstPhoto = el && el.imageTitle
                             ? el.imageTitle.split(", ")[0]
                             : null;
