@@ -289,7 +289,7 @@ const VacancyFormContactSimple = ({
                     className={styles.button_resume_file}
                     onMouseOver={handleMouseEnter}
                     onMouseOut={handleMouseLeave}
-                    onClick={() => fileInputRef.current.click()}
+                    onClick={() => fileInputRef.current.click()}                
                   >
                     {fileAttached ? "Прикрепить файл" : "Прикрепить файл"}
                   </div>
@@ -297,17 +297,19 @@ const VacancyFormContactSimple = ({
               )}
             </div>
           </div>
-          <div className={styles.agreement_vacancy}>
+          <div className={styles.agreement_vacancy} style={{paddingTop: '80px'}}>
             Нажав на кнопку, соглашаюсь на обработку{" "}
             <Link
               to="../Information"
               target="blank"
               className={styles.agreement_vacancy_link}
               onMouseOver={handleMouseEnter}
-              onMouseOut={handleMouseLeave}
+              onMouseOut={handleMouseLeave}              
             >
               персональных данных
             </Link>
+               </div>
+             <div style={{display: 'flex', justifyContent: 'center'}}>
             <button
               className={`${styles.button_vacancy}
               ${!isValid || !formData ? styles.disabled : ""}`}
@@ -316,6 +318,7 @@ const VacancyFormContactSimple = ({
               id="submit-button"
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
+              style={{minWidth: '432px', height: '56px'}}
             >
               <p className={styles.button_name_vacancy}>
                 Откликнутся на вакансию
