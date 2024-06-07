@@ -8,10 +8,16 @@ import { useParams } from "react-router-dom";
 import Error from "../../Loading/Error/Error";
 import LoadingCircle from "../../Loading/LoadingCircle";
 import VacancyFormContactSimple from "../../UI/VacancyFormContact/VacancyFormContactSimple";
+import VacancyFormContact from "../../UI/VacancyFormContact/VacancyFormContact";
 
 import star3d_1 from "./icons/star3d_1.png";
 import star3d_2 from "./icons/star3d_2.png";
 import star3d_3 from "./icons/star3d_3.png";
+import heart from "./icons/heart.png";
+import frame1 from "./icons/frame1.png";
+import frame2 from "./icons/frame2.png";
+import frame3 from "./icons/frame3.png";
+import frame4 from "./icons/frame4.png";
 
 const VacanciesMainCard = ({
   handleMouseEnter,
@@ -22,32 +28,43 @@ const VacanciesMainCard = ({
   const { id } = useParams();
   const vacancies = useSelector((state) => state.vacancies.vacancies);
   const loading = useSelector((state) => state.vacancies.loading);
-  const error = useSelector((state) => state.vacancies.error);  
+  const error = useSelector((state) => state.vacancies.error);
+  const [selectedVacancy, setSelectedVacancy] = useState(null);
+
   const [buttonTop, setButtonTop] = useState(0);
   const formRef = React.createRef();
 
   useEffect(() => {
     dispatch(fetchEmployees(id));
- }, [dispatch, id]);
- 
- useEffect(() => {
-  const updateButtonPosition = () => {
-    if (formRef.current) {
-      const formRect = formRef.current.getBoundingClientRect();
-      if (formRect.bottom < window.innerHeight) {
-        setButtonTop(window.scrollY + window.innerHeight - formRect.height);
-      } else {
-        setButtonTop(0);
-      }
+  }, [dispatch, id]);
+
+  useEffect(() => {
+    if (vacancies && vacancies.length > 0) {
+      // Выбираем первую вакансию или любую другую логику выбора
+      setSelectedVacancy(vacancies[0]);
     }
-  };
+  }, [vacancies]);
+  
 
-  window.addEventListener('scroll', updateButtonPosition);
-  return () => {
-    window.removeEventListener('scroll', updateButtonPosition);
-  };
-}, []);
+  useEffect(() => {
+    const updateButtonPosition = () => {
+      if (formRef.current) {
+        const formRect = formRef.current.getBoundingClientRect();
+        if (formRect.bottom < window.innerHeight) {
+          setButtonTop(window.scrollY + window.innerHeight - formRect.height);
+        } else {
+          setButtonTop(0);
+        }
+      }
+    };
 
+    window.addEventListener("scroll", updateButtonPosition);
+    return () => {
+      window.removeEventListener("scroll", updateButtonPosition);
+    };
+  }, []);
+
+ 
   return (
     <>
       <Helmet>
@@ -58,11 +75,11 @@ const VacanciesMainCard = ({
           className={styles.main_vacancy_block__background1}
           style={{ backgroundImage: `url(${star3d_1})` }}
         />
-         <div
+        <div
           className={styles.main_vacancy_block__background2}
           style={{ backgroundImage: `url(${star3d_2})` }}
         />
-         <div
+        <div
           className={styles.main_vacancy_block__background3}
           style={{ backgroundImage: `url(${star3d_3})` }}
         />
@@ -135,18 +152,18 @@ const VacanciesMainCard = ({
                       {vacancy.modeOperating}
                     </span>
                   </div>
+                  <div className={styles.vacancyFormWrapperSimple}>
+                    <VacancyFormContactSimple
+                      handleMouseEnter={handleMouseEnter}
+                      handleMouseLeave={handleMouseLeave}
+                      handleMouseHover={handleMouseHover}
+                      formRef={formRef}
+                      buttonTop={buttonTop}
+                    />
+                  </div>
                 </div>
               </div>
             ))}
-          </div>
-                  <div className={styles.vacancyFormWrapperSimple}>
-            <VacancyFormContactSimple
-              handleMouseEnter={handleMouseEnter}
-              handleMouseLeave={handleMouseLeave}
-              handleMouseHover={handleMouseHover}
-              formRef={formRef}
-              buttonTop={buttonTop}
-            />
           </div>
           <div
             className={styles.main_vacancy_block__all_button}
@@ -156,7 +173,36 @@ const VacanciesMainCard = ({
             <AllVacancyButton />
           </div>
         </div>
-      
+        <div className={styles.main_vacancyWrapper__offer}>
+          <span className={styles.main_vacancyWrapper__offerName}>Marks Group предлагает тебе</span>
+          <img className={styles.main_vacancyWrapper__offerHeart} src={heart} alt={heart} />
+        </div>
+        <div className={styles.main_vacancyWrapper__frameBlock}>
+        <div className={styles.main_vacancyWrapper__frameBlock_frame}>
+        <img className={styles.main_vacancyWrapper__frame} src={frame1} alt={frame1} />
+        <span className={styles.main_vacancyWrapper__frameSpan}>Опыт работы на&nbsp;уникальных объектах</span>
+        </div>
+        <div className={styles.main_vacancyWrapper__frameBlock_frame}>
+        <img className={styles.main_vacancyWrapper__frame} src={frame2} alt={frame2} />
+        <span className={styles.main_vacancyWrapper__frameSpan}>Развитие карьерного и&nbsp;личностного потенциала</span>
+        </div>
+        <div className={styles.main_vacancyWrapper__frameBlock_frame}>
+        <img className={styles.main_vacancyWrapper__frame} src={frame3} alt={frame3} />
+        <span className={styles.main_vacancyWrapper__frameSpan}>Создаем атмосферу менторства и&nbsp;наставничества</span>
+        </div>
+        <div className={styles.main_vacancyWrapper__frameBlock_frame}>
+        <img className={styles.main_vacancyWrapper__frame} src={frame4} alt={frame4} />
+        <span className={styles.main_vacancyWrapper__frameSpan}>Даем почву для воплощения ваших идей</span>
+        </div>
+        </div>
+        <div className={styles.main_vacancyWrapper__vacancyFormWrapper}>
+          <VacancyFormContact     
+           initialDirection={selectedVacancy?.direction}  
+            handleMouseEnter={handleMouseEnter}
+            handleMouseLeave={handleMouseLeave}
+            handleMouseHover={handleMouseHover}
+          />
+        </div>      
       </div>
     </>
   );
