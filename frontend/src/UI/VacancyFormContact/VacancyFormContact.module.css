@@ -11,6 +11,7 @@
 .form_vacancy_wrapperSimple {
   display: flex;
   height: fit-content;
+  width: 100%;
   position: relative;
 }
 
@@ -82,7 +83,7 @@
   height: 1px;
   margin-top: 12px;
   background-color: var(--gray-959DA6);
-  width: 23rem;
+  width: 100%;
 }
 
 .line_select {

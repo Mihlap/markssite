@@ -1,4 +1,4 @@
-import React, { useRef, useState, useMemo, useCallback } from "react";
+import React, { useRef, useState, useMemo, useCallback, useEffect } from "react";
 import InputMask from "react-input-mask";
 import Select from "react-select";
 import { Link } from "react-router-dom";
@@ -6,23 +6,35 @@ import styles from "./VacancyFormContact.module.css";
 import "react-phone-number-input/style.css";
 import icon_tg from "../../Portal/Vacancies/icons/icon_tg.png";
 
-const options = [
-  { value: "Другая вакансия", label: "Другая вакансия" },
-  { value: "Архитектура", label: "Архитектура" },
-  { value: "Конструкции", label: "Конструкции" },
-  { value: "Инженерия", label: "Инженерия" },
-  { value: "Аналитика", label: "Аналитика" },
-  { value: "Технологии", label: "Технологии" },
-  { value: "Проектирование", label: "Проектирование" },
-  { value: "BIM", label: "BIM" },
-  { value: "Генеральный план", label: "Генеральный план" },
-  { value: "it", label: "it" },
-  { value: "Дизайн", label: "Дизайн" },
-];
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 
-const VacancyFormContact = ({ handleMouseEnter, handleMouseLeave }) => {
+const VacancyFormContact = ({ initialDirection, handleMouseEnter, handleMouseLeave }) => {
+
+ const options = useMemo(() => [
+    { value: "Другая вакансия", label: "Другая вакансия" },
+    { value: "Архитектура", label: "Архитектура" },
+    { value: "Конструкции", label: "Конструкции" },
+    { value: "Инженерия", label: "Инженерия" },
+    { value: "Аналитика", label: "Аналитика" },
+    { value: "Технологии", label: "Технологии" },
+    { value: "Проектирование", label: "Проектирование" },
+    { value: "BIM", label: "BIM" },
+    { value: "Генеральный план", label: "Генеральный план" },
+    { value: "it", label: "it" },
+    { value: "Дизайн", label: "Дизайн" },
+  ], []);
+  
+  const [selectedOptions, setSelectedOptions] = useState(
+    options.find(option => option.value === initialDirection)
+  );
+  
+  useEffect(() => {
+    // Обновляем selectedOptions когда initialDirection или options изменяется
+    const foundOption = options.find(option => option.value === initialDirection);
+    setSelectedOptions(foundOption);
+  }, [initialDirection, options]); 
+
   const [isFocused, setIsFocused] = useState({
     name: false,
     phone: false,
@@ -33,7 +45,7 @@ const VacancyFormContact = ({ handleMouseEnter, handleMouseLeave }) => {
   });
 
   const [isValid, setIsValid] = useState(true);
-  const [selectedOptions, setSelectedOptions] = useState(null);
+  // const [selectedOptions, setSelectedOptions] = useState(null);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [fileAttached, setFileAttached] = useState(false);
   const [formData, setFormData] = useState({
@@ -361,7 +373,7 @@ const VacancyFormContact = ({ handleMouseEnter, handleMouseLeave }) => {
                   placeholder={"Выбрать вакансию"}
                   onChange={handleChangeVacancy}
                   isSearchable={false}
-                  isClearable={false}
+                  isClearable={true} 
                   menuShouldScrollIntoView={false}
                   styles={customStyles}
                 />
