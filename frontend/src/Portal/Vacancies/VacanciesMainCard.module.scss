@@ -1,226 +1,283 @@
 @import "../../App.css";
 
 .main_vacancyWrapper {
+  // min-height: 200vh;
 
-.main_vacancy_block {
-  width: 100%;
-  height: 100%;
-  min-height: 200vh;
-  padding-top: 50px;
-  opacity: 0.9;
-
-  &__all_button {
-    position: absolute;
-    top: 0;
-    padding-left: 8.37rem;
-    padding-top: 152px;
-    cursor: pointer;
-    z-index: 1;
-  }
-
-  &__wrapper {
+  .main_vacancy_block {
     display: flex;
-    flex-direction: column;
-    border-bottom: 1px solid rgb(235, 236, 238);
-  }
-
-  &__item {
-    display: flex;
-    justify-content: space-between;
-    position: relative;
-  }
-
-  &__background1 {
-  position: absolute;
-  width: 20rem;
-  height: 20rem;
-  top: 40vh;
-  right: 27vw;
-  background-size: cover;
-  background-repeat: no-repeat;
-  z-index: -1;
-  
-}
-
-&__background2 {
-  position: absolute;
-  width: 12.5rem;
-  height: 12.5rem;
-  right: 14vw;
-  top: 8vh;
-  background-size: cover;
-  background-repeat: no-repeat;
-  z-index: -1;
-}
-
-&__background3 {
-  position: absolute;
-  width: 31.25rem;
-  height: 34.37rem;
-  top: 30vh;
-  right: 0;
-  background-size: cover;
-  background-repeat: no-repeat;
-  z-index: -1;
-}
-
-  &__blockLeft {
+    width: 100%;
     height: 100%;
-    flex: 1;
-    backdrop-filter: blur(0.88rem);
-    background: linear-gradient(221.46deg, rgba(255, 203, 193, 0.09) -4.631%, rgba(117, 187, 253, 0.09) 44.805%, rgba(188, 188, 188, 0.09) 103.423%);
+    padding-top: 50px;   
+
+    &__all_button {
+      position: absolute;
+      top: 0;
+      padding-left: 8.37rem;
+      padding-top: 152px;
+      cursor: pointer;
+      z-index: 1;
+    }
+
+    &__wrapper {
+      display: flex;
+      flex-direction: column;
+    }
+
+    &__item {
+      display: flex;
+      justify-content: space-between;
+      position: relative;
+    }
+
+    &__background1 {
+      position: absolute;
+      width: 24rem;
+      height: 24rem;
+      top: 40%;
+      right: 24vw;
+      background-size: cover;
+      background-repeat: no-repeat;
+      z-index: -1;
+
+    }
+
+    &__background2 {
+      position: absolute;
+      width: 12.5rem;
+      height: 12.5rem;
+      right: 15vw;
+      top: 8%;
+      background-size: cover;
+      background-repeat: no-repeat;
+      z-index: -1;
+    }
+
+    &__background3 {
+      position: absolute;
+      width: 31.25rem;
+      height: 34.37rem;
+      top: 30%;
+      right: 0;
+      background-size: cover;
+      background-repeat: no-repeat;
+      z-index: -1;
+    }
+
+    &__blockLeft {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      backdrop-filter: blur(0.88rem);
+      background: linear-gradient(221.46deg, rgba(255, 203, 193, 0.09) -4.631%, rgba(117, 187, 253, 0.09) 44.805%, rgba(188, 188, 188, 0.09) 103.423%);
+      padding-left: 8.37rem;
+      padding-top: 140px;
+      border-bottom: 1px solid rgb(235, 236, 238);
+      opacity: 0.8;
+    }
+
+    &__blockRight {
+      display: flex;
+      flex-wrap: wrap;
+      width: 50%;
+      height: 50%;
+      margin-left: auto;
+      justify-content: space-between;
+      align-content: stretch;
+      border-bottom: 1px solid rgb(235, 236, 238);
+      opacity: 0.8;
+    }
+
+    &__vacancyTitle {
+      color: var(--black-1D2E43);
+      font-family: var(--font-unbounded);
+      font-size: 3rem;
+      font-weight: var(--fw-300);
+      line-height: 4rem;
+      letter-spacing: 0rem;
+      text-align: left;
+      max-width: 80%;
+      padding-top: 46px;
+    }
+
+    &__vacancyDetails {}
+
+    &__vacancyTitle1 {
+      font-family: var(--font-raleway);
+      font-weight: var(--fw-400);
+      letter-spacing: 0rem;
+      padding-top: 67px;
+    }
+
+    &__vacancyTitle1__titleKey {
+      color: var(--gray-959DA6);
+      font-size: 1rem;
+      line-height: 1.5rem;
+    }
+
+    &__vacancyTitle1__titleValue {
+      color: var(--black-1D2E43);
+      font-size: 1.25rem;
+      line-height: 1.75rem;
+      padding-top: 8px;
+    }
+
+    &__vacancyTitle1__titleValue1 {
+      color: var(--black-1D2E43);
+      font-size: 1.25rem;
+      line-height: 1.75rem;
+      padding-top: 8px;
+      padding-bottom: 4rem;
+      max-width: 80%;
+    }
+
+    &__vacancyTitle1__titleKey1 {
+      font-size: 1rem;
+      line-height: 1.625rem;
+      color: var(--black-1D2E43);
+      font-family: var(--font-raleway);
+      font-size: 1.125rem;
+      font-weight: var(--fw-400);
+      padding-left: 6.25rem;
+    }
+
+    &__vacancyTitle1__titleValue {
+      color: var(--black-1D2E43);
+      font-family: var(--font-unbounded);
+      font-size: 2rem;
+      font-weight: var(--fw-300);
+      line-height: 2.5rem;
+      padding-left: 6.25rem;
+      padding-top: 6px;
+    }
+
+    &__detail {
+      display: flex;
+      flex-wrap: wrap;
+      width: 100%;
+      justify-content: space-between;
+    }
+
+    &__detailItem {
+      display: flex;
+      flex-direction: column;
+      width: calc(50% - 0rem);
+      height: 100%;
+      border: 1px solid rgb(235, 236, 238);
+      backdrop-filter: blur(14px);
+      background: rgba(255, 255, 255, 0.7);
+      padding-left: 3.5vw;
+      justify-content: center;
+    }
+
+    .topLeftSquare {
+      border-left: 1px solid rgb(235, 236, 238);
+      border-top: 1px solid rgb(235, 236, 238);
+      backdrop-filter: blur(14px);
+      background: linear-gradient(221.46deg, rgba(255, 203, 193, 0.09) -4.321%, rgba(117, 187, 253, 0.09) 46.423%, rgba(188, 188, 188, 0.09) 106.591%);
+    }
+
+    .topRightSquare {
+      border-bottom: 1px solid rgb(235, 236, 238);
+      border-left: 1px solid rgb(235, 236, 238);
+      border-top: 1px solid rgb(235, 236, 238);
+      backdrop-filter: blur(9px);
+      background: rgba(255, 255, 255, 0.7);
+    }
+
+    .bottomLeftSquare {
+      border: 1px solid rgb(235, 236, 238);
+      backdrop-filter: blur(9px);
+      background: rgba(255, 255, 255, 0.7);
+    }
+
+    .bottomRightSquare {
+      border-bottom: 1px solid rgb(235, 236, 238);
+      backdrop-filter: blur(14px);
+      background: linear-gradient(221.46deg, rgba(255, 203, 193, 0.09) -4.33%, rgba(117, 187, 253, 0.09) 46.376%, rgba(188, 188, 188, 0.09) 106.499%);
+    }
+
+
+    &__detailKey {
+      font-size: 1.125rem;
+      line-height: 1.625rem;
+      color: var(--black-1D2E43);
+      font-family: var(--font-raleway);
+      font-weight: var(--fw-400);
+    }
+
+    &__detailValue {
+      color: var(--black-1D2E43);
+      font-family: var(--font-unbounded);
+      font-size: 2rem;
+      font-weight: var(--fw-300);
+      line-height: 2.5rem;
+      margin-top: 6px;
+    }
+  }
+
+  .vacancyFormWrapperSimple {
+    border: 1px solid rgb(235, 236, 238);
+    backdrop-filter: blur(9px);
+    background: rgba(255, 255, 255, 0.7);
+    padding: 3rem 2.5rem 3rem 2.5rem;
+    width: 100%;
+  }
+
+  &__vacancyFormWrapper {
+    padding: 50rem 3rem 5rem 7rem;
+  }
+
+  &__offer {
+    display: flex;
     padding-left: 8.37rem;
     padding-top: 140px;
+    width: 100%;
+    align-items: center;
   }
 
-  &__blockRight {
-    display: flex;
-    flex-wrap: wrap;
-    width: 30%;
-    margin-left: auto;
-    justify-content: space-between;
-  }
-
-  &__vacancyTitle {
-    color: var(--black-1D2E43);
-    font-family: var(--font-unbounded);
-    font-size: 3rem;
-    font-weight: var(--fw-300);
-    line-height: 4rem;
-    letter-spacing: 0rem;
-    text-align: left;
-    max-width: 80%;
-    padding-top: 46px;
-  }
-
-  &__vacancyDetails {
-    margin-top: 67px;
-  }
-
-  &__vacancyTitle1 {
-    font-family: var(--font-raleway);
-    font-weight: var(--fw-400);
-    letter-spacing: 0rem;
-  }
-
-  &__vacancyTitle1__titleKey {
-    color: var(--gray-959DA6);
-    font-size: 1rem;
-    line-height: 1.5rem;
-  }
-
-  &__vacancyTitle1__titleValue {
-    color: var(--black-1D2E43);
-    font-size: 1.25rem;
-    line-height: 1.75rem;
-    padding-top: 8px;
-  }
-
-  &__vacancyTitle1__titleValue1 {
-    color: var(--black-1D2E43);
-    font-size: 1.25rem;
-    line-height: 1.75rem;
-    padding-top: 8px;
-    padding-bottom: 4rem;
-    max-width: 80%;
-  }
-
-  &__vacancyTitle1__titleKey1 {
-    font-size: 1rem;
-    line-height: 1.625rem;
-    color: var(--black-1D2E43);
-    font-family: var(--font-raleway);
-    font-size: 1.125rem;
-    font-weight: var(--fw-400);
-    padding-left: 6.25rem;
-  }
-
-  &__vacancyTitle1__titleValue {
+  &__offerName {
     color: var(--black-1D2E43);
     font-family: var(--font-unbounded);
     font-size: 2rem;
     font-weight: var(--fw-300);
-    line-height: 2.5rem;
-    padding-left: 6.25rem;
-    padding-top: 6px;
+    line-height: 2.5rem;   
+    text-align: left;
+    padding-right: 1.875rem;
   }
 
-  &__detail {
+  &__offerHeart {  
+    align-items: center;
+  }
+
+  &__frameBlock {
     display: flex;
-    flex-wrap: wrap;
-    width: 100%;
-    justify-content: space-between;
+    padding-left: 8.37rem;
+    padding-top: 72px;
+    gap: 3.875rem;
+    max-width: 60%;
   }
 
-  &__detailItem {
+  &__frameBlock_frame {
     display: flex;
     flex-direction: column;
-    width: calc(50% - 0rem);
-    box-sizing: border-box;
-    border: 1px solid rgb(235, 236, 238);
-    backdrop-filter: blur(14px);
-    background: rgba(255, 255, 255, 0.7);
-    padding-left: 3.5vw;
-    // padding-top: 6vh;
-    justify-content: center;
+    max-width: 18rem;  
   }
 
-  .topLeftSquare {
-    border-left: 1px solid rgb(235, 236, 238);
-    border-top: 1px solid rgb(235, 236, 238);
-    backdrop-filter: blur(14px);
-    background: linear-gradient(221.46deg, rgba(255, 203, 193, 0.09) -4.321%, rgba(117, 187, 253, 0.09) 46.423%, rgba(188, 188, 188, 0.09) 106.591%);
+  &__frame {
+    height: auto; 
+    
+    width: 60%;
   }
-  
-  .topRightSquare {
-    border-bottom: 1px solid rgb(235, 236, 238);
-    border-left: 1px solid rgb(235, 236, 238);
-    border-top: 1px solid rgb(235, 236, 238);
-    backdrop-filter: blur(9px);
-    background: rgba(255, 255, 255, 0.7);
-  }
-  
-  .bottomLeftSquare {
-    border: 1px solid rgb(235, 236, 238);
-    backdrop-filter: blur(9px);
-    background: rgba(255, 255, 255, 0.7);  
-  }
-  
-  .bottomRightSquare {
-    border-bottom: 1px solid rgb(235, 236, 238);
-    backdrop-filter: blur(14px);
-    background: linear-gradient(221.46deg, rgba(255, 203, 193, 0.09) -4.33%, rgba(117, 187, 253, 0.09) 46.376%, rgba(188, 188, 188, 0.09) 106.499%);
-  }
-  
 
-  &__detailKey {
-    font-size: 1.125rem;
-    line-height: 1.625rem;
-    color: var(--black-1D2E43);
-    font-family: var(--font-raleway);
-    font-weight: var(--fw-400);
-   }
-
-  &__detailValue {
-    color: var(--black-1D2E43);
-    font-family: var(--font-unbounded);
-    font-size: 2rem;
-    font-weight: var(--fw-300);
-    line-height: 2.5rem;
-    margin-top: 6px;
-   }    
-  }
-  
-  .vacancyFormWrapperSimple {
-    position: absolute;
-    right: 0;
-    display: flex;   
-    border: 1px solid rgb(235, 236, 238);
-    backdrop-filter: blur(9px);
-    background: rgba(255, 255, 255, 0.7);
-    padding: 2rem 6.25rem 2rem 6.25rem;
-   
-   }
-
-
+    &__frameSpan {
+      color: rgb(29, 46, 67);
+      font-family: var(--font-raleway);
+      font-weight: var(--fw-500);
+      font-size: 1.125rem;
+      line-height: 1.5rem;    
+      text-align: left;
+      width: 90%;
+      word-wrap: break-word;
+      padding-top: 6px;
+    }
 }
