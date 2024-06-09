@@ -316,6 +316,9 @@ font-family: var(--font-raleway);
   box-sizing: border-box;
   border: 1px solid #1D2E43;
   border-radius: 2.12rem;
+  background-color: transparent; 
+  color: var(--black-1D2E43);
+  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out; 
 }
 
 .filterModalButton:hover {
@@ -324,8 +327,9 @@ font-family: var(--font-raleway);
 }
 
 .activeFilter {
-  background-color: var(--black-1D2E43);
-  color: var(--white-F6F6F6);
+  background-color: var(--black-1D2E43) !important;
+  color: var(--white-F6F6F6) !important;
+  border: none !important;
 }
 
 .applyButtonWrapper {
@@ -543,7 +547,6 @@ font-family: var(--font-raleway);
 
 .vacancyCell_buttonLink {
   margin-right: 2.25rem;
-  /* background-color: var(--blue-75BBFD); */
   width: 41px;
   height: 41px;
   border-radius: 50%;
@@ -1134,8 +1137,15 @@ font-family: var(--font-raleway);
   }
   
   .filterModalButton:hover {
-    background-color: transparent;
-    border: 1px solid #1D2E43;
+    background-color: transparent !important;
+   color: var(--black-1D2E43) !important;
+   border: 1px solid var(--black-1D2E43) !important;
+  }
+
+  .activeFilter {
+    background-color: var(--black-1D2E43) !important;
+    color: var(--white-F6F6F6) !important;
+    border: none !important;
   }
 
   .applyButton {
@@ -1510,9 +1520,16 @@ font-family: var(--font-raleway);
  }
  
  .filterModalButton:hover {
-   background-color: transparent;
-   border: 1px solid #1D2E43;
+   background-color: transparent !important;
+   color: var(--black-1D2E43) !important;
+   border: 1px solid var(--black-1D2E43) !important;
  }
+
+ .activeFilter {
+  background-color: var(--black-1D2E43) !important;
+  color: var(--white-F6F6F6) !important;
+  border: none !important;
+}
 
   .applyButtonWrapper {
     display: flex;
