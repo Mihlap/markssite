@@ -7,13 +7,11 @@ import { useDispatch, useSelector } from "react-redux";
 Modal.setAppElement("#root");
 
 const FilterModalVacancies = ({
-   isOpen,
-   onClose,
-   setFilters,
-   selectedFilter,
-   handleMouseEnter,
-   handleMouseLeave,
-  }) => {
+  isOpen,
+  onClose,
+  setFilters,
+  selectedFilter,
+}) => {
   const dispatch = useDispatch();
   const activeFilters = useSelector((state) => state.vacancies.activeFilters);
   const filterKeyForSpecialty = 'direction';
@@ -21,7 +19,7 @@ const FilterModalVacancies = ({
   const [localFilters, setLocalFilters] = useState({ ...activeFilters });
 
   useEffect(() => {
-      setLocalFilters(activeFilters);
+    setLocalFilters(activeFilters);
   }, [activeFilters]);
 
   const handleFilterClick = useCallback((category, value) => {
@@ -57,7 +55,7 @@ const FilterModalVacancies = ({
   const filterButtons = [
     {
       name: "Требуемый опыт работы",
-      filterKey: "experience", 
+      filterKey: "experience",
       buttons: [
         { id: "experience-1", label: "Без опыта", value: "Без опыта" },
         { id: "experience-2", label: "1-3 года", value: "1-3" },
@@ -100,12 +98,9 @@ const FilterModalVacancies = ({
   return (
     <Modal
       className={styles.modal_wrapper_vacancy}
-      modal={document.querySelector(".modal")}
-      modalStyleZIndex={999}
       isOpen={isOpen}
       onRequestClose={onClose}
       onAfterOpen={() => {
-        // setIsModalProjectOpen(true);
         document.body.style.overflow = "hidden";
         document.body.classList.add("modal-open");
       }}
@@ -114,7 +109,6 @@ const FilterModalVacancies = ({
         document.body.classList.remove("modal-open");
       }}
       shouldCloseOnOverlayClick={true}
-      onClick={onClose}
       ariaHideApp={false}
       style={{
         overlay: {
@@ -127,12 +121,8 @@ const FilterModalVacancies = ({
       }}
     >
       <div
-        onClick={(e) => {
-          onClose();
-        }}
+        onClick={onClose}
         className={`${styles.modal_vacancy_close} ${styles.fixed_modal_vacancy}`}
-        onMouseEnter={handleMouseEnter}
-        onMouseLeave={handleMouseLeave}
       >
         <svg
           width="16"
@@ -162,15 +152,13 @@ const FilterModalVacancies = ({
                   <button
                     key={button.id}
                     className={`${styles.filterModalButton} ${
-                      localFilters[filterGroup.name]?.includes(button.label)
+                      localFilters[filterGroup.filterKey]?.includes(button.value)
                         ? styles.activeFilter
                         : ""
                     }`}
                     onClick={() =>
-                      handleFilterClick(filterGroup.name, button.label)
+                      handleFilterClick(filterGroup.filterKey, button.value)
                     }
-                    onMouseEnter={handleMouseEnter}
-                    onMouseLeave={handleMouseLeave}
                   >
                     {button.label}
                   </button>
@@ -181,11 +169,9 @@ const FilterModalVacancies = ({
         </div>
         <div className={styles.applyButtonWrapper}>
           <button
-           className={styles.applyButton}
+            className={styles.applyButton}
             onClick={handleApplyFilters}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-            >
+          >
             Применить
           </button>
         </div>
