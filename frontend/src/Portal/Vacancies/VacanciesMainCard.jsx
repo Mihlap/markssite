@@ -9,6 +9,7 @@ import Error from "../../Loading/Error/Error";
 import LoadingCircle from "../../Loading/LoadingCircle";
 import VacancyFormContactSimple from "../../UI/VacancyFormContact/VacancyFormContactSimple";
 import VacancyFormContact from "../../UI/VacancyFormContact/VacancyFormContact";
+import RenderVacancySections from "./RenderVacancySections";
 
 import star3d_1 from "./icons/star3d_1.png";
 import star3d_2 from "./icons/star3d_2.png";
@@ -19,10 +20,11 @@ import frame2 from "./icons/frame2.png";
 import frame3 from "./icons/frame3.png";
 import frame4 from "./icons/frame4.png";
 
+
 const VacanciesMainCard = ({
   handleMouseEnter,
   handleMouseLeave,
-  handleMouseHover,
+  handleMouseHover, 
 }) => {
   const dispatch = useDispatch();
   const { id } = useParams();
@@ -44,7 +46,6 @@ const VacanciesMainCard = ({
       setSelectedVacancy(vacancies[0]);
     }
   }, [vacancies]);
-  
 
   useEffect(() => {
     const updateButtonPosition = () => {
@@ -64,7 +65,7 @@ const VacanciesMainCard = ({
     };
   }, []);
 
- 
+
   return (
     <>
       <Helmet>
@@ -174,35 +175,72 @@ const VacanciesMainCard = ({
           </div>
         </div>
         <div className={styles.main_vacancyWrapper__offer}>
-          <span className={styles.main_vacancyWrapper__offerName}>Marks Group предлагает тебе</span>
-          <img className={styles.main_vacancyWrapper__offerHeart} src={heart} alt={heart} />
+          <span className={styles.main_vacancyWrapper__offerName}>
+            Marks Group предлагает тебе
+          </span>
+          <img
+            className={styles.main_vacancyWrapper__offerHeart}
+            src={heart}
+            alt={heart}
+          />
         </div>
-        <div className={styles.main_vacancyWrapper__frameBlock}>
-        <div className={styles.main_vacancyWrapper__frameBlock_frame}>
-        <img className={styles.main_vacancyWrapper__frame} src={frame1} alt={frame1} />
-        <span className={styles.main_vacancyWrapper__frameSpan}>Опыт работы на&nbsp;уникальных объектах</span>
+        <div className={styles.main_vacancyWrapper__wrapperFrameBlock}>
+          <div className={styles.main_vacancyWrapper__frameBlock}>
+            <div className={styles.main_vacancyWrapper__frameBlock_frame}>
+              <img
+                className={styles.main_vacancyWrapper__frame}
+                src={frame1}
+                alt={frame1}
+              />
+              <span className={styles.main_vacancyWrapper__frameSpan}>
+                Опыт работы на&nbsp;уникальных объектах
+              </span>
+            </div>
+            <div className={styles.main_vacancyWrapper__frameBlock_frame}>
+              <img
+                className={styles.main_vacancyWrapper__frame}
+                src={frame2}
+                alt={frame2}
+              />
+              <span className={styles.main_vacancyWrapper__frameSpan}>
+                Развитие карьерного и&nbsp;личностного потенциала
+              </span>
+            </div>
+          </div>
+          <div className={styles.main_vacancyWrapper__frameBlock}>
+            <div className={styles.main_vacancyWrapper__frameBlock_frame}>
+              <img
+                className={styles.main_vacancyWrapper__frame}
+                src={frame3}
+                alt={frame3}
+              />
+              <span className={styles.main_vacancyWrapper__frameSpan}>
+                Создаем атмосферу менторства и&nbsp;наставничества
+              </span>
+            </div>
+            <div className={styles.main_vacancyWrapper__frameBlock_frame}>
+              <img
+                className={styles.main_vacancyWrapper__frame}
+                src={frame4}
+                alt={frame4}
+              />
+              <span className={styles.main_vacancyWrapper__frameSpan}>
+                Даем почву для воплощения ваших идей
+              </span>
+            </div>
+          </div>
         </div>
-        <div className={styles.main_vacancyWrapper__frameBlock_frame}>
-        <img className={styles.main_vacancyWrapper__frame} src={frame2} alt={frame2} />
-        <span className={styles.main_vacancyWrapper__frameSpan}>Развитие карьерного и&nbsp;личностного потенциала</span>
-        </div>
-        <div className={styles.main_vacancyWrapper__frameBlock_frame}>
-        <img className={styles.main_vacancyWrapper__frame} src={frame3} alt={frame3} />
-        <span className={styles.main_vacancyWrapper__frameSpan}>Создаем атмосферу менторства и&nbsp;наставничества</span>
-        </div>
-        <div className={styles.main_vacancyWrapper__frameBlock_frame}>
-        <img className={styles.main_vacancyWrapper__frame} src={frame4} alt={frame4} />
-        <span className={styles.main_vacancyWrapper__frameSpan}>Даем почву для воплощения ваших идей</span>
-        </div>
+        <div className={styles.main_vacancyWrapper__wrapperTextBlock}>
+        <RenderVacancySections />
         </div>
         <div className={styles.main_vacancyWrapper__vacancyFormWrapper}>
-          <VacancyFormContact     
-           initialDirection={selectedVacancy?.direction}  
+          <VacancyFormContact
+            initialDirection={selectedVacancy?.direction}
             handleMouseEnter={handleMouseEnter}
             handleMouseLeave={handleMouseLeave}
             handleMouseHover={handleMouseHover}
           />
-        </div>      
+        </div>
       </div>
     </>
   );
