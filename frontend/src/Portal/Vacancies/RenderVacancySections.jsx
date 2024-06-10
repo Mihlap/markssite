@@ -20,6 +20,10 @@ const RenderVacancySections = () => {
     return doc.body.innerHTML;
   };
 
+  const formatSkills = (skills) => {
+    return skills.split(",").map((skill) => `<span class="${styles.skillButton}">${skill.trim()}</span>`).join("");
+  };
+
   return vacancies.map((vacancy, index) => (
     <div key={index}>
       <div className={styles.main_vacancyWrapper__wrapperTitle}>
@@ -44,9 +48,9 @@ const RenderVacancySections = () => {
         <h4>Ключевые навыки</h4>
       </div>
       <div
-        className={styles.main_vacancyWrapper__textBlock1}
+        className={styles.main_vacancyWrapper__textBlock}
         dangerouslySetInnerHTML={{
-          __html: formatContentWithSpans(vacancy.skills),
+          __html: formatSkills(vacancy.skills),
         }}
       />
     </div>
