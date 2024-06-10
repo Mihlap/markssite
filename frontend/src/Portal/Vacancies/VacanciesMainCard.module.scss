@@ -27,13 +27,13 @@
       display: flex;
       justify-content: space-between;
       position: relative;
-    }
+     }
 
     &__background1 {
       position: absolute;
       width: 24rem;
       height: 24rem;
-      top: 40%;
+      top: 27%;
       right: 24vw;
       background-size: cover;
       background-repeat: no-repeat;
@@ -56,7 +56,7 @@
       position: absolute;
       width: 31.25rem;
       height: 34.37rem;
-      top: 30%;
+      top: 25%;
       right: 0;
       background-size: cover;
       background-repeat: no-repeat;
@@ -66,7 +66,7 @@
     &__blockLeft {
       display: flex;
       flex-direction: column;
-      height: 100%;
+      height: 80%;
       backdrop-filter: blur(0.88rem);
       background: linear-gradient(221.46deg, rgba(255, 203, 193, 0.09) -4.631%, rgba(117, 187, 253, 0.09) 44.805%, rgba(188, 188, 188, 0.09) 103.423%);
       padding-left: 8.37rem;
@@ -99,9 +99,7 @@
       padding-top: 46px;
     }
 
-    &__vacancyDetails {}
-
-    &__vacancyTitle1 {
+     &__vacancyTitle1 {
       font-family: var(--font-raleway);
       font-weight: var(--fw-400);
       letter-spacing: 0rem;
@@ -161,7 +159,7 @@
       display: flex;
       flex-direction: column;
       width: calc(50% - 0rem);
-      height: 100%;
+      height: 80%;
       border: 1px solid rgb(235, 236, 238);
       backdrop-filter: blur(14px);
       background: rgba(255, 255, 255, 0.7);
@@ -230,7 +228,7 @@
   &__offer {
     display: flex;
     padding-left: 8.37rem;
-    padding-top: 140px;
+    padding-top: 0px;
     width: 100%;
     align-items: center;
   }
@@ -253,14 +251,15 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    padding: 72px 20% 140px 8.37rem;
-    gap: 3.875rem;
+    padding: 72px 20% 0px 8.37rem;
+    // gap: 3.875rem;
     width: 100%;
   }
 
   &__frameBlock {
     display: flex;
-    gap: 3.875rem;
+    // gap: 3.875rem;
+    padding-bottom: 0;
   }
 
   &__frameBlock_frame {
@@ -314,19 +313,20 @@
     line-height: 1.625rem;
     text-align: left;
     padding-top: 80px;
+    padding-bottom: 22px;
   }
 
   &__textBlock {
     font-family: var(--font-raleway);
     font-size: 1.375rem;
     font-weight: var(--fw-400);
+    color: var(--black-1D2E43);
   }
 
   &__textBlock span {
     display: block;
     margin-top: 32px;
   }
-
 
   &__textBlock li {
     position: relative;
@@ -339,5 +339,20 @@
     position: absolute;
     left: 0;
     top: 0;
+  }
+
+  .skillButton {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 9px 24px;
+    margin: 8px 8px 0px 0px;
+    width: auto;
+    height: 38px;
+    background-color: var(--white-F6F6F6); 
+    border: 1px solid var(--gray-959DA6);    
+    font-size: 0.875rem;
+    font-weight: var(--fw-400);   
+    border-radius: 2.125rem;
   }
 }
