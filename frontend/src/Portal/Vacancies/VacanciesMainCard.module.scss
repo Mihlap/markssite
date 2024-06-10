@@ -7,7 +7,7 @@
     display: flex;
     width: 100%;
     height: 100%;
-    padding-top: 50px;   
+    padding-top: 50px;
 
     &__all_button {
       position: absolute;
@@ -240,12 +240,12 @@
     font-family: var(--font-unbounded);
     font-size: 2rem;
     font-weight: var(--fw-300);
-    line-height: 2.5rem;   
+    line-height: 2.5rem;
     text-align: left;
     padding-right: 1.875rem;
   }
 
-  &__offerHeart {  
+  &__offerHeart {
     align-items: center;
   }
 
@@ -253,53 +253,91 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    padding-left: 8.37rem;
-    padding-top: 72px;
+    padding: 72px 20% 140px 8.37rem;
     gap: 3.875rem;
-    max-width: 75%;
     width: 100%;
   }
 
   &__frameBlock {
     display: flex;
     gap: 3.875rem;
-    // flex-direction: row;
-    // flex-wrap: wrap;
-    // max-width: 75%;
-    // width: 100%;
-    
-  }
-
-  &__frameBlock1 {
-    display: flex;
-    gap: 3.875rem;
-    // flex-direction: row;
-    // flex-wrap: wrap;
-    // max-width: 75%;
-    // width: 100%;
   }
 
   &__frameBlock_frame {
     display: flex;
     flex-direction: column;
-    width: 70%;
-    
+    width: 50%;
+
   }
 
   &__frame {
-    height: 12.5rem;     
+    height: 12.5rem;
     width: 12.5rem;
   }
 
-    &__frameSpan {
-      color: rgb(29, 46, 67);
-      font-family: var(--font-raleway);
-      font-weight: var(--fw-500);
-      font-size: 1.125rem;
-      line-height: 1.5rem;    
-      text-align: left;
-      width: 70%;
-      word-wrap: break-word;
-      padding-top: 6px;
-    }
+  &__frameSpan {
+    color: var(--black-1D2E43);
+    font-family: var(--font-raleway);
+    font-weight: var(--fw-500);
+    font-size: 1.125rem;
+    line-height: 1.5rem;
+    text-align: left;
+    width: 70%;
+    word-wrap: break-word;
+    padding-top: 6px;
+  }
+
+  &__wrapperTextBlock {
+    display: flex;
+    flex-direction: column;
+    color: var(--black-1D2E43);
+    line-height: 2rem;
+    text-align: left;
+    padding-left: 8.37rem;
+    width: 70%;
+  }
+
+  &__wrapperTitle {
+    font-family: var(--font-unbounded);
+    font-size: 1.5rem;
+    font-weight: var(--fw-300);
+    padding-top: 140px;
+    margin-bottom: 32px;
+  }
+
+
+  &__wrapperTitle1 {
+    color: var(--gray-959DA6);
+    font-family: var(--font-raleway);
+    font-size: 1.125rem;
+    font-weight: var(--fw-400);
+    line-height: 1.625rem;
+    text-align: left;
+    padding-top: 80px;
+  }
+
+  &__textBlock {
+    font-family: var(--font-raleway);
+    font-size: 1.375rem;
+    font-weight: var(--fw-400);
+  }
+
+  &__textBlock span {
+    display: block;
+    margin-top: 32px;
+  }
+
+
+  &__textBlock li {
+    position: relative;
+    padding-left: 1.5em;
+    list-style-type: none;
+  }
+
+  &__textBlock li::before {
+    content: "\2022";
+    position: absolute;
+    left: 0;
+    top: 0;
+  }
 }
