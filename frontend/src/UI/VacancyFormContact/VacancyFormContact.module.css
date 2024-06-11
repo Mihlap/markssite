@@ -313,6 +313,15 @@
   right: 0;
 }
 
+.for_applicants_tg img {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.for_applicants_tg img:hover {
+  transform: scale(1.2);
+}
+
+
 .for_applicants_mail:hover {
   color: var(--blue-75BBFD);
 }
