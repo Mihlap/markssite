@@ -28,7 +28,7 @@
 
     &__item {
       display: flex;
-      justify-content: space-between;  
+      justify-content: space-between;
     }
 
     &__background1 {
@@ -63,7 +63,7 @@
       background-size: cover;
       background-repeat: no-repeat;
       z-index: -1;
-    } 
+    }
 
     &__blockLeft {
       display: flex;
@@ -231,7 +231,7 @@
   &__offer {
     display: flex;
     padding-left: 8.37rem;
-    padding-top: 0px;
+    padding-top: 140px;
     width: 100%;
     align-items: center;
   }
@@ -362,7 +362,7 @@
   &__aboutBlockWrapper {
     display: flex;
     flex-direction: column;
-    text-align: left;  
+    text-align: left;
     padding-left: 8.37rem;
     padding-top: 90px;
   }
@@ -372,7 +372,7 @@
     font-family: var(--font-raleway);
     font-size: 1.125rem;
     font-weight: var(--fw-400);
-    line-height: 1.625rem;     
+    line-height: 1.625rem;
   }
 
   &__aboutBlockText {
@@ -384,88 +384,191 @@
     padding-top: 22px;
     white-space: pre-wrap;
   }
+
   &__wrapperCountBlock {
-  position: relative;
-  display: flex;
-  flex-wrap: nowrap;
-  align-items: center;
-  padding-top: 68px;
-  
-  .countItem {
-    padding-right: 9rem;
-  }
-  
-  .countLabel {
-    font-family: var(--font-raleway);
-    font-size: 1.125rem;
-    line-height: 1.625rem;
-    font-weight: var(--fw-400);
-    color: var(--black-1D2E43);
-  }
-  
-  .countValue {
+    position: relative;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    padding-top: 68px;
+
+    .countItem {
+      padding-right: 9rem;
+    }
+
+    .countLabel {
+      font-family: var(--font-raleway);
+      font-size: 1.125rem;
+      line-height: 1.625rem;
+      font-weight: var(--fw-400);
+      color: var(--black-1D2E43);
+    }
+
+    .countValue {
       font-family: var(--font-unbounded);
       font-size: 2.5rem;
       line-height: 3rem;
       font-weight: var(--fw-300);
       color: var(--black-1D2E43);
-      margin-top: 8px;    
+      margin-top: 8px;
+    }
+
+    .vectorAround {
+      position: absolute;
+      top: 30px;
+      left: 14rem;
+    }
+
+    .offerHeart2 {
+      position: absolute;
+      top: 15px;
+      left: 28.5rem;
+    }
   }
 
-  .vectorAround {
-    position: absolute;
-    top: 30px;
-    left: 14rem;
-  }
-  .offerHeart2 {
-    position: absolute;
-    top: 15px;
-    left: 28.5rem; 
-  }
-}
+  .main_vacancyWrapper__3dGroup {
+    position: relative;
 
-.main_vacancyWrapper__3dGroup {
-  position: relative;
-  
-  .background4 {
-    position: absolute;
-    width: 22rem;
-    height: 22rem;
-    top: 60%;
-    left: 0;
-    background-size: cover;
-    background-repeat: no-repeat;
-    z-index: -1;
-    opacity: 1;    
-  }
+    .background4 {
+      position: absolute;
+      width: 22rem;
+      height: 22rem;
+      top: 60%;
+      left: 8rem;
+      background-size: cover;
+      background-repeat: no-repeat;
+      z-index: -1;
+      opacity: 1;
+    }
 
     .background5 {
+      position: absolute;
+      width: 11rem;
+      height: 11rem;
+      top: 0%;
+      right: 50rem;
+      background-size: cover;
+      background-repeat: no-repeat;
+      z-index: -1;
+      opacity: 1;
+    }
+
+    .background6 {
+      position: absolute;
+      width: 8.5rem;
+      height: 8.5rem;
+      top: 35%;
+      left: 63rem;
+      background-size: cover;
+      background-repeat: no-repeat;
+      z-index: -1;
+      opacity: 1;
+    }
+
+    .background7 {
+      position: absolute;
+      width: 14rem;
+      height: 13rem;
+      top: 100%;
+      left: 63rem;
+      background-size: cover;
+      background-repeat: no-repeat;
+      z-index: -1;
+      opacity: 1;
+    }
+  }
+
+  &_locationBlockLocation {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+  }
+  
+  &__locationWrapper {
+    display: flex;
+    justify-content: flex-end;
+    flex-direction: column;
+    text-align: left;
+    padding-top: 281px;
+    padding-right: 6rem;
+    position: relative;
+    
+    .locationTitle {
+      align-self: flex-end;
+      color: var(--gray-959DA6);
+      font-family: var(--font-raleway);
+      font-size: 1.125rem;
+      font-weight: var(--fw-400);
+      line-height: 1.625rem;      
+      padding-right: 38rem;
+    }
+    
+    .locationText {
+      align-self: flex-end;
+      color: var(--black-1D2E43);
+      font-family: var(--font-unbounded);
+      font-size: 2.5rem;
+      font-weight: var(--fw-300);
+      line-height: 3rem;
+      padding-top: 22px;      
+      white-space: pre-wrap;
+    }
+    
+  }
+  
+  &__locationWrapperLocation {
+    display: flex;
+    flex-direction: column;
+    color: var(--black-1D2E43);
+    text-align: right;
+    letter-spacing: 0px;
+    padding-top: 102.7px;    
+
+    .locationLabel {
+      font-family: var(--font-raleway);
+      font-size: 1.125rem;
+      font-weight: var(--fw-400);
+      line-height: 1.625rem;      
+      padding-right: 41rem;
+    }
+
+    .locationValue {
+      font-family: var(--font-unbounded);
+      font-size: 2.5rem;
+      font-weight: var(--fw-300);
+      line-height: 3rem;  
+      padding-right: 36rem;   
+    }
+  }
+
+  &__spanWrapperLocation {
     position: absolute;
-    width: 11rem;
-    height: 11rem;
-    top: 0%;
-    right: 20vw;
-    background-size: cover;
-    background-repeat: no-repeat;
-    z-index: -1;
-    opacity: 1;    
-  }
-}
-
-&__locationWrapper {
-  display: flex;
-  justify-content: flex-end;
-  padding-top: 281px;
-
-  .locationTitle {
-    padding-right: 20vw;
-    color: var(--gray-959DA6);
+    right: 6rem;
+    top: 500px;
+    display: flex;
+    flex-direction: column;
     font-family: var(--font-raleway);
-    font-size: 1.125rem;
     font-weight: var(--fw-400);
-    line-height: 1.625rem; 
-  }
+    color: var(--black-1D2E43);
+    font-size: 1.125rem;
+    line-height: 1.625rem;  
+    text-align: right;
+    letter-spacing: 0px;
+    max-width: 30rem;
+    gap: 24px;
+   }
 
-}
-
+   .rocketVectorAround1Block {
+    position: absolute;
+    display: block;
+    top: 30rem;
+    right: 41rem;
+ 
+    .rocket {
+  margin-right: -1rem;
+    }
+   }
+  //  .vectorAround1 {
+  //   position: absolute;
+  //  }
 }

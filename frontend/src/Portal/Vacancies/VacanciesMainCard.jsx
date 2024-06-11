@@ -16,9 +16,13 @@ import star3d_2 from "./icons/star3d_2.png";
 import star3d_3 from "./icons/star3d_3.png";
 import star3d_4 from "./icons/star3d_4.png";
 import star3d_5 from "./icons/star3d_5.png";
+import star3d_6 from "./icons/star3d_6.png";
+import star3d_7 from "./icons/star3d_7.png";
 import heart from "./icons/heart.png";
 import heart2 from "./icons/heart2.png";
+import rocket from "./icons/rocket.png";
 import vectorAround from "./icons/VectorAround.png";
+import vectorAround1 from "./icons/VectorAround1.png";
 import frame1 from "./icons/frame1.png";
 import frame2 from "./icons/frame2.png";
 import frame3 from "./icons/frame3.png";
@@ -119,7 +123,7 @@ const VacanciesMainCard = ({
                     className={`${styles.main_vacancy_block__detailItem} ${styles.topLeftSquare}`}
                   >
                     <span className={styles.main_vacancy_block__detailKey}>
-                      Опыт работы:
+                      Опыт&nbsp;работы:
                     </span>
                     <span className={styles.main_vacancy_block__detailValue}>
                       {vacancy.experience}
@@ -149,7 +153,7 @@ const VacanciesMainCard = ({
                     className={`${styles.main_vacancy_block__detailItem} ${styles.bottomRightSquare}`}
                   >
                     <span className={styles.main_vacancy_block__detailKey}>
-                      Режим работы:
+                      Режим&nbsp;работы:
                     </span>
                     <span className={styles.main_vacancy_block__detailValue}>
                       {vacancy.modeOperating}
@@ -227,16 +231,16 @@ const VacanciesMainCard = ({
                 alt={frame4}
               />
               <span className={styles.main_vacancyWrapper__frameSpan}>
-                Даем почву для воплощения ваших идей
+                Даем почву для&nbsp;воплощения ваших идей
               </span>
             </div>
           </div>
-        </div>         
-          <div className={styles.main_vacancyWrapper__wrapperTextBlock}>
-            <RenderVacancySections />
-          </div>
+        </div>
+        <div className={styles.main_vacancyWrapper__wrapperTextBlock}>
+          <RenderVacancySections />
+        </div>
         <div className={styles.main_vacancyWrapper__3dGroup}>
-         <div
+          <div
             className={styles.background4}
             style={{ backgroundImage: `url(${star3d_4})` }}
           />
@@ -244,9 +248,17 @@ const VacanciesMainCard = ({
             className={styles.background5}
             style={{ backgroundImage: `url(${star3d_5})` }}
           />
+             <div
+            className={styles.background6}
+            style={{ backgroundImage: `url(${star3d_6})` }}
+          />
+             <div
+            className={styles.background7}
+            style={{ backgroundImage: `url(${star3d_7})` }}
+          />
           <div className={styles.main_vacancyWrapper__aboutBlockWrapper}>
             <div className={styles.main_vacancyWrapper__aboutBlockTitle}>
-              Немного о нас
+              Немного о&nbsp;нас
             </div>
             <span className={styles.main_vacancyWrapper__aboutBlockText}>
               MARKS GROUP генеральный
@@ -255,8 +267,8 @@ const VacanciesMainCard = ({
             </span>
             <div className={styles.main_vacancyWrapper__wrapperCountBlock}>
               <div className={styles.countItem}>
-                <div className={styles.countLabel}>На рынке</div>
-                <div className={styles.countValue}>17 лет</div>
+                <div className={styles.countLabel}>На&nbsp;рынке</div>
+                <div className={styles.countValue}>17&nbsp;лет</div>
               </div>
               <div className={styles.countItem}>
                 <img className={styles.offerHeart2} src={heart2} alt={heart2} />
@@ -275,8 +287,31 @@ const VacanciesMainCard = ({
             </div>
           </div>
           <div className={styles.main_vacancyWrapper__locationWrapper}>
-          <div className={styles.locationTitle}>
-              Расположение
+            <div className={styles.locationTitle}>Расположение</div>
+            <span className={styles.locationText}>
+              Офис в&nbsp;центре Москвы, метро
+              <br />
+              Белорусская
+            </span>
+            <div className={styles.main_vacancyWrapper__locationBlockLocation}>
+              <div className={styles.rocketVectorAround1Block}>
+             <img className={styles.rocket} src={rocket} alt={rocket} />
+             <img
+               className={styles.vectorAround1}
+               src={vectorAround1}
+               alt={vectorAround1}
+                />
+                </div>
+              <div
+                className={styles.main_vacancyWrapper__locationWrapperLocation}
+              >
+                <div className={styles.locationLabel}>От&nbsp;метро</div>
+                <div className={styles.locationValue}>10&nbsp;мин</div>
+              </div>
+              <div className={styles.main_vacancyWrapper__spanWrapperLocation}>
+                <span className={styles.spanLocationText}>Комфортный оборудованный офис, кофе чай печеньки по утрам</span>
+                <span className={styles.spanLocationText}>Мы предоставляем все оборудование для комфортной работы и отдыха</span>
+              </div>
             </div>
           </div>
         </div>
