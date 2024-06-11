@@ -2,6 +2,7 @@
 
 .main_vacancyWrapper {
   // min-height: 200vh;
+  position: relative;
 
   .main_vacancy_block {
     display: flex;
@@ -21,20 +22,21 @@
     &__wrapper {
       display: flex;
       flex-direction: column;
+      width: 100%;
+      height: auto;
     }
 
     &__item {
       display: flex;
-      justify-content: space-between;
-      position: relative;
-     }
+      justify-content: space-between;  
+    }
 
     &__background1 {
       position: absolute;
       width: 24rem;
       height: 24rem;
-      top: 27%;
-      right: 24vw;
+      top: 50vh;
+      right: 26vw;
       background-size: cover;
       background-repeat: no-repeat;
       z-index: -1;
@@ -45,8 +47,8 @@
       position: absolute;
       width: 12.5rem;
       height: 12.5rem;
-      right: 15vw;
-      top: 8%;
+      right: 18vw;
+      top: 8vh;
       background-size: cover;
       background-repeat: no-repeat;
       z-index: -1;
@@ -56,17 +58,18 @@
       position: absolute;
       width: 31.25rem;
       height: 34.37rem;
-      top: 25%;
-      right: 0;
+      top: 50vh;
+      right: 0vw;
       background-size: cover;
       background-repeat: no-repeat;
       z-index: -1;
-    }
+    } 
 
     &__blockLeft {
       display: flex;
       flex-direction: column;
-      height: 80%;
+      height: 100%;
+      width: 100%;
       backdrop-filter: blur(0.88rem);
       background: linear-gradient(221.46deg, rgba(255, 203, 193, 0.09) -4.631%, rgba(117, 187, 253, 0.09) 44.805%, rgba(188, 188, 188, 0.09) 103.423%);
       padding-left: 8.37rem;
@@ -79,7 +82,7 @@
       display: flex;
       flex-wrap: wrap;
       width: 50%;
-      height: 50%;
+      height: 62.5%;
       margin-left: auto;
       justify-content: space-between;
       align-content: stretch;
@@ -99,7 +102,7 @@
       padding-top: 46px;
     }
 
-     &__vacancyTitle1 {
+    &__vacancyTitle1 {
       font-family: var(--font-raleway);
       font-weight: var(--fw-400);
       letter-spacing: 0rem;
@@ -349,10 +352,120 @@
     margin: 8px 8px 0px 0px;
     width: auto;
     height: 38px;
-    background-color: var(--white-F6F6F6); 
-    border: 1px solid var(--gray-959DA6);    
+    background-color: var(--white-F6F6F6);
+    border: 1px solid var(--gray-959DA6);
     font-size: 0.875rem;
-    font-weight: var(--fw-400);   
+    font-weight: var(--fw-400);
     border-radius: 2.125rem;
   }
+
+  &__aboutBlockWrapper {
+    display: flex;
+    flex-direction: column;
+    text-align: left;  
+    padding-left: 8.37rem;
+    padding-top: 90px;
+  }
+
+  &__aboutBlockTitle {
+    color: var(--gray-959DA6);
+    font-family: var(--font-raleway);
+    font-size: 1.125rem;
+    font-weight: var(--fw-400);
+    line-height: 1.625rem;     
+  }
+
+  &__aboutBlockText {
+    color: var(--black-1D2E43);
+    font-family: var(--font-unbounded);
+    font-size: 2.5rem;
+    font-weight: var(--fw-300);
+    line-height: 3rem;
+    padding-top: 22px;
+    white-space: pre-wrap;
+  }
+  &__wrapperCountBlock {
+  position: relative;
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  padding-top: 68px;
+  
+  .countItem {
+    padding-right: 9rem;
+  }
+  
+  .countLabel {
+    font-family: var(--font-raleway);
+    font-size: 1.125rem;
+    line-height: 1.625rem;
+    font-weight: var(--fw-400);
+    color: var(--black-1D2E43);
+  }
+  
+  .countValue {
+      font-family: var(--font-unbounded);
+      font-size: 2.5rem;
+      line-height: 3rem;
+      font-weight: var(--fw-300);
+      color: var(--black-1D2E43);
+      margin-top: 8px;    
+  }
+
+  .vectorAround {
+    position: absolute;
+    top: 30px;
+    left: 14rem;
+  }
+  .offerHeart2 {
+    position: absolute;
+    top: 15px;
+    left: 28.5rem; 
+  }
+}
+
+.main_vacancyWrapper__3dGroup {
+  position: relative;
+  
+  .background4 {
+    position: absolute;
+    width: 22rem;
+    height: 22rem;
+    top: 60%;
+    left: 0;
+    background-size: cover;
+    background-repeat: no-repeat;
+    z-index: -1;
+    opacity: 1;    
+  }
+
+    .background5 {
+    position: absolute;
+    width: 11rem;
+    height: 11rem;
+    top: 0%;
+    right: 20vw;
+    background-size: cover;
+    background-repeat: no-repeat;
+    z-index: -1;
+    opacity: 1;    
+  }
+}
+
+&__locationWrapper {
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 281px;
+
+  .locationTitle {
+    padding-right: 20vw;
+    color: var(--gray-959DA6);
+    font-family: var(--font-raleway);
+    font-size: 1.125rem;
+    font-weight: var(--fw-400);
+    line-height: 1.625rem; 
+  }
+
+}
+
 }
