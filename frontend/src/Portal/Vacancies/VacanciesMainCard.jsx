@@ -14,17 +14,20 @@ import RenderVacancySections from "./RenderVacancySections";
 import star3d_1 from "./icons/star3d_1.png";
 import star3d_2 from "./icons/star3d_2.png";
 import star3d_3 from "./icons/star3d_3.png";
+import star3d_4 from "./icons/star3d_4.png";
+import star3d_5 from "./icons/star3d_5.png";
 import heart from "./icons/heart.png";
+import heart2 from "./icons/heart2.png";
+import vectorAround from "./icons/VectorAround.png";
 import frame1 from "./icons/frame1.png";
 import frame2 from "./icons/frame2.png";
 import frame3 from "./icons/frame3.png";
 import frame4 from "./icons/frame4.png";
 
-
 const VacanciesMainCard = ({
   handleMouseEnter,
   handleMouseLeave,
-  handleMouseHover, 
+  handleMouseHover,
 }) => {
   const dispatch = useDispatch();
   const { id } = useParams();
@@ -64,7 +67,6 @@ const VacanciesMainCard = ({
       window.removeEventListener("scroll", updateButtonPosition);
     };
   }, []);
-
 
   return (
     <>
@@ -229,9 +231,54 @@ const VacanciesMainCard = ({
               </span>
             </div>
           </div>
-        </div>
-        <div className={styles.main_vacancyWrapper__wrapperTextBlock}>
-        <RenderVacancySections />
+        </div>         
+          <div className={styles.main_vacancyWrapper__wrapperTextBlock}>
+            <RenderVacancySections />
+          </div>
+        <div className={styles.main_vacancyWrapper__3dGroup}>
+         <div
+            className={styles.background4}
+            style={{ backgroundImage: `url(${star3d_4})` }}
+          />
+          <div
+            className={styles.background5}
+            style={{ backgroundImage: `url(${star3d_5})` }}
+          />
+          <div className={styles.main_vacancyWrapper__aboutBlockWrapper}>
+            <div className={styles.main_vacancyWrapper__aboutBlockTitle}>
+              Немного о нас
+            </div>
+            <span className={styles.main_vacancyWrapper__aboutBlockText}>
+              MARKS GROUP генеральный
+              <br />
+              проектировщик
+            </span>
+            <div className={styles.main_vacancyWrapper__wrapperCountBlock}>
+              <div className={styles.countItem}>
+                <div className={styles.countLabel}>На рынке</div>
+                <div className={styles.countValue}>17 лет</div>
+              </div>
+              <div className={styles.countItem}>
+                <img className={styles.offerHeart2} src={heart2} alt={heart2} />
+                <img
+                  className={styles.vectorAround}
+                  src={vectorAround}
+                  alt={vectorAround}
+                />
+                <div className={styles.countLabel}>Специалистов</div>
+                <div className={styles.countValue}>+1000</div>
+              </div>
+              <div className={styles.countItem1}>
+                <div className={styles.countLabel}>Реализованных проектов</div>
+                <div className={styles.countValue}>+200</div>
+              </div>
+            </div>
+          </div>
+          <div className={styles.main_vacancyWrapper__locationWrapper}>
+          <div className={styles.locationTitle}>
+              Расположение
+            </div>
+          </div>
         </div>
         <div className={styles.main_vacancyWrapper__vacancyFormWrapper}>
           <VacancyFormContact
