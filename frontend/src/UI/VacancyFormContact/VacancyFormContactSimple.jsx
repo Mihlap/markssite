@@ -9,7 +9,7 @@ const Host = process.env.REACT_APP_SERVER_HOST;
 const VacancyFormContactSimple = ({
   handleMouseEnter,
   handleMouseLeave,
-  
+  buttonRef,
 }) => {
   const [isFocused, setIsFocused] = useState({
     name: false,
@@ -319,6 +319,7 @@ const VacancyFormContactSimple = ({
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
               style={{minWidth: '432px', height: '56px'}}
+              ref={buttonRef}
             >
               <p className={styles.button_name_vacancy}>
                 Откликнутся на вакансию

@@ -1,7 +1,6 @@
 @import "../../App.css";
 
 .main_vacancyWrapper {
-  // min-height: 200vh;
   position: relative;
 
   .main_vacancy_block {
@@ -35,7 +34,7 @@
       position: absolute;
       width: 24rem;
       height: 24rem;
-      top: 50vh;
+      top: 12%;
       right: 26vw;
       background-size: cover;
       background-repeat: no-repeat;
@@ -48,7 +47,7 @@
       width: 12.5rem;
       height: 12.5rem;
       right: 18vw;
-      top: 8vh;
+      top: 2%;
       background-size: cover;
       background-repeat: no-repeat;
       z-index: -1;
@@ -58,7 +57,7 @@
       position: absolute;
       width: 31.25rem;
       height: 34.37rem;
-      top: 50vh;
+      top: 10%;
       right: 0vw;
       background-size: cover;
       background-repeat: no-repeat;
@@ -224,9 +223,6 @@
     width: 100%;
   }
 
-  &__vacancyFormWrapper {
-    padding: 50rem 3rem 5rem 7rem;
-  }
 
   &__offer {
     display: flex;
@@ -433,7 +429,7 @@
       position: absolute;
       width: 22rem;
       height: 22rem;
-      top: 60%;
+      top: 40%;
       left: 8rem;
       background-size: cover;
       background-repeat: no-repeat;
@@ -446,7 +442,7 @@
       width: 11rem;
       height: 11rem;
       top: 0%;
-      right: 50rem;
+      left: 65%;
       background-size: cover;
       background-repeat: no-repeat;
       z-index: -1;
@@ -455,10 +451,10 @@
 
     .background6 {
       position: absolute;
-      width: 8.5rem;
-      height: 8.5rem;
-      top: 35%;
-      left: 63rem;
+      width: 10.5rem;
+      height: 10rem;
+      top: 40%;
+      left: 40%;
       background-size: cover;
       background-repeat: no-repeat;
       z-index: -1;
@@ -467,10 +463,46 @@
 
     .background7 {
       position: absolute;
-      width: 14rem;
-      height: 13rem;
+      width: 14.5rem;
+      height: 13.5rem;
       top: 100%;
-      left: 63rem;
+      left: 45%;
+      padding-left: 2rem;
+      background-size: cover;
+      background-repeat: no-repeat;
+      z-index: -1;
+      opacity: 1;
+    }
+    
+    .background8 {
+      position: absolute;
+      width: 50rem;
+      height: 37rem;
+      top: 55%;
+      left: 13rem;
+      background-size: cover;
+      background-repeat: no-repeat;
+      z-index: -2;
+      opacity: 1;
+    }
+    
+    .background9 {
+      position: absolute;
+      width: 60rem;
+      height: 50rem;
+      top: -7%;
+      left: 65%;
+      background-size: cover;
+      background-repeat: no-repeat;
+      z-index: -2;
+      opacity: 1;
+    }
+    .background10 {
+      position: absolute;
+      width: 20.5rem;
+      height: 19rem;
+      top: 60%;
+      left: 80%;
       background-size: cover;
       background-repeat: no-repeat;
       z-index: -1;
@@ -568,6 +600,11 @@
   margin-right: -1rem;
     }
    }
+
+   &__vacancyFormWrapper {
+    padding: 50rem 3rem 5rem 7rem;
+  }
+
   //  .vectorAround1 {
   //   position: absolute;
   //  }
