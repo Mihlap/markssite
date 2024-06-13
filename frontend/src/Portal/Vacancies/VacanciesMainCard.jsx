@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import styles from "./VacanciesMainCard.module.scss";
 import AllVacancyButton from "../../UI/ButtonVacancy/AllVacancyButton";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchEmployees } from "../../store/Slice/vacanciesSlice";
 import { useParams } from "react-router-dom";
+import gsap from "gsap";
+import ScrollTrigger from "gsap/ScrollTrigger";
 import Error from "../../Loading/Error/Error";
 import LoadingCircle from "../../Loading/LoadingCircle";
 import VacancyFormContactSimple from "../../UI/VacancyFormContact/VacancyFormContactSimple";
@@ -18,15 +20,20 @@ import star3d_4 from "./icons/star3d_4.png";
 import star3d_5 from "./icons/star3d_5.png";
 import star3d_6 from "./icons/star3d_6.png";
 import star3d_7 from "./icons/star3d_7.png";
+import star3d_8 from "./icons/star3d_8.png";
 import heart from "./icons/heart.png";
 import heart2 from "./icons/heart2.png";
 import rocket from "./icons/rocket.png";
+import rocketBig from "./icons/rocketBig.png";
+import sputnik from "./icons/sputnik.png";
 import vectorAround from "./icons/VectorAround.png";
 import vectorAround1 from "./icons/VectorAround1.png";
 import frame1 from "./icons/frame1.png";
 import frame2 from "./icons/frame2.png";
 import frame3 from "./icons/frame3.png";
 import frame4 from "./icons/frame4.png";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const VacanciesMainCard = ({
   handleMouseEnter,
@@ -40,8 +47,10 @@ const VacanciesMainCard = ({
   const error = useSelector((state) => state.vacancies.error);
   const [selectedVacancy, setSelectedVacancy] = useState(null);
 
-  const [buttonTop, setButtonTop] = useState(0);
-  const formRef = React.createRef();
+  const formRef = useRef(null);
+  const buttonRef = useRef(null);
+  const rocketRef = useRef(null);
+  const sputnikRef = useRef(null);
 
   useEffect(() => {
     dispatch(fetchEmployees(id));
@@ -49,28 +58,67 @@ const VacanciesMainCard = ({
 
   useEffect(() => {
     if (vacancies && vacancies.length > 0) {
-      // Выбираем первую вакансию или любую другую логику выбора
-      setSelectedVacancy(vacancies[0]);
+        setSelectedVacancy(vacancies[0]);
     }
   }, [vacancies]);
 
-  useEffect(() => {
-    const updateButtonPosition = () => {
-      if (formRef.current) {
-        const formRect = formRef.current.getBoundingClientRect();
-        if (formRect.bottom < window.innerHeight) {
-          setButtonTop(window.scrollY + window.innerHeight - formRect.height);
-        } else {
-          setButtonTop(0);
-        }
-      }
-    };
+  useEffect(() => {   const buttonAnimation = gsap.to(buttonRef.current, {
+    y: () => {
+      const formTop = formRef.current.offsetTop;
+      const buttonTop = buttonRef.current.offsetTop;
+      return formTop - buttonTop;
+    },
+    opacity: 1,
+    ease: "none",
+    scrollTrigger: {
+      trigger: buttonRef.current,
+      start: "top center",
+      end: () => `+=${document.documentElement.scrollHeight - window.innerHeight}`,
+      scrub: true,
+    },
+  });
+  
 
-    window.addEventListener("scroll", updateButtonPosition);
+
+    const rocketAnimation = gsap.fromTo(
+        rocketRef.current,
+        { x: 0, opacity: 1 },
+        {
+            x: 150,
+            opacity: 1,
+            duration: 1,
+            scrollTrigger: {
+                trigger: rocketRef.current,
+                start: "bottom bottom",
+                end: "bottom bottom",
+                scrub: true,
+            },
+        }
+    );
+
+    const sputnikAnimation = gsap.fromTo(
+        sputnikRef.current,
+        { x: 0, opacity: 1 },
+        {
+            x: -150,
+            opacity: 1,
+            duration: 1,
+            scrollTrigger: {
+                trigger: sputnikRef.current,
+                start: "bottom bottom",
+                end: "bottom top",
+                scrub: true,
+            },
+        }
+    );
+
     return () => {
-      window.removeEventListener("scroll", updateButtonPosition);
+        buttonAnimation.kill();
+        rocketAnimation.kill();
+        sputnikAnimation.kill();
     };
-  }, []);
+  }, [formRef, buttonRef, rocketRef, sputnikRef]);
+
 
   return (
     <>
@@ -164,8 +212,7 @@ const VacanciesMainCard = ({
                       handleMouseEnter={handleMouseEnter}
                       handleMouseLeave={handleMouseLeave}
                       handleMouseHover={handleMouseHover}
-                      formRef={formRef}
-                      buttonTop={buttonTop}
+                      buttonRef={buttonRef}
                     />
                   </div>
                 </div>
@@ -256,6 +303,20 @@ const VacanciesMainCard = ({
             className={styles.background7}
             style={{ backgroundImage: `url(${star3d_7})` }}
           />
+             <div
+            className={styles.background10}
+            style={{ backgroundImage: `url(${star3d_8})` }}
+          />
+               <div
+            className={styles.background8}
+            ref={rocketRef}
+            style={{ backgroundImage: `url(${rocketBig})` }}
+          />
+               <div
+            className={styles.background9}
+            ref={sputnikRef}
+            style={{ backgroundImage: `url(${sputnik})` }}
+          />
           <div className={styles.main_vacancyWrapper__aboutBlockWrapper}>
             <div className={styles.main_vacancyWrapper__aboutBlockTitle}>
               Немного о&nbsp;нас
@@ -315,12 +376,13 @@ const VacanciesMainCard = ({
             </div>
           </div>
         </div>
-        <div className={styles.main_vacancyWrapper__vacancyFormWrapper}>
+        <div className={styles.main_vacancyWrapper__vacancyFormWrapper} ref={formRef}>
           <VacancyFormContact
             initialDirection={selectedVacancy?.direction}
             handleMouseEnter={handleMouseEnter}
             handleMouseLeave={handleMouseLeave}
             handleMouseHover={handleMouseHover}
+            buttonRef={buttonRef}            
           />
         </div>
       </div>
