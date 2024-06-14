@@ -59,16 +59,19 @@
 
 
 .toggle_blockHeader {
+  width: 32px;
+  height: 32px;
  position: absolute;
  right: 2.44rem;
  cursor: pointer;
- transition: transform 0.3s ease-in-out;
+ transform-origin: 50% 50%;
+ transition: transform 0.4s cubic-bezier(.04,.68,.29,1.28);
 }
 
 
 .rotate180 {
-  transform: rotate(360deg);
-  transition: transform 0.5s ease-in-out;
+  transform: rotate(180deg);
+  transition: transform 0.4s cubic-bezier(.04,.68,.29,1.28);
 }
 
 .blockTitleContentWrapper {
@@ -368,15 +371,18 @@
   }
 
   .toggle_blockHeader {
+    width: 32px;
+    height: 32px;
     position: absolute;
     right: 2.44rem;
     cursor: pointer;
-    transition: transform 0.3s ease-in-out;
+    transform-origin: 50% 50%;
+    transition: transform 0.4s cubic-bezier(.04,.68,.29,1.28);
    }
    
    .rotate180 {
-    transform: rotate(360deg);
-     transition: transform 0.3s ease-in-out;
+    transform: rotate(180deg);
+    transition: transform 0.4s cubic-bezier(.04,.68,.29,1.28);
    }
   
   .blockTitleContentWrapper {
@@ -633,7 +639,7 @@
     font-style: normal;
     font-weight: var(--fw-300);
     line-height: 2rem;
-    padding: 0.5rem 2.81rem 0rem 2.81rem;
+    padding: 0.5rem 3.4375rem 0rem 3.4375rem;
     flex-direction: column;
     align-items: flex-start;
   }
@@ -674,15 +680,18 @@
   
 
   .toggle_blockHeader {
+    width: 32px;
+    height: 32px;
     position: absolute;
     right: 3vw;
     cursor: pointer;
-    transition: transform 0.3s ease-in-out;
+    transform-origin: 50% 50%;
+    transition: transform 0.4s cubic-bezier(.04,.68,.29,1.28);
    }
    
    .rotate180 {
-    transform: rotate(360deg);
-     transition: transform 0.3s ease-in-out;
+    transform: rotate(180deg);
+    transition: transform 0.4s cubic-bezier(.04,.68,.29,1.28);
    }
   
   .blockTitleContentWrapper {
@@ -694,7 +703,7 @@
   .blockTitle_blockHeader {
     display: flex;
     align-items: center;
-    padding: 1.56rem 2.81rem 2.13rem 2.81rem;
+    padding: 1.5rem 3.4375rem 2rem 3.4375rem;
     color: var(--black-3C3C3C);
     font-family: var(--font-unbounded);
     font-size: 1.25rem;
@@ -772,10 +781,12 @@
   @keyframes slideContentOut {
     0% {
       transform: translateX(26vw); 
+      opacity: 0;
       animation-timing-function: cubic-bezier(0.4, 0.0, 2, 1);
     }
     100% {
         transform: translateX(0);
+        opacity: 1;
       animation-timing-function: cubic-bezier(0.0, 0.0, 0.2, 1);
     }
   }
@@ -784,7 +795,7 @@
   .blocksContainer {
     display: flex;
     width: 100%;
-    padding: 0rem 15% 3.5rem 2.81rem;
+    padding: 0rem 15% 3.4375rem 3.4375rem;
     flex-wrap: wrap;
   }
 
@@ -964,16 +975,20 @@
   }
 
   .toggle_blockHeader {
+    width: 32px;
+    height: 32px;
     position: absolute;
     right: 1rem;
-    padding-top: 1.5rem;
+    /* padding-top: 1.5rem; */
+    margin-top: 1.5rem;
     cursor: pointer;
-    transition: transform 0.3s ease-in-out;
+    transform-origin: 50% 50%;
+    transition: transform 0.4s cubic-bezier(.04,.68,.29,1.28);
    }
    
    .rotate180 {
-    transform: rotate(360deg);
-     transition: transform 0.3s ease-in-out;
+    transform: rotate(180deg);
+    transition: transform 0.4s cubic-bezier(.04,.68,.29,1.28);
    }
    
    .blockTitleContentWrapper {
@@ -986,7 +1001,7 @@
    .blockTitle_blockHeader {
      display: flex;
      flex-direction: column;
-     padding: 2rem 2rem 1.5rem 1rem;
+     padding: 1.5rem 1rem 1.5rem 1rem;
      color: var(--black-3C3C3C);
      font-family: var(--font-unbounded);
      font-size: 1.25rem;
