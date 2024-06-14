@@ -64,7 +64,8 @@ const BlockHeaderMain = ({ handleMouseEnter, handleMouseLeave }) => {
                     xmlns="http://www.w3.org/2000/svg"
                   >
                     <path
-                      d={isOpen ? "M17 14L12.5 9L8 14" : "M8 10L12.5 15L17 10"}
+                      // d={isOpen ? "M17 14L12.5 9L8 14" : "M8 10L12.5 15L17 10"}
+                      d="M8 10L12.5 15L17 10"
                       stroke="#566272"
                     />
                   </svg>
@@ -96,9 +97,7 @@ const BlockHeaderMain = ({ handleMouseEnter, handleMouseLeave }) => {
                       xmlns="http://www.w3.org/2000/svg"
                     >
                       <path
-                        d={
-                          isOpen ? "M17 14L12.5 9L8 14" : "M8 10L12.5 15L17 10"
-                        }
+                        d="M8 10L12.5 15L17 10"
                         stroke="#566272"
                       />
                     </svg>
