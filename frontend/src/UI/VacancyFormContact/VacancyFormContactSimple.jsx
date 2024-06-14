@@ -1,4 +1,4 @@
-import React, { useRef, useState, useCallback } from "react";
+import React, { useRef, useState, useCallback, useEffect } from "react";
 import InputMask from "react-input-mask";
 import { Link } from "react-router-dom";
 import styles from "./VacancyFormContact.module.css";
@@ -19,7 +19,7 @@ const VacancyFormContactSimple = ({
   });
 
   const [isValid, setIsValid] = useState(true);
-  // const [selectedOptions, setSelectedOptions] = useState(null);
+  const [isFormValid, setIsFormValid] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [fileAttached, setFileAttached] = useState(false);
   const [formData, setFormData] = useState({
@@ -31,10 +31,6 @@ const VacancyFormContactSimple = ({
 
   const fileInputRef = useRef(null);
   const isFilled = useCallback((name) => !!formData[name], [formData]);
-
-  // const handleChangeVacancy = useCallback((selectedValues) => {
-  //   setSelectedOptions(selectedValues);
-  // }, []);
 
   const handleFocus = useCallback((event) => {
     const name = event?.target?.name;
@@ -103,7 +99,6 @@ const VacancyFormContactSimple = ({
           });
           setSelectedFiles([]);
           setFileAttached(false);
-          // setSelectedOptions(null);
         } else {
           console.error("Form submission failed:", data.message || "Unknown error");
         }
@@ -137,6 +132,11 @@ const VacancyFormContactSimple = ({
       return updatedFiles;
     });
   }, []);
+
+  useEffect(() => {
+    const isFormComplete = Object.values(formData).every(field => field.trim() !== "") && isValid;
+    setIsFormValid(isFormComplete);
+  }, [formData, isValid]);
 
   return (
     <form className={styles.form_form_wrapper} onSubmit={handleSubmit}>
@@ -312,17 +312,17 @@ const VacancyFormContactSimple = ({
              <div style={{display: 'flex', justifyContent: 'center'}}>
             <button
               className={`${styles.button_vacancy}
-              ${!isValid || !formData ? styles.disabled : ""}`}
-              disabled={!isValid || !formData}
+              ${!isFormValid ? styles.disabled : ""}`}
+              disabled={!isFormValid}
               type="submit"
               id="submit-button"
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
-              style={{minWidth: '432px', height: '56px'}}
+              style={{ minWidth: '432px', height: '56px'}}
               ref={buttonRef}
             >
               <p className={styles.button_name_vacancy}>
-                Откликнутся на вакансию
+                Откликнуться на вакансию
               </p>
             </button>
           </div>

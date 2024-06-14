@@ -7,8 +7,9 @@ import { fetchEmployees } from "../../store/Slice/vacanciesSlice";
 import { useParams } from "react-router-dom";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
-import Error from "../../Loading/Error/Error";
-import LoadingCircle from "../../Loading/LoadingCircle";
+import { Swiper, SwiperSlide } from "swiper/react";
+// import Error from "../../Loading/Error/Error";
+// import LoadingCircle from "../../Loading/LoadingCircle";
 import VacancyFormContactSimple from "../../UI/VacancyFormContact/VacancyFormContactSimple";
 import VacancyFormContact from "../../UI/VacancyFormContact/VacancyFormContact";
 import RenderVacancySections from "./RenderVacancySections";
@@ -32,8 +33,24 @@ import frame1 from "./icons/frame1.png";
 import frame2 from "./icons/frame2.png";
 import frame3 from "./icons/frame3.png";
 import frame4 from "./icons/frame4.png";
+import slider1 from "./icons/slider1.png";
+import slider2 from "./icons/slider2.png";
+import slider3 from "./icons/slider3.png";
 
 gsap.registerPlugin(ScrollTrigger);
+
+const imageArray = [
+  slider1,
+  slider2,
+  slider3,
+  slider2,
+  slider1,
+  slider2,
+  slider3,
+  slider2,
+  slider1,
+  slider2,
+];
 
 const VacanciesMainCard = ({
   handleMouseEnter,
@@ -43,14 +60,15 @@ const VacanciesMainCard = ({
   const dispatch = useDispatch();
   const { id } = useParams();
   const vacancies = useSelector((state) => state.vacancies.vacancies);
-  const loading = useSelector((state) => state.vacancies.loading);
-  const error = useSelector((state) => state.vacancies.error);
+  // const loading = useSelector((state) => state.vacancies.loading);
+  // const error = useSelector((state) => state.vacancies.error);
   const [selectedVacancy, setSelectedVacancy] = useState(null);
 
   const formRef = useRef(null);
   const buttonRef = useRef(null);
   const rocketRef = useRef(null);
   const sputnikRef = useRef(null);
+  const sliderCardRef = useRef(null);
 
   useEffect(() => {
     dispatch(fetchEmployees(id));
@@ -58,67 +76,76 @@ const VacanciesMainCard = ({
 
   useEffect(() => {
     if (vacancies && vacancies.length > 0) {
-        setSelectedVacancy(vacancies[0]);
+      setSelectedVacancy(vacancies[0]);
     }
   }, [vacancies]);
 
-  useEffect(() => {   const buttonAnimation = gsap.to(buttonRef.current, {
-    y: () => {
-      const formTop = formRef.current.offsetTop;
-      const buttonTop = buttonRef.current.offsetTop;
-      return formTop - buttonTop;
-    },
-    opacity: 1,
-    ease: "none",
-    scrollTrigger: {
-      trigger: buttonRef.current,
-      start: "top center",
-      end: () => `+=${document.documentElement.scrollHeight - window.innerHeight}`,
-      scrub: true,
-    },
-  });
-  
+  useEffect(() => {
+    if (!formRef.current || !buttonRef.current) return;
 
+    // gsap.set(buttonRef.current, { position: "relative", zIndex: 1 });
 
-    const rocketAnimation = gsap.fromTo(
-        rocketRef.current,
-        { x: 0, opacity: 1 },
-        {
-            x: 150,
-            opacity: 1,
-            duration: 1,
-            scrollTrigger: {
-                trigger: rocketRef.current,
-                start: "bottom bottom",
-                end: "bottom bottom",
-                scrub: true,
-            },
-        }
+    const buttonAnimation = gsap.to(buttonRef.current, {
+      y: () => {
+        const formTop = formRef.current.offsetTop;
+        const buttonTop = buttonRef.current.offsetTop;
+        return (formTop - buttonTop) * 1.5;
+      },
+      opacity: 1,
+      ease: "none",
+      scrollTrigger: {
+        trigger: buttonRef.current,
+        start: "top center",
+        end: () =>
+          `+=${document.documentElement.scrollHeight - window.innerHeight}`,
+        scrub: true,
+      },
+    });
+
+    const buttonOpacityAnimation = gsap.to(buttonRef.current, {
+      opacity: -1,
+      scrollTrigger: {
+        trigger: formRef.current,
+        start: "top bottom",
+        end: "top top",
+        scrub: true,
+      },
+    });
+
+    return () => {
+      buttonAnimation.kill();
+      buttonOpacityAnimation.kill();
+    };
+  }, [formRef, buttonRef]);
+
+  useEffect(() => {
+    const animation = gsap.timeline({
+      scrollTrigger: {
+        trigger: rocketRef.current,
+        start: "bottom bottom",
+        end: "top top",
+        scrub: true,
+      },
+    });
+
+    animation.fromTo(
+      rocketRef.current,
+      { x: 0, opacity: 1 },
+      { x: 100, opacity: 1, duration: 1 }
     );
 
-    const sputnikAnimation = gsap.fromTo(
-        sputnikRef.current,
-        { x: 0, opacity: 1 },
-        {
-            x: -150,
-            opacity: 1,
-            duration: 1,
-            scrollTrigger: {
-                trigger: sputnikRef.current,
-                start: "bottom bottom",
-                end: "bottom top",
-                scrub: true,
-            },
-        }
+    animation.fromTo(
+      sputnikRef.current,
+      { x: 0, opacity: 1 },
+      { x: -100, opacity: 1, duration: 1 },
+      "<"
     );
 
     return () => {
-        buttonAnimation.kill();
-        rocketAnimation.kill();
-        sputnikAnimation.kill();
+      animation.kill();
     };
-  }, [formRef, buttonRef, rocketRef, sputnikRef]);
-
+  }, [rocketRef, sputnikRef]);
+  
 
   return (
     <>
@@ -295,24 +322,24 @@ const VacanciesMainCard = ({
             className={styles.background5}
             style={{ backgroundImage: `url(${star3d_5})` }}
           />
-             <div
+          <div
             className={styles.background6}
             style={{ backgroundImage: `url(${star3d_6})` }}
           />
-             <div
+          <div
             className={styles.background7}
             style={{ backgroundImage: `url(${star3d_7})` }}
           />
-             <div
+          <div
             className={styles.background10}
             style={{ backgroundImage: `url(${star3d_8})` }}
           />
-               <div
+          <div
             className={styles.background8}
             ref={rocketRef}
             style={{ backgroundImage: `url(${rocketBig})` }}
           />
-               <div
+          <div
             className={styles.background9}
             ref={sputnikRef}
             style={{ backgroundImage: `url(${sputnik})` }}
@@ -356,13 +383,13 @@ const VacanciesMainCard = ({
             </span>
             <div className={styles.main_vacancyWrapper__locationBlockLocation}>
               <div className={styles.rocketVectorAround1Block}>
-             <img className={styles.rocket} src={rocket} alt={rocket} />
-             <img
-               className={styles.vectorAround1}
-               src={vectorAround1}
-               alt={vectorAround1}
+                <img className={styles.rocket} src={rocket} alt={rocket} />
+                <img
+                  className={styles.vectorAround1}
+                  src={vectorAround1}
+                  alt={vectorAround1}
                 />
-                </div>
+              </div>
               <div
                 className={styles.main_vacancyWrapper__locationWrapperLocation}
               >
@@ -370,19 +397,88 @@ const VacanciesMainCard = ({
                 <div className={styles.locationValue}>10&nbsp;мин</div>
               </div>
               <div className={styles.main_vacancyWrapper__spanWrapperLocation}>
-                <span className={styles.spanLocationText}>Комфортный оборудованный офис, кофе чай печеньки по утрам</span>
-                <span className={styles.spanLocationText}>Мы предоставляем все оборудование для комфортной работы и отдыха</span>
+                <span className={styles.spanLocationText}>
+                  Комфортный оборудованный офис, кофе чай печеньки по утрам
+                </span>
+                <span className={styles.spanLocationText}>
+                  Мы предоставляем все оборудование для комфортной работы и
+                  отдыха
+                </span>
               </div>
             </div>
           </div>
         </div>
-        <div className={styles.main_vacancyWrapper__vacancyFormWrapper} ref={formRef}>
+        <div className={styles.main_vacancyWrapper__sliderBlock}>
+          <div className={styles.sliderBlockText}>Как мы проводим время</div>
+          <div className={styles.sliderContainer}>
+            <Swiper
+              className={styles.sliderContainer_block}
+              ref={sliderCardRef}           
+              spaceBetween={30}
+              touch="true"
+              direction="horizontal"
+              loop={true} 
+              breakpoints={{
+                2500: {
+                  slidesPerView: 4.7,
+                },
+                2000: {
+                  slidesPerView: 4.2,
+                },
+                1750: {
+                  slidesPerView: 3.5,
+                },
+                1440: {
+                  slidesPerView: 2.7,
+                },
+                1300: {
+                  slidesPerView: 2.7,
+                },
+                1200: {
+                  slidesPerView: 2.5,
+                },
+                1024: {
+                  slidesPerView: 2.3,
+                },
+                900: {
+                  slidesPerView: 2.1,
+                },
+                700: {
+                  slidesPerView: 2.1,
+                },
+              }}
+            >   
+            {imageArray.map((imageSrc, index) => (
+            <SwiperSlide
+            key={index}        
+            className={`${styles.sliderContainer_blockSlide}
+            ${index % 2 === 0 ? styles.verticalSlide : styles.horizontalSlide}`}
+            >
+                <div>
+                  <div className={styles.wrapper_sliderContainer_blockSlide}>
+                    <img
+                      className={styles.container_image_blockSlide}
+                      src={imageSrc}
+                      alt={`Слайд ${index + 1}`}               
+                      loading="lazy"                   
+                    />
+                  </div>
+                </div>
+              </SwiperSlide>
+            ))}
+            </Swiper>
+          </div>
+        </div>
+        <div
+          className={styles.main_vacancyWrapper__vacancyFormWrapper}
+          ref={formRef}
+        >
           <VacancyFormContact
             initialDirection={selectedVacancy?.direction}
             handleMouseEnter={handleMouseEnter}
             handleMouseLeave={handleMouseLeave}
             handleMouseHover={handleMouseHover}
-            buttonRef={buttonRef}            
+            buttonRef={buttonRef}
           />
         </div>
       </div>
