@@ -8,8 +8,8 @@ import { useParams } from "react-router-dom";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
 import { Swiper, SwiperSlide } from "swiper/react";
-import Error from "../../Loading/Error/Error";
-import LoadingCircle from "../../Loading/LoadingCircle";
+// import Error from "../../Loading/Error/Error";
+// import LoadingCircle from "../../Loading/LoadingCircle";
 import VacancyFormContactSimple from "../../UI/VacancyFormContact/VacancyFormContactSimple";
 import VacancyFormContact from "../../UI/VacancyFormContact/VacancyFormContact";
 import RenderVacancySections from "./RenderVacancySections";
@@ -60,8 +60,8 @@ const VacanciesMainCard = ({
   const dispatch = useDispatch();
   const { id } = useParams();
   const vacancies = useSelector((state) => state.vacancies.vacancies);
-  const loading = useSelector((state) => state.vacancies.loading);
-  const error = useSelector((state) => state.vacancies.error);
+  // const loading = useSelector((state) => state.vacancies.loading);
+  // const error = useSelector((state) => state.vacancies.error);
   const [selectedVacancy, setSelectedVacancy] = useState(null);
 
   const formRef = useRef(null);
@@ -83,7 +83,7 @@ const VacanciesMainCard = ({
   useEffect(() => {
     if (!formRef.current || !buttonRef.current) return;
 
-    gsap.set(buttonRef.current, { zIndex: 9000 });
+    // gsap.set(buttonRef.current, { position: "relative", zIndex: 1 });
 
     const buttonAnimation = gsap.to(buttonRef.current, {
       y: () => {
@@ -413,8 +413,7 @@ const VacanciesMainCard = ({
           <div className={styles.sliderContainer}>
             <Swiper
               className={styles.sliderContainer_block}
-              ref={sliderCardRef}
-              style={{  zIndex: "-1" }}
+              ref={sliderCardRef}           
               spaceBetween={30}
               touch="true"
               direction="horizontal"
@@ -454,7 +453,7 @@ const VacanciesMainCard = ({
             key={index}        
             className={`${styles.sliderContainer_blockSlide}
             ${index % 2 === 0 ? styles.verticalSlide : styles.horizontalSlide}`}
-             >
+            >
                 <div>
                   <div className={styles.wrapper_sliderContainer_blockSlide}>
                     <img
