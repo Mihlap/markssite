@@ -424,6 +424,7 @@
 
   .main_vacancyWrapper__3dGroup {
     position: relative;
+    z-index: -1;
 
     .background4 {
       position: absolute;
@@ -525,7 +526,7 @@
     padding-top: 281px;
     padding-right: 6rem;
     position: relative;
-
+ 
     .locationTitle {
       align-self: flex-end;
       color: var(--gray-959DA6);
@@ -545,6 +546,8 @@
       line-height: 3rem;
       padding-top: 22px;
       white-space: pre-wrap;
+      z-index: -3;
+
     }
 
   }
@@ -589,7 +592,7 @@
     letter-spacing: 0px;
     max-width: 30rem;
     gap: 24px;
-    z-index: -1;
+    // z-index: -3;
   }
 
   .rocketVectorAround1Block {
@@ -597,6 +600,7 @@
     display: block;
     top: 30rem;
     right: 41rem;
+    // z-index: -1;
 
     .rocket {
       margin-right: -1rem;
@@ -608,10 +612,9 @@
   }
 
   &__sliderBlock {
-    display: block;
+    display: block;    
     padding-top: 198px;
   
-
     .sliderBlockText {
       color: var(--gray-959DA6);
       font-family: var(--font-raleway);
@@ -623,18 +626,21 @@
     }
 
     .sliderContainer {
-      display: flex;      
+      display: flex;     
       width: 100%;
       height: 100%;
       padding-top: 24px;
       // padding-bottom: 5.66rem;
-      overflow: hidden;   
+      overflow: hidden;         
     }
+    
 
     .sliderContainer_block {
       display: flex;    
-      padding-left: 7rem;
-      height: 100%;     
+      padding-left: 8.37rem;
+      height: 100%; 
+      // position: relative; 
+      // z-index: 0;         
     }
 
     .sliderContainer_blockSlide {
@@ -642,7 +648,7 @@
       justify-content: center; 
       align-items: center; 
       width: 100%;
-      height: 100%;
+      height: 100%;   
     }
 
     .verticalSlide {
