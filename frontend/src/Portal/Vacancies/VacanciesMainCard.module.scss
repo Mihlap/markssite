@@ -473,7 +473,7 @@
       z-index: -1;
       opacity: 1;
     }
-    
+
     .background8 {
       position: absolute;
       width: 50rem;
@@ -485,7 +485,7 @@
       z-index: -2;
       opacity: 1;
     }
-    
+
     .background9 {
       position: absolute;
       width: 60rem;
@@ -497,6 +497,7 @@
       z-index: -2;
       opacity: 1;
     }
+
     .background10 {
       position: absolute;
       width: 20.5rem;
@@ -515,7 +516,7 @@
     flex-direction: column;
     justify-content: flex-end;
   }
-  
+
   &__locationWrapper {
     display: flex;
     justify-content: flex-end;
@@ -524,17 +525,17 @@
     padding-top: 281px;
     padding-right: 6rem;
     position: relative;
-    
+
     .locationTitle {
       align-self: flex-end;
       color: var(--gray-959DA6);
       font-family: var(--font-raleway);
       font-size: 1.125rem;
       font-weight: var(--fw-400);
-      line-height: 1.625rem;      
+      line-height: 1.625rem;
       padding-right: 38rem;
     }
-    
+
     .locationText {
       align-self: flex-end;
       color: var(--black-1D2E43);
@@ -542,25 +543,25 @@
       font-size: 2.5rem;
       font-weight: var(--fw-300);
       line-height: 3rem;
-      padding-top: 22px;      
+      padding-top: 22px;
       white-space: pre-wrap;
     }
-    
+
   }
-  
+
   &__locationWrapperLocation {
     display: flex;
     flex-direction: column;
     color: var(--black-1D2E43);
     text-align: right;
     letter-spacing: 0px;
-    padding-top: 102.7px;    
+    padding-top: 102.7px;
 
     .locationLabel {
       font-family: var(--font-raleway);
       font-size: 1.125rem;
       font-weight: var(--fw-400);
-      line-height: 1.625rem;      
+      line-height: 1.625rem;
       padding-right: 41rem;
     }
 
@@ -568,8 +569,8 @@
       font-family: var(--font-unbounded);
       font-size: 2.5rem;
       font-weight: var(--fw-300);
-      line-height: 3rem;  
-      padding-right: 36rem;   
+      line-height: 3rem;
+      padding-right: 36rem;
     }
   }
 
@@ -583,29 +584,100 @@
     font-weight: var(--fw-400);
     color: var(--black-1D2E43);
     font-size: 1.125rem;
-    line-height: 1.625rem;  
+    line-height: 1.625rem;
     text-align: right;
     letter-spacing: 0px;
     max-width: 30rem;
     gap: 24px;
-   }
+    z-index: -1;
+  }
 
-   .rocketVectorAround1Block {
+  .rocketVectorAround1Block {
     position: absolute;
     display: block;
     top: 30rem;
     right: 41rem;
- 
-    .rocket {
-  margin-right: -1rem;
-    }
-   }
 
-   &__vacancyFormWrapper {
-    padding: 50rem 3rem 5rem 7rem;
+    .rocket {
+      margin-right: -1rem;
+    }
   }
 
-  //  .vectorAround1 {
-  //   position: absolute;
-  //  }
+  &__vacancyFormWrapper {
+    padding: 20rem 3rem 5rem 8.37rem;
+  }
+
+  &__sliderBlock {
+    display: block;
+    padding-top: 198px;
+  
+
+    .sliderBlockText {
+      color: var(--gray-959DA6);
+      font-family: var(--font-raleway);
+      font-size: 1.125rem;
+      font-weight: var(--fw-400);
+      line-height: 1.625rem;
+      text-align: left;
+      padding-left: 8.37rem;
+    }
+
+    .sliderContainer {
+      display: flex;      
+      width: 100%;
+      height: 100%;
+      padding-top: 24px;
+      // padding-bottom: 5.66rem;
+      overflow: hidden;   
+    }
+
+    .sliderContainer_block {
+      display: flex;    
+      padding-left: 7rem;
+      height: 100%;     
+    }
+
+    .sliderContainer_blockSlide {
+      display: flex;
+      justify-content: center; 
+      align-items: center; 
+      width: 100%;
+      height: 100%;
+    }
+
+    .verticalSlide {
+      min-width: 35rem;
+      min-height: 43.75rem;
+      border-radius: 1rem;
+    }
+  
+    .horizontalSlide { 
+      min-width: 43.75rem;
+      min-height: 35rem;
+      border-radius: 1rem; 
+      margin-top: 4rem; 
+    }
+
+    .wrapper_sliderContainer_blockSlide {
+      display: flex;
+      justify-content: center; 
+      align-items: center;
+      width: 100%;
+      height: 100%;
+      border-radius: 1rem;
+      gap: 1.88rem;
+      overflow: hidden;   
+    }
+
+    .wrapper_sliderContainer_blockSlide,
+    .container_image_blockSlide {
+      border-radius: 1rem;   
+    }
+
+    .container_image_blockSlide {
+      width: auto;
+      height: auto;
+      object-fit: cover;    
+    }
+  }
 }
