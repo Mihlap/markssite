@@ -6,7 +6,6 @@ import styles from "./VacancyFormContact.module.css";
 import "react-phone-number-input/style.css";
 import icon_tg from "../../Portal/Vacancies/icons/icon_tg.png";
 
-
 const Host = process.env.REACT_APP_SERVER_HOST;
 
 const VacancyFormContact = ({ initialDirection, handleMouseEnter, handleMouseLeave }) => {
@@ -45,7 +44,7 @@ const VacancyFormContact = ({ initialDirection, handleMouseEnter, handleMouseLea
   });
 
   const [isValid, setIsValid] = useState(true);
-  // const [selectedOptions, setSelectedOptions] = useState(null);
+  const [isFormValid, setIsFormValid] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [fileAttached, setFileAttached] = useState(false);
   const [formData, setFormData] = useState({
@@ -62,6 +61,7 @@ const VacancyFormContact = ({ initialDirection, handleMouseEnter, handleMouseLea
 
   const handleChangeVacancy = useCallback((selectedValues) => {
     setSelectedOptions(selectedValues);
+    setFormData((prevData) => ({ ...prevData, choose: selectedValues?.value || "" }));
   }, []);
 
   const handleFocus = useCallback((event) => {
@@ -192,6 +192,11 @@ const VacancyFormContact = ({ initialDirection, handleMouseEnter, handleMouseLea
       return updatedFiles;
     });
   }, []);
+
+  useEffect(() => {
+    const isFormComplete = Object.values(formData).every(field => field.trim() !== "") && isValid;
+    setIsFormValid(isFormComplete);
+  }, [formData, isValid]);
 
   const customStyles = useMemo(
     () => ({
@@ -484,15 +489,15 @@ const VacancyFormContact = ({ initialDirection, handleMouseEnter, handleMouseLea
             </Link>
             <button
               className={`${styles.button_vacancy}
-              ${!isValid || !formData ? styles.disabled : ""}`}
-              disabled={!isValid || !formData}
+              ${!isFormValid ? styles.disabled : ""}`}
+              disabled={!isFormValid}
               type="submit"
               id="submit-button"
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
             >
               <p className={styles.button_name_vacancy}>
-                Откликнутся на вакансию
+                Откликнуться на вакансию
               </p>
             </button>
           </div>
