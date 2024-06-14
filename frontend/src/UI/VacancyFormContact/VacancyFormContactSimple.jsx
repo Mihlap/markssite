@@ -318,7 +318,7 @@ const VacancyFormContactSimple = ({
               id="submit-button"
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
-              style={{ minWidth: '432px', height: '56px', position: 'relative', zIndex: 9000 }}
+              style={{ minWidth: '432px', height: '56px'}}
               ref={buttonRef}
             >
               <p className={styles.button_name_vacancy}>
