@@ -27,7 +27,6 @@ import clearAll from "./icons/clearAll.svg";
 import FilterModalVacancies from "./FilterModalVacancies";
 import RocketComponent from "../../UI/Rocket/RocketComponents";
 
-
 const VacanciesMain = ({
   handleMouseEnter,
   handleMouseLeave,
@@ -79,7 +78,10 @@ const VacanciesMain = ({
     Занятость: "busyness",
   };
 
-  const vacanciesMain = useMemo(() => [...filteredVacancies].reverse(), [filteredVacancies]);
+  const vacanciesMain = useMemo(
+    () => [...filteredVacancies].reverse(),
+    [filteredVacancies]
+  );
 
   const handleResize = useCallback(() => {
     setWindowWidth(window.innerWidth);
@@ -129,26 +131,31 @@ const VacanciesMain = ({
     setModalFiltersActive(hasActiveFilters);
   }, [filters, selectedFilter, filterKeyForSpecialty]);
 
+  const applyFilters = useCallback(
+    (vacancies, filters) => {
+      return vacancies.filter((vacancy) => {
+        return Object.keys(filters).every((filterKey) => {
+          const mappedKey = filterMappings[filterKey] || filterKey;
+          const filterValues = filters[filterKey];
 
-  const applyFilters = useCallback((vacancies, filters) => {
-    return vacancies.filter((vacancy) => {
-      return Object.keys(filters).every((filterKey) => {
-        const mappedKey = filterMappings[filterKey] || filterKey;
-        const filterValues = filters[filterKey];
+          if (filterValues.length === 0) return true;
+          const vacancyValue = vacancy[mappedKey];
 
-        if (filterValues.length === 0) return true;
-        const vacancyValue = vacancy[mappedKey];
-
-        return filterValues.includes(vacancyValue);
+          return filterValues.includes(vacancyValue);
+        });
       });
-    });
-  }, [filterMappings]);
+    },
+    [filterMappings]
+  );
 
-  const handleButtonClick = useCallback((direction) => {
-    dispatch(setSelectedFilter(direction));
-    dispatch(getFetchFormFilter(direction));
-    setShowManyVacancies(false);
-  }, [dispatch]);
+  const handleButtonClick = useCallback(
+    (direction) => {
+      dispatch(setSelectedFilter(direction));
+      dispatch(getFetchFormFilter(direction));
+      setShowManyVacancies(false);
+    },
+    [dispatch]
+  );
 
   const toggleShowAllVacancies = useCallback(() => {
     setShowManyVacancies((prev) => !prev);
@@ -166,26 +173,30 @@ const VacanciesMain = ({
     return !vacancy.hidden;
   }, []);
 
-  const visibleVacancies = useMemo(() => vacanciesMain.filter((vacancy) =>
-    shouldDisplayVacancy(vacancy)
-  ), [vacanciesMain, shouldDisplayVacancy]);
+  const visibleVacancies = useMemo(
+    () => vacanciesMain.filter((vacancy) => shouldDisplayVacancy(vacancy)),
+    [vacanciesMain, shouldDisplayVacancy]
+  );
 
-  const removeFilter = useCallback((filterCategory, filterValue) => {
-    const newFilters = { ...filters };
-    if (Array.isArray(newFilters[filterCategory])) {
-      newFilters[filterCategory] = newFilters[filterCategory].filter(
-        (value) => value !== filterValue
-      );
-      if (newFilters[filterCategory].length === 0) {
+  const removeFilter = useCallback(
+    (filterCategory, filterValue) => {
+      const newFilters = { ...filters };
+      if (Array.isArray(newFilters[filterCategory])) {
+        newFilters[filterCategory] = newFilters[filterCategory].filter(
+          (value) => value !== filterValue
+        );
+        if (newFilters[filterCategory].length === 0) {
+          delete newFilters[filterCategory];
+        }
+      } else {
         delete newFilters[filterCategory];
       }
-    } else {
-      delete newFilters[filterCategory];
-    }
-    dispatch(fetchFilteredVacancies(newFilters));
-    setFilters(newFilters);
-    dispatch(setActiveFilters(newFilters));
-  }, [filters, dispatch]);
+      dispatch(fetchFilteredVacancies(newFilters));
+      setFilters(newFilters);
+      dispatch(setActiveFilters(newFilters));
+    },
+    [filters, dispatch]
+  );
 
   const clearAllFilters = useCallback(() => {
     const resetFilters =
@@ -211,21 +222,23 @@ const VacanciesMain = ({
     setModalFiltersActive(false);
   }, [dispatch]);
 
-  const activeFiltersArray = useMemo(() => Object.entries(filters).flatMap(
-    ([key, values]) => {
-      if (Array.isArray(values)) {
-        if (
-          key === filterKeyForSpecialty &&
-          values.includes(selectedFilter) &&
-          values.length === 1
-        ) {
-          return [];
+  const activeFiltersArray = useMemo(
+    () =>
+      Object.entries(filters).flatMap(([key, values]) => {
+        if (Array.isArray(values)) {
+          if (
+            key === filterKeyForSpecialty &&
+            values.includes(selectedFilter) &&
+            values.length === 1
+          ) {
+            return [];
+          }
+          return values.map((value) => ({ category: key, value }));
         }
-        return values.map((value) => ({ category: key, value }));
-      }
-      return [];
-    }
-  ), [filters, filterKeyForSpecialty, selectedFilter]);
+        return [];
+      }),
+    [filters, filterKeyForSpecialty, selectedFilter]
+  );
 
   return (
     <>
@@ -236,7 +249,7 @@ const VacanciesMain = ({
         <div className={styles.main_vacancies_block}>
           <div className={styles.wrapper_vacancies}>
             <div className={styles.rocket_model}>
-            {/* <div className={styles.rocket_image}> */}
+              {/* <div className={styles.rocket_image}> */}
               {/* <img src="/assets/rocket.png" alt="rocket.png" /> */}
               <RocketComponent />
             </div>
@@ -405,7 +418,10 @@ const VacanciesMain = ({
               <div className={styles.dopFilterName}>Доп. фильтры</div>
               <div className={styles.activeFiltersContainer}>
                 {activeFiltersArray.map((filter, index) => (
-                  <div key={`${filter.category}-${index}`} className={styles.activeFilterTag}>
+                  <div
+                    key={`${filter.category}-${index}`}
+                    className={styles.activeFilterTag}
+                  >
                     <p className={styles.dopFilterButtonName}>{filter.value}</p>
                     <button
                       onClick={() =>
@@ -469,7 +485,7 @@ const VacanciesMain = ({
                     : totalDisplayedVacancies
                 )
                 .map((vacancy) => (
-                  <div
+                  <Link
                     key={vacancy.id}
                     to={`/vacancy/${vacancy.id}`}
                     className={styles.vacancyContainer}
@@ -535,7 +551,7 @@ const VacanciesMain = ({
                         </div>
                       </>
                     )}
-                  </div>
+                  </Link>
                 ))}
             </>
           ) : (
