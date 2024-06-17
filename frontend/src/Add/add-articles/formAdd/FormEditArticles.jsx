@@ -979,12 +979,13 @@ export default function FormEditArticles({ setIsModalOpen, editArticleData }) {
                   toolbar: [
                     ["bold", "italic", "underline"],
                     [{ list: "bullet" }, { list: "ordered" }],
+                    [{ 'indent': '-1'}, { 'indent': '+1' }],
                   ],
                   clipboard: {
                     matchVisual: false,
                   },
                 }}
-                formats={["bold", "italic", "underline", "list"]}
+                formats={["bold", "italic", "underline", "list", "indent"]}
                 className={styles.form_container__textarea}
                 style={{
                   // resize: "none",
@@ -1231,12 +1232,13 @@ export default function FormEditArticles({ setIsModalOpen, editArticleData }) {
                   toolbar: [
                     ["bold", "italic", "underline"],
                     [{ list: "bullet" }, { list: "ordered" }],
+                    [{ 'indent': '-1'}, { 'indent': '+1' }],
                   ],
                   clipboard: {
                     matchVisual: false,
                   },
                 }}
-                formats={["bold", "italic", "underline", "list"]}
+                formats={["bold", "italic", "underline", "list", "indent"]}
                 className={styles.form_container__textarea}
                 style={{
                   // resize: "none",
