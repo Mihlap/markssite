@@ -22,6 +22,9 @@ import star3d_5 from "./icons/star3d_5.png";
 import star3d_6 from "./icons/star3d_6.png";
 import star3d_7 from "./icons/star3d_7.png";
 import star3d_8 from "./icons/star3d_8.png";
+import star3d_9 from "./icons/star3d_9.png";
+import star3d_10 from "./icons/star3d_10.png";
+import star3d_11 from "./icons/star3d_11.png";
 import heart from "./icons/heart.png";
 import heart2 from "./icons/heart2.png";
 import rocket from "./icons/rocket.png";
@@ -83,7 +86,7 @@ const VacanciesMainCard = ({
   useEffect(() => {
     if (!formRef.current || !buttonRef.current) return;
 
-    // gsap.set(buttonRef.current, { position: "relative", zIndex: 1 });
+    // gsap.set(buttonRef.current, { position: "relative", zIndex: 1000 });
 
     const buttonAnimation = gsap.to(buttonRef.current, {
       y: () => {
@@ -95,7 +98,7 @@ const VacanciesMainCard = ({
       ease: "none",
       scrollTrigger: {
         trigger: buttonRef.current,
-        start: "top center",
+        start: "center center",
         end: () =>
           `+=${document.documentElement.scrollHeight - window.innerHeight}`,
         scrub: true,
@@ -106,7 +109,7 @@ const VacanciesMainCard = ({
       opacity: -1,
       scrollTrigger: {
         trigger: formRef.current,
-        start: "top bottom",
+        // start: "center center",
         end: "top top",
         scrub: true,
       },
@@ -145,7 +148,6 @@ const VacanciesMainCard = ({
       animation.kill();
     };
   }, [rocketRef, sputnikRef]);
-  
 
   return (
     <>
@@ -413,11 +415,11 @@ const VacanciesMainCard = ({
           <div className={styles.sliderContainer}>
             <Swiper
               className={styles.sliderContainer_block}
-              ref={sliderCardRef}           
+              ref={sliderCardRef}
               spaceBetween={30}
-              touch="true"
+              touch="true"             
               direction="horizontal"
-              loop={true} 
+              loop={true}
               breakpoints={{
                 2500: {
                   slidesPerView: 4.7,
@@ -447,27 +449,119 @@ const VacanciesMainCard = ({
                   slidesPerView: 2.1,
                 },
               }}
-            >   
-            {imageArray.map((imageSrc, index) => (
-            <SwiperSlide
-            key={index}        
-            className={`${styles.sliderContainer_blockSlide}
-            ${index % 2 === 0 ? styles.verticalSlide : styles.horizontalSlide}`}
             >
-                <div>
-                  <div className={styles.wrapper_sliderContainer_blockSlide}>
-                    <img
-                      className={styles.container_image_blockSlide}
-                      src={imageSrc}
-                      alt={`Слайд ${index + 1}`}               
-                      loading="lazy"                   
-                    />
+              {imageArray.map((imageSrc, index) => (
+                <SwiperSlide
+                  key={index}
+                  className={`${styles.sliderContainer_blockSlide}
+            ${index % 2 === 0 ? styles.verticalSlide : styles.horizontalSlide}`}
+                >
+                  <div>
+                    <div className={styles.wrapper_sliderContainer_blockSlide}>
+                      <img
+                        className={styles.container_image_blockSlide}
+                        src={imageSrc}
+                        alt={`Слайд ${index + 1}`}
+                        loading="lazy"
+                      />
+                    </div>
                   </div>
-                </div>
-              </SwiperSlide>
-            ))}
+                </SwiperSlide>
+              ))}
             </Swiper>
           </div>
+        </div>
+        <div className={styles.main_vacancyWrapper__frameBlockNext}>    
+        <div className={styles.main_vacancyWrapper__3dNext}>  
+          <div
+            className={styles.background9next}
+            style={{ backgroundImage: `url(${star3d_9})` }}
+          />
+          <div
+            className={styles.background10next}
+            style={{ backgroundImage: `url(${star3d_10})` }}
+          />
+          <div
+            className={styles.background11next}
+            style={{ backgroundImage: `url(${star3d_11})` }}
+          />
+           </div>
+          <div className={styles.frameBlockLeft}>
+            <div className={styles.blockTitle}>Плюсы работы с&nbsp;нами</div>
+            <span className={styles.blockText}>Безусловная любовь к&nbsp;профессии</span>
+            <span className={styles.blockText1}>
+              Мы любим не&nbsp;только профессию, но&nbsp;и&nbsp;наш коллектив, делаем все, что&nbsp;бы
+               сотрудникам было приятно и&nbsp;комфортно. Каждый понедельник -
+              отмечаем фруктовый день, весело гуляем на&nbsp;корпоративах, проводим
+              спортивные и&nbsp;светские мероприятия
+            </span>
+          </div>
+          <div className={styles.frameBlockRight}>         
+            <div className={styles.main_vacancyWrapper__frameBlock_frame}>
+              <img
+                className={styles.main_vacancyWrapper__frame}
+                src={frame1}
+                alt={frame1}
+              />
+              <span className={styles.main_vacancyWrapper__frameSpan}>
+              Корпоративный английский
+              </span>
+            </div>
+            <div className={styles.main_vacancyWrapper__frameBlock_frame}>
+              <img
+                className={styles.main_vacancyWrapper__frame}
+                src={frame2}
+                alt={frame2}
+              />
+              <span className={styles.main_vacancyWrapper__frameSpan}>
+              Библиотека профессиональной литературы
+              </span>
+            </div>
+            <div className={styles.main_vacancyWrapper__frameBlock_frame}>
+              <img
+                className={styles.main_vacancyWrapper__frame}
+                src={frame3}
+                alt={frame3}
+              />
+              <span className={styles.main_vacancyWrapper__frameSpan}>
+              Корпоративное такси для встреч
+              </span>
+            </div>
+            <div className={styles.main_vacancyWrapper__frameBlock_frame}>
+              <img
+                className={styles.main_vacancyWrapper__frame}
+                src={frame4}
+                alt={frame4}
+              />
+              <span className={styles.main_vacancyWrapper__frameSpan}>
+              Оплачиваемы занятия в&nbsp;фитнес клубе
+              </span>
+            </div>
+            <div className={styles.main_vacancyWrapper__frameBlock_frame}>
+              <img
+                className={styles.main_vacancyWrapper__frame}
+                src={frame1}
+                alt={frame1}
+              />
+              <span className={styles.main_vacancyWrapper__frameSpan}>
+              Поддержка и&nbsp;адаптация от&nbsp;совета молодых специалистов
+              </span>
+            </div>
+            <div className={styles.main_vacancyWrapper__frameBlock_frame}>
+              <img
+                className={styles.main_vacancyWrapper__frame}
+                src={frame1}
+                alt={frame1}
+              />
+              <span className={styles.main_vacancyWrapper__frameSpan}>
+              Обучение и&nbsp;карьерный рост
+              </span>
+            </div>
+          </div>
+        </div>
+        <div className={styles.temporaryText} buttonRef={buttonRef}>"Мы ищем именно тебя!"</div>
+        <div className={styles.textUnderForm}>
+          Оставьте ваши контакты, мы всегда&nbsp;в&nbsp;поиске талантливых профессионалов
         </div>
         <div
           className={styles.main_vacancyWrapper__vacancyFormWrapper}
@@ -477,8 +571,7 @@ const VacanciesMainCard = ({
             initialDirection={selectedVacancy?.direction}
             handleMouseEnter={handleMouseEnter}
             handleMouseLeave={handleMouseLeave}
-            handleMouseHover={handleMouseHover}
-            buttonRef={buttonRef}
+            handleMouseHover={handleMouseHover}          
           />
         </div>
       </div>
