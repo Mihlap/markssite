@@ -74,7 +74,7 @@
       padding-left: 8.37rem;
       padding-top: 140px;
       border-bottom: 1px solid rgb(235, 236, 238);
-      opacity: 0.8;
+      opacity: 0.9;
     }
 
     &__blockRight {
@@ -86,7 +86,7 @@
       justify-content: space-between;
       align-content: stretch;
       border-bottom: 1px solid rgb(235, 236, 238);
-      opacity: 0.8;
+      opacity: 0.9;
     }
 
     &__vacancyTitle {
@@ -526,7 +526,7 @@
     padding-top: 281px;
     padding-right: 6rem;
     position: relative;
- 
+
     .locationTitle {
       align-self: flex-end;
       color: var(--gray-959DA6);
@@ -607,12 +607,9 @@
     }
   }
 
-  &__vacancyFormWrapper {
-    padding: 20rem 3rem 5rem 8.37rem;
-  }
 
   &__sliderBlock {
-    display: block;    
+    display: block;
     padding-top: 198px;
   
     .sliderBlockText {
@@ -626,29 +623,28 @@
     }
 
     .sliderContainer {
-      display: flex;     
+      display: flex;
       width: 100%;
       height: 100%;
       padding-top: 24px;
-      // padding-bottom: 5.66rem;
-      overflow: hidden;         
+      position: relative; 
+      z-index: 0;   
     }
-    
+
 
     .sliderContainer_block {
-      display: flex;    
+      display: flex;
       padding-left: 8.37rem;
-      height: 100%; 
-      // position: relative; 
-      // z-index: 0;         
+      height: 100%;        
     }
 
     .sliderContainer_blockSlide {
       display: flex;
-      justify-content: center; 
-      align-items: center; 
+      justify-content: center;
+      align-items: center;
       width: 100%;
-      height: 100%;   
+      height: 100%;
+      pointer-events: none;
     }
 
     .verticalSlide {
@@ -656,28 +652,27 @@
       min-height: 43.75rem;
       border-radius: 1rem;
     }
-  
-    .horizontalSlide { 
+
+    .horizontalSlide {
       min-width: 43.75rem;
       min-height: 35rem;
-      border-radius: 1rem; 
-      margin-top: 4rem; 
+      border-radius: 1rem;
+      margin-top: 4rem;
     }
 
     .wrapper_sliderContainer_blockSlide {
       display: flex;
-      justify-content: center; 
+      justify-content: center;
       align-items: center;
       width: 100%;
       height: 100%;
       border-radius: 1rem;
-      gap: 1.88rem;
-      overflow: hidden;   
+      gap: 1.88rem;   
     }
 
     .wrapper_sliderContainer_blockSlide,
     .container_image_blockSlide {
-      border-radius: 1rem;   
+      border-radius: 1rem;
     }
 
     .container_image_blockSlide {
@@ -685,5 +680,130 @@
       height: auto;
       object-fit: cover;    
     }
+  }
+
+  .main_vacancyWrapper__3dNext {
+    position: relative;
+    z-index: -1;
+
+    .background9next {
+      position: absolute;
+      width: 10rem;
+      height: 9.5rem;
+      top: -10%;
+      left: 20vw;
+      background-size: cover;
+      background-repeat: no-repeat;
+      z-index: -2;
+      opacity: 1;
+    }
+  
+    .background10next {
+      position: absolute;
+      width: 17.3rem;
+      height: 16.3rem;
+      top: 50%;
+      left: 0vw;
+      background-size: cover;
+      background-repeat: no-repeat;
+      z-index: -2;
+      opacity: 1;
+    }
+  
+    .background11next {
+      position: absolute;
+      width: 12rem;
+      height: 12rem;
+      top: 70%;
+      left: 17vw;
+      background-size: cover;
+      background-repeat: no-repeat;
+      z-index: -1;
+      opacity: 1;
+    }
+
+  }
+
+  &__frameBlockNext {
+    display: flex;
+    padding-top: 11rem;
+    padding-left: 8.37rem;
+
+
+    .frameBlockLeft {
+      display: flex;
+      flex-direction: column;
+      letter-spacing: 0px;
+      text-align: left;
+
+      .blockTitle {
+        color: var(--gray-959DA6);
+        font-family: var(--font-raleway);
+        font-size: 1.125rem;
+        font-weight: var(--fw-700);
+        line-height: 1.5rem;      
+      }
+
+      .blockText {
+        max-width: 47rem;
+        color: var(--black-1D2E43);
+        font-family: var(--font-unbounded);
+        font-size: 2.5rem;
+        font-weight: var(--fw-300);
+        line-height: 3rem;       
+        padding-top: 1.5rem;
+      }
+
+      .blockText1 {
+        max-width: 30rem;
+        color: var(--black-1D2E43);
+        font-family: var(--font-raleway);
+        font-size: 1.125rem;
+        font-weight: var(--fw-400);
+        line-height: 1.625rem;     
+        padding-top: 2rem;
+      }
+    }
+    .frameBlockRight {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      padding-left: 10vw;
+ 
+    .main_vacancyWrapper__frameBlock_frame {
+      flex: 0 0 30%; 
+      margin-bottom: 6.25rem; 
+    }
+    }
+
+  }
+
+  .temporaryText {
+    max-width: 47rem;
+    color: var(--black-1D2E43);
+    font-family: var(--font-unbounded);
+    font-size: 2.5rem;
+    font-style: normal;
+    font-weight: var(--fw-300);
+    line-height: 3rem;
+    padding-left: 8.37rem;
+    padding-top: 10rem;
+  }
+
+  .textUnderForm {
+    max-width: 47rem;
+    color: var(--black-1D2E43);
+    font-variant-numeric: lining-nums proportional-nums;
+    font-family: var(--font-raleway);
+    font-size: 1.125rem;
+    font-style: normal;
+    font-weight: var(--fw-400);
+    line-height: 1.625rem;
+    padding-left: 8.37rem;
+    padding-top: 1.5rem;
+  }
+
+  &__vacancyFormWrapper {
+    padding: 3.5rem 3rem 20rem 8.37rem;
   }
 }
