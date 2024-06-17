@@ -309,8 +309,8 @@ const VacancyFormContactSimple = ({
               персональных данных
             </Link>
                </div>
-             <div style={{display: 'flex', justifyContent: 'center'}}>
-            <button
+             <div style={{display: 'flex', justifyContent: 'center', zIndex: '1000'}}>
+            <button            
               className={`${styles.button_vacancy}
               ${!isFormValid ? styles.disabled : ""}`}
               disabled={!isFormValid}
