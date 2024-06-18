@@ -83,43 +83,43 @@ const VacanciesMainCard = ({
     }
   }, [vacancies]);
 
-  useEffect(() => {
-    if (!formRef.current || !buttonRef.current) return;
+  // useEffect(() => {
+  //   if (!formRef.current || !buttonRef.current) return;
 
-    // gsap.set(buttonRef.current, { position: "relative", zIndex: 1000 });
+  //   // gsap.set(buttonRef.current, { position: "relative", zIndex: 1000 });
 
-    const buttonAnimation = gsap.to(buttonRef.current, {
-      y: () => {
-        const formTop = formRef.current.offsetTop;
-        const buttonTop = buttonRef.current.offsetTop;
-        return (formTop - buttonTop) * 1.5;
-      },
-      opacity: 1,
-      ease: "none",
-      scrollTrigger: {
-        trigger: buttonRef.current,
-        start: "center center",
-        end: () =>
-          `+=${document.documentElement.scrollHeight - window.innerHeight}`,
-        scrub: true,
-      },
-    });
+  //   const buttonAnimation = gsap.to(buttonRef.current, {
+  //     y: () => {
+  //       const formTop = formRef.current.offsetTop;
+  //       const buttonTop = buttonRef.current.offsetTop;
+  //       return (formTop - buttonTop) * 1.5;
+  //     },
+  //     opacity: 1,
+  //     ease: "none",
+  //     scrollTrigger: {
+  //       trigger: buttonRef.current,
+  //       start: "center center",
+  //       end: () =>
+  //         `+=${document.documentElement.scrollHeight - window.innerHeight}`,
+  //       scrub: true,
+  //     },
+  //   });
 
-    const buttonOpacityAnimation = gsap.to(buttonRef.current, {
-      opacity: -1,
-      scrollTrigger: {
-        trigger: formRef.current,
-        // start: "center center",
-        end: "top top",
-        scrub: true,
-      },
-    });
+  //   const buttonOpacityAnimation = gsap.to(buttonRef.current, {
+  //     opacity: -1,
+  //     scrollTrigger: {
+  //       trigger: formRef.current,
+  //       // start: "center center",
+  //       end: "top top",
+  //       scrub: true,
+  //     },
+  //   });
 
-    return () => {
-      buttonAnimation.kill();
-      buttonOpacityAnimation.kill();
-    };
-  }, [formRef, buttonRef]);
+  //   return () => {
+  //     buttonAnimation.kill();
+  //     buttonOpacityAnimation.kill();
+  //   };
+  // }, [formRef, buttonRef]);
 
   useEffect(() => {
     const animation = gsap.timeline({
