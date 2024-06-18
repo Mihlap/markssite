@@ -237,34 +237,65 @@ export const onWheel = (el, e, enableVerticalScroll, isHorizontalScroll, setIsHo
 
 // Функция преобразования тегов списка с точками и номерами
 export const renderListWithDots = (htmlString) => {
-  // Заменяем неразрывные пробелы на обычные пробелы
-  const withSpaces = htmlString.replace(/&nbsp;/g, ' ');
+  // Заменяем неразрывные пробелы на обычные пробелы, чтобы корректно обрабатывать введённые пробелы
+  // const withSpaces = htmlString.replace(/&nbsp;/g, ' ');
+
+  // Заменяем обычные пробелы на неразрывные для корректного отображения
+  const withNonBreakingSpaces = htmlString.replace(/ {2}/g, ' &nbsp;');
 
   // Заменяем теги <ul> и <li> для неупорядоченного списка
-  let newListHTML = withSpaces.replace(/<ul\b[^>]*>[\s\S]*?<\/ul>/gi, (ulMatch) => {
-      return ulMatch.replace(/<li\b([^>]*)>([\s\S]*?)<\/li>/gi, (liMatch, p1, p2) => {
-          const spacesBefore = p1.match(/^( *)/)[1];
-          // Маркер для неупорядоченного списка (точка)
-          const marker = `${spacesBefore}&bull;`;
-          return `<li>${marker} ${p2}</li>`;
+  let newListHTML = withNonBreakingSpaces.replace(/<ul\b[^>]*>[\s\S]*?<\/ul>/gi, (ulMatch) => {
+      return ulMatch.replace(/<li\b([^>]*)>([\s\S]*?)<\/li>/gi, (liMatch, liAttributes, liContent) => {
+          return processListItem(liAttributes, liContent);
       });
   });
 
   // Заменяем теги <ol> и <li> для упорядоченного списка
   newListHTML = newListHTML.replace(/<ol\b[^>]*>[\s\S]*?<\/ol>/gi, (olMatch) => {
       let order = 1;
-      return olMatch.replace(/<li\b([^>]*)>([\s\S]*?)<\/li>/gi, (liMatch, p1, p2) => {
-          const spacesBefore = p1.match(/^( *)/)[1];
-          // Маркер для упорядоченного списка (номер)
-          const marker = `${spacesBefore}${order}.`;
+      return olMatch.replace(/<li\b([^>]*)>([\s\S]*?)<\/li>/gi, (liMatch, liAttributes, liContent) => {
+          const indentMatch = liAttributes.match(/class="[^"]*ql-indent-(\d+)/);
+          const indentLevel = indentMatch ? parseInt(indentMatch[1], 10) : 0;
+          const paddingLeft = indentLevel * 30; 
+          const marker = `${order}.`;
           order++;
-          return `<li>${marker} ${p2}</li>`;
+          return `<li style="padding-left: ${paddingLeft}px;">${marker} ${liContent}</li>`;
       });
+  });
+
+  // Обработка отступов для тегов <p>
+  newListHTML = newListHTML.replace(/<p\b([^>]*)>([\s\S]*?)<\/p>/gi, (pMatch, pAttributes, pContent) => {
+      return processParagraph(pAttributes, pContent);
   });
 
   // Возвращаем обработанную строку
   return newListHTML;
 }
+
+function processListItem(attributes, content) {
+  const indentMatch = attributes.match(/class="[^"]*ql-indent-(\d+)/);
+  const indentLevel = indentMatch ? parseInt(indentMatch[1], 10) : 0;
+  const paddingLeft = indentLevel * 30;
+  const spacePreservation = attributes.match(/^\s+/); // Capture leading whitespace
+  const spacesBefore = spacePreservation ? spacePreservation[0].replace(/\t/g, '    ') : ''; // Convert tabs to spaces
+  const marker = `${spacesBefore}&bull;`;
+
+  return `<li style="padding-left: ${paddingLeft}px; white-space: pre-wrap;">${marker} ${content}</li>`;
+}
+
+function processParagraph(attributes, content) {
+  const indentMatch = attributes.match(/class="[^"]*ql-indent-(\d+)/);
+  const indentLevel = indentMatch ? parseInt(indentMatch[1], 10) : 0;
+  const paddingLeft = indentLevel * 30;
+  const spacePreservation = attributes.match(/^\s+/); // Capture leading whitespace
+  const spacesBefore = spacePreservation ? spacePreservation[0].replace(/\t/g, '    ') : ''; // Convert tabs to spaces
+
+  return `<p style="padding-left: ${paddingLeft}px; white-space: pre-wrap;">${spacesBefore}${content}</p>`;
+}
+
+
+
+
 
 
 
