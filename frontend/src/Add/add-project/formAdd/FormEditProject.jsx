@@ -1016,6 +1016,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                     editorElement.style.lineHeight = "16px";
                     editorElement.style.boxSizing = "border-box";
                     editorElement.style.paddingBottom = "2.5rem";
+                    editorElement.style.whiteSpace = "pre-wrap";
                   }
                 }}
                 modules={{
@@ -1040,6 +1041,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                   color: "var(---black-1D2E43)",
                   boxSizing: "border-box",
                   paddingBottom: "2.5rem",
+                   whiteSpace: "pre-wrap"
                 }}
                 required
                 name={key}
@@ -2431,6 +2433,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                     color: "var(---black-1D2E43)",
                     boxSizing: "border-box",
                     paddingBottom: "2.5rem",
+                     whiteSpace: "pre-wrap"
                   }}
                   required
                   name="textBlock"
