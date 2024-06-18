@@ -742,7 +742,6 @@ export default function FormAddProject({ setIsModalOpen }) {
                   if (el) {
                     const editor = el.getEditor();
                     const editorElement = editor.root;
-
                     editorElement.style.fontSize = "16px";
                     editorElement.style.fontFamily = "Raleway, sans-serif";
                     editorElement.style.color = "var(--black-1D2E43)";
@@ -752,6 +751,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                     editorElement.style.lineHeight = "16px";
                     editorElement.style.boxSizing = "border-box";
                     editorElement.style.paddingBottom = "2.5rem";
+                    editorElement.style.whiteSpace = "pre-wrap";
                   }
                 }}
                 modules={{
@@ -776,6 +776,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                   color: "var(---black-1D2E43)",
                   boxSizing: "border-box",
                   paddingBottom: "2.5rem",
+                  whiteSpace: "pre-wrap"
                 }}
                 required
                 name={key}
@@ -2082,6 +2083,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                 color: "var(---black-1D2E43)",
                 boxSizing: "border-box",
                 paddingBottom: "2.5rem",
+                whiteSpace: "pre-wrap"
               }}
               required
               name="textBlock"
