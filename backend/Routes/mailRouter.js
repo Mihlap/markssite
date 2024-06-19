@@ -45,8 +45,8 @@ mailRouter.post('/submitForm', async (req, res) => {
   const formData = req.body;
 
   const mailOptions = {
-    from: 'mikhail.test.mail@mail.ru',
-    to: 'mikhail.test.mail@mail.ru',
+    from: process.env.EMAIL_USER,
+    to: process.env.EMAIL_USER,
     subject: 'Новая форма от клиента',
     text: `
     Имя: ${formData.name}
@@ -90,8 +90,8 @@ mailRouter.post('/subscribe', (req, res) => {
   }
 
   const mailOptions = {
-    from: 'mikhail.test.mail@mail.ru',
-    to: 'mikhail.test.mail@mail.ru',
+    from: process.env.EMAIL_USER,
+    to: process.env.EMAIL_USER,
     subject: 'Подписка на новости',
     text: `Подписка на новости: ${email}`,
   };
@@ -135,8 +135,8 @@ mailRouter.post('/portalSubmitForm', upload.array('resumeFiles', 2), (req, res) 
   `;
 
   const mailOptions = {
-    from: 'ok.test.mikhail@mail.ru',
-    to: 'ok.test.mikhail@mail.ru',
+    from: process.env.EMAIL_PORTAL_USER,
+    to: process.env.EMAIL_PORTAL_USER,
     subject: 'Заявка на вакансию',
     text: emailBody,  
     attachments: [], 
