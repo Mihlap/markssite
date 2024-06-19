@@ -10,6 +10,8 @@ const VacancyFormContactSimple = ({
   handleMouseEnter,
   handleMouseLeave,
   buttonRef,
+  setIsLoading,
+  setIsModalOpen,
 }) => {
   const [isFocused, setIsFocused] = useState({
     name: false,
@@ -72,6 +74,7 @@ const VacancyFormContactSimple = ({
 
   const handleSubmit = useCallback((event) => {
     event.preventDefault();
+    setIsLoading(true);
 
     const formDataToSend = new FormData();
     const formDataCopy = { ...formData };
@@ -90,6 +93,7 @@ const VacancyFormContactSimple = ({
     })
       .then((response) => response.json())
       .then((data) => {
+        setIsModalOpen(true);
         if (data && data.message === "Письмо успешно отправлено") {
           setFormData({
             name: "",
@@ -107,6 +111,9 @@ const VacancyFormContactSimple = ({
         if (!error.response || error.response.status !== 200) {
           console.error("Error:", error);
         }
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
   }, [formData, selectedFiles]);
 
