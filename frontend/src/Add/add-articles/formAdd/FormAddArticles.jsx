@@ -253,6 +253,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
         };
       }
 
+    
       const generateUniqueName = (originalName) => {
         const timestamp = Date.now();
         const randomNum = Math.floor(Math.random() * 10000);
@@ -648,7 +649,6 @@ export default function FormAddArticles({ setIsModalOpen }) {
                   if (el) {
                     const editor = el.getEditor();
                     const editorElement = editor.root;
-
                     editorElement.style.fontSize = "16px";
                     editorElement.style.fontFamily = "Raleway, sans-serif";
                     editorElement.style.color = "var(--black-1D2E43)";
@@ -658,12 +658,13 @@ export default function FormAddArticles({ setIsModalOpen }) {
                     editorElement.style.lineHeight = "16px";
                     editorElement.style.boxSizing = "border-box";
                     editorElement.style.paddingBottom = "2.5rem";
+                    editorElement.style.whiteSpace = "pre-wrap";
                   }
                 }}
                 modules={{
                   toolbar: [
                     ["bold", "italic", "underline"],
-                    [{ list: "bullet" }, { list: "ordered" }],
+                    [{ list: "bullet" }, { list: "ordered" }],                   
                   ],
                   clipboard: {
                     matchVisual: false,
@@ -680,6 +681,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
                   color: "var(---black-1D2E43)",
                   boxSizing: "border-box",
                   paddingBottom: "2.5rem",
+                  whiteSpace: "pre-wrap"
                 }}
                 formats={["bold", "italic", "underline", "list"]}
                 className={`${styles.form_container__textarea} ${styles.orange_color}`}
@@ -977,7 +979,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
                 modules={{
                   toolbar: [
                     ["bold", "italic", "underline"],
-                    [{ list: "bullet" }, { list: "ordered" }],
+                    [{ list: "bullet" }, { list: "ordered" }],                   
                   ],
                   clipboard: {
                     matchVisual: false,
@@ -998,6 +1000,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
                   color: "var(---black-1D2E43)",
                   boxSizing: "border-box",
                   paddingBottom: "2.5rem",
+                  whiteSpace: "pre-wrap"
                 }}
                 required
                 name="descriptionArticle"
@@ -1193,7 +1196,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
                 modules={{
                   toolbar: [
                     ["bold", "italic", "underline"],
-                    [{ list: "bullet" }, { list: "ordered" }],
+                    [{ list: "bullet" }, { list: "ordered" }],                   
                   ],
                   clipboard: {
                     matchVisual: false,
@@ -1214,6 +1217,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
                   color: "var(---black-1D2E43)",
                   boxSizing: "border-box",
                   paddingBottom: "2.5rem",
+                  whiteSpace: "pre-wrap"
                 }}
                 required
                 name="textBlock"
