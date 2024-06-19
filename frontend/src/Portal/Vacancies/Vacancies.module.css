@@ -321,10 +321,10 @@ font-family: var(--font-raleway);
   transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out; 
 }
 
-.filterModalButton:hover {
+/* .filterModalButton:hover {
   background-color: var(--light-gray-C0C5CB);
   border: 1px solid var(--light-gray-C0C5CB);
-}
+} */
 
 .activeFilter {
   background-color: var(--black-1D2E43) !important;
@@ -1135,7 +1135,7 @@ font-family: var(--font-raleway);
   .filterModalButton {
      cursor: none;
   }
-  
+/*   
   .filterModalButton:hover {
     background-color: transparent !important;
    color: var(--black-1D2E43) !important;
@@ -1146,7 +1146,8 @@ font-family: var(--font-raleway);
     background-color: var(--black-1D2E43) !important;
     color: var(--white-F6F6F6) !important;
     border: none !important;
-  }
+  } */
+  
 
   .applyButton {
     cursor: none;
@@ -1518,7 +1519,7 @@ font-family: var(--font-raleway);
   .filterModalButton {
     cursor: none;
  }
- 
+/*  
  .filterModalButton:hover {
    background-color: transparent !important;
    color: var(--black-1D2E43) !important;
@@ -1529,7 +1530,7 @@ font-family: var(--font-raleway);
   background-color: var(--black-1D2E43) !important;
   color: var(--white-F6F6F6) !important;
   border: none !important;
-}
+} */
 
   .applyButtonWrapper {
     display: flex;
