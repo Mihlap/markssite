@@ -3,22 +3,22 @@ import axios from "axios";
 
 const serverHost = process.env.REACT_APP_SERVER_HOST;
 
-export const fetchVacancies = createAsyncThunk(
-  'vacancies/fetchVacancies',
-  async () => {
-    try {
-      const response = await fetch("https://api.hh.ru/vacancies?employer_id=1098613");
-      if (response.ok) {
-        const data = await response.json();
-        return data.items;
-      } else {
-        throw new Error("Failed to fetch vacancies");
-      }
-    } catch (error) {
-      throw new Error(`Error fetching vacancies: ${error}`);
-    }
-  }
-);
+// export const fetchVacancies = createAsyncThunk(
+//   'vacancies/fetchVacancies',
+//   async () => {
+//     try {
+//       const response = await fetch("https://api.hh.ru/vacancies?employer_id=1098613");
+//       if (response.ok) {
+//         const data = await response.json();
+//         return data.items;
+//       } else {
+//         throw new Error("Failed to fetch vacancies");
+//       }
+//     } catch (error) {
+//       throw new Error(`Error fetching vacancies: ${error}`);
+//     }
+//   }
+// );
 
 export const fetchEmployees = createAsyncThunk(
   'vacancies/fetchEmployees',
@@ -123,18 +123,18 @@ const vacanciesSlice = createSlice({
     },
   },
   extraReducers: {
-    [fetchVacancies.pending]: (state) => {
-      state.loading = true;
-      state.error = null;
-    },
-    [fetchVacancies.fulfilled]: (state, action) => {
-      state.loading = false;
-      state.vacancies = action.payload;
-    },
-    [fetchVacancies.rejected]: (state, action) => {
-      state.loading = false;
-      state.error = action.error.message;
-    },
+    // [fetchVacancies.pending]: (state) => {
+    //   state.loading = true;
+    //   state.error = null;
+    // },
+    // [fetchVacancies.fulfilled]: (state, action) => {
+    //   state.loading = false;
+    //   state.vacancies = action.payload;
+    // },
+    // [fetchVacancies.rejected]: (state, action) => {
+    //   state.loading = false;
+    //   state.error = action.error.message;
+    // },
     [fetchEmployees.pending]: (state) => {
       state.loading = true;
       state.error = null;
