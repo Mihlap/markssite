@@ -1,0 +1,38 @@
+@import "../../../App.css";
+@import "../../../_variables.scss";
+
+.BenefitsGrid {
+  padding: 7.5rem 9rem;
+  background: linear-gradient(261.46deg, rgba(255, 203, 193, 0.09) -4.67%, rgba(117, 187, 253, 0.09) 44.63%, rgba(188, 188, 188, 0.09) 103.07%);
+
+  &__title {
+    font-size: rem(32);
+    margin-bottom: rem(80);
+  }
+
+  &__items {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    column-gap: rem(43);
+    row-gap: rem(64);
+  }
+
+  &__icon {
+    width: rem(160);
+    margin-bottom: rem(16);
+
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  &__item {
+    h3 {
+      font-weight: bold;
+      font-size: rem(18);
+      margin-bottom: rem(8);
+    }
+  }
+}

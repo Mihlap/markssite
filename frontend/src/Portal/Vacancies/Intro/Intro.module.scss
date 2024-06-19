@@ -1,0 +1,65 @@
+@import "../../../App.css";
+@import "../../../_variables.scss";
+
+.Intro {
+  position: relative;
+  padding-top: 48px;
+
+  &__wrapper {
+    height: 544px;
+    padding: 64px 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-top: 1px solid var(--light-light-gray-EBECEE);
+    border-bottom: 1px solid var(--light-light-gray-EBECEE);
+    background: linear-gradient(261deg, rgba(255, 203, 193, 0.09) -4.67%, rgba(117, 187, 253, 0.09) 44.63%, rgba(188, 188, 188, 0.09) 103.07%);
+    backdrop-filter: blur(7px); 
+  }
+
+  &__text {
+    width: 40%;
+    color: var(--black-1D2E43);
+    font-family: var(--font-unbounded);
+    font-style: normal;
+    font-weight: var(--fw-300);
+    padding-left: 5%;
+  }
+
+  &__pretitle {
+    display: inline-block;
+    font-size: 24px;
+    line-height: 28px;
+    margin-bottom: 8px;
+  }
+
+  &__title {
+    font-size: 48px;
+    line-height: 64px;
+  }
+
+  @media all and (max-width:$bp4){
+    &__wrapper {
+      height: auto;
+    }
+
+    &__pretitle {
+      font-size: 18px;
+      line-height: 26px;
+    }
+  
+    &__title {
+      font-size: 32px;
+      line-height: 40px;
+    }
+
+    &__text {
+      width: 100%;
+      padding-right: 5%;
+    }
+
+    &__animation {
+      display: none;
+    }
+  }
+}
