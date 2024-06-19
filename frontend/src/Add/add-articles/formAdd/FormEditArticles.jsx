@@ -658,6 +658,7 @@ export default function FormEditArticles({ setIsModalOpen, editArticleData }) {
                   editorElement.style.lineHeight = "16px";
                   editorElement.style.boxSizing = "border-box";
                   editorElement.style.paddingBottom = "2.5rem";
+                  editorElement.style.whiteSpace = "pre-wrap";
                 }
               }}
               style={{
@@ -671,15 +672,16 @@ export default function FormEditArticles({ setIsModalOpen, editArticleData }) {
                 color: "var(---black-1D2E43)",
                 boxSizing: "border-box",
                 paddingBottom: "2.5rem",
+                whiteSpace: "pre-wrap"
               }}
               modules={{
                 toolbar: [
                   ["bold", "italic", "underline"],
-                  [{ list: "bullet" }, { list: "ordered" }],
+                  [{ list: "bullet" }, { list: "ordered" }],                     
                 ],
                 clipboard: {
                   matchVisual: false,
-                },
+                },                
               }}
               formats={["bold", "italic", "underline", "list"]}
               className={`${styles.form_container__textarea} ${styles.orange_color}`}
@@ -978,14 +980,13 @@ export default function FormEditArticles({ setIsModalOpen, editArticleData }) {
                 modules={{
                   toolbar: [
                     ["bold", "italic", "underline"],
-                    [{ list: "bullet" }, { list: "ordered" }],
-                    [{ 'indent': '-1'}, { 'indent': '+1' }],
+                    [{ list: "bullet" }, { list: "ordered" }]                
                   ],
                   clipboard: {
                     matchVisual: false,
                   },
                 }}
-                formats={["bold", "italic", "underline", "list", "indent"]}
+                formats={["bold", "italic", "underline", "list"]}
                 className={styles.form_container__textarea}
                 style={{
                   // resize: "none",
@@ -1000,6 +1001,7 @@ export default function FormEditArticles({ setIsModalOpen, editArticleData }) {
                   color: "var(---black-1D2E43)",
                   boxSizing: "border-box",
                   paddingBottom: "2.5rem",
+                  whiteSpace: "pre-wrap"
                 }}
                 required
                 name="descriptionArticle"
@@ -1231,14 +1233,13 @@ export default function FormEditArticles({ setIsModalOpen, editArticleData }) {
                 modules={{
                   toolbar: [
                     ["bold", "italic", "underline"],
-                    [{ list: "bullet" }, { list: "ordered" }],
-                    [{ 'indent': '-1'}, { 'indent': '+1' }],
+                    [{ list: "bullet" }, { list: "ordered" }],                  
                   ],
                   clipboard: {
                     matchVisual: false,
                   },
                 }}
-                formats={["bold", "italic", "underline", "list", "indent"]}
+                formats={["bold", "italic", "underline", "list"]}
                 className={styles.form_container__textarea}
                 style={{
                   // resize: "none",
@@ -1253,6 +1254,7 @@ export default function FormEditArticles({ setIsModalOpen, editArticleData }) {
                   color: "var(---black-1D2E43)",
                   boxSizing: "border-box",
                   paddingBottom: "2.5rem",
+                  whiteSpace: "pre-wrap"
                 }}
                 required
                 name="textBlock"
