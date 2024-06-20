@@ -5,15 +5,17 @@ import { Link } from "react-router-dom";
 import styles from "./VacancyFormContact.module.css";
 import "react-phone-number-input/style.css";
 import icon_tg from "../../Portal/Vacancies/icons/icon_tg.png";
+import ModalVacancyFormSend from "./ModalVacancyFormSend";
+import LoadingVacancy from "../../Loading/LoadingVacancy";
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 
 const VacancyFormContact = ({ initialDirection, handleMouseEnter, handleMouseLeave }) => {
 
- const options = useMemo(() => [
+  const options = useMemo(() => [
     { value: "Другая вакансия", label: "Другая вакансия" },
     { value: "Архитектура", label: "Архитектура" },
-    { value: "Конструкции", label: "Конструкции" },
+    { value: "Конструктив", label: "Конструктив" },
     { value: "Инженерия", label: "Инженерия" },
     { value: "Аналитика", label: "Аналитика" },
     { value: "Технологии", label: "Технологии" },
@@ -23,16 +25,18 @@ const VacancyFormContact = ({ initialDirection, handleMouseEnter, handleMouseLea
     { value: "it", label: "it" },
     { value: "Дизайн", label: "Дизайн" },
   ], []);
-  
+
   const [selectedOptions, setSelectedOptions] = useState(
     options.find(option => option.value === initialDirection)
   );
-  
+
   useEffect(() => {
-    // Обновляем selectedOptions когда initialDirection или options изменяется
     const foundOption = options.find(option => option.value === initialDirection);
     setSelectedOptions(foundOption);
-  }, [initialDirection, options]); 
+    if (initialDirection) {
+      setFormData((prevData) => ({ ...prevData, choose: initialDirection }));
+    }
+  }, [initialDirection, options]);
 
   const [isFocused, setIsFocused] = useState({
     name: false,
@@ -47,6 +51,8 @@ const VacancyFormContact = ({ initialDirection, handleMouseEnter, handleMouseLea
   const [isFormValid, setIsFormValid] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [fileAttached, setFileAttached] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -114,6 +120,7 @@ const VacancyFormContact = ({ initialDirection, handleMouseEnter, handleMouseLea
   const handleSubmit = useCallback(
     (event) => {
       event.preventDefault();
+      setIsLoading(true);
 
       const formDataToSend = new FormData();
       const formDataCopy = {
@@ -136,6 +143,7 @@ const VacancyFormContact = ({ initialDirection, handleMouseEnter, handleMouseLea
         .then((response) => response.json())
         .then((data) => {
           if (data && data.message === "Письмо успешно отправлено") {
+            setIsModalOpen(true);
             setFormData({
               name: "",
               phone: "",
@@ -158,6 +166,9 @@ const VacancyFormContact = ({ initialDirection, handleMouseEnter, handleMouseLea
           if (!error.response || error.response.status !== 200) {
             console.error("Error:", error);
           }
+        })
+        .finally(() => {
+          setIsLoading(false);
         });
     },
     [formData, selectedOptions, selectedFiles]
@@ -194,7 +205,7 @@ const VacancyFormContact = ({ initialDirection, handleMouseEnter, handleMouseLea
   }, []);
 
   useEffect(() => {
-    const isFormComplete = Object.values(formData).every(field => field.trim() !== "") && isValid;
+    const isFormComplete = Object.values(formData).every(field => field.trim() !== "") && isValid && formData.choose;
     setIsFormValid(isFormComplete);
   }, [formData, isValid]);
 
@@ -268,271 +279,254 @@ const VacancyFormContact = ({ initialDirection, handleMouseEnter, handleMouseLea
   );
 
   return (
-    <form className={styles.form_form_wrapper} onSubmit={handleSubmit}>
-      <div className={styles.form_vacancy_wrapper}>
-        <div className={styles.form_vacancy_block}>
-          <div className={styles.form_vacancy_left}>
-            <div className={`${styles.group} some-unique-class`}>
-              <label
-                className={`${styles.label1} ${
-                  isFocused.name || isFilled("name") ? styles.focused1 : ""
-                }`}
-                onMouseOver={handleMouseEnter}
-                onMouseOut={handleMouseLeave}
-              >
-                <input
-                  type="text"
-                  name="name"
-                  placeholder=""
-                  value={formData.name}
-                  onChange={handleChange}
-                  onFocus={handleFocus}
-                  onBlur={handleBlur}
-                  maxLength="100"
-                  autoComplete="off"
-                  className={styles.input_name_form_contacts}
-                />
-                <div className={styles.line}></div>
-                <span className={styles.placeholder}>
-                  Ваше&nbsp;имя&nbsp;и&nbsp;фамилия
-                </span>
-              </label>
-            </div>
-            <div className={styles.group}>
-              <label
-                className={`${styles.label1} ${
-                  isFocused.phone || isFilled("phone") ? styles.focused1 : ""
-                }`}
-                onMouseOver={handleMouseEnter}
-                onMouseOut={handleMouseLeave}
-              >
-                <InputMask
-                  id="phone-input"
-                  mask="+7 (999) 999-99-99"
-                  maskChar=""
-                  name="phone"
-                  placeholder=""
-                  value={formData.phone}
-                  onBlur={handleBlur}
-                  onChange={handleChange}
-                  onFocus={handleFocus}
-                  autoComplete="off"
-                  onPaste={handlePaste}
-                  className={`${styles.input_tel_form_contacts} ${
-                    isFocused.phone ? styles.focused : ""
-                  }`}
-                  style={{ fontVariantNumeric: "lining-nums" }}
-                />
-                <div className={styles.line}></div>
-                <span className={styles.placeholder}>Телефон</span>
-                {!isValid && formData.phone.length > 0 && (
-                  <span className={styles.error_line}>
-                    Некорректный телефон
-                  </span>
-                )}
-              </label>
-            </div>
-            <div className={styles.group}>
-              <label
-                className={`${styles.label1} ${
-                  isFocused.city || isFilled("city") ? styles.focused1 : ""
-                }`}
-                onMouseOver={handleMouseEnter}
-                onMouseOut={handleMouseLeave}
-              >
-                <input
-                  type="text"
-                  name="city"
-                  placeholder=""
-                  value={formData.city}
-                  onChange={handleChange}
-                  onFocus={handleFocus}
-                  onBlur={handleBlur}
-                  maxLength="100"
-                  autoComplete="off"
-                  className={styles.input_city_form_contacts}
-                />
-                <div className={styles.line}></div>
-                <span className={styles.placeholder}>Город</span>
-              </label>
-            </div>
-          </div>
-          <div className={styles.form_vacancy_right}>
-            <div className={`${styles.group} some-unique-class`}>
-              <label
-                className={`${styles.label1} ${
-                  isFocused.choose || isFilled("choose") ? styles.focused1 : ""
-                }`}
-                onMouseOver={handleMouseEnter}
-                onMouseOut={handleMouseLeave}
-              >
-                <Select
-                  className={styles.input_choose_form_contacts}
-                  id="choose-input"
-                  name="choose"
-                  onFocus={handleFocus}
-                  onBlur={handleBlur}
-                  isMulti={false}
-                  options={options}
-                  value={selectedOptions}
-                  placeholder={"Выбрать вакансию"}
-                  onChange={handleChangeVacancy}
-                  isSearchable={false}
-                  isClearable={true} 
-                  menuShouldScrollIntoView={false}
-                  styles={customStyles}
-                />
-              </label>
-            </div>
-            <div className={`${styles.group} some-unique-class`}>
-              <label
-                className={`${styles.label1} ${
-                  isFocused.letter || isFilled("letter") ? styles.focused1 : ""
-                }`}
-                onMouseOver={handleMouseEnter}
-                onMouseOut={handleMouseLeave}
-              >
-                <input
-                  type="text"
-                  name="letter"
-                  placeholder=""
-                  value={formData.letter}
-                  onChange={handleChange}
-                  onFocus={handleFocus}
-                  onBlur={handleBlur}
-                  maxLength="500"
-                  autoComplete="off"
-                  className={styles.input_letter_form_contacts}
-                />
-                <div className={styles.line}></div>
-                <span className={styles.placeholder}>
-                  Сопроводительное письмо
-                </span>
-              </label>
-            </div>
-            <div className={styles.group}>
-              <label
-                className={`${styles.label1} ${
-                  isFocused.resume || isFilled("resume") ? styles.focused1 : ""
-                }`}
-                onMouseOver={handleMouseEnter}
-                onMouseOut={handleMouseLeave}
-              >
-                <input
-                  type="text"
-                  name="resume"
-                  placeholder=""
-                  value={formData.resume}
-                  onChange={handleChange}
-                  onFocus={handleFocus}
-                  onBlur={handleBlur}
-                  maxLength="200"
-                  autoComplete="off"
-                  className={styles.input_resume_form_contacts}
-                />
-                <div className={`${styles.line} ${styles.line_resume}`}></div>
-                <span className={styles.placeholder}>
-                  Ссылка&nbsp;на&nbsp;резюме/портфолио
-                </span>
-              </label>
-              <div className={styles.resumeFiles}>
-                {selectedFiles.map((file, index) => (
-                  <div
-                    key={index}
-                    className={styles.fileContainer_resumeFiles}
+    <>
+      {isLoading ? (
+        <LoadingVacancy />
+      ) : (
+        <form className={styles.form_form_wrapper} onSubmit={handleSubmit}>
+          <div className={styles.form_vacancy_wrapper}>
+            <div className={styles.form_vacancy_block}>
+              <div className={styles.form_vacancy_left}>
+                <div className={`${styles.group} some-unique-class`}>
+                  <label
+                    className={`${styles.label1} ${isFocused.name || isFilled("name") ? styles.focused1 : ""}`}
                     onMouseOver={handleMouseEnter}
                     onMouseOut={handleMouseLeave}
-                    onClick={() => handleRemoveFile(index)}
                   >
-                    <span className={styles.removeFile_resumeFiles}>
-                      <span className={styles.removeFile_resumeFiles_remove}>
-                        &times;
-                      </span>
-                    </span>
-                    <span className={styles.fileName_resumeFiles}>
-                      {file.name}
-                    </span>
-                  </div>
-                ))}
-              </div>
-              {selectedFiles.length < 2 && (
-                <div>
-                  <input
-                    type="file"
-                    name="resumeFile"
-                    onChange={handleFileChange}
-                    style={{ display: "none" }}
-                    ref={fileInputRef}
-                  />
-                  <div
-                    className={styles.button_resume_file}
-                    onMouseOver={handleMouseEnter}
-                    onMouseOut={handleMouseLeave}
-                    onClick={() => fileInputRef.current.click()}
-                  >
-                    {fileAttached ? "Прикрепить файл" : "Прикрепить файл"}
-                  </div>
+                    <input
+                      type="text"
+                      name="name"
+                      placeholder=""
+                      value={formData.name}
+                      onChange={handleChange}
+                      onFocus={handleFocus}
+                      onBlur={handleBlur}
+                      maxLength="100"
+                      autoComplete="off"
+                      className={styles.input_name_form_contacts}
+                    />
+                    <div className={styles.line}></div>
+                    <span className={styles.placeholder}>Ваше&nbsp;имя&nbsp;и&nbsp;фамилия</span>
+                  </label>
                 </div>
-              )}
+                <div className={styles.group}>
+                  <label
+                    className={`${styles.label1} ${isFocused.phone || isFilled("phone") ? styles.focused1 : ""}`}
+                    onMouseOver={handleMouseEnter}
+                    onMouseOut={handleMouseLeave}
+                  >
+                    <InputMask
+                      id="phone-input"
+                      mask="+7 (999) 999-99-99"
+                      maskChar=""
+                      name="phone"
+                      placeholder=""
+                      value={formData.phone}
+                      onBlur={handleBlur}
+                      onChange={handleChange}
+                      onFocus={handleFocus}
+                      autoComplete="off"
+                      onPaste={handlePaste}
+                      className={`${styles.input_tel_form_contacts} ${isFocused.phone ? styles.focused : ""}`}
+                      style={{ fontVariantNumeric: "lining-nums" }}
+                    />
+                    <div className={styles.line}></div>
+                    <span className={styles.placeholder}>Телефон</span>
+                    {!isValid && formData.phone.length > 0 && (
+                      <span className={styles.error_line}>Некорректный телефон</span>
+                    )}
+                  </label>
+                </div>
+                <div className={styles.group}>
+                  <label
+                    className={`${styles.label1} ${isFocused.city || isFilled("city") ? styles.focused1 : ""}`}
+                    onMouseOver={handleMouseEnter}
+                    onMouseOut={handleMouseLeave}
+                  >
+                    <input
+                      type="text"
+                      name="city"
+                      placeholder=""
+                      value={formData.city}
+                      onChange={handleChange}
+                      onFocus={handleFocus}
+                      onBlur={handleBlur}
+                      maxLength="100"
+                      autoComplete="off"
+                      className={styles.input_city_form_contacts}
+                    />
+                    <div className={styles.line}></div>
+                    <span className={styles.placeholder}>Город</span>
+                  </label>
+                </div>
+              </div>
+              <div className={styles.form_vacancy_right}>
+                <div className={`${styles.group} some-unique-class`}>
+                  <label
+                    className={`${styles.label1} ${isFocused.choose || isFilled("choose") ? styles.focused1 : ""}`}
+                    onMouseOver={handleMouseEnter}
+                    onMouseOut={handleMouseLeave}
+                  >
+                    <Select
+                      className={styles.input_choose_form_contacts}
+                      id="choose-input"
+                      name="choose"
+                      onFocus={handleFocus}
+                      onBlur={handleBlur}
+                      isMulti={false}
+                      options={options}
+                      value={selectedOptions}
+                      placeholder={"Выбрать вакансию"}
+                      onChange={handleChangeVacancy}
+                      isSearchable={false}
+                      isClearable={true}
+                      menuShouldScrollIntoView={false}
+                      styles={customStyles}
+                    />
+                  </label>
+                </div>
+                <div className={`${styles.group} some-unique-class`}>
+                  <label
+                    className={`${styles.label1} ${isFocused.letter || isFilled("letter") ? styles.focused1 : ""}`}
+                    onMouseOver={handleMouseEnter}
+                    onMouseOut={handleMouseLeave}
+                  >
+                    <input
+                      type="text"
+                      name="letter"
+                      placeholder=""
+                      value={formData.letter}
+                      onChange={handleChange}
+                      onFocus={handleFocus}
+                      onBlur={handleBlur}
+                      maxLength="500"
+                      autoComplete="off"
+                      className={styles.input_letter_form_contacts}
+                    />
+                    <div className={styles.line}></div>
+                    <span className={styles.placeholder}>Сопроводительное письмо</span>
+                  </label>
+                </div>
+                <div className={styles.group}>
+                  <label
+                    className={`${styles.label1} ${isFocused.resume || isFilled("resume") ? styles.focused1 : ""}`}
+                    onMouseOver={handleMouseEnter}
+                    onMouseOut={handleMouseLeave}
+                  >
+                    <input
+                      type="text"
+                      name="resume"
+                      placeholder=""
+                      value={formData.resume}
+                      onChange={handleChange}
+                      onFocus={handleFocus}
+                      onBlur={handleBlur}
+                      maxLength="200"
+                      autoComplete="off"
+                      className={styles.input_resume_form_contacts}
+                    />
+                    <div className={`${styles.line} ${styles.line_resume}`}></div>
+                    <span className={styles.placeholder}>Ссылка&nbsp;на&nbsp;резюме/портфолио</span>
+                  </label>
+                  <div className={styles.resumeFiles}>
+                    {selectedFiles.map((file, index) => (
+                      <div
+                        key={index}
+                        className={styles.fileContainer_resumeFiles}
+                        onMouseOver={handleMouseEnter}
+                        onMouseOut={handleMouseLeave}
+                        onClick={() => handleRemoveFile(index)}
+                      >
+                        <span className={styles.removeFile_resumeFiles}>
+                          <span className={styles.removeFile_resumeFiles_remove}>&times;</span>
+                        </span>
+                        <span className={styles.fileName_resumeFiles}>{file.name}</span>
+                      </div>
+                    ))}
+                  </div>
+                  {selectedFiles.length < 2 && (
+                    <div>
+                      <input
+                        type="file"
+                        name="resumeFile"
+                        onChange={handleFileChange}
+                        style={{ display: "none" }}
+                        ref={fileInputRef}
+                      />
+                      <div
+                        className={styles.button_resume_file}
+                        onMouseOver={handleMouseEnter}
+                        onMouseOut={handleMouseLeave}
+                        onClick={() => fileInputRef.current.click()}
+                      >
+                        {fileAttached ? "Прикрепить файл" : "Прикрепить файл"}
+                      </div>
+                    </div>
+                  )}
+                </div>
+              </div>
+              <div className={styles.agreement_vacancy}>
+                Нажав на кнопку, соглашаюсь на обработку{" "}
+                <Link
+                  to="../Information"
+                  target="blank"
+                  className={styles.agreement_vacancy_link}
+                  onMouseOver={handleMouseEnter}
+                  onMouseOut={handleMouseLeave}
+                >
+                  персональных данных
+                </Link>
+                <button
+                  className={`${styles.button_vacancy} ${!isFormValid ? styles.disabled : ""}`}
+                  disabled={!isFormValid}
+                  type="submit"
+                  id="submit-button"
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
+                >
+                  <p className={styles.button_name_vacancy}>Откликнуться на вакансию</p>
+                </button>
+              </div>
+            </div>
+            <div className={styles.for_applicants_wrapper}>
+              <div className={styles.for_applicants}>Для соискателей</div>
+              <Link
+                to="mailto:hr@marksgroup.ru"
+                className={styles.for_applicants_mail}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+              >
+                hr@marksgroup.ru
+              </Link>
+              <Link
+                to="https://t.me/marks_career"
+                target="_blank"
+                className={styles.for_applicants_tg}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+              >
+                <img src={icon_tg} alt="Telegram" />
+              </Link>
+              <Link
+                to={"tel:+74951201226"}
+                className={styles.for_applicants_tel}
+                style={{ fontVariantNumeric: "lining-nums" }}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+              >
+                +7&nbsp;(495)&nbsp;120-12-26
+              </Link>
             </div>
           </div>
-          <div className={styles.agreement_vacancy}>
-            Нажав на кнопку, соглашаюсь на обработку{" "}
-            <Link
-              to="../Information"
-              target="blank"
-              className={styles.agreement_vacancy_link}
-              onMouseOver={handleMouseEnter}
-              onMouseOut={handleMouseLeave}
-            >
-              персональных данных
-            </Link>
-            <button
-              className={`${styles.button_vacancy}
-              ${!isFormValid ? styles.disabled : ""}`}
-              disabled={!isFormValid}
-              type="submit"
-              id="submit-button"
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
-            >
-              <p className={styles.button_name_vacancy}>
-                Откликнуться на вакансию
-              </p>
-            </button>
-          </div>
-        </div>
-        <div className={styles.for_applicants_wrapper}>
-          <div className={styles.for_applicants}>Для соискателей</div>
-          <Link
-            to="mailto:hr@marksgroup.ru"
-            className={styles.for_applicants_mail}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-          >
-            hr@marksgroup.ru
-          </Link>
-          <Link
-            to="https://t.me/marks_career"
-            target="_blank"
-            className={styles.for_applicants_tg}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-          >
-            <img src={icon_tg} alt="Telegram" />
-          </Link>
-          <Link
-            to={"tel:+74951201226"}
-            className={styles.for_applicants_tel}
-            style={{ fontVariantNumeric: "lining-nums" }}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-          >
-            +7&nbsp;(495)&nbsp;120-12-26
-          </Link>
-        </div>
-      </div>
-    </form>
+          <ModalVacancyFormSend
+            isOpen={isModalOpen}
+            onRequestClose={() => setIsModalOpen(false)}
+            title="Заявка отправлена!"
+            message="Мы свяжемся с вами в ближайшее время!"
+          />
+        </form>
+      )}
+    </>
   );
 };
 
