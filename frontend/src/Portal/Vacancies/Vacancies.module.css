@@ -230,19 +230,17 @@ font-family: var(--font-raleway);
   margin-top: 0px;
   border: none !important;
   outline: none;
-  border-radius: none;
+  border-radius: 0;
   background-color: rgba(246, 246, 246, 0.92);
   box-shadow: -2px 4px 22px 0px rgba(29, 46, 67, 0.46);
   backdrop-filter: blur(8.5px);
-  overflow-y: auto;
-  animation: fadeInOut 0.4s ease-out forwards;
+  animation: fadeInOut 0.5s ease-out forwards;
 }
 
 @keyframes fadeInOut {
   from {
     opacity: 0;
   }
-
   to {
     opacity: 1;
   }
@@ -264,7 +262,7 @@ font-family: var(--font-raleway);
 .filterModalContent {
   display: flex;
   flex-direction: column;
-  padding: 4.5rem 6.5rem 0rem 6.5rem;
+  padding: 4.5rem 6rem 0rem 6.5rem;
 }
 
 .filterName_button_modal_wrapper {
@@ -316,20 +314,22 @@ font-family: var(--font-raleway);
   box-sizing: border-box;
   border: 1px solid #1D2E43;
   border-radius: 2.12rem;
-  background-color: transparent; 
+  background-color: var(--white-F6F6F6); 
   color: var(--black-1D2E43);
-  transition: background-color 0.3s ease-in-out, color 0.3s ease-in-out; 
+  transition: background-color 0.2s ease-in-out, color 0.2s ease-in-out; 
 }
 
-/* .filterModalButton:hover {
-  background-color: var(--light-gray-C0C5CB);
-  border: 1px solid var(--light-gray-C0C5CB);
-} */
+@media (min-width: 1025px) {
+  .filterModalButton:hover {
+    background-color: var(--light-gray-C0C5CB);
+    border: 1px solid var(--light-gray-C0C5CB);
+  }
+}
 
-.activeFilter {
-  background-color: var(--black-1D2E43) !important;
-  color: var(--white-F6F6F6) !important;
-  border: none !important;
+.filterModalButton.activeFilter {
+  background-color: var(--black-1D2E43);
+  color: var(--white-F6F6F6);
+  border: none;
 }
 
 .applyButtonWrapper {
@@ -577,9 +577,6 @@ font-family: var(--font-raleway);
   align-items: center;
 }
 
-
-
-
 /* Стили для кнопки "Показать все" */
 
 .showVacanciesOfTotalVacanciesContainer {
@@ -765,8 +762,6 @@ font-family: var(--font-raleway);
 .menu_button_group_vacancy_wrapper_main_swiper {
   display: none;
 }
-
-
 
 @media screen and (min-width: 1025px) and (max-width: 1600px) {
   .wrapper_vacancies {
@@ -1083,7 +1078,6 @@ font-family: var(--font-raleway);
   cursor: none;
   }
   
-  
   .showManyButton:hover {
     background-color: var(--blue-75BBFD);
     color: var(--white-F6F6F6);
@@ -1135,19 +1129,6 @@ font-family: var(--font-raleway);
   .filterModalButton {
      cursor: none;
   }
-/*   
-  .filterModalButton:hover {
-    background-color: transparent !important;
-   color: var(--black-1D2E43) !important;
-   border: 1px solid var(--black-1D2E43) !important;
-  }
-
-  .activeFilter {
-    background-color: var(--black-1D2E43) !important;
-    color: var(--white-F6F6F6) !important;
-    border: none !important;
-  } */
-  
 
   .applyButton {
     cursor: none;
@@ -1519,19 +1500,6 @@ font-family: var(--font-raleway);
   .filterModalButton {
     cursor: none;
  }
-/*  
- .filterModalButton:hover {
-   background-color: transparent !important;
-   color: var(--black-1D2E43) !important;
-   border: 1px solid var(--black-1D2E43) !important;
- }
-
- .activeFilter {
-  background-color: var(--black-1D2E43) !important;
-  color: var(--white-F6F6F6) !important;
-  border: none !important;
-} */
-
   .applyButtonWrapper {
     display: flex;
     padding-top: 6px;   
