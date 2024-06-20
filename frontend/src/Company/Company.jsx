@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useRef, useState, useMemo } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  useMemo,
+} from "react";
 import Modal from "react-modal";
 import { useInView } from "react-intersection-observer";
 import { useDispatch, useSelector } from "react-redux";
@@ -33,6 +39,7 @@ import CompanySubscriptionForm from "../UI/CompanySubscriptionForm/CompanySubscr
 import CounterCompanyMobile from "../UI/CounterCompanyMobile";
 import CounterCompanyMobile2 from "../UI/CounterCompanyMobile2";
 import CompanyGroupSlider from "../UI/CompanyGroupSlider/CompanyGroupSlider";
+import ModalVacancyFormSend from "../UI/VacancyFormContact/ModalVacancyFormSend";
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 
@@ -41,17 +48,23 @@ export default function Company({
   handleMouseLeave,
   handleMouseHover,
 }) {
-  const videoSource = useMemo(() => ({
-    large: `${Host}/videos/company_full.mp4`,
-    medium: `${Host}/videos/company_ipad.mp4`,
-    small: `${Host}/videos/company_mob.mp4`,
-  }), []);
+  const videoSource = useMemo(
+    () => ({
+      large: `${Host}/videos/company_full.mp4`,
+      medium: `${Host}/videos/company_ipad.mp4`,
+      small: `${Host}/videos/company_mob.mp4`,
+    }),
+    []
+  );
 
-  const videoSource2 = useMemo(() => ({
-    large: `${Host}/videos/main_company_full.mp4`,
-    medium: `${Host}/videos/main_company_ipad.mp4`,
-    small: `${Host}/videos/main_company_mobile.mp4`,
-  }), []);
+  const videoSource2 = useMemo(
+    () => ({
+      large: `${Host}/videos/main_company_full.mp4`,
+      medium: `${Host}/videos/main_company_ipad.mp4`,
+      small: `${Host}/videos/main_company_mobile.mp4`,
+    }),
+    []
+  );
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [countPercent, setCountPercent] = useState(0);
   const [countHuman, setCountHuman] = useState(0);
@@ -65,16 +78,19 @@ export default function Company({
   const [showCards, setShowCards] = useState(false);
   const [activeButton, setActiveButton] = useState("Руководство");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoadingFormContacts, setIsLoadingFormContacts] = useState(false);
+  const [modalOpenFormContacts, setModalOpenFormContacts] = useState(false);
+  const [isLoadingSubscription, setIsLoadingSubscription] = useState(false);
+  const [modalOpenSubscription, setModalOpenSubscription] = useState(false);
 
   const dispatch = useDispatch();
-  const { selectedCard, category, staff, loading, error, allImagesLoaded } = useSelector(
-    (state) => state.staff
-  );
+  const { selectedCard, category, staff, loading, error, allImagesLoaded } =
+    useSelector((state) => state.staff);
 
   const blockSlider = useRef(null);
   const nameCompanyRef = useRef(null);
   const thisBlockRef = useRef(null);
- 
+
   const countDepartment = useSelector((state) => state.counter.countDepartment);
   const countGap = useSelector((state) => state.counter.countGap);
   const countScient = useSelector((state) => state.counter.countScient);
@@ -96,7 +112,7 @@ export default function Company({
 
     return () => {
       window.removeEventListener("scroll", scrollToTop);
-     };
+    };
   }, []);
 
   useEffect(() => {
@@ -129,22 +145,24 @@ export default function Company({
     }
   }, [category, dispatch]);
 
-  const handleButtonClick = useCallback((newCategory, selectedCardId) => {
-    if (selectedCardId) {
-      dispatch(selectCard(selectedCardId));
-      setIsModalOpen(true);
-    } else {
-      setIsModalOpen(false);
-      dispatch(selectCard(null));
-      setShowCards(true);
-      if (newCategory !== category) {
-        setActiveButton(newCategory);
-        dispatch(setCategory(newCategory));
+  const handleButtonClick = useCallback(
+    (newCategory, selectedCardId) => {
+      if (selectedCardId) {
+        dispatch(selectCard(selectedCardId));
+        setIsModalOpen(true);
+      } else {
+        setIsModalOpen(false);
+        dispatch(selectCard(null));
+        setShowCards(true);
+        if (newCategory !== category) {
+          setActiveButton(newCategory);
+          dispatch(setCategory(newCategory));
+        }
       }
-    }
-  }, [category, dispatch]);
+    },
+    [category, dispatch]
+  );
 
- 
   useEffect(() => {
     const timer1 = setTimeout(() => {
       if (countPercent < 1000) {
@@ -182,7 +200,7 @@ export default function Company({
   ]);
 
   useEffect(() => {
-     gsap?.registerPlugin(ScrollTrigger);
+    gsap?.registerPlugin(ScrollTrigger);
 
     const { elementsRight } = { elementsRight: [blockSlider.current] };
 
@@ -244,12 +262,15 @@ export default function Company({
     }
   }, []);
 
-  const buttonsStuff = useMemo(() => [
-    { name: "Руководство", onClick: handleButtonClick },
-    // { name: "Руководители отделов", onClick: handleButtonClick },
-    { name: "Научно-техническое сопровождение", onClick: handleButtonClick },
-    // { name: "HR", onClick: handleButtonClick },
-  ], [handleButtonClick]);
+  const buttonsStuff = useMemo(
+    () => [
+      { name: "Руководство", onClick: handleButtonClick },
+      // { name: "Руководители отделов", onClick: handleButtonClick },
+      { name: "Научно-техническое сопровождение", onClick: handleButtonClick },
+      // { name: "HR", onClick: handleButtonClick },
+    ],
+    [handleButtonClick]
+  );
 
   const handleImageLoad = useCallback(() => {
     if (allImagesLoaded) {
@@ -317,7 +338,7 @@ export default function Company({
               <source src={videoSrc2} type="video/mp4" preload="auto" />
             </video>
           )}
-        </div>      
+        </div>
         <div ref={blockSlider} className={styles.underSlider_text_wrapper}>
           <span className={styles.span_underSlider_text1}>
             Создаём пространства будущего.
@@ -382,7 +403,7 @@ export default function Company({
             <div className={styles.this_block}>&mdash; ЭТО</div>
           </div>
           <div className={styles.right_about}>
-          <div className={styles.text_right_about}>
+            <div className={styles.text_right_about}>
               {/* <span>От идеи до реализации – работа над проектами на всех этапах жизненного цикла</span>
             <br />
             <br />
@@ -513,7 +534,7 @@ export default function Company({
             handleMouseHover={handleMouseHover}
           />
         )}
-          {/* {loading && (
+        {/* {loading && (
           <div className={styles.loadingOverlay}>
             <LoadingCircle />
           </div>
@@ -653,19 +674,19 @@ export default function Company({
                   },
                   content: {
                     zIndex: 10,
-                    overflow: 'auto',
-                    WebkitOverflowScrolling: 'touch', // Для плавной прокрутки в Safari
-                    '&::WebkitScrollbar': {
-                      width: '12px',
+                    overflow: "auto",
+                    WebkitOverflowScrolling: "touch", // Для плавной прокрутки в Safari
+                    "&::WebkitScrollbar": {
+                      width: "12px",
                     },
-                    '&::WebkitScrollbarTrack': {
-                      backgroundColor: '#75BBFD',
-                      borderRadius: '6px',
+                    "&::WebkitScrollbarTrack": {
+                      backgroundColor: "#75BBFD",
+                      borderRadius: "6px",
                     },
-                    '&::WebkitScrollbarTrack': {
-                      backgroundColor: 'transparent',
+                    "&::WebkitScrollbarTrack": {
+                      backgroundColor: "transparent",
                     },
-                  },                
+                  },
                 }}
               >
                 {selectedCard && (
@@ -1014,9 +1035,9 @@ export default function Company({
                 >
                   <div className={styles.wrapper_container_item_stuff}>
                     <img
-                        className={`${styles.container__img_stuff} ${
-                          showCards ? "loaded" : ""
-                        }`}
+                      className={`${styles.container__img_stuff} ${
+                        showCards ? "loaded" : ""
+                      }`}
                       src={`${Host}/images/imageStuff/${el.img}`}
                       onLoad={handleImageLoad}
                       onError={(e) => {
@@ -1067,11 +1088,11 @@ export default function Company({
                   className={styles.slide_container_item_stuff}
                   onClick={() => handleButtonClick(category, el.id)}
                 >
-                  <div className={styles.wrapper_container_item_stuff} >
+                  <div className={styles.wrapper_container_item_stuff}>
                     <img
-                         className={`${styles.container__img_stuff} ${
-                          showCards ? "loaded" : ""
-                        }`}
+                      className={`${styles.container__img_stuff} ${
+                        showCards ? "loaded" : ""
+                      }`}
                       src={`${Host}/images/imageStuff/${el.img}`}
                       onLoad={handleImageLoad}
                       onError={(e) => {
@@ -1101,19 +1122,125 @@ export default function Company({
             )}
           </div>
           <div className={styles.form_wrapper}>
+            {isLoadingFormContacts && (
+              <div
+                style={{
+                  position: "relative",
+                  height: "30vh",
+                  width: window.innerWidth <= 768 ? "100vw" : "50vw",
+                }}
+              >
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "100%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                    zIndex: 10,
+                  }}
+                >
+                  <LoadingCircle />
+                </div>
+              </div>
+            )}
+            {modalOpenFormContacts && (
+              <div
+                style={{
+                  position: "relative",
+                  height: "30vh",
+                  width: window.innerWidth <= 768 ? "100vw" : "50vw",
+                }}
+              >
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "100%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                    zIndex: 10,
+                  }}
+                >
+                  <ModalVacancyFormSend
+                    isOpen={modalOpenFormContacts}
+                    onRequestClose={() => setModalOpenFormContacts(false)}
+                    title="Ваше сообщение доставлено!"
+                    message="Мы ответим вам в ближайшее время!"
+                  />
+                </div>
+              </div>
+            )}
             <div className={styles.company_form_contacts_wrapper}>
-              <CompanyFormContacts 
-               handleMouseEnter={handleMouseEnter}
-               handleMouseLeave={handleMouseLeave}
-               handleMouseHover={handleMouseHover}
-              />
+              {!isLoadingFormContacts && !modalOpenFormContacts && (
+                <>
+                  <CompanyFormContacts
+                    handleMouseEnter={handleMouseEnter}
+                    handleMouseLeave={handleMouseLeave}
+                    handleMouseHover={handleMouseHover}
+                    setIsLoading={setIsLoadingFormContacts}
+                    setModalOpen={setModalOpenFormContacts}
+                  />
+                </>
+              )}
             </div>
+            {isLoadingSubscription && (
+              <div
+                style={{
+                  position: "relative",
+                  height: "30vh",
+                  width: window.innerWidth <= 768 ? "100vw" : "50vw",
+                }}
+              >
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "100%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                    zIndex: 100,
+                  }}
+                >
+                  <LoadingCircle />
+                </div>
+              </div>
+            )}
+            {modalOpenSubscription && (
+              <div
+                style={{
+                  position: "relative",
+                  height: "30vh",
+                  width: window.innerWidth <= 768 ? "100vw" : "50vw",
+                }}
+              >
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "100%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                    zIndex: 100,
+                  }}
+                >
+                  <ModalVacancyFormSend
+                    isOpen={modalOpenSubscription}
+                    onRequestClose={() => setModalOpenSubscription(false)}
+                    title="Вы подписаны!"
+                    message="Если захотите завершить подписку, напишите нам!"
+                  />
+                </div>
+              </div>
+            )}
             <div className={styles.companySubscriptionForm_wrapper}>
-              <CompanySubscriptionForm 
-               handleMouseEnter={handleMouseEnter}
-               handleMouseLeave={handleMouseLeave}
-               handleMouseHover={handleMouseHover}
-              />
+              {!isLoadingSubscription && !modalOpenSubscription && (
+                <>
+                  <CompanySubscriptionForm
+                    handleMouseEnter={handleMouseEnter}
+                    handleMouseLeave={handleMouseLeave}
+                    handleMouseHover={handleMouseHover}
+                    setIsLoading={setIsLoadingSubscription}
+                    setModalOpen={setModalOpenSubscription}
+                  />
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -1121,5 +1248,3 @@ export default function Company({
     </>
   );
 }
-
-// jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj
