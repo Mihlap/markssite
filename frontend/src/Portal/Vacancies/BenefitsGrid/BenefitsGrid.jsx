@@ -12,28 +12,28 @@ const benefitsArray = [
 	},
 	{
 		icon: "../icons/benefit-1.svg",
-		title: "Мы за развитие команды",
-		desc: "Регулярные обучение, Ревит, индивидуальные программы, управление",
+		title: "Свобода выбора и мышления",
+		desc: "Ценим идеи наших сотрудников, поощряем инициативность",
 	},
 	{
 		icon: "../icons/benefit-1.svg",
-		title: "Мы за развитие команды",
-		desc: "Регулярные обучение, Ревит, индивидуальные программы, управление",
+		title: "Заботимся о здоровье",
+		desc: "ДМС, корпоративный спорт: футбол, баскетбол, пинг-понг, волейбол, йога",
 	},
 	{
 		icon: "../icons/benefit-1.svg",
-		title: "Мы за развитие команды",
-		desc: "Регулярные обучение, Ревит, индивидуальные программы, управление",
+		title: "Или тут про язвки?",
+		desc: "Корпоративная скидка на Skyeng, внутреннее обучение английскому",
 	},
 	{
 		icon: "../icons/benefit-1.svg",
-		title: "Мы за развитие команды",
-		desc: "Регулярные обучение, Ревит, индивидуальные программы, управление",
+		title: "Международное проектирование",
+		desc: "Создаем уникальные объекты по России и миру",
 	},
 	{
 		icon: "../icons/benefit-1.svg",
-		title: "Мы за развитие команды",
-		desc: "Регулярные обучение, Ревит, индивидуальные программы, управление",
+		title: "Весело отрывемся",
+		desc: "Корпоративные мероприятия, ежегодный сплав",
 	},
 ]
 
@@ -42,19 +42,21 @@ const BenefitsGrid = () => {
 		<section className={styles.BenefitsGrid}>
 			<h2 className={styles.BenefitsGrid__title}>Преимущества работы с нами
 			</h2>
-			<div className={styles.BenefitsGrid__items}>
+			<ul className={styles.BenefitsGrid__items}>
 				{benefitsArray.map((item, index) => {
 					return (
-						<div className={styles.BenefitsGrid__item} key={index}>
+						<li className={styles.BenefitsGrid__item} key={index}>
 							<div className={styles.BenefitsGrid__icon}>
-									<img src={benefit_1}/>
+									<img src={item.icon}/>
 							</div>
-							<h3>{item.title}</h3>
-							<span>{item.desc}</span>
-						</div>
+							<div className={styles.BenefitsGrid__text}>
+								<h3>{item.title}</h3>
+								<span>{item.desc}</span>
+							</div>
+						</li>
 					)})
 				}
-			</div>
+			</ul>
 
 		</section>
 	);

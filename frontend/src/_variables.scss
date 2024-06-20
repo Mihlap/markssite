@@ -1,15 +1,16 @@
 $bp1: 1920px;
 $bp2: 1440px;
-$bp3: 1024px;
-$bp4: 768px;
-$bp5: 576px;
-$bp6: 320px;
+$bp3: 1280px;
+$bp4: 1024px;
+$bp5: 768px;
+$bp6: 576px;
+$bp7: 377px;
 
-$br-btn: 66px; 
 
 @function rem($pixels) {
 	@return calc($pixels / 16) + rem;
 }
+
 // $br1: 3px;
 // $br2: 12px;
 // $br3: 10px;

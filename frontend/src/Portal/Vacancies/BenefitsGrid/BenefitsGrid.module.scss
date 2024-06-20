@@ -2,12 +2,13 @@
 @import "../../../_variables.scss";
 
 .BenefitsGrid {
-  padding: 7.5rem 9rem;
+  padding: rem(120) rem(144);
   background: linear-gradient(261.46deg, rgba(255, 203, 193, 0.09) -4.67%, rgba(117, 187, 253, 0.09) 44.63%, rgba(188, 188, 188, 0.09) 103.07%);
 
   &__title {
     font-size: rem(32);
     margin-bottom: rem(80);
+    font-family: var(--font-unbounded);
   }
 
   &__items {
@@ -18,6 +19,7 @@
   }
 
   &__icon {
+    flex-shrink: 0;
     width: rem(160);
     margin-bottom: rem(16);
 
@@ -33,6 +35,44 @@
       font-weight: bold;
       font-size: rem(18);
       margin-bottom: rem(8);
+    }
+  }
+
+  @media all and (max-width:$bp4){
+    padding: rem(80) rem(174);
+
+    &__title {
+      font-size: rem(24);
+      margin-bottom: rem(54);
+    }
+
+    &__items {
+      grid-template-columns: repeat(2, 1fr);
+      column-gap: rem(100);
+    }
+  }
+  
+  @media all and (max-width:$bp5){
+    padding: rem(64) rem(16);
+    
+    &__title {
+      margin-bottom: rem(48);
+    }
+
+    &__items {
+      grid-template-columns: 1fr;
+      gap: rem(48);
+    }
+
+    &__item {
+      display: flex;
+      align-items: center;
+    }
+
+    &__icon {
+      width: rem(80);
+      margin-bottom: 0;
+      margin-right: rem(8);
     }
   }
 }
