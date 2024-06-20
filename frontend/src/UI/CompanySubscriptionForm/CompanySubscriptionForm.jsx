@@ -8,6 +8,8 @@ const CompanySubscriptionForm = ({
   handleMouseEnter,
   handleMouseLeave,
   handleMouseHover,
+  setIsLoading,
+  setModalOpen,
 }) => {
   const [isFocused, setIsFocused] = useState(false);
   const [value, setValue] = useState("");
@@ -40,11 +42,14 @@ const CompanySubscriptionForm = ({
 
   const handleSubmit = useCallback(async (event) => {
     event.preventDefault();
+    setIsLoading(true);
+
     const email = event.target.querySelector("#email-input").value;
     const isValid = isValidRegex.test(email);
     setIsValid(isValid);
     setShowError(!isValid);
     if (!isValid) {
+      setIsLoading(false);
       setShowError(true);
       return;
     }
@@ -58,6 +63,7 @@ const CompanySubscriptionForm = ({
       });
 
       if (response.status === 200) {
+        setModalOpen(true);
         setMessage("Вы успешно подписались на новости.");
         setValue("");
       } else {
@@ -65,8 +71,10 @@ const CompanySubscriptionForm = ({
       }
     } catch (error) {
       setMessage("Произошла ошибка при подписке.");
+    }  finally {
+      setIsLoading(false);
     }
-  }, []);
+  }, [setIsLoading, setModalOpen]);
 
   const emailInputStyle = useMemo(() => ({
     borderColor: isValid ? "" : "#E00747"
