@@ -1,102 +1,61 @@
 import React, { useRef, useEffect } from 'react';
 import styles from "./VacanciesMain3.module.scss";
 import Intro from "./Intro/Intro";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Navigation } from "swiper";
+import RatingSwiper from './RatingSwiper/RatingSwiper';
 import BenefitsGrid from './BenefitsGrid/BenefitsGrid';
+import SocialsSwiper from './SocialsSwiper/SocialsSwiper';
 
 import "swiper/css";
 import "swiper/css/navigation";
 
-import img1 from "./icons/vacancies-slider.jpg";
-import img1x2 from "./icons/vacancies-slider-2x.jpg";
+
+import invite_1 from "./icons/invite-1.png";
+import invite_2 from "./icons/invite-2.png";
+
 
 const VacanciesMain3 = () => {
-	const prevRef = useRef(null);
-	const nextRef = useRef(null);
-	const swiperRef = useRef(null);
-
-	useEffect(() => {
-		if (swiperRef.current && swiperRef.current.swiper) {
-			const swiperInstance = swiperRef.current.swiper;
-			swiperInstance.params.navigation.prevEl = prevRef.current;
-			swiperInstance.params.navigation.nextEl = nextRef.current;
-			swiperInstance.navigation.init();
-			swiperInstance.navigation.update();
-		}
-	}, []);
-
 	return (
 		<>
 			<Intro />
-			<BenefitsGrid />
+		
+			<section className={styles.socials}>
+				<div className={styles.socials__header}>
+					<h2>Подписывайся на <span>наши каналы в&nbsp;социальных сетях</span>, там всегда можно найти информации о лекциях, конференциях и ключевых объектах</h2>
+				</div>
+				<div className={styles.socials__slider}>
+					<SocialsSwiper />
+				</div>
+			</section>
 
 			
 			<section className={styles.rating}>
 				<div className={styles.rating__header}>
-					<div>
+					<h2>
 						<span>Передовая компания</span><span>в сфере проектирования</span>
+					</h2>
+				</div>
+				<RatingSwiper />
+			</section>
+			
+			<BenefitsGrid />
+			
+			{/* <section className={styles.invite}>
+				<h2>Приглашаем студентов на стажировку</h2>
+				<div className={styles.invite__content}>
+					<div className={styles.invite__content}>
+						<div className={styles.invite__photos}>
+							<img src={invite_1}></img>
+							<img src={invite_2}></img>
+							<img src={invite_1}></img>
+							<img src={invite_1}></img>
+							<div className={styles.invite__photohh}></div>
+						</div>
+						<div className={styles.invite__desc}>Команда <span>молодых специалистов MARKSGROUP</span> помогает с адаптацией и погружением в команду
+						</div>
+						<a href="#" className={styles.invite__button}>Узнать больше</a>
 					</div>
 				</div>
-				<div className={styles.rating__navigation}>
-					<button ref={prevRef}></button>
-					<button ref={nextRef}></button>
-				</div>
-				<Swiper
-					ref={swiperRef}
-					modules={[Navigation]}
-					spaceBetween={30}
-					slidesPerView={1}
-					loop={true}
-					navigation={{
-							prevEl: prevRef.current,
-							nextEl: nextRef.current,
-					}}
-				>
-					<SwiperSlide>
-						<div className={styles.rating__slide}>
-							<div className={styles.rating__full}>
-								<span className={styles.rating__date}>Октябрь 31, 2022</span>
-								<h3 className={styles.rating__title}>Победитель 100 лучших объектов России в номинации  «Лучшие конструктивные решения»</h3>
-								<div className={styles.rating__picture}>
-										<img src={img1} srcSet={img1x2} alt="Винодельня" />
-								</div>
-							</div>
-							<div className={styles.rating__rows}>
-								<div className={styles.rating__row}>
-										<span className={styles.rating__date}>Октябрь 31, 2022</span>
-										<h3 className={styles.rating__title}>Победитель рейтинга «Репутация компании» среди столичных проектных и архитектурных бюро</h3>
-								</div>
-								<div className={styles.rating__row}>
-										<span className={styles.rating__date}>Октябрь 31, 2022</span>
-										<h3 className={styles.rating__title}>Премия Москомархитектуры в номинации «Лучшее АГР объекта транспортной инфраструктуры»</h3>
-								</div>
-							</div>
-						</div>
-					</SwiperSlide>
-					<SwiperSlide>
-						<div className={styles.rating__slide}>
-							<div className={styles.rating__rows}>
-								<div className={styles.rating__row}>
-									<span className={styles.rating__date}>Октябрь 31, 2022</span>
-									<h3 className={styles.rating__title}>Победитель рейтинга «Репутация компании» среди столичных проектных и архитектурных бюро</h3>
-								</div>
-								<div className={styles.rating__row}>
-									<span className={styles.rating__date}>Октябрь 31, 2022</span>
-									<h3 className={styles.rating__title}>Премия Москомархитектуры в номинации «Лучшее АГР объекта транспортной инфраструктуры»</h3>
-								</div>
-							</div>
-							<div className={styles.rating__full}>
-								<span className={styles.rating__date}>Октябрь 31, 2022</span>
-								<h3 className={styles.rating__title}>Победитель 100 лучших объектов России в номинации  «Лучшие конструктивные решения»</h3>
-								<div className={styles.rating__picture}>
-									<img src={img1} srcSet={img1x2} alt="Винодельня"/>
-								</div>
-							</div>
-						</div>
-					</SwiperSlide>
-				</Swiper>
-			</section>
+			</section> */}
 		</>
 	);
 };
