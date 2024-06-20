@@ -3,11 +3,11 @@
 
 .Intro {
   position: relative;
-  padding-top: 48px;
+  padding-top: rem(48);
 
   &__wrapper {
-    height: 544px;
-    padding: 64px 0;
+    height:rem(544);
+    padding: rem(64) 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -23,19 +23,19 @@
     font-family: var(--font-unbounded);
     font-style: normal;
     font-weight: var(--fw-300);
-    padding-left: 5%;
+    padding-left: rem(62);
   }
 
   &__pretitle {
     display: inline-block;
-    font-size: 24px;
-    line-height: 28px;
-    margin-bottom: 8px;
+    font-size: rem(24);
+    line-height: rem(28);
+    margin-bottom: rem(8);
   }
 
   &__title {
-    font-size: 48px;
-    line-height: 64px;
+    font-size: rem(48);
+    line-height: rem(64);
   }
 
   @media all and (max-width:$bp4){
@@ -44,22 +44,28 @@
     }
 
     &__pretitle {
-      font-size: 18px;
-      line-height: 26px;
+      font-size: rem(18);
+      line-height: rem(26);
     }
   
     &__title {
-      font-size: 32px;
-      line-height: 40px;
+      font-size: rem(32);
+      line-height: rem(40)
     }
 
     &__text {
       width: 100%;
-      padding-right: 5%;
     }
 
     &__animation {
       display: none;
+    }
+  }
+
+  @media all and (max-width:$bp5){
+    &__text {
+      width: 100%;
+      padding: 0 rem(16);
     }
   }
 }
