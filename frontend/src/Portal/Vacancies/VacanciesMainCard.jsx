@@ -39,6 +39,8 @@ import frame4 from "./icons/frame4.png";
 import slider1 from "./icons/slider1.png";
 import slider2 from "./icons/slider2.png";
 import slider3 from "./icons/slider3.png";
+import LoadingVacancy from "../../Loading/LoadingVacancy";
+import ModalVacancyFormSend from "../../UI/VacancyFormContact/ModalVacancyFormSend";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -63,8 +65,8 @@ const VacanciesMainCard = ({
   const dispatch = useDispatch();
   const { id } = useParams();
   const vacancies = useSelector((state) => state.vacancies.vacancies);
-  // const loading = useSelector((state) => state.vacancies.loading);
-  // const error = useSelector((state) => state.vacancies.error);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedVacancy, setSelectedVacancy] = useState(null);
 
   const formRef = useRef(null);
@@ -155,6 +157,13 @@ const VacanciesMainCard = ({
         <title>Marks Group</title>
       </Helmet>
       <div className={styles.main_vacancyWrapper}>
+      {isLoading && <LoadingVacancy />}
+    <ModalVacancyFormSend
+      isOpen={isModalOpen}
+      onRequestClose={() => setIsModalOpen(false)}
+      title="Заявка отправлена!"
+      message="Мы свяжемся с вами в ближайшее время!"
+    />
         <div
           className={styles.main_vacancy_block__background1}
           style={{ backgroundImage: `url(${star3d_1})` }}
@@ -242,6 +251,8 @@ const VacanciesMainCard = ({
                       handleMouseLeave={handleMouseLeave}
                       handleMouseHover={handleMouseHover}
                       buttonRef={buttonRef}
+                      setIsLoading={setIsLoading}
+                      setIsModalOpen={setIsModalOpen}
                     />
                   </div>
                 </div>
@@ -417,7 +428,7 @@ const VacanciesMainCard = ({
               className={styles.sliderContainer_block}
               ref={sliderCardRef}
               spaceBetween={30}
-              touch="true"             
+              touch="true"
               direction="horizontal"
               loop={true}
               breakpoints={{
@@ -471,32 +482,35 @@ const VacanciesMainCard = ({
             </Swiper>
           </div>
         </div>
-        <div className={styles.main_vacancyWrapper__frameBlockNext}>    
-        <div className={styles.main_vacancyWrapper__3dNext}>  
-          <div
-            className={styles.background9next}
-            style={{ backgroundImage: `url(${star3d_9})` }}
-          />
-          <div
-            className={styles.background10next}
-            style={{ backgroundImage: `url(${star3d_10})` }}
-          />
-          <div
-            className={styles.background11next}
-            style={{ backgroundImage: `url(${star3d_11})` }}
-          />
-           </div>
+        <div className={styles.main_vacancyWrapper__frameBlockNext}>
+          <div className={styles.main_vacancyWrapper__3dNext}>
+            <div
+              className={styles.background9next}
+              style={{ backgroundImage: `url(${star3d_9})` }}
+            />
+            <div
+              className={styles.background10next}
+              style={{ backgroundImage: `url(${star3d_10})` }}
+            />
+            <div
+              className={styles.background11next}
+              style={{ backgroundImage: `url(${star3d_11})` }}
+            />
+          </div>
           <div className={styles.frameBlockLeft}>
             <div className={styles.blockTitle}>Плюсы работы с&nbsp;нами</div>
-            <span className={styles.blockText}>Безусловная любовь к&nbsp;профессии</span>
+            <span className={styles.blockText}>
+              Безусловная любовь к&nbsp;профессии
+            </span>
             <span className={styles.blockText1}>
-              Мы любим не&nbsp;только профессию, но&nbsp;и&nbsp;наш коллектив, делаем все, что&nbsp;бы
-               сотрудникам было приятно и&nbsp;комфортно. Каждый понедельник -
-              отмечаем фруктовый день, весело гуляем на&nbsp;корпоративах, проводим
-              спортивные и&nbsp;светские мероприятия
+              Мы любим не&nbsp;только профессию, но&nbsp;и&nbsp;наш коллектив,
+              делаем все, что&nbsp;бы сотрудникам было приятно и&nbsp;комфортно.
+              Каждый понедельник - отмечаем фруктовый день, весело гуляем
+              на&nbsp;корпоративах, проводим спортивные и&nbsp;светские
+              мероприятия
             </span>
           </div>
-          <div className={styles.frameBlockRight}>         
+          <div className={styles.frameBlockRight}>
             <div className={styles.main_vacancyWrapper__frameBlock_frame}>
               <img
                 className={styles.main_vacancyWrapper__frame}
@@ -504,7 +518,7 @@ const VacanciesMainCard = ({
                 alt={frame1}
               />
               <span className={styles.main_vacancyWrapper__frameSpan}>
-              Корпоративный английский
+                Корпоративный английский
               </span>
             </div>
             <div className={styles.main_vacancyWrapper__frameBlock_frame}>
@@ -514,7 +528,7 @@ const VacanciesMainCard = ({
                 alt={frame2}
               />
               <span className={styles.main_vacancyWrapper__frameSpan}>
-              Библиотека профессиональной литературы
+                Библиотека профессиональной литературы
               </span>
             </div>
             <div className={styles.main_vacancyWrapper__frameBlock_frame}>
@@ -524,7 +538,7 @@ const VacanciesMainCard = ({
                 alt={frame3}
               />
               <span className={styles.main_vacancyWrapper__frameSpan}>
-              Корпоративное такси для встреч
+                Корпоративное такси для встреч
               </span>
             </div>
             <div className={styles.main_vacancyWrapper__frameBlock_frame}>
@@ -534,7 +548,7 @@ const VacanciesMainCard = ({
                 alt={frame4}
               />
               <span className={styles.main_vacancyWrapper__frameSpan}>
-              Оплачиваемы занятия в&nbsp;фитнес клубе
+                Оплачиваемы занятия в&nbsp;фитнес клубе
               </span>
             </div>
             <div className={styles.main_vacancyWrapper__frameBlock_frame}>
@@ -544,7 +558,7 @@ const VacanciesMainCard = ({
                 alt={frame1}
               />
               <span className={styles.main_vacancyWrapper__frameSpan}>
-              Поддержка и&nbsp;адаптация от&nbsp;совета молодых специалистов
+                Поддержка и&nbsp;адаптация от&nbsp;совета молодых специалистов
               </span>
             </div>
             <div className={styles.main_vacancyWrapper__frameBlock_frame}>
@@ -554,14 +568,17 @@ const VacanciesMainCard = ({
                 alt={frame1}
               />
               <span className={styles.main_vacancyWrapper__frameSpan}>
-              Обучение и&nbsp;карьерный рост
+                Обучение и&nbsp;карьерный рост
               </span>
             </div>
           </div>
         </div>
-        <div className={styles.temporaryText} buttonRef={buttonRef}>"Мы ищем именно тебя!"</div>
+        <div className={styles.temporaryText} buttonRef={buttonRef}>
+          "Мы ищем именно тебя!"
+        </div>
         <div className={styles.textUnderForm}>
-          Оставьте ваши контакты, мы всегда&nbsp;в&nbsp;поиске талантливых профессионалов
+          Оставьте ваши контакты, мы всегда&nbsp;в&nbsp;поиске талантливых
+          профессионалов
         </div>
         <div
           className={styles.main_vacancyWrapper__vacancyFormWrapper}
@@ -571,7 +588,9 @@ const VacanciesMainCard = ({
             initialDirection={selectedVacancy?.direction}
             handleMouseEnter={handleMouseEnter}
             handleMouseLeave={handleMouseLeave}
-            handleMouseHover={handleMouseHover}          
+            handleMouseHover={handleMouseHover}
+            setIsLoading={setIsLoading}
+            setIsModalOpen={setIsModalOpen}
           />
         </div>
       </div>
