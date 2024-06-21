@@ -1,37 +1,41 @@
 import React from 'react';
 import styles from "./BenefitsGrid.module.scss";
 
-
 import benefit_1 from "../icons/benefit-1.svg";
+import benefit_2 from "../icons/benefit-2.svg";
+import benefit_3 from "../icons/benefit-3.svg";
+import benefit_4 from "../icons/benefit-4.svg";
+import benefit_5 from "../icons/benefit-5.svg";
+import benefit_6 from "../icons/benefit-6.svg";
 
 const benefitsArray = [
 	{
-		icon: "../icons/benefit-1.svg",
+		icon: benefit_1,
 		title: "Мы за развитие команды",
 		desc: "Регулярные обучение, Ревит, индивидуальные программы, управление",
 	},
 	{
-		icon: "../icons/benefit-1.svg",
+		icon: benefit_2,
 		title: "Свобода выбора и мышления",
 		desc: "Ценим идеи наших сотрудников, поощряем инициативность",
 	},
 	{
-		icon: "../icons/benefit-1.svg",
+		icon: benefit_3,
 		title: "Заботимся о здоровье",
 		desc: "ДМС, корпоративный спорт: футбол, баскетбол, пинг-понг, волейбол, йога",
 	},
 	{
-		icon: "../icons/benefit-1.svg",
+		icon: benefit_4,
 		title: "Или тут про язвки?",
 		desc: "Корпоративная скидка на Skyeng, внутреннее обучение английскому",
 	},
 	{
-		icon: "../icons/benefit-1.svg",
+		icon: benefit_5,
 		title: "Международное проектирование",
 		desc: "Создаем уникальные объекты по России и миру",
 	},
 	{
-		icon: "../icons/benefit-1.svg",
+		icon: benefit_6,
 		title: "Весело отрывемся",
 		desc: "Корпоративные мероприятия, ежегодный сплав",
 	},

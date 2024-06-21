@@ -9,35 +9,44 @@ import "swiper/css/navigation";
 
 import social_1 from "../icons/socials-swiper-1.jpg";
 import social_2 from "../icons/socials-swiper-2.jpg";
+import social_3 from "../icons/socials-swiper-3.jpg";
+import social_4 from "../icons/socials-swiper-1.jpg";
+import social_5 from "../icons/socials-swiper-2.jpg";
+import social_6 from "../icons/socials-swiper-3.jpg";
 
 const socialsArray = [
 	{
-		picture: "../icons/socials-swiper-1.jpg",
+		picture: social_1,
 		title: "Telegram",
 		subtitle: "MARKS GROUP",
 	},
 	{
-		picture: "../icons/socials-swiper-2.jpg",
+		picture: social_2,
 		title: "Telegram",
 		subtitle: "MARKS GROUP",
 	},
 	{
-		picture: "../icons/socials-swiper-2.jpg",
+		picture: social_3,
 		title: "Telegram",
 		subtitle: "MARKS GROUP",
 	},
 	{
-		picture: "../icons/socials-swiper-2.jpg",
+		picture: social_4,
 		title: "Telegram",
 		subtitle: "MARKS GROUP",
 	},
 	{
-		picture: "../icons/socials-swiper-2.jpg",
+		picture: social_5,
 		title: "Telegram",
 		subtitle: "MARKS GROUP",
 	},
 	{
-		picture: "../icons/socials-swiper-2.jpg",
+		picture: social_5,
+		title: "Telegram",
+		subtitle: "MARKS GROUP",
+	},
+	{
+		picture: social_6,
 		title: "Telegram",
 		subtitle: "MARKS GROUP",
 	},
@@ -66,7 +75,7 @@ const SocialsSwiper = () => {
         ref={swiperRef}
         modules={[Navigation, Keyboard]}
         slidesPerView={3}
-        // loop={true}
+        loop={true}
         navigation={{
           prevEl: prevRef.current,
           nextEl: nextRef.current,
@@ -74,16 +83,17 @@ const SocialsSwiper = () => {
         centeredSlides={true}
         speed={1000}
         keyboard={{ enabled: true }}
-        // LoopAdditionalSlides={5}
-        initialSlide={2}
+        LoopAdditionalSlides={5}
+        initialSlide={1}
         slideActiveClass={styles.SocialsSwiper__active}
       >
         {socialsArray.map((item, index) => {
+        
           return (
             <SwiperSlide key={index}>
               <div className={styles.SocialsSwiper__inner}>
                 <div className={styles.SocialsSwiper__picture}>
-                  <img src={social_1} alt={item.title} />
+                  <img src={item.picture} alt={item.title} />
                 </div>
                 <div className={styles.SocialsSwiper__bottom}>
                   <div className={styles.SocialsSwiper__text}>
