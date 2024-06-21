@@ -253,7 +253,7 @@ const VacanciesMainCard = ({
                       buttonRef={buttonRef}
                       setIsLoading={setIsLoading}
                       setIsModalOpen={setIsModalOpen}
-                    />
+                  />
                   </div>
                 </div>
               </div>
@@ -430,7 +430,7 @@ const VacanciesMainCard = ({
               spaceBetween={30}
               touch="true"
               direction="horizontal"
-              loop={true}
+              loop={false}
               breakpoints={{
                 2500: {
                   slidesPerView: 4.7,
@@ -442,7 +442,7 @@ const VacanciesMainCard = ({
                   slidesPerView: 3.5,
                 },
                 1440: {
-                  slidesPerView: 2.7,
+                  slidesPerView: 2.7,              
                 },
                 1300: {
                   slidesPerView: 2.7,
