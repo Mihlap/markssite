@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import styles from "./VacanciesMain3.module.scss";
 import Intro from "./Intro/Intro";
 import RatingSwiper from './RatingSwiper/RatingSwiper';
@@ -8,36 +8,32 @@ import SocialsSwiper from './SocialsSwiper/SocialsSwiper';
 import "swiper/css";
 import "swiper/css/navigation";
 
-
 import invite_1 from "./icons/invite-1.png";
 import invite_2 from "./icons/invite-2.png";
-
 
 const VacanciesMain3 = () => {
 	return (
 		<>
 			<Intro />
-		
-			<section className={styles.socials}>
+			{/* <section className={styles.socials}>
 				<div className={styles.socials__header}>
 					<h2>Подписывайся на <span>наши каналы в&nbsp;социальных сетях</span>, там всегда можно найти информации о лекциях, конференциях и ключевых объектах</h2>
 				</div>
 				<div className={styles.socials__slider}>
 					<SocialsSwiper />
 				</div>
-			</section>
+			</section> */}
 
-			
 			<section className={styles.rating}>
 				<div className={styles.rating__header}>
 					<h2>
 						<span>Передовая компания</span><span>в сфере проектирования</span>
 					</h2>
 				</div>
-				<RatingSwiper />
+				<RatingSwiper /> 
 			</section>
 			
-			<BenefitsGrid />
+			{/* <BenefitsGrid /> */}
 			
 			{/* <section className={styles.invite}>
 				<h2>Приглашаем студентов на стажировку</h2>
