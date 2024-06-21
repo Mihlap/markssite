@@ -168,7 +168,7 @@ const VacancyFormContactSimple = ({
                   onBlur={handleBlur}
                   maxLength="100"
                   autoComplete="off"
-                  className={styles.input_name_form_contacts}
+                  className={styles.input_name_form_contacts}              
                 />
                 <div className={styles.lineSimple}></div>
                 <span className={styles.placeholder}>
