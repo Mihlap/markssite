@@ -26,19 +26,19 @@
 
     &__item {
       display: flex;
-      justify-content: space-between;
+      justify-content: space-between;   
+      height: 50vh;
     }
 
     &__background1 {
       position: absolute;
       width: 23.5rem;
       height: 23.5rem;
-      top: 8%;
-      right: 28%;
+      top: 6%;
+      right: 26%;
       background-size: cover;
       background-repeat: no-repeat;
-      z-index: 1;
-      opacity: 0.5;
+      z-index: -1;  
     }
 
     &__background2 {
@@ -46,50 +46,59 @@
       width: 14rem;
       height: 14rem;
       right: 18%;
-      top: 2%;
+      top: 1%;
       background-size: cover;
       background-repeat: no-repeat;
-      z-index: 1;
-      opacity: 0.5;
+      z-index: -1; 
     }
 
     &__background3 {
       position: absolute;
       width: 31.25rem;
       height: 34.37rem;
-      top: 7%;
+      top: 5%;
       right: 1%;
       background-size: cover;
       background-repeat: no-repeat;
-      z-index: 1;
-      opacity: 0.5;
+      z-index: -1;   
     }
 
+ 
     &__blockLeft {
       display: flex;
-      flex-direction: column;
-      height: 100%;
+      flex-direction: column;     
+      height: 100%; 
       width: 100%;
-      backdrop-filter: blur(0.88rem);
+      // width: 100%; 
+      backdrop-filter: blur(7px);
       background: linear-gradient(221.46deg, rgba(255, 203, 193, 0.09) -4.631%, rgba(117, 187, 253, 0.09) 44.805%, rgba(188, 188, 188, 0.09) 103.423%);
       padding-left: 8.37rem;
-      padding-top: 140px;
-      border-bottom: 1px solid rgb(235, 236, 238);
-      opacity: 0.9;
+      // padding-top: 140px;
+      border-bottom: 1px solid rgb(235, 236, 238);  
     }
 
-    &__blockRight {
-      display: flex;
-      flex-wrap: wrap;
-      width: 50%;
-      height: 100%;
+    &__blockRightWrapper {
+      position: -webkit-fixed; 
+      position: fixed;
+      top: 0;
+      right: 0;  
+      height: 25vh; 
+      width: 35vw;
+      // z-index: 9997;
+    }
+
+    &__blockRight {    
+      display: flex;    
+      flex-wrap: wrap;   
+      height: 100%; 
+      width: 100%;
       margin-left: auto;
       justify-content: space-between;
       align-content: stretch;
       border-bottom: 1px solid rgb(235, 236, 238);
-      padding-top: 50px;
-      opacity: 0.9;
-    }
+      // padding-top: 50px; 
+    }  
+    
 
     &__vacancyTitle {
       color: var(--black-1D2E43);
@@ -99,15 +108,15 @@
       line-height: 4rem;
       letter-spacing: 0rem;
       text-align: left;
-      max-width: 80%;
-      padding-top: 46px;
+      max-width: 50%;
+      padding-top: 186px;
     }
 
     &__vacancyTitle1 {
       font-family: var(--font-raleway);
       font-weight: var(--fw-400);
       letter-spacing: 0rem;
-      max-width: 80%;
+      max-width: 70%;
       padding-top: 67px;
     }
 
@@ -155,8 +164,7 @@
 
     &__detail {
       display: flex;
-      flex-wrap: wrap;
-      width: 100%;
+      flex-wrap: wrap;   
       justify-content: space-between;
     }
 
@@ -164,10 +172,8 @@
       display: flex;
       flex-direction: column;
       width: calc(50% - 0rem);
-      height: 50%;
-      border: 1px solid rgb(235, 236, 238);
-      backdrop-filter: blur(14px);
-      background: rgba(255, 255, 255, 0.7);
+      height: 100%;
+      border: 1px solid rgb(235, 236, 238);  
       padding-left: 3.5vw;
       justify-content: center;
     }
@@ -175,7 +181,7 @@
     .topLeftSquare {
       border-left: 1px solid rgb(235, 236, 238);
       border-top: 1px solid rgb(235, 236, 238);
-      backdrop-filter: blur(14px);
+      backdrop-filter: blur(7px);
       background: linear-gradient(221.46deg, rgba(255, 203, 193, 0.09) -4.321%, rgba(117, 187, 253, 0.09) 46.423%, rgba(188, 188, 188, 0.09) 106.591%);
     }
 
@@ -183,19 +189,19 @@
       border-bottom: 1px solid rgb(235, 236, 238);
       border-left: 1px solid rgb(235, 236, 238);
       border-top: 1px solid rgb(235, 236, 238);
-      backdrop-filter: blur(9px);
+      backdrop-filter: blur(4.5px);
       background: rgba(255, 255, 255, 0.7);
     }
 
     .bottomLeftSquare {
       border: 1px solid rgb(235, 236, 238);
-      backdrop-filter: blur(9px);
+      backdrop-filter: blur(4.5px);
       background: rgba(255, 255, 255, 0.7);
     }
 
     .bottomRightSquare {
       border-bottom: 1px solid rgb(235, 236, 238);
-      backdrop-filter: blur(14px);
+      backdrop-filter: blur(7px);
       background: linear-gradient(221.46deg, rgba(255, 203, 193, 0.09) -4.33%, rgba(117, 187, 253, 0.09) 46.376%, rgba(188, 188, 188, 0.09) 106.499%);
     }
 
@@ -217,12 +223,13 @@
       margin-top: 6px;
     }
   }
+  
 
   .vacancyFormWrapperSimple {
     border: 1px solid rgb(235, 236, 238);
-    backdrop-filter: blur(9px);
+    backdrop-filter: blur(4.5px);
     background: rgba(255, 255, 255, 0.7);
-    padding: 3rem 2.5rem 3rem 2.5rem;
+    padding: 6.5vh 6.25rem 7vh 6.25rem;
     width: 100%;
   }
 
@@ -295,7 +302,7 @@
     line-height: 2rem;
     text-align: left;
     padding-left: 8.37rem;
-    width: 70%;
+    width: 60%;
   }
 
   &__wrapperTitle {
@@ -363,7 +370,7 @@
     flex-direction: column;
     text-align: left;
     padding-left: 8.37rem;
-    padding-top: 90px;
+    padding-top: 250px;
   }
 
   &__aboutBlockTitle {
@@ -825,10 +832,10 @@
       &__background1 {
         width: 14rem;
         height: 14rem;
-        top: 9%;
+        top: 8%;
         right: 33%;
-        z-index: -1;
-        opacity: 1;
+        // z-index: -1;
+        // opacity: 1;
       }
 
       &__background2 {
@@ -836,8 +843,8 @@
         height: 12rem;
         right: 18%;
         top: 1%;
-        z-index: -1;
-        opacity: 1;
+        // z-index: -1;
+        // opacity: 1;
       }
 
       &__background3 {
@@ -845,8 +852,8 @@
         height: 28rem;
         top: 6%;
         right: 2%;
-        z-index: -1;
-        opacity: 1;
+        // z-index: -1;
+        // opacity: 1;
       }
 
       &__blockLeft {
@@ -854,18 +861,18 @@
       }
 
       &__blockRight {
-        width: 50%;
+        width: 45%;
         height: 75%;
       }
 
       &__vacancyTitle {
-        margin-right: 1rem;
+        margin-right: 1rem;    
       }
 
       &__vacancyTitle1 {
         padding-top: 32px;
         margin-right: 1rem;
-        max-width: 100%;
+        max-width: 60%;
       }
 
       &__vacancyTitle1__titleValue1 {
@@ -878,9 +885,10 @@
       }
 
       &__detailItem {
-        height: 50%;
+        min-height: 210px;
         padding-left: 2.5rem;
       }
+      
 
       &__detailKey {
         font-size: 1rem;
