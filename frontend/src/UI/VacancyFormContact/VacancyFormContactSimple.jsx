@@ -9,7 +9,6 @@ const Host = process.env.REACT_APP_SERVER_HOST;
 const VacancyFormContactSimple = ({
   handleMouseEnter,
   handleMouseLeave,
-  buttonRef,
   setIsLoading,
   setIsModalOpen,
 }) => {
@@ -325,8 +324,7 @@ const VacancyFormContactSimple = ({
               id="submit-button"
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
-              style={{ minWidth: '432px', height: '56px'}}
-              ref={buttonRef}
+              style={{ minWidth: '432px', height: '56px'}}        
             >
               <p className={styles.button_name_vacancy}>
                 Откликнуться на вакансию
