@@ -126,21 +126,22 @@ mailRouter.post('/portalSubmitForm', upload.array('resumeFiles', 2), (req, res) 
   const resumeFiles = req.files;
 
   const emailBody = `
-    Имя: ${formData.name}
-    Телефон: ${formData.phone}
-    Город: ${formData.city}
-    Выбранная вакансия: ${formData.choose}
-    Сопроводительное письмо: ${formData.letter}
-    Ссылка на резюме/портфолио: ${formData.resume}
-  `;
+  Имя: ${formData.name ? formData.name : ''}
+  Телефон: ${formData.phone ? formData.phone : ''}
+  ${formData.city ? `Город: ${formData.city}` : ''}
+  ${formData.choose ? `Выбранная вакансия: ${formData.choose}` : ''}
+  Сопроводительное письмо: ${formData.letter ? formData.letter : ''}
+  Ссылка на резюме/портфолио: ${formData.resume ? formData.resume : ''}
+`;
 
   const mailOptions = {
     from: process.env.EMAIL_PORTAL_USER,
     to: process.env.EMAIL_PORTAL_USER,
-    subject: 'Заявка на вакансию',
-    text: emailBody,  
-    attachments: [], 
+    subject: formData.title ? `Заявка на вакансию: ${formData.title}` : "Заявка на вакансию",
+    text: emailBody,
+    attachments: [],
   };
+  
 
   if (resumeFiles) {
     resumeFiles.forEach((file, index) => {

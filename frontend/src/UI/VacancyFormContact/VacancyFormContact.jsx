@@ -10,7 +10,7 @@ import LoadingVacancy from "../../Loading/LoadingVacancy";
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 
-const VacancyFormContact = ({ initialDirection, handleMouseEnter, handleMouseLeave }) => {
+const VacancyFormContact = ({ initialDirection, handleMouseEnter, handleMouseLeave, vacancyTitle }) => {
 
   const options = useMemo(() => [
     { value: "Другая вакансия", label: "Другая вакансия" },
@@ -60,6 +60,7 @@ const VacancyFormContact = ({ initialDirection, handleMouseEnter, handleMouseLea
     choose: "",
     letter: "",
     resume: "",
+    title: vacancyTitle,
   });
 
   const fileInputRef = useRef(null);
@@ -125,6 +126,7 @@ const VacancyFormContact = ({ initialDirection, handleMouseEnter, handleMouseLea
       const formDataToSend = new FormData();
       const formDataCopy = {
         ...formData,
+        title: vacancyTitle,
         choose: selectedOptions ? selectedOptions.value : "",
       };
 
@@ -151,6 +153,7 @@ const VacancyFormContact = ({ initialDirection, handleMouseEnter, handleMouseLea
               choose: "",
               letter: "",
               resume: "",
+              title: vacancyTitle,
             });
             setSelectedFiles([]);
             setFileAttached(false);
@@ -203,9 +206,9 @@ const VacancyFormContact = ({ initialDirection, handleMouseEnter, handleMouseLea
       return updatedFiles;
     });
   }, []);
-
+  
   useEffect(() => {
-    const isFormComplete = Object.values(formData).every(field => field.trim() !== "") && isValid && formData.choose;
+    const isFormComplete = Object.values(formData).every(field => field?.trim() !== "") && isValid && formData.choose;
     setIsFormValid(isFormComplete);
   }, [formData, isValid]);
 

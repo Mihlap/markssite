@@ -84,7 +84,6 @@
       right: 0;  
       height: 25vh; 
       width: 35vw;
-      // z-index: 9997;
     }
 
     &__blockRight {    
@@ -259,8 +258,8 @@
   &__wrapperFrameBlock {
     display: flex;
     flex-direction: row;
-    flex-wrap: wrap;
-    padding: 72px 26% 0px 8.37rem;
+    // flex-wrap: wrap;
+    padding: 72px 30% 0px 8.37rem;
     // gap: 3.875rem;
     width: 100%;
   }
@@ -489,8 +488,8 @@
       position: absolute;
       width: 50rem;
       height: 37rem;
-      top: 55%;
-      left: 13rem;
+      top: 60%;
+      left: 5rem;
       background-size: cover;
       background-repeat: no-repeat;
       z-index: -2;
@@ -501,7 +500,7 @@
       position: absolute;
       width: 60rem;
       height: 50rem;
-      top: -7%;
+      top: 0%;
       left: 65%;
       background-size: cover;
       background-repeat: no-repeat;
@@ -534,7 +533,7 @@
     flex-direction: column;
     text-align: left;
     padding-top: 281px;
-    padding-right: 6rem;
+    padding-right: 20rem;
     position: relative;
 
     .locationTitle {
@@ -556,8 +555,6 @@
       line-height: 3rem;
       padding-top: 22px;
       white-space: pre-wrap;
-      z-index: -3;
-
     }
 
   }
@@ -589,7 +586,7 @@
 
   &__spanWrapperLocation {
     position: absolute;
-    right: 6rem;
+    right: 20rem;
     top: 500px;
     display: flex;
     flex-direction: column;
@@ -609,11 +606,11 @@
     position: absolute;
     display: block;
     top: 30rem;
-    right: 41rem;
+    right: 55rem;
     // z-index: -1;
 
     .rocket {
-      margin-right: -1rem;
+      margin-right: -1.5rem;
     }
   }
 
@@ -829,41 +826,36 @@
         padding-left: 3.875rem;
       }
 
+      &__item {
+        display: flex;
+        justify-content: space-between;   
+        height: 110vh;
+      }
+
       &__background1 {
         width: 14rem;
         height: 14rem;
-        top: 8%;
-        right: 33%;
-        // z-index: -1;
-        // opacity: 1;
+        top: 9%;
+        right: 32%;     
       }
 
       &__background2 {
         width: 10rem;
         height: 12rem;
         right: 18%;
-        top: 1%;
-        // z-index: -1;
-        // opacity: 1;
+        top: 0%;     
       }
 
       &__background3 {
         width: 25rem;
         height: 28rem;
         top: 6%;
-        right: 2%;
-        // z-index: -1;
-        // opacity: 1;
-      }
+        right: 2%;   
+       }
 
       &__blockLeft {
         padding-left: 3.875rem;
-      }
-
-      &__blockRight {
-        width: 45%;
-        height: 75%;
-      }
+      }   
 
       &__vacancyTitle {
         margin-right: 1rem;    
@@ -885,8 +877,10 @@
       }
 
       &__detailItem {
-        min-height: 210px;
+        max-height: 180px;
+        min-height: 140px;
         padding-left: 2.5rem;
+        margin-bottom: -2rem; // для того чтобы влезла кнопка формы отправки вакансий
       }
       
 
@@ -904,14 +898,14 @@
 
     .vacancyFormWrapperSimple {
       border: 1px solid rgb(235, 236, 238);
-      backdrop-filter: blur(9px);
+      backdrop-filter: blur(4.5px);
       background: rgba(255, 255, 255, 0.7);
-      padding: 3rem 2.5rem 3rem 2.5rem;
+      padding: 1.5rem 2.5rem;
       width: 100%;
+      opacity: 0.9;
     }
 
-
-    &__offer {
+     &__offer {
       padding-left: 3.875rem;
       padding-top: 80px;
     }
@@ -943,7 +937,7 @@
     &__frameBlock_frame {
       display: flex;
       flex-direction: column;
-      width: 50%;
+      width: 25vw;
     }
 
     &__frame {
@@ -980,7 +974,6 @@
 
     &__aboutBlockWrapper {
       padding-left: 3.875rem;
-      padding-top: 121px;
     }
 
     &__aboutBlockTitle {
@@ -1050,23 +1043,23 @@
       .background8 {
         width: 40rem;
         height: 28rem;
-        top: 50%;
-        left: 2rem;
-        z-index: -5;
+        top: 60%;
+        left: -5rem;
+        // z-index: -5;
       }
 
       .background9 {
         width: 40rem;
         height: 30rem;
-        top: 1%;
-        left: 65%;
+        top: 10%;
+        left: 70%;
       }
 
       .background10 {
         position: absolute;
         width: 12rem;
         height: 12rem;
-        top: 50%;
+        top: 70%;
         left: 75%;
         background-size: cover;
         background-repeat: no-repeat;
