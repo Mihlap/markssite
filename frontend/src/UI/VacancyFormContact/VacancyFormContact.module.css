@@ -184,7 +184,7 @@
   transition: background-color 0.4s ease;
 }
 
-/* .button_vacancySimple {
+.button_vacancySimple {
   display: inline-flex;
   padding: 1rem 2rem;
   justify-content: center;
@@ -193,10 +193,14 @@
   border: 1px solid transparent;
   background-color: var(--blue-75BBFD);
   margin-top: 1rem;
+  /* cursor: none; */
   transition: background-color 0.4s ease;
-} */
+  min-width: 432px;
+  height: 56px;
+}
 
-.button_vacancy:hover {
+.button_vacancy:hover,
+.button_vacancySimple:hover {
   background: var(--dark-blue-389FFF);
 }
 
@@ -399,12 +403,18 @@
     padding-top: 2.2vh;
   }
 
-
   .line {
     height: 1px;
     margin-top: 12px;
     background-color: var(--gray-959DA6);
     max-width: 28rem;
+    width: 100%;
+  }
+
+  .lineSimple {
+    height: 1px;
+    margin-top: 12px;
+    background-color: var(--gray-959DA6);
     width: 100%;
   }
 
@@ -500,6 +510,21 @@
     margin-top: 1rem;
     cursor: none;
     transition: background-color 0.4s ease;
+  }
+
+  .button_vacancySimple {
+    display: inline-flex;
+    padding: 1rem 2rem;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4.125rem;
+    border: 1px solid transparent;
+    background-color: var(--blue-75BBFD);
+    margin-top: 1rem;
+    /* cursor: none; */
+    transition: background-color 0.4s ease;
+    min-width: 0;
+    height: 46px;
   }
 
   .button_vacancy:hover {
