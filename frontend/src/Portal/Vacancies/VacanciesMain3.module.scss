@@ -63,45 +63,7 @@
     }
   }
 }
-	// const tl = gsap.timeline({
-	// 	scrollTrigger: {
-	// 		trigger: `.${styles.invite}`,
-	// 		start: 'top bottom',
-	// 		end:'bottom top',
-	// 		scrub: true,
-	// 		markers: true,
-	// 	},
-	// });
 
-	// 	tl.from([star1Ref.current, star3Ref.current],
-	// 		{
-	// 			rotation: -180, duration: 0.3
-	// 		}
-	// 	).to([star1Ref.current, star3Ref.current],
-	// 		 {
-	// 			rotation: 180, duration: 0.3
-	// 		}
-	// 	)
-
-	// 	const tl2 = gsap.timeline({
-	// 		scrollTrigger: {
-	// 			trigger: `.${styles.invite}`,
-	// 			start: 'top bottom',
-	// 			end:'bottom top',
-	// 			scrub: true,
-	// 			markers: true,
-	// 		},
-	// 	});
-
-	// 	tl2.from([star2Ref.current, star4Ref.current],
-	// 			{
-	// 				rotation: 180, duration: 0.2
-	// 			}
-	// 	).to([star2Ref.current, star4Ref.current],
-	// 		{
-	// 		 rotation: -180, duration: 0.3
-	// 	 }
-	//  )
 .invite {
   padding: rem(90) rem(62) rem(100) rem(62);
   background: linear-gradient(261.46deg, rgba(255, 203, 193, 0.09) -4.67%, rgba(117, 187, 253, 0.09) 44.63%, rgba(188, 188, 188, 0.09) 103.07%);
