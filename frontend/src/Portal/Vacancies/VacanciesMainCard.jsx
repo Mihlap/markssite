@@ -70,10 +70,11 @@ const VacanciesMainCard = ({
   const [selectedVacancy, setSelectedVacancy] = useState(null);
 
   const formRef = useRef(null);
-  const buttonRef = useRef(null);
   const rocketRef = useRef(null);
   const sputnikRef = useRef(null);
   const sliderCardRef = useRef(null);
+  const blockRightWrapperRef = useRef(null);
+  const wrapperTextBlockRef = useRef(null);
 
   useEffect(() => {
     dispatch(fetchEmployees(id));
@@ -84,6 +85,42 @@ const VacanciesMainCard = ({
       setSelectedVacancy(vacancies[0]);
     }
   }, [vacancies]);
+
+  
+  useEffect(() => {
+    const handleScroll = () => {
+      window.requestAnimationFrame(() => {
+        const blockRight = blockRightWrapperRef.current;
+        const wrapperTextBlock = wrapperTextBlockRef.current;
+        if (!blockRight || !wrapperTextBlock) return;
+  
+        const blockRightRect = blockRight.getBoundingClientRect();
+        const wrapperTextBlockRect = wrapperTextBlock.getBoundingClientRect();
+
+        const wrapperTextBlockBottom = wrapperTextBlockRect.top + window.scrollY + 500;
+  
+        // Проверяем, достиг ли нижний край текстового блока
+        if (window.scrollY + blockRightRect.height >= wrapperTextBlockBottom) {
+          // Когда blockRight должен перестать быть фиксированным и начать скролиться
+          blockRight.style.position = 'absolute';
+          blockRight.style.top = `${(wrapperTextBlockBottom - blockRightRect.height)}px`;
+          blockRight.style.right = '0';
+        } else {
+          blockRight.style.position = 'fixed';
+          blockRight.style.top = '0';
+          blockRight.style.right = '0';
+        }
+      });
+    };
+  
+    window.addEventListener('scroll', handleScroll);
+  
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+  
+
 
   // useEffect(() => {
   //   if (!formRef.current || !buttonRef.current) return;
@@ -204,7 +241,8 @@ const VacanciesMainCard = ({
                     </ul>
                   </div>
                 </div>{" "}
-                <div className={styles.main_vacancy_block__blockRight}>
+                <div className={styles.main_vacancy_block__blockRightWrapper} ref={blockRightWrapperRef}>
+                 <div className={styles.main_vacancy_block__blockRight}>
                   <div
                     className={`${styles.main_vacancy_block__detailItem} ${styles.topLeftSquare}`}
                   >
@@ -249,12 +287,12 @@ const VacanciesMainCard = ({
                     <VacancyFormContactSimple
                       handleMouseEnter={handleMouseEnter}
                       handleMouseLeave={handleMouseLeave}
-                      handleMouseHover={handleMouseHover}
-                      buttonRef={buttonRef}
+                      handleMouseHover={handleMouseHover}                   
                       setIsLoading={setIsLoading}
                       setIsModalOpen={setIsModalOpen}
                   />
                   </div>
+                </div>
                 </div>
               </div>
             ))}
@@ -323,7 +361,7 @@ const VacanciesMainCard = ({
             </div>
           </div>
         </div>
-        <div className={styles.main_vacancyWrapper__wrapperTextBlock}>
+        <div className={styles.main_vacancyWrapper__wrapperTextBlock} ref={wrapperTextBlockRef}>
           <RenderVacancySections />
         </div>
         <div className={styles.main_vacancyWrapper__3dGroup}>
@@ -573,7 +611,7 @@ const VacanciesMainCard = ({
             </div>
           </div>
         </div>
-        <div className={styles.temporaryText} buttonRef={buttonRef}>
+        <div className={styles.temporaryText}>
           "Мы ищем именно тебя!"
         </div>
         <div className={styles.textUnderForm}>
