@@ -11,6 +11,7 @@ const VacancyFormContactSimple = ({
   handleMouseLeave,
   setIsLoading,
   setIsModalOpen,
+  vacancyTitleSimple
 }) => {
   const [isFocused, setIsFocused] = useState({
     name: false,
@@ -28,6 +29,7 @@ const VacancyFormContactSimple = ({
     phone: "",    
     letter: "",
     resume: "",
+    title: vacancyTitleSimple,
   });
 
   const fileInputRef = useRef(null);
@@ -76,7 +78,7 @@ const VacancyFormContactSimple = ({
     setIsLoading(true);
 
     const formDataToSend = new FormData();
-    const formDataCopy = { ...formData };
+    const formDataCopy = { ...formData, title: vacancyTitleSimple };
 
     Object.keys(formDataCopy).forEach((key) => {
       formDataToSend.append(key, formDataCopy[key]);
@@ -99,6 +101,7 @@ const VacancyFormContactSimple = ({
             phone: "",           
             letter: "",
             resume: "",
+            title: vacancyTitleSimple,
           });
           setSelectedFiles([]);
           setFileAttached(false);
@@ -114,7 +117,7 @@ const VacancyFormContactSimple = ({
       .finally(() => {
         setIsLoading(false);
       });
-  }, [formData, selectedFiles]);
+    }, [formData, selectedFiles, vacancyTitleSimple]);
 
   const handleFileChange = useCallback((event) => {
     const files = Array.from(event.target.files);
@@ -140,7 +143,7 @@ const VacancyFormContactSimple = ({
   }, []);
 
   useEffect(() => {
-    const isFormComplete = Object.values(formData).every(field => field.trim() !== "") && isValid;
+    const isFormComplete = Object.values(formData).every(field => field?.trim() !== "") && isValid;
     setIsFormValid(isFormComplete);
   }, [formData, isValid]);
 
@@ -317,14 +320,14 @@ const VacancyFormContactSimple = ({
                </div>
              <div style={{display: 'flex', justifyContent: 'center', zIndex: '1000'}}>
             <button            
-              className={`${styles.button_vacancy}
+              className={`${styles.button_vacancySimple}
               ${!isFormValid ? styles.disabled : ""}`}
               disabled={!isFormValid}
               type="submit"
               id="submit-button"
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
-              style={{ minWidth: '432px', height: '56px'}}        
+              // style={{ minWidth: '432px', height: '56px'}}        
             >
               <p className={styles.button_name_vacancy}>
                 Откликнуться на вакансию

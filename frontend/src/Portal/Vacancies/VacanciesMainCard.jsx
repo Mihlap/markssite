@@ -27,7 +27,7 @@ import star3d_10 from "./icons/star3d_10.png";
 import star3d_11 from "./icons/star3d_11.png";
 import heart from "./icons/heart.png";
 import heart2 from "./icons/heart2.png";
-import rocket from "./icons/rocket.png";
+import rocket1 from "./icons/rocket1.svg";
 import rocketBig from "./icons/rocketBig.png";
 import sputnik from "./icons/sputnik.png";
 import vectorAround from "./icons/VectorAround.png";
@@ -97,7 +97,12 @@ const VacanciesMainCard = ({
         const blockRightRect = blockRight.getBoundingClientRect();
         const wrapperTextBlockRect = wrapperTextBlock.getBoundingClientRect();
 
-        const wrapperTextBlockBottom = wrapperTextBlockRect.top + window.scrollY + 500;
+        let wrapperTextBlockBottom;
+        if (window.innerWidth >= 1025 && window.innerWidth <= 1600) {
+          wrapperTextBlockBottom = wrapperTextBlockRect.top + window.scrollY + 1000;
+        } else {
+          wrapperTextBlockBottom = wrapperTextBlockRect.top + window.scrollY + 500;
+        }
   
         // Проверяем, достиг ли нижний край текстового блока
         if (window.scrollY + blockRightRect.height >= wrapperTextBlockBottom) {
@@ -164,8 +169,8 @@ const VacanciesMainCard = ({
     const animation = gsap.timeline({
       scrollTrigger: {
         trigger: rocketRef.current,
-        start: "bottom bottom",
-        end: "top top",
+        start: "top bottom",
+        end: "bottom top",
         scrub: true,
       },
     });
@@ -173,13 +178,13 @@ const VacanciesMainCard = ({
     animation.fromTo(
       rocketRef.current,
       { x: 0, opacity: 1 },
-      { x: 100, opacity: 1, duration: 1 }
+      { x: 180, opacity: 1, duration: 1 }
     );
 
     animation.fromTo(
       sputnikRef.current,
       { x: 0, opacity: 1 },
-      { x: -100, opacity: 1, duration: 1 },
+      { x: -180, opacity: 1, duration: 1 },
       "<"
     );
 
@@ -290,6 +295,7 @@ const VacanciesMainCard = ({
                       handleMouseHover={handleMouseHover}                   
                       setIsLoading={setIsLoading}
                       setIsModalOpen={setIsModalOpen}
+                      vacancyTitleSimple={selectedVacancy?.title}
                   />
                   </div>
                 </div>
@@ -434,7 +440,7 @@ const VacanciesMainCard = ({
             </span>
             <div className={styles.main_vacancyWrapper__locationBlockLocation}>
               <div className={styles.rocketVectorAround1Block}>
-                <img className={styles.rocket} src={rocket} alt={rocket} />
+                <img className={styles.rocket} src={rocket1} alt={rocket1} />
                 <img
                   className={styles.vectorAround1}
                   src={vectorAround1}
@@ -612,7 +618,7 @@ const VacanciesMainCard = ({
           </div>
         </div>
         <div className={styles.temporaryText}>
-          "Мы ищем именно тебя!"
+          Мы ищем именно тебя!
         </div>
         <div className={styles.textUnderForm}>
           Оставьте ваши контакты, мы всегда&nbsp;в&nbsp;поиске талантливых
@@ -629,6 +635,7 @@ const VacanciesMainCard = ({
             handleMouseHover={handleMouseHover}
             setIsLoading={setIsLoading}
             setIsModalOpen={setIsModalOpen}
+            vacancyTitle={selectedVacancy?.title}
           />
         </div>
       </div>
