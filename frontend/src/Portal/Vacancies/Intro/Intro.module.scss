@@ -5,6 +5,34 @@
   position: relative;
   padding-top: rem(48);
 
+  &__star {
+    position: absolute;
+    z-index: -1;
+    background-size: cover;
+    top: 0;
+    right: 0;
+
+    &_1 {
+      width: rem(290);
+      height: rem(290);
+    }
+    
+    &_2 {
+      width: rem(290);
+      height: rem(290);
+    }
+    
+    &_3 {
+      width: rem(135);
+      height: rem(135);
+    }
+    
+    &_4 {
+      width: rem(128);
+      height: rem(128);
+    }
+  }
+
   &__wrapper {
     height:rem(544);
     padding: rem(64) 0;
