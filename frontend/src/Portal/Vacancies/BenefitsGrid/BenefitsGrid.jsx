@@ -1,12 +1,18 @@
-import React from 'react';
-import styles from "./BenefitsGrid.module.scss";
+import React, { useLayoutEffect, useRef }  from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-import benefit_1 from "../icons/benefit-1.svg";
-import benefit_2 from "../icons/benefit-2.svg";
-import benefit_3 from "../icons/benefit-3.svg";
-import benefit_4 from "../icons/benefit-4.svg";
-import benefit_5 from "../icons/benefit-5.svg";
-import benefit_6 from "../icons/benefit-6.svg";
+import StarsFour3d from '../StarsFour3d/StarsFour3d';
+
+import styles from './BenefitsGrid.module.scss';
+
+import benefit_1 from '../icons/benefit-1.svg';
+import benefit_2 from '../icons/benefit-2.svg';
+import benefit_3 from '../icons/benefit-3.svg';
+import benefit_4 from '../icons/benefit-4.svg';
+import benefit_5 from '../icons/benefit-5.svg';
+import benefit_6 from '../icons/benefit-6.svg';
+
 
 const benefitsArray = [
 	{
@@ -41,24 +47,90 @@ const benefitsArray = [
 	},
 ]
 
+
 const BenefitsGrid = () => {
+	const star1Ref = useRef(null);
+	const star2Ref = useRef(null);
+	const star3Ref = useRef(null);
+	const star4Ref = useRef(null);
+
+	const rotationDeg = 60;
+	const opacity = 0.4;
+
+	gsap.registerPlugin(ScrollTrigger);
+
+	useLayoutEffect(() => {
+		const tl = gsap.timeline({
+			scrollTrigger: {
+				trigger: `.${styles.BenefitsGrid}`,
+				start: 'top bottom',
+				end:'bottom top',
+				scrub: true,
+			},
+		});
+
+		tl.to([star1Ref.current, star3Ref.current],
+			 {
+				rotation: rotationDeg,
+			}
+		)
+
+		const tl2 = gsap.timeline({
+			scrollTrigger: {
+				trigger: `.${styles.BenefitsGrid}`,
+				start: 'top bottom',
+				end:'bottom top',
+				scrub: true,
+			},
+		});
+
+		tl2.to([star2Ref.current, star4Ref.current],
+			{
+			 rotation: -(rotationDeg),
+		 }
+	 )
+
+	 const tl3 = gsap.timeline({
+		scrollTrigger: {
+			trigger: `.${styles.BenefitsGrid}`,
+			start: 'top bottom',
+			end:'bottom top',
+			scrub: true,
+		},
+	});
+	
+	tl3.to([star3Ref.current, star4Ref.current],
+		{
+			opacity: opacity
+		}
+	)
+	}, []);
+
 	return (
 		<section className={styles.BenefitsGrid}>
 			<h2 className={styles.BenefitsGrid__title}>Преимущества работы с нами
 			</h2>
-			<ul className={styles.BenefitsGrid__items}>
-				{benefitsArray.map((item, index) => {
-					return (
-						<li className={styles.BenefitsGrid__item} key={index}>
-							<div className={styles.BenefitsGrid__icon}>
-									<img src={item.icon}/>
-							</div>
-							<div className={styles.BenefitsGrid__text}>
-								<h3>{item.title}</h3>
-								<span>{item.desc}</span>
-							</div>
-						</li>
-					)})
+				<StarsFour3d 
+					section='BenefitsGrid' 
+					styles={styles} 
+					star1Ref={star1Ref} 
+					star2Ref={star2Ref} 
+					star3Ref={star3Ref} 
+					star4Ref={star4Ref} 
+				/>
+				<ul className={styles.BenefitsGrid__items}>
+					{benefitsArray.map((item, index) => {
+						return (
+							<li className={styles.BenefitsGrid__item} key={index}>
+								<div className={styles.BenefitsGrid__icon}>
+										<img src={item.icon}/>
+								</div>
+								<div className={styles.BenefitsGrid__text}>
+									<h3>{item.title}</h3>
+									<span>{item.desc}</span>
+								</div>
+							</li>
+						)})
 				}
 			</ul>
 
