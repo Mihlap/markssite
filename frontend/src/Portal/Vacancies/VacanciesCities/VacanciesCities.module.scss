@@ -1,0 +1,191 @@
+@import "../../../App.css";
+@import "../../../_variables.scss";
+
+.VacanciesCities {
+  $s: &;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  &__text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 28%;
+    padding: 64px 0 64px 64px;
+
+    h2 {
+      font-family: var(--font-unbounded);
+      font-size: rem(32);
+      line-height: rem(40);
+      margin-bottom: rem(24);
+    }
+
+    p {
+      font-family: var(--font-raleway);
+      margin-bottom: rem(32);
+      font-size: rem(18);
+    }
+
+    a {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: var(--blue-75BBFD);
+      border-radius: rem(66);
+      color: var(--white-F6F6F6);
+      font-size: rem(16);
+      min-height: rem(56);
+      padding: rem(16) rem(32);
+      transition: 0.3s;
+  
+      &:hover {
+        background-color: var(--dark-blue-389FFF);
+      }
+  
+      &:active {
+        background-color: var(--super-dark-blue-345374);
+      }
+    }
+  }
+
+  &__map {
+    position: relative;
+    width: rem(960);
+    height: rem(932);
+  }
+
+  &__city {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    span {
+      position: absolute;
+      transform: translateY(-57px);
+      z-index: 60;
+    }
+
+    &_msk {
+      top: rem(173);
+      right: rem(382);
+
+      #{$s}__box {
+        width: 470px;
+        height: 470px;
+      }
+
+      #{$s}__circle {
+        &_xs {
+          width: 22px;
+          height: 22px;
+        }
+        
+        &_s {
+          width: 102px;
+          height: 102px;
+        }
+  
+        &_m {
+          width: 216px;
+          height: 216px;
+        }
+      }
+    }
+
+    &_obg {
+      top: rem(639);
+      right: rem(448);
+    }
+
+    &_chbk{
+      top: rem(622);
+      right: rem(318);
+    }
+
+    &_tsht {
+      top: rem(696);
+      right: rem(181);
+    }
+  }
+
+  &__box {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform-origin: center center;
+    width: 70px;
+    height: 70px;
+  }
+
+  &__circle {
+    position: absolute;
+    border-radius: 100%;
+    background-color: var(--blue-light-BADDFE);
+    transform-origin: center center;
+    animation: ellipse 4s ease infinite;
+
+
+    &_xs {
+      width: 12px;
+      height: 12px;
+      opacity: 1;
+      z-index: 50;
+      animation: none;
+      background-color: var(--blue-75BBFD);
+    }
+
+
+    &_s {
+      width: 42px;
+      height: 42px;
+      z-index: 40;
+      opacity: 0.3;
+    }
+
+    &_m {
+      width: 70px;
+      height: 70px;
+      z-index: 30;
+      opacity: 0.16;
+    }
+
+    &_l {
+      width: 360px;
+      height: 360px;
+      z-index: 20;
+      opacity: 0.16;
+    }
+
+    &_xl {
+      width: 470px;
+      height: 470px;
+      z-index: 10;
+      opacity: 0.1;
+    }
+    
+  }
+
+  @keyframes ellipse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(0.5);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+
+  @media all and (max-width:$bp4){
+  }
+
+  @media all and (max-width:$bp5){
+  }
+}

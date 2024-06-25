@@ -18,7 +18,7 @@ const VideoScroll = () => {
 				start: 'top 590px',
 				end:'bottom top',
 				markers: true,
-				scrub: true,
+				// scrub: true,
 			},
 		});
 

@@ -12,6 +12,8 @@ import BenefitsGrid from './BenefitsGrid/BenefitsGrid';
 import SocialsSwiper from './SocialsSwiper/SocialsSwiper';
 import StarsFour3d from './StarsFour3d/StarsFour3d';
 import VideoScroll from './VideoScroll/VideoScroll';
+import VacanciesCities from './VacanciesCities/VacanciesCities';
+
 
 import invite_1 from "./icons/invite-1.png";
 import invite_2 from "./icons/invite-2.png";
@@ -78,7 +80,7 @@ const VacanciesMain3 = () => {
 		<>
 			<Intro />
 
-			<VideoScroll />
+			{/* <VideoScroll />
 
 			<section className={styles.rating}>
 				<div className={styles.rating__header}>
@@ -88,7 +90,9 @@ const VacanciesMain3 = () => {
 				</div>
 				<RatingSwiper /> 
 			</section>
-			
+			 */}
+			<VacanciesCities />
+
 			<BenefitsGrid />
 			
 			<section className={styles.invite}>
