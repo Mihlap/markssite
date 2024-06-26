@@ -11,8 +11,8 @@
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    width: 28%;
-    padding: 64px 0 64px 64px;
+    width: 32%;
+    padding: rem(64) 0 rem(64) rem(64);
 
     h2 {
       font-family: var(--font-unbounded);
@@ -50,76 +50,17 @@
   }
 
   &__map {
+    flex-shrink: 0;
     position: relative;
     width: rem(960);
     height: rem(932);
-  }
 
-  &__city {
-    position: absolute;
-    top: 0;
-    right: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    span {
-      position: absolute;
-      transform: translateY(-57px);
-      z-index: 60;
+    img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-position: bottom -5px right -132px;
     }
-
-    &_msk {
-      top: rem(173);
-      right: rem(382);
-
-      #{$s}__box {
-        width: 470px;
-        height: 470px;
-      }
-
-      #{$s}__circle {
-        &_xs {
-          width: 22px;
-          height: 22px;
-        }
-        
-        &_s {
-          width: 102px;
-          height: 102px;
-        }
-  
-        &_m {
-          width: 216px;
-          height: 216px;
-        }
-      }
-    }
-
-    &_obg {
-      top: rem(639);
-      right: rem(448);
-    }
-
-    &_chbk{
-      top: rem(622);
-      right: rem(318);
-    }
-
-    &_tsht {
-      top: rem(696);
-      right: rem(181);
-    }
-  }
-
-  &__box {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transform-origin: center center;
-    width: 70px;
-    height: 70px;
   }
 
   &__circle {
@@ -153,22 +94,90 @@
       z-index: 30;
       opacity: 0.16;
     }
-
-    &_l {
-      width: 360px;
-      height: 360px;
-      z-index: 20;
-      opacity: 0.16;
-    }
-
-    &_xl {
-      width: 470px;
-      height: 470px;
-      z-index: 10;
-      opacity: 0.1;
-    }
-    
   }
+
+  &__city {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    span {
+      position: absolute;
+      transform: translateY(-57px);
+      z-index: 60;
+    }
+
+    &_msk {
+      top: rem(180);
+      right: rem(300);
+
+      #{$s}__box {
+        width: 470px;
+        height: 470px;
+      }
+
+      #{$s}__circle {
+        &_xs {
+          width: 22px;
+          height: 22px;
+        }
+        
+        &_s {
+          width: 102px;
+          height: 102px;
+        }
+  
+        &_m {
+          width: 216px;
+          height: 216px;
+        }
+
+        &_l {
+          width: 360px;
+          height: 360px;
+          z-index: 20;
+          opacity: 0.16;
+        }
+    
+        &_xl {
+          width: 470px;
+          height: 470px;
+          z-index: 10;
+          opacity: 0.1;
+        }
+      }
+    }
+
+    &_obg {
+      top: rem(645);
+      right: rem(380);
+    }
+
+    &_chbk{
+      top: rem(622);
+      right: rem(260);
+    }
+
+    &_tsht {
+      top: rem(696);
+      right: rem(150);
+    }
+  }
+
+  &__box {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform-origin: center center;
+    width: 70px;
+    height: 70px;
+  }
+
+ 
 
   @keyframes ellipse {
     0% {
@@ -183,9 +192,91 @@
   }
   
 
-  @media all and (max-width:$bp4){
+  @media all and (max-width:$bp3){
+    &__map {
+      width: rem(632);
+      height: rem(572);
+
+      img {
+        object-position: bottom -32px right -32px;
+      }
+    }
+
+    &__circle {
+      &_xs {
+        width: 8px;
+        height: 8px;
+      }
+
+      &_s {
+        width: 26px;
+        height: 26px;
+      }
+      &_m {
+        width: 45px;
+        height: 45px;
+      }
+    }
+
+    &__city {
+      span {
+        transform: translateY(-57px);
+      }
+  
+      &_msk {
+        top: rem(70);
+        right: rem(220);
+  
+        #{$s}__box {
+          width: rem(310);
+          height: rem(310);
+        }
+  
+        #{$s}__circle {
+          &_xs {
+            width: 14px;
+            height: 14px;
+          }
+          
+          &_s {
+            width: 54px;
+            height: 54px;
+          }
+    
+          &_m {
+            width: 142px;
+            height: 142px;
+          }
+  
+          &_l {
+            width: 238px;
+            height: 238px;
+          }
+      
+          &_xl {
+            width: 310px;
+            height: 310px;
+          }
+        }
+      }
+  
+      &_obg {
+        top: rem(395);
+        right: rem(281);
+      }
+  
+      &_chbk{
+        top: rem(622);
+        right: rem(318);
+      }
+  
+      &_tsht {
+        display: none;
+        // top: rem(384);
+        // right: rem(196);
+      }
+    }
+    
   }
 
-  @media all and (max-width:$bp5){
-  }
 }

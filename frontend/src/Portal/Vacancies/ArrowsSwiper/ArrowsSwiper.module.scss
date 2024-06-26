@@ -32,4 +32,9 @@
       background-color: var(--dark-gray-566272);
     }
   }
+
+  
+  @media all and (max-width:$bp3){
+    display: none;
+  }
 }

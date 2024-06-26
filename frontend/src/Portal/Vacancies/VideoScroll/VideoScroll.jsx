@@ -7,7 +7,7 @@ import styles from "./VideoScroll.module.scss";
 import videoFile from "../icons/video/mock-video.mp4";
 
 const VideoScroll = () => {
-	const video = useRef(null);
+	const videoRef = useRef(null);
 
 	gsap.registerPlugin(ScrollTrigger);
 
@@ -17,30 +17,28 @@ const VideoScroll = () => {
 				trigger: `.${styles.VideoScroll}`,
 				start: 'top 590px',
 				end:'bottom top',
-				markers: true,
-				// scrub: true,
+				// markers: true,
 			},
 		});
 
-		tl.fromTo(video.current,
+		tl.fromTo(videoRef.current,
 			{
 				height: '0',
 				width: '0',
-        transition: 'all 0.3s ease-in-out'
 			},
 			{
-				height: '100%',
-				width: '100%',
+				height: '100vh',
+				width:  '100%',
 			}
 		)
-	}, []);
+	}, [videoRef]);
 
 
 	return (
 		<>
 			<section className={styles.VideoScroll}>
 				<video
-					ref={video}
+					ref={videoRef}
 					playsInline
 					autoPlay
 					muted

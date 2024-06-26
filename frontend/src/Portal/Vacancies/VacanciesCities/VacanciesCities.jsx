@@ -23,8 +23,6 @@ const VacanciesCities = () => {
 				scrub: true,
 			},
 		});
-
-	
 	}, []);
 	
 	return (

@@ -64,49 +64,71 @@ const SocialsSwiper = () => {
       swiperInstance.params.navigation.nextEl = nextRef.current;
       swiperInstance.navigation.init();
       swiperInstance.navigation.update();
+      
     }
   }, []);
 
   return (
     <section className={styles.SocialsSwiper}>
-      <ArrowsSwiper prevRef={prevRef} nextRef={nextRef} />
-      <Swiper 
-        className={styles.SocialsSwiper__swiper}
-        ref={swiperRef}
-        modules={[Navigation, Keyboard]}
-        slidesPerView={3}
-        loop={true}
-        navigation={{
-          prevEl: prevRef.current,
-          nextEl: nextRef.current,
-        }}
-        centeredSlides={true}
-        speed={1000}
-        keyboard={{ enabled: true }}
-        LoopAdditionalSlides={5}
-        initialSlide={1}
-        slideActiveClass={styles.SocialsSwiper__active}
-      >
-        {socialsArray.map((item, index) => {
-        
-          return (
-            <SwiperSlide key={index}>
-              <div className={styles.SocialsSwiper__inner}>
-                <div className={styles.SocialsSwiper__picture}>
-                  <img src={item.picture} alt={item.title} />
-                </div>
-                <div className={styles.SocialsSwiper__bottom}>
-                  <div className={styles.SocialsSwiper__text}>
-                    <h3>{item.title}</h3>
-                    <span>{item.subtitle}</span>
+      <div className={styles.SocialsSwiper__header}>
+        <h2>Подписывайся на <span>наши каналы в&nbsp;социальных сетях</span>, там всегда можно найти информации о лекциях, конференциях и ключевых объектах</h2>
+      </div>
+      <div className={styles.SocialsSwiper__slider}>
+        <ArrowsSwiper prevRef={prevRef} nextRef={nextRef} />
+        <Swiper 
+          className={styles.SocialsSwiper__swiper}
+          ref={swiperRef}
+          modules={[Navigation, Keyboard]}
+          navigation={{
+            prevEl: prevRef.current,
+            nextEl: nextRef.current,
+          }}
+          speed={1000}
+          keyboard={{ enabled: true }}
+          slideActiveClass={styles.SocialsSwiper__active}
+          breakpoints={{
+            1024: {
+              slidesPerView: 3, 
+              centeredSlides: true, 
+              LoopAdditionalSlides: 5,  
+              initialSlide: 1,        
+              loop: true,  
+              spaceBetween: 30,
+            },
+            768: {
+              slidesPerView: 2.5,
+              spaceBetween: 16,
+            },
+            377: {
+              slidesPerView: 1,
+              LoopAdditionalSlides: 0,
+              initialSlide: 0,    
+              centeredSlides: false,  
+              spaceBetween: 0, 
+            },
+          }}
+        >
+          {socialsArray.map((item, index) => {
+          
+            return (
+              <SwiperSlide key={index}>
+                <div className={styles.SocialsSwiper__inner}>
+                  <div className={styles.SocialsSwiper__picture}>
+                    <img src={item.picture} alt={item.title} />
                   </div>
-                  <a href="#" className={styles.SocialsSwiper__button}>Подписаться</a>
+                  <div className={styles.SocialsSwiper__bottom}>
+                    <div className={styles.SocialsSwiper__text}>
+                      <h3>{item.title}</h3>
+                      <span>{item.subtitle}</span>
+                    </div>
+                    <a href="#" className={styles.SocialsSwiper__button}>Подписаться</a>
+                  </div>
                 </div>
-              </div>
-            </SwiperSlide>
-          );
-        })}
-      </Swiper>
+              </SwiperSlide>
+            );
+          })}
+        </Swiper>
+      </div>
     </section>
   );
 };
