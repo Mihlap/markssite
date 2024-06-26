@@ -34,11 +34,11 @@
   }
 
   &__wrapper {
-    height:rem(544);
-    padding: rem(64) 0;
+    min-height: rem(768);
+    padding: rem(168) 0 rem(64) 0;
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    align-items: flex-start;
     border-top: 1px solid var(--light-light-gray-EBECEE);
     border-bottom: 1px solid var(--light-light-gray-EBECEE);
     background: linear-gradient(261deg, rgba(255, 203, 193, 0.09) -4.67%, rgba(117, 187, 253, 0.09) 44.63%, rgba(188, 188, 188, 0.09) 103.07%);
@@ -46,7 +46,10 @@
   }
 
   &__text {
-    width: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 65%;
     color: var(--black-1D2E43);
     font-family: var(--font-unbounded);
     font-style: normal;
@@ -66,9 +69,49 @@
     line-height: rem(64);
   }
 
-  @media all and (max-width:$bp4){
+  &__button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--blue-75BBFD);
+    border-radius: rem(66);
+    color: var(--white-F6F6F6);
+    font-size: rem(16);
+    min-height: rem(56);
+    padding: rem(16) rem(32);
+    transition: 0.3s;
+    margin-top: rem(48);
+
+    &:hover {
+      background-color: var(--dark-blue-389FFF);
+    }
+
+    &:active {
+      background-color: var(--super-dark-blue-345374);
+    }
+  }
+
+  // Адаптация под планшеты
+  @media all and (max-width:$bp3){
     &__wrapper {
-      height: auto;
+      min-height: auto;
+      padding: rem(112) 0 rem(64) 0;
+    }
+
+
+    &__text {
+      width: 100%;
+    }
+  }
+
+  @media all and (max-width:$bp4){
+    &__text {
+      width: 100%;
+      padding: 0 rem(16);
+    }
+
+    &__wrapper {
+      padding: rem(64) 0 rem(64) 0;
     }
 
     &__pretitle {
@@ -78,22 +121,11 @@
   
     &__title {
       font-size: rem(32);
-      line-height: rem(40)
+      line-height: rem(40);
     }
 
-    &__text {
-      width: 100%;
-    }
-
-    &__animation {
-      display: none;
-    }
-  }
-
-  @media all and (max-width:$bp5){
-    &__text {
-      width: 100%;
-      padding: 0 rem(16);
-    }
+    &__button {
+      margin-top: rem(32);
+    }  
   }
 }

@@ -2,6 +2,28 @@
 @import "../../../_variables.scss";
 
 .RatingSwiper {
+  background-color: var( --white-F6F6F6);
+  padding: rem(120) rem(24) rem(64) rem(24);
+
+  &__header {
+    font-family: var(--font-unbounded);
+    font-size: rem(65);
+    line-height: rem(75.5);
+    margin-bottom: rem(42);
+    text-align: left;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    span {
+      display: block;
+
+      &:last-child {
+        padding-left: rem(118);
+      }
+    }
+  }
+
   &__wrapper {
     padding: rem(30) 0;
   }
@@ -34,6 +56,7 @@
   &__title {
     font-size: rem(24);
     line-height: rem(32);
+    font-family: var(--font-unbounded);
   }
 
   &__full, 
@@ -46,7 +69,7 @@
     border-radius: rem(16);
   }
 
-  &__full  &__title {
+  &__full &__title {
     margin-bottom: rem(32);
   }
 
@@ -75,6 +98,7 @@
   }
 
   &__button {
+    align-self: flex-end;
     position: relative;
     min-height: rem(32);
     border-radius: rem(34);
@@ -109,17 +133,32 @@
     }
   }
 
-  @media all and (max-width:$bp4){
-    // &__adaptive {
-    //   display: flex;
-    //   flex-direction: column;
-    //   gap: 24px;
-    // }
+  @media all and (max-width:$bp3){
+    padding: rem(120) 15% rem(56) 15%;
+    
+    span {
+      display: block;
+    }
+
+    &__header {
+      align-self: flex-start;
+      font-size: rem(40);
+      line-height: rem(48);
+
+      span:last-child {
+        padding-left: 0;
+      }
+    }
+
+    &__swiper {
+      display: flex;
+      flex-direction: column;
+    }
 
     &__slide {
       display: flex;
       flex-direction: column;
-      gap: 24px;
+      gap: 16px;
 
       &:not(:first-child) {
         margin-top: 24px;
@@ -127,6 +166,39 @@
 
       &:nth-child(even) {
         flex-direction: column-reverse;
+      }
+    }
+  }
+
+  @media all and (max-width:$bp4){
+    padding: rem(96) rem(16);
+    display: flex;
+    flex-direction: column;
+
+
+    &__header {
+      font-size: rem(32);
+      line-height: rem(40);
+    }
+  
+    &__full, 
+    &__row {
+      padding: rem(16);
+    }
+
+    &__date {
+      margin-bottom: rem(48);
+    }
+
+    &__title {
+      font-size: rem(20);
+      line-height: rem(28);
+    }
+
+
+    &__row {
+      &:not(:last-child) {
+        margin-bottom: rem(16);
       }
     }
   }
