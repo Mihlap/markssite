@@ -129,7 +129,7 @@ mailRouter.post('/portalSubmitForm', upload.array('resumeFiles', 2), (req, res) 
   Имя: ${formData.name ? formData.name : ''}
   Телефон: ${formData.phone ? formData.phone : ''}
   ${formData.city ? `Город: ${formData.city}` : ''}
-  ${formData.choose ? `Выбранная вакансия: ${formData.choose}` : ''}
+  ${formData.choose ? `Выбранное направление: ${formData.choose}` : ''}
   Сопроводительное письмо: ${formData.letter ? formData.letter : ''}
   Ссылка на резюме/портфолио: ${formData.resume ? formData.resume : ''}
 `;

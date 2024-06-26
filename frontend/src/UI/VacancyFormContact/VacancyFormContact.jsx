@@ -13,7 +13,7 @@ const Host = process.env.REACT_APP_SERVER_HOST;
 const VacancyFormContact = ({ initialDirection, handleMouseEnter, handleMouseLeave, vacancyTitle }) => {
 
   const options = useMemo(() => [
-    { value: "Другая вакансия", label: "Другая вакансия" },
+    { value: "Другое направление", label: "Другое направление" },
     { value: "Архитектура", label: "Архитектура" },
     { value: "Конструктив", label: "Конструктив" },
     { value: "Инженерия", label: "Инженерия" },
@@ -379,7 +379,7 @@ const VacancyFormContact = ({ initialDirection, handleMouseEnter, handleMouseLea
                       isMulti={false}
                       options={options}
                       value={selectedOptions}
-                      placeholder={"Выбрать вакансию"}
+                      placeholder={"Выбрать направление"}
                       onChange={handleChangeVacancy}
                       isSearchable={false}
                       isClearable={true}
