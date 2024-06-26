@@ -73,8 +73,12 @@
     }
   }
 
-  @media all and (max-width:$bp4){
+  @media all and (max-width:$bp3){
     padding: rem(80) rem(174);
+
+    &__star {
+      display: none;
+    }
 
     &__title {
       font-size: rem(24);
@@ -87,7 +91,7 @@
     }
   }
   
-  @media all and (max-width:$bp5){
+  @media all and (max-width:$bp4){
     padding: rem(64) rem(16);
     
     &__title {

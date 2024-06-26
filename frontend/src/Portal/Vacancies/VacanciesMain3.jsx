@@ -7,13 +7,12 @@ import "swiper/css";
 import "swiper/css/navigation";
 
 import Intro from "./Intro/Intro";
+import VideoScroll from './VideoScroll/VideoScroll';
 import RatingSwiper from './RatingSwiper/RatingSwiper';
 import BenefitsGrid from './BenefitsGrid/BenefitsGrid';
 import SocialsSwiper from './SocialsSwiper/SocialsSwiper';
 import StarsFour3d from './StarsFour3d/StarsFour3d';
-import VideoScroll from './VideoScroll/VideoScroll';
 import VacanciesCities from './VacanciesCities/VacanciesCities';
-
 
 import invite_1 from "./icons/invite-1.png";
 import invite_2 from "./icons/invite-2.png";
@@ -74,26 +73,23 @@ const VacanciesMain3 = () => {
 			opacity: opacity
 		}
 	)
+
+	return () => {
+		tl.kill();
+		tl2.kill();
+		tl3.kill();
+	};
+
 	}, []);
 
 	return (
 		<>
-			<Intro />
-
-			{/* <VideoScroll />
-
-			<section className={styles.rating}>
-				<div className={styles.rating__header}>
-					<h2>
-						<span>Передовая компания</span><span>в сфере проектирования</span>
-					</h2>
-				</div>
-				<RatingSwiper /> 
-			</section>
-			 */}
+			{/* <Intro />
+			<VideoScroll /> */}
+			{/* <RatingSwiper />  */}
 			<VacanciesCities />
 
-			<BenefitsGrid />
+			{/* <BenefitsGrid /> */}
 			
 			<section className={styles.invite}>
 				<StarsFour3d 
@@ -119,14 +115,7 @@ const VacanciesMain3 = () => {
 				</div>
 			</section>
 	
-			<section className={styles.socials}>
-				<div className={styles.socials__header}>
-					<h2>Подписывайся на <span>наши каналы в&nbsp;социальных сетях</span>, там всегда можно найти информации о лекциях, конференциях и ключевых объектах</h2>
-				</div>
-				<div className={styles.socials__slider}>
-					<SocialsSwiper />
-				</div>
-			</section>
+			<SocialsSwiper />  
 		</>
 	);
 };

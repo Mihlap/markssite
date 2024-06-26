@@ -15,7 +15,8 @@ const Intro = () => {
 				<div className={styles.Intro__wrapper}>
 					<div className={styles.Intro__text}>
 						<span className={styles.Intro__pretitle}> Мы ищем специалистов в&nbsp;наш дружный коллектив</span>
-						<h1 className={styles.Intro__title}>Мы всегда в поиске талантливых специалистов</h1>
+						<h1 className={styles.Intro__title}>Мы всегда в&nbsp;поиске талантливых специалистов</h1>
+						<a href="#" className={styles.Intro__button}>Смотреть вакансии</a>
 					</div>
 					<div className={styles.Intro__animation}>
 						<StarsFour3d 
