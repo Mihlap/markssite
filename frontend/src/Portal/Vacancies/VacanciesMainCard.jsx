@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { Helmet } from "react-helmet-async";
 import styles from "./VacanciesMainCard.module.scss";
 import AllVacancyButton from "../../UI/ButtonVacancy/AllVacancyButton";
@@ -68,6 +68,8 @@ const VacanciesMainCard = ({
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedVacancy, setSelectedVacancy] = useState(null);
+  const [isVisible, setIsVisible] = useState(window.innerWidth > 1024);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   const formRef = useRef(null);
   const rocketRef = useRef(null);
@@ -75,6 +77,21 @@ const VacanciesMainCard = ({
   const sliderCardRef = useRef(null);
   const blockRightWrapperRef = useRef(null);
   const wrapperTextBlockRef = useRef(null);
+
+  useEffect(() => {
+    function handleResize() {
+      setIsVisible(window.innerWidth > 1024);
+      setWindowWidth(window.innerWidth);
+    }
+
+    window.addEventListener("resize", handleResize);
+
+    handleResize();
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   useEffect(() => {
     dispatch(fetchEmployees(id));
@@ -86,46 +103,50 @@ const VacanciesMainCard = ({
     }
   }, [vacancies]);
 
-  
   useEffect(() => {
+    if (window.innerWidth < 1025) {
+      return;
+    }
     const handleScroll = () => {
       window.requestAnimationFrame(() => {
         const blockRight = blockRightWrapperRef.current;
         const wrapperTextBlock = wrapperTextBlockRef.current;
         if (!blockRight || !wrapperTextBlock) return;
-  
+
         const blockRightRect = blockRight.getBoundingClientRect();
         const wrapperTextBlockRect = wrapperTextBlock.getBoundingClientRect();
 
         let wrapperTextBlockBottom;
         if (window.innerWidth >= 1025 && window.innerWidth <= 1600) {
-          wrapperTextBlockBottom = wrapperTextBlockRect.top + window.scrollY + 1000;
+          wrapperTextBlockBottom =
+            wrapperTextBlockRect.top + window.scrollY + 1000;
         } else {
-          wrapperTextBlockBottom = wrapperTextBlockRect.top + window.scrollY + 500;
+          wrapperTextBlockBottom =
+            wrapperTextBlockRect.top + window.scrollY + 500;
         }
-  
+
         // Проверяем, достиг ли нижний край текстового блока
         if (window.scrollY + blockRightRect.height >= wrapperTextBlockBottom) {
           // Когда blockRight должен перестать быть фиксированным и начать скролиться
-          blockRight.style.position = 'absolute';
-          blockRight.style.top = `${(wrapperTextBlockBottom - blockRightRect.height)}px`;
-          blockRight.style.right = '0';
+          blockRight.style.position = "absolute";
+          blockRight.style.top = `${
+            wrapperTextBlockBottom - blockRightRect.height
+          }px`;
+          blockRight.style.right = "0";
         } else {
-          blockRight.style.position = 'fixed';
-          blockRight.style.top = '0';
-          blockRight.style.right = '0';
+          blockRight.style.position = "fixed";
+          blockRight.style.top = "0";
+          blockRight.style.right = "0";
         }
       });
     };
-  
-    window.addEventListener('scroll', handleScroll);
-  
+
+    window.addEventListener("scroll", handleScroll);
+
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
-  
-
 
   // useEffect(() => {
   //   if (!formRef.current || !buttonRef.current) return;
@@ -165,7 +186,16 @@ const VacanciesMainCard = ({
   //   };
   // }, [formRef, buttonRef]);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    const timer = setTimeout(() => {
+    if (!rocketRef.current || !sputnikRef.current) {
+      console.log("Рефы не инициализированы");
+      return;
+    }
+
+    const xValueRocket = window.innerWidth <= 1024 ? 100 : 180;
+    const xValueSputnik = window.innerWidth <= 1024 ? -100 : -180;
+
     const animation = gsap.timeline({
       scrollTrigger: {
         trigger: rocketRef.current,
@@ -178,20 +208,24 @@ const VacanciesMainCard = ({
     animation.fromTo(
       rocketRef.current,
       { x: 0, opacity: 1 },
-      { x: 180, opacity: 1, duration: 1 }
+      { x: xValueRocket, opacity: 1, duration: 1 }
     );
 
     animation.fromTo(
       sputnikRef.current,
       { x: 0, opacity: 1 },
-      { x: -180, opacity: 1, duration: 1 },
+      { x: xValueSputnik, opacity: 1, duration: 1 },
       "<"
     );
+  }, 100);
 
-    return () => {
-      animation.kill();
+    // return () => {
+    //   animation.kill(); 
+    // };
+    return () => {    
+      clearTimeout(timer);
     };
-  }, [rocketRef, sputnikRef]);
+  }, [rocketRef, sputnikRef, windowWidth]);
 
   return (
     <>
@@ -199,13 +233,13 @@ const VacanciesMainCard = ({
         <title>Marks Group</title>
       </Helmet>
       <div className={styles.main_vacancyWrapper}>
-      {isLoading && <LoadingVacancy />}
-    <ModalVacancyFormSend
-      isOpen={isModalOpen}
-      onRequestClose={() => setIsModalOpen(false)}
-      title="Заявка отправлена!"
-      message="Мы свяжемся с вами в ближайшее время!"
-    />
+        {isLoading && <LoadingVacancy />}
+        <ModalVacancyFormSend
+          isOpen={isModalOpen}
+          onRequestClose={() => setIsModalOpen(false)}
+          title="Заявка отправлена!"
+          message="Мы свяжемся с вами в ближайшее время!"
+        />
         <div
           className={styles.main_vacancy_block__background1}
           style={{ backgroundImage: `url(${star3d_1})` }}
@@ -245,60 +279,65 @@ const VacanciesMainCard = ({
                       ></li>
                     </ul>
                   </div>
-                </div>{" "}
-                <div className={styles.main_vacancy_block__blockRightWrapper} ref={blockRightWrapperRef}>
-                 <div className={styles.main_vacancy_block__blockRight}>
-                  <div
-                    className={`${styles.main_vacancy_block__detailItem} ${styles.topLeftSquare}`}
-                  >
-                    <span className={styles.main_vacancy_block__detailKey}>
-                      Опыт&nbsp;работы:
-                    </span>
-                    <span className={styles.main_vacancy_block__detailValue}>
-                      {vacancy.experience}
-                    </span>
-                  </div>
-                  <div
-                    className={`${styles.main_vacancy_block__detailItem} ${styles.topRightSquare}`}
-                  >
-                    <span className={styles.main_vacancy_block__detailKey}>
-                      Локация:
-                    </span>
-                    <span className={styles.main_vacancy_block__detailValue}>
-                      {vacancy.locationStaff}
-                    </span>
-                  </div>
-                  <div
-                    className={`${styles.main_vacancy_block__detailItem} ${styles.bottomLeftSquare}`}
-                  >
-                    <span className={styles.main_vacancy_block__detailKey}>
-                      Занятость:
-                    </span>
-                    <span className={styles.main_vacancy_block__detailValue}>
-                      {vacancy.busyness}
-                    </span>
-                  </div>
-                  <div
-                    className={`${styles.main_vacancy_block__detailItem} ${styles.bottomRightSquare}`}
-                  >
-                    <span className={styles.main_vacancy_block__detailKey}>
-                      Режим&nbsp;работы:
-                    </span>
-                    <span className={styles.main_vacancy_block__detailValue}>
-                      {vacancy.modeOperating}
-                    </span>
-                  </div>
-                  <div className={styles.vacancyFormWrapperSimple}>
-                    <VacancyFormContactSimple
-                      handleMouseEnter={handleMouseEnter}
-                      handleMouseLeave={handleMouseLeave}
-                      handleMouseHover={handleMouseHover}                   
-                      setIsLoading={setIsLoading}
-                      setIsModalOpen={setIsModalOpen}
-                      vacancyTitleSimple={selectedVacancy?.title}
-                  />
-                  </div>
                 </div>
+                <div
+                  className={styles.main_vacancy_block__blockRightWrapper}
+                  ref={blockRightWrapperRef}
+                >
+                  <div className={styles.main_vacancy_block__blockRight}>
+                    <div
+                      className={`${styles.main_vacancy_block__detailItem} ${styles.topLeftSquare}`}
+                    >
+                      <span className={styles.main_vacancy_block__detailKey}>
+                        Опыт&nbsp;работы:
+                      </span>
+                      <span className={styles.main_vacancy_block__detailValue}>
+                        {vacancy.experience}
+                      </span>
+                    </div>
+                    <div
+                      className={`${styles.main_vacancy_block__detailItem} ${styles.topRightSquare}`}
+                    >
+                      <span className={styles.main_vacancy_block__detailKey}>
+                        Локация:
+                      </span>
+                      <span className={styles.main_vacancy_block__detailValue}>
+                        {vacancy.locationStaff}
+                      </span>
+                    </div>
+                    <div
+                      className={`${styles.main_vacancy_block__detailItem} ${styles.bottomLeftSquare}`}
+                    >
+                      <span className={styles.main_vacancy_block__detailKey}>
+                        Занятость:
+                      </span>
+                      <span className={styles.main_vacancy_block__detailValue}>
+                        {vacancy.busyness}
+                      </span>
+                    </div>
+                    <div
+                      className={`${styles.main_vacancy_block__detailItem} ${styles.bottomRightSquare}`}
+                    >
+                      <span className={styles.main_vacancy_block__detailKey}>
+                        Режим&nbsp;работы:
+                      </span>
+                      <span className={styles.main_vacancy_block__detailValue}>
+                        {vacancy.modeOperating}
+                      </span>
+                    </div>
+                    <div className={styles.vacancyFormWrapperSimple}>
+                      {isVisible && (
+                        <VacancyFormContactSimple
+                          handleMouseEnter={handleMouseEnter}
+                          handleMouseLeave={handleMouseLeave}
+                          handleMouseHover={handleMouseHover}
+                          setIsLoading={setIsLoading}
+                          setIsModalOpen={setIsModalOpen}
+                          vacancyTitleSimple={selectedVacancy?.title}
+                        />
+                      )}
+                    </div>
+                  </div>
                 </div>
               </div>
             ))}
@@ -367,7 +406,10 @@ const VacanciesMainCard = ({
             </div>
           </div>
         </div>
-        <div className={styles.main_vacancyWrapper__wrapperTextBlock} ref={wrapperTextBlockRef}>
+        <div
+          className={styles.main_vacancyWrapper__wrapperTextBlock}
+          ref={wrapperTextBlockRef}
+        >
           <RenderVacancySections />
         </div>
         <div className={styles.main_vacancyWrapper__3dGroup}>
@@ -432,12 +474,13 @@ const VacanciesMainCard = ({
             </div>
           </div>
           <div className={styles.main_vacancyWrapper__locationWrapper}>
-            <div className={styles.locationTitle}>Расположение</div>
-            <span className={styles.locationText}>
-              Офис в&nbsp;центре Москвы, метро
-              <br />
-              Белорусская
-            </span>
+            <div className={styles.locationTitle}>Расположение</div>{" "}
+            {windowWidth && (
+              <span className={styles.locationText}>
+                Офис в&nbsp;центре Москвы, метро{" "}
+                {windowWidth <= 1024 ? " " : <br />} Белорусская
+              </span>
+            )}
             <div className={styles.main_vacancyWrapper__locationBlockLocation}>
               <div className={styles.rocketVectorAround1Block}>
                 <img className={styles.rocket} src={rocket1} alt={rocket1} />
@@ -486,7 +529,7 @@ const VacanciesMainCard = ({
                   slidesPerView: 3.5,
                 },
                 1440: {
-                  slidesPerView: 2.7,              
+                  slidesPerView: 2.7,
                 },
                 1300: {
                   slidesPerView: 2.7,
@@ -562,7 +605,7 @@ const VacanciesMainCard = ({
                 alt={frame1}
               />
               <span className={styles.main_vacancyWrapper__frameSpan}>
-                Корпоративный английский
+              Опыт работы на уникальных объектах
               </span>
             </div>
             <div className={styles.main_vacancyWrapper__frameBlock_frame}>
@@ -617,9 +660,7 @@ const VacanciesMainCard = ({
             </div>
           </div>
         </div>
-        <div className={styles.temporaryText}>
-          Мы ищем именно тебя!
-        </div>
+        <div className={styles.temporaryText}>Мы ищем именно тебя!</div>
         <div className={styles.textUnderForm}>
           Оставьте ваши контакты, мы всегда&nbsp;в&nbsp;поиске талантливых
           профессионалов
