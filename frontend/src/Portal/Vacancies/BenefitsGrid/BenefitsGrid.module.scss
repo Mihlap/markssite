@@ -73,6 +73,7 @@
     }
   }
 
+  // Адаптация под планшеты
   @media all and (max-width:$bp3){
     padding: rem(80) rem(174);
 
@@ -91,6 +92,7 @@
     }
   }
   
+  // Адаптация под мобильную версию
   @media all and (max-width:$bp4){
     padding: rem(64) rem(16);
     

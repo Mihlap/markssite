@@ -51,7 +51,6 @@
     align-items: flex-start;
     width: 65%;
     color: var(--black-1D2E43);
-    font-family: var(--font-unbounded);
     font-style: normal;
     font-weight: var(--fw-300);
     padding-left: rem(62);
@@ -67,6 +66,7 @@
   &__title {
     font-size: rem(48);
     line-height: rem(64);
+    font-family: var(--font-unbounded);
   }
 
   &__button {
@@ -104,6 +104,7 @@
     }
   }
 
+  // Адаптация под мобильную версию
   @media all and (max-width:$bp4){
     &__text {
       width: 100%;
@@ -127,5 +128,21 @@
     &__button {
       margin-top: rem(32);
     }  
+
+    &__star {
+      &_2 {
+        width: 207px;
+        height: 207px;
+        top: 0;
+        right: -73px;
+      }
+
+      &_1,
+      &_3,
+      &_4 {
+        display: none;
+      }
+      
+    }
   }
 }

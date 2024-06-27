@@ -14,11 +14,12 @@ const Intro = () => {
 			<section className={styles.Intro}>
 				<div className={styles.Intro__wrapper}>
 					<div className={styles.Intro__text}>
-						<span className={styles.Intro__pretitle}> Мы ищем специалистов в&nbsp;наш дружный коллектив</span>
+						<span className={styles.Intro__pretitle}> Хочешь в&nbsp;нашу команду?</span>
 						<h1 className={styles.Intro__title}>Мы всегда в&nbsp;поиске талантливых специалистов</h1>
 						<a href="#" className={styles.Intro__button}>Смотреть вакансии</a>
 					</div>
 					<div className={styles.Intro__animation}>
+						{/* Добавление объектов звездочек с присваиванием класса родителького компонента */}
 						<StarsFour3d 
 							section='Intro' 
 							styles={styles} 

@@ -74,7 +74,9 @@ const SocialsSwiper = () => {
         <h2>Подписывайся на <span>наши каналы в&nbsp;социальных сетях</span>, там всегда можно найти информации о лекциях, конференциях и ключевых объектах</h2>
       </div>
       <div className={styles.SocialsSwiper__slider}>
+        {/* Переиспользуемый компонент - стрелки для свайпера */}
         <ArrowsSwiper prevRef={prevRef} nextRef={nextRef} />
+        {/* Свайпер с социальными сетями  */}
         <Swiper 
           className={styles.SocialsSwiper__swiper}
           ref={swiperRef}
@@ -87,7 +89,7 @@ const SocialsSwiper = () => {
           keyboard={{ enabled: true }}
           slideActiveClass={styles.SocialsSwiper__active}
           breakpoints={{
-            1024: {
+            1439: {
               slidesPerView: 3, 
               centeredSlides: true, 
               LoopAdditionalSlides: 5,  
@@ -95,16 +97,19 @@ const SocialsSwiper = () => {
               loop: true,  
               spaceBetween: 30,
             },
-            768: {
-              slidesPerView: 2.5,
-              spaceBetween: 16,
+            769: {
+              slidesPerView: 2.8,
             },
-            377: {
-              slidesPerView: 1,
+
+            575: {
+              slidesPerView: 1.5,
+            },
+            
+            376: {
+              slidesPerView: 1.1,
               LoopAdditionalSlides: 0,
               initialSlide: 0,    
-              centeredSlides: false,  
-              spaceBetween: 0, 
+              centeredSlides: false,
             },
           }}
         >

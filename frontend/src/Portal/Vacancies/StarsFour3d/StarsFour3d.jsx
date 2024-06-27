@@ -5,6 +5,7 @@ import star_2 from '../icons/star-2.png';
 import star_3 from '../icons/star-3.png';
 import star_4 from '../icons/star-4.png';
 
+// Описание компонента - объекты звездочек с классом нужного компонента для управления стилями из родительского компонента
 const StarsFour3d = ({section, styles, star1Ref, star2Ref, star3Ref, star4Ref}) => {
   return (
     <>

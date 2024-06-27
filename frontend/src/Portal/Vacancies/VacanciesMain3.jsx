@@ -23,6 +23,8 @@ const VacanciesMain3 = () => {
 	const star3Ref = useRef(null);
 	const star4Ref = useRef(null);
 
+
+	// Анимация объектов звёздочек в invite
 	const rotationDeg = 60;
 	const opacity = 0.4;
 
@@ -33,13 +35,13 @@ const VacanciesMain3 = () => {
 			scrollTrigger: {
 				trigger: `.${styles.invite}`,
 				start: '11% bottom',
-				end:'bottom top',
+				end: 'bottom top',
 				scrub: true,
 			},
 		});
 
 		tl.to([star1Ref.current, star3Ref.current],
-			 {
+			{
 				rotation: rotationDeg,
 			}
 		)
@@ -48,57 +50,60 @@ const VacanciesMain3 = () => {
 			scrollTrigger: {
 				trigger: `.${styles.invite}`,
 				start: '11% bottom',
-				end:'bottom top',
+				end: 'bottom top',
 				scrub: true,
 			},
 		});
 
 		tl2.to([star2Ref.current, star4Ref.current],
 			{
-			 rotation: -(rotationDeg),
-		 }
-	 )
+				rotation: -(rotationDeg),
+			}
+		)
 
-	 const tl3 = gsap.timeline({
-		scrollTrigger: {
-			trigger: `.${styles.invite}`,
-			start: '11% bottom',
-			end:'bottom top',
-			scrub: true,
-		},
-	});
-	
-	tl3.to([star3Ref.current, star4Ref.current],
-		{
-			opacity: opacity
-		}
-	)
+		const tl3 = gsap.timeline({
+			scrollTrigger: {
+				trigger: `.${styles.invite}`,
+				start: '11% bottom',
+				end: 'bottom top',
+				scrub: true,
+			},
+		});
 
-	return () => {
-		tl.kill();
-		tl2.kill();
-		tl3.kill();
-	};
+		tl3.to([star3Ref.current, star4Ref.current],
+			{
+				opacity: opacity
+			}
+		)
+
+		return () => {
+			tl.kill();
+			tl2.kill();
+			tl3.kill();
+		};
 
 	}, []);
 
 	return (
 		<>
-			{/* <Intro />
-			<VideoScroll /> */}
-			{/* <RatingSwiper />  */}
+			<Intro />
+
+			<VideoScroll />
+
+			<RatingSwiper />
+
 			<VacanciesCities />
 
-			{/* <BenefitsGrid /> */}
-			
+			<BenefitsGrid />
+
 			<section className={styles.invite}>
-				<StarsFour3d 
-					section='invite' 
-					styles={styles} 
-					star1Ref={star1Ref} 
-					star2Ref={star2Ref} 
-					star3Ref={star3Ref} 
-					star4Ref={star4Ref} 
+				<StarsFour3d
+					section='invite'
+					styles={styles}
+					star1Ref={star1Ref}
+					star2Ref={star2Ref}
+					star3Ref={star3Ref}
+					star4Ref={star4Ref}
 				/>
 				<h2 className={styles.invite__title}>Приглашаем студентов на&nbsp;стажировку</h2>
 				<div className={styles.invite__content}>
@@ -109,13 +114,13 @@ const VacanciesMain3 = () => {
 						<img src={invite_2}></img>
 						<span></span>
 					</div>
-					<div className={styles.invite__desc}>Команда <span>молодых специалистов MARKSGROUP</span> помогает с адаптацией и&nbsp;погружением в команду
+					<div className={styles.invite__desc}>Оплачиваемая стажировка. Сотрудничаем с&nbsp;ВУЗами, даем возможность <span>учиться у&nbsp;профессионалов</span> в&nbsp;сфере проектирования!
 					</div>
 					<a href="#" className={styles.invite__button}>Узнать больше</a>
 				</div>
 			</section>
-	
-			<SocialsSwiper />  
+
+			<SocialsSwiper />
 		</>
 	);
 };
