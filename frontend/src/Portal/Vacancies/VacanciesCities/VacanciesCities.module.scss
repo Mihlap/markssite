@@ -6,12 +6,13 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  height: 100vh;
 
   &__text {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    width: 32%;
+    width: 36%;
     padding: rem(64) 0 rem(64) rem(64);
 
     h2 {
@@ -53,13 +54,14 @@
     flex-shrink: 0;
     position: relative;
     width: rem(960);
-    height: rem(932);
+    height: rem(880);
+    overflow: hidden;
 
     img {
       display: block;
       width: 100%;
       height: 100%;
-      object-position: bottom -5px right -132px;
+      object-position: bottom rem(-11) right rem(-135);
     }
   }
 
@@ -108,15 +110,21 @@
       position: absolute;
       transform: translateY(-57px);
       z-index: 60;
+      font-size: 19px;
+      white-space: nowrap;
     }
 
     &_msk {
-      top: rem(180);
-      right: rem(300);
+      top: 138px;
+      right: 293px;
 
       #{$s}__box {
         width: 470px;
         height: 470px;
+      }
+
+      span {
+        font-size: 25px;
       }
 
       #{$s}__circle {
@@ -151,19 +159,24 @@
       }
     }
 
+    &_vzh {
+      top: 416px;
+      right: 549px;
+    }
+    
+    &_spb {    
+      top: 218px;
+      right: 472px;
+    }
+
     &_obg {
-      top: rem(645);
-      right: rem(380);
+      top: 573px;
+      right: 375px;
     }
 
-    &_chbk{
-      top: rem(622);
-      right: rem(260);
-    }
-
-    &_tsht {
-      top: rem(696);
-      right: rem(150);
+    &_chbk {     
+      top: 558px;
+      right: 260px;
     }
   }
 
@@ -177,8 +190,7 @@
     height: 70px;
   }
 
- 
-
+  // Анимация
   @keyframes ellipse {
     0% {
       transform: scale(1);
@@ -191,16 +203,21 @@
     }
   }
   
-
-  @media all and (max-width:$bp3){
-    &__map {
-      width: rem(632);
-      height: rem(572);
-
-      img {
-        object-position: bottom -32px right -32px;
-      }
+  
+  
+  @media all and (max-width:$bp2){
+    &__text {
+      position: absolute;
+      width: 44%;
+      z-index: 60;
+      padding: rem(64) 0 rem(194) 16%;
     }
+
+    &__map {
+      width: rem(758);
+      height: rem(686);
+      margin-left: auto;
+    } 
 
     &__circle {
       &_xs {
@@ -219,14 +236,20 @@
     }
 
     &__city {
+
       span {
-        transform: translateY(-57px);
+        transform: translateY(-38px);
+        font-size: 14px;
       }
   
       &_msk {
-        top: rem(70);
-        right: rem(220);
-  
+        top: 141px;
+        right: 231px;
+
+        span {
+          font-size: 18px;
+        }
+
         #{$s}__box {
           width: rem(310);
           height: rem(310);
@@ -259,24 +282,201 @@
           }
         }
       }
+    
+      &_vzh {
+        top: 323px;
+        right: 396px;
+      }
+      
+      &_spb {        
+        top: 166px;
+        right: 338px;
+      }
   
       &_obg {
-        top: rem(395);
-        right: rem(281);
+        top: 443px;
+        right: 259px;
       }
   
-      &_chbk{
-        top: rem(622);
-        right: rem(318);
-      }
-  
-      &_tsht {
-        display: none;
-        // top: rem(384);
-        // right: rem(196);
+      &_chbk {     
+        top: 435px;
+        right: 168px;
       }
     }
-    
   }
 
+  // Адаптация под планшет
+  @media all and (max-width:$bp3){
+    &__text {
+      width: 53%;
+    }
+
+    &__map {
+      width: rem(599);
+      height: rem(572);
+      
+      img {        
+        object-position: bottom rem(10) right rem(-60);
+        transform: scale(1.18);
+      }
+    }
+
+    &__city {
+
+      span {
+        font-size: 9px;
+        transform: translateY(-24px);
+      }
+
+      &_msk {       
+        top: 56px;
+        right: 204px;
+
+        span {
+          font-size: 12px;
+        }
+      }
+    
+      &_vzh {       
+        top: 236px;
+        right: 365px;
+      }
+      
+      &_spb {                
+        top: 88px;
+        right: 314px;
+      }
+  
+      &_obg {
+        top: 362px;
+        right: 244px;
+      }
+  
+      &_chbk {             
+        top: 351px;
+        right: 158px;
+      }
+    }
+  }
+
+  @media all and (max-width:1000px){
+    &__text {
+      width: 30%;
+      padding-left: 24px;
+    }
+  }
+
+  // Адаптация под моюильную версию
+  @media all and (max-width:$bp4){
+    flex-direction: column;
+    height: auto;
+
+    &__text {
+      position: static;
+      width: 100%;
+      padding: rem(120) rem(16) 0 rem(16); 
+
+      h2 {
+        font-size: rem(24);
+        line-height: rem(32);
+      }
+    }
+
+    &__map {
+      width: 100%;
+      height: rem(507);
+      
+      img {        
+        object-position: bottom -15px right -146px;
+        transform: scale(1.3);
+        object-fit: contain;
+      }
+    }
+
+    &__city {
+      span {
+        transform: translateY(-24px);
+      }
+
+      &_msk {        
+        top: 61px;
+        right: 76px;
+
+        span {
+          font-size: 12px;
+        }
+      }
+    
+      &_vzh {       
+        top: 241px;
+        right: 238px;
+      }
+      
+      &_spb {           
+        top: 93px;
+        right: 180px;
+      }
+  
+      &_obg {
+        top: 359px;
+        right: 108px;
+      }
+  
+      &_chbk {             
+        top: 348px;
+        right: 21px;
+      }
+    }
+  }
+
+  @media all and (max-width:$bp5){
+   
+    &__map {
+      width: 100%;
+      height: rem(507);
+      margin-right: auto;
+      margin-left: 0;
+      
+      img {        
+        object-position: bottom -36px right -168px;
+        transform: scale(1.3);
+        object-fit: cover;
+      }
+    }
+
+    &__city {
+      span {
+        transform: translateY(-24px);
+      }
+
+      &_msk {       
+        top: 83px;
+        right: 57px;
+
+        span {
+          font-size: 12px;
+        }
+      }
+    
+      &_vzh {       
+        top: 261px;
+        right: 219px;
+      }
+      
+      &_spb {          
+        top: 112px;
+        right: 161px;
+      }
+  
+      &_obg {        
+        top: 380px;
+        right: 89px;
+      }
+  
+      &_chbk {               
+        top: 369px;
+        right: 2px;
+      }
+    }
+  }
 }
