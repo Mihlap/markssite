@@ -42,10 +42,6 @@ const RatingSwiper = () => {
 
   const [showAll, setShowAll] = useState(false);
 
-  const handleShowAllClick = () => {
-    setShowAll(!showAll);
-  };
-
   return (
     <section className={styles.RatingSwiper}>
       <div className={styles.RatingSwiper__header}>
@@ -54,8 +50,10 @@ const RatingSwiper = () => {
 					</h2>
       </div>
       <div className={styles.RatingSwiper__swiper}>
+        {/* Отрисовка слайдера в зависимости от размера экрана */}
         {!isTablet ?
           <>
+            {/* Компонент стрелочки с присваиванием ссылок */}
             <ArrowsSwiper prevRef={prevRef} nextRef={nextRef} />
             <Swiper
               ref={swiperRef}

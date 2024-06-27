@@ -5,7 +5,41 @@
   margin: rem(140) 0;
   background-color: var( --white-F6F6F6);
   $s: &;
-  min-height: rem(600);
+  min-height: rem(750);
+
+  &__swiper {
+    margin-top: 24px;
+  }
+
+  &__slider {
+    padding: 0 4rem;
+    position: relative;
+
+    & > * {
+      overflow: visible;
+    }
+
+    &::before,
+    &::after {
+      position: absolute;
+      content: '';
+      background-color: var(--white-F6F6F6);
+      height: 100%;
+      width: 112px;
+      z-index: 10;
+    }
+
+    &::before {
+      top: 0;
+      left: -4rem;
+    }
+    
+    &::after {
+      top: 0;
+      right: -4rem;
+    }
+  }
+
 
   &__header {
     width: 58%;
@@ -53,6 +87,10 @@
   }
 
   &__button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: var(--font-raleway);
     font-size: rem(10);
     background-color: var(--blue-75BBFD);
     border-radius: rem(33.5);
@@ -84,6 +122,8 @@
   }
 
   @media all and (max-width:$bp2){
+    min-height: auto;
+
     &__inner,
     &__active &__inner {
       padding: rem(16);
@@ -91,7 +131,7 @@
     
     &__button,
     &__active &__button {
-      height: rem(31px);
+      height: rem(31);
     }
 
     &__picture,
@@ -101,10 +141,22 @@
     }  
   }
 
+  // Адаптация под планшеты
   @media all and (max-width:$bp3){
+    margin: rem(120) 0;
+   
+    &__slider {
+      &::before,
+      &::after {
+        content: none;
+      }
+
+      padding: 0 rem(16);
+      transform: translateX(10.8125rem);
+    }
+
     &__header {
-      width: 70%;
-      
+      width: 75%;
       font-size: rem(24);
       line-height: rem(32);
       padding: 0 0 rem(48) rem(173);
@@ -119,6 +171,49 @@
       h3, span {
         font-size: 16px;
       }
+    }
+  }
+
+  // Адаптация под мобильную версию
+  @media all and (max-width:$bp4){
+    margin: rem(110) 0;
+
+    &__slider {
+      transform: none;
+    }
+
+    &__header {
+      width: 100%;
+      font-size: rem(20);
+      line-height: rem(28);
+      padding: 0 rem(16) rem(80) rem(16); 
+    }
+
+    &__bottom {
+      h3, span {
+        font-size: 16px;
+      }
+    }
+  }
+
+  @media all and (max-width:574px){
+    &__slider {
+      padding: 0;
+      margin: 0 5px;
+    }
+
+    &__inner {
+      margin: 0 8px;
+      border-radius: 12.42px;
+    }
+
+    &__picture,
+    &__active &__picture {
+      height: auto;
+    }  
+    
+    &__button {
+      font-size: rem(10);
     }
   }
 }

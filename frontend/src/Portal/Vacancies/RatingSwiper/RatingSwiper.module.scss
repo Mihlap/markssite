@@ -3,7 +3,7 @@
 
 .RatingSwiper {
   background-color: var( --white-F6F6F6);
-  padding: rem(120) rem(24) rem(64) rem(24);
+  padding: rem(140) rem(64) rem(26) rem(64);
 
   &__header {
     font-family: var(--font-unbounded);
@@ -76,14 +76,11 @@
   &__rows {
     display: flex;
     flex-direction: column;
+    gap: 16px;
   }
 
   &__row {
     flex-grow: 1;
-
-    &:not(:last-child) {
-      margin-bottom: rem(30);
-    }
   }
 
   &__picture {
@@ -133,17 +130,24 @@
     }
   }
 
+  
+  // Адаптация под планшет
   @media all and (max-width:$bp3){
-    padding: rem(120) 15% rem(56) 15%;
+    padding: 0;
     
     span {
       display: block;
     }
 
     &__header {
-      align-self: flex-start;
       font-size: rem(40);
       line-height: rem(48);
+      padding: rem(120) 15% rem(54) 15%;
+      margin: 0;
+
+      h2 {
+        align-self: flex-start;
+      }
 
       span:last-child {
         padding-left: 0;
@@ -153,25 +157,53 @@
     &__swiper {
       display: flex;
       flex-direction: column;
+      gap: 12px;
+    }
+
+    &__adaptive {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
     }
 
     &__slide {
       display: flex;
       flex-direction: column;
       gap: 16px;
-
-      &:not(:first-child) {
-        margin-top: 24px;
+      padding: 0 15% 0 15%;
+      
+      &:last-child {
+        padding: 0 15% rem(12) 15%;
       }
 
       &:nth-child(even) {
         flex-direction: column-reverse;
       }
     }
+
+    &__full, 
+    &__row {
+      padding: rem(24);
+    }
+
+    &__title {
+      font-size: rem(18);
+      line-height: rem(28);
+    }
+
+    &__date {
+      margin-bottom: rem(48);
+    }
+
+    &__button {
+      margin: 0 15% 0 0;
+    }
   }
 
-  @media all and (max-width:$bp4){
-    padding: rem(96) rem(16);
+  
+  // Адаптация под мобильную версию
+  @media all and (max-width:$bp5){
+    padding:0;
     display: flex;
     flex-direction: column;
 
@@ -179,6 +211,15 @@
     &__header {
       font-size: rem(32);
       line-height: rem(40);
+      padding: rem(96) rem(16) rem(32) rem(16);
+    }
+
+    &__slide {
+      padding: 0 rem(16) 0 rem(16);
+
+      &:last-child {
+        padding: 0 rem(16) 0 rem(16);
+      }
     }
   
     &__full, 
@@ -186,20 +227,14 @@
       padding: rem(16);
     }
 
-    &__date {
-      margin-bottom: rem(48);
-    }
-
     &__title {
       font-size: rem(20);
       line-height: rem(28);
     }
 
-
-    &__row {
-      &:not(:last-child) {
-        margin-bottom: rem(16);
-      }
+    &__button {
+      margin: 0 rem(16) 0 0;
     }
   }
+
 }
