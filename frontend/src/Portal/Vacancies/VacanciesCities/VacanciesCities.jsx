@@ -3,6 +3,7 @@ import React, { useLayoutEffect, useRef }  from 'react';
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import gsap from 'gsap';
 
+import ButtonLink from '../ButtonLink/ButtonLink';
 import styles from "./VacanciesCities.module.scss";
 import map from "../icons/vacancies-cities.png";
 
@@ -29,7 +30,7 @@ const VacanciesCities = () => {
 			<div className={styles.VacanciesCities__text}>
 				<h2>Вакансии по всему миру!</h2>
 				<p>5 офисов в России и один в Узбекистане. Если ты крутой специалист, мы готовы помочь с переездом и поиском жилья</p>
-				<a href="#">Взглянуть на офис</a>
+				<ButtonLink text="Взглянуть на офис" currentHref="#"/>
 			</div>
 			<div className={styles.VacanciesCities__map}>
 				<img src={map} alt="Карта офисов" />

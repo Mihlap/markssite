@@ -6,6 +6,8 @@ import styles from "./VacanciesMain3.module.scss";
 import "swiper/css";
 import "swiper/css/navigation";
 
+
+import ButtonLink from './ButtonLink/ButtonLink';
 import Intro from "./Intro/Intro";
 import VideoScroll from './VideoScroll/VideoScroll';
 import RatingSwiper from './RatingSwiper/RatingSwiper';
@@ -22,7 +24,6 @@ const VacanciesMain3 = () => {
 	const star2Ref = useRef(null);
 	const star3Ref = useRef(null);
 	const star4Ref = useRef(null);
-
 
 	// Анимация объектов звёздочек в invite
 	const rotationDeg = 60;
@@ -116,7 +117,7 @@ const VacanciesMain3 = () => {
 					</div>
 					<div className={styles.invite__desc}>Оплачиваемая стажировка. Сотрудничаем с&nbsp;ВУЗами, даем возможность <span>учиться у&nbsp;профессионалов</span> в&nbsp;сфере проектирования!
 					</div>
-					<a href="#" className={styles.invite__button}>Узнать больше</a>
+					<ButtonLink text="Узнать больше" currentHref="#"/>
 				</div>
 			</section>
 
