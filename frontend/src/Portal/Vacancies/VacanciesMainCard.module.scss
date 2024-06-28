@@ -25,7 +25,7 @@
 
     &__item {
       display: flex;
-      justify-content: space-between;   
+      justify-content: space-between;
       height: 50vh;
     }
 
@@ -37,7 +37,7 @@
       right: 26%;
       background-size: cover;
       background-repeat: no-repeat;
-      z-index: -1;  
+      z-index: -1;
     }
 
     &__background2 {
@@ -48,7 +48,7 @@
       top: 1%;
       background-size: cover;
       background-repeat: no-repeat;
-      z-index: -1; 
+      z-index: -1;
     }
 
     &__background3 {
@@ -59,53 +59,53 @@
       right: 1%;
       background-size: cover;
       background-repeat: no-repeat;
-      z-index: -1;   
+      z-index: -1;
     }
 
- 
-    &__blockLeft {   
+
+    &__blockLeft {
       display: flex;
-      flex-direction: column;     
-      height: 100%; 
-      width: 100%;    
+      flex-direction: column;
+      height: 100%;
+      width: 100%;
       backdrop-filter: blur(7px);
       background: linear-gradient(221.46deg, rgba(255, 203, 193, 0.09) -4.631%, rgba(117, 187, 253, 0.09) 44.805%, rgba(188, 188, 188, 0.09) 103.423%);
-      padding-left: 8.37rem;  
+      padding-left: 8.37rem;
       // padding-top: 140px;
-      border-bottom: 1px solid rgb(235, 236, 238);  
+      border-bottom: 1px solid rgb(235, 236, 238);
     }
 
     &__blockRightWrapper {
-      position: -webkit-fixed; 
+      position: -webkit-fixed;
       position: fixed;
       top: 0;
-      right: 0;  
-      height: 25vh; 
+      right: 0;
+      height: 25vh;
       width: 35vw;
     }
 
-    &__blockRight {    
-      display: flex;    
-      flex-wrap: wrap;   
-      height: 100%; 
+    &__blockRight {
+      display: flex;
+      flex-wrap: wrap;
+      height: 100%;
       width: 100%;
       margin-left: auto;
       justify-content: space-between;
       align-content: stretch;
       border-bottom: 1px solid rgb(235, 236, 238);
       // padding-top: 50px; 
-    }  
-    
+    }
+
 
     &__vacancyTitle {
       color: var(--black-1D2E43);
       font-family: var(--font-unbounded);
       font-size: 3rem;
       font-weight: var(--fw-300);
-      line-height: 4rem;      
+      line-height: 4rem;
       width: 100%;
       padding-right: 40vw;
-      padding-top: 186px; 
+      padding-top: 186px;
     }
 
     &__vacancyTitle1 {
@@ -160,7 +160,7 @@
 
     &__detail {
       display: flex;
-      flex-wrap: wrap;   
+      flex-wrap: wrap;
       justify-content: space-between;
     }
 
@@ -169,7 +169,7 @@
       flex-direction: column;
       width: calc(50% - 0rem);
       height: 100%;
-      border: 1px solid rgb(235, 236, 238);  
+      border: 1px solid rgb(235, 236, 238);
       padding-left: 3.5vw;
       justify-content: center;
     }
@@ -219,7 +219,7 @@
       margin-top: 6px;
     }
   }
-  
+
 
   .vacancyFormWrapperSimple {
     border: 1px solid rgb(235, 236, 238);
@@ -246,10 +246,15 @@
     line-height: 2.5rem;
     text-align: left;
     padding-right: 1.875rem;
+    align-items: center;
   }
 
+
   &__offerHeart {
-    align-items: center;
+    display: inline-block;
+    vertical-align: middle;
+    margin-left: 1rem;
+    margin-bottom: 0.5rem;
   }
 
   &__wrapperFrameBlock {
@@ -815,6 +820,10 @@
     padding: 3.5rem 3rem 20rem 8.37rem;
   }
 
+  .mobileBackgroundContainer {
+    display: none;
+  }
+
   @media screen and (min-width: 1025px) and (max-width: 1600px) {
 
     .main_vacancy_block {
@@ -825,7 +834,7 @@
 
       &__item {
         display: flex;
-        justify-content: space-between;   
+        justify-content: space-between;
         height: 110vh;
       }
 
@@ -833,31 +842,31 @@
         width: 14rem;
         height: 14rem;
         top: 9%;
-        right: 32%;     
+        right: 32%;
       }
 
       &__background2 {
         width: 10rem;
         height: 12rem;
         right: 18%;
-        top: 0%;     
+        top: 0%;
       }
 
       &__background3 {
         width: 25rem;
         height: 28rem;
         top: 6%;
-        right: 2%;   
-       }
+        right: 2%;
+      }
 
-      &__blockLeft {    
+      &__blockLeft {
         padding-left: 3.875rem;
-      }   
+      }
 
-      &__vacancyTitle { 
-        display: flex;  
-        flex-wrap: wrap; 
-        width: fit-content;    
+      &__vacancyTitle {
+        display: flex;
+        flex-wrap: wrap;
+        width: fit-content;
         padding-right: 40rem;
       }
 
@@ -866,12 +875,12 @@
       //   padding-top: 186px; 
       //   width: 50%;
       // }
-   
+
 
       &__vacancyTitle1 {
         padding-top: 32px;
         margin-right: 1rem;
-        max-width: 60%;     
+        max-width: 60%;
       }
 
       &__vacancyTitle1__titleValue1 {
@@ -889,7 +898,7 @@
         padding-left: 2.5rem;
         margin-bottom: -2rem; // для того чтобы влезла кнопка формы отправки вакансий
       }
-      
+
 
       &__detailKey {
         font-size: 1rem;
@@ -912,7 +921,7 @@
       // opacity: 0.9;
     }
 
-     &__offer {
+    &__offer {
       padding-left: 3.875rem;
       padding-top: 80px;
     }
@@ -1223,7 +1232,7 @@
         left: 30vw;
         background-size: cover;
         background-repeat: no-repeat;
-        z-index: -1;     
+        z-index: -1;
       }
 
       .background10next {
@@ -1234,7 +1243,7 @@
         left: 0vw;
         background-size: cover;
         background-repeat: no-repeat;
-        z-index: -1;     
+        z-index: -1;
       }
 
       .background11next {
@@ -1245,7 +1254,7 @@
         left: 23vw;
         background-size: cover;
         background-repeat: no-repeat;
-        z-index: -1;   
+        z-index: -1;
       }
 
     }
@@ -1288,16 +1297,16 @@
         flex-wrap: wrap;
         justify-content: space-between;
         padding-left: 1rem;
-        padding-top: 3rem;     
+        padding-top: 3rem;
 
         .main_vacancyWrapper__frameBlock_frame {
           flex: 0 0 50%;
-          margin-bottom: 3rem;           
+          margin-bottom: 3rem;
         }
 
         .main_vacancyWrapper__frame {
           width: 7.5rem;
-          height: 7.5rem;     
+          height: 7.5rem;
         }
 
         .main_vacancyWrapper__frameSpan {
@@ -1316,14 +1325,14 @@
 
     }
 
-    .temporaryText {  
+    .temporaryText {
       padding-left: 3.875rem;
       padding-top: 160px;
     }
 
     .textUnderForm {
       max-width: 40rem;
-      padding-left: 3.875rem;    
+      padding-left: 3.875rem;
     }
 
     &__vacancyFormWrapper {
@@ -1334,550 +1343,1084 @@
 
   /* стили для планшетной версии  */
   @media screen and (min-width: 768px) and (max-width: 1024px) {
-    
-      .main_vacancy_block {
-        display: flex;
-        width: 100%;
-        height: 100%;
-    
-        &__all_button {    
-          padding-left: 3.43rem;
-          padding-top: 85px;
-          cursor: none;   
-        }
-    
-        &__item { 
-          flex-direction: column;
-          height: auto;  
-         }
-    
-        &__background1 {     
-          width: 14rem;
-          height: 14rem;
-          top: 7%;
-          right: 46%;      
-        }
-    
-        &__background2 {      
-          width: 8rem;
-          height: 8rem;
-          right: 10%;
-          top: 2%;   
-        }
-    
-        &__background3 {      
-          width: 26rem;
-          height: 26rem;
-          top: 6%;
-          right: 0%;               
-        }
-    
-     
-        &__blockLeft {          
-          padding-left: 3.43rem;        
-        }
-    
-        &__blockRightWrapper {
-          position: -webkit-relative; 
-          position: relative;     
-          height: auto;      
-        }
-    
-        &__blockRight {    
-          display: flex; 
-          flex-direction: row;   
-          flex-wrap: nowrap;   
-          height: 100%; 
-          width: 100%;
-          margin-left: auto;
-          justify-content: flex-start;
-          align-items: center;     
-        }  
-       
-    
-        &__vacancyTitle {      
-          display: flex;  
-          flex-wrap: wrap; 
-          width: fit-content;    
-          padding-right: 40rem;
-          padding-top: 151px;
-        }
-    
-        &__vacancyTitle1 {     
-          max-width: 100%;
-          padding-top: 32px;
-        }
-    
-        &__vacancyTitle1__titleKey {      
-          font-size: 1rem;
-          line-height: 1.5rem;            
-        }
 
-    
-        &__vacancyTitle1__titleValue {       
-          font-size: 1.25rem;
-          line-height: 1.75rem;
-          padding-top: 8px;
-        }
-    
-        &__vacancyTitle1__titleValue1 {       
-          font-size: 1.25rem;
-          line-height: 1.75rem;
-          padding-top: 8px;
-          padding-bottom: 4rem;
-          max-width: 80%;
-        }
-    
-        &__vacancyTitle1__titleKey1 {
-          font-size: 1rem;
-          line-height: 1.625rem;      
-          font-size: 1.125rem;      
-          padding-left: 6.25rem;
-        }
-    
-        &__vacancyTitle1__titleValue {    
-          font-size: 2rem;     
-          line-height: 2.5rem;
-          padding-left: 6.25rem;
-          padding-top: 6px;
-        }
-    
-    
-        &__detail {
-          display: flex;
-          flex-wrap: nowrap;   
-          justify-content: flex-start;
-        }
-    
-        &__detailItem {       
-          min-width: 26vw;
-          width: 100%;
-          min-height: 8.563rem;
-          height: 100%;       
-          padding-left: 3.43rem;          
-        }
-    
-        .topLeftSquare {
-          order: 1;        
-        }
-    
-        .topRightSquare {
-          order: 2;             
-        }
-    
-        .bottomLeftSquare {
-          order: 4;                
-        }
-    
-        .bottomRightSquare {
-          order: 3;        
-        }
-    
-    
-        &__detailKey {
-          font-size: 1rem;
-          line-height: 1.5rem;      
-        }
-    
-        &__detailValue {      
-          font-size: 1.25rem;
-          line-height: 1.75rem;
-          margin-top: 8px;
-        }
-      }   
-      
-    .vacancyFormWrapperSimple {
-        display: none;
-    }
-
-    
-  &__offer { 
-    padding-left: 11.43rem;
-    padding-top: 80px;
-  }
-
-  &__offerName {
-    font-size: 1.5rem;
-    line-height: 2rem;   
-    padding-right: 0.81rem;
-  }
-
-  &__wrapperFrameBlock {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    padding: 72px 0rem 0px 11.43rem; 
-    width: 100%;
-  }
-
-  &__frameBlock:nth-last-child(n+2) { 
-    margin-bottom: 4.5rem;
-  }
-
-  &__frameBlock_frame { 
-    width: 50%; 
-  }
-
-  &__frame {
-    height: 7.5rem;
-    width: 7.5rem;
-  }
-
-  &__frameSpan {   
-    padding-top: 8px;
-  }
-
-  &__wrapperTextBlock {
-    display: flex;
-    flex-direction: column;
-    color: var(--black-1D2E43);
-    line-height: 2rem;
-    text-align: left;
-    padding-left: 11.43rem;
-    width: 85%;
-  }
-
-  &__wrapperTitle {
-    font-family: var(--font-unbounded);
-    font-size: 1.5rem;
-    font-weight: var(--fw-300);
-    padding-top: 5rem;
-    margin-bottom: 2rem;
-  }
-
-
-  &__wrapperTitle1 {
-    font-size: 1rem;  
-    line-height: 1.5rem; 
-    padding-top: 80px;
-    padding-bottom: 22px;
-  }
-
-  &__textBlock {
-    font-size: 1.125rem;
-    line-height: 1.625rem;
-  }
-
-  &__textBlock span {
-    margin-top: 2rem;
-  }
-
-  &__textBlock li { 
-    padding-left: 2rem;
-  }
-
-  &__textBlock li::before {
-    content: "\2022";
-    position: absolute;
-    left: 0.8rem;
-    top: 0;
-  }
-  
-
-  &__aboutBlockWrapper {
-    display: flex;
-    flex-direction: column;
-    text-align: left;
-    padding-left: 11.43rem;
-    padding-top: 6.25rem;
-  }
-
-  &__aboutBlockTitle {  
-    font-size: 1rem;   
-    line-height: 1.5rem;
-  }
-
-  &__aboutBlockText {
-    font-size: 2rem;
-    line-height: 2.5rem;
-    padding-top: 24px;
-  }
-
-  &__wrapperCountBlock {    
-     padding-top: 3.875rem;
-     padding-right: 1rem;
-     gap: 2rem;
-     flex-wrap: wrap;
-
-    .countItem {
-      padding-right: 4rem;
-    }
-
-    .countLabel { 
-      font-size: 1.125rem;
-      line-height: 1.625rem;   
-    }
-
-    .countValue {
-      font-family: var(--font-unbounded);
-      font-size: 2.5rem;
-      line-height: 3rem;
-      font-weight: var(--fw-300);
-      color: var(--black-1D2E43);
-      margin-top: 8px;
-    }
-
-    .vectorAround {
-      position: absolute;
-      top: 30px;
-      left: 11rem;
-    }
-
-    .offerHeart2 {   
-      top: 15px;
-      left: 25rem;
-    }
-  }
-
-  .main_vacancyWrapper__3dGroup {
-
-    .background4 {
-      width: 6rem;
-      height: 6rem;
-      top: 52%;
-      left: 28rem; ;
-    }
-
-    .background5 {
-      display: none;
-    }
-
-    .background6 {    
-      width: 6rem;
-      height: 6rem;
-      top: 45%;
-      left: 36rem;  
-    }
-
-    .background7 { 
-      width: 8rem;
-      height: 8rem;
-      top: 90%;
-      left: 5%;
-      padding-left: 2rem;   
-    }
-
-    .background8 {   
-      width: 24rem;
-      height: 18rem;
-      top: 45%;
-      left: 0rem;   
-    }
-
-    .background9 {     
-      width: 26em;
-      height: 26rem;
-      top: 30%;
-      left: 65%;    
-    }
-
-    .background10 { 
-      width: 7rem;
-      height: 7rem;
-      top: 60%;
-      left: 85%; 
-    }
-  }
-
-  &_locationBlockLocation {
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
- 
-  }
-
-  &__locationWrapper {
-    justify-content: flex-end;
-    padding-top: 303px;
-    padding-right: 5rem;
-    padding-left: 11.43rem;
-
-    .locationTitle {
-      align-self: flex-start;    
-      font-size: 1rem;    
-      line-height: 1.5rem;       
-    }
-
-    .locationText {
-      align-self: flex-start;  
-      font-size: 2rem;
-      line-height: 2.5rem;
-    }
-
-  }
-
-  &__locationWrapperLocation {
-    display: flex;
-    flex-direction: column;
-    color: var(--black-1D2E43);
-    text-align: left;
-    letter-spacing: 0px;
-    padding-top: 6rem;
-  
-    .locationLabel {
-      font-family: var(--font-raleway);
-      font-size: 1.125rem;
-      font-weight: var(--fw-400);
-      line-height: 1.625rem;
-      padding-right: 41rem;
-    }
-
-    .locationValue {
-      font-family: var(--font-unbounded);
-      font-size: 2.5rem;
-      font-weight: var(--fw-300);
-      line-height: 3rem;
-      padding-right: 36rem;
-    }
-  }
-
-  &__spanWrapperLocation { 
-    right: 2rem;
-    left: 24rem;
-    top: 30.6rem;
-    display: flex;
-    max-width: 26rem;
-    gap: 24px;
-  }
-
-  .rocketVectorAround1Block {
-    position: absolute;
-    display: block;
-    top: 27rem;
-    left: 10rem; 
-
-    .rocket {
-      margin-left: 0rem;
-      margin-bottom: -2rem;
-    }
-  }
-
-
-  &__sliderBlock {  
-    padding-top: 7.625rem;
-
-
-    .sliderBlockText {  
-      font-size: 1rem;
-      line-height: 1.5rem;
-      padding-left: 3.125rem;
-    }
-  
-
-    .sliderContainer_block {  
-      padding-left: 3.125rem;
-    }
-
-  }
-
-  .main_vacancyWrapper__3dNext {
-    position: relative;
-    z-index: -1;
-
-    .background9next,
-    .background10next,
-    .background11next {
-      display: none;
-    }
-
-  }
-
-  &__frameBlockNext {
-    display: flex;
-    flex-direction: column;
-    padding-top: 4.125rem;
-    padding-left: 11rem;
-
-
-    .frameBlockLeft {
+    .main_vacancy_block {
       display: flex;
-      flex-direction: column;
-      letter-spacing: 0px;
-      text-align: left;
+      width: 100%;
+      height: 100%;
 
-      .blockTitle {
-        display: none;
+      &__all_button {
+        padding-left: 3.43rem;
+        padding-top: 85px;
+        cursor: none;
       }
 
-      .blockText {
-        max-width: 80%;     
+      &__item {
+        flex-direction: column;
+        height: auto;
+      }
+
+      &__background1 {
+        width: 14rem;
+        height: 14rem;
+        top: 7%;
+        right: 46%;
+      }
+
+      &__background2 {
+        width: 8rem;
+        height: 8rem;
+        right: 10%;
+        top: 2%;
+      }
+
+      &__background3 {
+        width: 26rem;
+        height: 26rem;
+        top: 6%;
+        right: 0%;
+      }
+
+
+      &__blockLeft {
+        padding-left: 3.43rem;
+      }
+
+      &__blockRightWrapper {
+        position: -webkit-relative;
+        position: relative;
+        height: auto;
+      }
+
+      &__blockRight {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        height: 100%;
+        width: 100%;
+        margin-left: auto;
+        justify-content: flex-start;
+        align-items: center;
+      }
+
+
+      &__vacancyTitle {
+        display: flex;
+        flex-wrap: wrap;
+        width: fit-content;
+        padding-right: 40rem;
+        padding-top: 151px;
+      }
+
+      &__vacancyTitle1 {
+        max-width: 100%;
+        padding-top: 32px;
+      }
+
+      &__vacancyTitle1__titleKey {
+        font-size: 1rem;
+        line-height: 1.5rem;
+      }
+
+
+      &__vacancyTitle1__titleValue {
+        font-size: 1.25rem;
+        line-height: 1.75rem;
+        padding-top: 8px;
+      }
+
+      &__vacancyTitle1__titleValue1 {
+        font-size: 1.25rem;
+        line-height: 1.75rem;
+        padding-top: 8px;
+        padding-bottom: 4rem;
+        max-width: 80%;
+      }
+
+      &__vacancyTitle1__titleKey1 {
+        font-size: 1rem;
+        line-height: 1.625rem;
+        font-size: 1.125rem;
+        padding-left: 6.25rem;
+      }
+
+      &__vacancyTitle1__titleValue {
         font-size: 2rem;
         line-height: 2.5rem;
-        padding-top: 0rem;
+        padding-left: 6.25rem;
+        padding-top: 6px;
       }
 
-      .blockText1 {
+
+      &__detail {
+        display: flex;
+        flex-wrap: nowrap;
+        justify-content: flex-start;
+      }
+
+      &__detailItem {
+        min-width: 26vw;
+        width: 100%;
+        min-height: 8.563rem;
+        height: 100%;
+        padding-left: 3.43rem;
+      }
+
+      .topLeftSquare {
+        order: 1;
+      }
+
+      .topRightSquare {
+        order: 2;
+      }
+
+      .bottomLeftSquare {
+        order: 4;
+      }
+
+      .bottomRightSquare {
+        order: 3;
+      }
+
+
+      &__detailKey {
+        font-size: 1rem;
+        line-height: 1.5rem;
+      }
+
+      &__detailValue {
+        font-size: 1.25rem;
+        line-height: 1.75rem;
+        margin-top: 8px;
+      }
+    }
+
+    .vacancyFormWrapperSimple {
+      display: none;
+    }
+
+
+    &__offer {
+      padding-left: 11.43rem;
+      padding-top: 80px;
+    }
+
+    &__offerName {
+      font-size: 1.5rem;
+      line-height: 2rem;
+      padding-right: 0.81rem;
+    }
+
+    &__wrapperFrameBlock {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      padding: 72px 0rem 0px 11.43rem;
+      width: 100%;
+    }
+
+    &__frameBlock:nth-last-child(n+2) {
+      margin-bottom: 4.5rem;
+    }
+
+    &__frameBlock_frame {
+      width: 50%;
+    }
+
+    &__frame {
+      height: 7.5rem;
+      width: 7.5rem;
+    }
+
+    &__frameSpan {
+      padding-top: 8px;
+    }
+
+    &__wrapperTextBlock {
+      display: flex;
+      flex-direction: column;
+      color: var(--black-1D2E43);
+      line-height: 2rem;
+      text-align: left;
+      padding-left: 11.43rem;
+      width: 85%;
+    }
+
+    &__wrapperTitle {
+      font-family: var(--font-unbounded);
+      font-size: 1.5rem;
+      font-weight: var(--fw-300);
+      padding-top: 5rem;
+      margin-bottom: 2rem;
+    }
+
+
+    &__wrapperTitle1 {
+      font-size: 1rem;
+      line-height: 1.5rem;
+      padding-top: 80px;
+      padding-bottom: 22px;
+    }
+
+    &__textBlock {
+      font-size: 1.125rem;
+      line-height: 1.625rem;
+    }
+
+    &__textBlock span {
+      margin-top: 2rem;
+    }
+
+    &__textBlock li {
+      padding-left: 2rem;
+    }
+
+    &__textBlock li::before {
+      content: "\2022";
+      position: absolute;
+      left: 0.8rem;
+      top: 0;
+    }
+
+
+    &__aboutBlockWrapper {
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+      padding-left: 11.43rem;
+      padding-top: 6.25rem;
+    }
+
+    &__aboutBlockTitle {
+      font-size: 1rem;
+      line-height: 1.5rem;
+    }
+
+    &__aboutBlockText {
+      font-size: 2rem;
+      line-height: 2.5rem;
+      padding-top: 24px;
+    }
+
+    &__wrapperCountBlock {
+      padding-top: 3.875rem;
+      padding-right: 1rem;
+      gap: 2rem;
+      flex-wrap: wrap;
+
+      .countItem {
+        padding-right: 4rem;
+      }
+
+      .countLabel {
+        font-size: 1.125rem;
+        line-height: 1.625rem;
+      }
+
+      .countValue {
+        font-family: var(--font-unbounded);
+        font-size: 2.5rem;
+        line-height: 3rem;
+        font-weight: var(--fw-300);
+        color: var(--black-1D2E43);
+        margin-top: 8px;
+      }
+
+      .vectorAround {
+        position: absolute;
+        top: 30px;
+        left: 11rem;
+      }
+
+      .offerHeart2 {
+        top: 15px;
+        left: 25rem;
+      }
+    }
+
+    .main_vacancyWrapper__3dGroup {
+
+      .background4 {
+        width: 6rem;
+        height: 6rem;
+        top: 52%;
+        left: 28rem;
+        ;
+      }
+
+      .background5 {
         display: none;
       }
+
+      .background6 {
+        width: 6rem;
+        height: 6rem;
+        top: 45%;
+        left: 36rem;
+      }
+
+      .background7 {
+        width: 8rem;
+        height: 8rem;
+        top: 90%;
+        left: 5%;
+        padding-left: 2rem;
+      }
+
+      .background8 {
+        width: 24rem;
+        height: 18rem;
+        top: 45%;
+        left: 0rem;
+      }
+
+      .background9 {
+        width: 26em;
+        height: 26rem;
+        top: 30%;
+        left: 65%;
+      }
+
+      .background10 {
+        width: 7rem;
+        height: 7rem;
+        top: 60%;
+        left: 85%;
+      }
     }
 
-    .frameBlockRight {
+    &_locationBlockLocation {
       display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      padding-left: 0;
-      padding-top: 2.625rem;
+      flex-direction: column;
+      justify-content: flex-start;
 
-      .main_vacancyWrapper__frameBlock_frame {
-        flex: 0 0 50%;
-        margin-bottom: 6.25rem;
+    }
+
+    &__locationWrapper {
+      justify-content: flex-end;
+      padding-top: 303px;
+      padding-right: 5rem;
+      padding-left: 11.43rem;
+
+      .locationTitle {
+        align-self: flex-start;
+        font-size: 1rem;
+        line-height: 1.5rem;
       }
 
-      
-      .main_vacancyWrapper__frame {
-        width: 7.5rem;
-        height: 7.5rem;     
+      .locationText {
+        align-self: flex-start;
+        font-size: 2rem;
+        line-height: 2.5rem;
       }
 
-      .main_vacancyWrapper__frameSpan {
-        color: var(--black-1D2E43);
+    }
+
+    &__locationWrapperLocation {
+      display: flex;
+      flex-direction: column;
+      color: var(--black-1D2E43);
+      text-align: left;
+      letter-spacing: 0px;
+      padding-top: 6rem;
+
+      .locationLabel {
         font-family: var(--font-raleway);
         font-size: 1.125rem;
-        font-weight: var(--fw-500);
-        line-height: 1.5rem;
-        letter-spacing: 0px;
-        text-align: left;
-        width: 70%;
-        margin-right: 3.9rem;
+        font-weight: var(--fw-400);
+        line-height: 1.625rem;
+        padding-right: 41rem;
+      }
+
+      .locationValue {
+        font-family: var(--font-unbounded);
+        font-size: 2.5rem;
+        font-weight: var(--fw-300);
+        line-height: 3rem;
+        padding-right: 36rem;
       }
     }
 
-  }
+    &__spanWrapperLocation {
+      right: 2rem;
+      left: 24rem;
+      top: 30.6rem;
+      display: flex;
+      max-width: 26rem;
+      gap: 24px;
+    }
 
-  .temporaryText {
-    max-width: 47rem;
-    color: var(--black-1D2E43);
-    font-family: var(--font-unbounded);
-    font-size: 2.5rem;
-    font-style: normal;
-    font-weight: var(--fw-300);
-    line-height: 3rem;
-    padding-left: 11rem;
-    padding-top: 1.188rem;
-  }
+    .rocketVectorAround1Block {
+      position: absolute;
+      display: block;
+      top: 27rem;
+      left: 10rem;
 
-  .textUnderForm {
-    max-width: 47rem;
-    color: var(--black-1D2E43);
-    font-variant-numeric: lining-nums proportional-nums;
-    font-family: var(--font-raleway);
-    font-size: 1.125rem;
-    font-style: normal;
-    font-weight: var(--fw-400);
-    line-height: 1.625rem;
-    padding-left: 11rem;
-    padding-top: 1.5rem;
-  }
+      .rocket {
+        margin-left: 0rem;
+        margin-bottom: -2rem;
+      }
+    }
 
-  &__vacancyFormWrapper {
-    padding: 2.75rem 11rem 6rem 11rem; 
-  }
 
-    
+    &__sliderBlock {
+      padding-top: 7.625rem;
+
+
+      .sliderBlockText {
+        font-size: 1rem;
+        line-height: 1.5rem;
+        padding-left: 3.125rem;
+      }
+
+
+      .sliderContainer_block {
+        padding-left: 3.125rem;
+      }
+
+    }
+
+    .main_vacancyWrapper__3dNext {
+      position: relative;
+      z-index: -1;
+
+      .background9next,
+      .background10next,
+      .background11next {
+        display: none;
+      }
+
+    }
+
+    &__frameBlockNext {
+      display: flex;
+      flex-direction: column;
+      padding-top: 4.125rem;
+      padding-left: 11rem;
+
+
+      .frameBlockLeft {
+        display: flex;
+        flex-direction: column;
+        letter-spacing: 0px;
+        text-align: left;
+
+        .blockTitle {
+          display: none;
+        }
+
+        .blockText {
+          max-width: 80%;
+          font-size: 2rem;
+          line-height: 2.5rem;
+          padding-top: 0rem;
+        }
+
+        .blockText1 {
+          display: none;
+        }
+      }
+
+      .frameBlockRight {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        padding-left: 0;
+        padding-top: 2.625rem;
+
+        .main_vacancyWrapper__frameBlock_frame {
+          flex: 0 0 50%;
+          margin-bottom: 6.25rem;
+        }
+
+
+        .main_vacancyWrapper__frame {
+          width: 7.5rem;
+          height: 7.5rem;
+        }
+
+        .main_vacancyWrapper__frameSpan {
+          color: var(--black-1D2E43);
+          font-family: var(--font-raleway);
+          font-size: 1.125rem;
+          font-weight: var(--fw-500);
+          line-height: 1.5rem;
+          letter-spacing: 0px;
+          text-align: left;
+          width: 70%;
+          margin-right: 3.9rem;
+        }
+      }
+
+    }
+
+    .temporaryText {
+      max-width: 47rem;
+      color: var(--black-1D2E43);
+      font-family: var(--font-unbounded);
+      font-size: 2.5rem;
+      font-style: normal;
+      font-weight: var(--fw-300);
+      line-height: 3rem;
+      padding-left: 11rem;
+      padding-top: 1.188rem;
+    }
+
+    .textUnderForm {
+      max-width: 47rem;
+      color: var(--black-1D2E43);
+      font-variant-numeric: lining-nums proportional-nums;
+      font-family: var(--font-raleway);
+      font-size: 1.125rem;
+      font-style: normal;
+      font-weight: var(--fw-400);
+      line-height: 1.625rem;
+      padding-left: 11rem;
+      padding-top: 1.5rem;
+    }
+
+    &__vacancyFormWrapper {
+      padding: 2.75rem 11rem 6rem 11rem;
+    }
+
   }
 
 
   /* стили мобильной версии  */
-  @media screen and (max-width: 767px) {}
+  @media screen and (max-width: 767px) {
+
+    .main_vacancy_block {
+      display: flex;
+      width: 100%;
+      height: 100%;
+
+      &__all_button {
+        padding-left: 1rem;
+        padding-top: 65px;
+        cursor: none;
+      }
+
+      &__item {
+        flex-direction: column;
+        height: auto;
+      }
+
+      &__background1 {
+        width: 8.5rem;
+        height: 8.5rem;
+        top: 8%;
+        right: 0;
+        left: 2%;
+        z-index: 0;
+      }
+
+      &__background2 {
+        width: 5rem;
+        height: 5rem;
+        right: 10%;
+        top: 6%;
+        z-index: 0;
+      }
+
+      &__background3 {
+        width: 15.6rem;
+        height: 15.6rem;
+        top: 7%;
+        right: 0%;
+        z-index: 0;
+      }
+
+
+      &__blockLeft {
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+
+      &__blockRightWrapper {
+        position: relative;
+        width: 100%;
+        height: auto;
+      }
+
+      &__blockRight {
+        display: flex;
+        height: 100%;
+        width: 100%;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      &__vacancyTitle {
+        display: flex;
+        flex-wrap: wrap;
+        width: 100%;
+        font-size: 2rem;
+        line-height: 2.5rem;
+        padding-right: 0rem;
+        padding-top: 149px;
+      }
+
+      &__vacancyTitle1 {
+        max-width: 100%;
+        padding-top: 24px;
+      }
+
+      &__vacancyTitle1__titleKey {
+        font-size: 1rem;
+        line-height: 1.5rem;
+      }
+
+      &__vacancyTitle1__titleValue {
+        font-size: 1.25rem;
+        line-height: 1.75rem;
+        padding-top: 8px;
+      }
+
+      &__vacancyTitle1__titleValue1 {
+        font-size: 1.25rem;
+        line-height: 1.75rem;
+        padding-top: 8px;
+        padding-bottom: 3.75rem;
+        max-width: 100%;
+      }
+
+      &__vacancyTitle1__titleKey1 {
+        font-size: 1rem;
+        line-height: 1.625rem;
+        font-size: 1.125rem;
+        padding-left: 6.25rem;
+      }
+
+      &__vacancyTitle1__titleValue {
+        font-size: 2rem;
+        line-height: 2.5rem;
+        padding-left: 6.25rem;
+        padding-top: 6px;
+      }
+
+
+      &__detail {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+      }
+
+      &__detailItem {
+        max-height: 8.563rem;
+        padding-left: 1rem;
+      }
+
+      .topLeftSquare {
+        order: 1;
+      }
+
+      .topRightSquare {
+        order: 2;
+      }
+
+      .bottomLeftSquare {
+        order: 3;
+      }
+
+      .bottomRightSquare {
+        order: 4;
+      }
+
+
+      &__detailKey {
+        font-size: 1rem;
+        line-height: 1.5rem;
+      }
+
+      &__detailValue {
+        font-size: 1.25rem;
+        line-height: 1.75rem;
+        margin-top: 8px;
+      }
+    }
+
+    .vacancyFormWrapperSimple {
+      display: none;
+    }
+
+
+    &__offer {
+      padding-right: 1rem;
+      padding-left: 1rem;
+      padding-top: 168px;
+    }
+
+    &__offerName {
+      font-size: 1.5rem;
+      line-height: 2rem;
+    }
+
+    &__wrapperFrameBlock {
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+      padding: 51px 1rem 0px 1rem;
+      width: 100%;
+    }
+
+    &__frameBlock {
+      margin-bottom: 0rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    &__frameBlock_frame {
+      display: flex;
+      flex-direction: row;
+      width: 100%;
+      margin-bottom: 2rem;
+    }
+
+    &__frame {
+      height: 5rem;
+      width: 5rem;
+    }
+
+    &__frameSpan {
+      padding-top: 0px;
+      margin-top: 16px;
+      padding-left: 0.7rem;
+      width: 100%;
+    }
+
+    &__wrapperTextBlock {
+      display: flex;
+      flex-direction: column;
+      color: var(--black-1D2E43);
+      line-height: 2rem;
+      text-align: left;
+      padding: 4rem 1rem 0rem 1rem;
+      width: 100%;
+    }
+
+    &__wrapperTitle {
+      font-size: 1.5rem;
+      padding-top: 0rem;
+      margin-bottom: 1.5rem;
+    }
+
+
+    &__wrapperTitle1 {
+      font-size: 1rem;
+      line-height: 1.5rem;
+      padding-top: 48px;
+      padding-bottom: 1.5rem;
+    }
+
+    &__textBlock {
+      font-size: 1.125rem;
+      line-height: 1.625rem;
+    }
+
+    &__textBlock span {
+      margin-top: 1.5rem;
+    }
+
+    &__textBlock li {
+      padding-left: 2rem;
+    }
+
+    &__textBlock li::before {
+      content: "\2022";
+      position: absolute;
+      left: 0.8rem;
+      top: 0;
+    }
+
+
+    &__aboutBlockWrapper {
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+      padding: 4rem 1rem 0rem 1rem;
+    }
+
+    &__aboutBlockTitle {
+      font-size: 1rem;
+      line-height: 1.5rem;
+    }
+
+    &__aboutBlockText {
+      font-size: 1.25rem;
+      line-height: 1.75rem;
+      padding-top: 16px;
+    }
+
+    &__wrapperCountBlock {
+      display: flex;
+      flex-wrap: nowrap;
+      align-items: start;
+      padding: 3.375rem 0rem 0rem 0rem;
+      gap: 2.9rem;
+      flex-wrap: wrap;
+
+      .countItem {
+        padding-right: 0rem;
+      }
+
+      .countLabel {
+        font-size: 1rem;
+        line-height: 1.5rem;
+      }
+
+      .countValue {
+        font-family: var(--font-unbounded);
+        font-size: 2.5rem;
+        line-height: 3rem;
+        font-weight: var(--fw-300);
+        color: var(--black-1D2E43);
+        margin-top: 8px;
+      }
+
+      .vectorAround {
+        position: absolute;
+        top: 1rem;
+        left: 10rem;
+      }
+
+      .offerHeart2 {
+        top: 0.5rem;
+        left: 20rem;
+      }
+    }
+
+    .main_vacancyWrapper__3dGroup {
+
+      .background4 {
+        width: 6rem;
+        height: 6rem;
+        top: 52%;
+        left: 28rem;
+        ;
+      }
+
+      .background5 {
+        display: none;
+      }
+
+      .background6 {
+        width: 6rem;
+        height: 6rem;
+        top: 45%;
+        left: 36rem;
+      }
+
+      .background7 {
+        width: 8rem;
+        height: 8rem;
+        top: 90%;
+        left: 5%;
+        padding-left: 2rem;
+      }
+
+      .background8 {
+        width: 24rem;
+        height: 18rem;
+        top: 45%;
+        left: 0rem;
+      }
+
+      .background9 {
+        width: 26em;
+        height: 26rem;
+        top: 30%;
+        left: 65%;
+      }
+
+      .background10 {
+        width: 7rem;
+        height: 7rem;
+        top: 60%;
+        left: 85%;
+      }
+      
+    }
+
+    &_locationBlockLocation {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+
+    }
+
+    &__locationWrapper {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      padding-top: 407px;
+      padding-right: 1rem;
+      padding-left: 1rem;
+
+      .locationTitle {
+        align-self: flex-start;
+        font-size: 1rem;
+        line-height: 1.5rem;
+      }
+
+      .locationText {
+        align-self: flex-start;
+        font-size: 1.25rem;
+        line-height: 1.75rem;
+        padding-top: 1rem;
+      }
+
+    }
+
+    &__locationWrapperLocation {
+       padding-top: 3.875rem;
+       padding-left: 20rem;
+
+     }
+
+    &__spanWrapperLocation {
+      position: relative;
+      // right: 2rem;
+      // left: 24rem;
+      // top: 30.6rem;
+      display: flex;
+      max-width: 26rem;
+      gap: 24px;
+    }
+
+    .rocketVectorAround1Block {
+      position: absolute;
+      display: block;
+      top: 27rem;
+      left: 10rem;
+
+      .rocket {
+        margin-left: 0rem;
+        margin-bottom: -2rem;
+      }
+    }
+
+
+    &__sliderBlock {
+      padding-top: 7.625rem;
+
+
+      .sliderBlockText {
+        font-size: 1rem;
+        line-height: 1.5rem;
+        padding-left: 3.125rem;
+      }
+
+
+      .sliderContainer_block {
+        padding-left: 3.125rem;
+      }
+
+    }
+
+    .main_vacancyWrapper__3dNext {
+      position: relative;
+      z-index: -1;
+
+      .background9next,
+      .background10next,
+      .background11next {
+        display: none;
+      }
+
+    }
+
+    &__frameBlockNext {
+      display: flex;
+      flex-direction: column;
+      padding-top: 4.125rem;
+      padding-left: 11rem;
+
+
+      .frameBlockLeft {
+        display: flex;
+        flex-direction: column;
+        letter-spacing: 0px;
+        text-align: left;
+
+        .blockTitle {
+          display: none;
+        }
+
+        .blockText {
+          max-width: 80%;
+          font-size: 2rem;
+          line-height: 2.5rem;
+          padding-top: 0rem;
+        }
+
+        .blockText1 {
+          display: none;
+        }
+      }
+
+      .frameBlockRight {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        padding-left: 0;
+        padding-top: 2.625rem;
+
+        .main_vacancyWrapper__frameBlock_frame {
+          flex: 0 0 50%;
+          margin-bottom: 6.25rem;
+        }
+
+
+        .main_vacancyWrapper__frame {
+          width: 7.5rem;
+          height: 7.5rem;
+        }
+
+        .main_vacancyWrapper__frameSpan {
+          color: var(--black-1D2E43);
+          font-family: var(--font-raleway);
+          font-size: 1.125rem;
+          font-weight: var(--fw-500);
+          line-height: 1.5rem;
+          letter-spacing: 0px;
+          text-align: left;
+          width: 70%;
+          margin-right: 3.9rem;
+        }
+      }
+
+    }
+
+    .temporaryText {
+      max-width: 47rem;
+      color: var(--black-1D2E43);
+      font-family: var(--font-unbounded);
+      font-size: 2.5rem;
+      font-style: normal;
+      font-weight: var(--fw-300);
+      line-height: 3rem;
+      padding-left: 11rem;
+      padding-top: 1.188rem;
+    }
+
+    .textUnderForm {
+      max-width: 47rem;
+      color: var(--black-1D2E43);
+      font-variant-numeric: lining-nums proportional-nums;
+      font-family: var(--font-raleway);
+      font-size: 1.125rem;
+      font-style: normal;
+      font-weight: var(--fw-400);
+      line-height: 1.625rem;
+      padding-left: 11rem;
+      padding-top: 1.5rem;
+    }
+
+    &__vacancyFormWrapper {
+      padding: 2.75rem 11rem 6rem 11rem;
+    }
+
+  }
+
 
 }
