@@ -2,6 +2,7 @@ import React, { useRef }  from 'react';
 import styles from "./Intro.module.scss";
 
 import StarsFour3d from '../StarsFour3d/StarsFour3d';
+import ButtonLink from '../ButtonLink/ButtonLink';
 
 const Intro = () => {
 	const star1Ref = useRef(null);
@@ -16,7 +17,7 @@ const Intro = () => {
 					<div className={styles.Intro__text}>
 						<span className={styles.Intro__pretitle}> Хочешь в&nbsp;нашу команду?</span>
 						<h1 className={styles.Intro__title}>Мы всегда в&nbsp;поиске талантливых специалистов</h1>
-						<a href="#" className={styles.Intro__button}>Смотреть вакансии</a>
+						<ButtonLink text="Смотреть вакансии" currentHref="#" section="Intro" currentStyles={styles}/>
 					</div>
 					<div className={styles.Intro__animation}>
 						{/* Добавление объектов звездочек с присваиванием класса родителького компонента */}

@@ -70,25 +70,7 @@
   }
 
   &__button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: var(--blue-75BBFD);
-    border-radius: rem(66);
-    color: var(--white-F6F6F6);
-    font-size: rem(16);
-    min-height: rem(56);
-    padding: rem(16) rem(32);
-    transition: 0.3s;
     margin-top: rem(48);
-
-    &:hover {
-      background-color: var(--dark-blue-389FFF);
-    }
-
-    &:active {
-      background-color: var(--super-dark-blue-345374);
-    }
   }
 
   // Адаптация под планшеты
