@@ -1,0 +1,148 @@
+@import "../../../App.css";
+@import "../../../_variables.scss";
+
+.Intro {
+  position: relative;
+  padding-top: rem(48);
+
+  &__star {
+    position: absolute;
+    z-index: -1;
+    background-size: cover;
+    top: 0;
+    right: 0;
+
+    &_1 {
+      width: rem(290);
+      height: rem(290);
+    }
+    
+    &_2 {
+      width: rem(290);
+      height: rem(290);
+    }
+    
+    &_3 {
+      width: rem(135);
+      height: rem(135);
+    }
+    
+    &_4 {
+      width: rem(128);
+      height: rem(128);
+    }
+  }
+
+  &__wrapper {
+    min-height: rem(768);
+    padding: rem(168) 0 rem(64) 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    border-top: 1px solid var(--light-light-gray-EBECEE);
+    border-bottom: 1px solid var(--light-light-gray-EBECEE);
+    background: linear-gradient(261deg, rgba(255, 203, 193, 0.09) -4.67%, rgba(117, 187, 253, 0.09) 44.63%, rgba(188, 188, 188, 0.09) 103.07%);
+    backdrop-filter: blur(7px); 
+  }
+
+  &__text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 65%;
+    color: var(--black-1D2E43);
+    font-style: normal;
+    font-weight: var(--fw-300);
+    padding-left: rem(62);
+  }
+
+  &__pretitle {
+    display: inline-block;
+    font-size: rem(24);
+    line-height: rem(28);
+    margin-bottom: rem(8);
+  }
+
+  &__title {
+    font-size: rem(48);
+    line-height: rem(64);
+    font-family: var(--font-unbounded);
+  }
+
+  &__button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--blue-75BBFD);
+    border-radius: rem(66);
+    color: var(--white-F6F6F6);
+    font-size: rem(16);
+    min-height: rem(56);
+    padding: rem(16) rem(32);
+    transition: 0.3s;
+    margin-top: rem(48);
+
+    &:hover {
+      background-color: var(--dark-blue-389FFF);
+    }
+
+    &:active {
+      background-color: var(--super-dark-blue-345374);
+    }
+  }
+
+  // Адаптация под планшеты
+  @media all and (max-width:$bp3){
+    &__wrapper {
+      min-height: auto;
+      padding: rem(112) 0 rem(64) 0;
+    }
+
+
+    &__text {
+      width: 100%;
+    }
+  }
+
+  // Адаптация под мобильную версию
+  @media all and (max-width:$bp4){
+    &__text {
+      width: 100%;
+      padding: 0 rem(16);
+    }
+
+    &__wrapper {
+      padding: rem(64) 0 rem(64) 0;
+    }
+
+    &__pretitle {
+      font-size: rem(18);
+      line-height: rem(26);
+    }
+  
+    &__title {
+      font-size: rem(32);
+      line-height: rem(40);
+    }
+
+    &__button {
+      margin-top: rem(32);
+    }  
+
+    &__star {
+      &_2 {
+        width: 207px;
+        height: 207px;
+        top: 0;
+        right: -73px;
+      }
+
+      &_1,
+      &_3,
+      &_4 {
+        display: none;
+      }
+      
+    }
+  }
+}
