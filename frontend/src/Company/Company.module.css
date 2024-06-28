@@ -462,10 +462,8 @@
  }
 
 .card_container_ul {
-  display: flex;
-  /* position: relative; */
-  flex-wrap: wrap;
-  /* justify-content: space-between; */
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
   width: 100%;
   gap: 1.88rem;
   padding-left: 1.87vw;
