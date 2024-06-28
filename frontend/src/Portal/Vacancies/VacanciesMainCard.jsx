@@ -32,6 +32,7 @@ import rocketBig from "./icons/rocketBig.png";
 import sputnik from "./icons/sputnik.png";
 import vectorAround from "./icons/VectorAround.png";
 import vectorAround1 from "./icons/VectorAround1.png";
+import vectorAround2 from "./icons/vectorAround2.svg";
 import frame1 from "./icons/frame1.png";
 import frame2 from "./icons/frame2.png";
 import frame3 from "./icons/frame3.png";
@@ -119,7 +120,7 @@ const VacanciesMainCard = ({
         let wrapperTextBlockBottom;
         if (window.innerWidth >= 1025 && window.innerWidth <= 1600) {
           wrapperTextBlockBottom =
-            wrapperTextBlockRect.top + window.scrollY + 1000;
+            wrapperTextBlockRect.top + window.scrollY + 800;
         } else {
           wrapperTextBlockBottom =
             wrapperTextBlockRect.top + window.scrollY + 500;
@@ -353,12 +354,12 @@ const VacanciesMainCard = ({
         <div className={styles.main_vacancyWrapper__offer}>
           <span className={styles.main_vacancyWrapper__offerName}>
             Marks Group предлагает тебе
-          </span>
           <img
             className={styles.main_vacancyWrapper__offerHeart}
             src={heart}
             alt={heart}
           />
+          </span>
         </div>
         <div className={styles.main_vacancyWrapper__wrapperFrameBlock}>
           <div className={styles.main_vacancyWrapper__frameBlock}>
@@ -461,8 +462,8 @@ const VacanciesMainCard = ({
                 <img className={styles.offerHeart2} src={heart2} alt={heart2} />
                 <img
                   className={styles.vectorAround}
-                  src={vectorAround}
-                  alt={vectorAround}
+                  src={window.innerWidth <= 767 ? vectorAround2 : vectorAround}
+                  alt={window.innerWidth <= 767 ? 'vectorAround2' : 'vectorAround'}
                 />
                 <div className={styles.countLabel}>Специалистов</div>
                 <div className={styles.countValue}>+1000</div>
