@@ -1,0 +1,41 @@
+@import "../../../App.css";
+@import "../../../_variables.scss";
+
+.ArrowsSwiper {
+  display: flex;
+  justify-content: flex-end;
+
+  button {
+    width: rem(40);
+    height: rem(18);
+    border: 1px solid var(--dark-gray-566272);
+    border-radius: rem(34);
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUiIGhlaWdodD0iNiIgdmlld0JveD0iMCAwIDE1IDYiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0tOS41MzY3NGUtMDcgM0w1IDUuODg2NzVMNSAwLjExMzI0OEwtOS41MzY3NGUtMDcgM1pNMTUgMi41TDQuNSAyLjVMNC41IDMuNUwxNSAzLjVMMTUgMi41WiIgZmlsbD0iIzU2NjI3MiIvPgo8L3N2Zz4K');
+    transition: 0.2s;
+    
+    &:not(:last-child) {
+      margin-right: rem(12);
+    }
+
+    &:last-child{
+      transform: rotate(180deg);
+    }
+
+    &:hover {
+      background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUiIGhlaWdodD0iNiIgdmlld0JveD0iMCAwIDE1IDYiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0tNi4yNTg0OWUtMDcgM0w1IDUuODg2NzVMNSAwLjExMzI0OEwtNi4yNTg0OWUtMDcgM1pNMTUgMi41TDQuNSAyLjVMNC41IDMuNUwxNSAzLjVMMTUgMi41WiIgZmlsbD0iI0Y2RjZGNiIvPgo8L3N2Zz4K');
+      background-color: var(--black-1D2E43);
+    }
+
+    &:active{
+      background-color: var(--dark-gray-566272);
+    }
+  }
+
+  // Адаптация под планшеты
+  
+  @media all and (max-width:$bp3){
+    display: none;
+  }
+}
