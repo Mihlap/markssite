@@ -1,18 +1,20 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
-import { Helmet } from "react-helmet-async";
-import styles from "./VacanciesMainCard.module.scss";
-import AllVacancyButton from "../../UI/ButtonVacancy/AllVacancyButton";
-import { useDispatch, useSelector } from "react-redux";
-import { fetchEmployees } from "../../store/Slice/vacanciesSlice";
 import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { Helmet } from "react-helmet-async";
 import gsap from "gsap";
 import ScrollTrigger from "gsap/ScrollTrigger";
-import { Swiper, SwiperSlide } from "swiper/react";
+import styles from "./VacanciesMainCard.module.scss";
+import VacancySlider from "./VacancySlider";
+import LoadingVacancy from "../../Loading/LoadingVacancy";
+import RenderVacancySections from "./RenderVacancySections";
+import { fetchEmployees } from "../../store/Slice/vacanciesSlice";
 // import Error from "../../Loading/Error/Error";
 // import LoadingCircle from "../../Loading/LoadingCircle";
+import AllVacancyButton from "../../UI/ButtonVacancy/AllVacancyButton";
 import VacancyFormContactSimple from "../../UI/VacancyFormContact/VacancyFormContactSimple";
 import VacancyFormContact from "../../UI/VacancyFormContact/VacancyFormContact";
-import RenderVacancySections from "./RenderVacancySections";
+import ModalVacancyFormSend from "../../UI/VacancyFormContact/ModalVacancyFormSend";
 
 import star3d_1 from "./icons/star3d_1.png";
 import star3d_2 from "./icons/star3d_2.png";
@@ -37,26 +39,10 @@ import frame1 from "./icons/frame1.png";
 import frame2 from "./icons/frame2.png";
 import frame3 from "./icons/frame3.png";
 import frame4 from "./icons/frame4.png";
-import slider1 from "./icons/slider1.png";
-import slider2 from "./icons/slider2.png";
-import slider3 from "./icons/slider3.png";
-import LoadingVacancy from "../../Loading/LoadingVacancy";
-import ModalVacancyFormSend from "../../UI/VacancyFormContact/ModalVacancyFormSend";
+
 
 gsap.registerPlugin(ScrollTrigger);
 
-const imageArray = [
-  slider1,
-  slider2,
-  slider3,
-  slider2,
-  slider1,
-  slider2,
-  slider3,
-  slider2,
-  slider1,
-  slider2,
-];
 
 const VacanciesMainCard = ({
   handleMouseEnter,
@@ -484,11 +470,14 @@ const VacanciesMainCard = ({
             )}
             <div className={styles.main_vacancyWrapper__locationBlockLocation}>
               <div className={styles.rocketVectorAround1Block}>
-                <img className={styles.rocket} src={rocket1} alt={rocket1} />
+                <img className={styles.rocket}
+                 src={rocket1}
+                 alt={rocket1}          
+                />
                 <img
                   className={styles.vectorAround1}
-                  src={vectorAround1}
-                  alt={vectorAround1}
+                  src={window.innerWidth <= 767 ? vectorAround : vectorAround1}
+                  alt={window.innerWidth <= 767 ? 'vectorAround' : 'vectorAround1'}
                 />
               </div>
               <div
@@ -511,64 +500,7 @@ const VacanciesMainCard = ({
         </div>
         <div className={styles.main_vacancyWrapper__sliderBlock}>
           <div className={styles.sliderBlockText}>Как мы проводим время</div>
-          <div className={styles.sliderContainer}>
-            <Swiper
-              className={styles.sliderContainer_block}
-              ref={sliderCardRef}
-              spaceBetween={30}
-              touch="true"
-              direction="horizontal"
-              loop={false}
-              breakpoints={{
-                2500: {
-                  slidesPerView: 4.7,
-                },
-                2000: {
-                  slidesPerView: 4.2,
-                },
-                1750: {
-                  slidesPerView: 3.5,
-                },
-                1440: {
-                  slidesPerView: 2.7,
-                },
-                1300: {
-                  slidesPerView: 2.7,
-                },
-                1200: {
-                  slidesPerView: 2.5,
-                },
-                1024: {
-                  slidesPerView: 2.3,
-                },
-                900: {
-                  slidesPerView: 2.1,
-                },
-                700: {
-                  slidesPerView: 2.1,
-                },
-              }}
-            >
-              {imageArray.map((imageSrc, index) => (
-                <SwiperSlide
-                  key={index}
-                  className={`${styles.sliderContainer_blockSlide}
-            ${index % 2 === 0 ? styles.verticalSlide : styles.horizontalSlide}`}
-                >
-                  <div>
-                    <div className={styles.wrapper_sliderContainer_blockSlide}>
-                      <img
-                        className={styles.container_image_blockSlide}
-                        src={imageSrc}
-                        alt={`Слайд ${index + 1}`}
-                        loading="lazy"
-                      />
-                    </div>
-                  </div>
-                </SwiperSlide>
-              ))}
-            </Swiper>
-          </div>
+          <VacancySlider />
         </div>
         <div className={styles.main_vacancyWrapper__frameBlockNext}>
           <div className={styles.main_vacancyWrapper__3dNext}>
