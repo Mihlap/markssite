@@ -44,6 +44,8 @@ import Office from "./Portal/Office/Office";
 import PortalMenu from "./Navbar/PortalMenu";
 import VacanciesMain from "./Portal/Vacancies/VacanciesMain";
 import VacanciesMainCard from "./Portal/Vacancies/VacanciesMainCard";
+import VacanciesMain3 from "./Portal/Vacancies/VacanciesMain3";
+
 // import eruda from 'eruda';
 
 export default function App() {
@@ -262,6 +264,16 @@ export default function App() {
                     path="/portal/vacancies"
                     element={
                       <VacanciesMain
+                        handleMouseEnter={handleMouseEnter}
+                        handleMouseLeave={handleMouseLeave}
+                        handleMouseHover={handleMouseHover}
+                      />
+                    }
+                  />
+                  <Route
+                    path="/portal/vacancies3"
+                    element={
+                      <VacanciesMain3
                         handleMouseEnter={handleMouseEnter}
                         handleMouseLeave={handleMouseLeave}
                         handleMouseHover={handleMouseHover}
