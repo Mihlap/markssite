@@ -1,0 +1,482 @@
+@import "../../../App.css";
+@import "../../../_variables.scss";
+
+.VacanciesCities {
+  $s: &;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100vh;
+
+  &__text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 36%;
+    padding: rem(64) 0 rem(64) rem(64);
+
+    h2 {
+      font-family: var(--font-unbounded);
+      font-size: rem(32);
+      line-height: rem(40);
+      margin-bottom: rem(24);
+    }
+
+    p {
+      font-family: var(--font-raleway);
+      margin-bottom: rem(32);
+      font-size: rem(18);
+    }
+
+    a {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: var(--blue-75BBFD);
+      border-radius: rem(66);
+      color: var(--white-F6F6F6);
+      font-size: rem(16);
+      min-height: rem(56);
+      padding: rem(16) rem(32);
+      transition: 0.3s;
+  
+      &:hover {
+        background-color: var(--dark-blue-389FFF);
+      }
+  
+      &:active {
+        background-color: var(--super-dark-blue-345374);
+      }
+    }
+  }
+
+  &__map {
+    flex-shrink: 0;
+    position: relative;
+    width: rem(960);
+    height: rem(880);
+    overflow: hidden;
+
+    img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-position: bottom rem(-11) right rem(-135);
+    }
+  }
+
+  &__circle {
+    position: absolute;
+    border-radius: 100%;
+    background-color: var(--blue-light-BADDFE);
+    transform-origin: center center;
+    animation: ellipse 4s ease infinite;
+
+
+    &_xs {
+      width: 12px;
+      height: 12px;
+      opacity: 1;
+      z-index: 50;
+      animation: none;
+      background-color: var(--blue-75BBFD);
+    }
+
+
+    &_s {
+      width: 42px;
+      height: 42px;
+      z-index: 40;
+      opacity: 0.3;
+    }
+
+    &_m {
+      width: 70px;
+      height: 70px;
+      z-index: 30;
+      opacity: 0.16;
+    }
+  }
+
+  &__city {
+    position: absolute;
+    top: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    span {
+      position: absolute;
+      transform: translateY(-57px);
+      z-index: 60;
+      font-size: 19px;
+      white-space: nowrap;
+    }
+
+    &_msk {
+      top: 138px;
+      right: 293px;
+
+      #{$s}__box {
+        width: 470px;
+        height: 470px;
+      }
+
+      span {
+        font-size: 25px;
+      }
+
+      #{$s}__circle {
+        &_xs {
+          width: 22px;
+          height: 22px;
+        }
+        
+        &_s {
+          width: 102px;
+          height: 102px;
+        }
+  
+        &_m {
+          width: 216px;
+          height: 216px;
+        }
+
+        &_l {
+          width: 360px;
+          height: 360px;
+          z-index: 20;
+          opacity: 0.16;
+        }
+    
+        &_xl {
+          width: 470px;
+          height: 470px;
+          z-index: 10;
+          opacity: 0.1;
+        }
+      }
+    }
+
+    &_vzh {
+      top: 416px;
+      right: 549px;
+    }
+    
+    &_spb {    
+      top: 218px;
+      right: 472px;
+    }
+
+    &_obg {
+      top: 573px;
+      right: 375px;
+    }
+
+    &_chbk {     
+      top: 558px;
+      right: 260px;
+    }
+  }
+
+  &__box {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform-origin: center center;
+    width: 70px;
+    height: 70px;
+  }
+
+  // Анимация
+  @keyframes ellipse {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(0.5);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  
+  
+  
+  @media all and (max-width:$bp2){
+    &__text {
+      position: absolute;
+      width: 44%;
+      z-index: 60;
+      padding: rem(64) 0 rem(194) 16%;
+    }
+
+    &__map {
+      width: rem(758);
+      height: rem(686);
+      margin-left: auto;
+    } 
+
+    &__circle {
+      &_xs {
+        width: 8px;
+        height: 8px;
+      }
+
+      &_s {
+        width: 26px;
+        height: 26px;
+      }
+      &_m {
+        width: 45px;
+        height: 45px;
+      }
+    }
+
+    &__city {
+
+      span {
+        transform: translateY(-38px);
+        font-size: 14px;
+      }
+  
+      &_msk {
+        top: 141px;
+        right: 231px;
+
+        span {
+          font-size: 18px;
+        }
+
+        #{$s}__box {
+          width: rem(310);
+          height: rem(310);
+        }
+  
+        #{$s}__circle {
+          &_xs {
+            width: 14px;
+            height: 14px;
+          }
+          
+          &_s {
+            width: 54px;
+            height: 54px;
+          }
+    
+          &_m {
+            width: 142px;
+            height: 142px;
+          }
+  
+          &_l {
+            width: 238px;
+            height: 238px;
+          }
+      
+          &_xl {
+            width: 310px;
+            height: 310px;
+          }
+        }
+      }
+    
+      &_vzh {
+        top: 323px;
+        right: 396px;
+      }
+      
+      &_spb {        
+        top: 166px;
+        right: 338px;
+      }
+  
+      &_obg {
+        top: 443px;
+        right: 259px;
+      }
+  
+      &_chbk {     
+        top: 435px;
+        right: 168px;
+      }
+    }
+  }
+
+  // Адаптация под планшет
+  @media all and (max-width:$bp3){
+    &__text {
+      width: 53%;
+    }
+
+    &__map {
+      width: rem(599);
+      height: rem(572);
+      
+      img {        
+        object-position: bottom rem(10) right rem(-60);
+        transform: scale(1.18);
+      }
+    }
+
+    &__city {
+
+      span {
+        font-size: 9px;
+        transform: translateY(-24px);
+      }
+
+      &_msk {       
+        top: 56px;
+        right: 204px;
+
+        span {
+          font-size: 12px;
+        }
+      }
+    
+      &_vzh {       
+        top: 236px;
+        right: 365px;
+      }
+      
+      &_spb {                
+        top: 88px;
+        right: 314px;
+      }
+  
+      &_obg {
+        top: 362px;
+        right: 244px;
+      }
+  
+      &_chbk {             
+        top: 351px;
+        right: 158px;
+      }
+    }
+  }
+
+  @media all and (max-width:1000px){
+    &__text {
+      width: 30%;
+      padding-left: 24px;
+    }
+  }
+
+  // Адаптация под моюильную версию
+  @media all and (max-width:$bp4){
+    flex-direction: column;
+    height: auto;
+
+    &__text {
+      position: static;
+      width: 100%;
+      padding: rem(120) rem(16) 0 rem(16); 
+
+      h2 {
+        font-size: rem(24);
+        line-height: rem(32);
+      }
+    }
+
+    &__map {
+      width: 100%;
+      height: rem(507);
+      
+      img {        
+        object-position: bottom -15px right -146px;
+        transform: scale(1.3);
+        object-fit: contain;
+      }
+    }
+
+    &__city {
+      span {
+        transform: translateY(-24px);
+      }
+
+      &_msk {        
+        top: 61px;
+        right: 76px;
+
+        span {
+          font-size: 12px;
+        }
+      }
+    
+      &_vzh {       
+        top: 241px;
+        right: 238px;
+      }
+      
+      &_spb {           
+        top: 93px;
+        right: 180px;
+      }
+  
+      &_obg {
+        top: 359px;
+        right: 108px;
+      }
+  
+      &_chbk {             
+        top: 348px;
+        right: 21px;
+      }
+    }
+  }
+
+  @media all and (max-width:$bp5){
+   
+    &__map {
+      width: 100%;
+      height: rem(507);
+      margin-right: auto;
+      margin-left: 0;
+      
+      img {        
+        object-position: bottom -36px right -168px;
+        transform: scale(1.3);
+        object-fit: cover;
+      }
+    }
+
+    &__city {
+      span {
+        transform: translateY(-24px);
+      }
+
+      &_msk {       
+        top: 83px;
+        right: 57px;
+
+        span {
+          font-size: 12px;
+        }
+      }
+    
+      &_vzh {       
+        top: 261px;
+        right: 219px;
+      }
+      
+      &_spb {          
+        top: 112px;
+        right: 161px;
+      }
+  
+      &_obg {        
+        top: 380px;
+        right: 89px;
+      }
+  
+      &_chbk {               
+        top: 369px;
+        right: 2px;
+      }
+    }
+  }
+}
