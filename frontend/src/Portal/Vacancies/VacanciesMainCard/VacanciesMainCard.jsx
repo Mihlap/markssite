@@ -138,7 +138,7 @@ const VacanciesMainCard = ({
     };
   }, [handleScroll]);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     const button = formButtonRef.current;
     const form = formRef.current;
   
