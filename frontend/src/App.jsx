@@ -270,7 +270,7 @@ export default function App() {
                       />
                     }
                   />
-                  {/* <Route
+                  <Route
                     path="/portal/vacancies3"
                     element={
                       <VacanciesMain3
@@ -279,7 +279,7 @@ export default function App() {
                         handleMouseHover={handleMouseHover}
                       />
                     }
-                  /> */}
+                  />
                   <Route
                     path="/vacancy/:id"
                     element={
