@@ -1,9 +1,15 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Helmet } from "react-helmet-async";
 import gsap from "gsap";
-import ScrollTrigger from "gsap/ScrollTrigger";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import styles from "./VacanciesMainCard.module.scss";
 import VacancySlider from "./VacancySlider";
 import LoadingVacancy from "../../Loading/LoadingVacancy";
@@ -40,9 +46,7 @@ import frame2 from "./icons/frame2.png";
 import frame3 from "./icons/frame3.png";
 import frame4 from "./icons/frame4.png";
 
-
 gsap.registerPlugin(ScrollTrigger);
-
 
 const VacanciesMainCard = ({
   handleMouseEnter,
@@ -59,26 +63,25 @@ const VacanciesMainCard = ({
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   const formRef = useRef(null);
+  const formButtonRef = useRef(null);
   const rocketRef = useRef(null);
   const sputnikRef = useRef(null);
-  const sliderCardRef = useRef(null);
   const blockRightWrapperRef = useRef(null);
   const wrapperTextBlockRef = useRef(null);
 
+  const handleResize = useCallback(() => {
+    setIsVisible(window.innerWidth > 1024);
+    setWindowWidth(window.innerWidth);
+  }, []);
+
   useEffect(() => {
-    function handleResize() {
-      setIsVisible(window.innerWidth > 1024);
-      setWindowWidth(window.innerWidth);
-    }
-
     window.addEventListener("resize", handleResize);
-
     handleResize();
 
     return () => {
       window.removeEventListener("resize", handleResize);
     };
-  }, []);
+  }, [handleResize]);
 
   useEffect(() => {
     dispatch(fetchEmployees(id));
@@ -90,129 +93,93 @@ const VacanciesMainCard = ({
     }
   }, [vacancies]);
 
+  const handleScroll = useCallback(() => {
+    window.requestAnimationFrame(() => {
+      const blockRight = blockRightWrapperRef.current;
+      const wrapperTextBlock = wrapperTextBlockRef.current;
+      if (!blockRight || !wrapperTextBlock) return;
+
+      const blockRightRect = blockRight.getBoundingClientRect();
+      const wrapperTextBlockRect = wrapperTextBlock.getBoundingClientRect();
+
+      let wrapperTextBlockBottom;
+      if (window.innerWidth >= 1025 && window.innerWidth <= 1600) {
+        wrapperTextBlockBottom =
+          wrapperTextBlockRect.top + window.scrollY + window.innerHeight * 1.2;
+      } else {
+        wrapperTextBlockBottom =
+          wrapperTextBlockRect.top + window.scrollY + window.innerHeight * 0.5;
+      }
+
+      if (window.scrollY + blockRightRect.height >= wrapperTextBlockBottom) {
+        blockRight.style.position = "absolute";
+        blockRight.style.top = `${
+          wrapperTextBlockBottom - blockRightRect.height
+        }px`;
+        blockRight.style.right = "0";
+      } else {
+        blockRight.style.position = "fixed";
+        blockRight.style.top = "0";
+        blockRight.style.right = "0";
+      }
+    });
+  }, []);
+
   useEffect(() => {
     if (window.innerWidth < 1025) {
       return;
     }
-    const handleScroll = () => {
-      window.requestAnimationFrame(() => {
-        const blockRight = blockRightWrapperRef.current;
-        const wrapperTextBlock = wrapperTextBlockRef.current;
-        if (!blockRight || !wrapperTextBlock) return;
-
-        const blockRightRect = blockRight.getBoundingClientRect();
-        const wrapperTextBlockRect = wrapperTextBlock.getBoundingClientRect();
-
-        let wrapperTextBlockBottom;
-        if (window.innerWidth >= 1025 && window.innerWidth <= 1600) {
-          wrapperTextBlockBottom =
-            wrapperTextBlockRect.top + window.scrollY + 800;
-        } else {
-          wrapperTextBlockBottom =
-            wrapperTextBlockRect.top + window.scrollY + 500;
-        }
-
-        // Проверяем, достиг ли нижний край текстового блока
-        if (window.scrollY + blockRightRect.height >= wrapperTextBlockBottom) {
-          // Когда blockRight должен перестать быть фиксированным и начать скролиться
-          blockRight.style.position = "absolute";
-          blockRight.style.top = `${
-            wrapperTextBlockBottom - blockRightRect.height
-          }px`;
-          blockRight.style.right = "0";
-        } else {
-          blockRight.style.position = "fixed";
-          blockRight.style.top = "0";
-          blockRight.style.right = "0";
-        }
-      });
-    };
 
     window.addEventListener("scroll", handleScroll);
 
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
-  }, []);
-
-  // useEffect(() => {
-  //   if (!formRef.current || !buttonRef.current) return;
-
-  //   // gsap.set(buttonRef.current, { position: "relative", zIndex: 1000 });
-
-  //   const buttonAnimation = gsap.to(buttonRef.current, {
-  //     y: () => {
-  //       const formTop = formRef.current.offsetTop;
-  //       const buttonTop = buttonRef.current.offsetTop;
-  //       return (formTop - buttonTop) * 1.5;
-  //     },
-  //     opacity: 1,
-  //     ease: "none",
-  //     scrollTrigger: {
-  //       trigger: buttonRef.current,
-  //       start: "center center",
-  //       end: () =>
-  //         `+=${document.documentElement.scrollHeight - window.innerHeight}`,
-  //       scrub: true,
-  //     },
-  //   });
-
-  //   const buttonOpacityAnimation = gsap.to(buttonRef.current, {
-  //     opacity: -1,
-  //     scrollTrigger: {
-  //       trigger: formRef.current,
-  //       // start: "center center",
-  //       end: "top top",
-  //       scrub: true,
-  //     },
-  //   });
-
-  //   return () => {
-  //     buttonAnimation.kill();
-  //     buttonOpacityAnimation.kill();
-  //   };
-  // }, [formRef, buttonRef]);
+  }, [handleScroll]);
 
   useLayoutEffect(() => {
     const timer = setTimeout(() => {
-    if (!rocketRef.current || !sputnikRef.current) {
-      console.log("Рефы не инициализированы");
-      return;
-    }
+      if (!rocketRef.current || !sputnikRef.current) {
+        // console.log("Рефы не инициализированы");
+        return;
+      }
 
-    const xValueRocket = window.innerWidth <= 1024 ? 100 : 180;
-    const xValueSputnik = window.innerWidth <= 1024 ? -100 : -180;
+      const xValueRocket = window.innerWidth <= 1024 ? 100 : 180;
+      const xValueSputnik = window.innerWidth <= 1024 ? -10 : -180;
 
-    const animation = gsap.timeline({
-      scrollTrigger: {
-        trigger: rocketRef.current,
-        start: "top bottom",
-        end: "bottom top",
-        scrub: true,
-      },
-    });
+      const animation = gsap.timeline({
+        scrollTrigger: {
+          trigger: rocketRef.current,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
+        },
+      });
 
-    animation.fromTo(
-      rocketRef.current,
-      { x: 0, opacity: 1 },
-      { x: xValueRocket, opacity: 1, duration: 1 }
-    );
+      animation.fromTo(
+        rocketRef.current,
+        { x: 0, opacity: 1 },
+        { x: xValueRocket, opacity: 1, duration: 1 }
+      );
 
-    animation.fromTo(
-      sputnikRef.current,
-      { x: 0, opacity: 1 },
-      { x: xValueSputnik, opacity: 1, duration: 1 },
-      "<"
-    );
-  }, 100);
+      animation.fromTo(
+        sputnikRef.current,
+        { x: 0, opacity: 1 },
+        { x: xValueSputnik, opacity: 1, duration: 1 },
+        "<"
+      );
+    }, 100);
 
-    // return () => {
-    //   animation.kill(); 
-    // };
-    return () => {    
+     return () => {
       clearTimeout(timer);
     };
-  }, [rocketRef, sputnikRef, windowWidth]);
+  }, [windowWidth]);
+
+  const handleScrollToForm = () => {
+    if (formButtonRef.current) {
+      formButtonRef.current.scrollIntoView({ behavior: "smooth" });
+    }
+  };
 
   return (
     <>
@@ -336,15 +303,15 @@ const VacanciesMainCard = ({
           >
             <AllVacancyButton />
           </div>
-        </div>
+        </div>       
         <div className={styles.main_vacancyWrapper__offer}>
           <span className={styles.main_vacancyWrapper__offerName}>
             Marks Group предлагает тебе
-          <img
-            className={styles.main_vacancyWrapper__offerHeart}
-            src={heart}
-            alt={heart}
-          />
+            <img
+              className={styles.main_vacancyWrapper__offerHeart}
+              src={heart}
+              alt={heart}
+            />
           </span>
         </div>
         <div className={styles.main_vacancyWrapper__wrapperFrameBlock}>
@@ -393,11 +360,26 @@ const VacanciesMainCard = ({
             </div>
           </div>
         </div>
-        <div
-          className={styles.main_vacancyWrapper__wrapperTextBlock}
-          ref={wrapperTextBlockRef}
-        >
-          <RenderVacancySections />
+        <div  className={styles.main_vacancyWrapper__button_vacancyWrapper}>
+        {!isVisible && (
+          <button
+            className={styles.main_vacancyWrapper__button_vacancy}
+            type="submit"
+            id="submit-button"
+            onClick={handleScrollToForm}
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+          >
+            <p className={styles.main_vacancyWrapper__button_name_vacancy}>
+              Откликнуться на вакансию
+            </p>
+          </button>
+        )}
+        </div>
+        <div className={styles.main_vacancyWrapper__wrapperTextBlock}>
+          <div ref={wrapperTextBlockRef}>
+            <RenderVacancySections />
+          </div>
         </div>
         <div className={styles.main_vacancyWrapper__3dGroup}>
           <div
@@ -449,7 +431,9 @@ const VacanciesMainCard = ({
                 <img
                   className={styles.vectorAround}
                   src={window.innerWidth <= 767 ? vectorAround2 : vectorAround}
-                  alt={window.innerWidth <= 767 ? 'vectorAround2' : 'vectorAround'}
+                  alt={
+                    window.innerWidth <= 767 ? "vectorAround2" : "vectorAround"
+                  }
                 />
                 <div className={styles.countLabel}>Специалистов</div>
                 <div className={styles.countValue}>+1000</div>
@@ -470,14 +454,13 @@ const VacanciesMainCard = ({
             )}
             <div className={styles.main_vacancyWrapper__locationBlockLocation}>
               <div className={styles.rocketVectorAround1Block}>
-                <img className={styles.rocket}
-                 src={rocket1}
-                 alt={rocket1}          
-                />
+                <img className={styles.rocket} src={rocket1} alt={rocket1} />
                 <img
                   className={styles.vectorAround1}
                   src={window.innerWidth <= 767 ? vectorAround : vectorAround1}
-                  alt={window.innerWidth <= 767 ? 'vectorAround' : 'vectorAround1'}
+                  alt={
+                    window.innerWidth <= 767 ? "vectorAround" : "vectorAround1"
+                  }
                 />
               </div>
               <div
@@ -538,7 +521,7 @@ const VacanciesMainCard = ({
                 alt={frame1}
               />
               <span className={styles.main_vacancyWrapper__frameSpan}>
-              Опыт работы на уникальных объектах
+                Опыт работы на уникальных объектах
               </span>
             </div>
             <div className={styles.main_vacancyWrapper__frameBlock_frame}>
@@ -603,6 +586,7 @@ const VacanciesMainCard = ({
           ref={formRef}
         >
           <VacancyFormContact
+           formButtonRef={formButtonRef}
             initialDirection={selectedVacancy?.direction}
             handleMouseEnter={handleMouseEnter}
             handleMouseLeave={handleMouseLeave}
