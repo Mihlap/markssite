@@ -42,9 +42,9 @@ import CookieComponent from "./UI/CookieComponent/CookieComponent";
 import Internships from "./Portal/Internships/Internships";
 import Office from "./Portal/Office/Office";
 import PortalMenu from "./Navbar/PortalMenu";
-import VacanciesMain from "./Portal/Vacancies/VacanciesMain";
-import VacanciesMainCard from "./Portal/Vacancies/VacanciesMainCard";
-import VacanciesMain3 from "./Portal/Vacancies/VacanciesMain3";
+import VacanciesMain from "./Portal/Vacancies/VacanciesMain/VacanciesMain";
+import VacanciesMainCard from "./Portal/Vacancies/VacanciesMainCard/VacanciesMainCard";
+import VacanciesMain3 from "./Portal/Vacancies/VacanciesMain/VacanciesMain3";
 
 // import eruda from 'eruda';
 
