@@ -205,7 +205,7 @@ const VacanciesMainCard = ({
         scrub: true,
       },
     });
-
+  
     animation.fromTo(
       rocketRef.current,
       { x: 0, opacity: 1 },
@@ -684,5 +684,14 @@ const VacanciesMainCard = ({
     </>
   );
 };
+                // console.log("🚀 ~    <img
+                //   className={styles.vectorAround1}
+                //   src={vectorAround1}
+                //   alt={vectorAround1}
+                // />:",    <img
+                //   className={styles.vectorAround1}
+                //   src={vectorAround1}
+                //   alt={vectorAround1}
+                // />)
 
 export default VacanciesMainCard;
