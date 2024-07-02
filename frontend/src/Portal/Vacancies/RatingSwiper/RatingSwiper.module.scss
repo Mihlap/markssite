@@ -3,7 +3,8 @@
 
 .RatingSwiper {
   background-color: var( --white-F6F6F6);
-  padding: rem(140) rem(64) rem(26) rem(64);
+  padding: 0;
+  padding: rem(220) 0 rem(52) 0;
 
   &__header {
     font-family: var(--font-unbounded);
@@ -24,6 +25,14 @@
     }
   }
 
+  &__body {
+    padding: 0 rem(113) 0 rem(113);
+
+    & > * {
+      overflow: visible;
+    }
+  }
+
   &__wrapper {
     padding: rem(30) 0;
   }
@@ -31,7 +40,7 @@
   &__slide {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: rem(30);
+    gap: rem(54);
 
     &_hide {
       max-height: 0; 
@@ -57,9 +66,12 @@
     font-size: rem(24);
     line-height: rem(32);
     font-family: var(--font-unbounded);
+
+    &:not(:last-child) {
+      margin-bottom: 32px;
+    }
   }
 
-  &__full, 
   &__row {
     display: flex;
     flex-direction: column;
@@ -69,19 +81,17 @@
     border-radius: rem(16);
   }
 
-  &__full &__title {
-    margin-bottom: rem(32);
-  }
-
   &__rows {
     display: flex;
     flex-direction: column;
-    gap: 16px;
+    gap: 54px;
   }
 
   &__row {
     flex-grow: 1;
   }
+
+
 
   &__picture {
     margin-top: auto;
@@ -181,7 +191,6 @@
       }
     }
 
-    &__full, 
     &__row {
       padding: rem(24);
     }
@@ -222,7 +231,6 @@
       }
     }
   
-    &__full, 
     &__row {
       padding: rem(16);
     }

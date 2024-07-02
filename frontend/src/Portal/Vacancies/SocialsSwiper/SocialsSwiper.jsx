@@ -7,12 +7,12 @@ import ArrowsSwiper from '../ArrowsSwiper/ArrowsSwiper';
 import "swiper/css";
 import "swiper/css/navigation";
 
-import social_1 from "../icons/socials-swiper-1.jpg";
-import social_2 from "../icons/socials-swiper-2.jpg";
-import social_3 from "../icons/socials-swiper-3.jpg";
-import social_4 from "../icons/socials-swiper-1.jpg";
-import social_5 from "../icons/socials-swiper-2.jpg";
-import social_6 from "../icons/socials-swiper-3.jpg";
+import social_1 from "../icons/socials-swiper-1.svg";
+import social_2 from "../icons/socials-swiper-2.svg";
+import social_3 from "../icons/socials-swiper-3.svg";
+import social_4 from "../icons/socials-swiper-4.svg";
+import social_5 from "../icons/socials-swiper-3.svg";
+import social_6 from "../icons/socials-swiper-2.svg";
 
 const socialsArray = [
 	{
@@ -71,7 +71,7 @@ const SocialsSwiper = () => {
   return (
     <section className={styles.SocialsSwiper}>
       <div className={styles.SocialsSwiper__header}>
-        <h2>Подписывайся на <span>наши каналы в&nbsp;социальных сетях</span>, там всегда можно найти информации о лекциях, конференциях и ключевых объектах</h2>
+        <h2>Подписывайся на <span>наши каналы в&nbsp;социальных сетях</span>, там всегда можно найти информации о&nbsp;лекциях, конференциях и&nbsp;ключевых объектах</h2>
       </div>
       <div className={styles.SocialsSwiper__slider}>
         {/* Переиспользуемый компонент - стрелки для свайпера */}
@@ -89,6 +89,14 @@ const SocialsSwiper = () => {
           keyboard={{ enabled: true }}
           slideActiveClass={styles.SocialsSwiper__active}
           breakpoints={{
+            2559: {
+              slidesPerView: 4, 
+              centeredSlides: false, 
+              LoopAdditionalSlides: 5,  
+              initialSlide: 0,         
+              loop: true,  
+              spaceBetween: 54,
+            },
             1439: {
               slidesPerView: 3, 
               centeredSlides: true, 

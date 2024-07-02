@@ -1,7 +1,7 @@
-@import "../../App.css";
-@import "../../_variables.scss";
+@import "../../../App.css";
+@import "../../../_variables.scss";
 
-.invite {
+.VacanciesInvite {
   padding: rem(90) rem(62) rem(100) rem(62);
   background: linear-gradient(261.46deg, rgba(255, 203, 193, 0.09) -4.67%, rgba(117, 187, 253, 0.09) 44.63%, rgba(188, 188, 188, 0.09) 103.07%);
   font-family: var(--font-unbounded);
@@ -101,6 +101,7 @@
       color: var(--blue-75BBFD);
     }
   }
+
 
   @media all and (max-width:$bp2){
     h2, &__content {

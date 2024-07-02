@@ -33,8 +33,7 @@
     }
   }
 
-  // Адаптация под планшеты
-  
+  // Адаптация под tablet
   @media all and (max-width:$bp3){
     display: none;
   }
