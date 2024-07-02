@@ -454,7 +454,7 @@
       width: 11rem;
       height: 11rem;
       top: 0%;
-      left: 65%;
+      left: 55%;
       background-size: cover;
       background-repeat: no-repeat;
       z-index: -1;
@@ -687,9 +687,11 @@
       border-radius: 1rem;
     }
 
-    .container_image_blockSlide {
+    .container_image_blockSlide img {
       width: auto;
       height: auto;
+      max-width: 100%;
+      max-height: 100%;
       object-fit: cover;
     }
   }
@@ -1111,7 +1113,7 @@
         padding-top: 24px;
         white-space: pre-wrap;
         z-index: -1;
-
+        // white-space: normal; 
       }
 
     }
@@ -1536,6 +1538,36 @@
       padding-top: 8px;
     }
 
+    &__button_vacancyWrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-top: 4rem;
+    }
+
+
+    &__button_vacancy {
+      display: inline-flex;
+      padding: 1rem 2rem;
+      justify-content: center;
+      align-items: center;
+      border-radius: 4.125rem;
+      border: 1px solid transparent;
+      background-color: var(--blue-75BBFD);
+      transition: background-color 0.4s ease;
+    }
+
+    &__button_name_vacancy {
+      color: var(--white-F6F6F6);
+      font-variant-numeric: lining-nums proportional-nums;
+      font-family: var(--font-raleway);
+      font-size: 1rem;
+      font-style: normal;
+      font-weight: var(--fw-400);
+      line-height: 1.5rem;
+    }
+
+
     &__wrapperTextBlock {
       display: flex;
       flex-direction: column;
@@ -1644,7 +1676,7 @@
         width: 6rem;
         height: 6rem;
         top: 52%;
-        left: 28rem;
+        left: 26rem;
         ;
       }
 
@@ -1712,6 +1744,7 @@
         align-self: flex-start;
         font-size: 2rem;
         line-height: 2.5rem;
+        white-space: normal;
       }
 
     }
@@ -1958,6 +1991,9 @@
         line-height: 2.5rem;
         padding-right: 0rem;
         padding-top: 149px;
+        overflow-wrap: break-word;
+        // word-break: break-all; 
+        // hyphens: auto    
       }
 
       &__vacancyTitle1 {
@@ -2088,6 +2124,35 @@
       width: 100%;
     }
 
+    &__button_vacancyWrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-top: 1rem;
+    }
+
+
+    &__button_vacancy {
+      display: inline-flex;
+      padding: 1rem 2rem;
+      justify-content: center;
+      align-items: center;
+      border-radius: 4.125rem;
+      border: 1px solid transparent;
+      background-color: var(--blue-75BBFD);
+      transition: background-color 0.4s ease;
+    }
+
+    &__button_name_vacancy {
+      color: var(--white-F6F6F6);
+      font-variant-numeric: lining-nums proportional-nums;
+      font-family: var(--font-raleway);
+      font-size: 1rem;
+      font-style: normal;
+      font-weight: var(--fw-400);
+      line-height: 1.5rem;
+    }
+
     &__wrapperTextBlock {
       display: flex;
       flex-direction: column;
@@ -2108,13 +2173,14 @@
     &__wrapperTitle1 {
       font-size: 1rem;
       line-height: 1.5rem;
-      padding-top: 48px;
+      padding-top: 8px;
       padding-bottom: 1.5rem;
     }
 
     &__textBlock {
       font-size: 1.125rem;
       line-height: 1.625rem;
+      padding-bottom: 4rem;
     }
 
     &__textBlock span {
@@ -2137,7 +2203,7 @@
       display: flex;
       flex-direction: column;
       text-align: left;
-      padding: 4rem 1rem 0rem 1rem;
+      padding: 0rem 1rem 0rem 1rem;
     }
 
     &__aboutBlockTitle {
@@ -2194,9 +2260,8 @@
       .background4 {
         width: 6rem;
         height: 6rem;
-        top: 52%;
-        left: 28rem;
-        ;
+        top: 38%;
+        left: 2rem;
       }
 
       .background5 {
@@ -2204,41 +2269,42 @@
       }
 
       .background6 {
-        width: 6rem;
-        height: 6rem;
-        top: 45%;
-        left: 36rem;
-      }
-
-      .background7 {
         width: 8rem;
         height: 8rem;
-        top: 90%;
-        left: 5%;
+        top: 128%;
+        left: 50%;
+      }
+
+
+      .background7 {
+        width: 6rem;
+        height: 6rem;
+        top: 120%;
+        left: 80%;
         padding-left: 2rem;
       }
 
       .background8 {
         width: 24rem;
-        height: 18rem;
-        top: 45%;
-        left: 0rem;
+        height: 15rem;
+        top: 108%;
+        left: -5rem;
       }
 
       .background9 {
-        width: 26em;
-        height: 26rem;
-        top: 30%;
-        left: 65%;
+        width: 20rem;
+        height: 20rem;
+        top: 33%;
+        left: 20%;
       }
 
       .background10 {
         width: 7rem;
         height: 7rem;
-        top: 60%;
-        left: 85%;
+        top: 58%;
+        left: 55%;
       }
-      
+
     }
 
     &_locationBlockLocation {
@@ -2267,52 +2333,144 @@
         font-size: 1.25rem;
         line-height: 1.75rem;
         padding-top: 1rem;
+        white-space: normal;
       }
+
+      .no-break {
+        white-space: nowrap;
+      }
+
 
     }
 
     &__locationWrapperLocation {
-       padding-top: 3.875rem;
-       padding-left: 20rem;
+      padding-top: 3.9rem;
+      padding-left: 3.125rem;
 
-     }
+    }
 
     &__spanWrapperLocation {
       position: relative;
-      // right: 2rem;
-      // left: 24rem;
-      // top: 30.6rem;
+      right: 0;
+      left: 0rem;
+      top: 3.5rem;
       display: flex;
-      max-width: 26rem;
+      max-width: 100%;
       gap: 24px;
     }
+
 
     .rocketVectorAround1Block {
       position: absolute;
       display: block;
-      top: 27rem;
-      left: 10rem;
+      top: 33rem;
+      left: 1rem;
+    }
+
+    .rocket {
+      position: absolute;
+      top: 2rem;
+      left: 15rem;
+      margin-right: 0;
+      margin-bottom: 0;
+
+    }
+
+    @media screen and (min-width: 564px) and (max-width: 767px) {
+      .rocketVectorAround1Block {
+        position: absolute;
+        display: block;
+        top: 31em;
+        left: 1rem;
+      }
 
       .rocket {
-        margin-left: 0rem;
-        margin-bottom: -2rem;
+        position: absolute;
+        top: 2rem;
+        left: 15rem;
+        margin-right: 0;
+        margin-bottom: 0;
+
       }
     }
 
-
     &__sliderBlock {
-      padding-top: 7.625rem;
+      padding-top: 25.43rem;
 
 
       .sliderBlockText {
         font-size: 1rem;
         line-height: 1.5rem;
-        padding-left: 3.125rem;
+        padding-left: 1rem;
+      }
+
+
+      .sliderContainer {
+        display: flex;
+        width: 100%;
+        height: 100%;
+        padding-top: 1rem;
       }
 
 
       .sliderContainer_block {
-        padding-left: 3.125rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+      }
+
+      .verticalSlide {
+        max-width: 20rem;
+        min-width: 0rem;
+        max-height: 25rem;
+        min-height: 5rem;
+        border-radius: 0.546rem;
+      }
+
+      .horizontalSlide {
+        max-width: 25rem;
+        min-width: 0rem;
+        max-height: 20rem;
+        min-height: 0rem;
+        border-radius: 0.546rem;
+        margin-top: 2rem;
+      }
+
+      .wrapper_sliderContainer_blockSlide {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+        border-radius: 0.546rem;
+        gap: 0rem;
+        padding-left: 0rem;
+        margin-right: 0rem;
+      }
+
+      .wrapper_sliderContainer_blockSlide,
+      .container_image_blockSlide {
+        border-radius: 0.546rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        height: 100%;
+      }
+
+      .container_image_blockSlide {
+        width: auto;
+        height: auto;
+        object-fit: cover;
+      }
+
+      .sliderContainer_blockSlide.verticalSlide img {
+        width: 100%;
+        height: 100%;
+      }
+
+      .sliderContainer_blockSlide.horizontalSlide img {
+        width: 100%;
+        height: 100%;
       }
 
     }
@@ -2332,8 +2490,9 @@
     &__frameBlockNext {
       display: flex;
       flex-direction: column;
-      padding-top: 4.125rem;
-      padding-left: 11rem;
+      padding-top: 4rem;
+      padding-left: 1rem;
+      padding-right: 1rem;
 
 
       .frameBlockLeft {
@@ -2343,14 +2502,16 @@
         text-align: left;
 
         .blockTitle {
-          display: none;
+          font-size: 1rem;
+          font-weight: var(--fw-400);
+          line-height: 1.5rem;
         }
 
         .blockText {
-          max-width: 80%;
-          font-size: 2rem;
-          line-height: 2.5rem;
-          padding-top: 0rem;
+          max-width: 100%;
+          font-size: 1.5rem;
+          line-height: 2rem;
+          padding-top: 1rem;
         }
 
         .blockText1 {
@@ -2360,47 +2521,36 @@
 
       .frameBlockRight {
         display: flex;
+        flex-direction: column;
         flex-wrap: wrap;
         justify-content: space-between;
         padding-left: 0;
-        padding-top: 2.625rem;
+        padding-top: 3.75rem;
 
         .main_vacancyWrapper__frameBlock_frame {
-          flex: 0 0 50%;
-          margin-bottom: 6.25rem;
+          flex: 0;
+          margin-bottom: 2rem;
         }
-
 
         .main_vacancyWrapper__frame {
-          width: 7.5rem;
-          height: 7.5rem;
+          width: 5rem;
+          height: 5rem;
         }
 
-        .main_vacancyWrapper__frameSpan {
-          color: var(--black-1D2E43);
-          font-family: var(--font-raleway);
-          font-size: 1.125rem;
-          font-weight: var(--fw-500);
-          line-height: 1.5rem;
-          letter-spacing: 0px;
-          text-align: left;
-          width: 70%;
-          margin-right: 3.9rem;
-        }
       }
 
     }
 
     .temporaryText {
-      max-width: 47rem;
+      max-width: 100%;
       color: var(--black-1D2E43);
       font-family: var(--font-unbounded);
-      font-size: 2.5rem;
+      font-size: 1.5rem;
       font-style: normal;
       font-weight: var(--fw-300);
-      line-height: 3rem;
-      padding-left: 11rem;
-      padding-top: 1.188rem;
+      line-height: 2rem;
+      padding-left: 1rem;
+      padding-top: 3rem;
     }
 
     .textUnderForm {
@@ -2412,12 +2562,12 @@
       font-style: normal;
       font-weight: var(--fw-400);
       line-height: 1.625rem;
-      padding-left: 11rem;
-      padding-top: 1.5rem;
+      padding-left: 1rem;
+      padding-top: 1rem;
     }
 
     &__vacancyFormWrapper {
-      padding: 2.75rem 11rem 6rem 11rem;
+      padding: 1.5rem 1rem 3.75rem 1rem;
     }
 
   }
