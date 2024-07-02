@@ -10,7 +10,7 @@ import LoadingVacancy from "../../Loading/LoadingVacancy";
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 
-const VacancyFormContact = ({ initialDirection, handleMouseEnter, handleMouseLeave, vacancyTitle }) => {
+const VacancyFormContact = ({ formButtonRef, initialDirection, handleMouseEnter, handleMouseLeave, vacancyTitle }) => {
 
   const options = useMemo(() => [
     { value: "Другое направление", label: "Другое направление" },
@@ -286,7 +286,7 @@ const VacancyFormContact = ({ initialDirection, handleMouseEnter, handleMouseLea
       {isLoading ? (
         <LoadingVacancy />
       ) : (
-        <form className={styles.form_form_wrapper} onSubmit={handleSubmit}>
+        <form ref={formButtonRef} className={styles.form_form_wrapper} onSubmit={handleSubmit}>
           <div className={styles.form_vacancy_wrapper}>
             <div className={styles.form_vacancy_block}>
               <div className={styles.form_vacancy_left}>

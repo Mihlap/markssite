@@ -43,7 +43,7 @@ const VacancySlider = () => {
         slidesPerView="auto"
         spaceBetween={windowWidth <= 767 ? 20 : 30}
         centeredSlides={false}
-        touch={true}
+        touch="true" 
         direction="horizontal"
         breakpoints={{
           2500: { slidesPerView: 4.7 },
