@@ -25,14 +25,23 @@ const FilterModalVacancies = ({
   const handleFilterClick = useCallback((category, value) => {
     setLocalFilters((prevFilters) => {
       const updatedFilters = { ...prevFilters };
-      const currentValues = updatedFilters[category] || [];
-      const valueIndex = currentValues.indexOf(value);
 
-      if (valueIndex > -1) {
-        updatedFilters[category] = currentValues.filter((item) => item !== value);
+      // Это для выбора одного таба
+      if (updatedFilters[category]?.length === 1 && updatedFilters[category][0] === value) {
+        delete updatedFilters[category]; 
       } else {
-        updatedFilters[category] = [...currentValues, value];
+        updatedFilters[category] = [value];
       }
+
+      // Это для выбора нескольких табов
+      // const currentValues = updatedFilters[category] || [];
+      // const valueIndex = currentValues.indexOf(value);
+
+      // if (valueIndex > -1) {
+      //   updatedFilters[category] = currentValues.filter((item) => item !== value);
+      // } else {
+      //   updatedFilters[category] = [...currentValues, value];
+      // }
 
       if (selectedFilter !== "Все") {
         updatedFilters[filterKeyForSpecialty] = [selectedFilter];
@@ -60,7 +69,7 @@ const FilterModalVacancies = ({
         { id: "experience-1", label: "Без опыта", value: "Без опыта" },
         { id: "experience-2", label: "1-3 года", value: "1-3" },
         { id: "experience-3", label: "3-5 лет", value: "3-5" },
-        { id: "experience-4", label: "5-10 лет", value: "5-10" },
+        { id: "experience-4", label: "5-10 лет", value: "5-10 лет" },
       ],
     },
     {
