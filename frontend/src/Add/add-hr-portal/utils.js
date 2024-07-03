@@ -9,7 +9,7 @@ export const selectBlocks = [
     { value: "Аналитика", label: "Аналитика" },
     { value: "Финансы", label: "Финансы" },
     { value: "Дизайн", label: "Дизайн" },
-    { value: "it", label: "it" },
+    { value: "IT", label: "IT" },
     { value: "Администрирование", label: "Администрирование" },
     { value: "Бэк офис", label: "Бэк офис" },
     { value: "Стажировки", label: "Стажировки" },
