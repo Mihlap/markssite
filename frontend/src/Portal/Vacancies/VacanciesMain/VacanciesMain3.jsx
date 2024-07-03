@@ -1,125 +1,24 @@
-import React, { useLayoutEffect, useRef } from 'react';
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import gsap from "gsap";
+import React from 'react';
 
-import styles from "./VacanciesMain3.module.scss";
-import "swiper/css";
-import "swiper/css/navigation";
-
-import Intro from "../Intro/Intro";
-import VideoScroll from '../VideoScroll/VideoScroll';
-import RatingSwiper from '../RatingSwiper/RatingSwiper';
-import BenefitsGrid from '../BenefitsGrid/BenefitsGrid';
-import SocialsSwiper from '../SocialsSwiper/SocialsSwiper';
-import StarsFour3d from '../StarsFour3d/StarsFour3d';
-import VacanciesCities from '../VacanciesCities/VacanciesCities';
-
-import invite_1 from "../icons/invite-1.png";
-import invite_2 from "../icons/invite-2.png";
+import Intro from "./Intro/Intro";
+import VideoScroll from './VideoScroll/VideoScroll';
+import RatingSwiper from './RatingSwiper/RatingSwiper';
+import BenefitsGrid from './BenefitsGrid/BenefitsGrid';
+import SocialsSwiper from './SocialsSwiper/SocialsSwiper';
+import VacanciesMap from './VacanciesMap/VacanciesMap';
+import VacanciesInvite from './VacanciesInvite/VacanciesInvite';
+import TextCenter from './TextCenter/TextCenter';
 
 const VacanciesMain3 = () => {
-	const star1Ref = useRef(null);
-	const star2Ref = useRef(null);
-	const star3Ref = useRef(null);
-	const star4Ref = useRef(null);
-
-
-	// Анимация объектов звёздочек в invite
-	const rotationDeg = 60;
-	const opacity = 0.4;
-
-	gsap.registerPlugin(ScrollTrigger);
-
-	useLayoutEffect(() => {
-		const tl = gsap.timeline({
-			scrollTrigger: {
-				trigger: `.${styles.invite}`,
-				start: '11% bottom',
-				end: 'bottom top',
-				scrub: true,
-			},
-		});
-
-		tl.to([star1Ref.current, star3Ref.current],
-			{
-				rotation: rotationDeg,
-			}
-		)
-
-		const tl2 = gsap.timeline({
-			scrollTrigger: {
-				trigger: `.${styles.invite}`,
-				start: '11% bottom',
-				end: 'bottom top',
-				scrub: true,
-			},
-		});
-
-		tl2.to([star2Ref.current, star4Ref.current],
-			{
-				rotation: -(rotationDeg),
-			}
-		)
-
-		const tl3 = gsap.timeline({
-			scrollTrigger: {
-				trigger: `.${styles.invite}`,
-				start: '11% bottom',
-				end: 'bottom top',
-				scrub: true,
-			},
-		});
-
-		tl3.to([star3Ref.current, star4Ref.current],
-			{
-				opacity: opacity
-			}
-		)
-
-		return () => {
-			tl.kill();
-			tl2.kill();
-			tl3.kill();
-		};
-
-	}, []);
-
 	return (
 		<>
 			<Intro />
-
 			<VideoScroll />
-
+			<TextCenter />
 			<RatingSwiper />
-
-			<VacanciesCities />
-
+			<VacanciesMap />
 			<BenefitsGrid />
-
-			<section className={styles.invite}>
-				<StarsFour3d
-					section='invite'
-					styles={styles}
-					star1Ref={star1Ref}
-					star2Ref={star2Ref}
-					star3Ref={star3Ref}
-					star4Ref={star4Ref}
-				/>
-				<h2 className={styles.invite__title}>Приглашаем студентов на&nbsp;стажировку</h2>
-				<div className={styles.invite__content}>
-					<div className={styles.invite__photos}>
-						<img src={invite_1}></img>
-						<img src={invite_2}></img>
-						<img src={invite_1}></img>
-						<img src={invite_2}></img>
-						<span></span>
-					</div>
-					<div className={styles.invite__desc}>Оплачиваемая стажировка. Сотрудничаем с&nbsp;ВУЗами, даем возможность <span>учиться у&nbsp;профессионалов</span> в&nbsp;сфере проектирования!
-					</div>
-					<a href="#" className={styles.invite__button}>Узнать больше</a>
-				</div>
-			</section>
-
+			<VacanciesInvite />
 			<SocialsSwiper />
 		</>
 	);
