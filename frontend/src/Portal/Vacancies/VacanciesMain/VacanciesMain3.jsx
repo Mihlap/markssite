@@ -2,24 +2,26 @@ import React from 'react';
 
 import Intro from "../Intro/Intro";
 import VideoScroll from '../VideoScroll/VideoScroll';
-import RatingSwiper from '../RatingSwiper/RatingSwiper';
-import BenefitsGrid from '../BenefitsGrid/BenefitsGrid';
-import SocialsSwiper from '../SocialsSwiper/SocialsSwiper';
-import VacanciesMap from '../VacanciesMap/VacanciesMap';
-import VacanciesInvite from '../VacanciesInvite/VacanciesInvite';
 import TextCenter from '../TextCenter/TextCenter';
+import RatingSwiper from '../RatingSwiper/RatingSwiper';
+import CountRows from '../CountRows/CountRows';
+import VacanciesMap from '../VacanciesMap/VacanciesMap';
+import BenefitsGrid from '../BenefitsGrid/BenefitsGrid';
+import VacanciesInvite from '../VacanciesInvite/VacanciesInvite';
+import SocialsSwiper from '../SocialsSwiper/SocialsSwiper';
 
 const VacanciesMain3 = () => {
 	return (
 		<>
 			<Intro />
-			<VideoScroll />
+			{/* <VideoScroll /> */}
 			<TextCenter />
 			<RatingSwiper />
-			<VacanciesMap />
+			<CountRows />
+			{/* <VacanciesMap />
 			<BenefitsGrid />
 			<VacanciesInvite />
-			<SocialsSwiper />
+			<SocialsSwiper /> */}
 		</>
 	);
 };
