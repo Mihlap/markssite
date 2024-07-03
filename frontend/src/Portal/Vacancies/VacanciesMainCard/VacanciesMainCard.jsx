@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Helmet } from "react-helmet-async";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { debounce, throttle } from 'lodash';
 import styles from "./VacanciesMainCard.module.scss";
 import VacancySlider from "../VacancySlider/VacancySlider";
 import LoadingVacancy from "../../../Loading/LoadingVacancy";
@@ -69,74 +70,63 @@ const VacanciesMainCard = ({
   const blockRightWrapperRef = useRef(null);
   const wrapperTextBlockRef = useRef(null);
 
-  const handleResize = useCallback(() => {
-    setIsVisible(window.innerWidth > 1024);
-    setWindowWidth(window.innerWidth);
-  }, []);
-
   useEffect(() => {
-    window.addEventListener("resize", handleResize);
-    handleResize();
-
+    const handleResizeDebounced = debounce(() => {
+      setIsVisible(window.innerWidth > 1024);
+      setWindowWidth(window.innerWidth);
+    }, 100);
+  
+    window.addEventListener("resize", handleResizeDebounced);    
+   
     return () => {
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("resize", handleResizeDebounced);
+      handleResizeDebounced.cancel(); 
     };
-  }, [handleResize]);
+  }, []); 
 
-  useEffect(() => {
-    dispatch(fetchEmployees(id));
-  }, [dispatch, id]);
+  // useEffect(() => {
+  //   dispatch(fetchEmployees(id));
+  // }, [dispatch, id]);
 
-  useEffect(() => {
-    if (vacancies && vacancies.length > 0) {
-      setSelectedVacancy(vacancies[0]);
+  // useEffect(() => {
+  //   if (vacancies && vacancies.length > 0) {
+  //     setSelectedVacancy(vacancies[0]);
+  //   }
+  // }, [vacancies]);
+
+  useEffect(() => {    
+    if (!vacancies || vacancies.length === 0) {
+      dispatch(fetchEmployees(id));
     }
-  }, [vacancies]);
+  }, [dispatch, id, vacancies]);   
 
   const handleScroll = useCallback(() => {
     window.requestAnimationFrame(() => {
       const blockRight = blockRightWrapperRef.current;
       const wrapperTextBlock = wrapperTextBlockRef.current;
-      
+  
       if (!blockRight || !wrapperTextBlock) return;
-
+  
       const blockRightRect = blockRight.getBoundingClientRect();
       const wrapperTextBlockRect = wrapperTextBlock.getBoundingClientRect();
-
-      let wrapperTextBlockBottom;
-      if (window.innerWidth >= 1025 && window.innerWidth <= 1600) {
-        wrapperTextBlockBottom =
-          wrapperTextBlockRect.top + window.scrollY + window.innerHeight * 1.2;
-      } else {
-        wrapperTextBlockBottom =
-          wrapperTextBlockRect.top + window.scrollY + window.innerHeight * 0.5;
-      }
-
-      if (window.scrollY + blockRightRect.height >= wrapperTextBlockBottom) {
-        blockRight.style.position = "absolute";
-        blockRight.style.top = `${
-          wrapperTextBlockBottom - blockRightRect.height
-        }px`;
-        blockRight.style.right = "0";
-      } else {
-        blockRight.style.position = "fixed";
-        blockRight.style.top = "0";
-        blockRight.style.right = "0";
-      }
+  
+      const wrapperTextBlockBottom = window.innerWidth >= 1025 && window.innerWidth <= 1600 ?
+        wrapperTextBlockRect.top + window.scrollY + window.innerHeight * 1.2 :
+        wrapperTextBlockRect.top + window.scrollY + window.innerHeight * 0.5;
+  
+      blockRight.style.position = window.scrollY + blockRightRect.height >= wrapperTextBlockBottom ? "absolute" : "fixed";
+      blockRight.style.top = window.scrollY + blockRightRect.height >= wrapperTextBlockBottom ? `${wrapperTextBlockBottom - blockRightRect.height}px` : "0";
+      blockRight.style.right = "0";
     });
-  }, []);
-
+  }, [windowWidth]);
+  
   useEffect(() => {
-    if (window.innerWidth < 1025) {
-      return;
-    }
-
+    if (window.innerWidth < 1025) return;
+  
     window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [handleScroll]);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [handleScroll]); 
+  
 
   useEffect(() => {
     const button = formButtonRef.current;
@@ -144,40 +134,29 @@ const VacanciesMainCard = ({
   
     if (!button || !form) return;
   
-    const initialButtonBottom = button.getBoundingClientRect().bottom + window.scrollY + 60;
-    let isButtonFixed = false;
-    let isButtonHidden = false;
+    const initialButtonBottom = button.getBoundingClientRect().bottom + window.scrollY;
   
     const handleScroll = () => {
       const scrollY = window.scrollY;
-      const formRect = form.getBoundingClientRect();
       const windowHeight = window.innerHeight;
+      const formRect = form.getBoundingClientRect();
   
-      if (scrollY + windowHeight >= initialButtonBottom && !isButtonFixed) {
-        button.classList.add(styles.fixed);
-        isButtonFixed = true;
-      } else if (scrollY + windowHeight < initialButtonBottom && isButtonFixed) {
-        button.classList.remove(styles.fixed);
-        isButtonFixed = false;
-      }
+      // Определение, нужно ли фиксировать кнопку
+      const shouldFixButton = scrollY + windowHeight >= initialButtonBottom;
+      // Определение, нужно ли скрыть кнопку
+      const shouldHideButton = formRect.top <= windowHeight;
   
-      if (formRect.top <= windowHeight && !isButtonHidden) {
-        button.classList.add(styles.hidden);
-        isButtonHidden = true;
-      } else if (formRect.top > windowHeight && isButtonHidden) {
-        button.classList.remove(styles.hidden);
-        isButtonHidden = false;
-      }
+      // Использование toggle для добавления или удаления классов на основе условий
+      button.classList.toggle(styles.fixed, shouldFixButton);
+      button.classList.toggle(styles.hidden, shouldHideButton);
     };
   
     window.addEventListener('scroll', handleScroll);
-      
+  
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
-  }, [handleScroll]);
-  
-  
+  }, []); 
 
   
   const handleScrollToForm = () => {
@@ -186,16 +165,19 @@ const VacanciesMainCard = ({
     }
   };
 
-   useLayoutEffect(() => {
+  useLayoutEffect(() => {
     const timer = setTimeout(() => {
       if (!rocketRef.current || !sputnikRef.current) {
-         return;
+        return;
       }
-
-      const xValueRocket = window.innerWidth <= 1024 ? 100 : 180;
-      const xValueSputnik = window.innerWidth <= 1024 ? -100 : -180;
-
-      const animation = gsap.timeline({
+  
+     gsap.killTweensOf([rocketRef.current, sputnikRef.current]);
+  
+      const isSmallScreen = window.innerWidth <= 767;
+      const xValueRocket = isSmallScreen ? 80 : (window.innerWidth <= 1024 ? 100 : 180);
+      const xValueSputnik = isSmallScreen ? -80 : (window.innerWidth <= 1024 ? -100 : -180);
+  
+      const rocketAnimation = gsap.timeline({
         scrollTrigger: {
           trigger: rocketRef.current,
           start: "top bottom",
@@ -203,25 +185,35 @@ const VacanciesMainCard = ({
           scrub: true,
         },
       });
-
-      animation.fromTo(
+      rocketAnimation.fromTo(
         rocketRef.current,
         { x: 0, opacity: 1 },
         { x: xValueRocket, opacity: 1, duration: 1 }
       );
-
-      animation.fromTo(
+  
+      const sputnikAnimation = gsap.timeline({
+        scrollTrigger: {
+          trigger: sputnikRef.current,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
+        },
+      });
+      sputnikAnimation.fromTo(
         sputnikRef.current,
         { x: 0, opacity: 1 },
-        { x: xValueSputnik, opacity: 1, duration: 1 },
-        "<"
+        { x: xValueSputnik, opacity: 1, duration: 1 }
       );
+  
     }, 100);
-
-     return () => {
+  
+    return () => {
       clearTimeout(timer);
+      gsap.killTweensOf([rocketRef.current, sputnikRef.current]);
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
-   }, [windowWidth]);  
+  }, [windowWidth]); 
+  
 
   return (
     <>
