@@ -8,8 +8,6 @@ import "swiper/css";
 import "swiper/css/navigation";
 
 import img1 from "../icons/vacancies-slider.jpg";
-import img1x2 from "../icons/vacancies-slider-2x.jpg";
-
 
 const RatingSwiperRow = ({ picture }) => {
 	return (
@@ -22,13 +20,12 @@ const RatingSwiperRow = ({ picture }) => {
 	);
 };
 
-
 const RatingSwiper = () => {
   const prevRef = useRef(null);
   const nextRef = useRef(null);
   const swiperRef = useRef(null);
   const [, setWindowWidth] = useState(window.innerWidth);
-  const [isTablet, setIsTablet] = useState(window.innerWidth <= 1024);
+  const [isTablet, setIsTablet] = useState(window.innerWidth <= 1280);
 
   useEffect(() => {
     if (swiperRef.current && swiperRef.current.swiper) {
@@ -59,7 +56,7 @@ const RatingSwiper = () => {
     <section className={styles.RatingSwiper}>
       <div className={styles.RatingSwiper__header}>
 					<h2>
-						<span>Передовая компания </span><span>в&nbsp;сфере проектирования</span>
+						<span>Ведущая компания </span><span>в&nbsp;сфере проектирования</span>
 					</h2>
       </div>
       <div className={styles.RatingSwiper__body}>
@@ -110,42 +107,18 @@ const RatingSwiper = () => {
             <>
               <div className={styles.RatingSwiper__adaptive}>
                 <div className={styles.RatingSwiper__slide}>
-                  <div className={styles.RatingSwiper__full}>
-                    <span className={styles.RatingSwiper__date}>Октябрь 31, 2022</span>
-                    <h3 className={styles.RatingSwiper__title}>Победитель 100 лучших объектов России в&nbsp;номинации &laquo;Лучшие конструктивные решения&raquo;</h3>
-                    <div className={styles.RatingSwiper__picture}>
-                      <img src={img1} alt="Винодельня" />
-                    </div>
-                  </div>
+                  <RatingSwiperRow picture={img1}/>
                   <div className={styles.RatingSwiper__rows}>
-                    <div className={styles.RatingSwiper__row}>
-                      <span className={styles.RatingSwiper__date}>Октябрь 31, 2022</span>
-                      <h3 className={styles.RatingSwiper__title}>Победитель рейтинга &laquo;Репутация компании&raquo; среди столичных проектных и&nbsp;архитектурных бюро</h3>
-                    </div>
-                    <div className={styles.RatingSwiper__row}>
-                      <span className={styles.RatingSwiper__date}>Октябрь 31, 2022</span>
-                      <h3 className={styles.RatingSwiper__title}>Премия Москомархитектуры в&nbsp;номинации &laquo;Лучшее АГР объекта транспортной инфраструктуры&raquo;</h3>
-                    </div>
+                    <RatingSwiperRow/>
+                    <RatingSwiperRow/>
                   </div>
                 </div>
-                <div className={`${styles.RatingSwiper__slide} ${styles.RatingSwiper__slide_hide} ${showAll ? styles.visible : ''}`}>
+                <div className={`${styles.RatingSwiper__slide} ${styles.hide} ${showAll ? styles.visible : ''}`}>
                   <div className={styles.RatingSwiper__rows}>
-                    <div className={styles.RatingSwiper__row}>
-                      <span className={styles.RatingSwiper__date}>Октябрь 31, 2022</span>
-                      <h3 className={styles.RatingSwiper__title}>Победитель рейтинга &laquo;Репутация компании&raquo; среди столичных проектных и&nbsp;архитектурных бюро</h3>
-                    </div>
-                    <div className={styles.RatingSwiper__row}>
-                      <span className={styles.RatingSwiper__date}>Октябрь 31, 2022</span>
-                      <h3 className={styles.RatingSwiper__title}>Премия Москомархитектуры в&nbsp;номинации &laquo;Лучшее АГР объекта транспортной инфраструктуры&raquo;</h3>
-                    </div>
+                    <RatingSwiperRow/>
+                    <RatingSwiperRow/>
                   </div>
-                  <div className={styles.RatingSwiper__full}>
-                    <span className={styles.RatingSwiper__date}>Октябрь 31, 2022</span>
-                    <h3 className={styles.RatingSwiper__title}>Победитель 100 лучших объектов России в&nbsp;номинации &laquo;Лучшие конструктивные решения&raquo;</h3>
-                    <div className={styles.RatingSwiper__picture}>
-                      <img src={img1} alt="Винодельня" />
-                    </div>
-                  </div>
+                  <RatingSwiperRow picture={img1}/>
                 </div>
               </div>
               <button
@@ -158,8 +131,6 @@ const RatingSwiper = () => {
       </div>
 
     </section>
-
-
   );
 };
 
