@@ -72,12 +72,6 @@ button {
   --mb-container-1: 1rem;
 }
 
-/* Border radius */
-:root {
-  --br-btn: 4.1rem;
-  --br-blk: 1rem;
-}
-
 #root {
   overflow-x: hidden;
 }

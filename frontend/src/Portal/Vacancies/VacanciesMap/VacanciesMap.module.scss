@@ -1,7 +1,7 @@
 @import "../../../App.css";
 @import "../../../_variables.scss";
 
-.VacanciesCities {
+.VacanciesMap {
   $s: &;
   display: flex;
   align-items: center;
@@ -26,27 +26,6 @@
       font-family: var(--font-raleway);
       margin-bottom: rem(32);
       font-size: rem(18);
-    }
-
-    a {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background-color: var(--blue-75BBFD);
-      border-radius: rem(66);
-      color: var(--white-F6F6F6);
-      font-size: rem(16);
-      min-height: rem(56);
-      padding: rem(16) rem(32);
-      transition: 0.3s;
-  
-      &:hover {
-        background-color: var(--dark-blue-389FFF);
-      }
-  
-      &:active {
-        background-color: var(--super-dark-blue-345374);
-      }
     }
   }
 
@@ -305,7 +284,7 @@
     }
   }
 
-  // Адаптация под планшет
+  // Адаптация под tablet
   @media all and (max-width:$bp3){
     &__text {
       width: 53%;
@@ -366,7 +345,7 @@
     }
   }
 
-  // Адаптация под моюильную версию
+  // Адаптация под mobile
   @media all and (max-width:$bp4){
     flex-direction: column;
     height: auto;
