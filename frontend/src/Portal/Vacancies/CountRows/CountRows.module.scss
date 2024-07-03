@@ -1,0 +1,230 @@
+@import "../../../App.css";
+@import "../../../_variables.scss";
+
+.CountRows {
+  $s: &;
+  background: linear-gradient(261.46deg, rgba(255, 203, 193, 0.09) -4.67%, rgba(117, 187, 253, 0.09) 44.63%, rgba(188, 188, 188, 0.09) 103.07%);
+  min-height: rem(1100);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+
+  &__star {
+    position: absolute;
+    z-index: -1;
+    background-size: cover;
+
+    &_1 {
+      width: rem(290);
+      height: rem(290);
+      top: 68.66%;
+      left: 5.66%;
+    }
+    
+    &_2 {
+      display: none;
+    }
+    
+    &_3 {
+      width: rem(135);
+      height: rem(135);
+      top: 4.63%;
+      left: 81.02%;
+    }
+    
+    &_4 {
+      width: rem(128);
+      height: rem(128);
+      top: 53.59%;
+      left: 64.06%;
+    }
+  }
+
+  &__wrapper {
+    margin: rem(32) 18.67% rem(32) 18.28%;
+    color: var(--black-1D2E43);
+    font-family: var(--font-unbounded);
+    overflow: hidden;
+  }
+
+  &__header {
+    font-size: rem(48);
+    line-height: rem(64);
+    margin-bottom: rem(64);
+  }
+
+  &__list {
+    counter-reset: count;
+  }
+
+  &__line {
+    border-top: 1px solid var(--light-gray-C0C5CB); 
+    animation-name: showLine; 
+    animation-duration: 1s;   
+    animation-timing-function: ease-in-out; 
+    animation-delay: 0s; 
+    animation-iteration-count: 1; 
+    animation-direction: normal; 
+    animation-fill-mode: forwards; 
+    animation-play-state: paused; 
+    width: 0;
+  }
+
+  @keyframes showLine {
+    0% {
+      width: 0;
+    }
+    100% {
+      width: 100%;
+    }
+  }
+
+  &__text {
+    margin-bottom: rem(24);
+    font-size: rem(32);
+    line-height: rem(40);
+    animation-name: showText;
+    animation-duration: 1.5s;
+    animation-timing-function: ease-in-out;
+    animation-delay: 0s;
+    animation-iteration-count: 1;
+    animation-direction: normal;
+    animation-fill-mode: forwards;
+    animation-play-state: paused;
+    opacity: 0;
+    transform: translateX(-100%);
+  }
+
+  @keyframes showText {
+    0% {
+      opacity: 0;
+      transform: translateX(-10%);
+    }
+    100% {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  &.animate {
+    #{$s}__line {
+      animation-play-state: running;
+    }
+
+    #{$s}__text {
+      animation-play-state: running;
+    }
+  }
+
+
+  &__count {
+    height: rem(32);
+    counter-increment: count;
+    margin-bottom: rem(24);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    &::before {
+      content: counter(count, decimal-leading-zero);
+      color: var(--dark-gray-566272);
+      display: block;
+      font-size: rem(12);
+      line-height: rem(32);
+      height: 100%;
+    }
+  }
+
+  &__count,
+  &__text {
+    padding: 0 rem(16);
+  }
+
+
+  // Адаптация под desktop
+  @media all and (max-width:$bp0){
+    min-height: rem(886);
+
+    &__star {
+      &_1 {
+        top: 63.09%;
+        left: 0;
+      }
+      
+      &_3 {
+        top: 4.63%;
+        left: 86.46%;
+      }
+      
+      &_4 {
+        top: 46.95%;
+        left: 65.35%;
+      }
+    }
+
+    &__wrapper {
+      margin: rem(32) 10%;
+    }
+
+    &__header {
+      font-size: rem(40);
+      line-height: rem(48);
+      margin-bottom: rem(32);
+    }
+
+    &__text {
+      width: 75%;
+      margin-bottom: rem(32);
+      font-size: rem(24);
+      line-height: rem(32);
+    }
+
+    &__count,
+    &__text {
+      padding: 0 0 0 rem(16);
+    }
+  }
+
+  // Адаптация под tablet
+  @media all and (max-width:$bp3){
+    &__wrapper {
+      margin: rem(32) 16%;
+    }
+
+    &__text {
+      width: 100%;
+    }
+  }
+ 
+  // Адаптация под mobile
+  @media all and (max-width:$bp4){
+    min-height: 0;
+
+    &__star {
+      &_1 {
+        top: 67.03%;
+        left: -26.73%;
+      }
+      
+      &_3 {
+        top: 40.52%;
+        left: 28.65%;
+      }
+      
+      &_4 {
+        top: 6%;
+        left: 67%;
+      }
+    }
+
+    &__wrapper {
+      margin: rem(120) rem(16);
+    }
+
+    &__text {
+      margin-bottom: rem(47);
+    }
+
+  }
+}
