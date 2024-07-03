@@ -10,6 +10,19 @@ import "swiper/css/navigation";
 import img1 from "../icons/vacancies-slider.jpg";
 import img1x2 from "../icons/vacancies-slider-2x.jpg";
 
+
+const RatingSwiperRow = ({ picture }) => {
+	return (
+    <div className={styles.RatingSwiper__row}>
+      <span className={styles.RatingSwiper__date}>Октябрь 31, 2022</span>
+      <h3 className={styles.RatingSwiper__title}>Победитель 100 лучших объектов России в&nbsp;номинации &laquo;Лучшие конструктивные решения&raquo;</h3>
+      {console.log(picture)}
+       {picture ? <div className={styles.RatingSwiper__picture}><img src={picture}/></div> : null}
+    </div>
+	);
+};
+
+
 const RatingSwiper = () => {
   const prevRef = useRef(null);
   const nextRef = useRef(null);
@@ -49,13 +62,14 @@ const RatingSwiper = () => {
 						<span>Передовая компания </span><span>в&nbsp;сфере проектирования</span>
 					</h2>
       </div>
-      <div className={styles.RatingSwiper__swiper}>
+      <div className={styles.RatingSwiper__body}>
         {/* Отрисовка слайдера в зависимости от размера экрана */}
         {!isTablet ?
           <>
             {/* Компонент стрелочки с присваиванием ссылок */}
             <ArrowsSwiper prevRef={prevRef} nextRef={nextRef} />
-            <Swiper
+            <div className={styles.RatingSwiper__swiper}></div>
+            <Swiper 
               ref={swiperRef}
               modules={[Navigation]}
               spaceBetween={30}
@@ -66,47 +80,29 @@ const RatingSwiper = () => {
                 nextEl: nextRef.current,
               }}
               wrapperClass={styles.RatingSwiper__wrapper}
+              breakpoints={{
+                2559: {
+                  slidesPerView: 1.5,
+                  spaceBetween: 54,
+                },
+                1439: {
+                  slidesPerView: 1, 
+                  spaceBetween: 30,
+                },
+              }}
             >
-              <SwiperSlide>
-                <div className={styles.RatingSwiper__slide}>
-                  <div className={styles.RatingSwiper__full}>
-                    <span className={styles.RatingSwiper__date}>Октябрь 31, 2022</span>
-                    <h3 className={styles.RatingSwiper__title}>Победитель 100 лучших объектов России в номинации  «Лучшие конструктивные решения»</h3>
-                    <div className={styles.RatingSwiper__picture}>
-                      <img src={img1} srcSet={img1x2} alt="Винодельня" />
-                    </div>
-                  </div>
-                  <div className={styles.RatingSwiper__rows}>
-                    <div className={styles.RatingSwiper__row}>
-                      <span className={styles.RatingSwiper__date}>Октябрь 31, 2022</span>
-                      <h3 className={styles.RatingSwiper__title}>Победитель рейтинга «Репутация компании» среди столичных проектных и архитектурных бюро</h3>
-                    </div>
-                    <div className={styles.RatingSwiper__row}>
-                      <span className={styles.RatingSwiper__date}>Октябрь 31, 2022</span>
-                      <h3 className={styles.RatingSwiper__title}>Премия Москомархитектуры в номинации «Лучшее АГР объекта транспортной инфраструктуры»</h3>
-                    </div>
-                  </div>
+              <SwiperSlide className={styles.RatingSwiper__slide}>
+                <RatingSwiperRow picture={img1}/>
+                <div className={styles.RatingSwiper__rows}>
+                  <RatingSwiperRow/>
+                  <RatingSwiperRow/>
                 </div>
               </SwiperSlide>
-              <SwiperSlide>
-                <div className={styles.RatingSwiper__slide}>
-                  <div className={styles.RatingSwiper__rows}>
-                    <div className={styles.RatingSwiper__row}>
-                      <span className={styles.RatingSwiper__date}>Октябрь 31, 2022</span>
-                      <h3 className={styles.RatingSwiper__title}>Победитель рейтинга «Репутация компании» среди столичных проектных и архитектурных бюро</h3>
-                    </div>
-                    <div className={styles.RatingSwiper__row}>
-                      <span className={styles.RatingSwiper__date}>Октябрь 31, 2022</span>
-                      <h3 className={styles.RatingSwiper__title}>Премия Москомархитектуры в номинации «Лучшее АГР объекта транспортной инфраструктуры»</h3>
-                    </div>
-                  </div>
-                  <div className={styles.RatingSwiper__full}>
-                    <span className={styles.RatingSwiper__date}>Октябрь 31, 2022</span>
-                    <h3 className={styles.RatingSwiper__title}>Победитель 100 лучших объектов России в номинации  «Лучшие конструктивные решения»</h3>
-                    <div className={styles.RatingSwiper__picture}>
-                      <img src={img1} srcSet={img1x2} alt="Винодельня" />
-                    </div>
-                  </div>
+              <SwiperSlide className={styles.RatingSwiper__slide}>
+                <RatingSwiperRow picture={img1}/>
+                <div className={styles.RatingSwiper__rows}>
+                  <RatingSwiperRow/>
+                  <RatingSwiperRow/>
                 </div>
               </SwiperSlide>
             </Swiper>
@@ -116,19 +112,19 @@ const RatingSwiper = () => {
                 <div className={styles.RatingSwiper__slide}>
                   <div className={styles.RatingSwiper__full}>
                     <span className={styles.RatingSwiper__date}>Октябрь 31, 2022</span>
-                    <h3 className={styles.RatingSwiper__title}>Победитель 100 лучших объектов России в номинации  «Лучшие конструктивные решения»</h3>
+                    <h3 className={styles.RatingSwiper__title}>Победитель 100 лучших объектов России в&nbsp;номинации &laquo;Лучшие конструктивные решения&raquo;</h3>
                     <div className={styles.RatingSwiper__picture}>
-                      <img src={img1} srcSet={img1x2} alt="Винодельня" />
+                      <img src={img1} alt="Винодельня" />
                     </div>
                   </div>
                   <div className={styles.RatingSwiper__rows}>
                     <div className={styles.RatingSwiper__row}>
                       <span className={styles.RatingSwiper__date}>Октябрь 31, 2022</span>
-                      <h3 className={styles.RatingSwiper__title}>Победитель рейтинга «Репутация компании» среди столичных проектных и архитектурных бюро</h3>
+                      <h3 className={styles.RatingSwiper__title}>Победитель рейтинга &laquo;Репутация компании&raquo; среди столичных проектных и&nbsp;архитектурных бюро</h3>
                     </div>
                     <div className={styles.RatingSwiper__row}>
                       <span className={styles.RatingSwiper__date}>Октябрь 31, 2022</span>
-                      <h3 className={styles.RatingSwiper__title}>Премия Москомархитектуры в номинации «Лучшее АГР объекта транспортной инфраструктуры»</h3>
+                      <h3 className={styles.RatingSwiper__title}>Премия Москомархитектуры в&nbsp;номинации &laquo;Лучшее АГР объекта транспортной инфраструктуры&raquo;</h3>
                     </div>
                   </div>
                 </div>
@@ -136,18 +132,18 @@ const RatingSwiper = () => {
                   <div className={styles.RatingSwiper__rows}>
                     <div className={styles.RatingSwiper__row}>
                       <span className={styles.RatingSwiper__date}>Октябрь 31, 2022</span>
-                      <h3 className={styles.RatingSwiper__title}>Победитель рейтинга «Репутация компании» среди столичных проектных и архитектурных бюро</h3>
+                      <h3 className={styles.RatingSwiper__title}>Победитель рейтинга &laquo;Репутация компании&raquo; среди столичных проектных и&nbsp;архитектурных бюро</h3>
                     </div>
                     <div className={styles.RatingSwiper__row}>
                       <span className={styles.RatingSwiper__date}>Октябрь 31, 2022</span>
-                      <h3 className={styles.RatingSwiper__title}>Премия Москомархитектуры в номинации «Лучшее АГР объекта транспортной инфраструктуры»</h3>
+                      <h3 className={styles.RatingSwiper__title}>Премия Москомархитектуры в&nbsp;номинации &laquo;Лучшее АГР объекта транспортной инфраструктуры&raquo;</h3>
                     </div>
                   </div>
                   <div className={styles.RatingSwiper__full}>
                     <span className={styles.RatingSwiper__date}>Октябрь 31, 2022</span>
-                    <h3 className={styles.RatingSwiper__title}>Победитель 100 лучших объектов России в номинации  «Лучшие конструктивные решения»</h3>
+                    <h3 className={styles.RatingSwiper__title}>Победитель 100 лучших объектов России в&nbsp;номинации &laquo;Лучшие конструктивные решения&raquo;</h3>
                     <div className={styles.RatingSwiper__picture}>
-                      <img src={img1} srcSet={img1x2} alt="Винодельня" />
+                      <img src={img1} alt="Винодельня" />
                     </div>
                   </div>
                 </div>
