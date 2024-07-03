@@ -4,23 +4,24 @@
 .RatingSwiper {
   background-color: var( --white-F6F6F6);
   padding: 0;
-  padding: rem(220) 0 rem(52) 0;
+  padding: rem(220) 0 rem(60) 0;
 
   &__header {
-    font-family: var(--font-unbounded);
-    font-size: rem(65);
-    line-height: rem(75.5);
-    margin-bottom: rem(42);
-    text-align: left;
+    margin-bottom: rem(60);
     display: flex;
     align-items: center;
     flex-direction: column;
+    font-family: var(--font-unbounded);
+    font-size: rem(74);
+    line-height: rem(80);
+    text-align: left;
+    color: var(--black-1D2E43);
 
     span {
       display: block;
 
       &:last-child {
-        padding-left: rem(118);
+        padding-left: rem(407);
       }
     }
   }
@@ -41,19 +42,6 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: rem(54);
-
-    &_hide {
-      max-height: 0; 
-      opacity: 0.3;
-      overflow: hidden;
-      transition: max-height 1s ease, opacity 1s ease;
-    }
-
-    &.visible {
-      max-height: 2000px;
-      opacity: 1;
-      transition: max-height 3s ease, opacity 2s ease;
-    }
   }
 
   &__date {
@@ -68,30 +56,26 @@
     font-family: var(--font-unbounded);
 
     &:not(:last-child) {
-      margin-bottom: 32px;
+      margin-bottom: rem(32);
     }
   }
 
   &__row {
+    flex-grow: 1;
     display: flex;
     flex-direction: column;
     padding: rem(36);
     background-color: #F8F8F8;
-    box-shadow: 0px 0px rem(20) 0px #00000008;
+    color: var(--black-3C3C3C);
+    box-shadow: 0 0 rem(20) 0 #00000008;
     border-radius: rem(16);
   }
 
   &__rows {
     display: flex;
     flex-direction: column;
-    gap: 54px;
+    gap: rem(54);
   }
-
-  &__row {
-    flex-grow: 1;
-  }
-
-
 
   &__picture {
     margin-top: auto;
@@ -112,11 +96,11 @@
     padding: rem(8) rem(36) rem(8) rem(16);
     background-color: var(--light-light-gray-EBECEE);
     margin-top: rem(8);
-    transition: background-color 0.3s ease;
+    transition: all 0.3s ease;
 
     &:before {
       position: absolute;
-      right: 10px;
+      right: rem(10);
       transform: translateY(-50%);
       top: 50%;
       width: rem(16);
@@ -127,6 +111,8 @@
       background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTMgNkw4IDExTDEzIDYiIHN0cm9rZT0iIzFEMkU0MyIvPgo8L3N2Zz4K');
       background-size: contain;
       content: '';
+      transition: all 1s ease;
+      
     }
 
     &:hover {
@@ -136,15 +122,74 @@
     &.visible {
       &:before {
         transform: translateY(-50%)rotate(180deg);
+        transition: all 1s ease;
       }
     }
   }
 
+  // Адаптация под desktop
+  @media all and (max-width:$bp0){
+    padding: rem(140) 0 rem(16) 0;
+    margin-bottom: rem(24);
+
+    &__header {
+      margin-bottom: rem(70);
+      font-size: rem(65);
+      line-height: rem(75.5);
+      padding: 0 rem(155) 0 rem(162);
   
-  // Адаптация под планшет
-  @media all and (max-width:$bp3){
+      span {
+        display: block;
+  
+        &:last-child {
+          padding-left: rem(100);
+        }
+      }
+    }
+
+    &__body {
+      padding: 0 rem(63) 0 rem(63);
+      position: relative;
+
+      &::before,
+      &::after {
+        width: rem(112);
+        position: absolute;
+        content: '';
+        background-color: var(--white-F6F6F6);
+        height: 100%;
+        z-index: 10;
+        content: '';
+      }
+
+      &::before {
+        top: 0;
+        left: -4rem;
+      }
+      
+      &::after {
+        top: 0;
+        right: -4rem;
+      }
+    }
+
+    &__slide,
+    &__rows {
+      gap: rem(30);
+    }
+
+    &__slide {
+      &:nth-child(even) {
+        display: flex;
+        flex-direction: row-reverse;
+      }
+    }
+  }
+
+  // Адаптация под tablet
+  @media all and (max-width:$bp2){
     padding: 0;
-    
+
     span {
       display: block;
     }
@@ -164,31 +209,58 @@
       }
     }
 
-    &__swiper {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
+    &__body {
+      padding: 0;
+
+      &::before,
+      &::after {
+        content: none;
+      }
     }
 
+    &__slide,
+    &__rows {
+      gap: rem(24);
+    }
+
+    &__body,
     &__adaptive {
       display: flex;
       flex-direction: column;
-      gap: 12px;
     }
 
     &__slide {
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: rem(24);
       padding: 0 15% 0 15%;
       
-      &:last-child {
-        padding: 0 15% rem(12) 15%;
-      }
-
       &:nth-child(even) {
         flex-direction: column-reverse;
       }
+
+      &.hide {
+        max-height: 0; 
+        opacity: 0;
+        padding: 0 15% 0 15%;
+        transition: max-height 1s ease, opacity 1s ease, padding 1s ease;
+      }
+
+      &.visible {
+        max-height: rem(2000);
+        opacity: 1;
+        padding: 0 15% rem(24) 15%;
+        transition: max-height 3s ease, opacity 1s ease-in-out 0.3s, padding 1s ease;
+      }
+
+      &:not(:first-child) {
+        padding: rem(24) 15% 0 15%;
+
+        &.visible {
+          padding-bottom: rem(24);
+        }
+      }
+
     }
 
     &__row {
@@ -196,7 +268,7 @@
     }
 
     &__title {
-      font-size: rem(18);
+      font-size: rem(20);
       line-height: rem(28);
     }
 
@@ -205,29 +277,27 @@
     }
 
     &__button {
-      margin: 0 15% 0 0;
+      margin: 0 15% 0 15%;
     }
   }
-
   
-  // Адаптация под мобильную версию
-  @media all and (max-width:$bp5){
+  // Адаптация под mobile
+  @media all and (max-width:$bp4){
     padding:0;
     display: flex;
     flex-direction: column;
 
-
     &__header {
       font-size: rem(32);
       line-height: rem(40);
-      padding: rem(96) rem(16) rem(32) rem(16);
+      padding: rem(80) rem(16) rem(32) rem(16);
     }
 
     &__slide {
       padding: 0 rem(16) 0 rem(16);
-
-      &:last-child {
-        padding: 0 rem(16) 0 rem(16);
+ 
+      &:not(:first-child) {
+        padding: 24px rem(16) 0 rem(16);
       }
     }
   
