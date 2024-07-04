@@ -89,35 +89,54 @@ const SocialsSwiper = () => {
           keyboard={{ enabled: true }}
           slideActiveClass={styles.SocialsSwiper__active}
           breakpoints={{
-            2559: {
+            2500: {
               slidesPerView: 4, 
               centeredSlides: false, 
-              LoopAdditionalSlides: 5,  
               initialSlide: 0,         
               loop: true,  
               spaceBetween: 54,
-            },
-            1439: {
-              slidesPerView: 3, 
-              centeredSlides: true, 
               LoopAdditionalSlides: 5,  
-              initialSlide: 1,        
-              loop: true,  
-              spaceBetween: 30,
-            },
-            769: {
-              slidesPerView: 2.8,
             },
 
-            575: {
-              slidesPerView: 1.5,
+            1920: {
+              slidesPerView: 3.3, 
+              centeredSlides: false, 
+              initialSlide: 0,         
+              loop: true,  
+              spaceBetween: 54,
+              LoopAdditionalSlides: 5,  
+            },
+
+            1280: { 
+              slidesPerView: 3, 
+              spaceBetween: 30,
+              loop: true,
+              centeredSlides: true,
+              initialSlide: 1,     
+            },
+
+            1024: {
+              slidesPerView: 3.1,
+              spaceBetween: 16,
+              loop: true,
+            },
+
+            768: {
+              slidesPerView: 2,
+              spaceBetween: 16,
+              loop: true,
             },
             
-            376: {
+            576: {
+              slidesPerView: 1.5,
+              spaceBetween: 16,
+              loop: true,
+            },
+            
+            280: {
               slidesPerView: 1.1,
-              LoopAdditionalSlides: 0,
-              initialSlide: 0,    
-              centeredSlides: false,
+              loop: true,
+              spaceBetween: 0,
             },
           }}
         >
