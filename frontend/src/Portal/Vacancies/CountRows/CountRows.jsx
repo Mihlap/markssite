@@ -15,7 +15,7 @@ const CountRows = () => {
           sectionRef.current.classList.remove(styles.animate);
         }
       },
-      { threshold: 0.2 }
+      { threshold: 0.3 }
     );
   
     if (sectionRef.current) {

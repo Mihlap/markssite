@@ -1,0 +1,270 @@
+@import "../../../App.css";
+@import "../../../_variables.scss";
+
+.DirectionsGrid {
+  display: grid;
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 2fr 1fr 1fr;
+  min-height: rem(1284);
+  $s: &;
+
+  &__text {
+    padding: rem(80) rem(80) 0 rem(80);
+    font-size: rem(24);
+    line-height: rem(32);
+    z-index: 10;
+
+    p:not(:last-child) {
+      margin-bottom: rem(24);
+    }
+  }
+
+  &__subtitle {
+    margin-bottom: rem(16);
+    font-size: rem(32);
+    line-height: rem(40);
+    font-family: var(--font-unbounded);
+    font-weight: var(--fw-300);
+  }
+
+  &__item {
+    background-color: #FCFCFC;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+
+    // Для анимации праллакса
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 1s, transform 1s;
+
+    &.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    // Уменьшение бордера до 0.5px
+    &::after {
+      content: '';
+      position: absolute;
+      width: calc(100% + 1px);
+      height: calc(100% + 1px);
+      top: -0.25px;
+      left: -0.25px;
+      border: 1px solid var(--light-light-gray-EBECEE);
+      box-sizing: border-box; 
+      background-color: transparent;
+    }
+
+    &:nth-child(even) {
+      background-color: var(--white-F6F6F6);
+    }
+
+    img {
+      align-self: flex-end;
+      margin-top: auto;
+      display: block;
+      max-width: rem(332);
+      max-height: rem(300);
+      width: 100%;
+      height: 100%;
+      margin-bottom: rem(54);
+    }
+
+    &_header {
+      justify-content: center;
+  
+      #{$s}__text {
+        padding: rem(80) rem(80) 0 rem(113);
+
+        p {
+          width: 55%;
+        }
+      }
+   
+      #{$s}__subtitle {
+        font-size: rem(48);
+        line-height: rem(64);
+        margin-bottom: rem(45);
+        font-family: var(--font-unbounded);
+        font-weight: var(--fw-500);
+      }
+    }
+  
+    &_it {
+      position: relative;
+
+      #{$s}__text {
+        padding: rem(80) rem(80) 0 rem(113);
+        
+        p {
+          width: 55%;
+        }
+      }
+      
+      
+      img {
+        position: absolute;
+        bottom: 0;
+        right: rem(36);
+      }
+    }
+  }
+  
+  // Адаптация под меньший размер desktop
+  @media all and (max-width:$bp0) {
+    grid-template-columns: minmax(48%, 2fr) minmax(25%, 1fr) minmax(25%, 1fr);
+    min-height: rem(912);
+
+    &__text {
+      padding: rem(52) rem(30) 0 rem(30);
+      font-size: rem(18);
+      line-height: rem(28);
+    }
+
+    &__subtitle {
+      font-size: rem(24);
+      line-height: rem(32);
+    }
+
+    &__item {
+      img {
+        max-width: rem(250);
+        max-height: rem(226);
+        margin-bottom: 0;
+      }
+
+      &_header {
+        #{$s}__text {
+          padding: rem(52) rem(32) 0 rem(63);
+
+          p {
+            width: 70%;
+          }
+        }
+    
+        #{$s}__subtitle {
+          font-size: rem(40);
+          line-height: rem(48);
+          margin-bottom: rem(24);
+        }
+      }
+    
+      &_it {
+        position: relative;
+        
+        #{$s}__text {
+          padding: rem(52) rem(32) 0 rem(63);
+
+          p {
+            width: 70%;
+          }
+        }
+        
+        img {
+          right: 0;
+        }
+      }
+    }
+  }
+
+  // Адаптация под tablet
+  @media all and (max-width:$bp3) {
+    min-height: 0;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+
+    &__text {
+      padding: rem(54) 0 rem(54) 0;
+    }
+
+    &__item {
+      min-height: rem(268);
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: rem(24);
+      padding-left: rem(165);
+      padding-right: rem(165);
+
+      img {
+        margin: 0;
+        align-self: center;
+      }
+
+      p {
+        width:100%;
+      }
+
+      &_header {
+        min-height: rem(350);
+
+        #{$s}__text {
+          padding: rem(54) 0 rem(54) 0;
+          
+          p {
+            width: 100%;
+          }
+        }
+      }
+
+      &_it {
+        #{$s}__text {
+          padding: rem(54) 0 rem(54) 0;
+          
+          p {
+            width: 100%;
+          }
+        }
+
+        img {
+          position: static;
+        }
+      }
+    }
+  }
+ 
+  // Адаптация под mobile
+  @media all and (max-width:$bp4) {
+   
+    &__text {
+      padding: rem(74) rem(16) rem(74) rem(16);
+    }
+
+    &__item {
+      position: relative;
+      padding: 0;
+      min-height: 0;
+
+      img {
+        align-self: flex-start;
+        position: absolute;
+        top: rem(16);
+        right: 0;
+        max-width: rem(110);
+        max-height: rem(100);
+      }
+
+      &_header {
+        #{$s}__subtitle {
+          font-size: rem(32);
+          line-height: rem(40);
+        }
+
+        #{$s}__text {
+          padding: rem(50) rem(16) rem(50) rem(16);
+        }
+      }
+
+      &_it {
+        #{$s}__text {
+          padding: rem(50) rem(16) rem(50) rem(16);
+          
+          p {
+            width: 100%;
+          }
+        }
+      }
+    }
+  }
+}
