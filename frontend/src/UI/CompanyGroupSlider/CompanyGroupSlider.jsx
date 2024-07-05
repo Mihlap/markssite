@@ -34,7 +34,7 @@ const CompanyGroupSlider = () => {
         }}
       >
         {slidesData.map((slide, index) => (
-          <SwiperSlide key={index}>
+          <SwiperSlide key={index} className="company-group-slide">
             <img src={slide.imgSrc} alt={slide.altText} />
             <span className="text_slider_span">{slide.description}</span>
           </SwiperSlide>
