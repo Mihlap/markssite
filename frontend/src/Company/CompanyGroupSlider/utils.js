@@ -7,7 +7,7 @@ const slidesData = [
   {
     imgSrc: "./assets/Vector2A.svg",
     altText: "Vector2A",
-    description: "Цифровые решения в проектировании, девелопменте и строительстве."
+    description: "Цифровые решения в проектировании, девелопменте и строительстве.",  
   },
   {
     imgSrc: "./assets/Vector3A.svg",
