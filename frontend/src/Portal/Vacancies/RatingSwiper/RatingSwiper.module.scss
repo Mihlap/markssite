@@ -39,6 +39,7 @@
   }
 
   &__slide {
+    flex-grow: 1;
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: rem(54);

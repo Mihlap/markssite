@@ -1,7 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import styles from "./RatingSwiper.module.scss";
+
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation } from "swiper";
+
 import ArrowsSwiper from '../ArrowsSwiper/ArrowsSwiper';
 
 import "swiper/css";
@@ -65,12 +67,12 @@ const RatingSwiper = () => {
           <>
             {/* Компонент стрелочки с присваиванием ссылок */}
             <ArrowsSwiper prevRef={prevRef} nextRef={nextRef} />
-            <div className={styles.RatingSwiper__swiper}></div>
+            {/* <div className={styles.RatingSwiper__swiper}></div> */}
             <Swiper 
               ref={swiperRef}
               modules={[Navigation]}
               spaceBetween={30}
-              slidesPerView={1}
+              slidesPerView={'auto'}
               loop={true}
               navigation={{
                 prevEl: prevRef.current,
@@ -78,11 +80,13 @@ const RatingSwiper = () => {
               }}
               wrapperClass={styles.RatingSwiper__wrapper}
               breakpoints={{
-                2559: {
-                  slidesPerView: 1.5,
+                // Для экранов от 1920 пикселей и выше
+                1920: {
+                  slidesPerView: 1,
                   spaceBetween: 54,
                 },
-                1439: {
+                // Для экранов от 1440 пикселей и выше, но меньше 1920 пикселей
+                1440: {
                   slidesPerView: 1, 
                   spaceBetween: 30,
                 },
