@@ -18,25 +18,23 @@ const CompanyGroupSlider = () => {
   };
 
   return (
-    <div className="company-group-container">
+    <div className="company_group_container">
       <Swiper
+      className="wrapper_group_container"
         ref={swiperRef}
-        spaceBetween={50}
+        spaceBetween={0}
         slidesPerView={'auto'}
+        centeredSlides={false}
         loop={true}
+        effect={"fade"}
         onSlideChange={(swiper) => setCurrentPage(swiper.realIndex)}
-        breakpoints={{
-          2501: { spaceBetween: 200 },
-          1601: { spaceBetween: 100 },
-          1025: { spaceBetween: 90 },
-          768: { spaceBetween: 80 },
-          0: { spaceBetween: 50 },
-        }}
-      >
+        >
         {slidesData.map((slide, index) => (
-          <SwiperSlide key={index} className="company-group-slide">
-            <img src={slide.imgSrc} alt={slide.altText} />
+          <SwiperSlide key={index} className="company_group_slide">
+            <div className="wrapper_sliderContainer_blockSlide">
+            <img className="image_group_container" src={slide.imgSrc} alt={slide.altText} />
             <span className="text_slider_span">{slide.description}</span>
+            </div>
           </SwiperSlide>
         ))}
       </Swiper>

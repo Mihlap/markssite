@@ -38,7 +38,7 @@ import CompanyFormContacts from "../UI/CompanyFormContacts/CompanyFormContacts";
 import CompanySubscriptionForm from "../UI/CompanySubscriptionForm/CompanySubscriptionForm";
 import CounterCompanyMobile from "../UI/CounterCompanyMobile";
 import CounterCompanyMobile2 from "../UI/CounterCompanyMobile2";
-import CompanyGroupSlider from "../UI/CompanyGroupSlider/CompanyGroupSlider";
+import CompanyGroupSlider from "./CompanyGroupSlider/CompanyGroupSlider";
 import ModalVacancyFormSend from "../UI/VacancyFormContact/ModalVacancyFormSend";
 
 const Host = process.env.REACT_APP_SERVER_HOST;
