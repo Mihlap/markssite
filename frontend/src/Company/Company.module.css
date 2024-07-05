@@ -367,7 +367,7 @@
   line-height: normal;
 }
 .company_group_slider {
-  padding-left: 1.87vw;
+  padding-left: 0;
    /* padding-right: 1.87vw; */
 }
 
@@ -921,7 +921,7 @@ bottom: 3.38rem;
   }
 
   .company_group_slider {
-    padding-left: 3.6vw;
+    padding-left: 0;
     /* padding-right: 1.87vw; */
   }
   .awards_wrapper {
@@ -1363,7 +1363,7 @@ bottom: 3.38rem;
   }
 
   .company_group_slider {
-    padding-left: 1rem;
+    padding-left: 0;
       /* padding-right: 0; */
   }
 
