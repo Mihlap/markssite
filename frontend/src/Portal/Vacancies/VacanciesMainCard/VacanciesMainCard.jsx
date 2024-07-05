@@ -84,21 +84,21 @@ const VacanciesMainCard = ({
     };
   }, []); 
 
-  // useEffect(() => {
-  //   dispatch(fetchEmployees(id));
-  // }, [dispatch, id]);
+  useEffect(() => {
+    dispatch(fetchEmployees(id));
+  }, [dispatch, id]);
 
-  // useEffect(() => {
-  //   if (vacancies && vacancies.length > 0) {
-  //     setSelectedVacancy(vacancies[0]);
-  //   }
-  // }, [vacancies]);
-
-  useEffect(() => {    
-    if (!vacancies || vacancies.length === 0) {
-      dispatch(fetchEmployees(id));
+  useEffect(() => {
+    if (vacancies && vacancies.length > 0) {
+      setSelectedVacancy(vacancies[0]);
     }
-  }, [dispatch, id, vacancies]);   
+  }, [vacancies]);
+
+  // useEffect(() => {    
+  //   if (!vacancies || vacancies.length === 0) {
+  //     dispatch(fetchEmployees(id));
+  //   }
+  // }, [dispatch, id, vacancies]);   
 
   const handleScroll = useCallback(() => {
     window.requestAnimationFrame(() => {
@@ -205,7 +205,7 @@ const VacanciesMainCard = ({
         { x: xValueSputnik, opacity: 1, duration: 1 }
       );
   
-    }, 100);
+    }, 0);
   
     return () => {
       clearTimeout(timer);
