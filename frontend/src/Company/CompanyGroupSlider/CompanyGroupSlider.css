@@ -1,0 +1,180 @@
+@import "../../App.css";
+
+.company_group_container {
+  padding-bottom: 9.25rem;
+  width: 100%;
+  height: 100%;
+}
+
+.wrapper_group_container {
+  display: flex;
+  width: 100%;  
+}
+
+.company_group_slide {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding-left: 1.87vw;
+  padding-right: 1.87vw;
+}
+
+.wrapper_sliderContainer_blockSlide {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  /* justify-content: center; */
+  width: 100%;
+  height: 100%;
+}
+
+/* .wrapper_sliderContainer_blockSlide.swiper-slide {
+  width: 100% !important; 
+} */
+
+
+.image_group_container {
+  /* width: auto;
+  height: auto; */
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: cover;
+}
+
+
+.text_slider_span {
+  display: flex;
+  color: var(--black-3C3C3C);
+  font-variant-numeric: lining-nums proportional-nums;
+  font-family: var(--font-raleway);
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: var(--fw-400);
+  line-height: 1.25rem;
+  padding-top: 1.5rem;
+}
+
+
+
+/* .swiper-slide span {
+  width: 100%; 
+  min-width: 30rem;
+  height: 100%;
+} */
+
+
+
+@media screen and (min-width: 1025px) and (max-width: 1600px) {
+
+  .company_group_slide {
+    margin-right: 3vw;
+  }
+
+.wrapper_sliderContainer_blockSlide.swiper-slide {
+  width: 100% !important; 
+}
+
+}
+
+
+/* стили для планшетной версии  */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+
+  .company_group_container {
+    padding-left: 3.6vw;
+    padding-bottom: 6.25rem;
+    width: 100%;
+  }
+
+
+  .text_slider_span {
+    display: flex;
+    color: var(--black-3C3C3C);
+    font-variant-numeric: lining-nums proportional-nums;
+    font-family: var(--font-raleway);
+    font-size: 0.875rem;
+    font-style: normal;
+    font-weight: var(--fw-400);
+    line-height: 1.25rem;
+    padding-top: 1.5rem;
+  }
+
+  .wrapper_sliderContainer_blockSlide.swiper-slide {
+    width: 100% !important;
+  
+  }
+
+  .swiper-slide span {
+    width: 100%;
+    min-width: 30rem;
+    height: 100%;
+  }
+
+
+
+}
+
+/* стили мобильной версии  */
+
+@media screen and (max-width: 767px) {
+
+  .company_group_container {
+    padding-bottom: 5rem;
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  .text_slider_span {
+    padding-right: 0rem;
+  }
+
+  .company_group_slide {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .wrapper_sliderContainer_blockSlide {
+    display: block;
+    width: 100%;
+    min-height: 80px;
+    height: auto;
+  }
+
+  .wrapper_sliderContainer_blockSlide.swiper-slide {
+    width: 100% !important;
+    height: auto;
+  }
+
+
+  .image_group_container {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+  }
+  
+
+
+  .pagination_company_slider {
+    display: flex;
+    justify-content: center;
+    margin-top: 35px;
+  }
+
+  .pagination_company_slider-dot {
+    display: inline-block;
+    width: 20px;
+    height: 4px;
+    border: 2px solid var(--light-light-gray-EBECEE);
+    background-color: var(--light-light-gray-EBECEE);
+    margin: 0 5px;
+    cursor: pointer;
+  }
+
+  .pagination_company_slider-dot.active {
+    width: 54px;
+    border: 2px solid var(--salmon-FF7F6A);
+  }
+}

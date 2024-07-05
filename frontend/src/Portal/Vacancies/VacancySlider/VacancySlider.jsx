@@ -39,7 +39,8 @@ const VacancySlider = () => {
     <div className={styles.sliderContainer}>
       <Swiper
         className={styles.sliderContainer_block}
-        loop={false}
+        loop={true}
+        effect={"fade"}
         slidesPerView="auto"
         spaceBetween={windowWidth <= 767 ? 20 : 30}
         centeredSlides={false}
