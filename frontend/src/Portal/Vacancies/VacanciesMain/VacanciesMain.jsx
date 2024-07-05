@@ -529,7 +529,7 @@ const VacanciesMain = ({
                             {vacancy.title}
                           </div>
                           <div className={styles.vacancyCell_buttonLink_ipad}>
-                            {/* <img src={buttonLink_ipad} alt="buttonLink_ipad" /> */}
+                            <img src={buttonLink_ipad} alt="buttonLink_ipad" />
                           </div>
                         </div>
                         <div className={styles.vacancyContainer222}>
