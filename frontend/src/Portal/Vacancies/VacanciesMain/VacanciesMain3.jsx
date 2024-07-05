@@ -14,9 +14,9 @@ import SocialsSwiper from '../SocialsSwiper/SocialsSwiper';
 const VacanciesMain3 = () => {
 	return (
 		<>
-			<Intro />
+			{/* <Intro />
 			<VideoScroll />
-			<TextCenter />
+			<TextCenter /> */}
 			<RatingSwiper />
 			<CountRows />
 			<DirectionsGrid />
