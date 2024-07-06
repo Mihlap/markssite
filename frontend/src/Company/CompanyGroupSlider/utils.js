@@ -2,22 +2,22 @@ const slidesData = [
   {
     imgSrc: "./assets/VectorA.svg",
     altText: "VectorA",
-    description: "Проектно-архитектурная компания. Генеральное проектирование, научные исследования, комплексный анализ объектов и территорий развития инфраструктуры городов и мегаполисов."
+    description: "Design and architecture company. General design, scientific research, comprehensive analysis of object and territories for cities and metapolicies infrastructure development."
   },
   {
     imgSrc: "./assets/Vector2A.svg",
     altText: "Vector2A",
-    description: "Цифровые решения в проектировании, девелопменте и строительстве.",  
+    description: "Digital solutions in design, development and constructions.",  
   },
   {
     imgSrc: "./assets/Vector3A.svg",
     altText: "Vector3A",
-    description: "Научно-техническое сопровождение проектирования и строительства. Проектирование, научные исследования, комплексные расчёты строительных конструкций, оснований, фундаментов и подземных сооружений."
+    description: "Scientific and technological supervision of design and construction. Design, scientific research, comprehensive calculations of constructional structures, bases, foundations and underground facilities."
   },
   {
     imgSrc: "./assets/Vector4A.svg",
     altText: "Vector4A",
-    description: "Институт науки, проектирования и инжиниринга. Проектирование объектов промышленного и гражданского строительства."
+    description: "The Institute for Science, Design and Engineering. Design of projects of industrial and civil construction."
   },
 ];
 
