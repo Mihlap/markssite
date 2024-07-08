@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Intro from "../Intro/Intro";
+import Intro from '../Intro/Intro';
 import VideoScroll from '../VideoScroll/VideoScroll';
 import TextCenter from '../TextCenter/TextCenter';
 import RatingSwiper from '../RatingSwiper/RatingSwiper';
@@ -10,20 +10,28 @@ import VacanciesMap from '../VacanciesMap/VacanciesMap';
 import BenefitsGrid from '../BenefitsGrid/BenefitsGrid';
 import VacanciesInvite from '../VacanciesInvite/VacanciesInvite';
 import SocialsSwiper from '../SocialsSwiper/SocialsSwiper';
+import GalleryTabs from '../GalleryTabs/GalleryTabs';
+import VacanciesList from '../VacanciesList/VacanciesList';
 
-const VacanciesMain3 = () => {
+const VacanciesMain3 = ({ handleMouseEnter, handleMouseLeave, handleMouseHover }) => {
 	return (
 		<>
-			{/* <Intro />
-			<VideoScroll />
-			<TextCenter /> */}
+			<Intro />
+			{/* <VideoScroll />
+			<TextCenter />
 			<RatingSwiper />
 			<CountRows />
-			<DirectionsGrid />
+			<DirectionsGrid /> */}
 			<VacanciesMap />
-			<BenefitsGrid />
+			{/* <BenefitsGrid />
+			<VacanciesList />
 			<VacanciesInvite />
 			<SocialsSwiper />
+			<GalleryTabs
+   handleMouseEnter={handleMouseEnter}
+	 handleMouseLeave={handleMouseLeave}
+	 handleMouseHover={handleMouseHover}
+			/> */}
 		</>
 	);
 };

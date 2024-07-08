@@ -81,6 +81,10 @@ const RatingSwiper = () => {
               wrapperClass={styles.RatingSwiper__wrapper}
               breakpoints={{
                 // Для экранов от 1920 пикселей и выше
+                2500: {
+                  slidesPerView: 1.5,
+                  spaceBetween: 54,
+                },
                 1920: {
                   slidesPerView: 1,
                   spaceBetween: 54,
