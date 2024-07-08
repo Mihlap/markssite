@@ -1,0 +1,90 @@
+@import "../../../App.css";
+@import "../../../_variables.scss";
+
+
+.GalleryTabs {
+  padding: rem(113) rem(105);
+
+  &__title {
+    font-family: var( --font-unbounded);
+    font-size: rem(40);
+    font-weight: var(--fw-300);
+    line-height: rem(48);
+    margin-bottom: rem(40);
+
+    span {
+      color: var(--blue-75BBFD);
+    }
+  }
+
+  &__buttons {
+    display: flex;
+    gap: rem(8);
+    margin-bottom: rem(32);
+
+    button {
+      flex-shrink: 0;
+      padding: rem(8) rem(24);
+      padding: 8px 24px 8px 24px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: rem(40);
+      border-radius: rem(34);
+      color: var(--black-1D2E43);
+      font-size: rem(16);
+      font-weight: var(--fw-400);
+      line-height: rem(24);
+      background-color: var( --light-light-gray-EBECEE);
+      transition: 0.3s;
+
+      &:hover {
+        background-color: var(--light-gray-C0C5CB);
+      }
+
+      &.active {
+        background-color: var(--blue-75BBFD);
+        color: var(--white-F6F6F6);
+      }
+    }
+  }
+
+  &__content {
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+    }
+    // transition: 0.3s;
+    cursor: none;
+  }
+
+  // Адаптация под меньший размер desktop
+  @media all and (max-width:$bp0){
+    padding: rem(150) 0;
+    
+    &__buttons, 
+    &__title {
+      padding: 0 rem(63) ;
+    }
+  }
+
+  // Адаптация под tablet
+  @media all and (max-width:$bp3){
+    padding: rem(120) rem(174)h;
+  }
+  
+  // Адаптация под mobile
+  @media all and (max-width:$bp4){
+    padding: rem(120) 0;
+
+    &__buttons, 
+    &__title {
+      padding: 0 rem(16) ;
+    }
+
+    &__buttons {
+      margin-bottom: rem(24);
+    }  
+  }
+}
