@@ -17,6 +17,8 @@ const VacanciesMain3 = ({ handleMouseEnter, handleMouseLeave, handleMouseHover }
 	return (
 		<>
 			<Intro />
+			<Intro />
+			<Intro />
 			{/* <VideoScroll />
 			<TextCenter />
 			<RatingSwiper />
