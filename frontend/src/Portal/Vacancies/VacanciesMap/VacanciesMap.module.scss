@@ -1,47 +1,48 @@
 @import "../../../App.css";
 @import "../../../_variables.scss";
 
+
 .VacanciesMap {
   $s: &;
   display: flex;
   align-items: center;
   justify-content: space-between;
   height: 100vh;
+  padding-left: rem(64);
+  overflow: hidden;
 
   &__text {
+    flex-shrink: 0;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    width: 36%;
-    padding: rem(64) 0 rem(64) rem(64);
+    width: 20%;
+    margin: rem(64) 0 rem(64) auto;
 
     h2 {
       font-family: var(--font-unbounded);
-      font-size: rem(32);
-      line-height: rem(40);
-      margin-bottom: rem(24);
+      font-size: rem(40);
+      line-height: rem(48);
+      margin-bottom: rem(45);
     }
 
     p {
       font-family: var(--font-raleway);
       margin-bottom: rem(32);
-      font-size: rem(18);
+      font-size: rem(24);
+      line-height: rem(32);
     }
   }
 
   &__map {
     flex-shrink: 0;
     position: relative;
-    width: rem(960);
-    height: rem(880);
-    overflow: hidden;
-
-    img {
-      display: block;
-      width: 100%;
-      height: 100%;
-      object-position: bottom rem(-11) right rem(-135);
-    }
+    width: 1574px;
+    height: 1400px;
+    background-image: url('../icons/vacancies-cities.png');
+    background-position: center center;
+    background-size: 100%;
+    background-repeat: no-repeat;
   }
 
   &__circle {
@@ -53,27 +54,28 @@
 
 
     &_xs {
-      width: 12px;
-      height: 12px;
+      width: 17px;
+      height: 17px;
       opacity: 1;
       z-index: 50;
       animation: none;
       background-color: var(--blue-75BBFD);
     }
 
-
     &_s {
-      width: 42px;
-      height: 42px;
+      width: 60px;
+      height: 60px;
       z-index: 40;
       opacity: 0.3;
+      animation-delay: 700ms;
     }
 
     &_m {
-      width: 70px;
-      height: 70px;
+      width: 97px;
+      height: 97px;
       z-index: 30;
       opacity: 0.16;
+      animation-delay: 900ms;
     }
   }
 
@@ -87,75 +89,80 @@
 
     span {
       position: absolute;
-      transform: translateY(-57px);
+      transform: translateY(-75px);
       z-index: 60;
       font-size: 19px;
       white-space: nowrap;
     }
 
-    &_msk {
-      top: 138px;
-      right: 293px;
+    &_msk {    
+      top: 249px;
+      right: 756px;
 
       #{$s}__box {
-        width: 470px;
-        height: 470px;
+        width: 661px;
+        height: 661px;
       }
 
       span {
         font-size: 25px;
+        transform: translateY(-87px);
       }
 
       #{$s}__circle {
         &_xs {
-          width: 22px;
-          height: 22px;
+          width: 32px;
+          height: 32px;
         }
         
         &_s {
-          width: 102px;
-          height: 102px;
+          width: 115px;
+          height: 115px;
+          animation-delay: 700ms;
         }
   
         &_m {
-          width: 216px;
-          height: 216px;
+          width: 304px;
+          height: 304px;
+          animation-delay: 800ms;
         }
 
         &_l {
-          width: 360px;
-          height: 360px;
+          width: 509px;
+          height: 509px;
           z-index: 20;
           opacity: 0.16;
+          animation-delay: 900ms;
         }
     
         &_xl {
-          width: 470px;
-          height: 470px;
+          width: 661px;
+          height: 661px;
           z-index: 10;
           opacity: 0.1;
+          animation-delay: 1000ms;
         }
       }
     }
 
     &_vzh {
-      top: 416px;
-      right: 549px;
+      top: 656px;
+      right: 1127px;
     }
     
     &_spb {    
-      top: 218px;
-      right: 472px;
+      top: 341px;
+      right: 1005px;
     }
 
     &_obg {
-      top: 573px;
-      right: 375px;
+      top: 905px;
+      right: 852px;
     }
 
     &_chbk {     
-      top: 558px;
-      right: 260px;
+      top: 882px;
+      right: 669px;
     }
   }
 
@@ -165,8 +172,8 @@
     justify-content: center;
     align-items: center;
     transform-origin: center center;
-    width: 70px;
-    height: 70px;
+    width: 97px;
+    height: 97px;
   }
 
   // Анимация
@@ -181,127 +188,170 @@
       transform: scale(1);
     }
   }
-  
-  
-  
-  @media all and (max-width:$bp2){
+
+  @media all and (max-width:2000px){
+
     &__text {
-      position: absolute;
-      width: 44%;
-      z-index: 60;
-      padding: rem(64) 0 rem(194) 16%;
-    }
-
-    &__map {
-      width: rem(758);
-      height: rem(686);
-      margin-left: auto;
-    } 
-
-    &__circle {
-      &_xs {
-        width: 8px;
-        height: 8px;
-      }
-
-      &_s {
-        width: 26px;
-        height: 26px;
-      }
-      &_m {
-        width: 45px;
-        height: 45px;
-      }
-    }
-
-    &__city {
-
-      span {
-        transform: translateY(-38px);
-        font-size: 14px;
+      width: 30%;
+  
+      h2 {
+        font-size: rem(32);
+        line-height: rem(40);
+        margin-bottom: rem(24);
       }
   
-      &_msk {
-        top: 141px;
-        right: 231px;
+      p {
+        margin-bottom: rem(32);
+        font-size: rem(18);
+        line-height: rem(26);
+      }
+    }
+  
+    &__map {
+      width: 960px;
+      height: 880px;
+      background-position: bottom 0 right -156px;
+      background-size: 113%;
+    }
+  
+    &__circle {
+  
+      &_xs {
+        width: 12px;
+        height: 12px;
+      }
+  
+      &_s {
+        width: 42px;
+        height: 42px;
+      }
+  
+      &_m {
+        width: 70px;
+        height: 70px;
+      }
+    }
+  
+    &__city {
+      span {
+        font-size: 14px;
+        transform: translateY(-47px);
+      }
 
+      &_msk {        
+        top: 80px;
+        right: 356px;
+        
         span {
           font-size: 18px;
+          transform: translateY(-58px);
         }
 
+  
         #{$s}__box {
-          width: rem(310);
-          height: rem(310);
+          width: 470px;
+          height: 470px;
         }
   
         #{$s}__circle {
           &_xs {
-            width: 14px;
-            height: 14px;
+            width: 22px;
+            height: 22px;
           }
           
           &_s {
-            width: 54px;
-            height: 54px;
+            width: 102px;
+            height: 102px;
           }
     
           &_m {
-            width: 142px;
-            height: 142px;
+            width: 216px;
+            height: 216px;
           }
   
           &_l {
-            width: 238px;
-            height: 238px;
+            width: 360px;
+            height: 360px;
           }
       
           &_xl {
-            width: 310px;
-            height: 310px;
+            width: 470px;
+            height: 470px;
           }
         }
       }
-    
-      &_vzh {
-        top: 323px;
-        right: 396px;
+  
+      &_vzh {        
+        top: 364px;
+        right: 619px;
       }
       
-      &_spb {        
-        top: 166px;
-        right: 338px;
+      &_spb {    
+        top: 149px;
+        right: 533px;
       }
   
-      &_obg {
-        top: 443px;
-        right: 259px;
+      &_obg {       
+        top: 536px;
+        right: 428px;
       }
   
-      &_chbk {     
-        top: 435px;
-        right: 168px;
+      &_chbk {             
+        top: 520px;
+        right: 303px;
       }
     }
+  
+    &__box {
+      width: 70px;
+      height: 70px;
+    }
   }
+
 
   // Адаптация под tablet
   @media all and (max-width:$bp3){
     &__text {
-      width: 53%;
+      width: 38%;
+  
+      h2 {
+        font-size: rem(24);
+        line-height: rem(32);
+      }
+  
+      p {
+        font-size: rem(18);
+        line-height: rem(26);
+      }
     }
 
     &__map {
       width: rem(599);
       height: rem(572);
-      
-      img {        
-        object-position: bottom rem(10) right rem(-60);
-        transform: scale(1.18);
-      }
+      background-position: bottom -62px right -128px;
+      background-size: 118%;
     }
 
-    &__city {
+    &__circle {
+  
+      &_xs {
+        width: 12px;
+        height: 12px;
+      }
+  
+      &_s {
+        width: 42px;
+        height: 42px;
+      }
+  
+      &_m {
+        width: 70px;
+        height: 70px;
+      }
+    }
+  
 
+    &__city {h
       span {
         font-size: 9px;
         transform: translateY(-24px);
@@ -313,6 +363,38 @@
 
         span {
           font-size: 12px;
+        }
+
+        #{$s}__box {
+          width: 470px;
+          height: 470px;
+        }
+  
+        #{$s}__circle {
+          &_xs {
+            width: 22px;
+            height: 22px;
+          }
+          
+          &_s {
+            width: 102px;
+            height: 102px;
+          }
+    
+          &_m {
+            width: 216px;
+            height: 216px;
+          }
+  
+          &_l {
+            width: 360px;
+            height: 360px;
+          }
+      
+          &_xl {
+            width: 470px;
+            height: 470px;
+          }
         }
       }
     
@@ -338,22 +420,17 @@
     }
   }
 
-  @media all and (max-width:1000px){
-    &__text {
-      width: 30%;
-      padding-left: 24px;
-    }
-  }
-
   // Адаптация под mobile
   @media all and (max-width:$bp4){
     flex-direction: column;
     height: auto;
+    padding: 0;
 
     &__text {
       position: static;
       width: 100%;
       padding: rem(120) rem(16) 0 rem(16); 
+      margin-bottom: 0;
 
       h2 {
         font-size: rem(24);
@@ -362,14 +439,11 @@
     }
 
     &__map {
-      width: 100%;
-      height: rem(507);
-      
-      img {        
-        object-position: bottom -15px right -146px;
-        transform: scale(1.3);
-        object-fit: contain;
-      }
+      width: 375px;
+      height: 507px;
+      background-position: bottom 0 right -130px;
+      background-size: cover;
+      margin-left: auto;
     }
 
     &__city {
@@ -415,12 +489,6 @@
       height: rem(507);
       margin-right: auto;
       margin-left: 0;
-      
-      img {        
-        object-position: bottom -36px right -168px;
-        transform: scale(1.3);
-        object-fit: cover;
-      }
     }
 
     &__city {

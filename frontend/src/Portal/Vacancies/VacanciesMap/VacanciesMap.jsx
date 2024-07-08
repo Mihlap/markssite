@@ -28,12 +28,12 @@ const VacanciesMap = () => {
 	return (
 		<section className={styles.VacanciesMap}>
 			<div className={styles.VacanciesMap__text}>
-				<h2>Вакансии по&nbsp;всему миру!</h2>
+				<h2>Вакансии<br></br>по&nbsp;всему миру!</h2>
 				<p>5&nbsp;офисов в&nbsp;России и&nbsp;один в&nbsp;Узбекистане. Если ты&nbsp;крутой специалист, мы&nbsp;готовы помочь с&nbsp;переездом и&nbsp;поиском жилья</p>
 				<ButtonLink text="Взглянуть на офис" currentHref="#"/>
 			</div>
 			<div className={styles.VacanciesMap__map}>
-				<img src={map} alt="Карта офисов" />
+				{/* <img src={map} alt="Карта офисов" /> */}
 				<div className={`${styles.VacanciesMap__city} ${styles.VacanciesMap__city_spb}`}>
 						<div className={styles.VacanciesMap__box}>
 							<span>Санкт-Петербург</span>
