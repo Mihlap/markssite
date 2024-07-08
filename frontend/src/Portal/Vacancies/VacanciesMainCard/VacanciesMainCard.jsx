@@ -76,8 +76,8 @@ const VacanciesMainCard = ({
       setWindowWidth(window.innerWidth);
     }, 100);
   
-    window.addEventListener("resize", handleResizeDebounced);    
-   
+    window.addEventListener("resize", handleResizeDebounced);  
+     
     return () => {
       window.removeEventListener("resize", handleResizeDebounced);
       handleResizeDebounced.cancel(); 
@@ -98,66 +98,104 @@ const VacanciesMainCard = ({
   //   if (!vacancies || vacancies.length === 0) {
   //     dispatch(fetchEmployees(id));
   //   }
-  // }, [dispatch, id, vacancies]);   
+  // }, [dispatch, id, vacancies]); 
+   
 
-  const handleScroll = useCallback(() => {
-    window.requestAnimationFrame(() => {
-      const blockRight = blockRightWrapperRef.current;
-      const wrapperTextBlock = wrapperTextBlockRef.current;
+  // const handleScroll = useCallback(() => {
+  //   window.requestAnimationFrame(() => {
+  //     const blockRight = blockRightWrapperRef.current;
+  //     const wrapperTextBlock = wrapperTextBlockRef.current;
   
-      if (!blockRight || !wrapperTextBlock) return;
+  //     if (!blockRight || !wrapperTextBlock) return;
   
-      const blockRightRect = blockRight.getBoundingClientRect();
-      const wrapperTextBlockRect = wrapperTextBlock.getBoundingClientRect();
+  //     const blockRightRect = blockRight.getBoundingClientRect();
+  //     const wrapperTextBlockRect = wrapperTextBlock.getBoundingClientRect();
   
-      const wrapperTextBlockBottom = window.innerWidth >= 1025 && window.innerWidth <= 1600 ?
-        wrapperTextBlockRect.top + window.scrollY + window.innerHeight * 1.2 :
-        wrapperTextBlockRect.top + window.scrollY + window.innerHeight * 0.5;
-  
-      blockRight.style.position = window.scrollY + blockRightRect.height >= wrapperTextBlockBottom ? "absolute" : "fixed";
-      blockRight.style.top = window.scrollY + blockRightRect.height >= wrapperTextBlockBottom ? `${wrapperTextBlockBottom - blockRightRect.height}px` : "0";
-      blockRight.style.right = "0";
-    });
-  }, [windowWidth]);
-  
-  useEffect(() => {
-    if (window.innerWidth < 1025) return;
-  
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, [handleScroll]); 
-  
+  //     // const wrapperTextBlockBottom = window.innerWidth >= 1025 && window.innerWidth <= 1600 ?
+  //     //   wrapperTextBlockRect.top + window.scrollY + window.innerHeight * 0.6 :
+  //     //   wrapperTextBlockRect.top + window.scrollY + window.innerHeight * 0.3;
 
-  useEffect(() => {
-    const button = formButtonRef.current;
-    const form = formRef.current;
+  //     const wrapperTextBlockBottom = wrapperTextBlockRect.bottom + window.scrollY - blockRightRect.height - 400;
   
-    if (!button || !form) return;
+  //     blockRight.style.position = window.scrollY + blockRightRect.height >= wrapperTextBlockBottom ? "absolute" : "fixed";
+  //     blockRight.style.top = window.scrollY + blockRightRect.height >= wrapperTextBlockBottom ? `${wrapperTextBlockBottom - blockRightRect.height}px` : "0";
+  //     blockRight.style.right = "0";
+  //   });
+  // }, [windowWidth]);
+
   
-    const initialButtonBottom = button.getBoundingClientRect().bottom + window.scrollY;
+  // useEffect(() => {
+  //   if (window.innerWidth < 1025) return;
   
+  //   window.addEventListener("scroll", handleScroll);
+  //   return () => window.removeEventListener("scroll", handleScroll);
+  // }, [handleScroll]); 
+
+  useLayoutEffect(() => {
+    if (window.innerWidth < 1025) return undefined; 
+    
     const handleScroll = () => {
-      const scrollY = window.scrollY;
-      const windowHeight = window.innerHeight;
-      const formRect = form.getBoundingClientRect();
+      const animationFrameId = window.requestAnimationFrame(() => {
+        const blockRight = blockRightWrapperRef.current;
+        const wrapperTextBlock = wrapperTextBlockRef.current;
   
-      // Определение, нужно ли фиксировать кнопку
-      const shouldFixButton = scrollY + windowHeight >= initialButtonBottom;
-      // Определение, нужно ли скрыть кнопку
-      const shouldHideButton = formRect.top <= windowHeight;
+        if (!blockRight || !wrapperTextBlock) return;
   
-      // Использование toggle для добавления или удаления классов на основе условий
-      button.classList.toggle(styles.fixed, shouldFixButton);
-      button.classList.toggle(styles.hidden, shouldHideButton);
+        const blockRightRect = blockRight.getBoundingClientRect();
+        const wrapperTextBlockRect = wrapperTextBlock.getBoundingClientRect();
+  
+        const wrapperTextBlockBottom = wrapperTextBlockRect.bottom + window.scrollY - blockRightRect.height - 400;
+  
+        blockRight.style.position = window.scrollY + blockRightRect.height >= wrapperTextBlockBottom ? "absolute" : "fixed";
+        blockRight.style.top = window.scrollY + blockRightRect.height >= wrapperTextBlockBottom ? `${wrapperTextBlockBottom - blockRightRect.height}px` : "0";
+        blockRight.style.right = "0";
+      });
+  
+      return () => window.cancelAnimationFrame(animationFrameId);
     };
   
-    window.addEventListener('scroll', handleScroll);
+    const timer = setTimeout(() => {
+      handleScroll();
+      window.addEventListener("scroll", handleScroll);
+    }, 150); 
   
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      clearTimeout(timer);
+      window.removeEventListener("scroll", handleScroll);
     };
-  }, []); 
+  }, [windowWidth]);
+  
+  
 
+  useLayoutEffect(() => {
+    const button = formButtonRef.current;
+    const form = formRef.current;
+    if (!button || !form) return;
+  
+    setTimeout(() => {
+      const initialButtonBottom = button.getBoundingClientRect().bottom + window.scrollY;
+  
+      const updateButtonPosition = () => {
+        const scrollY = window.scrollY;
+        const windowHeight = window.innerHeight;
+        const formRect = form.getBoundingClientRect();
+  
+        const shouldFixButton = scrollY + windowHeight >= initialButtonBottom;
+        const shouldHideButton = formRect.top <= windowHeight;
+  
+        button.classList.toggle(styles.fixed, shouldFixButton);
+        button.classList.toggle(styles.hidden, shouldHideButton);
+      };
+  
+      updateButtonPosition();
+      window.addEventListener('scroll', updateButtonPosition);
+  
+      return () => {
+        window.removeEventListener('scroll', updateButtonPosition);
+      };
+    }, 150); 
+  }, []);
+  
   
   const handleScrollToForm = () => {
     if (formRef.current) {
@@ -205,7 +243,7 @@ const VacanciesMainCard = ({
         { x: xValueSputnik, opacity: 1, duration: 1 }
       );
   
-    }, 0);
+    }, 100);
   
     return () => {
       clearTimeout(timer);
