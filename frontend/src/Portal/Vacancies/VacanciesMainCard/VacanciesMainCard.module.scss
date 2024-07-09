@@ -19,8 +19,8 @@
     &__wrapper {
       display: flex;
       flex-direction: column;
-      width: 100%;
-      height: auto;
+       width: 100%;      
+       height: auto;
     }
 
     &__item {
@@ -93,7 +93,6 @@
       justify-content: space-between;
       align-content: stretch;
       border-bottom: 1px solid rgb(235, 236, 238);
-      // padding-top: 50px; 
     }
 
 
@@ -837,13 +836,13 @@
       &__item {
         display: flex;
         justify-content: space-between;
-        height: 110vh;
+        height: auto;
       }
 
       &__background1 {
         width: 14rem;
         height: 14rem;
-        top: 9%;
+        top: 7.5%;
         right: 32%;
       }
 
@@ -857,7 +856,7 @@
       &__background3 {
         width: 25rem;
         height: 28rem;
-        top: 6%;
+        top: 5.5%;
         right: 2%;
       }
 
@@ -894,12 +893,12 @@
         max-width: 80%;
       }
 
-      &__detailItem {
-        max-height: 180px;
-        min-height: 140px;
-        padding-left: 2.5rem;
-        margin-bottom: -2rem; // для того чтобы влезла кнопка формы отправки вакансий
-      }
+      // &__detailItem {
+      //   max-height: 100%;
+      //   min-height: 140px;
+      //   padding-left: 2.5rem;
+      //   margin-bottom: -2rem; // для того чтобы влезла кнопка формы отправки вакансий
+      // }
 
 
       &__detailKey {
@@ -918,7 +917,7 @@
       border: 1px solid rgb(235, 236, 238);
       backdrop-filter: blur(4.5px);
       background: rgba(255, 255, 255, 0.7);
-      padding: 1.5rem 2.5rem;
+      padding: 2rem 2.5rem;
       width: 100%;
       // opacity: 0.9;
     }
