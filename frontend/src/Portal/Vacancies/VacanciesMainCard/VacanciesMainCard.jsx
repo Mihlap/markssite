@@ -88,19 +88,20 @@ const VacanciesMainCard = ({
     dispatch(fetchEmployees(id));
   }, [dispatch, id]);
 
+  
   useEffect(() => {
     if (vacancies && vacancies.length > 0) {
-      setSelectedVacancy(vacancies[0]);
+      const selectedVac = vacancies.find(vacancy => vacancy.id === parseInt(id));
+      setSelectedVacancy(selectedVac); 
     }
-  }, [vacancies]);
-
-  // useEffect(() => {    
-  //   if (!vacancies || vacancies.length === 0) {
-  //     dispatch(fetchEmployees(id));
+  }, [vacancies, id]);
+  
+  // useEffect(() => {
+  //   if (vacancies && vacancies.length > 0) {
+  //     setSelectedVacancy(vacancies[0]);
   //   }
-  // }, [dispatch, id, vacancies]); 
-   
-
+  // }, [vacancies]);
+ 
   // const handleScroll = useCallback(() => {
   //   window.requestAnimationFrame(() => {
   //     const blockRight = blockRightWrapperRef.current;
@@ -131,39 +132,79 @@ const VacanciesMainCard = ({
   //   return () => window.removeEventListener("scroll", handleScroll);
   // }, [handleScroll]); 
 
-  useLayoutEffect(() => {
-    if (window.innerWidth < 1025) return undefined; 
-    
-    const handleScroll = () => {
-      const animationFrameId = window.requestAnimationFrame(() => {
-        const blockRight = blockRightWrapperRef.current;
-        const wrapperTextBlock = wrapperTextBlockRef.current;
+  // useLayoutEffect(() => {
+  //   if (window.innerWidth < 1025) return undefined;
   
-        if (!blockRight || !wrapperTextBlock) return;
+  //   const handleScroll = () => {
+  //     const animationFrameId = window.requestAnimationFrame(() => {
+  //       const blockRight = blockRightWrapperRef.current;
+  //       const wrapperTextBlock = wrapperTextBlockRef.current;
   
-        const blockRightRect = blockRight.getBoundingClientRect();
-        const wrapperTextBlockRect = wrapperTextBlock.getBoundingClientRect();
+  //       if (!blockRight || !wrapperTextBlock) return;
   
-        const wrapperTextBlockBottom = wrapperTextBlockRect.bottom + window.scrollY - blockRightRect.height - 400;
+  //       const blockRightRect = blockRight.getBoundingClientRect();
+  //       const wrapperTextBlockRect = wrapperTextBlock.getBoundingClientRect();
   
-        blockRight.style.position = window.scrollY + blockRightRect.height >= wrapperTextBlockBottom ? "absolute" : "fixed";
-        blockRight.style.top = window.scrollY + blockRightRect.height >= wrapperTextBlockBottom ? `${wrapperTextBlockBottom - blockRightRect.height}px` : "0";
-        blockRight.style.right = "0";
-      });
+  //       const wrapperTextBlockBottom = wrapperTextBlockRect.bottom + window.scrollY - blockRightRect.height - 400;
   
-      return () => window.cancelAnimationFrame(animationFrameId);
+  //       blockRight.style.position = window.scrollY + blockRightRect.height >= wrapperTextBlockBottom ? "absolute" : "fixed";
+  //       blockRight.style.top = window.scrollY + blockRightRect.height >= wrapperTextBlockBottom ? `${wrapperTextBlockBottom - blockRightRect.height}px` : "0";
+  //       blockRight.style.right = "0";
+  //     });
+  
+  //     return () => window.cancelAnimationFrame(animationFrameId);
+  //   };
+  
+  //   const timer = setTimeout(() => {
+  //     if (blockRightWrapperRef.current && wrapperTextBlockRef.current) {
+  //       handleScroll();
+  //       window.addEventListener("scroll", handleScroll);
+  //     }
+  //   }, 20);
+  
+  //   return () => {
+  //     clearTimeout(timer);
+  //     window.removeEventListener("scroll", handleScroll);
+  //   };
+  // }, [windowWidth]);
+  
+  useEffect(() => {
+    if (window.innerWidth < 1025) return;
+  
+    const blockRight = blockRightWrapperRef.current;
+    const wrapperTextBlock = wrapperTextBlockRef.current;
+  
+    if (!blockRight || !wrapperTextBlock) return;
+  
+    const updatePosition = () => {
+      const blockRightRect = blockRight.getBoundingClientRect();
+      const wrapperTextBlockRect = wrapperTextBlock.getBoundingClientRect();
+      const wrapperTextBlockBottom = wrapperTextBlockRect.bottom + window.scrollY - blockRightRect.height - 400;
+  
+      blockRight.style.position = window.scrollY + blockRightRect.height >= wrapperTextBlockBottom ? "absolute" : "fixed";
+      blockRight.style.top = window.scrollY + blockRightRect.height >= wrapperTextBlockBottom ? `${wrapperTextBlockBottom - blockRightRect.height}px` : "0";
+      blockRight.style.right = "0";
     };
   
-    const timer = setTimeout(() => {
-      handleScroll();
-      window.addEventListener("scroll", handleScroll);
-    }, 150); 
+    const scrollTriggerInstance = ScrollTrigger.create({
+      trigger: wrapperTextBlock,
+      start: "top top",
+      end: "bottom bottom",
+      scrub: true,
+      onUpdate: updatePosition,
+      onRefresh: updatePosition 
+    });
+  
+   ScrollTrigger.refresh();
   
     return () => {
-      clearTimeout(timer);
-      window.removeEventListener("scroll", handleScroll);
+      scrollTriggerInstance.kill(); 
     };
   }, [windowWidth]);
+  
+  useEffect(() => {
+    ScrollTrigger.refresh();
+  }, [selectedVacancy]); 
   
   
 
