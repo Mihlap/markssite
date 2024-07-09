@@ -17,7 +17,7 @@
     flex-direction: column;
     align-items: flex-start;
     width: 20%;
-    margin: rem(64) 0 rem(64) auto;
+    margin: rem(64) 0 rem(128) auto;
 
     h2 {
       font-family: var(--font-unbounded);
@@ -193,6 +193,8 @@
 
     &__text {
       width: 30%;
+      margin: 0 0 rem(160) auto;
+  
   
       h2 {
         font-size: rem(32);
@@ -311,8 +313,10 @@
 
   // Адаптация под tablet
   @media all and (max-width:$bp3){
+
     &__text {
       width: 38%;
+      margin: rem(64) 0 rem(64) auto;
   
       h2 {
         font-size: rem(24);
@@ -332,90 +336,94 @@
       background-size: 118%;
     }
 
+    &__box {
+      width: 45px;
+      height: 45px;
+    }
+
     &__circle {
-  
       &_xs {
-        width: 12px;
-        height: 12px;
+        width: 8px;
+        height: 8px;
       }
   
       &_s {
-        width: 42px;
-        height: 42px;
+        width: 27px;
+        height: 27px;
       }
   
       &_m {
-        width: 70px;
-        height: 70px;
+        width: 45px;
+        height: 45px;
       }
     }
   
-
-    &__city {h
+    &__city {
       span {
         font-size: 9px;
-        transform: translateY(-24px);
+        transform: translateY(-34px);
       }
 
       &_msk {       
-        top: 56px;
-        right: 204px;
+        top: 110px;
+        right: 208px;
 
         span {
           font-size: 12px;
+          transform: translateY(-38px);
         }
 
         #{$s}__box {
-          width: 470px;
-          height: 470px;
+          width: 306px;
+          height: 306px;
         }
   
         #{$s}__circle {
           &_xs {
-            width: 22px;
-            height: 22px;
+            width: 15px;
+            height: 15px;
           }
           
           &_s {
-            width: 102px;
-            height: 102px;
+            width: 53px;
+            height: 53px;
           }
     
           &_m {
-            width: 216px;
-            height: 216px;
+            width: 141px;
+            height: 141px;
           }
   
           &_l {
-            width: 360px;
-            height: 360px;
+            width: 236px;
+            height: 236px;
           }
       
           &_xl {
-            width: 470px;
-            height: 470px;
+            width: 306px;
+            height: 306px;
           }
         }
       }
     
       &_vzh {       
-        top: 236px;
-        right: 365px;
+        top: 296px;
+        right: 379px;
       }
       
-      &_spb {                
-        top: 88px;
-        right: 314px;
+      &_spb {                 
+        top: 156px;
+        right: 324px;
       }
   
       &_obg {
-        top: 362px;
-        right: 244px;
+        top: 409px;
+        right: 255px;
       }
   
       &_chbk {             
-        top: 351px;
-        right: 158px;
+        top: 398px;
+        right: 173px;
       }
     }
   }
@@ -452,8 +460,8 @@
       }
 
       &_msk {        
-        top: 61px;
-        right: 76px;
+        top: 59px;
+        right: 109px;
 
         span {
           font-size: 12px;
@@ -461,69 +469,25 @@
       }
     
       &_vzh {       
-        top: 241px;
-        right: 238px;
+        top: 234px;
+        right: 272px;
       }
       
-      &_spb {           
-        top: 93px;
-        right: 180px;
+      &_spb {       
+        top: 121px;
+        right: 228px;
       }
   
       &_obg {
-        top: 359px;
-        right: 108px;
+        top: 324px;
+        right: 172px;
       }
   
-      &_chbk {             
-        top: 348px;
-        right: 21px;
+      &_chbk {                
+        top: 315px;
+        right: 107px;
       }
     }
   }
 
-  @media all and (max-width:$bp5){
-   
-    &__map {
-      width: 100%;
-      height: rem(507);
-      margin-right: auto;
-      margin-left: 0;
-    }
-
-    &__city {
-      span {
-        transform: translateY(-24px);
-      }
-
-      &_msk {       
-        top: 83px;
-        right: 57px;
-
-        span {
-          font-size: 12px;
-        }
-      }
-    
-      &_vzh {       
-        top: 261px;
-        right: 219px;
-      }
-      
-      &_spb {          
-        top: 112px;
-        right: 161px;
-      }
-  
-      &_obg {        
-        top: 380px;
-        right: 89px;
-      }
-  
-      &_chbk {               
-        top: 369px;
-        right: 2px;
-      }
-    }
-  }
 }
