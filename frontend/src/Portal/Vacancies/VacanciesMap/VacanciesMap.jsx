@@ -1,30 +1,9 @@
 
-import React, { useLayoutEffect, useRef }  from 'react';
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import gsap from 'gsap';
-
+import React  from 'react';
 import ButtonLink from '../ButtonLink/ButtonLink';
 import styles from "./VacanciesMap.module.scss";
-import map from "../icons/vacancies-cities.png";
-
 
 const VacanciesMap = () => {
-	// Анимация звездочек 
-	// const city = useRef(null);
-
-	// gsap.registerPlugin(ScrollTrigger);
-
-	// useLayoutEffect(() => {
-	// 	const tl = gsap.timeline({
-	// 		scrollTrigger: {
-	// 			trigger: `.${styles.VacanciesMap}`,
-	// 			start: 'top bottom',
-	// 			end:'bottom top',
-	// 			scrub: true,
-	// 		},
-	// 	});
-	// }, []);
-	
 	return (
 		<section className={styles.VacanciesMap}>
 			<div className={styles.VacanciesMap__text}>
