@@ -1,3 +1,4 @@
+
 import React from 'react';
 
 import Intro from '../Intro/Intro';
@@ -12,28 +13,32 @@ import VacanciesInvite from '../VacanciesInvite/VacanciesInvite';
 import SocialsSwiper from '../SocialsSwiper/SocialsSwiper';
 import GalleryTabs from '../GalleryTabs/GalleryTabs';
 import VacanciesList from '../VacanciesList/VacanciesList';
+import VacanciesProfileForm from '../VacanciesProfileForm/VacanciesProfileForm';
 
 const VacanciesMain3 = ({ handleMouseEnter, handleMouseLeave, handleMouseHover }) => {
 	return (
 		<>
 			<Intro />
-			<Intro />
-			<Intro />
-			{/* <VideoScroll />
+			<VideoScroll />
 			<TextCenter />
 			<RatingSwiper />
 			<CountRows />
-			<DirectionsGrid /> */}
+			<DirectionsGrid />
 			<VacanciesMap />
-			{/* <BenefitsGrid />
-			<VacanciesList />
+			<BenefitsGrid />
+			<VacanciesList />р
 			<VacanciesInvite />
 			<SocialsSwiper />
 			<GalleryTabs
-   handleMouseEnter={handleMouseEnter}
-	 handleMouseLeave={handleMouseLeave}
-	 handleMouseHover={handleMouseHover}
-			/> */}
+				handleMouseEnter={handleMouseEnter}
+				handleMouseLeave={handleMouseLeave}
+				handleMouseHover={handleMouseHover}
+			/>
+			<VacanciesProfileForm
+				handleMouseEnter={handleMouseEnter}
+				handleMouseLeave={handleMouseLeave}
+				handleMouseHover={handleMouseHover}
+			/>
 		</>
 	);
 };

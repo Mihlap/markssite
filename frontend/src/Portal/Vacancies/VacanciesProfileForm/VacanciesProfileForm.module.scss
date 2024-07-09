@@ -1,0 +1,120 @@
+@import "../../../App.css";
+@import "../../../_variables.scss";
+
+.temporaryText {
+  max-width: 47rem;
+  color: var(--black-1D2E43);
+  font-family: var(--font-unbounded);
+  font-size: 2.5rem;
+  font-style: normal;
+  font-weight: var(--fw-300);
+  line-height: 3rem;
+  padding-left: 7rem;
+  padding-top: 7.5rem;
+}
+
+.textUnderForm {
+  /* max-width: 47rem; */
+  color: var(--black-1D2E43);
+  font-variant-numeric: lining-nums proportional-nums;
+  font-family: var(--font-raleway);
+  font-size: 1.125rem;
+  font-style: normal;
+  font-weight: var(--fw-400);
+  line-height: 1.625rem;
+  padding-left: 7rem;
+  padding-top: 1.5rem;
+}
+
+.vacancyFormWrapper {
+  padding: 1.5rem 0rem 5rem 7rem;
+}
+
+.textUnderForm {
+  max-width: 40rem;
+  padding-left: 4rem;
+}
+
+@media screen and (min-width: 1025px) and (max-width: 1600px) {
+  .temporaryText {
+    padding-left: 4rem;
+  }
+
+
+  .textUnderForm {
+    max-width: 40rem;
+    padding-left: 4rem;
+  }
+
+  .vacancyFormWrapper {
+    padding: 0rem 0rem 6rem 4rem;
+  }
+}
+
+/* стили для планшетной версии  */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .temporaryText {
+    max-width: 44rem;
+    padding-left: 4vw;
+    padding-top: 2.5rem;
+  }
+
+  .temporaryText {
+    max-width: 100%;
+    color: var(--black-1D2E43);
+    font-size: 40px;
+    line-height: 48px;
+    padding: 100px 10.8rem 0px 10.8rem;
+  }
+
+
+  .textUnderForm {
+    max-width: 44rem;
+    padding-left: 4vw;
+    padding-right: 4vw;
+    padding-top: 1.5rem;
+  }
+
+  .textUnderForm {
+    max-width: 100%;
+    font-size: 18px;
+    line-height: 26px;
+    padding: 24px 10.8rem 0px 10.8rem;
+  }
+
+  .vacancyFormWrapper {
+    padding: 0rem 4vw 4.2rem 4vw;
+  }
+
+  .vacancyFormWrapper {
+    padding: 6px 10.8rem 80px 10.8rem;
+  }
+
+}
+
+@media screen and (max-width: 767px) {
+  .textUnderForm {
+    max-width: 100%;
+    padding: 16px 1rem 0rem 1rem;
+    font-family: var(--font-raleway);
+    font-weight: var(--fw-400);
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 26px;
+  }
+
+  .temporaryText {
+    max-width: 100%;
+    padding: 60px 1rem 0rem 1rem;
+    font-family: var(--font-unbounded);
+    font-size: 24px;
+    font-weight: var(--fw-300);
+    line-height: 32px;
+    letter-spacing: 0px;
+    text-align: left;
+  }
+
+  .vacancyFormWrapper {
+    padding: 0rem 1rem 60px 1rem;
+  }
+}
