@@ -13,10 +13,8 @@ const AllVacancyButton = () => {
     window.scrollTo(20, 0);
  
     const { link } = refs;
-    // Скрываем заголовок, ссылку и описание перед анимацией
     gsap.set([link.current], { opacity: 0 });
  
-    // Анимируем появление заголовка, затем ссылки, затем описания
     gsap.to(link.current, { duration: 1, opacity: 1, delay: 1 });
      
     gsap.registerPlugin(ScrollTrigger);
