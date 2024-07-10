@@ -71,7 +71,6 @@
       backdrop-filter: blur(7px);
       background: linear-gradient(221.46deg, rgba(255, 203, 193, 0.09) -4.631%, rgba(117, 187, 253, 0.09) 44.805%, rgba(188, 188, 188, 0.09) 103.423%);
       padding-left: 8.37rem;
-      // padding-top: 140px;
       border-bottom: 1px solid rgb(235, 236, 238);
     }
 
@@ -864,6 +863,10 @@
         padding-left: 3.875rem;
       }
 
+      &__blockRightWrapper {
+        height: 20vh;
+      }
+  
       &__vacancyTitle {
         display: flex;
         flex-wrap: wrap;

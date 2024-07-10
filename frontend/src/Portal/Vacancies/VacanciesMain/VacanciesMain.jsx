@@ -2,10 +2,9 @@ import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { Helmet } from "react-helmet-async";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./Vacancies.module.css";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
-import LoadingCircle from "../../../Loading/LoadingCircle";
 import {
   fetchFilteredVacancies,
   getFetchForm,
@@ -14,19 +13,17 @@ import {
   setSelectedFilter,
   setActiveFilters,
   setFilteredVacancies,
-  deleteForm,
 } from "../../../store/Slice/vacanciesSlice";
+import VacanciesSectionRender from "./VacanciesSectionRender/VacanciesSectionRender";
+import FilterModalVacancies from "../FilterModalVacancies/FilterModalVacancies";
 import VacancyFormContact from "../../../UI/VacancyFormContact/VacancyFormContact";
+import RocketComponent from "../../../UI/Rocket/RocketComponents";
 
 import iconFilter from "../icons/filter.svg";
 import iconFilterRed from "../icons/filterRed.svg";
 import iconFilterWhiterRed from "../icons/filterWhiteRed.svg";
-// import buttonLink from "../icons/buttonLink.svg";
-// import buttonLink_ipad from "../icons/buttonLink1.svg";
 import clearAll from "../icons/clearAll.svg";
-import FilterModalVacancies from "../FilterModalVacancies/FilterModalVacancies";
-import RocketComponent from "../../../UI/Rocket/RocketComponents";
-import VacanciesSectionRender from "./VacanciesSectionRender/VacanciesSectionRender";
+
 
 const VacanciesMain = ({
   handleMouseEnter,
@@ -35,8 +32,7 @@ const VacanciesMain = ({
   hideVacancies,
 }) => {
   const dispatch = useDispatch();
-  const location = useLocation();
-  const {
+ const {
     vacancies,
     loading,
     vacancyCountsByDirection,
@@ -53,8 +49,7 @@ const VacanciesMain = ({
   const [modalFiltersActive, setModalFiltersActive] = useState(false);
   const [swiper, setSwiper] = useState(null);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const [initialLoad, setInitialLoad] = useState(true);
-
+  
   const isIpadMobile = windowWidth <= 1024;
 
   const buttonVacancyChoose = [
