@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { Helmet } from "react-helmet-async";
 import { useDispatch, useSelector } from "react-redux";
 import styles from "./Vacancies.module.css";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import LoadingCircle from "../../../Loading/LoadingCircle";
@@ -35,6 +35,7 @@ const VacanciesMain = ({
   hideVacancies,
 }) => {
   const dispatch = useDispatch();
+  const location = useLocation();
   const {
     vacancies,
     loading,
@@ -52,6 +53,7 @@ const VacanciesMain = ({
   const [modalFiltersActive, setModalFiltersActive] = useState(false);
   const [swiper, setSwiper] = useState(null);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [initialLoad, setInitialLoad] = useState(true);
 
   const isIpadMobile = windowWidth <= 1024;
 
@@ -95,7 +97,8 @@ const VacanciesMain = ({
     };
   }, [handleResize]);
 
-  useEffect(() => {
+ 
+ useEffect(() => {
     window.scrollTo(0, 0);
     dispatch(getVacanciesByDirection());
     dispatch(getFetchForm());
@@ -108,7 +111,7 @@ const VacanciesMain = ({
     setFilters(activeFilters);
   }, [dispatch, vacancies, activeFilters]);
 
-  useEffect(() => {
+ useEffect(() => {
     if (selectedFilter === "Все") {
       setFilters({});
       dispatch(setActiveFilters({}));
@@ -149,14 +152,20 @@ const VacanciesMain = ({
     [filterMappings]
   );
 
-  const handleButtonClick = useCallback(
-    (direction) => {
-      dispatch(setSelectedFilter(direction));
-      dispatch(getFetchFormFilter(direction));
-      setShowManyVacancies(false);
-    },
-    [dispatch]
-  );
+ const handleButtonClick = useCallback((direction) => {
+    dispatch(setSelectedFilter(direction));
+    if (direction === "Все") {
+        dispatch(setActiveFilters({}));
+        dispatch(fetchFilteredVacancies({}));
+    } else {
+        dispatch(getFetchFormFilter(direction));
+        const newFilters = { ...filters, [filterKeyForSpecialty]: [direction] };
+        dispatch(setActiveFilters(newFilters));
+        const filteredVacancies = applyFilters(vacancies, newFilters);
+        dispatch(setFilteredVacancies(filteredVacancies));
+    }
+    setShowManyVacancies(false);
+}, [dispatch, filters, vacancies]);
 
   const toggleShowAllVacancies = useCallback(() => {
     setShowManyVacancies((prev) => !prev);

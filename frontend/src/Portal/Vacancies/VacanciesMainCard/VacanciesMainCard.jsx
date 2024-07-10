@@ -414,7 +414,7 @@ const VacanciesMainCard = ({
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
           >
-            <AllVacancyButton />
+          <AllVacancyButton selectedFilter={selectedVacancy?.direction || 'Все'} />
           </div>
         </div>       
         <div className={styles.main_vacancyWrapper__offer}>
