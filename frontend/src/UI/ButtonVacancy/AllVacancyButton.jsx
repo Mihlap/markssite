@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import style from './../ButtonsProjects/AllProjectsButton.module.css';
 
-const AllVacancyButton = ({ selectedFilter }) => {
+const AllVacancyButton = () => {
   const refs = {
     link: useRef(null),
    };
@@ -13,17 +13,15 @@ const AllVacancyButton = ({ selectedFilter }) => {
     window.scrollTo(20, 0);
  
     const { link } = refs;
-    // Скрываем заголовок, ссылку и описание перед анимацией
     gsap.set([link.current], { opacity: 0 });
  
-    // Анимируем появление заголовка, затем ссылки, затем описания
     gsap.to(link.current, { duration: 1, opacity: 1, delay: 1 });
      
     gsap.registerPlugin(ScrollTrigger);
  
   }, []);
   return (
-    <Link to="/portal/vacancies" state={{ selectedFilter }} ref={refs.link}>
+    <Link to="/portal/vacancies" ref={refs.link}>
     <button className={style.button_link_vacancy}>
       <div className={style.button_link_allProjectButton}>
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
