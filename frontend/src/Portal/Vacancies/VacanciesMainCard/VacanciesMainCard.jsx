@@ -1,5 +1,4 @@
 import React, {
-  useCallback,
   useEffect,
   useLayoutEffect,
   useRef,
@@ -10,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Helmet } from "react-helmet-async";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { debounce, throttle } from 'lodash';
+import { debounce } from 'lodash';
 import styles from "./VacanciesMainCard.module.scss";
 import VacancySlider from "../VacancySlider/VacancySlider";
 import LoadingVacancy from "../../../Loading/LoadingVacancy";
@@ -67,8 +66,6 @@ const VacanciesMainCard = ({
   const formButtonRef = useRef(null);
   const rocketRef = useRef(null);
   const sputnikRef = useRef(null);
-  const blockRightWrapperRef = useRef(null);
-  const wrapperTextBlockRef = useRef(null);
 
   useEffect(() => {
     const handleResizeDebounced = debounce(() => {
@@ -88,19 +85,20 @@ const VacanciesMainCard = ({
     dispatch(fetchEmployees(id));
   }, [dispatch, id]);
 
+  
   useEffect(() => {
     if (vacancies && vacancies.length > 0) {
-      setSelectedVacancy(vacancies[0]);
+      const selectedVac = vacancies.find(vacancy => vacancy.id === parseInt(id));
+      setSelectedVacancy(selectedVac); 
     }
-  }, [vacancies]);
-
-  // useEffect(() => {    
-  //   if (!vacancies || vacancies.length === 0) {
-  //     dispatch(fetchEmployees(id));
+  }, [vacancies, id]);
+  
+  // useEffect(() => {
+  //   if (vacancies && vacancies.length > 0) {
+  //     setSelectedVacancy(vacancies[0]);
   //   }
-  // }, [dispatch, id, vacancies]); 
-   
-
+  // }, [vacancies]);
+ 
   // const handleScroll = useCallback(() => {
   //   window.requestAnimationFrame(() => {
   //     const blockRight = blockRightWrapperRef.current;
@@ -131,41 +129,89 @@ const VacanciesMainCard = ({
   //   return () => window.removeEventListener("scroll", handleScroll);
   // }, [handleScroll]); 
 
+  // useLayoutEffect(() => {
+  //   if (window.innerWidth < 1025) return undefined;
+  
+  //   const handleScroll = () => {
+  //     const animationFrameId = window.requestAnimationFrame(() => {
+  //       const blockRight = blockRightWrapperRef.current;
+  //       const wrapperTextBlock = wrapperTextBlockRef.current;
+  
+  //       if (!blockRight || !wrapperTextBlock) return;
+  
+  //       const blockRightRect = blockRight.getBoundingClientRect();
+  //       const wrapperTextBlockRect = wrapperTextBlock.getBoundingClientRect();
+  
+  //       const wrapperTextBlockBottom = wrapperTextBlockRect.bottom + window.scrollY - blockRightRect.height - 400;
+  
+  //       blockRight.style.position = window.scrollY + blockRightRect.height >= wrapperTextBlockBottom ? "absolute" : "fixed";
+  //       blockRight.style.top = window.scrollY + blockRightRect.height >= wrapperTextBlockBottom ? `${wrapperTextBlockBottom - blockRightRect.height}px` : "0";
+  //       blockRight.style.right = "0";
+  //     });
+  
+  //     return () => window.cancelAnimationFrame(animationFrameId);
+  //   };
+  
+  //   const timer = setTimeout(() => {
+  //     if (blockRightWrapperRef.current && wrapperTextBlockRef.current) {
+  //       handleScroll();
+  //       window.addEventListener("scroll", handleScroll);
+  //     }
+  //   }, 20);
+  
+  //   return () => {
+  //     clearTimeout(timer);
+  //     window.removeEventListener("scroll", handleScroll);
+  //   };
+  // }, [windowWidth]);
+  
+  
   useLayoutEffect(() => {
-    if (window.innerWidth < 1025) return undefined; 
-    
-    const handleScroll = () => {
-      const animationFrameId = window.requestAnimationFrame(() => {
-        const blockRight = blockRightWrapperRef.current;
-        const wrapperTextBlock = wrapperTextBlockRef.current;
-  
+  if (window.innerWidth < 1025) return;
+
+  // const timer = setTimeout(() => {
+    vacancies.forEach(vacancy => {
+      const blockRight = document.getElementById(`blockRight-${vacancy?.id}`);
+      const wrapperTextBlock = document.getElementById(`wrapperTextBlock-${selectedVacancy?.id}`);
+
+      
+      const updatePosition = () => {
         if (!blockRight || !wrapperTextBlock) return;
-  
         const blockRightRect = blockRight.getBoundingClientRect();
         const wrapperTextBlockRect = wrapperTextBlock.getBoundingClientRect();
-  
         const wrapperTextBlockBottom = wrapperTextBlockRect.bottom + window.scrollY - blockRightRect.height - 400;
-  
+
         blockRight.style.position = window.scrollY + blockRightRect.height >= wrapperTextBlockBottom ? "absolute" : "fixed";
         blockRight.style.top = window.scrollY + blockRightRect.height >= wrapperTextBlockBottom ? `${wrapperTextBlockBottom - blockRightRect.height}px` : "0";
         blockRight.style.right = "0";
+      };
+
+      const scrollTriggerInstance = ScrollTrigger.create({
+        trigger: wrapperTextBlock,
+        start: "top top",
+        end: "bottom bottom",
+        scrub: true,
+        onUpdate: updatePosition,
+        onRefresh: updatePosition
       });
-  
-      return () => window.cancelAnimationFrame(animationFrameId);
-    };
-  
-    const timer = setTimeout(() => {
-      handleScroll();
-      window.addEventListener("scroll", handleScroll);
-    }, 150); 
-  
-    return () => {
-      clearTimeout(timer);
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [windowWidth]);
+
+      return () => {
+        scrollTriggerInstance.kill(); 
+      };
+    });
+  // }, 100); 
+
+  return () => {
+    // clearTimeout(timer);
+    ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+  };
+}, [windowWidth]);
   
   
+useLayoutEffect(() => {
+    ScrollTrigger.refresh();
+  }, [selectedVacancy]); 
+    
 
   useLayoutEffect(() => {
     const button = formButtonRef.current;
@@ -173,7 +219,7 @@ const VacanciesMainCard = ({
     if (!button || !form) return;
   
     setTimeout(() => {
-      const initialButtonBottom = button.getBoundingClientRect().bottom + window.scrollY;
+      const initialButtonBottom = button.getBoundingClientRect().bottom + window.scrollY + 30;
   
       const updateButtonPosition = () => {
         const scrollY = window.scrollY;
@@ -308,7 +354,7 @@ const VacanciesMainCard = ({
                 </div>
                 <div
                   className={styles.main_vacancy_block__blockRightWrapper}
-                  ref={blockRightWrapperRef}
+                  id={`blockRight-${vacancy?.id}`}
                 >
                   <div className={styles.main_vacancy_block__blockRight}>
                     <div
@@ -373,7 +419,7 @@ const VacanciesMainCard = ({
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
           >
-            <AllVacancyButton />
+          <AllVacancyButton />
           </div>
         </div>       
         <div className={styles.main_vacancyWrapper__offer}>
@@ -450,7 +496,9 @@ const VacanciesMainCard = ({
         )}
         </div>
         <div className={styles.main_vacancyWrapper__wrapperTextBlock}>
-          <div ref={wrapperTextBlockRef}>
+          <div
+             id={`wrapperTextBlock-${selectedVacancy?.id}`}
+          >
             <RenderVacancySections />
           </div>
         </div>
@@ -674,4 +722,4 @@ const VacanciesMainCard = ({
   );
 };
               
-export default VacanciesMainCard;
+export default React.memo(VacanciesMainCard);
