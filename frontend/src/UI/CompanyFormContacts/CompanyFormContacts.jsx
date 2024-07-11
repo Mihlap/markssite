@@ -9,7 +9,7 @@ const CompanyFormContacts = ({
   handleMouseLeave,
   setIsLoading,
   setModalOpen,
-  handleMouseHover,
+  // handleMouseHover,
 }) => {
   const [formData, setFormData] = useState({
     name: "",
