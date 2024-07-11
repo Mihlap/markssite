@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import Slider from "react-slick";
 import styles from "./ConstructorBlockRenderer.module.scss";
 import "../stylePaginationSlider.css";

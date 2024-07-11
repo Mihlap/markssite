@@ -93,119 +93,47 @@ const VacanciesMainCard = ({
     }
   }, [vacancies, id]);
   
-  // useEffect(() => {
-  //   if (vacancies && vacancies.length > 0) {
-  //     setSelectedVacancy(vacancies[0]);
-  //   }
-  // }, [vacancies]);
- 
-  // const handleScroll = useCallback(() => {
-  //   window.requestAnimationFrame(() => {
-  //     const blockRight = blockRightWrapperRef.current;
-  //     const wrapperTextBlock = wrapperTextBlockRef.current;
-  
-  //     if (!blockRight || !wrapperTextBlock) return;
-  
-  //     const blockRightRect = blockRight.getBoundingClientRect();
-  //     const wrapperTextBlockRect = wrapperTextBlock.getBoundingClientRect();
-  
-  //     // const wrapperTextBlockBottom = window.innerWidth >= 1025 && window.innerWidth <= 1600 ?
-  //     //   wrapperTextBlockRect.top + window.scrollY + window.innerHeight * 0.6 :
-  //     //   wrapperTextBlockRect.top + window.scrollY + window.innerHeight * 0.3;
-
-  //     const wrapperTextBlockBottom = wrapperTextBlockRect.bottom + window.scrollY - blockRightRect.height - 400;
-  
-  //     blockRight.style.position = window.scrollY + blockRightRect.height >= wrapperTextBlockBottom ? "absolute" : "fixed";
-  //     blockRight.style.top = window.scrollY + blockRightRect.height >= wrapperTextBlockBottom ? `${wrapperTextBlockBottom - blockRightRect.height}px` : "0";
-  //     blockRight.style.right = "0";
-  //   });
-  // }, [windowWidth]);
-
-  
-  // useEffect(() => {
-  //   if (window.innerWidth < 1025) return;
-  
-  //   window.addEventListener("scroll", handleScroll);
-  //   return () => window.removeEventListener("scroll", handleScroll);
-  // }, [handleScroll]); 
-
-  // useLayoutEffect(() => {
-  //   if (window.innerWidth < 1025) return undefined;
-  
-  //   const handleScroll = () => {
-  //     const animationFrameId = window.requestAnimationFrame(() => {
-  //       const blockRight = blockRightWrapperRef.current;
-  //       const wrapperTextBlock = wrapperTextBlockRef.current;
-  
-  //       if (!blockRight || !wrapperTextBlock) return;
-  
-  //       const blockRightRect = blockRight.getBoundingClientRect();
-  //       const wrapperTextBlockRect = wrapperTextBlock.getBoundingClientRect();
-  
-  //       const wrapperTextBlockBottom = wrapperTextBlockRect.bottom + window.scrollY - blockRightRect.height - 400;
-  
-  //       blockRight.style.position = window.scrollY + blockRightRect.height >= wrapperTextBlockBottom ? "absolute" : "fixed";
-  //       blockRight.style.top = window.scrollY + blockRightRect.height >= wrapperTextBlockBottom ? `${wrapperTextBlockBottom - blockRightRect.height}px` : "0";
-  //       blockRight.style.right = "0";
-  //     });
-  
-  //     return () => window.cancelAnimationFrame(animationFrameId);
-  //   };
-  
-  //   const timer = setTimeout(() => {
-  //     if (blockRightWrapperRef.current && wrapperTextBlockRef.current) {
-  //       handleScroll();
-  //       window.addEventListener("scroll", handleScroll);
-  //     }
-  //   }, 20);
-  
-  //   return () => {
-  //     clearTimeout(timer);
-  //     window.removeEventListener("scroll", handleScroll);
-  //   };
-  // }, [windowWidth]);
-  
-  
+   
   useLayoutEffect(() => {
-  if (window.innerWidth < 1025) return;
-
-  // const timer = setTimeout(() => {
-    vacancies.forEach(vacancy => {
-      const blockRight = document.getElementById(`blockRight-${vacancy?.id}`);
-      const wrapperTextBlock = document.getElementById(`wrapperTextBlock-${selectedVacancy?.id}`);
-
-      
-      const updatePosition = () => {
+    if (window.innerWidth < 1025) return;
+  
+    const frameId = requestAnimationFrame(() => {
+      vacancies?.forEach(vacancy => {
+        const blockRight = document.getElementById(`blockRight-${vacancy?.id}`);
+        const wrapperTextBlock = document.getElementById(`wrapperTextBlock-${selectedVacancy?.id}`);
+  
         if (!blockRight || !wrapperTextBlock) return;
-        const blockRightRect = blockRight.getBoundingClientRect();
-        const wrapperTextBlockRect = wrapperTextBlock.getBoundingClientRect();
-        const wrapperTextBlockBottom = wrapperTextBlockRect.bottom + window.scrollY - blockRightRect.height - 400;
-
-        blockRight.style.position = window.scrollY + blockRightRect.height >= wrapperTextBlockBottom ? "absolute" : "fixed";
-        blockRight.style.top = window.scrollY + blockRightRect.height >= wrapperTextBlockBottom ? `${wrapperTextBlockBottom - blockRightRect.height}px` : "0";
-        blockRight.style.right = "0";
-      };
-
-      const scrollTriggerInstance = ScrollTrigger.create({
-        trigger: wrapperTextBlock,
-        start: "top top",
-        end: "bottom bottom",
-        scrub: true,
-        onUpdate: updatePosition,
-        onRefresh: updatePosition
+  
+        const updatePosition = () => {
+          const blockRightRect = blockRight.getBoundingClientRect();
+          const wrapperTextBlockRect = wrapperTextBlock.getBoundingClientRect();
+          const wrapperTextBlockBottom = wrapperTextBlockRect.bottom + window.scrollY - blockRightRect.height - 400;
+  
+          blockRight.style.position = window.scrollY + blockRightRect.height >= wrapperTextBlockBottom ? "absolute" : "fixed";
+          blockRight.style.top = window.scrollY + blockRightRect.height >= wrapperTextBlockBottom ? `${wrapperTextBlockBottom - blockRightRect.height}px` : "0";
+          blockRight.style.right = "0";
+        };
+  
+        const scrollTriggerInstance = ScrollTrigger.create({
+          trigger: wrapperTextBlock,
+          start: "top bottom",
+          end: "bottom top",
+          scrub: true,
+          onUpdate: updatePosition,
+          onRefresh: updatePosition
+        });
+  
+        return () => {
+          scrollTriggerInstance.kill(); 
+        };
       });
-
-      return () => {
-        scrollTriggerInstance.kill(); 
-      };
     });
-  // }, 100); 
-
-  return () => {
-    // clearTimeout(timer);
-    ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-  };
-}, [windowWidth]);
+  
+    return () => {
+      cancelAnimationFrame(frameId);
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    };
+  }, [windowWidth]); 
   
   
 useLayoutEffect(() => {
