@@ -4,7 +4,9 @@ import gsap from 'gsap';
 
 import styles from "./VideoScroll.module.scss";
 
-import videoFile from "../icons/video/mock-video.mp4";
+// import videoFile from "../icons/video/mock-video.mp4";
+
+const Host = process.env.REACT_APP_SERVER_HOST;
 
 const VideoScroll = () => {
 	const videoRef = useRef(null);
@@ -45,7 +47,7 @@ const VideoScroll = () => {
 					loop
 					className={styles.VideoScroll__video}
 				>
-				<source src={videoFile} type="video/mp4" />
+				<source src={`${Host}/videos/main_company_full.mp4`} type="video/mp4" />
 				</video>
 			</section>
 		</>
