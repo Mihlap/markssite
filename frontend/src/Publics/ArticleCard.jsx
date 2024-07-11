@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useMemo, useCallback } from "react";
+import React, { useEffect, useRef, useState, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useParams } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
@@ -17,7 +17,7 @@ import {
   shareToVK,
   shareToTelegram,
   shareToWhatsApp,
-  shareToViber,
+  // shareToViber,
 } from "../Project/utils";
 import styles from "./ArticleCard.module.css";
 import catPhoto from "../img/default-photo.jpeg";

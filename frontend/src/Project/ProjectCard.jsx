@@ -18,7 +18,7 @@ import {
   shareToVK,
   shareToTelegram,
   shareToWhatsApp,
-  shareToViber,
+  // shareToViber,
 } from "./utils";
 import catPhoto from "../img/default-photo.jpeg";
 

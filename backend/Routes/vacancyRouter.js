@@ -176,7 +176,7 @@ router.get('/getHiddenVacancies', async (req, res) => {
 // получение данных формы
 router.get('/getzapros', async (req, res) => {
   try {
-    const data = await Employee.findAll({});
+    const data = await Employee.findAll({ order: [['id', 'ASC']] });
     res.json(data);
   } catch (error) {
     console.error(error);
