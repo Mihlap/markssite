@@ -81,7 +81,6 @@ export default function Publics({ handleMouseEnter, handleMouseLeave, handleMous
     }
   }, [dispatch, selectArticle]);
 
-  // console.log(articles, "+++++++++++++++++++++++++++++++++++++++++++++");
   return (
     <>
       <Helmet>

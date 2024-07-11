@@ -43,14 +43,14 @@ gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
     medium: `${Host}/videos/main_company_ipad.mp4`,
     small: `${Host}/videos/main_company_mobile.mp4`,
   };
-  const [loadingArticle, setLoadingArticle] = useState(false);
+  // const [loadingArticle, setLoadingArticle] = useState(false);
   const cursorVariant = useSelector((state) => state.cursor);
 
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const [videoSrc, setVideoSrc] = useState(null);
   const sliderCardRef = useRef(null);
 
-  const { article, loading, error } = useSelector((state) => state.article);
+  const { error } = useSelector((state) => state.article);
   const dispatch = useDispatch();
   const articles = useSelector((state) => state.article.article);
   const projects = useSelector((state) => state.searchproject.projects);
