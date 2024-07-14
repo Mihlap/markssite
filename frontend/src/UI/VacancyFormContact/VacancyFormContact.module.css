@@ -1043,6 +1043,13 @@
     background-color: var(--blue-75BBFD);
   }
 
+  /* .centerButton {
+    display: block;
+    margin-top: 1rem;
+    margin-left: auto;
+    margin-right: auto;
+  } */
+
 
   .button_name_vacancy {
     color: var(--white-F6F6F6);
