@@ -85,8 +85,6 @@ router.post(
         monthYear: req.body.monthYear,
         viewConstruction: req.body.viewConstruction,
         style: req.body.radioValue,
-        imageTitle: imageTitles,
-        imageProject: imageProjects,
         titleTextBlock: req.body.titleTextBlock,
         descriptionProject: req.body.descriptionProject,
         totalArea: req.body.totalArea,
@@ -103,12 +101,14 @@ router.post(
         publicationTwo: req.body.publicationTwo,
         linkToPublicationTwo: req.body.linkToPublicationTwo,
         awards: req.body.awards,
-        imageOpen: imageOpens,
         headingTextBlock: req.body.headingTextBlock,
         textBlock: req.body.textBlock,
-        imageClose: imageCloses,
         numberOfLanes: req.body.numberOfLanes,
         long: req.body.long,
+        imageTitle: imageTitles,
+        imageProject: imageProjects,
+        imageOpen: imageOpens,
+        imageClose: imageCloses,
       });
 
       await Constructor.create({
@@ -170,8 +170,6 @@ router.put(
       const {
         projectId
       } = req.params;
-      // console.log(`Обновление данных для проекта с ID ${projectId}`);
-
       // Поиск проекта по id
       const projectToUpdate = await Project.findByPk(projectId, {
         include: [Constructor]
