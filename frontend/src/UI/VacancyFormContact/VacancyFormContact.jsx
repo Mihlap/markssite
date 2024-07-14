@@ -10,7 +10,7 @@ import LoadingVacancy from "../../Loading/LoadingVacancy";
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 
-const VacancyFormContact = ({ formButtonRef, initialDirection, handleMouseEnter, handleMouseLeave, vacancyTitle }) => {
+const VacancyFormContact = ({ formButtonRef, initialDirection, handleMouseEnter, handleMouseLeave, vacancyTitle, centerButton }) => {
 
   const options = useMemo(() => [
     { value: "Другое направление", label: "Другое направление" },
@@ -29,6 +29,8 @@ const VacancyFormContact = ({ formButtonRef, initialDirection, handleMouseEnter,
   const [selectedOptions, setSelectedOptions] = useState(
     options.find(option => option.value === initialDirection)
   );
+
+  const buttonClassName = centerButton ? `${styles.button_vacancy} ${styles.centerButton}` : styles.button_vacancy;
 
   useEffect(() => {
     const foundOption = options.find(option => option.value === initialDirection);
@@ -480,7 +482,7 @@ const VacancyFormContact = ({ formButtonRef, initialDirection, handleMouseEnter,
                   персональных данных
                 </Link>
                 <button
-                  className={`${styles.button_vacancy} ${!isFormValid ? styles.disabled : ""}`}
+                  className={`${buttonClassName} ${!isFormValid ? styles.disabled : ""}`}
                   disabled={!isFormValid}
                   type="submit"
                   id="submit-button"
