@@ -19,14 +19,14 @@
     &__wrapper {
       display: flex;
       flex-direction: column;
-       width: 100%;      
+       width: 100%;       
        height: auto;
     }
 
     &__item {
       display: flex;
       justify-content: space-between;
-      height: 50vh;
+      height: 80vh;
     }
 
     &__background1 {
@@ -79,7 +79,7 @@
       position: fixed;
       top: 0;
       right: 0;
-      height: 25vh;
+      height: 40vh;
       width: 35vw;
     }
 
@@ -2569,7 +2569,7 @@
           height: 5rem;
         }
 
-      }
+       }
 
     }
 
