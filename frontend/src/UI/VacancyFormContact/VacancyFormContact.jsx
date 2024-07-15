@@ -4,7 +4,7 @@ import Select from "react-select";
 import { Link } from "react-router-dom";
 import styles from "./VacancyFormContact.module.css";
 import "react-phone-number-input/style.css";
-import icon_tg from "../../Portal/Vacancies/icons/icon_tg.png";
+import icon_tg from "../../Portal/Vacancies/icons/icon_tg.svg";
 import ModalVacancyFormSend from "./ModalVacancyFormSend";
 import LoadingVacancy from "../../Loading/LoadingVacancy";
 
@@ -22,7 +22,7 @@ const VacancyFormContact = ({ formButtonRef, initialDirection, handleMouseEnter,
     { value: "Проектирование", label: "Проектирование" },
     { value: "BIM", label: "BIM" },
     { value: "Генеральный план", label: "Генеральный план" },
-    { value: "it", label: "it" },
+    { value: "IT", label: "IT" },
     { value: "Дизайн", label: "Дизайн" },
   ], []);
 
