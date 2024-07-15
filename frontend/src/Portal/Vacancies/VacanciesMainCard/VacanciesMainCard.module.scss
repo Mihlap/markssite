@@ -19,14 +19,14 @@
     &__wrapper {
       display: flex;
       flex-direction: column;
-       width: 100%;       
+       width: 100%;      
        height: auto;
     }
 
     &__item {
       display: flex;
       justify-content: space-between;
-      height: 80vh;
+      height: auto;
     }
 
     &__background1 {
@@ -79,7 +79,7 @@
       position: fixed;
       top: 0;
       right: 0;
-      height: 40vh;
+      height: 25vh;
       width: 35vw;
     }
 
@@ -864,7 +864,7 @@
       }
 
       &__blockRightWrapper {
-        height: 20vh;
+        height: 25vh;
       }
   
       &__vacancyTitle {
@@ -1929,7 +1929,7 @@
     }
 
     &__vacancyFormWrapper {
-      padding: 2.75rem 11rem 6rem 11rem;
+      padding: 2.75rem 11rem 7rem 11rem;
     }
 
   }
@@ -2151,7 +2151,6 @@
 
 
     &__button_vacancy {
-
       display: inline-flex;
       padding: 1rem 2rem;
       justify-content: center;
@@ -2569,7 +2568,7 @@
           height: 5rem;
         }
 
-       }
+      }
 
     }
 
@@ -2599,7 +2598,7 @@
     }
 
     &__vacancyFormWrapper {
-      padding: 1.5rem 1rem 3.75rem 1rem;
+      padding: 1.5rem 1rem 7rem 1rem;
     }
 
   }

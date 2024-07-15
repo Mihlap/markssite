@@ -816,6 +816,19 @@
     background-color: var(--blue-75BBFD);
   }
 
+  
+  .centerButton {
+    display: block;
+    position: absolute;
+    bottom: -5rem;
+    /* top: 0rem; */
+    left: 50%;
+    right: 0;
+    transform: translateX(-50%);
+    width: 100%;
+  }
+
+
 
   .button_name_vacancy {
     color: var(--white-F6F6F6);
@@ -1043,12 +1056,16 @@
     background-color: var(--blue-75BBFD);
   }
 
-  /* .centerButton {
+  .centerButton {
     display: block;
-    margin-top: 1rem;
-    margin-left: auto;
-    margin-right: auto;
-  } */
+    position: absolute;
+    bottom: -5rem;
+    /* top: 0rem; */
+    left: 50%;
+    right: 0;
+    transform: translateX(-50%);
+    width: 100%;
+  }
 
 
   .button_name_vacancy {
