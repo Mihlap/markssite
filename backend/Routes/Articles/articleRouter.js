@@ -208,7 +208,7 @@ router.put(
    
       // Удаление изображений из папки imageAdd
    const allImageToRemove = allImageTitlesStringToDelete ? allImageTitlesStringToDelete.split(', ')
-   .filter(image => allImageTitles.includes(image))
+   .filter(image => !allImageTitles.includes(image))
    : [];
 
    await Promise.all(allImageToRemove.map(deleteImageEdit));
