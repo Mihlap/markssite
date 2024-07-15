@@ -33,18 +33,20 @@ import star3d_8 from "../icons/star3d_8.png";
 import star3d_9 from "../icons/star3d_9.png";
 import star3d_10 from "../icons/star3d_10.png";
 import star3d_11 from "../icons/star3d_11.png";
-import heart from "../icons/heart.png";
-import heart2 from "../icons/heart2.png";
+import heart from "../icons/heart.svg";
+import heart2 from "../icons/heart2.svg";
 import rocket1 from "../icons/rocket1.svg";
 import rocketBig from "../icons/rocketBig.png";
 import sputnik from "../icons/sputnik.png";
-import vectorAround from "../icons/VectorAround.png";
+import vectorAround from "../icons/VectorAround.svg";
 import vectorAround1 from "../icons/VectorAround1.png";
 import vectorAround2 from "../icons/vectorAround2.svg";
-import frame1 from "../icons/frame1.png";
-import frame2 from "../icons/frame2.png";
-import frame3 from "../icons/frame3.png";
-import frame4 from "../icons/frame4.png";
+
+import frame1 from "../icons/frame/frame1.svg";
+import frame2 from "../icons/frame/frame2.svg";
+import frame3 from "../icons/frame/frame3.svg";
+import frame4 from "../icons/frame/frame4.svg";
+import BenefitsVacancy from "../BenefitsVacancy/BenefitsVacancy";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -416,8 +418,8 @@ useLayoutEffect(() => {
             <div className={styles.main_vacancyWrapper__frameBlock_frame}>
               <img
                 className={styles.main_vacancyWrapper__frame}
-                src={frame1}
-                alt={frame1}
+                src={frame2}
+                alt={frame2}
               />
               <span className={styles.main_vacancyWrapper__frameSpan}>
                 Опыт работы на&nbsp;уникальных объектах
@@ -426,8 +428,8 @@ useLayoutEffect(() => {
             <div className={styles.main_vacancyWrapper__frameBlock_frame}>
               <img
                 className={styles.main_vacancyWrapper__frame}
-                src={frame2}
-                alt={frame2}
+                src={frame1}
+                alt={frame1}
               />
               <span className={styles.main_vacancyWrapper__frameSpan}>
                 Развитие карьерного и&nbsp;личностного потенциала
@@ -438,8 +440,8 @@ useLayoutEffect(() => {
             <div className={styles.main_vacancyWrapper__frameBlock_frame}>
               <img
                 className={styles.main_vacancyWrapper__frame}
-                src={frame3}
-                alt={frame3}
+                src={frame4}
+                alt={frame4}
               />
               <span className={styles.main_vacancyWrapper__frameSpan}>
                 Создаем атмосферу менторства и&nbsp;наставничества
@@ -448,8 +450,8 @@ useLayoutEffect(() => {
             <div className={styles.main_vacancyWrapper__frameBlock_frame}>
               <img
                 className={styles.main_vacancyWrapper__frame}
-                src={frame4}
-                alt={frame4}
+                src={frame3}
+                alt={frame3}
               />
               <span className={styles.main_vacancyWrapper__frameSpan}>
                 Даем почву для&nbsp;воплощения ваших идей
@@ -613,8 +615,9 @@ useLayoutEffect(() => {
               мероприятия
             </span>
           </div>
-          <div className={styles.frameBlockRight}>
-            <div className={styles.main_vacancyWrapper__frameBlock_frame}>
+          {/* <div className={styles.frameBlockRight}> */}
+          <BenefitsVacancy />
+            {/* <div className={styles.main_vacancyWrapper__frameBlock_frame}>
               <img
                 className={styles.main_vacancyWrapper__frame}
                 src={frame1}
@@ -673,8 +676,8 @@ useLayoutEffect(() => {
               <span className={styles.main_vacancyWrapper__frameSpan}>
                 Обучение и&nbsp;карьерный рост
               </span>
-            </div>
-          </div>
+            </div> */}
+          {/* </div> */}
         </div>
         <div className={styles.temporaryText}>Мы ищем именно тебя!</div>
         <div className={styles.textUnderForm}>
