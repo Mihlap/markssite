@@ -147,7 +147,7 @@ useLayoutEffect(() => {
     if (!button || !form) return;
   
     setTimeout(() => {
-      const initialButtonBottom = button.getBoundingClientRect().bottom + window.scrollY + 30;
+      const initialButtonBottom = button.getBoundingClientRect().bottom + window.scrollY + 10;
   
       const updateButtonPosition = () => {
         const scrollY = window.scrollY;
@@ -178,53 +178,104 @@ useLayoutEffect(() => {
   };
 
   useLayoutEffect(() => {
-    const timer = setTimeout(() => {
-      if (!rocketRef.current || !sputnikRef.current) {
-        return;
-      }
+    if (window.innerWidth > 1024) {
+      // Для размеров экрана больше 1024
+      const timer = setTimeout(() => {
+        if (!rocketRef.current || !sputnikRef.current) {
+          return;
+        }
   
-     gsap.killTweensOf([rocketRef.current, sputnikRef.current]);
+        gsap.killTweensOf([rocketRef.current, sputnikRef.current]);
   
-      const isSmallScreen = window.innerWidth <= 767;
-      const xValueRocket = isSmallScreen ? 80 : (window.innerWidth <= 1024 ? 100 : 180);
-      const xValueSputnik = isSmallScreen ? -80 : (window.innerWidth <= 1024 ? -100 : -180);
+        const xValueRocket = 180;
+        const xValueSputnik = -180;
   
-      const rocketAnimation = gsap.timeline({
-        scrollTrigger: {
-          trigger: rocketRef.current,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: true,
-        },
-      });
-      rocketAnimation.fromTo(
-        rocketRef.current,
-        { x: 0, opacity: 1 },
-        { x: xValueRocket, opacity: 1, duration: 1 }
-      );
+        const rocketAnimation = gsap.timeline({
+          scrollTrigger: {
+            trigger: rocketRef.current,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+          },
+        });
+        rocketAnimation.fromTo(
+          rocketRef.current,
+          { x: 0, opacity: 1 },
+          { x: xValueRocket, opacity: 1, duration: 1 }
+        );
   
-      const sputnikAnimation = gsap.timeline({
-        scrollTrigger: {
-          trigger: sputnikRef.current,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: true,
-        },
-      });
-      sputnikAnimation.fromTo(
-        sputnikRef.current,
-        { x: 0, opacity: 1 },
-        { x: xValueSputnik, opacity: 1, duration: 1 }
-      );
+        const sputnikAnimation = gsap.timeline({
+          scrollTrigger: {
+            trigger: sputnikRef.current,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+          },
+        });
+        sputnikAnimation.fromTo(
+          sputnikRef.current,
+          { x: 0, opacity: 1 },
+          { x: xValueSputnik, opacity: 1, duration: 1 }
+        );
+      }, 100);
   
-    }, 100);
+      return () => {
+        clearTimeout(timer);
+        gsap.killTweensOf([rocketRef.current, sputnikRef.current]);
+        ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      };
+    } else {
+      // Для размеров от 1024 и меньше
+      const animate = () => {
+        if (!rocketRef.current || !sputnikRef.current) {
+          return;
+        }
   
-    return () => {
-      clearTimeout(timer);
-      gsap.killTweensOf([rocketRef.current, sputnikRef.current]);
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-    };
-  }, [windowWidth]); 
+        gsap.killTweensOf([rocketRef.current, sputnikRef.current]);
+  
+        const isSmallScreen = window.innerWidth <= 767;
+        const xValueRocket = isSmallScreen ? 80 : 100;
+        const xValueSputnik = isSmallScreen ? -80 : -100;
+  
+        const rocketAnimation = gsap.timeline({
+          scrollTrigger: {
+            trigger: rocketRef.current,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+          },
+        });
+        rocketAnimation.fromTo(
+          rocketRef.current,
+          { x: 0, opacity: 1 },
+          { x: xValueRocket, opacity: 1, duration: 1 }
+        );
+  
+        const sputnikAnimation = gsap.timeline({
+          scrollTrigger: {
+            trigger: sputnikRef.current,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+          },
+        });
+        sputnikAnimation.fromTo(
+          sputnikRef.current,
+          { x: 0, opacity: 1 },
+          { x: xValueSputnik, opacity: 1, duration: 1 }
+        );
+      };
+  
+      const frameId = requestAnimationFrame(animate);
+  
+      return () => {
+        cancelAnimationFrame(frameId);
+        gsap.killTweensOf([rocketRef.current, sputnikRef.current]);
+        ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      };
+    }
+  }, [windowWidth]);
+  
   
 
   return (
@@ -643,7 +694,8 @@ useLayoutEffect(() => {
             setIsLoading={setIsLoading}
             setIsModalOpen={setIsModalOpen}
             vacancyTitle={selectedVacancy?.title}
-          />
+            centerButton={true}
+         />
         </div>
       </div>
     </>
