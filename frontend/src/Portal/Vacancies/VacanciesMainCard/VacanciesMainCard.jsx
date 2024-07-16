@@ -97,7 +97,7 @@ const VacanciesMainCard = ({
   
    
   useLayoutEffect(() => {
-    if (window.innerWidth < 1025) return;
+    if (windowWidth < 1025) return;
   
     const frameId = requestAnimationFrame(() => {
       vacancies?.forEach(vacancy => {
@@ -105,14 +105,26 @@ const VacanciesMainCard = ({
         const wrapperTextBlock = document.getElementById(`wrapperTextBlock-${selectedVacancy?.id}`);
   
         if (!blockRight || !wrapperTextBlock) return;
+     
   
         const updatePosition = () => {
           const blockRightRect = blockRight.getBoundingClientRect();
           const wrapperTextBlockRect = wrapperTextBlock.getBoundingClientRect();
-          const wrapperTextBlockBottom = wrapperTextBlockRect.bottom + window.scrollY - blockRightRect.height - 400;
-  
-          blockRight.style.position = window.scrollY + blockRightRect.height >= wrapperTextBlockBottom ? "absolute" : "fixed";
-          blockRight.style.top = window.scrollY + blockRightRect.height >= wrapperTextBlockBottom ? `${wrapperTextBlockBottom - blockRightRect.height}px` : "0";
+          let wrapperTextBlockBottom;
+
+          if (windowWidth > 1601) {
+            wrapperTextBlockBottom = wrapperTextBlockRect.bottom + window.scrollY - blockRightRect.height - 550;
+          } else {
+            wrapperTextBlockBottom = wrapperTextBlockRect.bottom + window.scrollY - blockRightRect.height - 350;
+          }
+
+          if (window.scrollY + blockRightRect.height >= wrapperTextBlockBottom) {
+            blockRight.style.position = "absolute";
+            blockRight.style.top = `${wrapperTextBlockBottom - blockRightRect.height}px`;
+          } else {
+            blockRight.style.position = "fixed";
+            blockRight.style.top = "0";
+          }
           blockRight.style.right = "0";
         };
   
