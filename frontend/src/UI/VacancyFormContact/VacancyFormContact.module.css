@@ -192,11 +192,11 @@
   border-radius: 4.125rem;
   border: 1px solid transparent;
   background-color: var(--blue-75BBFD);
-  margin-top: 1rem;
+  margin-top: 3rem;
   /* cursor: none; */
   transition: background-color 0.4s ease;
   min-width: 432px;
-  height: 56px;
+  /* height: 56px; */
 }
 
 .button_vacancy:hover,
@@ -524,7 +524,7 @@
     /* cursor: none; */
     transition: background-color 0.4s ease;
     min-width: 0;
-    height: 46px;
+    /* height: 46px; */
   }
 
   .button_vacancy:hover {
