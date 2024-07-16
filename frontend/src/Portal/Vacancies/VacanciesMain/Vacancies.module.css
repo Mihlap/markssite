@@ -48,12 +48,12 @@
 }
 
 
-/* .rocket_model {
+.rocket_model {
   right: 0;
   top: 0;
   width: 60rem;
   height: 40rem;
-} */
+}
 
 .rocket_image {
   position: absolute;
