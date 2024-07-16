@@ -480,6 +480,7 @@ const VacanciesMain = ({
               handleMouseEnter={handleMouseEnter}
               handleMouseLeave={handleMouseLeave}
               handleMouseHover={handleMouseHover}
+              centerButton={true}
             />
           </div>
         </div>
