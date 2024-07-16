@@ -615,69 +615,9 @@ useLayoutEffect(() => {
               мероприятия
             </span>
           </div>
-          {/* <div className={styles.frameBlockRight}> */}
-          <BenefitsVacancy />
-            {/* <div className={styles.main_vacancyWrapper__frameBlock_frame}>
-              <img
-                className={styles.main_vacancyWrapper__frame}
-                src={frame1}
-                alt={frame1}
-              />
-              <span className={styles.main_vacancyWrapper__frameSpan}>
-                Опыт работы на уникальных объектах
-              </span>
-            </div>
-            <div className={styles.main_vacancyWrapper__frameBlock_frame}>
-              <img
-                className={styles.main_vacancyWrapper__frame}
-                src={frame2}
-                alt={frame2}
-              />
-              <span className={styles.main_vacancyWrapper__frameSpan}>
-                Библиотека профессиональной литературы
-              </span>
-            </div>
-            <div className={styles.main_vacancyWrapper__frameBlock_frame}>
-              <img
-                className={styles.main_vacancyWrapper__frame}
-                src={frame3}
-                alt={frame3}
-              />
-              <span className={styles.main_vacancyWrapper__frameSpan}>
-                Корпоративное такси для встреч
-              </span>
-            </div>
-            <div className={styles.main_vacancyWrapper__frameBlock_frame}>
-              <img
-                className={styles.main_vacancyWrapper__frame}
-                src={frame4}
-                alt={frame4}
-              />
-              <span className={styles.main_vacancyWrapper__frameSpan}>
-                Оплачиваемы занятия в&nbsp;фитнес клубе
-              </span>
-            </div>
-            <div className={styles.main_vacancyWrapper__frameBlock_frame}>
-              <img
-                className={styles.main_vacancyWrapper__frame}
-                src={frame1}
-                alt={frame1}
-              />
-              <span className={styles.main_vacancyWrapper__frameSpan}>
-                Поддержка и&nbsp;адаптация от&nbsp;совета молодых специалистов
-              </span>
-            </div>
-            <div className={styles.main_vacancyWrapper__frameBlock_frame}>
-              <img
-                className={styles.main_vacancyWrapper__frame}
-                src={frame1}
-                alt={frame1}
-              />
-              <span className={styles.main_vacancyWrapper__frameSpan}>
-                Обучение и&nbsp;карьерный рост
-              </span>
-            </div> */}
-          {/* </div> */}
+          <div className={styles.frameBlockRight}>
+          <BenefitsVacancy />           
+          </div>
         </div>
         <div className={styles.temporaryText}>Мы ищем именно тебя!</div>
         <div className={styles.textUnderForm}>
