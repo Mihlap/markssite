@@ -1,0 +1,48 @@
+$bp0: 1920px;
+$bp1: 1440px;
+$bp2: 1280px;
+$bp3: 1024px;
+$bp4: 768px;
+$bp5: 576px;
+$bp6: 377px;
+
+
+@function rem($pixels) {
+  @return #{$pixels / 16}rem;
+}
+
+// $br1: 3px;
+// $br2: 12px;
+// $br3: 10px;
+// $br4: 15px;
+// $br5: 20px;
+// $max-width: 2560px;
+
+// // Радиусы внешних блоков (внешнии секции и блоки)
+// @mixin borderRadius {
+//     border-radius: 40px;
+  
+//     @media all and (max-width:$bp4){
+//       border-radius: 20px;
+//     }
+//   }
+  
+//   // Радиусы внутренних блоков 
+//   @mixin borderRadiusInner {
+//     border-radius: 20px;
+  
+//     @media all and (max-width:$bp4){
+//       border-radius: 10px;
+//     }
+//   }
+  
+//   // Отступы между секциями
+//   @mixin sectionMargin {
+//     margin-bottom: 50px;
+//     margin-top: 50px;
+  
+//     @media all and (max-width:$bp4){
+//       margin-bottom: 30px;
+//       margin-top: 30px;
+//     }
+//   }

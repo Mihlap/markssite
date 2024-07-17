@@ -1,0 +1,25 @@
+'use strict';
+const {
+  Model
+} = require('sequelize');
+module.exports = (sequelize, DataTypes) => {
+  class PublicationTwo extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      // define association here
+    }
+  }
+  PublicationTwo.init({
+    publication: DataTypes.JSON,
+    IdArticle: DataTypes.SMALLINT,
+
+  }, {
+    sequelize,
+    modelName: 'PublicationTwo',
+  });
+  return PublicationTwo;
+};

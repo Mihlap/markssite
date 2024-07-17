@@ -1,0 +1,439 @@
+@import '../../App.css';
+.form_container {
+    width: 44rem;
+    padding: 1.62rem 1rem 1.75rem 2rem;
+
+    &__block_form {
+        /* Прячем стандартный скроллбар для Firefox и IE/Edge */
+        scrollbar-width: none;
+        /* Для Firefox */
+        -ms-overflow-style: none;
+        /* Для Internet Explorer и Edge */
+
+        padding-right: 15px;
+        /* Отступ от правого края */
+
+    }
+
+    &__block_form::-webkit-scrollbar {
+        width: 5px;
+        /* Ширина скролла */
+    }
+
+    &__block_form::-webkit-scrollbar-track {
+        background-color: #F5F5F5;
+        /* Цвет фона трека */
+    }
+
+    &__block_form::-webkit-scrollbar-thumb {
+        background-color: #948e8e;
+        /* Цвет самого скролла */
+        border-radius: 10px;
+        /* Скругление углов */
+        width: 5px;
+        /* Ширина бегунка */
+        height: 30px;
+        /* Устанавливаем фиксированную высоту для бегунка */
+    }
+
+    &__block_form::-webkit-scrollbar-thumb:hover {
+        background-color: #555;
+        /* Цвет скролла при наведении */
+    }
+
+    &__form {
+        display: flex;
+        flex-direction: column;
+        gap: 32px;
+        height: 72vh
+    }
+
+
+    &__title {
+        font-size: 1.5rem;
+        font-family: var(--font-unbounded);
+        font-style: normal;
+        font-weight: 300;
+        line-height: 2rem;
+        margin-bottom: 2.5rem;
+    }
+
+    &__notification {
+        position: fixed;
+        top: 20px;
+        right: 12px; // начальная позиция справа за пределами экрана
+        font-family: var(--font-raleway);
+        background-color: var(--white-F6F6F6);
+        color: var(--black-1D2E43);
+        padding: 10px 20px;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        z-index: 1000;
+        transition: right 0.5s;
+
+        &.show {
+            right: 20px; // конечная позиция в пределах экрана
+        }
+    }
+
+    &__block_form {
+       overflow-y: auto;
+    }
+
+ 
+    &__block_gray_one {
+        background-color: var(--light-light-gray-EBECEE);
+        padding: 0.88rem 1rem 2rem 1rem;
+        border-radius: 6px;
+    }
+
+  
+
+    &__button_block {
+        position: fixed;
+        bottom: 8%;
+        display: flex;
+        gap: 7px;
+        z-index: 9;
+        padding-left: 90px;
+    }
+
+    &__button_save {
+        display: flex;
+        width: 231px;
+        padding: 16px 32px;
+        justify-content: center;
+        align-items: center;
+        border-radius: 66px;
+        background-color: var(--blue-75BBFD);
+        color: var(--white-F6F6F6);
+        border: none;
+        transition: background-color 0.3s;
+
+        &::before {
+            content: "Сохранить";
+            display: inline-block;
+            font-family: var(--font-raleway);
+            font-size: 1rem;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 24px;
+            margin-right: 8px;
+            /* Отступ между текстом и кнопкой */
+        }
+
+        &:hover {
+            background-color: var(--dark-blue-389FFF);
+        }
+    }
+
+    &__button_cancel {
+        display: flex;
+        width: 231px;
+        padding: 16px 32px;
+        justify-content: center;
+        align-items: center;
+        border-radius: 66px;
+        background-color: var(--light-light-gray-EBECEE);
+        color: var(--black-1D2E43);
+        border: none;
+        transition: background-color 0.3s;
+
+        &::before {
+            content: "Отмена";
+            display: inline-block;
+            font-family: var(--font-raleway);
+            font-size: 1rem;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 24px;
+            margin-right: 8px;
+            /* Отступ между текстом и кнопкой */
+        }
+
+        &:hover {
+            background-color: var(--light-gray-C0C5CB);
+        }
+    }
+
+    &__heading_block {
+        display: flex;
+        flex-direction: column-reverse;
+        position: relative;
+    }
+
+    &__heading_block_input {
+        border: 1px solid var(--blue-75BBFD);
+        border-radius: 6px;
+        padding: 1rem 3.5rem 1rem 1rem;
+        font-family: var(--font-raleway);
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+
+        &::placeholder {
+            color: var(--gray-959DA6);
+            font-family: var(--font-raleway);
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 16px;
+        }
+    }
+
+    &__heading_block_input_length {
+        position: absolute;
+        right: 7px;
+        bottom: 25%;
+        color: var(--gray-959DA6);
+        font-family: var(--font-raleway);
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 16px;
+    }
+
+    &__heading_block_label {
+        color: var(--light-gray-C0C5CB);
+        font-family: var(--font-raleway);
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 16px;
+        margin-bottom: 4px;
+    }
+
+    &__description_text {
+        display: flex;
+        flex-direction: column-reverse;
+        position: relative;
+        // padding-top: 16px;
+    }  
+
+  
+    &__textarea {
+        resize: none;
+        height: auto;
+        padding: 1rem 1rem 2rem 1rem;
+        border: 1px solid var(--blue-75BBFD);
+        height: 200px;
+        border-radius: 6px;
+        font-family: var(--font-raleway);
+        font-size: 1rem;
+        color: var(--black-1D2E43);
+        
+
+        &::placeholder {
+            color: var(--gray-959DA6);
+            font-family: var(--font-raleway);
+            font-size: 16px;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 16px;
+        }
+    }
+
+    &__textarea_label {
+        color: var(--light-gray-C0C5CB);
+        font-family: var(--font-raleway);
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 16px;
+        margin-bottom: 4px;
+    }
+
+    &__textarea_label_constructor {
+        color: var(--light-gray-C0C5CB);
+        font-family: var(--font-raleway);
+        font-size: 12px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 16px;
+        margin-bottom: 4px;
+        margin-top: 16px;
+    }
+
+    &__textarea_length {
+        position: absolute;
+        right: 10px;
+        bottom: 5%;
+        z-index: 9;
+        background-color: var(--light-gray-C0C5CBB);
+        color: var(--black-1D2E43);
+        font-family: var(--font-raleway);
+        font-size: 16px;
+        font-style: normal;
+        font-weight: 400;
+        line-height: 16px;
+    }
+
+    &__block_gray_flex {
+        display: flex;
+        justify-content: space-between;
+        // gap: 32px;
+    }
+
+    &__block_public {
+        width: 45%;
+    }
+
+    &__block_public_link {
+        width: 45%;
+    }
+}
+
+
+.flex_block_gap {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.form__group {
+    position: relative;
+    padding: 15px 0 0;
+    margin-top: 10px;
+}
+
+
+.form__field {
+    font-family: var(--font-raleway);
+    width: 100%;
+    border: 0;
+    border-bottom: 1px solid var(--gray-959DA6);
+    outline: 0;
+    font-size: 1rem;
+    color: var(--black-1D2E43);
+    padding: 7px 0;
+    background: transparent;
+    transition: border-color 0.2s;
+    position: relative;
+    caret-color: var(--salmon-FF7F6A);
+}
+
+.form__field:focus {
+    border-color: var(--blue-75BBFD);
+    /* Замените var(--your-focus-color) на цвет, который вы хотите использовать при фокусе */
+}
+
+.form__field:focus::caret {
+    color: var(--your-caret-color);
+    /* Замените var(--your-caret-color) на желаемый цвет */
+}
+
+.form__field::placeholder {
+    color: transparent;
+}
+
+.form__field:not(:placeholder-shown)~.form__label {
+    font-size: 0.8rem;
+    /* Уменьшите размер метки */
+    cursor: text;
+    top: 5px;
+    /* Уменьшите отступ сверху */
+    font-weight: var(--fw-400);
+    color: var(--light-gray-C0C5CB);
+}
+
+.measurement {
+    position: absolute;
+    right: 10px;
+    top: 65%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    font-family: Raleway;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 16px;
+    color: var(--gray-959DA6);
+
+}
+
+.form__label {
+    position: absolute;
+    top: 20px;
+    display: block;
+    transition: 0.2s;
+    font-size: 1rem;
+    color: var(--gray-959DA6);
+}
+
+.disabledLabel {
+    color: var(--light-gray-C0C5CB);
+}
+
+.hidden {
+    display: none;
+  }
+
+
+.form_error_message {
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    font-family: var(--font-raleway);
+    color: var(--black-1D2E43);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form_error_message_div {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    width: 534px;
+    height: auto;
+    padding: 32px 32px 32px 32px;
+    border-radius: 1rem;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+}
+
+.form_error_close_button {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    width: 25px;
+    height: 25px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    transition: transform 0.3s ease;
+
+    &:hover {
+        transform: scale(1.2);
+    }
+}
+
+@media screen and (min-width: 1025px) and (max-width: 1600px) {
+    .form_container {
+        &__form {
+            height: 60vh
+        }
+    }
+}
+
+
+
+@media screen and (max-width: 1024px) {
+
+    .form_container {
+        width: 33rem;
+
+        
+
+    &__button_block {       
+        padding-left: 0px;
+    }
+
+}
+}

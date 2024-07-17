@@ -1,0 +1,283 @@
+/* глобальный стили  */
+
+@import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;700;900&family=Unbounded:wght@300&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;700;900&display=swap');
+
+/* это шрифт для прелоудера  */
+@font-face {
+  font-family: 'MyCustomFont';
+  src: url('./font/square721bdexbtcyr_bold.otf') format('woff2'),
+    url('./font/square721bdexbtcyr_bold.otf') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* a,
+button {
+  cursor: none !important;
+} */
+
+/* * {
+  cursor: none;
+} */
+/* это может выключить мышку во всех браузерах, и будет только колесик */
+
+/* Colors */
+:root {
+  --blue-75BBFD: #75BBFD;
+  --dark-blue-389FFF: #389FFF;
+  --super-dark-blue-345374: #345374;
+  --dark-FFFFFF1A: #FFFFFF1A;
+  --orange-FE5000: #FE5000;
+  --salmon-FF7F6A: #FF7F6A;
+  --crimson-E00747: #E00747;
+  --white-F6F6F6: #F6F6F6;
+  --black-3C3C3C: #3C3C3C;
+  --black-4E4E4E: #4E4E4E;
+  --black-1D2E43: #1D2E43;
+  --dark-gray-566272: #566272;
+  --secondary-dark-gray-525459: #525459;
+  --gray-959DA6: #959DA6;
+  --light-gray-C0C5CB: #C0C5CB;
+  --light-light-gray-EBECEE: #EBECEE;
+  --light-light-gray-EDEDED: #EDEDED;
+  --green-96A96C: #96A96C;
+  --yellow-FFD481: #FFD481;
+  --blue-light-BADDFE: #BADDFE;
+  --salmon-light-FFBFB5: #FFBFB5;
+  --crimson-light-F39CB5: #F39CB5;
+}
+
+/* Fonts */
+:root {
+  --font-unbounded: 'Unbounded', sans-serif;
+  --font-inter: 'Inter', sans-serif;
+  --font-raleway: 'Raleway', sans-serif;
+  --font-MyCustomFont: 'MyCustomFont', sans-serif;
+
+  /* Font weights */
+  --fw-300: 300;
+  --fw-400: 400;
+  --fw-500: 500;
+  --fw-600: 600;
+  --fw-700: 700;
+  --fw-800: 800;
+  --fw-900: 900;
+}
+
+/* Spacing */
+:root {
+  --mb-container-2: 1.87vw;
+  --mb-container-1: 1rem;
+}
+
+#root {
+  overflow-x: hidden;
+}
+
+* {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  box-sizing: border-box;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+video {
+  display: block;
+  margin: 0;
+  padding: 0;
+}
+
+body .ReactModal__Content {
+  overflow: auto;
+}
+
+body .ReactModal__Content::-webkit-scrollbar {
+  width: 6px;
+}
+
+body .ReactModal__Content::-webkit-scrollbar-thumb {
+  background-color: #C0C5CB;
+  border-radius: 4px;
+}
+
+body .ReactModal__Content::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+
+/* *::-webkit-scrollbar {
+  width: 5px;
+}
+
+*::-webkit-scrollbar-track {
+  background-color: #F5F5F5;
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: #948e8e;
+  border-radius: 10px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: #555;
+} */
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Raleway', 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background-color: var(--white-F6F6F6);
+  /* background-color: rgb(32, 33, 36); */
+  overflow-x: hidden;
+  font-variant-numeric: lining-nums;
+  cursor: default;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: inherit;
+  font-size: inherit;
+}
+
+ul,
+ol,
+li {
+  list-style: none;
+}
+
+img {
+  vertical-align: top;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  padding: 0;
+  border: none;
+  font: inherit;
+  color: inherit;
+  background-color: transparent;
+  cursor: pointer;
+}
+
+input,
+textarea {
+  outline: none;
+  font-variant-numeric: lining-nums;
+}
+
+input[type="radio"] {
+  appearance: none;
+  display: none;
+}
+
+input[type="radio"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  outline: none;
+  transition: border-color 0.2s;
+  cursor: pointer;
+}
+
+input[type="radio"]:checked {
+  border-color: #007bff;
+}
+
+/* Скрыть стрелки управления для input number */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* Стили для мобильной версии сайта блока NavBar начинаются тут */
+@media screen and (max-width: 700px) {
+  .body {
+    overflow-x: hidden;
+  }
+}
+
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: var(--blue-75BBFD);
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.fade-enter {
+  opacity: 0;
+}
+
+.fade-enter-active {
+  opacity: 1;
+  transition: opacity 300ms ease-in-out;
+}
+
+.fade-exit {
+  opacity: 1;
+}
+
+.fade-exit-active {
+  opacity: 0;
+  transition: opacity 300ms ease-in-out;
+}

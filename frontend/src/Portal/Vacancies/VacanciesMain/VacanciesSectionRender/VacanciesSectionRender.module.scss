@@ -1,0 +1,434 @@
+@import "../../../../App.css";
+
+
+.vacanciesHeaders {
+  display: flex;
+  justify-content: space-between;
+  padding: 50px 0rem 18px 0rem;
+  font-family: var(--font-raleway);
+  font-size: 0.875rem;
+  font-weight: var(--fw-400);
+  line-height: 1.25rem;
+  color: var(--light-gray-C0C5CB);
+  text-align: left;
+}
+
+.headerCell {
+  font-family: var(--font-raleway);
+  font-size: 0.875rem;
+  font-weight: var(--fw-400);
+  line-height: 1.25rem;
+  color: var(--light-gray-C0C5CB);
+  text-align: left;
+}
+
+.headerCell_specialization { width: 66%; padding-left: 4.3rem; }
+.headerCell_direction { width: 25%; padding-left: 0rem; margin-right: 0.5rem; }
+.headerCell_busyness { width: 25%; padding-left: 0rem; margin-right: 1rem; }
+.headerCell_location { width: 25%; margin-right: 5.5rem; }
+
+
+.vacancyContainer {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  background-color: #F8F8F8;
+  border-radius: 1rem;
+  margin-right: 1.688rem;
+  margin-left: 1.69rem;
+  align-items: center;
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.03);
+}
+
+.vacancyCell {
+  color: var(--black-1D2E43);
+  font-family: var(--font-raleway);
+  font-size: 16px;
+  font-weight: var(--fw-400);
+  line-height: 24px;
+  letter-spacing: 0px;
+  text-align: left;
+}
+
+.vacancyCell_title {
+  width: 66%;
+  text-align: left;
+  display: flex;
+  align-items: center;
+  padding: 42px 1rem 42px 2.5rem;
+  color: var(--black-1D2E43);
+  font-family: var(--font-unbounded);
+  font-size: 20px;
+  font-weight: var(--fw-300);
+  line-height: 28px;
+  letter-spacing: 0px;
+  text-align: left;
+  margin-right: 2rem;
+  position: relative;
+}
+
+.titleZone {
+  content: "";
+  position: absolute;
+  left: 100%;
+  height: 60px;
+  background-color: black;
+  border: 1px solid rgb(235, 236, 238);
+}
+
+.vacancyCell_direction {
+  width: 25%;
+  margin-right: 2rem;
+}
+
+.vacancyCell_busyness {
+  width: 25%;
+  margin-right: 2rem;
+}
+
+.vacancyCell_locationStaff {
+  width: 25%;
+}
+
+.vacancyCell_buttonLink {
+  margin-right: 2.25rem;
+  width: 41px;
+  height: 41px;
+  border-radius: 50%;
+  background-color: var(--blue-75BBFD);
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+.vacancyContainer:hover .vacancyCell_buttonLink {
+  background-color: var(--dark-blue-389FFF);
+}
+
+.vacancyContainer:hover {
+  box-shadow: 0px 0px 20px 0px rgba(196, 215, 234, 0.47);
+}
+
+
+
+.vacancyContainer:hover .titleZone {
+  border: 1px solid rgb(186, 221, 254);
+}
+
+.vacancy_content_massage {
+  display: flex;
+  font-family: var(--font-unbounded);
+  font-weight: var(--fw-300);
+  color: var(--light-gray-C0C5CB);
+  font-size: 1.75rem;
+  line-height: 1.75rem;
+  padding-top: 3rem;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Стили для кнопки "Показать все" */
+
+.showVacanciesOfTotalVacanciesContainer {
+
+}
+
+.showVacanciesOfTotalVacancies {
+  display: flex;
+  padding-top: 56px;
+  color: var(--gray-959DA6);
+  font-family: var(--font-raleway);
+  font-size: 14px;
+  font-weight: var(--fw-400);
+  line-height: 20px;
+  /* padding-left: 120px; */
+  justify-content: center;
+  align-items: center;
+}
+
+.showManyButtonWrapper {
+  display: flex;
+  justify-content: center;
+  padding-top: 8px;
+  /* padding-left: 5%; */
+  transition: margin-top 0.4s ease;
+}
+
+.showManyButtonWrapperShifted {
+  margin-top: -50px;
+}
+
+.showManyButton {
+  align-items: center;
+  padding: 16px 32px;
+  background-color: var(--blue-75BBFD);
+  color: var(--white-F6F6F6);
+  border: none;
+  border-radius: 24px;
+  cursor: pointer;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+.showManyButton:hover {
+  background-color: var(--dark-blue-389FFF);
+  color: var(--white-F6F6F6);
+}
+
+/* стили для планшетной версии  */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+
+  .vacanciesHeaders,
+  .vacancyCell_buttonLink {
+    display: none;
+  }
+
+  .vacancyContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: none;
+    margin: 16px 10.8em 16px 10.8rem;
+    background-color: #F8F8F8;
+    border-radius: 1rem;
+    align-items: center;
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.03);
+    height: 148px;
+    overflow: hidden;
+    cursor: none;
+  }
+
+  .vacancyContainer111 {
+    display: flex;
+    width: 100%;
+    padding-left: 1.5rem;
+  }
+
+  .vacancyContainer222 {
+    display: flex;
+    width: 100%;
+    padding: 0rem 1rem 24px 1.5rem;
+    padding-top: clamp(0.5rem, calc(148px - 1rem), 0.5rem);
+    color: var(--dark-gray-566272);
+    font-family: var(--font-raleway);
+    font-size: 16px;
+    font-weight: var(--fw-400);
+    line-height: 24px;
+    letter-spacing: 0px;
+    text-align: left;
+  }
+
+  .vacancyCell_title {
+    width: 100%;
+    align-items: center;
+    padding: 24px 1rem 0 0rem;
+    color: var(--black-1D2E43);
+    font-family: var(--font-unbounded);
+    font-size: 20px;
+    font-weight: var(--fw-400);
+    line-height: 28px;
+    letter-spacing: 0px;
+    text-align: left;
+    margin-right: 0rem;
+    width: 100%;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .vacancyCell_direction {
+    width: fit-content;
+    margin-right: 0rem;
+  }
+
+  .vacancyCell_busyness {
+    width: fit-content;
+    margin-right: 0rem;
+  }
+
+  .vacancyCell_locationStaff {
+    width: fit-content;
+  }
+
+  .vacancyContainer222 .vacancyCell:not(:last-child)::after {
+    content: "•";
+    margin: 0 8px;
+  }
+
+
+  .vacancyCell_buttonLink_ipad {
+    display: flex;
+    margin-right: 1.5rem;
+    margin-top: 24px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+  }
+
+  .vacancyContainer:hover {
+    box-shadow: 0px 0px 20px 0px rgba(196, 215, 234, 0.47);
+  }
+
+  .vacancyContainer:hover .vacancyCell_buttonLink_ipad {
+    background-color: var(--dark-blue-389FFF);
+  }
+
+  .showVacanciesOfTotalVacanciesContainer {
+    padding-left: 40%;
+  }
+
+  .showVacanciesOfTotalVacancies {
+    padding-top: 24px;
+  }
+
+  .showManyButtonWrapperShifted {
+    margin-top: -20px;
+  }
+  
+  .showManyButton {
+  cursor: none;
+  }
+  
+  .showManyButton:hover {
+    background-color: var(--blue-75BBFD);
+    color: var(--white-F6F6F6);
+  } 
+
+}
+
+/* стили мобильной версии  */
+
+@media screen and (max-width: 767px) {
+
+  .vacanciesHeaders,
+  .vacancyCell_buttonLink {
+    display: none;
+  }
+
+  .vacancyContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: none;
+    margin: 24px 1rem 0 1rem;
+    background-color: #F8F8F8;
+    border-radius: 1rem;
+    align-items: center;
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.03);
+    height: 148px;
+    overflow: hidden;
+    cursor: none;
+  }
+
+  .vacancyContainer111 {
+    display: flex;
+    width: 100%;
+    padding-left: 1.5rem;
+  }
+
+  .vacancyContainer222 {
+    display: flex;
+    width: 100%;
+    padding: 0rem 24px 24px 24px;
+    padding-top: clamp(0.5rem, calc(148px - 1rem), 0.5rem);
+    color: var(--dark-gray-566272);
+    font-family: var(--font-raleway);
+    font-size: 16px;
+    font-weight: var(--fw-400);
+    line-height: 24px;
+    letter-spacing: 0px;
+    text-align: left;
+    flex-wrap: wrap;
+    white-space: wrap;
+  }
+
+  .vacancyCell_title {
+    width: 100%;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 24px 0 0 0;
+    color: var(--black-1D2E43);
+    font-family: var(--font-raleway);
+    font-size: 20px;
+    font-weight: var(--fw-400);
+    line-height: 28px;
+    letter-spacing: 0px;
+    text-align: left;
+    margin-right: 0.5rem;
+  }
+
+  .vacancyCell_direction {
+    width: fit-content;
+    margin-right: 0rem;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+  }
+
+  .vacancyCell_busyness {
+    width: fit-content;
+    margin-right: 0rem;
+  }
+
+  .vacancyCell_locationStaff {
+    width: fit-content;
+  }
+
+  .vacancyContainer222 .vacancyCell:not(:last-child)::after {
+    content: "•";
+    margin: 0 8px;
+  }
+
+
+  .vacancyCell_buttonLink_ipad {
+    display: flex;
+    margin-right: 1.5rem;
+    margin-top: 24px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+  }
+
+  .vacancyContainer:hover {
+    box-shadow: 0px 0px 20px 0px rgba(196, 215, 234, 0.47);
+  }
+
+  .vacancyContainer:hover .vacancyCell_buttonLink_ipad {
+    background-color: var(--dark-blue-389FFF);
+  }
+
+  .showVacanciesOfTotalVacanciesContainer {
+    padding-left: 1rem;
+  }
+
+  .showVacanciesOfTotalVacancies {
+    padding-top: 32px;
+  }
+
+  .vacancy_content_massage {
+    display: flex;
+    font-family: var(--font-unbounded);
+    font-weight: var(--fw-300);
+    color: var(--light-gray-C0C5CB);
+    font-size: 1.10rem;
+    line-height: 1.25rem;
+    padding-top: 3rem;
+    justify-content: center;
+    align-items: center;
+  }
+
+
+.showManyButtonWrapperShifted {
+  margin-top: -20px;
+}
+
+.showManyButton {
+cursor: none;
+}
+
+.showManyButton:hover {
+  background-color: var(--blue-75BBFD);
+  color: var(--white-F6F6F6);
+}
+
+
+}
