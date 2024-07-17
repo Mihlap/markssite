@@ -151,7 +151,6 @@
   line-height: 1rem;
   padding-top: 4rem;
   max-width: 20rem;
-
 }
 
 .agreement_vacancy_link {
@@ -404,7 +403,7 @@
   }
 
   .line {
-    height: 1px;
+    height: 0.5px;
     margin-top: 12px;
     background-color: var(--gray-959DA6);
     max-width: 28rem;
@@ -412,7 +411,7 @@
   }
 
   .lineSimple {
-    height: 1px;
+    height: 0.5px;
     margin-top: 12px;
     background-color: var(--gray-959DA6);
     width: 100%;
