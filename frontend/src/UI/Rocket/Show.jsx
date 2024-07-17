@@ -1,7 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
-import gsap from 'gsap';
 
 
 function lerp(start, end, t) {
