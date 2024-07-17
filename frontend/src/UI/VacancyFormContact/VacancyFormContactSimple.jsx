@@ -306,7 +306,7 @@ const VacancyFormContactSimple = ({
               )}
             </div>
           </div>
-          <div className={styles.agreement_vacancy} style={{paddingTop: '80px'}}>
+          <div className={styles.agreement_vacancy} >
             Нажав на кнопку, соглашаюсь на обработку{" "}
             <Link
               to="../Information"
