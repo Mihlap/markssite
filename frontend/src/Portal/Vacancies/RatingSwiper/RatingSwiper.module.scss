@@ -1,0 +1,248 @@
+@import "../../../App.css";
+@import "../../../_variables.scss";
+
+.RatingSwiper {
+  background-color: var( --white-F6F6F6);
+  padding: 0;
+  padding: rem(220) 0 rem(52) 0;
+
+  &__header {
+    font-family: var(--font-unbounded);
+    font-size: rem(65);
+    line-height: rem(75.5);
+    margin-bottom: rem(42);
+    text-align: left;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+
+    span {
+      display: block;
+
+      &:last-child {
+        padding-left: rem(118);
+      }
+    }
+  }
+
+  &__body {
+    padding: 0 rem(113) 0 rem(113);
+
+    & > * {
+      overflow: visible;
+    }
+  }
+
+  &__wrapper {
+    padding: rem(30) 0;
+  }
+
+  &__slide {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: rem(54);
+
+    &_hide {
+      max-height: 0; 
+      opacity: 0.3;
+      overflow: hidden;
+      transition: max-height 1s ease, opacity 1s ease;
+    }
+
+    &.visible {
+      max-height: 2000px;
+      opacity: 1;
+      transition: max-height 3s ease, opacity 2s ease;
+    }
+  }
+
+  &__date {
+    display: inline-block;
+    color: var(--gray-959DA6);
+    margin-bottom: rem(64);
+  }
+
+  &__title {
+    font-size: rem(24);
+    line-height: rem(32);
+    font-family: var(--font-unbounded);
+
+    &:not(:last-child) {
+      margin-bottom: 32px;
+    }
+  }
+
+  &__row {
+    display: flex;
+    flex-direction: column;
+    padding: rem(36);
+    background-color: #F8F8F8;
+    box-shadow: 0px 0px rem(20) 0px #00000008;
+    border-radius: rem(16);
+  }
+
+  &__rows {
+    display: flex;
+    flex-direction: column;
+    gap: 54px;
+  }
+
+  &__row {
+    flex-grow: 1;
+  }
+
+
+
+  &__picture {
+    margin-top: auto;
+    
+    img {
+      display: block;
+      width: 100%;
+      height: auto;
+      border-radius: rem(15);
+    }
+  }
+
+  &__button {
+    align-self: flex-end;
+    position: relative;
+    min-height: rem(32);
+    border-radius: rem(34);
+    padding: rem(8) rem(36) rem(8) rem(16);
+    background-color: var(--light-light-gray-EBECEE);
+    margin-top: rem(8);
+    transition: background-color 0.3s ease;
+
+    &:before {
+      position: absolute;
+      right: 10px;
+      transform: translateY(-50%);
+      top: 50%;
+      width: rem(16);
+      height: rem(16);
+      position: absolute;
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTMgNkw4IDExTDEzIDYiIHN0cm9rZT0iIzFEMkU0MyIvPgo8L3N2Zz4K');
+      background-size: contain;
+      content: '';
+    }
+
+    &:hover {
+      background-color: var(--light-gray-C0C5CB);
+    }
+
+    &.visible {
+      &:before {
+        transform: translateY(-50%)rotate(180deg);
+      }
+    }
+  }
+
+  
+  // Адаптация под планшет
+  @media all and (max-width:$bp3){
+    padding: 0;
+    
+    span {
+      display: block;
+    }
+
+    &__header {
+      font-size: rem(40);
+      line-height: rem(48);
+      padding: rem(120) 15% rem(54) 15%;
+      margin: 0;
+
+      h2 {
+        align-self: flex-start;
+      }
+
+      span:last-child {
+        padding-left: 0;
+      }
+    }
+
+    &__swiper {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    &__adaptive {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    &__slide {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      padding: 0 15% 0 15%;
+      
+      &:last-child {
+        padding: 0 15% rem(12) 15%;
+      }
+
+      &:nth-child(even) {
+        flex-direction: column-reverse;
+      }
+    }
+
+    &__row {
+      padding: rem(24);
+    }
+
+    &__title {
+      font-size: rem(18);
+      line-height: rem(28);
+    }
+
+    &__date {
+      margin-bottom: rem(48);
+    }
+
+    &__button {
+      margin: 0 15% 0 0;
+    }
+  }
+
+  
+  // Адаптация под мобильную версию
+  @media all and (max-width:$bp5){
+    padding:0;
+    display: flex;
+    flex-direction: column;
+
+
+    &__header {
+      font-size: rem(32);
+      line-height: rem(40);
+      padding: rem(96) rem(16) rem(32) rem(16);
+    }
+
+    &__slide {
+      padding: 0 rem(16) 0 rem(16);
+
+      &:last-child {
+        padding: 0 rem(16) 0 rem(16);
+      }
+    }
+  
+    &__row {
+      padding: rem(16);
+    }
+
+    &__title {
+      font-size: rem(20);
+      line-height: rem(28);
+    }
+
+    &__button {
+      margin: 0 rem(16) 0 0;
+    }
+  }
+
+}

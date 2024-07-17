@@ -1,0 +1,31 @@
+@import "../../../App.css";
+@import "../../../_variables.scss";
+
+.ButtonLink {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: var(--font-raleway);
+  background-color: var(--blue-75BBFD);
+  border-radius: rem(66);
+  color: var(--white-F6F6F6);
+  font-size: rem(18);
+  min-height: rem(58);
+  padding: rem(16) rem(32);
+  transition: 0.3s;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--dark-blue-389FFF);
+  }
+
+  &:active {
+    background-color: var(--super-dark-blue-345374);
+  }
+
+  @media all and (max-width:$bp1){
+    font-size: rem(16);
+    min-height: rem(56);
+    line-height: rem(24);
+  }
+}

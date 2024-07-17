@@ -1,0 +1,107 @@
+@import "../../../App.css";
+
+.frameBlockRight_benefits {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+
+  &__frameBlock_frame {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-bottom: 5.5rem;
+  }
+
+&__frame {
+  height: 12.5rem;
+  width: 12.5rem;
+}
+
+&__frameSpan {
+  color: var(--black-1D2E43);
+  font-family: var(--font-raleway);
+  font-weight: var(--fw-500);
+  font-size: 1.125rem;
+  line-height: 1.5rem;
+  text-align: left;
+  width: 70%;
+  word-wrap: break-word;
+  padding-top: 8px;
+}
+
+}
+
+@media screen and (min-width: 1025px) and (max-width: 1600px) {
+  .frameBlockRight_benefits {
+    grid-template-columns: repeat(2, 1fr);
+  
+  
+    &__frameBlock_frame {
+      margin-bottom: 6rem;
+    }
+  
+  &__frame {
+    width: 10rem;
+    height: 10rem;
+  }
+  
+  &__frameSpan {  
+    margin-right: 4rem;
+  }
+  
+  }
+}
+
+  /* стили для планшетной версии  */
+  @media screen and (min-width: 768px) and (max-width: 1024px) {
+
+    .frameBlockRight_benefits {
+      grid-template-columns: repeat(2, 1fr);
+    
+    
+      &__frameBlock_frame {
+        margin-bottom: 6rem;
+      }
+    
+    &__frame {
+      width: 7.5rem;
+      height: 7.5rem;
+    }
+    
+    &__frameSpan {  
+      margin-right: 4rem;
+    }
+    
+    }
+
+  }
+
+    /* стили мобильной версии  */
+    @media screen and (max-width: 767px) {
+      .frameBlockRight_benefits {
+        grid-template-columns: repeat(1, 1fr);
+      
+      
+        &__frameBlock_frame {
+          flex-direction: row;       
+          align-items: center; 
+          justify-content: left;         
+          margin-bottom: 2rem;
+        }
+      
+      &__frame {
+         width: 5rem;
+          height: 5rem;
+      }
+      
+      &__frameSpan {  
+        margin-right: 0rem;
+        margin-left: 0.5rem;
+        width: 100%;
+      }
+      
+      }
+
+    }
+
+

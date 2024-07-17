@@ -1,0 +1,64 @@
+@import '../../App.css';
+
+@media screen and (max-width: 767px) {
+    .swiper_container_ProjectCard {
+    display: flex;
+    }
+
+    
+    .swiper_container_project_ProjectCard {
+        width: 100%;
+        /* border-radius: 1rem; */
+    }
+    
+    .swiper_wrapper_ProjectCard {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        z-index: 1;
+        position: relative;
+    }
+    
+    .div_el_selectCompetencies_ProjectCard {
+        font-family: var(--font-raleway);
+        font-size: 9px;
+        font-style: normal;
+        font-weight: var(--fw-500);
+        line-height: normal;
+        display: flex;
+        max-width: fit-content;
+        justify-content: center;
+        align-items: center;
+        margin-top: 8px;
+        margin-right: 6px;
+        padding-left: 0px;
+    }
+    
+    .swiper_container_item {
+      height: 100%;
+     padding-left: 0rem;
+      margin-right: 0rem; 
+    }
+
+    /* .swiper_pagination_ProjectCard {
+        display: flex;
+        justify-content: center;
+        margin-top: 1.5rem;
+        padding-bottom: 3.5rem;
+    }
+
+    .swiper_pagination_bullet_ProjectCard {
+        width: 20px;
+        height: 4px;
+        border: 2px solid var(--light-gray-C0C5CB);
+        background-color: var(--light-light-gray-EBECEE);
+        margin: 0 5px;
+        cursor: pointer;
+    }
+
+    .swiper_pagination_bullet_ProjectCard.active {
+        width: 4rem;
+        border: 2px solid var(--salmon-FF7F6A);
+    } */
+
+}

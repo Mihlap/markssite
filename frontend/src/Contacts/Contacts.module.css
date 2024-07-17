@@ -1,0 +1,338 @@
+@import '../App.css';
+
+.main_contact {
+  display: flex;
+  max-width: 100%;
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+.menu_block {
+  flex-direction: column;
+  width: min-content;
+  max-width: 100%;
+  height: 100%;
+  font-family: var(--font-unbounded);
+  font-style: normal;
+  font-weight: var(--fw-300);
+  color: var(--black-1D2E43);
+  background: linear-gradient(261.46deg, rgba(117, 187, 253, 0.09) -4.67%, rgba(123, 163, 217, 0.05) 44.63%, rgba(117, 187, 253, 0.09) 103.07%);
+  box-shadow: 0px 0px 37px rgba(44, 59, 68, 0.17);
+  backdrop-filter: blur(14px);
+  z-index: 1;
+  padding-left: 1.94vw;
+  padding-right: 6.39vw;
+}
+
+.menu_block::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  width: 1px;
+  background: linear-gradient(261.46deg, rgba(117, 187, 253, 0.09) -4.67%, rgba(123, 163, 217, 0.05) 44.63%, rgba(117, 187, 253, 0.09) 103.07%);
+  box-shadow: 0px 0px 37px rgba(44, 59, 68, 0.17);  
+}
+
+.map_block {
+  position: absolute;
+  display: flex;
+  height: 100%;
+  width: 100%;
+ }
+
+.menu_span {
+  font-size: 20px;
+  line-height: 28px;
+  padding-top: 15vh;
+}
+
+.menu_mail {
+  font-size: 48px;
+  line-height: 64px;
+  padding-top: 0.54vh;
+}
+.menu_tel {
+  font-size: 24px;
+  line-height: 32px;
+  padding-top: 4.82vh;
+}
+
+.link_mail,
+.link_tel {
+  display: none;
+}
+
+.menu_address {
+  font-family: var(--font-raleway);
+  font-weight: var(--fw-400);
+  font-size: 16px;
+  line-height: 24px;
+  padding-top: 2.14vh;
+}
+
+.menu_work {
+  font-family: var(--font-raleway);
+  font-weight: var(--fw-400);
+  font-size: 14px;
+  line-height: 20px;
+  padding-top: 0.54vh;
+  color: var(--dark-gray-566272);
+}
+
+.menu_office_name {
+  font-size: 24px;
+  line-height: 32px;
+  color: #000000;
+  padding-top: 30vh;
+
+}
+
+.menu_button_group {
+  display: flex;
+  padding-top: 1.688rem;
+  gap: 8px;
+  padding-bottom: 8vh;
+  
+}
+
+.menu_button {
+  border-radius: 34px;
+  background-color: transparent;
+  border: 1px solid var(--black-1D2E43);
+  font-family: var(--font-raleway);
+  font-style: normal;
+  font-weight: var(--fw-400);
+  font-size: 14px;
+  line-height: 20px;
+  width: fit-content;
+  align-items: center;
+  transition: background-color 0.8s ease, color 0.8s ease;
+  }
+
+.menu_button:hover {
+  background-color: var(--dark-gray-566272);
+  border: 1px solid transparent;
+  color: var(--white-F6F6F6);
+  font-weight: var(--fw-300);
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+.menu_button_active {
+  color: var(--white-F6F6F6);
+  background-color: var(--black-1D2E43);
+  pointer-events: none;
+  font-weight: var(--fw-300);
+}
+.menu_button_city {
+  padding: 8px 24px;
+}
+
+/* Стили планшетной версии */
+
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .main_contact {
+    min-width: 0px;
+  }
+
+  .menu_block {
+    position: absolute;
+    height: auto;
+    width: 100%;
+    padding-left: 3.43rem;
+    border-bottom: 1px solid #EBECEE;;
+  }
+
+  .menu_span {
+    font-family: var(--font-raleway);
+    font-weight: var(--fw-400);
+    font-size: 16px;
+    line-height: 24px;
+    padding-top: 6.25rem;
+  }
+
+  .link_mail {
+    display: block;
+    font-family: var(--font-unbounded);
+    font-size: 48px;
+    font-style: normal;
+    line-height: 64px;
+    font-weight: var(--fw-400);
+    color: var(--black-1D2E43);
+    padding-top: 0.5rem;
+  }
+
+  .link_tel {
+    display: block;
+    font-family: var(--font-unbounded);
+    font-style: normal;
+    font-weight: var(--fw-300);
+    font-size: 24px;
+    line-height: 32px;
+    color: var(--black-1D2E43);
+    padding-top: 2rem;
+  }
+
+  .menu_mail,
+  .menu_tel {
+    display: none;
+  }
+
+  .menu_address {
+    font-size: 16px;
+    line-height: 24px;
+    font-feature-settings: 'pnum' on, 'lnum' on;
+    padding-top: 1rem;
+  }
+
+  .menu_office_name {
+    display: none;
+  }
+
+  .menu_button_group {
+    padding-bottom: 2rem;
+    gap: 8px;
+  }
+
+  .menu_button {
+    background-color: var(--white-F6F6F6);
+    transition: background-color 0.4s ease, color 0.4s ease;
+  }
+
+    .menu_button:hover {
+      background: var(--white-F6F6F6);
+      color: var(--black-1D2E43);
+      border: 1px solid var(--black-1D2E43);
+      transition: none;
+    }
+  .menu_button_active {
+    color: var(--white-F6F6F6);
+    background-color: var(--black-1D2E43);
+    pointer-events: none;
+  }
+
+  .map_block {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+  }
+
+  .mySwiper {
+    display: none;
+  }
+}
+
+/* Стили мобильной версии */
+
+@media screen and (max-width: 767px) {
+  .main_contact {
+    min-width: 0px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .menu_block {
+    position: absolute;
+    height: auto;
+    width: 100%;
+    padding-left: 16px;
+    border-bottom: 1px solid #EBECEE;;
+   }
+
+    .menu_span {
+      font-family: var(--font-raleway);
+      font-style: normal;
+      font-weight: var(--fw-400);
+      font-size: 16px;
+      line-height: 24px;
+      padding-top: 130px;
+    }
+
+  .link_mail {
+    display: block;
+    font-size: 27px;
+    line-height: 32px;
+    font-weight: var(--fw-400);
+    color: var(--black-1D2E43);
+    padding-top: 8px;
+  }
+
+  .link_tel {
+    display: block;
+    font-size: 20px;
+    line-height: 28px;
+    color: var(--black-1D2E43);
+    padding-top: 32px;
+  }
+
+  .menu_mail,
+  .menu_tel {
+    display: none;
+  }
+
+  .menu_address {
+    font-size: 16px;
+    line-height: 24px;
+    font-feature-settings: 'pnum' on, 'lnum' on;
+    padding-right: 10px;
+  }
+
+  .menu_office_name {
+    display: none;
+  }
+
+  .menu_work {
+    padding-bottom: 48px;
+  }
+
+  .menu_button_group {
+    display: none;
+  }
+
+  .map_block {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+   }
+   
+   .mySwiper {
+    position: absolute;
+    bottom: 2rem;
+    padding-left: 10px;
+    padding-right: 10px;
+    max-width: 100%;
+   }
+  
+  .slider_menu_button {
+    border-radius: 34px;
+    background-color: var(--white-F6F6F6);
+    border: 1px solid var(--black-1D2E43);
+    font-family: var(--font-raleway);
+    font-weight: var(--fw-400);
+    font-size: 14px;
+    line-height: 2rem;
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+    cursor: pointer;
+    transition: background-color 0.4s ease, color 0.4s ease;
+   }
+  .slider_menu_button_active {
+    color: var(--white-F6F6F6);
+    background-color: var(--black-1D2E43);
+  }
+  .slider_button_city {
+     padding: 2px 24px;
+  }
+
+}
+
+
+
+@media (min-width: 1025px) {
+  .mySwiper {
+    display: none;
+  }
+}

@@ -1,0 +1,21 @@
+@import "../../App.css";
+
+.error_container {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.error_block {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
+}
+
+.error_text {
+    font-size: 20px;
+    color: var(--black-1D2E43);
+    font-family: var(--font-raleway);
+}

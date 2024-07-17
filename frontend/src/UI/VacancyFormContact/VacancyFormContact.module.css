@@ -1,0 +1,1175 @@
+@import "../../App.css";
+
+/* @media screen and (min-width: 1601px) and (max-width: 3000px) { */
+
+
+.form_vacancy_wrapper {
+  display: flex;
+  height: fit-content;
+  position: relative;
+}
+
+.form_vacancy_wrapperSimple {
+  display: flex;
+  height: fit-content;
+  width: 100%;
+  position: relative;
+}
+
+
+.form_vacancy_block {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 88px;
+  width: fit-content;
+}
+
+.form_vacancy_block_simple {
+  display: grid;
+  grid-template-columns: repeat(1, 1fr);
+  column-gap: 76px;
+  width: 100%;
+}
+
+.form_vacancy_left,
+.form_vacancy_right {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.form_vacancy_right {
+  /* padding-top: 0.1rem; */
+}
+
+
+.label1 {
+  position: relative;
+}
+
+
+.input_name_form_contacts,
+.input_tel_form_contacts,
+.input_city_form_contacts,
+.input_letter_form_contacts,
+.input_resume_form_contacts,
+.input_choose_form_contacts {
+  border: none;
+  outline: none;
+  background-color: transparent;
+  padding-top: 3vh;
+  font-family: var(--font-raleway);
+  font-style: normal;
+  font-weight: var(--fw-400);
+  font-size: 16px;
+  line-height: 16px;
+  width: 100%;
+  position: relative;
+}
+
+.input_choose_form_contacts {
+  padding-top: 2.45vh;
+}
+
+
+.line {
+  height: 1px;
+  margin-top: 12px;
+  background-color: var(--gray-959DA6);
+  width: 34rem;
+  /* width: 100%; */
+}
+
+.lineSimple {
+  height: 1px;
+  margin-top: 12px;
+  background-color: var(--gray-959DA6);
+  width: 100%;
+}
+
+.line_select {
+  margin-top: 0;
+  background-color: var(--gray-959DA6);
+}
+
+.error_line {
+  font-family: var(--font-raleway);
+  font-style: normal;
+  font-weight: var(--fw-400);
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--crimson-E00747);
+}
+
+.placeholder {
+  position: absolute;
+  top: 90%;
+  left: 0;
+  color: var(--gray-959DA6);
+  font-size: 16px;
+  transform: translateY(-100%);
+  transform-origin: left top;
+  transition: all 0.3s ease-out;
+  padding-bottom: 10px;
+  width: 100%;
+  white-space: nowrap;
+}
+
+.input_tel_form_contacts:not(:placeholder-shown)+.placeholder,
+.input_tel_form_contacts:empty+.placeholder,
+.focused1 .placeholder {
+  transform: translateY(-200%) scale(0.75);
+  -webkit-transform: translateY(-200%) scale(0.75);
+  font-size: 16px;
+  color: var(--gray-959DA6);
+}
+
+.input_name_form_contacts:focus+.line,
+.input_city_form_contacts:focus+.line,
+.input_letter_form_contacts:focus+.line,
+.input_resume_form_contacts:focus+.line,
+.input_tel_form_contacts:focus+.line,
+#phone-input.input_tel_form_contacts.focus+.line {
+  background-color: var(--blue-75BBFD);
+}
+
+.input_name_form_contacts:focus+.lineSimple,
+.input_letter_form_contacts:focus+.lineSimple,
+.input_resume_form_contacts:focus+.lineSimple,
+.input_tel_form_contacts:focus+.lineSimple,
+#phone-input.input_tel_form_contacts.focus+.lineSimple {
+  background-color: var(--blue-75BBFD);
+}
+
+.agreement_vacancy {
+  color: var(--gray-959DA6);
+  font-variant-numeric: lining-nums proportional-nums;
+  font-family: var(--font-raleway);
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: var(--fw-400);
+  line-height: 1rem;
+  padding-top: 4rem;
+  max-width: 20rem;
+}
+
+.agreement_vacancy_link {
+  color: var(--gray-959DA6);
+  font-variant-numeric: lining-nums proportional-nums;
+  font-family: var(--font-raleway);
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: var(--fw-400);
+  line-height: 1rem;
+  text-decoration-line: underline;
+  cursor: none;
+  transition: color 0.4s ease;
+}
+
+.agreement_vacancy_link:hover {
+  color: var(--blue-75BBFD);
+}
+
+.button_vacancy {
+  display: inline-flex;
+  padding: 1rem 2rem;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4.125rem;
+  border: 1px solid transparent;
+  background-color: var(--blue-75BBFD);
+  margin-top: 1rem;
+  /* cursor: none; */
+  transition: background-color 0.4s ease;
+}
+
+.button_vacancySimple {
+  display: inline-flex;
+  padding: 1rem 2rem;
+  justify-content: center;
+  align-items: center;
+  border-radius: 4.125rem;
+  border: 1px solid transparent;
+  background-color: var(--blue-75BBFD);
+  margin-top: 3rem;
+  /* cursor: none; */
+  transition: background-color 0.4s ease;
+  min-width: 432px;
+  /* height: 56px; */
+}
+
+.button_vacancy:hover,
+.button_vacancySimple:hover {
+  background: var(--dark-blue-389FFF);
+}
+
+.button_name_vacancy {
+  color: var(--white-F6F6F6);
+  font-variant-numeric: lining-nums proportional-nums;
+  font-family: var(--font-raleway);
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: var(--fw-400);
+  line-height: 1.5rem;
+}
+
+.button_resume_file {
+  position: absolute;
+  display: flex;
+  padding: 0.5rem 0.8125rem;
+  align-items: flex-start;
+  border-radius: 2.5rem;
+  background-color: var(--light-light-gray-EBECEE);
+  font-family: var(--font-raleway);
+  font-size: 0.625rem;
+  font-style: normal;
+  font-weight: var(--fw-400);
+  line-height: 0.875rem;
+  width: fit-content;
+  margin-top: 1rem;
+  cursor: pointer;
+  transition: background-color 0.4s ease;
+}
+
+.button_resume_file:hover {
+  background: var(--light-gray-C0C5CB);
+}
+
+
+.fileAttached {
+  display: flex;
+}
+
+.resumeFiles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.fileContainer_resumeFiles {
+  display: flex;
+  color: var(--dark-gray-566269);
+  font-variant-numeric: lining-nums proportional-nums;
+  font-family: var(--font-raleway);
+  font-size: 0.75rem;
+  font-style: normal;
+  font-weight: var(--fw-400);
+  line-height: 1rem;
+  padding-top: 0.5rem;
+  position: relative;
+  transition: color 0.4s ease;
+}
+
+.fileContainer_resumeFiles:hover .removeFile_resumeFiles,
+.fileContainer_resumeFiles:hover .fileName_resumeFiles {
+  color: var(--blue-75BBFD);
+}
+
+.removeFile_resumeFiles,
+.fileName_resumeFiles {
+  display: flex;
+  margin-right: 6px;
+  cursor: pointer;
+}
+
+.removeFile_resumeFiles_remove {
+  font-size: 24px;
+  /* cursor: pointer; */
+  margin-top: -1.5px;
+}
+
+.for_applicants_wrapper {
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  top: 18rem;
+  right: 7rem;
+  z-index: 3;
+}
+
+.for_applicants {
+  color: var(--black-1D2E43);
+  font-family: var(--font-unbounded);
+  font-size: 1.25rem;
+  font-style: normal;
+  font-weight: var(--fw-300);
+  line-height: 1.75rem;
+  white-space: nowrap;
+}
+
+
+.for_applicants_mail {
+  color: var(--black-1D2E43);
+  font-variant-numeric: lining-nums proportional-nums;
+  font-family: var(--font-raleway);
+  font-size: 1.125rem;
+  font-style: normal;
+  font-weight: var(--fw-400);
+  line-height: 1.625rem;
+  margin-top: 1rem;
+  white-space: nowrap;
+  transition: color 0.3s ease;
+}
+
+.for_applicants_tg {
+  position: absolute;
+  bottom: 6px;
+  right: 0;
+}
+
+.for_applicants_tg img {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.for_applicants_tg img:hover {
+  transform: scale(1.2);
+}
+
+
+.for_applicants_mail:hover {
+  color: var(--blue-75BBFD);
+}
+
+.for_applicants_tel {
+  color: var(--black-1D2E43);
+  font-variant-numeric: lining-nums proportional-nums;
+  font-family: var(--font-raleway);
+  font-size: 1.125rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.625rem;
+  margin-top: 0.37rem;
+  white-space: nowrap;
+  transition: color 0.3s ease;
+}
+
+.for_applicants_tel:hover {
+  color: var(--blue-75BBFD);
+}
+
+/* } */
+
+@media screen and (min-width: 1025px) and (max-width: 1600px) {
+
+  .form_vacancy_wrapper {
+    display: flex;
+    height: fit-content;
+    position: relative;
+    /* width: ; */
+  }
+
+  .form_vacancy_block {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    column-gap: 88px;
+    width: 60rem;
+  }
+
+  .form_vacancy_left,
+  .form_vacancy_right {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  /* .form_vacancy_left {
+    padding-top: 0.5rem;
+  } */
+
+  .label1 {
+    position: relative;
+  }
+
+
+  .input_name_form_contacts,
+  .input_tel_form_contacts,
+  .input_city_form_contacts,
+  .input_letter_form_contacts,
+  .input_resume_form_contacts {
+    border: none;
+    outline: none;
+    background-color: transparent;
+    padding-top: 2.7vh;
+    font-family: var(--font-raleway);
+    font-style: normal;
+    font-weight: var(--fw-400);
+    font-size: 16px;
+    line-height: 16px;
+    width: 100%;
+  }
+
+  .input_choose_form_contacts {
+    padding-top: 2.2vh;
+  }
+
+  .line {
+    height: 0.5px;
+    margin-top: 12px;
+    background-color: var(--gray-959DA6);
+    max-width: 28rem;
+    width: 100%;
+  }
+
+  .lineSimple {
+    height: 0.5px;
+    margin-top: 12px;
+    background-color: var(--gray-959DA6);
+    width: 100%;
+  }
+
+  .line_select {
+    margin-top: 0;
+    background-color: var(--gray-959DA6);
+  }
+
+  .error_line {
+    font-family: var(--font-raleway);
+    font-style: normal;
+    font-weight: var(--fw-400);
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--crimson-E00747);
+  }
+
+  .placeholder {
+    position: absolute;
+    top: 90%;
+    left: 0;
+    color: var(--gray-959DA6);
+    font-size: 16px;
+    transform: translateY(-100%);
+    transform-origin: left top;
+    transition: all 0.3s ease-out;
+    padding-bottom: 10px;
+    width: 100%;
+    white-space: nowrap;
+  }
+
+  .input_tel_form_contacts:not(:placeholder-shown)+.placeholder,
+  .input_tel_form_contacts:empty+.placeholder,
+  .focused1 .placeholder {
+    transform: translateY(-160%) scale(0.75);
+    -webkit-transform: translateY(-160%) scale(0.75);
+    font-size: 16px;
+    color: var(--gray-959DA6);
+  }
+
+  .input_name_form_contacts:focus+.line,
+  .input_city_form_contacts:focus+.line,
+  .input_choose_form_contacts:focus+.line,
+  .input_letter_form_contacts:focus+.line,
+  .input_resume_form_contacts:focus+.line,
+  #phone-input:focus+.line {
+    background-color: var(--blue-75BBFD);
+  }
+
+  /* .hidden {
+    display: none;
+  } */
+
+
+  .agreement_vacancy {
+    color: var(--gray-959DA6);
+    font-variant-numeric: lining-nums proportional-nums;
+    font-family: var(--font-raleway);
+    font-size: 0.75rem;
+    font-style: normal;
+    font-weight: var(--fw-400);
+    line-height: 1rem;
+    padding-top: 4rem;
+    max-width: 20rem;
+
+  }
+
+  .agreement_vacancy_link {
+    color: var(--gray-959DA6);
+    font-variant-numeric: lining-nums proportional-nums;
+    font-family: var(--font-raleway);
+    font-size: 0.75rem;
+    font-style: normal;
+    font-weight: var(--fw-400);
+    line-height: 1rem;
+    text-decoration-line: underline;
+    cursor: none;
+    transition: color 0.4s ease;
+  }
+
+  .agreement_vacancy_link:hover {
+    color: var(--blue-75BBFD);
+  }
+
+  .button_vacancy {
+    display: inline-flex;
+    padding: 1rem 2rem;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4.125rem;
+    border: 1px solid transparent;
+    background-color: var(--blue-75BBFD);
+    margin-top: 1rem;
+    cursor: none;
+    transition: background-color 0.4s ease;
+  }
+
+  .button_vacancySimple {
+    display: inline-flex;
+    padding: 1rem 2rem;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4.125rem;
+    border: 1px solid transparent;
+    background-color: var(--blue-75BBFD);
+    margin-top: 1rem;
+    /* cursor: none; */
+    transition: background-color 0.4s ease;
+    min-width: 0;
+    /* height: 46px; */
+  }
+
+  .button_vacancy:hover {
+    background: var(--dark-blue-389FFF);
+  }
+
+  .button_name_vacancy {
+    color: var(--white-F6F6F6);
+    font-variant-numeric: lining-nums proportional-nums;
+    font-family: var(--font-raleway);
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: var(--fw-400);
+    line-height: 1.5rem;
+  }
+
+  .button_resume_file {
+    position: absolute;
+    display: flex;
+    padding: 0.5rem 0.8125rem;
+    align-items: flex-start;
+    border-radius: 2.5rem;
+    background-color: var(--light-light-gray-EBECEE);
+    font-family: var(--font-raleway);
+    font-size: 0.625rem;
+    font-style: normal;
+    font-weight: var(--fw-400);
+    line-height: 0.875rem;
+    width: fit-content;
+    margin-top: 1rem;
+    transition: background-color 0.4s ease;
+  }
+
+  .button_resume_file:hover {
+    background: var(--light-gray-C0C5CB);
+  }
+
+
+  .fileAttached {
+    display: flex;
+  }
+
+  .resumeFiles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .fileContainer_resumeFiles {
+    display: flex;
+    color: var(--dark-gray-566269);
+    font-variant-numeric: lining-nums proportional-nums;
+    font-family: var(--font-raleway);
+    font-size: 0.75rem;
+    font-style: normal;
+    font-weight: var(--fw-400);
+    line-height: 1rem;
+    padding-top: 0.5rem;
+    position: relative;
+    transition: color 0.4s ease;
+  }
+
+  .fileContainer_resumeFiles:hover .removeFile_resumeFiles,
+  .fileContainer_resumeFiles:hover .fileName_resumeFiles {
+    color: var(--blue-75BBFD);
+  }
+
+  .removeFile_resumeFiles,
+  .fileName_resumeFiles {
+    display: flex;
+    margin-right: 6px;
+  }
+
+  .removeFile_resumeFiles_remove {
+    font-size: 24px;
+    cursor: pointer;
+    margin-top: -1.5px;
+  }
+
+  .for_applicants_wrapper {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    top: 16.5rem;
+    right: 4.69rem;
+    z-index: 3;
+  }
+
+  .for_applicants {
+    color: var(--black-1D2E43);
+    font-family: var(--font-unbounded);
+    font-size: 1.25rem;
+    font-style: normal;
+    font-weight: var(--fw-300);
+    line-height: 1.75rem;
+    white-space: nowrap;
+  }
+
+  .for_applicants_mail {
+    color: var(--black-1D2E43);
+    font-variant-numeric: lining-nums proportional-nums;
+    font-family: var(--font-raleway);
+    font-size: 1.125rem;
+    font-style: normal;
+    font-weight: var(--fw-400);
+    line-height: 1.625rem;
+    margin-top: 1rem;
+    white-space: nowrap;
+    transition: color 0.3s ease;
+  }
+
+  .for_applicants_mail:hover {
+    color: var(--blue-75BBFD);
+  }
+
+  .for_applicants_tel {
+    color: var(--black-1D2E43);
+    font-variant-numeric: lining-nums proportional-nums;
+    font-family: var(--font-raleway);
+    font-size: 1.125rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.625rem;
+    margin-top: 0.37rem;
+    white-space: nowrap;
+    transition: color 0.3s ease;
+  }
+
+  .for_applicants_tel:hover {
+    color: var(--blue-75BBFD);
+  }
+
+}
+
+/* стили для планшетной версии  */
+
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+
+  .form_vacancy_wrapper {
+    display: flex;
+    height: fit-content;
+    position: relative;
+  }
+
+  .form_vacancy_block {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    column-gap: 76px;
+    width: 100%;
+  }
+
+  .form_vacancy_left,
+  .form_vacancy_right {
+    width: 100%;
+  }
+
+  .form_vacancy_left {
+    padding-top: 0rem;
+  }
+
+  .group {
+    width: 100%;
+  }
+
+  .label1 {
+    position: relative;
+  }
+
+
+  .input_name_form_contacts,
+  .input_tel_form_contacts,
+  .input_city_form_contacts,
+  .input_letter_form_contacts,
+  .input_resume_form_contacts {
+    border: none;
+    outline: none;
+    background-color: transparent;
+    padding-top: 2.7vh;
+    font-family: var(--font-raleway);
+    font-style: normal;
+    font-weight: var(--fw-400);
+    font-size: 16px;
+    line-height: 16px;
+    width: 100%;
+  }
+
+  .input_choose_form_contacts {
+    /* padding-top: 1.8vh; */
+  }
+
+
+  .line {
+    height: 1px;
+    margin-top: 10px;
+    background-color: var(--gray-959DA6);
+    width: 100%;
+  }
+
+  .line_resume {
+    width: 46vw;
+  }
+
+  .line_select {
+    margin-top: 0;
+    background-color: var(--gray-959DA6);
+  }
+
+  .error_line {
+    font-family: var(--font-raleway);
+    font-style: normal;
+    font-weight: var(--fw-400);
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--crimson-E00747);
+  }
+
+  .placeholder {
+    position: absolute;
+    top: 90%;
+    left: 0;
+    color: var(--gray-959DA6);
+    font-size: 16px;
+    transform: translateY(-100%);
+    transform-origin: left top;
+    transition: all 0.3s ease-out;
+    padding-bottom: 10px;
+    width: 100%;
+    white-space: nowrap;
+  }
+
+  .input_tel_form_contacts:not(:placeholder-shown)+.placeholder,
+  .input_tel_form_contacts:empty+.placeholder,
+  .focused1 .placeholder {
+    transform: translateY(-180%) scale(0.75);
+    -webkit-transform: translateY(-180%) scale(0.75);
+    font-size: 16px;
+    color: var(--gray-959DA6);
+  }
+
+  .input_name_form_contacts:focus+.line,
+  .input_city_form_contacts:focus+.line,
+  .input_choose_form_contacts:focus+.line,
+  .input_letter_form_contacts:focus+.line,
+  .input_resume_form_contacts:focus+.line,
+  #phone-input:focus+.line {
+    background-color: var(--blue-75BBFD);
+  }
+
+  .agreement_vacancy {
+    color: var(--gray-959DA6);
+    font-variant-numeric: lining-nums proportional-nums;
+    font-family: var(--font-raleway);
+    font-size: 0.75rem;
+    font-style: normal;
+    font-weight: var(--fw-400);
+    line-height: 1rem;
+    padding-top: 5rem;
+    max-width: 20rem;
+
+  }
+
+  .agreement_vacancy_link {
+    color: var(--gray-959DA6);
+    font-variant-numeric: lining-nums proportional-nums;
+    font-family: var(--font-raleway);
+    font-size: 0.75rem;
+    font-style: normal;
+    font-weight: var(--fw-400);
+    line-height: 1rem;
+    text-decoration-line: underline;
+    cursor: none;
+    transition: color 0.4s ease;
+  }
+
+  .button_vacancy {
+    display: inline-flex;
+    padding: 1rem 2rem;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4.125rem;
+    border: 1px solid transparent;
+    background-color: var(--blue-75BBFD);
+    margin-top: 1.44rem;
+    cursor: none;
+    transition: background-color 0.4s ease;
+  }
+
+  .button_vacancy:hover {
+    background-color: var(--blue-75BBFD);
+  }
+
+  
+  .centerButton {
+    display: block;
+    position: absolute;
+    bottom: -5rem;
+    /* top: 0rem; */
+    left: 50%;
+    right: 0;
+    transform: translateX(-50%);
+    width: 100%;
+  }
+
+
+
+  .button_name_vacancy {
+    color: var(--white-F6F6F6);
+    font-variant-numeric: lining-nums proportional-nums;
+    font-family: var(--font-raleway);
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: var(--fw-400);
+    line-height: 1.5rem;
+  }
+
+  .button_resume_file {
+    position: absolute;
+    display: flex;
+    padding: 0.5rem 0.8125rem;
+    align-items: flex-start;
+    border-radius: 2.5rem;
+    background-color: var(--light-light-gray-EBECEE);
+    font-family: var(--font-raleway);
+    font-size: 0.625rem;
+    font-style: normal;
+    font-weight: var(--fw-400);
+    line-height: 0.875rem;
+    width: fit-content;
+    margin-top: 1rem;
+    transition: background-color 0.4s ease;
+    cursor: none;
+  }
+
+
+  .button_resume_file:hover {
+    background-color: var(--light-light-gray-EBECEE);
+  }
+
+
+  .fileAttached {
+    display: flex;
+  }
+
+  .resumeFiles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .fileContainer_resumeFiles {
+    display: flex;
+    color: var(--dark-gray-566269);
+    font-variant-numeric: lining-nums proportional-nums;
+    font-family: var(--font-raleway);
+    font-size: 0.75rem;
+    font-style: normal;
+    font-weight: var(--fw-400);
+    line-height: 1rem;
+    padding-top: 0.5rem;
+    position: relative;
+    transition: color 0.4s ease;
+  }
+
+  .removeFile_resumeFiles,
+  .fileName_resumeFiles {
+    display: flex;
+    margin-right: 6px;
+  }
+
+  .removeFile_resumeFiles_remove {
+    font-size: 24px;
+    margin-top: -1.5px;
+  }
+
+  .for_applicants_wrapper {
+    display: none;
+  }
+}
+
+
+/* стили мобильной версии  */
+
+@media (max-width: 767px) {
+  .form_vacancy_wrapper {
+    display: flex;
+    height: fit-content;
+    position: relative;
+  }
+
+  .form_vacancy_block {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+    column-gap: 1.78rem;
+    width: 100%;
+  }
+
+  .form_vacancy_left,
+  .form_vacancy_right {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .form_vacancy_right {
+    padding-top: 0rem;
+  }
+
+  .group {
+    width: 100%;
+  }
+
+  .label1 {
+    position: relative;
+  }
+
+  .line {
+    height: 1px;
+    margin-top: 12px;
+    background-color: var(--gray-959DA6);
+    max-width: 100%;
+    width: 100%;
+  }
+
+  .line_select {
+    margin-top: 0;
+    background-color: var(--gray-959DA6);
+  }
+
+  .error_line {
+    font-family: var(--font-raleway);
+    font-style: normal;
+    font-weight: var(--fw-400);
+    font-size: 12px;
+    line-height: 16px;
+    color: var(--crimson-E00747);
+  }
+
+  .input_name_form_contacts,
+  .input_tel_form_contacts,
+  .input_city_form_contacts,
+  .input_letter_form_contacts,
+  .input_resume_form_contacts,
+  .input_choose_form_contacts {
+    border: none;
+    outline: none;
+    background-color: transparent;
+    font-family: var(--font-raleway);
+    font-style: normal;
+    font-weight: var(--fw-400);
+    font-size: 16px;
+    line-height: normal;
+    /* padding-top: 2.7vh; */
+    width: 100%;
+    position: relative;
+  }
+
+  .placeholder {
+    position: absolute;
+    top: 90%;
+    left: 0;
+    color: var(--gray-959DA6);
+    font-size: 16px;
+    transform: translateY(-100%);
+    transform-origin: left top;
+    transition: all 0.3s ease-out;
+    padding-bottom: 10px;
+    width: 100%;
+    white-space: nowrap;
+  }
+
+  .input_tel_form_contacts:not(:placeholder-shown)+.placeholder,
+  .input_tel_form_contacts:empty+.placeholder,
+  .focused1 .placeholder {
+    transform: translateY(-150%) scale(0.75);
+    -webkit-transform: translateY(-150%) scale(0.75);
+    font-size: 16px;
+    color: var(--gray-959DA6);
+  }
+
+  .input_name_form_contacts:focus+.line,
+  .input_city_form_contacts:focus+.line,
+  .input_choose_form_contacts:focus+.line,
+  .input_letter_form_contacts:focus+.line,
+  .input_resume_form_contacts:focus+.line,
+  #phone-input:focus+.line {
+    background-color: var(--blue-75BBFD);
+  }
+
+  .agreement_vacancy {
+    color: var(--gray-959DA6);
+    font-variant-numeric: lining-nums proportional-nums;
+    font-family: var(--font-raleway);
+    font-size: 0.75rem;
+    font-style: normal;
+    font-weight: var(--fw-400);
+    line-height: 1rem;
+    padding-top: 5rem;
+    max-width: 20rem;
+
+  }
+
+  .agreement_vacancy_link {
+    color: var(--gray-959DA6);
+    font-variant-numeric: lining-nums proportional-nums;
+    font-family: var(--font-raleway);
+    font-size: 0.75rem;
+    font-style: normal;
+    font-weight: var(--fw-400);
+    line-height: 1rem;
+    text-decoration-line: underline;
+    cursor: none;
+    transition: color 0.4s ease;
+  }
+
+  .button_vacancy {
+    display: inline-flex;
+    padding: 1rem 2rem;
+    justify-content: center;
+    align-items: center;
+    border-radius: 4.125rem;
+    border: 1px solid transparent;
+    background-color: var(--blue-75BBFD);
+    margin-top: 1rem;
+    cursor: none;
+    transition: background-color 0.4s ease;
+  }
+
+  .button_vacancy:hover {
+    background-color: var(--blue-75BBFD);
+  }
+
+  .centerButton {
+    display: block;
+    position: absolute;
+    bottom: -5rem;
+    /* top: 0rem; */
+    left: 50%;
+    right: 0;
+    transform: translateX(-50%);
+    width: 100%;
+  }
+
+
+  .button_name_vacancy {
+    color: var(--white-F6F6F6);
+    font-variant-numeric: lining-nums proportional-nums;
+    font-family: var(--font-raleway);
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: var(--fw-400);
+    line-height: 1.5rem;
+  }
+
+  .button_resume_file {
+    position: absolute;
+    left: 0;
+    display: flex;
+    padding: 0.5rem 0.8125rem;
+    align-items: flex-start;
+    border-radius: 2.5rem;
+    background-color: var(--light-light-gray-EBECEE);
+    font-family: var(--font-raleway);
+    font-size: 0.625rem;
+    font-style: normal;
+    font-weight: var(--fw-400);
+    line-height: 0.875rem;
+    width: fit-content;
+    margin-top: 1rem;
+    transition: background-color 0.4s ease;
+    cursor: none;
+  }
+
+  .button_resume_file:hover {
+    background-color: var(--light-light-gray-EBECEE);
+  }
+
+
+  .fileAttached {
+    display: flex;
+  }
+
+  .resumeFiles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  .fileContainer_resumeFiles {
+    display: flex;
+    color: var(--dark-gray-566269);
+    font-variant-numeric: lining-nums proportional-nums;
+    font-family: var(--font-raleway);
+    font-size: 0.75rem;
+    font-style: normal;
+    font-weight: var(--fw-400);
+    line-height: 1rem;
+    padding-top: 0.5rem;
+    position: relative;
+    transition: color 0.4s ease;
+  }
+
+  .removeFile_resumeFiles,
+  .fileName_resumeFiles {
+    display: flex;
+    margin-right: 6px;
+  }
+
+  .removeFile_resumeFiles_remove {
+    font-size: 24px;
+    margin-top: -1.5px;
+  }
+
+  .for_applicants_wrapper {
+    display: none;
+  }
+
+}
+
+
+
+/* Медиа-запросы */
+/* @media screen and (-webkit-min-device-pixel-ratio: 0) and (min-resolution: .001dpcm) {
+  .form_vacancy_wrapper {
+    display: flex;
+    height: fit-content;
+    position: relative;
+  }
+ 
+} */
+
+/* Для Firefox */
+/* @-moz-document url-prefix() {
+  .form_vacancy_wrapper {
+    display: flex;
+    height: fit-content;
+    position: relative;
+  }
+ 
+} */
+
+/* Для Internet Explorer */
+/* @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
+  .form_vacancy_wrapper {
+    display: flex;
+    height: fit-content;
+    position: relative;
+  }
+
+} */

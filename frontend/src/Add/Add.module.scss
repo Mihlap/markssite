@@ -1,0 +1,25 @@
+@import '../App.css';
+
+.add_container {
+    padding-left: 26%;
+    padding-right: 14%;
+    height: 100vh;
+    // background-color: rgb(32,33,36);
+}
+
+
+@media screen and (min-width: 1024px) and (max-width: 1600px) {
+    .add_container {
+        padding-left: 20%;
+        padding-right: 0;
+        height: 100vh;
+        // background-color: rgb(32,33,36);
+    }
+}
+
+@media screen and (max-width: 1023px) {
+    .add_container {
+        padding-left: 0px;
+        padding-right: 0;
+    }
+}

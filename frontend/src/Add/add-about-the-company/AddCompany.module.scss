@@ -1,0 +1,16 @@
+@import '../../App.css';
+
+
+.company_components_admin {
+    height: 100vh;
+    padding-left: 3rem;
+    padding-top: 7.5rem;
+
+    &__title {
+        font-family: var(--font-unbounded);
+        font-size: 2rem;
+        font-style: normal;
+        font-weight: 300;
+        line-height: 2.5rem;
+    }
+}
