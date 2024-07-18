@@ -1,6 +1,6 @@
 export const selectBlocks = [
   { name: 'direction', label: 'Направление', options: [
-    { value: "Другая вакансия", label: "Другая вакансия" },
+    { value: "Другое направление", label: "Другое направление" },
     { value: "Архитектура", label: "Архитектура" },
     { value: "Конструктив", label: "Конструктив" },
     { value: "Инженерия", label: "Инженерия" },
