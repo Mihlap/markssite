@@ -470,6 +470,28 @@ font-family: var(--font-raleway);
     padding-left: 4rem;
   }
 
+  .filterModalContent {
+    padding: 0rem 6rem 0rem 6.5rem;
+  }
+
+  .filterName_button_modal_wrapper { 
+    padding-bottom: 0px;
+    max-width: 30rem;
+  }
+
+  .filterName_title {
+    padding-top: 1.5rem;
+  }
+  
+  .filterName_button_modal {
+    padding-top: 0.75rem;
+  }
+
+  .applyButtonWrapper {
+    padding-top: 1.5rem;
+    padding-bottom: 2rem;
+  }
+
   .vacancyFormWrapper {
     padding: 0rem 0rem 6rem 4rem;
   }
@@ -681,6 +703,10 @@ font-family: var(--font-raleway);
     display: flex;
     flex-direction: column;
     padding: 24px 2rem 0rem 2rem;
+  }
+
+  .filterName_button_modal_wrapper { 
+    max-width: 30rem;
   }
 
   .filterName_title {

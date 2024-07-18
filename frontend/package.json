@@ -2,7 +2,7 @@
   "name": "markssite",
   "version": "0.1.0",
   "private": true,
-  "proxy": "http://localhost:8080", 
+  "proxy": "http://localhost:8080",
   "dependencies": {
     "@mapbox/mapbox-gl-draw": "^1.4.1",
     "@mediapipe/tasks-vision": "^0.10.14",
@@ -83,3 +83,4 @@
     "webpack-obfuscator": "^3.5.1"
   }
 }
+

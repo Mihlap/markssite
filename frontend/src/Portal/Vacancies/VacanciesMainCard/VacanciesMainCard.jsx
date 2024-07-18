@@ -1,15 +1,10 @@
-import React, {
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Helmet } from "react-helmet-async";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { debounce } from 'lodash';
+import { debounce } from "lodash";
 import styles from "./VacanciesMainCard.module.scss";
 import VacancySlider from "../VacancySlider/VacancySlider";
 import LoadingVacancy from "../../../Loading/LoadingVacancy";
@@ -74,122 +69,139 @@ const VacanciesMainCard = ({
       setIsVisible(window.innerWidth > 1024);
       setWindowWidth(window.innerWidth);
     }, 100);
-  
-    window.addEventListener("resize", handleResizeDebounced);  
-     
+
+    window.addEventListener("resize", handleResizeDebounced);
+
     return () => {
       window.removeEventListener("resize", handleResizeDebounced);
-      handleResizeDebounced.cancel(); 
+      handleResizeDebounced.cancel();
     };
-  }, []); 
+  }, []);
 
   useEffect(() => {
     window.scrollTo(0, 0);
     dispatch(fetchEmployees(id));
   }, [dispatch, id]);
 
-  
   useEffect(() => {
     if (vacancies && vacancies.length > 0) {
-      const selectedVac = vacancies.find(vacancy => vacancy.id === parseInt(id));
-      setSelectedVacancy(selectedVac); 
+      const selectedVac = vacancies.find(
+        (vacancy) => vacancy.id === parseInt(id)
+      );
+      setSelectedVacancy(selectedVac);
     }
   }, [vacancies, id]);
-  
-   
+
   useEffect(() => {
-    if (windowWidth < 1025 || !vacancies || !selectedVacancy) return;  
-    
+    if (windowWidth < 1025 || !vacancies || !selectedVacancy) return;
+
     const timeout = setTimeout(() => {
       const frameId = requestAnimationFrame(() => {
-        vacancies.forEach(vacancy => {
-          const blockRight = document.getElementById(`blockRight-${vacancy.id}`);
-          const wrapperTextBlock = document.getElementById(`wrapperTextBlock-${selectedVacancy.id}`);
-  
+        vacancies.forEach((vacancy) => {
+          const blockRight = document.getElementById(
+            `blockRight-${vacancy.id}`
+          );
+          const wrapperTextBlock = document.getElementById(
+            `wrapperTextBlock-${selectedVacancy.id}`
+          );
+
           if (!blockRight || !wrapperTextBlock) return;
-  
+
           const updatePosition = () => {
             const blockRightRect = blockRight.getBoundingClientRect();
-            const wrapperTextBlockRect = wrapperTextBlock.getBoundingClientRect();
+            const wrapperTextBlockRect =
+              wrapperTextBlock.getBoundingClientRect();
             let wrapperTextBlockBottom;
-  
+
             if (windowWidth > 1601) {
-              wrapperTextBlockBottom = wrapperTextBlockRect.bottom + window.scrollY - blockRightRect.height - 550;
+              wrapperTextBlockBottom =
+                wrapperTextBlockRect.bottom +
+                window.scrollY -
+                blockRightRect.height -
+                550;
             } else {
-              wrapperTextBlockBottom = wrapperTextBlockRect.bottom + window.scrollY - blockRightRect.height - 350;
+              wrapperTextBlockBottom =
+                wrapperTextBlockRect.bottom +
+                window.scrollY -
+                blockRightRect.height -
+                350;
             }
-  
-            if (window.scrollY + blockRightRect.height >= wrapperTextBlockBottom) {
+
+            if (
+              window.scrollY + blockRightRect.height >=
+              wrapperTextBlockBottom
+            ) {
               blockRight.style.position = "absolute";
-              blockRight.style.top = `${wrapperTextBlockBottom - blockRightRect.height}px`;
+              blockRight.style.top = `${
+                wrapperTextBlockBottom - blockRightRect.height
+              }px`;
             } else {
               blockRight.style.position = "fixed";
               blockRight.style.top = "0";
             }
             blockRight.style.right = "0";
           };
-  
+
           const scrollTriggerInstance = ScrollTrigger.create({
             trigger: wrapperTextBlock,
             start: "top bottom",
             end: "bottom top",
             scrub: true,
             onUpdate: updatePosition,
-            onRefresh: updatePosition
-          });  
-         
+            onRefresh: updatePosition,
+          });
+
           return () => {
             scrollTriggerInstance.kill();
           };
         });
       });
-  
+
       return () => {
         cancelAnimationFrame(frameId);
-        ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+        ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
       };
     }, 500);
-  
+
     return () => {
       clearTimeout(timeout);
     };
-  }, [windowWidth, vacancies, selectedVacancy]);   
-  
-  
-   useLayoutEffect(() => {
+  }, [windowWidth, vacancies, selectedVacancy]);
+
+  useLayoutEffect(() => {
     ScrollTrigger.refresh();
-    }, [selectedVacancy]); 
-  
-   useLayoutEffect(() => {
+  }, [selectedVacancy]);
+
+  useLayoutEffect(() => {
     const button = formButtonRef.current;
     const form = formRef.current;
     if (!button || !form) return;
-  
+
     setTimeout(() => {
-      const initialButtonBottom = button.getBoundingClientRect().bottom + window.scrollY + 10;
-  
+      const initialButtonBottom =
+        button.getBoundingClientRect().bottom + window.scrollY + 10;
+
       const updateButtonPosition = () => {
         const scrollY = window.scrollY;
         const windowHeight = window.innerHeight;
         const formRect = form.getBoundingClientRect();
-  
+
         const shouldFixButton = scrollY + windowHeight >= initialButtonBottom;
         const shouldHideButton = formRect.top <= windowHeight;
-  
+
         button.classList.toggle(styles.fixed, shouldFixButton);
         button.classList.toggle(styles.hidden, shouldHideButton);
       };
-  
+
       updateButtonPosition();
-      window.addEventListener('scroll', updateButtonPosition);
-  
+      window.addEventListener("scroll", updateButtonPosition);
+
       return () => {
-        window.removeEventListener('scroll', updateButtonPosition);
+        window.removeEventListener("scroll", updateButtonPosition);
       };
-    }, 300); 
+    }, 300);
   }, []);
-  
-  
+
   const handleScrollToForm = () => {
     if (formRef.current) {
       formRef.current.scrollIntoView({ behavior: "smooth" });
@@ -203,12 +215,12 @@ const VacanciesMainCard = ({
         if (!rocketRef.current || !sputnikRef.current) {
           return;
         }
-  
+
         gsap.killTweensOf([rocketRef.current, sputnikRef.current]);
-  
+
         const xValueRocket = 180;
         const xValueSputnik = -180;
-  
+
         const rocketAnimation = gsap.timeline({
           scrollTrigger: {
             trigger: rocketRef.current,
@@ -222,7 +234,7 @@ const VacanciesMainCard = ({
           { x: 0, opacity: 1 },
           { x: xValueRocket, opacity: 1, duration: 1 }
         );
-  
+
         const sputnikAnimation = gsap.timeline({
           scrollTrigger: {
             trigger: sputnikRef.current,
@@ -237,11 +249,11 @@ const VacanciesMainCard = ({
           { x: xValueSputnik, opacity: 1, duration: 1 }
         );
       }, 1000);
-  
+
       return () => {
         clearTimeout(timer);
         gsap.killTweensOf([rocketRef.current, sputnikRef.current]);
-        ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+        ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
       };
     } else {
       // Для размеров от 1024 и меньше
@@ -249,13 +261,13 @@ const VacanciesMainCard = ({
         if (!rocketRef.current || !sputnikRef.current) {
           return;
         }
-  
+
         gsap.killTweensOf([rocketRef.current, sputnikRef.current]);
-  
+
         const isSmallScreen = window.innerWidth <= 767;
         const xValueRocket = isSmallScreen ? 80 : 100;
         const xValueSputnik = isSmallScreen ? -80 : -100;
-  
+
         const rocketAnimation = gsap.timeline({
           scrollTrigger: {
             trigger: rocketRef.current,
@@ -269,7 +281,7 @@ const VacanciesMainCard = ({
           { x: 0, opacity: 1 },
           { x: xValueRocket, opacity: 1, duration: 1 }
         );
-  
+
         const sputnikAnimation = gsap.timeline({
           scrollTrigger: {
             trigger: sputnikRef.current,
@@ -284,17 +296,16 @@ const VacanciesMainCard = ({
           { x: xValueSputnik, opacity: 1, duration: 1 }
         );
       };
-  
+
       const frameId = requestAnimationFrame(animate);
-  
+
       return () => {
         cancelAnimationFrame(frameId);
         gsap.killTweensOf([rocketRef.current, sputnikRef.current]);
-        ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+        ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
       };
     }
-  }, [windowWidth]); 
-  
+  }, [windowWidth]);
 
   return (
     <>
@@ -416,9 +427,9 @@ const VacanciesMainCard = ({
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
           >
-          <AllVacancyButton />
+            <AllVacancyButton />
           </div>
-        </div>       
+        </div>
         <div className={styles.main_vacancyWrapper__offer}>
           <span className={styles.main_vacancyWrapper__offerName}>
             Marks Group предлагает тебе
@@ -475,27 +486,25 @@ const VacanciesMainCard = ({
             </div>
           </div>
         </div>
-        <div  className={styles.main_vacancyWrapper__button_vacancyWrapper}>
-        {!isVisible && (
-          <button
-            className={styles.main_vacancyWrapper__button_vacancy}
-            type="submit"
-            id="submit-button"
-            onClick={handleScrollToForm}
-            onMouseEnter={handleMouseEnter}
+        <div className={styles.main_vacancyWrapper__button_vacancyWrapper}>
+          {!isVisible && (
+            <button
+              className={styles.main_vacancyWrapper__button_vacancy}
+              type="submit"
+              id="submit-button"
+              onClick={handleScrollToForm}
+              onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
               ref={formButtonRef}
-          >
-            <p className={styles.main_vacancyWrapper__button_name_vacancy}>
-              Откликнуться на вакансию
-            </p>
-          </button>
-        )}
+            >
+              <p className={styles.main_vacancyWrapper__button_name_vacancy}>
+                Откликнуться на вакансию
+              </p>
+            </button>
+          )}
         </div>
         <div className={styles.main_vacancyWrapper__wrapperTextBlock}>
-          <div
-             id={`wrapperTextBlock-${selectedVacancy?.id}`}
-          >
+          <div id={`wrapperTextBlock-${selectedVacancy?.id}`}>
             <RenderVacancySections />
           </div>
         </div>
@@ -632,7 +641,7 @@ const VacanciesMainCard = ({
             </span>
           </div>
           <div className={styles.frameBlockRight}>
-          <BenefitsVacancy />           
+            <BenefitsVacancy />
           </div>
         </div>
         <div className={styles.temporaryText}>Мы ищем именно тебя!</div>
@@ -645,7 +654,7 @@ const VacanciesMainCard = ({
           ref={formRef}
         >
           <VacancyFormContact
-           formRef={formRef}
+            formRef={formRef}
             initialDirection={selectedVacancy?.direction}
             handleMouseEnter={handleMouseEnter}
             handleMouseLeave={handleMouseLeave}
@@ -654,11 +663,11 @@ const VacanciesMainCard = ({
             setIsModalOpen={setIsModalOpen}
             vacancyTitle={selectedVacancy?.title}
             centerButton={true}
-         />
+          />
         </div>
       </div>
     </>
   );
 };
-              
+
 export default React.memo(VacanciesMainCard);
