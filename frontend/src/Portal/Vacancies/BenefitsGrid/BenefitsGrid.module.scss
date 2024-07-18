@@ -53,6 +53,12 @@
     row-gap: rem(64);
   }
 
+  &__item {
+    color: var(--black-1D2E43);
+    font-size: rem(16);
+    line-height: rem(24);
+  }
+
   &__icon {
     flex-shrink: 0;
     width: rem(160);
@@ -69,6 +75,7 @@
     h3 {
       font-weight: bold;
       font-size: rem(18);
+      line-height: rem(24);
       margin-bottom: rem(8);
     }
   }
