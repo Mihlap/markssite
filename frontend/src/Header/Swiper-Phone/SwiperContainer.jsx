@@ -12,18 +12,18 @@ import { Link } from "react-router-dom";
 const Host = process.env.REACT_APP_SERVER_HOST;
 
 export default function SwiperContainer({ article1, article2 }) {
-  const [currentIndexContainer, setCurrentIndexContainer] = useState(0);
-  const swiperContainerRef = useRef(null);
+  // const [currentIndexContainer, setCurrentIndexContainer] = useState(0);
+  // const swiperContainerRef = useRef(null);
   SwiperCore.use([Navigation, Pagination, Autoplay]);
 
   const combinedArticles = [...article1, ...article2];
 
-  const handleContainerClick = (index) => {
-    setCurrentIndexContainer(index);
-    if (swiperContainerRef.current && swiperContainerRef.current.slideTo) {
-      swiperContainerRef.current.slideTo(index);
-    }
-  };
+  // const handleContainerClick = (index) => {
+  //   setCurrentIndexContainer(index);
+  //   if (swiperContainerRef.current && swiperContainerRef.current.slideTo) {
+  //     swiperContainerRef.current.slideTo(index);
+  //   }
+  // };
 
   return (
     <div className="swiper_container_wrapper">

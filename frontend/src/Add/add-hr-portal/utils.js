@@ -17,9 +17,9 @@ export const selectBlocks = [
   ] },
   { name: 'experience', label: 'Опыт работы', options: [
     { value: "Без опыта", label: "Без опыта" },
-    { value: "1-3 года", label: "1-3" },
-    { value: "3-5 лет", label: "3-5" },
-    { value: "5-10 лет", label: "5-10" },
+    { value: "1-3 года", label: "1-3 года" },
+    { value: "3-5 лет", label: "3-5 лет" },
+    { value: "5-10 лет", label: "5-10 лет" },
   ] },
   { name: 'location', label: 'Локация', options: [
     { value: "Москва", label: "Москва" },

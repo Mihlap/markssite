@@ -1,5 +1,7 @@
+import React, { useLayoutEffect, useRef }  from 'react';
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import gsap from 'gsap';
 
-import React  from 'react';
 import ButtonLink from '../ButtonLink/ButtonLink';
 import styles from "./VacanciesMap.module.scss";
 

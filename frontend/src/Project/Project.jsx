@@ -20,7 +20,7 @@ import { fetchToggleStateAsync } from "../store/Slice/toggleSlice";
 import catPhoto from "../img/default-photo.jpeg";
 
 const Host = process.env.REACT_APP_SERVER_HOST;
-const apiKey = process.env.REACT_APP_API_KEY;
+// const apiKey = process.env.REACT_APP_API_KEY;
 
 export default function Project({
   handleMouseEnter,
@@ -87,10 +87,10 @@ export default function Project({
   );
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   const [swiper, setSwiper] = useState(null);
-  const navigate = useNavigate();
+
 
   const projectsPerPage = 100;
-  const isMobileScreen = screenWidth <= 768;
+  // const isMobileScreen = screenWidth <= 768;
 
   // console.log(projects);
   // useEffect(() => {

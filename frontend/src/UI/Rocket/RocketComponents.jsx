@@ -15,12 +15,26 @@ const Rocket = () => {
     right: 0,
     // top: 10,
     bottom: 0,
-    width: '25%',
+    width: '75%',
     height: '100%',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center', 
   });
+
+  // const [containerStyle, setContainerStyle] = useState(() => {
+  //   const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+  //   return {
+      // position: 'fixed',
+      // right: 0,
+      // bottom: 0,
+      // width: isSafari ? '30%' : '75%',
+      // height: '100%',
+      // display: 'flex',
+      // justifyContent: 'center',
+      // alignItems: 'center',
+  //   };
+  // });
 
   const handleResize = useCallback(() => {
     const screenWidth = window.innerWidth;
