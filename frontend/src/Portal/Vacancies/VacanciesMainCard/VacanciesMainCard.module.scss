@@ -26,7 +26,7 @@
     &__item {
       display: flex;
       justify-content: space-between;
-      height: 50vh;
+      height: auto;
     }
 
     &__background1 {
@@ -71,7 +71,6 @@
       backdrop-filter: blur(7px);
       background: linear-gradient(221.46deg, rgba(255, 203, 193, 0.09) -4.631%, rgba(117, 187, 253, 0.09) 44.805%, rgba(188, 188, 188, 0.09) 103.423%);
       padding-left: 8.37rem;
-      // padding-top: 140px;
       border-bottom: 1px solid rgb(235, 236, 238);
     }
 
@@ -753,12 +752,13 @@
         color: var(--gray-959DA6);
         font-family: var(--font-raleway);
         font-size: 1.125rem;
-        font-weight: var(--fw-700);
+        font-weight: var(--fw-400);
         line-height: 1.5rem;
       }
 
       .blockText {
-        max-width: 47rem;
+        max-width: 100%;
+        width: 100%;
         color: var(--black-1D2E43);
         font-family: var(--font-unbounded);
         font-size: 2.5rem;
@@ -768,7 +768,8 @@
       }
 
       .blockText1 {
-        max-width: 30rem;
+        max-width: 100%;
+        width: 100%;
         color: var(--black-1D2E43);
         font-family: var(--font-raleway);
         font-size: 1.125rem;
@@ -779,15 +780,8 @@
     }
 
     .frameBlockRight {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-      padding-left: 10vw;
-
-      .main_vacancyWrapper__frameBlock_frame {
-        flex: 0 0 30%;
-        margin-bottom: 6.25rem;
-      }
+       padding-left: 10vw;
+       flex: 0 0 70%;
     }
 
   }
@@ -801,7 +795,7 @@
     font-weight: var(--fw-300);
     line-height: 3rem;
     padding-left: 8.37rem;
-    padding-top: 10rem;
+    padding-top: 8rem;
   }
 
   .textUnderForm {
@@ -818,7 +812,7 @@
   }
 
   &__vacancyFormWrapper {
-    padding: 3.5rem 3rem 20rem 8.37rem;
+    padding: 3.5rem 3rem 6rem 8.37rem;
   }
 
   .mobileBackgroundContainer {
@@ -864,6 +858,11 @@
         padding-left: 3.875rem;
       }
 
+      &__blockRight {
+        height: 100vh;
+        // height: calc(100% - 5vh);
+      }
+  
       &__vacancyTitle {
         display: flex;
         flex-wrap: wrap;
@@ -893,12 +892,13 @@
         max-width: 80%;
       }
 
-      // &__detailItem {
-      //   max-height: 100%;
-      //   min-height: 140px;
-      //   padding-left: 2.5rem;
-      //   margin-bottom: -2rem; // для того чтобы влезла кнопка формы отправки вакансий
-      // }
+      &__detailItem {
+        // max-height: 25vh;
+        min-height: 20vh;
+        padding-left: 2.5rem;
+        height: auto;
+        // margin-bottom: -2rem; 
+      }
 
 
       &__detailKey {
@@ -1271,6 +1271,7 @@
         flex-direction: column;
         letter-spacing: 0px;
         text-align: left;
+        z-index: 1;
 
         .blockTitle {
           font-size: 1rem;
@@ -1278,7 +1279,7 @@
         }
 
         .blockText {
-          max-width: 70%;
+          max-width: 80%;
           width: 100%;
           font-size: 2rem;
           font-weight: var(--fw-300);
@@ -1287,7 +1288,7 @@
         }
 
         .blockText1 {
-          max-width: 80%;
+          max-width: 90%;
           width: 100%;
           padding-top: 29px;
         }
@@ -1295,40 +1296,16 @@
 
       .frameBlockRight {
         display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        padding-left: 1rem;
+        padding-left: 4rem;
         padding-top: 3rem;
-
-        .main_vacancyWrapper__frameBlock_frame {
-          flex: 0 0 50%;
-          margin-bottom: 3rem;
+        flex: 0 0 60%;
         }
-
-        .main_vacancyWrapper__frame {
-          width: 7.5rem;
-          height: 7.5rem;
-        }
-
-        .main_vacancyWrapper__frameSpan {
-          color: var(--black-1D2E43);
-          font-family: var(--font-raleway);
-          font-size: 1.125rem;
-          font-weight: var(--fw-500);
-          line-height: 1.5rem;
-          letter-spacing: 0px;
-          text-align: left;
-          width: 80%;
-          margin-right: 3.9rem;
-        }
-
-      }
 
     }
 
     .temporaryText {
       padding-left: 3.875rem;
-      padding-top: 160px;
+      padding-top: 24px;
     }
 
     .textUnderForm {
@@ -1337,7 +1314,7 @@
     }
 
     &__vacancyFormWrapper {
-      padding: 2.75rem 0rem 5.75rem 3.875rem;
+      padding: 2.75rem 0rem 5rem 3.875rem;
     }
 
   }
@@ -1868,33 +1845,12 @@
       }
 
       .frameBlockRight {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
         padding-left: 0;
         padding-top: 2.625rem;
 
         .main_vacancyWrapper__frameBlock_frame {
           flex: 0 0 50%;
           margin-bottom: 6.25rem;
-        }
-
-
-        .main_vacancyWrapper__frame {
-          width: 7.5rem;
-          height: 7.5rem;
-        }
-
-        .main_vacancyWrapper__frameSpan {
-          color: var(--black-1D2E43);
-          font-family: var(--font-raleway);
-          font-size: 1.125rem;
-          font-weight: var(--fw-500);
-          line-height: 1.5rem;
-          letter-spacing: 0px;
-          text-align: left;
-          width: 70%;
-          margin-right: 3.9rem;
         }
       }
 
@@ -1909,7 +1865,7 @@
       font-weight: var(--fw-300);
       line-height: 3rem;
       padding-left: 11rem;
-      padding-top: 1.188rem;
+      padding-top: 1.5rem;
     }
 
     .textUnderForm {
@@ -1926,7 +1882,7 @@
     }
 
     &__vacancyFormWrapper {
-      padding: 2.75rem 11rem 6rem 11rem;
+      padding: 2.75rem 11rem 9rem 11rem;
     }
 
   }
@@ -2148,7 +2104,6 @@
 
 
     &__button_vacancy {
-
       display: inline-flex;
       padding: 1rem 2rem;
       justify-content: center;
@@ -2550,23 +2505,9 @@
 
       .frameBlockRight {
         display: flex;
-        flex-direction: column;
-        flex-wrap: wrap;
-        justify-content: space-between;
         padding-left: 0;
-        padding-top: 3.75rem;
-
-        .main_vacancyWrapper__frameBlock_frame {
-          flex: 0;
-          margin-bottom: 2rem;
-        }
-
-        .main_vacancyWrapper__frame {
-          width: 5rem;
-          height: 5rem;
-        }
-
-      }
+        padding-top: 2.7rem;
+    }
 
     }
 
@@ -2596,7 +2537,7 @@
     }
 
     &__vacancyFormWrapper {
-      padding: 1.5rem 1rem 3.75rem 1rem;
+      padding: 1.5rem 1rem 8rem 1rem;
     }
 
   }

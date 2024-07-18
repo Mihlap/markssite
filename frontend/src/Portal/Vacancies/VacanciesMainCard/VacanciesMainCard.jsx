@@ -1,16 +1,10 @@
-import React, {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { Helmet } from "react-helmet-async";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { debounce, throttle } from 'lodash';
+import { debounce } from "lodash";
 import styles from "./VacanciesMainCard.module.scss";
 import VacancySlider from "../VacancySlider/VacancySlider";
 import LoadingVacancy from "../../../Loading/LoadingVacancy";
@@ -34,18 +28,20 @@ import star3d_8 from "../icons/star3d_8.png";
 import star3d_9 from "../icons/star3d_9.png";
 import star3d_10 from "../icons/star3d_10.png";
 import star3d_11 from "../icons/star3d_11.png";
-import heart from "../icons/heart.png";
-import heart2 from "../icons/heart2.png";
+import heart from "../icons/heart.svg";
+import heart2 from "../icons/heart2.svg";
 import rocket1 from "../icons/rocket1.svg";
 import rocketBig from "../icons/rocketBig.png";
 import sputnik from "../icons/sputnik.png";
-import vectorAround from "../icons/VectorAround.png";
+import vectorAround from "../icons/VectorAround.svg";
 import vectorAround1 from "../icons/VectorAround1.png";
 import vectorAround2 from "../icons/vectorAround2.svg";
-import frame1 from "../icons/frame1.png";
-import frame2 from "../icons/frame2.png";
-import frame3 from "../icons/frame3.png";
-import frame4 from "../icons/frame4.png";
+
+import frame1 from "../icons/frame/frame1.svg";
+import frame2 from "../icons/frame/frame2.svg";
+import frame3 from "../icons/frame/frame3.svg";
+import frame4 from "../icons/frame/frame4.svg";
+import BenefitsVacancy from "../BenefitsVacancy/BenefitsVacancy";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -67,136 +63,145 @@ const VacanciesMainCard = ({
   const formButtonRef = useRef(null);
   const rocketRef = useRef(null);
   const sputnikRef = useRef(null);
-  const blockRightWrapperRef = useRef(null);
-  const wrapperTextBlockRef = useRef(null);
 
   useEffect(() => {
     const handleResizeDebounced = debounce(() => {
       setIsVisible(window.innerWidth > 1024);
       setWindowWidth(window.innerWidth);
     }, 100);
-  
-    window.addEventListener("resize", handleResizeDebounced);  
-     
+
+    window.addEventListener("resize", handleResizeDebounced);
+
     return () => {
       window.removeEventListener("resize", handleResizeDebounced);
-      handleResizeDebounced.cancel(); 
+      handleResizeDebounced.cancel();
     };
-  }, []); 
+  }, []);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     dispatch(fetchEmployees(id));
   }, [dispatch, id]);
 
   useEffect(() => {
     if (vacancies && vacancies.length > 0) {
-      setSelectedVacancy(vacancies[0]);
+      const selectedVac = vacancies.find(
+        (vacancy) => vacancy.id === parseInt(id)
+      );
+      setSelectedVacancy(selectedVac);
     }
-  }, [vacancies]);
+  }, [vacancies, id]);
 
-  // useEffect(() => {    
-  //   if (!vacancies || vacancies.length === 0) {
-  //     dispatch(fetchEmployees(id));
-  //   }
-  // }, [dispatch, id, vacancies]); 
-   
+  useEffect(() => {
+    if (windowWidth < 1025 || !vacancies || !selectedVacancy) return;
 
-  // const handleScroll = useCallback(() => {
-  //   window.requestAnimationFrame(() => {
-  //     const blockRight = blockRightWrapperRef.current;
-  //     const wrapperTextBlock = wrapperTextBlockRef.current;
-  
-  //     if (!blockRight || !wrapperTextBlock) return;
-  
-  //     const blockRightRect = blockRight.getBoundingClientRect();
-  //     const wrapperTextBlockRect = wrapperTextBlock.getBoundingClientRect();
-  
-  //     // const wrapperTextBlockBottom = window.innerWidth >= 1025 && window.innerWidth <= 1600 ?
-  //     //   wrapperTextBlockRect.top + window.scrollY + window.innerHeight * 0.6 :
-  //     //   wrapperTextBlockRect.top + window.scrollY + window.innerHeight * 0.3;
+    const timeout = setTimeout(() => {
+      const frameId = requestAnimationFrame(() => {
+        vacancies.forEach((vacancy) => {
+          const blockRight = document.getElementById(
+            `blockRight-${vacancy.id}`
+          );
+          const wrapperTextBlock = document.getElementById(
+            `wrapperTextBlock-${selectedVacancy.id}`
+          );
 
-  //     const wrapperTextBlockBottom = wrapperTextBlockRect.bottom + window.scrollY - blockRightRect.height - 400;
-  
-  //     blockRight.style.position = window.scrollY + blockRightRect.height >= wrapperTextBlockBottom ? "absolute" : "fixed";
-  //     blockRight.style.top = window.scrollY + blockRightRect.height >= wrapperTextBlockBottom ? `${wrapperTextBlockBottom - blockRightRect.height}px` : "0";
-  //     blockRight.style.right = "0";
-  //   });
-  // }, [windowWidth]);
+          if (!blockRight || !wrapperTextBlock) return;
 
-  
-  // useEffect(() => {
-  //   if (window.innerWidth < 1025) return;
-  
-  //   window.addEventListener("scroll", handleScroll);
-  //   return () => window.removeEventListener("scroll", handleScroll);
-  // }, [handleScroll]); 
+          const updatePosition = () => {
+            const blockRightRect = blockRight.getBoundingClientRect();
+            const wrapperTextBlockRect =
+              wrapperTextBlock.getBoundingClientRect();
+            let wrapperTextBlockBottom;
+
+            if (windowWidth > 1601) {
+              wrapperTextBlockBottom =
+                wrapperTextBlockRect.bottom +
+                window.scrollY -
+                blockRightRect.height -
+                550;
+            } else {
+              wrapperTextBlockBottom =
+                wrapperTextBlockRect.bottom +
+                window.scrollY -
+                blockRightRect.height -
+                350;
+            }
+
+            if (
+              window.scrollY + blockRightRect.height >=
+              wrapperTextBlockBottom
+            ) {
+              blockRight.style.position = "absolute";
+              blockRight.style.top = `${
+                wrapperTextBlockBottom - blockRightRect.height
+              }px`;
+            } else {
+              blockRight.style.position = "fixed";
+              blockRight.style.top = "0";
+            }
+            blockRight.style.right = "0";
+          };
+
+          const scrollTriggerInstance = ScrollTrigger.create({
+            trigger: wrapperTextBlock,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+            onUpdate: updatePosition,
+            onRefresh: updatePosition,
+          });
+
+          return () => {
+            scrollTriggerInstance.kill();
+          };
+        });
+      });
+
+      return () => {
+        cancelAnimationFrame(frameId);
+        ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+      };
+    }, 500);
+
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [windowWidth, vacancies, selectedVacancy]);
 
   useLayoutEffect(() => {
-    if (window.innerWidth < 1025) return undefined; 
-    
-    const handleScroll = () => {
-      const animationFrameId = window.requestAnimationFrame(() => {
-        const blockRight = blockRightWrapperRef.current;
-        const wrapperTextBlock = wrapperTextBlockRef.current;
-  
-        if (!blockRight || !wrapperTextBlock) return;
-  
-        const blockRightRect = blockRight.getBoundingClientRect();
-        const wrapperTextBlockRect = wrapperTextBlock.getBoundingClientRect();
-  
-        const wrapperTextBlockBottom = wrapperTextBlockRect.bottom + window.scrollY - blockRightRect.height - 400;
-  
-        blockRight.style.position = window.scrollY + blockRightRect.height >= wrapperTextBlockBottom ? "absolute" : "fixed";
-        blockRight.style.top = window.scrollY + blockRightRect.height >= wrapperTextBlockBottom ? `${wrapperTextBlockBottom - blockRightRect.height}px` : "0";
-        blockRight.style.right = "0";
-      });
-  
-      return () => window.cancelAnimationFrame(animationFrameId);
-    };
-  
-    const timer = setTimeout(() => {
-      handleScroll();
-      window.addEventListener("scroll", handleScroll);
-    }, 150); 
-  
-    return () => {
-      clearTimeout(timer);
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [windowWidth]);
-  
-  
+    ScrollTrigger.refresh();
+  }, [selectedVacancy]);
 
   useLayoutEffect(() => {
     const button = formButtonRef.current;
     const form = formRef.current;
     if (!button || !form) return;
-  
+
     setTimeout(() => {
-      const initialButtonBottom = button.getBoundingClientRect().bottom + window.scrollY;
-  
+      const initialButtonBottom =
+        button.getBoundingClientRect().bottom + window.scrollY + 10;
+
       const updateButtonPosition = () => {
         const scrollY = window.scrollY;
         const windowHeight = window.innerHeight;
         const formRect = form.getBoundingClientRect();
-  
+
         const shouldFixButton = scrollY + windowHeight >= initialButtonBottom;
         const shouldHideButton = formRect.top <= windowHeight;
-  
+
         button.classList.toggle(styles.fixed, shouldFixButton);
         button.classList.toggle(styles.hidden, shouldHideButton);
       };
-  
+
       updateButtonPosition();
-      window.addEventListener('scroll', updateButtonPosition);
-  
+      window.addEventListener("scroll", updateButtonPosition);
+
       return () => {
-        window.removeEventListener('scroll', updateButtonPosition);
+        window.removeEventListener("scroll", updateButtonPosition);
       };
-    }, 150); 
+    }, 300);
   }, []);
-  
-  
+
   const handleScrollToForm = () => {
     if (formRef.current) {
       formRef.current.scrollIntoView({ behavior: "smooth" });
@@ -204,54 +209,103 @@ const VacanciesMainCard = ({
   };
 
   useLayoutEffect(() => {
-    const timer = setTimeout(() => {
-      if (!rocketRef.current || !sputnikRef.current) {
-        return;
-      }
-  
-     gsap.killTweensOf([rocketRef.current, sputnikRef.current]);
-  
-      const isSmallScreen = window.innerWidth <= 767;
-      const xValueRocket = isSmallScreen ? 80 : (window.innerWidth <= 1024 ? 100 : 180);
-      const xValueSputnik = isSmallScreen ? -80 : (window.innerWidth <= 1024 ? -100 : -180);
-  
-      const rocketAnimation = gsap.timeline({
-        scrollTrigger: {
-          trigger: rocketRef.current,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: true,
-        },
-      });
-      rocketAnimation.fromTo(
-        rocketRef.current,
-        { x: 0, opacity: 1 },
-        { x: xValueRocket, opacity: 1, duration: 1 }
-      );
-  
-      const sputnikAnimation = gsap.timeline({
-        scrollTrigger: {
-          trigger: sputnikRef.current,
-          start: "top bottom",
-          end: "bottom top",
-          scrub: true,
-        },
-      });
-      sputnikAnimation.fromTo(
-        sputnikRef.current,
-        { x: 0, opacity: 1 },
-        { x: xValueSputnik, opacity: 1, duration: 1 }
-      );
-  
-    }, 100);
-  
-    return () => {
-      clearTimeout(timer);
-      gsap.killTweensOf([rocketRef.current, sputnikRef.current]);
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-    };
-  }, [windowWidth]); 
-  
+    if (window.innerWidth > 1024) {
+      // Для размеров экрана больше 1024
+      const timer = setTimeout(() => {
+        if (!rocketRef.current || !sputnikRef.current) {
+          return;
+        }
+
+        gsap.killTweensOf([rocketRef.current, sputnikRef.current]);
+
+        const xValueRocket = 180;
+        const xValueSputnik = -180;
+
+        const rocketAnimation = gsap.timeline({
+          scrollTrigger: {
+            trigger: rocketRef.current,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+          },
+        });
+        rocketAnimation.fromTo(
+          rocketRef.current,
+          { x: 0, opacity: 1 },
+          { x: xValueRocket, opacity: 1, duration: 1 }
+        );
+
+        const sputnikAnimation = gsap.timeline({
+          scrollTrigger: {
+            trigger: sputnikRef.current,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+          },
+        });
+        sputnikAnimation.fromTo(
+          sputnikRef.current,
+          { x: 0, opacity: 1 },
+          { x: xValueSputnik, opacity: 1, duration: 1 }
+        );
+      }, 1000);
+
+      return () => {
+        clearTimeout(timer);
+        gsap.killTweensOf([rocketRef.current, sputnikRef.current]);
+        ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+      };
+    } else {
+      // Для размеров от 1024 и меньше
+      const animate = () => {
+        if (!rocketRef.current || !sputnikRef.current) {
+          return;
+        }
+
+        gsap.killTweensOf([rocketRef.current, sputnikRef.current]);
+
+        const isSmallScreen = window.innerWidth <= 767;
+        const xValueRocket = isSmallScreen ? 80 : 100;
+        const xValueSputnik = isSmallScreen ? -80 : -100;
+
+        const rocketAnimation = gsap.timeline({
+          scrollTrigger: {
+            trigger: rocketRef.current,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+          },
+        });
+        rocketAnimation.fromTo(
+          rocketRef.current,
+          { x: 0, opacity: 1 },
+          { x: xValueRocket, opacity: 1, duration: 1 }
+        );
+
+        const sputnikAnimation = gsap.timeline({
+          scrollTrigger: {
+            trigger: sputnikRef.current,
+            start: "top bottom",
+            end: "bottom top",
+            scrub: true,
+          },
+        });
+        sputnikAnimation.fromTo(
+          sputnikRef.current,
+          { x: 0, opacity: 1 },
+          { x: xValueSputnik, opacity: 1, duration: 1 }
+        );
+      };
+
+      const frameId = requestAnimationFrame(animate);
+
+      return () => {
+        cancelAnimationFrame(frameId);
+        gsap.killTweensOf([rocketRef.current, sputnikRef.current]);
+        ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+      };
+    }
+  }, [windowWidth]);
 
   return (
     <>
@@ -308,7 +362,7 @@ const VacanciesMainCard = ({
                 </div>
                 <div
                   className={styles.main_vacancy_block__blockRightWrapper}
-                  ref={blockRightWrapperRef}
+                  id={`blockRight-${vacancy?.id}`}
                 >
                   <div className={styles.main_vacancy_block__blockRight}>
                     <div
@@ -375,7 +429,7 @@ const VacanciesMainCard = ({
           >
             <AllVacancyButton />
           </div>
-        </div>       
+        </div>
         <div className={styles.main_vacancyWrapper__offer}>
           <span className={styles.main_vacancyWrapper__offerName}>
             Marks Group предлагает тебе
@@ -391,8 +445,8 @@ const VacanciesMainCard = ({
             <div className={styles.main_vacancyWrapper__frameBlock_frame}>
               <img
                 className={styles.main_vacancyWrapper__frame}
-                src={frame1}
-                alt={frame1}
+                src={frame2}
+                alt={frame2}
               />
               <span className={styles.main_vacancyWrapper__frameSpan}>
                 Опыт работы на&nbsp;уникальных объектах
@@ -401,8 +455,8 @@ const VacanciesMainCard = ({
             <div className={styles.main_vacancyWrapper__frameBlock_frame}>
               <img
                 className={styles.main_vacancyWrapper__frame}
-                src={frame2}
-                alt={frame2}
+                src={frame1}
+                alt={frame1}
               />
               <span className={styles.main_vacancyWrapper__frameSpan}>
                 Развитие карьерного и&nbsp;личностного потенциала
@@ -413,8 +467,8 @@ const VacanciesMainCard = ({
             <div className={styles.main_vacancyWrapper__frameBlock_frame}>
               <img
                 className={styles.main_vacancyWrapper__frame}
-                src={frame3}
-                alt={frame3}
+                src={frame4}
+                alt={frame4}
               />
               <span className={styles.main_vacancyWrapper__frameSpan}>
                 Создаем атмосферу менторства и&nbsp;наставничества
@@ -423,8 +477,8 @@ const VacanciesMainCard = ({
             <div className={styles.main_vacancyWrapper__frameBlock_frame}>
               <img
                 className={styles.main_vacancyWrapper__frame}
-                src={frame4}
-                alt={frame4}
+                src={frame3}
+                alt={frame3}
               />
               <span className={styles.main_vacancyWrapper__frameSpan}>
                 Даем почву для&nbsp;воплощения ваших идей
@@ -432,25 +486,25 @@ const VacanciesMainCard = ({
             </div>
           </div>
         </div>
-        <div  className={styles.main_vacancyWrapper__button_vacancyWrapper}>
-        {!isVisible && (
-          <button
-            className={styles.main_vacancyWrapper__button_vacancy}
-            type="submit"
-            id="submit-button"
-            onClick={handleScrollToForm}
-            onMouseEnter={handleMouseEnter}
+        <div className={styles.main_vacancyWrapper__button_vacancyWrapper}>
+          {!isVisible && (
+            <button
+              className={styles.main_vacancyWrapper__button_vacancy}
+              type="submit"
+              id="submit-button"
+              onClick={handleScrollToForm}
+              onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
               ref={formButtonRef}
-          >
-            <p className={styles.main_vacancyWrapper__button_name_vacancy}>
-              Откликнуться на вакансию
-            </p>
-          </button>
-        )}
+            >
+              <p className={styles.main_vacancyWrapper__button_name_vacancy}>
+                Откликнуться на вакансию
+              </p>
+            </button>
+          )}
         </div>
         <div className={styles.main_vacancyWrapper__wrapperTextBlock}>
-          <div ref={wrapperTextBlockRef}>
+          <div id={`wrapperTextBlock-${selectedVacancy?.id}`}>
             <RenderVacancySections />
           </div>
         </div>
@@ -587,66 +641,7 @@ const VacanciesMainCard = ({
             </span>
           </div>
           <div className={styles.frameBlockRight}>
-            <div className={styles.main_vacancyWrapper__frameBlock_frame}>
-              <img
-                className={styles.main_vacancyWrapper__frame}
-                src={frame1}
-                alt={frame1}
-              />
-              <span className={styles.main_vacancyWrapper__frameSpan}>
-                Опыт работы на уникальных объектах
-              </span>
-            </div>
-            <div className={styles.main_vacancyWrapper__frameBlock_frame}>
-              <img
-                className={styles.main_vacancyWrapper__frame}
-                src={frame2}
-                alt={frame2}
-              />
-              <span className={styles.main_vacancyWrapper__frameSpan}>
-                Библиотека профессиональной литературы
-              </span>
-            </div>
-            <div className={styles.main_vacancyWrapper__frameBlock_frame}>
-              <img
-                className={styles.main_vacancyWrapper__frame}
-                src={frame3}
-                alt={frame3}
-              />
-              <span className={styles.main_vacancyWrapper__frameSpan}>
-                Корпоративное такси для встреч
-              </span>
-            </div>
-            <div className={styles.main_vacancyWrapper__frameBlock_frame}>
-              <img
-                className={styles.main_vacancyWrapper__frame}
-                src={frame4}
-                alt={frame4}
-              />
-              <span className={styles.main_vacancyWrapper__frameSpan}>
-                Оплачиваемы занятия в&nbsp;фитнес клубе
-              </span>
-            </div>
-            <div className={styles.main_vacancyWrapper__frameBlock_frame}>
-              <img
-                className={styles.main_vacancyWrapper__frame}
-                src={frame1}
-                alt={frame1}
-              />
-              <span className={styles.main_vacancyWrapper__frameSpan}>
-                Поддержка и&nbsp;адаптация от&nbsp;совета молодых специалистов
-              </span>
-            </div>
-            <div className={styles.main_vacancyWrapper__frameBlock_frame}>
-              <img
-                className={styles.main_vacancyWrapper__frame}
-                src={frame1}
-                alt={frame1}
-              />
-              <span className={styles.main_vacancyWrapper__frameSpan}>
-                Обучение и&nbsp;карьерный рост
-              </span>
-            </div>
+            <BenefitsVacancy />
           </div>
         </div>
         <div className={styles.temporaryText}>Мы ищем именно тебя!</div>
@@ -659,7 +654,7 @@ const VacanciesMainCard = ({
           ref={formRef}
         >
           <VacancyFormContact
-           formRef={formRef}
+            formRef={formRef}
             initialDirection={selectedVacancy?.direction}
             handleMouseEnter={handleMouseEnter}
             handleMouseLeave={handleMouseLeave}
@@ -667,11 +662,12 @@ const VacanciesMainCard = ({
             setIsLoading={setIsLoading}
             setIsModalOpen={setIsModalOpen}
             vacancyTitle={selectedVacancy?.title}
+            centerButton={true}
           />
         </div>
       </div>
     </>
   );
 };
-              
-export default VacanciesMainCard;
+
+export default React.memo(VacanciesMainCard);
