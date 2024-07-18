@@ -1,6 +1,5 @@
-@import "../../../App.css";
-@import "../../../_variables.scss";
-
+@import '../../../App.css';
+@import '../../../_variables.scss';
 
 .temporaryText {
   max-width: 47rem;
@@ -41,7 +40,6 @@
     padding-left: 4rem;
   }
 
-
   .textUnderForm {
     max-width: 40rem;
     padding-left: 4rem;
@@ -68,7 +66,6 @@
     padding: 100px 10.8rem 0px 10.8rem;
   }
 
-
   .textUnderForm {
     max-width: 44rem;
     padding-left: 4vw;
@@ -90,7 +87,6 @@
   .vacancyFormWrapper {
     padding: 6px 10.8rem 80px 10.8rem;
   }
-
 }
 
 @media screen and (max-width: 767px) {

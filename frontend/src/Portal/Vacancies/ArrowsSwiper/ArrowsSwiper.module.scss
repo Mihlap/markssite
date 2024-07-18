@@ -1,5 +1,5 @@
-@import "../../../App.css";
-@import "../../../_variables.scss";
+@import '../../../App.css';
+@import '../../../_variables.scss';
 
 .ArrowsSwiper {
   display: flex;
@@ -14,12 +14,12 @@
     background-repeat: no-repeat;
     background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTUiIGhlaWdodD0iNiIgdmlld0JveD0iMCAwIDE1IDYiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxwYXRoIGQ9Ik0tOS41MzY3NGUtMDcgM0w1IDUuODg2NzVMNSAwLjExMzI0OEwtOS41MzY3NGUtMDcgM1pNMTUgMi41TDQuNSAyLjVMNC41IDMuNUwxNSAzLjVMMTUgMi41WiIgZmlsbD0iIzU2NjI3MiIvPgo8L3N2Zz4K');
     transition: 0.2s;
-    
+
     &:not(:last-child) {
       margin-right: rem(12);
     }
 
-    &:last-child{
+    &:last-child {
       transform: rotate(180deg);
     }
 
@@ -28,13 +28,13 @@
       background-color: var(--black-1D2E43);
     }
 
-    &:active{
+    &:active {
       background-color: var(--dark-gray-566272);
     }
   }
 
   // Адаптация под tablet
-  @media all and (max-width:$bp3){
+  @media all and (max-width: $bp3) {
     display: none;
   }
 }
