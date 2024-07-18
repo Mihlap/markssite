@@ -16,7 +16,7 @@
     "dotenv": "^16.0.3",
     "eruda": "^3.0.1",
     "framer-motion": "^10.15.1",
-    "gsap": "^3.11.5",
+    "gsap": "^3.12.5",
     "localStorage": "^1.0.4",
     "mapbox-gl": "^2.14.0",
     "normalize.css": "^8.0.1",
@@ -83,4 +83,3 @@
     "webpack-obfuscator": "^3.5.1"
   }
 }
-

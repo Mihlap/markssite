@@ -3,9 +3,9 @@
   "singleQuote": true,
   "tabWidth": 2,
   "useTabs": false,
-  "printWidth": 80,
+  "printWidth": 120,
   "trailingComma": "es5",
   "bracketSpacing": true,
   "arrowParens": "always",
-  "jsxBracketSameLine": false
+  "jsxBracketSameLine": true
 }

@@ -1,5 +1,4 @@
-
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
 import Intro from '../Intro/Intro';
 import VideoScroll from '../VideoScroll/VideoScroll';
@@ -18,46 +17,39 @@ import VacancyFormContact from '../../../UI/VacancyFormContact/VacancyFormContac
 import styles from './VacanciesMain3.module.scss';
 
 const VacanciesMain3 = ({ handleMouseEnter, handleMouseLeave, handleMouseHover }) => {
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [windowWidth] = useState(window.innerWidth);
 
-	return (
-		<>
-			<Intro />
-			<VideoScroll />
-			<TextCenter />
-			<RatingSwiper />
-			<CountRows />
-			<DirectionsGrid />
-			<VacanciesMap />
-			<BenefitsGrid />
-			<VacanciesList />р
-			<VacanciesInvite />
-			<SocialsSwiper />
-			<GalleryTabs
-				handleMouseEnter={handleMouseEnter}
-				handleMouseLeave={handleMouseLeave}
-				handleMouseHover={handleMouseHover}
-			/>
-
-			<div className={styles.temporaryText}>
-				{windowWidth > 1024
-					? "Не нашли подходящую вакансию?"
-					: "Мы ищем именно тебя!"}
-			</div>
-			<div className={styles.textUnderForm}>
-				Оставьте ваши контакты, мы всегда в поиске талантливых
-				профессионалов
-			</div>
-			<div className={styles.vacancyFormWrapper}>
-				<VacancyFormContact
-					handleMouseEnter={handleMouseEnter}
-					handleMouseLeave={handleMouseLeave}
-					handleMouseHover={handleMouseHover}
-				/>
-			</div>
-
-		</>
-	);
+  return (
+    <>
+      <Intro />
+      <VideoScroll />
+      <TextCenter />
+      <RatingSwiper />
+      <CountRows />
+      <DirectionsGrid />
+      <VacanciesMap />
+      <BenefitsGrid />
+      <VacanciesList />р
+      <VacanciesInvite />
+      <SocialsSwiper />
+      <GalleryTabs
+        handleMouseEnter={handleMouseEnter}
+        handleMouseLeave={handleMouseLeave}
+        handleMouseHover={handleMouseHover}
+      />
+      <div className={styles.temporaryText}>
+        {windowWidth > 1024 ? 'Не нашли подходящую вакансию?' : 'Мы ищем именно тебя!'}
+      </div>
+      <div className={styles.textUnderForm}>Оставьте ваши контакты, мы всегда в поиске талантливых профессионалов</div>
+      <div className={styles.vacancyFormWrapper}>
+        <VacancyFormContact
+          handleMouseEnter={handleMouseEnter}
+          handleMouseLeave={handleMouseLeave}
+          handleMouseHover={handleMouseHover}
+        />
+      </div>
+    </>
+  );
 };
 
 export default VacanciesMain3;
