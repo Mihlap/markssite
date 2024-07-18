@@ -1,7 +1,10 @@
 import React, { useEffect, useState, useCallback } from "react";
 import Modal from "react-modal";
 import styles from "../VacanciesMain/Vacancies.module.css";
-import { fetchFilteredVacancies, setActiveFilters } from "../../../store/Slice/vacanciesSlice";
+import {
+  fetchFilteredVacancies,
+  setActiveFilters,
+} from "../../../store/Slice/vacanciesSlice";
 import { useDispatch, useSelector } from "react-redux";
 
 Modal.setAppElement("#root");
@@ -14,7 +17,7 @@ const FilterModalVacancies = ({
 }) => {
   const dispatch = useDispatch();
   const activeFilters = useSelector((state) => state.vacancies.activeFilters);
-  const filterKeyForSpecialty = 'direction';
+  const filterKeyForSpecialty = "direction";
 
   const [localFilters, setLocalFilters] = useState({ ...activeFilters });
 
@@ -22,34 +25,40 @@ const FilterModalVacancies = ({
     setLocalFilters(activeFilters);
   }, [activeFilters]);
 
-  const handleFilterClick = useCallback((category, value) => {
-    setLocalFilters((prevFilters) => {
-      const updatedFilters = { ...prevFilters };
+  const handleFilterClick = useCallback(
+    (category, value) => {
+      setLocalFilters((prevFilters) => {
+        const updatedFilters = { ...prevFilters };
 
-      // Это для выбора одного таба
-      if (updatedFilters[category]?.length === 1 && updatedFilters[category][0] === value) {
-        delete updatedFilters[category]; 
-      } else {
-        updatedFilters[category] = [value];
-      }
+        // Это для выбора одного таба
+        if (
+          updatedFilters[category]?.length === 1 &&
+          updatedFilters[category][0] === value
+        ) {
+          delete updatedFilters[category];
+        } else {
+          updatedFilters[category] = [value];
+        }
 
-      // Это для выбора нескольких табов
-      // const currentValues = updatedFilters[category] || [];
-      // const valueIndex = currentValues.indexOf(value);
+        // Это для выбора нескольких табов
+        // const currentValues = updatedFilters[category] || [];
+        // const valueIndex = currentValues.indexOf(value);
 
-      // if (valueIndex > -1) {
-      //   updatedFilters[category] = currentValues.filter((item) => item !== value);
-      // } else {
-      //   updatedFilters[category] = [...currentValues, value];
-      // }
+        // if (valueIndex > -1) {
+        //   updatedFilters[category] = currentValues.filter((item) => item !== value);
+        // } else {
+        //   updatedFilters[category] = [...currentValues, value];
+        // }
 
-      if (selectedFilter !== "Все") {
-        updatedFilters[filterKeyForSpecialty] = [selectedFilter];
-      }
+        if (selectedFilter !== "Все") {
+          updatedFilters[filterKeyForSpecialty] = [selectedFilter];
+        }
 
-      return updatedFilters;
-    });
-  }, [selectedFilter]);
+        return updatedFilters;
+      });
+    },
+    [selectedFilter]
+  );
 
   const handleApplyFilters = useCallback(() => {
     if (selectedFilter !== "Все") {
@@ -77,7 +86,11 @@ const FilterModalVacancies = ({
       filterKey: "locationStaff",
       buttons: [
         { id: "locationStaff-1", label: "Москва", value: "Москва" },
-        { id: "locationStaff-2", label: "Санкт-Петербург", value: "Санкт-Петербург" },
+        {
+          id: "locationStaff-2",
+          label: "Санкт-Петербург",
+          value: "Санкт-Петербург",
+        },
         { id: "locationStaff-3", label: "Воронеж", value: "Воронеж" },
         { id: "locationStaff-4", label: "Оренбург", value: "Оренбург" },
         { id: "locationStaff-5", label: "Челябинск", value: "Челябинск" },
@@ -161,7 +174,9 @@ const FilterModalVacancies = ({
                   <button
                     key={button.id}
                     className={`${styles.filterModalButton} ${
-                      localFilters[filterGroup.filterKey]?.includes(button.value)
+                      localFilters[filterGroup.filterKey]?.includes(
+                        button.value
+                      )
                         ? styles.activeFilter
                         : ""
                     }`}
@@ -177,10 +192,7 @@ const FilterModalVacancies = ({
           ))}
         </div>
         <div className={styles.applyButtonWrapper}>
-          <button
-            className={styles.applyButton}
-            onClick={handleApplyFilters}
-          >
+          <button className={styles.applyButton} onClick={handleApplyFilters}>
             Применить
           </button>
         </div>
