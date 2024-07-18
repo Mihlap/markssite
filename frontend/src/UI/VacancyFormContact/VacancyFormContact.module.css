@@ -151,7 +151,6 @@
   line-height: 1rem;
   padding-top: 4rem;
   max-width: 20rem;
-
 }
 
 .agreement_vacancy_link {
@@ -192,11 +191,11 @@
   border-radius: 4.125rem;
   border: 1px solid transparent;
   background-color: var(--blue-75BBFD);
-  margin-top: 1rem;
+  margin-top: 3rem;
   /* cursor: none; */
   transition: background-color 0.4s ease;
   min-width: 432px;
-  height: 56px;
+  /* height: 56px; */
 }
 
 .button_vacancy:hover,
@@ -404,7 +403,7 @@
   }
 
   .line {
-    height: 1px;
+    height: 0.5px;
     margin-top: 12px;
     background-color: var(--gray-959DA6);
     max-width: 28rem;
@@ -412,7 +411,7 @@
   }
 
   .lineSimple {
-    height: 1px;
+    height: 0.5px;
     margin-top: 12px;
     background-color: var(--gray-959DA6);
     width: 100%;
@@ -524,7 +523,7 @@
     /* cursor: none; */
     transition: background-color 0.4s ease;
     min-width: 0;
-    height: 46px;
+    /* height: 46px; */
   }
 
   .button_vacancy:hover {
@@ -816,6 +815,19 @@
     background-color: var(--blue-75BBFD);
   }
 
+  
+  .centerButton {
+    display: block;
+    position: absolute;
+    bottom: -5rem;
+    /* top: 0rem; */
+    left: 50%;
+    right: 0;
+    transform: translateX(-50%);
+    width: 100%;
+  }
+
+
 
   .button_name_vacancy {
     color: var(--white-F6F6F6);
@@ -1041,6 +1053,17 @@
 
   .button_vacancy:hover {
     background-color: var(--blue-75BBFD);
+  }
+
+  .centerButton {
+    display: block;
+    position: absolute;
+    bottom: -5rem;
+    /* top: 0rem; */
+    left: 50%;
+    right: 0;
+    transform: translateX(-50%);
+    width: 100%;
   }
 
 
