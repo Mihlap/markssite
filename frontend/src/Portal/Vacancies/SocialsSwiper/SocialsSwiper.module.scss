@@ -84,6 +84,14 @@
     }
   }
 
+  @media all and (max-width:$bp0){
+    &__picture {
+      height: auto;
+    }
+  }
+
+
+
   @media all and (max-width:$bp1){
     &__slider {
       padding: 0 rem(64);
