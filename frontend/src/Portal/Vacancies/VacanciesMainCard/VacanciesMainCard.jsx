@@ -61,7 +61,7 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
   const sputnikRef = useRef(null);
 
   useEffect(() => {
-    const handleResizeDebounced = debounce(() => {
+     const handleResizeDebounced = debounce(() => {
       setIsVisible(window.innerWidth > 1024);
       setWindowWidth(window.innerWidth);
     }, 100);
@@ -74,10 +74,10 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
     };
   }, []);
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
+  useEffect(() => {  
     dispatch(fetchEmployees(id));
   }, [dispatch, id]);
+
 
   useEffect(() => {
     if (vacancies && vacancies.length > 0) {
@@ -236,8 +236,8 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
         gsap.killTweensOf([rocketRef.current, sputnikRef.current]);
 
         const isSmallScreen = window.innerWidth <= 767;
-        const xValueRocket = isSmallScreen ? 80 : 100;
-        const xValueSputnik = isSmallScreen ? -80 : -100;
+        const xValueRocket = isSmallScreen ? 200 : 100;
+        const xValueSputnik = isSmallScreen ? -100 : -100;
 
         const rocketAnimation = gsap.timeline({
           scrollTrigger: {
@@ -273,6 +273,15 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
       };
     }
   }, [windowWidth]);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      window.scrollTo(0, 0);
+    }, 100);
+  
+    return () => clearTimeout(timer);
+  }, [id]);
+
 
   return (
     <>
