@@ -1,0 +1,109 @@
+@import '../../App.css';
+@import '../../_variables.scss';
+
+.CompanySlider {
+  margin: rem(120) 0;
+
+  &__title {
+    padding: 0 rem(30);
+    margin-bottom: rem(60);
+    color: var(--black-1D2E43);
+    font-family: var(--font-unbounded);
+    font-size: rem(40);
+    line-height: rem(48);
+  }
+
+  * > &__swiper {
+    overflow: visible !important;
+    padding: 0 rem(30) !important;
+  }
+
+  &__picture {
+    margin-bottom: rem(24);
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+
+    img {
+      display: block;
+      height: rem(68);
+      width: auto;
+      max-width: 100%;
+      object-fit: contain;
+      object-position: left;
+    }
+  }
+
+  &__text {
+    font-size: rem(18);
+    line-height: rem(26);
+    font-weight: 400;
+    color: var(--black-3C3C3C);
+  }
+
+  &__pagination {
+    display: none;
+    text-align: center;
+    z-index: 10;
+    margin-top: rem(30);
+  }
+
+  &__bullet {
+    width: rem(15);
+    height: rem(5);
+    background-color: var(--light-light-gray-EBECEE);
+    display: inline-block;
+    margin: 0 rem(4);
+    transition: 0.5s;
+  }
+
+  &__bulletActive {
+    width: rem(48);
+    background-color: var(--salmon-FF7F6A);
+  }
+
+  // Адаптация под меньший размер desktop
+  @media all and (max-width: $bp1) {
+    &__text {
+      font-size: rem(14);
+      line-height: rem(20);
+    }
+
+    &__picture {
+      img {
+        height: rem(40);
+      }
+    }
+
+  }
+
+  // Адаптация под tablet
+  @media all and (max-width: $bp3) {
+  }
+
+  // Адаптация под mobile
+  @media all and (max-width: $bp4) {
+    margin: rem(48) 0 rem(80) 0;
+    &__pagination {
+      display: block;
+    }
+
+    &__title {
+      padding: 0 rem(16);
+      margin-bottom: rem(48);
+      font-size: rem(24);
+      line-height: rem(32);
+    }
+
+    * > &__swiper {
+      padding: 0 rem(16) !important;
+    }
+
+    
+    &__picture {
+      img {
+        height: rem(48);
+      }
+    }
+  }
+}
