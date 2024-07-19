@@ -92,87 +92,144 @@ const VacanciesMainCard = ({
     }
   }, [vacancies, id]);
 
-  useEffect(() => {
+   useEffect(() => {
     if (windowWidth < 1025 || !vacancies || !selectedVacancy) return;
-
-    const timeout = setTimeout(() => {
-      const frameId = requestAnimationFrame(() => {
-        vacancies.forEach((vacancy) => {
-          const blockRight = document.getElementById(
-            `blockRight-${vacancy.id}`
-          );
-          const wrapperTextBlock = document.getElementById(
-            `wrapperTextBlock-${selectedVacancy.id}`
-          );
-
-          if (!blockRight || !wrapperTextBlock) return;
-
-          const updatePosition = () => {
-            const blockRightRect = blockRight.getBoundingClientRect();
-            const wrapperTextBlockRect =
-              wrapperTextBlock.getBoundingClientRect();
-            let wrapperTextBlockBottom;
-
-            if (windowWidth > 1601) {
-              wrapperTextBlockBottom =
-                wrapperTextBlockRect.bottom +
-                window.scrollY -
-                blockRightRect.height -
-                550;
-            } else {
-              wrapperTextBlockBottom =
-                wrapperTextBlockRect.bottom +
-                window.scrollY -
-                blockRightRect.height -
-                350;
-            }
-
-            if (
-              window.scrollY + blockRightRect.height >=
-              wrapperTextBlockBottom
-            ) {
-              blockRight.style.position = "absolute";
-              blockRight.style.top = `${
-                wrapperTextBlockBottom - blockRightRect.height
-              }px`;
-            } else {
-              blockRight.style.position = "fixed";
-              blockRight.style.top = "0";
-            }
-            blockRight.style.right = "0";
-          };
-
-          const scrollTriggerInstance = ScrollTrigger.create({
-            trigger: wrapperTextBlock,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: true,
-            onUpdate: updatePosition,
-            onRefresh: updatePosition,
-          });
-
-          return () => {
-            scrollTriggerInstance.kill();
-          };
-        });
-      });
-
-      return () => {
-        cancelAnimationFrame(frameId);
-        ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-      };
-    }, 500);
+  
+    const frameId = requestAnimationFrame(setupScrollTriggers);  
 
     return () => {
-      clearTimeout(timeout);
+      cancelAnimationFrame(frameId);    
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
   }, [windowWidth, vacancies, selectedVacancy]);
+  
+  const setupScrollTriggers = () => {
+     const triggers = [];
+  
+    vacancies.forEach((vacancy) => {
+      const blockRight = document.getElementById(`blockRight-${vacancy.id}`);
+      const wrapperTextBlock = document.getElementById(`wrapperTextBlock-${selectedVacancy.id}`);
+      if (!blockRight || !wrapperTextBlock) return;
+  
+      const trigger = setupBlockAnimation(blockRight, wrapperTextBlock);
+      if (trigger) triggers.push(trigger); 
+    });
+  
+    return () => {
+       triggers.forEach(trigger => trigger.kill());
+    };
+  };
+  
+  const setupBlockAnimation = (blockRight, wrapperTextBlock) => {
+    const blockRightRect = blockRight.getBoundingClientRect();
+    const wrapperTextBlockRect = wrapperTextBlock.getBoundingClientRect();
+    let wrapperTextBlockBottom = wrapperTextBlockRect.bottom + window.scrollY - blockRightRect.height - 350;
+  
+    if (windowWidth > 1601) {
+      wrapperTextBlockBottom -= 200;  
+    }  
+  
+    return ScrollTrigger.create({
+      trigger: wrapperTextBlock,
+      start: "top bottom",
+      end: "bottom top",
+      scrub: true,
+      onUpdate: self => updatePosition(self, blockRight, wrapperTextBlockBottom),
+      onRefresh: self => updatePosition(self, blockRight, wrapperTextBlockBottom)
+    });
+  };
+  
+  const updatePosition = (self, blockRight, bottom) => {
+    const scrollerPoint = window.scrollY + blockRight.getBoundingClientRect().height;
+    if (scrollerPoint >= bottom) {
+      blockRight.style.position = "absolute";
+      blockRight.style.top = `${bottom - blockRight.getBoundingClientRect().height}px`;
+    } else {
+      blockRight.style.position = "fixed";
+      blockRight.style.top = "0";
+    }
+    blockRight.style.right = "0";
+  };
+  
+  
 
-  useLayoutEffect(() => {
-    ScrollTrigger.refresh();
-  }, [selectedVacancy]);
+  // useLayoutEffect(() => {
+  //   const setupAnimations = () => {
+  //     if (!rocketRef.current || !sputnikRef.current) return;
+  
+  //     gsap.killTweensOf([rocketRef.current, sputnikRef.current]);
+  //     const isSmallScreen = window.innerWidth <= 767;
+  
+  //     const xValueRocket = window.innerWidth > 1024 ? 180 : isSmallScreen ? 80 : 100;
+  //     const xValueSputnik = window.innerWidth > 1024 ? -180 : isSmallScreen ? -80 : -100;
+  
+  //     const rocketAnimation = gsap.timeline({
+  //       scrollTrigger: {
+  //         trigger: rocketRef.current,
+  //         start: "top bottom",
+  //         end: "bottom top",
+  //         scrub: true,
+  //       }
+  //     });
+  
+  //     rocketAnimation.fromTo(
+  //       rocketRef.current,
+  //       { x: 0, opacity: 1 },
+  //       { x: xValueRocket, opacity: 1, duration: 1 }
+  //     );
+  
+  //     const sputnikAnimation = gsap.timeline({
+  //       scrollTrigger: {
+  //         trigger: sputnikRef.current,
+  //         start: "top bottom",
+  //         end: "bottom top",
+  //         scrub: true,
+  //       }
+  //     });
+  
+  //     sputnikAnimation.fromTo(
+  //       sputnikRef.current,
+  //       { x: 0, opacity: 1 },
+  //       { x: xValueSputnik, opacity: 1, duration: 1 }
+  //     );
+  //   };
+  
+  //   const timer = setTimeout(setupAnimations, 1000);
+  
+  //   return () => {
+  //     clearTimeout(timer);
+  //     gsap.killTweensOf([rocketRef.current, sputnikRef.current]);
+  //     ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+  //   };
+  // }, [windowWidth]); 
 
-  useLayoutEffect(() => {
+  useEffect(() => {
+    const handleScroll = () => {
+      const rocketEl = rocketRef.current;
+      const sputnikEl = sputnikRef.current;
+  
+      if (!rocketEl || !sputnikEl) return;
+  
+      // const isSmallScreen = window.innerWidth <= 1024;
+      const xValueRocket = window.innerWidth > 1024 ? 80 : 30;
+      const xValueSputnik = window.innerWidth > 1024 ? -80 : -40;
+  
+      const scrollPosition = window.scrollY;
+  
+      rocketEl.style.transform = `translateX(${scrollPosition * (xValueRocket / window.innerHeight)}px)`;
+      sputnikEl.style.transform = `translateX(${scrollPosition * (xValueSputnik / window.innerHeight)}px)`;
+    };
+  
+    window.addEventListener('scroll', handleScroll);    
+   
+    handleScroll();
+    
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [windowWidth]); 
+  
+  
+  
+ useLayoutEffect(() => {
     const button = formButtonRef.current;
     const form = formRef.current;
     if (!button || !form) return;
@@ -208,110 +265,10 @@ const VacanciesMainCard = ({
     }
   };
 
-  useLayoutEffect(() => {
-    if (window.innerWidth > 1024) {
-      // Для размеров экрана больше 1024
-      const timer = setTimeout(() => {
-        if (!rocketRef.current || !sputnikRef.current) {
-          return;
-        }
-
-        gsap.killTweensOf([rocketRef.current, sputnikRef.current]);
-
-        const xValueRocket = 180;
-        const xValueSputnik = -180;
-
-        const rocketAnimation = gsap.timeline({
-          scrollTrigger: {
-            trigger: rocketRef.current,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: true,
-          },
-        });
-        rocketAnimation.fromTo(
-          rocketRef.current,
-          { x: 0, opacity: 1 },
-          { x: xValueRocket, opacity: 1, duration: 1 }
-        );
-
-        const sputnikAnimation = gsap.timeline({
-          scrollTrigger: {
-            trigger: sputnikRef.current,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: true,
-          },
-        });
-        sputnikAnimation.fromTo(
-          sputnikRef.current,
-          { x: 0, opacity: 1 },
-          { x: xValueSputnik, opacity: 1, duration: 1 }
-        );
-      }, 1000);
-
-      return () => {
-        clearTimeout(timer);
-        gsap.killTweensOf([rocketRef.current, sputnikRef.current]);
-        ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-      };
-    } else {
-      // Для размеров от 1024 и меньше
-      const animate = () => {
-        if (!rocketRef.current || !sputnikRef.current) {
-          return;
-        }
-
-        gsap.killTweensOf([rocketRef.current, sputnikRef.current]);
-
-        const isSmallScreen = window.innerWidth <= 767;
-        const xValueRocket = isSmallScreen ? 200 : 100;
-        const xValueSputnik = isSmallScreen ? -100 : -100;
-
-        const rocketAnimation = gsap.timeline({
-          scrollTrigger: {
-            trigger: rocketRef.current,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: true,
-          },
-        });
-        rocketAnimation.fromTo(
-          rocketRef.current,
-          { x: 0, opacity: 1 },
-          { x: xValueRocket, opacity: 1, duration: 1 }
-        );
-
-        const sputnikAnimation = gsap.timeline({
-          scrollTrigger: {
-            trigger: sputnikRef.current,
-            start: "top bottom",
-            end: "bottom top",
-            scrub: true,
-          },
-        });
-        sputnikAnimation.fromTo(
-          sputnikRef.current,
-          { x: 0, opacity: 1 },
-          { x: xValueSputnik, opacity: 1, duration: 1 }
-        );
-      };
-
-      const frameId = requestAnimationFrame(animate);
-
-      return () => {
-        cancelAnimationFrame(frameId);
-        gsap.killTweensOf([rocketRef.current, sputnikRef.current]);
-        ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
-      };
-    }
-  }, [windowWidth]);
-
   useEffect(() => {
     const timer = setTimeout(() => {
       window.scrollTo(0, 0);
-    }, 100);
-  
+    }, 100);  
     return () => clearTimeout(timer);
   }, [id]);
 
@@ -538,13 +495,11 @@ const VacanciesMainCard = ({
             className={styles.background10}
             style={{ backgroundImage: `url(${star3d_8})` }}
           />
-          <div
-            className={styles.background8}
+          <div className={styles.background8}
             ref={rocketRef}
             style={{ backgroundImage: `url(${rocketBig})` }}
           />
-          <div
-            className={styles.background9}
+          <div className={styles.background9}
             ref={sputnikRef}
             style={{ backgroundImage: `url(${sputnik})` }}
           />
