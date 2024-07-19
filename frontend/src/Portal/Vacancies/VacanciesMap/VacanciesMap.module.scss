@@ -1,6 +1,5 @@
-@import "../../../App.css";
-@import "../../../_variables.scss";
-
+@import '../../../App.css';
+@import '../../../_variables.scss';
 
 .VacanciesMap {
   $s: &;
@@ -52,7 +51,6 @@
     transform-origin: center center;
     animation: ellipse 4s ease infinite;
 
-
     &_xs {
       width: 17px;
       height: 17px;
@@ -95,7 +93,7 @@
       white-space: nowrap;
     }
 
-    &_msk {    
+    &_msk {
       top: 249px;
       right: 756px;
 
@@ -114,13 +112,13 @@
           width: 32px;
           height: 32px;
         }
-        
+
         &_s {
           width: 115px;
           height: 115px;
           animation-delay: 700ms;
         }
-  
+
         &_m {
           width: 304px;
           height: 304px;
@@ -134,7 +132,7 @@
           opacity: 0.16;
           animation-delay: 900ms;
         }
-    
+
         &_xl {
           width: 661px;
           height: 661px;
@@ -149,8 +147,8 @@
       top: 656px;
       right: 1127px;
     }
-    
-    &_spb {    
+
+    &_spb {
       top: 341px;
       right: 1005px;
     }
@@ -160,7 +158,7 @@
       right: 852px;
     }
 
-    &_chbk {     
+    &_chbk {
       top: 882px;
       right: 669px;
     }
@@ -189,140 +187,134 @@
     }
   }
 
-  @media all and (max-width:2000px){
-
+  @media all and (max-width: 2000px) {
     &__text {
       width: 30%;
       margin: 0 0 rem(160) auto;
-  
-  
+
       h2 {
         font-size: rem(32);
         line-height: rem(40);
         margin-bottom: rem(24);
       }
-  
+
       p {
         margin-bottom: rem(32);
         font-size: rem(18);
         line-height: rem(26);
       }
     }
-  
+
     &__map {
       width: 960px;
       height: 880px;
       background-position: bottom 0 right -156px;
       background-size: 113%;
     }
-  
+
     &__circle {
-  
       &_xs {
         width: 12px;
         height: 12px;
       }
-  
+
       &_s {
         width: 42px;
         height: 42px;
       }
-  
+
       &_m {
         width: 70px;
         height: 70px;
       }
     }
-  
+
     &__city {
       span {
         font-size: 14px;
         transform: translateY(-47px);
       }
 
-      &_msk {        
+      &_msk {
         top: 80px;
         right: 356px;
-        
+
         span {
           font-size: 18px;
           transform: translateY(-58px);
         }
 
-  
         #{$s}__box {
           width: 470px;
           height: 470px;
         }
-  
+
         #{$s}__circle {
           &_xs {
             width: 22px;
             height: 22px;
           }
-          
+
           &_s {
             width: 102px;
             height: 102px;
           }
-    
+
           &_m {
             width: 216px;
             height: 216px;
           }
-  
+
           &_l {
             width: 360px;
             height: 360px;
           }
-      
+
           &_xl {
             width: 470px;
             height: 470px;
           }
         }
       }
-  
-      &_vzh {        
+
+      &_vzh {
         top: 364px;
         right: 619px;
       }
-      
-      &_spb {    
+
+      &_spb {
         top: 149px;
         right: 533px;
       }
-  
-      &_obg {       
+
+      &_obg {
         top: 536px;
         right: 428px;
       }
-  
-      &_chbk {             
+
+      &_chbk {
         top: 520px;
         right: 303px;
       }
     }
-  
+
     &__box {
       width: 70px;
       height: 70px;
     }
   }
 
-
   // Адаптация под tablet
-  @media all and (max-width:$bp3){
-
+  @media all and (max-width: $bp3) {
     &__text {
       width: 38%;
       margin: rem(64) 0 rem(64) auto;
-  
+
       h2 {
         font-size: rem(24);
         line-height: rem(32);
       }
-  
+
       p {
         font-size: rem(18);
         line-height: rem(26);
@@ -346,25 +338,25 @@
         width: 8px;
         height: 8px;
       }
-  
+
       &_s {
         width: 27px;
         height: 27px;
       }
-  
+
       &_m {
         width: 45px;
         height: 45px;
       }
     }
-  
+
     &__city {
       span {
         font-size: 9px;
         transform: translateY(-34px);
       }
 
-      &_msk {       
+      &_msk {
         top: 110px;
         right: 208px;
 
@@ -377,51 +369,51 @@
           width: 306px;
           height: 306px;
         }
-  
+
         #{$s}__circle {
           &_xs {
             width: 15px;
             height: 15px;
           }
-          
+
           &_s {
             width: 53px;
             height: 53px;
           }
-    
+
           &_m {
             width: 141px;
             height: 141px;
           }
-  
+
           &_l {
             width: 236px;
             height: 236px;
           }
-      
+
           &_xl {
             width: 306px;
             height: 306px;
           }
         }
       }
-    
-      &_vzh {       
+
+      &_vzh {
         top: 296px;
         right: 379px;
       }
-      
-      &_spb {                 
+
+      &_spb {
         top: 156px;
         right: 324px;
       }
-  
+
       &_obg {
         top: 409px;
         right: 255px;
       }
-  
-      &_chbk {             
+
+      &_chbk {
         top: 398px;
         right: 173px;
       }
@@ -429,7 +421,7 @@
   }
 
   // Адаптация под mobile
-  @media all and (max-width:$bp4){
+  @media all and (max-width: $bp4) {
     flex-direction: column;
     height: auto;
     padding: 0;
@@ -437,7 +429,7 @@
     &__text {
       position: static;
       width: 100%;
-      padding: rem(120) rem(16) 0 rem(16); 
+      padding: rem(120) rem(16) 0 rem(16);
       margin-bottom: 0;
 
       h2 {
@@ -459,7 +451,7 @@
         transform: translateY(-24px);
       }
 
-      &_msk {        
+      &_msk {
         top: 59px;
         right: 109px;
 
@@ -467,27 +459,26 @@
           font-size: 12px;
         }
       }
-    
-      &_vzh {       
+
+      &_vzh {
         top: 234px;
         right: 272px;
       }
-      
-      &_spb {       
+
+      &_spb {
         top: 121px;
         right: 228px;
       }
-  
+
       &_obg {
         top: 324px;
         right: 172px;
       }
-  
-      &_chbk {                
+
+      &_chbk {
         top: 315px;
         right: 107px;
       }
     }
   }
-
 }

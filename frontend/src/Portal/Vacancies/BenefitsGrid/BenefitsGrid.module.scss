@@ -2,7 +2,7 @@
 @import "../../../_variables.scss";
 
 .BenefitsGrid {
-  padding: rem(120) rem(144);
+  padding: rem(120) 0;
   background: linear-gradient(261.46deg, rgba(255, 203, 193, 0.09) -4.67%, rgba(117, 187, 253, 0.09) 44.63%, rgba(188, 188, 188, 0.09) 103.07%);
   position: relative;
 
@@ -42,11 +42,14 @@
 
   &__title {
     font-size: rem(32);
-    margin-bottom: rem(80);
     font-family: var(--font-unbounded);
+    width: 63%;
+    margin: 0 auto rem(80) auto;
   }
 
   &__items {
+    width: 63%;
+    margin: 0 auto;
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     column-gap: rem(43);
@@ -80,20 +83,34 @@
     }
   }
 
+  @media all and (max-width:$bp0){
+    &__title {
+      width: 80%;
+      margin: 0 auto rem(80) auto;
+    }
+  
+    &__items {
+      width: 80%;
+      column-gap: rem(44);
+      row-gap: rem(40);
+    }
+  }
   // Адаптация под tablet
   @media all and (max-width:$bp3){
-    padding: rem(80) rem(174);
+    padding: rem(80) 0;
 
     &__star {
       display: none;
     }
 
     &__title {
+      width: 66%;
       font-size: rem(24);
       margin-bottom: rem(54);
     }
 
     &__items {
+      width: 66%;
       grid-template-columns: repeat(2, 1fr);
       column-gap: rem(100);
     }
@@ -105,9 +122,11 @@
     
     &__title {
       margin-bottom: rem(48);
+      width: 100%;
     }
 
     &__items {
+      width: 100%;
       grid-template-columns: 1fr;
       gap: rem(48);
     }

@@ -70,10 +70,7 @@ const SocialsSwiper = () => {
   return (
     <section className={styles.SocialsSwiper}>
       <div className={styles.SocialsSwiper__header}>
-        <h2>
-          Подписывайся на <span>наши каналы в&nbsp;социальных сетях</span>, там всегда можно найти информации
-          о&nbsp;лекциях, конференциях и&nbsp;ключевых объектах
-        </h2>
+        <h2>Хочешь узнать больше о&nbsp;жизни компании? Подписывайся на&nbsp;нас в&nbsp;<span>социальных сетях!</span></h2>
       </div>
       <div className={styles.SocialsSwiper__slider}>
         {/* Переиспользуемый компонент - стрелки для свайпера */}

@@ -29,7 +29,7 @@ const VacanciesMain3 = ({ handleMouseEnter, handleMouseLeave, handleMouseHover }
       <DirectionsGrid />
       <VacanciesMap />
       <BenefitsGrid />
-      <VacanciesList />р
+      <VacanciesList />
       <VacanciesInvite />
       <SocialsSwiper />
       <GalleryTabs

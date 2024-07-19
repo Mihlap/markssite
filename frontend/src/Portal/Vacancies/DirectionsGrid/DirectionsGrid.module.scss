@@ -13,6 +13,7 @@
     font-size: rem(24);
     line-height: rem(32);
     z-index: 10;
+    color: var(--black-1D2E43);
 
     p:not(:last-child) {
       margin-bottom: rem(24);
@@ -178,6 +179,7 @@
       padding: rem(54) 0 rem(54) 0;
     }
 
+
     &__item {
       min-height: rem(268);
       flex-direction: row;
@@ -186,6 +188,10 @@
       gap: rem(24);
       padding-left: rem(165);
       padding-right: rem(165);
+
+      &:nth-child(1) {
+        background-color: var(--white-F6F6F6);
+      }
 
       img {
         margin: 0;

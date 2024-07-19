@@ -1,50 +1,52 @@
 import React, { useLayoutEffect, useRef } from 'react';
 import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 import styles from './VideoScroll.module.scss';
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 
 const VideoScroll = () => {
+  gsap.registerPlugin(ScrollTrigger);
+
   const videoRef = useRef(null);
   const containerRef = useRef(null);
 
   useLayoutEffect(() => {
-    const observerOptions = {
-      root: null,
-      rootMargin: '0px',
-      threshold: 0.5, // Начать анимацию, когда 50% элемента видимо
-    };
-
-    const observerCallback = (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          gsap.fromTo(
-            videoRef.current,
-            {
-              height: '0',
-              width: '0',
-            },
-            {
-              height: '100vh',
-              width: '100%',
-              duration: 1,
-            }
-          );
-        }
+    // Добавим задержку перед инициализацией ScrollTrigger
+    const initScrollTrigger = () => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: 'top center',
+          end: 'bottom center',
+          toggleActions: 'play none none none',
+        },
       });
+
+      tl.fromTo(
+        videoRef.current,
+        {
+          display: 'none',
+          height: '0',
+          width: '0',
+        },
+        {
+          display: 'block',
+          height: '100vh',
+          width: '100%',
+          duration: 1,
+        }
+      );
+
+      ScrollTrigger.refresh();
     };
 
-    const observer = new IntersectionObserver(observerCallback, observerOptions);
-
-    if (containerRef.current) {
-      observer.observe(containerRef.current);
-    }
+    const timeout = setTimeout(initScrollTrigger, 500);
 
     return () => {
-      if (containerRef.current) {
-        observer.unobserve(containerRef.current);
-      }
+      clearTimeout(timeout);
+      ScrollTrigger.kill();
     };
   }, []);
 
