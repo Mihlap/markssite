@@ -18,6 +18,7 @@
     position: absolute;
     z-index: -1;
     background-size: cover;
+    background-repeat: no-repeat; 
 
     &_1 {
       width: rem(308);
@@ -90,7 +91,7 @@
         top: 82.33%;
         left: 6.67%;
       }
-    }
+    }   
   }
 
   // Адаптация под tablet
@@ -169,6 +170,7 @@
         top: 70.74%;
         left: 21.49%;
       }
-    }
+    }    
   }
 }
+

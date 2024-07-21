@@ -210,23 +210,37 @@ const VacanciesMainCard = ({
   
       if (!rocketEl || !sputnikEl) return;
   
-      // const isSmallScreen = window.innerWidth <= 1024;
-      const xValueRocket = window.innerWidth > 1024 ? 80 : 30;
-      const xValueSputnik = window.innerWidth > 1024 ? -80 : -40;
-  
       const scrollPosition = window.scrollY;
   
-      rocketEl.style.transform = `translateX(${scrollPosition * (xValueRocket / window.innerHeight)}px)`;
-      sputnikEl.style.transform = `translateX(${scrollPosition * (xValueSputnik / window.innerHeight)}px)`;
+      let xValueRocket, xValueSputnik, rocketStart, sputnikStart;
+  
+      if (window.innerWidth > 1024) {
+        xValueRocket = 80;
+        xValueSputnik = -80;
+        rocketStart = -150; 
+        sputnikStart = 0; 
+      } else if (window.innerWidth > 767) {
+        xValueRocket = 50;
+        xValueSputnik = -50;
+        rocketStart = -80; 
+        sputnikStart = 20;
+      } else {
+        xValueRocket = 40;
+        xValueSputnik = -40;
+        rocketStart = -200; 
+        sputnikStart = -40; 
+      }
+  
+      rocketEl.style.transform = `translateX(${rocketStart + scrollPosition * (xValueRocket / window.innerHeight)}px)`;
+      sputnikEl.style.transform = `translateX(${sputnikStart + scrollPosition * (xValueSputnik / window.innerHeight)}px)`;
     };
   
-    window.addEventListener('scroll', handleScroll);    
-   
-    handleScroll();
-    
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, [windowWidth]); 
+    window.addEventListener('scroll', handleScroll);
   
+    handleScroll();
+  
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [windowWidth]);  
   
   
  useLayoutEffect(() => {
