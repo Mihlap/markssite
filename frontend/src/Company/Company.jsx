@@ -226,19 +226,19 @@ export default function Company({
         const scrollTop = window.scrollY || document.documentElement.scrollTop;
 
         if (scrollTop > thisBlockRect.top && screenWidth >= 2000) {
-          const translateYValue = nameCompanyRect.height + 60;
+          const translateYValue = nameCompanyRect.height + 190;
           nameCompanyRef.current.style.transform = `translateY(${translateYValue}px)`;
-          thisBlockRef.current.style.transform = `translateY(0px) translateX(10vw) rotate(-90deg)`;
+          thisBlockRef.current.style.transform = `translateY(150px) translateX(10vw) rotate(-90deg)`;
         } else if (
           scrollTop > thisBlockRect.top &&
           screenWidth < 1999 &&
           screenWidth >= 1480
         ) {
-          const translateYValue = nameCompanyRect.height + 112;
+          const translateYValue = nameCompanyRect.height + 200;
           nameCompanyRef.current.style.transform = `translateY(${translateYValue}px)`;
-          thisBlockRef.current.style.transform = `translateY(40px) translateX(10vw) rotate(-90deg)`;
+          thisBlockRef.current.style.transform = `translateY(170px) translateX(10vw) rotate(-90deg)`;
         } else if (scrollTop > thisBlockRect.top && screenWidth <= 1479) {
-          const translateYValue = nameCompanyRect.height + 262;
+          const translateYValue = nameCompanyRect.height + 230;
           nameCompanyRef.current.style.transform = `translateY(${translateYValue}px)`;
           thisBlockRef.current.style.transform = `translateY(180px) translateX(10vw) rotate(-90deg)`;
         } else {
@@ -404,52 +404,24 @@ export default function Company({
           </div>
           <div className={styles.right_about}>
             <div className={styles.text_right_about}>
-              {/* <span>От идеи до реализации – работа над проектами на всех этапах жизненного цикла</span>
-            <br />
-            <br />
-            <span>
-            Генеральное проектирование, цифровые технологии в строительстве, научные исследования,
-            комплексный анализ объектов и территорий, транспортной инфраструктуры городов и мегаполисов.
-            </span>
-            <br />
-            <br /> */}
               <p>
-                MARKS&nbsp;GROUP объединяет целый ряд компаний
-                по&nbsp;направлениям деятельности и&nbsp;ключевым компетенциям:
-                «МАРКС&nbsp;Инжиниринг», «Подземпроект»,
-                «Институт&nbsp;науки&nbsp;проектирования и&nbsp;инжиниринга»
-                и&nbsp;«МАРКС&nbsp;Диджитал».
+                MARKS GROUP &ndash; ключевая компания в&nbsp;сфере генерального проектирования,
+                начиная от&nbsp;концепции и&nbsp;заканчивая авторским
+                надзором за&nbsp;строительством объекта и&nbsp;его введением в&nbsp;эксплуатацию.
               </p>
               <br />
               {/* <br /> */}
               <p>
-                Сегодня это более 1000 специалистов и&nbsp;свыше 200
-                реализованных проектов в&nbsp;Москве, Санкт-Петербурге, Уфе,
-                Омске, Грозном, Крыму и&nbsp;других крупных регионах страны.
-                Работаем в&nbsp;партнёрстве с&nbsp;ведущими девелоперами,
-                крупными строительными организациями и&nbsp;международными
-                архитектурными бюро.
+                С&nbsp;2015&nbsp;года непрерывный опыт проектирования уникальных объектов,
+                жилых и&nbsp;общественных зданий, промышленных предприятий
+                и&nbsp;объектов транспортной инфраструктуры.
               </p>
               <br />
               {/* <br /> */}
               <p>
-                В&nbsp;портфеле актуальных проектов Группы компаний: комплексное
-                проектирование уникальных зданий и&nbsp;сооружений, жилых
-                и&nbsp;многофункциональных высотных комплексов, объектов
-                рекреационно-туристического кластера, комплексное развитие
-                территорий, развитие сети аэропортов, инфраструктуры
-                метрополитена.
+               MARKS GROUP. Вдохновляющие проекты для&nbsp;амбициозных заказчиков.
               </p>
-              <p>
-                {" "}
-                Более 18 лет опыта проектирования как&nbsp;полного комплекса,
-                так&nbsp;и&nbsp;отдельных разделов проектной и&nbsp;рабочей
-                документации для&nbsp;объектов различной сложности
-                и&nbsp;функционального назначения, начиная с&nbsp;архитектурной
-                концепции и&nbsp;заканчивая авторским надзором
-                за&nbsp;строительством.
-              </p>
-            </div>
+              </div>
             <div className={styles.main_counter_wrapper}>
               {isMobile && <CounterCompanyMobile2 />}
             </div>
@@ -1163,8 +1135,8 @@ export default function Company({
                   <ModalVacancyFormSend
                     isOpen={modalOpenFormContacts}
                     onRequestClose={() => setModalOpenFormContacts(false)}
-                    title="Ваше сообщение доставлено!"
-                    message="Мы ответим вам в ближайшее время!"
+                    title="Заявка отправлена!"
+                    message="Мы свяжемся с вами в ближайшее время!"
                   />
                 </div>
               </div>
