@@ -2,6 +2,7 @@
 @import '../../_variables.scss';
 
 .CompanySlider {
+  $s: &;
   margin: rem(120) 0;
 
   &__title {
@@ -16,17 +17,35 @@
   * > &__swiper {
     overflow: visible !important;
     padding: 0 rem(30) !important;
+
+    & > * {
+      justify-content: space-between;
+      gap: 24px;
+    }
+  }
+
+  &__slide {
+    &:first-child {
+      #{$s}__picture {
+        justify-content: flex-start;
+      }
+    }
+
+    &:last-child {
+      #{$s}__picture {
+        justify-content: flex-end;
+      }
+    }
   }
 
   &__picture {
-    margin-bottom: rem(24);
     display: flex;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
 
     img {
       display: block;
-      height: rem(68);
+      height: rem(80);
       width: auto;
       max-width: 100%;
       object-fit: contain;
@@ -35,6 +54,8 @@
   }
 
   &__text {
+    display: none;
+    margin-top: rem(24);
     font-size: rem(18);
     line-height: rem(26);
     font-weight: 400;
@@ -62,6 +83,21 @@
     background-color: var(--salmon-FF7F6A);
   }
 
+  @media all and (max-width: 2200px) {
+    &__picture {
+      img {
+        height: rem(68);
+      }
+    }
+  }
+
+  @media all and (max-width: $bp0) {
+    &__picture {
+      img {
+        height: rem(58);
+      }
+    }
+  }
   // Адаптация под меньший размер desktop
   @media all and (max-width: $bp1) {
     &__text {
@@ -71,22 +107,32 @@
 
     &__picture {
       img {
-        height: rem(40);
+        height: rem(48);
       }
     }
-
   }
 
-  // Адаптация под tablet
-  @media all and (max-width: $bp3) {
+  @media all and (min-width: $bp0) {
+    &__slide {
+      width: auto !important;
+    }
+  }
+
+  @media all and (max-width: $bp0) {
+    * > &__swiper > * {
+      gap: 0px;
+    }
+  }
+
+  @media all and (max-width: $bp2) {
+    &__pagination {
+      display: block;
+    }
   }
 
   // Адаптация под mobile
   @media all and (max-width: $bp4) {
-    margin: rem(48) 0 rem(80) 0;
-    &__pagination {
-      display: block;
-    }
+    margin: rem(49) 0 rem(80) 0;
 
     &__title {
       padding: 0 rem(16);
@@ -99,10 +145,23 @@
       padding: 0 rem(16) !important;
     }
 
-    
     &__picture {
       img {
         height: rem(48);
+      }
+    }
+
+    &__slide {
+      &:first-child {
+        #{$s}__picture {
+          justify-content: center;
+        }
+      }
+
+      &:last-child {
+        #{$s}__picture {
+          justify-content: center;
+        }
       }
     }
   }

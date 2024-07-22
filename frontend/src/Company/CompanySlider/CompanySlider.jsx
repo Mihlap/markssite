@@ -49,30 +49,28 @@ const CompanySlider = () => {
           }}
           keyboard={{ enabled: true }}
           slideActiveClass={styles.CompanySlider__active}
-          loop={true}
           spaceBetween={30}
           slidesPerGroup={1}
           breakpoints={{
-            1920: {
-              spaceBetween: 80,
+            1280: {
               slidesPerView: 4,
-            },
-            1440: {
-              slidesPerView: 4,
-            },
-            1024: {
-              slidesPerView: 2.8,
+              spaceBetween: 0,
             },
             768: {
+              slidesPerView: 3,
+              spaceBetween: 60,
+            },
+            480: {
               slidesPerView: 2,
+              spaceBetween: 30,
             },
             280: {
-              spaceBetween: 30,
               slidesPerView: 1,
+              spaceBetween: 30,
             },
           }}>
           {companyArray.map((item, index) => (
-            <SwiperSlide key={index}>
+            <SwiperSlide className={styles.CompanySlider__slide} key={index}>
               <div className={styles.CompanySlider__picture}>
                 <img src={item.picture} alt={item.title} />
               </div>
