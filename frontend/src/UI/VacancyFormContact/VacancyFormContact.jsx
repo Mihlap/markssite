@@ -529,8 +529,8 @@ const VacancyFormContact = ({ formButtonRef, initialDirection, handleMouseEnter,
           <ModalVacancyFormSend
             isOpen={isModalOpen}
             onRequestClose={() => setIsModalOpen(false)}
-            title="Заявка отправлена!"
-            message="Мы свяжемся с вами в ближайшее время!"
+            title="Спасибо за отклик!"
+            message="Мы изучим информацию и свяжемся с вами"
           />
         </form>
       )}
