@@ -489,7 +489,7 @@
       width: 50rem;
       height: 37rem;
       top: 60%;
-      left: 5rem;
+      left: 0rem;
       background-size: cover;
       background-repeat: no-repeat;
       z-index: -2;
@@ -1047,7 +1047,7 @@
         width: 11rem;
         height: 11rem;
         top: 40%;
-        left: 55%;
+        left: 50%;
       }
 
       .background7 {
@@ -1666,7 +1666,7 @@
         width: 6rem;
         height: 6rem;
         top: 52%;
-        left: 26rem;
+        left: 48%;
         ;
       }
 
@@ -2269,17 +2269,17 @@
       }
 
       .background8 {
-        width: 24rem;
+         width: 24rem;
         height: 15rem;
-        top: 108%;
-        left: -5rem;
-      }
+        top: 110%;
+        left: 0;      
+       }
 
       .background9 {
-        width: 20rem;
-        height: 20rem;
+        width: 19rem;
+        height: 19rem;
         top: 33%;
-        left: 20%;
+        left: 50%;
       }
 
       .background10 {
@@ -2544,3 +2544,14 @@
 
 
 }
+
+// @media screen and (min-width: 300px) and (max-width: 540px) {
+
+// .background8 {
+//   width: 24rem;
+//   height: 15rem;
+//   top: 110%;
+//   left: 0%; 
+//   right: 50%;     
+//  }
+// }
