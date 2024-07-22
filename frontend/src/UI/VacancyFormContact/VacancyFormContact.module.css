@@ -71,9 +71,8 @@
   padding-top: 2.45vh;
 }
 
-
 .line {
-  height: 0.5px;
+  height: 0.8px;
   margin-top: 12px;
   background-color: var(--gray-959DA6);
   width: 34rem;
@@ -81,7 +80,7 @@
 }
 
 .lineSimple {
-  height: 0.5px;
+  height: 0.8px;
   margin-top: 12px;
   background-color: var(--gray-959DA6);
   width: 100%;
@@ -403,7 +402,7 @@
   }
 
   .line {
-    height: 0.5px;
+    height: 0.8px;
     margin-top: 12px;
     background-color: var(--gray-959DA6);
     max-width: 28rem;
@@ -411,7 +410,7 @@
   }
 
   .lineSimple {
-    height: 0.5px;
+    height: 0.8px;
     margin-top: 12px;
     background-color: var(--gray-959DA6);
     width: 100%;
@@ -716,7 +715,7 @@
 
 
   .line {
-    height: 1px;
+    height: 0.8px;
     margin-top: 10px;
     background-color: var(--gray-959DA6);
     width: 100%;
@@ -940,7 +939,7 @@
   }
 
   .line {
-    height: 1px;
+    height: 0.8px;
     margin-top: 12px;
     background-color: var(--gray-959DA6);
     max-width: 100%;

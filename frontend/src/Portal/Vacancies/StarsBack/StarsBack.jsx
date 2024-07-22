@@ -1,6 +1,6 @@
-import React, { useLayoutEffect, useRef } from 'react';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import gsap from 'gsap';
+import React, { useEffect, useRef } from 'react';
+// import { ScrollTrigger } from "gsap/ScrollTrigger";
+// import gsap from "gsap";
 
 import star_1 from '../icons/star-1.png';
 import star_2 from '../icons/star-2.png';
@@ -9,62 +9,47 @@ import star_4 from '../icons/star-4.png';
 
 // Анимированные звездочки с классом родительского компонента для управления стилями из родительского компонента
 const StarsBack = ({ section, styles }) => {
-  gsap.registerPlugin(ScrollTrigger);
-
   const star1Ref = useRef(null);
   const star2Ref = useRef(null);
   const star3Ref = useRef(null);
   const star4Ref = useRef(null);
 
-  const ROTATION_DEG_VALUE = 180;
-  const BLUR_VALUE = '5px';
+  const handleScroll = () => {
+    const scrollY = window.scrollY;
+    const windowHeight = window.innerHeight;
 
-  useLayoutEffect(() => {
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: `.${styles[section]}`,
-        start: 'top bottom',
-        end: 'bottom top',
-        scrub: true,
-      },
+    [star1Ref, star3Ref].forEach(ref => {
+      if (ref.current) {
+        ref.current.style.transform = `rotate(${scrollY / windowHeight * 90}deg)`;
+        ref.current.style.transformOrigin = "center";
+      }
     });
 
-    tl.to([star1Ref.current, star3Ref.current], {
-      rotation: ROTATION_DEG_VALUE,
+    [star2Ref, star4Ref].forEach(ref => {
+      if (ref.current) {
+        ref.current.style.transform = `rotate(${-scrollY / windowHeight * 90}deg)`;
+        ref.current.style.transformOrigin = "center";
+      }
     });
 
-    const tl2 = gsap.timeline({
-      scrollTrigger: {
-        trigger: `.${styles[section]}`,
-        start: 'top bottom',
-        end: 'bottom top',
-        scrub: true,
-      },
+    [star1Ref, star2Ref, star3Ref, star4Ref].forEach(ref => {
+      if (ref.current) {
+        ref.current.style.filter = `blur(${Math.min(5, scrollY / windowHeight * 1)}px)`;
+      }
     });
+  };
 
-    tl2.to([star2Ref.current, star4Ref.current], {
-      rotation: -ROTATION_DEG_VALUE,
+  useEffect(() => {
+    window.addEventListener('scroll', handleScroll);
+    [star1Ref, star2Ref, star3Ref, star4Ref].forEach(ref => {
+      if (ref.current) {
+        ref.current.style.transformOrigin = "center center";
+      }
     });
-
-    const tl3 = gsap.timeline({
-      scrollTrigger: {
-        trigger: `.${styles[section]}`,
-        start: 'top bottom',
-        end: 'bottom top',
-        scrub: true,
-      },
-    });
-
-    tl3.to([star1Ref.current, star2Ref.current, star3Ref.current, star4Ref.current], {
-      filter: `blur(${BLUR_VALUE})`,
-    });
-
     return () => {
-      tl.kill();
-      tl2.kill();
-      tl3.kill();
+      window.removeEventListener('scroll', handleScroll);
     };
-  }, [star1Ref, star2Ref, star3Ref, star4Ref]);
+  }, []);
 
   return (
     <>
