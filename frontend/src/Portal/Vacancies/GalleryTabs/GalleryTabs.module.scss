@@ -3,7 +3,7 @@
 
 
 .GalleryTabs {
-  padding: rem(113) rem(105);
+  margin: rem(113) rem(105);
 
   &__title {
     font-family: var( --font-unbounded);
@@ -62,7 +62,7 @@
 
   // Адаптация под меньший размер desktop
   @media all and (max-width:$bp0){
-    padding: rem(150) 0;
+    margin: rem(150) 0;
     
     &__buttons, 
     &__title {
@@ -72,12 +72,11 @@
 
   // Адаптация под tablet
   @media all and (max-width:$bp3){
-    padding: rem(120) rem(174)h;
+    margin: rem(120) 0;
   }
   
   // Адаптация под mobile
   @media all and (max-width:$bp4){
-    padding: rem(120) 0;
 
     &__buttons, 
     &__title {

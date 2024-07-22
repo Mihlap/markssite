@@ -57,9 +57,10 @@
   }
 
   h2 {
+    width: 60%;
     font-size: rem(65);
     line-height: rem(75.5);
-    margin: 0 auto rem(94) auto;
+    margin: 0 auto rem(94) 0;
     text-align: left;
     color: var(--black-3C3C3C);
   }
@@ -129,6 +130,10 @@
     h2 {
       width: 65%;
       margin-left: 0;
+    }
+
+    &__content {
+      width: 45%;
     }
 
     &__desc {
