@@ -1,6 +1,5 @@
-@import "../../../App.css";
-@import "../../../_variables.scss";
-
+@import '../../../App.css';
+@import '../../../_variables.scss';
 
 .temporaryText {
   max-width: 47rem;
@@ -15,7 +14,7 @@
 }
 
 .textUnderForm {
-  /* max-width: 47rem; */
+  max-width: 47rem;
   color: var(--black-1D2E43);
   font-variant-numeric: lining-nums proportional-nums;
   font-family: var(--font-raleway);
@@ -31,16 +30,11 @@
   padding: 1.5rem 0rem 5rem 7rem;
 }
 
-.textUnderForm {
-  max-width: 40rem;
-  padding-left: 4rem;
-}
 
 @media screen and (min-width: 1025px) and (max-width: 1600px) {
   .temporaryText {
     padding-left: 4rem;
   }
-
 
   .textUnderForm {
     max-width: 40rem;
@@ -68,7 +62,6 @@
     padding: 100px 10.8rem 0px 10.8rem;
   }
 
-
   .textUnderForm {
     max-width: 44rem;
     padding-left: 4vw;
@@ -90,7 +83,6 @@
   .vacancyFormWrapper {
     padding: 6px 10.8rem 80px 10.8rem;
   }
-
 }
 
 @media screen and (max-width: 767px) {
