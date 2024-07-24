@@ -1,23 +1,15 @@
-import React, { useEffect, useState, useCallback } from "react";
-import Modal from "react-modal";
-import styles from "../VacanciesMain/Vacancies.module.css";
-import {
-  fetchFilteredVacancies,
-  setActiveFilters,
-} from "../../../store/Slice/vacanciesSlice";
-import { useDispatch, useSelector } from "react-redux";
+import React, { useEffect, useState, useCallback } from 'react';
+import Modal from 'react-modal';
+import styles from '../VacanciesMain/Vacancies.module.css';
+import { fetchFilteredVacancies, setActiveFilters } from '../../../store/Slice/vacanciesSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
-Modal.setAppElement("#root");
+Modal.setAppElement('#root');
 
-const FilterModalVacancies = ({
-  isOpen,
-  onClose,
-  setFilters,
-  selectedFilter,
-}) => {
+const FilterModalVacancies = ({ isOpen, onClose, setFilters, selectedFilter }) => {
   const dispatch = useDispatch();
   const activeFilters = useSelector((state) => state.vacancies.activeFilters);
-  const filterKeyForSpecialty = "direction";
+  const filterKeyForSpecialty = 'direction';
 
   const [localFilters, setLocalFilters] = useState({ ...activeFilters });
 
@@ -31,10 +23,7 @@ const FilterModalVacancies = ({
         const updatedFilters = { ...prevFilters };
 
         // Это для выбора одного таба
-        if (
-          updatedFilters[category]?.length === 1 &&
-          updatedFilters[category][0] === value
-        ) {
+        if (updatedFilters[category]?.length === 1 && updatedFilters[category][0] === value) {
           delete updatedFilters[category];
         } else {
           updatedFilters[category] = [value];
@@ -50,7 +39,7 @@ const FilterModalVacancies = ({
         //   updatedFilters[category] = [...currentValues, value];
         // }
 
-        if (selectedFilter !== "Все") {
+        if (selectedFilter !== 'Все') {
           updatedFilters[filterKeyForSpecialty] = [selectedFilter];
         }
 
@@ -61,7 +50,7 @@ const FilterModalVacancies = ({
   );
 
   const handleApplyFilters = useCallback(() => {
-    if (selectedFilter !== "Все") {
+    if (selectedFilter !== 'Все') {
       localFilters[filterKeyForSpecialty] = [selectedFilter];
     }
     setFilters(localFilters);
@@ -72,47 +61,47 @@ const FilterModalVacancies = ({
 
   const filterButtons = [
     {
-      name: "Требуемый опыт работы",
-      filterKey: "experience",
+      name: 'Требуемый опыт работы',
+      filterKey: 'experience',
       buttons: [
-        { id: "experience-1", label: "Без опыта", value: "Без опыта" },
-        { id: "experience-2", label: "1-3 года", value: "1-3 года" },
-        { id: "experience-3", label: "3-5 лет", value: "3-5 лет" },
-        { id: "experience-4", label: "5-10 лет", value: "5-10 лет" },
+        { id: 'experience-1', label: 'Без опыта', value: 'Без опыта' },
+        { id: 'experience-2', label: '1-3 года', value: '1-3 года' },
+        { id: 'experience-3', label: '3-5 лет', value: '3-5 лет' },
+        { id: 'experience-4', label: '5-10 лет', value: '5-10 лет' },
       ],
     },
     {
-      name: "Локация",
-      filterKey: "locationStaff",
+      name: 'Локация',
+      filterKey: 'locationStaff',
       buttons: [
-        { id: "locationStaff-1", label: "Москва", value: "Москва" },
+        { id: 'locationStaff-1', label: 'Москва', value: 'Москва' },
         {
-          id: "locationStaff-2",
-          label: "Санкт-Петербург",
-          value: "Санкт-Петербург",
+          id: 'locationStaff-2',
+          label: 'Санкт-Петербург',
+          value: 'Санкт-Петербург',
         },
-        { id: "locationStaff-3", label: "Воронеж", value: "Воронеж" },
-        { id: "locationStaff-4", label: "Оренбург", value: "Оренбург" },
-        { id: "locationStaff-5", label: "Челябинск", value: "Челябинск" },
-        { id: "locationStaff-6", label: "Ташкент", value: "Ташкент" },
+        { id: 'locationStaff-3', label: 'Воронеж', value: 'Воронеж' },
+        { id: 'locationStaff-4', label: 'Оренбург', value: 'Оренбург' },
+        { id: 'locationStaff-5', label: 'Челябинск', value: 'Челябинск' },
+        { id: 'locationStaff-6', label: 'Ташкент', value: 'Ташкент' },
       ],
     },
     {
-      name: "Режим работы",
-      filterKey: "modeOperating",
+      name: 'Режим работы',
+      filterKey: 'modeOperating',
       buttons: [
-        { id: "modeOperating-1", label: "Офис", value: "Офис" },
-        { id: "modeOperating-2", label: "Гибрид", value: "Гибрид" },
-        { id: "modeOperating-3", label: "Удаленно", value: "Удаленно" },
+        { id: 'modeOperating-1', label: 'Офис', value: 'Офис' },
+        { id: 'modeOperating-2', label: 'Гибрид', value: 'Гибрид' },
+        { id: 'modeOperating-3', label: 'Удаленно', value: 'Удаленно' },
       ],
     },
     {
-      name: "Занятость",
-      filterKey: "busyness",
+      name: 'Занятость',
+      filterKey: 'busyness',
       buttons: [
-        { id: "busyness-1", label: "Полная", value: "Полная" },
-        { id: "busyness-2", label: "Частичная", value: "Частичная" },
-        { id: "busyness-3", label: "Проектная", value: "Проектная" },
+        { id: 'busyness-1', label: 'Полная', value: 'Полная' },
+        { id: 'busyness-2', label: 'Частичная', value: 'Частичная' },
+        { id: 'busyness-3', label: 'Проектная', value: 'Проектная' },
       ],
     },
   ];
@@ -123,36 +112,26 @@ const FilterModalVacancies = ({
       isOpen={isOpen}
       onRequestClose={onClose}
       onAfterOpen={() => {
-        document.body.style.overflow = "hidden";
-        document.body.classList.add("modal-open");
+        document.body.style.overflow = 'hidden';
+        document.body.classList.add('modal-open');
       }}
       onAfterClose={() => {
-        document.body.style.overflow = "";
-        document.body.classList.remove("modal-open");
+        document.body.style.overflow = '';
+        document.body.classList.remove('modal-open');
       }}
       shouldCloseOnOverlayClick={true}
       ariaHideApp={false}
       style={{
         overlay: {
           zIndex: 9999,
-          backgroundColor: "#2C3B447A",
+          backgroundColor: '#2C3B447A',
         },
         content: {
           zIndex: 9999,
         },
-      }}
-    >
-      <div
-        onClick={onClose}
-        className={`${styles.modal_vacancy_close} ${styles.fixed_modal_vacancy}`}
-      >
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 16 16"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
+      }}>
+      <div onClick={onClose} className={`${styles.modal_vacancy_close} ${styles.fixed_modal_vacancy}`}>
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
             fillRule="evenodd"
             clipRule="evenodd"
@@ -174,16 +153,9 @@ const FilterModalVacancies = ({
                   <button
                     key={button.id}
                     className={`${styles.filterModalButton} ${
-                      localFilters[filterGroup.filterKey]?.includes(
-                        button.value
-                      )
-                        ? styles.activeFilter
-                        : ""
+                      localFilters[filterGroup.filterKey]?.includes(button.value) ? styles.activeFilter : ''
                     }`}
-                    onClick={() =>
-                      handleFilterClick(filterGroup.filterKey, button.value)
-                    }
-                  >
+                    onClick={() => handleFilterClick(filterGroup.filterKey, button.value)}>
                     {button.label}
                   </button>
                 ))}
