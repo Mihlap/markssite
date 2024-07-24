@@ -2,7 +2,6 @@ import React, { useEffect, useState, useCallback, useMemo } from 'react';
 
 import { useSelector } from 'react-redux';
 import Intro from '../Intro/Intro';
-import VideoScroll from '../VideoScroll/VideoScroll';
 import TextCenter from '../TextCenter/TextCenter';
 import RatingSwiper from '../RatingSwiper/RatingSwiper';
 import CountRows from '../CountRows/CountRows';
@@ -21,7 +20,7 @@ import VacanciesSectionRender from './VacanciesSectionRender/VacanciesSectionRen
 const VacanciesMain3 = ({ handleMouseEnter, handleMouseLeave, handleMouseHover }) => {
   const [windowWidth] = useState(window.innerWidth);
   const [showManyVacancies, setShowManyVacancies] = useState(false);
-  
+
   const [totalDisplayedVacancies, setTotalDisplayedVacancies] = useState(6);
   const { vacancies, loading, vacancyCountsByDirection, filteredVacancies, activeFilters } = useSelector(
     (state) => state.vacancies
@@ -45,7 +44,6 @@ const VacanciesMain3 = ({ handleMouseEnter, handleMouseLeave, handleMouseHover }
   return (
     <>
       <Intro />
-      <VideoScroll />
       <TextCenter />
       <RatingSwiper />
       <CountRows />

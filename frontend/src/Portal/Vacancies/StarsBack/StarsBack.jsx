@@ -12,7 +12,7 @@ const StarsBack = ({ section, styles }) => {
   const star4Ref = useRef(null);
 
   const ROTATION_DEG_VALUE = 90;
-  const BLUR_VALUE = 30;
+  const BLUR_VALUE = 10;
 
   const handleScroll = () => {
     if (!containerRef.current) return;
@@ -20,7 +20,7 @@ const StarsBack = ({ section, styles }) => {
     const containerTop = containerRef.current.getBoundingClientRect().top;
     const windowHeight = window.innerHeight;
 
-    const scrollY = -containerTop + windowHeight / 2;
+    const scrollY = -containerTop + windowHeight / 1.3;
 
     [star1Ref, star3Ref].forEach((ref) => {
       if (ref.current) {
