@@ -38,7 +38,8 @@ import CompanyFormContacts from "../UI/CompanyFormContacts/CompanyFormContacts";
 import CompanySubscriptionForm from "../UI/CompanySubscriptionForm/CompanySubscriptionForm";
 import CounterCompanyMobile from "../UI/CounterCompanyMobile";
 import CounterCompanyMobile2 from "../UI/CounterCompanyMobile2";
-import CompanyGroupSlider from "./CompanyGroupSlider/CompanyGroupSlider";
+// import CompanyGroupSlider from "./CompanyGroupSlider/CompanyGroupSlider";
+import CompanySlider from "./CompanySlider/CompanySlider";
 import ModalVacancyFormSend from "../UI/VacancyFormContact/ModalVacancyFormSend";
 
 const Host = process.env.REACT_APP_SERVER_HOST;
@@ -488,7 +489,7 @@ export default function Company({
           </p>
         </div>
         <div className={styles.company_group_slider}>
-          <CompanyGroupSlider />
+          <CompanySlider />
         </div>
         <div className={styles.awards_wrapper}>
           Награды и&nbsp;премии
