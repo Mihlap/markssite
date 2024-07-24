@@ -100,6 +100,13 @@
   color: var(--crimson-E00747);
 }
 
+.errorLine {
+  height: 0.8px;
+  margin-top: 12px;
+  background-color: red;
+  width: 34rem;
+}
+
 .placeholder {
   position: absolute;
   top: 90%;
@@ -131,6 +138,13 @@
 #phone-input.input_tel_form_contacts.focus+.line {
   background-color: var(--blue-75BBFD);
 }
+
+/* .input_name_form_contacts:focus+.errorLine,
+.input_resume_form_contacts:focus+.errorLine,
+.input_tel_form_contacts:focus+.errorLine,
+#phone-input.input_tel_form_contacts.focus+.errorLine {
+  background-color: red;
+} */
 
 .input_name_form_contacts:focus+.lineSimple,
 .input_letter_form_contacts:focus+.lineSimple,
