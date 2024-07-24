@@ -67,6 +67,13 @@ const VacancyFormContact = ({ formButtonRef, initialDirection, handleMouseEnter,
     resume: "",
     title: vacancyTitle,
   });
+  
+  const [errors, setErrors] = useState({
+    // name: "",
+    // phone: false,
+    // choose: false,
+    // resume: false
+  });
 
   const fileInputRef = useRef(null);
   const isFilled = useCallback((name) => !!formData[name], [formData]);
@@ -117,7 +124,6 @@ const VacancyFormContact = ({ formButtonRef, initialDirection, handleMouseEnter,
   const handleChange = useCallback((event) => {
     const { name, value } = event.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
-
     if (name === "phone") {
       setIsValid(true);
     }
@@ -126,6 +132,21 @@ const VacancyFormContact = ({ formButtonRef, initialDirection, handleMouseEnter,
   const handleSubmit = useCallback(
     (event) => {
       event.preventDefault();
+
+      const newErrors = {
+        name: formData.name.trim() === "",
+        phone: formData.phone.trim() === "",
+        choose: !selectedOptions || selectedOptions.value === "",
+        resume: formData.resume.trim() === ""
+      };
+    
+      setErrors(newErrors);
+    
+      const formIsValid = !Object.values(newErrors).some(err => err);
+      if (!formIsValid) {
+        return; 
+      }
+
       setIsLoading(true);
 
       const formDataToSend = new FormData();
@@ -182,6 +203,12 @@ const VacancyFormContact = ({ formButtonRef, initialDirection, handleMouseEnter,
     [formData, selectedOptions, selectedFiles]
   );
 
+  const getLineClass = (field) => {
+     const isFieldEmpty = formData[field]?.trim() === '';
+    return `${styles.line} ${errors[field] && isFieldEmpty ? styles.errorLine : ''}`;
+  };  
+
+
   const handleFileChange = useCallback((event) => {
     const files = Array.from(event.target.files);
 
@@ -212,10 +239,23 @@ const VacancyFormContact = ({ formButtonRef, initialDirection, handleMouseEnter,
     });
   }, []);
   
+  // useEffect(() => {
+  //   const isFormComplete = Object.values(formData).every(field => field?.trim() !== "") && isValid && formData.choose;
+  //   setIsFormValid(isFormComplete);
+  // }, [formData, isValid]);
+
   useEffect(() => {
-    const isFormComplete = Object.values(formData).every(field => field?.trim() !== "") && isValid && formData.choose;
-    setIsFormValid(isFormComplete);
-  }, [formData, isValid]);
+    const requiredFields = [
+     formData.name.trim(),
+     formData.phone.trim(),
+     formData.resume.trim(),
+     selectedOptions ? selectedOptions.value : "" 
+   ];
+ 
+   const isFormComplete = requiredFields.every(field => field !== "");
+ 
+   setIsFormValid(isFormComplete && isValid);
+ }, [formData, selectedOptions, isValid]); 
 
   const customStyles = useMemo(
     () => ({
@@ -311,11 +351,13 @@ const VacancyFormContact = ({ formButtonRef, initialDirection, handleMouseEnter,
                       onBlur={handleBlur}
                       maxLength="100"
                       autoComplete="off"
-                      className={styles.input_name_form_contacts}
+                        className={styles.input_name_form_contacts}
+                        // className={getLineClass('name')} 
                     />
-                    <div className={styles.line}></div>
-                    <span className={styles.placeholder}>Ваше&nbsp;имя&nbsp;и&nbsp;фамилия</span>
-                  </label>
+                      <div className={styles.line}></div>
+                      {/* <div className={getLineClass('name')}></div> */}
+                      <span className={styles.placeholder}>Ваше&nbsp;имя&nbsp;и&nbsp;фамилия</span>
+                   </label>
                 </div>
                 <div className={styles.group}>
                   <label
@@ -433,7 +475,8 @@ const VacancyFormContact = ({ formButtonRef, initialDirection, handleMouseEnter,
                       autoComplete="off"
                       className={styles.input_resume_form_contacts}
                     />
-                    <div className={`${styles.line} ${styles.line_resume}`}></div>
+                      <div className={`${styles.line} ${styles.line_resume}`}></div>
+                      {/* <div className={getLineClass('resume')}></div> */}
                     <span className={styles.placeholder}>Ссылка&nbsp;на&nbsp;резюме/портфолио</span>
                   </label>
                   <div className={styles.resumeFiles}>
@@ -529,8 +572,8 @@ const VacancyFormContact = ({ formButtonRef, initialDirection, handleMouseEnter,
           <ModalVacancyFormSend
             isOpen={isModalOpen}
             onRequestClose={() => setIsModalOpen(false)}
-            title="Спасибо за отклик!"
-            message="Мы изучим информацию и свяжемся с вами"
+            title="Спасибо за&nbsp;отклик!"
+            message="Мы изучим информацию и&nbsp;свяжемся с&nbsp;вами"
           />
         </form>
       )}
