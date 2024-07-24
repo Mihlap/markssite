@@ -297,8 +297,8 @@ const VacanciesMainCard = ({
         <ModalVacancyFormSend
           isOpen={isModalOpen}
           onRequestClose={() => setIsModalOpen(false)}
-          title="Спасибо за отклик!"
-          message="Мы изучим информацию и свяжемся с вами"
+          title="Спасибо за&nbsp;отклик!"
+          message="Мы изучим информацию и&nbsp;свяжемся с&nbsp;вами"
         />
         <div
           className={styles.main_vacancy_block__background1}
