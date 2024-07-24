@@ -1,5 +1,5 @@
-@import "../../../App.css";
-@import "../../../_variables.scss";
+@import '../../../App.css';
+@import '../../../_variables.scss';
 
 .DirectionsGrid {
   display: grid;
@@ -13,6 +13,7 @@
     font-size: rem(24);
     line-height: rem(32);
     z-index: 10;
+    color: var(--black-1D2E43);
 
     p:not(:last-child) {
       margin-bottom: rem(24);
@@ -28,7 +29,7 @@
   }
 
   &__item {
-    background-color: #FCFCFC;
+    background-color: #fcfcfc;
     position: relative;
     display: flex;
     flex-direction: column;
@@ -36,7 +37,24 @@
     // Для анимации праллакса
     opacity: 0;
     transform: translateY(50px);
-    transition: opacity 1s, transform 1s;
+    transition: all 1s;
+    transition-delay: 0s;
+
+    &:nth-child(2) {
+      transition-delay: 0.5s;
+    }
+    &:nth-child(3) {
+      transition-delay: 1s;
+    }
+    &:nth-child(4) {
+      transition-delay: 0.8s;
+    }
+    &:nth-child(5) {
+      transition-delay: 1.3s;
+    }
+    &:nth-child(6) {
+      transition-delay: 1.8s;
+    }
 
     &.visible {
       opacity: 1;
@@ -52,7 +70,7 @@
       top: -0.25px;
       left: -0.25px;
       border: 1px solid var(--light-light-gray-EBECEE);
-      box-sizing: border-box; 
+      box-sizing: border-box;
       background-color: transparent;
     }
 
@@ -73,7 +91,7 @@
 
     &_header {
       justify-content: center;
-  
+
       #{$s}__text {
         padding: rem(80) rem(80) 0 rem(113);
 
@@ -81,7 +99,7 @@
           width: 55%;
         }
       }
-   
+
       #{$s}__subtitle {
         font-size: rem(48);
         line-height: rem(64);
@@ -90,19 +108,18 @@
         font-weight: var(--fw-500);
       }
     }
-  
+
     &_it {
       position: relative;
 
       #{$s}__text {
         padding: rem(80) rem(80) 0 rem(113);
-        
+
         p {
           width: 55%;
         }
       }
-      
-      
+
       img {
         position: absolute;
         bottom: 0;
@@ -110,9 +127,9 @@
       }
     }
   }
-  
+
   // Адаптация под меньший размер desktop
-  @media all and (max-width:$bp0) {
+  @media all and (max-width: $bp0) {
     grid-template-columns: minmax(48%, 2fr) minmax(25%, 1fr) minmax(25%, 1fr);
     min-height: rem(912);
 
@@ -142,17 +159,17 @@
             width: 70%;
           }
         }
-    
+
         #{$s}__subtitle {
           font-size: rem(40);
           line-height: rem(48);
           margin-bottom: rem(24);
         }
       }
-    
+
       &_it {
         position: relative;
-        
+
         #{$s}__text {
           padding: rem(52) rem(32) 0 rem(63);
 
@@ -160,7 +177,7 @@
             width: 70%;
           }
         }
-        
+
         img {
           right: 0;
         }
@@ -169,7 +186,7 @@
   }
 
   // Адаптация под tablet
-  @media all and (max-width:$bp3) {
+  @media all and (max-width: $bp3) {
     min-height: 0;
     grid-template-columns: 1fr;
     grid-template-rows: auto;
@@ -187,13 +204,26 @@
       padding-left: rem(165);
       padding-right: rem(165);
 
+      &:nth-child(1) {
+        background-color: var(--white-F6F6F6);
+      }
+
+      &:nth-child(1),
+      &:nth-child(2),
+      &:nth-child(3),
+      &:nth-child(4),
+      &:nth-child(5),
+      &:nth-child(6) {
+        transition-delay: 0s;
+      }
+
       img {
         margin: 0;
         align-self: center;
       }
 
       p {
-        width:100%;
+        width: 100%;
       }
 
       &_header {
@@ -201,7 +231,7 @@
 
         #{$s}__text {
           padding: rem(54) 0 rem(54) 0;
-          
+
           p {
             width: 100%;
           }
@@ -211,7 +241,7 @@
       &_it {
         #{$s}__text {
           padding: rem(54) 0 rem(54) 0;
-          
+
           p {
             width: 100%;
           }
@@ -223,10 +253,9 @@
       }
     }
   }
- 
+
   // Адаптация под mobile
-  @media all and (max-width:$bp4) {
-   
+  @media all and (max-width: $bp4) {
     &__text {
       padding: rem(74) rem(16) rem(74) rem(16);
     }
@@ -259,7 +288,7 @@
       &_it {
         #{$s}__text {
           padding: rem(50) rem(16) rem(50) rem(16);
-          
+
           p {
             width: 100%;
           }

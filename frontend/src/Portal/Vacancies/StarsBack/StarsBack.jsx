@@ -1,58 +1,57 @@
 import React, { useEffect, useRef } from 'react';
-// import { ScrollTrigger } from "gsap/ScrollTrigger";
-// import gsap from "gsap";
-
 import star_1 from '../icons/star-1.png';
 import star_2 from '../icons/star-2.png';
 import star_3 from '../icons/star-3.png';
 import star_4 from '../icons/star-4.png';
 
-// Анимированные звездочки с классом родительского компонента для управления стилями из родительского компонента
 const StarsBack = ({ section, styles }) => {
+  const containerRef = useRef(null);
   const star1Ref = useRef(null);
   const star2Ref = useRef(null);
   const star3Ref = useRef(null);
   const star4Ref = useRef(null);
 
+  const ROTATION_DEG_VALUE = 90;
+  const BLUR_VALUE = 10;
+
   const handleScroll = () => {
-    const scrollY = window.scrollY;
+    if (!containerRef.current) return;
+
+    const containerTop = containerRef.current.getBoundingClientRect().top;
     const windowHeight = window.innerHeight;
 
-    [star1Ref, star3Ref].forEach(ref => {
+    const scrollY = -containerTop + windowHeight / 1.3;
+
+    [star1Ref, star3Ref].forEach((ref) => {
       if (ref.current) {
-        ref.current.style.transform = `rotate(${scrollY / windowHeight * 90}deg)`;
-        ref.current.style.transformOrigin = "center";
+        ref.current.style.transform = `rotate(${(scrollY / windowHeight) * ROTATION_DEG_VALUE}deg)`;
       }
     });
 
-    [star2Ref, star4Ref].forEach(ref => {
+    [star2Ref, star4Ref].forEach((ref) => {
       if (ref.current) {
-        ref.current.style.transform = `rotate(${-scrollY / windowHeight * 90}deg)`;
-        ref.current.style.transformOrigin = "center";
+        ref.current.style.transform = `rotate(${(-scrollY / windowHeight) * ROTATION_DEG_VALUE}deg)`;
       }
     });
 
-    [star1Ref, star2Ref, star3Ref, star4Ref].forEach(ref => {
+    [star1Ref, star2Ref, star3Ref, star4Ref].forEach((ref) => {
       if (ref.current) {
-        ref.current.style.filter = `blur(${Math.min(5, scrollY / windowHeight * 1)}px)`;
+        ref.current.style.filter = `blur(${Math.min(BLUR_VALUE, (scrollY / windowHeight) * BLUR_VALUE)}px)`;
       }
     });
   };
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
-    [star1Ref, star2Ref, star3Ref, star4Ref].forEach(ref => {
-      if (ref.current) {
-        ref.current.style.transformOrigin = "center center";
-      }
-    });
+    handleScroll();
+
     return () => {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
   return (
-    <>
+    <div ref={containerRef}>
       <div
         className={`${styles[`${section}__star`]} ${styles[`${section}__star_1`]}`}
         style={{ backgroundImage: `url(${star_1})` }}
@@ -73,7 +72,7 @@ const StarsBack = ({ section, styles }) => {
         style={{ backgroundImage: `url(${star_4})` }}
         ref={star4Ref}
       />
-    </>
+    </div>
   );
 };
 

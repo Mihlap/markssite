@@ -1,12 +1,8 @@
-import React  from 'react';
-import styles from "./VacanciesList.module.scss";
+import React from 'react';
+import styles from './VacanciesList.module.scss';
 
 const VacanciesList = () => {
-	return (
-		<>
-
-		</>
-	);
+  return <></>;
 };
 
 export default VacanciesList;
