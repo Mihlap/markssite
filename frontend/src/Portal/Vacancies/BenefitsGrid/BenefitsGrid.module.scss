@@ -1,9 +1,14 @@
-@import "../../../App.css";
-@import "../../../_variables.scss";
+@import '../../../App.css';
+@import '../../../_variables.scss';
 
 .BenefitsGrid {
   padding: rem(120) 0;
-  background: linear-gradient(261.46deg, rgba(255, 203, 193, 0.09) -4.67%, rgba(117, 187, 253, 0.09) 44.63%, rgba(188, 188, 188, 0.09) 103.07%);
+  background: linear-gradient(
+    261.46deg,
+    rgba(255, 203, 193, 0.09) -4.67%,
+    rgba(117, 187, 253, 0.09) 44.63%,
+    rgba(188, 188, 188, 0.09) 103.07%
+  );
   position: relative;
 
   &__star {
@@ -17,21 +22,21 @@
       top: 20%;
       right: -10%;
     }
-    
+
     &_2 {
       width: rem(485);
       height: rem(485);
       top: 0%;
-      left:-7%;
+      left: -7%;
     }
-    
+
     &_3 {
       width: rem(214);
       height: rem(214);
       top: 5%;
       right: 10%;
     }
-    
+
     &_4 {
       width: rem(222);
       height: rem(222);
@@ -83,12 +88,42 @@
     }
   }
 
-  @media all and (max-width:$bp0){
+  @media all and (max-width: $bp0) {
+    &__star {
+      &_1 {
+        width: rem(290);
+        height: rem(290);
+        top: 20%;
+        right: -6%;
+      }
+
+      &_2 {
+        width: rem(290);
+        height: rem(290);
+        top: 0%;
+        left: -7%;
+      }
+
+      &_3 {
+        width: rem(128);
+        height: rem(128);
+        top: 5%;
+        right: 10%;
+      }
+
+      &_4 {
+        width: rem(135);
+        height: rem(135);
+        left: 3%;
+        bottom: 1%;
+      }
+    }
+
     &__title {
       width: 80%;
       margin: 0 auto rem(80) auto;
     }
-  
+
     &__items {
       width: 80%;
       column-gap: rem(44);
@@ -96,7 +131,7 @@
     }
   }
   // Адаптация под tablet
-  @media all and (max-width:$bp3){
+  @media all and (max-width: $bp3) {
     padding: rem(80) 0;
 
     &__star {
@@ -115,11 +150,11 @@
       column-gap: rem(100);
     }
   }
-  
+
   // Адаптация под mobile
-  @media all and (max-width:$bp4){
+  @media all and (max-width: $bp4) {
     padding: rem(64) rem(16);
-    
+
     &__title {
       margin-bottom: rem(48);
       width: 100%;
