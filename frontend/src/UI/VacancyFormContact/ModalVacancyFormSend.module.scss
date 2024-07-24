@@ -33,10 +33,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  // justify-content: center;
-  // align-items: center;
   box-sizing: border-box; 
-  // padding: 0rem 6.625rem 3rem 3.625rem;
   background-color: var(--white-F6F6F6);
   box-shadow: -2px 4px 22px 0px rgba(29, 46, 67, 0.46);
   backdrop-filter: blur(8.5px);
@@ -66,9 +63,9 @@
 .modalTitleFormSend {
   color: var(--black-1D2E43);
   font-family: var(--font-unbounded);
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: var(--fw-300);
-  line-height: 2.5rem;
+  line-height: 3rem;
   letter-spacing: 0px;
   text-align: left;
   margin-bottom: 18px;
@@ -76,15 +73,15 @@
 
 .modalMessageFormSend {
   color: var(--black-3C3C3C);
-  font-family: var(--font-raleway);
-  font-weight: var(--fw-400);
-  line-height: 1.5rem;
+  font-family: var(--font-unbounded);
+  font-weight: var(--fw-300);
   letter-spacing: 0px;
   text-align: left;
-  font-size: 1.125rem;
+  font-size: 1.5rem;
+  line-height: 2rem;
   text-align: left;
   justify-content: left;
-  width: 100%;
+  max-width: 80%;
 }
 
 // .closeButtonFormSend {
@@ -115,16 +112,50 @@
 
 
 @media screen and (min-width: 1025px) and (max-width: 1600px) {
+  .modalTitleFormSend {
+    font-size: 2rem;
+    line-height: 2.5rem;
+    white-space: nowrap;
+  }
+
   .modalMessageFormSend {
-    color: var(--black-3C3C3C);
-    font-family: var(--font-raleway);
-    font-weight: var(--fw-400);
-    line-height: 1.5rem;
-    letter-spacing: 0px;
-    text-align: left;
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+   }
+  }
+
+
+  /* стили для планшетной версии  */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .modalTitleFormSend {
+    font-size: 2rem;
+    line-height: 2.5rem;
+    white-space: nowrap;
+  }
+
+  .modalMessageFormSend {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    max-width: 100%;
+   }
+}
+
+/* стили мобильной версии  */
+@media screen and (max-width: 767px) {
+  .modalWrapperFormSend {
+    padding: 0rem 4rem 2rem 1rem;
+ }
+ 
+  .modalTitleFormSend {
+    font-size: 1.5rem;
+    line-height: 2rem;
+    white-space: nowrap;
+  }
+
+  .modalMessageFormSend {
     font-size: 1.125rem;
-    text-align: left;
-    justify-content: left;
-    width: 80%;
-  }
-  }
+    line-height: 1.625rem;
+    max-width: 100%;
+   }
+
+}
