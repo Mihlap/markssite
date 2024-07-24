@@ -21,7 +21,7 @@ const DirectionsGrid = () => {
           }
         });
       },
-      { threshold: 0.7 }
+      { threshold: 0.4 }
     );
 
     itemsRef.current.forEach((item) => {

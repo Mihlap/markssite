@@ -1,9 +1,14 @@
-@import "../../../App.css";
-@import "../../../_variables.scss";
+@import '../../../App.css';
+@import '../../../_variables.scss';
 
 .CountRows {
   $s: &;
-  background: linear-gradient(261.46deg, rgba(255, 203, 193, 0.09) -4.67%, rgba(117, 187, 253, 0.09) 44.63%, rgba(188, 188, 188, 0.09) 103.07%);
+  background: linear-gradient(
+    261.46deg,
+    rgba(255, 203, 193, 0.09) -4.67%,
+    rgba(117, 187, 253, 0.09) 44.63%,
+    rgba(188, 188, 188, 0.09) 103.07%
+  );
   min-height: rem(1100);
   display: flex;
   flex-direction: column;
@@ -21,18 +26,18 @@
       top: 68.66%;
       left: 5.66%;
     }
-    
+
     &_2 {
       display: none;
     }
-    
+
     &_3 {
       width: rem(135);
       height: rem(135);
       top: 4.63%;
       left: 81.02%;
     }
-    
+
     &_4 {
       width: rem(128);
       height: rem(128);
@@ -59,16 +64,43 @@
   }
 
   &__line {
-    border-top: 1px solid var(--light-gray-C0C5CB); 
-    animation-name: showLine; 
-    animation-duration: 1s;   
-    animation-timing-function: ease-in-out; 
-    animation-delay: 0s; 
-    animation-iteration-count: 1; 
-    animation-direction: normal; 
-    animation-fill-mode: forwards; 
-    animation-play-state: paused; 
+    border-top: 1px solid var(--light-gray-C0C5CB);
+    animation-name: showLine;
+    animation-duration: 2s;
+    animation-timing-function: ease-in-out;
+    animation-delay: 0s;
+    animation-iteration-count: 1;
+    animation-direction: normal;
+    animation-fill-mode: forwards;
+    animation-play-state: paused;
     width: 0;
+  }
+
+  li {
+    &:nth-child(2) {
+      #{$s}__line {
+        animation-delay: 0.1s;
+      }
+      #{$s}__text {
+        animation-delay: 0.5s;
+      }
+    }
+    &:nth-child(3) {
+      #{$s}__line {
+        animation-delay: 0.3s;
+      }
+      #{$s}__text {
+        animation-delay: 0.7s;
+      }
+    }
+    &:nth-child(4) {
+      #{$s}__line {
+        animation-delay: 0.5s;
+      }
+      #{$s}__text {
+        animation-delay: 0.9s;
+      }
+    }
   }
 
   @keyframes showLine {
@@ -87,7 +119,7 @@
     animation-name: showText;
     animation-duration: 1.5s;
     animation-timing-function: ease-in-out;
-    animation-delay: 0s;
+    animation-delay: 0;
     animation-iteration-count: 1;
     animation-direction: normal;
     animation-fill-mode: forwards;
@@ -117,7 +149,6 @@
     }
   }
 
-
   &__count {
     height: rem(32);
     counter-increment: count;
@@ -141,9 +172,8 @@
     padding: 0 rem(16);
   }
 
-
   // Адаптация под desktop
-  @media all and (max-width:$bp0){
+  @media all and (max-width: $bp0) {
     min-height: rem(886);
 
     &__star {
@@ -151,12 +181,12 @@
         top: 63.09%;
         left: 0;
       }
-      
+
       &_3 {
         top: 4.63%;
         left: 86.46%;
       }
-      
+
       &_4 {
         top: 46.95%;
         left: 65.35%;
@@ -187,7 +217,7 @@
   }
 
   // Адаптация под tablet
-  @media all and (max-width:$bp3){
+  @media all and (max-width: $bp3) {
     &__wrapper {
       margin: rem(32) 16%;
     }
@@ -196,9 +226,9 @@
       width: 100%;
     }
   }
- 
+
   // Адаптация под mobile
-  @media all and (max-width:$bp4){
+  @media all and (max-width: $bp4) {
     min-height: 0;
 
     &__star {
@@ -206,12 +236,12 @@
         top: 67.03%;
         left: -26.73%;
       }
-      
+
       &_3 {
         top: 40.52%;
         left: 28.65%;
       }
-      
+
       &_4 {
         top: 6%;
         left: 67%;
@@ -225,6 +255,5 @@
     &__text {
       margin-bottom: rem(47);
     }
-
   }
 }
