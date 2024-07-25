@@ -481,13 +481,13 @@ export default function Company({
             )}
           </div>
         </div>
-        <div className={styles.company_group_name}>
+        {/* <div className={styles.company_group_name}>
           Состав группы компаний
           <p className={styles.plus_nine} style={{ verticalAlign: "top" }}>
-            {/* <img src={plusNine} alt="plus_nine" /> */}
+            <img src={plusNine} alt="plus_nine" />
             <span>+ 4</span>
           </p>
-        </div>
+        </div> */}
         <div className={styles.company_group_slider}>
           <CompanySlider />
         </div>

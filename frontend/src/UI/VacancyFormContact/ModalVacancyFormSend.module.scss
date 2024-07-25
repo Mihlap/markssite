@@ -1,30 +1,5 @@
 @import "../../App.css";
 
-// .modalWrapperFormSend {
-//   display: flex;
-//   flex-direction: column;   
-//   width: 100%;
-//   height: 100%;
-//   animation: fadeInOut 0.5s ease-out forwards;
-// }
-
-// @keyframes fadeInOut {
-//   from {
-//     opacity: 0;
-//   }
-//   to {
-//     opacity: 1;
-//   }
-// }
-
-// .modalOverlayFormSend {
-//   position: fixed;
-//   top: 0;
-//   left: 0;
-//   right: 0;
-//   bottom: 0;
-//   // background-color: transparent;
-// }
 
 .modalContentFormSend {
   display: flex;
@@ -57,7 +32,8 @@
 }
 
 .modalWrapperFormSend {
-   padding: 0rem 9.56rem 3rem 3.625rem;
+   padding: 0rem 9.56vw 3rem 3.625rem;
+   width: 100%;
 }
 
 .modalTitleFormSend {
@@ -69,6 +45,7 @@
   letter-spacing: 0px;
   text-align: left;
   margin-bottom: 18px;
+  padding-top: 1rem;
 }
 
 .modalMessageFormSend {
@@ -84,35 +61,11 @@
   max-width: 80%;
 }
 
-// .closeButtonFormSend {
-//   background-color: var(--blue-75BBFD);
-//   padding: 1rem 2rem;
-//   justify-content: center;
-//   align-items: center;
-//   border-radius: 4.125rem;
-//   border: none;
-//   // border-radius: 1rem;
-//   cursor: pointer;
-//   transition: background-color 0.3s;
-
-//   &:hover {
-//     background-color: var(--dark-blue-389FFF);
-//   }
-
-//   .closeButtonFormSendTitle {
-//     color: var(--white-F6F6F6);
-//     font-variant-numeric: lining-nums proportional-nums;
-//     font-family: var(--font-raleway);
-//     font-size: 1rem;
-//     font-style: normal;
-//     font-weight: var(--fw-400);
-//     line-height: 1.5rem;
-//   }
-// }
 
 
 @media screen and (min-width: 1025px) and (max-width: 1600px) {
   .modalTitleFormSend {
+    padding-top: 1rem;
     font-size: 2rem;
     line-height: 2.5rem;
     white-space: nowrap;
@@ -129,6 +82,7 @@
 @media screen and (min-width: 768px) and (max-width: 1024px) {
   .modalTitleFormSend {
     font-size: 2rem;
+    padding-top: 1rem;
     line-height: 2.5rem;
     white-space: nowrap;
   }
@@ -142,20 +96,31 @@
 
 /* стили мобильной версии  */
 @media screen and (max-width: 767px) {
+
+  .modalContentFormSend {
+    max-width: 100%;
+    width:  90%;
+  }
+
   .modalWrapperFormSend {
-    padding: 0rem 4rem 2rem 1rem;
+    padding: 0rem 9vw 2rem 1rem;
+    width: 100%;
  }
  
   .modalTitleFormSend {
+    padding-top: 1rem;
     font-size: 1.5rem;
     line-height: 2rem;
     white-space: nowrap;
+    max-width: 100%;
+    width: 100%;
   }
 
   .modalMessageFormSend {
     font-size: 1.125rem;
     line-height: 1.625rem;
     max-width: 100%;
+    width: 100%;
    }
 
 }
