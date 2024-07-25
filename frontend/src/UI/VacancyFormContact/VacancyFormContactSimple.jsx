@@ -24,6 +24,7 @@ const VacancyFormContactSimple = ({
   const [isFormValid, setIsFormValid] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [fileAttached, setFileAttached] = useState(false);
+  const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
     name: "",
     phone: "",    
@@ -75,6 +76,22 @@ const VacancyFormContactSimple = ({
 
   const handleSubmit = useCallback((event) => {
     event.preventDefault();
+
+    const resumeFilled = formData.resume.trim() !== "" || selectedFiles.length > 0;
+
+    const newErrors = {
+      name: formData.name.trim() === "",
+      phone: formData.phone.trim() === "",
+      resume: !resumeFilled 
+    };
+  
+    setErrors(newErrors);
+  
+    const formIsValid = !Object.values(newErrors).some(err => err);
+    if (!formIsValid) {
+      return; 
+    }
+
     setIsLoading(true);
 
     const formDataToSend = new FormData();
@@ -119,6 +136,11 @@ const VacancyFormContactSimple = ({
       });
     }, [formData, selectedFiles, vacancyTitleSimple]);
 
+    const getLineClassSimple = (field) => {
+      const isFieldEmpty = formData[field]?.trim() === '';
+     return `${styles.lineSimple} ${errors[field] && isFieldEmpty ? styles.errorLine : ''}`;
+   }; 
+
   const handleFileChange = useCallback((event) => {
     const files = Array.from(event.target.files);
 
@@ -143,9 +165,29 @@ const VacancyFormContactSimple = ({
   }, []);
 
   useEffect(() => {
-    const isFormComplete = Object.values(formData).every(field => field?.trim() !== "") && isValid;
-    setIsFormValid(isFormComplete);
-  }, [formData, isValid]);
+    const requiredFields = [
+     formData.name.trim(),
+     formData.phone.trim(),
+     formData.resume.trim(),   
+   ];
+ 
+   const isFormComplete = requiredFields.every(field => field !== "");
+ 
+   setIsFormValid(isFormComplete && isValid);
+ }, [formData, isValid]); 
+
+ useEffect(() => {
+  const resumeFilled = formData.resume.trim() !== " " || selectedFiles.length > 0;
+  setErrors(prevErrors => ({
+    ...prevErrors,
+    resume: !resumeFilled
+  }));
+}, [formData.resume, selectedFiles]);
+
+  // useEffect(() => {
+  //   const isFormComplete = Object.values(formData).every(field => field?.trim() !== "") && isValid;
+  //   setIsFormValid(isFormComplete);
+  // }, [formData, isValid]);
 
   return (
     <form className={styles.form_form_wrapper} onSubmit={handleSubmit}>
@@ -172,7 +214,8 @@ const VacancyFormContactSimple = ({
                   autoComplete="off"
                   className={styles.input_name_form_contacts}              
                 />
-                <div className={styles.lineSimple}></div>
+                {/* <div className={styles.lineSimple}></div> */}
+                <div className={getLineClassSimple('name')}></div>
                 <span className={styles.placeholder}>
                   Ваше&nbsp;имя&nbsp;и&nbsp;фамилия
                 </span>
@@ -203,7 +246,8 @@ const VacancyFormContactSimple = ({
                   }`}
                   style={{ fontVariantNumeric: "lining-nums" }}
                 />
-                <div className={styles.lineSimple}></div>
+                {/* <div className={styles.lineSimple}></div> */}
+                <div className={getLineClassSimple('phone')}></div>
                 <span className={styles.placeholder}>Телефон</span>
                 {!isValid && formData.phone.length > 0 && (
                   <span className={styles.error_line}>
@@ -260,7 +304,8 @@ const VacancyFormContactSimple = ({
                   autoComplete="off"
                   className={styles.input_resume_form_contacts}
                 />
-                <div className={`${styles.lineSimple} ${styles.line_resume}`}></div>
+                  <div className={`${getLineClassSimple('resume')} ${styles.line_resume}`}></div>
+                {/* <div className={`${styles.lineSimple} ${styles.line_resume}`}></div> */}
                 <span className={styles.placeholder}>
                 Ссылка&nbsp;на&nbsp;резюме/портфолио
                 </span>
@@ -322,7 +367,7 @@ const VacancyFormContactSimple = ({
             <button            
               className={`${styles.button_vacancySimple}
               ${!isFormValid ? styles.disabled : ""}`}
-              disabled={!isFormValid}
+              // disabled={!isFormValid}
               type="submit"
               id="submit-button"
               onMouseEnter={handleMouseEnter}

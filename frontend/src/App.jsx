@@ -79,8 +79,7 @@ export default function App() {
 
   useEffect(() => {
     dispatch(checkUserAuth());
-    dispatch(fetchToggleStateForButton3Async());
-    // eruda.init();
+    dispatch(fetchToggleStateForButton3Async());  
   }, [dispatch]);
 
   const handlePageChange = (page) => {
@@ -116,11 +115,10 @@ export default function App() {
   };
 
   const handleReturn = () => {
-    dispatch(resetCurrentPage()); // Сбрасываем currentPage
+    dispatch(resetCurrentPage());
     localStorage.removeItem("activeClass");
   };
 
-  // console.log(isUserChecked);
   // таймаут для прелоудера на сайте
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -136,8 +134,6 @@ export default function App() {
     }
   }, [videoLoaded]);  
 
-  // console.log(location.pathname)
-  // console.log(`пользователь 👉${user?.name}👈`);
   return (
     <HelmetProvider>
       {loading === true &&
@@ -299,17 +295,7 @@ export default function App() {
                         handleMouseHover={handleMouseHover}
                       />
                     }
-                  />
-                  <Route
-                    path="/portal/office"
-                    element={
-                      <Office
-                        handleMouseEnter={handleMouseEnter}
-                        handleMouseLeave={handleMouseLeave}
-                        handleMouseHover={handleMouseHover}
-                      />
-                    }
-                  />
+                  />                 
                   <Route path="*" element={<NotFound />} />
                   <Route path="/login" element={<Login />} />
                   {isActive && (
