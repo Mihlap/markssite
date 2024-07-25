@@ -94,4 +94,4 @@ export const selectBlocks = [
 ];
 
 
-export const buttonsFilter = ["Вакансии", "Стажировки", "Главная", "Офис"];
+export const buttonsFilter = ["Вакансии", "Стажировки", "Главная"];
