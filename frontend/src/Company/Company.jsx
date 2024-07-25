@@ -1,54 +1,40 @@
-import React, {
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-  useMemo,
-} from "react";
-import Modal from "react-modal";
-import { useInView } from "react-intersection-observer";
-import { useDispatch, useSelector } from "react-redux";
-import styles from "./Company.module.css";
-import gsap from "gsap";
-import { Helmet } from "react-helmet-async";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import SliderMobile from "../UI/SliderHeader/SliderMobile";
-import TableCompany from "../UI/TableCompany/TableCompany";
-import TableCompanyMobile from "../UI/TableCompany/TableCompanyMobile";
+import React, { useCallback, useEffect, useRef, useState, useMemo } from 'react';
+import Modal from 'react-modal';
+import { useInView } from 'react-intersection-observer';
+import { useDispatch, useSelector } from 'react-redux';
+import styles from './Company.module.css';
+import gsap from 'gsap';
+import { Helmet } from 'react-helmet-async';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import SliderMobile from '../UI/SliderHeader/SliderMobile';
+import TableCompany from '../UI/TableCompany/TableCompany';
+import TableCompanyMobile from '../UI/TableCompany/TableCompanyMobile';
 import {
   incrementDepartment,
   incrementGap,
   incrementScient,
   incrementScienceDegree,
-} from "../store/Slice/counterSlice";
+} from '../store/Slice/counterSlice';
 
-import {
-  fetchCategoryStaff,
-  selectCard,
-  setCategory,
-} from "../store/Slice/StaffSlice";
-import LoadingCircle from "../Loading/LoadingCircle";
-import Error from "../Loading/Error/Error";
+import { fetchCategoryStaff, selectCard, setCategory } from '../store/Slice/StaffSlice';
+import LoadingCircle from '../Loading/LoadingCircle';
+import Error from '../Loading/Error/Error';
 
-import bracket from "../icons/bracket.svg";
-import bracket_dark from "../icons/bracket_dark.svg";
-import CompanyFormContacts from "../UI/CompanyFormContacts/CompanyFormContacts";
-import CompanySubscriptionForm from "../UI/CompanySubscriptionForm/CompanySubscriptionForm";
-import CounterCompanyMobile from "../UI/CounterCompanyMobile";
-import CounterCompanyMobile2 from "../UI/CounterCompanyMobile2";
+import bracket from '../icons/bracket.svg';
+import bracket_dark from '../icons/bracket_dark.svg';
+import CompanyFormContacts from '../UI/CompanyFormContacts/CompanyFormContacts';
+import CompanySubscriptionForm from '../UI/CompanySubscriptionForm/CompanySubscriptionForm';
+import CounterCompanyMobile from '../UI/CounterCompanyMobile';
+import CounterCompanyMobile2 from '../UI/CounterCompanyMobile2';
 // import CompanyGroupSlider from "./CompanyGroupSlider/CompanyGroupSlider";
-import CompanySlider from "./CompanySlider/CompanySlider";
-import ModalVacancyFormSend from "../UI/VacancyFormContact/ModalVacancyFormSend";
+import CompanySlider from './CompanySlider/CompanySlider';
+import ModalVacancyFormSend from '../UI/VacancyFormContact/ModalVacancyFormSend';
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 
-export default function Company({
-  handleMouseEnter,
-  handleMouseLeave,
-  handleMouseHover,
-}) {
+export default function Company({ handleMouseEnter, handleMouseLeave, handleMouseHover }) {
   const videoSource = useMemo(
     () => ({
       large: `${Host}/videos/company_full.mp4`,
@@ -77,7 +63,7 @@ export default function Company({
   const [videoSrc2, setVideoSrc2] = useState(null);
 
   const [showCards, setShowCards] = useState(false);
-  const [activeButton, setActiveButton] = useState("Руководство");
+  const [activeButton, setActiveButton] = useState('Руководство');
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoadingFormContacts, setIsLoadingFormContacts] = useState(false);
   const [modalOpenFormContacts, setModalOpenFormContacts] = useState(false);
@@ -85,8 +71,7 @@ export default function Company({
   const [modalOpenSubscription, setModalOpenSubscription] = useState(false);
 
   const dispatch = useDispatch();
-  const { selectedCard, category, staff, loading, error, allImagesLoaded } =
-    useSelector((state) => state.staff);
+  const { selectedCard, category, staff, loading, error, allImagesLoaded } = useSelector((state) => state.staff);
 
   const blockSlider = useRef(null);
   const nameCompanyRef = useRef(null);
@@ -95,16 +80,14 @@ export default function Company({
   const countDepartment = useSelector((state) => state.counter.countDepartment);
   const countGap = useSelector((state) => state.counter.countGap);
   const countScient = useSelector((state) => state.counter.countScient);
-  const countScienceDegree = useSelector(
-    (state) => state.counter.countScienceDegree
-  );
+  const countScienceDegree = useSelector((state) => state.counter.countScienceDegree);
 
   const [ref, inView] = useInView({
     threshold: 0.5,
   });
 
   const isMobile = windowWidth <= 767;
-  const symbol = "•";
+  const symbol = '•';
 
   useEffect(() => {
     const scrollToTop = () => {
@@ -112,7 +95,7 @@ export default function Company({
     };
 
     return () => {
-      window.removeEventListener("scroll", scrollToTop);
+      window.removeEventListener('scroll', scrollToTop);
     };
   }, []);
 
@@ -132,10 +115,10 @@ export default function Company({
     };
 
     handleResize();
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
 
     return () => {
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener('resize', handleResize);
     };
   }, []);
 
@@ -190,15 +173,7 @@ export default function Company({
       }, 80);
       return () => clearTimeout(timer1);
     }
-  }, [
-    dispatch,
-    countDepartment,
-    countGap,
-    countScient,
-    countScienceDegree,
-    inView,
-    ref,
-  ]);
+  }, [dispatch, countDepartment, countGap, countScient, countScienceDegree, inView, ref]);
 
   useEffect(() => {
     gsap?.registerPlugin(ScrollTrigger);
@@ -206,14 +181,14 @@ export default function Company({
     const { elementsRight } = { elementsRight: [blockSlider.current] };
 
     gsap?.from(elementsRight, {
-      x: "-100%",
+      x: '-100%',
       opacity: 0,
       duration: 1.5,
       delay: 0.5,
-      ease: "power4.out",
+      ease: 'power4.out',
       scrollTrigger: {
         trigger: elementsRight,
-        start: "top 80%",
+        start: 'top 80%',
       },
     });
   }, []);
@@ -230,11 +205,7 @@ export default function Company({
           const translateYValue = nameCompanyRect.height + 190;
           nameCompanyRef.current.style.transform = `translateY(${translateYValue}px)`;
           thisBlockRef.current.style.transform = `translateY(150px) translateX(10vw) rotate(-90deg)`;
-        } else if (
-          scrollTop > thisBlockRect.top &&
-          screenWidth < 1999 &&
-          screenWidth >= 1480
-        ) {
+        } else if (scrollTop > thisBlockRect.top && screenWidth < 1999 && screenWidth >= 1480) {
           const translateYValue = nameCompanyRect.height + 200;
           nameCompanyRef.current.style.transform = `translateY(${translateYValue}px)`;
           thisBlockRef.current.style.transform = `translateY(170px) translateX(10vw) rotate(-90deg)`;
@@ -243,15 +214,15 @@ export default function Company({
           nameCompanyRef.current.style.transform = `translateY(${translateYValue}px)`;
           thisBlockRef.current.style.transform = `translateY(180px) translateX(10vw) rotate(-90deg)`;
         } else {
-          nameCompanyRef.current.style.transform = "none";
-          thisBlockRef.current.style.transform = "rotate(-180deg)";
+          nameCompanyRef.current.style.transform = 'none';
+          thisBlockRef.current.style.transform = 'rotate(-180deg)';
         }
       }
     }
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener('scroll', handleScroll);
     return () => {
       if (nameCompanyRef.current && thisBlockRef.current) {
-        window.removeEventListener("scroll", handleScroll);
+        window.removeEventListener('scroll', handleScroll);
       }
     };
   }, []);
@@ -265,9 +236,9 @@ export default function Company({
 
   const buttonsStuff = useMemo(
     () => [
-      { name: "Руководство", onClick: handleButtonClick },
+      { name: 'Руководство', onClick: handleButtonClick },
       // { name: "Руководители отделов", onClick: handleButtonClick },
-      { name: "Научно-техническое сопровождение", onClick: handleButtonClick },
+      { name: 'Научно-техническое сопровождение', onClick: handleButtonClick },
       // { name: "HR", onClick: handleButtonClick },
     ],
     [handleButtonClick]
@@ -283,7 +254,7 @@ export default function Company({
   if (error) {
     return (
       <div>
-        {" "}
+        {' '}
         <Error error={error.message} />
       </div>
     );
@@ -328,14 +299,7 @@ export default function Company({
         {/* <Company_Slider /> */}
         <div className={styles.block_video_company}>
           {videoSrc2 && (
-            <video
-              playsInline
-              autoPlay
-              muted
-              loop
-              id="bg-video"
-              className={styles.bg_video}
-            >
+            <video playsInline autoPlay muted loop id="bg-video" className={styles.bg_video}>
               <source src={videoSrc2} type="video/mp4" preload="auto" />
             </video>
           )}
@@ -358,9 +322,7 @@ export default function Company({
                   </div>
                   <p>{countPercent}</p>
                 </div>
-                <span className={styles.span_underSlider_text}>
-                  Квалифицированных специалистов
-                </span>
+                <span className={styles.span_underSlider_text}>Квалифицированных специалистов</span>
               </div>
               <div className={styles.container_text}>
                 <div className={styles.div_underSlider_text}>
@@ -369,9 +331,7 @@ export default function Company({
                   </div>
                   <p>{countProject}</p>
                 </div>
-                <span className={styles.span_underSlider_text}>
-                  Проектов реализовано
-                </span>
+                <span className={styles.span_underSlider_text}>Проектов реализовано</span>
               </div>
               <div className={styles.container_text}>
                 <div className={styles.div_underSlider_text}>
@@ -380,9 +340,7 @@ export default function Company({
                   </div>
                   <p>{countHuman}</p>
                 </div>
-                <span className={styles.span_underSlider_text}>
-                  Лет на&nbsp;рынке
-                </span>
+                <span className={styles.span_underSlider_text}>Лет на&nbsp;рынке</span>
               </div>
             </div>
           )}
@@ -406,26 +364,21 @@ export default function Company({
           <div className={styles.right_about}>
             <div className={styles.text_right_about}>
               <p>
-                MARKS GROUP &ndash; ключевая компания в&nbsp;сфере генерального проектирования,
-                начиная от&nbsp;концепции и&nbsp;заканчивая авторским
-                надзором за&nbsp;строительством объекта и&nbsp;его введением в&nbsp;эксплуатацию.
+                MARKS GROUP &ndash; ключевая компания в&nbsp;сфере генерального проектирования, начиная
+                от&nbsp;концепции и&nbsp;заканчивая авторским надзором за&nbsp;строительством объекта и&nbsp;его
+                введением в&nbsp;эксплуатацию.
               </p>
               <br />
               {/* <br /> */}
               <p>
-                С&nbsp;2015&nbsp;года непрерывный опыт проектирования уникальных объектов,
-                жилых и&nbsp;общественных зданий, промышленных предприятий
-                и&nbsp;объектов транспортной инфраструктуры.
+                С&nbsp;2015&nbsp;года непрерывный опыт проектирования уникальных объектов, жилых и&nbsp;общественных
+                зданий, промышленных предприятий и&nbsp;объектов транспортной инфраструктуры.
               </p>
               <br />
               {/* <br /> */}
-              <p>
-               MARKS GROUP. Вдохновляющие проекты для&nbsp;амбициозных заказчиков.
-              </p>
-              </div>
-            <div className={styles.main_counter_wrapper}>
-              {isMobile && <CounterCompanyMobile2 />}
+              <p>MARKS GROUP. Вдохновляющие проекты для&nbsp;амбициозных заказчиков.</p>
             </div>
+            <div className={styles.main_counter_wrapper}>{isMobile && <CounterCompanyMobile2 />}</div>
             {!isMobile && (
               <div className={styles.right_counter_wrapper} ref={ref}>
                 <div className={styles.container_text_right}>
@@ -435,9 +388,7 @@ export default function Company({
                     </div>
                     <p className={styles.number}>{countDepartment}</p>
                   </div>
-                  <span className={styles.span_underSlider_text_right}>
-                    Регионов присутствия
-                  </span>
+                  <span className={styles.span_underSlider_text_right}>Регионов присутствия</span>
                 </div>
                 <div className={styles.container_text_right}>
                   <div className={styles.div_underSlider_text_right}>
@@ -446,14 +397,10 @@ export default function Company({
                     </div>
                     <p className={styles.number}>{countGap}</p>
                   </div>
-                  <span className={styles.span_underSlider_text_right}>
-                    Объектов транспортной инфраструктуры
-                  </span>
+                  <span className={styles.span_underSlider_text_right}>Объектов транспортной инфраструктуры</span>
                 </div>
                 <div className={styles.container_text_right}>
-                  <div
-                    className={`${styles.div_underSlider_text_right} ${styles.div_underSlider_text_right_last}`}
-                  >
+                  <div className={`${styles.div_underSlider_text_right} ${styles.div_underSlider_text_right_last}`}>
                     <div className={styles.text_svg_right}>
                       <img src={bracket_dark} alt="bracket_dark" />
                     </div>
@@ -464,9 +411,7 @@ export default function Company({
                   </span>
                 </div>
                 <div className={styles.container_text_right}>
-                  <div
-                    className={`${styles.div_underSlider_text_right} ${styles.div_underSlider_text_right_last}`}
-                  >
+                  <div className={`${styles.div_underSlider_text_right} ${styles.div_underSlider_text_right_last}`}>
                     <div className={styles.text_svg_right}>
                       <img src={bracket_dark} alt="bracket_dark" />
                     </div>
@@ -481,23 +426,24 @@ export default function Company({
             )}
           </div>
         </div>
-        <div className={styles.company_group_name}>
+        <CompanySlider />
+        {/* <div className={styles.company_group_name}>
           Состав группы компаний
-          <p className={styles.plus_nine} style={{ verticalAlign: "top" }}>
-            {/* <img src={plusNine} alt="plus_nine" /> */}
+          <p className={styles.plus_nine} style={{ verticalAlign: 'top' }}>
+            <img src={plusNine} alt="plus_nine" />
             <span>+ 4</span>
           </p>
         </div>
         <div className={styles.company_group_slider}>
-          <CompanySlider />
-        </div>
+        </div> */}
+
         <div className={styles.awards_wrapper}>
           Награды и&nbsp;премии
           <div className={styles.years_div}>/2005-2024/</div>
         </div>
         <div className={styles.list_project}>
-          Список проектов, которые были отмечены конкурсами в&nbsp;разных
-          номинациях за&nbsp;годы практики с&nbsp;2005&nbsp;года
+          Список проектов, которые были отмечены конкурсами в&nbsp;разных номинациях за&nbsp;годы практики
+          с&nbsp;2005&nbsp;года
         </div>
         {isMobile && <TableCompanyMobile />}
         {!isMobile && (
@@ -523,8 +469,7 @@ export default function Company({
               //   clickable: true,
               // }}
               className={styles.my_swiper_button_group}
-              touch="true"
-            >
+              touch="true">
               <div className={styles.button_group}>
                 {buttonsStuff &&
                   buttonsStuff?.map((button, index) => (
@@ -534,11 +479,8 @@ export default function Company({
                         e.preventDefault();
                         button.onClick(button.name);
                       }}
-                      className={`${styles.button_hover} ${
-                        activeButton === button.name ? styles.active : ""
-                      }`}
-                      style={{ width: "fit-content" }}
-                    >
+                      className={`${styles.button_hover} ${activeButton === button.name ? styles.active : ''}`}
+                      style={{ width: 'fit-content' }}>
                       <p type="button">{button.name}</p>
                     </SwiperSlide>
                   ))}
@@ -551,39 +493,32 @@ export default function Company({
                 type="button"
                 onClick={(e) => {
                   e.preventDefault();
-                  handleButtonClick("Руководство");
+                  handleButtonClick('Руководство');
                 }}
                 className={`${styles.button_leader} ${styles.button_hover} ${
-                  activeButton === "Руководство" ? styles.active : ""
+                  activeButton === 'Руководство' ? styles.active : ''
                 }`}
                 onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-              >
+                onMouseLeave={handleMouseLeave}>
                 Руководство
               </button>
               <button
                 type="button"
                 onClick={(e) => {
                   e.preventDefault();
-                  handleButtonClick("Научно-техническое сопровождение");
+                  handleButtonClick('Научно-техническое сопровождение');
                 }}
                 className={`${styles.button_support} ${styles.button_hover} ${
-                  activeButton === "Научно-техническое сопровождение"
-                    ? styles.active
-                    : ""
+                  activeButton === 'Научно-техническое сопровождение' ? styles.active : ''
                 }`}
                 onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-              >
+                onMouseLeave={handleMouseLeave}>
                 Научно-техническое сопровождение
               </button>
             </div>
           )}
         </div>
-        <div
-          className={styles.card_container}
-          style={{ opacity: showCards ? 1 : 0 }}
-        >
+        <div className={styles.card_container} style={{ opacity: showCards ? 1 : 0 }}>
           <ul className={styles.card_container_ul}>
             {staff &&
               staff?.map((el) => (
@@ -593,13 +528,10 @@ export default function Company({
                   className={styles.container__item_stuff}
                   onClick={() => handleButtonClick(category, el.id)}
                   onMouseEnter={handleMouseHover}
-                  onMouseLeave={handleMouseLeave}
-                >
+                  onMouseLeave={handleMouseLeave}>
                   <div className={styles.wrapper_container_item_stuff}>
                     <img
-                      className={`${styles.container__img_stuff} ${
-                        showCards ? "loaded" : ""
-                      }`}
+                      className={`${styles.container__img_stuff} ${showCards ? 'loaded' : ''}`}
                       src={`${Host}/images/imageStuff/${el.img}`}
                       onLoad={handleImageLoad}
                       onError={(e) => {
@@ -610,19 +542,15 @@ export default function Company({
                       loading="lazy"
                     />
                   </div>
-                  <div className={styles.container__item_name_stuff}>
-                    {el.name}
-                  </div>
-                  <div className={styles.container__item_position_stuff}>
-                    {el.position}
-                  </div>
+                  <div className={styles.container__item_name_stuff}>{el.name}</div>
+                  <div className={styles.container__item_position_stuff}>{el.position}</div>
                 </li>
               ))}
             {isModalOpen && selectedCard && (
               <Modal
                 className={styles.modal_wrapper}
                 const
-                modal={document.querySelector(".modal")}
+                modal={document.querySelector('.modal')}
                 modalStyleZIndex={10}
                 isOpen={isModalOpen}
                 onRequestClose={() => {
@@ -631,37 +559,36 @@ export default function Company({
                 }}
                 onAfterOpen={() => {
                   setIsModalOpen(true);
-                  document.body.style.overflow = "hidden";
-                  document.body.classList.add("modal-open");
+                  document.body.style.overflow = 'hidden';
+                  document.body.classList.add('modal-open');
                 }}
                 onAfterClose={() => {
-                  document.body.style.overflow = "";
-                  document.body.classList.remove("modal-open");
+                  document.body.style.overflow = '';
+                  document.body.classList.remove('modal-open');
                 }}
                 ariaHideApp={false}
                 categoryId={category}
                 style={{
                   overlay: {
                     zIndex: 10,
-                    backgroundColor: "#2C3B447A",
+                    backgroundColor: '#2C3B447A',
                   },
                   content: {
                     zIndex: 10,
-                    overflow: "auto",
-                    WebkitOverflowScrolling: "touch", // Для плавной прокрутки в Safari
-                    "&::WebkitScrollbar": {
-                      width: "12px",
+                    overflow: 'auto',
+                    WebkitOverflowScrolling: 'touch', // Для плавной прокрутки в Safari
+                    '&::WebkitScrollbar': {
+                      width: '12px',
                     },
-                    "&::WebkitScrollbarTrack": {
-                      backgroundColor: "#75BBFD",
-                      borderRadius: "6px",
+                    '&::WebkitScrollbarTrack': {
+                      backgroundColor: '#75BBFD',
+                      borderRadius: '6px',
                     },
-                    "&::WebkitScrollbarTrack": {
-                      backgroundColor: "transparent",
+                    '&::WebkitScrollbarTrack': {
+                      backgroundColor: 'transparent',
                     },
                   },
-                }}
-              >
+                }}>
                 {selectedCard && (
                   <div key={selectedCard.id} className={styles.modal_context}>
                     <div
@@ -671,15 +598,8 @@ export default function Company({
                         dispatch(selectCard(null));
                       }}
                       onMouseEnter={handleMouseEnter}
-                      onMouseLeave={handleMouseLeave}
-                    >
-                      <svg
-                        width="16"
-                        height="16"
-                        viewBox="0 0 16 16"
-                        fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
+                      onMouseLeave={handleMouseLeave}>
+                      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
                           fillRule="evenodd"
                           clipRule="evenodd"
@@ -697,9 +617,7 @@ export default function Company({
                         />
                       </div>
                     </div>
-                    <div className={styles.modal_name_stuff}>
-                      {selectedCard.name}
-                    </div>
+                    <div className={styles.modal_name_stuff}>{selectedCard.name}</div>
                     {/* {selectedCard.description && (
                       <div className={styles.modal_description_stuff}>
                         {selectedCard.description
@@ -716,188 +634,138 @@ export default function Company({
                       </div>
                     )} */}
                     {selectedCard.description && (
-                      <div className={styles.modal_description_stuff}>
-                        {selectedCard.description}
-                      </div>
+                      <div className={styles.modal_description_stuff}>{selectedCard.description}</div>
                     )}
-                    {selectedCard.about && (
-                      <div className={styles.modal_about_stuff}>
-                        {selectedCard.about}
-                      </div>
-                    )}
+                    {selectedCard.about && <div className={styles.modal_about_stuff}>{selectedCard.about}</div>}
                     {selectedCard.about1 && (
                       <div className={styles.modal_about_stuff1}>
-                        <div className={styles.modal_about_stuff_symbol}>
-                          {symbol}
-                        </div>
+                        <div className={styles.modal_about_stuff_symbol}>{symbol}</div>
                         {selectedCard.about1}
                       </div>
                     )}
                     {selectedCard.about2 && (
                       <div className={styles.modal_about_stuff1}>
-                        <div className={styles.modal_about_stuff_symbol}>
-                          {symbol}
-                        </div>
+                        <div className={styles.modal_about_stuff_symbol}>{symbol}</div>
                         {selectedCard.about2}
                       </div>
                     )}
                     {selectedCard.about3 && (
                       <div className={styles.modal_about_stuff1}>
-                        <div className={styles.modal_about_stuff_symbol}>
-                          {symbol}
-                        </div>
+                        <div className={styles.modal_about_stuff_symbol}>{symbol}</div>
                         {selectedCard.about3}
                       </div>
                     )}
                     {selectedCard.about4 && (
                       <div className={styles.modal_about_stuff1}>
-                        <div className={styles.modal_about_stuff_symbol}>
-                          {symbol}
-                        </div>
+                        <div className={styles.modal_about_stuff_symbol}>{symbol}</div>
                         {selectedCard.about4}
                       </div>
                     )}
                     {selectedCard.about5 && (
                       <div className={styles.modal_about_stuff1}>
-                        <div className={styles.modal_about_stuff_symbol}>
-                          {symbol}
-                        </div>
+                        <div className={styles.modal_about_stuff_symbol}>{symbol}</div>
                         {selectedCard.about5}
                       </div>
                     )}
                     {selectedCard.about6 && (
                       <div className={styles.modal_about_stuff1}>
-                        <div className={styles.modal_about_stuff_symbol}>
-                          {symbol}
-                        </div>
+                        <div className={styles.modal_about_stuff_symbol}>{symbol}</div>
                         {selectedCard.about6}
                       </div>
                     )}
                     {selectedCard.about7 && (
                       <div className={styles.modal_about_stuff1}>
-                        <div className={styles.modal_about_stuff_symbol}>
-                          {symbol}
-                        </div>
+                        <div className={styles.modal_about_stuff_symbol}>{symbol}</div>
                         {selectedCard.about7}
                       </div>
                     )}
                     {selectedCard.about8 && (
                       <div className={styles.modal_about_stuff1}>
-                        <div className={styles.modal_about_stuff_symbol}>
-                          {symbol}
-                        </div>
+                        <div className={styles.modal_about_stuff_symbol}>{symbol}</div>
                         {selectedCard.about8}
                       </div>
                     )}
                     {selectedCard.about9 && (
                       <div className={styles.modal_about_stuff1}>
-                        <div className={styles.modal_about_stuff_symbol}>
-                          {symbol}
-                        </div>
+                        <div className={styles.modal_about_stuff_symbol}>{symbol}</div>
                         {selectedCard.about9}
                       </div>
                     )}
                     {selectedCard.about10 && (
                       <div className={styles.modal_about_stuff1}>
-                        <div className={styles.modal_about_stuff_symbol}>
-                          {symbol}
-                        </div>
+                        <div className={styles.modal_about_stuff_symbol}>{symbol}</div>
                         {selectedCard.about10}
                       </div>
                     )}
                     {selectedCard.about11 && (
                       <div className={styles.modal_about_stuff1}>
-                        <div className={styles.modal_about_stuff_symbol}>
-                          {symbol}
-                        </div>
+                        <div className={styles.modal_about_stuff_symbol}>{symbol}</div>
                         {selectedCard.about11}
                       </div>
                     )}
                     {selectedCard.about12 && (
                       <div className={styles.modal_about_stuff1}>
-                        <div className={styles.modal_about_stuff_symbol}>
-                          {symbol}
-                        </div>
+                        <div className={styles.modal_about_stuff_symbol}>{symbol}</div>
                         {selectedCard.about12}
                       </div>
                     )}
                     {selectedCard.about13 && (
                       <div className={styles.modal_about_stuff1}>
-                        <div className={styles.modal_about_stuff_symbol}>
-                          {symbol}
-                        </div>
+                        <div className={styles.modal_about_stuff_symbol}>{symbol}</div>
                         {selectedCard.about13}
                       </div>
                     )}
                     {selectedCard.about14 && (
                       <div className={styles.modal_about_stuff1}>
-                        <div className={styles.modal_about_stuff_symbol}>
-                          {symbol}
-                        </div>
+                        <div className={styles.modal_about_stuff_symbol}>{symbol}</div>
                         {selectedCard.about14}
                       </div>
                     )}
                     {selectedCard.about15 && (
                       <div className={styles.modal_about_stuff1}>
-                        <div className={styles.modal_about_stuff_symbol}>
-                          {symbol}
-                        </div>
+                        <div className={styles.modal_about_stuff_symbol}>{symbol}</div>
                         {selectedCard.about15}
                       </div>
                     )}
                     {selectedCard.about16 && (
                       <div className={styles.modal_about_stuff1}>
-                        <div className={styles.modal_about_stuff_symbol}>
-                          {symbol}
-                        </div>
+                        <div className={styles.modal_about_stuff_symbol}>{symbol}</div>
                         {selectedCard.about16}
                       </div>
                     )}
                     {selectedCard.about17 && (
                       <div className={styles.modal_about_stuff1}>
-                        <div className={styles.modal_about_stuff_symbol}>
-                          {symbol}
-                        </div>
+                        <div className={styles.modal_about_stuff_symbol}>{symbol}</div>
                         {selectedCard.about17}
                       </div>
                     )}
                     {selectedCard.about18 && (
                       <div className={styles.modal_about_stuff1}>
-                        <div className={styles.modal_about_stuff_symbol}>
-                          {symbol}
-                        </div>
+                        <div className={styles.modal_about_stuff_symbol}>{symbol}</div>
                         {selectedCard.about18}
                       </div>
                     )}
                     {selectedCard.about19 && (
                       <div className={styles.modal_about_stuff1}>
-                        <div className={styles.modal_about_stuff_symbol}>
-                          {symbol}
-                        </div>
+                        <div className={styles.modal_about_stuff_symbol}>{symbol}</div>
                         {selectedCard.about19}
                       </div>
                     )}
                     {selectedCard.about20 && (
                       <div className={styles.modal_about_stuff1}>
-                        <div className={styles.modal_about_stuff_symbol}>
-                          {symbol}
-                        </div>
+                        <div className={styles.modal_about_stuff_symbol}>{symbol}</div>
                         {selectedCard.about20}
                       </div>
                     )}
                     {selectedCard.about21 && (
                       <div className={styles.modal_about_stuff1}>
-                        <div className={styles.modal_about_stuff_symbol}>
-                          {symbol}
-                        </div>
+                        <div className={styles.modal_about_stuff_symbol}>{symbol}</div>
                         {selectedCard.about21}
                       </div>
                     )}
                     {selectedCard.about22 && (
                       <div className={styles.modal_about_stuff1}>
-                        <div className={styles.modal_about_stuff_symbol}>
-                          {symbol}
-                        </div>
+                        <div className={styles.modal_about_stuff_symbol}>{symbol}</div>
                         {selectedCard.about22}
                       </div>
                     )}
@@ -910,68 +778,50 @@ export default function Company({
                       </div>
                     )}
                     {selectedCard.description1 && (
-                      <div className={styles.modal_description_stuff1}>
-                        {selectedCard.description1}
-                      </div>
+                      <div className={styles.modal_description_stuff1}>{selectedCard.description1}</div>
                     )}
                     {selectedCard.about24 && (
                       <div className={styles.modal_about_stuff1}>
-                        <div className={styles.modal_about_stuff_symbol}>
-                          {symbol}
-                        </div>
+                        <div className={styles.modal_about_stuff_symbol}>{symbol}</div>
                         {selectedCard.about24}
                       </div>
                     )}
                     {selectedCard.description2 && (
-                      <div className={styles.modal_description_stuff1}>
-                        {selectedCard.description2}
-                      </div>
+                      <div className={styles.modal_description_stuff1}>{selectedCard.description2}</div>
                     )}
                     {selectedCard.about25 && (
                       <div className={styles.modal_about_stuff1}>
-                        <div className={styles.modal_about_stuff_symbol}>
-                          {symbol}
-                        </div>
+                        <div className={styles.modal_about_stuff_symbol}>{symbol}</div>
                         {selectedCard.about25}
                       </div>
                     )}
                     {selectedCard.about26 && (
                       <div className={styles.modal_about_stuff1}>
-                        <div className={styles.modal_about_stuff_symbol}>
-                          {symbol}
-                        </div>
+                        <div className={styles.modal_about_stuff_symbol}>{symbol}</div>
                         {selectedCard.about26}
                       </div>
                     )}
                     {selectedCard.about27 && (
                       <div className={styles.modal_about_stuff1}>
-                        <div className={styles.modal_about_stuff_symbol}>
-                          {symbol}
-                        </div>
+                        <div className={styles.modal_about_stuff_symbol}>{symbol}</div>
                         {selectedCard.about27}
                       </div>
                     )}
                     {selectedCard.about28 && (
                       <div className={styles.modal_about_stuff1}>
-                        <div className={styles.modal_about_stuff_symbol}>
-                          {symbol}
-                        </div>
+                        <div className={styles.modal_about_stuff_symbol}>{symbol}</div>
                         {selectedCard.about28}
                       </div>
                     )}
                     {selectedCard.about29 && (
                       <div className={styles.modal_about_stuff1}>
-                        <div className={styles.modal_about_stuff_symbol}>
-                          {symbol}
-                        </div>
+                        <div className={styles.modal_about_stuff_symbol}>{symbol}</div>
                         {selectedCard.about29}
                       </div>
                     )}
                     {selectedCard.about30 && (
                       <div className={styles.modal_about_stuff1}>
-                        <div className={styles.modal_about_stuff_symbol}>
-                          {symbol}
-                        </div>
+                        <div className={styles.modal_about_stuff_symbol}>{symbol}</div>
                         {selectedCard.about30}
                       </div>
                     )}
@@ -988,29 +838,23 @@ export default function Company({
               loop={true}
               slidesPerView={1.1}
               spaceBetween={0}
-              effect={"fade"}
+              effect={'fade'}
               touch="true"
-              onSlideChange={(swiper) =>
-                setCurrentIndexCompany(swiper.realIndex)
-              }
+              onSlideChange={(swiper) => setCurrentIndexCompany(swiper.realIndex)}
               onSwiper={(swiper) => {
                 if (swiperCompanyRef.current === null) {
                   swiperCompanyRef.current = swiper;
                 }
-              }}
-            >
+              }}>
               {staff?.map((el) => (
                 <SwiperSlide
                   key={el.id}
                   data-user-id={el.id}
                   className={styles.slide_container_item_stuff}
-                  onClick={() => handleButtonClick(category, el.id)}
-                >
+                  onClick={() => handleButtonClick(category, el.id)}>
                   <div className={styles.wrapper_container_item_stuff}>
                     <img
-                      className={`${styles.container__img_stuff} ${
-                        showCards ? "loaded" : ""
-                      }`}
+                      className={`${styles.container__img_stuff} ${showCards ? 'loaded' : ''}`}
                       src={`${Host}/images/imageStuff/${el.img}`}
                       onLoad={handleImageLoad}
                       onError={(e) => {
@@ -1020,12 +864,8 @@ export default function Company({
                       loading="lazy"
                     />
                   </div>
-                  <div className={styles.container__item_name_stuff}>
-                    {el.name}
-                  </div>
-                  <div className={styles.container__item_position_stuff}>
-                    {el.position}
-                  </div>
+                  <div className={styles.container__item_name_stuff}>{el.name}</div>
+                  <div className={styles.container__item_position_stuff}>{el.position}</div>
                 </SwiperSlide>
               ))}
             </Swiper>
@@ -1052,20 +892,16 @@ export default function Company({
               loop={true}
               slidesPerView={2.2}
               spaceBetween={0}
-              touch="true"
-            >
+              touch="true">
               {staff?.map((el) => (
                 <SwiperSlide
                   key={el.id}
                   data-user-id={el.id}
                   className={styles.slide_container_item_stuff}
-                  onClick={() => handleButtonClick(category, el.id)}
-                >
+                  onClick={() => handleButtonClick(category, el.id)}>
                   <div className={styles.wrapper_container_item_stuff}>
                     <img
-                      className={`${styles.container__img_stuff} ${
-                        showCards ? "loaded" : ""
-                      }`}
+                      className={`${styles.container__img_stuff} ${showCards ? 'loaded' : ''}`}
                       src={`${Host}/images/imageStuff/${el.img}`}
                       onLoad={handleImageLoad}
                       onError={(e) => {
@@ -1075,12 +911,8 @@ export default function Company({
                       loading="lazy"
                     />
                   </div>
-                  <div className={styles.container__item_name_stuff}>
-                    {el.name}
-                  </div>
-                  <div className={styles.container__item_position_stuff}>
-                    {el.position}
-                  </div>
+                  <div className={styles.container__item_name_stuff}>{el.name}</div>
+                  <div className={styles.container__item_position_stuff}>{el.position}</div>
                 </SwiperSlide>
               ))}
             </Swiper>
@@ -1098,20 +930,18 @@ export default function Company({
             {isLoadingFormContacts && (
               <div
                 style={{
-                  position: "relative",
-                  height: "30vh",
-                  width: window.innerWidth <= 768 ? "100vw" : "50vw",
-                }}
-              >
+                  position: 'relative',
+                  height: '30vh',
+                  width: window.innerWidth <= 768 ? '100vw' : '50vw',
+                }}>
                 <div
                   style={{
-                    position: "absolute",
-                    top: "100%",
-                    left: "50%",
-                    transform: "translate(-50%, -50%)",
+                    position: 'absolute',
+                    top: '100%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
                     zIndex: 10,
-                  }}
-                >
+                  }}>
                   <LoadingCircle />
                 </div>
               </div>
@@ -1119,20 +949,18 @@ export default function Company({
             {modalOpenFormContacts && (
               <div
                 style={{
-                  position: "relative",
-                  height: "30vh",
-                  width: window.innerWidth <= 768 ? "100vw" : "50vw",
-                }}
-              >
+                  position: 'relative',
+                  height: '30vh',
+                  width: window.innerWidth <= 768 ? '100vw' : '50vw',
+                }}>
                 <div
                   style={{
-                    position: "absolute",
-                    top: "100%",
-                    left: "50%",
-                    transform: "translate(-50%, -50%)",
+                    position: 'absolute',
+                    top: '100%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
                     zIndex: 10,
-                  }}
-                >
+                  }}>
                   <ModalVacancyFormSend
                     isOpen={modalOpenFormContacts}
                     onRequestClose={() => setModalOpenFormContacts(false)}
@@ -1158,20 +986,18 @@ export default function Company({
             {isLoadingSubscription && (
               <div
                 style={{
-                  position: "relative",
-                  height: "30vh",
-                  width: window.innerWidth <= 768 ? "100vw" : "50vw",
-                }}
-              >
+                  position: 'relative',
+                  height: '30vh',
+                  width: window.innerWidth <= 768 ? '100vw' : '50vw',
+                }}>
                 <div
                   style={{
-                    position: "absolute",
-                    top: "100%",
-                    left: "50%",
-                    transform: "translate(-50%, -50%)",
+                    position: 'absolute',
+                    top: '100%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
                     zIndex: 100,
-                  }}
-                >
+                  }}>
                   <LoadingCircle />
                 </div>
               </div>
@@ -1179,20 +1005,18 @@ export default function Company({
             {modalOpenSubscription && (
               <div
                 style={{
-                  position: "relative",
-                  height: "30vh",
-                  width: window.innerWidth <= 768 ? "100vw" : "50vw",
-                }}
-              >
+                  position: 'relative',
+                  height: '30vh',
+                  width: window.innerWidth <= 768 ? '100vw' : '50vw',
+                }}>
                 <div
                   style={{
-                    position: "absolute",
-                    top: "100%",
-                    left: "50%",
-                    transform: "translate(-50%, -50%)",
+                    position: 'absolute',
+                    top: '100%',
+                    left: '50%',
+                    transform: 'translate(-50%, -50%)',
                     zIndex: 100,
-                  }}
-                >
+                  }}>
                   <ModalVacancyFormSend
                     isOpen={modalOpenSubscription}
                     onRequestClose={() => setModalOpenSubscription(false)}

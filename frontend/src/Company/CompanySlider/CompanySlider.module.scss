@@ -3,7 +3,7 @@
 
 .CompanySlider {
   $s: &;
-  margin: rem(120) 0;
+  margin: rem(180) 0;
 
   &__title {
     padding: 0 rem(30);
@@ -83,6 +83,12 @@
     background-color: var(--salmon-FF7F6A);
   }
 
+  @media all and (min-width: $bp0) {
+    &__slide {
+      width: auto !important;
+    }
+  }
+
   @media all and (max-width: 2200px) {
     &__picture {
       img {
@@ -97,7 +103,12 @@
         height: rem(58);
       }
     }
+
+    * > &__swiper > * {
+      gap: 0px;
+    }
   }
+
   // Адаптация под меньший размер desktop
   @media all and (max-width: $bp1) {
     &__text {
@@ -112,22 +123,14 @@
     }
   }
 
-  @media all and (min-width: $bp0) {
-    &__slide {
-      width: auto !important;
-    }
-  }
-
-  @media all and (max-width: $bp0) {
-    * > &__swiper > * {
-      gap: 0px;
-    }
-  }
-
   @media all and (max-width: $bp2) {
     &__pagination {
       display: block;
     }
+  }
+
+  @media all and (max-width: $bp3) {
+    margin: rem(120) 0;
   }
 
   // Адаптация под mobile
