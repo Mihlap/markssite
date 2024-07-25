@@ -5,10 +5,10 @@ import 'swiper/swiper-bundle.min.css';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Keyboard } from 'swiper';
 
-import company_1 from './company-swiper-1.svg';
-import company_2 from './company-swiper-2.svg';
-import company_3 from './company-swiper-3.svg';
-import company_4 from './company-swiper-4.svg';
+import company_1 from '../../img/company-swiper-1.svg';
+import company_2 from '../../img/company-swiper-2.svg';
+import company_3 from '../../img/company-swiper-3.svg';
+import company_4 from '../../img/company-swiper-4.svg';
 
 const companyArray = [
   {
