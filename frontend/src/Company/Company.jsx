@@ -426,6 +426,7 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
             )}
           </div>
         </div>
+        <CompanySlider/>
         {/* <div className={styles.company_group_name}>
           Состав группы компаний
           <p className={styles.plus_nine} style={{ verticalAlign: "top" }}>
@@ -434,9 +435,8 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
             <span>+ 4</span>
           </p>
         </div> */}
-        <div className={styles.company_group_slider}>
+        {/* <div className={styles.company_group_slider}>
         </div> */}
-
         <div className={styles.awards_wrapper}>
           Награды и&nbsp;премии
           <div className={styles.years_div}>/2005-2024/</div>
