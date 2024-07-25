@@ -101,11 +101,9 @@
 }
 
 .errorLine {
-  height: 0.8px;
-  margin-top: 12px;
-  background-color: red;
-  width: 34rem;
+  background-color: var(--crimson-E00747)
 }
+
 
 .placeholder {
   position: absolute;
@@ -138,13 +136,6 @@
 #phone-input.input_tel_form_contacts.focus+.line {
   background-color: var(--blue-75BBFD);
 }
-
-/* .input_name_form_contacts:focus+.errorLine,
-.input_resume_form_contacts:focus+.errorLine,
-.input_tel_form_contacts:focus+.errorLine,
-#phone-input.input_tel_form_contacts.focus+.errorLine {
-  background-color: red;
-} */
 
 .input_name_form_contacts:focus+.lineSimple,
 .input_letter_form_contacts:focus+.lineSimple,
@@ -423,13 +414,18 @@
     width: 100%;
   }
 
+  
   .lineSimple {
     height: 0.8px;
     margin-top: 12px;
     background-color: var(--gray-959DA6);
     width: 100%;
   }
-
+  
+  .errorLine {
+    background-color: var(--crimson-E00747)
+  }
+  
   .line_select {
     margin-top: 0;
     background-color: var(--gray-959DA6);
@@ -735,6 +731,11 @@
     width: 100%;
   }
 
+  .errorLine {
+    background-color: var(--crimson-E00747)
+  }
+  
+
   .line_resume {
     width: 46vw;
   }
@@ -958,6 +959,10 @@
     background-color: var(--gray-959DA6);
     max-width: 100%;
     width: 100%;
+  }
+
+  .errorLine {
+    background-color: var(--crimson-E00747)
   }
 
   .line_select {

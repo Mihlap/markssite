@@ -426,14 +426,14 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
             )}
           </div>
         </div>
-        <CompanySlider />
         {/* <div className={styles.company_group_name}>
           Состав группы компаний
-          <p className={styles.plus_nine} style={{ verticalAlign: 'top' }}>
+          <p className={styles.plus_nine} style={{ verticalAlign: "top" }}>
+        <CompanySlider />
             <img src={plusNine} alt="plus_nine" />
             <span>+ 4</span>
           </p>
-        </div>
+        </div> */}
         <div className={styles.company_group_slider}>
         </div> */}
 
