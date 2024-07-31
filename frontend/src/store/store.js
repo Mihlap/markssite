@@ -7,6 +7,7 @@ import articleSlice from "./Slice/articleSlice";
 import searchProjectMainSlice from "./Slice/searchProjectMainSlice";
 import searchArticlePublicLeft from "./Slice/searchArticlePublicLeftSlice";
 import searchArticlePublicRightReducer from "./Slice/searchArticlePublicRightSlice";
+import searchVacancyMainSlice from "./Slice/searchVacancyMainSlice";
 import authReducer from "./Slice/authSlice";
 import userReducer from "./Slice/userSlice";
 import cursorReducer from "./Slice/cursorSlice";
@@ -24,6 +25,7 @@ export default configureStore({
     counter: counterSlice,
     article: articleSlice,
     searchproject: searchProjectMainSlice,
+    searchvacancy: searchVacancyMainSlice,
     searchArticlePublicLeft: searchArticlePublicLeft,
     searchArticlePublicRight: searchArticlePublicRightReducer,
     cursor: cursorReducer,
