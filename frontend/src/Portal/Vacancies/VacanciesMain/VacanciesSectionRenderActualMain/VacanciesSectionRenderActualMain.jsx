@@ -137,8 +137,8 @@ const VacanciesSectionRenderActualMain = ({
       )}
     </>
   ) : (
-    <div className={styles.vacancy_content_massage}>
-      Скоро здесь появятся вакансии
+    <div className={styles.vacancy_content_massage} style={{paddingBottom: "3rem"}}>
+      Скоро здесь появятся актуальные вакансии
     </div>
   );
 };

@@ -1,4 +1,5 @@
 const express = require('express');
+const { sequelize } = require('../../db/models');
 
 const {
   Employee,
@@ -283,26 +284,36 @@ router.get('/getzapros-modalFilter', async (req, res) => {
 
 // удаление вакансии
 router.delete('/deletezapros/:id', async (req, res) => {
+  const { id } = req.params;
+  
+  // Начало транзакции
+  const transaction = await sequelize.transaction();
+
   try {
-    const {
-      id
-    } = req.params;
-    await Employee.destroy({
-      where: {
-        id
-      }
-    });
+    // Попытка удалить связанную запись из другой таблицы
+    const vacancyMainEntry = await VacanciesMain.findOne({ where: { IdVacancy: id }, transaction });
+    if (vacancyMainEntry) {
+      await vacancyMainEntry.destroy({ transaction });
+    }
+
+    // Удаление вакансии из модели Employee
+    await Employee.destroy({ where: { id }, transaction });
+
+    // Подтверждение транзакции
+    await transaction.commit();
     res.json({
+      message: 'Вакансия и связанная запись успешно удалены',
       id
     });
   } catch (error) {
+    // Откат транзакции в случае ошибки
+    await transaction.rollback();
     console.error('Ошибка при удалении вакансии:', error);
     res.status(500).json({
       error: 'Произошла ошибка при удалении вакансии.'
     });
   }
 });
-
 
 
 module.exports = router;
