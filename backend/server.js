@@ -18,7 +18,9 @@ const searchArticleRight = require('./Routes/Articles/searchArticleRightRouter')
 const mailRouter = require('./Routes/mailRouter');
 const toggleRouter = require('./Routes/toggle/toggleRouter');
 const videoRouter = require('./Routes/videoRouter');
-const vacancyRouter = require('./Routes/vacancyRouter');
+const vacancyRouter = require('./Routes/Vacancies/vacancyRouter');
+const searchVacanciesRouter = require('./Routes/Vacancies/searchVacanciesRouter');
+
 
 
 // const { createProxyMiddleware } = require('http-proxy-middleware');
@@ -109,6 +111,7 @@ app.use('/api-stuffs', staffsRouter);
 app.use('/api-project', projectRouter);
 app.use('/api-article', articleRouter);
 app.use('/search', searchRouter);
+app.use('/search', searchVacanciesRouter);
 app.use('/search-article', searchArticleLeft);
 app.use('/search-articles', searchArticleRight);
 app.use('/api-mail', mailRouter);

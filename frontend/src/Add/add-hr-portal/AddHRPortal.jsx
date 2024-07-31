@@ -20,6 +20,7 @@ import noLook from '../icon/eye2.svg';
 import copyIcon from '../icon/copyIcon.svg';
 import pencilIcon from '../add-navbar/icon/pencil.svg';
 import LoadingCircle from '../../Loading/LoadingCircle.jsx';
+import SearchVacancyMain from '../HomeAdmin/SearchVacancyMain.jsx';
 
 export default function AddHRPortal({ user }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -59,9 +60,13 @@ export default function AddHRPortal({ user }) {
   }, [updateModalBlockHeight]);
 
   const handleOpenModal = useCallback(() => {
-    setIsModalOpen(true);
-    setEditVacancyData(null);
-  }, []);
+    if (selectedFilter !== 'Главная hr') {
+      setIsModalOpen(true);
+      setEditVacancyData(null);
+    } else {
+      // console.log("Для 'Главная hr' добавление новых элементов.");
+    }
+  }, [selectedFilter]);
 
   const handleCloseModal = useCallback(() => {
     setIsModalOpen(false);
@@ -173,7 +178,7 @@ export default function AddHRPortal({ user }) {
         return vacancy.type === 'вакансия';
       } else if (selectedFilter === 'Стажировки') {
         return vacancy.type === 'стажировка';
-      } else if (selectedFilter === 'Главная') {
+      } else if (selectedFilter === 'Главная hr') {
         return vacancy.type === 'главная';
       }
       return false;
@@ -203,39 +208,70 @@ export default function AddHRPortal({ user }) {
             </button>
           ))}
         </div>
-        <div className={styles.card_components_admin__button_block} onClick={handleOpenModal}>
-          <button className={styles.card_components_admin__button}>
-            <div>
-              <svg
-                className={styles.card_components_admin__icon}
-                width="41"
-                height="40"
-                viewBox="0 0 41 40"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg">
-                <g id="icon">
-                  <circle id="Ellipse 4" cx="20.5" cy="20" r="20" fill="#F6F6F6" />
-                  <path
-                    id="Vector 10"
-                    d="M10.5 20H20.5M30.5 20H20.5M20.5 20V10M20.5 20V30"
-                    stroke="#75BBFD"
-                    strokeWidth="2"
-                    strokeLinecap="square"
-                  />
-                </g>
-              </svg>
+        {selectedFilter === 'Главная hr' ? (
+          <>          
+            <div className={styles.card_components_admin__button_block} onClick={handleOpenModal}>
+              <button className={styles.card_components_admin__button}>
+                <div>
+                  <svg
+                    className={styles.card_components_admin__icon}
+                    width="41"
+                    height="40"
+                    viewBox="0 0 41 40"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <g id="icon">
+                      <circle id="Ellipse 4" cx="20.5" cy="20" r="20" fill="#F6F6F6" />
+                      <path
+                        id="Vector 10"
+                        d="M10.5 20H20.5M30.5 20H20.5M20.5 20V10M20.5 20V30"
+                        stroke="#75BBFD"
+                        strokeWidth="2"
+                        strokeLinecap="square"
+                      />
+                    </g>
+                  </svg>
+                </div>
+                <div className={styles.card_components_admin__button_text}>Добавить слайд</div>
+              </button>
             </div>
-            <div className={styles.card_components_admin__button_text}>
-              {selectedFilter === 'Вакансии'
-                ? 'Добавить вакансию'
-                : selectedFilter === 'Стажировки'
-                ? 'Добавить стажировку'
-                : selectedFilter === 'Главная'
-                ? 'Добавить на главную страницу'
-                : 'Добавить вакансию'}
-            </div>
-          </button>
-        </div>
+            <SearchVacancyMain
+              
+            />
+          </>
+        ) : (
+          <div className={styles.card_components_admin__button_block} onClick={handleOpenModal}>
+            <button className={styles.card_components_admin__button}>
+              <div>
+                <svg
+                  className={styles.card_components_admin__icon}
+                  width="41"
+                  height="40"
+                  viewBox="0 0 41 40"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <g id="icon">
+                    <circle id="Ellipse 4" cx="20.5" cy="20" r="20" fill="#F6F6F6" />
+                    <path
+                      id="Vector 10"
+                      d="M10.5 20H20.5M30.5 20H20.5M20.5 20V10M20.5 20V30"
+                      stroke="#75BBFD"
+                      strokeWidth="2"
+                      strokeLinecap="square"
+                    />
+                  </g>
+                </svg>
+              </div>
+              <div className={styles.card_components_admin__button_text}>
+                {selectedFilter === 'Вакансии'
+                  ? 'Добавить вакансию'
+                  : selectedFilter === 'Стажировки'
+                  ? 'Добавить стажировку'
+                  : 'Добавить'}
+              </div>
+            </button>
+          </div>
+        )}
         {isModalOpen && (
           <div className={styles.card_components_admin__modal_container}>
             <div style={{ maxHeight: modalBlockHeight }} className={styles.card_components_admin__modal_block}>
