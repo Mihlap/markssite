@@ -1,9 +1,9 @@
-import React, { useEffect, useState, useCallback, useMemo } from "react";
-import { Helmet } from "react-helmet-async";
-import { useDispatch, useSelector } from "react-redux";
-import styles from "./Vacancies.module.css";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
+import { Helmet } from 'react-helmet-async';
+import { useDispatch, useSelector } from 'react-redux';
+import styles from './Vacancies.module.css';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
 import {
   fetchFilteredVacancies,
   getFetchForm,
@@ -12,35 +12,25 @@ import {
   setSelectedFilter,
   setActiveFilters,
   setFilteredVacancies,
-} from "../../../store/Slice/vacanciesSlice";
-import VacanciesSectionRender from "./VacanciesSectionRender/VacanciesSectionRender";
-import FilterModalVacancies from "../FilterModalVacancies/FilterModalVacancies";
-import VacancyFormContact from "../../../UI/VacancyFormContact/VacancyFormContact";
-import RocketComponent from "../../../UI/Rocket/RocketComponents";
+} from '../../../store/Slice/vacanciesSlice';
+import VacanciesSectionRender from './VacanciesSectionRender/VacanciesSectionRender';
+import FilterModalVacancies from '../FilterModalVacancies/FilterModalVacancies';
+import VacancyFormContact from '../../../UI/VacancyFormContact/VacancyFormContact';
+import RocketComponent from '../../../UI/Rocket/RocketComponents';
 
-import iconFilter from "../icons/filter.svg";
-import iconFilterRed from "../icons/filterRed.svg";
-import iconFilterWhiterRed from "../icons/filterWhiteRed.svg";
-import clearAll from "../icons/clearAll.svg";
+import iconFilter from '../icons/filter.svg';
+import iconFilterRed from '../icons/filterRed.svg';
+import iconFilterWhiterRed from '../icons/filterWhiteRed.svg';
+import clearAll from '../icons/clearAll.svg';
 
-
-const VacanciesMain = ({
-  handleMouseEnter,
-  handleMouseLeave,
-  handleMouseHover,
-  hideVacancies,
-}) => {
+const VacanciesMain = ({ handleMouseEnter, handleMouseLeave, handleMouseHover, hideVacancies }) => {
   const dispatch = useDispatch();
- const {
-    vacancies,
-    loading,
-    vacancyCountsByDirection,
-    filteredVacancies,
-    activeFilters,
-  } = useSelector((state) => state.vacancies);
+  const { vacancies, loading, vacancyCountsByDirection, filteredVacancies, activeFilters } = useSelector(
+    (state) => state.vacancies
+  );
   const selectedFilter = useSelector((state) => state.vacancies.selectedFilter);
 
-  const filterKeyForSpecialty = "direction";
+  const filterKeyForSpecialty = 'direction';
   const [showManyVacancies, setShowManyVacancies] = useState(false);
   const [totalDisplayedVacancies, setTotalDisplayedVacancies] = useState(6);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -48,51 +38,47 @@ const VacanciesMain = ({
   const [modalFiltersActive, setModalFiltersActive] = useState(false);
   const [swiper, setSwiper] = useState(null);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  
+
   const isIpadMobile = windowWidth <= 1024;
 
   const buttonVacancyChoose = [
-    "Все",
-    "Архитектура",
-    "Конструктив",
-    "Инженерия",
-    "Научно-техническое сопровождение",
-    "BIM",
-    "Аналитика",
-    "Финансы",
-    "Дизайн",
-    "IT",
-    "Администрирование",
-    "Бэк офис",
-    "Стажировки",
-    "Управление",
+    'Все',
+    'Архитектура',
+    'Конструктив',
+    'Инженерия',
+    'Научно-техническое сопровождение',
+    'BIM',
+    'Аналитика',
+    'Финансы',
+    'Дизайн',
+    'IT',
+    'Администрирование',
+    'Бэк офис',
+    'Стажировки',
+    'Управление',
   ];
 
   const filterMappings = {
-    "Требуемый опыт работы": "experience",
-    Локация: "locationStaff",
-    "Режим работы": "modeOperating",
-    Занятость: "busyness",
+    'Требуемый опыт работы': 'experience',
+    Локация: 'locationStaff',
+    'Режим работы': 'modeOperating',
+    Занятость: 'busyness',
   };
 
-  const vacanciesMain = useMemo(
-    () => [...filteredVacancies].reverse(),
-    [filteredVacancies]
-  );
+  const vacanciesMain = useMemo(() => [...filteredVacancies].reverse(), [filteredVacancies]);
 
   const handleResize = useCallback(() => {
     setWindowWidth(window.innerWidth);
   }, []);
 
   useEffect(() => {
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
     return () => {
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener('resize', handleResize);
     };
   }, [handleResize]);
 
- 
- useEffect(() => {
+  useEffect(() => {
     window.scrollTo(0, 0);
     dispatch(getVacanciesByDirection());
     dispatch(getFetchForm());
@@ -105,26 +91,21 @@ const VacanciesMain = ({
     setFilters(activeFilters);
   }, [dispatch, vacancies, activeFilters]);
 
- useEffect(() => {
-    if (selectedFilter === "Все") {
+  useEffect(() => {
+    if (selectedFilter === 'Все') {
       setFilters({});
       dispatch(setActiveFilters({}));
     }
   }, [selectedFilter, dispatch]);
 
   useEffect(() => {
-    const anyActiveFilters = Object.keys(filters).some(
-      (key) => filters[key].length > 0
-    );
+    const anyActiveFilters = Object.keys(filters).some((key) => filters[key].length > 0);
     setModalFiltersActive(anyActiveFilters);
   }, [filters]);
 
   useEffect(() => {
     const hasActiveFilters = Object.entries(filters).some(([key, values]) => {
-      return (
-        values.length > 0 &&
-        !(key === filterKeyForSpecialty && values.includes(selectedFilter))
-      );
+      return values.length > 0 && !(key === filterKeyForSpecialty && values.includes(selectedFilter));
     });
     setModalFiltersActive(hasActiveFilters);
   }, [filters, selectedFilter, filterKeyForSpecialty]);
@@ -146,20 +127,23 @@ const VacanciesMain = ({
     [filterMappings]
   );
 
- const handleButtonClick = useCallback((direction) => {
-    dispatch(setSelectedFilter(direction));
-    if (direction === "Все") {
+  const handleButtonClick = useCallback(
+    (direction) => {
+      dispatch(setSelectedFilter(direction));
+      if (direction === 'Все') {
         dispatch(setActiveFilters({}));
         dispatch(fetchFilteredVacancies({}));
-    } else {
+      } else {
         dispatch(getFetchFormFilter(direction));
         const newFilters = { ...filters, [filterKeyForSpecialty]: [direction] };
         dispatch(setActiveFilters(newFilters));
         const filteredVacancies = applyFilters(vacancies, newFilters);
         dispatch(setFilteredVacancies(filteredVacancies));
-    }
-    setShowManyVacancies(false);
-}, [dispatch, filters, vacancies]);
+      }
+      setShowManyVacancies(false);
+    },
+    [dispatch, filters, vacancies]
+  );
 
   const toggleShowAllVacancies = useCallback(() => {
     setShowManyVacancies((prev) => !prev);
@@ -186,9 +170,7 @@ const VacanciesMain = ({
     (filterCategory, filterValue) => {
       const newFilters = { ...filters };
       if (Array.isArray(newFilters[filterCategory])) {
-        newFilters[filterCategory] = newFilters[filterCategory].filter(
-          (value) => value !== filterValue
-        );
+        newFilters[filterCategory] = newFilters[filterCategory].filter((value) => value !== filterValue);
         if (newFilters[filterCategory].length === 0) {
           delete newFilters[filterCategory];
         }
@@ -203,17 +185,11 @@ const VacanciesMain = ({
   );
 
   const clearAllFilters = useCallback(() => {
-    const resetFilters =
-      selectedFilter !== "Все"
-        ? { [filterKeyForSpecialty]: [selectedFilter] }
-        : {};
+    const resetFilters = selectedFilter !== 'Все' ? { [filterKeyForSpecialty]: [selectedFilter] } : {};
     setFilters(resetFilters);
     dispatch(setActiveFilters(resetFilters));
     dispatch(fetchFilteredVacancies(resetFilters));
-    setModalFiltersActive(
-      Object.keys(resetFilters)?.length > 0 &&
-        resetFilters[filterKeyForSpecialty]?.length > 0
-    );
+    setModalFiltersActive(Object.keys(resetFilters)?.length > 0 && resetFilters[filterKeyForSpecialty]?.length > 0);
   }, [selectedFilter, filterKeyForSpecialty, dispatch]);
 
   const clearAllFiltersMobile = useCallback(() => {
@@ -222,7 +198,7 @@ const VacanciesMain = ({
     setFilters(resetFilters);
     dispatch(setActiveFilters(resetFilters));
     dispatch(fetchFilteredVacancies(resetFilters));
-    dispatch(setSelectedFilter("Все"));
+    dispatch(setSelectedFilter('Все'));
     setModalFiltersActive(false);
   }, [dispatch]);
 
@@ -230,11 +206,7 @@ const VacanciesMain = ({
     () =>
       Object.entries(filters).flatMap(([key, values]) => {
         if (Array.isArray(values)) {
-          if (
-            key === filterKeyForSpecialty &&
-            values.includes(selectedFilter) &&
-            values.length === 1
-          ) {
+          if (key === filterKeyForSpecialty && values.includes(selectedFilter) && values.length === 1) {
             return [];
           }
           return values.map((value) => ({ category: key, value }));
@@ -258,9 +230,7 @@ const VacanciesMain = ({
               <RocketComponent />
             </div>
             <div className={styles.vacancies_header_wrapper}>
-              <span className={styles.vacancies_header1}>
-                Мы ищем специалистов в&nbsp;наш дружный коллектив
-              </span>
+              <span className={styles.vacancies_header1}>Мы ищем специалистов в&nbsp;наш дружный коллектив</span>
               <span className={styles.vacancies_header2}>Работа у нас</span>
             </div>
           </div>
@@ -272,18 +242,11 @@ const VacanciesMain = ({
                     <button
                       onMouseEnter={handleMouseEnter}
                       onMouseLeave={handleMouseLeave}
-                      className={`${styles.menu__button__allVacancy} ${
-                        selectedFilter === el ? styles.active : ""
-                      }`}
-                      onClick={() => handleButtonClick(el)}
-                    >
-                      <span className={styles.menu_button_items_vacancyText}>
-                        {el}
-                      </span>
+                      className={`${styles.menu__button__allVacancy} ${selectedFilter === el ? styles.active : ''}`}
+                      onClick={() => handleButtonClick(el)}>
+                      <span className={styles.menu_button_items_vacancyText}>{el}</span>
                       <span className={styles.menu_button_items_vacancyCount}>
-                        {el !== "Все" && vacancyCountsByDirection
-                          ? vacancyCountsByDirection[el] || 0
-                          : ""}
+                        {el !== 'Все' && vacancyCountsByDirection ? vacancyCountsByDirection[el] || 0 : ''}
                       </span>
                     </button>
                   </div>
@@ -294,13 +257,9 @@ const VacanciesMain = ({
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
               className={styles.menu__button__choose__vacancyFilter}
-              onClick={handleModalOpen}
-            >
+              onClick={handleModalOpen}>
               <div className={styles.icon__svg_button__choose__vacancyFilter_}>
-                <img
-                  src={modalFiltersActive ? iconFilterRed : iconFilter}
-                  alt="IconFilter"
-                />
+                <img src={modalFiltersActive ? iconFilterRed : iconFilter} alt="IconFilter" />
               </div>
               <div className={styles.button_choose_vacancyFilter}>Фильтр</div>
             </button>
@@ -322,46 +281,22 @@ const VacanciesMain = ({
                 slidesPerView="auto"
                 spaceBetween={8}
                 className={styles.menu_button_group_vacancy_swiper_mobile}
-                touch="true"
-              >
+                touch="true">
                 {(activeFiltersArray?.length > 0 ||
-                  buttonVacancyChoose.some(
-                    (el) => selectedFilter === el && el !== "Все"
-                  )) && (
-                  <div
-                    className={
-                      styles.menu__button__choose__vacancyFilter_mobile
-                    }
-                  >
-                    <SwiperSlide
-                      className={styles.menu_button_items_vacancyTex_clear}
-                      onClick={clearAllFiltersMobile}
-                    >
+                  buttonVacancyChoose.some((el) => selectedFilter === el && el !== 'Все')) && (
+                  <div className={styles.menu__button__choose__vacancyFilter_mobile}>
+                    <SwiperSlide className={styles.menu_button_items_vacancyTex_clear} onClick={clearAllFiltersMobile}>
                       {/* ✕ */}
                       <img src={clearAll} alt="clearAll" />
                     </SwiperSlide>
                   </div>
                 )}
                 <SwiperSlide
-                  className={`${
-                    styles.menu__button__choose__vacancyFilter_mobile
-                  }
-                      ${
-                        modalFiltersActive ? styles.filterWhiterBackground : ""
-                      }`}
-                  onClick={handleModalOpen}
-                >
-                  <div
-                    className={
-                      styles.icon__svg_button__choose__vacancyFilter_mobile
-                    }
-                  >
-                    <img
-                      src={
-                        modalFiltersActive ? iconFilterWhiterRed : iconFilter
-                      }
-                      alt="IconFilter"
-                    />
+                  className={`${styles.menu__button__choose__vacancyFilter_mobile}
+                      ${modalFiltersActive ? styles.filterWhiterBackground : ''}`}
+                  onClick={handleModalOpen}>
+                  <div className={styles.icon__svg_button__choose__vacancyFilter_mobile}>
+                    <img src={modalFiltersActive ? iconFilterWhiterRed : iconFilter} alt="IconFilter" />
                   </div>
                 </SwiperSlide>
                 {activeFiltersArray.length > 0 &&
@@ -370,24 +305,12 @@ const VacanciesMain = ({
                       isIpadMobile && (
                         <SwiperSlide
                           key={`${filter.category}-${index}`}
-                          className={
-                            styles.menu__button__choose__vacancyFilter_mobile_dop
-                          }
-                        >
-                          <div
-                            onClick={() =>
-                              removeFilter(filter.category, filter.value)
-                            }
-                          >
+                          className={styles.menu__button__choose__vacancyFilter_mobile_dop}>
+                          <div onClick={() => removeFilter(filter.category, filter.value)}>
                             <div
                               // className={styles.menu__button__choose__vacancyFilter_mobile}
-                              style={{ display: "flex" }}
-                            >
-                              <p
-                                className={styles.menu_button_items_vacancyText}
-                              >
-                                {filter.value}
-                              </p>
+                              style={{ display: 'flex' }}>
+                              <p className={styles.menu_button_items_vacancyText}>{filter.value}</p>
                               <span className={styles.xSpan}>✕</span>
                             </div>
                           </div>
@@ -395,21 +318,16 @@ const VacanciesMain = ({
                       )
                   )}
                 {buttonVacancyChoose.map((el, index) =>
-                  isIpadMobile && el === "Все" ? null : (
+                  isIpadMobile && el === 'Все' ? null : (
                     <SwiperSlide
                       key={`${index}-${el}`}
-                      className={`${
-                        styles.menu__button__choose__vacancyFilter_mobile
-                      } ${selectedFilter === el ? styles.active : ""}`}
-                      onClick={() => handleButtonClick(el)}
-                    >
-                      <span className={styles.menu_button_items_vacancyText}>
-                        {el}
-                      </span>
+                      className={`${styles.menu__button__choose__vacancyFilter_mobile} ${
+                        selectedFilter === el ? styles.active : ''
+                      }`}
+                      onClick={() => handleButtonClick(el)}>
+                      <span className={styles.menu_button_items_vacancyText}>{el}</span>
                       <span className={styles.menu_button_items_vacancyCount}>
-                        {el !== "Все" && vacancyCountsByDirection
-                          ? vacancyCountsByDirection[el] || 0
-                          : ""}
+                        {el !== 'Все' && vacancyCountsByDirection ? vacancyCountsByDirection[el] || 0 : ''}
                       </span>
                     </SwiperSlide>
                   )
@@ -422,18 +340,12 @@ const VacanciesMain = ({
               <div className={styles.dopFilterName}>Доп. фильтры</div>
               <div className={styles.activeFiltersContainer}>
                 {activeFiltersArray.map((filter, index) => (
-                  <div
-                    key={`${filter.category}-${index}`}
-                    className={styles.activeFilterTag}
-                  >
+                  <div key={`${filter.category}-${index}`} className={styles.activeFilterTag}>
                     <p className={styles.dopFilterButtonName}>{filter.value}</p>
                     <button
-                      onClick={() =>
-                        removeFilter(filter.category, filter.value)
-                      }
+                      onClick={() => removeFilter(filter.category, filter.value)}
                       onMouseEnter={handleMouseEnter}
-                      onMouseLeave={handleMouseLeave}
-                    >
+                      onMouseLeave={handleMouseLeave}>
                       <span className={styles.xSpan}>✕</span>
                     </button>
                   </div>
@@ -443,11 +355,8 @@ const VacanciesMain = ({
                     className={styles.clearAllFiltersButton}
                     onClick={clearAllFilters}
                     onMouseEnter={handleMouseEnter}
-                    onMouseLeave={handleMouseLeave}
-                  >
-                    <p className={styles.dopFilterButtonNameClear}>
-                      Очистить все
-                    </p>
+                    onMouseLeave={handleMouseLeave}>
+                    <p className={styles.dopFilterButtonNameClear}>Очистить все</p>
                     <span className={styles.xSpanClear}>✕</span>
                   </button>
                 )}
@@ -467,13 +376,10 @@ const VacanciesMain = ({
           />
 
           <div className={styles.temporaryText}>
-            {windowWidth > 1024
-              ? "Не нашли подходящую вакансию?"
-              : "Мы ищем именно тебя!"}
+            {windowWidth > 1024 ? 'Не нашли подходящую вакансию?' : 'Мы ищем именно тебя!'}
           </div>
           <div className={styles.textUnderForm}>
-            Оставьте ваши контакты, мы всегда в поиске талантливых
-            профессионалов
+            Оставьте ваши контакты, мы всегда в поиске талантливых профессионалов
           </div>
           <div className={styles.vacancyFormWrapper}>
             <VacancyFormContact

@@ -1,10 +1,29 @@
 const express = require('express');
 
 const {
-  Employee
+  Employee,
+  VacanciesMain
 } = require('../../db/models');
 
 const router = express.Router();
+
+const syncVacancyMain = async (vacancyId) => {
+  const vacancy = await Employee.findByPk(vacancyId);
+  if (vacancy) {
+    const vacancyData = vacancy.toJSON();
+    const vacancyMainEntry = await VacanciesMain.findOne({
+      where: {
+        IdVacancy: vacancy.id
+      }
+    });
+    if (vacancyMainEntry) {
+      await vacancyMainEntry.update({
+        vacancy: vacancyData,
+        IdVacancy: vacancy.id,
+      });
+    }
+  }
+};
 
 // Маршрут для добавления новой вакансии
 router.post('/addVacancy', async (req, res) => {
@@ -81,9 +100,7 @@ router.post('/copyVacancy/:id', async (req, res) => {
 // изменяем  данные вакансии
 router.put('/editVacancy/:id', async (req, res) => {
   try {
-    const {
-      id
-    } = req.params;
+    const { id } = req.params;
     const formData = req.body;
 
     const existingVacancy = await Employee.findByPk(id);
@@ -113,6 +130,8 @@ router.put('/editVacancy/:id', async (req, res) => {
         id
       }
     });
+
+    await syncVacancyMain(id);
     res.json({
       message: 'Вакансия успешно обновлена'
   });
