@@ -158,7 +158,7 @@ export default function SearchPublicProject({
             id="idshnik"
             value={savedId !== null ? savedId : searchId}
             onChange={handleSearchChange}
-            onKeyPress={handleKeyPress}
+            onKeyDown={handleKeyPress} 
             required
             autoComplete="off"
           />
