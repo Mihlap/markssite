@@ -8,3 +8,4 @@ export const arrIdProjectSelector = createSelector(
   projectsSelector,
   (projects) => projects?.map((el) => el)
 );
+
