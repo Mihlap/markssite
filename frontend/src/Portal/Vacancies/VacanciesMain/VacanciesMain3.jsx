@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, useEffect } from 'react';
 
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Intro from '../Intro/Intro';
 import TextCenter from '../TextCenter/TextCenter';
 import RatingSwiper from '../RatingSwiper/RatingSwiper';
@@ -13,33 +13,28 @@ import SocialsSwiper from '../SocialsSwiper/SocialsSwiper';
 import GalleryTabs from '../GalleryTabs/GalleryTabs';
 import VacanciesList from '../VacanciesList/VacanciesList';
 import VacancyFormContact from '../../../UI/VacancyFormContact/VacancyFormContact';
-
+import VacanciesSectionRenderActualMain from './VacanciesSectionRenderActualMain/VacanciesSectionRenderActualMain';
+import { getZaprosData } from '../../../store/Slice/searchVacancyMainSlice';
 import styles from './VacanciesMain3.module.scss';
-import VacanciesSectionRender from './VacanciesSectionRender/VacanciesSectionRender';
 
-const VacanciesMain3 = ({ handleMouseEnter, handleMouseLeave, handleMouseHover }) => {
+const VacanciesMain3 = ({ handleMouseEnter, handleMouseLeave }) => {
   const [windowWidth] = useState(window.innerWidth);
-  const [showManyVacancies, setShowManyVacancies] = useState(false);
+  // const [showManyVacancies, setShowManyVacancies] = useState(false);
 
-  const [totalDisplayedVacancies, setTotalDisplayedVacancies] = useState(6);
-  const { vacancies, loading, vacancyCountsByDirection, filteredVacancies, activeFilters } = useSelector(
-    (state) => state.vacancies
-  );
+  //  const shouldDisplayVacancy = useCallback((vacancy) => {
+  //   return !vacancy.hidden;
+  // }, []);
 
-  const shouldDisplayVacancy = useCallback((vacancy) => {
-    return !vacancy.hidden;
-  }, []);
+  // const vacanciesMain = useMemo(() => [...filteredVacancies].reverse(), [filteredVacancies]);
 
-  const vacanciesMain = useMemo(() => [...filteredVacancies].reverse(), [filteredVacancies]);
+  // const visibleVacancies = useMemo(
+  //   () => vacanciesMain.filter((vacancy) => shouldDisplayVacancy(vacancy)),
+  //   [vacanciesMain, shouldDisplayVacancy]
+  // );
 
-  const visibleVacancies = useMemo(
-    () => vacanciesMain.filter((vacancy) => shouldDisplayVacancy(vacancy)),
-    [vacanciesMain, shouldDisplayVacancy]
-  );
-
-  const toggleShowAllVacancies = useCallback(() => {
-    setShowManyVacancies((prev) => !prev);
-  }, []);
+  // const toggleShowAllVacancies = useCallback(() => {
+  //   setShowManyVacancies((prev) => !prev);
+  // }, []);
 
   return (
     <>
@@ -52,14 +47,15 @@ const VacanciesMain3 = ({ handleMouseEnter, handleMouseLeave, handleMouseHover }
       <BenefitsGrid />
       <VacanciesList />
 
-      <VacanciesSectionRender
-        loading={loading}
-        visibleVacancies={visibleVacancies}
-        shouldDisplayVacancy={shouldDisplayVacancy}
-        showManyVacancies={showManyVacancies}
-        toggleShowAllVacancies={toggleShowAllVacancies}
-        totalDisplayedVacancies={totalDisplayedVacancies}
-        windowWidth={windowWidth}
+      <VacanciesSectionRenderActualMain
+        // loading={loading}
+        // vacancies={vacancies}
+        // visibleVacancies={visibleVacancies}
+        // shouldDisplayVacancy={shouldDisplayVacancy}
+        // showManyVacancies={showManyVacancies}
+        // toggleShowAllVacancies={toggleShowAllVacancies}
+        // totalDisplayedVacancies={totalDisplayedVacancies}
+        // windowWidth={windowWidth}
         handleMouseEnter={handleMouseEnter}
         handleMouseLeave={handleMouseLeave}
       />
@@ -69,7 +65,6 @@ const VacanciesMain3 = ({ handleMouseEnter, handleMouseLeave, handleMouseHover }
       <GalleryTabs
         handleMouseEnter={handleMouseEnter}
         handleMouseLeave={handleMouseLeave}
-        handleMouseHover={handleMouseHover}
       />
       <div className={styles.temporaryText}>
         {windowWidth > 1024 ? 'Не нашли подходящую вакансию?' : 'Мы ищем именно тебя!'}
@@ -78,8 +73,7 @@ const VacanciesMain3 = ({ handleMouseEnter, handleMouseLeave, handleMouseHover }
       <div className={styles.vacancyFormWrapper}>
         <VacancyFormContact
           handleMouseEnter={handleMouseEnter}
-          handleMouseLeave={handleMouseLeave}
-          handleMouseHover={handleMouseHover}
+          handleMouseLeave={handleMouseLeave}    
         />
       </div>
     </>

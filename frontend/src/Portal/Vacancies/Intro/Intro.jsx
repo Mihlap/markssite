@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef } from 'react';
+import React, { useEffect, useLayoutEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger, ScrollToPlugin } from 'gsap/all';
 
@@ -10,52 +10,48 @@ import starsDesktop from '../icons/intro-stars.png';
 const Host = process.env.REACT_APP_SERVER_HOST;
 
 const Intro = () => {
-  gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
-
   const videoBoxRef = useRef(null);
   const videoRef = useRef(null);
 
+  useEffect(() => {
+    gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+  }, []);
+
   useLayoutEffect(() => {
-    const initScrollTrigger = () => {
-      const mm = gsap.matchMedia();
-
-      mm.add('(min-width: 1024px)', () => {
-        const tl = gsap.timeline({
-          scrollTrigger: {
-            trigger: videoBoxRef.current,
-            start: 'center center',
-            end: 'center center',
-            toggleActions: 'play none none none',
-          },
-        });
-
-        tl.fromTo(
-          videoRef.current,
-          {
-            display: 'none',
-            height: '0',
-            width: '0',
-          },
-          {
-            display: 'block',
-            height: '100vh',
-            width: '100%',
-            duration: 0.2,
-            onComplete: () => {
-              gsap.to(window, { duration: 1, scrollTo: videoBoxRef.current });
-            },
-          }
-        );
+    const mm = gsap.matchMedia();
+    
+    mm.add('(min-width: 1024px)', () => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: videoBoxRef.current,
+          start: 'center center',
+          end: 'center center',
+          toggleActions: 'play none none none',
+        }
       });
 
-      ScrollTrigger.refresh();
-    };
+      tl.fromTo(
+        videoRef.current,
+        { display: 'none', height: '0', width: '0' },
+        {
+          display: 'block',
+          height: '100vh',
+          width: '100%',
+          duration: 0.2,
+          onComplete: () => {
+            if (videoBoxRef.current) {
+              gsap.to(window, { duration: 1, scrollTo: videoBoxRef.current });
+            }
+          },
+        }
+      );  
+        return tl.scrollTrigger;
+    });
 
-    const timeout = setTimeout(initScrollTrigger, 500);
+    ScrollTrigger.refresh();
 
     return () => {
-      clearTimeout(timeout);
-      ScrollTrigger.kill();
+       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
   }, []);
 

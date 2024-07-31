@@ -1,19 +1,20 @@
 import React, { useEffect, useState } from "react";
 import styles from "./HomeAdmin.module.scss";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import DraggableVacancy from "./DraggableVacancy";
+import { arrIdVacancySelector } from "./utils/VacancySelector";
 import {
-  deleteProject,
-  searchProgectMainPostzapros,
-  updateProjectOrderReplacement,
-  updateProjectOrderSuccess,
-} from "../../store/Slice/searchProjectMainSlice";
-import DraggableProject from "./DraggableProject";
+  deleteVacancy,
+  getZaprosData,
+  searchVacancyMainPostzapros,
+  updateVacancyOrderReplacement,
+  updateVacancyOrderSuccess
+} from "../../store/Slice/searchVacancyMainSlice";
 
-export default function SearchVacancyMain({
-  projects,
-  arrIdProject,
-}) {
+export default function SearchVacancyMain() {
   const dispatch = useDispatch();
+  const vacancies = useSelector((state) => state.vacancies?.vacancies);
+  const arrIdVacancy = useSelector(arrIdVacancySelector);
 
   const [errorMessage, setErrorMessage] = useState("");
   const [showError, setShowError] = useState(false);
@@ -24,7 +25,12 @@ export default function SearchVacancyMain({
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [searchId, setSearchId] = useState("");
   const [savedId, setSavedId] = useState(null);
+  
 
+  useEffect(() => {
+    dispatch(getZaprosData());
+  }, [dispatch]);
+  
   const handleSearchChange = (event) => {
     setSearchId(event.target.value);    
     setIsButtonDisabled(event.target.value === "");
@@ -33,18 +39,21 @@ export default function SearchVacancyMain({
   const handleKeyPress = (event) => {
     // Проверяем, является ли нажатая клавиша клавишей "Enter" (код клавиши 13)
     if (event.key === "Enter") {
-      filterProjectsById(); // Выполняем поиск
+      filterVacanciesById(); // Выполняем поиск
     }
   };
   // Функция для фильтрации проектов по введенному id
-  const filterProjectsById = async () => {
-    const filteredProject = projects.find(
-      (project) => project.id === parseInt(searchId, 10)
+  const filterVacanciesById = async () => {
+    if (!vacancies) {
+      return; 
+    }
+    const filteredVacancy = vacancies.find(
+      (vacancy) => vacancy.id === parseInt(searchId, 10)
     );
-    if (filteredProject) {
+    if (filteredVacancy) {
       try {
         await dispatch(
-          searchProgectMainPostzapros(filteredProject, setSearchId, setSavedId)
+          searchVacancyMainPostzapros(filteredVacancy, setSearchId, setSavedId)
         );
 
         showMessage("Вакансия добавлена", "ok");
@@ -58,7 +67,7 @@ export default function SearchVacancyMain({
   };
 
   const handleFormDelete = (formId) => {
-    dispatch(deleteProject(formId));
+    dispatch(deleteVacancy(formId));
   };
 
   useEffect(() => {
@@ -71,24 +80,24 @@ export default function SearchVacancyMain({
     return () => clearTimeout(timer);
   }, [showError, showOk, replacement]);
 
-  const updateProjectOrder = (updatedProjects) => {
+  const updateVacancyOrder = (updatedVacancies) => {
     return (dispatch) => {
-      dispatch(updateProjectOrderSuccess(updatedProjects));
+      dispatch(updateVacancyOrderSuccess(updatedVacancies));
     };
   };
 
-  const moveProject = (draggedIndex, targetIndex) => {
-    const updatedProjects = [...arrIdProject];
-    const draggedProject = updatedProjects[draggedIndex];
-    updatedProjects.splice(draggedIndex, 1);
-    updatedProjects.splice(targetIndex, 0, draggedProject);
+  const moveVacancy = (draggedIndex, targetIndex) => {
+    const updatedVacancies = [...vacancies];
+    const draggedVacancy = updatedVacancies[draggedIndex];
+    updatedVacancies.splice(draggedIndex, 1);
+    updatedVacancies.splice(targetIndex, 0, draggedVacancy);
 
     // Вызываем действие для обновления порядка элементов
-    dispatch(updateProjectOrder(updatedProjects));
+    dispatch(updateVacancyOrder(updatedVacancies));
 
-    showMessage("Проект перемещен", "replacement");
+    showMessage("Вакансия перемещена", "replacement");
     // И тут же сохраняем новый порядок в базу данных
-    dispatch(updateProjectOrderReplacement(updatedProjects));
+    dispatch(updateVacancyOrderReplacement(updatedVacancies));
   };
 
   const showMessage = (message, type) => {
@@ -124,17 +133,17 @@ export default function SearchVacancyMain({
     );
   };
 
-  return (
+   return (
     <div className={styles.home_admin_section__section} >
       <span className={styles.home_admin_section__sectionSpan}>Актуальные вакансии</span>
       <div className={`${styles.home_admin_section__block_search} ${styles.home_admin_section__block_searchVacancy}`}>
         <div className={styles.home_admin_section__id_container}>
-          {arrIdProject?.map((el, index) => (
-            <DraggableProject
+          {arrIdVacancy?.map((vacancy, index) => (
+            <DraggableVacancy
               key={index}
-              project={el}
+              vacancy={vacancy}
               index={index}
-              moveProject={moveProject}
+              moveVacancy={moveVacancy}
               handleFormDelete={handleFormDelete}
             />
           ))}
@@ -148,7 +157,7 @@ export default function SearchVacancyMain({
             id="idshnik"
             value={savedId !== null ? savedId : searchId}
             onChange={handleSearchChange}
-            onKeyPress={handleKeyPress}
+            onKeyDown={handleKeyPress} 
             required
             autoComplete="off"
           />
@@ -159,7 +168,7 @@ export default function SearchVacancyMain({
         <div className={styles.home_admin_section__button_container_project}>
           <button
             className={styles.home_admin_section__button}
-            onClick={filterProjectsById}
+            onClick={filterVacanciesById}
             disabled={isButtonDisabled}
           />
         </div>
