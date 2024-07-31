@@ -5,7 +5,6 @@ const router = express.Router();
 
 // POST-запрос по маршруту '/search-publication-one'
 router.post('/search-vacancy', async (req, res) => {
-  console.log("Полученные данные:", req.body);
   try {
     const publicationData = req.body;
     const IdVacancies = req.body.vacancy.id;
