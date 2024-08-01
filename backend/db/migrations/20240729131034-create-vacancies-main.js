@@ -24,6 +24,9 @@ module.exports = {
       field2: {
         type: Sequelize.TEXT
       },
+      field3: {
+        type: Sequelize.TEXT
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE
