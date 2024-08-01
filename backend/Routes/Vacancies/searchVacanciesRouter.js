@@ -3,23 +3,22 @@ const { VacanciesMain } = require('../../db/models');
 
 const router = express.Router();
 
-// POST-запрос по маршруту '/search-publication-one'
+// POST-запрос по маршруту
 router.post('/search-vacancy', async (req, res) => {
+  const { vacancy, IdVacancy } = req.body;
   try {
-    const publicationData = req.body;
-    const IdVacancies = req.body.vacancy.id;
-
-    // Save the project data to the database
-    const savedVacancy = await VacanciesMain.create({
-      vacancy: publicationData,
-      IdVacancy: IdVacancies,
-    });
-
-    // Send back the ID of the saved project
-    res.status(200).json({ message: 'Данные успешно сохранены', vacancyId: savedVacancy.id });
+    const existingEntry = await VacanciesMain.findOne({ where: { IdVacancy } });
+    if (existingEntry) {
+      // Обновляем существующую запись
+      await existingEntry.update({ vacancy });
+    } else {
+      // Создаем новую запись
+      await VacanciesMain.create({ vacancy, IdVacancy });
+    }
+    res.status(200).json({ message: 'Вакансия сохранена/обновлена успешно.' });
   } catch (error) {
-    console.error('Ошибка при сохранении в базе данных:', error);
-    res.status(500).json({ error: 'Ошибка при сохранении в базу данных' });
+    console.error('Ошибка при сохранении вакансии:', error);
+    res.status(500).json({ error: 'Ошибка при обработке вашего запроса' });
   }
 });
 

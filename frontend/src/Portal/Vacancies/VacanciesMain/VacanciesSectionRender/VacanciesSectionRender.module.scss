@@ -1,10 +1,54 @@
 @import "../../../../App.css";
+// Актуальные вакансии
 
+.currentVacanciesTitle {
+  &:after {
+    content: "Актуальные вакансии";
+    display: block;
+    padding-left: 4rem;
+    padding-top: 13.75rem;
+    padding-bottom: 3rem;
+    font-family: var(--font-unbounded);
+    font-weight: var(--fw-300);
+    font-size: 2rem;
+    line-height: 2.5rem;
+  }
+
+  @media (max-width: 1600px) {
+  &:after {
+  content: "Актуальные вакансии";
+  display: block;
+  padding-left: 4rem;
+  padding-top: 8.75rem;
+  padding-bottom: 0rem;
+  font-size: 2rem;
+  line-height: 2.5rem;
+}
+}
+
+@media (max-width: 1024px) {
+  &:after {
+    content: "Горящие вакансии";
+    padding-left: 10.875rem;
+    padding-top: 7.5rem;
+    padding-bottom: 2.5rem;
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+}
+
+@media (max-width: 767px) {
+  &:after {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+}
+}
 
 .vacanciesHeaders {
   display: flex;
   justify-content: space-between;
-  padding: 50px 0rem 18px 0rem;
+  padding: 48px 0rem 18px 0rem;
   font-family: var(--font-raleway);
   font-size: 0.875rem;
   font-weight: var(--fw-400);

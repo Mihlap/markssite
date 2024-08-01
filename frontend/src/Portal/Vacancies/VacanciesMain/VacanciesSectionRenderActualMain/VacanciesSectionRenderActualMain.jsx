@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "../VacanciesSectionRender/VacanciesSectionRender.module.scss";
 import LoadingCircle from "../../../../Loading/LoadingCircle";
@@ -12,10 +12,10 @@ const VacanciesSectionRenderActualMain = ({
   showManyVacancies,
   toggleShowAllVacancies,
   totalDisplayedVacancies,
-  windowWidth,
   handleMouseEnter,
   handleMouseLeave,
 }) => {
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   const dispatch = useDispatch();
   const { vacancies, loading } = useSelector((state) => state.searchvacancy);
@@ -24,14 +24,26 @@ const VacanciesSectionRenderActualMain = ({
       dispatch(getZaprosData());
   }, [dispatch]);
 
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    }; 
+    window.addEventListener('resize', handleResize);   
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
 
   return loading ? (
+   
     <div className={styles.loader}>
       <LoadingCircle />
     </div>
-  ) : vacancies.length > 0 ? (
-    <>
-      <div className={styles.vacanciesHeaders}>
+  ) : vacancies && vacancies?.length > 0 ? (
+          <>
+        <div className={styles.currentVacanciesTitle}></div>  
+        <div className={styles.vacanciesHeaders}>
         <div className={styles.headerCell_specialization}>Специальность</div>
         <div className={`${styles.headerCell} ${styles.headerCell_direction}`}>
           Направление
@@ -43,10 +55,10 @@ const VacanciesSectionRenderActualMain = ({
           Локация
         </div>
       </div>
-      {vacancies?.map((item) => (
+      {vacancies?.map((vacancy) => (
           <Link
-            key={item.id}
-            to={`/vacancy/${item.vacancy.IdVacancy}`}
+            key={vacancy.id}
+            to={`/vacancy/${vacancy?.IdVacancy}`}
             className={styles.vacancyContainer}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
@@ -56,22 +68,22 @@ const VacanciesSectionRenderActualMain = ({
                 <div
                   className={`${styles.vacancyCell1} ${styles.vacancyCell_title}`}
                 >
-                      {item.vacancy.vacancy.title}
+                {vacancy?.vacancy?.title}           
                 </div>
                 <div
                   className={`${styles.vacancyCell} ${styles.vacancyCell_direction}`}
                 >
-                 {item.vacancy.vacancy.direction}
+                 {vacancy?.vacancy?.direction}
                 </div>
                 <div
                   className={`${styles.vacancyCell} ${styles.vacancyCell_busyness}`}
                 >
-                    {item.vacancy.vacancy.busyness}
+                    {vacancy?.vacancy?.busyness}
                 </div>
                 <div
                   className={`${styles.vacancyCell} ${styles.vacancyCell_locationStaff}`}
                 >
-                 {item.vacancy.vacancy.locationStaff}
+                 {vacancy?.vacancy?.locationStaff}
                 </div>
                 <div className={styles.vacancyCell_buttonLink}>
                   <img src={buttonLink} alt="buttonLink" />
@@ -83,7 +95,7 @@ const VacanciesSectionRenderActualMain = ({
                   <div
                     className={`${styles.vacancyCell1} ${styles.vacancyCell_title}`}
                   >
-                    {item.vacancy.vacancy.title}
+                    {vacancy?.vacancy?.title}
                   </div>
                   <div className={styles.vacancyCell_buttonLink_ipad}>
                     <img src={buttonLink_ipad} alt="buttonLink_ipad" />
@@ -93,24 +105,24 @@ const VacanciesSectionRenderActualMain = ({
                   <div
                     className={`${styles.vacancyCell} ${styles.vacancyCell_direction}`}
                   >
-                   {item.vacancy.vacancy.direction}
+                   {vacancy?.vacancy?.direction}
                   </div>
                   <div
                     className={`${styles.vacancyCell} ${styles.vacancyCell_busyness}`}
                   >
-                      {item.vacancy.vacancy.busyness}
+                      {vacancy?.vacancy?.busyness}
                   </div>
                   <div
                     className={`${styles.vacancyCell} ${styles.vacancyCell_locationStaff}`}
                   >
-                    {item.vacancy.vacancy.locationStaff}
+                    {vacancy?.vacancy?.locationStaff}
                   </div>
                 </div>
               </>
             )}
           </Link>
         ))}
-      {vacancies.length > 6 && (
+      {vacancies?.length > 6 && (
         <div className={styles.showVacanciesOfTotalVacanciesContainer}>
           <div className={styles.showVacanciesOfTotalVacancies}>
             {!showManyVacancies && vacancies.length > 6 && (
@@ -139,7 +151,7 @@ const VacanciesSectionRenderActualMain = ({
   ) : (
     <div className={styles.vacancy_content_massage} style={{paddingBottom: "3rem"}}>
       Скоро здесь появятся актуальные вакансии
-    </div>
+            </div>
   );
 };
 
