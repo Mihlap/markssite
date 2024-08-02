@@ -16,6 +16,8 @@ import VacancyFormContact from '../../../UI/VacancyFormContact/VacancyFormContac
 import VacanciesSectionRenderActualMain from './VacanciesSectionRenderActualMain/VacanciesSectionRenderActualMain';
 import styles from './VacanciesMain3.module.scss';
 
+
+
 const VacanciesMain3 = ({ handleMouseEnter, handleMouseLeave }) => {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
