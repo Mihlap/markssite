@@ -188,6 +188,18 @@
   align-items: center;
 }
 
+.actualMain {
+  display: flex;
+  flex-direction: column;
+  padding-top: 3.375rem;
+  padding-bottom: 8.75rem;
+}
+
+.vacancyAnnouncement {
+  padding-bottom: 0.5rem;
+}
+
+
 .showManyButtonWrapper {
   display: flex;
   justify-content: center;
@@ -325,6 +337,11 @@
     padding-top: 24px;
   }
 
+  .actualMain {
+    padding-top: 3rem;
+    padding-bottom: 7.5rem;
+  }
+
   .showManyButtonWrapperShifted {
     margin-top: -20px;
   }
@@ -448,6 +465,11 @@
 
   .showVacanciesOfTotalVacancies {
     padding-top: 32px;
+  }
+
+  .actualMain {
+    padding-top: 3rem;
+    padding-bottom: 7.5rem;
   }
 
   .vacancy_content_massage {
