@@ -14,7 +14,7 @@ const searchVacancyMainSlice = createSlice({
       state.loading = true;
       state.error = null;
     },
-    fetchVacancySuccess(state, action) {
+    fetchVacancySuccess(state, action) { 
       state.loading = false;
       state.vacancies = action.payload;
     },
@@ -47,7 +47,7 @@ export const {
 } = searchVacancyMainSlice.actions;
 
 export const searchVacancyMainPostzapros =
-  (filteredObject, setSearchId) => async (dispatch) => {
+  (filteredObject, setSearchId) => async (dispatch) => { 
     dispatch(fetchVacancyStart());
     try {
       await axios.post(`${serverHost}/search/search-vacancy`, {
@@ -59,8 +59,8 @@ export const searchVacancyMainPostzapros =
         searchId: "",
       });
     } catch (error) {
-      console.error("Ошибка при отправке на бекенд:", error);
-      dispatch(fetchVacancyFailure(error.message));
+      console.error("Ошибка при отправке на бекенд:", error.response?.data || error.message);
+      dispatch(fetchVacancyFailure(error.response?.data || error.message));
     }
   };
 
@@ -81,7 +81,6 @@ export const getZaprosData = () => async (dispatch) => {
     const response = await axios.get(
       `${serverHost}/search/search-vacancy/getzapros`
     );
-  
     const dataFromResponse = response.data;
     dispatch(fetchVacancySuccess(dataFromResponse)); 
   } catch (error) {

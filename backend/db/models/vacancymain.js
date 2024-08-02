@@ -20,6 +20,7 @@ module.exports = (sequelize, DataTypes) => {
       order: DataTypes.INTEGER,
       field1: DataTypes.TEXT,
       field2: DataTypes.TEXT,
+      field3: DataTypes.TEXT,
     },
     {
       sequelize,

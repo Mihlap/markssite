@@ -1,144 +1,136 @@
-import React, { useEffect } from "react";
-import { Link } from "react-router-dom";
-import styles from "../VacanciesSectionRender/VacanciesSectionRender.module.scss";
-import LoadingCircle from "../../../../Loading/LoadingCircle";
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import styles from '../VacanciesSectionRender/VacanciesSectionRender.module.scss';
+import LoadingCircle from '../../../../Loading/LoadingCircle';
 
-import buttonLink from "../../icons/buttonLink.svg";
-import buttonLink_ipad from "../../icons/buttonLink1.svg";
-import { useDispatch, useSelector } from "react-redux";
-import { getZaprosData } from "../../../../store/Slice/searchVacancyMainSlice";
+import buttonLink from '../../icons/buttonLink.svg';
+import buttonLink_ipad from '../../icons/buttonLink1.svg';
+import { useDispatch, useSelector } from 'react-redux';
+import { getZaprosData } from '../../../../store/Slice/searchVacancyMainSlice';
+import { getFetchForm } from '../../../../store/Slice/vacanciesSlice';
 
 const VacanciesSectionRenderActualMain = ({
-  showManyVacancies,
-  toggleShowAllVacancies,
-  totalDisplayedVacancies,
-  windowWidth,
   handleMouseEnter,
-  handleMouseLeave,
+  handleMouseLeave, 
 }) => {
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   const dispatch = useDispatch();
   const { vacancies, loading } = useSelector((state) => state.searchvacancy);
- 
+  const vacanciesСount = useSelector((state) => state.vacancies.vacancies); 
+
   useEffect(() => {
-      dispatch(getZaprosData());
+    dispatch(getZaprosData());
+    dispatch(getFetchForm());
   }, [dispatch]);
 
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
-  return loading ? (
-    <div className={styles.loader}>
-      <LoadingCircle />
-    </div>
-  ) : vacancies.length > 0 ? (
-    <>
-      <div className={styles.vacanciesHeaders}>
-        <div className={styles.headerCell_specialization}>Специальность</div>
-        <div className={`${styles.headerCell} ${styles.headerCell_direction}`}>
-          Направление
+  const getAnnouncementText = () => {
+    const count = vacanciesСount.length; 
+    if (count === 0) {
+      return null;
+    }
+    if (count < 10) {
+      return "Мы ищем уникальных специалистов";
+    }
+    const base = Math.floor((Math.min(count, 100) + 9) / 10) * 10;
+    return `Мы ищем более ${base} специалистов`;
+  };
+  
+ const displayedVacancies = vacancies?.slice(0, 6);
+
+  return (
+    <div>
+      {loading ? (
+        <div className={styles.loader}>
+          <LoadingCircle />
         </div>
-        <div className={`${styles.headerCell} ${styles.headerCell_busyness}`}>
-          Занятость
-        </div>
-        <div className={`${styles.headerCell} ${styles.headerCell_location}`}>
-          Локация
-        </div>
-      </div>
-      {vacancies?.map((item) => (
-          <Link
-            key={item.id}
-            to={`/vacancy/${item.vacancy.IdVacancy}`}
-            className={styles.vacancyContainer}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-          >
-            {windowWidth > 1024 ? (
-              <>
-                <div
-                  className={`${styles.vacancyCell1} ${styles.vacancyCell_title}`}
-                >
-                      {item.vacancy.vacancy.title}
-                </div>
-                <div
-                  className={`${styles.vacancyCell} ${styles.vacancyCell_direction}`}
-                >
-                 {item.vacancy.vacancy.direction}
-                </div>
-                <div
-                  className={`${styles.vacancyCell} ${styles.vacancyCell_busyness}`}
-                >
-                    {item.vacancy.vacancy.busyness}
-                </div>
-                <div
-                  className={`${styles.vacancyCell} ${styles.vacancyCell_locationStaff}`}
-                >
-                 {item.vacancy.vacancy.locationStaff}
-                </div>
-                <div className={styles.vacancyCell_buttonLink}>
-                  <img src={buttonLink} alt="buttonLink" />
-                </div>
-              </>
-            ) : (
-              <>
-                <div className={styles.vacancyContainer111}>
-                  <div
-                    className={`${styles.vacancyCell1} ${styles.vacancyCell_title}`}
-                  >
-                    {item.vacancy.vacancy.title}
-                  </div>
-                  <div className={styles.vacancyCell_buttonLink_ipad}>
-                    <img src={buttonLink_ipad} alt="buttonLink_ipad" />
-                  </div>
-                </div>
-                <div className={styles.vacancyContainer222}>
-                  <div
-                    className={`${styles.vacancyCell} ${styles.vacancyCell_direction}`}
-                  >
-                   {item.vacancy.vacancy.direction}
-                  </div>
-                  <div
-                    className={`${styles.vacancyCell} ${styles.vacancyCell_busyness}`}
-                  >
-                      {item.vacancy.vacancy.busyness}
-                  </div>
-                  <div
-                    className={`${styles.vacancyCell} ${styles.vacancyCell_locationStaff}`}
-                  >
-                    {item.vacancy.vacancy.locationStaff}
-                  </div>
-                </div>
-              </>
-            )}
-          </Link>
-        ))}
-      {vacancies.length > 6 && (
-        <div className={styles.showVacanciesOfTotalVacanciesContainer}>
-          <div className={styles.showVacanciesOfTotalVacancies}>
-            {!showManyVacancies && vacancies.length > 6 && (
-              <span className={styles.showManyVacanciesCount}>
-                {totalDisplayedVacancies} вакансий из {vacancies.length}
-              </span>
-            )}
+        ) : vacanciesСount.length === 0 ? (
+          <div className={styles.vacancy_content_massage} style={{paddingBottom: "3rem"}}>
+            Скоро здесь появятся актуальные вакансии
           </div>
-          <div
-            className={`${styles.showManyButtonWrapper} ${
-              showManyVacancies ? styles.showManyButtonWrapperShifted : ""
-            }`}
-          >
-            <button
-              className={styles.showManyButton}
-              onClick={toggleShowAllVacancies}
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
-            >
-              {showManyVacancies ? "Скрыть вакансии" : "Показать все вакансии"}
-            </button>
+        ) : (
+          <>
+          <div className={styles.currentVacanciesTitle}></div>
+          <div className={styles.vacanciesHeaders}>
+            <div className={styles.headerCell_specialization}>Специальность</div>
+            <div className={`${styles.headerCell} ${styles.headerCell_direction}`}>Направление</div>
+            <div className={`${styles.headerCell} ${styles.headerCell_busyness}`}>Занятость</div>
+            <div className={`${styles.headerCell} ${styles.headerCell_location}`}>Локация</div>
           </div>
-        </div>
+          {displayedVacancies.map((vacancy) => (
+              <Link
+                key={vacancy.id}
+                to={`/vacancy/${vacancy?.IdVacancy}`}
+                className={styles.vacancyContainer}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}>
+                {windowWidth > 1024 ? (
+                  <>
+                    <div className={`${styles.vacancyCell1} ${styles.vacancyCell_title}`}>
+                      {vacancy?.vacancy?.title}
+                    </div>
+                    <div className={`${styles.vacancyCell} ${styles.vacancyCell_direction}`}>
+                      {vacancy?.vacancy?.direction}
+                    </div>
+                    <div className={`${styles.vacancyCell} ${styles.vacancyCell_busyness}`}>
+                      {vacancy?.vacancy?.busyness}
+                    </div>
+                    <div className={`${styles.vacancyCell} ${styles.vacancyCell_locationStaff}`}>
+                      {vacancy?.vacancy?.locationStaff}
+                    </div>
+                    <div className={styles.vacancyCell_buttonLink}>
+                      <img src={buttonLink} alt="buttonLink" />
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className={styles.vacancyContainer111}>
+                      <div className={`${styles.vacancyCell1} ${styles.vacancyCell_title}`}>
+                        {vacancy?.vacancy?.title}
+                      </div>
+                      <div className={styles.vacancyCell_buttonLink_ipad}>
+                        <img src={buttonLink_ipad} alt="buttonLink_ipad" />
+                      </div>
+                    </div>
+                    <div className={styles.vacancyContainer222}>
+                      <div className={`${styles.vacancyCell} ${styles.vacancyCell_direction}`}>
+                        {vacancy?.vacancy?.direction}
+                      </div>
+                      <div className={`${styles.vacancyCell} ${styles.vacancyCell_busyness}`}>
+                        {vacancy?.vacancy?.busyness}
+                      </div>
+                      <div className={`${styles.vacancyCell} ${styles.vacancyCell_locationStaff}`}>
+                        {vacancy?.vacancy?.locationStaff}
+                      </div>
+                    </div>
+                  </>
+                )}
+              </Link>
+           ))}          
+             <div className={`${styles.showVacanciesOfTotalVacancies} ${styles.actualMain}`}>
+            {getAnnouncementText() && (
+              <div className={styles.vacancyAnnouncement}>{getAnnouncementText()}</div>
+            )}
+                <Link
+                    to="/portal/vacancies"
+                  className={styles.showManyButton}
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}>
+                  Смотреть все вакансии
+                </Link>
+             </div>
+         </>
       )}
-    </>
-  ) : (
-    <div className={styles.vacancy_content_massage} style={{paddingBottom: "3rem"}}>
-      Скоро здесь появятся актуальные вакансии
     </div>
   );
 };
