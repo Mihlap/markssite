@@ -1,6 +1,6 @@
-import React, { useState, useCallback, useMemo, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { useDispatch, useSelector } from 'react-redux';
+
 import Intro from '../Intro/Intro';
 import TextCenter from '../TextCenter/TextCenter';
 import RatingSwiper from '../RatingSwiper/RatingSwiper';
@@ -14,27 +14,22 @@ import GalleryTabs from '../GalleryTabs/GalleryTabs';
 import VacanciesList from '../VacanciesList/VacanciesList';
 import VacancyFormContact from '../../../UI/VacancyFormContact/VacancyFormContact';
 import VacanciesSectionRenderActualMain from './VacanciesSectionRenderActualMain/VacanciesSectionRenderActualMain';
-import { getZaprosData } from '../../../store/Slice/searchVacancyMainSlice';
 import styles from './VacanciesMain3.module.scss';
 
+
+
 const VacanciesMain3 = ({ handleMouseEnter, handleMouseLeave }) => {
-  const [windowWidth] = useState(window.innerWidth);
-  // const [showManyVacancies, setShowManyVacancies] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
-  //  const shouldDisplayVacancy = useCallback((vacancy) => {
-  //   return !vacancy.hidden;
-  // }, []);
-
-  // const vacanciesMain = useMemo(() => [...filteredVacancies].reverse(), [filteredVacancies]);
-
-  // const visibleVacancies = useMemo(
-  //   () => vacanciesMain.filter((vacancy) => shouldDisplayVacancy(vacancy)),
-  //   [vacanciesMain, shouldDisplayVacancy]
-  // );
-
-  // const toggleShowAllVacancies = useCallback(() => {
-  //   setShowManyVacancies((prev) => !prev);
-  // }, []);
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    }; 
+    window.addEventListener('resize', handleResize);   
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   return (
     <>
@@ -46,20 +41,10 @@ const VacanciesMain3 = ({ handleMouseEnter, handleMouseLeave }) => {
       <VacanciesMap />
       <BenefitsGrid />
       <VacanciesList />
-
       <VacanciesSectionRenderActualMain
-        // loading={loading}
-        // vacancies={vacancies}
-        // visibleVacancies={visibleVacancies}
-        // shouldDisplayVacancy={shouldDisplayVacancy}
-        // showManyVacancies={showManyVacancies}
-        // toggleShowAllVacancies={toggleShowAllVacancies}
-        // totalDisplayedVacancies={totalDisplayedVacancies}
-        // windowWidth={windowWidth}
         handleMouseEnter={handleMouseEnter}
         handleMouseLeave={handleMouseLeave}
       />
-
       <VacanciesInvite />
       <SocialsSwiper />
       <GalleryTabs
