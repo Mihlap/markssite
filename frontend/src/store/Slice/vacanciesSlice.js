@@ -279,6 +279,7 @@ export const getFetchForm = (hidden) => async (dispatch) => {
    const response = await axios.get(`${serverHost}/api-vacancy/getzapros`)  
     dispatch(fetchVacancySuccess(response.data));
     dispatch(updateVacancyLookStatusSuccess(response.data)); 
+    return response.data;
    } catch (error) {
     dispatch(fetchVacancyFailure(error.message));
   }
