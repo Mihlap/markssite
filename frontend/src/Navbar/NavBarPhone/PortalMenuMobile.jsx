@@ -27,7 +27,7 @@ const [isMenuActive, setMenuActive] = useState(false);
     <div className={styles.navbar_block}>
       <div className={styles.container}>
         <section className={styles.wrapper}>
-          <Link to="/" className={styles.brand}>
+          <Link to="/portal/vacanciesMain" className={styles.brand}>
             MARKS GROUP
           </Link>
           <button
@@ -71,7 +71,7 @@ const [isMenuActive, setMenuActive] = useState(false);
                  Работа у нас
                 </Link>
               </li>
-              {/* <li className={styles["menu-item"]}>
+              <li className={styles["menu-item"]}>
                 <Link
                   onClick={handleBurgerClick}
                   to="/portal/internships"
@@ -79,7 +79,7 @@ const [isMenuActive, setMenuActive] = useState(false);
                 >
                   Стажировки
                 </Link>
-              </li> */}
+              </li>
             </ul>
             <div className={styles.contact_info}>
               <div className={styles.contact_info_block}>
