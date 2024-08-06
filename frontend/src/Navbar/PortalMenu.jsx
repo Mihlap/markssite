@@ -69,9 +69,9 @@ export default function PortalMenu({ user, handleMouseEnter, handleMouseLeave })
             <Link
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
-              className={`${styles.navbar__title} ${activeClass === "/portal/vacancies"}`}
-              to="/portal/vacancies"
-              onClick={() => handleItemClick("/portal/vacancies")}
+              className={`${styles.navbar__title} ${activeClass === "/"}`}
+              to="/"
+              onClick={() => handleItemClick("/")}
             >
               <h1 className={styles.navbar__title} style={{display: 'flex', alignItems: 'center'}}>
                 <span>MARKS GROUP</span>
@@ -80,17 +80,17 @@ export default function PortalMenu({ user, handleMouseEnter, handleMouseLeave })
             </Link>
           </div>
           <ul className={styles.navbar__list}> 
-          {/* <Link
+          <Link
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
               className={`${styles.navbar__item} ${
-                activeClass === "/" ? styles.navbar__item_open : ""
+                activeClass === "/portal/vacanciesMain" ? styles.navbar__item_open : ""
               }`}
-              to=""
-              onClick={() => handleItemClick("/vacancies")}
+              to="portal/vacanciesMain"
+              onClick={() => handleItemClick("/portal/vacanciesMain")}
             >
               <div>Главная</div>
-            </Link>            */}
+            </Link>           
             <Link
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
@@ -100,7 +100,7 @@ export default function PortalMenu({ user, handleMouseEnter, handleMouseLeave })
               to="/portal/vacancies"
               onClick={() => handleItemClick("/portal/vacancies")}
               >
-              <div>Вакансии</div>
+              <div>Работа у нас</div>
             </Link>
             {/* <Link
               onMouseEnter={handleMouseEnter}
@@ -112,17 +112,6 @@ export default function PortalMenu({ user, handleMouseEnter, handleMouseLeave })
               onClick={() => handleItemClick("/portal/internships")}
             >
               <div>Стажировки</div>
-            </Link>
-            <Link
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
-              className={`${styles.navbar__item} ${
-                activeClass === "/portal/office" ? styles.navbar__item_open : ""
-              }`}
-              to="/portal/office"
-              onClick={() => handleItemClick("/portal/office")}
-            >
-              <div>Офис</div>
             </Link> */}
            </ul>
         </div>

@@ -1,5 +1,4 @@
 import { configureStore } from "@reduxjs/toolkit";
-// импортируйте ваши редьюсеры здесь
 import projectSlice from "./Slice/projectSlice";
 import staffSlice from './Slice/StaffSlice';
 import counterSlice from './Slice/counterSlice';
@@ -17,7 +16,6 @@ import vacanciesSlice from "./Slice/vacanciesSlice";
 
 export default configureStore({
   reducer: {
-    // добавьте все ваши редьюсеры здесь
     user: userReducer,
     auth: authReducer,
     project: projectSlice,

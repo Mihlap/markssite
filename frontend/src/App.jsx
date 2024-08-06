@@ -4,8 +4,6 @@ import { HelmetProvider } from "react-helmet-async";
 import "./App.css";
 import Company from "./Company/Company";
 import Header from "./Header/Header";
-
-// import Competentions from "./Competentions/Competentions";
 import Contacts from "./Contacts/Contacts";
 import Project from "./Project/Project";
 import Publics from "./Publics/Publics";
@@ -14,7 +12,6 @@ import Navbar from "./Navbar/Navbar";
 import Footer from "./Footer/Footer";
 import Information from "./Information/Information";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
-import Loading from "./Loading/Loading";
 import LoadingNew from "./Loading/LoadingNew";
 import Login from "./Login/Login";
 import Add from "./Add/Add";
@@ -40,7 +37,6 @@ import {
 } from "./store/Slice/cursorSlice";
 import CookieComponent from "./UI/CookieComponent/CookieComponent";
 import Internships from "./Portal/Internships/Internships";
-import Office from "./Portal/Office/Office";
 import PortalMenu from "./Navbar/PortalMenu";
 import VacanciesMain from "./Portal/Vacancies/VacanciesMain/VacanciesMain";
 import VacanciesMainCard from "./Portal/Vacancies/VacanciesMainCard/VacanciesMainCard";
@@ -62,13 +58,15 @@ export default function App() {
   const isMobile = window.innerWidth <= 768;
 
   useEffect(() => {
+    const vacancyDetailPath = /^\/portal\/vacancy\/\d+$/;
     setShowPortalMenu(
       location.pathname === "/portal/vacancies" ||
-        location.pathname === "/portal/internships" ||
-        location.pathname === "/portal/office"
+      location.pathname === "/portal/internships" ||
+      vacancyDetailPath.test(location.pathname) || 
+      location.pathname === "/portal/vacanciesMain"
     );
   }, [location.pathname]);
-
+  
   //  useEffect(() => {
   //    // Проверяем, находимся ли мы на административном маршруте
   //    const isAdminRoute = location.pathname.startsWith("/admin/");
@@ -137,8 +135,8 @@ export default function App() {
   return (
     <HelmetProvider>
       {loading === true &&
-      location.pathname.toLowerCase() !== "/information" &&
-      location.pathname.toLowerCase() !== "/portal/vacancies"
+      location.pathname !== "/information" &&
+      location.pathname !== "/portal/vacanciesMain"
       ? (
         <LoadingNew />
       ) : (
@@ -146,18 +144,18 @@ export default function App() {
           {showNavbarFooter && currentPage !== "add" && (
             <>
             {/* для 2-й итерации !!!! не стирать */}
-              {/* {showPortalMenu ? (
+              {showPortalMenu ? (
               <PortalMenu
                   user={user}
                   handleMouseEnter={handleMouseEnter}
                   handleMouseLeave={handleMouseLeave}
                 />
-             ) : ( */}
+             ) : (
                 <Navbar
                   handleMouseEnter={handleMouseEnter}
                   handleMouseLeave={handleMouseLeave}
                 />
-               {/* )}  */}
+               )}
             </>
           )}
           {showNavbarFooter && currentPage !== "add" && (
@@ -256,6 +254,16 @@ export default function App() {
                       />
                     }
                   />
+                    <Route
+                      path="/portal/vacanciesMain"
+                      element={
+                        <VacanciesMain3
+                          handleMouseEnter={handleMouseEnter}
+                          handleMouseLeave={handleMouseLeave}
+                          handleMouseHover={handleMouseHover}
+                        />
+                      }
+                    />
                   <Route
                     path="/portal/vacancies"
                     element={
@@ -266,18 +274,18 @@ export default function App() {
                       />
                     }
                   />
+                    {/* <Route
+                      path="/portal/internships"
+                      element={
+                        <Internships
+                          handleMouseEnter={handleMouseEnter}
+                          handleMouseLeave={handleMouseLeave}
+                          handleMouseHover={handleMouseHover}
+                        />
+                      }
+                    />                  */}
                   <Route
-                    path="/portal/vacancies3"
-                    element={
-                      <VacanciesMain3
-                        handleMouseEnter={handleMouseEnter}
-                        handleMouseLeave={handleMouseLeave}
-                        handleMouseHover={handleMouseHover}
-                      />
-                    }
-                  />
-                  <Route
-                    path="/vacancy/:id"
+                    path="/portal/vacancy/:id"
                     element={
                       <VacanciesMainCard
                         handleMouseEnter={handleMouseEnter}
@@ -286,16 +294,6 @@ export default function App() {
                       />
                     }
                   />
-                  <Route
-                    path="/portal/internships"
-                    element={
-                      <Internships
-                        handleMouseEnter={handleMouseEnter}
-                        handleMouseLeave={handleMouseLeave}
-                        handleMouseHover={handleMouseHover}
-                      />
-                    }
-                  />                 
                   <Route path="*" element={<NotFound />} />
                   <Route path="/login" element={<Login />} />
                   {isActive && (
