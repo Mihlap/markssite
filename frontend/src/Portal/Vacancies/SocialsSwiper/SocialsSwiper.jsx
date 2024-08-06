@@ -1,4 +1,5 @@
 import React, { useRef, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import styles from './SocialsSwiper.module.scss';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Navigation, Keyboard } from 'swiper';
@@ -150,9 +151,9 @@ const SocialsSwiper = () => {
                       <h3>{item.title}</h3>
                       <span>{item.subtitle}</span>
                     </div>
-                    <a href="#" className={styles.SocialsSwiper__button}>
+                    <Link to="https://t.me/marks_group" target="_blank" className={styles.SocialsSwiper__button}>
                       Подписаться
-                    </a>
+                    </Link>
                   </div>
                 </div>
               </SwiperSlide>

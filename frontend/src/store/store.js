@@ -1,5 +1,4 @@
 import { configureStore } from "@reduxjs/toolkit";
-// импортируйте ваши редьюсеры здесь
 import projectSlice from "./Slice/projectSlice";
 import staffSlice from './Slice/StaffSlice';
 import counterSlice from './Slice/counterSlice';
@@ -13,11 +12,11 @@ import userReducer from "./Slice/userSlice";
 import cursorReducer from "./Slice/cursorSlice";
 import toggleSlice from "./Slice/toggleSlice";
 import vacanciesSlice from "./Slice/vacanciesSlice";
+import previousPageReducer from './Slice/previousPageSlice';
 
 
 export default configureStore({
   reducer: {
-    // добавьте все ваши редьюсеры здесь
     user: userReducer,
     auth: authReducer,
     project: projectSlice,
@@ -31,5 +30,6 @@ export default configureStore({
     cursor: cursorReducer,
     toggle: toggleSlice,
     vacancies: vacanciesSlice,
+    previousPage: previousPageReducer,
   },
  });

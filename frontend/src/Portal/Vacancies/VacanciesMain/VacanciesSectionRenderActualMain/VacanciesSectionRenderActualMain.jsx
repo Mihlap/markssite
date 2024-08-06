@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import styles from '../VacanciesSectionRender/VacanciesSectionRender.module.scss';
 import LoadingCircle from '../../../../Loading/LoadingCircle';
 
@@ -20,6 +21,10 @@ const VacanciesSectionRenderActualMain = ({
   const vacanciesСount = useSelector((state) => state.vacancies.vacancies); 
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     dispatch(getZaprosData());
     dispatch(getFetchForm());
   }, [dispatch]);
@@ -27,10 +32,12 @@ const VacanciesSectionRenderActualMain = ({
   useEffect(() => {
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
+      // ScrollTrigger.refresh();
     };
     window.addEventListener('resize', handleResize);
     return () => {
       window.removeEventListener('resize', handleResize);
+      // ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
   }, []);
 
@@ -46,7 +53,7 @@ const VacanciesSectionRenderActualMain = ({
     return `Мы ищем более ${base} специалистов`;
   };
   
- const displayedVacancies = vacancies?.slice(0, 6);
+ const displayedVacancies = vacancies?.slice(0, 6).reverse();
 
   return (
     <div>
@@ -70,7 +77,7 @@ const VacanciesSectionRenderActualMain = ({
           {displayedVacancies.map((vacancy) => (
               <Link
                 key={vacancy.id}
-                to={`/vacancy/${vacancy?.IdVacancy}`}
+                to={`/portal/vacancy/${vacancy?.IdVacancy}`}
                 className={styles.vacancyContainer}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}>
@@ -122,7 +129,7 @@ const VacanciesSectionRenderActualMain = ({
               <div className={styles.vacancyAnnouncement}>{getAnnouncementText()}</div>
             )}
                 <Link
-                    to="/portal/vacancies"
+                  to="/portal/vacancies"
                   className={styles.showManyButton}
                   onMouseEnter={handleMouseEnter}
                   onMouseLeave={handleMouseLeave}>
