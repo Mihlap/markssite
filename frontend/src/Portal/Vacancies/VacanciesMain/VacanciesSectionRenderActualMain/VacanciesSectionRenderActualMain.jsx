@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import styles from '../VacanciesSectionRender/VacanciesSectionRender.module.scss';
 import LoadingCircle from '../../../../Loading/LoadingCircle';
 
@@ -31,10 +32,12 @@ const VacanciesSectionRenderActualMain = ({
   useEffect(() => {
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
+      // ScrollTrigger.refresh();
     };
     window.addEventListener('resize', handleResize);
     return () => {
       window.removeEventListener('resize', handleResize);
+      // ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
   }, []);
 
