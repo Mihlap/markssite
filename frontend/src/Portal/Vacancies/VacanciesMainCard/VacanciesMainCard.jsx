@@ -62,26 +62,14 @@ const VacanciesMainCard = ({
   const formRef = useRef(null);
   const formButtonRef = useRef(null);
   const rocketRef = useRef(null);
-  const sputnikRef = useRef(null);
-
- 
-  // useEffect(() => {
-  //   if (vacancies && vacancies.length > 0 && selectedVacancy) {
-  //     setupScrollTriggers();
-  
-  //     return () => {
-  //       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
-  //     };
-  //   }
-  // }, [vacancies, windowWidth, selectedVacancy]);
-  
+  const sputnikRef = useRef(null); 
   
 
   useEffect(() => {
      const handleResizeDebounced = debounce(() => {
       setIsVisible(window.innerWidth > 1024);
       setWindowWidth(window.innerWidth);
-    }, 100);
+    }, 300);
 
     window.addEventListener("resize", handleResizeDebounced);
 
@@ -118,6 +106,7 @@ const VacanciesMainCard = ({
   
   const setupScrollTriggers = () => {
     if (!selectedVacancy) return;
+
      const triggers = [];
   
     vacancies.forEach((vacancy) => {

@@ -16,7 +16,7 @@ const VacanciesMap = () => {
           5&nbsp;офисов в&nbsp;России и&nbsp;один в&nbsp;Узбекистане. Если ты&nbsp;крутой специалист, мы&nbsp;готовы
           помочь с&nbsp;переездом и&nbsp;поиском жилья
         </p>
-        <ButtonLink text="Взглянуть на офис" currentHref="#" />
+        {/* <ButtonLink text="Взглянуть на офис" currentHref="#" /> */}
       </div>
       <div className={styles.VacanciesMap__map}>
         {/* <img src={map} alt="Карта офисов" /> */}

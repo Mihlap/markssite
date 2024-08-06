@@ -11,7 +11,6 @@ import BenefitsGrid from '../BenefitsGrid/BenefitsGrid';
 import VacanciesInvite from '../VacanciesInvite/VacanciesInvite';
 import SocialsSwiper from '../SocialsSwiper/SocialsSwiper';
 import GalleryTabs from '../GalleryTabs/GalleryTabs';
-import VacanciesList from '../VacanciesList/VacanciesList';
 import VacancyFormContact from '../../../UI/VacancyFormContact/VacancyFormContact';
 import VacanciesSectionRenderActualMain from './VacanciesSectionRenderActualMain/VacanciesSectionRenderActualMain';
 import styles from './VacanciesMain3.module.scss';
@@ -40,7 +39,6 @@ const VacanciesMain3 = ({ handleMouseEnter, handleMouseLeave }) => {
       <DirectionsGrid />
       <VacanciesMap />
       <BenefitsGrid />
-      <VacanciesList />
       <VacanciesSectionRenderActualMain
         handleMouseEnter={handleMouseEnter}
         handleMouseLeave={handleMouseLeave}
