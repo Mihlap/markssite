@@ -20,6 +20,10 @@ const VacanciesSectionRenderActualMain = ({
   const vacanciesСount = useSelector((state) => state.vacancies.vacancies); 
 
   useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
+  useEffect(() => {
     dispatch(getZaprosData());
     dispatch(getFetchForm());
   }, [dispatch]);
@@ -46,7 +50,7 @@ const VacanciesSectionRenderActualMain = ({
     return `Мы ищем более ${base} специалистов`;
   };
   
- const displayedVacancies = vacancies?.slice(0, 6);
+ const displayedVacancies = vacancies?.slice(0, 6).reverse();
 
   return (
     <div>
@@ -70,7 +74,7 @@ const VacanciesSectionRenderActualMain = ({
           {displayedVacancies.map((vacancy) => (
               <Link
                 key={vacancy.id}
-                to={`/vacancy/${vacancy?.IdVacancy}`}
+                to={`/portal/vacancy/${vacancy?.IdVacancy}`}
                 className={styles.vacancyContainer}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}>
@@ -122,7 +126,7 @@ const VacanciesSectionRenderActualMain = ({
               <div className={styles.vacancyAnnouncement}>{getAnnouncementText()}</div>
             )}
                 <Link
-                    to="/portal/vacancies"
+                  to="/portal/vacancies"
                   className={styles.showManyButton}
                   onMouseEnter={handleMouseEnter}
                   onMouseLeave={handleMouseLeave}>

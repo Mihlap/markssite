@@ -285,7 +285,7 @@ router.put(
       });
 
       const dynamicBlocksContent = req.body.dynamicBlocksJSON ? JSON.parse(req.body.dynamicBlocksJSON) : [];
-      const existingImages = existingConstructor ? existingConstructor.image.split(', ') : [];
+      const existingImages = existingConstructor && existingConstructor.image ? existingConstructor.image.split(', ') : [];
 
       // Функция для извлечения всех изображений из вложенных структур
       const extractImages = (blocks) => blocks

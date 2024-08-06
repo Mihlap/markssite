@@ -96,16 +96,7 @@ const Navbar = memo(({ handleMouseEnter, handleMouseLeave }) => {
               onClick={() => handleItemClick("/login")}
             >
               <div>login</div>
-            </Link> */}
-            {/* <Link
-              className={`${styles.navbar__item} ${
-                activeClass === "/competention" ? styles.navbar__item_open : ""
-              }`}
-              to="/competention"
-              onClick={() => handleItemClick("/competention")}
-            >
-              <div>Компетенции</div>
-            </Link> */}
+            </Link> */}           
             <Link
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
@@ -149,11 +140,11 @@ const Navbar = memo(({ handleMouseEnter, handleMouseLeave }) => {
             <Link
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
-              className={`${styles.navbar__item} ${activeClass === "/portal/vacancies" ? styles.navbar__item_open : ""
+              className={`${styles.navbar__item} ${activeClass === "/portal/vacanciesMain" ? styles.navbar__item_open : ""
                 }`}
-              to="/portal/vacancies"
-              // target="_blank"
-              onClick={() => handleItemClick("/portal/vacancies")}
+              to="/portal/vacanciesMain"
+              target="_blank"
+              onClick={() => handleItemClick("/portal/vacanciesMain")}
             >
               <div>HR портал</div>
             </Link>
