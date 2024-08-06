@@ -92,8 +92,8 @@ const [isMenuActive, setMenuActive] = useState(false);
               <li className={styles["menu-item"]}>
                 <Link
                   onClick={handleBurgerClick}
-                  // target="_blank"
-                  to="/portal/vacancies"
+                  target="_blank"
+                  to="/portal/vacanciesMain"
                   className={styles["menu-link"]}
                 >
                   HR портал

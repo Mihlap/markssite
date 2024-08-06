@@ -64,6 +64,19 @@ const VacanciesMainCard = ({
   const rocketRef = useRef(null);
   const sputnikRef = useRef(null);
 
+ 
+  // useEffect(() => {
+  //   if (vacancies && vacancies.length > 0 && selectedVacancy) {
+  //     setupScrollTriggers();
+  
+  //     return () => {
+  //       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+  //     };
+  //   }
+  // }, [vacancies, windowWidth, selectedVacancy]);
+  
+  
+
   useEffect(() => {
      const handleResizeDebounced = debounce(() => {
       setIsVisible(window.innerWidth > 1024);
@@ -104,6 +117,7 @@ const VacanciesMainCard = ({
   }, [windowWidth, vacancies, selectedVacancy]);
   
   const setupScrollTriggers = () => {
+    if (!selectedVacancy) return;
      const triggers = [];
   
     vacancies.forEach((vacancy) => {

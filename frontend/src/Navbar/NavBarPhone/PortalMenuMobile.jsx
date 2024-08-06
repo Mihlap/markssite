@@ -27,7 +27,7 @@ const [isMenuActive, setMenuActive] = useState(false);
     <div className={styles.navbar_block}>
       <div className={styles.container}>
         <section className={styles.wrapper}>
-          <Link to="/portal/vacancies" className={styles.brand}>
+          <Link to="/" className={styles.brand}>
             MARKS GROUP
           </Link>
           <button
@@ -53,22 +53,22 @@ const [isMenuActive, setMenuActive] = useState(false);
             }
           >
             <ul className={styles["menu-inner"]}>
-              {/* <li className={styles["menu-item"]}>
+              <li className={styles["menu-item"]}>
                 <Link
                   onClick={handleBurgerClick}
-                  to="/"
+                  to="/portal/vacanciesMain"
                   className={styles["menu-link"]}
                 >
                   Главная
                 </Link>
-              </li> */}
+              </li>
                 <li className={styles["menu-item"]}>
                 <Link
                   onClick={handleBurgerClick}
                   to="/portal/vacancies"
                   className={styles["menu-link"]}
                 >
-                  Вакансии
+                 Работа у нас
                 </Link>
               </li>
               {/* <li className={styles["menu-item"]}>
@@ -79,17 +79,8 @@ const [isMenuActive, setMenuActive] = useState(false);
                 >
                   Стажировки
                 </Link>
-              </li>
-              <li className={styles["menu-item"]}>
-                <Link
-                  onClick={handleBurgerClick}
-                  to="/portal/office"
-                  className={styles["menu-link"]}
-                >
-                  Офис
-                </Link>
               </li> */}
-              </ul>
+            </ul>
             <div className={styles.contact_info}>
               <div className={styles.contact_info_block}>
                 {/* <div className={styles.contact_info_language}>EN | CN</div> */}
