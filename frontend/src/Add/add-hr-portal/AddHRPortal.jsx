@@ -235,9 +235,7 @@ export default function AddHRPortal({ user }) {
                 <div className={styles.card_components_admin__button_text}>Добавить слайд</div>
               </button>
             </div>
-            <SearchVacancyMain
-              
-            />
+            <SearchVacancyMain />
           </>
         ) : (
           <div className={styles.card_components_admin__button_block} onClick={handleOpenModal}>

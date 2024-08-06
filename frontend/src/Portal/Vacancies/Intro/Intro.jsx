@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useRef } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger, ScrollToPlugin } from 'gsap/all';
 
@@ -12,15 +12,21 @@ const Host = process.env.REACT_APP_SERVER_HOST;
 const Intro = () => {
   const videoBoxRef = useRef(null);
   const videoRef = useRef(null);
+  const [key, setKey] = useState(0);
+  const [videoVisible, setVideoVisible] = useState(false);
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
   }, []);
 
+  useEffect(() => {
+    setKey(prevKey => prevKey + 1);
+  }, []);
+
   useLayoutEffect(() => {
     const mm = gsap.matchMedia();
-    
-    mm.add('(min-width: 1024px)', () => {
+
+    const showVideo = () => {
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: videoBoxRef.current,
@@ -41,19 +47,52 @@ const Intro = () => {
           onComplete: () => {
             if (videoBoxRef.current) {
               gsap.to(window, { duration: 1, scrollTo: videoBoxRef.current });
+              setVideoVisible(true);
             }
           },
         }
-      );  
-        return tl.scrollTrigger;
-    });
+      );
 
-    ScrollTrigger.refresh();
+      return () => {
+        tl.scrollTrigger && tl.scrollTrigger.kill();
+        tl.kill();
+      };
+    };
+
+    mm.add('(min-width: 1024px)', showVideo);
 
     return () => {
-       ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      mm.revert();
     };
-  }, []);
+  }, [videoVisible]);
+
+  useEffect(() => {
+    if (videoRef.current) {
+      videoRef.current.style.display = 'none';
+      videoRef.current.style.height = '0';
+      videoRef.current.style.width = '0';
+
+      videoRef.current.addEventListener('loadeddata', () => {
+        setVideoVisible(true); 
+      });
+
+      videoRef.current.addEventListener('error', () => {
+        setVideoVisible(false); 
+      });
+
+      return () => {
+        if (videoRef.current) {
+          videoRef.current.removeEventListener('loadeddata', () => {
+            setVideoVisible(true);
+          });
+
+          videoRef.current.removeEventListener('error', () => {
+            setVideoVisible(false);
+          });
+        }
+      };
+    }
+  }, [videoVisible]);
 
   return (
     <>
@@ -62,14 +101,22 @@ const Intro = () => {
           <div className={styles.Intro__text}>
             <span className={styles.Intro__pretitle}>Присоединяйтесь к&nbsp;MARKS&nbsp;GROUP</span>
             <h1 className={styles.Intro__title}>Мы&nbsp;в&nbsp;поиске талантливых специалистов</h1>
-            <ButtonLink text="Смотреть вакансии" currentHref="#" section="Intro" currentStyles={styles} />
+            <ButtonLink text="Смотреть вакансии" to="/portal/vacancies" section="Intro" currentStyles={styles} />
           </div>
           <div className={styles.Intro__animation}>
             <img src={starsDesktop} alt=""></img>
           </div>
         </div>
         <div className={styles.Intro__video} ref={videoBoxRef}>
-          <video ref={videoRef} playsInline autoPlay muted loop>
+          <video
+            key={key}
+            ref={videoRef}
+            playsInline
+            autoPlay
+            muted
+            loop
+            style={{ display: videoVisible ? 'block' : 'none' }}
+            >
             <source src={`${Host}/videos/main_company_full.mp4`} type="video/mp4" />
           </video>
         </div>
