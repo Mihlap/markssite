@@ -13,6 +13,7 @@ import {
   setActiveFilters,
   setFilteredVacancies,
 } from '../../../store/Slice/vacanciesSlice';
+import { setPreviousPage } from '../../../store/Slice/previousPageSlice';
 import VacanciesSectionRender from './VacanciesSectionRender/VacanciesSectionRender';
 import FilterModalVacancies from '../FilterModalVacancies/FilterModalVacancies';
 import VacancyFormContact from '../../../UI/VacancyFormContact/VacancyFormContact';
@@ -54,8 +55,8 @@ const VacanciesMain = ({ handleMouseEnter, handleMouseLeave, handleMouseHover, h
     'IT',
     'Администрирование',
     'Бэк офис',
-    'Стажировки',
     'Управление',
+    'Стажировки',
   ];
 
   const filterMappings = {
@@ -77,6 +78,10 @@ const VacanciesMain = ({ handleMouseEnter, handleMouseLeave, handleMouseHover, h
       window.removeEventListener('resize', handleResize);
     };
   }, [handleResize]);
+
+  useEffect(() => {
+    dispatch(setPreviousPage('vacancies'));
+  }, [dispatch]);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -112,7 +117,7 @@ const VacanciesMain = ({ handleMouseEnter, handleMouseLeave, handleMouseHover, h
 
   const applyFilters = useCallback(
     (vacancies, filters) => {
-      return vacancies.filter((vacancy) => {
+      return vacancies.filter((vacancy) => {      
         return Object.keys(filters).every((filterKey) => {
           const mappedKey = filterMappings[filterKey] || filterKey;
           const filterValues = filters[filterKey];
@@ -161,10 +166,16 @@ const VacanciesMain = ({ handleMouseEnter, handleMouseLeave, handleMouseHover, h
     return !vacancy.hidden;
   }, []);
 
+  // const visibleVacancies = useMemo(
+  //   () => vacanciesMain.filter((vacancy) => shouldDisplayVacancy(vacancy)),
+  //   [vacanciesMain, shouldDisplayVacancy]
+  // );
+
   const visibleVacancies = useMemo(
-    () => vacanciesMain.filter((vacancy) => shouldDisplayVacancy(vacancy)),
-    [vacanciesMain, shouldDisplayVacancy]
+    () => filteredVacancies.filter((vacancy) => shouldDisplayVacancy(vacancy) && vacancy.type !== 'стажировка'),
+    [filteredVacancies, shouldDisplayVacancy]
   );
+  
 
   const removeFilter = useCallback(
     (filterCategory, filterValue) => {

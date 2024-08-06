@@ -27,7 +27,7 @@ const VacanciesInvite = () => {
               Оплачиваемая стажировка.<br></br> Сотрудничаем с&nbsp;ВУЗами, даем возможность{' '}
               <span>учиться у&nbsp;профессионалов</span> в&nbsp;сфере проектирования!
             </div>
-            <ButtonLink text="Смотреть стажировки" currentHref="#" />
+            <ButtonLink text="Смотреть стажировки" to="/portal/vacancies" />
           </div>
         </div>
       </section>
