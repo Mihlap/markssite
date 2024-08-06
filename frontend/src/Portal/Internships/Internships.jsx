@@ -1,12 +1,111 @@
-import React from 'react';
-import styles from './Internships.module.scss'
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
+import { Helmet } from 'react-helmet-async';
+import { useDispatch, useSelector } from 'react-redux';
+import styles from '../Vacancies/VacanciesMain/Vacancies.module.css';
+import 'swiper/css';
+import { 
+  getFetchForm, 
+  getVacanciesByDirection,
+} from '../../store/Slice/vacanciesSlice';
+import { setPreviousPage } from '../../store/Slice/previousPageSlice';
+import VacanciesSectionRender from '../Vacancies/VacanciesMain/VacanciesSectionRender/VacanciesSectionRender';
+import VacancyFormContact from '../../UI/VacancyFormContact/VacancyFormContact';
+import RocketComponents from '../../UI/Rocket/RocketComponents';
 
-const Internships = () => {
+const Internships = ({ handleMouseEnter, handleMouseLeave, handleMouseHover, hideVacancies }) => {
+  const dispatch = useDispatch();
+  const { loading, filteredVacancies } = useSelector(
+    (state) => state.vacancies
+  );
+ 
+  const [showManyVacancies, setShowManyVacancies] = useState(false);
+  const [totalDisplayedVacancies, setTotalDisplayedVacancies] = useState(6); 
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+
+ const handleResize = useCallback(() => {
+    setWindowWidth(window.innerWidth);
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [handleResize]);
+
+  useEffect(() => {
+    dispatch(setPreviousPage('internships'));
+  }, [dispatch]);
+
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    dispatch(getVacanciesByDirection());
+    dispatch(getFetchForm());
+  }, [dispatch]);
+
+
+  const toggleShowAllVacancies = useCallback(() => {
+    setShowManyVacancies((prev) => !prev);
+  }, []);
+
+
+  const shouldDisplayVacancy = useCallback((vacancy) => {
+    return !vacancy.hidden;
+  }, []);
+
+   const visibleVacancies = useMemo(
+    () => filteredVacancies.filter((vacancy) => shouldDisplayVacancy(vacancy) && vacancy.type !== 'вакансия'),
+    [filteredVacancies, shouldDisplayVacancy]
+  );
+  
   return (
-    <div className={styles.main_internships}
-    ><h1>В настоящее время страница в работе</h1>
-    </div>
-  )
-}
+    <>
+      <Helmet>
+        <title>Marks Group</title>
+      </Helmet>
+      {!hideVacancies && (
+        <div className={styles.main_vacancies_block}>
+          <div className={styles.wrapper_vacancies}>
+            <div className={styles.rocket_model}>          
+              <RocketComponents />
+            </div>
+            <div className={styles.vacancies_header_wrapper}>
+              <span className={styles.vacancies_header1}>Ждём молодых и&nbsp;активных</span>
+              <span className={styles.vacancies_header2}>Стажировки</span>
+            </div>
+          </div>         
+          <VacanciesSectionRender
+            loading={loading}
+            visibleVacancies={visibleVacancies}
+            shouldDisplayVacancy={shouldDisplayVacancy}
+            showManyVacancies={showManyVacancies}
+            toggleShowAllVacancies={toggleShowAllVacancies}
+            totalDisplayedVacancies={totalDisplayedVacancies}
+            windowWidth={windowWidth}
+            handleMouseEnter={handleMouseEnter}
+            handleMouseLeave={handleMouseLeave}
+          />
 
-export default Internships;
+          <div className={styles.temporaryText}>
+            {windowWidth > 1024 ? 'Не нашли подходящую вакансию?' : 'Мы ищем именно тебя!'}
+          </div>
+          <div className={styles.textUnderForm}>
+            Оставьте ваши контакты, мы всегда в поиске талантливых профессионалов
+          </div>
+          <div className={styles.vacancyFormWrapper}>
+            <VacancyFormContact
+              handleMouseEnter={handleMouseEnter}
+              handleMouseLeave={handleMouseLeave}
+              handleMouseHover={handleMouseHover}
+              centerButton={true}
+            />
+          </div>
+        </div>
+      )}
+    </>
+  );
+};
+
+export default React.memo(Internships);
