@@ -274,7 +274,7 @@ export default function App() {
                       />
                     }
                   />
-                    {/* <Route
+                    <Route
                       path="/portal/internships"
                       element={
                         <Internships
@@ -283,7 +283,7 @@ export default function App() {
                           handleMouseHover={handleMouseHover}
                         />
                       }
-                    />                  */}
+                    />                 
                   <Route
                     path="/portal/vacancy/:id"
                     element={

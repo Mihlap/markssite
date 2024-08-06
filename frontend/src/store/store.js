@@ -12,6 +12,7 @@ import userReducer from "./Slice/userSlice";
 import cursorReducer from "./Slice/cursorSlice";
 import toggleSlice from "./Slice/toggleSlice";
 import vacanciesSlice from "./Slice/vacanciesSlice";
+import previousPageReducer from './Slice/previousPageSlice';
 
 
 export default configureStore({
@@ -29,5 +30,6 @@ export default configureStore({
     cursor: cursorReducer,
     toggle: toggleSlice,
     vacancies: vacanciesSlice,
+    previousPage: previousPageReducer,
   },
  });
