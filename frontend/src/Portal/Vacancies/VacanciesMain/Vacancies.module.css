@@ -422,6 +422,10 @@ font-family: var(--font-raleway);
   padding-top: 7.5rem;
 }
 
+.temporaryText_intership {
+  max-width: 65rem;
+}
+
 .textUnderForm {
   /* max-width: 47rem; */
   color: var(--black-1D2E43);
