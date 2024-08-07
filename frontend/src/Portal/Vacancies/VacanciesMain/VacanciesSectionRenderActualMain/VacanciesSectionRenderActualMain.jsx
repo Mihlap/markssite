@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ScrollTrigger } from "gsap/ScrollTrigger";
 import styles from '../VacanciesSectionRender/VacanciesSectionRender.module.scss';
 import LoadingCircle from '../../../../Loading/LoadingCircle';
-
 import buttonLink from '../../icons/buttonLink.svg';
 import buttonLink_ipad from '../../icons/buttonLink1.svg';
 import { useDispatch, useSelector } from 'react-redux';
@@ -41,6 +39,10 @@ const VacanciesSectionRenderActualMain = ({
     };
   }, []);
 
+  const displayedVacancies = useMemo(() => {
+    return vacancies?.slice(0, 6).reverse();
+  }, [vacancies]);
+
   const getAnnouncementText = () => {
     const count = vacanciesСount.length; 
     if (count === 0) {
@@ -49,19 +51,16 @@ const VacanciesSectionRenderActualMain = ({
     if (count < 10) {
       return "Мы ищем уникальных специалистов";
     }
-    const base = Math.floor((Math.min(count, 100) + 9) / 10) * 10;
-    return `Мы ищем более ${base} специалистов`;
-  };
+     return `Мы ищем более ${Math.floor(count / 10) * 10} специалистов`;
+};
   
- const displayedVacancies = vacancies?.slice(0, 6).reverse();
-
   return (
     <div>
       {loading ? (
         <div className={styles.loader}>
           <LoadingCircle />
         </div>
-        ) : vacanciesСount.length === 0 ? (
+        ) : vacancies.length === 0 ? (
           <div className={styles.vacancy_content_massage} style={{paddingBottom: "3rem"}}>
             Скоро здесь появятся актуальные вакансии
           </div>
