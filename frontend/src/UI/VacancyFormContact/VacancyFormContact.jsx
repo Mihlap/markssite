@@ -10,7 +10,15 @@ import LoadingVacancy from "../../Loading/LoadingVacancy";
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 
-const VacancyFormContact = ({ formButtonRef, initialDirection, handleMouseEnter, handleMouseLeave, vacancyTitle, centerButton }) => {
+const VacancyFormContact = ({
+  formButtonRef,
+  initialDirection,
+  handleMouseEnter,
+  handleMouseLeave,
+  vacancyTitle,
+  centerButton,
+  isInternship = false
+}) => {
 
   const options = useMemo(() => [
     { value: "Другое направление", label: "Другое направление" },
@@ -545,7 +553,7 @@ const VacancyFormContact = ({ formButtonRef, initialDirection, handleMouseEnter,
                   onMouseEnter={handleMouseEnter}
                   onMouseLeave={handleMouseLeave}
                 >
-                  <p className={styles.button_name_vacancy}>Откликнуться на вакансию</p>
+                    <p className={styles.button_name_vacancy}>{(isInternship ? "Откликнуться на стажировку" : "Откликнуться на вакансию")}</p>                  
                 </button>
               </div>
             </div>

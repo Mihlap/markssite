@@ -16,6 +16,7 @@ const VacanciesSectionRender = ({
   windowWidth,
   handleMouseEnter,
   handleMouseLeave,
+  isInternship = false
 }) => {
   return loading ? (
     <div className={styles.loader}>
@@ -113,7 +114,7 @@ const VacanciesSectionRender = ({
           <div className={styles.showVacanciesOfTotalVacancies}>
             {!showManyVacancies && visibleVacancies.length > 6 && (
               <span className={styles.showManyVacanciesCount}>
-                {totalDisplayedVacancies} вакансий из {visibleVacancies.length}
+               {totalDisplayedVacancies} из {visibleVacancies.length} {isInternship ? 'стажировок' : 'вакансий'}
               </span>
             )}
           </div>
@@ -128,7 +129,10 @@ const VacanciesSectionRender = ({
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
             >
-              {showManyVacancies ? "Скрыть вакансии" : "Показать все вакансии"}
+                {showManyVacancies ? (isInternship ?
+                  "Скрыть стажировки" : "Скрыть вакансии")
+                  :
+                  (isInternship ? "Показать все стажировки" : "Показать все вакансии")}
             </button>
           </div>
         </div>
@@ -136,7 +140,7 @@ const VacanciesSectionRender = ({
     </>
   ) : (
     <div className={styles.vacancy_content_massage}>
-      Скоро здесь появятся вакансии
+       {isInternship ? 'Скоро здесь появятся стажировки' : 'Скоро здесь появятся вакансии'}
     </div>
   );
 };
