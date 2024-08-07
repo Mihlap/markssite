@@ -14,13 +14,14 @@ import RocketComponents from '../../UI/Rocket/RocketComponents';
 
 const Internships = ({ handleMouseEnter, handleMouseLeave, handleMouseHover, hideVacancies }) => {
   const dispatch = useDispatch();
-  const { loading, filteredVacancies } = useSelector(
+  const { vacancies, loading } = useSelector(
     (state) => state.vacancies
-  );
- 
+  );  
   const [showManyVacancies, setShowManyVacancies] = useState(false);
   const [totalDisplayedVacancies, setTotalDisplayedVacancies] = useState(6); 
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  const vacanciesMain = useMemo(() => [...vacancies].reverse(), [vacancies]);
 
 
  const handleResize = useCallback(() => {
@@ -41,9 +42,9 @@ const Internships = ({ handleMouseEnter, handleMouseLeave, handleMouseHover, hid
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    dispatch(getVacanciesByDirection());
-    dispatch(getFetchForm());
-  }, [dispatch]);
+      dispatch(getVacanciesByDirection());
+      dispatch(getFetchForm());
+    }, [dispatch]);
 
 
   const toggleShowAllVacancies = useCallback(() => {
@@ -56,8 +57,8 @@ const Internships = ({ handleMouseEnter, handleMouseLeave, handleMouseHover, hid
   }, []);
 
    const visibleVacancies = useMemo(
-    () => filteredVacancies.filter((vacancy) => shouldDisplayVacancy(vacancy) && vacancy.type !== 'вакансия'),
-    [filteredVacancies, shouldDisplayVacancy]
+     () => vacanciesMain.filter((vacancy) => shouldDisplayVacancy(vacancy) && vacancy.type !== 'вакансия'),    
+    [vacanciesMain, shouldDisplayVacancy]
   );
   
   return (
@@ -86,13 +87,16 @@ const Internships = ({ handleMouseEnter, handleMouseLeave, handleMouseHover, hid
             windowWidth={windowWidth}
             handleMouseEnter={handleMouseEnter}
             handleMouseLeave={handleMouseLeave}
+            isInternship={true} 
           />
 
-          <div className={styles.temporaryText}>
-            {windowWidth > 1024 ? 'Не нашли подходящую вакансию?' : 'Мы ищем именно тебя!'}
+          <div className={`${styles.temporaryText} ${styles.temporaryText_intership}`}>
+            {/* {windowWidth > 1024 ? 'Не нашли подходящую вакансию?' : 'Мы ищем именно тебя!'} */}
+            Хочешь пройти у&nbsp;нас&nbsp;стажировку,
+            но&nbsp;не&nbsp;нашел подходящую?
           </div>
           <div className={styles.textUnderForm}>
-            Оставьте ваши контакты, мы всегда в поиске талантливых профессионалов
+            Присылай резюме, обсудим!
           </div>
           <div className={styles.vacancyFormWrapper}>
             <VacancyFormContact
@@ -100,6 +104,7 @@ const Internships = ({ handleMouseEnter, handleMouseLeave, handleMouseHover, hid
               handleMouseLeave={handleMouseLeave}
               handleMouseHover={handleMouseHover}
               centerButton={true}
+              isInternship={true} 
             />
           </div>
         </div>
