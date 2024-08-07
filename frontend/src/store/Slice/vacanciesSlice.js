@@ -39,7 +39,7 @@ const vacanciesSlice = createSlice({
   initialState: {
     vacancies: [],
     filteredVacancies: [],
-    activeFilters: {},
+    activeFilters: {}, 
     loading: false,
     error: null,
     hidden: [],
@@ -65,7 +65,7 @@ const vacanciesSlice = createSlice({
   reducers: {
     fetchVacancyStart(state) {
       state.loading = true;
-      state.error = null;
+      state.error = null;  
     },
     fetchVacancySuccess(state, action) {
       state.loading = false;
@@ -73,7 +73,7 @@ const vacanciesSlice = createSlice({
      },
     fetchVacancyFailure(state, action) {
       state.loading = false;
-      state.error = action.payload;
+      state.error = action.payload;   
     },
     deleteVacancySuccess(state, action) {
       const vacanciesId = action.payload;
@@ -141,7 +141,7 @@ const vacanciesSlice = createSlice({
     },
     [fetchEmployees.fulfilled]: (state, action) => {
       state.loading = false;
-      state.vacancies = [action.payload]; 
+      state.vacancies = [action.payload];    
     },      
     [fetchEmployees.rejected]: (state, action) => {
       state.loading = false;
@@ -326,13 +326,15 @@ export const fetchFilteredVacancies = createAsyncThunk(
 
 
 
-export const getVacanciesByDirection = () => async (dispatch) => {
+export const getVacanciesByDirection = (type) => async (dispatch) => {
   try {
-    const response = await axios.get(`${serverHost}/api-vacancy/getzapros`);
+    const response = await axios.get(`${serverHost}/api-vacancy/getzapros`, {
+      params: { type }
+    });
     const vacancies = response.data;
     
     const counts = {};
-    const visibleVacancies = vacancies.filter(vacancy => !vacancy.hidden);
+    const visibleVacancies = vacancies.filter(vacancy => !vacancy.hidden && vacancy.type !== 'стажировка');
 
     visibleVacancies.forEach((vacancy) => {
       const { direction } = vacancy;

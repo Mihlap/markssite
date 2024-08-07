@@ -56,14 +56,14 @@ const VacanciesMain = ({ handleMouseEnter, handleMouseLeave, handleMouseHover, h
     'Администрирование',
     'Бэк офис',
     'Управление',
-    'Стажировки',
+    // 'Стажировки',
   ];
 
   const filterMappings = {
     'Требуемый опыт работы': 'experience',
-    Локация: 'locationStaff',
+    'Локация': 'locationStaff',
     'Режим работы': 'modeOperating',
-    Занятость: 'busyness',
+    'Занятость': 'busyness',
   };
 
   const vacanciesMain = useMemo(() => [...filteredVacancies].reverse(), [filteredVacancies]);
@@ -172,8 +172,8 @@ const VacanciesMain = ({ handleMouseEnter, handleMouseLeave, handleMouseHover, h
   // );
 
   const visibleVacancies = useMemo(
-    () => filteredVacancies.filter((vacancy) => shouldDisplayVacancy(vacancy) && vacancy.type !== 'стажировка'),
-    [filteredVacancies, shouldDisplayVacancy]
+    () => vacanciesMain.filter((vacancy) => shouldDisplayVacancy(vacancy) && vacancy.type !== 'стажировка'),
+    [vacanciesMain, shouldDisplayVacancy]
   );
   
 
