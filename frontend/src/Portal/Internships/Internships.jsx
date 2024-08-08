@@ -23,8 +23,7 @@ const Internships = ({ handleMouseEnter, handleMouseLeave, handleMouseHover, hid
 
   const vacanciesMain = useMemo(() => [...vacancies].reverse(), [vacancies]);
 
-
- const handleResize = useCallback(() => {
+  const handleResize = useCallback(() => {
     setWindowWidth(window.innerWidth);
   }, []);
 
@@ -36,6 +35,7 @@ const Internships = ({ handleMouseEnter, handleMouseLeave, handleMouseHover, hid
   }, [handleResize]);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     dispatch(setPreviousPage('internships'));
   }, [dispatch]);
 

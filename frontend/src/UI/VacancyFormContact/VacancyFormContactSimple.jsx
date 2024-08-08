@@ -1,6 +1,6 @@
 import React, { useRef, useState, useCallback, useEffect } from "react";
 import InputMask from "react-input-mask";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import styles from "./VacancyFormContact.module.css";
 import "react-phone-number-input/style.css";
 
@@ -13,6 +13,10 @@ const VacancyFormContactSimple = ({
   setIsModalOpen,
   vacancyTitleSimple
 }) => {
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const type = searchParams.get('type'); 
+
   const [isFocused, setIsFocused] = useState({
     name: false,
     phone: false, 
@@ -375,7 +379,7 @@ const VacancyFormContactSimple = ({
               // style={{ minWidth: '432px', height: '56px'}}        
             >
               <p className={styles.button_name_vacancy}>
-                Откликнуться на вакансию
+              {type === 'internship' ? "Откликнуться на стажировку" : "Откликнуться на вакансию"}
               </p>
             </button>
           </div>

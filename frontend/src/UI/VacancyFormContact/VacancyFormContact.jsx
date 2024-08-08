@@ -1,7 +1,7 @@
 import React, { useRef, useState, useMemo, useCallback, useEffect } from "react";
 import InputMask from "react-input-mask";
 import Select from "react-select";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import styles from "./VacancyFormContact.module.css";
 import "react-phone-number-input/style.css";
 import icon_tg from "../../Portal/Vacancies/icons/icon_tg.svg";
@@ -17,8 +17,10 @@ const VacancyFormContact = ({
   handleMouseLeave,
   vacancyTitle,
   centerButton,
-  isInternship = false
 }) => {
+  const location = useLocation();
+  const searchParams = new URLSearchParams(location.search);
+  const type = searchParams.get('type'); 
 
   const options = useMemo(() => [
     { value: "Другое направление", label: "Другое направление" },
@@ -553,7 +555,9 @@ const VacancyFormContact = ({
                   onMouseEnter={handleMouseEnter}
                   onMouseLeave={handleMouseLeave}
                 >
-                    <p className={styles.button_name_vacancy}>{(isInternship ? "Откликнуться на стажировку" : "Откликнуться на вакансию")}</p>                  
+                    <p className={styles.button_name_vacancy}>
+                      {type === 'internship' ? "Откликнуться на стажировку" : "Откликнуться на вакансию"}
+                    </p>                  
                 </button>
               </div>
             </div>

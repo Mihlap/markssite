@@ -6,7 +6,7 @@ import StarsBack from '../StarsBack/StarsBack';
 import invite_1 from '../icons/invite-1.png';
 import invite_2 from '../icons/invite-2.png';
 
-const VacanciesInvite = () => {
+const VacanciesInvite = ({isInternship = true}) => {
   return (
     <>
       <section className={styles.VacanciesInvite}>
@@ -27,7 +27,13 @@ const VacanciesInvite = () => {
               Оплачиваемая стажировка.<br></br> Сотрудничаем с&nbsp;ВУЗами, даем возможность{' '}
               <span>учиться у&nbsp;профессионалов</span> в&nbsp;сфере проектирования!
             </div>
-            <ButtonLink text="Смотреть стажировки" to="/portal/internships" />
+            <ButtonLink
+              text="Смотреть стажировки"             
+              to={{
+                pathname: "/portal/internships",
+                search: `?type=${isInternship ? 'internship' : 'vacancy'}`
+              }}
+            />
           </div>
         </div>
       </section>
