@@ -80,8 +80,8 @@ export const extractCityFromCountryCity = (countryCity) => {
 export const shareToVK = (project, Host) => {
   const url = encodeURIComponent(window.location.href);
   const title = encodeURIComponent(project.title);
-  const imageUrl = encodeURIComponent(`${Host}/images/imageAdd/${project.imageProject}`);
-  window.open(`https://vk.com/share.php?url=${url}&title=${title}&image=${imageUrl}`, '_blank');
+  // const imageUrl = encodeURIComponent(`${Host}/images/imageAdd/${project.imageProject}`);
+  window.open(`https://vk.com/share.php?url=${url}&title=${title}`, '_blank');
 };
 
 
@@ -92,21 +92,31 @@ export const shareToVK = (project, Host) => {
 // window.open(`https://t.me/share/url?url=${url}&text=${title}&image=${encodeURIComponent(imageUrl)}`, '_blank');
 // };
 
-
 // node-telegram-bot-api
 export const shareToTelegram = (project, Host) => {
   const url = encodeURIComponent(window.location.href);
   const title = encodeURIComponent(project.title);
-  const imageUrl = encodeURIComponent(`${Host}/images/imageAdd/${project.imageProject}`);
-  window.open(`https://t.me/share/url?url=${url}&text=${title}&image=${imageUrl}`, '_blank');
+  const telegramUrl = `https://t.me/share/url?url=${url}&text=${title}`;
+  window.open(telegramUrl, '_blank');
+  // const imageUrl = encodeURIComponent(`${Host}/images/imageAdd/${project.imageProject}`);
+  // window.open(`https://t.me/share/url?url=${url}&text=${title}&image=${imageUrl},`, '_blank');
 };
+
+// export const shareToTelegram = (project, Host) => {
+//   const url = encodeURIComponent(window.location.href);
+//   const title = "Check out this project";
+//   const telegramUrl = `http://t.me/share/url?url=${url}&text=${title}`;
+//   console.log('Opening Telegram URL:', telegramUrl);
+//   window.open(telegramUrl, '_blank');
+// };
+
 
 
 export const shareToWhatsApp = (project, Host) => {
   const title = encodeURIComponent(`Check out this project: ${project.title}`);
-  const imageUrl = `${Host}/images/imageAdd/${project.imageProject}`;
-  const imageTag = `<img src="${imageUrl}" alt="Project Image">`;
-  const message = `${title}%0A${window.location.href}%0A${imageTag}`;
+  // const imageUrl = `${Host}/images/imageAdd/${project.imageProject}`;
+  // const imageTag = `<img src="${imageUrl}" alt="Project Image">`;
+  const message = `${title}%0A${window.location.href}}`;
   const whatsappUrl = `https://wa.me/?text=${message}`;
   window.open(whatsappUrl, '_blank');
 };
