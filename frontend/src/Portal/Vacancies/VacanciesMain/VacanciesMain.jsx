@@ -384,6 +384,7 @@ const VacanciesMain = ({ handleMouseEnter, handleMouseLeave, handleMouseHover, h
             windowWidth={windowWidth}
             handleMouseEnter={handleMouseEnter}
             handleMouseLeave={handleMouseLeave}
+            isInternship={false}
           />
 
           <div className={styles.temporaryText}>
@@ -398,6 +399,7 @@ const VacanciesMain = ({ handleMouseEnter, handleMouseLeave, handleMouseHover, h
               handleMouseLeave={handleMouseLeave}
               handleMouseHover={handleMouseHover}
               centerButton={true}
+              isInternship={false}
             />
           </div>
         </div>
