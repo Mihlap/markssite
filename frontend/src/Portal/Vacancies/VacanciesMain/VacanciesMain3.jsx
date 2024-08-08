@@ -19,6 +19,9 @@ import styles from './VacanciesMain3.module.scss';
 
 const VacanciesMain3 = ({ handleMouseEnter, handleMouseLeave }) => {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  // const location = useLocation();
+  // const searchParams = new URLSearchParams(location.search);
+  // const type = searchParams.get('type'); 
 
   useEffect(() => {
     const handleResize = () => {

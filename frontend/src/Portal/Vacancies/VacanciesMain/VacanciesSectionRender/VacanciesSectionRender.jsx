@@ -45,7 +45,10 @@ const VacanciesSectionRender = ({
         .map((vacancy) => (
           <Link
             key={vacancy.id}
-            to={`/portal/vacancy/${vacancy.id}`}
+            to={{
+              pathname: `/portal/vacancy/${vacancy.id}`,
+              search: `?type=${isInternship ? 'internship' : 'vacancy'}`
+            }}
             className={styles.vacancyContainer}
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
