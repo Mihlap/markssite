@@ -10,6 +10,7 @@ import VacancySlider from "../VacancySlider/VacancySlider";
 import LoadingVacancy from "../../../Loading/LoadingVacancy";
 import RenderVacancySections from "../RenderVacancySections/RenderVacancySections";
 import { fetchEmployees } from "../../../store/Slice/vacanciesSlice";
+import { setActivePage  } from '../../../store/Slice/activePageSlice';
 // import Error from "../../Loading/Error/Error";
 // import LoadingCircle from "../../Loading/LoadingCircle";
 import AllVacancyButton from "../../../UI/ButtonVacancy/AllVacancyButton";
@@ -52,6 +53,7 @@ const VacanciesMainCard = ({
 }) => {
   const dispatch = useDispatch();
   const { id } = useParams();
+  const activePage = useSelector((state) => state.activePage.page); 
   const vacancies = useSelector((state) => state.vacancies.vacancies);
   const [isLoading, setIsLoading] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -346,6 +348,7 @@ const VacanciesMainCard = ({
                           setIsLoading={setIsLoading}
                           setIsModalOpen={setIsModalOpen}
                           vacancyTitleSimple={selectedVacancy?.title}
+                          buttonText={activePage === 'internships' ? 'Откликнуться на стажировку' : 'Откликнуться на вакансию'}
                         />
                       )}
                     </div>
@@ -593,6 +596,7 @@ const VacanciesMainCard = ({
             setIsModalOpen={setIsModalOpen}
             vacancyTitle={selectedVacancy?.title}
             centerButton={true}
+            buttonText={activePage === 'internships' ? 'Откликнуться на стажировку' : 'Откликнуться на вакансию'}
           />
         </div>
       </div>
