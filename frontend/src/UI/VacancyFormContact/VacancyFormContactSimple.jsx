@@ -11,7 +11,8 @@ const VacancyFormContactSimple = ({
   handleMouseLeave,
   setIsLoading,
   setIsModalOpen,
-  vacancyTitleSimple
+  vacancyTitleSimple,
+  buttonText,
 }) => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
@@ -379,7 +380,7 @@ const VacancyFormContactSimple = ({
               // style={{ minWidth: '432px', height: '56px'}}        
             >
               <p className={styles.button_name_vacancy}>
-              {type === 'internship' ? "Откликнуться на стажировку" : "Откликнуться на вакансию"}
+              {buttonText} 
               </p>
             </button>
           </div>
