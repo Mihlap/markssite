@@ -8,6 +8,7 @@ import {
   getVacanciesByDirection,
 } from '../../store/Slice/vacanciesSlice';
 import { setPreviousPage } from '../../store/Slice/previousPageSlice';
+import { setActivePage  } from '../../store/Slice/activePageSlice';
 import VacanciesSectionRender from '../Vacancies/VacanciesMain/VacanciesSectionRender/VacanciesSectionRender';
 import VacancyFormContact from '../../UI/VacancyFormContact/VacancyFormContact';
 import RocketComponents from '../../UI/Rocket/RocketComponents';
@@ -17,6 +18,7 @@ const Internships = ({ handleMouseEnter, handleMouseLeave, handleMouseHover, hid
   const { vacancies, loading } = useSelector(
     (state) => state.vacancies
   );  
+  const activePage = useSelector(state => state.activePage.page);
   const [showManyVacancies, setShowManyVacancies] = useState(false);
   const [totalDisplayedVacancies, setTotalDisplayedVacancies] = useState(6); 
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -37,6 +39,7 @@ const Internships = ({ handleMouseEnter, handleMouseLeave, handleMouseHover, hid
   useEffect(() => {
     window.scrollTo(0, 0);
     dispatch(setPreviousPage('internships'));
+    dispatch(setActivePage('internships'));
   }, [dispatch]);
 
 
@@ -105,6 +108,7 @@ const Internships = ({ handleMouseEnter, handleMouseLeave, handleMouseHover, hid
               handleMouseHover={handleMouseHover}
               centerButton={true}
               isInternship={true} 
+              buttonText={activePage === 'internships' ? 'Откликнуться на стажировку' : 'Откликнуться на вакансию'}
             />
           </div>
         </div>

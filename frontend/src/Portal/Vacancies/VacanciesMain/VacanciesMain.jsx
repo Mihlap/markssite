@@ -14,6 +14,7 @@ import {
   setFilteredVacancies,
 } from '../../../store/Slice/vacanciesSlice';
 import { setPreviousPage } from '../../../store/Slice/previousPageSlice';
+import { setActivePage  } from '../../../store/Slice/activePageSlice';
 import VacanciesSectionRender from './VacanciesSectionRender/VacanciesSectionRender';
 import FilterModalVacancies from '../FilterModalVacancies/FilterModalVacancies';
 import VacancyFormContact from '../../../UI/VacancyFormContact/VacancyFormContact';
@@ -30,6 +31,7 @@ const VacanciesMain = ({ handleMouseEnter, handleMouseLeave, handleMouseHover, h
     (state) => state.vacancies
   );
   const selectedFilter = useSelector((state) => state.vacancies.selectedFilter);
+  const activePage = state => state.activePage.page;
 
   const filterKeyForSpecialty = 'direction';
   const [showManyVacancies, setShowManyVacancies] = useState(false);
@@ -81,6 +83,7 @@ const VacanciesMain = ({ handleMouseEnter, handleMouseLeave, handleMouseHover, h
 
   useEffect(() => {
     dispatch(setPreviousPage('vacancies'));
+    dispatch(setActivePage('vacancies'));
   }, [dispatch]);
 
   useEffect(() => {
@@ -399,6 +402,7 @@ const VacanciesMain = ({ handleMouseEnter, handleMouseLeave, handleMouseHover, h
               handleMouseLeave={handleMouseLeave}
               handleMouseHover={handleMouseHover}
               centerButton={true}
+              buttonText={activePage === 'internships' ? 'Откликнуться на стажировку' : 'Откликнуться на вакансию'}
               isInternship={false}
             />
           </div>
