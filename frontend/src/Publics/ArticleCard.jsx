@@ -14,11 +14,13 @@ import {
   handleScroll,
   onVerticalScroll,
   onWheel,
+} from "../Project/utils";
+import {
   shareToVK,
   shareToTelegram,
   shareToWhatsApp,
   // shareToViber,
-} from "../Project/utils";
+} from "./utils";
 import styles from "./ArticleCard.module.css";
 import catPhoto from "../img/default-photo.jpeg";
 
