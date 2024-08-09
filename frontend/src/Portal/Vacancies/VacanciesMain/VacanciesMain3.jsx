@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-
+import { useDispatch } from 'react-redux';
 
 import Intro from '../Intro/Intro';
 import TextCenter from '../TextCenter/TextCenter';
@@ -13,15 +13,20 @@ import SocialsSwiper from '../SocialsSwiper/SocialsSwiper';
 import GalleryTabs from '../GalleryTabs/GalleryTabs';
 import VacancyFormContact from '../../../UI/VacancyFormContact/VacancyFormContact';
 import VacanciesSectionRenderActualMain from './VacanciesSectionRenderActualMain/VacanciesSectionRenderActualMain';
+import { setActivePage  } from '../../../store/Slice/activePageSlice';
 import styles from './VacanciesMain3.module.scss';
 
 
 
 const VacanciesMain3 = ({ handleMouseEnter, handleMouseLeave }) => {
+  const dispatch = useDispatch();
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  // const location = useLocation();
-  // const searchParams = new URLSearchParams(location.search);
-  // const type = searchParams.get('type'); 
+  const activePage = state => state.activePage.page;
+
+  useEffect(() => {
+    dispatch(setActivePage('vacancies'));
+  }, [dispatch]);
+  
 
   useEffect(() => {
     const handleResize = () => {
@@ -59,7 +64,8 @@ const VacanciesMain3 = ({ handleMouseEnter, handleMouseLeave }) => {
       <div className={styles.vacancyFormWrapper}>
         <VacancyFormContact
           handleMouseEnter={handleMouseEnter}
-          handleMouseLeave={handleMouseLeave}    
+          handleMouseLeave={handleMouseLeave}
+          buttonText={activePage === 'internships' ? 'Откликнуться на стажировку' : 'Откликнуться на вакансию'}
         />
       </div>
     </>
