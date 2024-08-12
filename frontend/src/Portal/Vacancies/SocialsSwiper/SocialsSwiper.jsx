@@ -14,43 +14,46 @@ import social_3 from '../icons/socials-swiper-3.svg';
 import social_4 from '../icons/socials-swiper-4.svg';
 import social_5 from '../icons/socials-swiper-3.svg';
 import social_6 from '../icons/socials-swiper-2.svg';
+import social_7 from '../icons/socials-swiper-5.svg';
 
 const socialsArray = [
   {
     picture: social_1,
     title: 'Telegram',
     subtitle: 'MARKS GROUP',
+    link: 'https://t.me/marks_group',
   },
   {
     picture: social_2,
     title: 'Telegram',
-    subtitle: 'MARKS GROUP',
+    subtitle: 'Карьера MARKS!',
+    link: 'https://t.me/marks_career',
   },
   {
     picture: social_3,
     title: 'Telegram',
-    subtitle: 'MARKS GROUP',
+    subtitle: 'MARKS DIGITAL',
   },
   {
     picture: social_4,
     title: 'Telegram',
-    subtitle: 'MARKS GROUP',
+    subtitle: 'MARKS CMC',
   },
   {
-    picture: social_5,
-    title: 'Telegram',
+    picture: social_7,
+    title: 'VK',
     subtitle: 'MARKS GROUP',
   },
-  {
-    picture: social_5,
-    title: 'Telegram',
-    subtitle: 'MARKS GROUP',
-  },
-  {
-    picture: social_6,
-    title: 'Telegram',
-    subtitle: 'MARKS GROUP',
-  },
+  // {
+  //   picture: social_5,
+  //   title: 'Telegram',
+  //   subtitle: 'MARKS GROUP',
+  // },
+  // {
+  //   picture: social_6,
+  //   title: 'Telegram',
+  //   subtitle: 'MARKS GROUP',
+  // },
 ];
 
 const SocialsSwiper = () => {
@@ -93,7 +96,7 @@ const SocialsSwiper = () => {
               slidesPerView: 4,
               centeredSlides: false,
               initialSlide: 0,
-              loop: true,
+              // loop: true,
               spaceBetween: 54,
               LoopAdditionalSlides: 5,
             },
@@ -102,7 +105,7 @@ const SocialsSwiper = () => {
               slidesPerView: 3.3,
               centeredSlides: false,
               initialSlide: 0,
-              loop: true,
+              // loop: true,
               spaceBetween: 54,
               LoopAdditionalSlides: 5,
             },
@@ -110,7 +113,7 @@ const SocialsSwiper = () => {
             1280: {
               slidesPerView: 3,
               spaceBetween: 30,
-              loop: true,
+              // loop: true,
               centeredSlides: true,
               initialSlide: 1,
             },
@@ -151,9 +154,15 @@ const SocialsSwiper = () => {
                       <h3>{item.title}</h3>
                       <span>{item.subtitle}</span>
                     </div>
-                    <Link to="https://t.me/marks_group" target="_blank" className={styles.SocialsSwiper__button}>
+                    {item.link && (
+                    <Link
+                      to={item.link}
+                      target="_blank"
+                      className={styles.SocialsSwiper__button}
+                    >
                       Подписаться
                     </Link>
+                  )}
                   </div>
                 </div>
               </SwiperSlide>
