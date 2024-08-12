@@ -478,31 +478,43 @@ export default function ConstructorBlockRenderer({
     );
   };
 
-  const renderVideoLinkBlock = (block) => {
-    let videoLink = "";
-
-    block?.forEach((item) => {
-      if (item.label === "Ссылка на видеоролик") videoLink = item.value;
-    });
-
+  const getEmbedUrl = (videoLink) => {
     if (!videoLink) return null;
-
-    let embedLink = videoLink;
+  
     if (videoLink.includes("youtu.be")) {
-      embedLink = videoLink.replace("youtu.be/", "www.youtube.com/embed/");
-    } else {
-      embedLink = videoLink.replace("watch?v=", "embed/");
+      return videoLink.replace("youtu.be/", "www.youtube.com/embed/");
     }
-
-    const handleIframeError = (event) => {
-      const iframeContainer = event.target.closest(
-        `.${styles.videoLinkContainer}`
-      );
-      if (iframeContainer) {
-        iframeContainer.innerHTML = "<div>Видео по ссылке не загружено</div>";
-      }
-    };
-
+    if (videoLink.includes("youtube.com/watch?v=")) {
+      return videoLink.replace("watch?v=", "embed/");
+    }
+    if (videoLink.includes("rutube.ru/video/")) {
+      const videoId = videoLink.split("/video/")[1].split("/")[0];
+      return `https://rutube.ru/play/embed/${videoId}`;
+    }
+    if (videoLink.includes("vk.com/video_ext.php")) {
+      return videoLink;
+    }
+    const match = videoLink.match(/vk.com\/video(-?\d+)_(\d+)/);
+    if (match) {
+      const [oid, id] = match.slice(1);
+      return `https://vk.com/video_ext.php?oid=${oid}&id=${id}`;
+    }
+    return null;
+  };
+  
+  const handleIframeError = (event) => {
+    const iframeContainer = event.target.closest(`.${styles.videoLinkContainer}`);
+    if (iframeContainer) {
+      iframeContainer.innerHTML = "<div>Видео по ссылке не загружено</div>";
+    }
+  };
+  
+  const renderVideoLinkBlock = (block) => {
+    const videoItem = block?.find(item => item.label === "Ссылка на видеоролик");
+    const embedLink = videoItem ? getEmbedUrl(videoItem.value) : null;
+  
+    if (!embedLink) return null;
+  
     return (
       <div className={styles.videoLinkContainer}>
         <iframe
@@ -516,6 +528,7 @@ export default function ConstructorBlockRenderer({
       </div>
     );
   };
+  
 
   switch (block[0]?.label) {
     case "Картинка с описанием":
