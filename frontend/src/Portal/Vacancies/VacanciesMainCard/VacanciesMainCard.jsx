@@ -106,6 +106,7 @@ const VacanciesMainCard = ({
     };
   }, [windowWidth, vacancies, selectedVacancy]);
   
+  
   const setupScrollTriggers = () => {
     if (!selectedVacancy) return;
 

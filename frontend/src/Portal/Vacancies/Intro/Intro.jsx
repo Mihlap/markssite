@@ -1,4 +1,5 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useLocation } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger, ScrollToPlugin } from 'gsap/all';
 
@@ -14,6 +15,7 @@ const Intro = () => {
   const videoRef = useRef(null);
   const [key, setKey] = useState(0);
   const [videoVisible, setVideoVisible] = useState(false);
+  const location = useLocation();
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
@@ -23,48 +25,44 @@ const Intro = () => {
     setKey(prevKey => prevKey + 1);
   }, []);
 
-  useLayoutEffect(() => {
-    const mm = gsap.matchMedia();
+  useEffect(() => {
+    setVideoVisible(false); 
 
-    const showVideo = () => {
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: videoBoxRef.current,
-          start: 'center center',
-          end: 'center center',
-          toggleActions: 'play none none none',
-        }
-      });
+    const tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: videoBoxRef.current,
+        start: 'top 60%',
+        end: 'top 40%',
+        toggleActions: 'play none none none',
+        onEnter: () => {
+          setVideoVisible(true);
+        },
+      }
+    });
 
-      tl.fromTo(
-        videoRef.current,
-        { display: 'none', height: '0', width: '0' },
-        {
-          display: 'block',
-          height: '100vh',
-          width: '100%',
-          duration: 0.2,
-          onComplete: () => {
-            if (videoBoxRef.current) {
-              gsap.to(window, { duration: 1, scrollTo: videoBoxRef.current });
-              setVideoVisible(true);
-            }
-          },
-        }
-      );
-
-      return () => {
-        tl.scrollTrigger && tl.scrollTrigger.kill();
-        tl.kill();
-      };
-    };
-
-    mm.add('(min-width: 1024px)', showVideo);
+    tl.fromTo(
+      videoRef.current,
+      { display: 'none', height: '0', width: '0' },
+      {
+        display: 'block',
+        height: '100vh',
+        width: '100%',
+        duration: 0.3,
+        onComplete: () => {
+          if (videoRef.current) {
+            videoRef.current.play().catch(error => {
+              console.error("Ошибка воспроизведения видео:", error);
+            });
+          }
+        },
+      }
+    );
 
     return () => {
-      mm.revert();
+      tl.scrollTrigger && tl.scrollTrigger.kill();
+      tl.kill();
     };
-  }, [videoVisible]);
+  }, [location]);
 
   useEffect(() => {
     if (videoRef.current) {
@@ -92,7 +90,7 @@ const Intro = () => {
         }
       };
     }
-  }, [videoVisible]);
+  }, []);
 
   return (
     <>
