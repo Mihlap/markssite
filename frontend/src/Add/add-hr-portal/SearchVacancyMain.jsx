@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import styles from "./HomeAdmin.module.scss";
+import styles from "../HomeAdmin/HomeAdmin.module.scss";
 import { useDispatch, useSelector } from "react-redux";
-import DraggableVacancy from "./DraggableVacancy";
-import { arrIdVacancySelector } from "./utils/VacancySelector";
+import DraggableVacancy from "../HomeAdmin/DraggableVacancy";
+import { arrIdVacancySelector } from "./VacancySelector";
 import {
   deleteVacancy,
   getZaprosData,
@@ -87,7 +87,7 @@ export default function SearchVacancyMain() {
   };
 
   const moveVacancy = (draggedIndex, targetIndex) => {
-    const updatedVacancies = [...vacancies];
+    const updatedVacancies = [...arrIdVacancy];
     const draggedVacancy = updatedVacancies[draggedIndex];
     updatedVacancies.splice(draggedIndex, 1);
     updatedVacancies.splice(targetIndex, 0, draggedVacancy);

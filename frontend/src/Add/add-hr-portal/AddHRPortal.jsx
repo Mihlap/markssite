@@ -20,9 +20,11 @@ import noLook from '../icon/eye2.svg';
 import copyIcon from '../icon/copyIcon.svg';
 import pencilIcon from '../add-navbar/icon/pencil.svg';
 import LoadingCircle from '../../Loading/LoadingCircle.jsx';
-import SearchVacancyMain from '../HomeAdmin/SearchVacancyMain.jsx';
+import SearchVacancyMain from './SearchVacancyMain.jsx';
+import { arrIdVacancySelector } from './VacancySelector.js';
 
-export default function AddHRPortal({ user }) {
+export default function AddHRPortal({ user })
+{
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editVacancyData, setEditVacancyData] = useState(null);
   const [modalBlockHeight, setModalBlockHeight] = useState('auto');
@@ -30,10 +32,21 @@ export default function AddHRPortal({ user }) {
   const [isCopied, setIsCopied] = useState(false);
   const [copiedId, setCopiedId] = useState('');
   const [copiedVacancyId, setCopiedVacancyId] = useState(null);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [showError, setShowError] = useState(false);
+  const [okMessage, setOkMessage] = useState('');
+  const [showOk, setShowOk] = useState(false);
+  const [replacementMessage, setReplacementMessage] = useState('');
+  const [replacement, setReplacement] = useState(false);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+  const [searchId, setSearchId] = useState('');
+  const [savedId, setSavedId] = useState(null);
 
   const dispatch = useDispatch();
   const { error, loading, hidden } = useSelector((state) => state.vacancies);
   const vacanciesAdd = useSelector((state) => state.vacancies.vacancies);
+  const vacancies = useSelector((state) => state.vacancies?.vacancies);
+  const arrIdVacancy = useSelector(arrIdVacancySelector);
 
   const isMountedRef = useRef(true);
   const [activeButtonIndex, setActiveButtonIndex] = useState(0);
@@ -209,7 +222,7 @@ export default function AddHRPortal({ user }) {
           ))}
         </div>
         {selectedFilter === 'Главная hr' ? (
-          <>          
+          <>
             <div className={styles.card_components_admin__button_block} onClick={handleOpenModal}>
               <button className={styles.card_components_admin__button}>
                 <div>
@@ -235,7 +248,28 @@ export default function AddHRPortal({ user }) {
                 <div className={styles.card_components_admin__button_text}>Добавить слайд</div>
               </button>
             </div>
-            <SearchVacancyMain />
+            <SearchVacancyMain
+              vacancies={vacancies}
+              arrIdVacancy={arrIdVacancy}
+              setSearchId={setSearchId}
+              setIsButtonDisabled={setIsButtonDisabled}
+              setSavedId={setSavedId}
+              searchId={searchId}
+              setOkMessage={setOkMessage}
+              setShowOk={setShowOk}
+              setErrorMessage={setErrorMessage}
+              setShowError={setShowError}
+              setReplacement={setReplacement}
+              setReplacementMessage={setReplacementMessage}
+              savedId={savedId}
+              isButtonDisabled={isButtonDisabled}
+              showError={showError}
+              errorMessage={errorMessage}
+              showOk={showOk}
+              okMessage={okMessage}
+              replacement={replacement}
+              replacementMessage={replacementMessage}
+            />
           </>
         ) : (
           <div className={styles.card_components_admin__button_block} onClick={handleOpenModal}>
