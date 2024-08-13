@@ -40,7 +40,7 @@ const VacanciesSectionRenderActualMain = ({
   }, []);
 
   const displayedVacancies = useMemo(() => {
-    return vacancies?.slice(0, 6).reverse();
+    return vacancies?.slice(0, 6);
   }, [vacancies]);
 
   const getAnnouncementText = () => {

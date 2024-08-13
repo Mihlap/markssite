@@ -1,6 +1,5 @@
 import React, {useEffect, useState } from "react";
 import styles from "./HomeAdmin.module.scss";
-
 import { useDispatch, useSelector } from "react-redux";
 import { arrIdProjectSelector } from "./utils/HomeAdminSelectors";
 import { arrIdArticlesLeftSelector } from "./utils/ArticleLeftSelectors";
@@ -18,7 +17,7 @@ export default function HomeAdmin() {
   const projects = useSelector((state) => state.project.projects);
   const articles = useSelector((state) => state.article.article);
 
-  // стейты для инпута ПРОЕТЫ
+  // стейты для инпута ПРОЕКТЫ
   const [errorMessage, setErrorMessage] = useState("");
   const [showError, setShowError] = useState(false);
   const [okMessage, setOkMessage] = useState("");
@@ -28,7 +27,7 @@ export default function HomeAdmin() {
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [searchId, setSearchId] = useState("");
   const [savedId, setSavedId] = useState(null);
-  // стейты для инпута ПРОЕТЫ
+  // стейты для инпута ПРОЕКТЫ
 
   // стейты для инпута ПУБЛИКАЦИИ левый
   const [searcIdOne, setSearcIdOne] = useState("");
