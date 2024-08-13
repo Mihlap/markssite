@@ -79,7 +79,6 @@ app.use((req, res, next) => {
 });
 
 
-
 const imagesPath = path.join(__dirname, 'images');  
 const videoPath = path.join(__dirname, 'images/video');
  
@@ -102,7 +101,6 @@ app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send('Something went wrong!');
 });
-
 
 
 app.get('/', indexRouter);

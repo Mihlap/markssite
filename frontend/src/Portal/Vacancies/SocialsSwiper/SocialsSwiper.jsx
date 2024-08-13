@@ -33,16 +33,19 @@ const socialsArray = [
     picture: social_3,
     title: 'Telegram',
     subtitle: 'MARKS DIGITAL',
+    link: 'https://t.me/digitalmarks',
   },
   {
     picture: social_4,
     title: 'Telegram',
     subtitle: 'MARKS CMC',
+    link: 'https://t.me/marks_molodezh',
   },
   {
     picture: social_7,
     title: 'VK',
     subtitle: 'MARKS GROUP',
+    link: 'https://vk.com/marks_group_vk',
   },
   // {
   //   picture: social_5,
