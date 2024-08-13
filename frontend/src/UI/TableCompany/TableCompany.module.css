@@ -9,7 +9,7 @@
 }
 
 .visible {
-  height: 1300px;
+  height: 1500px;
  }
   
   .tableStyle {
@@ -97,7 +97,7 @@
   right: 2%;
   display: flex;
   justify-content: flex-end;
-   padding-top: 13px;
+  padding-top: 13px;
 }
 
 .button_look_all {
@@ -136,7 +136,7 @@
   }
   
   .visible {
-    height: 1250px; /* Высота при открытии */
+    height: 1440px; /* Высота при открытии */
    }
 
   .slideDown {

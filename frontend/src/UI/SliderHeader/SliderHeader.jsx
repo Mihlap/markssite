@@ -34,6 +34,8 @@ const SliderHeader = () => {
   const images = [
     { src: "./assets/1.png", alt: "image1" },
     { src: "./assets/2.png", alt: "image2" },
+    { src: "./assets/7.png", alt: "image7" },
+    { src: "./assets/8.png", alt: "image8" },
     { src: "./assets/3.png", alt: "image3" },
     { src: "./assets/4.png", alt: "image4" },
     { src: "./assets/5.png", alt: "image5" },
