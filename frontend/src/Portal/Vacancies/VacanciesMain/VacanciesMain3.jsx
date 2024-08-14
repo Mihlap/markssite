@@ -52,11 +52,11 @@ const VacanciesMain3 = ({ handleMouseEnter, handleMouseLeave }) => {
         handleMouseLeave={handleMouseLeave}
       />
       <VacanciesInvite />
-      <SocialsSwiper />
-      <GalleryTabs
+      {/* <GalleryTabs
         handleMouseEnter={handleMouseEnter}
         handleMouseLeave={handleMouseLeave}
-      />
+      /> */}
+      <SocialsSwiper />
       <div className={styles.temporaryText}>
         {windowWidth > 1024 ? 'Не нашли подходящую вакансию?' : 'Мы ищем именно тебя!'}
       </div>
