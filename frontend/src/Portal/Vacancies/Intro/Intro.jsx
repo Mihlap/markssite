@@ -13,20 +13,33 @@ const Host = process.env.REACT_APP_SERVER_HOST;
 const Intro = () => {
   const videoBoxRef = useRef(null);
   const videoRef = useRef(null);
-  const [key, setKey] = useState(0);
+  // const [key, setKey] = useState(0);
   const [videoVisible, setVideoVisible] = useState(false);
   const location = useLocation();
 
+  // useEffect(() => {
+  //   gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+  // }, []);
+
+  // useEffect(() => {
+  //   setKey(prevKey => prevKey + 1);
+  // }, []); 
+
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
-  }, []);
 
-  useEffect(() => {
-    setKey(prevKey => prevKey + 1);
-  }, []);
 
-  useEffect(() => {
-    setVideoVisible(false); 
+    const updateVideoVisibility = (isVisible) => {
+      if (videoRef.current) {
+        setVideoVisible(isVisible);
+        if (isVisible) {
+          videoRef.current.play().catch(error => {
+            console.error("Ошибка воспроизведения видео:", error);
+          });
+        }
+      }
+    };
+    // setVideoVisible(false);     
 
     const tl = gsap.timeline({
       scrollTrigger: {
@@ -34,27 +47,29 @@ const Intro = () => {
         start: 'top 60%',
         end: 'top 40%',
         toggleActions: 'play none none none',
-        onEnter: () => {
-          setVideoVisible(true);
-        },
+        onEnter: () => updateVideoVisibility(true),
+        // onLeave: () => updateVideoVisibility(false),
+        // onEnter: () => {
+        //   setVideoVisible(true);
+        // },
       }
     });
 
     tl.fromTo(
       videoRef.current,
-      { display: 'none', height: '0', width: '0' },
+      { autoAlpha: 0, height: '0', width: '0' },
       {
-        display: 'block',
+        autoAlpha: 1,
         height: '100vh',
         width: '100%',
         duration: 0.3,
-        onComplete: () => {
-          if (videoRef.current) {
-            videoRef.current.play().catch(error => {
-              console.error("Ошибка воспроизведения видео:", error);
-            });
-          }
-        },
+        // onComplete: () => {
+        //   if (videoRef.current) {
+        //     videoRef.current.play().catch(error => {
+        //       console.error("Ошибка воспроизведения видео:", error);
+        //     });
+        //   }
+        // },
       }
     );
 
@@ -63,6 +78,19 @@ const Intro = () => {
       tl.kill();
     };
   }, [location]);
+
+  // useEffect(() => {
+  //   const playVideo = () => {
+  //     if (videoRef.current && videoVisible && !videoRef.current.playing) {
+  //       videoRef.current.play().catch(error => {
+  //         console.error("Ошибка воспроизведения видео:", error);
+  //       });
+  //     }
+  //   };
+  
+  //   playVideo();
+  // }, [videoVisible]);
+  
 
   useEffect(() => {
     if (videoRef.current) {
@@ -107,7 +135,7 @@ const Intro = () => {
         </div>
         <div className={styles.Intro__video} ref={videoBoxRef}>
           <video
-            key={key}
+            // key={key}
             ref={videoRef}
             playsInline
             autoPlay
