@@ -5,6 +5,8 @@ import StarsBack from '../StarsBack/StarsBack';
 
 import invite_1 from '../icons/invite-1.png';
 import invite_2 from '../icons/invite-2.png';
+import invite_3 from '../icons/invite-3.png';
+import invite_4 from '../icons/invite-4.png';
 
 const VacanciesInvite = ({isInternship = true}) => {
   return (
@@ -19,8 +21,8 @@ const VacanciesInvite = ({isInternship = true}) => {
             <div className={styles.VacanciesInvite__photos}>
               <img src={invite_1} alt=""></img>
               <img src={invite_2} alt=""></img>
-              <img src={invite_1} alt=""></img>
-              <img src={invite_2} alt=""></img>
+              <img src={invite_3} alt=""></img>
+              <img src={invite_4} alt=""></img>
               <span></span>
             </div>
             <div className={styles.VacanciesInvite__desc}>
