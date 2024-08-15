@@ -1,7 +1,10 @@
 import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import styles from '../style/style-card.module.scss';
-import FormEditVacancy from './FormEditVacancy';
-import FormAddVacancy from './FormAddVacancy';
+import FormEditVacancy from './FormEditVacancy/FormEditVacancy.jsx';
+import FormAddVacancy from './FormAddVacancy/FormAddVacancy.jsx';
+import FormAddSlide from './FormAddSlide/FormAddSlide.jsx'; 
+import AddSlideMain from './AddSlideMain/AddSlideMain.jsx';
+import AddEventMain from './AddEventMain/AddEventMain.jsx';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   deleteForm,
@@ -20,13 +23,16 @@ import noLook from '../icon/eye2.svg';
 import copyIcon from '../icon/copyIcon.svg';
 import pencilIcon from '../add-navbar/icon/pencil.svg';
 import LoadingCircle from '../../Loading/LoadingCircle.jsx';
-import SearchVacancyMain from './SearchVacancyMain.jsx';
+import SearchVacancyMain from './SearchVacancyMain/SearchVacancyMain.jsx';
 import { arrIdVacancySelector } from './VacancySelector.js';
+import FormEditSlide from './FormEditSlide/FormEditeSlide.jsx';
 
 export default function AddHRPortal({ user })
 {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpenMain, setIsModalOpenMain] = useState(false);
   const [editVacancyData, setEditVacancyData] = useState(null);
+  const [editSlideData, setEditSlideData] = useState(null);
   const [modalBlockHeight, setModalBlockHeight] = useState('auto');
   const [deleteModalState, setDeleteModalState] = useState({});
   const [isCopied, setIsCopied] = useState(false);
@@ -75,14 +81,18 @@ export default function AddHRPortal({ user })
   const handleOpenModal = useCallback(() => {
     if (selectedFilter !== 'Главная hr') {
       setIsModalOpen(true);
+      setIsModalOpenMain(true);
       setEditVacancyData(null);
+      setEditSlideData(null);
     } else {
-      // console.log("Для 'Главная hr' добавление новых элементов.");
+      setIsModalOpenMain(true);
+      setEditSlideData(null);
     }
   }, [selectedFilter]);
 
   const handleCloseModal = useCallback(() => {
-    setIsModalOpen(false);
+    setIsModalOpen(false); 
+    setIsModalOpenMain(false);
   }, []);
 
   const handleDeleteModalOpen = useCallback((id) => {
@@ -147,7 +157,9 @@ export default function AddHRPortal({ user })
         if (isMountedRef.current) {
           const vacancyToEdit = vacanciesAdd.find((el) => el.id === id);
           setEditVacancyData(vacancyToEdit);
+          setEditSlideData(vacancyToEdit);
           setIsModalOpen(true);
+          setIsModalOpenMain(true);
         }
       } catch (err) {
         console.error('Unable to copy vacancy to clipboard:', err);
@@ -198,6 +210,7 @@ export default function AddHRPortal({ user })
     });
   }, [vacanciesAdd, selectedFilter]);
 
+
   return (
     <section className={styles.card_components_admin}>
       <div className={styles.card_components_admin__block}>
@@ -223,31 +236,30 @@ export default function AddHRPortal({ user })
         </div>
         {selectedFilter === 'Главная hr' ? (
           <>
-            <div className={styles.card_components_admin__button_block} onClick={handleOpenModal}>
-              <button className={styles.card_components_admin__button}>
-                <div>
-                  <svg
-                    className={styles.card_components_admin__icon}
-                    width="41"
-                    height="40"
-                    viewBox="0 0 41 40"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <g id="icon">
-                      <circle id="Ellipse 4" cx="20.5" cy="20" r="20" fill="#F6F6F6" />
-                      <path
-                        id="Vector 10"
-                        d="M10.5 20H20.5M30.5 20H20.5M20.5 20V10M20.5 20V30"
-                        stroke="#75BBFD"
-                        strokeWidth="2"
-                        strokeLinecap="square"
-                      />
-                    </g>
-                  </svg>
+            <AddSlideMain handleOpenModal={handleOpenModal} />
+            {isModalOpenMain && (
+              <div className={styles.card_components_admin__modal_container}>
+                <div style={{ maxHeight: modalBlockHeight }} className={styles.card_components_admin__modal_block}>
+                  {editSlideData ? (
+                    <FormEditSlide               
+                      setIsModalOpenMain={setIsModalOpenMain}
+                      editSlideData={editSlideData}
+                      // selectedFilter={selectedFilter}
+                      formType="slide"
+                      className={styles.formAddProjectClass}
+                    />
+                  ) : (
+                      <FormAddSlide                   
+                      className={styles.formAddProjectClass}
+                      setIsModalOpenMain={setIsModalOpenMain}
+                      formType="slide"
+                      // selectedFilter={selectedFilter}
+                    />
+                  )}
+                  <button className={styles.card_components_admin__close_button} onClick={handleCloseModal}></button>
                 </div>
-                <div className={styles.card_components_admin__button_text}>Добавить слайд</div>
-              </button>
-            </div>
+              </div>
+            )}
             <SearchVacancyMain
               vacancies={vacancies}
               arrIdVacancy={arrIdVacancy}
@@ -270,6 +282,7 @@ export default function AddHRPortal({ user })
               replacement={replacement}
               replacementMessage={replacementMessage}
             />
+            <AddEventMain handleOpenModal={handleOpenModal} />
           </>
         ) : (
           <div className={styles.card_components_admin__button_block} onClick={handleOpenModal}>
@@ -340,7 +353,7 @@ export default function AddHRPortal({ user })
                     ? 'Вакансии сейчас отсутствуют. Добавьте вакансию!'
                     : selectedFilter === 'Стажировки'
                     ? 'Стажировки сейчас отсутствуют. Добавьте стажировку!'
-                    : 'Нет данных. Добавьте информацию!'}
+                    : ''}
                 </div>
               ) : (
                 <>

@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
-import styles from "../HomeAdmin/HomeAdmin.module.scss";
+import styles from "../../HomeAdmin/HomeAdmin.module.scss";
 import { useDispatch, useSelector } from "react-redux";
-import DraggableVacancy from "../HomeAdmin/DraggableVacancy";
-import { arrIdVacancySelector } from "./VacancySelector";
+import DraggableVacancy from "../../HomeAdmin/DraggableVacancy";
+import { arrIdVacancySelector } from "../VacancySelector";
 import {
   deleteVacancy,
   getZaprosData,
   searchVacancyMainPostzapros,
   updateVacancyOrderReplacement,
   updateVacancyOrderSuccess
-} from "../../store/Slice/searchVacancyMainSlice";
+} from "../../../store/Slice/searchVacancyMainSlice";
 
 export default function SearchVacancyMain() {
   const dispatch = useDispatch();
