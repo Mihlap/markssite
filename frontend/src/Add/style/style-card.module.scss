@@ -9,6 +9,14 @@
         padding: 0rem 3rem;
     }
 
+    &__blockAddSlide {
+        padding-top: 2.5rem;
+        padding-bottom: 1.75rem;
+    }
+    &__blockAddEvent {
+        padding-top: 3.75rem;
+    }
+
     &__title {
         font-family: var(--font-unbounded);
         font-size: 2rem;
