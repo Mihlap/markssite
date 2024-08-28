@@ -1,119 +1,75 @@
-import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import compressImageFile from 'browser-image-compression';
-import { transliterate } from 'transliteration';
 import styles from './FormAddSlide.module.scss';
-import { clearFormData, fetchProject } from '../../../store/Slice/projectSlice';
-import {
-  removePreviewPhoto,
-  removePreviewPhotoAva,
-  changeHandler,
-  removePreviewPhotoOpen,
-  removePreviewPhotoClose,
-} from '../../add-project/formAdd/utils/formHelpers';
-import customStyles from '../../add-project/formAdd/utils/customStyles';
-import {
-  DropdownIndicator,
-  ValueContainer,
-  AnotherDropdownIndicator,
-  AnotherValueContainer,
-  AnotherStagesProject,
-  SelectDegreeParticipationDropdownIndicator,
-  SelectDegreeParticipationValueContainer,
-  SelectStatusObjectDropdownIndicator,
-  SelectStatusObjectValueContainer,
-  MonthDropdownIndicator,
-  MonthValueContainer,
-  YearDropdownIndicator,
-  YearValueContainer,
-} from '../../add-project/formAdd/utils/CustomSelectComponents';
+// import { clearFormData, fetchProject } from '../../../store/Slice/projectSlice';
+import { removePreviewPhotoAva, changeHandler } from '../../add-project/formAdd/utils/formHelpers';
 import CalendarAdd from './CalendarAdd';
+import { postVacancyData } from '../../../store/Slice/vacancyMainSlideCardSlice';
 
 export default function FormAddSlide({ setIsModalOpenMain, formType }) {
   const dispatch = useDispatch();
 
   const headerTitle = formType === 'slide' ? 'Новый слайд' : 'Новый слайд';
-
-  const [selectedCompetencies, setSelectedCompetencies] = useState([]);
-  const [selectedViewConstruction, setSelectedViewConstruction] = useState([]);
-  const [selectedProjectStages, setSelectedProjectStages] = useState([]);
-  const [selectedDegreeParticipation, setSelectedDegreeParticipation] = useState([]);
-  const [selectStatusObject, setSelectStatusObject] = useState('');
-  const [isFocused, setIsFocused] = useState(false);
+ 
   const [date, setDate] = useState(null);
-
   const [previewPhotos, setPreviewPhotos] = useState([]);
   const [previewPhotoAva, setPreviewPhotoAva] = useState([]);
   const [previewPhotoOpen, setPreviewPhotoOpen] = useState([]);
   const [previewPhotoClose, setPreviewPhotoClose] = useState([]);
-
   const [isPhotoCloseVisible, setIsPhotoCloseVisible] = useState(true);
   const [isPhotoOpenVisible, setIsPhotoOpenVisible] = useState(true);
   const [isPhotoAvaVisible, setIsPhotoAvaVisible] = useState(true);
   const [isDropPhotoVisible, setIsDropPhotoVisible] = useState(true);
-
-  const [isMonthValid, setIsMonthValid] = useState(true);
-  const [isYearValid, setIsYearValid] = useState(true);
-  const [errorMessage, setErrorMessage] = useState('');
+  const [errorMessage, setErrorMessage] = useState("");
   const [showNotification, setShowNotification] = useState(false);
-
   const [isLoading, setIsLoading] = useState(false);
-  const [isLoadingDropPhoto, setIsLoadingDropPhoto] = useState(false);
-  const [isLoadingOpenImage, setIsLoadingOpenImage] = useState(false);
-  const [isLoadingCloseImage, setIsLoadingCloseImage] = useState(false);
-
   const [inputData, setInputData] = useState({
-    title: '',
-    selectCompetencies: [],
-    countryCity: '',
-    monthYear: '',
-    viewConstruction: [],
-    projectStages: [],
-    dropPhoto: [],
-    photoAva: '',
-    titleTextBlock: '',
-    descriptionProject: '',
-    totalArea: '',
-    siteArea: '',
-    floors: '',
-    altitude: '',
-    constructionVolume: '',
-    location: '',
-    degreeParticipation: '',
-    statusObject: '',
-    customer: '',
-    publication: '',
-    linkToPublication: '',
-    publicationTwo: '',
-    linkToPublicationTwo: '',
-    awards: [],
-    imageOpen: '',
-    headingTextBlock: '',
-    textBlock: '',
-    imageClose: '',
-    numberOfLanes: '',
-    long: '',
+    photoAva: "",
+    card1: { description: "", date: null },
+    card2: { description: "", date: null },
+    card3: { description: "", date: null },
   });
 
-  const [inputValue, setInputValue] = useState('');
-  const [blocks, setBlocks] = useState([]);
-  const [dynamicPreviews, setDynamicPreviews] = useState([]);
-  const [dynamicData, setDynamicData] = useState([]);
-  
+  const handleDescriptionChange = (cardKey, value) => {
+    if (value.length <= 150) {
+      setInputData(prevData => ({
+        ...prevData,
+        [cardKey]: { ...prevData[cardKey], description: value }
+      }));
+    }
+  };
 
-  const handleRemovePreviewPhotoAva = useCallback(
-    (index) => {
-      removePreviewPhotoAva(previewPhotoAva, setPreviewPhotoAva, index, inputData, setInputData, setIsPhotoAvaVisible);
-    },
-    [previewPhotoAva, inputData]
-  );
+  const handleDateChange = (cardKey, date) => {
+    setInputData(prevData => ({
+      ...prevData,
+      [cardKey]: { ...prevData[cardKey], date: date }
+    }));
+  };
 
-  const validateForm = useCallback(() => {
+  const handleRemovePreviewPhotoAva = useCallback((index) => {
+    removePreviewPhotoAva(
+      previewPhotoAva,
+      setPreviewPhotoAva,
+      index,
+      inputData,
+      setInputData,
+      setIsPhotoAvaVisible
+    );
+  }, [previewPhotoAva, inputData]);
+
+
+   const validateForm = useCallback(() => {
     let isValid = true;
     let errors = [];
 
-    if (!isValid) {
-      setErrorMessage(`Пожалуйста, заполните следующие обязательные поля: ${errors.join(', ')}.`);
+
+     if (!isValid) {
+      setErrorMessage(
+        `Пожалуйста, заполните следующие обязательные поля: ${errors.join(
+          ", "
+        )}.`
+      );
     }
 
     return isValid;
@@ -130,121 +86,44 @@ export default function FormAddSlide({ setIsModalOpenMain, formType }) {
       const isFormValid = validateForm();
 
       if (!isFormValid) {
-        console.error('Форма не прошла валидацию. Работа функции submitHandler прервана.');
+        console.error("Форма не прошла валидацию. Работа функции submitHandler прервана.");
       } else {
         try {
-          const formattedData = {
-            ...inputData,
-            dynamicBlocks: dynamicData,
-            selectCompetencies: Array.isArray(selectedCompetencies)
-              ? selectedCompetencies.map((option) => option.label).join(',')
-              : '',
-            degreeParticipation: Array.isArray(selectedDegreeParticipation)
-              ? selectedDegreeParticipation.map((option) => option.label).join(',')
-              : '',
-            statusObject: selectStatusObject.label,
-            viewConstruction: Array.isArray(selectedViewConstruction)
-              ? selectedViewConstruction.map((option) => option.label).join(',')
-              : '',
-            awards: Array.isArray(selectedProjectStages)
-              ? selectedProjectStages.map((option) => option.label).join(',')
-              : '',
+          const formData = {
             photoAva: inputData.photoAva,
-            imageOpen: inputData.imageOpen,
+            card1: inputData.card1,
+            card2: inputData.card2,
+            card3: inputData.card3
           };
 
-          await dispatch(fetchProject(formattedData, setInputData));
-          dispatch(clearFormData());
-
-          setSelectedCompetencies([]);
-          setSelectedDegreeParticipation([]);
-          setSelectStatusObject('');
-          setSelectedViewConstruction([]);
-          setSelectedProjectStages([]);
+          dispatch(postVacancyData(formData));
+          // dispatch(clearFormData());         
+         
           setPreviewPhotos([]);
-          setDynamicData([]);
           setInputData({
-            title: '',
-            selectCompetencies: '',
-            countryCity: '',
-            monthYear: '',
-            viewConstruction: '',
-            dropPhoto: [],
-            photoAva: '',
-            titleTextBlock: '',
-            descriptionProject: '',
-            totalArea: '',
-            siteArea: '',
-            floors: '',
-            altitude: '',
-            constructionVolume: '',
-            location: '',
-            degreeParticipation: '',
-            statusObject: '',
-            customer: '',
-            publication: '',
-            linkToPublication: '',
-            publicationTwo: '',
-            linkToPublicationTwo: '',
-            awards: '',
-            imageOpen: '',
-            textBlock: '',
-            imageClose: '',
+            photoAva: "",        
+            card1: { description: "", date: null },
+            card2: { description: "", date: null },
+            card3: { description: "", date: null },
           });
 
-          setErrorMessage('');
+          setErrorMessage("");
           setIsModalOpenMain(false);
+
         } catch (error) {
-          console.error('Произошла ошибка при отправке формы:', error);
+          console.error("Произошла ошибка при отправке формы:", error);
         }
       }
     },
     [
       validateForm,
       inputData,
-      dynamicData,
-      selectedCompetencies,
-      selectedDegreeParticipation,
-      selectStatusObject,
-      selectedViewConstruction,
-      selectedProjectStages,
       dispatch,
       setIsModalOpenMain,
     ]
   );
 
-  const areAllBlocksFilled = useCallback(() => {
-    for (let block of dynamicData) {
-      for (let input of block) {
-        if (input.required && (!input.value || input.value === '')) {
-          return false;
-        }
-      }
-    }
-    return true;
-  }, [dynamicData]);
-
-  const handleClick = useCallback(
-    (inputs) => {
-      if (!areAllBlocksFilled()) {
-        setShowNotification(true);
-        setTimeout(() => setShowNotification(false), 5000);
-        return;
-      }
-
-      const blockKey = Date.now().toString();
-      const newInputs = inputs.map((input) => ({
-        ...input,
-        key: blockKey + '_' + input.type,
-      }));
-      setBlocks((prevBlocks) => [...prevBlocks, newInputs]);
-      setDynamicData((prevDynamicData) => [...prevDynamicData, newInputs]);
-      setDynamicPreviews((prevPreviews) => [...prevPreviews, new Array(newInputs.length).fill([])]);
-    },
-    [areAllBlocksFilled]
-  );
-
-  const compressImage = useCallback(async (file) => {
+ const compressImage = useCallback(async (file) => {
     const options = {
       maxSizeMB: 4,
       maxWidthOrHeight: 1920,
@@ -254,62 +133,9 @@ export default function FormAddSlide({ setIsModalOpenMain, formType }) {
     try {
       return await compressImageFile(file, options);
     } catch (error) {
-      console.error('Ошибка при сжатии изображения:', error);
+      console.error("Ошибка при сжатии изображения:", error);
     }
   }, []);
-
-  const handleDynamicInputChange = useCallback(
-    async (blockIndex, inputIndex, value) => {
-      const newDynamicData = [...dynamicData];
-
-      if (!newDynamicData[blockIndex]) {
-        newDynamicData[blockIndex] = [];
-      }
-
-      if (!newDynamicData[blockIndex][inputIndex]) {
-        newDynamicData[blockIndex][inputIndex] = {
-          id: '',
-          type: '',
-          label: '',
-          value: '',
-        };
-      }
-
-      function generateUniqueName(originalName) {
-        const timestamp = Date.now();
-        const randomNum = Math.floor(Math.random() * 10000);
-        const fileExtension = originalName.split('.').pop();
-        const sliceOfOriginalName = transliterate(originalName.slice(0, 5));
-        const newName = `file_${sliceOfOriginalName}_${timestamp}_${randomNum}.${fileExtension}`;
-        return newName;
-      }
-
-      if (Array.isArray(value) && value[0] instanceof File) {
-        const newFiles = await Promise.all(
-          value.map(async (originalFile) => {
-            if (originalFile.type.startsWith('image/')) {
-              const compressedFile = await compressImage(originalFile);
-              const uniqueName = generateUniqueName(compressedFile.name);
-              return new File([compressedFile], uniqueName, {
-                type: compressedFile.type,
-              });
-            } else {
-              const uniqueName = generateUniqueName(originalFile.name);
-              return new File([originalFile], uniqueName, {
-                type: originalFile.type,
-              });
-            }
-          })
-        );
-
-        newDynamicData[blockIndex][inputIndex].value = newFiles;
-      } else {
-        newDynamicData[blockIndex][inputIndex].value = value;
-      }
-      setDynamicData(newDynamicData);
-    },
-    [dynamicData, compressImage]
-  );
 
   return (
     <div className={styles.form_container}>
@@ -325,30 +151,26 @@ export default function FormAddSlide({ setIsModalOpenMain, formType }) {
           <div className={styles.form_container__block_gray_one}>
             <div className={styles.form_container__description_text}>
               <div className={styles.form_container__textarea_length}>
-                {`${inputData.descriptionProject.length}/150`}
+                {`${inputData.card1.description.length}/150`}
               </div>
               <textarea
                 className={styles.form_container__textarea}
                 autoComplete="off"
                 required
-                name="descriptionProject"
-                id="descriptionProject"
+                name="descriptionCard1"
+                id="descriptionCard1"
                 cols="30"
                 rows="10"
                 placeholder="Не более 150 символов"
-                value={inputData.descriptionProject}
-                onChange={(event) => {
-                  const value = event.target.value;
-                  if (value.length <= 150) {
-                    setInputData({ ...inputData, descriptionProject: value });
-                  }
-                }}></textarea>
-              <label htmlFor="" className={styles.form_container__textarea_label_constructor}>
+                value={inputData.card1.description}
+                onChange={(e) => handleDescriptionChange('card1', e.target.value)}
+              ></textarea>
+              <label htmlFor="descriptionCard1" className={styles.form_container__textarea_label_constructor}>
                 Название конкурса
               </label>
             </div>
           </div>
-          <CalendarAdd date={date} setDate={setDate} />
+          <CalendarAdd date={inputData.card1.date} setDate={(date) => handleDateChange('card1', date)} />
           <div className={`${styles.photo_orientation_selector} ${styles.flex_block_gap}`}>
             <div className={styles.form_container__checkbox_block}>
               <div>Изображение</div>
@@ -372,10 +194,7 @@ export default function FormAddSlide({ setIsModalOpenMain, formType }) {
                       setPreviewPhotoClose,
                       setIsPhotoCloseVisible,
                       setIsLoading,
-                      setIsLoadingDropPhoto,
-                      setIsLoadingOpenImage,
-                      setIsLoadingCloseImage
-                    )
+                     )
                   }
                 />
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -412,58 +231,57 @@ export default function FormAddSlide({ setIsModalOpenMain, formType }) {
           <div className={styles.form_container__block_gray_one}>
             <div className={styles.form_container__description_text}>
               <div className={styles.form_container__textarea_length}>
-                {`${inputData.descriptionProject.length}/150`}
+                {`${inputData.card2.description.length}/150`}
               </div>
               <textarea
                 className={styles.form_container__textarea}
                 autoComplete="off"
                 required
-                name="descriptionProject"
-                id="descriptionProject"
+                name="descriptionCard2"
+                id="descriptionCard2"
                 cols="30"
                 rows="10"
                 placeholder="Не более 150 символов"
-                value={inputData.descriptionProject}
-                onChange={(event) => {
-                  const value = event.target.value;
-                  if (value.length <= 150) {
-                    setInputData({ ...inputData, descriptionProject: value });
-                  }
-                }}></textarea>
-              <label htmlFor="" className={styles.form_container__textarea_label_constructor}>
+                value={inputData.card2.description}
+                onChange={(e) => handleDescriptionChange('card2', e.target.value)}
+              ></textarea>
+              <label htmlFor="descriptionCard2" className={styles.form_container__textarea_label_constructor}>
                 Название конкурса
               </label>
             </div>
           </div>
-          <CalendarAdd date={date} setDate={setDate} />   
+          <CalendarAdd date={inputData.card2.date} setDate={(date) => handleDateChange('card2', date)} />  
           <div className={styles.form_container__titleCard}>Карточка 3</div>
           <div className={styles.form_container__block_gray_one}>
             <div className={styles.form_container__description_text}>
               <div className={styles.form_container__textarea_length}>
-                {`${inputData.descriptionProject.length}/150`}
+                {`${inputData.card3.description.length}/150`}
               </div>
               <textarea
                 className={styles.form_container__textarea}
                 autoComplete="off"
                 required
-                name="descriptionProject"
-                id="descriptionProject"
+                name="descriptionCard3"
+                id="descriptionCard3"
                 cols="30"
                 rows="10"
                 placeholder="Не более 150 символов"
-                value={inputData.descriptionProject}
-                onChange={(event) => {
-                  const value = event.target.value;
-                  if (value.length <= 150) {
-                    setInputData({ ...inputData, descriptionProject: value });
-                  }
-                }}></textarea>
-              <label htmlFor="" className={styles.form_container__textarea_label_constructor}>
+                value={inputData.card3.description}
+                onChange={(e) => handleDescriptionChange('card3', e.target.value)}
+                // value={inputData.descriptionCard3}
+                // onChange={(event) => {
+                //   const value = event.target.value;
+                //   if (value.length <= 150) {
+                //     setInputData({ ...inputData, descriptionCard3: value });
+                //   }
+                // }}
+              ></textarea>
+              <label htmlFor="descriptionCard3" className={styles.form_container__textarea_label_constructor}>
                 Название конкурса
               </label>
             </div>
           </div>
-          <CalendarAdd date={date} setDate={setDate} />
+          <CalendarAdd date={inputData.card3.date} setDate={(date) => handleDateChange('card3', date)} />
           <div className={styles.form_container__button_block}>
             <button className={styles.form_container__button_save} type="submit"></button>
             <button className={styles.form_container__button_cancel} type="submit" onClick={closeModal}></button>
