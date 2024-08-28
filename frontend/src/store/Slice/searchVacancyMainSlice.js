@@ -64,6 +64,7 @@ export const searchVacancyMainPostzapros =
     }
   };
 
+
   export const fetchSingleVacancy = (vacancyId) => async (dispatch) => {
     dispatch(fetchVacancyStart());
     try {
