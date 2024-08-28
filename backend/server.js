@@ -20,6 +20,7 @@ const toggleRouter = require('./Routes/toggle/toggleRouter');
 const videoRouter = require('./Routes/videoRouter');
 const vacancyRouter = require('./Routes/Vacancies/vacancyRouter');
 const searchVacanciesRouter = require('./Routes/Vacancies/searchVacanciesRouter');
+const vacancyDetailsRouter = require('./Routes/Vacancies/vacancyDetailsRouter');
 
 
 
@@ -116,6 +117,7 @@ app.use('/api-mail', mailRouter);
 app.use('/api/toggle', toggleRouter);
 app.use('/api/video', videoRouter);
 app.use('/api-vacancy', vacancyRouter);
+app.use('/api-vacancyDetails', vacancyDetailsRouter);
 
 // const sslKeyPath = './SSL Marksgroup/marksgroup.ru.key';
 // const sslCertPath = './SSL Marksgroup/certificate.crt';
