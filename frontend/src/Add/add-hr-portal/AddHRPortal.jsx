@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react'
 import styles from '../style/style-card.module.scss';
 import FormEditVacancy from './FormEditVacancy/FormEditVacancy.jsx';
 import FormAddVacancy from './FormAddVacancy/FormAddVacancy.jsx';
-import FormAddSlide from './FormAddSlide/FormAddSlide.jsx'; 
 import AddSlideMain from './AddSlideMain/AddSlideMain.jsx';
 import AddEventMain from './AddEventMain/AddEventMain.jsx';
 import { useDispatch, useSelector } from 'react-redux';
@@ -25,10 +24,9 @@ import pencilIcon from '../add-navbar/icon/pencil.svg';
 import LoadingCircle from '../../Loading/LoadingCircle.jsx';
 import SearchVacancyMain from './SearchVacancyMain/SearchVacancyMain.jsx';
 import { arrIdVacancySelector } from './VacancySelector.js';
-import FormEditSlide from './FormEditSlide/FormEditeSlide.jsx';
 
-export default function AddHRPortal({ user })
-{
+
+export default function AddHRPortal({ user }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpenMain, setIsModalOpenMain] = useState(false);
   const [editVacancyData, setEditVacancyData] = useState(null);
@@ -60,7 +58,7 @@ export default function AddHRPortal({ user })
 
   const updateModalBlockHeight = useCallback(() => {
     const windowHeight = window.innerHeight;
-    const maxHeight = Math.min(windowHeight - 100, 1900); // Примерное максимальное значение высоты
+    const maxHeight = Math.min(windowHeight - 100, 1900);
     setModalBlockHeight(`${maxHeight}px`);
   }, []);
 
@@ -91,7 +89,7 @@ export default function AddHRPortal({ user })
   }, [selectedFilter]);
 
   const handleCloseModal = useCallback(() => {
-    setIsModalOpen(false); 
+    setIsModalOpen(false);
     setIsModalOpenMain(false);
   }, []);
 
@@ -156,11 +154,9 @@ export default function AddHRPortal({ user })
         await navigator.clipboard.writeText(id);
         if (isMountedRef.current) {
           const vacancyToEdit = vacanciesAdd.find((el) => el.id === id);
-          setEditVacancyData(vacancyToEdit);
-          setEditSlideData(vacancyToEdit);
+          setEditVacancyData(vacancyToEdit);      
           setIsModalOpen(true);
-          setIsModalOpenMain(true);
-        }
+         }
       } catch (err) {
         console.error('Unable to copy vacancy to clipboard:', err);
       }
@@ -210,7 +206,6 @@ export default function AddHRPortal({ user })
     });
   }, [vacanciesAdd, selectedFilter]);
 
-
   return (
     <section className={styles.card_components_admin}>
       <div className={styles.card_components_admin__block}>
@@ -236,30 +231,18 @@ export default function AddHRPortal({ user })
         </div>
         {selectedFilter === 'Главная hr' ? (
           <>
-            <AddSlideMain handleOpenModal={handleOpenModal} />
-            {isModalOpenMain && (
-              <div className={styles.card_components_admin__modal_container}>
-                <div style={{ maxHeight: modalBlockHeight }} className={styles.card_components_admin__modal_block}>
-                  {editSlideData ? (
-                    <FormEditSlide               
-                      setIsModalOpenMain={setIsModalOpenMain}
-                      editSlideData={editSlideData}
-                      // selectedFilter={selectedFilter}
-                      formType="slide"
-                      className={styles.formAddProjectClass}
-                    />
-                  ) : (
-                      <FormAddSlide                   
-                      className={styles.formAddProjectClass}
-                      setIsModalOpenMain={setIsModalOpenMain}
-                      formType="slide"
-                      // selectedFilter={selectedFilter}
-                    />
-                  )}
-                  <button className={styles.card_components_admin__close_button} onClick={handleCloseModal}></button>
-                </div>
-              </div>
-            )}
+            <AddSlideMain
+              handleOpenModal={handleOpenModal}
+              isModalOpenMain={isModalOpenMain}
+              setIsModalOpenMain={setIsModalOpenMain}
+              editSlideData={editSlideData}
+              modalBlockHeight={modalBlockHeight}
+              user={user}
+              handleDeleteModalOpen={handleDeleteModalOpen}
+              deleteModalState={deleteModalState}
+              setDeleteModalState={setDeleteModalState}
+              handleDeleteModalClose={handleDeleteModalClose}  
+             />
             <SearchVacancyMain
               vacancies={vacancies}
               arrIdVacancy={arrIdVacancy}
