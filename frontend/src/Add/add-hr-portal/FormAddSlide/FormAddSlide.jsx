@@ -12,8 +12,7 @@ export default function FormAddSlide({ setIsModalOpenMain, formType }) {
 
   const headerTitle = formType === 'slide' ? 'Новый слайд' : 'Новый слайд';
  
-  const [date, setDate] = useState(null);
-  const [previewPhotos, setPreviewPhotos] = useState([]);
+   const [previewPhotos, setPreviewPhotos] = useState([]);
   const [previewPhotoAva, setPreviewPhotoAva] = useState([]);
   const [previewPhotoOpen, setPreviewPhotoOpen] = useState([]);
   const [previewPhotoClose, setPreviewPhotoClose] = useState([]);
