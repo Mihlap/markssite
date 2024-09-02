@@ -14,7 +14,7 @@ import toggleSlice from "./Slice/toggleSlice";
 import vacanciesSlice from "./Slice/vacanciesSlice";
 import previousPageReducer from './Slice/previousPageSlice';
 import activePageReducer from './Slice/activePageSlice';
-import formAddSlide from "./Slice/vacancyMainSlideCardSlice";
+import formAddSlideSlice from "./Slice/vacancyMainSlideCardSlice";
 
 
 export default configureStore({
@@ -34,6 +34,6 @@ export default configureStore({
     vacancies: vacanciesSlice,
     previousPage: previousPageReducer,
     activePage: activePageReducer,
-    formAddSlide: formAddSlide,
+    formAddSlide: formAddSlideSlice,
   },
  });
