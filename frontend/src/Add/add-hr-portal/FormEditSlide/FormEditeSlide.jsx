@@ -1,470 +1,307 @@
-import React, { useEffect, useRef, useState, useCallback, useMemo } from "react";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
-import Select from "react-select";
-import { useDispatch } from "react-redux";
-import { editVacancy } from "../../../store/Slice/vacanciesSlice.js";
-import { selectBlocks } from "../utils.js";
+import React, { useState, useCallback, useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import compressImageFile from 'browser-image-compression';
+import styles from '../FormAddSlide/FormAddSlide.module.scss';
+// import { clearFormData, fetchProject } from '../../../store/Slice/projectSlice';
+import { removePreviewPhotoAva, changeHandler } from '../../add-project/formAdd/utils/formHelpers';
+import CalendarAdd from '../FormAddSlide/CalendarAdd';
+import { postVacancyData, editSlide, fetchSlides }  from '../../../store/Slice/vacancyMainSlideCardSlice';
 
-import styles from "../FormAddVacancy/FormAddVacancy.module.scss";
-
-export default function FormEditSlide({ setIsModalOpen, selectedFilter, editVacancyData }) {
-  const [showNotification, setShowNotification] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
-
+export default function FormEditSlide({ setIsModalOpenMain, editSlideData }) {
   const dispatch = useDispatch();
-  const type = selectedFilter === "Вакансии" ? "вакансия" : "стажировка";
 
+  const [previewPhotos, setPreviewPhotos] = useState([]);
+  const [previewPhotoAva, setPreviewPhotoAva] = useState([]);
+  const [previewPhotoOpen, setPreviewPhotoOpen] = useState([]);
+  const [previewPhotoClose, setPreviewPhotoClose] = useState([]);
+  const [isPhotoCloseVisible, setIsPhotoCloseVisible] = useState(true);
+  const [isPhotoOpenVisible, setIsPhotoOpenVisible] = useState(true);
+  const [isPhotoAvaVisible, setIsPhotoAvaVisible] = useState(true);
+  const [isDropPhotoVisible, setIsDropPhotoVisible] = useState(true);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [showNotification, setShowNotification] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
-    title: "",
-    textBlock1: "",
-    textBlock2: "",
-    textBlock3: "",
-    department: "",
-    experience: "",
-    location: "",
-    busyness: "",
-    workMode: "",
-    skills: [],
-    benefits: [],
-    type: type,
+    photoAva: editSlideData?.photoAva || "",
+    card1: editSlideData?.card1 || { description: "", date: ""},
+    card2: editSlideData?.card2 || { description: "", date: "" },
+    card3: editSlideData?.card3 || { description: "", date: "" },
   });
-
-  const [isFocused, setIsFocused] = useState({
-    title: false,
-    textBlock1: false,
-    textBlock2: false,
-    textBlock3: false,
-    department: false,
-    experience: false,
-    location: false,
-    busyness: false,
-    workMode: false,
-    skills: false,
-    benefits: false,
-  });
-
-  const quillRef1 = useRef(null);
-  const quillRef2 = useRef(null);
-  const quillRef3 = useRef(null);
-
-  const quillRefs = useMemo(() => [quillRef1, quillRef2, quillRef3], []);
-  const applyStylesToQuillEditor = useCallback((quillRef) => {
-    if (quillRef && quillRef.current) {
-      const editor = quillRef.current.getEditor();
-      const editorElement = editor.root;
-
-      editorElement.style.fontSize = "16px";
-      editorElement.style.fontFamily = "Raleway, sans-serif";
-      editorElement.style.color = "var(--black-1D2E43)";
-      editorElement.style.border = "none";
-      editorElement.style.lineHeight = '1'; 
-    }
-  }, []);
+  
 
   useEffect(() => {
-    quillRefs.forEach((quillRef) => applyStylesToQuillEditor(quillRef));
-  }, [applyStylesToQuillEditor, quillRefs]);
-
-  useEffect(() => {
-    const quill = quillRef1.current.getEditor();
-
-    quill.on('text-change', () => {
-      const plainText = quill.getText();
-      
-      if (plainText.length > 300) {
-        const excessLength = plainText.length - 301;
-        quill.deleteText(quill.getLength() - 1 - excessLength, quill.getLength() - 1, 'silent');
-      }
-      setFormData((prevFormData) => ({
-        ...prevFormData,
-        textBlock1: quill.root.innerHTML,
-      }));
-    });
-  }, [setFormData]);
-
-  useEffect(() => {
-    if (editVacancyData) {
-      const skillsArray = editVacancyData.skills ? editVacancyData.skills.split(",") : [];
-      const advantagesArray = editVacancyData.advantages ? editVacancyData.advantages.split(",") : [];
-      const directionArray = editVacancyData.direction ? editVacancyData.direction.split(",") : [];
-      const experienceArray = editVacancyData.experience ? editVacancyData.experience.split(",") : [];
-      const locationArray = editVacancyData.locationStaff ? editVacancyData.locationStaff.split(",") : [];
-      const busynessArray = editVacancyData.busyness ? editVacancyData.busyness.split(",") : [];
-      const workModeArray = editVacancyData.modeOperating ? editVacancyData.modeOperating.split(",") : [];
-      setFormData(prev => ({
-        ...prev,
-        title: editVacancyData.title || "",
-        textBlock1: editVacancyData.searchStaff || "", 
-        textBlock2: editVacancyData.haveToWork || "", 
-        textBlock3: editVacancyData.requirements || "", 
-        direction: directionArray, 
-        experience: experienceArray,
-        location: locationArray,
-        busyness: busynessArray,
-        workMode: workModeArray,
-        skills: skillsArray,
-        benefits: advantagesArray,
-      }));
-    }
-  }, [editVacancyData]);
-
-  const handleSubmit = useCallback(async (event) => {
-    event.preventDefault();
-    setLoading(true);
-    try {
-      await dispatch(editVacancy({ id: editVacancyData.id, formData }));
+    if (editSlideData) {
       setFormData({
-        title: "",
-        textBlock1: "",
-        textBlock2: "",
-        textBlock3: "",
-        department: [],
-        experience: [],
-        location: [],
-        busyness: [],
-        workMode: [],
-        skills: [],
-        benefits: [],
-        type: type,
+        photoAva: editSlideData.photoAva || '',
+        card1: {
+          description: editSlideData.cardData.card1?.description || '',
+          date: editSlideData.cardData.card1?.date ? new Date(editSlideData.cardData.card1.date) : ""
+        },
+        card2: {
+          description: editSlideData.cardData.card2?.description || '',
+          date: editSlideData.cardData.card2?.date ? new Date(editSlideData.cardData.card2.date) : ""
+        },
+        card3: {
+          description: editSlideData.cardData.card3?.description || '',
+          date: editSlideData.cardData.card3?.date ? new Date(editSlideData.cardData.card3.date) : ""
+        },
       });
-      setIsModalOpen(false);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
     }
-  }, [dispatch, editVacancyData.id, formData, setIsModalOpen, type]);
+  }, [editSlideData]);
+  
 
-  const handleBlur = useCallback((event) => {
-    const name = event?.target?.name;
-    setIsFocused((prev) => ({ ...prev, [name]: false }));
-  }, []);
 
-  const handleFocus = useCallback((event) => {
-    const name = event?.target?.name;
-    setIsFocused((prev) => ({ ...prev, [name]: true }));
-  }, []);
+  const handleDescriptionChange = (cardKey, value) => {
+    if (value.length <= 150) {
+      setFormData(prevData => ({
+        ...prevData,
+        [cardKey]: { ...prevData[cardKey], description: value }
+      }));
+    }
+  };
 
-  const handleChangeSelect = useCallback((selectedOptions, name) => {
-    let selectedValues;
-    if (Array.isArray(selectedOptions)) {
-      selectedValues = selectedOptions.map(option => option.value);
-    } else if (selectedOptions) {
-      selectedValues = [selectedOptions.value];
-    } else {
-      selectedValues = [];
-    }    
-    setFormData(prev => ({
-      ...prev,
-      [name]: selectedValues
+  const handleDateChange = (cardKey, date) => {
+    setFormData(prevData => ({
+      ...prevData,
+      [cardKey]: { ...prevData[cardKey], date: date }
     }));
+  };
+
+  const handleRemovePreviewPhotoAva = useCallback((index) => {
+    removePreviewPhotoAva(
+      previewPhotoAva,
+      setPreviewPhotoAva,
+      index,
+      formData,
+      setFormData,
+      setIsPhotoAvaVisible
+    );
+  }, [previewPhotoAva, formData]);
+
+
+   const validateForm = useCallback(() => {
+    let isValid = true;
+    let errors = [];
+
+
+     if (!isValid) {
+      setErrorMessage(
+        `Пожалуйста, заполните следующие обязательные поля: ${errors.join(
+          ", "
+        )}.`
+      );
+    }
+
+    return isValid;
   }, []);
 
   const closeModal = useCallback(() => {
-    setIsModalOpen(false);
-  }, [setIsModalOpen]);
+    setIsModalOpenMain(false);
+  }, [setIsModalOpenMain]);
+
+  const submitHandler = useCallback(
+    async (e) => {
+      e.preventDefault();
+
+      const isFormValid = validateForm();
+
+      if (!isFormValid) {
+        console.error("Форма не прошла валидацию. Работа функции submitHandler прервана.");
+      } else {
+        try {
+          const dataToSend  = {
+            photoAva: formData.photoAva,
+            card1: formData.card1,
+            card2: formData.card2,
+            card3: formData.card3
+          };
+
+         
+          if (editSlideData && editSlideData.id) {
+            await dispatch(editSlide({ id: editSlideData.id, data: dataToSend }));
+          } else {
+            await dispatch(postVacancyData(dataToSend));
+          }        
+          await dispatch(fetchSlides());           
+          setPreviewPhotos([]);
+          setFormData({
+            photoAva: "",        
+            card1: { description: "", date: null },
+            card2: { description: "", date: null },
+            card3: { description: "", date: null },
+          });
+
+          setErrorMessage("");
+          setIsModalOpenMain(false);
+
+        } catch (error) {
+          console.error("Произошла ошибка при отправке формы:", error);
+        }
+      }
+    }, [validateForm, formData, dispatch, setIsModalOpenMain, editSlideData]);
+
+ const compressImage = useCallback(async (file) => {
+    const options = {
+      maxSizeMB: 4,
+      maxWidthOrHeight: 1920,
+      useWebWorker: true,
+    };
+
+    try {
+      return await compressImageFile(file, options);
+    } catch (error) {
+      console.error("Ошибка при сжатии изображения:", error);
+    }
+  }, []);
 
   return (
     <div className={styles.form_container}>
       {showNotification && (
         <div className={styles.form_container__notification}>
-          Заполните предыдущий блок или дождитесь загрузки изображений❗
+          Заполните предыдущий блок или дождитесь загркузки изображений❗
         </div>
       )}
-      <div className={styles.form_container__title}>
-        Редактирование {selectedFilter === "Вакансии" ? "вакансии" : "стажировки"}
-      </div>
+      <div className={styles.form_container__title}>Редактирование слайда</div>
       <div className={styles.form_container__block_form}>
-        <form className={styles.form_container__form} onSubmit={handleSubmit}>
+        <form className={styles.form_container__form} onSubmit={submitHandler}>
+          <div className={styles.form_container__titleCard}>Карточка 1</div>
           <div className={styles.form_container__block_gray_one}>
-            <div className={`${styles.form__group} ${styles.field}`}>
-              <input
-                type="input"
-                className={styles.form__field}
-                placeholder="title"
-                name="title"
-                id="title"
-                value={formData.title}
-                onChange={(event) => {
-                  const { name, value } = event.target;
-                  setFormData((prevFormData) => ({
-                    ...prevFormData,
-                    [name]: value,
-                  }));
-                }}
+            <div className={styles.form_container__description_text}>
+              <div className={styles.form_container__textarea_length}>
+                {`${formData.card1.description.length}/150`}
+              </div>
+              <textarea
+                className={styles.form_container__textarea}
+                autoComplete="off"
                 required
-              />
-              <label htmlFor="title" className={styles.form__label}>
-                Название вакансии
+                name="descriptionCard1"
+                id="descriptionCard1"
+                cols="30"
+                rows="10"
+                placeholder="Не более 150 символов"
+                value={formData.card1.description}
+                onChange={(e) => handleDescriptionChange('card1', e.target.value)}
+              ></textarea>
+              <label htmlFor="descriptionCard1" className={styles.form_container__textarea_label_constructor}>
+                Название конкурса
               </label>
             </div>
-            {selectBlocks.map((block, index) => (
-              <div key={`${block.id}_${block.name}_${index}`} className={`${styles.group} some-unique-class`}>
-                <label
-                  className={`${styles.label1} ${
-                    isFocused[block.name] || formData[block.name]
-                      ? styles.focused1
-                      : ""
-                  }`}
-                >
-                  <Select
-                    className={`${styles.form__group} ${styles.field}`}
-                    id={`${block.name}-input`}
-                    name={block.name}
-                    onFocus={handleFocus}
-                    onBlur={handleBlur}
-                    isMulti={block.name === "benefits" || block.name === "skills"}
-                    required
-                    options={block.options}
-                    value={Array.isArray(formData[block.name]) ? formData[block.name].map(value => ({
-                      label: value,
-                      value: value
-                    })) : []}
-                    placeholder={block.label}
-                    onChange={(value) => handleChangeSelect(value, block.name)}
-                    isSearchable={false}
-                    isClearable={false}
-                    menuShouldScrollIntoView={false}
-                    styles={{
-                      container: (provided) => ({
-                        ...provided,
-                        border: "none",
-                        width: "100%",
-                      }),
-                      control: (provided, state) => ({
-                        ...provided,
-                        border: "none",
-                        backgroundColor: "transparent",
-                        boxShadow: state.isFocused ? "none" : provided.boxShadow,
-                        borderBottom: `1px solid ${state.isFocused ? "#75BBFD" : "#959DA6"}`,
-                        borderColor: "transparent",
-                        "&:hover": {
-                          borderBottomColor: "1px solid",
-                        },
-                      }),
-                      indicatorSeparator: (provided) => ({
-                        ...provided,
-                        display: "none",
-                      }),
-                      multiValue: (provided) => ({
-                        ...provided,
-                        backgroundColor: "transparent",
-                      }),
-                      singleValue: (provided) => ({
-                        ...provided,
-                        color: "#959DA6",
-                        marginLeft: -5,
-                      }),
-                      placeholder: (provided) => ({
-                        ...provided,
-                        marginLeft: -5,
-                        color: "#959DA6",
-                      }),
-                      option: (provided, state) => ({
-                        ...provided,
-                        backgroundColor: state.isFocused ? "#75BBFD" : "transparent",
-                        color: state.isFocused ? "white" : "inherit",
-                      }),
-                      dropdownIndicator: (provided, state) => ({
-                        ...provided,
-                        transform: state.selectProps.menuIsOpen ? "rotate(180deg)" : null,
-                        transition: "transform 0.3s ease-in-out",
-                        color: state.isFocused ? "#75BBFD" : "#C0C5CB",
-                      }),
-                      menuList: (provided) => ({
-                        ...provided,
-                        "&::-webkit-scrollbar": {
-                          width: "4px",
-                        },
-                        "&::-webkit-scrollbar-thumb": {
-                          backgroundColor: "#C0C5CB",
-                          borderRadius: "4px",
-                        },
-                        "&::-webkit-scrollbar-track": {
-                          backgroundColor: "transparent",
-                        },
-                        "&::-ms-scrollbar": {
-                          width: "4px",
-                        },
-                        "&::-ms-scrollbar-thumb": {
-                          backgroundColor: "#C0C5CB",
-                          borderRadius: "4px",
-                        },
-                        "&::-ms-scrollbar-track": {
-                          backgroundColor: "transparent",
-                        },
-                        margin: "6px",
-                      }),
-                      menu: (provided) => ({
-                        ...provided,
-                        boxShadow: "none",
-                        backgroundColor: "#EBECEE",
-                      }),
-                    }}
-                  />
-                </label>
-              </div>
-            ))}
           </div>
+          <CalendarAdd date={formData.card1.date} setDate={(date) => handleDateChange('card1', date)} />
+          <div className={`${styles.photo_orientation_selector} ${styles.flex_block_gap}`}>
+            <div className={styles.form_container__checkbox_block}>
+              <div>Изображение</div>
+            </div>
+            <div style={{ display: isPhotoAvaVisible ? 'inline-block' : 'none' }}>
+              <label className={styles.slider_container__customFileUpload}>
+                <input
+                  type="file"
+                  name="photoAva"
+                  onChange={(event) =>
+                    changeHandler(
+                      event,
+                      formData,
+                      setFormData,
+                      setPreviewPhotos,
+                      setIsDropPhotoVisible,
+                      setPreviewPhotoAva,
+                      setIsPhotoAvaVisible,
+                      setPreviewPhotoOpen,
+                      setIsPhotoOpenVisible,
+                      setPreviewPhotoClose,
+                      setIsPhotoCloseVisible,
+                      setIsLoading,
+                     )
+                  }
+                />
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <g id="Frame 4684">
+                    <path
+                      id="Vector"
+                      d="M11.8349 7.54949L5.64223 7.54949C5.46569 7.54642 5.2903 7.57854 5.1263 7.64398C4.96231 7.70942 4.81299 7.80686 4.68705 7.93062C4.56112 8.05439 4.4611 8.20199 4.39282 8.36483C4.32454 8.52766 4.28938 8.70246 4.28938 8.87903C4.28937 9.0556 4.32454 9.2304 4.39282 9.39323C4.4611 9.55607 4.56112 9.70367 4.68705 9.82744C4.81299 9.9512 4.96231 10.0486 5.1263 10.1141C5.2903 10.1795 5.46569 10.2116 5.64223 10.2086L11.754 10.1277C12.4512 10.1156 13.1158 9.83011 13.6046 9.33275C14.0934 8.8354 14.3673 8.16596 14.3673 7.46862C14.3673 6.77129 14.0934 6.10185 13.6046 5.60449C13.1158 5.10713 12.4512 4.82165 11.754 4.80953L5.64223 4.88946C4.58413 4.88946 3.56936 5.30979 2.82117 6.05798C2.07298 6.80617 1.65265 7.82093 1.65265 8.87903C1.65265 9.93713 2.07298 10.9519 2.82117 11.7001C3.56936 12.4483 4.58413 12.8686 5.64223 12.8686L11.5189 12.8752"
+                      stroke="currentColor"
+                      strokeWidth="0.8"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </g>
+                </svg>
+                <div className={styles.slider_container__uploadTextForm}>Загрузить изображения</div>
+              </label>
+              {isLoading && <div className={styles.preview_photos_container__loading}>Загрузка . . .</div>}
+            </div>
+            <div>
+              {previewPhotoAva?.map((preview, index) => (
+                <div key={index} className={styles.preview_photos_container__block}>
+                  <img className={styles.preview_photos_container__img} src={preview} alt={`Preview ${index}`} />
+                  <div
+                    className={styles.preview_photos_container__remove_icon}
+                    onClick={() => handleRemovePreviewPhotoAva(index)}>
+                    <span></span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className={styles.form_container__titleCard}>Карточка 2</div>
           <div className={styles.form_container__block_gray_one}>
-            <div className={styles.heading_textarea}>
-              <div className={styles.form_container__description_text}>
+            <div className={styles.form_container__description_text}>
               <div className={styles.form_container__textarea_length}>
-            {`${quillRef1.current ? quillRef1.current.getEditor().getText().length - 1 : 0}/300`}
-            </div>
-                <ReactQuill
-                  ref={quillRef1}
-                  modules={{
-                    toolbar: [["bold", "underline", { list: "bullet" }]],
-                    clipboard: {
-                      matchVisual: false,
-                    },
-                  }}
-                  formats={["bold", "underline", "list"]}
-                  className={styles.form_container__textarea}
-                  style={{
-                    padding: "0rem",
-                    border: "1px solid var(--blue-75BBFD)",
-                    fontFamily: "var(--font-raleway)",
-                    borderRadius: "6px",
-                    fontSize: "16px",
-                    fontStyle: "normal",
-                    fontWeight: "var(--fw-400)",
-                    lineHeight: "16px",
-                    color: "var(---black-1D2E43)",
-                    boxSizing: "border-box",
-                    paddingBottom: "2.5rem",
-                  }}
-                  strict={false}
-                  required
-                  name="textBlock1"
-                  id="textBlock1"
-                  value={formData.textBlock1}               
-                  onChange={(value) => {
-                    setFormData((prevFormData) => ({
-                      ...prevFormData,
-                      textBlock1: value,
-                    }));
-                  }}
-                  placeholder="Не более 300 символов"
-                />
-                <label
-                  htmlFor="textBlock1"
-                  className={styles.form_container__textarea_label_constructor}
-                >
-                  Мы ищем
-                </label>
+                {`${formData.card2.description.length}/150`}
               </div>
+              <textarea
+                className={styles.form_container__textarea}
+                autoComplete="off"
+                required
+                name="descriptionCard2"
+                id="descriptionCard2"
+                cols="30"
+                rows="10"
+                placeholder="Не более 150 символов"
+                value={formData.card2.description}
+                onChange={(e) => handleDescriptionChange('card2', e.target.value)}
+              ></textarea>
+              <label htmlFor="descriptionCard2" className={styles.form_container__textarea_label_constructor}>
+                Название конкурса
+              </label>
             </div>
           </div>
+          <CalendarAdd date={formData.card2.date} setDate={(date) => handleDateChange('card2', date)} />  
+          <div className={styles.form_container__titleCard}>Карточка 3</div>
           <div className={styles.form_container__block_gray_one}>
-            <div className={styles.heading_textarea}>
-              <div className={styles.form_container__description_text}>
-                <ReactQuill
-                  ref={quillRef2}
-                  modules={{
-                    toolbar: [["bold", "underline", { list: "bullet" }]],
-                    clipboard: {
-                      matchVisual: false,
-                    },
-                  }}
-                  formats={["bold", "underline", "list"]}
-                  className={styles.form_container__textarea}
-                  style={{
-                    padding: "0rem",
-                    border: "1px solid var(--blue-75BBFD)",
-                    fontFamily: "var(--font-raleway)",
-                    borderRadius: "6px",
-                    fontSize: "16px",
-                    fontStyle: "normal",
-                    fontWeight: "var(--fw-400)",
-                    lineHeight: "16px",
-                    color: "var(---black-1D2E43)",
-                    boxSizing: "border-box",
-                    paddingBottom: "2.5rem",
-                  }}
-                  strict={false}
-                  required
-                  name="textBlock2"
-                  id="textBlock2"
-                  value={formData.textBlock2}
-                  onChange={(value) => {
-                    setFormData((prevFormData) => ({
-                      ...prevFormData,
-                      textBlock2: value,
-                    }));
-                  }}
-                  placeholder="нет ограничений по символам"
-                />
-                <label
-                  htmlFor="textBlock2"
-                  className={styles.form_container__textarea_label_constructor}
-                >
-                  Вам предстоит
-                </label>
+            <div className={styles.form_container__description_text}>
+              <div className={styles.form_container__textarea_length}>
+                {`${formData.card3.description.length}/150`}
               </div>
+              <textarea
+                className={styles.form_container__textarea}
+                autoComplete="off"
+                required
+                name="descriptionCard3"
+                id="descriptionCard3"
+                cols="30"
+                rows="10"
+                placeholder="Не более 150 символов"
+                value={formData.card3.description}
+                onChange={(e) => handleDescriptionChange('card3', e.target.value)}
+                // value={inputData.descriptionCard3}
+                // onChange={(event) => {
+                //   const value = event.target.value;
+                //   if (value.length <= 150) {
+                //     setInputData({ ...inputData, descriptionCard3: value });
+                //   }
+                // }}
+              ></textarea>
+              <label htmlFor="descriptionCard3" className={styles.form_container__textarea_label_constructor}>
+                Название конкурса
+              </label>
             </div>
           </div>
-          <div className={styles.form_container__block_gray_one}>
-            <div className={styles.heading_textarea}>
-              <div className={styles.form_container__description_text}>
-                <ReactQuill
-                  ref={quillRef3}
-                  modules={{
-                    toolbar: [["bold", "underline", { list: "bullet" }]],
-                    clipboard: {
-                      matchVisual: false,
-                    },
-                  }}
-                  formats={["bold", "underline", "list"]}
-                  className={styles.form_container__textarea}
-                  style={{
-                    padding: "0rem",
-                    border: "1px solid var(--blue-75BBFD)",
-                    fontFamily: "var(--font-raleway)",
-                    borderRadius: "6px",
-                    fontSize: "16px",
-                    fontStyle: "normal",
-                    fontWeight: "var(--fw-400)",
-                    lineHeight: "16px",
-                    color: "var(---black-1D2E43)",
-                    boxSizing: "border-box",
-                    paddingBottom: "2.5rem",
-                  }}
-                  strict={false}
-                  required
-                  name="textBlock3"
-                  id="textBlock3"
-                  value={formData.textBlock3}
-                  onChange={(value) => {
-                    setFormData((prevFormData) => ({
-                      ...prevFormData,
-                      textBlock3: value,
-                    }));
-                  }}
-                  placeholder="нет ограничений по символам"
-                />
-                <label
-                  htmlFor="textBlock3"
-                  className={styles.form_container__textarea_label_constructor}
-                >
-                  Требования
-                </label>
-              </div>
-            </div>
-          </div>
+          <CalendarAdd date={formData.card3.date} setDate={(date) => handleDateChange('card3', date)} />
           <div className={styles.form_container__button_block}>
-            <button
-              className={styles.form_container__button_save}
-              type="submit"
-            ></button>
-            <button
-              className={styles.form_container__button_cancel}
-              type="button"
-              onClick={closeModal}
-            ></button>
+            <button className={styles.form_container__button_save} type="submit"></button>
+            <button className={styles.form_container__button_cancel} type="submit" onClick={closeModal}></button>
           </div>
         </form>
       </div>
