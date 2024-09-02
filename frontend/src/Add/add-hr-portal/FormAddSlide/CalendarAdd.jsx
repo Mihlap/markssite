@@ -122,7 +122,10 @@ export default function CalendarAdd({ date, setDate }) {
   };
 
   const formatDate = (date) => {
-    return date ? date.toLocaleDateString() : 'Выбрать дату';
+    if (date instanceof Date && !isNaN(date)) {
+      return date.toLocaleDateString();
+    }
+    return 'Выбрать дату';
   };
 
   return (

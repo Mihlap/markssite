@@ -5,14 +5,12 @@ import styles from './FormAddSlide.module.scss';
 // import { clearFormData, fetchProject } from '../../../store/Slice/projectSlice';
 import { removePreviewPhotoAva, changeHandler } from '../../add-project/formAdd/utils/formHelpers';
 import CalendarAdd from './CalendarAdd';
-import { postVacancyData } from '../../../store/Slice/vacancyMainSlideCardSlice';
+import { postVacancyData, resetSlidesState }  from '../../../store/Slice/vacancyMainSlideCardSlice';
 
-export default function FormAddSlide({ setIsModalOpenMain, formType }) {
+export default function FormAddSlide({ setIsModalOpenMain }) {
   const dispatch = useDispatch();
-
-  const headerTitle = formType === 'slide' ? 'Новый слайд' : 'Новый слайд';
  
-   const [previewPhotos, setPreviewPhotos] = useState([]);
+  const [previewPhotos, setPreviewPhotos] = useState([]);
   const [previewPhotoAva, setPreviewPhotoAva] = useState([]);
   const [previewPhotoOpen, setPreviewPhotoOpen] = useState([]);
   const [previewPhotoClose, setPreviewPhotoClose] = useState([]);
@@ -96,7 +94,7 @@ export default function FormAddSlide({ setIsModalOpenMain, formType }) {
           };
 
           dispatch(postVacancyData(formData));
-          // dispatch(clearFormData());         
+          dispatch(resetSlidesState());       
          
           setPreviewPhotos([]);
           setInputData({
@@ -143,7 +141,7 @@ export default function FormAddSlide({ setIsModalOpenMain, formType }) {
           Заполните предыдущий блок или дождитесь загркузки изображений❗
         </div>
       )}
-      <div className={styles.form_container__title}>{headerTitle}</div>
+      <div className={styles.form_container__title}>Новый слайд</div>
       <div className={styles.form_container__block_form}>
         <form className={styles.form_container__form} onSubmit={submitHandler}>
           <div className={styles.form_container__titleCard}>Карточка 1</div>
