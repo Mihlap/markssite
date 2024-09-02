@@ -1,9 +1,48 @@
 const express = require('express');
+const multerMiddleware = require('../../middleware/file');   
 const { VacancyMainSlideCard } = require('../../db/models');
 
 const router = express.Router();
 
-router.post('/save-vacancy-details', async (req, res) => {
+// const projectImagesPath = path.join(__dirname, 'images/projectFoto');
+
+router.put('/update-slide/:id',   multerMiddleware.single('photoAva'), async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { card1, card2, card3 } = req.body;
+    const slide = await VacancyMainSlideCard.findByPk(id);
+
+    if (!slide) {
+      return res.status(404).json({ message: "Слайд не найден" });
+    }
+
+    // const deleteImageEdit = async (imageName) => {
+    //   const imagePath = path.join(__dirname, '..', '..', 'images', 'imageAdd', imageName);
+    //   try {
+    //     await fs.promises.unlink(imagePath);
+    //   } catch (error) {
+    //     if (error.code === 'ENOENT') {
+    //       // console.log(`Файл ${imageName} не найден, возможно, уже удален.`);
+    //     } else {
+    //       console.error(`Ошибка при удалении изображения ${imageName}:`, error);
+    //     }
+    //   }
+    // };
+
+
+    const updatedSlide = await slide.update({
+      photoAva: req.file ? `/images/slideCard/${req.file.filename}` : slide.photoAva,
+      cardData: { card1, card2, card3 }
+    });
+
+    res.json({ message: "Слайд успешно обновлен", data: updatedSlide });
+  } catch (error) {
+    console.error('Ошибка при обновлении слайда:', error);
+    res.status(500).json({ error: "Ошибка сервера при обновлении слайда" });
+  }
+});
+
+router.post('/save-vacancy-details',  multerMiddleware.single('photoAva'), async (req, res) => {
   let details;
   try {
     details = JSON.parse(req.body.details);
@@ -15,10 +54,7 @@ router.post('/save-vacancy-details', async (req, res) => {
     return res.status(400).json({ error: 'Некорректные данные: отсутствуют необходимые поля' });
   }
 
-  // Обработка photoAva, чтобы сохранить его как строку
-  const photoAva = Array.isArray(details.photoAva) && details.photoAva.length > 0
-    ? details.photoAva[0].url || '' // предполагается, что photoAva - это массив объектов с ключом `url`
-    : '';
+  const photoAva = req.file ? `/images/slideCard/${req.file.filename}` : '';
 
   const cardData = {
     card1: details.card1,
@@ -54,56 +90,77 @@ router.get('/get-slides', async (req, res) => {
   }
 });
 
-router.put('/update-slide/:id', async (req, res) => {
+
+
+router.get('/get-slide/:id', async (req, res) => {
+  const { id } = req.params;
+
   try {
-    const { id } = req.params;
-    const data = req.body;
     const slide = await VacancyMainSlideCard.findByPk(id);
-    if (slide) {
-      await slide.update(data);
-      res.json({ message: "Слайд обновлен", id, data: slide });
-    } else {
+    if (!slide) {
       res.status(404).json({ message: "Слайд не найден" });
+    } else {
+      res.json(slide);
     }
   } catch (error) {
-    res.status(500).json({ error: "Ошибка при обновлении слайда." });
+    console.error("Ошибка сервера при получении данных слайда:", error);
+    res.status(500).json({ error: "Ошибка сервера при получении данных слайда" });
   }
 });
 
 
-router.patch('/api-vacancyDetails/toggle-slide/:id', async (req, res) => {
-  const { id } = req.params;
-  const { hidden } = req.body;
+// router.put('/update-slide/:id', async (req, res) => {
+//   console.log('ID для обновления:', req.params.id);
+//   console.log('Данные для обновления:', req.body);
 
-  console.log('Попытка изменить видимость слайда:', id, hidden);
+//   try {
+//     const { id } = req.params;
+//     const data = req.body;
 
-  if (!id) {
-    return res.status(400).send('ID не передан');
-  }
+//     const slide = await VacancyMainSlideCard.findByPk(id);
+//     if (!slide) {
+//       console.log('Слайд не найден:', id);
+//       return res.status(404).json({ message: "Слайд не найден" });
+//     }
 
+//     // Обновляем данные слайда
+//     const updatedSlide = await slide.update(data);
+//     console.log('Обновленный слайд:', updatedSlide);
+
+//     res.json({ message: "Слайд успешно обновлен", slide: updatedSlide });
+//   } catch (error) {
+//     console.error('Ошибка при обновлении слайда:', error);
+//     res.status(500).json({ error: "Ошибка сервера при обновлении слайда" });
+//   }
+// });
+
+
+
+
+router.put('/toggle-slide/:id', async (req, res) => {
   try {
-    const slide = await VacancyMainSlideCard.findByPk(id);
-    if (slide) {
-      slide.hidden = hidden;
-      await slide.save();
-      console.log('Слайд обновлен:', slide);
-      res.json({ id: slide.id, hidden: slide.hidden });
+    const { id } = req.params;
+    const { hidden } = req.body;
+   
+    const updated = await VacancyMainSlideCard.update({ hidden }, {
+      where: { id }
+    });
+
+    if (updated) {
+      res.json({ message: 'Статус вакансии успешно обновлен', id, hidden });
     } else {
-      console.log('Слайд не найден:', id);
-      res.status(404).send('Слайд не найден');
+      res.status(404).json({ error: 'Вканансии не найдено' });
     }
   } catch (error) {
-    console.error('Ошибка сервера при попытке изменить видимость:', error);
-    res.status(500).send('Ошибка сервера');
+    console.error('Ошибка обновления статуса вакансии:', error);
+    res.status(500).json({ message: 'Ошибка сервера при обновлении статуса вакансии' });
   }
 });
 
 
 
 router.delete('/delete-slide/:id', async (req, res) => {
-  const id = req.params.id;
-
-  console.log('Получен запрос на удаление слайда с ID:', id);
+  const id = req.params.id; 
 
   if (!id || isNaN(parseInt(id))) { 
     console.error('Некорректный идентификатор слайда:', id);
@@ -113,7 +170,6 @@ router.delete('/delete-slide/:id', async (req, res) => {
   try {
     const result = await VacancyMainSlideCard.destroy({ where: { id } });
     if (result > 0) {
-      console.log('Слайд с ID удален:', id);
       res.json({ message: "Слайд удален", id });
     } else {
       console.error('Слайд с таким ID не найден:', id);
