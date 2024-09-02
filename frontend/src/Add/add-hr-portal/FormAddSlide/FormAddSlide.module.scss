@@ -594,6 +594,17 @@
     }
 }
 
+.slider_container__customFileUpload.active svg {
+    color: inherit;
+}
+
+
+.slider_container__customFileUpload.active {
+    background-color: var(--blue-75BBFD);
+    color: var(--light-light-gray-EBECEE);
+  }
+  
+
 .preview_photos_container {
     display: flex;
     flex-wrap: wrap;
