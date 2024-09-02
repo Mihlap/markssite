@@ -236,12 +236,14 @@ export default function AddHRPortal({ user }) {
               isModalOpenMain={isModalOpenMain}
               setIsModalOpenMain={setIsModalOpenMain}
               editSlideData={editSlideData}
+              setEditSlideData={setEditSlideData}
               modalBlockHeight={modalBlockHeight}
               user={user}
               deleteModalState={deleteModalState}
               setDeleteModalState={setDeleteModalState}
               handleDeleteModalClose={handleDeleteModalClose}  
               handleFormDelete={handleFormDelete}
+              handleDeleteModalOpen={handleDeleteModalOpen}
              />
             <SearchVacancyMain
               vacancies={vacancies}

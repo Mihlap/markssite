@@ -9,6 +9,7 @@ import {
   toggleSlideVisibility,
   deleteSlide,
   postVacancyData,
+  fetchSlideById
 } from '../../../store/Slice/vacancyMainSlideCardSlice';
 
 import Edit from '../../icon/Edit.svg';
@@ -21,11 +22,12 @@ export default function AddSlideMain({
   isModalOpenMain,
   setIsModalOpenMain,
   editSlideData,
+  setEditSlideData,
   modalBlockHeight,
   deleteModalState,
   setDeleteModalState,
   handleDeleteModalClose,
-  handleFormDelete
+  handleDeleteModalOpen
 }) {
   const dispatch = useDispatch();
   const slides = useSelector(state => state.formAddSlide.slides || []);
@@ -52,36 +54,46 @@ export default function AddSlideMain({
     fetchAndSetSlides();
   }, [fetchAndSetSlides]);
 
-  const handleAddSlide = async (formData) => {
+  const handleAddSlide = useCallback(async (formData) => {
     try {
       await dispatch(postVacancyData(formData)).unwrap();
+      dispatch(fetchSlides());
     } catch (error) {
       console.error("Ошибка при добавлении слайда:", error);
     }
-  };
+  }, [dispatch]);
 
-  const handleEditClick = useCallback((id) => {
-    if (editSlideData) {
-      dispatch(editSlide({ id, data: editSlideData }));
-    }
-  }, [dispatch, editSlideData]);
 
-  const handleDeleteSlide = async (id) => {
-    console.log("Попытка удалить слайд с ID:", id); 
+
+  const handleEditClick = useCallback(async (id) => {
+    if (!id) {
+      console.error('Некорректный идентификатор:', id);
+      return;
+    }    
     try {
-      await dispatch(deleteSlide(id)).unwrap();
+      const slideData = await dispatch(fetchSlideById(id)).unwrap();
+      setEditSlideData(slideData);
+      setIsModalOpenMain(true);
     } catch (error) {
-      console.error("Ошибка при удалении слайда:", error);
+      console.error('Ошибка при загрузке данных слайда:', error);
     }
-  };
+  }, [dispatch, setEditSlideData, setIsModalOpenMain]);
   
+   
+
+  const handleFormDelete = useCallback(
+    (id) => {
+      dispatch(deleteSlide(id));
+       handleDeleteModalClose(id);
+    },
+    [dispatch, handleDeleteModalClose]
+  );
+
 
   const handleLookClick = useCallback((id) => {
-    console.log("ID перед вызовом:", id); // Добавьте эту строку для проверки
     const slide = slides.find(slide => slide.id === id);
     if (slide) {
-      console.log("Переключение видимости для ID:", slide.id);
-      dispatch(toggleSlideVisibility({ id: slide.id, hidden: !slide.hidden }));
+     dispatch(toggleSlideVisibility({ id, hidden: !slide.hidden }));
     } else {
       console.error("Слайд с таким ID не найден:", id);
     }
@@ -125,13 +137,14 @@ export default function AddSlideMain({
                 editSlideData={editSlideData}
                 formType="slide"
                 className={styles.formAddProjectClass}
+                onSubmit={handleEditClick}
               />
             ) : (
               <FormAddSlide
                 className={styles.formAddProjectClass}
                 setIsModalOpenMain={setIsModalOpenMain}
                 formType="slide"
-                onSubmit={handleAddSlide} // передаем функцию добавления слайда
+                onSubmit={handleAddSlide}
               />
             )}
             <button
@@ -145,7 +158,7 @@ export default function AddSlideMain({
     {Array.isArray(slides) &&
       slides.map((el, index) => {
         return (
-          <div key={el.id} className={styles.cart_vacancy_container}>
+          <div key={`${el.id}-${index}`} className={styles.cart_vacancy_container}>
             <div className={styles.cart_vacancy_container__content}>
               <span className={styles.cart_vacancy_container__title}>{`Слайд ${index + 1}`}</span>
             </div>
@@ -179,7 +192,7 @@ export default function AddSlideMain({
 
               {user?.name === 'obezyankaa' || user?.name === 'Pokemon' ? (
                 <div className={styles.del_block_vacancy}>
-                  <button className={styles.buttom_del} onClick={() => handleDeleteSlide(el.id)}>
+                  <button className={styles.buttom_del} onClick={() => handleDeleteModalOpen(el.id)}>
                     <label htmlFor="delete" className={styles.label}>
                       <div className={styles.wrapper}>
                         <div className={styles.lid}>
