@@ -104,6 +104,8 @@ export default function FormAddSlide({ setIsModalOpenMain, formType }) {
   const [blocks, setBlocks] = useState([]);
   const [dynamicPreviews, setDynamicPreviews] = useState([]);
   const [dynamicData, setDynamicData] = useState([]);
+  const [isButtonClicked, setIsButtonClicked] = useState(false);
+
 
   const handleRemovePreviewPhotoAva = useCallback(
     (index) => {
@@ -317,7 +319,9 @@ export default function FormAddSlide({ setIsModalOpenMain, formType }) {
 
   const handleCalendarOpen = () => {
     setShowCalendar(!showCalendar);
+    setIsButtonClicked(!isButtonClicked);
   };
+  
 
   const formatDate = (date) => {
     return date.toLocaleDateString();
@@ -363,7 +367,11 @@ export default function FormAddSlide({ setIsModalOpenMain, formType }) {
           <div className={styles.calendarBlockWrapper}>
               <div className={styles.dataTitle}>Дата</div>
             <div className={styles.slider_container__customFileUpload}>
-              <button type="button" onClick={handleCalendarOpen} className={styles.datePickerButton}>
+              <button
+               type="button"
+                onClick={handleCalendarOpen}
+                 className={styles.datePickerButton}>
+                  
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path
                     fillRule="evenodd"
