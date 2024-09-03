@@ -84,8 +84,11 @@
     img {
       display: block;
       width: 100%;
-      height: auto;
+      height: 100%;
+      max-height: rem(314);
+      align-self: stretch;
       border-radius: rem(15);
+      object-fit: cover;
     }
   }
 
@@ -251,7 +254,7 @@
         max-height: rem(2000);
         opacity: 1;
         padding: 0 15% rem(24) 15%;
-        transition: max-height 3s ease, opacity 1s ease-in-out 0.3s, padding 1s ease;
+        transition: max-height 4s ease, opacity 1s ease-in-out 0.4s, padding 1s ease;
       }
 
       &:not(:first-child) {
@@ -278,7 +281,7 @@
     }
 
     &__button {
-      margin: 0 15% 0 15%;
+      margin: rem(32) 15% 0 15%;
     }
   }
   
@@ -312,7 +315,7 @@
     }
 
     &__button {
-      margin: 0 rem(16) 0 0;
+      margin: rem(20) rem(16) 0 0;
     }
   }
 
