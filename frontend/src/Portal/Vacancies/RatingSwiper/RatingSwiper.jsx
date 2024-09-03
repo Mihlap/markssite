@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo, memo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchSlides } from '../../../store/Slice/vacancyMainSlideCardSlice'; 
 import styles from './RatingSwiper.module.scss';
@@ -25,14 +25,18 @@ const RatingSwiperRow = ({ picture, date, title }) => {
   );
 };
 
-const RatingSwiper = () => {
+const RatingSwiper = memo(() => {
   const dispatch = useDispatch();
   const prevRef = useRef(null);
   const nextRef = useRef(null);
   const swiperRef = useRef(null);
   const slides = useSelector((state) => state.formAddSlide.slides);
+  const visibleSlides = useMemo(() => {
+    return slides.filter(slide => !slide.hidden);
+  }, [slides]);
   const [, setWindowWidth] = useState(window.innerWidth);
   const [isTablet, setIsTablet] = useState(window.innerWidth <= 1280);
+  const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
     dispatch(fetchSlides()); 
@@ -46,7 +50,7 @@ const RatingSwiper = () => {
       swiperInstance.navigation.init();
       swiperInstance.navigation.update();
     }
-  }, []);
+  }, [prevRef, nextRef, visibleSlides]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -61,7 +65,7 @@ const RatingSwiper = () => {
     };
   }, []);
 
-  const [showAll, setShowAll] = useState(false);
+   const slidesToShow = isTablet && !showAll ? visibleSlides.slice(0, 1) : visibleSlides;
 
   return (
     <section className={styles.RatingSwiper}>
@@ -80,7 +84,7 @@ const RatingSwiper = () => {
               modules={[Navigation]}
               spaceBetween={30}
               slidesPerView={'auto'}
-              loop={true}
+              loop={false}
               navigation={{
                 prevEl: prevRef.current,
                 nextEl: nextRef.current,
@@ -100,7 +104,7 @@ const RatingSwiper = () => {
                   spaceBetween: 30,
                 },
               }}>
-              {slides.map((slide) => (
+              {slidesToShow?.map((slide) => (
                 <SwiperSlide key={slide.id} className={styles.RatingSwiper__slide}>
                   <RatingSwiperRow
                     picture={`${Host}/images/slideCard/${slide.photoAva}`} 
@@ -124,7 +128,7 @@ const RatingSwiper = () => {
         ) : (
           <>
             <div className={styles.RatingSwiper__adaptive}>
-              {slides.map((slide) => (
+              {slidesToShow?.map((slide) => (
                 <div key={slide.id} className={styles.RatingSwiper__slide}>
                   <RatingSwiperRow
                     picture={`${Host}/images/slideCard/${slide.photoAva}`}
@@ -144,16 +148,18 @@ const RatingSwiper = () => {
                 </div>
               ))}
             </div>
-            <button
-              className={`${styles.RatingSwiper__button} ${showAll ? styles.visible : ''}`}
-              onClick={() => setShowAll(!showAll)}>
-              {showAll ? 'Скрыть все' : 'Смотреть все'}
-            </button>
+            {visibleSlides.length > 1 && (
+              <button
+                className={`${styles.RatingSwiper__button} ${showAll ? styles.visible : ''}`}
+                onClick={() => setShowAll(!showAll)}>
+                {showAll ? 'Скрыть все' : 'Смотреть все'}
+              </button>
+            )}
           </>
         )}
       </div>
     </section>
   );
-};
+});
 
 export default RatingSwiper;
