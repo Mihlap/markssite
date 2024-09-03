@@ -92,7 +92,8 @@ export const toggleSlideVisibility = createAsyncThunk(
     try {
       const response = await axios.put(`${serverHost}/api-vacancyDetails/toggle-slide/${id}`, { hidden });
     if (response.status === 200) {
-        dispatch(updateSlideVisibility({ id, hidden }));
+      dispatch(updateSlideVisibility({ id, hidden }));
+      dispatch(fetchSlides());
       }
       return response.data;
     } catch (error) {
