@@ -1,48 +1,64 @@
 const express = require('express');
-const multerMiddleware = require('../../middleware/file');   
+const path = require('path');
+const fs = require('fs');
+const fileMiddleware = require('../../middleware/fileSlideCard');   
 const { VacancyMainSlideCard } = require('../../db/models');
 
 const router = express.Router();
 
-// const projectImagesPath = path.join(__dirname, 'images/projectFoto');
+const slideCardImagesPath = path.join(__dirname, '../../images/slideCard');
 
-router.put('/update-slide/:id',   multerMiddleware.single('photoAva'), async (req, res) => {
+router.put('/update-slide/:id', fileMiddleware.fields([{ name: 'photoAva', maxCount: 1 }]), 
+  async (req, res) => {
+  // Функция удаления изображения
+  const deleteImageEdit = async (imageName) => {
+    const imagePath = path.join(slideCardImagesPath, imageName);
+    try {
+      await fs.promises.unlink(imagePath);
+    } catch (error) {
+      if (error.code === 'ENOENT') {
+        // Файл уже был удален ранее, это нормально
+      } else {
+        console.error(`Ошибка при удалении изображения ${imageName}:`, error);
+      }
+    }
+  };
+
   try {
     const { id } = req.params;
-    const { card1, card2, card3 } = req.body;
+    const details = JSON.parse(req.body.details);
     const slide = await VacancyMainSlideCard.findByPk(id);
 
     if (!slide) {
       return res.status(404).json({ message: "Слайд не найден" });
     }
 
-    // const deleteImageEdit = async (imageName) => {
-    //   const imagePath = path.join(__dirname, '..', '..', 'images', 'imageAdd', imageName);
-    //   try {
-    //     await fs.promises.unlink(imagePath);
-    //   } catch (error) {
-    //     if (error.code === 'ENOENT') {
-    //       // console.log(`Файл ${imageName} не найден, возможно, уже удален.`);
-    //     } else {
-    //       console.error(`Ошибка при удалении изображения ${imageName}:`, error);
-    //     }
-    //   }
-    // };
+    if (req.files && req.files['photoAva']) {
+     
+      await deleteImageEdit(slide.photoAva);
+      slide.photoAva = req.files['photoAva'][0].filename;
+    }
 
+    await slide.update({
+        photoAva: slide.photoAva,
+        cardData: details,
+      });
 
-    const updatedSlide = await slide.update({
-      photoAva: req.file ? `/images/slideCard/${req.file.filename}` : slide.photoAva,
-      cardData: { card1, card2, card3 }
-    });
-
-    res.json({ message: "Слайд успешно обновлен", data: updatedSlide });
+    res.json({ message: "Слайд успешно обновлен", data: slide });
   } catch (error) {
     console.error('Ошибка при обновлении слайда:', error);
     res.status(500).json({ error: "Ошибка сервера при обновлении слайда" });
   }
 });
 
-router.post('/save-vacancy-details',  multerMiddleware.single('photoAva'), async (req, res) => {
+
+
+router.post('/save-vacancy-details',
+  fileMiddleware.fields([{
+  name: 'photoAva',
+  maxCount: 1
+    },
+  ]), async (req, res) => {
   let details;
   try {
     details = JSON.parse(req.body.details);
@@ -54,7 +70,7 @@ router.post('/save-vacancy-details',  multerMiddleware.single('photoAva'), async
     return res.status(400).json({ error: 'Некорректные данные: отсутствуют необходимые поля' });
   }
 
-  const photoAva = req.file ? `/images/slideCard/${req.file.filename}` : '';
+  const photoAva = req.files && req.files['photoAva'] ? req.files['photoAva'][0].filename : '';
 
   const cardData = {
     card1: details.card1,
@@ -63,11 +79,10 @@ router.post('/save-vacancy-details',  multerMiddleware.single('photoAva'), async
   };
 
   try {
-    // Сохраняем photoAva как строку и cardData как JSON
     const newSlide = await VacancyMainSlideCard.create({
-      photoAva,
       cardData,
-      hidden: false, // или любое значение по умолчанию
+      hidden: false,
+      photoAva
     });
 
     res.status(200).json({ message: 'Детали вакансии сохранены успешно.', data: newSlide });
@@ -76,6 +91,8 @@ router.post('/save-vacancy-details',  multerMiddleware.single('photoAva'), async
     res.status(500).json({ error: 'Ошибка при обработке вашего запроса', details: error.errors });
   }
 });
+
+
 
 
 router.get('/get-slides', async (req, res) => {
@@ -108,33 +125,16 @@ router.get('/get-slide/:id', async (req, res) => {
   }
 });
 
+router.get('/getimage/:imageName', (req, res) => {
+  const {
+    imageName
+  } = req.params;
+  const imagePath = path.join(slideCardImagesPath, imageName);
 
-// router.put('/update-slide/:id', async (req, res) => {
-//   console.log('ID для обновления:', req.params.id);
-//   console.log('Данные для обновления:', req.body);
+  res.set('Cache-Control', 'public, max-age=432000'); // 432000 секунд = 5 дней
 
-//   try {
-//     const { id } = req.params;
-//     const data = req.body;
-
-//     const slide = await VacancyMainSlideCard.findByPk(id);
-//     if (!slide) {
-//       console.log('Слайд не найден:', id);
-//       return res.status(404).json({ message: "Слайд не найден" });
-//     }
-
-//     // Обновляем данные слайда
-//     const updatedSlide = await slide.update(data);
-//     console.log('Обновленный слайд:', updatedSlide);
-
-//     res.json({ message: "Слайд успешно обновлен", slide: updatedSlide });
-//   } catch (error) {
-//     console.error('Ошибка при обновлении слайда:', error);
-//     res.status(500).json({ error: "Ошибка сервера при обновлении слайда" });
-//   }
-// });
-
-
+  res.sendFile(imagePath);
+});
 
 
 router.put('/toggle-slide/:id', async (req, res) => {
@@ -163,20 +163,36 @@ router.delete('/delete-slide/:id', async (req, res) => {
   const id = req.params.id; 
 
   if (!id || isNaN(parseInt(id))) { 
-    console.error('Некорректный идентификатор слайда:', id);
     return res.status(400).json({ error: "Некорректный идентификатор слайда." });
   }
 
   try {
+    // Сначала находим слайд, чтобы получить информацию об изображении
+    const slide = await VacancyMainSlideCard.findByPk(id);
+
+    if (!slide) {
+      return res.status(404).json({ error: "Слайд не найден." });
+    }
+
+    // Удаляем слайд из базы данных
     const result = await VacancyMainSlideCard.destroy({ where: { id } });
+
     if (result > 0) {
+      // Если слайд успешно удален из базы данных, удаляем связанное изображение
+      if (slide.photoAva) {
+        const imagePath = path.join(slideCardImagesPath, slide.photoAva);
+        fs.unlink(imagePath, (err) => {
+          if (err) {
+            console.error(`Ошибка при удалении изображения ${slide.photoAva}:`, err);
+          }
+        });
+      }
+
       res.json({ message: "Слайд удален", id });
     } else {
-      console.error('Слайд с таким ID не найден:', id);
-      res.status(404).json({ error: "Слайд не найден." });
+      res.status(500).json({ error: "Ошибка при удалении слайда." });
     }
   } catch (error) {
-    console.error('Ошибка при удалении слайда:', error);
     res.status(500).json({ error: "Ошибка при удалении слайда." });
   }
 });
