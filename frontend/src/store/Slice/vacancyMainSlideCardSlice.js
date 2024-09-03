@@ -5,18 +5,14 @@ const serverHost = process.env.REACT_APP_SERVER_HOST;
 
 export const postVacancyData = createAsyncThunk(
   'slides/postVacancyData',
-  async (formData, {  dispatch, rejectWithValue }) => {
+  async (formData, { dispatch, rejectWithValue }) => {
     try {
-        const serializedData = JSON.stringify({
-        photoAva: formData.photoAva || '',
-        card1: formData.card1,
-        card2: formData.card2,
-        card3: formData.card3,
+       const response = await axios.post(`${serverHost}/api-vacancyDetails/save-vacancy-details`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       });
-          
-      const response = await axios.post(`${serverHost}/api-vacancyDetails/save-vacancy-details`, {
-        details: serializedData,
-      });
+
       if (response.data) {
         dispatch(fetchSlides()); 
       }
@@ -27,6 +23,7 @@ export const postVacancyData = createAsyncThunk(
     }
   }
 );
+
 
 export const fetchSlides = createAsyncThunk(
   'slides/fetchSlides',
@@ -71,7 +68,12 @@ export const editSlide = createAsyncThunk(
   'slides/editSlide',
   async ({ id, data }, { rejectWithValue }) => {
     try {
-      const response = await axios.put(`${serverHost}/api-vacancyDetails/update-slide/${id}`, data);
+      const response = await axios.put(`${serverHost}/api-vacancyDetails/update-slide/${id}`, data, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+
       if (response.status === 200) {
         return response.data;  
       } else {
@@ -82,6 +84,7 @@ export const editSlide = createAsyncThunk(
     }
   }
 );
+
 
 export const toggleSlideVisibility = createAsyncThunk(
   'slides/toggleSlideVisibility',

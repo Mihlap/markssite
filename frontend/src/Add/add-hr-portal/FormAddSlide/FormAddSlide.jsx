@@ -2,7 +2,6 @@ import React, { useState, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import compressImageFile from 'browser-image-compression';
 import styles from './FormAddSlide.module.scss';
-// import { clearFormData, fetchProject } from '../../../store/Slice/projectSlice';
 import { removePreviewPhotoAva, changeHandler } from '../../add-project/formAdd/utils/formHelpers';
 import CalendarAdd from './CalendarAdd';
 import { postVacancyData, resetSlidesState }  from '../../../store/Slice/vacancyMainSlideCardSlice';
@@ -76,40 +75,46 @@ export default function FormAddSlide({ setIsModalOpenMain }) {
     setIsModalOpenMain(false);
   }, [setIsModalOpenMain]);
 
+
   const submitHandler = useCallback(
     async (e) => {
       e.preventDefault();
-
+  
       const isFormValid = validateForm();
-
+  
       if (!isFormValid) {
         console.error("Форма не прошла валидацию. Работа функции submitHandler прервана.");
-      } else {
-        try {
-          const formData = {
-            photoAva: inputData.photoAva,
-            card1: inputData.card1,
-            card2: inputData.card2,
-            card3: inputData.card3
-          };
+        return;
+      }
+  
+      const formData = new FormData();
+      formData.append('details', JSON.stringify({
+        card1: inputData.card1,
+        card2: inputData.card2,
+        card3: inputData.card3,
+      }));
+  
+      if (inputData.photoAva && inputData.photoAva.length > 0) {
+        formData.append('photoAva', inputData.photoAva[0]);
+      }
 
-          dispatch(postVacancyData(formData));
-          dispatch(resetSlidesState());       
-         
-          setPreviewPhotos([]);
-          setInputData({
-            photoAva: "",        
-            card1: { description: "", date: null },
-            card2: { description: "", date: null },
-            card3: { description: "", date: null },
-          });
-
-          setErrorMessage("");
-          setIsModalOpenMain(false);
-
-        } catch (error) {
-          console.error("Произошла ошибка при отправке формы:", error);
-        }
+ 
+      try {
+        await dispatch(postVacancyData(formData)).unwrap();
+        dispatch(resetSlidesState());       
+        setPreviewPhotos([]);
+        setInputData({
+          photoAva: "",
+          card1: { description: "", date: null },
+          card2: { description: "", date: null },
+          card3: { description: "", date: null },
+        });
+  
+        setErrorMessage("");
+        setIsModalOpenMain(false);
+  
+      } catch (error) {
+        console.error("Произошла ошибка при отправке формы:", error);
       }
     },
     [
@@ -119,6 +124,7 @@ export default function FormAddSlide({ setIsModalOpenMain }) {
       setIsModalOpenMain,
     ]
   );
+  
 
  const compressImage = useCallback(async (file) => {
     const options = {
