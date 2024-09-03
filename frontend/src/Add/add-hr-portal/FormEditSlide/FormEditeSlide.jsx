@@ -5,7 +5,9 @@ import styles from '../FormAddSlide/FormAddSlide.module.scss';
 // import { clearFormData, fetchProject } from '../../../store/Slice/projectSlice';
 import { removePreviewPhotoAva, changeHandler } from '../../add-project/formAdd/utils/formHelpers';
 import CalendarAdd from '../FormAddSlide/CalendarAdd';
-import { postVacancyData, editSlide, fetchSlides }  from '../../../store/Slice/vacancyMainSlideCardSlice';
+import { postVacancyData, editSlide, fetchSlides } from '../../../store/Slice/vacancyMainSlideCardSlice';
+
+const Host = process.env.REACT_APP_SERVER_HOST;
 
 export default function FormEditSlide({ setIsModalOpenMain, editSlideData }) {
   const dispatch = useDispatch();
@@ -67,6 +69,23 @@ export default function FormEditSlide({ setIsModalOpenMain, editSlideData }) {
     }));
   };
 
+  const handleFileChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setFormData(prevState => ({
+        ...prevState,
+        photoAva: file  // Обновляем состояние новым файлом
+      }));
+  
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewPhotoAva([reader.result]); // Обновляем превью
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+  
+
   const handleRemovePreviewPhotoAva = useCallback((index) => {
     removePreviewPhotoAva(
       previewPhotoAva,
@@ -102,43 +121,55 @@ export default function FormEditSlide({ setIsModalOpenMain, editSlideData }) {
   const submitHandler = useCallback(
     async (e) => {
       e.preventDefault();
-
+  
       const isFormValid = validateForm();
-
+  
       if (!isFormValid) {
         console.error("Форма не прошла валидацию. Работа функции submitHandler прервана.");
-      } else {
-        try {
-          const dataToSend  = {
-            photoAva: formData.photoAva,
-            card1: formData.card1,
-            card2: formData.card2,
-            card3: formData.card3
-          };
-
-         
-          if (editSlideData && editSlideData.id) {
-            await dispatch(editSlide({ id: editSlideData.id, data: dataToSend }));
-          } else {
-            await dispatch(postVacancyData(dataToSend));
-          }        
-          await dispatch(fetchSlides());           
-          setPreviewPhotos([]);
-          setFormData({
-            photoAva: "",        
-            card1: { description: "", date: null },
-            card2: { description: "", date: null },
-            card3: { description: "", date: null },
-          });
-
-          setErrorMessage("");
-          setIsModalOpenMain(false);
-
-        } catch (error) {
-          console.error("Произошла ошибка при отправке формы:", error);
-        }
+        return;
       }
-    }, [validateForm, formData, dispatch, setIsModalOpenMain, editSlideData]);
+  
+      const dataToSend = new FormData();
+      dataToSend.append('details', JSON.stringify({
+        card1: formData.card1,
+        card2: formData.card2,
+        card3: formData.card3,
+      }));
+  
+      if (formData.photoAva && formData.photoAva instanceof File) {     
+        dataToSend.append('photoAva', formData.photoAva);
+      } else if (editSlideData && editSlideData.photoAva) {
+        dataToSend.append('photoAva', editSlideData.photoAva);
+      } else {
+       dataToSend.append('photoAva', '');
+      }
+    
+      try {
+        if (editSlideData && editSlideData.id) {
+          await dispatch(editSlide({ id: editSlideData.id, data: dataToSend })).unwrap();
+        } else {
+          await dispatch(postVacancyData(dataToSend)).unwrap();
+        }
+  
+        await dispatch(fetchSlides());
+        setPreviewPhotos([]);
+        setFormData({
+          photoAva: "",
+          card1: { description: "", date: null },
+          card2: { description: "", date: null },
+          card3: { description: "", date: null },
+        });
+  
+        setErrorMessage("");
+        setIsModalOpenMain(false);
+  
+      } catch (error) {
+        console.error("Произошла ошибка при отправке формы:", error);
+      }
+    },
+    [validateForm, formData, dispatch, setIsModalOpenMain, editSlideData]
+  );
+  
 
  const compressImage = useCallback(async (file) => {
     const options = {
@@ -197,22 +228,7 @@ export default function FormEditSlide({ setIsModalOpenMain, editSlideData }) {
                 <input
                   type="file"
                   name="photoAva"
-                  onChange={(event) =>
-                    changeHandler(
-                      event,
-                      formData,
-                      setFormData,
-                      setPreviewPhotos,
-                      setIsDropPhotoVisible,
-                      setPreviewPhotoAva,
-                      setIsPhotoAvaVisible,
-                      setPreviewPhotoOpen,
-                      setIsPhotoOpenVisible,
-                      setPreviewPhotoClose,
-                      setIsPhotoCloseVisible,
-                      setIsLoading,
-                     )
-                  }
+                  onChange={handleFileChange} 
                 />
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <g id="Frame 4684">
@@ -231,6 +247,22 @@ export default function FormEditSlide({ setIsModalOpenMain, editSlideData }) {
               {isLoading && <div className={styles.preview_photos_container__loading}>Загрузка . . .</div>}
             </div>
             <div>
+            {formData.photoAva !== null &&
+                previewPhotoAva.length === 0 && (
+                  <div className={styles.preview_photos_container__block}>
+                    <img
+                      className={styles.preview_photos_container__img}
+                      src={`${Host}/images/slideCard/${formData.photoAva}`}
+                      alt="Preview"
+                    />
+                    <div
+                    className={styles.preview_photos_container__remove_icon}
+                  onClick={() => handleRemovePreviewPhotoAva()}
+                      >
+                 <span></span>
+                   </div>
+                  </div>
+                )}
               {previewPhotoAva?.map((preview, index) => (
                 <div key={index} className={styles.preview_photos_container__block}>
                   <img className={styles.preview_photos_container__img} src={preview} alt={`Preview ${index}`} />
