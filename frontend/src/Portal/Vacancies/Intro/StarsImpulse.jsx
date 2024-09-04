@@ -9,7 +9,7 @@ import { BallCollider, Physics, RigidBody } from "@react-three/rapier";
 THREE.ColorManagement.legacyMode = false;
 
 // Массив объектов для звезд
-const baubles = [...Array(12)].map(() => ({ scale: [0.55, 0.75, 1, 1, 1.15][Math.floor(Math.random() * 2.5)] }));
+const baubles = [...Array(16)].map(() => ({ scale: [0.55, 0.75, 1, 1, 1.15][Math.floor(Math.random() * 2.5)] }));
 
 // Компонент для отдельной звездочки
 function Bauble({ vec = new THREE.Vector3(), scale, r = THREE.MathUtils.randFloatSpread }) {
@@ -19,7 +19,7 @@ function Bauble({ vec = new THREE.Vector3(), scale, r = THREE.MathUtils.randFloa
   useFrame((state, delta) => {
     delta = Math.min(0.1, delta);
     if (api.current) {
-    api.current.applyImpulse(
+    api.current?.applyImpulse(
       vec
         .copy(api.current.translation())
         .normalize()
@@ -58,7 +58,7 @@ function Pointer({ vec = new THREE.Vector3() }) {
 
   return (
     <RigidBody position={[100, 100, 100]} type="kinematicPosition" colliders={false} ref={ref}>
-      <BallCollider args={[2]} />
+      <BallCollider args={[1.5]} />
     </RigidBody>
   );
 }
@@ -83,7 +83,7 @@ function StarsImpulse() {
       <pointLight intensity={14000} color='#389FFF' decay={2} distance={800} position={[-10, 4, 45]}/>
       <pointLight intensity={14000} color='#e02209' distance={2600} position={[20, -15, 36]}/>
       <pointLight intensity={800} color='white' decay={2} distance={800} position={[12, 3, 38]}/>
-      <Physics gravity={[12, 2, 0]}>
+      <Physics gravity={[-40, 2, 0]}>
         <Pointer />
         {baubles.map((props, i) => <Bauble key={i} {...props} />)}
       </Physics>
