@@ -86,6 +86,26 @@ export const editSlide = createAsyncThunk(
 );
 
 
+export const updateSlidesOrder = createAsyncThunk(
+  'vacancyMainSlideCard/updateSlidesOrder',
+  async (slides, { rejectWithValue }) => {
+    try {
+      const response = await axios.put(`${serverHost}/api-vacancyDetails/update-slides-order`, {
+        slides: slides.map((slide, index) => ({
+          id: slide.id,
+          order: index  // Сохраняем порядок для каждого слайда
+        }))
+      });
+      return response.data; // Возвращаем обновленные слайды с сервера, если требуется
+    } catch (error) {
+      console.error('Ошибка при обновлении порядка слайдов на сервере:', error);
+      return rejectWithValue('Ошибка при обновлении порядка слайдов: ' + error.message);
+    }
+  }
+);
+
+
+
 export const toggleSlideVisibility = createAsyncThunk(
   'slides/toggleSlideVisibility',
   async ({ id, hidden }, { dispatch, rejectWithValue }) => {
@@ -136,6 +156,9 @@ const formAddSlideSlice = createSlice({
           state.slides = [...state.slides];
         }
     },
+    updateSlidesOrderLocally(state, action) { 
+      state.slides = action.payload;
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -173,7 +196,10 @@ const formAddSlideSlice = createSlice({
       .addCase(fetchSlideById.rejected, (state, action) => {   
         console.error('Ошибка при получении данных слайда:', action.payload);
         state.error = action.payload;
-      })     
+      })
+      .addCase(updateSlidesOrder.fulfilled, (state, action) => {
+        state.slides = action.payload.slides;
+      })    
       .addCase(deleteSlide.fulfilled, (state, action) => {
         state.slides = state.slides.filter((slide) => slide.id !== action.payload); 
         state.slides = [...state.slides];
@@ -181,6 +207,6 @@ const formAddSlideSlice = createSlice({
   },
 });
 
-export const { resetSlidesState, updateSlideVisibility } = formAddSlideSlice.actions;
+export const { resetSlidesState, updateSlideVisibility, updateSlidesOrderLocally } = formAddSlideSlice.actions;
 
 export default formAddSlideSlice.reducer;

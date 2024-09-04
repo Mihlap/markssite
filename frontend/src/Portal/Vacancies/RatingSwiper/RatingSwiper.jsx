@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useMemo, memo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchSlides } from '../../../store/Slice/vacancyMainSlideCardSlice'; 
+import { fetchSlides, updateSlidesOrderLocally } from '../../../store/Slice/vacancyMainSlideCardSlice'; 
 import styles from './RatingSwiper.module.scss';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -39,7 +39,7 @@ const RatingSwiper = memo(() => {
   const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
-    dispatch(fetchSlides()); 
+    dispatch(fetchSlides()).unwrap();
   }, [dispatch]);
 
   useEffect(() => {
