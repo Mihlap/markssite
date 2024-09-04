@@ -1,3 +1,4 @@
+/* eslint-disable no-await-in-loop */
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
@@ -51,6 +52,32 @@ router.put('/update-slide/:id', fileMiddleware.fields([{ name: 'photoAva', maxCo
   }
 });
 
+router.put('/update-slides-order', async (req, res) => {
+  const { slides } = req.body;
+
+  if (!Array.isArray(slides)) {
+    return res.status(400).json({ error: 'Некорректные данные: ожидался массив слайдов' });
+  }
+
+  try {
+    // eslint-disable-next-line no-plusplus
+    for (let i = 0; i < slides.length; i++) {
+      const { id, order } = slides[i];     
+
+      await VacancyMainSlideCard.update({ order }, { where: { id } });
+    }
+
+    const updatedSlides = await VacancyMainSlideCard.findAll({
+      order: [['order', 'ASC']],
+    });
+
+    res.json({ message: 'Порядок слайдов успешно обновлен', slides: updatedSlides });
+  } catch (error) {
+    console.error('Ошибка при обновлении порядка слайдов:', error);
+    res.status(500).json({ error: 'Ошибка сервера при обновлении порядка слайдов' });
+  }
+});
+
 
 
 router.post('/save-vacancy-details',
@@ -97,7 +124,7 @@ router.post('/save-vacancy-details',
 
 router.get('/get-slides', async (req, res) => {
   try {
-    const data = await VacancyMainSlideCard.findAll({ order: [['id', 'ASC']] });
+    const data = await VacancyMainSlideCard.findAll({ order: [['order', 'ASC']] });
     res.json(data);
   } catch (error) {
     console.error(error);
