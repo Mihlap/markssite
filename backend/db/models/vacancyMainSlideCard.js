@@ -17,7 +17,12 @@ module.exports = (sequelize, DataTypes) => {
     {
       photoAva: DataTypes.STRING,
       cardData: DataTypes.JSON,
-      hidden: DataTypes.BOOLEAN
+      hidden: DataTypes.BOOLEAN,
+      order: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+      },
     },
     {
       sequelize,
