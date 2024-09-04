@@ -629,6 +629,23 @@
         background-repeat: no-repeat;
     }
 
+    &__circle_block {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-gap: 6px;
+        margin-right: 1.56rem;
+     }
+
+    &__circle {
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        -moz-border-radius: 50%;
+        -webkit-border-radius: 50%;
+        -khtml-border-radius: 50%;
+        background-color: var(--light-gray-C0C5CB);
+    }
+
 }
 
 .copiedVacancy {
