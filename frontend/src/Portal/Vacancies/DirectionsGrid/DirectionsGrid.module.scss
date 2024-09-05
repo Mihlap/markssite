@@ -37,23 +37,23 @@
     // Для анимации праллакса
     opacity: 0;
     transform: translateY(50px);
-    transition: all 1s;
+    transition: all 0.5s;
     transition-delay: 0s;
 
     &:nth-child(2) {
-      transition-delay: 0.5s;
+      transition-delay: 0.3s;
     }
     &:nth-child(3) {
-      transition-delay: 1s;
+      transition-delay: 0.6s;
     }
     &:nth-child(4) {
-      transition-delay: 0.8s;
+      transition-delay: 0.7s;
     }
     &:nth-child(5) {
-      transition-delay: 1.3s;
+      transition-delay: 0.8s;
     }
     &:nth-child(6) {
-      transition-delay: 1.8s;
+      transition-delay: 0.9s;
     }
 
     &.visible {
