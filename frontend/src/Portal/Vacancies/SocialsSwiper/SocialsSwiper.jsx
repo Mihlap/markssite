@@ -12,9 +12,10 @@ import social_1 from '../icons/socials-swiper-1.svg';
 import social_2 from '../icons/socials-swiper-2.svg';
 import social_3 from '../icons/socials-swiper-3.svg';
 import social_4 from '../icons/socials-swiper-4.svg';
-import social_5 from '../icons/socials-swiper-3.svg';
-import social_6 from '../icons/socials-swiper-2.svg';
-import social_7 from '../icons/socials-swiper-5.svg';
+import social_5 from '../icons/socials-swiper-5.svg';
+import social_6 from '../icons/socials-swiper-6.svg';
+import social_7 from '../icons/socials-swiper-7.svg';
+import social_8 from '../icons/socials-swiper-8.svg';
 
 const socialsArray = [
   {
@@ -38,25 +39,33 @@ const socialsArray = [
   {
     picture: social_4,
     title: 'Telegram',
-    subtitle: 'MARKS CMC',
+    subtitle: 'Проект Молодёжь',
     link: 'https://t.me/marks_molodezh',
   },
   {
-    picture: social_7,
+    picture: social_5,
     title: 'VK',
     subtitle: 'MARKS GROUP',
     link: 'https://vk.com/marks_group_vk',
   },
-  // {
-  //   picture: social_5,
-  //   title: 'Telegram',
-  //   subtitle: 'MARKS GROUP',
-  // },
-  // {
-  //   picture: social_6,
-  //   title: 'Telegram',
-  //   subtitle: 'MARKS GROUP',
-  // },
+  {
+    picture: social_6,
+    title: 'Rutube',
+    subtitle: 'MARKS GROUP',
+    link: 'https://rutube.ru/channel/38807824',
+  },
+  {
+    picture: social_7,
+    title: 'Дзен',
+    subtitle: 'MARKS GROUP',
+    link: 'https://dzen.ru/marksgroupp',
+  },
+  {
+    picture: social_8,
+    title: 'YouTube',
+    subtitle: 'MARKS GROUP',
+    link: 'https://www.youtube.com/@marks_group',
+  },
 ];
 
 const SocialsSwiper = () => {
@@ -99,7 +108,7 @@ const SocialsSwiper = () => {
               slidesPerView: 4,
               centeredSlides: false,
               initialSlide: 0,
-              // loop: true,
+              loop: true,
               spaceBetween: 54,
               LoopAdditionalSlides: 5,
             },
@@ -108,7 +117,7 @@ const SocialsSwiper = () => {
               slidesPerView: 3.3,
               centeredSlides: false,
               initialSlide: 0,
-              // loop: true,
+              loop: true,
               spaceBetween: 54,
               LoopAdditionalSlides: 5,
             },
@@ -116,7 +125,7 @@ const SocialsSwiper = () => {
             1280: {
               slidesPerView: 3,
               spaceBetween: 30,
-              // loop: true,
+              loop: true,
               centeredSlides: true,
               initialSlide: 1,
             },
