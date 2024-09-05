@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger, ScrollToPlugin } from 'gsap/all';
@@ -15,18 +15,31 @@ const Intro = () => {
   const videoBoxRef = useRef(null);
   const videoRef = useRef(null);
   const location = useLocation();
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 767); 
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 767);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   useLayoutEffect(() => {
     if (!gsap.core.globals().ScrollTrigger) {
       gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
     }
 
-        const tl = gsap.timeline({
+    const tl = gsap.timeline({
       scrollTrigger: {
         trigger: videoBoxRef.current,
-        start: 'top 70%', 
-        end: 'bottom 30%', 
-        toggleActions: 'play pause resume reset', 
+        start: 'top 70%',
+        end: 'bottom 30%',
+        toggleActions: 'play pause resume reset',
         onEnter: () => {
           if (videoRef.current && videoRef.current.paused) {
             videoRef.current.play().catch((error) => {
@@ -34,14 +47,14 @@ const Intro = () => {
             });
           }
         },
-          onLeaveBack: () => {
+        onLeaveBack: () => {
           if (videoRef.current) {
-              videoRef.current.pause();
-            }
-          }, 
+            videoRef.current.pause();
+          }
         },
-      });
-     
+      },
+    });
+
     tl.fromTo(
       videoRef.current,
       { autoAlpha: 0, height: '0', width: '0' },
@@ -49,7 +62,7 @@ const Intro = () => {
         autoAlpha: 1,
         height: '100vh',
         width: '100%',
-        duration: 0.3,    
+        duration: 0.3,
       }
     );
 
@@ -63,7 +76,6 @@ const Intro = () => {
     };
   }, [location]);
 
-
   return (
     <>
       <section className={styles.Intro}>
@@ -73,20 +85,18 @@ const Intro = () => {
             <h1 className={styles.Intro__title}>Мы&nbsp;в&nbsp;поиске талантливых специалистов</h1>
             <ButtonLink text="Смотреть вакансии" to="/portal/vacancies" section="Intro" currentStyles={styles} />
           </div>
-            <StarsImpulse />
-          <div className={styles.Intro__animation}>
-            {/* <img src={starsDesktop} alt=""></img> */}
-          </div>
+          {isMobile ? (
+            <div className={styles.Intro__animation}>
+              <img src={starsDesktop} alt=""></img>
+            </div>
+          ) : (
+            <div className={styles.Intro__starsWrapper}>
+              <StarsImpulse />
+            </div>
+          )}
         </div>
         <div className={styles.Intro__video} ref={videoBoxRef}>
-          <video        
-            ref={videoRef}
-            playsInline
-            autoPlay
-            muted
-            loop         
-            style={{ display: 'block' }}
-            >
+          <video ref={videoRef} playsInline autoPlay muted loop style={{ display: 'block' }}>
             <source src={`${Host}/videos/main_company_full.mp4`} type="video/mp4" />
           </video>
         </div>

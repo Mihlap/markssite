@@ -66,7 +66,7 @@
   &__line {
     border-top: 1px solid var(--light-gray-C0C5CB);
     animation-name: showLine;
-    animation-duration: 2s;
+    animation-duration: 0.8s;
     animation-timing-function: ease-in-out;
     animation-delay: 0s;
     animation-iteration-count: 1;
@@ -90,7 +90,7 @@
         animation-delay: 0.3s;
       }
       #{$s}__text {
-        animation-delay: 0.7s;
+        animation-delay: 0.5s;
       }
     }
     &:nth-child(4) {
@@ -98,7 +98,7 @@
         animation-delay: 0.5s;
       }
       #{$s}__text {
-        animation-delay: 0.9s;
+        animation-delay: 0.7s;
       }
     }
   }
@@ -117,7 +117,7 @@
     font-size: rem(32);
     line-height: rem(40);
     animation-name: showText;
-    animation-duration: 1.5s;
+    animation-duration: 0.8s;
     animation-timing-function: ease-in-out;
     animation-delay: 0;
     animation-iteration-count: 1;
