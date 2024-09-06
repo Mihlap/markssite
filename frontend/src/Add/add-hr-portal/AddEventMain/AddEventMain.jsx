@@ -1,11 +1,69 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import styles from '../../style/style-card.module.scss';
+import SlideModalManager from '../AddSlideMain/SlideModalManager';
+import SlidesList from '../AddSlideMain/SlidesList';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  deleteSlide,
+  toggleSlideVisibility,
+  fetchSlideById
+} from '../../../store/Slice/vacancyMainSlideCardSlice';
 
-export default function AddSlideMain({ handleOpenModal }) {
+export default function AddSlideMain({ 
+  user,
+  isModalOpenMain,
+  setIsModalOpenMain,
+  editSlideData,
+  setEditSlideData,
+  modalBlockHeight,
+  deleteModalState,
+  setDeleteModalState,
+  handleDeleteModalClose,
+  handleDeleteModalOpen
+ }) {
+
+  const dispatch = useDispatch();
+  const slides = useSelector(state => state.formAddSlide.slides || []);
+
+  const handleOpenModal = () => {
+    setEditSlideData(null);
+    setIsModalOpenMain(true);
+  };
+
+  const handleFormDelete = useCallback(
+    (id) => {
+      dispatch(deleteSlide(id));
+      handleDeleteModalClose(id);
+    },
+    [dispatch, handleDeleteModalClose]
+  );
+
+  const handleLookClick = useCallback((id) => {
+    const slide = slides.find(slide => slide.id === id);
+    if (slide) {
+      dispatch(toggleSlideVisibility({ id, hidden: !slide.hidden }));
+    } else {
+      console.error("Слайд с таким ID не найден:", id);
+    }
+  }, [dispatch, slides]);
+
+  const handleEditClick = useCallback(
+    async (id) => {
+      try {
+        const slideData = await dispatch(fetchSlideById(id)).unwrap();
+        setEditSlideData(slideData);
+        setIsModalOpenMain(true);
+      } catch (error) {
+        console.error("Ошибка при загрузке данных слайда:", error);
+      }
+    },
+    [dispatch, setEditSlideData, setIsModalOpenMain]
+  );
+
   return (
     <div className={styles.card_components_admin__blockAddEvent} >
     <span className={styles.card_components_admin__title}>Жизнь на MARKS`e</span>
-    <div className={styles.card_components_admin__button_block} >
+    <div className={styles.card_components_admin__button_block} onClick={handleOpenModal}>
               <button className={styles.card_components_admin__button}>
                 <div>
                   <svg
@@ -30,6 +88,23 @@ export default function AddSlideMain({ handleOpenModal }) {
                 <div className={styles.card_components_admin__button_text}>Добавить мероприятие</div>
               </button>
       </div>
+      <SlideModalManager
+        isModalOpenMain={isModalOpenMain}
+        setIsModalOpenMain={setIsModalOpenMain}
+        editSlideData={editSlideData}
+        setEditSlideData={setEditSlideData}
+        modalBlockHeight={modalBlockHeight}
+      />
+
+      <SlidesList
+        user={user}
+        deleteModalState={deleteModalState}
+        handleDeleteModalClose={handleDeleteModalClose}
+        handleDeleteModalOpen={handleDeleteModalOpen}
+        handleEditClick={handleEditClick}
+        handleFormDelete={handleFormDelete}
+        handleLookClick={handleLookClick}
+      />
       </div>
   )
 }
