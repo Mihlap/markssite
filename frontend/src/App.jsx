@@ -36,13 +36,12 @@ import {
   textLeaveFooter,
 } from "./store/Slice/cursorSlice";
 import CookieComponent from "./UI/CookieComponent/CookieComponent";
-import Internships from "./Portal/Internships/Internships";
 import PortalMenu from "./Navbar/PortalMenu";
-import VacanciesMain from "./Portal/Vacancies/VacanciesMain/VacanciesMain";
 import VacanciesMainCard from "./Portal/Vacancies/VacanciesMainCard/VacanciesMainCard";
 import VacanciesMain3 from "./Portal/Vacancies/VacanciesMain/VacanciesMain3";
+import Internships from "./Portal/Internships/Internships";
+import VacanciesComponent from "./Portal/Vacancies/VacanciesMain/VacanciesComponent/VacanciesComponent";
 
-// import eruda from 'eruda';
 
 export default function App() {
   const user = useSelector((state) => state.auth.user);
@@ -267,7 +266,7 @@ export default function App() {
                   <Route
                     path="/portal/vacancies"
                     element={
-                      <VacanciesMain
+                      <VacanciesComponent
                         handleMouseEnter={handleMouseEnter}
                         handleMouseLeave={handleMouseLeave}
                         handleMouseHover={handleMouseHover}
