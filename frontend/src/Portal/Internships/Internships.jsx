@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useDispatch, useSelector } from 'react-redux';
-import styles from '../Vacancies/VacanciesMain/Vacancies.module.css';
+import styles from '../Vacancies/VacanciesMain/VacanciesComponent/VacanciesComponent.module.css';
 import 'swiper/css';
 import { 
   getFetchForm, 
