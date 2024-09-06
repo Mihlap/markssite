@@ -30,12 +30,10 @@ const VacanciesSectionRenderActualMain = ({
   useEffect(() => {
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
-      // ScrollTrigger.refresh();
-    };
+     };
     window.addEventListener('resize', handleResize);
     return () => {
       window.removeEventListener('resize', handleResize);
-      // ScrollTrigger.getAll().forEach(trigger => trigger.kill());
     };
   }, []);
 
