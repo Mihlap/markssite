@@ -80,6 +80,8 @@ const SocialsSwiper = () => {
       swiperInstance.params.navigation.nextEl = nextRef.current;
       swiperInstance.navigation.init();
       swiperInstance.navigation.update();
+
+      swiperInstance.slideToLoop(0, 0);
     }
   }, []);
 
@@ -101,56 +103,43 @@ const SocialsSwiper = () => {
             nextEl: nextRef.current,
           }}
           speed={1000}
-          keyboard={{ enabled: true }}
           slideActiveClass={styles.SocialsSwiper__active}
+          loop={true} 
+          loopAdditionalSlides={socialsArray.length}
+          keyboard={{ enabled: true }}
           breakpoints={{
             2500: {
-              slidesPerView: 4,
-              centeredSlides: false,
-              initialSlide: 0,
-              loop: true,
+              slidesPerView: 4,             
               spaceBetween: 54,
-              LoopAdditionalSlides: 5,
-            },
+              },
 
             1920: {
-              slidesPerView: 3.3,
-              centeredSlides: false,
-              initialSlide: 0,
-              loop: true,
-              spaceBetween: 54,
-              LoopAdditionalSlides: 5,
+              slidesPerView: 3.3,                         
+              spaceBetween: 54,             
             },
 
             1280: {
               slidesPerView: 3,
-              spaceBetween: 30,
-              loop: true,
-              centeredSlides: true,
-              initialSlide: 1,
+              spaceBetween: 30,                          
             },
 
             1024: {
               slidesPerView: 3.1,
-              spaceBetween: 16,
-              loop: true,
+              spaceBetween: 16,             
             },
 
             768: {
               slidesPerView: 2,
-              spaceBetween: 16,
-              loop: true,
+              spaceBetween: 16,             
             },
 
             576: {
               slidesPerView: 1.5,
-              spaceBetween: 16,
-              loop: true,
+              spaceBetween: 16,             
             },
 
             280: {
-              slidesPerView: 1.1,
-              loop: true,
+              slidesPerView: 1.1,           
               spaceBetween: 0,
             },
           }}>
