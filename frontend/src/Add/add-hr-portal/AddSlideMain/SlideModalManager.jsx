@@ -1,8 +1,8 @@
 import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import styles from '../../style/style-card.module.scss';
-import FormEditSlide from '../FormEditSlide/FormEditeSlide.jsx';
-import FormAddSlide from '../FormAddSlide/FormAddSlide.jsx';
+import FormEditSlide from '../FormAddEditSlide/FormEditeSlide.jsx';
+import FormAddSlide from '../FormAddEditSlide/FormAddSlide.jsx';
 import { postVacancyData, fetchSlideById, fetchSlides } from '../../../store/Slice/vacancyMainSlideCardSlice';
 
 export default function SlideModalManager({
@@ -14,28 +14,34 @@ export default function SlideModalManager({
 }) {
   const dispatch = useDispatch();
 
-  const handleAddSlide = useCallback(async (formData) => {
-    try {
-      await dispatch(postVacancyData(formData)).unwrap();
-      dispatch(fetchSlides());
-    } catch (error) {
-      console.error("Ошибка при добавлении слайда:", error);
-    }
-  }, [dispatch]);
+  const handleAddSlide = useCallback(
+    async (formData) => {
+      try {
+        await dispatch(postVacancyData(formData)).unwrap();
+        dispatch(fetchSlides());
+      } catch (error) {
+        console.error('Ошибка при добавлении слайда:', error);
+      }
+    },
+    [dispatch]
+  );
 
-  const handleEditClick = useCallback(async (id) => {
-    if (!id) {
-      console.error('Некорректный идентификатор:', id);
-      return;
-    }
-    try {
-      const slideData = await dispatch(fetchSlideById(id)).unwrap();
-      setEditSlideData(slideData);
-      setIsModalOpenMain(true);
-    } catch (error) {
-      console.error('Ошибка при загрузке данных слайда:', error);
-    }
-  }, [dispatch, setEditSlideData, setIsModalOpenMain]);
+  const handleEditClick = useCallback(
+    async (id) => {
+      if (!id) {
+        console.error('Некорректный идентификатор:', id);
+        return;
+      }
+      try {
+        const slideData = await dispatch(fetchSlideById(id)).unwrap();
+        setEditSlideData(slideData);
+        setIsModalOpenMain(true);
+      } catch (error) {
+        console.error('Ошибка при загрузке данных слайда:', error);
+      }
+    },
+    [dispatch, setEditSlideData, setIsModalOpenMain]
+  );
 
   return (
     isModalOpenMain && (
@@ -59,8 +65,7 @@ export default function SlideModalManager({
           )}
           <button
             className={styles.card_components_admin__close_button}
-            onClick={() => setIsModalOpenMain(false)}
-          ></button>
+            onClick={() => setIsModalOpenMain(false)}></button>
         </div>
       </div>
     )

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback, useMemo } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useDispatch, useSelector } from 'react-redux';
-import styles from './Vacancies.module.css';
+import styles from '../VacanciesComponent/VacanciesComponent.module.css';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import {
@@ -12,20 +12,20 @@ import {
   setSelectedFilter,
   setActiveFilters,
   setFilteredVacancies,
-} from '../../../store/Slice/vacanciesSlice';
-import { setPreviousPage } from '../../../store/Slice/previousPageSlice';
-import { setActivePage  } from '../../../store/Slice/activePageSlice';
-import VacanciesSectionRender from './VacanciesSectionRender/VacanciesSectionRender';
-import FilterModalVacancies from '../FilterModalVacancies/FilterModalVacancies';
-import VacancyFormContact from '../../../UI/VacancyFormContact/VacancyFormContact';
-import RocketComponent from '../../../UI/Rocket/RocketComponents';
+} from '../../../../store/Slice/vacanciesSlice';
+import { setPreviousPage } from '../../../../store/Slice/previousPageSlice';
+import { setActivePage  } from '../../../../store/Slice/activePageSlice';
+import VacanciesSectionRender from '../VacanciesSectionRender/VacanciesSectionRender';
+import FilterModalVacancies from '../../FilterModalVacancies/FilterModalVacancies';
+import VacancyFormContact from '../../../../UI/VacancyFormContact/VacancyFormContact';
+import RocketComponent from '../../../../UI/Rocket/RocketComponents';
 
-import iconFilter from '../icons/filter.svg';
-import iconFilterRed from '../icons/filterRed.svg';
-import iconFilterWhiterRed from '../icons/filterWhiteRed.svg';
-import clearAll from '../icons/clearAll.svg';
+import iconFilter from '../../icons/filter.svg';
+import iconFilterRed from '../../icons/filterRed.svg';
+import iconFilterWhiterRed from '../../icons/filterWhiteRed.svg';
+import clearAll from '../../icons/clearAll.svg';
 
-const VacanciesMain = ({ handleMouseEnter, handleMouseLeave, handleMouseHover, hideVacancies }) => {
+const VacanciesComponent = ({ handleMouseEnter, handleMouseLeave, handleMouseHover, hideVacancies }) => {
   const dispatch = useDispatch();
   const { vacancies, loading, vacancyCountsByDirection, filteredVacancies, activeFilters } = useSelector(
     (state) => state.vacancies
@@ -412,4 +412,4 @@ const VacanciesMain = ({ handleMouseEnter, handleMouseLeave, handleMouseHover, h
   );
 };
 
-export default React.memo(VacanciesMain);
+export default React.memo(VacanciesComponent);
