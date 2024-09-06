@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import styles from '../style/style-card.module.scss';
-import FormEditVacancy from './FormEditVacancy/FormEditVacancy.jsx';
+import FormEditVacancy from './FormAddVacancy/FormEditVacancy.jsx';
 import FormAddVacancy from './FormAddVacancy/FormAddVacancy.jsx';
 import AddSlideMain from './AddSlideMain/AddSlideMain.jsx';
 import AddEventMain from './AddEventMain/AddEventMain.jsx';
@@ -24,7 +24,6 @@ import pencilIcon from '../add-navbar/icon/pencil.svg';
 import LoadingCircle from '../../Loading/LoadingCircle.jsx';
 import SearchVacancyMain from './SearchVacancyMain/SearchVacancyMain.jsx';
 import { arrIdVacancySelector } from './VacancySelector.js';
-
 
 export default function AddHRPortal({ user }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -154,9 +153,9 @@ export default function AddHRPortal({ user }) {
         await navigator.clipboard.writeText(id);
         if (isMountedRef.current) {
           const vacancyToEdit = vacanciesAdd.find((el) => el.id === id);
-          setEditVacancyData(vacancyToEdit);      
+          setEditVacancyData(vacancyToEdit);
           setIsModalOpen(true);
-         }
+        }
       } catch (err) {
         console.error('Unable to copy vacancy to clipboard:', err);
       }
@@ -241,10 +240,10 @@ export default function AddHRPortal({ user }) {
               user={user}
               deleteModalState={deleteModalState}
               setDeleteModalState={setDeleteModalState}
-              handleDeleteModalClose={handleDeleteModalClose}  
+              handleDeleteModalClose={handleDeleteModalClose}
               handleFormDelete={handleFormDelete}
               handleDeleteModalOpen={handleDeleteModalOpen}
-             />
+            />
             <SearchVacancyMain
               vacancies={vacancies}
               arrIdVacancy={arrIdVacancy}
@@ -267,7 +266,20 @@ export default function AddHRPortal({ user }) {
               replacement={replacement}
               replacementMessage={replacementMessage}
             />
-            <AddEventMain handleOpenModal={handleOpenModal} />
+            <AddEventMain
+                 handleOpenModal={handleOpenModal}
+                 isModalOpenMain={isModalOpenMain}
+                 setIsModalOpenMain={setIsModalOpenMain}
+                 editSlideData={editSlideData}
+                 setEditSlideData={setEditSlideData}
+                 modalBlockHeight={modalBlockHeight}
+                 user={user}
+                 deleteModalState={deleteModalState}
+                 setDeleteModalState={setDeleteModalState}
+                 handleDeleteModalClose={handleDeleteModalClose}
+                 handleFormDelete={handleFormDelete}
+                 handleDeleteModalOpen={handleDeleteModalOpen}
+            />
           </>
         ) : (
           <div className={styles.card_components_admin__button_block} onClick={handleOpenModal}>
