@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import styles from '../style/style-card.module.scss';
-import FormEditVacancy from './FormAddVacancy/FormEditVacancy.jsx';
-import FormAddVacancy from './FormAddVacancy/FormAddVacancy.jsx';
+import FormEditVacancy from './FormAddEditVacancy/FormEditVacancy.jsx';
+import FormAddVacancy from './FormAddEditVacancy/FormAddVacancy.jsx';
 import AddSlideMain from './AddSlideMain/AddSlideMain.jsx';
 import AddEventMain from './AddEventMain/AddEventMain.jsx';
 import { useDispatch, useSelector } from 'react-redux';
