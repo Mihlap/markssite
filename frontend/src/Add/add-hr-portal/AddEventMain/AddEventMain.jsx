@@ -63,7 +63,7 @@ export default function AddSlideMain({
   return (
     <div className={styles.card_components_admin__blockAddEvent} >
     <span className={styles.card_components_admin__title}>Жизнь на MARKS`e</span>
-    <div className={styles.card_components_admin__button_block} onClick={handleOpenModal}>
+    <div className={styles.card_components_admin__button_block} >
               <button className={styles.card_components_admin__button}>
                 <div>
                   <svg
