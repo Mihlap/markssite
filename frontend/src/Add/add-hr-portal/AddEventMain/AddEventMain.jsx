@@ -62,7 +62,7 @@ export default function AddEventMain({
   return (
     <div className={styles.card_components_admin__blockAddSlide}>
       <span className={styles.card_components_admin__title}>Ведущая компания в сфере проектирования</span>
-      <div className={styles.card_components_admin__button_block} onClick={handleOpenModal}>
+      <div className={styles.card_components_admin__button_block} >
         <button className={styles.card_components_admin__button}>
           <div>
             <svg
@@ -90,7 +90,7 @@ export default function AddEventMain({
       </div>
 
    
-      <EventModalManager
+      {/* <EventModalManager
         isModalOpenMain={isModalOpenMain}
         setIsModalOpenMain={setIsModalOpenMain}
         editSlideData={editSlideData}
@@ -106,7 +106,7 @@ export default function AddEventMain({
         handleEditClick={handleEditClick}
         handleFormDelete={handleFormDelete}
         handleLookClick={handleLookClick}
-      />
+      /> */}
     </div>
   );
 }
