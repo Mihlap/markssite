@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { editVacancy } from "../../../store/Slice/vacanciesSlice.js";
 import { selectBlocks } from "../utils.js";
 
-import styles from "../FormAddVacancy/FormAddVacancy.module.scss";
+import styles from "./FormAddVacancy.module.scss";
 
 export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVacancyData }) {
   const [showNotification, setShowNotification] = useState(false);
