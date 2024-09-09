@@ -21,6 +21,7 @@ const videoRouter = require('./Routes/videoRouter');
 const vacancyRouter = require('./Routes/Vacancies/vacancyRouter');
 const searchVacanciesRouter = require('./Routes/Vacancies/searchVacanciesRouter');
 const vacancyDetailsRouter = require('./Routes/Vacancies/vacancyDetailsRouter');
+const vacancyEventRouter = require('./Routes/Vacancies/vacancyEventRouter');
 
 
 
@@ -92,6 +93,7 @@ app.use('/images/imageAdd', express.static(path.join(imagesPath, 'imageAdd')));
 app.use('/images/imageArticle', express.static(path.join(imagesPath, 'imageAdd')));
 app.use('/images/projectFoto', express.static(path.join(imagesPath, 'projectFoto'), { maxAge: '5d' }));
 app.use('/images/slideCard', express.static(path.join(imagesPath, 'slideCard'), { maxAge: '5d' }));
+app.use('/images/event', express.static(path.join(imagesPath, 'event'), { maxAge: '5d' }));
 app.use('/videos', express.static(videoPath, { maxAge: '5d', immutable: true, }));
 app.use('/public/assets', express.static(path.join(__dirname, 'assets'), { maxAge: '5d' }));
 app.use(session(sessionConfig));
@@ -119,6 +121,7 @@ app.use('/api/toggle', toggleRouter);
 app.use('/api/video', videoRouter);
 app.use('/api-vacancy', vacancyRouter);
 app.use('/api-vacancyDetails', vacancyDetailsRouter);
+app.use('/api-event', vacancyEventRouter);
 
 // const sslKeyPath = './SSL Marksgroup/marksgroup.ru.key';
 // const sslCertPath = './SSL Marksgroup/certificate.crt';
