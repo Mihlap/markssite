@@ -57,7 +57,7 @@ export default function SlidesList({
     <div className={styles.card_components_admin__block__vacancy}>
       {slides.map((el, index) => (
         <Slide
-          key={el.id}
+        key={el.id || index}
           el={el}
           index={index}
           handleDragStart={handleDragStart}
