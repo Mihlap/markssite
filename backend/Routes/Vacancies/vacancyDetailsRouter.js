@@ -15,12 +15,10 @@ router.put('/update-slide/:id', fileMiddleware.fields([{ name: 'photoAva', maxCo
     const deleteImageIfUnused = async (imageName, currentSlideId) => {
       const imagePath = path.join(slideCardImagesPath, imageName);
       try {
-        // Проверяем, используется ли изображение в других слайдах, кроме текущего
-        const otherSlidesWithImage = await VacancyMainSlideCard.findOne({
-          where: { photoAva: imageName, id: { [Op.ne]: currentSlideId } }, // исключаем текущий слайд
+          const otherSlidesWithImage = await VacancyMainSlideCard.findOne({
+          where: { photoAva: imageName, id: { [Op.ne]: currentSlideId } },
         });
-
-        // Если изображение не используется в других слайдах, удаляем его
+     
         if (!otherSlidesWithImage) {
           await fs.promises.unlink(imagePath);
           // console.log(`Изображение успешно удалено: ${imageName}`);
@@ -220,18 +218,20 @@ router.delete('/delete-slide/:id', async (req, res) => {
   }
 
   try {
-    // Сначала находим слайд, чтобы получить информацию об изображении
     const slide = await VacancyMainSlideCard.findByPk(id);
 
     if (!slide) {
       return res.status(404).json({ error: "Слайд не найден." });
     }
 
-     const result = await VacancyMainSlideCard.destroy({ where: { id } });
+    const result = await VacancyMainSlideCard.destroy({ where: { id } });
 
     if (result > 0) {
-      // Если слайд успешно удален из базы данных, удаляем связанное изображение
-      if (slide.photoAva) {
+       const otherSlidesWithImage = await VacancyMainSlideCard.findOne({
+        where: { photoAva: slide.photoAva, id: { [Op.ne]: id } } 
+      });
+
+      if (!otherSlidesWithImage && slide.photoAva) {
         const imagePath = path.join(slideCardImagesPath, slide.photoAva);
         fs.unlink(imagePath, (err) => {
           if (err) {
@@ -239,6 +239,7 @@ router.delete('/delete-slide/:id', async (req, res) => {
           }
         });
       }
+
       res.json({ message: "Слайд удален", id });
     } else {
       res.status(500).json({ error: "Ошибка при удалении слайда." });
@@ -247,6 +248,9 @@ router.delete('/delete-slide/:id', async (req, res) => {
     res.status(500).json({ error: "Ошибка при удалении слайда." });
   }
 });
+
+module.exports = router;
+
 
 
 module.exports = router;
