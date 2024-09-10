@@ -5,7 +5,8 @@ import SlideModalManager from './SlideModalManager';
 import {
   deleteSlide,
   toggleSlideVisibility,
-  fetchSlideById
+  fetchSlideById,
+  updateSlidesOrderLocally
 } from '../../../store/Slice/vacancyMainSlideCardSlice';
 import styles from '../../style/style-card.module.scss';
 
@@ -52,6 +53,11 @@ export default function AddSlideMain({
         const slideData = await dispatch(fetchSlideById(id)).unwrap();
         setEditSlideData(slideData);
         setIsModalOpenMain(true);
+
+        const updatedSlides = slides.map(slide => 
+          slide.id === slideData.id ? slideData : slide
+        );
+        dispatch(updateSlidesOrderLocally(updatedSlides));
       } catch (error) {
         console.error("Ошибка при загрузке данных слайда:", error);
       }
