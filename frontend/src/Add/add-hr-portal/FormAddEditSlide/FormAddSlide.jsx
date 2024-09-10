@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import compressImageFile from 'browser-image-compression';
 import styles from './FormAddSlide.module.scss';
@@ -19,6 +19,7 @@ export default function FormAddSlide({ setIsModalOpenMain }) {
   const [isDropPhotoVisible, setIsDropPhotoVisible] = useState(true);
   const [errorMessage, setErrorMessage] = useState("");
   const [showNotification, setShowNotification] = useState(false);
+  const [isImageRemoved, setIsImageRemoved] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [inputData, setInputData] = useState({
     photoAva: "",
@@ -26,6 +27,10 @@ export default function FormAddSlide({ setIsModalOpenMain }) {
     card2: { description: "", date: null },
     card3: { description: "", date: null },
   });
+
+  useEffect(() => {
+    validateForm();
+  }, [inputData]);
 
   const handleDescriptionChange = (cardKey, value) => {
     if (value.length <= 150) {
@@ -54,23 +59,38 @@ export default function FormAddSlide({ setIsModalOpenMain }) {
     );
   }, [previewPhotoAva, inputData]);
 
-
-   const validateForm = useCallback(() => {
+  const validateForm = useCallback(() => {
     let isValid = true;
-    let errors = [];
-
-
-     if (!isValid) {
-      setErrorMessage(
-        `Пожалуйста, заполните следующие обязательные поля: ${errors.join(
-          ", "
-        )}.`
-      );
+  
+    if (!inputData.photoAva) {
+      isValid = false;
     }
-
+    if (!inputData.card1.description) {
+      isValid = false;
+    }
+    if (!inputData.card2.description) {
+      isValid = false;
+    }
+    if (!inputData.card3.description) {
+      isValid = false;
+    }
+    if (!inputData.card1.date) {
+      isValid = false;
+    }
+    if (!inputData.card2.date) {
+      isValid = false;
+    }
+    if (!inputData.card3.date) {
+      isValid = false;
+    }
+  
+    setShowNotification(!isValid);
+  
     return isValid;
-  }, []);
-
+  }, [inputData]);
+  
+  
+  
   const closeModal = useCallback(() => {
     setIsModalOpenMain(false);
   }, [setIsModalOpenMain]);
@@ -83,8 +103,7 @@ export default function FormAddSlide({ setIsModalOpenMain }) {
       const isFormValid = validateForm();
   
       if (!isFormValid) {
-        console.error("Форма не прошла валидацию. Работа функции submitHandler прервана.");
-        return;
+          return;
       }
   
       const formData = new FormData();
@@ -110,7 +129,7 @@ export default function FormAddSlide({ setIsModalOpenMain }) {
           card3: { description: "", date: null },
         });
   
-        setErrorMessage("");
+        setShowNotification(false); 
         setIsModalOpenMain(false);
   
       } catch (error) {
@@ -144,7 +163,7 @@ export default function FormAddSlide({ setIsModalOpenMain }) {
     <div className={styles.form_container}>
       {showNotification && (
         <div className={styles.form_container__notification}>
-          Заполните предыдущий блок или дождитесь загркузки изображений❗
+         Необходимо заполнить каждое поле❗
         </div>
       )}
       <div className={styles.form_container__title}>Новый слайд</div>
