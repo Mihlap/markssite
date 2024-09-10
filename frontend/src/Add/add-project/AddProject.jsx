@@ -25,12 +25,11 @@ export default function AddProject({ user }) {
   );
   const loading = useSelector((state) => state.project.loading);
   const error = useSelector((state) => state.project.error);
-  // const [isActive, setIsActive] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
   const [copiedId, setCopiedId] = useState("");
   const [deleteModalState, setDeleteModalState] = useState({});
-  const [modalBlockHeight, setModalBlockHeight] = useState("auto"); // Изначально высота будет автоматически рассчитываться
+  const [modalBlockHeight, setModalBlockHeight] = useState("auto");
   const [editProjectData, setEditProjectData] = useState(null);
  
   const isMountedRef = useRef(true);
