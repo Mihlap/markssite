@@ -14,15 +14,10 @@ export default function FormEditSlide({ setIsModalOpenMain, editSlideData }) {
 
   const [previewPhotos, setPreviewPhotos] = useState([]);
   const [previewPhotoAva, setPreviewPhotoAva] = useState([]);
-  const [previewPhotoOpen, setPreviewPhotoOpen] = useState([]);
-  const [previewPhotoClose, setPreviewPhotoClose] = useState([]);
-  const [isPhotoCloseVisible, setIsPhotoCloseVisible] = useState(true);
-  const [isPhotoOpenVisible, setIsPhotoOpenVisible] = useState(true);
   const [isPhotoAvaVisible, setIsPhotoAvaVisible] = useState(true);
-  const [isDropPhotoVisible, setIsDropPhotoVisible] = useState(true);
-  const [errorMessage, setErrorMessage] = useState('');
   const [showNotification, setShowNotification] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isImageRemoved, setIsImageRemoved] = useState(false);
   const [formData, setFormData] = useState({
     photoAva: editSlideData?.photoAva || '',
     card1: editSlideData?.card1 || { description: '', date: '' },
@@ -50,7 +45,81 @@ export default function FormEditSlide({ setIsModalOpenMain, editSlideData }) {
     }
   }, [editSlideData]);
 
+  const compressImage = useCallback(async (file) => {
+    const options = {
+      maxSizeMB: 4,
+      maxWidthOrHeight: 1920,
+      useWebWorker: true,
+    };
+
+    try {
+      return await compressImageFile(file, options);
+    } catch (error) {
+      console.error('Ошибка при сжатии изображения:', error);
+    }
+  }, []);
+
+
+  const handleFileChange = async (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setShowNotification(false);
+      setIsImageRemoved(false);
+      setIsLoading(true);
+  
+      const compressedFile = await compressImage(file);
+  
+      const finalFile = new File([compressedFile], file.name, { type: compressedFile.type });
+  
+      setFormData((prevState) => ({
+        ...prevState,
+        photoAva: finalFile, 
+      }));
+  
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewPhotoAva([reader.result]); 
+        setIsLoading(false); 
+      };
+      reader.readAsDataURL(finalFile); 
+    }
+  };
+
+
+  const handleRemovePreviewPhotoAva = useCallback(() => {
+    setShowNotification(false); 
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      photoAva: '',
+    }));
+    setPreviewPhotoAva([]); 
+    setIsImageRemoved(true); 
+  }, []);
+
+
+  const validateForm = useCallback(() => {
+    let isValid = true;
+    if (!formData.photoAva ||
+      !formData.card1.description ||
+      !formData.card2.description ||
+      !formData.card3.description ||
+      !formData.card1.date ||
+      !formData.card2.date ||
+      !formData.card3.date) {
+      isValid = false;
+    }
+    setShowNotification(!isValid);
+    return isValid;
+  }, [formData]);
+
+  const closeModal = useCallback(() => {
+    setIsModalOpenMain(false);
+  }, [setIsModalOpenMain]);
+
+
+
   const handleDescriptionChange = (cardKey, value) => {
+    setShowNotification(false); 
     if (value.length <= 150) {
       setFormData((prevData) => ({
         ...prevData,
@@ -60,49 +129,13 @@ export default function FormEditSlide({ setIsModalOpenMain, editSlideData }) {
   };
 
   const handleDateChange = (cardKey, date) => {
+    setShowNotification(false); 
     setFormData((prevData) => ({
       ...prevData,
       [cardKey]: { ...prevData[cardKey], date: date },
     }));
   };
-
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      setFormData((prevState) => ({
-        ...prevState,
-        photoAva: file, // Обновляем состояние новым файлом
-      }));
-
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewPhotoAva([reader.result]); // Обновляем превью
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleRemovePreviewPhotoAva = useCallback(
-    (index) => {
-      removePreviewPhotoAva(previewPhotoAva, setPreviewPhotoAva, index, formData, setFormData, setIsPhotoAvaVisible);
-    },
-    [previewPhotoAva, formData]
-  );
-
-  const validateForm = useCallback(() => {
-    let isValid = true;
-    let errors = [];
-
-    if (!isValid) {
-      setErrorMessage(`Пожалуйста, заполните следующие обязательные поля: ${errors.join(', ')}.`);
-    }
-
-    return isValid;
-  }, []);
-
-  const closeModal = useCallback(() => {
-    setIsModalOpenMain(false);
-  }, [setIsModalOpenMain]);
+ 
 
   const submitHandler = useCallback(
     async (e) => {
@@ -111,7 +144,7 @@ export default function FormEditSlide({ setIsModalOpenMain, editSlideData }) {
       const isFormValid = validateForm();
 
       if (!isFormValid) {
-        console.error('Форма не прошла валидацию. Работа функции submitHandler прервана.');
+        setShowNotification(true);
         return;
       }
 
@@ -125,12 +158,10 @@ export default function FormEditSlide({ setIsModalOpenMain, editSlideData }) {
         })
       );
 
-      if (formData.photoAva && formData.photoAva instanceof File) {
-        dataToSend.append('photoAva', formData.photoAva);
-      } else if (editSlideData && editSlideData.photoAva) {
-        dataToSend.append('photoAva', editSlideData.photoAva);
-      } else {
-        dataToSend.append('photoAva', '');
+      if (isImageRemoved) {
+        dataToSend.append('removePhotoAva', 'true'); 
+      } else if (formData.photoAva && formData.photoAva instanceof File) {
+        dataToSend.append('photoAva', formData.photoAva); 
       }
 
       try {
@@ -149,34 +180,20 @@ export default function FormEditSlide({ setIsModalOpenMain, editSlideData }) {
           card3: { description: '', date: null },
         });
 
-        setErrorMessage('');
+        setShowNotification(false); 
         setIsModalOpenMain(false);
       } catch (error) {
         console.error('Произошла ошибка при отправке формы:', error);
       }
     },
-    [validateForm, formData, dispatch, setIsModalOpenMain, editSlideData]
+    [validateForm, formData, isImageRemoved, dispatch, setIsModalOpenMain, editSlideData]
   );
-
-  const compressImage = useCallback(async (file) => {
-    const options = {
-      maxSizeMB: 4,
-      maxWidthOrHeight: 1920,
-      useWebWorker: true,
-    };
-
-    try {
-      return await compressImageFile(file, options);
-    } catch (error) {
-      console.error('Ошибка при сжатии изображения:', error);
-    }
-  }, []);
 
   return (
     <div className={styles.form_container}>
       {showNotification && (
         <div className={styles.form_container__notification}>
-          Заполните предыдущий блок или дождитесь загркузки изображений❗
+         Необходимо заполнить каждое поле❗
         </div>
       )}
       <div className={styles.form_container__title}>Редактирование слайда</div>
@@ -227,7 +244,7 @@ export default function FormEditSlide({ setIsModalOpenMain, editSlideData }) {
               {isLoading && <div className={styles.preview_photos_container__loading}>Загрузка . . .</div>}
             </div>
             <div>
-              {formData.photoAva !== null && previewPhotoAva.length === 0 && (
+              {formData.photoAva && previewPhotoAva.length === 0 && (
                 <div className={styles.preview_photos_container__block}>
                   <img
                     className={styles.preview_photos_container__img}
@@ -236,7 +253,8 @@ export default function FormEditSlide({ setIsModalOpenMain, editSlideData }) {
                   />
                   <div
                     className={styles.preview_photos_container__remove_icon}
-                    onClick={() => handleRemovePreviewPhotoAva()}>
+                    onClick={() => handleRemovePreviewPhotoAva()}
+                  >
                     <span></span>
                   </div>
                 </div>
