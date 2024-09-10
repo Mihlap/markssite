@@ -23,6 +23,7 @@ export default function FormEditSlide({ setIsModalOpenMain, editSlideData }) {
   const [errorMessage, setErrorMessage] = useState('');
   const [showNotification, setShowNotification] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isImageRemoved, setIsImageRemoved] = useState(false);
   const [formData, setFormData] = useState({
     photoAva: editSlideData?.photoAva || '',
     card1: editSlideData?.card1 || { description: '', date: '' },
@@ -51,6 +52,7 @@ export default function FormEditSlide({ setIsModalOpenMain, editSlideData }) {
   }, [editSlideData]);
 
   const handleDescriptionChange = (cardKey, value) => {
+    setShowNotification(false); 
     if (value.length <= 150) {
       setFormData((prevData) => ({
         ...prevData,
@@ -60,6 +62,7 @@ export default function FormEditSlide({ setIsModalOpenMain, editSlideData }) {
   };
 
   const handleDateChange = (cardKey, date) => {
+    setShowNotification(false); 
     setFormData((prevData) => ({
       ...prevData,
       [cardKey]: { ...prevData[cardKey], date: date },
@@ -69,36 +72,79 @@ export default function FormEditSlide({ setIsModalOpenMain, editSlideData }) {
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
+      setShowNotification(false); 
+      setIsImageRemoved(false); 
       setFormData((prevState) => ({
         ...prevState,
-        photoAva: file, // Обновляем состояние новым файлом
+        photoAva: file, 
       }));
 
       const reader = new FileReader();
       reader.onloadend = () => {
-        setPreviewPhotoAva([reader.result]); // Обновляем превью
+        setPreviewPhotoAva([reader.result]); 
       };
       reader.readAsDataURL(file);
     }
   };
 
-  const handleRemovePreviewPhotoAva = useCallback(
-    (index) => {
-      removePreviewPhotoAva(previewPhotoAva, setPreviewPhotoAva, index, formData, setFormData, setIsPhotoAvaVisible);
-    },
-    [previewPhotoAva, formData]
-  );
 
+  const handleRemovePreviewPhotoAva = useCallback(() => {
+    setShowNotification(false); 
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      photoAva: '',
+    }));
+    setPreviewPhotoAva([]); 
+    setIsImageRemoved(true); 
+  }, []);
+  
+  
+  
   const validateForm = useCallback(() => {
     let isValid = true;
     let errors = [];
-
-    if (!isValid) {
-      setErrorMessage(`Пожалуйста, заполните следующие обязательные поля: ${errors.join(', ')}.`);
+  
+    if (!formData.photoAva) {
+      isValid = false;
+      errors.push('Изображение');
     }
-
+    // Проверка описаний карточек
+    if (!formData.card1.description) {
+      isValid = false;
+      errors.push('Описание Карточки 1');
+    }
+    if (!formData.card2.description) {
+      isValid = false;
+      errors.push('Описание Карточки 2');
+    }
+    if (!formData.card3.description) {
+      isValid = false;
+      errors.push('Описание Карточки 3');
+    }
+  
+    // Проверка дат карточек
+    if (!formData.card1.date) {
+      isValid = false;
+      errors.push('Дата Карточки 1');
+    }
+    if (!formData.card2.date) {
+      isValid = false;
+      errors.push('Дата Карточки 2');
+    }
+    if (!formData.card3.date) {
+      isValid = false;
+      errors.push('Дата Карточки 3');
+    }
+  
+    if (!isValid) {
+      setShowNotification(true); 
+    } else {
+      setShowNotification(false); 
+    }
+  
     return isValid;
-  }, []);
+  }, [formData, isImageRemoved]);
+  
 
   const closeModal = useCallback(() => {
     setIsModalOpenMain(false);
@@ -125,12 +171,10 @@ export default function FormEditSlide({ setIsModalOpenMain, editSlideData }) {
         })
       );
 
-      if (formData.photoAva && formData.photoAva instanceof File) {
-        dataToSend.append('photoAva', formData.photoAva);
-      } else if (editSlideData && editSlideData.photoAva) {
-        dataToSend.append('photoAva', editSlideData.photoAva);
-      } else {
-        dataToSend.append('photoAva', '');
+      if (isImageRemoved) {
+        dataToSend.append('removePhotoAva', 'true'); 
+      } else if (formData.photoAva && formData.photoAva instanceof File) {
+        dataToSend.append('photoAva', formData.photoAva); 
       }
 
       try {
@@ -149,13 +193,13 @@ export default function FormEditSlide({ setIsModalOpenMain, editSlideData }) {
           card3: { description: '', date: null },
         });
 
-        setErrorMessage('');
+        setShowNotification(false); 
         setIsModalOpenMain(false);
       } catch (error) {
         console.error('Произошла ошибка при отправке формы:', error);
       }
     },
-    [validateForm, formData, dispatch, setIsModalOpenMain, editSlideData]
+    [validateForm, formData, isImageRemoved, dispatch, setIsModalOpenMain, editSlideData]
   );
 
   const compressImage = useCallback(async (file) => {
@@ -171,12 +215,13 @@ export default function FormEditSlide({ setIsModalOpenMain, editSlideData }) {
       console.error('Ошибка при сжатии изображения:', error);
     }
   }, []);
+  
 
   return (
     <div className={styles.form_container}>
       {showNotification && (
         <div className={styles.form_container__notification}>
-          Заполните предыдущий блок или дождитесь загркузки изображений❗
+         Необходимо заполнить каждое поле❗
         </div>
       )}
       <div className={styles.form_container__title}>Редактирование слайда</div>
@@ -227,7 +272,7 @@ export default function FormEditSlide({ setIsModalOpenMain, editSlideData }) {
               {isLoading && <div className={styles.preview_photos_container__loading}>Загрузка . . .</div>}
             </div>
             <div>
-              {formData.photoAva !== null && previewPhotoAva.length === 0 && (
+              {formData.photoAva && previewPhotoAva.length === 0 && (
                 <div className={styles.preview_photos_container__block}>
                   <img
                     className={styles.preview_photos_container__img}
@@ -236,7 +281,8 @@ export default function FormEditSlide({ setIsModalOpenMain, editSlideData }) {
                   />
                   <div
                     className={styles.preview_photos_container__remove_icon}
-                    onClick={() => handleRemovePreviewPhotoAva()}>
+                    onClick={() => handleRemovePreviewPhotoAva()}
+                  >
                     <span></span>
                   </div>
                 </div>
