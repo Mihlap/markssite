@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import compressImageFile from 'browser-image-compression';
 import styles from './FormAddSlide.module.scss';
@@ -7,19 +7,13 @@ import CalendarAdd from './CalendarAdd';
 import { postVacancyData, resetSlidesState }  from '../../../store/Slice/vacancyMainSlideCardSlice';
 
 export default function FormAddSlide({ setIsModalOpenMain }) {
-  const dispatch = useDispatch();
- 
-  const [previewPhotos, setPreviewPhotos] = useState([]);
+  const dispatch = useDispatch(); 
+
   const [previewPhotoAva, setPreviewPhotoAva] = useState([]);
-  const [previewPhotoOpen, setPreviewPhotoOpen] = useState([]);
-  const [previewPhotoClose, setPreviewPhotoClose] = useState([]);
-  const [isPhotoCloseVisible, setIsPhotoCloseVisible] = useState(true);
-  const [isPhotoOpenVisible, setIsPhotoOpenVisible] = useState(true);
   const [isPhotoAvaVisible, setIsPhotoAvaVisible] = useState(true);
-  const [isDropPhotoVisible, setIsDropPhotoVisible] = useState(true);
-  const [errorMessage, setErrorMessage] = useState("");
   const [showNotification, setShowNotification] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false); 
   const [inputData, setInputData] = useState({
     photoAva: "",
     card1: { description: "", date: null },
@@ -27,21 +21,89 @@ export default function FormAddSlide({ setIsModalOpenMain }) {
     card3: { description: "", date: null },
   });
 
+  const validateForm = useCallback(() => {
+    const isValid =
+      inputData.photoAva &&
+      inputData.card1.description &&
+      inputData.card2.description &&
+      inputData.card3.description &&
+      inputData.card1.date &&
+      inputData.card2.date &&
+      inputData.card3.date;
+
+    return isValid;
+  }, [inputData]);
+
+  useEffect(() => {
+    if (isSubmitted) {
+      setShowNotification(!validateForm());
+    }
+  }, [inputData, isSubmitted, validateForm]);
+
+  const compressImage = useCallback(async (file) => {
+    const options = {
+      maxSizeMB: 4,
+      maxWidthOrHeight: 1920,
+      useWebWorker: true,
+    };
+
+    try {
+      return await compressImageFile(file, options);
+    } catch (error) {
+      console.error("Ошибка при сжатии изображения:", error);
+      return file; 
+    }
+  }, []);
+
+
+  const handleFileChange = async (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setIsLoading(true); 
+  
+      const compressedFile = await compressImage(file);  
+    
+      const finalFile = new File([compressedFile], file.name, { type: compressedFile.type });
+  
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewPhotoAva([reader.result]); 
+        setInputData((prevData) => ({
+          ...prevData,
+          photoAva: [finalFile], 
+        }));
+        setIsPhotoAvaVisible(true); 
+        setIsLoading(false); 
+      };
+      reader.readAsDataURL(finalFile);
+    }
+  };
+  
+  
+
   const handleDescriptionChange = (cardKey, value) => {
     if (value.length <= 150) {
-      setInputData(prevData => ({
+      setInputData((prevData) => ({
         ...prevData,
-        [cardKey]: { ...prevData[cardKey], description: value }
+        [cardKey]: { ...prevData[cardKey], description: value },
       }));
+    }
+    if (isSubmitted) {
+      setShowNotification(!validateForm());  
     }
   };
 
   const handleDateChange = (cardKey, date) => {
-    setInputData(prevData => ({
+    setInputData((prevData) => ({
       ...prevData,
-      [cardKey]: { ...prevData[cardKey], date: date }
+      [cardKey]: { ...prevData[cardKey], date: date },
     }));
-  };
+    if (isSubmitted) {
+      setShowNotification(!validateForm()); 
+    }
+  }
+ 
+
 
   const handleRemovePreviewPhotoAva = useCallback((index) => {
     removePreviewPhotoAva(
@@ -53,38 +115,31 @@ export default function FormAddSlide({ setIsModalOpenMain }) {
       setIsPhotoAvaVisible
     );
   }, [previewPhotoAva, inputData]);
-
-
-   const validateForm = useCallback(() => {
-    let isValid = true;
-    let errors = [];
-
-
-     if (!isValid) {
-      setErrorMessage(
-        `Пожалуйста, заполните следующие обязательные поля: ${errors.join(
-          ", "
-        )}.`
-      );
-    }
-
-    return isValid;
-  }, []);
-
+ 
+  
   const closeModal = useCallback(() => {
+    setInputData({
+      photoAva: "",
+      card1: { description: "", date: null },
+      card2: { description: "", date: null },
+      card3: { description: "", date: null },
+    });
+    setPreviewPhotoAva([]);
     setIsModalOpenMain(false);
   }, [setIsModalOpenMain]);
+  
 
 
   const submitHandler = useCallback(
     async (e) => {
       e.preventDefault();
+      setIsSubmitted(true); 
   
       const isFormValid = validateForm();
   
       if (!isFormValid) {
-        console.error("Форма не прошла валидацию. Работа функции submitHandler прервана.");
-        return;
+        setShowNotification(true);
+          return;
       }
   
       const formData = new FormData();
@@ -98,11 +153,9 @@ export default function FormAddSlide({ setIsModalOpenMain }) {
         formData.append('photoAva', inputData.photoAva[0]);
       }
 
- 
-      try {
+       try {
         await dispatch(postVacancyData(formData)).unwrap();
         dispatch(resetSlidesState());       
-        setPreviewPhotos([]);
         setInputData({
           photoAva: "",
           card1: { description: "", date: null },
@@ -110,7 +163,7 @@ export default function FormAddSlide({ setIsModalOpenMain }) {
           card3: { description: "", date: null },
         });
   
-        setErrorMessage("");
+        setShowNotification(false); 
         setIsModalOpenMain(false);
   
       } catch (error) {
@@ -126,25 +179,11 @@ export default function FormAddSlide({ setIsModalOpenMain }) {
   );
   
 
- const compressImage = useCallback(async (file) => {
-    const options = {
-      maxSizeMB: 4,
-      maxWidthOrHeight: 1920,
-      useWebWorker: true,
-    };
-
-    try {
-      return await compressImageFile(file, options);
-    } catch (error) {
-      console.error("Ошибка при сжатии изображения:", error);
-    }
-  }, []);
-
-  return (
+ return (
     <div className={styles.form_container}>
       {showNotification && (
         <div className={styles.form_container__notification}>
-          Заполните предыдущий блок или дождитесь загркузки изображений❗
+         Необходимо заполнить каждое поле❗
         </div>
       )}
       <div className={styles.form_container__title}>Новый слайд</div>
@@ -183,23 +222,8 @@ export default function FormAddSlide({ setIsModalOpenMain }) {
                 <input
                   type="file"
                   name="photoAva"
-                  onChange={(event) =>
-                    changeHandler(
-                      event,
-                      inputData,
-                      setInputData,
-                      setPreviewPhotos,
-                      setIsDropPhotoVisible,
-                      setPreviewPhotoAva,
-                      setIsPhotoAvaVisible,
-                      setPreviewPhotoOpen,
-                      setIsPhotoOpenVisible,
-                      setPreviewPhotoClose,
-                      setIsPhotoCloseVisible,
-                      setIsLoading,
-                     )
-                  }
-                />
+                  onChange={handleFileChange}
+                 />
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <g id="Frame 4684">
                     <path
@@ -219,7 +243,11 @@ export default function FormAddSlide({ setIsModalOpenMain }) {
             <div>
               {previewPhotoAva?.map((preview, index) => (
                 <div key={index} className={styles.preview_photos_container__block}>
-                  <img className={styles.preview_photos_container__img} src={preview} alt={`Preview ${index}`} />
+                  <img
+                    className={styles.preview_photos_container__img}
+                    src={preview}
+                    alt={`Preview ${index}`}
+                  />
                   <div
                     className={styles.preview_photos_container__remove_icon}
                     onClick={() => handleRemovePreviewPhotoAva(index)}>

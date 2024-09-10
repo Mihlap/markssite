@@ -1,5 +1,6 @@
 /* eslint-disable no-await-in-loop */
 const express = require('express');
+const { Op } = require('sequelize');
 const path = require('path');
 const fs = require('fs');
 const fileMiddleware = require('../../middleware/fileSlideCard');   
@@ -11,46 +12,69 @@ const slideCardImagesPath = path.join(__dirname, '../../images/slideCard');
 
 router.put('/update-slide/:id', fileMiddleware.fields([{ name: 'photoAva', maxCount: 1 }]), 
   async (req, res) => {
-  // Функция удаления изображения
-  const deleteImageEdit = async (imageName) => {
-    const imagePath = path.join(slideCardImagesPath, imageName);
-    try {
-      await fs.promises.unlink(imagePath);
-    } catch (error) {
-      if (error.code === 'ENOENT') {
-        // Файл уже был удален ранее, это нормально
-      } else {
-        console.error(`Ошибка при удалении изображения ${imageName}:`, error);
-      }
-    }
-  };
-
-  try {
-    const { id } = req.params;
-    const details = JSON.parse(req.body.details);
-    const slide = await VacancyMainSlideCard.findByPk(id);
-
-    if (!slide) {
-      return res.status(404).json({ message: "Слайд не найден" });
-    }
-
-    if (req.files && req.files['photoAva']) {
+    const deleteImageIfUnused = async (imageName, currentSlideId) => {
+      const imagePath = path.join(slideCardImagesPath, imageName);
+      try {
+          const otherSlidesWithImage = await VacancyMainSlideCard.findOne({
+          where: { photoAva: imageName, id: { [Op.ne]: currentSlideId } },
+        });
      
-      await deleteImageEdit(slide.photoAva);
-      slide.photoAva = req.files['photoAva'][0].filename;
-    }
+        if (!otherSlidesWithImage) {
+          await fs.promises.unlink(imagePath);
+          // console.log(`Изображение успешно удалено: ${imageName}`);
+        } else {
+          // console.log(`Изображение ${imageName} используется в других слайдах и не будет удалено.`);
+        }
+      } catch (error) {
+        if (error.code === 'ENOENT') {
+          console.warn(`Файл уже был удален: ${imageName}`);
+        } else if (error.code === 'EPERM') {
+          console.error(`Ошибка при удалении изображения ${imageName}: Недостаточно прав доступа.`);
+        } else {
+          console.error(`Ошибка при удалении изображения ${imageName}:`, error);
+        }
+      }
+    };
 
-    await slide.update({
+    try {
+      const { id } = req.params;
+      const details = JSON.parse(req.body.details);
+      const slide = await VacancyMainSlideCard.findByPk(id);
+
+      if (!slide) {
+        return res.status(404).json({ message: "Слайд не найден" });
+      }
+
+      const oldImage = slide.photoAva;  
+
+       if (req.body.removePhotoAva === 'true' && slide.photoAva) {
+        await deleteImageIfUnused(slide.photoAva, id);
+        slide.photoAva = '';
+      }
+
+        if (req.files && req.files['photoAva']) {     
+        slide.photoAva = req.files['photoAva'][0].filename; 
+      }
+
+      await slide.update({
         photoAva: slide.photoAva,
         cardData: details,
       });
 
-    res.json({ message: "Слайд успешно обновлен", data: slide });
-  } catch (error) {
-    console.error('Ошибка при обновлении слайда:', error);
-    res.status(500).json({ error: "Ошибка сервера при обновлении слайда" });
+      if (oldImage && oldImage !== slide.photoAva) {
+        await deleteImageIfUnused(oldImage, id);
+      }
+
+      res.json({ message: "Слайд успешно обновлен", data: slide });
+    } catch (error) {
+      console.error('Ошибка при обновлении слайда:', error);
+      res.status(500).json({ error: "Ошибка сервера при обновлении слайда" });
+    }
   }
-});
+);
+
+
+
 
 router.put('/update-slides-order', async (req, res) => {
   const { slides } = req.body;
@@ -194,19 +218,20 @@ router.delete('/delete-slide/:id', async (req, res) => {
   }
 
   try {
-    // Сначала находим слайд, чтобы получить информацию об изображении
     const slide = await VacancyMainSlideCard.findByPk(id);
 
     if (!slide) {
       return res.status(404).json({ error: "Слайд не найден." });
     }
 
-    // Удаляем слайд из базы данных
     const result = await VacancyMainSlideCard.destroy({ where: { id } });
 
     if (result > 0) {
-      // Если слайд успешно удален из базы данных, удаляем связанное изображение
-      if (slide.photoAva) {
+       const otherSlidesWithImage = await VacancyMainSlideCard.findOne({
+        where: { photoAva: slide.photoAva, id: { [Op.ne]: id } } 
+      });
+
+      if (!otherSlidesWithImage && slide.photoAva) {
         const imagePath = path.join(slideCardImagesPath, slide.photoAva);
         fs.unlink(imagePath, (err) => {
           if (err) {
@@ -223,6 +248,9 @@ router.delete('/delete-slide/:id', async (req, res) => {
     res.status(500).json({ error: "Ошибка при удалении слайда." });
   }
 });
+
+module.exports = router;
+
 
 
 module.exports = router;
