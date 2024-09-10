@@ -14,13 +14,7 @@ export default function FormEditSlide({ setIsModalOpenMain, editSlideData }) {
 
   const [previewPhotos, setPreviewPhotos] = useState([]);
   const [previewPhotoAva, setPreviewPhotoAva] = useState([]);
-  const [previewPhotoOpen, setPreviewPhotoOpen] = useState([]);
-  const [previewPhotoClose, setPreviewPhotoClose] = useState([]);
-  const [isPhotoCloseVisible, setIsPhotoCloseVisible] = useState(true);
-  const [isPhotoOpenVisible, setIsPhotoOpenVisible] = useState(true);
   const [isPhotoAvaVisible, setIsPhotoAvaVisible] = useState(true);
-  const [isDropPhotoVisible, setIsDropPhotoVisible] = useState(true);
-  const [errorMessage, setErrorMessage] = useState('');
   const [showNotification, setShowNotification] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isImageRemoved, setIsImageRemoved] = useState(false);
@@ -51,6 +45,79 @@ export default function FormEditSlide({ setIsModalOpenMain, editSlideData }) {
     }
   }, [editSlideData]);
 
+  const compressImage = useCallback(async (file) => {
+    const options = {
+      maxSizeMB: 4,
+      maxWidthOrHeight: 1920,
+      useWebWorker: true,
+    };
+
+    try {
+      return await compressImageFile(file, options);
+    } catch (error) {
+      console.error('Ошибка при сжатии изображения:', error);
+    }
+  }, []);
+
+
+  const handleFileChange = async (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      setShowNotification(false);
+      setIsImageRemoved(false);
+      setIsLoading(true);
+  
+      const compressedFile = await compressImage(file);
+  
+      const finalFile = new File([compressedFile], file.name, { type: compressedFile.type });
+  
+      setFormData((prevState) => ({
+        ...prevState,
+        photoAva: finalFile, 
+      }));
+  
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setPreviewPhotoAva([reader.result]); 
+        setIsLoading(false); 
+      };
+      reader.readAsDataURL(finalFile); 
+    }
+  };
+
+
+  const handleRemovePreviewPhotoAva = useCallback(() => {
+    setShowNotification(false); 
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      photoAva: '',
+    }));
+    setPreviewPhotoAva([]); 
+    setIsImageRemoved(true); 
+  }, []);
+
+
+  const validateForm = useCallback(() => {
+    let isValid = true;
+    if (!formData.photoAva ||
+      !formData.card1.description ||
+      !formData.card2.description ||
+      !formData.card3.description ||
+      !formData.card1.date ||
+      !formData.card2.date ||
+      !formData.card3.date) {
+      isValid = false;
+    }
+    setShowNotification(!isValid);
+    return isValid;
+  }, [formData]);
+
+  const closeModal = useCallback(() => {
+    setIsModalOpenMain(false);
+  }, [setIsModalOpenMain]);
+
+
+
   const handleDescriptionChange = (cardKey, value) => {
     setShowNotification(false); 
     if (value.length <= 150) {
@@ -68,87 +135,7 @@ export default function FormEditSlide({ setIsModalOpenMain, editSlideData }) {
       [cardKey]: { ...prevData[cardKey], date: date },
     }));
   };
-
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      setShowNotification(false); 
-      setIsImageRemoved(false); 
-      setFormData((prevState) => ({
-        ...prevState,
-        photoAva: file, 
-      }));
-
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewPhotoAva([reader.result]); 
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-
-  const handleRemovePreviewPhotoAva = useCallback(() => {
-    setShowNotification(false); 
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      photoAva: '',
-    }));
-    setPreviewPhotoAva([]); 
-    setIsImageRemoved(true); 
-  }, []);
-  
-  
-  
-  const validateForm = useCallback(() => {
-    let isValid = true;
-    let errors = [];
-  
-    if (!formData.photoAva) {
-      isValid = false;
-      errors.push('Изображение');
-    }
-    // Проверка описаний карточек
-    if (!formData.card1.description) {
-      isValid = false;
-      errors.push('Описание Карточки 1');
-    }
-    if (!formData.card2.description) {
-      isValid = false;
-      errors.push('Описание Карточки 2');
-    }
-    if (!formData.card3.description) {
-      isValid = false;
-      errors.push('Описание Карточки 3');
-    }
-  
-    // Проверка дат карточек
-    if (!formData.card1.date) {
-      isValid = false;
-      errors.push('Дата Карточки 1');
-    }
-    if (!formData.card2.date) {
-      isValid = false;
-      errors.push('Дата Карточки 2');
-    }
-    if (!formData.card3.date) {
-      isValid = false;
-      errors.push('Дата Карточки 3');
-    }
-  
-    if (!isValid) {
-      setShowNotification(true); 
-    } else {
-      setShowNotification(false); 
-    }
-  
-    return isValid;
-  }, [formData, isImageRemoved]);
-  
-
-  const closeModal = useCallback(() => {
-    setIsModalOpenMain(false);
-  }, [setIsModalOpenMain]);
+ 
 
   const submitHandler = useCallback(
     async (e) => {
@@ -157,7 +144,7 @@ export default function FormEditSlide({ setIsModalOpenMain, editSlideData }) {
       const isFormValid = validateForm();
 
       if (!isFormValid) {
-        console.error('Форма не прошла валидацию. Работа функции submitHandler прервана.');
+        setShowNotification(true);
         return;
       }
 
@@ -201,21 +188,6 @@ export default function FormEditSlide({ setIsModalOpenMain, editSlideData }) {
     },
     [validateForm, formData, isImageRemoved, dispatch, setIsModalOpenMain, editSlideData]
   );
-
-  const compressImage = useCallback(async (file) => {
-    const options = {
-      maxSizeMB: 4,
-      maxWidthOrHeight: 1920,
-      useWebWorker: true,
-    };
-
-    try {
-      return await compressImageFile(file, options);
-    } catch (error) {
-      console.error('Ошибка при сжатии изображения:', error);
-    }
-  }, []);
-  
 
   return (
     <div className={styles.form_container}>
