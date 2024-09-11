@@ -2,8 +2,6 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import compressImageFile from 'browser-image-compression';
 import styles from './FormAddSlide.module.scss';
-// import { clearFormData, fetchProject } from '../../../store/Slice/projectSlice';
-import { removePreviewPhotoAva, changeHandler } from '../../add-project/formAdd/utils/formHelpers';
 import CalendarAdd from './CalendarAdd';
 import { postVacancyData, editSlide, fetchSlides } from '../../../store/Slice/vacancyMainSlideCardSlice';
 
