@@ -3,18 +3,18 @@ import axios from 'axios';
 
 const serverHost = process.env.REACT_APP_SERVER_HOST;
 
-export const postVacancyData = createAsyncThunk(
-  'slides/postVacancyData',
+export const postEventData = createAsyncThunk(
+  'events/postEventData',
   async (formData, { dispatch, rejectWithValue }) => {
     try {
-       const response = await axios.post(`${serverHost}/api-vacancyDetails/save-vacancy-details`, formData, {
+       const response = await axios.post(`${serverHost}/api-events/save-event-details`, formData, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
       });
 
       if (response.data) {
-        dispatch(fetchSlides()); 
+        dispatch(fetchEvents()); 
       }
       return response.data;
     } catch (error) {
@@ -25,11 +25,11 @@ export const postVacancyData = createAsyncThunk(
 );
 
 
-export const fetchSlides = createAsyncThunk(
-  'slides/fetchSlides',
+export const fetchEvents = createAsyncThunk(
+  'events/fetchEvents',
   async (_, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`${serverHost}/api-vacancyDetails/get-slides`);
+      const response = await axios.get(`${serverHost}/api-events/get-events`);
       return response.data;
     } catch (error) {
       return rejectWithValue('Ошибка при получении данных: ' + error.message);
@@ -37,38 +37,38 @@ export const fetchSlides = createAsyncThunk(
   }
 );
 
-export const fetchSlideDetails = createAsyncThunk(
-  'slides/fetchSlideDetails',
-  async (slideId, { rejectWithValue }) => {
+export const fetchEventDetails = createAsyncThunk(
+  'events/fetchEventDetails',
+  async (eventId, { rejectWithValue }) => {
       try {
-          const response = await axios.get(`${serverHost}/api-vacancyDetails/get-slide/${slideId}`);
+          const response = await axios.get(`${serverHost}/api-events/get-event/${eventId}`);
           return response.data;
       } catch (error) {
-          return rejectWithValue('Ошибка при получении данных слайда: ' + error.message);
+          return rejectWithValue('Ошибка при получении данных мероприятия: ' + error.message);
       }
   }
 );
 
 
-export const fetchSlideById = createAsyncThunk(
-  'slides/fetchSlideById',
+export const fetchEventById = createAsyncThunk(
+  'events/fetchEventById',
   async (id, { rejectWithValue }) => {
     try {
-      const response = await axios.get(`${serverHost}/api-vacancyDetails/get-slide/${id}`);
+      const response = await axios.get(`${serverHost}/api-events/get-event/${id}`);
       return response.data;
     } catch (error) {
-      return rejectWithValue('Ошибка при получении данных слайда: ' + error.message);
+      return rejectWithValue('Ошибка при получении данных мероприятия: ' + error.message);
     }
   }
 );
 
 
 
-export const editSlide = createAsyncThunk(
-  'slides/editSlide',
+export const editEvent = createAsyncThunk(
+  'events/editEvent',
   async ({ id, data }, { rejectWithValue }) => {
     try {
-      const response = await axios.put(`${serverHost}/api-vacancyDetails/update-slide/${id}`, data, {
+      const response = await axios.put(`${serverHost}/api-events/update-event/${id}`, data, {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
@@ -77,136 +77,136 @@ export const editSlide = createAsyncThunk(
       if (response.status === 200) {
         return response.data;  
       } else {
-        return rejectWithValue('Не удалось обновить слайд');
+        return rejectWithValue('Не удалось обновить мероприятия');
       }
     } catch (error) {
-      return rejectWithValue('Ошибка при обновлении слайда: ' + error.message);
+      return rejectWithValue('Ошибка при обновлении мероприятия: ' + error.message);
     }
   }
 );
 
 
-export const updateSlidesOrder = createAsyncThunk(
-  'vacancyMainSlideCard/updateSlidesOrder',
-  async (slides, { rejectWithValue }) => {
+export const updateEventsOrder = createAsyncThunk(
+  'events/updateEventsOrder',
+  async (events, { rejectWithValue }) => {
     try {
-      const response = await axios.put(`${serverHost}/api-vacancyDetails/update-slides-order`, {
-        slides: slides.map((slide, index) => ({
-          id: slide.id,
-          order: index  // Сохраняем порядок для каждого слайда
+      const response = await axios.put(`${serverHost}/api-events/update-event-order`, {
+        events: events.map((event, index) => ({
+          id: event.id,
+          order: index  
         }))
       });
-      return response.data; // Возвращаем обновленные слайды с сервера, если требуется
+      return response.data;
     } catch (error) {
-      console.error('Ошибка при обновлении порядка слайдов на сервере:', error);
-      return rejectWithValue('Ошибка при обновлении порядка слайдов: ' + error.message);
+      console.error('Ошибка при обновлении порядка мероприятий на сервере:', error);
+      return rejectWithValue('Ошибка при обновлении порядка мероприятий: ' + error.message);
     }
   }
 );
 
 
 
-export const toggleSlideVisibility = createAsyncThunk(
-  'slides/toggleSlideVisibility',
+export const toggleEventVisibility = createAsyncThunk(
+  'events/toggleEventVisibility',
   async ({ id, hidden }, { dispatch, rejectWithValue }) => {
     try {
-      const response = await axios.put(`${serverHost}/api-vacancyDetails/toggle-slide/${id}`, { hidden });
+      const response = await axios.put(`${serverHost}/api-events/toggle-event/${id}`, { hidden });
     if (response.status === 200) {
-      dispatch(updateSlideVisibility({ id, hidden }));
-      dispatch(fetchSlides());
+      dispatch(updateEventVisibility({ id, hidden }));
+      dispatch(fetchEvents());
       }
       return response.data;
     } catch (error) {
-      console.error('Ошибка при переключении видимости слайда:', error);
-      return rejectWithValue('Ошибка при переключении видимости слайда: ' + error.message);
+      console.error('Ошибка при переключении видимости мероприятия:', error);
+      return rejectWithValue('Ошибка при переключении видимости мероприятия: ' + error.message);
     }
   }
 );
 
 
-export const deleteSlide = createAsyncThunk(
-  'slides/deleteSlide',
+export const deleteEvent = createAsyncThunk(
+  'events/deleteEvent',
   async (id, { rejectWithValue }) => {
     try {
-      await axios.delete(`${serverHost}/api-vacancyDetails/delete-slide/${id}`);
+      await axios.delete(`${serverHost}/api-events/delete-event/${id}`);
       return id;  
     } catch (error) {
-      return rejectWithValue('Ошибка при удалении слайда: ' + error.message);
+      return rejectWithValue('Ошибка при удалении мероприятия: ' + error.message);
     }
   }
 );
 
 const formAddEventSlice = createSlice({
-  name: 'slides',
+  name: 'events',
   initialState: {
-    slides: [],
+    events: [],
     isLoading: false,
     error: null,
   },
   reducers: {
-    resetSlidesState(state) {
+    resetEventsState(state) {
       state.slides = [];
       state.isLoading = false;
       state.error = null;
     },
-    updateSlideVisibility(state, action) {
-      const index = state.slides.findIndex((slide) => slide.id === action.payload.id);
+    updateEventVisibility(state, action) {
+      const index = state.events.findIndex((event) => event.id === action.payload.id);
         if (index !== -1) {
-          state.slides[index].hidden = action.payload.hidden;
-          state.slides = [...state.slides];
+          state.events[index].hidden = action.payload.hidden;
+          state.events = [...state.events];
         }
     },
-    updateSlidesOrderLocally(state, action) { 
-      state.slides = action.payload;
+    updateEventsOrderLocally(state, action) { 
+      state.events = action.payload;
     },
   },
   extraReducers: (builder) => {
     builder
-      .addCase(fetchSlides.pending, (state) => {
+      .addCase(fetchEvents.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(fetchSlides.fulfilled, (state, action) => {
+      .addCase(fetchEvents.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.slides = action.payload;
+        state.events = action.payload;
       })
-      .addCase(fetchSlides.rejected, (state, action) => {
+      .addCase(fetchEvents.rejected, (state, action) => {
         state.isLoading = false;
         state.error = action.error.message;
       })
-      .addCase(postVacancyData.fulfilled, (state, action) => {
-        state.slides = [...state.slides, action.payload];
+      .addCase(postEventData.fulfilled, (state, action) => {
+        state.events = [...state.events, action.payload];
       })
-      .addCase(editSlide.fulfilled, (state, action) => {
-        const index = state.slides.findIndex(slide => slide.id === action.payload.id);
+      .addCase(editEvent.fulfilled, (state, action) => {
+        const index = state.events.findIndex(event => event.id === action.payload.id);
         if (index !== -1) {
-          state.slides[index] = {...state.slides[index], ...action.payload};  
+          state.events[index] = {...state.events[index], ...action.payload};  
         } else {
           console.warn('Slide not found for update, adding new slide.');
-          state.slides.push(action.payload);
+          state.events.push(action.payload);
         }
       })
-      .addCase(fetchSlideById.fulfilled, (state, action) => {      
-        const existingIndex = state.slides.findIndex((slide) => slide.id === action.payload.id);
+      .addCase(fetchEventById.fulfilled, (state, action) => {      
+        const existingIndex = state.events.findIndex((event) => event.id === action.payload.id);
         if (existingIndex !== -1) {
-          state.slides[existingIndex] = action.payload;
+          state.events[existingIndex] = action.payload;
         } else {
-          state.slides.push(action.payload);
+          state.events.push(action.payload);
         }
       })
-      .addCase(fetchSlideById.rejected, (state, action) => {   
-        console.error('Ошибка при получении данных слайда:', action.payload);
+      .addCase(fetchEventById.rejected, (state, action) => {   
+        console.error('Ошибка при получении данных мероприятия:', action.payload);
         state.error = action.payload;
       })
-      .addCase(updateSlidesOrder.fulfilled, (state, action) => {
-        state.slides = action.payload.slides;
+      .addCase(updateEventsOrder.fulfilled, (state, action) => {
+        state.events = action.payload.events;
       })    
-      .addCase(deleteSlide.fulfilled, (state, action) => {
-        state.slides = state.slides.filter((slide) => slide.id !== action.payload); 
-        state.slides = [...state.slides];
+      .addCase(deleteEvent.fulfilled, (state, action) => {
+        state.events = state.events.filter((event) => event.id !== action.payload); 
+        state.events = [...state.events];
       });
   },
 });
 
-export const { resetSlidesState, updateSlideVisibility, updateSlidesOrderLocally } = formAddEventSlice.actions;
+export const { resetEventsState, updateEventVisibility, updateEventsOrderLocally } = formAddEventSlice.actions;
 
 export default formAddEventSlice.reducer;

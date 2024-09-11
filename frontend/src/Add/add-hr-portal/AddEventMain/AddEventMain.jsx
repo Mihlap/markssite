@@ -11,10 +11,10 @@ import styles from '../../style/style-card.module.scss';
 
 export default function AddEventMain({
   user,
-  isModalOpenMain,
-  setIsModalOpenMain,
-  editSlideData,
-  setEditSlideData,
+  isModalOpenEvent,
+  setIsModalOpenEvent,
+  editEventData,
+  setEditEventData,
   modalBlockHeight,
   deleteModalState,
   setDeleteModalState,
@@ -25,8 +25,8 @@ export default function AddEventMain({
   const slides = useSelector(state => state.formAddSlide.slides || []);
 
   const handleOpenModal = () => {
-    setEditSlideData(null);
-    setIsModalOpenMain(true);
+    setEditEventData(null);
+    setIsModalOpenEvent(true);
   };
 
   const handleFormDelete = useCallback(
@@ -50,19 +50,22 @@ export default function AddEventMain({
     async (id) => {
       try {
         const slideData = await dispatch(fetchSlideById(id)).unwrap();
-        setEditSlideData(slideData);
-        setIsModalOpenMain(true);
+        setEditEventData(slideData);
+        setIsModalOpenEvent(true);
       } catch (error) {
         console.error("Ошибка при загрузке данных слайда:", error);
       }
     },
-    [dispatch, setEditSlideData, setIsModalOpenMain]
+    [dispatch, setEditEventData, setIsModalOpenEvent]
   );
 
   return (
     <div className={styles.card_components_admin__blockAddSlide}>
       <span className={styles.card_components_admin__title}>Ведущая компания в сфере проектирования</span>
-      <div className={styles.card_components_admin__button_block} >
+      <div
+        className={styles.card_components_admin__button_block}
+        // onClick={handleOpenModal}
+      >
         <button className={styles.card_components_admin__button}>
           <div>
             <svg
@@ -90,11 +93,11 @@ export default function AddEventMain({
       </div>
 
    
-      {/* <EventModalManager
-        isModalOpenMain={isModalOpenMain}
-        setIsModalOpenMain={setIsModalOpenMain}
-        editSlideData={editSlideData}
-        setEditSlideData={setEditSlideData}
+      <EventModalManager
+        isModalOpenEvent={isModalOpenEvent}
+        setIsModalOpenEvent={setIsModalOpenEvent}
+        editEventData={editEventData}
+        setEditEventData={setEditEventData}
         modalBlockHeight={modalBlockHeight}
       />
 
@@ -106,7 +109,7 @@ export default function AddEventMain({
         handleEditClick={handleEditClick}
         handleFormDelete={handleFormDelete}
         handleLookClick={handleLookClick}
-      /> */}
+      />
     </div>
   );
 }
