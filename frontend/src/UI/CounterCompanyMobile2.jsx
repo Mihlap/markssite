@@ -1,17 +1,17 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useInView } from "react-intersection-observer";
-import { useDispatch, useSelector } from "react-redux";
-import gsap from "gsap";
-import styles from "../Company/Company.module.css";
+import React, { useEffect, useRef, useState } from 'react';
+import { useInView } from 'react-intersection-observer';
+import { useDispatch, useSelector } from 'react-redux';
+import gsap from 'gsap';
+import styles from '../Company/Company.module.css';
 
 import {
   incrementDepartment,
   incrementGap,
   incrementScient,
   incrementScienceDegree,
-} from "../store/Slice/counterSlice";
+} from '../store/Slice/counterSlice';
 
-import bracket_dark from "../icons/bracket_dark.svg";
+import bracket_dark from '../icons/bracket_dark.svg';
 
 const CounterCompanyMobile2 = () => {
   const [counting, setCounting] = useState(true);
@@ -19,61 +19,48 @@ const CounterCompanyMobile2 = () => {
   const countDepartment = useSelector((state) => state.counter.countDepartment);
   const countGap = useSelector((state) => state.counter.countGap);
   const countScient = useSelector((state) => state.counter.countScient);
-  const countScienceDegree = useSelector(
-    (state) => state.counter.countScienceDegree
-  );
-  
+  const countScienceDegree = useSelector((state) => state.counter.countScienceDegree);
+
   const [inViewRef, inView] = useInView({ threshold: 0.5 });
   const ref1 = useRef(null);
   const ref2 = useRef(null);
 
   useEffect(() => {
     let timer1;
-  let timer2;
-  
-  const runCounters = async () => {
-    if (inView) {
-      timer1 = setTimeout(() => {
-        dispatch(incrementDepartment());
-        dispatch(incrementScient());
-        
-        timer2 = setTimeout(() => {
-          dispatch(incrementGap());
-          dispatch(incrementScienceDegree());
-          setCounting(false);
-        }, 50);
-      }, 150);
-    }
-  };
+    let timer2;
 
-  runCounters();
+    const runCounters = async () => {
+      if (inView) {
+        timer1 = setTimeout(() => {
+          dispatch(incrementDepartment());
+          dispatch(incrementScient());
 
-  return () => {
-    clearTimeout(timer1);
-    clearTimeout(timer2);
-  };
-  }, [
-    dispatch,
-    countDepartment,
-    countGap,
-    countScient,
-    countScienceDegree,
-    inView,
-  ]);
-      
+          timer2 = setTimeout(() => {
+            dispatch(incrementGap());
+            dispatch(incrementScienceDegree());
+            setCounting(false);
+          }, 50);
+        }, 150);
+      }
+    };
+
+    runCounters();
+
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+    };
+  }, [dispatch, countDepartment, countGap, countScient, countScienceDegree, inView]);
+
   useEffect(() => {
     if (inView) {
-      gsap.from(ref1.current, { x: -100, opacity: 0,  stagger: 0.5,
-        ease: "power2.out", duration: 0.5});
+      gsap.from(ref1.current, { x: -100, opacity: 0, stagger: 0.5, ease: 'power2.out', duration: 0.5 });
       if (!counting) {
-       gsap.from(ref2.current, { x: -100, opacity: 0, stagger: 0.5,
-        ease: "power2.out",  duration: 0.5});
-   
+        gsap.from(ref2.current, { x: -100, opacity: 0, stagger: 0.5, ease: 'power2.out', duration: 0.5 });
       }
     }
   }, [counting]);
 
- 
   return (
     <div className={styles.right_counter_wrapper} ref={inViewRef}>
       {counting ? (
@@ -85,21 +72,17 @@ const CounterCompanyMobile2 = () => {
               </div>
               <p className={styles.number}>{countDepartment}</p>
             </div>
-            <span className={styles.span_underSlider_text_right}>
-            Регионов присутствия
-            </span>
+            <span className={styles.span_underSlider_text_right}>Регионов присутствия</span>
           </div>
           <div className={styles.container_text_right}>
-            <div
-              className={`${styles.div_underSlider_text_right} ${styles.div_underSlider_text_right_last}`}
-            >
+            <div className={`${styles.div_underSlider_text_right} ${styles.div_underSlider_text_right_last}`}>
               <div className={styles.text_svg_right}>
                 <img src={bracket_dark} alt="bracket_dark" />
               </div>
               <p className={styles.number}>{countScient}</p>
             </div>
             <span className={styles.span_underSlider_text_right}>
-            Положительных заключений государственной экспертизы в&nbsp;статусе генерального проектировщика
+              Положительных заключений государственной экспертизы в&nbsp;статусе генерального проектировщика
             </span>
           </div>
         </div>
@@ -112,14 +95,10 @@ const CounterCompanyMobile2 = () => {
               </div>
               <p className={styles.number}>{countGap}</p>
             </div>
-            <span className={styles.span_underSlider_text_right}>
-            Объектов транспортной инфраструктуры
-            </span>
+            <span className={styles.span_underSlider_text_right}>Объектов транспортной инфраструктуры</span>
           </div>
           <div className={styles.container_text_right}>
-            <div
-              className={`${styles.div_underSlider_text_right} ${styles.div_underSlider_text_right_last}`}
-            >
+            <div className={`${styles.div_underSlider_text_right} ${styles.div_underSlider_text_right_last}`}>
               <div className={styles.text_svg_right}>
                 <img src={bracket_dark} alt="bracket_dark" />
               </div>
@@ -127,10 +106,10 @@ const CounterCompanyMobile2 = () => {
               {/* <p className={styles.number_metr}>м<sup className={styles.small_sup}>2</sup></p> */}
             </div>
             <span className={styles.span_underSlider_text_right}>
-            Объёма проектирования с&nbsp;применением цифровых технологий
+              Объёма проектирования с&nbsp;применением цифровых технологий
             </span>
           </div>
-          </div>
+        </div>
       )}
     </div>
   );

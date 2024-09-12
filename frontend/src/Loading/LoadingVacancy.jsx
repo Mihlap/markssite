@@ -1,14 +1,14 @@
-import React from "react";
-import styles from "./LoadingVacancy.module.scss";
+import React from 'react';
+import styles from './LoadingVacancy.module.scss';
 
 export default function LoadingVacancy() {
   return (
     <div
       style={{
-        height: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
+        height: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
       }}
     >
       <div className={styles.div_svg}>
@@ -33,5 +33,3 @@ export default function LoadingVacancy() {
     </div>
   );
 }
-
-

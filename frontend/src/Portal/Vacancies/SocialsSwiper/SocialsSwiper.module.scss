@@ -1,9 +1,9 @@
-@import "../../../App.css";
-@import "../../../_variables.scss";
+@import '../../../App.css';
+@import '../../../_variables.scss';
 
 .SocialsSwiper {
   margin: rem(140) 0;
-  background-color: var( --white-F6F6F6);
+  background-color: var(--white-F6F6F6);
   $s: &;
   min-height: rem(750);
 
@@ -61,7 +61,8 @@
     align-items: flex-start;
     justify-content: space-between;
 
-    h3, span {
+    h3,
+    span {
       font-size: 20px;
     }
   }
@@ -83,17 +84,14 @@
       background-color: var(--dark-blue-389FFF);
     }
   }
-  
 
-  @media all and (max-width:$bp0){
+  @media all and (max-width: $bp0) {
     &__picture {
       height: auto;
     }
   }
 
-
-
-  @media all and (max-width:$bp1){
+  @media all and (max-width: $bp1) {
     &__slider {
       padding: 0 rem(64);
       position: relative;
@@ -113,7 +111,7 @@
         top: 0;
         left: -4rem;
       }
-      
+
       &::after {
         top: 0;
         right: -4rem;
@@ -126,7 +124,7 @@
       font-size: rem(32);
       line-height: rem(40);
     }
-      
+
     &__inner {
       padding: rem(24);
       box-shadow: 0px 0px rem(20) 0px #00000008;
@@ -138,20 +136,19 @@
       border-radius: rem(17.5);
     }
 
-    &__active  {
-
+    &__active {
       #{$s}__inner {
         padding: rem(26) rem(18);
       }
-      
+
       #{$s}__button {
         height: rem(34);
       }
-  
+
       #{$s}__picture {
         margin-bottom: rem(34);
         height: rem(335);
-      }  
+      }
     }
 
     &__button {
@@ -159,7 +156,7 @@
     }
   }
 
-  @media all and (max-width:$bp2){
+  @media all and (max-width: $bp2) {
     min-height: auto;
     // background-color: red;
 
@@ -178,7 +175,7 @@
     &__active &__inner {
       padding: rem(16);
     }
-    
+
     &__button,
     &__active &__button {
       height: rem(31);
@@ -188,17 +185,17 @@
     &__active &__picture {
       margin-bottom: rem(24);
       height: rem(258);
-    }  
+    }
   }
 
   // Адаптация под tablet
-  @media all and (max-width:$bp3){
+  @media all and (max-width: $bp3) {
     margin: rem(120) 0;
 
     &__swiper {
       margin-top: 0;
     }
-   
+
     &__slider {
       &::before,
       &::after {
@@ -214,22 +211,22 @@
       font-size: rem(24);
       line-height: rem(32);
       padding: 0 0 rem(48) rem(173);
-  
+
       span {
         color: var(--blue-75BBFD);
       }
     }
 
     &__bottom {
-  
-      h3, span {
+      h3,
+      span {
         font-size: 16px;
       }
     }
   }
 
   // Адаптация под mobile
-  @media all and (max-width:$bp4){
+  @media all and (max-width: $bp4) {
     margin: rem(110) 0;
 
     &__inner img {
@@ -244,17 +241,18 @@
       width: 100%;
       font-size: rem(20);
       line-height: rem(28);
-      padding: 0 rem(16) rem(48) rem(16); 
+      padding: 0 rem(16) rem(48) rem(16);
     }
 
     &__bottom {
-      h3, span {
+      h3,
+      span {
         font-size: 16px;
       }
     }
   }
 
-  @media all and (max-width:$bp5){
+  @media all and (max-width: $bp5) {
     &__slider {
       padding: 0;
       margin: 0 5px;
@@ -268,8 +266,8 @@
     &__picture,
     &__active &__picture {
       height: auto;
-    }  
-    
+    }
+
     &__button {
       font-size: rem(10);
       padding: rem(8) rem(20);

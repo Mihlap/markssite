@@ -4,7 +4,7 @@ import Slide from './Slide';
 import {
   fetchSlides,
   updateSlidesOrderLocally,
-  updateSlidesOrder
+  updateSlidesOrder,
 } from '../../../store/Slice/vacancyMainSlideCardSlice';
 import styles from '../../style/style-card.module.scss';
 
@@ -15,7 +15,7 @@ export default function SlidesList({
   handleDeleteModalOpen,
   handleEditClick,
   handleFormDelete,
-  handleLookClick
+  handleLookClick,
 }) {
   const dispatch = useDispatch();
   const slides = useSelector((state) => state.formAddSlide.slides || []);
@@ -57,7 +57,7 @@ export default function SlidesList({
     <div className={styles.card_components_admin__block__vacancy}>
       {slides.map((el, index) => (
         <Slide
-        key={el.id || index}
+          key={el.id || index}
           el={el}
           index={index}
           handleDragStart={handleDragStart}

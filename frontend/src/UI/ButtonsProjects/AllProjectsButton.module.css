@@ -1,5 +1,3 @@
-
-
 .button_link {
   display: flex;
   justify-content: center;
@@ -7,34 +5,33 @@
   background: rgba(246, 246, 246, 0.42);
   border: none;
   color: var(--white-F6F6F6);
-  padding: 0.25rem 1rem 0.25rem 0.25rem ;
+  padding: 0.25rem 1rem 0.25rem 0.25rem;
   text-align: center;
   cursor: pointer;
   border-radius: 2.125rem;
   transition: background-color 0.4s ease;
- }
+}
 
- .button_link_vacancy {   
+.button_link_vacancy {
   display: flex;
   justify-content: center;
   align-items: center;
   background: rgb(255, 255, 255);
   border: none;
   color: var(--dark-gray-566272);
-  padding: 0.25rem 1rem 0.25rem 0.25rem ;
+  padding: 0.25rem 1rem 0.25rem 0.25rem;
   text-align: center;
   cursor: pointer;
   border-radius: 2.125rem;
   transition: background-color 0.4s ease;
- }
-
+}
 
 .button_link_allProjectButton {
- display: flex;
- justify-content: center;
- align-items: center;
- width: 1.5rem;
- height: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 1.5rem;
+  height: 1.5rem;
 }
 
 .button_name_allProjectButton {
@@ -61,37 +58,38 @@
   padding-left: 1.87vw;
   padding-right: 1.87vw;
 }
-.previous_svg, .next_svg {
-display: flex;
-border: none;
-background-color: var(--white-F6F6F6);;
-justify-content: center;
-align-items: center;
-padding: 1.25vh 0vh;
+.previous_svg,
+.next_svg {
+  display: flex;
+  border: none;
+  background-color: var(--white-F6F6F6);
+  justify-content: center;
+  align-items: center;
+  padding: 1.25vh 0vh;
 }
- 
-.previous_svg span{
-padding-left: 0.7vw;
-font-family: var(--font-raleway);
-font-weight: var(--fw-400);
-font-size: 0.97vw;
-line-height: 1.38vh;
-color: var(--black-1D2E43);
+
+.previous_svg span {
+  padding-left: 0.7vw;
+  font-family: var(--font-raleway);
+  font-weight: var(--fw-400);
+  font-size: 0.97vw;
+  line-height: 1.38vh;
+  color: var(--black-1D2E43);
 }
-.next_svg span{
-padding-right: 0.7vw;
-font-family: 'Raleway';
-font-style: normal;
-font-weight: 400;
-font-size: 0.97vw;
-line-height: 1.38vh;
-color: var(--black-1D2E43);
-  }
+.next_svg span {
+  padding-right: 0.7vw;
+  font-family: 'Raleway';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 0.97vw;
+  line-height: 1.38vh;
+  color: var(--black-1D2E43);
+}
 
 .button_project :hover {
-    color: var(--salmon-light-FFBFB5);
-    fill: var(--salmon-light-FFBFB5);
-  }
+  color: var(--salmon-light-FFBFB5);
+  fill: var(--salmon-light-FFBFB5);
+}
 /* Стили для планшетногй версии сайта блока AllProjectButton начинаются тут */
 
 @media screen and (min-width: 768px) and (max-width: 1024px) {
@@ -102,23 +100,19 @@ color: var(--black-1D2E43);
   .button_link_vacancy:hover {
     background-color: rgb(255, 255, 255);
   }
-  
-  
 }
 
 /* Стили для мобильной версии сайта блока AllProjectButton начинаются тут */
 @media screen and (max-width: 767px) {
-
   .button_link:hover {
     background: rgba(246, 246, 246, 0.42);
   }
-  
+
   .button_link_vacancy:hover {
     background-color: rgb(255, 255, 255);
   }
 
-.button_project {
-  display: none;
+  .button_project {
+    display: none;
+  }
 }
-}
-

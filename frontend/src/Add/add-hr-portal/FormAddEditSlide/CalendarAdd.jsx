@@ -32,7 +32,7 @@ export default function CalendarAdd({ date, setDate }) {
       button.style.height = '48px';
       button.style.display = 'flex';
       button.style.justifyContent = 'center';
-      button.style.alignItems = 'center';      
+      button.style.alignItems = 'center';
       button.onmouseenter = () => (button.style.backgroundColor = '#75BBFD');
       button.onmouseleave = () => (button.style.backgroundColor = '');
     });
@@ -137,7 +137,8 @@ export default function CalendarAdd({ date, setDate }) {
         <button
           type="button"
           onClick={handleCalendarOpen}
-          className={`${styles.slider_container__customFileUpload} ${buttonActive ? styles.activeButton : ''}`}>
+          className={`${styles.slider_container__customFileUpload} ${buttonActive ? styles.activeButton : ''}`}
+        >
           <svg width="12" height="12" viewBox="0 0 12 12" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
             <path
               fillRule="evenodd"

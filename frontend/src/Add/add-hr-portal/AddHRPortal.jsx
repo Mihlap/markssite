@@ -223,7 +223,8 @@ export default function AddHRPortal({ user }) {
               className={`${styles.card_components_admin__buttonFilter__group} ${
                 activeButtonIndex === index ? styles.activeButtonVacancy : ''
               } ${index === 0 ? styles.noAnimation : ''}`}
-              onClick={() => handleButtonsFilterClick(index)}>
+              onClick={() => handleButtonsFilterClick(index)}
+            >
               <img
                 className={`${styles.card_components_admin__buttonFilter__icons} ${
                   activeButtonIndex === index ? styles.activeIcon : ''
@@ -301,7 +302,8 @@ export default function AddHRPortal({ user }) {
                   height="40"
                   viewBox="0 0 41 40"
                   fill="none"
-                  xmlns="http://www.w3.org/2000/svg">
+                  xmlns="http://www.w3.org/2000/svg"
+                >
                   <g id="icon">
                     <circle id="Ellipse 4" cx="20.5" cy="20" r="20" fill="#F6F6F6" />
                     <path
@@ -373,7 +375,8 @@ export default function AddHRPortal({ user }) {
                               key={el.id}
                               className={`${styles.cart_vacancy_container} ${
                                 copiedVacancyId === el.id ? styles.copiedVacancy : ''
-                              }`}>
+                              }`}
+                            >
                               <div className={styles.cart_vacancy_container__content}>
                                 <span className={styles.cart_vacancy_container__title}>{el.title}</span>
                               </div>
@@ -388,7 +391,8 @@ export default function AddHRPortal({ user }) {
                                 )}
                                 <button
                                   className={styles.cart_vacancy_container__copyButton}
-                                  onClick={() => handleCopyClick(el.id)}>
+                                  onClick={() => handleCopyClick(el.id)}
+                                >
                                   <div className={styles.cart_vacancy_container__copyButton_img_copy_ok} />
                                 </button>
                               </div>
@@ -396,7 +400,8 @@ export default function AddHRPortal({ user }) {
                                 {user?.name === 'obezyankaa' || user?.name === 'Pokemon' || user?.name === 'hr778' ? (
                                   <div
                                     className={styles.copyIcon_block_vacancy}
-                                    onClick={() => handleCopyVacancyClick(el.id)}>
+                                    onClick={() => handleCopyVacancyClick(el.id)}
+                                  >
                                     <button className={styles.buttom_copyIcon}>
                                       <label htmlFor="copyIcon" className={styles.label}>
                                         <div className={`${styles.wrapper}`}>
@@ -428,7 +433,8 @@ export default function AddHRPortal({ user }) {
                                 {user?.name === 'obezyankaa' || user?.name === 'Pokemon' || user?.name === 'hr778' ? (
                                   <div
                                     className={`${styles.look_block_vacancy} ${el.hidden ? styles.disabled : ''}`}
-                                    onClick={() => handleLookClick(el.id)}>
+                                    onClick={() => handleLookClick(el.id)}
+                                  >
                                     <button className={styles.buttom_look}>
                                       <label htmlFor="look" className={styles.label}>
                                         <div className={`${styles.wrapper}`}>
@@ -481,7 +487,8 @@ export default function AddHRPortal({ user }) {
 
                                   <button
                                     className={styles.delete_modal_block__close_button}
-                                    onClick={() => handleDeleteModalClose(el.id)}></button>
+                                    onClick={() => handleDeleteModalClose(el.id)}
+                                  ></button>
                                 </div>
                               </div>
                             )}

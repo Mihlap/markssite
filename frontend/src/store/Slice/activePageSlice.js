@@ -3,13 +3,13 @@ import { createSlice } from '@reduxjs/toolkit';
 const activePageSlice = createSlice({
   name: 'activePage',
   initialState: {
-    page: '' 
+    page: '',
   },
   reducers: {
     setActivePage: (state, action) => {
       state.page = action.payload;
-    }
-  }
+    },
+  },
 });
 
 export const { setActivePage } = activePageSlice.actions;

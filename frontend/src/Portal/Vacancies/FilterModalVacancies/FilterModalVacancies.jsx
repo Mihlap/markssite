@@ -129,7 +129,8 @@ const FilterModalVacancies = ({ isOpen, onClose, setFilters, selectedFilter }) =
         content: {
           zIndex: 9999,
         },
-      }}>
+      }}
+    >
       <div onClick={onClose} className={`${styles.modal_vacancy_close} ${styles.fixed_modal_vacancy}`}>
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
@@ -155,7 +156,8 @@ const FilterModalVacancies = ({ isOpen, onClose, setFilters, selectedFilter }) =
                     className={`${styles.filterModalButton} ${
                       localFilters[filterGroup.filterKey]?.includes(button.value) ? styles.activeFilter : ''
                     }`}
-                    onClick={() => handleFilterClick(filterGroup.filterKey, button.value)}>
+                    onClick={() => handleFilterClick(filterGroup.filterKey, button.value)}
+                  >
                     {button.label}
                   </button>
                 ))}

@@ -1,18 +1,14 @@
-import React, { useEffect, useState } from "react";
-import styles from "./TableCompany.module.css";
-import tableData from "./tableData";
+import React, { useEffect, useState } from 'react';
+import styles from './TableCompany.module.css';
+import tableData from './tableData';
 
-const TableCompany = ({
-  handleMouseEnter,
-  handleMouseLeave,
-  handleMouseHover,
-}) => {
+const TableCompany = ({ handleMouseEnter, handleMouseLeave, handleMouseHover }) => {
   const [showAll, setShowAll] = useState(false);
 
   const tdStyle = {
-    paddingTop: "36px",
-    paddingBottom: "36px",
-    borderTop: "1px solid var(--dark-gray-566272)",
+    paddingTop: '36px',
+    paddingBottom: '36px',
+    borderTop: '1px solid var(--dark-gray-566272)',
     whiteSpace: 'nowrap',
     overflow: 'hidden',
     textOverflow: 'ellipsis',
@@ -20,11 +16,11 @@ const TableCompany = ({
   };
 
   const tdStyle4 = {
-    borderTop: "1px solid var(--dark-gray-566272)",
-    whiteSpace: "nowrap",
-    overflow: "hidden",
-    textOverflow: "ellipsis",
-    wordWrap: "break-word",
+    borderTop: '1px solid var(--dark-gray-566272)',
+    whiteSpace: 'nowrap',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    wordWrap: 'break-word',
   };
 
   const handleShowAllClick = () => {
@@ -36,23 +32,23 @@ const TableCompany = ({
     };
 
     const scrollToTableHeader = () => {
-      const element = document.getElementById("table-header-anchor");
+      const element = document.getElementById('table-header-anchor');
       if (element) {
         element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        window.location.replace("#table-header-anchor");
+        window.location.replace('#table-header-anchor');
       }
     };
 
     const hash = window.location.hash;
-    if (hash === "#table-header-anchor") {
+    if (hash === '#table-header-anchor') {
       scrollToTableHeader();
     } else {
       scrollToTop();
     }
 
     return () => {
-      window.removeEventListener("scroll", scrollToTop);
-      window.removeEventListener("scroll", scrollToTableHeader);
+      window.removeEventListener('scroll', scrollToTop);
+      window.removeEventListener('scroll', scrollToTableHeader);
     };
   }, []);
 
@@ -94,18 +90,9 @@ const TableCompany = ({
             onMouseEnter={handleMouseEnter}
             onMouseLeave={handleMouseLeave}
           >
-            {showAll ? "Скрыть все" : "Смотреть все"}
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                d={showAll ? "M17 14L12.5 9L8 14" : "M8 10L12.5 15L17 10"}
-                stroke="#1D2E43"
-              />
+            {showAll ? 'Скрыть все' : 'Смотреть все'}
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d={showAll ? 'M17 14L12.5 9L8 14' : 'M8 10L12.5 15L17 10'} stroke="#1D2E43" />
             </svg>
           </button>
         </div>

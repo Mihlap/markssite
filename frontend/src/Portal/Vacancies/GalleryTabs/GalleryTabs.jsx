@@ -41,11 +41,7 @@ const GalleryTabs = ({ handleMouseEnter, handleMouseLeave }) => {
             Вечеринка '22
           </button>
         </div>
-        <div
-          className={styles.GalleryTabs__content}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-         >
+        <div className={styles.GalleryTabs__content} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
           <img src={mockImg} alt=""></img>
         </div>
       </section>

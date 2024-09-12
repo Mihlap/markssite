@@ -65,7 +65,8 @@ export default function SlideModalManager({
           )}
           <button
             className={styles.card_components_admin__close_button}
-            onClick={() => setIsModalOpenEvent(false)}></button>
+            onClick={() => setIsModalOpenEvent(false)}
+          ></button>
         </div>
       </div>
     )

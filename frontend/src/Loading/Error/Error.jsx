@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import styles from "./Error.module.css";
+import React, { useState, useEffect } from 'react';
+import styles from './Error.module.css';
 
 export default function Error({ error }) {
   const [width1, setWidth1] = useState(12);
@@ -16,20 +16,14 @@ export default function Error({ error }) {
       setHeight2(window.innerHeight / 14); // делим высоту на четыре
     }
     handleResize();
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   return (
     <div className={styles.error_container}>
       <div className={styles.error_block}>
-        <svg
-          width={width1}
-          height={height1}
-          viewBox="0 0 12 12"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
+        <svg width={width1} height={height1} viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
             d="M9.87643 0.364345C10.3622 -0.121448 11.1498 -0.121448 11.6356 0.364345C12.1214 0.850138 12.1214 1.63776 11.6356 2.12356L7.75921 5.99999L11.6357 9.87644C12.1214 10.3622 12.1214 11.1499 11.6357 11.6357C11.1499 12.1214 10.3622 12.1214 9.87645 11.6357L6 7.7592L2.12355 11.6357C1.63776 12.1214 0.850137 12.1214 0.364345 11.6357C-0.121448 11.1499 -0.121448 10.3622 0.364345 9.87644L4.24079 5.99999L0.36436 2.12356C-0.121432 1.63776 -0.121432 0.850138 0.36436 0.364345C0.850152 -0.121448 1.63778 -0.121448 2.12357 0.364345L6 4.24078L9.87643 0.364345Z"
             fill="url(#paint0_linear_2265_10244)"
@@ -49,13 +43,7 @@ export default function Error({ error }) {
           </defs>
         </svg>
 
-        <svg
-          width={width2}
-          height={height2}
-          viewBox="0 0 47 12"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
+        <svg width={width2} height={height2} viewBox="0 0 47 12" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
             d="M6.62 11.78C5.32667 11.78 4.18 11.5333 3.18 11.04C2.19333 10.5333 1.41333 9.84 0.84 8.96C0.28 8.06667 0 7.04 0 5.88C0 4.70667 0.266667 3.68 0.8 2.8C1.33333 1.92 2.07333 1.23333 3.02 0.74C3.96667 0.246666 5.05333 0 6.28 0C7.49333 0 8.55333 0.266668 9.46 0.800001C10.3667 1.33333 11.0667 2.08667 11.56 3.06C12.0667 4.02 12.32 5.14 12.32 6.42H1.4V4.96H11.54L10.46 5.62C10.42 4.78 10.22 4.05333 9.86 3.44C9.5 2.82667 9.01333 2.35333 8.4 2.02C7.78667 1.68667 7.07333 1.52 6.26 1.52C5.38 1.52 4.61333 1.7 3.96 2.06C3.30667 2.40667 2.79333 2.9 2.42 3.54C2.06 4.18 1.88 4.93333 1.88 5.8C1.88 6.70667 2.08667 7.49333 2.5 8.16C2.91333 8.82667 3.49333 9.34 4.24 9.7C4.98667 10.06 5.86667 10.24 6.88 10.24C7.8 10.24 8.7 10.0867 9.58 9.78C10.4733 9.47333 11.2733 9.05333 11.98 8.52V9.96C11.2867 10.52 10.46 10.9667 9.5 11.3C8.54 11.62 7.58 11.78 6.62 11.78Z"
             fill="url(#paint0_linear_2265_10241)"

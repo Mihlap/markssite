@@ -4,7 +4,7 @@ import Event from './Event';
 import {
   fetchSlides,
   updateSlidesOrderLocally,
-  updateSlidesOrder
+  updateSlidesOrder,
 } from '../../../store/Slice/vacancyMainSlideCardSlice';
 import styles from '../../style/style-card.module.scss';
 
@@ -15,7 +15,7 @@ export default function EventsList({
   handleDeleteModalOpen,
   handleEditClick,
   handleFormDelete,
-  handleLookClick
+  handleLookClick,
 }) {
   const dispatch = useDispatch();
   const slides = useSelector((state) => state.formAddSlide.slides || []);

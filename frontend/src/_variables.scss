@@ -6,7 +6,6 @@ $bp4: 768px;
 $bp5: 576px;
 $bp6: 377px;
 
-
 @function rem($pixels) {
   @return #{$pixels / 16}rem;
 }
@@ -21,26 +20,26 @@ $bp6: 377px;
 // // Радиусы внешних блоков (внешнии секции и блоки)
 // @mixin borderRadius {
 //     border-radius: 40px;
-  
+
 //     @media all and (max-width:$bp4){
 //       border-radius: 20px;
 //     }
 //   }
-  
-//   // Радиусы внутренних блоков 
+
+//   // Радиусы внутренних блоков
 //   @mixin borderRadiusInner {
 //     border-radius: 20px;
-  
+
 //     @media all and (max-width:$bp4){
 //       border-radius: 10px;
 //     }
 //   }
-  
+
 //   // Отступы между секциями
 //   @mixin sectionMargin {
 //     margin-bottom: 50px;
 //     margin-top: 50px;
-  
+
 //     @media all and (max-width:$bp4){
 //       margin-bottom: 30px;
 //       margin-top: 30px;

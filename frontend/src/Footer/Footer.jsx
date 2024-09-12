@@ -1,27 +1,18 @@
-import React from "react";
-import styles from "./Footer.module.css";
-import { Link } from "react-router-dom";
+import React from 'react';
+import styles from './Footer.module.css';
+import { Link } from 'react-router-dom';
 
-const Footer = ({
-  handleMouseEnterFooter,
-  handleMouseEnterFooterMore,
-  handleMouseLeaveFooter,
-  handleMouseLeave, 
-}) => {
+const Footer = ({ handleMouseEnterFooter, handleMouseEnterFooterMore, handleMouseLeaveFooter, handleMouseLeave }) => {
   function mapToLink(link, event) {
     event.preventDefault();
     window.location.href = link;
   }
   const mapHendler = (event) => {
-    mapToLink("https://yandex.ru/maps/-/CCUgmThXKA");
+    mapToLink('https://yandex.ru/maps/-/CCUgmThXKA');
   };
-  
 
   return (
-    <footer
-      onMouseEnter={handleMouseEnterFooter}
-      onMouseLeave={handleMouseLeave}
-    >
+    <footer onMouseEnter={handleMouseEnterFooter} onMouseLeave={handleMouseLeave}>
       <div id="contacts" className={styles.footer_container}>
         <div className={styles.footer_block_left}>
           <div className={styles.mail_block}>
@@ -40,9 +31,9 @@ const Footer = ({
           <div className={styles.office_contact}>
             <div className={styles.office_tel}>
               <Link
-                to={"tel:+74951201226"}
+                to={'tel:+74951201226'}
                 className={styles.tel}
-                style={{ fontVariantNumeric: "lining-nums" }}
+                style={{ fontVariantNumeric: 'lining-nums' }}
                 onMouseEnter={handleMouseEnterFooterMore}
                 onMouseLeave={handleMouseLeaveFooter}
               >
@@ -53,15 +44,8 @@ const Footer = ({
               // to={"https://yandex.ru/maps/-/CCUgmThXKA"}
               className={styles.address}
             >
-              <div
-                onClick={mapHendler}
-                onMouseEnter={handleMouseEnterFooterMore}
-                onMouseLeave={handleMouseLeaveFooter}
-              >
-                <span>
-                  Москва З-я&nbsp;ул.&nbsp;Ямского Поля, д.&nbsp;20, с. 1,
-                  офис&nbsp;704
-                </span>
+              <div onClick={mapHendler} onMouseEnter={handleMouseEnterFooterMore} onMouseLeave={handleMouseLeaveFooter}>
+                <span>Москва З-я&nbsp;ул.&nbsp;Ямского Поля, д.&nbsp;20, с. 1, офис&nbsp;704</span>
               </div>
             </div>
           </div>
@@ -81,7 +65,7 @@ const Footer = ({
               <span
                 className={styles.social_links_item}
                 // onClick={vkHendler}
-                style={{ marginRight: "21px" }}
+                style={{ marginRight: '21px' }}
               >
                 VK
               </span>
@@ -102,7 +86,7 @@ const Footer = ({
             <Link to="https://www.youtube.com/@marks_group" target="_blank">
               <span
                 className={styles.social_links_item}
-                style={{ marginRight: "22px" }}
+                style={{ marginRight: '22px' }}
                 onMouseEnter={handleMouseEnterFooterMore}
                 onMouseLeave={handleMouseLeaveFooter}
               >
@@ -133,7 +117,7 @@ const Footer = ({
               target="_blank"
               onMouseEnter={handleMouseEnterFooterMore}
               onMouseLeave={handleMouseLeaveFooter}
-             >
+            >
               <span>Документы</span>
             </Link>
             <div className={styles.job_link}>©&nbsp;MARKSLAB</div>

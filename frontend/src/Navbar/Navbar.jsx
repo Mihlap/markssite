@@ -66,7 +66,8 @@ const Navbar = memo(({ handleMouseEnter, handleMouseLeave }) => {
               onMouseLeave={handleMouseLeave}
               className={` ${styles.Navbar__title} ${activeClass === '/'}`}
               to="/"
-              onClick={() => handleItemClick('/')}>
+              onClick={() => handleItemClick('/')}
+            >
               <h1>MARKS GROUP</h1>
             </Link>
           </div>
@@ -94,7 +95,8 @@ const Navbar = memo(({ handleMouseEnter, handleMouseLeave }) => {
               onMouseLeave={handleMouseLeave}
               className={`${styles.Navbar__item} ${activeClass === '/' ? styles.Navbar__item_open : ''}`}
               to="/"
-              onClick={() => handleItemClick('/')}>
+              onClick={() => handleItemClick('/')}
+            >
               <div>Главная</div>
             </Link>
             <Link
@@ -102,7 +104,8 @@ const Navbar = memo(({ handleMouseEnter, handleMouseLeave }) => {
               onMouseLeave={handleMouseLeave}
               className={`${styles.Navbar__item} ${activeClass === '/project' ? styles.Navbar__item_open : ''}`}
               to="/project"
-              onClick={() => handleItemClick('/project')}>
+              onClick={() => handleItemClick('/project')}
+            >
               <div>Проекты</div>
             </Link>
             <Link
@@ -110,7 +113,8 @@ const Navbar = memo(({ handleMouseEnter, handleMouseLeave }) => {
               onMouseLeave={handleMouseLeave}
               className={`${styles.Navbar__item} ${activeClass === '/publication' ? styles.Navbar__item_open : ''}`}
               to="/publication"
-              onClick={() => handleItemClick('/publication')}>
+              onClick={() => handleItemClick('/publication')}
+            >
               <div>Публикации</div>
             </Link>
             <Link
@@ -118,7 +122,8 @@ const Navbar = memo(({ handleMouseEnter, handleMouseLeave }) => {
               onMouseLeave={handleMouseLeave}
               className={`${styles.Navbar__item} ${activeClass === '/company' ? styles.Navbar__item_open : ''}`}
               to="/company"
-              onClick={() => handleItemClick('/company')}>
+              onClick={() => handleItemClick('/company')}
+            >
               <div>О Компании</div>
             </Link>
             <Link
@@ -129,7 +134,8 @@ const Navbar = memo(({ handleMouseEnter, handleMouseLeave }) => {
               }`}
               to="/portal/vacanciesMain"
               target="_blank"
-              onClick={() => handleItemClick('/portal/vacanciesMain')}>
+              onClick={() => handleItemClick('/portal/vacanciesMain')}
+            >
               <div>HR портал</div>
             </Link>
             <Link
@@ -137,7 +143,8 @@ const Navbar = memo(({ handleMouseEnter, handleMouseLeave }) => {
               onMouseLeave={handleMouseLeave}
               className={`${styles.Navbar__item} ${activeClass === '/contacts' ? styles.Navbar__item_open : ''}`}
               to="/contacts"
-              onClick={() => handleItemClick('/contacts')}>
+              onClick={() => handleItemClick('/contacts')}
+            >
               <div>Контакты</div>
             </Link>
             <Link
@@ -148,7 +155,8 @@ const Navbar = memo(({ handleMouseEnter, handleMouseLeave }) => {
               onClick={(e) => {
                 e.preventDefault();
                 window.location.href = 'https://marksgroup.org/';
-              }}>
+              }}
+            >
               <div>EN</div>
             </Link>
           </ul>

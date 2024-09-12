@@ -25,11 +25,9 @@ module.exports = function override(config, env) {
       stringArray: true,
       stringArrayEncoding: 'base64',
       stringArrayThreshold: 0.75,
-      unicodeEscapeSequence: false
+      unicodeEscapeSequence: false,
     })
   );
-
- 
 
   // Вернуть обновленную конфигурацию
   return config;

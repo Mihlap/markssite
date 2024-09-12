@@ -44,7 +44,8 @@ const DirectionsGrid = () => {
       <section className={styles.DirectionsGrid}>
         <div
           ref={(el) => (itemsRef.current[0] = el)}
-          className={`${styles.DirectionsGrid__item} ${styles.DirectionsGrid__item_header}`}>
+          className={`${styles.DirectionsGrid__item} ${styles.DirectionsGrid__item_header}`}
+        >
           <div className={styles.DirectionsGrid__text}>
             <h2 className={styles.DirectionsGrid__subtitle}>Выбери свое направление!</h2>
             <p>
@@ -69,7 +70,8 @@ const DirectionsGrid = () => {
         </div>
         <div
           ref={(el) => (itemsRef.current[3] = el)}
-          className={`${styles.DirectionsGrid__item} ${styles.DirectionsGrid__item_it}`}>
+          className={`${styles.DirectionsGrid__item} ${styles.DirectionsGrid__item_it}`}
+        >
           <div className={styles.DirectionsGrid__text}>
             <h2 className={styles.DirectionsGrid__subtitle}>IT</h2>
             <p>Цифровизация процессов строительства, проектирования, девелопмента</p>

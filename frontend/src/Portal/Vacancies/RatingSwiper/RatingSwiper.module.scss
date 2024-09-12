@@ -1,8 +1,8 @@
-@import "../../../App.css";
-@import "../../../_variables.scss";
+@import '../../../App.css';
+@import '../../../_variables.scss';
 
 .RatingSwiper {
-  background-color: var( --white-F6F6F6);
+  background-color: var(--white-F6F6F6);
   padding: 0;
   padding: rem(220) 0 rem(60) 0;
 
@@ -66,7 +66,7 @@
     display: flex;
     flex-direction: column;
     padding: rem(36);
-    background-color: #F8F8F8;
+    background-color: #f8f8f8;
     color: var(--black-3C3C3C);
     box-shadow: 0 0 rem(20) 0 #00000008;
     border-radius: rem(16);
@@ -80,7 +80,7 @@
 
   &__picture {
     margin-top: auto;
-    
+
     img {
       display: block;
       width: 100%;
@@ -115,7 +115,6 @@
       background-size: contain;
       content: '';
       transition: all 1s ease;
-      
     }
 
     &:hover {
@@ -124,14 +123,14 @@
 
     &.visible {
       &:before {
-        transform: translateY(-50%)rotate(180deg);
+        transform: translateY(-50%) rotate(180deg);
         transition: all 1s ease;
       }
     }
   }
 
   // Адаптация под desktop
-  @media all and (max-width:$bp0){
+  @media all and (max-width: $bp0) {
     padding: rem(140) 0 rem(16) 0;
     margin-bottom: rem(24);
 
@@ -140,10 +139,10 @@
       font-size: rem(65);
       line-height: rem(75.5);
       padding: 0 rem(155) 0 rem(162);
-  
+
       span {
         display: block;
-  
+
         &:last-child {
           padding-left: rem(100);
         }
@@ -169,7 +168,7 @@
         top: 0;
         left: -4rem;
       }
-      
+
       &::after {
         top: 0;
         right: -4rem;
@@ -190,7 +189,7 @@
   }
 
   // Адаптация под tablet
-  @media all and (max-width:$bp2){
+  @media all and (max-width: $bp2) {
     padding: 0;
 
     span {
@@ -237,13 +236,13 @@
       flex-direction: column;
       gap: rem(24);
       padding: 0 15% 0 15%;
-      
+
       &:nth-child(even) {
         flex-direction: column-reverse;
       }
 
       &.hide {
-        max-height: 0; 
+        max-height: 0;
         opacity: 0;
         padding: 0 15% 0 15%;
         transition: max-height 1s ease, opacity 1s ease, padding 1s ease;
@@ -263,7 +262,6 @@
           padding-bottom: rem(24);
         }
       }
-
     }
 
     &__row {
@@ -283,10 +281,10 @@
       margin: rem(32) 15% 0 15%;
     }
   }
-  
+
   // Адаптация под mobile
-  @media all and (max-width:$bp4){
-    padding:0;
+  @media all and (max-width: $bp4) {
+    padding: 0;
     display: flex;
     flex-direction: column;
 
@@ -298,12 +296,12 @@
 
     &__slide {
       padding: 0 rem(16) 0 rem(16);
- 
+
       &:not(:first-child) {
         padding: 24px rem(16) 0 rem(16);
       }
     }
-  
+
     &__row {
       padding: rem(16);
     }
@@ -317,5 +315,4 @@
       margin: rem(20) rem(16) 0 0;
     }
   }
-
 }
