@@ -1,5 +1,5 @@
-import compressImageFile from "browser-image-compression";
-const { transliterate } = require("transliteration");
+import compressImageFile from 'browser-image-compression';
+const { transliterate } = require('transliteration');
 // formHelpers.js
 export const removePreviewPhoto = (
   previewPhotos,
@@ -48,16 +48,14 @@ export const removePreviewPhotoAva = (
   setIsPhotoAvaVisible(updatedPreviewPhotosAva.length > 0);
 
   // Удаление фото из массива выбранных файлов
-  const updatedDropPhotosAva = Array.isArray(inputData.photoAva)
-  ? [...inputData.photoAva]
-  : [];
-updatedDropPhotosAva.splice(index, 1);
+  const updatedDropPhotosAva = Array.isArray(inputData.photoAva) ? [...inputData.photoAva] : [];
+  updatedDropPhotosAva.splice(index, 1);
 
-  let updatedImageAuthor = "";
-  if (typeof inputData.imageAuthor === "string") {
-    const imageAuthorArray = inputData.imageAuthor.split(", ");
+  let updatedImageAuthor = '';
+  if (typeof inputData.imageAuthor === 'string') {
+    const imageAuthorArray = inputData.imageAuthor.split(', ');
     imageAuthorArray.splice(index, 1);
-    updatedImageAuthor = imageAuthorArray.join(", ");
+    updatedImageAuthor = imageAuthorArray.join(', ');
   }
 
   setInputData((prev) => ({
@@ -110,13 +108,13 @@ export const removePreviewPhotoClose = (
 };
 
 function formatNumberWithThousandSeparator(number) {
-  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+  return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 }
 
 function generateUniqueName(originalName) {
   const timestamp = Date.now();
   const randomNum = Math.floor(Math.random() * 10000);
-  const fileExtension = originalName.split(".").pop();
+  const fileExtension = originalName.split('.').pop();
 
   // Транслитерация части оригинального имени файла
   const sliceOfOriginalName = transliterate(originalName.slice(0, 5));
@@ -148,29 +146,28 @@ export async function changeHandler(
   if (event.target.files) {
     const originalFiles = Array.from(event.target.files);
 
-        const inputName = event.target.name;
-        let isLoadingState;
-        switch (inputName) {
-          case "dropPhoto":
-            isLoadingState = setIsLoadingDropPhoto;
-            break;
-          case "photoAva":
-            isLoadingState = setIsLoading;
-            break;
-          case "imageOpen":
-            isLoadingState = setIsLoadingOpenImage;
-            break;
-          case "imageClose":
-            isLoadingState = setIsLoadingCloseImage;
-            break;
-          // Добавьте другие case для других input элементов, если они есть
-          default:
-            console.error("Unrecognized input name:", inputName);
-            return;
-        }
+    const inputName = event.target.name;
+    let isLoadingState;
+    switch (inputName) {
+      case 'dropPhoto':
+        isLoadingState = setIsLoadingDropPhoto;
+        break;
+      case 'photoAva':
+        isLoadingState = setIsLoading;
+        break;
+      case 'imageOpen':
+        isLoadingState = setIsLoadingOpenImage;
+        break;
+      case 'imageClose':
+        isLoadingState = setIsLoadingCloseImage;
+        break;
+      // Добавьте другие case для других input элементов, если они есть
+      default:
+        console.error('Unrecognized input name:', inputName);
+        return;
+    }
 
-
-     isLoadingState(true);
+    isLoadingState(true);
     let newFiles = await Promise.all(
       originalFiles.map(async (originalFile) => {
         const uniqueName = generateUniqueName(originalFile.name);
@@ -186,7 +183,7 @@ export async function changeHandler(
               type: compressedFile.type,
             });
           } catch (error) {
-            console.error("Ошибка при сжатии файла:", error);
+            console.error('Ошибка при сжатии файла:', error);
             return null; // В случае ошибки сжатия, вернуть null
           }
         } else {
@@ -201,7 +198,7 @@ export async function changeHandler(
     newFiles = newFiles.filter((file) => file !== null);
 
     switch (event.target.name) {
-      case "dropPhoto":
+      case 'dropPhoto':
         setInputData((prev) => ({
           ...prev,
           dropPhoto: newFiles,
@@ -209,7 +206,7 @@ export async function changeHandler(
         setIsDropPhotoVisible(false);
         setPreviewPhotos(newFiles.map((file) => URL.createObjectURL(file)));
         break;
-      case "photoAva":
+      case 'photoAva':
         setInputData((prev) => ({
           ...prev,
           photoAva: newFiles,
@@ -217,7 +214,7 @@ export async function changeHandler(
         setIsPhotoAvaVisible(false);
         setPreviewPhotoAva(newFiles.map((file) => URL.createObjectURL(file)));
         break;
-      case "imageOpen":
+      case 'imageOpen':
         setInputData((prev) => ({
           ...prev,
           imageOpen: newFiles,
@@ -225,7 +222,7 @@ export async function changeHandler(
         setIsPhotoOpenVisible(false);
         setPreviewPhotoOpen(newFiles.map((file) => URL.createObjectURL(file)));
         break;
-      case "imageClose":
+      case 'imageClose':
         setInputData((prev) => ({
           ...prev,
           imageClose: newFiles,
@@ -234,20 +231,20 @@ export async function changeHandler(
         setPreviewPhotoClose(newFiles.map((file) => URL.createObjectURL(file)));
         break;
       default:
-        console.error("Unrecognized input name:", event.target.name);
+        console.error('Unrecognized input name:', event.target.name);
         break;
     }
     isLoadingState(false);
     event.target.value = null;
-    event.target.style.display = "none";
+    event.target.style.display = 'none';
   } else if (
-    event.target.name === "totalArea" ||
-    event.target.name === "siteArea" ||
-    event.target.name === "floors" ||
-    event.target.name === "altitude" ||
-    event.target.name === "constructionVolume"
+    event.target.name === 'totalArea' ||
+    event.target.name === 'siteArea' ||
+    event.target.name === 'floors' ||
+    event.target.name === 'altitude' ||
+    event.target.name === 'constructionVolume'
   ) {
-    const onlyDigits = event.target.value.replace(/\D+/g, "");
+    const onlyDigits = event.target.value.replace(/\D+/g, '');
     const formattedValue = formatNumberWithThousandSeparator(onlyDigits);
     setInputData((prev) => ({
       ...prev,
@@ -261,13 +258,12 @@ export async function changeHandler(
   }
 }
 
-
 // функция подгрузки видео линк в админку
-  export async function getEmbedLink(link) {
-    if (link.includes("youtu.be")) {
-      return link.replace("youtu.be/", "www.youtube.com/embed/");
-    } else if (link.includes("watch?v=")) {
-      return link.replace("watch?v=", "embed/");
-    }
-    return link;
+export async function getEmbedLink(link) {
+  if (link.includes('youtu.be')) {
+    return link.replace('youtu.be/', 'www.youtube.com/embed/');
+  } else if (link.includes('watch?v=')) {
+    return link.replace('watch?v=', 'embed/');
   }
+  return link;
+}

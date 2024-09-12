@@ -1,9 +1,9 @@
-import React, { useEffect, useState, useCallback, useMemo } from "react";
-import { YMaps, Map, ZoomControl } from "@pbe/react-yandex-maps";
-import popupsData from "./popupsdata";
-import styles from "./Mapbox.module.css";
-import Marker from "./Marker";
-import Popup from "./Popup";
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
+import { YMaps, Map, ZoomControl } from '@pbe/react-yandex-maps';
+import popupsData from './popupsdata';
+import styles from './Mapbox.module.css';
+import Marker from './Marker';
+import Popup from './Popup';
 
 const apiKey = process.env.REACT_APP_API_KEY;
 
@@ -31,11 +31,11 @@ const Mapbox3D = React.memo(() => {
   }, [selectedPopup]);
 
   const handleMapTouchStart = useCallback(() => {
-    document.body.style.overflow = "auto";
+    document.body.style.overflow = 'auto';
   }, []);
 
   const handleMapTouchEnd = useCallback(() => {
-    document.body.style.overflow = "hidden";
+    document.body.style.overflow = 'hidden';
   }, []);
 
   const handleMapClick = useCallback(() => {
@@ -72,16 +72,14 @@ const Mapbox3D = React.memo(() => {
           query={{ apiKey }}
           options={{
             suppressMapOpenBlock: true,
-            suppressMapOpenBlockKey: "ctrlKey",
-            behaviors: ["disableScrollZoom"],
+            suppressMapOpenBlockKey: 'ctrlKey',
+            behaviors: ['disableScrollZoom'],
           }}
           onTouchStart={handleMapTouchStart}
           onTouchEnd={handleMapTouchEnd}
           onClick={handleMapClick}
         >
-          {window.innerWidth > 1025 && (
-            <ZoomControl options={{ position: { top: 20, right: 20 } }} />
-          )}
+          {window.innerWidth > 1025 && <ZoomControl options={{ position: { top: 20, right: 20 } }} />}
           {popupsData.map((marker, index) => (
             <Marker
               key={index}

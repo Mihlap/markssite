@@ -1,42 +1,41 @@
-import React, {useEffect, useState } from "react";
-import styles from "./HomeAdmin.module.scss";
-import { useDispatch, useSelector } from "react-redux";
-import { arrIdProjectSelector } from "./utils/HomeAdminSelectors";
-import { arrIdArticlesLeftSelector } from "./utils/ArticleLeftSelectors";
-import { arrIdArticlesRightSelector } from "./utils/ArticleRightSelectors";
-import SearchPublicProject from "./SearchPublicProject";
-import SearchPublicLeft from "./SearchPublicLeft";
-import SearchPublicRight from "./SearchPublicRight";
-import { getZaprosData } from "../../store/Slice/searchProjectMainSlice";
-import { searchArticleLeftGet } from "../../store/Slice/searchArticlePublicLeftSlice";
-import { searchArticleRightGet } from "../../store/Slice/searchArticlePublicRightSlice";
+import React, { useEffect, useState } from 'react';
+import styles from './HomeAdmin.module.scss';
+import { useDispatch, useSelector } from 'react-redux';
+import { arrIdProjectSelector } from './utils/HomeAdminSelectors';
+import { arrIdArticlesLeftSelector } from './utils/ArticleLeftSelectors';
+import { arrIdArticlesRightSelector } from './utils/ArticleRightSelectors';
+import SearchPublicProject from './SearchPublicProject';
+import SearchPublicLeft from './SearchPublicLeft';
+import SearchPublicRight from './SearchPublicRight';
+import { getZaprosData } from '../../store/Slice/searchProjectMainSlice';
+import { searchArticleLeftGet } from '../../store/Slice/searchArticlePublicLeftSlice';
+import { searchArticleRightGet } from '../../store/Slice/searchArticlePublicRightSlice';
 
 export default function HomeAdmin() {
-
   const dispatch = useDispatch();
   const projects = useSelector((state) => state.project.projects);
   const articles = useSelector((state) => state.article.article);
 
   // стейты для инпута ПРОЕКТЫ
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, setErrorMessage] = useState('');
   const [showError, setShowError] = useState(false);
-  const [okMessage, setOkMessage] = useState("");
+  const [okMessage, setOkMessage] = useState('');
   const [showOk, setShowOk] = useState(false);
-  const [replacementMessage, setReplacementMessage] = useState("");
+  const [replacementMessage, setReplacementMessage] = useState('');
   const [replacement, setReplacement] = useState(false);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
-  const [searchId, setSearchId] = useState("");
+  const [searchId, setSearchId] = useState('');
   const [savedId, setSavedId] = useState(null);
   // стейты для инпута ПРОЕКТЫ
 
   // стейты для инпута ПУБЛИКАЦИИ левый
-  const [searcIdOne, setSearcIdOne] = useState("");
+  const [searcIdOne, setSearcIdOne] = useState('');
   const [saveIdOne, setSaveIdOne] = useState(null);
   const [isBtnDisabledPublicOne, setIsBtnDisabledPublicOne] = useState(true);
   // стейты для инпута ПУБЛИКАЦИИ левый
 
   // стейты для инпута ПУБЛИКАЦИИ справа
-  const [searcIdTwo, setSearcIdTwo] = useState("");
+  const [searcIdTwo, setSearcIdTwo] = useState('');
   const [saveIdTwo, setSaveIdTwo] = useState(null);
   const [isBtnDisabledPublicTwo, setIsBtnDisabledPublicTwo] = useState(true);
   // стейты для инпута ПУБЛИКАЦИИ справа
@@ -50,7 +49,6 @@ export default function HomeAdmin() {
     dispatch(searchArticleLeftGet());
     dispatch(searchArticleRightGet());
   }, [dispatch]);
-
 
   return (
     <section className={styles.home_admin_section}>
@@ -73,7 +71,6 @@ export default function HomeAdmin() {
           setShowError={setShowError}
           setOkMessage={setOkMessage}
           setShowOk={setShowOk}
-          
         />
         <SearchPublicRight
           articles={articles}

@@ -88,7 +88,9 @@ const SocialsSwiper = () => {
   return (
     <section className={styles.SocialsSwiper}>
       <div className={styles.SocialsSwiper__header}>
-        <h2>Хочешь узнать больше о&nbsp;жизни компании? Подписывайся на&nbsp;нас в&nbsp;<span>социальных сетях!</span></h2>
+        <h2>
+          Хочешь узнать больше о&nbsp;жизни компании? Подписывайся на&nbsp;нас в&nbsp;<span>социальных сетях!</span>
+        </h2>
       </div>
       <div className={styles.SocialsSwiper__slider}>
         {/* Переиспользуемый компонент - стрелки для свайпера */}
@@ -104,45 +106,46 @@ const SocialsSwiper = () => {
           }}
           speed={1000}
           slideActiveClass={styles.SocialsSwiper__active}
-          loop={true} 
+          loop={true}
           loopAdditionalSlides={socialsArray.length}
           keyboard={{ enabled: true }}
           breakpoints={{
             2500: {
-              slidesPerView: 4,             
+              slidesPerView: 4,
               spaceBetween: 54,
-              },
+            },
 
             1920: {
-              slidesPerView: 3.3,                         
-              spaceBetween: 54,             
+              slidesPerView: 3.3,
+              spaceBetween: 54,
             },
 
             1280: {
               slidesPerView: 3,
-              spaceBetween: 30,                          
+              spaceBetween: 30,
             },
 
             1024: {
               slidesPerView: 3.1,
-              spaceBetween: 16,             
+              spaceBetween: 16,
             },
 
             768: {
               slidesPerView: 2,
-              spaceBetween: 16,             
+              spaceBetween: 16,
             },
 
             576: {
               slidesPerView: 1.5,
-              spaceBetween: 16,             
+              spaceBetween: 16,
             },
 
             280: {
-              slidesPerView: 1.1,           
+              slidesPerView: 1.1,
               spaceBetween: 0,
             },
-          }}>
+          }}
+        >
           {socialsArray.map((item, index) => {
             return (
               <SwiperSlide key={index}>
@@ -156,14 +159,10 @@ const SocialsSwiper = () => {
                       <span>{item.subtitle}</span>
                     </div>
                     {item.link && (
-                    <Link
-                      to={item.link}
-                      target="_blank"
-                      className={styles.SocialsSwiper__button}
-                    >
-                      Подписаться
-                    </Link>
-                  )}
+                      <Link to={item.link} target="_blank" className={styles.SocialsSwiper__button}>
+                        Подписаться
+                      </Link>
+                    )}
                   </div>
                 </div>
               </SwiperSlide>

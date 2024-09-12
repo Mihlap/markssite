@@ -1,395 +1,386 @@
-@import "../../App.css";
+@import '../../App.css';
 
 .home_admin_section {
-    // height: 100vh;
-   padding: 7.5rem 2.5rem 0rem 22%;
+  // height: 100vh;
+  padding: 7.5rem 2.5rem 0rem 22%;
 
-    &__title {
-        font-family: var(--font-unbounded);
-        color: var(--black-1D2E43);
-        font-size: 32px;
-        font-style: normal;
-        font-weight: 300;
-        line-height: 40px;
-        padding-bottom: 32px;
+  &__title {
+    font-family: var(--font-unbounded);
+    color: var(--black-1D2E43);
+    font-size: 32px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 40px;
+    padding-bottom: 32px;
+  }
+
+  &__article_container {
+    display: flex;
+    gap: 64px;
+    width: 100%;
+    padding-bottom: 6rem;
+  }
+
+  &__section {
+    padding-top: 2rem;
+  }
+
+  &__sectionSpan {
+    font-family: var(--font-unbounded);
+    color: var(--black-1D2E43);
+    font-weight: 300;
+    font-size: 32px;
+    line-height: 40px;
+  }
+
+  &__block_search {
+    position: relative;
+    width: 100%;
+    background-color: var(--light-light-gray-EBECEE);
+    border-radius: 0.38rem;
+    display: inline-flex;
+    flex-direction: column;
+    padding: 2.62rem 1.5rem 1.5rem 1.5rem;
+  }
+
+  &__block_searchVacancy {
+    margin-top: 2rem;
+  }
+
+  &__button_container_project {
+    padding-right: 70%;
+  }
+
+  &__button_container_articles {
+    padding-right: 40%;
+  }
+
+  &__button {
+    display: flex;
+    padding: 1rem 1rem;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+    width: 100%;
+    border-radius: 4.125rem;
+    border: none;
+    background-color: var(--dark-blue-389FFF);
+
+    &::before {
+      content: 'Добавить на главную';
+      color: var(--white-F6F6F6);
+      font-variant-numeric: lining-nums proportional-nums;
+      font-family: var(--font-raleway);
+      font-size: 1rem;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 1.5rem;
     }
 
-    &__article_container {
-        display: flex;
-        gap: 64px;
-        width: 100%;
-        padding-bottom: 6rem;
+    &[disabled] {
+      transition: all 0.3s ease-in-out;
+      opacity: 0.3;
+      pointer-events: none;
+    }
+  }
+
+  &__button_replacement {
+    display: flex;
+    padding: 1rem 1rem;
+    justify-content: center;
+    align-items: center;
+    margin-top: 2rem;
+    width: 14rem;
+    border-radius: 4.125rem;
+    border: none;
+    background-color: var(--dark-blue-389FFF);
+
+    &::before {
+      content: 'Заменить публикацию';
+      color: var(--white-F6F6F6);
+      font-variant-numeric: lining-nums proportional-nums;
+      font-family: var(--font-raleway);
+      font-size: 1rem;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 1.5rem;
     }
 
-    &__section {
-        padding-top: 2rem;       
+    &[disabled] {
+      transition: all 0.3s ease-in-out;
+      opacity: 0.3;
+      pointer-events: none;
     }
+  }
 
-    &__sectionSpan {
-        font-family: var(--font-unbounded);
-        color: var(--black-1D2E43);
-        font-weight: 300;
-        font-size: 32px;
-        line-height: 40px;
+  &__id_container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    padding: 10px;
+  }
+
+  &__id_block {
+    display: flex;
+    align-items: center;
+    padding: 8px 16px 8px 24px;
+    border-radius: 2rem;
+    gap: 4px;
+    background-color: var(--white-F6F6F6);
+    color: var(--black-1D2E43);
+    font-family: var(--font-raleway);
+    font-size: 18px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+  }
+
+  &__circle_block {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 3px;
+    margin-right: 0.63rem;
+    cursor: pointer;
+  }
+
+  &__circle {
+    width: 3px;
+    height: 3px;
+    border-radius: 50%;
+    -moz-border-radius: 50%;
+    -webkit-border-radius: 50%;
+    -khtml-border-radius: 50%;
+    background-color: var(--blue-75BBFD);
+  }
+
+  &__dragging {
+    /* Добавьте стили, которые вы хотите применить при поднятии блока */
+    /* Например, добавьте тень или обводку */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: 2px solid var(--blue-75BBFD);
+    border-radius: 1rem;
+  }
+
+  &__moved {
+    /* Стили для элемента, который только что был перемещен */
+    /* Например, измените цвет фона */
+    background-color: var(--green-00FF00);
+  }
+
+  &__button_del {
+    display: flex;
+    align-items: center;
+  }
+
+  &__ok {
+    position: absolute;
+    top: -10%;
+    right: 10px;
+    color: var(--white-F6F6F6);
+    display: inline-flex;
+    padding: 8px 19px;
+    align-items: flex-start;
+    gap: 10px;
+    background: var(--gray-959DA6);
+    border-radius: 1rem;
+
+    &::after {
+      content: '';
+      position: absolute;
+      font-family: var(--font-raleway);
+      font-style: normal;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 16px;
+      bottom: -16px;
+      left: 20px;
+      border: 8px solid transparent;
+      border-top-color: var(--gray-959DA6);
     }
+  }
 
-    &__block_search {
-         position: relative;
-        width: 100%;
-        background-color: var(--light-light-gray-EBECEE);
-        border-radius: 0.38rem;
-        display: inline-flex;
-        flex-direction: column;
-        padding: 2.62rem 1.5rem 1.5rem 1.5rem;
+  &__error {
+    position: absolute;
+    top: -10%;
+    right: 10px;
+    color: var(--white-F6F6F6);
+    display: inline-flex;
+    padding: 8px 19px;
+    align-items: flex-start;
+    gap: 10px;
+    background: var(--salmon-FF7F6A);
+    border-radius: 1rem;
+
+    &::after {
+      content: '';
+      position: absolute;
+      font-family: var(--font-raleway);
+      font-style: normal;
+      font-size: 12px;
+      font-weight: 400;
+      line-height: 16px;
+      bottom: -16px;
+      left: 20px;
+      border: 8px solid transparent;
+      border-top-color: var(--salmon-FF7F6A);
     }
-
-    &__block_searchVacancy {
-        margin-top: 2rem;
-    }
-
-    &__button_container_project {
-        padding-right: 70%;
-    }
-
-    &__button_container_articles {
-        padding-right: 40%;
-    }
-
-    &__button {
-        display: flex;
-        padding: 1rem 1rem;
-        justify-content: center;
-        align-items: center;
-        margin-top: 2rem;
-        width: 100%;
-        border-radius: 4.125rem;
-        border: none;
-        background-color: var(--dark-blue-389FFF);
-
-
-        &::before {
-            content: "Добавить на главную";
-            color: var(--white-F6F6F6);
-            font-variant-numeric: lining-nums proportional-nums;
-            font-family: var(--font-raleway);
-            font-size: 1rem;
-            font-style: normal;
-            font-weight: 400;
-            line-height: 1.5rem;
-        }
-
-        &[disabled] {
-            transition: all 0.3s ease-in-out;
-            opacity: 0.3;
-            pointer-events: none;
-        }
-    }
-
-    &__button_replacement {
-        display: flex;
-        padding: 1rem 1rem;
-        justify-content: center;
-        align-items: center;
-        margin-top: 2rem;
-        width: 14rem;
-        border-radius: 4.125rem;
-        border: none;
-        background-color: var(--dark-blue-389FFF);
-
-
-        &::before {
-            content: "Заменить публикацию";
-            color: var(--white-F6F6F6);
-            font-variant-numeric: lining-nums proportional-nums;
-            font-family: var(--font-raleway);
-            font-size: 1rem;
-            font-style: normal;
-            font-weight: 400;
-            line-height: 1.5rem;
-        }
-
-        &[disabled] {
-            transition: all 0.3s ease-in-out;
-            opacity: 0.3;
-            pointer-events: none;
-        }
-    }
-
-
-    &__id_container {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 1rem;
-        padding: 10px;
-    }
-
-    &__id_block {
-        display: flex;
-        align-items: center;
-        padding: 8px 16px 8px 24px;
-        border-radius: 2rem;
-        gap: 4px;
-        background-color: var(--white-F6F6F6);
-        color: var(--black-1D2E43);
-        font-family: var(--font-raleway);
-        font-size: 18px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: 24px;
-    }
-
-    &__circle_block {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        grid-gap: 3px;
-        margin-right: 0.63rem;
-        cursor: pointer;
-    }
-
-    &__circle {
-        width: 3px;
-        height: 3px;
-        border-radius: 50%;
-        -moz-border-radius: 50%;
-        -webkit-border-radius: 50%;
-        -khtml-border-radius: 50%;
-        background-color: var(--blue-75BBFD);
-    }
-
-    &__dragging {
-        /* Добавьте стили, которые вы хотите применить при поднятии блока */
-        /* Например, добавьте тень или обводку */
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        border: 2px solid var(--blue-75BBFD);
-        border-radius: 1rem;
-    }
-
-    &__moved {
-        /* Стили для элемента, который только что был перемещен */
-        /* Например, измените цвет фона */
-        background-color: var(--green-00FF00);
-    }
-
-    &__button_del {
-        display: flex;
-        align-items: center;
-    }
-
-    &__ok {
-        position: absolute;
-        top: -10%;
-        right: 10px;
-        color: var(--white-F6F6F6);
-        display: inline-flex;
-        padding: 8px 19px;
-        align-items: flex-start;
-        gap: 10px;
-        background: var(--gray-959DA6);
-        border-radius: 1rem;
-
-        &::after {
-            content: "";
-            position: absolute;
-            font-family: var(--font-raleway);
-            font-style: normal;
-            font-size: 12px;
-            font-weight: 400;
-            line-height: 16px;
-            bottom: -16px;
-            left: 20px;
-            border: 8px solid transparent;
-            border-top-color: var(--gray-959DA6);
-
-        }
-    }
-
-    &__error {
-        position: absolute;
-        top: -10%;
-        right: 10px;
-        color: var(--white-F6F6F6);
-        display: inline-flex;
-        padding: 8px 19px;
-        align-items: flex-start;
-        gap: 10px;
-        background: var(--salmon-FF7F6A);
-        border-radius: 1rem;
-
-        &::after {
-            content: "";
-            position: absolute;
-            font-family: var(--font-raleway);
-            font-style: normal;
-            font-size: 12px;
-            font-weight: 400;
-            line-height: 16px;
-            bottom: -16px;
-            left: 20px;
-            border: 8px solid transparent;
-            border-top-color: var(--salmon-FF7F6A);
-
-        }
-    }
+  }
 }
 
 .home_admin_section__delete {
+  position: absolute;
+  top: -10%;
+  right: 10px;
+  color: var(--white-F6F6F6);
+  display: inline-flex;
+  padding: 8px 19px;
+  align-items: flex-start;
+  gap: 10px;
+  background: var(--crimson-E00747);
+  border-radius: 1rem;
+
+  &::after {
+    content: '';
     position: absolute;
-    top: -10%;
-    right: 10px;
-    color: var(--white-F6F6F6);
-    display: inline-flex;
-    padding: 8px 19px;
-    align-items: flex-start;
-    gap: 10px;
-    background: var(--crimson-E00747);
-    border-radius: 1rem;
-
-    &::after {
-        content: "";
-        position: absolute;
-        font-family: var(--font-raleway);
-        font-style: normal;
-        font-size: 12px;
-        font-weight: 400;
-        line-height: 16px;
-        bottom: -16px;
-        left: 20px;
-        border: 8px solid transparent;
-        border-top-color: var(--crimson-E00747);
-
-    }
+    font-family: var(--font-raleway);
+    font-style: normal;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16px;
+    bottom: -16px;
+    left: 20px;
+    border: 8px solid transparent;
+    border-top-color: var(--crimson-E00747);
+  }
 }
 
 .home_admin_section__update {
+  position: absolute;
+  top: -10%;
+  right: 10px;
+  color: var(--white-F6F6F6);
+  display: inline-flex;
+  padding: 8px 19px;
+  align-items: flex-start;
+  gap: 10px;
+  background: var(--green-96A96C);
+  border-radius: 1rem;
+
+  &::after {
+    content: '';
     position: absolute;
-    top: -10%;
-    right: 10px;
-    color: var(--white-F6F6F6);
-    display: inline-flex;
-    padding: 8px 19px;
-    align-items: flex-start;
-    gap: 10px;
-    background: var(--green-96A96C);
-    border-radius: 1rem;
-
-    &::after {
-        content: "";
-        position: absolute;
-        font-family: var(--font-raleway);
-        font-style: normal;
-        font-size: 12px;
-        font-weight: 400;
-        line-height: 16px;
-        bottom: -16px;
-        left: 20px;
-        border: 8px solid transparent;
-        border-top-color: var(--green-96A96C);
-
-    }
+    font-family: var(--font-raleway);
+    font-style: normal;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 16px;
+    bottom: -16px;
+    left: 20px;
+    border: 8px solid transparent;
+    border-top-color: var(--green-96A96C);
+  }
 }
-
 
 /* Add a class for the placeholder when dragging over */
 .home_admin_section__id_block--drag-over {
-    border: 2px dashed blue;
+  border: 2px dashed blue;
 }
 
 .home_admin_section__button_del svg {
-    width: 30px;
-    height: 30px;
+  width: 30px;
+  height: 30px;
 }
 
 .home_admin_section__button_del svg path {
-    stroke: #1d2e43;
-    stroke-linecap: round;
-    stroke-linejoin: round;
+  stroke: #1d2e43;
+  stroke-linecap: round;
+  stroke-linejoin: round;
 }
 
 /* Стили для кнопки с иконкой при наведении на неё */
 .home_admin_section__button_del:hover svg path {
-    stroke: var(--blue-75BBFD);
-    /* Здесь вы можете указать красный цвет или любой другой цвет */
+  stroke: var(--blue-75BBFD);
+  /* Здесь вы можете указать красный цвет или любой другой цвет */
 }
 
 .form__group {
-    position: relative;
-    width: 100%;
-    padding: 15px 0 0;
-    margin-top: 10px;
+  position: relative;
+  width: 100%;
+  padding: 15px 0 0;
+  margin-top: 10px;
 }
 
 .form__field {
-    font-family: var(--font-raleway);
-    width: 100%;
-    border: 0;
-    border-bottom: 1px solid var(--gray-959DA6);
-    outline: 0;
-    font-size: 1.3rem;
-    color: var(--black-1D2E43);
-    padding: 7px 0;
-    background: transparent;
-    transition: border-color 0.2s;
+  font-family: var(--font-raleway);
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid var(--gray-959DA6);
+  outline: 0;
+  font-size: 1.3rem;
+  color: var(--black-1D2E43);
+  padding: 7px 0;
+  background: transparent;
+  transition: border-color 0.2s;
 
-    &::placeholder {
-        color: transparent;
-    }
+  &::placeholder {
+    color: transparent;
+  }
 
-    &:placeholder-shown~.form__label {
-        font-size: 1rem;
-        cursor: text;
-        top: 20px;
-        font-weight: var(--fw-400);
-    }
+  &:placeholder-shown ~ .form__label {
+    font-size: 1rem;
+    cursor: text;
+    top: 20px;
+    font-weight: var(--fw-400);
+  }
 }
 
 .form__label {
+  position: absolute;
+  top: 0;
+  display: block;
+  transition: 0.2s;
+  font-size: 1rem;
+  color: var(--gray-959DA6);
+}
+
+.form__field:focus {
+  ~ .form__label {
     position: absolute;
     top: 0;
     display: block;
     transition: 0.2s;
-    font-size: 1rem;
+    font-size: 0.7rem;
     color: var(--gray-959DA6);
-}
-
-.form__field:focus {
-    ~.form__label {
-        position: absolute;
-        top: 0;
-        display: block;
-        transition: 0.2s;
-        font-size: 0.70rem;
-        color: var(--gray-959DA6);
-        font-weight: 400;
-    }
-
-    padding-bottom: 6px;
     font-weight: 400;
-    border-width: 3px;
-    border-image: linear-gradient(to right, var(--salmon-FF7F6A), var(--salmon-FF7F6A)) 1 / 0 0 1px 0 stretch;
-    border-image-slice: 2;
+  }
+
+  padding-bottom: 6px;
+  font-weight: 400;
+  border-width: 3px;
+  border-image: linear-gradient(to right, var(--salmon-FF7F6A), var(--salmon-FF7F6A)) 1 / 0 0 1px 0 stretch;
+  border-image-slice: 2;
 }
 
 /* reset input */
 .form__field {
-
-    &:required,
-    &:invalid {
-        box-shadow: none;
-    }
+  &:required,
+  &:invalid {
+    box-shadow: none;
+  }
 }
 
 @media screen and (min-width: 1024px) and (max-width: 1600px) {
-    .home_admin_section {
-         padding: 7.5rem 2.5rem 0rem 5rem;  
-    }
+  .home_admin_section {
+    padding: 7.5rem 2.5rem 0rem 5rem;
+  }
 }
 
 @media screen and (max-width: 1023px) {
-    .home_admin_section {
-        padding-left: 7rem;
+  .home_admin_section {
+    padding-left: 7rem;
 
-        &__button_container_articles {
-            padding-right: 20%;
-        }
+    &__button_container_articles {
+      padding-right: 20%;
     }
+  }
 }

@@ -1,18 +1,12 @@
-import React, { useEffect, useCallback } from "react";
-import styles from "./Applications.module.scss";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchToggleStateForButton3Async,
-  updateToggleStateForButton3Async,
-} from "../../store/Slice/toggleSlice";
-import { deleteUser, getAllUserNames } from "../../store/Slice/authSlice";
+import React, { useEffect, useCallback } from 'react';
+import styles from './Applications.module.scss';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchToggleStateForButton3Async, updateToggleStateForButton3Async } from '../../store/Slice/toggleSlice';
+import { deleteUser, getAllUserNames } from '../../store/Slice/authSlice';
 
 function ToggleButton({ isActive, onClick }) {
   return (
-    <div
-      className={`${styles.toggleButton} ${isActive ? styles.active : ""}`}
-      onClick={onClick}
-    >
+    <div className={`${styles.toggleButton} ${isActive ? styles.active : ''}`} onClick={onClick}>
       <div className={styles.circle}></div>
     </div>
   );
@@ -24,11 +18,8 @@ function UsersList({ users, onDeleteUser }) {
       {users.map((user) => (
         <li className={styles.Applications__item_text} key={user.id}>
           {user.id}: {user.userName}
-          {user.userName !== "Pokemon" && user.userName !== "obezyankaa" && (
-            <button
-              className={styles.Applications__delete_btn}
-              onClick={() => onDeleteUser(user.id, user.userName)}
-            >
+          {user.userName !== 'Pokemon' && user.userName !== 'obezyankaa' && (
+            <button className={styles.Applications__delete_btn} onClick={() => onDeleteUser(user.id, user.userName)}>
               Удалить
             </button>
           )}
@@ -41,9 +32,7 @@ function UsersList({ users, onDeleteUser }) {
 export default function Applications() {
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.auth.user);
-  const isActiveForButton3 = useSelector(
-    (state) => state.toggle.isActiveForButton3
-  );
+  const isActiveForButton3 = useSelector((state) => state.toggle.isActiveForButton3);
   const userNames = useSelector((state) => state.auth.userNames);
 
   useEffect(() => {
@@ -53,11 +42,7 @@ export default function Applications() {
 
   const handleDeleteUser = useCallback(
     (userId, userName) => {
-      if (
-        window.confirm(
-          `Вы уверены, что хотите удалить пользователя ${userName}?`
-        )
-      ) {
+      if (window.confirm(`Вы уверены, что хотите удалить пользователя ${userName}?`)) {
         dispatch(deleteUser(userId)).then(() => {
           dispatch(getAllUserNames());
         });
@@ -75,21 +60,15 @@ export default function Applications() {
       <div className={styles.Applications__title}>Управление</div>
       <div className={styles.Applications__container}>
         <div className={styles.Applications__hide_block}>
-          <div className={styles.Applications__hide_text}>
-            Открыть окно для регистрации
-          </div>
+          <div className={styles.Applications__hide_text}>Открыть окно для регистрации</div>
           <ToggleButton isActive={isActiveForButton3} onClick={toggleActive} />
         </div>
         <div>
           {currentUser ? (
             <>
-              <span className={styles.Applications__hide_text}>
-                Текущий пользователь в админке:
-              </span>
+              <span className={styles.Applications__hide_text}>Текущий пользователь в админке:</span>
               <div className={styles.Applications__status_block}>
-                <span className={styles.Applications__item_text}>
-                  {currentUser.name}
-                </span>
+                <span className={styles.Applications__item_text}>{currentUser.name}</span>
                 <div className={styles.Applications__status} />
               </div>
             </>
@@ -98,12 +77,8 @@ export default function Applications() {
           )}
         </div>
         <div>
-          <div className={styles.Applications__hide_text}>
-            Пользователи, которые зарегистрированы
-          </div>
-          {userNames && (
-            <UsersList users={userNames} onDeleteUser={handleDeleteUser} />
-          )}
+          <div className={styles.Applications__hide_text}>Пользователи, которые зарегистрированы</div>
+          {userNames && <UsersList users={userNames} onDeleteUser={handleDeleteUser} />}
         </div>
       </div>
     </section>

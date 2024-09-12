@@ -1,38 +1,38 @@
-import React, { useEffect, useRef, useState, useCallback, useMemo } from "react";
-import styles from "./AddNavbar.module.scss";
-import { Link, useNavigate } from "react-router-dom";
-import icon1 from "./icon/one.png";
-import icon2 from "./icon/three.png";
-import icon3 from "./icon/four.png";
-import icon4 from "./icon/two.png";
-import caseIcon from "./icon/case.svg";
-import fireIcon from "./icon/fire.svg";
-import hrIcon from "./icon/hr.svg";
-import pencilIcon from "./icon/pencil.svg";
-import projectorIcon from "./icon/projector.svg";
-import settingIcon from "./icon/setting.svg";
-import exit from "./icon/exit.svg";
+import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
+import styles from './AddNavbar.module.scss';
+import { Link, useNavigate } from 'react-router-dom';
+import icon1 from './icon/one.png';
+import icon2 from './icon/three.png';
+import icon3 from './icon/four.png';
+import icon4 from './icon/two.png';
+import caseIcon from './icon/case.svg';
+import fireIcon from './icon/fire.svg';
+import hrIcon from './icon/hr.svg';
+import pencilIcon from './icon/pencil.svg';
+import projectorIcon from './icon/projector.svg';
+import settingIcon from './icon/setting.svg';
+import exit from './icon/exit.svg';
 
-import { useDispatch } from "react-redux";
-import { logoutUser } from "../../store/Slice/authSlice";
-import { resetCurrentPage } from "../../store/Slice/userSlice";
+import { useDispatch } from 'react-redux';
+import { logoutUser } from '../../store/Slice/authSlice';
+import { resetCurrentPage } from '../../store/Slice/userSlice';
 
 export default function AddNavbar({ user, handleReturn }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [selectedItem, setSelectedItem] = useState("home");
+  const [selectedItem, setSelectedItem] = useState('home');
   const [indicatorX, setIndicatorX] = useState(0);
   const [indicatorY, setIndicatorY] = useState(0);
   const itemRefs = useRef({});
   const indicatorRef = useRef(null);
 
-  const isObezyankaaUser = user?.name === "obezyankaa";
-  const isPokemonUser = user?.name === "Pokemon";
-  const isHr778User = user?.name === "hr778";
-  const isManagerUser = user?.name === "manager";
+  const isObezyankaaUser = user?.name === 'obezyankaa';
+  const isPokemonUser = user?.name === 'Pokemon';
+  const isHr778User = user?.name === 'hr778';
+  const isManagerUser = user?.name === 'manager';
 
   useEffect(() => {
-    const storedSelectedItem = localStorage.getItem("selectedItem");
+    const storedSelectedItem = localStorage.getItem('selectedItem');
     if (storedSelectedItem) {
       setSelectedItem(storedSelectedItem);
     }
@@ -67,67 +67,73 @@ export default function AddNavbar({ user, handleReturn }) {
     }
   }, [indicatorX, indicatorY]);
 
-  const handleItemClick = useCallback((event, itemName, itemPath) => {
-    event.preventDefault();
-    setSelectedItem(itemName);
-    localStorage.setItem("selectedItem", itemName);
-    navigate(itemPath);
-  }, [navigate]);
+  const handleItemClick = useCallback(
+    (event, itemName, itemPath) => {
+      event.preventDefault();
+      setSelectedItem(itemName);
+      localStorage.setItem('selectedItem', itemName);
+      navigate(itemPath);
+    },
+    [navigate]
+  );
 
   const logouthandler = useCallback(async () => {
     try {
       dispatch(logoutUser());
       dispatch(resetCurrentPage());
-      navigate("/");
+      navigate('/');
     } catch (error) {
-      console.error("Ошибка при выходе из системы", error);
+      console.error('Ошибка при выходе из системы', error);
     }
   }, [dispatch, navigate]);
 
-  const menuItems = useMemo(() => [
-    {
-      name: "home",
-      path: "./home",
-      icon: pencilIcon,
-      label: "Главная",
-      visible: isPokemonUser || isObezyankaaUser || isManagerUser,
-    },
-    {
-      name: "add-a-project",
-      path: "./add-a-project",
-      icon: fireIcon,
-      label: "Проекты",
-      visible: isPokemonUser || isObezyankaaUser || isManagerUser,
-    },
-    {
-      name: "add-a-articles",
-      path: "./add-a-articles",
-      icon: projectorIcon,
-      label: "Публикации",
-      visible: isPokemonUser || isObezyankaaUser || isManagerUser,
-    },
-    {
-      name: "add-a-company",
-      path: "./add-a-company",
-      icon: caseIcon,
-      label: "О компании",
-      visible: isPokemonUser || isObezyankaaUser || isManagerUser,
-    },
-    {
-      name: "add-hr-portal",
-      path: "./add-hr-portal",
-      icon: hrIcon,
-      label: "HR портал",
-      visible: isPokemonUser || isObezyankaaUser || isHr778User,
-    },
-    {
-      name: "add-a-applications",
-      path: "./add-a-applications",
-      icon: settingIcon,
-      label: "Управление",
-      visible: isPokemonUser || isObezyankaaUser,
-    },
-  ], [isPokemonUser, isObezyankaaUser, isManagerUser, isHr778User]);
+  const menuItems = useMemo(
+    () => [
+      {
+        name: 'home',
+        path: './home',
+        icon: pencilIcon,
+        label: 'Главная',
+        visible: isPokemonUser || isObezyankaaUser || isManagerUser,
+      },
+      {
+        name: 'add-a-project',
+        path: './add-a-project',
+        icon: fireIcon,
+        label: 'Проекты',
+        visible: isPokemonUser || isObezyankaaUser || isManagerUser,
+      },
+      {
+        name: 'add-a-articles',
+        path: './add-a-articles',
+        icon: projectorIcon,
+        label: 'Публикации',
+        visible: isPokemonUser || isObezyankaaUser || isManagerUser,
+      },
+      {
+        name: 'add-a-company',
+        path: './add-a-company',
+        icon: caseIcon,
+        label: 'О компании',
+        visible: isPokemonUser || isObezyankaaUser || isManagerUser,
+      },
+      {
+        name: 'add-hr-portal',
+        path: './add-hr-portal',
+        icon: hrIcon,
+        label: 'HR портал',
+        visible: isPokemonUser || isObezyankaaUser || isHr778User,
+      },
+      {
+        name: 'add-a-applications',
+        path: './add-a-applications',
+        icon: settingIcon,
+        label: 'Управление',
+        visible: isPokemonUser || isObezyankaaUser,
+      },
+    ],
+    [isPokemonUser, isObezyankaaUser, isManagerUser, isHr778User]
+  );
 
   return (
     <>
@@ -135,9 +141,7 @@ export default function AddNavbar({ user, handleReturn }) {
         <div className={styles.add_navbar_container__block}>
           <div className={styles.selectedIndicator} ref={indicatorRef} />
           <div className={styles.add_navbar_container__management}>
-            <div className={styles.add_navbar_container__title}>
-              MARKS GROUP
-            </div>
+            <div className={styles.add_navbar_container__title}>MARKS GROUP</div>
             <ul className={styles.add_navbar_container__list}>
               {menuItems.map(
                 (item) =>
@@ -146,19 +150,13 @@ export default function AddNavbar({ user, handleReturn }) {
                       <Link
                         ref={(el) => (itemRefs.current[item.name] = el)}
                         className={`${styles.add_navbar_container__item} ${
-                          selectedItem === item.name ? styles.active : ""
+                          selectedItem === item.name ? styles.active : ''
                         }`}
                         to={item.path}
                         onClick={(event) => handleItemClick(event, item.name, item.path)}
                       >
-                        <img
-                          className={styles.add_navbar_container__item__icons}
-                          src={item.icon}
-                          alt={item.icon}
-                        />
-                        <p className={styles.add_navbar_container__title__ipad}>
-                          {item.label}
-                        </p>
+                        <img className={styles.add_navbar_container__item__icons} src={item.icon} alt={item.icon} />
+                        <p className={styles.add_navbar_container__title__ipad}>{item.label}</p>
                       </Link>
                     </li>
                   )
@@ -166,19 +164,9 @@ export default function AddNavbar({ user, handleReturn }) {
             </ul>
           </div>
           <li className={styles.add_navbar_container__item_li}>
-            <button
-              className={styles.add_navbar_container__item_exit}
-              type="button"
-              onClick={logouthandler}
-            >
-              <img
-                className={styles.add_navbar_container__item__icons_exit}
-                src={exit}
-                alt={exit}
-              />
-              <p className={styles.add_navbar_container__exit_ipad}>
-                Выйти из аккаунта
-              </p>
+            <button className={styles.add_navbar_container__item_exit} type="button" onClick={logouthandler}>
+              <img className={styles.add_navbar_container__item__icons_exit} src={exit} alt={exit} />
+              <p className={styles.add_navbar_container__exit_ipad}>Выйти из аккаунта</p>
             </button>
           </li>
         </div>

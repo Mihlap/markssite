@@ -8,7 +8,7 @@ import invite_2 from '../icons/invite-2.png';
 import invite_3 from '../icons/invite-3.png';
 import invite_4 from '../icons/invite-4.png';
 
-const VacanciesInvite = ({isInternship = true}) => {
+const VacanciesInvite = ({ isInternship = true }) => {
   return (
     <>
       <section className={styles.VacanciesInvite}>
@@ -30,10 +30,10 @@ const VacanciesInvite = ({isInternship = true}) => {
               <span>учиться у&nbsp;профессионалов</span> в&nbsp;сфере проектирования!
             </div>
             <ButtonLink
-              text="Смотреть стажировки"             
+              text="Смотреть стажировки"
               to={{
-                pathname: "/portal/internships",
-                search: `?type=${isInternship ? 'internship' : 'vacancy'}`
+                pathname: '/portal/internships',
+                search: `?type=${isInternship ? 'internship' : 'vacancy'}`,
               }}
             />
           </div>

@@ -1,24 +1,23 @@
 @import '../../App.css';
 
 .cursor {
-    // background-color: var(--black-1D2E43);
-    height: 24px;
-    width: 24px;
-    border-radius: 50%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 9999;
-    pointer-events: none;
+  // background-color: var(--black-1D2E43);
+  height: 24px;
+  width: 24px;
+  border-radius: 50%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  pointer-events: none;
 }
 
 .cursor-hover {
-    text-align: center;
+  text-align: center;
 }
 
-
 @media screen and (max-width: 1024px) {
-    .cursor-container {
-        display: none;
-    }
+  .cursor-container {
+    display: none;
+  }
 }
