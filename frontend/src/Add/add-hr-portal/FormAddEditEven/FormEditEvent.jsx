@@ -2,7 +2,7 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import compressImageFile from 'browser-image-compression';
 import styles from './FormAddEvent.module.scss';
-import { postVacancyData, editSlide, fetchSlides } from '../../../store/Slice/vacancyMainSlideCardSlice';
+import { editEvent, fetchEvents, postEventData } from '../../../store/Slice/vacancyEventSlice';
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 
@@ -16,28 +16,17 @@ export default function FormEditSlide({ setIsModalOpenEvent, editEventData }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isImageRemoved, setIsImageRemoved] = useState(false);
   const [formData, setFormData] = useState({
-    photoAva: editEventData?.photoAva || '',
-    card1: editEventData?.card1 || { description: '', date: '' },
-    card2: editEventData?.card2 || { description: '', date: '' },
-    card3: editEventData?.card3 || { description: '', date: '' },
+    title: editEventData?.title || '',
+    files: editEventData?.files || '',
+    eventData: editEventData?.eventData || '',
   });
 
   useEffect(() => {
     if (editEventData) {
       setFormData({
-        photoAva: editEventData.photoAva || '',
-        card1: {
-          description: editEventData.cardData.card1?.description || '',
-          date: editEventData.cardData.card1?.date ? new Date(editEventData.cardData.card1.date) : '',
-        },
-        card2: {
-          description: editEventData.cardData.card2?.description || '',
-          date: editEventData.cardData.card2?.date ? new Date(editEventData.cardData.card2.date) : '',
-        },
-        card3: {
-          description: editEventData.cardData.card3?.description || '',
-          date: editEventData.cardData.card3?.date ? new Date(editEventData.cardData.card3.date) : '',
-        },
+        title: editEventData?.title || '',
+        files: editEventData?.files || '',
+        eventData: editEventData?.eventData || '',
       });
     }
   }, [editEventData]);
@@ -56,52 +45,49 @@ export default function FormEditSlide({ setIsModalOpenEvent, editEventData }) {
     }
   }, []);
 
+
   const handleFileChange = async (event) => {
     const file = event.target.files[0];
     if (file) {
       setShowNotification(false);
       setIsImageRemoved(false);
       setIsLoading(true);
-
+  
       const compressedFile = await compressImage(file);
-
+  
       const finalFile = new File([compressedFile], file.name, { type: compressedFile.type });
-
+  
       setFormData((prevState) => ({
         ...prevState,
-        photoAva: finalFile,
+        files: finalFile, 
       }));
-
+  
       const reader = new FileReader();
       reader.onloadend = () => {
-        setPreviewPhotoAva([reader.result]);
-        setIsLoading(false);
+        setPreviewPhotoAva([reader.result]); 
+        setIsLoading(false); 
       };
-      reader.readAsDataURL(finalFile);
+      reader.readAsDataURL(finalFile); 
     }
   };
 
+
   const handleRemovePreviewPhotoAva = useCallback(() => {
-    setShowNotification(false);
+    setShowNotification(false); 
     setFormData((prevFormData) => ({
       ...prevFormData,
-      photoAva: '',
+      files: '',
     }));
-    setPreviewPhotoAva([]);
-    setIsImageRemoved(true);
+    setPreviewPhotoAva([]); 
+    setIsImageRemoved(true); 
   }, []);
+
 
   const validateForm = useCallback(() => {
     let isValid = true;
-    if (
-      !formData.photoAva ||
-      !formData.card1.description ||
-      !formData.card2.description ||
-      !formData.card3.description ||
-      !formData.card1.date ||
-      !formData.card2.date ||
-      !formData.card3.date
-    ) {
+    if (!formData.title ||
+      !formData.files ||
+      !formData.eventData) {
       isValid = false;
     }
     setShowNotification(!isValid);
@@ -112,15 +98,18 @@ export default function FormEditSlide({ setIsModalOpenEvent, editEventData }) {
     setIsModalOpenEvent(false);
   }, [setIsModalOpenEvent]);
 
+
+
   const handleDescriptionChange = (cardKey, value) => {
-    setShowNotification(false);
+    setShowNotification(false); 
     if (value.length <= 150) {
       setFormData((prevData) => ({
         ...prevData,
-        [cardKey]: { ...prevData[cardKey], description: value },
+        eventData: value, 
       }));
     }
   };
+
 
   const submitHandler = useCallback(
     async (e) => {
@@ -134,38 +123,35 @@ export default function FormEditSlide({ setIsModalOpenEvent, editEventData }) {
       }
 
       const dataToSend = new FormData();
-      dataToSend.append(
-        'details',
-        JSON.stringify({
-          card1: formData.card1,
-          card2: formData.card2,
-          card3: formData.card3,
-        })
-      );
+      dataToSend.append('title', formData.title);
+      dataToSend.append('details', JSON.stringify({
+        eventData: formData.eventData,     
+      }));
 
       if (isImageRemoved) {
-        dataToSend.append('removePhotoAva', 'true');
-      } else if (formData.photoAva && formData.photoAva instanceof File) {
-        dataToSend.append('photoAva', formData.photoAva);
+        dataToSend.append('removePhotoAva', 'true'); 
+      } else if (formData.files && formData.files instanceof File) {
+        dataToSend.append('files', formData.files); 
       }
 
       try {
         if (editEventData && editEventData.id) {
-          await dispatch(editSlide({ id: editEventData.id, data: dataToSend })).unwrap();
+          await dispatch(editEvent({ id: editEventData.id, data: dataToSend })).unwrap();
         } else {
-          await dispatch(postVacancyData(dataToSend)).unwrap();
+          await dispatch(postEventData(dataToSend)).unwrap();
         }
 
-        await dispatch(fetchSlides());
+        await dispatch(fetchEvents());
         setPreviewPhotos([]);
         setFormData({
-          photoAva: '',
-          card1: { description: '', date: null },
-          card2: { description: '', date: null },
-          card3: { description: '', date: null },
+          title: "",
+          files: "",
+          eventData: "",
+          hidden: "",
+          order: ""
         });
 
-        setShowNotification(false);
+        setShowNotification(false); 
         setIsModalOpenEvent(false);
       } catch (error) {
         console.error('Произошла ошибка при отправке формы:', error);
@@ -177,32 +163,56 @@ export default function FormEditSlide({ setIsModalOpenEvent, editEventData }) {
   return (
     <div className={styles.form_container}>
       {showNotification && (
-        <div className={styles.form_container__notification}>Необходимо заполнить каждое поле❗</div>
+        <div className={styles.form_container__notification}>
+         Необходимо заполнить каждое поле❗
+        </div>
       )}
       <div className={styles.form_container__title}>Редактирование слайда</div>
       <div className={styles.form_container__block_form}>
         <form className={styles.form_container__form} onSubmit={submitHandler}>
+        <div className={styles.form_container__block_gray_one}>
+           <div className={`${styles.form__group} ${styles.field}`}>
+              <input
+                type="input"
+                className={styles.form__field}
+                placeholder="title"
+                name="title"
+                id="title"
+                value={formData.title}
+                onChange={(event) => {
+                  const { name, value } = event.target;
+                  setFormData((prevFormData) => ({
+                    ...prevFormData,
+                    [name]: value,
+                  }));
+                }}
+                required
+              />
+              <label htmlFor="title" className={styles.form__label}>
+                Название мероприятия
+              </label>
+            </div>
+            </div>
           <div className={styles.form_container__titleCard}>Карточка 1</div>
           <div className={styles.form_container__block_gray_one}>
             <div className={styles.form_container__description_text}>
-              <div className={styles.form_container__textarea_length}>{`${formData.card1.description.length}/150`}</div>
+              <div className={styles.form_container__textarea_length}>{`${formData.eventData.length}/150`}</div>
               <textarea
                 className={styles.form_container__textarea}
                 autoComplete="off"
                 required
-                name="descriptionCard1"
-                id="descriptionCard1"
+                name="description"
+                id="description"
                 cols="30"
                 rows="10"
                 placeholder="Не более 150 символов"
-                value={formData.card1.description}
-                onChange={(e) => handleDescriptionChange('card1', e.target.value)}
-              ></textarea>
-              <label htmlFor="descriptionCard1" className={styles.form_container__textarea_label_constructor}>
+                value={formData.eventData}
+                onChange={(e) => handleDescriptionChange('card1', e.target.value)}></textarea>
+              <label htmlFor="description" className={styles.form_container__textarea_label_constructor}>
                 Название конкурса
               </label>
             </div>
-          </div>
+          </div>       
           <div className={`${styles.photo_orientation_selector} ${styles.flex_block_gap}`}>
             <div className={styles.form_container__checkbox_block}>
               <div>Изображение</div>
@@ -227,11 +237,11 @@ export default function FormEditSlide({ setIsModalOpenEvent, editEventData }) {
               {isLoading && <div className={styles.preview_photos_container__loading}>Загрузка . . .</div>}
             </div>
             <div>
-              {formData.photoAva && previewPhotoAva.length === 0 && (
+              {formData.files  && previewPhotoAva.length === 0 && (
                 <div className={styles.preview_photos_container__block}>
                   <img
                     className={styles.preview_photos_container__img}
-                    src={`${Host}/images/slideCard/${formData.photoAva}`}
+                    src={`${Host}/images/eventAdd/${formData.files}`}
                     alt="Preview"
                   />
                   <div
@@ -247,57 +257,14 @@ export default function FormEditSlide({ setIsModalOpenEvent, editEventData }) {
                   <img className={styles.preview_photos_container__img} src={preview} alt={`Preview ${index}`} />
                   <div
                     className={styles.preview_photos_container__remove_icon}
-                    onClick={() => handleRemovePreviewPhotoAva(index)}
-                  >
+                    onClick={() => handleRemovePreviewPhotoAva(index)}>
                     <span></span>
                   </div>
                 </div>
               ))}
             </div>
-          </div>
-
-          <div className={styles.form_container__titleCard}>Карточка 2</div>
-          <div className={styles.form_container__block_gray_one}>
-            <div className={styles.form_container__description_text}>
-              <div className={styles.form_container__textarea_length}>{`${formData.card2.description.length}/150`}</div>
-              <textarea
-                className={styles.form_container__textarea}
-                autoComplete="off"
-                required
-                name="descriptionCard2"
-                id="descriptionCard2"
-                cols="30"
-                rows="10"
-                placeholder="Не более 150 символов"
-                value={formData.card2.description}
-                onChange={(e) => handleDescriptionChange('card2', e.target.value)}
-              ></textarea>
-              <label htmlFor="descriptionCard2" className={styles.form_container__textarea_label_constructor}>
-                Название конкурса
-              </label>
-            </div>
-          </div>
-          <div className={styles.form_container__titleCard}>Карточка 3</div>
-          <div className={styles.form_container__block_gray_one}>
-            <div className={styles.form_container__description_text}>
-              <div className={styles.form_container__textarea_length}>{`${formData.card3.description.length}/150`}</div>
-              <textarea
-                className={styles.form_container__textarea}
-                autoComplete="off"
-                required
-                name="descriptionCard3"
-                id="descriptionCard3"
-                cols="30"
-                rows="10"
-                placeholder="Не более 150 символов"
-                value={formData.card3.description}
-                onChange={(e) => handleDescriptionChange('card3', e.target.value)}
-              ></textarea>
-              <label htmlFor="descriptionCard3" className={styles.form_container__textarea_label_constructor}>
-                Название конкурса
-              </label>
-            </div>
-          </div>
+          </div>     
+       
           <div className={styles.form_container__button_block}>
             <button className={styles.form_container__button_save} type="submit"></button>
             <button className={styles.form_container__button_cancel} type="submit" onClick={closeModal}></button>
