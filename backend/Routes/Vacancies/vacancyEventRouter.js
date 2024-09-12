@@ -39,33 +39,33 @@ router.put('/update-event/:id', fileMiddleware.fields([{ name: 'files', maxCount
     try {
       const { id } = req.params;
       const details = JSON.parse(req.body.details);
-      const slide = await VacancyMainEvent.findByPk(id);
+      const event = await VacancyMainEvent.findByPk(id);
 
-      if (!slide) {
-        return res.status(404).json({ message: "Слайд не найден" });
+      if (!event) {
+        return res.status(404).json({ message: "Мероприятие не найдено" });
       }
 
-      const oldImage = slide.photoAva;  
+      const oldImage = event.files;  
 
-       if (req.body.removePhotoAva === 'true' && slide.photoAva) {
-        await deleteImageIfUnused(slide.photoAva, id);
-        slide.photoAva = '';
+       if (req.body.removeFiles === 'true' && event.files) {
+        await deleteImageIfUnused(event.files, id);
+        event.files = '';
       }
 
-        if (req.files && req.files['photoAva']) {     
-        slide.photoAva = req.files['photoAva'][0].filename; 
+        if (req.files && req.files['files']) {     
+          event.files = req.files['files'][0].filename; 
       }
 
-      await slide.update({
-        photoAva: slide.photoAva,
-        cardData: details,
+      await event.update({
+        photoAva: event.files,
+        eventData: details,
       });
 
-      if (oldImage && oldImage !== slide.photoAva) {
+      if (oldImage && oldImage !== event.files) {
         await deleteImageIfUnused(oldImage, id);
       }
 
-      res.json({ message: "Слайд успешно обновлен", data: slide });
+      res.json({ message: "Слайд успешно обновлен", data: event });
     } catch (error) {
       console.error('Ошибка при обновлении слайда:', error);
       res.status(500).json({ error: "Ошибка сервера при обновлении слайда" });
@@ -76,37 +76,37 @@ router.put('/update-event/:id', fileMiddleware.fields([{ name: 'files', maxCount
 
 
 
-router.put('/update-slides-order', async (req, res) => {
-  const { slides } = req.body;
+router.put('/update-event-order', async (req, res) => {
+  const { events } = req.body;
 
-  if (!Array.isArray(slides)) {
-    return res.status(400).json({ error: 'Некорректные данные: ожидался массив слайдов' });
+  if (!Array.isArray(events)) {
+    return res.status(400).json({ error: 'Некорректные данные: ожидался массив мероприятий' });
   }
 
   try {
     // eslint-disable-next-line no-plusplus
-    for (let i = 0; i < slides.length; i++) {
-      const { id, order } = slides[i];     
+    for (let i = 0; i < events.length; i++) {
+      const { id, order } = events[i];     
 
       await VacancyMainEvent.update({ order }, { where: { id } });
     }
 
-    const updatedSlides = await VacancyMainEvent.findAll({
+    const updatedFiles = await VacancyMainEvent.findAll({
       order: [['order', 'ASC']],
     });
 
-    res.json({ message: 'Порядок слайдов успешно обновлен', slides: updatedSlides });
+    res.json({ message: 'Порядок мероприятий успешно обновлен', events: updatedFiles });
   } catch (error) {
-    console.error('Ошибка при обновлении порядка слайдов:', error);
-    res.status(500).json({ error: 'Ошибка сервера при обновлении порядка слайдов' });
+    console.error('Ошибка при обновлении порядка мероприятий:', error);
+    res.status(500).json({ error: 'Ошибка сервера при обновлении порядка мероприятий' });
   }
 });
 
 
 
-router.post('/save-vacancy-details',
+router.post('/save-event-details',
   fileMiddleware.fields([{
-  name: 'photoAva',
+  name: 'files',
   maxCount: 1
     },
   ]), async (req, res) => {
@@ -117,26 +117,23 @@ router.post('/save-vacancy-details',
     return res.status(400).json({ error: 'Некорректные данные: не удалось распарсить JSON' });
   }
 
-  if (!details || !details.card1 || !details.card2 || !details.card3) {
+  if (!details) {
     return res.status(400).json({ error: 'Некорректные данные: отсутствуют необходимые поля' });
   }
 
-  const photoAva = req.files && req.files['photoAva'] ? req.files['photoAva'][0].filename : '';
+  const files = req.files && req.files['files'] ? req.files['files'][0].filename : '';
+  const title = req.body.title; 
 
-  const cardData = {
-    card1: details.card1,
-    card2: details.card2,
-    card3: details.card3,
-  };
-
+ 
   try {
-    const newSlide = await VacancyMainEvent.create({
-      cardData,
+    const newEvent = await VacancyMainEvent.create({
+      title,
+      eventData: details.eventData,
       hidden: false,
-      photoAva
+      files
     });
 
-    res.status(200).json({ message: 'Детали вакансии сохранены успешно.', data: newSlide });
+    res.status(200).json({ message: 'Детали вакансии сохранены успешно.', data: newEvent });
   } catch (error) {
     console.error('Ошибка при сохранении деталей вакансии:', error);
     res.status(500).json({ error: 'Ошибка при обработке вашего запроса', details: error.errors });
@@ -146,33 +143,31 @@ router.post('/save-vacancy-details',
 
 
 
-router.get('/get-slides', async (req, res) => {
+router.get('/get-events', async (req, res) => {
   try {
     const data = await VacancyMainEvent.findAll({ order: [['order', 'ASC']] });
     res.json(data);
   } catch (error) {
-    console.error(error);
-    res.status(500).json({
-      error: 'Произошла ошибка при получении данных.'
-    });
+    console.error('Произошла ошибка при получении данных.');
+    res.status(500).json({ error: "Ошибка сервера при получении данных"  });
   }
 });
 
 
 
-router.get('/get-slide/:id', async (req, res) => {
+router.get('/get-event/:id', async (req, res) => {
   const { id } = req.params;
 
   try {
-    const slide = await VacancyMainEvent.findByPk(id);
-    if (!slide) {
-      res.status(404).json({ message: "Слайд не найден" });
+    const event = await VacancyMainEvent.findByPk(id);
+    if (!event) {
+      res.status(404).json({ message: "Меропиятие не найден" });
     } else {
-      res.json(slide);
+      res.json(event);
     }
   } catch (error) {
-    console.error("Ошибка сервера при получении данных слайда:", error);
-    res.status(500).json({ error: "Ошибка сервера при получении данных слайда" });
+    console.error("Ошибка сервера при получении данных мероприятий:", error);
+    res.status(500).json({ error: "Ошибка сервера при получении данных мероприятий" });
   }
 });
 
@@ -188,7 +183,7 @@ router.get('/getimage/:imageName', (req, res) => {
 });
 
 
-router.put('/toggle-slide/:id', async (req, res) => {
+router.put('/toggle-event/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const { hidden } = req.body;
@@ -198,54 +193,54 @@ router.put('/toggle-slide/:id', async (req, res) => {
     });
 
     if (updated) {
-      res.json({ message: 'Статус вакансии успешно обновлен', id, hidden });
+      res.json({ message: 'Статус мероприятий успешно обновлен', id, hidden });
     } else {
-      res.status(404).json({ error: 'Вканансии не найдено' });
+      res.status(404).json({ error: 'Мероприятие не найдено' });
     }
   } catch (error) {
-    console.error('Ошибка обновления статуса вакансии:', error);
-    res.status(500).json({ message: 'Ошибка сервера при обновлении статуса вакансии' });
+    console.error('Ошибка обновления статуса мероприятий:', error);
+    res.status(500).json({ message: 'Ошибка сервера при обновлении статуса мероприятий' });
   }
 });
 
 
 
-router.delete('/delete-slide/:id', async (req, res) => {
-  const id = req.params.id; 
+router.delete('/delete-event/:id', async (req, res) => {
+  const { id } = req.params;
 
   if (!id || isNaN(parseInt(id))) { 
-    return res.status(400).json({ error: "Некорректный идентификатор слайда." });
+    return res.status(400).json({ error: "Некорректный идентификатор мероприятия." });
   }
 
   try {
-    const slide = await VacancyMainEvent.findByPk(id);
+    const event = await VacancyMainEvent.findByPk(id);
 
-    if (!slide) {
-      return res.status(404).json({ error: "Слайд не найден." });
+    if (!event) {
+      return res.status(404).json({ error: "Мероприятие не найдено." });
     }
 
     const result = await VacancyMainEvent.destroy({ where: { id } });
 
-    if (result > 0) {
-       const otherSlidesWithImage = await VacancyMainEvent.findOne({
-        where: { photoAva: slide.photoAva, id: { [Op.ne]: id } } 
+    if (result) {
+       const otherEventsWithImage = await VacancyMainEvent.findOne({
+        where: { files: event.files, id: { [Op.ne]: id } } 
       });
 
-      if (!otherSlidesWithImage && slide.photoAva) {
-        const imagePath = path.join(eventImagesPath, slide.photoAva);
+      if (!otherEventsWithImage && event.files) {
+        const imagePath = path.join(eventImagesPath, event.files);
         fs.unlink(imagePath, (err) => {
           if (err) {
-            console.error(`Ошибка при удалении изображения ${slide.photoAva}:`, err);
+            console.error(`Ошибка при удалении изображения ${event.files}:`, err);
           }
         });
       }
 
-      res.json({ message: "Слайд удален", id });
+      res.json({ message: "Мероприятие удалено", id });
     } else {
-      res.status(500).json({ error: "Ошибка при удалении слайда." });
+      res.status(500).json({ error: "Ошибка при удалении мероприятия." });
     }
   } catch (error) {
-    res.status(500).json({ error: "Ошибка при удалении слайда." });
+    res.status(500).json({ error: "Ошибка при удалении мероприятия." });
   }
 });
 

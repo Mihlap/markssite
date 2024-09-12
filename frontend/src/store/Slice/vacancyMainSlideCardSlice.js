@@ -165,9 +165,9 @@ const formAddSlideSlice = createSlice({
       .addCase(fetchSlides.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(fetchSlides.fulfilled, (state, action) => {
-        state.isLoading = false;
+      .addCase(fetchSlides.fulfilled, (state, action) => {      
         state.slides = action.payload;
+        state.isLoading = false;
       })
       .addCase(fetchSlides.rejected, (state, action) => {
         state.isLoading = false;
@@ -176,12 +176,12 @@ const formAddSlideSlice = createSlice({
       .addCase(postVacancyData.fulfilled, (state, action) => {
         state.slides = [...state.slides, action.payload];
       })
-      .addCase(editSlide.fulfilled, (state, action) => {
+      .addCase(editSlide.fulfilled, (state, action) => {     
         const index = state.slides.findIndex(slide => slide.id === action.payload.id);
         if (index !== -1) {
           state.slides[index] = {...state.slides[index], ...action.payload};  
         } else {
-          console.warn('Slide not found for update, adding new slide.');
+          console.warn('Слайд не найден для обновления, добавляем новый слайд.');
           state.slides.push(action.payload);
         }
       })

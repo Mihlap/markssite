@@ -48,7 +48,7 @@ export default function AddHRPortal({ user }) {
   const [savedId, setSavedId] = useState(null);
 
   const dispatch = useDispatch();
-  const { error, loading } = useSelector((state) => state.vacancies);
+  const { error, loading, hidden } = useSelector((state) => state.vacancies);
   const vacanciesAdd = useSelector((state) => state.vacancies.vacancies);
   const vacancies = useSelector((state) => state.vacancies?.vacancies);
   const arrIdVacancy = useSelector(arrIdVacancySelector);
@@ -80,23 +80,14 @@ export default function AddHRPortal({ user }) {
   const handleOpenModal = useCallback(() => {
     if (selectedFilter !== 'Главная hr') {
       setIsModalOpen(true);
-      setIsModalOpenMain(true);
-      setIsModalOpenEvent(true);
       setEditVacancyData(null);
-      setEditSlideData(null);
-      setEditEventData(null);
     } else {
-      setIsModalOpenMain(true);
-      setIsModalOpenEvent(true);
-      setEditSlideData(null);
-      setEditEventData(null);
+ 
     }
   }, [selectedFilter]);
 
   const handleCloseModal = useCallback(() => {
     setIsModalOpen(false);
-    setIsModalOpenMain(false);
-    setIsModalOpenEvent(false);
   }, []);
 
   const handleDeleteModalOpen = useCallback((id) => {
@@ -237,19 +228,13 @@ export default function AddHRPortal({ user }) {
         </div>
         {selectedFilter === 'Главная hr' ? (
           <>
-            <AddSlideMain
-              handleOpenModal={handleOpenModal}
+            <AddSlideMain         
               isModalOpenMain={isModalOpenMain}
               setIsModalOpenMain={setIsModalOpenMain}
               editSlideData={editSlideData}
               setEditSlideData={setEditSlideData}
               modalBlockHeight={modalBlockHeight}
-              user={user}
-              deleteModalState={deleteModalState}
-              setDeleteModalState={setDeleteModalState}
-              handleDeleteModalClose={handleDeleteModalClose}
-              handleFormDelete={handleFormDelete}
-              handleDeleteModalOpen={handleDeleteModalOpen}
+              user={user}           
             />
             <SearchVacancyMain
               vacancies={vacancies}
@@ -273,22 +258,13 @@ export default function AddHRPortal({ user }) {
               replacement={replacement}
               replacementMessage={replacementMessage}
             />
-            <AddEventMain
-              handleOpenModal={handleOpenModal}
-              isModalOpenEvent={isModalOpenEvent}
-              setIsModalOpenEvent={setIsModalOpenEvent}
-              editEventData={editEventData}
-              setEditEventData={setEditEventData}
-              modalBlockHeight={modalBlockHeight}
-              user={user}
-              isCopied={isCopied}
-              copiedId={copiedId}
-              deleteModalState={deleteModalState}
-              setDeleteModalState={setDeleteModalState}
-              handleDeleteModalClose={handleDeleteModalClose}
-              handleFormDelete={handleFormDelete}
-              handleDeleteModalOpen={handleDeleteModalOpen}
-              handleCopyClick={handleCopyClick}
+            <AddEventMain             
+                 isModalOpenEvent={isModalOpenEvent}
+                 setIsModalOpenEvent={setIsModalOpenEvent}
+                 editEventData={editEventData}
+                 setEditEventData={setEditEventData}
+                 modalBlockHeight={modalBlockHeight}
+                 user={user}         
             />
           </>
         ) : (
