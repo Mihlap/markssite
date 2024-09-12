@@ -1,12 +1,12 @@
-import React, { useEffect, useRef, useState, useCallback, useMemo } from "react";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
-import Select from "react-select";
-import { useDispatch } from "react-redux";
-import { addVacancy } from "../../../store/Slice/vacanciesSlice.js";
-import { selectBlocks } from "../utils.js";
+import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import Select from 'react-select';
+import { useDispatch } from 'react-redux';
+import { addVacancy } from '../../../store/Slice/vacanciesSlice.js';
+import { selectBlocks } from '../utils.js';
 
-import styles from "./FormAddVacancy.module.scss";
+import styles from './FormAddVacancy.module.scss';
 
 export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
   const [showNotification, setShowNotification] = useState(false);
@@ -14,20 +14,20 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
   const [error, setError] = useState(null);
 
   const dispatch = useDispatch();
-  const type = selectedFilter === "Вакансии" ? "вакансия" : "стажировка";
+  const type = selectedFilter === 'Вакансии' ? 'вакансия' : 'стажировка';
 
   const [formData, setFormData] = useState({
-    title: "",
-    textBlock1: "",
-    textBlock2: "",
-    textBlock3: "",
-    department: "",
-    experience: "",
-    location: "",
-    busyness: "",
-    workMode: "",
-    skills: "",
-    benefits: "",
+    title: '',
+    textBlock1: '',
+    textBlock2: '',
+    textBlock3: '',
+    department: '',
+    experience: '',
+    location: '',
+    busyness: '',
+    workMode: '',
+    skills: '',
+    benefits: '',
     type: type,
   });
 
@@ -55,14 +55,13 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
       const editor = quillRef.current.getEditor();
       const editorElement = editor.root;
 
-      editorElement.style.fontSize = "16px";
-      editorElement.style.fontFamily = "Raleway, sans-serif";
-      editorElement.style.color = "var(--black-1D2E43)";
-      editorElement.style.border = "none";
-      editorElement.style.lineHeight = '1'; 
+      editorElement.style.fontSize = '16px';
+      editorElement.style.fontFamily = 'Raleway, sans-serif';
+      editorElement.style.color = 'var(--black-1D2E43)';
+      editorElement.style.border = 'none';
+      editorElement.style.lineHeight = '1';
     }
   }, []);
-
 
   useEffect(() => {
     quillRefs.forEach((quillRef) => applyStylesToQuillEditor(quillRef));
@@ -73,7 +72,7 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
 
     quill.on('text-change', () => {
       const plainText = quill.getText();
-      
+
       if (plainText.length > 300) {
         const excessLength = plainText.length - 301;
         quill.deleteText(quill.getLength() - 1 - excessLength, quill.getLength() - 1, 'silent');
@@ -85,31 +84,34 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
     });
   }, [setFormData]);
 
-  const handleSubmit = useCallback(async (event) => {
-    event.preventDefault();
-    setLoading(true);
-    try {
-      await dispatch(addVacancy(formData));
-      setFormData({
-        title: "",
-        textBlock1: "",
-        textBlock2: "",
-        textBlock3: "",
-        department: "",
-        experience: "",
-        location: "",
-        busyness: "",
-        workMode: "",
-        skills: [],
-        benefits: [],
-      });
-      setIsModalOpen(false);
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  }, [dispatch, formData, setIsModalOpen]);
+  const handleSubmit = useCallback(
+    async (event) => {
+      event.preventDefault();
+      setLoading(true);
+      try {
+        await dispatch(addVacancy(formData));
+        setFormData({
+          title: '',
+          textBlock1: '',
+          textBlock2: '',
+          textBlock3: '',
+          department: '',
+          experience: '',
+          location: '',
+          busyness: '',
+          workMode: '',
+          skills: [],
+          benefits: [],
+        });
+        setIsModalOpen(false);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    },
+    [dispatch, formData, setIsModalOpen]
+  );
 
   const handleBlur = useCallback((event) => {
     const name = event?.target?.name;
@@ -125,7 +127,7 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
     let selectedValue;
     if (Array.isArray(value)) {
       const selectedValues = value.map((option) => option.value);
-      selectedValue = selectedValues.join(", ");
+      selectedValue = selectedValues.join(', ');
     } else {
       selectedValue = value;
     }
@@ -134,7 +136,7 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
       [name]: selectedValue,
     }));
   }, []);
-  
+
   const closeModal = useCallback(() => {
     setIsModalOpen(false);
   }, [setIsModalOpen]);
@@ -147,7 +149,7 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
         </div>
       )}
       <div className={styles.form_container__title}>
-        Новая {selectedFilter === "Вакансии" ? "вакансия" : "стажировка"}
+        Новая {selectedFilter === 'Вакансии' ? 'вакансия' : 'стажировка'}
       </div>
       <div className={styles.form_container__block_form}>
         <form className={styles.form_container__form} onSubmit={handleSubmit}>
@@ -176,11 +178,7 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
             {selectBlocks.map((block, index) => (
               <div key={`${block.name}_${index}`} className={`${styles.group} some-unique-class`}>
                 <label
-                  className={`${styles.label1} ${
-                    isFocused[block.name] || formData[block.name]
-                      ? styles.focused1
-                      : ""
-                  }`}
+                  className={`${styles.label1} ${isFocused[block.name] || formData[block.name] ? styles.focused1 : ''}`}
                 >
                   <Select
                     className={`${styles.form__group} ${styles.field}`}
@@ -188,12 +186,10 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
                     name={block.name}
                     onFocus={handleFocus}
                     onBlur={handleBlur}
-                    isMulti={block.name === "benefits" || block.name === "skills"}
+                    isMulti={block.name === 'benefits' || block.name === 'skills'}
                     options={block.options}
                     required
-                    value={block.options.find(
-                      (option) => option.value === formData[block.name]
-                    )}
+                    value={block.options.find((option) => option.value === formData[block.name])}
                     placeholder={block.label}
                     onChange={(value) => handleChangeSelect(value, block.name)}
                     isSearchable={false}
@@ -202,77 +198,77 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
                     styles={{
                       container: (provided) => ({
                         ...provided,
-                        border: "none",
-                        width: "100%",
+                        border: 'none',
+                        width: '100%',
                       }),
                       control: (provided, state) => ({
                         ...provided,
-                        border: "none",
-                        backgroundColor: "transparent",
-                        boxShadow: state.isFocused ? "none" : provided.boxShadow,
-                        borderBottom: `1px solid ${state.isFocused ? "#75BBFD" : "#959DA6"}`,
-                        borderColor: "transparent",
-                        "&:hover": {
-                          borderBottomColor: "1px solid",
+                        border: 'none',
+                        backgroundColor: 'transparent',
+                        boxShadow: state.isFocused ? 'none' : provided.boxShadow,
+                        borderBottom: `1px solid ${state.isFocused ? '#75BBFD' : '#959DA6'}`,
+                        borderColor: 'transparent',
+                        '&:hover': {
+                          borderBottomColor: '1px solid',
                         },
                       }),
                       indicatorSeparator: (provided) => ({
                         ...provided,
-                        display: "none",
+                        display: 'none',
                       }),
                       multiValue: (provided) => ({
                         ...provided,
-                        backgroundColor: "transparent",
+                        backgroundColor: 'transparent',
                       }),
                       singleValue: (provided) => ({
                         ...provided,
-                        color: "#1D2E43",
+                        color: '#1D2E43',
                         marginLeft: -5,
                       }),
                       placeholder: (provided) => ({
                         ...provided,
                         marginLeft: -5,
-                        color: "#959DA6",
+                        color: '#959DA6',
                       }),
                       option: (provided, state) => ({
                         ...provided,
-                        backgroundColor: state.isFocused ? "#75BBFD" : "transparent",
-                        color: state.isFocused ? "white" : "inherit",
+                        backgroundColor: state.isFocused ? '#75BBFD' : 'transparent',
+                        color: state.isFocused ? 'white' : 'inherit',
                       }),
                       dropdownIndicator: (provided, state) => ({
                         ...provided,
-                        transform: state.selectProps.menuIsOpen ? "rotate(180deg)" : null,
-                        transition: "transform 0.3s ease-in-out",
-                        color: state.isFocused ? "#75BBFD" : "#C0C5CB",
+                        transform: state.selectProps.menuIsOpen ? 'rotate(180deg)' : null,
+                        transition: 'transform 0.3s ease-in-out',
+                        color: state.isFocused ? '#75BBFD' : '#C0C5CB',
                       }),
                       menuList: (provided) => ({
                         ...provided,
-                        "&::-webkit-scrollbar": {
-                          width: "4px",
+                        '&::-webkit-scrollbar': {
+                          width: '4px',
                         },
-                        "&::-webkit-scrollbar-thumb": {
-                          backgroundColor: "#C0C5CB",
-                          borderRadius: "4px",
+                        '&::-webkit-scrollbar-thumb': {
+                          backgroundColor: '#C0C5CB',
+                          borderRadius: '4px',
                         },
-                        "&::-webkit-scrollbar-track": {
-                          backgroundColor: "transparent",
+                        '&::-webkit-scrollbar-track': {
+                          backgroundColor: 'transparent',
                         },
-                        "&::-ms-scrollbar": {
-                          width: "4px",
+                        '&::-ms-scrollbar': {
+                          width: '4px',
                         },
-                        "&::-ms-scrollbar-thumb": {
-                          backgroundColor: "#C0C5CB",
-                          borderRadius: "4px",
+                        '&::-ms-scrollbar-thumb': {
+                          backgroundColor: '#C0C5CB',
+                          borderRadius: '4px',
                         },
-                        "&::-ms-scrollbar-track": {
-                          backgroundColor: "transparent",
+                        '&::-ms-scrollbar-track': {
+                          backgroundColor: 'transparent',
                         },
-                        margin: "6px",
+                        margin: '6px',
                       }),
                       menu: (provided) => ({
                         ...provided,
-                        boxShadow: "none",
-                        backgroundColor: "#EBECEE",
+                        boxShadow: 'none',
+                        backgroundColor: '#EBECEE',
                       }),
                     }}
                   />
@@ -283,30 +279,30 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
           <div className={styles.form_container__block_gray_one}>
             <div className={styles.heading_textarea}>
               <div className={styles.form_container__description_text}>
-            <div className={styles.form_container__textarea_length}>
-            {`${quillRef1.current ? quillRef1.current.getEditor().getText().length - 1 : 0}/300`}
-            </div>
+                <div className={styles.form_container__textarea_length}>
+                  {`${quillRef1.current ? quillRef1.current.getEditor().getText().length - 1 : 0}/300`}
+                </div>
                 <ReactQuill
                   ref={quillRef1}
                   modules={{
-                    toolbar: [["bold", "underline", { list: "bullet" }]],
+                    toolbar: [['bold', 'underline', { list: 'bullet' }]],
                     clipboard: {
                       matchVisual: false,
                     },
                   }}
-                  formats={["bold", "underline", "list"]}
+                  formats={['bold', 'underline', 'list']}
                   className={styles.form_container__textarea}
                   style={{
-                    padding: "0rem",
-                    border: "1px solid var(--blue-75BBFD)",
-                    fontFamily: "var(--font-raleway)",
-                    borderRadius: "6px",
-                    fontSize: "16px",
-                    fontStyle: "normal",
-                    fontWeight: "var(--fw-400)",                   
-                    color: "var(---black-1D2E43)",
-                    boxSizing: "border-box",
-                    paddingBottom: "2.5rem",                  
+                    padding: '0rem',
+                    border: '1px solid var(--blue-75BBFD)',
+                    fontFamily: 'var(--font-raleway)',
+                    borderRadius: '6px',
+                    fontSize: '16px',
+                    fontStyle: 'normal',
+                    fontWeight: 'var(--fw-400)',
+                    color: 'var(---black-1D2E43)',
+                    boxSizing: 'border-box',
+                    paddingBottom: '2.5rem',
                   }}
                   required
                   name="textBlock1"
@@ -320,10 +316,7 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
                   }}
                   placeholder="Не более 300 символов"
                 />
-                <label
-                  htmlFor="textBlock1"
-                  className={styles.form_container__textarea_label_constructor}
-                >
+                <label htmlFor="textBlock1" className={styles.form_container__textarea_label_constructor}>
                   Мы ищем
                 </label>
               </div>
@@ -332,29 +325,28 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
           <div className={styles.form_container__block_gray_one}>
             <div className={styles.heading_textarea}>
               <div className={styles.form_container__description_text}>
-                
                 <ReactQuill
                   ref={quillRef2}
                   modules={{
-                    toolbar: [["bold", "underline", { list: "bullet" }]],
+                    toolbar: [['bold', 'underline', { list: 'bullet' }]],
                     clipboard: {
                       matchVisual: false,
                     },
                   }}
-                  formats={["bold", "underline", "list"]}
+                  formats={['bold', 'underline', 'list']}
                   className={styles.form_container__textarea}
                   style={{
-                    padding: "0rem",
-                    border: "1px solid var(--blue-75BBFD)",
-                    fontFamily: "var(--font-raleway)",
-                    borderRadius: "6px",
-                    fontSize: "16px",
-                    fontStyle: "normal",
-                    fontWeight: "var(--fw-400)",
-                    lineHeight: "16px",
-                    color: "var(---black-1D2E43)",
-                    boxSizing: "border-box",
-                    paddingBottom: "2.5rem",
+                    padding: '0rem',
+                    border: '1px solid var(--blue-75BBFD)',
+                    fontFamily: 'var(--font-raleway)',
+                    borderRadius: '6px',
+                    fontSize: '16px',
+                    fontStyle: 'normal',
+                    fontWeight: 'var(--fw-400)',
+                    lineHeight: '16px',
+                    color: 'var(---black-1D2E43)',
+                    boxSizing: 'border-box',
+                    paddingBottom: '2.5rem',
                   }}
                   required
                   name="textBlock2"
@@ -368,10 +360,7 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
                   }}
                   placeholder="нет ограничений по символам"
                 />
-                <label
-                  htmlFor="textBlock2"
-                  className={styles.form_container__textarea_label_constructor}
-                >
+                <label htmlFor="textBlock2" className={styles.form_container__textarea_label_constructor}>
                   Вам предстоит
                 </label>
               </div>
@@ -383,25 +372,25 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
                 <ReactQuill
                   ref={quillRef3}
                   modules={{
-                    toolbar: [["bold", "underline", { list: "bullet" }]],
+                    toolbar: [['bold', 'underline', { list: 'bullet' }]],
                     clipboard: {
                       matchVisual: false,
                     },
                   }}
-                  formats={["bold", "underline", "list"]}
+                  formats={['bold', 'underline', 'list']}
                   className={styles.form_container__textarea}
                   style={{
-                    padding: "0rem",
-                    border: "1px solid var(--blue-75BBFD)",
-                    fontFamily: "var(--font-raleway)",
-                    borderRadius: "6px",
-                    fontSize: "16px",
-                    fontStyle: "normal",
-                    fontWeight: "var(--fw-400)",
-                    lineHeight: "16px",
-                    color: "var(---black-1D2E43)",
-                    boxSizing: "border-box",
-                    paddingBottom: "2.5rem",
+                    padding: '0rem',
+                    border: '1px solid var(--blue-75BBFD)',
+                    fontFamily: 'var(--font-raleway)',
+                    borderRadius: '6px',
+                    fontSize: '16px',
+                    fontStyle: 'normal',
+                    fontWeight: 'var(--fw-400)',
+                    lineHeight: '16px',
+                    color: 'var(---black-1D2E43)',
+                    boxSizing: 'border-box',
+                    paddingBottom: '2.5rem',
                   }}
                   required
                   name="textBlock3"
@@ -415,26 +404,15 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
                   }}
                   placeholder="нет ограничений по символам"
                 />
-                <label
-                  htmlFor="textBlock3"
-                  className={styles.form_container__textarea_label_constructor}
-                >
+                <label htmlFor="textBlock3" className={styles.form_container__textarea_label_constructor}>
                   Требования
                 </label>
               </div>
             </div>
           </div>
           <div className={styles.form_container__button_block}>
-            <button
-              className={styles.form_container__button_save}
-              type="submit"
-              disabled={loading}
-            ></button>
-            <button
-              className={styles.form_container__button_cancel}
-              type="button"
-              onClick={closeModal}
-            ></button>
+            <button className={styles.form_container__button_save} type="submit" disabled={loading}></button>
+            <button className={styles.form_container__button_cancel} type="button" onClick={closeModal}></button>
           </div>
         </form>
       </div>

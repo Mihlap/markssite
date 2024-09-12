@@ -210,3 +210,4 @@ const formAddEventSlice = createSlice({
 export const { resetEventsState, updateEventVisibility, updateEventsOrderLocally } = formAddEventSlice.actions;
 
 export default formAddEventSlice.reducer;
+

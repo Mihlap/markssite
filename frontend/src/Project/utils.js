@@ -10,33 +10,31 @@ export const getUserGeolocation = () => {
           const apiUrl = `https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}&zoom=10`;
 
           fetch(apiUrl)
-            .then(response => {
+            .then((response) => {
               if (!response.ok) {
                 throw new Error('Ошибка сети или неверный ответ сервера');
               }
               return response.json();
             })
-            .then(data => {
+            .then((data) => {
               const city = data.address.city || data.address.town || data.address.village || data.address.county;
               if (city) {
                 resolve({ latitude, longitude, city });
               } else {
-                resolve({ latitude, longitude, city: "Москва" });
+                resolve({ latitude, longitude, city: 'Москва' });
               }
             })
-            .catch(error => reject(error));
+            .catch((error) => reject(error));
         },
         (error) => {
           reject(error);
         }
       );
     } else {
-      reject(new Error("Геолокация не поддерживается этим браузером."));
+      reject(new Error('Геолокация не поддерживается этим браузером.'));
     }
   });
 };
-
-
 
 export const resizeImage = (width, height) => {
   const aspectRatio = height / width;
@@ -58,14 +56,14 @@ export const resizeImage = (width, height) => {
 };
 
 export const extractCityFromCountryCity = (countryCity) => {
-  if (!countryCity) return "";
+  if (!countryCity) return '';
   const parts = countryCity.split(/[.,:\s]+/);
   if (parts.length === 1) {
     return parts[0].trim();
   } else if (parts.length > 1) {
     return parts[1].trim();
   }
-  return "";
+  return '';
 };
 
 export const shareToVK = (project, Host) => {
@@ -76,8 +74,6 @@ export const shareToVK = (project, Host) => {
   window.open(vkUrl, '_blank');
 };
 
-
-
 export const shareToTelegram = (project, Host) => {
   const title = encodeURIComponent(`${project.title}`);
   const url = encodeURIComponent(window.location.href);
@@ -87,16 +83,14 @@ export const shareToTelegram = (project, Host) => {
   window.open(telegramUrl, '_blank');
 };
 
-
 export const shareToWhatsApp = (project, Host) => {
   const title = encodeURIComponent(`${project.title}`);
   const projectUrl = encodeURIComponent(window.location.href);
-  const imageUrl = encodeURIComponent(`${Host}/images/imageAdd/${project.imageProject}`);  
+  const imageUrl = encodeURIComponent(`${Host}/images/imageAdd/${project.imageProject}`);
   const message = `${title}%0A${projectUrl}%0AСсылка: ${imageUrl}`;
   const whatsappUrl = `https://wa.me/?text=${message}`;
   window.open(whatsappUrl, '_blank');
 };
-
 
 export const shareToViber = (project, Host) => {
   const url = encodeURIComponent(window.location.href);
@@ -106,7 +100,7 @@ export const shareToViber = (project, Host) => {
 };
 
 export const handleScroll = (el, projects, setEnableVerticalScroll, setIsHorizontalScroll, setIsAtRightEdge) => {
-   if (el) {
+  if (el) {
     const rect = el.getBoundingClientRect();
     const isSliderInView = rect.top <= window.innerHeight && rect.bottom >= 0;
     setEnableVerticalScroll(!isSliderInView);
@@ -115,10 +109,7 @@ export const handleScroll = (el, projects, setEnableVerticalScroll, setIsHorizon
       if (isSliderInView && el.scrollLeft > 0) {
         setEnableVerticalScroll(false);
         setIsHorizontalScroll(false);
-      } else if (
-        !isSliderInView &&
-        el.scrollLeft + el.clientWidth >= el.scrollWidth
-      ) {
+      } else if (!isSliderInView && el.scrollLeft + el.clientWidth >= el.scrollWidth) {
         setEnableVerticalScroll(true);
         setIsHorizontalScroll(false);
       } else if (!isSliderInView && el.scrollLeft <= 0) {
@@ -142,7 +133,7 @@ export const handleScroll = (el, projects, setEnableVerticalScroll, setIsHorizon
 };
 
 export const onVerticalScroll = (el, e, setEnableVerticalScroll) => {
-   const isScrollingUp = e.deltaY < 0;
+  const isScrollingUp = e.deltaY < 0;
   const isAtTop = el.scrollTop <= 0;
   const isAtBottom = el.scrollTop + el.clientHeight >= el.scrollHeight;
 
@@ -152,7 +143,7 @@ export const onVerticalScroll = (el, e, setEnableVerticalScroll) => {
   } else if (!isAtBottom) {
     el.scrollTo({
       top: el.scrollTop + e.deltaY,
-      behavior: "smooth",
+      behavior: 'smooth',
     });
   } else {
     e.preventDefault();
@@ -166,44 +157,29 @@ export const onWheel = (el, e, enableVerticalScroll, isHorizontalScroll, setIsHo
   const isAtLeftEdge = el.scrollLeft <= 0;
   const isAtTop = el.scrollTop <= 0;
 
-  if (
-    isScrollingRight &&
-    isAtRightEdge &&
-    isAtBottom &&
-    !isHorizontalScroll
-  ) {
-    setIsHorizontalScroll(false); 
+  if (isScrollingRight && isAtRightEdge && isAtBottom && !isHorizontalScroll) {
+    setIsHorizontalScroll(false);
     el.scrollTo({
       top: el.scrollTop + e.deltaY,
-      behavior: "smooth",
+      behavior: 'smooth',
     });
   } else if (enableVerticalScroll && !isScrollingRight) {
     if (isAtLeftEdge && isAtTop) {
-      setIsHorizontalScroll(true); 
+      setIsHorizontalScroll(true);
       el.scrollLeft += e.deltaY;
     } else if (isAtLeftEdge && !isAtTop) {
       el.scrollTo({
         top: el.scrollTop + e.deltaY,
-        behavior: "smooth",
+        behavior: 'smooth',
       });
-    } else if (
-      isAtRightEdge &&
-      isAtBottom &&
-      e.deltaY < 0 &&
-      !isHorizontalScroll
-    ) {
-      setIsHorizontalScroll(false); 
+    } else if (isAtRightEdge && isAtBottom && e.deltaY < 0 && !isHorizontalScroll) {
+      setIsHorizontalScroll(false);
       el.scrollLeft += e.deltaY;
-    } else if (
-      isAtRightEdge &&
-      isAtBottom &&
-      e.deltaY > 0 &&
-      !isHorizontalScroll
-    ) {
-      setIsHorizontalScroll(true); 
+    } else if (isAtRightEdge && isAtBottom && e.deltaY > 0 && !isHorizontalScroll) {
+      setIsHorizontalScroll(true);
       el.scrollTo({
         top: el.scrollTop + e.deltaY,
-        behavior: "smooth",
+        behavior: 'smooth',
       });
     } else {
       e.preventDefault();
@@ -213,14 +189,15 @@ export const onWheel = (el, e, enableVerticalScroll, isHorizontalScroll, setIsHo
   }
 };
 
-
- // Функция проверки наличия тегов списка в HTML строке
- export const containsListTags = (htmlString) => {
+// Функция проверки наличия тегов списка в HTML строке
+export const containsListTags = (htmlString) => {
   // Проверяем наличие тегов <ul> и <li> для неупорядоченного списка
   // или <ol> и <li> для упорядоченного списка
-  return /<ul\b[\s\S]*?<li\b[\s\S]*?>[\s\S]*?<\/li>[\s\S]*?<\/ul>/i.test(htmlString) ||
-         /<ol\b[\s\S]*?<li\b[\s\S]*?>[\s\S]*?<\/li>[\s\S]*?<\/ol>/i.test(htmlString);
-}
+  return (
+    /<ul\b[\s\S]*?<li\b[\s\S]*?>[\s\S]*?<\/li>[\s\S]*?<\/ul>/i.test(htmlString) ||
+    /<ol\b[\s\S]*?<li\b[\s\S]*?>[\s\S]*?<\/li>[\s\S]*?<\/ol>/i.test(htmlString)
+  );
+};
 
 // Функция преобразования тегов списка с точками и номерами
 export const renderListWithDots = (htmlString) => {
@@ -232,39 +209,39 @@ export const renderListWithDots = (htmlString) => {
 
   // Заменяем теги <ul> и <li> для неупорядоченного списка
   let newListHTML = withNonBreakingSpaces.replace(/<ul\b[^>]*>[\s\S]*?<\/ul>/gi, (ulMatch) => {
-      return ulMatch.replace(/<li\b([^>]*)>([\s\S]*?)<\/li>/gi, (liMatch, liAttributes, liContent) => {
-          return processListItem(liAttributes, liContent);
-      });
+    return ulMatch.replace(/<li\b([^>]*)>([\s\S]*?)<\/li>/gi, (liMatch, liAttributes, liContent) => {
+      return processListItem(liAttributes, liContent);
+    });
   });
 
   // Заменяем теги <ol> и <li> для упорядоченного списка
   newListHTML = newListHTML.replace(/<ol\b[^>]*>[\s\S]*?<\/ol>/gi, (olMatch) => {
-      let order = 1;
-      return olMatch.replace(/<li\b([^>]*)>([\s\S]*?)<\/li>/gi, (liMatch, liAttributes, liContent) => {
-          const indentMatch = liAttributes.match(/class="[^"]*ql-indent-(\d+)/);
-          const indentLevel = indentMatch ? parseInt(indentMatch[1], 10) : 0;
-          const paddingLeft = indentLevel * 30; 
-          const marker = `${order}.`;
-          order++;
-          return `<li style="padding-left: ${paddingLeft}px;">${marker} ${liContent}</li>`;
-      });
+    let order = 1;
+    return olMatch.replace(/<li\b([^>]*)>([\s\S]*?)<\/li>/gi, (liMatch, liAttributes, liContent) => {
+      const indentMatch = liAttributes.match(/class="[^"]*ql-indent-(\d+)/);
+      const indentLevel = indentMatch ? parseInt(indentMatch[1], 10) : 0;
+      const paddingLeft = indentLevel * 30;
+      const marker = `${order}.`;
+      order++;
+      return `<li style="padding-left: ${paddingLeft}px;">${marker} ${liContent}</li>`;
+    });
   });
 
   // Обработка отступов для тегов <p>
   newListHTML = newListHTML.replace(/<p\b([^>]*)>([\s\S]*?)<\/p>/gi, (pMatch, pAttributes, pContent) => {
-      return processParagraph(pAttributes, pContent);
+    return processParagraph(pAttributes, pContent);
   });
 
   // Возвращаем обработанную строку
   return newListHTML;
-}
+};
 
 function processListItem(attributes, content) {
   const indentMatch = attributes.match(/class="[^"]*ql-indent-(\d+)/);
   const indentLevel = indentMatch ? parseInt(indentMatch[1], 10) : 0;
   const paddingLeft = indentLevel * 30;
   const spacePreservation = attributes.match(/^\s+/);
-  const spacesBefore = spacePreservation ? spacePreservation[0].replace(/\t/g, '    ') : ''; 
+  const spacesBefore = spacePreservation ? spacePreservation[0].replace(/\t/g, '    ') : '';
   const marker = `${spacesBefore}&bull;`;
 
   return `<li style="padding-left: ${paddingLeft}px; white-space: pre-wrap;">${marker} ${content}</li>`;
@@ -274,8 +251,8 @@ function processParagraph(attributes, content) {
   const indentMatch = attributes.match(/class="[^"]*ql-indent-(\d+)/);
   const indentLevel = indentMatch ? parseInt(indentMatch[1], 10) : 0;
   const paddingLeft = indentLevel * 30;
-  const spacePreservation = attributes.match(/^\s+/); 
-  const spacesBefore = spacePreservation ? spacePreservation[0].replace(/\t/g, '    ') : ''; 
+  const spacePreservation = attributes.match(/^\s+/);
+  const spacesBefore = spacePreservation ? spacePreservation[0].replace(/\t/g, '    ') : '';
 
   return `<p style="padding-left: ${paddingLeft}px; white-space: pre-wrap;">${spacesBefore}${content}</p>`;
 }

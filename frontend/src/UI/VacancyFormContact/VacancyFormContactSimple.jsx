@@ -1,8 +1,8 @@
-import React, { useRef, useState, useCallback, useEffect } from "react";
-import InputMask from "react-input-mask";
-import { Link, useLocation } from "react-router-dom";
-import styles from "./VacancyFormContact.module.css";
-import "react-phone-number-input/style.css";
+import React, { useRef, useState, useCallback, useEffect } from 'react';
+import InputMask from 'react-input-mask';
+import { Link, useLocation } from 'react-router-dom';
+import styles from './VacancyFormContact.module.css';
+import 'react-phone-number-input/style.css';
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 
@@ -16,11 +16,11 @@ const VacancyFormContactSimple = ({
 }) => {
   const location = useLocation();
   const searchParams = new URLSearchParams(location.search);
-  const type = searchParams.get('type'); 
+  const type = searchParams.get('type');
 
   const [isFocused, setIsFocused] = useState({
     name: false,
-    phone: false, 
+    phone: false,
     letter: false,
     resume: false,
   });
@@ -31,10 +31,10 @@ const VacancyFormContactSimple = ({
   const [fileAttached, setFileAttached] = useState(false);
   const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
-    name: "",
-    phone: "",    
-    letter: "",
-    resume: "",
+    name: '',
+    phone: '',
+    letter: '',
+    resume: '',
     title: vacancyTitleSimple,
   });
 
@@ -48,11 +48,14 @@ const VacancyFormContactSimple = ({
 
   const handlePaste = useCallback((event) => {
     event.preventDefault();
-    const pastedData = event.clipboardData.getData("text");
-    const cleanedValue = pastedData.replace(/\D/g, "");
+    const pastedData = event.clipboardData.getData('text');
+    const cleanedValue = pastedData.replace(/\D/g, '');
 
     if (cleanedValue.length >= 10) {
-      const formattedValue = `+7 (${cleanedValue.slice(-10, -7)}) ${cleanedValue.slice(-7, -4)}-${cleanedValue.slice(-4, -2)}-${cleanedValue.slice(-2)}`;
+      const formattedValue = `+7 (${cleanedValue.slice(-10, -7)}) ${cleanedValue.slice(-7, -4)}-${cleanedValue.slice(
+        -4,
+        -2
+      )}-${cleanedValue.slice(-2)}`;
       setFormData((prevData) => ({ ...prevData, phone: formattedValue }));
       setIsValid(true);
     } else {
@@ -60,103 +63,112 @@ const VacancyFormContactSimple = ({
     }
   }, []);
 
-  const handleBlur = useCallback((event) => {
-    const name = event?.target?.name;
-    setIsFocused((prev) => ({ ...prev, [name]: false }));
+  const handleBlur = useCallback(
+    (event) => {
+      const name = event?.target?.name;
+      setIsFocused((prev) => ({ ...prev, [name]: false }));
 
-    if (name === "phone") {
-      const phoneNumberRegex = /^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/;
-      setIsValid(phoneNumberRegex.test(formData.phone));
-    }
-  }, [formData.phone]);
+      if (name === 'phone') {
+        const phoneNumberRegex = /^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/;
+        setIsValid(phoneNumberRegex.test(formData.phone));
+      }
+    },
+    [formData.phone]
+  );
 
   const handleChange = useCallback((event) => {
     const { name, value } = event.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
 
-    if (name === "phone") {
+    if (name === 'phone') {
       setIsValid(true);
     }
   }, []);
 
-  const handleSubmit = useCallback((event) => {
-    event.preventDefault();
+  const handleSubmit = useCallback(
+    (event) => {
+      event.preventDefault();
 
-    const resumeFilled = formData.resume.trim() !== "" || selectedFiles.length > 0;
+      const resumeFilled = formData.resume.trim() !== '' || selectedFiles.length > 0;
 
-    const newErrors = {
-      name: formData.name.trim() === "",
-      phone: formData.phone.trim() === "",
-      resume: !resumeFilled 
-    };
-  
-    setErrors(newErrors);
-  
-    const formIsValid = !Object.values(newErrors).some(err => err);
-    if (!formIsValid) {
-      return; 
-    }
+      const newErrors = {
+        name: formData.name.trim() === '',
+        phone: formData.phone.trim() === '',
+        resume: !resumeFilled,
+      };
 
-    setIsLoading(true);
+      setErrors(newErrors);
 
-    const formDataToSend = new FormData();
-    const formDataCopy = { ...formData, title: vacancyTitleSimple };
+      const formIsValid = !Object.values(newErrors).some((err) => err);
+      if (!formIsValid) {
+        return;
+      }
 
-    Object.keys(formDataCopy).forEach((key) => {
-      formDataToSend.append(key, formDataCopy[key]);
-    });
+      setIsLoading(true);
 
-    selectedFiles.forEach((file) => {
-      formDataToSend.append("resumeFiles", file);
-    });
+      const formDataToSend = new FormData();
+      const formDataCopy = { ...formData, title: vacancyTitleSimple };
 
-    fetch(`${Host}/api-mail/portalSubmitForm`, {
-      method: "POST",
-      body: formDataToSend,
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setIsModalOpen(true);
-        if (data && data.message === "Письмо успешно отправлено") {
-          setFormData({
-            name: "",
-            phone: "",           
-            letter: "",
-            resume: "",
-            title: vacancyTitleSimple,
-          });
-          setSelectedFiles([]);
-          setFileAttached(false);
-        } else {
-          console.error("Form submission failed:", data.message || "Unknown error");
-        }
-      })
-      .catch((error) => {
-        if (!error.response || error.response.status !== 200) {
-          console.error("Error:", error);
-        }
-      })
-      .finally(() => {
-        setIsLoading(false);
+      Object.keys(formDataCopy).forEach((key) => {
+        formDataToSend.append(key, formDataCopy[key]);
       });
-    }, [formData, selectedFiles, vacancyTitleSimple]);
 
-    const getLineClassSimple = (field) => {
-      const isFieldEmpty = formData[field]?.trim() === '';
-     return `${styles.lineSimple} ${errors[field] && isFieldEmpty ? styles.errorLine : ''}`;
-   }; 
+      selectedFiles.forEach((file) => {
+        formDataToSend.append('resumeFiles', file);
+      });
+
+      fetch(`${Host}/api-mail/portalSubmitForm`, {
+        method: 'POST',
+        body: formDataToSend,
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          setIsModalOpen(true);
+          if (data && data.message === 'Письмо успешно отправлено') {
+            setFormData({
+              name: '',
+              phone: '',
+              letter: '',
+              resume: '',
+              title: vacancyTitleSimple,
+            });
+            setSelectedFiles([]);
+            setFileAttached(false);
+          } else {
+            console.error('Form submission failed:', data.message || 'Unknown error');
+          }
+        })
+        .catch((error) => {
+          if (!error.response || error.response.status !== 200) {
+            console.error('Error:', error);
+          }
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
+    },
+    [formData, selectedFiles, vacancyTitleSimple]
+  );
+
+  const getLineClassSimple = (field) => {
+    const isFieldEmpty = formData[field]?.trim() === '';
+    return `${styles.lineSimple} ${errors[field] && isFieldEmpty ? styles.errorLine : ''}`;
+  };
 
   const handleFileChange = useCallback((event) => {
     const files = Array.from(event.target.files);
 
     if (files.length > 0) {
-      if (files.every((file) =>
-        file.type.includes("image/") || file.type === "application/pdf" || file.type.includes("application/")
-      )) {
+      if (
+        files.every(
+          (file) =>
+            file.type.includes('image/') || file.type === 'application/pdf' || file.type.includes('application/')
+        )
+      ) {
         setSelectedFiles((prevFiles) => [...prevFiles, ...files]);
         setFileAttached(true);
       } else {
-        console.error("Invalid file type. Please select an image, PDF, or other document.");
+        console.error('Invalid file type. Please select an image, PDF, or other document.');
       }
     }
   }, []);
@@ -170,24 +182,20 @@ const VacancyFormContactSimple = ({
   }, []);
 
   useEffect(() => {
-    const requiredFields = [
-     formData.name.trim(),
-     formData.phone.trim(),
-     formData.resume.trim(),   
-   ];
- 
-   const isFormComplete = requiredFields.every(field => field !== "");
- 
-   setIsFormValid(isFormComplete && isValid);
- }, [formData, isValid]); 
+    const requiredFields = [formData.name.trim(), formData.phone.trim(), formData.resume.trim()];
 
- useEffect(() => {
-  const resumeFilled = formData.resume.trim() !== " " || selectedFiles.length > 0;
-  setErrors(prevErrors => ({
-    ...prevErrors,
-    resume: !resumeFilled
-  }));
-}, [formData.resume, selectedFiles]);
+    const isFormComplete = requiredFields.every((field) => field !== '');
+
+    setIsFormValid(isFormComplete && isValid);
+  }, [formData, isValid]);
+
+  useEffect(() => {
+    const resumeFilled = formData.resume.trim() !== ' ' || selectedFiles.length > 0;
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      resume: !resumeFilled,
+    }));
+  }, [formData.resume, selectedFiles]);
 
   // useEffect(() => {
   //   const isFormComplete = Object.values(formData).every(field => field?.trim() !== "") && isValid;
@@ -201,9 +209,7 @@ const VacancyFormContactSimple = ({
           <div className={styles.form_vacancy_left}>
             <div className={`${styles.group} some-unique-class`}>
               <label
-                className={`${styles.label1} ${
-                  isFocused.name || isFilled("name") ? styles.focused1 : ""
-                }`}
+                className={`${styles.label1} ${isFocused.name || isFilled('name') ? styles.focused1 : ''}`}
                 onMouseOver={handleMouseEnter}
                 onMouseOut={handleMouseLeave}
               >
@@ -217,20 +223,16 @@ const VacancyFormContactSimple = ({
                   onBlur={handleBlur}
                   maxLength="100"
                   autoComplete="off"
-                  className={styles.input_name_form_contacts}              
+                  className={styles.input_name_form_contacts}
                 />
                 {/* <div className={styles.lineSimple}></div> */}
                 <div className={getLineClassSimple('name')}></div>
-                <span className={styles.placeholder}>
-                  Ваше&nbsp;имя&nbsp;и&nbsp;фамилия
-                </span>
+                <span className={styles.placeholder}>Ваше&nbsp;имя&nbsp;и&nbsp;фамилия</span>
               </label>
             </div>
             <div className={styles.group}>
               <label
-                className={`${styles.label1} ${
-                  isFocused.phone || isFilled("phone") ? styles.focused1 : ""
-                }`}
+                className={`${styles.label1} ${isFocused.phone || isFilled('phone') ? styles.focused1 : ''}`}
                 onMouseOver={handleMouseEnter}
                 onMouseOut={handleMouseLeave}
               >
@@ -246,28 +248,22 @@ const VacancyFormContactSimple = ({
                   onFocus={handleFocus}
                   autoComplete="off"
                   onPaste={handlePaste}
-                  className={`${styles.input_tel_form_contacts} ${
-                    isFocused.phone ? styles.focused : ""
-                  }`}
-                  style={{ fontVariantNumeric: "lining-nums" }}
+                  className={`${styles.input_tel_form_contacts} ${isFocused.phone ? styles.focused : ''}`}
+                  style={{ fontVariantNumeric: 'lining-nums' }}
                 />
                 {/* <div className={styles.lineSimple}></div> */}
                 <div className={getLineClassSimple('phone')}></div>
                 <span className={styles.placeholder}>Телефон</span>
                 {!isValid && formData.phone.length > 0 && (
-                  <span className={styles.error_line}>
-                    Некорректный телефон
-                  </span>
+                  <span className={styles.error_line}>Некорректный телефон</span>
                 )}
               </label>
-            </div>           
+            </div>
           </div>
-          <div className={styles.form_vacancy_right}>          
+          <div className={styles.form_vacancy_right}>
             <div className={`${styles.group} some-unique-class`}>
               <label
-                className={`${styles.label1} ${
-                  isFocused.letter || isFilled("letter") ? styles.focused1 : ""
-                }`}
+                className={`${styles.label1} ${isFocused.letter || isFilled('letter') ? styles.focused1 : ''}`}
                 onMouseOver={handleMouseEnter}
                 onMouseOut={handleMouseLeave}
               >
@@ -284,16 +280,12 @@ const VacancyFormContactSimple = ({
                   className={styles.input_letter_form_contacts}
                 />
                 <div className={styles.lineSimple}></div>
-                <span className={styles.placeholder}>
-                  Сопроводительное письмо
-                </span>
+                <span className={styles.placeholder}>Сопроводительное письмо</span>
               </label>
             </div>
             <div className={styles.group}>
               <label
-                className={`${styles.label1} ${
-                  isFocused.resume || isFilled("resume") ? styles.focused1 : ""
-                }`}
+                className={`${styles.label1} ${isFocused.resume || isFilled('resume') ? styles.focused1 : ''}`}
                 onMouseOver={handleMouseEnter}
                 onMouseOut={handleMouseLeave}
               >
@@ -309,11 +301,9 @@ const VacancyFormContactSimple = ({
                   autoComplete="off"
                   className={styles.input_resume_form_contacts}
                 />
-                  <div className={`${getLineClassSimple('resume')} ${styles.line_resume}`}></div>
+                <div className={`${getLineClassSimple('resume')} ${styles.line_resume}`}></div>
                 {/* <div className={`${styles.lineSimple} ${styles.line_resume}`}></div> */}
-                <span className={styles.placeholder}>
-                Ссылка&nbsp;на&nbsp;резюме/портфолио
-                </span>
+                <span className={styles.placeholder}>Ссылка&nbsp;на&nbsp;резюме/портфолио</span>
               </label>
               <div className={styles.resumeFiles}>
                 {selectedFiles.map((file, index) => (
@@ -325,13 +315,9 @@ const VacancyFormContactSimple = ({
                     onClick={() => handleRemoveFile(index)}
                   >
                     <span className={styles.removeFile_resumeFiles}>
-                      <span className={styles.removeFile_resumeFiles_remove}>
-                        &times;
-                      </span>
+                      <span className={styles.removeFile_resumeFiles_remove}>&times;</span>
                     </span>
-                    <span className={styles.fileName_resumeFiles}>
-                      {file.name}
-                    </span>
+                    <span className={styles.fileName_resumeFiles}>{file.name}</span>
                   </div>
                 ))}
               </div>
@@ -341,50 +327,48 @@ const VacancyFormContactSimple = ({
                     type="file"
                     name="resumeFile"
                     onChange={handleFileChange}
-                    style={{ display: "none" }}
+                    style={{ display: 'none' }}
                     ref={fileInputRef}
                   />
                   <div
                     className={styles.button_resume_file}
                     onMouseOver={handleMouseEnter}
                     onMouseOut={handleMouseLeave}
-                    onClick={() => fileInputRef.current.click()}                
+                    onClick={() => fileInputRef.current.click()}
                   >
-                    {fileAttached ? "Прикрепить файл" : "Прикрепить файл"}
+                    {fileAttached ? 'Прикрепить файл' : 'Прикрепить файл'}
                   </div>
                 </div>
               )}
             </div>
           </div>
-          <div className={styles.agreement_vacancy} >
-            Нажав на кнопку, соглашаюсь на обработку{" "}
+          <div className={styles.agreement_vacancy}>
+            Нажав на кнопку, соглашаюсь на обработку{' '}
             <Link
               to="../Information"
               target="blank"
               className={styles.agreement_vacancy_link}
               onMouseOver={handleMouseEnter}
-              onMouseOut={handleMouseLeave}              
+              onMouseOut={handleMouseLeave}
             >
               персональных данных
             </Link>
-               </div>
-             <div style={{display: 'flex', justifyContent: 'center', zIndex: '1000'}}>
-            <button            
+          </div>
+          <div style={{ display: 'flex', justifyContent: 'center', zIndex: '1000' }}>
+            <button
               className={`${styles.button_vacancySimple}
-              ${!isFormValid ? styles.disabled : ""}`}
+              ${!isFormValid ? styles.disabled : ''}`}
               // disabled={!isFormValid}
               type="submit"
               id="submit-button"
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
-              // style={{ minWidth: '432px', height: '56px'}}        
+              // style={{ minWidth: '432px', height: '56px'}}
             >
-              <p className={styles.button_name_vacancy}>
-              {buttonText} 
-              </p>
+              <p className={styles.button_name_vacancy}>{buttonText}</p>
             </button>
           </div>
-        </div>      
+        </div>
       </div>
     </form>
   );

@@ -64,7 +64,7 @@ export default function AddEventMain({
         setEditEventData(slideData);
         setIsModalOpenEvent(true);
       } catch (error) {
-        console.error("Ошибка при загрузке данных слайда:", error);
+        console.error('Ошибка при загрузке данных слайда:', error);
       }
     },
     [dispatch, setEditEventData, setIsModalOpenEvent]
@@ -103,7 +103,6 @@ export default function AddEventMain({
         </button>
       </div>
 
-   
       <EventModalManager
         isModalOpenEvent={isModalOpenEvent}
         setIsModalOpenEvent={setIsModalOpenEvent}

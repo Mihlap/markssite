@@ -1,12 +1,11 @@
-@import "../../../App.css";
-@import "../../../_variables.scss";
-
+@import '../../../App.css';
+@import '../../../_variables.scss';
 
 .GalleryTabs {
   margin: rem(113) rem(105);
 
   &__title {
-    font-family: var( --font-unbounded);
+    font-family: var(--font-unbounded);
     font-size: rem(40);
     font-weight: var(--fw-300);
     line-height: rem(48);
@@ -35,7 +34,7 @@
       font-size: rem(16);
       font-weight: var(--fw-400);
       line-height: rem(24);
-      background-color: var( --light-light-gray-EBECEE);
+      background-color: var(--light-light-gray-EBECEE);
       transition: 0.3s;
 
       &:hover {
@@ -61,30 +60,29 @@
   }
 
   // Адаптация под меньший размер desktop
-  @media all and (max-width:$bp0){
+  @media all and (max-width: $bp0) {
     margin: rem(150) 0;
-    
-    &__buttons, 
+
+    &__buttons,
     &__title {
-      padding: 0 rem(63) ;
+      padding: 0 rem(63);
     }
   }
 
   // Адаптация под tablet
-  @media all and (max-width:$bp3){
+  @media all and (max-width: $bp3) {
     margin: rem(120) 0;
   }
-  
-  // Адаптация под mobile
-  @media all and (max-width:$bp4){
 
-    &__buttons, 
+  // Адаптация под mobile
+  @media all and (max-width: $bp4) {
+    &__buttons,
     &__title {
-      padding: 0 rem(16) ;
+      padding: 0 rem(16);
     }
 
     &__buttons {
       margin-bottom: rem(24);
-    }  
+    }
   }
 }

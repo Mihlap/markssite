@@ -1,8 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import styles from "./Loading.module.css";
+import React, { useEffect, useState } from 'react';
+import styles from './Loading.module.css';
 export default function Loading() {
-
-    
   const [percent, setPercent] = useState(0);
   const [progressWidth, setProgressWidth] = useState(0);
 
@@ -15,7 +13,7 @@ export default function Loading() {
         setProgressWidth((prevWidth) => prevWidth + 4);
       }
     }, 40);
-// testfdfd
+    // testfdfd
     // sdfsdf
     return () => clearInterval(loading);
   }, [percent, progressWidth]);
@@ -25,24 +23,13 @@ export default function Loading() {
       <div className={styles.contentLoaderBlock}>
         <div className={`full ${styles.granimate}`}>
           <h1 className={styles.contentLoaderTitle}>MARKS GROUP</h1>
-          <div className={styles.contentLoaderSubtitle}>
-            ГЕНЕРАЛЬНОЕ ПРОЕКТИРОВАНИЕ
-          </div>
+          <div className={styles.contentLoaderSubtitle}>ГЕНЕРАЛЬНОЕ ПРОЕКТИРОВАНИЕ</div>
         </div>
         <div className={styles.loadingContainer}>
-          <div
-            className={`${styles.percent} ${
-              percent === 100 ? styles.textBlink : ""
-            }`}
-          >
-            {percent}%
-          </div>
+          <div className={`${styles.percent} ${percent === 100 ? styles.textBlink : ''}`}>{percent}%</div>
           <div className={styles.loadingProgresBar}>
             <div className={styles.loadingProgresBar}>
-              <div
-                className={styles.progress}
-                style={{ width: `${progressWidth}px` }}
-              ></div>
+              <div className={styles.progress} style={{ width: `${progressWidth}px` }}></div>
             </div>
           </div>
         </div>

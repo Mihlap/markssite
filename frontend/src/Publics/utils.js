@@ -1,6 +1,5 @@
 // const Host = process.env.REACT_APP_SERVER_HOST;
 
-
 export const shareToVK = (article, Host) => {
   const url = encodeURIComponent(window.location.href);
   const title = encodeURIComponent(article.title);
@@ -8,8 +7,6 @@ export const shareToVK = (article, Host) => {
   const vkUrl = `https://vk.com/share.php?url=${url}&title=${title}&description=Ссылка: ${imageUrl}`;
   window.open(vkUrl, '_blank');
 };
-
-
 
 export const shareToTelegram = (article, Host) => {
   const title = encodeURIComponent(`${article.title}`);
@@ -20,16 +17,14 @@ export const shareToTelegram = (article, Host) => {
   window.open(telegramUrl, '_blank');
 };
 
-
 export const shareToWhatsApp = (article, Host) => {
   const title = encodeURIComponent(`${article.title}`);
   const projectUrl = encodeURIComponent(window.location.href);
-  const imageUrl = encodeURIComponent(`${Host}/images/imageArticle/${article.imageOpen}`);  
+  const imageUrl = encodeURIComponent(`${Host}/images/imageArticle/${article.imageOpen}`);
   const message = `${title}%0A${projectUrl}%0AСсылка: ${imageUrl}`;
   const whatsappUrl = `https://wa.me/?text=${message}`;
   window.open(whatsappUrl, '_blank');
 };
-
 
 export const shareToViber = (article, Host) => {
   const url = encodeURIComponent(window.location.href);

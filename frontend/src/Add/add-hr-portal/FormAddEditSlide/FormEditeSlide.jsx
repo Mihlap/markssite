@@ -57,53 +57,52 @@ export default function FormEditSlide({ setIsModalOpenMain, editSlideData }) {
     }
   }, []);
 
-
   const handleFileChange = async (event) => {
     const file = event.target.files[0];
     if (file) {
       setShowNotification(false);
       setIsImageRemoved(false);
       setIsLoading(true);
-  
+
       const compressedFile = await compressImage(file);
-  
+
       const finalFile = new File([compressedFile], file.name, { type: compressedFile.type });
-  
+
       setFormData((prevState) => ({
         ...prevState,
-        photoAva: finalFile, 
+        photoAva: finalFile,
       }));
-  
+
       const reader = new FileReader();
       reader.onloadend = () => {
-        setPreviewPhotoAva([reader.result]); 
-        setIsLoading(false); 
+        setPreviewPhotoAva([reader.result]);
+        setIsLoading(false);
       };
-      reader.readAsDataURL(finalFile); 
+      reader.readAsDataURL(finalFile);
     }
   };
 
-
   const handleRemovePreviewPhotoAva = useCallback(() => {
-    setShowNotification(false); 
+    setShowNotification(false);
     setFormData((prevFormData) => ({
       ...prevFormData,
       photoAva: '',
     }));
-    setPreviewPhotoAva([]); 
-    setIsImageRemoved(true); 
+    setPreviewPhotoAva([]);
+    setIsImageRemoved(true);
   }, []);
-
 
   const validateForm = useCallback(() => {
     let isValid = true;
-    if (!formData.photoAva ||
+    if (
+      !formData.photoAva ||
       !formData.card1.description ||
       !formData.card2.description ||
       !formData.card3.description ||
       !formData.card1.date ||
       !formData.card2.date ||
-      !formData.card3.date) {
+      !formData.card3.date
+    ) {
       isValid = false;
     }
     setShowNotification(!isValid);
@@ -114,10 +113,8 @@ export default function FormEditSlide({ setIsModalOpenMain, editSlideData }) {
     setIsModalOpenMain(false);
   }, [setIsModalOpenMain]);
 
-
-
   const handleDescriptionChange = (cardKey, value) => {
-    setShowNotification(false); 
+    setShowNotification(false);
     if (value.length <= 150) {
       setFormData((prevData) => ({
         ...prevData,
@@ -127,13 +124,12 @@ export default function FormEditSlide({ setIsModalOpenMain, editSlideData }) {
   };
 
   const handleDateChange = (cardKey, date) => {
-    setShowNotification(false); 
+    setShowNotification(false);
     setFormData((prevData) => ({
       ...prevData,
       [cardKey]: { ...prevData[cardKey], date: date },
     }));
   };
- 
 
   const submitHandler = useCallback(
     async (e) => {
@@ -157,9 +153,9 @@ export default function FormEditSlide({ setIsModalOpenMain, editSlideData }) {
       );
 
       if (isImageRemoved) {
-        dataToSend.append('removePhotoAva', 'true'); 
+        dataToSend.append('removePhotoAva', 'true');
       } else if (formData.photoAva && formData.photoAva instanceof File) {
-        dataToSend.append('photoAva', formData.photoAva); 
+        dataToSend.append('photoAva', formData.photoAva);
       }
 
       try {
@@ -178,7 +174,7 @@ export default function FormEditSlide({ setIsModalOpenMain, editSlideData }) {
           card3: { description: '', date: null },
         });
 
-        setShowNotification(false); 
+        setShowNotification(false);
         setIsModalOpenMain(false);
       } catch (error) {
         console.error('Произошла ошибка при отправке формы:', error);
@@ -190,9 +186,7 @@ export default function FormEditSlide({ setIsModalOpenMain, editSlideData }) {
   return (
     <div className={styles.form_container}>
       {showNotification && (
-        <div className={styles.form_container__notification}>
-         Необходимо заполнить каждое поле❗
-        </div>
+        <div className={styles.form_container__notification}>Необходимо заполнить каждое поле❗</div>
       )}
       <div className={styles.form_container__title}>Редактирование слайда</div>
       <div className={styles.form_container__block_form}>
@@ -211,7 +205,8 @@ export default function FormEditSlide({ setIsModalOpenMain, editSlideData }) {
                 rows="10"
                 placeholder="Не более 150 символов"
                 value={formData.card1.description}
-                onChange={(e) => handleDescriptionChange('card1', e.target.value)}></textarea>
+                onChange={(e) => handleDescriptionChange('card1', e.target.value)}
+              ></textarea>
               <label htmlFor="descriptionCard1" className={styles.form_container__textarea_label_constructor}>
                 Название конкурса
               </label>
@@ -262,7 +257,8 @@ export default function FormEditSlide({ setIsModalOpenMain, editSlideData }) {
                   <img className={styles.preview_photos_container__img} src={preview} alt={`Preview ${index}`} />
                   <div
                     className={styles.preview_photos_container__remove_icon}
-                    onClick={() => handleRemovePreviewPhotoAva(index)}>
+                    onClick={() => handleRemovePreviewPhotoAva(index)}
+                  >
                     <span></span>
                   </div>
                 </div>
@@ -284,7 +280,8 @@ export default function FormEditSlide({ setIsModalOpenMain, editSlideData }) {
                 rows="10"
                 placeholder="Не более 150 символов"
                 value={formData.card2.description}
-                onChange={(e) => handleDescriptionChange('card2', e.target.value)}></textarea>
+                onChange={(e) => handleDescriptionChange('card2', e.target.value)}
+              ></textarea>
               <label htmlFor="descriptionCard2" className={styles.form_container__textarea_label_constructor}>
                 Название конкурса
               </label>

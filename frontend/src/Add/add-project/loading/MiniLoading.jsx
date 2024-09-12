@@ -1,13 +1,13 @@
-import React from "react";
-import styles from "./MiniLoading.module.scss";
+import React from 'react';
+import styles from './MiniLoading.module.scss';
 
 export default function MiniLoading() {
   return (
     <div
       style={{
-        position: "absolute",
-        top: "55%",
-        right: "45%",
+        position: 'absolute',
+        top: '55%',
+        right: '45%',
       }}
     >
       <div className={styles.div_svg}>

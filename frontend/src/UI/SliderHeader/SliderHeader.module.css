@@ -1,4 +1,4 @@
-@import "../../App.css";
+@import '../../App.css';
 
 .item img {
   padding-left: 4rem;
@@ -31,12 +31,12 @@
     padding-left: 3rem;
   }
 
-   .item_mobile {
+  .item_mobile {
     padding-left: 2.81rem;
     height: 100%;
     width: 100%;
   }
-  
+
   .item_mobile_img {
     height: 26px;
   }
@@ -63,13 +63,13 @@
     height: 100%;
     width: 100%;
   }
-  
+
   .item_mobile_img {
     height: 26px;
   }
 
   .icon_partner_phone {
-     display: block;
+    display: block;
   }
 
   .logo {
@@ -77,5 +77,4 @@
     z-index: 0;
     padding-top: 40px;
   }
-
 }

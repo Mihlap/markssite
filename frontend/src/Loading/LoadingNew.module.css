@@ -7,7 +7,13 @@
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background: linear-gradient(261deg, rgba(255, 203, 193, 0.09) -4.67%, rgba(117, 187, 253, 0.09) 44.63%, rgba(188, 188, 188, 0.09) 103.07%), #F6F6F6;
+  background: linear-gradient(
+      261deg,
+      rgba(255, 203, 193, 0.09) -4.67%,
+      rgba(117, 187, 253, 0.09) 44.63%,
+      rgba(188, 188, 188, 0.09) 103.07%
+    ),
+    #f6f6f6;
   overflow: hidden;
 }
 
@@ -28,15 +34,15 @@
 }
 
 .contentLoaderSubtitle {
-    font-size: 1.35569rem;
-    line-height: 3.38919rem;
-    padding-bottom: 47px;
-    text-align: center;
+  font-size: 1.35569rem;
+  line-height: 3.38919rem;
+  padding-bottom: 47px;
+  text-align: center;
 }
 
 .contentLoaderTitle,
 .contentLoaderSubtitle {
-    color: var(--white-F6F6F6);
+  color: var(--white-F6F6F6);
 }
 
 .contentLoaderBlock {
@@ -62,7 +68,7 @@
 }
 
 .textBlink {
-  animation: animate .7s ease-in-out .1s;
+  animation: animate 0.7s ease-in-out 0.1s;
 }
 
 /* ---- Большие кружки ---- */
@@ -74,29 +80,29 @@
   align-items: center;
 }
 
-.ellipseFirst{
-    width: 1440px;
-    height: 1440px;
-    animation: ellipse 6s ease-in-out infinite;
-    animation-delay: 100ms;
+.ellipseFirst {
+  width: 1440px;
+  height: 1440px;
+  animation: ellipse 6s ease-in-out infinite;
+  animation-delay: 100ms;
 }
-.ellipseSecond{
-    width: 1188px;
-    height: 1188px;
-    animation: ellipse 6s ease-in-out infinite;
-    animation-delay: 200ms;
+.ellipseSecond {
+  width: 1188px;
+  height: 1188px;
+  animation: ellipse 6s ease-in-out infinite;
+  animation-delay: 200ms;
 }
-.ellipseThird{
-    width: 936px;
-    height: 936px;
-    animation: ellipse 6s ease-in-out infinite;
-    animation-delay: 300ms;
+.ellipseThird {
+  width: 936px;
+  height: 936px;
+  animation: ellipse 6s ease-in-out infinite;
+  animation-delay: 300ms;
 }
-.ellipseFour{
-    width: 689px;
-    height: 685px;
-    animation: ellipse 6s ease-in-out infinite;
-    animation-delay: 400ms;
+.ellipseFour {
+  width: 689px;
+  height: 685px;
+  animation: ellipse 6s ease-in-out infinite;
+  animation-delay: 400ms;
 }
 
 .ellipseAll {
@@ -104,7 +110,12 @@
   position: absolute;
   border-radius: 50%;
   transform-origin: center;
-  background: linear-gradient(261deg, rgba(255, 203, 193, 0.09) -4.67%, rgba(117, 187, 253, 0.09) 44.63%, rgba(188, 188, 188, 0.09) 103.07%);
+  background: linear-gradient(
+    261deg,
+    rgba(255, 203, 193, 0.09) -4.67%,
+    rgba(117, 187, 253, 0.09) 44.63%,
+    rgba(188, 188, 188, 0.09) 103.07%
+  );
   box-shadow: -2px 8px 31.1px 0px rgba(103, 151, 194, 0.22);
 }
 
@@ -125,17 +136,16 @@
 /* ---- Перетекающие кружки ---- */
 
 .filter {
-    position: absolute;
-    visibility: hidden;
-  }
+  position: absolute;
+  visibility: hidden;
+}
 
-  
 .dots {
-    filter: url(#gooeyness);
-    -webkit-filter: url(#gooeyness);
-    padding: 22px;
-  }
-  
+  filter: url(#gooeyness);
+  -webkit-filter: url(#gooeyness);
+  padding: 22px;
+}
+
 .dot {
   will-change: transform;
   background: var(--white-F6F6F6);
@@ -144,136 +154,135 @@
   margin-right: 28px;
   width: 28px;
   height: 28px;
-  }
-  
-.dot:first-child {
-    animation: FirstDot 4s ease-in-out infinite;
-  }
-  
-.dot:nth-child(2) {
-    animation: SecondDot 4s ease-in-out infinite;
-  }
-  
-.dot:nth-child(3) {
-    animation: ThirdDot 4s ease-in-out infinite;
-  }
-  
-.dot:nth-child(4) {
-    animation: FourthDot 4s ease-in-out infinite;
-  }
-  
-.dot:nth-child(5) {
-    animation: FifthDot 4s ease-in-out infinite;
-  }
-  
-@keyframes FirstDot {
-    0% {
-      transform: scale() translateX(0);
-    }
-    25% {
-      transform: scale(1.8) translateX(0);
-    }
-    50% {
-      transform: scale(1) translateX(0);
-    }
-    83% {
-      transform: scale(1) translateX(220px);
-    }
-    100% {
-      transform: scale(1) translateX(0);
-    }
-  }
-  
-@keyframes SecondDot {
-    0% {
-      transform: translateX(0px);
-    }
-    27% {
-      transform: translateX(-40px);
-    }
-    50% {
-      transform: translateX(0px);
-    }
-    81% {
-      transform: translateX(180px);
-    }
-    100% {
-      transform: translateX(0);
-    }
-  }
-  
-@keyframes ThirdDot {
-    0% {
-      transform: translateX(0px);
-    }
-    29% {
-      transform: translateX(-100px);
-    }
-    50% {
-      transform: translateX(0px);
-    }
-    79% {
-      transform: translateX(120px);
-    }
-    100% {
-      transform: translateX(0);
-    }
-  }
-  
-@keyframes FourthDot {
-    0% {
-      transform: translateX(0px);
-    }
-    31% {
-      transform: translateX(-160px);
-    }
-    50% {
-      transform: translateX(0px);
-    }
-    77% {
-      transform: translateX(60px);
-    }
-    100% {
-      transform: translateX(0);
-    }
-  }
-  
-@keyframes FifthDot {
-    0% {
-      transform: scale(1) translateX(0);
-    }
-    33% {
-      transform: scale(1) translateX(-220px);
-    }
-    50% {
-      transform: scale(1) translateX(0);
-    }
-    75% {
-      transform: scale(1.8) translateX(0);
-    }
-    100% {
-      transform: scale(1) translateX(0);
-    }
-  }
+}
 
+.dot:first-child {
+  animation: FirstDot 4s ease-in-out infinite;
+}
+
+.dot:nth-child(2) {
+  animation: SecondDot 4s ease-in-out infinite;
+}
+
+.dot:nth-child(3) {
+  animation: ThirdDot 4s ease-in-out infinite;
+}
+
+.dot:nth-child(4) {
+  animation: FourthDot 4s ease-in-out infinite;
+}
+
+.dot:nth-child(5) {
+  animation: FifthDot 4s ease-in-out infinite;
+}
+
+@keyframes FirstDot {
+  0% {
+    transform: scale() translateX(0);
+  }
+  25% {
+    transform: scale(1.8) translateX(0);
+  }
+  50% {
+    transform: scale(1) translateX(0);
+  }
+  83% {
+    transform: scale(1) translateX(220px);
+  }
+  100% {
+    transform: scale(1) translateX(0);
+  }
+}
+
+@keyframes SecondDot {
+  0% {
+    transform: translateX(0px);
+  }
+  27% {
+    transform: translateX(-40px);
+  }
+  50% {
+    transform: translateX(0px);
+  }
+  81% {
+    transform: translateX(180px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes ThirdDot {
+  0% {
+    transform: translateX(0px);
+  }
+  29% {
+    transform: translateX(-100px);
+  }
+  50% {
+    transform: translateX(0px);
+  }
+  79% {
+    transform: translateX(120px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes FourthDot {
+  0% {
+    transform: translateX(0px);
+  }
+  31% {
+    transform: translateX(-160px);
+  }
+  50% {
+    transform: translateX(0px);
+  }
+  77% {
+    transform: translateX(60px);
+  }
+  100% {
+    transform: translateX(0);
+  }
+}
+
+@keyframes FifthDot {
+  0% {
+    transform: scale(1) translateX(0);
+  }
+  33% {
+    transform: scale(1) translateX(-220px);
+  }
+  50% {
+    transform: scale(1) translateX(0);
+  }
+  75% {
+    transform: scale(1.8) translateX(0);
+  }
+  100% {
+    transform: scale(1) translateX(0);
+  }
+}
 
 @keyframes animate {
-    0% {
-        opacity: 1;
-    }
+  0% {
+    opacity: 1;
+  }
 
-    50% {
-        opacity: 0.2;
-    }
+  50% {
+    opacity: 0.2;
+  }
 
-    100% {
-        opacity: 1;
-    }
+  100% {
+    opacity: 1;
+  }
 }
 
 /* Стили для мобильной версии начинаются тут */
 @media screen and (max-width: 767px) {
-  .conentLoaderLogo{
+  .conentLoaderLogo {
     display: flex;
   }
   .dots {
@@ -281,24 +290,24 @@
     padding: 0;
     transform: scale(0.5);
   }
-  
+
   .ellipseFirst {
     width: 560px;
     height: 560px;
   }
-  .ellipseSecond{
+  .ellipseSecond {
     width: 460px;
     height: 460px;
   }
-  .ellipseThird{
+  .ellipseThird {
     width: 360px;
     height: 360px;
   }
-  .ellipseFour{
+  .ellipseFour {
     width: 260px;
     height: 260px;
   }
-  .itemLoaderLogo{
+  .itemLoaderLogo {
     padding: 0 56px 0 56px;
   }
   .contentLoaderSubtitle {
@@ -306,33 +315,32 @@
     line-height: 2.7rem;
     padding-bottom: 20px;
   }
-    .percent {
-        font-size: 4.40vw;
-    }
+  .percent {
+    font-size: 4.4vw;
+  }
 }
-
 
 /* Создаем стили для контейнера лоадера */
 .loader_container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
 }
 
 /* Создаем стили для самого лоадера */
 .loader {
-    border: 12px solid rgba(255, 203, 193, 0.18);
-    border-top-color: #ff9988;
-    border-radius: 50%;
-    width: 80px;
-    height: 80px;
-    animation: spin 1s ease-in-out infinite;
+  border: 12px solid rgba(255, 203, 193, 0.18);
+  border-top-color: #ff9988;
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  animation: spin 1s ease-in-out infinite;
 }
 
 /* Создаем анимацию вращения */
 @keyframes spin {
-    to {
-        transform: rotate(360deg);
-    }
+  to {
+    transform: rotate(360deg);
+  }
 }

@@ -13,26 +13,23 @@ import SocialsSwiper from '../SocialsSwiper/SocialsSwiper';
 import GalleryTabs from '../GalleryTabs/GalleryTabs';
 import VacancyFormContact from '../../../UI/VacancyFormContact/VacancyFormContact';
 import VacanciesSectionRenderActualMain from './VacanciesSectionRenderActualMain/VacanciesSectionRenderActualMain';
-import { setActivePage  } from '../../../store/Slice/activePageSlice';
+import { setActivePage } from '../../../store/Slice/activePageSlice';
 import styles from './VacanciesMain3.module.scss';
-
-
 
 const VacanciesMain3 = ({ handleMouseEnter, handleMouseLeave }) => {
   const dispatch = useDispatch();
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-  const activePage = state => state.activePage.page;
+  const activePage = (state) => state.activePage.page;
 
   useEffect(() => {
     dispatch(setActivePage('vacancies'));
   }, [dispatch]);
-  
 
   useEffect(() => {
     const handleResize = () => {
       setWindowWidth(window.innerWidth);
-    }; 
-    window.addEventListener('resize', handleResize);   
+    };
+    window.addEventListener('resize', handleResize);
     return () => {
       window.removeEventListener('resize', handleResize);
     };
@@ -47,10 +44,7 @@ const VacanciesMain3 = ({ handleMouseEnter, handleMouseLeave }) => {
       <DirectionsGrid />
       <VacanciesMap />
       <BenefitsGrid />
-      <VacanciesSectionRenderActualMain
-        handleMouseEnter={handleMouseEnter}
-        handleMouseLeave={handleMouseLeave}
-      />
+      <VacanciesSectionRenderActualMain handleMouseEnter={handleMouseEnter} handleMouseLeave={handleMouseLeave} />
       <VacanciesInvite />
       {/* <GalleryTabs
         handleMouseEnter={handleMouseEnter}

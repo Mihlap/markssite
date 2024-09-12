@@ -1,13 +1,13 @@
-import { useRef, useState } from "react";
-import { Link } from "react-router-dom";
-import { Swiper, SwiperSlide } from "swiper/react";
-import SwipeCore, { Navigation, Pagination, Autoplay } from "swiper";
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import SliderItemProject from "../../Header/Swiper-project/SliderItemProject";
-import "./SliderContainerProjectCard.css";
-import catPhoto from "../../img/default-photo.jpeg";
+import { useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import SwipeCore, { Navigation, Pagination, Autoplay } from 'swiper';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import SliderItemProject from '../../Header/Swiper-project/SliderItemProject';
+import './SliderContainerProjectCard.css';
+import catPhoto from '../../img/default-photo.jpeg';
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 
@@ -27,13 +27,13 @@ const SliderContainerArticleCard = ({ articles }) => {
   return (
     <div className="swiper_container_ProjectCard">
       <Swiper
-     loop={false}
-     slidesPerView={1.1}
-     spaceBetween={-2}
-     centeredSlides={true}
-     touch="true"
+        loop={false}
+        slidesPerView={1.1}
+        spaceBetween={-2}
+        centeredSlides={true}
+        touch="true"
         className="swiper_container_project_ProjectCard"
-        style={{ paddingTop: "1.5rem" }}
+        style={{ paddingTop: '1.5rem' }}
         onSlideChange={(swiper) => setCurrentIndex(swiper.realIndex)}
         onSwiper={(swiper) => {
           if (swiperRef.current === null) {
@@ -45,14 +45,10 @@ const SliderContainerArticleCard = ({ articles }) => {
           {articles?.map((article) => {
             if (!article) return null;
 
-            const imagePathsForArticle = article.imageTitle
-              ? article.imageTitle.split(",").map((el) => el.trim())
-              : [];
+            const imagePathsForArticle = article.imageTitle ? article.imageTitle.split(',').map((el) => el.trim()) : [];
 
             const firstImageName = imagePathsForArticle[0] || null;
-            const encodedFileName = firstImageName
-              ? encodeURIComponent(firstImageName)
-              : null;
+            const encodedFileName = firstImageName ? encodeURIComponent(firstImageName) : null;
             const defaultImagePath = `${catPhoto}`;
             const firstImagePath = encodedFileName
               ? `${Host}/images/imageArticle/${encodedFileName}`

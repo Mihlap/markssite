@@ -34,11 +34,6 @@ export const counterSlice = createSlice({
   },
 });
 
-export const {
-  incrementDepartment,
-  incrementGap,
-  incrementScient,
-  incrementScienceDegree,
-} = counterSlice.actions;
+export const { incrementDepartment, incrementGap, incrementScient, incrementScienceDegree } = counterSlice.actions;
 
 export default counterSlice.reducer;

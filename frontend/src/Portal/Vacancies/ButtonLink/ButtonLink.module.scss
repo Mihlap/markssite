@@ -1,5 +1,5 @@
-@import "../../../App.css";
-@import "../../../_variables.scss";
+@import '../../../App.css';
+@import '../../../_variables.scss';
 
 .ButtonLink {
   display: flex;
@@ -23,7 +23,7 @@
     background-color: var(--super-dark-blue-345374);
   }
 
-  @media all and (max-width:$bp1){
+  @media all and (max-width: $bp1) {
     font-size: rem(16);
     min-height: rem(56);
     line-height: rem(24);

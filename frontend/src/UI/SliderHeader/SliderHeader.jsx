@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useMemo, useRef } from "react";
-import Marquee from "react-fast-marquee";
-import styles from "./SliderHeader.module.css";
+import React, { useState, useEffect, useMemo, useRef } from 'react';
+import Marquee from 'react-fast-marquee';
+import styles from './SliderHeader.module.css';
 
 const SliderHeader = () => {
   const [show, setShow] = useState(false);
@@ -11,7 +11,7 @@ const SliderHeader = () => {
       (entries) => {
         if (entries[0].isIntersecting) {
           setShow(true);
-           observer.disconnect();
+          observer.disconnect();
         }
       },
       { threshold: 0.5 } // Измените порог при необходимости
@@ -21,32 +21,35 @@ const SliderHeader = () => {
     return () => observer.disconnect();
   }, []);
 
-  const marqueeProps = useMemo(() => ({
-    gradient: true,
-    speed: 80,
-    direction: "left",
-    spacing: 10,
-    autoFill: true,
-    gaps: null,
-    gradientColor: "transparent",
-  }), []);
+  const marqueeProps = useMemo(
+    () => ({
+      gradient: true,
+      speed: 80,
+      direction: 'left',
+      spacing: 10,
+      autoFill: true,
+      gaps: null,
+      gradientColor: 'transparent',
+    }),
+    []
+  );
 
   const images = [
-    { src: "./assets/1.png", alt: "image1" },
-    { src: "./assets/2.png", alt: "image2" },
-    { src: "./assets/7.png", alt: "image7" },
-    { src: "./assets/8.png", alt: "image8" },
-    { src: "./assets/3.png", alt: "image3" },
-    { src: "./assets/4.png", alt: "image4" },
-    { src: "./assets/5.png", alt: "image5" },
-    { src: "./assets/6.png", alt: "image6" },
+    { src: './assets/1.png', alt: 'image1' },
+    { src: './assets/2.png', alt: 'image2' },
+    { src: './assets/7.png', alt: 'image7' },
+    { src: './assets/8.png', alt: 'image8' },
+    { src: './assets/3.png', alt: 'image3' },
+    { src: './assets/4.png', alt: 'image4' },
+    { src: './assets/5.png', alt: 'image5' },
+    { src: './assets/6.png', alt: 'image6' },
   ];
 
   return (
     <div className={styles.logo}>
       <div ref={marqueeRef}>
         {show && (
-          <Marquee {...marqueeProps} style={{ paddingLeft: '18.26vw', width: "calc(100% - 18.26vw) *100%" }}>
+          <Marquee {...marqueeProps} style={{ paddingLeft: '18.26vw', width: 'calc(100% - 18.26vw) *100%' }}>
             {images.map((image, index) => (
               <div className={styles.item} key={index}>
                 <img src={image.src} alt={image.alt} />
