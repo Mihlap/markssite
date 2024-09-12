@@ -15,10 +15,10 @@ const Event = ({
   handleLookClick,
   handleEditClick,
   handleCopyClick,
-  handleDeleteModalOpen,
-  deleteModalState,
-  handleDeleteModalClose,
-  handleFormDelete,
+  handleDeleteModalOpenEvent,
+  deleteModalStateEvent,
+  handleDeleteModalCloseEvent,
+  handleFormDeleteEvent,
   user,
 }) => (
   <div
@@ -73,7 +73,9 @@ const Event = ({
 
       {['obezyankaa', 'Pokemon'].includes(user?.name) && (
         <div className={styles.del_block_vacancy}>
-          <button className={styles.buttom_del} onClick={() => handleDeleteModalOpen(el.id)}>
+          <button className={styles.buttom_del}
+          onClick={() => handleDeleteModalOpenEvent(el.id)}
+          >
             <label htmlFor="delete" className={styles.label}>
               <div className={styles.wrapper}>
                 <div className={styles.lid}>
@@ -98,18 +100,18 @@ const Event = ({
       ))}
     </div>
 
-    {deleteModalState[el.id] && (
+    {deleteModalStateEvent[el.id] && (
       <div className={styles.delete_modal_container}>
         <div className={styles.delete_modal_block}>
-          <div className={styles.delete_modal_block__title}>Вы точно хотите удалить слайд «Слайд {index + 1}»?</div>
-          <p className={styles.delete_modal_block__text}>Удаленный слайд вернуть будет невозможно</p>
+          <div className={styles.delete_modal_block__title}>Вы точно хотите удалить мероприятие «{el.title}»?</div>
+          <p className={styles.delete_modal_block__text}>Удаленное мероприятие вернуть будет невозможно</p>
           <div className={styles.button_block}>
-            <button className={styles.button_block__cancel} onClick={() => handleDeleteModalClose(el.id)} />
-            <button className={styles.button_block__save} onClick={() => handleFormDelete(el.id)} />
+            <button className={styles.button_block__cancel} onClick={() => handleDeleteModalCloseEvent(el.id)} />
+            <button className={styles.button_block__save} onClick={() => handleFormDeleteEvent(el.id)} />
           </div>
           <button
             className={styles.delete_modal_block__close_button}
-            onClick={() => handleDeleteModalClose(el.id)}></button>
+            onClick={() => handleDeleteModalCloseEvent(el.id)}></button>
         </div>
       </div>
     )}

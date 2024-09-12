@@ -121,7 +121,7 @@ app.use('/api/toggle', toggleRouter);
 app.use('/api/video', videoRouter);
 app.use('/api-vacancy', vacancyRouter);
 app.use('/api-vacancyDetails', vacancyDetailsRouter);
-app.use('/api-event', vacancyEventRouter);
+app.use('/api-events', vacancyEventRouter);
 
 // const sslKeyPath = './SSL Marksgroup/marksgroup.ru.key';
 // const sslCertPath = './SSL Marksgroup/certificate.crt';
