@@ -28,8 +28,10 @@ import { arrIdVacancySelector } from './VacancySelector.js';
 export default function AddHRPortal({ user }) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpenMain, setIsModalOpenMain] = useState(false);
+  const [isModalOpenEvent, setIsModalOpenEvent] = useState(false);
   const [editVacancyData, setEditVacancyData] = useState(null);
   const [editSlideData, setEditSlideData] = useState(null);
+  const [editEventData, setEditEventData] = useState(null);
   const [modalBlockHeight, setModalBlockHeight] = useState('auto');
   const [deleteModalState, setDeleteModalState] = useState({});
   const [isCopied, setIsCopied] = useState(false);
@@ -46,7 +48,7 @@ export default function AddHRPortal({ user }) {
   const [savedId, setSavedId] = useState(null);
 
   const dispatch = useDispatch();
-  const { error, loading, hidden } = useSelector((state) => state.vacancies);
+  const { error, loading } = useSelector((state) => state.vacancies);
   const vacanciesAdd = useSelector((state) => state.vacancies.vacancies);
   const vacancies = useSelector((state) => state.vacancies?.vacancies);
   const arrIdVacancy = useSelector(arrIdVacancySelector);
@@ -79,17 +81,22 @@ export default function AddHRPortal({ user }) {
     if (selectedFilter !== 'Главная hr') {
       setIsModalOpen(true);
       setIsModalOpenMain(true);
+      setIsModalOpenEvent(true);
       setEditVacancyData(null);
       setEditSlideData(null);
+      setEditEventData(null);
     } else {
       setIsModalOpenMain(true);
+      setIsModalOpenEvent(true);
       setEditSlideData(null);
+      setEditEventData(null);
     }
   }, [selectedFilter]);
 
   const handleCloseModal = useCallback(() => {
     setIsModalOpen(false);
     setIsModalOpenMain(false);
+    setIsModalOpenEvent(false);
   }, []);
 
   const handleDeleteModalOpen = useCallback((id) => {
@@ -267,18 +274,21 @@ export default function AddHRPortal({ user }) {
               replacementMessage={replacementMessage}
             />
             <AddEventMain
-                 handleOpenModal={handleOpenModal}
-                 isModalOpenMain={isModalOpenMain}
-                 setIsModalOpenMain={setIsModalOpenMain}
-                 editSlideData={editSlideData}
-                 setEditSlideData={setEditSlideData}
-                 modalBlockHeight={modalBlockHeight}
-                 user={user}
-                 deleteModalState={deleteModalState}
-                 setDeleteModalState={setDeleteModalState}
-                 handleDeleteModalClose={handleDeleteModalClose}
-                 handleFormDelete={handleFormDelete}
-                 handleDeleteModalOpen={handleDeleteModalOpen}
+              handleOpenModal={handleOpenModal}
+              isModalOpenEvent={isModalOpenEvent}
+              setIsModalOpenEvent={setIsModalOpenEvent}
+              editEventData={editEventData}
+              setEditEventData={setEditEventData}
+              modalBlockHeight={modalBlockHeight}
+              user={user}
+              isCopied={isCopied}
+              copiedId={copiedId}
+              deleteModalState={deleteModalState}
+              setDeleteModalState={setDeleteModalState}
+              handleDeleteModalClose={handleDeleteModalClose}
+              handleFormDelete={handleFormDelete}
+              handleDeleteModalOpen={handleDeleteModalOpen}
+              handleCopyClick={handleCopyClick}
             />
           </>
         ) : (
