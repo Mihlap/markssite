@@ -2,11 +2,9 @@ import React, { useRef, useState, useEffect } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { useGLTF } from '@react-three/drei';
 
-
 function lerp(start, end, t) {
-    return start * (1 - t) + end * t;
-  }
-
+  return start * (1 - t) + end * t;
+}
 
 const Show = React.memo(() => {
   const { nodes } = useGLTF('/assets/rocket_01.gltf');
@@ -26,7 +24,7 @@ const Show = React.memo(() => {
         setScale(0.2);
       }
     };
-    
+
     handleResize();
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
@@ -41,7 +39,7 @@ const Show = React.memo(() => {
   //     );
   //   }
   // }, []);
-    
+
   useFrame((state, delta) => {
     const targetSpeed = hovered ? 0.12 : 0.01;
     setRotationSpeed((prev) => lerp(prev, targetSpeed, 0.01));

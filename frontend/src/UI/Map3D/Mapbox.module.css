@@ -1,17 +1,16 @@
-@import "../../App.css";
-
+@import '../../App.css';
 
 .map {
   display: flex;
   width: auto;
   height: 64.5vh;
   padding: 0px 0.1vw;
- }
+}
 
- .popup {
-position: absolute;
-left: 50%;
-transform: translate(-50%);
+.popup {
+  position: absolute;
+  left: 50%;
+  transform: translate(-50%);
   max-width: 21rem;
   min-width: 20rem;
   height: fit-content;
@@ -25,9 +24,9 @@ transform: translate(-50%);
   background-color: var(--white-F6F6F6);
   padding-bottom: 1rem;
   padding-right: 1rem;
- }
+}
 
- .popupContent {
+.popupContent {
   display: flex;
   flex-direction: column;
   /* align-items: center; */
@@ -36,8 +35,7 @@ transform: translate(-50%);
   padding-left: 1rem;
 }
 
-
- .popupImage {
+.popupImage {
   display: block;
   width: 18rem;
   height: 12rem;
@@ -68,7 +66,6 @@ transform: translate(-50%);
   line-height: 0.5rem;
 } */
 
-
 .popupCustomButton {
   display: flex;
   width: fit-content;
@@ -90,23 +87,20 @@ transform: translate(-50%);
   margin-bottom: 1rem;
 }
 
- .popupCustomButton:hover {
+.popupCustomButton:hover {
   background-color: var(--dark-gray-566272);
   color: var(--white-F6F6F6);
- }
+}
 
- .popupCloseButton {
+.popupCloseButton {
   position: absolute;
   top: 1rem;
   right: 1rem;
   cursor: pointer;
-  z-index: 1; 
+  z-index: 1;
   width: 1.00006rem;
   height: 1rem;
 }
-
-
-
 
 @media screen and (min-width: 768px) and (max-width: 1024px) {
   .map {
@@ -114,12 +108,9 @@ transform: translate(-50%);
     height: 40vh;
     padding: 0;
   }
-  
- }
+}
 
- 
-
- @media screen and (max-width: 767px) {
+@media screen and (max-width: 767px) {
   .map {
     width: 100%;
     height: 70vh;
@@ -129,34 +120,30 @@ transform: translate(-50%);
     position: absolute;
     left: 50%;
     transform: translate(-50%);
-      max-width: 15rem;
-      min-width: 15rem;
-      height: fit-content;
-      border-radius: 0.5rem;
-      margin-top: 10%;
-      object-fit: center;
-      display: flex;
-      flex-direction: column;
-      align-items: left;
-      text-align: left;
-      background-color: var(--white-F6F6F6);
-      padding-bottom: 1rem;
-      padding-right: 1rem;
-     }
-     .popupTitle {
-      display: block;
-      color: var(--black-3C3C3C);
-      font-family: var(--font-raleway);
-      font-size: 1rem;
-      font-style: normal;
-      font-weight: var(--fw-700);
-      line-height: 1.5rem;
-      margin-top: 1rem;
-      font-variant-numeric: lining-nums;
-      max-width: 10rem;
-    }
-
-  
- }
-
-
+    max-width: 15rem;
+    min-width: 15rem;
+    height: fit-content;
+    border-radius: 0.5rem;
+    margin-top: 10%;
+    object-fit: center;
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    text-align: left;
+    background-color: var(--white-F6F6F6);
+    padding-bottom: 1rem;
+    padding-right: 1rem;
+  }
+  .popupTitle {
+    display: block;
+    color: var(--black-3C3C3C);
+    font-family: var(--font-raleway);
+    font-size: 1rem;
+    font-style: normal;
+    font-weight: var(--fw-700);
+    line-height: 1.5rem;
+    margin-top: 1rem;
+    font-variant-numeric: lining-nums;
+    max-width: 10rem;
+  }
+}

@@ -1,52 +1,52 @@
-import React, { useEffect, useState, useCallback, useMemo } from "react";
-import { Helmet } from "react-helmet-async";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
-import "swiper/css/pagination";
-import { YMaps, Map, Placemark } from "@pbe/react-yandex-maps";
-import { Link } from "react-router-dom";
-import styles from "./Contacts.module.css";
+import React, { useEffect, useState, useCallback, useMemo } from 'react';
+import { Helmet } from 'react-helmet-async';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
+import 'swiper/css/pagination';
+import { YMaps, Map, Placemark } from '@pbe/react-yandex-maps';
+import { Link } from 'react-router-dom';
+import styles from './Contacts.module.css';
 
 const apiKey = process.env.REACT_APP_API_KEY;
 
 const cities = [
-  { name: "Москва", coords: [55.783, 37.5804] },
-  { name: "Воронеж", coords: [51.653696, 39.178566] },
-  { name: "Оренбург", coords: [51.804, 55.1053] },
-  { name: "Челябинск", coords: [55.1566, 61.3018] },
-  { name: "Ташкент", coords: [41.2964, 69.275] },
+  { name: 'Москва', coords: [55.783, 37.5804] },
+  { name: 'Воронеж', coords: [51.653696, 39.178566] },
+  { name: 'Оренбург', coords: [51.804, 55.1053] },
+  { name: 'Челябинск', coords: [55.1566, 61.3018] },
+  { name: 'Ташкент', coords: [41.2964, 69.275] },
 ];
 
 const cityInfo = {
   Москва: {
-    address: "Москва, 3-я ул. Ямского Поля, д. 20, с. 1, офис 704",
-    phone: "+7 (495) 120-12-26",
-    mail: "mail@marksgroup.ru",
-    hour: "",
+    address: 'Москва, 3-я ул. Ямского Поля, д. 20, с. 1, офис 704',
+    phone: '+7 (495) 120-12-26',
+    mail: 'mail@marksgroup.ru',
+    hour: '',
   },
   Воронеж: {
-    address: "Воронеж, ул. Ворошилова, д. 1а",
-    phone: "+7 (495) 120-12-26",
-    mail: "mail@marksgroup.ru",
-    hour: "",
+    address: 'Воронеж, ул. Ворошилова, д. 1а',
+    phone: '+7 (495) 120-12-26',
+    mail: 'mail@marksgroup.ru',
+    hour: '',
   },
   Оренбург: {
-    address: "Оренбург, пр. Нижний, д. 17, офис 305",
-    phone: "+7 (3532) 22-86-96",
-    mail: "mail@marksgroup.ru",
-    hour: "+ 2 МСК",
+    address: 'Оренбург, пр. Нижний, д. 17, офис 305',
+    phone: '+7 (3532) 22-86-96',
+    mail: 'mail@marksgroup.ru',
+    hour: '+ 2 МСК',
   },
   Челябинск: {
-    address: "Челябинск, ул. Северная, д. 52/3",
-    phone: "+7 (968) 110-11-30",
-    mail: "mail@marksgroup.ru",
-    hour: "+ 2 МСК",
+    address: 'Челябинск, ул. Северная, д. 52/3',
+    phone: '+7 (968) 110-11-30',
+    mail: 'mail@marksgroup.ru',
+    hour: '+ 2 МСК',
   },
   Ташкент: {
-    address: "Tashkent, Oybek Street, 18/1",
-    phone: "+998 99 353 96 90",
-    mail: "mail@marksgroup.ru",
-    hour: "+ 2 МСК",
+    address: 'Tashkent, Oybek Street, 18/1',
+    phone: '+998 99 353 96 90',
+    mail: 'mail@marksgroup.ru',
+    hour: '+ 2 МСК',
   },
 };
 
@@ -70,9 +70,7 @@ const Contacts = ({ handleMouseEnter, handleMouseLeave }) => {
     if (swiper) {
       swiper.slideTo(cities.findIndex((c) => c.name === selectedMap));
     }
-    setMapCenter(
-      cities.find((c) => c.name === selectedMap)?.coords || [37.5804, 55.783]
-    );
+    setMapCenter(cities.find((c) => c.name === selectedMap)?.coords || [37.5804, 55.783]);
     setMapKey((prevKey) => prevKey + 1);
   }, [selectedMap, swiper]);
 
@@ -80,12 +78,16 @@ const Contacts = ({ handleMouseEnter, handleMouseLeave }) => {
     setSelectedMap(city.name);
   }, []);
 
-  const mapOptions = useMemo(() => (
-    window.innerWidth <= 767 ? {
-      suppressMapOpenBlock: true,
-      suppressMapOpenBlockKey: "ctrlKey",
-    } : {}
-  ), []);
+  const mapOptions = useMemo(
+    () =>
+      window.innerWidth <= 767
+        ? {
+            suppressMapOpenBlock: true,
+            suppressMapOpenBlockKey: 'ctrlKey',
+          }
+        : {},
+    []
+  );
 
   const { address, phone, mail, hour } = cityInfo[selectedMap];
   const isLargeScreen = window.innerWidth >= 1024;
@@ -97,9 +99,7 @@ const Contacts = ({ handleMouseEnter, handleMouseLeave }) => {
       </Helmet>
       <div className={styles.main_contact}>
         <div className={styles.menu_block}>
-          <div className={styles.menu_span}>
-            Стать клиентом или&nbsp;партнёром
-          </div>
+          <div className={styles.menu_span}>Стать клиентом или&nbsp;партнёром</div>
           <div className={styles.menu_mail}>{mail}</div>
           <div className={styles.menu_tel}>{phone}</div>
           <Link to={`mailto:${mail}`} className={styles.link_mail}>
@@ -110,9 +110,8 @@ const Contacts = ({ handleMouseEnter, handleMouseLeave }) => {
           </Link>
           <div className={styles.menu_address}>{address}</div>
           <div className={styles.menu_work}>
-            Режим работы &nbsp;&bull;&nbsp; Пн.&nbsp;&mdash;
-            Пт.&nbsp;10.00&mdash;19.00
-            {(selectedMap !== "Москва" && selectedMap !== "Воронеж") && <> &nbsp;&bull;&nbsp; {hour}</>}
+            Режим работы &nbsp;&bull;&nbsp; Пн.&nbsp;&mdash; Пт.&nbsp;10.00&mdash;19.00
+            {selectedMap !== 'Москва' && selectedMap !== 'Воронеж' && <> &nbsp;&bull;&nbsp; {hour}</>}
           </div>
           <div className={styles.menu_hour}></div>
           <div className={styles.menu_office_name}>Наши офисы</div>
@@ -120,7 +119,7 @@ const Contacts = ({ handleMouseEnter, handleMouseLeave }) => {
             {cities.map((city) => (
               <button
                 key={city.name}
-                className={`${styles.menu_button} ${selectedMap === city.name ? styles.menu_button_active : ""}`}
+                className={`${styles.menu_button} ${selectedMap === city.name ? styles.menu_button_active : ''}`}
                 onClick={() => handleCityClick(city)}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
@@ -135,7 +134,9 @@ const Contacts = ({ handleMouseEnter, handleMouseLeave }) => {
             <Map
               key={mapKey}
               defaultState={{
-                center: isLargeScreen ? [mapCenter[0], mapCenter[1] - 0.15] : [mapCenter[0] + 0.05, mapCenter[1] + 0.05],
+                center: isLargeScreen
+                  ? [mapCenter[0], mapCenter[1] - 0.15]
+                  : [mapCenter[0] + 0.05, mapCenter[1] + 0.05],
                 zoom: 11,
               }}
               width="100%"
@@ -146,7 +147,7 @@ const Contacts = ({ handleMouseEnter, handleMouseLeave }) => {
               <Placemark
                 geometry={mapCenter}
                 options={{
-                  iconLayout: "default#image",
+                  iconLayout: 'default#image',
                   iconImageHref: `data:image/svg+xml,${encodeURIComponent(customMarkerSVG)}`,
                   iconImageSize: [64, 64],
                 }}
@@ -155,16 +156,18 @@ const Contacts = ({ handleMouseEnter, handleMouseLeave }) => {
           </YMaps>
           <Swiper
             onSwiper={setSwiper}
-            slidesPerView={"auto"}
+            slidesPerView={'auto'}
             spaceBetween={10}
             className={styles.mySwiper}
-            touch={"true"}
+            touch={'true'}
           >
             <div className={styles.slider_menu_button_group}>
               {cities.map((city) => (
                 <SwiperSlide
                   key={city.name}
-                  className={`${styles.slider_menu_button} ${selectedMap === city.name ? styles.slider_menu_button_active : ""}`}
+                  className={`${styles.slider_menu_button} ${
+                    selectedMap === city.name ? styles.slider_menu_button_active : ''
+                  }`}
                   onClick={() => handleCityClick(city)}
                 >
                   <p className={styles.slider_button_city}>{city.name}</p>
@@ -181,7 +184,7 @@ const Contacts = ({ handleMouseEnter, handleMouseLeave }) => {
           }
         `}
       </style>
-       {/* <style>
+      {/* <style>
         {`
           [class*="ymaps-2"][class*="-ground-pane"] {
             filter: grayscale(98%) brightness(100%);
@@ -200,10 +203,6 @@ const Contacts = ({ handleMouseEnter, handleMouseLeave }) => {
 };
 
 export default React.memo(Contacts);
-
-
-
-
 
 // не стирать это для mapbox
 

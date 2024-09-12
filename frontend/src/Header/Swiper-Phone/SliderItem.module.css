@@ -1,140 +1,138 @@
 @import '../../App.css';
 
 .slider_item {
-    width: 36.25rem;
-    height: 20.37rem;
-    border-radius: 1rem;
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    flex-shrink: 0;
-    cursor: grab;
-    
+  width: 36.25rem;
+  height: 20.37rem;
+  border-radius: 1rem;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  cursor: grab;
 }
 
 .slider_item_content {
-    padding: 1rem 0rem;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    transition: 0.4s;
-    word-wrap: break-word;
-    white-space: normal;
+  padding: 1rem 0rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  transition: 0.4s;
+  word-wrap: break-word;
+  white-space: normal;
 }
 
 .slider_image_wrapper {
-    width: 94%;
-    height: 20.37rem;
-    overflow: hidden;
-    border-radius: 0px 0px 1rem 1rem;
-    position: relative;
+  width: 94%;
+  height: 20.37rem;
+  overflow: hidden;
+  border-radius: 0px 0px 1rem 1rem;
+  position: relative;
 }
 
 .slider_image {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: 0.2s;
-    border-radius: 16px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: 0.2s;
+  border-radius: 16px;
 }
 
 .slider_subject {
-    font-style: normal;
-    font-weight: var(--fw-700);
-    font-size: 1rem;
-    line-height: 1.5rem;
-    font-feature-settings: 'pnum' on, 'lnum' on;
-    color: var(--black-1D2E43);
-    word-wrap: break-word;
+  font-style: normal;
+  font-weight: var(--fw-700);
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-feature-settings: 'pnum' on, 'lnum' on;
+  color: var(--black-1D2E43);
+  word-wrap: break-word;
 
-    @media screen and (max-width: 520px) {
-        & {
-            font-size: 16px;
-            line-height: 24px;
-        }
+  @media screen and (max-width: 520px) {
+    & {
+      font-size: 16px;
+      line-height: 24px;
     }
+  }
 }
 
 .slider_city_dataMonthYear_wrapper {
-    display: flex;
-    padding-top: 0.5rem;
-    word-wrap: break-word;
+  display: flex;
+  padding-top: 0.5rem;
+  word-wrap: break-word;
 
-    @media screen and (max-width: 520px) {
-        & {
-            font-size: 14px;
-            line-height: 20px;
-        }
+  @media screen and (max-width: 520px) {
+    & {
+      font-size: 14px;
+      line-height: 20px;
     }
-   }
-  
-  .slider_text_city {
-    font-family: var(--font-raleway);
-    font-style: normal;
-    font-weight: var(--fw-400);
-    font-size: 0.875rem;
-    line-height: 1.25rem;
-
-    @media screen and (max-width: 520px) {
-        & {
-            font-size: 14px;
-            line-height: 20px;
-        }
-    }
-    
   }
-  
-  .slider_text_svg {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
+}
 
-    @media screen and (max-width: 520px) {
-        & {
-            font-size: 14px;
-            line-height: 20px;
-        }
-    }
-   }
-  
-  .slider_text_dataMonthYear {
-    font-family: var(--font-raleway);
-    font-style: normal;
-    font-weight: var(--fw-400);
-    font-size: 0.875rem;
-    line-height: 1.25rem;
+.slider_text_city {
+  font-family: var(--font-raleway);
+  font-style: normal;
+  font-weight: var(--fw-400);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
 
-    @media screen and (max-width: 520px) {
-        & {
-            font-size: 14px;
-            line-height: 20px;
-        }
+  @media screen and (max-width: 520px) {
+    & {
+      font-size: 14px;
+      line-height: 20px;
     }
-   }
+  }
+}
+
+.slider_text_svg {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+
+  @media screen and (max-width: 520px) {
+    & {
+      font-size: 14px;
+      line-height: 20px;
+    }
+  }
+}
+
+.slider_text_dataMonthYear {
+  font-family: var(--font-raleway);
+  font-style: normal;
+  font-weight: var(--fw-400);
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+
+  @media screen and (max-width: 520px) {
+    & {
+      font-size: 14px;
+      line-height: 20px;
+    }
+  }
+}
 
 .slider_text {
-    font-style: normal;
-    padding-top: 10px;
-    font-weight: var(--fw-400);
-    font-size: 14px;
-    line-height: 20px;
-    font-feature-settings: 'pnum' on, 'lnum' on;
-    color: var(--black-1D2E43);
-    
-    @media screen and (max-width: 520px) {
-        & {
-            font-size: 14px;
-            line-height: 20px;
-        }
+  font-style: normal;
+  padding-top: 10px;
+  font-weight: var(--fw-400);
+  font-size: 14px;
+  line-height: 20px;
+  font-feature-settings: 'pnum' on, 'lnum' on;
+  color: var(--black-1D2E43);
+
+  @media screen and (max-width: 520px) {
+    & {
+      font-size: 14px;
+      line-height: 20px;
     }
+  }
 }
 
 .icon_image {
-    position: absolute;
-    bottom: 6%;
-    right: 6%;
+  position: absolute;
+  bottom: 6%;
+  right: 6%;
 }
 
 /* первый 350 на 515 

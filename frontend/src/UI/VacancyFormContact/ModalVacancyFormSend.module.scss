@@ -1,5 +1,4 @@
-@import "../../App.css";
-
+@import '../../App.css';
 
 .modalContentFormSend {
   display: flex;
@@ -8,7 +7,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  box-sizing: border-box; 
+  box-sizing: border-box;
   background-color: var(--white-F6F6F6);
   box-shadow: -2px 4px 22px 0px rgba(29, 46, 67, 0.46);
   backdrop-filter: blur(8.5px);
@@ -32,8 +31,8 @@
 }
 
 .modalWrapperFormSend {
-   padding: 0rem 9.56vw 3rem 3.625rem;
-   width: 100%;
+  padding: 0rem 9.56vw 3rem 3.625rem;
+  width: 100%;
 }
 
 .modalTitleFormSend {
@@ -61,8 +60,6 @@
   max-width: 80%;
 }
 
-
-
 @media screen and (min-width: 1025px) and (max-width: 1600px) {
   .modalTitleFormSend {
     padding-top: 1rem;
@@ -74,11 +71,10 @@
   .modalMessageFormSend {
     font-size: 1.25rem;
     line-height: 1.75rem;
-   }
   }
+}
 
-
-  /* стили для планшетной версии  */
+/* стили для планшетной версии  */
 @media screen and (min-width: 768px) and (max-width: 1024px) {
   .modalTitleFormSend {
     font-size: 2rem;
@@ -91,22 +87,21 @@
     font-size: 1.25rem;
     line-height: 1.75rem;
     max-width: 100%;
-   }
+  }
 }
 
 /* стили мобильной версии  */
 @media screen and (max-width: 767px) {
-
   .modalContentFormSend {
     max-width: 100%;
-    width:  90%;
+    width: 90%;
   }
 
   .modalWrapperFormSend {
     padding: 0rem 9vw 2rem 1rem;
     width: 100%;
- }
- 
+  }
+
   .modalTitleFormSend {
     padding-top: 1rem;
     font-size: 1.5rem;
@@ -121,6 +116,5 @@
     line-height: 1.625rem;
     max-width: 100%;
     width: 100%;
-   }
-
+  }
 }

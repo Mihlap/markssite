@@ -1,4 +1,4 @@
-@import "../../App.css";
+@import '../../App.css';
 
 .company_group_container {
   padding-bottom: 9.25rem;
@@ -8,7 +8,7 @@
 
 .wrapper_group_container {
   display: flex;
-  width: 100%;  
+  width: 100%;
 }
 
 .company_group_slide {
@@ -34,7 +34,6 @@
   object-fit: cover;
 }
 
-
 .text_slider_span {
   display: flex;
   color: var(--black-3C3C3C);
@@ -47,29 +46,23 @@
   padding-top: 1.5rem;
 }
 
-
 @media screen and (min-width: 1025px) and (max-width: 1600px) {
-
   .company_group_slide {
     margin-right: 3vw;
   }
 
-.wrapper_sliderContainer_blockSlide.swiper-slide {
-  width: 100% !important; 
+  .wrapper_sliderContainer_blockSlide.swiper-slide {
+    width: 100% !important;
+  }
 }
-
-}
-
 
 /* стили для планшетной версии  */
 @media screen and (min-width: 768px) and (max-width: 1024px) {
-
   .company_group_container {
     padding-left: 3.6vw;
     padding-bottom: 6.25rem;
     width: 100%;
   }
-
 
   .text_slider_span {
     display: flex;
@@ -85,14 +78,12 @@
 
   .wrapper_sliderContainer_blockSlide.swiper-slide {
     width: 100% !important;
-  
   }
 }
 
 /* стили мобильной версии  */
 
 @media screen and (max-width: 767px) {
-
   .company_group_container {
     padding-bottom: 5rem;
     padding-left: 0.5rem;
@@ -120,7 +111,6 @@
     height: auto;
   }
 
-
   .image_group_container {
     width: auto;
     height: auto;
@@ -128,8 +118,6 @@
     max-height: 100%;
     object-fit: cover;
   }
-  
-
 
   .pagination_company_slider {
     display: flex;

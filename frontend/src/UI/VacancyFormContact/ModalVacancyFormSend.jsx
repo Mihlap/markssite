@@ -1,9 +1,9 @@
 import React from 'react';
 import Modal from 'react-modal';
-import styles from './ModalVacancyFormSend.module.scss'
+import styles from './ModalVacancyFormSend.module.scss';
 
-const ModalVacancyFormSend  = ({ isOpen, onRequestClose, title, message }) => {
-  return (    
+const ModalVacancyFormSend = ({ isOpen, onRequestClose, title, message }) => {
+  return (
     <Modal
       isOpen={isOpen}
       onRequestClose={onRequestClose}
@@ -11,25 +11,19 @@ const ModalVacancyFormSend  = ({ isOpen, onRequestClose, title, message }) => {
       style={{
         overlay: {
           zIndex: 9999,
-          backgroundColor: "#2C3B447A",
+          backgroundColor: '#2C3B447A',
         },
         content: {
           zIndex: 9999,
         },
       }}
     >
-       <div
+      <div
         onClick={onRequestClose}
         // onRequestClose={onRequestClose}
         className={styles.modal_vacancy_close}
       >
-        <svg
-          width="16"
-          height="16"
-          viewBox="0 0 16 16"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
             fillRule="evenodd"
             clipRule="evenodd"
@@ -38,7 +32,7 @@ const ModalVacancyFormSend  = ({ isOpen, onRequestClose, title, message }) => {
           />
         </svg>
       </div>
-      <div className={styles.modalWrapperFormSend}>     
+      <div className={styles.modalWrapperFormSend}>
         <h2 className={styles.modalTitleFormSend}>{title}</h2>
         <p className={styles.modalMessageFormSend}>{message}</p>
         {/* <button className={styles.closeButtonFormSend} onClick={onRequestClose}>

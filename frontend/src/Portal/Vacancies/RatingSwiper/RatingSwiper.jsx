@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useMemo, memo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchSlides, updateSlidesOrderLocally } from '../../../store/Slice/vacancyMainSlideCardSlice'; 
+import { fetchSlides, updateSlidesOrderLocally } from '../../../store/Slice/vacancyMainSlideCardSlice';
 import styles from './RatingSwiper.module.scss';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -32,7 +32,7 @@ const RatingSwiper = memo(() => {
   const swiperRef = useRef(null);
   const slides = useSelector((state) => state.formAddSlide.slides);
   const visibleSlides = useMemo(() => {
-    return slides.filter(slide => !slide.hidden);
+    return slides.filter((slide) => !slide.hidden);
   }, [slides]);
   const [, setWindowWidth] = useState(window.innerWidth);
   const [isTablet, setIsTablet] = useState(window.innerWidth <= 1280);
@@ -65,7 +65,7 @@ const RatingSwiper = memo(() => {
     };
   }, []);
 
-   const slidesToShow = isTablet && !showAll ? visibleSlides.slice(0, 1) : visibleSlides;
+  const slidesToShow = isTablet && !showAll ? visibleSlides.slice(0, 1) : visibleSlides;
 
   return (
     <section className={styles.RatingSwiper}>
@@ -103,21 +103,22 @@ const RatingSwiper = memo(() => {
                   slidesPerView: 1,
                   spaceBetween: 30,
                 },
-              }}>
+              }}
+            >
               {slidesToShow?.map((slide) => (
                 <SwiperSlide key={slide.id} className={styles.RatingSwiper__slide}>
                   <RatingSwiperRow
-                    picture={`${Host}/images/slideCard/${slide.photoAva}`} 
-                    date={new Date(slide.cardData.card1.date).toLocaleDateString()} 
+                    picture={`${Host}/images/slideCard/${slide.photoAva}`}
+                    date={new Date(slide.cardData.card1.date).toLocaleDateString()}
                     title={slide.cardData.card1.description}
                   />
                   <div className={styles.RatingSwiper__rows}>
                     <RatingSwiperRow
-                      date={new Date(slide.cardData.card2.date).toLocaleDateString()} 
+                      date={new Date(slide.cardData.card2.date).toLocaleDateString()}
                       title={slide.cardData.card2.description}
                     />
                     <RatingSwiperRow
-                      date={new Date(slide.cardData.card3.date).toLocaleDateString()} 
+                      date={new Date(slide.cardData.card3.date).toLocaleDateString()}
                       title={slide.cardData.card3.description}
                     />
                   </div>
@@ -132,16 +133,16 @@ const RatingSwiper = memo(() => {
                 <div key={slide.id} className={styles.RatingSwiper__slide}>
                   <RatingSwiperRow
                     picture={`${Host}/images/slideCard/${slide.photoAva}`}
-                    date={new Date(slide.cardData.card1.date).toLocaleDateString()} 
+                    date={new Date(slide.cardData.card1.date).toLocaleDateString()}
                     title={slide.cardData.card1.description}
                   />
                   <div className={styles.RatingSwiper__rows}>
-                    <RatingSwiperRow                
-                      date={new Date(slide.cardData.card2.date).toLocaleDateString()} 
+                    <RatingSwiperRow
+                      date={new Date(slide.cardData.card2.date).toLocaleDateString()}
                       title={slide.cardData.card2.description}
                     />
-                    <RatingSwiperRow                
-                      date={new Date(slide.cardData.card3.date).toLocaleDateString()} 
+                    <RatingSwiperRow
+                      date={new Date(slide.cardData.card3.date).toLocaleDateString()}
                       title={slide.cardData.card3.description}
                     />
                   </div>
@@ -151,7 +152,8 @@ const RatingSwiper = memo(() => {
             {visibleSlides.length > 1 && (
               <button
                 className={`${styles.RatingSwiper__button} ${showAll ? styles.visible : ''}`}
-                onClick={() => setShowAll(!showAll)}>
+                onClick={() => setShowAll(!showAll)}
+              >
                 {showAll ? 'Скрыть все' : 'Смотреть все'}
               </button>
             )}

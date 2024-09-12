@@ -1,9 +1,8 @@
-import React, { useEffect, useState } from 'react'
-import styles from "./LoadingNew.module.css";
-import logo from "../icons/logowhite.svg"
+import React, { useEffect, useState } from 'react';
+import styles from './LoadingNew.module.css';
+import logo from '../icons/logowhite.svg';
 
-
-export default function Loading() {    
+export default function Loading() {
   const [percent, setPercent] = useState(0);
   const [progressWidth, setProgressWidth] = useState(0);
 
@@ -16,7 +15,7 @@ export default function Loading() {
         setProgressWidth((prevWidth) => prevWidth + 4);
       }
     }, 40);
-// testfdfd
+    // testfdfd
     // sdfsdf
     return () => clearInterval(loading);
   }, [percent, progressWidth]);
@@ -31,25 +30,22 @@ export default function Loading() {
       </div>
       <div className={styles.contentLoaderBlock}>
         <div className={styles.conentLoaderLogo}>
-          <img className={styles.itemLoaderLogo} src={logo} alt="marksgroup"/>
-          <div className={styles.contentLoaderSubtitle}>
-            ГЕНЕРАЛЬНОЕ&nbsp;ПРОЕКТИРОВАНИЕ
-          </div>
+          <img className={styles.itemLoaderLogo} src={logo} alt="marksgroup" />
+          <div className={styles.contentLoaderSubtitle}>ГЕНЕРАЛЬНОЕ&nbsp;ПРОЕКТИРОВАНИЕ</div>
         </div>
         <div className={styles.loadingContainer}>
-          <div
-            className={`${styles.percent} ${
-              percent === 100 ? styles.textBlink : ""
-            }`}
-          >
-            {percent}%
-          </div>
+          <div className={`${styles.percent} ${percent === 100 ? styles.textBlink : ''}`}>{percent}%</div>
           <div className={styles.contantDot}>
             <svg className={styles.filter} version="1.1">
               <defs>
                 <filter id="gooeyness">
                   <feGaussianBlur in="SourceGraphic" stdDeviation="10" result="blur" />
-                  <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 20 -10" result="gooeyness" />
+                  <feColorMatrix
+                    in="blur"
+                    mode="matrix"
+                    values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 20 -10"
+                    result="gooeyness"
+                  />
                   <feComposite in="SourceGraphic" in2="gooeyness" operator="atop" />
                 </filter>
               </defs>

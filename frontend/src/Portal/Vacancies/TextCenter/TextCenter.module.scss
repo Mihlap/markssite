@@ -1,5 +1,5 @@
-@import "../../../App.css";
-@import "../../../_variables.scss";
+@import '../../../App.css';
+@import '../../../_variables.scss';
 
 .TextCenter {
   $s: &;
@@ -8,7 +8,12 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(261.46deg, rgba(255, 203, 193, 0.09) -4.67%, rgba(117, 187, 253, 0.09) 44.63%, rgba(188, 188, 188, 0.09) 103.07%);
+  background: linear-gradient(
+    261.46deg,
+    rgba(255, 203, 193, 0.09) -4.67%,
+    rgba(117, 187, 253, 0.09) 44.63%,
+    rgba(188, 188, 188, 0.09) 103.07%
+  );
 
   br {
     display: none;
@@ -18,7 +23,7 @@
     position: absolute;
     z-index: -1;
     background-size: cover;
-    background-repeat: no-repeat; 
+    background-repeat: no-repeat;
 
     &_1 {
       width: rem(308);
@@ -26,25 +31,25 @@
       top: 20.88%;
       left: 76.64%;
     }
-    
+
     &_2 {
       width: rem(308);
       height: rem(290);
-      top:  3.94%;
-      left: 2.50%;
+      top: 3.94%;
+      left: 2.5%;
     }
-    
+
     &_3 {
       width: rem(130);
       height: rem(122);
       top: 7.05%;
       left: 67.34%;
     }
-    
+
     &_4 {
       width: rem(140);
       height: rem(132);
-      top: 79.20%;
+      top: 79.2%;
       left: 6.76%;
     }
   }
@@ -60,9 +65,9 @@
       color: var(--blue-75BBFD);
     }
   }
-  
+
   // Адаптация под меньший размер desktop
-  @media all and (max-width:$bp0){
+  @media all and (max-width: $bp0) {
     min-height: rem(900);
 
     &__text {
@@ -70,32 +75,32 @@
       font-size: rem(40);
       line-height: rem(48);
     }
-  
+
     &__star {
       &_1 {
         top: 16.11%;
         left: 74.51%;
       }
-      
+
       &_2 {
         top: 28.56%;
         left: -5.76%;
       }
-      
+
       &_3 {
         top: 5.11%;
         left: 65.63%;
       }
-      
+
       &_4 {
         top: 82.33%;
         left: 6.67%;
       }
-    }   
+    }
   }
 
   // Адаптация под tablet
-  @media all and (max-width:$bp3){
+  @media all and (max-width: $bp3) {
     min-height: rem(540);
 
     &__text {
@@ -109,26 +114,26 @@
         top: 26.85%;
         left: 81.84%;
       }
-      
+
       &_2 {
         top: -8.89%;
         left: -9.08%;
       }
-      
+
       &_3 {
         top: 8.52%;
         left: 69.34%;
       }
-      
+
       &_4 {
         top: 80.74%;
-        left: 8.40%;
+        left: 8.4%;
       }
     }
   }
 
   // Адаптация под mobile
-  @media all and (max-width:$bp4){
+  @media all and (max-width: $bp4) {
     br {
       display: block;
     }
@@ -149,28 +154,27 @@
         top: 33.33%;
         left: 78.78%;
       }
-      
+
       &_2 {
         width: rem(201);
         height: rem(201);
         top: 8.52%;
         left: -24.67%;
       }
-      
+
       &_3 {
         width: rem(89);
         height: rem(89);
         top: 20.56%;
         left: 55.17%;
       }
-      
+
       &_4 {
         width: rem(94);
         height: rem(94);
         top: 70.74%;
         left: 21.49%;
       }
-    }    
+    }
   }
 }
-

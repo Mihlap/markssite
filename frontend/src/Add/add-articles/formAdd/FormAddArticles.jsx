@@ -1,31 +1,23 @@
-import React, {
-  useEffect,
-  useRef,
-  useState, 
-  useCallback,
-} from "react";
-import Select from "react-select";
-import ReactQuill from "react-quill";
-import "react-quill/dist/quill.snow.css";
-import { transliterate } from "transliteration";
-import { useDispatch } from "react-redux";
-import styles from "../../add-project/formAdd/FormAddProject.module.scss";
+import React, { useEffect, useRef, useState, useCallback } from 'react';
+import Select from 'react-select';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
+import { transliterate } from 'transliteration';
+import { useDispatch } from 'react-redux';
+import styles from '../../add-project/formAdd/FormAddProject.module.scss';
 import {
   changeHandler,
   removePreviewPhoto,
   removePreviewPhotoAva,
   removePreviewPhotoClose,
   removePreviewPhotoOpen,
-} from "./utils/formHelpers";
-import { fetchArticle } from "../../../store/Slice/articleSlice";
-import customStyles from "../../add-project/formAdd/utils/customStyles";
-import compressImageFile from "browser-image-compression";
+} from './utils/formHelpers';
+import { fetchArticle } from '../../../store/Slice/articleSlice';
+import customStyles from '../../add-project/formAdd/utils/customStyles';
+import compressImageFile from 'browser-image-compression';
 
-import ConstructorPage from "../constructor/ConstructorPage";
-import {
-  PublicationContainer,
-  PublicationIndicator,
-} from "../../add-project/formAdd/utils/CustomSelectComponents";
+import ConstructorPage from '../constructor/ConstructorPage';
+import { PublicationContainer, PublicationIndicator } from '../../add-project/formAdd/utils/CustomSelectComponents';
 
 export default function FormAddArticles({ setIsModalOpen }) {
   const dispatch = useDispatch();
@@ -41,18 +33,18 @@ export default function FormAddArticles({ setIsModalOpen }) {
   const [isFocused, setIsFocused] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
   const [inputData, setInputData] = useState({
-    title: "",
-    author: "",
-    city: "",
-    dataMonthYear: "",
+    title: '',
+    author: '',
+    city: '',
+    dataMonthYear: '',
     selectCompetencies: [],
     dropPhoto: [],
-    titleTextBlock: "",
-    descriptionArticle: "",
-    photoAva: "",
-    imageOpen: "",
-    textBlock: "",
-    imageClose: "",
+    titleTextBlock: '',
+    descriptionArticle: '',
+    photoAva: '',
+    imageOpen: '',
+    textBlock: '',
+    imageClose: '',
   });
 
   const [isLoading, setIsLoading] = useState(false);
@@ -69,10 +61,10 @@ export default function FormAddArticles({ setIsModalOpen }) {
       const editor = quillRef.current.getEditor();
       const editorElement = editor.root;
 
-      editorElement.style.fontSize = "16px";
-      editorElement.style.fontFamily = "Raleway, sans-serif";
-      editorElement.style.color = "var(--black-1D2E43)";
-      editorElement.style.border = "none";
+      editorElement.style.fontSize = '16px';
+      editorElement.style.fontFamily = 'Raleway, sans-serif';
+      editorElement.style.color = 'var(--black-1D2E43)';
+      editorElement.style.border = 'none';
     }
   }, []);
 
@@ -80,7 +72,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
     quillRefs.forEach((quillRef) => applyStylesToQuillEditor(quillRef));
   }, [quillRef1, quillRef2, applyStylesToQuillEditor]);
 
-  const [inputValue, setInputValue] = useState("");
+  const [inputValue, setInputValue] = useState('');
   const [onenConstructor, setOpenConstructor] = useState(false);
   const [blocks, setBlocks] = useState([]);
   const [dynamicPreviews, setDynamicPreviews] = useState([]);
@@ -88,28 +80,14 @@ export default function FormAddArticles({ setIsModalOpen }) {
 
   const handleRemovePreviewPhoto = useCallback(
     (index) => {
-      removePreviewPhoto(
-        previewPhotos,
-        setPreviewPhotos,
-        index,
-        inputData,
-        setInputData,
-        setIsDropPhotoVisible
-      );
+      removePreviewPhoto(previewPhotos, setPreviewPhotos, index, inputData, setInputData, setIsDropPhotoVisible);
     },
     [previewPhotos, inputData]
   );
 
   const handleRemovePreviewPhotoAva = useCallback(
     (index) => {
-      removePreviewPhotoAva(
-        previewPhotoAva,
-        setPreviewPhotoAva,
-        index,
-        inputData,
-        setInputData,
-        setIsPhotoAvaVisible
-      );
+      removePreviewPhotoAva(previewPhotoAva, setPreviewPhotoAva, index, inputData, setInputData, setIsPhotoAvaVisible);
     },
     [previewPhotoAva, inputData]
   );
@@ -148,24 +126,22 @@ export default function FormAddArticles({ setIsModalOpen }) {
       const formattedData = {
         ...inputData,
         dynamicBlocks: dynamicData,
-        selectCompetencies: selectedCompetencies
-          .map((option) => option.label)
-          .join(","),
+        selectCompetencies: selectedCompetencies.map((option) => option.label).join(','),
       };
       dispatch(fetchArticle(formattedData));
       setInputData({
-        title: "",
-        author: "",
-        city: "",
-        dataMonthYear: "",
+        title: '',
+        author: '',
+        city: '',
+        dataMonthYear: '',
         selectCompetencies: [],
         dropPhoto: [],
-        titleTextBlock: "",
-        descriptionArticle: "",
-        photoAva: "",
-        imageOpen: "",
-        textBlock: "",
-        imageClose: "",
+        titleTextBlock: '',
+        descriptionArticle: '',
+        photoAva: '',
+        imageOpen: '',
+        textBlock: '',
+        imageClose: '',
       });
       setSelectedCompetencies([]);
       setIsModalOpen(false);
@@ -184,7 +160,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
   const areAllBlocksFilled = useCallback(() => {
     for (let block of dynamicData) {
       for (let input of block) {
-        if (input.required && (!input.value || input.value === "")) {
+        if (input.required && (!input.value || input.value === '')) {
           return false;
         }
       }
@@ -193,15 +169,9 @@ export default function FormAddArticles({ setIsModalOpen }) {
   }, [dynamicData]);
 
   const handleRemoveBlock = useCallback((blockIndex) => {
-    setDynamicData((prevDynamicData) =>
-      prevDynamicData.filter((_, index) => index !== blockIndex)
-    );
-    setBlocks((prevBlocks) =>
-      prevBlocks.filter((_, index) => index !== blockIndex)
-    );
-    setDynamicPreviews((prevPreviews) =>
-      prevPreviews.filter((_, index) => index !== blockIndex)
-    );
+    setDynamicData((prevDynamicData) => prevDynamicData.filter((_, index) => index !== blockIndex));
+    setBlocks((prevBlocks) => prevBlocks.filter((_, index) => index !== blockIndex));
+    setDynamicPreviews((prevPreviews) => prevPreviews.filter((_, index) => index !== blockIndex));
   }, []);
 
   const handleClick = useCallback(
@@ -215,7 +185,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
       const blockKey = Date.now().toString();
       const newInputs = inputs.map((input) => ({
         ...input,
-        key: blockKey + "_" + input.type,
+        key: blockKey + '_' + input.type,
       }));
       setBlocks((prevState) => [...prevState, newInputs]);
       setDynamicData((prevDynamicData) => [...prevDynamicData, newInputs]);
@@ -233,7 +203,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
     try {
       return await compressImageFile(file, options);
     } catch (error) {
-      console.error("Ошибка при сжатии изображения:", error);
+      console.error('Ошибка при сжатии изображения:', error);
     }
   }, []);
 
@@ -247,17 +217,16 @@ export default function FormAddArticles({ setIsModalOpen }) {
 
       if (!newDynamicData[blockIndex][inputIndex]) {
         newDynamicData[blockIndex][inputIndex] = {
-          type: "",
-          label: "",
-          value: "",
+          type: '',
+          label: '',
+          value: '',
         };
       }
 
-    
       const generateUniqueName = (originalName) => {
         const timestamp = Date.now();
         const randomNum = Math.floor(Math.random() * 10000);
-        const fileExtension = originalName.split(".").pop();
+        const fileExtension = originalName.split('.').pop();
         const sliceOfOriginalName = transliterate(originalName.slice(0, 5));
         const newName = `file_${sliceOfOriginalName}_${timestamp}_${randomNum}.${fileExtension}`;
         return newName;
@@ -266,7 +235,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
       if (Array.isArray(value) && value[0] instanceof File) {
         const newFiles = await Promise.all(
           value.map(async (originalFile) => {
-            if (originalFile.type.startsWith("image/")) {
+            if (originalFile.type.startsWith('image/')) {
               const compressedFile = await compressImage(originalFile);
               const uniqueName = generateUniqueName(compressedFile.name);
               return new File([compressedFile], uniqueName, {
@@ -293,47 +262,42 @@ export default function FormAddArticles({ setIsModalOpen }) {
 
   const getPreviewClassName = useCallback((label) => {
     switch (label) {
-      case "Картинка с описанием":
+      case 'Картинка с описанием':
         return {
           outerDiv: styles.imgWithDescriptionPreview,
           innerDiv: styles.someInnerDivStyle,
         };
-      case "Слайдер *допускается загрузка 8ми изображений":
+      case 'Слайдер *допускается загрузка 8ми изображений':
         return {
           outerDiv: styles.sliderPreview,
           innerDiv: styles.sliderPreviewDiv,
         };
-      case "Блок 2е вертикальные картинки":
+      case 'Блок 2е вертикальные картинки':
         return {
           outerDiv: styles.verticallyBlock,
           innerDiv: styles.previewWerticallyBlock,
           verticalImgTwo: styles.verticalTwoImg,
         };
-      case "Видеоролик":
+      case 'Видеоролик':
         return {
           outerDiv: styles.videoPreview,
           innerDiv: styles.videoInnerDiv,
           videoStyles: styles.videoStyle,
         };
-      case "Ссылка на видеоролик":
+      case 'Ссылка на видеоролик':
         return {
           outerDiv: styles.videoPreview,
           innerDiv: styles.videoInnerDiv,
           videoStyles: styles.videoStyle,
         };
       default:
-        return "";
+        return '';
     }
   }, []);
 
   const renderInputWithLabel = useCallback(
     (inputType, labelText, blockIndex, inputIndex, key) => {
-      const handleDeletePreview = (
-        event,
-        blockIndex,
-        inputIndex,
-        previewIndex
-      ) => {
+      const handleDeletePreview = (event, blockIndex, inputIndex, previewIndex) => {
         event.preventDefault();
         setDynamicPreviews((prev) => {
           const newPreviews = [...prev];
@@ -352,73 +316,50 @@ export default function FormAddArticles({ setIsModalOpen }) {
         });
 
         const fileInputs = document.querySelectorAll('input[type="file"]');
-        fileInputs.forEach((input) => (input.value = ""));
+        fileInputs.forEach((input) => (input.value = ''));
       };
 
       const classNames = getPreviewClassName(labelText);
 
       return (
         <div key={inputIndex}>
-          {inputType === "text" && (
+          {inputType === 'text' && (
             <div className={styles.form_container__heading_block}>
               <input
                 type="input"
                 maxLength="56"
-                value={dynamicData[blockIndex][inputIndex].value || ""}
+                value={dynamicData[blockIndex][inputIndex].value || ''}
                 className={`${styles.form_container__heading_block_input} ${styles.orange_color}`}
                 placeholder={labelText}
                 onChange={(e) => {
                   setInputValue(e.target.value);
-                  handleDynamicInputChange(
-                    blockIndex,
-                    inputIndex,
-                    e.target.value
-                  );
+                  handleDynamicInputChange(blockIndex, inputIndex, e.target.value);
                 }}
               />
-              <label
-                htmlFor="titleTextBlock"
-                className={styles.form_container__heading_block_label}
-              >
+              <label htmlFor="titleTextBlock" className={styles.form_container__heading_block_label}>
                 {labelText}
               </label>
-              <div
-                className={styles.form_container__heading_block_input_length}
-              >
-                {(dynamicData[blockIndex][inputIndex].value || "").length}/56
+              <div className={styles.form_container__heading_block_input_length}>
+                {(dynamicData[blockIndex][inputIndex].value || '').length}/56
               </div>
             </div>
           )}
-          {inputType === "file" && (
+          {inputType === 'file' && (
             <>
-              {labelText === "Видеоролик" ? (
+              {labelText === 'Видеоролик' ? (
                 <div>
-                  <div
-                    className={
-                      styles.form_container__checkbox_block_constructor
-                    }
-                  >
+                  <div className={styles.form_container__checkbox_block_constructor}>
                     <div>{labelText}</div>
                   </div>
-                  <label
-                    className={
-                      styles.slider_container__customFileUploadOrangeColor
-                    }
-                  >
+                  <label className={styles.slider_container__customFileUploadOrangeColor}>
                     <input
                       type="file"
                       accept="video/*"
                       onChange={(e) => {
                         const filesArray = Array.from(e.target.files);
-                        handleDynamicInputChange(
-                          blockIndex,
-                          inputIndex,
-                          filesArray
-                        );
+                        handleDynamicInputChange(blockIndex, inputIndex, filesArray);
 
-                        const previewsArray = filesArray.map((file) =>
-                          URL.createObjectURL(file)
-                        );
+                        const previewsArray = filesArray.map((file) => URL.createObjectURL(file));
                         setDynamicPreviews((prev) => {
                           const newPreviews = [...prev];
                           if (!newPreviews[blockIndex]) {
@@ -448,79 +389,45 @@ export default function FormAddArticles({ setIsModalOpen }) {
                         />
                       </g>
                     </svg>
-                    <div className={styles.slider_container__uploadText}>
-                      Загрузить видеоролик
-                    </div>
+                    <div className={styles.slider_container__uploadText}>Загрузить видеоролик</div>
                   </label>
                   {dynamicPreviews[blockIndex] &&
                     dynamicPreviews[blockIndex][inputIndex] &&
-                    dynamicPreviews[blockIndex][inputIndex].map(
-                      (src, index) => (
-                        <div
-                          key={`${blockIndex}-${inputIndex}-${index}`}
-                          className={classNames.innerDiv}
-                        >
+                    dynamicPreviews[blockIndex][inputIndex].map((src, index) => (
+                      <div key={`${blockIndex}-${inputIndex}-${index}`} className={classNames.innerDiv}>
+                        <div className={styles.preview_photos_container_block_constructor}>
+                          <video
+                            key={index}
+                            src={src}
+                            muted
+                            loop
+                            autoPlay
+                            className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
+                          />
                           <div
-                            className={
-                              styles.preview_photos_container_block_constructor
-                            }
+                            className={styles.preview_photos_container_block_constructor__remove_icon}
+                            onClick={(e) => handleDeletePreview(e, blockIndex, inputIndex, index)}
                           >
-                            <video
-                              key={index}
-                              src={src}
-                              muted
-                              loop
-                              autoPlay
-                              className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
-                            />
-                            <div
-                              className={
-                                styles.preview_photos_container_block_constructor__remove_icon
-                              }
-                              onClick={(e) =>
-                                handleDeletePreview(
-                                  e,
-                                  blockIndex,
-                                  inputIndex,
-                                  index
-                                )
-                              }
-                            >
-                              <span></span>
-                            </div>
+                            <span></span>
                           </div>
                         </div>
-                      )
-                    )}
+                      </div>
+                    ))}
                 </div>
               ) : (
                 <>
                   <div key={inputIndex}>
-                    <div
-                      className={
-                        styles.form_container__checkbox_block_constructor
-                      }
-                    >
+                    <div className={styles.form_container__checkbox_block_constructor}>
                       <div>{labelText}</div>
                     </div>
-                    <label
-                      className={
-                        styles.slider_container__customFileUploadOrangeColor
-                      }
-                    >
+                    <label className={styles.slider_container__customFileUploadOrangeColor}>
                       <input
                         type="file"
                         onChange={(e) => {
                           const filesArray = Array.from(e.target.files);
-                          handleDynamicInputChange(
-                            blockIndex,
-                            inputIndex,
-                            filesArray
-                          );
+                          handleDynamicInputChange(blockIndex, inputIndex, filesArray);
 
-                          const previewsArray = filesArray.map((file) =>
-                            URL.createObjectURL(file)
-                          );
+                          const previewsArray = filesArray.map((file) => URL.createObjectURL(file));
                           setDynamicPreviews((prev) => {
                             const newPreviews = [...prev];
                             if (!newPreviews[blockIndex]) {
@@ -551,77 +458,48 @@ export default function FormAddArticles({ setIsModalOpen }) {
                           />
                         </g>
                       </svg>
-                      <div className={styles.slider_container__uploadText}>
-                        Загрузить изображения
-                      </div>
+                      <div className={styles.slider_container__uploadText}>Загрузить изображения</div>
                     </label>
                   </div>
-                  <div
-                    className={`${styles.previewContainer} ${classNames.outerDiv}`}
-                  >
+                  <div className={`${styles.previewContainer} ${classNames.outerDiv}`}>
                     {dynamicPreviews[blockIndex] &&
                       dynamicPreviews[blockIndex][inputIndex] &&
-                      dynamicPreviews[blockIndex][inputIndex].map(
-                        (src, index) => {
-                          return (
-                            <div
-                              key={`${blockIndex}-${inputIndex}-${index}`}
-                              className={classNames.innerDiv}
-                            >
+                      dynamicPreviews[blockIndex][inputIndex].map((src, index) => {
+                        return (
+                          <div key={`${blockIndex}-${inputIndex}-${index}`} className={classNames.innerDiv}>
+                            <div className={styles.preview_photos_container_block_constructor}>
+                              <img
+                                src={src}
+                                alt={`Preview ${index}`}
+                                className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
+                              />
                               <div
-                                className={
-                                  styles.preview_photos_container_block_constructor
-                                }
+                                className={styles.preview_photos_container_block_constructor__remove_icon}
+                                onClick={(e) => handleDeletePreview(e, blockIndex, inputIndex, index)}
                               >
-                                <img
-                                  src={src}
-                                  alt={`Preview ${index}`}
-                                  className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
-                                />
-                                <div
-                                  className={
-                                    styles.preview_photos_container_block_constructor__remove_icon
-                                  }
-                                  onClick={(e) =>
-                                    handleDeletePreview(
-                                      e,
-                                      blockIndex,
-                                      inputIndex,
-                                      index
-                                    )
-                                  }
-                                >
-                                  <span></span>
-                                </div>
+                                <span></span>
                               </div>
                             </div>
-                          );
-                        }
-                      )}
+                          </div>
+                        );
+                      })}
                   </div>
                 </>
               )}
             </>
           )}
-          {inputType === "videoLink" && (
+          {inputType === 'videoLink' && (
             <div className={styles.form_container__heading_block}>
               <input
                 type="url"
-                value={dynamicData[blockIndex][inputIndex].value || ""}
+                value={dynamicData[blockIndex][inputIndex].value || ''}
                 className={`${styles.form_container__heading_block_input} ${styles.orange_color}`}
                 placeholder={labelText}
                 onChange={(e) => {
-                  handleDynamicInputChange(
-                    blockIndex,
-                    inputIndex,
-                    e.target.value
-                  );
+                  handleDynamicInputChange(blockIndex, inputIndex, e.target.value);
                 }}
               />
-              <label
-                htmlFor="videoLink"
-                className={styles.form_container__heading_block_label}
-              >
+              <label htmlFor="videoLink" className={styles.form_container__heading_block_label}>
                 {labelText}
               </label>
               {/* {dynamicData[blockIndex][inputIndex].value && (
@@ -638,52 +516,49 @@ export default function FormAddArticles({ setIsModalOpen }) {
             )} */}
             </div>
           )}
-          {inputType === "textarea" && (
-            <div
-              key={inputIndex}
-              className={styles.form_container__description_text}
-            >
+          {inputType === 'textarea' && (
+            <div key={inputIndex} className={styles.form_container__description_text}>
               <div className={styles.form_container__textarea_length}></div>
               <ReactQuill
                 ref={(el) => {
                   if (el) {
                     const editor = el.getEditor();
                     const editorElement = editor.root;
-                    editorElement.style.fontSize = "16px";
-                    editorElement.style.fontFamily = "Raleway, sans-serif";
-                    editorElement.style.color = "var(--black-1D2E43)";
-                    editorElement.style.padding = "1rem";
-                    editorElement.style.borderRadius = "6px";
-                    editorElement.style.fontWeight = "var(--fw-400)";
-                    editorElement.style.lineHeight = "16px";
-                    editorElement.style.boxSizing = "border-box";
-                    editorElement.style.paddingBottom = "2.5rem";
-                    editorElement.style.whiteSpace = "pre-wrap";
+                    editorElement.style.fontSize = '16px';
+                    editorElement.style.fontFamily = 'Raleway, sans-serif';
+                    editorElement.style.color = 'var(--black-1D2E43)';
+                    editorElement.style.padding = '1rem';
+                    editorElement.style.borderRadius = '6px';
+                    editorElement.style.fontWeight = 'var(--fw-400)';
+                    editorElement.style.lineHeight = '16px';
+                    editorElement.style.boxSizing = 'border-box';
+                    editorElement.style.paddingBottom = '2.5rem';
+                    editorElement.style.whiteSpace = 'pre-wrap';
                   }
                 }}
                 modules={{
                   toolbar: [
-                    ["bold", "italic", "underline"],
-                    [{ list: "bullet" }, { list: "ordered" }],                   
+                    ['bold', 'italic', 'underline'],
+                    [{ list: 'bullet' }, { list: 'ordered' }],
                   ],
                   clipboard: {
                     matchVisual: false,
                   },
                 }}
                 style={{
-                  padding: "0rem",
-                  fontFamily: "var(--font-raleway)",
-                  borderRadius: "6px",
-                  fontSize: "16px",
-                  fontStyle: "normal",
-                  fontWeight: "var(--fw-400)",
-                  lineHeight: "16px",
-                  color: "var(---black-1D2E43)",
-                  boxSizing: "border-box",
-                  paddingBottom: "2.5rem",
-                  whiteSpace: "pre-wrap"
+                  padding: '0rem',
+                  fontFamily: 'var(--font-raleway)',
+                  borderRadius: '6px',
+                  fontSize: '16px',
+                  fontStyle: 'normal',
+                  fontWeight: 'var(--fw-400)',
+                  lineHeight: '16px',
+                  color: 'var(---black-1D2E43)',
+                  boxSizing: 'border-box',
+                  paddingBottom: '2.5rem',
+                  whiteSpace: 'pre-wrap',
                 }}
-                formats={["bold", "italic", "underline", "list"]}
+                formats={['bold', 'italic', 'underline', 'list']}
                 className={`${styles.form_container__textarea} ${styles.orange_color}`}
                 required
                 name={key}
@@ -694,10 +569,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
                 }}
                 placeholder={labelText}
               />
-              <label
-                htmlFor=""
-                className={styles.form_container__textarea_label_constructor}
-              >
+              <label htmlFor="" className={styles.form_container__textarea_label_constructor}>
                 {labelText}
               </label>
             </div>
@@ -705,30 +577,15 @@ export default function FormAddArticles({ setIsModalOpen }) {
         </div>
       );
     },
-    [
-      dynamicData,
-      dynamicPreviews,
-      getPreviewClassName,
-      handleDynamicInputChange,
-    ]
+    [dynamicData, dynamicPreviews, getPreviewClassName, handleDynamicInputChange]
   );
 
   const renderInputs = useCallback(
     (inputs, blockIndex) => {
       return (
         <div key={blockIndex} className={styles.blockContainer}>
-          {inputs.map((input, inputIndex) =>
-            renderInputWithLabel(
-              input.type,
-              input.label,
-              blockIndex,
-              inputIndex
-            )
-          )}
-          <div
-            className={styles.blockContainer__close_button}
-            onClick={() => handleRemoveBlock(blockIndex)}
-          ></div>
+          {inputs.map((input, inputIndex) => renderInputWithLabel(input.type, input.label, blockIndex, inputIndex))}
+          <div className={styles.blockContainer__close_button} onClick={() => handleRemoveBlock(blockIndex)}></div>
         </div>
       );
     },
@@ -755,9 +612,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
                 name="title"
                 id="title"
                 value={inputData.title}
-                onChange={(event) =>
-                  changeHandler(event, inputData, setInputData)
-                }
+                onChange={(event) => changeHandler(event, inputData, setInputData)}
                 // required
               />
               <label htmlFor="title" className={styles.form__label}>
@@ -775,9 +630,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
                 name="author"
                 id="author"
                 value={inputData.author}
-                onChange={(event) =>
-                  changeHandler(event, inputData, setInputData)
-                }
+                onChange={(event) => changeHandler(event, inputData, setInputData)}
               />
               <label htmlFor="author" className={styles.form__label}>
                 Автор статьи
@@ -794,9 +647,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
                 name="city"
                 id="city"
                 value={inputData.city}
-                onChange={(event) =>
-                  changeHandler(event, inputData, setInputData)
-                }
+                onChange={(event) => changeHandler(event, inputData, setInputData)}
               />
               <label htmlFor="city" className={styles.form__label}>
                 Издание, город
@@ -813,9 +664,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
                 name="dataMonthYear"
                 id="dataMonthYear"
                 value={inputData.dataMonthYear}
-                onChange={(event) =>
-                  changeHandler(event, inputData, setInputData)
-                }
+                onChange={(event) => changeHandler(event, inputData, setInputData)}
               />
               <label htmlFor="dataMonthYear" className={styles.form__label}>
                 Дата, месяц, год
@@ -828,11 +677,11 @@ export default function FormAddArticles({ setIsModalOpen }) {
               value={selectedCompetencies}
               onChange={setSelectedCompetencies}
               options={[
-                { value: "Выступления", label: "Выступления" },
-                { value: "Интервью", label: "Интервью" },
-                { value: "Новости", label: "Новости" },
-                { value: "Статьи", label: "Статьи" },
-                { value: "Научные публикации", label: "Научные публикации" },
+                { value: 'Выступления', label: 'Выступления' },
+                { value: 'Интервью', label: 'Интервью' },
+                { value: 'Новости', label: 'Новости' },
+                { value: 'Статьи', label: 'Статьи' },
+                { value: 'Научные публикации', label: 'Научные публикации' },
               ]}
               className={styles.form__field}
               placeholder="Выберите табы фильтрации"
@@ -845,9 +694,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
             />
           </div>
           {/* блок где загружаются 4 картинки, они отображаются в шапке слайдера  */}
-          <div
-            className={`${styles.slider_container} ${styles.flex_block_gap}`}
-          >
+          <div className={`${styles.slider_container} ${styles.flex_block_gap}`}>
             <div className={styles.form_container__checkbox_block}>
               <div>
                 Слайдер
@@ -882,13 +729,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
                   }
                   multiple
                 />
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 16 16"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <g id="Frame 4684">
                     <path
                       id="Vector"
@@ -900,22 +741,13 @@ export default function FormAddArticles({ setIsModalOpen }) {
                     />
                   </g>
                 </svg>
-                <div className={styles.slider_container__uploadTextForm}>
-                  Загрузить изображения
-                </div>
+                <div className={styles.slider_container__uploadTextForm}>Загрузить изображения</div>
               </label>
-              {isLoadingDropPhoto && (
-                <div className={styles.preview_photos_container__loading}>
-                  Загрузка . . .
-                </div>
-              )}
+              {isLoadingDropPhoto && <div className={styles.preview_photos_container__loading}>Загрузка . . .</div>}
             </div>
             <div className={styles.preview_photos_container}>
               {inputData.dropPhoto.map((preview, index) => (
-                <div
-                  key={index}
-                  className={styles.preview_photos_container__block}
-                >
+                <div key={index} className={styles.preview_photos_container__block}>
                   <img
                     className={styles.preview_photos_container__img}
                     src={URL.createObjectURL(preview)}
@@ -959,10 +791,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
                   )
                 }
               />
-              <label
-                htmlFor="titleTextBlock"
-                className={styles.form_container__heading_block_label}
-              >
+              <label htmlFor="titleTextBlock" className={styles.form_container__heading_block_label}>
                 Заголовок текстового блока
               </label>
               {/* <div className={styles.form_container__heading_block_input_length}>
@@ -978,29 +807,29 @@ export default function FormAddArticles({ setIsModalOpen }) {
                 ref={quillRef1}
                 modules={{
                   toolbar: [
-                    ["bold", "italic", "underline"],
-                    [{ list: "bullet" }, { list: "ordered" }],                   
+                    ['bold', 'italic', 'underline'],
+                    [{ list: 'bullet' }, { list: 'ordered' }],
                   ],
                   clipboard: {
                     matchVisual: false,
                   },
                 }}
-                formats={["bold", "italic", "underline", "list"]}
+                formats={['bold', 'italic', 'underline', 'list']}
                 className={styles.form_container__textarea}
                 style={{
                   // resize: "none",
-                  padding: "0rem",
-                  border: "1px solid var(--blue-75BBFD)",
-                  fontFamily: "var(--font-raleway)",
-                  borderRadius: "6px",
-                  fontSize: "16px",
-                  fontStyle: "normal",
-                  fontWeight: "var(--fw-400)",
-                  lineHeight: "16px",
-                  color: "var(---black-1D2E43)",
-                  boxSizing: "border-box",
-                  paddingBottom: "2.5rem",
-                  whiteSpace: "pre-wrap"
+                  padding: '0rem',
+                  border: '1px solid var(--blue-75BBFD)',
+                  fontFamily: 'var(--font-raleway)',
+                  borderRadius: '6px',
+                  fontSize: '16px',
+                  fontStyle: 'normal',
+                  fontWeight: 'var(--fw-400)',
+                  lineHeight: '16px',
+                  color: 'var(---black-1D2E43)',
+                  boxSizing: 'border-box',
+                  paddingBottom: '2.5rem',
+                  whiteSpace: 'pre-wrap',
                 }}
                 required
                 name="descriptionArticle"
@@ -1014,25 +843,20 @@ export default function FormAddArticles({ setIsModalOpen }) {
                 }}
                 placeholder="Нет ограничения по символам"
               />
-              <label
-                htmlFor=""
-                className={styles.form_container__textarea_label_constructor}
-              >
+              <label htmlFor="" className={styles.form_container__textarea_label_constructor}>
                 Текст статьи
               </label>
             </div>
           </div>
 
-          <div
-            className={`${styles.photo_orientation_selector} ${styles.flex_block_gap}`}
-          >
+          <div className={`${styles.photo_orientation_selector} ${styles.flex_block_gap}`}>
             <div className={styles.form_container__checkbox_block}>
               <div>
                 Фото автора статьи
                 {/* <span> для отображения на странице «Проекты»</span> */}
               </div>
             </div>
-            <div style={{ display: isPhotoAvaVisible ? "block" : "none" }}>
+            <div style={{ display: isPhotoAvaVisible ? 'block' : 'none' }}>
               <label className={styles.slider_container__customFileUpload}>
                 <input
                   type="file"
@@ -1057,13 +881,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
                     )
                   }
                 />
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 16 16"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <g id="Frame 4684">
                     <path
                       id="Vector"
@@ -1075,27 +893,14 @@ export default function FormAddArticles({ setIsModalOpen }) {
                     />
                   </g>
                 </svg>
-                <div className={styles.slider_container__uploadTextForm}>
-                  Загрузить изображения
-                </div>
+                <div className={styles.slider_container__uploadTextForm}>Загрузить изображения</div>
               </label>
-              {isLoading && (
-                <div className={styles.preview_photos_container__loading}>
-                  Загрузка . . .
-                </div>
-              )}
+              {isLoading && <div className={styles.preview_photos_container__loading}>Загрузка . . .</div>}
             </div>
             <div>
               {previewPhotoAva?.map((preview, index) => (
-                <div
-                  key={index}
-                  className={styles.preview_photos_container__block}
-                >
-                  <img
-                    className={styles.preview_photos_container__img}
-                    src={preview}
-                    alt={`Preview ${index}`}
-                  />
+                <div key={index} className={styles.preview_photos_container__block}>
+                  <img className={styles.preview_photos_container__img} src={preview} alt={`Preview ${index}`} />
                   <div
                     className={styles.preview_photos_container__remove_icon}
                     onClick={() => handleRemovePreviewPhotoAva(index)}
@@ -1106,15 +911,11 @@ export default function FormAddArticles({ setIsModalOpen }) {
               ))}
             </div>
           </div>
-          <div
-            className={`${styles.photo_orientation_selector} ${styles.flex_block_gap}`}
-          >
+          <div className={`${styles.photo_orientation_selector} ${styles.flex_block_gap}`}>
             <div className={styles.form_container__checkbox_block}>
               <div>Открывающая картинка</div>
             </div>
-            <div
-              style={{ display: isPhotoOpenVisible ? "inline-block" : "none" }}
-            >
+            <div style={{ display: isPhotoOpenVisible ? 'inline-block' : 'none' }}>
               <label className={styles.slider_container__customFileUpload}>
                 <input
                   type="file"
@@ -1138,15 +939,9 @@ export default function FormAddArticles({ setIsModalOpen }) {
                       setIsLoadingCloseImage
                     )
                   }
-                  style={{ display: isPhotoOpenVisible ? "block" : "none" }}
+                  style={{ display: isPhotoOpenVisible ? 'block' : 'none' }}
                 />
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 16 16"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <g id="Frame 4684">
                     <path
                       id="Vector"
@@ -1158,27 +953,14 @@ export default function FormAddArticles({ setIsModalOpen }) {
                     />
                   </g>
                 </svg>
-                <div className={styles.slider_container__uploadTextForm}>
-                  Загрузить изображения
-                </div>
+                <div className={styles.slider_container__uploadTextForm}>Загрузить изображения</div>
               </label>
-              {isLoadingOpenImage && (
-                <div className={styles.preview_photos_container__loading}>
-                  Загрузка . . .
-                </div>
-              )}
+              {isLoadingOpenImage && <div className={styles.preview_photos_container__loading}>Загрузка . . .</div>}
             </div>
             <div>
               {previewPhotoOpen?.map((preview, index) => (
-                <div
-                  key={index}
-                  className={styles.preview_photos_container__block}
-                >
-                  <img
-                    className={styles.preview_photos_container__img}
-                    src={preview}
-                    alt={`Preview ${index}`}
-                  />
+                <div key={index} className={styles.preview_photos_container__block}>
+                  <img className={styles.preview_photos_container__img} src={preview} alt={`Preview ${index}`} />
                   <div
                     className={styles.preview_photos_container__remove_icon}
                     onClick={() => handleRemovePreviewPhotoOpen(index)}
@@ -1195,29 +977,29 @@ export default function FormAddArticles({ setIsModalOpen }) {
                 ref={quillRef2}
                 modules={{
                   toolbar: [
-                    ["bold", "italic", "underline"],
-                    [{ list: "bullet" }, { list: "ordered" }],                   
+                    ['bold', 'italic', 'underline'],
+                    [{ list: 'bullet' }, { list: 'ordered' }],
                   ],
                   clipboard: {
                     matchVisual: false,
                   },
                 }}
-                formats={["bold", "italic", "underline", "list"]}
+                formats={['bold', 'italic', 'underline', 'list']}
                 className={styles.form_container__textarea}
                 style={{
                   // resize: "none",
-                  padding: "0rem",
-                  border: "1px solid var(--blue-75BBFD)",
-                  fontFamily: "var(--font-raleway)",
-                  borderRadius: "6px",
-                  fontSize: "16px",
-                  fontStyle: "normal",
-                  fontWeight: "var(--fw-400)",
-                  lineHeight: "16px",
-                  color: "var(---black-1D2E43)",
-                  boxSizing: "border-box",
-                  paddingBottom: "2.5rem",
-                  whiteSpace: "pre-wrap"
+                  padding: '0rem',
+                  border: '1px solid var(--blue-75BBFD)',
+                  fontFamily: 'var(--font-raleway)',
+                  borderRadius: '6px',
+                  fontSize: '16px',
+                  fontStyle: 'normal',
+                  fontWeight: 'var(--fw-400)',
+                  lineHeight: '16px',
+                  color: 'var(---black-1D2E43)',
+                  boxSizing: 'border-box',
+                  paddingBottom: '2.5rem',
+                  whiteSpace: 'pre-wrap',
                 }}
                 required
                 name="textBlock"
@@ -1231,10 +1013,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
                 }}
                 placeholder="Нет ограничения по символам"
               />
-              <label
-                htmlFor="textBlock"
-                className={styles.form_container__textarea_label}
-              >
+              <label htmlFor="textBlock" className={styles.form_container__textarea_label}>
                 Текстовый блок
               </label>
             </div>
@@ -1262,13 +1041,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
                       xmlns="http://www.w3.org/2000/svg"
                     >
                       <g id="icon">
-                        <circle
-                          id="Ellipse 4"
-                          cx="20.5"
-                          cy="20"
-                          r="20"
-                          fill="#FF7F6A"
-                        />
+                        <circle id="Ellipse 4" cx="20.5" cy="20" r="20" fill="#FF7F6A" />
                         <path
                           id="Vector 10"
                           d="M10.5 20H20.5M30.5 20H20.5M20.5 20V10M20.5 20V30"
@@ -1279,9 +1052,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
                       </g>
                     </svg>
                   </button>
-                  <div className={styles.constructor_container__text}>
-                    Добавить блок из библиотеки
-                  </div>
+                  <div className={styles.constructor_container__text}>Добавить блок из библиотеки</div>
                 </div>
               ) : (
                 <ConstructorPage handleClick={handleClick} />
@@ -1289,13 +1060,11 @@ export default function FormAddArticles({ setIsModalOpen }) {
             </div>
           </div>
 
-          <div
-            className={`${styles.imageClose_block} ${styles.flex_block_gap}`}
-          >
+          <div className={`${styles.imageClose_block} ${styles.flex_block_gap}`}>
             <div className={styles.form_container__checkbox_block}>
               <div>Закрывающая картинка</div>
             </div>
-            <div style={{ display: isPhotoCloseVisible ? "block" : "none" }}>
+            <div style={{ display: isPhotoCloseVisible ? 'block' : 'none' }}>
               <label className={styles.slider_container__customFileUpload}>
                 <input
                   type="file"
@@ -1320,13 +1089,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
                     )
                   }
                 />
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 16 16"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <g id="Frame 4684">
                     <path
                       id="Vector"
@@ -1338,27 +1101,14 @@ export default function FormAddArticles({ setIsModalOpen }) {
                     />
                   </g>
                 </svg>
-                <div className={styles.slider_container__uploadTextForm}>
-                  Загрузить изображения
-                </div>
+                <div className={styles.slider_container__uploadTextForm}>Загрузить изображения</div>
               </label>
-              {isLoadingCloseImage && (
-                <div className={styles.preview_photos_container__loading}>
-                  Загрузка . . .
-                </div>
-              )}
+              {isLoadingCloseImage && <div className={styles.preview_photos_container__loading}>Загрузка . . .</div>}
             </div>
             <div>
               {previewPhotoClose?.map((preview, index) => (
-                <div
-                  key={index}
-                  className={styles.preview_photos_container__block}
-                >
-                  <img
-                    className={styles.preview_photos_container__img}
-                    src={preview}
-                    alt={`Preview ${index}`}
-                  />
+                <div key={index} className={styles.preview_photos_container__block}>
+                  <img className={styles.preview_photos_container__img} src={preview} alt={`Preview ${index}`} />
                   <div
                     className={styles.preview_photos_container__remove_icon}
                     onClick={() => handleRemovePreviewPhotoClose(index)}
@@ -1377,11 +1127,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
               // disabled={!areAllFieldsFilled()}
             ></button>
 
-            <button
-              className={styles.form_container__button_cancel}
-              type="submit"
-              onClick={closeModal}
-            ></button>
+            <button className={styles.form_container__button_cancel} type="submit" onClick={closeModal}></button>
           </div>
         </form>
       </div>

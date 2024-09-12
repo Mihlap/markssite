@@ -1,12 +1,12 @@
-import { useRef, useState } from "react";
-import { Link } from "react-router-dom";
-import { Swiper, SwiperSlide } from "swiper/react";
-import SwipeCore, { Navigation, Pagination, Autoplay } from "swiper";
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/pagination";
-import SliderItemProject from "../../Header/Swiper-project/SliderItemProject";
-import "./SliderContainerProjectCard.css";
+import { useRef, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import SwipeCore, { Navigation, Pagination, Autoplay } from 'swiper';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import SliderItemProject from '../../Header/Swiper-project/SliderItemProject';
+import './SliderContainerProjectCard.css';
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 
@@ -17,11 +17,11 @@ const SliderContainerProjectCard = ({ projects }) => {
   SwipeCore.use([Navigation, Pagination, Autoplay]);
 
   const colors = {
-    Архитектура: "#FF7F6A",
-    BIM: "#75BBFD",
-    Конструкции: "#566272",
-    Дизайн: "#FAA8BD",
-    Инженерия: "#90B734",
+    Архитектура: '#FF7F6A',
+    BIM: '#75BBFD',
+    Конструкции: '#566272',
+    Дизайн: '#FAA8BD',
+    Инженерия: '#90B734',
   };
 
   const handlePageClick = (index) => {
@@ -30,16 +30,15 @@ const SliderContainerProjectCard = ({ projects }) => {
       swiperRef.current.slideTo(index);
     }
   };
-  
 
   return (
     <div className="swiper_container_ProjectCard">
       <Swiper
-     loop={false}
-     slidesPerView={1.1}
-     spaceBetween={-2}
-     centeredSlides={true}
-    touch="true"
+        loop={false}
+        slidesPerView={1.1}
+        spaceBetween={-2}
+        centeredSlides={true}
+        touch="true"
         className="swiper_container_project_ProjectCard"
         onSlideChange={(swiper) => setCurrentIndex(swiper.realIndex)}
         onSwiper={(swiper) => {
@@ -50,80 +49,79 @@ const SliderContainerProjectCard = ({ projects }) => {
       >
         <div className="swiper_wrapper_ProjectCard">
           {projects?.map((project) => {
-              if (project) {
+            if (project) {
               return (
                 <SwiperSlide className="swiper_container_item" key={project.id}>
                   <Link key={project.id} to={`/projects/${project.id}`}>
-                  <SliderItemProject
-                   className="swiper_item_image"
-                    title={project.title}
-                    src={`${Host}/images/imageAdd/${
-                      project.imageProject ? project.imageProject : project.imageTitle
-                    }`}
-                    text={project.text}
-                    id={project.link}
-                    selectCompetencies={(() => {
-                      try {
-                        const selectCompetencies = project.selectCompetencies;
-                    
-                        if (Array.isArray(selectCompetencies)) {
-                          // ... (то же, что и в предыдущем коде)
-                        } else if (typeof project.selectCompetencies === "string") {
-                          // Если строка с одним значением и без запятых, отобразить компетенцию
-                          if (!project.selectCompetencies.includes(",")) {
-                            const label = project.selectCompetencies.trim();
-                            return (
-                              <div
-                                key={label}
-                                className="div_el_selectCompetencies_ProjectCard"
-                                style={{
-                                  color: colors[label],
-                                  borderColor: colors[label],
-                                  border: "0.5px solid",
-                                  padding: "3px 6px",
-                                  borderRadius: "34px",
-                                }}
-                              >
-                                {label}
-                              </div>
-                            );
-                          } else {
-                            // Строка с несколькими значениями, разделенными запятыми
-                            return project.selectCompetencies.split(",").map((value) => {
-                              const label = value.trim();
+                    <SliderItemProject
+                      className="swiper_item_image"
+                      title={project.title}
+                      src={`${Host}/images/imageAdd/${
+                        project.imageProject ? project.imageProject : project.imageTitle
+                      }`}
+                      text={project.text}
+                      id={project.link}
+                      selectCompetencies={(() => {
+                        try {
+                          const selectCompetencies = project.selectCompetencies;
+
+                          if (Array.isArray(selectCompetencies)) {
+                            // ... (то же, что и в предыдущем коде)
+                          } else if (typeof project.selectCompetencies === 'string') {
+                            // Если строка с одним значением и без запятых, отобразить компетенцию
+                            if (!project.selectCompetencies.includes(',')) {
+                              const label = project.selectCompetencies.trim();
                               return (
                                 <div
-                                  key={value}
+                                  key={label}
                                   className="div_el_selectCompetencies_ProjectCard"
                                   style={{
-                                    color: colors[value],
-                                    borderColor: colors[value],
-                                    border: "0.5px solid",
-                                    padding: "3px 6px",
-                                    borderRadius: "34px",
+                                    color: colors[label],
+                                    borderColor: colors[label],
+                                    border: '0.5px solid',
+                                    padding: '3px 6px',
+                                    borderRadius: '34px',
                                   }}
                                 >
                                   {label}
                                 </div>
                               );
-                            });
+                            } else {
+                              // Строка с несколькими значениями, разделенными запятыми
+                              return project.selectCompetencies.split(',').map((value) => {
+                                const label = value.trim();
+                                return (
+                                  <div
+                                    key={value}
+                                    className="div_el_selectCompetencies_ProjectCard"
+                                    style={{
+                                      color: colors[value],
+                                      borderColor: colors[value],
+                                      border: '0.5px solid',
+                                      padding: '3px 6px',
+                                      borderRadius: '34px',
+                                    }}
+                                  >
+                                    {label}
+                                  </div>
+                                );
+                              });
+                            }
                           }
+                        } catch (error) {
+                          return null;
                         }
-                      } catch (error) {
-                        return null;
-                      }
-                    })()}
-                    
-                    countryCity={project.countryCity}
-                    monthYear={project.monthYear}
-                  />
-                </Link>
+                      })()}
+                      countryCity={project.countryCity}
+                      monthYear={project.monthYear}
+                    />
+                  </Link>
                 </SwiperSlide>
               );
             } else {
-              return null; 
+              return null;
             }
-            })}
+          })}
         </div>
       </Swiper>
       {/* <div className="swiper_pagination_ProjectCard">

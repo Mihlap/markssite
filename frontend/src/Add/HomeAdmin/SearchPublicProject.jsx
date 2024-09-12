@@ -1,13 +1,13 @@
-import React, { useEffect } from "react";
-import styles from "./HomeAdmin.module.scss";
-import { useDispatch } from "react-redux";
+import React, { useEffect } from 'react';
+import styles from './HomeAdmin.module.scss';
+import { useDispatch } from 'react-redux';
 import {
   deleteProject,
   searchProgectMainPostzapros,
   updateProjectOrderReplacement,
   updateProjectOrderSuccess,
-} from "../../store/Slice/searchProjectMainSlice";
-import DraggableProject from "./DraggableProject";
+} from '../../store/Slice/searchProjectMainSlice';
+import DraggableProject from './DraggableProject';
 
 export default function SearchPublicProject({
   projects,
@@ -37,34 +37,30 @@ export default function SearchPublicProject({
     setSearchId(event.target.value);
 
     // Устанавливаем состояние дизейблинга кнопки в зависимости от того, пустое ли поле ввода
-    setIsButtonDisabled(event.target.value === "");
+    setIsButtonDisabled(event.target.value === '');
   };
 
   const handleKeyPress = (event) => {
     // Проверяем, является ли нажатая клавиша клавишей "Enter" (код клавиши 13)
-    if (event.key === "Enter") {
+    if (event.key === 'Enter') {
       filterProjectsById(); // Выполняем поиск
     }
   };
   // Функция для фильтрации проектов по введенному id
   const filterProjectsById = async () => {
-    const filteredProject = projects.find(
-      (project) => project.id === parseInt(searchId, 10)
-    );
+    const filteredProject = projects.find((project) => project.id === parseInt(searchId, 10));
     if (filteredProject) {
       try {
-        await dispatch(
-          searchProgectMainPostzapros(filteredProject, setSearchId, setSavedId)
-        );
+        await dispatch(searchProgectMainPostzapros(filteredProject, setSearchId, setSavedId));
 
-        showMessage("Проект добавлен", "ok");
+        showMessage('Проект добавлен', 'ok');
       } catch (error) {
-        console.error("Ошибка при сохранении проекта:", error);
-        showMessage("Ошибка при сохранении проекта:", "error");
+        console.error('Ошибка при сохранении проекта:', error);
+        showMessage('Ошибка при сохранении проекта:', 'error');
       }
     } else {
       // console.log("Проект с таким id не найден");
-      showMessage("Проект с таким id не найден", "error");
+      showMessage('Проект с таким id не найден', 'error');
     }
   };
 
@@ -97,22 +93,22 @@ export default function SearchPublicProject({
     // Вызываем действие для обновления порядка элементов
     dispatch(updateProjectOrder(updatedProjects));
 
-    showMessage("Проект перемещен", "replacement");
+    showMessage('Проект перемещен', 'replacement');
     // И тут же сохраняем новый порядок в базу данных
     dispatch(updateProjectOrderReplacement(updatedProjects));
   };
 
   const showMessage = (message, type) => {
     switch (type) {
-      case "error":
+      case 'error':
         setErrorMessage(message);
         setShowError(true);
         break;
-      case "ok":
+      case 'ok':
         setOkMessage(message);
         setShowOk(true);
         break;
-      case "replacement":
+      case 'replacement':
         setReplacementMessage(message);
         setReplacement(true);
         break;
@@ -123,13 +119,7 @@ export default function SearchPublicProject({
 
   const Message = ({ message, type }) => {
     return (
-      <div
-        className={
-          type === "error"
-            ? styles.home_admin_section__error
-            : styles.home_admin_section__ok
-        }
-      >
+      <div className={type === 'error' ? styles.home_admin_section__error : styles.home_admin_section__ok}>
         {message}
       </div>
     );
@@ -158,7 +148,7 @@ export default function SearchPublicProject({
             id="idshnik"
             value={savedId !== null ? savedId : searchId}
             onChange={handleSearchChange}
-            onKeyDown={handleKeyPress} 
+            onKeyDown={handleKeyPress}
             required
             autoComplete="off"
           />
@@ -173,15 +163,9 @@ export default function SearchPublicProject({
             disabled={isButtonDisabled}
           />
         </div>
-        <div>
-          {showError && <Message message={errorMessage} type="error" />}
-        </div>
+        <div>{showError && <Message message={errorMessage} type="error" />}</div>
         <div>{showOk && <Message message={okMessage} type="ok" />}</div>
-        <div>
-          {replacement && (
-            <Message message={replacementMessage} type="replacement" />
-          )}
-        </div>
+        <div>{replacement && <Message message={replacementMessage} type="replacement" />}</div>
       </div>
     </div>
   );

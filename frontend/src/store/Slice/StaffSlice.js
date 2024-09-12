@@ -1,11 +1,11 @@
-import { createSlice } from "@reduxjs/toolkit";
-import axios from "axios";
+import { createSlice } from '@reduxjs/toolkit';
+import axios from 'axios';
 
-const DEFAULT_CATEGORY = "Руководство";
+const DEFAULT_CATEGORY = 'Руководство';
 const host = process.env.REACT_APP_SERVER_HOST;
 
 const staffSlice = createSlice({
-  name: "staff",
+  name: 'staff',
   initialState: {
     category: DEFAULT_CATEGORY,
     selectedCardId: null,
@@ -50,23 +50,15 @@ const staffSlice = createSlice({
     },
     imageLoadSuccess(state, action) {
       const { staffId } = action.payload;
-      state.staff = state.staff.map((staff) =>
-        staff.id === staffId ? { ...staff, imgLoaded: true } : staff
-      );
+      state.staff = state.staff.map((staff) => (staff.id === staffId ? { ...staff, imgLoaded: true } : staff));
       const allImagesLoaded = state.staff.every((staff) => staff.imgLoaded);
-      state.allImagesLoaded = allImagesLoaded; 
+      state.allImagesLoaded = allImagesLoaded;
     },
   },
 });
 
-export const {
-  fetchStaffStart,
-  fetchStaffSuccess,
-  fetchStaffFailure,
-  selectCard,
-  setCategory,
-  imageLoadSuccess,
-} = staffSlice.actions;
+export const { fetchStaffStart, fetchStaffSuccess, fetchStaffFailure, selectCard, setCategory, imageLoadSuccess } =
+  staffSlice.actions;
 
 export const fetchCategoryStaff = (category) => async (dispatch) => {
   dispatch(fetchStaffStart());
@@ -80,7 +72,7 @@ export const fetchCategoryStaff = (category) => async (dispatch) => {
     filteredData.forEach((staff) => {
       const { id, img } = staff;
       const image = new Image();
-      image.src = `${host}/images/imageStuff/${img}`; 
+      image.src = `${host}/images/imageStuff/${img}`;
       image.onload = () => dispatch(imageLoadSuccess({ staffId: id }));
     });
 
@@ -95,7 +87,4 @@ export const fetchCategoryStaff = (category) => async (dispatch) => {
   }
 };
 
-
 export default staffSlice.reducer;
-
-

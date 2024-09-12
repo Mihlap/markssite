@@ -1,6 +1,5 @@
 @import '../App.css';
 
-
 .footer_container {
   display: flex;
   justify-content: space-between;
@@ -75,9 +74,7 @@
 
 .address:hover {
   color: var(--salmon-light-FFBFB5);
-
 }
-
 
 .footer_block_right {
   display: flex;
@@ -149,13 +146,10 @@
   padding-right: 20px;
 }
 
-
-
 /* Стили для планшетной версии сайта блока Footer начинаются тут */
 @media screen and (min-width: 700px) and (max-width: 1024px) {
   .footer_container {
     min-width: 0px;
-
   }
 
   .mail_link:hover,
@@ -171,7 +165,6 @@
     color: var(--light-gray-C0C5CB);
     transition: none;
   }
-
 }
 
 /* Стили для мобильной версии сайта блока Footer начинаются тут */
@@ -209,7 +202,6 @@
     align-items: normal;
   }
 
-
   .job {
     display: flex;
     justify-content: flex-end;
@@ -235,5 +227,4 @@
     color: var(--light-gray-C0C5CB);
     transition: none;
   }
-
 }

@@ -8,7 +8,8 @@ const ButtonLink = ({ text, to, section, currentStyles }) => {
     <>
       <Link
         to={to}
-        className={`${styles.ButtonLink} ${currentStyles && section ? currentStyles[`${section}__button`] : ''}`}>
+        className={`${styles.ButtonLink} ${currentStyles && section ? currentStyles[`${section}__button`] : ''}`}
+      >
         {text}
       </Link>
     </>

@@ -1,7 +1,7 @@
-import React, { useRef, useState, useEffect } from "react";
-import Slider from "react-slick";
-import catPhoto from "../../img/default-photo.jpeg";
-import ".././Company_Slider/Company_Slider.css";
+import React, { useRef, useState, useEffect } from 'react';
+import Slider from 'react-slick';
+import catPhoto from '../../img/default-photo.jpeg';
+import '.././Company_Slider/Company_Slider.css';
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 
@@ -13,9 +13,7 @@ const ProjectCardSlider = ({ slidesCard }) => {
     slidesCard && slidesCard.length > 0
       ? slidesCard.flatMap((slide) => {
           if (!slide.imageTitle) return catPhoto;
-          return slide.imageTitle
-            .split(",")
-            .map((el) => `${Host}/images/imageAdd/${el.trim()}`);
+          return slide.imageTitle.split(',').map((el) => `${Host}/images/imageAdd/${el.trim()}`);
         })
       : [];
 
@@ -47,9 +45,9 @@ const ProjectCardSlider = ({ slidesCard }) => {
   };
 
   const handleSwipe = (direction) => {
-    if (direction === "left" && activeButtonIndex < slidesCard.length - 1) {
+    if (direction === 'left' && activeButtonIndex < slidesCard.length - 1) {
       handleButtonClick(activeButtonIndex + 1);
-    } else if (direction === "right" && activeButtonIndex > 0) {
+    } else if (direction === 'right' && activeButtonIndex > 0) {
       handleButtonClick(activeButtonIndex - 1);
     }
   };
@@ -64,11 +62,7 @@ const ProjectCardSlider = ({ slidesCard }) => {
       <div className="company-slider-container">
         {imagePaths?.map((path, index) => (
           <div key={index} className="company-slider-slide">
-            <img
-              className="company-slider-slide-img"
-              src={path}
-              alt={`Slide ${index + 1}`}
-            />
+            <img className="company-slider-slide-img" src={path} alt={`Slide ${index + 1}`} />
           </div>
         ))}
       </div>
@@ -90,11 +84,7 @@ const ProjectCardSlider = ({ slidesCard }) => {
       >
         {imagePaths?.map((path, index) => (
           <div key={index} className="company-slider-slide">
-            <img
-              className="company-slider-slide-img"
-              src={path}
-              alt={`Slide ${index + 1}`}
-            />
+            <img className="company-slider-slide-img" src={path} alt={`Slide ${index + 1}`} />
           </div>
         ))}
       </Slider>
@@ -103,12 +93,10 @@ const ProjectCardSlider = ({ slidesCard }) => {
           {imagePaths?.map((__, index) => (
             <button
               key={index}
-              className={`button_slider ${
-                activeButtonIndex === index ? "active" : ""
-              }`}
+              className={`button_slider ${activeButtonIndex === index ? 'active' : ''}`}
               onClick={() => handleButtonClick(index)}
             >
-              {String(index + 1).padStart(2, "0")}
+              {String(index + 1).padStart(2, '0')}
             </button>
           ))}
           <div className="underline" style={{ width: `${lineWidth}%` }}></div>

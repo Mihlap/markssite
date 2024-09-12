@@ -1,11 +1,9 @@
-import React from 'react'
-import styles from './Basket.module.scss'
+import React from 'react';
+import styles from './Basket.module.scss';
 
 export default function Basket() {
   return (
-    <button
-      className={styles.buttom_del}
-    >
+    <button className={styles.buttom_del}>
       <label htmlFor="delete" className={styles.label}>
         <div className={`${styles.wrapper}`}>
           <div className={`${styles.lid}`}></div>
