@@ -31,5 +31,5 @@ module.exports = (sequelize, DataTypes) => {
       modelName: 'VacancyMainEvent',
     },
   );
-  return Event;
+  return VacancyMainEvent;
 };
