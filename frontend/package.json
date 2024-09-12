@@ -41,7 +41,6 @@
     "react-slick": "^0.29.0",
     "redux": "^4.2.1",
     "reselect": "^4.1.8",
-    "sass": "1.62.0",
     "slick-carousel": "^1.8.1",
     "swiper": "^9.4.1",
     "three": "^0.164.1",
@@ -82,6 +81,8 @@
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "react-app-rewired": "^2.2.1",
     "react-scripts": "^5.0.1",
+    "sass": "^1.78.0",
+    "sass-loader": "^16.0.1",
     "webpack-obfuscator": "^3.5.1"
   }
 }
