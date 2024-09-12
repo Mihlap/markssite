@@ -1,32 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Event from './Event';
-import {
-  fetchSlides,
-  updateSlidesOrderLocally,
-  updateSlidesOrder
-} from '../../../store/Slice/vacancyMainSlideCardSlice';
 import styles from '../../style/style-card.module.scss';
+import { fetchEvents, updateEventsOrder, updateEventsOrderLocally } from '../../../store/Slice/vacancyEventSlice';
 
 export default function EventsList({
   user,
-  deleteModalState,
-  handleDeleteModalClose,
-  handleDeleteModalOpen,
+  deleteModalStateEvent,
+  handleDeleteModalCloseEvent,
+  handleDeleteModalOpenEvent,
   handleEditClick,
-  handleFormDelete,
+  handleFormDeleteEvent,
   handleLookClick
 }) {
   const dispatch = useDispatch();
-  const slides = useSelector((state) => state.formAddSlide.slides || []);
+  const events = useSelector((state) => state.formAddEvent.events || []);
   const [draggedItem, setDraggedItem] = useState(null);
 
   useEffect(() => {
-    dispatch(fetchSlides());
+    dispatch(fetchEvents());
   }, [dispatch]);
 
   const handleDragStart = (e, index) => {
-    setDraggedItem(slides[index]);
+    setDraggedItem(events[index]);
     e.dataTransfer.effectAllowed = 'move';
   };
 
@@ -39,25 +35,25 @@ export default function EventsList({
 
     if (!draggedItem) return;
 
-    const draggedIndex = slides.findIndex((slide) => slide.id === draggedItem.id);
+    const draggedIndex = events.findIndex((event) => event.id === draggedItem.id);
     if (draggedIndex === index) return;
 
-    const updatedSlides = [...slides];
-    const [removed] = updatedSlides.splice(draggedIndex, 1);
-    updatedSlides.splice(index, 0, removed);
+    const updatedEvents = [...events];
+    const [removed] = updatedEvents.splice(draggedIndex, 1);
+    updatedEvents.splice(index, 0, removed);
 
-    dispatch(updateSlidesOrderLocally(updatedSlides));
+    dispatch(updateEventsOrderLocally(updatedEvents));
 
-    const slidesWithOrder = updatedSlides.map((slide, idx) => ({ id: slide.id, order: idx }));
-    dispatch(updateSlidesOrder(slidesWithOrder));
+    const eventsWithOrder = updatedEvents.map((event, idx) => ({ id: event.id, order: idx }));
+    dispatch(updateEventsOrder(eventsWithOrder));
     setDraggedItem(null);
   };
 
   return (
     <div className={styles.card_components_admin__block__vacancy}>
-      {slides.map((el, index) => (
+      {events.map((el, index) => (
         <Event
-          key={el.id}
+          key={`${el.id}-${index}`}
           el={el}
           index={index}
           handleDragStart={handleDragStart}
@@ -65,10 +61,10 @@ export default function EventsList({
           handleDrop={handleDrop}
           handleLookClick={handleLookClick}
           handleEditClick={handleEditClick}
-          handleDeleteModalOpen={handleDeleteModalOpen}
-          deleteModalState={deleteModalState}
-          handleDeleteModalClose={handleDeleteModalClose}
-          handleFormDelete={handleFormDelete}
+          handleDeleteModalOpenEvent={handleDeleteModalOpenEvent}
+          deleteModalStateEvent={deleteModalStateEvent}
+          handleDeleteModalCloseEvent={handleDeleteModalCloseEvent}
+          handleFormDeleteEvent={handleFormDeleteEvent}
           user={user}
         />
       ))}

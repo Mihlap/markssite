@@ -113,9 +113,9 @@ export const toggleEventVisibility = createAsyncThunk(
       const response = await axios.put(`${serverHost}/api-events/toggle-event/${id}`, { hidden });
     if (response.status === 200) {
       dispatch(updateEventVisibility({ id, hidden }));
-      dispatch(fetchEvents());
-      }
+      // dispatch(fetchEvents());
       return response.data;
+      }
     } catch (error) {
       console.error('Ошибка при переключении видимости мероприятия:', error);
       return rejectWithValue('Ошибка при переключении видимости мероприятия: ' + error.message);
@@ -153,7 +153,7 @@ const formAddEventSlice = createSlice({
       const index = state.events.findIndex((event) => event.id === action.payload.id);
         if (index !== -1) {
           state.events[index].hidden = action.payload.hidden;
-          state.events = [...state.events];
+          // state.events = [...state.events];
         }
     },
     updateEventsOrderLocally(state, action) { 
@@ -166,8 +166,8 @@ const formAddEventSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(fetchEvents.fulfilled, (state, action) => {
-        state.isLoading = false;
         state.events = action.payload;
+        state.isLoading = false;
       })
       .addCase(fetchEvents.rejected, (state, action) => {
         state.isLoading = false;

@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import compressImageFile from 'browser-image-compression';
 import styles from './FormAddEvent.module.scss';
 import { removePreviewPhotoAva } from '../../add-project/formAdd/utils/formHelpers';
-import { postVacancyData, resetSlidesState }  from '../../../store/Slice/vacancyMainSlideCardSlice';
+import { postEventData, resetEventsState } from '../../../store/Slice/vacancyEventSlice';
 
 export default function FormAddEvent({ setIsModalOpenEvent }) {
   const dispatch = useDispatch(); 
@@ -17,19 +17,15 @@ export default function FormAddEvent({ setIsModalOpenEvent }) {
     title: "",
     files: "",
     eventData: "",
-    hidden: "",
-    order: ""
-  });
+   });
 
   const validateForm = useCallback(() => {
     const isValid =
       inputData.title &&
       inputData.files &&      
-      inputData.eventData &&
-      inputData.hidden &&
-      inputData.order;
-
-    return isValid;
+      inputData.eventData
+   
+      return isValid;
   }, [inputData]);
 
   useEffect(() => {
@@ -82,7 +78,8 @@ export default function FormAddEvent({ setIsModalOpenEvent }) {
   const handleDescriptionChange = (cardKey, value) => {
     if (value.length <= 150) {
       setInputData((prevData) => ({
-        ...prevData,  
+        ...prevData,
+        eventData: value,  
       }));
     }
     if (isSubmitted) {
@@ -107,9 +104,7 @@ export default function FormAddEvent({ setIsModalOpenEvent }) {
       title: "",
       files: "",
       eventData: "",
-      hidden: "",
-      order: ""
-    });
+     });
     setPreviewPhotoAva([]);
     setIsModalOpenEvent(false);
   }, [setIsModalOpenEvent]);
@@ -129,17 +124,18 @@ export default function FormAddEvent({ setIsModalOpenEvent }) {
       }
   
       const formData = new FormData();
+      formData.append('title', inputData.title);
       formData.append('details', JSON.stringify({
-        inputData: inputData.eventData,     
+        eventData: inputData.eventData,     
       }));
   
       if (inputData.files && inputData.files.length > 0) {
-        formData.append('files', inputData.files);
+        formData.append('files', inputData.files[0]);
       }
 
        try {
-        await dispatch(postVacancyData(formData)).unwrap();
-        dispatch(resetSlidesState());       
+        await dispatch(postEventData(formData)).unwrap();
+        dispatch(resetEventsState());       
         setInputData({
           title: "",
           files: "",
@@ -174,6 +170,29 @@ export default function FormAddEvent({ setIsModalOpenEvent }) {
       <div className={styles.form_container__title}>Новое мероприятие</div>
       <div className={styles.form_container__block_form}>
         <form className={styles.form_container__form} onSubmit={submitHandler}>
+        <div className={styles.form_container__block_gray_one}>
+           <div className={`${styles.form__group} ${styles.field}`}>
+              <input
+                type="input"
+                className={styles.form__field}
+                placeholder="title"
+                name="title"
+                id="title"
+                value={inputData.title}
+                onChange={(event) => {
+                  const { name, value } = event.target;
+                  setInputData((prevFormData) => ({
+                    ...prevFormData,
+                    [name]: value,
+                  }));
+                }}
+                required
+              />
+              <label htmlFor="title" className={styles.form__label}>
+                Название мероприятия
+              </label>
+            </div>
+            </div>
            <div className={styles.form_container__block_gray_one}>
             <div className={styles.form_container__description_text}>
               <div className={styles.form_container__textarea_length}>
@@ -239,30 +258,8 @@ export default function FormAddEvent({ setIsModalOpenEvent }) {
                 </div>
               ))}
             </div>
-          </div>
-    
-          {/* <div className={styles.form_container__block_gray_one}>
-            <div className={styles.form_container__description_text}>
-              <div className={styles.form_container__textarea_length}>
-                {`${inputData.card2.description.length}/150`}
-              </div>
-              <textarea
-                className={styles.form_container__textarea}
-                autoComplete="off"
-                required
-                name="descriptionCard2"
-                id="descriptionCard2"
-                cols="30"
-                rows="10"
-                placeholder="Не более 150 символов"
-                value={inputData.card2.description}
-                onChange={(e) => handleDescriptionChange('card2', e.target.value)}
-              ></textarea>
-              <label htmlFor="descriptionCard2" className={styles.form_container__textarea_label_constructor}>
-                Название конкурса
-              </label>
-            </div>
-          </div>           */}
+          </div>    
+       
           <div className={styles.form_container__button_block}>
             <button className={styles.form_container__button_save} type="submit"></button>
             <button className={styles.form_container__button_cancel} type="submit" onClick={closeModal}></button>
