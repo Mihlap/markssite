@@ -1,138 +1,136 @@
 @import '../../App.css';
 
-
 .Applications {
-    height: 100vh;
-    padding-left: 20%;
-    padding-top: 7.5rem;
+  height: 100vh;
+  padding-left: 20%;
+  padding-top: 7.5rem;
 
-    &__container {
-        display: flex;
-        flex-direction: column;
-        gap: 2rem;
+  &__container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  &__title {
+    font-family: var(--font-unbounded);
+    font-size: 2rem;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 2.5rem;
+  }
+
+  &__hide_block {
+    display: flex;
+    text-align: center;
+    gap: 10px;
+    margin-top: 10px;
+  }
+
+  &__hide_text {
+    color: var(--gray-959DA6);
+    font-variant-numeric: lining-nums proportional-nums;
+    font-family: var(--font-raleway);
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 20px;
+  }
+
+  &__status_block {
+    display: flex;
+    gap: 4px;
+  }
+
+  &__status {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: linear-gradient(to right, #dee6ed, #90b734, #93b543);
+    background-size: 200% 200%;
+    animation: gradient 5s ease infinite;
+
+    @keyframes gradient {
+      0% {
+        background-position: 0% 50%;
+      }
+
+      50% {
+        background-position: 100% 50%;
+      }
+
+      100% {
+        background-position: 0% 50%;
+      }
     }
+  }
 
-    &__title {
-        font-family: var(--font-unbounded);
-        font-size: 2rem;
-        font-style: normal;
-        font-weight: 300;
-        line-height: 2.5rem;
+  &__list_text {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  &__item_text {
+    font-family: var(--font-raleway);
+    color: var(--black-1D2E43);
+  }
+
+  &__delete_btn {
+    display: inline-flex;
+    padding: 3px;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    border: none;
+    border-radius: 4px;
+    color: var(--white-F6F6F6);
+    background-color: var(--crimson-light-F39CB5);
+    transition: all 0.3s ease-in-out;
+    margin-left: 10px;
+
+    &:hover {
+      background-color: #e37091;
     }
-
-    &__hide_block {
-        display: flex;
-        text-align: center;
-        gap: 10px;
-        margin-top: 10px;
-    }
-
-    &__hide_text {
-        color: var(--gray-959DA6);
-        font-variant-numeric: lining-nums proportional-nums;
-        font-family: var(--font-raleway);
-        font-size: 14px;
-        font-style: normal;
-        font-weight: 400;
-        line-height: 20px;
-    }
-
-    &__status_block {
-        display: flex;
-        gap: 4px;
-    }
-
-    &__status {
-        width: 4px;
-        height: 4px;
-        border-radius: 50%;
-        background: linear-gradient(to right, #DEE6ED, #90B734, #93b543);
-        background-size: 200% 200%;
-        animation: gradient 5s ease infinite;
-
-        @keyframes gradient {
-            0% {
-                background-position: 0% 50%;
-            }
-
-            50% {
-                background-position: 100% 50%;
-            }
-
-            100% {
-                background-position: 0% 50%;
-            }
-        }
-    }
-
-    &__list_text {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    &__item_text {
-        font-family: var(--font-raleway);
-        color: var(--black-1D2E43);
-    }
-
-    &__delete_btn {
-        display: inline-flex;
-        padding: 3px;
-        justify-content: center;
-        align-items: center;
-        z-index: 9999;
-        border: none;
-        border-radius: 4px;
-        color: var(--white-F6F6F6);
-        background-color: var(--crimson-light-F39CB5);
-        transition: all 0.3s ease-in-out;
-        margin-left: 10px;
-
-        &:hover {
-            background-color: #e37091;
-            ;
-        }
-    }
+  }
 }
 
 .toggleButton {
-    width: 40px;
-    height: 24px;
-    background-color: #BADDFE;
-    border-radius: 15px;
-    position: relative;
-    cursor: pointer;
-    transition: background-color 0.3s;
+  width: 40px;
+  height: 24px;
+  background-color: #baddfe;
+  border-radius: 15px;
+  position: relative;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  .circle {
+    width: 18px;
+    height: 18px;
+    background-color: white;
+    border-radius: 50%;
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    transition: left 0.3s;
+  }
+
+  &.active {
+    background-color: var(--blue-75BBFD);
 
     .circle {
-        width: 18px;
-        height: 18px;
-        background-color: white;
-        border-radius: 50%;
-        position: absolute;
-        top: 3px;
-        left: 3px;
-        transition: left 0.3s;
+      left: 19px;
     }
-
-    &.active {
-        background-color: var(--blue-75BBFD);
-
-        .circle {
-            left: 19px;
-        }
-    }
+  }
 }
 
-@media screen and (min-width: 1024px) and (max-width: 1600px) {  
-    .Applications {     
-       padding-left: 5rem;      
-    }
+@media screen and (min-width: 1024px) and (max-width: 1600px) {
+  .Applications {
+    padding-left: 5rem;
+  }
 }
 
 @media (max-width: 1023px) {
-    .Applications {
-        padding-left: 7.5rem;
-    }
+  .Applications {
+    padding-left: 7.5rem;
+  }
 }

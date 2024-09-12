@@ -4,7 +4,20 @@ import Edit from '../../icon/Edit.svg';
 import Look from '../../icon/eye.svg';
 import noLook from '../../icon/eye2.svg';
 
-const Slide = ({ el, index, handleDragStart, handleDragOver, handleDrop, handleLookClick, handleEditClick, handleDeleteModalOpen, deleteModalState, handleDeleteModalClose, handleFormDelete, user }) => (
+const Slide = ({
+  el,
+  index,
+  handleDragStart,
+  handleDragOver,
+  handleDrop,
+  handleLookClick,
+  handleEditClick,
+  handleDeleteModalOpen,
+  deleteModalState,
+  handleDeleteModalClose,
+  handleFormDelete,
+  user,
+}) => (
   <div
     draggable
     onDragStart={(e) => handleDragStart(e, index)}
@@ -31,7 +44,10 @@ const Slide = ({ el, index, handleDragStart, handleDragOver, handleDrop, handleL
               </label>
             </button>
           </div>
-          <div className={`${styles.edit_block_vacancy} ${styles.edit_block_slide}`} onClick={() => handleEditClick(el.id)}>
+          <div
+            className={`${styles.edit_block_vacancy} ${styles.edit_block_slide}`}
+            onClick={() => handleEditClick(el.id)}
+          >
             <button className={styles.buttom_edit}>
               <label htmlFor="edit" className={styles.label}>
                 <div className={styles.wrapper}>
@@ -73,17 +89,16 @@ const Slide = ({ el, index, handleDragStart, handleDragOver, handleDrop, handleL
     {deleteModalState[el.id] && (
       <div className={styles.delete_modal_container}>
         <div className={styles.delete_modal_block}>
-          <div className={styles.delete_modal_block__title}>
-            Вы точно хотите удалить слайд «Слайд {index + 1}»?
-          </div>
-          <p className={styles.delete_modal_block__text}>
-            Удаленный слайд вернуть будет невозможно
-          </p>
+          <div className={styles.delete_modal_block__title}>Вы точно хотите удалить слайд «Слайд {index + 1}»?</div>
+          <p className={styles.delete_modal_block__text}>Удаленный слайд вернуть будет невозможно</p>
           <div className={styles.button_block}>
             <button className={styles.button_block__cancel} onClick={() => handleDeleteModalClose(el.id)} />
             <button className={styles.button_block__save} onClick={() => handleFormDelete(el.id)} />
           </div>
-          <button className={styles.delete_modal_block__close_button} onClick={() => handleDeleteModalClose(el.id)}></button>
+          <button
+            className={styles.delete_modal_block__close_button}
+            onClick={() => handleDeleteModalClose(el.id)}
+          ></button>
         </div>
       </div>
     )}

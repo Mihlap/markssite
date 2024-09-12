@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { motion } from "framer-motion";
-import "./CustomCursor.scss";
-import { useSelector } from "react-redux";
-import { useDispatch } from "react-redux";
-import { mouseDown, mouseUp } from "../../store/Slice/cursorSlice";
+import React, { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
+import './CustomCursor.scss';
+import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
+import { mouseDown, mouseUp } from '../../store/Slice/cursorSlice';
 
 export default function CustomCursor() {
   const [mousePosition, setMousePosition] = useState({
@@ -27,10 +27,7 @@ export default function CustomCursor() {
       };
 
       window.requestAnimationFrame(() => {
-        if (
-          newPosition.x !== mousePosition.x ||
-          newPosition.y !== mousePosition.y
-        ) {
+        if (newPosition.x !== mousePosition.x || newPosition.y !== mousePosition.y) {
           setMousePosition(newPosition);
         }
       });
@@ -44,14 +41,14 @@ export default function CustomCursor() {
       dispatch(mouseUp());
     };
 
-    window.addEventListener("mousemove", mouseMove);
-    window.addEventListener("mousedown", handleMouseDown);
-    window.addEventListener("mouseup", handleMouseUp);
+    window.addEventListener('mousemove', mouseMove);
+    window.addEventListener('mousedown', handleMouseDown);
+    window.addEventListener('mouseup', handleMouseUp);
 
     return () => {
-      window.removeEventListener("mousemove", mouseMove);
-      window.removeEventListener("mousedown", handleMouseDown);
-      window.removeEventListener("mouseup", handleMouseUp);
+      window.removeEventListener('mousemove', mouseMove);
+      window.removeEventListener('mousedown', handleMouseDown);
+      window.removeEventListener('mouseup', handleMouseUp);
     };
   }, [dispatch]);
 
@@ -78,8 +75,8 @@ export default function CustomCursor() {
       width: 64,
       x: mousePosition.x - 16,
       y: mousePosition.y - 16,
-      backgroundColor: "rgba(29, 46, 67, 0)", // Установка фона как прозрачного
-      border: "2px solid #1D2E43", // Установка синей границы, замените #1D2E43 на ваш код цвета
+      backgroundColor: 'rgba(29, 46, 67, 0)', // Установка фона как прозрачного
+      border: '2px solid #1D2E43', // Установка синей границы, замените #1D2E43 на ваш код цвета
     },
     textFooter: {
       zIndex: 2,
@@ -95,7 +92,7 @@ export default function CustomCursor() {
       width: 64,
       x: mousePosition.x - 16,
       y: mousePosition.y - 16,
-      backgroundColor: "#F6F6F6",
+      backgroundColor: '#F6F6F6',
     },
 
     textLeaveFooter: {
@@ -108,50 +105,44 @@ export default function CustomCursor() {
       scale: 1.7,
       x: mousePosition.x,
       y: mousePosition.y,
-      backgroundColor: "#F6F6F6",
+      backgroundColor: '#F6F6F6',
     },
     mouseUpFooter: {
       scale: 1,
       x: mousePosition.x,
       y: mousePosition.y,
-      backgroundColor: "#F6F6F6",
+      backgroundColor: '#F6F6F6',
     },
     imageHover: {
       height: 100,
       width: 100,
       x: mousePosition.x - 24,
       y: mousePosition.y - 24,
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      color: "#ffffff",
-      backgroundColor: "#1D2E43",
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      color: '#ffffff',
+      backgroundColor: '#1D2E43',
     },
     specialHover: {
       height: 100,
       width: 100,
       x: mousePosition.x - 24,
       y: mousePosition.y - 24,
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      color: "#ffffff",
-      backgroundColor: "#1D2E43",
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      color: '#ffffff',
+      backgroundColor: '#1D2E43',
     },
   };
 
   return (
     <div className="cursor-container">
       {window.innerWidth >= 1025 && (
-        <motion.div
-          className="cursor"
-          variants={variants}
-          animate={cursorVariant}
-        >
-          {cursorVariant === "imageHover" && <span>Смотреть</span>}
-          {cursorVariant === "specialHover" && (
-            <div className="cursor-hover">Все Конкурсы</div>
-          )}
+        <motion.div className="cursor" variants={variants} animate={cursorVariant}>
+          {cursorVariant === 'imageHover' && <span>Смотреть</span>}
+          {cursorVariant === 'specialHover' && <div className="cursor-hover">Все Конкурсы</div>}
         </motion.div>
       )}
     </div>

@@ -1,8 +1,13 @@
-import React, { useEffect, useState } from 'react'
-import styles from "./HomeAdmin.module.scss";
-import { useDispatch } from "react-redux";
+import React, { useEffect, useState } from 'react';
+import styles from './HomeAdmin.module.scss';
+import { useDispatch } from 'react-redux';
 import IDPublicLeft from './IDPublicLeft';
-import { getUpdatedArticles, searchArticleLeftDelete, searchArticleLeftMain, updateArticleLeft } from '../../store/Slice/searchArticlePublicLeftSlice';
+import {
+  getUpdatedArticles,
+  searchArticleLeftDelete,
+  searchArticleLeftMain,
+  updateArticleLeft,
+} from '../../store/Slice/searchArticlePublicLeftSlice';
 
 export default function SearchPublicLeft({
   articles,
@@ -12,95 +17,76 @@ export default function SearchPublicLeft({
   setSaveIdOne,
   setSearcIdOne,
   setIsBtnDisabledPublicOne,
-  isBtnDisabledPublicOne
+  isBtnDisabledPublicOne,
 }) {
   const dispatch = useDispatch();
-    const [message, setMessage] = useState({
-      text: "",
-      type: null,
-    });
-
+  const [message, setMessage] = useState({
+    text: '',
+    type: null,
+  });
 
   const handleSearchOnePublic = (event) => {
     setSearcIdOne(event.target.value);
-    setIsBtnDisabledPublicOne(event.target.value === "");
+    setIsBtnDisabledPublicOne(event.target.value === '');
   };
 
-     useEffect(() => {
-       if (message.type) {
-         const timer = setTimeout(() => {
-           setMessage({ text: "", type: null });
-         }, 3000);
-         return () => clearTimeout(timer);
-       }
-     }, [message]);
+  useEffect(() => {
+    if (message.type) {
+      const timer = setTimeout(() => {
+        setMessage({ text: '', type: null });
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [message]);
 
   const filterArticleOnePublic = async (event) => {
-    const filterArticle = articles.find(
-      (article) => article.id === parseInt(searcIdOne, 10)
-    );
+    const filterArticle = articles.find((article) => article.id === parseInt(searcIdOne, 10));
 
     if (filterArticle) {
       try {
-        await dispatch(
-          searchArticleLeftMain(
-            filterArticle,
-            setSearcIdOne,
-            setSaveIdOne,
-            setIsBtnDisabledPublicOne
-          )
-        );
-        showMessage("Публикация добавлена", "ok");
+        await dispatch(searchArticleLeftMain(filterArticle, setSearcIdOne, setSaveIdOne, setIsBtnDisabledPublicOne));
+        showMessage('Публикация добавлена', 'ok');
       } catch (error) {
-        showMessage("Ошибка при сохранении проекта:", "error");
+        showMessage('Ошибка при сохранении проекта:', 'error');
       }
     } else {
-      showMessage("Публикация с таким id не найдена", "error");
-      setSearcIdOne("");
-      setIsBtnDisabledPublicOne(event.target.value === "");
+      showMessage('Публикация с таким id не найдена', 'error');
+      setSearcIdOne('');
+      setIsBtnDisabledPublicOne(event.target.value === '');
     }
   };
 
- const showMessage = (text, type) => {
+  const showMessage = (text, type) => {
     setMessage({ text, type });
- };
-  
+  };
+
   const Message = ({ text, type }) => {
     const typesToStyles = {
       error: styles.home_admin_section__error,
       ok: styles.home_admin_section__ok,
       delete: styles.home_admin_section__delete,
-      update: styles.home_admin_section__update
+      update: styles.home_admin_section__update,
     };
     return <div className={typesToStyles[type] || styles.home_admin_section__ok}>{text}</div>;
   };
 
-const handleArticleLeftDelete = (formId) => {
-  dispatch(searchArticleLeftDelete(formId))
-    .then(() => {
-      dispatch(getUpdatedArticles());
-      showMessage("Публикация удалена", "delete");
-    })
-    .catch((error) => {
-      console.error("Ошибка при удалении статьи:", error);
-    });
-};
+  const handleArticleLeftDelete = (formId) => {
+    dispatch(searchArticleLeftDelete(formId))
+      .then(() => {
+        dispatch(getUpdatedArticles());
+        showMessage('Публикация удалена', 'delete');
+      })
+      .catch((error) => {
+        console.error('Ошибка при удалении статьи:', error);
+      });
+  };
 
   const handlerUpdateReplacement = () => {
-    const filterArticle = articles.find(
-      (article) => article.id === parseInt(searcIdOne, 10)
-    );
+    const filterArticle = articles.find((article) => article.id === parseInt(searcIdOne, 10));
 
     if (filterArticle) {
-      dispatch(
-        updateArticleLeft(
-          filterArticle,
-          setSaveIdOne,
-          setSearcIdOne,
-          setIsBtnDisabledPublicOne
-        )
-      );
-      showMessage("Публикация заменена", "update");
+      dispatch(updateArticleLeft(filterArticle, setSaveIdOne, setSearcIdOne, setIsBtnDisabledPublicOne));
+      showMessage('Публикация заменена', 'update');
     }
   };
 
@@ -109,11 +95,7 @@ const handleArticleLeftDelete = (formId) => {
       <div className={styles.home_admin_section__id_container}>
         {arrIdArticleLeft &&
           arrIdArticleLeft?.map((el) => (
-            <IDPublicLeft
-              key={el.id}
-              article={el}
-              handleArticleLeftDelete={handleArticleLeftDelete}
-            />
+            <IDPublicLeft key={el.id} article={el} handleArticleLeftDelete={handleArticleLeftDelete} />
           ))}
       </div>
       <div className={`${styles.form__group} ${styles.field}`}>
@@ -150,7 +132,7 @@ const handleArticleLeftDelete = (formId) => {
           />
         )}
       </div>
-        {message.type && <Message text={message.text} type={message.type} />}
+      {message.type && <Message text={message.text} type={message.type} />}
     </div>
   );
 }

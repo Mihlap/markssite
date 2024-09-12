@@ -1,7 +1,7 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const userSlice = createSlice({
-  name: "user",
+  name: 'user',
   initialState: {
     user: null,
     currentPage: null,
@@ -25,5 +25,4 @@ export const { setUser, setCurrentPage, resetCurrentPage } = userSlice.actions;
 
 export default userSlice.reducer;
 
-
-// этот слайс нужен для того, чтоб скрывать и показывать navbar && footer когда мы переходим или выходим из админки 
+// этот слайс нужен для того, чтоб скрывать и показывать navbar && footer когда мы переходим или выходим из админки

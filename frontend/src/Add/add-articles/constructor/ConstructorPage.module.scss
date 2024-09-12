@@ -1,123 +1,123 @@
 @import '../../../App.css';
 
 .div_conteiner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+
+  &__item {
+    width: 141px;
+    height: 116px;
+    background-color: var(--salmon-light-FFBFB5);
+    border-radius: 6px;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+
+    &:hover {
+      background-color: var(--salmon-FF7F6A);
+    }
+  }
+
+  &__blockOne {
+    padding: 22px 22px 21px 33px;
+    width: 141px;
+    height: 116px;
+  }
+
+  &__blockTwo {
+    padding: 25px 32px 41px 33px;
+  }
+
+  &__blockThree {
+    padding: 22px 21px 22px 22px;
+  }
+
+  &__blockFour {
+    padding: 22px 21px 22px 22px;
+  }
+
+  &__blockFive {
+    padding: 32px 10px;
+  }
+
+  &__blockSix {
+    padding: 32px;
+  }
+
+  &__blockSeven {
+    padding: 42px 32px 41px 33px;
+  }
+
+  &__blockEight {
+    padding: 24px 23px 26px 22px;
+  }
+  &__blockEight_img {
+    padding: 10px 5px;
+    border-radius: 18px;
+    border: 6px solid var(--white-F6F6F6);
+  }
+
+  &__blockNine {
+    padding: 37px 26px 26px 17px;
+  }
+
+  &__blockTen {
+    padding: 43px 27px;
+  }
+
+  &__blockVideoFrame {
     display: flex;
-    flex-wrap: wrap;
-    gap: 16px;
+    flex-direction: column;
+    align-items: center;
     justify-content: center;
-
-    &__item {
-        width: 141px;
-        height: 116px;
-        background-color: var(--salmon-light-FFBFB5);
-        border-radius: 6px;
-        transition: all 0.3s ease-in-out;
-        cursor: pointer;
-
-        &:hover {
-            background-color: var(--salmon-FF7F6A);
-        }
-    }
-
-    &__blockOne {
-        padding: 22px 22px 21px 33px;
-        width: 141px;
-        height: 116px;
-    }
-
-    &__blockTwo {
-        padding: 25px 32px 41px 33px;
-    }
-
-    &__blockThree {
-        padding: 22px 21px 22px 22px;
-    }
-
-    &__blockFour {
-        padding: 22px 21px 22px 22px;
-    }
-
-    &__blockFive {
-        padding: 32px 10px;
-    }
-
-    &__blockSix {
-        padding: 32px;
-    }
-    
-    &__blockSeven {
-        padding: 42px 32px 41px 33px;
-    }
-
-    &__blockEight {
-        padding: 24px 23px 26px 22px;
-    }
-    &__blockEight_img {
-        padding: 10px 5px;
-        border-radius: 18px;
-        border: 6px solid var(--white-F6F6F6);
-    }
-
-    &__blockNine {
-        padding: 37px 26px 26px 17px;
-    }
-
-    &__blockTen {
-        padding: 43px 27px;
-    }
-
-    &__blockVideoFrame {
-         display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center; 
-       gap: 6px;     
-    }
+    gap: 6px;
+  }
 }
 
 .videoText {
-    font-size: 1rem;
-    color: var(--white-F6F6F6);
-    white-space: nowrap; 
-    margin-top: -20px;
- }
+  font-size: 1rem;
+  color: var(--white-F6F6F6);
+  white-space: nowrap;
+  margin-top: -20px;
+}
 
 .constructorBlockOne {
-    padding: 22px 22px 21px 33px;
+  padding: 22px 22px 21px 33px;
 }
 
 .notification {
-    position: fixed;
-    top: 6%;
-    right: -330px;
-    /* Ширина вашего уведомления */
-    width: 320px;
-    padding: 10px;
-    background-color: #333;
-    color: #fff;
-    transition: right 1s;
-    box-shadow: -5px 0px 15px rgba(0, 0, 0, 0.3);
-    border-radius: 5px;
+  position: fixed;
+  top: 6%;
+  right: -330px;
+  /* Ширина вашего уведомления */
+  width: 320px;
+  padding: 10px;
+  background-color: #333;
+  color: #fff;
+  transition: right 1s;
+  box-shadow: -5px 0px 15px rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
 }
 
 .showNotification {
-    right: 20px;
+  right: 20px;
 }
 
 // стили для блока с цитатой
 
 .block_quote_img {
-    display: flex;
-    align-items: center;
-    gap: 2px;
+  display: flex;
+  align-items: center;
+  gap: 2px;
 }
 
 .div_conteiner__blockNine_imgLeft {
-    margin-bottom: 32px;
+  margin-bottom: 32px;
 }
 
 .div_conteiner__blockNine_imgRight {
-    margin-top: 30px;
+  margin-top: 30px;
 }
 // .constructorBlockTwo {}
 
@@ -130,11 +130,10 @@
 // .constructorBlockSix {}
 
 @media screen and (max-width: 1024px) {
-
-    .div_conteiner {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 16px;
-        justify-content: center;
-}
+  .div_conteiner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    justify-content: center;
+  }
 }

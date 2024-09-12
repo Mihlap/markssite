@@ -1,4 +1,4 @@
-@import "../App.css";
+@import '../App.css';
 
 .main_project_card {
   display: flex;
@@ -30,7 +30,6 @@
   word-wrap: break-word;
 }
 
-
 .cart_project_title__block__card {
   display: flex;
   font-family: var(--font-unbounded);
@@ -55,7 +54,6 @@
   line-height: normal;
   padding-top: 2rem;
 }
-
 
 .cart_project__address__block__card {
   display: flex;
@@ -104,7 +102,6 @@
   white-space: normal;
 }
 
-
 .title_block_mobile,
 .title_text_mobile,
 .project_container_projectCard_sliderMobile {
@@ -144,7 +141,7 @@
   flex-wrap: wrap;
   position: relative;
   bottom: 5px;
-  margin-left: 8px;  
+  margin-left: 8px;
 }
 
 .title_text {
@@ -222,7 +219,7 @@
 
 .local_ritgh,
 .local_left {
-  width: 100%; 
+  width: 100%;
 }
 
 .local_title {
@@ -262,8 +259,6 @@
   padding-left: 14.75vw;
 }
 
-
-
 .item:not(:last-child) {
   padding-bottom: 3.75rem;
 }
@@ -274,7 +269,6 @@
   height: auto;
   max-height: 50vw;
   border-radius: 1rem;
-
 }
 
 .item_img_latest {
@@ -282,7 +276,7 @@
   margin-top: 0;
 }
 
-.item_img_close img{
+.item_img_close img {
   width: 100%;
   height: auto;
   max-height: 50vw;
@@ -333,7 +327,7 @@
   color: var(--black-1D2E43);
   word-wrap: break-word;
   word-break: break-word;
-  overflow-wrap: anywhere; 
+  overflow-wrap: anywhere;
   white-space: pre-line;
   hyphens: auto;
   padding-bottom: 3.75rem;
@@ -350,7 +344,6 @@
   line-height: 32px;
   padding-bottom: 24px;
 }
-
 
 .quote_text {
   font-weight: var(--fw-400);
@@ -376,8 +369,6 @@
   color: var(--gray-959DA6);
   padding-top: 24px;
 }
-
-
 
 /* Стили для кнопок */
 
@@ -447,9 +438,9 @@
   font-size: 0.875rem;
   color: var(--black-1D2E43);
   font-variant-numeric: lining-nums proportional-nums;
-    display: -webkit-box;
+  display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3; 
+  -webkit-line-clamp: 3;
   overflow: hidden;
 }
 
@@ -467,10 +458,9 @@
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: 3; 
+  -webkit-line-clamp: 3;
   overflow: hidden;
 }
-
 
 .button_project_link_projectCard1:hover {
   background-color: var(--light-gray-C0C5CB);
@@ -537,7 +527,6 @@
   padding-left: 1.69rem;
 }
 
-
 .slider_container_item_card_projectCard {
   display: flex;
   min-width: 24rem;
@@ -545,7 +534,6 @@
   min-height: 24rem;
   height: 100%;
 }
-
 
 .wrapper_container_item_card_projectCard {
   display: flex;
@@ -557,7 +545,7 @@
   border-radius: 1rem;
   gap: 1.88rem;
   overflow: hidden;
-  transition: transform 0.8s ease-in-out, filter 0.8s ease-in-out; 
+  transition: transform 0.8s ease-in-out, filter 0.8s ease-in-out;
   cursor: pointer;
 }
 
@@ -584,7 +572,7 @@
   transform-origin: center;
   /* transform: scale(0.98); */
   transition: transform 0.8s ease-in-out;
- }
+}
 
 .wrapper_container_item_card_projectCard:hover .container__imageTitle_projectCard {
   transform: scale(1.1);
@@ -598,7 +586,7 @@
 }
 
 .wrapper_container_item_card_projectCard:not(:hover) {
-  filter: brightness(100%); 
+  filter: brightness(100%);
   transition: transform 0.8s ease-in-out, filter 0.8s ease-in-out;
 }
 
@@ -650,9 +638,8 @@
   align-items: center;
 }
 
-
 .container__monthYear_projectCard {
-  color: var(--unnamed, #A7A7A7);
+  color: var(--unnamed, #a7a7a7);
   /* text-align: right; */
   font-family: var(--font-raleway);
   font-size: 0.625rem;
@@ -688,12 +675,9 @@
   margin-right: 6px;
 }
 
-
-
 /* Стили для desctop версии +1 сайта блока ProjectCard начинаются тут */
 
 @media screen and (min-width: 1300px) and (max-width: 1600px) {
-
   .header_content_left {
     padding-left: 1.75rem;
     padding-right: 4.65vw;
@@ -701,15 +685,14 @@
 
   .result_container {
     display: flex;
-    gap: 1.81rem
+    gap: 1.81rem;
   }
 
   .header_content_right {
     width: 40%;
     padding-right: 1.69rem;
     padding-left: 1rem;
-  } 
-
+  }
 
   .blockImg {
     display: flex;
@@ -719,36 +702,34 @@
     padding-left: 1.75rem;
   }
 
-    .quote_container,
-    .description_object_container {
-      display: flex;
-      padding-right: 14.75vw;
-      padding-left:14.75vw;
-    }
+  .quote_container,
+  .description_object_container {
+    display: flex;
+    padding-right: 14.75vw;
+    padding-left: 14.75vw;
+  }
 
-    .description_object_block {
-       padding-left: 0vw;
-      padding-right: 0vw;
-    }
-    .button_project_projectCard {
-      display: flex;
-      padding-right: 1.75rem;
-      padding-left: 1.75rem;;
-      width: 100%;
-    } 
+  .description_object_block {
+    padding-left: 0vw;
+    padding-right: 0vw;
+  }
+  .button_project_projectCard {
+    display: flex;
+    padding-right: 1.75rem;
+    padding-left: 1.75rem;
+    width: 100%;
+  }
 
-    .local_container_wrapper_block {
-       min-height: 120px;
-    }
+  .local_container_wrapper_block {
+    min-height: 120px;
+  }
 
-    .local_container_wrapper_block1 {
-       min-height: 100px;
-    }
-
+  .local_container_wrapper_block1 {
+    min-height: 100px;
+  }
 }
 
 @media screen and (min-width: 1025px) and (max-width: 1299px) {
-
   .header_content_left {
     padding-left: 1.75rem;
     padding-right: 4.65vw;
@@ -756,15 +737,14 @@
 
   .result_container {
     display: flex;
-    gap: 1.81rem
+    gap: 1.81rem;
   }
 
   .header_content_right {
     width: 40%;
     padding-right: 1.69rem;
     padding-left: 1rem;
-  } 
-
+  }
 
   .blockImg {
     display: flex;
@@ -774,38 +754,36 @@
     padding-left: 1.75rem;
   }
 
-    .quote_container,
-    .description_object_container {
-      display: flex;
-      padding-right: 14.75vw;
-      padding-left:14.75vw;
-    }
+  .quote_container,
+  .description_object_container {
+    display: flex;
+    padding-right: 14.75vw;
+    padding-left: 14.75vw;
+  }
 
-    .description_object_block {
-       padding-left: 0vw;
-      padding-right: 0vw;
-    }
-    .button_project_projectCard {
-      display: flex;
-      padding-right: 1.75rem;
-      padding-left: 1.75rem;;
-      width: 100%;
-    } 
+  .description_object_block {
+    padding-left: 0vw;
+    padding-right: 0vw;
+  }
+  .button_project_projectCard {
+    display: flex;
+    padding-right: 1.75rem;
+    padding-left: 1.75rem;
+    width: 100%;
+  }
 
-    .local_container_wrapper_block {
-       min-height: 150px;
-    }
+  .local_container_wrapper_block {
+    min-height: 150px;
+  }
 
-    .local_container_wrapper_block1 {
-       min-height: 100px;
-    }
-
+  .local_container_wrapper_block1 {
+    min-height: 100px;
+  }
 }
 
 /* Стили для planshet версии сайта блока ProjectCard начинаются тут */
 
 @media screen and (max-width: 1024px) {
-
   .div_conteiner {
     width: 100%;
     padding: 0rem 1rem;
@@ -829,7 +807,6 @@
     white-space: normal;
     order: 2;
   }
-
 
   .title_block,
   .title_text {
@@ -855,7 +832,6 @@
     overflow-wrap: break-word;
     hyphens: auto;
   }
-
 
   .title_text_mobile {
     display: block;
@@ -890,7 +866,7 @@
 
   .local_container {
     display: flex;
-     padding-bottom: 1rem;
+    padding-bottom: 1rem;
   }
 
   .local_container_wrapper_block {
@@ -908,20 +884,19 @@
     flex-direction: column;
     gap: 1rem;
     width: 40%;
-   }
+  }
 
-    .local_text {
-      width: 80%;
-      overflow-wrap: break-word;
-      word-break: break-word;
-      -webkit-hyphens: auto;
-      -ms-hyphens: auto;
-    }
+  .local_text {
+    width: 80%;
+    overflow-wrap: break-word;
+    word-break: break-word;
+    -webkit-hyphens: auto;
+    -ms-hyphens: auto;
+  }
 
   .publicationLink:hover {
     color: var(--gray-959DA6);
   }
-  
 
   .blockImg {
     padding-right: 1rem;
@@ -946,8 +921,6 @@
     display: flex;
     padding-right: 0;
     padding-left: 0;
-
-
   }
 
   .description_object_title {
@@ -977,7 +950,6 @@
     padding-left: 1rem;
   }
 
-
   .button_project_link_projectCard1,
   .button_project_link_projectCard2 {
     padding: 2.2rem 1rem;
@@ -988,7 +960,7 @@
     fill: initial;
     transition: none;
   }
-  
+
   .button_project_link_projectCard2:hover {
     background: var(--salmon-light-FFBFB5);
     fill: initial;
@@ -1002,11 +974,11 @@
 
   .previous__span_projectCard {
     padding-left: 0.87rem;
-   }
+  }
 
   .next__span_projectCard {
-     padding-right: 0.87rem;
-   }
+    padding-right: 0.87rem;
+  }
 
   .social_links_projectCard {
     display: none;
@@ -1041,7 +1013,6 @@
     height: 100%;
   }
 
-
   .wrapper_container_item_card_projectCard {
     display: flex;
     min-width: 100%;
@@ -1065,12 +1036,10 @@
     object-fit: cover;
     object-position: center;
   }
-
 }
 
 /* Стили для мобильной версии сайта блока ProjectCard начинаются тут */
 @media screen and (max-width: 767px) {
-
   .all_button_div {
     top: 10vh;
     left: 1rem;
@@ -1096,7 +1065,6 @@
     grid-column-gap: 1px;
     grid-row-gap: 6px;
   }
-
 
   .cart_project_title__block__card {
     font-size: 2rem;
@@ -1126,11 +1094,10 @@
     order: 2;
   }
 
- .left_meta_castom {
+  .left_meta_castom {
     bottom: 2px;
     margin-left: 0.3rem;
   }
-  
 
   .title_block,
   .title_text {
@@ -1171,39 +1138,38 @@
 
   .result_container_mobile {
     display: flex;
-      flex-wrap: wrap;
-      width: 100%;
-      row-gap: 1.5rem;
-      column-gap: 19.5vw;
-      padding-bottom: 0rem;
-    }
+    flex-wrap: wrap;
+    width: 100%;
+    row-gap: 1.5rem;
+    column-gap: 19.5vw;
+    padding-bottom: 0rem;
+  }
 
-    .result_number_mobile {
-      font-family: var(--font-unbounded);
-      font-style: normal;
-      font-weight: var(--fw-300);
-      font-size: 1.25rem;
-      line-height: 1.75rem;
-      color: var(--dark-gray-566272);
-      word-wrap: break-word;
-      overflow-wrap: break-word;
-      max-width: fit-content;
-      }
-    
-    .result_text_mobile {
-      color: var(--gray-959DA6);
-      font-variant-numeric: lining-nums proportional-nums;
-      font-family: var(--font-raleway);
-      font-size: 0.875rem;
-      font-style: normal;
-      font-weight: var(--fw-400);
-      line-height: 1.25rem;
-    }
+  .result_number_mobile {
+    font-family: var(--font-unbounded);
+    font-style: normal;
+    font-weight: var(--fw-300);
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    color: var(--dark-gray-566272);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    max-width: fit-content;
+  }
 
-   
-    .result_container {
-      display: none;
-    }
+  .result_text_mobile {
+    color: var(--gray-959DA6);
+    font-variant-numeric: lining-nums proportional-nums;
+    font-family: var(--font-raleway);
+    font-size: 0.875rem;
+    font-style: normal;
+    font-weight: var(--fw-400);
+    line-height: 1.25rem;
+  }
+
+  .result_container {
+    display: none;
+  }
 
   /* << =============== правый блок контента с информацией =============== >> */
 
@@ -1236,14 +1202,11 @@
   .publicationLink:hover {
     color: var(--gray-959DA6);
   }
-  
 
   .blockImg {
     padding-right: 0rem;
     padding-left: 0rem;
-
   }
-
 
   .item:not(:last-child) {
     padding-bottom: 2.5rem;
@@ -1266,8 +1229,8 @@
   }
   .item_img_close1 {
     padding-right: 0rem;
-    padding-left: 0rem; 
-  border-radius: 0;
+    padding-left: 0rem;
+    border-radius: 0;
   }
 
   .item_img_close {
@@ -1279,10 +1242,10 @@
     object-fit: cover;
   }
 
-  .item_img_close img{
+  .item_img_close img {
     border-radius: 0;
   }
-  
+
   .item_photo_together {
     gap: 2.08vw;
   }
@@ -1318,9 +1281,8 @@
     display: flex;
     padding-right: 0rem;
     padding-left: 0rem;
-    width: 100%;  
+    width: 100%;
   }
-
 
   .button_project_link_projectCard1,
   .button_project_link_projectCard2 {
@@ -1335,14 +1297,14 @@
     width: 100%;
   }
 
-  .previous__span_projectCard {  
+  .previous__span_projectCard {
     font-size: 0.75rem;
     font-style: normal;
     font-weight: var(--fw-400);
     padding-left: 0.87rem;
   }
 
-  .next__span_projectCard { 
+  .next__span_projectCard {
     font-size: 0.75rem;
     font-style: normal;
     font-weight: var(--fw-400);
@@ -1355,7 +1317,7 @@
     fill: initial;
     transition: none;
   }
-  
+
   .button_project_link_projectCard2:hover {
     background: var(--salmon-light-FFBFB5);
     fill: initial;
@@ -1380,7 +1342,6 @@
 
   .main_project_projectCard {
     display: none;
-
   }
 
   .project_container_projectCard_sliderMobile {
@@ -1390,12 +1351,7 @@
   }
 }
 
-
-
 @media screen and (max-width: 550px) {
-
- 
-
   .header_content_right {
     width: 100%;
     padding-left: 1rem;
@@ -1421,12 +1377,8 @@
   }
 }
 
-
 /* Стили для мобильной версии сайта блока ProjectCard начинаются тут */
 @media screen and (max-width: 390px) {
-
- 
-
   .header_content_right {
     width: 100%;
     padding-left: 1rem;
@@ -1453,12 +1405,10 @@
 }
 
 @media screen and (max-width: 350px) {
-
   .local_container_wrapper_block {
     height: 210px;
   }
   .local_container_wrapper_block1 {
     height: 100px;
   }
-
- }
+}

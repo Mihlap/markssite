@@ -6,7 +6,7 @@ import {
   deleteSlide,
   toggleSlideVisibility,
   fetchSlideById,
-  updateSlidesOrderLocally
+  updateSlidesOrderLocally,
 } from '../../../store/Slice/vacancyMainSlideCardSlice';
 import styles from '../../style/style-card.module.scss';
 
@@ -20,10 +20,10 @@ export default function AddSlideMain({
   deleteModalState,
   setDeleteModalState,
   handleDeleteModalClose,
-  handleDeleteModalOpen
+  handleDeleteModalOpen,
 }) {
   const dispatch = useDispatch();
-  const slides = useSelector(state => state.formAddSlide.slides || []);
+  const slides = useSelector((state) => state.formAddSlide.slides || []);
 
   const handleOpenModal = () => {
     setEditSlideData(null);
@@ -38,14 +38,17 @@ export default function AddSlideMain({
     [dispatch, handleDeleteModalClose]
   );
 
-  const handleLookClick = useCallback((id) => {
-    const slide = slides.find(slide => slide.id === id);
-    if (slide) {
-      dispatch(toggleSlideVisibility({ id, hidden: !slide.hidden }));
-    } else {
-      console.error("Слайд с таким ID не найден:", id);
-    }
-  }, [dispatch, slides]);
+  const handleLookClick = useCallback(
+    (id) => {
+      const slide = slides.find((slide) => slide.id === id);
+      if (slide) {
+        dispatch(toggleSlideVisibility({ id, hidden: !slide.hidden }));
+      } else {
+        console.error('Слайд с таким ID не найден:', id);
+      }
+    },
+    [dispatch, slides]
+  );
 
   const handleEditClick = useCallback(
     async (id) => {
@@ -54,12 +57,10 @@ export default function AddSlideMain({
         setEditSlideData(slideData);
         setIsModalOpenMain(true);
 
-        const updatedSlides = slides.map(slide => 
-          slide.id === slideData.id ? slideData : slide
-        );
+        const updatedSlides = slides.map((slide) => (slide.id === slideData.id ? slideData : slide));
         dispatch(updateSlidesOrderLocally(updatedSlides));
       } catch (error) {
-        console.error("Ошибка при загрузке данных слайда:", error);
+        console.error('Ошибка при загрузке данных слайда:', error);
       }
     },
     [dispatch, setEditSlideData, setIsModalOpenMain]
@@ -95,7 +96,6 @@ export default function AddSlideMain({
         </button>
       </div>
 
-   
       <SlideModalManager
         isModalOpenMain={isModalOpenMain}
         setIsModalOpenMain={setIsModalOpenMain}

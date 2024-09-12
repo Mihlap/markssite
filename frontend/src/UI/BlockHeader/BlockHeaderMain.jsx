@@ -1,19 +1,15 @@
-import React, { useEffect, useState } from "react";
-import { blockData } from "./utils.js";
-import styles from "./BlockHeaderMain.module.css";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { blockData } from './utils.js';
+import styles from './BlockHeaderMain.module.css';
+import { Link } from 'react-router-dom';
 
 const BlockHeaderMain = ({ handleMouseEnter, handleMouseLeave }) => {
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
-  const [blockStates, setBlockStates] = useState(
-    Array(blockData.length).fill(false)
-  );
+  const [blockStates, setBlockStates] = useState(Array(blockData.length).fill(false));
 
   const toggleBlock = (index) => {
     setBlockStates((prevState) => {
-      const newState = prevState.map((state, i) =>
-        i === index ? !state : false
-      );
+      const newState = prevState.map((state, i) => (i === index ? !state : false));
       return newState;
     });
   };
@@ -23,10 +19,10 @@ const BlockHeaderMain = ({ handleMouseEnter, handleMouseLeave }) => {
       setScreenWidth(window.innerWidth);
     };
 
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
 
     return () => {
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener('resize', handleResize);
     };
   }, []);
 
@@ -37,9 +33,7 @@ const BlockHeaderMain = ({ handleMouseEnter, handleMouseLeave }) => {
       {blockStates.map((isOpen, index) => (
         <div className={styles.block_blockHeader} key={index}>
           <div className={styles.closedBlockContent_blockHeader}>
-            <div className={styles.blockNumber_blockHeader}>
-              {index < 8 ? `0${index + 1}` : index + 1}
-            </div>
+            <div className={styles.blockNumber_blockHeader}>{index < 8 ? `0${index + 1}` : index + 1}</div>
             <div className={styles.line_blockHeader}></div>
             <div
               className={styles.block_hover}
@@ -49,9 +43,7 @@ const BlockHeaderMain = ({ handleMouseEnter, handleMouseLeave }) => {
             >
               {isMobileScreen && (
                 <div
-                  className={`${styles.toggle_blockHeader} ${
-                    isOpen ? styles.rotate180 : ""
-                  }`}
+                  className={`${styles.toggle_blockHeader} ${isOpen ? styles.rotate180 : ''}`}
                   // onClick={() => toggleBlock(index)}
                 >
                   <svg
@@ -75,31 +67,16 @@ const BlockHeaderMain = ({ handleMouseEnter, handleMouseLeave }) => {
                 {blockData[index].title}
                 <div
                   className={`${styles.content_blockHeader} ${
-                    isOpen
-                      ? styles.contentOpen_blockHeader
-                      : styles.contentClose_blockHeader
+                    isOpen ? styles.contentOpen_blockHeader : styles.contentClose_blockHeader
                   }`}
                 >
                   {blockData[index].content}
                 </div>
 
                 {!isMobileScreen && (
-                  <div
-                    className={`${styles.toggle_blockHeader} ${
-                      isOpen ? styles.rotate180 : ""
-                    }`}
-                  >
-                    <svg
-                      width="32"
-                      height="32"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path
-                        d="M8 10L12.5 15L17 10"
-                        stroke="#566272"
-                      />
+                  <div className={`${styles.toggle_blockHeader} ${isOpen ? styles.rotate180 : ''}`}>
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                      <path d="M8 10L12.5 15L17 10" stroke="#566272" />
                     </svg>
                   </div>
                 )}
@@ -118,24 +95,14 @@ const BlockHeaderMain = ({ handleMouseEnter, handleMouseLeave }) => {
                     >
                       {isMobileScreen && (
                         <div className={styles.block_content_tochka}>
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="4"
-                            height="4"
-                            viewBox="0 0 4 4"
-                            fill="none"
-                          >
+                          <svg xmlns="http://www.w3.org/2000/svg" width="4" height="4" viewBox="0 0 4 4" fill="none">
                             <circle cx="2" cy="2" r="2" fill="#566272" />
                           </svg>
                         </div>
-                      )}{" "}
+                      )}{' '}
                       <div className={styles.block_name_content}>
-                        <div className={styles.blockName}>
-                          {block.block_name}
-                        </div>
-                        <div className={styles.blockContent}>
-                          {block.block_content}
-                        </div>
+                        <div className={styles.blockName}>{block.block_name}</div>
+                        <div className={styles.blockContent}>{block.block_content}</div>
                       </div>
                     </div>
                   ))}

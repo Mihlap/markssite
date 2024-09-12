@@ -1,18 +1,18 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice } from '@reduxjs/toolkit';
 
 const cursorSlice = createSlice({
-  name: "cursor",
-  initialState: "default",
+  name: 'cursor',
+  initialState: 'default',
   reducers: {
-    textEnter: () => "text",
-    textFooter: () => "textFooter",
-    textFooterEnter: () => "textFooterEnter",
-    imageHover: () => "imageHover",
-    specialHover: () => "specialHover",
-    textLeave: () => "default",
-    textLeaveFooter: () => "textLeaveFooter",
-    mouseDown: () => "mouseDown",
-    mouseUp: () => "mouseUp",
+    textEnter: () => 'text',
+    textFooter: () => 'textFooter',
+    textFooterEnter: () => 'textFooterEnter',
+    imageHover: () => 'imageHover',
+    specialHover: () => 'specialHover',
+    textLeave: () => 'default',
+    textLeaveFooter: () => 'textLeaveFooter',
+    mouseDown: () => 'mouseDown',
+    mouseUp: () => 'mouseUp',
   },
 });
 

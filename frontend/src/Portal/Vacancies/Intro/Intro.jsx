@@ -15,7 +15,7 @@
 //   const videoBoxRef = useRef(null);
 //   const videoRef = useRef(null);
 //   const location = useLocation();
-//   const [isMobile, setIsMobile] = useState(window.innerWidth <= 767); 
+//   const [isMobile, setIsMobile] = useState(window.innerWidth <= 767);
 
 //   useEffect(() => {
 //     const handleResize = () => {
@@ -33,7 +33,7 @@
 //     if (!gsap.core.globals().ScrollTrigger) {
 //       gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 //     }
-  
+
 //     const tl = gsap.timeline({
 //       scrollTrigger: {
 //         trigger: videoBoxRef.current,
@@ -54,10 +54,10 @@
 //         },
 //       },
 //     });
-  
-//     const handleVideoLoaded = () => {    
+
+//     const handleVideoLoaded = () => {
 //       gsap.set(videoRef.current, { autoAlpha: 0, height: '0', width: '0' });
-  
+
 //       tl.fromTo(
 //         videoRef.current,
 //         { autoAlpha: 0, height: '0', width: '0' },
@@ -69,17 +69,17 @@
 //         }
 //       );
 //     };
-  
-//     if (videoRef.current) {    
-//       if (videoRef.current.readyState >= 3) {     
+
+//     if (videoRef.current) {
+//       if (videoRef.current.readyState >= 3) {
 //         handleVideoLoaded();
-//       } else {      
+//       } else {
 //         videoRef.current.addEventListener('loadeddata', handleVideoLoaded);
 //       }
 //     }
-  
+
 //     ScrollTrigger.refresh();
-  
+
 //     return () => {
 //       if (tl.scrollTrigger) {
 //         tl.scrollTrigger.kill();
@@ -90,7 +90,6 @@
 //       }
 //     };
 //   }, [location]);
-  
 
 //   return (
 //     <>
@@ -122,7 +121,6 @@
 // };
 
 // export default Intro;
-
 
 import React, { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
@@ -229,7 +227,14 @@ const Intro = () => {
           )}
         </div>
         <div className={styles.Intro__video} ref={videoBoxRef}>
-          <video ref={videoRef} playsInline autoPlay muted loop style={{ display: 'block', opacity: 0, height: '0', width: '0' }}>
+          <video
+            ref={videoRef}
+            playsInline
+            autoPlay
+            muted
+            loop
+            style={{ display: 'block', opacity: 0, height: '0', width: '0' }}
+          >
             <source src={`${Host}/videos/main_company_full.mp4`} type="video/mp4" />
           </video>
         </div>

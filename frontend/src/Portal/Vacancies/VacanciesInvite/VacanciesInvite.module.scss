@@ -119,7 +119,6 @@
     }
   }
 
-
   @media all and (max-width: $bp0) {
     &__container {
       width: 100%;
@@ -142,7 +141,6 @@
       margin-bottom: rem(40);
     }
   }
-
 
   @media all and (max-width: $bp3) {
     br {
@@ -208,12 +206,10 @@
   }
 
   @media all and (max-width: $bp4) {
-
     &__container {
       width: 100%;
       padding: rem(90) rem(16) rem(90) rem(16);
     }
-
 
     h2 {
       width: 100%;

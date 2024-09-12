@@ -1,5 +1,5 @@
-import React from "react";
-import styles from "./Mapbox.module.css";
+import React from 'react';
+import styles from './Mapbox.module.css';
 
 const Popup = React.memo(({ selectedPopup, onClose }) => {
   return (
@@ -9,9 +9,7 @@ const Popup = React.memo(({ selectedPopup, onClose }) => {
           <img className={styles.popupImage} src={selectedPopup.image} alt={selectedPopup.title} />
         )}
         <div className={styles.popupTitle}>{selectedPopup.title}</div>
-        {selectedPopup.buttonText && (
-          <div className={styles.popupCustomButton}>{selectedPopup.buttonText}</div>
-        )}
+        {selectedPopup.buttonText && <div className={styles.popupCustomButton}>{selectedPopup.buttonText}</div>}
       </div>
       <div className={styles.popupCloseButton} onClick={onClose}>
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">

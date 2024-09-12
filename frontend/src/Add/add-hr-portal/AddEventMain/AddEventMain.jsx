@@ -2,11 +2,7 @@ import React, { useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import EventsList from './EventsList';
 import EventModalManager from './EventModalManager';
-import {
-  deleteSlide,
-  toggleSlideVisibility,
-  fetchSlideById
-} from '../../../store/Slice/vacancyMainSlideCardSlice';
+import { deleteSlide, toggleSlideVisibility, fetchSlideById } from '../../../store/Slice/vacancyMainSlideCardSlice';
 import styles from '../../style/style-card.module.scss';
 
 export default function AddEventMain({
@@ -19,10 +15,10 @@ export default function AddEventMain({
   deleteModalState,
   setDeleteModalState,
   handleDeleteModalClose,
-  handleDeleteModalOpen
+  handleDeleteModalOpen,
 }) {
   const dispatch = useDispatch();
-  const slides = useSelector(state => state.formAddSlide.slides || []);
+  const slides = useSelector((state) => state.formAddSlide.slides || []);
 
   const handleOpenModal = () => {
     setEditEventData(null);
@@ -37,14 +33,17 @@ export default function AddEventMain({
     [dispatch, handleDeleteModalClose]
   );
 
-  const handleLookClick = useCallback((id) => {
-    const slide = slides.find(slide => slide.id === id);
-    if (slide) {
-      dispatch(toggleSlideVisibility({ id, hidden: !slide.hidden }));
-    } else {
-      console.error("Слайд с таким ID не найден:", id);
-    }
-  }, [dispatch, slides]);
+  const handleLookClick = useCallback(
+    (id) => {
+      const slide = slides.find((slide) => slide.id === id);
+      if (slide) {
+        dispatch(toggleSlideVisibility({ id, hidden: !slide.hidden }));
+      } else {
+        console.error('Слайд с таким ID не найден:', id);
+      }
+    },
+    [dispatch, slides]
+  );
 
   const handleEditClick = useCallback(
     async (id) => {
@@ -53,7 +52,7 @@ export default function AddEventMain({
         setEditEventData(slideData);
         setIsModalOpenEvent(true);
       } catch (error) {
-        console.error("Ошибка при загрузке данных слайда:", error);
+        console.error('Ошибка при загрузке данных слайда:', error);
       }
     },
     [dispatch, setEditEventData, setIsModalOpenEvent]
@@ -92,7 +91,6 @@ export default function AddEventMain({
         </button>
       </div>
 
-   
       <EventModalManager
         isModalOpenEvent={isModalOpenEvent}
         setIsModalOpenEvent={setIsModalOpenEvent}

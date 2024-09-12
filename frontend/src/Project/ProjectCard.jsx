@@ -1,16 +1,16 @@
-import React, { useEffect, useRef, useState, useMemo, useCallback } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Helmet } from "react-helmet-async";
-import { useParams, Link } from "react-router-dom";
-import gsap from "gsap";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { MotionPathPlugin } from "gsap/MotionPathPlugin";
-import ProjectCardSlider from "../UI/Project&ArticleCardSlider/ProjectCardSlider";
-import styles from "./ProjectCard.module.css";
-import { getFetchForm } from "../store/Slice/projectSlice";
-import SliderContainerProjectCard from "../UI/Project&ArticleCardSlider/SliderContainerProjectCard";
-import AllProjectsButton from "../UI/ButtonsProjects/AllProjectsButton";
+import React, { useEffect, useRef, useState, useMemo, useCallback } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Helmet } from 'react-helmet-async';
+import { useParams, Link } from 'react-router-dom';
+import gsap from 'gsap';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { MotionPathPlugin } from 'gsap/MotionPathPlugin';
+import ProjectCardSlider from '../UI/Project&ArticleCardSlider/ProjectCardSlider';
+import styles from './ProjectCard.module.css';
+import { getFetchForm } from '../store/Slice/projectSlice';
+import SliderContainerProjectCard from '../UI/Project&ArticleCardSlider/SliderContainerProjectCard';
+import AllProjectsButton from '../UI/ButtonsProjects/AllProjectsButton';
 import {
   handleScroll,
   onVerticalScroll,
@@ -19,24 +19,20 @@ import {
   shareToTelegram,
   shareToWhatsApp,
   // shareToViber,
-} from "./utils";
-import catPhoto from "../img/default-photo.jpeg";
+} from './utils';
+import catPhoto from '../img/default-photo.jpeg';
 
-import next from ".././icons/next.svg";
-import previous from ".././icons/previous.svg";
-import ConstructorBlockRenderer from "./ConstructorProject/ConstructorBlockRenderer";
-import { containsListTags } from "../Project/utils";
-import { renderListWithDots } from "../Project/utils";
+import next from '.././icons/next.svg';
+import previous from '.././icons/previous.svg';
+import ConstructorBlockRenderer from './ConstructorProject/ConstructorBlockRenderer';
+import { containsListTags } from '../Project/utils';
+import { renderListWithDots } from '../Project/utils';
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 
-const ProjectCard = React.memo(({
-  handleMouseEnter,
-  handleMouseLeave,
-  handleMouseHover,
-}) => {
+const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMouseHover }) => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const sliderCardRef = useRef(null);
@@ -47,7 +43,7 @@ const ProjectCard = React.memo(({
   const [enableVerticalScroll, setEnableVerticalScroll] = useState(true);
   const [isHorizontalScroll, setIsHorizontalScroll] = useState(false);
   const [isAtRightEdge, setIsAtRightEdge] = useState(false);
-  const [scrollingMode, setScrollingMode] = useState("vertical");
+  const [scrollingMode, setScrollingMode] = useState('vertical');
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   const refs = {
@@ -112,17 +108,17 @@ const ProjectCard = React.memo(({
     const animateElement = (element) => {
       if (element) {
         gsap.from(element, {
-          x: "-100%",
+          x: '-100%',
           opacity: 0,
           duration: 1.5,
           delay: 1,
-          ease: "power4.out",
+          ease: 'power4.out',
           scrollTrigger: {
             trigger: element,
           },
         });
       }
-      gsap.from(element, { duration: 1, clipPath: { start: "100%" } });
+      gsap.from(element, { duration: 1, clipPath: { start: '100%' } });
     };
 
     elementsRight.forEach(animateElement);
@@ -130,63 +126,32 @@ const ProjectCard = React.memo(({
   }, []);
 
   const colors = {
-    Архитектура: "#FF7F6A",
-    BIM: "#75BBFD",
-    Конструкции: "#566272",
-    Дизайн: "#FAA8BD",
-    Инженерия: "#90B734",
+    Архитектура: '#FF7F6A',
+    BIM: '#75BBFD',
+    Конструкции: '#566272',
+    Дизайн: '#FAA8BD',
+    Инженерия: '#90B734',
   };
 
   useEffect(() => {
     const el = sliderCardRef.current;
     if (el) {
+      el.addEventListener('wheel', (e) => onVerticalScroll(el, e, setEnableVerticalScroll), { passive: false });
       el.addEventListener(
-        "wheel",
-        (e) => onVerticalScroll(el, e, setEnableVerticalScroll),
+        'wheel',
+        (e) => onWheel(el, e, enableVerticalScroll, isHorizontalScroll, setIsHorizontalScroll),
         { passive: false }
       );
-      el.addEventListener(
-        "wheel",
-        (e) =>
-          onWheel(
-            el,
-            e,
-            enableVerticalScroll,
-            isHorizontalScroll,
-            setIsHorizontalScroll
-          ),
-        { passive: false }
-      );
-      el.addEventListener("scroll", () =>
-        handleScroll(
-          el,
-          projects,
-          setEnableVerticalScroll,
-          setIsHorizontalScroll,
-          setIsAtRightEdge
-        )
+      el.addEventListener('scroll', () =>
+        handleScroll(el, projects, setEnableVerticalScroll, setIsHorizontalScroll, setIsAtRightEdge)
       );
       return () => {
-        el.removeEventListener("wheel", (e) =>
-          onVerticalScroll(el, e, setEnableVerticalScroll)
+        el.removeEventListener('wheel', (e) => onVerticalScroll(el, e, setEnableVerticalScroll));
+        el.removeEventListener('wheel', (e) =>
+          onWheel(el, e, enableVerticalScroll, isHorizontalScroll, setIsHorizontalScroll)
         );
-        el.removeEventListener("wheel", (e) =>
-          onWheel(
-            el,
-            e,
-            enableVerticalScroll,
-            isHorizontalScroll,
-            setIsHorizontalScroll
-          )
-        );
-        el.removeEventListener("scroll", () =>
-          handleScroll(
-            el,
-            projects,
-            setEnableVerticalScroll,
-            setIsHorizontalScroll,
-            setIsAtRightEdge
-          )
+        el.removeEventListener('scroll', () =>
+          handleScroll(el, projects, setEnableVerticalScroll, setIsHorizontalScroll, setIsAtRightEdge)
         );
       };
     }
@@ -197,32 +162,25 @@ const ProjectCard = React.memo(({
   const nextIndex = (currentIndex + 1) % projects.length;
   const previousProject = projects[previousIndex];
   const nextProject = projects[nextIndex];
-  const firstValue = (projects[0]?.viewConstruction ?? "").split(",")[0];
+  const firstValue = (projects[0]?.viewConstruction ?? '').split(',')[0];
   const userSelectedBlocks = project?.Constructors?.map((el) => el.data);
-  const imageOpenSource =
-    project && project.imageOpen
-      ? `${Host}/images/imageAdd/${project.imageOpen}`
-      : catPhoto;
-  const altTextOpen = (project && project.imageOpen) || "Default Alt Text";
-  const imageCloseSource =
-    project && project.imageClose
-      ? `${Host}/images/imageAdd/${project.imageClose}`
-      : catPhoto;
-  const altTextClose = (project && project.imageClose) || "Default Alt Text";
+  const imageOpenSource = project && project.imageOpen ? `${Host}/images/imageAdd/${project.imageOpen}` : catPhoto;
+  const altTextOpen = (project && project.imageOpen) || 'Default Alt Text';
+  const imageCloseSource = project && project.imageClose ? `${Host}/images/imageAdd/${project.imageClose}` : catPhoto;
+  const altTextClose = (project && project.imageClose) || 'Default Alt Text';
 
   // Обработчик изменения размера окна
   const handleResize = useCallback(() => {
     setWindowWidth(window.innerWidth);
   }, []);
 
-
   // Подписка на событие изменения размера окна
   useEffect(() => {
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
 
     // Отписка от события при размонтировании компонента
     return () => {
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener('resize', handleResize);
     };
   }, []);
 
@@ -241,21 +199,12 @@ const ProjectCard = React.memo(({
   return (
     <>
       <Helmet>
-        <title>{project ? project.title : "Marks Group"}</title>
-        <meta
-          property="og:image"
-          content={
-            project ? `${Host}/images/imageAdd/${project.imageProject}` : ""
-          }
-        />
+        <title>{project ? project.title : 'Marks Group'}</title>
+        <meta property="og:image" content={project ? `${Host}/images/imageAdd/${project.imageProject}` : ''} />
       </Helmet>
       <div className={styles.main_project_card}>
         {project && <ProjectCardSlider slidesCard={[project]} />}
-        <div
-          className={styles.all_button_div}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-        >
+        <div className={styles.all_button_div} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
           <AllProjectsButton />
         </div>
         <div className={styles.section_project__block__card}>
@@ -267,43 +216,37 @@ const ProjectCard = React.memo(({
                     <div className={styles.cart_project__widget__block__card}>
                       {(() => {
                         try {
-                          const selectCompetencies = JSON.parse(
-                            project.selectCompetencies
-                          );
+                          const selectCompetencies = JSON.parse(project.selectCompetencies);
                           return selectCompetencies.map((competency) => (
                             <div
                               key={competency.value}
-                              className={
-                                styles.el_project_selectCompetencies__block__card
-                              }
+                              className={styles.el_project_selectCompetencies__block__card}
                               style={{
                                 // color: colors[competency.value],
                                 // borderColor: colors[competency.value],
-                                border: "1px solid",
-                                padding: "3px 6px",
-                                borderRadius: "34px",
+                                border: '1px solid',
+                                padding: '3px 6px',
+                                borderRadius: '34px',
                               }}
                             >
                               {competency.label}
                             </div>
                           ));
                         } catch (error) {
-                          if (typeof project.selectCompetencies === "string") {
+                          if (typeof project.selectCompetencies === 'string') {
                             // Если строка с одним значением и без запятых
-                            if (!project.selectCompetencies.includes(",")) {
+                            if (!project.selectCompetencies.includes(',')) {
                               const label = project.selectCompetencies.trim();
                               return (
                                 <div
                                   key={label}
-                                  className={
-                                    styles.el_project_selectCompetencies__block__card
-                                  }
+                                  className={styles.el_project_selectCompetencies__block__card}
                                   style={{
                                     // color: colors[label],
                                     // borderColor: colors[label],
-                                    border: "1px solid",
-                                    padding: "3px 6px",
-                                    borderRadius: "34px",
+                                    border: '1px solid',
+                                    padding: '3px 6px',
+                                    borderRadius: '34px',
                                   }}
                                 >
                                   {label}
@@ -312,59 +255,41 @@ const ProjectCard = React.memo(({
                             }
                             // Строка с несколькими значениями, разделенными запятыми
                             else {
-                              return project.selectCompetencies
-                                .split(",")
-                                .map((value) => {
-                                  const label = value.trim();
-                                  return (
-                                    <div
-                                      key={value}
-                                      className={
-                                        styles.el_project_selectCompetencies__block__card
-                                      }
-                                      style={{
-                                        // color: colors[value],
-                                        // borderColor: colors[value],
-                                        border: "1px solid",
-                                        padding: "3px 6px",
-                                        borderRadius: "34px",
-                                      }}
-                                    >
-                                      {label}
-                                    </div>
-                                  );
-                                });
+                              return project.selectCompetencies.split(',').map((value) => {
+                                const label = value.trim();
+                                return (
+                                  <div
+                                    key={value}
+                                    className={styles.el_project_selectCompetencies__block__card}
+                                    style={{
+                                      // color: colors[value],
+                                      // borderColor: colors[value],
+                                      border: '1px solid',
+                                      padding: '3px 6px',
+                                      borderRadius: '34px',
+                                    }}
+                                  >
+                                    {label}
+                                  </div>
+                                );
+                              });
                             }
                           }
                           return null;
                         }
                       })()}
                     </div>
-                    <div
-                      className={styles.cart_project_title__block__card}
-                      ref={refs.title}
-                    >
+                    <div className={styles.cart_project_title__block__card} ref={refs.title}>
                       {project.title}
                     </div>
                   </div>
                 </div>
-                <div
-                  className={styles.cart_project__address__block__card}
-                  ref={refs.address}
-                >
-                  {project.countryCity}{" "}
-                  <div
-                    className={styles.cart_project__address__svg__block__card}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="2"
-                      height="2"
-                      viewBox="0 0 2 2"
-                      fill="none"
-                    >
+                <div className={styles.cart_project__address__block__card} ref={refs.address}>
+                  {project.countryCity}{' '}
+                  <div className={styles.cart_project__address__svg__block__card}>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="2" height="2" viewBox="0 0 2 2" fill="none">
                       <circle cx="1" cy="1" r="1" fill="#F6F6F6" />
-                    </svg>{" "}
+                    </svg>{' '}
                   </div>
                   {project.monthYear}
                 </div>
@@ -379,44 +304,39 @@ const ProjectCard = React.memo(({
                 <div className={styles.title_block}>
                   <div className={styles.left_title}>
                     {project.titleTextBlock}
-                    <div
-                      className={`${styles.left_meta} ${styles.left_meta_castom}`}
-                    >
-                  {project.degreeParticipation.split(',').join(', ')}
-
+                    <div className={`${styles.left_meta} ${styles.left_meta_castom}`}>
+                      {project.degreeParticipation.split(',').join(', ')}
                     </div>
                   </div>
                 </div>
-                <div className={styles.title_text}>
-                  {project.descriptionProject}
-                </div>
+                <div className={styles.title_text}>{project.descriptionProject}</div>
                 <div className={styles.result_container}>
                   {[
                     {
                       value: project.totalArea,
-                      text: "Общая площадь",
-                      unit: "м²",
+                      text: 'Общая площадь',
+                      unit: 'м²',
                     },
                     {
                       value: project.siteArea,
-                      text: "Площадь участка",
-                      unit: "га",
+                      text: 'Площадь участка',
+                      unit: 'га',
                     },
-                    { value: project.floors, text: "Этажность" }, // Если у какого-то поля нет единицы измерения, просто опустите 'unit'
-                    { value: project.altitude, text: "Высотность", unit: "м" },
+                    { value: project.floors, text: 'Этажность' }, // Если у какого-то поля нет единицы измерения, просто опустите 'unit'
+                    { value: project.altitude, text: 'Высотность', unit: 'м' },
                     {
                       value: project.constructionVolume,
-                      text: "Строительный объем",
-                      unit: "м³",
+                      text: 'Строительный объем',
+                      unit: 'м³',
                     },
                     {
                       value: project.numberOfLanes,
-                      text: "Количество полос",
+                      text: 'Количество полос',
                     },
                     {
                       value: project.long,
-                      text: "Длинна",
-                      unit: "км",
+                      text: 'Длинна',
+                      unit: 'км',
                     },
                   ]
                     .filter((item) => item.value) // фильтрация по наличию значения
@@ -424,8 +344,7 @@ const ProjectCard = React.memo(({
                     .map((item) => (
                       <div key={item.text} className={styles.result_block}>
                         <div className={styles.result_number}>
-                          {item.value}{" "}
-                          {item.unit ? <span>{item.unit}</span> : null}
+                          {item.value} {item.unit ? <span>{item.unit}</span> : null}
                         </div>
                         <div className={styles.result_text}>{item.text}</div>
                       </div>
@@ -436,24 +355,24 @@ const ProjectCard = React.memo(({
                     {[
                       {
                         value: project.totalArea,
-                        text: "Общая площадь",
-                        unit: "м²",
+                        text: 'Общая площадь',
+                        unit: 'м²',
                       },
                       {
                         value: project.siteArea,
-                        text: "Площадь участка",
-                        unit: "га",
+                        text: 'Площадь участка',
+                        unit: 'га',
                       },
-                      { value: project.floors, text: "Этажность" },
+                      { value: project.floors, text: 'Этажность' },
                       {
                         value: project.altitude,
-                        text: "Высотность",
-                        unit: "м",
+                        text: 'Высотность',
+                        unit: 'м',
                       },
                       {
                         value: project.constructionVolume,
-                        text: "Строительный объем",
-                        unit: "м³",
+                        text: 'Строительный объем',
+                        unit: 'м³',
                       },
                     ]
                       .filter((item) => item.value)
@@ -464,61 +383,39 @@ const ProjectCard = React.memo(({
                             {item.value}
                             {item.unit ? <span>{item.unit}</span> : null}
                           </div>
-                          <div className={styles.result_text_mobile}>
-                            {item.text}
-                          </div>
+                          <div className={styles.result_text_mobile}>{item.text}</div>
                         </div>
                       ))}
                   </div>
                 )}
               </div>
-              <div
-                ref={refs.blockRight}
-                className={styles.header_content_right}
-              >
+              <div ref={refs.blockRight} className={styles.header_content_right}>
                 <div className={styles.title_block_mobile}>
                   <div className={styles.left_title}>
                     {project.titleTextBlock}
-                    <div
-                      className={`${styles.left_meta} ${styles.left_meta_castom}`}
-                    >
-                     {project.degreeParticipation.split(',').join(', ')}
+                    <div className={`${styles.left_meta} ${styles.left_meta_castom}`}>
+                      {project.degreeParticipation.split(',').join(', ')}
                     </div>
                   </div>
                 </div>
-                <div className={styles.title_text_mobile}>
-                  {project.descriptionProject}
-                </div>
+                <div className={styles.title_text_mobile}>{project.descriptionProject}</div>
                 <div className={styles.local_container}>
                   <div className={styles.local_ritgh}>
                     <div className={styles.local_container_wrapper_block}>
                       <div className={styles.local_title}>Расположение</div>
-                      <div className={styles.local_text}>
-                        {project.location}
-                      </div>
+                      <div className={styles.local_text}>{project.location}</div>
                     </div>
                     <div className={styles.local_container_wrapper_block1}>
                       <div className={styles.local_title}>Статус</div>
-                      <div className={styles.local_text}>
-                        {" "}
-                        {project.statusObject}
-                      </div>
+                      <div className={styles.local_text}> {project.statusObject}</div>
                     </div>
                     <div className={styles.local_container_wrapper_block1}>
                       <div className={styles.local_title}>Публикация</div>
                       <Link to={project.linkToPublication} target="_blank">
-                        <div
-                          className={`${styles.publicationLink} ${styles.local_text}`}
-                        >
-                          {project.publication}
-                        </div>
+                        <div className={`${styles.publicationLink} ${styles.local_text}`}>{project.publication}</div>
                       </Link>
                       <Link to={project.linkToPublicationTwo} target="_blank">
-                        <div
-                          className={`${styles.publicationLink} ${styles.local_text}`}
-                        >
-                          {project.publicationTwo}
-                        </div>
+                        <div className={`${styles.publicationLink} ${styles.local_text}`}>{project.publicationTwo}</div>
                       </Link>
                     </div>
                   </div>
@@ -526,37 +423,28 @@ const ProjectCard = React.memo(({
                     <div className={styles.local_container_wrapper_block}>
                       <div className={styles.local_title}>Степень участия</div>
                       <div className={styles.local_text}>
-                        {" "}
+                        {' '}
                         {/* {project.degreeParticipation} */}
-                        {project.degreeParticipation
-                          .split(",")
-                          .map((elem, index, array) => (
-                            <span key={index}>
-                              {elem.trim()}{" "}
-                              {index < array.length - 1 ? ", " : ""}
-                            </span>
-                          ))}
+                        {project.degreeParticipation.split(',').map((elem, index, array) => (
+                          <span key={index}>
+                            {elem.trim()} {index < array.length - 1 ? ', ' : ''}
+                          </span>
+                        ))}
                       </div>
                     </div>
                     <div className={styles.local_container_wrapper_block1}>
                       <div className={styles.local_title}>Заказчик</div>
-                      <div className={styles.local_text}>
-                        {" "}
-                        {project.customer}
-                      </div>
+                      <div className={styles.local_text}> {project.customer}</div>
                     </div>
                     <div className={styles.local_container_wrapper_block1}>
                       <div className={styles.local_title}>Стадия</div>
                       <div className={styles.local_text}>
-                        {" "}
-                        {project.awards
-                          .split(",")
-                          .map((award, index, array) => (
-                            <span key={index}>
-                              {award.trim()}{" "}
-                              {index < array.length - 1 ? ", " : ""}
-                            </span>
-                          ))}
+                        {' '}
+                        {project.awards.split(',').map((award, index, array) => (
+                          <span key={index}>
+                            {award.trim()} {index < array.length - 1 ? ', ' : ''}
+                          </span>
+                        ))}
                       </div>
                     </div>
                   </div>
@@ -566,24 +454,13 @@ const ProjectCard = React.memo(({
             <div className={styles.blockImg}>
               <div className={styles.container}>
                 <div className={styles.item}>
-                  <img
-                    ref={refs.leftImg1}
-                    className={styles.item_img}
-                    src={imageOpenSource}
-                    alt=""
-                    loading="lazy"
-                  />
+                  <img ref={refs.leftImg1} className={styles.item_img} src={imageOpenSource} alt="" loading="lazy" />
                 </div>
-                <div
-                  ref={refs.blockDescription}
-                  className={styles.description_object_container}
-                >
+                <div ref={refs.blockDescription} className={styles.description_object_container}>
                   <div className={styles.description_object_block}>
                     {project.headingTextBlock && (
                       <div className={styles.description_object_title}>
-                        <h2 className={styles.blockHeadingTitle_heading}>
-                          {project.headingTextBlock}
-                        </h2>
+                        <h2 className={styles.blockHeadingTitle_heading}>{project.headingTextBlock}</h2>
                       </div>
                     )}
                     <div className={styles.description_object_text1}>
@@ -620,10 +497,7 @@ const ProjectCard = React.memo(({
                     alt=""
                   />
                 </div> */}
-                <div
-                  className={styles.div_conteiner}
-                  ref={refs.constructorBlock}
-                >
+                <div className={styles.div_conteiner} ref={refs.constructorBlock}>
                   {userSelectedBlocks?.map((innerBlocks, outerIndex) => (
                     <div key={outerIndex}>
                       {innerBlocks?.map((block, innerIndex) => (
@@ -659,9 +533,7 @@ const ProjectCard = React.memo(({
                 >
                   <div className={styles.previous_svg_projectCard}>
                     <img src={previous} alt={previous} />
-                    <span className={styles.previous__span_projectCard}>
-                      {`${previousProject.title}`}
-                    </span>
+                    <span className={styles.previous__span_projectCard}>{`${previousProject.title}`}</span>
                   </div>
                 </Link>
               )}
@@ -673,9 +545,7 @@ const ProjectCard = React.memo(({
                   to={`/projects/${nextProject.id}`}
                 >
                   <div className={styles.next_svg_projectCard}>
-                    <span className={styles.next__span_projectCard}>
-                      {`${nextProject.title}`}
-                    </span>
+                    <span className={styles.next__span_projectCard}>{`${nextProject.title}`}</span>
                     <img src={next} alt={next} />
                   </div>
                 </Link>
@@ -687,10 +557,7 @@ const ProjectCard = React.memo(({
                 onMouseLeave={handleMouseLeave}
                 onClick={() => shareToVK(project, Host)}
               >
-                <span
-                  className={styles.social_links_item}
-                  style={{ marginRight: "21px", color: "#FF7F6A" }}
-                >
+                <span className={styles.social_links_item} style={{ marginRight: '21px', color: '#FF7F6A' }}>
                   VK
                 </span>
               </button>
@@ -699,10 +566,7 @@ const ProjectCard = React.memo(({
                 onMouseLeave={handleMouseLeave}
                 onClick={() => shareToWhatsApp(project, Host)}
               >
-                <span
-                  className={styles.social_links_item}
-                  style={{ marginRight: "25px", color: "#FF7F6A" }}
-                >
+                <span className={styles.social_links_item} style={{ marginRight: '25px', color: '#FF7F6A' }}>
                   WA
                 </span>
               </button>
@@ -719,10 +583,7 @@ const ProjectCard = React.memo(({
                 onMouseLeave={handleMouseLeave}
                 onClick={() => shareToTelegram(project, Host)}
               >
-                <span
-                  className={styles.social_links_item}
-                  style={{ color: "#FF7F6A" }}
-                >
+                <span className={styles.social_links_item} style={{ color: '#FF7F6A' }}>
                   TG
                 </span>
               </button>
@@ -778,7 +639,7 @@ const ProjectCard = React.memo(({
               const defaultPhoto = catPhoto;
 
               const photoSrc =
-                photoName && photoName !== "null" && photoName !== "undefined"
+                photoName && photoName !== 'null' && photoName !== 'undefined'
                   ? `${Host}/images/imageAdd/${photoName}`
                   : defaultPhoto;
               if (!project) {
@@ -791,12 +652,10 @@ const ProjectCard = React.memo(({
                   onScroll={handleScroll}
                   id="slider_container_item_card"
                   className={styles.slider_container_item_card_projectCard}
-                  style={index % 2 === 1 ? { paddingTop: "10rem" } : {}}
+                  style={index % 2 === 1 ? { paddingTop: '10rem' } : {}}
                 >
                   <Link to={`/projects/${project.id}`} key={project.id}>
-                    <div
-                      className={styles.wrapper_container_item_card_projectCard}
-                    >
+                    <div className={styles.wrapper_container_item_card_projectCard}>
                       <img
                         className={styles.container__imageTitle_projectCard}
                         src={photoSrc}
@@ -806,103 +665,54 @@ const ProjectCard = React.memo(({
                         loading="lazy"
                       />
                     </div>
-                    <div
-                      className={
-                        styles.wrapper_container_title_selectCompetencies_projectCard
-                      }
-                    >
-                      <div
-                        className={
-                          styles.container_wrapper_title_city_data_block_projectCard
-                        }
-                      >
-                        <div className={styles.container__title_projectCard}>
-                          {project.title}
-                        </div>
-                        <div
-                          className={styles.countryCity_monthYear_projectCard}
-                        >
-                          <div
-                            className={
-                              styles.container__countryCity_projectCard
-                            }
-                          >
-                            {project.countryCity}
-                          </div>
-                          <div
-                            className={
-                              styles.cart_project__address__svg_projectCard
-                            }
-                          >
-                            <svg
-                              xmlns="http://www.w3.org/2000/svg"
-                              width="2"
-                              height="2"
-                              viewBox="0 0 2 2"
-                              fill="none"
-                            >
+                    <div className={styles.wrapper_container_title_selectCompetencies_projectCard}>
+                      <div className={styles.container_wrapper_title_city_data_block_projectCard}>
+                        <div className={styles.container__title_projectCard}>{project.title}</div>
+                        <div className={styles.countryCity_monthYear_projectCard}>
+                          <div className={styles.container__countryCity_projectCard}>{project.countryCity}</div>
+                          <div className={styles.cart_project__address__svg_projectCard}>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="2" height="2" viewBox="0 0 2 2" fill="none">
                               <circle cx="1" cy="1" r="1" fill="#959DA6" />
-                            </svg>{" "}
+                            </svg>{' '}
                           </div>
-                          <div
-                            className={styles.container__monthYear_projectCard}
-                          >
-                            {project.monthYear}
-                          </div>
+                          <div className={styles.container__monthYear_projectCard}>{project.monthYear}</div>
                         </div>
                       </div>
-                      <div
-                        className={
-                          styles.wrapper_container__selectCompetencies_projectCard
-                        }
-                      >
-                        <div
-                          className={
-                            styles.container__selectCompetencies_projectCard
-                          }
-                        >
+                      <div className={styles.wrapper_container__selectCompetencies_projectCard}>
+                        <div className={styles.container__selectCompetencies_projectCard}>
                           {(() => {
                             try {
-                              const selectCompetencies = JSON.parse(
-                                project.selectCompetencies
-                              );
+                              const selectCompetencies = JSON.parse(project.selectCompetencies);
                               return selectCompetencies.map((competency) => (
                                 <div
                                   key={competency.value}
-                                  className={
-                                    styles.div_el_selectCompetencies_projectCard
-                                  }
+                                  className={styles.div_el_selectCompetencies_projectCard}
                                   style={{
                                     color: colors[competency.value],
                                     borderColor: colors[competency.value],
-                                    border: "1px solid",
-                                    padding: "3px 6px",
-                                    borderRadius: "34px",
+                                    border: '1px solid',
+                                    padding: '3px 6px',
+                                    borderRadius: '34px',
                                   }}
                                 >
                                   {competency.label}
                                 </div>
                               ));
                             } catch (error) {
-                              if (
-                                typeof project.selectCompetencies === "string"
-                              ) {
+                              if (typeof project.selectCompetencies === 'string') {
                                 // Если строка с одним значением и без запятых
-                                if (!project.selectCompetencies.includes(",")) {
-                                  const label =
-                                    project.selectCompetencies.trim();
+                                if (!project.selectCompetencies.includes(',')) {
+                                  const label = project.selectCompetencies.trim();
                                   return (
                                     <div
                                       key={label}
-                                      className={
-                                        styles.div_el_selectCompetencies_projectCard
-                                      }
+                                      className={styles.div_el_selectCompetencies_projectCard}
                                       style={{
                                         color: colors[label],
                                         borderColor: colors[label],
-                                        border: "1px solid",
-                                        padding: "3px 6px",
-                                        borderRadius: "34px",
+                                        border: '1px solid',
+                                        padding: '3px 6px',
+                                        borderRadius: '34px',
                                       }}
                                     >
                                       {label}
@@ -910,31 +720,25 @@ const ProjectCard = React.memo(({
                                   );
                                 }
                                 // Строка с несколькими значениями, разделенными запятыми
-                                else if (
-                                  project.selectCompetencies.includes(",")
-                                ) {
-                                  return project.selectCompetencies
-                                    .split(",")
-                                    .map((value) => {
-                                      const label = value.trim();
-                                      return (
-                                        <div
-                                          key={value}
-                                          className={
-                                            styles.div_el_selectCompetencies_projectCard
-                                          }
-                                          style={{
-                                            color: colors[value],
-                                            borderColor: colors[value],
-                                            border: "1px solid",
-                                            padding: "3px 6px",
-                                            borderRadius: "34px",
-                                          }}
-                                        >
-                                          {label}
-                                        </div>
-                                      );
-                                    });
+                                else if (project.selectCompetencies.includes(',')) {
+                                  return project.selectCompetencies.split(',').map((value) => {
+                                    const label = value.trim();
+                                    return (
+                                      <div
+                                        key={value}
+                                        className={styles.div_el_selectCompetencies_projectCard}
+                                        style={{
+                                          color: colors[value],
+                                          borderColor: colors[value],
+                                          border: '1px solid',
+                                          padding: '3px 6px',
+                                          borderRadius: '34px',
+                                        }}
+                                      >
+                                        {label}
+                                      </div>
+                                    );
+                                  });
                                 }
                               }
                               return null;

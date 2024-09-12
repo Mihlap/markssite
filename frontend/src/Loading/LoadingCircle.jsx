@@ -1,14 +1,14 @@
-import React from "react";
-import styles from "./Loader.module.scss";
+import React from 'react';
+import styles from './Loader.module.scss';
 
 export default function LoadingCircle() {
   return (
     <div
       style={{
-        height: "100vh",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
+        height: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
       }}
     >
       <div className={styles.div_svg}>
