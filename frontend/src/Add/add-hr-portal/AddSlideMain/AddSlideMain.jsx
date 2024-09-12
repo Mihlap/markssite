@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import SlidesList from './SlidesList';
 import SlideModalManager from './SlideModalManager';
@@ -17,25 +17,37 @@ export default function AddSlideMain({
   editSlideData,
   setEditSlideData,
   modalBlockHeight,
-  deleteModalState,
-  setDeleteModalState,
-  handleDeleteModalClose,
-  handleDeleteModalOpen,
 }) {
   const dispatch = useDispatch();
-  const slides = useSelector((state) => state.formAddSlide.slides || []);
-
-  const handleOpenModal = () => {
-    setEditSlideData(null);
+  const slides = useSelector(state => state.formAddSlide.slides || []);
+  const [deleteModalStateSlide, setDeleteModalStateSlide] = useState({});
+  const handleOpenModal = useCallback(() => {
     setIsModalOpenMain(true);
-  };
+    setEditSlideData(null);
+  }, []);
 
-  const handleFormDelete = useCallback(
+  const handleDeleteModalOpenSlide = useCallback((id) => {
+    setDeleteModalStateSlide((prevState) => ({
+      ...prevState,
+      [id]: true,
+    }));
+  }, []);
+
+  const handleDeleteModalCloseSlide = useCallback((id) => {
+    setDeleteModalStateSlide((prevState) => {
+      const newState = { ...prevState };
+      delete newState[id];
+      return newState;
+    });
+  }, []);
+
+
+  const handleFormDeleteSlide = useCallback(
     (id) => {
       dispatch(deleteSlide(id));
-      handleDeleteModalClose(id);
+      handleDeleteModalCloseSlide(id);
     },
-    [dispatch, handleDeleteModalClose]
+    [dispatch, handleDeleteModalCloseSlide]
   );
 
   const handleLookClick = useCallback(
@@ -63,7 +75,7 @@ export default function AddSlideMain({
         console.error('Ошибка при загрузке данных слайда:', error);
       }
     },
-    [dispatch, setEditSlideData, setIsModalOpenMain]
+    [dispatch, slides, setEditSlideData, setIsModalOpenMain] 
   );
 
   return (
@@ -106,12 +118,12 @@ export default function AddSlideMain({
 
       <SlidesList
         user={user}
-        deleteModalState={deleteModalState}
-        handleDeleteModalClose={handleDeleteModalClose}
-        handleDeleteModalOpen={handleDeleteModalOpen}
+        deleteModalStateSlide={deleteModalStateSlide}
+        handleDeleteModalCloseSlide={handleDeleteModalCloseSlide}
+        handleDeleteModalOpenSlide={handleDeleteModalOpenSlide}
         handleEditClick={handleEditClick}
-        handleFormDelete={handleFormDelete}
-        handleLookClick={handleLookClick}
+        handleFormDeleteSlide={handleFormDeleteSlide}
+        handleLookClick={handleLookClick}    
       />
     </div>
   );
