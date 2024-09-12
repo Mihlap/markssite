@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
-import Slider from "react-slick";
-import styles from "./ConstructorBlockRenderer.module.scss";
-import "../stylePaginationSlider.css";
+import React, { useEffect, useState } from 'react';
+import Slider from 'react-slick';
+import styles from './ConstructorBlockRenderer.module.scss';
+import '../stylePaginationSlider.css';
 
-import playIcon from "../../icons/play.svg";
-import pauseIcon from "../../icons/pause.svg";
-import playIconMobile from "../../icons/playMobile.svg";
-import pauseIconMobile from "../../icons/pauseMobile.svg";
-import { containsListTags } from "../../Project/utils";
-import { renderListWithDots } from "../../Project/utils";
+import playIcon from '../../icons/play.svg';
+import pauseIcon from '../../icons/pause.svg';
+import playIconMobile from '../../icons/playMobile.svg';
+import pauseIconMobile from '../../icons/pauseMobile.svg';
+import { containsListTags } from '../../Project/utils';
+import { renderListWithDots } from '../../Project/utils';
 
 const isMobileScreen = window.innerWidth <= 1024;
 
@@ -18,11 +18,11 @@ const pauseIconToUse = isMobileScreen ? pauseIconMobile : pauseIcon;
 const Host = process.env.REACT_APP_SERVER_HOST;
 
 const arrowStyles = {
-  position: "absolute",
-  top: "50%",
-  transform: "translateY(-50%)",
+  position: 'absolute',
+  top: '50%',
+  transform: 'translateY(-50%)',
   zIndex: 1,
-  cursor: "pointer",
+  cursor: 'pointer',
 };
 
 const PrevArrow = ({ props, onClick, onMouseEnter, onMouseLeave }) => (
@@ -30,15 +30,9 @@ const PrevArrow = ({ props, onClick, onMouseEnter, onMouseLeave }) => (
     onMouseEnter={onMouseEnter}
     onMouseLeave={onMouseLeave}
     onClick={onClick}
-    style={{ ...arrowStyles, left: "1.5rem" }}
+    style={{ ...arrowStyles, left: '1.5rem' }}
   >
-    <svg
-      width="42"
-      height="42"
-      viewBox="0 0 32 32"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg width="42" height="42" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
       <g id="icon / 24 /  arrow /  normal">
         <rect
           y="32"
@@ -78,15 +72,9 @@ const NextArrow = ({ props, onClick, onMouseEnter, onMouseLeave }) => (
     onMouseEnter={onMouseEnter}
     onMouseLeave={onMouseLeave}
     onClick={onClick}
-    style={{ ...arrowStyles, right: "1.5rem" }}
+    style={{ ...arrowStyles, right: '1.5rem' }}
   >
-    <svg
-      width="42"
-      height="42"
-      viewBox="0 0 32 32"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
+    <svg width="42" height="42" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
       <g id="icon / 24 /  arrow /  normal">
         <rect
           x="32"
@@ -97,12 +85,7 @@ const NextArrow = ({ props, onClick, onMouseEnter, onMouseLeave }) => (
           fill="url(#paint0_linear_565_7000)"
           fillOpacity="0.55"
         />
-        <path
-          id="Vector 30"
-          d="M13.333 21.3335L19.9997 15.3335L13.333 9.3335"
-          stroke="#F6F6F6"
-          strokeWidth="1.33333"
-        />
+        <path id="Vector 30" d="M13.333 21.3335L19.9997 15.3335L13.333 9.3335" stroke="#F6F6F6" strokeWidth="1.33333" />
       </g>
       <defs>
         <linearGradient
@@ -121,11 +104,7 @@ const NextArrow = ({ props, onClick, onMouseEnter, onMouseLeave }) => (
   </div>
 );
 
-export default function ConstructorBlockRenderer({
-  block,
-  handleMouseLeave,
-  handleMouseEnter,
-}) {
+export default function ConstructorBlockRenderer({ block, handleMouseLeave, handleMouseEnter }) {
   const [activeSlide, setActiveSlide] = useState(0);
   const [dotsVisible, setDotsVisible] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
@@ -138,21 +117,20 @@ export default function ConstructorBlockRenderer({
 
     handleResize();
 
-    window.addEventListener("resize", handleResize);
+    window.addEventListener('resize', handleResize);
 
     return () => {
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener('resize', handleResize);
     };
   }, []);
 
   const renderImageWithDescription = (block) => {
-    let imageUrl = "";
-    let description = "";
+    let imageUrl = '';
+    let description = '';
 
     block?.forEach((item) => {
-      if (item?.label === "Картинка с описанием")
-        imageUrl = item.value?.[0] || "";
-      if (item?.label === "Описание картинки") description = item?.value || "";
+      if (item?.label === 'Картинка с описанием') imageUrl = item.value?.[0] || '';
+      if (item?.label === 'Описание картинки') description = item?.value || '';
     });
 
     // Проверяем, есть ли imageUrl или description, если нет, то не отображаем блок
@@ -168,29 +146,23 @@ export default function ConstructorBlockRenderer({
             loading="lazy"
           />
         )}
-        {description && (
-          <div className={styles.containerImageToDescription__text}>
-            {description}
-          </div>
-        )}
+        {description && <div className={styles.containerImageToDescription__text}>{description}</div>}
       </div>
     );
   };
 
   const renderHeaderWithText = (block) => {
-    let header = "";
-    let text = "";
+    let header = '';
+    let text = '';
 
     block.forEach((item) => {
-      if (item.label === "Заголовок") header = item.value;
-      if (item.label === "Текстовый блок") text = item.value;
+      if (item.label === 'Заголовок') header = item.value;
+      if (item.label === 'Текстовый блок') text = item.value;
     });
 
     return (
       <div className={styles.blockHeadingTitle}>
-        {header && (
-          <h2 className={styles.blockHeadingTitle__heading}>{header}</h2>
-        )}
+        {header && <h2 className={styles.blockHeadingTitle__heading}>{header}</h2>}
         <p className={styles.blockHeadingTitle__text}>
           {containsListTags(text) ? (
             <div
@@ -277,9 +249,7 @@ export default function ConstructorBlockRenderer({
   const renderTwoImage = (block, index) => {
     const images = block[0].value;
     return (
-      <div
-        className={`${styles.imageBlockTwo} ${styles.imageBlockTwo_project}`}
-      >
+      <div className={`${styles.imageBlockTwo} ${styles.imageBlockTwo_project}`}>
         {images.map((el, index) => (
           <img
             className={styles.imageBlockTwo__gridImage}
@@ -297,49 +267,49 @@ export default function ConstructorBlockRenderer({
     const images = block[0].value;
 
     const sliderImageContainerStyle = {
-      borderRadius: "10px",
-      overflow: "hidden",
+      borderRadius: '10px',
+      overflow: 'hidden',
     };
 
     let sliderImageStyle = {
-      width: "100%",
-      height: "810px",
-      objectFit: "cover",
-      borderRadius: "16px",
+      width: '100%',
+      height: '810px',
+      objectFit: 'cover',
+      borderRadius: '16px',
     };
 
     if (window.innerWidth <= 768) {
       sliderImageStyle = {
-        width: "100%",
-        height: "22.6rem",
-        objectFit: "cover",
-        borderRadius: "16px",
+        width: '100%',
+        height: '22.6rem',
+        objectFit: 'cover',
+        borderRadius: '16px',
       };
     } else if (window.innerWidth >= 768 && window.innerWidth <= 1024) {
       sliderImageStyle = {
-        width: "100%",
-        height: "29rem",
-        objectFit: "cover",
-        borderRadius: "16px",
+        width: '100%',
+        height: '29rem',
+        objectFit: 'cover',
+        borderRadius: '16px',
       };
     }
 
     const activeDotStyle = {
-      position: "relative",
-      width: "50px",
-      height: "4px",
-      backgroundColor: "rgba(255, 127, 106, 1)",
-      right: "30px",
-      transition: "width 0.5s, background-color 0.3s",
-      zIndex: "1",
+      position: 'relative',
+      width: '50px',
+      height: '4px',
+      backgroundColor: 'rgba(255, 127, 106, 1)',
+      right: '30px',
+      transition: 'width 0.5s, background-color 0.3s',
+      zIndex: '1',
     };
 
     const inactiveDotStyle = {
-      position: "relative",
-      width: "15px",
-      height: "4px",
-      backgroundColor: "#EBECEE",
-      zIndex: "0",
+      position: 'relative',
+      width: '15px',
+      height: '4px',
+      backgroundColor: '#EBECEE',
+      zIndex: '0',
     };
 
     // Настройки слайдера
@@ -359,39 +329,18 @@ export default function ConstructorBlockRenderer({
         setActiveSlide(newIndex);
       },
       focusOnSelect: true,
-      prevArrow: dotsVisible && (
-        <PrevArrow
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-        />
-      ),
-      nextArrow: dotsVisible && (
-        <NextArrow
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-        />
-      ),
+      prevArrow: dotsVisible && <PrevArrow onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} />,
+      nextArrow: dotsVisible && <NextArrow onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} />,
     };
 
     // console.log('Block:', block);
 
     return (
-      <div
-        className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockFive} ${styles.slider_container}`}
-      >
+      <div className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockFive} ${styles.slider_container}`}>
         <Slider {...settings}>
           {images?.map((img, index) => (
-            <div
-              key={index}
-              style={sliderImageContainerStyle}
-              className={styles.custom_slider}
-            >
-              <img
-                style={sliderImageStyle}
-                src={`${Host}/images/imageAdd/${img}`}
-                alt="Slider_image"
-                loading="lazy"
-              />
+            <div key={index} style={sliderImageContainerStyle} className={styles.custom_slider}>
+              <img style={sliderImageStyle} src={`${Host}/images/imageAdd/${img}`} alt="Slider_image" loading="lazy" />
             </div>
           ))}
         </Slider>
@@ -400,30 +349,30 @@ export default function ConstructorBlockRenderer({
   };
 
   const renderVideoBlock = (block) => {
-    const videoPath = block[0]?.value.join("");
+    const videoPath = block[0]?.value.join('');
 
     if (!videoPath) {
       return null; // или просто return; если вы предпочитаете не возвращать явно null
     }
 
     const videoStyle = {
-      WebkitAppearance: "none",
-      appearance: "none",
-      border: "none",
+      WebkitAppearance: 'none',
+      appearance: 'none',
+      border: 'none',
       opacity: 1,
-      outline: "none",
+      outline: 'none',
       // controls: "controls",
     };
 
     const handlePlay = () => {
-      const videoElement = document.querySelector("video");
+      const videoElement = document.querySelector('video');
       videoElement.play();
       setIsPlaying(true);
       setIsHovered(false);
     };
 
     const handlePause = () => {
-      const videoElement = document.querySelector("video");
+      const videoElement = document.querySelector('video');
       videoElement.pause();
       setIsPlaying(false);
       setIsHovered(false);
@@ -445,10 +394,7 @@ export default function ConstructorBlockRenderer({
             onPlay={() => setIsPlaying(true)}
             onPause={() => setIsPlaying(false)}
           >
-            <source
-              src={`${Host}/images/imageAdd/${videoPath}`}
-              type="video/mp4"
-            />
+            <source src={`${Host}/images/imageAdd/${videoPath}`} type="video/mp4" />
           </video>
           <div className={styles.buttonWrapperBlock}>
             {isPlaying ? (
@@ -480,18 +426,18 @@ export default function ConstructorBlockRenderer({
 
   const getEmbedUrl = (videoLink) => {
     if (!videoLink) return null;
-  
-    if (videoLink.includes("youtu.be")) {
-      return videoLink.replace("youtu.be/", "www.youtube.com/embed/");
+
+    if (videoLink.includes('youtu.be')) {
+      return videoLink.replace('youtu.be/', 'www.youtube.com/embed/');
     }
-    if (videoLink.includes("youtube.com/watch?v=")) {
-      return videoLink.replace("watch?v=", "embed/");
+    if (videoLink.includes('youtube.com/watch?v=')) {
+      return videoLink.replace('watch?v=', 'embed/');
     }
-    if (videoLink.includes("rutube.ru/video/")) {
-      const videoId = videoLink.split("/video/")[1].split("/")[0];
+    if (videoLink.includes('rutube.ru/video/')) {
+      const videoId = videoLink.split('/video/')[1].split('/')[0];
       return `https://rutube.ru/play/embed/${videoId}`;
     }
-    if (videoLink.includes("vk.com/video_ext.php")) {
+    if (videoLink.includes('vk.com/video_ext.php')) {
       return videoLink;
     }
     const match = videoLink.match(/vk.com\/video(-?\d+)_(\d+)/);
@@ -501,20 +447,20 @@ export default function ConstructorBlockRenderer({
     }
     return null;
   };
-  
+
   const handleIframeError = (event) => {
     const iframeContainer = event.target.closest(`.${styles.videoLinkContainer}`);
     if (iframeContainer) {
-      iframeContainer.innerHTML = "<div>Видео по ссылке не загружено</div>";
+      iframeContainer.innerHTML = '<div>Видео по ссылке не загружено</div>';
     }
   };
-  
+
   const renderVideoLinkBlock = (block) => {
-    const videoItem = block?.find(item => item.label === "Ссылка на видеоролик");
+    const videoItem = block?.find((item) => item.label === 'Ссылка на видеоролик');
     const embedLink = videoItem ? getEmbedUrl(videoItem.value) : null;
-  
+
     if (!embedLink) return null;
-  
+
     return (
       <div className={styles.videoLinkContainer}>
         <iframe
@@ -528,22 +474,21 @@ export default function ConstructorBlockRenderer({
       </div>
     );
   };
-  
 
   switch (block[0]?.label) {
-    case "Картинка с описанием":
+    case 'Картинка с описанием':
       return renderImageWithDescription(block);
-    case "Заголовок":
+    case 'Заголовок':
       return renderHeaderWithText(block);
-    case "Блок 3 картинки":
+    case 'Блок 3 картинки':
       return renderThreeImages(block);
-    case "Блок 2е вертикальные картинки":
+    case 'Блок 2е вертикальные картинки':
       return renderTwoImage(block);
-    case "Слайдер *допускается загрузка 8ми изображений":
+    case 'Слайдер *допускается загрузка 8ми изображений':
       return renderImageSlider(block);
-    case "Видеоролик":
+    case 'Видеоролик':
       return renderVideoBlock(block);
-    case "Ссылка на видеоролик":
+    case 'Ссылка на видеоролик':
       return renderVideoLinkBlock(block);
     default:
       return null;

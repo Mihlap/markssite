@@ -1,44 +1,36 @@
-import React, { useEffect, useRef, useState, useMemo } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
-import { Helmet } from "react-helmet-async";
-import gsap from "gsap";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { ScrollTrigger } from "gsap/ScrollTrigger";
-import { MotionPathPlugin } from "gsap/MotionPathPlugin";
-import AllArticlesButton from "../UI/ButtonsArticles/AllArticlesButton";
-import ArticleCardSlider from "../UI/ArticleCardSlider.jsx/ArticleCardSlider";
-import SliderContainerArticleCard from "../UI/Project&ArticleCardSlider/SlideContainerArticleCard";
-import { getFetchFormArticle } from "../store/Slice/articleSlice";
-import {
-  handleScroll,
-  onVerticalScroll,
-  onWheel,
-} from "../Project/utils";
+import React, { useEffect, useRef, useState, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useParams } from 'react-router-dom';
+import { Helmet } from 'react-helmet-async';
+import gsap from 'gsap';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { MotionPathPlugin } from 'gsap/MotionPathPlugin';
+import AllArticlesButton from '../UI/ButtonsArticles/AllArticlesButton';
+import ArticleCardSlider from '../UI/ArticleCardSlider.jsx/ArticleCardSlider';
+import SliderContainerArticleCard from '../UI/Project&ArticleCardSlider/SlideContainerArticleCard';
+import { getFetchFormArticle } from '../store/Slice/articleSlice';
+import { handleScroll, onVerticalScroll, onWheel } from '../Project/utils';
 import {
   shareToVK,
   shareToTelegram,
   shareToWhatsApp,
   // shareToViber,
-} from "./utils";
-import styles from "./ArticleCard.module.css";
-import catPhoto from "../img/default-photo.jpeg";
+} from './utils';
+import styles from './ArticleCard.module.css';
+import catPhoto from '../img/default-photo.jpeg';
 
-import next from ".././icons/next.svg";
-import previous from ".././icons/previous.svg";
-import ConstructorBlockRenderer from "./ConstructorArticle/ConstructorBlockRender";
-import { containsListTags } from "../Project/utils";
-import { renderListWithDots } from "../Project/utils";
+import next from '.././icons/next.svg';
+import previous from '.././icons/previous.svg';
+import ConstructorBlockRenderer from './ConstructorArticle/ConstructorBlockRender';
+import { containsListTags } from '../Project/utils';
+import { renderListWithDots } from '../Project/utils';
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 
-const ArticleCard = React.memo(({ 
-  handleMouseEnter,
-  handleMouseLeave,
-  handleMouseHover,
-}) => {
+const ArticleCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMouseHover }) => {
   const { id } = useParams();
   const dispatch = useDispatch();
   const sliderArticleCardRef = useRef(null);
@@ -49,7 +41,7 @@ const ArticleCard = React.memo(({
   const [enableVerticalScroll, setEnableVerticalScroll] = useState(true);
   const [isHorizontalScroll, setIsHorizontalScroll] = useState(false);
   const [isAtRightEdge, setIsAtRightEdge] = useState(false);
-  const [scrollingMode, setScrollingMode] = useState("vertical");
+  const [scrollingMode, setScrollingMode] = useState('vertical');
 
   const isMobile = window.innerWidth <= 767;
 
@@ -132,17 +124,17 @@ const ArticleCard = React.memo(({
     const animateElement = (element) => {
       if (element) {
         gsap.from(element, {
-          x: "-100%",
+          x: '-100%',
           opacity: 0,
           duration: 1.5,
           delay: 1,
-          ease: "power4.out",
+          ease: 'power4.out',
           scrollTrigger: {
             trigger: element,
           },
         });
       }
-      gsap.from(element, { duration: 1, clipPath: { start: "110%" } });
+      gsap.from(element, { duration: 1, clipPath: { start: '110%' } });
     };
 
     elementsRight.forEach(animateElement);
@@ -152,53 +144,22 @@ const ArticleCard = React.memo(({
   useEffect(() => {
     const el = sliderArticleCardRef.current;
     if (el) {
+      el.addEventListener('wheel', (e) => onVerticalScroll(el, e, setEnableVerticalScroll), { passive: false });
       el.addEventListener(
-        "wheel",
-        (e) => onVerticalScroll(el, e, setEnableVerticalScroll),
+        'wheel',
+        (e) => onWheel(el, e, enableVerticalScroll, isHorizontalScroll, setIsHorizontalScroll),
         { passive: false }
       );
-      el.addEventListener(
-        "wheel",
-        (e) =>
-          onWheel(
-            el,
-            e,
-            enableVerticalScroll,
-            isHorizontalScroll,
-            setIsHorizontalScroll
-          ),
-        { passive: false }
-      );
-      el.addEventListener("scroll", () =>
-        handleScroll(
-          el,
-          articles,
-          setEnableVerticalScroll,
-          setIsHorizontalScroll,
-          setIsAtRightEdge
-        )
+      el.addEventListener('scroll', () =>
+        handleScroll(el, articles, setEnableVerticalScroll, setIsHorizontalScroll, setIsAtRightEdge)
       );
       return () => {
-        el.removeEventListener("wheel", (e) =>
-          onVerticalScroll(el, e, setEnableVerticalScroll)
+        el.removeEventListener('wheel', (e) => onVerticalScroll(el, e, setEnableVerticalScroll));
+        el.removeEventListener('wheel', (e) =>
+          onWheel(el, e, enableVerticalScroll, isHorizontalScroll, setIsHorizontalScroll)
         );
-        el.removeEventListener("wheel", (e) =>
-          onWheel(
-            el,
-            e,
-            enableVerticalScroll,
-            isHorizontalScroll,
-            setIsHorizontalScroll
-          )
-        );
-        el.removeEventListener("scroll", () =>
-          handleScroll(
-            el,
-            articles,
-            setEnableVerticalScroll,
-            setIsHorizontalScroll,
-            setIsAtRightEdge
-          )
+        el.removeEventListener('scroll', () =>
+          handleScroll(el, articles, setEnableVerticalScroll, setIsHorizontalScroll, setIsAtRightEdge)
         );
       };
     }
@@ -217,43 +178,26 @@ const ArticleCard = React.memo(({
   const nextArticle = articles[nextIndex];
   const userSelectedBlocks = article?.ConstructorArticles?.map((el) => el.data) || [];
 
-
-  const imageOpenSource =
-  article && article.imageOpen
-    ? `${Host}/images/imageArticle/${article.imageOpen}`
-    : catPhoto;
-  const altTextOpen = (article && article.imageOpen) || "Default Alt Text";
+  const imageOpenSource = article && article.imageOpen ? `${Host}/images/imageArticle/${article.imageOpen}` : catPhoto;
+  const altTextOpen = (article && article.imageOpen) || 'Default Alt Text';
   const imageCloseSource =
-  article && article.imageClose
-      ? `${Host}/images/imageArticle/${article.imageClose}`
-      : catPhoto;
-  const altTextClose = (article && article.imageClose) || "Default Alt Text";
-
+    article && article.imageClose ? `${Host}/images/imageArticle/${article.imageClose}` : catPhoto;
+  const altTextClose = (article && article.imageClose) || 'Default Alt Text';
 
   // Получаем 20 рандомных статей
   const randomArticles = useMemo(() => {
     return articles ? [...articles].sort(() => 0.5 - Math.random()).slice(0, 20) : [];
   }, [articles]);
 
-  
   return (
     <>
       <Helmet>
-        <title>{article ? article.title : "Marks Group"}</title>
-        <meta
-          property="og:image"
-          content={
-            article ? `${Host}/images/imageArticle/${article.imageOpen}` : ""
-          }
-        />
+        <title>{article ? article.title : 'Marks Group'}</title>
+        <meta property="og:image" content={article ? `${Host}/images/imageArticle/${article.imageOpen}` : ''} />
       </Helmet>
       <div className={styles.main_article_card}>
         {article && <ArticleCardSlider slidesCard={[article]} />}
-        <div
-          className={styles.all_button_div}
-          onMouseEnter={handleMouseEnter}
-          onMouseLeave={handleMouseLeave}
-        >
+        <div className={styles.all_button_div} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
           <AllArticlesButton />
         </div>
         <div className={styles.section_article__block__card}>
@@ -262,37 +206,20 @@ const ArticleCard = React.memo(({
               <div className={styles.cart_article__container__block__card}>
                 <div className={styles.article_content__wrapper__block__card}>
                   <div className={styles.cart_article__content__block__card}>
-                    <div
-                      className={styles.cart_article_title__block__card}
-                      ref={refs.title}
-                    >
+                    <div className={styles.cart_article_title__block__card} ref={refs.title}>
                       {article.title}
                     </div>
                   </div>
                 </div>
-                <div
-                  className={styles.cart_article__author__block__card}
-                  ref={refs.author}
-                >
+                <div className={styles.cart_article__author__block__card} ref={refs.author}>
                   {article.author}
                 </div>
-                <div
-                  className={styles.cart_article__address__block__card}
-                  ref={refs.city}
-                >
-                  {article.city}{" "}
-                  <div
-                    className={styles.cart_article__address__svg__block__card}
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="2"
-                      height="2"
-                      viewBox="0 0 2 2"
-                      fill="none"
-                    >
+                <div className={styles.cart_article__address__block__card} ref={refs.city}>
+                  {article.city}{' '}
+                  <div className={styles.cart_article__address__svg__block__card}>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="2" height="2" viewBox="0 0 2 2" fill="none">
                       <circle cx="1" cy="1" r="1" fill="#F6F6F6" />
-                    </svg>{" "}
+                    </svg>{' '}
                   </div>
                   {article.dataMonthYear}
                 </div>
@@ -305,9 +232,7 @@ const ArticleCard = React.memo(({
             <div className={styles.header_content}>
               <div ref={refs.blockLeft} className={styles.header_content_left}>
                 <div className={styles.title_block}>
-                  <div className={styles.left_title}>
-                    {article.titleTextBlock}
-                  </div>
+                  <div className={styles.left_title}>{article.titleTextBlock}</div>
                 </div>
                 <div className={styles.title_text}>
                   {containsListTags(article.descriptionArticle) ? (
@@ -318,28 +243,21 @@ const ArticleCard = React.memo(({
                     />
                   ) : (
                     <div
-                    dangerouslySetInnerHTML={{
-                      __html: renderListWithDots(article.descriptionArticle),
-                    }}
-                  />
+                      dangerouslySetInnerHTML={{
+                        __html: renderListWithDots(article.descriptionArticle),
+                      }}
+                    />
                   )}
                 </div>
                 <div className={styles.result_container}></div>
               </div>
               {article && article.imageAuthor ? (
-                <div
-                  ref={refs.blockRight}
-                  className={styles.header_content_right}
-                >
+                <div ref={refs.blockRight} className={styles.header_content_right}>
                   <div className={styles.local_container_photo_author}>
                     <img
                       className={styles.container__imageAuthor_articleCard}
-                      src={
-                        article.imageAuthor
-                          ? `${Host}/images/imageArticle/${article.imageAuthor}`
-                          : `${catPhoto}`
-                      }
-                      alt={article.imageAuthor || "Default Alt Text"}
+                      src={article.imageAuthor ? `${Host}/images/imageArticle/${article.imageAuthor}` : `${catPhoto}`}
+                      alt={article.imageAuthor || 'Default Alt Text'}
                     />
                     <div className={styles.author_name}>{article.author}</div>
                     <div className={styles.text_author}>Автор статьи</div>
@@ -369,18 +287,18 @@ const ArticleCard = React.memo(({
                   <div className={styles.leftImg1_object_text1}>
                     {/* {article.textBlock} */}
                     {containsListTags(article.textBlock) ? (
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: renderListWithDots(article.textBlock),
-                      }}
-                    />
-                  ) : (
-                    <div
-                    dangerouslySetInnerHTML={{
-                      __html: renderListWithDots(article.textBlock),
-                    }}
-                  />
-                  )}
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: renderListWithDots(article.textBlock),
+                        }}
+                      />
+                    ) : (
+                      <div
+                        dangerouslySetInnerHTML={{
+                          __html: renderListWithDots(article.textBlock),
+                        }}
+                      />
+                    )}
                   </div>
                 </div>
               </div>
@@ -399,16 +317,13 @@ const ArticleCard = React.memo(({
                 </div>
               ))}
             </div>
-            <div
-              className={styles.item_container_imageClose}
-              ref={refs.imageClose}
-            >
+            <div className={styles.item_container_imageClose} ref={refs.imageClose}>
               <div className={styles.item}>
                 <img
                   className={styles.item_img_close}
                   src={imageCloseSource}
-                    alt=""
-                    loading="lazy"
+                  alt=""
+                  loading="lazy"
                   // src={
                   //   article && article.imageClose
                   //     ? `${Host}/images/imageArticle/${article.imageClose}`
@@ -419,50 +334,23 @@ const ArticleCard = React.memo(({
                   //     ? article.imageClose
                   //     : "Default Alt Text"
                   // }
-                 />
+                />
               </div>
             </div>
-            <div
-              className={
-                styles.container_author_address_imageClose_share_article
-              }
-            >
-              <div
-                className={styles.container_author_address_imageClose}
-                ref={refs.address_imageClose}
-              >
+            <div className={styles.container_author_address_imageClose_share_article}>
+              <div className={styles.container_author_address_imageClose} ref={refs.address_imageClose}>
                 {/* <img
                   className={styles.item_img}
                   src={`${Host}/images/imageArticle/${article.imageClose}`}
                   alt={article.imageClose}
                 /> */}
-                <div
-                  className={
-                    styles.cart_article__author__block__card_imageClose
-                  }
-                >
-                  {article.author}
-                </div>
-                <div
-                  className={
-                    styles.cart_article__address__block__card_imageClose
-                  }
-                >
-                  {article.city}{" "}
-                  <div
-                    className={
-                      styles.cart_article__address__svg__block__card_imageClose
-                    }
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="2"
-                      height="2"
-                      viewBox="0 0 2 2"
-                      fill="none"
-                    >
+                <div className={styles.cart_article__author__block__card_imageClose}>{article.author}</div>
+                <div className={styles.cart_article__address__block__card_imageClose}>
+                  {article.city}{' '}
+                  <div className={styles.cart_article__address__svg__block__card_imageClose}>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="2" height="2" viewBox="0 0 2 2" fill="none">
                       <circle cx="1" cy="1" r="1" fill="#959DA6" />
-                    </svg>{" "}
+                    </svg>{' '}
                   </div>
                   {article.dataMonthYear}
                 </div>
@@ -475,10 +363,7 @@ const ArticleCard = React.memo(({
                 onMouseLeave={handleMouseLeave}
                 onClick={() => shareToVK(article, Host)}
               >
-                <span
-                  className={styles.social_links_item}
-                  style={{ marginRight: "21px", color: "#FF7F6A" }}
-                >
+                <span className={styles.social_links_item} style={{ marginRight: '21px', color: '#FF7F6A' }}>
                   VK
                 </span>
               </button>
@@ -487,10 +372,7 @@ const ArticleCard = React.memo(({
                 onMouseLeave={handleMouseLeave}
                 onClick={() => shareToWhatsApp(article, Host)}
               >
-                <span
-                  className={styles.social_links_item}
-                  style={{ marginRight: "25px", color: "#FF7F6A" }}
-                >
+                <span className={styles.social_links_item} style={{ marginRight: '25px', color: '#FF7F6A' }}>
                   WA
                 </span>
               </button>
@@ -507,10 +389,7 @@ const ArticleCard = React.memo(({
                 onMouseLeave={handleMouseLeave}
                 onClick={() => shareToTelegram(article, Host)}
               >
-                <span
-                  className={styles.social_links_item}
-                  style={{ color: "#FF7F6A" }}
-                >
+                <span className={styles.social_links_item} style={{ color: '#FF7F6A' }}>
                   TG
                 </span>
               </button>
@@ -528,7 +407,7 @@ const ArticleCard = React.memo(({
               <div className={styles.previous_svg_articleCard}>
                 <img src={previous} alt={previous} />
                 <span className={styles.previous__span_articleCard}>
-                  {isMobile ? "Предыдущая статья" : `${previousArticle.title}`}
+                  {isMobile ? 'Предыдущая статья' : `${previousArticle.title}`}
                 </span>
               </div>
             </Link>
@@ -542,7 +421,7 @@ const ArticleCard = React.memo(({
             >
               <div className={styles.next_svg_articleCard}>
                 <span className={styles.next__span_articleCard}>
-                  {isMobile ? "Следующая статья" : `${nextArticle.title}`}
+                  {isMobile ? 'Следующая статья' : `${nextArticle.title}`}
                 </span>
                 <img src={next} alt={next} />
               </div>
@@ -550,9 +429,7 @@ const ArticleCard = React.memo(({
           )}
         </div>
         <div className={styles.article_name_text}>Ещё по теме</div>
-        <div className={styles.swiper_article_container}>
-          {/* <SwiperContainerProgect projects={projects} /> */}
-        </div>
+        <div className={styles.swiper_article_container}>{/* <SwiperContainerProgect projects={projects} /> */}</div>
         <div className={styles.main_article_articleCard}>
           <Swiper
             className={styles.slider_card_container_article_articleCard}
@@ -598,13 +475,11 @@ const ArticleCard = React.memo(({
               }
 
               const imagePathsForArticle = article.imageTitle
-                ? article.imageTitle.split(",").map((el) => el.trim())
+                ? article.imageTitle.split(',').map((el) => el.trim())
                 : [];
               const firstImageName = imagePathsForArticle[0] || null;
 
-              const encodedFileName = firstImageName
-                ? encodeURIComponent(firstImageName)
-                : null;
+              const encodedFileName = firstImageName ? encodeURIComponent(firstImageName) : null;
               const defaultImagePath = `${catPhoto}`; // Путь к запасному изображению.
               const firstImagePath = encodedFileName
                 ? `${Host}/images/imageArticle/${encodedFileName}`
@@ -616,12 +491,10 @@ const ArticleCard = React.memo(({
                   onScroll={handleScroll}
                   id="slider_container_item_card"
                   className={styles.slider_container_item_card_articleCard}
-                  style={index % 2 === 1 ? { paddingTop: "10rem" } : {}}
+                  style={index % 2 === 1 ? { paddingTop: '10rem' } : {}}
                 >
                   <Link to={`/publication/${article.id}`} key={article.id}>
-                    <div
-                      className={styles.wrapper_container_item_card_articleCard}
-                    >
+                    <div className={styles.wrapper_container_item_card_articleCard}>
                       <img
                         className={styles.container__imageTitle_articleCard}
                         src={firstImagePath}
@@ -631,34 +504,16 @@ const ArticleCard = React.memo(({
                       />
                     </div>
                     <div className={styles.title_articleCard}>
-                      <div className={styles.container__title_articleCard}>
-                        {article.title}
-                      </div>
+                      <div className={styles.container__title_articleCard}>{article.title}</div>
                     </div>
                     <div className={styles.countryCity_monthYear_articleCard}>
-                      <div
-                        className={styles.container__countryCity_articleCard}
-                      >
-                        {article.city}{" "}
-                      </div>
-                      <div
-                        className={
-                          styles.cart_article__address__svg_articleCard
-                        }
-                      >
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="2"
-                          height="2"
-                          viewBox="0 0 2 2"
-                          fill="none"
-                        >
+                      <div className={styles.container__countryCity_articleCard}>{article.city} </div>
+                      <div className={styles.cart_article__address__svg_articleCard}>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="2" height="2" viewBox="0 0 2 2" fill="none">
                           <circle cx="1" cy="1" r="1" fill="#959DA6" />
-                        </svg>{" "}
+                        </svg>{' '}
                       </div>
-                      <div className={styles.container__monthYear_articleCard}>
-                        {article.dataMonthYear}
-                      </div>
+                      <div className={styles.container__monthYear_articleCard}>{article.dataMonthYear}</div>
                     </div>
                   </Link>
                 </SwiperSlide>
@@ -668,7 +523,7 @@ const ArticleCard = React.memo(({
         </div>
         <div className={styles.article_container_articleCard_sliderMobile}>
           <SliderContainerArticleCard articles={randomArticles} />
-        </div>{" "}
+        </div>{' '}
       </div>
     </>
   );

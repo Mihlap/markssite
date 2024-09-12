@@ -1,12 +1,12 @@
-import React, { useRef, useState, useMemo, useCallback, useEffect } from "react";
-import InputMask from "react-input-mask";
-import Select from "react-select";
-import { Link } from "react-router-dom";
-import styles from "./VacancyFormContact.module.css";
-import "react-phone-number-input/style.css";
-import icon_tg from "../../Portal/Vacancies/icons/icon_tg.svg";
-import ModalVacancyFormSend from "./ModalVacancyFormSend";
-import LoadingVacancy from "../../Loading/LoadingVacancy";
+import React, { useRef, useState, useMemo, useCallback, useEffect } from 'react';
+import InputMask from 'react-input-mask';
+import Select from 'react-select';
+import { Link } from 'react-router-dom';
+import styles from './VacancyFormContact.module.css';
+import 'react-phone-number-input/style.css';
+import icon_tg from '../../Portal/Vacancies/icons/icon_tg.svg';
+import ModalVacancyFormSend from './ModalVacancyFormSend';
+import LoadingVacancy from '../../Loading/LoadingVacancy';
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 
@@ -19,31 +19,32 @@ const VacancyFormContact = ({
   centerButton,
   buttonText,
 }) => {
-   const options = useMemo(() => [
-    { value: "Другое направление", label: "Другое направление" },
-    { value: "Архитектура", label: "Архитектура" },
-    { value: "Конструктив", label: "Конструктив" },
-    { value: "Инженерия", label: "Инженерия" },
-    { value: "Научно-техническое сопровождение", label: "Научно-техническое сопровождение" },
-    { value: "BIM", label: "BIM" },
-    { value: "Аналитика", label: "Аналитика" },
-    { value: "Финансы", label: "Финансы" },
-    { value: "Дизайн", label: "Дизайн" },
-    { value: "IT", label: "IT" },
-    { value: "Администрирование", label: "Администрирование" },
-    { value: "Бэк офис", label: "Бэк офис" },
-    { value: "Стажировки", label: "Стажировки" },
-    { value: "Управление", label: "Управление" },
-  ], []);
-
-  const [selectedOptions, setSelectedOptions] = useState(
-    options.find(option => option.value === initialDirection)
+  const options = useMemo(
+    () => [
+      { value: 'Другое направление', label: 'Другое направление' },
+      { value: 'Архитектура', label: 'Архитектура' },
+      { value: 'Конструктив', label: 'Конструктив' },
+      { value: 'Инженерия', label: 'Инженерия' },
+      { value: 'Научно-техническое сопровождение', label: 'Научно-техническое сопровождение' },
+      { value: 'BIM', label: 'BIM' },
+      { value: 'Аналитика', label: 'Аналитика' },
+      { value: 'Финансы', label: 'Финансы' },
+      { value: 'Дизайн', label: 'Дизайн' },
+      { value: 'IT', label: 'IT' },
+      { value: 'Администрирование', label: 'Администрирование' },
+      { value: 'Бэк офис', label: 'Бэк офис' },
+      { value: 'Стажировки', label: 'Стажировки' },
+      { value: 'Управление', label: 'Управление' },
+    ],
+    []
   );
+
+  const [selectedOptions, setSelectedOptions] = useState(options.find((option) => option.value === initialDirection));
 
   const buttonClassName = centerButton ? `${styles.button_vacancy} ${styles.centerButton}` : styles.button_vacancy;
 
   useEffect(() => {
-    const foundOption = options.find(option => option.value === initialDirection);
+    const foundOption = options.find((option) => option.value === initialDirection);
     setSelectedOptions(foundOption);
     if (initialDirection) {
       setFormData((prevData) => ({ ...prevData, choose: initialDirection }));
@@ -67,22 +68,21 @@ const VacancyFormContact = ({
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
-    name: "",
-    phone: "",
-    city: "",
-    choose: "",
-    letter: "",
-    resume: "",
+    name: '',
+    phone: '',
+    city: '',
+    choose: '',
+    letter: '',
+    resume: '',
     title: vacancyTitle,
   });
-  
 
   const fileInputRef = useRef(null);
   const isFilled = useCallback((name) => !!formData[name], [formData]);
 
   const handleChangeVacancy = useCallback((selectedValues) => {
     setSelectedOptions(selectedValues);
-    setFormData((prevData) => ({ ...prevData, choose: selectedValues?.value || "" }));
+    setFormData((prevData) => ({ ...prevData, choose: selectedValues?.value || '' }));
   }, []);
 
   const handleFocus = useCallback((event) => {
@@ -92,14 +92,11 @@ const VacancyFormContact = ({
 
   const handlePaste = useCallback((event) => {
     event.preventDefault();
-    const pastedData = event.clipboardData.getData("text");
-    const cleanedValue = pastedData.replace(/\D/g, "");
+    const pastedData = event.clipboardData.getData('text');
+    const cleanedValue = pastedData.replace(/\D/g, '');
 
     if (cleanedValue.length >= 10) {
-      const formattedValue = `+7 (${cleanedValue.slice(
-        -10,
-        -7
-      )}) ${cleanedValue.slice(-7, -4)}-${cleanedValue.slice(
+      const formattedValue = `+7 (${cleanedValue.slice(-10, -7)}) ${cleanedValue.slice(-7, -4)}-${cleanedValue.slice(
         -4,
         -2
       )}-${cleanedValue.slice(-2)}`;
@@ -115,7 +112,7 @@ const VacancyFormContact = ({
       const name = event?.target?.name;
       setIsFocused((prev) => ({ ...prev, [name]: false }));
 
-      if (name === "phone") {
+      if (name === 'phone') {
         const phoneNumberRegex = /^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/;
         setIsValid(phoneNumberRegex.test(formData.phone));
       }
@@ -126,7 +123,7 @@ const VacancyFormContact = ({
   const handleChange = useCallback((event) => {
     const { name, value } = event.target;
     setFormData((prevData) => ({ ...prevData, [name]: value }));
-    if (name === "phone") {
+    if (name === 'phone') {
       setIsValid(true);
     }
   }, []);
@@ -134,21 +131,21 @@ const VacancyFormContact = ({
   const handleSubmit = useCallback(
     (event) => {
       event.preventDefault();
-      
-      const resumeFilled = formData.resume.trim() !== "" || selectedFiles.length > 0;
+
+      const resumeFilled = formData.resume.trim() !== '' || selectedFiles.length > 0;
 
       const newErrors = {
-        name: formData.name.trim() === "",
-        phone: formData.phone.trim() === "",
-        choose: !selectedOptions || selectedOptions.value === "",
-        resume: !resumeFilled 
+        name: formData.name.trim() === '',
+        phone: formData.phone.trim() === '',
+        choose: !selectedOptions || selectedOptions.value === '',
+        resume: !resumeFilled,
       };
-    
+
       setErrors(newErrors);
-    
-      const formIsValid = !Object.values(newErrors).some(err => err);
+
+      const formIsValid = !Object.values(newErrors).some((err) => err);
       if (!formIsValid) {
-        return; 
+        return;
       }
 
       setIsLoading(true);
@@ -157,7 +154,7 @@ const VacancyFormContact = ({
       const formDataCopy = {
         ...formData,
         title: vacancyTitle,
-        choose: selectedOptions ? selectedOptions.value : "",
+        choose: selectedOptions ? selectedOptions.value : '',
       };
 
       Object.keys(formDataCopy).forEach((key) => {
@@ -165,39 +162,36 @@ const VacancyFormContact = ({
       });
 
       selectedFiles.forEach((file) => {
-        formDataToSend.append("resumeFiles", file);
+        formDataToSend.append('resumeFiles', file);
       });
 
       fetch(`${Host}/api-mail/portalSubmitForm`, {
-        method: "POST",
+        method: 'POST',
         body: formDataToSend,
       })
         .then((response) => response.json())
         .then((data) => {
-          if (data && data.message === "Письмо успешно отправлено") {
+          if (data && data.message === 'Письмо успешно отправлено') {
             setIsModalOpen(true);
             setFormData({
-              name: "",
-              phone: "",
-              city: "",
-              choose: "",
-              letter: "",
-              resume: "",
+              name: '',
+              phone: '',
+              city: '',
+              choose: '',
+              letter: '',
+              resume: '',
               title: vacancyTitle,
             });
             setSelectedFiles([]);
             setFileAttached(false);
             setSelectedOptions(null);
           } else {
-            console.error(
-              "Form submission failed:",
-              data.message || "Unknown error"
-            );
+            console.error('Form submission failed:', data.message || 'Unknown error');
           }
         })
         .catch((error) => {
           if (!error.response || error.response.status !== 200) {
-            console.error("Error:", error);
+            console.error('Error:', error);
           }
         })
         .finally(() => {
@@ -208,10 +202,9 @@ const VacancyFormContact = ({
   );
 
   const getLineClass = (field) => {
-     const isFieldEmpty = formData[field]?.trim() === '';
+    const isFieldEmpty = formData[field]?.trim() === '';
     return `${styles.line} ${errors[field] && isFieldEmpty ? styles.errorLine : ''}`;
-  };  
-
+  };
 
   const handleFileChange = useCallback((event) => {
     const files = Array.from(event.target.files);
@@ -220,17 +213,13 @@ const VacancyFormContact = ({
       if (
         files.every(
           (file) =>
-            file.type.includes("image/") ||
-            file.type === "application/pdf" ||
-            file.type.includes("application/")
+            file.type.includes('image/') || file.type === 'application/pdf' || file.type.includes('application/')
         )
       ) {
         setSelectedFiles((prevFiles) => [...prevFiles, ...files]);
         setFileAttached(true);
       } else {
-        console.error(
-          "Invalid file type. Please select an image, PDF, or other document."
-        );
+        console.error('Invalid file type. Please select an image, PDF, or other document.');
       }
     }
   }, []);
@@ -243,101 +232,101 @@ const VacancyFormContact = ({
     });
   }, []);
 
-    // useEffect(() => {
+  // useEffect(() => {
   //   const isFormComplete = Object.values(formData).every(field => field?.trim() !== "") && isValid;
   //   setIsFormValid(isFormComplete);
-  // }, [formData, isValid]);  
+  // }, [formData, isValid]);
 
   useEffect(() => {
     const requiredFields = [
-     formData.name.trim(),
-     formData.phone.trim(),
-     formData.resume.trim(),
-     selectedOptions ? selectedOptions.value : "" 
-   ];
- 
-   const isFormComplete = requiredFields.every(field => field !== "");
- 
-   setIsFormValid(isFormComplete && isValid);
- }, [formData, selectedOptions, isValid]); 
+      formData.name.trim(),
+      formData.phone.trim(),
+      formData.resume.trim(),
+      selectedOptions ? selectedOptions.value : '',
+    ];
 
- useEffect(() => {
-  const resumeFilled = formData.resume.trim() !== " " || selectedFiles.length > 0;
-  setErrors(prevErrors => ({
-    ...prevErrors,
-    resume: !resumeFilled
-  }));
-}, [formData.resume, selectedFiles]);
+    const isFormComplete = requiredFields.every((field) => field !== '');
 
- const errorChoose = errors.choose;
- const isOptionSelected = selectedOptions && selectedOptions.value; 
+    setIsFormValid(isFormComplete && isValid);
+  }, [formData, selectedOptions, isValid]);
+
+  useEffect(() => {
+    const resumeFilled = formData.resume.trim() !== ' ' || selectedFiles.length > 0;
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      resume: !resumeFilled,
+    }));
+  }, [formData.resume, selectedFiles]);
+
+  const errorChoose = errors.choose;
+  const isOptionSelected = selectedOptions && selectedOptions.value;
 
   const customStyles = useMemo(
     () => ({
       container: (provided) => ({
         ...provided,
-        border: "none",
-        width: "100%",
+        border: 'none',
+        width: '100%',
       }),
       control: (provided, state) => ({
         ...provided,
-        border: "none",
-        backgroundColor: "transparent",
-        boxShadow: state.isFocused ? "none" : provided.boxShadow,
+        border: 'none',
+        backgroundColor: 'transparent',
+        boxShadow: state.isFocused ? 'none' : provided.boxShadow,
         borderBottom: `1px solid ${
-          state.isFocused ? "#75BBFD" : (!isOptionSelected && errorChoose) ? "#E00747" : "#959DA6"
+          state.isFocused ? '#75BBFD' : !isOptionSelected && errorChoose ? '#E00747' : '#959DA6'
         }`,
-        borderColor: "transparent",
-        "&:hover": {
-          borderBottomColor: "1px solid",
+        borderColor: 'transparent',
+        '&:hover': {
+          borderBottomColor: '1px solid',
         },
       }),
       indicatorSeparator: (provided) => ({
         ...provided,
-        display: "none",
+        display: 'none',
       }),
       multiValue: (provided) => ({
         ...provided,
-        backgroundColor: "transparent",
+        backgroundColor: 'transparent',
       }),
       singleValue: (provided) => ({
         ...provided,
-        color: "#959DA6",
+        color: '#959DA6',
         marginLeft: -5,
       }),
       placeholder: (provided) => ({
         ...provided,
         marginLeft: -5,
-        color: "#959DA6",
+        color: '#959DA6',
       }),
       option: (provided, state) => ({
         ...provided,
-        backgroundColor: state.isFocused ? "#75BBFD" : "transparent",
-        color: state.isFocused ? "white" : "inherit",
+        backgroundColor: state.isFocused ? '#75BBFD' : 'transparent',
+        color: state.isFocused ? 'white' : 'inherit',
       }),
       dropdownIndicator: (provided, state) => ({
         ...provided,
-        transform: state.selectProps.menuIsOpen ? "rotate(180deg)" : null,
-        transition: "transform 0.3s ease-in-out",
-        color: state.isFocused ? "#75BBFD" : "#C0C5CB",
+        transform: state.selectProps.menuIsOpen ? 'rotate(180deg)' : null,
+        transition: 'transform 0.3s ease-in-out',
+        color: state.isFocused ? '#75BBFD' : '#C0C5CB',
       }),
       menuList: (provided) => ({
         ...provided,
-        "&::-webkit-scrollbar": {
-          width: "4px",
+        '&::-webkit-scrollbar': {
+          width: '4px',
         },
-        "&::-webkit-scrollbar-thumb": {
-          backgroundColor: "#C0C5CB",
-          borderRadius: "4px",
+        '&::-webkit-scrollbar-thumb': {
+          backgroundColor: '#C0C5CB',
+          borderRadius: '4px',
         },
-        "&::-webkit-scrollbar-track": {
-          backgroundColor: "transparent",
+        '&::-webkit-scrollbar-track': {
+          backgroundColor: 'transparent',
         },
       }),
       menu: (provided) => ({
         ...provided,
-        boxShadow: "none",
-        backgroundColor: "#EBECEE",
+        boxShadow: 'none',
+        backgroundColor: '#EBECEE',
       }),
     }),
     [errorChoose, isOptionSelected]
@@ -354,7 +343,7 @@ const VacancyFormContact = ({
               <div className={styles.form_vacancy_left}>
                 <div className={`${styles.group} some-unique-class`}>
                   <label
-                    className={`${styles.label1} ${isFocused.name || isFilled("name") ? styles.focused1 : ""}`}
+                    className={`${styles.label1} ${isFocused.name || isFilled('name') ? styles.focused1 : ''}`}
                     onMouseOver={handleMouseEnter}
                     onMouseOut={handleMouseLeave}
                   >
@@ -368,16 +357,16 @@ const VacancyFormContact = ({
                       onBlur={handleBlur}
                       maxLength="100"
                       autoComplete="off"
-                        className={styles.input_name_form_contacts}                  
+                      className={styles.input_name_form_contacts}
                     />
-                      {/* <div className={styles.line}></div> */}
-                      <div className={getLineClass('name')}></div>
-                      <span className={styles.placeholder}>Ваше&nbsp;имя&nbsp;и&nbsp;фамилия</span>
-                   </label>
+                    {/* <div className={styles.line}></div> */}
+                    <div className={getLineClass('name')}></div>
+                    <span className={styles.placeholder}>Ваше&nbsp;имя&nbsp;и&nbsp;фамилия</span>
+                  </label>
                 </div>
                 <div className={styles.group}>
                   <label
-                    className={`${styles.label1} ${isFocused.phone || isFilled("phone") ? styles.focused1 : ""}`}
+                    className={`${styles.label1} ${isFocused.phone || isFilled('phone') ? styles.focused1 : ''}`}
                     onMouseOver={handleMouseEnter}
                     onMouseOut={handleMouseLeave}
                   >
@@ -393,8 +382,8 @@ const VacancyFormContact = ({
                       onFocus={handleFocus}
                       autoComplete="off"
                       onPaste={handlePaste}
-                      className={`${styles.input_tel_form_contacts} ${isFocused.phone ? styles.focused : ""}`}
-                      style={{ fontVariantNumeric: "lining-nums" }}
+                      className={`${styles.input_tel_form_contacts} ${isFocused.phone ? styles.focused : ''}`}
+                      style={{ fontVariantNumeric: 'lining-nums' }}
                     />
                     {/* <div className={styles.line}></div> */}
                     <div className={getLineClass('phone')}></div>
@@ -406,7 +395,7 @@ const VacancyFormContact = ({
                 </div>
                 <div className={styles.group}>
                   <label
-                    className={`${styles.label1} ${isFocused.city || isFilled("city") ? styles.focused1 : ""}`}
+                    className={`${styles.label1} ${isFocused.city || isFilled('city') ? styles.focused1 : ''}`}
                     onMouseOver={handleMouseEnter}
                     onMouseOut={handleMouseLeave}
                   >
@@ -430,7 +419,7 @@ const VacancyFormContact = ({
               <div className={styles.form_vacancy_right}>
                 <div className={`${styles.group} some-unique-class`}>
                   <label
-                    className={`${styles.label1} ${isFocused.choose || isFilled("choose") ? styles.focused1 : ""}`}
+                    className={`${styles.label1} ${isFocused.choose || isFilled('choose') ? styles.focused1 : ''}`}
                     onMouseOver={handleMouseEnter}
                     onMouseOut={handleMouseLeave}
                   >
@@ -443,7 +432,7 @@ const VacancyFormContact = ({
                       isMulti={false}
                       options={options}
                       value={selectedOptions}
-                      placeholder={"Выбрать направление"}
+                      placeholder={'Выбрать направление'}
                       onChange={handleChangeVacancy}
                       isSearchable={false}
                       isClearable={true}
@@ -454,7 +443,7 @@ const VacancyFormContact = ({
                 </div>
                 <div className={`${styles.group} some-unique-class`}>
                   <label
-                    className={`${styles.label1} ${isFocused.letter || isFilled("letter") ? styles.focused1 : ""}`}
+                    className={`${styles.label1} ${isFocused.letter || isFilled('letter') ? styles.focused1 : ''}`}
                     onMouseOver={handleMouseEnter}
                     onMouseOut={handleMouseLeave}
                   >
@@ -476,7 +465,7 @@ const VacancyFormContact = ({
                 </div>
                 <div className={styles.group}>
                   <label
-                    className={`${styles.label1} ${isFocused.resume || isFilled("resume") ? styles.focused1 : ""}`}
+                    className={`${styles.label1} ${isFocused.resume || isFilled('resume') ? styles.focused1 : ''}`}
                     onMouseOver={handleMouseEnter}
                     onMouseOut={handleMouseLeave}
                   >
@@ -492,8 +481,8 @@ const VacancyFormContact = ({
                       autoComplete="off"
                       className={styles.input_resume_form_contacts}
                     />
-                      <div className={`${getLineClass('resume')} ${styles.line_resume}`}></div>
-                      {/* <div className={getLineClass('resume')}></div> */}
+                    <div className={`${getLineClass('resume')} ${styles.line_resume}`}></div>
+                    {/* <div className={getLineClass('resume')}></div> */}
                     <span className={styles.placeholder}>Ссылка&nbsp;на&nbsp;резюме/портфолио</span>
                   </label>
                   <div className={styles.resumeFiles}>
@@ -518,7 +507,7 @@ const VacancyFormContact = ({
                         type="file"
                         name="resumeFile"
                         onChange={handleFileChange}
-                        style={{ display: "none" }}
+                        style={{ display: 'none' }}
                         ref={fileInputRef}
                       />
                       <div
@@ -527,14 +516,14 @@ const VacancyFormContact = ({
                         onMouseOut={handleMouseLeave}
                         onClick={() => fileInputRef.current.click()}
                       >
-                        {fileAttached ? "Прикрепить файл" : "Прикрепить файл"}
+                        {fileAttached ? 'Прикрепить файл' : 'Прикрепить файл'}
                       </div>
                     </div>
                   )}
                 </div>
               </div>
               <div className={styles.agreement_vacancy}>
-                Нажав на кнопку, соглашаюсь на обработку{" "}
+                Нажав на кнопку, соглашаюсь на обработку{' '}
                 <Link
                   to="../Information"
                   target="blank"
@@ -545,16 +534,14 @@ const VacancyFormContact = ({
                   персональных данных
                 </Link>
                 <button
-                  className={`${buttonClassName} ${!isFormValid ? styles.disabled : ""}`}
+                  className={`${buttonClassName} ${!isFormValid ? styles.disabled : ''}`}
                   // disabled={!isFormValid}
                   type="submit"
                   id="submit-button"
                   onMouseEnter={handleMouseEnter}
                   onMouseLeave={handleMouseLeave}
                 >
-                    <p className={styles.button_name_vacancy}>
-                      {buttonText} 
-                    </p>                  
+                  <p className={styles.button_name_vacancy}>{buttonText}</p>
                 </button>
               </div>
             </div>
@@ -578,9 +565,9 @@ const VacancyFormContact = ({
                 <img src={icon_tg} alt="Telegram" />
               </Link>
               <Link
-                to={"tel:+74951201226"}
+                to={'tel:+74951201226'}
                 className={styles.for_applicants_tel}
-                style={{ fontVariantNumeric: "lining-nums" }}
+                style={{ fontVariantNumeric: 'lining-nums' }}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
               >

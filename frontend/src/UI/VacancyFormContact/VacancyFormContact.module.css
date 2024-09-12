@@ -1,7 +1,6 @@
-@import "../../App.css";
+@import '../../App.css';
 
 /* @media screen and (min-width: 1601px) and (max-width: 3000px) { */
-
 
 .form_vacancy_wrapper {
   display: flex;
@@ -15,7 +14,6 @@
   width: 100%;
   position: relative;
 }
-
 
 .form_vacancy_block {
   display: grid;
@@ -42,11 +40,9 @@
   /* padding-top: 0.1rem; */
 }
 
-
 .label1 {
   position: relative;
 }
-
 
 .input_name_form_contacts,
 .input_tel_form_contacts,
@@ -101,9 +97,8 @@
 }
 
 .errorLine {
-  background-color: var(--crimson-E00747)
+  background-color: var(--crimson-E00747);
 }
-
 
 .placeholder {
   position: absolute;
@@ -119,8 +114,8 @@
   white-space: nowrap;
 }
 
-.input_tel_form_contacts:not(:placeholder-shown)+.placeholder,
-.input_tel_form_contacts:empty+.placeholder,
+.input_tel_form_contacts:not(:placeholder-shown) + .placeholder,
+.input_tel_form_contacts:empty + .placeholder,
 .focused1 .placeholder {
   transform: translateY(-200%) scale(0.75);
   -webkit-transform: translateY(-200%) scale(0.75);
@@ -128,20 +123,20 @@
   color: var(--gray-959DA6);
 }
 
-.input_name_form_contacts:focus+.line,
-.input_city_form_contacts:focus+.line,
-.input_letter_form_contacts:focus+.line,
-.input_resume_form_contacts:focus+.line,
-.input_tel_form_contacts:focus+.line,
-#phone-input.input_tel_form_contacts.focus+.line {
+.input_name_form_contacts:focus + .line,
+.input_city_form_contacts:focus + .line,
+.input_letter_form_contacts:focus + .line,
+.input_resume_form_contacts:focus + .line,
+.input_tel_form_contacts:focus + .line,
+#phone-input.input_tel_form_contacts.focus + .line {
   background-color: var(--blue-75BBFD);
 }
 
-.input_name_form_contacts:focus+.lineSimple,
-.input_letter_form_contacts:focus+.lineSimple,
-.input_resume_form_contacts:focus+.lineSimple,
-.input_tel_form_contacts:focus+.lineSimple,
-#phone-input.input_tel_form_contacts.focus+.lineSimple {
+.input_name_form_contacts:focus + .lineSimple,
+.input_letter_form_contacts:focus + .lineSimple,
+.input_resume_form_contacts:focus + .lineSimple,
+.input_tel_form_contacts:focus + .lineSimple,
+#phone-input.input_tel_form_contacts.focus + .lineSimple {
   background-color: var(--blue-75BBFD);
 }
 
@@ -239,7 +234,6 @@
   background: var(--light-gray-C0C5CB);
 }
 
-
 .fileAttached {
   display: flex;
 }
@@ -301,7 +295,6 @@
   white-space: nowrap;
 }
 
-
 .for_applicants_mail {
   color: var(--black-1D2E43);
   font-variant-numeric: lining-nums proportional-nums;
@@ -329,7 +322,6 @@
   transform: scale(1.2);
 }
 
-
 .for_applicants_mail:hover {
   color: var(--blue-75BBFD);
 }
@@ -354,7 +346,6 @@
 /* } */
 
 @media screen and (min-width: 1025px) and (max-width: 1600px) {
-
   .form_vacancy_wrapper {
     display: flex;
     height: fit-content;
@@ -383,7 +374,6 @@
   .label1 {
     position: relative;
   }
-
 
   .input_name_form_contacts,
   .input_tel_form_contacts,
@@ -414,18 +404,17 @@
     width: 100%;
   }
 
-  
   .lineSimple {
     height: 0.8px;
     margin-top: 12px;
     background-color: var(--gray-959DA6);
     width: 100%;
   }
-  
+
   .errorLine {
-    background-color: var(--crimson-E00747)
+    background-color: var(--crimson-E00747);
   }
-  
+
   .line_select {
     margin-top: 0;
     background-color: var(--gray-959DA6);
@@ -454,8 +443,8 @@
     white-space: nowrap;
   }
 
-  .input_tel_form_contacts:not(:placeholder-shown)+.placeholder,
-  .input_tel_form_contacts:empty+.placeholder,
+  .input_tel_form_contacts:not(:placeholder-shown) + .placeholder,
+  .input_tel_form_contacts:empty + .placeholder,
   .focused1 .placeholder {
     transform: translateY(-160%) scale(0.75);
     -webkit-transform: translateY(-160%) scale(0.75);
@@ -463,19 +452,18 @@
     color: var(--gray-959DA6);
   }
 
-  .input_name_form_contacts:focus+.line,
-  .input_city_form_contacts:focus+.line,
-  .input_choose_form_contacts:focus+.line,
-  .input_letter_form_contacts:focus+.line,
-  .input_resume_form_contacts:focus+.line,
-  #phone-input:focus+.line {
+  .input_name_form_contacts:focus + .line,
+  .input_city_form_contacts:focus + .line,
+  .input_choose_form_contacts:focus + .line,
+  .input_letter_form_contacts:focus + .line,
+  .input_resume_form_contacts:focus + .line,
+  #phone-input:focus + .line {
     background-color: var(--blue-75BBFD);
   }
 
   /* .hidden {
     display: none;
   } */
-
 
   .agreement_vacancy {
     color: var(--gray-959DA6);
@@ -487,7 +475,6 @@
     line-height: 1rem;
     padding-top: 4rem;
     max-width: 20rem;
-
   }
 
   .agreement_vacancy_link {
@@ -569,7 +556,6 @@
   .button_resume_file:hover {
     background: var(--light-gray-C0C5CB);
   }
-
 
   .fileAttached {
     display: flex;
@@ -664,13 +650,11 @@
   .for_applicants_tel:hover {
     color: var(--blue-75BBFD);
   }
-
 }
 
 /* стили для планшетной версии  */
 
 @media screen and (min-width: 768px) and (max-width: 1024px) {
-
   .form_vacancy_wrapper {
     display: flex;
     height: fit-content;
@@ -701,7 +685,6 @@
     position: relative;
   }
 
-
   .input_name_form_contacts,
   .input_tel_form_contacts,
   .input_city_form_contacts,
@@ -723,7 +706,6 @@
     /* padding-top: 1.8vh; */
   }
 
-
   .line {
     height: 0.8px;
     margin-top: 10px;
@@ -732,9 +714,8 @@
   }
 
   .errorLine {
-    background-color: var(--crimson-E00747)
+    background-color: var(--crimson-E00747);
   }
-  
 
   .line_resume {
     width: 46vw;
@@ -768,8 +749,8 @@
     white-space: nowrap;
   }
 
-  .input_tel_form_contacts:not(:placeholder-shown)+.placeholder,
-  .input_tel_form_contacts:empty+.placeholder,
+  .input_tel_form_contacts:not(:placeholder-shown) + .placeholder,
+  .input_tel_form_contacts:empty + .placeholder,
   .focused1 .placeholder {
     transform: translateY(-180%) scale(0.75);
     -webkit-transform: translateY(-180%) scale(0.75);
@@ -777,12 +758,12 @@
     color: var(--gray-959DA6);
   }
 
-  .input_name_form_contacts:focus+.line,
-  .input_city_form_contacts:focus+.line,
-  .input_choose_form_contacts:focus+.line,
-  .input_letter_form_contacts:focus+.line,
-  .input_resume_form_contacts:focus+.line,
-  #phone-input:focus+.line {
+  .input_name_form_contacts:focus + .line,
+  .input_city_form_contacts:focus + .line,
+  .input_choose_form_contacts:focus + .line,
+  .input_letter_form_contacts:focus + .line,
+  .input_resume_form_contacts:focus + .line,
+  #phone-input:focus + .line {
     background-color: var(--blue-75BBFD);
   }
 
@@ -796,7 +777,6 @@
     line-height: 1rem;
     padding-top: 5rem;
     max-width: 20rem;
-
   }
 
   .agreement_vacancy_link {
@@ -829,7 +809,6 @@
     background-color: var(--blue-75BBFD);
   }
 
-  
   .centerButton {
     display: block;
     position: absolute;
@@ -840,8 +819,6 @@
     transform: translateX(-50%);
     width: 100%;
   }
-
-
 
   .button_name_vacancy {
     color: var(--white-F6F6F6);
@@ -871,11 +848,9 @@
     cursor: none;
   }
 
-
   .button_resume_file:hover {
     background-color: var(--light-light-gray-EBECEE);
   }
-
 
   .fileAttached {
     display: flex;
@@ -916,7 +891,6 @@
     display: none;
   }
 }
-
 
 /* стили мобильной версии  */
 
@@ -962,7 +936,7 @@
   }
 
   .errorLine {
-    background-color: var(--crimson-E00747)
+    background-color: var(--crimson-E00747);
   }
 
   .line_select {
@@ -1012,8 +986,8 @@
     white-space: nowrap;
   }
 
-  .input_tel_form_contacts:not(:placeholder-shown)+.placeholder,
-  .input_tel_form_contacts:empty+.placeholder,
+  .input_tel_form_contacts:not(:placeholder-shown) + .placeholder,
+  .input_tel_form_contacts:empty + .placeholder,
   .focused1 .placeholder {
     transform: translateY(-150%) scale(0.75);
     -webkit-transform: translateY(-150%) scale(0.75);
@@ -1021,12 +995,12 @@
     color: var(--gray-959DA6);
   }
 
-  .input_name_form_contacts:focus+.line,
-  .input_city_form_contacts:focus+.line,
-  .input_choose_form_contacts:focus+.line,
-  .input_letter_form_contacts:focus+.line,
-  .input_resume_form_contacts:focus+.line,
-  #phone-input:focus+.line {
+  .input_name_form_contacts:focus + .line,
+  .input_city_form_contacts:focus + .line,
+  .input_choose_form_contacts:focus + .line,
+  .input_letter_form_contacts:focus + .line,
+  .input_resume_form_contacts:focus + .line,
+  #phone-input:focus + .line {
     background-color: var(--blue-75BBFD);
   }
 
@@ -1040,7 +1014,6 @@
     line-height: 1rem;
     padding-top: 5rem;
     max-width: 20rem;
-
   }
 
   .agreement_vacancy_link {
@@ -1084,7 +1057,6 @@
     width: 100%;
   }
 
-
   .button_name_vacancy {
     color: var(--white-F6F6F6);
     font-variant-numeric: lining-nums proportional-nums;
@@ -1117,7 +1089,6 @@
   .button_resume_file:hover {
     background-color: var(--light-light-gray-EBECEE);
   }
-
 
   .fileAttached {
     display: flex;
@@ -1157,10 +1128,7 @@
   .for_applicants_wrapper {
     display: none;
   }
-
 }
-
-
 
 /* Медиа-запросы */
 /* @media screen and (-webkit-min-device-pixel-ratio: 0) and (min-resolution: .001dpcm) {

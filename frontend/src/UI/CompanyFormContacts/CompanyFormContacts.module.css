@@ -1,12 +1,7 @@
-@import "../../App.css";
+@import '../../App.css';
 
 .border_line_con {
-  box-shadow:
-    -1px 0 0 #F6F6F6,
-    1px 0 0 #F6F6F6,
-    0 -1px 0 #F6F6F6,
-    0 1px 0 #F6F6F6,
-    0 0 16px rgba(0, 0, 0, 0.1);
+  box-shadow: -1px 0 0 #f6f6f6, 1px 0 0 #f6f6f6, 0 -1px 0 #f6f6f6, 0 1px 0 #f6f6f6, 0 0 16px rgba(0, 0, 0, 0.1);
   border-radius: 16px;
   border-radius: 16px;
   width: 100%;
@@ -17,7 +12,12 @@
   width: 38rem;
   height: fit-content;
   border-radius: 1rem;
-  background: linear-gradient(221deg, rgba(255, 203, 193, 0.09) 0%, rgba(117, 187, 253, 0.09) 45.75%, rgba(188, 188, 188, 0.09) 100%);
+  background: linear-gradient(
+    221deg,
+    rgba(255, 203, 193, 0.09) 0%,
+    rgba(117, 187, 253, 0.09) 45.75%,
+    rgba(188, 188, 188, 0.09) 100%
+  );
   box-shadow: 0px 4px 37px 0px rgba(44, 59, 68, 0.05);
   backdrop-filter: blur(14.5px);
 }
@@ -93,7 +93,7 @@
 
 .placeholder {
   position: absolute;
-  top: 90%; 
+  top: 90%;
   left: 0;
   color: var(--gray-959DA6);
   font-size: 16px;
@@ -113,16 +113,16 @@
   color: var(--gray-959DA6);
 }
 
-.input_name_form_contacts:focus+.line {
-  background-color: #FF7F6A;
+.input_name_form_contacts:focus + .line {
+  background-color: #ff7f6a;
 }
 
-.input_task_form_contacts:focus+.line {
-  background-color: #FF7F6A;
+.input_task_form_contacts:focus + .line {
+  background-color: #ff7f6a;
 }
 
-#phone-input:focus+.line {
-  background-color: #FF7F6A;
+#phone-input:focus + .line {
+  background-color: #ff7f6a;
 }
 
 .button_hover10 {
@@ -163,20 +163,29 @@
   color: var(--gray-959DA6);
 }
 
-.form_left_wrapper:has(.input_name_form_contacts:not(:placeholder-shown)):has(.input_tel_form_contacts:not(:placeholder-shown)):has(.input_task_form_contacts:not(:placeholder-shown)) .button_hover10 {
+.form_left_wrapper:has(.input_name_form_contacts:not(:placeholder-shown)):has(
+    .input_tel_form_contacts:not(:placeholder-shown)
+  ):has(.input_task_form_contacts:not(:placeholder-shown))
+  .button_hover10 {
   border: 1px solid var(--black-1D2E43);
   color: var(--black-1D2E43);
 }
 
-.form_left_wrapper:has(.input_name_form_contacts:not(:placeholder-shown)) :has(.input_tel_form_contacts:not(:placeholder-shown)) :has(.input_task_form_contacts:not(:placeholder-shown)) .button_name10 {
+.form_left_wrapper:has(.input_name_form_contacts:not(:placeholder-shown))
+  :has(.input_tel_form_contacts:not(:placeholder-shown))
+  :has(.input_task_form_contacts:not(:placeholder-shown))
+  .button_name10 {
   color: var(--black-1D2E43);
 }
 
-.form_left_wrapper:has(.input_name_form_contacts:not(:placeholder-shown)) :has(.input_tel_form_contacts:not(:placeholder-shown)) :has(.input_task_form_contacts:not(:placeholder-shown)) .disabled {
+.form_left_wrapper:has(.input_name_form_contacts:not(:placeholder-shown))
+  :has(.input_tel_form_contacts:not(:placeholder-shown))
+  :has(.input_task_form_contacts:not(:placeholder-shown))
+  .disabled {
   color: var(--black-1D2E43);
 }
 
-.checkbox-input[type=checkbox]:checked~.button_hover10 {
+.checkbox-input[type='checkbox']:checked ~ .button_hover10 {
   color: var(--black-1D2E43);
 }
 
@@ -195,9 +204,9 @@
   align-items: center;
 }
 
-.agreement input[type="checkbox"] {
+.agreement input[type='checkbox'] {
   margin-right: 8px;
-  margin-top:-2px;
+  margin-top: -2px;
 }
 
 .agreement a {
@@ -209,7 +218,7 @@
   color: var(--black-1D2E43);
 }
 
-.checkbox-input[type=checkbox] {
+.checkbox-input[type='checkbox'] {
   transform: scale(1);
   cursor: pointer;
 }
@@ -219,7 +228,7 @@
 }
 
 .checkbox::before {
-  content: "";
+  content: '';
   display: inline-block;
   width: 14px;
   height: 14px;
@@ -228,7 +237,7 @@
 }
 
 .checkbox::after {
-  content: "\2713";
+  content: '\2713';
   position: absolute;
   top: 45%;
   left: 60%;
@@ -237,7 +246,7 @@
 }
 
 .checkbox:checked::before {
-  background-color: #FF7F6A;
+  background-color: #ff7f6a;
 }
 
 .checkbox:checked::after {
@@ -275,7 +284,7 @@
     width: 23rem;
   }
 
-  .some-unique-class input[name="task"] {
+  .some-unique-class input[name='task'] {
     width: 70%;
   }
 
@@ -330,7 +339,7 @@
 
   .placeholder {
     position: absolute;
-    top: 90%; 
+    top: 90%;
     left: 0;
     color: var(--gray-959DA6);
     font-size: 16px;
@@ -344,7 +353,7 @@
 
   .input_tel_form_contacts:empty + .placeholder,
   .focused1 .placeholder,
-  .input_tel_form_contacts:focus+.placeholder {
+  .input_tel_form_contacts:focus + .placeholder {
     transform: translateY(-180%) scale(0.75);
     -webkit-transform: translateY(-180%) scale(0.75);
     font-size: 16px;
@@ -355,7 +364,7 @@
     width: 100%;
   }
 
-  .some-unique-class input[name="task"] {
+  .some-unique-class input[name='task'] {
     width: 50%;
   }
 
@@ -398,11 +407,11 @@
   }
 
   .checkbox {
-    position: relative; 
+    position: relative;
   }
 
   .checkbox::before {
-    content: "";
+    content: '';
     display: inline-block;
     width: 14px;
     height: 14px;
@@ -411,7 +420,7 @@
   }
 
   .checkbox::after {
-    content: "\2713";
+    content: '\2713';
     position: absolute;
     top: 45%;
     left: 60%;
@@ -420,7 +429,7 @@
   }
 
   .checkbox:checked::before {
-    background-color: #FF7F6A;
+    background-color: #ff7f6a;
   }
 
   .checkbox:checked::after {

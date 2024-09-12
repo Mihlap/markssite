@@ -1,12 +1,11 @@
 // feature/toggle/toggleSlice.js
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
 
 const serverHost = process.env.REACT_APP_SERVER_HOST;
 
-
 export const updateToggleStateAsync = createAsyncThunk(
-  "toggle/updateState",
+  'toggle/updateState',
   async (isActiveForButton1, { rejectWithValue }) => {
     try {
       const response = await axios.put(`${serverHost}/api/toggle/project`, {
@@ -19,21 +18,18 @@ export const updateToggleStateAsync = createAsyncThunk(
   }
 );
 
-export const fetchToggleStateAsync = createAsyncThunk(
-  "toggle/fetchState",
-  async (_, { rejectWithValue }) => {
-    try {
-      const response = await axios.get(`${serverHost}/api/toggle/project`);
-      return response.data.isActiveForButton1;
-    } catch (error) {
-      return rejectWithValue(error.response.data);
-    }
+export const fetchToggleStateAsync = createAsyncThunk('toggle/fetchState', async (_, { rejectWithValue }) => {
+  try {
+    const response = await axios.get(`${serverHost}/api/toggle/project`);
+    return response.data.isActiveForButton1;
+  } catch (error) {
+    return rejectWithValue(error.response.data);
   }
-);
+});
 
 // Добавляем новое действие для второй кнопки
 export const updateToggleStateForButton2Async = createAsyncThunk(
-  "toggle/updateStateForButton2",
+  'toggle/updateStateForButton2',
   async (isActiveForButton2, { rejectWithValue }) => {
     try {
       const response = await axios.put(`${serverHost}/api/toggle/article`, {
@@ -47,7 +43,7 @@ export const updateToggleStateForButton2Async = createAsyncThunk(
 );
 
 export const fetchToggleStateForButton2Async = createAsyncThunk(
-  "toggle/fetchStateForButton2",
+  'toggle/fetchStateForButton2',
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get(`${serverHost}/api/toggle/article`);
@@ -61,7 +57,7 @@ export const fetchToggleStateForButton2Async = createAsyncThunk(
 // это отвечает за открытие и закрытия роута который даёт возможность зарегистрировать нового пользователя
 
 export const updateToggleStateForButton3Async = createAsyncThunk(
-  "toggle/updateStateForButton3",
+  'toggle/updateStateForButton3',
   async (isActiveForButton3, { rejectWithValue }) => {
     try {
       const response = await axios.put(`${serverHost}/api/toggle/button3`, {
@@ -69,25 +65,25 @@ export const updateToggleStateForButton3Async = createAsyncThunk(
       });
       return response.data;
     } catch (error) {
-      return rejectWithValue(error?.response?.data || "Unknown error occurred");
+      return rejectWithValue(error?.response?.data || 'Unknown error occurred');
     }
   }
 );
 
 export const fetchToggleStateForButton3Async = createAsyncThunk(
-  "toggle/fetchStateForButton3",
+  'toggle/fetchStateForButton3',
   async (_, { rejectWithValue }) => {
     try {
       const response = await axios.get(`${serverHost}/api/toggle/button3`);
       return response.data.isActiveForButton3;
     } catch (error) {
-      return rejectWithValue(error?.response?.data || "Unknown error occurred");
+      return rejectWithValue(error?.response?.data || 'Unknown error occurred');
     }
   }
 );
 
 const toggleSlice = createSlice({
-  name: "toggle",
+  name: 'toggle',
   initialState: {
     isActiveForButton1: false,
     isActiveForButton2: false,
@@ -104,7 +100,7 @@ const toggleSlice = createSlice({
       // console.log("Successfully updated toggle in state");
     },
     [updateToggleStateAsync.rejected]: (state, action) => {
-      state.error = action.payload?.message || "An unknown error occurred";
+      state.error = action.payload?.message || 'An unknown error occurred';
       // console.error("Error updating toggle:", state.error);
     },
     [fetchToggleStateAsync.fulfilled]: (state, action) => {
@@ -116,7 +112,7 @@ const toggleSlice = createSlice({
         state.error = action.payload?.message;
         // console.error("Error fetching toggle state:", action.payload.message);
       } else {
-        state.error = "Unknown error occurred.";
+        state.error = 'Unknown error occurred.';
         // console.error("Unknown error occurred during toggle state fetch.");
       }
     },
@@ -128,7 +124,7 @@ const toggleSlice = createSlice({
       // console.log("Successfully updated toggle for button 2 in state");
     },
     [updateToggleStateForButton2Async.rejected]: (state, action) => {
-      state.error = action.payload?.message || "An unknown error occurred";
+      state.error = action.payload?.message || 'An unknown error occurred';
       // console.error(
       //   "Error updating toggle for button 2:",
       //   action.payload?.message
@@ -139,11 +135,8 @@ const toggleSlice = createSlice({
       // console.log("Successfully fetched toggle state for button 2 from server");
     },
     [fetchToggleStateForButton2Async.rejected]: (state, action) => {
-      state.error = action.payload?.message || "An unknown error occurred";
-      console.error(
-        "Error fetching toggle state for button 2:",
-        action.payload?.message
-      );
+      state.error = action.payload?.message || 'An unknown error occurred';
+      console.error('Error fetching toggle state for button 2:', action.payload?.message);
     },
     [updateToggleStateForButton3Async.pending]: (state, action) => {
       // console.log("Starting API request to update toggle for button 3");
@@ -153,7 +146,7 @@ const toggleSlice = createSlice({
       // console.log("Successfully updated toggle for button 3 in state");
     },
     [updateToggleStateForButton3Async.rejected]: (state, action) => {
-      state.error = action.payload?.message || "Unknown error occurred";
+      state.error = action.payload?.message || 'Unknown error occurred';
       // console.error("Error updating toggle for button 3:", state.error);
     },
     [fetchToggleStateForButton3Async.fulfilled]: (state, action) => {
@@ -161,12 +154,10 @@ const toggleSlice = createSlice({
       // console.log("Successfully fetched toggle state for button 3 from server");
     },
     [fetchToggleStateForButton3Async.rejected]: (state, action) => {
-      state.error = action.payload?.message || "Unknown error occurred";
+      state.error = action.payload?.message || 'Unknown error occurred';
       // console.error("Error fetching toggle state for button 3:", state.error);
     },
   },
 });
-
-
 
 export default toggleSlice.reducer;

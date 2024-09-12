@@ -12,7 +12,7 @@ export const handleScroll = (prevScrollPos, setVisible, setPrevScrollPos) => {
 
 export const handleItemClick = (path, setActiveClass) => {
   setActiveClass(path);
-  localStorage.setItem("activeClass", path);
+  localStorage.setItem('activeClass', path);
 };
 
 export const handlePath = (location, setActiveClass) => {
@@ -21,7 +21,7 @@ export const handlePath = (location, setActiveClass) => {
 };
 
 export const handleStoredClass = (setActiveClass) => {
-  const storedActiveClass = localStorage.getItem("activeClass");
+  const storedActiveClass = localStorage.getItem('activeClass');
   if (storedActiveClass) {
     setActiveClass(storedActiveClass);
   }

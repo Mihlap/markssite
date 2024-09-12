@@ -68,7 +68,8 @@ const CompanySlider = () => {
               slidesPerView: 1,
               spaceBetween: 30,
             },
-          }}>
+          }}
+        >
           {companyArray.map((item, index) => (
             <SwiperSlide className={styles.CompanySlider__slide} key={index}>
               <div className={styles.CompanySlider__picture}>

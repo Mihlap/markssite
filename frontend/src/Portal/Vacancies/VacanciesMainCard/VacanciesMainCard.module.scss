@@ -1,4 +1,4 @@
-@import "../../../App.css";
+@import '../../../App.css';
 
 .main_vacancyWrapper {
   position: relative;
@@ -19,8 +19,8 @@
     &__wrapper {
       display: flex;
       flex-direction: column;
-       width: 100%;      
-       height: auto;
+      width: 100%;
+      height: auto;
     }
 
     &__item {
@@ -62,14 +62,18 @@
       z-index: -1;
     }
 
-
     &__blockLeft {
       display: flex;
       flex-direction: column;
       height: 100%;
       width: 100%;
       backdrop-filter: blur(7px);
-      background: linear-gradient(221.46deg, rgba(255, 203, 193, 0.09) -4.631%, rgba(117, 187, 253, 0.09) 44.805%, rgba(188, 188, 188, 0.09) 103.423%);
+      background: linear-gradient(
+        221.46deg,
+        rgba(255, 203, 193, 0.09) -4.631%,
+        rgba(117, 187, 253, 0.09) 44.805%,
+        rgba(188, 188, 188, 0.09) 103.423%
+      );
       padding-left: 8.37rem;
       border-bottom: 1px solid rgb(235, 236, 238);
     }
@@ -93,7 +97,6 @@
       align-content: stretch;
       border-bottom: 1px solid rgb(235, 236, 238);
     }
-
 
     &__vacancyTitle {
       color: var(--black-1D2E43);
@@ -176,7 +179,12 @@
       border-left: 1px solid rgb(235, 236, 238);
       border-top: 1px solid rgb(235, 236, 238);
       backdrop-filter: blur(7px);
-      background: linear-gradient(221.46deg, rgba(255, 203, 193, 0.09) -4.321%, rgba(117, 187, 253, 0.09) 46.423%, rgba(188, 188, 188, 0.09) 106.591%);
+      background: linear-gradient(
+        221.46deg,
+        rgba(255, 203, 193, 0.09) -4.321%,
+        rgba(117, 187, 253, 0.09) 46.423%,
+        rgba(188, 188, 188, 0.09) 106.591%
+      );
     }
 
     .topRightSquare {
@@ -196,9 +204,13 @@
     .bottomRightSquare {
       border-bottom: 1px solid rgb(235, 236, 238);
       backdrop-filter: blur(7px);
-      background: linear-gradient(221.46deg, rgba(255, 203, 193, 0.09) -4.33%, rgba(117, 187, 253, 0.09) 46.376%, rgba(188, 188, 188, 0.09) 106.499%);
+      background: linear-gradient(
+        221.46deg,
+        rgba(255, 203, 193, 0.09) -4.33%,
+        rgba(117, 187, 253, 0.09) 46.376%,
+        rgba(188, 188, 188, 0.09) 106.499%
+      );
     }
-
 
     &__detailKey {
       font-size: 1.125rem;
@@ -218,7 +230,6 @@
     }
   }
 
-
   .vacancyFormWrapperSimple {
     border: 1px solid rgb(235, 236, 238);
     backdrop-filter: blur(4.5px);
@@ -226,7 +237,6 @@
     padding: 6.5vh 6.25rem 7vh 6.25rem;
     width: 100%;
   }
-
 
   &__offer {
     display: flex;
@@ -246,7 +256,6 @@
     padding-right: 1.875rem;
     align-items: center;
   }
-
 
   &__offerHeart {
     display: inline-block;
@@ -274,7 +283,6 @@
     display: flex;
     flex-direction: column;
     width: 50%;
-
   }
 
   &__frame {
@@ -312,7 +320,6 @@
     margin-bottom: 32px;
   }
 
-
   &__wrapperTitle1 {
     color: var(--gray-959DA6);
     font-family: var(--font-raleway);
@@ -343,7 +350,7 @@
   }
 
   &__textBlock li::before {
-    content: "\2022";
+    content: '\2022';
     position: absolute;
     left: 0;
     top: 0;
@@ -556,7 +563,6 @@
       padding-top: 22px;
       white-space: pre-wrap;
     }
-
   }
 
   &__locationWrapperLocation {
@@ -614,7 +620,6 @@
     }
   }
 
-
   &__sliderBlock {
     display: block;
     padding-top: 198px;
@@ -637,7 +642,6 @@
       height: 100%;
       padding-top: 24px;
     }
-
 
     .sliderContainer_block {
       display: flex;
@@ -733,14 +737,12 @@
       z-index: -1;
       opacity: 1;
     }
-
   }
 
   &__frameBlockNext {
     display: flex;
     padding-top: 11rem;
     padding-left: 8.37rem;
-
 
     .frameBlockLeft {
       display: flex;
@@ -780,10 +782,9 @@
     }
 
     .frameBlockRight {
-       padding-left: 10vw;
-       flex: 0 0 70%;
+      padding-left: 10vw;
+      flex: 0 0 70%;
     }
-
   }
 
   .temporaryText {
@@ -820,9 +821,7 @@
   }
 
   @media screen and (min-width: 1025px) and (max-width: 1600px) {
-
     .main_vacancy_block {
-
       &__all_button {
         padding-left: 3.875rem;
       }
@@ -862,7 +861,7 @@
         height: 100vh;
         // height: calc(100% - 5vh);
       }
-  
+
       &__vacancyTitle {
         display: flex;
         flex-wrap: wrap;
@@ -870,12 +869,11 @@
         padding-right: 40rem;
       }
 
-      // &__vacancyTitle {    
+      // &__vacancyTitle {
       //   padding-right: 40vw;
-      //   padding-top: 186px; 
+      //   padding-top: 186px;
       //   width: 50%;
       // }
-
 
       &__vacancyTitle1 {
         padding-top: 32px;
@@ -897,9 +895,8 @@
         min-height: 20vh;
         padding-left: 2.5rem;
         height: auto;
-        // margin-bottom: -2rem; 
+        // margin-bottom: -2rem;
       }
-
 
       &__detailKey {
         font-size: 1rem;
@@ -975,7 +972,6 @@
       margin-bottom: 32px;
     }
 
-
     &__wrapperTitle1 {
       font-size: 1rem;
       line-height: 1.5rem;
@@ -987,7 +983,6 @@
     &__textBlock {
       font-size: 1.125rem;
     }
-
 
     &__aboutBlockWrapper {
       padding-left: 3.875rem;
@@ -1010,7 +1005,6 @@
       .countItem {
         padding-right: 5rem;
       }
-
 
       .vectorAround {
         position: absolute;
@@ -1112,9 +1106,8 @@
         padding-top: 24px;
         white-space: pre-wrap;
         z-index: -1;
-        // white-space: normal; 
+        // white-space: normal;
       }
-
     }
 
     &__locationWrapperLocation {
@@ -1161,7 +1154,6 @@
       }
     }
 
-
     &__sliderBlock {
       display: block;
       padding-top: 187px;
@@ -1195,9 +1187,11 @@
         height: 100%;
       }
 
-      .verticalSlide {}
+      .verticalSlide {
+      }
 
-      .horizontalSlide {}
+      .horizontalSlide {
+      }
 
       .wrapper_sliderContainer_blockSlide {
         display: flex;
@@ -1206,7 +1200,7 @@
         width: 100%;
         height: 100%;
         border-radius: 1rem;
-        // gap: 1.88rem;   
+        // gap: 1.88rem;
       }
 
       .wrapper_sliderContainer_blockSlide,
@@ -1257,14 +1251,12 @@
         background-repeat: no-repeat;
         z-index: -1;
       }
-
     }
 
     &__frameBlockNext {
       display: flex;
       padding-top: 130px;
       padding-left: 3.875rem;
-
 
       .frameBlockLeft {
         display: flex;
@@ -1299,8 +1291,7 @@
         padding-left: 4rem;
         padding-top: 3rem;
         flex: 0 0 60%;
-        }
-
+      }
     }
 
     .temporaryText {
@@ -1316,12 +1307,10 @@
     &__vacancyFormWrapper {
       padding: 2.75rem 0rem 5rem 3.875rem;
     }
-
   }
 
   /* стили для планшетной версии  */
   @media screen and (min-width: 768px) and (max-width: 1024px) {
-
     .main_vacancy_block {
       display: flex;
       width: 100%;
@@ -1359,7 +1348,6 @@
         right: 0%;
       }
 
-
       &__blockLeft {
         padding-left: 3.43rem;
       }
@@ -1381,7 +1369,6 @@
         align-items: center;
       }
 
-
       &__vacancyTitle {
         display: flex;
         flex-wrap: wrap;
@@ -1399,7 +1386,6 @@
         font-size: 1rem;
         line-height: 1.5rem;
       }
-
 
       &__vacancyTitle1__titleValue {
         font-size: 1.25rem;
@@ -1428,7 +1414,6 @@
         padding-left: 6.25rem;
         padding-top: 6px;
       }
-
 
       &__detail {
         display: flex;
@@ -1460,7 +1445,6 @@
         order: 3;
       }
 
-
       &__detailKey {
         font-size: 1rem;
         line-height: 1.5rem;
@@ -1476,7 +1460,6 @@
     .vacancyFormWrapperSimple {
       display: none;
     }
-
 
     &__offer {
       padding-left: 11.43rem;
@@ -1497,7 +1480,7 @@
       width: 100%;
     }
 
-    &__frameBlock:nth-last-child(n+2) {
+    &__frameBlock:nth-last-child(n + 2) {
       margin-bottom: 4.5rem;
     }
 
@@ -1516,15 +1499,13 @@
 
     &__button_vacancyWrapper {
       position: relative;
-       display: flex;
+      display: flex;
       justify-content: center;
       align-items: center;
       padding-top: 4rem;
     }
 
-
     &__button_vacancy {
- 
       display: inline-flex;
       padding: 1rem 2rem;
       justify-content: center;
@@ -1534,7 +1515,6 @@
       background-color: var(--blue-75BBFD);
       transition: background-color 0.4s ease;
 
-
       &.fixed {
         position: fixed;
         bottom: 0;
@@ -1542,12 +1522,12 @@
         transform: translateX(-50%);
         z-index: 1000;
       }
-    
+
       &.hidden {
         display: none;
       }
     }
-  
+
     &__button_name_vacancy {
       color: var(--white-F6F6F6);
       font-variant-numeric: lining-nums proportional-nums;
@@ -1576,7 +1556,6 @@
       margin-bottom: 2rem;
     }
 
-
     &__wrapperTitle1 {
       font-size: 1rem;
       line-height: 1.5rem;
@@ -1598,12 +1577,11 @@
     }
 
     &__textBlock li::before {
-      content: "\2022";
+      content: '\2022';
       position: absolute;
       left: 0.8rem;
       top: 0;
     }
-
 
     &__aboutBlockWrapper {
       display: flex;
@@ -1661,13 +1639,11 @@
     }
 
     .main_vacancyWrapper__3dGroup {
-
       .background4 {
         width: 6rem;
         height: 6rem;
         top: 52%;
         left: 48%;
-        ;
       }
 
       .background5 {
@@ -1715,7 +1691,6 @@
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
-
     }
 
     &__locationWrapper {
@@ -1736,7 +1711,6 @@
         line-height: 2.5rem;
         white-space: normal;
       }
-
     }
 
     &__locationWrapperLocation {
@@ -1785,10 +1759,8 @@
       }
     }
 
-
     &__sliderBlock {
       padding-top: 7.625rem;
-
 
       .sliderBlockText {
         font-size: 1rem;
@@ -1796,11 +1768,9 @@
         padding-left: 3.125rem;
       }
 
-
       .sliderContainer_block {
         padding-left: 3.125rem;
       }
-
     }
 
     .main_vacancyWrapper__3dNext {
@@ -1812,7 +1782,6 @@
       .background11next {
         display: none;
       }
-
     }
 
     &__frameBlockNext {
@@ -1820,7 +1789,6 @@
       flex-direction: column;
       padding-top: 4.125rem;
       padding-left: 11rem;
-
 
       .frameBlockLeft {
         display: flex;
@@ -1853,7 +1821,6 @@
           margin-bottom: 6.25rem;
         }
       }
-
     }
 
     .temporaryText {
@@ -1884,13 +1851,10 @@
     &__vacancyFormWrapper {
       padding: 2.75rem 11rem 9rem 11rem;
     }
-
   }
-
 
   /* стили мобильной версии  */
   @media screen and (max-width: 767px) {
-
     .main_vacancy_block {
       display: flex;
       width: 100%;
@@ -1932,7 +1896,6 @@
         z-index: 0;
       }
 
-
       &__blockLeft {
         padding-left: 1rem;
         padding-right: 1rem;
@@ -1961,8 +1924,8 @@
         padding-right: 0rem;
         padding-top: 149px;
         overflow-wrap: break-word;
-        // word-break: break-all; 
-        // hyphens: auto    
+        // word-break: break-all;
+        // hyphens: auto
       }
 
       &__vacancyTitle1 {
@@ -2003,7 +1966,6 @@
         padding-top: 6px;
       }
 
-
       &__detail {
         display: flex;
         flex-wrap: wrap;
@@ -2031,7 +1993,6 @@
         order: 4;
       }
 
-
       &__detailKey {
         font-size: 1rem;
         line-height: 1.5rem;
@@ -2047,7 +2008,6 @@
     .vacancyFormWrapperSimple {
       display: none;
     }
-
 
     &__offer {
       padding-right: 1rem;
@@ -2102,7 +2062,6 @@
       padding-top: 1rem;
     }
 
-
     &__button_vacancy {
       display: inline-flex;
       padding: 1rem 2rem;
@@ -2120,7 +2079,7 @@
         transform: translateX(-50%);
         z-index: 1000;
       }
-    
+
       &.hidden {
         display: none;
       }
@@ -2133,11 +2092,11 @@
       font-size: 1rem;
       font-style: normal;
       font-weight: var(--fw-400);
-      line-height: 1.5rem;  
-      white-space: nowrap;     
+      line-height: 1.5rem;
+      white-space: nowrap;
     }
 
-      &__wrapperTextBlock {
+    &__wrapperTextBlock {
       display: flex;
       flex-direction: column;
       color: var(--black-1D2E43);
@@ -2152,7 +2111,6 @@
       padding-top: 0rem;
       margin-bottom: 1.5rem;
     }
-
 
     &__wrapperTitle1 {
       font-size: 1rem;
@@ -2176,12 +2134,11 @@
     }
 
     &__textBlock li::before {
-      content: "\2022";
+      content: '\2022';
       position: absolute;
       left: 0.8rem;
       top: 0;
     }
-
 
     &__aboutBlockWrapper {
       display: flex;
@@ -2240,7 +2197,6 @@
     }
 
     .main_vacancyWrapper__3dGroup {
-
       .background4 {
         width: 6rem;
         height: 6rem;
@@ -2259,7 +2215,6 @@
         left: 50%;
       }
 
-
       .background7 {
         width: 6rem;
         height: 6rem;
@@ -2269,11 +2224,11 @@
       }
 
       .background8 {
-         width: 24rem;
+        width: 24rem;
         height: 15rem;
         top: 110%;
-        left: 0;      
-       }
+        left: 0;
+      }
 
       .background9 {
         width: 19rem;
@@ -2288,14 +2243,12 @@
         top: 58%;
         left: 55%;
       }
-
     }
 
     &_locationBlockLocation {
       display: flex;
       flex-direction: column;
       justify-content: flex-start;
-
     }
 
     &__locationWrapper {
@@ -2323,14 +2276,11 @@
       .no-break {
         white-space: nowrap;
       }
-
-
     }
 
     &__locationWrapperLocation {
       padding-top: 3.9rem;
       padding-left: 3.125rem;
-
     }
 
     &__spanWrapperLocation {
@@ -2342,7 +2292,6 @@
       max-width: 100%;
       gap: 24px;
     }
-
 
     .rocketVectorAround1Block {
       position: absolute;
@@ -2357,7 +2306,6 @@
       left: 15rem;
       margin-right: 0;
       margin-bottom: 0;
-
     }
 
     @media screen and (min-width: 564px) and (max-width: 767px) {
@@ -2374,13 +2322,11 @@
         left: 15rem;
         margin-right: 0;
         margin-bottom: 0;
-
       }
     }
 
     &__sliderBlock {
       padding-top: 25.43rem;
-
 
       .sliderBlockText {
         font-size: 1rem;
@@ -2388,14 +2334,12 @@
         padding-left: 1rem;
       }
 
-
       .sliderContainer {
         display: flex;
         width: 100%;
         height: 100%;
         padding-top: 1rem;
       }
-
 
       .sliderContainer_block {
         padding-left: 1rem;
@@ -2456,7 +2400,6 @@
         width: 100%;
         height: 100%;
       }
-
     }
 
     .main_vacancyWrapper__3dNext {
@@ -2468,7 +2411,6 @@
       .background11next {
         display: none;
       }
-
     }
 
     &__frameBlockNext {
@@ -2477,7 +2419,6 @@
       padding-top: 4rem;
       padding-left: 1rem;
       padding-right: 1rem;
-
 
       .frameBlockLeft {
         display: flex;
@@ -2507,8 +2448,7 @@
         display: flex;
         padding-left: 0;
         padding-top: 2.7rem;
-    }
-
+      }
     }
 
     .temporaryText {
@@ -2539,10 +2479,7 @@
     &__vacancyFormWrapper {
       padding: 1.5rem 1rem 8rem 1rem;
     }
-
   }
-
-
 }
 
 // @media screen and (min-width: 300px) and (max-width: 540px) {
@@ -2551,7 +2488,7 @@
 //   width: 24rem;
 //   height: 15rem;
 //   top: 110%;
-//   left: 0%; 
-//   right: 50%;     
+//   left: 0%;
+//   right: 50%;
 //  }
 // }

@@ -1,7 +1,7 @@
-@import "../../App.css";
+@import '../../App.css';
 
 .tableContainer {
-  height: 694px; 
+  height: 694px;
   overflow: hidden;
   transition: height 0.5s ease-in-out;
   padding-left: 1.87vw;
@@ -10,12 +10,12 @@
 
 .visible {
   height: 1500px;
- }
-  
-  .tableStyle {
-    border-collapse: collapse;
-    width: 100%;
-   }
+}
+
+.tableStyle {
+  border-collapse: collapse;
+  width: 100%;
+}
 
 .thStyle {
   text-align: left;
@@ -32,7 +32,7 @@
 .thStyle4 {
   text-align: right;
   padding-bottom: 16px;
-   font-family: var(--font-raleway);
+  font-family: var(--font-raleway);
   font-style: normal;
   font-weight: var(--fw-400);
   color: var(--gray-959DA6);
@@ -49,7 +49,7 @@
   line-height: 1.75rem;
   color: var(--black-1D2E43);
   text-align: left;
-  max-width: 27vw; 
+  max-width: 27vw;
   min-width: 6rem;
   padding-right: 20px;
 }
@@ -62,7 +62,7 @@
   line-height: 24px;
   color: var(--black-1D2E43);
   text-align: left;
-  max-width: 27vw; 
+  max-width: 27vw;
   min-width: 4rem;
   padding-right: 20px;
 }
@@ -75,7 +75,7 @@
   line-height: 24px;
   color: var(--dark-gray-566272);
   text-align: left;
-  max-width: 10vw; 
+  max-width: 10vw;
   min-width: 4rem;
   width: 100%;
   padding-right: 20px;
@@ -90,7 +90,7 @@
   color: var(--dark-gray-566272);
   text-align: right;
   padding-right: 20px;
- }
+}
 
 .button_table {
   position: absolute;
@@ -122,10 +122,8 @@
   transition: all 0.5s ease-in-out;
 }
 
-
 /* стили для планшетной версии  */
 @media screen and (min-width: 768px) and (max-width: 1024px) {
-
   .tableContainer {
     height: 670px; /* Начальная высота */
     overflow: hidden;
@@ -134,23 +132,23 @@
     padding-right: 3.37rem;
     width: 100%;
   }
-  
+
   .visible {
     height: 1440px; /* Высота при открытии */
-   }
+  }
 
   .slideDown {
     max-height: 120vh;
     transition: max-height 0.5s ease-in-out;
   }
-  
+
   .slideUp {
     max-height: 50vh;
     transition: max-height 0.5s ease-in-out;
   }
 
   .tableStyle {
-   max-width: 100%;
+    max-width: 100%;
   }
 
   .thStyle {
@@ -164,11 +162,11 @@
     line-height: 20px;
     width: 50%;
   }
-     
- .thStyle4 {
+
+  .thStyle4 {
     text-align: left;
-     padding-bottom: 16px;
-     padding-right: 2vw;
+    padding-bottom: 16px;
+    padding-right: 2vw;
     font-family: var(--font-raleway);
     font-style: normal;
     font-weight: var(--fw-400);
@@ -177,7 +175,7 @@
     line-height: 20px;
     width: 100%;
   }
-  
+
   .tdStyle1 {
     font-family: var(--font-raleway);
     font-style: normal;
@@ -190,34 +188,34 @@
     min-width: 2rem;
     padding-right: 10px;
   }
-  
+
   .tdStyle2 {
     font-family: var(--font-raleway);
     font-style: normal;
     font-weight: var(--fw-400);
     font-size: 1rem;
-    line-height: 1.5rem; 
+    line-height: 1.5rem;
     color: var(--black-1D2E43);
     text-align: left;
-    border-top: "1px solid black";
+    border-top: '1px solid black';
     max-width: 26vw;
     min-width: 2rem;
     padding-right: 20px;
   }
-  
+
   .tdStyle3 {
     font-family: var(--font-raleway);
     font-style: normal;
     font-weight: var(--fw-400);
     font-size: 0.875rem;
-    line-height: 1.25rem; 
+    line-height: 1.25rem;
     color: var(--dark-gray-566272);
     text-align: left;
     max-width: 10rem;
     min-width: 5rem;
     padding-right: 2vw;
-    }
-  
+  }
+
   .tdStyle4 {
     text-align: left;
     font-family: var(--font-raleway);
@@ -226,11 +224,11 @@
     font-size: 16px;
     line-height: 24px;
     color: var(--dark-gray-566272);
-     padding-right: 10px;
-     max-width: 10rem;
-     min-width: 5rem;
-   }
-  
+    padding-right: 10px;
+    max-width: 10rem;
+    min-width: 5rem;
+  }
+
   .button_table {
     position: absolute;
     padding-right: 2rem;
@@ -244,13 +242,11 @@
 
 /* стили для мобильной версии  */
 @media screen and (max-width: 767px) {
-
   .tableStyle {
     border-collapse: collapse;
     margin-left: 0rem;
     margin-right: 0rem;
     border-bottom: 1px solid var(--dark-gray-566272);
- 
   }
   .expandedOut {
     animation: slideContentIn 0.4s ease-in-out;
@@ -285,8 +281,7 @@
     }
   } */
 
-
-    .tdStyle1 {
+  .tdStyle1 {
     font-family: var(--font-raleway);
     font-weight: var(--fw-300);
     font-size: 1.125rem;
@@ -322,7 +317,7 @@
   .svgContainer {
     transition: transform 0.5s ease-in-out;
   }
-  
+
   .svgContainer.clicked {
     transform: rotate(360deg);
   }
@@ -344,7 +339,6 @@
     font-family: var(--font-raleway);
     line-height: 24px;
     padding-left: 1rem;
-    
   }
 
   .field_prize {
@@ -367,7 +361,6 @@
   }
 
   .button_table {
- display: none;
+    display: none;
   }
-
 }

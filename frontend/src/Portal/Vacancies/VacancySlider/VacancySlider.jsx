@@ -1,23 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import styles from "../VacanciesMainCard/VacanciesMainCard.module.scss";
+import styles from '../VacanciesMainCard/VacanciesMainCard.module.scss';
 
-import slider1 from "../icons/slider1.png";
-import slider2 from "../icons/slider2.png";
-import slider3 from "../icons/slider3.png";
+import slider1 from '../icons/slider1.png';
+import slider2 from '../icons/slider2.png';
+import slider3 from '../icons/slider3.png';
 
-const imageArray = [
-  slider1,
-  slider2,
-  slider3,
-  slider2,
-  slider1,
-  slider2,
-  slider3,
-  slider2,
-  slider1,
-  slider2,
-];
+const imageArray = [slider1, slider2, slider3, slider2, slider1, slider2, slider3, slider2, slider1, slider2];
 
 const VacancySlider = () => {
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
@@ -28,7 +17,7 @@ const VacancySlider = () => {
     };
 
     window.addEventListener('resize', handleResize);
-    handleResize(); 
+    handleResize();
 
     return () => {
       window.removeEventListener('resize', handleResize);
@@ -40,11 +29,11 @@ const VacancySlider = () => {
       <Swiper
         className={styles.sliderContainer_block}
         loop={true}
-        effect={"fade"}
+        effect={'fade'}
         slidesPerView="auto"
         spaceBetween={windowWidth <= 767 ? 20 : 30}
         centeredSlides={false}
-        touch="true" 
+        touch="true"
         direction="horizontal"
         breakpoints={{
           2500: { slidesPerView: 4.7 },

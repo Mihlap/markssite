@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
-import gsap from "gsap";
-import styles from "../Company/Company.module.css";
+import gsap from 'gsap';
+import styles from '../Company/Company.module.css';
 
-import bracket from "../icons/bracket.svg";
+import bracket from '../icons/bracket.svg';
 
 const CounterCompanyMobile = () => {
   const [countPercentM, setCountPercentM] = useState(0);
@@ -11,7 +11,6 @@ const CounterCompanyMobile = () => {
   const [activeCounter, setActiveCounter] = useState(0);
   const [finishedCounters, setFinishedCounters] = useState([]);
   const blockSlider = useRef();
-    
 
   useEffect(() => {
     const timer1 = setTimeout(() => {
@@ -25,8 +24,7 @@ const CounterCompanyMobile = () => {
         setCountHumanM(countHumanM + 1);
       }
     }, 50);
-  
-   
+
     const delayTimer = setTimeout(() => {
       if (countPercentM >= 1000 && !finishedCounters.includes(0)) {
         setActiveCounter(1);
@@ -39,23 +37,22 @@ const CounterCompanyMobile = () => {
       if (countHumanM >= 18 && !finishedCounters.includes(2)) {
         setFinishedCounters([...finishedCounters, 2]);
       }
-    }, 600); 
-  
+    }, 600);
+
     return () => {
       clearTimeout(timer1);
       clearTimeout(delayTimer);
     };
   }, [countPercentM, countHumanM, countProjectM, activeCounter, finishedCounters]);
-  
 
   useEffect(() => {
     const elements = blockSlider.current.children;
 
     gsap.from(elements, {
-      x: "-100%",
+      x: '-100%',
       duration: 1,
       stagger: 0.5,
-      ease: "power2.out"
+      ease: 'power2.out',
     });
   }, [activeCounter]);
 
@@ -71,9 +68,9 @@ const CounterCompanyMobile = () => {
           {activeCounter === 2 && <p>{countHumanM}</p>}
         </div>
         <span className={styles.span_underSlider_text}>
-          {activeCounter === 0 && " Квалифицированных специалистов"}
-          {activeCounter === 1 && "Проектов реализовано"}
-          {activeCounter === 2 && "Лет на рынке"}
+          {activeCounter === 0 && ' Квалифицированных специалистов'}
+          {activeCounter === 1 && 'Проектов реализовано'}
+          {activeCounter === 2 && 'Лет на рынке'}
         </span>
       </div>
     </div>

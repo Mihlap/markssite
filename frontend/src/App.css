@@ -25,28 +25,28 @@ button {
 
 /* Colors */
 :root {
-  --blue-75BBFD: #75BBFD;
-  --dark-blue-389FFF: #389FFF;
+  --blue-75BBFD: #75bbfd;
+  --dark-blue-389FFF: #389fff;
   --super-dark-blue-345374: #345374;
-  --dark-FFFFFF1A: #FFFFFF1A;
-  --orange-FE5000: #FE5000;
-  --salmon-FF7F6A: #FF7F6A;
-  --crimson-E00747: #E00747;
-  --white-F6F6F6: #F6F6F6;
-  --black-3C3C3C: #3C3C3C;
-  --black-4E4E4E: #4E4E4E;
-  --black-1D2E43: #1D2E43;
+  --dark-FFFFFF1A: #ffffff1a;
+  --orange-FE5000: #fe5000;
+  --salmon-FF7F6A: #ff7f6a;
+  --crimson-E00747: #e00747;
+  --white-F6F6F6: #f6f6f6;
+  --black-3C3C3C: #3c3c3c;
+  --black-4E4E4E: #4e4e4e;
+  --black-1D2E43: #1d2e43;
   --dark-gray-566272: #566272;
   --secondary-dark-gray-525459: #525459;
-  --gray-959DA6: #959DA6;
-  --light-gray-C0C5CB: #C0C5CB;
-  --light-light-gray-EBECEE: #EBECEE;
-  --light-light-gray-EDEDED: #EDEDED;
-  --green-96A96C: #96A96C;
-  --yellow-FFD481: #FFD481;
-  --blue-light-BADDFE: #BADDFE;
-  --salmon-light-FFBFB5: #FFBFB5;
-  --crimson-light-F39CB5: #F39CB5;
+  --gray-959DA6: #959da6;
+  --light-gray-C0C5CB: #c0c5cb;
+  --light-light-gray-EBECEE: #ebecee;
+  --light-light-gray-EDEDED: #ededed;
+  --green-96A96C: #96a96c;
+  --yellow-FFD481: #ffd481;
+  --blue-light-BADDFE: #baddfe;
+  --salmon-light-FFBFB5: #ffbfb5;
+  --crimson-light-F39CB5: #f39cb5;
 }
 
 /* Fonts */
@@ -100,14 +100,13 @@ body .ReactModal__Content::-webkit-scrollbar {
 }
 
 body .ReactModal__Content::-webkit-scrollbar-thumb {
-  background-color: #C0C5CB;
+  background-color: #c0c5cb;
   border-radius: 4px;
 }
 
 body .ReactModal__Content::-webkit-scrollbar-track {
   background-color: transparent;
 }
-
 
 /* *::-webkit-scrollbar {
   width: 5px;
@@ -127,9 +126,8 @@ body .ReactModal__Content::-webkit-scrollbar-track {
 } */
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Raleway', 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Raleway', 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell',
+    'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--white-F6F6F6);
@@ -140,8 +138,7 @@ body {
 }
 
 code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
 
 h1,
@@ -184,12 +181,12 @@ textarea {
   font-variant-numeric: lining-nums;
 }
 
-input[type="radio"] {
+input[type='radio'] {
   appearance: none;
   display: none;
 }
 
-input[type="radio"] {
+input[type='radio'] {
   -webkit-appearance: none;
   -moz-appearance: none;
   appearance: none;
@@ -202,18 +199,18 @@ input[type="radio"] {
   cursor: pointer;
 }
 
-input[type="radio"]:checked {
+input[type='radio']:checked {
   border-color: #007bff;
 }
 
 /* Скрыть стрелки управления для input number */
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
   -webkit-appearance: none;
   margin: 0;
 }
 
-input[type="number"] {
+input[type='number'] {
   -moz-appearance: textfield;
 }
 

@@ -32,7 +32,8 @@ const NavBarPhone = memo(() => {
             <button
               type="button"
               className={`${styles.burger} ${isMenuActive ? styles['is-active'] : ''}`}
-              onClick={handleBurgerClick}>
+              onClick={handleBurgerClick}
+            >
               <span className={styles['burger-line']}></span>
               <span className={styles['burger-line']}></span>
               <span className={styles['burger-line']}></span>
@@ -40,7 +41,8 @@ const NavBarPhone = memo(() => {
             </button>
             <div
               className={`${styles.menu} ${isMenuActive ? styles['is-active'] : ''}`}
-              style={isMenuActive ? { maxHeight: '1200px' } : { maxHeight: '0', visibility: 'hidden', opacity: 0 }}>
+              style={isMenuActive ? { maxHeight: '1200px' } : { maxHeight: '0', visibility: 'hidden', opacity: 0 }}
+            >
               <ul className={styles['menu-inner']}>
                 <li className={styles['menu-item']}>
                   <Link onClick={handleBurgerClick} to="/" className={styles['menu-link']}>
@@ -67,7 +69,8 @@ const NavBarPhone = memo(() => {
                     onClick={handleBurgerClick}
                     target="_blank"
                     to="/portal/vacanciesMain"
-                    className={styles['menu-link']}>
+                    className={styles['menu-link']}
+                  >
                     HR портал
                   </Link>
                 </li>
@@ -89,7 +92,8 @@ const NavBarPhone = memo(() => {
                   <Link
                     to={'tel:+74951201226'}
                     className={styles.contact_info_phone}
-                    style={{ fontVariantNumeric: 'lining-nums' }}>
+                    style={{ fontVariantNumeric: 'lining-nums' }}
+                  >
                     +7(495)&nbsp;120-12-26
                   </Link>
                 </div>

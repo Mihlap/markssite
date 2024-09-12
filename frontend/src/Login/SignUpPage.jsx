@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import axios from 'axios';
-import styles from "./Login.module.scss";
+import styles from './Login.module.scss';
 import { useNavigate } from 'react-router-dom';
 
 export default function SignUpPage() {
@@ -12,7 +12,7 @@ export default function SignUpPage() {
     const checkUser = async () => {
       try {
         const response = await axios({
-          method: "get",
+          method: 'get',
           url: `${serverHost}/api/auth/user`,
           withCredentials: true, // Включает отправку кук с запросом
         });
@@ -34,14 +34,14 @@ export default function SignUpPage() {
 
     try {
       const response = await axios({
-        method: "post",
+        method: 'post',
         url: `${serverHost}/api/auth/signup`,
         data: formData,
         withCredentials: true, // Включает отправку кук с запросом
       });
 
       if (response.status === 200) {
-        navigate("/admin");
+        navigate('/admin');
       }
     } catch (error) {
       console.log(error);
