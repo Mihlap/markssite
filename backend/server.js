@@ -93,7 +93,7 @@ app.use('/images/imageAdd', express.static(path.join(imagesPath, 'imageAdd')));
 app.use('/images/imageArticle', express.static(path.join(imagesPath, 'imageAdd')));
 app.use('/images/projectFoto', express.static(path.join(imagesPath, 'projectFoto'), { maxAge: '5d' }));
 app.use('/images/slideCard', express.static(path.join(imagesPath, 'slideCard'), { maxAge: '5d' }));
-app.use('/images/event', express.static(path.join(imagesPath, 'event'), { maxAge: '5d' }));
+app.use('/images/eventAdd', express.static(path.join(imagesPath, 'eventAdd'), { maxAge: '5d' }));
 app.use('/videos', express.static(videoPath, { maxAge: '5d', immutable: true, }));
 app.use('/public/assets', express.static(path.join(__dirname, 'assets'), { maxAge: '5d' }));
 app.use(session(sessionConfig));
