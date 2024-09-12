@@ -265,7 +265,7 @@ display: inline-block;
   font-style: normal;
   font-weight: var(--fw-400);
   line-height: normal;
-  padding-top: 0.6rem;
+  padding-top: 0.5rem;
   width: max-content;
 }
 
