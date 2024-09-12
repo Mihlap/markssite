@@ -3,14 +3,14 @@ import { useDispatch } from 'react-redux';
 import styles from '../../style/style-card.module.scss';
 import FormEditSlide from '../FormAddEditSlide/FormEditeSlide.jsx';
 import FormAddSlide from '../FormAddEditSlide/FormAddSlide.jsx';
-import { postVacancyData, fetchSlideById, fetchSlides } from '../../../store/Slice/vacancyMainSlideCardSlice';
+import { postVacancyData, fetchSlides } from '../../../store/Slice/vacancyMainSlideCardSlice';
 
 export default function SlideModalManager({
   isModalOpenMain,
   setIsModalOpenMain,
   editSlideData,
-  setEditSlideData,
   modalBlockHeight,
+  handleEditClick
 }) {
   const dispatch = useDispatch();
 
@@ -19,29 +19,14 @@ export default function SlideModalManager({
       try {
         await dispatch(postVacancyData(formData)).unwrap();
         dispatch(fetchSlides());
+        setIsModalOpenMain(false);
       } catch (error) {
         console.error('Ошибка при добавлении слайда:', error);
       }
     },
-    [dispatch]
+    [dispatch, setIsModalOpenMain]
   );
-
-  const handleEditClick = useCallback(
-    async (id) => {
-      if (!id) {
-        console.error('Некорректный идентификатор:', id);
-        return;
-      }
-      try {
-        const slideData = await dispatch(fetchSlideById(id)).unwrap();
-        setEditSlideData(slideData);
-        setIsModalOpenMain(true);
-      } catch (error) {
-        console.error('Ошибка при загрузке данных слайда:', error);
-      }
-    },
-    [dispatch, setEditSlideData, setIsModalOpenMain]
-  );
+  
 
   return (
     isModalOpenMain && (
@@ -53,7 +38,7 @@ export default function SlideModalManager({
               editSlideData={editSlideData}
               formType="slide"
               className={styles.formAddProjectClass}
-              onSubmit={handleEditClick}
+              handleEditClick={handleEditClick}
             />
           ) : (
             <FormAddSlide
@@ -65,8 +50,7 @@ export default function SlideModalManager({
           )}
           <button
             className={styles.card_components_admin__close_button}
-            onClick={() => setIsModalOpenMain(false)}
-          ></button>
+            onClick={() => setIsModalOpenMain(false)}></button>
         </div>
       </div>
     )

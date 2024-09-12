@@ -1,9 +1,9 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import EventsList from './EventsList';
 import EventModalManager from './EventModalManager';
-import { deleteSlide, toggleSlideVisibility, fetchSlideById } from '../../../store/Slice/vacancyMainSlideCardSlice';
 import styles from '../../style/style-card.module.scss';
+import { deleteEvent, fetchEventById, toggleEventVisibility } from '../../../store/Slice/vacancyEventSlice';
 
 export default function AddEventMain({
   user,
@@ -11,44 +11,56 @@ export default function AddEventMain({
   setIsModalOpenEvent,
   editEventData,
   setEditEventData,
-  modalBlockHeight,
-  deleteModalState,
-  setDeleteModalState,
-  handleDeleteModalClose,
-  handleDeleteModalOpen,
+  modalBlockHeight
 }) {
   const dispatch = useDispatch();
-  const slides = useSelector((state) => state.formAddSlide.slides || []);
+  const events = useSelector(state => state.formAddEvent.events || []);
+  const [deleteModalStateEvent, setDeleteModalStateEvent] = useState({});
 
-  const handleOpenModal = () => {
-    setEditEventData(null);
+  
+  const handleOpenModalEvent = useCallback(() => {
     setIsModalOpenEvent(true);
-  };
+    setEditEventData(null);
+  }, []);
 
-  const handleFormDelete = useCallback(
+
+  const handleDeleteModalOpenEvent = useCallback((id) => {
+    setDeleteModalStateEvent((prevState) => ({
+      ...prevState,
+      [id]: true,
+    }));
+  }, []);
+
+  const handleDeleteModalCloseEvent = useCallback((id) => {
+    setDeleteModalStateEvent((prevState) => {
+      const newState = { ...prevState };
+      delete newState[id];
+      return newState;
+    });
+  }, []);
+
+
+  const handleFormDeleteEvent = useCallback(
     (id) => {
-      dispatch(deleteSlide(id));
-      handleDeleteModalClose(id);
+      dispatch(deleteEvent(id));
+      handleDeleteModalCloseEvent(id);
     },
-    [dispatch, handleDeleteModalClose]
+    [dispatch, handleDeleteModalCloseEvent]
   );
 
-  const handleLookClick = useCallback(
-    (id) => {
-      const slide = slides.find((slide) => slide.id === id);
-      if (slide) {
-        dispatch(toggleSlideVisibility({ id, hidden: !slide.hidden }));
-      } else {
-        console.error('Слайд с таким ID не найден:', id);
-      }
-    },
-    [dispatch, slides]
-  );
+  const handleLookClick = useCallback((id) => {
+    const event = events.find(event => event.id === id);
+    if (event) {
+      dispatch(toggleEventVisibility({ id, hidden: !event.hidden }));
+    } else {
+      console.error("Слайд с таким ID не найден:", id);
+    }
+  }, [dispatch, events]);
 
   const handleEditClick = useCallback(
     async (id) => {
       try {
-        const slideData = await dispatch(fetchSlideById(id)).unwrap();
+        const slideData = await dispatch(fetchEventById(id)).unwrap();
         setEditEventData(slideData);
         setIsModalOpenEvent(true);
       } catch (error) {
@@ -63,7 +75,7 @@ export default function AddEventMain({
       <span className={styles.card_components_admin__title}>Ведущая компания в сфере проектирования</span>
       <div
         className={styles.card_components_admin__button_block}
-        // onClick={handleOpenModal}
+        onClick={handleOpenModalEvent}
       >
         <button className={styles.card_components_admin__button}>
           <div>
@@ -101,11 +113,11 @@ export default function AddEventMain({
 
       <EventsList
         user={user}
-        deleteModalState={deleteModalState}
-        handleDeleteModalClose={handleDeleteModalClose}
-        handleDeleteModalOpen={handleDeleteModalOpen}
+        deleteModalStateEvent={deleteModalStateEvent}
+        handleDeleteModalCloseEvent={handleDeleteModalCloseEvent}
+        handleDeleteModalOpenEvent={handleDeleteModalOpenEvent}
         handleEditClick={handleEditClick}
-        handleFormDelete={handleFormDelete}
+        handleFormDeleteEvent={handleFormDeleteEvent}
         handleLookClick={handleLookClick}
       />
     </div>
