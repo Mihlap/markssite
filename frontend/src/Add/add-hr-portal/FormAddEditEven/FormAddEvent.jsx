@@ -22,8 +22,8 @@ export default function FormAddEvent({ setIsModalOpenEvent }) {
   const validateForm = useCallback(() => {
     const isValid =
       inputData.title &&
-      inputData.files &&      
-      inputData.eventData
+      inputData.files      
+      // inputData.eventData
    
       return isValid;
   }, [inputData]);
@@ -51,37 +51,41 @@ export default function FormAddEvent({ setIsModalOpenEvent }) {
 
 
   const handleFileChange = async (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      setIsLoading(true); 
+    const files = Array.from(event.target.files); // Преобразуем FileList в массив
+    if (files.length > 0) {
+      setIsLoading(true);
   
-      const compressedFile = await compressImage(file);  
-    
-      const finalFile = new File([compressedFile], file.name, { type: compressedFile.type });
+      const compressedFiles = await Promise.all(
+        files.map(async (file) => {
+          const compressedFile = await compressImage(file);
+          return new File([compressedFile], file.name, { type: compressedFile.type });
+        })
+      );
   
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewPhotoAva([reader.result]); 
-        setInputData((prevData) => ({
-          ...prevData,
-          files: [finalFile], 
-        }));
-        setIsPhotoAvaVisible(true); 
-        setIsLoading(false); 
-      };
-      reader.readAsDataURL(finalFile);
+      // Обновляем превью фотографий
+      setPreviewPhotoAva((prevPreviews) => [
+        ...prevPreviews,
+        ...compressedFiles.map((file) => URL.createObjectURL(file)),
+      ]);
+  
+      // Обновляем массив файлов в inputData (заменяем inputData на setInputData)
+      setInputData((prevData) => ({
+        ...prevData,
+        files: [...(prevData.files || []), ...compressedFiles], // Добавляем новые файлы к существующим
+      }));
+  
+      setIsLoading(false);
     }
   };
   
   
 
-  const handleDescriptionChange = (cardKey, value) => {
-    if (value.length <= 150) {
-      setInputData((prevData) => ({
-        ...prevData,
-        eventData: value,  
-      }));
-    }
+  const handleDescriptionChange = (value) => {
+    setInputData((prevData) => ({
+      ...prevData,
+      title: value, 
+      // eventData: value, 
+    }));
     if (isSubmitted) {
       setShowNotification(!validateForm());  
     }
@@ -130,7 +134,9 @@ export default function FormAddEvent({ setIsModalOpenEvent }) {
       }));
   
       if (inputData.files && inputData.files.length > 0) {
-        formData.append('files', inputData.files[0]);
+        inputData.files.forEach((file) => {
+          formData.append('files', file); 
+        });
       }
 
        try {
@@ -138,7 +144,7 @@ export default function FormAddEvent({ setIsModalOpenEvent }) {
         dispatch(resetEventsState());       
         setInputData({
           title: "",
-          files: "",
+          files: [], 
           eventData: "",
           hidden: "",
           order: ""
@@ -179,13 +185,7 @@ export default function FormAddEvent({ setIsModalOpenEvent }) {
                 name="title"
                 id="title"
                 value={inputData.title}
-                onChange={(event) => {
-                  const { name, value } = event.target;
-                  setInputData((prevFormData) => ({
-                    ...prevFormData,
-                    [name]: value,
-                  }));
-                }}
+                onChange={(e) => handleDescriptionChange(e.target.value)}
                 required
               />
               <label htmlFor="title" className={styles.form__label}>
@@ -193,7 +193,7 @@ export default function FormAddEvent({ setIsModalOpenEvent }) {
               </label>
             </div>
             </div>
-           <div className={styles.form_container__block_gray_one}>
+           {/* <div className={styles.form_container__block_gray_one}>
             <div className={styles.form_container__description_text}>
               <div className={styles.form_container__textarea_length}>
                 {`${inputData.eventData.length}/150`}
@@ -214,7 +214,7 @@ export default function FormAddEvent({ setIsModalOpenEvent }) {
                 Название конкурса
               </label>
             </div>
-          </div>        
+          </div>         */}
           <div className={`${styles.photo_orientation_selector} ${styles.flex_block_gap}`}>
             <div className={styles.form_container__checkbox_block}>
               <div>Изображение</div>
@@ -222,9 +222,10 @@ export default function FormAddEvent({ setIsModalOpenEvent }) {
             <div style={{ display: isPhotoAvaVisible ? 'inline-block' : 'none' }}>
               <label className={styles.slider_container__customFileUpload}>
                 <input
-                  type="file"
-                  name="files"
-                  onChange={handleFileChange}
+                 type="file"
+                 name="files"
+                 multiple
+                 onChange={handleFileChange}
                  />
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <g id="Frame 4684">
