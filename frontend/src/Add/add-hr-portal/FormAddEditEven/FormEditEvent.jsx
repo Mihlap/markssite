@@ -9,24 +9,24 @@ const Host = process.env.REACT_APP_SERVER_HOST;
 export default function FormEditSlide({ setIsModalOpenEvent, editEventData }) {
   const dispatch = useDispatch();
 
-  const [previewPhotos, setPreviewPhotos] = useState([]);
   const [previewPhotoAva, setPreviewPhotoAva] = useState([]);
   const [isPhotoAvaVisible, setIsPhotoAvaVisible] = useState(true);
   const [showNotification, setShowNotification] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isImageRemoved, setIsImageRemoved] = useState(false);
+  const [removedFiles, setRemovedFiles] = useState([]); 
   const [formData, setFormData] = useState({
     title: editEventData?.title || '',
-    files: editEventData?.files || '',
-    eventData: editEventData?.eventData || '',
+    files: editEventData?.files || [],
+    // eventData: editEventData?.eventData || '',
   });
 
   useEffect(() => {
     if (editEventData) {
       setFormData({
         title: editEventData?.title || '',
-        files: editEventData?.files || '',
-        eventData: editEventData?.eventData || '',
+        files: editEventData?.files || [],
+        // eventData: editEventData?.eventData || '',
       });
     }
   }, [editEventData]);
@@ -45,133 +45,147 @@ export default function FormEditSlide({ setIsModalOpenEvent, editEventData }) {
     }
   }, []);
 
-
   const handleFileChange = async (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      setShowNotification(false);
-      setIsImageRemoved(false);
+    const files = Array.from(event.target.files);
+    if (files.length > 0) {
       setIsLoading(true);
-  
-      const compressedFile = await compressImage(file);
-  
-      const finalFile = new File([compressedFile], file.name, { type: compressedFile.type });
-  
-      setFormData((prevState) => ({
-        ...prevState,
-        files: finalFile, 
+
+      const compressedFiles = await Promise.all(
+        files.map(async (file) => {
+          const compressedFile = await compressImage(file);
+          return new File([compressedFile], file.name, { type: compressedFile.type });
+        })
+      );
+
+      setPreviewPhotoAva((prevPreviews) => [
+        ...prevPreviews,
+        ...compressedFiles.map((file) => URL.createObjectURL(file)),
+      ]);
+
+      setFormData((prevData) => ({
+        ...prevData,
+        files: [...prevData.files, ...compressedFiles],
       }));
-  
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewPhotoAva([reader.result]); 
-        setIsLoading(false); 
-      };
-      reader.readAsDataURL(finalFile); 
+
+      setIsLoading(false);
     }
   };
 
-
-  const handleRemovePreviewPhotoAva = useCallback(() => {
-    setShowNotification(false); 
+  const handleRemovePreviewPhotoAva = useCallback((indexToRemove) => {
+    setShowNotification(false);  
+  
+    const fileToRemove = formData.files[indexToRemove];
+    
+    // Добавляем удалённый файл в массив удалённых файлов
+    setRemovedFiles((prevRemovedFiles) => [...prevRemovedFiles, fileToRemove]);
+  
+    setPreviewPhotoAva((prevPreviews) => 
+      prevPreviews.filter((_, index) => index !== indexToRemove)
+    );
+  
     setFormData((prevFormData) => ({
       ...prevFormData,
-      files: '',
+      files: prevFormData.files.filter((_, index) => index !== indexToRemove),
     }));
-    setPreviewPhotoAva([]); 
-    setIsImageRemoved(true); 
-  }, []);
-
+  
+    if (formData.files.length === 1) {
+      setIsImageRemoved(true);
+    }
+  }, [formData.files]);
+  
 
   const validateForm = useCallback(() => {
     let isValid = true;
-    if (!formData.title ||
-      !formData.files ||
-      !formData.eventData) {
+    if (!formData.title || formData.files.length === 0) {
       isValid = false;
     }
     setShowNotification(!isValid);
     return isValid;
   }, [formData]);
 
-  const closeModal = useCallback(() => {
+  const closeModalEvent = useCallback(() => {
     setIsModalOpenEvent(false);
   }, [setIsModalOpenEvent]);
 
-
-
-  const handleDescriptionChange = (cardKey, value) => {
-    setShowNotification(false); 
-    if (value.length <= 150) {
-      setFormData((prevData) => ({
-        ...prevData,
-        eventData: value, 
-      }));
-    }
+  const handleDescriptionChange = (value) => {
+    setShowNotification(false);
+    // if (value.length <= 150) {
+    setFormData((prevData) => ({
+      ...prevData,
+      title: value,
+      // eventData: value,
+    }));
+    // }
   };
-
 
   const submitHandler = useCallback(
     async (e) => {
       e.preventDefault();
-
+  
       const isFormValid = validateForm();
-
       if (!isFormValid) {
         setShowNotification(true);
         return;
       }
-
+  
       const dataToSend = new FormData();
       dataToSend.append('title', formData.title);
-      dataToSend.append('details', JSON.stringify({
-        eventData: formData.eventData,     
-      }));
-
+      dataToSend.append(
+        'details',
+        JSON.stringify({
+          eventData: formData.eventData,
+        })
+      );
+  
       if (isImageRemoved) {
-        dataToSend.append('removePhotoAva', 'true'); 
-      } else if (formData.files && formData.files instanceof File) {
-        dataToSend.append('files', formData.files); 
+        dataToSend.append('removePhotoAva', 'true');
       }
-
+  
+      // Добавляем новые файлы
+      if (formData.files.length > 0) {
+        formData.files.forEach((file) => {
+          dataToSend.append('files', file);
+        });
+      }
+  
+      // Отправляем информацию о удаленных файлах
+      if (removedFiles.length > 0) {
+        dataToSend.append('removedFiles', JSON.stringify(removedFiles));
+      }
+  
       try {
         if (editEventData && editEventData.id) {
           await dispatch(editEvent({ id: editEventData.id, data: dataToSend })).unwrap();
         } else {
           await dispatch(postEventData(dataToSend)).unwrap();
         }
-
+  
         await dispatch(fetchEvents());
-        setPreviewPhotos([]);
         setFormData({
-          title: "",
-          files: "",
-          eventData: "",
-          hidden: "",
-          order: ""
+          title: '',
+          files: [],
         });
-
-        setShowNotification(false); 
+  
+        setShowNotification(false);
         setIsModalOpenEvent(false);
       } catch (error) {
         console.error('Произошла ошибка при отправке формы:', error);
       }
     },
-    [validateForm, formData, isImageRemoved, dispatch, setIsModalOpenEvent, editEventData]
+    [validateForm, formData, removedFiles, isImageRemoved, dispatch, setIsModalOpenEvent, editEventData]
   );
+  
 
   return (
     <div className={styles.form_container}>
       {showNotification && (
-        <div className={styles.form_container__notification}>
-         Необходимо заполнить каждое поле❗
-        </div>
+        <div className={styles.form_container__notification}>Необходимо заполнить каждое поле❗</div>
       )}
       <div className={styles.form_container__title}>Редактирование слайда</div>
       <div className={styles.form_container__block_form}>
         <form className={styles.form_container__form} onSubmit={submitHandler}>
-        <div className={styles.form_container__block_gray_one}>
-           <div className={`${styles.form__group} ${styles.field}`}>
+          <div className={styles.form_container__block_gray_one}>
+            <div className={`${styles.form__group} ${styles.field}`}>
               <input
                 type="input"
                 className={styles.form__field}
@@ -179,22 +193,16 @@ export default function FormEditSlide({ setIsModalOpenEvent, editEventData }) {
                 name="title"
                 id="title"
                 value={formData.title}
-                onChange={(event) => {
-                  const { name, value } = event.target;
-                  setFormData((prevFormData) => ({
-                    ...prevFormData,
-                    [name]: value,
-                  }));
-                }}
+                onChange={(e) => handleDescriptionChange(e.target.value)}
                 required
               />
               <label htmlFor="title" className={styles.form__label}>
                 Название мероприятия
               </label>
             </div>
-            </div>
+          </div>
           <div className={styles.form_container__titleCard}>Карточка 1</div>
-          <div className={styles.form_container__block_gray_one}>
+          {/* <div className={styles.form_container__block_gray_one}>
             <div className={styles.form_container__description_text}>
               <div className={styles.form_container__textarea_length}>{`${formData.eventData.length}/150`}</div>
               <textarea
@@ -212,14 +220,14 @@ export default function FormEditSlide({ setIsModalOpenEvent, editEventData }) {
                 Название конкурса
               </label>
             </div>
-          </div>       
+          </div>        */}
           <div className={`${styles.photo_orientation_selector} ${styles.flex_block_gap}`}>
             <div className={styles.form_container__checkbox_block}>
               <div>Изображение</div>
             </div>
             <div style={{ display: isPhotoAvaVisible ? 'inline-block' : 'none' }}>
               <label className={styles.slider_container__customFileUpload}>
-                <input type="file" name="photoAva" onChange={handleFileChange} />
+                <input type="file" name="files" multiple onChange={handleFileChange} />
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <g id="Frame 4684">
                     <path
@@ -237,21 +245,23 @@ export default function FormEditSlide({ setIsModalOpenEvent, editEventData }) {
               {isLoading && <div className={styles.preview_photos_container__loading}>Загрузка . . .</div>}
             </div>
             <div>
-              {formData.files  && previewPhotoAva.length === 0 && (
-                <div className={styles.preview_photos_container__block}>
-                  <img
-                    className={styles.preview_photos_container__img}
-                    src={`${Host}/images/eventAdd/${formData.files}`}
-                    alt="Preview"
-                  />
-                  <div
-                    className={styles.preview_photos_container__remove_icon}
-                    onClick={() => handleRemovePreviewPhotoAva()}
-                  >
-                    <span></span>
+              {formData.files.length > 0 &&
+                previewPhotoAva.length === 0 &&
+                formData.files.map((file, index) => (
+                  <div key={index} className={styles.preview_photos_container__block}>
+                    <img
+                      className={styles.preview_photos_container__img}
+                      src={`${Host}/images/eventAdd/${file}`}
+                      alt={`Preview ${index}`}
+                    />
+                    <div
+                      className={styles.preview_photos_container__remove_icon}
+                      onClick={() => handleRemovePreviewPhotoAva(index)} 
+                    >
+                      <span></span>
+                    </div>
                   </div>
-                </div>
-              )}
+                ))}
               {previewPhotoAva?.map((preview, index) => (
                 <div key={index} className={styles.preview_photos_container__block}>
                   <img className={styles.preview_photos_container__img} src={preview} alt={`Preview ${index}`} />
@@ -263,11 +273,11 @@ export default function FormEditSlide({ setIsModalOpenEvent, editEventData }) {
                 </div>
               ))}
             </div>
-          </div>     
-       
+          </div>
+
           <div className={styles.form_container__button_block}>
             <button className={styles.form_container__button_save} type="submit"></button>
-            <button className={styles.form_container__button_cancel} type="submit" onClick={closeModal}></button>
+            <button className={styles.form_container__button_cancel} type="submit" onClick={closeModalEvent}></button>
           </div>
         </form>
       </div>

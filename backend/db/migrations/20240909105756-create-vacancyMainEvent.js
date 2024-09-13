@@ -15,7 +15,7 @@ module.exports = {
         allowNull: false
       },
       files: {
-        type: Sequelize.STRING,
+        type: Sequelize.JSONB,
         allowNull: true
       },
       eventData: {
