@@ -17,7 +17,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      files: DataTypes.STRING,
+      files: {
+        type: DataTypes.JSONB,
+        allowNull: true,
+      },
       eventData: DataTypes.JSON,
       hidden: DataTypes.BOOLEAN,
       order: {
