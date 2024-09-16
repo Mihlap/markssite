@@ -377,6 +377,7 @@ export default function ConstructorBlockRenderer({ block, handleMouseLeave, hand
       setIsPlaying(false);
       setIsHovered(false);
     };
+    
 
     return (
       <div className={styles.wrapper_conteiner__item}>
@@ -385,7 +386,7 @@ export default function ConstructorBlockRenderer({ block, handleMouseLeave, hand
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
         >
-          <video
+          <video        
             playsInline
             muted
             loop
