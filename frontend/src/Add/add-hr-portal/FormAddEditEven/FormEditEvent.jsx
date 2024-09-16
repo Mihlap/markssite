@@ -240,7 +240,7 @@ export default function FormEditSlide({ setIsModalOpenEvent, editEventData }) {
                     />
                   </g>
                 </svg>
-                <div className={styles.slider_container__uploadTextForm}>Загрузить изображения</div>
+                <div className={styles.slider_container__uploadTextForm}>Загрузить изображения/видео</div>
               </label>
               {isLoading && <div className={styles.preview_photos_container__loading}>Загрузка . . .</div>}
             </div>
