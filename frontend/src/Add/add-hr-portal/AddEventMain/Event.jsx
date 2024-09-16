@@ -73,9 +73,7 @@ const Event = ({
 
       {['obezyankaa', 'Pokemon'].includes(user?.name) && (
         <div className={styles.del_block_vacancy}>
-          <button className={styles.buttom_del}
-          onClick={() => handleDeleteModalOpenEvent(el.id)}
-          >
+          <button className={styles.buttom_del} onClick={() => handleDeleteModalOpenEvent(el.id)}>
             <label htmlFor="delete" className={styles.label}>
               <div className={styles.wrapper}>
                 <div className={styles.lid}>
