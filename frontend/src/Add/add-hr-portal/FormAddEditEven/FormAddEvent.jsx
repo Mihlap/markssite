@@ -193,11 +193,10 @@ export default function FormAddEvent({ setIsModalOpenEvent }) {
                 Название мероприятия
               </label>
             </div>
-            </div>
-      
+            </div>            
           <div className={`${styles.photo_orientation_selector} ${styles.flex_block_gap}`}>
             <div className={styles.form_container__checkbox_block}>
-              <div>Изображение</div>
+              <div>Слайдер</div>
             </div>
             <div style={{ display: isPhotoAvaVisible ? 'inline-block' : 'none' }}>
               <label className={styles.slider_container__customFileUpload}>
@@ -219,6 +218,7 @@ export default function FormAddEvent({ setIsModalOpenEvent }) {
                     />
                   </g>
                 </svg>
+                
                 <div className={styles.slider_container__uploadTextForm}>Загрузить изображения/видео</div>
               </label>
               {isLoading && <div className={styles.preview_photos_container__loading}>Загрузка . . .</div>}

@@ -200,30 +200,11 @@ export default function FormEditSlide({ setIsModalOpenEvent, editEventData }) {
                 Название мероприятия
               </label>
             </div>
-          </div>
-          <div className={styles.form_container__titleCard}>Карточка 1</div>
-          {/* <div className={styles.form_container__block_gray_one}>
-            <div className={styles.form_container__description_text}>
-              <div className={styles.form_container__textarea_length}>{`${formData.eventData.length}/150`}</div>
-              <textarea
-                className={styles.form_container__textarea}
-                autoComplete="off"
-                required
-                name="description"
-                id="description"
-                cols="30"
-                rows="10"
-                placeholder="Не более 150 символов"
-                value={formData.eventData}
-                onChange={(e) => handleDescriptionChange('card1', e.target.value)}></textarea>
-              <label htmlFor="description" className={styles.form_container__textarea_label_constructor}>
-                Название конкурса
-              </label>
-            </div>
-          </div>        */}
+          </div>      
+          
           <div className={`${styles.photo_orientation_selector} ${styles.flex_block_gap}`}>
             <div className={styles.form_container__checkbox_block}>
-              <div>Изображение</div>
+              <div>Слайдер</div>
             </div>
             <div style={{ display: isPhotoAvaVisible ? 'inline-block' : 'none' }}>
               <label className={styles.slider_container__customFileUpload}>
