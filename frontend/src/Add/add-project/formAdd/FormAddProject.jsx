@@ -777,8 +777,6 @@ export default function FormAddProject({ setIsModalOpen }) {
 
   // << ============ функции КОНСТРУКТОРА ============ >>
 
-  // console.log(inputData, "<<--inputData PROJECT");
-  // console.log(selectedProjectStages, "<<--selectedProjectStages");
   return (
     <div className={styles.form_container}>
       {showNotification && (
@@ -1040,81 +1038,7 @@ export default function FormAddProject({ setIsModalOpen }) {
                 </div>
               ))}
             </div>
-
-            {/* <div className={styles.form_container__radio_container}>
-              <div
-                className={`${styles.form_container__radio_block_one} ${
-                  selectedRadio === "28,28"
-                    ? styles.form_container__radio_activ_block
-                    : ""
-                }`}
-              >
-                <label
-                  className={`${styles.form_container__radio_label_one} ${
-                    selectedRadio === "28,28"
-                      ? styles.form_container__radio_activ_label
-                      : ""
-                  }`}
-                >
-                  <input
-                    className={styles.form_container__radio_input}
-                    type="radio"
-                    name="radioGroup"
-                    value="28,28"
-                    checked={selectedRadio === "28,28"}
-                    onChange={(e) => setSelectedRadio(e.target.value)}
-                  />
-                </label>
-              </div>
-              <div
-                className={`${styles.form_container__radio_block_two} ${
-                  selectedRadio === "28,14"
-                    ? styles.form_container__radio_activ_block
-                    : ""
-                }`}
-              >
-                <label
-                  className={`${styles.form_container__radio_label_two} ${
-                    selectedRadio === "28,14"
-                      ? styles.form_container__radio_activ_label
-                      : ""
-                  }`}
-                >
-                  <input
-                    className={styles.form_container__radio_input}
-                    type="radio"
-                    name="radioGroup"
-                    value="28,14"
-                    checked={selectedRadio === "28,14"}
-                    onChange={(e) => setSelectedRadio(e.target.value)}
-                  />
-                </label>
-              </div>
-              <div
-                className={`${styles.form_container__radio_block_three} ${
-                  selectedRadio === "28,48"
-                    ? styles.form_container__radio_activ_block
-                    : ""
-                }`}
-              >
-                <label
-                  className={`${styles.form_container__radio_label_three} ${
-                    selectedRadio === "28,48"
-                      ? styles.form_container__radio_activ_label
-                      : ""
-                  }`}
-                >
-                  <input
-                    className={styles.form_container__radio_input}
-                    type="radio"
-                    name="radioGroup"
-                    value="28,48"
-                    checked={selectedRadio === "28,48"}
-                    onChange={(e) => setSelectedRadio(e.target.value)}
-                  />
-                </label>
-              </div>
-            </div> */}
+          
           </div>
           {/* блок где загружаются 4 картинки, они отображаются в шапке слайдера  */}
           <div className={`${styles.image_four} ${styles.flex_block_gap}`}>
