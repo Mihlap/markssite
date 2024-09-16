@@ -18,6 +18,10 @@ module.exports = {
         type: Sequelize.JSONB,
         allowNull: true
       },
+      videos: {
+        type: Sequelize.JSONB,
+        allowNull: true
+      },
       eventData: {
         type: Sequelize.JSON,
         allowNull: false,
