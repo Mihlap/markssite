@@ -104,10 +104,9 @@ router.put('/update-event-order', async (req, res) => {
 
 
 router.post('/save-event-details',
-  fileMiddleware.fields([{
-  name: 'files',
-  maxCount: 500
-    },
+  fileMiddleware.fields([
+    { name: 'files', maxCount: 500 },
+    { name: 'videos', maxCount: 100 },
   ]), async (req, res) => {
   let details;
   try {
@@ -120,10 +119,14 @@ router.post('/save-event-details',
     return res.status(400).json({ error: 'Некорректные данные: отсутствуют необходимые поля' });
   }
   
-  const files = req.files && req.files['files'] ? req.files['files'].map(file => file.filename) : [];
-  const title = req.body.title; 
+  const files = req.files && req.files['files'] ? req.files['files'].map((file) => file.filename) : [];
+  const videoFiles = req.files && req.files['videos'] ? req.files['videos'].map((file) => file.filename) : [];
+  const videoUrls = req.body['videoUrls[]'] ? [].concat(req.body['videoUrls[]']) : []; 
 
- 
+  const videos = [...videoFiles, ...videoUrls];
+
+  const title = req.body.title;
+
   try {
       await VacancyMainEvent.increment('order', { by: 1, where: {} });
 
@@ -131,12 +134,13 @@ router.post('/save-event-details',
         title,
         hidden: false,        
         files,
+        videos,
         order: 0
       });
 
-    res.status(200).json({ message: 'Детали вакансии сохранены успешно.', data: newEvent });
+    res.status(200).json({ message: 'Детали мероприятия сохранены успешно.', data: newEvent });
   } catch (error) {
-    console.error('Ошибка при сохранении деталей вакансии:', error);
+    console.error('Ошибка при сохранении деталей мероприятий:', error);
     res.status(500).json({ error: 'Ошибка при обработке вашего запроса', details: error.errors });
   }
 });

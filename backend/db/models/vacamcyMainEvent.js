@@ -21,6 +21,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.JSONB,
         allowNull: true,
       },
+      videos: {
+        type: DataTypes.JSONB, 
+        allowNull: true,
+      },
       eventData: DataTypes.JSON,
       hidden: DataTypes.BOOLEAN,
       order: {
