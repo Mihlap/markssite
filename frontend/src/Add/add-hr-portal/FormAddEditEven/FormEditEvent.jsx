@@ -9,24 +9,24 @@ const Host = process.env.REACT_APP_SERVER_HOST;
 export default function FormEditSlide({ setIsModalOpenEvent, editEventData }) {
   const dispatch = useDispatch();
 
-  const [previewPhotos, setPreviewPhotos] = useState([]);
   const [previewPhotoAva, setPreviewPhotoAva] = useState([]);
   const [isPhotoAvaVisible, setIsPhotoAvaVisible] = useState(true);
   const [showNotification, setShowNotification] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isImageRemoved, setIsImageRemoved] = useState(false);
+  const [removedFiles, setRemovedFiles] = useState([]); 
   const [formData, setFormData] = useState({
     title: editEventData?.title || '',
-    files: editEventData?.files || '',
-    eventData: editEventData?.eventData || '',
+    files: editEventData?.files || [],
+    // eventData: editEventData?.eventData || '',
   });
 
   useEffect(() => {
     if (editEventData) {
       setFormData({
         title: editEventData?.title || '',
-        files: editEventData?.files || '',
-        eventData: editEventData?.eventData || '',
+        files: editEventData?.files || [],
+        // eventData: editEventData?.eventData || '',
       });
     }
   }, [editEventData]);
@@ -45,133 +45,147 @@ export default function FormEditSlide({ setIsModalOpenEvent, editEventData }) {
     }
   }, []);
 
-
   const handleFileChange = async (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      setShowNotification(false);
-      setIsImageRemoved(false);
+    const files = Array.from(event.target.files);
+    if (files.length > 0) {
       setIsLoading(true);
-  
-      const compressedFile = await compressImage(file);
-  
-      const finalFile = new File([compressedFile], file.name, { type: compressedFile.type });
-  
-      setFormData((prevState) => ({
-        ...prevState,
-        files: finalFile, 
+
+      const compressedFiles = await Promise.all(
+        files.map(async (file) => {
+          const compressedFile = await compressImage(file);
+          return new File([compressedFile], file.name, { type: compressedFile.type });
+        })
+      );
+
+      setPreviewPhotoAva((prevPreviews) => [
+        ...prevPreviews,
+        ...compressedFiles.map((file) => URL.createObjectURL(file)),
+      ]);
+
+      setFormData((prevData) => ({
+        ...prevData,
+        files: [...prevData.files, ...compressedFiles],
       }));
-  
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewPhotoAva([reader.result]); 
-        setIsLoading(false); 
-      };
-      reader.readAsDataURL(finalFile); 
+
+      setIsLoading(false);
     }
   };
 
-
-  const handleRemovePreviewPhotoAva = useCallback(() => {
-    setShowNotification(false); 
+  const handleRemovePreviewPhotoAva = useCallback((indexToRemove) => {
+    setShowNotification(false);  
+  
+    const fileToRemove = formData.files[indexToRemove];
+    
+    // Добавляем удалённый файл в массив удалённых файлов
+    setRemovedFiles((prevRemovedFiles) => [...prevRemovedFiles, fileToRemove]);
+  
+    setPreviewPhotoAva((prevPreviews) => 
+      prevPreviews.filter((_, index) => index !== indexToRemove)
+    );
+  
     setFormData((prevFormData) => ({
       ...prevFormData,
-      files: '',
+      files: prevFormData.files.filter((_, index) => index !== indexToRemove),
     }));
-    setPreviewPhotoAva([]); 
-    setIsImageRemoved(true); 
-  }, []);
-
+  
+    if (formData.files.length === 1) {
+      setIsImageRemoved(true);
+    }
+  }, [formData.files]);
+  
 
   const validateForm = useCallback(() => {
     let isValid = true;
-    if (!formData.title ||
-      !formData.files ||
-      !formData.eventData) {
+    if (!formData.title || formData.files.length === 0) {
       isValid = false;
     }
     setShowNotification(!isValid);
     return isValid;
   }, [formData]);
 
-  const closeModal = useCallback(() => {
+  const closeModalEvent = useCallback(() => {
     setIsModalOpenEvent(false);
   }, [setIsModalOpenEvent]);
 
-
-
-  const handleDescriptionChange = (cardKey, value) => {
-    setShowNotification(false); 
-    if (value.length <= 150) {
-      setFormData((prevData) => ({
-        ...prevData,
-        eventData: value, 
-      }));
-    }
+  const handleDescriptionChange = (value) => {
+    setShowNotification(false);
+    // if (value.length <= 150) {
+    setFormData((prevData) => ({
+      ...prevData,
+      title: value,
+      // eventData: value,
+    }));
+    // }
   };
-
 
   const submitHandler = useCallback(
     async (e) => {
       e.preventDefault();
-
+  
       const isFormValid = validateForm();
-
       if (!isFormValid) {
         setShowNotification(true);
         return;
       }
-
+  
       const dataToSend = new FormData();
       dataToSend.append('title', formData.title);
-      dataToSend.append('details', JSON.stringify({
-        eventData: formData.eventData,     
-      }));
-
+      dataToSend.append(
+        'details',
+        JSON.stringify({
+          eventData: formData.eventData,
+        })
+      );
+  
       if (isImageRemoved) {
-        dataToSend.append('removePhotoAva', 'true'); 
-      } else if (formData.files && formData.files instanceof File) {
-        dataToSend.append('files', formData.files); 
+        dataToSend.append('removePhotoAva', 'true');
       }
-
+  
+      // Добавляем новые файлы
+      if (formData.files.length > 0) {
+        formData.files.forEach((file) => {
+          dataToSend.append('files', file);
+        });
+      }
+  
+      // Отправляем информацию о удаленных файлах
+      if (removedFiles.length > 0) {
+        dataToSend.append('removedFiles', JSON.stringify(removedFiles));
+      }
+  
       try {
         if (editEventData && editEventData.id) {
           await dispatch(editEvent({ id: editEventData.id, data: dataToSend })).unwrap();
         } else {
           await dispatch(postEventData(dataToSend)).unwrap();
         }
-
+  
         await dispatch(fetchEvents());
-        setPreviewPhotos([]);
         setFormData({
-          title: "",
-          files: "",
-          eventData: "",
-          hidden: "",
-          order: ""
+          title: '',
+          files: [],
         });
-
-        setShowNotification(false); 
+  
+        setShowNotification(false);
         setIsModalOpenEvent(false);
       } catch (error) {
         console.error('Произошла ошибка при отправке формы:', error);
       }
     },
-    [validateForm, formData, isImageRemoved, dispatch, setIsModalOpenEvent, editEventData]
+    [validateForm, formData, removedFiles, isImageRemoved, dispatch, setIsModalOpenEvent, editEventData]
   );
+  
 
   return (
     <div className={styles.form_container}>
       {showNotification && (
-        <div className={styles.form_container__notification}>
-         Необходимо заполнить каждое поле❗
-        </div>
+        <div className={styles.form_container__notification}>Необходимо заполнить каждое поле❗</div>
       )}
       <div className={styles.form_container__title}>Редактирование слайда</div>
       <div className={styles.form_container__block_form}>
         <form className={styles.form_container__form} onSubmit={submitHandler}>
-        <div className={styles.form_container__block_gray_one}>
-           <div className={`${styles.form__group} ${styles.field}`}>
+          <div className={styles.form_container__block_gray_one}>
+            <div className={`${styles.form__group} ${styles.field}`}>
               <input
                 type="input"
                 className={styles.form__field}
@@ -179,47 +193,53 @@ export default function FormEditSlide({ setIsModalOpenEvent, editEventData }) {
                 name="title"
                 id="title"
                 value={formData.title}
-                onChange={(event) => {
-                  const { name, value } = event.target;
-                  setFormData((prevFormData) => ({
-                    ...prevFormData,
-                    [name]: value,
-                  }));
-                }}
+                onChange={(e) => handleDescriptionChange(e.target.value)}
                 required
               />
               <label htmlFor="title" className={styles.form__label}>
                 Название мероприятия
               </label>
             </div>
-            </div>
-          <div className={styles.form_container__titleCard}>Карточка 1</div>
-          <div className={styles.form_container__block_gray_one}>
-            <div className={styles.form_container__description_text}>
-              <div className={styles.form_container__textarea_length}>{`${formData.eventData.length}/150`}</div>
-              <textarea
-                className={styles.form_container__textarea}
-                autoComplete="off"
-                required
-                name="description"
-                id="description"
-                cols="30"
-                rows="10"
-                placeholder="Не более 150 символов"
-                value={formData.eventData}
-                onChange={(e) => handleDescriptionChange('card1', e.target.value)}></textarea>
-              <label htmlFor="description" className={styles.form_container__textarea_label_constructor}>
-                Название конкурса
-              </label>
-            </div>
-          </div>       
-          <div className={`${styles.photo_orientation_selector} ${styles.flex_block_gap}`}>
+          </div>      
+          
+          <div className={styles.form_container__block_gray_one}>  
+           <div className={`${styles.slider_container} ${styles.flex_block_gap}`}>
             <div className={styles.form_container__checkbox_block}>
-              <div>Изображение</div>
+              <div>Слайдер</div>
             </div>
-            <div style={{ display: isPhotoAvaVisible ? 'inline-block' : 'none' }}>
+
+            <div className={styles.preview_photos_container}>
+              {formData.files.length > 0 &&
+                previewPhotoAva.length === 0 &&
+                formData.files.map((file, index) => (
+                  <div key={index} className={styles.preview_photos_container__block}>
+                    <img
+                      className={styles.preview_photos_container__img}
+                      src={`${Host}/images/eventAdd/${file}`}
+                      alt={`Preview ${index}`}
+                    />
+                    <div
+                      className={styles.preview_photos_container__remove_icon}
+                      onClick={() => handleRemovePreviewPhotoAva(index)} 
+                    >
+                      <span></span>
+                    </div>
+                  </div>
+                ))}
+              {previewPhotoAva?.map((preview, index) => (
+                <div key={index} className={styles.preview_photos_container__block}>
+                  <img className={styles.preview_photos_container__img} src={preview} alt={`Preview ${index}`} />
+                  <div
+                    className={styles.preview_photos_container__remove_icon}
+                    onClick={() => handleRemovePreviewPhotoAva(index)}>
+                    <span></span>
+                  </div>
+                </div>
+              ))}
+            </div> 
+             <div style={{ display: isPhotoAvaVisible ? 'inline-block' : 'none' }}>
               <label className={styles.slider_container__customFileUpload}>
-                <input type="file" name="photoAva" onChange={handleFileChange} />
+                <input type="file" name="files" multiple onChange={handleFileChange} />
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <g id="Frame 4684">
                     <path
@@ -236,22 +256,57 @@ export default function FormEditSlide({ setIsModalOpenEvent, editEventData }) {
               </label>
               {isLoading && <div className={styles.preview_photos_container__loading}>Загрузка . . .</div>}
             </div>
-            <div>
-              {formData.files  && previewPhotoAva.length === 0 && (
-                <div className={styles.preview_photos_container__block}>
-                  <img
-                    className={styles.preview_photos_container__img}
-                    src={`${Host}/images/eventAdd/${formData.files}`}
-                    alt="Preview"
-                  />
-                  <div
-                    className={styles.preview_photos_container__remove_icon}
-                    onClick={() => handleRemovePreviewPhotoAva()}
-                  >
-                    <span></span>
-                  </div>
-                </div>
-              )}
+            </div>        
+          </div>
+
+          <div className={styles.form_container__block_gray_one}>
+           <div className={`${styles.slider_container} ${styles.flex_block_gap}`}>
+            <div className={styles.form_container__checkbox_block}>
+              <div>Слайдер</div>
+            </div>
+            <div className={styles.form_container__heading_block}>
+              <input
+                type="input"
+                className={styles.form_container__heading_block_input}
+                placeholder="URL видео"
+                name="urlVideo"
+                id="urlVideo"
+                maxLength="300"
+                value={formData.titleTextBlock}
+                // onChange={(event) => {
+                //   const value = event.target.value;
+                //   if (value.length <= 56) {
+                //     setInputData({ ...inputData, titleTextBlock: value });
+                //   }
+                // }}
+                autoComplete="off"
+                required
+              />           
+            </div>
+            <div style={{ display: isPhotoAvaVisible ? 'inline-block' : 'none' }}>
+              <label 
+              className={styles.slider_container__customFileUpload}
+               style={{marginTop: '0.5rem' }}
+              >
+                <input type="file" name="files" multiple onChange={handleFileChange} />
+                <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                  <g id="Frame 4684">
+                    <path
+                      id="Vector"
+                      d="M11.8349 7.54949L5.64223 7.54949C5.46569 7.54642 5.2903 7.57854 5.1263 7.64398C4.96231 7.70942 4.81299 7.80686 4.68705 7.93062C4.56112 8.05439 4.4611 8.20199 4.39282 8.36483C4.32454 8.52766 4.28938 8.70246 4.28938 8.87903C4.28937 9.0556 4.32454 9.2304 4.39282 9.39323C4.4611 9.55607 4.56112 9.70367 4.68705 9.82744C4.81299 9.9512 4.96231 10.0486 5.1263 10.1141C5.2903 10.1795 5.46569 10.2116 5.64223 10.2086L11.754 10.1277C12.4512 10.1156 13.1158 9.83011 13.6046 9.33275C14.0934 8.8354 14.3673 8.16596 14.3673 7.46862C14.3673 6.77129 14.0934 6.10185 13.6046 5.60449C13.1158 5.10713 12.4512 4.82165 11.754 4.80953L5.64223 4.88946C4.58413 4.88946 3.56936 5.30979 2.82117 6.05798C2.07298 6.80617 1.65265 7.82093 1.65265 8.87903C1.65265 9.93713 2.07298 10.9519 2.82117 11.7001C3.56936 12.4483 4.58413 12.8686 5.64223 12.8686L11.5189 12.8752"
+                      stroke="currentColor"
+                      strokeWidth="0.8"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </g>
+                </svg>
+
+                <div className={styles.slider_container__uploadTextForm}>Загрузить видео с компьютера</div>
+              </label>
+              {isLoading && <div className={styles.preview_photos_container__loading}>Загрузка . . .</div>}
+            </div>
+            <div className={styles.preview_photos_container}>
               {previewPhotoAva?.map((preview, index) => (
                 <div key={index} className={styles.preview_photos_container__block}>
                   <img className={styles.preview_photos_container__img} src={preview} alt={`Preview ${index}`} />
@@ -263,11 +318,12 @@ export default function FormEditSlide({ setIsModalOpenEvent, editEventData }) {
                 </div>
               ))}
             </div>
-          </div>     
-       
+           </div>             
+          </div>
+
           <div className={styles.form_container__button_block}>
             <button className={styles.form_container__button_save} type="submit"></button>
-            <button className={styles.form_container__button_cancel} type="submit" onClick={closeModal}></button>
+            <button className={styles.form_container__button_cancel} type="submit" onClick={closeModalEvent}></button>
           </div>
         </form>
       </div>
