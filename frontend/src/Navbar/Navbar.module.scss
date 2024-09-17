@@ -35,6 +35,8 @@
   }
 
   &__title {
+    display: flex;
+    align-items: center;
     font-family: var(--font-MyCustomFont);
     font-size: clamp(rem(24), 1.6vw, rem(42));
     padding-left: clamp(rem(16), 2.3vw, rem(60));
@@ -47,14 +49,15 @@
     cursor: none !important;
   }
 
-  // &__title__hr {
-  //   color: #1d2e43;
-  //   font-family: var(--font-unbounded);
-  //   font-size: 1rem;
-  //   font-style: normal;
-  //   font-weight: var(--fw-400);
-  //   line-height: normal;
-  // }
+  &__title__hr {
+    color: #1d2e43;
+    font-family: var(--font-unbounded);
+    font-size: clamp(16px, 1.1vw, 32px);
+    font-style: normal;
+    font-weight: var(--fw-400);
+    line-height: normal;
+    margin-left: clamp(8px, 0.5vw, 16px);
+  }
 
   &__list {
     display: flex;
