@@ -49,7 +49,7 @@ export default function SlideModalManager({
         <div style={{ maxHeight: modalBlockHeight }} className={styles.card_components_admin__modal_block}>
           {editEventData ? (
             <FormEditEvent
-              setIsModalOpenMain={setIsModalOpenEvent}
+              setIsModalOpenEvent={setIsModalOpenEvent}
               editEventData={editEventData}
               formType="slide"
               className={styles.formAddProjectClass}
