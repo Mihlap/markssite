@@ -57,63 +57,58 @@ export default function PortalMenu({ user, handleMouseEnter, handleMouseLeave })
     }
   }, []);
   return (
-    <header className={visible ? styles.header_visible : styles.header_hidden}>
-      <nav className={styles.navbar}>
-        <div className={styles.navbar__container}>
-          <div className={styles.navbar__title_block}>
+    <header className={`${styles.Navbar} ${visible ? '' : styles.hidden}`}>
+      <nav className={styles.Navbar__nav}>
+        <div className={styles.Navbar__container}>
+          <div className={styles.Navbar__logo}>
             <Link
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
-              className={`${styles.navbar__title} ${activeClass === '/portal/vacanciesMain'}`}
-              to="/portal/vacanciesMain"
-              onClick={() => handleItemClick('/portal/vacanciesMain')}
-            >
-              <h1 className={styles.navbar__title} style={{ display: 'flex', alignItems: 'center' }}>
-                <span>MARKS GROUP</span>
-                <p className={styles.navbar__title__hr} style={{ marginLeft: '0.5rem' }}>
-                  HR
-                </p>
-              </h1>
+              className={` ${styles.Navbar__title} ${activeClass === '/'}`}
+              to="/"
+              onClick={() => handleItemClick('/')}>
+              <h1>MARKS GROUP</h1>
+
+              <p className={styles.Navbar__title__hr}>HR</p>
             </Link>
           </div>
-          <ul className={styles.navbar__list}>
+          <ul className={styles.Navbar__list}>
             <Link
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
-              className={`${styles.navbar__item} ${
-                activeClass === '/portal/vacanciesMain' ? styles.navbar__item_open : ''
+              className={`${styles.Navbar__item} ${
+                activeClass === '/portal/vacanciesMain' ? styles.Navbar__item_open : ''
               }`}
-              to="portal/vacanciesMain"
-              onClick={() => handleItemClick('/portal/vacanciesMain')}
-            >
+              to="/"
+              onClick={() => handleItemClick('/')}>
               <div>Главная</div>
             </Link>
+
             <Link
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
-              className={`${styles.navbar__item} ${
-                activeClass === '/portal/vacancies' ? styles.navbar__item_open : ''
+              className={`${styles.Navbar__item} ${
+                activeClass === '/portal/vacancies' ? styles.Navbar__item_open : ''
               }`}
               to="/portal/vacancies"
-              onClick={() => handleItemClick('/portal/vacancies')}
-            >
+              onClick={() => handleItemClick('/portal/vacancies')}>
               <div>Работа у нас</div>
             </Link>
+
             <Link
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
-              className={`${styles.navbar__item} ${
-                activeClass === '/portal/internships' ? styles.navbar__item_open : ''
+              className={`${styles.Navbar__item} ${
+                activeClass === '/portal/internships' ? styles.Navbar__item_open : ''
               }`}
               to="/portal/internships"
-              onClick={() => handleItemClick('/portal/internships')}
-            >
+              onClick={() => handleItemClick('/portal/internships')}>
               <div>Стажировки</div>
             </Link>
           </ul>
         </div>
       </nav>
-      <div className={styles.navbar_phone}>
+      <div className={styles.Navbar__phone}>
         <PortalMenuMobile />
       </div>
     </header>
