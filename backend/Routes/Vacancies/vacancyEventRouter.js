@@ -35,7 +35,9 @@ router.put('/update-event/:id', fileMiddleware.fields([{ name: 'files', maxCount
 
     const { id } = req.params;
     try {
-      const { title, details, removedFiles } = req.body;
+      const { title, videoUrls, removedFiles } = req.body;
+      const eventData = JSON.parse(videoUrls);
+
       const event = await VacancyMainEvent.findByPk(id);
 
       if (!event) {
@@ -61,7 +63,7 @@ router.put('/update-event/:id', fileMiddleware.fields([{ name: 'files', maxCount
       await event.update({
         title,
         files: event.files,
-        eventData: details,
+        eventData,
       });
 
       res.json({ message: "Слайд успешно обновлен", data: event });
@@ -115,15 +117,14 @@ router.post('/save-event-details',
     return res.status(400).json({ error: 'Некорректные данные: не удалось распарсить JSON' });
   }
   
-  if (!details) {
+  if (!details || !details.eventData || !Array.isArray(details.eventData)) {
     return res.status(400).json({ error: 'Некорректные данные: отсутствуют необходимые поля' });
   }
   
+  const eventData = details.eventData; 
   const files = req.files && req.files['files'] ? req.files['files'].map((file) => file.filename) : [];
-  const videoFiles = req.files && req.files['videos'] ? req.files['videos'].map((file) => file.filename) : [];
-  const videoUrls = req.body['videoUrls[]'] ? [].concat(req.body['videoUrls[]']) : []; 
-
-  const videos = [...videoFiles, ...videoUrls];
+  // const videoFiles = req.files && req.files['videos'] ? req.files['videos'].map((file) => file.filename) : [];
+  
 
   const title = req.body.title;
 
@@ -134,7 +135,7 @@ router.post('/save-event-details',
         title,
         hidden: false,        
         files,
-        videos,
+        eventData,
         order: 0
       });
 
