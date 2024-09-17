@@ -8,5 +8,4 @@ $bp6: 377px;
 
 @function rem($pixels) {
   @return calc($pixels / 16) + rem;
-
 }
