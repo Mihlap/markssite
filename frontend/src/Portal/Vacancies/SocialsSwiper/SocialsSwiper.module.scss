@@ -32,13 +32,20 @@
     }
   }
 
-  &__inner {
+  &__item {
+    display: block;
     padding: rem(32);
     box-shadow: 0px 0px 26.75px 0px #00000008;
     border-radius: rem(21.4);
     font-family: var(--font-unbounded);
     font-size: rem(20);
     transition: all 0.6s ease;
+
+    &:hover {
+      #{$s}__button {
+        background-color: var(--dark-blue-389FFF);
+      }
+    }
   }
 
   &__picture {
@@ -79,10 +86,6 @@
     font-size: rem(14);
     color: var(--white-F6F6F6);
     transition: 0.6s;
-
-    &:hover {
-      background-color: var(--dark-blue-389FFF);
-    }
   }
 
   @media all and (max-width: $bp0) {
@@ -125,7 +128,7 @@
       line-height: rem(40);
     }
 
-    &__inner {
+    &__item {
       padding: rem(24);
       box-shadow: 0px 0px rem(20) 0px #00000008;
       border-radius: rem(17.5);
@@ -137,7 +140,7 @@
     }
 
     &__active {
-      #{$s}__inner {
+      #{$s}__item {
         padding: rem(26) rem(18);
       }
 
@@ -160,7 +163,7 @@
     min-height: auto;
     // background-color: red;
 
-    &__inner img {
+    &__item img {
       min-height: rem(258);
     }
 
@@ -171,8 +174,8 @@
     //   }
     // }
 
-    &__inner,
-    &__active &__inner {
+    &__item,
+    &__active &__item {
       padding: rem(16);
     }
 
@@ -229,7 +232,7 @@
   @media all and (max-width: $bp4) {
     margin: rem(110) 0;
 
-    &__inner img {
+    &__item img {
       min-height: 0;
     }
 
@@ -258,7 +261,7 @@
       margin: 0 5px;
     }
 
-    &__inner {
+    &__item {
       margin: 0 8px;
       border-radius: 12.42px;
     }
