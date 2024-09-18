@@ -122,8 +122,8 @@
   font-family: var(--font-unbounded);
   font-style: normal;
   font-weight: var(--fw-300);
-  line-height: 1.5;
-  font-size: clamp(20px, 1.3vw, 40px);
+  font-size: 1.25rem;
+  line-height: 1.5rem;
   color: var(--white-F6F6F6);
   white-space: pre-wrap;
   margin-right: 20rem;
@@ -133,17 +133,16 @@
   font-family: var(--font-unbounded);
   font-style: normal;
   font-weight: var(--fw-500);
-  line-height: 1.6;
-  font-size: clamp(32px, 2.2vw, 64px);
+  font-size: 2rem;
+  line-height: 2.5rem;
   color: var(--white-F6F6F6);
-  padding-top: clamp(8px, 0.5vw, 16px);
+  padding-top: 8px;
 }
 
 .div_counter_wrapper {
   display: flex;
   flex-direction: row;
   padding-top: 1.94vh;
-  gap: clamp(24px, 1.6vw, 48px);
 }
 
 .container_text_right {
@@ -154,8 +153,8 @@
 .container_text {
   display: flex;
   flex-direction: column;
-  align-items: center;
   box-sizing: border-box;
+  max-width: 14rem;
   width: 100%;
 }
 
@@ -165,29 +164,24 @@
   font-style: normal;
   font-weight: var(--fw-500);
   font-size: 48px;
-
-  font-size: clamp(48px, 3.3vw, 96px);
-  line-height: 1.3;
+  line-height: 64px;
   color: var(--white-F6F6F6);
   width: 100%;
 }
 
 .text_svg {
-  padding-right: 24px;
+  padding-right: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 1.25vw;
-  height: 1.6vw;
-  margin: auto 0;
 }
 
 .span_underSlider_text {
   font-family: var(--font-raleway);
   font-style: normal;
   font-weight: var(--fw-500);
-  font-size: clamp(16px, 1.1vw, 32px);
-  line-height: 1.5;
+  font-size: 16px;
+  line-height: 24px;
   color: var(--white-F6F6F6);
   padding-top: 9px;
   width: 100%;
@@ -250,8 +244,8 @@
   font-family: var(--font-raleway);
   font-style: normal;
   font-weight: var(--fw-400);
-  font-size: clamp(16px, 1.1vw, 32px);
-  line-height: 1.5;
+  font-size: 16px;
+  line-height: 24px;
   padding-left: 11vw;
   padding-right: 0vw;
   width: 76vw;
@@ -305,7 +299,6 @@
   /* display: flex; */
   font-family: var(--font-unbounded);
   font-size: 60px;
-  font-size: clamp(60px, 4vw, 90px);
   font-weight: var(--fw-300);
   /* width: 100%;  */
 }
@@ -330,17 +323,14 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  width: clamp(rem(18), 1.25vw, 90px);
-  height: clamp(rem(24), 1.6vw, 90px);
-  align-self: center;
 }
 
 .span_underSlider_text_right {
   font-family: var(--font-raleway);
   font-style: normal;
   font-weight: var(--fw-400);
-  line-height: 1.4;
-  font-size: clamp(14px, 0.9vw, 28px);
+  font-size: 14px;
+  line-height: 20px;
   color: var(--gray-959DA6);
   padding-top: 16px;
   width: fit-content;
@@ -384,8 +374,8 @@
   font-family: var(--font-unbounded);
   font-style: normal;
   font-weight: var(--fw-300);
-  font-size: clamp(40px, 2.7vw, 90px);
-  line-height: 1.2;
+  font-size: 40px;
+  line-height: 48px;
   color: var(--black-1D2E43);
   padding-left: 39.84vw;
   padding-right: 15rem;
@@ -394,9 +384,9 @@
 }
 
 .years_div {
-  font-size: clamp(14px, 0.9vw, 28px);
+  font-size: 14px;
   font-family: var(--font-raleway);
-  line-height: 1.4;
+  line-height: 20px;
   color: var(--gray-959DA6);
   padding-left: 16px;
 }
@@ -405,8 +395,8 @@
   font-family: var(--font-unbounded);
   font-style: normal;
   font-weight: var(--fw-300);
-  font-size: clamp(20px, 1.2vw, 90px);
-  line-height: 1.4;
+  font-size: 20px;
+  line-height: 28px;
   color: var(--black-1D2E43);
   padding-left: 39.84vw;
   padding-right: 1.87vw;
@@ -740,20 +730,6 @@
   align-items: center;
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 1000;
-}
-
-@media screen and (max-width: 1440px) {
-  .awards_wrapper {
-    font-size: 40px;
-  }
-
-  .list_project {
-    font-size: 20px;
-  }
-
-  .span_underSlider_text_right {
-    font-size: 14px;
-  }
 }
 
 @media screen and (min-width: 1700px) and (max-width: 3000px) {
@@ -1166,7 +1142,6 @@
     margin-right: 1rem;
     max-width: 100%;
     word-wrap: break-word;
-    margin-bottom: 24px;
   }
 
   .span_underSlider_text2 {
