@@ -2,7 +2,7 @@
 
 .item img {
   padding-left: 4rem;
-  height: clamp(40px, 2.7vw, 80px);
+  height: 40px;
 }
 
 .logo {
@@ -15,13 +15,13 @@
   padding-top: 0rem;
 }
 .item_mobile {
-  padding-left: clamp(44px, 3vw, 88px);
+  padding-left: 2.75rem;
   height: 100%;
   width: 100%;
 }
 
 .item_mobile_img {
-  height: clamp(26px, 1.8vw, 52px);
+  height: 26px;
 }
 
 /* Стили для планшетной версии сайта блока SliderHeader начинаются тут */
@@ -48,7 +48,7 @@
   .logo {
     position: relative;
     z-index: 0;
-    padding-top: 52px;
+    padding-top: 40px;
   }
 }
 

@@ -20,8 +20,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: clamp(49px, 3.4vw, 90px);
-    border: 1px solid var(--black-1D2E43);
+    height: 49px;
+    border-bottom: 1px solid var(--black-1D2E43);
   }
 
   &__logo {
@@ -37,9 +37,11 @@
   &__title {
     display: flex;
     align-items: center;
+    gap: 12px;
     font-family: var(--font-MyCustomFont);
-    font-size: clamp(rem(24), 1.6vw, rem(42));
-    padding-left: clamp(rem(16), 2.3vw, rem(60));
+    font-size: 24px;
+    padding-left: 62px;
+    width: 100%;
     color: var(--black-1D2E43);
     cursor: pointer;
     width: auto;
@@ -52,11 +54,10 @@
   &__title__hr {
     color: #1d2e43;
     font-family: var(--font-unbounded);
-    font-size: clamp(16px, 1.1vw, 32px);
+    font-size: 1rem;
     font-style: normal;
     font-weight: var(--fw-400);
     line-height: normal;
-    margin-left: clamp(8px, 0.5vw, 16px);
   }
 
   &__list {
@@ -65,7 +66,7 @@
   }
 
   &__item {
-    font-size: clamp(rem(16), 1.1vw, rem(28));
+    font-size: 16px;
     font-family: var(--font-raleway);
     font-style: normal;
     font-weight: var(--fw-400);
