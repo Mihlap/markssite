@@ -6,12 +6,18 @@ import { fetchEvents } from '../../../store/Slice/vacancyEventSlice';
 
 const GalleryTabs = ({ handleMouseEnter, handleMouseLeave }) => {
   const dispatch = useDispatch();
-  const [activeIndex, setActiveIndex] = useState();
+  const [activeIndex, setActiveIndex] = useState(null);
   const { events } = useSelector((state) => state.formAddEvent);
 
   useEffect(() => {
     dispatch(fetchEvents());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (events && events.length > 0 && activeIndex === null) {
+      setActiveIndex(0);
+    }
+  }, [events, activeIndex]);
 
 
    return (
