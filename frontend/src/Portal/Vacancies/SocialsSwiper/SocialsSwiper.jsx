@@ -44,27 +44,27 @@ const socialsArray = [
   },
   {
     picture: social_5,
-    title: 'VK',
-    subtitle: 'MARKS GROUP',
-    link: 'https://vk.com/marks_group_vk',
-  },
-  {
-    picture: social_6,
-    title: 'Rutube',
-    subtitle: 'MARKS GROUP',
-    link: 'https://rutube.ru/channel/38807824',
-  },
-  {
-    picture: social_7,
     title: 'Дзен',
     subtitle: 'MARKS GROUP',
     link: 'https://dzen.ru/marksgroupp',
   },
   {
-    picture: social_8,
+    picture: social_6,
+    title: 'VK',
+    subtitle: 'MARKS GROUP',
+    link: 'https://vk.com/marks_group_vk',
+  },
+  {
+    picture: social_7,
     title: 'YouTube',
     subtitle: 'MARKS GROUP',
     link: 'https://www.youtube.com/@marks_group',
+  },
+  {
+    picture: social_8,
+    title: 'Rutube',
+    subtitle: 'MARKS GROUP',
+    link: 'https://rutube.ru/channel/38807824',
   },
 ];
 
@@ -144,12 +144,11 @@ const SocialsSwiper = () => {
               slidesPerView: 1.1,
               spaceBetween: 0,
             },
-          }}
-        >
+          }}>
           {socialsArray.map((item, index) => {
             return (
               <SwiperSlide key={index}>
-                <div className={styles.SocialsSwiper__inner}>
+                <Link to={item.link} target="_blank" className={styles.SocialsSwiper__item}>
                   <div className={styles.SocialsSwiper__picture}>
                     <img src={item.picture} alt={item.title} />
                   </div>
@@ -158,13 +157,9 @@ const SocialsSwiper = () => {
                       <h3>{item.title}</h3>
                       <span>{item.subtitle}</span>
                     </div>
-                    {item.link && (
-                      <Link to={item.link} target="_blank" className={styles.SocialsSwiper__button}>
-                        Подписаться
-                      </Link>
-                    )}
+                    {item.link && <button className={styles.SocialsSwiper__button}>Подписаться</button>}
                   </div>
-                </div>
+                </Link>
               </SwiperSlide>
             );
           })}
