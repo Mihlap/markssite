@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Slider from 'react-slick';
 import styles from './GalleryTabs.module.scss';
@@ -6,7 +6,7 @@ import { fetchEvents } from '../../../store/Slice/vacancyEventSlice';
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 
-const GalleryTabs = ({ handleMouseEnter, handleMouseLeave }) => {
+const GalleryTabs = React.memo(({ handleMouseEnter, handleMouseLeave }) => {
   const dispatch = useDispatch();
   const [activeIndex, setActiveIndex] = useState(null);
   const sliderRef = useRef(null);
@@ -16,29 +16,36 @@ const GalleryTabs = ({ handleMouseEnter, handleMouseLeave }) => {
     dispatch(fetchEvents());
   }, [dispatch]);
 
+ 
   useEffect(() => {
-    if (events && events.length > 0 && activeIndex === null) {
+    if (events && events?.length > 0 && activeIndex === null) {
       setActiveIndex(0);
     }
   }, [events, activeIndex]);
 
-  const getMediaPaths = (event) => {
+
+  const getMediaPaths = useCallback((event) => {
     const images = event?.files?.filter((file) =>
       file.endsWith('.jpg') || file.endsWith('.png') || file.endsWith('.jpeg') || file.endsWith('.avif')
     );
 
     const videos = event?.eventData?.filter((file) => file.endsWith('.mp4') || file.includes('youtube.com') || file.includes('vk.com') || file.includes('rutube.ru'));
     return { images, videos };
-  };
+  }, []);
 
-  const handleButtonClick = (index) => {
+  const mediaPaths = useMemo(() => {
+    return events?.[activeIndex] ? getMediaPaths(events[activeIndex]) : null;
+  }, [events, activeIndex, getMediaPaths]);
+
+
+  const handleButtonClick = useCallback((index) => {
     if (sliderRef.current) {
       sliderRef.current.slickGoTo(index);
       setActiveIndex(index);
     }
-  };
+  }, []);
 
-  const renderVideo = (videoUrl) => {
+  const renderVideo = useCallback((videoUrl) => {
     if (videoUrl.includes('youtube.com')) {
       return (
         <iframe
@@ -46,9 +53,10 @@ const GalleryTabs = ({ handleMouseEnter, handleMouseLeave }) => {
           height="315"
           src={videoUrl.replace('watch?v=', 'embed/')}
           title="YouTube video"
-          frameBorder="0"
+          // frameBorder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
+          loading="lazy" 
         ></iframe>
       );
     } else if (videoUrl.includes('vk.com/video')) {
@@ -63,9 +71,10 @@ const GalleryTabs = ({ handleMouseEnter, handleMouseLeave }) => {
             height="315"
             src={vkEmbedUrl}
             title="VK video"
-            frameBorder="0"
-            allow="autoplay; fullscreen; picture-in-picture"
+            // frameBorder="0"
+             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
+            loading="lazy" 
           ></iframe>
         );
       }    
@@ -76,22 +85,21 @@ const GalleryTabs = ({ handleMouseEnter, handleMouseLeave }) => {
           height="315"
           src={videoUrl.replace('/video/', '/play/embed/')}
           title="Rutube video"
-          frameBorder="0"
-          allow="autoplay; encrypted-media"
+          // frameBorder="0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
+          loading="lazy" 
         ></iframe>
       );
     } else if (videoUrl.endsWith('.mp4')) {
       return (
-        <video controls>
+        <video controls preload="metadata" loading="lazy">
           <source src={`${Host}/videos/${videoUrl}`} type="video/mp4" />
         </video>
       );
     }
     return null;
-  };
-
-  const mediaPaths = events?.[activeIndex] ? getMediaPaths(events[activeIndex]) : null;
+  }, []);
 
   return (
     <section className={styles.GalleryTabs}>
@@ -99,10 +107,10 @@ const GalleryTabs = ({ handleMouseEnter, handleMouseLeave }) => {
         Жизнь на&nbsp;<span>MARKS`e</span>
       </h2>
 
-      {events && events.length > 0 ? (
+      {events && events?.length > 0 ? (
         <>
           <div className={styles.GalleryTabs__buttons}>
-            {events.map((event, index) => (
+            {events?.map((event, index) => (
               <button
                 key={event.id}
                 className={activeIndex === index ? styles.active : ''}
@@ -116,7 +124,7 @@ const GalleryTabs = ({ handleMouseEnter, handleMouseLeave }) => {
           </div>
 
           <div className={styles.GalleryTabs__content} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-            <Slider ref={sliderRef} arrows={false} slidesToScroll={1} infinite={true} autoplay={true} autoplaySpeed={6000}>
+            <Slider ref={sliderRef} arrows={false} slidesToScroll={1} infinite={true} autoplay={true} autoplaySpeed={6000} lazyLoad="ondemand">
               {mediaPaths?.images?.map((path, index) => (
                 <div key={index} className={styles.slide}>
                   <img src={`${Host}/images/eventAdd/${path}`} alt={`Slide ${index + 1}`} />
@@ -138,6 +146,6 @@ const GalleryTabs = ({ handleMouseEnter, handleMouseLeave }) => {
       )}
     </section>
   );
-};
+});
 
 export default GalleryTabs;
