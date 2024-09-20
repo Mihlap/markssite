@@ -70,14 +70,13 @@ const GalleryTabs = React.memo(({ handleMouseEnter, handleMouseLeave }) => {
     if (videoUrl.includes('youtube.com')) {
       return (
         <iframe
-          width="100%"
-          height="100%"
-          src={videoUrl.replace('watch?v=', 'embed/')}
-          title="YouTube video"
-          // frameBorder="0"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowFullScreen
-          loading="lazy"></iframe>
+        width="100%"
+        height="100%"
+        src={videoUrl.replace('watch?v=', 'embed/') + '?autoplay=1&mute=1'} 
+        title="YouTube video"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+        loading="lazy"></iframe>
       );
     } else if (videoUrl.includes('vk.com/video')) {
       const match = videoUrl.match(/vk\.com\/video(-?\d+)_(\d+)/);
@@ -89,7 +88,7 @@ const GalleryTabs = React.memo(({ handleMouseEnter, handleMouseLeave }) => {
           <iframe
             width="100%"
             height="100%"
-            src={vkEmbedUrl}
+            src={`${vkEmbedUrl}&autoplay=1&muted=1`}
             title="VK video"
             // frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -102,7 +101,7 @@ const GalleryTabs = React.memo(({ handleMouseEnter, handleMouseLeave }) => {
         <iframe
           width="100%"
           height="100%"
-          src={videoUrl.replace('/video/', '/play/embed/')}
+          src={videoUrl.replace('/video/', '/play/embed/') + '?autoplay=1&muted=1'}
           title="Rutube video"
           // frameBorder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -111,7 +110,7 @@ const GalleryTabs = React.memo(({ handleMouseEnter, handleMouseLeave }) => {
       );
     } else if (videoUrl.endsWith('.mp4')) {
       return (
-        <video controls preload="metadata" loading="lazy">
+        <video autoPlay muted playsInline loop preload="metadata" loading="lazy">
           <source src={`${Host}/videos/${videoUrl}`} type="video/mp4" />
         </video>
       );
@@ -124,8 +123,6 @@ const GalleryTabs = React.memo(({ handleMouseEnter, handleMouseLeave }) => {
       <h2 className={styles.GalleryTabs__title}>
         Жизнь на&nbsp;<span>MARKS`e</span>
       </h2>
-
-      {/* Content rendering and slider */}
       {events && events?.length > 0 ? (
         <>
           <div className={styles.GalleryTabs__buttons}>
@@ -144,18 +141,21 @@ const GalleryTabs = React.memo(({ handleMouseEnter, handleMouseLeave }) => {
           <div ref={galleryRef} className={styles.GalleryTabs__content} onMouseMove={handleMouseMove}>
             <div ref={cursorRef} className={styles.GalleryTabs__cursor}></div>
             <div
-              className={`${styles.GalleryTabs__half} ${styles.GalleryTabs__half_left}`}
+              className={`${styles.GalleryTabs__half} ${styles.GalleryTabs__half_left} ${
+                mediaPaths?.videos?.length ? styles.disabled : ''
+              }`}
               onClick={() => handleSlide('left')}></div>
             <div
-              className={`${styles.GalleryTabs__half} ${styles.GalleryTabs__half_right}`}
+              className={`${styles.GalleryTabs__half} ${styles.GalleryTabs__half_right} ${
+                mediaPaths?.videos?.length ? styles.disabled : ''
+              }`}
               onClick={() => handleSlide('right')}></div>
             <Slider
               ref={sliderRef}
               arrows={false}
               slidesToScroll={1}
               infinite={true}
-              autoplay={true}
-              autoplaySpeed={6000}
+              autoplay={false}
               lazyLoad="ondemand">
               {mediaPaths?.images?.map((path, index) => (
                 <div key={index} className={styles.slide}>
