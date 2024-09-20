@@ -14,10 +14,9 @@
     span {
       color: var(--blue-75BBFD);
     }
-
   }
 
-  .GalleryTabs__noEvents {
+  &__noEvents {
     display: flex;
     font-family: var(--font-unbounded);
     font-weight: var(--fw-300);
@@ -63,13 +62,74 @@
   }
 
   &__content {
-    img {
+    height: 75vh;
+    max-height: rem(1080);
+    overflow: hidden;
+    position: relative;
+
+    * {
+      height: 100%;
+    }
+    img,
+    video {
       display: block;
       width: 100%;
-      height: auto;
+      height: 100%;
+      object-fit: cover;
     }
-    // transition: 0.3s;
-    cursor: none;
+  }
+
+  &__content:hover &__cursor {
+    width: 94px;
+    height: 94px;
+  }
+
+  &__half {
+    position: absolute;
+    top: 0;
+    width: 50%;
+    height: 100%;
+    z-index: 15;
+    background-color: transparent;
+    cursor: default;
+
+    &_left {
+      left: 0;
+      cursor: url('../icons/arrow-right.svg') 8 8, auto;
+    }
+
+    &_right {
+      right: 0;
+      cursor: url('../icons/arrow-left.svg') 4 8, auto;
+    }
+
+    @media (pointer: coarse) {
+      &_left {
+        cursor: default;
+      }
+
+      &_right {
+        cursor: default;
+      }
+    }
+  }
+
+  &__cursor {
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: translate(-50%, -50%);
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background-color: #75bbfd;
+    pointer-events: none;
+    z-index: 10000;
+    transition: background-color 0.3s ease, width 0.3s, height 0.3s;
+
+    @media (pointer: coarse) {
+      display: none;
+    }
   }
 
   // Адаптация под меньший размер desktop
@@ -80,15 +140,14 @@
     &__title {
       padding: 0 rem(63);
     }
-  
   }
 
   // Адаптация под tablet
   @media all and (max-width: $bp3) {
     margin: rem(120) 0;
 
-    .GalleryTabs__noEvents {      
-      font-size: 1.75rem;     
+    .GalleryTabs__noEvents {
+      font-size: 1.75rem;
     }
   }
 
@@ -105,11 +164,11 @@
 
     .GalleryTabs__noEvents {
       display: flex;
-      align-content: center; 
-      justify-content: center;    
-      font-size: 1.25rem;  
-      padding-left: 1rem; 
-      padding-right: 1rem;  
+      align-content: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      padding-left: 1rem;
+      padding-right: 1rem;
     }
   }
 }
