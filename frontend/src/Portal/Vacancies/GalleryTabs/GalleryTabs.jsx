@@ -70,55 +70,77 @@ const GalleryTabs = React.memo(({ handleMouseEnter, handleMouseLeave }) => {
     if (videoUrl.includes('youtube.com')) {
       return (
         <iframe
-        width="100%"
-        height="100%"
-        src={videoUrl.replace('watch?v=', 'embed/') + '?autoplay=1&mute=1'} 
-        title="YouTube video"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-        allowFullScreen
-        loading="lazy"></iframe>
+          id={`youtube-player-${activeIndex}`}
+          width="100%"
+          height="100%"
+          src={videoUrl.replace('watch?v=', 'embed/') + '?autoplay=1&mute=1&controls=0'}
+          title="YouTube video"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          playsInline
+          allowFullScreen
+          loading="lazy">
+        </iframe>
       );
     } else if (videoUrl.includes('vk.com/video')) {
       const match = videoUrl.match(/vk\.com\/video(-?\d+)_(\d+)/);
       if (match) {
         const ownerId = match[1];
         const videoId = match[2];
-        const vkEmbedUrl = `https://vk.com/video_ext.php?oid=${ownerId}&id=${videoId}`;
+        const vkEmbedUrl = `https://vk.com/video_ext.php?oid=${ownerId}&id=${videoId}&autoplay=1&muted=1&controls=0`;
         return (
           <iframe
+            id={`vk-player-${activeIndex}`}
             width="100%"
             height="100%"
-            src={`${vkEmbedUrl}&autoplay=1&muted=1`}
+            src={vkEmbedUrl}
             title="VK video"
-            // frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            playsInline
             allowFullScreen
-            loading="lazy"></iframe>
+            loading="lazy"
+            onLoad={() => {
+              const iframe = document.getElementById(`vk-player-${activeIndex}`);
+              setTimeout(() => {        
+                iframe.contentWindow.postMessage(JSON.stringify({ type: 'player:mute', data: {} }), '*');
+                iframe.contentWindow.postMessage(JSON.stringify({ type: 'player:play', data: {} }), '*');
+              }, 1000);
+            }}>
+          </iframe>
         );
       }
     } else if (videoUrl.includes('rutube.ru')) {
       return (
         <iframe
+          id={`rutube-player-${activeIndex}`} 
           width="100%"
           height="100%"
-          src={videoUrl.replace('/video/', '/play/embed/') + '?autoplay=1&muted=1'}
+          src={videoUrl.replace('/video/', '/play/embed/') + '?autoplay=1&muted=1&controls=0'}
           title="Rutube video"
-          // frameBorder="0"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          playsInline
           allowFullScreen
-          loading="lazy"></iframe>
+          loading="lazy"
+          onLoad={() => {
+            const iframe = document.getElementById(`rutube-player-${activeIndex}`);
+            setTimeout(() => {
+              iframe.contentWindow.postMessage(JSON.stringify({ type: 'player:mute', data: {} }), '*');
+              iframe.contentWindow.postMessage(JSON.stringify({ type: 'player:play', data: {} }), '*');
+            }, 500);
+          }}>
+        </iframe>
       );
     } else if (videoUrl.endsWith('.mp4')) {
       return (
-        <video autoPlay muted playsInline loop preload="metadata" loading="lazy">
+        <video autoPlay muted playsInline loop preload="metadata" controls={false} loading="lazy">
           <source src={`${Host}/videos/${videoUrl}`} type="video/mp4" />
         </video>
       );
     }
     return null;
-  }, []);
+  }, [activeIndex]);
 
-  return (
+  
+ return (
     <section className={styles.GalleryTabs}>
       <h2 className={styles.GalleryTabs__title}>
         Жизнь на&nbsp;<span>MARKS`e</span>
