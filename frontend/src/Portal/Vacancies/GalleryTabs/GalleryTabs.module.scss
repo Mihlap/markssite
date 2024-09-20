@@ -106,7 +106,7 @@
     &_right {
       right: 0;
       cursor: url('../icons/arrow-left.svg') 4 8, auto;
-    }
+    } 
 
     @media (pointer: coarse) {
       &_left {
@@ -228,3 +228,5 @@
     }
   }
 }
+
+
