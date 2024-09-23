@@ -107,7 +107,7 @@ const SocialsSwiper = () => {
           speed={1000}
           slideActiveClass={styles.SocialsSwiper__active}
           loop={true}
-          loopAdditionalSlides={socialsArray.length}
+          // loopAdditionalSlides={socialsArray.length}
           keyboard={{ enabled: true }}
           breakpoints={{
             2500: {
