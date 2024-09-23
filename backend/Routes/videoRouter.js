@@ -50,7 +50,7 @@ router.get('/:videoName', async (req, res) => {
 router.get('/:filename', async (req, res) => {
   const { filename } = req.params;
 
-  console.log('Запрос на имя файла в роутере:', filename);
+  // console.log('Запрос на имя файла в роутере:', filename);
 
   const videoPath = path.join(destinationPath, filename);
 
