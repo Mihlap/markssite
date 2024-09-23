@@ -35,23 +35,43 @@ import ModalVacancyFormSend from '../UI/VacancyFormContact/ModalVacancyFormSend'
 const Host = process.env.REACT_APP_SERVER_HOST;
 
 export default function Company({ handleMouseEnter, handleMouseLeave, handleMouseHover }) {
+  // const videoSource = useMemo(
+  //   () => ({
+  //     large: `${Host}/videos/company_full.mp4`,
+  //     medium: `${Host}/videos/company_ipad.mp4`,
+  //     small: `${Host}/videos/company_mob.mp4`,
+  //   }),
+  //   []
+  // );
+
+  // const videoSource2 = useMemo(
+  //   () => ({
+  //     large: `${Host}/videos/main_company_full.mp4`,
+  //     medium: `${Host}/videos/main_company_ipad.mp4`,
+  //     small: `${Host}/videos/main_company_mobile.mp4`,
+  //   }),
+  //   []
+  // );
+
   const videoSource = useMemo(
     () => ({
-      large: `${Host}/videos/company_full.mp4`,
-      medium: `${Host}/videos/company_ipad.mp4`,
-      small: `${Host}/videos/company_mob.mp4`,
+      large: `https://s3.timeweb.cloud/41834503-b9272655-a301-4b1e-a0da-efcedea0878a/images/video/company_full.mp4`,
+      medium: `https://s3.timeweb.cloud/41834503-b9272655-a301-4b1e-a0da-efcedea0878a/images/video/company_ipad.mp4`,
+      small: `https://s3.timeweb.cloud/41834503-b9272655-a301-4b1e-a0da-efcedea0878a/images/video/company_mob.mp4`,
+    }),
+    []
+  );
+  
+  const videoSource2 = useMemo(
+    () => ({
+      large: `https://s3.timeweb.cloud/41834503-b9272655-a301-4b1e-a0da-efcedea0878a/images/video/main_company_full.mp4`,
+      medium: `https://s3.timeweb.cloud/41834503-b9272655-a301-4b1e-a0da-efcedea0878a/images/video/main_company_ipad.mp4`,
+      small: `https://s3.timeweb.cloud/41834503-b9272655-a301-4b1e-a0da-efcedea0878a/images/video/main_company_mobile.mp4`,
     }),
     []
   );
 
-  const videoSource2 = useMemo(
-    () => ({
-      large: `${Host}/videos/main_company_full.mp4`,
-      medium: `${Host}/videos/main_company_ipad.mp4`,
-      small: `${Host}/videos/main_company_mobile.mp4`,
-    }),
-    []
-  );
+
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [countPercent, setCountPercent] = useState(0);
   const [countHuman, setCountHuman] = useState(0);
@@ -537,10 +557,10 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
                   <div className={styles.wrapper_container_item_stuff}>
                     <img
                       className={`${styles.container__img_stuff} ${showCards ? 'loaded' : ''}`}
-                      src={`${Host}/images/imageStuff/${el.img}`}
+                      src={`https://s3.timeweb.cloud/41834503-b9272655-a301-4b1e-a0da-efcedea0878a/images/imageStuff/${el.img}`}
                       onLoad={handleImageLoad}
                       onError={(e) => {
-                        e.target.src = `${Host}/images/imageStuff/no_photo.png`;
+                        e.target.src = `https://s3.timeweb.cloud/41834503-b9272655-a301-4b1e-a0da-efcedea0878a/images/imageStuff/no_photo.png`;
                         // el.imgLoaded = false;
                       }}
                       alt={el.img}
@@ -864,10 +884,10 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
                   <div className={styles.wrapper_container_item_stuff}>
                     <img
                       className={`${styles.container__img_stuff} ${showCards ? 'loaded' : ''}`}
-                      src={`${Host}/images/imageStuff/${el.img}`}
+                      src={`https://s3.timeweb.cloud/41834503-b9272655-a301-4b1e-a0da-efcedea0878a/images/imageStuff/${el.img}`}
                       onLoad={handleImageLoad}
                       onError={(e) => {
-                        e.target.src = `${Host}/images/imageStuff/no_photo.png`;
+                        e.target.src = `https://s3.timeweb.cloud/41834503-b9272655-a301-4b1e-a0da-efcedea0878a/images/imageStuff/no_photo.png`;
                       }}
                       alt={el.img}
                       loading="lazy"
@@ -913,10 +933,10 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
                   <div className={styles.wrapper_container_item_stuff}>
                     <img
                       className={`${styles.container__img_stuff} ${showCards ? 'loaded' : ''}`}
-                      src={`${Host}/images/imageStuff/${el.img}`}
+                      src={`https://s3.timeweb.cloud/41834503-b9272655-a301-4b1e-a0da-efcedea0878a/images/imageStuff/${el.img}`}
                       onLoad={handleImageLoad}
                       onError={(e) => {
-                        e.target.src = `${Host}/images/imageStuff/no_photo.png`;
+                        e.target.src = `https://s3.timeweb.cloud/41834503-b9272655-a301-4b1e-a0da-efcedea0878a/images/imageStuff/no_photo.png`;
                       }}
                       alt={el.img}
                       loading="lazy"
