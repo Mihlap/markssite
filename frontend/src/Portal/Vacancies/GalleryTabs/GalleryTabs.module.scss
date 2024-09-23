@@ -135,6 +135,22 @@
     }
   }
 
+  .vkPlayerOverlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    pointer-events: none;
+  }
+  
+
+  // iframe {
+  //   pointer-events: none; 
+  // }
+  
+
   // Адаптация под меньший размер desktop
   @media all and (max-width: $bp0) {
     margin: rem(150) 0;
