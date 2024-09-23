@@ -7,12 +7,12 @@ import styles from './GalleryTabs.module.scss';
 import { fetchEvents } from '../../../store/Slice/vacancyEventSlice';
 
 const Host = process.env.REACT_APP_SERVER_HOST;
-const VK_api = process.env.REACT_APP_VK_API;
+// const VK_api = process.env.REACT_APP_VK_API;
 
 const GalleryTabs = React.memo(({ handleMouseEnter, handleMouseLeave }) => {
   const dispatch = useDispatch();
   const [activeIndex, setActiveIndex] = useState(null);
-  const [isVKLoaded, setIsVKLoaded] = useState(false); 
+  // const [isVKLoaded, setIsVKLoaded] = useState(false); 
   const sliderRef = useRef(null);
   const cursorRef = useRef(null);
   const galleryRef = useRef(null);
@@ -28,28 +28,28 @@ const GalleryTabs = React.memo(({ handleMouseEnter, handleMouseLeave }) => {
     }
   }, [events, activeIndex]);
 
-  useEffect(() => {
-    const script = document.createElement('script');
-    script.src = 'https://vk.com/js/api/openapi.js?169';
-    script.async = true;
-    script.onload = () => {
-      if (window.VK) {
-        window.VK.init({
-          apiId: VK_api,
-          onlyWidgets: false,
-        });
-        setIsVKLoaded(true);
-      }
-    };
-    script.onerror = () => {
-      console.error('Не удалось загрузить скрипт VK Open API.');
-      setIsVKLoaded(false);
-    };
-    document.body.appendChild(script);
-    return () => {
-      document.body.removeChild(script);
-    };
-  }, []);  
+  // useEffect(() => {
+  //   const script = document.createElement('script');
+  //   script.src = 'https://vk.com/js/api/openapi.js?169';
+  //   script.async = true;
+  //   script.onload = () => {
+  //     if (window.VK) {
+  //       window.VK.init({
+  //         apiId: VK_api,
+  //         onlyWidgets: false,
+  //       });
+  //       setIsVKLoaded(true);
+  //     }
+  //   };
+  //   script.onerror = () => {
+  //     console.error('Не удалось загрузить скрипт VK Open API.');
+  //     setIsVKLoaded(false);
+  //   };
+  //   document.body.appendChild(script);
+  //   return () => {
+  //     document.body.removeChild(script);
+  //   };
+  // }, []);  
   
 
   const handleMouseMove = (e) => {
@@ -105,43 +105,43 @@ const GalleryTabs = React.memo(({ handleMouseEnter, handleMouseLeave }) => {
   );
 
 
- useEffect(() => {
-  if (isVKLoaded && mediaPaths?.videos) {
-    const vkVideoUrl = mediaPaths.videos.find((video) =>
-      video.includes('vk.com/video')
-    );
-    if (vkVideoUrl) {
-      const match = vkVideoUrl.match(/vk\.com\/video(-?\d+)_(\d+)/);
-      if (match) {
-        const ownerId = match[1];
-        const videoId = match[2];
+//  useEffect(() => {
+//   if (isVKLoaded && mediaPaths?.videos) {
+//     const vkVideoUrl = mediaPaths.videos.find((video) =>
+//       video.includes('vk.com/video')
+//     );
+//     if (vkVideoUrl) {
+//       const match = vkVideoUrl.match(/vk\.com\/video(-?\d+)_(\d+)/);
+//       if (match) {
+//         const ownerId = match[1];
+//         const videoId = match[2];
 
-        // console.log('Available VK Widgets:', window.VK.Widgets); // Проверка доступных методов
+//         // console.log('Available VK Widgets:', window.VK.Widgets); // Проверка доступных методов
 
-        setTimeout(() => {
-          if (window.VK && window.VK.Widgets && typeof window.VK.Widgets.Video === 'function') {
-            // console.log('Вызов VK.Widgets.Video');
-            window.VK.Widgets.Video(
-              `vk_video_player_${ownerId}_${videoId}_${activeIndex}`,
-              {
-                width: '100%',
-                height: '100%',
-                video: `${ownerId}_${videoId}`,
-                autoplay: 1,
-                mute: 1,
-                hd: 1,
-              }
-            );
-          } else {
-            console.error('VK.Widgets.Video is not available. Available Widgets:', window.VK.Widgets);
-          }
-        }, 1000);
-      }
-    }
-  } else if (!isVKLoaded) {
-    console.error('VK Open API не загружен. Невозможно инициализировать виджет VK видео.');
-  }
-}, [isVKLoaded, activeIndex, mediaPaths]);
+//         setTimeout(() => {
+//           if (window.VK && window.VK.Widgets && typeof window.VK.Widgets.Video === 'function') {
+//             // console.log('Вызов VK.Widgets.Video');
+//             window.VK.Widgets.Video(
+//               `vk_video_player_${ownerId}_${videoId}_${activeIndex}`,
+//               {
+//                 width: '100%',
+//                 height: '100%',
+//                 video: `${ownerId}_${videoId}`,
+//                 autoplay: 1,
+//                 mute: 1,
+//                 hd: 1,
+//               }
+//             );
+//           } else {
+//             console.error('VK.Widgets.Video is not available. Available Widgets:', window.VK.Widgets);
+//           }
+//         }, 1000);
+//       }
+//     }
+//   } else if (!isVKLoaded) {
+//     console.error('VK Open API не загружен. Невозможно инициализировать виджет VK видео.');
+//   }
+// }, [isVKLoaded, activeIndex, mediaPaths]);
  
   
 
@@ -177,29 +177,29 @@ const GalleryTabs = React.memo(({ handleMouseEnter, handleMouseLeave }) => {
         if (match) {
           const ownerId = match[1];
           const videoId = match[2];
-          // const vkEmbedUrl = `https://vk.com/video_ext.php?oid=${ownerId}&id=${videoId}&hd=1&autoplay=1&controls=0`;
+          const vkEmbedUrl = `https://vk.com/video_ext.php?oid=${ownerId}&id=${videoId}&hd=1&autoplay=1&controls=0`;
           return (
-          //   <iframe
-          //   id={`vk-player-${activeIndex}`}
-          //   width="100%"
-          //   height="100%"
-          //   src={vkEmbedUrl}
-          //   title="VK video"
-          //   allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
-          //   playsInline
-          //   allowFullScreen
-          //   loading="lazy"
-          // ></iframe>
-            <div
-              style={{ position: 'relative', width: '100%', height: '100%' }}
-            >
-              <div
-                id={`vk_video_player_${ownerId}_${videoId}_${activeIndex}`}
-                style={{ width: '100%', height: '100%' }}
-              ></div>
-              {/* Overlay to prevent interaction with controls */}
-              <div className={styles.vkPlayerOverlay}></div>
-            </div>
+            <iframe
+            id={`vk-player-${activeIndex}`}
+            width="100%"
+            height="100%"
+            src={vkEmbedUrl}
+            title="VK video"
+            allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
+            playsInline
+            allowFullScreen
+            loading="lazy"
+          ></iframe>
+            // <div
+            //   style={{ position: 'relative', width: '100%', height: '100%' }}
+            // >
+            //   <div
+            //     id={`vk_video_player_${ownerId}_${videoId}_${activeIndex}`}
+            //     style={{ width: '100%', height: '100%' }}
+            //   ></div>
+            //   {/* Overlay to prevent interaction with controls */}
+            //   <div className={styles.vkPlayerOverlay}></div>
+            // </div>
           );
         }
       } else if (videoUrl.includes('rutube.ru')) {
@@ -255,7 +255,7 @@ const GalleryTabs = React.memo(({ handleMouseEnter, handleMouseLeave }) => {
       }
       return null;
     },
-    [activeIndex, styles.vkPlayerOverlay]
+    [activeIndex]
   );
 
   return (
@@ -280,10 +280,9 @@ const GalleryTabs = React.memo(({ handleMouseEnter, handleMouseLeave }) => {
                 onMouseLeave={handleMouseLeave}
               >
                 {event.title}
-              </button>
+                </SwiperSlide>
             ))}
-          </div>
-
+            </Swiper>
           <div
             ref={galleryRef}
             className={styles.GalleryTabs__content}
