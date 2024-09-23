@@ -1,6 +1,8 @@
 import React, { useEffect, useState, useRef, useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Slider from 'react-slick';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
 import styles from './GalleryTabs.module.scss';
 import { fetchEvents } from '../../../store/Slice/vacancyEventSlice';
 
@@ -263,11 +265,16 @@ const GalleryTabs = React.memo(({ handleMouseEnter, handleMouseLeave }) => {
       </h2>
       {events && events?.length > 0 ? (
         <>
-          <div className={styles.GalleryTabs__buttons}>
-            {events?.map((event, index) => (
-              <button
+          <Swiper
+            className={styles.GalleryTabs__buttons}
+            speed={1000}
+            slidesPerView={'auto'}
+            spaceBetween={8}
+          >
+          {events?.map((event, index) => (
+            <SwiperSlide
                 key={event.id}
-                className={activeIndex === index ? styles.active : ''}
+                className={`${styles.GalleryTabs__button} ${activeIndex === index ? styles.active : ''}`}
                 onClick={() => handleButtonClick(index)}
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
