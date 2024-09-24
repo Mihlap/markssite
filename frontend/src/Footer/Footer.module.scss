@@ -189,10 +189,6 @@
       display: none;
     }
 
-    &__socials {
-      display: none;
-    }
-
     &__office {
       padding-bottom: 14px;
     }
@@ -211,6 +207,7 @@
       flex-direction: row-reverse;
       gap: 2vh;
       justify-content: flex-end;
+      padding-top: 24px;
 
       a {
         padding: 0;
