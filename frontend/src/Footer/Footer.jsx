@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './Footer.module.css';
+import styles from './Footer.module.scss';
 import { Link } from 'react-router-dom';
 
 const Footer = ({ handleMouseEnterFooter, handleMouseEnterFooterMore, handleMouseLeaveFooter, handleMouseLeave }) => {
@@ -12,61 +12,56 @@ const Footer = ({ handleMouseEnterFooter, handleMouseEnterFooterMore, handleMous
   };
 
   return (
-    <footer onMouseEnter={handleMouseEnterFooter} onMouseLeave={handleMouseLeave}>
-      <div id="contacts" className={styles.footer_container}>
-        <div className={styles.footer_block_left}>
-          <div className={styles.mail_block}>
+    <footer className={styles.footer} onMouseEnter={handleMouseEnterFooter} onMouseLeave={handleMouseLeave}>
+      <div id="contacts" className={styles.footer__container}>
+        {/* левая сторона  */}
+        <div className={styles.footer__block_left}>
+          <div className={styles.footer__mail}>
             <Link
-              className={styles.mail_link}
               to="mailto:mail@marksgroup.ru"
               onMouseEnter={handleMouseEnterFooterMore}
-              onMouseLeave={handleMouseLeaveFooter}
-            >
+              onMouseLeave={handleMouseLeaveFooter}>
               <span>mail@marksgroup.ru</span>
             </Link>
           </div>
-          <div className={styles.office}>
+          <div className={styles.footer__office}>
             <p>Офис&nbsp;·&nbsp;Москва</p>
           </div>
-          <div className={styles.office_contact}>
-            <div className={styles.office_tel}>
+          <div className={styles.footer__contacts}>
+            <div>
               <Link
                 to={'tel:+74951201226'}
-                className={styles.tel}
+                className={styles.footer__tel}
                 style={{ fontVariantNumeric: 'lining-nums' }}
                 onMouseEnter={handleMouseEnterFooterMore}
-                onMouseLeave={handleMouseLeaveFooter}
-              >
+                onMouseLeave={handleMouseLeaveFooter}>
                 <span>+7&nbsp;(495)&nbsp;120-12-26</span>
               </Link>
             </div>
             <div
-              // to={"https://yandex.ru/maps/-/CCUgmThXKA"}
-              className={styles.address}
+              className={styles.footer__address} // to={"https://yandex.ru/maps/-/CCUgmThXKA"}
             >
-              <div onClick={mapHendler} onMouseEnter={handleMouseEnterFooterMore} onMouseLeave={handleMouseLeaveFooter}>
+              <a onClick={mapHendler} onMouseEnter={handleMouseEnterFooterMore} onMouseLeave={handleMouseLeaveFooter}>
                 <span>Москва З-я&nbsp;ул.&nbsp;Ямского Поля, д.&nbsp;20, с. 1, офис&nbsp;704</span>
-              </div>
+              </a>
             </div>
           </div>
         </div>
+
         {/* правая сторона  */}
-        <div className={styles.footer_block_right}>
-          {/* <div className={styles.block_lang}>
+        <div className={styles.footer__block_right}>
+          {/* <div className={styles.footer__lang}>
             <span className={styles.en}>EN</span>
           </div> */}
-          <div id="projects" className={styles.social_links}>
+          <div id="projects" className={styles.footer__socials}>
             <Link
               to="https://vk.com/marks_group_vk"
               target="_blank"
               onMouseEnter={handleMouseEnterFooterMore}
-              onMouseLeave={handleMouseLeaveFooter}
-            >
+              onMouseLeave={handleMouseLeaveFooter}>
               <span
-                className={styles.social_links_item}
                 // onClick={vkHendler}
-                style={{ marginRight: '21px' }}
-              >
+                style={{ marginRight: '21px' }}>
                 VK
               </span>
             </Link>
@@ -77,7 +72,6 @@ const Footer = ({ handleMouseEnterFooter, handleMouseEnterFooterMore, handleMous
               onMouseLeave={handleMouseLeaveFooter}
             >
               <span
-                className={styles.social_links_item}
                 style={{ marginRight: "25px" }}
               >
                 IG
@@ -85,11 +79,9 @@ const Footer = ({ handleMouseEnterFooter, handleMouseEnterFooterMore, handleMous
             </Link> */}
             <Link to="https://www.youtube.com/@marks_group" target="_blank">
               <span
-                className={styles.social_links_item}
                 style={{ marginRight: '22px' }}
                 onMouseEnter={handleMouseEnterFooterMore}
-                onMouseLeave={handleMouseLeaveFooter}
-              >
+                onMouseLeave={handleMouseLeaveFooter}>
                 YT
               </span>
             </Link>
@@ -97,30 +89,26 @@ const Footer = ({ handleMouseEnterFooter, handleMouseEnterFooterMore, handleMous
               to="https://t.me/marks_group"
               target="_blank"
               onMouseEnter={handleMouseEnterFooterMore}
-              onMouseLeave={handleMouseLeaveFooter}
-            >
+              onMouseLeave={handleMouseLeaveFooter}>
               <span
-                className={styles.social_links_item}
-                // onClick={telegramHendler}
+              // onClick={telegramHendler}
               >
                 TG
               </span>
             </Link>
           </div>
-          <div className={styles.job}>
-            {/* <Link className={styles.job_link} to="/">
+          <div className={styles.footer__documents}>
+            {/* <Link  to="/">
               Сотрудникам
             </Link> */}
             <Link
-              className={styles.job_link}
               to="./Information"
               target="_blank"
               onMouseEnter={handleMouseEnterFooterMore}
-              onMouseLeave={handleMouseLeaveFooter}
-            >
+              onMouseLeave={handleMouseLeaveFooter}>
               <span>Документы</span>
             </Link>
-            <div className={styles.job_link}>©&nbsp;MARKSLAB</div>
+            <div className={styles.footer__copyright}>©&nbsp;MARKSLAB</div>
           </div>
         </div>
       </div>
