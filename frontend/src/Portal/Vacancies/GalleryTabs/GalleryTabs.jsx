@@ -15,7 +15,7 @@ const GalleryTabs = React.memo(({ handleMouseEnter, handleMouseLeave }) => {
   const cursorRef = useRef(null);
   const galleryRef = useRef(null);
   const { events } = useSelector((state) => state.formAddEvent);
-  const videoRefs = useRef([]); // Refs для видео
+  const videoRefs = useRef([]);
 
   useEffect(() => {
     dispatch(fetchEvents());
@@ -23,7 +23,7 @@ const GalleryTabs = React.memo(({ handleMouseEnter, handleMouseLeave }) => {
 
   useEffect(() => {
     if (events && events?.length > 0 && activeIndex === null) {
-      const visibleEvents = events.filter((event) => !event.hidden); 
+      const visibleEvents = events.filter((event) => !event.hidden);
       if (visibleEvents.length > 0) {
         setActiveIndex(0);
       }
@@ -51,18 +51,11 @@ const GalleryTabs = React.memo(({ handleMouseEnter, handleMouseLeave }) => {
 
   const getMediaPaths = useCallback((event) => {
     const images = event?.files?.filter(
-      (file) =>
-        file.endsWith('.jpg') ||
-        file.endsWith('.png') ||
-        file.endsWith('.jpeg') ||
-        file.endsWith('.avif')
+      (file) => file.endsWith('.jpg') || file.endsWith('.png') || file.endsWith('.jpeg') || file.endsWith('.avif')
     );
 
     const videos = event?.eventData?.filter(
-      (file) =>
-        file.endsWith('.mp4') ||
-        file.includes('youtube.com') ||
-        file.includes('rutube.ru')
+      (file) => file.endsWith('.mp4') || file.includes('youtube.com') || file.includes('rutube.ru')
     );
     return { images, videos };
   }, []);
@@ -74,15 +67,14 @@ const GalleryTabs = React.memo(({ handleMouseEnter, handleMouseLeave }) => {
   const handleButtonClick = useCallback(
     (index) => {
       if (sliderRef.current) {
-        sliderRef.current.slickGoTo(0); 
+        sliderRef.current.slickGoTo(0);
         setActiveIndex(index);
       }
     },
     [sliderRef]
-  ); 
+  );
 
-const renderVideo = useCallback(
-  (videoUrl, index) => {
+  const renderVideo = useCallback((videoUrl, index) => {
     let youtubeVideoId;
     if (videoUrl.includes('youtu.be')) {
       youtubeVideoId = videoUrl.split('/').pop();
@@ -104,8 +96,7 @@ const renderVideo = useCallback(
           allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
           playsInline
           allowFullScreen
-          loading="lazy"
-        ></iframe>
+          loading="lazy"></iframe>
       );
     } else if (videoUrl.includes('rutube.ru')) {
       const rutubeEmbedUrl = videoUrl.replace('/video/', '/play/embed/') + '?autoplay=1&muted=1&controls=0';
@@ -116,7 +107,7 @@ const renderVideo = useCallback(
           width="100%"
           height="100%"
           src={rutubeEmbedUrl}
-          title="Rutube video"    
+          title="Rutube video"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           playsInline
           allowFullScreen
@@ -124,21 +115,11 @@ const renderVideo = useCallback(
           onLoad={() => {
             const iframe = document.getElementById(`rutube-player-${index}`);
             setTimeout(() => {
-              iframe.contentWindow.postMessage(
-                JSON.stringify({ type: 'player:mute', data: {} }),
-                '*'
-              );
-              iframe.contentWindow.postMessage(
-                JSON.stringify({ type: 'player:play', data: {} }),
-                '*'
-              );
-              iframe.contentWindow.postMessage(
-                JSON.stringify({ type: 'player:hideControls', data: {} }),
-                '*'
-              );
-            }, 1000);
-          }}
-        ></iframe>
+              iframe.contentWindow.postMessage(JSON.stringify({ type: 'player:mute', data: {} }), '*');
+              iframe.contentWindow.postMessage(JSON.stringify({ type: 'player:play', data: {} }), '*');
+              iframe.contentWindow.postMessage(JSON.stringify({ type: 'player:hideControls', data: {} }), '*');
+            }, 100);
+          }}></iframe>
       );
     } else if (videoUrl.endsWith('.mp4')) {
       return (
@@ -152,42 +133,91 @@ const renderVideo = useCallback(
           controls={false}
           loading="lazy"
           width="100%"
-          height="100%"
-        >
+          height="100%">
           <source src={`${Host}/videos/${videoUrl}`} type="video/mp4" />
         </video>
       );
     }
     return null;
-  },
-  [activeIndex]
-);
-
+  }, []);
 
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.play?.(); // Начать проигрывание видео
+          if (entry.isIntersecting && entry.target.tagName === 'IFRAME') {
+            const iframe = entry.target;
+            if (iframe && iframe.src.includes('rutube.ru')) {
+              iframe.contentWindow.postMessage(JSON.stringify({ type: 'player:play', data: {} }), '*');
+            }
+          } else if (entry.isIntersecting && entry.target.tagName === 'VIDEO') {
+            entry.target.play();
           } else {
-            entry.target.pause?.(); // Остановить видео, если оно выходит за пределы видимости
+            entry.target.pause?.();
           }
         });
       },
       { threshold: 0.5 }
     );
 
-    videoRefs.current.forEach((video) => {
-      if (video) observer.observe(video);
-    });
+    setTimeout(() => {
+      videoRefs.current.forEach((video) => {
+        if (video) observer.observe(video);
+      });
+    }, 100);
 
     return () => {
       videoRefs.current.forEach((video) => {
         if (video) observer.unobserve(video);
       });
     };
+  }, [mediaPaths, activeIndex]);
+
+  useEffect(() => {
+    if (mediaPaths?.videos && videoRefs.current[activeIndex]) {
+      const currentVideo = videoRefs.current[activeIndex];
+
+      if (currentVideo && currentVideo.tagName === 'IFRAME' && currentVideo.src.includes('rutube.ru')) {
+        currentVideo.contentWindow.postMessage(JSON.stringify({ type: 'player:play', data: {} }), '*');
+      } else if (currentVideo && currentVideo.tagName === 'VIDEO') {
+        currentVideo.play();
+      }
+    }
+  }, [activeIndex, mediaPaths?.videos]);
+
+  const mediaItems = useMemo(() => {
+    const images = mediaPaths?.images?.map((path, index) => ({
+      type: 'image',
+      src: path,
+      index
+    })) || [];
+  
+    const videos = mediaPaths?.videos?.map((video, index) => ({
+      type: 'video',
+      src: video,
+      index
+    })) || [];
+  
+    return [...videos, ...images];
   }, [mediaPaths]);
+  
+  const renderMediaItem = useCallback((item) => {   
+        if (item.type === 'video') {
+          return (
+            <div key={item.index} className={styles.slide}>
+              {renderVideo(item.src, item.index)}
+            </div>
+      );
+    } else  if (item.type === 'image') {
+      return (
+        <div key={item.index} className={styles.slide}>
+          <img src={`${Host}/images/eventAdd/${item.src}`} alt={`Slide ${item.index + 1}`} />
+        </div>
+      );
+    }
+    return null;
+  }, [renderVideo]);
+  
 
   return (
     <section className={styles.GalleryTabs}>
@@ -196,73 +226,45 @@ const renderVideo = useCallback(
       </h2>
       {events && events?.filter((event) => !event.hidden).length > 0 ? (
         <>
-          <Swiper
-            className={styles.GalleryTabs__buttons}
-            speed={1000}
-            slidesPerView={'auto'}
-            spaceBetween={8}
-          >
-          {events
-           ?.filter((event) => !event.hidden)
-           .map((event, index) => (
-            <SwiperSlide
-                key={event.id}
-                className={`${styles.GalleryTabs__button} ${activeIndex === index ? styles.active : ''}`}
-                onClick={() => handleButtonClick(index)}
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-              >
-                {event.title}
-              </SwiperSlide>
-            ))}
-            </Swiper>
-          <div
-            ref={galleryRef}
-            className={styles.GalleryTabs__content}
-            onMouseMove={handleMouseMove}
-          >
+          <Swiper className={styles.GalleryTabs__buttons} speed={1000} slidesPerView={'auto'} spaceBetween={8}>
+            {events
+              ?.filter((event) => !event.hidden)
+              .map((event, index) => (
+                <SwiperSlide
+                  key={event.id}
+                  className={`${styles.GalleryTabs__button} ${activeIndex === index ? styles.active : ''}`}
+                  onClick={() => handleButtonClick(index)}
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}>
+                  {event.title}
+                </SwiperSlide>
+              ))}
+          </Swiper>
+          <div ref={galleryRef} className={styles.GalleryTabs__content} onMouseMove={handleMouseMove}>
             <div ref={cursorRef} className={styles.GalleryTabs__cursor}></div>
             <div
               className={`${styles.GalleryTabs__half} ${styles.GalleryTabs__half_left} ${
                 mediaPaths?.videos?.length ? styles.disabled : ''
               }`}
-              onClick={() => handleSlide('left')}
-            ></div>
+              onClick={() => handleSlide('left')}></div>
             <div
               className={`${styles.GalleryTabs__half} ${styles.GalleryTabs__half_right} ${
                 mediaPaths?.videos?.length ? styles.disabled : ''
               }`}
-              onClick={() => handleSlide('right')}
-            ></div>
+              onClick={() => handleSlide('right')}></div>
             <Slider
               ref={sliderRef}
               arrows={false}
               slidesToScroll={1}
               infinite={true}
               autoplay={false}
-              lazyLoad="ondemand"
-            >
-              {mediaPaths?.images?.map((path, index) => (
-                <div key={index} className={styles.slide}>
-                  <img
-                    src={`${Host}/images/eventAdd/${path}`}
-                    alt={`Slide ${index + 1}`}
-                  />
-                </div>
-              ))}
-
-              {mediaPaths?.videos?.map((video, index) => (
-                <div key={index} className={styles.slide}>
-                  {renderVideo(video, index)}
-                </div>
-              ))}
+              lazyLoad="ondemand">
+              {mediaItems.map((item) => renderMediaItem(item))}
             </Slider>
           </div>
         </>
       ) : (
-        <div className={styles.GalleryTabs__noEvents}>
-          Скоро здесь будет что-то увлекательное!
-        </div>
+        <div className={styles.GalleryTabs__noEvents}>Скоро здесь будет что-то увлекательное!</div>
       )}
     </section>
   );
