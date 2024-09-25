@@ -35,41 +35,41 @@ import ModalVacancyFormSend from '../UI/VacancyFormContact/ModalVacancyFormSend'
 const Host = process.env.REACT_APP_SERVER_HOST;
 
 export default function Company({ handleMouseEnter, handleMouseLeave, handleMouseHover }) {
-  // const videoSource = useMemo(
-  //   () => ({
-  //     large: `${Host}/videos/company_full.mp4`,
-  //     medium: `${Host}/videos/company_ipad.mp4`,
-  //     small: `${Host}/videos/company_mob.mp4`,
-  //   }),
-  //   []
-  // );
-
-  // const videoSource2 = useMemo(
-  //   () => ({
-  //     large: `${Host}/videos/main_company_full.mp4`,
-  //     medium: `${Host}/videos/main_company_ipad.mp4`,
-  //     small: `${Host}/videos/main_company_mobile.mp4`,
-  //   }),
-  //   []
-  // );
-
   const videoSource = useMemo(
     () => ({
-      large: `https://s3.timeweb.cloud/41834503-b9272655-a301-4b1e-a0da-efcedea0878a/images/video/company_full.mp4`,
-      medium: `https://s3.timeweb.cloud/41834503-b9272655-a301-4b1e-a0da-efcedea0878a/images/video/company_ipad.mp4`,
-      small: `https://s3.timeweb.cloud/41834503-b9272655-a301-4b1e-a0da-efcedea0878a/images/video/company_mob.mp4`,
+      large: `${Host}/videos/company_full.mp4`,
+      medium: `${Host}/videos/company_ipad.mp4`,
+      small: `${Host}/videos/company_mob.mp4`,
     }),
     []
   );
-  
+
   const videoSource2 = useMemo(
     () => ({
-      large: `https://s3.timeweb.cloud/41834503-b9272655-a301-4b1e-a0da-efcedea0878a/images/video/main_company_full.mp4`,
-      medium: `https://s3.timeweb.cloud/41834503-b9272655-a301-4b1e-a0da-efcedea0878a/images/video/main_company_ipad.mp4`,
-      small: `https://s3.timeweb.cloud/41834503-b9272655-a301-4b1e-a0da-efcedea0878a/images/video/main_company_mobile.mp4`,
+      large: `${Host}/videos/main_company_full.mp4`,
+      medium: `${Host}/videos/main_company_ipad.mp4`,
+      small: `${Host}/videos/main_company_mobile.mp4`,
     }),
     []
   );
+
+  // const videoSource = useMemo(
+  //   () => ({
+  //     large: `https://s3.timeweb.cloud/41834503-b9272655-a301-4b1e-a0da-efcedea0878a/images/video/company_full.mp4`,
+  //     medium: `https://s3.timeweb.cloud/41834503-b9272655-a301-4b1e-a0da-efcedea0878a/images/video/company_ipad.mp4`,
+  //     small: `https://s3.timeweb.cloud/41834503-b9272655-a301-4b1e-a0da-efcedea0878a/images/video/company_mob.mp4`,
+  //   }),
+  //   []
+  // );
+  
+  // const videoSource2 = useMemo(
+  //   () => ({
+  //     large: `https://s3.timeweb.cloud/41834503-b9272655-a301-4b1e-a0da-efcedea0878a/images/video/main_company_full.mp4`,
+  //     medium: `https://s3.timeweb.cloud/41834503-b9272655-a301-4b1e-a0da-efcedea0878a/images/video/main_company_ipad.mp4`,
+  //     small: `https://s3.timeweb.cloud/41834503-b9272655-a301-4b1e-a0da-efcedea0878a/images/video/main_company_mobile.mp4`,
+  //   }),
+  //   []
+  // );
 
 
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
