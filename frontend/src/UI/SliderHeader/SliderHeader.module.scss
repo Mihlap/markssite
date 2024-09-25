@@ -1,0 +1,161 @@
+@import '../../App.css';
+
+@keyframes marquee {
+  0% {
+    transform: translateX(10%);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.SliderHeader {
+  position: relative;
+
+  /* Градиенты  */
+  &::after,
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    width: 100px;
+    height: 100%;
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  &::before {
+    left: 0;
+    background: linear-gradient(to right, var(--white-F6F6F6), rgba(255, 255, 255, 0));
+  }
+
+  &::after {
+    right: 0;
+    background: linear-gradient(to left, var(--white-F6F6F6), rgba(255, 255, 255, 0));
+  }
+
+  &__marquee {
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+    animation: marquee 30s linear infinite;
+    position: relative;
+    height: 42px;
+  }
+
+  &__item {
+    height: 100%;
+
+    &_companies {
+      max-height: 26px;
+
+      &:nth-child(11) {
+        max-height: 39px;
+      }
+    }
+
+    img {
+      display: block;
+      height: auto;
+      width: auto;
+      min-height: 26px;
+      max-height: 100%;
+      object-fit: contain;
+    }
+  }
+
+  @media all and (max-width: 1024px) {
+    &__marquee {
+      animation: marquee 10s linear infinite;
+    }
+  }
+
+  @media all and (max-width: 768px) {
+    &__marquee {
+      gap: 2.7rem;
+      animation: marquee 5s linear infinite;
+    }
+  }
+}
+
+// // Стили для старого кода с библиотекой react-fast-marquee
+// @import '../../App.css';
+
+// .item img {
+//   padding-left: 4rem;
+//   height: 40px;
+// }
+
+// .logo {
+//   padding-top: 56px;
+//   cursor: none !important;
+// }
+
+// .icon_partner_phone {
+//   display: block;
+//   padding-top: 0rem;
+// }
+// .item_mobile {
+//   padding-left: 2.75rem;
+//   height: 100%;
+//   width: 100%;
+// }
+
+// .item_mobile_img {
+//   height: 26px;
+// }
+
+// /* Стили для планшетной версии сайта блока SliderHeader начинаются тут */
+// @media screen and (min-width: 700px) and (max-width: 1024px) {
+//   .item img {
+//     height: 30px;
+//     padding-left: 3rem;
+//   }
+
+//   .item_mobile {
+//     padding-left: 2.81rem;
+//     height: 100%;
+//     width: 100%;
+//   }
+
+//   .item_mobile_img {
+//     height: 26px;
+//   }
+
+//   .icon_partner_phone {
+//     display: block;
+//   }
+
+//   .logo {
+//     position: relative;
+//     z-index: 0;
+//     padding-top: 40px;
+//   }
+// }
+
+// /* Стили для мобильной версии сайта блока SliderHeader начинаются тут */
+// @media only screen and (max-width: 700px) {
+//   .item img {
+//     height: 30px;
+//   }
+
+//   .item_mobile {
+//     padding-left: 10vw;
+//     height: 100%;
+//     width: 100%;
+//   }
+
+//   .item_mobile_img {
+//     height: 26px;
+//   }
+
+//   .icon_partner_phone {
+//     display: block;
+//   }
+
+//   .logo {
+//     position: relative;
+//     z-index: 0;
+//     padding-top: 40px;
+//   }
+// }
