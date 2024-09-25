@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Marquee from 'react-fast-marquee';
-import styles from './SliderHeader.module.css';
+import styles from './SliderHeader.module.scss';
 
 const imageFileNames = [
   'logo1.png',
@@ -69,8 +69,7 @@ const SliderMobile = () => {
           autoFill={true}
           gaps={null}
           gradientColor={'#F6F6F6'}
-          delayBetweenLoops={2000}
-        >
+          delayBetweenLoops={2000}>
           {imageFileNames.map((fileName, index) => (
             <div key={index} className={styles.item_mobile}>
               <img src={`./assets/logo/${fileName}`} alt={`logo${index + 1}`} className={styles.item_mobile_img} />
