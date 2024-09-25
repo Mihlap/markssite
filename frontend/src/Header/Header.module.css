@@ -166,6 +166,7 @@
   flex-direction: column;
   padding-left: 18.26vw;
   padding-top: 5rem;
+  padding-bottom: 5rem;
 }
 
 .desctop_title {
@@ -468,7 +469,7 @@ svg path {
  height: 26px;
  } */
 .sliderMobile_container {
-  padding-top: 2.31rem;
+  padding-top: 3rem;
   padding-left: 0;
 }
 
@@ -641,7 +642,7 @@ svg path {
   border-radius: 34px;
   max-width: fit-content;
   margin-bottom: 6px;
-  margin-right: 6px;
+  margin-left: 6px;
 }
 .swiper_container {
   display: none;
@@ -969,7 +970,13 @@ svg path {
     padding-top: 1rem;
   }
 
-  .header_desctop_block,
+  .header_desctop_block {
+    padding: 2.5rem 0 0 0;
+    * {
+      display: none;
+    }
+  }
+
   .card_container,
   .most,
   .icon_partner,
