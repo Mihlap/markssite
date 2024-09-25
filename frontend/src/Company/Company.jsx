@@ -8,7 +8,8 @@ import { Helmet } from 'react-helmet-async';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
-import SliderMobile from '../UI/SliderHeader/SliderMobile';
+// import SliderMobile from '../UI/SliderHeader/SliderMobile';
+import SliderHeader from '../UI/SliderHeader/SliderHeader';
 import TableCompany from '../UI/TableCompany/TableCompany';
 import TableCompanyMobile from '../UI/TableCompany/TableCompanyMobile';
 import {
@@ -61,7 +62,7 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
   //   }),
   //   []
   // );
-  
+
   // const videoSource2 = useMemo(
   //   () => ({
   //     large: `https://s3.timeweb.cloud/41834503-b9272655-a301-4b1e-a0da-efcedea0878a/images/video/main_company_full.mp4`,
@@ -70,7 +71,6 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
   //   }),
   //   []
   // );
-
 
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [countPercent, setCountPercent] = useState(0);
@@ -366,7 +366,8 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
           )}
         </div>
         <div className={styles.sliderMobile_wrapper}>
-          <SliderMobile />
+          {/* <SliderMobile /> */}
+          <SliderHeader />
         </div>
         <div className={styles.about_main}>
           <div className={styles.left_about}>
@@ -489,8 +490,7 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
               //   clickable: true,
               // }}
               className={styles.my_swiper_button_group}
-              touch="true"
-            >
+              touch="true">
               <div className={styles.button_group}>
                 {buttonsStuff &&
                   buttonsStuff?.map((button, index) => (
@@ -501,8 +501,7 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
                         button.onClick(button.name);
                       }}
                       className={`${styles.button_hover} ${activeButton === button.name ? styles.active : ''}`}
-                      style={{ width: 'fit-content' }}
-                    >
+                      style={{ width: 'fit-content' }}>
                       <p type="button">{button.name}</p>
                     </SwiperSlide>
                   ))}
@@ -521,8 +520,7 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
                   activeButton === 'Руководство' ? styles.active : ''
                 }`}
                 onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-              >
+                onMouseLeave={handleMouseLeave}>
                 Руководство
               </button>
               <button
@@ -535,8 +533,7 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
                   activeButton === 'Научно-техническое сопровождение' ? styles.active : ''
                 }`}
                 onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-              >
+                onMouseLeave={handleMouseLeave}>
                 Научно-техническое сопровождение
               </button>
             </div>
@@ -552,8 +549,7 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
                   className={styles.container__item_stuff}
                   onClick={() => handleButtonClick(category, el.id)}
                   onMouseEnter={handleMouseHover}
-                  onMouseLeave={handleMouseLeave}
-                >
+                  onMouseLeave={handleMouseLeave}>
                   <div className={styles.wrapper_container_item_stuff}>
                     <img
                       className={`${styles.container__img_stuff} ${showCards ? 'loaded' : ''}`}
@@ -613,8 +609,7 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
                       backgroundColor: 'transparent',
                     },
                   },
-                }}
-              >
+                }}>
                 {selectedCard && (
                   <div key={selectedCard.id} className={styles.modal_context}>
                     <div
@@ -624,8 +619,7 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
                         dispatch(selectCard(null));
                       }}
                       onMouseEnter={handleMouseEnter}
-                      onMouseLeave={handleMouseLeave}
-                    >
+                      onMouseLeave={handleMouseLeave}>
                       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
                           fillRule="evenodd"
@@ -872,15 +866,13 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
                 if (swiperCompanyRef.current === null) {
                   swiperCompanyRef.current = swiper;
                 }
-              }}
-            >
+              }}>
               {staff?.map((el) => (
                 <SwiperSlide
                   key={el.id}
                   data-user-id={el.id}
                   className={styles.slide_container_item_stuff}
-                  onClick={() => handleButtonClick(category, el.id)}
-                >
+                  onClick={() => handleButtonClick(category, el.id)}>
                   <div className={styles.wrapper_container_item_stuff}>
                     <img
                       className={`${styles.container__img_stuff} ${showCards ? 'loaded' : ''}`}
@@ -921,15 +913,13 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
               loop={true}
               slidesPerView={2.2}
               spaceBetween={0}
-              touch="true"
-            >
+              touch="true">
               {staff?.map((el) => (
                 <SwiperSlide
                   key={el.id}
                   data-user-id={el.id}
                   className={styles.slide_container_item_stuff}
-                  onClick={() => handleButtonClick(category, el.id)}
-                >
+                  onClick={() => handleButtonClick(category, el.id)}>
                   <div className={styles.wrapper_container_item_stuff}>
                     <img
                       className={`${styles.container__img_stuff} ${showCards ? 'loaded' : ''}`}
@@ -964,8 +954,7 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
                   position: 'relative',
                   height: '30vh',
                   width: window.innerWidth <= 768 ? '100vw' : '50vw',
-                }}
-              >
+                }}>
                 <div
                   style={{
                     position: 'absolute',
@@ -973,8 +962,7 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
                     left: '50%',
                     transform: 'translate(-50%, -50%)',
                     zIndex: 10,
-                  }}
-                >
+                  }}>
                   <LoadingCircle />
                 </div>
               </div>
@@ -985,8 +973,7 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
                   position: 'relative',
                   height: '30vh',
                   width: window.innerWidth <= 768 ? '100vw' : '50vw',
-                }}
-              >
+                }}>
                 <div
                   style={{
                     position: 'absolute',
@@ -994,8 +981,7 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
                     left: '50%',
                     transform: 'translate(-50%, -50%)',
                     zIndex: 10,
-                  }}
-                >
+                  }}>
                   <ModalVacancyFormSend
                     isOpen={modalOpenFormContacts}
                     onRequestClose={() => setModalOpenFormContacts(false)}
@@ -1024,8 +1010,7 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
                   position: 'relative',
                   height: '30vh',
                   width: window.innerWidth <= 768 ? '100vw' : '50vw',
-                }}
-              >
+                }}>
                 <div
                   style={{
                     position: 'absolute',
@@ -1033,8 +1018,7 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
                     left: '50%',
                     transform: 'translate(-50%, -50%)',
                     zIndex: 100,
-                  }}
-                >
+                  }}>
                   <LoadingCircle />
                 </div>
               </div>
@@ -1045,8 +1029,7 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
                   position: 'relative',
                   height: '30vh',
                   width: window.innerWidth <= 768 ? '100vw' : '50vw',
-                }}
-              >
+                }}>
                 <div
                   style={{
                     position: 'absolute',
@@ -1054,8 +1037,7 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
                     left: '50%',
                     transform: 'translate(-50%, -50%)',
                     zIndex: 100,
-                  }}
-                >
+                  }}>
                   <ModalVacancyFormSend
                     isOpen={modalOpenSubscription}
                     onRequestClose={() => setModalOpenSubscription(false)}
