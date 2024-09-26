@@ -10,7 +10,7 @@ export default function SlideModalManager({
   setIsModalOpenMain,
   editSlideData,
   modalBlockHeight,
-  handleEditClick
+  handleEditClick,
 }) {
   const dispatch = useDispatch();
 
@@ -26,7 +26,6 @@ export default function SlideModalManager({
     },
     [dispatch, setIsModalOpenMain]
   );
-  
 
   return (
     isModalOpenMain && (
@@ -50,7 +49,8 @@ export default function SlideModalManager({
           )}
           <button
             className={styles.card_components_admin__close_button}
-            onClick={() => setIsModalOpenMain(false)}></button>
+            onClick={() => setIsModalOpenMain(false)}
+          ></button>
         </div>
       </div>
     )

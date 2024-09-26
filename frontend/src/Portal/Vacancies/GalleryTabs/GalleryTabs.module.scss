@@ -60,7 +60,6 @@
       background-color: var(--blue-75BBFD);
       color: var(--white-F6F6F6);
     }
-    
   }
 
   &__content {
@@ -104,7 +103,7 @@
     &_right {
       right: 0;
       cursor: url('../icons/arrow-left.svg') 4 8, auto;
-    } 
+    }
 
     @media (pointer: coarse) {
       &_left {
@@ -134,7 +133,6 @@
       display: none;
     }
   }
-
 
   // Адаптация под меньший размер desktop
   @media all and (max-width: $bp0) {
@@ -227,5 +225,3 @@
     }
   }
 }
-
-

@@ -11,7 +11,7 @@ export default function EventsList({
   handleDeleteModalOpenEvent,
   handleEditClick,
   handleFormDeleteEvent,
-  handleLookClick
+  handleLookClick,
 }) {
   const dispatch = useDispatch();
   const events = useSelector((state) => state.formAddEvent.events || []);

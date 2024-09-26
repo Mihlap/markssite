@@ -4,7 +4,7 @@ import Slide from './Slide';
 import {
   fetchSlides,
   updateSlidesOrderLocally,
-  updateSlidesOrder
+  updateSlidesOrder,
 } from '../../../store/Slice/vacancyMainSlideCardSlice';
 import styles from '../../style/style-card.module.scss';
 
@@ -15,7 +15,7 @@ export default function SlidesList({
   handleDeleteModalOpenSlide,
   handleEditClick,
   handleFormDeleteSlide,
-  handleLookClick
+  handleLookClick,
 }) {
   const dispatch = useDispatch();
   const slides = useSelector((state) => state.formAddSlide.slides || []);
@@ -24,7 +24,6 @@ export default function SlidesList({
   useEffect(() => {
     dispatch(fetchSlides());
   }, [dispatch]);
-  
 
   const handleDragStart = (e, index) => {
     setDraggedItem(slides[index]);
@@ -54,25 +53,25 @@ export default function SlidesList({
     setDraggedItem(null);
   };
 
-  return ( 
-      <div className={styles.card_components_admin__block__vacancy}>
-        {slides.map((el, index) => (
-          <Slide
-            key={`${el.id}-${index}`}
-            el={el}
-            index={index}
-            handleDragStart={handleDragStart}
-            handleDragOver={handleDragOver}
-            handleDrop={handleDrop}
-            handleLookClick={handleLookClick}
-            handleEditClick={handleEditClick}
-            handleDeleteModalOpenSlide={handleDeleteModalOpenSlide}
-            deleteModalStateSlide={deleteModalStateSlide}
-            handleDeleteModalCloseSlide={handleDeleteModalCloseSlide}
-            handleFormDeleteSlide={handleFormDeleteSlide}
-            user={user}
-          />
-        ))}
-      </div>
-   );
+  return (
+    <div className={styles.card_components_admin__block__vacancy}>
+      {slides.map((el, index) => (
+        <Slide
+          key={`${el.id}-${index}`}
+          el={el}
+          index={index}
+          handleDragStart={handleDragStart}
+          handleDragOver={handleDragOver}
+          handleDrop={handleDrop}
+          handleLookClick={handleLookClick}
+          handleEditClick={handleEditClick}
+          handleDeleteModalOpenSlide={handleDeleteModalOpenSlide}
+          deleteModalStateSlide={deleteModalStateSlide}
+          handleDeleteModalCloseSlide={handleDeleteModalCloseSlide}
+          handleFormDeleteSlide={handleFormDeleteSlide}
+          user={user}
+        />
+      ))}
+    </div>
+  );
 }
