@@ -69,7 +69,8 @@ const SliderMobile = () => {
           autoFill={true}
           gaps={null}
           gradientColor={'#F6F6F6'}
-          delayBetweenLoops={2000}>
+          delayBetweenLoops={2000}
+        >
           {imageFileNames.map((fileName, index) => (
             <div key={index} className={styles.item_mobile}>
               <img src={`./assets/logo/${fileName}`} alt={`logo${index + 1}`} className={styles.item_mobile_img} />

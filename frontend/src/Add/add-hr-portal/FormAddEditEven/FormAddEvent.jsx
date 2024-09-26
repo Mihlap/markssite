@@ -12,7 +12,7 @@ export default function FormAddEvent({ setIsModalOpenEvent }) {
   const [isPhotoAvaVisible, setIsPhotoAvaVisible] = useState(true);
   const [showNotification, setShowNotification] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false); 
+  const [isSubmitted, setIsSubmitted] = useState(false);
   const [inputData, setInputData] = useState({
     title: '',
     files: [],
@@ -21,8 +21,9 @@ export default function FormAddEvent({ setIsModalOpenEvent }) {
   });
 
   const validateForm = useCallback(() => {
-    const isValid = (inputData.title && inputData.files.length > 0) || (inputData.title && inputData.eventData.length >= 0);
- 
+    const isValid =
+      (inputData.title && inputData.files.length > 0) || (inputData.title && inputData.eventData.length >= 0);
+
     return isValid;
   }, [inputData]);
 
@@ -69,10 +70,9 @@ export default function FormAddEvent({ setIsModalOpenEvent }) {
         files: [...(prevData.files || []), ...compressedFiles],
       }));
 
-      setIsLoading(false);   
+      setIsLoading(false);
     }
   };
-
 
   const handleVideoChange = (index, value) => {
     const videoUrl = value.trim();
@@ -91,7 +91,7 @@ export default function FormAddEvent({ setIsModalOpenEvent }) {
       ...prevData,
       eventData: [...prevData.eventData, ''],
     }));
-  };  
+  };
 
   const handleRemoveVideoField = (indexToRemove) => {
     setInputData((prevData) => ({
@@ -99,9 +99,8 @@ export default function FormAddEvent({ setIsModalOpenEvent }) {
       eventData: prevData.eventData.filter((_, index) => index !== indexToRemove),
     }));
   };
-  
 
-   const handleDescriptionChange = (value) => {
+  const handleDescriptionChange = (value) => {
     setInputData((prevData) => ({
       ...prevData,
       title: value,
@@ -124,7 +123,7 @@ export default function FormAddEvent({ setIsModalOpenEvent }) {
       }));
 
       if (updatedFiles.length === 0) {
-        setIsPhotoAvaVisible(false);      ;
+        setIsPhotoAvaVisible(false);
       }
     },
     [previewPhotoAva, inputData.files]
@@ -156,14 +155,14 @@ export default function FormAddEvent({ setIsModalOpenEvent }) {
 
       const formData = new FormData();
       formData.append('title', inputData.title);
-      formData.append('details', JSON.stringify({ eventData: inputData.eventData }));      
+      formData.append('details', JSON.stringify({ eventData: inputData.eventData }));
 
       if (inputData.files && inputData.files.length > 0) {
         inputData.files.forEach((file) => {
           formData.append('files', file);
         });
       }
-    
+
       try {
         await dispatch(postEventData(formData)).unwrap();
         dispatch(resetEventsState());
@@ -171,7 +170,7 @@ export default function FormAddEvent({ setIsModalOpenEvent }) {
           title: '',
           files: [],
           // videos: [],
-          eventData: [''],        
+          eventData: [''],
         });
 
         setShowNotification(false);
@@ -191,7 +190,7 @@ export default function FormAddEvent({ setIsModalOpenEvent }) {
       <div className={styles.form_container__title}>Новое мероприятие</div>
       <div className={styles.form_container__block_form}>
         <form className={styles.form_container__form} onSubmit={submitHandler}>
-          <div className={styles.form_container__block_gray_one} style={{paddingBottom: '2rem'}}>
+          <div className={styles.form_container__block_gray_one} style={{ paddingBottom: '2rem' }}>
             <div className={`${styles.form__group} ${styles.field}`}>
               <input
                 type="input"
@@ -216,7 +215,10 @@ export default function FormAddEvent({ setIsModalOpenEvent }) {
                 <div>Слайдер</div>
               </div>
               <div style={{ display: isPhotoAvaVisible ? 'inline-block' : 'none' }}>
-                <label className={styles.slider_container__customFileUpload} style={{ marginTop: '0', marginBottom: "-1rem" }}>
+                <label
+                  className={styles.slider_container__customFileUpload}
+                  style={{ marginTop: '0', marginBottom: '-1rem' }}
+                >
                   <input type="file" name="files" multiple onChange={handleFileChange} />
                   <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <g id="Frame 4684">
@@ -241,7 +243,8 @@ export default function FormAddEvent({ setIsModalOpenEvent }) {
                     <img className={styles.preview_photos_container__img} src={preview} alt={`Preview ${index}`} />
                     <div
                       className={styles.preview_photos_container__remove_icon}
-                      onClick={() => handleRemovePreviewPhotoAva(index)}>
+                      onClick={() => handleRemovePreviewPhotoAva(index)}
+                    >
                       <span></span>
                     </div>
                   </div>
@@ -249,8 +252,7 @@ export default function FormAddEvent({ setIsModalOpenEvent }) {
               </div>
             </div>
             <div>
-         
-            {inputData.eventData.map((url, index) => (
+              {inputData.eventData.map((url, index) => (
                 <div key={index} className={styles.form_container__block_gray_one}>
                   <div className={styles.form_container__heading_block}>
                     <input
@@ -262,20 +264,19 @@ export default function FormAddEvent({ setIsModalOpenEvent }) {
                       maxLength="300"
                       value={url}
                       onChange={(e) => handleVideoChange(index, e.target.value)}
-                    />                   
-                      <div
+                    />
+                    <div
                       className={styles.blockContainer__close_button}
                       onClick={() => handleRemoveVideoField(index)}
-                    >               
-                    </div>
+                    ></div>
                   </div>
                 </div>
-              ))}      
-            <label
-              className={styles.slider_container__customFileUpload}
-              style={{ marginTop: '1rem', marginBottom: '2rem' }}
-              onClick={addNewVideoField}
-            >
+              ))}
+              <label
+                className={styles.slider_container__customFileUpload}
+                style={{ marginTop: '1rem', marginBottom: '2rem' }}
+                onClick={addNewVideoField}
+              >
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <g id="Frame 4684">
                     <path

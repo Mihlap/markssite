@@ -46,10 +46,7 @@ const VacanciesMain3 = ({ handleMouseEnter, handleMouseLeave }) => {
       <BenefitsGrid />
       <VacanciesSectionRenderActualMain handleMouseEnter={handleMouseEnter} handleMouseLeave={handleMouseLeave} />
       <VacanciesInvite />
-      <GalleryTabs
-        handleMouseEnter={handleMouseEnter}
-        handleMouseLeave={handleMouseLeave}
-      />
+      <GalleryTabs handleMouseEnter={handleMouseEnter} handleMouseLeave={handleMouseLeave} />
       <SocialsSwiper />
       <div className={styles.temporaryText}>
         {windowWidth > 1024 ? 'Не нашли подходящую вакансию?' : 'Мы ищем именно тебя!'}

@@ -55,7 +55,8 @@ const SwiperContainerProgect = ({ projects }) => {
           if (swiperRef.current === null) {
             swiperRef.current = swiper;
           }
-        }}>
+        }}
+      >
         <div className="swiper_wrapper">
           {combinedProjects?.map((project, index) => {
             if (!project || !project.id) {
@@ -89,7 +90,8 @@ const SwiperContainerProgect = ({ projects }) => {
                                   border: '0.5px solid',
                                   padding: '3px 6px',
                                   borderRadius: '34px',
-                                }}>
+                                }}
+                              >
                                 {label}
                               </div>
                             );
@@ -107,7 +109,8 @@ const SwiperContainerProgect = ({ projects }) => {
                                     border: '0.5px solid',
                                     padding: '3px 6px',
                                     borderRadius: '34px',
-                                  }}>
+                                  }}
+                                >
                                   {label}
                                 </div>
                               );
