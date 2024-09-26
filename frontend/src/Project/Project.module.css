@@ -11,7 +11,7 @@
 .project_slider_text {
   font-family: var(--font-unbounded);
   position: absolute;
-  bottom: 10vh;
+  bottom: 13vh;
   left: 9.06vw;
   z-index: 1;
   color: var(--white-F6F6F6);
@@ -21,17 +21,17 @@
 
 .actuality_text {
   font-size: 1.5rem;
+  font-size: clamp(1rem, 1.7vw, 3rem);
   font-weight: var(--fw-300);
-  line-height: 2rem;
+  line-height: 133%;
 }
 
 .projects_name_text {
   font-family: var(--font-unbounded);
-  font-size: 3rem;
-  /* font-size: clamp(1.6rem, calc(-.13rem + 2.43vw), 2.6rem); */
-  font-weight: var(--fw-500);
-  line-height: 4rem;
-  padding-top: 0.25rem;
+  font-size: clamp(1rem, 3.3vw, 6rem);
+  font-weight: var(--fw-600);
+  line-height: 133%;
+  padding-top: 0.3rem;
 }
 
 .menu_button_group_project_wrapper_main {
@@ -78,7 +78,8 @@ display: inline-block;
 .menu__button__allProject:hover {
   background-color: var(--dark-gray-566272);
   color: var(--white-F6F6F6);
-  transition: background-color 0.4s ease, color 0.4s ease;
+  border: 1px solid var(--dark-gray-566272);
+  transition: background-color 0.4s ease, border 0.1s ease, color 0.4s ease;
 }
 
 .menu__button__allProject.active {
@@ -232,7 +233,7 @@ display: inline-block;
   font-style: normal;
   font-weight: var(--fw-700);
   line-height: 20px;
-  color: var(--black-4E4E4E);
+  color: var(--black-1D2E43);
   padding-top: 16px;
 }
 
@@ -246,6 +247,7 @@ display: inline-block;
   justify-content: flex-end;
   flex-wrap: wrap;
   grid-row-gap: 8px;
+  column-gap: 6px;
   padding-top: 16px;
   padding-left: 8px;
   font-family: var(--font-raleway);
@@ -277,7 +279,7 @@ display: inline-block;
 }
 
 .el_project_selectCompetencies {
-  margin-right: 6px;
+  /* margin-left: 6px; */
   border: 1px solid;
   border-radius: 34px;
   max-width: fit-content;
@@ -642,6 +644,11 @@ display: inline-block;
   }
 }
 
+@media screen and (min-width: 1920px) {
+  .projects_name_text {
+    font-weight: var(--fw-700);
+  }
+}
 /* Стили для планшетной версии сайта блока Project начинаются тут */
 @media screen and (min-width: 768px) and (max-width: 1024px) {
   .project_slider_text {
@@ -988,6 +995,8 @@ display: inline-block;
 
   .project_content__wrapper {
     display: block;
+    padding-bottom: 20px;
+    position: relative;
   }
 
   .cart_project_title {
@@ -1020,6 +1029,8 @@ display: inline-block;
   }
 
   .cart_project__address {
+    position: absolute;
+    bottom: 0;
     display: flex;
     color: var(--gray-959DA6);
     font-size: 0.625rem;
@@ -1027,7 +1038,7 @@ display: inline-block;
   }
 
   .el_project_selectCompetencies {
-    margin-right: 6px;
+    /* margin-right: 6px; */
     /* margin-top: 6px; */
     border: 1px solid;
     padding: 3px 6px;
