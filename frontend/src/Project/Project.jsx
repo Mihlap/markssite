@@ -311,6 +311,7 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
                   size="60"
                   required
                   autoComplete="off"
+                  placeholder=""
                 />
                 <div className={styles.line_modal_project}></div>
                 <div className={styles.placeholder_modal_project}>
@@ -487,6 +488,7 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
                   size="60"
                   required
                   autoComplete="off"
+                  placeholder=""
                 />
                 <div className={styles.line_modal_project}></div>
                 <div className={styles.placeholder_modal_project}>

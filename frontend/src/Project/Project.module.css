@@ -183,7 +183,6 @@ display: inline-block;
   flex-direction: column;
   width: calc(33.33% - 1.88rem);
   max-height: 30rem;
-  padding-bottom: 1rem;
 }
 
 .cart_project {
@@ -533,10 +532,9 @@ display: inline-block;
   pointer-events: none;
 }
 
-#text-input:not(:placeholder-shown) + .placeholder_modal_project,
-#text-input:empty + .placeholder_modal_project,
+.address_and_city_choose_location:not(:placeholder-shown) + .line_modal_project + .placeholder_modal_project,
 .focused .placeholder_modal_project {
-  transform: translateY(-100%) scale(1);
+  transform: translateY(-120%) scale(1);
   font-size: 12px;
   color: var(--gray-959DA6);
 }
@@ -909,10 +907,9 @@ display: inline-block;
     transition: all 0.1s ease-out;
   }
 
-  #text-input:not(:placeholder-shown) + .placeholder_modal_project,
-  #text-input:empty + .placeholder_modal_project,
+  .address_and_city_choose_location:not(:placeholder-shown) + .line_modal_project + .placeholder_modal_project,
   .focused .placeholder_modal_project {
-    transform: translateY(-100%) scale(1);
+    transform: translateY(-120%) scale(1);
     font-size: 12px;
     color: var(--gray-959DA6);
   }
@@ -932,6 +929,7 @@ display: inline-block;
     display: flex;
     padding-top: 2.5rem;
     padding-left: 1rem;
+    padding-right: 1rem;
     bottom: 0rem;
     left: 0rem;
     right: 0rem;
