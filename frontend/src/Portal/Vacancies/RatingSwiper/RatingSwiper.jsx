@@ -108,7 +108,7 @@ const RatingSwiper = memo(() => {
               {slidesToShow?.map((slide) => (
                 <SwiperSlide key={slide.id} className={styles.RatingSwiper__slide}>
                   <RatingSwiperRow
-                    picture={`${Host}/images/slideCard/${slide.photoAva}`}
+                    picture={slide.photoAva}
                     date={new Date(slide.cardData.card1.date).toLocaleDateString()}
                     title={slide.cardData.card1.description}
                   />
@@ -132,7 +132,7 @@ const RatingSwiper = memo(() => {
               {slidesToShow?.map((slide) => (
                 <div key={slide.id} className={styles.RatingSwiper__slide}>
                   <RatingSwiperRow
-                    picture={`${Host}/images/slideCard/${slide.photoAva}`}
+                    picture={slide.photoAva}
                     date={new Date(slide.cardData.card1.date).toLocaleDateString()}
                     title={slide.cardData.card1.description}
                   />

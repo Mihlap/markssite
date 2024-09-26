@@ -6,7 +6,7 @@ import 'swiper/css';
 import styles from './GalleryTabs.module.scss';
 import { fetchEvents } from '../../../store/Slice/vacancyEventSlice';
 
-const Host = process.env.REACT_APP_SERVER_HOST;
+const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
 const GalleryTabs = React.memo(({ handleMouseEnter, handleMouseLeave }) => {
   const dispatch = useDispatch();
@@ -134,7 +134,7 @@ const GalleryTabs = React.memo(({ handleMouseEnter, handleMouseLeave }) => {
           loading="lazy"
           width="100%"
           height="100%">
-          <source src={`${Host}/videos/${videoUrl}`} type="video/mp4" />
+          <source src={`${bucket_url}/videos/${videoUrl}`} type="video/mp4" />
         </video>
       );
     }
@@ -211,14 +211,13 @@ const GalleryTabs = React.memo(({ handleMouseEnter, handleMouseLeave }) => {
     } else  if (item.type === 'image') {
       return (
         <div key={item.index} className={styles.slide}>
-          <img src={`${Host}/images/eventAdd/${item.src}`} alt={`Slide ${item.index + 1}`} />
+          <img src={item.src} alt={`Slide ${item.index + 1}`} />
         </div>
       );
     }
     return null;
   }, [renderVideo]);
   
-
   return (
     <section className={styles.GalleryTabs}>
       <h2 className={styles.GalleryTabs__title}>
