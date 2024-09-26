@@ -130,25 +130,6 @@ export default function FormAddEvent({ setIsModalOpenEvent }) {
     [previewPhotoAva, inputData.files]
   );
 
-  // const handleRemovePreviewVideo = useCallback(
-  //   (index) => {
-  //     const updatedVideos = previewVideoAva.filter((_, i) => i !== index);
-  //     setPreviewVideoAva(updatedVideos);
-
-  //     const updatedVideoFiles = inputData.videos.filter((_, i) => i !== index);
-  //     setInputData((prevData) => ({
-  //       ...prevData,
-  //       videos: updatedVideoFiles,
-  //     }));
-
-  //     if (updatedVideoFiles.length === 0) {
-  //       setIsVideoActive(false);
-  //       setIsImagesActive(true);
-  //     }
-  //   },
-  //   [previewVideoAva, inputData.videos]
-  // );
-
   const closeModal = useCallback(() => {
     setInputData({
       title: '',
