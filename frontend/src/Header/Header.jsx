@@ -12,7 +12,6 @@ import SwiperCore, { Navigation } from 'swiper';
 import SliderHeader from '../UI/SliderHeader/SliderHeader';
 import Mapbox3D from '../UI/Map3D/Mapbox3D';
 import Error from '../Loading/Error/Error';
-// import SliderMobile from '../UI/SliderHeader/SliderMobile';
 import BlockHeaderMain from '../UI/BlockHeader/BlockHeaderMain';
 import { getFetchFormArticle } from '../store/Slice/articleSlice';
 import { getZaprosData } from '../store/Slice/searchProjectMainSlice';
@@ -24,21 +23,20 @@ import notDataPhoto from './img/notData.png';
 import nameCompany from '../icons/nameCompany.svg';
 import nameCompany1 from '../icons/nameCompany1.svg';
 import img123 from './img/Главная.png';
-// import { textEnter, textLeave, imageHover, specialHover } from "../store/Slice/cursorSlice";
 
 SwiperCore.use([Navigation]);
 const Host = process.env.REACT_APP_SERVER_HOST;
+const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
 const Header = React.memo(
   ({ handleMouseEnter, handleMouseLeave, handleMouseHover, handleSpecialHover, setVideoLoaded }) => {
     const videoSource = {
-      large: `${Host}/videos/main_company_full.mp4`,
-      medium: `${Host}/videos/main_company_ipad.mp4`,
-      small: `${Host}/videos/main_company_mobile.mp4`,
+      large: `${bucket_url}/images/video/main_company_full.mp4`,
+      medium: `${bucket_url}/images/video/main_company_ipad.mp4`,
+      small: `${bucket_url}/images/video/main_company_mobile.mp4`,
     };
-    // const [loadingArticle, setLoadingArticle] = useState(false);
     const cursorVariant = useSelector((state) => state.cursor);
 
     const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
@@ -63,22 +61,7 @@ const Header = React.memo(
       window.scrollTo(0, 0);
     }, []);
 
-    // const handleMouseEnter = () => {
-    //   dispatch(textEnter());
-    // };
-
-    // const handleMouseLeave = () => {
-    //   dispatch(textLeave());
-    // };
-
-    // const handleMouseHover = () => {
-    //   dispatch(imageHover());
-    // };
-
-    // const handleSpecialHover = () => {
-    //   dispatch(specialHover());
-    // };
-
+  
     useEffect(() => {
       const handleResize = () => {
         const screenWidth = window.innerWidth;
@@ -174,10 +157,7 @@ const Header = React.memo(
         </div>
       );
     }
-    // if (loading) {
-    //   return <LoadingCircle />;
-    //   // return <LoadingNew />;
-    // }
+   
 
     const NewProject = projects.map((el) => (el && el.project !== undefined ? el.project : null));
     const MapProject = NewProject.map((el) => (el && el.project !== undefined ? el.project : null));
@@ -194,10 +174,7 @@ const Header = React.memo(
           <title>Marks Group</title>
         </Helmet>
         <main className={styles.header}>
-          {/* <div className={styles.video_block}>
-          <VideoPlayer videoSource={videoSource} />
-        </div> */}
-          <div className={styles.wrapper_nameCompanyMainHeader}>
+           <div className={styles.wrapper_nameCompanyMainHeader}>
             <div className={styles.block_video_company}>
               {videoSrc && (
                 <video
@@ -280,7 +257,6 @@ const Header = React.memo(
                                   onMouseEnter={handleMouseHover}
                                   onMouseLeave={handleMouseLeave}
                                   className={styles.img_1}
-                                  // src={`${Host}/images/imageArticle/${firstPhoto}`}
                                   src={firstImagePath}
                                   alt="photo1"
                                   loading="lazy"
@@ -326,10 +302,10 @@ const Header = React.memo(
                           </Link>
                         );
                       } else {
-                        return null; // Не отображаем ничего, если статья не соответствует ArticleLeft
+                        return null;
                       }
                     })}
-                  {MapArticle.length === 0 && ( // Отображаем заглушку, если MapArticle пустой
+                  {MapArticle.length === 0 && (
                     <div className={styles.card_item_1}>
                       <div className={styles.card_img}>
                         <img className={styles.img_1} src={img123} alt="photo2" />
@@ -371,7 +347,6 @@ const Header = React.memo(
                                   onMouseEnter={handleMouseHover}
                                   onMouseLeave={handleMouseLeave}
                                   className={styles.img_2}
-                                  // src={`${Host}/images/imageArticle/${firstPhoto}`}
                                   src={firstImagePathRight}
                                   alt="photo2"
                                   loading="lazy"
@@ -417,10 +392,10 @@ const Header = React.memo(
                           </Link>
                         );
                       } else {
-                        return null; // Не отображаем ничего, если статья не соответствует ArticRight
+                        return null;
                       }
                     })}
-                  {MapArticleRight.length === 0 && ( // Отображаем заглушку, если MapArticleRight пустой
+                  {MapArticleRight.length === 0 && ( 
                     <div className={styles.card_item_2}>
                       <div className={styles.card_img}>
                         <img className={styles.img_2} src={img123} alt="photo2" />
@@ -502,15 +477,9 @@ const Header = React.memo(
               }}>
               {combinedProjects?.map((project, index) => {
                 if (!project || !project.id) {
-                  return null; // Пропускать проекты, у которых нет данных
+                  return null;
                 }
-                // const isCustomSize = project.hasCustomSize;
-
-                // const { width, height } = resizeImage(
-                //   project.style?.split(",")[0],
-                //   project.style?.split(",")[1]
-                // );
-
+              
                 return (
                   <SwiperSlide
                     key={`${project.IdProject}-${index}`}
@@ -524,10 +493,6 @@ const Header = React.memo(
                           onMouseEnter={handleMouseHover}
                           onMouseLeave={handleMouseLeave}
                           className={styles.container__imageTitle}
-                          //  style={{
-                          //   height: `${project.style?.split(",")[1]}rem`,
-                          //   width: `${project.style?.split(",")[0]}rem`,
-                          // }}
                           loading="lazy"
                           src={`${Host}/images/imageAdd/${
                             project.imageProject ? project.imageProject : project.imageTitle

@@ -130,7 +130,7 @@ import ButtonLink from '../ButtonLink/ButtonLink';
 import starsDesktop from '../icons/intro-stars.png';
 import StarsImpulse from './StarsImpulse';
 
-const Host = process.env.REACT_APP_SERVER_HOST;
+const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
 const Intro = () => {
   const videoBoxRef = useRef(null);
@@ -235,7 +235,7 @@ const Intro = () => {
             loop
             style={{ display: 'block', opacity: 0, height: '0', width: '0' }}
           >
-            <source src={`${Host}/videos/main_company_full.mp4`} type="video/mp4" />
+            <source src={`${bucket_url}/images/video/main_company_full.mp4`} type="video/mp4" />
           </video>
         </div>
       </section>

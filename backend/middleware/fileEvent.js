@@ -1,13 +1,6 @@
 const multer = require('multer');
 
-const storage = multer.diskStorage({
-  destination(req, file, cb) {
-    cb(null, 'images/eventAdd/');
-  },
-  filename(req, file, cb) {
-    cb(null, `${file.originalname}`);
-  },
-});
+const storage = multer.memoryStorage();
 
 const types = [
   'image/png',
@@ -28,5 +21,6 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-
 module.exports = multer({ storage, fileFilter });
+
+

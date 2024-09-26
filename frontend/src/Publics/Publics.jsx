@@ -9,6 +9,7 @@ import { fetchToggleStateForButton2Async } from '../store/Slice/toggleSlice';
 import catPhoto from '../img/default-photo.jpeg';
 
 const Host = process.env.REACT_APP_SERVER_HOST;
+const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
 export default function Publics({ handleMouseEnter, handleMouseLeave, handleMouseHover }) {
   const dispatch = useDispatch();
@@ -22,9 +23,9 @@ export default function Publics({ handleMouseEnter, handleMouseLeave, handleMous
 
   const videoSource = useMemo(
     () => ({
-      small: `${Host}/videos/public_mob.mp4`,
-      medium: `${Host}/videos/public_ipad.mp4`,
-      large: `${Host}/videos/public_full.mp4`,
+      small: `${bucket_url}/images/video/public_mob.mp4`,
+      medium: `${bucket_url}/images/video/public_ipad.mp4`,
+      large: `${bucket_url}/images/video/public_full.mp4`,
     }),
     []
   );
