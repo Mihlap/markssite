@@ -33,45 +33,28 @@ import CounterCompanyMobile2 from '../UI/CounterCompanyMobile2';
 import CompanySlider from './CompanySlider/CompanySlider';
 import ModalVacancyFormSend from '../UI/VacancyFormContact/ModalVacancyFormSend';
 
-const Host = process.env.REACT_APP_SERVER_HOST;
+const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
+
 
 export default function Company({ handleMouseEnter, handleMouseLeave, handleMouseHover }) {
   const videoSource = useMemo(
     () => ({
-      large: `${Host}/videos/company_full.mp4`,
-      medium: `${Host}/videos/company_ipad.mp4`,
-      small: `${Host}/videos/company_mob.mp4`,
+      large: `${bucket_url}/images/video/company_full.mp4`,
+      medium: `${bucket_url}/images/video/company_ipad.mp4`,
+      small: `${bucket_url}/images/video/company_mob.mp4`,
     }),
     []
   );
 
   const videoSource2 = useMemo(
     () => ({
-      large: `${Host}/videos/main_company_full.mp4`,
-      medium: `${Host}/videos/main_company_ipad.mp4`,
-      small: `${Host}/videos/main_company_mobile.mp4`,
+      large: `${bucket_url}/images/video/main_company_full.mp4`,
+      medium: `${bucket_url}/images/video/main_company_ipad.mp4`,
+      small: `${bucket_url}/images/video/main_company_mobile.mp4`,
     }),
     []
   );
-
-  // const videoSource = useMemo(
-  //   () => ({
-  //     large: `https://s3.timeweb.cloud/41834503-b9272655-a301-4b1e-a0da-efcedea0878a/images/video/company_full.mp4`,
-  //     medium: `https://s3.timeweb.cloud/41834503-b9272655-a301-4b1e-a0da-efcedea0878a/images/video/company_ipad.mp4`,
-  //     small: `https://s3.timeweb.cloud/41834503-b9272655-a301-4b1e-a0da-efcedea0878a/images/video/company_mob.mp4`,
-  //   }),
-  //   []
-  // );
-
-  // const videoSource2 = useMemo(
-  //   () => ({
-  //     large: `https://s3.timeweb.cloud/41834503-b9272655-a301-4b1e-a0da-efcedea0878a/images/video/main_company_full.mp4`,
-  //     medium: `https://s3.timeweb.cloud/41834503-b9272655-a301-4b1e-a0da-efcedea0878a/images/video/main_company_ipad.mp4`,
-  //     small: `https://s3.timeweb.cloud/41834503-b9272655-a301-4b1e-a0da-efcedea0878a/images/video/main_company_mobile.mp4`,
-  //   }),
-  //   []
-  // );
-
+ 
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [countPercent, setCountPercent] = useState(0);
   const [countHuman, setCountHuman] = useState(0);
@@ -91,7 +74,7 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
   const [modalOpenSubscription, setModalOpenSubscription] = useState(false);
 
   const dispatch = useDispatch();
-  const { selectedCard, category, staff, loading, error, allImagesLoaded } = useSelector((state) => state.staff);
+  const { selectedCard, category, staff, error, allImagesLoaded } = useSelector((state) => state.staff);
 
   const blockSlider = useRef(null);
   const nameCompanyRef = useRef(null);
@@ -633,7 +616,7 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
                       <div className={styles.modal}>
                         <img
                           className={styles.modal_img_stuff}
-                          src={`${Host}/images/imageStuff/${selectedCard.img}`}
+                          src={`${bucket_url}/images/imageStuff/${selectedCard.img}`}
                           alt={selectedCard.img}
                         />
                       </div>
