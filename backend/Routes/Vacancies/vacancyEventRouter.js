@@ -1,39 +1,39 @@
-/* eslint-disable no-await-in-loop */
 const express = require('express');
 const { Op } = require('sequelize');
 const path = require('path');
 const fs = require('fs');
 const fileMiddleware = require('../../middleware/fileEvent');   
 const { VacancyMainEvent } = require('../../db/models');
+const { uploadFileToS3, deleteFileFromS3 } = require('../../s3Utils/s3Service');
 
 const router = express.Router();
 
-const eventImagesPath = path.join(__dirname, '../../images/eventAdd');
+function getFileNameFromUrl(url) {
+  const urlParts = url.split('/');
+  return urlParts[urlParts.length - 1]; 
+}
 
-router.put('/update-event/:id', fileMiddleware.fields([{ name: 'files', maxCount: 500 }]), 
+
+const deleteImageIfUnused = async (imageUrl, currentEventId) => {
+  try {
+     const otherEventsWithImage = await VacancyMainEvent.findOne({
+      where: { files: { [Op.contains]: [imageUrl] }, id: { [Op.ne]: currentEventId } },
+    });
+
+     if (!otherEventsWithImage) {
+      const fileName = getFileNameFromUrl(imageUrl); 
+      await deleteFileFromS3(fileName, 'images/imageEvent');
+    }
+  } catch (error) {
+    console.error(`Ошибка при удалении изображения ${imageUrl}:`, error);
+  }
+};
+
+
+router.put('/update-event/:id', fileMiddleware.fields([{ name: 'files', maxCount: 500 }]),
   async (req, res) => {
-    const deleteImageIfUnused = async (imageName, currentEventId) => {
-      const imagePath = path.join(eventImagesPath, imageName);
-      try {
-        const otherEventsWithImage = await VacancyMainEvent.findOne({
-          where: { files: { [Op.contains]: [imageName] }, id: { [Op.ne]: currentEventId } },
-        });  
-     
-        if (!otherEventsWithImage) {
-          await fs.promises.unlink(imagePath);
-        }
-      } catch (error) {
-        if (error.code === 'ENOENT') {
-          console.warn(`Файл уже был удален: ${imageName}`);
-        } else if (error.code === 'EPERM') {
-          console.error(`Ошибка при удалении изображения ${imageName}: Недостаточно прав доступа.`);
-        } else {
-          console.error(`Ошибка при удалении изображения ${imageName}:`, error);
-        }
-      }
-    };
-
     const { id } = req.params;
+
     try {
       const { title, videoUrls, removedFiles } = req.body;
       const eventData = JSON.parse(videoUrls);
@@ -44,23 +44,26 @@ router.put('/update-event/:id', fileMiddleware.fields([{ name: 'files', maxCount
         return res.status(404).json({ message: "Мероприятие не найдено" });
       }
 
-      const oldFiles = event.files || []; 
+      const oldFiles = event.files || [];
 
-       if (removedFiles) {
+     if (removedFiles) {
         const removedFilesArray = JSON.parse(removedFiles);
-        removedFilesArray.forEach(async (fileName) => {
-          await deleteImageIfUnused(fileName, id);
-        });
-
+        // eslint-disable-next-line no-restricted-syntax
+        for (const fileUrl of removedFilesArray) {
+          // eslint-disable-next-line no-await-in-loop
+          await deleteImageIfUnused(fileUrl, id);
+        }
         event.files = event.files.filter((file) => !removedFilesArray.includes(file));
       }
 
-      if (req.files && req.files['files']) {     
-        const newFiles = req.files['files'].map((file) => file.filename);
+      // Загрузка новых файлов в S3
+      if (req.files && req.files['files']) {
+        const newFilesPromises = req.files['files'].map((file) => uploadFileToS3(file, 'images/imageEvent'));
+        const newFiles = await Promise.all(newFilesPromises);
         event.files = [...newFiles, ...oldFiles];
       }
 
-      await event.update({
+       await event.update({
         title,
         files: event.files,
         eventData,
@@ -75,8 +78,6 @@ router.put('/update-event/:id', fileMiddleware.fields([{ name: 'files', maxCount
 );
 
 
-
-
 router.put('/update-event-order', async (req, res) => {
   const { events } = req.body;
 
@@ -89,6 +90,7 @@ router.put('/update-event-order', async (req, res) => {
     for (let i = 0; i < events.length; i++) {
       const { id, order } = events[i];     
 
+      // eslint-disable-next-line no-await-in-loop
       await VacancyMainEvent.update({ order }, { where: { id } });
     }
 
@@ -121,12 +123,19 @@ router.post('/save-event-details',
     return res.status(400).json({ error: 'Некорректные данные: отсутствуют необходимые поля' });
   }
   
-  const eventData = details.eventData; 
-  const files = req.files && req.files['files'] ? req.files['files'].map((file) => file.filename) : [];
-  // const videoFiles = req.files && req.files['videos'] ? req.files['videos'].map((file) => file.filename) : [];
-  
+    const {eventData} = details; 
+    const files = [];
 
-  const title = req.body.title;
+     // Загрузка файлов в S3
+     if (req.files && req.files.files) {
+      // eslint-disable-next-line no-restricted-syntax
+      for (const file of req.files.files) {
+        // eslint-disable-next-line no-await-in-loop
+        const fileUrl = await uploadFileToS3(file, 'images/imageEvent');
+        files.push(fileUrl);
+      }
+    }
+  const {title} = req.body;
 
   try {
       await VacancyMainEvent.increment('order', { by: 1, where: {} });
@@ -145,9 +154,6 @@ router.post('/save-event-details',
     res.status(500).json({ error: 'Ошибка при обработке вашего запроса', details: error.errors });
   }
 });
-
-
-
 
 router.get('/get-events', async (req, res) => {
   try {
@@ -181,18 +187,6 @@ router.get('/get-event/:id', async (req, res) => {
   }
 });
 
-router.get('/getimage/:imageName', (req, res) => {
-  const {
-    imageName
-  } = req.params;
-  const imagePath = path.join(eventImagesPath, imageName);
-
-  res.set('Cache-Control', 'public, max-age=432000'); // 432000 секунд = 5 дней
-
-  res.sendFile(imagePath);
-});
-
-
 router.put('/toggle-event/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -215,13 +209,15 @@ router.put('/toggle-event/:id', async (req, res) => {
 
 
 
+// удаление из s3 хранилище
+
 router.delete('/delete-event/:id', async (req, res) => {
   const { id } = req.params;
 
-  if (!id || isNaN(parseInt(id))) { 
+  // eslint-disable-next-line radix, no-restricted-globals
+  if (!id || isNaN(parseInt(id))) {
     return res.status(400).json({ error: "Некорректный идентификатор мероприятия." });
   }
-
   try {
     const event = await VacancyMainEvent.findByPk(id);
 
@@ -231,32 +227,26 @@ router.delete('/delete-event/:id', async (req, res) => {
 
     const result = await VacancyMainEvent.destroy({ where: { id } });
 
-    if (result) {    
+    if (result) {
       if (event.files && Array.isArray(event.files)) {
-        for (const file of event.files) {
-          const otherEventsWithImage = await VacancyMainEvent.findOne({
-            where: { files: { [Op.contains]: [file] }, id: { [Op.ne]: id } }
-          });
-
-            if (!otherEventsWithImage) {
-              const imagePath = path.join(eventImagesPath, file);
-              fs.unlink(imagePath, (err) => {
-                if (err) {
-                  console.error(`Ошибка при удалении изображения ${file}:`, err);
-                }
-              });
-            }
-          }
+        // eslint-disable-next-line no-restricted-syntax
+        for (const fileUrl of event.files) {
+          const fileName = getFileNameFromUrl(fileUrl); 
+          // eslint-disable-next-line no-await-in-loop
+          await deleteFileFromS3(fileName, 'images/imageEvent'); 
         }
+      }
 
       res.json({ message: "Мероприятие удалено", id });
     } else {
       res.status(500).json({ error: "Ошибка при удалении мероприятия." });
     }
   } catch (error) {
+    console.error('Ошибка при удалении мероприятия:', error);
     res.status(500).json({ error: "Ошибка при удалении мероприятия." });
   }
 });
+
 
 module.exports = router;
 

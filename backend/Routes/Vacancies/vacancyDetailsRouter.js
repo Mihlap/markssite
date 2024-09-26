@@ -3,39 +3,35 @@ const express = require('express');
 const { Op } = require('sequelize');
 const path = require('path');
 const fs = require('fs');
-const fileMiddleware = require('../../middleware/fileSlideCard');   
+const fileMiddleware = require('../../middleware/fileEvent');   
 const { VacancyMainSlideCard } = require('../../db/models');
+const { uploadFileToS3, deleteFileFromS3 } = require('../../s3Utils/s3Service');
 
 const router = express.Router();
 
-const slideCardImagesPath = path.join(__dirname, '../../images/slideCard');
+function getFileNameFromUrl(url) {
+  const urlParts = url.split('/');
+  return urlParts[urlParts.length - 1]; 
+}
+
+const deleteImageIfUnused = async (imageName, currentSlideId) => {
+  try {
+     const otherSlidesWithImage = await VacancyMainSlideCard.findOne({
+      where: { photoAva: imageName, id: { [Op.ne]: currentSlideId } },
+    });
+
+     if (!otherSlidesWithImage) {
+      const fileName = getFileNameFromUrl(imageName); 
+      await deleteFileFromS3(fileName, 'images/slideCard');
+    }
+  } catch (error) {
+    console.error(`Ошибка при удалении изображения ${imageName}:`, error);
+  }
+};
+
 
 router.put('/update-slide/:id', fileMiddleware.fields([{ name: 'photoAva', maxCount: 1 }]), 
   async (req, res) => {
-    const deleteImageIfUnused = async (imageName, currentSlideId) => {
-      const imagePath = path.join(slideCardImagesPath, imageName);
-      try {
-          const otherSlidesWithImage = await VacancyMainSlideCard.findOne({
-          where: { photoAva: imageName, id: { [Op.ne]: currentSlideId } },
-        });
-     
-        if (!otherSlidesWithImage) {
-          await fs.promises.unlink(imagePath);
-          // console.log(`Изображение успешно удалено: ${imageName}`);
-        } else {
-          // console.log(`Изображение ${imageName} используется в других слайдах и не будет удалено.`);
-        }
-      } catch (error) {
-        if (error.code === 'ENOENT') {
-          console.warn(`Файл уже был удален: ${imageName}`);
-        } else if (error.code === 'EPERM') {
-          console.error(`Ошибка при удалении изображения ${imageName}: Недостаточно прав доступа.`);
-        } else {
-          console.error(`Ошибка при удалении изображения ${imageName}:`, error);
-        }
-      }
-    };
-
     try {
       const { id } = req.params;
       const details = JSON.parse(req.body.details);
@@ -52,8 +48,9 @@ router.put('/update-slide/:id', fileMiddleware.fields([{ name: 'photoAva', maxCo
         slide.photoAva = '';
       }
 
-        if (req.files && req.files['photoAva']) {     
-        slide.photoAva = req.files['photoAva'][0].filename; 
+      if (req.files && req.files['photoAva']) {     
+        const fileUrl = await uploadFileToS3(req.files['photoAva'][0], 'images/slideCard');
+        slide.photoAva = fileUrl; 
       }
 
       await slide.update({
@@ -121,7 +118,17 @@ router.post('/save-vacancy-details',
     return res.status(400).json({ error: 'Некорректные данные: отсутствуют необходимые поля' });
   }
 
-  const photoAva = req.files && req.files['photoAva'] ? req.files['photoAva'][0].filename : '';
+  let photoAva = '';
+  // Если загружено фото
+  if (req.files && req.files['photoAva']) {
+    try {
+      // Загружаем фото на S3 и получаем URL
+      photoAva = await uploadFileToS3(req.files['photoAva'][0], 'images/slideCard');
+    } catch (error) {
+      console.error('Ошибка при загрузке фото на S3:', error);
+      return res.status(500).json({ error: 'Ошибка при загрузке фото' });
+    }
+  }
 
   const cardData = {
     card1: details.card1,
@@ -176,17 +183,6 @@ router.get('/get-slide/:id', async (req, res) => {
   }
 });
 
-router.get('/getimage/:imageName', (req, res) => {
-  const {
-    imageName
-  } = req.params;
-  const imagePath = path.join(slideCardImagesPath, imageName);
-
-  res.set('Cache-Control', 'public, max-age=432000'); // 432000 секунд = 5 дней
-
-  res.sendFile(imagePath);
-});
-
 
 router.put('/toggle-slide/:id', async (req, res) => {
   try {
@@ -211,7 +207,7 @@ router.put('/toggle-slide/:id', async (req, res) => {
 
 
 router.delete('/delete-slide/:id', async (req, res) => {
-  const id = req.params.id; 
+  const {id} = req.params; 
 
   if (!id || isNaN(parseInt(id))) { 
     return res.status(400).json({ error: "Некорректный идентификатор слайда." });
@@ -232,13 +228,10 @@ router.delete('/delete-slide/:id', async (req, res) => {
       });
 
       if (!otherSlidesWithImage && slide.photoAva) {
-        const imagePath = path.join(slideCardImagesPath, slide.photoAva);
-        fs.unlink(imagePath, (err) => {
-          if (err) {
-            console.error(`Ошибка при удалении изображения ${slide.photoAva}:`, err);
-          }
-        });
+        const fileName = getFileNameFromUrl(slide.photoAva);
+        await deleteFileFromS3(fileName, 'images/slideCard'); 
       }
+
 
       res.json({ message: "Слайд удален", id });
     } else {
@@ -248,9 +241,5 @@ router.delete('/delete-slide/:id', async (req, res) => {
     res.status(500).json({ error: "Ошибка при удалении слайда." });
   }
 });
-
-module.exports = router;
-
-
 
 module.exports = router;

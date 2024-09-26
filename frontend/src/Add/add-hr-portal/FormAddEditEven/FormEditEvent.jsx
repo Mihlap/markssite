@@ -4,8 +4,6 @@ import compressImageFile from 'browser-image-compression';
 import styles from './FormAddEvent.module.scss';
 import { editEvent, fetchEvents, postEventData } from '../../../store/Slice/vacancyEventSlice';
 
-const Host = process.env.REACT_APP_SERVER_HOST;
-
 export default function FormEditSlide({ setIsModalOpenEvent, editEventData }) {
   const dispatch = useDispatch();
 
@@ -235,7 +233,7 @@ export default function FormEditSlide({ setIsModalOpenEvent, editEventData }) {
                   <div key={index} className={styles.preview_photos_container__block}>
                     <img
                       className={styles.preview_photos_container__img}
-                      src={`${Host}/images/eventAdd/${file}`}
+                      src={file}
                       alt={`Preview ${index}`}
                     />
                     <div

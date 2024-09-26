@@ -241,7 +241,7 @@ export default function FormEditSlide({ setIsModalOpenMain, editSlideData }) {
                 <div className={styles.preview_photos_container__block}>
                   <img
                     className={styles.preview_photos_container__img}
-                    src={`${Host}/images/slideCard/${formData.photoAva}`}
+                    src={formData.photoAva}
                     alt="Preview"
                   />
                   <div
