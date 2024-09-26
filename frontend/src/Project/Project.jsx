@@ -347,8 +347,7 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
               slidesPerView="auto"
               spaceBetween={8}
               className={styles.my_swiper2_button_group_project}
-              touch="true"
-            >
+              touch="true">
               <div className={styles.button_group_project}>
                 {buttonChoose &&
                   buttonChoose?.map((el, index) => (
@@ -361,8 +360,7 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
                           ? styles.active
                           : ''
                       }`}
-                      style={{ width: 'fit-content' }}
-                    >
+                      style={{ width: 'fit-content' }}>
                       <p type="button" className={styles.menu_button_items}>
                         {el}
                       </p>
@@ -388,8 +386,7 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
                           ? styles.active
                           : ''
                       }`}
-                      onClick={() => handleButtonClick(el)}
-                    >
+                      onClick={() => handleButtonClick(el)}>
                       <p className={styles.menu_button_items}>{el}</p>
                     </button>
                   </div>
@@ -400,8 +397,7 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
               className={styles.menu__button__choose__city}
-              onClick={handleSelectCityClick}
-            >
+              onClick={handleSelectCityClick}>
               <div className={styles.icon__svg_button__choose__city}>
                 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <g id="icon">
@@ -443,14 +439,12 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
             content: {
               zIndex: 9999,
             },
-          }}
-        >
+          }}>
           <div
             onClick={(e) => {
               handleModalClose(e, selectOnCompetencies);
             }}
-            className={`${styles.modal_project_close} ${styles.fixed_modal_project}`}
-          >
+            className={`${styles.modal_project_close} ${styles.fixed_modal_project}`}>
             <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
                 fillRule="evenodd"
@@ -533,8 +527,7 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
                     backgroundColor: !isValid ? '#959DA6' : '',
                     pointerEvents: !isValid ? 'none' : 'auto',
                     opacity: !isValid ? 0.6 : 1,
-                  }}
-                >
+                  }}>
                   <p className={styles.menu_button_items}>{el}</p>
                 </button>
               </div>
@@ -582,8 +575,7 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
                                   width="2"
                                   height="2"
                                   viewBox="0 0 2 2"
-                                  fill="none"
-                                >
+                                  fill="none">
                                   <circle cx="1" cy="1" r="1" fill="#959DA6" />
                                 </svg>{' '}
                               </div>
@@ -606,8 +598,7 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
                                         border: '1px solid',
                                         padding: '3px 6px',
                                         borderRadius: '34px',
-                                      }}
-                                    >
+                                      }}>
                                       {competency.label}
                                     </div>
                                   ));
@@ -625,8 +616,7 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
                                             border: '1px solid',
                                             padding: '3px 6px',
                                             borderRadius: '34px',
-                                          }}
-                                        >
+                                          }}>
                                           {label}
                                         </div>
                                       );
@@ -643,8 +633,7 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
                                               border: '1px solid',
                                               padding: '3px 6px',
                                               borderRadius: '34px',
-                                            }}
-                                          >
+                                            }}>
                                             {label}
                                           </div>
                                         );
