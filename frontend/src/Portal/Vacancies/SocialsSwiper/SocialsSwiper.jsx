@@ -144,7 +144,8 @@ const SocialsSwiper = () => {
               slidesPerView: 1.1,
               spaceBetween: 0,
             },
-          }}>
+          }}
+        >
           {socialsArray.map((item, index) => {
             return (
               <SwiperSlide key={index}>

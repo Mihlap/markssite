@@ -66,7 +66,8 @@ export default function PortalMenu({ user, handleMouseEnter, handleMouseLeave })
               onMouseLeave={handleMouseLeave}
               className={` ${styles.Navbar__title} ${activeClass === '/portal/vacanciesMain'}`}
               to="/portal/vacanciesMain"
-              onClick={() => handleItemClick('/portal/vacanciesMain')}>
+              onClick={() => handleItemClick('/portal/vacanciesMain')}
+            >
               <h1>MARKS GROUP</h1>
 
               <p className={styles.Navbar__title__hr}>HR</p>
@@ -80,7 +81,8 @@ export default function PortalMenu({ user, handleMouseEnter, handleMouseLeave })
                 activeClass === '/portal/vacanciesMain' ? styles.Navbar__item_open : ''
               }`}
               to="/portal/vacanciesMain"
-              onClick={() => handleItemClick('/portal/vacanciesMain')}>
+              onClick={() => handleItemClick('/portal/vacanciesMain')}
+            >
               <div>Главная</div>
             </Link>
 
@@ -91,7 +93,8 @@ export default function PortalMenu({ user, handleMouseEnter, handleMouseLeave })
                 activeClass === '/portal/vacancies' ? styles.Navbar__item_open : ''
               }`}
               to="/portal/vacancies"
-              onClick={() => handleItemClick('/portal/vacancies')}>
+              onClick={() => handleItemClick('/portal/vacancies')}
+            >
               <div>Работа у нас</div>
             </Link>
 
@@ -102,7 +105,8 @@ export default function PortalMenu({ user, handleMouseEnter, handleMouseLeave })
                 activeClass === '/portal/internships' ? styles.Navbar__item_open : ''
               }`}
               to="/portal/internships"
-              onClick={() => handleItemClick('/portal/internships')}>
+              onClick={() => handleItemClick('/portal/internships')}
+            >
               <div>Стажировки</div>
             </Link>
           </ul>

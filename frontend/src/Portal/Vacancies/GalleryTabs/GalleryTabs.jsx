@@ -96,7 +96,8 @@ const GalleryTabs = React.memo(({ handleMouseEnter, handleMouseLeave }) => {
           allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
           playsInline
           allowFullScreen
-          loading="lazy"></iframe>
+          loading="lazy"
+        ></iframe>
       );
     } else if (videoUrl.includes('rutube.ru')) {
       const rutubeEmbedUrl = videoUrl.replace('/video/', '/play/embed/') + '?autoplay=1&muted=1&controls=0';
@@ -119,7 +120,8 @@ const GalleryTabs = React.memo(({ handleMouseEnter, handleMouseLeave }) => {
               iframe.contentWindow.postMessage(JSON.stringify({ type: 'player:play', data: {} }), '*');
               iframe.contentWindow.postMessage(JSON.stringify({ type: 'player:hideControls', data: {} }), '*');
             }, 100);
-          }}></iframe>
+          }}
+        ></iframe>
       );
     } else if (videoUrl.endsWith('.mp4')) {
       return (
@@ -133,7 +135,8 @@ const GalleryTabs = React.memo(({ handleMouseEnter, handleMouseLeave }) => {
           controls={false}
           loading="lazy"
           width="100%"
-          height="100%">
+          height="100%"
+        >
           <source src={`${bucket_url}/videos/${videoUrl}`} type="video/mp4" />
         </video>
       );
@@ -186,38 +189,43 @@ const GalleryTabs = React.memo(({ handleMouseEnter, handleMouseLeave }) => {
   }, [activeIndex, mediaPaths?.videos]);
 
   const mediaItems = useMemo(() => {
-    const images = mediaPaths?.images?.map((path, index) => ({
-      type: 'image',
-      src: path,
-      index
-    })) || [];
-  
-    const videos = mediaPaths?.videos?.map((video, index) => ({
-      type: 'video',
-      src: video,
-      index
-    })) || [];
-  
+    const images =
+      mediaPaths?.images?.map((path, index) => ({
+        type: 'image',
+        src: path,
+        index,
+      })) || [];
+
+    const videos =
+      mediaPaths?.videos?.map((video, index) => ({
+        type: 'video',
+        src: video,
+        index,
+      })) || [];
+
     return [...videos, ...images];
   }, [mediaPaths]);
-  
-  const renderMediaItem = useCallback((item) => {   
-        if (item.type === 'video') {
-          return (
-            <div key={item.index} className={styles.slide}>
-              {renderVideo(item.src, item.index)}
-            </div>
-      );
-    } else  if (item.type === 'image') {
-      return (
-        <div key={item.index} className={styles.slide}>
-          <img src={item.src} alt={`Slide ${item.index + 1}`} />
-        </div>
-      );
-    }
-    return null;
-  }, [renderVideo]);
-  
+
+  const renderMediaItem = useCallback(
+    (item) => {
+      if (item.type === 'video') {
+        return (
+          <div key={item.index} className={styles.slide}>
+            {renderVideo(item.src, item.index)}
+          </div>
+        );
+      } else if (item.type === 'image') {
+        return (
+          <div key={item.index} className={styles.slide}>
+            <img src={item.src} alt={`Slide ${item.index + 1}`} />
+          </div>
+        );
+      }
+      return null;
+    },
+    [renderVideo]
+  );
+
   return (
     <section className={styles.GalleryTabs}>
       <h2 className={styles.GalleryTabs__title}>
@@ -234,7 +242,8 @@ const GalleryTabs = React.memo(({ handleMouseEnter, handleMouseLeave }) => {
                   className={`${styles.GalleryTabs__button} ${activeIndex === index ? styles.active : ''}`}
                   onClick={() => handleButtonClick(index)}
                   onMouseEnter={handleMouseEnter}
-                  onMouseLeave={handleMouseLeave}>
+                  onMouseLeave={handleMouseLeave}
+                >
                   {event.title}
                 </SwiperSlide>
               ))}
@@ -245,19 +254,22 @@ const GalleryTabs = React.memo(({ handleMouseEnter, handleMouseLeave }) => {
               className={`${styles.GalleryTabs__half} ${styles.GalleryTabs__half_left} ${
                 mediaPaths?.videos?.length ? styles.disabled : ''
               }`}
-              onClick={() => handleSlide('left')}></div>
+              onClick={() => handleSlide('left')}
+            ></div>
             <div
               className={`${styles.GalleryTabs__half} ${styles.GalleryTabs__half_right} ${
                 mediaPaths?.videos?.length ? styles.disabled : ''
               }`}
-              onClick={() => handleSlide('right')}></div>
+              onClick={() => handleSlide('right')}
+            ></div>
             <Slider
               ref={sliderRef}
               arrows={false}
               slidesToScroll={1}
               infinite={true}
               autoplay={false}
-              lazyLoad="ondemand">
+              lazyLoad="ondemand"
+            >
               {mediaItems.map((item) => renderMediaItem(item))}
             </Slider>
           </div>

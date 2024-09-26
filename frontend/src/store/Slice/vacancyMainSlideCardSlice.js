@@ -142,7 +142,7 @@ const formAddSlideSlice = createSlice({
       .addCase(fetchSlides.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(fetchSlides.fulfilled, (state, action) => {      
+      .addCase(fetchSlides.fulfilled, (state, action) => {
         state.slides = action.payload;
         state.isLoading = false;
       })
@@ -153,8 +153,8 @@ const formAddSlideSlice = createSlice({
       .addCase(postVacancyData.fulfilled, (state, action) => {
         state.slides = [...state.slides, action.payload];
       })
-      .addCase(editSlide.fulfilled, (state, action) => {     
-        const index = state.slides.findIndex(slide => slide.id === action.payload.id);
+      .addCase(editSlide.fulfilled, (state, action) => {
+        const index = state.slides.findIndex((slide) => slide.id === action.payload.id);
         if (index !== -1) {
           state.slides[index] = { ...state.slides[index], ...action.payload };
         } else {
