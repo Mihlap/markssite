@@ -1,4 +1,3 @@
-// s3Service.js
 const { Upload } = require('@aws-sdk/lib-storage');
 const { DeleteObjectCommand } = require('@aws-sdk/client-s3');
 const { s3Client, BUCKET_NAME } = require('./s3Client');
@@ -21,6 +20,8 @@ async function uploadFileToS3(file, folder = 'uploads') {
 
     const data = await upload.done();
     const fileUrl = `https://${BUCKET_NAME}.s3.timeweb.cloud/${folder}/${fileName}`;
+
+    console.log(data, 'data здесь');    
 
     return fileUrl; 
   } catch (err) {
