@@ -7,6 +7,7 @@ const types = [
   'image/jpeg',
   'image/jpg',
   'image/HEIC',
+  'image/avif',
   'video/mp4',
   'video/mpeg',
   'video/quicktime',
