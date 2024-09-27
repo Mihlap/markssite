@@ -19,7 +19,7 @@ export default function AddSlideMain({
   modalBlockHeight,
 }) {
   const dispatch = useDispatch();
-  const slides = useSelector(state => state.formAddSlide.slides || []);
+  const slides = useSelector((state) => state.formAddSlide.slides || []);
   const [deleteModalStateSlide, setDeleteModalStateSlide] = useState({});
   const handleOpenModal = useCallback(() => {
     setIsModalOpenMain(true);
@@ -40,7 +40,6 @@ export default function AddSlideMain({
       return newState;
     });
   }, []);
-
 
   const handleFormDeleteSlide = useCallback(
     (id) => {
@@ -75,7 +74,7 @@ export default function AddSlideMain({
         console.error('Ошибка при загрузке данных слайда:', error);
       }
     },
-    [dispatch, slides, setEditSlideData, setIsModalOpenMain] 
+    [dispatch, slides, setEditSlideData, setIsModalOpenMain]
   );
 
   return (
@@ -123,7 +122,7 @@ export default function AddSlideMain({
         handleDeleteModalOpenSlide={handleDeleteModalOpenSlide}
         handleEditClick={handleEditClick}
         handleFormDeleteSlide={handleFormDeleteSlide}
-        handleLookClick={handleLookClick}    
+        handleLookClick={handleLookClick}
       />
     </div>
   );
