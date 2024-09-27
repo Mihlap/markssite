@@ -21,7 +21,7 @@ async function uploadFileToS3(file, folder = 'uploads') {
     const data = await upload.done();
     const fileUrl = `https://${BUCKET_NAME}.s3.timeweb.cloud/${folder}/${fileName}`;
 
-    console.log(data, 'data здесь');    
+    // console.log(data, 'data здесь');    
 
     return fileUrl; 
   } catch (err) {
