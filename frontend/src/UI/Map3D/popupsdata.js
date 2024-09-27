@@ -179,4 +179,3 @@ const popupsData = [
 ];
 
 export default popupsData;
-
