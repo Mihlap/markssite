@@ -11,18 +11,16 @@ export default function AddEventMain({
   setIsModalOpenEvent,
   editEventData,
   setEditEventData,
-  modalBlockHeight
+  modalBlockHeight,
 }) {
   const dispatch = useDispatch();
-  const events = useSelector(state => state.formAddEvent.events || []);
+  const events = useSelector((state) => state.formAddEvent.events || []);
   const [deleteModalStateEvent, setDeleteModalStateEvent] = useState({});
 
-  
   const handleOpenModalEvent = useCallback(() => {
     setIsModalOpenEvent(true);
     setEditEventData(null);
   }, []);
-
 
   const handleDeleteModalOpenEvent = useCallback((id) => {
     setDeleteModalStateEvent((prevState) => ({
@@ -39,7 +37,6 @@ export default function AddEventMain({
     });
   }, []);
 
-
   const handleFormDeleteEvent = useCallback(
     (id) => {
       dispatch(deleteEvent(id));
@@ -48,14 +45,17 @@ export default function AddEventMain({
     [dispatch, handleDeleteModalCloseEvent]
   );
 
-  const handleLookClick = useCallback((id) => {
-    const event = events.find(event => event.id === id);
-    if (event) {
-      dispatch(toggleEventVisibility({ id, hidden: !event.hidden }));
-    } else {
-      console.error("Слайд с таким ID не найден:", id);
-    }
-  }, [dispatch, events]);
+  const handleLookClick = useCallback(
+    (id) => {
+      const event = events.find((event) => event.id === id);
+      if (event) {
+        dispatch(toggleEventVisibility({ id, hidden: !event.hidden }));
+      } else {
+        console.error('Слайд с таким ID не найден:', id);
+      }
+    },
+    [dispatch, events]
+  );
 
   const handleEditClick = useCallback(
     async (id) => {
@@ -73,10 +73,7 @@ export default function AddEventMain({
   return (
     <div className={styles.card_components_admin__blockAddSlide}>
       <span className={styles.card_components_admin__title}>Ведущая компания в сфере проектирования</span>
-      <div
-        className={styles.card_components_admin__button_block}
-        onClick={handleOpenModalEvent}
-      >
+      <div className={styles.card_components_admin__button_block} onClick={handleOpenModalEvent}>
         <button className={styles.card_components_admin__button}>
           <div>
             <svg

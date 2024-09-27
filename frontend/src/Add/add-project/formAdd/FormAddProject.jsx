@@ -1038,7 +1038,6 @@ export default function FormAddProject({ setIsModalOpen }) {
                 </div>
               ))}
             </div>
-          
           </div>
           {/* блок где загружаются 4 картинки, они отображаются в шапке слайдера  */}
           <div className={`${styles.image_four} ${styles.flex_block_gap}`}>

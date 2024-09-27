@@ -239,11 +239,7 @@ export default function FormEditSlide({ setIsModalOpenMain, editSlideData }) {
             <div>
               {formData.photoAva && previewPhotoAva.length === 0 && (
                 <div className={styles.preview_photos_container__block}>
-                  <img
-                    className={styles.preview_photos_container__img}
-                    src={formData.photoAva}
-                    alt="Preview"
-                  />
+                  <img className={styles.preview_photos_container__img} src={formData.photoAva} alt="Preview" />
                   <div
                     className={styles.preview_photos_container__remove_icon}
                     onClick={() => handleRemovePreviewPhotoAva()}

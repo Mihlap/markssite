@@ -89,7 +89,8 @@ const SliderHeader = ({ isAwards }) => {
             {images.map((image, index) => (
               <div
                 key={index}
-                className={`${styles.SliderHeader__item} ${isAwards ? '' : styles.SliderHeader__item_companies}`}>
+                className={`${styles.SliderHeader__item} ${isAwards ? '' : styles.SliderHeader__item_companies}`}
+              >
                 <img src={image.src} alt={image.alt} />
               </div>
             ))}
@@ -97,14 +98,16 @@ const SliderHeader = ({ isAwards }) => {
             {images.map((image, index) => (
               <div
                 key={`duplicate-${index}`}
-                className={`${styles.SliderHeader__item} ${isAwards ? '' : styles.SliderHeader__item_companies}`}>
+                className={`${styles.SliderHeader__item} ${isAwards ? '' : styles.SliderHeader__item_companies}`}
+              >
                 <img src={image.src} alt={image.alt} />
               </div>
             ))}
             {images.map((image, index) => (
               <div
                 key={`duplicate2-${index}`}
-                className={`${styles.SliderHeader__item} ${isAwards ? '' : styles.SliderHeader__item_companies}`}>
+                className={`${styles.SliderHeader__item} ${isAwards ? '' : styles.SliderHeader__item_companies}`}
+              >
                 <img src={image.src} alt={image.alt} />
               </div>
             ))}
