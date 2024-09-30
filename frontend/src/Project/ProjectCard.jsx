@@ -227,8 +227,7 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
                                 border: '1px solid',
                                 padding: '3px 6px',
                                 borderRadius: '34px',
-                              }}
-                            >
+                              }}>
                               {competency.label}
                             </div>
                           ));
@@ -247,8 +246,7 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
                                     border: '1px solid',
                                     padding: '3px 6px',
                                     borderRadius: '34px',
-                                  }}
-                                >
+                                  }}>
                                   {label}
                                 </div>
                               );
@@ -267,8 +265,7 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
                                       border: '1px solid',
                                       padding: '3px 6px',
                                       borderRadius: '34px',
-                                    }}
-                                  >
+                                    }}>
                                     {label}
                                   </div>
                                 );
@@ -529,8 +526,7 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
                   onMouseEnter={handleMouseEnter}
                   onMouseLeave={handleMouseLeave}
                   className={styles.button_project_link_projectCard1}
-                  to={`/projects/${previousProject.id}`}
-                >
+                  to={`/projects/${previousProject.id}`}>
                   <div className={styles.previous_svg_projectCard}>
                     <img src={previous} alt={previous} />
                     <span className={styles.previous__span_projectCard}>{`${previousProject.title}`}</span>
@@ -542,8 +538,7 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
                   onMouseEnter={handleMouseEnter}
                   onMouseLeave={handleMouseLeave}
                   className={styles.button_project_link_projectCard2}
-                  to={`/projects/${nextProject.id}`}
-                >
+                  to={`/projects/${nextProject.id}`}>
                   <div className={styles.next_svg_projectCard}>
                     <span className={styles.next__span_projectCard}>{`${nextProject.title}`}</span>
                     <img src={next} alt={next} />
@@ -555,8 +550,7 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
               <button
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
-                onClick={() => shareToVK(project, Host)}
-              >
+                onClick={() => shareToVK(project, Host)}>
                 <span className={styles.social_links_item} style={{ marginRight: '21px', color: '#FF7F6A' }}>
                   VK
                 </span>
@@ -564,8 +558,7 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
               <button
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
-                onClick={() => shareToWhatsApp(project, Host)}
-              >
+                onClick={() => shareToWhatsApp(project, Host)}>
                 <span className={styles.social_links_item} style={{ marginRight: '25px', color: '#FF7F6A' }}>
                   WA
                 </span>
@@ -581,8 +574,7 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
               <button
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
-                onClick={() => shareToTelegram(project, Host)}
-              >
+                onClick={() => shareToTelegram(project, Host)}>
                 <span className={styles.social_links_item} style={{ color: '#FF7F6A' }}>
                   TG
                 </span>
@@ -632,8 +624,7 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
               700: {
                 slidesPerView: 2.1,
               },
-            }}
-          >
+            }}>
             {randomProjects?.map((project, index) => {
               const photoName = project && project.imageProject;
               const defaultPhoto = catPhoto;
@@ -652,8 +643,7 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
                   onScroll={handleScroll}
                   id="slider_container_item_card"
                   className={styles.slider_container_item_card_projectCard}
-                  style={index % 2 === 1 ? { paddingTop: '10rem' } : {}}
-                >
+                  style={index % 2 === 1 ? { paddingTop: '10rem' } : {}}>
                   <Link to={`/projects/${project.id}`} key={project.id}>
                     <div className={styles.wrapper_container_item_card_projectCard}>
                       <img
@@ -693,8 +683,7 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
                                     border: '1px solid',
                                     padding: '3px 6px',
                                     borderRadius: '34px',
-                                  }}
-                                >
+                                  }}>
                                   {competency.label}
                                 </div>
                               ));
@@ -713,8 +702,7 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
                                         border: '1px solid',
                                         padding: '3px 6px',
                                         borderRadius: '34px',
-                                      }}
-                                    >
+                                      }}>
                                       {label}
                                     </div>
                                   );
@@ -733,8 +721,7 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
                                           border: '1px solid',
                                           padding: '3px 6px',
                                           borderRadius: '34px',
-                                        }}
-                                      >
+                                        }}>
                                         {label}
                                       </div>
                                     );
