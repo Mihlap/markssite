@@ -3,7 +3,6 @@ import styles from './ConstructorPage.module.scss';
 
 import svg1 from './svg/Group4650.svg';
 import svg2 from './svg/Group4648.svg';
-import svg3 from './svg/Group4651.svg';
 import svg4 from './svg/Group4652.svg';
 import svg5 from './svg/Group4649.svg';
 import svg6 from './svg/Group4641.svg';
