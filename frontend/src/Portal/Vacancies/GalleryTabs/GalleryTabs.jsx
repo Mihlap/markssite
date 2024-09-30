@@ -145,6 +145,8 @@ const GalleryTabs = React.memo(({ handleMouseEnter, handleMouseLeave }) => {
   }, []);
 
   useEffect(() => {
+    const currentVideoRefs = [...videoRefs.current]; 
+    
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
@@ -164,13 +166,13 @@ const GalleryTabs = React.memo(({ handleMouseEnter, handleMouseLeave }) => {
     );
 
     setTimeout(() => {
-      videoRefs.current.forEach((video) => {
+      currentVideoRefs.forEach((video) => {
         if (video) observer.observe(video);
       });
     }, 100);
 
     return () => {
-      videoRefs.current.forEach((video) => {
+      currentVideoRefs.forEach((video) => {
         if (video) observer.unobserve(video);
       });
     };
