@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Slider from 'react-slick';
 import styles from './ConstructorBlockRenderer.module.scss';
 import '../stylePaginationSlider.css';
@@ -7,6 +7,8 @@ import playIcon from '../../icons/play.svg';
 import pauseIcon from '../../icons/pause.svg';
 import playIconMobile from '../../icons/playMobile.svg';
 import pauseIconMobile from '../../icons/pauseMobile.svg';
+import fullscreen from '../../icons/full_screen.svg';
+import fullscreen_exit from '../../icons/fullscreen_exit.svg';
 import { containsListTags } from '../../Project/utils';
 import { renderListWithDots } from '../../Project/utils';
 
@@ -30,8 +32,7 @@ const PrevArrow = ({ props, onClick, onMouseEnter, onMouseLeave }) => (
     onMouseEnter={onMouseEnter}
     onMouseLeave={onMouseLeave}
     onClick={onClick}
-    style={{ ...arrowStyles, left: '1.5rem' }}
-  >
+    style={{ ...arrowStyles, left: '1.5rem' }}>
     <svg width="42" height="42" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
       <g id="icon / 24 /  arrow /  normal">
         <rect
@@ -57,8 +58,7 @@ const PrevArrow = ({ props, onClick, onMouseEnter, onMouseLeave }) => (
           y1="34.1818"
           x2="55.3078"
           y2="90.3335"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor="#BBDEFF" />
           <stop offset="1" stopColor="#FFBFB5" />
         </linearGradient>
@@ -72,8 +72,7 @@ const NextArrow = ({ props, onClick, onMouseEnter, onMouseLeave }) => (
     onMouseEnter={onMouseEnter}
     onMouseLeave={onMouseLeave}
     onClick={onClick}
-    style={{ ...arrowStyles, right: '1.5rem' }}
-  >
+    style={{ ...arrowStyles, right: '1.5rem' }}>
     <svg width="42" height="42" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
       <g id="icon / 24 /  arrow /  normal">
         <rect
@@ -94,8 +93,7 @@ const NextArrow = ({ props, onClick, onMouseEnter, onMouseLeave }) => (
           y1="2.18182"
           x2="87.3078"
           y2="58.3335"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor="#BBDEFF" />
           <stop offset="1" stopColor="#FFBFB5" />
         </linearGradient>
@@ -109,6 +107,8 @@ export default function ConstructorBlockRenderer({ block, handleMouseLeave, hand
   const [dotsVisible, setDotsVisible] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const videoRef = useRef(null);
 
   useEffect(() => {
     const handleResize = () => {
@@ -121,6 +121,24 @@ export default function ConstructorBlockRenderer({ block, handleMouseLeave, hand
 
     return () => {
       window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      if (!document.fullscreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
+        setIsFullscreen(false); 
+      }
+    };
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+    document.addEventListener('msfullscreenchange', handleFullscreenChange);
+
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+      document.removeEventListener('webkitfullscreenchange', handleFullscreenChange);
+      document.removeEventListener('msfullscreenchange', handleFullscreenChange);
     };
   }, []);
 
@@ -352,7 +370,7 @@ export default function ConstructorBlockRenderer({ block, handleMouseLeave, hand
     const videoPath = block[0]?.value.join('');
 
     if (!videoPath) {
-      return null; // или просто return; если вы предпочитаете не возвращать явно null
+      return null;
     }
 
     const videoStyle = {
@@ -361,21 +379,50 @@ export default function ConstructorBlockRenderer({ block, handleMouseLeave, hand
       border: 'none',
       opacity: 1,
       outline: 'none',
-      // controls: "controls",
+      display: 'block',
+      width: '100%',
+      height: isFullscreen ? '100vh' : 'auto',   
+      objectFit: 'cover', 
     };
 
     const handlePlay = () => {
-      const videoElement = document.querySelector('video');
+      const videoElement = videoRef.current;
       videoElement.play();
       setIsPlaying(true);
       setIsHovered(false);
     };
 
     const handlePause = () => {
-      const videoElement = document.querySelector('video');
+      const videoElement = videoRef.current;
       videoElement.pause();
       setIsPlaying(false);
       setIsHovered(false);
+    };
+
+    const handleFullscreen = () => {
+      // const videoElement = videoRef.current;
+      const containerElement = document.documentElement; 
+    
+      if (containerElement.requestFullscreen) {
+        containerElement.requestFullscreen();
+      } else if (containerElement.webkitRequestFullscreen) {
+        containerElement.webkitRequestFullscreen();
+      } else if (containerElement.msRequestFullscreen) {
+        containerElement.msRequestFullscreen();
+      }
+      setIsFullscreen(true);
+    };
+
+    const handleExitFullscreen = () => {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+      } else if (document.msExitFullscreen) {
+        document.msExitFullscreen();
+      }
+
+      setIsFullscreen(false);
     };
 
     return (
@@ -384,40 +431,64 @@ export default function ConstructorBlockRenderer({ block, handleMouseLeave, hand
           className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockSix}`}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
-        >
+          style={{ position: 'relative'}}
+          >
           <video
+            ref={videoRef}
             playsInline
             muted
             loop
+            controls={false}
             className={styles.block_video}
             style={videoStyle}
             onPlay={() => setIsPlaying(true)}
-            onPause={() => setIsPlaying(false)}
-          >
+            onPause={() => setIsPlaying(false)}>
             <source src={`${Host}/images/imageAdd/${videoPath}`} type="video/mp4" />
           </video>
+
           <div className={styles.buttonWrapperBlock}>
-            {isPlaying ? (
-              isHovered && (
-                <button className={styles.buttonPause} onClick={handlePause}>
-                  <img
-                    src={pauseIconToUse}
-                    alt={pauseIconToUse}
-                    onMouseEnter={handleMouseEnter}
-                    onMouseLeave={handleMouseLeave}
-                  />
-                </button>
-              )
-            ) : (
-              <button className={styles.buttonPlayBlock} onClick={handlePlay}>
+             {isPlaying ? (
+                  isHovered && (
+                    <button className={styles.buttonPause} onClick={handlePause}>
+                      <img
+                        src={pauseIconToUse}
+                        alt={pauseIconToUse}
+                        onMouseEnter={handleMouseEnter}
+                        onMouseLeave={handleMouseLeave}
+                      />
+                    </button>
+                  )
+                ) : (
+                  <button className={styles.buttonPlayBlock} onClick={handlePlay}>
+                    <img
+                      src={playIconToUse}
+                      alt={playIconToUse}
+                      onMouseEnter={handleMouseEnter}
+                      onMouseLeave={handleMouseLeave}
+                    />
+                  </button>
+                )}             
+          </div>
+          <div className={styles.buttonWrapperBlock1}>
+            {!isFullscreen ? (
+              <button className={styles.buttonFullscreen} onClick={handleFullscreen}>
                 <img
-                  src={playIconToUse}
-                  alt={playIconToUse}
+                  src={fullscreen}
+                  alt={fullscreen}
                   onMouseEnter={handleMouseEnter}
                   onMouseLeave={handleMouseLeave}
                 />
               </button>
-            )}
+              ) : (
+              <button className={styles.buttonExitFullscreen} onClick={handleExitFullscreen}>
+                <img
+                  src={fullscreen_exit}
+                  alt={fullscreen_exit}
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
+                />
+              </button>
+             )} 
           </div>
         </div>
       </div>
@@ -469,8 +540,7 @@ export default function ConstructorBlockRenderer({ block, handleMouseLeave, hand
           title="Video Player"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
-          onError={handleIframeError}
-        ></iframe>
+          onError={handleIframeError}></iframe>
       </div>
     );
   };
