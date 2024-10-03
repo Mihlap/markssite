@@ -155,12 +155,14 @@
   position: relative;
   width: 100%;
   height: auto;
-  max-height: 50vw;
+  max-height: 40vw;
   border-radius: 16px;
 }
+
+
 .buttonWrapperBlock {
-  position: relative;
-  bottom: 50%;
+  position: absolute;
+  top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
@@ -193,6 +195,33 @@
   transform: translate(-50%, -50%);
 }
 
+.buttonWrapperBlock1 {
+  position: absolute;
+  bottom: 18%;
+  right: 3%;
+}
+
+.buttonFullscreen {
+  display: flex; 
+  width: 4rem;  
+  height: 4rem;
+  border-radius: 50%;
+}
+
+.buttonExitFullscreen {
+  display: flex;   
+  width: 4rem;  
+  height: 4rem;
+  bottom: 18%;
+}
+
+.buttonFullscreen img,
+.buttonExitFullscreen img {
+  width: 100%;  
+  height: 100%;
+}
+
+
 .videoLinkContainer {
   width: 100%;
   height: 100%;
@@ -204,6 +233,9 @@
   min-height: 40vw;
   border-radius: 16px;
 }
+
+
+
 
 /* Стили для desctop версии +1 сайта блока ProjectCard начинаются тут */
 
@@ -234,6 +266,13 @@
     padding-right: 0;
     padding-left: 0;
   }
+
+  .buttonWrapperBlock1 {
+    position: absolute;
+    bottom: 20%;
+    right: 3%;
+  }
+  
 }
 
 /* Стили для планшетной версии сайта блока ProjectCardConstructor, начинаются тут */
@@ -433,6 +472,23 @@
   }
 }
 
+.buttonWrapperBlock1 {
+  position: absolute;
+  bottom: 20%;
+  right: 3%;
+}
+
+.buttonFullscreen {
+  width: 2rem;  
+  height: 2rem;
+}
+
+.buttonExitFullscreen { 
+  width: 2rem;  
+  height: 2rem;
+}
+
+
 /* Стили для мобильной версии сайта блока ProjectCardConstructor, начинаются тут */
 @media screen and (max-width: 767px) {
   .containerImageToDescription {
@@ -579,4 +635,23 @@
     padding-left: 0;
     padding-bottom: 40px;
   }
+
+  .buttonWrapperBlock1 {
+    position: absolute;
+    bottom: 25%;
+    right: 3%;
+  }
+  
+  .buttonFullscreen {
+    width: 2rem;  
+    height: 2rem;
+  }
+  
+  .buttonExitFullscreen { 
+    width: 2rem;  
+    height: 2rem;
+  }
+  
+
+  
 }

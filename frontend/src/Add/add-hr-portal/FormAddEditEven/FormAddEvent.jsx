@@ -235,7 +235,11 @@ export default function FormAddEvent({ setIsModalOpenEvent }) {
 
                   <div className={styles.slider_container__uploadTextForm}>Загрузить изображения</div>
                 </label>
-                {isLoading && <div className={styles.preview_photos_container__loading}>Загрузка . . .</div>}
+                {isLoading && <div className={styles.preview_photos_container__loading}
+                 style={{marginTop: '8px'}}
+                 >                  
+                  Загрузка . . .
+                </div>}
               </div>
               <div className={styles.preview_photos_container}>
                 {previewPhotoAva?.map((preview, index) => (
