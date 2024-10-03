@@ -7,6 +7,8 @@ import playIcon from '../../icons/play.svg';
 import pauseIcon from '../../icons/pause.svg';
 import playIconMobile from '../../icons/playMobile.svg';
 import pauseIconMobile from '../../icons/pauseMobile.svg';
+import fullscreen from '../../icons/full_screen.svg';
+import fullscreen_exit from '../../icons/fullscreen_exit.svg';
 import { containsListTags } from '../../Project/utils';
 import { renderListWithDots } from '../../Project/utils';
 
@@ -109,6 +111,8 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
   const [dotsVisible, setDotsVisible] = useState(true);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const videoRef = useRef(null);
 
   useEffect(() => {
     const handleResize = () => {
@@ -123,6 +127,25 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
       window.removeEventListener('resize', handleResize);
     };
   }, []);
+
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      if (!document.fullscreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
+        setIsFullscreen(false); 
+      }
+    };
+
+    document.addEventListener('fullscreenchange', handleFullscreenChange);
+    document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+    document.addEventListener('msfullscreenchange', handleFullscreenChange);
+
+    return () => {
+      document.removeEventListener('fullscreenchange', handleFullscreenChange);
+      document.removeEventListener('webkitfullscreenchange', handleFullscreenChange);
+      document.removeEventListener('msfullscreenchange', handleFullscreenChange);
+    };
+  }, []);
+
 
   const renderImageWithDescription = (block) => {
     let imageUrl = '';
@@ -443,7 +466,7 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
     const videoPath = block[0]?.value.join('');
 
     if (!videoPath) {
-      return null; // или просто return; если вы предпочитаете не возвращать явно null
+      return null; 
     }
 
     const videoStyle = {
@@ -452,22 +475,53 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
       border: 'none',
       opacity: 1,
       outline: 'none',
-      // controls: "controls",
+      display: 'block',
+      width: '100%',
+      height: isFullscreen ? '100vh' : 'auto',   
+      objectFit: 'cover', 
     };
 
+
     const handlePlay = () => {
-      const videoElement = document.querySelector('video');
+      const videoElement = videoRef.current;
       videoElement.play();
       setIsPlaying(true);
       setIsHovered(false);
     };
 
     const handlePause = () => {
-      const videoElement = document.querySelector('video');
+      const videoElement = videoRef.current;
       videoElement.pause();
       setIsPlaying(false);
       setIsHovered(false);
     };
+
+    const handleFullscreen = () => {
+      // const videoElement = videoRef.current;
+      const containerElement = document.documentElement; 
+    
+      if (containerElement.requestFullscreen) {
+        containerElement.requestFullscreen();
+      } else if (containerElement.webkitRequestFullscreen) {
+        containerElement.webkitRequestFullscreen();
+      } else if (containerElement.msRequestFullscreen) {
+        containerElement.msRequestFullscreen();
+      }
+      setIsFullscreen(true);
+    };
+
+    const handleExitFullscreen = () => {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+      } else if (document.msExitFullscreen) {
+        document.msExitFullscreen();
+      }
+
+      setIsFullscreen(false);
+    };
+
 
     return (
       <div className={styles.wrapper_conteiner__item}>
@@ -475,8 +529,10 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
           className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockSix}`}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
+          style={{ position: 'relative'}}
         >
           <video
+            ref={videoRef}
             playsInline
             muted
             loop
@@ -509,6 +565,27 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
                 />
               </button>
             )}
+          </div>
+          <div className={styles.buttonWrapperBlock1}>
+            {!isFullscreen ? (
+              <button className={styles.buttonFullscreen} onClick={handleFullscreen}>
+                <img
+                  src={fullscreen}
+                  alt={fullscreen}
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
+                />
+              </button>
+              ) : (
+              <button className={styles.buttonExitFullscreen} onClick={handleExitFullscreen}>
+                <img
+                  src={fullscreen_exit}
+                  alt={fullscreen_exit}
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
+                />
+              </button>
+             )} 
           </div>
         </div>
       </div>
