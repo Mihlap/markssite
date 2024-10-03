@@ -298,14 +298,15 @@
 
 .div_conteiner__blockSix {
   max-width: 100%;
+  width: 100%;
   padding-left: 13.75vw;
   padding-bottom: 3.75rem;
 }
 
 .block_video {
   width: 100%;
-  height: auto;
-  max-height: 50vw;
+  object-fit: cover;
+  height: 100%;
   border-radius: 16px;
 }
 
@@ -403,6 +404,7 @@
   }
 
   .div_conteiner__blockSix {
+    width: 100%;
     max-width: 100%;
     padding-left: 0;
     padding-bottom: 3.75rem;

@@ -397,54 +397,57 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
                 </div>
                 <div className={styles.title_text_mobile}>{project.descriptionProject}</div>
                 <div className={styles.local_container}>
-                  <div className={styles.local_ritgh}>
-                    <div className={styles.local_container_wrapper_block}>
-                      <div className={styles.local_title}>Расположение</div>
-                      <div className={styles.local_text}>{project.location}</div>
-                    </div>
-                    <div className={styles.local_container_wrapper_block1}>
-                      <div className={styles.local_title}>Статус</div>
-                      <div className={styles.local_text}> {project.statusObject}</div>
-                    </div>
-                    <div className={styles.local_container_wrapper_block1}>
-                      <div className={styles.local_title}>Публикация</div>
-                      <Link to={project.linkToPublication} target="_blank">
-                        <div className={`${styles.publicationLink} ${styles.local_text}`}>{project.publication}</div>
-                      </Link>
-                      <Link to={project.linkToPublicationTwo} target="_blank">
-                        <div className={`${styles.publicationLink} ${styles.local_text}`}>{project.publicationTwo}</div>
-                      </Link>
+                  {/* <div className={styles.local_ritgh}> */}
+                  <div className={styles.local_container_wrapper_block}>
+                    <div className={styles.local_title}>Расположение</div>
+                    <div className={styles.local_text}> {project.location || '—'}</div>
+                  </div>
+                  <div className={styles.local_container_wrapper_block}>
+                    <div className={styles.local_title}>Статус</div>
+                    <div className={styles.local_text}>
+                      {console.log(project.statusObject)}
+                      {project.statusObject !== 'undefined' ? project.statusObject : '—'}
                     </div>
                   </div>
-                  <div className={styles.local_left}>
-                    <div className={styles.local_container_wrapper_block}>
-                      <div className={styles.local_title}>Степень участия</div>
-                      <div className={styles.local_text}>
-                        {' '}
-                        {/* {project.degreeParticipation} */}
-                        {project.degreeParticipation.split(',').map((elem, index, array) => (
-                          <span key={index}>
-                            {elem.trim()} {index < array.length - 1 ? ', ' : ''}
-                          </span>
-                        ))}
+                  <div className={styles.local_container_wrapper_block}>
+                    <div className={styles.local_title}>Публикация</div>
+                    <Link to={project.linkToPublication || '—'} target="_blank">
+                      <div className={`${styles.publicationLink} ${styles.local_text}`}>{project.publication}</div>
+                    </Link>
+                    <Link to={project.linkToPublicationTwo} target="_blank">
+                      <div className={`${styles.publicationLink} ${styles.local_text}`}>
+                        {project.publicationTwo || '—'}
                       </div>
-                    </div>
-                    <div className={styles.local_container_wrapper_block1}>
-                      <div className={styles.local_title}>Заказчик</div>
-                      <div className={styles.local_text}> {project.customer}</div>
-                    </div>
-                    <div className={styles.local_container_wrapper_block1}>
-                      <div className={styles.local_title}>Стадия</div>
-                      <div className={styles.local_text}>
-                        {' '}
-                        {project.awards.split(',').map((award, index, array) => (
-                          <span key={index}>
-                            {award.trim()} {index < array.length - 1 ? ', ' : ''}
-                          </span>
-                        ))}
-                      </div>
+                    </Link>
+                  </div>
+                  {/* </div> */}
+                  {/* <div className={styles.local_left}> */}
+                  <div className={styles.local_container_wrapper_block}>
+                    <div className={styles.local_title}>Степень участия</div>
+                    <div className={styles.local_text}>
+                      {/* {project.degreeParticipation} */}
+                      {(project.degreeParticipation || '—').split(',').map((elem, index, array) => (
+                        <span key={index}>
+                          {elem.trim()} {index < array.length - 1 ? ', ' : ''}
+                        </span>
+                      ))}
                     </div>
                   </div>
+                  <div className={styles.local_container_wrapper_block}>
+                    <div className={styles.local_title}>Заказчик</div>
+                    <div className={styles.local_text}> {project.customer || '—'}</div>
+                  </div>
+                  <div className={styles.local_container_wrapper_block}>
+                    <div className={styles.local_title}>Стадия</div>
+                    <div className={styles.local_text}>
+                      {(project.awards || '—').split(',').map((award, index, array) => (
+                        <span key={index}>
+                          {award.trim()} {index < array.length - 1 ? ', ' : ''}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  {/* </div> */}
                 </div>
               </div>
             </div>

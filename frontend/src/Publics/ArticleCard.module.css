@@ -691,6 +691,9 @@
 /* Стили для desctop версии +1 сайта блока ArticleCard начинаются тут */
 
 @media screen and (min-width: 1025px) and (max-width: 1600px) {
+  .item_img {
+    width: 100%;
+  }
   .header_content_left {
     max-width: 78%;
     white-space: normal;
@@ -702,11 +705,23 @@
     display: flex;
     height: 100%;
     padding-left: 1.75rem;
-    padding-right: 0vw;
+    padding-right: 1.75rem;
   }
+
+  .leftImg1_object_text1 {
+    width: 100%;
+  }
+  .div_conteiner {
+    width: 100%;
+    padding-right: 1.75rem;
+  }
+
   .item_container_imageClose {
     padding-left: 1.75rem;
+    padding-right: 1.75rem;
+    width: 100%;
   }
+
   .container_author_address_imageClose {
     padding-left: 0;
   }
