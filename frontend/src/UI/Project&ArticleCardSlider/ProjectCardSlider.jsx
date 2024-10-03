@@ -3,7 +3,7 @@ import Slider from 'react-slick';
 import catPhoto from '../../img/default-photo.jpeg';
 import '.././Company_Slider/Company_Slider.css';
 
-const Host = process.env.REACT_APP_SERVER_HOST;
+const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
 const ProjectCardSlider = ({ slidesCard }) => {
   const sliderRef = useRef(null);
@@ -13,7 +13,9 @@ const ProjectCardSlider = ({ slidesCard }) => {
     slidesCard && slidesCard.length > 0
       ? slidesCard.flatMap((slide) => {
           if (!slide.imageTitle) return catPhoto;
-          return slide.imageTitle.split(',').map((el) => `${Host}/images/imageAdd/${el.trim()}`);
+          return slide.imageTitle.split(',').map((el) => {
+            return el.includes('https') ? el.trim() : `${bucket_url}/images/imageAdd/${el.trim()}`;
+          });
         })
       : [];
 
@@ -80,8 +82,7 @@ const ProjectCardSlider = ({ slidesCard }) => {
         infinite={true}
         autoplay={true}
         autoplaySpeed={6000}
-        beforeChange={handleBeforeChange}
-      >
+        beforeChange={handleBeforeChange}>
         {imagePaths?.map((path, index) => (
           <div key={index} className="company-slider-slide">
             <img className="company-slider-slide-img" src={path} alt={`Slide ${index + 1}`} />
@@ -94,8 +95,7 @@ const ProjectCardSlider = ({ slidesCard }) => {
             <button
               key={index}
               className={`button_slider ${activeButtonIndex === index ? 'active' : ''}`}
-              onClick={() => handleButtonClick(index)}
-            >
+              onClick={() => handleButtonClick(index)}>
               {String(index + 1).padStart(2, '0')}
             </button>
           ))}

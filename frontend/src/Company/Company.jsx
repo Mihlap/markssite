@@ -540,10 +540,10 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
                   <div className={styles.wrapper_container_item_stuff}>
                     <img
                       className={`${styles.container__img_stuff} ${showCards ? 'loaded' : ''}`}
-                      src={`https://s3.timeweb.cloud/41834503-b9272655-a301-4b1e-a0da-efcedea0878a/images/imageStuff/${el.img}`}
+                      src={`${bucket_url}/images/imageStuff/${el.img}`}
                       onLoad={handleImageLoad}
                       onError={(e) => {
-                        e.target.src = `https://s3.timeweb.cloud/41834503-b9272655-a301-4b1e-a0da-efcedea0878a/images/imageStuff/no_photo.png`;
+                        e.target.src = `${bucket_url}/images/imageStuff/no_photo.png`;
                         // el.imgLoaded = false;
                       }}
                       alt={el.img}
@@ -867,10 +867,10 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
                   <div className={styles.wrapper_container_item_stuff}>
                     <img
                       className={`${styles.container__img_stuff} ${showCards ? 'loaded' : ''}`}
-                      src={`https://s3.timeweb.cloud/41834503-b9272655-a301-4b1e-a0da-efcedea0878a/images/imageStuff/${el.img}`}
+                      src={`${bucket_url}/images/imageStuff/${el.img}`}
                       onLoad={handleImageLoad}
                       onError={(e) => {
-                        e.target.src = `https://s3.timeweb.cloud/41834503-b9272655-a301-4b1e-a0da-efcedea0878a/images/imageStuff/no_photo.png`;
+                        e.target.src = `${bucket_url}/images/imageStuff/no_photo.png`;
                       }}
                       alt={el.img}
                       loading="lazy"
@@ -916,10 +916,10 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
                   <div className={styles.wrapper_container_item_stuff}>
                     <img
                       className={`${styles.container__img_stuff} ${showCards ? 'loaded' : ''}`}
-                      src={`https://s3.timeweb.cloud/41834503-b9272655-a301-4b1e-a0da-efcedea0878a/images/imageStuff/${el.img}`}
+                      src={`${bucket_url}/images/imageStuff/${el.img}`}
                       onLoad={handleImageLoad}
                       onError={(e) => {
-                        e.target.src = `https://s3.timeweb.cloud/41834503-b9272655-a301-4b1e-a0da-efcedea0878a/images/imageStuff/no_photo.png`;
+                        e.target.src = `${bucket_url}/images/imageStuff/no_photo.png`;
                       }}
                       alt={el.img}
                       loading="lazy"

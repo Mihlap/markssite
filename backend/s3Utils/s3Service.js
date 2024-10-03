@@ -3,10 +3,11 @@ const { DeleteObjectCommand } = require('@aws-sdk/client-s3');
 const { s3Client, BUCKET_NAME } = require('./s3Client');
 
 async function uploadFileToS3(file, folder = 'uploads') {
-  const fileName = `${Date.now()}-${file.originalname}`;
+  // const fileName = `${Date.now()}-${file.originalname}`;
+  const fileName = file.originalname;
   const uploadParams = {
     Bucket: BUCKET_NAME,
-    Key: `${folder}/${fileName}`, // Уникальный путь и имя файла в S3
+    Key: `${folder}/${fileName}`, // Путь и имя файла в S3
     Body: file.buffer,  // Содержимое файла
     ContentType: file.mimetype, // MIME-тип файла
     ACL: 'public-read', // Публичный доступ

@@ -17,7 +17,7 @@ const isMobileScreen = window.innerWidth <= 1024;
 const playIconToUse = isMobileScreen ? playIconMobile : playIcon;
 const pauseIconToUse = isMobileScreen ? pauseIconMobile : pauseIcon;
 
-const Host = process.env.REACT_APP_SERVER_HOST;
+const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
 const arrowStyles = {
   position: 'absolute',
@@ -142,6 +142,8 @@ export default function ConstructorBlockRenderer({ block, handleMouseLeave, hand
     };
   }, []);
 
+  const isFullUrl = (url) => url.startsWith('http://') || url.startsWith('https://');
+
   const renderImageWithDescription = (block) => {
     let imageUrl = '';
     let description = '';
@@ -154,12 +156,14 @@ export default function ConstructorBlockRenderer({ block, handleMouseLeave, hand
     // Проверяем, есть ли imageUrl или description, если нет, то не отображаем блок
     if (!imageUrl && !description) return null;
 
+    const imageSrc = isFullUrl(imageUrl) ? imageUrl : `${bucket_url}/images/imageAdd/${imageUrl}`;
+
     return (
       <div className={styles.containerImageToDescription}>
         {imageUrl && (
           <img
             className={styles.containerImageToDescription__img}
-            src={`${Host}/images/imageAdd/${imageUrl}`}
+            src={imageSrc}
             alt="Описание"
             loading="lazy"
           />
@@ -214,7 +218,7 @@ export default function ConstructorBlockRenderer({ block, handleMouseLeave, hand
         {images.length >= 1 && (
           <img
             className={styles.horizontalImage}
-            src={`${Host}/images/imageAdd/${images[0]}`}
+            src={isFullUrl(images[0]) ? images[0] : `${bucket_url}/images/imageAdd/${images[0]}`}
             alt="Horizontal_image1"
             loading="lazy"
           />
@@ -222,7 +226,7 @@ export default function ConstructorBlockRenderer({ block, handleMouseLeave, hand
         {images.length >= 2 && (
           <img
             className={styles.horizontalImage}
-            src={`${Host}/images/imageAdd/${images[1]}`}
+            src={isFullUrl(images[1]) ? images[1] : `${bucket_url}/images/imageAdd/${images[1]}`}
             alt="Horizontal_image2"
             loading="lazy"
           />
@@ -232,7 +236,7 @@ export default function ConstructorBlockRenderer({ block, handleMouseLeave, hand
         {images.length >= 3 && (
           <img
             className={styles.verticalImage}
-            src={`${Host}/images/imageAdd/${images[2]}`}
+            src={isFullUrl(images[2]) ? images[2] : `${bucket_url}/images/imageAdd/${images[2]}`}
             alt="Vertical_image"
             loading="lazy"
           />
@@ -272,7 +276,7 @@ export default function ConstructorBlockRenderer({ block, handleMouseLeave, hand
           <img
             className={styles.imageBlockTwo__gridImage}
             key={index}
-            src={`${Host}/images/imageAdd/${el}`}
+            src={isFullUrl(el) ? el : `${bucket_url}/images/imageAdd/${el}`}
             alt={`img_${index}`}
             loading="lazy"
           />
@@ -358,7 +362,12 @@ export default function ConstructorBlockRenderer({ block, handleMouseLeave, hand
         <Slider {...settings}>
           {images?.map((img, index) => (
             <div key={index} style={sliderImageContainerStyle} className={styles.custom_slider}>
-              <img style={sliderImageStyle} src={`${Host}/images/imageAdd/${img}`} alt="Slider_image" loading="lazy" />
+              <img
+                style={sliderImageStyle}
+                src={isFullUrl(img) ? img : `${bucket_url}/images/imageAdd/${img}`}
+                alt="Slider_image"
+                loading="lazy"
+              />
             </div>
           ))}
         </Slider>
@@ -372,6 +381,10 @@ export default function ConstructorBlockRenderer({ block, handleMouseLeave, hand
     if (!videoPath) {
       return null;
     }
+
+    const videoSrc = isFullUrl(videoPath)
+    ? videoPath
+    : `${bucket_url}/images/imageAdd/${videoPath}`;
 
     const videoStyle = {
       WebkitAppearance: 'none',
@@ -443,7 +456,7 @@ export default function ConstructorBlockRenderer({ block, handleMouseLeave, hand
             style={videoStyle}
             onPlay={() => setIsPlaying(true)}
             onPause={() => setIsPlaying(false)}>
-            <source src={`${Host}/images/imageAdd/${videoPath}`} type="video/mp4" />
+            <source src={videoSrc} type="video/mp4" />
           </video>
 
           <div className={styles.buttonWrapperBlock}>
