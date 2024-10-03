@@ -12,8 +12,9 @@ import { fetchToggleStateAsync, updateToggleStateAsync } from '../../store/Slice
 import LoadingModal from './loading/LoadingModal';
 import Edit from '../icon/Edit.svg';
 
-export default function AddProject({ user }) {
-  const Host = process.env.REACT_APP_SERVER_HOST;
+const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
+
+export default function AddProject({ user }) { 
   const dispatch = useDispatch();
   const project = useSelector((state) => state.project.projects);
   const isActiveForButton1 = useSelector((state) => state.toggle.isActiveForButton1);
@@ -131,6 +132,7 @@ export default function AddProject({ user }) {
     return [...project];
   }, [project]);
 
+
   return (
     <section className={styles.card_components_admin}>
       <div className={styles.card_components_admin__block}>
@@ -203,13 +205,12 @@ export default function AddProject({ user }) {
                 <>
                   <div className={styles.card_components_admin__block_map}>
                     {sortedProjects?.map((el) => {
-                      const photoName = el && el.imageProject;
                       const defaultPhoto = cat;
-
-                      const photoSrc =
-                        photoName && photoName !== 'null' && photoName !== 'undefined'
-                          ? `${Host}/images/imageAdd/${photoName}`
-                          : defaultPhoto;
+                      const photoName = el?.imageProject;
+                      const photoSrc = photoName && photoName.includes('https')
+                        ? photoName
+                        : `${bucket_url}/images/imageAdd/${photoName || defaultPhoto}`;                                      
+                 
                       return (
                         <React.Fragment key={el.id}>
                           <div key={el.id} className={styles.cart_project_container}>
