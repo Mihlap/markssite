@@ -19,8 +19,7 @@ import '../UI/ButtonsProjects/AllProjectsButton.module.css';
 import { fetchToggleStateAsync } from '../store/Slice/toggleSlice';
 import catPhoto from '../img/default-photo.jpeg';
 
-const Host = process.env.REACT_APP_SERVER_HOST;
-// const apiKey = process.env.REACT_APP_API_KEY;
+const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
 export default function Project({ handleMouseEnter, handleMouseLeave, handleMouseHover }) {
   const buttonChoose = [
@@ -540,24 +539,18 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
           <div className={styles.section_project__block}>
             {filteredProjects &&
               filteredProjects.slice().map((project) => {
-                const photoName = project && project.imageProject;
-                const defaultPhoto = catPhoto; // Убедитесь, что catPhoto существует и содержит правильный путь к изображению по умолчанию
+                const defaultPhoto = catPhoto;
+                const photoName = project && project?.imageProject;
                 const photoSrc =
-                  photoName && photoName !== 'null' && photoName !== 'undefined'
-                    ? `${Host}/images/imageAdd/${photoName}`
-                    : defaultPhoto;
+                  photoName && photoName.includes('https')
+                    ? photoName
+                    : `${bucket_url}/images/imageAdd/${photoName || defaultPhoto}`;
                 if (!project) {
                   return null;
                 }
                 return (
                   <Link key={project.id} to={`/projects/${project.id}`} className={styles.section_project__block_cart}>
-                    <div
-                      className={styles.cart_project}
-                      // style={{
-                      //   height: `${project.style?.split(",")[1]}rem`,
-                      //   width: `${project.style?.split(",")[0]}rem`,
-                      // }}
-                    >
+                    <div className={styles.cart_project}>
                       <div className={styles.cart_project__container}>
                         <img
                           className={styles.container__imageTitle_projectCard}

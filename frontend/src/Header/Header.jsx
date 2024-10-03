@@ -182,8 +182,7 @@ const Header = React.memo(
                   loop
                   id="bg-video"
                   onCanPlayThrough={() => setVideoLoaded(true)}
-                  className={styles.bg_video}
-                >
+                  className={styles.bg_video}>
                   <source src={videoSrc} type="video/mp4" />
                 </video>
               )}
@@ -213,8 +212,7 @@ const Header = React.memo(
             <div
               onMouseEnter={handleSpecialHover}
               onMouseLeave={handleMouseLeave}
-              className={styles.sliderHeader_container}
-            >
+              className={styles.sliderHeader_container}>
               <NavLink to="/company#table-header-anchor">
                 {/* <SliderHeader /> */}
                 <SliderHeader isAwards={true} />
@@ -273,8 +271,7 @@ const Header = React.memo(
                                     width="4"
                                     height="4"
                                     viewBox="0 0 4 4"
-                                    fill="none"
-                                  >
+                                    fill="none">
                                     <circle cx="2" cy="2" r="2" fill="#566272" />
                                   </svg>
                                 </span>
@@ -283,15 +280,13 @@ const Header = React.memo(
                               <button
                                 onMouseEnter={handleMouseEnter}
                                 onMouseLeave={handleMouseLeave}
-                                className={styles.card_button}
-                              >
+                                className={styles.card_button}>
                                 <svg
                                   width="32"
                                   height="32"
                                   viewBox="0 0 32 32"
                                   fill="currentColor"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                >
+                                  xmlns="http://www.w3.org/2000/svg">
                                   <circle cx="16" cy="16" r="16" fill="#566272" />
                                   <path
                                     d="M6 16H16M26 16H16M16 16V6M16 16V26"
@@ -366,8 +361,7 @@ const Header = React.memo(
                                     width="4"
                                     height="4"
                                     viewBox="0 0 4 4"
-                                    fill="none"
-                                  >
+                                    fill="none">
                                     <circle cx="2" cy="2" r="2" fill="#566272" />
                                   </svg>
                                 </span>
@@ -376,15 +370,13 @@ const Header = React.memo(
                               <button
                                 onMouseEnter={handleMouseEnter}
                                 onMouseLeave={handleMouseLeave}
-                                className={`${styles.card_button} ${styles.extra_button_class}`}
-                              >
+                                className={`${styles.card_button} ${styles.extra_button_class}`}>
                                 <svg
                                   width="32"
                                   height="32"
                                   viewBox="0 0 32 32"
                                   fill="currentColor"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                >
+                                  xmlns="http://www.w3.org/2000/svg">
                                   <circle cx="16" cy="16" r="16" fill="#566272" />
                                   <path
                                     d="M6 16H16M26 16H16M16 16V6M16 16V26"
@@ -480,8 +472,7 @@ const Header = React.memo(
                 700: {
                   slidesPerView: 2.1,
                 },
-              }}
-            >
+              }}>
               {combinedProjects?.map((project, index) => {
                 if (!project || !project.id) {
                   return null;
@@ -493,8 +484,7 @@ const Header = React.memo(
                     // onScroll={handleScroll}
                     id="slider_container_item_card"
                     className={styles.slider_container_item_card}
-                    style={index % 2 === 1 ? { paddingTop: '10rem' } : {}}
-                  >
+                    style={index % 2 === 1 ? { paddingTop: '10rem' } : {}}>
                     <Link to={`/projects/${project.id}`} key={`${project.IdProject}-${index}`}>
                       <div className={styles.wrapper_container_item_card}>
                         <img
@@ -502,9 +492,13 @@ const Header = React.memo(
                           onMouseLeave={handleMouseLeave}
                           className={styles.container__imageTitle}
                           loading="lazy"
-                          src={`${Host}/images/imageAdd/${
-                            project.imageProject ? project.imageProject : project.imageTitle
-                          }`}
+                          src={
+                            project.imageProject?.includes('https')
+                              ? project.imageProject
+                              : `${bucket_url}/images/imageAdd/${
+                                  project.imageProject ? project.imageProject : project.imageTitle
+                                }`
+                          }
                           alt={project.imageProject ? project.imageProject : project.imageTitle}
                           onError={(e) => {
                             e.target.src = notDataPhoto;
@@ -523,8 +517,7 @@ const Header = React.memo(
                                 width="2"
                                 height="2"
                                 viewBox="0 0 2 2"
-                                fill="none"
-                              >
+                                fill="none">
                                 <circle cx="1" cy="1" r="1" fill="#959DA6" />
                               </svg>{' '}
                             </div>
@@ -546,8 +539,7 @@ const Header = React.memo(
                                       border: '1px solid',
                                       padding: '3px 6px',
                                       borderRadius: '34px',
-                                    }}
-                                  >
+                                    }}>
                                     {competency.label}
                                   </div>
                                 ));
@@ -566,8 +558,7 @@ const Header = React.memo(
                                           border: '1px solid',
                                           padding: '3px 6px',
                                           borderRadius: '34px',
-                                        }}
-                                      >
+                                        }}>
                                         {label}
                                       </div>
                                     );
@@ -586,8 +577,7 @@ const Header = React.memo(
                                             border: '1px solid',
                                             padding: '3px 6px',
                                             borderRadius: '34px',
-                                          }}
-                                        >
+                                          }}>
                                           {label}
                                         </div>
                                       );
