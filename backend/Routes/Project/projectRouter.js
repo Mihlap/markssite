@@ -1,7 +1,7 @@
 const express = require('express');
-// eslint-disable-next-line
-const path = require('path');
-const { URL } = require('url');
+const {
+  URL
+} = require('url');
 const {
   Project,
   ProjectMain,
@@ -14,8 +14,6 @@ const {
 } = require('../../s3Utils/s3Service');
 
 const router = express.Router();
-
-// const projectImagesPath = path.join(__dirname, 'images/projectFoto');
 
 const syncProjectMain = async (projectId) => {
   const project = await Project.findByPk(projectId);
@@ -40,9 +38,9 @@ const syncProjectMain = async (projectId) => {
   }
 };
 
-
 const extractFileNameAndFolderFromUrl = (url) => {
-  console.log('URL для извлечения:', url); 
+
+  // Если это не полный URL, значит это локальный путь файла
   if (!url.includes('http')) {
     return {
       fileName: url,
@@ -51,22 +49,24 @@ const extractFileNameAndFolderFromUrl = (url) => {
   }
 
   try {
+    // Обрабатываем только корректные URL с протоколом
     const urlObj = new URL(url);
-    const { pathname } = urlObj;
+    const {
+      pathname
+    } = urlObj;
     const parts = pathname.split('/').filter(Boolean);
+
     if (parts.length >= 2) {
       const folder = parts.slice(0, -1).join('/');
       const fileName = parts[parts.length - 1];
-      console.log('Извлечено имя файла:', fileName, 'и папка:', folder); 
       return {
         fileName,
-        folder
+        folder,
       };
     }
-    const fileName = parts[0];
     return {
-      fileName,
-      folder: ''
+      fileName: parts[0],
+      folder: 'images/imageAdd',
     };
   } catch (error) {
     console.error(`Ошибка извлечения данных из URL: ${url}`, error);
@@ -76,19 +76,23 @@ const extractFileNameAndFolderFromUrl = (url) => {
 
 
 
-const deleteImageFromS3 = async (imageUrl) => {
-  const result = extractFileNameAndFolderFromUrl(imageUrl);
+const deleteImageFromS3 = async (fileUrl) => {
+  const result = extractFileNameAndFolderFromUrl(fileUrl);
   if (result) {
-    const { fileName, folder } = result;
-    console.log(`Удаление файла: ${fileName} из папки: ${folder}`);
+    let {
+      fileName,
+      folder
+    } = result;
+    fileName = decodeURIComponent(fileName);
+    folder = decodeURIComponent(folder);
     try {
-      await deleteFileFromS3(fileName, folder);
-      console.log(`Файл ${fileName} успешно удалён.`);
+      const response = await deleteFileFromS3(fileName, folder);
+      console.log(`Файл ${fileName} успешно удалён с S3:`, response);
     } catch (error) {
       console.error(`Ошибка при удалении файла ${fileName}:`, error);
     }
   } else {
-    console.log(`Не удалось извлечь имя файла и папку из URL: ${imageUrl}`);
+    console.log(`Не удалось извлечь имя файла и папку из URL: ${fileUrl}`);
   }
 };
 
@@ -100,7 +104,7 @@ const updateDynamicBlocksContent = (blocks, newImages) => {
   return blocks.map((blockGroup) =>
     blockGroup.map((block) => {
       if (block.type === 'file' && Array.isArray(block.value)) {
-        const updatedValues = block.value.map((val) => {   
+        const updatedValues = block.value.map((val) => {
           if (typeof val === 'string' && (val.startsWith('blob:') || val.startsWith('temp_'))) {
             const newImage = newImages[imageIndex];
             imageIndex += 1;
@@ -108,14 +112,15 @@ const updateDynamicBlocksContent = (blocks, newImages) => {
           }
           return val;
         });
-        return { ...block, value: updatedValues };
+        return {
+          ...block,
+          value: updatedValues
+        };
       }
       return block;
     })
   );
 };
-
-
 
 
 router.post(
@@ -152,8 +157,7 @@ router.post(
             const fileUrl = await uploadFileToS3(file, 'images/imageAdd');
             return fileUrl;
           })
-        ) :
-        [];
+        ) : [];
 
 
       if (req.body.dynamicBlocksJSON) {
@@ -173,8 +177,7 @@ router.post(
             const fileUrl = await uploadFileToS3(file, 'images/imageAdd');
             return fileUrl;
           })
-        ) :
-        [];
+        ) : [];
 
       const imageProjects = req.files.photoAva ?
         await uploadFileToS3(req.files.photoAva[0], 'images/imageAdd') :
@@ -212,7 +215,7 @@ router.post(
         headingTextBlock: req.body.headingTextBlock,
         textBlock: req.body.textBlock,
         numberOfLanes: req.body.numberOfLanes,
-        long: req.body.long, 
+        long: req.body.long,
         imageTitle: imageTitles.join(', '),
         imageProject: imageProjects,
         imageOpen: imageOpens,
@@ -220,7 +223,7 @@ router.post(
       });
 
       await Constructor.create({
-        data: dynamicBlocksContent,  
+        data: dynamicBlocksContent,
         image: dynamicImageTitles.join(', '),
         idBlock: createdProject.id,
       });
@@ -229,7 +232,7 @@ router.post(
         message: 'Данные успешно сохранены'
       });
     } catch (error) {
-      console.log(error); 
+      console.log(error);
       res.status(500).json({
         message: 'Произошла ошибка при сохранении данных'
       });
@@ -265,7 +268,6 @@ router.put(
       const {
         projectId
       } = req.params;
-      // Поиск проекта по id
       const projectToUpdate = await Project.findByPk(projectId, {
         include: [Constructor],
       });
@@ -276,53 +278,20 @@ router.put(
         });
       }
 
-      // Загрузка новых файлов на S3 и получение URL
-      const imageTitlesNew = req.files.dropPhoto ?
-        await Promise.all(
-          req.files.dropPhoto.map((file) => uploadFileToS3(file, 'images/imageAdd'))
-        ) :
-        [];
+      // Получение текущих изображений
+      const currentImageTitles = projectToUpdate.imageTitle ? projectToUpdate.imageTitle.split(', ').map((item) => item.trim()) : [];
+      const currentImageProjects = projectToUpdate.imageProject ? [projectToUpdate.imageProject] : [];
+      const currentImageOpens = projectToUpdate.imageOpen ? [projectToUpdate.imageOpen] : [];
+      const currentImageCloses = projectToUpdate.imageClose ? [projectToUpdate.imageClose] : [];
 
-      const imageProjectNew = req.files.photoAva ?
-        await uploadFileToS3(req.files.photoAva[0], 'images/imageAdd') :
-        null;
+      // Новые изображения для загрузки на S3
+      const imageTitlesNew = req.files.dropPhoto ? await Promise.all(req.files.dropPhoto.map((file) => uploadFileToS3(file, 'images/imageAdd'))) : [];
+      const imageProjectNew = req.files.photoAva ? await uploadFileToS3(req.files.photoAva[0], 'images/imageAdd') : null;
+      const imageOpenNew = req.files.imageOpen ? await uploadFileToS3(req.files.imageOpen[0], 'images/imageAdd') : null;
+      const imageCloseNew = req.files.imageClose ? await uploadFileToS3(req.files.imageClose[0], 'images/imageAdd') : null;
 
-      const imageOpenNew = req.files.imageOpen ?
-        await uploadFileToS3(req.files.imageOpen[0], 'images/imageAdd') :
-        null;
-
-      const imageCloseNew = req.files.imageClose ?
-        await uploadFileToS3(req.files.imageClose[0], 'images/imageAdd') :
-        null;
-      
-          // Загрузка новых динамических изображений на S3
-          const dynamicImagesNew = req.files.dynamicImages
-          ? await Promise.all(
-              req.files.dynamicImages.map(async (file) => {
-                const { fileUrl } = await uploadFileToS3(file, 'images/imageAdd');
-                return fileUrl;
-              })
-            )
-          : [];
-
-      // Получение текущих изображений из базы данных
-      const currentImageTitles = projectToUpdate.imageTitle ?
-        projectToUpdate.imageTitle.split(', ').map((item) => item.trim()) :
-        [];
-      const currentImageProjects = projectToUpdate.imageProject ?
-        [projectToUpdate.imageProject] :
-        [];
-      const currentImageOpens = projectToUpdate.imageOpen ?
-        [projectToUpdate.imageOpen] :
-        [];
-      const currentImageCloses = projectToUpdate.imageClose ?
-        [projectToUpdate.imageClose] :
-        [];
-
-      // Получение изображений, которые пользователь хочет сохранить, из req.body
-      const imageTitlesFromClient = req.body.imageTitle ?
-        req.body.imageTitle.split(',').map((item) => item.trim()) :
-        [];
+      // Изображения от клиента
+      const imageTitlesFromClient = req.body.imageTitle ? req.body.imageTitle.split(',').map((item) => item.trim()) : [];
       const imageProjectFromClient = req.body.imageProject ? [req.body.imageProject] : [];
       const imageOpenFromClient = req.body.imageOpen ? [req.body.imageOpen] : [];
       const imageCloseFromClient = req.body.imageClose ? [req.body.imageClose] : [];
@@ -333,34 +302,13 @@ router.put(
       const updatedImageOpens = imageOpenNew ? [imageOpenNew] : imageOpenFromClient;
       const updatedImageCloses = imageCloseNew ? [imageCloseNew] : imageCloseFromClient;
 
-      const normalizeUrl = (url) => url.trim().toLowerCase();
+      // Нормализация URL для корректного сравнения
+      const normalizeUrl = (url) => decodeURIComponent(url.trim()); // Главное не приводить к нижнему регистру а то будет боль
+      const normalizedCurrentImages = [...currentImageTitles, ...currentImageProjects, ...currentImageOpens, ...currentImageCloses].filter(Boolean).map(normalizeUrl);
+      const normalizedUpdatedImages = [...updatedImageTitles, ...updatedImageProjects, ...updatedImageOpens, ...updatedImageCloses].filter(Boolean).map(normalizeUrl);
 
-      // // Все изображения для сохранения
-      // const imagesToKeep = [
-      //   ...updatedImageTitles,
-      //   ...updatedImageProjects,
-      //   ...updatedImageOpens,
-      //   ...updatedImageCloses,
-      // ].filter(Boolean).map(normalizeUrl);
-
-      // // Все текущие изображения
-      // const imagesToDelete = [
-      //   ...currentImageTitles,
-      //   ...currentImageProjects,
-      //   ...currentImageOpens,
-      //   ...currentImageCloses,
-      // ].filter(Boolean).map(normalizeUrl);
-
-      // // Получение изображений для удаления (те, которые больше не используются)
-      // const imagesToRemove = imagesToDelete.filter((image) => !imagesToKeep.includes(image));     
-      
-            // Получение изображений для удаления (те, которые больше не используются)
-      const imagesToRemove = currentImageTitles
-        .concat(currentImageProjects, currentImageOpens, currentImageCloses)
-        .filter(image => !updatedImageTitles.includes(image) &&
-          !updatedImageProjects.includes(image) &&
-          !updatedImageOpens.includes(image) &&
-          !updatedImageCloses.includes(image));
+      // Поиск изображений для удаления (тех, которые больше не используются)
+      const imagesToRemove = normalizedCurrentImages.filter((image) => !normalizedUpdatedImages.includes(normalizeUrl(image)));
 
       // Удаление старых изображений из S3
       await Promise.all(imagesToRemove.map(deleteImageFromS3));
@@ -403,42 +351,51 @@ router.put(
         where: {
           idBlock: projectId,
         },
-      });      
-      
+      });
+
       const dynamicBlocksContent = req.body.dynamicBlocksJSON ?
-        JSON.parse(req.body.dynamicBlocksJSON) :
+        JSON.parse(req.body.dynamicBlocksJSON) : [];
+
+      // Загрузка новых динамических изображений на S3
+      const dynamicImagesNew = req.files.dynamicImages ?
+        await Promise.all(
+          req.files.dynamicImages.map(async (file) => {
+            const {
+              fileUrl
+            } = await uploadFileToS3(file, 'images/imageAdd');
+            return fileUrl;
+          })
+        ) :
         [];
 
-        const updatedDynamicBlocksContent = updateDynamicBlocksContent(
-          dynamicBlocksContent,
-          dynamicImagesNew
-      );      
+      // Сохраняем текущие динамические изображения, если они уже существуют
+      const existingDynamicImages = existingConstructor && existingConstructor.image ?
+        existingConstructor.image.split(', ').map((img) => img.trim()) :
+        [];
 
-      const existingImages =
-      existingConstructor && existingConstructor.image
-        ? existingConstructor.image.split(', ').map((img) => img.trim())
-        : [];
+      // Объединяем старые и новые динамические изображения
+      const allDynamicImages = [...existingDynamicImages, ...dynamicImagesNew];
 
+      // Обновляем контент динамических блоков
+      const updatedDynamicBlocksContent = updateDynamicBlocksContent(
+        dynamicBlocksContent,
+        allDynamicImages
+      );
+
+      // Извлечение всех динамических изображений
       const extractImages = (blocks) =>
-           blocks
-           .flatMap((blockGroup) => blockGroup)
-           .filter((block) => block.type === 'file' && Array.isArray(block.value))
-             .flatMap((block) => block.value)
-             .filter(Boolean);
-      
-     
-      
-      const newDynamicImages = extractImages(updatedDynamicBlocksContent).map((img) => img.trim());     
+        blocks
+        .flatMap((blockGroup) => blockGroup)
+        .filter((block) => block.type === 'file' && Array.isArray(block.value))
+        .flatMap((block) => block.value)
+        .filter(Boolean);
+
+      const newDynamicImages = extractImages(updatedDynamicBlocksContent).map((img) => img.trim());
 
       // Определение изображений, которые больше не связаны с динамическими блоками
-      const imagesToRemoveFromDynamicBlocks = existingImages.filter(
+      const imagesToRemoveFromDynamicBlocks = existingDynamicImages.filter(
         (image) => !newDynamicImages.map(normalizeUrl).includes(normalizeUrl(image))
-      )      
-
-
-          console.log('existingImages:', existingImages);
-          console.log('newDynamicImages:', newDynamicImages);
-          console.log('imagesToRemoveFromDynamicBlocks:', imagesToRemoveFromDynamicBlocks);
+      );
 
       // Удаление старых динамических изображений из S3
       await Promise.all(imagesToRemoveFromDynamicBlocks.map(deleteImageFromS3));
@@ -451,7 +408,7 @@ router.put(
         });
       } else {
         await Constructor.create({
-          data: updatedDynamicBlocksContent, 
+          data: updatedDynamicBlocksContent,
           image: newDynamicImages.join(', '),
           idBlock: projectId,
         });
@@ -472,18 +429,6 @@ router.put(
 );
 
 
-// router.get('/getimage/:imageName', (req, res) => {
-//   const {
-//     imageName
-//   } = req.params;
-//   const imagePath = path.join(projectImagesPath, imageName);
-
-//   res.set('Cache-Control', 'public, max-age=432000'); // 432000 секунд = 5 дней
-
-//   res.sendFile(imagePath);
-// });
-
-
 router.get('/getzapros', async (req, res) => {
   try {
     const data = await Project.findAll({
@@ -492,8 +437,6 @@ router.get('/getzapros', async (req, res) => {
         ['id', 'DESC']
       ]
     });
-
-    // res.set('Cache-Control', 'public, max-age=432000'); // 432000 секунд = 5 дней
 
     res.json(data);
   } catch (error) {
@@ -520,9 +463,6 @@ router.get('/getzapros-filter', async (req, res) => {
     } else {
       data = await Project.findAll();
     }
-
-    // res.set('Cache-Control', 'public, max-age=432000'); // 432000 секунд = 5 дней
-
     res.json(data);
   } catch (error) {
     console.log(error);
@@ -576,130 +516,46 @@ router.delete('/deletezapros/:id', async (req, res) => {
       }
     });
 
-    console.log('Удаляем проект с id:', id);
-
     // Удаление изображений из Constructor
     if (deleteConstructorImg?.image) {
       const imageConstructorNames = deleteConstructorImg.image.includes(', ') ?
-        deleteConstructorImg.image.split(', ') :
-        [deleteConstructorImg.image];
-      
-        console.log('Изображения в Constructor для удаления:', imageConstructorNames)
+        deleteConstructorImg.image.split(', ') : [deleteConstructorImg.image];
 
       await Promise.all(
         imageConstructorNames.map(async (imageUrl) => {
-          const result = extractFileNameAndFolderFromUrl(imageUrl);
-          if (result) {
-            const {
-              fileName,
-              folder
-            } = result;
-            await deleteFileFromS3(fileName, folder);
-          } else {
-            console.log(`Не удалось извлечь имя файла и папку из URL: ${imageUrl}`);
-          }
+          await deleteImageFromS3(imageUrl);
         })
       );
     }
+    // Удаление изображений из Project (imageTitle, imageProject, imageOpen, imageClose)
+    const allImages = [
+      ...(post.imageTitle ? post.imageTitle.split(', ') : []),
+      post.imageProject,
+      post.imageOpen,
+      post.imageClose,
+    ].filter(Boolean);
 
-    // Удаление фотографий из imageTitle
-    if (post.imageTitle) {
-      const imageTitleNames = post.imageTitle.includes(', ') ?
-        post.imageTitle.split(', ') :
-        [post.imageTitle];
-      
-        console.log('Изображения из imageTitle для удаления:', imageTitleNames);
+    await Promise.all(
+      allImages.map(async (imageUrl) => {
+        await deleteImageFromS3(imageUrl);
+      })
+    );
 
-      await Promise.all(
-        imageTitleNames.map(async (imageUrl) => {
-          const result = extractFileNameAndFolderFromUrl(imageUrl);
-          if (result) {
-            const {
-              fileName,
-              folder
-            } = result;
-            await deleteFileFromS3(fileName, folder);
-          } else {
-            console.log(`Не удалось извлечь имя файла и папку из URL: ${imageUrl}`);
-          }
-        })
-      );
-    }
-
-    // Удаление фотографий из imageProject
-    if (post.imageProject) {
-      const projectImageNames = [post.imageProject];
-
-      console.log('Изображения из imageProject для удаления:', projectImageNames);
-
-      await Promise.all(
-        projectImageNames.map(async (imageUrl) => {
-          const result = extractFileNameAndFolderFromUrl(imageUrl);
-          if (result) {
-            const {
-              fileName,
-              folder
-            } = result;
-            await deleteFileFromS3(fileName, folder);
-          } else {
-            console.log(`Не удалось извлечь имя файла и папку из URL: ${imageUrl}`);
-          }
-        })
-      );
-    }
-
-    // Удаление фотографии из imageOpen
-    if (post.imageOpen) {
-
-      console.log('Изображение из imageOpen для удаления:', post.imageOpen);
-
-      const result = extractFileNameAndFolderFromUrl(post.imageOpen);
-      if (result) {
-        const {
-          fileName,
-          folder
-        } = result;
-        await deleteFileFromS3(fileName, folder);
-      } else {
-        console.log(`Не удалось извлечь имя файла и папку из URL: ${post.imageOpen}`);
-      }
-    }
-
-    // Удаление фотографии из imageClose
-    if (post.imageClose) {
-      
-      console.log('Изображение из imageClose для удаления:', post.imageClose);
-
-      const result = extractFileNameAndFolderFromUrl(post.imageClose);
-      if (result) {
-        const {
-          fileName,
-          folder
-        } = result;
-        await deleteFileFromS3(fileName, folder);
-      } else {
-        console.log(`Не удалось извлечь имя файла и папку из URL: ${post.imageClose}`);
-      }
-    }
-
-    // Удаление связанных элементов из других таблиц
+    // Удаление связанных элементов и проекта
     await Constructor.destroy({
       where: {
-        idBlock: id,
-      },
+        idBlock: id
+      }
     });
-
     await ProjectMain.destroy({
       where: {
-        IdProject: id,
-      },
+        IdProject: id
+      }
     });
-
-    // Удаление поста
     await Project.destroy({
       where: {
-        id,
-      },
+        id
+      }
     });
 
     res.sendStatus(200);
