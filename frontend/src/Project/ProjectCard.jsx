@@ -227,8 +227,7 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
                                 border: '1px solid',
                                 padding: '3px 6px',
                                 borderRadius: '34px',
-                              }}
-                            >
+                              }}>
                               {competency.label}
                             </div>
                           ));
@@ -247,8 +246,7 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
                                     border: '1px solid',
                                     padding: '3px 6px',
                                     borderRadius: '34px',
-                                  }}
-                                >
+                                  }}>
                                   {label}
                                 </div>
                               );
@@ -267,8 +265,7 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
                                       border: '1px solid',
                                       padding: '3px 6px',
                                       borderRadius: '34px',
-                                    }}
-                                  >
+                                    }}>
                                     {label}
                                   </div>
                                 );
@@ -400,54 +397,57 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
                 </div>
                 <div className={styles.title_text_mobile}>{project.descriptionProject}</div>
                 <div className={styles.local_container}>
-                  <div className={styles.local_ritgh}>
-                    <div className={styles.local_container_wrapper_block}>
-                      <div className={styles.local_title}>Расположение</div>
-                      <div className={styles.local_text}>{project.location}</div>
-                    </div>
-                    <div className={styles.local_container_wrapper_block1}>
-                      <div className={styles.local_title}>Статус</div>
-                      <div className={styles.local_text}> {project.statusObject}</div>
-                    </div>
-                    <div className={styles.local_container_wrapper_block1}>
-                      <div className={styles.local_title}>Публикация</div>
-                      <Link to={project.linkToPublication} target="_blank">
-                        <div className={`${styles.publicationLink} ${styles.local_text}`}>{project.publication}</div>
-                      </Link>
-                      <Link to={project.linkToPublicationTwo} target="_blank">
-                        <div className={`${styles.publicationLink} ${styles.local_text}`}>{project.publicationTwo}</div>
-                      </Link>
+                  {/* <div className={styles.local_ritgh}> */}
+                  <div className={styles.local_container_wrapper_block}>
+                    <div className={styles.local_title}>Расположение</div>
+                    <div className={styles.local_text}> {project.location || '—'}</div>
+                  </div>
+                  <div className={styles.local_container_wrapper_block}>
+                    <div className={styles.local_title}>Статус</div>
+                    <div className={styles.local_text}>
+                      {console.log(project.statusObject)}
+                      {project.statusObject !== 'undefined' ? project.statusObject : '—'}
                     </div>
                   </div>
-                  <div className={styles.local_left}>
-                    <div className={styles.local_container_wrapper_block}>
-                      <div className={styles.local_title}>Степень участия</div>
-                      <div className={styles.local_text}>
-                        {' '}
-                        {/* {project.degreeParticipation} */}
-                        {project.degreeParticipation.split(',').map((elem, index, array) => (
-                          <span key={index}>
-                            {elem.trim()} {index < array.length - 1 ? ', ' : ''}
-                          </span>
-                        ))}
+                  <div className={styles.local_container_wrapper_block}>
+                    <div className={styles.local_title}>Публикация</div>
+                    <Link to={project.linkToPublication || '—'} target="_blank">
+                      <div className={`${styles.publicationLink} ${styles.local_text}`}>{project.publication}</div>
+                    </Link>
+                    <Link to={project.linkToPublicationTwo} target="_blank">
+                      <div className={`${styles.publicationLink} ${styles.local_text}`}>
+                        {project.publicationTwo || '—'}
                       </div>
-                    </div>
-                    <div className={styles.local_container_wrapper_block1}>
-                      <div className={styles.local_title}>Заказчик</div>
-                      <div className={styles.local_text}> {project.customer}</div>
-                    </div>
-                    <div className={styles.local_container_wrapper_block1}>
-                      <div className={styles.local_title}>Стадия</div>
-                      <div className={styles.local_text}>
-                        {' '}
-                        {project.awards.split(',').map((award, index, array) => (
-                          <span key={index}>
-                            {award.trim()} {index < array.length - 1 ? ', ' : ''}
-                          </span>
-                        ))}
-                      </div>
+                    </Link>
+                  </div>
+                  {/* </div> */}
+                  {/* <div className={styles.local_left}> */}
+                  <div className={styles.local_container_wrapper_block}>
+                    <div className={styles.local_title}>Степень участия</div>
+                    <div className={styles.local_text}>
+                      {/* {project.degreeParticipation} */}
+                      {(project.degreeParticipation || '—').split(',').map((elem, index, array) => (
+                        <span key={index}>
+                          {elem.trim()} {index < array.length - 1 ? ', ' : ''}
+                        </span>
+                      ))}
                     </div>
                   </div>
+                  <div className={styles.local_container_wrapper_block}>
+                    <div className={styles.local_title}>Заказчик</div>
+                    <div className={styles.local_text}> {project.customer || '—'}</div>
+                  </div>
+                  <div className={styles.local_container_wrapper_block}>
+                    <div className={styles.local_title}>Стадия</div>
+                    <div className={styles.local_text}>
+                      {(project.awards || '—').split(',').map((award, index, array) => (
+                        <span key={index}>
+                          {award.trim()} {index < array.length - 1 ? ', ' : ''}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  {/* </div> */}
                 </div>
               </div>
             </div>
@@ -529,8 +529,7 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
                   onMouseEnter={handleMouseEnter}
                   onMouseLeave={handleMouseLeave}
                   className={styles.button_project_link_projectCard1}
-                  to={`/projects/${previousProject.id}`}
-                >
+                  to={`/projects/${previousProject.id}`}>
                   <div className={styles.previous_svg_projectCard}>
                     <img src={previous} alt={previous} />
                     <span className={styles.previous__span_projectCard}>{`${previousProject.title}`}</span>
@@ -542,8 +541,7 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
                   onMouseEnter={handleMouseEnter}
                   onMouseLeave={handleMouseLeave}
                   className={styles.button_project_link_projectCard2}
-                  to={`/projects/${nextProject.id}`}
-                >
+                  to={`/projects/${nextProject.id}`}>
                   <div className={styles.next_svg_projectCard}>
                     <span className={styles.next__span_projectCard}>{`${nextProject.title}`}</span>
                     <img src={next} alt={next} />
@@ -555,8 +553,7 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
               <button
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
-                onClick={() => shareToVK(project, Host)}
-              >
+                onClick={() => shareToVK(project, Host)}>
                 <span className={styles.social_links_item} style={{ marginRight: '21px', color: '#FF7F6A' }}>
                   VK
                 </span>
@@ -564,8 +561,7 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
               <button
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
-                onClick={() => shareToWhatsApp(project, Host)}
-              >
+                onClick={() => shareToWhatsApp(project, Host)}>
                 <span className={styles.social_links_item} style={{ marginRight: '25px', color: '#FF7F6A' }}>
                   WA
                 </span>
@@ -581,8 +577,7 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
               <button
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
-                onClick={() => shareToTelegram(project, Host)}
-              >
+                onClick={() => shareToTelegram(project, Host)}>
                 <span className={styles.social_links_item} style={{ color: '#FF7F6A' }}>
                   TG
                 </span>
@@ -632,8 +627,7 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
               700: {
                 slidesPerView: 2.1,
               },
-            }}
-          >
+            }}>
             {randomProjects?.map((project, index) => {
               const photoName = project && project.imageProject;
               const defaultPhoto = catPhoto;
@@ -652,8 +646,7 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
                   onScroll={handleScroll}
                   id="slider_container_item_card"
                   className={styles.slider_container_item_card_projectCard}
-                  style={index % 2 === 1 ? { paddingTop: '10rem' } : {}}
-                >
+                  style={index % 2 === 1 ? { paddingTop: '10rem' } : {}}>
                   <Link to={`/projects/${project.id}`} key={project.id}>
                     <div className={styles.wrapper_container_item_card_projectCard}>
                       <img
@@ -693,8 +686,7 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
                                     border: '1px solid',
                                     padding: '3px 6px',
                                     borderRadius: '34px',
-                                  }}
-                                >
+                                  }}>
                                   {competency.label}
                                 </div>
                               ));
@@ -713,8 +705,7 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
                                         border: '1px solid',
                                         padding: '3px 6px',
                                         borderRadius: '34px',
-                                      }}
-                                    >
+                                      }}>
                                       {label}
                                     </div>
                                   );
@@ -733,8 +724,7 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
                                           border: '1px solid',
                                           padding: '3px 6px',
                                           borderRadius: '34px',
-                                        }}
-                                      >
+                                        }}>
                                         {label}
                                       </div>
                                     );

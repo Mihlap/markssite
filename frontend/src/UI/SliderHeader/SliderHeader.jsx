@@ -86,31 +86,15 @@ const SliderHeader = ({ isAwards }) => {
       <div ref={marqueeRef} className={styles.marqueeContainer}>
         {show && (
           <div className={styles.SliderHeader__marquee}>
-            {images.map((image, index) => (
-              <div
-                key={index}
-                className={`${styles.SliderHeader__item} ${isAwards ? '' : styles.SliderHeader__item_companies}`}
-              >
-                <img src={image.src} alt={image.alt} />
-              </div>
-            ))}
-            {/* Дублирование изображений для отсутсвия пустого места перед началом нового цикла анимации*/}
-            {images.map((image, index) => (
-              <div
-                key={`duplicate-${index}`}
-                className={`${styles.SliderHeader__item} ${isAwards ? '' : styles.SliderHeader__item_companies}`}
-              >
-                <img src={image.src} alt={image.alt} />
-              </div>
-            ))}
-            {images.map((image, index) => (
-              <div
-                key={`duplicate2-${index}`}
-                className={`${styles.SliderHeader__item} ${isAwards ? '' : styles.SliderHeader__item_companies}`}
-              >
-                <img src={image.src} alt={image.alt} />
-              </div>
-            ))}
+            {Array.from({ length: 10 }).flatMap((_, i) =>
+              images.map((image, index) => (
+                <div
+                  key={`${i}-${index}`}
+                  className={`${styles.SliderHeader__item} ${isAwards ? '' : styles.SliderHeader__item_companies}`}>
+                  <img src={image.src} alt={image.alt} />
+                </div>
+              ))
+            )}
           </div>
         )}
       </div>
