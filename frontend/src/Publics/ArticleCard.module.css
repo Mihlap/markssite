@@ -9,7 +9,7 @@
 
 .all_button_div {
   position: absolute;
-  top: 8%;
+  top: 10rem;
   left: 1.69rem;
   cursor: pointer;
   z-index: 1;
@@ -39,6 +39,7 @@
   line-height: 4rem;
   color: var(--white-F6F6F6);
   padding-top: 4rem;
+  width: 44%;
 }
 
 .cart_article__author__block__card {
@@ -79,7 +80,7 @@
   display: flex;
   justify-content: space-between;
   padding-top: 4rem;
-  padding-bottom: 0rem;
+  padding-bottom: 1rem;
 }
 
 /* <<=============== левый блок контента с информацией===============>> */
@@ -688,9 +689,22 @@
   padding-left: 1.75rem;
 }
 
+@media screen and (min-width: 1440px) and (max-width: 1920px) {
+  .all_button_div {
+    top: 8rem;
+  }
+
+  .cart_article_title__block__card {
+    width: 60%;
+  }
+}
+
 /* Стили для desctop версии +1 сайта блока ArticleCard начинаются тут */
 
 @media screen and (min-width: 1025px) and (max-width: 1600px) {
+  .item_img {
+    width: 100%;
+  }
   .header_content_left {
     max-width: 78%;
     white-space: normal;
@@ -702,11 +716,23 @@
     display: flex;
     height: 100%;
     padding-left: 1.75rem;
-    padding-right: 0vw;
+    padding-right: 1.75rem;
   }
+
+  .leftImg1_object_text1 {
+    width: 100%;
+  }
+  .div_conteiner {
+    width: 100%;
+    padding-right: 1.75rem;
+  }
+
   .item_container_imageClose {
     padding-left: 1.75rem;
+    padding-right: 1.75rem;
+    width: 100%;
   }
+
   .container_author_address_imageClose {
     padding-left: 0;
   }
@@ -724,6 +750,10 @@
     padding-left: 1.69rem;
     width: 100%;
   }
+
+  .cart_article_title__block__card {
+    width: 80%;
+  }
 }
 
 /* Стили для planshet версии сайта блока ArticleCard начинаются тут */
@@ -735,13 +765,18 @@
   .text_author {
     display: none;
   }
+
+  .cart_article_title__block__card {
+    width: 100%;
+  }
+
   .cart_article__block__card {
     width: 100%;
   }
   .blockImg {
     width: 100%;
-    padding-left: 1rem;
-    padding-right: 1rem;
+    padding-left: 1.75rem;
+    padding-right: 1.75rem;
   }
 
   .item_img {
@@ -901,6 +936,9 @@
 
 /* Стили для мобильной версии сайта блока ArticleCard начинаются тут */
 @media screen and (max-width: 768px) {
+  .cart_article_title__block__card {
+    width: 100%;
+  }
   .share_article,
   .social_links_articleCard,
   /* .cart_article__author__block__card, */
@@ -920,7 +958,7 @@
   }
 
   .cart_article__block__card {
-    padding-top: 16vh;
+    padding-top: 9.7rem;
     padding-left: 1rem;
     padding-right: 1rem;
     width: 100%;
