@@ -8,7 +8,7 @@ import 'swiper/css/pagination';
 import SliderItemProject from '../../Header/Swiper-project/SliderItemProject';
 import './SliderContainerProjectCard.css';
 
-const Host = process.env.REACT_APP_SERVER_HOST;
+const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
 const SliderContainerProjectCard = ({ projects }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -31,6 +31,19 @@ const SliderContainerProjectCard = ({ projects }) => {
     }
   };
 
+  const isFullUrl = (url) => url.startsWith('http://') || url.startsWith('https://');
+
+const imageSrc = projects.imageProject
+  ? isFullUrl(projects.imageProject)
+    ? projects.imageProject
+    : `${bucket_url}/images/imageAdd/${projects.imageProject}`
+  : projects.imageTitle
+    ? isFullUrl(projects.imageTitle)
+      ? projects.imageTitle
+      : `${bucket_url}/images/imageAdd/${projects.imageTitle}`
+    : "";
+
+
   return (
     <div className="swiper_container_ProjectCard">
       <Swiper
@@ -45,8 +58,7 @@ const SliderContainerProjectCard = ({ projects }) => {
           if (swiperRef.current === null) {
             swiperRef.current = swiper;
           }
-        }}
-      >
+        }}>
         <div className="swiper_wrapper_ProjectCard">
           {projects?.map((project) => {
             if (project) {
@@ -56,9 +68,7 @@ const SliderContainerProjectCard = ({ projects }) => {
                     <SliderItemProject
                       className="swiper_item_image"
                       title={project.title}
-                      src={`${Host}/images/imageAdd/${
-                        project.imageProject ? project.imageProject : project.imageTitle
-                      }`}
+                      src={imageSrc}
                       text={project.text}
                       id={project.link}
                       selectCompetencies={(() => {
@@ -81,8 +91,7 @@ const SliderContainerProjectCard = ({ projects }) => {
                                     border: '0.5px solid',
                                     padding: '3px 6px',
                                     borderRadius: '34px',
-                                  }}
-                                >
+                                  }}>
                                   {label}
                                 </div>
                               );
@@ -100,8 +109,7 @@ const SliderContainerProjectCard = ({ projects }) => {
                                       border: '0.5px solid',
                                       padding: '3px 6px',
                                       borderRadius: '34px',
-                                    }}
-                                  >
+                                    }}>
                                     {label}
                                   </div>
                                 );
