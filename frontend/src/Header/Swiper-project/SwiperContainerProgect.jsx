@@ -8,7 +8,7 @@ import 'swiper/css/pagination';
 import SliderItemProject from './SliderItemProject';
 import './SwiperContainerProgect.css';
 
-const Host = process.env.REACT_APP_SERVER_HOST;
+const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
 const SwiperContainerProgect = ({ projects }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -67,7 +67,11 @@ const SwiperContainerProgect = ({ projects }) => {
                 <Link key={project.id} to={`/projects/${project.id}`}>
                   <SliderItemProject
                     title={project.title}
-                    src={`${Host}/images/imageAdd/${project.imageProject ? project.imageProject : project.imageTitle}`}
+                    src={
+                      project.imageProject?.includes('https')
+                        ? project.imageProject
+                        : `${bucket_url}/images/imageAdd/${project.imageProject ? project.imageProject : project.imageTitle}`
+                    }
                     text={project.text}
                     id={project.link}
                     selectCompetencies={(() => {

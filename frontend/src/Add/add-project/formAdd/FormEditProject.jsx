@@ -40,7 +40,7 @@ import {
 import ConstructorPage from '../constructor/ConstructorPage';
 import { monthOptions, yearOptions } from './utils/Time';
 
-const Host = process.env.REACT_APP_SERVER_HOST;
+const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
 export default function FormEditProject({ setIsModalOpen, editProjectData }) {
   const dispatch = useDispatch();
@@ -631,6 +631,8 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
       }
       const classNames = getPreviewClassName(labelText);
 
+      const isFullUrl = (url) => url.startsWith('http://') || url.startsWith('https://');
+
       return (
         <div key={key}>
           {inputType === 'text' && (
@@ -702,7 +704,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                   </label>
                   {Array.isArray(dynamicPreviews[blockIndex]?.[inputIndex]) &&
                     dynamicPreviews[blockIndex][inputIndex].map((src, index) => (
-                      <div key={`${blockIndex}-${inputIndex}-${index}`} className={classNames.innerDiv}>
+                       <div key={`${blockIndex}-${inputIndex}-${index}`} className={classNames.innerDiv}>
                         <div className={styles.preview_photos_container_block_constructor}>
                           {typeof src === 'string' && src.startsWith('blob:') ? (
                             <video
@@ -716,13 +718,13 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                           ) : (
                             <video
                               key={index}
-                              src={`${Host}/images/imageAdd/${src}`}
+                              src={`${bucket_url}/images/imageAdd/${src}`}
                               muted
                               loop
                               autoPlay
                               className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
                             />
-                          )}
+                          )}                         
                           <div
                             className={styles.preview_photos_container_block_constructor__remove_icon}
                             onClick={(e) => handleDeletePreview(e, blockIndex, inputIndex, index)}
@@ -779,23 +781,28 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                   </div>
                   <div className={`${styles.previewContainer} ${classNames.outerDiv}`}>
                     {Array.isArray(dynamicPreviews[blockIndex]?.[inputIndex]) &&
-                      dynamicPreviews[blockIndex][inputIndex].map((src, index) => {
+                        dynamicPreviews[blockIndex][inputIndex].map((src, index) => {                        
+                          let imageSrc = src;
+                          if (typeof src === 'string' && src.startsWith('blob:')) {
+                            // является локальным URL для предварительного просмотра
+                            imageSrc = src;
+                          } else if (isFullUrl(src)) {
+                            // является полным URL, используем как есть
+                            imageSrc = src;
+                          } else if (src) {
+                            // добавляем bucket_url
+                            imageSrc = `${bucket_url}/images/imageAdd/${src}`;
+                          } else {                     
+                            return null;
+                          }                                 
                         return (
                           <div key={`${blockIndex}-${inputIndex}-${index}`} className={classNames.innerDiv}>
                             <div className={styles.preview_photos_container_block_constructor}>
-                              {typeof src === 'string' && src.startsWith('blob:') ? (
                                 <img
-                                  src={src}
-                                  alt={`Preview ${index}`}
-                                  className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
-                                />
-                              ) : (
-                                <img
-                                  src={`${Host}/images/imageAdd/${src}`}
-                                  alt={`Preview ${index}`}
-                                  className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
-                                />
-                              )}
+                                 src={imageSrc}
+                                 alt={`Preview ${index}`}
+                                 className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
+                               />
                               <div
                                 className={styles.preview_photos_container_block_constructor__remove_icon}
                                 onClick={(e) => handleDeletePreview(e, blockIndex, inputIndex, index)}
@@ -946,9 +953,6 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
   };
 
   // << ============ функции КОНСТРУКТОРА ============ >>
-
-  // console.log(inputData, "<<--inputData PROJECT");
-  // console.log(dynamicData, "<<--dynamicData");
 
   return (
     <div className={styles.form_container}>
@@ -1206,7 +1210,10 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                 <div className={styles.preview_photos_container__block}>
                   <img
                     className={styles.preview_photos_container__img}
-                    src={`${Host}/images/imageAdd/${inputData.imageProject}`}
+                    src={inputData?.imageProject?.includes('https') 
+                      ? inputData.imageProject 
+                      : `${bucket_url}/images/imageAdd/${inputData?.imageProject}`
+                    }                    
                     alt="Preview"
                   />
                   {/* <div
@@ -1220,89 +1227,9 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
               {previewPhotoAva?.map((preview, index) => (
                 <div key={index} className={styles.preview_photos_container__block}>
                   <img className={styles.preview_photos_container__img} src={preview || ''} alt={`Preview ${index}`} />
-                  {/* <div
-                    className={styles.preview_photos_container__remove_icon}
-                    onClick={() => handleRemovePreviewPhotoAva(index)}
-                  >
-                    <span></span>
-                  </div> */}
                 </div>
               ))}
-            </div>
-            {/* <div className={styles.form_container__radio_container}>
-              <div
-                className={`${styles.form_container__radio_block_one} ${
-                  selectedRadio === "28,28"
-                    ? styles.form_container__radio_activ_block
-                    : ""
-                }`}
-              >
-                <label
-                  className={`${styles.form_container__radio_label_one} ${
-                    selectedRadio === "28,28"
-                      ? styles.form_container__radio_activ_label
-                      : ""
-                  }`}
-                >
-                  <input
-                    className={styles.form_container__radio_input}
-                    type="radio"
-                    name="radioGroup"
-                    value="28,28"
-                    checked={selectedRadio === "28,28"}
-                    onChange={(e) => setSelectedRadio(e.target.value)}
-                  />
-                </label>
-              </div>
-              <div
-                className={`${styles.form_container__radio_block_two} ${
-                  selectedRadio === "28,14"
-                    ? styles.form_container__radio_activ_block
-                    : ""
-                }`}
-              >
-                <label
-                  className={`${styles.form_container__radio_label_two} ${
-                    selectedRadio === "28,14"
-                      ? styles.form_container__radio_activ_label
-                      : ""
-                  }`}
-                >
-                  <input
-                    className={styles.form_container__radio_input}
-                    type="radio"
-                    name="radioGroup"
-                    value="28,14"
-                    checked={selectedRadio === "28,14"}
-                    onChange={(e) => setSelectedRadio(e.target.value)}
-                  />
-                </label>
-              </div>
-              <div
-                className={`${styles.form_container__radio_block_three} ${
-                  selectedRadio === "28,48"
-                    ? styles.form_container__radio_activ_block
-                    : ""
-                }`}
-              >
-                <label
-                  className={`${styles.form_container__radio_label_three} ${
-                    selectedRadio === "28,48"
-                      ? styles.form_container__radio_activ_label
-                      : ""
-                  }`}
-                >
-                  <input
-                    className={styles.form_container__radio_input}
-                    type="radio"
-                    name="radioGroup"
-                    value="28,48"
-                    checked={selectedRadio === "28,48"}
-                    onChange={(e) => setSelectedRadio(e.target.value)}
-                  />
-                </label>
-              </div>
-            </div> */}
+            </div>      
           </div>
           {/* блок где загружаются 4 картинки, они отображаются в шапке слайдера  */}
           <div className={`${styles.image_four} ${styles.flex_block_gap}`}>
@@ -1384,7 +1311,10 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                   <div key={index} className={styles.preview_photos_container__block}>
                     <img
                       className={styles.preview_photos_container__img}
-                      src={`${Host}/images/imageAdd/${imageFileName.trim()}`}
+                      src={imageFileName.trim().includes('https') 
+                        ? imageFileName.trim() 
+                        : `${bucket_url}/images/imageAdd/${imageFileName.trim()}`
+                      }
                       alt={`Preview ${index}`}
                     />
                     <div
@@ -2063,7 +1993,10 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                 <div className={styles.preview_photos_container__block}>
                   <img
                     className={styles.preview_photos_container__img}
-                    src={`${Host}/images/imageAdd/${inputData.imageOpen}`}
+                    src={inputData?.imageOpen?.includes('https') 
+                      ? inputData.imageOpen 
+                      : `${bucket_url}/images/imageAdd/${inputData?.imageOpen}`
+                    }  
                     alt="Preview"
                   />
                   {/* <div
@@ -2291,7 +2224,10 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
                 <div className={styles.preview_photos_container__block}>
                   <img
                     className={styles.preview_photos_container__img}
-                    src={`${Host}/images/imageAdd/${inputData.imageClose}`}
+                    src={inputData?.imageClose?.includes('https') 
+                      ? inputData.imageClose 
+                      : `${bucket_url}/images/imageAdd/${inputData?.imageClose}`
+                    } 
                     alt="Preview"
                   />
                   {/* <div
