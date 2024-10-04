@@ -2,7 +2,7 @@
 
 @keyframes marquee {
   0% {
-    transform: translateX(10%);
+    transform: translateX(0%);
   }
   100% {
     transform: translateX(-50%);
@@ -35,12 +35,14 @@
   }
 
   &__marquee {
+    width: 1000%;
     display: flex;
     align-items: center;
     gap: 4rem;
-    animation: marquee 20s linear infinite;
+    animation: marquee 120s linear infinite;
     position: relative;
     height: 42px;
+    overflow: hidden;
   }
 
   &__item {
@@ -66,21 +68,27 @@
 
   @media all and (max-width: 1600px) {
     &__marquee {
+      width: 1500%;
       gap: 3rem;
-      animation: marquee 15s linear infinite;
     }
   }
 
   @media all and (max-width: 1024px) {
     &__marquee {
-      animation: marquee 10s linear infinite;
+      width: 2000%;
     }
   }
 
   @media all and (max-width: 768px) {
     &__marquee {
+      width: 3000%;
       gap: 2.7rem;
-      animation: marquee 5s linear infinite;
+    }
+  }
+
+  @media all and (max-width: 480px) {
+    &__marquee {
+      width: 5000%;
     }
   }
 }
