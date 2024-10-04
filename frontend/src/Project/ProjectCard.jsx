@@ -30,7 +30,7 @@ import { renderListWithDots } from '../Project/utils';
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
-const Host = process.env.REACT_APP_SERVER_HOST;
+const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
 const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMouseHover }) => {
   const { id } = useParams();
@@ -162,12 +162,23 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
   const nextIndex = (currentIndex + 1) % projects.length;
   const previousProject = projects[previousIndex];
   const nextProject = projects[nextIndex];
-  const firstValue = (projects[0]?.viewConstruction ?? '').split(',')[0];
   const userSelectedBlocks = project?.Constructors?.map((el) => el.data);
-  const imageOpenSource = project && project.imageOpen ? `${Host}/images/imageAdd/${project.imageOpen}` : catPhoto;
-  const altTextOpen = (project && project.imageOpen) || 'Default Alt Text';
-  const imageCloseSource = project && project.imageClose ? `${Host}/images/imageAdd/${project.imageClose}` : catPhoto;
-  const altTextClose = (project && project.imageClose) || 'Default Alt Text';
+  const isFullUrl = (url) => url.startsWith('http://') || url.startsWith('https://');
+
+  const imageOpenSource = project && project.imageOpen
+    ? isFullUrl(project.imageOpen)
+      ? project.imageOpen
+      : `${bucket_url}/images/imageAdd/${project.imageOpen}`
+    : catPhoto;
+  
+    const imageCloseSource = project && project.imageClose
+    ? isFullUrl(project.imageClose)
+      ? project.imageClose
+      : `${bucket_url}/images/imageAdd/${project.imageClose}`
+    : catPhoto;
+  
+  // const altTextOpen = (project && project.imageOpen) || 'Default Alt Text';
+  // const altTextClose = (project && project.imageClose) || 'Default Alt Text';
 
   // Обработчик изменения размера окна
   const handleResize = useCallback(() => {
@@ -190,17 +201,11 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
   }, [projects]);
   // const randomProjects = projects.slice().sort(() => Math.random() - 0.5).slice(0, 20);
 
-  //  console.log(projects, " << --- projects");
-  // console.log(userSelectedBlocks, "<<--- userSelectedBlocks");
-
-  // console.log('Host:', Host);
-  // console.log('project.imageProject:', project.imageProject);
-
   return (
     <>
       <Helmet>
         <title>{project ? project.title : 'Marks Group'}</title>
-        <meta property="og:image" content={project ? `${Host}/images/imageAdd/${project.imageProject}` : ''} />
+        <meta property="og:image" content={project ? `${bucket_url}/images/imageAdd/${project.imageProject}` : ''} />
       </Helmet>
       <div className={styles.main_project_card}>
         {project && <ProjectCardSlider slidesCard={[project]} />}
@@ -553,7 +558,7 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
               <button
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
-                onClick={() => shareToVK(project, Host)}>
+                onClick={() => shareToVK(project, bucket_url)}>
                 <span className={styles.social_links_item} style={{ marginRight: '21px', color: '#FF7F6A' }}>
                   VK
                 </span>
@@ -561,7 +566,7 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
               <button
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
-                onClick={() => shareToWhatsApp(project, Host)}>
+                onClick={() => shareToWhatsApp(project, bucket_url)}>
                 <span className={styles.social_links_item} style={{ marginRight: '25px', color: '#FF7F6A' }}>
                   WA
                 </span>
@@ -577,7 +582,7 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
               <button
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
-                onClick={() => shareToTelegram(project, Host)}>
+                onClick={() => shareToTelegram(project, bucket_url)}>
                 <span className={styles.social_links_item} style={{ color: '#FF7F6A' }}>
                   TG
                 </span>
@@ -632,11 +637,15 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
               const photoName = project && project.imageProject;
               const defaultPhoto = catPhoto;
 
-              const photoSrc =
-                photoName && photoName !== 'null' && photoName !== 'undefined'
-                  ? `${Host}/images/imageAdd/${photoName}`
-                  : defaultPhoto;
-              if (!project) {
+              const isFullUrl = (url) => url.startsWith('http://') || url.startsWith('https://');
+
+              const photoSrc =photoName
+                ? isFullUrl(photoName)
+                  ? photoName
+                  : `${bucket_url}/images/imageAdd/${photoName}`
+                : defaultPhoto;
+
+                if (!project) {
                 return null;
               }
 
