@@ -48,7 +48,7 @@
   display: flex;
   flex-wrap: wrap;
   padding-top: 2rem;
-  padding-left: 1.69rem;
+  padding-left: 1.87vw;
   grid-column-gap: 8px;
   grid-row-gap: 16px;
   width: 100%;
@@ -106,7 +106,7 @@ display: inline-block;
 .button_look_all {
   display: inline-flex;
   justify-content: flex-start;
-  padding-left: 1.69rem;
+  padding-left: 1.87vw;
   padding-top: 0.5rem;
   align-items: center;
   border: none;
@@ -175,7 +175,7 @@ display: inline-block;
   display: flex;
   flex-wrap: wrap;
   gap: 1.88rem;
-  padding-left: 1.88rem;
+  padding-left: 1.87vw;
 }
 
 .section_project__block_cart {
@@ -651,7 +651,7 @@ display: inline-block;
 @media screen and (min-width: 768px) and (max-width: 1024px) {
   .project_slider_text {
     bottom: 44vh;
-    left: 3.44rem;
+    left: 1rem;
   }
 
   .actuality_text {
@@ -679,8 +679,8 @@ display: inline-block;
   }
 
   .menu_button_group_project {
-    padding-left: 3rem;
-    padding-right: 3rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
   .menu__button__allProject {
     transition: background-color 0.4s ease, color 0.4s ease;
@@ -695,6 +695,10 @@ display: inline-block;
   .menu__button__allProject.active {
     background-color: var(--black-1D2E43);
     color: var(--white-F6F6F6);
+  }
+
+  .menu__button__choose__city {
+    margin-right: 1rem;
   }
 
   .menu__button__choose__city:hover {
@@ -776,18 +780,20 @@ display: inline-block;
   }
   .section_project {
     padding-top: 1.5rem;
-    padding-left: 1.21rem;
-    padding-right: 1.9rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
   }
 
   .section_project__block {
     justify-content: space-between;
+    padding-left: 0;
   }
 
   .section_project__block_cart {
     width: calc(50% - 1.88rem);
     max-height: auto;
     margin-bottom: 1rem;
+    flex-grow: 1;
   }
 
   .container__imageTitle_projectCard {
@@ -809,7 +815,7 @@ display: inline-block;
 
   .project_slider_text {
     bottom: 24vh;
-    left: 1.31rem;
+    left: 1rem;
   }
 
   .actuality_text {
