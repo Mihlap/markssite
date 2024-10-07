@@ -8,7 +8,7 @@ import styles from './Publics.module.css';
 import { fetchToggleStateForButton2Async } from '../store/Slice/toggleSlice';
 import catPhoto from '../img/default-photo.jpeg';
 
-const Host = process.env.REACT_APP_SERVER_HOST;
+
 const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
 export default function Publics({ handleMouseEnter, handleMouseLeave, handleMouseHover }) {
@@ -160,11 +160,11 @@ export default function Publics({ handleMouseEnter, handleMouseLeave, handleMous
                   : [];
 
                 const firstImageName = imagePathsForArticle[0] || null;
-                const encodedFileName = firstImageName ? encodeURIComponent(firstImageName) : null;
-                const defaultImagePath = catPhoto;
-                const firstImagePath = encodedFileName
-                  ? `${Host}/images/imageArticle/${encodedFileName}`
-                  : defaultImagePath;
+                const defaultImagePath = catPhoto;              
+                const firstImagePath = firstImageName && firstImageName.includes('https')
+                  ? firstImageName
+                  : `${bucket_url}/images/imageAdd/${firstImageName || defaultImagePath}`; 
+                  
                 return (
                   <Link
                     key={article.id}

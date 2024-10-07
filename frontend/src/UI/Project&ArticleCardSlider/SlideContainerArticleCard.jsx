@@ -9,7 +9,7 @@ import SliderItemProject from '../../Header/Swiper-project/SliderItemProject';
 import './SliderContainerProjectCard.css';
 import catPhoto from '../../img/default-photo.jpeg';
 
-const Host = process.env.REACT_APP_SERVER_HOST;
+const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
 const SliderContainerArticleCard = ({ articles }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -23,6 +23,9 @@ const SliderContainerArticleCard = ({ articles }) => {
       swiperRef.current.slideTo(index);
     }
   };
+
+  const isFullUrl = (url) => url.startsWith('http://') || url.startsWith('https://');
+
 
   return (
     <div className="swiper_container_ProjectCard">
@@ -48,11 +51,12 @@ const SliderContainerArticleCard = ({ articles }) => {
             const imagePathsForArticle = article.imageTitle ? article.imageTitle.split(',').map((el) => el.trim()) : [];
 
             const firstImageName = imagePathsForArticle[0] || null;
-            const encodedFileName = firstImageName ? encodeURIComponent(firstImageName) : null;
             const defaultImagePath = `${catPhoto}`;
-            const firstImagePath = encodedFileName
-              ? `${Host}/images/imageArticle/${encodedFileName}`
-              : defaultImagePath;
+            const firstImagePath = firstImageName
+            ? isFullUrl(firstImageName)
+              ? firstImageName
+              : `${bucket_url}/images/imageArticle/${firstImageName}`
+            : defaultImagePath;
 
             return (
               <SwiperSlide className="swiper_container_item" key={article.id}>

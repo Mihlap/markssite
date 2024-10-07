@@ -25,7 +25,7 @@ import nameCompany1 from '../icons/nameCompany1.svg';
 import img123 from './img/Главная.png';
 
 SwiperCore.use([Navigation]);
-const Host = process.env.REACT_APP_SERVER_HOST;
+
 const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
@@ -240,12 +240,12 @@ const Header = React.memo(
                         const imagePathsForArticle = article.imageTitle
                           ? article.imageTitle.split(',').map((el) => el.trim())
                           : [];
-                        const firstPhoto = imagePathsForArticle[0] || null;
-                        const encodedFileName = firstPhoto ? encodeURIComponent(firstPhoto) : null;
+                        const firstPhoto = imagePathsForArticle[0] || null;                    
                         const defaultImagePath = img123;
-                        const firstImagePath = encodedFileName
-                          ? `${Host}/images/imageArticle/${encodedFileName}`
-                          : defaultImagePath;
+
+                        const firstImagePath = firstPhoto?.includes('https')
+                        ? firstPhoto
+                        : `${bucket_url}/images/imageArticle/${encodeURIComponent(firstPhoto) || defaultImagePath}`;
 
                         return (
                           <Link to={`/publication/${article.id}`} key={article.id}>
@@ -331,12 +331,13 @@ const Header = React.memo(
                           ? article.imageTitle.split(',').map((el) => el.trim())
                           : [];
                         const firstPhotoRight = imagePathsForArticleRight[0] || null;
-                        const encodedFileName = firstPhotoRight ? encodeURIComponent(firstPhotoRight) : null;
                         const defaultImagePath = img123;
-                        const firstImagePathRight = encodedFileName
-                          ? `${Host}/images/imageArticle/${encodedFileName}`
-                          : defaultImagePath;
 
+                        const firstImagePathRight = firstPhotoRight?.includes('https')
+                        ? firstPhotoRight
+                        : `${bucket_url}/images/imageArticle/${encodeURIComponent(firstPhotoRight) || defaultImagePath}`;
+
+                        
                         return (
                           <Link to={`/publication/${article.id}`} key={article.id}>
                             <div key={article.id} className={styles.card_item_2}>
