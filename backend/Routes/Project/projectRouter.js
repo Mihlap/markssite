@@ -304,6 +304,7 @@ router.put(
 
       // Нормализация URL для корректного сравнения
       const normalizeUrl = (url) => decodeURIComponent(url.trim()); // Главное не приводить к нижнему регистру а то будет боль
+
       const normalizedCurrentImages = [...currentImageTitles, ...currentImageProjects, ...currentImageOpens, ...currentImageCloses].filter(Boolean).map(normalizeUrl);
       const normalizedUpdatedImages = [...updatedImageTitles, ...updatedImageProjects, ...updatedImageOpens, ...updatedImageCloses].filter(Boolean).map(normalizeUrl);
 
@@ -519,43 +520,106 @@ router.delete('/deletezapros/:id', async (req, res) => {
     // Удаление изображений из Constructor
     if (deleteConstructorImg?.image) {
       const imageConstructorNames = deleteConstructorImg.image.includes(', ') ?
-        deleteConstructorImg.image.split(', ') : [deleteConstructorImg.image];
-
-      await Promise.all(
+        deleteConstructorImg.image.split(', ') :
+        [deleteConstructorImg.image];
+      
+         await Promise.all(
         imageConstructorNames.map(async (imageUrl) => {
-          await deleteImageFromS3(imageUrl);
+          const result = extractFileNameAndFolderFromUrl(imageUrl);
+          if (result) {
+            const {
+              fileName,
+              folder
+            } = result;
+            await deleteFileFromS3(fileName, folder);
+          } else {
+            console.log(`Не удалось извлечь имя файла и папку из URL: ${imageUrl}`);
+          }
         })
       );
     }
-    // Удаление изображений из Project (imageTitle, imageProject, imageOpen, imageClose)
-    const allImages = [
-      ...(post.imageTitle ? post.imageTitle.split(', ') : []),
-      post.imageProject,
-      post.imageOpen,
-      post.imageClose,
-    ].filter(Boolean);
-
-    await Promise.all(
-      allImages.map(async (imageUrl) => {
-        await deleteImageFromS3(imageUrl);
-      })
-    );
-
-    // Удаление связанных элементов и проекта
+    // Удаление фотографий из imageTitle
+    if (post.imageTitle) {
+      const imageTitleNames = post.imageTitle.includes(', ') ?
+        post.imageTitle.split(', ') :
+        [post.imageTitle];
+      
+      await Promise.all(
+        imageTitleNames.map(async (imageUrl) => {
+          const result = extractFileNameAndFolderFromUrl(imageUrl);
+          if (result) {
+            const {
+              fileName,
+              folder
+            } = result;
+            await deleteFileFromS3(fileName, folder);
+          } else {
+            console.log(`Не удалось извлечь имя файла и папку из URL: ${imageUrl}`);
+          }
+        })
+      );
+    }
+    // Удаление фотографий из imageProject
+    if (post.imageProject) {
+      const projectImageNames = [post.imageProject];   
+      await Promise.all(
+        projectImageNames.map(async (imageUrl) => {
+          const result = extractFileNameAndFolderFromUrl(imageUrl);
+          if (result) {
+            const {
+              fileName,
+              folder
+            } = result;
+            await deleteFileFromS3(fileName, folder);
+          } else {
+            console.log(`Не удалось извлечь имя файла и папку из URL: ${imageUrl}`);
+          }
+        })
+      );
+    }
+    // Удаление фотографии из imageOpen
+    if (post.imageOpen) {
+        const result = extractFileNameAndFolderFromUrl(post.imageOpen);
+      if (result) {
+        const {
+          fileName,
+          folder
+        } = result;
+        await deleteFileFromS3(fileName, folder);
+      } else {
+        console.log(`Не удалось извлечь имя файла и папку из URL: ${post.imageOpen}`);
+      }
+    }
+    // Удаление фотографии из imageClose
+    if (post.imageClose) {     
+  
+      const result = extractFileNameAndFolderFromUrl(post.imageClose);
+      if (result) {
+        const {
+          fileName,
+          folder
+        } = result;
+        await deleteFileFromS3(fileName, folder);
+      } else {
+        console.log(`Не удалось извлечь имя файла и папку из URL: ${post.imageClose}`);
+      }
+    }
+    // Удаление связанных элементов из других таблиц
     await Constructor.destroy({
       where: {
-        idBlock: id
-      }
+        idBlock: id,
+      },
     });
     await ProjectMain.destroy({
       where: {
-        IdProject: id
-      }
+        IdProject: id,
+      },
     });
+    // Удаление поста
     await Project.destroy({
       where: {
-        id
-      }
+        id,
+      },
     });
 
     res.sendStatus(200);
