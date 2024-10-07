@@ -3,22 +3,21 @@ import Slider from 'react-slick';
 import catPhoto from '../../img/default-photo.jpeg';
 import '.././Company_Slider/Company_Slider.css';
 
-const Host = process.env.REACT_APP_SERVER_HOST;
+const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
 const ArticleCardSlider = ({ slidesCard }) => {
   const sliderRef = useRef(null);
   const [activeButtonIndex, setActiveButtonIndex] = useState(0);
 
   const imagePaths =
-    slidesCard && slidesCard.length > 0
-      ? slidesCard.flatMap((slide) =>
-          slide.imageTitle
-            ? slide.imageTitle
-                .split(',')
-                .map((el) => (el.trim() ? `${Host}/images/imageArticle/${el.trim()}` : catPhoto))
-            : [catPhoto]
-        )
-      : [];
+  slidesCard && slidesCard.length > 0
+    ? slidesCard.flatMap((slide) => {
+        if (!slide.imageTitle) return catPhoto;
+        return slide.imageTitle.split(',').map((el) => {
+          return el.includes('https') ? el.trim() : `${bucket_url}/images/imageArticle/${el.trim()}`;
+        });
+      })
+    : [];
 
   const calculateLineWidth = (index) => {
     const count = imagePaths ? imagePaths.length : 0;
