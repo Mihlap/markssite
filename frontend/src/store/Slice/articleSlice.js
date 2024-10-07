@@ -94,27 +94,7 @@ export const fetchArticle = createAsyncThunk('article/fetchArticle', async (form
     ? `${serverHost}/api-article/editzapros/${articleId}`
     : `${serverHost}/api-article/postzapros`;
 
-  // for (const key in formattedData) {
-  //   if (Array.isArray(formattedData[key])) {
-  //     if (key === "photoAva" && formattedData[key].length > 0) {
-  //       formData.append("photoAva", formattedData[key][0]);
-  //     } else if (key === "imageOpen" && formattedData[key].length > 0) {
-  //       formData.append("imageOpen", formattedData[key][0]);
-  //     } else if (key === "dynamicBlocks" && formattedData[key].length > 0) {
-  //       let data = formattedData[key];
-  //       let photosArray = [];
 
-  //       data.forEach((outerObj) => {
-  //         outerObj.forEach((innerObj) => {
-  //           if (
-  //             innerObj.type === "file" &&
-  //             Array.isArray(innerObj.value) &&
-  //             innerObj.value.length > 0
-  //           ) {
-  //             photosArray = photosArray.concat(innerObj.value);
-  //           }
-  //         });
-  //       });
   for (const key in formattedData) {
     if (formattedData.hasOwnProperty(key)) {
       const value = formattedData[key];
@@ -137,21 +117,6 @@ export const fetchArticle = createAsyncThunk('article/fetchArticle', async (form
             });
           });
 
-          // const cloneDynamicBlocks = formattedData.dynamicBlocks.map(
-          //   (outerArray) => {
-          //     return outerArray.map((obj) => {
-          //       if (obj.type === "file" && Array.isArray(obj.value)) {
-          //         return {
-          //           ...obj,
-          //           value: obj.value.map((file) =>
-          //             file ? file.name : null
-          //           ),
-          //         };
-          //       }
-          //       return obj;
-          //     });
-          //   }
-          // );
           const cloneDynamicBlocks = value.map((outerArray) => {
             return outerArray.map((obj) => {
               // Проверяем, что значение value не равно undefined и не пустой массив
@@ -179,23 +144,7 @@ export const fetchArticle = createAsyncThunk('article/fetchArticle', async (form
             });
           });
 
-          //       formData.append(
-          //         "dynamicBlocksJSON",
-          //         JSON.stringify(cloneDynamicBlocks)
-          //       );
-
-          //       photosArray.forEach((photo) => {
-          //         formData.append("dynamicImages", photo);
-          //       });
-          //     } else {
-          //       for (const file of formattedData[key]) {
-          //         formData.append(key, file);
-          //       }
-          //     }
-          //   } else {
-          //     formData.append(key, formattedData[key]);
-          //   }
-          // }
+     
           formData.append('dynamicBlocksJSON', JSON.stringify(cloneDynamicBlocks));
           // console.log(cloneDynamicBlocks, '<----cloneDynamicBlocks');
 

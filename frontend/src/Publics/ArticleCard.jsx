@@ -28,7 +28,7 @@ import { renderListWithDots } from '../Project/utils';
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
-const Host = process.env.REACT_APP_SERVER_HOST;
+const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
 const ArticleCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMouseHover }) => {
   const { id } = useParams();
@@ -177,12 +177,28 @@ const ArticleCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
   const previousArticle = articles[previousIndex];
   const nextArticle = articles[nextIndex];
   const userSelectedBlocks = article?.ConstructorArticles?.map((el) => el.data) || [];
+  const isFullUrl = (url) => url.startsWith('http://') || url.startsWith('https://');
 
-  const imageOpenSource = article && article.imageOpen ? `${Host}/images/imageArticle/${article.imageOpen}` : catPhoto;
-  const altTextOpen = (article && article.imageOpen) || 'Default Alt Text';
-  const imageCloseSource =
-    article && article.imageClose ? `${Host}/images/imageArticle/${article.imageClose}` : catPhoto;
-  const altTextClose = (article && article.imageClose) || 'Default Alt Text';
+  const imageOpenSource = article && article.imageOpen
+  ? isFullUrl(article.imageOpen)
+    ? article.imageOpen
+    : `${bucket_url}/images/imageArticle/${article.imageOpen}`
+  : catPhoto;
+
+  const imageCloseSource = article && article.imageClose
+  ? isFullUrl(article.imageClose)
+    ? article.imageClose
+    : `${bucket_url}/images/imageArticle/${article.imageClose}`
+  : catPhoto;
+
+  const imageAuthorSource = article && article.imageAuthor
+  ? isFullUrl(article.imageAuthor)
+    ? article.imageAuthor
+    : `${bucket_url}/images/imageArticle/${article.imageAuthor}`
+    : "";
+
+  // const altTextOpen = (article && article.imageOpen) || 'Default Alt Text';
+  // const altTextClose = (article && article.imageClose) || 'Default Alt Text';
 
   // Получаем 20 рандомных статей
   const randomArticles = useMemo(() => {
@@ -193,7 +209,7 @@ const ArticleCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
     <>
       <Helmet>
         <title>{article ? article.title : 'Marks Group'}</title>
-        <meta property="og:image" content={article ? `${Host}/images/imageArticle/${article.imageOpen}` : ''} />
+        <meta property="og:image" content={article ? `${bucket_url}/images/imageArticle/${article.imageOpen}` : ''} />
       </Helmet>
       <div className={styles.main_article_card}>
         {article && <ArticleCardSlider slidesCard={[article]} />}
@@ -256,7 +272,7 @@ const ArticleCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
                   <div className={styles.local_container_photo_author}>
                     <img
                       className={styles.container__imageAuthor_articleCard}
-                      src={article.imageAuthor ? `${Host}/images/imageArticle/${article.imageAuthor}` : `${catPhoto}`}
+                      src={imageAuthorSource}
                       alt={article.imageAuthor || 'Default Alt Text'}
                     />
                     <div className={styles.author_name}>{article.author}</div>
@@ -273,16 +289,6 @@ const ArticleCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
                     src={imageOpenSource}
                     alt=""
                     loading="lazy"
-                    // src={
-                    //   article && article.imageOpen
-                    //     ? `${Host}/images/imageArticle/${article.imageOpen}`
-                    //     : `${catPhoto}`
-                    // }
-                    // alt={
-                    //   article && article.imageOpen
-                    //     ? article.imageOpen
-                    //     : "Default Alt Text"
-                    // }
                   />
                   <div className={styles.leftImg1_object_text1}>
                     {/* {article.textBlock} */}
@@ -324,16 +330,6 @@ const ArticleCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
                   src={imageCloseSource}
                   alt=""
                   loading="lazy"
-                  // src={
-                  //   article && article.imageClose
-                  //     ? `${Host}/images/imageArticle/${article.imageClose}`
-                  //     : `${catPhoto}`
-                  // }
-                  // alt={
-                  //   article && article.imageClose
-                  //     ? article.imageClose
-                  //     : "Default Alt Text"
-                  // }
                 />
               </div>
             </div>
@@ -361,7 +357,7 @@ const ArticleCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
               <button
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
-                onClick={() => shareToVK(article, Host)}
+                onClick={() => shareToVK(article, bucket_url)}
               >
                 <span className={styles.social_links_item} style={{ marginRight: '21px', color: '#FF7F6A' }}>
                   VK
@@ -370,7 +366,7 @@ const ArticleCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
               <button
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
-                onClick={() => shareToWhatsApp(article, Host)}
+                onClick={() => shareToWhatsApp(article, bucket_url)}
               >
                 <span className={styles.social_links_item} style={{ marginRight: '25px', color: '#FF7F6A' }}>
                   WA
@@ -387,7 +383,7 @@ const ArticleCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
               <button
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
-                onClick={() => shareToTelegram(article, Host)}
+                onClick={() => shareToTelegram(article, bucket_url)}
               >
                 <span className={styles.social_links_item} style={{ color: '#FF7F6A' }}>
                   TG
@@ -478,12 +474,14 @@ const ArticleCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
                 ? article.imageTitle.split(',').map((el) => el.trim())
                 : [];
               const firstImageName = imagePathsForArticle[0] || null;
+              const defaultImagePath = `${catPhoto}`; 
+              const isFullUrl = (url) => url.startsWith('http://') || url.startsWith('https://');
 
-              const encodedFileName = firstImageName ? encodeURIComponent(firstImageName) : null;
-              const defaultImagePath = `${catPhoto}`; // Путь к запасному изображению.
-              const firstImagePath = encodedFileName
-                ? `${Host}/images/imageArticle/${encodedFileName}`
-                : defaultImagePath;
+              const firstImagePath = firstImageName
+              ? isFullUrl(firstImageName)
+                ? firstImageName
+                : `${bucket_url}/images/imageArticle/${firstImageName}`
+              : defaultImagePath;
 
               return (
                 <SwiperSlide

@@ -10,8 +10,10 @@ import { fetchToggleStateForButton2Async, updateToggleStateForButton2Async } fro
 import LoadingModal from '../add-project/loading/LoadingModal';
 import Edit from '../icon/Edit.svg';
 
+const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
+
+
 export default function AddArticles({ user }) {
-  const Host = process.env.REACT_APP_SERVER_HOST;
   const dispatch = useDispatch();
   const article = useSelector((state) => state.article.article);
   const loading = useSelector((state) => state.article.loading);
@@ -197,13 +199,12 @@ export default function AddArticles({ user }) {
                   <div className={styles.card_components_admin__block_map}>
                     {Array.isArray(article) &&
                       [...article]?.map((el) => {
-                        const firstPhoto = el && el.imageTitle ? el.imageTitle.split(', ')[0] : null;
+                        const firstPhoto = el && el?.imageTitle ? el.imageTitle?.split(', ')[0] : null;
                         const defaultPhoto = cat;
+                        const photoSrc = firstPhoto && firstPhoto.includes('https')
+                          ? firstPhoto
+                          : `${bucket_url}/images/imageAdd/${firstPhoto || defaultPhoto}`; 
 
-                        const photoSrc =
-                          firstPhoto && firstPhoto !== 'null' && firstPhoto !== 'undefined'
-                            ? `${Host}/images/imageArticle/${firstPhoto}`
-                            : defaultPhoto;
                         return (
                           <React.Fragment key={el.id}>
                             <div key={el.id} className={styles.cart_project_container}>
@@ -270,10 +271,10 @@ export default function AddArticles({ user }) {
                               <div className={styles.delete_modal_container}>
                                 <div className={styles.delete_modal_block}>
                                   <div className={styles.delete_modal_block__title}>
-                                    Вы точно хотите удалить проект <br /> «{el.title}»
+                                    Вы точно хотите удалить публикацию <br /> «{el.title}»
                                   </div>
                                   <p className={styles.delete_modal_block__text}>
-                                    Удаленный проект нельзя будет вернуть
+                                    Удаленную публикацию нельзя будет вернуть
                                   </p>
 
                                   <div className={styles.button_block}>

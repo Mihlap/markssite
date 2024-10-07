@@ -2,8 +2,7 @@ const { Upload } = require('@aws-sdk/lib-storage');
 const { DeleteObjectCommand } = require('@aws-sdk/client-s3');
 const { s3Client, BUCKET_NAME } = require('./s3Client');
 
-async function uploadFileToS3(file, folder = 'uploads') {
-  // const fileName = `${Date.now()}-${file.originalname}`;
+async function uploadFileToS3(file, folder) {
   const fileName = file.originalname;
   const uploadParams = {
     Bucket: BUCKET_NAME,
@@ -29,7 +28,7 @@ async function uploadFileToS3(file, folder = 'uploads') {
   }
 }
 
-async function deleteFileFromS3(fileName, folder = 'uploads') {
+async function deleteFileFromS3(fileName, folder) {
  const key = `${folder}/${fileName}`; 
   const deleteParams = {
     Bucket: BUCKET_NAME,
