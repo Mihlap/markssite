@@ -213,12 +213,6 @@ export const fetchProject = createAsyncThunk('project/fetchProject', async (form
     }
   }
 
-  // for (var pair of formData.entries()) {
-  //   console.log(pair[0] + ', ' + pair[1]);
-  // }
-
-  // console.log("Request Method:", requestMethod);
-  //   console.log("Request URL:", requestUrl);
 
   try {
     await axios({
@@ -228,12 +222,9 @@ export const fetchProject = createAsyncThunk('project/fetchProject', async (form
       headers: { 'Content-Type': 'multipart/form-data' },
     });
 
-    // console.log('Успешно обновлено на сервере');
-
+ 
     dispatch(clearFormData());
-    // Опционально: обновить список проектов
-    dispatch(getFetchForm());
-    // Опционально: получение динамических данных
+    dispatch(getFetchForm()); 
     if (projectId) {
       dispatch(getDynamicData(projectId));
     }

@@ -26,7 +26,7 @@ import compressImageFile from 'browser-image-compression';
 import ConstructorPage from '../constructor/ConstructorPage';
 import { PublicationContainer, PublicationIndicator } from '../../add-project/formAdd/utils/CustomSelectComponents';
 
-const Host = process.env.REACT_APP_SERVER_HOST;
+const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
 export default function FormEditArticles({ setIsModalOpen, editArticleData }) {
   const dispatch = useDispatch();
@@ -465,6 +465,8 @@ export default function FormEditArticles({ setIsModalOpen, editArticleData }) {
     (inputType, labelText, blockIndex, inputIndex, key) => {
       const classNames = getPreviewClassName(labelText);
 
+      const isFullUrl = (url) => url.startsWith('http://') || url.startsWith('https://');
+
       return (
         <div key={key}>
           {inputType === 'text' && (
@@ -551,7 +553,7 @@ export default function FormEditArticles({ setIsModalOpen, editArticleData }) {
                           ) : (
                             <video
                               key={index}
-                              src={`${Host}/images/imageArticle/${src}`}
+                              src={`${bucket_url}/images/imageArticle/${src}`}
                               muted
                               loop
                               autoPlay
@@ -617,22 +619,28 @@ export default function FormEditArticles({ setIsModalOpen, editArticleData }) {
                   </div>
                   <div className={`${styles.previewContainer} ${classNames.outerDiv}`}>
                     {Array.isArray(dynamicPreviews[blockIndex]?.[inputIndex]) &&
-                      dynamicPreviews[blockIndex][inputIndex].map((src, index) => (
+                      dynamicPreviews[blockIndex][inputIndex].map((src, index) => {   
+                        let imageSrc = src;
+                        if (typeof src === 'string' && src.startsWith('blob:')) {
+                          // является локальным URL для предварительного просмотра
+                          imageSrc = src;
+                        } else if (isFullUrl(src)) {
+                          // является полным URL, используем как есть
+                          imageSrc = src;
+                        } else if (src) {
+                          // добавляем bucket_url
+                          imageSrc = `${bucket_url}/images/imageArticle/${src}`;
+                        } else {                     
+                          return null;
+                        }                                 
+                      return (
                         <div key={`${blockIndex}-${inputIndex}-${index}`} className={classNames.innerDiv}>
                           <div className={styles.preview_photos_container_block_constructor}>
-                            {typeof src === 'string' && src.startsWith('blob:') ? (
                               <img
-                                src={src}
-                                alt={`Preview ${index}`}
-                                className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
-                              />
-                            ) : (
-                              <img
-                                src={`${Host}/images/imageArticle/${src}`}
-                                alt={`Preview ${index}`}
-                                className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
-                              />
-                            )}
+                               src={imageSrc}
+                               alt={`Preview ${index}`}
+                               className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
+                             />
                             <div
                               className={styles.preview_photos_container_block_constructor__remove_icon}
                               onClick={(e) => handleDeletePreview(e, blockIndex, inputIndex, index)}
@@ -641,7 +649,8 @@ export default function FormEditArticles({ setIsModalOpen, editArticleData }) {
                             </div>
                           </div>
                         </div>
-                      ))}
+                         );
+                    })}
                   </div>
                 </>
               )}
@@ -937,7 +946,10 @@ export default function FormEditArticles({ setIsModalOpen, editArticleData }) {
                     <div key={index} className={styles.preview_photos_container__block}>
                       <img
                         className={styles.preview_photos_container__img}
-                        src={`${Host}/images/imageArticle/${imageFileName.trim()}`}
+                        src={imageFileName.trim().includes('https') 
+                          ? imageFileName.trim() 
+                          : `${bucket_url}/images/imageArticle/${imageFileName.trim()}`
+                        }
                         alt={`Preview ${index}`}
                       />
                       <div
@@ -1091,8 +1103,11 @@ export default function FormEditArticles({ setIsModalOpen, editArticleData }) {
               {inputData.imageAuthor && previewPhotoAva.length === 0 && inputData.imageAuthor.length > 0 && (
                 <div className={styles.preview_photos_container__block}>
                   <img
-                    className={styles.preview_photos_container__img}
-                    src={`${Host}/images/imageArticle/${inputData.imageAuthor}`}
+                    className={styles.preview_photos_container__img}               
+                    src={inputData?.imageAuthor?.includes('https') 
+                      ? inputData.imageAuthor 
+                      : `${bucket_url}/images/imagerticle/${inputData?.imageAuthor}`
+                    }  
                     alt=""
                   />
                   <div
@@ -1177,8 +1192,11 @@ export default function FormEditArticles({ setIsModalOpen, editArticleData }) {
               {inputData.imageOpen !== null && previewPhotoOpen.length === 0 && (
                 <div className={styles.preview_photos_container__block}>
                   <img
-                    className={styles.preview_photos_container__img}
-                    src={`${Host}/images/imageArticle/${inputData.imageOpen}`}
+                    className={styles.preview_photos_container__img}                
+                    src={inputData?.imageOpen?.includes('https') 
+                      ? inputData.imageOpen 
+                      : `${bucket_url}/images/imageArticle/${inputData?.imageOpen}`
+                    } 
                     alt="Preview"
                   />
                   {/* <div
@@ -1345,8 +1363,11 @@ export default function FormEditArticles({ setIsModalOpen, editArticleData }) {
               {!inputData.imageClose !== null && previewPhotoClose.length === 0 && (
                 <div className={styles.preview_photos_container__block}>
                   <img
-                    className={styles.preview_photos_container__img}
-                    src={`${Host}/images/imageArticle/${inputData.imageClose}`}
+                    className={styles.preview_photos_container__img}              
+                    src={inputData?.imageClose?.includes('https') 
+                      ? inputData.imageClose 
+                      : `${bucket_url}/images/imageAdd/${inputData?.imageClose}`
+                    } 
                     alt="Preview"
                   />
                   {/* <div

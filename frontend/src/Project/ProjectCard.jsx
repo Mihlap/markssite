@@ -409,8 +409,7 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
                   </div>
                   <div className={styles.local_container_wrapper_block}>
                     <div className={styles.local_title}>Статус</div>
-                    <div className={styles.local_text}>
-                      {console.log(project.statusObject)}
+                    <div className={styles.local_text}>                    
                       {project.statusObject !== 'undefined' ? project.statusObject : '—'}
                     </div>
                   </div>

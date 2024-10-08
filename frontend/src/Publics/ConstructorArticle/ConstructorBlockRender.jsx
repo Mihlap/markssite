@@ -17,7 +17,7 @@ const isMobileScreen = window.innerWidth <= 1024;
 const playIconToUse = isMobileScreen ? playIconMobile : playIcon;
 const pauseIconToUse = isMobileScreen ? pauseIconMobile : pauseIcon;
 
-const Host = process.env.REACT_APP_SERVER_HOST;
+const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
 const arrowStyles = {
   position: 'absolute',
@@ -146,6 +146,8 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
     };
   }, []);
 
+  const isFullUrl = (url) => url.startsWith('http://') || url.startsWith('https://');
+
 
   const renderImageWithDescription = (block) => {
     let imageUrl = '';
@@ -156,12 +158,17 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
       if (item?.label === 'Описание картинки') description = item?.value || '';
     });
 
+       // Проверяем, есть ли imageUrl или description, если нет, то не отображаем блок
+       if (!imageUrl && !description) return null;
+
+       const imageSrc = isFullUrl(imageUrl) ? imageUrl : `${bucket_url}/images/imageArticle/${imageUrl}`;
+
     return (
       <div className={styles.containerImageToDescription}>
         {imageUrl && (
           <img
             className={styles.containerImageToDescription__img}
-            src={`${Host}/images/imageArticle/${imageUrl}`}
+            src={imageSrc}
             alt="Описание"
             loading="lazy"
           />
@@ -185,7 +192,7 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
         <h2 className={styles.blockHeadingTitle__heading}>{header}</h2>
         <p className={styles.blockHeadingTitle__text}>
           {containsListTags(text) ? (
-            <div
+            <span
               dangerouslySetInnerHTML={{
                 __html: renderListWithDots(text),
               }}
@@ -205,20 +212,56 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
 
   const renderThreeImages = (block, index) => {
     const images = block[0]?.value;
-    return (
-      <div className={styles.gridContainer}>
-        {images?.slice(0, 2).map((img, index) => (
-          <img
-            className={styles.horizontalImage}
-            key={index}
-            src={`${Host}/images/imageArticle/${img}`}
-            alt="Horizontal_image"
-          />
-        ))}
-        <img className={styles.verticalImage} src={`${Host}/images/imageArticle/${images[2]}`} alt="Vertical_image" />
-      </div>
-    );
-  };
+       //  Проверяем, есть ли картинки в блоке
+       if (!images || images.length < 1) {
+        return null; // Если картинок нет или их не три, не рендерим блок
+      }
+      return (
+        <div className={styles.gridContainer}>
+          {/* Рендерим первые две горизонтальные картинки, если они существуют */}
+          {images.length >= 1 && (
+            <img
+              className={styles.horizontalImage}
+              src={isFullUrl(images[0]) ? images[0] : `${bucket_url}/images/imageArticle/${images[0]}`}
+              alt="Horizontal_image1"
+              loading="lazy"
+            />
+          )}
+          {images.length >= 2 && (
+            <img
+              className={styles.horizontalImage}
+              src={isFullUrl(images[1]) ? images[1] : `${bucket_url}/images/imageArticle/${images[1]}`}
+              alt="Horizontal_image2"
+              loading="lazy"
+            />
+          )}
+  
+          {/* Рендерим вертикальную картинку, если она существует */}
+          {images.length >= 3 && (
+            <img
+              className={styles.verticalImage}
+              src={isFullUrl(images[2]) ? images[2] : `${bucket_url}/images/imageArticle/${images[2]}`}
+              alt="Vertical_image"
+              loading="lazy"
+            />
+          )}
+        </div>
+      );
+    };
+  //   return (
+  //     <div className={styles.gridContainer}>
+  //       {images?.slice(0, 2).map((img, index) => (
+  //         <img
+  //           className={styles.horizontalImage}
+  //           key={index}
+  //           src={`${Host}/images/imageArticle/${img}`}
+  //           alt="Horizontal_image"
+  //         />
+  //       ))}
+  //       <img className={styles.verticalImage} src={`${Host}/images/imageArticle/${images[2]}`} alt="Vertical_image" />
+  //     </div>
+  //   );
+  // };
 
   const renderTwoImage = (block, index) => {
     const images = block[0]?.value;
@@ -228,8 +271,8 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
           <img
             className={styles.imageBlockTwo__gridImage}
             key={index}
-            src={`${Host}/images/imageArticle/${el}`}
-            alt="img_two"
+            src={isFullUrl(el) ? el : `${bucket_url}/images/imageArticle/${el}`}
+            alt={`img_${index}`}
           />
         ))}
       </div>
@@ -311,7 +354,12 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
         <Slider {...settings}>
           {images?.map((img, index) => (
             <div key={index} style={sliderImageContainerStyle} className={styles.custom_slider}>
-              <img style={sliderImageStyle} src={`${Host}/images/imageArticle/${img}`} alt="Slider_image" />
+              <img
+               style={sliderImageStyle}
+               src={isFullUrl(img) ? img : `${bucket_url}/images/imageArticle/${img}`}
+                 alt="Slider_image"
+                loading="lazy"
+                />
             </div>
           ))}
         </Slider>
@@ -329,13 +377,13 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
     return (
       <div className={styles.text_block}>
         {containsListTags(descriptionTextBlock) ? (
-          <div
+          <span
             dangerouslySetInnerHTML={{
               __html: renderListWithDots(descriptionTextBlock),
             }}
           />
         ) : (
-          <div
+          <span
             dangerouslySetInnerHTML={{
               __html: renderListWithDots(descriptionTextBlock),
             }}
@@ -357,13 +405,13 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
       <div className={styles.text_framed}>
         <div className={styles.text_framed__text}>
           {containsListTags(descriptionText) ? (
-            <div
+            <span
               dangerouslySetInnerHTML={{
                 __html: renderListWithDots(descriptionText),
               }}
             />
           ) : (
-            <div
+            <span
               dangerouslySetInnerHTML={{
                 __html: renderListWithDots(descriptionText),
               }}
@@ -403,13 +451,13 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
         <div className={styles.quote_block_constainer__text_block}>
           <div className={styles.quote_block_constainer__quote_text}>
             {containsListTags(author) ? (
-              <div
+              <span
                 dangerouslySetInnerHTML={{
                   __html: renderListWithDots(author),
                 }}
               />
             ) : (
-              <div
+              <span
                 dangerouslySetInnerHTML={{
                   __html: renderListWithDots(author),
                 }}
@@ -423,7 +471,7 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
           <div className={styles.quote_block_constainer__author_block}>
             <img
               className={styles.quote_block_constainer__img}
-              src={`${Host}/images/imageArticle/${imageUrl}`}
+              src={isFullUrl(imageUrl) ? imageUrl : `${bucket_url}/images/imageArticle/${imageUrl}`}
               alt={author}
             />
             <div className={styles.quote_block_constainer__quote}>{quote}</div>
@@ -445,13 +493,13 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
         <div className={styles.note_block__bookmark} />
         <div className={styles.note_block__text}>
           {containsListTags(noteBlockText) ? (
-            <div
+            <span
               dangerouslySetInnerHTML={{
                 __html: renderListWithDots(noteBlockText),
               }}
             />
           ) : (
-            <div
+            <span
               dangerouslySetInnerHTML={{
                 __html: renderListWithDots(noteBlockText),
               }}
@@ -468,6 +516,10 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
     if (!videoPath) {
       return null; 
     }
+
+    const videoSrc = isFullUrl(videoPath)
+    ? videoPath
+    : `${bucket_url}/images/imageArticle/${videoPath}`;
 
     const videoStyle = {
       WebkitAppearance: 'none',
@@ -541,7 +593,7 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
             onPlay={() => setIsPlaying(true)}
             onPause={() => setIsPlaying(false)}
           >
-            <source src={`${Host}/images/imageArticle/${videoPath}`} type="video/mp4" />
+             <source src={videoSrc} type="video/mp4" />
           </video>
           <div className={styles.buttonWrapperBlock}>
             {isPlaying ? (
