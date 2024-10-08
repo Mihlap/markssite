@@ -88,7 +88,6 @@ app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use('/images', express.static(imagesPath, { maxAge: '5d' }));
-app.use('/images/imageArticle', express.static(path.join(imagesPath, 'imageArticle')));
 app.use('/videos', express.static(videoPath, { maxAge: '5d', immutable: true, }));
 app.use('/public/assets', express.static(path.join(__dirname, 'assets'), { maxAge: '5d' }));
 app.use(session(sessionConfig));

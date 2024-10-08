@@ -9,7 +9,7 @@ import Slideritem from './SliderItem';
 import styles from './SwiperContainer.css';
 import { Link } from 'react-router-dom';
 
-const Host = process.env.REACT_APP_SERVER_HOST;
+const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
 export default function SwiperContainer({ article1, article2 }) {
   // const [currentIndexContainer, setCurrentIndexContainer] = useState(0);
@@ -50,8 +50,12 @@ export default function SwiperContainer({ article1, article2 }) {
                 <SwiperSlide className="swiper_container_item_articles" key={`${item.id}_${index}`}>
                   <Link key={item.id} to={`/publication/${item.id}`}>
                     <Slideritem
-                      title={item.title}
-                      src={`${Host}/images/imageArticle/${firstPhoto}`}
+                      title={item.title}                    
+                      src={
+                        firstPhoto?.includes('https')
+                          ? firstPhoto
+                          : `${bucket_url}/images/imageAdd/${firstPhoto}`
+                      }
                       city={item.city}
                       dataMonthYear={item.dataMonthYear}
                       id={item.link}

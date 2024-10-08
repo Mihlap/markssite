@@ -21,5 +21,6 @@ module.exports = {
   },
   rules: {
     'no-console': 'off', // Отключить предупреждение для вызовов console.log()
+    'consistent-return': 'off', // Отключить обязательное правило для return в каждой ветке функции
   },
 };
