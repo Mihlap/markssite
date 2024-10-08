@@ -32,8 +32,7 @@ const PrevArrow = ({ props, onClick, onMouseEnter, onMouseLeave }) => (
     onMouseEnter={onMouseEnter}
     onMouseLeave={onMouseLeave}
     onClick={onClick}
-    style={{ ...arrowStyles, left: '1.5rem' }}
-  >
+    style={{ ...arrowStyles, left: '1.5rem' }}>
     <svg width="42" height="42" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
       <g id="icon / 24 /  arrow /  normal">
         <rect
@@ -59,8 +58,7 @@ const PrevArrow = ({ props, onClick, onMouseEnter, onMouseLeave }) => (
           y1="34.1818"
           x2="55.3078"
           y2="90.3335"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor="#BBDEFF" />
           <stop offset="1" stopColor="#FFBFB5" />
         </linearGradient>
@@ -74,8 +72,7 @@ const NextArrow = ({ props, onClick, onMouseEnter, onMouseLeave }) => (
     onMouseEnter={onMouseEnter}
     onMouseLeave={onMouseLeave}
     onClick={onClick}
-    style={{ ...arrowStyles, right: '1.5rem' }}
-  >
+    style={{ ...arrowStyles, right: '1.5rem' }}>
     <svg width="42" height="42" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
       <g id="icon / 24 /  arrow /  normal">
         <rect
@@ -96,8 +93,7 @@ const NextArrow = ({ props, onClick, onMouseEnter, onMouseLeave }) => (
           y1="2.18182"
           x2="87.3078"
           y2="58.3335"
-          gradientUnits="userSpaceOnUse"
-        >
+          gradientUnits="userSpaceOnUse">
           <stop stopColor="#BBDEFF" />
           <stop offset="1" stopColor="#FFBFB5" />
         </linearGradient>
@@ -131,7 +127,7 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
   useEffect(() => {
     const handleFullscreenChange = () => {
       if (!document.fullscreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
-        setIsFullscreen(false); 
+        setIsFullscreen(false);
       }
     };
 
@@ -148,7 +144,6 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
 
   const isFullUrl = (url) => url.startsWith('http://') || url.startsWith('https://');
 
-
   const renderImageWithDescription = (block) => {
     let imageUrl = '';
     let description = '';
@@ -158,20 +153,15 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
       if (item?.label === 'Описание картинки') description = item?.value || '';
     });
 
-       // Проверяем, есть ли imageUrl или description, если нет, то не отображаем блок
-       if (!imageUrl && !description) return null;
+    // Проверяем, есть ли imageUrl или description, если нет, то не отображаем блок
+    if (!imageUrl && !description) return null;
 
-       const imageSrc = isFullUrl(imageUrl) ? imageUrl : `${bucket_url}/images/imageArticle/${imageUrl}`;
+    const imageSrc = isFullUrl(imageUrl) ? imageUrl : `${bucket_url}/images/imageArticle/${imageUrl}`;
 
     return (
       <div className={styles.containerImageToDescription}>
         {imageUrl && (
-          <img
-            className={styles.containerImageToDescription__img}
-            src={imageSrc}
-            alt="Описание"
-            loading="lazy"
-          />
+          <img className={styles.containerImageToDescription__img} src={imageSrc} alt="Описание" loading="lazy" />
         )}
         {description && <div className={styles.containerImageToDescription__text}>{description}</div>}
       </div>
@@ -212,42 +202,42 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
 
   const renderThreeImages = (block, index) => {
     const images = block[0]?.value;
-       //  Проверяем, есть ли картинки в блоке
-       if (!images || images.length < 1) {
-        return null; // Если картинок нет или их не три, не рендерим блок
-      }
-      return (
-        <div className={styles.gridContainer}>
-          {/* Рендерим первые две горизонтальные картинки, если они существуют */}
-          {images.length >= 1 && (
-            <img
-              className={styles.horizontalImage}
-              src={isFullUrl(images[0]) ? images[0] : `${bucket_url}/images/imageArticle/${images[0]}`}
-              alt="Horizontal_image1"
-              loading="lazy"
-            />
-          )}
-          {images.length >= 2 && (
-            <img
-              className={styles.horizontalImage}
-              src={isFullUrl(images[1]) ? images[1] : `${bucket_url}/images/imageArticle/${images[1]}`}
-              alt="Horizontal_image2"
-              loading="lazy"
-            />
-          )}
-  
-          {/* Рендерим вертикальную картинку, если она существует */}
-          {images.length >= 3 && (
-            <img
-              className={styles.verticalImage}
-              src={isFullUrl(images[2]) ? images[2] : `${bucket_url}/images/imageArticle/${images[2]}`}
-              alt="Vertical_image"
-              loading="lazy"
-            />
-          )}
-        </div>
-      );
-    };
+    //  Проверяем, есть ли картинки в блоке
+    if (!images || images.length < 1) {
+      return null; // Если картинок нет или их не три, не рендерим блок
+    }
+    return (
+      <div className={styles.gridContainer}>
+        {/* Рендерим первые две горизонтальные картинки, если они существуют */}
+        {images.length >= 1 && (
+          <img
+            className={styles.horizontalImage}
+            src={isFullUrl(images[0]) ? images[0] : `${bucket_url}/images/imageArticle/${images[0]}`}
+            alt="Horizontal_image1"
+            loading="lazy"
+          />
+        )}
+        {images.length >= 2 && (
+          <img
+            className={styles.horizontalImage}
+            src={isFullUrl(images[1]) ? images[1] : `${bucket_url}/images/imageArticle/${images[1]}`}
+            alt="Horizontal_image2"
+            loading="lazy"
+          />
+        )}
+
+        {/* Рендерим вертикальную картинку, если она существует */}
+        {images.length >= 3 && (
+          <img
+            className={styles.verticalImage}
+            src={isFullUrl(images[2]) ? images[2] : `${bucket_url}/images/imageArticle/${images[2]}`}
+            alt="Vertical_image"
+            loading="lazy"
+          />
+        )}
+      </div>
+    );
+  };
   //   return (
   //     <div className={styles.gridContainer}>
   //       {images?.slice(0, 2).map((img, index) => (
@@ -289,7 +279,7 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
 
     let sliderImageStyle = {
       width: '100%',
-      height: '810px',
+      height: '370',
       objectFit: 'cover',
       borderRadius: '1rem',
     };
@@ -355,11 +345,11 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
           {images?.map((img, index) => (
             <div key={index} style={sliderImageContainerStyle} className={styles.custom_slider}>
               <img
-               style={sliderImageStyle}
-               src={isFullUrl(img) ? img : `${bucket_url}/images/imageArticle/${img}`}
-                 alt="Slider_image"
+                style={sliderImageStyle}
+                src={isFullUrl(img) ? img : `${bucket_url}/images/imageArticle/${img}`}
+                alt="Slider_image"
                 loading="lazy"
-                />
+              />
             </div>
           ))}
         </Slider>
@@ -514,12 +504,10 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
     const videoPath = block[0]?.value.join('');
 
     if (!videoPath) {
-      return null; 
+      return null;
     }
 
-    const videoSrc = isFullUrl(videoPath)
-    ? videoPath
-    : `${bucket_url}/images/imageArticle/${videoPath}`;
+    const videoSrc = isFullUrl(videoPath) ? videoPath : `${bucket_url}/images/imageArticle/${videoPath}`;
 
     const videoStyle = {
       WebkitAppearance: 'none',
@@ -529,10 +517,9 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
       outline: 'none',
       display: 'block',
       width: '100%',
-      height: isFullscreen ? '100vh' : 'auto',   
-      objectFit: 'cover', 
+      height: isFullscreen ? '100vh' : 'auto',
+      objectFit: 'cover',
     };
-
 
     const handlePlay = () => {
       const videoElement = videoRef.current;
@@ -550,8 +537,8 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
 
     const handleFullscreen = () => {
       // const videoElement = videoRef.current;
-      const containerElement = document.documentElement; 
-    
+      const containerElement = document.documentElement;
+
       if (containerElement.requestFullscreen) {
         containerElement.requestFullscreen();
       } else if (containerElement.webkitRequestFullscreen) {
@@ -574,15 +561,13 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
       setIsFullscreen(false);
     };
 
-
     return (
       <div className={styles.wrapper_conteiner__item}>
         <div
           className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockSix}`}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
-          style={{ position: 'relative'}}
-        >
+          style={{ position: 'relative' }}>
           <video
             ref={videoRef}
             playsInline
@@ -591,9 +576,8 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
             className={styles.block_video}
             style={videoStyle}
             onPlay={() => setIsPlaying(true)}
-            onPause={() => setIsPlaying(false)}
-          >
-             <source src={videoSrc} type="video/mp4" />
+            onPause={() => setIsPlaying(false)}>
+            <source src={videoSrc} type="video/mp4" />
           </video>
           <div className={styles.buttonWrapperBlock}>
             {isPlaying ? (
@@ -628,7 +612,7 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
                   onMouseLeave={handleMouseLeave}
                 />
               </button>
-              ) : (
+            ) : (
               <button className={styles.buttonExitFullscreen} onClick={handleExitFullscreen}>
                 <img
                   src={fullscreen_exit}
@@ -637,7 +621,7 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
                   onMouseLeave={handleMouseLeave}
                 />
               </button>
-             )} 
+            )}
           </div>
         </div>
       </div>
@@ -689,8 +673,7 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
           title="Video Player"
           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           allowFullScreen
-          onError={handleIframeError}
-        ></iframe>
+          onError={handleIframeError}></iframe>
       </div>
     );
   };
