@@ -230,12 +230,12 @@
 // стили для планшета
 @media only screen and (min-width: 426px) and (max-width: 1024px) {
   .navbar_block {
-    .burger {
-      display: block;
-      opacity: 1;
-      visibility: visible;
-    }
-
+    & {
+      .burger {
+        display: block;
+        opacity: 1;
+        visibility: visible;
+      }
     .menu {
       width: 19.5rem;
       max-height: 0rem;
@@ -266,8 +266,9 @@
       }
     }
   }
+}
 
-  .contact_info {
+ .contact_info {
     position: absolute;
     right: 15px;
     bottom: 20%;
