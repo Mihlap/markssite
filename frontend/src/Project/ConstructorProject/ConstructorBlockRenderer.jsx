@@ -127,7 +127,7 @@ export default function ConstructorBlockRenderer({ block, handleMouseLeave, hand
   useEffect(() => {
     const handleFullscreenChange = () => {
       if (!document.fullscreenElement && !document.webkitFullscreenElement && !document.msFullscreenElement) {
-        setIsFullscreen(false); 
+        setIsFullscreen(false);
       }
     };
 
@@ -161,12 +161,7 @@ export default function ConstructorBlockRenderer({ block, handleMouseLeave, hand
     return (
       <div className={styles.containerImageToDescription}>
         {imageUrl && (
-          <img
-            className={styles.containerImageToDescription__img}
-            src={imageSrc}
-            alt="Описание"
-            loading="lazy"
-          />
+          <img className={styles.containerImageToDescription__img} src={imageSrc} alt="Описание" loading="lazy" />
         )}
         {description && <div className={styles.containerImageToDescription__text}>{description}</div>}
       </div>
@@ -295,7 +290,7 @@ export default function ConstructorBlockRenderer({ block, handleMouseLeave, hand
 
     let sliderImageStyle = {
       width: '100%',
-      height: '810px',
+      height: '370px',
       objectFit: 'cover',
       borderRadius: '16px',
     };
@@ -382,9 +377,7 @@ export default function ConstructorBlockRenderer({ block, handleMouseLeave, hand
       return null;
     }
 
-    const videoSrc = isFullUrl(videoPath)
-    ? videoPath
-    : `${bucket_url}/images/imageAdd/${videoPath}`;
+    const videoSrc = isFullUrl(videoPath) ? videoPath : `${bucket_url}/images/imageAdd/${videoPath}`;
 
     const videoStyle = {
       WebkitAppearance: 'none',
@@ -394,8 +387,8 @@ export default function ConstructorBlockRenderer({ block, handleMouseLeave, hand
       outline: 'none',
       display: 'block',
       width: '100%',
-      height: isFullscreen ? '100vh' : 'auto',   
-      objectFit: 'cover', 
+      height: isFullscreen ? '100vh' : 'auto',
+      objectFit: 'cover',
     };
 
     const handlePlay = () => {
@@ -414,8 +407,8 @@ export default function ConstructorBlockRenderer({ block, handleMouseLeave, hand
 
     const handleFullscreen = () => {
       // const videoElement = videoRef.current;
-      const containerElement = document.documentElement; 
-    
+      const containerElement = document.documentElement;
+
       if (containerElement.requestFullscreen) {
         containerElement.requestFullscreen();
       } else if (containerElement.webkitRequestFullscreen) {
@@ -444,8 +437,7 @@ export default function ConstructorBlockRenderer({ block, handleMouseLeave, hand
           className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockSix}`}
           onMouseEnter={() => setIsHovered(true)}
           onMouseLeave={() => setIsHovered(false)}
-          style={{ position: 'relative'}}
-          >
+          style={{ position: 'relative' }}>
           <video
             ref={videoRef}
             playsInline
@@ -460,27 +452,27 @@ export default function ConstructorBlockRenderer({ block, handleMouseLeave, hand
           </video>
 
           <div className={styles.buttonWrapperBlock}>
-             {isPlaying ? (
-                  isHovered && (
-                    <button className={styles.buttonPause} onClick={handlePause}>
-                      <img
-                        src={pauseIconToUse}
-                        alt={pauseIconToUse}
-                        onMouseEnter={handleMouseEnter}
-                        onMouseLeave={handleMouseLeave}
-                      />
-                    </button>
-                  )
-                ) : (
-                  <button className={styles.buttonPlayBlock} onClick={handlePlay}>
-                    <img
-                      src={playIconToUse}
-                      alt={playIconToUse}
-                      onMouseEnter={handleMouseEnter}
-                      onMouseLeave={handleMouseLeave}
-                    />
-                  </button>
-                )}             
+            {isPlaying ? (
+              isHovered && (
+                <button className={styles.buttonPause} onClick={handlePause}>
+                  <img
+                    src={pauseIconToUse}
+                    alt={pauseIconToUse}
+                    onMouseEnter={handleMouseEnter}
+                    onMouseLeave={handleMouseLeave}
+                  />
+                </button>
+              )
+            ) : (
+              <button className={styles.buttonPlayBlock} onClick={handlePlay}>
+                <img
+                  src={playIconToUse}
+                  alt={playIconToUse}
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
+                />
+              </button>
+            )}
           </div>
           <div className={styles.buttonWrapperBlock1}>
             {!isFullscreen ? (
@@ -492,7 +484,7 @@ export default function ConstructorBlockRenderer({ block, handleMouseLeave, hand
                   onMouseLeave={handleMouseLeave}
                 />
               </button>
-              ) : (
+            ) : (
               <button className={styles.buttonExitFullscreen} onClick={handleExitFullscreen}>
                 <img
                   src={fullscreen_exit}
@@ -501,7 +493,7 @@ export default function ConstructorBlockRenderer({ block, handleMouseLeave, hand
                   onMouseLeave={handleMouseLeave}
                 />
               </button>
-             )} 
+            )}
           </div>
         </div>
       </div>

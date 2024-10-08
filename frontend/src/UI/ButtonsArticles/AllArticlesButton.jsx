@@ -29,7 +29,7 @@ const AllArticlesButton = () => {
             <path d="M14 8L9 12.5L14 17" stroke="#F6F6F6" />
           </svg>
         </div>
-        <div className={style.button_name_allProjectButton}>Все публикации</div>
+        <div className={style.button_name_allProjectButton}>Все статьи</div>
       </button>
     </Link>
   );

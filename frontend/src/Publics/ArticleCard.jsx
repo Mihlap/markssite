@@ -179,23 +179,26 @@ const ArticleCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
   const userSelectedBlocks = article?.ConstructorArticles?.map((el) => el.data) || [];
   const isFullUrl = (url) => url.startsWith('http://') || url.startsWith('https://');
 
-  const imageOpenSource = article && article.imageOpen
-  ? isFullUrl(article.imageOpen)
-    ? article.imageOpen
-    : `${bucket_url}/images/imageArticle/${article.imageOpen}`
-  : catPhoto;
+  const imageOpenSource =
+    article && article.imageOpen
+      ? isFullUrl(article.imageOpen)
+        ? article.imageOpen
+        : `${bucket_url}/images/imageArticle/${article.imageOpen}`
+      : catPhoto;
 
-  const imageCloseSource = article && article.imageClose
-  ? isFullUrl(article.imageClose)
-    ? article.imageClose
-    : `${bucket_url}/images/imageArticle/${article.imageClose}`
-  : catPhoto;
+  const imageCloseSource =
+    article && article.imageClose
+      ? isFullUrl(article.imageClose)
+        ? article.imageClose
+        : `${bucket_url}/images/imageArticle/${article.imageClose}`
+      : catPhoto;
 
-  const imageAuthorSource = article && article.imageAuthor
-  ? isFullUrl(article.imageAuthor)
-    ? article.imageAuthor
-    : `${bucket_url}/images/imageArticle/${article.imageAuthor}`
-    : "";
+  const imageAuthorSource =
+    article && article.imageAuthor
+      ? isFullUrl(article.imageAuthor)
+        ? article.imageAuthor
+        : `${bucket_url}/images/imageArticle/${article.imageAuthor}`
+      : '';
 
   // const altTextOpen = (article && article.imageOpen) || 'Default Alt Text';
   // const altTextClose = (article && article.imageClose) || 'Default Alt Text';
@@ -245,150 +248,156 @@ const ArticleCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
         </div>
         {article && (
           <div className={styles.container}>
-            <div className={styles.header_content}>
-              <div ref={refs.blockLeft} className={styles.header_content_left}>
-                <div className={styles.title_block}>
-                  <div className={styles.left_title}>{article.titleTextBlock}</div>
-                </div>
-                <div className={styles.title_text}>
-                  {containsListTags(article.descriptionArticle) ? (
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: renderListWithDots(article.descriptionArticle),
-                      }}
-                    />
-                  ) : (
-                    <div
-                      dangerouslySetInnerHTML={{
-                        __html: renderListWithDots(article.descriptionArticle),
-                      }}
-                    />
-                  )}
-                </div>
-                <div className={styles.result_container}></div>
-              </div>
-              {article && article.imageAuthor ? (
-                <div ref={refs.blockRight} className={styles.header_content_right}>
-                  <div className={styles.local_container_photo_author}>
-                    <img
-                      className={styles.container__imageAuthor_articleCard}
-                      src={imageAuthorSource}
-                      alt={article.imageAuthor || 'Default Alt Text'}
-                    />
-                    <div className={styles.author_name}>{article.author}</div>
-                    <div className={styles.text_author}>Автор статьи</div>
+            <div className={styles.wrapper}>
+              <div className={styles.header_content}>
+                <div ref={refs.blockLeft} className={styles.header_content_left}>
+                  <div className={styles.title_block}>
+                    <div className={styles.left_title}>{article.titleTextBlock}</div>
                   </div>
-                </div>
-              ) : null}
-            </div>
-            <div className={styles.blockImg}>
-              <div className={styles.container}>
-                <div className={styles.item} ref={refs.leftImg1}>
-                  <img
-                    className={styles.item_img}
-                    src={imageOpenSource}
-                    alt=""
-                    loading="lazy"
-                  />
-                  <div className={styles.leftImg1_object_text1}>
-                    {/* {article.textBlock} */}
-                    {containsListTags(article.textBlock) ? (
+                  <div className={styles.title_text}>
+                    {containsListTags(article.descriptionArticle) ? (
                       <div
                         dangerouslySetInnerHTML={{
-                          __html: renderListWithDots(article.textBlock),
+                          __html: renderListWithDots(article.descriptionArticle),
                         }}
                       />
                     ) : (
                       <div
                         dangerouslySetInnerHTML={{
-                          __html: renderListWithDots(article.textBlock),
+                          __html: renderListWithDots(article.descriptionArticle),
                         }}
                       />
                     )}
                   </div>
+                  <div className={styles.result_container}></div>
                 </div>
-              </div>
-            </div>
-            <div className={styles.div_conteiner} ref={refs.constructorBlock}>
-              {userSelectedBlocks?.map((innerBlocks, outerIndex) => (
-                <div key={outerIndex}>
-                  {innerBlocks?.map((block, innerIndex) => (
-                    <ConstructorBlockRenderer
-                      handleMouseEnter={handleMouseEnter}
-                      handleMouseLeave={handleMouseLeave}
-                      key={innerIndex}
-                      block={block}
-                    />
-                  ))}
-                </div>
-              ))}
-            </div>
-            <div className={styles.item_container_imageClose} ref={refs.imageClose}>
-              <div className={styles.item}>
-                <img
-                  className={styles.item_img_close}
-                  src={imageCloseSource}
-                  alt=""
-                  loading="lazy"
-                />
-              </div>
-            </div>
-            <div className={styles.container_author_address_imageClose_share_article}>
-              <div className={styles.container_author_address_imageClose} ref={refs.address_imageClose}>
-                {/* <img
-                  className={styles.item_img}
-                  src={`${Host}/images/imageArticle/${article.imageClose}`}
-                  alt={article.imageClose}
-                /> */}
-                <div className={styles.cart_article__author__block__card_imageClose}>{article.author}</div>
-                <div className={styles.cart_article__address__block__card_imageClose}>
-                  {article.city}{' '}
-                  <div className={styles.cart_article__address__svg__block__card_imageClose}>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="2" height="2" viewBox="0 0 2 2" fill="none">
-                      <circle cx="1" cy="1" r="1" fill="#959DA6" />
-                    </svg>{' '}
+                {article && article.imageAuthor ? (
+                  <div ref={refs.blockRight} className={styles.header_content_right}>
+                    <div className={styles.local_container_photo_author}>
+                      <img
+                        className={styles.container__imageAuthor_articleCard}
+                        src={imageAuthorSource}
+                        alt={article.imageAuthor || 'Default Alt Text'}
+                      />
+                      <div className={styles.author_name}>{article.author}</div>
+                      <div className={styles.text_author}>Автор статьи</div>
+                    </div>
                   </div>
-                  {article.dataMonthYear}
+                ) : null}
+              </div>
+              <div className={styles.blockImg}>
+                <div className={styles.container}>
+                  <div className={styles.item} ref={refs.leftImg1}>
+                    <img className={styles.item_img} src={imageOpenSource} alt="" loading="lazy" />
+                    <div className={styles.leftImg1_object_text1}>
+                      {/* {article.textBlock} */}
+                      {containsListTags(article.textBlock) ? (
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: renderListWithDots(article.textBlock),
+                          }}
+                        />
+                      ) : (
+                        <div
+                          dangerouslySetInnerHTML={{
+                            __html: renderListWithDots(article.textBlock),
+                          }}
+                        />
+                      )}
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div className={styles.share_article}>Поделиться статьей</div>
-            </div>
-            <div id="articles" className={styles.social_links_articleCard}>
-              <button
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-                onClick={() => shareToVK(article, bucket_url)}
-              >
-                <span className={styles.social_links_item} style={{ marginRight: '21px', color: '#FF7F6A' }}>
-                  VK
+              <div className={styles.div_conteiner} ref={refs.constructorBlock}>
+                {userSelectedBlocks?.map((innerBlocks, outerIndex) => (
+                  <div key={outerIndex}>
+                    {innerBlocks?.map((block, innerIndex) => (
+                      <ConstructorBlockRenderer
+                        handleMouseEnter={handleMouseEnter}
+                        handleMouseLeave={handleMouseLeave}
+                        key={innerIndex}
+                        block={block}
+                      />
+                    ))}
+                  </div>
+                ))}
+              </div>
+              <div className={styles.item_container_imageClose} ref={refs.imageClose}>
+                <div className={styles.item}>
+                  <img className={styles.item_img_close} src={imageCloseSource} alt="" loading="lazy" />
+                </div>
+              </div>
+              <div className={styles.container_author_wrapper}>
+                <div className={styles.container_author_address_imageClose_share_article}>
+                  <div className={styles.container_author_address_imageClose} ref={refs.address_imageClose}>
+                    {/* <img
+                    className={styles.item_img}
+                    src={`${Host}/images/imageArticle/${article.imageClose}`}
+                    alt={article.imageClose}
+                  /> */}
+                    <div className={styles.cart_article__author__block__card_imageClose}>{article.author}</div>
+                    <div className={styles.cart_article__address__block__card_imageClose}>
+                      {article.city}{' '}
+                      <div className={styles.cart_article__address__svg__block__card_imageClose}>
+                        <svg xmlns="http://www.w3.org/2000/svg" width="2" height="2" viewBox="0 0 2 2" fill="none">
+                          <circle cx="1" cy="1" r="1" fill="#959DA6" />
+                        </svg>{' '}
+                      </div>
+                      {article.dataMonthYear}
+                    </div>
+                  </div>
+                  <div className={styles.share_article}>
+                    <div>Поделиться статьей</div>
+                    <div id="articles" className={styles.social_links_articleCard}>
+                      <button
+                        onMouseEnter={handleMouseEnter}
+                        onMouseLeave={handleMouseLeave}
+                        onClick={() => shareToVK(article, bucket_url)}>
+                        <span className={styles.social_links_item} style={{ marginRight: '18px', color: '#FF7F6A' }}>
+                          VK
+                        </span>
+                      </button>
+                      <button onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} onClick={() => {}}>
+                        <span className={styles.social_links_item} style={{ marginRight: '18px', color: '#FF7F6A' }}>
+                          IG
+                        </span>
+                      </button>
+
+                      <button onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} onClick={() => {}}>
+                        <span className={styles.social_links_item} style={{ marginRight: '18px', color: '#FF7F6A' }}>
+                          BE
+                        </span>
+                      </button>
+                      {/* <button
+                  onMouseEnter={handleMouseEnter}
+                  onMouseLeave={handleMouseLeave}
+                  onClick={() => shareToWhatsApp(article, bucket_url)}
+                >
+                  <span className={styles.social_links_item} style={{ marginRight: '18px', color: '#FF7F6A' }}>
+                    WA
+                  </span>
+                </button> */}
+
+                      {/* <button onClick={() => shareToViber(article, Host)}>
+                <span
+                  className={styles.social_links_item}
+                  style={{ marginRight: "22px", color: "#FF7F6A" }}
+                >
+                  VB
                 </span>
-              </button>
-              <button
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-                onClick={() => shareToWhatsApp(article, bucket_url)}
-              >
-                <span className={styles.social_links_item} style={{ marginRight: '25px', color: '#FF7F6A' }}>
-                  WA
-                </span>
-              </button>
-              {/* <button onClick={() => shareToViber(article, Host)}>
-              <span
-                className={styles.social_links_item}
-                style={{ marginRight: "22px", color: "#FF7F6A" }}
-              >
-                VB
-              </span>
-            </button> */}
-              <button
-                onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-                onClick={() => shareToTelegram(article, bucket_url)}
-              >
-                <span className={styles.social_links_item} style={{ color: '#FF7F6A' }}>
-                  TG
-                </span>
-              </button>
+              </button> */}
+                      <button
+                        onMouseEnter={handleMouseEnter}
+                        onMouseLeave={handleMouseLeave}
+                        onClick={() => shareToTelegram(article, bucket_url)}>
+                        <span className={styles.social_links_item} style={{ color: '#FF7F6A' }}>
+                          TG
+                        </span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         )}
@@ -398,8 +407,7 @@ const ArticleCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
               className={styles.button_article_link_articleCard1}
               to={`/publication/${previousArticle.id}`}
               onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
-            >
+              onMouseLeave={handleMouseLeave}>
               <div className={styles.previous_svg_articleCard}>
                 <img src={previous} alt={previous} />
                 <span className={styles.previous__span_articleCard}>
@@ -413,8 +421,7 @@ const ArticleCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
               className={styles.button_article_link_articleCard2}
               to={`/publication/${nextArticle.id}`}
               onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
-            >
+              onMouseLeave={handleMouseLeave}>
               <div className={styles.next_svg_articleCard}>
                 <span className={styles.next__span_articleCard}>
                   {isMobile ? 'Следующая статья' : `${nextArticle.title}`}
@@ -463,8 +470,7 @@ const ArticleCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
               700: {
                 slidesPerView: 2.1,
               },
-            }}
-          >
+            }}>
             {randomArticles?.map((article, index) => {
               if (!article) {
                 return null;
@@ -474,14 +480,14 @@ const ArticleCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
                 ? article.imageTitle.split(',').map((el) => el.trim())
                 : [];
               const firstImageName = imagePathsForArticle[0] || null;
-              const defaultImagePath = `${catPhoto}`; 
+              const defaultImagePath = `${catPhoto}`;
               const isFullUrl = (url) => url.startsWith('http://') || url.startsWith('https://');
 
               const firstImagePath = firstImageName
-              ? isFullUrl(firstImageName)
-                ? firstImageName
-                : `${bucket_url}/images/imageArticle/${firstImageName}`
-              : defaultImagePath;
+                ? isFullUrl(firstImageName)
+                  ? firstImageName
+                  : `${bucket_url}/images/imageArticle/${firstImageName}`
+                : defaultImagePath;
 
               return (
                 <SwiperSlide
@@ -489,8 +495,7 @@ const ArticleCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
                   onScroll={handleScroll}
                   id="slider_container_item_card"
                   className={styles.slider_container_item_card_articleCard}
-                  style={index % 2 === 1 ? { paddingTop: '10rem' } : {}}
-                >
+                  style={index % 2 === 1 ? { paddingTop: '10rem' } : {}}>
                   <Link to={`/publication/${article.id}`} key={article.id}>
                     <div className={styles.wrapper_container_item_card_articleCard}>
                       <img
