@@ -187,13 +187,13 @@ export default function ConstructorBlockRenderer({ block, handleMouseLeave, hand
         {header && <h2 className={styles.blockHeadingTitle__heading}>{header}</h2>}
         <p className={styles.blockHeadingTitle__text}>
           {containsListTags(text) ? (
-            <div
+            <span
               dangerouslySetInnerHTML={{
                 __html: renderListWithDots(text),
               }}
             />
           ) : (
-            <div
+            <span
               dangerouslySetInnerHTML={{
                 __html: renderListWithDots(text),
               }}

@@ -7,7 +7,7 @@ const {
   ProjectMain,
   Constructor
 } = require('../../db/models');
-const fileMiddleware = require('../../middleware/fileEvent');
+const fileMiddleware = require('../../middleware/file');
 const {
   uploadFileToS3,
   deleteFileFromS3
@@ -355,7 +355,8 @@ router.put(
       });
 
       const dynamicBlocksContent = req.body.dynamicBlocksJSON ?
-        JSON.parse(req.body.dynamicBlocksJSON) : [];
+        JSON.parse(req.body.dynamicBlocksJSON) 
+        : [];
 
       // Загрузка новых динамических изображений на S3
       const dynamicImagesNew = req.files.dynamicImages ?

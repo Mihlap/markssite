@@ -2,7 +2,7 @@ const express = require('express');
 const { Op } = require('sequelize');
 const path = require('path');
 const fs = require('fs');
-const fileMiddleware = require('../../middleware/fileEvent');   
+const fileMiddleware = require('../../middleware/file');   
 const { VacancyMainEvent } = require('../../db/models');
 const { uploadFileToS3, deleteFileFromS3 } = require('../../s3Utils/s3Service');
 
