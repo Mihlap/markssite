@@ -732,6 +732,7 @@
   z-index: 1000;
 }
 
+
 @media screen and (min-width: 1700px) and (max-width: 3000px) {
   .underSlider_text_wrapper {
     position: absolute;
