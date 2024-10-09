@@ -185,6 +185,9 @@ const VacancyFormContact = ({
             setSelectedFiles([]);
             setFileAttached(false);
             setSelectedOptions(null);
+                if (window.ym) {
+                //  window.ym(YOUR_METRIKA_ID, 'reachGoal', 'formSubmitted');
+                }
           } else {
             console.error('Form submission failed:', data.message || 'Unknown error');
           }
