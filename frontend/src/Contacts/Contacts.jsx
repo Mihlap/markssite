@@ -11,6 +11,7 @@ const apiKey = process.env.REACT_APP_API_KEY;
 
 const cities = [
   { name: 'Москва', coords: [55.783, 37.5804] },
+  { name: 'Санкт-Петербург', coords: [59.93424, 30.39175] },
   { name: 'Воронеж', coords: [51.653696, 39.178566] },
   { name: 'Оренбург', coords: [51.804, 55.1053] },
   { name: 'Челябинск', coords: [55.1566, 61.3018] },
@@ -18,31 +19,37 @@ const cities = [
 ];
 
 const cityInfo = {
-  Москва: {
+  'Москва': {
     address: 'Москва, 3-я ул. Ямского Поля, д. 20, с. 1, офис 704',
     phone: '+7 (495) 120-12-26',
     mail: 'mail@marksgroup.ru',
     hour: '',
   },
-  Воронеж: {
+  'Санкт-Петербург': {
+    address: 'Санкт-Петербург, Синопская набережная, д. 50А',
+    phone: '+7 (495) 120-12-26',
+    mail: 'mail@marksgroup.ru',
+    hour: '',
+  },
+  'Воронеж': {
     address: 'Воронеж, ул. Ворошилова, д. 1а',
     phone: '+7 (495) 120-12-26',
     mail: 'mail@marksgroup.ru',
     hour: '',
   },
-  Оренбург: {
+  'Оренбург': {
     address: 'Оренбург, пр. Нижний, д. 17, офис 305',
     phone: '+7 (3532) 22-86-96',
     mail: 'mail@marksgroup.ru',
     hour: '+ 2 МСК',
   },
-  Челябинск: {
+ 'Челябинск': {
     address: 'Челябинск, ул. Северная, д. 52/3',
     phone: '+7 (968) 110-11-30',
     mail: 'mail@marksgroup.ru',
     hour: '+ 2 МСК',
   },
-  Ташкент: {
+  'Ташкент': {
     address: 'Tashkent, Oybek Street, 18/1',
     phone: '+998 99 353 96 90',
     mail: 'mail@marksgroup.ru',
@@ -111,7 +118,7 @@ const Contacts = ({ handleMouseEnter, handleMouseLeave }) => {
           <div className={styles.menu_address}>{address}</div>
           <div className={styles.menu_work}>
             Режим работы &nbsp;&bull;&nbsp; Пн.&nbsp;&mdash; Пт.&nbsp;10.00&mdash;19.00
-            {selectedMap !== 'Москва' && selectedMap !== 'Воронеж' && <> &nbsp;&bull;&nbsp; {hour}</>}
+            {selectedMap !== 'Москва' && selectedMap !== 'Санкт-Петербург' && selectedMap !== 'Воронеж' && <> &nbsp;&bull;&nbsp; {hour}</>}
           </div>
           <div className={styles.menu_hour}></div>
           <div className={styles.menu_office_name}>Наши офисы</div>

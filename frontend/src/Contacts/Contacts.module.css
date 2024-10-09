@@ -27,7 +27,7 @@
   backdrop-filter: blur(14px);
   z-index: 1;
   padding-left: 1.94vw;
-  padding-right: 6.39vw;
+  padding-right: 2.39vw;
 }
 
 .menu_block::after {
@@ -118,6 +118,7 @@
   width: fit-content;
   align-items: center;
   transition: background-color 0.8s ease, color 0.8s ease;
+  white-space: nowrap;
 }
 
 .menu_button:hover {
@@ -136,6 +137,7 @@
 }
 .menu_button_city {
   padding: 8px 24px;
+  width: 100%;
 }
 
 /* Стили планшетной версии */
