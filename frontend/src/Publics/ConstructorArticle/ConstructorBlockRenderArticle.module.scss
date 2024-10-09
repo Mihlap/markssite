@@ -568,8 +568,6 @@
     &__quote_text {
       color: var(--black-1D2E43);
       font-variant-numeric: lining-nums proportional-nums;
-
-      /* Body Regular · 16 */
       font-family: var(--font-raleway);
       font-size: 16px;
       font-style: normal;
@@ -577,7 +575,6 @@
       line-height: 24px;
       white-space: pre-wrap;
       word-break: break-word;
-      /* 150% */
     }
 
     &__quote_author {
@@ -670,19 +667,18 @@
 }
 
 /* Стили для мобильной версии сайта блока ProjectCardConstructor, начинаются тут */
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 768px) {
   .containerImageToDescription {
-    padding-top: 0.5rem;
-    padding-bottom: 40px;
-    // padding-left: 1rem;
-    // padding-right: 1rem;
+    padding: 0;
+    margin: 2rem 0;
   }
 
   .blockHeadingTitle {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-    padding: 0px 1vw 2.5rem 1vw;
+    padding: 0;
+    margin: 2rem 0;
 
     &__heading {
       color: var(--black-1D2E43);
@@ -781,13 +777,14 @@
 
   .quote_block_constainer {
     position: relative;
-    margin-bottom: 2.5rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
     word-wrap: break-word;
     padding-left: 0;
 
     &__text_block {
       display: flex;
-      padding: 24px;
+      padding: 24px 16px;
       flex-direction: column;
       align-items: flex-start;
       gap: 16px;
@@ -837,11 +834,16 @@
   }
 
   .text_framed {
-    margin-bottom: 40px;
+    margin-bottom: 2rem;
+    margin-top: 2rem;
     padding-left: 0;
     padding-right: 0;
     white-space: pre-wrap;
     word-break: break-word;
+
+    &__text {
+      padding: 1.5rem 1rem;
+    }
   }
 
   .note_block {
@@ -850,7 +852,8 @@
     word-wrap: break-word;
     padding-right: 0;
     padding-left: 0;
-    padding-bottom: 2.5rem;
+    padding-bottom: 0;
+    margin: 2rem 0;
 
     &__bookmark {
       width: 9px;
@@ -869,7 +872,8 @@
   .text_block {
     padding-right: 0;
     padding-left: 0;
-    padding-bottom: 40px;
+    padding-bottom: 0;
+    margin: 2rem 0;
     white-space: pre-wrap;
     word-break: break-word;
   }
@@ -877,10 +881,11 @@
   // <<< ====== стили для слайдера с картинками =) ====== >>>
 
   .slider_container {
-    padding-bottom: 56px;
+    padding: 0;
     padding-left: 0rem;
     padding-right: 0rem;
     width: 100%;
+    margin: 2rem 0;
   }
 
   .custom_slider {
@@ -889,13 +894,14 @@
   .div_conteiner__blockSix {
     width: 100%;
     max-width: 100%;
-    padding-left: 0;
-    padding-bottom: 40px;
+    padding: 0;
+    margin: 2rem 0;
   }
 
   .videoLinkContainer {
     padding-left: 0;
-    padding-bottom: 40px;
+    padding-bottom: 0px;
+    margin: 2rem 0;
   }
 
   .buttonWrapperBlock1 {
