@@ -2,5 +2,6 @@
   "cSpell.words": [
     "Podzemproekt"
   ],
-  "editor.formatOnSave": true
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true
 }
