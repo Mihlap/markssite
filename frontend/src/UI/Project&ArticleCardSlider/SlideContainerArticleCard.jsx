@@ -12,17 +12,17 @@ import catPhoto from '../../img/default-photo.jpeg';
 const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
 const SliderContainerArticleCard = ({ articles }) => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+  const [, setCurrentIndex] = useState(0);
   const swiperRef = useRef(null);
 
   SwipeCore.use([Navigation, Pagination, Autoplay]);
 
-  const handlePageClick = (index) => {
-    setCurrentIndex(index);
-    if (swiperRef.current && swiperRef.current.slideTo) {
-      swiperRef.current.slideTo(index);
-    }
-  };
+  // const handlePageClick = (index) => {
+  //   setCurrentIndex(index);
+  //   if (swiperRef.current && swiperRef.current.slideTo) {
+  //     swiperRef.current.slideTo(index);
+  //   }
+  // };
 
   const isFullUrl = (url) => url.startsWith('http://') || url.startsWith('https://');
 

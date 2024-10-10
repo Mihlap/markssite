@@ -1,7 +1,9 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useRef } from 'react';
 import InputMask from 'react-input-mask';
 import styles from './CompanyFormContacts.module.css';
 import 'react-phone-number-input/style.css';
+
+ const Host = process.env.REACT_APP_SERVER_HOST;
 
 const CompanyFormContacts = ({
   handleMouseEnter,
@@ -26,8 +28,9 @@ const CompanyFormContacts = ({
   const [isConsentGiven, setIsConsentGiven] = useState(false);
   const [inputLineColor, setInputLineColor] = useState('#959DA6');
 
-  const Host = process.env.REACT_APP_SERVER_HOST;
+  const phoneInputRef = useRef(null);
 
+ 
   const handleFocus = useCallback((event) => {
     const name = event.target.name;
     setIsFocused((prevState) => ({
@@ -123,7 +126,7 @@ const CompanyFormContacts = ({
           setIsLoading(false);
         });
     },
-    [formData, isConsentGiven, Host]
+    [formData, isConsentGiven, setIsLoading, setModalOpen]
   );
 
   return (
@@ -137,8 +140,7 @@ const CompanyFormContacts = ({
               <label
                 className={`${styles.label1} ${isFocused.name ? styles.focused1 : ''}`}
                 onMouseOver={handleMouseEnter}
-                onMouseOut={handleMouseLeave}
-              >
+                onMouseOut={handleMouseLeave}>
                 <input
                   type="text"
                   name="name"
@@ -160,10 +162,9 @@ const CompanyFormContacts = ({
               <label
                 className={`${styles.label1} ${isFocused.phone ? styles.focused1 : ''}`}
                 onMouseOver={handleMouseEnter}
-                onMouseOut={handleMouseLeave}
-              >
+                onMouseOut={handleMouseLeave}>
                 <InputMask
-                  id="phone-input"
+                  ref={phoneInputRef}
                   mask="+7 (999) 999-99-99"
                   maskChar=""
                   name="phone"
@@ -188,8 +189,7 @@ const CompanyFormContacts = ({
               <label
                 className={`${styles.label1} ${isFocused.task ? styles.focused1 : ''}`}
                 onMouseOver={handleMouseEnter}
-                onMouseOut={handleMouseLeave}
-              >
+                onMouseOut={handleMouseLeave}>
                 <input
                   type="text"
                   name="task"
@@ -234,8 +234,7 @@ const CompanyFormContacts = ({
               type="submit"
               id="submit-button"
               onMouseOver={handleMouseEnter}
-              onMouseOut={handleMouseLeave}
-            >
+              onMouseOut={handleMouseLeave}>
               <p className={styles.button_name10}>Отправить</p>
             </button>
           </form>
