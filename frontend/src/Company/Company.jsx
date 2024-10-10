@@ -548,12 +548,8 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
                     <img
                       className={`${styles.container__img_stuff} ${showCards ? 'loaded' : ''}`}
                       src={`${bucket_url}/images/imageStuff/${el.img}`}
-                      onLoad={() => {
-                        // console.log(`Image loaded successfully: ${bucket_url}/images/imageStuff/${el.img}`);
-                        handleImageLoad();
-                      }}
+                      onLoad={handleImageLoad}
                       onError={(e) => {
-                     
                         e.target.src = `${bucket_url}/images/imageStuff/no_photo.png`;
                       }}
                       alt={el.img}
