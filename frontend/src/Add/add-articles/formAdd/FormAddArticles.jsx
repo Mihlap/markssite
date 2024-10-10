@@ -29,8 +29,8 @@ export default function FormAddArticles({ setIsModalOpen }) {
   const [isPhotoCloseVisible, setIsPhotoCloseVisible] = useState(true);
   const [isPhotoOpenVisible, setIsPhotoOpenVisible] = useState(true);
   const [isPhotoAvaVisible, setIsPhotoAvaVisible] = useState(true);
-  const [isDropPhotoVisible, setIsDropPhotoVisible] = useState(true);
-  const [isFocused, setIsFocused] = useState(false);
+  const [, setIsDropPhotoVisible] = useState(true);
+  const [, setIsFocused] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
   const [inputData, setInputData] = useState({
     title: '',
@@ -54,8 +54,8 @@ export default function FormAddArticles({ setIsModalOpen }) {
 
   const quillRef1 = useRef(null);
   const quillRef2 = useRef(null);
-
   const quillRefs = [quillRef1, quillRef2];
+
   const applyStylesToQuillEditor = useCallback((quillRef) => {
     if (quillRef && quillRef.current) {
       const editor = quillRef.current.getEditor();
@@ -72,8 +72,8 @@ export default function FormAddArticles({ setIsModalOpen }) {
     quillRefs.forEach((quillRef) => applyStylesToQuillEditor(quillRef));
   }, [quillRef1, quillRef2, applyStylesToQuillEditor]);
 
-  const [inputValue, setInputValue] = useState('');
-  const [onenConstructor, setOpenConstructor] = useState(false);
+  const [, setInputValue] = useState('');
+  const [openConstructor, setOpenConstructor] = useState(false);
   const [blocks, setBlocks] = useState([]);
   const [dynamicPreviews, setDynamicPreviews] = useState([]);
   const [dynamicData, setDynamicData] = useState([]);
@@ -755,8 +755,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
                   />
                   <div
                     className={styles.preview_photos_container__remove_icon}
-                    onClick={() => handleRemovePreviewPhoto(index)}
-                  >
+                    onClick={() => handleRemovePreviewPhoto(index)}>
                     <span></span>
                   </div>
                 </div>
@@ -903,8 +902,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
                   <img className={styles.preview_photos_container__img} src={preview} alt={`Preview ${index}`} />
                   <div
                     className={styles.preview_photos_container__remove_icon}
-                    onClick={() => handleRemovePreviewPhotoAva(index)}
-                  >
+                    onClick={() => handleRemovePreviewPhotoAva(index)}>
                     <span></span>
                   </div>
                 </div>
@@ -963,8 +961,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
                   <img className={styles.preview_photos_container__img} src={preview} alt={`Preview ${index}`} />
                   <div
                     className={styles.preview_photos_container__remove_icon}
-                    onClick={() => handleRemovePreviewPhotoOpen(index)}
-                  >
+                    onClick={() => handleRemovePreviewPhotoOpen(index)}>
                     <span></span>
                   </div>
                 </div>
@@ -1029,7 +1026,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
 
           <div className={styles.constructor_container}>
             <div className={styles.constructor_container__block}>
-              {!onenConstructor ? (
+              {!openConstructor ? (
                 <div className={styles.constructor_container__block_btn}>
                   <button onClick={handlerOpenConstructor}>
                     <svg
@@ -1038,8 +1035,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
                       height="40"
                       viewBox="0 0 41 40"
                       fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
+                      xmlns="http://www.w3.org/2000/svg">
                       <g id="icon">
                         <circle id="Ellipse 4" cx="20.5" cy="20" r="20" fill="#FF7F6A" />
                         <path
@@ -1111,8 +1107,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
                   <img className={styles.preview_photos_container__img} src={preview} alt={`Preview ${index}`} />
                   <div
                     className={styles.preview_photos_container__remove_icon}
-                    onClick={() => handleRemovePreviewPhotoClose(index)}
-                  >
+                    onClick={() => handleRemovePreviewPhotoClose(index)}>
                     <span></span>
                   </div>
                 </div>

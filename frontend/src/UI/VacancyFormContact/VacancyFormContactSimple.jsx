@@ -1,6 +1,6 @@
 import React, { useRef, useState, useCallback, useEffect } from 'react';
 import InputMask from 'react-input-mask';
-import { Link, useLocation } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import styles from './VacancyFormContact.module.css';
 import 'react-phone-number-input/style.css';
 
@@ -14,10 +14,6 @@ const VacancyFormContactSimple = ({
   vacancyTitleSimple,
   buttonText,
 }) => {
-  const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
-  const type = searchParams.get('type');
-
   const [isFocused, setIsFocused] = useState({
     name: false,
     phone: false,
@@ -147,7 +143,7 @@ const VacancyFormContactSimple = ({
           setIsLoading(false);
         });
     },
-    [formData, selectedFiles, vacancyTitleSimple]
+    [formData, selectedFiles, vacancyTitleSimple, setIsLoading, setIsModalOpen]
   );
 
   const getLineClassSimple = (field) => {
