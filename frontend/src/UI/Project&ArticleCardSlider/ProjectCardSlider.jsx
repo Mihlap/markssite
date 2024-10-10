@@ -5,6 +5,18 @@ import '.././Company_Slider/Company_Slider.css';
 
 const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
+const calculateLineWidth = (index, count) => {
+  if (count === 4) {
+    return (index + 1) * 22;
+  } else if (count === 3) {
+    return (index + 1) * 30;
+  } else if (count === 2) {
+    return (index + 1) * 45;
+  } else {
+    return index;
+  }
+};
+
 const ProjectCardSlider = ({ slidesCard }) => {
   const sliderRef = useRef(null);
   const [activeButtonIndex, setActiveButtonIndex] = useState(0);
@@ -19,30 +31,17 @@ const ProjectCardSlider = ({ slidesCard }) => {
         })
       : [];
 
-  const calculateLineWidth = (index) => {
-    const count = imagePaths ? imagePaths.length : 0;
-    if (sliderRef.current && count === 4) {
-      return (index + 1) * 22;
-    } else if (sliderRef.current && count === 3) {
-      return (index + 1) * 30;
-    } else if (sliderRef.current && count === 2) {
-      return (index + 1) * 45;
-    } else {
-      return index;
-    }
-  };
-
-  const [lineWidth, setLineWidth] = useState(() => calculateLineWidth(0));
+  const [lineWidth, setLineWidth] = useState(() => calculateLineWidth(0, imagePaths.length));
 
   useEffect(() => {
-    setLineWidth(calculateLineWidth(0));
-  }, [slidesCard]);
+    setLineWidth(calculateLineWidth(0, imagePaths.length));
+  }, [slidesCard, imagePaths.length]);
 
   const handleButtonClick = (index) => {
     if (sliderRef.current) {
       sliderRef.current.slickGoTo(index);
       setActiveButtonIndex(index);
-      setLineWidth(calculateLineWidth(index));
+      setLineWidth(calculateLineWidth(index, imagePaths.length));
     }
   };
 
@@ -56,7 +55,7 @@ const ProjectCardSlider = ({ slidesCard }) => {
 
   const handleBeforeChange = (oldIndex, newIndex) => {
     setActiveButtonIndex(newIndex);
-    setLineWidth(calculateLineWidth(newIndex));
+    setLineWidth(calculateLineWidth(newIndex, imagePaths.length));
   };
 
   if (imagePaths.length <= 1) {
