@@ -1,8 +1,10 @@
 @import '../App.css';
 
+div:empty {
+  display: none;
+}
+
 .main_article_card {
-  display: flex;
-  flex-direction: column;
   height: 100%;
   width: 100%;
   background-color: var(--white-F6F6F6);
@@ -842,7 +844,7 @@
 
   .button_article_link_articleCard1,
   .button_article_link_articleCard2 {
-    padding: 2.2rem 1rem;
+    padding: 1rem;
   }
 
   .previous_svg_articleCard,
@@ -897,9 +899,67 @@
 
 /* Стили для мобильной версии сайта блока ArticleCard начинаются тут */
 @media screen and (max-width: 768px) {
-  .cart_article_title__block__card {
+  .main_article_card > div:first-child {
+    display: none;
+  }
+
+  .all_button_div {
+    top: 5.125rem;
+    left: 1rem;
+    /* position: static; */
+  }
+
+  .all_button_div button {
+    background-color: var(--white-F6F6F6);
+    color: var(--black-1D2E43);
+  }
+
+  .all_button_div svg {
+    fill: var(--black-1D2E43);
+  }
+
+  .section_article__block__card {
+    position: static;
+    background: linear-gradient(
+      261.46deg,
+      rgba(255, 203, 193, 0.2) -4.67%,
+      rgba(117, 187, 253, 0.2) 44.63%,
+      rgba(188, 188, 188, 0.2) 103.07%
+    );
+  }
+
+  .section_article__block__card * {
+    color: var(--black-1D2E43);
+  }
+
+  .cart_article__block__card {
+    margin-top: 9.75rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    padding-bottom: 4rem;
     width: 100%;
   }
+
+  .cart_article_title__block__card {
+    width: 100%;
+    font-size: 1.5rem;
+    line-height: 2rem;
+    margin-top: 0rem;
+    font-weight: 300;
+  }
+
+  .cart_article__author__block__card {
+    margin-top: 2rem;
+    font-size: 1.5rem;
+    line-height: 2rem;
+    font-weight: 300;
+  }
+
+  .wrapper {
+    padding: 1rem;
+    width: 100%;
+  }
+
   .share_article,
   .social_links_articleCard,
   /* .cart_article__author__block__card, */
@@ -913,26 +973,9 @@
     display: none;
   }
 
-  .all_button_div {
-    top: 10%;
-    left: 1rem;
-  }
-
-  .cart_article__block__card {
-    margin-top: 9.7rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
-    width: 100%;
-  }
-
-  .cart_article_title__block__card {
-    font-size: 1.5rem;
-    line-height: 2rem;
-    margin-top: 0rem;
-  }
-
   .header_content {
     padding-bottom: 0rem;
+    margin-bottom: 2rem;
   }
 
   .header_content_left {
@@ -949,20 +992,21 @@
   .title_text {
     width: 100%;
     margin-top: 1rem;
-    margin-bottom: 2.5rem;
+    padding-bottom: 0;
     white-space: pre-wrap;
     word-break: break-word;
   }
 
   .blockImg {
     width: 100%;
-    padding-left: 1rem;
-    padding-right: 1rem;
-    padding-bottom: 24px;
+    padding-left: 0;
+    padding-right: 0;
+    margin: 2rem 0;
   }
 
   .item_img {
     width: 100%;
+    margin-bottom: 0;
   }
 
   .item:not(:last-child) {
@@ -1011,6 +1055,7 @@
   .item_container_imageClose {
     padding: 0rem 0rem 0rem 0rem;
     width: 100%;
+    margin-bottom: 2rem;
   }
 
   .item_img_close {
@@ -1022,9 +1067,10 @@
   .container_author_address_imageClose_share_article {
     display: flex;
     flex-direction: row;
-    /* justify-content: 0; */
-    margin-top: 1rem;
-    padding-bottom: 2rem;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding-bottom: 0;
+    margin-bottom: 1rem;
   }
 
   .item_container_imageClose {
@@ -1048,15 +1094,15 @@
     padding-left: 0;
     flex-wrap: wrap;
   }
+
   .cart_article__author__block__card_imageClose {
     display: inline-flex;
-    padding-left: 1rem;
-    padding-right: 0.5rem;
     overflow-wrap: break-word;
+    padding: 0;
   }
   .cart_article__address__block__card_imageClose {
     display: inline-flex;
-    padding-left: 1rem;
+    padding: 0;
   }
   .cart_article__address__svg__block__card_imageClose {
     display: flex;
@@ -1075,6 +1121,8 @@
 
   .button_article_link_articleCard1,
   .button_article_link_articleCard2 {
+    padding: 1rem;
+    width: 50%;
   }
 
   .previous_svg_articleCard,
@@ -1086,13 +1134,16 @@
   }
 
   .previous__span_articleCard {
+    padding-left: 0.37rem;
     font-size: 0.75rem;
-    padding-left: 0.87rem;
+    line-height: 1rem;
   }
 
   .next__span_articleCard {
     font-size: 0.75rem;
-    padding-right: 0.87rem;
+    line-height: 1rem;
+    text-align: right;
+    padding-right: 0.37rem;
   }
 
   .button_article_link_articleCard1:hover {
@@ -1106,10 +1157,11 @@
   }
 
   .article_name_text {
-    padding-left: 5vw;
+    padding-left: 1rem;
     padding-right: 1rem;
     margin-top: 2.5rem;
     padding-bottom: 0rem;
+    margin-bottom: 1.5rem;
   }
 
   .article_container_articleCard_sliderMobile {
@@ -1121,24 +1173,18 @@
   .leftImg1_object_text1,
   .div_conteiner {
     width: 100%;
-    padding: 1rem 0rem;
+    padding: 0;
     white-space: pre-wrap;
     word-break: break-word;
   }
 
   .header_content_left {
     width: 100%;
+    padding: 0;
   }
 
   .leftImg1_object_text1 {
-    margin-top: 2.5rem;
+    margin: 2rem 0 0 0;
     width: 100%;
-  }
-  .div_conteiner {
-    width: 100%;
-    padding-left: 1rem;
-    padding-right: 1rem;
-    margin-top: 0;
-    padding-bottom: 0;
   }
 }
