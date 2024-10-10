@@ -9,16 +9,16 @@ import {
   changeHandler,
   removePreviewPhoto,
   removePreviewPhotoAva,
-  removePreviewPhotoClose,
-  removePreviewPhotoOpen,
-  getEmbedLink,
+  // removePreviewPhotoClose,
+  // removePreviewPhotoOpen,
+  // getEmbedLink,
 } from './utils/formHelpers';
 import {
   fetchArticle,
   setArticleId,
-  clearFormData,
-  setDynamicaData,
-  setDynamicImages,
+  // clearFormData,
+  // setDynamicaData,
+  // setDynamicImages,
 } from '../../../store/Slice/articleSlice';
 import customStyles from '../../add-project/formAdd/utils/customStyles';
 import compressImageFile from 'browser-image-compression';
@@ -37,15 +37,15 @@ export default function FormEditArticles({ setIsModalOpen, editArticleData }) {
   const [previewPhotoClose, setPreviewPhotoClose] = useState([]);
   const [isPhotoCloseVisible, setIsPhotoCloseVisible] = useState(true);
   const [isPhotoOpenVisible, setIsPhotoOpenVisible] = useState(true);
-  const [isPhotoAvaVisible, setIsPhotoAvaVisible] = useState(true);
-  const [isDropPhotoVisible, setIsDropPhotoVisible] = useState(true);
-  const [isFocused, setIsFocused] = useState(false);
+  const [, setIsPhotoAvaVisible] = useState(true);
+  const [, setIsDropPhotoVisible] = useState(true);
+  const [, setIsFocused] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoadingDropPhoto, setIsLoadingDropPhoto] = useState(false);
   const [isLoadingOpenImage, setIsLoadingOpenImage] = useState(false);
   const [isLoadingCloseImage, setIsLoadingCloseImage] = useState(false);
-  const [embedLink, setEmbedLink] = useState('');
+  const [embedLink] = useState('');
   const [inputData, setInputData] = useState({
     title: '',
     author: '',

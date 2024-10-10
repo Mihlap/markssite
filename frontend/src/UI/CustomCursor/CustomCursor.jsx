@@ -1,24 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import './CustomCursor.scss';
-import { useSelector } from 'react-redux';
-import { useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import { mouseDown, mouseUp } from '../../store/Slice/cursorSlice';
 
 export default function CustomCursor() {
   const [mousePosition, setMousePosition] = useState({
-    x: 0,
-    y: 0,
+    x: window.innerWidth / 2,
+    y: window.innerHeight / 2,
   });
   const cursorVariant = useSelector((state) => state.cursor);
-
   const dispatch = useDispatch();
 
   useEffect(() => {
-    setMousePosition({
+    const updatePosition = {
       x: window.innerWidth / 2,
       y: window.innerHeight / 2,
-    });
+    };
 
     const mouseMove = (e) => {
       const newPosition = {
@@ -27,7 +25,9 @@ export default function CustomCursor() {
       };
 
       window.requestAnimationFrame(() => {
-        if (newPosition.x !== mousePosition.x || newPosition.y !== mousePosition.y) {
+        if (newPosition.x !== updatePosition.x || newPosition.y !== updatePosition.y) {
+          updatePosition.x = newPosition.x;
+          updatePosition.y = newPosition.y;
           setMousePosition(newPosition);
         }
       });
@@ -53,39 +53,18 @@ export default function CustomCursor() {
   }, [dispatch]);
 
   const variants = {
-    default: {
-      x: mousePosition.x,
-      y: mousePosition.y,
-      // height: 24,
-      // width: 24,
-    },
-
-    mouseDown: {
-      scale: 1.7,
-      x: mousePosition.x,
-      y: mousePosition.y,
-    },
-    mouseUp: {
-      scale: 1,
-      x: mousePosition.x,
-      y: mousePosition.y,
-    },
+    default: { x: mousePosition.x, y: mousePosition.y },
+    mouseDown: { scale: 1.7, x: mousePosition.x, y: mousePosition.y },
+    mouseUp: { scale: 1, x: mousePosition.x, y: mousePosition.y },
     text: {
       height: 64,
       width: 64,
       x: mousePosition.x - 16,
       y: mousePosition.y - 16,
-      backgroundColor: 'rgba(29, 46, 67, 0)', // Установка фона как прозрачного
-      border: '2px solid #1D2E43', // Установка синей границы, замените #1D2E43 на ваш код цвета
+      backgroundColor: 'rgba(29, 46, 67, 0)',
+      border: '2px solid #1D2E43',
     },
-    textFooter: {
-      zIndex: 2,
-      height: 24,
-      width: 24,
-      x: mousePosition.x - 0,
-      y: mousePosition.y - 0,
-      // backgroundColor: "#F6F6F6",
-    },
+    textFooter: { zIndex: 2, height: 24, width: 24, x: mousePosition.x, y: mousePosition.y },
     textFooterEnter: {
       zIndex: 2,
       height: 64,
@@ -94,25 +73,9 @@ export default function CustomCursor() {
       y: mousePosition.y - 16,
       backgroundColor: '#F6F6F6',
     },
-
-    textLeaveFooter: {
-      x: mousePosition.x,
-      y: mousePosition.y,
-      // backgroundColor: "#F6F6F6",
-    },
-
-    mouseDownFooter: {
-      scale: 1.7,
-      x: mousePosition.x,
-      y: mousePosition.y,
-      backgroundColor: '#F6F6F6',
-    },
-    mouseUpFooter: {
-      scale: 1,
-      x: mousePosition.x,
-      y: mousePosition.y,
-      backgroundColor: '#F6F6F6',
-    },
+    textLeaveFooter: { x: mousePosition.x, y: mousePosition.y },
+    mouseDownFooter: { scale: 1.7, x: mousePosition.x, y: mousePosition.y, backgroundColor: '#F6F6F6' },
+    mouseUpFooter: { scale: 1, x: mousePosition.x, y: mousePosition.y, backgroundColor: '#F6F6F6' },
     imageHover: {
       height: 100,
       width: 100,
