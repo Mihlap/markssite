@@ -64,27 +64,22 @@ export const fetchCategoryStaff = (category) => async (dispatch) => {
   dispatch(fetchStaffStart());
 
   try {
-    const response = await axios.get(`${host}/api-stuffs/stuffs`);
+      const response = await axios.get(`${host}/api-stuffs/stuffs`);
+      const staff = response.data.filter((staff) => staff.category.includes(category));
 
-    const staff = response.data;
-    const filteredData = staff.filter((staff) => staff.category.includes(category));
-
-    filteredData.forEach((staff) => {
-      const { id, img } = staff;
-      const image = new Image();
-      image.src = `${host}/images/imageStuff/${img}`;
-      image.onload = () => dispatch(imageLoadSuccess({ staffId: id }));
-    });
+    // filteredData.forEach((staff) => {
+    //   const { id, img } = staff;
+    //   const image = new Image();
+    //   image.src = `${host}/images/imageStuff/${img}`;
+    //   image.onload = () => dispatch(imageLoadSuccess({ staffId: id }));
+    // });
 
     dispatch(setCategory(category));
-    dispatch(fetchStaffSuccess(filteredData));
+    dispatch(fetchStaffSuccess(staff));
   } catch (error) {
-    if (error.code === 'ECONNABORTED') {
-      dispatch(fetchStaffFailure('Время ожидания запроса истекло'));
-    } else {
-      dispatch(fetchStaffFailure(error.message));
-    }
-  }
+     const errorMessage = error.code === 'ECONNABORTED' ? 'Время ожидания запроса истекло' : error.message;
+     dispatch(fetchStaffFailure(errorMessage));
+     }
 };
 
 export default staffSlice.reducer;

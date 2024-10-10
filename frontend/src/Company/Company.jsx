@@ -55,11 +55,13 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
     []
   );
 
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [windowWidth] = useState(window.innerWidth);
   const [countPercent, setCountPercent] = useState(0);
   const [countHuman, setCountHuman] = useState(0);
   const [countProject, setCountProject] = useState(0);
-  const [swiper, setSwiper] = useState(null);
+  // eslint-disable-next-line no-unused-vars
+  const [, setSwiper] = useState(null);
+  // eslint-disable-next-line no-unused-vars
   const [currentIndexCompany, setCurrentIndexCompany] = useState(0);
   const swiperCompanyRef = useRef(null);
   const [videoSrc, setVideoSrc] = useState(null);
@@ -72,10 +74,9 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
   const [modalOpenFormContacts, setModalOpenFormContacts] = useState(false);
   const [isLoadingSubscription, setIsLoadingSubscription] = useState(false);
   const [modalOpenSubscription, setModalOpenSubscription] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
 
   const dispatch = useDispatch();
-  const { selectedCard, category, staff, error, allImagesLoaded } = useSelector((state) => state.staff);
+  const { selectedCard, category, staff, error, allImagesLoaded, loading } = useSelector((state) => state.staff);
 
   const blockSlider = useRef(null);
   const nameCompanyRef = useRef(null);
@@ -124,20 +125,20 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, []);
+  }, [videoSource.large, videoSource.medium, videoSource2.large, videoSource2.medium, videoSource2.small]);
 
-   useEffect(() => {
+
+  useEffect(() => {
     const fetchData = async () => {
       if (category) {
-        setIsLoading(true);
         await dispatch(fetchCategoryStaff(category));
-        setIsLoading(false);
         setShowCards(true);
       }
     };
 
     fetchData();
   }, [category, dispatch]);
+
 
   const handleButtonClick = useCallback(
     (newCategory, selectedCardId) => {
@@ -204,45 +205,49 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
   }, []);
 
   useEffect(() => {
+    const nameCompanyElement = nameCompanyRef.current;
+    const thisBlockElement = thisBlockRef.current;
+
     function handleScroll() {
-      if (nameCompanyRef.current && thisBlockRef.current) {
-        const nameCompanyRect = nameCompanyRef.current.getBoundingClientRect();
-        const thisBlockRect = thisBlockRef.current.getBoundingClientRect();
+      if (nameCompanyElement && thisBlockElement) {
+        const nameCompanyRect = nameCompanyElement.getBoundingClientRect();
+        const thisBlockRect = thisBlockElement.getBoundingClientRect();
         const screenWidth = window.innerWidth;
         const scrollTop = window.scrollY || document.documentElement.scrollTop;
 
         if (scrollTop > thisBlockRect.top && screenWidth >= 2000) {
           const translateYValue = nameCompanyRect.height + 190;
-          nameCompanyRef.current.style.transform = `translateY(${translateYValue}px)`;
-          thisBlockRef.current.style.transform = `translateY(150px) translateX(10vw) rotate(-90deg)`;
+          nameCompanyElement.style.transform = `translateY(${translateYValue}px)`;
+          thisBlockElement.style.transform = `translateY(150px) translateX(10vw) rotate(-90deg)`;
         } else if (scrollTop > thisBlockRect.top && screenWidth < 1999 && screenWidth >= 1480) {
           const translateYValue = nameCompanyRect.height + 200;
-          nameCompanyRef.current.style.transform = `translateY(${translateYValue}px)`;
-          thisBlockRef.current.style.transform = `translateY(170px) translateX(10vw) rotate(-90deg)`;
+          nameCompanyElement.style.transform = `translateY(${translateYValue}px)`;
+          thisBlockElement.style.transform = `translateY(170px) translateX(10vw) rotate(-90deg)`;
         } else if (scrollTop > thisBlockRect.top && screenWidth <= 1479) {
           const translateYValue = nameCompanyRect.height + 230;
-          nameCompanyRef.current.style.transform = `translateY(${translateYValue}px)`;
-          thisBlockRef.current.style.transform = `translateY(180px) translateX(10vw) rotate(-90deg)`;
+          nameCompanyElement.style.transform = `translateY(${translateYValue}px)`;
+          thisBlockElement.style.transform = `translateY(180px) translateX(10vw) rotate(-90deg)`;
         } else {
-          nameCompanyRef.current.style.transform = 'none';
-          thisBlockRef.current.style.transform = 'rotate(-180deg)';
+          nameCompanyElement.style.transform = 'none';
+          thisBlockElement.style.transform = 'rotate(-180deg)';
         }
       }
     }
+
     window.addEventListener('scroll', handleScroll);
+
     return () => {
-      if (nameCompanyRef.current && thisBlockRef.current) {
-        window.removeEventListener('scroll', handleScroll);
-      }
+      window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
-  const handlePCardCompanyClick = useCallback((index) => {
-    setCurrentIndexCompany(index);
-    if (swiperCompanyRef.current && swiperCompanyRef.current.slideTo) {
-      swiperCompanyRef.current.slideTo(index);
-    }
-  }, []);
+  // не стирать эту функцию!!!
+  // const handlePCardCompanyClick = useCallback((index) => {
+  //   setCurrentIndexCompany(index);
+  //   if (swiperCompanyRef.current && swiperCompanyRef.current.slideTo) {
+  //     swiperCompanyRef.current.slideTo(index);
+  //   }
+  // }, []);
 
   const buttonsStuff = useMemo(
     () => [
@@ -256,7 +261,6 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
 
   const handleImageLoad = useCallback(() => {
     if (allImagesLoaded) {
-      // Все изображения загружены, выполняем нужные действия
       setShowCards(true);
     }
   }, [allImagesLoaded]);
@@ -269,9 +273,7 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
       </div>
     );
   }
-  // if (loading) {
-  //   return <LoadingCircle />;
-  // }
+
 
   // кнопки временно закоменчены, будут в дальнейшем использованы
   //  {/* <button
@@ -531,33 +533,34 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
         </div>
         <div className={styles.card_container} style={{ opacity: showCards ? 1 : 0 }}>
           <ul className={styles.card_container_ul}>
-            {isLoading ? 
+            {loading ? (
               <SkeletonLoader itemCount={8} />
-            : staff?.map((el) => (
-                    <li
-                      key={el.id}
-                      data-user-id={el.id}
-                      className={styles.container__item_stuff}
-                      onClick={() => handleButtonClick(category, el.id)}
-                      onMouseEnter={handleMouseHover}
-                      onMouseLeave={handleMouseLeave}>
-                      <div className={styles.wrapper_container_item_stuff}>
-                        <img
-                          className={`${styles.container__img_stuff} ${showCards ? 'loaded' : ''}`}
-                          src={`${bucket_url}/images/imageStuff/${el.img}`}
-                          onLoad={handleImageLoad}
-                          onError={(e) => {
-                            e.target.src = `${bucket_url}/images/imageStuff/no_photo.png`;
-                            // el.imgLoaded = false;
-                          }}
-                          alt={el.img}
-                          loading="lazy"
-                        />
-                      </div>
-                      <div className={styles.container__item_name_stuff}>{el.name}</div>
-                      <div className={styles.container__item_position_stuff}>{el.position}</div>
-                    </li>
-                  ))}           
+            ) : (
+              staff?.map((el) => (
+                <li
+                  key={el.id}
+                  data-user-id={el.id}
+                  className={styles.container__item_stuff}
+                  onClick={() => handleButtonClick(category, el.id)}
+                  onMouseEnter={handleMouseHover}
+                  onMouseLeave={handleMouseLeave}>
+                  <div className={styles.wrapper_container_item_stuff}>
+                    <img
+                      className={`${styles.container__img_stuff} ${showCards ? 'loaded' : ''}`}
+                      src={`${bucket_url}/images/imageStuff/${el.img}`}
+                      onLoad={handleImageLoad}
+                      onError={(e) => {
+                        e.target.src = `${bucket_url}/images/imageStuff/no_photo.png`;
+                      }}
+                      alt={el.img}
+                      loading="lazy"
+                    />
+                  </div>
+                  <div className={styles.container__item_name_stuff}>{el.name}</div>
+                  <div className={styles.container__item_position_stuff}>{el.position}</div>
+                </li>
+              ))
+            )}
             {isModalOpen && selectedCard && (
               <Modal
                 className={styles.modal_wrapper}
@@ -593,11 +596,9 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
                       width: '12px',
                     },
                     '&::WebkitScrollbarTrack': {
-                      backgroundColor: '#75BBFD',
-                      borderRadius: '6px',
-                    },
-                    '&::WebkitScrollbarTrack': {
+                      // backgroundColor: '#75BBFD',
                       backgroundColor: 'transparent',
+                      borderRadius: '6px',
                     },
                   },
                 }}>

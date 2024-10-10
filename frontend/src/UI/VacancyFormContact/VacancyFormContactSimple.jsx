@@ -1,6 +1,6 @@
 import React, { useRef, useState, useCallback, useEffect } from 'react';
-import InputMask from 'react-input-mask';
-import { Link, useLocation } from 'react-router-dom';
+import InputMask from 'react-input-mask-next';
+import { Link } from 'react-router-dom';
 import styles from './VacancyFormContact.module.css';
 import 'react-phone-number-input/style.css';
 
@@ -14,10 +14,6 @@ const VacancyFormContactSimple = ({
   vacancyTitleSimple,
   buttonText,
 }) => {
-  const location = useLocation();
-  const searchParams = new URLSearchParams(location.search);
-  const type = searchParams.get('type');
-
   const [isFocused, setIsFocused] = useState({
     name: false,
     phone: false,
@@ -30,6 +26,7 @@ const VacancyFormContactSimple = ({
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [fileAttached, setFileAttached] = useState(false);
   const [errors, setErrors] = useState({});
+  const phoneInputRef = useRef(null);
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -134,6 +131,11 @@ const VacancyFormContactSimple = ({
             });
             setSelectedFiles([]);
             setFileAttached(false);
+            if (window.ym) {
+                window.ym(95967240, 'reachGoal', 'form2_done');
+              } else {
+                console.warn('Yandex.Metrika is not available');
+              }
           } else {
             console.error('Form submission failed:', data.message || 'Unknown error');
           }
@@ -147,7 +149,7 @@ const VacancyFormContactSimple = ({
           setIsLoading(false);
         });
     },
-    [formData, selectedFiles, vacancyTitleSimple]
+    [formData, selectedFiles, vacancyTitleSimple, setIsLoading, setIsModalOpen]
   );
 
   const getLineClassSimple = (field) => {
@@ -211,8 +213,7 @@ const VacancyFormContactSimple = ({
               <label
                 className={`${styles.label1} ${isFocused.name || isFilled('name') ? styles.focused1 : ''}`}
                 onMouseOver={handleMouseEnter}
-                onMouseOut={handleMouseLeave}
-              >
+                onMouseOut={handleMouseLeave}>
                 <input
                   type="text"
                   name="name"
@@ -234,10 +235,9 @@ const VacancyFormContactSimple = ({
               <label
                 className={`${styles.label1} ${isFocused.phone || isFilled('phone') ? styles.focused1 : ''}`}
                 onMouseOver={handleMouseEnter}
-                onMouseOut={handleMouseLeave}
-              >
+                onMouseOut={handleMouseLeave}>
                 <InputMask
-                  id="phone-input"
+                  ref={phoneInputRef}
                   mask="+7 (999) 999-99-99"
                   maskChar=""
                   name="phone"
@@ -265,8 +265,7 @@ const VacancyFormContactSimple = ({
               <label
                 className={`${styles.label1} ${isFocused.letter || isFilled('letter') ? styles.focused1 : ''}`}
                 onMouseOver={handleMouseEnter}
-                onMouseOut={handleMouseLeave}
-              >
+                onMouseOut={handleMouseLeave}>
                 <input
                   type="text"
                   name="letter"
@@ -287,8 +286,7 @@ const VacancyFormContactSimple = ({
               <label
                 className={`${styles.label1} ${isFocused.resume || isFilled('resume') ? styles.focused1 : ''}`}
                 onMouseOver={handleMouseEnter}
-                onMouseOut={handleMouseLeave}
-              >
+                onMouseOut={handleMouseLeave}>
                 <input
                   type="text"
                   name="resume"
@@ -312,8 +310,7 @@ const VacancyFormContactSimple = ({
                     className={styles.fileContainer_resumeFiles}
                     onMouseOver={handleMouseEnter}
                     onMouseOut={handleMouseLeave}
-                    onClick={() => handleRemoveFile(index)}
-                  >
+                    onClick={() => handleRemoveFile(index)}>
                     <span className={styles.removeFile_resumeFiles}>
                       <span className={styles.removeFile_resumeFiles_remove}>&times;</span>
                     </span>
@@ -334,8 +331,7 @@ const VacancyFormContactSimple = ({
                     className={styles.button_resume_file}
                     onMouseOver={handleMouseEnter}
                     onMouseOut={handleMouseLeave}
-                    onClick={() => fileInputRef.current.click()}
-                  >
+                    onClick={() => fileInputRef.current.click()}>
                     {fileAttached ? 'Прикрепить файл' : 'Прикрепить файл'}
                   </div>
                 </div>
@@ -349,8 +345,7 @@ const VacancyFormContactSimple = ({
               target="blank"
               className={styles.agreement_vacancy_link}
               onMouseOver={handleMouseEnter}
-              onMouseOut={handleMouseLeave}
-            >
+              onMouseOut={handleMouseLeave}>
               персональных данных
             </Link>
           </div>

@@ -21,10 +21,10 @@ import {
   AnotherDropdownIndicator,
   AnotherValueContainer,
   AnotherStagesProject,
-  SelectDegreeParticipationDropdownIndicator,
-  SelectDegreeParticipationValueContainer,
-  SelectStatusObjectDropdownIndicator,
-  SelectStatusObjectValueContainer,
+  // SelectDegreeParticipationDropdownIndicator,
+  // SelectDegreeParticipationValueContainer,
+  // SelectStatusObjectDropdownIndicator,
+  // SelectStatusObjectValueContainer,
   MonthDropdownIndicator,
   MonthValueContainer,
   YearDropdownIndicator,
@@ -41,7 +41,8 @@ export default function FormAddProject({ setIsModalOpen }) {
   const [selectedProjectStages, setSelectedProjectStages] = useState([]);
   const [selectedDegreeParticipation, setSelectedDegreeParticipation] = useState([]);
   const [selectStatusObject, setSelectStatusObject] = useState('');
-  const [isFocused, setIsFocused] = useState(false);
+  const [, setIsFocused] = useState(false);
+
 
   const [previewPhotos, setPreviewPhotos] = useState([]);
   const [previewPhotoAva, setPreviewPhotoAva] = useState([]);
@@ -51,10 +52,10 @@ export default function FormAddProject({ setIsModalOpen }) {
   const [isPhotoCloseVisible, setIsPhotoCloseVisible] = useState(true);
   const [isPhotoOpenVisible, setIsPhotoOpenVisible] = useState(true);
   const [isPhotoAvaVisible, setIsPhotoAvaVisible] = useState(true);
-  const [isDropPhotoVisible, setIsDropPhotoVisible] = useState(true);
+  const [, setIsDropPhotoVisible] = useState(true);
 
-  const [isMonthValid, setIsMonthValid] = useState(true);
-  const [isYearValid, setIsYearValid] = useState(true);
+  const [, setIsMonthValid] = useState(true);
+  const [, setIsYearValid] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
   const [showNotification, setShowNotification] = useState(false);
 
@@ -116,7 +117,7 @@ export default function FormAddProject({ setIsModalOpen }) {
     long: '',
   });
 
-  const [inputValue, setInputValue] = useState('');
+  const [, setInputValue] = useState('');
   const [onenConstructor, setOpenConstructor] = useState(false);
   const [blocks, setBlocks] = useState([]);
   const [dynamicPreviews, setDynamicPreviews] = useState([]);

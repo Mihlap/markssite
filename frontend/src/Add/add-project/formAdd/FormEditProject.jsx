@@ -7,18 +7,18 @@ import 'react-quill/dist/quill.snow.css';
 import { transliterate } from 'transliteration';
 import styles from './FormAddProject.module.scss';
 import {
-  clearFormData,
+  // clearFormData,
   fetchProject,
   setProjectId,
-  setDynamicaData,
-  setDynamicImages,
+  // setDynamicaData,
+  // setDynamicImages,
 } from '../../../store/Slice/projectSlice';
 import {
   removePreviewPhoto,
-  removePreviewPhotoAva,
+  // removePreviewPhotoAva,
   changeHandler,
-  removePreviewPhotoOpen,
-  removePreviewPhotoClose,
+  // removePreviewPhotoOpen,
+  // removePreviewPhotoClose,
 } from './utils/formHelpers';
 import customStyles from './utils/customStyles';
 import {
@@ -27,8 +27,8 @@ import {
   AnotherDropdownIndicator,
   AnotherValueContainer,
   AnotherStagesProject,
-  SelectDegreeParticipationDropdownIndicator,
-  SelectDegreeParticipationValueContainer,
+  // SelectDegreeParticipationDropdownIndicator,
+  // SelectDegreeParticipationValueContainer,
   SelectStatusObjectDropdownIndicator,
   SelectStatusObjectValueContainer,
   MonthDropdownIndicator,
@@ -83,18 +83,18 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
   const [selectedProjectStages, setSelectedProjectStages] = useState([]);
   const [selectedDegreeParticipation, setSelectedDegreeParticipation] = useState([]);
   const [selectStatusObject, setSelectStatusObject] = useState(null);
-  const [isFocused, setIsFocused] = useState(false);
+  const [, setIsFocused] = useState(false);
   // const [selectedRadio, setSelectedRadio] = useState("28,28");
   const [previewPhotos, setPreviewPhotos] = useState([]);
   const [previewPhotoAva, setPreviewPhotoAva] = useState([]);
   const [previewPhotoOpen, setPreviewPhotoOpen] = useState([]);
   const [previewPhotoClose, setPreviewPhotoClose] = useState([]);
-  const [isPhotoCloseVisible, setIsPhotoCloseVisible] = useState(true);
-  const [isPhotoOpenVisible, setIsPhotoOpenVisible] = useState(true);
-  const [isPhotoAvaVisible, setIsPhotoAvaVisible] = useState(true);
-  const [isDropPhotoVisible, setIsDropPhotoVisible] = useState(true);
-  const [isMonthValid, setIsMonthValid] = useState(true);
-  const [isYearValid, setIsYearValid] = useState(true);
+  const [, setIsPhotoCloseVisible] = useState(true);
+  const [, setIsPhotoOpenVisible] = useState(true);
+  const [, setIsPhotoAvaVisible] = useState(true);
+  const [, setIsDropPhotoVisible] = useState(true);
+  const [, setIsMonthValid] = useState(true);
+  const [, setIsYearValid] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
   const [showNotification, setShowNotification] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -103,7 +103,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
   const [isLoadingCloseImage, setIsLoadingCloseImage] = useState(false);
   const [selectedMonth, setSelectedMonth] = useState(null);
   const [selectedYear, setSelectedYear] = useState(null);
-  const [embedLink, setEmbedLink] = useState('');
+  const [embedLink] = useState('');
 
   const quillRef1 = useRef(null);
 
