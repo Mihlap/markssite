@@ -1,5 +1,5 @@
 import React, { useRef, useState, useMemo, useCallback, useEffect } from 'react';
-import InputMask from 'react-input-mask';
+import InputMask from 'react-input-mask-next';
 import Select from 'react-select';
 import { Link } from 'react-router-dom';
 import styles from './VacancyFormContact.module.css';
@@ -67,6 +67,7 @@ const VacancyFormContact = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
+  const phoneInputRef = useRef(null);
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -185,9 +186,11 @@ const VacancyFormContact = ({
             setSelectedFiles([]);
             setFileAttached(false);
             setSelectedOptions(null);
-                if (window.ym) {
-                //  window.ym(YOUR_METRIKA_ID, 'reachGoal', 'formSubmitted');
-                }
+             if (window.ym) {
+               window.ym(95967240, 'reachGoal', 'form1_done');
+             } else {
+               console.warn('Yandex.Metrika is not available'); 
+             }
           } else {
             console.error('Form submission failed:', data.message || 'Unknown error');
           }
@@ -201,7 +204,7 @@ const VacancyFormContact = ({
           setIsLoading(false);
         });
     },
-    [formData, selectedOptions, selectedFiles]
+    [formData, selectedOptions, selectedFiles, vacancyTitle]
   );
 
   const getLineClass = (field) => {
@@ -348,8 +351,7 @@ const VacancyFormContact = ({
                   <label
                     className={`${styles.label1} ${isFocused.name || isFilled('name') ? styles.focused1 : ''}`}
                     onMouseOver={handleMouseEnter}
-                    onMouseOut={handleMouseLeave}
-                  >
+                    onMouseOut={handleMouseLeave}>
                     <input
                       type="text"
                       name="name"
@@ -371,10 +373,9 @@ const VacancyFormContact = ({
                   <label
                     className={`${styles.label1} ${isFocused.phone || isFilled('phone') ? styles.focused1 : ''}`}
                     onMouseOver={handleMouseEnter}
-                    onMouseOut={handleMouseLeave}
-                  >
+                    onMouseOut={handleMouseLeave}>
                     <InputMask
-                      id="phone-input"
+                      ref={phoneInputRef}                     
                       mask="+7 (999) 999-99-99"
                       maskChar=""
                       name="phone"
@@ -400,8 +401,7 @@ const VacancyFormContact = ({
                   <label
                     className={`${styles.label1} ${isFocused.city || isFilled('city') ? styles.focused1 : ''}`}
                     onMouseOver={handleMouseEnter}
-                    onMouseOut={handleMouseLeave}
-                  >
+                    onMouseOut={handleMouseLeave}>
                     <input
                       type="text"
                       name="city"
@@ -424,8 +424,7 @@ const VacancyFormContact = ({
                   <label
                     className={`${styles.label1} ${isFocused.choose || isFilled('choose') ? styles.focused1 : ''}`}
                     onMouseOver={handleMouseEnter}
-                    onMouseOut={handleMouseLeave}
-                  >
+                    onMouseOut={handleMouseLeave}>
                     <Select
                       className={styles.input_choose_form_contacts}
                       id="choose-input"
@@ -448,8 +447,7 @@ const VacancyFormContact = ({
                   <label
                     className={`${styles.label1} ${isFocused.letter || isFilled('letter') ? styles.focused1 : ''}`}
                     onMouseOver={handleMouseEnter}
-                    onMouseOut={handleMouseLeave}
-                  >
+                    onMouseOut={handleMouseLeave}>
                     <input
                       type="text"
                       name="letter"
@@ -470,8 +468,7 @@ const VacancyFormContact = ({
                   <label
                     className={`${styles.label1} ${isFocused.resume || isFilled('resume') ? styles.focused1 : ''}`}
                     onMouseOver={handleMouseEnter}
-                    onMouseOut={handleMouseLeave}
-                  >
+                    onMouseOut={handleMouseLeave}>
                     <input
                       type="text"
                       name="resume"
@@ -495,8 +492,7 @@ const VacancyFormContact = ({
                         className={styles.fileContainer_resumeFiles}
                         onMouseOver={handleMouseEnter}
                         onMouseOut={handleMouseLeave}
-                        onClick={() => handleRemoveFile(index)}
-                      >
+                        onClick={() => handleRemoveFile(index)}>
                         <span className={styles.removeFile_resumeFiles}>
                           <span className={styles.removeFile_resumeFiles_remove}>&times;</span>
                         </span>
@@ -517,8 +513,7 @@ const VacancyFormContact = ({
                         className={styles.button_resume_file}
                         onMouseOver={handleMouseEnter}
                         onMouseOut={handleMouseLeave}
-                        onClick={() => fileInputRef.current.click()}
-                      >
+                        onClick={() => fileInputRef.current.click()}>
                         {fileAttached ? 'Прикрепить файл' : 'Прикрепить файл'}
                       </div>
                     </div>
@@ -532,8 +527,7 @@ const VacancyFormContact = ({
                   target="blank"
                   className={styles.agreement_vacancy_link}
                   onMouseOver={handleMouseEnter}
-                  onMouseOut={handleMouseLeave}
-                >
+                  onMouseOut={handleMouseLeave}>
                   персональных данных
                 </Link>
                 <button
@@ -542,8 +536,7 @@ const VacancyFormContact = ({
                   type="submit"
                   id="submit-button"
                   onMouseEnter={handleMouseEnter}
-                  onMouseLeave={handleMouseLeave}
-                >
+                  onMouseLeave={handleMouseLeave}>
                   <p className={styles.button_name_vacancy}>{buttonText}</p>
                 </button>
               </div>
@@ -554,8 +547,7 @@ const VacancyFormContact = ({
                 to="mailto:hr@marksgroup.ru"
                 className={styles.for_applicants_mail}
                 onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-              >
+                onMouseLeave={handleMouseLeave}>
                 hr@marksgroup.ru
               </Link>
               <Link
@@ -563,8 +555,7 @@ const VacancyFormContact = ({
                 target="_blank"
                 className={styles.for_applicants_tg}
                 onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-              >
+                onMouseLeave={handleMouseLeave}>
                 <img src={icon_tg} alt="Telegram" />
               </Link>
               <Link
@@ -572,8 +563,7 @@ const VacancyFormContact = ({
                 className={styles.for_applicants_tel}
                 style={{ fontVariantNumeric: 'lining-nums' }}
                 onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-              >
+                onMouseLeave={handleMouseLeave}>
                 +7&nbsp;(495)&nbsp;120-12-26
               </Link>
             </div>
