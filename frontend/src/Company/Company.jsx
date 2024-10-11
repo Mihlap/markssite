@@ -33,6 +33,7 @@ import CounterCompanyMobile2 from '../UI/CounterCompanyMobile2';
 import CompanySlider from './CompanySlider/CompanySlider';
 import ModalVacancyFormSend from '../UI/VacancyFormContact/ModalVacancyFormSend';
 import SkeletonLoader from './SkeletonLoader/SkeletonLoader';
+import SkeletonLoaderSlider from './SkeletonLoader/SkeletonLoaderSlider ';
 
 const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
@@ -76,7 +77,7 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
   const [modalOpenSubscription, setModalOpenSubscription] = useState(false);
 
   const dispatch = useDispatch();
-  const { selectedCard, category, staff, error, allImagesLoaded, loading } = useSelector((state) => state.staff);
+  const { selectedCard, category, staff, error, loading } = useSelector((state) => state.staff);
 
   const blockSlider = useRef(null);
   const nameCompanyRef = useRef(null);
@@ -93,6 +94,15 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
 
   const isMobile = windowWidth <= 767;
   const symbol = '•';
+
+  const filteredStaff = staff.filter((staff) => {
+    const categoryArray =
+      staff.category.startsWith('{') && staff.category.endsWith('}')
+        ? staff.category.slice(1, -1).split(',')
+        : [staff.category];
+
+    return categoryArray.some((cat) => cat.trim().replace(/"/g, '') === category);
+  });
 
   useEffect(() => {
     const scrollToTop = () => {
@@ -127,7 +137,6 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
     };
   }, [videoSource.large, videoSource.medium, videoSource2.large, videoSource2.medium, videoSource2.small]);
 
-
   useEffect(() => {
     const fetchData = async () => {
       if (category) {
@@ -138,7 +147,6 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
 
     fetchData();
   }, [category, dispatch]);
-
 
   const handleButtonClick = useCallback(
     (newCategory, selectedCardId) => {
@@ -259,11 +267,6 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
     [handleButtonClick]
   );
 
-  const handleImageLoad = useCallback(() => {
-    if (allImagesLoaded) {
-      setShowCards(true);
-    }
-  }, [allImagesLoaded]);
 
   if (error) {
     return (
@@ -273,34 +276,6 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
       </div>
     );
   }
-
-
-  // кнопки временно закоменчены, будут в дальнейшем использованы
-  //  {/* <button
-  //       type="button"
-  //       onClick={(e) => {
-  //         e.preventDefault();
-  //         handleButtonClick("Руководители отделов");
-  //       }}
-  //       className={`${styles.button_department} ${styles.button_hover} ${
-  //         activeButton === "Руководители отделов" ? styles.active : ""
-  //       }`}
-  //     >
-  //       Руководители отделов
-  //     </button> */}
-
-  //            {/* <button
-  //   type="button"
-  //   onClick={(e) => {
-  //     e.preventDefault();
-  //     handleButtonClick("HR");
-  //   }}
-  //   className={`${styles.button_hr} ${styles.button_hover} ${
-  //     activeButton === "HR" ? styles.active : ""
-  //   }`}
-  // >
-  //   HR
-  // </button> */}
 
   return (
     <>
@@ -466,11 +441,6 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
             handleMouseHover={handleMouseHover}
           />
         )}
-        {/* {loading && (
-          <div className={styles.loadingOverlay}>
-            <LoadingCircle />
-          </div>
-        )} */}
         <div className={styles.specialist_wrapper}>
           <div className={styles.specialist}>Специалисты</div>
           {isMobile && (
@@ -478,9 +448,6 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
               onSwiper={setSwiper}
               slidesPerView="auto"
               spaceBetween={0}
-              // pagination={{
-              //   clickable: true,
-              // }}
               className={styles.my_swiper_button_group}
               touch="true">
               <div className={styles.button_group}>
@@ -536,7 +503,7 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
             {loading ? (
               <SkeletonLoader itemCount={8} />
             ) : (
-              staff?.map((el) => (
+              filteredStaff?.map((el) => (
                 <li
                   key={el.id}
                   data-user-id={el.id}
@@ -547,8 +514,7 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
                   <div className={styles.wrapper_container_item_stuff}>
                     <img
                       className={`${styles.container__img_stuff} ${showCards ? 'loaded' : ''}`}
-                      src={`${bucket_url}/images/imageStuff/${el.img}`}
-                      onLoad={handleImageLoad}
+                      src={el.img}
                       onError={(e) => {
                         e.target.src = `${bucket_url}/images/imageStuff/no_photo.png`;
                       }}
@@ -596,7 +562,6 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
                       width: '12px',
                     },
                     '&::WebkitScrollbarTrack': {
-                      // backgroundColor: '#75BBFD',
                       backgroundColor: 'transparent',
                       borderRadius: '6px',
                     },
@@ -623,30 +588,11 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
                     </div>
                     <div className={styles.modal_container}>
                       <div className={styles.modal}>
-                        <img
-                          className={styles.modal_img_stuff}
-                          src={`${bucket_url}/images/imageStuff/${selectedCard.img}`}
-                          alt={selectedCard.img}
-                        />
+                        <img className={styles.modal_img_stuff} src={selectedCard.img} alt="" />
                       </div>
                     </div>
                     <div className={styles.modal_name_stuff}>{selectedCard.name}</div>
-                    {/* {selectedCard.description && (
-                      <div className={styles.modal_description_stuff}>
-                        {selectedCard.description
-                          .split(".")
-                          .map((sentence, index) => (
-                            <span key={index}>
-                              {sentence.trim()}
-                              {index !==
-                              selectedCard.description.split(".").length - 1 ? (
-                                <br />
-                              ) : null}
-                            </span>
-                          ))}
-                      </div>
-                    )} */}
-                    {selectedCard.description && (
+                   {selectedCard.description && (
                       <div className={styles.modal_description_stuff}>{selectedCard.description}</div>
                     )}
                     {selectedCard.about && <div className={styles.modal_about_stuff}>{selectedCard.about}</div>}
@@ -844,91 +790,85 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
             )}
           </ul>
         </div>
+
         {isMobile && (
           <div className={styles.slider_card_wrapper}>
-            <Swiper
-              className={styles.slider_card_container}
-              loop={true}
-              slidesPerView={1.1}
-              spaceBetween={0}
-              effect={'fade'}
-              touch="true"
-              onSlideChange={(swiper) => setCurrentIndexCompany(swiper.realIndex)}
-              onSwiper={(swiper) => {
-                if (swiperCompanyRef.current === null) {
-                  swiperCompanyRef.current = swiper;
-                }
-              }}>
-              {staff?.map((el) => (
-                <SwiperSlide
-                  key={el.id}
-                  data-user-id={el.id}
-                  className={styles.slide_container_item_stuff}
-                  onClick={() => handleButtonClick(category, el.id)}>
-                  <div className={styles.wrapper_container_item_stuff}>
-                    <img
-                      className={`${styles.container__img_stuff} ${showCards ? 'loaded' : ''}`}
-                      src={`${bucket_url}/images/imageStuff/${el.img}`}
-                      onLoad={handleImageLoad}
-                      onError={(e) => {
-                        e.target.src = `${bucket_url}/images/imageStuff/no_photo.png`;
-                      }}
-                      alt={el.img}
-                      loading="lazy"
-                    />
-                  </div>
-                  <div className={styles.container__item_name_stuff}>{el.name}</div>
-                  <div className={styles.container__item_position_stuff}>{el.position}</div>
-                </SwiperSlide>
-              ))}
-            </Swiper>
+            {loading ? (
+              <SkeletonLoaderSlider itemCount={8} isMobile />
+            ) : (
+              <Swiper
+                className={styles.slider_card_container}
+                loop={true}
+                slidesPerView={1.1}
+                spaceBetween={0}
+                effect={'fade'}
+                touch="true"
+                onSlideChange={(swiper) => setCurrentIndexCompany(swiper.realIndex)}
+                onSwiper={(swiper) => {
+                  if (swiperCompanyRef.current === null) {
+                    swiperCompanyRef.current = swiper;
+                  }
+                }}>
+                {filteredStaff?.map((el) => (
+                  <SwiperSlide
+                    key={el.id}
+                    data-user-id={el.id}
+                    className={styles.slide_container_item_stuff}
+                    onClick={() => handleButtonClick(category, el.id)}>
+                    <div className={styles.wrapper_container_item_stuff}>
+                      <img
+                        className={`${styles.container__img_stuff} ${showCards ? 'loaded' : ''}`}
+                        src={el.img}
+                        onError={(e) => {
+                          e.target.src = `${bucket_url}/images/imageStuff/no_photo.png`;
+                        }}
+                        alt={el.img}
+                        loading="lazy"
+                      />
+                    </div>
+                    <div className={styles.container__item_name_stuff}>{el.name}</div>
+                    <div className={styles.container__item_position_stuff}>{el.position}</div>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            )}
           </div>
         )}
-        {/* <div
-          className="swiper_pagination_container"
-        >
-          {staff &&
-            staff.map((_, index) => (
-              <button
-                key={index}
-                className={`swiper_pagination_bullet_container ${
-                  currentIndexCompany === index ? "active" : ""
-                }`}
-                onClick={() => handlePCardCompanyClick(index)}
-              />
-            ))}
-        </div> */}
+
         {!isMobile && (
           <div className={styles.slider_card_wrapper}>
-            <Swiper
-              className={styles.slider_card_container}
-              loop={true}
-              slidesPerView={2.2}
-              spaceBetween={0}
-              touch="true">
-              {staff?.map((el) => (
-                <SwiperSlide
-                  key={el.id}
-                  data-user-id={el.id}
-                  className={styles.slide_container_item_stuff}
-                  onClick={() => handleButtonClick(category, el.id)}>
-                  <div className={styles.wrapper_container_item_stuff}>
-                    <img
-                      className={`${styles.container__img_stuff} ${showCards ? 'loaded' : ''}`}
-                      src={`${bucket_url}/images/imageStuff/${el.img}`}
-                      onLoad={handleImageLoad}
-                      onError={(e) => {
-                        e.target.src = `${bucket_url}/images/imageStuff/no_photo.png`;
-                      }}
-                      alt={el.img}
-                      loading="lazy"
-                    />
-                  </div>
-                  <div className={styles.container__item_name_stuff}>{el.name}</div>
-                  <div className={styles.container__item_position_stuff}>{el.position}</div>
-                </SwiperSlide>
-              ))}
-            </Swiper>
+            {loading ? (
+              <SkeletonLoaderSlider itemCount={8} isMobile={false} />
+            ) : (
+              <Swiper
+                className={styles.slider_card_container}
+                loop={true}
+                slidesPerView={2.2}
+                spaceBetween={0}
+                touch="true">
+                {filteredStaff?.map((el) => (
+                  <SwiperSlide
+                    key={el.id}
+                    data-user-id={el.id}
+                    className={styles.slide_container_item_stuff}
+                    onClick={() => handleButtonClick(category, el.id)}>
+                    <div className={styles.wrapper_container_item_stuff}>
+                      <img
+                        className={`${styles.container__img_stuff} ${showCards ? 'loaded' : ''}`}
+                        src={el.img}
+                        onError={(e) => {
+                          e.target.src = `${bucket_url}/images/imageStuff/no_photo.png`;
+                        }}
+                        alt={el.img}
+                        loading="lazy"
+                      />
+                    </div>
+                    <div className={styles.container__item_name_stuff}>{el.name}</div>
+                    <div className={styles.container__item_position_stuff}>{el.position}</div>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            )}
           </div>
         )}
         <div className={styles.fon}>
