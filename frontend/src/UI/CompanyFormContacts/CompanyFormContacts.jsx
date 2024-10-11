@@ -1,7 +1,7 @@
 import React, { useState, useCallback, useRef } from 'react';
-import InputMask from 'react-input-mask-next';
-import styles from './CompanyFormContacts.module.css';
+import InputMask from 'react-input-mask';
 import 'react-phone-number-input/style.css';
+import styles from './CompanyFormContacts.module.css';
 
  const Host = process.env.REACT_APP_SERVER_HOST;
 
@@ -164,6 +164,7 @@ const CompanyFormContacts = ({
                 onMouseOver={handleMouseEnter}
                 onMouseOut={handleMouseLeave}>
                 <InputMask
+                  id="phone-input"
                   ref={phoneInputRef}
                   mask="+7 (999) 999-99-99"
                   maskChar=""
