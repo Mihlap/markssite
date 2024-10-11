@@ -19,8 +19,7 @@ const staffSlice = createSlice({
   reducers: {
     fetchStaffStart(state) {
       state.loading = true;
-      state.error = null;
-      // state.allImagesLoaded = false;
+      state.error = null;  
     },
     fetchStaffSuccess(state, action) {
        state.loading = false;
@@ -39,16 +38,6 @@ const staffSlice = createSlice({
     setCategory(state, action) {
           state.category = action.payload;
     },
-  //  imageLoadSuccess(state, action) {
-  //    const {
-  //      staffId
-  //    } = action.payload;
-  //    state.staff = state.staff.map((staff) => (staff.id === staffId ? {
-  //      ...staff,
-  //      imgLoaded: true
-  //    } : staff));
-  //    state.allImagesLoaded = state.staff.every((staff) => staff.imgLoaded);
-  //  },
   },
 });
 
@@ -60,7 +49,7 @@ export const fetchCategoryStaff = (category) => async (dispatch) => {
 
   try {
 
-  await new Promise((resolve) => setTimeout(resolve, 500));
+  await new Promise((resolve) => setTimeout(resolve, 300));
     
   const response = await axios.get(`${host}/api-stuffs/stuffs`);
   const staffData = response.data.map((staff) => ({
