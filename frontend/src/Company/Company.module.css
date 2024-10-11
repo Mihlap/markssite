@@ -519,7 +519,8 @@
 }
 
 Покажите изображение,
-когда оно загружено .container__img_stuff.loaded {
+когда оно загружено
+ .container__img_stuff.loaded {
   opacity: 0.5;
 }
 
