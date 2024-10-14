@@ -42,7 +42,7 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
 
   const [enableVerticalScroll, setEnableVerticalScroll] = useState(true);
   const [isHorizontalScroll, setIsHorizontalScroll] = useState(false);
-  const [isAtRightEdge, setIsAtRightEdge] = useState(false);
+  const [, setIsAtRightEdge] = useState(false);
   const [scrollingMode, setScrollingMode] = useState('vertical');
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
@@ -193,7 +193,7 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, []);
+  }, [handleResize]);
 
   // Получаем 20 рандомных проектов
   const randomProjects = useMemo(() => {

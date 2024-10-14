@@ -185,6 +185,11 @@ const VacancyFormContact = ({
             setSelectedFiles([]);
             setFileAttached(false);
             setSelectedOptions(null);
+             if (window.ym) {
+               window.ym(95967240, 'reachGoal', 'form1_done');
+             } else {
+               console.warn('Yandex.Metrika is not available'); 
+             }
           } else {
             console.error('Form submission failed:', data.message || 'Unknown error');
           }
@@ -370,7 +375,7 @@ const VacancyFormContact = ({
                     onMouseOver={handleMouseEnter}
                     onMouseOut={handleMouseLeave}
                   >
-                    <InputMask
+                      <InputMask                        
                       id="phone-input"
                       mask="+7 (999) 999-99-99"
                       maskChar=""

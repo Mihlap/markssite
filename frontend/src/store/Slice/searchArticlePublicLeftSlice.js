@@ -93,7 +93,7 @@ export const searchArticleLeftDelete = (IdArticle) => async (dispatch) => {
   dispatch(fetchArticleLeftStart());
 
   try {
-    const response = await axios.delete(`${serverHost}/search-article/left-delete/${IdArticle}`);
+    await axios.delete(`${serverHost}/search-article/left-delete/${IdArticle}`);
     dispatch(deleteArticleLeftSuccess(IdArticle));
   } catch (error) {
     dispatch(deleteArticleLeftFailure(error.message));

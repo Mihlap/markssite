@@ -32,6 +32,8 @@ import CounterCompanyMobile2 from '../UI/CounterCompanyMobile2';
 // import CompanyGroupSlider from "./CompanyGroupSlider/CompanyGroupSlider";
 import CompanySlider from './CompanySlider/CompanySlider';
 import ModalVacancyFormSend from '../UI/VacancyFormContact/ModalVacancyFormSend';
+import SkeletonLoader from './SkeletonLoader/SkeletonLoader';
+import SkeletonLoaderSlider from './SkeletonLoader/SkeletonLoaderSlider ';
 
 const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
@@ -54,11 +56,13 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
     []
   );
 
-  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [windowWidth] = useState(window.innerWidth);
   const [countPercent, setCountPercent] = useState(0);
   const [countHuman, setCountHuman] = useState(0);
   const [countProject, setCountProject] = useState(0);
-  const [swiper, setSwiper] = useState(null);
+  // eslint-disable-next-line no-unused-vars
+  const [, setSwiper] = useState(null);
+  // eslint-disable-next-line no-unused-vars
   const [currentIndexCompany, setCurrentIndexCompany] = useState(0);
   const swiperCompanyRef = useRef(null);
   const [videoSrc, setVideoSrc] = useState(null);
@@ -73,7 +77,7 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
   const [modalOpenSubscription, setModalOpenSubscription] = useState(false);
 
   const dispatch = useDispatch();
-  const { selectedCard, category, staff, error, allImagesLoaded } = useSelector((state) => state.staff);
+  const { selectedCard, category, staff, error, loading } = useSelector((state) => state.staff);
 
   const blockSlider = useRef(null);
   const nameCompanyRef = useRef(null);
@@ -90,6 +94,15 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
 
   const isMobile = windowWidth <= 767;
   const symbol = '•';
+
+  const filteredStaff = staff.filter((staff) => {
+    const categoryArray =
+      staff.category.startsWith('{') && staff.category.endsWith('}')
+        ? staff.category.slice(1, -1).split(',')
+        : [staff.category];
+
+    return categoryArray.some((cat) => cat.trim().replace(/"/g, '') === category);
+  });
 
   useEffect(() => {
     const scrollToTop = () => {
@@ -122,13 +135,17 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
     return () => {
       window.removeEventListener('resize', handleResize);
     };
-  }, []);
+  }, [videoSource.large, videoSource.medium, videoSource2.large, videoSource2.medium, videoSource2.small]);
 
   useEffect(() => {
-    if (category) {
-      dispatch(fetchCategoryStaff(category));
-      setShowCards(true);
-    }
+    const fetchData = async () => {
+      if (category) {
+        await dispatch(fetchCategoryStaff(category));
+        setShowCards(true);
+      }
+    };
+
+    fetchData();
   }, [category, dispatch]);
 
   const handleButtonClick = useCallback(
@@ -196,45 +213,49 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
   }, []);
 
   useEffect(() => {
+    const nameCompanyElement = nameCompanyRef.current;
+    const thisBlockElement = thisBlockRef.current;
+
     function handleScroll() {
-      if (nameCompanyRef.current && thisBlockRef.current) {
-        const nameCompanyRect = nameCompanyRef.current.getBoundingClientRect();
-        const thisBlockRect = thisBlockRef.current.getBoundingClientRect();
+      if (nameCompanyElement && thisBlockElement) {
+        const nameCompanyRect = nameCompanyElement.getBoundingClientRect();
+        const thisBlockRect = thisBlockElement.getBoundingClientRect();
         const screenWidth = window.innerWidth;
         const scrollTop = window.scrollY || document.documentElement.scrollTop;
 
         if (scrollTop > thisBlockRect.top && screenWidth >= 2000) {
           const translateYValue = nameCompanyRect.height + 190;
-          nameCompanyRef.current.style.transform = `translateY(${translateYValue}px)`;
-          thisBlockRef.current.style.transform = `translateY(150px) translateX(10vw) rotate(-90deg)`;
+          nameCompanyElement.style.transform = `translateY(${translateYValue}px)`;
+          thisBlockElement.style.transform = `translateY(150px) translateX(10vw) rotate(-90deg)`;
         } else if (scrollTop > thisBlockRect.top && screenWidth < 1999 && screenWidth >= 1480) {
           const translateYValue = nameCompanyRect.height + 200;
-          nameCompanyRef.current.style.transform = `translateY(${translateYValue}px)`;
-          thisBlockRef.current.style.transform = `translateY(170px) translateX(10vw) rotate(-90deg)`;
+          nameCompanyElement.style.transform = `translateY(${translateYValue}px)`;
+          thisBlockElement.style.transform = `translateY(170px) translateX(10vw) rotate(-90deg)`;
         } else if (scrollTop > thisBlockRect.top && screenWidth <= 1479) {
           const translateYValue = nameCompanyRect.height + 230;
-          nameCompanyRef.current.style.transform = `translateY(${translateYValue}px)`;
-          thisBlockRef.current.style.transform = `translateY(180px) translateX(10vw) rotate(-90deg)`;
+          nameCompanyElement.style.transform = `translateY(${translateYValue}px)`;
+          thisBlockElement.style.transform = `translateY(180px) translateX(10vw) rotate(-90deg)`;
         } else {
-          nameCompanyRef.current.style.transform = 'none';
-          thisBlockRef.current.style.transform = 'rotate(-180deg)';
+          nameCompanyElement.style.transform = 'none';
+          thisBlockElement.style.transform = 'rotate(-180deg)';
         }
       }
     }
+
     window.addEventListener('scroll', handleScroll);
+
     return () => {
-      if (nameCompanyRef.current && thisBlockRef.current) {
-        window.removeEventListener('scroll', handleScroll);
-      }
+      window.removeEventListener('scroll', handleScroll);
     };
   }, []);
 
-  const handlePCardCompanyClick = useCallback((index) => {
-    setCurrentIndexCompany(index);
-    if (swiperCompanyRef.current && swiperCompanyRef.current.slideTo) {
-      swiperCompanyRef.current.slideTo(index);
-    }
-  }, []);
+  // не стирать эту функцию!!!
+  // const handlePCardCompanyClick = useCallback((index) => {
+  //   setCurrentIndexCompany(index);
+  //   if (swiperCompanyRef.current && swiperCompanyRef.current.slideTo) {
+  //     swiperCompanyRef.current.slideTo(index);
+  //   }
+  // }, []);
 
   const buttonsStuff = useMemo(
     () => [
@@ -246,12 +267,6 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
     [handleButtonClick]
   );
 
-  const handleImageLoad = useCallback(() => {
-    if (allImagesLoaded) {
-      // Все изображения загружены, выполняем нужные действия
-      setShowCards(true);
-    }
-  }, [allImagesLoaded]);
 
   if (error) {
     return (
@@ -261,36 +276,6 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
       </div>
     );
   }
-  // if (loading) {
-  //   return <LoadingCircle />;
-  // }
-
-  // кнопки временно закоменчены, будут в дальнейшем использованы
-  //  {/* <button
-  //       type="button"
-  //       onClick={(e) => {
-  //         e.preventDefault();
-  //         handleButtonClick("Руководители отделов");
-  //       }}
-  //       className={`${styles.button_department} ${styles.button_hover} ${
-  //         activeButton === "Руководители отделов" ? styles.active : ""
-  //       }`}
-  //     >
-  //       Руководители отделов
-  //     </button> */}
-
-  //            {/* <button
-  //   type="button"
-  //   onClick={(e) => {
-  //     e.preventDefault();
-  //     handleButtonClick("HR");
-  //   }}
-  //   className={`${styles.button_hr} ${styles.button_hover} ${
-  //     activeButton === "HR" ? styles.active : ""
-  //   }`}
-  // >
-  //   HR
-  // </button> */}
 
   return (
     <>
@@ -456,11 +441,6 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
             handleMouseHover={handleMouseHover}
           />
         )}
-        {/* {loading && (
-          <div className={styles.loadingOverlay}>
-            <LoadingCircle />
-          </div>
-        )} */}
         <div className={styles.specialist_wrapper}>
           <div className={styles.specialist}>Специалисты</div>
           {isMobile && (
@@ -468,12 +448,8 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
               onSwiper={setSwiper}
               slidesPerView="auto"
               spaceBetween={0}
-              // pagination={{
-              //   clickable: true,
-              // }}
               className={styles.my_swiper_button_group}
-              touch="true"
-            >
+              touch="true">
               <div className={styles.button_group}>
                 {buttonsStuff &&
                   buttonsStuff?.map((button, index) => (
@@ -484,8 +460,7 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
                         button.onClick(button.name);
                       }}
                       className={`${styles.button_hover} ${activeButton === button.name ? styles.active : ''}`}
-                      style={{ width: 'fit-content' }}
-                    >
+                      style={{ width: 'fit-content' }}>
                       <p type="button">{button.name}</p>
                     </SwiperSlide>
                   ))}
@@ -504,8 +479,7 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
                   activeButton === 'Руководство' ? styles.active : ''
                 }`}
                 onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-              >
+                onMouseLeave={handleMouseLeave}>
                 Руководство
               </button>
               <button
@@ -518,8 +492,7 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
                   activeButton === 'Научно-техническое сопровождение' ? styles.active : ''
                 }`}
                 onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-              >
+                onMouseLeave={handleMouseLeave}>
                 Научно-техническое сопровождение
               </button>
             </div>
@@ -527,24 +500,23 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
         </div>
         <div className={styles.card_container} style={{ opacity: showCards ? 1 : 0 }}>
           <ul className={styles.card_container_ul}>
-            {staff &&
-              staff?.map((el) => (
+            {loading ? (
+              <SkeletonLoader itemCount={8} />
+            ) : (
+              filteredStaff?.map((el) => (
                 <li
                   key={el.id}
                   data-user-id={el.id}
                   className={styles.container__item_stuff}
                   onClick={() => handleButtonClick(category, el.id)}
                   onMouseEnter={handleMouseHover}
-                  onMouseLeave={handleMouseLeave}
-                >
+                  onMouseLeave={handleMouseLeave}>
                   <div className={styles.wrapper_container_item_stuff}>
                     <img
                       className={`${styles.container__img_stuff} ${showCards ? 'loaded' : ''}`}
-                      src={`${bucket_url}/images/imageStuff/${el.img}`}
-                      onLoad={handleImageLoad}
+                      src={el.img}
                       onError={(e) => {
                         e.target.src = `${bucket_url}/images/imageStuff/no_photo.png`;
-                        // el.imgLoaded = false;
                       }}
                       alt={el.img}
                       loading="lazy"
@@ -553,7 +525,8 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
                   <div className={styles.container__item_name_stuff}>{el.name}</div>
                   <div className={styles.container__item_position_stuff}>{el.position}</div>
                 </li>
-              ))}
+              ))
+            )}
             {isModalOpen && selectedCard && (
               <Modal
                 className={styles.modal_wrapper}
@@ -589,15 +562,11 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
                       width: '12px',
                     },
                     '&::WebkitScrollbarTrack': {
-                      backgroundColor: '#75BBFD',
+                      backgroundColor: 'transparent',
                       borderRadius: '6px',
                     },
-                    '&::WebkitScrollbarTrack': {
-                      backgroundColor: 'transparent',
-                    },
                   },
-                }}
-              >
+                }}>
                 {selectedCard && (
                   <div key={selectedCard.id} className={styles.modal_context}>
                     <div
@@ -607,8 +576,7 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
                         dispatch(selectCard(null));
                       }}
                       onMouseEnter={handleMouseEnter}
-                      onMouseLeave={handleMouseLeave}
-                    >
+                      onMouseLeave={handleMouseLeave}>
                       <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path
                           fillRule="evenodd"
@@ -620,30 +588,11 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
                     </div>
                     <div className={styles.modal_container}>
                       <div className={styles.modal}>
-                        <img
-                          className={styles.modal_img_stuff}
-                          src={`${bucket_url}/images/imageStuff/${selectedCard.img}`}
-                          alt={selectedCard.img}
-                        />
+                        <img className={styles.modal_img_stuff} src={selectedCard.img} alt="" />
                       </div>
                     </div>
                     <div className={styles.modal_name_stuff}>{selectedCard.name}</div>
-                    {/* {selectedCard.description && (
-                      <div className={styles.modal_description_stuff}>
-                        {selectedCard.description
-                          .split(".")
-                          .map((sentence, index) => (
-                            <span key={index}>
-                              {sentence.trim()}
-                              {index !==
-                              selectedCard.description.split(".").length - 1 ? (
-                                <br />
-                              ) : null}
-                            </span>
-                          ))}
-                      </div>
-                    )} */}
-                    {selectedCard.description && (
+                   {selectedCard.description && (
                       <div className={styles.modal_description_stuff}>{selectedCard.description}</div>
                     )}
                     {selectedCard.about && <div className={styles.modal_about_stuff}>{selectedCard.about}</div>}
@@ -841,95 +790,85 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
             )}
           </ul>
         </div>
+
         {isMobile && (
           <div className={styles.slider_card_wrapper}>
-            <Swiper
-              className={styles.slider_card_container}
-              loop={true}
-              slidesPerView={1.1}
-              spaceBetween={0}
-              effect={'fade'}
-              touch="true"
-              onSlideChange={(swiper) => setCurrentIndexCompany(swiper.realIndex)}
-              onSwiper={(swiper) => {
-                if (swiperCompanyRef.current === null) {
-                  swiperCompanyRef.current = swiper;
-                }
-              }}
-            >
-              {staff?.map((el) => (
-                <SwiperSlide
-                  key={el.id}
-                  data-user-id={el.id}
-                  className={styles.slide_container_item_stuff}
-                  onClick={() => handleButtonClick(category, el.id)}
-                >
-                  <div className={styles.wrapper_container_item_stuff}>
-                    <img
-                      className={`${styles.container__img_stuff} ${showCards ? 'loaded' : ''}`}
-                      src={`${bucket_url}/images/imageStuff/${el.img}`}
-                      onLoad={handleImageLoad}
-                      onError={(e) => {
-                        e.target.src = `${bucket_url}/images/imageStuff/no_photo.png`;
-                      }}
-                      alt={el.img}
-                      loading="lazy"
-                    />
-                  </div>
-                  <div className={styles.container__item_name_stuff}>{el.name}</div>
-                  <div className={styles.container__item_position_stuff}>{el.position}</div>
-                </SwiperSlide>
-              ))}
-            </Swiper>
+            {loading ? (
+              <SkeletonLoaderSlider itemCount={8} isMobile />
+            ) : (
+              <Swiper
+                className={styles.slider_card_container}
+                loop={true}
+                slidesPerView={1.1}
+                spaceBetween={0}
+                effect={'fade'}
+                touch="true"
+                onSlideChange={(swiper) => setCurrentIndexCompany(swiper.realIndex)}
+                onSwiper={(swiper) => {
+                  if (swiperCompanyRef.current === null) {
+                    swiperCompanyRef.current = swiper;
+                  }
+                }}>
+                {filteredStaff?.map((el) => (
+                  <SwiperSlide
+                    key={el.id}
+                    data-user-id={el.id}
+                    className={styles.slide_container_item_stuff}
+                    onClick={() => handleButtonClick(category, el.id)}>
+                    <div className={styles.wrapper_container_item_stuff}>
+                      <img
+                        className={`${styles.container__img_stuff} ${showCards ? 'loaded' : ''}`}
+                        src={el.img}
+                        onError={(e) => {
+                          e.target.src = `${bucket_url}/images/imageStuff/no_photo.png`;
+                        }}
+                        alt={el.img}
+                        loading="lazy"
+                      />
+                    </div>
+                    <div className={styles.container__item_name_stuff}>{el.name}</div>
+                    <div className={styles.container__item_position_stuff}>{el.position}</div>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            )}
           </div>
         )}
-        {/* <div
-          className="swiper_pagination_container"
-        >
-          {staff &&
-            staff.map((_, index) => (
-              <button
-                key={index}
-                className={`swiper_pagination_bullet_container ${
-                  currentIndexCompany === index ? "active" : ""
-                }`}
-                onClick={() => handlePCardCompanyClick(index)}
-              />
-            ))}
-        </div> */}
+
         {!isMobile && (
           <div className={styles.slider_card_wrapper}>
-            <Swiper
-              className={styles.slider_card_container}
-              loop={true}
-              slidesPerView={2.2}
-              spaceBetween={0}
-              touch="true"
-            >
-              {staff?.map((el) => (
-                <SwiperSlide
-                  key={el.id}
-                  data-user-id={el.id}
-                  className={styles.slide_container_item_stuff}
-                  onClick={() => handleButtonClick(category, el.id)}
-                >
-                  <div className={styles.wrapper_container_item_stuff}>
-                    <img
-                      className={`${styles.container__img_stuff} ${showCards ? 'loaded' : ''}`}
-                      src={`${bucket_url}/images/imageStuff/${el.img}`}
-                      onLoad={handleImageLoad}
-                      onError={(e) => {
-                        e.target.src = `${bucket_url}/images/imageStuff/no_photo.png`;
-                      }}
-                      alt={el.img}
-                      loading="lazy"
-                    />
-                  </div>
-                  <div className={styles.container__item_name_stuff}>{el.name}</div>
-                  <div className={styles.container__item_position_stuff}>{el.position}</div>
-                </SwiperSlide>
-              ))}
-            </Swiper>
+            {loading ? (
+              <SkeletonLoaderSlider itemCount={8} isMobile={false} />
+            ) : (
+              <Swiper
+                className={styles.slider_card_container}
+                loop={true}
+                slidesPerView={2.2}
+                spaceBetween={0}
+                touch="true">
+                {filteredStaff?.map((el) => (
+                  <SwiperSlide
+                    key={el.id}
+                    data-user-id={el.id}
+                    className={styles.slide_container_item_stuff}
+                    onClick={() => handleButtonClick(category, el.id)}>
+                    <div className={styles.wrapper_container_item_stuff}>
+                      <img
+                        className={`${styles.container__img_stuff} ${showCards ? 'loaded' : ''}`}
+                        src={el.img}
+                        onError={(e) => {
+                          e.target.src = `${bucket_url}/images/imageStuff/no_photo.png`;
+                        }}
+                        alt={el.img}
+                        loading="lazy"
+                      />
+                    </div>
+                    <div className={styles.container__item_name_stuff}>{el.name}</div>
+                    <div className={styles.container__item_position_stuff}>{el.position}</div>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            )}
           </div>
         )}
         <div className={styles.fon}>
@@ -947,8 +886,7 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
                   position: 'relative',
                   height: '30vh',
                   width: window.innerWidth <= 768 ? '100vw' : '50vw',
-                }}
-              >
+                }}>
                 <div
                   style={{
                     position: 'absolute',
@@ -956,8 +894,7 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
                     left: '50%',
                     transform: 'translate(-50%, -50%)',
                     zIndex: 10,
-                  }}
-                >
+                  }}>
                   <LoadingCircle />
                 </div>
               </div>
@@ -968,8 +905,7 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
                   position: 'relative',
                   height: '30vh',
                   width: window.innerWidth <= 768 ? '100vw' : '50vw',
-                }}
-              >
+                }}>
                 <div
                   style={{
                     position: 'absolute',
@@ -977,8 +913,7 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
                     left: '50%',
                     transform: 'translate(-50%, -50%)',
                     zIndex: 10,
-                  }}
-                >
+                  }}>
                   <ModalVacancyFormSend
                     isOpen={modalOpenFormContacts}
                     onRequestClose={() => setModalOpenFormContacts(false)}
@@ -1007,8 +942,7 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
                   position: 'relative',
                   height: '30vh',
                   width: window.innerWidth <= 768 ? '100vw' : '50vw',
-                }}
-              >
+                }}>
                 <div
                   style={{
                     position: 'absolute',
@@ -1016,8 +950,7 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
                     left: '50%',
                     transform: 'translate(-50%, -50%)',
                     zIndex: 100,
-                  }}
-                >
+                  }}>
                   <LoadingCircle />
                 </div>
               </div>
@@ -1028,8 +961,7 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
                   position: 'relative',
                   height: '30vh',
                   width: window.innerWidth <= 768 ? '100vw' : '50vw',
-                }}
-              >
+                }}>
                 <div
                   style={{
                     position: 'absolute',
@@ -1037,8 +969,7 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
                     left: '50%',
                     transform: 'translate(-50%, -50%)',
                     zIndex: 100,
-                  }}
-                >
+                  }}>
                   <ModalVacancyFormSend
                     isOpen={modalOpenSubscription}
                     onRequestClose={() => setModalOpenSubscription(false)}
