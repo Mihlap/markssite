@@ -1,5 +1,5 @@
 import React, { useRef, useState, useCallback, useEffect } from 'react';
-import InputMask from 'react-input-mask';
+import InputMask from 'react-input-mask-next';
 import { Link } from 'react-router-dom';
 import styles from './VacancyFormContact.module.css';
 import 'react-phone-number-input/style.css';
