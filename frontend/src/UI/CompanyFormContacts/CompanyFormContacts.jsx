@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useRef } from 'react';
-import InputMask from 'react-input-mask';
+import InputMask from 'react-input-mask-next';
 import 'react-phone-number-input/style.css';
 import styles from './CompanyFormContacts.module.css';
 
