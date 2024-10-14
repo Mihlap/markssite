@@ -1,8 +1,8 @@
 @import '../App.css';
 
-div:empty {
+/* div:empty {
   display: none;
-}
+} */
 
 .main_article_card {
   height: 100%;

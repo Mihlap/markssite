@@ -54,7 +54,7 @@ $radius: 1rem;
   }
 
   50% {
-    stroke-dashoffset: $offset/4;
+    stroke-dashoffset: $offset*0.25;
     transform: rotate(135deg);
   }
 

@@ -519,7 +519,8 @@
 }
 
 Покажите изображение,
-когда оно загружено .container__img_stuff.loaded {
+когда оно загружено
+ .container__img_stuff.loaded {
   opacity: 0.5;
 }
 
@@ -731,6 +732,7 @@
   background-color: rgba(0, 0, 0, 0.5);
   z-index: 1000;
 }
+
 
 @media screen and (min-width: 1700px) and (max-width: 3000px) {
   .underSlider_text_wrapper {

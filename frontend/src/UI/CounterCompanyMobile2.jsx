@@ -59,7 +59,7 @@ const CounterCompanyMobile2 = () => {
         gsap.from(ref2.current, { x: -100, opacity: 0, stagger: 0.5, ease: 'power2.out', duration: 0.5 });
       }
     }
-  }, [counting]);
+  }, [inView, counting]);
 
   return (
     <div className={styles.right_counter_wrapper} ref={inViewRef}>

@@ -1,8 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Modal from 'react-modal';
 import styles from './ModalVacancyFormSend.module.scss';
 
 const ModalVacancyFormSend = ({ isOpen, onRequestClose, title, message }) => {
+
+    useEffect(() => {
+      if (isOpen) {
+        if (window.ym) {
+         // window.ym(YOUR_METRIKA_ID, 'reachGoal', 'modalOpened');
+        }
+      }
+    }, [isOpen]);
   return (
     <Modal
       isOpen={isOpen}
