@@ -49,7 +49,7 @@ export const fetchCategoryStaff = (category) => async (dispatch) => {
 
   try {
 
-  await new Promise((resolve) => setTimeout(resolve, 300));
+  await new Promise((resolve) => setTimeout(resolve, 500));
     
   const response = await axios.get(`${host}/api-stuffs/stuffs`);
   const staffData = response.data.map((staff) => ({
