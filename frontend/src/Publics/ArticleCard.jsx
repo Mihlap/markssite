@@ -214,7 +214,7 @@ const ArticleCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
         <title>{article ? article.title : 'Marks Group'}</title>
         <meta property="og:image" content={article ? `${bucket_url}/images/imageArticle/${article.imageOpen}` : ''} />
       </Helmet>
-      <div className={styles.main_article_card}>
+      <div className={`${styles.main_article_card} article-card`}>
         {article && <ArticleCardSlider slidesCard={[article]} />}
         <div className={styles.all_button_div} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
           <AllArticlesButton />
