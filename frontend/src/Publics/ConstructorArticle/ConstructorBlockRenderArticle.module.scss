@@ -391,17 +391,16 @@
   right: calc(-7.8vw - 16.56rem);
 }
 
-/* Стили для desctop версии +1 сайта блока ProjectCard начинаются тут */
-@media screen and (min-width: 1440px) and (max-width: 1920px) {
-  .text_framed {
-    margin-bottom: 2.5rem;
-  }
-
+@media screen and (max-width: 1920px) {
   .quote_block_constainer__author_block {
     right: calc(-7.8vw - 8.56rem);
   }
+  .text_framed {
+    margin-bottom: 2.5rem;
+  }
 }
 
+/* Стили для desctop версии +1 сайта блока ProjectCard начинаются тут */
 @media screen and (min-width: 1025px) and (max-width: 1600px) {
   .blockHeadingTitle {
     padding-right: 0;
