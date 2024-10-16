@@ -240,12 +240,12 @@ const Header = React.memo(
                         const imagePathsForArticle = article.imageTitle
                           ? article.imageTitle.split(',').map((el) => el.trim())
                           : [];
-                        const firstPhoto = imagePathsForArticle[0] || null;                    
+                        const firstPhoto = imagePathsForArticle[0] || null;
                         const defaultImagePath = img123;
 
                         const firstImagePath = firstPhoto?.includes('https')
-                        ? firstPhoto
-                        : `${bucket_url}/images/imageArticle/${encodeURIComponent(firstPhoto) || defaultImagePath}`;
+                          ? firstPhoto
+                          : `${bucket_url}/images/imageArticle/${encodeURIComponent(firstPhoto) || defaultImagePath}`;
 
                         return (
                           <Link to={`/publication/${article.id}`} key={article.id}>
@@ -334,10 +334,10 @@ const Header = React.memo(
                         const defaultImagePath = img123;
 
                         const firstImagePathRight = firstPhotoRight?.includes('https')
-                        ? firstPhotoRight
-                        : `${bucket_url}/images/imageArticle/${encodeURIComponent(firstPhotoRight) || defaultImagePath}`;
+                          ? firstPhotoRight
+                          : `${bucket_url}/images/imageArticle/${encodeURIComponent(firstPhotoRight) || defaultImagePath}`;
 
-                        
+
                         return (
                           <Link to={`/publication/${article.id}`} key={article.id}>
                             <div key={article.id} className={styles.card_item_2}>
@@ -496,9 +496,8 @@ const Header = React.memo(
                           src={
                             project.imageProject?.includes('https')
                               ? project.imageProject
-                              : `${bucket_url}/images/imageAdd/${
-                                  project.imageProject ? project.imageProject : project.imageTitle
-                                }`
+                              : `${bucket_url}/images/imageAdd/${project.imageProject ? project.imageProject : project.imageTitle
+                              }`
                           }
                           alt={project.imageProject ? project.imageProject : project.imageTitle}
                           onError={(e) => {
