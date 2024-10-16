@@ -500,8 +500,8 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
       </div>
     );
   };
-  const renderVideoBlock = (block) => {
-    const videoPath = block[0]?.value.join('');
+  const renderVideoBlock = (block) => {    
+    const videoPath = Array.isArray(block[0]?.value) ? block[0].value.join('') : null;
 
     if (!videoPath) {
       return null;
