@@ -41,6 +41,7 @@ import VacanciesMainCard from './Portal/Vacancies/VacanciesMainCard/VacanciesMai
 import VacanciesMain3 from './Portal/Vacancies/VacanciesMain/VacanciesMain3';
 import Internships from './Portal/Internships/Internships';
 import VacanciesComponent from './Portal/Vacancies/VacanciesMain/VacanciesComponent/VacanciesComponent';
+import Footer_new from './Footer/Footer_new';
 
 export default function App() {
   const user = useSelector((state) => state.auth.user);
@@ -299,7 +300,8 @@ export default function App() {
               handleMouseEnterFooterMore={handleMouseEnterFooterMore}
               handleMouseLeaveFooter={handleMouseLeaveFooter}
               handleMouseLeave={handleMouseLeave}
-            />
+              />
+          // <Footer_new />
           )}
           {showNavbarFooter && currentPage !== 'add' && <CustomCursor />}
         </>
