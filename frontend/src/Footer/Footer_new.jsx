@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import styles from './Footer_new.module.scss';
 
 const Footer_new = () => {
@@ -19,25 +19,23 @@ const Footer_new = () => {
     'Документы',
   ];
 
-  const handleMouseEnter = () => {
+  const handleMouseEnter = useCallback(() => {
     setText('Осталось\u00A0только\u00A0нажать');
-
     updateHoveredElements();
     intervalRef.current = setInterval(updateHoveredElements, 50);
-  };
+  }, []);
 
-  const handleMouseLeave = () => {
+  const handleMouseLeave = useCallback(() => {
     setText('Обсудим\u00A0ваш\u00A0проект');
     setHoveredChars([]);
     setHoveredFooterChars([]);
-
     if (intervalRef.current) {
       clearInterval(intervalRef.current);
       intervalRef.current = null;
     }
-  };
+  }, []);
 
-  const rectangleCircleOverlap = (rect, circle) => {
+  const rectangleCircleOverlap = useCallback((rect, circle) => {
     const rectX = rect.left;
     const rectY = rect.top;
     const rectW = rect.right - rect.left;
@@ -53,15 +51,13 @@ const Footer_new = () => {
     const distanceX = circleX - closestX;
     const distanceY = circleY - closestY;
 
-    const distanceSquared = distanceX * distanceX + distanceY * distanceY;
-    return distanceSquared < radius * radius;
-  };
+    return distanceX * distanceX + distanceY * distanceY < radius * radius;
+  }, []);
 
-  const updateHoveredElements = () => {
+  const updateHoveredElements = useCallback(() => {
     if (!circleRef.current) return;
 
     const circleRect = circleRef.current.getBoundingClientRect();
-
     if (circleRect.width <= 100) {
       setHoveredChars([]);
       setHoveredFooterChars([]);
@@ -72,14 +68,9 @@ const Footer_new = () => {
     const circleCenterX = circleRect.left + circleRadius;
     const circleCenterY = circleRect.top + circleRadius;
 
-    const updatedHoveredChars = [];
-    const updatedHoveredFooterChars = [];
-
-    charRefs.current.forEach((char, index) => {
-      if (!char) return;
-
+    const updatedHoveredChars = charRefs.current.reduce((acc, char, index) => {
+      if (!char) return acc;
       const charRect = char.getBoundingClientRect();
-
       if (
         rectangleCircleOverlap(charRect, {
           cx: circleCenterX,
@@ -87,15 +78,14 @@ const Footer_new = () => {
           r: circleRadius,
         })
       ) {
-        updatedHoveredChars.push(index);
+        acc.push(index);
       }
-    });
+      return acc;
+    }, []);
 
-    footerCharRefs.current.forEach((char, index) => {
-      if (!char) return;
-
+    const updatedHoveredFooterChars = footerCharRefs.current.reduce((acc, char, index) => {
+      if (!char) return acc;
       const charRect = char.getBoundingClientRect();
-
       if (
         rectangleCircleOverlap(charRect, {
           cx: circleCenterX,
@@ -103,26 +93,30 @@ const Footer_new = () => {
           r: circleRadius,
         })
       ) {
-        updatedHoveredFooterChars.push(index);
+        acc.push(index);
       }
-    });
+      return acc;
+    }, []);
 
-    setHoveredChars(updatedHoveredChars);
-    setHoveredFooterChars(updatedHoveredFooterChars);
-  };
+    setHoveredChars((prev) => (prev.length !== updatedHoveredChars.length ? updatedHoveredChars : prev));
+    setHoveredFooterChars((prev) =>
+      prev.length !== updatedHoveredFooterChars.length ? updatedHoveredFooterChars : prev
+    );
+  }, [rectangleCircleOverlap]);
 
   useEffect(() => {
-    window.addEventListener('resize', updateHoveredElements);
-    window.addEventListener('scroll', updateHoveredElements);
+    const handleResizeOrScroll = () => updateHoveredElements();
+    window.addEventListener('resize', handleResizeOrScroll);
+    window.addEventListener('scroll', handleResizeOrScroll);
 
     return () => {
-      window.removeEventListener('resize', updateHoveredElements);
-      window.removeEventListener('scroll', updateHoveredElements);
+      window.removeEventListener('resize', handleResizeOrScroll);
+      window.removeEventListener('scroll', handleResizeOrScroll);
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
       }
     };
-  }, []);
+  }, [updateHoveredElements]);
 
   let footerCharIndex = 0;
 
