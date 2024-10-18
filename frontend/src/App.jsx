@@ -301,12 +301,7 @@ export default function App() {
               handleMouseLeaveFooter={handleMouseLeaveFooter}
               handleMouseLeave={handleMouseLeave}
               />
-            //     <Footer_new
-            //   handleMouseEnterFooter={handleMouseEnterFooter}
-            //   handleMouseEnterFooterMore={handleMouseEnterFooterMore}
-            //   handleMouseLeaveFooter={handleMouseLeaveFooter}
-            //   handleMouseLeave={handleMouseLeave}
-            // />
+          // <Footer_new />
           )}
           {showNavbarFooter && currentPage !== 'add' && <CustomCursor />}
         </>
