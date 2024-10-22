@@ -1,14 +1,27 @@
-import React from 'react';
+import { useState } from 'react';
 import styles from './FooterCircle.module.scss';
 
 const FooterCircle = () => {
+  const [isHover, setIsHover] = useState(false);
+
+  const handleMouseEnter = () => {
+    setIsHover(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHover(false);
+  };
+
   return (
     <footer className={styles.FooterCircle}>
-      <div className={styles.FooterCircle__main}>
+      <div className={`${styles.FooterCircle__main} ${isHover ? styles.animate : ''}`}>
         <div className={styles.FooterCircle__action}>
           <div className={styles.FooterCircle__open}>
-            <span>Обсудим ваш</span>
-            <span>проект</span>
+            <div>Обсудим ваш</div>
+            <div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+              проект
+              <span></span>
+            </div>
           </div>
         </div>
         <div className={styles.FooterCircle__info}>
