@@ -1,27 +1,41 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styles from './FooterCircle.module.scss';
 
 const FooterCircle = () => {
   const [isHover, setIsHover] = useState(false);
+  const [isLargeScreen, setIsLargeScreen] = useState(false);
 
-  const handleMouseEnter = () => {
+  useEffect(() => {
+    const mediaQuery = window.matchMedia('(min-width: 768px)');
+
+    const handleScreenResize = () => {
+      setIsLargeScreen(mediaQuery.matches);
+    };
+
+    handleScreenResize();
+    mediaQuery.addEventListener('change', handleScreenResize);
+
+    return () => {
+      mediaQuery.removeEventListener('change', handleScreenResize);
+    };
+  }, []);
+
+  const handleCursorEnter = () => {
     setIsHover(true);
   };
 
-  const handleMouseLeave = () => {
+  const handleCursorLeave = () => {
     setIsHover(false);
   };
 
   return (
     <footer className={styles.FooterCircle}>
-      <div className={`${styles.FooterCircle__main} ${isHover ? styles.animate : ''}`}>
+      <div
+        className={`${styles.FooterCircle__main} ${isLargeScreen && isHover ? styles.animate : styles.resetAnimate}`}>
         <div className={styles.FooterCircle__action}>
-          <div className={styles.FooterCircle__open}>
+          <div className={styles.FooterCircle__open} onMouseEnter={handleCursorEnter} onMouseLeave={handleCursorLeave}>
             <div>Обсудим ваш</div>
-            <div onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-              проект
-              <span></span>
-            </div>
+            <div>проект</div>
           </div>
         </div>
         <div className={styles.FooterCircle__info}>
@@ -53,7 +67,9 @@ const FooterCircle = () => {
             </div>
           </div>
           <div className={styles.FooterCircle__footnote}>
-            <a href="https://yandex.ru/maps/-/CDdzIZ0o">Документы</a>
+            <a href="./Information" target="_blank">
+              Документы
+            </a>
             <span>&copy; laba</span>
           </div>
         </div>
@@ -61,7 +77,7 @@ const FooterCircle = () => {
 
       <div className={styles.FooterCircle__layer}>
         <div className={styles.FooterCircle__action}>
-          <a href="#" className={styles.FooterCircle__link}>
+          <a href="#" className={`${styles.FooterCircle__link} ${isLargeScreen && isHover ? styles.animate : ''}`}>
             Осталось только нажать
           </a>
         </div>
@@ -94,7 +110,9 @@ const FooterCircle = () => {
             </div>
           </div>
           <div className={styles.FooterCircle__footnote}>
-            <a href="https://yandex.ru/maps/-/CDdzIZ0o">Документы</a>
+            <a href="./Information" target="_blank">
+              Документы
+            </a>
             <span>&copy; laba</span>
           </div>
         </div>
