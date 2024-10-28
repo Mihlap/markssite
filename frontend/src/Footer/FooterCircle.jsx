@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import styles from './FooterCircle.module.scss';
 
+import FooterInfo from './FooterInfo';
+
 const FooterCircle = () => {
   const [isHover, setIsHover] = useState(false);
   const [isLargeScreen, setIsLargeScreen] = useState(false);
@@ -38,41 +40,7 @@ const FooterCircle = () => {
             <div>проект</div>
           </div>
         </div>
-        <div className={styles.FooterCircle__info}>
-          <ul className={styles.FooterCircle__socials}>
-            <li>
-              <a href="#">vk</a>
-            </li>
-            <li>
-              <a href="#">yt</a>
-            </li>
-            <li>
-              <a href="#">ru</a>
-            </li>
-            <li>
-              <a href="#">tg</a>
-            </li>
-          </ul>
-          <div className={styles.FooterCircle__contacts}>
-            <div className={styles.FooterCircle__office}>Офис Москва</div>
-            <div className={styles.FooterCircle__address}>
-              <a href="https://yandex.ru/maps/-/CDdzIZ0o">Москва 3-я Ямского Поля, дом 20 строение 1 офис 704</a>
-            </div>
-            <div className={styles.FooterCircle__phone}>Телефон</div>
-            <div className={styles.FooterCircle__number}>
-              <a href="tel:+74951201226">+7 (495) 120-12-26</a>
-            </div>
-            <div className={styles.FooterCircle__mail}>
-              <a href="mailto:mail@marksgroup.ru">mail@marksgroup.ru</a>
-            </div>
-          </div>
-          <div className={styles.FooterCircle__footnote}>
-            <a href="./Information" target="_blank">
-              Документы
-            </a>
-            <span>&copy; laba</span>
-          </div>
-        </div>
+        <FooterInfo />
       </div>
 
       <div className={styles.FooterCircle__layer}>
@@ -81,41 +49,7 @@ const FooterCircle = () => {
             Осталось только нажать
           </a>
         </div>
-        <div className={styles.FooterCircle__info}>
-          <ul className={styles.FooterCircle__socials}>
-            <li>
-              <a href="#">vk</a>
-            </li>
-            <li>
-              <a href="#">yt</a>
-            </li>
-            <li>
-              <a href="#">ru</a>
-            </li>
-            <li>
-              <a href="#">tg</a>
-            </li>
-          </ul>
-          <div className={styles.FooterCircle__contacts}>
-            <div className={styles.FooterCircle__office}>Офис Москва</div>
-            <div className={styles.FooterCircle__address}>
-              <a href="https://yandex.ru/maps/-/CDdzIZ0o">Москва 3-я Ямского Поля, дом 20 строение 1 офис 704</a>
-            </div>
-            <div className={styles.FooterCircle__phone}>Телефон</div>
-            <div className={styles.FooterCircle__number}>
-              <a href="tel:+74951201226">+7 (495) 120-12-26</a>
-            </div>
-            <div className={styles.FooterCircle__mail}>
-              <a href="mailto:mail@marksgroup.ru">mail@marksgroup.ru</a>
-            </div>
-          </div>
-          <div className={styles.FooterCircle__footnote}>
-            <a href="./Information" target="_blank">
-              Документы
-            </a>
-            <span>&copy; laba</span>
-          </div>
-        </div>
+        <FooterInfo />
       </div>
     </footer>
   );
