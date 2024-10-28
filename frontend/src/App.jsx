@@ -43,6 +43,7 @@ import Internships from './Portal/Internships/Internships';
 import VacanciesComponent from './Portal/Vacancies/VacanciesMain/VacanciesComponent/VacanciesComponent';
 import Footer_new from './Footer/Footer_new';
 import FooterCircle from './Footer/FooterCircle';
+import FooterForm from './Footer/FooterForm';
 
 export default function App() {
   const user = useSelector((state) => state.auth.user);
@@ -302,7 +303,10 @@ export default function App() {
             //   handleMouseLeave={handleMouseLeave}
             // />
             // <Footer_new />
-            <FooterCircle />
+            <>
+              <FooterCircle />
+              <FooterForm />
+            </>
           )}
           {showNavbarFooter && currentPage !== 'add' && <CustomCursor />}
         </>
