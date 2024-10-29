@@ -7,6 +7,7 @@
   font-family: var(--font-raleway);
   position: relative;
   overflow: hidden;
+  border-top: 1px solid #959da64d;
 
   @keyframes FooterCircleMask {
     @for $i from 0 through 100 {

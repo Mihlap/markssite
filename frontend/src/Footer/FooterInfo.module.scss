@@ -23,6 +23,12 @@
       line-height: 142%;
       text-transform: uppercase;
       letter-spacing: 0.1em;
+      transition: color 0.4s ease;
+
+      &:hover {
+        color: var(--salmon-light-FFBFB5);
+        transition: color 0.4s ease;
+      }
     }
   }
 
@@ -53,6 +59,15 @@
   &__number,
   &__address {
     font-size: 14px;
+
+    a {
+      transition: color 0.4s ease;
+
+      &:hover {
+        color: var(--salmon-light-FFBFB5);
+        transition: color 0.4s ease;
+      }
+    }
   }
 
   &__address {
@@ -68,6 +83,15 @@
     grid-column-end: 4;
     grid-row-start: 1;
     grid-row-end: 3;
+
+    a {
+      transition: color 0.4s ease;
+
+      &:hover {
+        color: var(--salmon-light-FFBFB5);
+        transition: color 0.4s ease;
+      }
+    }
   }
 
   &__footnote {
@@ -80,6 +104,15 @@
 
     span {
       text-transform: uppercase;
+    }
+
+    a {
+      transition: color 0.4s ease;
+
+      &:hover {
+        color: var(--salmon-light-FFBFB5);
+        transition: color 0.4s ease;
+      }
     }
   }
 
