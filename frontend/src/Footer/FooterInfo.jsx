@@ -1,21 +1,46 @@
 import styles from './FooterInfo.module.scss';
 
-const FooterInfo = () => {
+const FooterInfo = ({
+  handleMouseEnterFooter,
+  handleMouseEnterFooterMore,
+  handleMouseLeaveFooter,
+  handleMouseLeave,
+}) => {
   return (
     <div className={styles.FooterInfo}>
       <div className={styles.FooterInfo__info}>
         <ul className={styles.FooterInfo__socials}>
           <li>
-            <a href="#">vk</a>
+            <a
+              onMouseEnter={handleMouseEnterFooterMore}
+              onMouseLeave={handleMouseLeaveFooter}
+              href="https://vk.com/marks_group_vk">
+              vk
+            </a>
           </li>
           <li>
-            <a href="#">yt</a>
+            <a
+              onMouseEnter={handleMouseEnterFooterMore}
+              onMouseLeave={handleMouseLeaveFooter}
+              href="https://www.youtube.com/@marks_group">
+              yt
+            </a>
           </li>
           <li>
-            <a href="#">ru</a>
+            <a
+              onMouseEnter={handleMouseEnterFooterMore}
+              onMouseLeave={handleMouseLeaveFooter}
+              href="https://rutube.ru/channel/38807824/">
+              ru
+            </a>
           </li>
           <li>
-            <a href="#">tg</a>
+            <a
+              onMouseEnter={handleMouseEnterFooterMore}
+              onMouseLeave={handleMouseLeaveFooter}
+              href="https://t.me/marks_group">
+              tg
+            </a>
           </li>
         </ul>
         <div className={styles.FooterInfo__contacts}>

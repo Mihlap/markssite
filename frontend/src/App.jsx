@@ -296,16 +296,26 @@ export default function App() {
           </TransitionGroup>
           <CookieComponent />
           {showNavbarFooter && currentPage !== 'add' && (
-            // <Footer
-            //   handleMouseEnterFooter={handleMouseEnterFooter}
-            //   handleMouseEnterFooterMore={handleMouseEnterFooterMore}
-            //   handleMouseLeaveFooter={handleMouseLeaveFooter}
-            //   handleMouseLeave={handleMouseLeave}
-            // />
-            // <Footer_new />
             <>
-              <FooterCircle />
-              <FooterForm />
+              {/* <Footer
+                handleMouseEnterFooter={handleMouseEnterFooter}
+                handleMouseEnterFooterMore={handleMouseEnterFooterMore}
+                handleMouseLeaveFooter={handleMouseLeaveFooter}
+                handleMouseLeave={handleMouseLeave}
+              /> */}
+              {/* <Footer_new /> */}
+              <FooterCircle
+                handleMouseEnterFooter={handleMouseEnterFooter}
+                handleMouseEnterFooterMore={handleMouseEnterFooterMore}
+                handleMouseLeaveFooter={handleMouseLeaveFooter}
+                handleMouseLeave={handleMouseLeave}
+              />
+              <FooterForm
+                handleMouseEnterFooter={handleMouseEnterFooter}
+                handleMouseEnterFooterMore={handleMouseEnterFooterMore}
+                handleMouseLeaveFooter={handleMouseLeaveFooter}
+                handleMouseLeave={handleMouseLeave}
+              />
             </>
           )}
           {showNavbarFooter && currentPage !== 'add' && <CustomCursor />}
