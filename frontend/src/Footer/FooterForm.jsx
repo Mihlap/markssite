@@ -15,7 +15,12 @@ const ERROR_TEXT = {
   tel: 'Некорректный номер телефона',
 };
 
-const FooterForm = () => {
+const FooterForm = ({
+  handleMouseEnterFooter,
+  handleMouseEnterFooterMore,
+  handleMouseLeaveFooter,
+  handleMouseLeave,
+}) => {
   const formRef = useRef(null);
   const [placeholderText, setPlaceholderText] = useState('Расскажите о Вашем проекте или идее'); // Состояние для хранения текста плейсхолдера в textarea
 
@@ -88,7 +93,7 @@ const FooterForm = () => {
   };
 
   return (
-    <section className={styles.FooterForm}>
+    <section className={styles.FooterForm} onMouseEnter={handleMouseEnterFooter} onMouseLeave={handleMouseLeave}>
       <div className={styles.FooterForm__container}>
         <div className={styles.FooterForm__top}>
           <div className={styles.FooterForm__left}>
@@ -131,17 +136,24 @@ const FooterForm = () => {
                 <span className={styles.FooterForm__placeholder}>Телефон</span>
                 <span className={styles.FooterForm__textError}>Некорректный номер телефона</span>
               </div>
-              <div className={styles.FooterForm__agreement}>
-                Нажав на кнопку, соглашаюсь на обработку на <a href="#">обработку персональных данных</a>
+              <div className={styles.FooterForm__conclusion}>
+                <div className={styles.FooterForm__agreement}>
+                  Нажав на кнопку, соглашаюсь на обработку на <a href="./Information">обработку персональных данных</a>
+                </div>
+                <button type="submit" className={styles.FooterForm__submit}>
+                  Отправить
+                </button>
               </div>
-              <button type="submit" className={styles.FooterForm__submit}>
-                Отправить
-              </button>
             </form>
           </div>
         </div>
         <div className={styles.FooterForm__bottom}>
-          <FooterInfo />
+          <FooterInfo
+            handleMouseEnterFooter={handleMouseEnterFooter}
+            handleMouseEnterFooterMore={handleMouseEnterFooterMore}
+            handleMouseLeaveFooter={handleMouseLeaveFooter}
+            handleMouseLeave={handleMouseLeave}
+          />
         </div>
       </div>
     </section>

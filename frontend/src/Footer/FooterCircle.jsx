@@ -3,7 +3,12 @@ import styles from './FooterCircle.module.scss';
 
 import FooterInfo from './FooterInfo';
 
-const FooterCircle = () => {
+const FooterCircle = ({
+  handleMouseEnterFooter,
+  handleMouseEnterFooterMore,
+  handleMouseLeaveFooter,
+  handleMouseLeave,
+}) => {
   const [isHover, setIsHover] = useState(false);
   const [isLargeScreen, setIsLargeScreen] = useState(false);
 
@@ -31,7 +36,7 @@ const FooterCircle = () => {
   };
 
   return (
-    <footer className={styles.FooterCircle}>
+    <footer className={styles.FooterCircle} onMouseEnter={handleMouseEnterFooter} onMouseLeave={handleMouseLeave}>
       <div
         className={`${styles.FooterCircle__main} ${isLargeScreen && isHover ? styles.animate : styles.resetAnimate}`}>
         <div className={styles.FooterCircle__action}>
@@ -40,7 +45,12 @@ const FooterCircle = () => {
             <div>проект</div>
           </div>
         </div>
-        <FooterInfo />
+        <FooterInfo
+          handleMouseEnterFooter={handleMouseEnterFooter}
+          handleMouseEnterFooterMore={handleMouseEnterFooterMore}
+          handleMouseLeaveFooter={handleMouseLeaveFooter}
+          handleMouseLeave={handleMouseLeave}
+        />
       </div>
 
       <div className={styles.FooterCircle__layer}>
@@ -49,7 +59,12 @@ const FooterCircle = () => {
             Осталось только нажать
           </a>
         </div>
-        <FooterInfo />
+        <FooterInfo
+          handleMouseEnterFooter={handleMouseEnterFooter}
+          handleMouseEnterFooterMore={handleMouseEnterFooterMore}
+          handleMouseLeaveFooter={handleMouseLeaveFooter}
+          handleMouseLeave={handleMouseLeave}
+        />
       </div>
     </footer>
   );
