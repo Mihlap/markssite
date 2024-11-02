@@ -1,70 +1,60 @@
 import { useState, useEffect } from 'react';
+import { motion } from 'framer-motion';
+import FooterInfo from './FooterInfo';
 import styles from './FooterCircle.module.scss';
 
-import FooterInfo from './FooterInfo';
+const FooterCircle = () => {
+  const [isHovered, setIsHovered] = useState(false);
+  const [isTabletScreen, setIsTabletScreen] = useState(false);
 
-const FooterCircle = ({
-  handleMouseEnterFooter,
-  handleMouseEnterFooterMore,
-  handleMouseLeaveFooter,
-  handleMouseLeave,
-}) => {
-  const [isHover, setIsHover] = useState(false);
-  const [isLargeScreen, setIsLargeScreen] = useState(false);
-
+  // Обновляем состояние экрана при изменении его ширины
   useEffect(() => {
-    const mediaQuery = window.matchMedia('(min-width: 768px)');
-
-    const handleScreenResize = () => {
-      setIsLargeScreen(mediaQuery.matches);
+    const handleResize = () => {
+      setIsTabletScreen(window.innerWidth < 1024);
     };
 
-    handleScreenResize();
-    mediaQuery.addEventListener('change', handleScreenResize);
-
-    return () => {
-      mediaQuery.removeEventListener('change', handleScreenResize);
-    };
+    handleResize();
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const handleCursorEnter = () => {
-    setIsHover(true);
-  };
+  // Определяем начальный стиль `maskImage` в зависимости от ширины экрана
+  const initialMask = isTabletScreen
+    ? 'radial-gradient(circle at 283px 105px, transparent 0px, black 0)'
+    : 'radial-gradient(circle at 605px 200px, transparent 0px, black 0)';
 
-  const handleCursorLeave = () => {
-    setIsHover(false);
-  };
+  // Определяем стиль `maskImage` при ховере в зависимости от ширины экрана
+  const hoverMask = isTabletScreen
+    ? 'radial-gradient(circle at 283px 105px, transparent 275px, black 0)'
+    : 'radial-gradient(circle at 605px 200px, transparent 570px, black 0)';
 
   return (
-    <footer className={styles.FooterCircle} onMouseEnter={handleMouseEnterFooter} onMouseLeave={handleMouseLeave}>
-      <div
-        className={`${styles.FooterCircle__main} ${isLargeScreen && isHover ? styles.animate : styles.resetAnimate}`}>
+    <footer className={styles.FooterCircle}>
+      <motion.div
+        className={styles.FooterCircle__main}
+        initial={{ maskImage: initialMask }}
+        animate={{
+          maskImage: isHovered ? hoverMask : initialMask,
+          transition: { duration: 0.5 },
+        }}>
         <div className={styles.FooterCircle__action}>
-          <div className={styles.FooterCircle__open} onMouseEnter={handleCursorEnter} onMouseLeave={handleCursorLeave}>
+          <div
+            className={styles.FooterCircle__open}
+            onMouseEnter={() => setIsHovered(true)}
+            onMouseLeave={() => setIsHovered(false)}>
             <div>Обсудим ваш</div>
             <div>проект</div>
           </div>
         </div>
-        <FooterInfo
-          handleMouseEnterFooter={handleMouseEnterFooter}
-          handleMouseEnterFooterMore={handleMouseEnterFooterMore}
-          handleMouseLeaveFooter={handleMouseLeaveFooter}
-          handleMouseLeave={handleMouseLeave}
-        />
-      </div>
-
+        <FooterInfo />
+      </motion.div>
       <div className={styles.FooterCircle__layer}>
         <div className={styles.FooterCircle__action}>
-          <a href="#" className={`${styles.FooterCircle__link} ${isLargeScreen && isHover ? styles.animate : ''}`}>
+          <a href="" className={`${styles.FooterCircle__link} ${isHovered ? styles.animate : ''}`}>
             Осталось только нажать
           </a>
         </div>
-        <FooterInfo
-          handleMouseEnterFooter={handleMouseEnterFooter}
-          handleMouseEnterFooterMore={handleMouseEnterFooterMore}
-          handleMouseLeaveFooter={handleMouseLeaveFooter}
-          handleMouseLeave={handleMouseLeave}
-        />
+        <FooterInfo />
       </div>
     </footer>
   );
