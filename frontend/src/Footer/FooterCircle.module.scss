@@ -2,60 +2,33 @@
 
 .FooterCircle {
   $s: &;
-  $action-box-height: 250px;
-  $d: 500px;
+  $action-box-height: rem(250);
   font-family: var(--font-raleway);
   position: relative;
   overflow: hidden;
   border-top: 1px solid #959da64d;
 
-  @keyframes FooterCircleMask {
-    @for $i from 0 through 100 {
-      #{$i}% {
-        --mask: radial-gradient(circle at 671px 201px, transparent #{($i * $d / 100)}, black 0);
-      }
-    }
-  }
-
-  @keyframes resetFooterCircleMask {
-    @for $i from 0 through 100 {
-      #{$i}% {
-        --mask: radial-gradient(circle at 671px 201px, transparent #{($d - ($i * $d / 100))}, black 0);
-      }
-    }
-  }
-
   &__main,
   &__layer {
-    padding: 0 4.4vw 1rem 4.4vw;
+    padding: 0 2.5rem 1rem 2.5rem;
   }
 
   &__main {
-    --mask: radial-gradient(circle at 671px 201px, transparent 0px, black 0);
-    mask: var(--mask);
     width: 100%;
     height: 100%;
     background-color: var(--black-1D2E43);
     color: var(--white-F6F6F6);
     z-index: 20;
     position: relative;
-
-    &.animate {
-      animation: FooterCircleMask 0.5s forwards; // Длительность анимации
-    }
-
-    &.resetAnimate {
-      animation: resetFooterCircleMask 0.5s forwards; // Длительность анимации
-    }
   }
 
   &__action {
     min-height: $action-box-height;
     font-family: var(--font-unbounded);
-    font-size: 50px;
+    font-size: rem(50);
     font-weight: var(--fw-300);
     line-height: 168%;
-    padding: 156px 0 142px 0;
+    padding: rem(156) 0 rem(142) 0;
   }
 
   &__open {
@@ -64,7 +37,7 @@
 
     div:first-child {
       display: inline;
-      margin-right: 34px;
+      margin-right: rem(34);
     }
 
     div:last-child {
@@ -153,18 +126,23 @@
         transform: translateY(-50%) scale(1.25);
       }
       100% {
-        transform: translateY(-50%) scale(1);
+        transform: translateY(-50%) scale(1.5);
+        opacity: 0;
       }
     }
 
-    &::before {
+    &::before,
+    &::after {
       content: '';
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
-      right: -96px;
-      width: 64px;
-      height: 64px;
+      right: rem(-96);
+      width: rem(64);
+      height: rem(64);
+    }
+
+    &::before {
       background-position: center center;
       background-repeat: no-repeat;
       background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3QgeD0iMS4yOCIgeT0iMS4yOCIgd2lkdGg9IjYxLjQ0IiBoZWlnaHQ9IjYxLjQ0IiByeD0iMzAuNzIiIHN0cm9rZT0iI0Y2RjZGNiIgc3Ryb2tlLXdpZHRoPSIyLjU2Ii8+CjxjaXJjbGUgY3g9IjMyIiBjeT0iMzIiIHI9IjMyIiBmaWxsPSIjNzVCQkZEIi8+CjxwYXRoIGQ9Ik0yMy4wNDEyIDI0LjU4NDdWMjAuMDUyN0w0MC45NjEyIDI3LjAyMTZWMzEuOTRMMjMuMDQxMiAyNC41ODQ3WiIgZmlsbD0iI0Y2RjZGNiIvPgo8cGF0aCBkPSJNNDAuOTYgMzYuOTc4NVYzMS45NDE0TDIzLjA0IDM5LjEzMzJWNDMuOTQ3NEw0MC45NiAzNi45Nzg1WiIgZmlsbD0iI0Y2RjZGNiIvPgo8L3N2Zz4K');
@@ -173,42 +151,10 @@
     }
 
     &::after {
-      content: '';
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
-      right: -96px;
-      width: 64px;
-      height: 64px;
       background-color: rgba(117, 187, 253, 0.5);
       border-radius: 100%;
       z-index: 10;
       transition: 0.5s;
-    }
-  }
-
-  @media screen and (max-width: $bp0) {
-    $d: 560px;
-
-    @keyframes FooterCircleMask {
-      @for $i from 0 through 100 {
-        #{$i}% {
-          --mask: radial-gradient(circle at 560px 201px, transparent #{($i * $d / 100)}, black 0);
-        }
-      }
-    }
-
-    @keyframes resetFooterCircleMask {
-      @for $i from 0 through 100 {
-        #{$i}% {
-          --mask: radial-gradient(circle at 560px 201px, transparent #{($d - ($i * $d / 100))}, black 0);
-        }
-      }
-    }
-
-    &__main,
-    &__layer {
-      padding: 0 1.87vw 16px 1.87vw;
     }
   }
 
@@ -219,24 +165,7 @@
   }
 
   @media screen and (max-width: $bp3) {
-    $action-box-height: 115px;
-    $d: 270px;
-
-    @keyframes FooterCircleMask {
-      @for $i from 0 through 100 {
-        #{$i}% {
-          --mask: radial-gradient(circle at 280px 115px, transparent #{($i * $d / 100)}, black 0);
-        }
-      }
-    }
-
-    @keyframes resetFooterCircleMask {
-      @for $i from 0 through 100 {
-        #{$i}% {
-          --mask: radial-gradient(circle at 280px 115px, transparent #{($d - ($i * $d / 100))}, black 0);
-        }
-      }
-    }
+    $action-box-height: rem(115);
 
     &__main,
     &__layer {
@@ -245,15 +174,15 @@
 
     &__action {
       min-height: $action-box-height;
-      font-size: 24px;
-      padding: 85px 0 111px 0;
+      font-size: rem(24);
+      padding: rem(85) 0 rem(111) 0;
     }
 
     &__open {
       width: 100%;
 
       div:first-child {
-        margin-right: 14px;
+        margin-right: rem(14);
       }
 
       div:last-child {
@@ -274,6 +203,15 @@
     &__layer {
       color: var(--dark-gray-566272);
     }
+
+    &__link {
+      &::before,
+      &::after {
+        right: rem(-64);
+        width: rem(44);
+        height: rem(44);
+      }
+    }
   }
 
   @media screen and (max-width: $bp4) {
@@ -284,7 +222,7 @@
 
   @media screen and (max-width: $bp6) {
     &__action {
-      font-size: 23px;
+      font-size: rem(23);
     }
   }
 }
