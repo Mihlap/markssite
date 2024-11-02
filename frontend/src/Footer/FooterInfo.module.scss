@@ -116,7 +116,7 @@
     }
   }
 
-  @media screen and (max-width: $bp3) {
+  @media screen and (max-width: 1000px) {
     &__office {
       margin-bottom: 14px;
     }
@@ -167,6 +167,10 @@
   }
 
   @media screen and (max-width: $bp6) {
+    &__office {
+      font-size: 16px;
+    }
+
     &__address {
       font-size: 12px;
     }

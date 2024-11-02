@@ -1,14 +1,10 @@
 import { useRef, useState } from 'react';
 import InputMask from 'react-input-mask-next';
-import FooterInfo from './FooterInfo';
-import styles from './FooterForm.module.scss';
-import mark from '../icons/footer-form-1.svg';
 
-const INPUT_NAMES = {
-  text: 'text',
-  name: 'name',
-  tel: 'tel',
-};
+import styles from './FooterForm.module.scss';
+
+import FooterInfo from './FooterInfo';
+import mark from '../icons/footer-form-1.svg';
 
 const ERROR_TEXT = {
   empty: 'Поле обязательно для заполнения',
@@ -22,9 +18,11 @@ const FooterForm = ({
   handleMouseLeave,
 }) => {
   const formRef = useRef(null);
-  const [placeholderText, setPlaceholderText] = useState('Расскажите о Вашем проекте или идее'); // Состояние для хранения текста плейсхолдера в textarea
 
-  // Функция для валидации ввода
+  // Состояние для текста плейсхолдера в textarea
+  const [placeholderText, setPlaceholderText] = useState('Расскажите о Вашем проекте или идее');
+
+  // Функция для валидации ввода телефона
   const validateInput = (e) => {
     const { name, value, parentNode: parent } = e.currentTarget;
 
@@ -42,14 +40,13 @@ const FooterForm = ({
       if (errorElement) errorElement.textContent = '';
     };
 
-    if (name === INPUT_NAMES.text || name === INPUT_NAMES.name) {
-      !value.trim() ? setError(parent, ERROR_TEXT.empty) : clearError(parent);
-    }
-
-    if (name === INPUT_NAMES.tel) {
+    // Валидация
+    if (name === 'tel') {
       if (!value.trim()) setError(parent, ERROR_TEXT.empty);
       else if (value.includes('_')) setError(parent, ERROR_TEXT.tel);
       else clearError(parent);
+    } else {
+      clearError(parent);
     }
   };
 
@@ -76,18 +73,10 @@ const FooterForm = ({
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    const formElements = Array.from(formRef.current.elements);
-    let formIsValid = true;
+    validateInput({ currentTarget: formRef.current.elements.tel });
 
-    formElements.forEach((input) => {
-      validateInput({ currentTarget: input });
-      const errorElement = input.parentNode.querySelector(`.${styles.FooterForm__textError}`);
-      if (errorElement && errorElement.textContent) {
-        formIsValid = false;
-      }
-    });
-
-    if (formIsValid) {
+    // Если после валидации ошибок нет, отправляем форму
+    if (!formRef.current.querySelector(`.${styles.FooterForm__input_error}`)) {
       formRef.current.submit();
     }
   };
@@ -97,48 +86,27 @@ const FooterForm = ({
       <div className={styles.FooterForm__container}>
         <div className={styles.FooterForm__top}>
           <div className={styles.FooterForm__left}>
-            <img src={mark} alt="mark" />
+            <img src={mark} />
           </div>
           <div className={styles.FooterForm__right}>
             <div className={styles.FooterForm__subtitle}>Опишите ваш запрос!</div>
             <form ref={formRef} className={styles.FooterForm__form} onSubmit={handleSubmit}>
               <div className={`${styles.FooterForm__input} ${styles.FooterForm__input_text}`}>
-                <textarea
-                  onChange={validateInput}
-                  onFocus={handleFocus}
-                  onBlur={handleBlur}
-                  name={INPUT_NAMES.text}
-                  id="text"
-                  placeholder=" "></textarea>
+                <textarea onFocus={handleFocus} onBlur={handleBlur} name="text" id="text" placeholder=" "></textarea>
                 <span className={styles.FooterForm__placeholder}>{placeholderText}</span>
-                <span className={styles.FooterForm__textError}>Поле обязательно для заполнения</span>
               </div>
               <div className={`${styles.FooterForm__input} ${styles.FooterForm__input_name}`}>
-                <input
-                  onChange={validateInput}
-                  onBlur={validateInput}
-                  name={INPUT_NAMES.name}
-                  type="text"
-                  id="name"
-                  placeholder=" "
-                />
+                <input name="name" type="text" id="name" placeholder=" " />
                 <span className={styles.FooterForm__placeholder}>Ваше имя</span>
-                <span className={styles.FooterForm__textError}>Поле обязательно для заполнения</span>
               </div>
               <div className={`${styles.FooterForm__input} ${styles.FooterForm__input_tel}`}>
-                <InputMask
-                  mask="+7 (999) 999-99-99"
-                  onChange={validateInput}
-                  onBlur={validateInput}
-                  name={INPUT_NAMES.tel}
-                  placeholder=" "
-                />
+                <InputMask mask="+7 (999) 999-99-99" onBlur={validateInput} name="tel" placeholder=" " />
                 <span className={styles.FooterForm__placeholder}>Телефон</span>
                 <span className={styles.FooterForm__textError}>Некорректный номер телефона</span>
               </div>
               <div className={styles.FooterForm__conclusion}>
                 <div className={styles.FooterForm__agreement}>
-                  Нажав на кнопку, соглашаюсь на обработку на <a href="./Information">обработку персональных данных</a>
+                  Нажав на кнопку, соглашаюсь на <a href="./Information">обработку персональных данных</a>
                 </div>
                 <button type="submit" className={styles.FooterForm__submit}>
                   Отправить

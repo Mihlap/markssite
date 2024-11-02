@@ -6,7 +6,7 @@
   font-weight: var(--fw-300);
 
   &__container {
-    margin: 0 4.4vw rem(16) 4.4vw;
+    margin: 0 2.5rem 1rem 2.5rem;
   }
 
   &__top {
@@ -15,6 +15,10 @@
     width: 100%;
     gap: 10%;
     margin-bottom: rem(124);
+  }
+
+  &__bottom {
+    color: var(--dark-gray-566272);
   }
 
   &__left {
@@ -37,6 +41,7 @@
     font-size: 48px;
     line-height: 133%;
     margin-bottom: 90px;
+    color: var(--black-1D2E43);
   }
 
   &__input {
@@ -105,8 +110,12 @@
     &_error {
       input,
       textarea {
-        color: var(--crimson-E00747);
+        color: var(--crimson-E00747) !important;
         border-bottom: 1px solid var(--crimson-E00747);
+
+        & + #{$s}__placeholder {
+          color: var(--crimson-E00747);
+        }
 
         & + span + #{$s}__textError {
           height: auto;
@@ -117,15 +126,26 @@
 
         &:focus,
         &:hover {
-          border-bottom: 1px solid var(--crimson-E00747);
+          transition: 0.5s;
+          border-bottom: 1px solid var(--crimson-E00747) !important;
           outline: none;
           caret-color: var(--crimson-E00747);
-          color: var(--crimson-E00747);
+          color: var(--crimson-E00747) !important;
+
+          & + #{$s}__placeholder {
+            color: var(--crimson-E00747);
+            transition: 0.5s;
+          }
         }
 
         &:hover {
-          #{$s}__placeholder {
-            color: var(--gray-959DA6);
+          border-bottom: 1px solid var(--crimson-E00747);
+          color: var(--crimson-E00747);
+          transition: 0.3s;
+          caret-color: var(--crimson-E00747);
+
+          & + #{$s}__placeholder {
+            color: var(--crimson-E00747);
           }
         }
 
@@ -162,10 +182,13 @@
     transform: translateY(rem(-20));
   }
 
+  &__conclusion {
+    width: min-content;
+  }
+
   &__agreement {
-    width: 33%;
     font-family: var(--font-raleway);
-    font-size: 11px;
+    font-size: 12px;
     line-height: 133%;
     margin-bottom: 24px;
     color: var(--gray-959DA6);
@@ -191,6 +214,7 @@
     transition: 0.3s;
 
     &::after {
+      box-sizing: border-box;
       content: '';
       display: block;
       width: 48px;
@@ -205,6 +229,7 @@
 
     &:hover {
       color: var(--blue-75BBFD);
+
       &::after {
         transition: 0.3s;
         background-color: var(--blue-75BBFD);
@@ -213,10 +238,6 @@
   }
 
   @media screen and (max-width: $bp0) {
-    &__container {
-      margin: 0 1.87vw 0 1.87vw;
-    }
-
     &__left {
       margin-top: rem(36);
     }
@@ -229,11 +250,15 @@
       font-size: 40px;
       margin-bottom: 80px;
     }
+
+    &__top {
+      gap: 36px;
+    }
   }
 
   @media screen and (max-width: $bp3) {
     &__container {
-      margin: 0 5vw 0 5vw;
+      margin: 0 1rem 1rem 1rem;
     }
 
     &__left {
@@ -243,6 +268,7 @@
 
     &__right {
       margin-top: rem(48);
+      width: 51%;
     }
 
     &__subtitle {
@@ -263,6 +289,96 @@
         font-size: 18px;
         min-height: 102px;
       }
+
+      &_tel {
+        margin-bottom: 84px;
+      }
+    }
+
+    &__submit {
+      font-size: 32px;
+      gap: 24px;
+
+      &::after {
+        width: 40px;
+        height: 40px;
+        background-size: 30%;
+      }
+    }
+  }
+
+  @media screen and (max-width: $bp4) {
+    &__top {
+      flex-direction: column;
+      margin-bottom: rem(90);
+    }
+
+    &__left {
+      margin-top: rem(32);
+      width: 100%;
+      max-width: 300px;
+    }
+
+    &__right {
+      margin-top: rem(24);
+      width: 100%;
+      font-size: 20px;
+    }
+
+    &__subtitle {
+      margin-bottom: 80px;
+      font-size: 20px;
+    }
+
+    &__input {
+      margin-bottom: 56px;
+      font-size: 18px;
+
+      input,
+      textarea {
+        min-height: 26px;
+        padding-bottom: rem(16);
+        color: var(--black-1D2E43);
+
+        &:not(:placeholder-shown) {
+          & + #{$s}__placeholder {
+            top: rem(-36);
+            font-size: rem(12);
+          }
+        }
+
+        &:focus {
+          border-bottom: 1px solid var(--salmon-FF7F6A);
+          transition: 0.3s;
+          caret-color: var(--salmon-FF7F6A);
+
+          & + #{$s}__placeholder {
+            top: rem(-36);
+            font-size: rem(12);
+          }
+        }
+      }
+
+      textarea {
+        min-height: 93px;
+      }
+    }
+
+    &__submit {
+      font-size: 24px;
+      gap: 16px;
+
+      &::after {
+        width: 32px;
+        height: 32px;
+      }
+    }
+  }
+
+  @media screen and (max-width: $bp6) {
+    &__input,
+    &__placeholder {
+      font-size: 17px;
     }
   }
 }
