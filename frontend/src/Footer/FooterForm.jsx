@@ -95,8 +95,15 @@ const FooterForm = ({
             <div className={styles.FooterForm__subtitle}>Опишите ваш запрос!</div>
             <form ref={formRef} className={styles.FooterForm__form} onSubmit={handleSubmit}>
               <div className={`${styles.FooterForm__input} ${styles.FooterForm__input_text}`}>
-                <textarea onFocus={handleFocus} onBlur={handleBlur} name="text" id="text" placeholder=" "></textarea>
+                <textarea
+                  maxLength={500}
+                  onFocus={handleFocus}
+                  onBlur={handleBlur}
+                  name="text"
+                  id="text"
+                  placeholder=" "></textarea>
                 <span className={styles.FooterForm__placeholder}>{placeholderText}</span>
+                <label htmlFor="text" className={styles.FooterForm__border}></label>
               </div>
               <div className={`${styles.FooterForm__input} ${styles.FooterForm__input_name}`}>
                 <input name="name" type="text" id="name" placeholder=" " />
