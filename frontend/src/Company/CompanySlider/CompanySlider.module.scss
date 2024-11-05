@@ -83,7 +83,7 @@
     background-color: var(--salmon-FF7F6A);
   }
 
-  @media all and (min-width: $bp0) {
+  @media all and (min-width: $XXL) {
     &__slide {
       width: auto !important;
     }
@@ -97,7 +97,7 @@
     }
   }
 
-  @media all and (max-width: $bp0) {
+  @media all and (max-width: $XL) {
     &__picture {
       img {
         height: rem(58);
@@ -110,7 +110,7 @@
   }
 
   // Адаптация под меньший размер desktop
-  @media all and (max-width: $bp1) {
+  @media all and (max-width: $XL) {
     &__text {
       font-size: rem(14);
       line-height: rem(20);
@@ -123,18 +123,18 @@
     }
   }
 
-  @media all and (max-width: $bp2) {
+  @media all and (max-width: $L) {
     &__pagination {
       display: block;
     }
   }
 
-  @media all and (max-width: $bp3) {
+  @media all and (max-width: $L) {
     margin: rem(120) 0;
   }
 
   // Адаптация под mobile
-  @media all and (max-width: $bp4) {
+  @media all and (max-width: $S) {
     margin: rem(49) 0 rem(80) 0;
 
     &__title {

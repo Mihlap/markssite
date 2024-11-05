@@ -237,7 +237,7 @@
     }
   }
 
-  @media screen and (max-width: $bp0) {
+  @media screen and (max-width: $XXL) {
     &__left {
       margin-top: rem(36);
     }
@@ -256,7 +256,7 @@
     }
   }
 
-  @media screen and (max-width: $bp3) {
+  @media screen and (max-width: $L) {
     &__container {
       margin: 0 1rem 1rem 1rem;
     }
@@ -307,7 +307,7 @@
     }
   }
 
-  @media screen and (max-width: $bp4) {
+  @media screen and (max-width: $S) {
     &__top {
       flex-direction: column;
       margin-bottom: rem(90);
@@ -375,7 +375,7 @@
     }
   }
 
-  @media screen and (max-width: $bp6) {
+  @media screen and (max-width: $XS) {
     &__input,
     &__placeholder {
       font-size: 17px;
