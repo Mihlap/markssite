@@ -4,7 +4,6 @@ import InputMask from 'react-input-mask-next';
 import styles from './FooterForm.module.scss';
 
 import FooterInfo from './FooterInfo';
-import Popup from '../UI/Popup/Popup';
 import mark from '../icons/footer-form-1.svg';
 
 const ERROR_TEXT = {
@@ -128,7 +127,6 @@ const FooterForm = ({
           />
         </div>
       </div>
-      <Popup isSent={isSent} />
     </section>
   );
 };
