@@ -119,7 +119,7 @@
     }
   }
 
-  @media all and (max-width: $bp0) {
+  @media all and (max-width: $XXL) {
     &__container {
       width: 100%;
       padding: rem(212) rem(62) rem(165) rem(62);
@@ -142,7 +142,7 @@
     }
   }
 
-  @media all and (max-width: $bp3) {
+  @media all and (max-width: $M) {
     br {
       display: block;
     }
@@ -205,7 +205,7 @@
     }
   }
 
-  @media all and (max-width: $bp4) {
+  @media all and (max-width: $S) {
     &__container {
       width: 100%;
       padding: rem(90) rem(16) rem(90) rem(16);

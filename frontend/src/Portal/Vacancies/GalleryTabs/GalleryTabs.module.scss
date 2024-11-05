@@ -135,7 +135,7 @@
   }
 
   // Адаптация под меньший размер desktop
-  @media all and (max-width: $bp0) {
+  @media all and (max-width: $XXL) {
     margin: rem(150) 0;
 
     &__buttons,
@@ -149,7 +149,7 @@
   }
 
   // Адаптация под tablet
-  @media all and (max-width: $bp3) {
+  @media all and (max-width: $M) {
     margin: rem(120) 0;
 
     &__noEvents {
@@ -184,7 +184,7 @@
   }
 
   // Адаптация под mobile
-  @media all and (max-width: $bp4) {
+  @media all and (max-width: $S) {
     &__buttons,
     &__title {
       padding: 0 rem(16);
@@ -219,7 +219,7 @@
     }
   }
 
-  @media all and (max-width: $bp5) {
+  @media all and (max-width: $XS) {
     &__content {
       max-height: rem(250);
     }

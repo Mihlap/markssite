@@ -34,7 +34,7 @@
   }
 
   // Адаптация под tablet
-  @media all and (max-width: $bp3) {
+  @media all and (max-width: $M) {
     display: none;
   }
 }
