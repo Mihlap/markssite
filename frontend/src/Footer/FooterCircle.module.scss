@@ -214,12 +214,6 @@
     }
   }
 
-  @media screen and (max-width: $S) {
-    &__layer {
-      display: none;
-    }
-  }
-
   @media screen and (max-width: $XS) {
     &__action {
       font-size: rem(23);
