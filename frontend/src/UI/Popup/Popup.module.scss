@@ -1,0 +1,83 @@
+@import '../../_variables.scss';
+
+.Popup {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1000;
+
+  &.active {
+    display: flex;
+  }
+
+  &__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__container {
+    position: relative;
+    width: 100%;
+    max-width: 41%;
+    background-color: #fff;
+    box-shadow: -2px 4px 22px 0px #2c3b4475;
+    overflow: hidden;
+  }
+
+  &__header {
+    display: flex;
+    justify-content: flex-end;
+    padding: 36px 36px 8px 36px;
+  }
+
+  &__body {
+    padding: 0 90px 48px 48px;
+  }
+
+  &__close {
+    width: 16px;
+    height: 16px;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZmlsbC1ydWxlPSJldmVub2RkIiBjbGlwLXJ1bGU9ImV2ZW5vZGQiIGQ9Ik04LjAwMDQ0IDguNzA3MTRMMC43MDcxMDcgMTYuMDAwNUwwIDE1LjI5MzRMNy4yOTMzMyA4LjAwMDA0TDAuMDAwNDAxODg0IDAuNzA3MTA3TDAuNzA3NTA5IDBMOC4wMDA0NCA3LjI5MjkzTDE1LjI5MzQgMEwxNi4wMDA1IDAuNzA3MTA3TDguNzA3NTUgOC4wMDAwNEwxNi4wMDA5IDE1LjI5MzRMMTUuMjkzOCAxNi4wMDA1TDguMDAwNDQgOC43MDcxNFoiIGZpbGw9ImJsYWNrIi8+Cjwvc3ZnPgo=');
+    background-size: contain;
+  }
+
+  &__title {
+    font-family: var(--font-unbounded);
+    font-size: 32px;
+    font-weight: var(--fw-300);
+    line-height: 125%;
+    margin-bottom: 24px;
+  }
+
+  &__desc {
+    font-family: var(--font-raleway);
+    font-size: 18px;
+    line-height: 144%;
+    margin-bottom: 40px;
+  }
+
+  &__button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 32px;
+    min-height: 56px;
+    border-radius: 66px;
+    background-color: var(--black-1D2E43);
+    color: var(--white-F6F6F6);
+  }
+}

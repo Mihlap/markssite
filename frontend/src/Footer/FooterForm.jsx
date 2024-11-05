@@ -4,6 +4,7 @@ import InputMask from 'react-input-mask-next';
 import styles from './FooterForm.module.scss';
 
 import FooterInfo from './FooterInfo';
+import Popup from '../UI/Popup/Popup';
 import mark from '../icons/footer-form-1.svg';
 
 const ERROR_TEXT = {
@@ -18,6 +19,8 @@ const FooterForm = ({
   handleMouseLeave,
 }) => {
   const formRef = useRef(null);
+
+  const [isSent, setIsSent] = useState(false);
 
   // Состояние для текста плейсхолдера в textarea
   const [placeholderText, setPlaceholderText] = useState('Расскажите о Вашем проекте или идее');
@@ -77,6 +80,7 @@ const FooterForm = ({
 
     // Если после валидации ошибок нет, отправляем форму
     if (!formRef.current.querySelector(`.${styles.FooterForm__input_error}`)) {
+      setIsSent(true);
       formRef.current.submit();
     }
   };
@@ -124,6 +128,7 @@ const FooterForm = ({
           />
         </div>
       </div>
+      <Popup isSent={isSent} />
     </section>
   );
 };
