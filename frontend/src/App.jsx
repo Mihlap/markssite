@@ -42,6 +42,8 @@ import VacanciesMain3 from './Portal/Vacancies/VacanciesMain/VacanciesMain3';
 import Internships from './Portal/Internships/Internships';
 import VacanciesComponent from './Portal/Vacancies/VacanciesMain/VacanciesComponent/VacanciesComponent';
 import Footer_new from './Footer/Footer_new';
+import FooterCircle from './Footer/FooterCircle';
+import FooterForm from './Footer/FooterForm';
 
 export default function App() {
   const user = useSelector((state) => state.auth.user);
@@ -287,21 +289,34 @@ export default function App() {
                       <>
                         <Add user={user} onPageChange={handlePageChange} handleReturn={handleReturn} />
                       </>
-                    }
-                  ></Route>
+                    }></Route>
                 ) : null}
               </Routes>
             </CSSTransition>
           </TransitionGroup>
           <CookieComponent />
           {showNavbarFooter && currentPage !== 'add' && (
-            <Footer
-              handleMouseEnterFooter={handleMouseEnterFooter}
-              handleMouseEnterFooterMore={handleMouseEnterFooterMore}
-              handleMouseLeaveFooter={handleMouseLeaveFooter}
-              handleMouseLeave={handleMouseLeave}
+            <>
+              {/* <Footer
+                handleMouseEnterFooter={handleMouseEnterFooter}
+                handleMouseEnterFooterMore={handleMouseEnterFooterMore}
+                handleMouseLeaveFooter={handleMouseLeaveFooter}
+                handleMouseLeave={handleMouseLeave}
+              /> */}
+              {/* <Footer_new /> */}
+              <FooterCircle
+                handleMouseEnterFooter={handleMouseEnterFooter}
+                handleMouseEnterFooterMore={handleMouseEnterFooterMore}
+                handleMouseLeaveFooter={handleMouseLeaveFooter}
+                handleMouseLeave={handleMouseLeave}
               />
-          // <Footer_new />
+              <FooterForm
+                handleMouseEnterFooter={handleMouseEnterFooter}
+                handleMouseEnterFooterMore={handleMouseEnterFooterMore}
+                handleMouseLeaveFooter={handleMouseLeaveFooter}
+                handleMouseLeave={handleMouseLeave}
+              />
+            </>
           )}
           {showNavbarFooter && currentPage !== 'add' && <CustomCursor />}
         </>
