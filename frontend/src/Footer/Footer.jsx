@@ -20,8 +20,7 @@ const Footer = ({ handleMouseEnterFooter, handleMouseEnterFooterMore, handleMous
             <Link
               to="mailto:mail@marksgroup.ru"
               onMouseEnter={handleMouseEnterFooterMore}
-              onMouseLeave={handleMouseLeaveFooter}
-            >
+              onMouseLeave={handleMouseLeaveFooter}>
               <span>mail@marksgroup.ru</span>
             </Link>
           </div>
@@ -35,8 +34,7 @@ const Footer = ({ handleMouseEnterFooter, handleMouseEnterFooterMore, handleMous
                 className={styles.footer__tel}
                 style={{ fontVariantNumeric: 'lining-nums' }}
                 onMouseEnter={handleMouseEnterFooterMore}
-                onMouseLeave={handleMouseLeaveFooter}
-              >
+                onMouseLeave={handleMouseLeaveFooter}>
                 <span>+7&nbsp;(495)&nbsp;120-12-26</span>
               </Link>
             </div>
@@ -60,12 +58,10 @@ const Footer = ({ handleMouseEnterFooter, handleMouseEnterFooterMore, handleMous
               to="https://vk.com/marks_group_vk"
               target="_blank"
               onMouseEnter={handleMouseEnterFooterMore}
-              onMouseLeave={handleMouseLeaveFooter}
-            >
+              onMouseLeave={handleMouseLeaveFooter}>
               <span
                 // onClick={vkHendler}
-                style={{ marginRight: '21px' }}
-              >
+                style={{ marginRight: '21px' }}>
                 VK
               </span>
             </Link>
@@ -85,8 +81,7 @@ const Footer = ({ handleMouseEnterFooter, handleMouseEnterFooterMore, handleMous
               <span
                 style={{ marginRight: '22px' }}
                 onMouseEnter={handleMouseEnterFooterMore}
-                onMouseLeave={handleMouseLeaveFooter}
-              >
+                onMouseLeave={handleMouseLeaveFooter}>
                 YT
               </span>
             </Link>
@@ -94,8 +89,7 @@ const Footer = ({ handleMouseEnterFooter, handleMouseEnterFooterMore, handleMous
               to="https://t.me/marks_group"
               target="_blank"
               onMouseEnter={handleMouseEnterFooterMore}
-              onMouseLeave={handleMouseLeaveFooter}
-            >
+              onMouseLeave={handleMouseLeaveFooter}>
               <span
               // onClick={telegramHendler}
               >
@@ -111,8 +105,7 @@ const Footer = ({ handleMouseEnterFooter, handleMouseEnterFooterMore, handleMous
               to="./Information"
               target="_blank"
               onMouseEnter={handleMouseEnterFooterMore}
-              onMouseLeave={handleMouseLeaveFooter}
-            >
+              onMouseLeave={handleMouseLeaveFooter}>
               <span>Документы</span>
             </Link>
             <div className={styles.footer__copyright}>©&nbsp;MARKSLAB</div>

@@ -1,0 +1,228 @@
+@import './../_variables.scss';
+
+.FooterCircle {
+  $s: &;
+  $action-box-height: rem(250);
+  font-family: var(--font-raleway);
+  position: relative;
+  overflow: hidden;
+  border-top: 1px solid #959da64d;
+
+  &__main,
+  &__layer {
+    padding: 0 2.5rem 1rem 2.5rem;
+  }
+
+  &__main {
+    width: 100%;
+    height: 100%;
+    background-color: var(--black-1D2E43);
+    color: var(--white-F6F6F6);
+    z-index: 20;
+    position: relative;
+  }
+
+  &__action {
+    min-height: $action-box-height;
+    font-family: var(--font-unbounded);
+    font-size: rem(50);
+    font-weight: var(--fw-300);
+    line-height: 168%;
+    padding: rem(156) 0 rem(142) 0;
+  }
+
+  &__open {
+    width: 63%;
+    cursor: pointer;
+
+    div:first-child {
+      display: inline;
+      margin-right: rem(34);
+    }
+
+    div:last-child {
+      display: inline;
+      position: relative;
+
+      &:after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: $action-box-height;
+        height: $action-box-height;
+        border-radius: 100%;
+        background-color: transparent;
+        border: 4px solid #f6f6f6;
+        box-sizing: border-box;
+      }
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: $action-box-height;
+        height: $action-box-height;
+        border-radius: 100%;
+        background-color: transparent;
+        border: 3px solid #f6f6f6;
+        box-sizing: border-box;
+        animation: FooterCirclePulse 2s normal infinite ease-out;
+        opacity: 0;
+      }
+    }
+  }
+
+  @keyframes FooterCirclePulse {
+    0% {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 0;
+    }
+
+    30% {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 0;
+    }
+    60% {
+      transform: translate(-50%, -50%) scale(1.05);
+      opacity: 0.6;
+    }
+
+    100% {
+      transform: translate(-50%, -50%) scale(1.1);
+      opacity: 0;
+    }
+  }
+
+  &__layer {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background-color: var(--white-F6F6F6);
+    color: var(--black-1D2E43);
+    top: 0;
+    left: 0;
+    z-index: 10;
+  }
+
+  &__link {
+    color: var(--blue-75BBFD);
+    position: relative;
+
+    &.animate {
+      &::after {
+        animation: FooterCircleLayerPulse 1s linear 0.5s forwards;
+      }
+    }
+
+    @keyframes FooterCircleLayerPulse {
+      0% {
+        transform: translateY(-50%) scale(1);
+      }
+      50% {
+        transform: translateY(-50%) scale(1.25);
+      }
+      100% {
+        transform: translateY(-50%) scale(1.5);
+        opacity: 0;
+      }
+    }
+
+    &::before,
+    &::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      right: rem(-96);
+      width: rem(64);
+      height: rem(64);
+    }
+
+    &::before {
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjQiIGhlaWdodD0iNjQiIHZpZXdCb3g9IjAgMCA2NCA2NCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3QgeD0iMS4yOCIgeT0iMS4yOCIgd2lkdGg9IjYxLjQ0IiBoZWlnaHQ9IjYxLjQ0IiByeD0iMzAuNzIiIHN0cm9rZT0iI0Y2RjZGNiIgc3Ryb2tlLXdpZHRoPSIyLjU2Ii8+CjxjaXJjbGUgY3g9IjMyIiBjeT0iMzIiIHI9IjMyIiBmaWxsPSIjNzVCQkZEIi8+CjxwYXRoIGQ9Ik0yMy4wNDEyIDI0LjU4NDdWMjAuMDUyN0w0MC45NjEyIDI3LjAyMTZWMzEuOTRMMjMuMDQxMiAyNC41ODQ3WiIgZmlsbD0iI0Y2RjZGNiIvPgo8cGF0aCBkPSJNNDAuOTYgMzYuOTc4NVYzMS45NDE0TDIzLjA0IDM5LjEzMzJWNDMuOTQ3NEw0MC45NiAzNi45Nzg1WiIgZmlsbD0iI0Y2RjZGNiIvPgo8L3N2Zz4K');
+      background-size: contain;
+      z-index: 20;
+    }
+
+    &::after {
+      background-color: rgba(117, 187, 253, 0.5);
+      border-radius: 100%;
+      z-index: 10;
+      transition: 0.5s;
+    }
+  }
+
+  @media screen and (max-width: $bp2) {
+    &__open {
+      width: 80%;
+    }
+  }
+
+  @media screen and (max-width: $bp3) {
+    $action-box-height: rem(115);
+
+    &__main,
+    &__layer {
+      padding: 0 1rem 1rem 1rem;
+    }
+
+    &__action {
+      min-height: $action-box-height;
+      font-size: rem(24);
+      padding: rem(85) 0 rem(111) 0;
+    }
+
+    &__open {
+      width: 100%;
+
+      div:first-child {
+        margin-right: rem(14);
+      }
+
+      div:last-child {
+        &:after {
+          width: $action-box-height;
+          height: $action-box-height;
+          border: 2px solid #f6f6f6;
+        }
+
+        &::before {
+          width: $action-box-height;
+          height: $action-box-height;
+          border: 1px solid #f6f6f6;
+        }
+      }
+    }
+
+    &__layer {
+      color: var(--dark-gray-566272);
+    }
+
+    &__link {
+      &::before,
+      &::after {
+        right: rem(-64);
+        width: rem(44);
+        height: rem(44);
+      }
+    }
+  }
+
+  @media screen and (max-width: $bp4) {
+    &__layer {
+      display: none;
+    }
+  }
+
+  @media screen and (max-width: $bp6) {
+    &__action {
+      font-size: rem(23);
+    }
+  }
+}
