@@ -152,7 +152,7 @@ export default function App() {
           {showNavbarFooter && currentPage !== 'add' && (
             <ButtonAdmin user={user} handleMouseEnter={handleMouseEnter} handleMouseLeave={handleMouseLeave} />
           )}
-          <TransitionGroup>
+          {/* <TransitionGroup>
             <CSSTransition key={location.key} classNames="fade" timeout={300}>
               <Routes location={location}>
                 <Route
@@ -293,7 +293,7 @@ export default function App() {
                 ) : null}
               </Routes>
             </CSSTransition>
-          </TransitionGroup>
+          </TransitionGroup> */}
           <CookieComponent />
           {showNavbarFooter && currentPage !== 'add' && (
             <>
