@@ -3,14 +3,13 @@ import Modal from 'react-modal';
 import styles from './ModalVacancyFormSend.module.scss';
 
 const ModalVacancyFormSend = ({ isOpen, onRequestClose, title, message }) => {
-
-    useEffect(() => {
-      if (isOpen) {
-        if (window.ym) {
-         // window.ym(YOUR_METRIKA_ID, 'reachGoal', 'modalOpened');
-        }
+  useEffect(() => {
+    if (isOpen) {
+      if (window.ym) {
+        // window.ym(YOUR_METRIKA_ID, 'reachGoal', 'modalOpened');
       }
-    }, [isOpen]);
+    }
+  }, [isOpen]);
   return (
     <Modal
       isOpen={isOpen}
@@ -24,13 +23,11 @@ const ModalVacancyFormSend = ({ isOpen, onRequestClose, title, message }) => {
         content: {
           zIndex: 9999,
         },
-      }}
-    >
+      }}>
       <div
         onClick={onRequestClose}
         // onRequestClose={onRequestClose}
-        className={styles.modal_vacancy_close}
-      >
+        className={styles.modal_vacancy_close}>
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
             fillRule="evenodd"
@@ -43,9 +40,9 @@ const ModalVacancyFormSend = ({ isOpen, onRequestClose, title, message }) => {
       <div className={styles.modalWrapperFormSend}>
         <h2 className={styles.modalTitleFormSend}>{title}</h2>
         <p className={styles.modalMessageFormSend}>{message}</p>
-        {/* <button className={styles.closeButtonFormSend} onClick={onRequestClose}>
-          <p className={styles.closeButtonFormSendTitle}>Закрыть</p>
-          </button> */}
+        <button className={styles.closeButtonFormSend} onClick={onRequestClose}>
+          <p className={styles.closeButtonFormSendTitle}>Спасибо, жду!</p>
+        </button>
       </div>
     </Modal>
   );
