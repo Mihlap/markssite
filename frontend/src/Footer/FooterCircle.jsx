@@ -51,7 +51,12 @@ const FooterCircle = ({
             <div>проект</div>
           </div>
         </div>
-        <FooterInfo />
+        <FooterInfo
+          handleMouseEnterFooter={handleMouseEnterFooter}
+          handleMouseEnterFooterMore={handleMouseEnterFooterMore}
+          handleMouseLeaveFooter={handleMouseLeaveFooter}
+          handleMouseLeave={handleMouseLeave}
+        />
       </motion.div>
       <div className={styles.FooterCircle__layer}>
         <div className={styles.FooterCircle__action}>

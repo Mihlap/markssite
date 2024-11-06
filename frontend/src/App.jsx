@@ -30,10 +30,15 @@ import {
   imageHover,
   specialHover,
   textEnter,
-  textFooter,
-  textFooterEnter,
   textLeave,
   textLeaveFooter,
+  // Для футера с темным фоном
+  textFooter,
+  textFooterEnter,
+  // Для футера с белым фоном
+  textFooterWhite,
+  textFooterWhiteEnter,
+  textLeaveWhiteFooter,
 } from './store/Slice/cursorSlice';
 import CookieComponent from './UI/CookieComponent/CookieComponent';
 import PortalMenu from './Navbar/PortalMenu';
@@ -89,6 +94,7 @@ export default function App() {
     dispatch(textEnter());
   };
 
+  // Для футера с темным фоном
   const handleMouseEnterFooter = () => {
     dispatch(textFooter());
   };
@@ -99,6 +105,19 @@ export default function App() {
 
   const handleMouseLeaveFooter = () => {
     dispatch(textLeaveFooter());
+  };
+
+  // Для футера с белым фоном
+  const handleMouseEnterFooterWhite = () => {
+    dispatch(textFooterWhite());
+  };
+
+  const handleMouseEnterFooterWhiteMore = () => {
+    dispatch(textFooterWhiteEnter());
+  };
+
+  const handleMouseLeaveFooterWhite = () => {
+    dispatch(textLeaveWhiteFooter());
   };
 
   const handleMouseLeave = () => {
@@ -310,10 +329,11 @@ export default function App() {
                 handleMouseLeaveFooter={handleMouseLeaveFooter}
                 handleMouseLeave={handleMouseLeave}
               />
+
               <FooterForm
-                handleMouseEnterFooter={handleMouseEnterFooter}
-                handleMouseEnterFooterMore={handleMouseEnterFooterMore}
-                handleMouseLeaveFooter={handleMouseLeaveFooter}
+                handleMouseEnterFooter={handleMouseEnterFooterWhite}
+                handleMouseEnterFooterMore={handleMouseEnterFooterWhiteMore}
+                handleMouseLeaveFooter={handleMouseLeaveFooterWhite}
                 handleMouseLeave={handleMouseLeave}
               /> */}
             </>
