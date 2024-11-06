@@ -3,7 +3,12 @@ import { motion } from 'framer-motion';
 import FooterInfo from './FooterInfo';
 import styles from './FooterCircle.module.scss';
 
-const FooterCircle = () => {
+const FooterCircle = ({
+  handleMouseEnterFooter,
+  handleMouseEnterFooterMore,
+  handleMouseLeaveFooter,
+  handleMouseLeave,
+}) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isTabletScreen, setIsTabletScreen] = useState(false);
 
@@ -46,7 +51,12 @@ const FooterCircle = () => {
             <div>проект</div>
           </div>
         </div>
-        <FooterInfo />
+        <FooterInfo
+          handleMouseEnterFooter={handleMouseEnterFooter}
+          handleMouseEnterFooterMore={handleMouseEnterFooterMore}
+          handleMouseLeaveFooter={handleMouseLeaveFooter}
+          handleMouseLeave={handleMouseLeave}
+        />
       </motion.div>
       <div className={styles.FooterCircle__layer}>
         <div className={styles.FooterCircle__action}>
