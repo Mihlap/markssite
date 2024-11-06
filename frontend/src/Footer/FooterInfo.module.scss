@@ -24,7 +24,9 @@
       text-transform: uppercase;
       letter-spacing: 0.1em;
       transition: color 0.4s ease;
-      pointer-events: auto;
+      position: relative;
+      z-index: 3;
+
 
       &:hover {
         color: var(--salmon-light-FFBFB5);
@@ -63,6 +65,8 @@
 
     a {
       transition: color 0.4s ease;
+      position: relative;
+      z-index: 3;
 
       &:hover {
         color: var(--salmon-light-FFBFB5);
@@ -87,6 +91,8 @@
 
     a {
       transition: color 0.4s ease;
+      position: relative;
+      z-index: 3;
 
       &:hover {
         color: var(--salmon-light-FFBFB5);
@@ -109,6 +115,8 @@
 
     a {
       transition: color 0.4s ease;
+      position: relative;
+      z-index: 3;
 
       &:hover {
         color: var(--salmon-light-FFBFB5);
