@@ -88,13 +88,13 @@
     transition: 0.6s;
   }
 
-  @media all and (max-width: $bp0) {
+  @media all and (max-width: $XXL) {
     &__picture {
       height: auto;
     }
   }
 
-  @media all and (max-width: $bp1) {
+  @media all and (max-width: $XL) {
     &__slider {
       padding: 0 rem(64);
       position: relative;
@@ -159,7 +159,7 @@
     }
   }
 
-  @media all and (max-width: $bp2) {
+  @media all and (max-width: $L) {
     min-height: auto;
     // background-color: red;
 
@@ -192,7 +192,7 @@
   }
 
   // Адаптация под tablet
-  @media all and (max-width: $bp3) {
+  @media all and (max-width: $M) {
     margin: rem(120) 0;
 
     &__swiper {
@@ -229,7 +229,7 @@
   }
 
   // Адаптация под mobile
-  @media all and (max-width: $bp4) {
+  @media all and (max-width: $S) {
     margin: rem(110) 0;
 
     &__item img {
@@ -255,7 +255,7 @@
     }
   }
 
-  @media all and (max-width: $bp5) {
+  @media all and (max-width: $XS) {
     &__slider {
       padding: 0;
       margin: 0 5px;

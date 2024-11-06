@@ -44,6 +44,17 @@
     color: var(--black-1D2E43);
   }
 
+  &__border {
+    display: block;
+    width: 100%;
+    border-bottom: 1px solid var(--gray-959DA6);
+    padding-top: 24px;
+
+    &:hover {
+      cursor: text;
+    }
+  }
+
   &__input {
     position: relative;
     margin-bottom: 96px;
@@ -105,6 +116,46 @@
 
     textarea {
       min-height: 165px;
+      resize: none;
+      overflow-y: auto;
+      padding-bottom: 0;
+      margin-bottom: 0;
+      border-bottom: none;
+      padding-right: 10px;
+
+      &:hover {
+        border-bottom: none;
+
+        & + #{$s}__placeholder + #{$s}__border {
+          border-bottom: 1px solid var(--salmon-FF7F6A);
+        }
+      }
+
+      &:focus {
+        border-bottom: none;
+
+        & + #{$s}__placeholder + #{$s}__border {
+          border-bottom: 1px solid var(--salmon-FF7F6A);
+        }
+      }
+
+      &::-webkit-scrollbar {
+        width: 4px; /* Ширина полосы прокрутки */
+        margin: 12px;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: var(--light-light-gray-EBECEE); /* Цвет фона полосы прокрутки */
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background-color: var(--light-gray-C0C5CB); /* Цвет бегунка */
+        border-radius: 4px;
+
+        &:hover {
+          background-color: var(--gray-959DA6);
+        }
+      }
     }
 
     &_error {
@@ -237,7 +288,7 @@
     }
   }
 
-  @media screen and (max-width: $bp0) {
+  @media screen and (max-width: $XXL) {
     &__left {
       margin-top: rem(36);
     }
@@ -256,7 +307,7 @@
     }
   }
 
-  @media screen and (max-width: $bp3) {
+  @media screen and (max-width: $L) {
     &__container {
       margin: 0 1rem 1rem 1rem;
     }
@@ -307,7 +358,7 @@
     }
   }
 
-  @media screen and (max-width: $bp4) {
+  @media screen and (max-width: $S) {
     &__top {
       flex-direction: column;
       margin-bottom: rem(90);
@@ -330,14 +381,21 @@
       font-size: 20px;
     }
 
+    &__border {
+      padding-top: rem(16);
+    }
+
     &__input {
       margin-bottom: 56px;
       font-size: 18px;
 
+      input {
+        padding-bottom: rem(16);
+      }
+
       input,
       textarea {
         min-height: 26px;
-        padding-bottom: rem(16);
         color: var(--black-1D2E43);
 
         &:not(:placeholder-shown) {
@@ -348,10 +406,6 @@
         }
 
         &:focus {
-          border-bottom: 1px solid var(--salmon-FF7F6A);
-          transition: 0.3s;
-          caret-color: var(--salmon-FF7F6A);
-
           & + #{$s}__placeholder {
             top: rem(-36);
             font-size: rem(12);
@@ -375,7 +429,7 @@
     }
   }
 
-  @media screen and (max-width: $bp6) {
+  @media screen and (max-width: $XS) {
     &__input,
     &__placeholder {
       font-size: 17px;
