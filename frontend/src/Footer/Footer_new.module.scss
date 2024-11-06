@@ -7,7 +7,7 @@
   align-items: center;
   height: 50vh;
   background-color: #102a44;
-  color: white;
+  // color: white;
   overflow: hidden;
 
   .footer-text-wrapper {
@@ -16,6 +16,8 @@
     align-items: center;
     justify-content: center;
     z-index: 2;
+
+   
 
     &:hover .footer-circle {
       width: 1000px;
@@ -80,8 +82,10 @@
     transition: color 0.4s ease;
     z-index: 2;
 
+   
+
     .footer-item {
-      transition: color 0.4s ease;
+      transition: color 0.4s ease;       
 
       .footer-char {
         color: white;
@@ -89,9 +93,14 @@
 
         &.inside-circle {
           color: black;
-          z-index: 4;
+          z-index: 0;
           position: relative;
-        }
+        }   
+        
+        // &:hover {
+        //   color: red;            
+        // }
+           
       }
     }
   }
@@ -107,6 +116,7 @@
   }
 }
 
+  
 @keyframes wave {
   0% {
     transform: translate(-50%, -50%) scale(1);
