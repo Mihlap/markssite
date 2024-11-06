@@ -1,10 +1,10 @@
-$bp0: 1920px;
-$bp1: 1440px;
-$bp2: 1280px;
-$bp3: 1024px;
-$bp4: 768px;
-$bp5: 576px;
-$bp6: 377px;
+$XXL: 1920px;
+$XL: 1440px;
+$L: 1280px;
+$M: 1024px;
+$S: 768px;
+$XS: 576px;
+$XXS: 377px;
 
 @function rem($pixels) {
   @return calc($pixels / 16) + rem;
