@@ -322,7 +322,12 @@ export default function App() {
                 handleMouseLeaveFooter={handleMouseLeaveFooter}
                 handleMouseLeave={handleMouseLeave}
               />
-              {/* <Footer_new /> */}
+              {/* <Footer_new
+                handleMouseEnterFooter={handleMouseEnterFooter}
+                handleMouseEnterFooterMore={handleMouseEnterFooterMore}
+                handleMouseLeaveFooter={handleMouseLeaveFooter}
+                handleMouseLeave={handleMouseLeave}
+              /> */}
               {/* <FooterCircle
                 handleMouseEnterFooter={handleMouseEnterFooter}
                 handleMouseEnterFooterMore={handleMouseEnterFooterMore}
@@ -335,7 +340,7 @@ export default function App() {
                 handleMouseEnterFooterMore={handleMouseEnterFooterWhiteMore}
                 handleMouseLeaveFooter={handleMouseLeaveFooterWhite}
                 handleMouseLeave={handleMouseLeave}
-              /> */}
+              />  */}
             </>
           )}
           {showNavbarFooter && currentPage !== 'add' && <CustomCursor />}
