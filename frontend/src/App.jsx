@@ -303,19 +303,24 @@ export default function App() {
                 handleMouseLeaveFooter={handleMouseLeaveFooter}
                 handleMouseLeave={handleMouseLeave}
               />
-              {/* <Footer_new /> */}
-              {/* <FooterCircle
-                handleMouseEnterFooter={handleMouseEnterFooter}
-                handleMouseEnterFooterMore={handleMouseEnterFooterMore}
-                handleMouseLeaveFooter={handleMouseLeaveFooter}
-                handleMouseLeave={handleMouseLeave}
-              />
-              <FooterForm
+              {/* <Footer_new
                 handleMouseEnterFooter={handleMouseEnterFooter}
                 handleMouseEnterFooterMore={handleMouseEnterFooterMore}
                 handleMouseLeaveFooter={handleMouseLeaveFooter}
                 handleMouseLeave={handleMouseLeave}
               /> */}
+              {/* <FooterCircle
+                handleMouseEnterFooter={handleMouseEnterFooter}
+                handleMouseEnterFooterMore={handleMouseEnterFooterMore}
+                handleMouseLeaveFooter={handleMouseLeaveFooter}
+                handleMouseLeave={handleMouseLeave}
+              /> 
+             <FooterForm
+                handleMouseEnterFooter={handleMouseEnterFooter}
+                handleMouseEnterFooterMore={handleMouseEnterFooterMore}
+                handleMouseLeaveFooter={handleMouseLeaveFooter}
+                handleMouseLeave={handleMouseLeave}
+              />  */}
             </>
           )}
           {showNavbarFooter && currentPage !== 'add' && <CustomCursor />}

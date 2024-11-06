@@ -1,7 +1,12 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import styles from './Footer_new.module.scss';
 
-const Footer_new = () => {
+const Footer_new = ({
+  handleMouseEnterFooter,
+  handleMouseEnterFooterMore,
+  handleMouseLeaveFooter,
+  handleMouseLeave,
+}) => {
   const [text, setText] = useState('Обсудим\u00A0ваш\u00A0проект');
   const [hoveredChars, setHoveredChars] = useState([]);
   const [hoveredFooterChars, setHoveredFooterChars] = useState([]);
@@ -19,13 +24,13 @@ const Footer_new = () => {
     'Документы',
   ];
 
-  const handleMouseEnter = useCallback(() => {
+  const handleMouseEnterText = useCallback(() => {
     setText('Осталось\u00A0только\u00A0нажать');
     updateHoveredElements();
     intervalRef.current = setInterval(updateHoveredElements, 50);
   }, []);
 
-  const handleMouseLeave = useCallback(() => {
+  const handleMouseLeaveText = useCallback(() => {
     setText('Обсудим\u00A0ваш\u00A0проект');
     setHoveredChars([]);
     setHoveredFooterChars([]);
@@ -121,8 +126,11 @@ const Footer_new = () => {
   let footerCharIndex = 0;
 
   return (
-    <div className={styles.footer}>
-      <div className={styles['footer-text-wrapper']} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+    <div className={styles.footer} onMouseEnter={handleMouseEnterFooter} onMouseLeave={handleMouseLeave}>
+      <div
+        className={styles['footer-text-wrapper']}
+        onMouseEnter={handleMouseEnterText}
+        onMouseLeave={handleMouseLeaveText}>
         <div className={styles['footer-text']}>
           {text.split('').map((char, index) => (
             <span
@@ -147,7 +155,9 @@ const Footer_new = () => {
                   ref={(el) => (footerCharRefs.current[totalIndex] = el)}
                   className={`${styles['footer-char']} ${
                     hoveredFooterChars.includes(totalIndex) ? styles['inside-circle'] : ''
-                  }`}>
+                  }`}
+                  onMouseEnter={handleMouseEnterFooterMore}
+                  onMouseLeave={handleMouseLeaveFooter}>
                   {char}
                 </span>
               );
@@ -158,7 +168,7 @@ const Footer_new = () => {
       <div className={styles['footer-right']}>
         {footerItems.slice(3).map((item, itemIndex) => (
           <div className={styles['footer-item']} key={itemIndex + 3}>
-            {item.split('').map((char, index) => {
+            {item.split('').map((char) => {
               const totalIndex = footerCharIndex++;
               return (
                 <span
@@ -166,7 +176,9 @@ const Footer_new = () => {
                   ref={(el) => (footerCharRefs.current[totalIndex] = el)}
                   className={`${styles['footer-char']} ${
                     hoveredFooterChars.includes(totalIndex) ? styles['inside-circle'] : ''
-                  }`}>
+                  }`}
+                  onMouseEnter={handleMouseEnterFooterMore}
+                  onMouseLeave={handleMouseLeaveFooter}>
                   {char}
                 </span>
               );
