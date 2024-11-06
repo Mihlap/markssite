@@ -3,7 +3,12 @@ import { motion } from 'framer-motion';
 import FooterInfo from './FooterInfo';
 import styles from './FooterCircle.module.scss';
 
-const FooterCircle = () => {
+const FooterCircle = ({
+  handleMouseEnterFooter,
+  handleMouseEnterFooterMore,
+  handleMouseLeaveFooter,
+  handleMouseLeave,
+}) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isTabletScreen, setIsTabletScreen] = useState(false);
 
