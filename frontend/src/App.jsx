@@ -297,14 +297,14 @@ export default function App() {
           <CookieComponent />
           {showNavbarFooter && currentPage !== 'add' && (
             <>
-              {/* <Footer
+              <Footer
                 handleMouseEnterFooter={handleMouseEnterFooter}
                 handleMouseEnterFooterMore={handleMouseEnterFooterMore}
                 handleMouseLeaveFooter={handleMouseLeaveFooter}
                 handleMouseLeave={handleMouseLeave}
-              /> */}
+              />
               {/* <Footer_new /> */}
-              <FooterCircle
+              {/* <FooterCircle
                 handleMouseEnterFooter={handleMouseEnterFooter}
                 handleMouseEnterFooterMore={handleMouseEnterFooterMore}
                 handleMouseLeaveFooter={handleMouseLeaveFooter}
@@ -315,7 +315,7 @@ export default function App() {
                 handleMouseEnterFooterMore={handleMouseEnterFooterMore}
                 handleMouseLeaveFooter={handleMouseLeaveFooter}
                 handleMouseLeave={handleMouseLeave}
-              />
+              /> */}
             </>
           )}
           {showNavbarFooter && currentPage !== 'add' && <CustomCursor />}
