@@ -130,7 +130,7 @@
   }
 
   // Адаптация под desktop
-  @media all and (max-width: $bp0) {
+  @media all and (max-width: $XXL) {
     padding: rem(140) 0 rem(16) 0;
     margin-bottom: rem(24);
 
@@ -189,7 +189,7 @@
   }
 
   // Адаптация под tablet
-  @media all and (max-width: $bp2) {
+  @media all and (max-width: $L) {
     padding: 0;
 
     span {
@@ -283,7 +283,7 @@
   }
 
   // Адаптация под mobile
-  @media all and (max-width: $bp4) {
+  @media all and (max-width: $S) {
     padding: 0;
     display: flex;
     flex-direction: column;

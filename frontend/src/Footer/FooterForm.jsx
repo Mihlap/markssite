@@ -19,6 +19,8 @@ const FooterForm = ({
 }) => {
   const formRef = useRef(null);
 
+  const [isSent, setIsSent] = useState(false);
+
   // Состояние для текста плейсхолдера в textarea
   const [placeholderText, setPlaceholderText] = useState('Расскажите о Вашем проекте или идее');
 
@@ -77,6 +79,7 @@ const FooterForm = ({
 
     // Если после валидации ошибок нет, отправляем форму
     if (!formRef.current.querySelector(`.${styles.FooterForm__input_error}`)) {
+      setIsSent(true);
       formRef.current.submit();
     }
   };
@@ -92,8 +95,15 @@ const FooterForm = ({
             <div className={styles.FooterForm__subtitle}>Опишите ваш запрос!</div>
             <form ref={formRef} className={styles.FooterForm__form} onSubmit={handleSubmit}>
               <div className={`${styles.FooterForm__input} ${styles.FooterForm__input_text}`}>
-                <textarea onFocus={handleFocus} onBlur={handleBlur} name="text" id="text" placeholder=" "></textarea>
+                <textarea
+                  maxLength={500}
+                  onFocus={handleFocus}
+                  onBlur={handleBlur}
+                  name="text"
+                  id="text"
+                  placeholder=" "></textarea>
                 <span className={styles.FooterForm__placeholder}>{placeholderText}</span>
+                <label htmlFor="text" className={styles.FooterForm__border}></label>
               </div>
               <div className={`${styles.FooterForm__input} ${styles.FooterForm__input_name}`}>
                 <input name="name" type="text" id="name" placeholder=" " />

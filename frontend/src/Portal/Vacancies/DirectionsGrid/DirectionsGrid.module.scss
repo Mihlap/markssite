@@ -129,7 +129,7 @@
   }
 
   // Адаптация под меньший размер desktop
-  @media all and (max-width: $bp0) {
+  @media all and (max-width: $XXL) {
     grid-template-columns: minmax(48%, 2fr) minmax(25%, 1fr) minmax(25%, 1fr);
     min-height: rem(912);
 
@@ -186,7 +186,7 @@
   }
 
   // Адаптация под tablet
-  @media all and (max-width: $bp3) {
+  @media all and (max-width: $M) {
     min-height: 0;
     grid-template-columns: 1fr;
     grid-template-rows: auto;
@@ -255,7 +255,7 @@
   }
 
   // Адаптация под mobile
-  @media all and (max-width: $bp4) {
+  @media all and (max-width: $S) {
     &__text {
       padding: rem(74) rem(16) rem(74) rem(16);
     }

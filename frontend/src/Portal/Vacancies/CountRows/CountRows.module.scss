@@ -173,7 +173,7 @@
   }
 
   // Адаптация под desktop
-  @media all and (max-width: $bp0) {
+  @media all and (max-width: $XXL) {
     min-height: rem(886);
 
     &__star {
@@ -217,7 +217,7 @@
   }
 
   // Адаптация под tablet
-  @media all and (max-width: $bp3) {
+  @media all and (max-width: $L) {
     &__wrapper {
       margin: rem(32) 16%;
     }
@@ -228,7 +228,7 @@
   }
 
   // Адаптация под mobile
-  @media all and (max-width: $bp4) {
+  @media all and (max-width: $S) {
     min-height: 0;
 
     &__star {
