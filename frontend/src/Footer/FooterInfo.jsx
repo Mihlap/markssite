@@ -46,18 +46,34 @@ const FooterInfo = ({
         <div className={styles.FooterInfo__contacts}>
           <div className={styles.FooterInfo__office}>Офис Москва</div>
           <div className={styles.FooterInfo__address}>
-            <a href="https://yandex.ru/maps/-/CDdzIZ0o">Москва 3-я Ямского Поля, дом 20 строение 1 офис 704</a>
+            <a
+              href="https://yandex.ru/maps/-/CDdzIZ0o"
+              onMouseEnter={handleMouseEnterFooterMore}
+              onMouseLeave={handleMouseLeaveFooter}>
+              Москва 3-я Ямского Поля, дом 20 строение 1 офис 704
+            </a>
           </div>
           <div className={styles.FooterInfo__phone}>Телефон</div>
           <div className={styles.FooterInfo__number}>
-            <a href="tel:+74951201226">+7 (495) 120-12-26</a>
+            <a href="tel:+74951201226" onMouseEnter={handleMouseEnterFooterMore} onMouseLeave={handleMouseLeaveFooter}>
+              +7 (495) 120-12-26
+            </a>
           </div>
           <div className={styles.FooterInfo__mail}>
-            <a href="mailto:mail@marksgroup.ru">mail@marksgroup.ru</a>
+            <a
+              href="mailto:mail@marksgroup.ru"
+              onMouseEnter={handleMouseEnterFooterMore}
+              onMouseLeave={handleMouseLeaveFooter}>
+              mail@marksgroup.ru
+            </a>
           </div>
         </div>
         <div className={styles.FooterInfo__footnote}>
-          <a href="./Information" target="_blank">
+          <a
+            href="./Information"
+            onMouseEnter={handleMouseEnterFooterMore}
+            onMouseLeave={handleMouseLeaveFooter}
+            target="_blank">
             Документы
           </a>
           <span>&copy; laba</span>
