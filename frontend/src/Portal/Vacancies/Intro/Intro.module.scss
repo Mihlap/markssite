@@ -94,7 +94,7 @@
   }
 
   // Адаптация под меньший размер desktop
-  @media all and (max-width: $bp0) {
+  @media all and (max-width: $XXL) {
     &__intro {
       min-height: rem(780);
       padding: 0 rem(44) 0 rem(62);
@@ -124,7 +124,7 @@
   }
 
   // Адаптация под tablet
-  @media all and (max-width: $bp3) {
+  @media all and (max-width: $M) {
     &__intro {
       min-height: 325px;
       padding: 0 rem(55);
@@ -153,7 +153,7 @@
   }
 
   // Адаптация под mobile
-  @media all and (max-width: $bp4) {
+  @media all and (max-width: $S) {
     &__text {
       width: 100%;
       max-width: 100%;

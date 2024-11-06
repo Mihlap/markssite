@@ -88,7 +88,7 @@
     }
   }
 
-  @media all and (max-width: $bp0) {
+  @media all and (max-width: $XXL) {
     &__star {
       &_1 {
         width: rem(290);
@@ -131,7 +131,7 @@
     }
   }
   // Адаптация под tablet
-  @media all and (max-width: $bp3) {
+  @media all and (max-width: $L) {
     padding: rem(80) 0;
 
     &__star {
@@ -152,7 +152,7 @@
   }
 
   // Адаптация под mobile
-  @media all and (max-width: $bp4) {
+  @media all and (max-width: $S) {
     padding: rem(64) rem(16);
 
     &__title {
