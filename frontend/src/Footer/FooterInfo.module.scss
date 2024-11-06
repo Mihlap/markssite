@@ -24,7 +24,6 @@
       text-transform: uppercase;
       letter-spacing: 0.1em;
       transition: color 0.4s ease;
-      pointer-events: auto;
 
       &:hover {
         color: var(--salmon-light-FFBFB5);
@@ -167,7 +166,7 @@
     }
   }
 
-  @media screen and (max-width: $XS) {
+  @media screen and (max-width: $S) {
     &__office {
       font-size: 16px;
     }
