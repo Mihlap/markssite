@@ -2,12 +2,15 @@ import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import FooterInfo from './FooterInfo';
 import styles from './FooterCircle.module.scss';
+import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setCursorVariant } from '../store/Slice/cursorSlice';
 
-const FooterCircle = ({ handleMouseEnterFooter, handleMouseEnterFooterMore, handleMouseLeaveFooter, handleMouseLeave }) => {
+const FooterCircle = ({ handleMouseEnterFooterMore, handleMouseLeaveFooter }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isTabletScreen, setIsTabletScreen] = useState(false);
+  const dispatch = useDispatch();
 
-  // Обновляем состояние экрана при изменении его ширины
   useEffect(() => {
     const handleResize = () => {
       setIsTabletScreen(window.innerWidth < 1024);
@@ -28,6 +31,16 @@ const FooterCircle = ({ handleMouseEnterFooter, handleMouseEnterFooterMore, hand
     ? 'radial-gradient(circle at 283px 105px, transparent 275px, black 0)'
     : 'radial-gradient(circle at 605px 200px, transparent 570px, black 0)';
 
+  const handleMouseEnterBlock = () => {
+    setIsHovered(true);
+    dispatch(setCursorVariant('textFooterEnter'));
+  };
+
+  const handleMouseLeaveBlock = () => {
+    setIsHovered(false);
+    dispatch(setCursorVariant('textLeaveFooter')); 
+  };
+
   return (
     <footer className={styles.FooterCircle}>
       <motion.div
@@ -37,29 +50,27 @@ const FooterCircle = ({ handleMouseEnterFooter, handleMouseEnterFooterMore, hand
           maskImage: isHovered ? hoverMask : initialMask,
           transition: { duration: 0.5 },
         }}>
-        <div className={styles.FooterCircle__action}>
-          <div
-            className={styles.FooterCircle__open}
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}>
+        <div
+          className={styles.FooterCircle__action}
+          onMouseEnter={handleMouseEnterBlock}
+          onMouseLeave={handleMouseLeaveBlock}>
+          <div className={styles.FooterCircle__open}>
             <div>Обсудим ваш</div>
             <div>проект</div>
           </div>
         </div>
         <FooterInfo
-          handleMouseEnterFooter={handleMouseEnterFooter}
           handleMouseEnterFooterMore={handleMouseEnterFooterMore}
           handleMouseLeaveFooter={handleMouseLeaveFooter}
-          handleMouseLeave={handleMouseLeave}
         />
       </motion.div>
       <div className={styles.FooterCircle__layer}>
         <div className={styles.FooterCircle__action}>
-          <a href="" className={`${styles.FooterCircle__link} ${isHovered ? styles.animate : ''}`}>
+          <Link to="" className={`${styles.FooterCircle__link} ${isHovered ? styles.animate : ''}`}>
             Осталось только нажать
-          </a>
+          </Link>
         </div>
-        <FooterInfo />
+        <FooterInfo/>
       </div>
     </footer>
   );
