@@ -118,7 +118,10 @@ const FooterForm = ({
                 <div className={styles.FooterForm__agreement}>
                   Нажав на кнопку, соглашаюсь на <a href="./Information">обработку персональных данных</a>
                 </div>
-                <button type="submit" className={styles.FooterForm__submit}>
+                <button
+                  type="submit"
+                  className={styles.FooterForm__submit}
+                  >
                   Отправить
                 </button>
               </div>

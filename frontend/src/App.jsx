@@ -46,7 +46,6 @@ import VacanciesMainCard from './Portal/Vacancies/VacanciesMainCard/VacanciesMai
 import VacanciesMain3 from './Portal/Vacancies/VacanciesMain/VacanciesMain3';
 import Internships from './Portal/Internships/Internships';
 import VacanciesComponent from './Portal/Vacancies/VacanciesMain/VacanciesComponent/VacanciesComponent';
-import Footer_new from './Footer/Footer_new';
 import FooterCircle from './Footer/FooterCircle';
 import FooterForm from './Footer/FooterForm';
 
@@ -316,18 +315,12 @@ export default function App() {
           <CookieComponent />
           {showNavbarFooter && currentPage !== 'add' && (
             <>
-              <Footer
+              {/* <Footer
                 handleMouseEnterFooter={handleMouseEnterFooter}
                 handleMouseEnterFooterMore={handleMouseEnterFooterMore}
                 handleMouseLeaveFooter={handleMouseLeaveFooter}
                 handleMouseLeave={handleMouseLeave}
-              />
-              {/* <Footer_new
-                handleMouseEnterFooter={handleMouseEnterFooter}
-                handleMouseEnterFooterMore={handleMouseEnterFooterMore}
-                handleMouseLeaveFooter={handleMouseLeaveFooter}
-                handleMouseLeave={handleMouseLeave}
-              /> */}
+              /> */}           
               <FooterCircle
                 handleMouseEnterFooter={handleMouseEnterFooter}
                 handleMouseEnterFooterMore={handleMouseEnterFooterMore}
