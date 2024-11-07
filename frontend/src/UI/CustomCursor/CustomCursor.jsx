@@ -51,6 +51,7 @@ export default function CustomCursor() {
       window.removeEventListener('mouseup', handleMouseUp);
     };
   }, [dispatch]);
+  
 
   const variants = {
     default: { x: mousePosition.x, y: mousePosition.y },
@@ -64,7 +65,7 @@ export default function CustomCursor() {
       backgroundColor: 'rgba(29, 46, 67, 0)',
       border: '2px solid #1D2E43',
     },
-
+  
     // Для футера с темным фоном
     textFooter: { zIndex: 2, height: 24, width: 24, x: mousePosition.x, y: mousePosition.y },
     textFooterEnter: {
