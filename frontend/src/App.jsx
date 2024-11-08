@@ -153,7 +153,10 @@ export default function App() {
 
   return (
     <HelmetProvider>
-      {loading === true && location.pathname !== '/information' && location.pathname !== '/portal/vacanciesMain' ? (
+      {loading === true &&
+      location.pathname !== '/information' &&
+      location.pathname !== '/portal/vacanciesMain' &&
+      location.pathname !== '/footer/footerForm' ? (
         <LoadingNew />
       ) : (
         <>
@@ -296,6 +299,17 @@ export default function App() {
                     />
                   }
                 />
+                <Route
+                  path="/footer/footerForm"
+                  element={
+                    <FooterForm
+                      handleMouseEnterFooter={handleMouseEnterFooterWhite}
+                      handleMouseEnterFooterMore={handleMouseEnterFooterWhiteMore}
+                      handleMouseLeaveFooter={handleMouseLeaveFooterWhite}
+                      handleMouseLeave={handleMouseLeave}
+                    />
+                  }
+                />
                 <Route path="*" element={<NotFound />} />
                 <Route path="/login" element={<Login />} />
                 {isActive && <Route path="/signup" element={<SignUpPage />} />}
@@ -320,20 +334,13 @@ export default function App() {
                 handleMouseEnterFooterMore={handleMouseEnterFooterMore}
                 handleMouseLeaveFooter={handleMouseLeaveFooter}
                 handleMouseLeave={handleMouseLeave}
-              /> */}           
+              /> */}
               <FooterCircle
                 handleMouseEnterFooter={handleMouseEnterFooter}
                 handleMouseEnterFooterMore={handleMouseEnterFooterMore}
                 handleMouseLeaveFooter={handleMouseLeaveFooter}
                 handleMouseLeave={handleMouseLeave}
               />
-
-              <FooterForm
-                handleMouseEnterFooter={handleMouseEnterFooterWhite}
-                handleMouseEnterFooterMore={handleMouseEnterFooterWhiteMore}
-                handleMouseLeaveFooter={handleMouseLeaveFooterWhite}
-                handleMouseLeave={handleMouseLeave}
-              /> 
             </>
           )}
           {showNavbarFooter && currentPage !== 'add' && <CustomCursor />}
