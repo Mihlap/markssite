@@ -1,8 +1,8 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import FooterInfo from './FooterInfo';
 import styles from './FooterCircle.module.scss';
-import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setCursorVariant } from '../store/Slice/cursorSlice';
 
@@ -11,7 +11,7 @@ const FooterCircle = ({ handleMouseEnterFooterMore, handleMouseLeaveFooter }) =>
   const [isTabletScreen, setIsTabletScreen] = useState(false);
   const dispatch = useDispatch();
 
-  useEffect(() => {
+    useEffect(() => {
     const handleResize = () => {
       setIsTabletScreen(window.innerWidth < 1024);
     };
@@ -33,12 +33,14 @@ const FooterCircle = ({ handleMouseEnterFooterMore, handleMouseLeaveFooter }) =>
 
   const handleMouseEnterBlock = () => {
     setIsHovered(true);
-    dispatch(setCursorVariant('textFooterEnter'));
+    dispatch(setCursorVariant('textFooterEnter'));  ;
+     dispatch(setCursorVariant('textFooterWhiteEnter'));
   };
 
   const handleMouseLeaveBlock = () => {
     setIsHovered(false);
     dispatch(setCursorVariant('textLeaveFooter')); 
+    dispatch(setCursorVariant('textLeaveWhiteFooter'));
   };
 
   return (
@@ -54,10 +56,10 @@ const FooterCircle = ({ handleMouseEnterFooterMore, handleMouseLeaveFooter }) =>
           className={styles.FooterCircle__action}
           onMouseEnter={handleMouseEnterBlock}
           onMouseLeave={handleMouseLeaveBlock}>
-          <div className={styles.FooterCircle__open}>
+          <Link to="./Footer/FooterForm" className={styles.FooterCircle__open}>
             <div>Обсудим ваш</div>
             <div>проект</div>
-          </div>
+          </Link>
         </div>
         <FooterInfo
           handleMouseEnterFooterMore={handleMouseEnterFooterMore}
@@ -65,12 +67,16 @@ const FooterCircle = ({ handleMouseEnterFooterMore, handleMouseLeaveFooter }) =>
         />
       </motion.div>
       <div className={styles.FooterCircle__layer}>
-        <div className={styles.FooterCircle__action}>
-          <Link to="" className={`${styles.FooterCircle__link} ${isHovered ? styles.animate : ''}`}>
+        <div
+          className={styles.FooterCircle__action}
+          onMouseEnter={handleMouseEnterBlock}
+          onMouseLeave={handleMouseLeaveBlock}
+          >
+          <span className={`${styles.FooterCircle__link} ${isHovered ? styles.animate : ''}`}>
             Осталось только нажать
-          </Link>
+          </span>
         </div>
-        <FooterInfo/>
+        <FooterInfo />
       </div>
     </footer>
   );
