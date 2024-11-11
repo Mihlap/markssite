@@ -84,7 +84,8 @@ const FooterInfo = ({
             href="./Information"
             onMouseEnter={handleMouseEnterFooterMore}
             onMouseLeave={handleMouseLeaveFooter}
-            target="_blank">
+            target="_blank"
+          >
             Документы
           </a>
           <span>&copy; laba</span>

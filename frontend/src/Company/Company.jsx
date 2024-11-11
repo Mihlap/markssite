@@ -592,7 +592,7 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
                       </div>
                     </div>
                     <div className={styles.modal_name_stuff}>{selectedCard.name}</div>
-                   {selectedCard.description && (
+                    {selectedCard.description && (
                       <div className={styles.modal_description_stuff}>{selectedCard.description}</div>
                     )}
                     {selectedCard.about && <div className={styles.modal_about_stuff}>{selectedCard.about}</div>}
@@ -919,6 +919,7 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
                     onRequestClose={() => setModalOpenFormContacts(false)}
                     title="Заявка отправлена!"
                     message="Мы свяжемся с вами в ближайшее время!"
+                    buttonText="Спасибо, жду!"
                   />
                 </div>
               </div>
@@ -975,6 +976,7 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
                     onRequestClose={() => setModalOpenSubscription(false)}
                     title="Вы подписаны!"
                     message="Если захотите завершить подписку, напишите нам!"
+                    buttonText="Спасибо, жду!"
                   />
                 </div>
               </div>
