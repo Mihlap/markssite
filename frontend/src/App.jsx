@@ -61,6 +61,7 @@ export default function App() {
   const [videoLoaded, setVideoLoaded] = useState(false);
 
   const isMobile = window.innerWidth <= 768;
+  const isFooterFormPage = location.pathname === '/footerForm';
 
   useEffect(() => {
     const vacancyDetailPath = /^\/portal\/vacancy\/\d+$/;
@@ -156,7 +157,7 @@ export default function App() {
       {loading === true &&
       location.pathname !== '/information' &&
       location.pathname !== '/portal/vacanciesMain' &&
-      location.pathname !== '/footer/footerForm' ? (
+      location.pathname !== '/footerForm' ? (
         <LoadingNew />
       ) : (
         <>
@@ -300,7 +301,7 @@ export default function App() {
                   }
                 />
                 <Route
-                  path="/footer/footerForm"
+                  path="/footerForm"
                   element={
                     <FooterForm
                       handleMouseEnterFooter={handleMouseEnterFooterWhite}
@@ -327,7 +328,7 @@ export default function App() {
             </CSSTransition>
           </TransitionGroup>
           <CookieComponent />
-          {showNavbarFooter && currentPage !== 'add' && (
+          {!isFooterFormPage && showNavbarFooter && currentPage !== 'add' && (
             <>
               {/* <Footer
                 handleMouseEnterFooter={handleMouseEnterFooter}

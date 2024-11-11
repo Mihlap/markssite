@@ -1,152 +1,254 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import InputMask from 'react-input-mask-next';
-
 import styles from './FooterForm.module.scss';
-
 import FooterInfo from './FooterInfo';
+import ModalVacancyFormSend from '../UI/VacancyFormContact/ModalVacancyFormSend'
 import mark from '../icons/footer-form-1.svg';
+import LoadingCircle from '../Loading/LoadingCircle';
 
 const ERROR_TEXT = {
   empty: 'Поле обязательно для заполнения',
   tel: 'Некорректный номер телефона',
 };
 
+const Host = process.env.REACT_APP_SERVER_HOST;
+
+const PLACEHOLDER_TEXT = {
+  default: 'Расскажите о Вашем проекте или идее',
+  focus: 'Запрос',
+};
+
 const FooterForm = ({ handleMouseEnterFooterMore, handleMouseLeaveFooter }) => {
   const formRef = useRef(null);
   const [, setIsSent] = useState(false);
-  const [placeholderText, setPlaceholderText] = useState('Расскажите о Вашем проекте или идее');
+  const [placeholderText, setPlaceholderText] = useState(PLACEHOLDER_TEXT.default);
   const [telError, setTelError] = useState('');
+  const [telTouched, setTelTouched] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const setError = (element, errorMessage) => {
+  const setError = useCallback((element, errorMessage) => {
     element.classList.add(styles.FooterForm__input_error);
     const errorElement = element.querySelector(`.${styles.FooterForm__textError}`);
     if (errorElement) errorElement.textContent = errorMessage;
-  };
+  }, []);
 
-  const clearError = (element) => {
+  const clearError = useCallback((element) => {
     element.classList.remove(styles.FooterForm__input_error);
     const errorElement = element.querySelector(`.${styles.FooterForm__textError}`);
     if (errorElement) errorElement.textContent = '';
-  };
+  }, []);
 
+  const validateInput = useCallback(
+    (e) => {
+      const { name, value, parentNode: parent } = e.currentTarget;
 
-  const validateInput = (e) => {
-    const { name, value, parentNode: parent } = e.currentTarget;
-
-    if (name === 'tel') {
-      if (!value.trim()) {
-        setTelError(ERROR_TEXT.empty);
-        setError(parent, ERROR_TEXT.empty);
-      } else if (value.includes('_')) {
-        setTelError(ERROR_TEXT.tel);
-        setError(parent, ERROR_TEXT.tel);
+      if (name === 'tel' && telTouched) {
+        if (value.trim().length > 0 && value.includes('_')) {
+          setTelError(ERROR_TEXT.tel);
+          setError(parent, ERROR_TEXT.tel);
+        } else if (value.trim() === '') {
+          setTelError(ERROR_TEXT.empty);
+          setError(parent, ERROR_TEXT.empty);
+        } else {
+          setTelError('');
+          clearError(parent);
+        }
       } else {
-        setTelError('');
         clearError(parent);
       }
-    } else {
+    },
+    [clearError, setError, telTouched]
+  );
+
+  const handleFocus = useCallback(
+    (e) => {
+      const { parentNode: parent } = e.currentTarget;
       clearError(parent);
+      if (e.currentTarget.name === 'text' && !e.currentTarget.value.trim()) {
+        setPlaceholderText(PLACEHOLDER_TEXT.focus);
+      }
+    },
+    [clearError]
+  );
+
+  const handleBlur = useCallback(
+    (e) => {
+      const { name, value } = e.currentTarget;
+      if (name === 'text' && !value.trim()) {
+        setPlaceholderText(PLACEHOLDER_TEXT.default);
+      }
+      validateInput(e);
+    },
+    [validateInput]
+  );
+
+  const handleTelFocus = useCallback(() => {
+    setTelTouched(true);
+  }, []);
+
+  const handleNameInput = (e) => {
+    const regex = /^[A-Za-zА-Яа-яЁё\s]+$/;
+    if (!regex.test(e.target.value)) {
+      e.target.value = e.target.value.replace(/[^A-Za-zА-Яа-яЁё\s]/g, '');
     }
   };
 
-  const handleFocus = (e) => {
-    const { parentNode: parent } = e.currentTarget;
-    clearError(parent); 
-    if (e.currentTarget.name === 'text' && !e.currentTarget.value.trim()) {
-      setPlaceholderText('Запрос');
-    }
-  };
+  const handleSubmit = useCallback(
+    async (e) => {
+      e.preventDefault();
+      const telInput = formRef.current.elements.tel;
+      validateInput({ currentTarget: telInput });
 
-  const handleBlur = (e) => {
-    const { name, value } = e.currentTarget;
-    if (name === 'text' && !value.trim()) {
-      setPlaceholderText('Расскажите о Вашем проекте или идее');
-    }
-    validateInput(e);
-  };
+      if (telInput.value.trim() && !telError) {
+        setIsLoading(true);
+        const formData = {
+          text: formRef.current.elements.text.value,
+          name: formRef.current.elements.name.value,
+          tel: formRef.current.elements.tel.value,
+        };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const telInput = formRef.current.elements.tel;
-    validateInput({ currentTarget: telInput });
+        try {
+          const response = await fetch(`${Host}/api-mail/submitFooterForm`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ ...formData }),
+          });
 
-    if (!telError) {
-      setIsSent(true);
-      formRef.current.submit();
-    }
-  };
+          if (response.ok) {
+            setIsSent(true);
+            formRef.current.reset();
+            setPlaceholderText(PLACEHOLDER_TEXT.default);
+            setTelError('');
+            setTelTouched(false);   
+            setIsLoading(false); 
+            setIsModalOpen(true); 
+            
+          } else {
+            console.error('Ошибка при отправке формы');
+            setIsLoading(false);
+          }
+        } catch (error) {
+          console.error('Error:', error);       
+        }
+      } else if (!telInput.value.trim()) {
+        setTelError(ERROR_TEXT.empty);
+        setError(telInput.parentNode, ERROR_TEXT.empty);
+      }
+    },
+    [telError, validateInput, setError]
+  );
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
-    <section className={styles.FooterForm}>
-      <div className={styles.FooterForm__container}>
-        <div className={styles.FooterForm__top}>
-          <div className={styles.FooterForm__left}>
-            <img src={mark} alt="" />
-          </div>
-          <div className={styles.FooterForm__right}>
-            <div className={styles.FooterForm__subtitle}>Опишите ваш запрос!</div>
-            <form ref={formRef} className={styles.FooterForm__form} onSubmit={handleSubmit}>
-              <div
-                className={`${styles.FooterForm__input} ${styles.FooterForm__input_text}`}
-                onMouseEnter={handleMouseEnterFooterMore}
-                onMouseLeave={handleMouseLeaveFooter}>
-                <textarea
-                  maxLength={500}
-                  onFocus={handleFocus}
-                  onBlur={handleBlur}
-                  name="text"
-                  id="text"
-                  placeholder=" "></textarea>
-                <span className={styles.FooterForm__placeholder}>{placeholderText}</span>
-                <label htmlFor="text" className={styles.FooterForm__border}></label>
-              </div>
-              <div
-                className={`${styles.FooterForm__input} ${styles.FooterForm__input_name}`}
-                onMouseEnter={handleMouseEnterFooterMore}
-                onMouseLeave={handleMouseLeaveFooter}>
-                <input name="name" type="text" id="name" placeholder=" " onFocus={handleFocus} onBlur={validateInput} />
-                <span className={styles.FooterForm__placeholder}>Ваше имя</span>
-              </div>
-              <div
-                className={`${styles.FooterForm__input} ${styles.FooterForm__input_tel}`}
-                onMouseEnter={handleMouseEnterFooterMore}
-                onMouseLeave={handleMouseLeaveFooter}>
-                <InputMask
-                  mask="+7 (999) 999-99-99"
-                  onBlur={(e) => validateInput(e)}
-                  name="tel"
-                  placeholder=" "
-                  onFocus={handleFocus}
-                />
-                <span className={styles.FooterForm__placeholder}>Телефон</span>
-                <span className={styles.FooterForm__textError}>{telError}</span>
-              </div>
-              <div className={styles.FooterForm__conclusion}>
+    <>
+      <section className={styles.FooterForm}>
+        <div className={styles.FooterForm__container}>
+          <div className={styles.FooterForm__top}>
+            <div className={styles.FooterForm__left}>
+              <img src={mark} alt="Mark" />
+            </div>
+            <div className={styles.FooterForm__right}>
+              <div className={styles.FooterForm__subtitle}>Опишите ваш запрос!</div>
+              <form ref={formRef} className={styles.FooterForm__form} onSubmit={handleSubmit}>
                 <div
-                  className={styles.FooterForm__agreement}
+                  className={`${styles.FooterForm__input} ${styles.FooterForm__input_text}`}
                   onMouseEnter={handleMouseEnterFooterMore}
                   onMouseLeave={handleMouseLeaveFooter}>
-                  Нажав на кнопку, соглашаюсь на <a href="./Information">обработку персональных данных</a>
+                  <textarea maxLength={500} onFocus={handleFocus} onBlur={handleBlur} name="text" placeholder=" " />
+                  <span className={styles.FooterForm__placeholder}>{placeholderText}</span>
+                  <label htmlFor="text" className={styles.FooterForm__border}></label>
                 </div>
-                <button
-                  type="submit"
-                  className={styles.FooterForm__submit}
+                <div
+                  className={`${styles.FooterForm__input} ${styles.FooterForm__input_name}`}
                   onMouseEnter={handleMouseEnterFooterMore}
                   onMouseLeave={handleMouseLeaveFooter}>
-                  Отправить
-                </button>
-              </div>
-            </form>
+                  <input
+                    name="name"
+                    type="text"
+                    id="name"
+                    placeholder=" "
+                    onInput={handleNameInput}
+                    onFocus={handleFocus}
+                    onBlur={validateInput}
+                  />
+                  <span className={styles.FooterForm__placeholder}>Ваше имя</span>
+                </div>
+                <div
+                  className={`${styles.FooterForm__input} ${styles.FooterForm__input_tel}`}
+                  onMouseEnter={handleMouseEnterFooterMore}
+                  onMouseLeave={handleMouseLeaveFooter}>
+                  <InputMask
+                    mask="+7 (999) 999-99-99"
+                    onBlur={validateInput}
+                    name="tel"
+                    placeholder=" "
+                    onFocus={handleTelFocus}
+                  />
+                  <span className={styles.FooterForm__placeholder}>Телефон</span>
+                  <span className={styles.FooterForm__textError}>{telError}</span>
+                </div>
+                <div className={styles.FooterForm__conclusion}>
+                  <div
+                    className={styles.FooterForm__agreement}
+                    onMouseEnter={handleMouseEnterFooterMore}
+                    onMouseLeave={handleMouseLeaveFooter}>
+                    Нажав на кнопку, соглашаюсь на{' '}
+                    <a href="./Information" target="_blank">
+                      обработку персональных данных
+                    </a>
+                  </div>
+                  <button
+                    type="submit"
+                    className={styles.FooterForm__submit}
+                    onMouseEnter={handleMouseEnterFooterMore}
+                    onMouseLeave={handleMouseLeaveFooter}>
+                    Отправить
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+          <div className={styles.FooterForm__bottom}>
+            <FooterInfo
+              handleMouseEnterFooterMore={handleMouseEnterFooterMore}
+              handleMouseLeaveFooter={handleMouseLeaveFooter}
+            />
           </div>
         </div>
-        <div className={styles.FooterForm__bottom}>
-          <FooterInfo
-            handleMouseEnterFooterMore={handleMouseEnterFooterMore}
-            handleMouseLeaveFooter={handleMouseLeaveFooter}
-          />
+      </section>
+
+      {isLoading && (
+        <div
+          style={{
+            position: 'relative',
+            height: '30vh',
+            width: window.innerWidth <= 768 ? '100vw' : '50vw',
+          }}>
+          <div
+            style={{
+              position: 'absolute',
+              top: '100%',
+              left: '50%',
+              transform: 'translate(-50%, -50%)',
+              zIndex: 10,
+            }}>
+            <LoadingCircle />
+          </div>
         </div>
-      </div>
-    </section>
+      )}
+      <ModalVacancyFormSend
+        isOpen={isModalOpen}
+        onRequestClose={() => setIsModalOpen(false)}
+        title="Спасибо!"
+        message="Мы изучим ваш запрос и свяжемся с вами."
+      />
+    </>
   );
 };
 

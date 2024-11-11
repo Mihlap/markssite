@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { useState, useEffect, useCallback, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import FooterInfo from './FooterInfo';
 import styles from './FooterCircle.module.scss';
@@ -8,40 +8,47 @@ import { setCursorVariant } from '../store/Slice/cursorSlice';
 
 const FooterCircle = ({ handleMouseEnterFooterMore, handleMouseLeaveFooter }) => {
   const [isHovered, setIsHovered] = useState(false);
-  const [isTabletScreen, setIsTabletScreen] = useState(false);
+  const [isTabletScreen, setIsTabletScreen] = useState(window.innerWidth < 1024);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-    useEffect(() => {
-    const handleResize = () => {
-      setIsTabletScreen(window.innerWidth < 1024);
-    };
-
-    handleResize();
+useEffect(() => {
+    const handleResize = () => setIsTabletScreen(window.innerWidth < 1024);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Определяем начальный стиль `maskImage` в зависимости от ширины экрана
-  const initialMask = isTabletScreen
-    ? 'radial-gradient(circle at 283px 105px, transparent 0px, black 0)'
-    : 'radial-gradient(circle at 605px 200px, transparent 0px, black 0)';
+const initialMask = useMemo(
+    () =>
+      isTabletScreen
+        ? 'radial-gradient(circle at 283px 105px, transparent 0px, black 0)'
+        : 'radial-gradient(circle at 605px 200px, transparent 0px, black 0)',
+    [isTabletScreen]
+  );
 
-  // Определяем стиль `maskImage` при ховере в зависимости от ширины экрана
-  const hoverMask = isTabletScreen
-    ? 'radial-gradient(circle at 283px 105px, transparent 275px, black 0)'
-    : 'radial-gradient(circle at 605px 200px, transparent 570px, black 0)';
+  const hoverMask = useMemo(
+    () =>
+      isTabletScreen
+        ? 'radial-gradient(circle at 283px 105px, transparent 275px, black 0)'
+        : 'radial-gradient(circle at 605px 200px, transparent 570px, black 0)',
+    [isTabletScreen]
+  );
 
-  const handleMouseEnterBlock = () => {
+ const handleMouseEnterBlock = useCallback(() => {
     setIsHovered(true);
-    dispatch(setCursorVariant('textFooterEnter'));  ;
-     dispatch(setCursorVariant('textFooterWhiteEnter'));
-  };
+    dispatch(setCursorVariant('textFooterEnter'));
+    dispatch(setCursorVariant('textFooterWhiteEnter'));
+  }, [dispatch]);
 
-  const handleMouseLeaveBlock = () => {
+  const handleMouseLeaveBlock = useCallback(() => {
     setIsHovered(false);
-    dispatch(setCursorVariant('textLeaveFooter')); 
+    dispatch(setCursorVariant('textLeaveFooter'));
     dispatch(setCursorVariant('textLeaveWhiteFooter'));
-  };
+  }, [dispatch]);
+
+  const handleClick = useCallback(() => {
+    navigate('/footerForm');
+  }, [navigate]);
 
   return (
     <footer className={styles.FooterCircle}>
@@ -55,23 +62,25 @@ const FooterCircle = ({ handleMouseEnterFooterMore, handleMouseLeaveFooter }) =>
         <div
           className={styles.FooterCircle__action}
           onMouseEnter={handleMouseEnterBlock}
-          onMouseLeave={handleMouseLeaveBlock}>
-          <Link to="./Footer/FooterForm" className={styles.FooterCircle__open}>
+          onMouseLeave={handleMouseLeaveBlock}
+          onClick={handleClick}>
+          <div className={styles.FooterCircle__open}>
             <div>Обсудим ваш</div>
             <div>проект</div>
-          </Link>
+          </div>
         </div>
         <FooterInfo
           handleMouseEnterFooterMore={handleMouseEnterFooterMore}
           handleMouseLeaveFooter={handleMouseLeaveFooter}
         />
       </motion.div>
+
       <div className={styles.FooterCircle__layer}>
         <div
           className={styles.FooterCircle__action}
           onMouseEnter={handleMouseEnterBlock}
           onMouseLeave={handleMouseLeaveBlock}
-          >
+          onClick={handleClick}>
           <span className={`${styles.FooterCircle__link} ${isHovered ? styles.animate : ''}`}>
             Осталось только нажать
           </span>
