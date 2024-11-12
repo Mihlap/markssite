@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import InputMask from 'react-input-mask-next';
 import styles from './FooterForm.module.scss';
 import FooterInfo from './FooterInfo';
-import ModalVacancyFormSend from '../UI/VacancyFormContact/ModalVacancyFormSend'
+import ModalVacancyFormSend from '../UI/VacancyFormContact/ModalVacancyFormSend';
 import mark from '../icons/footer-form-1.svg';
-import LoadingCircle from '../Loading/LoadingCircle';
 
 const ERROR_TEXT = {
   empty: 'Поле обязательно для заполнения',
@@ -20,12 +20,13 @@ const PLACEHOLDER_TEXT = {
 
 const FooterForm = ({ handleMouseEnterFooterMore, handleMouseLeaveFooter }) => {
   const formRef = useRef(null);
+  const navigate = useNavigate();
+  const location = useLocation();
   const [, setIsSent] = useState(false);
   const [placeholderText, setPlaceholderText] = useState(PLACEHOLDER_TEXT.default);
   const [telError, setTelError] = useState('');
   const [telTouched, setTelTouched] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
   const setError = useCallback((element, errorMessage) => {
     element.classList.add(styles.FooterForm__input_error);
@@ -101,7 +102,6 @@ const FooterForm = ({ handleMouseEnterFooterMore, handleMouseLeaveFooter }) => {
       validateInput({ currentTarget: telInput });
 
       if (telInput.value.trim() && !telError) {
-        setIsLoading(true);
         const formData = {
           text: formRef.current.elements.text.value,
           name: formRef.current.elements.name.value,
@@ -122,16 +122,13 @@ const FooterForm = ({ handleMouseEnterFooterMore, handleMouseLeaveFooter }) => {
             formRef.current.reset();
             setPlaceholderText(PLACEHOLDER_TEXT.default);
             setTelError('');
-            setTelTouched(false);   
-            setIsLoading(false); 
-            setIsModalOpen(true); 
-            
+            setTelTouched(false);
+            setIsModalOpen(true);
           } else {
             console.error('Ошибка при отправке формы');
-            setIsLoading(false);
           }
         } catch (error) {
-          console.error('Error:', error);       
+          console.error('Error:', error);
         }
       } else if (!telInput.value.trim()) {
         setTelError(ERROR_TEXT.empty);
@@ -140,6 +137,12 @@ const FooterForm = ({ handleMouseEnterFooterMore, handleMouseLeaveFooter }) => {
     },
     [telError, validateInput, setError]
   );
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false);
+    const previousRoute = location.state?.from || '/';
+    navigate(previousRoute);
+  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -222,29 +225,9 @@ const FooterForm = ({ handleMouseEnterFooterMore, handleMouseLeaveFooter }) => {
           </div>
         </div>
       </section>
-
-      {isLoading && (
-        <div
-          style={{
-            position: 'relative',
-            height: '30vh',
-            width: window.innerWidth <= 768 ? '100vw' : '50vw',
-          }}>
-          <div
-            style={{
-              position: 'absolute',
-              top: '100%',
-              left: '50%',
-              transform: 'translate(-50%, -50%)',
-              zIndex: 10,
-            }}>
-            <LoadingCircle />
-          </div>
-        </div>
-      )}
       <ModalVacancyFormSend
-        isOpen={isModalOpen}
-        onRequestClose={() => setIsModalOpen(false)}
+        isOpen={isModalOpen}       
+        onRequestClose={handleCloseModal}
         title="Спасибо!"
         message="Мы изучим ваш запрос и свяжемся с вами."
       />
