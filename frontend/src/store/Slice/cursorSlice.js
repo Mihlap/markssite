@@ -1,9 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+const initialState = 'default';
+
 const cursorSlice = createSlice({
   name: 'cursor',
-  initialState: 'default',
+  initialState,
   reducers: {
+    setCursorVariant: (state, action) => action.payload,
     textEnter: () => 'text',
     textFooter: () => 'textFooter',
     textFooterWhite: () => 'textFooterWhite',
@@ -20,6 +23,7 @@ const cursorSlice = createSlice({
 });
 
 export const {
+  setCursorVariant,
   textEnter,
   textFooter,
   textFooterWhite,

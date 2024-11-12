@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import Modal from 'react-modal';
 import styles from './ModalVacancyFormSend.module.scss';
 
-const ModalVacancyFormSend = ({ isOpen, onRequestClose, title, message }) => {
+const ModalVacancyFormSend = ({ isOpen, onRequestClose, title, message, buttonText }) => {
   useEffect(() => {
     if (isOpen) {
       if (window.ym) {
@@ -40,12 +40,18 @@ const ModalVacancyFormSend = ({ isOpen, onRequestClose, title, message }) => {
       <div className={styles.modalWrapperFormSend}>
         <h2 className={styles.modalTitleFormSend}>{title}</h2>
         <p className={styles.modalMessageFormSend}>{message}</p>
-        <button className={styles.closeButtonFormSend} onClick={onRequestClose}>
-          <p className={styles.closeButtonFormSendTitle}>Спасибо, жду!</p>
-        </button>
+        {buttonText && (
+          <button className={styles.closeButtonFormSend} onClick={onRequestClose}>
+            <p className={styles.closeButtonFormSendTitle}>{buttonText}</p>
+          </button>
+        )}
       </div>
     </Modal>
   );
 };
 
 export default ModalVacancyFormSend;
+
+{
+  /* <p className={styles.closeButtonFormSendTitle}>Спасибо, жду!</p> */
+}
