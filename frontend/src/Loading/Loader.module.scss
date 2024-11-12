@@ -3,9 +3,27 @@
 $offset: 187;
 $duration: 2.5s;
 $radius: 1rem;
+$small-spinner-size: 82px; // Размер для маленьких экранов
+$medium-spinner-size: 120px; // Размер для планшетов
+$small-inner-circle-size: 50px; // Внутренний круг для маленьких экранов
+$medium-inner-circle-size: 75px; // Внутренний круг для планшетов
+$small-div-svg-size: 82px; // Основной SVG контейнер для маленьких экранов
+$medium-div-svg-size: 120px; // Основной SVG контейнер для планшетов
 
 .spinner {
   animation: rotator $duration linear infinite;
+  width: 165px;
+  height: 165px;
+
+  @media screen and (max-width: 1024px) and (min-width: 768px) {
+    width: $medium-spinner-size;
+    height: $medium-spinner-size;
+  }
+
+  @media screen and (max-width: 768px) {
+    width: $small-spinner-size;
+    height: $small-spinner-size;
+  }
 }
 
 @keyframes rotator {
@@ -54,7 +72,7 @@ $radius: 1rem;
   }
 
   50% {
-    stroke-dashoffset: $offset*0.25;
+    stroke-dashoffset: $offset * 0.25;
     transform: rotate(135deg);
   }
 
@@ -64,27 +82,25 @@ $radius: 1rem;
   }
 }
 
-.div_round {
-  position: relative;
-  width: 115px;
-  height: 115px;
-  border-radius: 50%;
-  box-shadow: 0 0 0 20px #e2eefb;
-}
-
-.inner-circle {
-  transform: none;
-}
-
 .div_svg {
   position: relative;
   display: inline-block;
   height: 163px;
   width: 163px;
-  margin: 0em;
+  margin: 0;
   border-radius: 50%;
-  background: none repeat scroll 0 0 #e1eefc;
+  background: #e1eefc;
   overflow: hidden;
+
+  @media screen and (max-width: 1024px) and (min-width: 768px) {
+    height: $medium-div-svg-size;
+    width: $medium-div-svg-size;
+  }
+
+  @media screen and (max-width: 768px) {
+    height: $small-div-svg-size;
+    width: $small-div-svg-size;
+  }
 }
 
 .div_svg:after {
@@ -95,7 +111,21 @@ $radius: 1rem;
   display: block;
   height: 100px;
   width: 100px;
-  background: none repeat scroll 0 0 #f2f2f2;
+  background: #f2f2f2;
   border-radius: 50%;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+  @media screen and (max-width: 1024px) and (min-width: 768px) {
+    top: 22px;
+    left: 22px;
+    height: $medium-inner-circle-size;
+    width: $medium-inner-circle-size;
+  }
+
+  @media screen and (max-width: 768px) {
+    top: 16px;
+    left: 16px;
+    height: $small-inner-circle-size;
+    width: $small-inner-circle-size;
+  }
 }
