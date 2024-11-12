@@ -9,7 +9,7 @@
   transform: translate(-50%, -50%);
   box-sizing: border-box;
   background-color: var(--white-F6F6F6);
-  box-shadow: -2px 4px 22px 0px rgba(29, 46, 67, 0.46);
+  box-shadow: -2px 4px 22px 0px rgba(29, 46, 67, 0.6);
   backdrop-filter: blur(8.5px);
   z-index: 9999;
   animation: fadeInOut 0.5s ease-out forwards;
@@ -31,7 +31,7 @@
 }
 
 .modalWrapperFormSend {
-  padding: 0rem 9.56vw 3rem 3.625rem;
+  padding: 0rem 3.625rem 3rem 3.625rem;
   width: 100%;
 }
 
@@ -57,7 +57,7 @@
   line-height: 2rem;
   text-align: left;
   justify-content: left;
-  max-width: 80%;
+  max-width: 100%;
 }
 
 .closeButtonFormSend {

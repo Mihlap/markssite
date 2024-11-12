@@ -73,12 +73,12 @@ export default function CustomCursor() {
       width: 64,
       x: mousePosition.x - 16,
       y: mousePosition.y - 16,
-      backgroundColor: '#F6F6F6',
+      backgroundColor: 'rgba(246, 246, 246, 0)',
+      border: '2px solid #F6F6F6',
     },
     textLeaveFooter: { x: mousePosition.x, y: mousePosition.y },
 
     // Для футера с белым фоном
-
     textFooterWhite: { zIndex: 2, height: 24, width: 24, x: mousePosition.x, y: mousePosition.y },
     textFooterWhiteEnter: {
       zIndex: 2,
@@ -86,7 +86,8 @@ export default function CustomCursor() {
       width: 64,
       x: mousePosition.x - 16,
       y: mousePosition.y - 16,
-      backgroundColor: '#1d2e43',
+     backgroundColor: 'rgba(255, 255, 255, 0)',
+      border: '2px solid #1d2e43',
     },
     textLeaveWhiteFooter: { x: mousePosition.x, y: mousePosition.y },
 

@@ -46,7 +46,6 @@ import VacanciesMainCard from './Portal/Vacancies/VacanciesMainCard/VacanciesMai
 import VacanciesMain3 from './Portal/Vacancies/VacanciesMain/VacanciesMain3';
 import Internships from './Portal/Internships/Internships';
 import VacanciesComponent from './Portal/Vacancies/VacanciesMain/VacanciesComponent/VacanciesComponent';
-import Footer_new from './Footer/Footer_new';
 import FooterCircle from './Footer/FooterCircle';
 import FooterForm from './Footer/FooterForm';
 
@@ -62,6 +61,7 @@ export default function App() {
   const [videoLoaded, setVideoLoaded] = useState(false);
 
   const isMobile = window.innerWidth <= 768;
+  const isFooterFormPage = location.pathname === '/footerForm';
 
   useEffect(() => {
     const vacancyDetailPath = /^\/portal\/vacancy\/\d+$/;
@@ -154,7 +154,10 @@ export default function App() {
 
   return (
     <HelmetProvider>
-      {loading === true && location.pathname !== '/information' && location.pathname !== '/portal/vacanciesMain' ? (
+      {loading === true &&
+      location.pathname !== '/information' &&
+      location.pathname !== '/portal/vacanciesMain' &&
+      location.pathname !== '/footerForm' ? (
         <LoadingNew />
       ) : (
         <>
@@ -297,6 +300,17 @@ export default function App() {
                     />
                   }
                 />
+                <Route
+                  path="/footerForm"
+                  element={
+                    <FooterForm
+                      handleMouseEnterFooter={handleMouseEnterFooterWhite}
+                      handleMouseEnterFooterMore={handleMouseEnterFooterWhiteMore}
+                      handleMouseLeaveFooter={handleMouseLeaveFooterWhite}
+                      handleMouseLeave={handleMouseLeave}
+                    />
+                  }
+                />
                 <Route path="*" element={<NotFound />} />
                 <Route path="/login" element={<Login />} />
                 {isActive && <Route path="/signup" element={<SignUpPage />} />}
@@ -314,33 +328,20 @@ export default function App() {
             </CSSTransition>
           </TransitionGroup>
           <CookieComponent />
-          {showNavbarFooter && currentPage !== 'add' && (
+          {!isFooterFormPage && showNavbarFooter && currentPage !== 'add' && (
             <>
-              <Footer
-                handleMouseEnterFooter={handleMouseEnterFooter}
-                handleMouseEnterFooterMore={handleMouseEnterFooterMore}
-                handleMouseLeaveFooter={handleMouseLeaveFooter}
-                handleMouseLeave={handleMouseLeave}
-              />
-              {/* <Footer_new
+              {/* <Footer
                 handleMouseEnterFooter={handleMouseEnterFooter}
                 handleMouseEnterFooterMore={handleMouseEnterFooterMore}
                 handleMouseLeaveFooter={handleMouseLeaveFooter}
                 handleMouseLeave={handleMouseLeave}
               /> */}
-              {/* <FooterCircle
+              <FooterCircle
                 handleMouseEnterFooter={handleMouseEnterFooter}
                 handleMouseEnterFooterMore={handleMouseEnterFooterMore}
                 handleMouseLeaveFooter={handleMouseLeaveFooter}
                 handleMouseLeave={handleMouseLeave}
               />
-
-              <FooterForm
-                handleMouseEnterFooter={handleMouseEnterFooterWhite}
-                handleMouseEnterFooterMore={handleMouseEnterFooterWhiteMore}
-                handleMouseLeaveFooter={handleMouseLeaveFooterWhite}
-                handleMouseLeave={handleMouseLeave}
-              />  */}
             </>
           )}
           {showNavbarFooter && currentPage !== 'add' && <CustomCursor />}

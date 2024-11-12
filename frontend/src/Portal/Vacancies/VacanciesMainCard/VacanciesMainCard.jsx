@@ -243,6 +243,7 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
           onRequestClose={() => setIsModalOpen(false)}
           title="Спасибо за&nbsp;отклик!"
           message="Мы изучим информацию и&nbsp;свяжемся с&nbsp;вами"
+          buttonText="Спасибо,&nbsp;жду!"
         />
         <div className={styles.main_vacancy_block__background1} style={{ backgroundImage: `url(${star3d_1})` }} />
         <div className={styles.main_vacancy_block__background2} style={{ backgroundImage: `url(${star3d_2})` }} />
@@ -260,8 +261,7 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
                         className={styles.main_vacancy_block__vacancyTitle1__titleValue1}
                         dangerouslySetInnerHTML={{
                           __html: vacancy.searchStaff,
-                        }}
-                      ></li>
+                        }}></li>
                     </ul>
                   </div>
                 </div>
@@ -306,8 +306,7 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
           <div
             className={styles.main_vacancy_block__all_button}
             onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-          >
+            onMouseLeave={handleMouseLeave}>
             <AllVacancyButton />
           </div>
         </div>
@@ -352,8 +351,7 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
               onClick={handleScrollToForm}
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
-              ref={formButtonRef}
-            >
+              ref={formButtonRef}>
               <p className={styles.main_vacancyWrapper__button_name_vacancy}>Откликнуться на вакансию</p>
             </button>
           )}
