@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useMemo } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import FooterInfo from './FooterInfo';
 import styles from './FooterCircle.module.scss';
@@ -11,6 +11,7 @@ const FooterCircle = ({ handleMouseEnterFooterMore, handleMouseLeaveFooter }) =>
   const [isTabletScreen, setIsTabletScreen] = useState(window.innerWidth < 1024);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
 
 useEffect(() => {
     const handleResize = () => setIsTabletScreen(window.innerWidth < 1024);
@@ -47,8 +48,9 @@ const initialMask = useMemo(
   }, [dispatch]);
 
   const handleClick = useCallback(() => {
-    navigate('/footerForm');
-  }, [navigate]);
+    navigate('/footerForm', { state: { from: location.pathname } });
+  }, [navigate, location.pathname]);
+
 
   return (
     <footer className={styles.FooterCircle}>
