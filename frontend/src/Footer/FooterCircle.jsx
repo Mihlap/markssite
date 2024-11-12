@@ -8,6 +8,7 @@ import { setCursorVariant } from '../store/Slice/cursorSlice';
 
 const FooterCircle = ({ handleMouseEnterFooterMore, handleMouseLeaveFooter }) => {
   const [isHovered, setIsHovered] = useState(false);
+   const [isClicked, setIsClicked] = useState(false);
   const [isTabletScreen, setIsTabletScreen] = useState(window.innerWidth < 1024);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -30,26 +31,38 @@ const initialMask = useMemo(
   const hoverMask = useMemo(
     () =>
       isTabletScreen
-        ? 'radial-gradient(circle at 283px 105px, transparent 275px, black 0)'
+        ? 'radial-gradient(circle at 283px 105px, transparent 575px, black 0)'
         : 'radial-gradient(circle at 605px 200px, transparent 570px, black 0)',
     [isTabletScreen]
   );
 
- const handleMouseEnterBlock = useCallback(() => {
-    setIsHovered(true);
-    dispatch(setCursorVariant('textFooterEnter'));
-    dispatch(setCursorVariant('textFooterWhiteEnter'));
-  }, [dispatch]);
+  const handleMouseEnterBlock = useCallback(() => {
+    if (!isTabletScreen) {
+      setIsHovered(true);
+      dispatch(setCursorVariant('textFooterEnter'));
+      dispatch(setCursorVariant('textFooterWhiteEnter'));
+    }
+  }, [dispatch, isTabletScreen]);
 
   const handleMouseLeaveBlock = useCallback(() => {
-    setIsHovered(false);
-    dispatch(setCursorVariant('textLeaveFooter'));
-    dispatch(setCursorVariant('textLeaveWhiteFooter'));
-  }, [dispatch]);
+    if (!isTabletScreen) {
+      setIsHovered(false);
+      dispatch(setCursorVariant('textLeaveFooter'));
+      dispatch(setCursorVariant('textLeaveWhiteFooter'));
+    }
+  }, [dispatch, isTabletScreen]);
+  
 
   const handleClick = useCallback(() => {
-    navigate('/footerForm', { state: { from: location.pathname } });
-  }, [navigate, location.pathname]);
+     if (isTabletScreen) {
+       setIsClicked(true);
+       setTimeout(() => {
+         navigate('/footerForm', { state: { from: location.pathname } });
+       }, 300);
+     } else {
+       navigate('/footerForm', { state: { from: location.pathname } });
+     }
+   }, [navigate, location.pathname, isTabletScreen]);
 
 
   return (
@@ -58,8 +71,9 @@ const initialMask = useMemo(
         className={styles.FooterCircle__main}
         initial={{ maskImage: initialMask }}
         animate={{
-          maskImage: isHovered ? hoverMask : initialMask,
+          maskImage: isTabletScreen ? (isClicked ? hoverMask : initialMask) : isHovered ? hoverMask : initialMask,
           transition: { duration: 0.5 },
+          opacity: isClicked && isTabletScreen ? 0 : 1,
         }}>
         <div
           className={styles.FooterCircle__action}

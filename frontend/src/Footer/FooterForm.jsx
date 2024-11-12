@@ -5,6 +5,7 @@ import styles from './FooterForm.module.scss';
 import FooterInfo from './FooterInfo';
 import ModalVacancyFormSend from '../UI/VacancyFormContact/ModalVacancyFormSend';
 import mark from '../icons/footer-form-1.svg';
+import LoadingCircle from '../Loading/LoadingCircle';
 
 const ERROR_TEXT = {
   empty: 'Поле обязательно для заполнения',
@@ -27,6 +28,8 @@ const FooterForm = ({ handleMouseEnterFooterMore, handleMouseLeaveFooter }) => {
   const [telError, setTelError] = useState('');
   const [telTouched, setTelTouched] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
 
   const setError = useCallback((element, errorMessage) => {
     element.classList.add(styles.FooterForm__input_error);
@@ -102,6 +105,7 @@ const FooterForm = ({ handleMouseEnterFooterMore, handleMouseLeaveFooter }) => {
       validateInput({ currentTarget: telInput });
 
       if (telInput.value.trim() && !telError) {
+        setIsLoading(true); 
         const formData = {
           text: formRef.current.elements.text.value,
           name: formRef.current.elements.name.value,
@@ -129,6 +133,8 @@ const FooterForm = ({ handleMouseEnterFooterMore, handleMouseLeaveFooter }) => {
           }
         } catch (error) {
           console.error('Error:', error);
+        } finally {     
+          setIsLoading(false); 
         }
       } else if (!telInput.value.trim()) {
         setTelError(ERROR_TEXT.empty);
@@ -224,9 +230,14 @@ const FooterForm = ({ handleMouseEnterFooterMore, handleMouseLeaveFooter }) => {
             />
           </div>
         </div>
+          {isLoading && (
+            <div className={styles.LoadingOverlay}>
+              <LoadingCircle />
+            </div>
+          )}
       </section>
       <ModalVacancyFormSend
-        isOpen={isModalOpen}       
+        isOpen={isModalOpen}
         onRequestClose={handleCloseModal}
         title="Спасибо!"
         message="Мы изучим ваш запрос и свяжемся с вами."

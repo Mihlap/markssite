@@ -4,9 +4,19 @@
   $s: &;
   font-family: var(--font-unbounded);
   font-weight: var(--fw-300);
+  opacity: 0;
+  transform: scale(0.9);
+  animation: fadeIn 0.3s forwards;
 
   &__container {
     margin: 5rem 0 1rem 0;
+  }
+
+  @keyframes fadeIn {
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
   }
 
   &__top {
@@ -82,7 +92,7 @@
       transition: 0.3s;
 
       &:not(:placeholder-shown) {
-        & + #{$s}__placeholder {
+        &+#{$s}__placeholder {
           top: rem(-44);
           transition: 0.3s;
           font-size: rem(16);
@@ -94,7 +104,7 @@
         color: var(--salmon-FF7F6A);
         transition: 0.3s;
 
-        & + #{$s}__placeholder {
+        &+#{$s}__placeholder {
           color: var(--salmon-FF7F6A);
         }
       }
@@ -104,7 +114,7 @@
         transition: 0.3s;
         caret-color: var(--salmon-FF7F6A);
 
-        & + #{$s}__placeholder {
+        &+#{$s}__placeholder {
           top: rem(-44);
           transition: 0.3s;
           font-size: rem(16);
@@ -129,7 +139,7 @@
       &:hover {
         border-bottom: none;
 
-        & + #{$s}__placeholder + #{$s}__border {
+        &+#{$s}__placeholder+#{$s}__border {
           border-bottom: 1px solid var(--salmon-FF7F6A);
         }
       }
@@ -137,22 +147,25 @@
       &:focus {
         border-bottom: none;
 
-        & + #{$s}__placeholder + #{$s}__border {
+        &+#{$s}__placeholder+#{$s}__border {
           border-bottom: 1px solid var(--salmon-FF7F6A);
         }
       }
 
       &::-webkit-scrollbar {
-        width: 4px; /* Ширина полосы прокрутки */
+        width: 4px;
+        /* Ширина полосы прокрутки */
         margin: rem(12);
       }
 
       &::-webkit-scrollbar-track {
-        background: var(--light-light-gray-EBECEE); /* Цвет фона полосы прокрутки */
+        background: var(--light-light-gray-EBECEE);
+        /* Цвет фона полосы прокрутки */
       }
 
       &::-webkit-scrollbar-thumb {
-        background-color: var(--light-gray-C0C5CB); /* Цвет бегунка */
+        background-color: var(--light-gray-C0C5CB);
+        /* Цвет бегунка */
         border-radius: 4px;
 
         &:hover {
@@ -162,16 +175,17 @@
     }
 
     &_error {
+
       input,
       textarea {
         color: var(--crimson-E00747) !important;
         border-bottom: 1px solid var(--crimson-E00747);
 
-        & + #{$s}__placeholder {
+        &+#{$s}__placeholder {
           color: var(--crimson-E00747);
         }
 
-        & + span + #{$s}__textError {
+        &+span+#{$s}__textError {
           height: auto;
           opacity: 1;
           transition: 0.5s;
@@ -186,7 +200,7 @@
           caret-color: var(--crimson-E00747);
           color: var(--crimson-E00747) !important;
 
-          & + #{$s}__placeholder {
+          &+#{$s}__placeholder {
             color: var(--crimson-E00747);
             transition: 0.5s;
           }
@@ -198,7 +212,7 @@
           transition: 0.3s;
           caret-color: var(--crimson-E00747);
 
-          & + #{$s}__placeholder {
+          &+#{$s}__placeholder {
             color: var(--crimson-E00747);
           }
         }
@@ -289,6 +303,20 @@
         background-color: var(--blue-75BBFD);
       }
     }
+  }
+
+  .LoadingOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.5);
+    backdrop-filter: blur(8px);   
+    z-index: 9999
   }
 
   @media screen and (max-width: $XXL) {
@@ -419,14 +447,14 @@
         color: var(--black-1D2E43);
 
         &:not(:placeholder-shown) {
-          & + #{$s}__placeholder {
+          &+#{$s}__placeholder {
             top: rem(-36);
             font-size: rem(12);
           }
         }
 
         &:focus {
-          & + #{$s}__placeholder {
+          &+#{$s}__placeholder {
             top: rem(-36);
             font-size: rem(12);
           }
@@ -450,13 +478,14 @@
         width: rem(32);
         height: rem(32);
       }
-    }
+    }     
   }
 
   @media screen and (max-width: $XS) {
+
     &__input,
     &__placeholder {
       font-size: rem(17);
     }
-  }
+   }
 }
