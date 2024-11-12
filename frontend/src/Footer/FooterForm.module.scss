@@ -6,7 +6,7 @@
   font-weight: var(--fw-300);
 
   &__container {
-    margin: 0 2.5rem 1rem 2.5rem;
+    margin: 5rem 2.5rem 1rem 2.5rem;
   }
 
   &__top {
@@ -309,7 +309,7 @@
 
   @media screen and (max-width: $L) {
     &__container {
-      margin: 0 1rem 1rem 1rem;
+      margin: 5rem 1rem 1rem 1rem;
     }
 
     &__left {

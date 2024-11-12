@@ -41,6 +41,29 @@ const transporter = nodemailer.createTransport({
   connectionTimeout: 30000,
 });
 
+mailRouter.post('/submitFooterForm', async (req, res) => {
+  const formData = req.body;
+
+  const mailOptions = {
+    from: process.env.EMAIL_USER,
+    to: process.env.EMAIL_USER,
+    subject: 'Новый запрос',
+    text: `
+    Задача: ${formData.text}
+    Имя: ${formData.name}
+    Телефон: ${formData.tel}   
+    `,
+  };
+
+  try {
+    await transporter.sendMail(mailOptions);
+    res.status(200).send('Форма успешно отправлена');
+  } catch (error) {
+    console.error('Ошибка отправки письма:', error);
+    res.status(500).send('Ошибка при отправке формы');
+  }
+});
+
 mailRouter.post('/submitForm', async (req, res) => {
   const formData = req.body;
 

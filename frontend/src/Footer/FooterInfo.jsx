@@ -14,7 +14,9 @@ const FooterInfo = ({
             <a
               onMouseEnter={handleMouseEnterFooterMore}
               onMouseLeave={handleMouseLeaveFooter}
-              href="https://vk.com/marks_group_vk">
+              href="https://vk.com/marks_group_vk"
+              target="_blank"
+              rel="noreferrer">
               vk
             </a>
           </li>
@@ -22,7 +24,9 @@ const FooterInfo = ({
             <a
               onMouseEnter={handleMouseEnterFooterMore}
               onMouseLeave={handleMouseLeaveFooter}
-              href="https://www.youtube.com/@marks_group">
+              href="https://www.youtube.com/@marks_group"
+              target="_blank"
+              rel="noreferrer">
               yt
             </a>
           </li>
@@ -30,7 +34,9 @@ const FooterInfo = ({
             <a
               onMouseEnter={handleMouseEnterFooterMore}
               onMouseLeave={handleMouseLeaveFooter}
-              href="https://rutube.ru/channel/38807824/">
+              href="https://rutube.ru/channel/38807824/"
+              target="_blank"
+              rel="noreferrer">
               ru
             </a>
           </li>
@@ -38,7 +44,9 @@ const FooterInfo = ({
             <a
               onMouseEnter={handleMouseEnterFooterMore}
               onMouseLeave={handleMouseLeaveFooter}
-              href="https://t.me/marks_group">
+              href="https://t.me/marks_group"
+              target="_blank"
+              rel="noreferrer">
               tg
             </a>
           </li>
@@ -48,8 +56,11 @@ const FooterInfo = ({
           <div className={styles.FooterInfo__address}>
             <a
               href="https://yandex.ru/maps/-/CDdzIZ0o"
+              target="_blank"
+              rel="noreferrer"
               onMouseEnter={handleMouseEnterFooterMore}
               onMouseLeave={handleMouseLeaveFooter}>
+              {' '}
               Москва 3-я Ямского Поля, дом 20 строение 1 офис 704
             </a>
           </div>
@@ -73,7 +84,8 @@ const FooterInfo = ({
             href="./Information"
             onMouseEnter={handleMouseEnterFooterMore}
             onMouseLeave={handleMouseLeaveFooter}
-            target="_blank">
+            target="_blank"
+          >
             Документы
           </a>
           <span>&copy; laba</span>
