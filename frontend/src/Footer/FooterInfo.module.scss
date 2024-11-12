@@ -14,11 +14,11 @@
   &__socials {
     align-self: flex-end;
     display: flex;
-    gap: 24px;
-    margin-bottom: 4px;
+    gap: rem(24);
+    margin-bottom: rem(4);
 
     li a {
-      font-size: 14px;
+      font-size: rem(14);
       font-weight: var(--fw-900);
       line-height: 142%;
       text-transform: uppercase;
@@ -37,16 +37,16 @@
   &__contacts {
     font-family: var(--font-raleway);
     display: grid;
-    row-gap: 8px;
-    column-gap: 56px;
+    row-gap: rem(8);
+    column-gap: rem(56);
     grid-template-columns: max-content max-content 1fr;
     grid-template-rows: auto auto;
-    margin-bottom: 48px;
+    margin-bottom: rem(48);
   }
 
   &__office,
   &__phone {
-    font-size: 18px;
+    font-size: rem(18);
     font-weight: bold;
     line-height: 133%;
   }
@@ -60,7 +60,7 @@
 
   &__number,
   &__address {
-    font-size: 14px;
+    font-size: rem(14);
 
     a {
       transition: color 0.4s ease;
@@ -82,7 +82,7 @@
   &__mail {
     justify-self: flex-end;
     align-self: flex-end;
-    font-size: 32px;
+    font-size: rem(32);
     grid-column-start: 3;
     grid-column-end: 4;
     grid-row-start: 1;
@@ -103,8 +103,8 @@
   &__footnote {
     display: flex;
     justify-content: flex-end;
-    gap: 20px;
-    font-size: 14px;
+    gap: rem(20);
+    font-size: rem(14);
     line-height: 142%;
     color: var(--light-gray-C0C5CB);
 
@@ -126,7 +126,7 @@
 
   @media screen and (max-width: 1000px) {
     &__office {
-      margin-bottom: 14px;
+      margin-bottom: rem(14);
     }
 
     &__footnote {
@@ -136,14 +136,14 @@
     &__socials {
       align-self: flex-start;
       order: 2;
-      margin-bottom: 24px;
+      margin-bottom: rem(24);
     }
 
     &__contacts {
       display: flex;
       flex-direction: column;
-      gap: 4px;
-      margin-bottom: 24px;
+      gap: rem(4);
+      margin-bottom: rem(24);
       order: 1;
     }
 
@@ -154,7 +154,7 @@
 
     &__number,
     &__address {
-      font-size: 14px;
+      font-size: rem(14);
       line-height: 142%;
     }
 
@@ -166,7 +166,7 @@
       order: 2;
       justify-self: flex-start;
       align-self: flex-start;
-      font-size: 14px;
+      font-size: rem(14);
     }
 
     &__footnote {
@@ -176,11 +176,11 @@
 
   @media screen and (max-width: $S) {
     &__office {
-      font-size: 16px;
+      font-size: rem(16);
     }
 
     &__address {
-      font-size: 12px;
+      font-size: rem(12);
     }
   }
 }
