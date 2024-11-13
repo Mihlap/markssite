@@ -34,10 +34,12 @@ useEffect(() => {
   const handleVideoLoaded = () => {
     if (!video) return;
 
-    video.style.opacity = 0;
-    video.style.height = '0';
-    video.style.width = '0';
-    video.style.transition = 'opacity 1s ease, height 1s ease, width 1s ease';
+    if (!isMobile) {
+      video.style.opacity = 0;
+      video.style.height = '0';
+      video.style.width = '0';
+      video.style.transition = 'opacity 1s ease, height 1s ease, width 1s ease';
+    }
   };
 
   const handleIntersection = (entries) => {
@@ -46,9 +48,12 @@ useEffect(() => {
     entries.forEach((entry) => {
       if (entry.isIntersecting) {
         video.play().catch((error) => console.error('Ошибка воспроизведения видео:', error));
-        video.style.opacity = 1;
-        video.style.height = '100vh';
-        video.style.width = '100%';
+
+        if (!isMobile) {
+          video.style.opacity = 1;
+          video.style.height = '100vh';
+          video.style.width = '100%';
+        }
       } else {
         video.pause();
       }
@@ -60,7 +65,7 @@ useEffect(() => {
     threshold: 0.5,
   });
 
-  if (videoBox) {
+  if (videoBox && !isMobile) {
     observer.observe(videoBox);
   }
 
@@ -73,14 +78,14 @@ useEffect(() => {
   }
 
   return () => {
-    if (videoBox) {
+    if (videoBox && !isMobile) {
       observer.unobserve(videoBox);
     }
     if (video) {
       video.removeEventListener('loadeddata', handleVideoLoaded);
     }
   };
-}, [location]);
+}, [location, isMobile]);
 
 
   return (
@@ -109,7 +114,12 @@ useEffect(() => {
             autoPlay
             muted
             loop
-            style={{ display: 'block', opacity: 0, height: '0', width: '0' }}
+            style={{
+              display: 'block',
+              ...(isMobile
+                ? { width: '100%', height: '50vh' } 
+                : { opacity: 0, height: '0', width: '0' })
+            }}
           >
             <source src={`${bucket_url}/images/video/main_company_full.mp4`} type="video/mp4" />
           </video>
