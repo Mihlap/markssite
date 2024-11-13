@@ -29,11 +29,12 @@
     font-weight: var(--fw-300);
     line-height: 168%;
     padding: rem(156) 0 rem(142) 0;
-    cursor: pointer;
+  
   }
 
   &__open {
     width: 63%;
+    cursor: pointer;
  
     div:first-child {
       display: inline;
