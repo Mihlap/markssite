@@ -20,7 +20,8 @@ const Footer = ({ handleMouseEnterFooter, handleMouseEnterFooterMore, handleMous
             <Link
               to="mailto:mail@marksgroup.ru"
               onMouseEnter={handleMouseEnterFooterMore}
-              onMouseLeave={handleMouseLeaveFooter}>
+              onMouseLeave={handleMouseLeaveFooter}
+            >
               <span>mail@marksgroup.ru</span>
             </Link>
           </div>
