@@ -1,10 +1,8 @@
 import styles from './FooterInfo.module.scss';
 
-const FooterInfo = ({
-  handleMouseEnterFooter,
+const FooterInfo = ({  
   handleMouseEnterFooterMore,
-  handleMouseLeaveFooter,
-  handleMouseLeave,
+  handleMouseLeaveFooter
 }) => {
   return (
     <div className={styles.FooterInfo}>

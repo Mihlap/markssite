@@ -7,17 +7,18 @@ import ModalVacancyFormSend from '../UI/VacancyFormContact/ModalVacancyFormSend'
 import mark from '../icons/footer-form-1.svg';
 import LoadingCircle from '../Loading/LoadingCircle';
 
+const Host = process.env.REACT_APP_SERVER_HOST;
+
 const ERROR_TEXT = {
   empty: 'Поле обязательно для заполнения',
   tel: 'Некорректный номер телефона',
 };
 
-const Host = process.env.REACT_APP_SERVER_HOST;
-
 const PLACEHOLDER_TEXT = {
   default: 'Расскажите о Вашем проекте или идее',
   focus: 'Запрос',
 };
+
 
 const FooterForm = ({ handleMouseEnterFooterMore, handleMouseLeaveFooter }) => {
   const formRef = useRef(null);

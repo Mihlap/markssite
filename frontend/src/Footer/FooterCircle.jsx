@@ -6,6 +6,7 @@ import styles from './FooterCircle.module.scss';
 import { useDispatch } from 'react-redux';
 import { setCursorVariant } from '../store/Slice/cursorSlice';
 
+
 const FooterCircle = ({ handleMouseEnterFooterMore, handleMouseLeaveFooter }) => {
   const [isHovered, setIsHovered] = useState(false);
    const [isClicked, setIsClicked] = useState(false);
@@ -14,11 +15,13 @@ const FooterCircle = ({ handleMouseEnterFooterMore, handleMouseLeaveFooter }) =>
   const navigate = useNavigate();
   const location = useLocation();
 
+
 useEffect(() => {
     const handleResize = () => setIsTabletScreen(window.innerWidth < 1024);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, []);
+}, []);
+  
 
 const initialMask = useMemo(
     () =>
@@ -28,13 +31,19 @@ const initialMask = useMemo(
     [isTabletScreen]
   );
 
-  const hoverMask = useMemo(
-    () =>
-      isTabletScreen
-        ? 'radial-gradient(circle at 283px 105px, transparent 575px, black 0)'
-        : 'radial-gradient(circle at 605px 200px, transparent 570px, black 0)',
-    [isTabletScreen]
-  );
+
+ const hoverMask = useMemo(() => {
+    if (isTabletScreen && window.innerWidth < 400) {    
+      return 'radial-gradient(circle at 283px 105px, transparent 375px, black 0)';
+    } else if (isTabletScreen && window.innerWidth < 768) {    
+      return 'radial-gradient(circle at 283px 105px, transparent 575px, black 0)';
+    } else if (isTabletScreen && window.innerWidth < 1024) {     
+      return 'radial-gradient(circle at 283px 105px, transparent 875px, black 0)';
+    } else {     
+      return 'radial-gradient(circle at 605px 200px, transparent 570px, black 0)';
+    }
+  }, [isTabletScreen]);
+
 
   const handleMouseEnterBlock = useCallback(() => {
     if (!isTabletScreen) {
