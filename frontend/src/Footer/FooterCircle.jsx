@@ -6,6 +6,7 @@ import styles from './FooterCircle.module.scss';
 import { useDispatch } from 'react-redux';
 import { setCursorVariant } from '../store/Slice/cursorSlice';
 
+
 const FooterCircle = ({ handleMouseEnterFooterMore, handleMouseLeaveFooter }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
@@ -14,11 +15,13 @@ const FooterCircle = ({ handleMouseEnterFooterMore, handleMouseLeaveFooter }) =>
   const navigate = useNavigate();
   const location = useLocation();
 
-  useEffect(() => {
+
+useEffect(() => {
     const handleResize = () => setIsTabletScreen(window.innerWidth < 1024);
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
-  }, []);
+}, []);
+  
 
   const initialMask = useMemo(
     () =>
@@ -28,6 +31,7 @@ const FooterCircle = ({ handleMouseEnterFooterMore, handleMouseLeaveFooter }) =>
     [isTabletScreen]
   );
 
+
   const hoverMask = useMemo(
     () =>
       isTabletScreen
@@ -36,12 +40,14 @@ const FooterCircle = ({ handleMouseEnterFooterMore, handleMouseLeaveFooter }) =>
     [isTabletScreen]
   );
 
+
   const handleMouseEnterBlock = useCallback(() => {
     if (!isTabletScreen) {
       dispatch(setCursorVariant('textFooterEnter'));
       dispatch(setCursorVariant('textFooterWhiteEnter'));
     }
   }, [dispatch, isTabletScreen]);
+  
 
   const handleMouseLeaveBlock = useCallback(() => {
     if (!isTabletScreen) {
