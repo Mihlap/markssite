@@ -65,7 +65,6 @@ export default function CustomCursor() {
       border: '2px solid #1D2E43',
     },
 
-
     // Для футера с темным фоном
     textFooter: { zIndex: 2, height: 24, width: 24, x: mousePosition.x, y: mousePosition.y },
     textFooterEnter: {
@@ -91,7 +90,6 @@ export default function CustomCursor() {
       border: '2px solid #1d2e43',
     },
     textLeaveWhiteFooter: { x: mousePosition.x, y: mousePosition.y },
-    
 
     mouseDownFooter: { scale: 1.7, x: mousePosition.x, y: mousePosition.y, backgroundColor: '#F6F6F6' },
     mouseUpFooter: { scale: 1, x: mousePosition.x, y: mousePosition.y, backgroundColor: '#F6F6F6' },
