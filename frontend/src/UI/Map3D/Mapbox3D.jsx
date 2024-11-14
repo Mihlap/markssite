@@ -10,25 +10,35 @@ const apiKey = process.env.REACT_APP_API_KEY;
 const Mapbox3D = React.memo(() => {
   const [selectedPopup, setSelectedPopup] = useState(null);
   const [activeMarkerIndex, setActiveMarkerIndex] = useState(null);
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+
+  useEffect(() => {
+    const handleResize = () => setScreenWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const handleMarkerClick = useCallback((popupData, index) => {
     setSelectedPopup(popupData);
     setActiveMarkerIndex(index);
   }, []);
 
-  const handleMarkerHover = useCallback((popupData, index) => {
-    if (window.innerWidth > 1025) {
-      setSelectedPopup(popupData);
-      setActiveMarkerIndex(index);
-    }
-  }, []);
+  const handleMarkerHover = useCallback(
+    (popupData, index) => {
+      if (screenWidth > 1025) {
+        setSelectedPopup(popupData);
+        setActiveMarkerIndex(index);
+      }
+    },
+    [screenWidth]
+  );
 
   const handleMarkerLeave = useCallback(() => {
-    if (window.innerWidth > 1025 && !selectedPopup) {
+    if (screenWidth > 1025 && !selectedPopup) {
       setSelectedPopup(null);
       setActiveMarkerIndex(null);
     }
-  }, [selectedPopup]);
+  }, [screenWidth, selectedPopup]);
 
   const handleMapTouchStart = useCallback(() => {
     document.body.style.overflow = 'auto';
@@ -49,10 +59,10 @@ const Mapbox3D = React.memo(() => {
   }, []);
 
   const zoomLevel = useMemo(() => {
-    if (window.innerWidth <= 767) return 8.8;
-    if (window.innerWidth <= 1024) return 9.6;
+    if (screenWidth <= 767) return 8.8;
+    if (screenWidth <= 1024) return 9.6;
     return 10.5;
-  }, []);
+  }, [screenWidth]);
 
   const handlePopupClose = useCallback(() => {
     setSelectedPopup(null);
@@ -77,9 +87,8 @@ const Mapbox3D = React.memo(() => {
           }}
           onTouchStart={handleMapTouchStart}
           onTouchEnd={handleMapTouchEnd}
-          onClick={handleMapClick}
-        >
-          {window.innerWidth > 1025 && <ZoomControl options={{ position: { top: 20, right: 20 } }} />}
+          onClick={handleMapClick}>
+          {screenWidth > 1025 && <ZoomControl options={{ position: { top: 20, right: 20 } }} />}
           {popupsData.map((marker, index) => (
             <Marker
               key={index}
@@ -96,11 +105,11 @@ const Mapbox3D = React.memo(() => {
       {selectedPopup && <Popup selectedPopup={selectedPopup} onClose={handlePopupClose} />}
       <style>
         {`
-    [class*="ymaps-2"][class*="-ground-pane"] {    
-      -webkit-filter: grayscale(88%) brightness(100%);
-    }
-  `}
-      </style>
+  [class*="ymaps-2"][class*="-ground-pane"] {
+    -webkit-filter: grayscale(88%) brightness(100%);
+  }
+`}
+      </style>      
     </div>
   );
 });
