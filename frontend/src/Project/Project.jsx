@@ -70,12 +70,6 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
   const [swiper, setSwiper] = useState(null);
 
   const projectsPerPage = 100;
-  // const isMobileScreen = screenWidth <= 768;
-
-  // console.log(projects);
-  // useEffect(() => {
-  //   window.scrollTo(0, 0); // Прокрутите страницу вверх при монтировании компонента
-  // }, []);
 
   useEffect(() => {
     const scrollToTop = () => {
