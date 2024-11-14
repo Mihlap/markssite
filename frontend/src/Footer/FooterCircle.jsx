@@ -110,10 +110,7 @@ const initialMask = useMemo(
             Осталось только нажать
           </span>
         </div>
-        <FooterInfo
-          handleMouseEnterFooterMore={handleMouseEnterFooterMore}
-          handleMouseLeaveFooter={handleMouseLeaveFooter}
-        />
+        <FooterInfo />
       </div>
     </footer>
   );
