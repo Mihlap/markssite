@@ -65,7 +65,6 @@ export default function CustomCursor() {
       border: '2px solid #1D2E43',
     },
 
-  
     // Для футера с темным фоном
     textFooter: { zIndex: 2, height: 24, width: 24, x: mousePosition.x, y: mousePosition.y },
     textFooterEnter: {
