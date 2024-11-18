@@ -130,6 +130,11 @@ const FooterForm = ({ handleMouseEnterFooterMore, handleMouseLeaveFooter }) => {
             setTelError('');
             setTelTouched(false);
             setIsModalOpen(true);
+            // if (window.ym) {
+            //    window.ym(95967240, 'reachGoal', 'form1_done');
+            // } else {
+            //    console.warn('Yandex.Metrika is not available');
+            //  }
           } else {
             console.error('Ошибка при отправке формы');
           }
@@ -245,6 +250,8 @@ const FooterForm = ({ handleMouseEnterFooterMore, handleMouseLeaveFooter }) => {
         onRequestClose={handleCloseModal}
         title="Спасибо!"
         message="Мы изучим ваш запрос и свяжемся с вами."
+        autoClose={true}
+        customCloseAnimation={true}
       />
     </>
   );
