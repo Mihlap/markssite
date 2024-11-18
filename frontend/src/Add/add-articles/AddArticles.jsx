@@ -203,7 +203,7 @@ export default function AddArticles({ user }) {
                         const defaultPhoto = cat;
                         const photoSrc = firstPhoto && firstPhoto.includes('https')
                           ? firstPhoto
-                          : `${bucket_url}/images/imageAdd/${firstPhoto || defaultPhoto}`; 
+                          : `${bucket_url}/images/imageArticle/${firstPhoto || defaultPhoto}`; 
 
                         return (
                           <React.Fragment key={el.id}>
