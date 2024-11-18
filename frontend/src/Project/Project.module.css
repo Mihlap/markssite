@@ -10,10 +10,8 @@
 }
 
 .project_slider_text {
-  font-family: var(--font-unbounded);
   position: absolute;
   top: 55%;
-  bottom: auto;
   left: 9.06vw;
   z-index: 1;
   color: var(--white-F6F6F6);
@@ -623,7 +621,7 @@ display: inline-block;
 
 @media screen and (max-width: 2560px) {
   .project_slider_text {
-    top: 63%;
+    top: 60%;
   }
 }
 
