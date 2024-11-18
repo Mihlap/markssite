@@ -27,7 +27,6 @@ const CompanyFormContacts = ({
   const [isValid, setIsValid] = useState(true);
   const [isConsentGiven, setIsConsentGiven] = useState(false);
   const [inputLineColor, setInputLineColor] = useState('#959DA6');
-
   const phoneInputRef = useRef(null);
 
  
@@ -167,7 +166,7 @@ const CompanyFormContacts = ({
                   id="phone-input"
                   ref={phoneInputRef}
                   mask="+7 (999) 999-99-99"
-                  maskChar=""
+                  maskChar={null}
                   name="phone"
                   placeholder=""
                   value={formData.phone}

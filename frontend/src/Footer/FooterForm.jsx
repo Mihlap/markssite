@@ -22,6 +22,7 @@ const PLACEHOLDER_TEXT = {
 
 const FooterForm = ({ handleMouseEnterFooterMore, handleMouseLeaveFooter }) => {
   const formRef = useRef(null);
+  const inputRef = useRef(null);
   const navigate = useNavigate();
   const location = useLocation();
   const [, setIsSent] = useState(false);
@@ -195,6 +196,8 @@ const FooterForm = ({ handleMouseEnterFooterMore, handleMouseLeaveFooter }) => {
                   onMouseLeave={handleMouseLeaveFooter}>
                   <InputMask
                     mask="+7 (999) 999-99-99"
+                    ref={inputRef}
+                    maskChar={null}
                     onBlur={validateInput}
                     name="tel"
                     placeholder=" "
@@ -231,11 +234,11 @@ const FooterForm = ({ handleMouseEnterFooterMore, handleMouseLeaveFooter }) => {
             />
           </div>
         </div>
-          {isLoading && (
-            <div className={styles.LoadingOverlay}>
-              <LoadingCircle />
-            </div>
-          )}
+        {isLoading && (
+          <div className={styles.LoadingOverlay}>
+            <LoadingCircle />
+          </div>
+        )}
       </section>
       <ModalVacancyFormSend
         isOpen={isModalOpen}
