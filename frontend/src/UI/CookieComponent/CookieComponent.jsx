@@ -1,4 +1,3 @@
-// CookieComponent.js
 import React, { useState, useEffect } from 'react';
 import CookieConsent from 'react-cookie-consent';
 
@@ -7,15 +6,11 @@ const CookieComponent = () => {
 
   useEffect(() => {
     const handleResize = () => {
-      const newIsMobile = window.innerWidth <= 767;
-      setIsMobile(newIsMobile);
+      setIsMobile(window.innerWidth <= 767);
     };
 
     window.addEventListener('resize', handleResize);
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   return (
@@ -29,8 +24,8 @@ const CookieComponent = () => {
           justifyContent: 'center',
           alignItems: 'center',
           padding: isMobile ? '0.5rem 1rem' : '0.5rem 4rem 0.5rem 2rem',
-          background: 'var(--light-light-gray-EBECEE)',
-          color: 'var(--black-1D2E43)',
+          background: '#ebecee',
+          color: '#1d2e43',
           boxShadow: '0px 0px 20px 0px rgba(196, 215, 234, 0.61)',
           fontFamily: 'var(--font-raleway)',
           fontSize: isMobile ? '1rem' : '1.125rem',
@@ -52,9 +47,8 @@ const CookieComponent = () => {
           lineHeight: '1.5rem',
           cursor: 'pointer',
         }}
-        expires={10}
-      >
-        Мы используем файлы cookie и&nbsp;инструменты аналитики
+        expires={10}>
+        Мы используем файлы cookie и&nbsp;инструменты аналитики.
       </CookieConsent>
     </div>
   );
