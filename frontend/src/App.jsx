@@ -145,6 +145,7 @@ export default function App() {
     }
   }, [videoLoaded]);
 
+
   return (
     <HelmetProvider>
       {loading === true &&
