@@ -22,6 +22,7 @@ const PLACEHOLDER_TEXT = {
 
 const FooterForm = ({ handleMouseEnterFooterMore, handleMouseLeaveFooter }) => {
   const formRef = useRef(null);
+  const inputRef = useRef(null);
   const navigate = useNavigate();
   const location = useLocation();
   const [, setIsSent] = useState(false);
@@ -129,6 +130,11 @@ const FooterForm = ({ handleMouseEnterFooterMore, handleMouseLeaveFooter }) => {
             setTelError('');
             setTelTouched(false);
             setIsModalOpen(true);
+            // if (window.ym) {
+            //    window.ym(95967240, 'reachGoal', 'form1_done');
+            // } else {
+            //    console.warn('Yandex.Metrika is not available');
+            //  }
           } else {
             console.error('Ошибка при отправке формы');
           }
@@ -195,6 +201,8 @@ const FooterForm = ({ handleMouseEnterFooterMore, handleMouseLeaveFooter }) => {
                   onMouseLeave={handleMouseLeaveFooter}>
                   <InputMask
                     mask="+7 (999) 999-99-99"
+                    ref={inputRef}
+                    maskChar={null}
                     onBlur={validateInput}
                     name="tel"
                     placeholder=" "
@@ -231,17 +239,19 @@ const FooterForm = ({ handleMouseEnterFooterMore, handleMouseLeaveFooter }) => {
             />
           </div>
         </div>
-          {isLoading && (
-            <div className={styles.LoadingOverlay}>
-              <LoadingCircle />
-            </div>
-          )}
+        {isLoading && (
+          <div className={styles.LoadingOverlay}>
+            <LoadingCircle />
+          </div>
+        )}
       </section>
       <ModalVacancyFormSend
         isOpen={isModalOpen}
         onRequestClose={handleCloseModal}
         title="Спасибо!"
         message="Мы изучим ваш запрос и свяжемся с вами."
+        autoClose={true}
+        customCloseAnimation={true}
       />
     </>
   );

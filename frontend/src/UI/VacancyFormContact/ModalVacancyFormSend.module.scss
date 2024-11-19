@@ -13,6 +13,7 @@
   backdrop-filter: blur(8.5px);
   z-index: 9999;
   animation: fadeInOut 0.5s ease-out forwards;
+ transition: all 1s ease-out;
 }
 
 @keyframes fadeInOut {
@@ -23,6 +24,7 @@
     opacity: 1;
   }
 }
+
 
 .modal_vacancy_close {
   padding-top: 2rem;
