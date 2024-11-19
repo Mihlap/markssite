@@ -78,6 +78,7 @@ const VacancyFormContact = ({
   });
 
   const fileInputRef = useRef(null);
+  const inputRef = useRef(null);
   const isFilled = useCallback((name) => !!formData[name], [formData]);
 
   const handleChangeVacancy = useCallback((selectedValues) => {
@@ -387,8 +388,9 @@ const VacancyFormContact = ({
                     onMouseOut={handleMouseLeave}>
                     <InputMask
                       id="phone-input"
+                      ref={inputRef}
                       mask="+7 (999) 999-99-99"
-                      maskChar=""
+                      maskChar={null}
                       name="phone"
                       placeholder=""
                       value={formData.phone}

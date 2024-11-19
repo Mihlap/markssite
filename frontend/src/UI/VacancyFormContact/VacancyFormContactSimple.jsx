@@ -239,7 +239,7 @@ const VacancyFormContactSimple = ({
                 <InputMask
                   ref={phoneInputRef}
                   mask="+7 (999) 999-99-99"
-                  maskChar=""
+                  maskChar={null}
                   name="phone"
                   placeholder=""
                   value={formData.phone}
