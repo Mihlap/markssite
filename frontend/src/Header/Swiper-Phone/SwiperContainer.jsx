@@ -50,11 +50,9 @@ export default function SwiperContainer({ article1, article2 }) {
                 <SwiperSlide className="swiper_container_item_articles" key={`${item.id}_${index}`}>
                   <Link key={item.id} to={`/publication/${item.id}`}>
                     <Slideritem
-                      title={item.title}                    
+                      title={item.title}
                       src={
-                        firstPhoto?.includes('https')
-                          ? firstPhoto
-                          : `${bucket_url}/images/imageAdd/${firstPhoto}`
+                        firstPhoto?.includes('https') ? firstPhoto : `${bucket_url}/images/imageArticle/${firstPhoto}`
                       }
                       city={item.city}
                       dataMonthYear={item.dataMonthYear}
