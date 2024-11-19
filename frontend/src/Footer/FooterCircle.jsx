@@ -94,7 +94,7 @@ useEffect(() => {
             <div>Обсудим ваш</div>
             <div
               className={styles.FooterCircle__active}
-              onClick={isTabletScreen ? handleClick : ''}
+              onClick={isTabletScreen ? handleClick : null}
               onMouseEnter={handleMouseEnterCircle}
               onMouseLeave={handleMouseLeaveCircle}>
               <div className={styles.FooterCircle__circle}>проект</div>
