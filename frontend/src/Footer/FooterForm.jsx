@@ -250,8 +250,7 @@ const FooterForm = ({ handleMouseEnterFooterMore, handleMouseLeaveFooter }) => {
         onRequestClose={handleCloseModal}
         title="Спасибо!"
         message="Мы изучим ваш запрос и свяжемся с вами."
-        autoClose={true}
-        customCloseAnimation={true}
+        autoClose={true}       
       />
     </>
   );
