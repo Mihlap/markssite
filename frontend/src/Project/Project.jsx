@@ -282,10 +282,12 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
         <title>Marks Group</title>
       </Helmet>
       <div className={styles.project_main}>
-        <Company_Slider />
-        <div className={styles.project_slider_text}>
-          <p className={styles.actuality_text}>Креативные пространства от MARKS GROUP</p>
-          <span className={styles.projects_name_text}>Проекты</span>
+        <div className={styles.project_slider_box}>
+          <Company_Slider />
+          <div className={styles.project_slider_text}>
+            <p className={styles.actuality_text}>Креативные пространства от MARKS GROUP</p>
+            <span className={styles.projects_name_text}>Проекты</span>
+          </div>
         </div>
         {screenWidth && (
           <div onSubmit={handleAddressSubmit} className={styles.searchCityAddress_wrapper}>
