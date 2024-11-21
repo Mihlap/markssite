@@ -9,6 +9,10 @@
   position: relative;
 }
 
+.project_slider_box {
+  position: relative;
+}
+
 .project_slider_text {
   font-family: var(--font-unbounded);
   position: absolute;
