@@ -21,11 +21,11 @@ const ModalVacancyFormSend = ({
 
       const explodeTimer = setTimeout(() => {
         setIsExploding(true);
-      }, 3000);
+      }, 4000);
 
       const closeTimer = setTimeout(() => {
         onRequestClose();
-      }, 3500);
+      }, 5000);
 
       return () => {
         clearTimeout(morphTimer);
@@ -50,18 +50,40 @@ const ModalVacancyFormSend = ({
         content: {
           zIndex: 9999,
         },
-      }}>
-      {!isMorphing && !isExploding && (
-        <div className={styles.modalWrapperFormSend}>
-          <h2 className={styles.modalTitleFormSend}>{title}</h2>
-          <p className={styles.modalMessageFormSend}>{message}</p>
-          {!autoClose && buttonText && (
-            <button className={styles.closeButtonFormSend} onClick={onRequestClose}>
-              <p className={styles.closeButtonFormSendTitle}>{buttonText}</p>
-            </button>
-          )}
-        </div>
-      )}
+      }}
+      >
+      <div className={styles.modalWrapperFormSend}>
+        {!isMorphing && !isExploding && (
+          <>
+            <h2 className={styles.modalTitleFormSend}>{title}</h2>
+            <p className={styles.modalMessageFormSend}>{message}</p>
+            {!autoClose && buttonText && (
+              <button className={styles.closeButtonFormSend} onClick={onRequestClose}>
+                <p className={styles.closeButtonFormSendTitle}>{buttonText}</p>
+              </button>
+            )}
+          </>
+        )}
+        {isExploding && (
+          <div className={styles.explosionContainer}>
+            {[...Array(8)].map((_, index) => {
+              const angle = (index * 360) / 8; 
+              const x = Math.cos((angle * Math.PI) / 180); 
+              const y = Math.sin((angle * Math.PI) / 180);
+
+              return (
+                <div
+                  key={index}
+                  className={styles.explosionDot}
+                  style={{
+                    '--x': x,
+                    '--y': y,
+                  }}></div>
+              );
+            })}
+          </div>
+        )}
+      </div>
     </Modal>
   );
 };
