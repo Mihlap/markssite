@@ -12,30 +12,53 @@
   box-shadow: -2px 4px 22px 0px rgba(29, 46, 67, 0.6);
   backdrop-filter: blur(8.5px);
   z-index: 9999;
+  height: 202px; 
+  border-radius: 10px;
   // animation: fadeInOut 0.5s ease-out forwards;
-  // transition: all 2s ease-out;
-    animation: morphToHeart 4s ease-in-out forwards;
+  // animation: morphToHeart 2s ease-in-out forwards;
 }
 
-@keyframes fadeInOut {
-  from {
+.modalMorphing {
+  animation: morphToHeart 2s ease-in-out forwards;
+}
+
+// .modalExploding {
+//   animation: explodeToDots 1s ease-out forwards;
+// }
+
+
+.explosionContainer {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  z-index: 10;
+}
+
+.explosionDot {
+  width: 8px;
+  height: 8px;
+  background-color: var(--white-F6F6F6);
+  border-radius: 50%;
+  position: absolute;
+  animation: explodeDot 1s ease-out forwards;
+}
+
+@keyframes explodeDot {
+  0% {
+    transform: translate(0, 0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(calc(var(--x) * 200px), calc(var(--y) * 200px)); 
     opacity: 0;
   }
-  to {
-    opacity: 1;
-  }    
-}
-
-
-.modal_vacancy_close {
-  padding-top: 2rem;
-  padding-left: 90%;
-  cursor: pointer;
-}
-
-.modalWrapperFormSend {
-  padding: 0rem 3.625rem 3rem 3.625rem;
-  width: 100%;
 }
 
 @keyframes morphToHeart {
@@ -50,10 +73,14 @@
     transform: translate(-50%, -50%);
     background: var(--white-F6F6F6);
     clip-path: none;
+      border-radius: 10px;
+      transform: translate(-50%, -50%);
   }
-  5% {
-  max-width: 360px;
-  height: 202px;
+  50% {
+    width: 200px;
+    height: 150px;
+    border-radius: 50%;
+    clip-path: polygon(-41% 0, 50% 91%, 141% 0);
   aspect-ratio: 1;
   --_m: radial-gradient(#000 69%,#0000 70%) 84.5%/50%;
   -webkit-mask-box-image: var(--_m);
@@ -66,8 +93,10 @@
      linear-gradient(#000 0 0) bottom/100% 50% no-repeat;
   }
   100% {
-  width: 10px;
-  height: 10px; 
+    width: 10px;
+    height: 10px;
+    clip-path: polygon(-41% 0, 50% 91%, 141% 0);
+    transform: translate(-50%, -50%);
   aspect-ratio: 1;
   --_m: radial-gradient(#000 69%,#0000 70%) 84.5%/50%;
   -webkit-mask-box-image: var(--_m);
@@ -81,66 +110,27 @@
   }
 }
 
-.modalMorphing {
-  animation: morphToHeart 2s ease-in-out forwards;
-}
 
-// @keyframes explodeToDots {
-//   0% {
-//     transform: translate(-50%, -50%) scale(1);
-//     opacity: 1;
-//   }
-//   100% {
-//     transform: translate(-50%, -50%) scale(5);
+// @keyframes fadeInOut {
+//   from {
 //     opacity: 0;
 //   }
+//   to {
+//     opacity: 1;
+//   }    
 // }
 
-// .modalExploding {
-//   animation: explodeToDots 0.5s ease-out forwards;
-// }
 
+.modal_vacancy_close {
+  padding-top: 2rem;
+  padding-left: 90%;
+  cursor: pointer;
+}
 
-
-// @keyframes morphToHeart {
-//   0% {
-//    width: 600px;
-//     height: 300px;
-//     border-radius: 10px;
-//     transform: translate(-50%, -50%);
-//     background: var(--white-F6F6F6);
-//     clip-path: none;
-   
-//   }
-//   50% {
-//     width: 300px;
-//     height: 150px;
-//   aspect-ratio: 1;
-//   --_m: radial-gradient(#000 69%,#0000 70%) 84.5%/50%;
-//   -webkit-mask-box-image: var(--_m);
-//              mask-border: var(--_m);
-//   clip-path: polygon(-41% 0,50% 91%, 141% 0);
-//   background: var(--white-F6F6F6);
-//    mask:
-//      radial-gradient(at 70% 31%,#000 29%,#0000 30%),
-//      radial-gradient(at 30% 31%,#000 29%,#0000 30%),
-//      linear-gradient(#000 0 0) bottom/100% 50% no-repeat;
-//   }
-//   100% {
-//      width: 10px;
-//       height: 10px; 
-//   aspect-ratio: 1;
-//   --_m: radial-gradient(#000 69%,#0000 70%) 84.5%/50%;
-//   -webkit-mask-box-image: var(--_m);
-//              mask-border: var(--_m);
-//   clip-path: polygon(-41% 0,50% 91%, 141% 0);
-//   background: var(--white-F6F6F6);
-//    mask:
-//      radial-gradient(at 70% 31%,#000 29%,#0000 30%),
-//      radial-gradient(at 30% 31%,#000 29%,#0000 30%),
-//      linear-gradient(#000 0 0) bottom/100% 50% no-repeat;
-//   }
-
+.modalWrapperFormSend {
+  padding: 0rem 3.625rem 3rem 3.625rem;
+  width: 100%;
+}
 
 
 .modalTitleFormSend {
