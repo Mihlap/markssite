@@ -341,13 +341,3 @@ export default function App() {
   );
 }
 
-
-// старый футер
-
-//        <Footer
-//         handleMouseEnterFooter={handleMouseEnterFooter}
-//         handleMouseEnterFooterMore={handleMouseEnterFooterMore}
-//         handleMouseLeaveFooter={handleMouseLeaveFooter}
-//         handleMouseLeave={handleMouseLeave}
-//         />
-

@@ -5,15 +5,32 @@ import FooterInfo from './FooterInfo';
 import styles from './FooterCircle.module.scss';
 import { useDispatch } from 'react-redux';
 import { setCursorVariant } from '../store/Slice/cursorSlice';
+import ModalVacancyFormSend from '../UI/VacancyFormContact/ModalVacancyFormSend';
 
 
 const FooterCircle = ({ handleMouseEnterFooterMore, handleMouseLeaveFooter }) => {
   const [isHovered, setIsHovered] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
   const [isTabletScreen, setIsTabletScreen] = useState(window.innerWidth < 1024);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
+
+useEffect(() => {
+  if (location.state?.showModal) {
+    setIsModalOpen(true);
+  
+    window.scrollTo({
+      top: document.body.scrollHeight,   
+    });
+  }
+}, [location.state]);
+
+
+  const handleCloseModal = useCallback(() => {
+    setIsModalOpen(false);
+  }, []);
 
 
 useEffect(() => {
@@ -79,48 +96,58 @@ useEffect(() => {
     }
   }, [navigate, location.pathname, isTabletScreen]);
 
+
   return (
-    <footer className={styles.FooterCircle}>
-      <motion.div
-        className={styles.FooterCircle__main}
-        initial={{ maskImage: initialMask }}
-        animate={{
-          maskImage: isTabletScreen ? (isClicked ? hoverMask : initialMask) : isHovered ? hoverMask : initialMask,
-          transition: { duration: 1 },
-          opacity: isClicked && isTabletScreen ? 0 : 1,
-        }}>
-        <div className={styles.FooterCircle__action}>
-          <div className={styles.FooterCircle__open}>
-            <div>Обсудим ваш</div>
-            <div
-              className={styles.FooterCircle__active}
-              onClick={isTabletScreen ? handleClick : null}
-              onMouseEnter={handleMouseEnterCircle}
-              onMouseLeave={handleMouseLeaveCircle}>
-              <div className={styles.FooterCircle__circle}>проект</div>
+    <>
+      <footer className={styles.FooterCircle}>
+        <motion.div
+          className={styles.FooterCircle__main}
+          initial={{ maskImage: initialMask }}
+          animate={{
+            maskImage: isTabletScreen ? (isClicked ? hoverMask : initialMask) : isHovered ? hoverMask : initialMask,
+            transition: { duration: 1 },
+            opacity: isClicked && isTabletScreen ? 0 : 1,
+          }}>
+          <div className={styles.FooterCircle__action}>
+            <div className={styles.FooterCircle__open}>
+              <div>Обсудим ваш</div>
               <div
-                onClick={handleClick}
-                onMouseEnter={handleMouseEnterBlock}
-                onMouseLeave={handleMouseLeaveBlock}
-                className={styles.FooterCircle__arrow}></div>
+                className={styles.FooterCircle__active}
+                onClick={isTabletScreen ? handleClick : null}
+                onMouseEnter={handleMouseEnterCircle}
+                onMouseLeave={handleMouseLeaveCircle}>
+                <div className={styles.FooterCircle__circle}>проект</div>
+                <div
+                  onClick={handleClick}
+                  onMouseEnter={handleMouseEnterBlock}
+                  onMouseLeave={handleMouseLeaveBlock}
+                  className={styles.FooterCircle__arrow}></div>
+              </div>
             </div>
           </div>
-        </div>
-        <FooterInfo
-          handleMouseEnterFooterMore={handleMouseEnterFooterMore}
-          handleMouseLeaveFooter={handleMouseLeaveFooter}
-        />
-      </motion.div>
+          <FooterInfo
+            handleMouseEnterFooterMore={handleMouseEnterFooterMore}
+            handleMouseLeaveFooter={handleMouseLeaveFooter}
+          />
+        </motion.div>
 
-      <div className={styles.FooterCircle__layer}>
-        <div className={styles.FooterCircle__action} onClick={handleClick}>
-          <span className={`${styles.FooterCircle__link} ${isHovered ? styles.animate : ''}`}>
-            Осталось только нажать
-          </span>
+        <div className={styles.FooterCircle__layer}>
+          <div className={styles.FooterCircle__action} onClick={handleClick}>
+            <span className={`${styles.FooterCircle__link} ${isHovered ? styles.animate : ''}`}>
+              Осталось только нажать
+            </span>
+          </div>
+          <FooterInfo />
         </div>
-        <FooterInfo />
-      </div>
-    </footer>
+      </footer>
+      <ModalVacancyFormSend
+        isOpen={isModalOpen}
+        onRequestClose={handleCloseModal}
+        title="Спасибо!"
+        message="Мы изучим ваш запрос и свяжемся с вами."
+        autoClose={true}
+      />
+    </>
   );
 };
 
