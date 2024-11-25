@@ -116,7 +116,13 @@ useEffect(() => {
                 onClick={isTabletScreen ? handleClick : null}
                 onMouseEnter={handleMouseEnterCircle}
                 onMouseLeave={handleMouseLeaveCircle}>
-                <div className={styles.FooterCircle__circle}>проект</div>
+                <div
+                  className={styles.FooterCircle__circle}
+                  onClick={handleClick}
+                  onMouseEnter={handleMouseEnterBlock}
+                  onMouseLeave={handleMouseLeaveBlock}>
+                  проект
+                </div>
                 <div
                   onClick={handleClick}
                   onMouseEnter={handleMouseEnterBlock}
@@ -130,7 +136,6 @@ useEffect(() => {
             handleMouseLeaveFooter={handleMouseLeaveFooter}
           />
         </motion.div>
-
         <div className={styles.FooterCircle__layer}>
           <div className={styles.FooterCircle__action} onClick={handleClick}>
             <span className={`${styles.FooterCircle__link} ${isHovered ? styles.animate : ''}`}>

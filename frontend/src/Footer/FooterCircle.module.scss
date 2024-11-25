@@ -19,6 +19,7 @@
     background-color: var(--black-1D2E43);
     color: var(--white-F6F6F6);
     position: relative;
+    // cursor: pointer;
   }
 
   &__action {
@@ -34,7 +35,6 @@
     width: max-content;
     display: flex;
 
-
     div:first-child {
       display: inline;
       margin-right: rem(34);
@@ -48,6 +48,7 @@
   &__circle {
     display: inline;
     position: relative;
+    cursor: pointer;
 
     &:after {
       content: '';
