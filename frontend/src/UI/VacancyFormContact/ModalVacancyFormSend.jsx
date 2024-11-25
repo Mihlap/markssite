@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import styles from './ModalVacancyFormSend.module.scss';
+import ExplosionAnimation from './ExplosionAnimation';
 
 const ModalVacancyFormSend = ({
   isOpen,
@@ -17,15 +18,17 @@ const ModalVacancyFormSend = ({
     if (isOpen && autoClose) {
       const morphTimer = setTimeout(() => {
         setIsMorphing(true);
-      }, 2000);
+      }, 1000);
 
       const explodeTimer = setTimeout(() => {
+        setIsMorphing(false);
         setIsExploding(true);
-      }, 4000);
+      }, 1000);
 
       const closeTimer = setTimeout(() => {
+        setIsExploding(false);
         onRequestClose();
-      }, 5000);
+      }, 1300);
 
       return () => {
         clearTimeout(morphTimer);
@@ -36,55 +39,39 @@ const ModalVacancyFormSend = ({
   }, [isOpen, autoClose, onRequestClose]);
 
   return (
-    <Modal
-      isOpen={isOpen}
-      onRequestClose={onRequestClose}
-      className={`${styles.modalContentFormSend} ${isMorphing ? styles.modalMorphing : ''} ${
-        isExploding ? styles.modalExploding : ''
-      }`}
-      style={{
-        overlay: {
-          zIndex: 9999,
-          backgroundColor: '#2C3B447A',
-        },
-        content: {
-          zIndex: 9999,
-        },
-      }}
-      >
-      <div className={styles.modalWrapperFormSend}>
-        {!isMorphing && !isExploding && (
-          <>
-            <h2 className={styles.modalTitleFormSend}>{title}</h2>
-            <p className={styles.modalMessageFormSend}>{message}</p>
-            {!autoClose && buttonText && (
-              <button className={styles.closeButtonFormSend} onClick={onRequestClose}>
-                <p className={styles.closeButtonFormSendTitle}>{buttonText}</p>
-              </button>
-            )}
-          </>
-        )}
-        {isExploding && (
-          <div className={styles.explosionContainer}>
-            {[...Array(8)].map((_, index) => {
-              const angle = (index * 360) / 8; 
-              const x = Math.cos((angle * Math.PI) / 180); 
-              const y = Math.sin((angle * Math.PI) / 180);
-
-              return (
-                <div
-                  key={index}
-                  className={styles.explosionDot}
-                  style={{
-                    '--x': x,
-                    '--y': y,
-                  }}></div>
-              );
-            })}
-          </div>
-        )}
-      </div>
-    </Modal>
+    <>
+      <Modal
+        isOpen={isOpen}
+        onRequestClose={onRequestClose}
+        className={`${styles.modalContentFormSend} ${isMorphing ? styles.modalMorphing : ''} ${
+          isExploding ? styles.modalExploding : ''
+        }`}
+        style={{
+          overlay: {
+            zIndex: 9999,
+            backgroundColor: '#2C3B447A',
+          },
+          content: {
+            zIndex: 9999,
+          },
+        }}>
+        <div className={`${styles.modalWrapperFormSend} ${isExploding ? styles.exploding : ''}`}>
+          {!isMorphing && !isExploding && (
+            <>
+              <h2 className={styles.modalTitleFormSend}>{title}</h2>
+              <p className={styles.modalMessageFormSend}>{message}</p>
+              {!autoClose && buttonText && (
+                <button className={styles.closeButtonFormSend} onClick={onRequestClose}>
+                  <p className={styles.closeButtonFormSendTitle}>{buttonText}</p>
+                </button>
+              )}
+            </>
+          )}
+        
+        </div>
+      </Modal>
+      {isExploding && <ExplosionAnimation />}
+    </>
   );
 };
 
