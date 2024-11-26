@@ -149,8 +149,9 @@ useEffect(() => {
         isOpen={isModalOpen}
         onRequestClose={handleCloseModal}
         title="Спасибо!"
-        message="Мы изучим ваш запрос и свяжемся с вами."
+        message="Мы изучим ваш запрос и свяжемся с вами"
         autoClose={true}
+        customModalWrapperFormSend={styles.specialModal}
       />
     </>
   );

@@ -7,95 +7,53 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  box-sizing: border-box;
   background-color: var(--white-F6F6F6);
   box-shadow: -2px 4px 22px 0px rgba(29, 46, 67, 0.6);
   backdrop-filter: blur(8.5px);
-  z-index: 9999; 
-  border-radius: 10px;
-  // animation: fadeInOut 0.5s ease-out forwards;
-  animation: morphToHeart 1s ease-in-out forwards;
+  overflow: hidden;
+  transition: all 1s ease-in-out;
 }
 
-.modalMorphing {
-  // animation: morphToHeart 2s ease-in-out forwards;
+.initial {
+  width: fit-content;
+  height: auto;
+  border-radius: 10px; 
 }
+
+
+.morphing {
+  animation: morphToHeart 2s ease-in-out forwards;
+}
+
+.exploding {
+  display: none;
+}
+
 
 @keyframes morphToHeart {
-   0% {
-      width: 500px;
-    height: 200px;
-    border-radius: 100%;
-    // clip-path: polygon(-41% 0, 50% 91%, 141% 0);
-  // aspect-ratio: 1;
-  // --_m: radial-gradient(#000 69%,#0000 70%) 84.5%/50%;
-  // -webkit-mask-box-image: var(--_m);
-  //            mask-border: var(--_m);
+  0% {
+  width: 31rem;
+  height: auto;
+  border-radius: 100%;
   clip-path: none;
   background: var(--white-F6F6F6);
-  //  mask:
-  //    radial-gradient(at 70% 31%,#000 29%,#0000 30%),
-  //    radial-gradient(at 30% 31%,#000 29%,#0000 30%),
-  //    linear-gradient(#000 0 0) bottom/100% 50% no-repeat; 
   }
-  // 50% {
-  //     width: 300px;
-  //   height: 150px;
-  //   border-radius: 50%;
-  //   clip-path: polygon(-41% 0, 50% 91%, 141% 0);
-  // aspect-ratio: 1;
-  // --_m: radial-gradient(#000 69%,#0000 70%) 84.5%/50%;
-  // -webkit-mask-box-image: var(--_m);
-  //            mask-border: var(--_m);
-  // clip-path: polygon(-41% 0,50% 91%, 141% 0);
-  // background: var(--white-F6F6F6);
-  //  mask:
-  //    radial-gradient(at 70% 31%,#000 29%,#0000 30%),
-  //    radial-gradient(at 30% 31%,#000 29%,#0000 30%),
-  //    linear-gradient(#000 0 0) bottom/100% 50% no-repeat; 
-  // }
-  //   30% {
-  //   width: 150px;
-  //   height: 150px;
-  //   border-radius: 50%;
-  //   clip-path: polygon(-41% 0, 50% 91%, 141% 0);
-  // aspect-ratio: 1;
-  // --_m: radial-gradient(#000 69%,#0000 70%) 84.5%/50%;
-  // -webkit-mask-box-image: var(--_m);
-  //            mask-border: var(--_m);
-  // clip-path: polygon(-41% 0,50% 91%, 141% 0);
-  // background: var(--white-F6F6F6);
-  //  mask:
-  //    radial-gradient(at 70% 31%,#000 29%,#0000 30%),
-  //    radial-gradient(at 30% 31%,#000 29%,#0000 30%),
-  //    linear-gradient(#000 0 0) bottom/100% 50% no-repeat;
-  // }
-  // 70% {
-  //   width: 100px;
-  //   height: 50px;
-  //   border-radius: 50%;
-  //   clip-path: polygon(-41% 0, 50% 91%, 141% 0);
-  // aspect-ratio: 1;
-  // --_m: radial-gradient(#000 69%,#0000 70%) 84.5%/50%;
-  // -webkit-mask-box-image: var(--_m);
-  //            mask-border: var(--_m);
-  // clip-path: polygon(-41% 0,50% 91%, 141% 0);
-  // background: var(--white-F6F6F6);
-  //  mask:
-  //    radial-gradient(at 70% 31%,#000 29%,#0000 30%),
-  //    radial-gradient(at 30% 31%,#000 29%,#0000 30%),
-  //    linear-gradient(#000 0 0) bottom/100% 50% no-repeat;
-  // }
+  50% {
+  width: 12.5rem;
+  height: 12.5rem;
+  border-radius: 100%;
+  clip-path: polygon(-41% 0, 50% 91%, 141% 0); 
+  background: var(--white-F6F6F6);
+   mask:
+     radial-gradient(at 70% 31%,#000 29%,#0000 30%),
+     radial-gradient(at 30% 31%,#000 29%,#0000 30%),
+     linear-gradient(#000 0 0) bottom/100% 50% no-repeat; 
+  } 
   100% {
-    width: 2px;
-    height: 2px;
-    clip-path: polygon(-41% 0, 50% 91%, 141% 0);
-    transform: translate(-50%, -50%);
-  aspect-ratio: 1;
-  --_m: radial-gradient(#000 69%,#0000 70%) 84.5%/50%;
-  -webkit-mask-box-image: var(--_m);
-             mask-border: var(--_m);
-  clip-path: polygon(-41% 0,50% 91%, 141% 0);
+  width: 2px;
+  height: 2px;
+  clip-path: polygon(-41% 0, 50% 91%, 141% 0);
+  transform: translate(-50%, -50%);
   background: var(--white-F6F6F6);
    mask:
      radial-gradient(at 70% 31%,#000 29%,#0000 30%),
@@ -124,13 +82,7 @@
 .modalWrapperFormSend {
   padding: 2rem 3.625rem 3rem 3.625rem;
   width: 100%;
-
-    &.exploding {
-    padding: 0; 
-    background-color: transparent; 
-  }
 }
-
 
 .modalTitleFormSend {
   color: var(--black-1D2E43);
@@ -211,6 +163,7 @@
   .modalContentFormSend {
     max-width: 100%;
     width: 90%;
+
   }
 
   .modalWrapperFormSend {
@@ -234,4 +187,3 @@
     width: 100%;
   }
 }
-
