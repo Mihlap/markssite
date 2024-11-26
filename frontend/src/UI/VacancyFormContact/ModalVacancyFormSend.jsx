@@ -9,29 +9,32 @@ const ModalVacancyFormSend = ({
   title,
   message,
   buttonText,
-  autoClose = false,  
+  autoClose = false,
+  customModalWrapperFormSend = '',
 }) => {
+  const [isInitial, setIsInitial] = useState(true);
   const [isMorphing, setIsMorphing] = useState(false);
   const [isExploding, setIsExploding] = useState(false);
- 
+
   useEffect(() => {
     if (isOpen && autoClose) {
-      const morphTimer = setTimeout(() => {
+      const initialTimer = setTimeout(() => {
+        setIsInitial(false);
         setIsMorphing(true);
-      }, 1000);
+      }, 2000);
 
       const explodeTimer = setTimeout(() => {
         setIsMorphing(false);
         setIsExploding(true);
-      }, 1000);
+      }, 4000);
 
       const closeTimer = setTimeout(() => {
         setIsExploding(false);
         onRequestClose();
-      }, 1300);
+      }, 4500);
 
       return () => {
-        clearTimeout(morphTimer);
+        clearTimeout(initialTimer);
         clearTimeout(explodeTimer);
         clearTimeout(closeTimer);
       };
@@ -43,9 +46,9 @@ const ModalVacancyFormSend = ({
       <Modal
         isOpen={isOpen}
         onRequestClose={onRequestClose}
-        className={`${styles.modalContentFormSend} ${isMorphing ? styles.modalMorphing : ''} ${
-          isExploding ? styles.modalExploding : ''
-        }`}
+        className={`${styles.modalContentFormSend} ${isInitial ? styles.initial : ''} ${
+          isMorphing ? styles.morphing : ''
+        } ${isExploding ? styles.exploding : ''}`}
         style={{
           overlay: {
             zIndex: 9999,
@@ -55,8 +58,8 @@ const ModalVacancyFormSend = ({
             zIndex: 9999,
           },
         }}>
-        <div className={`${styles.modalWrapperFormSend} ${isExploding ? styles.exploding : ''}`}>
-          {!isMorphing && !isExploding && (
+        <div className={`${styles.modalWrapperFormSend} ${customModalWrapperFormSend}`}>
+          {!isExploding && (
             <>
               <h2 className={styles.modalTitleFormSend}>{title}</h2>
               <p className={styles.modalMessageFormSend}>{message}</p>
@@ -67,7 +70,6 @@ const ModalVacancyFormSend = ({
               )}
             </>
           )}
-        
         </div>
       </Modal>
       {isExploding && <ExplosionAnimation />}

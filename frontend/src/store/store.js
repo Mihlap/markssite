@@ -35,6 +35,6 @@ export default configureStore({
     previousPage: previousPageReducer,
     activePage: activePageReducer,
     formAddSlide: formAddSlideSlice,
-    formAddEvent: formAddEventSlice,
+    formAddEvent: formAddEventSlice,    
   },
 });
