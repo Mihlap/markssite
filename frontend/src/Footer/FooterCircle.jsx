@@ -3,8 +3,9 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import FooterInfo from './FooterInfo';
 import styles from './FooterCircle.module.scss';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { setCursorVariant } from '../store/Slice/cursorSlice';
+import { closeModal } from '../store/Slice/modalSlice';
 import ModalVacancyFormSend from '../UI/VacancyFormContact/ModalVacancyFormSend';
 
 
@@ -12,25 +13,24 @@ const FooterCircle = ({ handleMouseEnterFooterMore, handleMouseLeaveFooter }) =>
   const [isHovered, setIsHovered] = useState(false);
   const [isClicked, setIsClicked] = useState(false);
   const [isTabletScreen, setIsTabletScreen] = useState(window.innerWidth < 1024);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const isModalOpen = useSelector((state) => state.modal.isModalOpen);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
 
-useEffect(() => {
-  if (location.state?.showModal) {
-    setIsModalOpen(true);
-  
-    window.scrollTo({
-      top: document.body.scrollHeight,   
-    });
-  }
-}, [location.state]);
+
+  useEffect(() => {
+    if (isModalOpen) {
+      window.scrollTo({
+        top: document.body.scrollHeight,     
+      });
+    }
+  }, [isModalOpen]);
 
 
   const handleCloseModal = useCallback(() => {
-    setIsModalOpen(false);
-  }, []);
+    dispatch(closeModal());
+  }, [dispatch]);
 
 
 useEffect(() => {

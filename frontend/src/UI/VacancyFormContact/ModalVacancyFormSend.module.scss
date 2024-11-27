@@ -42,7 +42,8 @@
   width: 12.5rem;
   height: 12.5rem;
   border-radius: 100%;
-  clip-path: polygon(-41% 0, 50% 91%, 141% 0); 
+  transform: translate(-50%, -50%);
+  clip-path: polygon(-42% 0,50% 91%, 142% 0); 
   background: var(--white-F6F6F6);
    mask:
      radial-gradient(at 70% 31%,#000 29%,#0000 30%),
@@ -52,7 +53,8 @@
   100% {
   width: 2px;
   height: 2px;
-  clip-path: polygon(-41% 0, 50% 91%, 141% 0);
+   border-radius: 100%;
+  clip-path: polygon(-42% 0,50% 91%, 142% 0);
   transform: translate(-50%, -50%);
   background: var(--white-F6F6F6);
    mask:
