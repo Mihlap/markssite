@@ -5,6 +5,8 @@ import styles from './FooterForm.module.scss';
 import FooterInfo from './FooterInfo';
 import mark from '../icons/footer-form-1.svg';
 import LoadingCircle from '../Loading/LoadingCircle';
+import { openModal } from '../store/Slice/modalSlice';
+import { useDispatch } from 'react-redux';
 
 const Host = process.env.REACT_APP_SERVER_HOST;
 
@@ -22,6 +24,7 @@ const PLACEHOLDER_TEXT = {
 const FooterForm = ({ handleMouseEnterFooterMore, handleMouseLeaveFooter }) => {
   const formRef = useRef(null);
   const inputRef = useRef(null);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   const [, setIsSent] = useState(false);
@@ -127,13 +130,9 @@ const FooterForm = ({ handleMouseEnterFooterMore, handleMouseLeaveFooter }) => {
             setPlaceholderText(PLACEHOLDER_TEXT.default);
             setTelError('');
             setTelTouched(false);
+            dispatch(openModal());
             const previousRoute = location.state?.from || '/';
             navigate(previousRoute, { state: { showModal: true } });
-            // if (window.ym) {
-            //    window.ym(95967240, 'reachGoal', 'form1_done');
-            // } else {
-            //    console.warn('Yandex.Metrika is not available');
-            //  }
           } else {
             console.error('Ошибка при отправке формы');
           }
@@ -147,7 +146,7 @@ const FooterForm = ({ handleMouseEnterFooterMore, handleMouseLeaveFooter }) => {
         setError(telInput.parentNode, ERROR_TEXT.empty);
       }
     },
-    [telError, validateInput, setError, navigate, location.state]
+    [telError, validateInput, setError, navigate, dispatch, location.state]
   );
 
 

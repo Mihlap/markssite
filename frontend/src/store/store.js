@@ -16,6 +16,7 @@ import previousPageReducer from './Slice/previousPageSlice';
 import activePageReducer from './Slice/activePageSlice';
 import formAddSlideSlice from './Slice/vacancyMainSlideCardSlice';
 import formAddEventSlice from './Slice/vacancyEventSlice';
+import modalSlice from './Slice/modalSlice';
 
 export default configureStore({
   reducer: {
@@ -35,6 +36,7 @@ export default configureStore({
     previousPage: previousPageReducer,
     activePage: activePageReducer,
     formAddSlide: formAddSlideSlice,
-    formAddEvent: formAddEventSlice,
+    formAddEvent: formAddEventSlice,   
+    modal: modalSlice,
   },
 });

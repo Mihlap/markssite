@@ -7,101 +7,55 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  box-sizing: border-box;
   background-color: var(--white-F6F6F6);
   box-shadow: -2px 4px 22px 0px rgba(29, 46, 67, 0.6);
   backdrop-filter: blur(8.5px);
-  z-index: 9999;
-  height: 202px; 
-  border-radius: 10px;
-  // animation: fadeInOut 0.5s ease-out forwards;
-  // animation: morphToHeart 2s ease-in-out forwards;
+  overflow: hidden;
+  transition: all 1s ease-in-out, clip-path 1s ease-in-out; 
 }
 
-.modalMorphing {
-  animation: morphToHeart 2s ease-in-out forwards;
+.initial {
+  width: min-content;
+  height: auto;
+  border-radius: 10px; 
+  clip-path: inset(0);
+  transition: width 1s ease, height 1s ease, border-radius 1s ease, clip-path 1s ease;
 }
 
-// .modalExploding {
-//   animation: explodeToDots 1s ease-out forwards;
-// }
 
-
-.explosionContainer {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 100%;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background-color: transparent;
-  z-index: 10;
+.morphing {
+  animation: morphToHeart 1s ease-in-out forwards;
 }
 
-.explosionDot {
-  width: 8px;
-  height: 8px;
-  background-color: var(--white-F6F6F6);
-  border-radius: 50%;
-  position: absolute;
-  animation: explodeDot 1s ease-out forwards;
+.exploding {
+  display: none;
 }
 
-@keyframes explodeDot {
-  0% {
-    transform: translate(0, 0);
-    opacity: 1;
-  }
-  100% {
-    transform: translate(calc(var(--x) * 200px), calc(var(--y) * 200px)); 
-    opacity: 0;
-  }
-}
 
 @keyframes morphToHeart {
   0% {
-    width: 560px;
-    height: 202px;
-      aspect-ratio: 1;
-  --_m: radial-gradient(#000 69%,#0000 70%) 84.5%/50%;
-  -webkit-mask-box-image: var(--_m);
-             mask-border: var(--_m);
-    border-radius: 10px;
-    transform: translate(-50%, -50%);
-    background: var(--white-F6F6F6);
-    clip-path: none;
-      border-radius: 10px;
-      transform: translate(-50%, -50%);
+  width: 31rem;
+  height: auto;
+  border-radius: 50%;
+  clip-path: none; 
+  background: var(--white-F6F6F6);
   }
   50% {
-    width: 200px;
-    height: 150px;
-    border-radius: 50%;
-    clip-path: polygon(-41% 0, 50% 91%, 141% 0);
-  aspect-ratio: 1;
-  --_m: radial-gradient(#000 69%,#0000 70%) 84.5%/50%;
-  -webkit-mask-box-image: var(--_m);
-             mask-border: var(--_m);
-  clip-path: polygon(-41% 0,50% 91%, 141% 0);
+  width: 12.5rem;
+  height: 12.5rem;
+  transform: translate(-50%, -50%);
+  clip-path: polygon(-42% 0,50% 91%, 142% 0); 
   background: var(--white-F6F6F6);
    mask:
      radial-gradient(at 70% 31%,#000 29%,#0000 30%),
      radial-gradient(at 30% 31%,#000 29%,#0000 30%),
-     linear-gradient(#000 0 0) bottom/100% 50% no-repeat;
-  }
+     linear-gradient(#000 0 0) bottom/100% 50% no-repeat; 
+  } 
   100% {
-    width: 10px;
-    height: 10px;
-    clip-path: polygon(-41% 0, 50% 91%, 141% 0);
-    transform: translate(-50%, -50%);
-  aspect-ratio: 1;
-  --_m: radial-gradient(#000 69%,#0000 70%) 84.5%/50%;
-  -webkit-mask-box-image: var(--_m);
-             mask-border: var(--_m);
-  clip-path: polygon(-41% 0,50% 91%, 141% 0);
+  width: 2px;
+  height: 2px;
+  clip-path: polygon(-42% 0,50% 91%, 142% 0);
+  transform: translate(-50%, -50%);
   background: var(--white-F6F6F6);
    mask:
      radial-gradient(at 70% 31%,#000 29%,#0000 30%),
@@ -111,14 +65,14 @@
 }
 
 
-// @keyframes fadeInOut {
-//   from {
-//     opacity: 0;
-//   }
-//   to {
-//     opacity: 1;
-//   }    
-// }
+@keyframes fadeInOut {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }    
+}
 
 
 .modal_vacancy_close {
@@ -128,10 +82,9 @@
 }
 
 .modalWrapperFormSend {
-  padding: 0rem 3.625rem 3rem 3.625rem;
+  padding: 2rem 3.625rem 3rem 3.625rem;
   width: 100%;
 }
-
 
 .modalTitleFormSend {
   color: var(--black-1D2E43);
@@ -193,6 +146,39 @@
 
 /* стили для планшетной версии  */
 @media screen and (min-width: 768px) and (max-width: 1024px) {
+
+  @keyframes morphToHeart {
+  0% {
+  width: 31rem;
+  height: auto;
+  border-radius: 50%;
+  clip-path: none; 
+  background: var(--white-F6F6F6);
+  }
+  50% {
+  width: 8rem;
+  height: 8rem;
+  transform: translate(-50%, -50%);
+  clip-path: polygon(-42% 0,50% 91%, 142% 0); 
+  background: var(--white-F6F6F6);
+   mask:
+     radial-gradient(at 70% 31%,#000 29%,#0000 30%),
+     radial-gradient(at 30% 31%,#000 29%,#0000 30%),
+     linear-gradient(#000 0 0) bottom/100% 50% no-repeat; 
+  } 
+  100% {
+  width: 2px;
+  height: 2px;   
+  clip-path: polygon(-42% 0,50% 91%, 142% 0);
+  transform: translate(-50%, -50%);
+  background: var(--white-F6F6F6);
+   mask:
+     radial-gradient(at 70% 31%,#000 29%,#0000 30%),
+     radial-gradient(at 30% 31%,#000 29%,#0000 30%),
+     linear-gradient(#000 0 0) bottom/100% 50% no-repeat;
+  }
+}
+
   .modalTitleFormSend {
     font-size: 2rem;
     padding-top: 1rem;
@@ -211,11 +197,54 @@
 @media screen and (max-width: 767px) {
   .modalContentFormSend {
     max-width: 100%;
-    width: 90%;
+    width: 80%;
+    transition: all 1s ease-in-out, clip-path 1s ease-in-out;
+}
+
+  .initial {
+  max-width: 100%;
+  width: 90%;
+  height: auto;
+  border-radius: 10px; 
+  clip-path: inset(0);
+  transition: width 1s ease, height 1s ease, border-radius 1s ease, clip-path 1s ease;
+}
+
+
+@keyframes morphToHeart {
+  0% {
+  width: 21rem;
+  height: 8rem;
+  border-radius: 50%;
+  clip-path: none; 
+  background: var(--white-F6F6F6);
   }
+  50% {
+  width: 6rem;
+  height: 6rem;
+  transform: translate(-50%, -50%);
+  clip-path: polygon(-42% 0,50% 91%, 142% 0); 
+  background: var(--white-F6F6F6);
+   mask:
+     radial-gradient(at 70% 31%,#000 29%,#0000 30%),
+     radial-gradient(at 30% 31%,#000 29%,#0000 30%),
+     linear-gradient(#000 0 0) bottom/100% 50% no-repeat; 
+  } 
+  100% {
+  width: 2px;
+  height: 2px;
+  clip-path: polygon(-42% 0,50% 91%, 142% 0);
+  transform: translate(-50%, -50%);
+  background: var(--white-F6F6F6);
+   mask:
+     radial-gradient(at 70% 31%,#000 29%,#0000 30%),
+     radial-gradient(at 30% 31%,#000 29%,#0000 30%),
+     linear-gradient(#000 0 0) bottom/100% 50% no-repeat;
+  }
+}
 
   .modalWrapperFormSend {
-    padding: 0rem 9vw 2rem 1rem;
+    padding: 0rem 1rem 2rem 1rem;
     width: 100%;
   }
 
@@ -223,7 +252,7 @@
     padding-top: 1rem;
     font-size: 1.5rem;
     line-height: 2rem;
-    white-space: nowrap;
+    white-space: wrap;
     max-width: 100%;
     width: 100%;
   }
@@ -233,6 +262,6 @@
     line-height: 1.625rem;
     max-width: 100%;
     width: 100%;
+    white-space: wrap;
   }
 }
-
