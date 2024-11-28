@@ -16,30 +16,35 @@ const ModalVacancyFormSend = ({
   const [isMorphing, setIsMorphing] = useState(false);
   const [isExploding, setIsExploding] = useState(false);
 
-  useEffect(() => {
-    if (isOpen && autoClose) {
-      const initialTimer = setTimeout(() => {
-        setIsInitial(false);
-        setIsMorphing(true);
-      }, 2000);
+    useEffect(() => {
+      if (isOpen) {
+        const transitionTimer = setTimeout(() => {
+          setIsInitial(false);
+          setIsMorphing(true);
+        }, 1000);
 
-      const explodeTimer = setTimeout(() => {
-        setIsMorphing(false);
-        setIsExploding(true);
-      }, 4000);
+        return () => clearTimeout(transitionTimer);
+      }
+    }, [isOpen]);
 
-      const closeTimer = setTimeout(() => {
-        setIsExploding(false);
-        onRequestClose();
-      }, 4500);
+    useEffect(() => {
+      if (isOpen && autoClose) {
+        const explodeTimer = setTimeout(() => {
+          setIsMorphing(false);
+          setIsExploding(true);
+        }, 2000);
 
-      return () => {
-        clearTimeout(initialTimer);
-        clearTimeout(explodeTimer);
-        clearTimeout(closeTimer);
-      };
-    }
-  }, [isOpen, autoClose, onRequestClose]);
+        const closeTimer = setTimeout(() => {
+          setIsExploding(false);
+          onRequestClose();
+        }, 2500);
+
+        return () => {
+          clearTimeout(explodeTimer);
+          clearTimeout(closeTimer);
+        };
+      }
+    }, [isOpen, autoClose, onRequestClose]);
 
   return (
     <>
@@ -47,8 +52,7 @@ const ModalVacancyFormSend = ({
         isOpen={isOpen}
         onRequestClose={onRequestClose}
         className={`${styles.modalContentFormSend} ${isInitial ? styles.initial : ''} ${
-          isMorphing ? styles.morphing : ''
-        } ${isExploding ? styles.exploding : ''}`}
+          isMorphing ? styles.morphing : ''} ${isExploding ? styles.exploding : ''}`}
         style={{
           overlay: {
             zIndex: 9999,
