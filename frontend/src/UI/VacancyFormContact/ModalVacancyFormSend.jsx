@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Modal from 'react-modal';
 import styles from './ModalVacancyFormSend.module.scss';
+import ExplosionAnimation from './ExplosionAnimation';
 
 const ModalVacancyFormSend = ({
   isOpen,
@@ -8,83 +9,75 @@ const ModalVacancyFormSend = ({
   title,
   message,
   buttonText,
-  autoClose = false,  
+  autoClose = false,
+  customModalWrapperFormSend = '',
 }) => {
+  const [isInitial, setIsInitial] = useState(true);
   const [isMorphing, setIsMorphing] = useState(false);
   const [isExploding, setIsExploding] = useState(false);
- 
-  useEffect(() => {
-    if (isOpen && autoClose) {
-      const morphTimer = setTimeout(() => {
-        setIsMorphing(true);
-      }, 2000);
 
-      const explodeTimer = setTimeout(() => {
-        setIsExploding(true);
-      }, 4000);
+    useEffect(() => {
+      if (isOpen) {
+        const transitionTimer = setTimeout(() => {
+          setIsInitial(false);
+          setIsMorphing(true);
+        }, 1000);
 
-      const closeTimer = setTimeout(() => {
-        onRequestClose();
-      }, 5000);
+        return () => clearTimeout(transitionTimer);
+      }
+    }, [isOpen]);
 
-      return () => {
-        clearTimeout(morphTimer);
-        clearTimeout(explodeTimer);
-        clearTimeout(closeTimer);
-      };
-    }
-  }, [isOpen, autoClose, onRequestClose]);
+    useEffect(() => {
+      if (isOpen && autoClose) {
+        const explodeTimer = setTimeout(() => {
+          setIsMorphing(false);
+          setIsExploding(true);
+        }, 2000);
+
+        const closeTimer = setTimeout(() => {
+          setIsExploding(false);
+          onRequestClose();
+        }, 2500);
+
+        return () => {
+          clearTimeout(explodeTimer);
+          clearTimeout(closeTimer);
+        };
+      }
+    }, [isOpen, autoClose, onRequestClose]);
 
   return (
-    <Modal
-      isOpen={isOpen}
-      onRequestClose={onRequestClose}
-      className={`${styles.modalContentFormSend} ${isMorphing ? styles.modalMorphing : ''} ${
-        isExploding ? styles.modalExploding : ''
-      }`}
-      style={{
-        overlay: {
-          zIndex: 9999,
-          backgroundColor: '#2C3B447A',
-        },
-        content: {
-          zIndex: 9999,
-        },
-      }}
-      >
-      <div className={styles.modalWrapperFormSend}>
-        {!isMorphing && !isExploding && (
-          <>
-            <h2 className={styles.modalTitleFormSend}>{title}</h2>
-            <p className={styles.modalMessageFormSend}>{message}</p>
-            {!autoClose && buttonText && (
-              <button className={styles.closeButtonFormSend} onClick={onRequestClose}>
-                <p className={styles.closeButtonFormSendTitle}>{buttonText}</p>
-              </button>
-            )}
-          </>
-        )}
-        {isExploding && (
-          <div className={styles.explosionContainer}>
-            {[...Array(8)].map((_, index) => {
-              const angle = (index * 360) / 8; 
-              const x = Math.cos((angle * Math.PI) / 180); 
-              const y = Math.sin((angle * Math.PI) / 180);
-
-              return (
-                <div
-                  key={index}
-                  className={styles.explosionDot}
-                  style={{
-                    '--x': x,
-                    '--y': y,
-                  }}></div>
-              );
-            })}
-          </div>
-        )}
-      </div>
-    </Modal>
+    <>
+      <Modal
+        isOpen={isOpen}
+        onRequestClose={onRequestClose}
+        className={`${styles.modalContentFormSend} ${isInitial ? styles.initial : ''} ${
+          isMorphing ? styles.morphing : ''} ${isExploding ? styles.exploding : ''}`}
+        style={{
+          overlay: {
+            zIndex: 9999,
+            backgroundColor: '#2C3B447A',
+          },
+          content: {
+            zIndex: 9999,
+          },
+        }}>
+        <div className={`${styles.modalWrapperFormSend} ${customModalWrapperFormSend}`}>
+          {!isExploding && (
+            <>
+              <h2 className={styles.modalTitleFormSend}>{title}</h2>
+              <p className={styles.modalMessageFormSend}>{message}</p>
+              {!autoClose && buttonText && (
+                <button className={styles.closeButtonFormSend} onClick={onRequestClose}>
+                  <p className={styles.closeButtonFormSendTitle}>{buttonText}</p>
+                </button>
+              )}
+            </>
+          )}
+        </div>
+      </Modal>
+      {isExploding && <ExplosionAnimation />}
+    </>
   );
 };
 
