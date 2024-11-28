@@ -11,18 +11,20 @@
   box-shadow: -2px 4px 22px 0px rgba(29, 46, 67, 0.6);
   backdrop-filter: blur(8.5px);
   overflow: hidden;
-  transition: all 1s ease-in-out;
+  transition: all 1s ease-in-out, clip-path 1s ease-in-out; 
 }
 
 .initial {
-  width: fit-content;
+  width: min-content;
   height: auto;
   border-radius: 10px; 
+  clip-path: inset(0);
+  transition: width 1s ease, height 1s ease, border-radius 1s ease, clip-path 1s ease;
 }
 
 
 .morphing {
-  animation: morphToHeart 2s ease-in-out forwards;
+  animation: morphToHeart 1s ease-in-out forwards;
 }
 
 .exploding {
@@ -34,14 +36,13 @@
   0% {
   width: 31rem;
   height: auto;
-  border-radius: 100%;
-  clip-path: none;
+  border-radius: 50%;
+  clip-path: none; 
   background: var(--white-F6F6F6);
   }
   50% {
   width: 12.5rem;
   height: 12.5rem;
-  border-radius: 100%;
   transform: translate(-50%, -50%);
   clip-path: polygon(-42% 0,50% 91%, 142% 0); 
   background: var(--white-F6F6F6);
@@ -53,7 +54,6 @@
   100% {
   width: 2px;
   height: 2px;
-   border-radius: 100%;
   clip-path: polygon(-42% 0,50% 91%, 142% 0);
   transform: translate(-50%, -50%);
   background: var(--white-F6F6F6);
@@ -146,6 +146,39 @@
 
 /* стили для планшетной версии  */
 @media screen and (min-width: 768px) and (max-width: 1024px) {
+
+  @keyframes morphToHeart {
+  0% {
+  width: 31rem;
+  height: auto;
+  border-radius: 50%;
+  clip-path: none; 
+  background: var(--white-F6F6F6);
+  }
+  50% {
+  width: 8rem;
+  height: 8rem;
+  transform: translate(-50%, -50%);
+  clip-path: polygon(-42% 0,50% 91%, 142% 0); 
+  background: var(--white-F6F6F6);
+   mask:
+     radial-gradient(at 70% 31%,#000 29%,#0000 30%),
+     radial-gradient(at 30% 31%,#000 29%,#0000 30%),
+     linear-gradient(#000 0 0) bottom/100% 50% no-repeat; 
+  } 
+  100% {
+  width: 2px;
+  height: 2px;   
+  clip-path: polygon(-42% 0,50% 91%, 142% 0);
+  transform: translate(-50%, -50%);
+  background: var(--white-F6F6F6);
+   mask:
+     radial-gradient(at 70% 31%,#000 29%,#0000 30%),
+     radial-gradient(at 30% 31%,#000 29%,#0000 30%),
+     linear-gradient(#000 0 0) bottom/100% 50% no-repeat;
+  }
+}
+
   .modalTitleFormSend {
     font-size: 2rem;
     padding-top: 1rem;
@@ -164,12 +197,54 @@
 @media screen and (max-width: 767px) {
   .modalContentFormSend {
     max-width: 100%;
-    width: 90%;
+    width: 80%;
+    transition: all 1s ease-in-out, clip-path 1s ease-in-out;
+}
 
+  .initial {
+  max-width: 100%;
+  width: 90%;
+  height: auto;
+  border-radius: 10px; 
+  clip-path: inset(0);
+  transition: width 1s ease, height 1s ease, border-radius 1s ease, clip-path 1s ease;
+}
+
+
+@keyframes morphToHeart {
+  0% {
+  width: 21rem;
+  height: 8rem;
+  border-radius: 50%;
+  clip-path: none; 
+  background: var(--white-F6F6F6);
   }
+  50% {
+  width: 6rem;
+  height: 6rem;
+  transform: translate(-50%, -50%);
+  clip-path: polygon(-42% 0,50% 91%, 142% 0); 
+  background: var(--white-F6F6F6);
+   mask:
+     radial-gradient(at 70% 31%,#000 29%,#0000 30%),
+     radial-gradient(at 30% 31%,#000 29%,#0000 30%),
+     linear-gradient(#000 0 0) bottom/100% 50% no-repeat; 
+  } 
+  100% {
+  width: 2px;
+  height: 2px;
+  clip-path: polygon(-42% 0,50% 91%, 142% 0);
+  transform: translate(-50%, -50%);
+  background: var(--white-F6F6F6);
+   mask:
+     radial-gradient(at 70% 31%,#000 29%,#0000 30%),
+     radial-gradient(at 30% 31%,#000 29%,#0000 30%),
+     linear-gradient(#000 0 0) bottom/100% 50% no-repeat;
+  }
+}
 
   .modalWrapperFormSend {
-    padding: 0rem 9vw 2rem 1rem;
+    padding: 0rem 1rem 2rem 1rem;
     width: 100%;
   }
 
@@ -177,7 +252,7 @@
     padding-top: 1rem;
     font-size: 1.5rem;
     line-height: 2rem;
-    white-space: nowrap;
+    white-space: wrap;
     max-width: 100%;
     width: 100%;
   }
@@ -187,5 +262,6 @@
     line-height: 1.625rem;
     max-width: 100%;
     width: 100%;
+    white-space: wrap;
   }
 }
