@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation } from 'react-router';
 import styles from './Intro.module.scss';
 
 import ButtonLink from '../ButtonLink/ButtonLink';

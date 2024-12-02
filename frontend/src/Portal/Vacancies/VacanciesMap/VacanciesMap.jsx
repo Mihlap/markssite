@@ -1,8 +1,4 @@
-import React, { useLayoutEffect, useRef } from 'react';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import gsap from 'gsap';
-
-import ButtonLink from '../ButtonLink/ButtonLink';
+import React from 'react';
 import styles from './VacanciesMap.module.scss';
 
 const VacanciesMap = () => {

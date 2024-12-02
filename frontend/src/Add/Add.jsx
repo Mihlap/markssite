@@ -11,7 +11,7 @@ import AddHRPortal from './add-hr-portal/AddHRPortal';
 
 export default function Add({ user, onPageChange, handleReturn }) {
   useEffect(() => {
-    onPageChange('add'); // Передайте имя страницы в onPageChange
+    onPageChange('add');
   }, [onPageChange]);
 
   return (
@@ -19,7 +19,7 @@ export default function Add({ user, onPageChange, handleReturn }) {
       <div className={styles.add_container}>
         <AddNavbar handleReturn={handleReturn} user={user} />
         <Routes>
-          <Route path="/home" element={<HomeAdmin />} />
+          <Route path="home" element={<HomeAdmin />} />
           <Route path="add-a-project" element={<AddProject user={user} />} />
           <Route path="add-a-articles" element={<AddArticles user={user} />} />
           <Route path="add-hr-portal" element={<AddHRPortal user={user} />} />

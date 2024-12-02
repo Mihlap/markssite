@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import axios from 'axios';
 import styles from './Login.module.scss';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router';
 
 export default function SignUpPage() {
   const navigate = useNavigate(); // Хук для перенаправления пользователя

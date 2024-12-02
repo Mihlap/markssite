@@ -1,7 +1,7 @@
 import React, { memo, useState, useEffect, useCallback } from 'react';
 import styles from './Navbar.module.scss';
 import { Link, useLocation } from 'react-router-dom';
-import { handleScroll, handleItemClick, handlePath, handleStoredClass } from './utils/navbarUtils';
+// import { handleScroll, handleItemClick, handlePath, handleStoredClass } from './utils/navbarUtils';
 import NavBarPhone from './NavBarPhone/NavBarPhone';
 
 const Navbar = memo(({ handleMouseEnter, handleMouseLeave }) => {
@@ -9,36 +9,35 @@ const Navbar = memo(({ handleMouseEnter, handleMouseLeave }) => {
   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [visible, setVisible] = useState(true);
   const [scrollDelta, setScrollDelta] = useState(0);
+  const location = useLocation();
 
-  const handleScroll = () => {
-    const currentScrollPos = window.scrollY;
-    const delta = currentScrollPos - prevScrollPos; // Сколько пикселей прокрутились
+const handleScroll = useCallback(() => {
+  const currentScrollPos = window.scrollY;
+  const delta = currentScrollPos - prevScrollPos; 
 
-    if (window.innerWidth > 1024) {
-      if (prevScrollPos > currentScrollPos || currentScrollPos <= 0) {
-        // Если пользователь прокручивает вверх или прокручивает в самый верх
-        setVisible(true);
-        setScrollDelta(0); // сбросите scrollDelta
-      } else {
-        // Иначе, пользователь прокручивает вниз
-        setScrollDelta((prevDelta) => prevDelta + delta); // Обновляем scrollDelta
+  if (window.innerWidth > 1024) {
+    if (prevScrollPos > currentScrollPos || currentScrollPos <= 0) {
+      setVisible(true);
+      setScrollDelta(0);
+    } else {
+      setScrollDelta((prevDelta) => prevDelta + delta); 
 
-        if (scrollDelta > 100) {
-          // Проверяем, превышает ли scrollDelta 100 пикселей
-          setVisible(false);
-        }
+      if (scrollDelta > 100) {
+        setVisible(false);
       }
     }
+  }
 
-    setPrevScrollPos(currentScrollPos);
-  };
+  setPrevScrollPos(currentScrollPos);
+}, [prevScrollPos, scrollDelta]);
+  
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [prevScrollPos]);
+  }, [handleScroll]);
 
-  const location = useLocation();
+ 
 
   useEffect(() => {
     const currentPath = location.pathname;
@@ -56,6 +55,8 @@ const Navbar = memo(({ handleMouseEnter, handleMouseLeave }) => {
       setActiveClass(storedActiveClass);
     }
   }, []);
+
+  
   return (
     <header className={`${styles.Navbar} ${visible ? '' : styles.hidden}`}>
       <nav className={styles.Navbar__nav}>
