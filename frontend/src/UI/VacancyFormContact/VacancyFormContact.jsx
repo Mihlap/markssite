@@ -67,6 +67,7 @@ const VacancyFormContact = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
+  const [isMetricSent, setIsMetricSent] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -129,9 +130,12 @@ const VacancyFormContact = ({
     }
   }, []);
 
+
   const handleSubmit = useCallback(
     (event) => {
       event.preventDefault();
+      if (isMetricSent) return;
+      setIsMetricSent(true);
 
       const resumeFilled = formData.resume.trim() !== '' || selectedFiles.length > 0;
 
@@ -146,6 +150,7 @@ const VacancyFormContact = ({
 
       const formIsValid = !Object.values(newErrors).some((err) => err);
       if (!formIsValid) {
+        setIsMetricSent(false);
         return;
       }
 
@@ -202,9 +207,11 @@ const VacancyFormContact = ({
         })
         .finally(() => {
           setIsLoading(false);
+          setIsMetricSent(false);
         });
     },
     [
+      isMetricSent,
       formData,
       selectedOptions,
       selectedFiles,
@@ -587,6 +594,7 @@ const VacancyFormContact = ({
             title="Спасибо за&nbsp;отклик!"
             message="Мы изучим информацию и&nbsp;свяжемся с&nbsp;вами"
             buttonText="Спасибо,&nbsp;жду!"
+            variant="manualClose"
           />
         </form>
       )}

@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from 'react';
+import React, { useRef, useState, useEffect, useCallback } from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
@@ -23,22 +23,26 @@ const CompanySlider = () => {
     return slide.imageTitle.split(',').map((el) => `./assets/${el.trim()}`);
   });
 
-  useEffect(() => {
-    setLineWidth(calculateLineWidth(activeButtonIndex));
-  }, [activeButtonIndex]);
+ 
+ const calculateLineWidth = useCallback(
+   (index) => {
+     const count = imagePaths.length;
+     if (sliderRef.current && count === 4) {
+       return (index + 1) * 22;
+     } else if (sliderRef.current && count === 3) {
+       return (index + 1) * 30;
+     } else if (sliderRef.current && count === 2) {
+       return (index + 1) * 45;
+     } else {
+       return index;
+     }
+   },
+   [imagePaths.length]
+ );
 
-  const calculateLineWidth = (index) => {
-    const count = imagePaths.length;
-    if (sliderRef.current && count === 4) {
-      return (index + 1) * 22;
-    } else if (sliderRef.current && count === 3) {
-      return (index + 1) * 30;
-    } else if (sliderRef.current && count === 2) {
-      return (index + 1) * 45;
-    } else {
-      return index;
-    }
-  };
+    useEffect(() => {
+      setLineWidth(calculateLineWidth(activeButtonIndex));
+    }, [activeButtonIndex, calculateLineWidth]);
 
   const handleButtonClick = (index) => {
     if (sliderRef.current) {

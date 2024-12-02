@@ -39,7 +39,7 @@ const VacanciesComponent = ({ handleMouseEnter, handleMouseLeave, handleMouseHov
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [filters, setFilters] = useState({});
   const [modalFiltersActive, setModalFiltersActive] = useState(false);
-  const [swiper, setSwiper] = useState(null);
+  const [, setSwiper] = useState(null);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   const isIpadMobile = windowWidth <= 1024;

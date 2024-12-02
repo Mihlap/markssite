@@ -15,7 +15,7 @@ import {
 } from '../../store/Slice/vacanciesSlice';
 import { buttonsFilter } from './utils.js';
 
-import LoadingModal from '../add-project/loading/LoadingModal';
+// import LoadingModal from '../add-project/loading/LoadingModal';
 import Edit from '../icon/Edit.svg';
 import Look from '../icon/eye.svg';
 import noLook from '../icon/eye2.svg';
@@ -48,7 +48,7 @@ export default function AddHRPortal({ user }) {
   const [savedId, setSavedId] = useState(null);
 
   const dispatch = useDispatch();
-  const { error, loading, hidden } = useSelector((state) => state.vacancies);
+  const { error, loading } = useSelector((state) => state.vacancies);
   const vacanciesAdd = useSelector((state) => state.vacancies.vacancies);
   const vacancies = useSelector((state) => state.vacancies?.vacancies);
   const arrIdVacancy = useSelector(arrIdVacancySelector);

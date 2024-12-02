@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router';
 import InputMask from 'react-input-mask-next';
 import styles from './FooterForm.module.scss';
 import FooterInfo from './FooterInfo';
