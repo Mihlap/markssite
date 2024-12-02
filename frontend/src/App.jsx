@@ -31,10 +31,8 @@ import {
   textEnter,
   textLeave,
   textLeaveFooter,
-  // Для футера с темным фоном
   textFooter,
   textFooterEnter,
-  // Для футера с белым фоном
   textFooterWhite,
   textFooterWhiteEnter,
   textLeaveWhiteFooter,
@@ -60,7 +58,6 @@ export default function App() {
   const [videoLoaded, setVideoLoaded] = useState(false);
   const nodeRef = useRef(null);
 
-  // const isMobile = window.innerWidth <= 768;
   const isFooterFormPage = location.pathname === '/footerForm';
 
   useEffect(() => {
@@ -82,59 +79,29 @@ export default function App() {
     dispatch(setCurrentPage(page));
   };
 
-  const handleMouseEnter = () => {
-    dispatch(textEnter());
-  };
+  const handleMouseEnter = () => dispatch(textEnter());
+  const handleMouseLeave = () => dispatch(textLeave());
+  const handleMouseHover = () => dispatch(imageHover());
+  const handleSpecialHover = () => dispatch(specialHover());
 
   // Для футера с темным фоном
-  const handleMouseEnterFooter = () => {
-    dispatch(textFooter());
-  };
-
-  const handleMouseEnterFooterMore = () => {
-    dispatch(textFooterEnter());
-  };
-
-  const handleMouseLeaveFooter = () => {
-    dispatch(textLeaveFooter());
-  };
+  const handleMouseEnterFooter = () => dispatch(textFooter());
+  const handleMouseEnterFooterMore = () => dispatch(textFooterEnter());
+  const handleMouseLeaveFooter = () => dispatch(textLeaveFooter());
 
   // Для футера с белым фоном
-  const handleMouseEnterFooterWhite = () => {
-    dispatch(textFooterWhite());
-  };
-
-  const handleMouseEnterFooterWhiteMore = () => {
-    dispatch(textFooterWhiteEnter());
-  };
-
-  const handleMouseLeaveFooterWhite = () => {
-    dispatch(textLeaveWhiteFooter());
-  };
-
-  const handleMouseLeave = () => {
-    dispatch(textLeave());
-  };
-
-  const handleMouseHover = () => {
-    dispatch(imageHover());
-  };
-
-  const handleSpecialHover = () => {
-    dispatch(specialHover());
-  };
+  const handleMouseEnterFooterWhite = () => dispatch(textFooterWhite());
+  const handleMouseEnterFooterWhiteMore = () => dispatch(textFooterWhiteEnter());
+  const handleMouseLeaveFooterWhite = () => dispatch(textLeaveWhiteFooter());
 
   const handleReturn = () => {
     dispatch(resetCurrentPage());
     localStorage.removeItem('activeClass');
   };
 
-  // таймаут для прелоудера на сайте
+  // Таймаут для прелоудера
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setLoading(false);
-    }, 4000);
-
+    const timer = setTimeout(() => setLoading(false), 4000);
     return () => clearTimeout(timer);
   }, []);
 
@@ -144,10 +111,9 @@ export default function App() {
     }
   }, [videoLoaded]);
 
-
   return (
     <HelmetProvider>
-      {loading === true &&
+      {loading &&
       location.pathname !== '/information' &&
       location.pathname !== '/portal/vacanciesMain' &&
       location.pathname !== '/footerForm' ? (
@@ -156,7 +122,6 @@ export default function App() {
         <>
           {showNavbarFooter && currentPage !== 'add' && (
             <>
-              {/* для 2-й итерации !!!! не стирать */}
               {showPortalMenu ? (
                 <PortalMenu user={user} handleMouseEnter={handleMouseEnter} handleMouseLeave={handleMouseLeave} />
               ) : (
@@ -167,6 +132,7 @@ export default function App() {
           {showNavbarFooter && currentPage !== 'add' && (
             <ButtonAdmin user={user} handleMouseEnter={handleMouseEnter} handleMouseLeave={handleMouseLeave} />
           )}
+
           <TransitionGroup>
             <CSSTransition key={location.key} classNames="fade" timeout={300} nodeRef={nodeRef}>
               <div ref={nodeRef}>
@@ -193,7 +159,7 @@ export default function App() {
                       />
                     }
                   />
-                  <Route path="/project/:viewConstruction?" component={<Project />} />
+                  <Route path="/project/:viewConstruction?" element={<Project />} />
                   <Route
                     path="/projects/:id"
                     element={
@@ -309,33 +275,33 @@ export default function App() {
                   <Route path="/login" element={<Login />} />
                   {isActive && <Route path="/signup" element={<SignUpPage />} />}
                   <Route path="/test" element={<LoadingModal />} />
-                  {user ? (
+                  {user && (
                     <Route path="/admin">
                       <Route
                         path="*"
                         element={<Add user={user} onPageChange={handlePageChange} handleReturn={handleReturn} />}
                       />
                     </Route>
-                  ) : null}
+                  )}
                 </Routes>
               </div>
             </CSSTransition>
           </TransitionGroup>
+
           <CookieComponent />
+
           {!isFooterFormPage && showNavbarFooter && currentPage !== 'add' && (
-            <>
-              <FooterCircle
-                handleMouseEnterFooter={handleMouseEnterFooter}
-                handleMouseEnterFooterMore={handleMouseEnterFooterMore}
-                handleMouseLeaveFooter={handleMouseLeaveFooter}
-                handleMouseLeave={handleMouseLeave}
-              />
-            </>
+            <FooterCircle
+              handleMouseEnterFooter={handleMouseEnterFooter}
+              handleMouseEnterFooterMore={handleMouseEnterFooterMore}
+              handleMouseLeaveFooter={handleMouseLeaveFooter}
+              handleMouseLeave={handleMouseLeave}
+            />
           )}
+
           {showNavbarFooter && currentPage !== 'add' && <CustomCursor />}
         </>
       )}
     </HelmetProvider>
   );
 }
-
