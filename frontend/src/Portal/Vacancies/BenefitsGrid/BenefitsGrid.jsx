@@ -1,7 +1,5 @@
-import React, { useLayoutEffect, useRef } from 'react';
-
+import React from 'react';
 import StarsBack from '../StarsBack/StarsBack';
-
 import styles from './BenefitsGrid.module.scss';
 
 import benefit_1 from '../icons/benefit-1.svg';

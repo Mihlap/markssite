@@ -9,42 +9,42 @@ const ModalVacancyFormSend = ({
   title,
   message,
   buttonText,
-  autoClose = false,
+  variant = 'manualClose',
   customModalWrapperFormSend = '',
 }) => {
   const [isInitial, setIsInitial] = useState(true);
   const [isMorphing, setIsMorphing] = useState(false);
   const [isExploding, setIsExploding] = useState(false);
 
-    useEffect(() => {
-      if (isOpen) {
-        const transitionTimer = setTimeout(() => {
-          setIsInitial(false);
-          setIsMorphing(true);
-        }, 1000);
+  useEffect(() => {
+    if (isOpen && variant === 'autoCloseWithHeart') {
+      const transitionTimer = setTimeout(() => {
+        setIsInitial(false);
+        setIsMorphing(true);
+      }, 1000);
 
-        return () => clearTimeout(transitionTimer);
-      }
-    }, [isOpen]);
+      return () => clearTimeout(transitionTimer);
+    }
+  }, [isOpen, variant]);
 
-    useEffect(() => {
-      if (isOpen && autoClose) {
-        const explodeTimer = setTimeout(() => {
-          setIsMorphing(false);
-          setIsExploding(true);
-        }, 2000);
+  useEffect(() => {
+    if (isOpen && variant === 'autoCloseWithHeart') {
+      const explodeTimer = setTimeout(() => {
+        setIsMorphing(false);
+        setIsExploding(true);
+      }, 2000);
 
-        const closeTimer = setTimeout(() => {
-          setIsExploding(false);
-          onRequestClose();
-        }, 2500);
+      const closeTimer = setTimeout(() => {
+        setIsExploding(false);
+        onRequestClose();
+      }, 2500);
 
-        return () => {
-          clearTimeout(explodeTimer);
-          clearTimeout(closeTimer);
-        };
-      }
-    }, [isOpen, autoClose, onRequestClose]);
+      return () => {
+        clearTimeout(explodeTimer);
+        clearTimeout(closeTimer);
+      };
+    }
+  }, [isOpen, onRequestClose, variant]);
 
   return (
     <>
@@ -52,7 +52,8 @@ const ModalVacancyFormSend = ({
         isOpen={isOpen}
         onRequestClose={onRequestClose}
         className={`${styles.modalContentFormSend} ${isInitial ? styles.initial : ''} ${
-          isMorphing ? styles.morphing : ''} ${isExploding ? styles.exploding : ''}`}
+          isMorphing ? styles.morphing : ''
+        } ${isExploding ? styles.exploding : ''}`}
         style={{
           overlay: {
             zIndex: 9999,
@@ -67,7 +68,7 @@ const ModalVacancyFormSend = ({
             <>
               <h2 className={styles.modalTitleFormSend}>{title}</h2>
               <p className={styles.modalMessageFormSend}>{message}</p>
-              {!autoClose && buttonText && (
+              {variant === 'manualClose' && buttonText && (
                 <button className={styles.closeButtonFormSend} onClick={onRequestClose}>
                   <p className={styles.closeButtonFormSendTitle}>{buttonText}</p>
                 </button>

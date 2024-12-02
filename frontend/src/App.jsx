@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Route, Routes, useLocation } from 'react-router-dom';
+import { Route, Routes, useLocation } from 'react-router';
 import { HelmetProvider } from 'react-helmet-async';
 import './App.css';
 import Company from './Company/Company';
@@ -9,7 +9,6 @@ import Project from './Project/Project';
 import Publics from './Publics/Publics';
 import NotFound from './NotFound/NotFound';
 import Navbar from './Navbar/Navbar';
-// import Footer from './Footer/Footer';
 import Information from './Information/Information';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import LoadingNew from './Loading/LoadingNew';
@@ -311,13 +310,12 @@ export default function App() {
                   {isActive && <Route path="/signup" element={<SignUpPage />} />}
                   <Route path="/test" element={<LoadingModal />} />
                   {user ? (
-                    <Route
-                      path="/admin/*"
-                      element={
-                        <>
-                          <Add user={user} onPageChange={handlePageChange} handleReturn={handleReturn} />
-                        </>
-                      }></Route>
+                    <Route path="/admin">
+                      <Route
+                        path="*"
+                        element={<Add user={user} onPageChange={handlePageChange} handleReturn={handleReturn} />}
+                      />
+                    </Route>
                   ) : null}
                 </Routes>
               </div>
@@ -325,7 +323,7 @@ export default function App() {
           </TransitionGroup>
           <CookieComponent />
           {!isFooterFormPage && showNavbarFooter && currentPage !== 'add' && (
-            <>          
+            <>
               <FooterCircle
                 handleMouseEnterFooter={handleMouseEnterFooter}
                 handleMouseEnterFooterMore={handleMouseEnterFooterMore}

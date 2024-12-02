@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './Footer.module.scss';
-import { Link } from 'react-router-dom';
+import { Link } from 'react-router';
 
 const Footer = ({ handleMouseEnterFooter, handleMouseEnterFooterMore, handleMouseLeaveFooter, handleMouseLeave }) => {
   function mapToLink(link, event) {

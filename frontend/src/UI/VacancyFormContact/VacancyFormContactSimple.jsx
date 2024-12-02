@@ -27,6 +27,7 @@ const VacancyFormContactSimple = ({
   const [fileAttached, setFileAttached] = useState(false);
   const [errors, setErrors] = useState({});
   const phoneInputRef = useRef(null);
+  const [isMetricSent, setIsMetricSent] = useState(false);
   const [formData, setFormData] = useState({
     name: '',
     phone: '',
@@ -85,6 +86,8 @@ const VacancyFormContactSimple = ({
   const handleSubmit = useCallback(
     (event) => {
       event.preventDefault();
+      if (isMetricSent) return;
+      setIsMetricSent(true);
 
       const resumeFilled = formData.resume.trim() !== '' || selectedFiles.length > 0;
 
@@ -98,6 +101,7 @@ const VacancyFormContactSimple = ({
 
       const formIsValid = !Object.values(newErrors).some((err) => err);
       if (!formIsValid) {
+        setIsMetricSent(false);
         return;
       }
 
@@ -132,10 +136,10 @@ const VacancyFormContactSimple = ({
             setSelectedFiles([]);
             setFileAttached(false);
             if (window.ym) {
-                window.ym(95967240, 'reachGoal', 'form2_done');
-              } else {
-                console.warn('Yandex.Metrika is not available');
-              }
+              window.ym(95967240, 'reachGoal', 'form2_done');
+            } else {
+              console.warn('Yandex.Metrika is not available');
+            }
           } else {
             console.error('Form submission failed:', data.message || 'Unknown error');
           }
@@ -147,9 +151,17 @@ const VacancyFormContactSimple = ({
         })
         .finally(() => {
           setIsLoading(false);
+          setIsMetricSent(false);
         });
     },
-    [formData, selectedFiles, vacancyTitleSimple, setIsLoading, setIsModalOpen]
+    [
+      isMetricSent,
+      formData,
+      selectedFiles,
+      vacancyTitleSimple,
+      setIsLoading,
+      setIsModalOpen
+    ]
   );
 
   const getLineClassSimple = (field) => {

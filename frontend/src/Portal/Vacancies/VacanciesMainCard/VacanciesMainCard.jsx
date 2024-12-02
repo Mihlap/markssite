@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet-async';
 import gsap from 'gsap';
@@ -10,9 +10,6 @@ import VacancySlider from '../VacancySlider/VacancySlider';
 import LoadingVacancy from '../../../Loading/LoadingVacancy';
 import RenderVacancySections from '../RenderVacancySections/RenderVacancySections';
 import { fetchEmployees } from '../../../store/Slice/vacanciesSlice';
-import { setActivePage } from '../../../store/Slice/activePageSlice';
-// import Error from "../../Loading/Error/Error";
-// import LoadingCircle from "../../Loading/LoadingCircle";
 import AllVacancyButton from '../../../UI/ButtonVacancy/AllVacancyButton';
 import VacancyFormContactSimple from '../../../UI/VacancyFormContact/VacancyFormContactSimple';
 import VacancyFormContact from '../../../UI/VacancyFormContact/VacancyFormContact';
@@ -244,6 +241,7 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
           title="Спасибо за&nbsp;отклик!"
           message="Мы изучим информацию и&nbsp;свяжемся с&nbsp;вами"
           buttonText="Спасибо,&nbsp;жду!"
+          variant="manualClose"
         />
         <div className={styles.main_vacancy_block__background1} style={{ backgroundImage: `url(${star3d_1})` }} />
         <div className={styles.main_vacancy_block__background2} style={{ backgroundImage: `url(${star3d_2})` }} />
