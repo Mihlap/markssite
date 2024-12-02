@@ -1,10 +1,10 @@
-import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
+import React, { useEffect, useRef, useState, useCallback, useMemo, useLayoutEffect } from 'react';
 import styles from './AddNavbar.module.scss';
 import { Link, useNavigate } from 'react-router-dom';
-import icon1 from './icon/one.png';
-import icon2 from './icon/three.png';
-import icon3 from './icon/four.png';
-import icon4 from './icon/two.png';
+import { useDispatch } from 'react-redux';
+import { logoutUser } from '../../store/Slice/authSlice';
+import { resetCurrentPage } from '../../store/Slice/userSlice';
+
 import caseIcon from './icon/case.svg';
 import fireIcon from './icon/fire.svg';
 import hrIcon from './icon/hr.svg';
@@ -12,10 +12,6 @@ import pencilIcon from './icon/pencil.svg';
 import projectorIcon from './icon/projector.svg';
 import settingIcon from './icon/setting.svg';
 import exit from './icon/exit.svg';
-
-import { useDispatch } from 'react-redux';
-import { logoutUser } from '../../store/Slice/authSlice';
-import { resetCurrentPage } from '../../store/Slice/userSlice';
 
 export default function AddNavbar({ user, handleReturn }) {
   const dispatch = useDispatch();
@@ -38,30 +34,33 @@ export default function AddNavbar({ user, handleReturn }) {
     }
   }, []);
 
-  useEffect(() => {
-    updateIndicatorPosition(selectedItem);
-  }, [selectedItem]);
 
-  const updateIndicatorPosition = useCallback((itemName) => {
-    const item = itemRefs.current[itemName];
-    if (item && indicatorRef.current) {
-      let newIndicatorX = item.offsetLeft;
-      let newIndicatorY = item.offsetTop + item.offsetHeight - 2;
+   const updateIndicatorPosition = useCallback((itemName) => {
+     const item = itemRefs.current[itemName];
+     if (item && indicatorRef.current) {
+       let newIndicatorX = item.offsetLeft;
+       let newIndicatorY = item.offsetTop + item.offsetHeight - 2;
 
-      if (window.innerWidth <= 1600) {
-        newIndicatorY = item.offsetTop + item.offsetHeight - 6;
-      }
+       if (window.innerWidth <= 1600) {
+         newIndicatorY = item.offsetTop + item.offsetHeight - 6;
+       }
 
-      if (window.innerWidth <= 1023) {
-        newIndicatorY = item.offsetTop + item.offsetHeight + 16;
-      }
+       if (window.innerWidth <= 1023) {
+         newIndicatorY = item.offsetTop + item.offsetHeight + 16;
+       }
 
-      setIndicatorX(newIndicatorX);
-      setIndicatorY(newIndicatorY);
-    }
-  }, []);
+       setIndicatorX(newIndicatorX);
+       setIndicatorY(newIndicatorY);
+     }
+   }, []);
 
-  useEffect(() => {
+  
+ useLayoutEffect(() => {
+   updateIndicatorPosition(selectedItem);
+ }, [selectedItem, updateIndicatorPosition]);
+
+ 
+  useLayoutEffect(() => {
     if (indicatorRef.current) {
       indicatorRef.current.style.transform = `translate(${indicatorX}px, ${indicatorY}px)`;
     }
@@ -91,42 +90,42 @@ export default function AddNavbar({ user, handleReturn }) {
     () => [
       {
         name: 'home',
-        path: './home',
+        path: 'home',
         icon: pencilIcon,
         label: 'Главная',
         visible: isPokemonUser || isObezyankaaUser || isManagerUser,
       },
       {
         name: 'add-a-project',
-        path: './add-a-project',
+        path: 'add-a-project',
         icon: fireIcon,
         label: 'Проекты',
         visible: isPokemonUser || isObezyankaaUser || isManagerUser,
       },
       {
         name: 'add-a-articles',
-        path: './add-a-articles',
+        path: 'add-a-articles',
         icon: projectorIcon,
         label: 'Публикации',
         visible: isPokemonUser || isObezyankaaUser || isManagerUser,
       },
       {
         name: 'add-a-company',
-        path: './add-a-company',
+        path: 'add-a-company',
         icon: caseIcon,
         label: 'О компании',
         visible: isPokemonUser || isObezyankaaUser || isManagerUser,
       },
       {
         name: 'add-hr-portal',
-        path: './add-hr-portal',
+        path: 'add-hr-portal',
         icon: hrIcon,
         label: 'HR портал',
         visible: isPokemonUser || isObezyankaaUser || isHr778User,
       },
       {
         name: 'add-a-applications',
-        path: './add-a-applications',
+        path: 'add-a-applications',
         icon: settingIcon,
         label: 'Управление',
         visible: isPokemonUser || isObezyankaaUser,
@@ -134,6 +133,7 @@ export default function AddNavbar({ user, handleReturn }) {
     ],
     [isPokemonUser, isObezyankaaUser, isManagerUser, isHr778User]
   );
+  
 
   return (
     <>
@@ -172,20 +172,10 @@ export default function AddNavbar({ user, handleReturn }) {
         </div>
       </nav>
       <div className={styles.button_position}>
-        <div className={styles.button_container}>
-          {!isObezyankaaUser ? (
+        <div className={styles.button_container}>      
             <Link className={styles.button_xren} to="/" onClick={handleReturn}>
               <span className={styles.button_xren__text}>Предпросмотр</span>
-            </Link>
-          ) : (
-            <Link className={styles.button} to="/" onClick={handleReturn}>
-              <span className={styles.button__text}>Предпросмотр</span>
-              <img src={icon1} alt="1" className={styles.button__cone} />
-              <img src={icon2} alt="2" className={styles.button__torus} />
-              <img src={icon3} alt="3" className={styles.button__icosahedron} />
-              <img src={icon4} alt="4" className={styles.button__sphere} />
-            </Link>
-          )}
+            </Link>          
         </div>
       </div>
     </>

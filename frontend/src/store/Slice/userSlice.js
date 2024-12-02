@@ -15,7 +15,6 @@ const userSlice = createSlice({
       state.currentPage = action.payload;
     },
     resetCurrentPage(state) {
-      // Добавленное действие для сброса currentPage
       state.currentPage = null;
     },
   },

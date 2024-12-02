@@ -919,7 +919,8 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
                     onRequestClose={() => setModalOpenFormContacts(false)}
                     title="Заявка отправлена!"
                     message="Мы свяжемся с вами в ближайшее время!"
-                    buttonText="Спасибо, жду!"
+                    buttonText="Спасибо, жду!"                
+                    variant="manualClose"
                   />
                 </div>
               </div>
@@ -976,7 +977,8 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
                     onRequestClose={() => setModalOpenSubscription(false)}
                     title="Вы подписаны!"
                     message="Если захотите завершить подписку, напишите нам!"
-                    buttonText="Спасибо, жду!"
+                    buttonText="Спасибо, жду!"                  
+                    variant="manualClose"
                   />
                 </div>
               </div>
