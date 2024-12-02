@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useMemo, memo } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchSlides, updateSlidesOrderLocally } from '../../../store/Slice/vacancyMainSlideCardSlice';
+import { fetchSlides } from '../../../store/Slice/vacancyMainSlideCardSlice';
 import styles from './RatingSwiper.module.scss';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -9,7 +9,6 @@ import ArrowsSwiper from '../ArrowsSwiper/ArrowsSwiper';
 import 'swiper/css';
 import 'swiper/css/navigation';
 
-const Host = process.env.REACT_APP_SERVER_HOST;
 
 const RatingSwiperRow = ({ picture, date, title }) => {
   return (
