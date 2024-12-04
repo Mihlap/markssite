@@ -45,6 +45,16 @@ module.exports = {
         type: Sequelize.TEXT,
         allowNull: true,
       },
+       editor_id: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+        references: {
+          model: 'Users',
+          key: 'id',
+        },
+        onDelete: 'SET NULL',
+        onUpdate: 'CASCADE',
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
