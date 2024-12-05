@@ -43,6 +43,7 @@ import VacanciesMainCard from './Portal/Vacancies/VacanciesMainCard/VacanciesMai
 import VacanciesMain3 from './Portal/Vacancies/VacanciesMain/VacanciesMain3';
 import Internships from './Portal/Internships/Internships';
 import VacanciesComponent from './Portal/Vacancies/VacanciesMain/VacanciesComponent/VacanciesComponent';
+import Footer from './Footer/Footer';
 import FooterCircle from './Footer/FooterCircle';
 import FooterForm from './Footer/FooterForm';
 
@@ -57,6 +58,11 @@ export default function App() {
   const [showPortalMenu, setShowPortalMenu] = useState(false);
   const [videoLoaded, setVideoLoaded] = useState(false);
   const nodeRef = useRef(null);
+
+  const isPortalPage =
+    location.pathname.startsWith('/portal/vacancies') ||
+    location.pathname.startsWith('/portal/internships') ||
+    location.pathname.startsWith('/portal/vacancy');
 
   const isFooterFormPage = location.pathname === '/footerForm';
 
@@ -132,7 +138,6 @@ export default function App() {
           {showNavbarFooter && currentPage !== 'add' && (
             <ButtonAdmin user={user} handleMouseEnter={handleMouseEnter} handleMouseLeave={handleMouseLeave} />
           )}
-
           <TransitionGroup>
             <CSSTransition key={location.key} classNames="fade" timeout={300} nodeRef={nodeRef}>
               <div ref={nodeRef}>
@@ -287,21 +292,31 @@ export default function App() {
               </div>
             </CSSTransition>
           </TransitionGroup>
-
           <CookieComponent />
-
+    
           {!isFooterFormPage && showNavbarFooter && currentPage !== 'add' && (
-            <FooterCircle
-              handleMouseEnterFooter={handleMouseEnterFooter}
-              handleMouseEnterFooterMore={handleMouseEnterFooterMore}
-              handleMouseLeaveFooter={handleMouseLeaveFooter}
-              handleMouseLeave={handleMouseLeave}
-            />
+            <>
+              {isPortalPage ? (
+                <Footer
+                  handleMouseEnterFooter={handleMouseEnterFooter}
+                  handleMouseEnterFooterMore={handleMouseEnterFooterMore}
+                  handleMouseLeaveFooter={handleMouseLeaveFooter}
+                  handleMouseLeave={handleMouseLeave}
+                />
+              ) : (
+                <FooterCircle
+                  handleMouseEnterFooter={handleMouseEnterFooter}
+                  handleMouseEnterFooterMore={handleMouseEnterFooterMore}
+                  handleMouseLeaveFooter={handleMouseLeaveFooter}
+                  handleMouseLeave={handleMouseLeave}
+                />
+              )}
+            </>
           )}
-
           {showNavbarFooter && currentPage !== 'add' && <CustomCursor />}
         </>
       )}
     </HelmetProvider>
   );
 }
+  
