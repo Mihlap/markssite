@@ -1,15 +1,20 @@
 import React from 'react';
 import styles from './Footer.module.scss';
-import { Link } from 'react-router';
+import { Link } from 'react-router-dom';
 
 const Footer = ({ handleMouseEnterFooter, handleMouseEnterFooterMore, handleMouseLeaveFooter, handleMouseLeave }) => {
+
   function mapToLink(link, event) {
-    event.preventDefault();
+     if (event && event.preventDefault) {
+       event.preventDefault();
+     }
     window.location.href = link;
   }
-  const mapHendler = (event) => {
-    mapToLink('https://yandex.ru/maps/-/CCUgmThXKA');
-  };
+
+
+ const mapHandler = (event) => {
+   mapToLink('https://yandex.ru/maps/-/CCUgmThXKA', event);
+ };
 
   return (
     <footer className={styles.footer} onMouseEnter={handleMouseEnterFooter} onMouseLeave={handleMouseLeave}>
@@ -18,11 +23,10 @@ const Footer = ({ handleMouseEnterFooter, handleMouseEnterFooterMore, handleMous
         <div className={styles.footer__block_left}>
           <div className={styles.footer__mail}>
             <Link
-              to="mailto:mail@marksgroup.ru"
+              to="mailto:hr@marksgroup.ru"
               onMouseEnter={handleMouseEnterFooterMore}
-              onMouseLeave={handleMouseLeaveFooter}
-            >
-              <span>mail@marksgroup.ru</span>
+              onMouseLeave={handleMouseLeaveFooter}>
+              <span>hr@marksgroup.ru</span>
             </Link>
           </div>
           <div className={styles.footer__office}>
@@ -42,9 +46,20 @@ const Footer = ({ handleMouseEnterFooter, handleMouseEnterFooterMore, handleMous
             <div
               className={styles.footer__address} // to={"https://yandex.ru/maps/-/CCUgmThXKA"}
             >
-              <a onClick={mapHendler} onMouseEnter={handleMouseEnterFooterMore} onMouseLeave={handleMouseLeaveFooter}>
+              <div
+                role="button"
+                tabIndex="0"
+                onClick={(event) => mapHandler(event)}
+                onMouseEnter={handleMouseEnterFooterMore}
+                onMouseLeave={handleMouseLeaveFooter}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    mapHandler(e);
+                  }
+                }}
+                className={styles.footer__address}>
                 <span>Москва З-я&nbsp;ул.&nbsp;Ямского Поля, д.&nbsp;20, с. 1, офис&nbsp;704</span>
-              </a>
+              </div>
             </div>
           </div>
         </div>
@@ -99,14 +114,13 @@ const Footer = ({ handleMouseEnterFooter, handleMouseEnterFooterMore, handleMous
             </Link>
           </div>
           <div className={styles.footer__documents}>
-            {/* <Link  to="/">
-              Сотрудникам
-            </Link> */}
             <Link
               to="./Information"
               target="_blank"
               onMouseEnter={handleMouseEnterFooterMore}
-              onMouseLeave={handleMouseLeaveFooter}>
+              onMouseLeave={handleMouseLeaveFooter}
+              className={styles.footer__documents_link}
+            >
               <span>Документы</span>
             </Link>
             <div className={styles.footer__copyright}>©&nbsp;MARKSLAB</div>
