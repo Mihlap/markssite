@@ -4,7 +4,6 @@ import styles from '../../style/style-card.module.scss';
 import FormAddNews from './FormAddNews';
 import FormEditNews from './FormEditNews';
 import { deleteFormArticle, getFetchFormArticle } from '../../../store/Slice/articleSlice';
-import { fetchToggleStateForButton2Async, updateToggleStateForButton2Async } from '../../../store/Slice/toggleSlice';
 import LoadingModal from '../../add-project/loading/LoadingModal';
 import cat from '../../../img/default-photo.jpeg';
 import Edit from '../../icon/Edit.svg';
@@ -17,11 +16,9 @@ export default function AddNews({ user }) {
   const loading = useSelector((state) => state.article.loading);
   const error = useSelector((state) => state.article.error);
 
-  const isActiveForButton2 = useSelector((state) => state.toggle.isActiveForButton2);
-
   const [isModalOpen, setIsModalOpen] = useState(false);
-    const [isCopied, setIsCopied] = useState(false);
-    const [copiedId, setCopiedId] = useState('');
+  const [isCopied, setIsCopied] = useState(false);
+  const [copiedId, setCopiedId] = useState('');
   const [editArticleData, setEditArticleData] = useState(null);
   const [deleteModalState, setDeleteModalState] = useState({});
   const [modalBlockHeight, setModalBlockHeight] = useState('auto');
@@ -35,8 +32,7 @@ export default function AddNews({ user }) {
     }, []);
 
   useEffect(() => {
-    dispatch(getFetchFormArticle());
-     dispatch(fetchToggleStateForButton2Async());
+    dispatch(getFetchFormArticle());   
   }, [dispatch]);
 
   useEffect(() => {
@@ -121,18 +117,18 @@ export default function AddNews({ user }) {
       }
     }, [isCopied]);
 
-  const toggleActive = useCallback(() => {
-    dispatch(updateToggleStateForButton2Async(!isActiveForButton2));
-  }, [dispatch, isActiveForButton2]);
+  // const toggleActive = useCallback(() => {
+  //   dispatch(updateToggleStateForButton2Async(!isActiveForButton2));
+  // }, [dispatch, isActiveForButton2]);
 
   return (
     <div>
-      <div className={styles.card_components_admin__hide_block}>
+      {/* <div className={styles.card_components_admin__hide_block}>
         <div className={styles.card_components_admin__hide_text}>Скрыть фильтрацию</div>
         <div className={`${styles.toggleButton} ${isActiveForButton2 ? styles.active : ''}`} onClick={toggleActive}>
           <div className={styles.circle}></div>
         </div>
-      </div>
+      </div> */}
       <div className={styles.card_components_admin__button_block} onClick={handleOpenModal}>
         <button className={styles.card_components_admin__button}>
           <div>
@@ -173,18 +169,19 @@ export default function AddNews({ user }) {
       {loading ? (
         <LoadingModal />
       ) : error ? (
-        <div>Ошибка загрузки данных.</div>
+        <div className={styles.card_components_admin__errore_div}>Ошибка загрузки данных.</div>
       ) : article && article.length === 0 ? (
-        <div>Новостей пока нет.</div>
+        <div className={styles.card_components_admin__null_project}>Новостей пока нет.</div>
       ) : (
         <div className={styles.card_components_admin__block_map}>
           {Array.isArray(article) &&
             [...article]?.map((el) => {
-            const firstPhoto = el && el?.imageTitle ? el.imageTitle?.split(', ')[0] : null;
-            const defaultPhoto = cat;
-            const photoSrc = firstPhoto && firstPhoto.includes('https')
-            ? firstPhoto
-            : `${bucket_url}/images/imageArticle/${firstPhoto || defaultPhoto}`;
+              const firstPhoto = el && el?.imageTitle ? el.imageTitle?.split(', ')[0] : null;
+              const defaultPhoto = cat;
+              const photoSrc =
+                firstPhoto && firstPhoto.includes('https')
+                  ? firstPhoto
+                  : `${bucket_url}/images/imageArticle/${firstPhoto || defaultPhoto}`;
 
               return (
                 <React.Fragment key={el.id}>

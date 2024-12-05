@@ -4,21 +4,14 @@ import { transliterate } from 'transliteration';
 import { useDispatch } from 'react-redux';
 import styles from '../../add-project/formAdd/FormAddProject.module.scss';
 import ReactQuill from 'react-quill';
-// import "react-quill/dist/quill.snow.css";
 import {
   changeHandler,
   removePreviewPhoto,
   removePreviewPhotoAva,
-  // removePreviewPhotoClose,
-  // removePreviewPhotoOpen,
-  // getEmbedLink,
 } from './utils/formHelpers';
 import {
   fetchArticle,
   setArticleId,
-  // clearFormData,
-  // setDynamicaData,
-  // setDynamicImages,
 } from '../../../store/Slice/articleSlice';
 import customStyles from '../../add-project/formAdd/utils/customStyles';
 import compressImageFile from 'browser-image-compression';
@@ -83,9 +76,6 @@ export default function FormEditNews({ setIsModalOpen, editArticleData }) {
     [quillRef1, quillRef2].forEach((quillRef) => applyStylesToQuillEditor(quillRef));
   }, []);
 
-  // состояние для хранения текущего значения инпута
-  //  const [inputValue, setInputValue] = useState("");
-  // const [blocks, setBlocks] = useState([]);
   const [openConstructor, setOpenConstructor] = useState(false);
   const [dynamicPreviews, setDynamicPreviews] = useState([]);
   const [dynamicData, setDynamicData] = useState([]);
@@ -137,11 +127,12 @@ export default function FormEditNews({ setIsModalOpen, editArticleData }) {
                 blockIndex: index,
               }));
 
-              setDynamicData((prevDynamicData) => [
-                ...prevDynamicData.slice(0, index),
-                dynamicData,
-                ...prevDynamicData.slice(index + 1),
-              ]);
+            setDynamicData((prevDynamicData) => {
+              const newDynamicData = [...prevDynamicData];
+              newDynamicData[index] = dynamicData;
+              return newDynamicData;
+            });
+
 
               const previewsArray = dynamicData.map((input) => input.value);
               setDynamicPreviews((prev) => {
@@ -234,6 +225,7 @@ export default function FormEditNews({ setIsModalOpen, editArticleData }) {
         const previewPhotoAvaCopy = [...previewPhotoAva];
         const previewPhotoOpenCopy = [...previewPhotoOpen];
         const previewPhotoCloseCopy = [...previewPhotoClose];
+
         const formattedData = {
           ...inputData,
           dynamicBlocks: dynamicData,
@@ -263,13 +255,14 @@ export default function FormEditNews({ setIsModalOpen, editArticleData }) {
         setSelectedCompetencies([]);
         setIsModalOpen(false);
       } catch (error) {
-        console.error('Ошибка при сохранении статьи:', error);
+        console.error('Ошибка при сохранении новости:', error);
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [
       dispatch,
       editArticleData,
-      editArticleData.id,
+      editArticleData?.id,
       inputData,
       previewPhotos,
       previewPhotoAva,
@@ -277,6 +270,12 @@ export default function FormEditNews({ setIsModalOpen, editArticleData }) {
       previewPhotoClose,
       selectedCompetencies,
       dynamicData,
+      setInputData,
+      setPreviewPhotos,
+      setPreviewPhotoAva,
+      setPreviewPhotoOpen,
+      setPreviewPhotoClose,
+      setIsModalOpen,
     ]
   );
 
@@ -484,8 +483,7 @@ export default function FormEditNews({ setIsModalOpen, editArticleData }) {
               />
               <label
                 htmlFor={`input-${blockIndex}-${inputIndex}`}
-                className={styles.form_container__heading_block_label}
-              >
+                className={styles.form_container__heading_block_label}>
                 {labelText}
               </label>
               <div className={styles.form_container__heading_block_input_length}>
@@ -525,8 +523,7 @@ export default function FormEditNews({ setIsModalOpen, editArticleData }) {
                       height="16"
                       viewBox="0 0 16 16"
                       fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
+                      xmlns="http://www.w3.org/2000/svg">
                       <g id="Frame 4684">
                         <path
                           id="Vector"
@@ -565,8 +562,7 @@ export default function FormEditNews({ setIsModalOpen, editArticleData }) {
                           )}
                           <div
                             className={styles.preview_photos_container_block_constructor__remove_icon}
-                            onClick={(e) => handleDeletePreview(e, blockIndex, inputIndex, index)}
-                          >
+                            onClick={(e) => handleDeletePreview(e, blockIndex, inputIndex, index)}>
                             <span></span>
                           </div>
                         </div>
@@ -604,8 +600,7 @@ export default function FormEditNews({ setIsModalOpen, editArticleData }) {
                         height="16"
                         viewBox="0 0 16 16"
                         fill="none"
-                        xmlns="http://www.w3.org/2000/svg"
-                      >
+                        xmlns="http://www.w3.org/2000/svg">
                         <g id="Frame 4684">
                           <path
                             id="Vector"
@@ -622,7 +617,7 @@ export default function FormEditNews({ setIsModalOpen, editArticleData }) {
                   </div>
                   <div className={`${styles.previewContainer} ${classNames.outerDiv}`}>
                     {Array.isArray(dynamicPreviews[blockIndex]?.[inputIndex]) &&
-                      dynamicPreviews[blockIndex][inputIndex].map((src, index) => {   
+                      dynamicPreviews[blockIndex][inputIndex].map((src, index) => {
                         let imageSrc = src;
                         if (typeof src === 'string' && src.startsWith('blob:')) {
                           // является локальным URL для предварительного просмотра
@@ -633,27 +628,26 @@ export default function FormEditNews({ setIsModalOpen, editArticleData }) {
                         } else if (src) {
                           // добавляем bucket_url
                           imageSrc = `${bucket_url}/images/imageArticle/${src}`;
-                        } else {                     
+                        } else {
                           return null;
-                        }                                 
-                      return (
-                        <div key={`${blockIndex}-${inputIndex}-${index}`} className={classNames.innerDiv}>
-                          <div className={styles.preview_photos_container_block_constructor}>
+                        }
+                        return (
+                          <div key={`${blockIndex}-${inputIndex}-${index}`} className={classNames.innerDiv}>
+                            <div className={styles.preview_photos_container_block_constructor}>
                               <img
-                               src={imageSrc}
-                               alt={`Preview ${index}`}
-                               className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
-                             />
-                            <div
-                              className={styles.preview_photos_container_block_constructor__remove_icon}
-                              onClick={(e) => handleDeletePreview(e, blockIndex, inputIndex, index)}
-                            >
-                              <span></span>
+                                src={imageSrc}
+                                alt={`Preview ${index}`}
+                                className={`${styles.preview_photos_container__img} ${classNames.verticalImgTwo}`}
+                              />
+                              <div
+                                className={styles.preview_photos_container_block_constructor__remove_icon}
+                                onClick={(e) => handleDeletePreview(e, blockIndex, inputIndex, index)}>
+                                <span></span>
+                              </div>
                             </div>
                           </div>
-                        </div>
-                         );
-                    })}
+                        );
+                      })}
                   </div>
                 </>
               )}
@@ -682,8 +676,7 @@ export default function FormEditNews({ setIsModalOpen, editArticleData }) {
                     src={embedLink}
                     title="Video Player"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                    allowFullScreen
-                  ></iframe>
+                    allowFullScreen></iframe>
                 </div>
               )}
             </div>
@@ -747,7 +740,8 @@ export default function FormEditNews({ setIsModalOpen, editArticleData }) {
         </div>
       );
     },
-    [dynamicData, dynamicPreviews, handleDynamicInputChange, handleDeletePreview]
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [getPreviewClassName, dynamicData, dynamicPreviews, handleDynamicInputChange, handleDeletePreview]
   );
 
   const renderInputs = useCallback(
@@ -762,8 +756,7 @@ export default function FormEditNews({ setIsModalOpen, editArticleData }) {
           <div
             key={`close-${blockIndex}`}
             className={styles.blockContainer__close_button}
-            onClick={() => handleRemoveBlock(blockIndex)}
-          ></div>
+            onClick={() => handleRemoveBlock(blockIndex)}></div>
         </div>
       );
     },
@@ -777,9 +770,7 @@ export default function FormEditNews({ setIsModalOpen, editArticleData }) {
           Заполните предыдущий блок или дождитесь загркузки изображений❗
         </div>
       )}
-      <div className={styles.form_container__title}>
-        {editArticleData ? 'Редактирование новости' : 'Новая новость'}
-      </div>
+      <div className={styles.form_container__title}>{editArticleData ? 'Редактирование новости' : 'Новая новость'}</div>
       <div className={styles.form_container__block_form}>
         <form className={styles.form_container__form} onSubmit={submitHandler}>
           <div className={styles.form_container__block_gray_one}>
@@ -796,7 +787,7 @@ export default function FormEditNews({ setIsModalOpen, editArticleData }) {
                 // required
               />
               <label htmlFor="title" className={styles.form__label}>
-                Название статьи
+                Название
               </label>
             </div>
 
@@ -812,7 +803,7 @@ export default function FormEditNews({ setIsModalOpen, editArticleData }) {
                 onChange={(event) => changeHandler(event, inputData, setInputData)}
               />
               <label htmlFor="author" className={styles.form__label}>
-                Автор статьи
+                Автор
               </label>
             </div>
 
@@ -934,8 +925,7 @@ export default function FormEditNews({ setIsModalOpen, editArticleData }) {
                     />
                     <div
                       className={styles.preview_photos_container__remove_icon}
-                      onClick={() => handleRemovePreviewPhoto(index)}
-                    >
+                      onClick={() => handleRemovePreviewPhoto(index)}>
                       <span></span>
                     </div>
                   </div>
@@ -949,16 +939,16 @@ export default function FormEditNews({ setIsModalOpen, editArticleData }) {
                     <div key={index} className={styles.preview_photos_container__block}>
                       <img
                         className={styles.preview_photos_container__img}
-                        src={imageFileName.trim().includes('https') 
-                          ? imageFileName.trim() 
-                          : `${bucket_url}/images/imageArticle/${imageFileName.trim()}`
+                        src={
+                          imageFileName.trim().includes('https')
+                            ? imageFileName.trim()
+                            : `${bucket_url}/images/imageArticle/${imageFileName.trim()}`
                         }
                         alt={`Preview ${index}`}
                       />
                       <div
                         className={styles.preview_photos_container__remove_icon}
-                        onClick={() => handleRemovePreviewPhoto(index)}
-                      >
+                        onClick={() => handleRemovePreviewPhoto(index)}>
                         <span></span>
                       </div>
                     </div>
@@ -1046,14 +1036,14 @@ export default function FormEditNews({ setIsModalOpen, editArticleData }) {
                 placeholder="Нет ограничения по символам"
               />
               <label htmlFor="" className={styles.form_container__textarea_label_constructor}>
-                Текст статьи
+                Текст
               </label>
             </div>
           </div>
           <div className={`${styles.photo_orientation_selector} ${styles.flex_block_gap}`}>
             <div className={styles.form_container__checkbox_block}>
               <div>
-                Фото автора статьи
+                Фото автора текста
                 {/* <span> для отображения на странице «Проекты»</span> */}
               </div>
             </div>
@@ -1106,17 +1096,17 @@ export default function FormEditNews({ setIsModalOpen, editArticleData }) {
               {inputData.imageAuthor && previewPhotoAva.length === 0 && inputData.imageAuthor.length > 0 && (
                 <div className={styles.preview_photos_container__block}>
                   <img
-                    className={styles.preview_photos_container__img}               
-                    src={inputData?.imageAuthor?.includes('https') 
-                      ? inputData.imageAuthor 
-                      : `${bucket_url}/images/imagerticle/${inputData?.imageAuthor}`
-                    }  
+                    className={styles.preview_photos_container__img}
+                    src={
+                      inputData?.imageAuthor?.includes('https')
+                        ? inputData.imageAuthor
+                        : `${bucket_url}/images/imagerticle/${inputData?.imageAuthor}`
+                    }
                     alt=""
                   />
                   <div
                     className={styles.preview_photos_container__remove_icon}
-                    onClick={() => handleRemovePreviewPhotoAva()}
-                  >
+                    onClick={() => handleRemovePreviewPhotoAva()}>
                     <span></span>
                   </div>
                 </div>
@@ -1126,8 +1116,7 @@ export default function FormEditNews({ setIsModalOpen, editArticleData }) {
                   <img className={styles.preview_photos_container__img} src={preview || ''} alt={`Preview ${index}`} />
                   <div
                     className={styles.preview_photos_container__remove_icon}
-                    onClick={() => handleRemovePreviewPhotoAva(index)}
-                  >
+                    onClick={() => handleRemovePreviewPhotoAva(index)}>
                     <span></span>
                   </div>
                 </div>
@@ -1195,11 +1184,12 @@ export default function FormEditNews({ setIsModalOpen, editArticleData }) {
               {inputData.imageOpen !== null && previewPhotoOpen.length === 0 && (
                 <div className={styles.preview_photos_container__block}>
                   <img
-                    className={styles.preview_photos_container__img}                
-                    src={inputData?.imageOpen?.includes('https') 
-                      ? inputData.imageOpen 
-                      : `${bucket_url}/images/imageArticle/${inputData?.imageOpen}`
-                    } 
+                    className={styles.preview_photos_container__img}
+                    src={
+                      inputData?.imageOpen?.includes('https')
+                        ? inputData.imageOpen
+                        : `${bucket_url}/images/imageArticle/${inputData?.imageOpen}`
+                    }
                     alt="Preview"
                   />
                   {/* <div
@@ -1281,8 +1271,7 @@ export default function FormEditNews({ setIsModalOpen, editArticleData }) {
                       height="40"
                       viewBox="0 0 41 40"
                       fill="none"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
+                      xmlns="http://www.w3.org/2000/svg">
                       <g id="icon">
                         <circle id="Ellipse 4" cx="20.5" cy="20" r="20" fill="#FF7F6A" />
                         <path
@@ -1366,11 +1355,12 @@ export default function FormEditNews({ setIsModalOpen, editArticleData }) {
               {!inputData.imageClose !== null && previewPhotoClose.length === 0 && (
                 <div className={styles.preview_photos_container__block}>
                   <img
-                    className={styles.preview_photos_container__img}              
-                    src={inputData?.imageClose?.includes('https') 
-                      ? inputData.imageClose 
-                      : `${bucket_url}/images/imageAdd/${inputData?.imageClose}`
-                    } 
+                    className={styles.preview_photos_container__img}
+                    src={
+                      inputData?.imageClose?.includes('https')
+                        ? inputData.imageClose
+                        : `${bucket_url}/images/imageAdd/${inputData?.imageClose}`
+                    }
                     alt="Preview"
                   />
                   {/* <div

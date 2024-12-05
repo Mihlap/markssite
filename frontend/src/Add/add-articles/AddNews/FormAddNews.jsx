@@ -616,7 +616,7 @@ export default function FormAddNews({ setIsModalOpen }) {
                 // required
               />
               <label htmlFor="title" className={styles.form__label}>
-                Название статьи
+                Название
               </label>
             </div>
 
@@ -633,7 +633,7 @@ export default function FormAddNews({ setIsModalOpen }) {
                 onChange={(event) => changeHandler(event, inputData, setInputData)}
               />
               <label htmlFor="author" className={styles.form__label}>
-                Автор статьи
+                Автор
               </label>
             </div>
 
@@ -843,7 +843,7 @@ export default function FormAddNews({ setIsModalOpen }) {
                 placeholder="Нет ограничения по символам"
               />
               <label htmlFor="" className={styles.form_container__textarea_label_constructor}>
-                Текст статьи
+                Текст
               </label>
             </div>
           </div>
@@ -851,7 +851,7 @@ export default function FormAddNews({ setIsModalOpen }) {
           <div className={`${styles.photo_orientation_selector} ${styles.flex_block_gap}`}>
             <div className={styles.form_container__checkbox_block}>
               <div>
-                Фото автора статьи
+                Фото автора текста
                 {/* <span> для отображения на странице «Проекты»</span> */}
               </div>
             </div>
