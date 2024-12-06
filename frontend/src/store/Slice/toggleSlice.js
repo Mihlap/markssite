@@ -1,4 +1,3 @@
-// feature/toggle/toggleSlice.js
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
 
@@ -82,12 +81,40 @@ export const fetchToggleStateForButton3Async = createAsyncThunk(
   }
 );
 
+// Добавляем новое действие для Jornal кнопки
+export const updateToggleStateForButton4Async = createAsyncThunk(
+  'toggle/updateStateForButton4',
+  async (isActiveForButton4, { rejectWithValue }) => {
+    try {
+      const response = await axios.put(`${serverHost}/api/toggle/journal`, {
+        isActiveForButton4,
+      });
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
+export const fetchToggleStateForButton4Async = createAsyncThunk(
+  'toggle/fetchStateForButton4',
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`${serverHost}/api/toggle/journal`);
+      return response.data.isActiveForButton4;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }
+);
+
 const toggleSlice = createSlice({
   name: 'toggle',
   initialState: {
     isActiveForButton1: false,
     isActiveForButton2: false,
     isActiveForButton3: false,
+    isActiveForButton4: false,
     error: null,
   },
   reducers: {},
@@ -156,6 +183,20 @@ const toggleSlice = createSlice({
     [fetchToggleStateForButton3Async.rejected]: (state, action) => {
       state.error = action.payload?.message || 'Unknown error occurred';
       // console.error("Error fetching toggle state for button 3:", state.error);
+    },
+    [updateToggleStateForButton4Async.pending]: (state, action) => {    
+    },
+    [updateToggleStateForButton4Async.fulfilled]: (state, action) => {
+      state.isActiveForButton4 = !state.isActiveForButton4;
+    },
+    [updateToggleStateForButton4Async.rejected]: (state, action) => {
+      state.error = action.payload?.message || 'An unknown error occurred';   
+    },
+    [fetchToggleStateForButton4Async.fulfilled]: (state, action) => {
+      state.isActiveForButton4 = action.payload;
+    },
+    [fetchToggleStateForButton4Async.rejected]: (state, action) => {
+      state.error = action.payload?.message || 'An unknown error occurred';  
     },
   },
 });
