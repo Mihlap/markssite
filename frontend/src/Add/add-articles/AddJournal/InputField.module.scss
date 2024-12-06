@@ -1,0 +1,27 @@
+.inputField {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 16px;
+
+  & input {
+    font-size: 16px;
+    padding: 10px 12px;
+    border: 1px solid var(--blue-75BBFD);
+    border-radius: 4px;
+    color: var(--black-1D2E43);
+    font-family: 'Raleway', sans-serif;
+
+    &:focus {
+      outline: none;
+      border-color: var(--blue-focus);
+      box-shadow: 0 0 0 2px rgba(117, 187, 253, 0.5);
+    }
+  }
+
+  & label {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--gray-757575);
+  }
+}
