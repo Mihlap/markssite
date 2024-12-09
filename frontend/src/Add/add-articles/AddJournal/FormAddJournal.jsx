@@ -5,7 +5,14 @@ import FileUploader from './FileUploader';
 import DynamicBlockConstructor from './DynamicBlockConstructor';
 import styles from '../../../Add/add-project/formAdd/FormAddProject.module.scss';
 
-export default function FormAddJournal() {
+import {
+  PublicationContainer,
+  PublicationIndicator,
+} from '../../../Add/add-project/formAdd/utils/CustomSelectComponents';
+
+
+export default function FormAddJournal({ setIsModalOpen }) {
+  const [, setIsFocused] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
     date: '',
@@ -63,33 +70,80 @@ export default function FormAddJournal() {
     [formData, blocks]
   );
 
+  const closeModal = useCallback(() => {
+    setIsModalOpen(false);
+  }, [setIsModalOpen]);
+
   return (
     <div className={styles.form_container}>
       {showNotification && <div className={styles.form_container__notification}>Заполните обязательные поля</div>}
       <h1 className={styles.form_container__title}>Новая статья</h1>
       <div className={styles.form_container__block_form}>
         <form className={styles.form_container__form} onSubmit={handleSubmit}>
-          <InputField label="Название статьи" name="title" value={formData.title} onChange={handleInputChange} />
-          <InputField label="Дата, месяц, год" name="date" value={formData.date} onChange={handleInputChange} />
-          <DropdownSelect
-            label="Выберите категорию фильтрации"
-            name="category"
-            options={['Архитектура', 'IT', 'Проектирование', 'Механика грунтов']}
-            value={formData.category}
-            onChange={handleInputChange}
-          />
-          <DropdownSelect
-            label="Выберите номер выпуска"
-            name="issueNumber"
-            options={Array.from({ length: 10 }, (_, i) => i + 1)}
-            value={formData.issueNumber}
-            onChange={handleInputChange}
-          />
-
+          <div className={styles.form_container__block_gray_one}>
+            <InputField
+              label="Название статьи"
+              name="title"
+              placeholder="Название статьи"
+              value={formData.title}
+              onChange={handleInputChange}
+            />
+            <InputField
+              label="Дата, месяц, год"
+              placeholder="Дата, месяц, год"
+              name="date"
+              value={formData.date}
+              onChange={handleInputChange}
+            />
+            <DropdownSelect
+              label=""
+              name="category"
+              placeholder="Выберете категорию фильтрации"
+              isMulti
+              options={[
+                { value: 'Архитектура', label: 'Архитектура' },
+                { value: 'IT', label: 'IT' },
+                { value: 'Проектирование', label: 'Проектирование' },
+                { value: 'Механика грунтов', label: 'Механика грунтов' },
+              ]}
+              value={
+                Array.isArray(formData.category)
+                  ? formData.category.map((category) => ({
+                      value: category,
+                      label: category,
+                    }))
+                  : []
+              }
+              onChange={(selectedOptions) =>
+                handleInputChange('category', selectedOptions ? selectedOptions.map((option) => option.value) : [])
+              }
+              components={{
+                DropdownIndicator: PublicationIndicator,
+                ValueContainer: PublicationContainer,
+              }}
+            />
+            <DropdownSelect
+              label=""
+              placeholder="Выберите номер выпуска"
+              name="issueNumber"
+              options={Array.from({ length: 10 }, (_, i) => ({
+                value: (i + 1).toString(),
+                label: `Выпуск ${i + 1}`,
+              }))}
+              value={
+                formData.issueNumber ? { value: formData.issueNumber, label: `Выпуск ${formData.issueNumber}` } : null
+              }
+              onChange={(selectedOption) => handleInputChange('issueNumber', selectedOption?.value || '')}
+              components={{
+                DropdownIndicator: PublicationIndicator,
+                ValueContainer: PublicationContainer,
+              }}
+            />
+          </div>
           <div className={styles.authors}>
-            <h3>Авторы</h3>
+            <h3 className={styles.authors__title}>Авторы</h3>
             {formData.authors.map((author) => (
-              <div key={author.id} className={styles.author}>
+              <div key={author.id} className={styles.authors__block}>
                 <InputField
                   label="ФИО"
                   name={`author_${author.id}`}
@@ -101,12 +155,15 @@ export default function FormAddJournal() {
                     )
                   }
                 />
-                <button type="button" className={styles.removeAuthor} onClick={() => handleRemoveAuthor(author.id)}>
+                <button
+                  type="button"
+                  className={styles.authors__remove_button}
+                  onClick={() => handleRemoveAuthor(author.id)}>
                   Удалить
                 </button>
               </div>
             ))}
-            <button type="button" className={styles.addAuthor} onClick={handleAddAuthor}>
+            <button type="button" className={styles.authors__add_button} onClick={handleAddAuthor}>
               Добавить автора
             </button>
           </div>
@@ -120,12 +177,10 @@ export default function FormAddJournal() {
           <InputField label="Город, страна" name="location" value={formData.location} onChange={handleInputChange} />
           <FileUploader label="Загрузить изображение" name="image" />
           <DynamicBlockConstructor blocks={blocks} onAddBlock={handleAddBlock} onRemoveBlock={handleRemoveBlock} />
-          <button type="submit" className={styles.submitButton}>
-            Сохранить
-          </button>
-          <button type="button" className={styles.cancelButton} onClick={() => console.log('Отмена')}>
-            Отмена
-          </button>
+          <div className={styles.form_container__button_block}>
+            <button type="submit" className={styles.form_container__button_save}></button>
+            <button type="button" className={styles.form_container__button_cancel} onClick={closeModal}></button>
+          </div>
         </form>
       </div>
     </div>
