@@ -19,15 +19,11 @@ function Bauble({ vec = new THREE.Vector3(), scale, r = THREE.MathUtils.randFloa
   const { nodes } = useGLTF('/assets/stars.glb');
   const api = useRef();
 
-  useFrame((state, delta) => {
+  useFrame((_, delta) => {
     delta = Math.min(0.1, delta);
-    if (api.current) {
-      api.current?.applyImpulse(
-        vec
-          .copy(api.current.translation())
-          .normalize()
-          .multiply({ x: -1000 * delta * scale, y: -1000 * delta * scale, z: -1000 * delta * scale })
-      );
+    if (api.current && delta > 0) {
+      const impulseStrength = -1000 * delta * scale;
+      api.current.applyImpulse(vec.copy(api.current.translation()).normalize().multiplyScalar(impulseStrength));
     }
   });
 
@@ -39,12 +35,11 @@ function Bauble({ vec = new THREE.Vector3(), scale, r = THREE.MathUtils.randFloa
       position={[r(10), r(10), r(10)]}
       colliders={false}
       ref={api}
-      dispose={null}
-    >
+      dispose={null}>
       <BallCollider args={[1.4]} />
       <group>
         <mesh castShadow scale={0.7 * scale} geometry={nodes.stars_01.geometry}>
-          <meshPhongMaterial color={[1.4, 1.4, 1.4]} specular={[1.5, 1.5, 1.5]} shininess={12} />
+          <meshStandardMaterial color="#ffffff" emissive="#888888" metalness={0} roughness={0.2} />
         </mesh>
       </group>
     </RigidBody>
@@ -70,32 +65,31 @@ function Pointer({ vec = new THREE.Vector3() }) {
 function StarsImpulse() {
   // Массив для звезд
   const [baubles, setBaubles] = useState(generateBaubles([0.55, 0.75, 1, 1, 1.15]));
-  const [isVisible, setIsVisible] = useState(true); 
+  const [isVisible, setIsVisible] = useState(true);
 
- useEffect(() => {
-   const handleResize = () => {
-     const width = window.innerWidth;
-     if (width <= 1024 && width >= 768) {
-       setBaubles(generateBaubles([0.4, 0.5, 0.6, 0.7]));
-     } else {
-       setBaubles(generateBaubles([0.55, 0.75, 1, 1, 1.15]));
-     }
-   };
+  useEffect(() => {
+    const handleResize = () => {
+      const width = window.innerWidth;
+      if (width <= 1024 && width >= 768) {
+        setBaubles(generateBaubles([0.4, 0.5, 0.6, 0.7]));
+      } else {
+        setBaubles(generateBaubles([0.55, 0.75, 1, 1, 1.15]));
+      }
+    };
 
-   const observer = new IntersectionObserver(([entry]) => setIsVisible(entry.isIntersecting), { threshold: 0.1 });
+    const observer = new IntersectionObserver(([entry]) => setIsVisible(entry.isIntersecting), { threshold: 0.1 });
 
-   const container = document.getElementById('stars-canvas');
-   if (container) observer.observe(container);
+    const container = document.getElementById('stars-canvas');
+    if (container) observer.observe(container);
 
-   window.addEventListener('resize', handleResize);
-   handleResize();
+    window.addEventListener('resize', handleResize);
+    handleResize();
 
-   return () => {
-     window.removeEventListener('resize', handleResize);
-     if (container) observer.unobserve(container);
-   };
- }, []);
-
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      if (container) observer.unobserve(container);
+    };
+  }, []);
 
   return (
     <div id="stars-canvas" style={{ position: 'relative', top: 0, left: 0, height: '100vh', width: '100vw' }}>
