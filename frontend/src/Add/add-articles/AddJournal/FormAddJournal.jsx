@@ -1,18 +1,20 @@
 import React, { useState, useCallback } from 'react';
 import InputField from './InputField';
 import DropdownSelect from './DropdownSelect';
-import FileUploader from './FileUploader';
-import DynamicBlockConstructor from './DynamicBlockConstructor';
+
 import styles from '../../../Add/add-project/formAdd/FormAddProject.module.scss';
 
 import {
   PublicationContainer,
   PublicationIndicator,
 } from '../../../Add/add-project/formAdd/utils/CustomSelectComponents';
+import AuthorsSection from './AuthorsSection';
+
 
 
 export default function FormAddJournal({ setIsModalOpen }) {
-  const [, setIsFocused] = useState(false);
+ 
+  const [showNotification, setShowNotification] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
     date: '',
@@ -25,8 +27,6 @@ export default function FormAddJournal({ setIsModalOpen }) {
     blocks: [],
   });
 
-  const [blocks, setBlocks] = useState([]);
-  const [showNotification, setShowNotification] = useState(false);
 
   const handleInputChange = useCallback((name, value) => {
     setFormData((prev) => ({
@@ -35,27 +35,6 @@ export default function FormAddJournal({ setIsModalOpen }) {
     }));
   }, []);
 
-  const handleAddAuthor = useCallback(() => {
-    setFormData((prev) => ({
-      ...prev,
-      authors: [...prev.authors, { id: Date.now(), name: '' }],
-    }));
-  }, []);
-
-  const handleRemoveAuthor = useCallback((id) => {
-    setFormData((prev) => ({
-      ...prev,
-      authors: prev.authors.filter((author) => author.id !== id),
-    }));
-  }, []);
-
-  const handleAddBlock = useCallback((block) => {
-    setBlocks((prevBlocks) => [...prevBlocks, block]);
-  }, []);
-
-  const handleRemoveBlock = useCallback((index) => {
-    setBlocks((prevBlocks) => prevBlocks.filter((_, i) => i !== index));
-  }, []);
 
   const handleSubmit = useCallback(
     (e) => {
@@ -65,10 +44,10 @@ export default function FormAddJournal({ setIsModalOpen }) {
         setTimeout(() => setShowNotification(false), 3000);
         return;
       }
-      console.log('Submitting form data:', { ...formData, blocks });
     },
-    [formData, blocks]
+    [formData]
   );
+
 
   const closeModal = useCallback(() => {
     setIsModalOpen(false);
@@ -140,34 +119,9 @@ export default function FormAddJournal({ setIsModalOpen }) {
               }}
             />
           </div>
-          <div className={styles.authors}>
-            <h3 className={styles.authors__title}>Авторы</h3>
-            {formData.authors.map((author) => (
-              <div key={author.id} className={styles.authors__block}>
-                <InputField
-                  label="ФИО"
-                  name={`author_${author.id}`}
-                  value={author.name}
-                  onChange={(name, value) =>
-                    handleInputChange(
-                      'authors',
-                      formData.authors.map((a) => (a.id === author.id ? { ...a, name: value } : a))
-                    )
-                  }
-                />
-                <button
-                  type="button"
-                  className={styles.authors__remove_button}
-                  onClick={() => handleRemoveAuthor(author.id)}>
-                  Удалить
-                </button>
-              </div>
-            ))}
-            <button type="button" className={styles.authors__add_button} onClick={handleAddAuthor}>
-              Добавить автора
-            </button>
-          </div>
 
+          <AuthorsSection />
+   
           <InputField
             label="Университет или организация"
             name="university"
@@ -175,8 +129,6 @@ export default function FormAddJournal({ setIsModalOpen }) {
             onChange={handleInputChange}
           />
           <InputField label="Город, страна" name="location" value={formData.location} onChange={handleInputChange} />
-          <FileUploader label="Загрузить изображение" name="image" />
-          <DynamicBlockConstructor blocks={blocks} onAddBlock={handleAddBlock} onRemoveBlock={handleRemoveBlock} />
           <div className={styles.form_container__button_block}>
             <button type="submit" className={styles.form_container__button_save}></button>
             <button type="button" className={styles.form_container__button_cancel} onClick={closeModal}></button>
