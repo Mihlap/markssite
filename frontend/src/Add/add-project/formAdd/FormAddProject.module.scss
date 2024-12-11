@@ -678,6 +678,74 @@
   }
 }
 
+    .add_input_button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      width: 100%;
+      padding: 1rem;
+      border: 1px dashed var(--blue-75BBFD);
+      font-size: 16px;
+      font-weight: 400;
+      color: var(--blue-75BBFD);
+      background-color: transparent;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+  
+      &:hover {
+        color: var(--dark-blue-389FFF);
+        border-color: var(--dark-blue-389FFF);
+      }
+  
+      svg {
+        width: 25px;
+        height: 24px;
+        transition: fill 0.3s ease;
+      }
+  
+      .add_input_text {
+        font-size: 16px;
+        font-weight: 400;
+        line-height: 16px;
+        color: currentColor;
+      }
+    }
+
+        .form_container {
+    
+          &__block_gray_one {
+            position: relative;
+            background-color: var(--light-light-gray-EBECEE);
+            padding: 2rem 1rem 2rem 1rem;
+          }
+    
+          &__close_button {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            cursor: pointer;
+            padding: 0;
+    
+            svg {
+              display: block;
+              width: 11.5px;
+              height: 11.5px;
+            }
+          }
+    
+          &__checkbox_block {
+            color: var(--light-gray-C0C5CB);
+            font-size: 0.75rem;
+            font-family: Raleway;
+            font-style: normal;
+            font-weight: 400;
+            line-height: 1rem;
+            padding-bottom: 0.3rem;
+          }
+        }
+
 // << ============ КОНСТРУКТОР ============ >>
 
 .constructor_container {
