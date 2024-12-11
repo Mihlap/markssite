@@ -1,10 +1,7 @@
 import React from 'react';
 import Select from 'react-select';
-// import styles from './DropdownSelect.module.scss';
 import styles from '../../../Add/add-project/formAdd/FormAddProject.module.scss';
 import customStyles from '../../add-project/formAdd/utils/customStyles';
-
-
 
 export default function DropdownSelect({
   label,

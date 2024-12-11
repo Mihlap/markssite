@@ -1,13 +1,10 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { deleteFormArticle, getFetchFormArticle } from '../../../store/Slice/articleSlice';
-import {
-  fetchToggleStateForButton4Async,
-  updateToggleStateForButton4Async,
-} from '../../../store/Slice/toggleSlice';
+import { fetchToggleStateForButton4Async, updateToggleStateForButton4Async } from '../../../store/Slice/toggleSlice';
 import LoadingModal from '../../add-project/loading/LoadingModal';
-import FormAddJournal from './FormAddJournal';
-import FormEditJournal from './FormEditJournal';
+import FormAddJournal from './FormAddEditJournal/FormAddJournal';
+import FormEditJournal from './FormAddEditJournal/FormEditJournal';
 import styles from '../../style/style-card.module.scss';
 
 import cat from '../../../img/default-photo.jpeg';

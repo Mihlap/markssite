@@ -29,8 +29,23 @@ export default function AuthorsSection() {
 
   const handleFileChange = useCallback(
     (id, file) => {
-      const previewUrl = URL.createObjectURL(file);
-      handleUpdateAuthorBlock(id, { image: previewUrl });
+      handleUpdateAuthorBlock(id, { isLoading: true });
+
+      const reader = new FileReader();
+
+      reader.onload = () => {
+        handleUpdateAuthorBlock(id, {
+          image: reader.result,
+          isLoading: false,
+        });
+      };
+
+      reader.onerror = () => {
+        console.error('Ошибка загрузки файла');
+        handleUpdateAuthorBlock(id, { isLoading: false });
+      };
+
+      reader.readAsDataURL(file);
     },
     [handleUpdateAuthorBlock]
   );
@@ -82,7 +97,7 @@ export default function AuthorsSection() {
             <ImagePreviewSection
               images={author.image ? [author.image] : []}
               onRemove={() => handleRemoveImage(author.id)}
-              isLoading={false}
+              isLoading={author.isLoading}
             />
             <div className={styles.form_container__heading_block}>
               <label htmlFor={`author-name-${author.id}`} className={styles.input_field__label}></label>
@@ -92,6 +107,7 @@ export default function AuthorsSection() {
                 className={styles.form_container__heading_block_input}
                 placeholder="ФИО"
                 value={author.name}
+                maxLength={150}
                 onChange={(e) => handleUpdateAuthorBlock(author.id, { name: e.target.value })}
               />
             </div>
