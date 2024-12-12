@@ -1,11 +1,16 @@
 import React, { useState, useCallback } from 'react';
 import InputField from '../InputField';
 import DropdownSelect from '../DropdownSelect';
+import AuthorsSection from '../AuthorsSection';
+import { useDispatch, useSelector } from 'react-redux';
 import styles from '../../../../Add/add-project/formAdd/FormAddProject.module.scss';
 import { PublicationContainer, PublicationIndicator } from '../../../add-project/formAdd/utils/CustomSelectComponents';
-import AuthorsSection from '../AuthorsSection';
+import { createJournal, updateAuthors } from '../../../../store/Slice/journalSlice';
 
-export default function FormAddJournal({ setIsModalOpen }) {
+
+export default function FormAddJournal({ setIsModalOpen }) {  
+  const dispatch = useDispatch();
+  const authors = useSelector((state) => state.journal?.formData?.authors || []);
   const [showNotification, setShowNotification] = useState(false);
   const [formData, setFormData] = useState({
     title: '',
@@ -57,18 +62,47 @@ export default function FormAddJournal({ setIsModalOpen }) {
     }));
   }, []);
 
+
   const handleSubmit = useCallback(
     (e) => {
       e.preventDefault();
+
       const { title, date, category } = formData;
-      if (!title || !date || !category) {
+      if (!title || !date || !category || authors.length === 0) {
         setShowNotification(true);
         setTimeout(() => setShowNotification(false), 3000);
         return;
       }
+
+      // Готовим данные к отправке
+      // Здесь мы создаем FormData, чтобы отправить данные как multipart/form-data
+      const fd = new FormData();
+
+      fd.append('title', formData.title);
+      fd.append('publication_date', formData.date);
+      // category – массив, его нужно превратить в JSON-строку
+      fd.append('category', JSON.stringify(Array.isArray(formData.category) ? formData.category : []));
+      fd.append('issue_number', formData.issueNumber || '');
+      fd.append('authors', JSON.stringify(authors));
+
+      // Если у вас есть поля organizations, locations, markdown_content, editor_id, их тоже можно добавить:
+      fd.append('organizations', JSON.stringify([]));
+      fd.append('locations', JSON.stringify([]));
+      fd.append('markdown_content', formData.text || '');
+      fd.append('editor_id', '');
+
+      // Если у вас когда-то появятся файлы (authorImages), добавьте их так:
+      // formData.authorImages.forEach((file) => fd.append('authorImages', file));
+
+      console.log('Данные формы перед отправкой:', { ...formData, authors });
+
+      // Отправляем данные на сервер для создания нового журнала
+      dispatch(createJournal(fd));
+      setIsModalOpen(false);
     },
-    [formData]
+    [formData, authors, dispatch, setIsModalOpen]
   );
+
 
   const closeModal = useCallback(() => {
     setIsModalOpen(false);
@@ -145,7 +179,10 @@ export default function FormAddJournal({ setIsModalOpen }) {
             />
           </div>
 
-          <AuthorsSection />
+          <AuthorsSection
+            authors={authors}
+            onAuthorsChange={(updatedAuthors) => dispatch(updateAuthors(updatedAuthors))}
+          />
 
           {universityBlocks.map((block) => (
             <div key={block.id} className={styles.form_container__block_gray_one}>
