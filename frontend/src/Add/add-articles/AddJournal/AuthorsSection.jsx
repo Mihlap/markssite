@@ -53,34 +53,26 @@ export default function AuthorsSection({ authors = [], onAuthorsChange }) {
   );
 
 
-  const handleFileChange = useCallback(
-    async (id, file) => {
-      if (!file) return;
+const handleFileChange = useCallback(
+  async (id, file) => {
+    if (!file) return;
 
-      handleUpdateAuthorBlock(id, { isLoading: true });
+    handleUpdateAuthorBlock(id, { isLoading: true });
 
-      try {
-        const compressedFile = await compressImage(file);
+    try {
+      // Сжимаем изображение
+      const compressedFile = await compressImage(file);
 
-        const reader = new FileReader();
-        reader.onload = () => {
-          console.log(`Изображение загружено для автора ${id}:`, reader.result);
-          handleUpdateAuthorBlock(id, { image: reader.result, isLoading: false });
-        };
+      // Обновляем автора с сжатым файлом
+      handleUpdateAuthorBlock(id, { image: compressedFile, isLoading: false });
+    } catch (error) {
+      console.error('Ошибка обработки изображения:', error);
+      handleUpdateAuthorBlock(id, { isLoading: false });
+    }
+  },
+  [handleUpdateAuthorBlock, compressImage]
+);
 
-        reader.onerror = () => {
-          console.error('Ошибка загрузки файла');
-          handleUpdateAuthorBlock(id, { isLoading: false });
-        };
-
-        reader.readAsDataURL(compressedFile);
-      } catch (error) {
-        console.error('Ошибка обработки изображения:', error);
-        handleUpdateAuthorBlock(id, { isLoading: false });
-      }
-    },
-    [handleUpdateAuthorBlock, compressImage]
-  );
 
 
   const handleRemoveImage = useCallback(
@@ -129,7 +121,7 @@ export default function AuthorsSection({ authors = [], onAuthorsChange }) {
                 <div className={styles.slider_container__uploadTextForm}>Загрузить изображения</div>
               </label>
               <ImagePreviewSection
-                images={author.image ? [author.image] : []}
+                images={author.image ? [URL.createObjectURL(author.image)] : []} 
                 onRemove={() => handleRemoveImage(author.id)}
                 isLoading={author.isLoading}
               />

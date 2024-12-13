@@ -30,6 +30,7 @@ export const createJournal = createAsyncThunk(
   }
 );
 
+
 // Thunk для обновления записи
 export const updateJournal = createAsyncThunk(
   'journal/updateJournal',

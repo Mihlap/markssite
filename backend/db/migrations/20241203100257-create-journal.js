@@ -14,11 +14,11 @@ module.exports = {
         allowNull: false,
       },
       publication_date: {
-        type: Sequelize.DATE,
+        type: Sequelize.STRING,
         allowNull: true,
       },
       category: {
-        type: Sequelize.STRING,
+        type: Sequelize.JSONB,
         allowNull: false,
       },
       issue_number: {
@@ -45,7 +45,7 @@ module.exports = {
         type: Sequelize.TEXT,
         allowNull: true,
       },
-       editor_id: {
+      editorId: {
         type: Sequelize.INTEGER,
         allowNull: true,
         references: {
@@ -54,6 +54,10 @@ module.exports = {
         },
         onDelete: 'SET NULL',
         onUpdate: 'CASCADE',
+      },
+      attachments: {
+        type: Sequelize.JSONB,
+        allowNull: true,
       },
       createdAt: {
         allowNull: false,
