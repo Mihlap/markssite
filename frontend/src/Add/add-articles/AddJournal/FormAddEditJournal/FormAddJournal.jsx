@@ -5,8 +5,8 @@ import AuthorsSection from '../AuthorsSection';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from '../../../../Add/add-project/formAdd/FormAddProject.module.scss';
 import { PublicationContainer, PublicationIndicator } from '../../../add-project/formAdd/utils/CustomSelectComponents';
-import { createJournal, updateAuthors } from '../../../../store/Slice/journalSlice';
-
+import { createJournal } from '../../../../store/Slice/journalSlice';
+import { updateAuthors } from '../../../../store/Slice/journalSlice';
 
 export default function FormAddJournal({ setIsModalOpen }) {  
   const dispatch = useDispatch();
@@ -62,46 +62,64 @@ export default function FormAddJournal({ setIsModalOpen }) {
     }));
   }, []);
 
+const handleSubmit = useCallback(
+  async (e) => {
+    e.preventDefault();
 
-  const handleSubmit = useCallback(
-    (e) => {
-      e.preventDefault();
+    const { title, date, category, issue_number, blocks, text } = formData;
 
-      const { title, date, category } = formData;
-      if (!title || !date || !category || authors.length === 0) {
-        setShowNotification(true);
-        setTimeout(() => setShowNotification(false), 3000);
-        return;
-      }
+    // if (!title || !date || !category) {
+    //   setShowNotification(true);
+    //   setTimeout(() => setShowNotification(false), 3000);
+    //   return;
+    // }
 
-      // Готовим данные к отправке
-      // Здесь мы создаем FormData, чтобы отправить данные как multipart/form-data
-      const fd = new FormData();
+    try {
+      const formattedData = {
+        title,
+        publication_date: date,
+        category: JSON.stringify(category),
+        issue_number: issue_number,
+        authors: JSON.stringify(authors),
+        organizations: JSON.stringify(blocks.filter((block) => block.type === 'university')),
+        locations: JSON.stringify(blocks.filter((block) => block.type === 'location')),
+        markdown_content: text,
+      };
 
-      fd.append('title', formData.title);
-      fd.append('publication_date', formData.date);
-      // category – массив, его нужно превратить в JSON-строку
-      fd.append('category', JSON.stringify(Array.isArray(formData.category) ? formData.category : []));
-      fd.append('issue_number', formData.issueNumber || '');
-      fd.append('authors', JSON.stringify(authors));
+         authors.forEach((author) => {
+           if (author.image) {
+             formData.append(`authorImages`, author.image);
+           }
+         });
 
-      // Если у вас есть поля organizations, locations, markdown_content, editor_id, их тоже можно добавить:
-      fd.append('organizations', JSON.stringify([]));
-      fd.append('locations', JSON.stringify([]));
-      fd.append('markdown_content', formData.text || '');
-      fd.append('editor_id', '');
-
-      // Если у вас когда-то появятся файлы (authorImages), добавьте их так:
-      // formData.authorImages.forEach((file) => fd.append('authorImages', file));
-
-      console.log('Данные формы перед отправкой:', { ...formData, authors });
-
-      // Отправляем данные на сервер для создания нового журнала
-      dispatch(createJournal(fd));
+      await dispatch(createJournal(formattedData)).unwrap();
       setIsModalOpen(false);
-    },
-    [formData, authors, dispatch, setIsModalOpen]
-  );
+
+      // Сброс формы
+      setFormData({
+        title: '',
+        date: '',
+        category: '',
+        issueNumber: '',
+        authors: [],
+        university: '',
+        location: '',
+        text: '',
+        blocks: [
+          { id: Date.now() + 1, type: 'university', value: '' },
+          { id: Date.now() + 2, type: 'location', value: '' },
+        ],
+      });
+    } catch (error) {
+      console.error('Ошибка при создании записи:', error);
+      setShowNotification(true);
+      setTimeout(() => setShowNotification(false), 3000);
+    }
+  },
+  [formData, authors, dispatch, setIsModalOpen]
+);
+
+
 
 
   const closeModal = useCallback(() => {
@@ -132,6 +150,7 @@ export default function FormAddJournal({ setIsModalOpen }) {
               name="date"
               value={formData.date}
               onChange={handleInputChange}
+              type="date"
             />
             <DropdownSelect
               label=""
@@ -180,8 +199,13 @@ export default function FormAddJournal({ setIsModalOpen }) {
           </div>
 
           <AuthorsSection
-            authors={authors}
-            onAuthorsChange={(updatedAuthors) => dispatch(updateAuthors(updatedAuthors))}
+            authors={formData.authors}
+            onAuthorsChange={(updatedAuthors) =>
+              setFormData((prev) => ({
+                ...prev,
+                authors: updatedAuthors,
+              }))
+            }
           />
 
           {universityBlocks.map((block) => (

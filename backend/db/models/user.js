@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       this.hasMany(Articles, { foreignKey: 'authorId' });
       this.hasMany(Staff, { foreignKey: 'userId' });
       this.hasMany(Employee, { foreignKey: 'authorId' });
-      this.hasMany(Journal, { foreignKey: 'editor_id', as: 'editorJournals' });
+      this.hasMany(Journal, { foreignKey: 'editorId' });
     }
   }
   User.init({
