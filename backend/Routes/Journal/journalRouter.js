@@ -1,23 +1,13 @@
+/* eslint-disable camelcase */
 const express = require('express');
 const { URL } = require('url');
-const { Journal, AttachmentsJournal } = require('../../db/models');
+const { Journal } = require('../../db/models');
 const fileMiddleware = require('../../middleware/file');
 const { uploadFileToS3, deleteFileFromS3 } = require('../../s3Utils/s3Service');
 
 const router = express.Router();
 
-if (!Journal || !AttachmentsJournal) {
-  console.error('Ошибка загрузки моделей Journals или AttachmentsJournal');
-}
-
 const extractFileNameAndFolderFromUrl = (url) => {
-  if (!url.includes('http')) {
-    return {
-      fileName: url,
-      folder: 'images/imageJournal',
-    };
-  }
-
   try {
     const urlObj = new URL(url);
     const { pathname } = urlObj;
@@ -38,9 +28,7 @@ const extractFileNameAndFolderFromUrl = (url) => {
 const deleteImageFromS3 = async (fileUrl) => {
   const result = extractFileNameAndFolderFromUrl(fileUrl);
   if (result) {
-    let { fileName, folder } = result;
-    fileName = decodeURIComponent(fileName);
-    folder = decodeURIComponent(folder);
+    const { fileName, folder } = result;
     try {
       const response = await deleteFileFromS3(fileName, folder);
       console.log(`Файл ${fileName} успешно удалён с S3:`, response);
@@ -48,15 +36,15 @@ const deleteImageFromS3 = async (fileUrl) => {
       console.error(`Ошибка при удалении файла ${fileName}:`, error);
     }
   } else {
-    console.log(`Не удалось извлечь имя файла и папку из URL: ${fileUrl}`);
+    console.error(`Не удалось извлечь имя файла и папку из URL: ${fileUrl}`);
   }
 };
 
+
+
 router.post(
   '/postzapros',
-  fileMiddleware.fields([
-    { name: 'authorImages', maxCount: 100 },
-  ]),
+  fileMiddleware.fields([{ name: 'authorImages', maxCount: 100 }]),
   async (req, res) => {
     try {
       const {
@@ -67,41 +55,47 @@ router.post(
         authors,
         organizations,
         locations,
-        // markdown_content,
-        editor_id,
+        markdown_content,
       } = req.body;
 
-      const parsedAuthors = authors ? JSON.parse(authors) : [];
-      const parsedOrganizations = organizations ? JSON.parse(organizations) : [];
-      const parsedLocations = locations ? JSON.parse(locations) : [];
+      // Проверка на обязательное поле title
+      if (!title || title.trim() === '') {
+        return res.status(400).json({ message: 'Поле "title" обязательно для заполнения.' });
+      }
 
+      // Парсинг JSON данных, если они существуют
+      const parsedAuthors = JSON.parse(authors || '[]');
+      const parsedOrganizations = JSON.parse(organizations || '[]');
+      const parsedLocations = JSON.parse(locations || '[]');
+      const parsedCategory = JSON.parse(category || '[]');
+
+      // Создание записи в базе данных
       const journal = await Journal.create({
         title,
-        publication_date,
-        category,
-        issue_number,
+        publication_date: publication_date || null,
+        category: parsedCategory,
+        issue_number: issue_number || null,
         authors: parsedAuthors,
         organizations: parsedOrganizations,
         locations: parsedLocations,
-        // markdown_content,
-        editor_id,
+        markdown_content: markdown_content || null,
       });
 
-      if (req.files.authorImages) {
-        const attachmentPromises = req.files.authorImages.map(async (file) => {
-          const fileUrl = await uploadFileToS3(file, 'images/imageJournal');
-          return AttachmentsJournal.create({
-            journal_id: journal.id,
-            file_type: file.mimetype,
-            file_url: fileUrl,
-            file_name: file.originalname,
-          });
-        });
+      // Загрузка изображений в S3
+   if (req.files && req.files.authorImages) {
+  const fileUploadPromises = req.files.authorImages.map(async (file) => {
+    const fileUrl = await uploadFileToS3(file, 'images/imageJournal');
+    return fileUrl;
+  });
 
-        await Promise.all(attachmentPromises);
-      }
+  const uploadedFiles = await Promise.all(fileUploadPromises);
 
-      res.status(200).json({ message: 'Данные успешно сохранены', journal });
+  // Сохраняем ссылки на файлы в attachments (предполагается, что это поле в модели)
+  journal.attachments = JSON.stringify(uploadedFiles);
+  await journal.save();
+}
+
+      res.status(201).json({ message: 'Запись успешно создана', journal });
     } catch (error) {
       console.error('Ошибка при создании записи:', error);
       res.status(500).json({ message: 'Ошибка при создании записи', error: error.message });
@@ -109,11 +103,12 @@ router.post(
   }
 );
 
+
+
+// Обновление записи
 router.put(
   '/editzapros/:journalId',
-  fileMiddleware.fields([
-    { name: 'authorImages', maxCount: 100 },
-  ]),
+  fileMiddleware.fields([{ name: 'authorImages', maxCount: 100 }]),
   async (req, res) => {
     try {
       const { journalId } = req.params;
@@ -125,49 +120,42 @@ router.put(
         authors,
         organizations,
         locations,
-        // markdown_content,
-        editor_id,
+        markdown_content,
       } = req.body;
 
-      const journal = await Journal.findByPk(journalId, {
-        include: { model: AttachmentsJournal, as: 'attachments' },
-      });
+      const journal = await Journal.findByPk(journalId);
 
       if (!journal) {
         return res.status(404).json({ message: 'Запись не найдена' });
       }
 
-      const parsedAuthors = authors ? JSON.parse(authors) : [];
-      const parsedOrganizations = organizations ? JSON.parse(organizations) : [];
-      const parsedLocations = locations ? JSON.parse(locations) : [];
+      const parsedAuthors = JSON.parse(authors || '[]');
+      const parsedOrganizations = JSON.parse(organizations || '[]');
+      const parsedLocations = JSON.parse(locations || '[]');
 
       await journal.update({
         title,
         publication_date,
-        category,
+        category: JSON.parse(category || '[]'),
         issue_number,
         authors: parsedAuthors,
         organizations: parsedOrganizations,
         locations: parsedLocations,
-        // markdown_content,
-        editor_id,
+        markdown_content,
       });
 
-      if (req.files.authorImages) {
-        const attachmentPromises = req.files.authorImages.map(async (file) => {
+      if (req.files && req.files.authorImages) {
+        const fileUploadPromises = req.files.authorImages.map(async (file) => {
           const fileUrl = await uploadFileToS3(file, 'images/imageJournal');
-          return AttachmentsJournal.create({
-            journal_id: journal.id,
-            file_type: file.mimetype,
-            file_url: fileUrl,
-            file_name: file.originalname,
-          });
+          return fileUrl;
         });
 
-        await Promise.all(attachmentPromises);
+        const uploadedFiles = await Promise.all(fileUploadPromises);
+        journal.attachments = [...journal.attachments, ...uploadedFiles];
+        await journal.save();
       }
 
-      res.status(200).json({ message: 'Запись успешно обновлена' });
+      res.status(200).json({ message: 'Запись успешно обновлена', journal });
     } catch (error) {
       console.error('Ошибка при обновлении записи:', error);
       res.status(500).json({ message: 'Ошибка при обновлении записи', error: error.message });
@@ -175,49 +163,41 @@ router.put(
   }
 );
 
-
+// Получение всех записей
 router.get('/getzapros', async (req, res) => {
   try {
-    if (!Journal) {
-      throw new Error('Модель Journals не определена');
-    }
-
-    const data = await Journal.findAll({
+    const journals = await Journal.findAll({
       order: [['id', 'DESC']],
-      include: { model: AttachmentsJournal, as: 'attachments' },
     });
 
-    const result = data.map((journal) => ({
+    const result = journals.map((journal) => ({
       ...journal.toJSON(),
       authors: journal.authors ? JSON.parse(journal.authors) : [],
+      organizations: journal.organizations ? JSON.parse(journal.organizations) : [],
+      locations: journal.locations ? JSON.parse(journal.locations) : [],
     }));
 
-    res.json(result);
+    res.status(200).json(result);
   } catch (error) {
     console.error('Ошибка при получении записей:', error);
     res.status(500).json({ message: 'Ошибка при получении записей', error: error.message });
   }
 });
 
-
-
+// Удаление записи
 router.delete('/deletezapros/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const journal = await Journal.findByPk(id, {
-      include: { model: AttachmentsJournal, as: 'attachments' },
-    });
+    const journal = await Journal.findByPk(id);
 
     if (!journal) {
       return res.status(404).json({ message: 'Запись не найдена' });
     }
 
-    const deletePromises = journal.attachments.map(async (attachment) => {
-      await deleteImageFromS3(attachment.file_url);
-      return attachment.destroy();
-    });
-
-    await Promise.all(deletePromises);
+    if (journal.attachments) {
+      const deletePromises = journal.attachments.map((fileUrl) => deleteImageFromS3(fileUrl));
+      await Promise.all(deletePromises);
+    }
 
     await journal.destroy();
 
