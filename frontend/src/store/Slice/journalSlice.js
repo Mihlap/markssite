@@ -14,22 +14,30 @@ export const fetchJournals = createAsyncThunk('journal/fetchJournals', async (_,
   }
 });
 
-// Thunk для создания новой записи
-export const createJournal = createAsyncThunk(
-  'journal/createJournal',
-  async (formData, { rejectWithValue }) => {
-    try {
-      const response = await axios.post(`${serverHost}/api-journal/postzapros`, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
-      });
-      return response.data;
-    } catch (error) {
-      console.error('Ошибка при создании записи:', error);
-      return rejectWithValue(error.message);
-    }
-  }
-);
 
+export const fetchJournalById = createAsyncThunk('journal/fetchJournalById', async (id, { rejectWithValue }) => {
+  try {
+    const response = await axios.get(`${serverHost}/api-journal/getzapros/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error('Ошибка при загрузке записи:', error);
+    return rejectWithValue(error.message);
+  }
+});
+
+
+// Thunk для создания новой записи
+export const createJournal = createAsyncThunk('journal/createJournal', async (formData, { rejectWithValue }) => {
+  try {
+    const response = await axios.post(`${serverHost}/api-journal/postzapros`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+    return response.data;
+  } catch (error) {
+    console.error('Ошибка при создании записи:', error);
+    return rejectWithValue(error.message);
+  }
+});
 
 // Thunk для обновления записи
 export const updateJournal = createAsyncThunk(
@@ -61,7 +69,6 @@ export const deleteJournal = createAsyncThunk('journal/deleteJournal', async (id
 const journalSlice = createSlice({
   name: 'journal',
   initialState: {
-    journals: [],
     formData: {
       title: '',
       publication_date: '',
@@ -70,13 +77,21 @@ const journalSlice = createSlice({
       authors: [],
       organizations: [],
       locations: [],
+      markdown_content: '',
+      blocks: [
+        { id: Date.now() + 1, type: 'university', value: '' },
+        { id: Date.now() + 2, type: 'location', value: '' },
+      ],
     },
+    journals: [],
     loading: false,
     error: null,
   },
+
   reducers: {
     setFormData(state, action) {
-      state.formData = { ...state.formData, ...action.payload };
+      const { name, value } = action.payload;
+      state.formData[name] = value;
     },
     updateAuthors(state, action) {
       state.formData.authors = action.payload;
@@ -85,11 +100,14 @@ const journalSlice = createSlice({
       state.formData = {
         title: '',
         publication_date: '',
-        category: '',
+        category: [],
         issue_number: '',
         authors: [],
-        organizations: [],
-        locations: [],
+        markdown_content: '',
+        blocks: [
+          { id: Date.now() + 1, type: 'university', value: '' },
+          { id: Date.now() + 2, type: 'location', value: '' },
+        ],
       };
     },
   },
@@ -126,9 +144,7 @@ const journalSlice = createSlice({
       .addCase(updateJournal.fulfilled, (state, action) => {
         state.loading = false;
         const updatedJournal = action.payload.journal;
-        state.journals = state.journals.map((journal) =>
-          journal.id === updatedJournal.id ? updatedJournal : journal
-        );
+        state.journals = state.journals.map((journal) => (journal.id === updatedJournal.id ? updatedJournal : journal));
       })
       .addCase(updateJournal.rejected, (state, action) => {
         state.loading = false;
