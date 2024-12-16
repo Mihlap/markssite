@@ -4,13 +4,11 @@ import ImagePreviewSection from './ImagePreviewSection';
 import compressImageFile from 'browser-image-compression';
 
 export default function AuthorsSection({ authors = [], onAuthorsChange }) {
-
   useEffect(() => {
     if (!Array.isArray(authors) || authors.length === 0) {
       onAuthorsChange([{ id: Date.now(), number: 1, name: '', image: null, isLoading: false }]);
     }
   }, [authors, onAuthorsChange]);
-
 
   const compressImage = useCallback(async (file) => {
     const options = {
@@ -27,13 +25,11 @@ export default function AuthorsSection({ authors = [], onAuthorsChange }) {
     }
   }, []);
 
-
   const handleAddAuthorBlock = useCallback(() => {
     const newAuthor = { id: Date.now(), number: authors.length + 1, name: '', image: null, isLoading: false };
     const updatedAuthors = [...authors, newAuthor];
     onAuthorsChange(updatedAuthors);
   }, [authors, onAuthorsChange]);
-
 
   const handleUpdateAuthorBlock = useCallback(
     (id, updatedData) => {
@@ -43,7 +39,6 @@ export default function AuthorsSection({ authors = [], onAuthorsChange }) {
     [authors, onAuthorsChange]
   );
 
-
   const handleRemoveAuthorBlock = useCallback(
     (id) => {
       const updatedAuthors = authors.filter((author) => author.id !== id);
@@ -52,28 +47,23 @@ export default function AuthorsSection({ authors = [], onAuthorsChange }) {
     [authors, onAuthorsChange]
   );
 
+  const handleFileChange = useCallback(
+    async (id, file) => {
+      if (!file) return;
 
-const handleFileChange = useCallback(
-  async (id, file) => {
-    if (!file) return;
+      handleUpdateAuthorBlock(id, { isLoading: true });
 
-    handleUpdateAuthorBlock(id, { isLoading: true });
+      try {
+        const compressedFile = await compressImage(file);
 
-    try {
-      // Сжимаем изображение
-      const compressedFile = await compressImage(file);
-
-      // Обновляем автора с сжатым файлом
-      handleUpdateAuthorBlock(id, { image: compressedFile, isLoading: false });
-    } catch (error) {
-      console.error('Ошибка обработки изображения:', error);
-      handleUpdateAuthorBlock(id, { isLoading: false });
-    }
-  },
-  [handleUpdateAuthorBlock, compressImage]
-);
-
-
+        handleUpdateAuthorBlock(id, { image: compressedFile, isLoading: false });
+      } catch (error) {
+        console.error('Ошибка обработки изображения:', error);
+        handleUpdateAuthorBlock(id, { isLoading: false });
+      }
+    },
+    [handleUpdateAuthorBlock, compressImage]
+  );
 
   const handleRemoveImage = useCallback(
     (id) => {
@@ -121,7 +111,7 @@ const handleFileChange = useCallback(
                 <div className={styles.slider_container__uploadTextForm}>Загрузить изображения</div>
               </label>
               <ImagePreviewSection
-                images={author.image ? [URL.createObjectURL(author.image)] : []} 
+                images={author.image ? [URL.createObjectURL(author.image)] : []}
                 onRemove={() => handleRemoveImage(author.id)}
                 isLoading={author.isLoading}
               />
