@@ -1,131 +1,110 @@
-import React, { useState, useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import InputField from '../InputField';
 import DropdownSelect from '../DropdownSelect';
 import AuthorsSection from '../AuthorsSection';
-import { useDispatch, useSelector } from 'react-redux';
+import { setFormData, updateAuthors, clearFormData } from '../../../../store/Slice/journalSlice';
+import { createJournal } from '../../../../store/Slice/journalSlice';
 import styles from '../../../../Add/add-project/formAdd/FormAddProject.module.scss';
 import { PublicationContainer, PublicationIndicator } from '../../../add-project/formAdd/utils/CustomSelectComponents';
-import { createJournal } from '../../../../store/Slice/journalSlice';
-import { updateAuthors } from '../../../../store/Slice/journalSlice';
 
-export default function FormAddJournal({ setIsModalOpen }) {  
+export default function FormAddJournal({ setIsModalOpen }) {
   const dispatch = useDispatch();
-  const authors = useSelector((state) => state.journal?.formData?.authors || []);
+  const formData = useSelector((state) => state.journal.formData);
+
   const [showNotification, setShowNotification] = useState(false);
-  const [formData, setFormData] = useState({
-    title: '',
-    date: '',
-    category: '',
-    issueNumber: '',
-    authors: [],
-    university: '',
-    location: '',
-    text: '',
-    blocks: [
-      { id: Date.now() + 1, type: 'university', value: '' },
-      { id: Date.now() + 2, type: 'location', value: '' },
-    ],
-  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleInputChange = useCallback((name, value) => {
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  }, []);
+  const handleInputChange = useCallback(
+    (name, value) => {
+      dispatch(setFormData({ name, value }));
+    },
+    [dispatch]
+  );
 
-  const handleAddInputBlock = useCallback((blockType) => {
-    setFormData((prev) => ({
-      ...prev,
-      blocks: [
-        ...prev.blocks,
-        {
-          id: Date.now(),
-          type: blockType,
-          value: '',
-        },
-      ],
-    }));
-  }, []);
+  const handleAddInputBlock = useCallback(
+    (blockType) => {
+      const newBlock = { id: Date.now(), type: blockType, value: '' };
+      dispatch(
+        setFormData({
+          name: 'blocks',
+          value: [...formData.blocks, newBlock],
+        })
+      );
+    },
+    [dispatch, formData.blocks]
+  );
 
-  const handleRemoveInputBlock = useCallback((id) => {
-    setFormData((prev) => ({
-      ...prev,
-      blocks: prev.blocks.filter((block) => block.id !== id),
-    }));
-  }, []);
+  const handleRemoveInputBlock = useCallback(
+    (id) => {
+      dispatch(
+        setFormData({
+          name: 'blocks',
+          value: formData.blocks.filter((block) => block.id !== id),
+        })
+      );
+    },
+    [dispatch, formData.blocks]
+  );
 
-  const handleBlockValueChange = useCallback((id, value) => {
-    setFormData((prev) => ({
-      ...prev,
-      blocks: prev.blocks.map((block) => (block.id === id ? { ...block, value } : block)),
-    }));
-  }, []);
+  const handleBlockValueChange = useCallback(
+    (id, value) => {
+      const updatedBlocks = formData.blocks.map((block) => (block.id === id ? { ...block, value } : block));
+      dispatch(setFormData({ name: 'blocks', value: updatedBlocks }));
+    },
+    [dispatch, formData.blocks]
+  );
 
-const handleSubmit = useCallback(
-  async (e) => {
-    e.preventDefault();
+  const handleSubmit = useCallback(
+    async (e) => {
+      e.preventDefault();
+      if (isSubmitting) return;
 
-    const { title, date, category, issue_number, blocks, text } = formData;
+      setIsSubmitting(true);
+      try {
+        const { title, date, category, issueNumber, blocks, text, authors } = formData;
 
-    // if (!title || !date || !category) {
-    //   setShowNotification(true);
-    //   setTimeout(() => setShowNotification(false), 3000);
-    //   return;
-    // }
+        if (!title || !date || !category) {
+          setShowNotification(true);
+          setTimeout(() => setShowNotification(false), 3000);
+          return;
+        }
 
-    try {
-      const formattedData = {
-        title,
-        publication_date: date,
-        category: JSON.stringify(category),
-        issue_number: issue_number,
-        authors: JSON.stringify(authors),
-        organizations: JSON.stringify(blocks.filter((block) => block.type === 'university')),
-        locations: JSON.stringify(blocks.filter((block) => block.type === 'location')),
-        markdown_content: text,
-      };
+        const formDataToSend = new FormData();
+        formDataToSend.append('title', title);
+        formDataToSend.append('publication_date', date);
+        formDataToSend.append('category', JSON.stringify(category));
+        formDataToSend.append('issue_number', issueNumber || null);
+        formDataToSend.append('authors', JSON.stringify(authors));
+        formDataToSend.append('organizations', JSON.stringify(blocks.filter((block) => block.type === 'university')));
+        formDataToSend.append('locations', JSON.stringify(blocks.filter((block) => block.type === 'location')));
+        formDataToSend.append('markdown_content', text || null);
 
-         authors.forEach((author) => {
-           if (author.image) {
-             formData.append(`authorImages`, author.image);
-           }
-         });
+        authors.forEach((author) => {
+          if (author.image) {
+            const uniqueName = `${Date.now()}_${author.image.name}`;
+            formDataToSend.append('authorImages', author.image, uniqueName);
+          }
+        });
 
-      await dispatch(createJournal(formattedData)).unwrap();
-      setIsModalOpen(false);
-
-      // Сброс формы
-      setFormData({
-        title: '',
-        date: '',
-        category: '',
-        issueNumber: '',
-        authors: [],
-        university: '',
-        location: '',
-        text: '',
-        blocks: [
-          { id: Date.now() + 1, type: 'university', value: '' },
-          { id: Date.now() + 2, type: 'location', value: '' },
-        ],
-      });
-    } catch (error) {
-      console.error('Ошибка при создании записи:', error);
-      setShowNotification(true);
-      setTimeout(() => setShowNotification(false), 3000);
-    }
-  },
-  [formData, authors, dispatch, setIsModalOpen]
-);
-
-
-
+        await dispatch(createJournal(formDataToSend)).unwrap();
+        setIsModalOpen(false);
+        dispatch(clearFormData());
+      } catch (error) {
+        console.error('Ошибка при создании записи:', error);
+        setShowNotification(true);
+        setTimeout(() => setShowNotification(false), 3000);
+      } finally {
+        setIsSubmitting(false);
+      }
+    },
+    [dispatch, formData, setIsModalOpen, isSubmitting]
+  );
 
   const closeModal = useCallback(() => {
     setIsModalOpen(false);
-  }, [setIsModalOpen]);
-
+    dispatch(clearFormData());
+  }, [setIsModalOpen, dispatch]);
 
   const universityBlocks = formData.blocks.filter((block) => block.type === 'university');
   const locationBlocks = formData.blocks.filter((block) => block.type === 'location');
@@ -135,7 +114,7 @@ const handleSubmit = useCallback(
       {showNotification && <div className={styles.form_container__notification}>Заполните обязательные поля</div>}
       <h1 className={styles.form_container__title}>Новая статья</h1>
       <div className={styles.form_container__block_form}>
-        <form className={styles.form_container__form} onSubmit={handleSubmit}>
+        <form className={styles.form_container__form} onSubmit={handleSubmit} noValidate>
           <div className={styles.form_container__block_gray_one}>
             <InputField
               label="Название статьи"
@@ -200,12 +179,7 @@ const handleSubmit = useCallback(
 
           <AuthorsSection
             authors={formData.authors}
-            onAuthorsChange={(updatedAuthors) =>
-              setFormData((prev) => ({
-                ...prev,
-                authors: updatedAuthors,
-              }))
-            }
+            onAuthorsChange={(updatedAuthors) => dispatch(updateAuthors(updatedAuthors))}
           />
 
           {universityBlocks.map((block) => (
@@ -213,7 +187,10 @@ const handleSubmit = useCallback(
               <div className={styles.form_container__checkbox_block}>
                 <div>Университет или организация</div>
               </div>
-              <button className={styles.form_container__close_button} onClick={() => handleRemoveInputBlock(block.id)}>
+              <button
+                type="button"
+                className={styles.form_container__close_button}
+                onClick={() => handleRemoveInputBlock(block.id)}>
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path
                     fillRule="evenodd"
@@ -252,7 +229,10 @@ const handleSubmit = useCallback(
               <div className={styles.form_container__checkbox_block}>
                 <div>Город, Страна</div>
               </div>
-              <button className={styles.form_container__close_button} onClick={() => handleRemoveInputBlock(block.id)}>
+              <button
+                type="button"
+                className={styles.form_container__close_button}
+                onClick={() => handleRemoveInputBlock(block.id)}>
                 <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                   <path
                     fillRule="evenodd"
@@ -269,8 +249,6 @@ const handleSubmit = useCallback(
                 onChange={(name, value) => handleBlockValueChange(block.id, value)}
                 placeholder="Нет ограничений по символам"
                 useHeadingBlock={true}
-                buttonLabel="Добавить город"
-                onButtonClick={() => console.log('Добавить город')}
               />
             </div>
           ))}
