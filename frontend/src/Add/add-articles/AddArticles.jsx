@@ -26,7 +26,7 @@ export default function AddArticles({ user }) {
     <section className={styles.card_components_admin}>
       <div className={styles.card_components_admin__block}>
         <div className={styles.card_components_admin__block_title_btn}>
-          <div className={styles.card_components_admin__title}>Публикации</div>      
+          <div className={styles.card_components_admin__title}>Публикации</div>
         </div>
         <div className={styles.card_components_admin__buttonFilter}>
           {filters.map((filter, index) => (
@@ -47,7 +47,7 @@ export default function AddArticles({ user }) {
             </button>
           ))}
         </div>
-        <div>{selectedFilter === 'Новости' ? <AddNews user={user} /> : <AddJournal />}</div>
+        <div>{selectedFilter === 'Новости' ? <AddNews user={user} /> : <AddJournal user={user} />}</div>
       </div>
     </section>
   );

@@ -70,7 +70,7 @@ export default function FormAddNews({ setIsModalOpen }) {
 
   useEffect(() => {
     quillRefs.forEach((quillRef) => applyStylesToQuillEditor(quillRef));
-  }, [quillRef1, quillRef2, applyStylesToQuillEditor]);
+  }, [quillRefs, quillRef1, quillRef2, applyStylesToQuillEditor]);
 
   const [, setInputValue] = useState('');
   const [openConstructor, setOpenConstructor] = useState(false);
@@ -599,7 +599,7 @@ export default function FormAddNews({ setIsModalOpen }) {
           Сначала заполните все обязательные поля в предыдущем блоке❗
         </div>
       )}
-      <div className={styles.form_container__title}>Новая новость</div>
+      <div className={styles.form_container__title}>Создай новость</div>
       <div className={styles.form_container__block_form}>
         <form className={styles.form_container__form} onSubmit={submitHandler}>
           <div className={styles.form_container__block_gray_one}>
