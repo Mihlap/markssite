@@ -10,6 +10,8 @@ const awardsImages = [
   { src: './assets/4.png', alt: 'award4' },
   { src: './assets/5.png', alt: 'award5' },
   { src: './assets/6.png', alt: 'award6' },
+  { src: './assets/9.png', alt: 'award9' },
+  { src: './assets/10.png', alt: 'award10' },
 ];
 
 const companiesImages = [
