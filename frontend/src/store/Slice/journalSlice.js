@@ -15,15 +15,18 @@ export const fetchJournals = createAsyncThunk('journal/fetchJournals', async (_,
 });
 
 
-export const fetchJournalById = createAsyncThunk('journal/fetchJournalById', async (id, { rejectWithValue }) => {
+// Thunk для получения одной записи
+export const fetchJournalById = createAsyncThunk('journals/fetchJournalById', async (id, { rejectWithValue }) => {
   try {
-    const response = await axios.get(`${serverHost}/api-journal/getzapros/${id}`);
+    const response = await axios.get(`/api-journal/getzapros/${id}`);
     return response.data;
   } catch (error) {
-    console.error('Ошибка при загрузке записи:', error);
-    return rejectWithValue(error.message);
+    console.error('Ошибка при загрузке записи:', error.message);
+    return rejectWithValue(error.response?.data || 'Ошибка при загрузке записи');
   }
 });
+
+
 
 
 // Thunk для создания новой записи
@@ -124,6 +127,17 @@ const journalSlice = createSlice({
       .addCase(fetchJournals.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(fetchJournalById.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchJournalById.fulfilled, (state, action) => {
+        state.loading = false;
+        state.formData = action.payload;
+      })
+      .addCase(fetchJournalById.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.error.message;
       })
       .addCase(createJournal.pending, (state) => {
         state.loading = true;

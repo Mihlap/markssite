@@ -157,18 +157,17 @@ router.put(
 );
 
 // Получение всех записей
-router.get('/getzapros/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    const journal = await Journal.findByPk(id);
-    if (!journal) {
-      return res.status(404).json({ message: 'Запись не найдена' });
-    }
-    res.status(200).json(journal);
-  } catch (error) {
-    console.error('Ошибка при получении записи:', error);
-    res.status(500).json({ message: 'Ошибка сервера' });
-  }
+router.get('/getzapros', async (req, res) => {
+   try {
+     const data = await Journal.findAll({    
+       order: [['id', 'DESC']],
+     });
+
+     res.json(data);
+   } catch (error) {
+     console.error('Ошибка при получении записи:', error);
+     res.status(500).json({ message: 'Ошибка сервера' });
+   }
 });
 
 
