@@ -12,6 +12,7 @@ import pencilIcon from './icon/pencil.svg';
 import projectorIcon from './icon/projector.svg';
 import settingIcon from './icon/setting.svg';
 import exit from './icon/exit.svg';
+import ChristmasTree from './icon/ChristmastreewithbulbandsnowPNGImage.png';
 
 export default function AddNavbar({ user, handleReturn }) {
   const dispatch = useDispatch();
@@ -21,11 +22,22 @@ export default function AddNavbar({ user, handleReturn }) {
   const [indicatorY, setIndicatorY] = useState(0);
   const itemRefs = useRef({});
   const indicatorRef = useRef(null);
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
 
   const isObezyankaaUser = user?.name === 'obezyankaa';
   const isPokemonUser = user?.name === 'Pokemon';
   const isHr778User = user?.name === 'hr778';
   const isManagerUser = user?.name === 'manager';
+
+    useEffect(() => {
+      const handleResize = () => setWindowWidth(window.innerWidth);
+      window.addEventListener('resize', handleResize);
+
+      return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
+   const shouldRenderTree = windowWidth > 1024;
+   const treeLeftPosition = windowWidth >= 2500 ? '400px' : '170px';
 
   useEffect(() => {
     const storedSelectedItem = localStorage.getItem('selectedItem');
@@ -153,8 +165,7 @@ export default function AddNavbar({ user, handleReturn }) {
                           selectedItem === item.name ? styles.active : ''
                         }`}
                         to={item.path}
-                        onClick={(event) => handleItemClick(event, item.name, item.path)}
-                      >
+                        onClick={(event) => handleItemClick(event, item.name, item.path)}>
                         <img className={styles.add_navbar_container__item__icons} src={item.icon} alt={item.icon} />
                         <p className={styles.add_navbar_container__title__ipad}>{item.label}</p>
                       </Link>
@@ -170,12 +181,25 @@ export default function AddNavbar({ user, handleReturn }) {
             </button>
           </li>
         </div>
+      {shouldRenderTree && (
+        <img
+          style={{
+            position: 'absolute',
+            bottom: 0,
+            left: treeLeftPosition,
+            zIndex: '999',
+            width: '10rem',
+          }}
+          src={ChristmasTree}
+          alt="ChristmasTree"
+        />
+      )}
       </nav>
       <div className={styles.button_position}>
-        <div className={styles.button_container}>      
-            <Link className={styles.button_xren} to="/" onClick={handleReturn}>
-              <span className={styles.button_xren__text}>Предпросмотр</span>
-            </Link>          
+        <div className={styles.button_container}>
+          <Link className={styles.button_xren} to="/" onClick={handleReturn}>
+            <span className={styles.button_xren__text}>Предпросмотр</span>
+          </Link>
         </div>
       </div>
     </>
