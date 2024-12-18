@@ -8,6 +8,13 @@ const { uploadFileToS3, deleteFileFromS3 } = require('../../s3Utils/s3Service');
 const router = express.Router();
 
 const extractFileNameAndFolderFromUrl = (url) => {
+if (!url.includes('http')) {
+    return {
+      fileName: url,
+      folder: 'images/imageJournal',
+    };
+  }
+
   try {
     const urlObj = new URL(url);
     const { pathname } = urlObj;
@@ -16,9 +23,15 @@ const extractFileNameAndFolderFromUrl = (url) => {
     if (parts.length >= 2) {
       const folder = parts.slice(0, -1).join('/');
       const fileName = parts[parts.length - 1];
-      return { fileName, folder };
+      return {
+        fileName,
+        folder,
+      };
     }
-    return { fileName: parts[0], folder: 'images/imageJournal' };
+    return {
+      fileName: parts[0],
+      folder: 'images/imageJournal',
+    };
   } catch (error) {
     console.error(`Ошибка извлечения данных из URL: ${url}`, error);
     return null;
@@ -28,7 +41,9 @@ const extractFileNameAndFolderFromUrl = (url) => {
 const deleteImageFromS3 = async (fileUrl) => {
   const result = extractFileNameAndFolderFromUrl(fileUrl);
   if (result) {
-    const { fileName, folder } = result;
+    let { fileName, folder } = result;
+    fileName = decodeURIComponent(fileName);
+    folder = decodeURIComponent(folder);
     try {
       const response = await deleteFileFromS3(fileName, folder);
       console.log(`Файл ${fileName} успешно удалён с S3:`, response);
@@ -36,9 +51,11 @@ const deleteImageFromS3 = async (fileUrl) => {
       console.error(`Ошибка при удалении файла ${fileName}:`, error);
     }
   } else {
-    console.error(`Не удалось извлечь имя файла и папку из URL: ${fileUrl}`);
+    console.log(`Не удалось извлечь имя файла и папку из URL: ${fileUrl}`);
   }
 };
+
+
 
 router.post(
   '/postzapros',
@@ -175,24 +192,55 @@ router.get('/getzapros', async (req, res) => {
 router.delete('/deletezapros/:id', async (req, res) => {
   try {
     const { id } = req.params;
-    const journal = await Journal.findByPk(id);
 
-    if (!journal) {
-      return res.status(404).json({ message: 'Запись не найдена' });
-    }
+    const post = await Journal.findByPk(id);
+     if (!post) {
+       return res.status(404).json({ message: 'Запись не найдена' });
+     }
 
-    if (journal.attachments) {
-      const deletePromises = journal.attachments.map((fileUrl) => deleteImageFromS3(fileUrl));
-      await Promise.all(deletePromises);
-    }
+    const normalizeFileName = (url) => url.split('/').pop().split('?')[0];
 
-    await journal.destroy();
+    const extractAndDeleteImages = async (imageUrls) => {
+      const normalizedUrls = [...new Set(imageUrls.map(normalizeFileName))];
+      // eslint-disable-next-line no-restricted-syntax
+      for (const imageUrl of normalizedUrls) {
+        const result = extractFileNameAndFolderFromUrl(imageUrl);
+        if (result) {
+          const {
+            fileName,
+            folder
+          } = result;
+          try {
+            // eslint-disable-next-line no-await-in-loop
+            await deleteFileFromS3(fileName, folder);
+            console.log(`Файл ${fileName} удалён из ${folder}`);
+          } catch (error) {
+            console.error(`Ошибка при удалении файла ${fileName}:`, error);
+          }
+        } else {
+          console.log(`Не удалось извлечь имя файла и папку из URL: ${imageUrl}`);
+        }
+      }
+    };
 
-    res.status(200).json({ message: 'Запись успешно удалена' });
+     if (post.attachments) {
+       const attachmentUrls = post.attachments;
+       await extractAndDeleteImages(attachmentUrls);
+     }
+
+
+  await Journal.destroy({
+    where: {
+      id,
+    },
+  });
+
+    res.sendStatus(200);
   } catch (error) {
-    console.error('Ошибка при удалении записи:', error);
-    res.status(500).json({ message: 'Ошибка при удалении записи', error: error.message });
+    console.error('Ошибка при удалении проекта:', error);
+    res.sendStatus(500);
   }
 });
+
 
 module.exports = router;
