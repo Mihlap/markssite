@@ -157,9 +157,21 @@
     transition: opacity 0.35s ease,
     visibility 0.35s ease;
   }
+  
 }
 
-.Navbar__santaHat {
+.navbar__santaHat {
+  position: absolute;
+  top: 2px;
+  left: 240px;
+  width: 60px;
+  height: auto;
+  pointer-events: none;
+  transform: rotate(30deg);
+  transform-origin: center botto
+}
+
+.navbar__santaHat_hr {
   position: absolute;
   top: 2px;
   left: 240px;
