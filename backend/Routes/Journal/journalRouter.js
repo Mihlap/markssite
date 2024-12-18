@@ -143,6 +143,17 @@ router.put(
       const parsedOrganizations = JSON.parse(organizations || '[]');
       const parsedLocations = JSON.parse(locations || '[]');
 
+      // Проверка на удаление старых изображений
+      const oldAttachments = journal.attachments || [];
+      const newImages = parsedAuthors.map((author) => author.image).filter(Boolean);
+
+      const imagesToDelete = oldAttachments.filter((oldImage) => !newImages.includes(oldImage));
+
+     
+      for (const imageUrl of imagesToDelete) {       
+        await deleteImageFromS3(imageUrl); 
+      }
+
       await journal.update({
         title,
         publication_date,
@@ -161,7 +172,10 @@ router.put(
         });
 
         const uploadedFiles = await Promise.all(fileUploadPromises);
-        journal.attachments = [...journal.attachments, ...uploadedFiles];
+        journal.attachments = [...newImages, ...uploadedFiles];
+        await journal.save();
+      } else {
+        journal.attachments = newImages;
         await journal.save();
       }
 
@@ -172,6 +186,7 @@ router.put(
     }
   },
 );
+
 
 // Получение всех записей
 router.get('/getzapros', async (req, res) => {
@@ -186,6 +201,26 @@ router.get('/getzapros', async (req, res) => {
      res.status(500).json({ message: 'Ошибка сервера' });
    }
 });
+
+
+// Получение одной записи
+router.get('/getzapros/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+   
+    const journal = await Journal.findByPk(id);
+
+    if (!journal) {
+      return res.status(404).json({ message: 'Запись не найдена' });
+    }
+    
+    res.json(journal);
+  } catch (error) {
+    console.error('Ошибка при получении записи:', error.message);
+    res.status(500).json({ message: 'Ошибка сервера' });
+  }
+});
+
 
 
 // Удаление записи

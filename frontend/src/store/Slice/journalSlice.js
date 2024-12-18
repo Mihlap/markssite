@@ -14,20 +14,19 @@ export const fetchJournals = createAsyncThunk('journal/fetchJournals', async (_,
   }
 });
 
-
 // Thunk для получения одной записи
-export const fetchJournalById = createAsyncThunk('journals/fetchJournalById', async (id, { rejectWithValue }) => {
+export const fetchJournalById = createAsyncThunk('journal/fetchJournalById', async (id, { rejectWithValue }) => {
   try {
-    const response = await axios.get(`/api-journal/getzapros/${id}`);
+    const response = await axios.get(`${serverHost}/api-journal/getzapros/${id}`);
+    if (!response.data) {
+      throw new Error('Нет данных для указанного ID');
+    }
     return response.data;
   } catch (error) {
-    console.error('Ошибка при загрузке записи:', error.message);
-    return rejectWithValue(error.response?.data || 'Ошибка при загрузке записи');
+    console.error('Ошибка при загрузке записи:', error);
+    return rejectWithValue(error.message || 'Ошибка при загрузке записи');
   }
 });
-
-
-
 
 // Thunk для создания новой записи
 export const createJournal = createAsyncThunk('journal/createJournal', async (formData, { rejectWithValue }) => {
@@ -133,11 +132,38 @@ const journalSlice = createSlice({
       })
       .addCase(fetchJournalById.fulfilled, (state, action) => {
         state.loading = false;
-        state.formData = action.payload;
+        const data = action.payload;
+        console.log('Данные с сервера:', data);
+        state.formData = {
+          title: data.title || '',
+          publication_date: data.publication_date || '',
+          category: Array.isArray(data.category) ? data.category : [],
+          issue_number: data.issue_number?.toString() || '',
+          authors: Array.isArray(data.authors) ? data.authors : [],
+          organizations: data.organizations || [],
+          locations: data.locations || [],
+          markdown_content: data.markdown_content || '',
+          blocks: [
+            ...(Array.isArray(data.organizations)
+              ? data.organizations.map((org, index) => ({
+                  id: org.id || `university-${Date.now()}-${index}`,
+                  type: 'university',
+                  value: org.value || org.name || '',
+                }))
+              : []),
+            ...(Array.isArray(data.locations)
+              ? data.locations.map((loc, index) => ({
+                  id: loc.id || `location-${Date.now()}-${index}`,
+                  type: 'location',
+                  value: loc.value || loc.name || '',
+                }))
+              : []),
+          ],
+        };
       })
       .addCase(fetchJournalById.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.error.message;
+        state.error = action.payload || 'Ошибка при загрузке записи';
       })
       .addCase(createJournal.pending, (state) => {
         state.loading = true;
@@ -171,7 +197,7 @@ const journalSlice = createSlice({
       .addCase(deleteJournal.fulfilled, (state, action) => {
         const { id } = action.payload;
         state.loading = false;
-        state.journals = state.journals.filter((journal) => journal.id !== id);     
+        state.journals = state.journals.filter((journal) => journal.id !== id);
       })
       .addCase(deleteJournal.rejected, (state, action) => {
         state.loading = false;
