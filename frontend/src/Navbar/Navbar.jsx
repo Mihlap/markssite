@@ -70,7 +70,7 @@ const handleScroll = useCallback(() => {
               to="/"
               onClick={() => handleItemClick('/')}>
               <h1>MARKS GROUP</h1>
-              <img src={santa} alt="santa" className={styles.Navbar__santaHat} />
+              {/* <img src={santa} alt="santa" className={styles.Navbar__santaHat} /> */}
             </Link>
           </div>
           <ul className={styles.Navbar__list}>
