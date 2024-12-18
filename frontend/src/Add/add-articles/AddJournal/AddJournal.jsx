@@ -59,12 +59,12 @@ export default function AddJournal({ user }) {
    dispatch(clearFormData());
    setIsModalOpen(true); 
  }, [dispatch]);
+  
 
-
-
-  const handleCloseModal = useCallback(() => {
+ const handleCloseModal = useCallback(() => {
     setIsModalOpen(false);
-  }, []);
+ }, []);
+  
 
   const handleDeleteModalOpen = useCallback((id) => {
     setDeleteModalState((prevState) => ({
