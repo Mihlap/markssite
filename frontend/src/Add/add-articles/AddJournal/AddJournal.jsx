@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { deleteJournal, fetchJournals } from '../../../store/Slice/journalSlice';
+import { clearFormData, deleteJournal, fetchJournals } from '../../../store/Slice/journalSlice';
 import { fetchToggleStateForButton4Async, updateToggleStateForButton4Async } from '../../../store/Slice/toggleSlice';
 import LoadingModal from '../../add-project/loading/LoadingModal';
 import FormAddJournal from './FormAddEditJournal/FormAddJournal';
@@ -52,13 +52,15 @@ export default function AddJournal({ user }) {
       isMountedRef.current = false;
     };
   }, [updateModalBlockHeight]);
+  
 
-  const handleOpenModal = useCallback(() => {
-    setIsModalOpen(true);
-    if (editJournalData) {
-      setEditJournalData(null);
-    }
-  }, [editJournalData]);
+ const handleOpenModal = useCallback(() => {
+   setEditJournalData(null);
+   dispatch(clearFormData());
+   setIsModalOpen(true); 
+ }, [dispatch]);
+
+
 
   const handleCloseModal = useCallback(() => {
     setIsModalOpen(false);
@@ -93,20 +95,13 @@ export default function AddJournal({ user }) {
 
 
 const handleEditClick = useCallback(
-  async (id) => {
-    try {
-      await navigator.clipboard.writeText(id);
-      if (isMountedRef.current) {
-        const journalToEdit = journals.find((el) => el.id === id);
-        if (journalToEdit) {
-          setEditJournalData(journalToEdit.id);
-          setIsModalOpen(true);
-        } else {
-          console.warn('Запись не найдена для редактирования:', id);
-        }
-      }
-    } catch (err) {
-      console.error('Unable to copy project to clipboard:', err);
+  async (id) => {   
+    const journalToEdit = journals.find((el) => el.id === id);
+    if (journalToEdit) {
+      setEditJournalData(journalToEdit.id);
+      setIsModalOpen(true);
+    } else {
+      console.warn('Запись не найдена для редактирования:', id);
     }
   },
   [journals]
