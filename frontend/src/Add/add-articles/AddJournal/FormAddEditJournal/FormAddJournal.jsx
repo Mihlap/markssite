@@ -14,6 +14,8 @@ export default function FormAddJournal({ setIsModalOpen }) {
 
   const [showNotification, setShowNotification] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [localImages, setLocalImages] = useState({});
+
 
   const handleInputChange = useCallback(
     (name, value) => {
@@ -81,9 +83,9 @@ export default function FormAddJournal({ setIsModalOpen }) {
         formDataToSend.append('markdown_content', text || null);
 
         authors.forEach((author) => {
-          if (author.image) {
-            const uniqueName = `${Date.now()}_${author.image.name}`;
-            formDataToSend.append('authorImages', author.image, uniqueName);
+          if (author.image && localImages[author.id]) {
+            const uniqueName = `${Date.now()}_${author.image}`;
+            formDataToSend.append('authorImages', localImages[author.id], uniqueName);
           }
         });
 
@@ -98,7 +100,7 @@ export default function FormAddJournal({ setIsModalOpen }) {
         setIsSubmitting(false);
       }
     },
-    [dispatch, formData, setIsModalOpen, isSubmitting]
+    [isSubmitting, formData, dispatch, setIsModalOpen, localImages]
   );
 
   const closeModal = useCallback(() => {
@@ -120,16 +122,17 @@ export default function FormAddJournal({ setIsModalOpen }) {
               label="Название статьи"
               name="title"
               placeholder="Название статьи"
-              value={formData.title}
+              value={formData.title || ''}
               onChange={handleInputChange}
+              type="text"
             />
             <InputField
               label="Дата, месяц, год"
               placeholder="Дата, месяц, год"
               name="date"
-              value={formData.date}
+              value={formData.date || ''}
               onChange={handleInputChange}
-              type="date"
+              type="text"
             />
             <DropdownSelect
               label=""
@@ -180,6 +183,7 @@ export default function FormAddJournal({ setIsModalOpen }) {
           <AuthorsSection
             authors={formData.authors}
             onAuthorsChange={(updatedAuthors) => dispatch(updateAuthors(updatedAuthors))}
+            onImageChange={(id, file) => setLocalImages((prev) => ({ ...prev, [id]: file }))}
           />
 
           {universityBlocks.map((block) => (
