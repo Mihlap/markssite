@@ -62,10 +62,10 @@ export const updateJournal = createAsyncThunk(
 export const deleteJournal = createAsyncThunk('journal/deleteJournal', async (id, { rejectWithValue }) => {
   try {
     await axios.delete(`${serverHost}/api-journal/deletezapros/${id}`);
-    return id;
+    return { id };
   } catch (error) {
-    console.error('Ошибка при удалении записи:', error);
-    return rejectWithValue(error.message);
+    console.error('Ошибка при удалении записи:', error.message);
+    return rejectWithValue(error.response?.data || error.message);
   }
 });
 
@@ -169,8 +169,9 @@ const journalSlice = createSlice({
         state.error = null;
       })
       .addCase(deleteJournal.fulfilled, (state, action) => {
+        const { id } = action.payload;
         state.loading = false;
-        state.journals = state.journals.filter((journal) => journal.id !== action.payload);
+        state.journals = state.journals.filter((journal) => journal.id !== id);     
       })
       .addCase(deleteJournal.rejected, (state, action) => {
         state.loading = false;

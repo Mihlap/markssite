@@ -113,13 +113,16 @@ const handleEditClick = useCallback(
 );
 
 
-  const handleFormDelete = useCallback(
-    (formId) => {
-      dispatch(deleteJournal(formId));
-      handleDeleteModalClose();
-    },
-    [dispatch, handleDeleteModalClose]
-  );
+ const handleFormDelete = useCallback(
+   (id) => {
+     if (id) {
+       dispatch(deleteJournal(id));
+       handleDeleteModalClose(id);
+     }
+   },
+   [dispatch, handleDeleteModalClose]
+ );
+
 
   useEffect(() => {
     if (isCopied) {
