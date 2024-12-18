@@ -37,7 +37,7 @@ export default function AddNavbar({ user, handleReturn }) {
     }, []);
 
    const shouldRenderTree = windowWidth > 1024;
-   const treeLeftPosition = windowWidth >= 2500 ? '400px' : '170px';
+   const treeLeftPosition = windowWidth >= 2500 ? '400px' : '200px';
 
   useEffect(() => {
     const storedSelectedItem = localStorage.getItem('selectedItem');
@@ -180,7 +180,6 @@ export default function AddNavbar({ user, handleReturn }) {
               <p className={styles.add_navbar_container__exit_ipad}>Выйти из аккаунта</p>
             </button>
           </li>
-        </div>
       {shouldRenderTree && (
         <img
           style={{
@@ -194,6 +193,7 @@ export default function AddNavbar({ user, handleReturn }) {
           alt="ChristmasTree"
         />
       )}
+        </div>
       </nav>
       <div className={styles.button_position}>
         <div className={styles.button_container}>
