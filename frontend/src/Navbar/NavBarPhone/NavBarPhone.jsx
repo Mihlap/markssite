@@ -29,7 +29,7 @@ const NavBarPhone = memo(() => {
           <section className={styles.wrapper}>
             <Link to="/" className={styles.brand}>
               MARKS GROUP
-              {/* <img src={santa} alt="santa" className={styles.Navbar__santaHat} /> */}
+              <img src={santa} alt="santa" className={styles.navbar__santaHat} />
             </Link>
             <button
               type="button"
