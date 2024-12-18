@@ -102,10 +102,26 @@
     display: none;
   }
 
+
+  .Navbar__santaHat {
+    position: absolute;
+    top: 2px;
+    left: 270px;
+    width: 60px;
+    height: auto;
+    pointer-events: none;
+    transform: rotate(30deg);
+    transform-origin: center botto
+  }
+
   /* Стили для меню на экранах шириной меньше или равной 1024px */
   @media screen and (max-width: 1025px) {
     &__phone {
       display: block;
+    }
+
+     .Navbar__santaHat {
+      display: none;
     }
   }
 }
