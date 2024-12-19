@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { memo } from 'react';
 import styles from '../../../Add/add-project/formAdd/FormAddProject.module.scss';
 
-export default function InputField({
+function InputField({
   label,
   name,
   value = '',
@@ -48,3 +48,5 @@ export default function InputField({
     </div>
   );
 }
+
+export default memo(InputField);
