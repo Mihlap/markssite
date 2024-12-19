@@ -8,7 +8,7 @@ const { uploadFileToS3, deleteFileFromS3 } = require('../../s3Utils/s3Service');
 const router = express.Router();
 
 const extractFileNameAndFolderFromUrl = (url) => {
-if (!url.includes('http')) {
+  if (!url.includes('http')) {
     return {
       fileName: url,
       folder: 'images/imageJournal',
@@ -54,8 +54,6 @@ const deleteImageFromS3 = async (fileUrl) => {
     console.log(`Не удалось извлечь имя файла и папку из URL: ${fileUrl}`);
   }
 };
-
-
 
 router.post(
   '/postzapros',
@@ -115,6 +113,7 @@ router.post(
   },
 );
 
+
 // Обновление записи
 router.put(
   '/editzapros/:journalId',
@@ -142,42 +141,44 @@ router.put(
       const parsedAuthors = JSON.parse(authors || '[]');
       const parsedOrganizations = JSON.parse(organizations || '[]');
       const parsedLocations = JSON.parse(locations || '[]');
+      const parsedCategory = JSON.parse(category || '[]');
 
-      // Проверка на удаление старых изображений
-      const oldAttachments = journal.attachments || [];
+      const currentAttachments = journal.attachments || [];
+      const currentImages = currentAttachments.map((url) => url.split('/').pop());
+
       const newImages = parsedAuthors.map((author) => author.image).filter(Boolean);
+      const newImageFileNames = newImages.map((url) => url.split('/').pop());
 
-      const imagesToDelete = oldAttachments.filter((oldImage) => !newImages.includes(oldImage));
+      const imagesToDelete = currentImages.filter((image) => !newImageFileNames.includes(image));
 
-     
-      for (const imageUrl of imagesToDelete) {       
-        await deleteImageFromS3(imageUrl); 
-      }
+      await Promise.all(imagesToDelete.map((image) => deleteImageFromS3(image)));
 
-      await journal.update({
-        title,
-        publication_date,
-        category: JSON.parse(category || '[]'),
-        issue_number,
-        authors: parsedAuthors,
-        organizations: parsedOrganizations,
-        locations: parsedLocations,
-        markdown_content,
-      });
-
+    
+      let uploadedFiles = [];
       if (req.files && req.files.authorImages) {
         const fileUploadPromises = req.files.authorImages.map(async (file) => {
           const fileUrl = await uploadFileToS3(file, 'images/imageJournal');
           return fileUrl;
         });
-
-        const uploadedFiles = await Promise.all(fileUploadPromises);
-        journal.attachments = [...newImages, ...uploadedFiles];
-        await journal.save();
-      } else {
-        journal.attachments = newImages;
-        await journal.save();
+        uploadedFiles = await Promise.all(fileUploadPromises);
       }
+
+      const updatedAttachments = [
+        ...currentAttachments.filter((attachment) => newImages.includes(attachment)),
+        ...uploadedFiles,
+      ];
+
+      await journal.update({
+        title,
+        publication_date,
+        category: parsedCategory,
+        issue_number: issue_number ? parseInt(issue_number, 10) : null,
+        authors: parsedAuthors,
+        organizations: parsedOrganizations,
+        locations: parsedLocations,
+        markdown_content,
+        attachments: updatedAttachments,
+      });
 
       res.status(200).json({ message: 'Запись успешно обновлена', journal });
     } catch (error) {
@@ -188,32 +189,38 @@ router.put(
 );
 
 
+
 // Получение всех записей
 router.get('/getzapros', async (req, res) => {
-   try {
-     const data = await Journal.findAll({    
-       order: [['id', 'DESC']],
-     });
+  try {
+    const data = await Journal.findAll({
+      order: [['id', 'DESC']],
+    });
 
-     res.json(data);
-   } catch (error) {
-     console.error('Ошибка при получении записи:', error);
-     res.status(500).json({ message: 'Ошибка сервера' });
-   }
+    res.json(data);
+  } catch (error) {
+    console.error('Ошибка при получении записи:', error);
+    res.status(500).json({ message: 'Ошибка сервера' });
+  }
 });
-
 
 // Получение одной записи
 router.get('/getzapros/:id', async (req, res) => {
   try {
     const { id } = req.params;
-   
+
     const journal = await Journal.findByPk(id);
 
     if (!journal) {
       return res.status(404).json({ message: 'Запись не найдена' });
     }
-    
+
+    if (journal.authors) {
+      journal.authors = journal.authors.map((author, index) => ({
+        ...author,
+        image: author.image?.startsWith('http') ? author.image : journal.attachments?.[index],
+      }));
+    }
     res.json(journal);
   } catch (error) {
     console.error('Ошибка при получении записи:', error.message);
@@ -221,17 +228,15 @@ router.get('/getzapros/:id', async (req, res) => {
   }
 });
 
-
-
 // Удаление записи
 router.delete('/deletezapros/:id', async (req, res) => {
   try {
     const { id } = req.params;
 
     const post = await Journal.findByPk(id);
-     if (!post) {
-       return res.status(404).json({ message: 'Запись не найдена' });
-     }
+    if (!post) {
+      return res.status(404).json({ message: 'Запись не найдена' });
+    }
 
     const normalizeFileName = (url) => url.split('/').pop().split('?')[0];
 
@@ -241,10 +246,7 @@ router.delete('/deletezapros/:id', async (req, res) => {
       for (const imageUrl of normalizedUrls) {
         const result = extractFileNameAndFolderFromUrl(imageUrl);
         if (result) {
-          const {
-            fileName,
-            folder
-          } = result;
+          const { fileName, folder } = result;
           try {
             // eslint-disable-next-line no-await-in-loop
             await deleteFileFromS3(fileName, folder);
@@ -258,17 +260,16 @@ router.delete('/deletezapros/:id', async (req, res) => {
       }
     };
 
-     if (post.attachments) {
-       const attachmentUrls = post.attachments;
-       await extractAndDeleteImages(attachmentUrls);
-     }
+    if (post.attachments) {
+      const attachmentUrls = post.attachments;
+      await extractAndDeleteImages(attachmentUrls);
+    }
 
-
-  await Journal.destroy({
-    where: {
-      id,
-    },
-  });
+    await Journal.destroy({
+      where: {
+        id,
+      },
+    });
 
     res.sendStatus(200);
   } catch (error) {
@@ -276,6 +277,5 @@ router.delete('/deletezapros/:id', async (req, res) => {
     res.sendStatus(500);
   }
 });
-
 
 module.exports = router;

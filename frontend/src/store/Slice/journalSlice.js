@@ -132,14 +132,19 @@ const journalSlice = createSlice({
       })
       .addCase(fetchJournalById.fulfilled, (state, action) => {
         state.loading = false;
-        const data = action.payload;
-        console.log('Данные с сервера:', data);
+        const data = action.payload;     
         state.formData = {
           title: data.title || '',
           publication_date: data.publication_date || '',
           category: Array.isArray(data.category) ? data.category : [],
           issue_number: data.issue_number?.toString() || '',
-          authors: Array.isArray(data.authors) ? data.authors : [],
+          authors: Array.isArray(data.authors)
+            ? data.authors.map((author, index) => ({
+                ...author,
+                image: author.image?.startsWith('http') ? author.image : data.attachments[index] || null,
+              }))
+            : [],
+          attachments: data.attachments || [],
           organizations: data.organizations || [],
           locations: data.locations || [],
           markdown_content: data.markdown_content || '',
