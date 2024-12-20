@@ -141,9 +141,13 @@ const journalSlice = createSlice({
           authors: Array.isArray(data.authors)
             ? data.authors.map((author, index) => ({
                 ...author,
-                image: author.image?.startsWith('http') ? author.image : data.attachments[index] || null,
+                image:
+                  typeof author.image === 'string' && author.image.startsWith('http')
+                    ? author.image
+                    : data.attachments[index] || null,
               }))
             : [],
+
           attachments: data.attachments || [],
           organizations: data.organizations || [],
           locations: data.locations || [],
