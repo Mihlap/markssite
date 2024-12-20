@@ -144,9 +144,13 @@ router.put(
       const parsedCategory = JSON.parse(category || '[]');
 
       const currentAttachments = journal.attachments || [];
-      const currentImages = currentAttachments.map((url) => url.split('/').pop());
+        const currentImages = currentAttachments
+          .filter((url) => typeof url === 'string')
+          .map((url) => url.split('/').pop());
 
-      const newImages = parsedAuthors.map((author) => author.image).filter(Boolean);
+      const newImages = parsedAuthors
+        .map((author) => author.image)
+        .filter((url) => typeof url === 'string');
       const newImageFileNames = newImages.map((url) => url.split('/').pop());
 
       const imagesToDelete = currentImages.filter((image) => !newImageFileNames.includes(image));
@@ -215,12 +219,15 @@ router.get('/getzapros/:id', async (req, res) => {
       return res.status(404).json({ message: 'Запись не найдена' });
     }
 
-    if (journal.authors) {
-      journal.authors = journal.authors.map((author, index) => ({
-        ...author,
-        image: author.image?.startsWith('http') ? author.image : journal.attachments?.[index],
-      }));
-    }
+   if (journal.authors) {
+     journal.authors = journal.authors.map((author, index) => ({
+       ...author,
+       image:
+         typeof author.image === 'string' && author.image.startsWith('http')
+           ? author.image
+           : journal.attachments?.[index] || null,
+     }));
+   }
     res.json(journal);
   } catch (error) {
     console.error('Ошибка при получении записи:', error.message);
