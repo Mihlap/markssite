@@ -1,7 +1,6 @@
 import React, { memo, useEffect, useState } from 'react';
 import styles from './NavBarPhone.module.scss';
 import { Link } from 'react-router-dom';
-import santa from '../../img/santa.png';
 
 const NavBarPhone = memo(() => {
   const [isMenuActive, setMenuActive] = useState(false);
@@ -28,8 +27,7 @@ const NavBarPhone = memo(() => {
         <div className={styles.container}>
           <section className={styles.wrapper}>
             <Link to="/" className={styles.brand}>
-              MARKS GROUP
-              <img src={santa} alt="santa" className={styles.navbar__santaHat} />
+              MARKS GROUP             
             </Link>
             <button
               type="button"

@@ -4,8 +4,6 @@ import { Link, useLocation } from 'react-router-dom';
 // import { handleScroll, handleItemClick, handlePath, handleStoredClass } from './utils/navbarUtils';
 import PortalMenuMobile from './NavBarPhone/PortalMenuMobile';
 
-import santa from '../img/santa.png';
-
 export default function PortalMenu({ user, handleMouseEnter, handleMouseLeave }) {
   const [activeClass, setActiveClass] = useState('');
   const [prevScrollPos, setPrevScrollPos] = useState(0);
@@ -69,8 +67,7 @@ export default function PortalMenu({ user, handleMouseEnter, handleMouseLeave })
             >
               <h1>MARKS GROUP</h1>
 
-              <p className={styles.Navbar__title__hr}>HR</p>
-                <img src={santa} alt="santa" className={styles.navbar__santaHat_hr} />
+              <p className={styles.Navbar__title__hr}>HR</p>            
             </Link>
           </div>
           <ul className={styles.Navbar__list}>

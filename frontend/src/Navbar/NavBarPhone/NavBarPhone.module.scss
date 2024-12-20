@@ -17,6 +17,8 @@
 }
 
 .brand {
+  display: flex;
+  align-items: center;
   font-family: var(--font-MyCustomFont);
   font-size: 1.4rem;
   font-weight: 700;
@@ -26,6 +28,18 @@
   color: var(--black-1D2E43);
   text-transform: uppercase;
   text-rendering: optimizeLegibility;
+  gap: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.Navbar__title__hr {
+  color: #1d2e43;
+  font-family: var(--font-unbounded);
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: var(--fw-400);
+  line-height: normal;
 }
 
 // Section: Navbar Menu
@@ -157,29 +171,7 @@
     transition: opacity 0.35s ease,
     visibility 0.35s ease;
   }
-  
-}
 
-.navbar__santaHat {
-  position: absolute;
-  top: 2px;
-  left: 240px;
-  width: 60px;
-  height: auto;
-  pointer-events: none;
-  transform: rotate(30deg);
-  transform-origin: center botto
-}
-
-.navbar__santaHat_hr {
-  position: absolute;
-  top: 2px;
-  left: 240px;
-  width: 60px;
-  height: auto;
-  pointer-events: none;
-  transform: rotate(30deg);
-  transform-origin: center botto
 }
 
 // Стили для телефонов
