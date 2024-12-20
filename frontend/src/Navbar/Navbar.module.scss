@@ -103,29 +103,7 @@
   }
 
 
-    .navbar__santaHat {
-      position: absolute;
-      top: 2px;
-      left: 260px;
-      width: 60px;
-      height: auto;
-      pointer-events: none;
-      transform: rotate(30deg);
-      transform-origin: center bottom
-    }
-  
-    .navbar__santaHat_hr {
-      position: absolute;
-      top: 0px;
-      left: 303px;
-      width: 60px;
-      height: auto;
-      pointer-events: none;
-      transform: rotate(30deg);
-      transform-origin: center bottom
-    }
-
-  /* Стили для меню на экранах шириной меньше или равной 1024px */
+ /* Стили для меню на экранах шириной меньше или равной 1024px */
   @media screen and (max-width: 1025px) {
     &__phone {
       display: block;

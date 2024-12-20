@@ -3,7 +3,7 @@ import styles from './Navbar.module.scss';
 import { Link, useLocation } from 'react-router-dom';
 // import { handleScroll, handleItemClick, handlePath, handleStoredClass } from './utils/navbarUtils';
 import NavBarPhone from './NavBarPhone/NavBarPhone';
-import santa from '../img/santa.png'
+
 
 const Navbar = memo(({ handleMouseEnter, handleMouseLeave }) => {
   const [activeClass, setActiveClass] = useState('');
@@ -69,8 +69,7 @@ const handleScroll = useCallback(() => {
               className={` ${styles.Navbar__title} ${activeClass === '/'}`}
               to="/"
               onClick={() => handleItemClick('/')}>
-              <h1>MARKS GROUP</h1>
-              <img src={santa} alt="santa" className={styles.navbar__santaHat} />
+              <h1>MARKS GROUP</h1>              
             </Link>
           </div>
           <ul className={styles.Navbar__list}>
