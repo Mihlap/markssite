@@ -4,7 +4,7 @@ import ImagePreviewSection from './ImagePreviewSection';
 import compressImageFile from 'browser-image-compression';
 
 function AuthorsSection({ authors = [], onAuthorsChange, onImageChange }) {
-  const [localImages, setLocalImages] = useState({}); // Для локального хранения файлов
+  const [localImages, setLocalImages] = useState({});
 
   useEffect(() => {
     if (!Array.isArray(authors)) {
@@ -49,7 +49,7 @@ function AuthorsSection({ authors = [], onAuthorsChange, onImageChange }) {
         .filter((author) => author.id !== id)
         .map((author, index) => ({ ...author, number: index + 1 }));
 
-      const { [id]: _, ...restImages } = localImages; // Удаляем локальный файл
+      const { [id]: _, ...restImages } = localImages;
       setLocalImages(restImages);
 
       onAuthorsChange(updatedAuthors);
@@ -83,20 +83,39 @@ function AuthorsSection({ authors = [], onAuthorsChange, onImageChange }) {
   );
 
 
-  const handleRemoveImage = useCallback(
-    (id) => {
-        setLocalImages((prev) => {
-        const updated = { ...prev };
-        delete updated[id];
-        return updated;
-      });
+  // const handleRemoveImage = useCallback(
+  //   (id) => {
+  //       setLocalImages((prev) => {
+  //       const updated = { ...prev };
+  //       delete updated[id];
+  //       return updated;
+  //     });
 
-      onAuthorsChange(
-        authors.map((author) => (author.id === id ? { ...author, image: null } : author))
-      );
-    },
-    [authors, onAuthorsChange]
-  );
+  //     onAuthorsChange(
+  //       authors.map((author) => (author.id === id ? { ...author, image: null } : author))
+  //     );
+  //   },
+  //   [authors, onAuthorsChange]
+  // );
+
+   const handleRemoveImage = useCallback(
+     (id) => {
+       setLocalImages((prev) => {
+         const updated = { ...prev };
+         delete updated[id];
+         return updated;
+       });
+
+       // Обновление изображения в authors (универсальный функционал)
+       const updatedAuthors = authors.map((author) => (author.id === id ? { ...author, image: null } : author));
+       onAuthorsChange(updatedAuthors);
+
+       // Уведомляем родительский компонент, что нужно обновить attachments
+       onImageChange(id, null);
+     },
+     [authors, onAuthorsChange, onImageChange]
+   );
+
 
   return (
     <div className={styles.form_container}>

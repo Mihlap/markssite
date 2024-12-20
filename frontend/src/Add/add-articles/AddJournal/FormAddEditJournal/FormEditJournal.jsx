@@ -109,12 +109,12 @@ export default function FormEditJournal({ editJournalData, setIsModalOpen }) {
         formDataToSend.append('locations', JSON.stringify(formData.blocks.filter((b) => b.type === 'location')));
         formDataToSend.append('markdown_content', formData.markdown_content || null);
 
-        formData.authors.forEach((author) => {
-          if (author.image && localImages[author.id]) {
-            const uniqueName = `${Date.now()}_${author.image}`;
-            formDataToSend.append('authorImages', localImages[author.id], uniqueName);
-          }
-        });
+       formData.authors.forEach((author) => {
+         if (author.image && localImages[author.id]) {
+           const uniqueName = `${Date.now()}_${author.image}`;
+           formDataToSend.append('authorImages', localImages[author.id], uniqueName);
+         }
+       });
 
         await dispatch(updateJournal({ journalId: editJournalData, formData: formDataToSend })).unwrap();
         setIsModalOpen(false);
@@ -215,8 +215,38 @@ export default function FormEditJournal({ editJournalData, setIsModalOpen }) {
                   }}
                 />
               </div>
-
               <AuthorsSection
+                authors={formData.authors.map((author, index) => ({
+                  ...author,
+                  image:
+                    typeof author.image === 'string' && author.image.startsWith('http')
+                      ? author.image
+                      : formData.attachments?.[index] || null,
+                }))}
+                onAuthorsChange={(updatedAuthors) => dispatch(updateAuthors(updatedAuthors))}
+                onImageChange={(id, file) => {
+                  setLocalImages((prev) => ({ ...prev, [id]: file }));
+
+                  if (file) {
+                    const updatedAttachments = Array.isArray(formData.attachments) ? [...formData.attachments] : [];
+                    const authorIndex = formData.authors.findIndex((author) => author.id === id);
+                    const temporaryFileName = `${Date.now()}_${file.name}`;
+                    updatedAttachments[authorIndex] = temporaryFileName;
+
+                    dispatch(setFormData({ name: 'attachments', value: updatedAttachments }));
+                  } else {
+                    const updatedAttachments = Array.isArray(formData.attachments)
+                      ? formData.attachments.filter((_, index) => {
+                          const authorIndex = formData.authors.findIndex((author) => author.id === id);
+                          return index !== authorIndex;
+                        })
+                      : [];
+
+                    dispatch(setFormData({ name: 'attachments', value: updatedAttachments }));
+                  }
+                }}
+              />
+              {/* <AuthorsSection
                 authors={
                   formData.authors.map((author, index) => ({
                     ...author,
@@ -228,7 +258,7 @@ export default function FormEditJournal({ editJournalData, setIsModalOpen }) {
                 }
                   onAuthorsChange={(updatedAuthors) => dispatch(updateAuthors(updatedAuthors))}                   
                   onImageChange={(id, file) => setLocalImages((prev) => ({ ...prev, [id]: file }))}
-              />
+              /> */}
 
               {universityBlocks.map((block) => (
                 <div key={block.id} className={styles.form_container__block_gray_one}>

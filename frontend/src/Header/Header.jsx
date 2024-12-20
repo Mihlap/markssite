@@ -37,9 +37,11 @@ const Header = React.memo(
       medium: `${bucket_url}/images/video/main_company_ipad.mp4`,
       small: `${bucket_url}/images/video/main_company_mobile.mp4`,
     };
-    const cursorVariant = useSelector((state) => state.cursor);
 
-    const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+    // const cursorVariant = useSelector((state) => state.cursor);
+
+    const [, setCurrentSlideIndex] = useState(0);
+    
     const [videoSrc, setVideoSrc] = useState(null);
     const sliderCardRef = useRef(null);
 
