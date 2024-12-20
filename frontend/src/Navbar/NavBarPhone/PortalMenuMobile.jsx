@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 import styles from './NavBarPhone.module.scss';
 import { Link } from 'react-router-dom';
 
-import santa from '../../img/santa.png';
-
 export default function PortalMenuMobile() {
   const [isMenuActive, setMenuActive] = useState(false);
 
@@ -29,9 +27,10 @@ export default function PortalMenuMobile() {
         <div className={styles.container}>
           <section className={styles.wrapper}>
             <Link to="/portal/vacanciesMain" className={styles.brand}>
+              
               MARKS GROUP
-            {/* <p className={styles.Navbar__title__hr}>HR</p> */}
-            <img src={santa} alt="santa" className={styles.navbar__santaHat_hr} />
+              
+            <p className={styles.Navbar__title__hr}>HR</p>          
             </Link>
             <button
               type="button"
