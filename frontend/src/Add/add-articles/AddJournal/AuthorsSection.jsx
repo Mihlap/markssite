@@ -65,9 +65,9 @@ function AuthorsSection({ authors = [], onAuthorsChange, onImageChange }) {
 
       try {
         const compressedFile = await compressImage(file);
-        
+
         setLocalImages((prev) => ({ ...prev, [id]: compressedFile }));
- 
+
         onImageChange(id, compressedFile);
 
         handleUpdateAuthorBlock(id, {
@@ -82,40 +82,14 @@ function AuthorsSection({ authors = [], onAuthorsChange, onImageChange }) {
     [handleUpdateAuthorBlock, onImageChange, compressImage]
   );
 
-
-  // const handleRemoveImage = useCallback(
-  //   (id) => {
-  //       setLocalImages((prev) => {
-  //       const updated = { ...prev };
-  //       delete updated[id];
-  //       return updated;
-  //     });
-
-  //     onAuthorsChange(
-  //       authors.map((author) => (author.id === id ? { ...author, image: null } : author))
-  //     );
-  //   },
-  //   [authors, onAuthorsChange]
-  // );
-
-   const handleRemoveImage = useCallback(
-     (id) => {
-       setLocalImages((prev) => {
-         const updated = { ...prev };
-         delete updated[id];
-         return updated;
-       });
-
-       // Обновление изображения в authors (универсальный функционал)
-       const updatedAuthors = authors.map((author) => (author.id === id ? { ...author, image: null } : author));
-       onAuthorsChange(updatedAuthors);
-
-       // Уведомляем родительский компонент, что нужно обновить attachments
-       onImageChange(id, null);
-     },
-     [authors, onAuthorsChange, onImageChange]
-   );
-
+  const handleRemoveImage = useCallback(
+    (id) => {
+      const updatedAuthors = authors.map((author) => (author.id === id ? { ...author, image: null } : author));
+      onAuthorsChange(updatedAuthors);
+      onImageChange(id, null);
+    },
+    [authors, onAuthorsChange, onImageChange]
+  );
 
   return (
     <div className={styles.form_container}>
@@ -143,15 +117,7 @@ function AuthorsSection({ authors = [], onAuthorsChange, onImageChange }) {
               <div className={styles.slider_container__uploadTextForm}>Загрузить изображение</div>
             </label>
             <ImagePreviewSection
-              images={
-                author.image
-                  ? [
-                      typeof author.image === 'string'
-                        ? author.image
-                        : localImages[author.id] && URL.createObjectURL(localImages[author.id]),
-                    ].filter(Boolean)
-                  : []
-              }
+              images={author.image ? [author.image].filter(Boolean) : []}
               onRemove={() => handleRemoveImage(author.id)}
               isLoading={author.isLoading}
             />
@@ -165,9 +131,7 @@ function AuthorsSection({ authors = [], onAuthorsChange, onImageChange }) {
                 value={author.name || ''}
                 maxLength={150}
                 onChange={(e) =>
-                  onAuthorsChange(
-                    authors.map((a) => (a.id === author.id ? { ...a, name: e.target.value } : a))
-                  )
+                  onAuthorsChange(authors.map((a) => (a.id === author.id ? { ...a, name: e.target.value } : a)))
                 }
               />
             </div>

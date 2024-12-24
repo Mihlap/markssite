@@ -16,7 +16,6 @@ export default function FormAddJournal({ setIsModalOpen }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [localImages, setLocalImages] = useState({});
 
-
   const handleInputChange = useCallback(
     (name, value) => {
       dispatch(setFormData({ name, value }));
@@ -66,7 +65,7 @@ export default function FormAddJournal({ setIsModalOpen }) {
       try {
         const { title, date, category, issueNumber, blocks, text, authors } = formData;
 
-        if (!title || !date || !category) {
+        if (!title || !date || category.length === 0 || Object.keys(authors).length === 0) {
           setShowNotification(true);
           setTimeout(() => setShowNotification(false), 3000);
           return;
@@ -82,13 +81,12 @@ export default function FormAddJournal({ setIsModalOpen }) {
         formDataToSend.append('locations', JSON.stringify(blocks.filter((block) => block.type === 'location')));
         formDataToSend.append('markdown_content', text || null);
 
-        authors.forEach((author) => {
-          if (author.image && localImages[author.id]) {
+        Object.entries(authors).forEach(([id, author]) => {
+          if (author.image && localImages[id]) {
             const uniqueName = `${Date.now()}_${author.image}`;
-            formDataToSend.append('authorImages', localImages[author.id], uniqueName);
+            formDataToSend.append('authorImages', localImages[id], uniqueName);
           }
         });
-
         await dispatch(createJournal(formDataToSend)).unwrap();
         setIsModalOpen(false);
         dispatch(clearFormData());
@@ -181,9 +179,20 @@ export default function FormAddJournal({ setIsModalOpen }) {
           </div>
 
           <AuthorsSection
-            authors={formData.authors}
-            onAuthorsChange={(updatedAuthors) => dispatch(updateAuthors(updatedAuthors))}
-            onImageChange={(id, file) => setLocalImages((prev) => ({ ...prev, [id]: file }))}
+            authors={Object.entries(formData.authors).map(([id, author]) => ({
+              ...author,
+              id,
+            }))}
+            onAuthorsChange={(updatedAuthors) => {
+              const authorsObject = updatedAuthors.reduce((acc, author) => {
+                acc[author.id] = author;
+                return acc;
+              }, {});
+              dispatch(updateAuthors(authorsObject));
+            }}
+            onImageChange={(id, file) => {
+              setLocalImages((prev) => ({ ...prev, [id]: file }));
+            }}
           />
 
           {universityBlocks.map((block) => (

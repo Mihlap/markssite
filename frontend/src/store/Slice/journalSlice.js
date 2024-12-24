@@ -76,7 +76,8 @@ const journalSlice = createSlice({
       publication_date: '',
       category: '',
       issue_number: '',
-      authors: [],
+      authors: {},
+      attachments: {},
       organizations: [],
       locations: [],
       markdown_content: '',
@@ -104,7 +105,8 @@ const journalSlice = createSlice({
         publication_date: '',
         category: [],
         issue_number: '',
-        authors: [],
+        authors: {},
+        attachments: {},
         markdown_content: '',
         blocks: [
           { id: Date.now() + 1, type: 'university', value: '' },
@@ -132,41 +134,40 @@ const journalSlice = createSlice({
       })
       .addCase(fetchJournalById.fulfilled, (state, action) => {
         state.loading = false;
-        const data = action.payload;     
+        const data = action.payload;
+
+        const attachmentsById = (data.authors || []).reduce((acc, author, index) => {
+          acc[author.id] = author.image || data.attachments?.[index] || null;
+          return acc;
+        }, {});
+
         state.formData = {
+          ...state.formData,
           title: data.title || '',
           publication_date: data.publication_date || '',
           category: Array.isArray(data.category) ? data.category : [],
           issue_number: data.issue_number?.toString() || '',
           authors: Array.isArray(data.authors)
-            ? data.authors.map((author, index) => ({
-                ...author,
-                image:
-                  typeof author.image === 'string' && author.image.startsWith('http')
-                    ? author.image
-                    : data.attachments[index] || null,
-              }))
-            : [],
-
-          attachments: data.attachments || [],
+            ? data.authors.reduce((acc, author) => {
+                acc[author.id] = { ...author, id: author.id };
+                return acc;
+              }, {})
+            : {},
+          attachments: attachmentsById,
           organizations: data.organizations || [],
           locations: data.locations || [],
           markdown_content: data.markdown_content || '',
           blocks: [
-            ...(Array.isArray(data.organizations)
-              ? data.organizations.map((org, index) => ({
-                  id: org.id || `university-${Date.now()}-${index}`,
-                  type: 'university',
-                  value: org.value || org.name || '',
-                }))
-              : []),
-            ...(Array.isArray(data.locations)
-              ? data.locations.map((loc, index) => ({
-                  id: loc.id || `location-${Date.now()}-${index}`,
-                  type: 'location',
-                  value: loc.value || loc.name || '',
-                }))
-              : []),
+            ...(data.organizations || []).map((org, index) => ({
+              id: org.id || `university-${index}`,
+              type: 'university',
+              value: org.value || org.name || '',
+            })),
+            ...(data.locations || []).map((loc, index) => ({
+              id: loc.id || `location-${index}`,
+              type: 'location',
+              value: loc.value || loc.name || '',
+            })),
           ],
         };
       })
