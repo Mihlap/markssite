@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useRef } from 'react';
+import React, { useEffect, useState, useCallback, useRef, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearFormData, deleteJournal, fetchJournals } from '../../../store/Slice/journalSlice';
 import { fetchToggleStateForButton4Async, updateToggleStateForButton4Async } from '../../../store/Slice/toggleSlice';
@@ -27,8 +27,7 @@ export default function AddJournal({ user }) {
   const [modalBlockHeight, setModalBlockHeight] = useState('auto');
 
   const isMountedRef = useRef(true);
-
-   const imageArray = [one, two, three];
+   const imageArray = useMemo(() => [one, two, three], []);
 
   const updateModalBlockHeight = useCallback(() => {
     const windowHeight = window.innerHeight;
@@ -43,6 +42,7 @@ export default function AddJournal({ user }) {
     }
     dispatch(fetchToggleStateForButton4Async());
   }, [dispatch, journals.length]);
+
 
   useEffect(() => {
     updateModalBlockHeight();
