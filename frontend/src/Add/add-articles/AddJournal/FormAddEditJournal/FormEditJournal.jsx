@@ -19,7 +19,6 @@ export default function FormEditJournal({ editJournalData, setIsModalOpen }) {
   const { formData, loading, error } = useSelector((state) => state.journal);
   const [showNotification, setShowNotification] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-   const [localImages, setLocalImages] = useState({});
 
   useEffect(() => {
     if (editJournalData) {
@@ -51,38 +50,43 @@ export default function FormEditJournal({ editJournalData, setIsModalOpen }) {
     [dispatch, formData.blocks]
   );
 
- const handleRemoveInputBlock = useCallback(
-   (id) => {
-     const updatedBlocks = formData.blocks.filter((block) => block.id !== id);
+  const handleRemoveInputBlock = useCallback(
+    (id) => {
+      const updatedBlocks = formData.blocks.filter((block) => block.id !== id);
 
-    const updatedAuthors = formData.authors.filter((author, index) => index !== id);
+      const updatedAuthors = Object.values(formData.authors)
+        .filter((author) => author.id !== id)
+        .reduce((acc, author) => {
+          acc[author.id] = author;
+          return acc;
+        }, {});
 
-    const updatedAttachments = formData.attachments?.filter((attachment, index) => index !== id);
+      const updatedAttachments = { ...formData.attachments };
+      delete updatedAttachments[id];
 
-     dispatch(
-       setFormData({
-         name: 'blocks',
-         value: updatedBlocks,
-       })
-     );
+      dispatch(
+        setFormData({
+          name: 'blocks',
+          value: updatedBlocks,
+        })
+      );
 
-     dispatch(
-       setFormData({
-         name: 'authors',
-         value: updatedAuthors,
-       })
-     );
+      dispatch(
+        setFormData({
+          name: 'authors',
+          value: updatedAuthors,
+        })
+      );
 
-     dispatch(
-       setFormData({
-         name: 'attachments',
-         value: updatedAttachments,
-       })
-     );
-   },
-   [dispatch, formData.blocks, formData.authors, formData.attachments]
- );
-
+      dispatch(
+        setFormData({
+          name: 'attachments',
+          value: updatedAttachments,
+        })
+      );
+    },
+    [dispatch, formData.blocks, formData.authors, formData.attachments]
+  );
 
   const handleBlockValueChange = useCallback(
     (id, value) => {
@@ -92,43 +96,44 @@ export default function FormEditJournal({ editJournalData, setIsModalOpen }) {
     [dispatch, formData.blocks]
   );
 
-  const handleSubmit = useCallback(
-    async (e) => {
-      e.preventDefault();
-      if (isSubmitting) return;
+const handleSubmit = useCallback(
+  async (e) => {
+    e.preventDefault();
+    if (isSubmitting) return;
 
-      setIsSubmitting(true);
-      try {
-        const formDataToSend = new FormData();
-        formDataToSend.append('title', formData.title);
-        formDataToSend.append('publication_date', formData.publication_date);
-        formDataToSend.append('category', JSON.stringify(formData.category));
-        formDataToSend.append('issue_number', formData.issue_number || null);
-        formDataToSend.append('authors', JSON.stringify(formData.authors));
-        formDataToSend.append('organizations', JSON.stringify(formData.blocks.filter((b) => b.type === 'university')));
-        formDataToSend.append('locations', JSON.stringify(formData.blocks.filter((b) => b.type === 'location')));
-        formDataToSend.append('markdown_content', formData.markdown_content || null);
+    setIsSubmitting(true);
+    try {
+      const formDataToSend = new FormData();
+      formDataToSend.append('title', formData.title);
+      formDataToSend.append('publication_date', formData.publication_date);
+      formDataToSend.append('category', JSON.stringify(formData.category));
+      formDataToSend.append('issue_number', formData.issue_number || null);
+      formDataToSend.append('authors', JSON.stringify(Object.values(formData.authors)));
+      formDataToSend.append('organizations', JSON.stringify(formData.blocks.filter((b) => b.type === 'university')));
+      formDataToSend.append('locations', JSON.stringify(formData.blocks.filter((b) => b.type === 'location')));
+      formDataToSend.append('markdown_content', formData.markdown_content || null);
 
-       formData.authors.forEach((author) => {
-         if (author.image && localImages[author.id]) {
-           const uniqueName = `${Date.now()}_${author.image}`;
-           formDataToSend.append('authorImages', localImages[author.id], uniqueName);
-         }
-       });
+      Object.values(formData.authors).forEach((author) => {
+        if (author.image) {
+          const uniqueName = `${Date.now()}_${author.image.name}`;
+          formDataToSend.append('authorImages', author.image, uniqueName);
+        }
+      });
 
-        await dispatch(updateJournal({ journalId: editJournalData, formData: formDataToSend })).unwrap();
-        setIsModalOpen(false);
-        dispatch(clearFormData());
-      } catch (error) {
-        console.error('Ошибка при создании записи:', error);
-        setShowNotification(true);
-        setTimeout(() => setShowNotification(false), 3000);
-      } finally {
-        setIsSubmitting(false);
-      }
-    },
-    [dispatch, formData, editJournalData, setIsModalOpen, isSubmitting, localImages]
-  );
+      await dispatch(updateJournal({ journalId: editJournalData, formData: formDataToSend })).unwrap();
+      setIsModalOpen(false);
+      dispatch(clearFormData());
+    } catch (error) {
+      console.error('Ошибка при создании записи:', error);
+      setShowNotification(true);
+      setTimeout(() => setShowNotification(false), 3000);
+    } finally {
+      setIsSubmitting(false);
+    }
+  },
+  [dispatch, formData, editJournalData, setIsModalOpen, isSubmitting]
+);
+
 
 
   const closeModal = useCallback(() => {
@@ -138,6 +143,23 @@ export default function FormEditJournal({ editJournalData, setIsModalOpen }) {
 
   const universityBlocks = formData.blocks.filter((block) => block.type === 'university');
   const locationBlocks = formData.blocks.filter((block) => block.type === 'location');
+
+  console.log('formData.authors:', formData.authors);
+  console.log('formData.attachments:', formData.attachments);
+
+  console.log('AuthorsSection Data:', {
+    authors: Object.entries(formData.authors).map(([id, author]) => ({
+      ...author,
+      id,
+      image: formData.attachments?.[id] || author.image || null,
+    })),
+  });
+
+    useEffect(() => {
+      console.log('formData.authors:', formData.authors);
+      console.log('formData.attachments:', formData.attachments);
+    }, [formData.authors, formData.attachments]);
+  
 
   return (
     <div className={styles.form_container}>
@@ -216,50 +238,28 @@ export default function FormEditJournal({ editJournalData, setIsModalOpen }) {
                 />
               </div>
               <AuthorsSection
-                authors={formData.authors.map((author, index) => ({
+                authors={Object.entries(formData.authors).map(([id, author]) => ({
                   ...author,
-                  image:
-                    typeof author.image === 'string' && author.image.startsWith('http')
-                      ? author.image
-                      : formData.attachments?.[index] || null,
+                  id,
+                  image: formData.attachments?.[id] || author.image || null,
                 }))}
-                onAuthorsChange={(updatedAuthors) => dispatch(updateAuthors(updatedAuthors))}
-                onImageChange={(id, file) => {
-                  setLocalImages((prev) => ({ ...prev, [id]: file }));
-
-                  if (file) {
-                    const updatedAttachments = Array.isArray(formData.attachments) ? [...formData.attachments] : [];
-                    const authorIndex = formData.authors.findIndex((author) => author.id === id);
-                    const temporaryFileName = `${Date.now()}_${file.name}`;
-                    updatedAttachments[authorIndex] = temporaryFileName;
-
-                    dispatch(setFormData({ name: 'attachments', value: updatedAttachments }));
-                  } else {
-                    const updatedAttachments = Array.isArray(formData.attachments)
-                      ? formData.attachments.filter((_, index) => {
-                          const authorIndex = formData.authors.findIndex((author) => author.id === id);
-                          return index !== authorIndex;
-                        })
-                      : [];
-
-                    dispatch(setFormData({ name: 'attachments', value: updatedAttachments }));
-                  }
+                onAuthorsChange={(updatedAuthors) => {
+                  const authorsObject = updatedAuthors.reduce((acc, author) => {
+                    acc[author.id] = author;
+                    return acc;
+                  }, {});
+                  dispatch(updateAuthors(authorsObject));
                 }}
-              />
-              {/* <AuthorsSection
-                authors={
-                  formData.authors.map((author, index) => ({
-                    ...author,
-                    image: author.image?.startsWith('http')
-                      ? author.image
-                      : // : formData.attachments[formData.authors.indexOf(author)] || null,
-                      formData.attachments?.[index] || null,
-                  })) || []
-                }
-                  onAuthorsChange={(updatedAuthors) => dispatch(updateAuthors(updatedAuthors))}                   
-                  onImageChange={(id, file) => setLocalImages((prev) => ({ ...prev, [id]: file }))}
-              /> */}
-
+                onImageChange={(id, file) => {
+                  const updatedAttachments = { ...formData.attachments };
+                  if (file) {
+                    updatedAttachments[id] = URL.createObjectURL(file);
+                  } else {
+                    delete updatedAttachments[id];
+                  }
+                  dispatch(setFormData({ name: 'attachments', value: updatedAttachments }));
+                }}
+              />           
               {universityBlocks.map((block) => (
                 <div key={block.id} className={styles.form_container__block_gray_one}>
                   <div className={styles.form_container__checkbox_block}>

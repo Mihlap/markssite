@@ -23,15 +23,10 @@ const extractFileNameAndFolderFromUrl = (url) => {
     if (parts.length >= 2) {
       const folder = parts.slice(0, -1).join('/');
       const fileName = parts[parts.length - 1];
-      return {
-        fileName,
-        folder,
-      };
+      return { fileName, folder };
     }
-    return {
-      fileName: parts[0],
-      folder: 'images/imageJournal',
-    };
+
+    return { fileName: parts[0], folder: 'images/imageJournal' };
   } catch (error) {
     console.error(`Ошибка извлечения данных из URL: ${url}`, error);
     return null;
@@ -41,12 +36,10 @@ const extractFileNameAndFolderFromUrl = (url) => {
 const deleteImageFromS3 = async (fileUrl) => {
   const result = extractFileNameAndFolderFromUrl(fileUrl);
   if (result) {
-    let { fileName, folder } = result;
-    fileName = decodeURIComponent(fileName);
-    folder = decodeURIComponent(folder);
+    const { fileName, folder } = result;
     try {
-      const response = await deleteFileFromS3(fileName, folder);
-      console.log(`Файл ${fileName} успешно удалён с S3:`, response);
+      await deleteFileFromS3(decodeURIComponent(fileName), decodeURIComponent(folder));
+      console.log(`Файл ${fileName} успешно удалён из S3`);
     } catch (error) {
       console.error(`Ошибка при удалении файла ${fileName}:`, error);
     }
@@ -55,6 +48,7 @@ const deleteImageFromS3 = async (fileUrl) => {
   }
 };
 
+// Создание новой записи
 router.post(
   '/postzapros',
   fileMiddleware.fields([{ name: 'authorImages', maxCount: 100 }]),
@@ -76,7 +70,7 @@ router.post(
         return res.status(400).json({ message: 'Поле "title" обязательно для заполнения.' });
       }
 
-      const parsedAuthors = JSON.parse(authors || '[]');
+      const parsedAuthors = Object.values(JSON.parse(authors || '{}'));
       const parsedOrganizations = JSON.parse(organizations || '[]');
       const parsedLocations = JSON.parse(locations || '[]');
       const parsedCategory = JSON.parse(category || '[]');
@@ -94,13 +88,9 @@ router.post(
       });
 
       if (req.files && req.files.authorImages) {
-        const fileUploadPromises = req.files.authorImages.map(async (file) => {
-          const fileUrl = await uploadFileToS3(file, 'images/imageJournal');
-          return fileUrl;
-        });
-
-        const uploadedFiles = await Promise.all(fileUploadPromises);
-
+        const uploadedFiles = await Promise.all(
+          req.files.authorImages.map(async (file) => uploadFileToS3(file, 'images/imageJournal')),
+        );
         journal.attachments = uploadedFiles;
         await journal.save();
       }
@@ -112,7 +102,6 @@ router.post(
     }
   },
 );
-
 
 // Обновление записи
 router.put(
@@ -138,33 +127,26 @@ router.put(
         return res.status(404).json({ message: 'Запись не найдена' });
       }
 
-      const parsedAuthors = JSON.parse(authors || '[]');
+      const parsedAuthors = Object.values(JSON.parse(authors || '{}')); // Объект авторов преобразуем в массив
       const parsedOrganizations = JSON.parse(organizations || '[]');
       const parsedLocations = JSON.parse(locations || '[]');
       const parsedCategory = JSON.parse(category || '[]');
 
       const currentAttachments = journal.attachments || [];
-        const currentImages = currentAttachments
-          .filter((url) => typeof url === 'string')
-          .map((url) => url.split('/').pop());
-
+      const currentImages = currentAttachments.map((url) => url.split('/').pop());
       const newImages = parsedAuthors
         .map((author) => author.image)
         .filter((url) => typeof url === 'string');
       const newImageFileNames = newImages.map((url) => url.split('/').pop());
-
       const imagesToDelete = currentImages.filter((image) => !newImageFileNames.includes(image));
 
       await Promise.all(imagesToDelete.map((image) => deleteImageFromS3(image)));
 
-    
       let uploadedFiles = [];
       if (req.files && req.files.authorImages) {
-        const fileUploadPromises = req.files.authorImages.map(async (file) => {
-          const fileUrl = await uploadFileToS3(file, 'images/imageJournal');
-          return fileUrl;
-        });
-        uploadedFiles = await Promise.all(fileUploadPromises);
+        uploadedFiles = await Promise.all(
+          req.files.authorImages.map(async (file) => uploadFileToS3(file, 'images/imageJournal')),
+        );
       }
 
       const updatedAttachments = [
@@ -192,18 +174,13 @@ router.put(
   },
 );
 
-
-
 // Получение всех записей
 router.get('/getzapros', async (req, res) => {
   try {
-    const data = await Journal.findAll({
-      order: [['id', 'DESC']],
-    });
-
+    const data = await Journal.findAll({ order: [['id', 'DESC']] });
     res.json(data);
   } catch (error) {
-    console.error('Ошибка при получении записи:', error);
+    console.error('Ошибка при получении записей:', error);
     res.status(500).json({ message: 'Ошибка сервера' });
   }
 });
@@ -212,22 +189,23 @@ router.get('/getzapros', async (req, res) => {
 router.get('/getzapros/:id', async (req, res) => {
   try {
     const { id } = req.params;
-
     const journal = await Journal.findByPk(id);
 
     if (!journal) {
       return res.status(404).json({ message: 'Запись не найдена' });
     }
 
-   if (journal.authors) {
-     journal.authors = journal.authors.map((author, index) => ({
-       ...author,
-       image:
-         typeof author.image === 'string' && author.image.startsWith('http')
-           ? author.image
-           : journal.attachments?.[index] || null,
-     }));
-   }
+ if (journal.authors) {
+   journal.authors = journal.authors.map((author, index) => ({
+     ...author,
+     image:
+       typeof author.image === 'string' && author.image.startsWith('http')
+         ? author.image
+         : journal.attachments?.[index] || null,
+   }));
+ }
+
+
     res.json(journal);
   } catch (error) {
     console.error('Ошибка при получении записи:', error.message);
