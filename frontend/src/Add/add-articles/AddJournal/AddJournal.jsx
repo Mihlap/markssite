@@ -1,6 +1,6 @@
-import React, { useEffect, useState, useCallback, useRef, useMemo } from 'react';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { clearFormData, deleteJournal, fetchJournals } from '../../../store/Slice/journalSlice';
+import { clearFormData, deleteJournal, fetchJournals, setFormData } from '../../../store/Slice/journalSlice';
 import { fetchToggleStateForButton4Async, updateToggleStateForButton4Async } from '../../../store/Slice/toggleSlice';
 import LoadingModal from '../../add-project/loading/LoadingModal';
 import FormAddJournal from './FormAddEditJournal/FormAddJournal';
@@ -25,16 +25,30 @@ export default function AddJournal({ user }) {
   const [editJournalData, setEditJournalData] = useState(null);
   const [deleteModalState, setDeleteModalState] = useState({});
   const [modalBlockHeight, setModalBlockHeight] = useState('auto');
-
+  const imageMap = {
+    one: one,
+    two: two,
+    three: three,
+  };
   const isMountedRef = useRef(true);
-   const imageArray = useMemo(() => [one, two, three], []);
+
+  const getNextImageKey = useCallback((journals) => { 
+    const imageKeys = ['one', 'two', 'three'];
+  
+    const usedIndices = journals.map((journal) => imageKeys.indexOf(journal.imageKey)).filter((idx) => idx >= 0);  
+    if (usedIndices.length === 0) {
+      return imageKeys[0];
+    } 
+    const maxUsedIndex = Math.max(...usedIndices);
+    const nextIndex = (maxUsedIndex + 1) % imageKeys.length;
+    return imageKeys[nextIndex];
+  }, []);
 
   const updateModalBlockHeight = useCallback(() => {
     const windowHeight = window.innerHeight;
     const maxHeight = Math.min(windowHeight - 100, 1900);
     setModalBlockHeight(`${maxHeight}px`);
   }, []);
-  
 
   useEffect(() => {
     if (!journals.length) {
@@ -42,7 +56,6 @@ export default function AddJournal({ user }) {
     }
     dispatch(fetchToggleStateForButton4Async());
   }, [dispatch, journals.length]);
-
 
   useEffect(() => {
     updateModalBlockHeight();
@@ -52,19 +65,18 @@ export default function AddJournal({ user }) {
       isMountedRef.current = false;
     };
   }, [updateModalBlockHeight]);
-  
 
- const handleOpenModal = useCallback(() => {
-   setEditJournalData(null);
-   dispatch(clearFormData());
-   setIsModalOpen(true); 
- }, [dispatch]);
-  
+  const handleOpenModal = useCallback(() => {
+    setEditJournalData(null);
+    dispatch(clearFormData());
+    setIsModalOpen(true);
+    const nextKey = getNextImageKey(journals);
+    dispatch(setFormData({ name: 'imageKey', value: nextKey }));
+  }, [dispatch, journals, getNextImageKey]);
 
- const handleCloseModal = useCallback(() => {
+  const handleCloseModal = useCallback(() => {
     setIsModalOpen(false);
- }, []);
-  
+  }, []);
 
   const handleDeleteModalOpen = useCallback((id) => {
     setDeleteModalState((prevState) => ({
@@ -94,30 +106,28 @@ export default function AddJournal({ user }) {
   }, []);
 
 
-const handleEditClick = useCallback(
-  async (id) => {   
-    const journalToEdit = journals.find((el) => el.id === id);
-    if (journalToEdit) {
-      setEditJournalData(journalToEdit.id);
-      setIsModalOpen(true);
-    } else {
-      console.warn('Запись не найдена для редактирования:', id);
-    }
-  },
-  [journals]
-);
+  const handleEditClick = useCallback(
+    async (id) => {
+      const journalToEdit = journals.find((el) => el.id === id);
+      if (journalToEdit) {
+        setEditJournalData(journalToEdit.id);
+        setIsModalOpen(true);
+      } else {
+        console.warn('Запись не найдена для редактирования:', id);
+      }
+    },
+    [journals]
+  );
 
-
- const handleFormDelete = useCallback(
-   (id) => {
-     if (id) {
-       dispatch(deleteJournal(id));
-       handleDeleteModalClose(id);
-     }
-   },
-   [dispatch, handleDeleteModalClose]
- );
-
+  const handleFormDelete = useCallback(
+    (id) => {
+      if (id) {
+        dispatch(deleteJournal(id));
+        handleDeleteModalClose(id);
+      }
+    },
+    [dispatch, handleDeleteModalClose]
+  );
 
   useEffect(() => {
     if (isCopied) {
@@ -132,7 +142,6 @@ const handleEditClick = useCallback(
   const toggleActive = useCallback(() => {
     dispatch(updateToggleStateForButton4Async(!isActiveForButton4));
   }, [dispatch, isActiveForButton4]);
-
 
   return (
     <>
@@ -189,7 +198,7 @@ const handleEditClick = useCallback(
         ) : (
           <div className={styles.card_components_admin__block_map}>
             {journals?.map((el, index) => {
-              const photoSrc = imageArray[index % imageArray.length];
+              const photoSrc = imageMap[el.imageKey] || one;
 
               return (
                 <React.Fragment key={el.id}>
