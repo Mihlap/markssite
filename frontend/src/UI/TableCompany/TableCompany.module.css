@@ -134,7 +134,7 @@
   }
 
   .visible {
-    height: 1730px; 
+    height: 1730px;
   }
 
   .slideDown {
@@ -253,6 +253,9 @@
     animation-fill-mode: forwards;
   }
 
+  .expandedOut td {
+    padding-top: 1rem;
+  }
   @keyframes slideContentIn {
     0% {
       transform: translateY(-30%);
@@ -266,13 +269,17 @@
 
   .tdStyle1 {
     font-family: var(--font-raleway);
-    font-weight: var(--fw-300);
+    font-weight: var(--fw-400);
     font-size: 1.125rem;
-    line-height: 1.5rem;
+    line-height: 1.625rem;
     text-align: left;
     width: 100%;
     padding-right: 1rem;
     padding-left: 1rem;
+  }
+
+  .tdStyle1:nth-child(1) {
+    padding-right: 3rem;
   }
 
   .tdStyle4 {
@@ -302,7 +309,7 @@
   }
 
   .svgContainer.clicked {
-    transform: rotate(360deg);
+    transform: rotate(180deg);
   }
 
   .field_nomination {
@@ -336,7 +343,7 @@
   }
 
   .element_prize {
-    color: var(--black-1D2E43);
+    color: var(--dark-gray-566272);
     font-size: 16px;
     font-family: var(--font-raleway);
     line-height: 24px;
