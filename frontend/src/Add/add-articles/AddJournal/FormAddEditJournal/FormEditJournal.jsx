@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import InputField from '../InputField';
 import DropdownSelect from '../DropdownSelect';
 import AuthorsSection from '../AuthorsSection';
+
 import {
   fetchJournalById,
   updateJournal,
@@ -11,12 +12,15 @@ import {
   updateAuthors,
   fetchJournals,
 } from '../../../../store/Slice/journalSlice';
+
 import { PublicationContainer, PublicationIndicator } from '../../../add-project/formAdd/utils/CustomSelectComponents';
 import styles from '../../../../Add/add-project/formAdd/FormAddProject.module.scss';
 
 export default function FormEditJournal({ editJournalData, setIsModalOpen }) {
   const dispatch = useDispatch();
   const { formData, loading, error } = useSelector((state) => state.journal);
+  const [localImages, setLocalImages] = useState({});
+
   const [showNotification, setShowNotification] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
@@ -30,6 +34,7 @@ export default function FormEditJournal({ editJournalData, setIsModalOpen }) {
     }
   }, [dispatch, editJournalData]);
 
+ 
   const handleInputChange = useCallback(
     (name, value) => {
       dispatch(setFormData({ name, value }));
@@ -37,22 +42,20 @@ export default function FormEditJournal({ editJournalData, setIsModalOpen }) {
     [dispatch]
   );
 
+
   const handleAddInputBlock = useCallback(
     (blockType) => {
       const newBlock = { id: Date.now(), type: blockType, value: '' };
-      dispatch(
-        setFormData({
-          name: 'blocks',
-          value: [...formData.blocks, newBlock],
-        })
-      );
+      const updated = [...formData.blocks, newBlock];
+      dispatch(setFormData({ name: 'blocks', value: updated }));
     },
     [dispatch, formData.blocks]
   );
 
+
   const handleRemoveInputBlock = useCallback(
     (id) => {
-      const updatedBlocks = formData.blocks.filter((block) => block.id !== id);
+      const updatedBlocks = formData.blocks.filter((b) => b.id !== id);
 
       const updatedAuthors = Object.values(formData.authors)
         .filter((author) => author.id !== id)
@@ -60,106 +63,107 @@ export default function FormEditJournal({ editJournalData, setIsModalOpen }) {
           acc[author.id] = author;
           return acc;
         }, {});
-
+  
       const updatedAttachments = { ...formData.attachments };
       delete updatedAttachments[id];
 
-      dispatch(
-        setFormData({
-          name: 'blocks',
-          value: updatedBlocks,
-        })
-      );
-
-      dispatch(
-        setFormData({
-          name: 'authors',
-          value: updatedAuthors,
-        })
-      );
-
-      dispatch(
-        setFormData({
-          name: 'attachments',
-          value: updatedAttachments,
-        })
-      );
+      dispatch(setFormData({ name: 'blocks', value: updatedBlocks }));
+      dispatch(setFormData({ name: 'authors', value: updatedAuthors }));
+      dispatch(setFormData({ name: 'attachments', value: updatedAttachments }));
     },
     [dispatch, formData.blocks, formData.authors, formData.attachments]
   );
 
+
   const handleBlockValueChange = useCallback(
-    (id, value) => {
-      const updatedBlocks = formData.blocks.map((block) => (block.id === id ? { ...block, value } : block));
+    (id, newValue) => {
+      const updatedBlocks = formData.blocks.map((block) => (block.id === id ? { ...block, value: newValue } : block));
       dispatch(setFormData({ name: 'blocks', value: updatedBlocks }));
     },
     [dispatch, formData.blocks]
   );
 
-const handleSubmit = useCallback(
-  async (e) => {
-    e.preventDefault();
-    if (isSubmitting) return;
 
-    setIsSubmitting(true);
-    try {
-      const formDataToSend = new FormData();
-      formDataToSend.append('title', formData.title);
-      formDataToSend.append('publication_date', formData.publication_date);
-      formDataToSend.append('category', JSON.stringify(formData.category));
-      formDataToSend.append('issue_number', formData.issue_number || null);
-      formDataToSend.append('authors', JSON.stringify(Object.values(formData.authors)));
-      formDataToSend.append('organizations', JSON.stringify(formData.blocks.filter((b) => b.type === 'university')));
-      formDataToSend.append('locations', JSON.stringify(formData.blocks.filter((b) => b.type === 'location')));
-      formDataToSend.append('markdown_content', formData.markdown_content || null);
+  const handleSubmit = useCallback(
+    async (e) => {
+      e.preventDefault();
+      if (isSubmitting) return;
 
-      Object.values(formData.authors).forEach((author) => {
-        if (author.image) {
-          const uniqueName = `${Date.now()}_${author.image.name}`;
-          formDataToSend.append('authorImages', author.image, uniqueName);
+       if (!formData.title || !formData.publication_date) {
+        setShowNotification(true);
+        setTimeout(() => setShowNotification(false), 3000);
+        return;
+      }
+
+      setIsSubmitting(true);
+
+      try {
+        const formDataToSend = new FormData();
+        formDataToSend.append('title', formData.title);
+        formDataToSend.append('publication_date', formData.publication_date);
+        formDataToSend.append('category', JSON.stringify(formData.category));
+        formDataToSend.append('issue_number', formData.issue_number || null);
+        formDataToSend.append('authors', JSON.stringify(Object.values(formData.authors)));
+        formDataToSend.append('organizations', JSON.stringify(formData.blocks.filter((b) => b.type === 'university')));
+        formDataToSend.append('locations', JSON.stringify(formData.blocks.filter((b) => b.type === 'location')));
+        formDataToSend.append('markdown_content', formData.markdown_content || null);
+        formDataToSend.append('imageKey', formData.imageKey || 'one');
+
+       
+        const journalId = editJournalData;
+        if (typeof journalId !== 'string' && typeof journalId !== 'number') {
+          throw new Error('Некорректный journalId');
         }
-      });
 
-      await dispatch(updateJournal({ journalId: editJournalData, formData: formDataToSend })).unwrap();
-      setIsModalOpen(false);
-      dispatch(clearFormData());
-    } catch (error) {
-      console.error('Ошибка при создании записи:', error);
-      setShowNotification(true);
-      setTimeout(() => setShowNotification(false), 3000);
-    } finally {
-      setIsSubmitting(false);
-    }
-  },
-  [dispatch, formData, editJournalData, setIsModalOpen, isSubmitting]
-);
+        console.log('Отправляемый imageKey:', formData.imageKey);
 
+        Object.values(formData.authors).forEach((author) => {
+          console.log('Автор перед обработкой:', author);
+
+          if (typeof author.image === 'string' && author.image.startsWith('blob:')) {
+            console.log('Удаляем blob:URL для автора', author.id);
+            const { image, ...rest } = author;
+            author = rest;
+          }
+
+        
+          if (localImages[author.id] instanceof File || localImages[author.id] instanceof Blob) {
+            const file = localImages[author.id];
+            const uniqueName = `${Date.now()}_${file.name || 'file'}`;
+            formDataToSend.append('authorImages', file, uniqueName);
+            console.log('Добавлен файл в FormData:', file.name);
+          }
+        });
+
+        console.log('Данные перед запросом (FormData):', Array.from(formDataToSend.entries()));
+      
+        await dispatch(updateJournal({ journalId, formData: formDataToSend })).unwrap();
+ 
+        setIsModalOpen(false);
+   
+        dispatch(clearFormData());
+      } catch (err) {
+        console.error('Ошибка при обновлении записи:', err);
+        if (err.message.includes('обязательные поля')) {
+          setShowNotification(true);
+          setTimeout(() => setShowNotification(false), 3000);
+        }
+      } finally {
+        setIsSubmitting(false);
+      }
+    },
+    [dispatch, formData, editJournalData, localImages, isSubmitting, setIsModalOpen]
+  );
 
 
   const closeModal = useCallback(() => {
     setIsModalOpen(false);
     dispatch(fetchJournals());
-  }, [setIsModalOpen, dispatch]);
+  }, [dispatch, setIsModalOpen]);
 
-  const universityBlocks = formData.blocks.filter((block) => block.type === 'university');
-  const locationBlocks = formData.blocks.filter((block) => block.type === 'location');
 
-  console.log('formData.authors:', formData.authors);
-  console.log('formData.attachments:', formData.attachments);
-
-  console.log('AuthorsSection Data:', {
-    authors: Object.entries(formData.authors).map(([id, author]) => ({
-      ...author,
-      id,
-      image: formData.attachments?.[id] || author.image || null,
-    })),
-  });
-
-    useEffect(() => {
-      console.log('formData.authors:', formData.authors);
-      console.log('formData.attachments:', formData.attachments);
-    }, [formData.authors, formData.attachments]);
-  
+  const universityBlocks = formData.blocks.filter((b) => b.type === 'university');
+  const locationBlocks = formData.blocks.filter((b) => b.type === 'location');
 
   return (
     <div className={styles.form_container}>
@@ -170,7 +174,8 @@ const handleSubmit = useCallback(
       ) : (
         <>
           {showNotification && <div className={styles.form_container__notification}>Заполните обязательные поля</div>}
-          <h1 className={styles.form_container__title}>Редактирвание статьи</h1>
+          <h1 className={styles.form_container__title}>Редактирование статьи</h1>
+
           <div className={styles.form_container__block_form}>
             <form className={styles.form_container__form} onSubmit={handleSubmit}>
               <div className={styles.form_container__block_gray_one}>
@@ -178,10 +183,11 @@ const handleSubmit = useCallback(
                   label="Название статьи"
                   name="title"
                   placeholder="Название статьи"
-                  value={formData.title}
+                  value={formData.title || ''}
                   onChange={handleInputChange}
                   type="text"
                 />
+
                 <InputField
                   label="Дата, месяц, год"
                   placeholder="Дата, месяц, год"
@@ -190,10 +196,11 @@ const handleSubmit = useCallback(
                   onChange={handleInputChange}
                   type="text"
                 />
+
                 <DropdownSelect
                   label=""
                   name="category"
-                  placeholder="Выберете категорию фильтрации"
+                  placeholder="Выберите категорию фильтрации"
                   isMulti
                   options={[
                     { value: 'Архитектура', label: 'Архитектура' },
@@ -202,64 +209,68 @@ const handleSubmit = useCallback(
                     { value: 'Механика грунтов', label: 'Механика грунтов' },
                   ]}
                   value={
-                    Array.isArray(formData.category)
-                      ? formData.category.map((category) => ({
-                          value: category,
-                          label: category,
-                        }))
-                      : []
+                    Array.isArray(formData.category) ? formData.category.map((cat) => ({ value: cat, label: cat })) : []
                   }
-                  onChange={(selectedOptions) =>
-                    handleInputChange('category', selectedOptions ? selectedOptions.map((option) => option.value) : [])
-                  }
+                  onChange={(selectedOptions) => {
+                    const newCats = selectedOptions ? selectedOptions.map((opt) => opt.value) : [];
+                    handleInputChange('category', newCats);
+                  }}
                   components={{
                     DropdownIndicator: PublicationIndicator,
                     ValueContainer: PublicationContainer,
                   }}
                 />
+
                 <DropdownSelect
                   label=""
                   placeholder="Выберите номер выпуска"
                   name="issue_number"
                   options={Array.from({ length: 10 }, (_, i) => ({
-                    value: (i + 1).toString(),
+                    value: `${i + 1}`,
                     label: `Выпуск ${i + 1}`,
                   }))}
                   value={
                     formData.issue_number
-                      ? { value: formData.issue_number, label: `Выпуск ${formData.issue_number}` }
+                      ? {
+                          value: formData.issue_number,
+                          label: `Выпуск ${formData.issue_number}`,
+                        }
                       : null
                   }
-                  onChange={(selectedOption) => handleInputChange('issue_number', selectedOption?.value || '')}
+                  onChange={(selOpt) => handleInputChange('issue_number', selOpt?.value || '')}
                   components={{
                     DropdownIndicator: PublicationIndicator,
                     ValueContainer: PublicationContainer,
                   }}
                 />
               </div>
-              <AuthorsSection
+           
+              <AuthorsSection         
                 authors={Object.entries(formData.authors).map(([id, author]) => ({
                   ...author,
-                  id,
+                  id,               
                   image: formData.attachments?.[id] || author.image || null,
-                }))}
+                }))}              
                 onAuthorsChange={(updatedAuthors) => {
-                  const authorsObject = updatedAuthors.reduce((acc, author) => {
-                    acc[author.id] = author;
+                  const newObj = updatedAuthors.reduce((acc, a) => {
+                    acc[a.id] = a;
                     return acc;
                   }, {});
-                  dispatch(updateAuthors(authorsObject));
-                }}
-                onImageChange={(id, file) => {
+                  dispatch(updateAuthors(newObj));
+                }}             
+                onImageChange={(authorId, file) => {           
+                  setLocalImages((prev) => ({ ...prev, [authorId]: file || null }));
+               
                   const updatedAttachments = { ...formData.attachments };
                   if (file) {
-                    updatedAttachments[id] = URL.createObjectURL(file);
+                    updatedAttachments[authorId] = URL.createObjectURL(file);
                   } else {
-                    delete updatedAttachments[id];
+                    delete updatedAttachments[authorId];
                   }
                   dispatch(setFormData({ name: 'attachments', value: updatedAttachments }));
                 }}
-              />           
+              />
+         
               {universityBlocks.map((block) => (
                 <div key={block.id} className={styles.form_container__block_gray_one}>
                   <div className={styles.form_container__checkbox_block}>
@@ -269,7 +280,7 @@ const handleSubmit = useCallback(
                     type="button"
                     className={styles.form_container__close_button}
                     onClick={() => handleRemoveInputBlock(block.id)}>
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg width="12" height="12" fill="none">
                       <path
                         fillRule="evenodd"
                         clipRule="evenodd"
@@ -282,9 +293,9 @@ const handleSubmit = useCallback(
                     label=""
                     name="university"
                     value={block.value}
-                    onChange={(name, value) => handleBlockValueChange(block.id, value)}
+                    onChange={(name, val) => handleBlockValueChange(block.id, val)}
                     placeholder="Нет ограничений по символам"
-                    useHeadingBlock={true}
+                    useHeadingBlock
                   />
                 </div>
               ))}
@@ -293,7 +304,7 @@ const handleSubmit = useCallback(
                 type="button"
                 className={styles.add_input_button}
                 onClick={() => handleAddInputBlock('university')}>
-                <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg width="25" height="24" fill="none">
                   <circle cx="12.5" cy="12" r="12" fill="currentColor" />
                   <path
                     d="M6.5 12H12.5M18.5 12H12.5M12.5 12V6M12.5 12V18"
@@ -304,7 +315,7 @@ const handleSubmit = useCallback(
                 </svg>
                 <span className={styles.add_input_text}>Добавить университет или организация</span>
               </button>
-
+     
               {locationBlocks.map((block) => (
                 <div key={block.id} className={styles.form_container__block_gray_one}>
                   <div className={styles.form_container__checkbox_block}>
@@ -314,7 +325,7 @@ const handleSubmit = useCallback(
                     type="button"
                     className={styles.form_container__close_button}
                     onClick={() => handleRemoveInputBlock(block.id)}>
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg width="12" height="12" fill="none">
                       <path
                         fillRule="evenodd"
                         clipRule="evenodd"
@@ -327,15 +338,15 @@ const handleSubmit = useCallback(
                     label=""
                     name="location"
                     value={block.value}
-                    onChange={(name, value) => handleBlockValueChange(block.id, value)}
+                    onChange={(name, val) => handleBlockValueChange(block.id, val)}
                     placeholder="Нет ограничений по символам"
-                    useHeadingBlock={true}
+                    useHeadingBlock
                   />
                 </div>
               ))}
 
               <button type="button" className={styles.add_input_button} onClick={() => handleAddInputBlock('location')}>
-                <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <svg width="25" height="24" fill="none">
                   <circle cx="12.5" cy="12" r="12" fill="currentColor" />
                   <path
                     d="M6.5 12H12.5M18.5 12H12.5M12.5 12V6M12.5 12V18"
@@ -348,8 +359,8 @@ const handleSubmit = useCallback(
               </button>
 
               <div className={styles.form_container__button_block}>
-                <button type="submit" className={styles.form_container__button_save}></button>
-                <button type="button" className={styles.form_container__button_cancel} onClick={closeModal}></button>
+                <button type="submit" className={styles.form_container__button_save} />
+                <button type="button" className={styles.form_container__button_cancel} onClick={closeModal} />
               </div>
             </form>
           </div>

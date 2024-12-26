@@ -32,7 +32,7 @@ export const fetchJournalById = createAsyncThunk('journal/fetchJournalById', asy
 export const createJournal = createAsyncThunk('journal/createJournal', async (formData, { rejectWithValue }) => {
   try {
     const response = await axios.post(`${serverHost}/api-journal/postzapros`, formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
+      // headers: { 'Content-Type': 'multipart/form-data' },
     });
     return response.data;
   } catch (error) {
@@ -47,7 +47,7 @@ export const updateJournal = createAsyncThunk(
   async ({ journalId, formData }, { rejectWithValue }) => {
     try {
       const response = await axios.put(`${serverHost}/api-journal/editzapros/${journalId}`, formData, {
-        headers: { 'Content-Type': 'multipart/form-data' },
+        // headers: { 'Content-Type': 'multipart/form-data' },
       });
       return response.data;
     } catch (error) {
@@ -81,6 +81,7 @@ const journalSlice = createSlice({
       organizations: [],
       locations: [],
       markdown_content: '',
+      imageKey: '',
       blocks: [
         { id: Date.now() + 1, type: 'university', value: '' },
         { id: Date.now() + 2, type: 'location', value: '' },
@@ -108,6 +109,7 @@ const journalSlice = createSlice({
         authors: {},
         attachments: {},
         markdown_content: '',
+        imageKey: '',
         blocks: [
           { id: Date.now() + 1, type: 'university', value: '' },
           { id: Date.now() + 2, type: 'location', value: '' },
@@ -140,6 +142,7 @@ const journalSlice = createSlice({
           acc[author.id] = author.image || data.attachments?.[index] || null;
           return acc;
         }, {});
+        state.formData.attachments = attachmentsById;
 
         state.formData = {
           ...state.formData,
@@ -157,6 +160,7 @@ const journalSlice = createSlice({
           organizations: data.organizations || [],
           locations: data.locations || [],
           markdown_content: data.markdown_content || '',
+          imageKey: data.imageKey || '',
           blocks: [
             ...(data.organizations || []).map((org, index) => ({
               id: org.id || `university-${index}`,
@@ -181,7 +185,7 @@ const journalSlice = createSlice({
       })
       .addCase(createJournal.fulfilled, (state, action) => {
         state.loading = false;
-        state.journals.push(action.payload.journal);
+        state.journals = [action.payload.journal, ...state.journals];
       })
       .addCase(createJournal.rejected, (state, action) => {
         state.loading = false;

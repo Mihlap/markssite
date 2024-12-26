@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import InputField from '../InputField';
 import DropdownSelect from '../DropdownSelect';
 import AuthorsSection from '../AuthorsSection';
-import { setFormData, updateAuthors, clearFormData } from '../../../../store/Slice/journalSlice';
+import { setFormData, updateAuthors, clearFormData, fetchJournals } from '../../../../store/Slice/journalSlice';
 import { createJournal } from '../../../../store/Slice/journalSlice';
 import styles from '../../../../Add/add-project/formAdd/FormAddProject.module.scss';
 import { PublicationContainer, PublicationIndicator } from '../../../add-project/formAdd/utils/CustomSelectComponents';
@@ -63,7 +63,7 @@ export default function FormAddJournal({ setIsModalOpen }) {
 
       setIsSubmitting(true);
       try {
-        const { title, date, category, issueNumber, blocks, text, authors } = formData;
+        const { title, date, category, issueNumber, blocks, text, authors, imageKey } = formData;
 
         if (!title || !date || category.length === 0 || Object.keys(authors).length === 0) {
           setShowNotification(true);
@@ -80,14 +80,19 @@ export default function FormAddJournal({ setIsModalOpen }) {
         formDataToSend.append('organizations', JSON.stringify(blocks.filter((block) => block.type === 'university')));
         formDataToSend.append('locations', JSON.stringify(blocks.filter((block) => block.type === 'location')));
         formDataToSend.append('markdown_content', text || null);
+        formDataToSend.append('imageKey', imageKey || null);
 
-        Object.entries(authors).forEach(([id, author]) => {
-          if (author.image && localImages[id]) {
-            const uniqueName = `${Date.now()}_${author.image}`;
-            formDataToSend.append('authorImages', localImages[id], uniqueName);
-          }
-        });
+            Object.entries(authors).forEach(([authorId, author]) => {
+            if (author.image) {         
+              const file = localImages[authorId];
+              if (file) {
+                const uniqueName = `${Date.now()}_${author.image}`;
+                formDataToSend.append('authorImages', file, uniqueName);
+              }
+            }
+          });
         await dispatch(createJournal(formDataToSend)).unwrap();
+        await dispatch(fetchJournals());
         setIsModalOpen(false);
         dispatch(clearFormData());
       } catch (error) {
@@ -105,6 +110,7 @@ export default function FormAddJournal({ setIsModalOpen }) {
     setIsModalOpen(false);
     dispatch(clearFormData());
   }, [setIsModalOpen, dispatch]);
+  
 
   const universityBlocks = formData.blocks.filter((block) => block.type === 'university');
   const locationBlocks = formData.blocks.filter((block) => block.type === 'location');
@@ -190,8 +196,8 @@ export default function FormAddJournal({ setIsModalOpen }) {
               }, {});
               dispatch(updateAuthors(authorsObject));
             }}
-            onImageChange={(id, file) => {
-              setLocalImages((prev) => ({ ...prev, [id]: file }));
+            onImageChange={(authorId, file) => {
+              setLocalImages((prev) => ({ ...prev, [authorId]: file }));
             }}
           />
 
