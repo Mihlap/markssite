@@ -3,9 +3,13 @@ import styles from './AuthorsSection.module.scss';
 import ImagePreviewSection from './ImagePreviewSection';
 import compressImageFile from 'browser-image-compression';
 
-function AuthorsSection({ authors = [], onAuthorsChange, onImageChange }) {
+function AuthorsSection({
+  authors = [],
+  onAuthorsChange,
+  onImageChange,
+}) { 
   const [localImages, setLocalImages] = useState({});
-
+ 
   useEffect(() => {
     if (!Array.isArray(authors)) {
       onAuthorsChange([]);
@@ -14,13 +18,13 @@ function AuthorsSection({ authors = [], onAuthorsChange, onImageChange }) {
     }
   }, [authors, onAuthorsChange]);
 
+
   const compressImage = useCallback(async (file) => {
     const options = {
       maxSizeMB: 4,
       maxWidthOrHeight: 1920,
       useWebWorker: true,
     };
-
     try {
       return await compressImageFile(file, options);
     } catch (error) {
@@ -29,11 +33,18 @@ function AuthorsSection({ authors = [], onAuthorsChange, onImageChange }) {
     }
   }, []);
 
+
   const handleAddAuthorBlock = useCallback(() => {
-    const newAuthor = { id: Date.now(), number: authors.length + 1, name: '', image: null, isLoading: false };
-    const updatedAuthors = [...authors, newAuthor];
-    onAuthorsChange(updatedAuthors);
+    const newAuthor = {
+      id: Date.now(),
+      number: authors.length + 1,
+      name: '',
+      image: null,
+      isLoading: false,
+    };
+    onAuthorsChange([...authors, newAuthor]);
   }, [authors, onAuthorsChange]);
+
 
   const handleUpdateAuthorBlock = useCallback(
     (id, updatedData) => {
@@ -43,26 +54,31 @@ function AuthorsSection({ authors = [], onAuthorsChange, onImageChange }) {
     [authors, onAuthorsChange]
   );
 
+  
   const handleRemoveAuthorBlock = useCallback(
     (id) => {
       const updatedAuthors = authors
         .filter((author) => author.id !== id)
         .map((author, index) => ({ ...author, number: index + 1 }));
-
-      const { [id]: _, ...restImages } = localImages;
-      setLocalImages(restImages);
-
+      setLocalImages((prev) => {
+        const { [id]: _, ...rest } = prev;
+        return rest;
+      });
       onAuthorsChange(updatedAuthors);
     },
-    [authors, onAuthorsChange, localImages]
+    [authors, onAuthorsChange]
   );
+
 
   const handleFileChange = useCallback(
     async (id, file) => {
       if (!file) return;
 
-      handleUpdateAuthorBlock(id, { isLoading: true });
+      if (localImages[id]) {
+        console.log(`Замена изображения для автора ${id}: ${localImages[id].name}`);
+      }
 
+      handleUpdateAuthorBlock(id, { isLoading: true });
       try {
         const compressedFile = await compressImage(file);
 
@@ -79,71 +95,91 @@ function AuthorsSection({ authors = [], onAuthorsChange, onImageChange }) {
         handleUpdateAuthorBlock(id, { isLoading: false });
       }
     },
-    [handleUpdateAuthorBlock, onImageChange, compressImage]
+    [compressImage, handleUpdateAuthorBlock, onImageChange, localImages]
   );
 
+
   const handleRemoveImage = useCallback(
-    (id) => {
-      const updatedAuthors = authors.map((author) => (author.id === id ? { ...author, image: null } : author));
-      onAuthorsChange(updatedAuthors);
+    (id) => {    
+      handleUpdateAuthorBlock(id, { image: null });
+     
       onImageChange(id, null);
+ 
+      setLocalImages((prev) => {
+        const { [id]: _, ...rest } = prev;
+        return rest;
+      });
     },
-    [authors, onAuthorsChange, onImageChange]
+    [handleUpdateAuthorBlock, onImageChange]
   );
 
   return (
     <div className={styles.form_container}>
-      {authors?.map((author) => (
-        <div key={author.id} className={styles.form_container__block_gray_one}>
-          <button className={styles.form_container__close_button} onClick={() => handleRemoveAuthorBlock(author.id)}>
-            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M5.99999 6.53013L0.530313 12L0 11.4697L5.46969 5.99982L0.000346988 0.530327L0.53066 2.82526e-05L5.99999 5.46951L11.4694 0L11.9997 0.530299L6.53029 5.99982L12 11.4697L11.4697 12L5.99999 6.53013Z"
-                fill="#566272"
+      {authors?.map((author) => {  
+        // const preview = author.image ? [author.image] : []; 
+         const preview = localImages[author.id]
+           ? [URL.createObjectURL(localImages[author.id])]
+           : author.image
+           ? [author.image]
+           : [];
+
+        return (
+          <div key={author.id} className={styles.form_container__block_gray_one}>         
+            <button className={styles.form_container__close_button} onClick={() => handleRemoveAuthorBlock(author.id)}>
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                <path
+                  fillRule="evenodd"
+                  clipRule="evenodd"
+                  d="M5.99999 6.53013L0.530313 12L0 11.4697L5.46969 5.99982L0.000346988 0.530327L0.53066 2.82526e-05L5.99999 5.46951L11.4694 0L11.9997 0.530299L6.53029 5.99982L12 11.4697L11.4697 12L5.99999 6.53013Z"
+                  fill="#566272"
+                />
+              </svg>
+            </button>
+
+            <div className={styles.form_container__checkbox_block}>
+              <div>{`Автор статьи ${author.number}`}</div>
+              <label htmlFor={`author-image-${author.id}`} className={styles.slider_container__customFileUpload}>
+                <input
+                  type="file"
+                  id={`author-image-${author.id}`}
+                  onChange={(e) => handleFileChange(author.id, e.target.files?.[0])}
+                  accept="image/*"
+                />
+                <div className={styles.slider_container__uploadTextForm}>Загрузить изображение</div>
+              </label>
+
+              <ImagePreviewSection
+                images={preview}
+                onRemove={() => handleRemoveImage(author.id)}
+                isLoading={author.isLoading}
               />
-            </svg>
-          </button>
-          <div className={styles.form_container__checkbox_block}>
-            <div>{`Автор статьи ${author.number}`}</div>
-            <label htmlFor={`author-image-${author.id}`} className={styles.slider_container__customFileUpload}>
-              <input
-                type="file"
-                id={`author-image-${author.id}`}
-                onChange={(e) => handleFileChange(author.id, e.target.files[0])}
-                accept="image/*"
-              />
-              <div className={styles.slider_container__uploadTextForm}>Загрузить изображение</div>
-            </label>
-            <ImagePreviewSection
-              images={author.image ? [author.image].filter(Boolean) : []}
-              onRemove={() => handleRemoveImage(author.id)}
-              isLoading={author.isLoading}
-            />
-            <div className={styles.form_container__heading_block}>
-              <label htmlFor={`author-name-${author.id}`} className={styles.input_field__label}></label>
-              <input
-                id={`author-name-${author.id}`}
-                type="text"
-                className={styles.form_container__heading_block_input}
-                placeholder="ФИО"
-                value={author.name || ''}
-                maxLength={150}
-                onChange={(e) =>
-                  onAuthorsChange(authors.map((a) => (a.id === author.id ? { ...a, name: e.target.value } : a)))
-                }
-              />
+      
+              <div className={styles.form_container__heading_block}>
+                <label htmlFor={`author-name-${author.id}`} className={styles.input_field__label}></label>
+                <input
+                  id={`author-name-${author.id}`}
+                  type="text"
+                  className={styles.form_container__heading_block_input}
+                  placeholder="ФИО"
+                  value={author.name || ''}
+                  maxLength={150}
+                  onChange={(e) => {
+                    const newName = e.target.value;
+                    handleUpdateAuthorBlock(author.id, { name: newName });
+                  }}
+                />
+              </div>
             </div>
           </div>
-        </div>
-      ))}
+        );
+      })}
+
       <button
         type="button"
         className={styles.add_author_button}
         onClick={handleAddAuthorBlock}
         aria-label="Добавить автора">
-        <svg width="25" height="24" viewBox="0 0 25 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <svg width="25" height="24" viewBox="0 0 25 24" fill="none">
           <circle cx="12.5" cy="12" r="12" fill="currentColor" />
           <path
             d="M6.5 12H12.5M18.5 12H12.5M12.5 12V6M12.5 12V18"
