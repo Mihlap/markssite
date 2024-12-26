@@ -7,7 +7,7 @@ const TableCompanyMobile = () => {
 
   const tdStyle = {
     paddingTop: '1rem',
-    paddingBottom: '2rem',
+    paddingBottom: '1rem',
     borderTop: '1px solid var(--dark-gray-566272)',
     whiteSpace: 'nowrap',
     overflow: 'hidden',
@@ -65,18 +65,17 @@ const TableCompanyMobile = () => {
                 </td>
                 <td
                   style={tdStyle5}
-                  className={`${styles.tdStyle5} ${styles.svgContainer} ${showTable === index ? styles.clicked : ''}`}
-                >
+                  className={`${styles.tdStyle5} ${styles.svgContainer} ${showTable === index ? styles.clicked : ''}`}>
                   <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
+                    width="12"
+                    height="7"
+                    viewBox="0 0 12 7"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"
                     style={{ cursor: 'pointer' }}
                     // onClick={() => handleShowTable(index)}
                   >
-                    <path d={showTable === index ? 'M17 14L12.5 9L8 14' : 'M8 10L12.5 15L17 10'} stroke="#1D2E43" />
+                    <path d="M1 1L6 6L11 1" stroke="#1D2E43" />
                   </svg>
                 </td>
               </tr>
