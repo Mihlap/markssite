@@ -59,6 +59,10 @@ module.exports = {
         type: Sequelize.JSONB,
         allowNull: true,
       },
+      imageKey: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
