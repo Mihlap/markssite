@@ -7,6 +7,7 @@ function AuthorsSection({
   authors = [],
   onAuthorsChange,
   onImageChange,
+  images
 }) { 
   const [localImages, setLocalImages] = useState({});
  
@@ -99,6 +100,7 @@ function AuthorsSection({
   );
 
 
+
   const handleRemoveImage = useCallback(
     (id) => {    
       handleUpdateAuthorBlock(id, { image: null });
@@ -113,18 +115,25 @@ function AuthorsSection({
     [handleUpdateAuthorBlock, onImageChange]
   );
 
+
+  useEffect(() => {
+    console.log('Полученные изображения в ImagePreviewSection:', images);
+  }, [images]);
+
   return (
     <div className={styles.form_container}>
-      {authors?.map((author) => {  
-        // const preview = author.image ? [author.image] : []; 
-         const preview = localImages[author.id]
-           ? [URL.createObjectURL(localImages[author.id])]
-           : author.image
-           ? [author.image]
-           : [];
+      {console.log('Состояние formData.authors:', authors)}
+      {authors?.map((author) => {
+        const preview = author.image ? [author.image] : [];
+        console.log(`Предпросмотр изображения для автора ${author.id}:`, preview);
+        //  const preview = localImages[author.id]
+        //    ? [URL.createObjectURL(localImages[author.id])]
+        //    : author.image
+        //    ? [author.image]
+        //    : [];
 
         return (
-          <div key={author.id} className={styles.form_container__block_gray_one}>         
+          <div key={author.id} className={styles.form_container__block_gray_one}>
             <button className={styles.form_container__close_button} onClick={() => handleRemoveAuthorBlock(author.id)}>
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                 <path
@@ -149,11 +158,12 @@ function AuthorsSection({
               </label>
 
               <ImagePreviewSection
+                // key={author.id}
                 images={preview}
                 onRemove={() => handleRemoveImage(author.id)}
                 isLoading={author.isLoading}
               />
-      
+
               <div className={styles.form_container__heading_block}>
                 <label htmlFor={`author-name-${author.id}`} className={styles.input_field__label}></label>
                 <input

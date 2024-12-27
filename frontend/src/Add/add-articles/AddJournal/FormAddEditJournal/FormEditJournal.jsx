@@ -16,6 +16,8 @@ import {
 import { PublicationContainer, PublicationIndicator } from '../../../add-project/formAdd/utils/CustomSelectComponents';
 import styles from '../../../../Add/add-project/formAdd/FormAddProject.module.scss';
 
+// const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
+
 export default function FormEditJournal({ editJournalData, setIsModalOpen }) {
   const dispatch = useDispatch();
   const { formData, loading, error } = useSelector((state) => state.journal);
@@ -24,15 +26,18 @@ export default function FormEditJournal({ editJournalData, setIsModalOpen }) {
   const [showNotification, setShowNotification] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  useEffect(() => {
-    if (editJournalData) {
-      if (typeof editJournalData === 'string' || typeof editJournalData === 'number') {
-        dispatch(fetchJournalById(editJournalData));
-      } else {
-        console.warn('Некорректный ID для fetchJournalById:', editJournalData);
-      }
+useEffect(() => {
+  if (editJournalData) {
+    if (typeof editJournalData === 'string' || typeof editJournalData === 'number') {
+      dispatch(fetchJournalById(editJournalData));
+    } else {
+      console.warn('Некорректный ID для fetchJournalById:', editJournalData);
     }
-  }, [dispatch, editJournalData]);
+  }
+}, [dispatch, editJournalData]);
+  
+  
+
 
  
   const handleInputChange = useCallback(

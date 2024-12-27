@@ -21,6 +21,9 @@ export const fetchJournalById = createAsyncThunk('journal/fetchJournalById', asy
     if (!response.data) {
       throw new Error('Нет данных для указанного ID');
     }
+
+    console.log('Данные из API в fetchJournalById:', response.data);
+    
     return response.data;
   } catch (error) {
     console.error('Ошибка при загрузке записи:', error);
