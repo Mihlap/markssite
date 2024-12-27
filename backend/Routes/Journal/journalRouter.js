@@ -112,9 +112,6 @@ router.put(
   fileMiddleware.fields([{ name: 'authorImages', maxCount: 100 }]),
   async (req, res) => {
     try {
-      console.log('req.body:', req.body);
-      console.log('req.files:', req.files);
-
       const { journalId } = req.params;
       const {
         title,
@@ -133,65 +130,79 @@ router.put(
         return res.status(404).json({ message: 'Запись не найдена' });
       }
 
-      let parsedAuthors = authors ? JSON.parse(authors) : [];
+      const parsedAuthors = authors ? JSON.parse(authors) : [];
       const parsedOrganizations = organizations ? JSON.parse(organizations) : [];
       const parsedLocations = locations ? JSON.parse(locations) : [];
       const parsedCategory = category ? JSON.parse(category) : [];
 
-      parsedAuthors = parsedAuthors.map((author) => {
-        if (author.image && author.image.startsWith('blob:')) {
-          return { ...author, image: undefined };
-        }
-        return author;
-      });
-
       const currentAttachments = journal.attachments || [];
-      const keepUrls = Array.isArray(parsedAuthors)
-        ? parsedAuthors.map((author) => author.image).filter((url) => typeof url === 'string')
+      console.log('Текущие вложения:', currentAttachments);
+
+      const normalizeUrl = (url) => url.split('/').pop().split('?')[0];
+
+      const normalizedCurrentAttachments = currentAttachments.map(normalizeUrl);
+
+      const newFiles = req.files.authorImages
+        ? await Promise.all(
+            req.files.authorImages.map((file) => uploadFileToS3(file, 'images/imageJournal')),
+          )
         : [];
 
-      console.log('currentAttachments:', currentAttachments);
-      console.log('keepUrls:', keepUrls);
+      console.log('Загружены новые файлы:', newFiles);
 
-      const attachmentsToKeep =
-        Array.isArray(currentAttachments) && Array.isArray(keepUrls)
-          ? currentAttachments.filter((oldUrl) => keepUrls.includes(oldUrl))
-          : [];
+      const updatedAuthors = parsedAuthors.map((author) => {
+        const normalizedImage = author.image ? normalizeUrl(author.image) : null;
 
-      let newUploadedFiles = [];
-      if (req.files && req.files.authorImages) {
-        newUploadedFiles = await Promise.all(
-          req.files.authorImages.map(async (file) => {
-            const uploadedUrl = await uploadFileToS3(file, 'images/imageJournal');
-            console.log('Загруженный URL:', uploadedUrl);
-            return uploadedUrl;
-          }),
+        // Проверяем, если новое изображение передано
+        const isNewImage = req.files.authorImages?.some(
+          (file) => file.originalname === normalizeUrl(author.image),
         );
-      }
 
-         let i = 0;
-         parsedAuthors = parsedAuthors?.map((author) => {     
-           if (!author.image && newUploadedFiles[i]) {
-             author.image = newUploadedFiles[i];
-             i++;
-           }
-           return author;
-         });
+        if (isNewImage) {
+          const newFile = newFiles.shift(); // Берём новое изображение
+          return { ...author, image: newFile }; // Обновляем автора с новым изображением
+        }
 
+        // Если изображение автора уже есть в текущих вложениях, оставляем его
+        if (normalizedImage && normalizedCurrentAttachments.includes(normalizedImage)) {
+          return author;
+        }
 
-      const updatedAttachments = [...attachmentsToKeep, ...newUploadedFiles];
+        // Если изображение отсутствует, оставляем поле `image` null
+        return { ...author, image: null };
+      });
 
-     const attachmentsToDelete = currentAttachments.filter(
-       (oldUrl) => !attachmentsToKeep.includes(oldUrl),
-     );
-     await Promise.all(attachmentsToDelete.map((url) => deleteImageFromS3(url)));
+      const updatedAttachments = [...currentAttachments, ...newFiles].map((file) =>
+        typeof file === 'string' ? file : file.Location,
+      ); 
+
+      console.log('Обновлённые вложения:', updatedAttachments);
+
+      const attachmentsToRemove = currentAttachments.filter(
+        (attachment) =>
+          !updatedAttachments.some(
+            (updatedAttachment) => normalizeUrl(updatedAttachment) === normalizeUrl(attachment),
+          ),
+      );
+
+      // Удаляем файлы, которые больше не нужны
+      await Promise.all(
+        attachmentsToRemove.map(async (url) => {
+          try {
+            await deleteImageFromS3(url);
+            console.log('Удалено из S3:', url);
+          } catch (error) {
+            console.error('Ошибка при удалении из S3:', error);
+          }
+        }),
+      );
 
       await journal.update({
         title,
         publication_date,
         category: parsedCategory,
         issue_number: issue_number ? parseInt(issue_number, 10) : null,
-        authors: parsedAuthors,
+        authors: updatedAuthors,
         organizations: parsedOrganizations,
         locations: parsedLocations,
         markdown_content,
@@ -199,11 +210,10 @@ router.put(
         imageKey,
       });
 
-      console.log('Запись успешно обновлена:', journal.dataValues);
-      return res.status(200).json({ message: 'Запись успешно обновлена', journal });
+      res.status(200).json({ message: 'Запись успешно обновлена', journal });
     } catch (error) {
       console.error('Ошибка при обновлении записи:', error);
-      return res.status(500).json({ message: 'Ошибка обновления', error: error.message });
+      res.status(500).json({ message: 'Ошибка обновления', error: error.message });
     }
   },
 );
@@ -232,15 +242,9 @@ router.get('/getzapros/:id', async (req, res) => {
       return res.status(404).json({ message: 'Запись не найдена' });
     }
 
-    // if (journal.authors) {
-    //   journal.authors = journal.authors.map((author, index) => ({
-    //     ...author,
-    //     image:
-    //       typeof author.image === 'string' && author.image.startsWith('http')
-    //         ? author.image
-    //         : journal.attachments?.[index] || null,
-    //   }));
-    // }
+      console.log('Данные записи из базы:', journal);
+
+   
     res.json(journal);
   } catch (error) {
     console.error('Ошибка при получении записи:', error.message);
