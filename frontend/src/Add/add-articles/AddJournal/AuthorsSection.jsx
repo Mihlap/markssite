@@ -71,24 +71,49 @@ function AuthorsSection({
   );
 
 
+  // const handleFileChange = useCallback(
+  //   async (id, file) => {
+  //     if (!file) return;
+
+  //     if (localImages[id]) {
+  //       console.log(`Замена изображения для автора ${id}: ${localImages[id].name}`);
+  //     }
+
+  //     handleUpdateAuthorBlock(id, { isLoading: true });
+  //     try {
+  //       const compressedFile = await compressImage(file);
+
+  //       setLocalImages((prev) => ({ ...prev, [id]: compressedFile }));
+
+  //       onImageChange(id, compressedFile);
+
+  //       handleUpdateAuthorBlock(id, {
+  //         image: URL.createObjectURL(compressedFile),
+  //         isLoading: false,
+  //       });
+  //     } catch (error) {
+  //       console.error('Ошибка обработки изображения:', error);
+  //       handleUpdateAuthorBlock(id, { isLoading: false });
+  //     }
+  //   },
+  //   [compressImage, handleUpdateAuthorBlock, onImageChange, localImages]
+  // );
+
   const handleFileChange = useCallback(
     async (id, file) => {
       if (!file) return;
-
-      if (localImages[id]) {
-        console.log(`Замена изображения для автора ${id}: ${localImages[id].name}`);
-      }
 
       handleUpdateAuthorBlock(id, { isLoading: true });
       try {
         const compressedFile = await compressImage(file);
 
-        setLocalImages((prev) => ({ ...prev, [id]: compressedFile }));
-
+        // Сохраните файл в Redux
+        const fileURL = URL.createObjectURL(compressedFile); // Временный URL
         onImageChange(id, compressedFile);
 
+        // Обновите состояние автора с полным URL
         handleUpdateAuthorBlock(id, {
-          image: URL.createObjectURL(compressedFile),
+          image: fileURL, // Здесь можно использовать полный URL после загрузки на сервер
           isLoading: false,
         });
       } catch (error) {
@@ -96,7 +121,7 @@ function AuthorsSection({
         handleUpdateAuthorBlock(id, { isLoading: false });
       }
     },
-    [compressImage, handleUpdateAuthorBlock, onImageChange, localImages]
+    [compressImage, handleUpdateAuthorBlock, onImageChange]
   );
 
 
@@ -116,23 +141,12 @@ function AuthorsSection({
   );
 
 
-  useEffect(() => {
-    console.log('Полученные изображения в ImagePreviewSection:', images);
-  }, [images]);
-
   return (
     <div className={styles.form_container}>
-      {console.log('Состояние formData.authors:', authors)}
       {authors?.map((author) => {
         const preview = author.image ? [author.image] : [];
-        console.log(`Предпросмотр изображения для автора ${author.id}:`, preview);
-        //  const preview = localImages[author.id]
-        //    ? [URL.createObjectURL(localImages[author.id])]
-        //    : author.image
-        //    ? [author.image]
-        //    : [];
 
-        return (
+      return (
           <div key={author.id} className={styles.form_container__block_gray_one}>
             <button className={styles.form_container__close_button} onClick={() => handleRemoveAuthorBlock(author.id)}>
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
@@ -158,7 +172,7 @@ function AuthorsSection({
               </label>
 
               <ImagePreviewSection
-                // key={author.id}
+                key={author.id}
                 images={preview}
                 onRemove={() => handleRemoveImage(author.id)}
                 isLoading={author.isLoading}
