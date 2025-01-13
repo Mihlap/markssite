@@ -120,8 +120,8 @@ app.use('/api-events', vacancyEventRouter);
 app.use('/api-journal', journalRouter);
 
 
-// const sslKeyPath = './SSL Marksgroup/marksgroup.ru.key';
-// const sslCertPath = './SSL Marksgroup/certificate.crt';
+// const sslKeyPath = '/SSL Marksgroup/certificate.key';
+// const sslCertPath = '/SSL Marksgroup/certificate.crt';
 
 
 // const credentials = {
