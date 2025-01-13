@@ -1,7 +1,11 @@
 @import '../../App.css';
 
+.TableCompanyContainer {
+  margin-bottom: 200px;
+}
+
 .tableContainer {
-  height: 694px;
+  max-height: 694px;
   overflow: hidden;
   transition: height 0.5s ease-in-out;
   padding-left: 1.87vw;
@@ -9,7 +13,7 @@
 }
 
 .visible {
-  height: 1800px;
+  max-height: 1800px;
 }
 
 .tableStyle {
@@ -124,8 +128,12 @@
 
 /* стили для планшетной версии  */
 @media screen and (min-width: 768px) and (max-width: 1024px) {
+  .TableCompanyContainer {
+    margin-bottom: 150px;
+  }
+
   .tableContainer {
-    height: 670px;
+    max-height: 670px;
     overflow: hidden;
     transition: height 0.5s ease-in-out;
     padding-left: 3.37rem;
@@ -134,7 +142,7 @@
   }
 
   .visible {
-    height: 1730px;
+    max-height: 1730px;
   }
 
   .slideDown {
@@ -243,6 +251,7 @@
 /* стили для мобильной версии  */
 @media screen and (max-width: 767px) {
   .tableStyle {
+    margin-bottom: 80px;
     border-collapse: collapse;
     margin-left: 0rem;
     margin-right: 0rem;
