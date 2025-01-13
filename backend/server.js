@@ -117,9 +117,8 @@ app.use('/api-vacancy', vacancyRouter);
 app.use('/api-vacancyDetails', vacancyDetailsRouter);
 app.use('/api-events', vacancyEventRouter);
 
-// const sslKeyPath = './SSL Marksgroup/marksgroup.ru.key';
-// const sslCertPath = './SSL Marksgroup/certificate.crt';
-
+// const sslKeyPath = '/SSL Marksgroup/certificate.key';
+// const sslCertPath = '/SSL Marksgroup/certificate.crt';
 
 // const credentials = {
 //   key: fs.readFileSync(sslKeyPath),
