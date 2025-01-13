@@ -86,7 +86,7 @@ export default function FormAddJournal({ setIsModalOpen }) {
             if (author.image) {         
               const file = localImages[authorId];
               if (file) {
-                const uniqueName = `${Date.now()}_${author.image}`;
+                const uniqueName = `${Date.now()}_${file.name}`;
                 formDataToSend.append('authorImages', file, uniqueName);
               }
             }
