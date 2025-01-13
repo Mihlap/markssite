@@ -52,6 +52,7 @@ const TableCompanyMobile = () => {
 
   return (
     <>
+    
       <table className={styles.tableStyle} id="table-header-anchor">
         <tbody>
           {tableData.map((el, index) => (
