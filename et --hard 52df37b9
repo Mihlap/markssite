@@ -1,0 +1,179 @@
+[33m52df37b9[m[33m ([m[1;36mHEAD -> [m[1;32mdev_mihlap[m[33m, [m[1;31morigin/main[m[33m)[m HEAD@{0}: pull origin main: Fast-forward
+[33m5d977b1a[m HEAD@{1}: checkout: moving from mihlap_jornal_adm to dev_mihlap
+[33mdf5685df[m[33m ([m[1;32mmihlap_jornal_adm[m[33m)[m HEAD@{2}: commit: все еще редактирование
+[33me321340e[m[33m ([m[1;31morigin/mihlap_jornal_adm[m[33m)[m HEAD@{3}: commit: переделывал занова_редактирование_еще не работает
+[33mdcaeba24[m HEAD@{4}: commit: отладка редактирования1
+[33mbab4bf5f[m HEAD@{5}: commit: отладка редактирования.....
+[33md254003c[m HEAD@{6}: commit: слайс и роутер для журнала, редактирование3
+[33mf81f3a2d[m HEAD@{7}: commit: слайс и роутер для журнала, редактирование1
+[33m59560aca[m HEAD@{8}: checkout: moving from dev_mihlap to mihlap_jornal_adm
+[33m5d977b1a[m HEAD@{9}: pull origin main: Fast-forward
+[33ma9d5d44b[m[33m ([m[1;31morigin/dev_mihlap[m[33m)[m HEAD@{10}: commit: добавлены согласованные новогодние темы
+[33mf7aceb0b[m HEAD@{11}: checkout: moving from mihlap_jornal_adm to dev_mihlap
+[33m59560aca[m HEAD@{12}: commit: слайс и роутер для журнала, редактирование
+[33mb0d484e5[m HEAD@{13}: checkout: moving from dev_mihlap to mihlap_jornal_adm
+[33mf7aceb0b[m HEAD@{14}: pull origin main: Fast-forward
+[33mf3742e24[m HEAD@{15}: commit: изменил настройки в canvas компонент starsimpulse
+[33m2fe629d5[m HEAD@{16}: checkout: moving from mihlap_jornal_adm to dev_mihlap
+[33mb0d484e5[m HEAD@{17}: commit: слайс и роутер для журнала, редактирование_начало2
+[33m8887effa[m HEAD@{18}: checkout: moving from dev_mihlap to mihlap_jornal_adm
+[33m2fe629d5[m HEAD@{19}: pull origin main: Fast-forward
+[33m127c87be[m HEAD@{20}: commit: добавлена шапка санты на логотип_hr
+[33m7e9e90d8[m HEAD@{21}: checkout: moving from mihlap_jornal_adm to dev_mihlap
+[33m8887effa[m HEAD@{22}: commit: слайс и роутер для журнала, редактирование_начало1
+[33m52685cf7[m HEAD@{23}: checkout: moving from dev_mihlap to mihlap_jornal_adm
+[33m7e9e90d8[m HEAD@{24}: pull origin main: Fast-forward
+[33m2f98b32b[m HEAD@{25}: commit: добавлена шапка санты на логотип_закоменчены
+[33m87006e49[m HEAD@{26}: checkout: moving from mihlap_jornal_adm to dev_mihlap
+[33m52685cf7[m HEAD@{27}: commit: слайс и роутер для журнала, редактирование_начало
+[33mbb230a99[m HEAD@{28}: checkout: moving from dev_mihlap to mihlap_jornal_adm
+[33m87006e49[m HEAD@{29}: checkout: moving from mihlap_jornal_adm to dev_mihlap
+[33mbb230a99[m HEAD@{30}: checkout: moving from dev_mihlap to mihlap_jornal_adm
+[33m87006e49[m HEAD@{31}: pull origin main: Fast-forward
+[33m23d6d2f4[m HEAD@{32}: commit: добавлена шапка санты на логотип
+[33mf5517b0e[m HEAD@{33}: checkout: moving from mihlap_jornal_adm to dev_mihlap
+[33mbb230a99[m HEAD@{34}: commit: слайс и роутер для журнала, удаление
+[33mc6c42292[m HEAD@{35}: checkout: moving from dev_mihlap to mihlap_jornal_adm
+[33mf5517b0e[m HEAD@{36}: pull origin main: Fast-forward
+[33m2a52ffd4[m HEAD@{37}: commit: добавлены ёлка и снежинки прошлого года
+[33m4e9e9e0f[m HEAD@{38}: commit: добавлены 2 лого на главной и о компании: 3 премии
+[33mcab20c1f[m HEAD@{39}: checkout: moving from mihlap_jornal_adm to dev_mihlap
+[33mc6c42292[m HEAD@{40}: commit: слайс и роутер для журнала, все публикации
+[33m349735c8[m HEAD@{41}: commit: слайс и роутер для журнала, настройка3
+[33m7ceb9b90[m HEAD@{42}: commit: слайс и роутер для журнала, настройка1
+[33mfc647313[m HEAD@{43}: commit: слайс и роутер для журнала, настройка
+[33m91703e5b[m HEAD@{44}: commit: страница журнала, форма кроме марк дауна готова
+[33m79252ddb[m HEAD@{45}: commit: страница журнала, начало построения формы2
+[33m7439b4c6[m HEAD@{46}: commit: страница журнала, начало построения формы1
+[33m6854c426[m HEAD@{47}: checkout: moving from dev_mihlap to mihlap_jornal_adm
+[33mcab20c1f[m HEAD@{48}: pull origin main: Fast-forward
+[33m01e282d6[m HEAD@{49}: commit: улучшена производительность звезд в starsimpulse
+[33mcb5c49af[m HEAD@{50}: checkout: moving from mihlap_jornal_adm to dev_mihlap
+[33m6854c426[m HEAD@{51}: commit: страница журнала, начало построения формы
+[33m7a930a60[m HEAD@{52}: commit: страница журнала, начало добавления формы1
+[33m0a6597c0[m HEAD@{53}: commit: страница журнала, начало добавления формы
+[33mabb9d963[m HEAD@{54}: commit: возврат старого футера на hr портал
+[33m883d2117[m HEAD@{55}: checkout: moving from dev_mihlap to mihlap_jornal_adm
+[33mcb5c49af[m HEAD@{56}: pull origin main: Fast-forward
+[33m83c3d525[m HEAD@{57}: commit: возврат старого футера на hr портал
+[33ma301dd03[m HEAD@{58}: checkout: moving from mihlap_jornal_adm to dev_mihlap
+[33m883d2117[m HEAD@{59}: checkout: moving from dev_mihlap to mihlap_jornal_adm
+[33ma301dd03[m HEAD@{60}: pull origin main: Fast-forward
+[33mfd5cca95[m HEAD@{61}: commit: добавление иконок в hr портал
+[33m1d50d8c8[m HEAD@{62}: checkout: moving from mihlap_jornal_adm to dev_mihlap
+[33m883d2117[m HEAD@{63}: commit: создание компонентов публикаций новостей журнала1
+[33m622492c0[m HEAD@{64}: checkout: moving from dev_mihlap to mihlap_jornal_adm
+[33m1d50d8c8[m HEAD@{65}: checkout: moving from mihlap_jornal_adm to dev_mihlap
+[33m622492c0[m HEAD@{66}: commit: создание компонентов публикаций новостей журнала, добавление иконок в hr портал
+[33mefb91fc4[m HEAD@{67}: commit: создание моделей и миграций для журнала
+[33m1d50d8c8[m HEAD@{68}: checkout: moving from dev_mihlap to mihlap_jornal_adm
+[33m1d50d8c8[m HEAD@{69}: pull origin main: Fast-forward
+[33ma8d730e0[m HEAD@{70}: commit: оптимизирован компонент app.jsx
+[33m3740567b[m HEAD@{71}: commit: устранение ошибок в метриках, при ложных кликах, правки компонентов
+[33ma295c995[m HEAD@{72}: pull origin main: Fast-forward
+[33me3942739[m HEAD@{73}: commit: heart_финиш
+[33m3cf44836[m HEAD@{74}: commit: heart_5
+[33m0a0399c6[m HEAD@{75}: commit: heart_4
+[33mbc24f7b0[m HEAD@{76}: commit: heart_3
+[33m6a7f582e[m HEAD@{77}: pull origin main: Fast-forward
+[33mbe07943e[m HEAD@{78}: commit: heart1
+[33mbffa57a6[m HEAD@{79}: commit: heart
+[33m03df6b42[m HEAD@{80}: pull origin main: Fast-forward
+[33m99596a70[m HEAD@{81}: commit: исправленная версия для хостинга, правки главная в слайдере статей
+[33m3aa7c5c0[m HEAD@{82}: pull origin main: Merge made by the 'ort' strategy.
+[33ma045aeba[m HEAD@{83}: commit: просто коммит
+[33m5defdc3b[m HEAD@{84}: pull origin main: Fast-forward
+[33m70e35db0[m HEAD@{85}: commit: правки футера, публикаци и др после деплоя
+[33mc64166e2[m HEAD@{86}: commit: правки в новый футер для курсора8
+[33mae6cbb6a[m HEAD@{87}: commit: правки в новый футер для курсора7
+[33m53bb9007[m HEAD@{88}: pull origin main: Fast-forward
+[33mfd312550[m HEAD@{89}: commit: правки в новый футер для курсора6
+[33m61b0f437[m HEAD@{90}: pull origin main: Fast-forward
+[33m0ab14009[m HEAD@{91}: commit: правки в новый футер для курсора5
+[33m67c39b7c[m HEAD@{92}: pull origin main: Fast-forward
+[33m1d1b9ab8[m HEAD@{93}: commit: правки в новый футер для курсора4
+[33me3961fdd[m HEAD@{94}: pull origin main: Fast-forward
+[33m5f915eb4[m HEAD@{95}: pull origin main: Fast-forward
+[33mf6bb23c9[m HEAD@{96}: commit: правки в новый футер для курсора3
+[33ma4685908[m HEAD@{97}: commit: правки в новый футер для курсора2
+[33md17fa222[m HEAD@{98}: commit: правки в новый футер для курсора1
+[33mb8e6c434[m HEAD@{99}: commit: правки в новый футер для курсора
+[33m2c92a15b[m HEAD@{100}: commit: не нужный коммит
+[33mceb23d41[m HEAD@{101}: pull origin main: Fast-forward
+[33mdd9ac67d[m HEAD@{102}: commit: коммит нового футера_попытка применить наш курсор
+[33m4d7fda80[m HEAD@{103}: pull origin main: Fast-forward
+[33m0d29c920[m HEAD@{104}: commit: коммит нового футера
+[33me2a233cb[m HEAD@{105}: pull origin main: Merge made by the 'ort' strategy.
+[33ma51e0319[m HEAD@{106}: commit: изменение свг на главной портала1
+[33me6cf204c[m HEAD@{107}: commit: изменение свг на главной портала
+[33mcf4b0208[m HEAD@{108}: pull origin main: Fast-forward
+[33m8f10e83c[m HEAD@{109}: commit: новый футер_с изменениями_скрыт, пока старый
+[33m4f912d16[m HEAD@{110}: pull origin main: Fast-forward
+[33m0f259811[m HEAD@{111}: commit: новый футер_начало с анимацией круг_улучшена производительность
+[33m00763859[m HEAD@{112}: commit: новый футер_начало с анимацией кругов
+[33mb7da66c4[m HEAD@{113}: pull origin main: Fast-forward
+[33mcb73ee6f[m HEAD@{114}: commit: div:empty в стилях articlecard
+[33m16895091[m HEAD@{115}: pull origin main: Fast-forward
+[33m3144eb5d[m HEAD@{116}: commit: обнаружен баг в компоненте constructorblockrender, связанный с незаполненным блоком видео: исправлено
+[33mb587b0c9[m HEAD@{117}: pull origin main: Fast-forward
+[33m0f74cc52[m HEAD@{118}: pull origin main: Fast-forward
+[33m22d6d8f5[m HEAD@{119}: commit: обнаружен баг в компоненте articlecard.module.scss div:empty, закомитил так как влияет на другие стили
+[33mf2ee357e[m HEAD@{120}: pull origin main: Fast-forward
+[33m8c8c4beb[m HEAD@{121}: commit: обновил скелетон сотрудников + сделан адаптивный скелетон сотрудников
+[33mcc609593[m HEAD@{122}: pull origin main: Fast-forward
+[33m30946d8f[m HEAD@{123}: commit: правки багов и предупреждений из консоли терминала
+[33m883f6c15[m HEAD@{124}: commit: правки багов и предупреждений из консоли терминала
+[33meaaed5e3[m HEAD@{125}: pull origin main: Fast-forward
+[33me8b8b9dc[m HEAD@{126}: commit: добавлен скелетон на персонал desktop версии + начало метрик на форму
+[33m8c1dd466[m HEAD@{127}: pull origin main: Fast-forward
+[33me848ee8f[m HEAD@{128}: commit: добавлен Спб в контакты
+[33mb93536d0[m HEAD@{129}: pull origin main: Fast-forward
+[33mf2d9eb3e[m HEAD@{130}: commit: убраны баги при удалении и статей из s3, работает хорошо
+[33mba5484cc[m HEAD@{131}: pull origin main: Fast-forward
+[33mbdf8b1cc[m HEAD@{132}: pull origin main: Fast-forward
+[33ma8c4876e[m HEAD@{133}: pull origin main: Fast-forward
+[33m24bbd585[m HEAD@{134}: commit: переход проектов на s3 полностью готово
+[33m5bf5b8dc[m HEAD@{135}: commit: переход проектов на s3
+[33m3102fdd4[m HEAD@{136}: pull origin main: Fast-forward
+[33mfebdb634[m HEAD@{137}: pull origin main: Fast-forward
+[33m4baebf86[m HEAD@{138}: commit: редактирование в окомпании текс 2005 вместо 2015
+[33m4679dd28[m HEAD@{139}: commit: добавил формат avif для загрузки изображений
+[33m634f5c57[m HEAD@{140}: pull origin main: Fast-forward
+[33md5074782[m HEAD@{141}: commit: просто коммит1
+[33maefb3bd4[m HEAD@{142}: pull origin main: Fast-forward
+[33m55775449[m HEAD@{143}: commit: просто коммит
+[33m77d811cd[m HEAD@{144}: pull origin main: Fast-forward
+[33m4377b4d3[m HEAD@{145}: commit: настроен s3 везде кроме проектов и статей
+[33m4610ea3f[m HEAD@{146}: pull origin main: Fast-forward
+[33m91a309bb[m HEAD@{147}: pull origin main: Fast-forward
+[33m732b1423[m HEAD@{148}: commit: слайдер в мероприятиях настроен1
+[33m0c732368[m HEAD@{149}: pull origin main: Fast-forward
+[33m508340dc[m HEAD@{150}: commit: слайдер в мероприятиях настроен
+[33m2dc38180[m HEAD@{151}: pull origin main: Fast-forward
+[33md7abde43[m HEAD@{152}: commit: проблема настроить слайдер по проигрыванию видео на разных платформах по ссылкам
+[33meeb7b53a[m HEAD@{153}: pull origin main: Fast-forward
+[33m141827cc[m HEAD@{154}: pull origin main: Fast-forward
+[33ma598ead1[m HEAD@{155}: commit: попробовал изменить проигрывание видео получаемое по ссылкам на автоплэй и беззвука не получилось только у вк
+[33md1e2478b[m HEAD@{156}: pull origin main: Fast-forward
+[33ma8dab21f[m HEAD@{157}: commit: попробовал изменить проигрывание видео получаемое по ссылкам на автоплэй и беззвука не получилось, мешает курсор
+[33mdef720c2[m HEAD@{158}: pull origin main: Merge made by the 'ort' strategy.
+[33m8f92a0d3[m HEAD@{159}: commit: начало отображение изображения и видео на клиенте2
+[33mfc3d7cc2[m HEAD@{160}: pull origin main: Fast-forward
+[33me4da7ac8[m HEAD@{161}: commit: начало отображение изображения и видео на клиенте1
+[33m3f66b3d8[m HEAD@{162}: pull origin main: Fast-forward
+[33mcbc506d9[m HEAD@{163}: commit: начало отображение изображения и видео на клиенте
+[33me0afe15f[m HEAD@{164}: pull origin main: Fast-forward
+[33m243409b9[m HEAD@{165}: commit: начало отображение кнопок мероприиятий на клиенте1
+[33mba267566[m HEAD@{166}: pull origin main: Fast-forward
+[33m5ccd486c[m HEAD@{167}: commit: начало отображение кнопок мероприиятий на клиенте
+[33m708e8a6f[m HEAD@{168}: pull origin main: Fast-forward
+[33m30d43bd0[m HEAD@{169}: commit: мероприятия админка полностью
+[33m3f0a2351[m HEAD@{170}: pull origin main: Fast-forward
+[33m5952090d[m HEAD@{171}: commit: создание: редактирование мероприятий в админке1
+[33m899d5b27[m HEAD@{172}: pull origin main: Fast-forward
+[33mdedbbb06[m HEAD@{173}: commit: создание: редактирование мероприятий в админке
+[33mecea6e98[m HEAD@{174}: pull origin main: Fast-forward
+[33ma3664291[m HEAD@{175}: pull origin main: Fast-forward
+[33me46cf02c[m HEAD@{176}: commit: создание: роутинг и слайсы мероприятий, бд
+[33m32e8532e[m HEAD@{177}: pull origin main: Fast-forward
+[33m313a83a3[m HEAD@{178}: commit: правка: удаление изображения из слайдов, с учетом если изображения дублируются
