@@ -16,8 +16,6 @@ import {
 import { PublicationContainer, PublicationIndicator } from '../../../add-project/formAdd/utils/CustomSelectComponents';
 import styles from '../../../../Add/add-project/formAdd/FormAddProject.module.scss';
 
-const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
-
 export default function FormEditJournal({ editJournalData, setIsModalOpen }) {
   const dispatch = useDispatch();
   const { formData, loading, error } = useSelector((state) => state.journal);
@@ -26,30 +24,25 @@ export default function FormEditJournal({ editJournalData, setIsModalOpen }) {
   const [showNotification, setShowNotification] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  useEffect(() => {
+    if (editJournalData) {
+      dispatch(fetchJournalById(editJournalData)).then((data) => {
+        const updatedAuthors = data.payload.authors.map((author) => ({
+          ...author,
+          image: author.image && !author.image.startsWith('blob:') ? author.image : null,
+        }));
 
+        dispatch(setFormData({ name: 'authors', value: updatedAuthors }));
+      });
+    }
+  }, [dispatch, editJournalData]);
 
-useEffect(() => {
-  if (editJournalData) {
-    dispatch(fetchJournalById(editJournalData)).then((data) => {
-      const updatedAuthors = data.payload.authors.map((author) => ({
-        ...author,
-        image: author.image,
-      }));
-
-      dispatch(setFormData({ name: 'authors', value: updatedAuthors }));
-    });
-  }
-}, [dispatch, editJournalData]);  
-
-
- 
   const handleInputChange = useCallback(
     (name, value) => {
       dispatch(setFormData({ name, value }));
     },
     [dispatch]
   );
-
 
   const handleAddInputBlock = useCallback(
     (blockType) => {
@@ -60,28 +53,13 @@ useEffect(() => {
     [dispatch, formData.blocks]
   );
 
-
   const handleRemoveInputBlock = useCallback(
     (id) => {
       const updatedBlocks = formData.blocks.filter((b) => b.id !== id);
-
-      const updatedAuthors = Object.values(formData.authors)
-        .filter((author) => author.id !== id)
-        .reduce((acc, author) => {
-          acc[author.id] = author;
-          return acc;
-        }, {});
-  
-      const updatedAttachments = { ...formData.attachments };
-      delete updatedAttachments[id];
-
       dispatch(setFormData({ name: 'blocks', value: updatedBlocks }));
-      dispatch(setFormData({ name: 'authors', value: updatedAuthors }));
-      dispatch(setFormData({ name: 'attachments', value: updatedAttachments }));
     },
-    [dispatch, formData.blocks, formData.authors, formData.attachments]
+    [dispatch, formData.blocks]
   );
-
 
   const handleBlockValueChange = useCallback(
     (id, newValue) => {
@@ -91,72 +69,122 @@ useEffect(() => {
     [dispatch, formData.blocks]
   );
 
+  const handleAuthorsChange = useCallback(
+    (updatedAuthors) => {
+      dispatch(updateAuthors(updatedAuthors));
+   
+      setLocalImages((prev) => {
+        const newImages = { ...prev };
+        updatedAuthors.forEach((author) => {
+          if (!(author.id in newImages)) {
+            newImages[author.id] = null;
+          }
+        });
+     
+        const updatedIds = updatedAuthors.map((a) => a.id);
+        Object.keys(newImages).forEach((id) => {
+          if (!updatedIds.includes(id)) {
+            delete newImages[id];
+          }
+        });
 
-const handleSubmit = useCallback(
-  async (e) => {
-    e.preventDefault();
-    if (isSubmitting) return;
-
-    if (!formData.title || !formData.publication_date) {
-      setShowNotification(true);
-      setTimeout(() => setShowNotification(false), 3000);
-      return;
-    }
-
-    setIsSubmitting(true);
-
-    try {
-      const formDataToSend = new FormData();
-      formDataToSend.append('title', formData.title);
-      formDataToSend.append('publication_date', formData.publication_date);
-      formDataToSend.append('category', JSON.stringify(formData.category));
-      formDataToSend.append('issue_number', formData.issue_number || null);
-      formDataToSend.append('authors', JSON.stringify(Object.values(formData.authors)));
-      formDataToSend.append('organizations', JSON.stringify(formData.blocks.filter((b) => b.type === 'university')));
-      formDataToSend.append('locations', JSON.stringify(formData.blocks.filter((b) => b.type === 'location')));
-      formDataToSend.append('markdown_content', formData.markdown_content || null);
-      formDataToSend.append('imageKey', formData.imageKey || 'one');
-
-      // Добавление файлов
-      Object.values(formData.authors).forEach((author) => {
-        if (localImages[author.id] instanceof File || localImages[author.id] instanceof Blob) {
-          const file = localImages[author.id];
-          const uniqueName = `${Date.now()}_${file.name || 'file'}`;
-          formDataToSend.append('authorImages', file, uniqueName);
-        }
+        return newImages;
       });
+    },
+    [dispatch]
+  );
 
-      // Отправка данных на сервер
-      const response = await dispatch(updateJournal({ journalId: editJournalData, formData: formDataToSend })).unwrap();
+  const handleImageChange = useCallback(
+    (authorId, file) => {
+      setLocalImages((prev) => ({ ...prev, [authorId]: file || null }));
 
-      // Обновление данных на клиенте с реальными ссылками на изображения
-      const updatedAuthors = response.journal.authors.map((author) => ({
-        ...author,
-        image: author.image, // Ссылка на изображение с S3
-      }));
-      dispatch(setFormData({ name: 'authors', value: updatedAuthors }));
+      const updatedAttachments = { ...formData.attachments };
+      if (file) {
+        updatedAttachments[authorId] = URL.createObjectURL(file);
+      } else {
+        delete updatedAttachments[authorId];
+      }
+      dispatch(setFormData({ name: 'attachments', value: updatedAttachments }));
+    },
+    [dispatch, formData.attachments]
+  );
 
-      setIsModalOpen(false);
-      dispatch(clearFormData());
-    } catch (err) {
-      console.error('Ошибка при обновлении записи:', err);
-      if (err.message.includes('обязательные поля')) {
+  const handleSubmit = useCallback(
+    async (e) => {
+      e.preventDefault();
+      if (isSubmitting) return;
+
+      if (!formData.title || !formData.publication_date) {
         setShowNotification(true);
         setTimeout(() => setShowNotification(false), 3000);
+        return;
       }
-    } finally {
-      setIsSubmitting(false);
-    }
-  },
-  [dispatch, formData, editJournalData, localImages, isSubmitting, setIsModalOpen]
-);
 
+      setIsSubmitting(true);
+
+      try {
+        const formDataToSend = new FormData();
+     
+        formDataToSend.append('title', formData.title);
+        formDataToSend.append('publication_date', formData.publication_date);
+        formDataToSend.append('category', JSON.stringify(formData.category));
+        formDataToSend.append('issue_number', formData.issue_number || null);
+        formDataToSend.append('organizations', JSON.stringify(formData.blocks.filter((b) => b.type === 'university')));
+        formDataToSend.append('locations', JSON.stringify(formData.blocks.filter((b) => b.type === 'location')));
+        formDataToSend.append('markdown_content', formData.markdown_content || null);
+        formDataToSend.append('imageKey', formData.imageKey || 'one');
+      
+        const sanitizedAuthors = formData.authors.map((author) => ({
+          ...author,
+          image: author.image && !author.image.startsWith('blob:') ? author.image : null,
+        }));
+        formDataToSend.append('authors', JSON.stringify(sanitizedAuthors));
+   
+        Object.entries(localImages).forEach(([id, file]) => {
+          if (file) {
+            formDataToSend.append('authorImages', file, id);
+          }
+        });
+  
+        const response = await dispatch(
+          updateJournal({ journalId: editJournalData, formData: formDataToSend })
+        ).unwrap();
+  
+        const updatedAuthors = formData.authors.map((author) => {
+          const updatedAuthor = response.journal.authors.find((respAuthor) => respAuthor.id === author.id);
+          return updatedAuthor ? { ...author, image: updatedAuthor.image } : author;
+        });
+        dispatch(setFormData({ name: 'authors', value: updatedAuthors }));
+
+        setIsModalOpen(false);
+        dispatch(clearFormData());
+      } catch (err) {
+        console.error('Ошибка при обновлении записи:', err);
+        setShowNotification(true);
+        setTimeout(() => setShowNotification(false), 3000);
+      } finally {
+        setIsSubmitting(false);
+      }
+    },
+    [dispatch, formData, editJournalData, localImages, isSubmitting, setIsModalOpen]
+  );
 
   const closeModal = useCallback(() => {
     setIsModalOpen(false);
     dispatch(fetchJournals());
   }, [dispatch, setIsModalOpen]);
 
+
+  useEffect(() => {
+    return () => {   
+      Object.values(localImages).forEach((file) => {
+        if (file instanceof Blob && file.type.startsWith('image/')) {
+          URL.revokeObjectURL(file);
+        }
+      });
+    };
+  }, [localImages]);
+  
 
   const universityBlocks = formData.blocks.filter((b) => b.type === 'university');
   const locationBlocks = formData.blocks.filter((b) => b.type === 'location');
@@ -240,33 +268,13 @@ const handleSubmit = useCallback(
                   }}
                 />
               </div>
-
+          
               <AuthorsSection
-                authors={Object.entries(formData.authors).map(([id, author]) => ({
-                  ...author,
-                  id,              
-                  image: author.image || null,
-                }))}
-                onAuthorsChange={(updatedAuthors) => {
-                  const newObj = updatedAuthors.reduce((acc, a) => {
-                    acc[a.id] = a;
-                    return acc;
-                  }, {});
-                  dispatch(updateAuthors(newObj));
-                }}
-                onImageChange={(authorId, file) => {
-                  setLocalImages((prev) => ({ ...prev, [authorId]: file || null }));
-
-                  const updatedAttachments = { ...formData.attachments };
-                  if (file) {
-                    updatedAttachments[authorId] = URL.createObjectURL(file);
-                  } else {
-                    delete updatedAttachments[authorId];
-                  }
-                  dispatch(setFormData({ name: 'attachments', value: updatedAttachments }));
-                }}
+                authors={formData.authors}
+                onAuthorsChange={handleAuthorsChange}
+                onImageChange={handleImageChange}
               />
-
+                  
               {universityBlocks.map((block) => (
                 <div key={block.id} className={styles.form_container__block_gray_one}>
                   <div className={styles.form_container__checkbox_block}>
@@ -284,7 +292,7 @@ const handleSubmit = useCallback(
                         fill="#566272"
                       />
                     </svg>
-                  </button>
+                  </button>                  
                   <InputField
                     label=""
                     name="university"
