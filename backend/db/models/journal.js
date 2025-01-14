@@ -26,7 +26,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
       },
       category: {
-        type: DataTypes.JSONB,
+        type: DataTypes.JSON,
         allowNull: false,
       },
       issue_number: {
@@ -34,15 +34,15 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
       },
       authors: {
-        type: DataTypes.JSONB,
+        type: DataTypes.JSON,
         allowNull: true,
       },
       organizations: {
-        type: DataTypes.JSONB,
+        type: DataTypes.JSON,
         allowNull: true,
       },
       locations: {
-        type: DataTypes.JSONB,
+        type: DataTypes.JSON,
         allowNull: true,
       },
       statusObject: {
@@ -58,7 +58,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: true,
       },
       attachments: {
-        type: DataTypes.JSONB,
+        type: DataTypes.JSON,
         allowNull: true,
         defaultValue: [],
       },

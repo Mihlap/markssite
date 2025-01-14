@@ -33,21 +33,6 @@ const extractFileNameAndFolderFromUrl = (url) => {
   }
 };
 
-const deleteImageFromS3 = async (fileUrl) => {
-  const result = extractFileNameAndFolderFromUrl(fileUrl);
-  if (result) {
-    const { fileName, folder } = result;
-    try {
-      await deleteFileFromS3(decodeURIComponent(fileName), decodeURIComponent(folder));
-      console.log(`Файл ${fileName} успешно удалён из S3`);
-    } catch (error) {
-      console.error(`Ошибка при удалении файла ${fileName}:`, error);
-    }
-  } else {
-    console.log(`Не удалось извлечь имя файла и папку из URL: ${fileUrl}`);
-  }
-};
-
 // POST /postzapros
 router.post(
   '/postzapros',
@@ -67,7 +52,7 @@ router.post(
         imageKey,
       } = req.body;
 
-      const parsedAuthors = Object.values(JSON.parse(authors || '{}'));
+      const parsedAuthors = authors ? Object.values(JSON.parse(authors)) : [];
       const parsedOrganizations = JSON.parse(organizations || '[]');
       const parsedLocations = JSON.parse(locations || '[]');
       const parsedCategory = JSON.parse(category || '[]');
@@ -91,20 +76,20 @@ router.post(
           req.files.authorImages.map(async (file) => uploadFileToS3(file, 'images/imageJournal')),
         );
 
-        console.log('Uploaded files =>', uploadedFiles);
-
-        // Преобразуем attachments
-        journal.attachments = uploadedFiles;
-
-        parsedAuthors.forEach((author, i) => {
+        // Присваиваем изображения авторам
+        const updatedParsedAuthors = parsedAuthors.map((author, i) => {
+          const updatedAuthor = { ...author };
           if (uploadedFiles[i]) {
-            author.image = uploadedFiles[i];
+            updatedAuthor.image = uploadedFiles[i];
           }
+          return updatedAuthor;
         });
-        journal.authors = parsedAuthors;
+        journal.authors = updatedParsedAuthors;   
+        
+        journal.attachments = uploadedFiles;
       }
 
-      await journal.save();    
+      await journal.save();
 
       return res.status(201).json({ message: 'Запись успешно создана', journal });
     } catch (error) {
@@ -137,55 +122,54 @@ router.put(
       if (!journal) {
         return res.status(404).json({ message: 'Запись не найдена' });
       }
-  
+
+      // Парсим данные из тела запроса
       const parsedAuthors = authors ? JSON.parse(authors) : [];
-      const parsedOrganizations = organizations ? JSON.parse(organizations) : [];
-      const parsedLocations = locations ? JSON.parse(locations) : [];
-      const parsedCategory = category ? JSON.parse(category) : [];
-
+      const parsedOrganizations = JSON.parse(organizations || '[]');
+      const parsedLocations = JSON.parse(locations || '[]');
+      const parsedCategory = JSON.parse(category || '[]');
       const currentAttachments = journal.attachments || [];
-      const normalizeUrl = (url) => url.split('/').pop().split('?')[0];
 
-     const newFiles = req.files.authorImages
-        ? await Promise.all(
-            req.files.authorImages.map((file) => uploadFileToS3(file, 'images/imageJournal')),
-          )
-        : [];
+      // Загружаем новые файлы, если есть конечно
+      let uploadedFiles = [];
+      if (req.files && req.files.authorImages) {
+        uploadedFiles = await Promise.all(
+          req.files.authorImages.map((file) => uploadFileToS3(file, 'images/imageJournal')),
+        );
+      }
 
-      console.log('Загружены новые файлы:', newFiles);
-
-      const updatedAuthors = parsedAuthors.map((author, i) => {
-        const oldImageUrl = author.image;
-        const newFile = newFiles[i] ? newFiles[i].Location : null;
-
-        if (newFile) {
-          return { ...author, image: newFile };
-        }
-        return { ...author, image: oldImageUrl };
+      // Обновляем авторов с учётом новых файлов
+      const updatedAuthors = parsedAuthors.map((author) => {
+        const file = uploadedFiles.find((uploadedFile) => uploadedFile.includes(author.id));
+        return {
+          ...author,
+          image: file || author.image,
+        };
       });
- 
+
+      // Обновляем список вложений
       const updatedAttachments = updatedAuthors.map((author) => author.image).filter(Boolean);
 
-      console.log('Обновлённые вложения:', updatedAttachments);
-
+      // Удаляем старые файлы из S3, которые больше не используются
       const attachmentsToRemove = currentAttachments.filter(
         (attachment) =>
           !updatedAttachments.some(
-            (updatedAttachment) => normalizeUrl(updatedAttachment) === normalizeUrl(attachment),
+            (updatedAttachment) =>
+              attachment.split('/').pop() === updatedAttachment.split('/').pop(),
           ),
       );
 
       await Promise.all(
         attachmentsToRemove.map(async (url) => {
           try {
-            await deleteImageFromS3(url);
-            console.log('Удалено из S3:', url);
+            await deleteFileFromS3(url.split('/').pop(), 'images/imageJournal');
           } catch (error) {
             console.error('Ошибка при удалении из S3:', error);
           }
         }),
       );
-  
+
+      // Обновляем запись в базе данных
       await journal.update({
         title,
         publication_date,
@@ -230,6 +214,7 @@ router.get('/getzapros/:id', async (req, res) => {
 
     res.json({
       ...journal.toJSON(),
+      authors: Array.isArray(journal.authors) ? journal.authors : [],
     });
   } catch (error) {
     console.error('Ошибка при получении записи:', error.message);

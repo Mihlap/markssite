@@ -3,14 +3,10 @@ import styles from './AuthorsSection.module.scss';
 import ImagePreviewSection from './ImagePreviewSection';
 import compressImageFile from 'browser-image-compression';
 
-function AuthorsSection({
-  authors = [],
-  onAuthorsChange,
-  onImageChange,
-  images
-}) { 
-  const [localImages, setLocalImages] = useState({});
- 
+function AuthorsSection({ authors = [], onAuthorsChange, onImageChange }) {
+  const [, setLocalImages] = useState({});
+  const validAuthors = Array.isArray(authors) ? authors : [];
+
   useEffect(() => {
     if (!Array.isArray(authors)) {
       onAuthorsChange([]);
@@ -18,7 +14,6 @@ function AuthorsSection({
       onAuthorsChange([{ id: Date.now(), number: 1, name: '', image: null, isLoading: false }]);
     }
   }, [authors, onAuthorsChange]);
-
 
   const compressImage = useCallback(async (file) => {
     const options = {
@@ -34,10 +29,9 @@ function AuthorsSection({
     }
   }, []);
 
-
   const handleAddAuthorBlock = useCallback(() => {
     const newAuthor = {
-      id: Date.now(),
+      id: `${Date.now()}_${Math.random().toString(36).substring(2, 15)}`,
       number: authors.length + 1,
       name: '',
       image: null,
@@ -45,7 +39,6 @@ function AuthorsSection({
     };
     onAuthorsChange([...authors, newAuthor]);
   }, [authors, onAuthorsChange]);
-
 
   const handleUpdateAuthorBlock = useCallback(
     (id, updatedData) => {
@@ -55,7 +48,6 @@ function AuthorsSection({
     [authors, onAuthorsChange]
   );
 
-  
   const handleRemoveAuthorBlock = useCallback(
     (id) => {
       const updatedAuthors = authors
@@ -70,35 +62,6 @@ function AuthorsSection({
     [authors, onAuthorsChange]
   );
 
-
-  // const handleFileChange = useCallback(
-  //   async (id, file) => {
-  //     if (!file) return;
-
-  //     if (localImages[id]) {
-  //       console.log(`Замена изображения для автора ${id}: ${localImages[id].name}`);
-  //     }
-
-  //     handleUpdateAuthorBlock(id, { isLoading: true });
-  //     try {
-  //       const compressedFile = await compressImage(file);
-
-  //       setLocalImages((prev) => ({ ...prev, [id]: compressedFile }));
-
-  //       onImageChange(id, compressedFile);
-
-  //       handleUpdateAuthorBlock(id, {
-  //         image: URL.createObjectURL(compressedFile),
-  //         isLoading: false,
-  //       });
-  //     } catch (error) {
-  //       console.error('Ошибка обработки изображения:', error);
-  //       handleUpdateAuthorBlock(id, { isLoading: false });
-  //     }
-  //   },
-  //   [compressImage, handleUpdateAuthorBlock, onImageChange, localImages]
-  // );
-
   const handleFileChange = useCallback(
     async (id, file) => {
       if (!file) return;
@@ -107,13 +70,11 @@ function AuthorsSection({
       try {
         const compressedFile = await compressImage(file);
 
-        // Сохраните файл в Redux
-        const fileURL = URL.createObjectURL(compressedFile); // Временный URL
+        const fileURL = URL.createObjectURL(compressedFile);
         onImageChange(id, compressedFile);
 
-        // Обновите состояние автора с полным URL
         handleUpdateAuthorBlock(id, {
-          image: fileURL, // Здесь можно использовать полный URL после загрузки на сервер
+          image: fileURL,
           isLoading: false,
         });
       } catch (error) {
@@ -124,14 +85,12 @@ function AuthorsSection({
     [compressImage, handleUpdateAuthorBlock, onImageChange]
   );
 
-
-
   const handleRemoveImage = useCallback(
-    (id) => {    
+    (id) => {
       handleUpdateAuthorBlock(id, { image: null });
-     
+
       onImageChange(id, null);
- 
+
       setLocalImages((prev) => {
         const { [id]: _, ...rest } = prev;
         return rest;
@@ -140,13 +99,12 @@ function AuthorsSection({
     [handleUpdateAuthorBlock, onImageChange]
   );
 
-
   return (
     <div className={styles.form_container}>
-      {authors?.map((author) => {
+      {validAuthors?.map((author) => {
         const preview = author.image ? [author.image] : [];
 
-      return (
+        return (
           <div key={author.id} className={styles.form_container__block_gray_one}>
             <button className={styles.form_container__close_button} onClick={() => handleRemoveAuthorBlock(author.id)}>
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
