@@ -7,7 +7,9 @@ const serverHost = process.env.REACT_APP_SERVER_HOST;
 export const fetchJournals = createAsyncThunk('journal/fetchJournals', async (_, { rejectWithValue }) => {
   try {
     const response = await axios.get(`${serverHost}/api-journal/getzapros`);
+
     return response.data;
+    
   } catch (error) {
     console.error('Ошибка при загрузке журналов:', error);
     return rejectWithValue(error.message);
@@ -21,10 +23,9 @@ export const fetchJournalById = createAsyncThunk('journal/fetchJournalById', asy
     if (!response.data) {
       throw new Error('Нет данных для указанного ID');
     }
-
-    console.log('Данные из API в fetchJournalById:', response.data);
     
     return response.data;
+
   } catch (error) {
     console.error('Ошибка при загрузке записи:', error);
     return rejectWithValue(error.message || 'Ошибка при загрузке записи');
@@ -37,7 +38,9 @@ export const createJournal = createAsyncThunk('journal/createJournal', async (fo
     const response = await axios.post(`${serverHost}/api-journal/postzapros`, formData, {
       // headers: { 'Content-Type': 'multipart/form-data' },
     });
+
     return response.data;
+
   } catch (error) {
     console.error('Ошибка при создании записи:', error);
     return rejectWithValue(error.message);
@@ -47,12 +50,14 @@ export const createJournal = createAsyncThunk('journal/createJournal', async (fo
 // Thunk для обновления записи
 export const updateJournal = createAsyncThunk(
   'journal/updateJournal',
-  async ({ journalId, formData }, { rejectWithValue }) => {
+  async ({ journalId, formData }, { rejectWithValue }) => {    
     try {
       const response = await axios.put(`${serverHost}/api-journal/editzapros/${journalId}`, formData, {
         // headers: { 'Content-Type': 'multipart/form-data' },
       });
+
       return response.data;
+
     } catch (error) {
       console.error('Ошибка при обновлении записи:', error);
       return rejectWithValue(error.message);
@@ -79,7 +84,7 @@ const journalSlice = createSlice({
       publication_date: '',
       category: '',
       issue_number: '',
-      authors: {},
+      authors: [],
       attachments: {},
       organizations: [],
       locations: [],
@@ -109,7 +114,7 @@ const journalSlice = createSlice({
         publication_date: '',
         category: [],
         issue_number: '',
-        authors: {},
+        authors: [],
         attachments: {},
         markdown_content: '',
         imageKey: '',
@@ -153,12 +158,7 @@ const journalSlice = createSlice({
           publication_date: data.publication_date || '',
           category: Array.isArray(data.category) ? data.category : [],
           issue_number: data.issue_number?.toString() || '',
-          authors: Array.isArray(data.authors)
-            ? data.authors.reduce((acc, author) => {
-                acc[author.id] = { ...author, id: author.id };
-                return acc;
-              }, {})
-            : {},
+          authors: Array.isArray(data.authors) ? data.authors : [],   
           attachments: attachmentsById,
           organizations: data.organizations || [],
           locations: data.locations || [],
@@ -176,7 +176,7 @@ const journalSlice = createSlice({
               value: loc.value || loc.name || '',
             })),
           ],
-        };
+        };        
       })
       .addCase(fetchJournalById.rejected, (state, action) => {
         state.loading = false;

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import InputField from '../InputField';
 import DropdownSelect from '../DropdownSelect';
@@ -110,6 +110,16 @@ export default function FormAddJournal({ setIsModalOpen }) {
     setIsModalOpen(false);
     dispatch(clearFormData());
   }, [setIsModalOpen, dispatch]);
+
+    useEffect(() => {
+      return () => {   
+        Object.values(localImages).forEach((file) => {
+          if (file instanceof Blob && file.type.startsWith('image/')) {
+            URL.revokeObjectURL(file);
+          }
+        });
+      };
+    }, [localImages]);
   
 
   const universityBlocks = formData.blocks.filter((block) => block.type === 'university');
@@ -130,6 +140,7 @@ export default function FormAddJournal({ setIsModalOpen }) {
               onChange={handleInputChange}
               type="text"
             />
+
             <InputField
               label="Дата, месяц, год"
               placeholder="Дата, месяц, год"
@@ -138,6 +149,7 @@ export default function FormAddJournal({ setIsModalOpen }) {
               onChange={handleInputChange}
               type="text"
             />
+
             <DropdownSelect
               label=""
               name="category"
@@ -165,6 +177,7 @@ export default function FormAddJournal({ setIsModalOpen }) {
                 ValueContainer: PublicationContainer,
               }}
             />
+            
             <DropdownSelect
               label=""
               placeholder="Выберите номер выпуска"

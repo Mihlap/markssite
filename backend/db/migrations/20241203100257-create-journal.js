@@ -18,7 +18,7 @@ module.exports = {
         allowNull: true,
       },
       category: {
-        type: Sequelize.JSONB,
+        type: Sequelize.JSON,
         allowNull: false,
       },
       issue_number: {
@@ -26,15 +26,15 @@ module.exports = {
         allowNull: true,
       },
       authors: {
-        type: Sequelize.JSONB,
+        type: Sequelize.JSON,
         allowNull: true,
       },
       organizations: {
-        type: Sequelize.JSONB,
+        type: Sequelize.JSON,
         allowNull: true,
       },
       locations: {
-        type: Sequelize.JSONB,
+        type: Sequelize.JSON,
         allowNull: true,
       },
       statusObject: {
@@ -56,7 +56,7 @@ module.exports = {
         onUpdate: 'CASCADE',
       },
       attachments: {
-        type: Sequelize.JSONB,
+        type: Sequelize.JSON,
         allowNull: true,
       },
       imageKey: {
