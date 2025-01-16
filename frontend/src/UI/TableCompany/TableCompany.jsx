@@ -53,7 +53,7 @@ const TableCompany = ({ handleMouseEnter, handleMouseLeave, handleMouseHover }) 
   }, []);
 
   return (
-    <div>
+    <div className={styles.TableCompanyContainer}>
       <div id="table-header-anchor" className={`${styles.tableContainer} ${showAll ? styles.visible : ''}`}>
         <table className={styles.tableStyle}>
           <thead>

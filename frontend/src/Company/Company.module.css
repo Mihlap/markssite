@@ -405,10 +405,6 @@
   padding-bottom: 48px;
 }
 
-.specialist_wrapper {
-  padding-top: 6.25rem;
-}
-
 .specialist {
   font-family: var(--font-unbounded);
   font-style: normal;
@@ -944,10 +940,6 @@
     padding-bottom: 40px;
   }
 
-  .specialist_wrapper {
-    padding-top: 5rem;
-  }
-
   .specialist {
     font-size: 24px;
     line-height: 32px;
@@ -1387,10 +1379,6 @@
     padding-left: 1rem;
     padding-right: 1rem;
     padding-bottom: 1.5rem;
-  }
-
-  .specialist_wrapper {
-    padding-top: 5rem;
   }
 
   .specialist {
