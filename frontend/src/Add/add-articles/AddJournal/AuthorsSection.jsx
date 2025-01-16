@@ -3,17 +3,18 @@ import styles from './AuthorsSection.module.scss';
 import ImagePreviewSection from './ImagePreviewSection';
 import compressImageFile from 'browser-image-compression';
 
-function AuthorsSection({ authors = [], onAuthorsChange, onImageChange }) {
+function AuthorsSection({ authors = [], onAuthorsChange, onImageChange, isEditing = false }) {
   const [, setLocalImages] = useState({});
   const validAuthors = Array.isArray(authors) ? authors : [];
 
   useEffect(() => {
     if (!Array.isArray(authors)) {
       onAuthorsChange([]);
-    } else if (authors.length === 0) {
+    } else if (authors.length === 0 && !isEditing) {
+      // Автоматически добавляем автора только в режиме создания
       onAuthorsChange([{ id: Date.now(), number: 1, name: '', image: null, isLoading: false }]);
     }
-  }, [authors, onAuthorsChange]);
+  }, [authors, onAuthorsChange, isEditing]);
 
   const compressImage = useCallback(async (file) => {
     const options = {
@@ -69,8 +70,8 @@ function AuthorsSection({ authors = [], onAuthorsChange, onImageChange }) {
       handleUpdateAuthorBlock(id, { isLoading: true });
       try {
         const compressedFile = await compressImage(file);
-
         const fileURL = URL.createObjectURL(compressedFile);
+
         onImageChange(id, compressedFile);
 
         handleUpdateAuthorBlock(id, {

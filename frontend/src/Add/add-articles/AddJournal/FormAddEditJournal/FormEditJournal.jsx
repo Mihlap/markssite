@@ -24,6 +24,14 @@ export default function FormEditJournal({ editJournalData, setIsModalOpen }) {
   const [showNotification, setShowNotification] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  const [universityBlocks, setUniversityBlocks] = useState([]);
+  const [locationBlocks, setLocationBlocks] = useState([]);
+
+  useEffect(() => {
+    setUniversityBlocks(formData.blocks.filter((b) => b.type === 'university'));
+    setLocationBlocks(formData.blocks.filter((b) => b.type === 'location'));
+  }, [formData.blocks]);
+
   useEffect(() => {
     if (editJournalData) {
       dispatch(fetchJournalById(editJournalData)).then((data) => {
@@ -72,7 +80,7 @@ export default function FormEditJournal({ editJournalData, setIsModalOpen }) {
   const handleAuthorsChange = useCallback(
     (updatedAuthors) => {
       dispatch(updateAuthors(updatedAuthors));
-   
+
       setLocalImages((prev) => {
         const newImages = { ...prev };
         updatedAuthors.forEach((author) => {
@@ -80,7 +88,7 @@ export default function FormEditJournal({ editJournalData, setIsModalOpen }) {
             newImages[author.id] = null;
           }
         });
-     
+
         const updatedIds = updatedAuthors.map((a) => a.id);
         Object.keys(newImages).forEach((id) => {
           if (!updatedIds.includes(id)) {
@@ -114,7 +122,7 @@ export default function FormEditJournal({ editJournalData, setIsModalOpen }) {
       e.preventDefault();
       if (isSubmitting) return;
 
-      if (!formData.title || !formData.publication_date) {
+      if (!formData.title || !formData.publication_date || !formData.category.length > 0) {
         setShowNotification(true);
         setTimeout(() => setShowNotification(false), 3000);
         return;
@@ -124,7 +132,7 @@ export default function FormEditJournal({ editJournalData, setIsModalOpen }) {
 
       try {
         const formDataToSend = new FormData();
-     
+
         formDataToSend.append('title', formData.title);
         formDataToSend.append('publication_date', formData.publication_date);
         formDataToSend.append('category', JSON.stringify(formData.category));
@@ -133,15 +141,15 @@ export default function FormEditJournal({ editJournalData, setIsModalOpen }) {
         formDataToSend.append('locations', JSON.stringify(formData.blocks.filter((b) => b.type === 'location')));
         formDataToSend.append('markdown_content', formData.markdown_content || null);
         formDataToSend.append('imageKey', formData.imageKey || 'one');
-      
+
         const sanitizedAuthors = formData.authors.map((author) => ({
           ...author,
-          image: author.image && !author.image.startsWith('blob:') ? author.image : null,
+          image: author.image && !author.image.startsWith('blob:') ? author.image : null,     
         }));
         formDataToSend.append('authors', JSON.stringify(sanitizedAuthors));
-   
+
         Object.entries(localImages).forEach(([id, file]) => {
-          if (file) {
+          if (file) {      
             formDataToSend.append('authorImages', file, id);
           }
         });
@@ -149,7 +157,7 @@ export default function FormEditJournal({ editJournalData, setIsModalOpen }) {
         const response = await dispatch(
           updateJournal({ journalId: editJournalData, formData: formDataToSend })
         ).unwrap();
-  
+
         const updatedAuthors = formData.authors.map((author) => {
           const updatedAuthor = response.journal.authors.find((respAuthor) => respAuthor.id === author.id);
           return updatedAuthor ? { ...author, image: updatedAuthor.image } : author;
@@ -174,9 +182,8 @@ export default function FormEditJournal({ editJournalData, setIsModalOpen }) {
     dispatch(fetchJournals());
   }, [dispatch, setIsModalOpen]);
 
-
   useEffect(() => {
-    return () => {   
+    return () => {
       Object.values(localImages).forEach((file) => {
         if (file instanceof Blob && file.type.startsWith('image/')) {
           URL.revokeObjectURL(file);
@@ -184,10 +191,6 @@ export default function FormEditJournal({ editJournalData, setIsModalOpen }) {
       });
     };
   }, [localImages]);
-  
-
-  const universityBlocks = formData.blocks.filter((b) => b.type === 'university');
-  const locationBlocks = formData.blocks.filter((b) => b.type === 'location');
 
   return (
     <div className={styles.form_container}>
@@ -268,13 +271,14 @@ export default function FormEditJournal({ editJournalData, setIsModalOpen }) {
                   }}
                 />
               </div>
-          
+
               <AuthorsSection
                 authors={formData.authors}
                 onAuthorsChange={handleAuthorsChange}
                 onImageChange={handleImageChange}
+                isEditing={true}
               />
-                  
+
               {universityBlocks.map((block) => (
                 <div key={block.id} className={styles.form_container__block_gray_one}>
                   <div className={styles.form_container__checkbox_block}>
@@ -292,7 +296,7 @@ export default function FormEditJournal({ editJournalData, setIsModalOpen }) {
                         fill="#566272"
                       />
                     </svg>
-                  </button>                  
+                  </button>
                   <InputField
                     label=""
                     name="university"
