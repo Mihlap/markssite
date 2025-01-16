@@ -28,11 +28,6 @@ export default function FormEditJournal({ editJournalData, setIsModalOpen }) {
   const [locationBlocks, setLocationBlocks] = useState([]);
 
   useEffect(() => {
-    setUniversityBlocks(formData.blocks.filter((b) => b.type === 'university'));
-    setLocationBlocks(formData.blocks.filter((b) => b.type === 'location'));
-  }, [formData.blocks]);
-
-  useEffect(() => {
     if (editJournalData) {
       dispatch(fetchJournalById(editJournalData)).then((data) => {
         const updatedAuthors = data.payload.authors.map((author) => ({
@@ -44,6 +39,13 @@ export default function FormEditJournal({ editJournalData, setIsModalOpen }) {
       });
     }
   }, [dispatch, editJournalData]);
+  
+
+    useEffect(() => {
+      setUniversityBlocks(formData.blocks.filter((b) => b.type === 'university'));
+      setLocationBlocks(formData.blocks.filter((b) => b.type === 'location'));
+    }, [formData.blocks]);
+
 
   const handleInputChange = useCallback(
     (name, value) => {
@@ -204,7 +206,7 @@ export default function FormEditJournal({ editJournalData, setIsModalOpen }) {
           <h1 className={styles.form_container__title}>Редактирование статьи</h1>
 
           <div className={styles.form_container__block_form}>
-            <form className={styles.form_container__form} onSubmit={handleSubmit}>
+            <form className={styles.form_container__form} onSubmit={handleSubmit} noValidate>
               <div className={styles.form_container__block_gray_one}>
                 <InputField
                   label="Название статьи"
