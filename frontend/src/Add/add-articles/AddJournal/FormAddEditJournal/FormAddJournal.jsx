@@ -65,7 +65,7 @@ export default function FormAddJournal({ setIsModalOpen }) {
       try {
         const { title, date, category, issueNumber, blocks, text, authors, imageKey } = formData;
 
-        if (!title || !date || category.length === 0 || Object.keys(authors).length === 0) {
+        if (!title || !date || category.length === 0 || !issueNumber || Object.keys(authors).length === 0) {
           setShowNotification(true);
           setTimeout(() => setShowNotification(false), 3000);
           return;
@@ -177,7 +177,7 @@ export default function FormAddJournal({ setIsModalOpen }) {
                 ValueContainer: PublicationContainer,
               }}
             />
-            
+
             <DropdownSelect
               label=""
               placeholder="Выберите номер выпуска"
@@ -211,7 +211,7 @@ export default function FormAddJournal({ setIsModalOpen }) {
             }}
             onImageChange={(authorId, file) => {
               setLocalImages((prev) => ({ ...prev, [authorId]: file }));
-            }}
+            }}         
           />
 
           {universityBlocks.map((block) => (
