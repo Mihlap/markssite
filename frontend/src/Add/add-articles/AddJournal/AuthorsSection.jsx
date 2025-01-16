@@ -11,7 +11,6 @@ function AuthorsSection({ authors = [], onAuthorsChange, onImageChange, isEditin
     if (!Array.isArray(authors)) {
       onAuthorsChange([]);
     } else if (authors.length === 0 && !isEditing) {
-      // Автоматически добавляем автора только в режиме создания
       onAuthorsChange([{ id: Date.now(), number: 1, name: '', image: null, isLoading: false }]);
     }
   }, [authors, onAuthorsChange, isEditing]);
