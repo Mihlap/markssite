@@ -8,7 +8,7 @@ const { uploadFileToS3, deleteFileFromS3 } = require('../../s3Utils/s3Service');
 const router = express.Router();
 
 const extractFileNameAndFolderFromUrl = (url) => {
-  if (!url.includes('http')) {
+  if (!url.includes('http') && !url.includes('https')) {
     return {
       fileName: url,
       folder: 'images/imageJournal',
@@ -84,8 +84,8 @@ router.post(
           }
           return updatedAuthor;
         });
-        journal.authors = updatedParsedAuthors;   
-        
+
+        journal.authors = updatedParsedAuthors;
         journal.attachments = uploadedFiles;
       }
 
@@ -136,16 +136,25 @@ router.put(
         uploadedFiles = await Promise.all(
           req.files.authorImages.map((file) => uploadFileToS3(file, 'images/imageJournal')),
         );
+          console.log('Загруженные файлы:', uploadedFiles);
       }
 
-      // Обновляем авторов с учётом новых файлов
+      // Обновление изображения при изменении
       const updatedAuthors = parsedAuthors.map((author) => {
         const file = uploadedFiles.find((uploadedFile) => uploadedFile.includes(author.id));
+        const updatedImage = file || author.image;
+
+        if (!updatedImage) return { ...author, image: null };
+
+        // Удаляем все старые временные метки
+        const cleanImagePath = updatedImage.split('?timestamp=')[0];
+
+        // Добавляем новую временную метку
         return {
           ...author,
-          image: file || author.image,
+          image: `${cleanImagePath}?timestamp=${Date.now()}`,
         };
-      });
+      });   
 
       // Обновляем список вложений
       const updatedAttachments = updatedAuthors.map((author) => author.image).filter(Boolean);
@@ -153,16 +162,19 @@ router.put(
       // Удаляем старые файлы из S3, которые больше не используются
       const attachmentsToRemove = currentAttachments.filter(
         (attachment) =>
-          !updatedAttachments.some(
-            (updatedAttachment) =>
-              attachment.split('/').pop() === updatedAttachment.split('/').pop(),
-          ),
+          !updatedAttachments.some((updatedAttachment) => {
+            const cleanAttachment = attachment.split('?timestamp=')[0];
+            const cleanUpdatedAttachment = updatedAttachment.split('?timestamp=')[0];
+            return cleanAttachment === cleanUpdatedAttachment;
+          }),
       );
 
       await Promise.all(
         attachmentsToRemove.map(async (url) => {
           try {
-            await deleteFileFromS3(url.split('/').pop(), 'images/imageJournal');
+            // Извлекаем имя файла для удаления
+            const fileName = url.split('/').pop().split('?')[0];
+            await deleteFileFromS3(fileName, 'images/imageJournal');
           } catch (error) {
             console.error('Ошибка при удалении из S3:', error);
           }
