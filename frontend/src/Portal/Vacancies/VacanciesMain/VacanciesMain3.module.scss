@@ -27,7 +27,16 @@
 }
 
 .vacancyFormWrapper {
-  padding: 1.5rem 0rem 5rem 7rem;
+  padding: 8px 0rem 11.25rem 7rem;
+}
+
+@media all and (max-width: $XXL) {
+  .temporaryText,
+  .textUnderForm,
+  .vacancyFormWrapper {
+    padding-left: 63px;
+    padding-right: 63px;
+  }
 }
 
 @media screen and (min-width: 1025px) and (max-width: 1600px) {

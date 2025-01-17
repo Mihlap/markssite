@@ -89,7 +89,8 @@ const SocialsSwiper = () => {
     <section className={styles.SocialsSwiper}>
       <div className={styles.SocialsSwiper__header}>
         <h2>
-          Хочешь узнать больше о&nbsp;жизни компании? Подписывайся на&nbsp;нас в&nbsp;<span>социальных сетях!</span>
+          Хочешь узнать больше о&nbsp;жизни компании?<br></br> Подписывайся на&nbsp;нас в&nbsp;
+          <span>социальных сетях!</span>
         </h2>
       </div>
       <div className={styles.SocialsSwiper__slider}>
@@ -115,37 +116,37 @@ const SocialsSwiper = () => {
               spaceBetween: 54,
             },
 
-            1920: {
+            1918: {
               slidesPerView: 3.3,
               spaceBetween: 54,
             },
 
-            1280: {
+            1278: {
               slidesPerView: 3,
               spaceBetween: 30,
+              centeredSlides: true,
             },
 
-            1024: {
-              slidesPerView: 3.1,
+            1022: {
+              slidesPerView: 2.1,
               spaceBetween: 16,
             },
 
-            768: {
+            767: {
               slidesPerView: 2,
               spaceBetween: 16,
             },
 
-            576: {
+            573: {
               slidesPerView: 1.5,
               spaceBetween: 16,
             },
 
-            280: {
+            278: {
               slidesPerView: 1.1,
               spaceBetween: 0,
             },
-          }}
-        >
+          }}>
           {socialsArray.map((item, index) => {
             return (
               <SwiperSlide key={index}>

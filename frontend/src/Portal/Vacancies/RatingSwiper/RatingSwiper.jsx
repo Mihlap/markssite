@@ -9,7 +9,6 @@ import ArrowsSwiper from '../ArrowsSwiper/ArrowsSwiper';
 import 'swiper/css';
 import 'swiper/css/navigation';
 
-
 const RatingSwiperRow = ({ picture, date, title }) => {
   return (
     <div className={styles.RatingSwiper__row}>
@@ -66,6 +65,28 @@ const RatingSwiper = memo(() => {
 
   const slidesToShow = isTablet && !showAll ? visibleSlides.slice(0, 1) : visibleSlides;
 
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    const months = [
+      'Январь',
+      'Февраль',
+      'Март',
+      'Апрель',
+      'Май',
+      'Июнь',
+      'Июль',
+      'Август',
+      'Сентябрь',
+      'Октябрь',
+      'Ноябрь',
+      'Декабрь',
+    ];
+    const day = date.getDate();
+    const month = months[date.getMonth()];
+    const year = date.getFullYear();
+    return `${month} ${day}, ${year}`;
+  };
+
   return (
     <section className={styles.RatingSwiper}>
       <div className={styles.RatingSwiper__header}>
@@ -102,22 +123,21 @@ const RatingSwiper = memo(() => {
                   slidesPerView: 1,
                   spaceBetween: 30,
                 },
-              }}
-            >
+              }}>
               {slidesToShow?.map((slide) => (
                 <SwiperSlide key={slide.id} className={styles.RatingSwiper__slide}>
                   <RatingSwiperRow
                     picture={slide.photoAva}
-                    date={new Date(slide.cardData.card1.date).toLocaleDateString()}
+                    date={formatDate(slide.cardData.card1.date)}
                     title={slide.cardData.card1.description}
                   />
                   <div className={styles.RatingSwiper__rows}>
                     <RatingSwiperRow
-                      date={new Date(slide.cardData.card2.date).toLocaleDateString()}
+                      date={formatDate(slide.cardData.card2.date)}
                       title={slide.cardData.card2.description}
                     />
                     <RatingSwiperRow
-                      date={new Date(slide.cardData.card3.date).toLocaleDateString()}
+                      date={formatDate(slide.cardData.card3.date)}
                       title={slide.cardData.card3.description}
                     />
                   </div>
@@ -132,27 +152,27 @@ const RatingSwiper = memo(() => {
                 <div key={slide.id} className={styles.RatingSwiper__slide}>
                   <RatingSwiperRow
                     picture={slide.photoAva}
-                    date={new Date(slide.cardData.card1.date).toLocaleDateString()}
+                    date={formatDate(slide.cardData.card1.date)}
                     title={slide.cardData.card1.description}
                   />
                   <div className={styles.RatingSwiper__rows}>
                     <RatingSwiperRow
-                      date={new Date(slide.cardData.card2.date).toLocaleDateString()}
+                      date={formatDate(slide.cardData.card2.date)}
                       title={slide.cardData.card2.description}
                     />
                     <RatingSwiperRow
-                      date={new Date(slide.cardData.card3.date).toLocaleDateString()}
+                      date={formatDate(slide.cardData.card3.date)}
                       title={slide.cardData.card3.description}
                     />
                   </div>
                 </div>
               ))}
             </div>
+
             {visibleSlides.length > 1 && (
               <button
                 className={`${styles.RatingSwiper__button} ${showAll ? styles.visible : ''}`}
-                onClick={() => setShowAll(!showAll)}
-              >
+                onClick={() => setShowAll(!showAll)}>
                 {showAll ? 'Скрыть все' : 'Смотреть все'}
               </button>
             )}

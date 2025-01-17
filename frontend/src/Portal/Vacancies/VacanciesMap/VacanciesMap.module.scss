@@ -6,8 +6,10 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  height: 100vh;
+  height: 100%;
   padding-left: rem(64);
+  padding-top: 80px;
+  padding-bottom: 40px;
   overflow: hidden;
 
   &__text {
@@ -21,6 +23,7 @@
     h2 {
       font-family: var(--font-unbounded);
       font-size: rem(40);
+      font-weight: var(--fw-300);
       line-height: rem(48);
       margin-bottom: rem(45);
     }
@@ -306,6 +309,8 @@
 
   // Адаптация под tablet
   @media all and (max-width: $L) {
+    padding-top: 40px;
+
     &__text {
       width: 38%;
       margin: rem(64) 0 rem(64) auto;
@@ -431,6 +436,7 @@
       width: 100%;
       padding: rem(120) rem(16) 0 rem(16);
       margin-bottom: 0;
+      margin-top: 0;
 
       h2 {
         font-size: rem(24);
@@ -478,6 +484,52 @@
       &_chbk {
         top: 315px;
         right: 107px;
+      }
+    }
+  }
+
+  @media all and (max-width: 380px) {
+    &__map {
+      width: 375px;
+      height: 643px;
+      background-position: bottom 36px right -267px;
+      background-size: cover;
+      margin-left: auto;
+    }
+
+    &__city {
+      span {
+        transform: translateY(-32px);
+      }
+
+      &_msk {
+        top: 76px;
+        right: 77px;
+
+        span {
+          font-size: 12px;
+          transform: translateY(-42px);
+        }
+      }
+
+      &_vzh {
+        top: 261px;
+        right: 249px;
+      }
+
+      &_spb {
+        top: 120px;
+        right: 193px;
+      }
+
+      &_obg {
+        top: 374px;
+        right: 124px;
+      }
+
+      &_chbk {
+        top: 364px;
+        right: 41px;
       }
     }
   }

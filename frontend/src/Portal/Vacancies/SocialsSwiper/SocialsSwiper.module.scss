@@ -2,13 +2,12 @@
 @import '../../../_variables.scss';
 
 .SocialsSwiper {
-  margin: rem(140) 0;
+  margin: rem(220) 0;
   background-color: var(--white-F6F6F6);
   $s: &;
-  min-height: rem(750);
 
   &__swiper {
-    margin-top: 24px;
+    margin-top: 40px;
   }
 
   &__slider {
@@ -21,11 +20,12 @@
   }
 
   &__header {
-    width: 52%;
     font-family: var(--font-unbounded);
     font-size: rem(40);
+    font-weight: var(--fw-300);
     line-height: rem(48);
     padding: 0 rem(112);
+    margin-bottom: rem(54);
 
     span {
       color: var(--blue-75BBFD);
@@ -36,7 +36,7 @@
     display: block;
     padding: rem(32);
     box-shadow: 0px 0px 26.75px 0px #00000008;
-    border-radius: rem(21.4);
+    border-radius: 21px;
     font-family: var(--font-unbounded);
     font-size: rem(20);
     transition: all 0.6s ease;
@@ -50,9 +50,8 @@
 
   &__picture {
     margin-bottom: rem(32);
-    height: rem(420);
     transition: all 0.6s ease;
-    border-radius: rem(32.11);
+    border-radius: 32px;
     overflow: hidden;
 
     img {
@@ -70,7 +69,12 @@
 
     h3,
     span {
-      font-size: 20px;
+      font-size: 24px;
+      font-weight: var(--fw-300);
+    }
+
+    span {
+      white-space: nowrap;
     }
   }
 
@@ -89,14 +93,27 @@
   }
 
   @media all and (max-width: $XXL) {
-    &__picture {
-      height: auto;
+    margin: rem(140) 0;
+
+    &__header {
+      padding: 0 rem(63);
+      margin-bottom: rem(64);
+    }
+
+    &__slider {
+      padding: 0 rem(64);
+    }
+
+    &__bottom {
+      h3,
+      span {
+        font-size: 20px;
+      }
     }
   }
 
   @media all and (max-width: $XL) {
     &__slider {
-      padding: 0 rem(64);
       position: relative;
 
       &::before,
@@ -126,6 +143,10 @@
       padding: 0 rem(64);
       font-size: rem(32);
       line-height: rem(40);
+
+      br {
+        display: none;
+      }
     }
 
     &__item {
@@ -135,7 +156,6 @@
     }
 
     &__picture {
-      height: rem(315);
       border-radius: rem(17.5);
     }
 
@@ -150,7 +170,6 @@
 
       #{$s}__picture {
         margin-bottom: rem(34);
-        height: rem(335);
       }
     }
 
@@ -159,20 +178,19 @@
     }
   }
 
-  @media all and (max-width: $L) {
-    min-height: auto;
-    // background-color: red;
-
-    &__item img {
-      min-height: rem(258);
+  @media all and (max-width: $M) {
+    &__header {
+      margin-bottom: 0;
     }
+  }
 
-    // &__slider {
-    //   &::before,
-    //   &::after {
-    //     content: none;
-    //   }
-    // }
+  @media all and (max-width: $L) {
+    &__slider {
+      &::before,
+      &::after {
+        content: none;
+      }
+    }
 
     &__item,
     &__active &__item {
@@ -187,7 +205,17 @@
     &__picture,
     &__active &__picture {
       margin-bottom: rem(24);
-      height: rem(258);
+    }
+
+    &__header {
+      width: 75%;
+    }
+
+    &__bottom {
+      h3,
+      span {
+        font-size: 16px;
+      }
     }
   }
 
@@ -232,10 +260,6 @@
   @media all and (max-width: $S) {
     margin: rem(110) 0;
 
-    &__item img {
-      min-height: 0;
-    }
-
     &__slider {
       transform: none;
     }
@@ -264,11 +288,6 @@
     &__item {
       margin: 0 8px;
       border-radius: 12.42px;
-    }
-
-    &__picture,
-    &__active &__picture {
-      height: auto;
     }
 
     &__button {
