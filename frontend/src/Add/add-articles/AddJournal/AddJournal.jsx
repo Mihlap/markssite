@@ -10,7 +10,6 @@ import styles from '../../style/style-card.module.scss';
 import Edit from '../../icon/Edit.svg';
 import one from '../../add-navbar/icon/one.png';
 import two from '../../add-navbar/icon/two.png';
-import three from '../../add-navbar/icon/three.png';
 
 export default function AddJournal({ user }) {
   const dispatch = useDispatch();
@@ -28,20 +27,31 @@ export default function AddJournal({ user }) {
   const imageMap = {
     one: one,
     two: two,
-    three: three,
   };
   const isMountedRef = useRef(true);
 
-  const getNextImageKey = useCallback((journals) => { 
-    const imageKeys = ['one', 'two', 'three'];
-  
-    const usedIndices = journals.map((journal) => imageKeys.indexOf(journal.imageKey)).filter((idx) => idx >= 0);  
-    if (usedIndices.length === 0) {
-      return imageKeys[0];
-    } 
-    const maxUsedIndex = Math.max(...usedIndices);
-    const nextIndex = (maxUsedIndex + 1) % imageKeys.length;
-    return imageKeys[nextIndex];
+  const getNextImageKey = useCallback((journals) => {
+    const imageKeys = ['one', 'two'];
+
+    const keyUsage = journals.reduce((acc, journal) => {
+      if (journal.imageKey && imageKeys.includes(journal.imageKey)) {
+        acc[journal.imageKey] = (acc[journal.imageKey] || 0) + 1;
+      }
+      return acc;
+    }, {});
+
+    let nextKey = imageKeys[0];
+    let minUsage = keyUsage[nextKey] || 0;
+
+    imageKeys.forEach((key) => {
+      const usage = keyUsage[key] || 0;
+      if (usage < minUsage) {
+        nextKey = key;
+        minUsage = usage;
+      }
+    });
+
+    return nextKey;
   }, []);
 
   const updateModalBlockHeight = useCallback(() => {
@@ -104,7 +114,6 @@ export default function AddJournal({ user }) {
       console.error('Unable to copy article to clipboard:', err);
     }
   }, []);
-
 
   const handleEditClick = useCallback(
     async (id) => {
@@ -196,16 +205,17 @@ export default function AddJournal({ user }) {
         ) : journals && journals.length === 0 ? (
           <div className={styles.card_components_admin__null_project}>Публикаций пока нет.</div>
         ) : (
-          <div className={styles.card_components_admin__block_map}>
-            {journals?.map((el, index) => {
+          <div
+            className={styles.card_components_admin__block_map}>
+            {journals?.map((el) => {
               const photoSrc = imageMap[el.imageKey] || one;
 
               return (
                 <React.Fragment key={el.id}>
-                  <div key={el.id} className={styles.cart_project_container}>
+                  <div key={el.id} className={`${styles.cart_project_container} ${styles.cart_journal_container}`}>
                     <div className={styles.cart_project_container__imageContainer}>
                       <img
-                        className={styles.cart_project_container__img}
+                        className={styles.cart_journal_container__img}
                         loading="lazy"
                         src={photoSrc}
                         alt="photo_journal"
