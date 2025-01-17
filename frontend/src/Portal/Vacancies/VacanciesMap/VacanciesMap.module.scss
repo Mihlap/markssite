@@ -210,13 +210,15 @@
   //   }
   // }
 
+  
+
   @media all and (max-width: 2000px) {
     &__text {
       width: 30%;
       margin: 0 0 rem(160) auto;
 
       h2 {
-        
+
         font-size: rem(32);
         line-height: rem(40);
         margin-bottom: rem(24);
