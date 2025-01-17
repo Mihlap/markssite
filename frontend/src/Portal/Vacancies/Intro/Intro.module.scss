@@ -76,7 +76,7 @@
   }
 
   &__button {
-    margin-top: rem(52);
+    margin-top: rem(48);
   }
 
   &__video {
@@ -130,10 +130,18 @@
       padding: 0 rem(55);
     }
 
+    &__pretitle {
+      font-size: rem(20);
+    }
+
     &__text {
       width: 100%;
       max-width: 100%;
       padding: rem(113) 0 rem(48) 0;
+    }
+
+    &__button {
+      margin-top: rem(32);
     }
 
     &__animation {
@@ -172,10 +180,6 @@
     &__title {
       font-size: rem(32);
       line-height: rem(40);
-    }
-
-    &__button {
-      margin-top: rem(32);
     }
 
     &__animation {
