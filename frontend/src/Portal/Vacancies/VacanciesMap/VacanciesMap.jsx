@@ -4,14 +4,14 @@ import styles from './VacanciesMap.module.scss';
 const VacanciesMap = () => {
   const [activeCityIndex, setActiveCityIndex] = useState(0);
   
-  const cities = ['msk', 'spb', 'vzh', 'obg', 'chbk'];
+  const cities = ['spb', 'msk', 'vzh', 'obg', 'chbk'];
 
   useEffect(() => {
     const handleWheel = (event) => {
       setActiveCityIndex((prevIndex) => {
-        if (event.deltaY > 0) {       
+        if (event.deltaY > 0) {
           return (prevIndex + 1) % cities.length;
-        } else {       
+        } else {
           return (prevIndex - 1 + cities.length) % cities.length;
         }
       });
@@ -57,8 +57,8 @@ const VacanciesMap = () => {
 };
 
 const cityNames = {
-  msk: 'Москва',
   spb: 'Санкт-Петербург',
+  msk: 'Москва',
   vzh: 'Воронеж',
   obg: 'Оренбург',
   chbk: 'Челябинск',
