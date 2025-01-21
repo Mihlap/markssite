@@ -135,8 +135,7 @@ router.put(
       if (req.files && req.files.authorImages) {
         uploadedFiles = await Promise.all(
           req.files.authorImages.map((file) => uploadFileToS3(file, 'images/imageJournal')),
-        );
-          console.log('Загруженные файлы:', uploadedFiles);
+        );        
       }
 
       // Обновление изображения при изменении
