@@ -1,11 +1,11 @@
 import React, { useEffect, useRef } from 'react';
 import styles from './DirectionsGrid.module.scss';
 
-import directionImg1 from '../icons/directions-1.png';
-import directionImg2 from '../icons/directions-2.png';
-import directionImg3 from '../icons/directions-3.png';
-import directionImg4 from '../icons/directions-4.png';
-import directionImg5 from '../icons/directions-5.png';
+import directionImg1 from '../icons/directions-1.svg';
+import directionImg2 from '../icons/directions-2.svg';
+import directionImg3 from '../icons/directions-3.svg';
+import directionImg4 from '../icons/directions-4.svg';
+import directionImg5 from '../icons/directions-5.svg';
 
 const DirectionsGrid = () => {
   const itemsRef = useRef([]);
@@ -44,12 +44,12 @@ const DirectionsGrid = () => {
       <section className={styles.DirectionsGrid}>
         <div
           ref={(el) => (itemsRef.current[0] = el)}
-          className={`${styles.DirectionsGrid__item} ${styles.DirectionsGrid__item_header}`}
-        >
+          className={`${styles.DirectionsGrid__item} ${styles.DirectionsGrid__item_header}`}>
           <div className={styles.DirectionsGrid__text}>
             <h2 className={styles.DirectionsGrid__subtitle}>Выбери свое направление!</h2>
             <p>
-              MARKS GROUP&nbsp;&mdash; многопрофильная компания, мы&nbsp;приглашаем специалистов самых разных
+              MARKS GROUP&nbsp;&mdash; многопрофильная компания,<br></br> мы&nbsp;приглашаем специалистов самых разных
+              <br></br>
               сфер&nbsp;деятельности
             </p>
           </div>
@@ -64,18 +64,23 @@ const DirectionsGrid = () => {
         <div ref={(el) => (itemsRef.current[2] = el)} className={styles.DirectionsGrid__item}>
           <div className={styles.DirectionsGrid__text}>
             <h2 className={styles.DirectionsGrid__subtitle}>Конструктив</h2>
-            <p>Разработка нестандартных конструктивных решений</p>
+            <p>
+              Разработка нестандартных <br></br>конструктивных решений
+            </p>
           </div>
           <img src={directionImg2}></img>
         </div>
         <div
           ref={(el) => (itemsRef.current[3] = el)}
-          className={`${styles.DirectionsGrid__item} ${styles.DirectionsGrid__item_it}`}
-        >
+          className={`${styles.DirectionsGrid__item} ${styles.DirectionsGrid__item_it}`}>
           <div className={styles.DirectionsGrid__text}>
             <h2 className={styles.DirectionsGrid__subtitle}>IT</h2>
-            <p>Цифровизация процессов строительства, проектирования, девелопмента</p>
-            <p>Разработка ПО&nbsp;и&nbsp;решений для автоматизации процессов информационного моделирования</p>
+            <p>
+              Цифровизация процессов строительства,<br></br> проектирования, девелопмента
+            </p>
+            <p>
+              Разработка ПО&nbsp;и&nbsp;решений для автоматизации<br></br> процессов информационного моделирования
+            </p>
             <p>Разработка&nbsp;VR и&nbsp;дополненной реальности</p>
           </div>
           <img src={directionImg3}></img>
@@ -90,7 +95,9 @@ const DirectionsGrid = () => {
         <div ref={(el) => (itemsRef.current[5] = el)} className={styles.DirectionsGrid__item}>
           <div className={styles.DirectionsGrid__text}>
             <h2 className={styles.DirectionsGrid__subtitle}>Инженерия</h2>
-            <p>Разработка внутренних и&nbsp;наружных инженерных систем</p>
+            <p>
+              Разработка внутренних <br></br>и&nbsp;наружных инженерных систем
+            </p>
           </div>
           <img src={directionImg5}></img>
         </div>

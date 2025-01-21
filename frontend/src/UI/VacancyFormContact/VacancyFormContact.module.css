@@ -1,4 +1,5 @@
 @import '../../App.css';
+@import '../../_variables.scss';
 
 /* @media screen and (min-width: 1601px) and (max-width: 3000px) { */
 
@@ -53,7 +54,7 @@
   border: none;
   outline: none;
   background-color: transparent;
-  padding-top: 3vh;
+  padding-top: 46px;
   font-family: var(--font-raleway);
   font-style: normal;
   font-weight: var(--fw-400);
@@ -220,7 +221,7 @@
   border-radius: 2.5rem;
   background-color: var(--light-light-gray-EBECEE);
   font-family: var(--font-raleway);
-  font-size: 0.625rem;
+  font-size: 0.75rem;
   font-style: normal;
   font-weight: var(--fw-400);
   line-height: 0.875rem;
@@ -280,7 +281,7 @@
   position: absolute;
   display: flex;
   flex-direction: column;
-  top: 18rem;
+  bottom: 0;
   right: 7rem;
   z-index: 3;
 }
@@ -345,7 +346,7 @@
 
 /* } */
 
-@media screen and (min-width: 1025px) and (max-width: 1600px) {
+@media screen and (min-width: 1024px) and (max-width: 1600px) {
   .form_vacancy_wrapper {
     display: flex;
     height: fit-content;
@@ -383,7 +384,7 @@
     border: none;
     outline: none;
     background-color: transparent;
-    padding-top: 2.7vh;
+    padding-top: 48px;
     font-family: var(--font-raleway);
     font-style: normal;
     font-weight: var(--fw-400);
@@ -473,7 +474,7 @@
     font-style: normal;
     font-weight: var(--fw-400);
     line-height: 1rem;
-    padding-top: 4rem;
+    padding-top: 3.6rem;
     max-width: 20rem;
   }
 
@@ -602,8 +603,7 @@
     position: absolute;
     display: flex;
     flex-direction: column;
-    top: 16.5rem;
-    right: 4.69rem;
+    right: 4.06rem;
     z-index: 3;
   }
 
@@ -693,13 +693,17 @@
     border: none;
     outline: none;
     background-color: transparent;
-    padding-top: 2.7vh;
+    padding-top: 48px;
     font-family: var(--font-raleway);
     font-style: normal;
     font-weight: var(--fw-400);
     font-size: 16px;
     line-height: 16px;
     width: 100%;
+  }
+
+  .input_name_form_contacts {
+    padding-top: 44px;
   }
 
   .input_choose_form_contacts {
@@ -775,7 +779,7 @@
     font-style: normal;
     font-weight: var(--fw-400);
     line-height: 1rem;
-    padding-top: 5rem;
+    padding-top: 4.875rem;
     max-width: 20rem;
   }
 
@@ -800,7 +804,7 @@
     border-radius: 4.125rem;
     border: 1px solid transparent;
     background-color: var(--blue-75BBFD);
-    margin-top: 1.44rem;
+    margin-top: 1rem;
     cursor: none;
     transition: background-color 0.4s ease;
   }

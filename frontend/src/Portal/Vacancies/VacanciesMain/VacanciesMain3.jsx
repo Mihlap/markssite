@@ -37,7 +37,7 @@ const VacanciesMain3 = ({ handleMouseEnter, handleMouseLeave }) => {
 
   return (
     <>
-      <Intro />
+      {/* <Intro /> */}
       <TextCenter />
       <RatingSwiper />
       <CountRows />
