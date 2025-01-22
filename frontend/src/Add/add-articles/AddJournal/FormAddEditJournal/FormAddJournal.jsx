@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import InputField from '../InputField';
 import DropdownSelect from '../DropdownSelect';
 import AuthorsSection from '../AuthorsSection';
+import MarkdownEditor from '../MarkdownEditor';
 import { setFormData, updateAuthors, clearFormData, fetchJournals } from '../../../../store/Slice/journalSlice';
 import { createJournal } from '../../../../store/Slice/journalSlice';
 import styles from '../../../../Add/add-project/formAdd/FormAddProject.module.scss';
@@ -211,7 +212,7 @@ export default function FormAddJournal({ setIsModalOpen }) {
             }}
             onImageChange={(authorId, file) => {
               setLocalImages((prev) => ({ ...prev, [authorId]: file }));
-            }}         
+            }}
           />
 
           {universityBlocks.map((block) => (
@@ -297,6 +298,13 @@ export default function FormAddJournal({ setIsModalOpen }) {
             </svg>
             <span className={styles.add_input_text}>Добавить город, страну</span>
           </button>
+
+          <div className={styles.form_container__block_gray_one}>
+            <div className={styles.form_container__checkbox_block}>
+              <div>Тело статьи</div>
+              <MarkdownEditor type="text" />
+            </div>
+          </div>
 
           <div className={styles.form_container__button_block}>
             <button type="submit" className={styles.form_container__button_save}></button>
