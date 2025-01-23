@@ -115,17 +115,19 @@ useEffect(() => {
                 className={styles.FooterCircle__active}
                 onClick={isTabletScreen ? handleClick : null}
                 onMouseEnter={handleMouseEnterCircle}
-                onMouseLeave={handleMouseLeaveCircle}>
+                onMouseLeave={handleMouseLeaveCircle}
+              >
                 <div
                   className={styles.FooterCircle__circle}
                   onClick={handleClick}
-                  onMouseEnter={handleMouseEnterBlock}
-                  onMouseLeave={handleMouseLeaveBlock}>
+                  // onMouseEnter={handleMouseEnterBlock}
+                  onMouseLeave={handleMouseLeaveBlock}
+                >
                   проект
                 </div>
                 <div
                   onClick={handleClick}
-                  onMouseEnter={handleMouseEnterBlock}
+                  // onMouseEnter={handleMouseEnterBlock}
                   onMouseLeave={handleMouseLeaveBlock}
                   className={styles.FooterCircle__arrow}></div>
               </div>

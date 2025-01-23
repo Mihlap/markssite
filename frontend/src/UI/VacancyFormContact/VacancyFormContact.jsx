@@ -334,6 +334,7 @@ const VacancyFormContact = ({
         transform: state.selectProps.menuIsOpen ? 'rotate(180deg)' : null,
         transition: 'transform 0.3s ease-in-out',
         color: state.isFocused ? '#75BBFD' : '#C0C5CB',
+        cursor: 'pointer',
       }),
       menuList: (provided) => ({
         ...provided,
