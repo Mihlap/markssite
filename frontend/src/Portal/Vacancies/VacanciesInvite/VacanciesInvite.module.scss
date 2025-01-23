@@ -222,7 +222,8 @@
     }
 
     &__desc {
-      font-size: rem(18);
+      font-size: rem(20);
+      line-height: 1.4;
     }
 
     &__star {
@@ -258,6 +259,7 @@
 
     &__photos {
       $n: rem(-28);
+      margin-bottom: rem(32);
 
       img {
         &:nth-child(2) {
