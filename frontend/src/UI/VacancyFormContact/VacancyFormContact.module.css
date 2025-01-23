@@ -162,7 +162,7 @@
   font-weight: var(--fw-400);
   line-height: 1rem;
   text-decoration-line: underline;
-  cursor: none;
+  /* cursor: none; */
   transition: color 0.4s ease;
 }
 
@@ -179,7 +179,6 @@
   border: 1px solid transparent;
   background-color: var(--blue-75BBFD);
   margin-top: 1rem;
-  /* cursor: none; */
   transition: background-color 0.4s ease;
 }
 
@@ -191,8 +190,7 @@
   border-radius: 4.125rem;
   border: 1px solid transparent;
   background-color: var(--blue-75BBFD);
-  margin-top: 3rem;
-  /* cursor: none; */
+  margin-top: 3rem;  
   transition: background-color 0.4s ease;
   min-width: 432px;
   /* height: 56px; */
@@ -487,7 +485,7 @@
     font-weight: var(--fw-400);
     line-height: 1rem;
     text-decoration-line: underline;
-    cursor: none;
+    /* cursor: none; */
     transition: color 0.4s ease;
   }
 
@@ -504,7 +502,7 @@
     border: 1px solid transparent;
     background-color: var(--blue-75BBFD);
     margin-top: 1rem;
-    cursor: none;
+    /* cursor: none; */
     transition: background-color 0.4s ease;
   }
 
