@@ -28,14 +28,14 @@ import LoadingModal from './Add/add-project/loading/LoadingModal';
 import {
   imageHover,
   specialHover,
-  textEnter,
+  // textEnter,
   textLeave,
-  textLeaveFooter,
-  textFooter,
-  textFooterEnter,
-  textFooterWhite,
-  textFooterWhiteEnter,
-  textLeaveWhiteFooter,
+  // textLeaveFooter,
+  // textFooter,
+  // textFooterEnter,
+  // textFooterWhite,
+  // textFooterWhiteEnter,
+  // textLeaveWhiteFooter,
 } from './store/Slice/cursorSlice';
 import CookieComponent from './UI/CookieComponent/CookieComponent';
 import PortalMenu from './Navbar/PortalMenu';
@@ -85,20 +85,20 @@ export default function App() {
     dispatch(setCurrentPage(page));
   };
 
-  const handleMouseEnter = () => dispatch(textEnter());
+  // const handleMouseEnter = () => dispatch(textEnter());
   const handleMouseLeave = () => dispatch(textLeave());
   const handleMouseHover = () => dispatch(imageHover());
   const handleSpecialHover = () => dispatch(specialHover());
 
   // Для футера с темным фоном
-  const handleMouseEnterFooter = () => dispatch(textFooter());
-  const handleMouseEnterFooterMore = () => dispatch(textFooterEnter());
-  const handleMouseLeaveFooter = () => dispatch(textLeaveFooter());
+  // const handleMouseEnterFooter = () => dispatch(textFooter());
+  // const handleMouseEnterFooterMore = () => dispatch(textFooterEnter());
+  // const handleMouseLeaveFooter = () => dispatch(textLeaveFooter());
 
   // Для футера с белым фоном
-  const handleMouseEnterFooterWhite = () => dispatch(textFooterWhite());
-  const handleMouseEnterFooterWhiteMore = () => dispatch(textFooterWhiteEnter());
-  const handleMouseLeaveFooterWhite = () => dispatch(textLeaveWhiteFooter());
+  // const handleMouseEnterFooterWhite = () => dispatch(textFooterWhite());
+  // const handleMouseEnterFooterWhiteMore = () => dispatch(textFooterWhiteEnter());
+  // const handleMouseLeaveFooterWhite = () => dispatch(textLeaveWhiteFooter());
 
   const handleReturn = () => {
     dispatch(resetCurrentPage());
@@ -129,14 +129,25 @@ export default function App() {
           {showNavbarFooter && currentPage !== 'add' && (
             <>
               {showPortalMenu ? (
-                <PortalMenu user={user} handleMouseEnter={handleMouseEnter} handleMouseLeave={handleMouseLeave} />
+                  <PortalMenu
+                    user={user}
+                    // handleMouseEnter={handleMouseEnter}
+                    // handleMouseLeave={handleMouseLeave}
+                  />
               ) : (
-                <Navbar handleMouseEnter={handleMouseEnter} handleMouseLeave={handleMouseLeave} />
+                    <Navbar
+                      // handleMouseEnter={handleMouseEnter}
+                      // handleMouseLeave={handleMouseLeave}
+                    />
               )}
             </>
           )}
           {showNavbarFooter && currentPage !== 'add' && (
-            <ButtonAdmin user={user} handleMouseEnter={handleMouseEnter} handleMouseLeave={handleMouseLeave} />
+              <ButtonAdmin
+                user={user}
+                // handleMouseEnter={handleMouseEnter}
+                // handleMouseLeave={handleMouseLeave}
+              />
           )}
           <TransitionGroup>
             <CSSTransition key={location.key} classNames="fade" timeout={300} nodeRef={nodeRef}>
@@ -146,7 +157,7 @@ export default function App() {
                     path="/"
                     element={
                       <Header
-                        handleMouseEnter={handleMouseEnter}
+                        // handleMouseEnter={handleMouseEnter}
                         handleMouseLeave={handleMouseLeave}
                         handleMouseHover={handleMouseHover}
                         handleSpecialHover={handleSpecialHover}
@@ -158,7 +169,7 @@ export default function App() {
                     path="/project"
                     element={
                       <Project
-                        handleMouseEnter={handleMouseEnter}
+                        // handleMouseEnter={handleMouseEnter}
                         handleMouseLeave={handleMouseLeave}
                         handleMouseHover={handleMouseHover}
                       />
@@ -169,7 +180,7 @@ export default function App() {
                     path="/projects/:id"
                     element={
                       <ProjectCard
-                        handleMouseEnter={handleMouseEnter}
+                        // handleMouseEnter={handleMouseEnter}
                         handleMouseLeave={handleMouseLeave}
                         handleMouseHover={handleMouseHover}
                       />
@@ -179,7 +190,7 @@ export default function App() {
                     path="/company"
                     element={
                       <Company
-                        handleMouseEnter={handleMouseEnter}
+                        // handleMouseEnter={handleMouseEnter}
                         handleMouseLeave={handleMouseLeave}
                         handleMouseHover={handleMouseHover}
                       />
@@ -189,7 +200,7 @@ export default function App() {
                     path="/publication"
                     element={
                       <Publics
-                        handleMouseEnter={handleMouseEnter}
+                        // handleMouseEnter={handleMouseEnter}
                         handleMouseLeave={handleMouseLeave}
                         handleMouseHover={handleMouseHover}
                       />
@@ -199,7 +210,7 @@ export default function App() {
                     path="/publication/:id"
                     element={
                       <ArticleCard
-                        handleMouseEnter={handleMouseEnter}
+                        // handleMouseEnter={handleMouseEnter}
                         handleMouseLeave={handleMouseLeave}
                         handleMouseHover={handleMouseHover}
                       />
@@ -209,7 +220,7 @@ export default function App() {
                     path="/contacts"
                     element={
                       <Contacts
-                        handleMouseEnter={handleMouseEnter}
+                        // handleMouseEnter={handleMouseEnter}
                         handleMouseLeave={handleMouseLeave}
                         handleMouseHover={handleMouseHover}
                       />
@@ -219,7 +230,7 @@ export default function App() {
                     path="/information"
                     element={
                       <Information
-                        handleMouseEnter={handleMouseEnter}
+                        // handleMouseEnter={handleMouseEnter}
                         handleMouseLeave={handleMouseLeave}
                         handleMouseHover={handleMouseHover}
                       />
@@ -229,7 +240,7 @@ export default function App() {
                     path="/portal/vacanciesMain"
                     element={
                       <VacanciesMain3
-                        handleMouseEnter={handleMouseEnter}
+                        // handleMouseEnter={handleMouseEnter}
                         handleMouseLeave={handleMouseLeave}
                         handleMouseHover={handleMouseHover}
                       />
@@ -239,7 +250,7 @@ export default function App() {
                     path="/portal/vacancies"
                     element={
                       <VacanciesComponent
-                        handleMouseEnter={handleMouseEnter}
+                        // handleMouseEnter={handleMouseEnter}
                         handleMouseLeave={handleMouseLeave}
                         handleMouseHover={handleMouseHover}
                       />
@@ -249,7 +260,7 @@ export default function App() {
                     path="/portal/internships"
                     element={
                       <Internships
-                        handleMouseEnter={handleMouseEnter}
+                        // handleMouseEnter={handleMouseEnter}
                         handleMouseLeave={handleMouseLeave}
                         handleMouseHover={handleMouseHover}
                       />
@@ -259,7 +270,7 @@ export default function App() {
                     path="/portal/vacancy/:id"
                     element={
                       <VacanciesMainCard
-                        handleMouseEnter={handleMouseEnter}
+                        // handleMouseEnter={handleMouseEnter}
                         handleMouseLeave={handleMouseLeave}
                         handleMouseHover={handleMouseHover}
                       />
@@ -269,10 +280,10 @@ export default function App() {
                     path="/footerForm"
                     element={
                       <FooterForm
-                        handleMouseEnterFooter={handleMouseEnterFooterWhite}
-                        handleMouseEnterFooterMore={handleMouseEnterFooterWhiteMore}
-                        handleMouseLeaveFooter={handleMouseLeaveFooterWhite}
-                        handleMouseLeave={handleMouseLeave}
+                        // handleMouseEnterFooter={handleMouseEnterFooterWhite}
+                        // handleMouseEnterFooterMore={handleMouseEnterFooterWhiteMore}
+                        // handleMouseLeaveFooter={handleMouseLeaveFooterWhite}
+                        // handleMouseLeave={handleMouseLeave}
                       />
                     }
                   />
@@ -298,17 +309,17 @@ export default function App() {
             <>
               {isPortalPage ? (
                 <Footer
-                  handleMouseEnterFooter={handleMouseEnterFooter}
-                  handleMouseEnterFooterMore={handleMouseEnterFooterMore}
-                  handleMouseLeaveFooter={handleMouseLeaveFooter}
-                  handleMouseLeave={handleMouseLeave}
+                  // handleMouseEnterFooter={handleMouseEnterFooter}
+                  // handleMouseEnterFooterMore={handleMouseEnterFooterMore}
+                  // handleMouseLeaveFooter={handleMouseLeaveFooter}
+                  // handleMouseLeave={handleMouseLeave}
                 />
               ) : (
                 <FooterCircle
-                  handleMouseEnterFooter={handleMouseEnterFooter}
-                  handleMouseEnterFooterMore={handleMouseEnterFooterMore}
-                  handleMouseLeaveFooter={handleMouseLeaveFooter}
-                  handleMouseLeave={handleMouseLeave}
+                  // handleMouseEnterFooter={handleMouseEnterFooter}
+                  // handleMouseEnterFooterMore={handleMouseEnterFooterMore}
+                  // handleMouseLeaveFooter={handleMouseLeaveFooter}
+                  // handleMouseLeave={handleMouseLeave}
                 />
               )}
             </>
