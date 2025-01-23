@@ -220,11 +220,12 @@
 
 .checkbox-input[type='checkbox'] {
   transform: scale(1);
-  cursor: pointer;
+  /* cursor: pointer; */
 }
 
 .checkbox {
   position: relative;
+  cursor: pointer;
 }
 
 .checkbox::before {

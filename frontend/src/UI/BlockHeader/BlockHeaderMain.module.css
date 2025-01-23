@@ -5,6 +5,7 @@
     /* display: flex;
   align-items: center;
   width: 100%; */
+   cursor: pointer;
   }
 
   .blockNumber_blockHeader {
@@ -34,7 +35,7 @@
     overflow: hidden;
     width: 100%;
     margin-top: 0.5rem;
-    cursor: none !important;
+    /* cursor: none !important; */
   }
 
   .block_hover::before {
@@ -317,6 +318,7 @@
   .block_blockHeader {
     align-items: center;
     width: 100%;
+    cursor: pointer;
   }
 
   .blockNumber_blockHeader {
@@ -387,7 +389,7 @@
   }
 
   .toggle_blockHeader {
-    cursor: none !important;
+    /* cursor: none !important; */
   }
 
   .blockTitle_blockHeader {
@@ -552,7 +554,7 @@
     position: relative;
     overflow: hidden;
     text-decoration: none;
-    cursor: none !important;
+    /* cursor: none !important; */
   }
 
   .button_block_name {
