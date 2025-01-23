@@ -255,6 +255,12 @@
 }
 
 /* стили для планшетной версии  */
+@media screen and (min-width: 1024px) and (max-width: 1600px) {
+  .input_name_form_contacts {
+    padding-top: 2.75rem;
+  }
+}
+
 @media screen and (min-width: 768px) and (max-width: 1024px) {
   .form_left_wrapper {
     width: 27rem;
