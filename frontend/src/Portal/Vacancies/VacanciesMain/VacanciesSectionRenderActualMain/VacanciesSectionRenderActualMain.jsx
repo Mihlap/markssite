@@ -61,9 +61,9 @@ const VacanciesSectionRenderActualMain = ({ handleMouseEnter, handleMouseLeave }
         </div>
       ) : (
         <>
-          <div className={styles.VacanciesSection}>
+          <div className={`${styles.VacanciesSection} ${styles.VacanciesSection_ActialMain}`}>
             <div className={styles.currentVacanciesTitle}></div>
-            <div className={styles.vacanciesHeaders}>
+            <div className={`${styles.vacanciesHeaders} ${styles.vacanciesHeaders_ActialMain}`}>
               <div className={styles.vacanciesHeaders_wrap}>
                 <div className={styles.headerCell_specialization}>Специальность</div>
                 <div className={`${styles.headerCell} ${styles.headerCell_direction}`}>Направление</div>
