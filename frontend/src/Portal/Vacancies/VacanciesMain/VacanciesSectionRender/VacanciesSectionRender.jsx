@@ -24,88 +24,89 @@ const VacanciesSectionRender = ({
     </div>
   ) : visibleVacancies.length > 0 ? (
     <>
-      <div className={styles.vacanciesHeaders}>
-        <div className={styles.headerCell_specialization}>Специальность</div>
-        <div className={`${styles.headerCell} ${styles.headerCell_direction}`}>Направление</div>
-        <div className={`${styles.headerCell} ${styles.headerCell_busyness}`}>Занятость</div>
-        <div className={`${styles.headerCell} ${styles.headerCell_location}`}>Локация</div>
-      </div>
-      {visibleVacancies
-        .filter(shouldDisplayVacancy)
-        .slice(0, showManyVacancies ? visibleVacancies.length : totalDisplayedVacancies)
-        .map((vacancy) => (
-          <Link
-            key={vacancy.id}
-            to={{
-              pathname: `/portal/vacancy/${vacancy.id}`,
-              search: `?type=${isInternship ? 'internship' : 'vacancy'}`,
-            }}
-            className={styles.vacancyContainer}
-            onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-          >
-            {windowWidth > 1024 ? (
-              <>
-                <div className={`${styles.vacancyCell1} ${styles.vacancyCell_title}`}>{vacancy.title}</div>
-                <div className={`${styles.vacancyCell} ${styles.vacancyCell_direction}`}>{vacancy.direction}</div>
-                <div className={`${styles.vacancyCell} ${styles.vacancyCell_busyness}`}>{vacancy.busyness}</div>
-                <div className={`${styles.vacancyCell} ${styles.vacancyCell_locationStaff}`}>
-                  {vacancy.locationStaff}
-                </div>
-                <div className={styles.vacancyCell_buttonLink}>
-                  <img src={buttonLink} alt="buttonLink" />
-                </div>
-              </>
-            ) : (
-              <>
-                <div className={styles.vacancyContainer111}>
+      <div className={styles.VacanciesSection}>
+        <div className={styles.vacanciesHeaders}>
+          <div className={styles.vacanciesHeaders_wrap}>
+            <div className={styles.headerCell_specialization}>Специальность</div>
+            <div className={`${styles.headerCell} ${styles.headerCell_direction}`}>Направление</div>
+            <div className={`${styles.headerCell} ${styles.headerCell_busyness}`}>Занятость</div>
+            <div className={`${styles.headerCell} ${styles.headerCell_location}`}>Локация</div>
+          </div>
+        </div>
+        {visibleVacancies
+          .filter(shouldDisplayVacancy)
+          .slice(0, showManyVacancies ? visibleVacancies.length : totalDisplayedVacancies)
+          .map((vacancy) => (
+            <Link
+              key={vacancy.id}
+              to={{
+                pathname: `/portal/vacancy/${vacancy.id}`,
+                search: `?type=${isInternship ? 'internship' : 'vacancy'}`,
+              }}
+              className={styles.vacancyContainer}
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}>
+              {windowWidth > 1024 ? (
+                <>
                   <div className={`${styles.vacancyCell1} ${styles.vacancyCell_title}`}>{vacancy.title}</div>
-                  <div className={styles.vacancyCell_buttonLink_ipad}>
-                    <img src={buttonLink_ipad} alt="buttonLink_ipad" />
-                  </div>
-                </div>
-                <div className={styles.vacancyContainer222}>
                   <div className={`${styles.vacancyCell} ${styles.vacancyCell_direction}`}>{vacancy.direction}</div>
                   <div className={`${styles.vacancyCell} ${styles.vacancyCell_busyness}`}>{vacancy.busyness}</div>
                   <div className={`${styles.vacancyCell} ${styles.vacancyCell_locationStaff}`}>
                     {vacancy.locationStaff}
                   </div>
-                </div>
-              </>
-            )}
-          </Link>
-        ))}
-      {visibleVacancies.length > 6 && (
-        <div className={styles.showVacanciesOfTotalVacanciesContainer}>
-          <div className={styles.showVacanciesOfTotalVacancies}>
-            {!showManyVacancies && visibleVacancies.length > 6 && (
-              <span className={styles.showManyVacanciesCount}>
-                {totalDisplayedVacancies} из {visibleVacancies.length} {isInternship ? 'стажировок' : 'вакансий'}
-              </span>
-            )}
+                  <div className={styles.vacancyCell_buttonLink}>
+                    <img src={buttonLink} alt="buttonLink" />
+                  </div>
+                </>
+              ) : (
+                <>
+                  <div className={styles.vacancyContainer111}>
+                    <div className={`${styles.vacancyCell1} ${styles.vacancyCell_title}`}>{vacancy.title}</div>
+                    <div className={styles.vacancyCell_buttonLink_ipad}>
+                      <img src={buttonLink_ipad} alt="buttonLink_ipad" />
+                    </div>
+                  </div>
+                  <div className={styles.vacancyContainer222}>
+                    <div className={`${styles.vacancyCell} ${styles.vacancyCell_direction}`}>{vacancy.direction}</div>
+                    <div className={`${styles.vacancyCell} ${styles.vacancyCell_busyness}`}>{vacancy.busyness}</div>
+                    <div className={`${styles.vacancyCell} ${styles.vacancyCell_locationStaff}`}>
+                      {vacancy.locationStaff}
+                    </div>
+                  </div>
+                </>
+              )}
+            </Link>
+          ))}
+        {visibleVacancies.length > 6 && (
+          <div className={styles.showVacanciesOfTotalVacanciesContainer}>
+            <div className={styles.showVacanciesOfTotalVacancies}>
+              {!showManyVacancies && visibleVacancies.length > 6 && (
+                <span className={styles.showManyVacanciesCount}>
+                  {totalDisplayedVacancies} из {visibleVacancies.length} {isInternship ? 'стажировок' : 'вакансий'}
+                </span>
+              )}
+            </div>
+            <div
+              className={`${styles.showManyButtonWrapper} ${
+                showManyVacancies ? styles.showManyButtonWrapperShifted : ''
+              }`}>
+              <button
+                className={styles.showManyButton}
+                onClick={toggleShowAllVacancies}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}>
+                {showManyVacancies
+                  ? isInternship
+                    ? 'Скрыть стажировки'
+                    : 'Скрыть вакансии'
+                  : isInternship
+                  ? 'Показать все стажировки'
+                  : 'Показать все вакансии'}
+              </button>
+            </div>
           </div>
-          <div
-            className={`${styles.showManyButtonWrapper} ${
-              showManyVacancies ? styles.showManyButtonWrapperShifted : ''
-            }`}
-          >
-            <button
-              className={styles.showManyButton}
-              onClick={toggleShowAllVacancies}
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
-            >
-              {showManyVacancies
-                ? isInternship
-                  ? 'Скрыть стажировки'
-                  : 'Скрыть вакансии'
-                : isInternship
-                ? 'Показать все стажировки'
-                : 'Показать все вакансии'}
-            </button>
-          </div>
-        </div>
-      )}
+        )}
+      </div>
     </>
   ) : (
     <div className={styles.vacancy_content_massage}>

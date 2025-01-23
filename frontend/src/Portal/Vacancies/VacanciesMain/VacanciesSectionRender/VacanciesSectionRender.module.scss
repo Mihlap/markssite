@@ -3,7 +3,11 @@
 
 .VacanciesSection {
   margin: 0 48px;
-  padding-top: 220px;
+  padding-top: 48px;
+
+  &_ActialMain {
+    padding-top: 220px;
+  }
 }
 
 .currentVacanciesTitle {
@@ -25,7 +29,10 @@
 }
 
 .vacanciesHeaders {
-  margin-bottom: 26px;
+  margin-bottom: 16px;
+  &_ActialMain {
+    margin-bottom: 26px;
+  }
 }
 
 .vacancyContainer,
@@ -37,7 +44,7 @@
 }
 
 .vacancyContainer {
-  margin-bottom: 16px;
+  margin-bottom: 1rem;
   background: #f6f6f6;
   border-radius: 8px;
   align-items: center;
@@ -55,27 +62,21 @@
 
 .headerCell {
   font-family: var(--font-raleway);
-  font-size: 0.875rem;
+  font-size: 1rem;
   font-weight: var(--fw-400);
   line-height: 1.25rem;
-  color: var(--light-gray-C0C5CB);
+  color: var(--gray-959DA6);
   text-align: left;
 }
 
 .headerCell_specialization {
   padding-left: 65px;
 }
-.headerCell_direction {
-}
-.headerCell_busyness {
-}
-.headerCell_location {
-}
 
 .vacancyCell {
   color: var(--black-1D2E43);
   font-family: var(--font-raleway);
-  font-size: 16px;
+  font-size: 1rem;
   font-weight: var(--fw-400);
   line-height: 24px;
   letter-spacing: 0px;
@@ -86,8 +87,8 @@
   text-align: left;
   display: flex;
   align-items: center;
-  padding: 58px 46px 58px 65px;
-  margin-right: 32px;
+  padding: 60px 46px 60px 65px;
+  margin-right: 2rem;
   color: var(--black-1D2E43);
   font-family: var(--font-unbounded);
   font-size: 24px;
@@ -206,14 +207,14 @@
 
 .showManyButton {
   align-items: center;
-  padding: 16px 32px;
+  padding: 1rem 2rem;
   background-color: var(--blue-75BBFD);
   color: var(--white-F6F6F6);
   border: none;
   border-radius: 66px;
   cursor: pointer;
   transition: background-color 0.4s ease, color 0.4s ease;
-  font-size: 16px;
+  font-size: 1rem;
 }
 
 .showManyButton:hover {
@@ -242,13 +243,12 @@
     }
   }
 
-  .headerCell_specialization {
-    padding-left: 36px;
+  .headerCell {
+    font-size: 0.875rem;
   }
 
-  .VacanciesSection {
-    margin: 0 48px;
-    padding-top: 220px;
+  .headerCell_specialization {
+    padding-left: 36px;
   }
 
   .vacancyCell_buttonLink {
@@ -270,8 +270,12 @@
 
   .VacanciesSection {
     width: 66%;
-    padding-top: 120px;
+    padding-top: 35px;
     margin: 0 auto;
+
+    &_ActialMain {
+      padding-top: 120px;
+    }
   }
 
   .vacanciesHeaders,
@@ -306,7 +310,7 @@
     padding-top: clamp(0.5rem, calc(148px - 1rem), 0.5rem);
     color: var(--dark-gray-566272);
     font-family: var(--font-raleway);
-    font-size: 16px;
+    font-size: 1rem;
     font-weight: var(--fw-400);
     line-height: 24px;
     letter-spacing: 0px;
@@ -404,7 +408,11 @@
 
 @media screen and (max-width: 769px) {
   .VacanciesSection {
-    padding-top: 120px;
+    padding-top: 24px;
+
+    &_ActialMain {
+      padding-top: 120px;
+    }
   }
 
   .currentVacanciesTitle:after {
@@ -413,7 +421,7 @@
   }
 
   .VacanciesSection {
-    margin: 0 16px;
+    margin: 0 1rem;
     width: auto;
   }
 
@@ -450,7 +458,7 @@
     padding-top: clamp(0.5rem, calc(148px - 1rem), 0.5rem);
     color: var(--dark-gray-566272);
     font-family: var(--font-raleway);
-    font-size: 16px;
+    font-size: 1rem;
     font-weight: var(--fw-400);
     line-height: 24px;
     letter-spacing: 0px;
@@ -523,7 +531,7 @@
   }
 
   .showVacanciesOfTotalVacancies {
-    padding-top: 32px;
+    padding-top: 2rem;
   }
 
   .actualMain {
@@ -549,6 +557,8 @@
 
   .showManyButton {
     cursor: none;
+    font-size: 1rem;
+    border-radius: 66px;
   }
 
   .showManyButton:hover {
