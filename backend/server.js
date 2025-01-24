@@ -118,6 +118,7 @@ app.use('/api-vacancy', vacancyRouter);
 app.use('/api-vacancyDetails', vacancyDetailsRouter);
 app.use('/api-events', vacancyEventRouter);
 app.use('/api-journal', journalRouter);
+app.use('/api-upload', journalRouter);
 
 
 // const sslKeyPath = '/SSL Marksgroup/certificate.key';
