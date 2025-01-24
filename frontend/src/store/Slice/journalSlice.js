@@ -47,6 +47,24 @@ export const createJournal = createAsyncThunk('journal/createJournal', async (fo
   }
 });
 
+// Thunk для загрузки изображений на сервер (S3)
+export const uploadImage = createAsyncThunk('journal/uploadImage', async (file, { rejectWithValue }) => {
+  try {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const response = await axios.post(`${serverHost}/api-upload/upload`, formData, {
+      headers: { 'Content-Type': 'multipart/form-data' },
+    });
+
+    return response.data.url;
+  } catch (error) {
+    return rejectWithValue(error.response?.data || 'Ошибка загрузки изображения');
+  }
+});
+
+
+
 // Thunk для обновления записи
 export const updateJournal = createAsyncThunk(
   'journal/updateJournal',
@@ -108,6 +126,9 @@ const journalSlice = createSlice({
     updateAuthors(state, action) {
       state.formData.authors = action.payload;
     },
+    addTemporaryImage(state, action) {
+      state.formData.markdown_content += `\n\n![${action.payload.name}](Загрузка...)\n\n`;
+    },
     clearFormData(state) {
       state.formData = {
         title: '',
@@ -127,6 +148,22 @@ const journalSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(uploadImage.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(uploadImage.fulfilled, (state, action) => {
+        state.loading = false;
+        state.formData.attachments = {
+          ...state.formData.attachments,
+          [action.meta.arg.name]: action.payload,
+        };
+        state.formData.markdown_content += `\n\n![${action.meta.arg.name}](${action.payload})\n\n`;
+      })
+      .addCase(uploadImage.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
       .addCase(fetchJournals.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -158,7 +195,7 @@ const journalSlice = createSlice({
           publication_date: data.publication_date || '',
           category: Array.isArray(data.category) ? data.category : [],
           issue_number: data.issue_number?.toString() || '',
-          authors: Array.isArray(data.authors) ? data.authors : [],   
+          authors: Array.isArray(data.authors) ? data.authors : [],
           attachments: attachmentsById,
           organizations: data.organizations || [],
           locations: data.locations || [],
@@ -176,7 +213,7 @@ const journalSlice = createSlice({
               value: loc.value || loc.name || '',
             })),
           ],
-        };        
+        };
       })
       .addCase(fetchJournalById.rejected, (state, action) => {
         state.loading = false;
@@ -223,6 +260,6 @@ const journalSlice = createSlice({
   },
 });
 
-export const { setFormData, updateAuthors, clearFormData } = journalSlice.actions;
+export const { setFormData, updateAuthors, clearFormData, addTemporaryImage } = journalSlice.actions;
 
 export default journalSlice.reducer;
