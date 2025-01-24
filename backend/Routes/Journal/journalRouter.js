@@ -33,6 +33,22 @@ const extractFileNameAndFolderFromUrl = (url) => {
   }
 };
 
+router.post('/upload', fileMiddleware.single('file'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ message: 'Файл не загружен' });
+    }
+
+    // Загружаем файл в S3
+    const fileUrl = await uploadFileToS3(req.file, 'images/imageJournal/imageMarkdown');
+
+    res.status(201).json({ url: fileUrl });
+  } catch (error) {
+    console.error('Ошибка при загрузке файла:', error);
+    res.status(500).json({ message: 'Ошибка загрузки файла', error: error.message });
+  }
+});
+
 // POST /postzapros
 router.post(
   '/postzapros',

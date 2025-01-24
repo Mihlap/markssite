@@ -47,6 +47,7 @@
       border: none;
       resize: none;
       background-color: transparent;
+      color: #333; // Исправление тусклого текста
     }
   }
 
@@ -58,11 +59,110 @@
     background-color: #f8fafc;
     border-top-right-radius: 6px;
     border-bottom-right-radius: 6px;
+    font-size: 16px;
+    line-height: 1.6;
+    color: #333;
 
     &-placeholder {
       width: 100%;
       height: 100%;
       font-size: 16px;
+      color: #a0a0a0;
+      font-style: italic;
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 16px;
+      color: #333;
+    }
+
+    h2 {
+      font-size: 22px;
+      font-weight: bold;
+      margin-bottom: 14px;
+      color: #444;
+    }
+
+    h3 {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 12px;
+      color: #555;
+    }
+
+    p {
+      margin-bottom: 12px;
+      line-height: 1.8;
+    }
+
+    ul,
+    ol {
+      margin-left: 20px;
+    }
+
+    blockquote {
+      border-left: 4px solid #75BBFD;
+      padding-left: 16px;
+      color: #666;
+      font-style: italic;
+      margin: 20px 0;
+    }
+
+    pre {
+      background-color: #f4f4f4;
+      padding: 16px;
+      border-radius: 6px;
+      overflow-x: auto;
+      font-size: 14px;
+      white-space: pre-wrap;
+    }
+
+    code {
+      background-color: #f4f4f4;
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      color: #d63384;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 6px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      display: block;
+      margin: 0 auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      border: 1px solid #d4edfb;
+      margin-bottom: 16px;
+    }
+
+    th,
+    td {
+      border: 1px solid #d4edfb;
+      padding: 8px;
+      text-align: left;
+    }
+
+    th {
+      background-color: #f8fafc;
+      font-weight: bold;
+    }
+
+    a {
+      color: var(--blue-75BBFD);
+      text-decoration: underline;
+
+      &:hover {
+        text-decoration: none;
+      }
     }
   }
 
@@ -82,4 +182,11 @@
       border: 2px solid #75BBFD;
     }
   }
+}
+
+.markdown-editor__preview img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
 }
