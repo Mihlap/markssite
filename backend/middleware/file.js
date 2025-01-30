@@ -12,6 +12,7 @@ const types = [
   'video/mpeg',
   'video/quicktime',
   'video/MOV',
+  'application/pdf',
 ];
 
 const fileFilter = (req, file, cb) => {
@@ -22,6 +23,13 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-module.exports = multer({ storage, fileFilter });
+const upload = multer({
+  storage,
+  fileFilter,
+  limits: { fileSize: 10 * 1024 * 1024 },
+});
+
+module.exports = upload;
+
 
 

@@ -64,7 +64,7 @@ export default function FormAddJournal({ setIsModalOpen }) {
 
       setIsSubmitting(true);
       try {
-        const { title, date, category, issueNumber, blocks, text, authors, imageKey } = formData;
+        const { title, date, category, issueNumber, blocks, authors, imageKey, markdown_content } = formData;
 
         if (!title || !date || category.length === 0 || !issueNumber || Object.keys(authors).length === 0) {
           setShowNotification(true);
@@ -79,9 +79,9 @@ export default function FormAddJournal({ setIsModalOpen }) {
         formDataToSend.append('issue_number', issueNumber || null);
         formDataToSend.append('authors', JSON.stringify(authors));
         formDataToSend.append('organizations', JSON.stringify(blocks.filter((block) => block.type === 'university')));
-        formDataToSend.append('locations', JSON.stringify(blocks.filter((block) => block.type === 'location')));
-        formDataToSend.append('markdown_content', text || null);
+        formDataToSend.append('locations', JSON.stringify(blocks.filter((block) => block.type === 'location')));      
         formDataToSend.append('imageKey', imageKey || null);
+        formDataToSend.append('markdown_content', markdown_content ?? '');
 
             Object.entries(authors).forEach(([authorId, author]) => {
             if (author.image) {         
@@ -91,7 +91,8 @@ export default function FormAddJournal({ setIsModalOpen }) {
                 formDataToSend.append('authorImages', file, uniqueName);
               }
             }
-          });
+            });
+        
         await dispatch(createJournal(formDataToSend)).unwrap();
         await dispatch(fetchJournals());
         setIsModalOpen(false);

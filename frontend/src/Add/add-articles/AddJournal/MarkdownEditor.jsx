@@ -1,9 +1,10 @@
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
 import remarkMath from 'remark-math';
 import remarkGfm from 'remark-gfm';
 import remarkBreaks from 'remark-breaks';
+import rehypeKatex from 'rehype-katex';
 import { BlockMath, InlineMath } from 'react-katex';
 import 'katex/dist/katex.min.css';
 import styles from './MarkdownEditor.module.scss';
@@ -14,10 +15,9 @@ import text from './icons/text.svg';
 import full_screen from './icons/full_screen.svg';
 import collapse from './icons/collapse.svg';
 import { useDispatch, useSelector } from 'react-redux';
-import { uploadImage, setFormData, addTemporaryImage } from '../../../store/Slice/journalSlice';
+import { setFormData, uploadMarkdownFile } from '../../../store/Slice/journalSlice';
 
 const MarkdownEditor = () => {
-  // const [markdown, setMarkdown] = useState('');
   const dispatch = useDispatch();
   const markdown = useSelector((state) => state.journal.formData.markdown_content);
   const [isFullscreen, setIsFullscreen] = useState(false);
@@ -25,63 +25,103 @@ const MarkdownEditor = () => {
   const editorRef = useRef(null);
 
   const handleChange = (e) => {
-     dispatch(setFormData({ name: 'markdown_content', value: e.target.value }));
+    dispatch(setFormData({ name: 'markdown_content', value: e.target.value }));
   };
 
-  const toggleFullscreen = () => {
-    if (!isFullscreen) {
-      if (editorRef.current.requestFullscreen) {
-        editorRef.current.requestFullscreen();
-      } else if (editorRef.current.webkitRequestFullscreen) {
-        editorRef.current.webkitRequestFullscreen();
-      } else if (editorRef.current.mozRequestFullScreen) {
-        editorRef.current.mozRequestFullScreen();
-      } else if (editorRef.current.msRequestFullscreen) {
-        editorRef.current.msRequestFullscreen();
-      }
-    } else {
-      if (document.exitFullscreen) {
-        document.exitFullscreen();
-      }
-    }
-    setIsFullscreen(!isFullscreen);
+ const toggleFullscreen = async () => {
+   try {
+     if (!isFullscreen) {
+     if (editorRef.current) {
+       await editorRef.current.requestFullscreen();
+     }
+     } else {
+       if (document.exitFullscreen) {
+         await document.exitFullscreen();
+       }
+     }  
+   } catch (err) {
+     console.error('Error toggling fullscreen:', err);
+   }
   };
+  
+    useEffect(() => {
+      const handleFullscreenChange = () => {
+        const isFull = !!document.fullscreenElement;
+        setIsFullscreen(isFull);
+      };
+
+      document.addEventListener('fullscreenchange', handleFullscreenChange);
+      document.addEventListener('webkitfullscreenchange', handleFullscreenChange); // Safari
+      document.addEventListener('mozfullscreenchange', handleFullscreenChange); // Firefox
+      document.addEventListener('MSFullscreenChange', handleFullscreenChange); // IE/Edge
+
+      return () => {
+        document.removeEventListener('fullscreenchange', handleFullscreenChange);
+        document.removeEventListener('webkitfullscreenchange', handleFullscreenChange);
+        document.removeEventListener('mozfullscreenchange', handleFullscreenChange);
+        document.removeEventListener('MSFullscreenChange', handleFullscreenChange);
+      };
+    }, []);
+
 
   const handleModeChange = (newMode) => {
     setMode(newMode);
   };
 
+
+  const insertTextAtCursor = (textarea, textToInsert) => {
+    const start = textarea.selectionStart;
+    const end = textarea.selectionEnd;
+    const currentValue = textarea.value;
+
+    const newValue = currentValue.substring(0, start) + textToInsert + currentValue.substring(end, currentValue.length);
+
+    textarea.value = newValue;
+   
+    const newCursorPos = start + textToInsert.length;
+    textarea.selectionStart = newCursorPos;
+    textarea.selectionEnd = newCursorPos;
+
+    return newValue;
+  };
+
+  const handleDrop = async (e) => {
+    e.preventDefault();
+
+    const files = Array.from(e.dataTransfer.files);
+    if (!files.length) return;
+
+    const textarea = e.target.closest('textarea');
  
-const handleDrop = (e) => {
-  e.preventDefault();
-  const files = e.dataTransfer.files;
+    for (let file of files) {
+      try {   
+        const isImage = file.type.startsWith('image/');
+        const isPdf = file.type === 'application/pdf';
 
-  if (files.length > 0) {
-    Array.from(files).forEach((file) => {
-      if (file.type.startsWith('image/')) {
-        const reader = new FileReader();
-        reader.onload = (event) => {
-          dispatch(addTemporaryImage({ name: file.name, url: event.target.result }));
-        };
-        reader.readAsDataURL(file);
+        if (!isImage && !isPdf) {         
+          continue;
+        }
 
-        dispatch(uploadImage(file))
-          .unwrap()
-          .then((uploadedUrl) => {
-            console.log('Файл загружен:', uploadedUrl);
-          })
-          .catch((error) => {
-            console.error('Ошибка загрузки:', error);
-            alert('Ошибка загрузки изображения.');
-          });
-      } else {
-        alert('Только изображения поддерживаются');
+        const url = await dispatch(uploadMarkdownFile(file)).unwrap();
+    
+        let markdownString = '';
+        if (isImage) {     
+          markdownString = `![Alt text](${url})`;
+        } else if (isPdf) {   
+          markdownString = `[${file.name}](${url})`;
+        }
+    
+        if (textarea) {
+          const updatedValue = insertTextAtCursor(textarea, markdownString);        
+          dispatch(setFormData({ name: 'markdown_content', value: updatedValue }));
+        } else {        
+          dispatch(setFormData({ name: 'markdown_content', value: markdown + '\n' + markdownString }));
+        }
+      } catch (err) {
+        console.error('Ошибка при загрузке файла или вставке в markdown:', err);
       }
-    });
-  }
-};
-
-
+    }
+  };
 
   return (
     <div
@@ -95,30 +135,26 @@ const handleDrop = (e) => {
             onClick={() => handleModeChange('both')}
             className={`${styles['markdown-editor__button']} ${
               mode === 'both' ? styles['markdown-editor__button--active'] : ''
-            }`}>        
+            }`}>
             <img src={full} alt="full" />
           </button>
           <button
             onClick={() => handleModeChange('markdown')}
             className={`${styles['markdown-editor__button']} ${
               mode === 'markdown' ? styles['markdown-editor__button--active'] : ''
-            }`}>         
+            }`}>
             <img src={editor} alt="editor" />
           </button>
           <button
             onClick={() => handleModeChange('preview')}
             className={`${styles['markdown-editor__button']} ${
               mode === 'preview' ? styles['markdown-editor__button--active'] : ''
-            }`}>           
+            }`}>
             <img src={text} alt="text" />
           </button>
         </div>
         <button onClick={toggleFullscreen} className={styles['markdown-editor__button']}>
-          {isFullscreen ? (           
-            <img src={collapse} alt="collapse" />
-          ) : (         
-            <img src={full_screen} alt="full_screen" />
-          )}
+          {isFullscreen ? <img src={collapse} alt="collapse" /> : <img src={full_screen} alt="full_screen" />}
         </button>
       </div>
 
@@ -135,12 +171,26 @@ const handleDrop = (e) => {
         <div className={styles['markdown-editor__preview']} style={{ display: mode === 'markdown' ? 'none' : 'block' }}>
           {markdown.trim() === '' && <div className={styles['markdown-editor__preview-placeholder']}>Предпросмотр</div>}
           <ReactMarkdown
+            type="text"
             children={markdown}
             remarkPlugins={[remarkMath, remarkGfm, remarkBreaks]}
-            rehypePlugins={[rehypeRaw]}
+            rehypePlugins={[rehypeRaw, rehypeKatex]}
             components={{
-              math: ({ value }) => <BlockMath>{value}</BlockMath>,
+              math: ({ value }) => (
+                <div style={{ margin: '1em 0' }}>
+                  <BlockMath>{value}</BlockMath>
+                </div>
+              ),
               inlineMath: ({ value }) => <InlineMath>{value}</InlineMath>,
+              p: ({ node, children }) => {
+                const hasBlockMath = children?.some?.((child) => {
+                  return child?.type?.name === 'BlockMath' || child?.type === 'div';
+                });
+                if (hasBlockMath) {
+                  return <div>{children}</div>;
+                }
+                return <p>{children}</p>;
+              },
               img: ({ src, alt }) => (
                 <img
                   src={src}
@@ -148,11 +198,23 @@ const handleDrop = (e) => {
                   style={{ maxWidth: '100%', height: 'auto', display: 'block', margin: '0 auto' }}
                 />
               ),
-              a: ({ href, children }) => (
-                <a href={href} target="_blank" rel="noopener noreferrer">
-                  {children}
-                </a>
-              ),
+              a: ({ href, children }) => {
+                const isPdf = href.toLowerCase().endsWith('.pdf');
+                if (isPdf) {
+                  return (
+                    <div style={{ margin: '1em 0' }}>
+                      <iframe src={href} title={children} width="100%" height="300px" style={{ border: 'none' }}>
+                        Ваш браузер не поддерживает встраивание PDF.
+                      </iframe>
+                    </div>
+                  );
+                }
+                return (
+                  <a href={href} target="_blank" rel="noopener noreferrer">
+                    {children}
+                  </a>
+                );
+              },
               blockquote: ({ children }) => (
                 <blockquote style={{ borderLeft: '4px solid #75BBFD', paddingLeft: '16px', color: '#666' }}>
                   {children}

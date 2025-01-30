@@ -32,6 +32,23 @@ export const fetchJournalById = createAsyncThunk('journal/fetchJournalById', asy
   }
 });
 
+// Thunk для создания маркдаун_файл
+export const uploadMarkdownFile = createAsyncThunk(
+  'journal/uploadMarkdownFile',
+  async (file, { rejectWithValue }) => {
+    try {
+      const formData = new FormData();
+    
+      formData.append('markdownFile', file);
+      const response = await axios.post(`${serverHost}/api-journal/uploadMarkdownFile`, formData);
+      return response.data.url; 
+    } catch (error) {
+      console.error('Ошибка при загрузке Markdown-файла:', error);
+      return rejectWithValue(error.message);
+    }
+  }
+);
+
 // Thunk для создания новой записи
 export const createJournal = createAsyncThunk('journal/createJournal', async (formData, { rejectWithValue }) => {
   try {
@@ -46,23 +63,6 @@ export const createJournal = createAsyncThunk('journal/createJournal', async (fo
     return rejectWithValue(error.message);
   }
 });
-
-// Thunk для загрузки изображений на сервер (S3)
-export const uploadImage = createAsyncThunk('journal/uploadImage', async (file, { rejectWithValue }) => {
-  try {
-    const formData = new FormData();
-    formData.append('file', file);
-
-    const response = await axios.post(`${serverHost}/api-upload/upload`, formData, {
-      headers: { 'Content-Type': 'multipart/form-data' },
-    });
-
-    return response.data.url;
-  } catch (error) {
-    return rejectWithValue(error.response?.data || 'Ошибка загрузки изображения');
-  }
-});
-
 
 
 // Thunk для обновления записи
@@ -117,7 +117,6 @@ const journalSlice = createSlice({
     loading: false,
     error: null,
   },
-
   reducers: {
     setFormData(state, action) {
       const { name, value } = action.payload;
@@ -125,10 +124,7 @@ const journalSlice = createSlice({
     },
     updateAuthors(state, action) {
       state.formData.authors = action.payload;
-    },
-    addTemporaryImage(state, action) {
-      state.formData.markdown_content += `\n\n![${action.payload.name}](Загрузка...)\n\n`;
-    },
+    }, 
     clearFormData(state) {
       state.formData = {
         title: '',
@@ -147,23 +143,7 @@ const journalSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder
-      .addCase(uploadImage.pending, (state) => {
-        state.loading = true;
-        state.error = null;
-      })
-      .addCase(uploadImage.fulfilled, (state, action) => {
-        state.loading = false;
-        state.formData.attachments = {
-          ...state.formData.attachments,
-          [action.meta.arg.name]: action.payload,
-        };
-        state.formData.markdown_content += `\n\n![${action.meta.arg.name}](${action.payload})\n\n`;
-      })
-      .addCase(uploadImage.rejected, (state, action) => {
-        state.loading = false;
-        state.error = action.payload;
-      })
+    builder     
       .addCase(fetchJournals.pending, (state) => {
         state.loading = true;
         state.error = null;
