@@ -387,11 +387,13 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
                   alt={window.innerWidth <= 767 ? 'vectorAround2' : 'vectorAround'}
                 />
                 <div className={styles.countLabel}>Специалистов</div>
-                <div className={styles.countValue}>+1000</div>
+                <div className={styles.countValue}>&gt;1000</div>
               </div>
               <div className={styles.countItem1}>
-                <div className={styles.countLabel}>Реализованных проектов</div>
-                <div className={styles.countValue}>+200</div>
+                <div className={styles.countLabel}>
+                  Реализованных<br></br> проектов
+                </div>
+                <div className={styles.countValue}>&gt;200</div>
               </div>
             </div>
           </div>
