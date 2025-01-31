@@ -228,7 +228,8 @@ font-family: var(--font-raleway);
 
 .modal_vacancy_close {
   padding-top: 2rem;
-  padding-left: 93%;
+  padding-right: 2rem;
+  margin-left: auto;
   cursor: pointer;
 }
 
@@ -475,7 +476,7 @@ font-family: var(--font-raleway);
   }
 
   .filterModalContent {
-    padding: 0rem 6rem 0rem 6.5rem;
+    padding: 0rem 5.5rem 0rem 5.5rem;
   }
 
   .filterName_button_modal_wrapper {
@@ -488,7 +489,7 @@ font-family: var(--font-raleway);
   }
 
   .filterName_button_modal {
-    padding-top: 0.75rem;
+    padding-top: 1rem;
   }
 
   .applyButtonWrapper {
@@ -498,6 +499,26 @@ font-family: var(--font-raleway);
 
   .vacancyFormWrapper {
     padding: 0rem 0rem 6rem 4rem;
+  }
+
+  .modal_wrapper_vacancy {
+    height: 100vh;
+  }
+
+  .filterModalContent {
+    height: 100%;
+  }
+
+  .applyButtonWrapper {
+    margin-top: auto;
+  }
+
+  .filterName {
+    padding-bottom: 24px;
+  }
+
+  .filterName_button_modal button {
+    margin-bottom: 16px;
   }
 }
 

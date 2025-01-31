@@ -400,6 +400,18 @@
   }
 }
 
+@media screen and (max-width: 1280px) {
+  .quote_block_constainer__author_block {
+    right: calc(-7.8vw - 7.56rem);
+  }
+
+  .quote_block_constainer {
+    &__img {
+      width: 10.06rem;
+      height: 10.06rem;
+    }
+  }
+}
 /* Стили для desctop версии +1 сайта блока ProjectCard начинаются тут */
 @media screen and (min-width: 1025px) and (max-width: 1600px) {
   .blockHeadingTitle {
