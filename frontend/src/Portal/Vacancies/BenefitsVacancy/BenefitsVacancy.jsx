@@ -11,10 +11,16 @@ const BenefitsVacancy = () => {
       {vacancy.advantages.split(',').map((advantage, idx) => {
         const trimmedAdvantage = advantage.trim();
         const benefit = benefitsData.find((b) => b.title === trimmedAdvantage);
+
         return benefit ? (
           <div key={idx} className={styles.frameBlockRight_benefits__frameBlock_frame}>
             <img className={styles.frameBlockRight_benefits__frame} src={benefit.icon} alt={benefit.title} />
-            <span className={styles.frameBlockRight_benefits__frameSpan}>{benefit.title}</span>
+            <span
+              className={styles.frameBlockRight_benefits__frameSpan}
+              dangerouslySetInnerHTML={{
+                __html: benefit.typographed || benefit.title,
+              }}
+            />
           </div>
         ) : null;
       })}
