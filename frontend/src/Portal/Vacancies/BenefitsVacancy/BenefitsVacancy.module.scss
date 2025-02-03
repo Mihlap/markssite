@@ -7,7 +7,7 @@
   &__frameBlock_frame {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     margin-bottom: 5.5rem;
   }
 
@@ -38,8 +38,8 @@
     }
 
     &__frame {
-      width: 10rem;
-      height: 10rem;
+      width: 7.5rem;
+      height: 7.5rem;
     }
 
     &__frameSpan {

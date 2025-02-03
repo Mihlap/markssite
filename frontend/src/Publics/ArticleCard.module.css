@@ -4,7 +4,6 @@
   display: none;
 }
 
-
 .main_article_card {
   height: 100%;
   width: 100%;
@@ -719,6 +718,16 @@
   }
 }
 
+@media screen and (max-width: 1280px) {
+  .container__imageAuthor_articleCard {
+    width: 10.06rem;
+    height: 10.06rem;
+  }
+
+  .header_content_right {
+    right: calc(-7.8vw - 7.56rem);
+  }
+}
 @media screen and (max-width: 1440px) {
   .all_button_div {
     top: 6.75rem;
@@ -751,6 +760,15 @@
   .button_article_link_articleCard2 {
     width: 18.6%;
     padding: 1rem 2.125rem;
+  }
+
+  .container__imageAuthor_articleCard {
+    width: 10.06rem;
+    height: 10.06rem;
+  }
+
+  .header_content_right {
+    right: calc(-7.8vw - 7.56rem);
   }
 }
 

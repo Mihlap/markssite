@@ -186,7 +186,7 @@
   border-radius: 4.125rem;
   border: 1px solid transparent;
   background-color: var(--blue-75BBFD);
-  margin-top: 3rem;  
+  margin-top: 3rem;
   transition: background-color 0.4s ease;
   min-width: 432px;
   /* height: 56px; */
@@ -770,7 +770,7 @@
     font-style: normal;
     font-weight: var(--fw-400);
     line-height: 1rem;
-    padding-top: 4.875rem;
+    padding-top: 5.875rem;
     max-width: 20rem;
   }
 
@@ -807,12 +807,11 @@
   .centerButton {
     display: block;
     position: absolute;
-    bottom: -5rem;
-    /* top: 0rem; */
-    left: 50%;
+    bottom: -4.5rem;
+
+    left: 0;
     right: 0;
-    transform: translateX(-50%);
-    width: 100%;
+    width: max-content;
   }
 
   .button_name_vacancy {
@@ -1051,12 +1050,8 @@
   .centerButton {
     display: block;
     position: absolute;
-    bottom: -5rem;
-    /* top: 0rem; */
-    left: 50%;
-    right: 0;
-    transform: translateX(-50%);
-    width: 100%;
+    bottom: -4.5rem;
+    width: max-content;
   }
 
   .button_name_vacancy {
