@@ -11,7 +11,7 @@
     &__all_button {
       position: absolute;
       top: 0;
-      padding-left: 8.37rem;
+      padding-left: 7rem;
       padding-top: 151px;
       cursor: pointer;
     }
@@ -74,7 +74,7 @@
         rgba(117, 187, 253, 0.09) 44.805%,
         rgba(188, 188, 188, 0.09) 103.423%
       );
-      padding-left: 8.37rem;
+      padding-left: 7rem;
       border-bottom: 1px solid rgb(235, 236, 238);
     }
 
@@ -231,7 +231,6 @@
   }
 
   .vacancyFormWrapperSimple {
-    border: 1px solid rgb(235, 236, 238);
     backdrop-filter: blur(4.5px);
     background: rgba(255, 255, 255, 0.7);
     padding: 6.5vh 6.25rem 7vh 6.25rem;
@@ -240,7 +239,7 @@
 
   &__offer {
     display: flex;
-    padding-left: 8.37rem;
+    padding-left: 7rem;
     padding-top: 140px;
     width: 100%;
     align-items: center;
@@ -265,27 +264,29 @@
   }
 
   &__wrapperFrameBlock {
-    display: flex;
-    flex-direction: row;
-    // flex-wrap: wrap;
-    padding: 72px 30% 0px 8.37rem;
-    // gap: 3.875rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 72px 43% 0px 7rem;
     width: 100%;
+    gap: 62px;
   }
 
   &__frameBlock {
-    display: flex;
-    // gap: 3.875rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
     padding-bottom: 0;
+    gap: 62px;
   }
 
   &__frameBlock_frame {
     display: flex;
     flex-direction: column;
-    width: 50%;
+    width: auto;
+    max-width: 288px;
   }
 
   &__frame {
+    display: block;
     height: 12.5rem;
     width: 12.5rem;
   }
@@ -297,7 +298,6 @@
     font-size: 1.125rem;
     line-height: 1.5rem;
     text-align: left;
-    width: 70%;
     word-wrap: break-word;
     padding-top: 8px;
   }
@@ -308,7 +308,7 @@
     color: var(--black-1D2E43);
     line-height: 2rem;
     text-align: left;
-    padding-left: 8.37rem;
+    padding-left: 7rem;
     width: 60%;
   }
 
@@ -364,7 +364,7 @@
     margin: 8px 8px 0px 0px;
     width: auto;
     height: 38px;
-    background-color: var(--white-F6F6F6);
+    background-color: transparent;
     border: 1px solid var(--gray-959DA6);
     font-size: 0.875rem;
     font-weight: var(--fw-400);
@@ -375,7 +375,7 @@
     display: flex;
     flex-direction: column;
     text-align: left;
-    padding-left: 8.37rem;
+    padding-left: 7rem;
     padding-top: 250px;
   }
 
@@ -414,6 +414,10 @@
       line-height: 1.625rem;
       font-weight: var(--fw-400);
       color: var(--black-1D2E43);
+
+      br {
+        display: none;
+      }
     }
 
     .countValue {
@@ -496,7 +500,6 @@
       width: 50rem;
       height: 37rem;
       top: 60%;
-      left: 0rem;
       background-size: cover;
       background-repeat: no-repeat;
       z-index: -2;
@@ -633,7 +636,7 @@
       font-weight: var(--fw-400);
       line-height: 1.625rem;
       text-align: left;
-      padding-left: 8.37rem;
+      padding-left: 7rem;
     }
 
     .sliderContainer {
@@ -645,7 +648,7 @@
 
     .sliderContainer_block {
       display: flex;
-      padding-left: 8.37rem;
+      padding-left: 7rem;
     }
 
     .sliderContainer_blockSlide {
@@ -742,7 +745,7 @@
   &__frameBlockNext {
     display: flex;
     padding-top: 11rem;
-    padding-left: 8.37rem;
+    padding-left: 7rem;
 
     .frameBlockLeft {
       display: flex;
@@ -771,7 +774,7 @@
 
       .blockText1 {
         max-width: 100%;
-        width: 100%;
+        width: 70%;
         color: var(--black-1D2E43);
         font-family: var(--font-raleway);
         font-size: 1.125rem;
@@ -795,7 +798,7 @@
     font-style: normal;
     font-weight: var(--fw-300);
     line-height: 3rem;
-    padding-left: 8.37rem;
+    padding-left: 7rem;
     padding-top: 8rem;
   }
 
@@ -808,19 +811,31 @@
     font-style: normal;
     font-weight: var(--fw-400);
     line-height: 1.625rem;
-    padding-left: 8.37rem;
+    padding-left: 7rem;
     padding-top: 1.5rem;
   }
 
   &__vacancyFormWrapper {
-    padding: 3.5rem 3rem 6rem 8.37rem;
+    padding: 3.5rem 3rem 6rem 7rem;
   }
 
   .mobileBackgroundContainer {
     display: none;
   }
 
-  @media screen and (min-width: 1025px) and (max-width: 1600px) {
+  @media screen and (max-width: 1900px) {
+    &__wrapperFrameBlock {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media screen and (min-width: 1600px) and (max-width: 2000px) {
+    .background8 {
+      left: -8rem;
+    }
+  }
+
+  @media screen and (min-width: 1024px) and (max-width: 1600px) {
     .main_vacancy_block {
       &__all_button {
         padding-left: 3.875rem;
@@ -911,7 +926,6 @@
     }
 
     .vacancyFormWrapperSimple {
-      border: 1px solid rgb(235, 236, 238);
       backdrop-filter: blur(4.5px);
       background: rgba(255, 255, 255, 0.7);
       padding: 2rem 2.5rem;
@@ -935,9 +949,6 @@
     }
 
     &__wrapperFrameBlock {
-      display: flex;
-      flex-direction: row;
-      flex-wrap: wrap;
       padding: 56px 0 0 3.875rem;
       gap: 3.5rem;
       width: 100%;
@@ -955,8 +966,8 @@
     }
 
     &__frame {
-      height: 10rem;
-      width: 10rem;
+      height: 7.5rem;
+      width: 7.5rem;
     }
 
     &__frameSpan {
@@ -1288,15 +1299,27 @@
 
       .frameBlockRight {
         display: flex;
-        padding-left: 4rem;
+        padding-left: 3.125rem;
+        margin-left: 0.9rem;
         padding-top: 3rem;
         flex: 0 0 60%;
+        position: relative;
+
+        &::before {
+          content: '';
+          height: 70%;
+          width: 1px;
+          background-color: #ebecee;
+          position: absolute;
+          left: 0;
+          bottom: 6rem;
+        }
       }
     }
 
     .temporaryText {
       padding-left: 3.875rem;
-      padding-top: 24px;
+      padding-top: 4rem;
     }
 
     .textUnderForm {
@@ -1356,6 +1379,7 @@
         position: -webkit-relative;
         position: relative;
         height: auto;
+        width: auto;
       }
 
       &__blockRight {
@@ -1373,7 +1397,7 @@
         display: flex;
         flex-wrap: wrap;
         width: fit-content;
-        padding-right: 40rem;
+        padding-right: 3.43rem;
         padding-top: 151px;
       }
 
@@ -1427,6 +1451,7 @@
         min-height: 8.563rem;
         height: 100%;
         padding-left: 3.43rem;
+        padding-right: 2rem;
       }
 
       .topLeftSquare {
@@ -1476,16 +1501,12 @@
       display: flex;
       flex-direction: row;
       flex-wrap: wrap;
-      padding: 72px 0rem 0px 11.43rem;
+      padding: 56px 0rem 0px 11.43rem;
       width: 100%;
     }
 
     &__frameBlock:nth-last-child(n + 2) {
       margin-bottom: 4.5rem;
-    }
-
-    &__frameBlock_frame {
-      width: 50%;
     }
 
     &__frame {
@@ -1503,6 +1524,7 @@
       justify-content: center;
       align-items: center;
       padding-top: 4rem;
+      padding-bottom: 1.5rem;
     }
 
     &__button_vacancy {
@@ -1517,7 +1539,7 @@
 
       &.fixed {
         position: fixed;
-        bottom: 0;
+        bottom: 2rem;
         left: 50%;
         transform: translateX(-50%);
         z-index: 1000;
@@ -1787,7 +1809,7 @@
     &__frameBlockNext {
       display: flex;
       flex-direction: column;
-      padding-top: 4.125rem;
+      padding-top: 7.5rem;
       padding-left: 11rem;
 
       .frameBlockLeft {
@@ -1801,7 +1823,7 @@
         }
 
         .blockText {
-          max-width: 80%;
+          max-width: 67%;
           font-size: 2rem;
           line-height: 2.5rem;
           padding-top: 0rem;
@@ -1849,7 +1871,7 @@
     }
 
     &__vacancyFormWrapper {
-      padding: 2.75rem 11rem 9rem 11rem;
+      padding: 2.75rem 11rem 9.5rem 11rem;
     }
   }
 
@@ -1872,6 +1894,7 @@
       }
 
       &__background1 {
+        display: none;
         width: 8.5rem;
         height: 8.5rem;
         top: 8%;
@@ -1881,6 +1904,7 @@
       }
 
       &__background2 {
+        display: none;
         width: 5rem;
         height: 5rem;
         right: 10%;
@@ -1889,6 +1913,7 @@
       }
 
       &__background3 {
+        display: none;
         width: 15.6rem;
         height: 15.6rem;
         top: 7%;
@@ -2012,7 +2037,7 @@
     &__offer {
       padding-right: 1rem;
       padding-left: 1rem;
-      padding-top: 168px;
+      padding-top: 5rem;
     }
 
     &__offerName {
@@ -2021,35 +2046,18 @@
     }
 
     &__wrapperFrameBlock {
-      display: flex;
-      flex-direction: column;
-      flex-wrap: wrap;
       padding: 51px 1rem 0px 1rem;
       width: 100%;
     }
 
     &__frameBlock {
       margin-bottom: 0rem;
-      display: flex;
-      flex-direction: column;
-    }
-
-    &__frameBlock_frame {
-      display: flex;
-      flex-direction: row;
-      width: 100%;
-      margin-bottom: 2rem;
-    }
-
-    &__frame {
-      height: 5rem;
-      width: 5rem;
     }
 
     &__frameSpan {
       padding-top: 0px;
       margin-top: 16px;
-      padding-left: 0.7rem;
+      padding-left: 0.5rem;
       width: 100%;
     }
 
@@ -2059,7 +2067,7 @@
       flex-wrap: nowrap;
       justify-content: center;
       align-items: center;
-      padding-top: 1rem;
+      padding-top: 4rem;
     }
 
     &__button_vacancy {
@@ -2074,7 +2082,7 @@
 
       &.fixed {
         position: fixed;
-        bottom: 0;
+        bottom: 2rem;
         left: 50%;
         transform: translateX(-50%);
         z-index: 1000;
@@ -2122,7 +2130,7 @@
     &__textBlock {
       font-size: 1.125rem;
       line-height: 1.625rem;
-      padding-bottom: 4rem;
+      padding-bottom: 2.5rem;
     }
 
     &__textBlock span {
@@ -2447,7 +2455,7 @@
       .frameBlockRight {
         display: flex;
         padding-left: 0;
-        padding-top: 2.7rem;
+        padding-top: 3rem;
       }
     }
 
@@ -2478,6 +2486,71 @@
 
     &__vacancyFormWrapper {
       padding: 1.5rem 1rem 8rem 1rem;
+    }
+
+    &__frame {
+      height: 7.5rem;
+      width: 7.5rem;
+    }
+
+    .main_vacancyWrapper__offer {
+      padding-top: 11rem;
+    }
+  }
+
+  @media screen and (max-width: 743px) {
+    &__wrapperCountBlock {
+      .countLabel {
+        br {
+          display: block;
+        }
+      }
+    }
+    &__wrapperFrameBlock {
+      gap: 32px;
+    }
+
+    &__wrapperTitle1 {
+      padding-bottom: 0.5rem;
+    }
+
+    &__frameBlock {
+      gap: 32px;
+    }
+
+    &__wrapperFrameBlock {
+      display: flex;
+      flex-direction: column;
+      flex-wrap: wrap;
+      padding: 40px 1rem 0px 1rem;
+      width: 100%;
+    }
+
+    &__frameBlock {
+      margin-bottom: 0rem;
+      display: flex;
+      flex-direction: column;
+    }
+
+    &__frameSpan {
+      margin-top: 0;
+    }
+
+    &__frameBlock_frame {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      width: 100%;
+      max-width: 100%;
+    }
+
+    &__frame {
+      height: 5rem;
+      width: 5rem;
+    }
+
+    &__button_vacancyWrapper {
+      padding-top: 0;
     }
   }
 }
