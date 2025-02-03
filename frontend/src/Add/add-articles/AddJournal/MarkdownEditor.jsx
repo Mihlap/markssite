@@ -1,8 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
+import { useDebouncedCallback } from 'use-debounce';
 import rehypeRaw from 'rehype-raw';
 import remarkMath from 'remark-math';
 import remarkGfm from 'remark-gfm';
+import rehypeSlug from 'rehype-slug';
 import remarkBreaks from 'remark-breaks';
 import rehypeKatex from 'rehype-katex';
 import rehypePdfEmbedder from './rehypePdfEmbedder';
@@ -16,20 +18,25 @@ import text from './icons/text.svg';
 import full_screen from './icons/full_screen.svg';
 import collapse from './icons/collapse.svg';
 import { useDispatch, useSelector } from 'react-redux';
-import { setFormData, uploadMarkdownFile } from '../../../store/Slice/journalSlice';
+import { setFormData, uploadMarkdownFile, deleteMarkdownFile } from '../../../store/Slice/journalSlice';
+import { extractMarkdownLinks } from './utils';
 
-const MarkdownEditor = () => {
+const MarkdownEditor = ({ onTempFilesChange }) => {
   const dispatch = useDispatch();
   const markdown = useSelector((state) => state.journal.formData.markdown_content);
   const [isFullscreen, setIsFullscreen] = useState(false);
+  const [uploadedFiles, setUploadedFiles] = useState(new Map());
   const [mode, setMode] = useState('both');
   const editorRef = useRef(null);
 
-  const handleChange = (e) => {
-      dispatch(setFormData({ name: 'markdown_content', value: e.target.value }));  
-  };
+  const handleChange = useCallback(
+    (e) => {
+      dispatch(setFormData({ name: 'markdown_content', value: e.target.value }));
+    },
+    [dispatch]
+  );
 
-  const toggleFullscreen = async () => {
+  const toggleFullscreen = useCallback(async () => {
     try {
       if (!isFullscreen) {
         if (editorRef.current) {
@@ -43,7 +50,7 @@ const MarkdownEditor = () => {
     } catch (err) {
       console.error('Error toggling fullscreen:', err);
     }
-  };
+  }, [isFullscreen]);
 
   useEffect(() => {
     const handleFullscreenChange = () => {
@@ -64,63 +71,96 @@ const MarkdownEditor = () => {
     };
   }, []);
 
-  const handleModeChange = (newMode) => {
+  const handleModeChange = useCallback((newMode) => {
     setMode(newMode);
-  };
+  }, []);
 
-  const insertTextAtCursor = (textarea, textToInsert) => {
+  const insertTextAtCursor = useCallback((textarea, textToInsert) => {
     const start = textarea.selectionStart;
     const end = textarea.selectionEnd;
     const currentValue = textarea.value;
-
-    const newValue = currentValue.substring(0, start) + textToInsert + currentValue.substring(end, currentValue.length);
-
+    const newValue = currentValue.substring(0, start) + textToInsert + currentValue.substring(end);
     textarea.value = newValue;
-
     const newCursorPos = start + textToInsert.length;
     textarea.selectionStart = newCursorPos;
     textarea.selectionEnd = newCursorPos;
-
     return newValue;
-  };
+  }, []);
 
-  const handleDrop = async (e) => {
-    e.preventDefault();
+  const handleDrop = useCallback(
+    async (e) => {
+      e.preventDefault();
+      const files = Array.from(e.dataTransfer.files);
+      if (!files.length) return;
+      const textarea = e.target.closest('textarea');
+      for (let file of files) {
+        try {
+          const isImage = file.type.startsWith('image/');
+          const isPdf = file.type === 'application/pdf';
+          if (!isImage && !isPdf) continue;
+          const url = await dispatch(uploadMarkdownFile(file)).unwrap();
 
-    const files = Array.from(e.dataTransfer.files);
-    if (!files.length) return;
+          setUploadedFiles((prev) => {
+            const newMap = new Map(prev);
+            const count = newMap.get(url) || 0;
+            newMap.set(url, count + 1);
 
-    const textarea = e.target.closest('textarea');
+            if (onTempFilesChange) {
+              onTempFilesChange(Array.from(newMap.keys()));
+            }
+            return newMap;
+          });
 
-    for (let file of files) {
-      try {
-        const isImage = file.type.startsWith('image/');
-        const isPdf = file.type === 'application/pdf';
-
-        if (!isImage && !isPdf) {
-          continue;
+          let markdownString = '';
+          if (isImage) {
+            markdownString = `![Alt text](${url})`;
+          } else if (isPdf) {
+            markdownString = `[${file.name}](${url})`;
+          }
+          if (textarea) {
+            const updatedValue = insertTextAtCursor(textarea, markdownString);
+            dispatch(setFormData({ name: 'markdown_content', value: updatedValue }));
+          } else {
+            dispatch(setFormData({ name: 'markdown_content', value: markdown + '\n' + markdownString }));
+          }
+        } catch (err) {
+          console.error('Ошибка при загрузке файла или вставке в markdown:', err);
         }
-
-        const url = await dispatch(uploadMarkdownFile(file)).unwrap();
-
-        let markdownString = '';
-        if (isImage) {
-          markdownString = `![Alt text](${url})`;
-        } else if (isPdf) {
-          markdownString = `[${file.name}](${url})`;
-        }
-
-        if (textarea) {
-          const updatedValue = insertTextAtCursor(textarea, markdownString);
-          dispatch(setFormData({ name: 'markdown_content', value: updatedValue }));
-        } else {
-          dispatch(setFormData({ name: 'markdown_content', value: markdown + '\n' + markdownString }));
-        }
-      } catch (err) {
-        console.error('Ошибка при загрузке файла или вставке в markdown:', err);
       }
-    }
-  };
+    },
+    [dispatch, insertTextAtCursor, markdown, onTempFilesChange]
+  );
+
+  const debouncedCheck = useDebouncedCallback(() => {
+    const currentLinks = extractMarkdownLinks(markdown);
+    uploadedFiles.forEach((count, fileUrl) => {
+      if (!currentLinks.includes(fileUrl)) {
+        setUploadedFiles((prev) => {
+          const newMap = new Map(prev);
+          const currentCount = newMap.get(fileUrl) || 0;
+          if (currentCount > 1) {
+            newMap.set(fileUrl, currentCount - 1);
+          } else {
+            dispatch(deleteMarkdownFile(fileUrl))
+              .unwrap()
+              .catch((err) => {
+                console.error('Ошибка удаления файла:', err);
+              });
+            newMap.delete(fileUrl);
+          }
+
+          if (onTempFilesChange) {
+            onTempFilesChange(Array.from(newMap.keys()));
+          }
+          return newMap;
+        });
+      }
+    });
+  }, 500);
+
+  useEffect(() => {
+    debouncedCheck();
+  }, [markdown, debouncedCheck]);
 
   return (
     <div
@@ -176,18 +216,18 @@ const MarkdownEditor = () => {
             type="text"
             children={markdown}
             remarkPlugins={[remarkMath, remarkGfm, remarkBreaks]}
-            rehypePlugins={[rehypeRaw, rehypeKatex, rehypePdfEmbedder]}
+            rehypePlugins={[rehypeRaw, rehypeKatex, rehypeSlug, rehypePdfEmbedder]}
+            unwrapDisallowed={true}
             components={{
-              p: ({ children }) => {             
-                const hasInvalidChildren = React.Children.toArray(children).some((child) => {
-                  if (typeof child !== 'object' || !child) return false;
-                  return child.type && ['BlockMath', 'PDFEmbed', 'div', 'iframe'].includes(child.type);
-                });
-
-                if (hasInvalidChildren) {
-                  return <>{children}</>;
-                }
-                return <p>{children}</p>;
+              p: ({ children }) => {
+                const shouldNotWrap = React.Children.toArray(children).some(
+                  (child) =>
+                    child &&
+                    typeof child === 'object' &&
+                    (child.type === 'PDFEmbed' ||
+                      (child.type === 'div' && child.props && child.props.style && child.props.style.border === 'none'))
+                );
+                return shouldNotWrap ? <>{children}</> : <p>{children}</p>;
               },
               PDFEmbed: ({ src, title }) => (
                 <div style={{ margin: '1em 0' }}>

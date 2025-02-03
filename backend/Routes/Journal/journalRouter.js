@@ -14,54 +14,61 @@ const extractFileNameAndFolderFromUrl = (url) => {
       folder: 'images/imageJournal',
     };
   }
-
   try {
-    const urlObj = new URL(url);
+    const cleanUrl = url.split('?')[0];
+    const urlObj = new URL(cleanUrl);
     const { pathname } = urlObj;
     const parts = pathname.split('/').filter(Boolean);
-
-    if (parts.length >= 2) {
-      const folder = parts.slice(0, -1).join('/');
-      const fileName = parts[parts.length - 1];
-      return { fileName, folder };
+    if (!parts.length) {
+      return null;
     }
 
-    return { fileName: parts[0], folder: 'images/imageJournal' };
+    const fileName = parts[parts.length - 1];
+    let folder = parts.slice(0, -1).join('/');
+
+    if (fileName.toLowerCase().endsWith('.pdf')) {
+      folder = 'images/imageJournal/documents';
+    } else if (!folder) {
+      folder = 'images/imageJournal';
+    }
+
+    return { fileName, folder };
   } catch (error) {
     console.error(`Ошибка извлечения данных из URL: ${url}`, error);
     return null;
   }
 };
 
-// Создание markdownFile POST /uploadMarkdownFile 
-router.post(
-  '/uploadMarkdownFile',
-  fileMiddleware.single('markdownFile'),
-  async (req, res) => {
-    try {
-      if (!req.file) {
-        return res.status(400).json({ message: 'Файл не найден в запросе' });
-      }
-
-      // Определяем папку на основе типа файла
-      let uploadFolder = 'images/imageJournal/imageMarkdown';
-      if (req.file.mimetype === 'application/pdf') {
-        uploadFolder = 'images/imageJournal/documents';
-      }
-
-      const uploadedUrl = await uploadFileToS3(req.file, uploadFolder);
-
-      return res.status(200).json({
-        message: 'Файл успешно загружен',
-        url: uploadedUrl,
-      });
-    } catch (error) {
-      console.error('Ошибка при загрузке файла в /uploadMarkdownFile:', error);
-      return res.status(500).json({ message: 'Ошибка загрузки файла', error: error.message });
+// Создание markdownFile POST /uploadMarkdownFile
+router.post('/uploadMarkdownFile', fileMiddleware.single('markdownFile'), async (req, res) => {
+  try {
+    if (!req.file) {
+      return res.status(400).json({ message: 'Файл не найден в запросе' });
     }
-  }
-);
 
+    const timestamp = Date.now();
+    const originalName = req.file.originalname;
+    const fileExtension = originalName.substring(originalName.lastIndexOf('.'));
+    const uniqueFileName = `${timestamp}${fileExtension}`;
+
+    let uploadFolder = 'images/imageJournal/imageMarkdown';
+    if (req.file.mimetype === 'application/pdf') {
+      uploadFolder = 'images/imageJournal/documents';
+    }
+
+    const fileForUpload = { ...req.file, originalname: uniqueFileName };
+
+    const uploadedUrl = await uploadFileToS3(fileForUpload, uploadFolder);
+
+    return res.status(200).json({
+      message: 'Файл успешно загружен',
+      url: uploadedUrl,
+    });
+  } catch (error) {
+    console.error('Ошибка при загрузке файла в /uploadMarkdownFile:', error);
+    return res.status(500).json({ message: 'Ошибка загрузки файла', error: error.message });
+  }
+});
 
 // POST /postzapros
 router.post(
@@ -120,7 +127,7 @@ router.post(
 
         journal.authors = updatedParsedAuthors;
         journal.attachments = uploadedFiles;
-      }   
+      }
 
       await journal.save();
 
@@ -145,14 +152,13 @@ function extractMarkdownLinks(markdownText) {
 
   // eslint-disable-next-line no-restricted-syntax
   for (const match of markdownText.matchAll(linkRegex)) {
-    const {url} = match.groups;
+    const { url } = match.groups;
     if (url.endsWith('.pdf') || url.match(/\.(jpg|jpeg|png|gif|bmp|webp)$/i)) {
       links.push(url);
     }
   }
   return [...new Set(links)];
 }
-
 
 // Обновление записи
 router.put(
@@ -189,14 +195,14 @@ router.put(
       const removedLinks = oldLinks.filter((link) => !newLinks.includes(link));
 
       removedLinks.forEach(async (link) => {
-       const result = extractFileNameAndFolderFromUrl(link);
-       if (result) {
-         const decodedFileName = decodeURIComponent(result.fileName);      
-         await deleteFileFromS3(decodedFileName, result.folder);
-       } else {
-         console.error('Не удалось извлечь данные из ссылки:', link);
-       }
-     });
+        const result = extractFileNameAndFolderFromUrl(link);
+        if (result) {
+          const decodedFileName = decodeURIComponent(result.fileName);
+          await deleteFileFromS3(decodedFileName, result.folder);
+        } else {
+          console.error('Не удалось извлечь данные из ссылки:', link);
+        }
+      });
 
       // Парсим данные из тела запроса
       const parsedAuthors = authors ? JSON.parse(authors) : [];
@@ -260,17 +266,16 @@ router.put(
       const removedPdfLinks = oldPdfLinks.filter((link) => !newPdfLinks.includes(link));
 
       // Удаляем старые PDF-файлы из S3
-     removedPdfLinks.forEach(async (link) => {
-       const result = extractFileNameAndFolderFromUrl(link);
-       if (result) {
-         const decodedFileName = decodeURIComponent(result.fileName); 
-         await deleteFileFromS3(decodedFileName, result.folder);
-       } else {
-         console.error('Не удалось извлечь данные из PDF-ссылки:', link);
-       }
-     });
+      removedPdfLinks.forEach(async (link) => {
+        const result = extractFileNameAndFolderFromUrl(link);
+        if (result) {
+          const decodedFileName = decodeURIComponent(result.fileName);
+          await deleteFileFromS3(decodedFileName, result.folder);
+        } else {
+          console.error('Не удалось извлечь данные из PDF-ссылки:', link);
+        }
+      });
 
-      // Обновляем запись в базе данных
       await journal.update({
         title,
         publication_date,
@@ -323,6 +328,24 @@ router.get('/getzapros/:id', async (req, res) => {
   }
 });
 
+router.delete('/delete-file', async (req, res) => {
+  try {
+    const { url } = req.body;  
+    if (!url) {
+      return res.status(400).json({ message: 'URL не предоставлен' });
+    }
+    const result = extractFileNameAndFolderFromUrl(url);   
+    if (!result) {
+      return res.status(400).json({ message: 'Невозможно определить данные из URL' });
+    }
+    const { fileName, folder } = result;
+    await deleteFileFromS3(fileName, folder);
+    res.status(200).json({ message: 'Файл удалён' });
+  } catch (error) {
+    console.error('Ошибка при удалении файла:', error);
+    res.status(500).json({ message: 'Ошибка удаления файла', error: error.message });
+  }
+});
 
 // Удаление записи
 router.delete('/deletezapros/:id', async (req, res) => {
@@ -334,7 +357,7 @@ router.delete('/deletezapros/:id', async (req, res) => {
       return res.status(404).json({ message: 'Запись не найдена' });
     }
 
-   const normalizeFileName = (url) => {
+    const normalizeFileName = (url) => {
       let decodedUrl = url;
       try {
         while (decodedUrl !== decodeURIComponent(decodedUrl)) {
@@ -352,14 +375,15 @@ router.delete('/deletezapros/:id', async (req, res) => {
 
       await Promise.all(
         uniqueUrls.map(async (fileName) => {
-          let { fileName: extractedFileName, folder } = extractFileNameAndFolderFromUrl(fileName);  
+          // eslint-disable-next-line prefer-const
+          let { fileName: extractedFileName, folder } = extractFileNameAndFolderFromUrl(fileName);
           if (isMarkdown) {
             folder = 'images/imageJournal/imageMarkdown';
           } else if (isPdf) {
             folder = 'images/imageJournal/documents';
           }
 
-          try {     
+          try {
             await deleteFileFromS3(extractedFileName, folder);
           } catch (error) {
             console.error(`Ошибка при удалении файла ${extractedFileName}:`, error);
@@ -367,20 +391,13 @@ router.delete('/deletezapros/:id', async (req, res) => {
         }),
       );
     };
-
-    // Удаляем файлы из attachments (основные файлы публикации)
+ 
     if (post.attachments) {
-      const attachmentUrls = post.attachments;  
-      await extractAndDeleteFiles(attachmentUrls, false, false);
-    }
+      const attachmentUrls = post.attachments;
+      await extractAndDeleteFiles(attachmentUrls, false, false);    }
 
-    // Извлекаем ссылки из Markdown (изображения + PDF)
-    const markdownLinks = extractMarkdownLinks(post.markdown_content || '');   
-
-    // Декодируем URL перед удалением
-    const decodedMarkdownLinks = markdownLinks.map((url) => decodeURIComponent(url).split('?')[0]); 
-
-    // Отдельно удаляем изображения и PDF-файлы из Markdown
+    const markdownLinks = extractMarkdownLinks(post.markdown_content || '');
+    const decodedMarkdownLinks = markdownLinks.map((url) => decodeURIComponent(url).split('?')[0]);
     const markdownImages = decodedMarkdownLinks.filter((link) => !link.endsWith('.pdf'));
     const markdownPdfs = decodedMarkdownLinks.filter((link) => link.endsWith('.pdf'));
 
@@ -396,7 +413,5 @@ router.delete('/deletezapros/:id', async (req, res) => {
     res.sendStatus(500);
   }
 });
-
-
 
 module.exports = router;
