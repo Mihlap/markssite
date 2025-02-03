@@ -1,10 +1,16 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import InputField from '../InputField';
 import DropdownSelect from '../DropdownSelect';
 import AuthorsSection from '../AuthorsSection';
 import MarkdownEditor from '../MarkdownEditor';
-import { setFormData, updateAuthors, clearFormData, fetchJournals } from '../../../../store/Slice/journalSlice';
+import {
+  setFormData,
+  updateAuthors,
+  clearFormData,
+  fetchJournals,
+  deleteMarkdownFile,
+} from '../../../../store/Slice/journalSlice';
 import { createJournal } from '../../../../store/Slice/journalSlice';
 import styles from '../../../../Add/add-project/formAdd/FormAddProject.module.scss';
 import { PublicationContainer, PublicationIndicator } from '../../../add-project/formAdd/utils/CustomSelectComponents';
@@ -16,6 +22,7 @@ export default function FormAddJournal({ setIsModalOpen }) {
   const [showNotification, setShowNotification] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [localImages, setLocalImages] = useState({});
+  const tempFilesRef = useRef([]);
 
   const handleInputChange = useCallback(
     (name, value) => {
@@ -79,24 +86,25 @@ export default function FormAddJournal({ setIsModalOpen }) {
         formDataToSend.append('issue_number', issueNumber || null);
         formDataToSend.append('authors', JSON.stringify(authors));
         formDataToSend.append('organizations', JSON.stringify(blocks.filter((block) => block.type === 'university')));
-        formDataToSend.append('locations', JSON.stringify(blocks.filter((block) => block.type === 'location')));      
+        formDataToSend.append('locations', JSON.stringify(blocks.filter((block) => block.type === 'location')));
         formDataToSend.append('imageKey', imageKey || null);
         formDataToSend.append('markdown_content', markdown_content ?? '');
 
-            Object.entries(authors).forEach(([authorId, author]) => {
-            if (author.image) {         
-              const file = localImages[authorId];
-              if (file) {
-                const uniqueName = `${Date.now()}_${file.name}`;
-                formDataToSend.append('authorImages', file, uniqueName);
-              }
+        Object.entries(authors).forEach(([authorId, author]) => {
+          if (author.image) {
+            const file = localImages[authorId];
+            if (file) {
+              const uniqueName = `${Date.now()}_${file.name}`;
+              formDataToSend.append('authorImages', file, uniqueName);
             }
-            });
-        
+          }
+        });
+
         await dispatch(createJournal(formDataToSend)).unwrap();
         await dispatch(fetchJournals());
         setIsModalOpen(false);
         dispatch(clearFormData());
+        tempFilesRef.current = [];
       } catch (error) {
         console.error('Ошибка при создании записи:', error);
         setShowNotification(true);
@@ -109,20 +117,41 @@ export default function FormAddJournal({ setIsModalOpen }) {
   );
 
   const closeModal = useCallback(() => {
+    tempFilesRef.current.forEach((url) => {
+      dispatch(deleteMarkdownFile(url))
+        .unwrap()
+        .catch((err) => {
+          console.error('Ошибка удаления временного файла:', err);
+        });
+    });
     setIsModalOpen(false);
     dispatch(clearFormData());
-  }, [setIsModalOpen, dispatch]);
+    tempFilesRef.current = [];
+  }, [dispatch, setIsModalOpen]);
 
-    useEffect(() => {
-      return () => {   
-        Object.values(localImages).forEach((file) => {
-          if (file instanceof Blob && file.type.startsWith('image/')) {
-            URL.revokeObjectURL(file);
-          }
-        });
-      };
-    }, [localImages]);
-  
+  useEffect(() => {
+    return () => {
+      tempFilesRef.current.forEach((url) => {
+        dispatch(deleteMarkdownFile(url))
+          .unwrap()
+          .catch((err) => {
+            console.error('Ошибка удаления временного файла при размонтировании:', err);
+          });
+      });
+      dispatch(clearFormData());
+      tempFilesRef.current = [];
+    };
+  }, [dispatch]);
+
+  useEffect(() => {
+    return () => {
+      Object.values(localImages).forEach((file) => {
+        if (file instanceof Blob && file.type.startsWith('image/')) {
+          URL.revokeObjectURL(file);
+        }
+      });
+    };
+  }, [localImages]);
 
   const universityBlocks = formData.blocks.filter((block) => block.type === 'university');
   const locationBlocks = formData.blocks.filter((block) => block.type === 'location');
@@ -303,7 +332,7 @@ export default function FormAddJournal({ setIsModalOpen }) {
           <div className={styles.form_container__block_gray_one}>
             <div className={styles.form_container__checkbox_block}>
               <div>Тело статьи</div>
-              <MarkdownEditor type="text" />
+              <MarkdownEditor type="text" onTempFilesChange={(files) => (tempFilesRef.current = files)} />
             </div>
           </div>
 

@@ -84,10 +84,7 @@ export default function AddJournal({ user }) {
     dispatch(setFormData({ name: 'imageKey', value: nextKey }));
   }, [dispatch, journals, getNextImageKey]);
 
-  const handleCloseModal = useCallback(() => {
-    setIsModalOpen(false);
-  }, []);
-
+ 
   const handleDeleteModalOpen = useCallback((id) => {
     setDeleteModalState((prevState) => ({
       ...prevState,
@@ -194,7 +191,10 @@ export default function AddJournal({ user }) {
               ) : (
                 <FormAddJournal setIsModalOpen={setIsModalOpen} />
               )}
-              <button className={styles.card_components_admin__close_button} onClick={handleCloseModal}></button>
+              <button
+                className={styles.card_components_admin__close_button}
+                onClick={() => setIsModalOpen(false)}>                
+                </button>
             </div>
           </div>
         )}
@@ -205,8 +205,7 @@ export default function AddJournal({ user }) {
         ) : journals && journals.length === 0 ? (
           <div className={styles.card_components_admin__null_project}>Публикаций пока нет.</div>
         ) : (
-          <div
-            className={styles.card_components_admin__block_map}>
+          <div className={styles.card_components_admin__block_map}>
             {journals?.map((el) => {
               const photoSrc = imageMap[el.imageKey] || one;
 
