@@ -15,18 +15,26 @@ import frame18 from '../icons/frame/frame18.svg';
 import frame19 from '../icons/frame/frame19.svg';
 
 const benefitsData = [
-  { title: 'Менторство и наставничество', icon: frame4 },
+  { title: 'Менторство и наставничество', icon: frame4, typographed: 'Менторство и&nbsp;наставничество' },
   { title: 'Фруктовый понедельник', icon: frame6 },
   { title: 'Корпоративный английский', icon: frame5 },
-  { title: 'НС и ДМС со стоматологией', icon: frame7 },
-  { title: 'Занятие в фитнес клубе', icon: frame8 },
+  { title: 'НС и ДМС со стоматологией', icon: frame7, typographed: 'НС и&nbsp;ДМС со&nbsp;стоматологией' },
+  { title: 'Занятие в фитнес клубе', icon: frame8, typographed: 'Занятие в&nbsp;фитнес клубе' },
   { title: 'Командные виды спорта, йога', icon: frame9 },
   { title: 'Библиотека профессиональной литературы', icon: frame19 },
   { title: 'Обучение Revit', icon: frame18 },
   { title: 'Корпоративное такси для встреч', icon: frame11 },
   { title: 'Зажигательные корпоративы', icon: frame13 },
-  { title: 'Адаптация и досуг от совета молодых специалистов', icon: frame12 },
-  { title: 'Обучение и карьерный рост', icon: frame15 },
+  {
+    title: 'Адаптация и досуг от совета молодых специалистов',
+    icon: frame12,
+    typographed: 'Адаптация и&nbsp;досуг от&nbsp;совета молодых специалистов',
+  },
+  {
+    title: 'Обучение и карьерный рост',
+    icon: frame15,
+    typographed: 'Обучение и&nbsp;карьерный рост',
+  },
   { title: 'Удаленная работа', icon: frame14 },
   { title: 'Гибкий график работы', icon: frame16 },
   { title: 'Новогодние подарки детям', icon: frame17 },
