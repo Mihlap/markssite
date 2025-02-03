@@ -9,7 +9,6 @@ export const fetchJournals = createAsyncThunk('journal/fetchJournals', async (_,
     const response = await axios.get(`${serverHost}/api-journal/getzapros`);
 
     return response.data;
-    
   } catch (error) {
     console.error('Ошибка при загрузке журналов:', error);
     return rejectWithValue(error.message);
@@ -23,9 +22,8 @@ export const fetchJournalById = createAsyncThunk('journal/fetchJournalById', asy
     if (!response.data) {
       throw new Error('Нет данных для указанного ID');
     }
-    
-    return response.data;
 
+    return response.data;
   } catch (error) {
     console.error('Ошибка при загрузке записи:', error);
     return rejectWithValue(error.message || 'Ошибка при загрузке записи');
@@ -33,21 +31,18 @@ export const fetchJournalById = createAsyncThunk('journal/fetchJournalById', asy
 });
 
 // Thunk для создания маркдаун_файл
-export const uploadMarkdownFile = createAsyncThunk(
-  'journal/uploadMarkdownFile',
-  async (file, { rejectWithValue }) => {
-    try {
-      const formData = new FormData();
-    
-      formData.append('markdownFile', file);
-      const response = await axios.post(`${serverHost}/api-journal/uploadMarkdownFile`, formData);
-      return response.data.url; 
-    } catch (error) {
-      console.error('Ошибка при загрузке Markdown-файла:', error);
-      return rejectWithValue(error.message);
-    }
+export const uploadMarkdownFile = createAsyncThunk('journal/uploadMarkdownFile', async (file, { rejectWithValue }) => {
+  try {
+    const formData = new FormData();
+
+    formData.append('markdownFile', file);
+    const response = await axios.post(`${serverHost}/api-journal/uploadMarkdownFile`, formData);
+    return response.data.url;
+  } catch (error) {
+    console.error('Ошибка при загрузке Markdown-файла:', error);
+    return rejectWithValue(error.message);
   }
-);
+});
 
 // Thunk для создания новой записи
 export const createJournal = createAsyncThunk('journal/createJournal', async (formData, { rejectWithValue }) => {
@@ -57,31 +52,41 @@ export const createJournal = createAsyncThunk('journal/createJournal', async (fo
     });
 
     return response.data;
-
   } catch (error) {
     console.error('Ошибка при создании записи:', error);
     return rejectWithValue(error.message);
   }
 });
 
-
 // Thunk для обновления записи
 export const updateJournal = createAsyncThunk(
   'journal/updateJournal',
-  async ({ journalId, formData }, { rejectWithValue }) => {    
+  async ({ journalId, formData }, { rejectWithValue }) => {
     try {
       const response = await axios.put(`${serverHost}/api-journal/editzapros/${journalId}`, formData, {
         // headers: { 'Content-Type': 'multipart/form-data' },
       });
 
       return response.data;
-
     } catch (error) {
       console.error('Ошибка при обновлении записи:', error);
       return rejectWithValue(error.message);
     }
   }
 );
+
+// Thunk для удаления Markdown-файла по URL
+export const deleteMarkdownFile = createAsyncThunk('journal/deleteMarkdownFile', async (url, { rejectWithValue }) => {
+  try {
+    await axios.delete(`${serverHost}/api-journal/delete-file`, {
+      data: { url },
+    });
+    return url;
+  } catch (error) {
+    console.error('Ошибка при удалении Markdown-файла:', error);
+    return rejectWithValue(error.message);
+  }
+});
 
 // Thunk для удаления записи
 export const deleteJournal = createAsyncThunk('journal/deleteJournal', async (id, { rejectWithValue }) => {
@@ -124,7 +129,7 @@ const journalSlice = createSlice({
     },
     updateAuthors(state, action) {
       state.formData.authors = action.payload;
-    }, 
+    },
     clearFormData(state) {
       state.formData = {
         title: '',
@@ -143,7 +148,7 @@ const journalSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder     
+    builder
       .addCase(fetchJournals.pending, (state) => {
         state.loading = true;
         state.error = null;
@@ -221,6 +226,17 @@ const journalSlice = createSlice({
         state.journals = state.journals.map((journal) => (journal.id === updatedJournal.id ? updatedJournal : journal));
       })
       .addCase(updateJournal.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(deleteMarkdownFile.pending, (state) => {
+        state.loading = true;
+        state.error = null;
+      })
+      .addCase(deleteMarkdownFile.fulfilled, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(deleteMarkdownFile.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })

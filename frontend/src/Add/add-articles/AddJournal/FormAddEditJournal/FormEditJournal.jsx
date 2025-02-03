@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState } from 'react';
+import React, { useEffect, useCallback, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import InputField from '../InputField';
 import DropdownSelect from '../DropdownSelect';
@@ -11,6 +11,7 @@ import {
   clearFormData,
   updateAuthors,
   fetchJournals,
+  deleteMarkdownFile,
 } from '../../../../store/Slice/journalSlice';
 
 import { PublicationContainer, PublicationIndicator } from '../../../add-project/formAdd/utils/CustomSelectComponents';
@@ -26,6 +27,7 @@ export default function FormEditJournal({ editJournalData, setIsModalOpen }) {
 
   const [universityBlocks, setUniversityBlocks] = useState([]);
   const [locationBlocks, setLocationBlocks] = useState([]);
+  const tempFilesRef = useRef([]);
 
   useEffect(() => {
     if (editJournalData) {
@@ -39,13 +41,11 @@ export default function FormEditJournal({ editJournalData, setIsModalOpen }) {
       });
     }
   }, [dispatch, editJournalData]);
-  
 
-    useEffect(() => {
-      setUniversityBlocks(formData.blocks.filter((b) => b.type === 'university'));
-      setLocationBlocks(formData.blocks.filter((b) => b.type === 'location'));
-    }, [formData.blocks]);
-
+  useEffect(() => {
+    setUniversityBlocks(formData.blocks.filter((b) => b.type === 'university'));
+    setLocationBlocks(formData.blocks.filter((b) => b.type === 'location'));
+  }, [formData.blocks]);
 
   const handleInputChange = useCallback(
     (name, value) => {
@@ -146,16 +146,16 @@ export default function FormEditJournal({ editJournalData, setIsModalOpen }) {
 
         const sanitizedAuthors = formData.authors.map((author) => ({
           ...author,
-          image: author.image && !author.image.startsWith('blob:') ? author.image : null,     
+          image: author.image && !author.image.startsWith('blob:') ? author.image : null,
         }));
         formDataToSend.append('authors', JSON.stringify(sanitizedAuthors));
 
         Object.entries(localImages).forEach(([id, file]) => {
-          if (file) {      
+          if (file) {
             formDataToSend.append('authorImages', file, id);
           }
         });
-  
+
         const response = await dispatch(
           updateJournal({ journalId: editJournalData, formData: formDataToSend })
         ).unwrap();
@@ -168,6 +168,7 @@ export default function FormEditJournal({ editJournalData, setIsModalOpen }) {
 
         setIsModalOpen(false);
         dispatch(clearFormData());
+        tempFilesRef.current = [];
       } catch (err) {
         console.error('Ошибка при обновлении записи:', err);
         setShowNotification(true);
@@ -180,9 +181,31 @@ export default function FormEditJournal({ editJournalData, setIsModalOpen }) {
   );
 
   const closeModal = useCallback(() => {
+    tempFilesRef.current.forEach((url) => {
+      dispatch(deleteMarkdownFile(url))
+        .unwrap()
+        .catch((err) => {
+          console.error('Ошибка удаления временного файла:', err);
+        });
+    });
     setIsModalOpen(false);
-    dispatch(fetchJournals());
+    dispatch(clearFormData());
+    tempFilesRef.current = [];
   }, [dispatch, setIsModalOpen]);
+
+  useEffect(() => {
+    return () => {
+      tempFilesRef.current.forEach((url) => {
+        dispatch(deleteMarkdownFile(url))
+          .unwrap()
+          .catch((err) => {
+            console.error('Ошибка удаления временного файла при размонтировании:', err);
+          });
+      });
+      dispatch(clearFormData());
+      tempFilesRef.current = [];
+    };
+  }, [dispatch]);
 
   useEffect(() => {
     return () => {
@@ -371,7 +394,7 @@ export default function FormEditJournal({ editJournalData, setIsModalOpen }) {
               <div className={styles.form_container__block_gray_one}>
                 <div className={styles.form_container__checkbox_block}>
                   <div>Тело статьи</div>
-                  <MarkdownEditor type="text" />
+                  <MarkdownEditor type="text" onTempFilesChange={(files) => (tempFilesRef.current = files)} />
                 </div>
               </div>
 
