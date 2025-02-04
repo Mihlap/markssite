@@ -4,10 +4,10 @@ import { useDebouncedCallback } from 'use-debounce';
 import rehypeRaw from 'rehype-raw';
 import remarkMath from 'remark-math';
 import remarkGfm from 'remark-gfm';
-import rehypeSlug from 'rehype-slug';
 import remarkBreaks from 'remark-breaks';
 import rehypeKatex from 'rehype-katex';
 import rehypePdfEmbedder from './rehypePdfEmbedder';
+import rehypeUniqueHeadingIds from './rehypeUniqueHeadingIds';
 import { BlockMath, InlineMath } from 'react-katex';
 import 'katex/dist/katex.min.css';
 import styles from './MarkdownEditor.module.scss';
@@ -21,6 +21,139 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setFormData, uploadMarkdownFile, deleteMarkdownFile } from '../../../store/Slice/journalSlice';
 import { extractMarkdownLinks } from './utils';
 
+
+const PDFEmbedComponent = ({ src, title }) => (
+  <div className={styles['markdown-editor__pdfembed']}>
+    <iframe src={src} title={title} width="100%" height="350px" style={{ border: 'none' }}>
+      Ваш браузер не поддерживает встраивание PDF.
+    </iframe>
+  </div>
+);
+PDFEmbedComponent.displayName = 'PDFEmbedComponent';
+
+const MathBlock = ({ value }) => (
+  <div className={styles['markdown-editor__mathblock']}>
+    <BlockMath>{value}</BlockMath>
+  </div>
+);
+MathBlock.displayName = 'MathBlock';
+
+// Функция для разворачивания вложенных детей
+const flattenChildren = (children) => {
+  let result = [];
+  React.Children.forEach(children, (child) => {
+    if (React.isValidElement(child) && child.props && child.props.children) {
+      result.push(child);
+      result = result.concat(flattenChildren(child.props.children));
+    } else {
+      result.push(child);
+    }
+  });
+  return result;
+};
+
+// Функция для переопределения абзаца
+const Paragraph = ({ node, children, ...props }) => {
+  const flatChildren = flattenChildren(children);
+  const hasBlockChild = flatChildren.some((child) => {
+    if (child && typeof child === 'object') {
+      return child.type === PDFEmbedComponent || child.type === MathBlock;
+    }
+    return false;
+  });
+  return hasBlockChild ? (
+    <div {...props} className={styles['markdown-editor__paragraph']}>
+      {children}
+    </div>
+  ) : (
+    <p {...props} className={styles['markdown-editor__paragraph']}>
+      {children}
+    </p>
+  );
+};
+
+const Heading1 = ({ children, ...props }) => (
+  <h1 className={styles['markdown-editor__heading1']} {...props}>
+    {children}
+  </h1>
+);
+const Heading2 = ({ children, ...props }) => (
+  <h2 className={styles['markdown-editor__heading2']} {...props}>
+    {children}
+  </h2>
+);
+const Heading3 = ({ children, ...props }) => (
+  <h3 className={styles['markdown-editor__heading3']} {...props}>
+    {children}
+  </h3>
+);
+const Heading4 = ({ children, ...props }) => (
+  <h4 className={styles['markdown-editor__heading4']} {...props}>
+    {children}
+  </h4>
+);
+const Heading5 = ({ children, ...props }) => (
+  <h5 className={styles['markdown-editor__heading5']} {...props}>
+    {children}
+  </h5>
+);
+const Heading6 = ({ children, ...props }) => (
+  <h6 className={styles['markdown-editor__heading6']} {...props}>
+    {children}
+  </h6>
+);
+
+
+const LinkComponent = ({ href, children, ...props }) => (
+  <a
+    href={href}
+    target="_blank"
+    rel="noopener noreferrer"
+    className={styles['markdown-editor__link']}
+    {...props}
+  >
+    {children}
+  </a>
+);
+
+const Table = ({ children, ...props }) => (
+  <div className={styles['markdown-editor__table-container']} style={{ overflowX: 'auto' }}>
+    <table className={styles['markdown-editor__table']} {...props}>
+      {children}
+    </table>
+  </div>
+);
+
+const List = ({ ordered, children, ...props }) =>
+  ordered ? (
+    <ol className={styles['markdown-editor__list']} {...props}>
+      {children}
+    </ol>
+  ) : (
+    <ul className={styles['markdown-editor__list']} {...props}>
+      {children}
+    </ul>
+  );
+
+  const BlockQuote = ({ children, ...props }) => (
+    <blockquote className={styles['markdown-editor__blockquote']} {...props}>
+      {children}
+    </blockquote>
+);
+  
+const InlineCode = ({ children, ...props }) => (
+  <code className={styles['markdown-editor__code']} {...props}>
+    {children}
+  </code>
+);
+
+
+const CodeBlock = ({ children, ...props }) => (
+  <pre className={styles['markdown-editor__pre']} {...props}>
+    {children}
+  </pre>
+);
+
 const MarkdownEditor = ({ onTempFilesChange }) => {
   const dispatch = useDispatch();
   const markdown = useSelector((state) => state.journal.formData.markdown_content);
@@ -28,6 +161,7 @@ const MarkdownEditor = ({ onTempFilesChange }) => {
   const [uploadedFiles, setUploadedFiles] = useState(new Map());
   const [mode, setMode] = useState('both');
   const editorRef = useRef(null);
+  const previewRef = useRef(null);
 
   const handleChange = useCallback(
     (e) => {
@@ -36,21 +170,9 @@ const MarkdownEditor = ({ onTempFilesChange }) => {
     [dispatch]
   );
 
-  const toggleFullscreen = useCallback(async () => {
-    try {
-      if (!isFullscreen) {
-        if (editorRef.current) {
-          await editorRef.current.requestFullscreen();
-        }
-      } else {
-        if (document.exitFullscreen) {
-          await document.exitFullscreen();
-        }
-      }
-    } catch (err) {
-      console.error('Error toggling fullscreen:', err);
-    }
-  }, [isFullscreen]);
+  const toggleFullscreen = useCallback(() => {
+    setIsFullscreen((prev) => !prev);
+  }, []);
 
   useEffect(() => {
     const handleFullscreenChange = () => {
@@ -162,6 +284,18 @@ const MarkdownEditor = ({ onTempFilesChange }) => {
     debouncedCheck();
   }, [markdown, debouncedCheck]);
 
+  //  useEffect(() => {
+  //    if (previewRef.current) {
+  //      const headings = previewRef.current.querySelectorAll('h1, h2, h3, h4, h5, h6');
+  //      const headingsData = Array.from(headings).map((heading) => ({
+  //        id: heading.id,
+  //        text: heading.textContent,
+  //        level: Number(heading.tagName.substring(1)), // h1 -> 1 и т.д.
+  //      }));
+  //      console.log('Заголовки в этом превью:', headingsData);
+  //    }
+  //  }, [markdown]);
+
   return (
     <div
       ref={editorRef}
@@ -210,70 +344,44 @@ const MarkdownEditor = ({ onTempFilesChange }) => {
           />
         </div>
 
-        <div className={styles['markdown-editor__preview']} style={{ display: mode === 'markdown' ? 'none' : 'block' }}>
+        <div
+          ref={previewRef}
+          className={styles['markdown-editor__preview']}
+          style={{ display: mode === 'markdown' ? 'none' : 'block' }}>
           {markdown.trim() === '' && <div className={styles['markdown-editor__preview-placeholder']}>Предпросмотр</div>}
           <ReactMarkdown
             type="text"
             children={markdown}
             remarkPlugins={[remarkMath, remarkGfm, remarkBreaks]}
-            rehypePlugins={[rehypeRaw, rehypeKatex, rehypeSlug, rehypePdfEmbedder]}
+            rehypePlugins={[rehypeRaw, rehypeKatex, rehypePdfEmbedder, rehypeUniqueHeadingIds]}
             unwrapDisallowed={true}
             components={{
-              p: ({ children }) => {
-                const shouldNotWrap = React.Children.toArray(children).some(
-                  (child) =>
-                    child &&
-                    typeof child === 'object' &&
-                    (child.type === 'PDFEmbed' ||
-                      (child.type === 'div' && child.props && child.props.style && child.props.style.border === 'none'))
-                );
-                return shouldNotWrap ? <>{children}</> : <p>{children}</p>;
-              },
-              PDFEmbed: ({ src, title }) => (
-                <div style={{ margin: '1em 0' }}>
-                  <iframe src={src} title={title} width="100%" height="350px" style={{ border: 'none' }}>
-                    Ваш браузер не поддерживает встраивание PDF.
-                  </iframe>
-                </div>
-              ),
-              math: ({ value }) => (
-                <div style={{ margin: '1em 0' }}>
-                  <BlockMath>{value}</BlockMath>
-                </div>
-              ),
+              h1: Heading1,
+              h2: Heading2,
+              h3: Heading3,
+              h4: Heading4,
+              h5: Heading5,
+              h6: Heading6,
+              p: Paragraph,
+              PDFEmbed: PDFEmbedComponent,
+              math: MathBlock,
               inlineMath: ({ value }) => <InlineMath>{value}</InlineMath>,
-              img: ({ src, alt }) => (
-                <img
-                  src={src}
-                  alt={alt}
-                  style={{ maxWidth: '100%', height: 'auto', display: 'block', margin: '0 auto' }}
-                />
-              ),
-              a: ({ href, children }) => (
-                <a href={href} target="_blank" rel="noopener noreferrer">
+              img: ({ src, alt }) => <img src={src} alt={alt} className={styles['markdown-editor__img']} />,
+              a: LinkComponent,
+              table: Table,
+              ul: ({ children, ...props }) => (
+                <ul className={styles['markdown-editor__list']} {...props}>
                   {children}
-                </a>
+                </ul>
               ),
-              table: ({ children }) => (
-                <div style={{ overflowX: 'auto' }}>
-                  <table>{children}</table>
-                </div>
-              ),
-              ul: ({ children }) => <ul style={{ margin: '1em 0' }}>{children}</ul>,
-              ol: ({ children }) => <ol style={{ margin: '1em 0' }}>{children}</ol>,
-              blockquote: ({ children }) => (
-                <blockquote style={{ borderLeft: '4px solid #75BBFD', paddingLeft: '16px', color: '#666' }}>
+              ol: ({ children, ...props }) => (
+                <ol className={styles['markdown-editor__list']} {...props}>
                   {children}
-                </blockquote>
+                </ol>
               ),
-              code: ({ children }) => (
-                <code style={{ backgroundColor: '#f4f4f4', padding: '4px', borderRadius: '4px' }}>{children}</code>
-              ),
-              pre: ({ children }) => (
-                <pre style={{ backgroundColor: '#f4f4f4', padding: '10px', borderRadius: '6px', overflowX: 'auto' }}>
-                  {children}
-                </pre>
-              ),
+              blockquote: BlockQuote,
+              code: InlineCode,
+              pre: CodeBlock,
             }}
           />
         </div>
