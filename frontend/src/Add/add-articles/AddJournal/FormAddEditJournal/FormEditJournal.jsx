@@ -10,7 +10,6 @@ import {
   setFormData,
   clearFormData,
   updateAuthors,
-  fetchJournals,
   deleteMarkdownFile,
 } from '../../../../store/Slice/journalSlice';
 

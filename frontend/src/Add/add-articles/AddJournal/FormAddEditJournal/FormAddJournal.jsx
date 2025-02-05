@@ -331,7 +331,7 @@ export default function FormAddJournal({ setIsModalOpen }) {
 
           <div className={styles.form_container__block_gray_one}>
             <div className={styles.form_container__checkbox_block}>
-              <div>Тело статьи</div>
+              <div style={{marginTop: '-16px'}}>Тело статьи</div>
               <MarkdownEditor type="text" onTempFilesChange={(files) => (tempFilesRef.current = files)} />
             </div>
           </div>
