@@ -6,8 +6,8 @@ import remarkMath from 'remark-math';
 import remarkGfm from 'remark-gfm';
 import remarkBreaks from 'remark-breaks';
 import rehypeKatex from 'rehype-katex';
-import rehypePdfEmbedder from './rehypePdfEmbedder';
-import rehypeUniqueHeadingIds from './rehypeUniqueHeadingIds';
+import rehypePdfEmbedder from './utils/rehypePdfEmbedder';
+import rehypeUniqueHeadingIds from './utils/rehypeUniqueHeadingIds';
 import { BlockMath, InlineMath } from 'react-katex';
 import 'katex/dist/katex.min.css';
 import styles from './MarkdownEditor.module.scss';
@@ -19,7 +19,7 @@ import full_screen from './icons/full_screen.svg';
 import collapse from './icons/collapse.svg';
 import { useDispatch, useSelector } from 'react-redux';
 import { setFormData, uploadMarkdownFile, deleteMarkdownFile } from '../../../store/Slice/journalSlice';
-import { extractMarkdownLinks } from './utils';
+import { extractMarkdownLinks } from './utils/extractMarkdownLinks';
 
 
 const PDFEmbedComponent = ({ src, title }) => (
@@ -369,16 +369,8 @@ const MarkdownEditor = ({ onTempFilesChange }) => {
               img: ({ src, alt }) => <img src={src} alt={alt} className={styles['markdown-editor__img']} />,
               a: LinkComponent,
               table: Table,
-              ul: ({ children, ...props }) => (
-                <ul className={styles['markdown-editor__list']} {...props}>
-                  {children}
-                </ul>
-              ),
-              ol: ({ children, ...props }) => (
-                <ol className={styles['markdown-editor__list']} {...props}>
-                  {children}
-                </ol>
-              ),
+              ul: List,
+              ol: List,
               blockquote: BlockQuote,
               code: InlineCode,
               pre: CodeBlock,

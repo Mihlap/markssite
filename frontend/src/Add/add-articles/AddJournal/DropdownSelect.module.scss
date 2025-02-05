@@ -1,27 +1,11 @@
-.dropdown {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
+@import '../../../App.css';
 
-  & select {
-    padding: 10px 12px;
-    border: 1px solid var(--blue-75BBFD);
-    border-radius: 4px;
-    font-size: 16px;
-    color: var(--black-1D2E43);
-    background-color: white;
-    font-family: 'Raleway', sans-serif;
-
-    &:focus {
-      outline: none;
-      border-color: var(--blue-focus);
-      box-shadow: 0 0 0 2px rgba(117, 187, 253, 0.5);
-    }
-  }
-
-  & label {
-    font-size: 14px;
-    font-weight: 600;
-    color: var(--gray-757575);
-  }
+.form__group {
+  position: relative;
+  padding: 15px 0 0;
+  font-size: 1rem;
+  font-family: var(--font-raleway);
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1rem;
 }

@@ -1,19 +1,17 @@
 import React, { memo } from 'react';
-import styles from '../../../Add/add-project/formAdd/FormAddProject.module.scss';
+import styles from './InputField.module.scss';
 
 function InputField({
   label,
   name,
   value = '',
   onChange,
-  placeholder,
-  wrapperClassName,
-  inputClassName,
+  placeholder, 
   type = 'text',
   useHeadingBlock = false,
 }) {
   return useHeadingBlock ? (
-    <div className={`${styles.form_container__heading_block} ${wrapperClassName || ''}`}>
+    <div className={styles.form_container__heading_block}>
       {label && (
         <label htmlFor={name} className={styles.input_field__label}>
           {label}
@@ -22,7 +20,7 @@ function InputField({
       <input
         id={name}
         name={name}
-        className={`${styles.form_container__heading_block_input} ${inputClassName || ''}`}
+        className={styles.form_container__heading_block_input}
         type={type}
         value={value || ''}
         onChange={(e) => onChange(name, e.target.value)}
@@ -31,11 +29,11 @@ function InputField({
       />
     </div>
   ) : (
-    <div className={`${styles.form__group} ${styles.field} ${wrapperClassName || ''}`}>
+    <div className={styles.form__group}>
       <input
         id={name}
         name={name}
-        className={`${styles.form__field} ${inputClassName || ''}`}
+        className={styles.form__field}
         type={type}
         value={value || ''}
         onChange={(e) => onChange(name, e.target.value)}
