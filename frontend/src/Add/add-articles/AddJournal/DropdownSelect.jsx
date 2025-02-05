@@ -1,27 +1,21 @@
 import React from 'react';
 import Select from 'react-select';
-import styles from '../../../Add/add-project/formAdd/FormAddProject.module.scss';
-import customStyles from '../../add-project/formAdd/utils/customStyles';
+import styles from './DropdownSelect.module.scss';
+import { customsStyles } from './utils/customsStyles';
+
 
 export default function DropdownSelect({
-  label,
   name,
   options,
   value,
   onChange,
   isMulti,
-  placeholder,
-  components,
+  placeholder,  
   onFocus,
   onBlur,
 }) {
   return (
-    <div className={`${styles.form__group} ${styles.field}`}>
-      {label && (
-        <label htmlFor={name} className={styles.form__label}>
-          {label}
-        </label>
-      )}
+    <div className={styles.form__group}>   
       <Select
         id={name}
         name={name}
@@ -29,12 +23,10 @@ export default function DropdownSelect({
         onChange={onChange}
         options={options}
         isMulti={isMulti}
-        placeholder={placeholder}
-        components={components}
-        styles={customStyles}
+        placeholder={placeholder}        
+        styles={customsStyles}
         onFocus={onFocus}
-        onBlur={onBlur}
-        className={styles.form__field}     
+        onBlur={onBlur}        
       />
     </div>
   );
