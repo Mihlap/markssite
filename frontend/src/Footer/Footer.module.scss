@@ -112,7 +112,7 @@
     }
   }
 
-  &__documents {
+&__documents {
     font-family: var(--font-raleway);
     display: flex;
     padding-top: 46px;
@@ -134,6 +134,7 @@
       }
     }
   }
+
 
   &__copyright {
     position: relative;

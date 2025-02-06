@@ -1,17 +1,18 @@
 import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import ReactQuill from 'react-quill-new';
+import 'react-quill-new/dist/quill.snow.css';
 import Select from 'react-select';
 import { useDispatch } from 'react-redux';
 import { addVacancy } from '../../../store/Slice/vacanciesSlice.js';
 import { selectBlocks } from '../utils.js';
+import customStyle  from './customStyle.js';
 
 import styles from './FormAddVacancy.module.scss';
 
 export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
-  const [showNotification, setShowNotification] = useState(false);
+  const [showNotification] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [, setError] = useState(null);
 
   const dispatch = useDispatch();
   const type = selectedFilter === 'Вакансии' ? 'вакансия' : 'стажировка';
@@ -178,8 +179,9 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
             {selectBlocks.map((block, index) => (
               <div key={`${block.name}_${index}`} className={`${styles.group} some-unique-class`}>
                 <label
-                  className={`${styles.label1} ${isFocused[block.name] || formData[block.name] ? styles.focused1 : ''}`}
-                >
+                  className={`${styles.label1} ${
+                    isFocused[block.name] || formData[block.name] ? styles.focused1 : ''
+                  }`}>
                   <Select
                     className={`${styles.form__group} ${styles.field}`}
                     id={`${block.name}-input`}
@@ -195,82 +197,7 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
                     isSearchable={false}
                     isClearable={false}
                     menuShouldScrollIntoView={false}
-                    styles={{
-                      container: (provided) => ({
-                        ...provided,
-                        border: 'none',
-                        width: '100%',
-                      }),
-                      control: (provided, state) => ({
-                        ...provided,
-                        border: 'none',
-                        backgroundColor: 'transparent',
-                        boxShadow: state.isFocused ? 'none' : provided.boxShadow,
-                        borderBottom: `1px solid ${state.isFocused ? '#75BBFD' : '#959DA6'}`,
-                        borderColor: 'transparent',
-                        '&:hover': {
-                          borderBottomColor: '1px solid',
-                        },
-                      }),
-                      indicatorSeparator: (provided) => ({
-                        ...provided,
-                        display: 'none',
-                      }),
-                      multiValue: (provided) => ({
-                        ...provided,
-                        backgroundColor: 'transparent',
-                      }),
-                      singleValue: (provided) => ({
-                        ...provided,
-                        color: '#1D2E43',
-                        marginLeft: -5,
-                      }),
-                      placeholder: (provided) => ({
-                        ...provided,
-                        marginLeft: -5,
-                        color: '#959DA6',
-                      }),
-                      option: (provided, state) => ({
-                        ...provided,
-                        backgroundColor: state.isFocused ? '#75BBFD' : 'transparent',
-                        color: state.isFocused ? 'white' : 'inherit',
-                      }),
-                      dropdownIndicator: (provided, state) => ({
-                        ...provided,
-                        transform: state.selectProps.menuIsOpen ? 'rotate(180deg)' : null,
-                        transition: 'transform 0.3s ease-in-out',
-                        color: state.isFocused ? '#75BBFD' : '#C0C5CB',
-                      }),
-                      menuList: (provided) => ({
-                        ...provided,
-                        '&::-webkit-scrollbar': {
-                          width: '4px',
-                        },
-                        '&::-webkit-scrollbar-thumb': {
-                          backgroundColor: '#C0C5CB',
-                          borderRadius: '4px',
-                        },
-                        '&::-webkit-scrollbar-track': {
-                          backgroundColor: 'transparent',
-                        },
-                        '&::-ms-scrollbar': {
-                          width: '4px',
-                        },
-                        '&::-ms-scrollbar-thumb': {
-                          backgroundColor: '#C0C5CB',
-                          borderRadius: '4px',
-                        },
-                        '&::-ms-scrollbar-track': {
-                          backgroundColor: 'transparent',
-                        },
-                        margin: '6px',
-                      }),
-                      menu: (provided) => ({
-                        ...provided,
-                        boxShadow: 'none',
-                        backgroundColor: '#EBECEE',
-                      }),
-                    }}
+                    styles={customStyle}
                   />
                 </label>
               </div>

@@ -3,6 +3,7 @@ const {
   SwitchingFilterProjects,
   SwitchingFilterArticle,
   SwitchingFilterRegistration,
+  SwitchingFilterJournal,
 } = require('../../db/models');
 
 const router = express.Router();
@@ -106,6 +107,39 @@ router.get('/button3', async (req, res) => {
     }
   } catch (error) {
       console.error('Error while processing /button3:', error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// << ============ SwitchingFilterJournal ============ >>
+
+router.put('/journal', async (req, res) => {
+  try {
+    const { isActiveForButton4 } = req.body;
+  
+    // Удалить все записи
+    await SwitchingFilterJournal.destroy({ truncate: true });
+
+    // Создать новую запись с заданным значением isActive
+    await SwitchingFilterJournal.create({
+      state: isActiveForButton4,
+    });
+
+    res.json({ success: true, message: 'Status updated successfully' });
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+router.get('/journal', async (req, res) => {
+  try {
+    const record = await SwitchingFilterJournal.findOne();
+    if (record) {
+      res.json({ success: true, isActiveForButton4: record.state });
+    } else {
+      res.status(404).json({ success: false, message: 'No records found' });
+    }
+  } catch (error) {
     res.status(500).json({ success: false, message: error.message });
   }
 });

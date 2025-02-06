@@ -2,7 +2,7 @@
 // import { Link } from "react-router-dom";
 import styles from './SliderItem.module.css';
 
-const Slideritem = ({ title, src, descriptionArticle, city, dataMonthYear, id }) => {
+const Slideritem = ({ title, src, descriptionArticle, city, dataMonthYear }) => {
   return (
     <div className={`${styles.slider_item}${styles.swiper_slide}`}>
       <div className={styles.slider_image_wrapper}>

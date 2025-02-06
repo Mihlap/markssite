@@ -78,16 +78,6 @@ export default function AddNavbar({ user, handleReturn }) {
     }
   }, [indicatorX, indicatorY]);
 
-  const handleItemClick = useCallback(
-    (event, itemName, itemPath) => {
-      event.preventDefault();
-      setSelectedItem(itemName);
-      localStorage.setItem('selectedItem', itemName);
-      navigate(itemPath);
-    },
-    [navigate]
-  );
-
   const logouthandler = useCallback(async () => {
     try {
       dispatch(logoutUser());
@@ -102,42 +92,42 @@ export default function AddNavbar({ user, handleReturn }) {
     () => [
       {
         name: 'home',
-        path: 'home',
+        path: '/admin/home',
         icon: pencilIcon,
         label: 'Главная',
         visible: isPokemonUser || isObezyankaaUser || isManagerUser,
       },
       {
         name: 'add-a-project',
-        path: 'add-a-project',
+        path: '/admin/add-a-project',
         icon: fireIcon,
         label: 'Проекты',
         visible: isPokemonUser || isObezyankaaUser || isManagerUser,
       },
       {
         name: 'add-a-articles',
-        path: 'add-a-articles',
+        path: '/admin/add-a-articles',
         icon: projectorIcon,
         label: 'Публикации',
         visible: isPokemonUser || isObezyankaaUser || isManagerUser,
       },
       {
         name: 'add-a-company',
-        path: 'add-a-company',
+        path: '/admin/add-a-company',
         icon: caseIcon,
         label: 'О компании',
         visible: isPokemonUser || isObezyankaaUser || isManagerUser,
       },
       {
         name: 'add-hr-portal',
-        path: 'add-hr-portal',
+        path: '/admin/add-hr-portal',
         icon: hrIcon,
         label: 'HR портал',
         visible: isPokemonUser || isObezyankaaUser || isHr778User,
       },
       {
         name: 'add-a-applications',
-        path: 'add-a-applications',
+        path: '/admin/add-a-applications',
         icon: settingIcon,
         label: 'Управление',
         visible: isPokemonUser || isObezyankaaUser,
@@ -165,7 +155,11 @@ export default function AddNavbar({ user, handleReturn }) {
                           selectedItem === item.name ? styles.active : ''
                         }`}
                         to={item.path}
-                        onClick={(event) => handleItemClick(event, item.name, item.path)}>
+                        onClick={() => {
+                        setSelectedItem(item.name);
+                        localStorage.setItem('selectedItem', item.name);
+                        }}
+                      >
                         <img className={styles.add_navbar_container__item__icons} src={item.icon} alt={item.icon} />
                         <p className={styles.add_navbar_container__title__ipad}>{item.label}</p>
                       </Link>

@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import Select from 'react-select';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import ReactQuill from 'react-quill-new';
+import 'react-quill-new/dist/quill.snow.css';
 import { transliterate } from 'transliteration';
 import { useDispatch } from 'react-redux';
 import styles from '../../add-project/formAdd/FormAddProject.module.scss';
@@ -19,7 +19,7 @@ import compressImageFile from 'browser-image-compression';
 import ConstructorPage from '../constructor/ConstructorPage';
 import { PublicationContainer, PublicationIndicator } from '../../add-project/formAdd/utils/CustomSelectComponents';
 
-export default function FormAddArticles({ setIsModalOpen }) {
+export default function FormAddNews({ setIsModalOpen }) {
   const dispatch = useDispatch();
   const [selectedCompetencies, setSelectedCompetencies] = useState([]);
   const [previewPhotos, setPreviewPhotos] = useState([]);
@@ -70,7 +70,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
 
   useEffect(() => {
     quillRefs.forEach((quillRef) => applyStylesToQuillEditor(quillRef));
-  }, [quillRef1, quillRef2, applyStylesToQuillEditor]);
+  }, [quillRefs, quillRef1, quillRef2, applyStylesToQuillEditor]);
 
   const [, setInputValue] = useState('');
   const [openConstructor, setOpenConstructor] = useState(false);
@@ -599,7 +599,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
           Сначала заполните все обязательные поля в предыдущем блоке❗
         </div>
       )}
-      <div className={styles.form_container__title}>Новая публикация</div>
+      <div className={styles.form_container__title}>Создай новость</div>
       <div className={styles.form_container__block_form}>
         <form className={styles.form_container__form} onSubmit={submitHandler}>
           <div className={styles.form_container__block_gray_one}>
@@ -616,7 +616,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
                 // required
               />
               <label htmlFor="title" className={styles.form__label}>
-                Название статьи
+                Название
               </label>
             </div>
 
@@ -633,7 +633,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
                 onChange={(event) => changeHandler(event, inputData, setInputData)}
               />
               <label htmlFor="author" className={styles.form__label}>
-                Автор статьи
+                Автор
               </label>
             </div>
 
@@ -843,7 +843,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
                 placeholder="Нет ограничения по символам"
               />
               <label htmlFor="" className={styles.form_container__textarea_label_constructor}>
-                Текст статьи
+                Текст
               </label>
             </div>
           </div>
@@ -851,7 +851,7 @@ export default function FormAddArticles({ setIsModalOpen }) {
           <div className={`${styles.photo_orientation_selector} ${styles.flex_block_gap}`}>
             <div className={styles.form_container__checkbox_block}>
               <div>
-                Фото автора статьи
+                Фото автора текста
                 {/* <span> для отображения на странице «Проекты»</span> */}
               </div>
             </div>

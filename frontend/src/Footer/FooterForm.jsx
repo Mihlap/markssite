@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, useCallback } from 'react';
 import { useLocation, useNavigate } from 'react-router';
-import InputMask from 'react-input-mask-next';
+import { InputMask } from '@react-input/mask';
 import styles from './FooterForm.module.scss';
 import FooterInfo from './FooterInfo';
 import mark from '../icons/footer-form-1.svg';
@@ -154,89 +154,90 @@ const FooterForm = ({ handleMouseEnterFooterMore, handleMouseLeaveFooter }) => {
     window.scrollTo(0, 0);
   }, []);
 
-  return (   
-      <section className={styles.FooterForm}>
-        <div className={styles.FooterForm__container}>
-          <div className={styles.FooterForm__top}>
-            <div className={styles.FooterForm__left}>
-              <img src={mark} alt="Mark" />
-            </div>
-            <div className={styles.FooterForm__right}>
-              <div className={styles.FooterForm__subtitle}>Опишите ваш запрос!</div>
-              <form ref={formRef} className={styles.FooterForm__form} onSubmit={handleSubmit}>
-                <div
-                  className={`${styles.FooterForm__input} ${styles.FooterForm__input_text}`}
-                  onMouseEnter={handleMouseEnterFooterMore}
-                  onMouseLeave={handleMouseLeaveFooter}>
-                  <textarea maxLength={500} onFocus={handleFocus} onBlur={handleBlur} name="text" placeholder=" " />
-                  <span className={styles.FooterForm__placeholder}>{placeholderText}</span>
-                  <label htmlFor="text" className={styles.FooterForm__border}></label>
-                </div>
-                <div
-                  className={`${styles.FooterForm__input} ${styles.FooterForm__input_name}`}
-                  onMouseEnter={handleMouseEnterFooterMore}
-                  onMouseLeave={handleMouseLeaveFooter}>
-                  <input
-                    name="name"
-                    type="text"
-                    id="name"
-                    placeholder=" "
-                    onInput={handleNameInput}
-                    onFocus={handleFocus}
-                    onBlur={validateInput}
-                  />
-                  <span className={styles.FooterForm__placeholder}>Ваше имя</span>
-                </div>
-                <div
-                  className={`${styles.FooterForm__input} ${styles.FooterForm__input_tel}`}
-                  onMouseEnter={handleMouseEnterFooterMore}
-                  onMouseLeave={handleMouseLeaveFooter}>
-                  <InputMask
-                    mask="+7 (999) 999-99-99"
-                    ref={inputRef}
-                    maskChar={null}
-                    onBlur={validateInput}
-                    name="tel"
-                    placeholder=" "
-                    onFocus={handleTelFocus}
-                  />
-                  <span className={styles.FooterForm__placeholder}>Телефон</span>
-                  <span className={styles.FooterForm__textError}>{telError}</span>
-                </div>
-                <div className={styles.FooterForm__conclusion}>
-                  <div
-                    className={styles.FooterForm__agreement}
-                    onMouseEnter={handleMouseEnterFooterMore}
-                    onMouseLeave={handleMouseLeaveFooter}>
-                    Нажав на кнопку, соглашаюсь на{' '}
-                    <a href="./Information" target="_blank">
-                      обработку персональных данных
-                    </a>
-                  </div>
-                  <button
-                    type="submit"
-                    className={styles.FooterForm__submit}
-                    onMouseEnter={handleMouseEnterFooterMore}
-                    onMouseLeave={handleMouseLeaveFooter}>
-                    Отправить
-                  </button>
-                </div>
-              </form>
-            </div>
+  return (
+    <section className={styles.FooterForm}>
+      <div className={styles.FooterForm__container}>
+        <div className={styles.FooterForm__top}>
+          <div className={styles.FooterForm__left}>
+            <img src={mark} alt="Mark" />
           </div>
-          <div className={styles.FooterForm__bottom}>
-            <FooterInfo
-              handleMouseEnterFooterMore={handleMouseEnterFooterMore}
-              handleMouseLeaveFooter={handleMouseLeaveFooter}
-            />
+          <div className={styles.FooterForm__right}>
+            <div className={styles.FooterForm__subtitle}>Опишите ваш запрос!</div>
+            <form ref={formRef} className={styles.FooterForm__form} onSubmit={handleSubmit}>
+              <div
+                className={`${styles.FooterForm__input} ${styles.FooterForm__input_text}`}
+                onMouseEnter={handleMouseEnterFooterMore}
+                onMouseLeave={handleMouseLeaveFooter}>
+                <textarea maxLength={500} onFocus={handleFocus} onBlur={handleBlur} name="text" placeholder=" " />
+                <span className={styles.FooterForm__placeholder}>{placeholderText}</span>
+                <label htmlFor="text" className={styles.FooterForm__border}></label>
+              </div>
+              <div
+                className={`${styles.FooterForm__input} ${styles.FooterForm__input_name}`}
+                onMouseEnter={handleMouseEnterFooterMore}
+                onMouseLeave={handleMouseLeaveFooter}>
+                <input
+                  name="name"
+                  type="text"
+                  id="name"
+                  placeholder=" "
+                  onInput={handleNameInput}
+                  onFocus={handleFocus}
+                  onBlur={validateInput}
+                />
+                <span className={styles.FooterForm__placeholder}>Ваше имя</span>
+              </div>
+              <div
+                className={`${styles.FooterForm__input} ${styles.FooterForm__input_tel}`}
+                onMouseEnter={handleMouseEnterFooterMore}
+                onMouseLeave={handleMouseLeaveFooter}>
+                <InputMask
+                  mask="+7 (___) ___-__-__"
+                  replacement={{ _: /\d/ }}
+                  showMask={true}
+                  ref={inputRef}
+                  onBlur={validateInput}
+                  name="tel"
+                  placeholder=" "
+                  onFocus={handleTelFocus}
+                />
+                <span className={styles.FooterForm__placeholder}>Телефон</span>
+                <span className={styles.FooterForm__textError}>{telError}</span>
+              </div>
+              <div className={styles.FooterForm__conclusion}>
+                <div
+                  className={styles.FooterForm__agreement}
+                  onMouseEnter={handleMouseEnterFooterMore}
+                  onMouseLeave={handleMouseLeaveFooter}>
+                  Нажав на кнопку, соглашаюсь на{' '}
+                  <a href="./Information" target="_blank">
+                    обработку персональных данных
+                  </a>
+                </div>
+                <button
+                  type="submit"
+                  className={styles.FooterForm__submit}
+                  onMouseEnter={handleMouseEnterFooterMore}
+                  onMouseLeave={handleMouseLeaveFooter}>
+                  Отправить
+                </button>
+              </div>
+            </form>
           </div>
         </div>
-        {isLoading && (
-          <div className={styles.LoadingOverlay}>
-            <LoadingCircle />
-          </div>
-        )}
-      </section>      
+        <div className={styles.FooterForm__bottom}>
+          <FooterInfo
+            handleMouseEnterFooterMore={handleMouseEnterFooterMore}
+            handleMouseLeaveFooter={handleMouseLeaveFooter}
+          />
+        </div>
+      </div>
+      {isLoading && (
+        <div className={styles.LoadingOverlay}>
+          <LoadingCircle />
+        </div>
+      )}
+    </section>
   );
 };
 

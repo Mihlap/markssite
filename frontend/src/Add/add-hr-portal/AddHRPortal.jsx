@@ -65,7 +65,6 @@ export default function AddHRPortal({ user }) {
       'Главная hr': pencilIcon,
     };
 
-
   const updateModalBlockHeight = useCallback(() => {
     const windowHeight = window.innerHeight;
     const maxHeight = Math.min(windowHeight - 100, 1900);

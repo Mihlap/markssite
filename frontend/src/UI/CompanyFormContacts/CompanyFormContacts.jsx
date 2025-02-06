@@ -1,9 +1,14 @@
 import React, { useState, useCallback, useRef } from 'react';
-import InputMask from 'react-input-mask-next';
+import { InputMask } from '@react-input/mask';
 import 'react-phone-number-input/style.css';
 import styles from './CompanyFormContacts.module.css';
 
- const Host = process.env.REACT_APP_SERVER_HOST;
+const Host = process.env.REACT_APP_SERVER_HOST;
+ 
+const maskOptions = {
+  mask: '+7 (___) ___-__-__',
+  replacement: { _: /\d/ },
+};
 
 const CompanyFormContacts = ({
   handleMouseEnter,
@@ -30,36 +35,42 @@ const CompanyFormContacts = ({
   const phoneInputRef = useRef(null);
 
  
-  const handleFocus = useCallback((event) => {
-    const name = event.target.name;
-    setIsFocused((prevState) => ({
-      ...prevState,
-      [name]: true,
-    }));
-    if (name === 'phone') {
-      setInputLineColor('#FF7F6A');
-    } else {
-      setInputLineColor('#959DA6');
-    }
-  }, []);
+  const handleFocus = useCallback(
+    (event) => {
+      const name = event.target.name;
+      setIsFocused((prevState) => ({
+        ...prevState,
+        [name]: true,
+      }));
+      if (name === 'phone') {
+        setInputLineColor('#FF7F6A');
+        if (!formData.phone) {
+          setFormData((prev) => ({ ...prev, phone: maskOptions.mask }));
+        }
+      } else {
+        setInputLineColor('#959DA6');
+      }
+    },
+    [formData.phone]
+  );
 
   const handleBlur = useCallback(
     (event) => {
       const name = event.target.name;
-      if (!formData[name]) {
+      // Если значение не введено или (для телефона) оно осталось равным шаблону – сбрасываем фокус и значение
+      if (!formData[name] || (name === 'phone' && formData.phone === maskOptions.mask)) {
         setIsFocused((prevState) => ({
           ...prevState,
           [name]: false,
         }));
+        if (name === 'phone') {
+          setFormData((prev) => ({ ...prev, phone: '' }));
+        }
       }
       if (name === 'phone') {
         const phoneNumberRegex = /^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/;
         setIsValid(phoneNumberRegex.test(formData.phone));
-        if (!phoneNumberRegex.test(formData.phone)) {
-          setInputLineColor('#959DA6');
-        } else {
-          setInputLineColor('#959DA6');
-        }
+        setInputLineColor('#959DA6');
       }
     },
     [formData]
@@ -165,9 +176,9 @@ const CompanyFormContacts = ({
                 <InputMask
                   id="phone-input"
                   ref={phoneInputRef}
-                  mask="+7 (999) 999-99-99"
-                  // maskChar={null}
-                  alwaysShowMask={false}
+                  mask="+7 (___) ___-__-__"
+                  replacement={{ _: /\d/ }}
+                  showMask={true}
                   name="phone"
                   placeholder=""
                   value={formData.phone}

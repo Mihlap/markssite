@@ -6,10 +6,10 @@ async function uploadFileToS3(file, folder) {
   const fileName = file.originalname;
   const uploadParams = {
     Bucket: BUCKET_NAME,
-    Key: `${folder}/${fileName}`, // Путь и имя файла в S3
-    Body: file.buffer,  // Содержимое файла
-    ContentType: file.mimetype, // MIME-тип файла
-    ACL: 'public-read', // Публичный доступ
+    Key: `${folder}/${fileName}`,
+    Body: file.buffer,
+    ContentType: file.mimetype,
+    ACL: 'public-read',
   };
 
   try {
@@ -18,10 +18,9 @@ async function uploadFileToS3(file, folder) {
       params: uploadParams,
     });
 
-    const data = await upload.done();
+    await upload.done();
     const fileUrl = `https://${BUCKET_NAME}.s3.timeweb.cloud/${folder}/${fileName}`;
-
-     return fileUrl; 
+    return fileUrl; 
   } catch (err) {
     console.error('Ошибка при загрузке файла на S3:', err);
     throw err;
