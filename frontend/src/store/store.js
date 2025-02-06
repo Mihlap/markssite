@@ -17,6 +17,7 @@ import activePageReducer from './Slice/activePageSlice';
 import formAddSlideSlice from './Slice/vacancyMainSlideCardSlice';
 import formAddEventSlice from './Slice/vacancyEventSlice';
 import modalSlice from './Slice/modalSlice';
+import journalSlice from './Slice/journalSlice';
 
 export default configureStore({
   reducer: {
@@ -30,6 +31,7 @@ export default configureStore({
     searchvacancy: searchVacancyMainSlice,
     searchArticlePublicLeft: searchArticlePublicLeft,
     searchArticlePublicRight: searchArticlePublicRightReducer,
+    journal: journalSlice,
     cursor: cursorReducer,
     toggle: toggleSlice,
     vacancies: vacanciesSlice,

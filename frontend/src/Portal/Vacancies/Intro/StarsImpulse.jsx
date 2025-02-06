@@ -20,9 +20,9 @@ function Bauble({ vec = new THREE.Vector3(), scale, r = THREE.MathUtils.randFloa
   const api = useRef();
 
   useFrame((_, delta) => {
-    delta = Math.min(0.1, delta); 
+    delta = Math.min(0.1, delta);
     if (api.current && delta > 0) {
-      const impulseStrength = -1000 * delta * scale; 
+      const impulseStrength = -1000 * delta * scale;
       api.current.applyImpulse(vec.copy(api.current.translation()).normalize().multiplyScalar(impulseStrength));
     }
   });
@@ -39,12 +39,7 @@ function Bauble({ vec = new THREE.Vector3(), scale, r = THREE.MathUtils.randFloa
       <BallCollider args={[1.4]} />
       <group>
         <mesh castShadow scale={0.7 * scale} geometry={nodes.stars_01.geometry}>
-          <meshStandardMaterial
-            color="#ffffff"
-            emissive="#888888"
-            metalness={0}
-            roughness={0.2}
-          />
+          <meshStandardMaterial color="#ffffff" emissive="#888888" metalness={0} roughness={0.2} />
         </mesh>
       </group>
     </RigidBody>

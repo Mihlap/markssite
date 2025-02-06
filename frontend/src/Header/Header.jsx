@@ -6,7 +6,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { MotionPathPlugin } from 'gsap/MotionPathPlugin';
 import SwiperContainer from './Swiper-Phone/SwiperContainer';
-import SwiperContainerProgect from './Swiper-project/SwiperContainerProgect';
+import SwiperContainerProject from './Swiper-project/SwiperContainerProject';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Navigation } from 'swiper';
 import SliderHeader from '../UI/SliderHeader/SliderHeader';
@@ -39,9 +39,11 @@ const Header = React.memo(
       medium: `${bucket_url}/images/video/main_company_ipad.mp4`,
       small: `${bucket_url}/images/video/main_company_mobile.mp4`,
     };
+
     // const cursorVariant = useSelector((state) => state.cursor);
 
     const [, setCurrentSlideIndex] = useState(0);
+    
     const [videoSrc, setVideoSrc] = useState(null);
     const sliderCardRef = useRef(null);
 
@@ -337,8 +339,9 @@ const Header = React.memo(
 
                         const firstImagePathRight = firstPhotoRight?.includes('https')
                           ? firstPhotoRight
-                          : `${bucket_url}/images/imageArticle/${encodeURIComponent(firstPhotoRight) || defaultImagePath}`;
-
+                          : `${bucket_url}/images/imageArticle/${
+                              encodeURIComponent(firstPhotoRight) || defaultImagePath
+                            }`;
 
                         return (
                           <Link to={`/publication/${article.id}`} key={article.id}>
@@ -435,7 +438,7 @@ const Header = React.memo(
             Проекты
           </div>
           <div className={styles.swiper_progect_container}>
-            <SwiperContainerProgect projects={projects} />
+            <SwiperContainerProject projects={projects} />
           </div>
           <div className={styles.main_project}>
             <Swiper
@@ -498,8 +501,9 @@ const Header = React.memo(
                           src={
                             project.imageProject?.includes('https')
                               ? project.imageProject
-                              : `${bucket_url}/images/imageAdd/${project.imageProject ? project.imageProject : project.imageTitle
-                              }`
+                              : `${bucket_url}/images/imageAdd/${
+                                  project.imageProject ? project.imageProject : project.imageTitle
+                                }`
                           }
                           alt={project.imageProject ? project.imageProject : project.imageTitle}
                           onError={(e) => {

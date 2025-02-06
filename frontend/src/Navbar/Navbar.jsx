@@ -1,16 +1,14 @@
 import React, { memo, useState, useEffect, useCallback } from 'react';
 import styles from './Navbar.module.scss';
-import { Link, useLocation } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 // import { handleScroll, handleItemClick, handlePath, handleStoredClass } from './utils/navbarUtils';
 import NavBarPhone from './NavBarPhone/NavBarPhone';
 
 
 const Navbar = memo(({ handleMouseEnter, handleMouseLeave }) => {
-  const [activeClass, setActiveClass] = useState('');
   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [visible, setVisible] = useState(true);
-  const [scrollDelta, setScrollDelta] = useState(0);
-  const location = useLocation();
+  const [scrollDelta, setScrollDelta] = useState(0);  
 
 const handleScroll = useCallback(() => {
   const currentScrollPos = window.scrollY;
@@ -37,40 +35,20 @@ const handleScroll = useCallback(() => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, [handleScroll]);
-
- 
-
-  useEffect(() => {
-    const currentPath = location.pathname;
-    setActiveClass(currentPath);
-  }, [location]);
-
-  const handleItemClick = useCallback((path) => {
-    setActiveClass(path);
-    localStorage.setItem('activeClass', path);
-  }, []);
-
-  useEffect(() => {
-    const storedActiveClass = localStorage.getItem('activeClass');
-    if (storedActiveClass) {
-      setActiveClass(storedActiveClass);
-    }
-  }, []);
-
   
   return (
     <header className={`${styles.Navbar} ${visible ? '' : styles.hidden}`}>
       <nav className={styles.Navbar__nav}>
         <div className={styles.Navbar__container}>
           <div className={styles.Navbar__logo}>
-            <Link
+            <NavLink
               onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
-              className={` ${styles.Navbar__title} ${activeClass === '/'}`}
+              onMouseLeave={handleMouseLeave}              
               to="/"
-              onClick={() => handleItemClick('/')}>
-              <h1>MARKS GROUP</h1>              
-            </Link>
+              className={({ isActive }) => `${styles.Navbar__title} ${isActive ? styles.Navbar__item_open : ''}`}              
+            >
+              <h1>MARKS GROUP</h1>
+            </NavLink>
           </div>
           <ul className={styles.Navbar__list}>
             {/* <Link
@@ -91,68 +69,62 @@ const handleScroll = useCallback(() => {
             >
               <div>login</div>
             </Link> */}
-            <Link
+            <NavLink
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
-              className={`${styles.Navbar__item} ${activeClass === '/' ? styles.Navbar__item_open : ''}`}
-              to="/"
-              onClick={() => handleItemClick('/')}>
+              className={({ isActive }) => `${styles.Navbar__item} ${isActive ? styles.Navbar__item_open : ''}`}
+              to="/"             
+            >
               <div>Главная</div>
-            </Link>
-            <Link
+            </NavLink>
+            <NavLink
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
-              className={`${styles.Navbar__item} ${activeClass === '/project' ? styles.Navbar__item_open : ''}`}
-              to="/project"
-              onClick={() => handleItemClick('/project')}>
+              className={({ isActive }) => `${styles.Navbar__item} ${isActive ? styles.Navbar__item_open : ''}`}
+              to="/project"             
+            >
               <div>Проекты</div>
-            </Link>
-            <Link
+            </NavLink>
+            <NavLink
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
-              className={`${styles.Navbar__item} ${activeClass === '/publication' ? styles.Navbar__item_open : ''}`}
-              to="/publication"
-              onClick={() => handleItemClick('/publication')}>
+              className={({ isActive }) => `${styles.Navbar__item} ${isActive ? styles.Navbar__item_open : ''}`}
+              to="/publication"              
+            >
               <div>Публикации</div>
-            </Link>
-            <Link
+            </NavLink>
+            <NavLink
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
-              className={`${styles.Navbar__item} ${activeClass === '/company' ? styles.Navbar__item_open : ''}`}
-              to="/company"
-              onClick={() => handleItemClick('/company')}>
+              className={({ isActive }) => `${styles.Navbar__item} ${isActive ? styles.Navbar__item_open : ''}`}
+              to="/company"              
+            >
               <div>О Компании</div>
-            </Link>
-            <Link
+            </NavLink>
+            <NavLink
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
-              className={`${styles.Navbar__item} ${
-                activeClass === '/portal/vacanciesMain' ? styles.Navbar__item_open : ''
-              }`}
+              className={({ isActive }) => `${styles.Navbar__item} ${isActive ? styles.Navbar__item_open : ''}`}
               to="/portal/vacanciesMain"
-              target="_blank"
-              onClick={() => handleItemClick('/portal/vacanciesMain')}>
+              target="_blank"            
+            >
               <div>HR портал</div>
-            </Link>
-            <Link
+            </NavLink>
+            <NavLink
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
-              className={`${styles.Navbar__item} ${activeClass === '/contacts' ? styles.Navbar__item_open : ''}`}
-              to="/contacts"
-              onClick={() => handleItemClick('/contacts')}>
+              className={({ isActive }) => `${styles.Navbar__item} ${isActive ? styles.Navbar__item_open : ''}`}
+              to="/contacts"              
+            >
               <div>Контакты</div>
-            </Link>
-            <Link
+            </NavLink>
+            <NavLink
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
-              className={`${styles.Navbar__item} ${activeClass === '/marksgroup' ? styles.Navbar__item_open : ''}`}
-              to="#"
-              onClick={(e) => {
-                e.preventDefault();
-                window.location.href = 'https://marksgroup.org/';
-              }}>
+              to="https://marksgroup.org/"           
+              className={({ isActive }) => `${styles.Navbar__item} ${isActive ? styles.Navbar__item_open : ''}`}>
               <div>EN</div>
-            </Link>
+            </NavLink>
           </ul>
         </div>
       </nav>

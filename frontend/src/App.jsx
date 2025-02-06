@@ -100,10 +100,10 @@ export default function App() {
   // const handleMouseEnterFooterWhiteMore = () => dispatch(textFooterWhiteEnter());
   // const handleMouseLeaveFooterWhite = () => dispatch(textLeaveWhiteFooter());
 
-  const handleReturn = () => {
-    dispatch(resetCurrentPage());
-    localStorage.removeItem('activeClass');
-  };
+  // const handleReturn = () => {
+  //   dispatch(resetCurrentPage());
+  //   localStorage.removeItem('activeClass');
+  // };
 
   // Таймаут для прелоудера
   useEffect(() => {
@@ -116,6 +116,12 @@ export default function App() {
       setLoading(false);
     }
   }, [videoLoaded]);
+
+  useEffect(() => {
+    if (!location.pathname.startsWith('/admin')) {
+      dispatch(resetCurrentPage());
+    }
+  }, [location.pathname, dispatch]);
 
   return (
     <HelmetProvider>
@@ -291,14 +297,7 @@ export default function App() {
                   <Route path="/login" element={<Login />} />
                   {isActive && <Route path="/signup" element={<SignUpPage />} />}
                   <Route path="/test" element={<LoadingModal />} />
-                  {user && (
-                    <Route path="/admin">
-                      <Route
-                        path="*"
-                        element={<Add user={user} onPageChange={handlePageChange} handleReturn={handleReturn} />}
-                      />
-                    </Route>
-                  )}
+                  {user && <Route path="/admin/*" element={<Add user={user} onPageChange={handlePageChange} />} />}
                 </Routes>
               </div>
             </CSSTransition>
@@ -309,17 +308,17 @@ export default function App() {
             <>
               {isPortalPage ? (
                 <Footer
-                  // handleMouseEnterFooter={handleMouseEnterFooter}
-                  // handleMouseEnterFooterMore={handleMouseEnterFooterMore}
-                  // handleMouseLeaveFooter={handleMouseLeaveFooter}
-                  // handleMouseLeave={handleMouseLeave}
+                  handleMouseEnterFooter={handleMouseEnterFooter}
+                  handleMouseEnterFooterMore={handleMouseEnterFooterMore}
+                  handleMouseLeaveFooter={handleMouseLeaveFooter}
+                  handleMouseLeave={handleMouseLeave}
                 />
               ) : (
                 <FooterCircle
-                  // handleMouseEnterFooter={handleMouseEnterFooter}
-                  // handleMouseEnterFooterMore={handleMouseEnterFooterMore}
-                  // handleMouseLeaveFooter={handleMouseLeaveFooter}
-                  // handleMouseLeave={handleMouseLeave}
+                  handleMouseEnterFooter={handleMouseEnterFooter}
+                  handleMouseEnterFooterMore={handleMouseEnterFooterMore}
+                  handleMouseLeaveFooter={handleMouseLeaveFooter}
+                  handleMouseLeave={handleMouseLeave}
                 />
               )}
             </>

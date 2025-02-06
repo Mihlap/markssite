@@ -1,5 +1,5 @@
-import React, { useEffect, useState, useCallback, useMemo } from 'react';
-import { YMaps, Map, ZoomControl } from '@pbe/react-yandex-maps';
+import React, { useEffect, useState, useCallback, useMemo, memo } from 'react';
+import { YMaps, Map, ZoomControl } from '@r3flector/react-yandex-maps';
 import popupsData from './popupsdata';
 import styles from './Mapbox.module.css';
 import Marker from './Marker';
@@ -7,7 +7,7 @@ import Popup from './Popup';
 
 const apiKey = process.env.REACT_APP_API_KEY;
 
-const Mapbox3D = React.memo(() => {
+const Mapbox3D = memo(() => {
   const [selectedPopup, setSelectedPopup] = useState(null);
   const [activeMarkerIndex, setActiveMarkerIndex] = useState(null);
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
