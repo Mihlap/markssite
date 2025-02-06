@@ -1,11 +1,10 @@
-import { useRef, useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import SwiperCore, { Navigation, Pagination, Autoplay } from 'swiper';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/swiper-bundle.css';
-import Slideritem from './SliderItem';
+import SliderItems from './SliderItem';
 import styles from './SwiperContainer.css';
 import { Link } from 'react-router-dom';
 
@@ -49,7 +48,7 @@ export default function SwiperContainer({ article1, article2 }) {
               return (
                 <SwiperSlide className="swiper_container_item_articles" key={`${item.id}_${index}`}>
                   <Link key={item.id} to={`/publication/${item.id}`}>
-                    <Slideritem
+                    <SliderItems
                       title={item.title}
                       src={
                         firstPhoto?.includes('https') ? firstPhoto : `${bucket_url}/images/imageArticle/${firstPhoto}`

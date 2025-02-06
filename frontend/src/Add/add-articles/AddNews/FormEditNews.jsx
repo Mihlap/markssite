@@ -3,7 +3,8 @@ import Select from 'react-select';
 import { transliterate } from 'transliteration';
 import { useDispatch } from 'react-redux';
 import styles from '../../add-project/formAdd/FormAddProject.module.scss';
-import ReactQuill from 'react-quill';
+import ReactQuill from 'react-quill-new';
+import 'react-quill-new/dist/quill.snow.css';
 import {
   changeHandler,
   removePreviewPhoto,

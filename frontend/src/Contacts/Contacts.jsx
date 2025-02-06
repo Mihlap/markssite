@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet-async';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
-import { YMaps, Map, Placemark } from '@pbe/react-yandex-maps';
+import { YMaps, Map, Placemark } from '@r3flector/react-yandex-maps';
 import { Link } from 'react-router-dom';
 import styles from './Contacts.module.css';
 

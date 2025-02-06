@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import ReactQuill from 'react-quill-new';
+import 'react-quill-new/dist/quill.snow.css';
 import Select from 'react-select';
 import { useDispatch } from 'react-redux';
 import { editVacancy } from '../../../store/Slice/vacanciesSlice.js';
