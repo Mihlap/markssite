@@ -1,7 +1,7 @@
-import React, { useCallback } from 'react';
-import { Placemark } from '@pbe/react-yandex-maps';
+import React, { memo, useCallback } from 'react';
+import { Placemark } from '@r3flector/react-yandex-maps';
 
-const Marker = React.memo(
+const Marker = memo(
   ({ marker, index, activeMarkerIndex, handleMarkerClick, handleMarkerHover, handleMarkerLeave }) => {
     const onClick = useCallback(() => handleMarkerClick(marker, index), [handleMarkerClick, marker, index]);
     const onMouseEnter = useCallback(() => handleMarkerHover(marker, index), [handleMarkerHover, marker, index]);

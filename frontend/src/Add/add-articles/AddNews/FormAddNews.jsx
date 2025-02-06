@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react';
 import Select from 'react-select';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import ReactQuill from 'react-quill-new';
+import 'react-quill-new/dist/quill.snow.css';
 import { transliterate } from 'transliteration';
 import { useDispatch } from 'react-redux';
 import styles from '../../add-project/formAdd/FormAddProject.module.scss';

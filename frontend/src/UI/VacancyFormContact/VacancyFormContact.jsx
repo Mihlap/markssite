@@ -1,5 +1,5 @@
 import React, { useRef, useState, useMemo, useCallback, useEffect } from 'react';
-import InputMask from 'react-input-mask-next';
+import { InputMask } from '@react-input/mask';
 import Select from 'react-select';
 import { Link } from 'react-router-dom';
 import styles from './VacancyFormContact.module.css';
@@ -9,6 +9,11 @@ import ModalVacancyFormSend from './ModalVacancyFormSend';
 import LoadingVacancy from '../../Loading/LoadingVacancy';
 
 const Host = process.env.REACT_APP_SERVER_HOST;
+
+const maskOptions = {
+  mask: '+7 (___) ___-__-__',
+  replacement: { _: /\d/ },
+};
 
 const VacancyFormContact = ({
   formButtonRef,
@@ -51,6 +56,16 @@ const VacancyFormContact = ({
     }
   }, [initialDirection, options]);
 
+  const [formData, setFormData] = useState({
+    name: '',
+    phone: '',
+    city: '',
+    choose: '',
+    letter: '',
+    resume: '',
+    title: vacancyTitle,
+  });
+
   const [isFocused, setIsFocused] = useState({
     name: false,
     phone: false,
@@ -68,15 +83,6 @@ const VacancyFormContact = ({
   const [isLoading, setIsLoading] = useState(false);
   const [errors, setErrors] = useState({});
   const [isMetricSent, setIsMetricSent] = useState(false);
-  const [formData, setFormData] = useState({
-    name: '',
-    phone: '',
-    city: '',
-    choose: '',
-    letter: '',
-    resume: '',
-    title: vacancyTitle,
-  });
 
   const fileInputRef = useRef(null);
   const inputRef = useRef(null);
@@ -87,10 +93,16 @@ const VacancyFormContact = ({
     setFormData((prevData) => ({ ...prevData, choose: selectedValues?.value || '' }));
   }, []);
 
-  const handleFocus = useCallback((event) => {
-    const name = event?.target?.name;
-    setIsFocused((prev) => ({ ...prev, [name]: true }));
-  }, []);
+    const handleFocus = useCallback(
+      (event) => {
+        const name = event?.target?.name;
+        setIsFocused((prev) => ({ ...prev, [name]: true }));
+        if (name === 'phone' && !formData.phone) {
+          setFormData((prev) => ({ ...prev, phone: maskOptions.mask }));
+        }
+      },
+      [formData.phone]
+    );
 
   const handlePaste = useCallback((event) => {
     event.preventDefault();
@@ -109,18 +121,21 @@ const VacancyFormContact = ({
     }
   }, []);
 
-  const handleBlur = useCallback(
-    (event) => {
-      const name = event?.target?.name;
-      setIsFocused((prev) => ({ ...prev, [name]: false }));
-
-      if (name === 'phone') {
-        const phoneNumberRegex = /^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/;
-        setIsValid(phoneNumberRegex.test(formData.phone));
-      }
-    },
-    [formData.phone]
-  );
+ const handleBlur = useCallback(
+   (event) => {
+     const name = event?.target?.name;
+     setIsFocused((prev) => ({ ...prev, [name]: false }));
+     if (name === 'phone') {
+       const phoneNumberRegex = /^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/;
+   
+       if (formData.phone === maskOptions.mask) {
+         setFormData((prev) => ({ ...prev, phone: '' }));
+       }
+       setIsValid(phoneNumberRegex.test(formData.phone));
+     }
+   },
+   [formData.phone]
+ );
 
   const handleChange = useCallback((event) => {
     const { name, value } = event.target;
@@ -129,7 +144,6 @@ const VacancyFormContact = ({
       setIsValid(true);
     }
   }, []);
-
 
   const handleSubmit = useCallback(
     (event) => {
@@ -396,8 +410,9 @@ const VacancyFormContact = ({
                     <InputMask
                       id="phone-input"
                       ref={inputRef}
-                      mask="+7 (999) 999-99-99"
-                      maskChar={null}
+                      mask={maskOptions.mask}
+                      replacement={maskOptions.replacement}                
+                      showMask={true}
                       name="phone"
                       placeholder=""
                       value={formData.phone}

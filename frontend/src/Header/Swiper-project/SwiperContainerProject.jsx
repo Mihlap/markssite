@@ -6,11 +6,11 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import SliderItemProject from './SliderItemProject';
-import './SwiperContainerProgect.css';
+import './SwiperContainerProject.css';
 
 const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
-const SwiperContainerProgect = ({ projects }) => {
+const SwiperContainerProject = ({ projects }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const swiperRef = useRef(null);
 
@@ -60,7 +60,7 @@ const SwiperContainerProgect = ({ projects }) => {
         <div className="swiper_wrapper">
           {combinedProjects?.map((project, index) => {
             if (!project || !project.id) {
-              return null; // Пропускать проекты, у которых нет данных
+              return null;
             }
             return (
               <SwiperSlide className="swiper_container_item_projects" key={`${project.id}_${index}`}>
@@ -147,4 +147,4 @@ const SwiperContainerProgect = ({ projects }) => {
   );
 };
 
-export default SwiperContainerProgect;
+export default SwiperContainerProject;
