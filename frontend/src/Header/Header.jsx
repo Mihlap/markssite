@@ -21,7 +21,9 @@ import styles from './Header.module.css';
 
 import notDataPhoto from './img/notData.png';
 import nameCompany from '../icons/nameCompany.svg';
+// import nameCompany from '../icons/newYear.svg';
 import nameCompany1 from '../icons/nameCompany1.svg';
+// import nameCompany1 from '../icons/newYear1.svg';
 import img123 from './img/Главная.png';
 
 SwiperCore.use([Navigation]);

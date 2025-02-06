@@ -92,7 +92,21 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
     threshold: 0.5,
   });
 
-  const isMobile = windowWidth <= 767;
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 767);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 767);
+    };
+
+    window.addEventListener('resize', handleResize);
+
+    // Очистка обработчика при размонтировании
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   const symbol = '•';
 
   const filteredStaff = staff.filter((staff) => {
@@ -267,7 +281,6 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
     [handleButtonClick]
   );
 
-
   if (error) {
     return (
       <div>
@@ -284,53 +297,55 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
       </Helmet>
       <div className={styles.company_main}>
         {/* <Company_Slider /> */}
-        <div className={styles.block_video_company}>
-          {videoSrc2 && (
-            <video playsInline autoPlay muted loop id="bg-video" className={styles.bg_video}>
-              <source src={videoSrc2} type="video/mp4" preload="auto" />
-            </video>
-          )}
-        </div>
-        <div ref={blockSlider} className={styles.underSlider_text_wrapper}>
-          <span className={styles.span_underSlider_text1}>
-            Создаём пространства будущего.
-            <br />
-            Знаковые проекты от&nbsp;ведущих специалистов <br />
-            в&nbsp;области комплексного проектирования
-          </span>
-          <span className={styles.span_underSlider_text2}>О&nbsp;компании</span>
-          {isMobile && <CounterCompanyMobile />}
-          {!isMobile && (
-            <div className={styles.div_counter_wrapper}>
-              <div className={styles.container_text}>
-                <div className={styles.div_underSlider_text}>
-                  <div className={styles.text_svg}>
-                    <img src={bracket} alt="bracket" />
+        <div className={styles.company_intro}>
+          <div className={styles.block_video_company}>
+            {videoSrc2 && (
+              <video playsInline autoPlay muted loop id="bg-video" className={styles.bg_video}>
+                <source src={videoSrc2} type="video/mp4" preload="auto" />
+              </video>
+            )}
+          </div>
+          <div ref={blockSlider} className={styles.underSlider_text_wrapper}>
+            <span className={styles.span_underSlider_text1}>
+              Создаём пространства будущего.
+              <br />
+              Знаковые проекты от&nbsp;ведущих специалистов <br />
+              в&nbsp;области комплексного проектирования
+            </span>
+            <span className={styles.span_underSlider_text2}>О&nbsp;компании</span>
+            {isMobile && <CounterCompanyMobile />}
+            {!isMobile && (
+              <div className={styles.div_counter_wrapper}>
+                <div className={styles.container_text}>
+                  <div className={styles.div_underSlider_text}>
+                    <div className={styles.text_svg}>
+                      <img src={bracket} alt="bracket" />
+                    </div>
+                    <p>{countPercent}</p>
                   </div>
-                  <p>{countPercent}</p>
+                  <span className={styles.span_underSlider_text}>Квалифицированных специалистов</span>
                 </div>
-                <span className={styles.span_underSlider_text}>Квалифицированных специалистов</span>
-              </div>
-              <div className={styles.container_text}>
-                <div className={styles.div_underSlider_text}>
-                  <div className={styles.text_svg}>
-                    <img src={bracket} alt="bracket" />
+                <div className={styles.container_text}>
+                  <div className={styles.div_underSlider_text}>
+                    <div className={styles.text_svg}>
+                      <img src={bracket} alt="bracket" />
+                    </div>
+                    <p>{countProject}</p>
                   </div>
-                  <p>{countProject}</p>
+                  <span className={styles.span_underSlider_text}>Проектов реализовано</span>
                 </div>
-                <span className={styles.span_underSlider_text}>Проектов реализовано</span>
-              </div>
-              <div className={styles.container_text}>
-                <div className={styles.div_underSlider_text}>
-                  <div className={styles.text_svg}>
-                    <img src={bracket} alt="bracket" />
+                <div className={styles.container_text}>
+                  <div className={styles.div_underSlider_text}>
+                    <div className={styles.text_svg}>
+                      <img src={bracket} alt="bracket" />
+                    </div>
+                    <p>{countHuman}</p>
                   </div>
-                  <p>{countHuman}</p>
+                  <span className={styles.span_underSlider_text}>Лет на&nbsp;рынке</span>
                 </div>
-                <span className={styles.span_underSlider_text}>Лет на&nbsp;рынке</span>
               </div>
-            </div>
-          )}
+            )}
+          </div>
         </div>
         <div className={styles.sliderMobile_wrapper}>
           {/* <SliderMobile /> */}
@@ -430,8 +445,8 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
           <div className={styles.years_div}>/2005-2024/</div>
         </div>
         <div className={styles.list_project}>
-          Список проектов, которые были отмечены конкурсами в&nbsp;разных номинациях за&nbsp;годы практики
-          с&nbsp;2005&nbsp;года
+          Список проектов, которые были отмечены конкурсами в&nbsp;разных номинациях за&nbsp;годы практики с&nbsp;2005
+          года
         </div>
         {isMobile && <TableCompanyMobile />}
         {!isMobile && (
@@ -447,7 +462,7 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
             <Swiper
               onSwiper={setSwiper}
               slidesPerView="auto"
-              spaceBetween={0}
+              spaceBetween={8}
               className={styles.my_swiper_button_group}
               touch="true">
               <div className={styles.button_group}>
@@ -919,7 +934,7 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
                     onRequestClose={() => setModalOpenFormContacts(false)}
                     title="Заявка отправлена!"
                     message="Мы свяжемся с вами в ближайшее время!"
-                    buttonText="Спасибо, жду!"                
+                    buttonText="Спасибо, жду!"
                     variant="manualClose"
                   />
                 </div>
@@ -977,7 +992,7 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
                     onRequestClose={() => setModalOpenSubscription(false)}
                     title="Вы подписаны!"
                     message="Если захотите завершить подписку, напишите нам!"
-                    buttonText="Спасибо, жду!"                  
+                    buttonText="Спасибо, жду!"
                     variant="manualClose"
                   />
                 </div>

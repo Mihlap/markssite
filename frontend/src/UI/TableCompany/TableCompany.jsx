@@ -6,8 +6,8 @@ const TableCompany = ({ handleMouseEnter, handleMouseLeave, handleMouseHover }) 
   const [showAll, setShowAll] = useState(false);
 
   const tdStyle = {
-    paddingTop: '36px',
-    paddingBottom: '36px',
+    paddingTop: '24px',
+    paddingBottom: '24px',
     borderTop: '1px solid var(--dark-gray-566272)',
     whiteSpace: 'nowrap',
     overflow: 'hidden',
@@ -53,7 +53,7 @@ const TableCompany = ({ handleMouseEnter, handleMouseLeave, handleMouseHover }) 
   }, []);
 
   return (
-    <div>
+    <div className={styles.TableCompanyContainer}>
       <div id="table-header-anchor" className={`${styles.tableContainer} ${showAll ? styles.visible : ''}`}>
         <table className={styles.tableStyle}>
           <thead>
@@ -88,8 +88,7 @@ const TableCompany = ({ handleMouseEnter, handleMouseLeave, handleMouseHover }) 
             className={styles.button_look_all}
             onClick={handleShowAllClick}
             onMouseEnter={handleMouseEnter}
-            onMouseLeave={handleMouseLeave}
-          >
+            onMouseLeave={handleMouseLeave}>
             {showAll ? 'Скрыть все' : 'Смотреть все'}
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path d={showAll ? 'M17 14L12.5 9L8 14' : 'M8 10L12.5 15L17 10'} stroke="#1D2E43" />

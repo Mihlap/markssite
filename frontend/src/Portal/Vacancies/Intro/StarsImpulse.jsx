@@ -99,7 +99,9 @@ function StarsImpulse() {
           shadows
           gl={{ alpha: true, stencil: false, depth: false, antialias: true }}
           camera={{ position: [0, 0, 20], fov: 32.5, near: 1, far: 100 }}
-          onCreated={(state) => (state.gl.toneMappingExposure = 3)}>
+          onCreated={({ gl }) => {
+            if (gl) gl.toneMappingExposure = 3;
+          }}>
           <ambientLight intensity={2} color="#91c8fc" />
           <directionalLight castShadow position={[-10, -20, 50]} intensity={2.4} shadow-mapSize={1024} />
           <pointLight intensity={14000} color="#389FFF" decay={2} distance={800} position={[-10, 4, 45]} />
@@ -114,7 +116,7 @@ function StarsImpulse() {
           </Physics>
 
           <EffectComposer disableNormalPass>
-            <N8AO aoRadius={1.5} intensity={5} color="lightgrey" quality="ultra" />
+            {typeof N8AO === 'function' && <N8AO aoRadius={1.5} intensity={5} color="lightgrey" quality="ultra" />}
             <ToneMapping />
           </EffectComposer>
         </Canvas>

@@ -50,7 +50,7 @@ const VacanciesSectionRenderActualMain = ({ handleMouseEnter, handleMouseLeave }
   };
 
   return (
-    <div>
+    <section>
       {loading ? (
         <div className={styles.loader}>
           <LoadingCircle />
@@ -61,48 +61,28 @@ const VacanciesSectionRenderActualMain = ({ handleMouseEnter, handleMouseLeave }
         </div>
       ) : (
         <>
-          <div className={styles.currentVacanciesTitle}></div>
-          <div className={styles.vacanciesHeaders}>
-            <div className={styles.headerCell_specialization}>Специальность</div>
-            <div className={`${styles.headerCell} ${styles.headerCell_direction}`}>Направление</div>
-            <div className={`${styles.headerCell} ${styles.headerCell_busyness}`}>Занятость</div>
-            <div className={`${styles.headerCell} ${styles.headerCell_location}`}>Локация</div>
-          </div>
-          {displayedVacancies.map((vacancy) => (
-            <Link
-              key={vacancy.id}
-              to={`/portal/vacancy/${vacancy?.IdVacancy}`}
-              className={styles.vacancyContainer}
-              onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
-            >
-              {windowWidth > 1024 ? (
-                <>
-                  <div className={`${styles.vacancyCell1} ${styles.vacancyCell_title}`}>{vacancy?.vacancy?.title}</div>
-                  <div className={`${styles.vacancyCell} ${styles.vacancyCell_direction}`}>
-                    {vacancy?.vacancy?.direction}
-                  </div>
-                  <div className={`${styles.vacancyCell} ${styles.vacancyCell_busyness}`}>
-                    {vacancy?.vacancy?.busyness}
-                  </div>
-                  <div className={`${styles.vacancyCell} ${styles.vacancyCell_locationStaff}`}>
-                    {vacancy?.vacancy?.locationStaff}
-                  </div>
-                  <div className={styles.vacancyCell_buttonLink}>
-                    <img src={buttonLink} alt="buttonLink" />
-                  </div>
-                </>
-              ) : (
-                <>
-                  <div className={styles.vacancyContainer111}>
+          <div className={`${styles.VacanciesSection} ${styles.VacanciesSection_ActialMain}`}>
+            <div className={styles.currentVacanciesTitle}></div>
+            <div className={`${styles.vacanciesHeaders} ${styles.vacanciesHeaders_ActialMain}`}>
+              <div className={styles.vacanciesHeaders_wrap}>
+                <div className={styles.headerCell_specialization}>Специальность</div>
+                <div className={`${styles.headerCell} ${styles.headerCell_direction}`}>Направление</div>
+                <div className={`${styles.headerCell} ${styles.headerCell_busyness}`}>Занятость</div>
+                <div className={`${styles.headerCell} ${styles.headerCell_location}`}>Локация</div>
+              </div>
+            </div>
+            {displayedVacancies.map((vacancy) => (
+              <Link
+                key={vacancy.id}
+                to={`/portal/vacancy/${vacancy?.IdVacancy}`}
+                className={styles.vacancyContainer}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}>
+                {windowWidth > 1024 ? (
+                  <>
                     <div className={`${styles.vacancyCell1} ${styles.vacancyCell_title}`}>
                       {vacancy?.vacancy?.title}
                     </div>
-                    <div className={styles.vacancyCell_buttonLink_ipad}>
-                      <img src={buttonLink_ipad} alt="buttonLink_ipad" />
-                    </div>
-                  </div>
-                  <div className={styles.vacancyContainer222}>
                     <div className={`${styles.vacancyCell} ${styles.vacancyCell_direction}`}>
                       {vacancy?.vacancy?.direction}
                     </div>
@@ -112,25 +92,49 @@ const VacanciesSectionRenderActualMain = ({ handleMouseEnter, handleMouseLeave }
                     <div className={`${styles.vacancyCell} ${styles.vacancyCell_locationStaff}`}>
                       {vacancy?.vacancy?.locationStaff}
                     </div>
-                  </div>
-                </>
-              )}
-            </Link>
-          ))}
+                    <div className={styles.vacancyCell_buttonLink}>
+                      <img src={buttonLink} alt="buttonLink" />
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <div className={styles.vacancyContainer111}>
+                      <div className={`${styles.vacancyCell1} ${styles.vacancyCell_title}`}>
+                        {vacancy?.vacancy?.title}
+                      </div>
+                      <div className={styles.vacancyCell_buttonLink_ipad}>
+                        <img src={buttonLink_ipad} alt="buttonLink_ipad" />
+                      </div>
+                    </div>
+                    <div className={styles.vacancyContainer222}>
+                      <div className={`${styles.vacancyCell} ${styles.vacancyCell_direction}`}>
+                        {vacancy?.vacancy?.direction}
+                      </div>
+                      <div className={`${styles.vacancyCell} ${styles.vacancyCell_busyness}`}>
+                        {vacancy?.vacancy?.busyness}
+                      </div>
+                      <div className={`${styles.vacancyCell} ${styles.vacancyCell_locationStaff}`}>
+                        {vacancy?.vacancy?.locationStaff}
+                      </div>
+                    </div>
+                  </>
+                )}
+              </Link>
+            ))}
+          </div>
           <div className={`${styles.showVacanciesOfTotalVacancies} ${styles.actualMain}`}>
             {getAnnouncementText() && <div className={styles.vacancyAnnouncement}>{getAnnouncementText()}</div>}
             <Link
               to="/portal/vacancies"
               className={styles.showManyButton}
               onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}
-            >
+              onMouseLeave={handleMouseLeave}>
               Смотреть все вакансии
             </Link>
           </div>
         </>
       )}
-    </div>
+    </section>
   );
 };
 

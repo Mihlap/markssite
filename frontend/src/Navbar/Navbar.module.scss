@@ -48,7 +48,7 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    cursor: none !important;
+    // cursor: none !important;
   }
 
   &__title__hr {
@@ -80,7 +80,7 @@
     border-left: 1px solid var(--black-1D2E43);
     white-space: nowrap;
     transition: background 0.3s ease, backdrop-filter 0.3s ease;
-    cursor: none !important;
+    // cursor: none !important;
 
     &:hover {
       background: rgb(246 246 246 / 60%);
@@ -102,10 +102,16 @@
     display: none;
   }
 
-  /* Стили для меню на экранах шириной меньше или равной 1024px */
+
+ /* Стили для меню на экранах шириной меньше или равной 1024px */
   @media screen and (max-width: 1025px) {
     &__phone {
       display: block;
+    }
+
+     .navbar__santaHat,
+     .navbar__santaHat_hr {
+      display: none;
     }
   }
 }

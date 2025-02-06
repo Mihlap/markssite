@@ -59,6 +59,7 @@
   h2 {
     width: 60%;
     font-size: rem(65);
+    font-weight: var(--fw-300);
     line-height: rem(75.5);
     margin: 0 auto rem(94) 0;
     text-align: left;
@@ -75,8 +76,10 @@
 
   &__desc {
     font-size: rem(40);
-    margin-bottom: rem(48);
+    margin-bottom: rem(40);
     color: var(--black-3C3C3C);
+    font-weight: var(--fw-300);
+
     span {
       color: var(--blue-75BBFD);
     }
@@ -122,13 +125,13 @@
   @media all and (max-width: $XXL) {
     &__container {
       width: 100%;
-      padding: rem(212) rem(62) rem(165) rem(62);
+      padding: rem(212) rem(62) rem(100) rem(62);
       margin: 0 auto;
     }
 
     h2 {
       width: 65%;
-      margin-left: 0;
+      margin: 0 auto rem(50) 0;
     }
 
     &__content {
@@ -219,7 +222,8 @@
     }
 
     &__desc {
-      font-size: rem(18);
+      font-size: rem(20);
+      line-height: 1.4;
     }
 
     &__star {
@@ -255,6 +259,7 @@
 
     &__photos {
       $n: rem(-28);
+      margin-bottom: rem(32);
 
       img {
         &:nth-child(2) {

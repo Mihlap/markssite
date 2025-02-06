@@ -1,10 +1,10 @@
-$XXL: 1920px;
-$XL: 1440px;
-$L: 1280px;
-$M: 1024px;
+$XXL: 1921px;
+$XL: 1441px;
+$L: 1281px;
+$M: 1025px;
 $S: 768px;
-$XS: 576px;
-$XXS: 377px;
+$XS: 577px;
+$XXS: 378px;
 
 @function rem($pixels) {
   @return calc($pixels / 16) + rem;
