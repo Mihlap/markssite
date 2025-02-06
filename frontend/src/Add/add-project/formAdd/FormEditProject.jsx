@@ -2,8 +2,8 @@ import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react'
 import { useDispatch } from 'react-redux';
 import Select from 'react-select';
 import compressImageFile from 'browser-image-compression';
-import ReactQuill from 'react-quill';
-import 'react-quill/dist/quill.snow.css';
+import ReactQuill from 'react-quill-new';
+import 'react-quill-new/dist/quill.snow.css';
 import { transliterate } from 'transliteration';
 import styles from './FormAddProject.module.scss';
 import {

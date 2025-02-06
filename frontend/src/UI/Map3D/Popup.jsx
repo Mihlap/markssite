@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { memo } from 'react';
 import styles from './Mapbox.module.css';
 
-const Popup = React.memo(({ selectedPopup, onClose }) => {
+const Popup = memo(({ selectedPopup, onClose }) => {
   return (
     <div className={styles.popup}>
       <div className={styles.popupContent}>
