@@ -281,7 +281,7 @@ router.put(
         .filter(Boolean)
         .map(extractFileName);
 
-      // Поиск изображений для удаления (тех, которые больше не используются)
+      // Поиск изображений для удаления (те, которые больше не используются)
       const imagesToRemove = normalizedCurrentImages.filter((image) => !normalizedUpdatedImages.includes(image));
 
       // Удаление старых изображений из S3

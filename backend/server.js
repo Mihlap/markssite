@@ -22,6 +22,7 @@ const vacancyRouter = require('./Routes/Vacancies/vacancyRouter');
 const searchVacanciesRouter = require('./Routes/Vacancies/searchVacanciesRouter');
 const vacancyDetailsRouter = require('./Routes/Vacancies/vacancyDetailsRouter');
 const vacancyEventRouter = require('./Routes/Vacancies/vacancyEventRouter');
+const journalRouter = require('./Routes/Journal/journalRouter');
 
 
 
@@ -116,6 +117,8 @@ app.use('/api/video', videoRouter);
 app.use('/api-vacancy', vacancyRouter);
 app.use('/api-vacancyDetails', vacancyDetailsRouter);
 app.use('/api-events', vacancyEventRouter);
+app.use('/api-journal', journalRouter);
+app.use('/api-upload', journalRouter);
 
 // const sslKeyPath = '/SSL Marksgroup/certificate.key';
 // const sslCertPath = '/SSL Marksgroup/certificate.crt';

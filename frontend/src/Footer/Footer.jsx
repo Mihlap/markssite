@@ -5,16 +5,15 @@ import { Link } from 'react-router-dom';
 const Footer = ({ handleMouseEnterFooter, handleMouseEnterFooterMore, handleMouseLeaveFooter, handleMouseLeave }) => {
 
   function mapToLink(link, event) {
-     if (event && event.preventDefault) {
-       event.preventDefault();
-     }
+    if (event && event.preventDefault) {
+      event.preventDefault();
+    }
     window.location.href = link;
   }
 
-
- const mapHandler = (event) => {
-   mapToLink('https://yandex.ru/maps/-/CCUgmThXKA', event);
- };
+  const mapHandler = (event) => {
+    mapToLink('https://yandex.ru/maps/-/CCUgmThXKA', event);
+  };
 
   return (
     <footer className={styles.footer} onMouseEnter={handleMouseEnterFooter} onMouseLeave={handleMouseLeave}>
@@ -119,8 +118,7 @@ const Footer = ({ handleMouseEnterFooter, handleMouseEnterFooterMore, handleMous
               target="_blank"
               onMouseEnter={handleMouseEnterFooterMore}
               onMouseLeave={handleMouseLeaveFooter}
-              className={styles.footer__documents_link}
-            >
+              className={styles.footer__documents_link}>
               <span>Документы</span>
             </Link>
             <div className={styles.footer__copyright}>©&nbsp;MARKSLAB</div>

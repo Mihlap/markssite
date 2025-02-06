@@ -8,7 +8,7 @@ export default function FormAddEvent({ setIsModalOpenEvent }) {
   const dispatch = useDispatch();
 
   const [previewPhotoAva, setPreviewPhotoAva] = useState([]);
-  const [previewVideoAva, setPreviewVideoAva] = useState([]);
+  const [, setPreviewVideoAva] = useState([]);
   const [isPhotoAvaVisible, setIsPhotoAvaVisible] = useState(true);
   const [showNotification, setShowNotification] = useState(false);
   const [isLoading, setIsLoading] = useState(false);

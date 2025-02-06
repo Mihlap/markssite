@@ -22,6 +22,7 @@ export default function Add({ user, onPageChange, handleReturn }) {
       <div className={styles.add_container}>
         <AddNavbar handleReturn={handleReturn} user={user} />
         <Routes>
+          <Route index element={<HomeAdmin />} />
           <Route path="home" element={<HomeAdmin />} />
           <Route path="add-a-project" element={<AddProject user={user} />} />
           <Route path="add-a-articles" element={<AddArticles user={user} />} />

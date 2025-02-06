@@ -56,10 +56,10 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
   const isActive = useSelector((state) => state.toggle.isActiveForButton1);
   const [currentPage, setCurrentPage] = useState(1);
   const [loading, setLoading] = useState(false);
-  const [showButton, setShowButton] = useState(false);
+  const [showButton] = useState(false);
   const [isModalProjectOpen, setIsModalProjectOpen] = useState(false);
   const [userGeolocation, setUserGeolocation] = useState(null);
-  const [curLocation, setCurLocation] = useState('Москва');
+  const [, setCurLocation] = useState('Москва');
   const [isFocusedProject, setIsFocusedProject] = useState(false);
   const [isValid, setIsValid] = useState(true);
   const [isTyping, setIsTyping] = useState(false);
@@ -67,7 +67,7 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
   const addressInputRef = useRef(null);
   const [selectOnCompetencies, setSelectOnCompetencies] = useState(category || 'Все');
   const [screenWidth, setScreenWidth] = useState(window.innerWidth);
-  const [swiper, setSwiper] = useState(null);
+  const [, setSwiper] = useState(null);
 
   const projectsPerPage = 100;
 
