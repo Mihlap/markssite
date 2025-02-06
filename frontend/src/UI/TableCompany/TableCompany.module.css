@@ -1,7 +1,11 @@
 @import '../../App.css';
 
+.TableCompanyContainer {
+  margin-bottom: 200px;
+}
+
 .tableContainer {
-  height: 694px;
+  max-height: 694px;
   overflow: hidden;
   transition: height 0.5s ease-in-out;
   padding-left: 1.87vw;
@@ -9,7 +13,7 @@
 }
 
 .visible {
-  height: 1500px;
+  max-height: 1800px;
 }
 
 .tableStyle {
@@ -124,8 +128,12 @@
 
 /* стили для планшетной версии  */
 @media screen and (min-width: 768px) and (max-width: 1024px) {
+  .TableCompanyContainer {
+    margin-bottom: 150px;
+  }
+
   .tableContainer {
-    height: 670px; /* Начальная высота */
+    max-height: 670px;
     overflow: hidden;
     transition: height 0.5s ease-in-out;
     padding-left: 3.37rem;
@@ -134,7 +142,7 @@
   }
 
   .visible {
-    height: 1440px; /* Высота при открытии */
+    max-height: 1730px;
   }
 
   .slideDown {
@@ -243,6 +251,7 @@
 /* стили для мобильной версии  */
 @media screen and (max-width: 767px) {
   .tableStyle {
+    margin-bottom: 80px;
     border-collapse: collapse;
     margin-left: 0rem;
     margin-right: 0rem;
@@ -253,6 +262,9 @@
     animation-fill-mode: forwards;
   }
 
+  .expandedOut td {
+    padding-top: 1rem;
+  }
   @keyframes slideContentIn {
     0% {
       transform: translateY(-30%);
@@ -264,32 +276,19 @@
     }
   }
 
-  /* .expandedIn {
-    animation: slideContentOut 0.4s ease-in-out;
-    animation-fill-mode: forwards;
-  }
-
-  @keyframes slideContentOut {
-    0% {
-      transform: translateY(0);
-      opacity: 1;
-    
-    }
-    100% {
-      transform: translateY(-100%);
-      opacity: 0;
-    }
-  } */
-
   .tdStyle1 {
     font-family: var(--font-raleway);
-    font-weight: var(--fw-300);
+    font-weight: var(--fw-400);
     font-size: 1.125rem;
-    line-height: 1.5rem;
+    line-height: 1.625rem;
     text-align: left;
     width: 100%;
     padding-right: 1rem;
     padding-left: 1rem;
+  }
+
+  .tdStyle1:nth-child(1) {
+    padding-right: 3rem;
   }
 
   .tdStyle4 {
@@ -319,7 +318,7 @@
   }
 
   .svgContainer.clicked {
-    transform: rotate(360deg);
+    transform: rotate(180deg);
   }
 
   .field_nomination {
@@ -353,7 +352,7 @@
   }
 
   .element_prize {
-    color: var(--black-1D2E43);
+    color: var(--dark-gray-566272);
     font-size: 16px;
     font-family: var(--font-raleway);
     line-height: 24px;

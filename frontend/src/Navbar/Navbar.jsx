@@ -4,6 +4,7 @@ import { NavLink } from 'react-router-dom';
 // import { handleScroll, handleItemClick, handlePath, handleStoredClass } from './utils/navbarUtils';
 import NavBarPhone from './NavBarPhone/NavBarPhone';
 
+
 const Navbar = memo(({ handleMouseEnter, handleMouseLeave }) => {
   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [visible, setVisible] = useState(true);

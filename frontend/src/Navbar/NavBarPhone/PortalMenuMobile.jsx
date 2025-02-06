@@ -27,7 +27,10 @@ export default function PortalMenuMobile() {
         <div className={styles.container}>
           <section className={styles.wrapper}>
             <Link to="/portal/vacanciesMain" className={styles.brand}>
+              
               MARKS GROUP
+              
+            <p className={styles.Navbar__title__hr}>HR</p>          
             </Link>
             <button
               type="button"

@@ -120,10 +120,8 @@ app.use('/api-events', vacancyEventRouter);
 app.use('/api-journal', journalRouter);
 app.use('/api-upload', journalRouter);
 
-
 // const sslKeyPath = '/SSL Marksgroup/certificate.key';
 // const sslCertPath = '/SSL Marksgroup/certificate.crt';
-
 
 // const credentials = {
 //   key: fs.readFileSync(sslKeyPath),

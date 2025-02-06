@@ -3,12 +3,6 @@
 
 .CountRows {
   $s: &;
-  background: linear-gradient(
-    261.46deg,
-    rgba(255, 203, 193, 0.09) -4.67%,
-    rgba(117, 187, 253, 0.09) 44.63%,
-    rgba(188, 188, 188, 0.09) 103.07%
-  );
   min-height: rem(1100);
   display: flex;
   flex-direction: column;
@@ -47,6 +41,7 @@
   }
 
   &__wrapper {
+    font-weight: var(--fw-300);
     margin: rem(32) 18.67% rem(32) 18.28%;
     color: var(--black-1D2E43);
     font-family: var(--font-unbounded);
@@ -152,6 +147,7 @@
   &__count {
     height: rem(32);
     counter-increment: count;
+    margin-top: rem(8);
     margin-bottom: rem(24);
     display: flex;
     align-items: center;
@@ -201,6 +197,10 @@
       font-size: rem(40);
       line-height: rem(48);
       margin-bottom: rem(32);
+    }
+
+    &__count {
+      margin-bottom: rem(24);
     }
 
     &__text {

@@ -8,6 +8,8 @@ import AddArticles from './add-articles/AddArticles';
 import AddCompany from './add-about-the-company/AddCompany';
 import Applications from './applications/Applications';
 import AddHRPortal from './add-hr-portal/AddHRPortal';
+// import Snowfall from './Snowfall/Snowfall';
+
 
 export default function Add({ user, onPageChange, handleReturn }) {
   useEffect(() => {
@@ -16,6 +18,7 @@ export default function Add({ user, onPageChange, handleReturn }) {
 
   return (
     <>
+      {/* <Snowfall /> */}
       <div className={styles.add_container}>
         <AddNavbar handleReturn={handleReturn} user={user} />
         <Routes>

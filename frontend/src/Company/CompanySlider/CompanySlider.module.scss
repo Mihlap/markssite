@@ -124,18 +124,26 @@
   }
 
   @media all and (max-width: $L) {
+    margin: rem(120) 0;
+
     &__pagination {
       display: block;
     }
   }
 
-  @media all and (max-width: $L) {
-    margin: rem(120) 0;
+  @media all and (max-width: $M) {
+    &__title {
+      padding: 0 5.4vw;
+    }
+
+    * > &__swiper {
+      padding: 0 5.4vw !important;
+    }
   }
 
   // Адаптация под mobile
   @media all and (max-width: $S) {
-    margin: rem(49) 0 rem(80) 0;
+    margin: rem(48) 0 rem(80) 0;
 
     &__title {
       padding: 0 rem(16);

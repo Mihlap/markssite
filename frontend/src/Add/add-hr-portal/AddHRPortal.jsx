@@ -59,12 +59,11 @@ export default function AddHRPortal({ user }) {
   const [activeButtonIndex, setActiveButtonIndex] = useState(0);
   const [selectedFilter, setSelectedFilter] = useState('Вакансии');
 
-  const buttonIcons = {
-    'Вакансии': hr,
-    'Стажировки': internships,
-    'Главная hr': pencilIcon,
-  };
-
+    const buttonIcons = {
+      Вакансии: hr,
+      Стажировки: internships,
+      'Главная hr': pencilIcon,
+    };
 
   const updateModalBlockHeight = useCallback(() => {
     const windowHeight = window.innerHeight;
