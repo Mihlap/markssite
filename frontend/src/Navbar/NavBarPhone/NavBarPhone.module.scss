@@ -17,6 +17,8 @@
 }
 
 .brand {
+  display: flex;
+  align-items: center;
   font-family: var(--font-MyCustomFont);
   font-size: 1.4rem;
   font-weight: 700;
@@ -26,6 +28,18 @@
   color: var(--black-1D2E43);
   text-transform: uppercase;
   text-rendering: optimizeLegibility;
+  gap: 10px;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.Navbar__title__hr {
+  color: #1d2e43;
+  font-family: var(--font-unbounded);
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: var(--fw-400);
+  line-height: normal;
 }
 
 // Section: Navbar Menu
@@ -95,6 +109,7 @@
 
     &.is-active {
       .burger-line {
+
         &:nth-child(1),
         &:nth-child(4) {
           top: 1.25rem;
@@ -153,8 +168,10 @@
     pointer-events: none;
 
     /* Add a transition for smooth animation */
-    transition: opacity 0.35s ease, visibility 0.35s ease;
+    transition: opacity 0.35s ease,
+    visibility 0.35s ease;
   }
+
 }
 
 // Стили для телефонов
@@ -236,6 +253,7 @@
         opacity: 1;
         visibility: visible;
       }
+
       .menu {
         width: 19.5rem;
         max-height: 0rem;

@@ -256,8 +256,7 @@ const VacanciesComponent = ({ handleMouseEnter, handleMouseLeave, handleMouseHov
                       onMouseEnter={handleMouseEnter}
                       onMouseLeave={handleMouseLeave}
                       className={`${styles.menu__button__allVacancy} ${selectedFilter === el ? styles.active : ''}`}
-                      onClick={() => handleButtonClick(el)}
-                    >
+                      onClick={() => handleButtonClick(el)}>
                       <span className={styles.menu_button_items_vacancyText}>{el}</span>
                       <span className={styles.menu_button_items_vacancyCount}>
                         {el !== 'Все' && vacancyCountsByDirection ? vacancyCountsByDirection[el] || 0 : ''}
@@ -271,8 +270,7 @@ const VacanciesComponent = ({ handleMouseEnter, handleMouseLeave, handleMouseHov
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
               className={styles.menu__button__choose__vacancyFilter}
-              onClick={handleModalOpen}
-            >
+              onClick={handleModalOpen}>
               <div className={styles.icon__svg_button__choose__vacancyFilter_}>
                 <img src={modalFiltersActive ? iconFilterRed : iconFilter} alt="IconFilter" />
               </div>
@@ -294,10 +292,11 @@ const VacanciesComponent = ({ handleMouseEnter, handleMouseLeave, handleMouseHov
               <Swiper
                 onSwiper={setSwiper}
                 slidesPerView="auto"
-                spaceBetween={8}
+                spaceBetween={0}
+                style={{ overflow: 'hidden' }}
+                freeMode={true}
                 className={styles.menu_button_group_vacancy_swiper_mobile}
-                touch="true"
-              >
+                touch="true">
                 {(activeFiltersArray?.length > 0 ||
                   buttonVacancyChoose.some((el) => selectedFilter === el && el !== 'Все')) && (
                   <div className={styles.menu__button__choose__vacancyFilter_mobile}>
@@ -310,8 +309,7 @@ const VacanciesComponent = ({ handleMouseEnter, handleMouseLeave, handleMouseHov
                 <SwiperSlide
                   className={`${styles.menu__button__choose__vacancyFilter_mobile}
                       ${modalFiltersActive ? styles.filterWhiterBackground : ''}`}
-                  onClick={handleModalOpen}
-                >
+                  onClick={handleModalOpen}>
                   <div className={styles.icon__svg_button__choose__vacancyFilter_mobile}>
                     <img src={modalFiltersActive ? iconFilterWhiterRed : iconFilter} alt="IconFilter" />
                   </div>
@@ -322,13 +320,11 @@ const VacanciesComponent = ({ handleMouseEnter, handleMouseLeave, handleMouseHov
                       isIpadMobile && (
                         <SwiperSlide
                           key={`${filter.category}-${index}`}
-                          className={styles.menu__button__choose__vacancyFilter_mobile_dop}
-                        >
+                          className={styles.menu__button__choose__vacancyFilter_mobile_dop}>
                           <div onClick={() => removeFilter(filter.category, filter.value)}>
                             <div
                               // className={styles.menu__button__choose__vacancyFilter_mobile}
-                              style={{ display: 'flex' }}
-                            >
+                              style={{ display: 'flex' }}>
                               <p className={styles.menu_button_items_vacancyText}>{filter.value}</p>
                               <span className={styles.xSpan}>✕</span>
                             </div>
@@ -343,8 +339,7 @@ const VacanciesComponent = ({ handleMouseEnter, handleMouseLeave, handleMouseHov
                       className={`${styles.menu__button__choose__vacancyFilter_mobile} ${
                         selectedFilter === el ? styles.active : ''
                       }`}
-                      onClick={() => handleButtonClick(el)}
-                    >
+                      onClick={() => handleButtonClick(el)}>
                       <span className={styles.menu_button_items_vacancyText}>{el}</span>
                       <span className={styles.menu_button_items_vacancyCount}>
                         {el !== 'Все' && vacancyCountsByDirection ? vacancyCountsByDirection[el] || 0 : ''}
@@ -365,8 +360,7 @@ const VacanciesComponent = ({ handleMouseEnter, handleMouseLeave, handleMouseHov
                     <button
                       onClick={() => removeFilter(filter.category, filter.value)}
                       onMouseEnter={handleMouseEnter}
-                      onMouseLeave={handleMouseLeave}
-                    >
+                      onMouseLeave={handleMouseLeave}>
                       <span className={styles.xSpan}>✕</span>
                     </button>
                   </div>
@@ -376,8 +370,7 @@ const VacanciesComponent = ({ handleMouseEnter, handleMouseLeave, handleMouseHov
                     className={styles.clearAllFiltersButton}
                     onClick={clearAllFilters}
                     onMouseEnter={handleMouseEnter}
-                    onMouseLeave={handleMouseLeave}
-                  >
+                    onMouseLeave={handleMouseLeave}>
                     <p className={styles.dopFilterButtonNameClear}>Очистить все</p>
                     <span className={styles.xSpanClear}>✕</span>
                   </button>

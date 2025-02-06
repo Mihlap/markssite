@@ -2,14 +2,14 @@
 @import '../../../_variables.scss';
 
 .GalleryTabs {
-  margin: rem(113) rem(105);
+  margin: rem(220) rem(113);
 
   &__title {
     font-family: var(--font-unbounded);
     font-size: rem(40);
     font-weight: var(--fw-300);
     line-height: rem(48);
-    margin-bottom: rem(40);
+    margin-bottom: rem(48);
 
     span {
       color: var(--blue-75BBFD);
@@ -50,10 +50,11 @@
     line-height: rem(24);
     background-color: var(--light-light-gray-EBECEE);
     transition: 0.3s;
+    cursor: pointer;
 
     &:hover {
       background-color: var(--light-gray-C0C5CB);
-      cursor: none;
+      // cursor: none;
     }
 
     &.active {
@@ -144,7 +145,8 @@
     }
 
     &__buttons {
-      padding-bottom: rem(16);
+      padding-bottom: rem(20);
+      margin-bottom: rem(20);
     }
   }
 
@@ -188,6 +190,7 @@
     &__buttons,
     &__title {
       padding: 0 rem(16);
+      margin-bottom: rem(32);
     }
 
     &__buttons {

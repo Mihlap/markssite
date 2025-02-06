@@ -67,7 +67,7 @@ export default function PortalMenu({ user, handleMouseEnter, handleMouseLeave })
             >
               <h1>MARKS GROUP</h1>
 
-              <p className={styles.Navbar__title__hr}>HR</p>
+              <p className={styles.Navbar__title__hr}>HR</p>            
             </Link>
           </div>
           <ul className={styles.Navbar__list}>

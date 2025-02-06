@@ -3,6 +3,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Raleway&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;700;900&family=Unbounded:wght@300&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@400;500;700;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Unbounded:wght@200..900&display=swap');
 
 /* это шрифт для прелоудера  */
 @font-face {
@@ -51,7 +52,7 @@ button {
 
 /* Fonts */
 :root {
-  --font-unbounded: 'Unbounded', sans-serif;
+  --font-unbounded: 'Unbounded', serif;
   --font-inter: 'Inter', sans-serif;
   --font-raleway: 'Raleway', sans-serif;
   --font-MyCustomFont: 'MyCustomFont', sans-serif;
@@ -93,6 +94,8 @@ video {
 
 body .ReactModal__Content {
   overflow: auto;
+  scrollbar-width: thin;
+  scrollbar-color: auto transparent;
 }
 
 body .ReactModal__Content::-webkit-scrollbar {

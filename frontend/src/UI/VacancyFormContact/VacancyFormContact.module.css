@@ -1,4 +1,5 @@
 @import '../../App.css';
+@import '../../_variables.scss';
 
 /* @media screen and (min-width: 1601px) and (max-width: 3000px) { */
 
@@ -53,7 +54,7 @@
   border: none;
   outline: none;
   background-color: transparent;
-  padding-top: 3vh;
+  padding-top: 3.5rem;
   font-family: var(--font-raleway);
   font-style: normal;
   font-weight: var(--fw-400);
@@ -61,10 +62,6 @@
   line-height: 16px;
   width: 100%;
   position: relative;
-}
-
-.input_choose_form_contacts {
-  padding-top: 2.45vh;
 }
 
 .line {
@@ -148,7 +145,7 @@
   font-style: normal;
   font-weight: var(--fw-400);
   line-height: 1rem;
-  padding-top: 4rem;
+  padding-top: 4.375rem;
   max-width: 20rem;
 }
 
@@ -161,7 +158,7 @@
   font-weight: var(--fw-400);
   line-height: 1rem;
   text-decoration-line: underline;
-  cursor: none;
+  /* cursor: none; */
   transition: color 0.4s ease;
 }
 
@@ -178,7 +175,6 @@
   border: 1px solid transparent;
   background-color: var(--blue-75BBFD);
   margin-top: 1rem;
-  /* cursor: none; */
   transition: background-color 0.4s ease;
 }
 
@@ -191,7 +187,6 @@
   border: 1px solid transparent;
   background-color: var(--blue-75BBFD);
   margin-top: 3rem;
-  /* cursor: none; */
   transition: background-color 0.4s ease;
   min-width: 432px;
   /* height: 56px; */
@@ -220,7 +215,7 @@
   border-radius: 2.5rem;
   background-color: var(--light-light-gray-EBECEE);
   font-family: var(--font-raleway);
-  font-size: 0.625rem;
+  font-size: 0.75rem;
   font-style: normal;
   font-weight: var(--fw-400);
   line-height: 0.875rem;
@@ -280,7 +275,7 @@
   position: absolute;
   display: flex;
   flex-direction: column;
-  top: 18rem;
+  bottom: 0;
   right: 7rem;
   z-index: 3;
 }
@@ -345,7 +340,7 @@
 
 /* } */
 
-@media screen and (min-width: 1025px) and (max-width: 1600px) {
+@media screen and (min-width: 1024px) and (max-width: 1600px) {
   .form_vacancy_wrapper {
     display: flex;
     height: fit-content;
@@ -383,7 +378,7 @@
     border: none;
     outline: none;
     background-color: transparent;
-    padding-top: 2.7vh;
+    padding-top: 3rem;
     font-family: var(--font-raleway);
     font-style: normal;
     font-weight: var(--fw-400);
@@ -392,8 +387,9 @@
     width: 100%;
   }
 
+  .input_name_form_contacts,
   .input_choose_form_contacts {
-    padding-top: 2.2vh;
+    padding-top: 2.75rem;
   }
 
   .line {
@@ -473,7 +469,7 @@
     font-style: normal;
     font-weight: var(--fw-400);
     line-height: 1rem;
-    padding-top: 4rem;
+    padding-top: 3.6rem;
     max-width: 20rem;
   }
 
@@ -486,7 +482,7 @@
     font-weight: var(--fw-400);
     line-height: 1rem;
     text-decoration-line: underline;
-    cursor: none;
+    /* cursor: none; */
     transition: color 0.4s ease;
   }
 
@@ -503,7 +499,7 @@
     border: 1px solid transparent;
     background-color: var(--blue-75BBFD);
     margin-top: 1rem;
-    cursor: none;
+    /* cursor: none; */
     transition: background-color 0.4s ease;
   }
 
@@ -602,8 +598,7 @@
     position: absolute;
     display: flex;
     flex-direction: column;
-    top: 16.5rem;
-    right: 4.69rem;
+    right: 4.06rem;
     z-index: 3;
   }
 
@@ -693,13 +688,17 @@
     border: none;
     outline: none;
     background-color: transparent;
-    padding-top: 2.7vh;
+    padding-top: 48px;
     font-family: var(--font-raleway);
     font-style: normal;
     font-weight: var(--fw-400);
     font-size: 16px;
     line-height: 16px;
     width: 100%;
+  }
+
+  .input_name_form_contacts {
+    padding-top: 44px;
   }
 
   .input_choose_form_contacts {
@@ -715,10 +714,6 @@
 
   .errorLine {
     background-color: var(--crimson-E00747);
-  }
-
-  .line_resume {
-    width: 46vw;
   }
 
   .line_select {
@@ -775,7 +770,7 @@
     font-style: normal;
     font-weight: var(--fw-400);
     line-height: 1rem;
-    padding-top: 5rem;
+    padding-top: 5.875rem;
     max-width: 20rem;
   }
 
@@ -800,7 +795,7 @@
     border-radius: 4.125rem;
     border: 1px solid transparent;
     background-color: var(--blue-75BBFD);
-    margin-top: 1.44rem;
+    margin-top: 1rem;
     cursor: none;
     transition: background-color 0.4s ease;
   }
@@ -812,12 +807,11 @@
   .centerButton {
     display: block;
     position: absolute;
-    bottom: -5rem;
-    /* top: 0rem; */
-    left: 50%;
+    bottom: -4.5rem;
+
+    left: 0;
     right: 0;
-    transform: translateX(-50%);
-    width: 100%;
+    width: max-content;
   }
 
   .button_name_vacancy {
@@ -967,9 +961,16 @@
     font-weight: var(--fw-400);
     font-size: 16px;
     line-height: normal;
-    /* padding-top: 2.7vh; */
+    padding-top: 48px;
     width: 100%;
     position: relative;
+  }
+
+  .input_name_form_contacts {
+    padding-top: 38px;
+  }
+  .input_letter_form_contacts {
+    padding-top: 47px;
   }
 
   .placeholder {
@@ -981,7 +982,7 @@
     transform: translateY(-100%);
     transform-origin: left top;
     transition: all 0.3s ease-out;
-    padding-bottom: 10px;
+    padding-bottom: 12px;
     width: 100%;
     white-space: nowrap;
   }
@@ -1049,12 +1050,8 @@
   .centerButton {
     display: block;
     position: absolute;
-    bottom: -5rem;
-    /* top: 0rem; */
-    left: 50%;
-    right: 0;
-    transform: translateX(-50%);
-    width: 100%;
+    bottom: -4.5rem;
+    width: max-content;
   }
 
   .button_name_vacancy {
