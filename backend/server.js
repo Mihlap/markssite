@@ -7,6 +7,9 @@ const cors = require('cors');
 const path = require('path');
 const session = require('express-session');
 const FileStore = require('session-file-store')(session);
+/* eslint-disable import/no-extraneous-dependencies */
+const rateLimit = require('express-rate-limit');
+
 const indexRouter = require('./Routes/indexRouter');
 const authRouter = require('./Routes/authRouter');
 const staffsRouter = require('./Routes/staffsRouter');
@@ -24,10 +27,7 @@ const vacancyDetailsRouter = require('./Routes/Vacancies/vacancyDetailsRouter');
 const vacancyEventRouter = require('./Routes/Vacancies/vacancyEventRouter');
 const journalRouter = require('./Routes/Journal/journalRouter');
 
-
-
 // const { createProxyMiddleware } = require('http-proxy-middleware');
-
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -80,6 +80,15 @@ app.use((req, res, next) => {
   res.header('Content-Security-Policy', 'default-src \'self\'');
   next();
 });
+
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 минут
+  max: 100, // максимум 100 запросов с одного IP за 15 минут
+  message: 'Слишком много запросов с этого IP, попробуйте позже',
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+app.use(limiter);
 
 
 const imagesPath = path.join(__dirname, 'images');  
