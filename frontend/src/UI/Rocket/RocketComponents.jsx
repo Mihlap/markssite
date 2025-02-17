@@ -6,42 +6,68 @@ import Planet from './Planet';
 
 preloadShoeModel();
 
+const getContainerWidthPercentage = (screenWidth) => {
+  const minScreen = 1024;
+  const maxScreen = 4500;
+  const minPercentage = 65; // для маленьких экранов
+  const maxPercentage = 30; // для больших экранов
+
+  if (screenWidth <= minScreen) return minPercentage;
+  if (screenWidth >= maxScreen) return maxPercentage;
+
+  const factor = (screenWidth - minScreen) / (maxScreen - minScreen);
+  const widthPercentage = minPercentage - factor * (minPercentage - maxPercentage);
+  return widthPercentage;
+};
+
 const Rocket = () => {
   const light = useRef();
 
   const [containerStyle, setContainerStyle] = useState({
     position: 'fixed',
-    right: 0,
-    // top: 10,
+    right: 0, 
     bottom: 0,
-    width: '75%',
+    width: '100%',
     height: '100%',
     display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
   });
 
-  const handleResize = useCallback(() => {
-    const screenWidth = window.innerWidth;
-    let width = '25%';
-    const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-    if (screenWidth >= 3500) width = '30%';
-    else if (screenWidth >= 2500) width = '36%';
-    else if (screenWidth >= 2000) width = '40%';
-    else if (screenWidth >= 1601) width = '50%';
-    else if (screenWidth >= 1301) width = '40%';
-    else if (screenWidth >= 1024) width = '50%';
-    else width = '65%';
+  // const handleResize = useCallback(() => {
+  //   const screenWidth = window.innerWidth;
+  //   let width = '25%';
+  //   const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+  //   if (screenWidth >= 3500) width = '30%';
+  //   else if (screenWidth >= 3000) width = '36%';
+  //   else if (screenWidth >= 2500) width = '46%';
+  //   else if (screenWidth >= 2000) width = '44%';
+  //   else if (screenWidth >= 1601) width = '66%';
+  //   else if (screenWidth >= 1301) width = '40%';
+  //   else if (screenWidth >= 1024) width = '50%';
+  //   else width = '65%';
 
-    if (isSafari) {
-      width = '35%';
-    }
+  //   if (isSafari) {
+  //     width = '35%';
+  //   }
 
-    setContainerStyle((prevStyle) => ({
-      ...prevStyle,
-      width,
-    }));
-  }, []);
+  //   setContainerStyle((prevStyle) => ({
+  //     ...prevStyle,
+  //     width,
+  //   }));
+  // }, []);
+
+    const handleResize = useCallback(() => {
+      const screenWidth = window.innerWidth;
+      const widthPercentage = getContainerWidthPercentage(screenWidth);
+
+      // Если необходимо, можно задать отдельное значение для Safari
+      const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+      const finalWidth = isSafari ? 35 : widthPercentage;
+
+      setContainerStyle((prevStyle) => ({
+        ...prevStyle,
+        width: finalWidth + '%',
+      }));
+    }, []);
 
   useEffect(() => {
     window.addEventListener('resize', handleResize);
