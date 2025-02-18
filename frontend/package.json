@@ -64,6 +64,12 @@
     "eject": "react-scripts eject",
     "format": "prettier --write ."
   },
+    "overrides": {
+    "postcss": "~8.4.31",
+    "cross-spawn": "~7.0.5",
+    "path-to-regexp": "~0.1.12",
+    "serialize-javascript": "~6.0.2"
+  },
   "eslintConfig": {
     "extends": [
       "react-app",
