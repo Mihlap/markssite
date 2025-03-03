@@ -8,9 +8,31 @@ function lerp(start, end, t) {
   return start * (1 - t) + end * t;
 }
 
+function useWindowWidth() {
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  useEffect(() => {
+    const handleResize = () => setWindowWidth(window.innerWidth);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+  return windowWidth;
+}
+
+const getModelScale = (width) => {
+  if (width >= 3500) return 0.24;
+  else if (width >= 3000) return 0.24;
+  else if (width >= 2500) return 0.24;
+  else if (width >= 2000) return 0.24;
+  else if (width >= 1601) return 0.24;
+  else if (width >= 1301) return 0.25;
+  else if (width >= 1024) return 0.25;
+  else return 0.25;
+};
+
 const Show = React.memo(() => {
   const { nodes } = useGLTF('/assets/rocket_01.gltf');
   const { size, camera } = useThree();
+   const windowWidth = useWindowWidth();
   const RotationRef = useRef();
   const [hovered, hover] = useState(false);
   const [rotationSpeed, setRotationSpeed] = useState(0.01);
@@ -18,36 +40,19 @@ const Show = React.memo(() => {
   const [posX, setPosX] = useState(21);
 
   useEffect(() => {
-    // Расчёт позиции модели по оси X относительно правого края экрана
-    const objectZ = 30; // фиксированная z-координата группы
+    const objectZ = 34;
     const distance = camera.position.z - objectZ;
     const verticalFov = THREE.MathUtils.degToRad(30);
     const halfVertical = Math.tan(verticalFov / 2) * distance;
     const aspect = size.width / size.height;
     const horizontalSize = halfVertical * 2 * aspect;
     const xRight = horizontalSize / 2;
-    const offset = 2; // расстояние от правого края до центра модели
+    const offset = 2;
     setPosX(xRight - offset);
 
-    // Линейная интерполяция для scale
-    const minScreen = 1024;
-    const maxScreen = 4500;
-    const minScale = 0.18;
-    const maxScale = 0.6;
-    let newScale = minScale;
-
-    if (size.width <= minScreen) {
-      newScale = minScale;
-    } else if (size.width >= maxScreen) {
-      newScale = maxScale;
-    } else {
-      const factor = (size.width - minScreen) / (maxScreen - minScreen);
-      newScale = minScale + factor * (maxScale - minScale);
-    }
-
+    const newScale = getModelScale(windowWidth);
     setScale(newScale);
-  }, [size.width, size.height, camera.position.z]);
-
+  }, [size.width, size.height, camera.position.z, windowWidth]);
 
   useFrame((state, delta) => {
     const targetSpeed = hovered ? 0.12 : 0.01;
@@ -57,8 +62,18 @@ const Show = React.memo(() => {
     }
   });
 
+
+  useFrame((state, delta) => {
+    const targetSpeed = hovered ? 0.12 : 0.01;
+    setRotationSpeed((prev) => lerp(prev, targetSpeed, 0.01));
+    if (RotationRef.current) {
+      RotationRef.current.rotation.z += rotationSpeed * delta * 60;
+    }
+  });  
+  
+
   return (
-    <group rotation={[-0.5, -0.95, 0]} position={[posX, -6, 16]}>
+    <group rotation={[-0.5, -0.95, 0]} position={[posX, -5.5, 16]}>
       <Center>
         <mesh
           ref={RotationRef}
@@ -67,7 +82,8 @@ const Show = React.memo(() => {
           castShadow
           receiveShadow
           geometry={nodes.rocket_01.geometry}
-          scale={scale}>
+          scale={scale}
+          renderOrder={10}>
           <meshPhongMaterial color={[1.8, 1.8, 1.8]} specular={[1, 1, 1]} shininess={12} />
         </mesh>
       </Center>
