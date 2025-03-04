@@ -45,7 +45,7 @@ const handleScroll = useCallback(() => {
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}              
               to="/"
-              className={({ isActive }) => `${styles.Navbar__title} ${isActive ? styles.Navbar__item_open : ''}`}              
+              className={styles.Navbar__title}              
             >
               <h1>MARKS GROUP</h1>
             </NavLink>

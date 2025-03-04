@@ -6,26 +6,55 @@ import styles from './BenefitsVacancy.module.scss';
 const BenefitsVacancy = () => {
   const vacancies = useSelector((state) => state.vacancies.vacancies);
 
-  return vacancies.map((vacancy, index) => (
-    <div key={index} className={styles.frameBlockRight_benefits}>
-      {vacancy.advantages.split(',').map((advantage, idx) => {
-        const trimmedAdvantage = advantage.trim();
-        const benefit = benefitsData.find((b) => b.title === trimmedAdvantage);
+  const processAdvantages = (advantages) => {
+    if (!advantages) return [];
+    if (Array.isArray(advantages)) return advantages;
+    // Разбиваем строку по запятым
+    const parts = advantages.split(',').map((item) => item.trim());
+    let result = [];
+    for (let i = 0; i < parts.length; i++) {
+      let current = parts[i];
+      // Если текущее значение уже найдено в списке, добавляем его
+      if (benefitsData.some((b) => b.title === current)) {
+        result.push(current);
+      } else if (i < parts.length - 1) {
+        // Пробуем объединить текущее со следующим
+        const combined = current + ', ' + parts[i + 1];
+        if (benefitsData.some((b) => b.title === combined)) {
+          result.push(combined);
+          i++; // Пропускаем следующий, так как он уже объединён
+        } else {
+          // Если объединённое значение не найдено, добавляем текущее как есть
+          result.push(current);
+        }
+      } else {
+        result.push(current);
+      }
+    }
+    return result;
+  };
 
-        return benefit ? (
-          <div key={idx} className={styles.frameBlockRight_benefits__frameBlock_frame}>
-            <img className={styles.frameBlockRight_benefits__frame} src={benefit.icon} alt={benefit.title} />
-            <span
-              className={styles.frameBlockRight_benefits__frameSpan}
-              dangerouslySetInnerHTML={{
-                __html: benefit.typographed || benefit.title,
-              }}
-            />
-          </div>
-        ) : null;
-      })}
-    </div>
-  ));
+  return vacancies.map((vacancy, index) => {
+    const advantagesArr = processAdvantages(vacancy.advantages);
+    return (
+      <div key={index} className={styles.frameBlockRight_benefits}>
+        {advantagesArr.map((advantage, idx) => {
+          const benefit = benefitsData.find((b) => b.title === advantage);
+          return benefit ? (
+            <div key={idx} className={styles.frameBlockRight_benefits__frameBlock_frame}>
+              <img className={styles.frameBlockRight_benefits__frame} src={benefit.icon} alt={benefit.title} />
+              <span
+                className={styles.frameBlockRight_benefits__frameSpan}
+                dangerouslySetInnerHTML={{
+                  __html: benefit.typographed || benefit.title,
+                }}
+              />
+            </div>
+          ) : null;
+        })}
+      </div>
+    );
+  });
 };
 
 export default BenefitsVacancy;
