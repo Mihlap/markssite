@@ -11,27 +11,26 @@ const Rocket = () => {
 
   const [containerStyle, setContainerStyle] = useState({
     position: 'fixed',
-    right: 0,
-    // top: 10,
+    right: 0, 
     bottom: 0,
-    width: '75%',
+    width: '100%',
     height: '100%',
     display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
+    zIndex: '9999',
   });
 
   const handleResize = useCallback(() => {
     const screenWidth = window.innerWidth;
     let width = '25%';
     const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-    if (screenWidth >= 3500) width = '30%';
-    else if (screenWidth >= 2500) width = '36%';
-    else if (screenWidth >= 2000) width = '40%';
-    else if (screenWidth >= 1601) width = '50%';
-    else if (screenWidth >= 1301) width = '40%';
-    else if (screenWidth >= 1024) width = '50%';
-    else width = '65%';
+    if (screenWidth >= 3500) width = '40%';
+    else if (screenWidth >= 3000) width = '45%';
+    else if (screenWidth >= 2500) width = '55%';
+    else if (screenWidth >= 2000) width = '65%';
+    else if (screenWidth >= 1601) width = '80%';
+    else if (screenWidth >= 1301) width = '65%';
+    else if (screenWidth >= 1024) width = '75%';
+    else width = '95%';
 
     if (isSafari) {
       width = '35%';
@@ -42,6 +41,7 @@ const Rocket = () => {
       width,
     }));
   }, []);
+
 
   useEffect(() => {
     window.addEventListener('resize', handleResize);
