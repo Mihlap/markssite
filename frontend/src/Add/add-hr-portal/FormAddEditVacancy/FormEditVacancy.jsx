@@ -87,29 +87,62 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
 
   useEffect(() => {
     if (editVacancyData) {
-      const skillsArray = editVacancyData.skills ? editVacancyData.skills.split(',') : [];
-      const advantagesArray = editVacancyData.advantages ? editVacancyData.advantages.split(',') : [];
-      const directionArray = editVacancyData.direction ? editVacancyData.direction.split(',') : [];
-      const experienceArray = editVacancyData.experience ? editVacancyData.experience.split(',') : [];
-      const locationArray = editVacancyData.locationStaff ? editVacancyData.locationStaff.split(',') : [];
-      const busynessArray = editVacancyData.busyness ? editVacancyData.busyness.split(',') : [];
-      const workModeArray = editVacancyData.modeOperating ? editVacancyData.modeOperating.split(',') : [];
+      // Функция, которая пытается объединить соседние части, если их комбинация соответствует одному из валидных значений
+      const combineSplitValues = (str, validOptions) => {
+        if (!str) return [];
+        const parts = str.split(',').map((s) => s.trim());
+        let result = [];
+        for (let i = 0; i < parts.length; i++) {
+          // Если текущая часть уже валидна — используем её
+          if (validOptions.includes(parts[i])) {
+            result.push(parts[i]);
+          } else if (i < parts.length - 1) {
+            // Пробуем объединить текущую и следующую часть
+            const combined = parts[i] + ', ' + parts[i + 1];
+            if (validOptions.includes(combined)) {
+              result.push(combined);
+              i++; // пропускаем следующий, т.к. он уже включён в объединённое значение
+            } else {
+              result.push(parts[i]);
+            }
+          } else {
+            result.push(parts[i]);
+          }
+        }
+        return result;
+      };
+
+      // Получаем список валидных значений для benefits из selectBlocks
+      const benefitsOptions = selectBlocks.find((b) => b.name === 'benefits')?.options.map((o) => o.value) || [];
+      // Аналогично можно сделать для других полей, если требуется
+      const skillsOptions = selectBlocks.find((b) => b.name === 'skills')?.options.map((o) => o.value) || [];
+      const directionOptions = selectBlocks.find((b) => b.name === 'direction')?.options.map((o) => o.value) || [];
+      const experienceOptions = selectBlocks.find((b) => b.name === 'experience')?.options.map((o) => o.value) || [];
+      const locationOptions = selectBlocks.find((b) => b.name === 'location')?.options.map((o) => o.value) || [];
+      const busynessOptions = selectBlocks.find((b) => b.name === 'busyness')?.options.map((o) => o.value) || [];
+      const workModeOptions = selectBlocks.find((b) => b.name === 'workMode')?.options.map((o) => o.value) || [];
+
       setFormData((prev) => ({
         ...prev,
         title: editVacancyData.title || '',
         textBlock1: editVacancyData.searchStaff || '',
         textBlock2: editVacancyData.haveToWork || '',
         textBlock3: editVacancyData.requirements || '',
-        direction: directionArray,
-        experience: experienceArray,
-        location: locationArray,
-        busyness: busynessArray,
-        workMode: workModeArray,
-        skills: skillsArray,
-        benefits: advantagesArray,
+        direction: editVacancyData.direction ? combineSplitValues(editVacancyData.direction, directionOptions) : [],
+        experience: editVacancyData.experience ? combineSplitValues(editVacancyData.experience, experienceOptions) : [],
+        location: editVacancyData.locationStaff
+          ? combineSplitValues(editVacancyData.locationStaff, locationOptions)
+          : [],
+        busyness: editVacancyData.busyness ? combineSplitValues(editVacancyData.busyness, busynessOptions) : [],
+        workMode: editVacancyData.modeOperating
+          ? combineSplitValues(editVacancyData.modeOperating, workModeOptions)
+          : [],
+        skills: editVacancyData.skills ? combineSplitValues(editVacancyData.skills, skillsOptions) : [],
+        benefits: editVacancyData.advantages ? combineSplitValues(editVacancyData.advantages, benefitsOptions) : [],
       }));
     }
   }, [editVacancyData]);
+
 
   const handleSubmit = useCallback(
     async (event) => {

@@ -33,16 +33,6 @@
   position: absolute;
 }
 
-/* .rocket_image {
-  position: absolute;
-  display: flex;
-  justify-content: flex-end;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center;
-} */
-
 .vacancies_header_wrapper {
   position: absolute;
   display: flex;
@@ -620,15 +610,9 @@ font-family: var(--font-raleway);
     padding-top: 30px;
   }
 
-  /* .menu_button_group_vacancy_swiper_mobile {
-    display: flex;
-    bottom: 0rem;
-    left: 0rem;
-    right: 0rem;
-    width: 100%;
-    padding-left: 10.8rem;
-    padding-right: 10.8rem;
-  } */
+  .menu_button_group_vacancy_swiper_mobile {
+    padding-left: 10.8rem;  
+  }
 
   .menu__button__choose__vacancyFilter_mobile {
     display: flex;
