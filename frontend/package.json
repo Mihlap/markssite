@@ -64,6 +64,11 @@
     "eject": "react-scripts eject",
     "format": "prettier --write ."
   },
+  "overrides": {
+    "cross-spawn": "~7.0.5",
+    "path-to-regexp": "~0.1.12",
+    "serialize-javascript": "~6.0.2"
+  },
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -87,8 +92,16 @@
       "last 1 firefox version"
     ]
   },
+  "peerDependencies": {
+    "postcss": "^8.0.0"
+  },
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
+    "autoprefixer": "^10.4.20",
+    "css-minimizer-webpack-plugin": "^7.0.0",
+    "postcss": "~8.5.2",
+    "postcss-import": "^16.1.0",
+    "postcss-preset-env": "^10.1.4",
     "react-app-rewired": "^2.2.1",
     "react-scripts": "^5.0.1",
     "sass": "^1.78.0",
