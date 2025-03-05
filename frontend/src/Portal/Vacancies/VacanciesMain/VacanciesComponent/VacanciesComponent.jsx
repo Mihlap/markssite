@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useMemo } from 'react';
+import React, { useEffect, useState, useCallback, useMemo, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from '../VacanciesComponent/VacanciesComponent.module.css';
@@ -41,6 +41,7 @@ const VacanciesComponent = ({ handleMouseEnter, handleMouseLeave, handleMouseHov
   const [modalFiltersActive, setModalFiltersActive] = useState(false);
   const [, setSwiper] = useState(null);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const initialLoad = useRef(true);
 
   const isIpadMobile = windowWidth <= 1024;
 
@@ -58,15 +59,17 @@ const VacanciesComponent = ({ handleMouseEnter, handleMouseLeave, handleMouseHov
     'Администрирование',
     'Бэк офис',
     'Управление',
-    // 'Стажировки',
   ];
 
-  const filterMappings = {
-    'Требуемый опыт работы': 'experience',
-    Локация: 'locationStaff',
-    'Режим работы': 'modeOperating',
-    Занятость: 'busyness',
-  };
+  const filterMappings = useMemo(
+    () => ({
+      'Требуемый опыт работы': 'experience',
+      Локация: 'locationStaff',
+      'Режим работы': 'modeOperating',
+      Занятость: 'busyness',
+    }),
+    []
+  );
 
   const vacanciesMain = useMemo(() => [...filteredVacancies].reverse(), [filteredVacancies]);
 
@@ -94,17 +97,14 @@ const VacanciesComponent = ({ handleMouseEnter, handleMouseLeave, handleMouseHov
   }, [dispatch, filters]);
 
   useEffect(() => {
-    const filteredVacancies = applyFilters(vacancies, activeFilters);
-    dispatch(setFilteredVacancies(filteredVacancies));
-    setFilters(activeFilters);
-  }, [dispatch, vacancies, activeFilters]);
-
-  useEffect(() => {
-    if (selectedFilter === 'Все') {
-      setFilters({});
-      dispatch(setActiveFilters({}));
+    if (initialLoad.current) {
+      if (selectedFilter === 'Все' && Object.keys(activeFilters).length === 0) {
+        setFilters({});
+        dispatch(setActiveFilters({}));
+      }
+      initialLoad.current = false;
     }
-  }, [selectedFilter, dispatch]);
+  }, [selectedFilter, activeFilters, dispatch]);
 
   useEffect(() => {
     const anyActiveFilters = Object.keys(filters).some((key) => filters[key].length > 0);
@@ -135,6 +135,12 @@ const VacanciesComponent = ({ handleMouseEnter, handleMouseLeave, handleMouseHov
     [filterMappings]
   );
 
+  useEffect(() => {
+    const filteredVacancies = applyFilters(vacancies, activeFilters);
+    dispatch(setFilteredVacancies(filteredVacancies));
+    setFilters(activeFilters);
+  }, [dispatch, vacancies, activeFilters, applyFilters]);
+
   const handleButtonClick = useCallback(
     (direction) => {
       dispatch(setSelectedFilter(direction));
@@ -150,7 +156,7 @@ const VacanciesComponent = ({ handleMouseEnter, handleMouseLeave, handleMouseHov
       }
       setShowManyVacancies(false);
     },
-    [dispatch, filters, vacancies]
+    [dispatch, filters, vacancies, applyFilters]
   );
 
   const toggleShowAllVacancies = useCallback(() => {
@@ -168,11 +174,6 @@ const VacanciesComponent = ({ handleMouseEnter, handleMouseLeave, handleMouseHov
   const shouldDisplayVacancy = useCallback((vacancy) => {
     return !vacancy.hidden;
   }, []);
-
-  // const visibleVacancies = useMemo(
-  //   () => vacanciesMain.filter((vacancy) => shouldDisplayVacancy(vacancy)),
-  //   [vacanciesMain, shouldDisplayVacancy]
-  // );
 
   const visibleVacancies = useMemo(
     () => vacanciesMain.filter((vacancy) => shouldDisplayVacancy(vacancy) && vacancy.type !== 'стажировка'),
@@ -237,9 +238,7 @@ const VacanciesComponent = ({ handleMouseEnter, handleMouseLeave, handleMouseHov
       {!hideVacancies && (
         <div className={styles.main_vacancies_block}>
           <div className={styles.wrapper_vacancies}>
-            <div className={styles.rocket_model}>
-              {/* <div className={styles.rocket_image}> */}
-              {/* <img src="/assets/rocket.png" alt="rocket.png" /> */}
+            <div className={styles.rocket_model}>  
               <RocketComponent />
             </div>
             <div className={styles.vacancies_header_wrapper}>
