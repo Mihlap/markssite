@@ -344,6 +344,10 @@ font-family: var(--font-raleway);
   justify-content: start;
 }
 
+.dopFilterWrapper {
+  padding-left: 1.69rem;
+}
+
 .activeFilterTag {
   display: flex;
   padding: 8px 24px;

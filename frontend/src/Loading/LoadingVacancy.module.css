@@ -1,0 +1,86 @@
+@import '../App.css';
+.spinner {
+  animation: rotator 2.5s linear infinite;
+}
+
+@keyframes rotator {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(270deg);
+  }
+}
+.path {
+  border-radius: 1rem;
+  stroke-dasharray: 187;
+  stroke-dashoffset: 0;
+  transform-origin: center;
+  animation: dash 2.5s ease-in-out infinite, colors 10s ease-in-out infinite;
+}
+
+@keyframes colors {
+  0% {
+    stroke: #75bbfd;
+  }
+  25% {
+    stroke: #75bbfd;
+  }
+  50% {
+    stroke: #75bbfd;
+  }
+  75% {
+    stroke: #75bbfd;
+  }
+  100% {
+    stroke: #75bbfd;
+  }
+}
+@keyframes dash {
+  0% {
+    stroke-dashoffset: 187;
+  }
+  50% {
+    stroke-dashoffset: 46.75;
+    transform: rotate(135deg);
+  }
+  100% {
+    stroke-dashoffset: 187;
+    transform: rotate(450deg);
+  }
+}
+.div_round {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  box-shadow: 0 0 0 20px #e2eefb;
+}
+
+.inner-circle {
+  transform: none;
+}
+
+.div_svg {
+  position: relative;
+  display: inline-block;
+  height: 163px;
+  width: 163px;
+  margin: 0em;
+  border-radius: 50%;
+  background: none repeat scroll 0 0 #e1eefc;
+  overflow: hidden;
+}
+
+.div_svg:after {
+  content: "";
+  position: absolute;
+  top: 33px;
+  left: 33px;
+  display: block;
+  height: 100px;
+  width: 100px;
+  background: none repeat scroll 0 0 #f2f2f2;
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}/*# sourceMappingURL=LoadingVacancy.module.css.map */

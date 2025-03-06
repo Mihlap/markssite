@@ -1,0 +1,322 @@
+@import '../../../App.css';
+.VacanciesMap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 100vh;
+  padding-left: 4rem;
+  overflow: hidden;
+}
+.VacanciesMap__text {
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 20%;
+  margin: 4rem 0 8rem auto;
+}
+.VacanciesMap__text h2 {
+  font-family: var(--font-unbounded);
+  font-size: 2.5rem;
+  line-height: 3rem;
+  margin-bottom: 2.8125rem;
+}
+.VacanciesMap__text p {
+  font-family: var(--font-raleway);
+  margin-bottom: 2rem;
+  font-size: 1.5rem;
+  line-height: 2rem;
+}
+.VacanciesMap__map {
+  flex-shrink: 0;
+  position: relative;
+  width: 1574px;
+  height: 1400px;
+  background-image: url("../icons/vacancies-cities.png");
+  background-position: center center;
+  background-size: 100%;
+  background-repeat: no-repeat;
+}
+.VacanciesMap__circle {
+  position: absolute;
+  border-radius: 100%;
+  background-color: var(--blue-light-BADDFE);
+  transform-origin: center center;
+  animation: ellipse 4s ease infinite;
+}
+.VacanciesMap__circle_xs {
+  width: 17px;
+  height: 17px;
+  opacity: 1;
+  z-index: 50;
+  animation: none;
+  background-color: var(--blue-75BBFD);
+}
+.VacanciesMap__circle_s {
+  width: 60px;
+  height: 60px;
+  z-index: 40;
+  opacity: 0.3;
+  animation-delay: 700ms;
+}
+.VacanciesMap__circle_m {
+  width: 97px;
+  height: 97px;
+  z-index: 30;
+  opacity: 0.16;
+  animation-delay: 900ms;
+}
+.VacanciesMap__city {
+  position: absolute;
+  top: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.VacanciesMap__city span {
+  position: absolute;
+  transform: translateY(-75px);
+  z-index: 60;
+  font-size: 19px;
+  white-space: nowrap;
+}
+.VacanciesMap__city_msk {
+  top: 249px;
+  right: 756px;
+}
+.VacanciesMap__city_msk .VacanciesMap__box {
+  width: 661px;
+  height: 661px;
+}
+.VacanciesMap__city_msk span {
+  font-size: 25px;
+  transform: translateY(-87px);
+}
+.VacanciesMap__city_vzh {
+  top: 656px;
+  right: 1127px;
+}
+.VacanciesMap__city_spb {
+  top: 341px;
+  right: 1005px;
+}
+.VacanciesMap__city_obg {
+  top: 905px;
+  right: 852px;
+}
+.VacanciesMap__city_chbk {
+  top: 882px;
+  right: 669px;
+}
+.VacanciesMap__box {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform-origin: center center;
+  width: 97px;
+  height: 97px;
+}
+.VacanciesMap .VacanciesMap__city_active .VacanciesMap__circle {
+  animation: pulse 3s infinite;
+}
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(3.5);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+@media all and (max-width: 2000px) {
+  .VacanciesMap__text {
+    width: 30%;
+    margin: 0 0 10rem auto;
+  }
+  .VacanciesMap__text h2 {
+    font-size: 2rem;
+    line-height: 2.5rem;
+    margin-bottom: 1.5rem;
+  }
+  .VacanciesMap__text p {
+    margin-bottom: 2rem;
+    font-size: 1.125rem;
+    line-height: 1.625rem;
+  }
+  .VacanciesMap__map {
+    width: 960px;
+    height: 880px;
+    background-position: bottom -30px right -196px;
+    background-size: 113%;
+  }
+  .VacanciesMap__circle_xs {
+    width: 12px;
+    height: 12px;
+  }
+  .VacanciesMap__circle_s {
+    width: 42px;
+    height: 42px;
+  }
+  .VacanciesMap__circle_m {
+    width: 70px;
+    height: 70px;
+  }
+  .VacanciesMap__city span {
+    font-size: 14px;
+    transform: translateY(-47px);
+  }
+  .VacanciesMap__city_msk {
+    top: 80px;
+    right: 356px;
+  }
+  .VacanciesMap__city_msk span {
+    font-size: 18px;
+    transform: translateY(-58px);
+  }
+  .VacanciesMap__city_msk .VacanciesMap__box {
+    width: 470px;
+    height: 470px;
+  }
+  .VacanciesMap__city_vzh {
+    top: 364px;
+    right: 619px;
+  }
+  .VacanciesMap__city_spb {
+    top: 139px;
+    right: 533px;
+  }
+  .VacanciesMap__city_obg {
+    top: 536px;
+    right: 428px;
+  }
+  .VacanciesMap__city_chbk {
+    top: 520px;
+    right: 303px;
+  }
+  .VacanciesMap__box {
+    width: 70px;
+    height: 70px;
+  }
+}
+@media all and (max-width: 1281px) {
+  .VacanciesMap__text {
+    width: 38%;
+    margin: 4rem 0 4rem auto;
+  }
+  .VacanciesMap__text h2 {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+  .VacanciesMap__text p {
+    font-size: 1.125rem;
+    line-height: 1.625rem;
+  }
+  .VacanciesMap__map {
+    width: 37.4375rem;
+    height: 35.75rem;
+    background-position: bottom -82px right -148px;
+    background-size: 118%;
+  }
+  .VacanciesMap__box {
+    width: 45px;
+    height: 45px;
+  }
+  .VacanciesMap__circle_xs {
+    width: 8px;
+    height: 8px;
+  }
+  .VacanciesMap__circle_s {
+    width: 27px;
+    height: 27px;
+  }
+  .VacanciesMap__circle_m {
+    width: 45px;
+    height: 45px;
+  }
+  .VacanciesMap__city span {
+    font-size: 9px;
+    transform: translateY(-34px);
+  }
+  .VacanciesMap__city_msk {
+    top: 110px;
+    right: 208px;
+  }
+  .VacanciesMap__city_msk span {
+    font-size: 12px;
+    transform: translateY(-38px);
+  }
+  .VacanciesMap__city_msk .VacanciesMap__box {
+    width: 306px;
+    height: 306px;
+  }
+  .VacanciesMap__city_vzh {
+    top: 296px;
+    right: 379px;
+  }
+  .VacanciesMap__city_spb {
+    top: 156px;
+    right: 324px;
+  }
+  .VacanciesMap__city_obg {
+    top: 409px;
+    right: 255px;
+  }
+  .VacanciesMap__city_chbk {
+    top: 398px;
+    right: 173px;
+  }
+}
+@media all and (max-width: 768px) {
+  .VacanciesMap {
+    flex-direction: column;
+    height: auto;
+    padding: 0;
+  }
+  .VacanciesMap__text {
+    position: static;
+    width: 100%;
+    padding: 7.5rem 1rem 0 1rem;
+    margin-bottom: 0;
+  }
+  .VacanciesMap__text h2 {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+  .VacanciesMap__map {
+    width: 375px;
+    height: 507px;
+    background-position: bottom -10px right -140px;
+    background-size: cover;
+    margin-left: auto;
+  }
+  .VacanciesMap__city span {
+    transform: translateY(-24px);
+  }
+  .VacanciesMap__city_msk {
+    top: 59px;
+    right: 109px;
+  }
+  .VacanciesMap__city_msk span {
+    font-size: 12px;
+  }
+  .VacanciesMap__city_vzh {
+    top: 234px;
+    right: 272px;
+  }
+  .VacanciesMap__city_spb {
+    top: 121px;
+    right: 228px;
+  }
+  .VacanciesMap__city_obg {
+    top: 324px;
+    right: 172px;
+  }
+  .VacanciesMap__city_chbk {
+    top: 315px;
+    right: 107px;
+  }
+}/*# sourceMappingURL=VacanciesMap.module.css.map */

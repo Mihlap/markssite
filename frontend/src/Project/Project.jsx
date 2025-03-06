@@ -343,7 +343,8 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
               slidesPerView="auto"
               spaceBetween={8}
               className={styles.my_swiper2_button_group_project}
-              touch="true">
+              touch="true"
+            >
               <div className={styles.button_group_project}>
                 {buttonChoose &&
                   buttonChoose?.map((el, index) => (
@@ -356,7 +357,8 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
                           ? styles.active
                           : ''
                       }`}
-                      style={{ width: 'fit-content' }}>
+                      style={{ width: 'fit-content' }}
+                    >
                       <p type="button" className={styles.menu_button_items}>
                         {el}
                       </p>
