@@ -1,0 +1,116 @@
+@import '../App.css';
+.spinner {
+  animation: rotator 2.5s linear infinite;
+  width: 165px;
+  height: 165px;
+}
+@media screen and (max-width: 1024px) and (min-width: 768px) {
+  .spinner {
+    width: 120px;
+    height: 120px;
+  }
+}
+@media screen and (max-width: 768px) {
+  .spinner {
+    width: 82px;
+    height: 82px;
+  }
+}
+
+@keyframes rotator {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(270deg);
+  }
+}
+.path {
+  border-radius: 1rem;
+  stroke-dasharray: 187;
+  stroke-dashoffset: 0;
+  transform-origin: center;
+  animation: dash 2.5s ease-in-out infinite, colors 10s ease-in-out infinite;
+}
+
+@keyframes colors {
+  0% {
+    stroke: #feb0a4;
+  }
+  25% {
+    stroke: #ffa597;
+  }
+  50% {
+    stroke: #fec6bd;
+  }
+  75% {
+    stroke: #ff9f8f;
+  }
+  100% {
+    stroke: #feb0a4;
+  }
+}
+@keyframes dash {
+  0% {
+    stroke-dashoffset: 187;
+  }
+  50% {
+    stroke-dashoffset: 46.75;
+    transform: rotate(135deg);
+  }
+  100% {
+    stroke-dashoffset: 187;
+    transform: rotate(450deg);
+  }
+}
+.div_svg {
+  position: relative;
+  display: inline-block;
+  height: 163px;
+  width: 163px;
+  margin: 0;
+  border-radius: 50%;
+  background: #e1eefc;
+  overflow: hidden;
+}
+@media screen and (max-width: 1024px) and (min-width: 768px) {
+  .div_svg {
+    height: 120px;
+    width: 120px;
+  }
+}
+@media screen and (max-width: 768px) {
+  .div_svg {
+    height: 82px;
+    width: 82px;
+  }
+}
+
+.div_svg:after {
+  content: "";
+  position: absolute;
+  top: 33px;
+  left: 33px;
+  display: block;
+  height: 100px;
+  width: 100px;
+  background: #f2f2f2;
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+@media screen and (max-width: 1024px) and (min-width: 768px) {
+  .div_svg:after {
+    top: 22px;
+    left: 22px;
+    height: 75px;
+    width: 75px;
+  }
+}
+@media screen and (max-width: 768px) {
+  .div_svg:after {
+    top: 16px;
+    left: 16px;
+    height: 50px;
+    width: 50px;
+  }
+}/*# sourceMappingURL=Loader.module.css.map */

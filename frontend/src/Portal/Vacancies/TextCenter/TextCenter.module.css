@@ -1,0 +1,144 @@
+@import '../../../App.css';
+.TextCenter {
+  min-height: 74.5rem;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(261.46deg, rgba(255, 203, 193, 0.09) -4.67%, rgba(117, 187, 253, 0.09) 44.63%, rgba(188, 188, 188, 0.09) 103.07%);
+}
+.TextCenter br {
+  display: none;
+}
+.TextCenter__star {
+  position: absolute;
+  z-index: -1;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+.TextCenter__star_1 {
+  width: 19.25rem;
+  height: 18.125rem;
+  top: 20.88%;
+  left: 76.64%;
+}
+.TextCenter__star_2 {
+  width: 19.25rem;
+  height: 18.125rem;
+  top: 3.94%;
+  left: 2.5%;
+}
+.TextCenter__star_3 {
+  width: 8.125rem;
+  height: 7.625rem;
+  top: 7.05%;
+  left: 67.34%;
+}
+.TextCenter__star_4 {
+  width: 8.75rem;
+  height: 8.25rem;
+  top: 79.2%;
+  left: 6.76%;
+}
+.TextCenter__text {
+  width: 50%;
+  font-weight: var(--fw-300);
+  font-family: var(--font-unbounded);
+  font-size: 3rem;
+  line-height: 4rem;
+}
+.TextCenter__text span {
+  color: var(--blue-75BBFD);
+}
+@media all and (max-width: 1921px) {
+  .TextCenter {
+    min-height: 56.25rem;
+  }
+  .TextCenter__text {
+    width: 66%;
+    font-size: 2.5rem;
+    line-height: 3rem;
+  }
+  .TextCenter__star_1 {
+    top: 16.11%;
+    left: 74.51%;
+  }
+  .TextCenter__star_2 {
+    top: 28.56%;
+    left: -5.76%;
+  }
+  .TextCenter__star_3 {
+    top: 5.11%;
+    left: 65.63%;
+  }
+  .TextCenter__star_4 {
+    top: 82.33%;
+    left: 6.67%;
+  }
+}
+@media all and (max-width: 1025px) {
+  .TextCenter {
+    min-height: 33.75rem;
+  }
+  .TextCenter__text {
+    font-size: 2rem;
+    line-height: 2.5rem;
+  }
+  .TextCenter__star {
+    filter: blur(5px);
+  }
+  .TextCenter__star_1 {
+    top: 26.85%;
+    left: 81.84%;
+  }
+  .TextCenter__star_2 {
+    top: -8.89%;
+    left: -9.08%;
+  }
+  .TextCenter__star_3 {
+    top: 8.52%;
+    left: 69.34%;
+  }
+  .TextCenter__star_4 {
+    top: 80.74%;
+    left: 8.4%;
+  }
+}
+@media all and (max-width: 768px) {
+  .TextCenter br {
+    display: block;
+  }
+  .TextCenter__text {
+    width: 100%;
+    padding: 16px 1px 16px 16px;
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+  .TextCenter__star {
+    fill: blur(10px);
+  }
+  .TextCenter__star_1 {
+    width: 12.5625rem;
+    height: 12.5625rem;
+    top: 33.33%;
+    left: 78.78%;
+  }
+  .TextCenter__star_2 {
+    width: 12.5625rem;
+    height: 12.5625rem;
+    top: 8.52%;
+    left: -24.67%;
+  }
+  .TextCenter__star_3 {
+    width: 5.5625rem;
+    height: 5.5625rem;
+    top: 20.56%;
+    left: 55.17%;
+  }
+  .TextCenter__star_4 {
+    width: 5.875rem;
+    height: 5.875rem;
+    top: 70.74%;
+    left: 21.49%;
+  }
+}/*# sourceMappingURL=TextCenter.module.css.map */

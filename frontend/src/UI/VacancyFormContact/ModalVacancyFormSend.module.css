@@ -1,0 +1,256 @@
+@charset "UTF-8";
+@import '../../App.css';
+.modalContentFormSend {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: var(--white-F6F6F6);
+  box-shadow: -2px 4px 22px 0px rgba(29, 46, 67, 0.6);
+  -webkit-backdrop-filter: blur(8.5px);
+          backdrop-filter: blur(8.5px);
+  overflow: hidden;
+  transition: all 1s ease-in-out, -webkit-clip-path 1s ease-in-out;
+  transition: all 1s ease-in-out, clip-path 1s ease-in-out;
+  transition: all 1s ease-in-out, clip-path 1s ease-in-out, -webkit-clip-path 1s ease-in-out;
+}
+
+.initial {
+  width: -moz-min-content;
+  width: min-content;
+  height: auto;
+  border-radius: 10px;
+  -webkit-clip-path: inset(0);
+          clip-path: inset(0);
+  transition: width 1s ease, height 1s ease, border-radius 1s ease, -webkit-clip-path 1s ease;
+  transition: width 1s ease, height 1s ease, border-radius 1s ease, clip-path 1s ease;
+  transition: width 1s ease, height 1s ease, border-radius 1s ease, clip-path 1s ease, -webkit-clip-path 1s ease;
+}
+
+.morphing {
+  animation: morphToHeart 1s ease-in-out forwards;
+}
+
+.exploding {
+  display: none;
+}
+
+@keyframes morphToHeart {
+  0% {
+    width: 31rem;
+    height: auto;
+    border-radius: 50%;
+    -webkit-clip-path: none;
+            clip-path: none;
+    background: var(--white-F6F6F6);
+  }
+  50% {
+    width: 12.5rem;
+    height: 12.5rem;
+    transform: translate(-50%, -50%);
+    -webkit-clip-path: polygon(-42% 0, 50% 91%, 142% 0);
+            clip-path: polygon(-42% 0, 50% 91%, 142% 0);
+    background: var(--white-F6F6F6);
+    -webkit-mask: radial-gradient(at 70% 31%, #000 29%, rgba(0, 0, 0, 0) 30%), radial-gradient(at 30% 31%, #000 29%, rgba(0, 0, 0, 0) 30%), linear-gradient(#000 0 0) bottom/100% 50% no-repeat;
+            mask: radial-gradient(at 70% 31%, #000 29%, rgba(0, 0, 0, 0) 30%), radial-gradient(at 30% 31%, #000 29%, rgba(0, 0, 0, 0) 30%), linear-gradient(#000 0 0) bottom/100% 50% no-repeat;
+  }
+  100% {
+    width: 2px;
+    height: 2px;
+    -webkit-clip-path: polygon(-42% 0, 50% 91%, 142% 0);
+            clip-path: polygon(-42% 0, 50% 91%, 142% 0);
+    transform: translate(-50%, -50%);
+    background: var(--white-F6F6F6);
+    -webkit-mask: radial-gradient(at 70% 31%, #000 29%, rgba(0, 0, 0, 0) 30%), radial-gradient(at 30% 31%, #000 29%, rgba(0, 0, 0, 0) 30%), linear-gradient(#000 0 0) bottom/100% 50% no-repeat;
+            mask: radial-gradient(at 70% 31%, #000 29%, rgba(0, 0, 0, 0) 30%), radial-gradient(at 30% 31%, #000 29%, rgba(0, 0, 0, 0) 30%), linear-gradient(#000 0 0) bottom/100% 50% no-repeat;
+  }
+}
+@keyframes fadeInOut {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+.modal_vacancy_close {
+  padding-top: 2rem;
+  padding-left: 90%;
+  cursor: pointer;
+}
+
+.modalWrapperFormSend {
+  padding: 2rem 3.625rem 3rem 3.625rem;
+  width: 100%;
+}
+
+.modalTitleFormSend {
+  color: var(--black-1D2E43);
+  font-family: var(--font-unbounded);
+  font-size: 2.5rem;
+  font-weight: var(--fw-300);
+  line-height: 3rem;
+  letter-spacing: 0px;
+  text-align: left;
+  margin-bottom: 18px;
+  padding-top: 1rem;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.modalMessageFormSend {
+  color: var(--black-3C3C3C);
+  font-family: var(--font-unbounded);
+  font-weight: var(--fw-300);
+  letter-spacing: 0px;
+  text-align: left;
+  font-size: 1.5rem;
+  line-height: 2rem;
+  text-align: left;
+  justify-content: left;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.closeButtonFormSend {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px 32px;
+  min-height: 56px;
+  border-radius: 66px;
+  background-color: var(--black-1D2E43);
+  color: var(--white-F6F6F6);
+  font-size: 16px;
+  margin-top: 40px;
+}
+
+@media screen and (min-width: 1025px) and (max-width: 1600px) {
+  .modalTitleFormSend {
+    padding-top: 1rem;
+    font-size: 2rem;
+    line-height: 2.5rem;
+    white-space: nowrap;
+  }
+  .modalMessageFormSend {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+  }
+}
+/* стили для планшетной версии  */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  @keyframes morphToHeart {
+    0% {
+      width: 31rem;
+      height: auto;
+      border-radius: 50%;
+      -webkit-clip-path: none;
+              clip-path: none;
+      background: var(--white-F6F6F6);
+    }
+    50% {
+      width: 8rem;
+      height: 8rem;
+      transform: translate(-50%, -50%);
+      -webkit-clip-path: polygon(-42% 0, 50% 91%, 142% 0);
+              clip-path: polygon(-42% 0, 50% 91%, 142% 0);
+      background: var(--white-F6F6F6);
+      -webkit-mask: radial-gradient(at 70% 31%, #000 29%, rgba(0, 0, 0, 0) 30%), radial-gradient(at 30% 31%, #000 29%, rgba(0, 0, 0, 0) 30%), linear-gradient(#000 0 0) bottom/100% 50% no-repeat;
+              mask: radial-gradient(at 70% 31%, #000 29%, rgba(0, 0, 0, 0) 30%), radial-gradient(at 30% 31%, #000 29%, rgba(0, 0, 0, 0) 30%), linear-gradient(#000 0 0) bottom/100% 50% no-repeat;
+    }
+    100% {
+      width: 2px;
+      height: 2px;
+      -webkit-clip-path: polygon(-42% 0, 50% 91%, 142% 0);
+              clip-path: polygon(-42% 0, 50% 91%, 142% 0);
+      transform: translate(-50%, -50%);
+      background: var(--white-F6F6F6);
+      -webkit-mask: radial-gradient(at 70% 31%, #000 29%, rgba(0, 0, 0, 0) 30%), radial-gradient(at 30% 31%, #000 29%, rgba(0, 0, 0, 0) 30%), linear-gradient(#000 0 0) bottom/100% 50% no-repeat;
+              mask: radial-gradient(at 70% 31%, #000 29%, rgba(0, 0, 0, 0) 30%), radial-gradient(at 30% 31%, #000 29%, rgba(0, 0, 0, 0) 30%), linear-gradient(#000 0 0) bottom/100% 50% no-repeat;
+    }
+  }
+  .modalTitleFormSend {
+    font-size: 2rem;
+    padding-top: 1rem;
+    line-height: 2.5rem;
+    white-space: nowrap;
+  }
+  .modalMessageFormSend {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    max-width: 100%;
+  }
+}
+/* стили мобильной версии  */
+@media screen and (max-width: 767px) {
+  .modalContentFormSend {
+    max-width: 100%;
+    width: 80%;
+    transition: all 1s ease-in-out, -webkit-clip-path 1s ease-in-out;
+    transition: all 1s ease-in-out, clip-path 1s ease-in-out;
+    transition: all 1s ease-in-out, clip-path 1s ease-in-out, -webkit-clip-path 1s ease-in-out;
+  }
+  .initial {
+    max-width: 100%;
+    width: 90%;
+    height: auto;
+    border-radius: 10px;
+    -webkit-clip-path: inset(0);
+            clip-path: inset(0);
+    transition: width 1s ease, height 1s ease, border-radius 1s ease, -webkit-clip-path 1s ease;
+    transition: width 1s ease, height 1s ease, border-radius 1s ease, clip-path 1s ease;
+    transition: width 1s ease, height 1s ease, border-radius 1s ease, clip-path 1s ease, -webkit-clip-path 1s ease;
+  }
+  @keyframes morphToHeart {
+    0% {
+      width: 21rem;
+      height: 8rem;
+      border-radius: 50%;
+      -webkit-clip-path: none;
+              clip-path: none;
+      background: var(--white-F6F6F6);
+    }
+    50% {
+      width: 6rem;
+      height: 6rem;
+      transform: translate(-50%, -50%);
+      -webkit-clip-path: polygon(-42% 0, 50% 91%, 142% 0);
+              clip-path: polygon(-42% 0, 50% 91%, 142% 0);
+      background: var(--white-F6F6F6);
+      -webkit-mask: radial-gradient(at 70% 31%, #000 29%, rgba(0, 0, 0, 0) 30%), radial-gradient(at 30% 31%, #000 29%, rgba(0, 0, 0, 0) 30%), linear-gradient(#000 0 0) bottom/100% 50% no-repeat;
+              mask: radial-gradient(at 70% 31%, #000 29%, rgba(0, 0, 0, 0) 30%), radial-gradient(at 30% 31%, #000 29%, rgba(0, 0, 0, 0) 30%), linear-gradient(#000 0 0) bottom/100% 50% no-repeat;
+    }
+    100% {
+      width: 2px;
+      height: 2px;
+      -webkit-clip-path: polygon(-42% 0, 50% 91%, 142% 0);
+              clip-path: polygon(-42% 0, 50% 91%, 142% 0);
+      transform: translate(-50%, -50%);
+      background: var(--white-F6F6F6);
+      -webkit-mask: radial-gradient(at 70% 31%, #000 29%, rgba(0, 0, 0, 0) 30%), radial-gradient(at 30% 31%, #000 29%, rgba(0, 0, 0, 0) 30%), linear-gradient(#000 0 0) bottom/100% 50% no-repeat;
+              mask: radial-gradient(at 70% 31%, #000 29%, rgba(0, 0, 0, 0) 30%), radial-gradient(at 30% 31%, #000 29%, rgba(0, 0, 0, 0) 30%), linear-gradient(#000 0 0) bottom/100% 50% no-repeat;
+    }
+  }
+  .modalWrapperFormSend {
+    padding: 0rem 1rem 2rem 1rem;
+    width: 100%;
+  }
+  .modalTitleFormSend {
+    padding-top: 1rem;
+    font-size: 1.5rem;
+    line-height: 2rem;
+    white-space: wrap;
+    max-width: 100%;
+    width: 100%;
+  }
+  .modalMessageFormSend {
+    font-size: 1.125rem;
+    line-height: 1.625rem;
+    max-width: 100%;
+    width: 100%;
+    white-space: wrap;
+  }
+}/*# sourceMappingURL=ModalVacancyFormSend.module.css.map */

@@ -1,0 +1,28 @@
+@import '../../../App.css';
+.ButtonLink {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: var(--font-raleway);
+  background-color: var(--blue-75BBFD);
+  border-radius: 4.125rem;
+  color: var(--white-F6F6F6);
+  font-size: 1rem;
+  min-height: 3.625rem;
+  padding: 1rem 2rem;
+  transition: 0.3s;
+  cursor: pointer;
+}
+.ButtonLink:hover {
+  background-color: var(--dark-blue-389FFF);
+}
+.ButtonLink:active {
+  background-color: var(--super-dark-blue-345374);
+}
+@media all and (max-width: 1441px) {
+  .ButtonLink {
+    font-size: 1rem;
+    min-height: 3.5rem;
+    line-height: 1.5rem;
+  }
+}/*# sourceMappingURL=ButtonLink.module.css.map */

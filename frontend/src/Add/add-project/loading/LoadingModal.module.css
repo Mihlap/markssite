@@ -1,0 +1,38 @@
+@import '../../../App.css';
+.modal_section {
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.8);
+  color: var(--black-1D2E43);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.modal_section__container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--white-F6F6F6);
+  width: 534px;
+  height: 320px;
+  padding: 32px 32px 32px 32px;
+  border-radius: 1rem;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  font-family: var(--font-unbounded);
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 32px;
+}
+.modal_section__text {
+  font-family: var(--font-unbounded);
+  font-size: 24px;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 32px;
+}/*# sourceMappingURL=LoadingModal.module.css.map */

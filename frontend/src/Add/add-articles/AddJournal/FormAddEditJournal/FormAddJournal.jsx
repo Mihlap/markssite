@@ -345,6 +345,3 @@ export default function FormAddJournal({ setIsModalOpen }) {
     </div>
   );
 }
-
-
-// =====
