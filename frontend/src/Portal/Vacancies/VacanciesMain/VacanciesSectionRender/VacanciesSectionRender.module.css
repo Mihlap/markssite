@@ -1,0 +1,505 @@
+@charset "UTF-8";
+@import '../../../../App.css';
+.VacanciesSection {
+  margin: 0 48px;
+  padding-top: 48px;
+}
+.VacanciesSection_ActialMain {
+  padding-top: 220px;
+}
+
+.currentVacanciesTitle:after {
+  content: "Актуальные вакансии";
+  display: block;
+  padding-bottom: 92px;
+  padding-left: 65px;
+  font-family: var(--font-unbounded);
+  font-weight: var(--fw-300);
+  font-size: 2rem;
+  line-height: 2.5rem;
+}
+
+.vacancyContainer,
+.vacanciesHeaders {
+  width: 100%;
+}
+
+.vacanciesHeaders {
+  margin-bottom: 16px;
+}
+.vacanciesHeaders_ActialMain {
+  margin-bottom: 26px;
+}
+
+.vacancyContainer,
+.vacanciesHeaders_wrap {
+  display: grid;
+  grid-template-columns: 39% 15% 15% 15% 104px;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.vacancyContainer {
+  margin-bottom: 1rem;
+  background: #f6f6f6;
+  border-radius: 8px;
+  align-items: center;
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.03);
+}
+
+.vacanciesHeaders_wrap {
+  font-family: var(--font-raleway);
+  font-size: 0.875rem;
+  font-weight: var(--fw-400);
+  line-height: 1.25rem;
+  color: var(--light-gray-C0C5CB);
+  text-align: left;
+}
+
+.headerCell {
+  font-family: var(--font-raleway);
+  font-size: 1rem;
+  font-weight: var(--fw-400);
+  line-height: 1.25rem;
+  color: var(--gray-959DA6);
+  text-align: left;
+}
+
+.headerCell_specialization {
+  padding-left: 65px;
+}
+
+.vacancyCell {
+  color: var(--black-1D2E43);
+  font-family: var(--font-raleway);
+  font-size: 1rem;
+  font-weight: var(--fw-400);
+  line-height: 24px;
+  letter-spacing: 0px;
+  text-align: left;
+}
+
+.vacancyCell_title {
+  text-align: left;
+  display: flex;
+  align-items: center;
+  padding: 60px 46px 60px 65px;
+  margin-right: 2rem;
+  color: var(--black-1D2E43);
+  font-family: var(--font-unbounded);
+  font-size: 24px;
+  font-weight: var(--fw-300);
+  line-height: 28px;
+  letter-spacing: 0px;
+  text-align: left;
+  position: relative;
+}
+
+.vacancyCell_title::before {
+  transition: 0.2s;
+  content: "";
+  width: 1px;
+  height: 60px;
+  background-color: #ebecee;
+  position: absolute;
+  right: 0;
+}
+
+.titleZone {
+  content: "";
+  position: absolute;
+  left: 100%;
+  height: 60px;
+  background-color: black;
+  border: 1px solid rgb(235, 236, 238);
+}
+
+.vacancyCell_buttonLink {
+  width: 41px;
+  height: 41px;
+  margin-right: 65px;
+  border-radius: 50%;
+  background-color: var(--blue-75BBFD);
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+.vacancyContainer:hover .vacancyCell_title::before {
+  background-color: #baddfe;
+}
+
+.vacancyContainer:hover .vacancyCell_buttonLink {
+  background-color: var(--dark-blue-389FFF);
+}
+
+.vacancyContainer:hover {
+  box-shadow: 0px 0px 20px 0px rgba(196, 215, 234, 0.47);
+}
+
+.vacancyContainer:hover .titleZone {
+  border: 1px solid rgb(186, 221, 254);
+}
+
+.vacancy_content_massage {
+  display: flex;
+  font-family: var(--font-unbounded);
+  font-weight: var(--fw-300);
+  color: var(--light-gray-C0C5CB);
+  font-size: 1.75rem;
+  line-height: 1.75rem;
+  padding-top: 3rem;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Стили для кнопки "Показать все" */
+.showVacanciesOfTotalVacancies {
+  display: flex;
+  padding-top: 56px;
+  color: var(--gray-959DA6);
+  font-family: var(--font-raleway);
+  font-size: 14px;
+  font-weight: var(--fw-400);
+  line-height: 20px;
+  /* padding-left: 120px; */
+  justify-content: center;
+  align-items: center;
+}
+
+.actualMain {
+  display: flex;
+  flex-direction: column;
+  padding-top: 54px;
+  padding-bottom: 220px;
+}
+
+.vacancyAnnouncement {
+  padding-bottom: 0.5rem;
+}
+
+.showManyButtonWrapper {
+  display: flex;
+  justify-content: center;
+  padding-top: 8px;
+  /* padding-left: 5%; */
+  transition: margin-top 0.4s ease;
+}
+
+.showManyButtonWrapperShifted {
+  margin-top: -50px;
+}
+
+.showManyButton {
+  align-items: center;
+  padding: 1rem 2rem;
+  background-color: var(--blue-75BBFD);
+  color: var(--white-F6F6F6);
+  border: none;
+  border-radius: 66px;
+  cursor: pointer;
+  transition: background-color 0.4s ease, color 0.4s ease;
+  font-size: 1rem;
+}
+
+.showManyButton:hover {
+  background-color: var(--dark-blue-389FFF);
+  color: var(--white-F6F6F6);
+}
+
+@media screen and (min-width: 1024px) and (max-width: 1600px) {
+  .vacancyCell_title {
+    font-size: 20px;
+    padding-left: 36px;
+    padding: 42px 36px;
+  }
+  .vacancyContainer,
+  .vacanciesHeaders_wrap {
+    display: grid;
+    grid-template-columns: 34% 1fr 1fr 1fr 90px;
+    justify-content: space-between;
+    gap: 24px;
+  }
+  .currentVacanciesTitle:after {
+    padding-left: 36px;
+  }
+  .headerCell {
+    font-size: 0.875rem;
+  }
+  .headerCell_specialization {
+    padding-left: 36px;
+  }
+  .vacancyCell_buttonLink {
+    margin-right: 48px;
+  }
+}
+/* стили для планшетной версии  */
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+  .currentVacanciesTitle:after {
+    font-size: 1.5rem;
+    line-height: 2rem;
+    padding: 0 0 40px 0;
+  }
+  .vacancyCell_title {
+    font-family: var(--font-raleway);
+  }
+  .VacanciesSection {
+    width: 66%;
+    padding-top: 35px;
+    margin: 0 auto;
+  }
+  .VacanciesSection_ActialMain {
+    padding-top: 120px;
+  }
+  .vacanciesHeaders,
+  .vacancyCell_buttonLink {
+    display: none;
+  }
+  .vacancyContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: #f8f8f8;
+    border-radius: 8px;
+    align-items: center;
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.03);
+    min-height: 148px;
+    overflow: hidden;
+    cursor: none;
+  }
+  .vacancyContainer111 {
+    display: flex;
+    width: 100%;
+    padding-left: 1.5rem;
+  }
+  .vacancyContainer222 {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    padding: 0rem 1rem 24px 1.5rem;
+    padding-top: clamp(0.5rem, 148px - 1rem, 0.5rem);
+    color: var(--dark-gray-566272);
+    font-family: var(--font-raleway);
+    font-size: 1rem;
+    font-weight: var(--fw-400);
+    line-height: 24px;
+    letter-spacing: 0px;
+    text-align: left;
+  }
+  .vacancyCell_title {
+    width: 100%;
+    align-items: center;
+    padding: 24px 1rem 0 0rem;
+    color: var(--black-1D2E43);
+    font-size: 20px;
+    font-weight: var(--fw-400);
+    line-height: 28px;
+    letter-spacing: 0px;
+    text-align: left;
+    margin-right: 0rem;
+    width: 100%;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .vacancyCell_title::before {
+    content: none;
+  }
+  .vacancyCell_direction {
+    width: -moz-fit-content;
+    width: fit-content;
+    margin-right: 0rem;
+  }
+  .vacancyCell_busyness {
+    width: -moz-fit-content;
+    width: fit-content;
+    margin-right: 0rem;
+  }
+  .vacancyCell_locationStaff {
+    width: -moz-fit-content;
+    width: fit-content;
+  }
+  .vacancyContainer222 .vacancyCell:not(:last-child)::after {
+    content: "•";
+    margin: 0 8px;
+  }
+  .vacancyCell_buttonLink_ipad {
+    display: flex;
+    margin-right: 1.5rem;
+    margin-top: 24px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+  }
+  .vacancyContainer:hover {
+    box-shadow: 0px 0px 20px 0px rgba(196, 215, 234, 0.47);
+  }
+  .vacancyContainer:hover .vacancyCell_buttonLink_ipad {
+    background-color: var(--dark-blue-389FFF);
+  }
+  .showVacanciesOfTotalVacanciesContainer {
+    padding-left: 40%;
+    display: inline-block;
+  }
+  .showVacanciesOfTotalVacancies {
+    padding-top: 24px;
+  }
+  .actualMain {
+    padding-top: 3rem;
+    padding-bottom: 7.5rem;
+  }
+  .showManyButtonWrapperShifted {
+    margin-top: -20px;
+  }
+  .showManyButton {
+    cursor: none;
+  }
+  .showManyButton:hover {
+    background-color: var(--blue-75BBFD);
+    color: var(--white-F6F6F6);
+  }
+  .vacancy_content_massage {
+    padding-left: 3rem;
+  }
+}
+/* стили мобильной версии  */
+@media screen and (max-width: 769px) {
+  .VacanciesSection {
+    padding-top: 24px;
+  }
+  .VacanciesSection_ActialMain {
+    padding-top: 120px;
+  }
+  .currentVacanciesTitle:after {
+    content: "Актуальные вакансии";
+    padding: 0 0 40px 0;
+  }
+  .VacanciesSection {
+    margin: 0 1rem;
+    width: auto;
+  }
+  .vacanciesHeaders,
+  .vacancyCell_buttonLink {
+    display: none;
+  }
+  .vacancyContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: none;
+    background-color: #f8f8f8;
+    border-radius: 8px;
+    align-items: center;
+    box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.03);
+    min-height: 148px;
+    overflow: hidden;
+    cursor: none;
+    width: auto;
+  }
+  .vacancyContainer111 {
+    display: flex;
+    width: 100%;
+    padding-left: 1.5rem;
+  }
+  .vacancyContainer222 {
+    display: flex;
+    flex-wrap: wrap;
+    width: 100%;
+    padding: 0rem 24px 24px 24px;
+    padding-top: clamp(0.5rem, 148px - 1rem, 0.5rem);
+    color: var(--dark-gray-566272);
+    font-family: var(--font-raleway);
+    font-size: 1rem;
+    font-weight: var(--fw-400);
+    line-height: 24px;
+    letter-spacing: 0px;
+    text-align: left;
+    white-space: wrap;
+  }
+  .vacancyCell_title {
+    width: 100%;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 24px 0 0 0;
+    color: var(--black-1D2E43);
+    font-family: var(--font-raleway);
+    font-size: 20px;
+    font-weight: var(--fw-400);
+    line-height: 28px;
+    letter-spacing: 0px;
+    text-align: left;
+    margin-right: 0.5rem;
+  }
+  .vacancyCell_title::before {
+    content: none;
+  }
+  .vacancyCell_direction {
+    width: -moz-fit-content;
+    width: fit-content;
+    margin-right: 0rem;
+    flex-wrap: nowrap;
+    white-space: nowrap;
+  }
+  .vacancyCell_busyness {
+    width: -moz-fit-content;
+    width: fit-content;
+    margin-right: 0rem;
+  }
+  .vacancyCell_locationStaff {
+    width: -moz-fit-content;
+    width: fit-content;
+  }
+  .vacancyContainer222 .vacancyCell:not(:last-child)::after {
+    content: "•";
+    margin: 0 8px;
+  }
+  .vacancyCell_buttonLink_ipad {
+    display: flex;
+    margin-right: 1.5rem;
+    margin-top: 24px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+  }
+  .vacancyContainer:hover {
+    box-shadow: 0px 0px 20px 0px rgba(196, 215, 234, 0.47);
+  }
+  .vacancyContainer:hover .vacancyCell_buttonLink_ipad {
+    background-color: var(--dark-blue-389FFF);
+  }
+  .showVacanciesOfTotalVacanciesContainer {
+    padding-left: 1rem;
+  }
+  .showVacanciesOfTotalVacancies {
+    padding-top: 2rem;
+  }
+  .actualMain {
+    padding-top: 3rem;
+    padding-bottom: 7.5rem;
+  }
+  .vacancy_content_massage {
+    display: flex;
+    font-family: var(--font-unbounded);
+    font-weight: var(--fw-300);
+    color: var(--light-gray-C0C5CB);
+    font-size: 1.1rem;
+    line-height: 1.25rem;
+    padding-top: 3rem;
+    justify-content: center;
+    align-items: center;
+  }
+  .showManyButtonWrapperShifted {
+    margin-top: -20px;
+  }
+  .showManyButton {
+    cursor: none;
+    font-size: 1rem;
+    border-radius: 66px;
+  }
+  .showManyButton:hover {
+    background-color: var(--blue-75BBFD);
+    color: var(--white-F6F6F6);
+  }
+}/*# sourceMappingURL=VacanciesSectionRender.module.css.map */

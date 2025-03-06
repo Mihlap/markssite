@@ -15,8 +15,7 @@ const Rocket = () => {
     bottom: 0,
     width: '100%',
     height: '100%',
-    display: 'flex',
-    zIndex: '9999',
+    display: 'flex', 
   });
 
   const handleResize = useCallback(() => {

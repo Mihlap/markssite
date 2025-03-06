@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useMemo } from 'react';
+import React, { useEffect, useState, useCallback, useMemo, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from '../VacanciesComponent/VacanciesComponent.module.css';
@@ -27,58 +27,59 @@ import clearAll from '../../icons/clearAll.svg';
 
 const VacanciesComponent = ({ handleMouseEnter, handleMouseLeave, handleMouseHover, hideVacancies }) => {
   const dispatch = useDispatch();
-  const { vacancies, loading, vacancyCountsByDirection, filteredVacancies, activeFilters } = useSelector(
-    (state) => state.vacancies
-  );
+  const { vacancies, loading, filteredVacancies, activeFilters } = useSelector((state) => state.vacancies);
   const selectedFilter = useSelector((state) => state.vacancies.selectedFilter);
-  const activePage = (state) => state.activePage.page;
+  const activePage = useSelector((state) => state.activePage.page);
 
   const filterKeyForSpecialty = 'direction';
+
   const [showManyVacancies, setShowManyVacancies] = useState(false);
-  const [totalDisplayedVacancies, setTotalDisplayedVacancies] = useState(6);
+  const [totalDisplayedVacancies] = useState(6);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [filters, setFilters] = useState({});
   const [modalFiltersActive, setModalFiltersActive] = useState(false);
   const [, setSwiper] = useState(null);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
-
+  const initialLoad = useRef(true);
   const isIpadMobile = windowWidth <= 1024;
 
-  const buttonVacancyChoose = [
-    'Все',
-    'Архитектура',
-    'Конструктив',
-    'Инженерия',
-    'Научно-техническое сопровождение',
-    'BIM',
-    'Аналитика',
-    'Финансы',
-    'Дизайн',
-    'IT',
-    'Администрирование',
-    'Бэк офис',
-    'Управление',
-    // 'Стажировки',
-  ];
+  const buttonVacancyChoose = useMemo(
+    () => [
+      'Все',
+      'Архитектура',
+      'Конструктив',
+      'Инженерия',
+      'Научно-техническое сопровождение',
+      'BIM',
+      'Аналитика',
+      'Финансы',
+      'Дизайн',
+      'IT',
+      'Администрирование',
+      'Бэк офис',
+      'Управление',
+    ],
+    []
+  );
 
-  const filterMappings = {
-    'Требуемый опыт работы': 'experience',
-    Локация: 'locationStaff',
-    'Режим работы': 'modeOperating',
-    Занятость: 'busyness',
-  };
+  const filterMappings = useMemo(
+    () => ({
+      'Требуемый опыт работы': 'experience',
+      Локация: 'locationStaff',
+      'Режим работы': 'modeOperating',
+      Занятость: 'busyness',
+    }),
+    []
+  );
 
-  const vacanciesMain = useMemo(() => [...filteredVacancies].reverse(), [filteredVacancies]);
+ const vacanciesMain = useMemo(() => [...filteredVacancies].reverse(), [filteredVacancies]);
 
-  const handleResize = useCallback(() => {
+ const handleResize = useCallback(() => {
     setWindowWidth(window.innerWidth);
   }, []);
-
   useEffect(() => {
     window.addEventListener('resize', handleResize);
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
+    return () => window.removeEventListener('resize', handleResize);
   }, [handleResize]);
 
   useEffect(() => {
@@ -94,46 +95,73 @@ const VacanciesComponent = ({ handleMouseEnter, handleMouseLeave, handleMouseHov
   }, [dispatch, filters]);
 
   useEffect(() => {
-    const filteredVacancies = applyFilters(vacancies, activeFilters);
-    dispatch(setFilteredVacancies(filteredVacancies));
-    setFilters(activeFilters);
-  }, [dispatch, vacancies, activeFilters]);
-
-  useEffect(() => {
-    if (selectedFilter === 'Все') {
-      setFilters({});
-      dispatch(setActiveFilters({}));
+    if (initialLoad.current) {
+      if (selectedFilter === 'Все' && Object.keys(activeFilters).length === 0) {
+        setFilters({});
+        dispatch(setActiveFilters({}));
+      }
+      initialLoad.current = false;
     }
-  }, [selectedFilter, dispatch]);
+  }, [selectedFilter, activeFilters, dispatch]);
 
   useEffect(() => {
-    const anyActiveFilters = Object.keys(filters).some((key) => filters[key].length > 0);
-    setModalFiltersActive(anyActiveFilters);
+    const anyActive = Object.keys(filters).some((key) => filters[key].length > 0);
+    setModalFiltersActive(anyActive);
   }, [filters]);
 
   useEffect(() => {
-    const hasActiveFilters = Object.entries(filters).some(([key, values]) => {
+    const hasActive = Object.entries(filters).some(([key, values]) => {
       return values.length > 0 && !(key === filterKeyForSpecialty && values.includes(selectedFilter));
     });
-    setModalFiltersActive(hasActiveFilters);
+    setModalFiltersActive(hasActive);
   }, [filters, selectedFilter, filterKeyForSpecialty]);
 
   const applyFilters = useCallback(
-    (vacancies, filters) => {
-      return vacancies.filter((vacancy) => {
-        return Object.keys(filters).every((filterKey) => {
+    (vacanciesList, filtersObj) => {
+      return vacanciesList.filter((vacancy) => {
+        return Object.keys(filtersObj).every((filterKey) => {
+          if (filterKey === filterKeyForSpecialty) {
+            return filtersObj[filterKey].includes(vacancy.direction);
+          }
           const mappedKey = filterMappings[filterKey] || filterKey;
-          const filterValues = filters[filterKey];
-
+          const filterValues = filtersObj[filterKey];
           if (filterValues.length === 0) return true;
-          const vacancyValue = vacancy[mappedKey];
-
-          return filterValues.includes(vacancyValue);
+          return filterValues.includes(vacancy[mappedKey]);
         });
       });
     },
-    [filterMappings]
+    [filterMappings, filterKeyForSpecialty]
   );
+
+  useEffect(() => {
+    const newFiltered = applyFilters(vacancies, activeFilters);
+    dispatch(setFilteredVacancies(newFiltered));
+    setFilters(activeFilters);
+  }, [dispatch, vacancies, activeFilters, applyFilters]);
+
+  const globalCounts = useMemo(() => {  
+    const additionalFilters = { ...activeFilters };
+    delete additionalFilters[filterKeyForSpecialty];
+    const vacanciesForGlobal = applyFilters(vacancies, additionalFilters).filter(
+      (vacancy) => !vacancy.hidden && vacancy.type !== 'стажировка'
+    );
+    const counts = {};  
+    buttonVacancyChoose.forEach((category) => {
+      if (category === 'Все') return;
+      const filtered = vacanciesForGlobal.filter((vacancy) => vacancy.direction === category);
+      counts[category] = filtered.length;
+    });
+    return counts;
+  }, [vacancies, activeFilters, applyFilters, filterKeyForSpecialty, buttonVacancyChoose]);
+
+  const selectedCount = useMemo(() => {
+    if (selectedFilter === 'Все') return null;
+    const filtersForSelected = { ...activeFilters, [filterKeyForSpecialty]: [selectedFilter] };
+    const vacanciesForSelected = applyFilters(vacancies, filtersForSelected).filter(
+      (vacancy) => !vacancy.hidden && vacancy.type !== 'стажировка'
+    );
+    return vacanciesForSelected.length;
+  }, [vacancies, activeFilters, applyFilters, filterKeyForSpecialty, selectedFilter]);
 
   const handleButtonClick = useCallback(
     (direction) => {
@@ -145,12 +173,12 @@ const VacanciesComponent = ({ handleMouseEnter, handleMouseLeave, handleMouseHov
         dispatch(getFetchFormFilter(direction));
         const newFilters = { ...filters, [filterKeyForSpecialty]: [direction] };
         dispatch(setActiveFilters(newFilters));
-        const filteredVacancies = applyFilters(vacancies, newFilters);
-        dispatch(setFilteredVacancies(filteredVacancies));
+        const newFiltered = applyFilters(vacancies, newFilters);
+        dispatch(setFilteredVacancies(newFiltered));
       }
       setShowManyVacancies(false);
     },
-    [dispatch, filters, vacancies]
+    [dispatch, filters, vacancies, applyFilters, filterKeyForSpecialty]
   );
 
   const toggleShowAllVacancies = useCallback(() => {
@@ -160,19 +188,11 @@ const VacanciesComponent = ({ handleMouseEnter, handleMouseLeave, handleMouseHov
   const handleModalOpen = useCallback(() => {
     setIsModalOpen(true);
   }, []);
-
   const handleModalClose = useCallback(() => {
     setIsModalOpen(false);
   }, []);
 
-  const shouldDisplayVacancy = useCallback((vacancy) => {
-    return !vacancy.hidden;
-  }, []);
-
-  // const visibleVacancies = useMemo(
-  //   () => vacanciesMain.filter((vacancy) => shouldDisplayVacancy(vacancy)),
-  //   [vacanciesMain, shouldDisplayVacancy]
-  // );
+  const shouldDisplayVacancy = useCallback((vacancy) => !vacancy.hidden, []);
 
   const visibleVacancies = useMemo(
     () => vacanciesMain.filter((vacancy) => shouldDisplayVacancy(vacancy) && vacancy.type !== 'стажировка'),
@@ -184,9 +204,7 @@ const VacanciesComponent = ({ handleMouseEnter, handleMouseLeave, handleMouseHov
       const newFilters = { ...filters };
       if (Array.isArray(newFilters[filterCategory])) {
         newFilters[filterCategory] = newFilters[filterCategory].filter((value) => value !== filterValue);
-        if (newFilters[filterCategory].length === 0) {
-          delete newFilters[filterCategory];
-        }
+        if (newFilters[filterCategory].length === 0) delete newFilters[filterCategory];
       } else {
         delete newFilters[filterCategory];
       }
@@ -207,7 +225,6 @@ const VacanciesComponent = ({ handleMouseEnter, handleMouseLeave, handleMouseHov
 
   const clearAllFiltersMobile = useCallback(() => {
     const resetFilters = {};
-
     setFilters(resetFilters);
     dispatch(setActiveFilters(resetFilters));
     dispatch(fetchFilteredVacancies(resetFilters));
@@ -219,9 +236,7 @@ const VacanciesComponent = ({ handleMouseEnter, handleMouseLeave, handleMouseHov
     () =>
       Object.entries(filters).flatMap(([key, values]) => {
         if (Array.isArray(values)) {
-          if (key === filterKeyForSpecialty && values.includes(selectedFilter) && values.length === 1) {
-            return [];
-          }
+          if (key === filterKeyForSpecialty && values.includes(selectedFilter) && values.length === 1) return [];
           return values.map((value) => ({ category: key, value }));
         }
         return [];
@@ -238,8 +253,6 @@ const VacanciesComponent = ({ handleMouseEnter, handleMouseLeave, handleMouseHov
         <div className={styles.main_vacancies_block}>
           <div className={styles.wrapper_vacancies}>
             <div className={styles.rocket_model}>
-              {/* <div className={styles.rocket_image}> */}
-              {/* <img src="/assets/rocket.png" alt="rocket.png" /> */}
               <RocketComponent />
             </div>
             <div className={styles.vacancies_header_wrapper}>
@@ -259,7 +272,8 @@ const VacanciesComponent = ({ handleMouseEnter, handleMouseLeave, handleMouseHov
                       onClick={() => handleButtonClick(el)}>
                       <span className={styles.menu_button_items_vacancyText}>{el}</span>
                       <span className={styles.menu_button_items_vacancyCount}>
-                        {el !== 'Все' && vacancyCountsByDirection ? vacancyCountsByDirection[el] || 0 : ''}
+                        {el !== 'Все' &&
+                          (selectedFilter !== 'Все' && el === selectedFilter ? selectedCount : globalCounts[el] || 0)}
                       </span>
                     </button>
                   </div>
@@ -301,14 +315,14 @@ const VacanciesComponent = ({ handleMouseEnter, handleMouseLeave, handleMouseHov
                   buttonVacancyChoose.some((el) => selectedFilter === el && el !== 'Все')) && (
                   <div className={styles.menu__button__choose__vacancyFilter_mobile}>
                     <SwiperSlide className={styles.menu_button_items_vacancyTex_clear} onClick={clearAllFiltersMobile}>
-                      {/* ✕ */}
                       <img src={clearAll} alt="clearAll" />
                     </SwiperSlide>
                   </div>
                 )}
                 <SwiperSlide
-                  className={`${styles.menu__button__choose__vacancyFilter_mobile}
-                      ${modalFiltersActive ? styles.filterWhiterBackground : ''}`}
+                  className={`${styles.menu__button__choose__vacancyFilter_mobile} ${
+                    modalFiltersActive ? styles.filterWhiterBackground : ''
+                  }`}
                   onClick={handleModalOpen}>
                   <div className={styles.icon__svg_button__choose__vacancyFilter_mobile}>
                     <img src={modalFiltersActive ? iconFilterWhiterRed : iconFilter} alt="IconFilter" />
@@ -322,9 +336,7 @@ const VacanciesComponent = ({ handleMouseEnter, handleMouseLeave, handleMouseHov
                           key={`${filter.category}-${index}`}
                           className={styles.menu__button__choose__vacancyFilter_mobile_dop}>
                           <div onClick={() => removeFilter(filter.category, filter.value)}>
-                            <div
-                              // className={styles.menu__button__choose__vacancyFilter_mobile}
-                              style={{ display: 'flex' }}>
+                            <div style={{ display: 'flex' }}>
                               <p className={styles.menu_button_items_vacancyText}>{filter.value}</p>
                               <span className={styles.xSpan}>✕</span>
                             </div>
@@ -342,7 +354,8 @@ const VacanciesComponent = ({ handleMouseEnter, handleMouseLeave, handleMouseHov
                       onClick={() => handleButtonClick(el)}>
                       <span className={styles.menu_button_items_vacancyText}>{el}</span>
                       <span className={styles.menu_button_items_vacancyCount}>
-                        {el !== 'Все' && vacancyCountsByDirection ? vacancyCountsByDirection[el] || 0 : ''}
+                        {el !== 'Все' &&
+                          (selectedFilter !== 'Все' && el === selectedFilter ? selectedCount : globalCounts[el] || 0)}
                       </span>
                     </SwiperSlide>
                   )
@@ -351,7 +364,7 @@ const VacanciesComponent = ({ handleMouseEnter, handleMouseLeave, handleMouseHov
             )}
           </div>
           {!isIpadMobile && activeFiltersArray.length > 0 && (
-            <div>
+            <div className={styles.dopFilterWrapper}>
               <div className={styles.dopFilterName}>Доп. фильтры</div>
               <div className={styles.activeFiltersContainer}>
                 {activeFiltersArray.map((filter, index) => (
@@ -390,7 +403,6 @@ const VacanciesComponent = ({ handleMouseEnter, handleMouseLeave, handleMouseHov
             handleMouseLeave={handleMouseLeave}
             isInternship={false}
           />
-
           <div className={styles.temporaryText}>
             {windowWidth > 1024 ? 'Не нашли подходящую вакансию?' : 'Мы ищем именно тебя!'}
           </div>

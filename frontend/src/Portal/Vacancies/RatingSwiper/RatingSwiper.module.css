@@ -1,0 +1,285 @@
+@import '../../../App.css';
+.RatingSwiper {
+  background-color: var(--white-F6F6F6);
+  padding: 0;
+  padding: 13.75rem 0 3.75rem 0;
+}
+.RatingSwiper__header {
+  margin-bottom: 3.75rem;
+  display: flex;
+  justify-content: center;
+  font-family: var(--font-unbounded);
+  font-size: 4.625rem;
+  font-weight: var(--fw-300);
+  line-height: 5rem;
+  text-align: left;
+  color: var(--black-1D2E43);
+}
+.RatingSwiper__header h2 {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+.RatingSwiper__header span {
+  display: block;
+}
+.RatingSwiper__header span:last-child {
+  padding-left: 25.4375rem;
+}
+.RatingSwiper__body {
+  padding: 0 7.0625rem 0 7.0625rem;
+}
+.RatingSwiper__body > * {
+  overflow: visible;
+}
+.RatingSwiper__wrapper {
+  padding: 1.875rem 0;
+  align-items: stretch;
+}
+.RatingSwiper__slide {
+  flex-grow: 1;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3.375rem;
+  height: auto;
+}
+.RatingSwiper__date {
+  font-size: 1.125rem;
+  display: inline-block;
+  color: var(--gray-959DA6);
+  margin-bottom: 4rem;
+}
+.RatingSwiper__title {
+  font-size: 1.5rem;
+  font-weight: var(--fw-300);
+  line-height: 2rem;
+  font-family: var(--font-unbounded);
+}
+.RatingSwiper__title:not(:last-child) {
+  margin-bottom: 2rem;
+}
+.RatingSwiper__row {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 3.5rem;
+  background-color: #f8f8f8;
+  color: var(--black-3C3C3C);
+  box-shadow: 0 0 1.25rem 0 rgba(0, 0, 0, 0.031372549);
+  border-radius: 1rem;
+}
+.RatingSwiper__rows {
+  display: flex;
+  flex-direction: column;
+  gap: 3.375rem;
+}
+.RatingSwiper__picture {
+  margin-top: auto;
+}
+.RatingSwiper__picture img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 16px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  aspect-ratio: 2.2;
+}
+.RatingSwiper__button {
+  align-self: flex-end;
+  position: relative;
+  min-height: 2rem;
+  border-radius: 2.125rem;
+  padding: 0.5rem 2.25rem 0.5rem 1rem;
+  background-color: var(--light-light-gray-EBECEE);
+  margin-top: 0.5rem;
+  transition: all 0.3s ease;
+}
+.RatingSwiper__button:before {
+  position: absolute;
+  right: 0.625rem;
+  transform: translateY(-50%);
+  top: 50%;
+  width: 1rem;
+  height: 1rem;
+  position: absolute;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTMgNkw4IDExTDEzIDYiIHN0cm9rZT0iIzFEMkU0MyIvPgo8L3N2Zz4K");
+  background-size: contain;
+  content: "";
+  transition: all 1s ease;
+}
+.RatingSwiper__button:hover {
+  background-color: var(--light-gray-C0C5CB);
+}
+.RatingSwiper__button.visible:before {
+  transform: translateY(-50%) rotate(180deg);
+  transition: all 1s ease;
+}
+@media all and (max-width: 1921px) {
+  .RatingSwiper {
+    padding: 8.75rem 0 1rem 0;
+    margin-bottom: 1.5rem;
+  }
+  .RatingSwiper__header {
+    margin-bottom: 2.625rem;
+    font-size: 4.0625rem;
+    line-height: 4.71875rem;
+    padding: 0 9.6875rem 0 10.125rem;
+  }
+  .RatingSwiper__header h2 {
+    gap: 16px;
+  }
+  .RatingSwiper__header span {
+    display: block;
+  }
+  .RatingSwiper__header span:last-child {
+    padding-left: 6.25rem;
+  }
+  .RatingSwiper__body {
+    padding: 0 3.9375rem 0 3.9375rem;
+    position: relative;
+  }
+  .RatingSwiper__body::before, .RatingSwiper__body::after {
+    width: 7rem;
+    position: absolute;
+    content: "";
+    background-color: var(--white-F6F6F6);
+    height: 100%;
+    z-index: 10;
+    content: "";
+  }
+  .RatingSwiper__body::before {
+    top: 0;
+    left: -4rem;
+  }
+  .RatingSwiper__body::after {
+    top: 0;
+    right: -4rem;
+  }
+  .RatingSwiper__slide, .RatingSwiper__rows {
+    gap: 1.875rem;
+  }
+  .RatingSwiper__slide:nth-child(even) {
+    display: flex;
+    flex-direction: row-reverse;
+  }
+}
+@media all and (max-width: 1441px) {
+  .RatingSwiper__header {
+    padding: 0 2rem;
+    gap: 16px;
+  }
+  .RatingSwiper__row {
+    padding: 2.25rem;
+  }
+}
+@media all and (max-width: 1281px) {
+  .RatingSwiper {
+    padding: 0;
+  }
+  .RatingSwiper span {
+    display: block;
+  }
+  .RatingSwiper__header {
+    font-size: 2.5rem;
+    line-height: 3rem;
+    padding: 7.5rem 15% 3.375rem 15%;
+    margin: 0;
+  }
+  .RatingSwiper__header h2 {
+    align-self: flex-start;
+    gap: 0;
+  }
+  .RatingSwiper__header span:last-child {
+    padding-left: 0;
+  }
+  .RatingSwiper__body {
+    padding: 0;
+  }
+  .RatingSwiper__body::before, .RatingSwiper__body::after {
+    content: none;
+  }
+  .RatingSwiper__slide, .RatingSwiper__rows {
+    gap: 1.5rem;
+  }
+  .RatingSwiper__body, .RatingSwiper__adaptive {
+    display: flex;
+    flex-direction: column;
+  }
+  .RatingSwiper__slide {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 0 15% 0 15%;
+  }
+  .RatingSwiper__slide:nth-child(even) {
+    flex-direction: column-reverse;
+  }
+  .RatingSwiper__slide.hide {
+    max-height: 0;
+    opacity: 0;
+    padding: 0 15% 0 15%;
+    transition: max-height 1s ease, opacity 1s ease, padding 1s ease;
+  }
+  .RatingSwiper__slide.visible {
+    max-height: 125rem;
+    opacity: 1;
+    padding: 0 15% 1.5rem 15%;
+    transition: max-height 4s ease, opacity 1s ease-in-out 0.4s, padding 1s ease;
+  }
+  .RatingSwiper__slide:not(:first-child) {
+    padding: 1.5rem 15% 0 15%;
+  }
+  .RatingSwiper__slide:not(:first-child).visible {
+    padding-bottom: 1.5rem;
+  }
+  .RatingSwiper__row {
+    padding: 1.5rem;
+  }
+  .RatingSwiper__title {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+  }
+  .RatingSwiper__date {
+    margin-bottom: 3rem;
+    font-size: 1rem;
+  }
+  .RatingSwiper__button {
+    margin: 2rem 15% 0 15%;
+  }
+}
+@media all and (max-width: 768px) {
+  .RatingSwiper {
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  .RatingSwiper__header {
+    font-size: 2rem;
+    line-height: 2.5rem;
+    padding: 5rem 1rem 2rem 1rem;
+  }
+  .RatingSwiper__slide {
+    padding: 0 1rem 0 1rem;
+    gap: 0.5rem;
+  }
+  .RatingSwiper__slide:not(:first-child) {
+    padding: 24px 1rem 0 1rem;
+  }
+  .RatingSwiper__rows {
+    gap: 0.5rem;
+  }
+  .RatingSwiper__row {
+    padding: 1rem;
+  }
+  .RatingSwiper__title {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+  }
+  .RatingSwiper__button {
+    margin: 1.25rem 1rem 0 0;
+    font-size: 14px;
+  }
+}/*# sourceMappingURL=RatingSwiper.module.css.map */
