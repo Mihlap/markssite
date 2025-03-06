@@ -1,0 +1,206 @@
+@import '../../../App.css';
+.CountRows {
+  min-height: 68.75rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+}
+.CountRows__star {
+  position: absolute;
+  z-index: -1;
+  background-size: cover;
+}
+.CountRows__star_1 {
+  width: 18.125rem;
+  height: 18.125rem;
+  top: 68.66%;
+  left: 5.66%;
+}
+.CountRows__star_2 {
+  display: none;
+}
+.CountRows__star_3 {
+  width: 8.4375rem;
+  height: 8.4375rem;
+  top: 4.63%;
+  left: 81.02%;
+}
+.CountRows__star_4 {
+  width: 8rem;
+  height: 8rem;
+  top: 53.59%;
+  left: 64.06%;
+}
+.CountRows__wrapper {
+  font-weight: var(--fw-300);
+  margin: 2rem 18.67% 2rem 18.28%;
+  color: var(--black-1D2E43);
+  font-family: var(--font-unbounded);
+  overflow: hidden;
+}
+.CountRows__header {
+  font-size: 3rem;
+  line-height: 4rem;
+  margin-bottom: 4rem;
+}
+.CountRows__list {
+  counter-reset: count;
+}
+.CountRows__line {
+  border-top: 1px solid var(--light-gray-C0C5CB);
+  animation-name: showLine;
+  animation-duration: 0.8s;
+  animation-timing-function: ease-in-out;
+  animation-delay: 0s;
+  animation-iteration-count: 1;
+  animation-direction: normal;
+  animation-fill-mode: forwards;
+  animation-play-state: paused;
+  width: 0;
+}
+.CountRows li:nth-child(2) .CountRows__line {
+  animation-delay: 0.1s;
+}
+.CountRows li:nth-child(2) .CountRows__text {
+  animation-delay: 0.5s;
+}
+.CountRows li:nth-child(3) .CountRows__line {
+  animation-delay: 0.3s;
+}
+.CountRows li:nth-child(3) .CountRows__text {
+  animation-delay: 0.5s;
+}
+.CountRows li:nth-child(4) .CountRows__line {
+  animation-delay: 0.5s;
+}
+.CountRows li:nth-child(4) .CountRows__text {
+  animation-delay: 0.7s;
+}
+@keyframes showLine {
+  0% {
+    width: 0;
+  }
+  100% {
+    width: 100%;
+  }
+}
+.CountRows__text {
+  margin-bottom: 1.5rem;
+  font-size: 2rem;
+  line-height: 2.5rem;
+  animation-name: showText;
+  animation-duration: 0.8s;
+  animation-timing-function: ease-in-out;
+  animation-delay: 0;
+  animation-iteration-count: 1;
+  animation-direction: normal;
+  animation-fill-mode: forwards;
+  animation-play-state: paused;
+  opacity: 0;
+  transform: translateX(-100%);
+}
+@keyframes showText {
+  0% {
+    opacity: 0;
+    transform: translateX(-10%);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+.CountRows.animate .CountRows__line {
+  animation-play-state: running;
+}
+.CountRows.animate .CountRows__text {
+  animation-play-state: running;
+}
+.CountRows__count {
+  height: 2rem;
+  counter-increment: count;
+  margin-top: 0.5rem;
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+.CountRows__count::before {
+  content: counter(count, decimal-leading-zero);
+  color: var(--dark-gray-566272);
+  display: block;
+  font-size: 0.75rem;
+  line-height: 2rem;
+  height: 100%;
+}
+.CountRows__count, .CountRows__text {
+  padding: 0 1rem;
+}
+@media all and (max-width: 1921px) {
+  .CountRows {
+    min-height: 55.375rem;
+  }
+  .CountRows__star_1 {
+    top: 63.09%;
+    left: 0;
+  }
+  .CountRows__star_3 {
+    top: 4.63%;
+    left: 86.46%;
+  }
+  .CountRows__star_4 {
+    top: 46.95%;
+    left: 65.35%;
+  }
+  .CountRows__wrapper {
+    margin: 2rem 10%;
+  }
+  .CountRows__header {
+    font-size: 2.5rem;
+    line-height: 3rem;
+    margin-bottom: 2rem;
+  }
+  .CountRows__count {
+    margin-bottom: 1.5rem;
+  }
+  .CountRows__text {
+    width: 75%;
+    margin-bottom: 2rem;
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+  .CountRows__count, .CountRows__text {
+    padding: 0 0 0 1rem;
+  }
+}
+@media all and (max-width: 1281px) {
+  .CountRows__wrapper {
+    margin: 2rem 16%;
+  }
+  .CountRows__text {
+    width: 100%;
+  }
+}
+@media all and (max-width: 768px) {
+  .CountRows {
+    min-height: 0;
+  }
+  .CountRows__star_1 {
+    top: 67.03%;
+    left: -26.73%;
+  }
+  .CountRows__star_3 {
+    top: 40.52%;
+    left: 28.65%;
+  }
+  .CountRows__star_4 {
+    top: 6%;
+    left: 67%;
+  }
+  .CountRows__wrapper {
+    margin: 7.5rem 1rem;
+  }
+  .CountRows__text {
+    margin-bottom: 2.9375rem;
+  }
+}/*# sourceMappingURL=CountRows.module.css.map */
