@@ -1,0 +1,240 @@
+@charset "UTF-8";
+@import '../../../App.css';
+.markdown-editor {
+  display: flex;
+  flex-direction: column;
+  height: 220px;
+  position: relative;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.markdown-editor--fullscreen {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  z-index: 9999;
+  background-color: var(--white-F6F6F6);
+  margin: 0 auto;
+  width: 90%;
+  height: 90%;
+  transform: translate(-50%, -50%);
+  border-radius: 6px;
+}
+@media (min-width: 1600px) {
+  .markdown-editor--fullscreen {
+    width: 68%;
+    height: 90%;
+  }
+}
+.markdown-editor--fullscreen .markdown-editor__button-panel {
+  padding-left: 16px;
+  padding-right: 16px;
+}
+.markdown-editor__button-panel {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  background-color: var(--light-light-gray-EBECEE);
+}
+.markdown-editor__button-panel-container {
+  display: flex;
+  gap: 8px;
+}
+.markdown-editor__content {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+  width: 100%;
+  border: 1px solid #d4edfb;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.markdown-editor__editor {
+  flex: 1;
+  background-color: var(--blue-light-BADDFE);
+  border-top-left-radius: 6px;
+  border-bottom-left-radius: 6px;
+}
+.markdown-editor__editor-textarea {
+  width: 100%;
+  height: 100%;
+  font-size: 16px;
+  padding: 16px;
+  border: none;
+  resize: none;
+  background-color: transparent;
+  color: var(--black-1D2E43);
+}
+.markdown-editor__preview {
+  flex: 1;
+  padding: 16px;
+  overflow-y: auto;
+  background-color: #f8fafc;
+  border-top-right-radius: 6px;
+  border-bottom-right-radius: 6px;
+  font-size: 16px;
+  line-height: 1.6;
+  color: var(--black-1D2E43);
+}
+.markdown-editor__preview-placeholder {
+  width: 100%;
+  height: 100%;
+  font-size: 16px;
+  color: var(--gray-959DA6);
+  font-style: var(--font-raleway);
+  font-weight: 400;
+}
+.markdown-editor__button {
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--white-F6F6F6);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: border 0.3s ease;
+}
+.markdown-editor__button--active {
+  color: var(--white-F6F6F6);
+  border: 2px solid #75BBFD;
+}
+
+/* Компонент PDF Embed */
+.markdown-editor__pdfembed {
+  margin: 1em 0;
+}
+
+/* Компонент MathBlock */
+.markdown-editor__mathblock {
+  margin: 1em 0;
+}
+
+/* Абзацы */
+.markdown-editor__paragraph {
+  margin-bottom: 12px;
+  line-height: 1.8;
+}
+
+/* Заголовки */
+.markdown-editor__heading1 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 16px;
+  color: var(--black-1D2E43);
+}
+
+.markdown-editor__heading2 {
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 14px;
+  color: var(--black-1D2E43);
+}
+
+.markdown-editor__heading3 {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 12px;
+  color: var(--black-1D2E43);
+}
+
+.markdown-editor__heading4 {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: var(--black-1D2E43);
+}
+
+.markdown-editor__heading5 {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 8px;
+  color: var(--black-1D2E43);
+}
+
+.markdown-editor__heading6 {
+  font-size: 14px;
+  font-weight: bold;
+  margin-bottom: 6px;
+  color: var(--black-1D2E43);
+}
+
+/* Ссылки */
+.markdown-editor__link {
+  color: var(--blue-75BBFD);
+  text-decoration: underline;
+}
+.markdown-editor__link:hover {
+  text-decoration: none;
+}
+
+/* Изображения */
+.markdown-editor__img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  border-radius: 6px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Таблицы */
+.markdown-editor__table-container {
+  overflow-x: auto;
+}
+
+.markdown-editor__table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid var(--black-4E4E4E);
+  margin-bottom: 16px;
+}
+
+.markdown-editor__table th,
+.markdown-editor__table td {
+  border: 1px solid var(--black-4E4E4E);
+  padding: 8px;
+  text-align: left;
+}
+
+.markdown-editor__table th {
+  background-color: var(--light-light-gray-EDEDED);
+  font-weight: bold;
+}
+
+/* Списки */
+.markdown-editor__list {
+  margin: 1em 0;
+  margin-left: 20px;
+}
+
+/* Цитаты */
+.markdown-editor__blockquote {
+  border-left: 4px solid #75BBFD;
+  padding-left: 16px;
+  color: var(--light-gray-C0C5CB);
+  font-style: var(--font-unbounded);
+  margin: 20px 0;
+}
+
+/* Inline-код */
+.markdown-editor__code {
+  background-color: var(--white-F6F6F6);
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-family: "Courier New", monospace;
+  font-size: 14px;
+  color: var(--crimson-E00747);
+}
+
+/* Блочный код */
+.markdown-editor__pre {
+  background-color: var(--white-F6F6F6);
+  padding: 16px;
+  border-radius: 6px;
+  overflow-x: auto;
+  font-size: 14px;
+  white-space: pre-wrap;
+  color: var(--crimson-E00747);
+}/*# sourceMappingURL=MarkdownEditor.module.css.map */
