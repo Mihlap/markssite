@@ -14,7 +14,7 @@ const CounterCompanyMobile = () => {
 
   useEffect(() => {
     const timer1 = setTimeout(() => {
-      if (countPercentM < 1000 && activeCounter === 0) {
+      if (countPercentM < 1300 && activeCounter === 0) {
         setCountPercentM(countPercentM + 20);
       }
       if (countProjectM < 200 && activeCounter === 1) {
@@ -26,7 +26,7 @@ const CounterCompanyMobile = () => {
     }, 50);
 
     const delayTimer = setTimeout(() => {
-      if (countPercentM >= 1000 && !finishedCounters.includes(0)) {
+      if (countPercentM >= 1300 && !finishedCounters.includes(0)) {
         setActiveCounter(1);
         setFinishedCounters([...finishedCounters, 0]);
       }
