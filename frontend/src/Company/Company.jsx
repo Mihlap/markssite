@@ -182,7 +182,7 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
 
   useEffect(() => {
     const timer1 = setTimeout(() => {
-      if (countPercent < 1000) {
+      if (countPercent < 1300) {
         setCountPercent(countPercent + 20);
       }
       if (countProject < 200) {
@@ -1001,13 +1001,13 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
             <div className={styles.companySubscriptionForm_wrapper}>
               {!isLoadingSubscription && !modalOpenSubscription && (
                 <>
-                  <CompanySubscriptionForm
+                  {/* <CompanySubscriptionForm
                     handleMouseEnter={handleMouseEnter}
                     handleMouseLeave={handleMouseLeave}
                     handleMouseHover={handleMouseHover}
                     setIsLoading={setIsLoadingSubscription}
                     setModalOpen={setModalOpenSubscription}
-                  />
+                  /> */}
                 </>
               )}
             </div>
