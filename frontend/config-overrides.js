@@ -3,6 +3,9 @@ const JavaScriptObfuscator = require('webpack-obfuscator');
 
 module.exports = function override(config, env) {
   if (env === 'production') {
+
+    config.devtool = false;
+    
     config.optimization = {
       ...config.optimization,
       minimizer: [

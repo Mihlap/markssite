@@ -450,8 +450,11 @@ const Header = React.memo(
               touch="true"
               direction="horizontal"
               loop={false}
-              touchRatio={0.5}
-              freeMode={{ momentumRatio: 0.5 }}             
+              touchRatio={0.3}
+              freeMode={{
+                momentumRatio: 0.5,
+                momentumVelocityRatio: 0.3,
+              }}
               breakpoints={{
                 2500: {
                   slidesPerView: 4.7,
