@@ -527,6 +527,7 @@ font-family: var(--font-raleway);
     left: 3.43rem;
     padding-right: 1rem;
     max-width: 420px;
+    background-color: transparent;
   }
 
   .vacancies_header1 {
@@ -739,7 +740,7 @@ font-family: var(--font-raleway);
 
 /* стили мобильной версии  */
 
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 768px) {
   .wrapper_vacancies {
     height: 376px;
   }

@@ -51,6 +51,18 @@ const VacanciesMap = () => {
     }
   };
 
+  useEffect(() => {
+    const handleResize = () => {
+      if (window.innerWidth <= 1024) {   
+        setActiveCityIndex(1);
+      }
+    };
+    window.addEventListener('resize', handleResize);
+    handleResize();
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+
  
   useEffect(() => {
     checkIfCentered();
@@ -64,6 +76,7 @@ const VacanciesMap = () => {
 
   useEffect(() => {
     const handleWheel = (event) => {
+      if (window.innerWidth <= 1024) return;
       if (!scrollLocked) return;
       event.preventDefault();
 
@@ -72,21 +85,21 @@ const VacanciesMap = () => {
 
       setActiveCityIndex((prevIndex) => {
         let newIndex = prevIndex;
-        if (event.deltaY > 0) {        
+        if (event.deltaY > 0) {
           newIndex = prevIndex + 1;
           if (newIndex >= cities.length) {
-            newIndex = cities.length - 1;       
+            newIndex = cities.length - 1;
             setScrollLocked(false);
           }
-        } else {        
+        } else {
           newIndex = prevIndex - 1;
           if (newIndex < 0) {
-            newIndex = 0;        
+            newIndex = 0;
             setScrollLocked(false);
           }
         }
         return newIndex;
-      });    
+      });
       setTimeout(() => setIsAnimating(false), animationDuration);
     };
 
@@ -94,7 +107,7 @@ const VacanciesMap = () => {
     return () => {
       window.removeEventListener('wheel', handleWheel, { passive: false });
     };
-  }, [scrollLocked, isAnimating]);
+  }, [scrollLocked, isAnimating, animationDuration]);
 
   return (
     <section ref={mapRef} className={styles.VacanciesMap}>
