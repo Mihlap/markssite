@@ -46,6 +46,7 @@ import VacanciesComponent from './Portal/Vacancies/VacanciesMain/VacanciesCompon
 import Footer from './Footer/Footer';
 import FooterCircle from './Footer/FooterCircle';
 import FooterForm from './Footer/FooterForm';
+import JournalMain from './Journal/JournalMain';
 
 export default function App() {
   const user = useSelector((state) => state.auth.user);
@@ -205,6 +206,16 @@ export default function App() {
                     path="/publication/:id"
                     element={
                       <ArticleCard
+                        handleMouseEnter={handleMouseEnter}
+                        handleMouseLeave={handleMouseLeave}
+                        handleMouseHover={handleMouseHover}
+                      />
+                    }
+                  />
+                  <Route
+                    path="/journalPage"
+                    element={
+                      <JournalMain
                         handleMouseEnter={handleMouseEnter}
                         handleMouseLeave={handleMouseLeave}
                         handleMouseHover={handleMouseHover}
