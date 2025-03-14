@@ -15,8 +15,8 @@ const CategoryButton = React.memo(function CategoryButton({ cat, count, isActive
       onClick={() => onClick(cat)}
       style={{
         backgroundColor: pillBgColor,
-        color: textColor,
-      }}>    
+        color: textColor,      
+      }}>
       {icon && (
         <span
           className={styles.iconCircle}
@@ -26,10 +26,11 @@ const CategoryButton = React.memo(function CategoryButton({ cat, count, isActive
           }}>
           {icon}
         </span>
-      )}  
+      )}
       <span className={styles.categoryText}>
-        {cat} {count}
+        {cat}
       </span>
+        {count > 0 && <span className={styles.categoryCount}>{count}</span>}
     </button>
   );
 });
