@@ -15,6 +15,7 @@
   background-color: #FFF;
   border-radius: 1.5rem;
   overflow: hidden;
+  width: 100%;
 }
 
 .categoryButtonsWrapper {
@@ -97,7 +98,7 @@
     color: var(--black-1D2E43);
     font-family: var(--font-raleway);
     font-size: 1rem;
-    font-weight: var(--fw-700);
+    font-weight: var(--fw-400);
     line-height: 1.5rem;
     outline: none;
 
@@ -107,8 +108,8 @@
   }
 
   .searchIcon {
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 1rem;
+    height: 1rem;
     flex-shrink: 0;
     color: var(--gray-959DA6);
 
@@ -164,15 +165,46 @@
 
 
 @media screen and (min-width: 1025px) and (max-width: 1600px) {
-  .categoryFiltersMain {
-    display: flex;
-    padding: 1.94rem 1.69rem 0rem 1.69rem;
-    width: 100%;
+  .searchContainer.collapsed {
+    width: 2.5rem;
+    height: 2.5rem;
+    min-width: 2.5rem;
+    max-width: 2.5rem;
+    padding: 0.5rem;
+    // border-radius: 50%;
+    background: var(--light-light-gray-EBECEE);
+    margin-left: auto; // Прижимаем к правой стороне
+    transform-origin: right center; // Анимация относительно правой стороны
+    transition: width 0.3s ease, padding 0.3s ease, border-radius 0.3s ease;
+    display: flex; // Обеспечивает центрирование содержимого
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
   }
 
-  .iconCircle {
-    width: 1.75rem;
-    height: 1.75rem;
+  .searchContainer.collapsed .searchInput {
+    width: 0;
+    opacity: 0;
+    transition: width 0.3s ease, opacity 0.3s ease;
+  }
+
+  .searchContainer.expanded {
+    width: 41.375rem;
+    min-width: 41.375rem;
+    max-width: 41.375rem;
+    padding: 0.5rem 1.5rem;
+    border-radius: 62.5rem;
+    background: var(--light-light-gray-EBECEE);
+    margin-left: auto;
+    transform-origin: right center;
+    transition: width 0.3s ease, padding 0.3s ease, border-radius 0.3s ease;
+  }
+
+  .searchContainer.expanded .searchInput {
+    width: 100%;
+    opacity: 1;
+    pointer-events: auto;
+    transition: width 0.3s ease, opacity 0.3s ease;
   }
 }
 
