@@ -20,6 +20,7 @@ function CategoryFilters() {
   const [isManualSelection, setIsManualSelection] = useState(false);
   const [buttonsOffset, setButtonsOffset] = useState(0);
   const [dropdownStyle, setDropdownStyle] = useState({});
+  const [isSearchExpanded, setIsSearchExpanded] = useState(false);
 
   const wrapperRef = useRef(null);
   const buttonsWrapperRef = useRef(null);
@@ -56,34 +57,38 @@ function CategoryFilters() {
     }
   }, [searchValue, journals, isManualSelection]);
 
-  const handleSearchChange = (e) => {
+  const handleSearchChange = useCallback((e) => {
     setSearchValue(e.target.value);
     setIsManualSelection(false);
-  };
+  }, []);
 
-  const handleClear = () => {
+  const handleClear = useCallback(() => {
     setSearchValue('');
     setFilteredResults([]);
     setIsDropdownOpen(false);
     setIsManualSelection(false);
-  };
+    setIsSearchExpanded(false);
+  }, []);
 
   useEffect(() => {
-    function handleOutsideClick(e) {
+    const handleOutsideClick = (e) => {
       if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
-        setIsDropdownOpen(false);
+        setIsDropdownOpen(false);     
+        if (!searchValue.trim() && window.innerWidth >= 1025 && window.innerWidth <= 1600) {
+          setIsSearchExpanded(false);
+        }
       }
-    }
+    };
     document.addEventListener('mousedown', handleOutsideClick);
     return () => {
       document.removeEventListener('mousedown', handleOutsideClick);
     };
-  }, []);
+  }, [searchValue]);
 
-  const highlightMatches = (text, searchValue) => {
-    if (!searchValue.trim()) return text;
-    const escapedSearch = searchValue.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    const regex = new RegExp(`(${escapedSearch})`, 'gi');
+  const highlightMatches = useCallback((text, query) => {
+    if (!query.trim()) return text;
+    const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const regex = new RegExp(`(${escapedQuery})`, 'gi');
     return text.split(regex).map((part, index) =>
       regex.test(part) ? (
         <span key={index} className={styles.highlight}>
@@ -93,13 +98,13 @@ function CategoryFilters() {
         part
       )
     );
-  };
+  }, []);
 
   const handleResultClick = useCallback((title) => {
     setSearchValue(title);
     setIsDropdownOpen(false);
     setIsManualSelection(true);
-  }, []);
+   }, []);
 
   const updateButtonsOffset = useCallback(() => {
     if (buttonsWrapperRef.current && buttonsRef.current) {
@@ -119,13 +124,12 @@ function CategoryFilters() {
     return () => observer.disconnect();
   }, [updateButtonsOffset]);
 
-  // Функция для обновления позиции dropdown относительно searchContainer
   const updateDropdownPosition = useCallback(() => {
     if (searchContainerRef.current) {
       const rect = searchContainerRef.current.getBoundingClientRect();
       setDropdownStyle({
         position: 'absolute',
-        top: rect.bottom + window.scrollY + 2, // 2px отступ
+        top: rect.bottom + window.scrollY + 2,
         left: rect.left + window.scrollX,
         width: rect.width,
         zIndex: 1000,
@@ -133,7 +137,6 @@ function CategoryFilters() {
     }
   }, []);
 
-  // При открытии dropdown или изменении размеров окна пересчитываем позицию
   useEffect(() => {
     if (isDropdownOpen) {
       updateDropdownPosition();
@@ -168,7 +171,14 @@ function CategoryFilters() {
             })}
           </div>
         </div>
-        <div className={styles.searchContainer} ref={searchContainerRef}>
+        <div
+          className={`${styles.searchContainer} ${isSearchExpanded ? styles.expanded : styles.collapsed}`}
+          ref={searchContainerRef}
+          onClick={() => {           
+            if (window.innerWidth >= 1025 && window.innerWidth <= 1600 && !isSearchExpanded) {
+              setIsSearchExpanded(true);
+            }
+          }}>
           <SearchIcon className={styles.searchIcon} />
           <input
             className={styles.searchInput}
@@ -179,6 +189,11 @@ function CategoryFilters() {
             onFocus={() => {
               if (searchValue.trim() && filteredResults.length) {
                 setIsDropdownOpen(true);
+              }
+            }}
+            onBlur={() => {
+              if (!searchValue.trim() && window.innerWidth >= 1025 && window.innerWidth <= 1600) {
+                setIsSearchExpanded(false);
               }
             }}
           />
@@ -204,4 +219,4 @@ function CategoryFilters() {
   );
 }
 
-export default CategoryFilters;
+export default React.memo(CategoryFilters);
