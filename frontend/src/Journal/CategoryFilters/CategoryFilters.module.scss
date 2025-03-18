@@ -1,6 +1,10 @@
 @import '../../../src/App.css';
 @import '../../../src/variables';
 
+/* ----------------------------------- */
+/*      Общие стили из вашего кода     */
+/* ----------------------------------- */
+
 .categoryFiltersMain {
   padding: 2.12rem 2rem 0rem 2rem;
   width: 100%;
@@ -55,10 +59,12 @@
 }
 
 .iconCircle {
-  display: inline-flex;
+  display: flex;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0.625rem;
   align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
+  gap: 0.625rem;
   border-radius: 1.25rem;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
@@ -79,6 +85,10 @@
   transform: translateY(-20%);
 }
 
+/* ----------------------------------- */
+/*       Основной контейнер поиска     */
+/* ----------------------------------- */
+
 .searchContainer {
   position: relative;
   display: flex;
@@ -89,6 +99,7 @@
   align-items: center;
   border-radius: 62.5rem;
   background: var(--light-light-gray-EBECEE);
+  /* <-- Серый фон по умолчанию */
   gap: 0.5rem;
 
   .searchInput {
@@ -111,7 +122,7 @@
     width: 1rem;
     height: 1rem;
     flex-shrink: 0;
-    color: var(--gray-959DA6);
+    color: var(--black-1D2E43);
 
     path {
       fill: currentColor;
@@ -163,78 +174,93 @@
   line-height: 1.5rem;
 }
 
-
+/* ----------------------------------- */
+/*       Анимация для 1025-1600px      */
+/* ----------------------------------- */
 @media screen and (min-width: 1025px) and (max-width: 1600px) {
   .searchContainer.collapsed {
-    width: 2.5rem;
-    height: 2.5rem;
-    min-width: 2.5rem;
-    max-width: 2.5rem;
+    width: 3rem;
+    height: 3rem;
+    min-width: 3rem;
+    max-width: 3rem;
     padding: 0.5rem;
-    // border-radius: 50%;
     background: var(--light-light-gray-EBECEE);
-    margin-left: auto; // Прижимаем к правой стороне
-    transform-origin: right center; // Анимация относительно правой стороны
-    transition: width 0.3s ease, padding 0.3s ease, border-radius 0.3s ease;
-    display: flex; // Обеспечивает центрирование содержимого
+    margin-left: auto;
+    transform-origin: right center;
+    display: flex;
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    transition: all 0.3s ease;
   }
 
   .searchContainer.collapsed .searchInput {
     width: 0;
     opacity: 0;
-    transition: width 0.3s ease, opacity 0.3s ease;
+    transition: all 0.3s ease;
   }
 
   .searchContainer.expanded {
     width: 41.375rem;
     min-width: 41.375rem;
     max-width: 41.375rem;
-    padding: 0.5rem 1.5rem;
+    padding: 0.875rem 1.5rem;
     border-radius: 62.5rem;
     background: var(--light-light-gray-EBECEE);
     margin-left: auto;
     transform-origin: right center;
-    transition: width 0.3s ease, padding 0.3s ease, border-radius 0.3s ease;
+    transition: all 0.3s ease;
   }
 
   .searchContainer.expanded .searchInput {
     width: 100%;
     opacity: 1;
     pointer-events: auto;
-    transition: width 0.3s ease, opacity 0.3s ease;
+    transition: all 0.3s ease;
+  }
+
+  .searchContainer .searchIcon {
+    width: 0.85rem;
+    height: 0.85rem;
+  }
+
+  .searchContainer.collapsed svg {
+    margin-left: 0.55rem;
   }
 }
 
+/* ----------------------------------- */
+/*  Адаптация для планшетов 768-1024   */
+/* ----------------------------------- */
 @media screen and (min-width: 768px) and (max-width: 1024px) {
-
   .categoryFilters {
     padding: 0;
     background-color: transparent;
     border-radius: 0;
+    padding-left: 11vw;
+    padding-right: 11vw;
   }
 
-  .categoryButtonsWrapper {
-    display: none;
-  }
-
+  /* На планшетах делаем фон поиска белым (как в старых стилях) */
   .searchContainer {
     width: 100%;
     max-width: 100%;
     min-width: unset;
-    background: #FFF;
+    background: #FFF;      
+    padding: 0.875rem 1.5rem;
+    border-radius: 2rem;
   }
 
   .searchInput {
-    color: var(--gray-959DA6, );
+    color: var(--gray-959DA6);
     font-weight: var(--fw-400);
   }
 }
 
+/* ----------------------------------- */
+/*  Адаптация для телефонов < 768px    */
+/* ----------------------------------- */
 @media screen and (max-width: 768px) {
-
   .categoryFilters {
     padding: 0;
     background-color: transparent;
@@ -245,15 +271,127 @@
     display: none;
   }
 
+  /* На телефонах тоже делаем фон поиска белым */
   .searchContainer {
     width: 100%;
     max-width: 100%;
     min-width: unset;
     background: #FFF;
+    padding: 0.875rem 1.5rem;
+    border-radius: 2rem;
   }
 
   .searchInput {
-    color: var(--gray-959DA6, );
+    color: var(--gray-959DA6);
     font-weight: var(--fw-400);
   }
 }
+
+/* ----------------------------------- */
+/*    Новые стили для мобильного UI    */
+/* ----------------------------------- */
+
+/* Мини-блок, который виден на мобильном до открытия оверлея */
+.mobileSearchMini {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  width: 100%;
+  background: var(--light-light-gray-EBECEE);
+  padding: 0.875rem 1.5rem;
+  border-radius: 2rem;
+  position: relative;
+}
+
+/* Крестик на мобильном мини-блоке (если searchValue не пустое) */
+// .closeIconMobile {
+//   width: 16px;
+//   height: 16px;
+//   cursor: pointer;
+//   position: absolute;
+//   right: 1rem;
+//   top: 50%;
+//   transform: translateY(-50%);
+
+//   path {
+//     fill: var(--black-1D2E43);
+//   }
+// }
+
+/* Полноэкранный оверлей */
+.mobileOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  overflow-y: auto;
+}
+
+/* Шапка оверлея: иконка + инпут + крестик для очистки оверлейного инпута */
+// .mobileOverlayHeader {
+//   display: flex;
+//   align-items: center;
+//   gap: 0.5rem;
+//   position: relative;
+// }
+
+// .mobileOverlayInput {
+//   flex: 1;
+//   border: none;
+//   background: transparent;
+//   font-size: 1rem;
+//   outline: none;
+//   color: var(--black-1D2E43);
+
+//   &::placeholder {
+//     color: var(--gray-959DA6);
+//   }
+// }
+
+/* Крестик (CloseIcon), который очищает именно mobileInput */
+.mobileOverlayClear {
+  // width: 16px;
+  // height: 16px;
+  // cursor: pointer;
+  // position: absolute;
+  // right: 0.5rem;
+
+  // path {
+  //   fill: var(--black-1D2E43);
+  // }
+}
+
+/* Кнопка "Отмена", которая закрывает оверлей и восстанавливает старые значения */
+// .mobileOverlayCancel {
+//   margin-top: 1rem;
+//   background: none;
+//   border: none;
+//   color: var(--black-1D2E43);
+//   font-size: 1rem;
+//   font-weight: 600;
+//   cursor: pointer;
+//   align-self: flex-end;
+// }
+
+// /* Блок с категориями в оверлее */
+// .mobileOverlayCategories {
+//   display: flex;
+//   flex-wrap: wrap;
+//   gap: 1rem;
+//   margin-top: 1rem;
+// }
+
+// /* Результаты поиска (совпадения) */
+// .mobileOverlayResults {
+//   margin-top: 1.5rem;
+//   display: flex;
+//   flex-direction: column;
+//   gap: 0.5rem;
+// }
