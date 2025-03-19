@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useMemo } from 'react';
+import React, { useState, useCallback, useMemo, useEffect } from 'react';
 import styles from './CategoryFilters.module.scss';
 
 const darkenColor = (hex, percent) => {
@@ -21,17 +21,33 @@ const darkenColor = (hex, percent) => {
 
 const CategoryButton = React.memo(function CategoryButton({ cat, count, isActive, color, icon, onClick }) {
   const [hovered, setHovered] = useState(false);
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 1024);
 
   const handleMouseEnter = useCallback(() => setHovered(true), []);
   const handleMouseLeave = useCallback(() => setHovered(false), []);
   const handleClick = useCallback(() => onClick(cat), [onClick, cat]);
 
+  useEffect(() => {
+    const handleResize = () => {
+      setIsSmallScreen(window.innerWidth <= 1024);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   const backgroundColor = useMemo(() => {
     if (isActive) {
       return hovered ? darkenColor(color, 20) : color;
+    } else {
+      if (isSmallScreen) {
+        return 'var(--light-light-gray-EDEDED)';
+      } else {
+        return hovered ? 'var(--light-light-gray-EDEDED)' : 'var(--white-F6F6F6)';
+      }
     }
-    return 'var(--white-F6F6F6)';
-  }, [isActive, hovered, color]);
+  }, [isActive, hovered, color, isSmallScreen]);
 
   const textColor = isActive ? '#fff' : 'var(--black-1D2E43)';
   const circleBgColor = isActive ? '#fff' : color;
@@ -42,8 +58,8 @@ const CategoryButton = React.memo(function CategoryButton({ cat, count, isActive
       type="button"
       className={styles.categoryButton}
       onClick={handleClick}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
+      onMouseEnter={isSmallScreen ? undefined : handleMouseEnter}
+      onMouseLeave={isSmallScreen ? undefined : handleMouseLeave}
       style={{
         backgroundColor,
         color: textColor,
