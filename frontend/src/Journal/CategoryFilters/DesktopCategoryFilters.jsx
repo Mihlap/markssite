@@ -1,93 +1,77 @@
-import React, { useEffect, useMemo, useState, useCallback, useRef } from 'react';
+import { useEffect, useCallback, useRef, memo } from 'react';
 import ReactDOM from 'react-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchJournals } from '../../store/Slice/journalSlice';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
+import {
+  setDesktopSelectedCategory,
+  setDesktopSearchValue,
+  setDesktopFilteredResults,
+  setDesktopIsDropdownOpen,
+  setDesktopIsManualSelection,
+  setDesktopButtonsOffset,
+  setDesktopDropdownStyle,
+  setDesktopIsSearchExpanded,
+} from '../../store/Slice/journal_categoryFiltersSlice.js';
 import CategoryButton from './CategoryButton';
 import styles from './CategoryFilters.module.scss';
 import { categoriesConfig } from './categories.js';
-
 import { ReactComponent as SearchIcon } from '../icons/search.svg';
 import { ReactComponent as CloseIcon } from '../icons/close.svg';
 
-function DesktopCategoryFilters() {
+function DesktopCategoryFilters({ categoriesList }) {
   const dispatch = useDispatch();
-  const journals = useSelector((state) => state.journal.journals);
-
-  const [selectedCategory, setSelectedCategory] = useState(null);
-  const [searchValue, setSearchValue] = useState('');
-  const [filteredResults, setFilteredResults] = useState([]);
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [isManualSelection, setIsManualSelection] = useState(false);
-  const [buttonsOffset, setButtonsOffset] = useState(0);
-  const [dropdownStyle, setDropdownStyle] = useState({});
-  const [isSearchExpanded, setIsSearchExpanded] = useState(false);
+  const {
+    selectedCategory,
+    searchValue,
+    filteredResults,
+    isDropdownOpen,
+    isManualSelection,
+    buttonsOffset,
+    dropdownStyle,
+    isSearchExpanded,
+  } = useSelector((state) => state.categoryFilters.desktop, shallowEqual);
+  const journals = useSelector((state) => state.journal.journals, shallowEqual);
 
   const wrapperRef = useRef(null);
   const buttonsWrapperRef = useRef(null);
   const buttonsRef = useRef(null);
   const searchContainerRef = useRef(null);
 
-  useEffect(() => {
-    dispatch(fetchJournals());
+  const resetDesktopSearch = useCallback(() => {
+    dispatch(setDesktopSearchValue(''));
+    dispatch(setDesktopSelectedCategory(null));
+    dispatch(setDesktopFilteredResults([]));
+    dispatch(setDesktopIsDropdownOpen(false));
+    dispatch(setDesktopIsManualSelection(false));
+    dispatch(setDesktopIsSearchExpanded(false));
   }, [dispatch]);
 
-  // Собираем категории + количество
-  const categoriesList = useMemo(() => {
-    if (!journals.length) return [];
-    const catCounts = journals.reduce((acc, { category = [] }) => {
-      category.forEach((cat) => {
-        acc[cat] = (acc[cat] || 0) + 1;
-      });
-      return acc;
-    }, {});
-    return Object.entries(catCounts).map(([cat, count]) => ({ cat, count }));
-  }, [journals]);
+  const handleCategoryClick = useCallback(
+    (cat) => {
+      resetDesktopSearch();
+      dispatch(setDesktopSelectedCategory(selectedCategory === cat ? null : cat));
+    },
+    [dispatch, selectedCategory, resetDesktopSearch]
+  );
 
-  // ==========================
-  //   ОСНОВНАЯ ЛОГИКА
-  // ==========================
+  const handleSearchChange = useCallback(
+    (e) => {
+      dispatch(setDesktopSelectedCategory(null));
+      dispatch(setDesktopSearchValue(e.target.value));
+      dispatch(setDesktopIsManualSelection(false));
+    },
+    [dispatch]
+  );
 
-  // (1) При выборе категории – сбрасываем поиск
-  const handleCategoryClick = useCallback((cat) => {
-    // Сбрасываем поиск
-    setSearchValue('');
-    setFilteredResults([]);
-    setIsDropdownOpen(false);
-    setIsManualSelection(false);
-    setIsSearchExpanded(false);
-
-    // Устанавливаем/снимаем выбранную категорию
-    setSelectedCategory((prev) => (prev === cat ? null : cat));
-  }, []);
-
-  // (2) При вводе в поиск – сбрасываем выбранную категорию
-  const handleSearchChange = useCallback((e) => {
-    // Сбрасываем выбранную категорию
-    setSelectedCategory(null);
-
-    // Обновляем поиск
-    setSearchValue(e.target.value);
-    setIsManualSelection(false);
-  }, []);
-
-  // (3) Сбрасываем всё при нажатии на крестик
   const handleClear = useCallback(() => {
-    setSearchValue('');
-    setSelectedCategory(null); // Сбрасываем категорию тоже
-    setFilteredResults([]);
-    setIsDropdownOpen(false);
-    setIsManualSelection(false);
-    setIsSearchExpanded(false);
-  }, []);
+    resetDesktopSearch();
+  }, [resetDesktopSearch]);
 
-  // Следим, чтобы при клике вне компонента закрывать выпадающий список
   useEffect(() => {
     const handleOutsideClick = (e) => {
       if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
-        setIsDropdownOpen(false);
-        // Если строка поиска пустая, свернуть
+        dispatch(setDesktopIsDropdownOpen(false)); 
         if (!searchValue.trim() && window.innerWidth >= 1025 && window.innerWidth <= 1600) {
-          setIsSearchExpanded(false);
+          dispatch(setDesktopIsSearchExpanded(false));
         }
       }
     };
@@ -95,21 +79,19 @@ function DesktopCategoryFilters() {
     return () => {
       document.removeEventListener('mousedown', handleOutsideClick);
     };
-  }, [searchValue]);
+  }, [dispatch, searchValue]);
 
-  // Фильтрация: если есть searchValue и не было ручного выбора
   useEffect(() => {
     if (searchValue.trim() && !isManualSelection) {
       const matches = journals.filter((journal) => journal.title.toLowerCase().includes(searchValue.toLowerCase()));
-      setFilteredResults(matches);
-      setIsDropdownOpen(matches.length > 0);
+      dispatch(setDesktopFilteredResults(matches));
+      dispatch(setDesktopIsDropdownOpen(matches.length > 0));
     } else {
-      setFilteredResults([]);
-      setIsDropdownOpen(false);
+      dispatch(setDesktopFilteredResults([]));
+      dispatch(setDesktopIsDropdownOpen(false));
     }
-  }, [searchValue, journals, isManualSelection]);
+  }, [dispatch, searchValue, journals, isManualSelection]);
 
-  // Подсветка совпадений
   const highlightMatches = useCallback((text, query) => {
     if (!query.trim()) return text;
     const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
@@ -125,24 +107,23 @@ function DesktopCategoryFilters() {
     );
   }, []);
 
-  // При выборе варианта из списка – заполняем поле и закрываем
-  const handleResultClick = useCallback((title) => {
-    setSearchValue(title);
-    setIsDropdownOpen(false);
-    setIsManualSelection(true);
-  }, []);
+  const handleResultClick = useCallback(
+    (title) => {
+      dispatch(setDesktopSearchValue(title));
+      dispatch(setDesktopIsDropdownOpen(false));
+      dispatch(setDesktopIsManualSelection(true));
+    },
+    [dispatch]
+  );
 
-  // ==========================
-  //   КНОПКИ КАТЕГОРИЙ
-  // ==========================
   const updateButtonsOffset = useCallback(() => {
     if (buttonsWrapperRef.current && buttonsRef.current) {
       const availableWidth = buttonsWrapperRef.current.offsetWidth;
       const totalButtonsWidth = buttonsRef.current.scrollWidth;
       const offset = availableWidth < totalButtonsWidth ? availableWidth - totalButtonsWidth : 0;
-      setButtonsOffset(offset);
+      dispatch(setDesktopButtonsOffset(offset));
     }
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (!buttonsWrapperRef.current) return;
@@ -153,21 +134,20 @@ function DesktopCategoryFilters() {
     return () => observer.disconnect();
   }, [updateButtonsOffset]);
 
-  // ==========================
-  //   ВЫПАДАЮЩИЙ СПИСОК
-  // ==========================
   const updateDropdownPosition = useCallback(() => {
     if (searchContainerRef.current) {
       const rect = searchContainerRef.current.getBoundingClientRect();
-      setDropdownStyle({
-        position: 'absolute',
-        top: rect.bottom + window.scrollY + 2,
-        left: rect.left + window.scrollX,
-        width: rect.width,
-        zIndex: 1000,
-      });
+      dispatch(
+        setDesktopDropdownStyle({
+          position: 'absolute',
+          top: rect.bottom + window.scrollY + 2,
+          left: rect.left + window.scrollX,
+          width: rect.width,
+          zIndex: 1000,
+        })
+      );
     }
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     if (isDropdownOpen) {
@@ -179,9 +159,6 @@ function DesktopCategoryFilters() {
     }
   }, [isDropdownOpen, updateDropdownPosition]);
 
-  // ==========================
-  //   РЕНДЕР
-  // ==========================
   return (
     <div className={styles.categoryFiltersMain}>
       <div className={styles.categoryFilters} ref={wrapperRef}>
@@ -191,10 +168,7 @@ function DesktopCategoryFilters() {
             ref={buttonsRef}
             style={{ transform: `translateX(${buttonsOffset}px)` }}>
             {categoriesList.map(({ cat, count }) => {
-              const { color, icon } = categoriesConfig[cat] || {
-                color: '#000',
-                icon: null,
-              };
+              const { color, icon } = categoriesConfig[cat] || { color: '#000', icon: null };
               return (
                 <CategoryButton
                   key={cat}
@@ -215,7 +189,7 @@ function DesktopCategoryFilters() {
           ref={searchContainerRef}
           onClick={() => {
             if (window.innerWidth >= 1025 && window.innerWidth <= 1600 && !isSearchExpanded) {
-              setIsSearchExpanded(true);
+              dispatch(setDesktopIsSearchExpanded(true));
             }
           }}>
           <SearchIcon className={styles.searchIcon} />
@@ -224,15 +198,16 @@ function DesktopCategoryFilters() {
             type="text"
             placeholder="Поиск"
             value={searchValue}
+            maxLength={50}
             onChange={handleSearchChange}
             onFocus={() => {
               if (searchValue.trim() && filteredResults.length) {
-                setIsDropdownOpen(true);
+                dispatch(setDesktopIsDropdownOpen(true));
               }
             }}
             onBlur={() => {
               if (!searchValue.trim() && window.innerWidth >= 1025 && window.innerWidth <= 1600) {
-                setIsSearchExpanded(false);
+                dispatch(setDesktopIsSearchExpanded(false));
               }
             }}
           />
@@ -240,19 +215,15 @@ function DesktopCategoryFilters() {
             <CloseIcon
               className={styles.closeIcon}
               onClick={() => {
-                // Сбрасываем и поиск, и категорию
                 handleClear();
-                // Дополнительно сворачиваем, если нужно
                 if (window.innerWidth >= 1025 && window.innerWidth <= 1600) {
-                  setIsSearchExpanded(false);
+                  dispatch(setDesktopIsSearchExpanded(false));
                 }
               }}
             />
           )}
         </div>
       </div>
-
-      {/* Портал с выпадающим списком, если есть результаты */}
       {isDropdownOpen &&
         filteredResults.length > 0 &&
         ReactDOM.createPortal(
@@ -272,4 +243,4 @@ function DesktopCategoryFilters() {
   );
 }
 
-export default React.memo(DesktopCategoryFilters);
+export default memo(DesktopCategoryFilters);

@@ -18,6 +18,7 @@ import formAddSlideSlice from './Slice/vacancyMainSlideCardSlice';
 import formAddEventSlice from './Slice/vacancyEventSlice';
 import modalSlice from './Slice/modalSlice';
 import journalSlice from './Slice/journalSlice';
+import journal_categoryFiltersSlice from './Slice/journal_categoryFiltersSlice';
 
 export default configureStore({
   reducer: {
@@ -38,7 +39,8 @@ export default configureStore({
     previousPage: previousPageReducer,
     activePage: activePageReducer,
     formAddSlide: formAddSlideSlice,
-    formAddEvent: formAddEventSlice,   
+    formAddEvent: formAddEventSlice,
     modal: modalSlice,
+    categoryFilters: journal_categoryFiltersSlice,
   },
 });
