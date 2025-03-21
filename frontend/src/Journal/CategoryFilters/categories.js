@@ -38,5 +38,5 @@ export const categoriesConfig = {
         />
       </svg>
     ),
-  },
+  }, 
 };

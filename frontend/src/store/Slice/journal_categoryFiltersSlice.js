@@ -1,16 +1,18 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+const initialDesktopState = {
+  selectedCategory: null,
+  searchValue: '',
+  filteredResults: [],
+  isDropdownOpen: false,
+  isManualSelection: false,
+  buttonsOffset: 0,
+  dropdownStyle: {},
+  isSearchExpanded: false,
+};
+
 const initialState = {
-  desktop: {
-    selectedCategory: null,
-    searchValue: '',
-    filteredResults: [],
-    isDropdownOpen: false,
-    isManualSelection: false,
-    buttonsOffset: 0,
-    dropdownStyle: {},
-    isSearchExpanded: false,
-  },
+  desktop: { ...initialDesktopState },
   mobile: {
     searchValue: '',
     selectedCategory: null,
@@ -24,7 +26,7 @@ const initialState = {
 const journal_categoryFiltersSlice = createSlice({
   name: 'categoryFilters',
   initialState,
-  reducers: { 
+  reducers: {
     setDesktopSelectedCategory(state, action) {
       state.desktop.selectedCategory = action.payload;
     },
@@ -49,6 +51,9 @@ const journal_categoryFiltersSlice = createSlice({
     setDesktopIsSearchExpanded(state, action) {
       state.desktop.isSearchExpanded = action.payload;
     },
+    resetDesktopSearchState(state) {
+      state.desktop = { ...initialDesktopState };
+    },  
     setMobileSearchValue(state, action) {
       state.mobile.searchValue = action.payload;
     },
@@ -79,6 +84,7 @@ export const {
   setDesktopButtonsOffset,
   setDesktopDropdownStyle,
   setDesktopIsSearchExpanded,
+  resetDesktopSearchState,
   setMobileSearchValue,
   setMobileSelectedCategory,
   setMobileIsOverlayOpen,

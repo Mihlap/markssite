@@ -14,6 +14,7 @@ import {
 import { createJournal } from '../../../../store/Slice/journalSlice';
 import styles from '../../../../Add/add-project/formAdd/FormAddProject.module.scss';
 import { PublicationContainer, PublicationIndicator } from '../../../add-project/formAdd/utils/CustomSelectComponents';
+import { categoryOptions } from '../utils/journalCategoryOptions';
 
 export default function FormAddJournal({ setIsModalOpen }) {
   const dispatch = useDispatch();
@@ -23,6 +24,7 @@ export default function FormAddJournal({ setIsModalOpen }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [localImages, setLocalImages] = useState({});
   const tempFilesRef = useRef([]);
+  
 
   const handleInputChange = useCallback(
     (name, value) => {
@@ -186,12 +188,7 @@ export default function FormAddJournal({ setIsModalOpen }) {
               name="category"
               placeholder="Выберете категорию фильтрации"
               isMulti
-              options={[
-                { value: 'Архитектура', label: 'Архитектура' },
-                { value: 'IT', label: 'IT' },
-                { value: 'Проектирование', label: 'Проектирование' },
-                { value: 'Механика грунтов', label: 'Механика грунтов' },
-              ]}
+              options={categoryOptions}
               value={
                 Array.isArray(formData.category)
                   ? formData.category.map((category) => ({
@@ -213,7 +210,7 @@ export default function FormAddJournal({ setIsModalOpen }) {
               label=""
               placeholder="Выберите номер выпуска"
               name="issueNumber"
-              options={Array.from({ length: 10 }, (_, i) => ({
+              options={Array.from({ length: 14 }, (_, i) => ({
                 value: (i + 1).toString(),
                 label: `Выпуск ${i + 1}`,
               }))}
@@ -331,7 +328,7 @@ export default function FormAddJournal({ setIsModalOpen }) {
 
           <div className={styles.form_container__block_gray_one}>
             <div className={styles.form_container__checkbox_block}>
-              <div style={{marginTop: '-16px'}}>Тело статьи</div>
+              <div style={{ marginTop: '-16px' }}>Тело статьи</div>
               <MarkdownEditor type="text" onTempFilesChange={(files) => (tempFilesRef.current = files)} />
             </div>
           </div>

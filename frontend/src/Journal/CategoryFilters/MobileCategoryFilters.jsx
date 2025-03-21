@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo } from 'react';
+import { memo, useCallback, useMemo, useState, useEffect } from 'react';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import {
   setMobileSearchValue,
@@ -19,59 +19,90 @@ function MobileCategoryFilters({ categoriesList }) {
   const { searchValue, selectedCategory, isOverlayOpen, mobileInput } = useSelector(
     (state) => state.categoryFilters.mobile,
     shallowEqual
-  ); 
+  );
   const journals = useSelector((state) => state.journal.journals, shallowEqual);
 
+  const [showAllCategories, setShowAllCategories] = useState(false);
+  const defaultVisibleCount = 4;
+
+  useEffect(() => {
+    if (!isOverlayOpen) {
+      setShowAllCategories(false);
+    }
+  }, [isOverlayOpen]);
+
+  const visibleCategories = useMemo(
+    () => (showAllCategories ? categoriesList : categoriesList.slice(0, defaultVisibleCount)),
+    [showAllCategories, categoriesList]
+  );
+  const hiddenCount = useMemo(() => categoriesList.length - defaultVisibleCount, [categoriesList]);
+
   const mobileFilteredResults = useMemo(() => {
+    if (selectedCategory) return [];
     const query = mobileInput.trim().toLowerCase();
     if (!query) return [];
     return journals.filter((journal) => journal.title.toLowerCase().includes(query));
-  }, [mobileInput, journals]);
+  }, [mobileInput, journals, selectedCategory]);
 
-  const openOverlay = () => {
+  const openOverlay = useCallback(() => {
     dispatch(setMobilePrevSearchValue(searchValue));
     dispatch(setMobilePrevSelectedCategory(selectedCategory));
     dispatch(setMobileInput(searchValue));
     dispatch(setMobileIsOverlayOpen(true));
-  };
+    if (selectedCategory) {
+      setShowAllCategories(true);
+    }
+  }, [dispatch, searchValue, selectedCategory]);
 
-  const handleCancel = () => {
+  const handleCancel = useCallback(() => {
     dispatch(setMobileIsOverlayOpen(false));
-  };
+  }, [dispatch]);
 
-  const handleClearOverlayInput = () => {
+  const handleClearOverlayInput = useCallback(() => {
     dispatch(setMobileInput(''));
     dispatch(setMobileSearchValue(''));
     dispatch(setMobileSelectedCategory(null));
-  };
+  }, [dispatch]);
 
-  const handleClearMainSearch = (e) => {
-    e.stopPropagation();
-    dispatch(setMobileSearchValue(''));
-    dispatch(setMobileSelectedCategory(null));
-  };
-
-  const handleCategoryClick = (cat) => {
-    if (selectedCategory === cat) {  
+  const handleClearMainSearch = useCallback(
+    (e) => {
+      e.stopPropagation();
       dispatch(setMobileSearchValue(''));
       dispatch(setMobileSelectedCategory(null));
-      dispatch(setMobileInput(''));
-    } else {   
-      dispatch(setMobileSearchValue(cat));
-      dispatch(setMobileSelectedCategory(cat));
+    },
+    [dispatch]
+  );
+
+  const handleCategoryClick = useCallback(
+    (cat) => {
+      if (selectedCategory === cat) {
+        dispatch(setMobileSearchValue(''));
+        dispatch(setMobileSelectedCategory(null));
+        dispatch(setMobileInput(''));
+      } else {
+        dispatch(setMobileSearchValue(cat));
+        dispatch(setMobileSelectedCategory(cat));
+        dispatch(setMobileIsOverlayOpen(false));
+      }
+    },
+    [dispatch, selectedCategory]
+  );
+
+  const handleMobileInputChange = useCallback(
+    (e) => {
+      dispatch(setMobileInput(e.target.value));
+    },
+    [dispatch]
+  );
+
+  const handleMobileResultClick = useCallback(
+    (title) => {
+      dispatch(setMobileSearchValue(title));
+      dispatch(setMobileSelectedCategory(null));
       dispatch(setMobileIsOverlayOpen(false));
-    }
-  };
-
-  const handleMobileInputChange = (e) => {
-    dispatch(setMobileInput(e.target.value));
-  };
-
-  const handleMobileResultClick = (title) => {
-    dispatch(setMobileSearchValue(title));
-    dispatch(setMobileSelectedCategory(null));
-    dispatch(setMobileIsOverlayOpen(false));
-  };
+    },
+    [dispatch]
+  );
 
   const highlightMatches = useCallback((text, query) => {
     if (!query.trim()) return text;
@@ -110,37 +141,45 @@ function MobileCategoryFilters({ categoriesList }) {
                 maxLength={50}
                 onChange={handleMobileInputChange}
                 autoFocus
-                />
-                {mobileInput && <CloseIcon className={styles.mobileOverlayClear} onClick={handleClearOverlayInput} />}
+              />
+              {mobileInput && <CloseIcon className={styles.mobileOverlayClear} onClick={handleClearOverlayInput} />}
             </div>
             <button className={styles.mobileOverlayCancel} onClick={handleCancel}>
               Отмена
             </button>
           </div>
-          <div className={styles.mobileOverlayCategories}>         
-              {categoriesList.map(({ cat, count }) => {
-                const { color, icon } = categoriesConfig[cat] || {
-                  color: '#000',
-                  icon: null,
-                };
-                return (
-                  <CategoryButton                
-                    key={cat}
-                    cat={cat}
-                    count={count}
-                    color={color}
-                    icon={icon}
-                    isActive={selectedCategory === cat}
-                    onClick={() => handleCategoryClick(cat)}
-                  />
-                );
-              })}        
+          <div className={styles.mobileOverlayCategories}>
+            {visibleCategories.map(({ cat, count }) => {
+              const { color, icon } = categoriesConfig[cat] || { color: '#000', icon: null };
+              return (
+                <CategoryButton
+                  key={cat}
+                  cat={cat}
+                  count={count}
+                  color={color}
+                  icon={icon}
+                  isActive={selectedCategory === cat}
+                  onClick={() => handleCategoryClick(cat)}
+                />
+              );
+            })}
+            {categoriesList.length > defaultVisibleCount && !showAllCategories && (
+              <CategoryButton
+                key="more-categories"
+                cat={`＋ ещё ${hiddenCount}`}
+                count={0}
+                isActive={false}
+                color={'var(--light-light-gray-EDEDED)'}
+                icon={null}
+                onClick={() => setShowAllCategories(true)}
+                customStyle={{ padding: '0.875rem 1rem' }}
+              />
+            )}
           </div>
           {mobileInput.trim() && mobileFilteredResults.length > 0 && (
-            // <>
             <div className={styles.mobileOverlayResults}>
               <div className={styles.resultsTitle}>Результаты поиска</div>
-              {mobileFilteredResults.slice(0, 20).map((journal) => (
+              {mobileFilteredResults.slice(0, 30).map((journal) => (
                 <div
                   key={journal.id}
                   className={styles.dropdownItem}
@@ -149,7 +188,6 @@ function MobileCategoryFilters({ categoriesList }) {
                 </div>
               ))}
             </div>
-            // </>
           )}
         </div>
       )}

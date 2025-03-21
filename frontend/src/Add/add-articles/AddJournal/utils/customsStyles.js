@@ -73,6 +73,7 @@ export const customsStyles = {
   }),
   menuList: (provided) => ({
     ...provided,
+    maxHeight: '300px',
     '&::-webkit-scrollbar': {
       width: '4px',
     },
