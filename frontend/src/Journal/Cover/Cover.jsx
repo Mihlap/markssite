@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './Cover.module.scss';
-import CURRENT_JOURNAL_NUMBER from '../icons/number001.svg';
+import CURRENT_JOURNAL_NUMBER from '../icons/journal001.svg';
 
 function Cover() {
   return (
