@@ -19,7 +19,15 @@ const darkenColor = (hex, percent) => {
   return `#${((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1).toUpperCase()}`;
 };
 
-const CategoryButton = React.memo(function CategoryButton({ cat, count, isActive, color, icon, onClick }) {
+const CategoryButton = React.memo(function CategoryButton({
+  cat,
+  count,
+  isActive,
+  color,
+  icon,
+  onClick,
+  customStyle = {},
+}) {
   const [hovered, setHovered] = useState(false);
   const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 1024);
 
@@ -63,6 +71,7 @@ const CategoryButton = React.memo(function CategoryButton({ cat, count, isActive
       style={{
         backgroundColor,
         color: textColor,
+        ...customStyle,
       }}>
       {icon && (
         <span
