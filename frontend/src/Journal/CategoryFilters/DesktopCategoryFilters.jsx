@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useRef, memo } from 'react';
+import { useEffect, useCallback, useRef, memo, useState, useMemo } from 'react';
 import ReactDOM from 'react-dom';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import {
@@ -7,9 +7,10 @@ import {
   setDesktopFilteredResults,
   setDesktopIsDropdownOpen,
   setDesktopIsManualSelection,
-  setDesktopButtonsOffset,
   setDesktopDropdownStyle,
   setDesktopIsSearchExpanded,
+  setDesktopButtonsOffset,
+  resetDesktopSearchState,
 } from '../../store/Slice/journal_categoryFiltersSlice.js';
 import CategoryButton from './CategoryButton';
 import styles from './CategoryFilters.module.scss';
@@ -32,25 +33,51 @@ function DesktopCategoryFilters({ categoriesList }) {
   const journals = useSelector((state) => state.journal.journals, shallowEqual);
 
   const wrapperRef = useRef(null);
+  const searchContainerRef = useRef(null);
   const buttonsWrapperRef = useRef(null);
   const buttonsRef = useRef(null);
-  const searchContainerRef = useRef(null);
+  const resizeTimerRef = useRef(null);
+
+  const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [isCategoriesExpanded, setIsCategoriesExpanded] = useState(false);
+
+  useEffect(() => {
+    const handleResize = () => {
+      if (resizeTimerRef.current) return;
+      resizeTimerRef.current = setTimeout(() => {
+        setWindowWidth(window.innerWidth);
+        resizeTimerRef.current = null;
+      }, 150);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => {
+      clearTimeout(resizeTimerRef.current);
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   const resetDesktopSearch = useCallback(() => {
-    dispatch(setDesktopSearchValue(''));
-    dispatch(setDesktopSelectedCategory(null));
-    dispatch(setDesktopFilteredResults([]));
-    dispatch(setDesktopIsDropdownOpen(false));
-    dispatch(setDesktopIsManualSelection(false));
-    dispatch(setDesktopIsSearchExpanded(false));
+    dispatch(resetDesktopSearchState());
+    setIsCategoriesExpanded(false);
   }, [dispatch]);
 
   const handleCategoryClick = useCallback(
     (cat) => {
-      resetDesktopSearch();
-      dispatch(setDesktopSelectedCategory(selectedCategory === cat ? null : cat));
+      if (selectedCategory === cat) {
+        resetDesktopSearch();
+      } else {        
+        dispatch(setDesktopSearchValue(''));
+        dispatch(setDesktopFilteredResults([]));
+        dispatch(setDesktopIsDropdownOpen(false));
+        dispatch(setDesktopIsManualSelection(false));
+        if (windowWidth >= 1025 && windowWidth <= 1600) {
+          dispatch(setDesktopIsSearchExpanded(false));
+        }
+        dispatch(setDesktopSelectedCategory(cat));
+        setIsCategoriesExpanded(true);
+      }
     },
-    [dispatch, selectedCategory, resetDesktopSearch]
+    [dispatch, selectedCategory, resetDesktopSearch, windowWidth]
   );
 
   const handleSearchChange = useCallback(
@@ -69,17 +96,15 @@ function DesktopCategoryFilters({ categoriesList }) {
   useEffect(() => {
     const handleOutsideClick = (e) => {
       if (wrapperRef.current && !wrapperRef.current.contains(e.target)) {
-        dispatch(setDesktopIsDropdownOpen(false)); 
-        if (!searchValue.trim() && window.innerWidth >= 1025 && window.innerWidth <= 1600) {
+        dispatch(setDesktopIsDropdownOpen(false));
+        if (!searchValue.trim() && windowWidth >= 1025 && windowWidth <= 1600) {
           dispatch(setDesktopIsSearchExpanded(false));
         }
       }
     };
     document.addEventListener('mousedown', handleOutsideClick);
-    return () => {
-      document.removeEventListener('mousedown', handleOutsideClick);
-    };
-  }, [dispatch, searchValue]);
+    return () => document.removeEventListener('mousedown', handleOutsideClick);
+  }, [dispatch, searchValue, windowWidth]);
 
   useEffect(() => {
     if (searchValue.trim() && !isManualSelection) {
@@ -112,28 +137,13 @@ function DesktopCategoryFilters({ categoriesList }) {
       dispatch(setDesktopSearchValue(title));
       dispatch(setDesktopIsDropdownOpen(false));
       dispatch(setDesktopIsManualSelection(true));
+      if (!title.trim() && windowWidth >= 1025 && windowWidth <= 1600) {
+        dispatch(setDesktopIsSearchExpanded(false));
+      }
     },
-    [dispatch]
+    [dispatch, windowWidth]
   );
-
-  const updateButtonsOffset = useCallback(() => {
-    if (buttonsWrapperRef.current && buttonsRef.current) {
-      const availableWidth = buttonsWrapperRef.current.offsetWidth;
-      const totalButtonsWidth = buttonsRef.current.scrollWidth;
-      const offset = availableWidth < totalButtonsWidth ? availableWidth - totalButtonsWidth : 0;
-      dispatch(setDesktopButtonsOffset(offset));
-    }
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (!buttonsWrapperRef.current) return;
-    const observer = new ResizeObserver(() => {
-      updateButtonsOffset();
-    });
-    observer.observe(buttonsWrapperRef.current);
-    return () => observer.disconnect();
-  }, [updateButtonsOffset]);
-
+  
   const updateDropdownPosition = useCallback(() => {
     if (searchContainerRef.current) {
       const rect = searchContainerRef.current.getBoundingClientRect();
@@ -152,22 +162,63 @@ function DesktopCategoryFilters({ categoriesList }) {
   useEffect(() => {
     if (isDropdownOpen) {
       updateDropdownPosition();
-      window.addEventListener('resize', updateDropdownPosition);
-      return () => {
-        window.removeEventListener('resize', updateDropdownPosition);
-      };
+      const throttledResize = () => updateDropdownPosition();
+      window.addEventListener('resize', throttledResize);
+      return () => window.removeEventListener('resize', throttledResize);
     }
   }, [isDropdownOpen, updateDropdownPosition]);
+
+  const visibleCategories = useMemo(() => {
+    if (windowWidth >= 1025 && windowWidth <= 1600 && !isCategoriesExpanded) {
+      return categoriesList.slice(0, 4);
+    }
+    return categoriesList;
+  }, [categoriesList, windowWidth, isCategoriesExpanded]);
+
+  const hiddenCount = useMemo(() => {
+    if (windowWidth >= 1025 && windowWidth <= 1600 && !isCategoriesExpanded) {
+      return categoriesList.length > 4 ? categoriesList.length - 4 : 0;
+    }
+    return 0;
+  }, [categoriesList, windowWidth, isCategoriesExpanded]);
+
+  const updateButtonsOffset = useCallback(() => {
+    if (buttonsWrapperRef.current && buttonsRef.current) {
+      const availableWidth = buttonsWrapperRef.current.offsetWidth;
+      const totalButtonsWidth = buttonsRef.current.scrollWidth;
+      const offset = availableWidth < totalButtonsWidth ? availableWidth - totalButtonsWidth : 0;
+      dispatch(setDesktopButtonsOffset(offset));
+    }
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (windowWidth >= 1025 && windowWidth <= 1600 && isSearchExpanded && buttonsWrapperRef.current) {
+      const observer = new ResizeObserver(() => {
+        updateButtonsOffset();
+      });
+      observer.observe(buttonsWrapperRef.current);
+      updateButtonsOffset();
+      return () => observer.disconnect();
+    }
+  }, [isSearchExpanded, updateButtonsOffset, windowWidth]);
 
   return (
     <div className={styles.categoryFiltersMain}>
       <div className={styles.categoryFilters} ref={wrapperRef}>
         <div className={styles.categoryButtonsWrapper} ref={buttonsWrapperRef}>
           <div
-            className={styles.categoryButtons}
             ref={buttonsRef}
-            style={{ transform: `translateX(${buttonsOffset}px)` }}>
-            {categoriesList.map(({ cat, count }) => {
+            className={
+              windowWidth >= 1025 && windowWidth <= 1600 && isSearchExpanded
+                ? styles.categoryButtonsExpanded
+                : styles.categoryButtons
+            }
+            style={
+              windowWidth >= 1025 && windowWidth <= 1600 && isSearchExpanded
+                ? { transform: `translateX(${buttonsOffset}px)` }
+                : {}
+            }>
+            {visibleCategories.map(({ cat, count }) => {
               const { color, icon } = categoriesConfig[cat] || { color: '#000', icon: null };
               return (
                 <CategoryButton
@@ -181,15 +232,35 @@ function DesktopCategoryFilters({ categoriesList }) {
                 />
               );
             })}
+            {hiddenCount > 0 && !isCategoriesExpanded && (
+              <CategoryButton
+                key="more-categories"
+                cat={`＋ ещё ${hiddenCount}`}
+                count={0}
+                isActive={false}
+                color={'var(--light-light-gray-EDEDED)'}
+                icon={null}
+                onClick={() => {
+                  setIsCategoriesExpanded(true);
+                  if (windowWidth >= 1025 && windowWidth <= 1600) {
+                    dispatch(setDesktopIsSearchExpanded(false));
+                  }
+                }}
+                customStyle={{ padding: '0.875rem 1rem' }}
+              />
+            )}
           </div>
         </div>
 
         <div
-          className={`${styles.searchContainer} ${isSearchExpanded ? styles.expanded : styles.collapsed}`}
+          className={`${styles.searchContainer} ${
+            windowWidth >= 1025 && windowWidth <= 1600 ? (isSearchExpanded ? styles.expanded : styles.collapsed) : ''
+          }`}
           ref={searchContainerRef}
           onClick={() => {
-            if (window.innerWidth >= 1025 && window.innerWidth <= 1600 && !isSearchExpanded) {
+            if (windowWidth >= 1025 && windowWidth <= 1600 && !isSearchExpanded) {
               dispatch(setDesktopIsSearchExpanded(true));
+              setIsCategoriesExpanded(false);
             }
           }}>
           <SearchIcon className={styles.searchIcon} />
@@ -206,7 +277,7 @@ function DesktopCategoryFilters({ categoriesList }) {
               }
             }}
             onBlur={() => {
-              if (!searchValue.trim() && window.innerWidth >= 1025 && window.innerWidth <= 1600) {
+              if (!searchValue.trim() && windowWidth >= 1025 && windowWidth <= 1600) {
                 dispatch(setDesktopIsSearchExpanded(false));
               }
             }}
@@ -214,11 +285,9 @@ function DesktopCategoryFilters({ categoriesList }) {
           {searchValue && (
             <CloseIcon
               className={styles.closeIcon}
-              onClick={() => {
+              onClick={(e) => {
+                e.stopPropagation();
                 handleClear();
-                if (window.innerWidth >= 1025 && window.innerWidth <= 1600) {
-                  dispatch(setDesktopIsSearchExpanded(false));
-                }
               }}
             />
           )}

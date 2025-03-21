@@ -769,10 +769,10 @@ export default function FormAddNews({ setIsModalOpen }) {
                 required
                 type="input"
                 className={styles.form_container__heading_block_input}
-                placeholder="Нет ограничения по символам"
+                placeholder="Не более 255 символов"
                 name="titleTextBlock"
                 id="titleTextBlock"
-                // maxLength="56"
+                maxLength="255"
                 value={inputData.titleTextBlock}
                 onChange={(event) =>
                   changeHandler(
@@ -793,9 +793,9 @@ export default function FormAddNews({ setIsModalOpen }) {
               <label htmlFor="titleTextBlock" className={styles.form_container__heading_block_label}>
                 Заголовок текстового блока
               </label>
-              {/* <div className={styles.form_container__heading_block_input_length}>
-              {`${inputData.titleTextBlock.length}/56`}
-            </div> */}
+              <div className={styles.form_container__heading_block_input_length}>
+              {`${inputData.titleTextBlock.length}/255`}
+            </div>
             </div>
             {/* блок и текстерией ( Описание статьи ) */}
             <div className={styles.form_container__description_text}>

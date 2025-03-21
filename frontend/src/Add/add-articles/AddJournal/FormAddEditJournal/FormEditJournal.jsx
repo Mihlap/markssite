@@ -14,6 +14,7 @@ import {
 } from '../../../../store/Slice/journalSlice';
 
 import { PublicationContainer, PublicationIndicator } from '../../../add-project/formAdd/utils/CustomSelectComponents';
+import { categoryOptions } from '../utils/journalCategoryOptions';
 import styles from '../../../../Add/add-project/formAdd/FormAddProject.module.scss';
 
 export default function FormEditJournal({ editJournalData, setIsModalOpen }) {
@@ -253,12 +254,7 @@ export default function FormEditJournal({ editJournalData, setIsModalOpen }) {
                   name="category"
                   placeholder="Выберите категорию фильтрации"
                   isMulti
-                  options={[
-                    { value: 'Архитектура', label: 'Архитектура' },
-                    { value: 'IT', label: 'IT' },
-                    { value: 'Проектирование', label: 'Проектирование' },
-                    { value: 'Механика грунтов', label: 'Механика грунтов' },
-                  ]}
+                 options={categoryOptions}
                   value={
                     Array.isArray(formData.category) ? formData.category.map((cat) => ({ value: cat, label: cat })) : []
                   }
@@ -276,7 +272,7 @@ export default function FormEditJournal({ editJournalData, setIsModalOpen }) {
                   label=""
                   placeholder="Выберите номер выпуска"
                   name="issue_number"
-                  options={Array.from({ length: 10 }, (_, i) => ({
+                  options={Array.from({ length: 14 }, (_, i) => ({
                     value: `${i + 1}`,
                     label: `Выпуск ${i + 1}`,
                   }))}
