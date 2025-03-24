@@ -5,47 +5,35 @@
   padding: 1.62rem 1rem 1.75rem 2rem;
 
   &__block_form {
-    /* Прячем стандартный скроллбар для Firefox и IE/Edge */
     scrollbar-width: none;
-    /* Для Firefox */
     -ms-overflow-style: none;
-    /* Для Internet Explorer и Edge */
-
     padding-right: 15px;
-    /* Отступ от правого края */
   }
 
   &__block_form::-webkit-scrollbar {
     width: 5px;
-    /* Ширина скролла */
   }
 
   &__block_form::-webkit-scrollbar-track {
     background-color: #f5f5f5;
-    /* Цвет фона трека */
   }
 
   &__block_form::-webkit-scrollbar-thumb {
     background-color: #948e8e;
-    /* Цвет самого скролла */
     border-radius: 10px;
-    /* Скругление углов */
     width: 5px;
-    /* Ширина бегунка */
     height: 30px;
-    /* Устанавливаем фиксированную высоту для бегунка */
   }
 
   &__block_form::-webkit-scrollbar-thumb:hover {
     background-color: #555;
-    /* Цвет скролла при наведении */
   }
 
   &__form {
     display: flex;
     flex-direction: column;
     gap: 32px;
-    height: 72vh;
+    height: clamp(65vh, 69vh, 73vh);
   }
 
   &__title {
@@ -60,7 +48,7 @@
   &__notification {
     position: fixed;
     top: 20px;
-    right: 12px; // начальная позиция справа за пределами экрана
+    right: 12px;
     font-family: var(--font-raleway);
     background-color: var(--white-F6F6F6);
     color: var(--black-1D2E43);
@@ -71,13 +59,11 @@
     transition: right 0.5s;
 
     &.show {
-      right: 20px; // конечная позиция в пределах экрана
+      right: 20px;
     }
   }
 
   &__block_form {
-    // height: 88vh;
-    // padding-bottom: 15rem;
     overflow-y: auto;
   }
 
@@ -154,7 +140,6 @@
     align-items: center;
     transition: all 0.2s ease-in-out;
 
-    /* Добавлено свойство transition */
     &:hover {
       background-color: rgb(133 185 247 / 15%);
     }
@@ -178,7 +163,6 @@
     align-items: center;
     transition: all 0.2s ease-in-out;
 
-    /* Добавлено свойство transition */
     &:hover {
       background-color: rgb(133 185 247 / 15%);
     }
@@ -201,7 +185,6 @@
     justify-content: center;
     align-items: center;
     transition: all 0.2s ease-in-out;
-    /* Добавлено свойство transition */
 
     &:hover {
       background-color: rgb(133 185 247 / 15%);
@@ -219,7 +202,6 @@
   &__radio_activ_block {
     background-color: var(--blue-75BBFD);
     transform: scale(1.1);
-    /* Пример анимации при выборе */
   }
 
   &__radio_activ_label {
@@ -256,7 +238,6 @@
       font-weight: 400;
       line-height: 24px;
       margin-right: 8px;
-      /* Отступ между текстом и кнопкой */
     }
 
     &:hover {
@@ -285,7 +266,6 @@
       font-weight: 400;
       line-height: 24px;
       margin-right: 8px;
-      /* Отступ между текстом и кнопкой */
     }
 
     &:hover {
@@ -344,7 +324,6 @@
     display: flex;
     flex-direction: column-reverse;
     position: relative;
-    // padding-top: 16px;
   }
 
   &__textarea {
@@ -406,7 +385,6 @@
   &__block_gray_flex {
     display: flex;
     justify-content: space-between;
-    // gap: 32px;
   }
 
   &__block_public {
@@ -451,24 +429,20 @@
 
 .form__field:focus {
   border-color: var(--salmon-FF7F6A);
-  /* Замените var(--your-focus-color) на цвет, который вы хотите использовать при фокусе */
 }
 
 .form__field:focus::caret {
   color: var(--your-caret-color);
-  /* Замените var(--your-caret-color) на желаемый цвет */
 }
 
 .form__field::placeholder {
   color: transparent;
 }
 
-.form__field:not(:placeholder-shown) ~ .form__label {
+.form__field:not(:placeholder-shown)~.form__label {
   font-size: 0.8rem;
-  /* Уменьшите размер метки */
   cursor: text;
   top: 5px;
-  /* Уменьшите отступ сверху */
   font-weight: var(--fw-400);
   color: var(--light-gray-C0C5CB);
 }
@@ -583,7 +557,6 @@
     color: var(--white-F6F6F6);
   }
 
-  /* Скрыть стандартную фразу "файл не выбран" */
   &__customFileUpload input[type='file'] {
     position: absolute;
     left: -9999px;
@@ -610,9 +583,7 @@
     height: 7rem;
     border-radius: 0.39rem;
     object-fit: cover;
-    /* Обрезать изображение, сохраняя его пропорции */
     object-position: center;
-    /* Центрировать изображение в контейнере */
   }
 
   @keyframes wave {
@@ -678,73 +649,73 @@
   }
 }
 
-    .add_input_button {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 6px;
-      width: 100%;
-      padding: 1rem;
-      border: 1px dashed var(--blue-75BBFD);
-      font-size: 16px;
-      font-weight: 400;
-      color: var(--blue-75BBFD);
-      background-color: transparent;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-  
-      &:hover {
-        color: var(--dark-blue-389FFF);
-        border-color: var(--dark-blue-389FFF);
-      }
-  
-      svg {
-        width: 25px;
-        height: 24px;
-        transition: fill 0.3s ease;
-      }
-  
-      .add_input_text {
-        font-size: 16px;
-        font-weight: 400;
-        line-height: 16px;
-        color: currentColor;
-      }
-    }
+.add_input_button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 1rem;
+  border: 1px dashed var(--blue-75BBFD);
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--blue-75BBFD);
+  background-color: transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s ease;
 
-        .form_container {
-    
-          &__block_gray_one {
-            position: relative;
-            background-color: var(--light-light-gray-EBECEE);
-            padding: 2rem 1rem 2rem 1rem;
-          }
-    
-          &__close_button {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            cursor: pointer;
-            padding: 0;
-    
-            svg {
-              display: block;
-              width: 11.5px;
-              height: 11.5px;
-            }
-          }
-    
-          &__checkbox_block {
-            color: var(--light-gray-C0C5CB);
-            font-size: 0.75rem;
-            font-family: Raleway;
-            font-style: normal;
-            font-weight: 400;
-            line-height: 1rem;
-            padding-bottom: 0.3rem;
-          }
-        }
+  &:hover {
+    color: var(--dark-blue-389FFF);
+    border-color: var(--dark-blue-389FFF);
+  }
+
+  svg {
+    width: 25px;
+    height: 24px;
+    transition: fill 0.3s ease;
+  }
+
+  .add_input_text {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 16px;
+    color: currentColor;
+  }
+}
+
+.form_container {
+
+  &__block_gray_one {
+    position: relative;
+    background-color: var(--light-light-gray-EBECEE);
+    padding: 2rem 1rem 2rem 1rem;
+  }
+
+  &__close_button {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    cursor: pointer;
+    padding: 0;
+
+    svg {
+      display: block;
+      width: 11.5px;
+      height: 11.5px;
+    }
+  }
+
+  &__checkbox_block {
+    color: var(--light-gray-C0C5CB);
+    font-size: 0.75rem;
+    font-family: Raleway;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1rem;
+    padding-bottom: 0.3rem;
+  }
+}
 
 // << ============ КОНСТРУКТОР ============ >>
 
@@ -775,11 +746,9 @@
     font-weight: 400;
     line-height: 16px;
     color: var(--salmon-FF7F6A);
-    /* 100% */
   }
 }
 
-// это просто для обводки конструктора
 .orange_color {
   border: 1px solid var(--salmon-FF7F6A);
 }
@@ -853,12 +822,6 @@
   flex-direction: column;
   gap: 32px;
   border-radius: 6px;
-  // padding: 32px 15px;
-  // background-color: var(--light-light-gray-EBECEE);
-}
-
-.imgWithDescriptionPreview {
-  /* Ваши стили для превью "Картинка с описанием" */
 }
 
 .blockContainer {
@@ -898,7 +861,6 @@
 
   &__close_button:hover {
     transform: scale(1.2);
-    /* Увеличиваем размер кнопки при наведении в 1.2 раза */
   }
 }
 
@@ -927,44 +889,42 @@
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr 1fr;
   gap: 16px;
-  // height: 25vh;
   align-items: stretch;
-  // margin-bottom: 90px;
 }
 
-.horizontalImage > div:nth-child(1) {
+.horizontalImage>div:nth-child(1) {
   grid-row: 1 / 2;
   grid-column: 1 / 2;
 }
 
-.horizontalImage > div:nth-child(1) > div > img {
+.horizontalImage>div:nth-child(1)>div>img {
   grid-column: 1/2;
   height: 15vh;
   border-radius: 1rem;
 }
 
-.horizontalImage > div:nth-child(2) {
+.horizontalImage>div:nth-child(2) {
   grid-row: 2 / 3;
   grid-column: 1 / 2;
 }
 
-.horizontalImage > div:nth-child(2) > div > img {
+.horizontalImage>div:nth-child(2)>div>img {
   grid-column: 1/2;
   height: 15vh;
   border-radius: 1rem;
 }
 
-.horizontalImage > div:nth-child(3) {
+.horizontalImage>div:nth-child(3) {
   grid-row: 1 / 3;
   grid-column: 2 / 3;
 }
 
-.horizontalImage > div:nth-child(3) > div {
+.horizontalImage>div:nth-child(3)>div {
   padding: 0;
   height: 100%;
 }
 
-.horizontalImage > div:nth-child(3) > div > img {
+.horizontalImage>div:nth-child(3)>div>img {
   height: 100%;
   display: block;
 }
@@ -1027,7 +987,7 @@
     width: 33rem;
 
     &__form {
-      height: 70vh;
+      height: 60vh;
     }
 
     &__button_block {
