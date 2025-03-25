@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialDesktopState = {
-  selectedCategory: null,
+  selectedCategories: [],
   searchValue: '',
   filteredResults: [],
   isDropdownOpen: false,
@@ -15,7 +15,7 @@ const initialState = {
   desktop: { ...initialDesktopState },
   mobile: {
     searchValue: '',
-    selectedCategory: null,
+    selectedCategories: [],
     isOverlayOpen: false,
     prevSearchValue: '',
     prevSelectedCategory: null,
@@ -27,8 +27,8 @@ const journal_categoryFiltersSlice = createSlice({
   name: 'categoryFilters',
   initialState,
   reducers: {
-    setDesktopSelectedCategory(state, action) {
-      state.desktop.selectedCategory = action.payload;
+    setDesktopSelectedCategories(state, action) {
+      state.desktop.selectedCategories = action.payload;
     },
     setDesktopSearchValue(state, action) {
       state.desktop.searchValue = action.payload;
@@ -53,12 +53,12 @@ const journal_categoryFiltersSlice = createSlice({
     },
     resetDesktopSearchState(state) {
       state.desktop = { ...initialDesktopState };
-    },  
+    },
     setMobileSearchValue(state, action) {
       state.mobile.searchValue = action.payload;
     },
-    setMobileSelectedCategory(state, action) {
-      state.mobile.selectedCategory = action.payload;
+    setMobileSelectedCategories(state, action) {
+      state.mobile.selectedCategories = action.payload;
     },
     setMobileIsOverlayOpen(state, action) {
       state.mobile.isOverlayOpen = action.payload;
@@ -76,7 +76,7 @@ const journal_categoryFiltersSlice = createSlice({
 });
 
 export const {
-  setDesktopSelectedCategory,
+  setDesktopSelectedCategories,
   setDesktopSearchValue,
   setDesktopFilteredResults,
   setDesktopIsDropdownOpen,
@@ -86,7 +86,7 @@ export const {
   setDesktopIsSearchExpanded,
   resetDesktopSearchState,
   setMobileSearchValue,
-  setMobileSelectedCategory,
+  setMobileSelectedCategories,
   setMobileIsOverlayOpen,
   setMobilePrevSearchValue,
   setMobilePrevSelectedCategory,
