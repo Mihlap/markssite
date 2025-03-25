@@ -21,6 +21,34 @@ function MobileCategoryFilters({ categoriesList }) {
     shallowEqual
   );
   const journals = useSelector((state) => state.journal.journals, shallowEqual);
+  const selectedIssueNumber = useSelector((state) => state.journal.selectedIssueNumber);
+  
+  const activeJournal = selectedCategory !== null ? selectedCategory : selectedIssueNumber;
+
+  const filteredJournals = useMemo(() => {
+    return activeJournal
+      ? journals.filter((journal) => String(journal.issue_number).padStart(3, '0') === activeJournal)
+      : journals;
+  }, [journals, activeJournal]);
+
+  const mobileFilteredResults = useMemo(() => {
+    const query = mobileInput.trim().toLowerCase();
+    if (!query) return [];
+    return filteredJournals.filter((journal) => journal.title.toLowerCase().includes(query));
+  }, [mobileInput, filteredJournals]);
+
+  useEffect(() => {
+    if (activeJournal && searchValue.trim()) {
+      const queryLower = searchValue.toLowerCase();
+      const matchExists = journals
+        .filter((journal) => String(journal.issue_number).padStart(3, '0') === activeJournal)
+        .some((journal) => journal.title.toLowerCase().includes(queryLower));
+      if (!matchExists) {
+        dispatch(setMobileSearchValue(''));
+        dispatch(setMobileInput(''));
+      }
+    }
+  }, [activeJournal, searchValue, journals, dispatch]);
 
   const [showAllCategories, setShowAllCategories] = useState(false);
   const defaultVisibleCount = 4;
@@ -36,13 +64,6 @@ function MobileCategoryFilters({ categoriesList }) {
     [showAllCategories, categoriesList]
   );
   const hiddenCount = useMemo(() => categoriesList.length - defaultVisibleCount, [categoriesList]);
-
-  const mobileFilteredResults = useMemo(() => {
-    if (selectedCategory) return [];
-    const query = mobileInput.trim().toLowerCase();
-    if (!query) return [];
-    return journals.filter((journal) => journal.title.toLowerCase().includes(query));
-  }, [mobileInput, journals, selectedCategory]);
 
   const openOverlay = useCallback(() => {
     dispatch(setMobilePrevSearchValue(searchValue));
@@ -80,7 +101,6 @@ function MobileCategoryFilters({ categoriesList }) {
         dispatch(setMobileSelectedCategory(null));
         dispatch(setMobileInput(''));
       } else {
-        dispatch(setMobileSearchValue(cat));
         dispatch(setMobileSelectedCategory(cat));
         dispatch(setMobileIsOverlayOpen(false));
       }
