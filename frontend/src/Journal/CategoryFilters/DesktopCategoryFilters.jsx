@@ -12,6 +12,7 @@ import {
   setDesktopButtonsOffset,
   resetDesktopSearchState,
 } from '../../store/Slice/journal_categoryFiltersSlice.js';
+import { setSelectedIssueNumber } from '../../store/Slice/journalSlice'; // импорт для сброса выбранного номера
 import CategoryButton from './CategoryButton';
 import styles from './CategoryFilters.module.scss';
 import { categoriesConfig } from './categories.js';
@@ -31,6 +32,7 @@ function DesktopCategoryFilters({ categoriesList }) {
     isSearchExpanded,
   } = useSelector((state) => state.categoryFilters.desktop, shallowEqual);
   const journals = useSelector((state) => state.journal.journals, shallowEqual);
+  const selectedIssueNumber = useSelector((state) => state.journal.selectedIssueNumber);
 
   const wrapperRef = useRef(null);
   const searchContainerRef = useRef(null);
@@ -40,6 +42,27 @@ function DesktopCategoryFilters({ categoriesList }) {
 
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
   const [isCategoriesExpanded, setIsCategoriesExpanded] = useState(false);
+
+  const resetDesktopSearch = useCallback(() => {
+    dispatch(resetDesktopSearchState());
+    setIsCategoriesExpanded(false);
+  }, [dispatch]);
+
+  const filteredJournals = useMemo(() => {
+    return selectedIssueNumber
+      ? journals.filter((journal) => String(journal.issue_number).padStart(3, '0') === selectedIssueNumber)
+      : journals;
+  }, [journals, selectedIssueNumber]);
+
+  useEffect(() => {
+    if (selectedIssueNumber && searchValue.trim()) {
+      const queryLower = searchValue.toLowerCase();
+      const matchExists = filteredJournals.some((journal) => journal.title.toLowerCase().includes(queryLower));
+      if (!matchExists) {
+        resetDesktopSearch();
+      }
+    }
+  }, [selectedIssueNumber, searchValue, filteredJournals, resetDesktopSearch]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -56,16 +79,22 @@ function DesktopCategoryFilters({ categoriesList }) {
     };
   }, []);
 
-  const resetDesktopSearch = useCallback(() => {
-    dispatch(resetDesktopSearchState());
-    setIsCategoriesExpanded(false);
-  }, [dispatch]);
+  useEffect(() => {
+    if (selectedIssueNumber && searchValue.trim()) {
+      const queryLower = searchValue.toLowerCase();
+      const matchExists = filteredJournals.some((journal) => journal.title.toLowerCase().includes(queryLower));
+
+      if (!matchExists) {
+        resetDesktopSearch();
+      }
+    }
+  }, [selectedIssueNumber, searchValue, filteredJournals, resetDesktopSearch]);
 
   const handleCategoryClick = useCallback(
     (cat) => {
       if (selectedCategory === cat) {
         resetDesktopSearch();
-      } else {        
+      } else {
         dispatch(setDesktopSearchValue(''));
         dispatch(setDesktopFilteredResults([]));
         dispatch(setDesktopIsDropdownOpen(false));
@@ -108,14 +137,16 @@ function DesktopCategoryFilters({ categoriesList }) {
 
   useEffect(() => {
     if (searchValue.trim() && !isManualSelection) {
-      const matches = journals.filter((journal) => journal.title.toLowerCase().includes(searchValue.toLowerCase()));
+      const matches = filteredJournals.filter((journal) =>
+        journal.title.toLowerCase().includes(searchValue.toLowerCase())
+      );
       dispatch(setDesktopFilteredResults(matches));
       dispatch(setDesktopIsDropdownOpen(matches.length > 0));
     } else {
       dispatch(setDesktopFilteredResults([]));
       dispatch(setDesktopIsDropdownOpen(false));
     }
-  }, [dispatch, searchValue, journals, isManualSelection]);
+  }, [dispatch, searchValue, filteredJournals, isManualSelection]);
 
   const highlightMatches = useCallback((text, query) => {
     if (!query.trim()) return text;
@@ -143,7 +174,7 @@ function DesktopCategoryFilters({ categoriesList }) {
     },
     [dispatch, windowWidth]
   );
-  
+
   const updateDropdownPosition = useCallback(() => {
     if (searchContainerRef.current) {
       const rect = searchContainerRef.current.getBoundingClientRect();
