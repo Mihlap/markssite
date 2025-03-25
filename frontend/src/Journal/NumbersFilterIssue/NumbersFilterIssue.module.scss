@@ -20,7 +20,7 @@
   padding: 1.5rem 2rem;
   align-items: center;
   gap: 1rem;
-  background: #F6F6F6;
+  background: var(--white-F6F6F6);
   white-space: nowrap;
 }
 
@@ -38,20 +38,17 @@
   white-space: nowrap;
   transition: background-color 0.3s ease, color 0.3s ease, fill 0.3s ease;
 
-  &:hover {
-    background-color: #f0f0f0;
-  }
 
   &.active {
-    background: #1D2E43;
+    background: var(--black-1D2E43);
 
     .issueText {
       background: #ffffff;
-      color: #1D2E43;
+      color: var(--black-1D2E43);
     }
 
     .issueSvg {
-      fill: #1D2E43;
+      fill: var(--black-1D2E43);
     }
 
     .marksText {
@@ -59,14 +56,14 @@
     }
 
     &:hover {
-      background-color: darken(#1D2E43, 10%);
+      background-color: var(--dark-gray-566272);
     }
   }
 
   .issueSvg {
     width: 51px;
     height: 15px;
-    fill: #F6F6F6;
+    fill: var(--white-F6F6F6);
     transition: fill 0.3s ease;
   }
 
@@ -74,21 +71,33 @@
     font-family: var(--font-raleway);
     font-size: 1.3rem;
     font-weight: var(--fw-700);
-    color: #F6F6F6;
-    background: #1D2E43;
+    color: var(--white-F6F6F6);
+    background: var(--black-1D2E43);
     padding: 0.45rem 0.62rem;
     border-radius: 7.6875rem;
     white-space: nowrap;
     transition: background-color 0.3s ease, color 0.3s ease;
+
+    &:hover {
+      background-color: var(--dark-gray-566272);
+    }
   }
 
   .marksText {
     font-family: var(--font-raleway);
     font-size: 1rem;
     font-weight: var(--fw-700);
-    color: #1D2E43;
+    color: var(--black-1D2E43);
     white-space: nowrap;
     transition: color 0.3s ease;
+  }
+}
+
+.issueButton.active {
+  .issueText {
+    &:hover {
+      background-color: #ffffff;
+    }
   }
 }
 
@@ -96,17 +105,60 @@
 @media screen and (min-width: 768px) and (max-width: 1024px) {
 
   .numbersFilterIssue {
-      padding: 0rem 3.22vw;    
-    }
+    padding: 0rem 3.22vw;
+  }
+
+  .issueButton {
+    cursor: none;
+  }
+
 }
 
 @media screen and (max-width: 768px) {
   .numbersFilterIssue {
-      padding: 0rem 1rem;
-    }
+    padding: 0rem 1rem;
+  }
+
+  .issueButton {
+    cursor: none;
+  }
+
 }
 
+// отключение ховера на адаптивных экранах
+@media screen and (max-width: 1024px) {
 
+  .issueButton:not(.active):hover {
+    background: #ffffff;
+  }
 
+  .issueButton:not(.active):hover .issueText {
+    background: var(--black-1D2E43);
+    color: var(--white-F6F6F6);
+  }
 
+  .issueButton:not(.active):hover .issueSvg {
+    fill: var(--white-F6F6F6);
+  }
 
+  .issueButton:not(.active):hover .marksText {
+    color: var(--black-1D2E43);
+  }
+
+  .issueButton.active:hover {
+    background: var(--black-1D2E43);
+  }
+
+  .issueButton.active:hover .issueText {
+    background: #ffffff;
+    color: var(--black-1D2E43);
+  }
+
+  .issueButton.active:hover .issueSvg {
+    fill: var(--black-1D2E43);
+  }
+
+  .issueButton.active:hover .marksText {
+    color: #ffffff;
+  }
+}
