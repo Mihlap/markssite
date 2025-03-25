@@ -1,0 +1,92 @@
+@import '../../../src/App.css';
+@import '../../../src/variables';
+
+.journal-card {
+  display: flex;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-bottom: 1rem;
+}
+
+.journal-card__left {
+  width: 30%;
+  background-color: #f8f8f8;
+  padding: 1rem;
+}
+
+
+@media (max-width: 1024px) {
+  .journal-card__left {
+    display: none;
+  }
+}
+
+.journal-card__authors-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+
+.journal-card__author-img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+
+.journal-card__right {
+  flex: 1;
+  padding: 1rem;
+}
+
+.journal-card__tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.journal-card__tab-btn {
+  padding: 0.5rem 1rem;
+  background-color: #e6e6e6;
+  border: none;
+  cursor: pointer;
+  border-radius: 4px;
+  font-weight: 500;
+  transition: background-color 0.2s;
+}
+
+.journal-card__tab-btn:hover {
+  background-color: #ccc;
+}
+
+.journal-card__tab-btn.active {
+  background-color: #007bff;
+  color: #fff;
+}
+
+
+.journal-card__content {
+  border: 1px solid #ddd;
+  padding: 1rem;
+  border-radius: 4px;
+}
+
+.journal-card__title {
+  margin: 0 0 0.5rem 0;
+}
+
+.journal-card__info {
+  font-size: 0.9rem;
+  color: #555;
+  line-height: 1.4;
+}
+
+.journal-card__annotation,
+.journal-card__content-section {
+  white-space: pre-line;
+  font-size: 0.95rem;
+  line-height: 1.4;
+  color: #333;
+}

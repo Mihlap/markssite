@@ -2,7 +2,7 @@ import { useEffect, useCallback, useRef, memo, useState, useMemo } from 'react';
 import ReactDOM from 'react-dom';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import {
-  setDesktopSelectedCategory,
+  setDesktopSelectedCategories,
   setDesktopSearchValue,
   setDesktopFilteredResults,
   setDesktopIsDropdownOpen,
@@ -12,7 +12,6 @@ import {
   setDesktopButtonsOffset,
   resetDesktopSearchState,
 } from '../../store/Slice/journal_categoryFiltersSlice.js';
-import { setSelectedIssueNumber } from '../../store/Slice/journalSlice'; // импорт для сброса выбранного номера
 import CategoryButton from './CategoryButton';
 import styles from './CategoryFilters.module.scss';
 import { categoriesConfig } from './categories.js';
@@ -22,7 +21,7 @@ import { ReactComponent as CloseIcon } from '../icons/close.svg';
 function DesktopCategoryFilters({ categoriesList }) {
   const dispatch = useDispatch();
   const {
-    selectedCategory,
+    selectedCategories,
     searchValue,
     filteredResults,
     isDropdownOpen,
@@ -90,28 +89,30 @@ function DesktopCategoryFilters({ categoriesList }) {
     }
   }, [selectedIssueNumber, searchValue, filteredJournals, resetDesktopSearch]);
 
-  const handleCategoryClick = useCallback(
-    (cat) => {
-      if (selectedCategory === cat) {
-        resetDesktopSearch();
-      } else {
-        dispatch(setDesktopSearchValue(''));
-        dispatch(setDesktopFilteredResults([]));
-        dispatch(setDesktopIsDropdownOpen(false));
-        dispatch(setDesktopIsManualSelection(false));
-        if (windowWidth >= 1025 && windowWidth <= 1600) {
-          dispatch(setDesktopIsSearchExpanded(false));
-        }
-        dispatch(setDesktopSelectedCategory(cat));
-        setIsCategoriesExpanded(true);
-      }
-    },
-    [dispatch, selectedCategory, resetDesktopSearch, windowWidth]
-  );
+const handleCategoryClick = useCallback(
+  (cat) => {
+    let newSelected;
+    if (selectedCategories.includes(cat)) {
+      newSelected = selectedCategories.filter((c) => c !== cat);
+    } else {
+      newSelected = [...selectedCategories, cat];
+    }
+    dispatch(setDesktopSelectedCategories(newSelected));
+    dispatch(setDesktopSearchValue(''));
+    dispatch(setDesktopFilteredResults([]));
+    dispatch(setDesktopIsDropdownOpen(false));
+    dispatch(setDesktopIsManualSelection(false));
+    if (windowWidth >= 1025 && windowWidth <= 1600) {
+      dispatch(setDesktopIsSearchExpanded(false));
+    }
+    setIsCategoriesExpanded(true);
+  },
+  [dispatch, selectedCategories, windowWidth]
+);
 
   const handleSearchChange = useCallback(
     (e) => {
-      dispatch(setDesktopSelectedCategory(null));
+      dispatch(setDesktopSelectedCategories([]));
       dispatch(setDesktopSearchValue(e.target.value));
       dispatch(setDesktopIsManualSelection(false));
     },
@@ -258,7 +259,7 @@ function DesktopCategoryFilters({ categoriesList }) {
                   count={count}
                   color={color}
                   icon={icon}
-                  isActive={selectedCategory === cat}
+                  isActive={Array.isArray(selectedCategories) && selectedCategories.includes(cat)}
                   onClick={() => handleCategoryClick(cat)}
                 />
               );
