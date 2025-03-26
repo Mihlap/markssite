@@ -1,6 +1,5 @@
-// src/components/JournalCard/JournalCard.jsx
 import React, { useState } from 'react';
-import styles from './JournalCard.module.scss'; // Если используете CSS-модули
+import styles from './JournalCard.module.scss';
 
 const TABS = {
   ARTICLE: 'Статья',
@@ -10,10 +9,8 @@ const TABS = {
 
 function JournalCard({ journal }) {
   const [activeTab, setActiveTab] = useState(TABS.ARTICLE);
-
-  // Список авторов
+ 
   const authors = journal?.authors || [];
-  // Ограничиваемся 6 авторами
   const authorsToDisplay = authors.slice(0, 6);
 
   const handleTabClick = (tab) => {
@@ -21,13 +18,10 @@ function JournalCard({ journal }) {
   };
 
   return (
-    <div className={styles.journalCard}>
-      {/* Левая часть: показываем только на >= 1025px (управляем через CSS) */}
+    <div className={styles.journalCard}>    
       <div className={styles.journalCard__left}>
         <div className={styles.journalCard__authorsGrid}>
-          {authorsToDisplay.map((author, index) => {
-            // Если у автора нет фото, вы можете подставить плейсхолдер (например, котика)
-            // const imageUrl = author.image || catPlaceholder;
+          {authorsToDisplay.map((author, index) => {           
             const imageUrl = author.image || '';
             return (
               <img
