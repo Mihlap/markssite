@@ -83,7 +83,7 @@ app.use((req, res, next) => {
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 минут
-  max: 100, // максимум 100 запросов с одного IP за 15 минут
+  max: 1000, // максимум 1000 запросов с одного IP за 15 минут
   message: 'Слишком много запросов с этого IP, попробуйте позже',
   standardHeaders: true,
   legacyHeaders: false,
