@@ -1,7 +1,6 @@
+// src/components/JournalCard/JournalCard.jsx
 import React, { useState } from 'react';
-// import catPlaceholder from './catPlaceholder.png';
-import styles from './JournalCard.module.scss';
-
+import styles from './JournalCard.module.scss'; // Если используете CSS-модули
 
 const TABS = {
   ARTICLE: 'Статья',
@@ -11,57 +10,63 @@ const TABS = {
 
 function JournalCard({ journal }) {
   const [activeTab, setActiveTab] = useState(TABS.ARTICLE);
- const authors = journal?.authors || [];
+
+  // Список авторов
+  const authors = journal?.authors || [];
+  // Ограничиваемся 6 авторами
   const authorsToDisplay = authors.slice(0, 6);
 
-   const handleTabClick = (tab) => {
+  const handleTabClick = (tab) => {
     setActiveTab(tab);
   };
 
   return (
-    <div className={styles.journal_card}>    
-      <div className="journal-card__left">
-        <div className="journal-card__authors-grid">
+    <div className={styles.journalCard}>
+      {/* Левая часть: показываем только на >= 1025px (управляем через CSS) */}
+      <div className={styles.journalCard__left}>
+        <div className={styles.journalCard__authorsGrid}>
           {authorsToDisplay.map((author, index) => {
-            const imageUrl = author.image; // Если у автора нет фото, показываем котика
+            // Если у автора нет фото, вы можете подставить плейсхолдер (например, котика)
+            // const imageUrl = author.image || catPlaceholder;
+            const imageUrl = author.image || '';
             return (
-              <img key={index} src={imageUrl} alt={`Автор ${author.name || ''}`} className="journal-card__author-img" />
+              <img
+                key={index}
+                src={imageUrl}
+                alt={`Автор ${author.name || ''}`}
+                className={styles.journalCard__authorImg}
+              />
             );
           })}
         </div>
       </div>
 
-      {/* Правая часть: видна всегда, независимо от ширины экрана */}
-      <div className="journal-card__right">
-        <div className="journal-card__tabs">
+      {/* Правая часть: видна на всех экранах */}
+      <div className={styles.journalCard__right}>
+        <div className={styles.journalCard__tabs}>
           <button
-            className={`journal-card__tab-btn ${activeTab === TABS.ARTICLE ? 'active' : ''}`}
+            className={`${styles.journalCard__tabBtn} ${activeTab === TABS.ARTICLE ? styles.active : ''}`}
             onClick={() => handleTabClick(TABS.ARTICLE)}>
             Статья
           </button>
           <button
-            className={`journal-card__tab-btn ${activeTab === TABS.ANNOTATION ? 'active' : ''}`}
+            className={`${styles.journalCard__tabBtn} ${activeTab === TABS.ANNOTATION ? styles.active : ''}`}
             onClick={() => handleTabClick(TABS.ANNOTATION)}>
             Аннотация
           </button>
           <button
-            className={`journal-card__tab-btn ${activeTab === TABS.CONTENT ? 'active' : ''}`}
+            className={`${styles.journalCard__tabBtn} ${activeTab === TABS.CONTENT ? styles.active : ''}`}
             onClick={() => handleTabClick(TABS.CONTENT)}>
             Содержание
           </button>
         </div>
 
-        <div className="journal-card__content">
+        <div className={styles.journalCard__content}>
           {/* Вкладка «Статья» */}
           {activeTab === TABS.ARTICLE && (
             <>
-              <h3 className="journal-card__title">{journal.title}</h3>
-              <div className="journal-card__info">
-                {/* 
-                  Пример вывода организаций, локаций и даты (адаптируйте под свою структуру).
-                  Допустим, journal.organizations — это массив объектов { name: '...' } или { value: '...' },
-                  а journal.locations — массив { name: '...' } или { value: '...' }.
-                */}
+              <h3 className={styles.journalCard__title}>{journal.title}</h3>
+              <div className={styles.journalCard__info}>
                 <p>
                   {journal.organizations?.map((org) => org.value || org.name).join(', ')};{' '}
                   {journal.locations?.map((loc) => loc.value || loc.name).join(', ')}
@@ -73,18 +78,12 @@ function JournalCard({ journal }) {
 
           {/* Вкладка «Аннотация» */}
           {activeTab === TABS.ANNOTATION && (
-            <div className="journal-card__annotation">
-              {/* Предположим, аннотация приходит в journal.annotation */}
-              {journal.annotation ? journal.annotation : 'Текст аннотации...'}
-            </div>
+            <div className={styles.journalCard__annotation}>{journal.annotation || 'Текст аннотации...'}</div>
           )}
 
           {/* Вкладка «Содержание» */}
           {activeTab === TABS.CONTENT && (
-            <div className="journal-card__content-section">
-              {/* Предположим, содержание приходит в journal.content */}
-              {journal.content ? journal.content : 'Текст содержания...'}
-            </div>
+            <div className={styles.journalCard__contentSection}>{journal.content || 'Текст содержания...'}</div>
           )}
         </div>
       </div>
