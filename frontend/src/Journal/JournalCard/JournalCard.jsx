@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import styles from './JournalCard.module.scss';
 
 import butt1 from '../icons/butt11.svg';
@@ -27,29 +27,22 @@ const TAB_COLOR_SETS = [
 
 const catImages = [cat1, cat2, cat3, cat4, cat5, cat6];
 
-// Функция, чтобы вернуть цвет текста для кнопки (если фон белый, делаем текст #1D2E43, иначе #FFFFFF)
 const getButtonTextColor = (bgColor) => {
   return bgColor === '#FFFFFF' ? '#1D2E43' : '#FFFFFF';
 };
 
 function JournalCard({ journal, index }) {
   const [activeTab, setActiveTab] = useState(TABS.ARTICLE);
-
-  // Получаем список авторов (не больше 6)
   const authors = journal?.authors || [];
   const authorsToDisplay = authors.slice(0, 6);
 
-  // Из массива цветов достаём по три цвета: для «Статьи», «Аннотации» и «Содержания»
   const [articleColor, annotationColor, contentColor] = TAB_COLOR_SETS[index % TAB_COLOR_SETS.length];
 
-  // Текущий цвет «обложки» (левой части) в зависимости от активного таба
   const currentCardColor =
     activeTab === TABS.ARTICLE ? articleColor : activeTab === TABS.ANNOTATION ? annotationColor : contentColor;
-
-  // Проверяем, «светлый» ли цвет (например, чтобы определить обратные стили для обложки)
+  
   const isInverted = currentCardColor === '#75BBFD';
 
-  // Класс для сетки авторов (разное количество авторов = разное расположение)
   let authorsCountClass = '';
   if (authorsToDisplay.length <= 3) {
     authorsCountClass =
@@ -64,7 +57,6 @@ function JournalCard({ journal, index }) {
 
   const getRandomCat = () => catImages[Math.floor(Math.random() * catImages.length)];
 
-  // Для переключения визуальных стилей вкладок (если нужно)
   const activeTabClass =
     activeTab === TABS.ARTICLE
       ? styles.activeTab1
@@ -74,7 +66,6 @@ function JournalCard({ journal, index }) {
 
   return (
     <div className={styles.journalCard}>
-      {/* Левая часть (обложка) */}
       <div className={styles.journalCard__left} style={{ backgroundColor: currentCardColor }}>
         <div className={`${styles.journalCard__authorsGrid} ${authorsCountClass}`}>
           {authorsToDisplay.map((author, idx) => {
@@ -102,9 +93,7 @@ function JournalCard({ journal, index }) {
         </div>
       </div>
 
-      {/* Правая часть (контент карточки) */}
       <div className={styles.journalCard__right}>
-        {/* Блок вкладок (кнопок) */}
         <div className={`${styles.journalCard__tabs} ${activeTabClass}`}>
           <button
             className={`${styles.journalCard__tabBtn} ${styles.tabBtn1} ${
@@ -117,7 +106,7 @@ function JournalCard({ journal, index }) {
               backgroundColor: articleColor,
               color: getButtonTextColor(articleColor),
             }}>
-            Статья
+            <span className={styles.tabText}>Статья</span>
           </button>
 
           <button
@@ -149,7 +138,6 @@ function JournalCard({ journal, index }) {
           </button>
         </div>
 
-        {/* Контент активной вкладки */}
         <div className={styles.journalCard__content} style={{ backgroundColor: currentCardColor }}>
           {activeTab === TABS.ARTICLE && (
             <>
