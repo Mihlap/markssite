@@ -78,37 +78,26 @@ function DesktopCategoryFilters({ categoriesList }) {
     };
   }, []);
 
-  useEffect(() => {
-    if (selectedIssueNumber && searchValue.trim()) {
-      const queryLower = searchValue.toLowerCase();
-      const matchExists = filteredJournals.some((journal) => journal.title.toLowerCase().includes(queryLower));
-
-      if (!matchExists) {
-        resetDesktopSearch();
+  const handleCategoryClick = useCallback(
+    (cat) => {
+      let newSelected;
+      if (selectedCategories.includes(cat)) {
+        newSelected = selectedCategories.filter((c) => c !== cat);
+      } else {
+        newSelected = [...selectedCategories, cat];
       }
-    }
-  }, [selectedIssueNumber, searchValue, filteredJournals, resetDesktopSearch]);
-
-const handleCategoryClick = useCallback(
-  (cat) => {
-    let newSelected;
-    if (selectedCategories.includes(cat)) {
-      newSelected = selectedCategories.filter((c) => c !== cat);
-    } else {
-      newSelected = [...selectedCategories, cat];
-    }
-    dispatch(setDesktopSelectedCategories(newSelected));
-    dispatch(setDesktopSearchValue(''));
-    dispatch(setDesktopFilteredResults([]));
-    dispatch(setDesktopIsDropdownOpen(false));
-    dispatch(setDesktopIsManualSelection(false));
-    if (windowWidth >= 1025 && windowWidth <= 1600) {
-      dispatch(setDesktopIsSearchExpanded(false));
-    }
-    setIsCategoriesExpanded(true);
-  },
-  [dispatch, selectedCategories, windowWidth]
-);
+      dispatch(setDesktopSelectedCategories(newSelected));
+      dispatch(setDesktopSearchValue(''));
+      dispatch(setDesktopFilteredResults([]));
+      dispatch(setDesktopIsDropdownOpen(false));
+      dispatch(setDesktopIsManualSelection(false));
+      if (windowWidth >= 1025 && windowWidth <= 1600) {
+        dispatch(setDesktopIsSearchExpanded(false));
+      }
+      setIsCategoriesExpanded(true);
+    },
+    [dispatch, selectedCategories, windowWidth]
+  );
 
   const handleSearchChange = useCallback(
     (e) => {

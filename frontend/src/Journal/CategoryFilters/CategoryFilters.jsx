@@ -1,6 +1,5 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchJournals } from '../../store/Slice/journalSlice';
+import { useSelector } from 'react-redux';
 import DesktopCategoryFilters from './DesktopCategoryFilters';
 import MobileCategoryFilters from './MobileCategoryFilters';
 
@@ -13,17 +12,11 @@ function useWindowWidth() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  return width;
-}
+  return width;}
 
 function CategoryFilters() {
-  const dispatch = useDispatch();
   const windowWidth = useWindowWidth();
-  const journals = useSelector((state) => state.journal.journals);
-
-  useEffect(() => {
-    dispatch(fetchJournals());
-  }, [dispatch]);
+  const journals = useSelector((state) => state.journal.journals); 
 
   const categoriesList = useMemo(() => {
     if (!journals.length) return [];
