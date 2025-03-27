@@ -62,7 +62,7 @@ function NumbersFilterIssue() {
     if (selectedIssueNumber === issue) {
       dispatch(setSelectedIssueNumber(null));
     } else {
-      dispatch(setSelectedIssueNumber(issue));  
+      dispatch(setSelectedIssueNumber(issue));
     }
   };
 
