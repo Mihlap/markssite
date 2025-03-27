@@ -177,6 +177,13 @@
     color: #1d2e43;
   }
 
+    .tabText {
+      display: block;
+      width: 100%;
+      text-align: center;
+      margin-right: 4rem;  
+    }
+
   &__content {
     display: flex;
     padding: 1rem;
