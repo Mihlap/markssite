@@ -13,7 +13,7 @@
   align-items: center;
   gap: 1rem;
   padding: 1rem 1rem;
-  background-color: #FFF;
+  background-color: var(--originWhite-FFFFFF);
   border-radius: 1.5rem;
   overflow: hidden;
   width: 100%;
@@ -142,7 +142,7 @@
   top: calc(100% + 2px);
   left: 0;
   right: 0;
-  background-color: #fff;
+  background-color: var(--originWhite-FFFFFF);
   z-index: 999;
   max-height: 200px;
   overflow-y: auto;
@@ -177,10 +177,10 @@
 @media screen and (min-width: 1025px) and (max-width: 1600px) {
 
   .categoryButtonsExpanded {
-      display: flex;
-      flex-wrap: nowrap;
-      gap: 1rem;
-    }
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 1rem;
+  }
 
   .searchContainer.collapsed {
     width: 3rem;
@@ -191,7 +191,7 @@
     background: var(--light-light-gray-EDEDED);
     margin-left: auto;
     transform-origin: right center;
-    display: flex;    
+    display: flex;
     align-items: center;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -255,7 +255,7 @@
     max-width: 100%;
     min-width: unset;
     padding: 0.875rem 1.5rem;
-    background: #FFF;
+    background: var(--originWhite-FFFFFF);
     border-radius: 2rem;
     cursor: none;
   }
@@ -264,6 +264,10 @@
     color: var(--gray-959DA6);
     font-weight: var(--fw-400);
     caret-color: var(--blue-75BBFD);
+  }
+
+  .filledBorder {
+    border: 1px solid var(--blue-75BBFD);
   }
 
   .highlight {
@@ -410,7 +414,7 @@
     min-width: unset;
     padding: 0.875rem 1.5rem;
     border-radius: 2rem;
-    background: #FFF;
+    background: var(--originWhite-FFFFFF);
     cursor: none;
   }
 
@@ -418,6 +422,10 @@
     color: var(--gray-959DA6);
     font-weight: var(--fw-400);
     caret-color: var(--blue-75BBFD);
+  }
+
+  .filledBorder {
+    border: 1px solid var(--blue-75BBFD);
   }
 
   .highlight {
@@ -500,7 +508,7 @@
     padding: 1rem 0;
     font-size: 1rem;
     border-bottom: 1px solid var(--light-light-gray-EBECEE);
-    white-space: nowrap;   
+    white-space: nowrap;
     text-overflow: ellipsis;
     width: 100%;
     overflow-y: auto;
