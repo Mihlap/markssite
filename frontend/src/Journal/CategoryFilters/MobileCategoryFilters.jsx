@@ -145,7 +145,8 @@ function MobileCategoryFilters({ categoriesList }) {
 
   return (
     <div className={styles.categoryFilters}>
-      <div className={styles.searchContainer} onClick={openOverlay}>
+      <div className={`${styles.searchContainer} ${searchValue ? styles.filledBorder : ''}`}
+       onClick={openOverlay}>
         <SearchIcon className={styles.searchIcon} />
         <input className={styles.searchInput} type="text" placeholder="Поиск" value={searchValue} readOnly />
         {searchValue && !isOverlayOpen && (
