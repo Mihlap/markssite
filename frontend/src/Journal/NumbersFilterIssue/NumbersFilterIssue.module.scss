@@ -32,7 +32,7 @@
   justify-content: center;
   align-items: center;
   gap: 0.5rem;
-  background: #ffffff;
+  background: var(--originWhite-FFFFFF);
   border-radius: 1.5rem;
   cursor: pointer;
   white-space: nowrap;
@@ -43,7 +43,7 @@
     background: var(--black-1D2E43);
 
     .issueText {
-      background: #ffffff;
+      background: var(--originWhite-FFFFFF);
       color: var(--black-1D2E43);
     }
 
@@ -52,7 +52,7 @@
     }
 
     .marksText {
-      color: #ffffff;
+      color: var(--originWhite-FFFFFF);
     }
 
     &:hover {
@@ -96,7 +96,7 @@
 .issueButton.active {
   .issueText {
     &:hover {
-      background-color: #ffffff;
+      background-color: var(--originWhite-FFFFFF);
     }
   }
 }
@@ -129,7 +129,7 @@
 @media screen and (max-width: 1024px) {
 
   .issueButton:not(.active):hover {
-    background: #ffffff;
+    background: var(--originWhite-FFFFFF);
   }
 
   .issueButton:not(.active):hover .issueText {
@@ -150,7 +150,7 @@
   }
 
   .issueButton.active:hover .issueText {
-    background: #ffffff;
+    background: var(--originWhite-FFFFFF);
     color: var(--black-1D2E43);
   }
 
@@ -159,6 +159,6 @@
   }
 
   .issueButton.active:hover .marksText {
-    color: #ffffff;
+    color: var(--originWhite-FFFFFF);
   }
 }
