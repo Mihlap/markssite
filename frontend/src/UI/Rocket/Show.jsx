@@ -60,17 +60,7 @@ const Show = React.memo(() => {
     if (RotationRef.current) {
       RotationRef.current.rotation.z += rotationSpeed * delta * 60;
     }
-  });
-
-
-  useFrame((state, delta) => {
-    const targetSpeed = hovered ? 0.12 : 0.01;
-    setRotationSpeed((prev) => lerp(prev, targetSpeed, 0.01));
-    if (RotationRef.current) {
-      RotationRef.current.rotation.z += rotationSpeed * delta * 60;
-    }
   });  
-  
 
   return (
     <group rotation={[-0.5, -0.95, 0]} position={[posX, -5.5, 16]}>
