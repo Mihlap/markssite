@@ -103,7 +103,7 @@
 
   &__tabBtn {
     position: relative;
-    display: flex;   
+    display: flex;
     align-items: center;
     justify-content: center;
     width: 19.95rem;
@@ -164,54 +164,84 @@
     }
   }
 
-.tabBtn1 {
+  .tabBtn1 {
     text-align: center;
     justify-content: center;
   }
 
-  .tabBtn2 {
-   
-  }
+  .tabBtn2 {}
 
   .tabBtn3 {
     color: var(--black-1D2E43);
   }
 
-    .tabText {
-      display: block;
-      width: 100%;
-      text-align: center;
-      margin-right: 4rem;  
-    }
+  .tabText {
+    display: block;
+    width: 100%;
+    text-align: center;
+    margin-right: 4rem;
+  }
 
   &__content {
     display: flex;
+    flex-direction: column;
     padding: 1rem;
     border-radius: 0 2rem 2rem 2rem;
     height: 19.625rem;
     color: var(--originWhite-FFFFFF);
-    align-items: center;
     justify-content: center;
   }
 
   &__title {
-    margin: 0 0 0.5rem 0;
     color: var(--originWhite-FFFFFF);
+    font-family: var(--font-unbounded);
+    font-size: 2rem;
+    font-style: normal;
+    font-weight: var(--fw-300);
+    line-height: 2.5rem;
+
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 4;
+    line-clamp: 4;
+    overflow: hidden;
+    text-overflow: ellipsis
   }
 
-  &__info {
-    font-size: 0.9rem;
+  &__subtitle {
+    margin-top: 1.5rem;
     color: var(--originWhite-FFFFFF);
-    line-height: 1.4;
-  }
+    font-family: var(--font-raleway);
+    font-size: 0.875rem;
+    font-style: normal;
+    font-weight: var(--fw-700);
+    line-height: 1.25rem;
 
-  &__annotation,
-  &__contentSection {
-    white-space: pre-line;
-    font-size: 0.95rem;
-    line-height: 1.4;
-    color: #333;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    line-clamp: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+
+    .subtitle__location,
+    .subtitle__date {
+      white-space: nowrap;
+    }
   }
+}
+
+.annotationContainer {
+  /* Общие стили для области аннотации */
+  color: var(--white-F6F6F6, #F6F6F6);
+  font-variant-numeric: lining-nums proportional-nums;
+  font-family: Raleway, sans-serif;
+  font-size: 1.125rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.625rem;
+  max-height: auto;
+  overflow-y: auto;
 }
 
 .journalCard__authorWrapper {
