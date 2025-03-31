@@ -15,6 +15,7 @@ import {
 
 import { PublicationContainer, PublicationIndicator } from '../../../add-project/formAdd/utils/CustomSelectComponents';
 import { categoryOptions } from '../utils/journalCategoryOptions';
+import { wrapAnnotationAndKeywords } from '../utils/markdownTransform';
 import styles from '../../../../Add/add-project/formAdd/FormAddProject.module.scss';
 
 export default function FormEditJournal({ editJournalData, setIsModalOpen }) {
@@ -141,7 +142,10 @@ export default function FormEditJournal({ editJournalData, setIsModalOpen }) {
         formDataToSend.append('issue_number', formData.issue_number || null);
         formDataToSend.append('organizations', JSON.stringify(formData.blocks.filter((b) => b.type === 'university')));
         formDataToSend.append('locations', JSON.stringify(formData.blocks.filter((b) => b.type === 'location')));
-        formDataToSend.append('markdown_content', formData.markdown_content || null);
+
+        const transformedMarkdown = wrapAnnotationAndKeywords(formData.markdown_content || '');
+        formDataToSend.append('markdown_content', transformedMarkdown);
+
         formDataToSend.append('imageKey', formData.imageKey || 'one');
 
         const sanitizedAuthors = formData.authors.map((author) => ({
