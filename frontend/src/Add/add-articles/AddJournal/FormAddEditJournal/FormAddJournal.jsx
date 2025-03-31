@@ -15,6 +15,7 @@ import { createJournal } from '../../../../store/Slice/journalSlice';
 import styles from '../../../../Add/add-project/formAdd/FormAddProject.module.scss';
 import { PublicationContainer, PublicationIndicator } from '../../../add-project/formAdd/utils/CustomSelectComponents';
 import { categoryOptions } from '../utils/journalCategoryOptions';
+import { wrapAnnotationAndKeywords } from '../utils/markdownTransform';
 
 export default function FormAddJournal({ setIsModalOpen }) {
   const dispatch = useDispatch();
@@ -90,7 +91,9 @@ export default function FormAddJournal({ setIsModalOpen }) {
         formDataToSend.append('organizations', JSON.stringify(blocks.filter((block) => block.type === 'university')));
         formDataToSend.append('locations', JSON.stringify(blocks.filter((block) => block.type === 'location')));
         formDataToSend.append('imageKey', imageKey || null);
-        formDataToSend.append('markdown_content', markdown_content ?? '');
+        
+        const transformedMarkdown = wrapAnnotationAndKeywords(markdown_content ?? '');
+        formDataToSend.append('markdown_content', transformedMarkdown);
 
         Object.entries(authors).forEach(([authorId, author]) => {
           if (author.image) {

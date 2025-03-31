@@ -11,6 +11,7 @@ import cat3 from '../icons/cat3.svg';
 import cat4 from '../icons/cat4.svg';
 import cat5 from '../icons/cat5.svg';
 import cat6 from '../icons/cat6.svg';
+import AnnotationContent from './AnnotationContent';
 
 const TABS = {
   ARTICLE: 'Статья',
@@ -141,19 +142,23 @@ function JournalCard({ journal, index }) {
         <div className={styles.journalCard__content} style={{ backgroundColor: currentCardColor }}>
           {activeTab === TABS.ARTICLE && (
             <>
-              <h3 className={styles.journalCard__title}>{journal.title}</h3>
-              <div className={styles.journalCard__info}>
-                <p>
-                  {journal.organizations?.map((org) => org.value || org.name).join(', ')};{' '}
-                  {journal.locations?.map((loc) => loc.value || loc.name).join(', ')}
-                </p>
-                <p>{journal.publication_date}</p>
-              </div>
+              <div className={styles.journalCard__title}>{journal.title}</div>
+              <p className={styles.journalCard__subtitle}>
+                <span className={styles.subtitle__org}>
+                  {journal.organizations?.[0]?.value || journal.organizations?.[0]?.name}
+                </span>
+                {journal.organizations?.[0] && (journal.locations?.[0] || journal.publication_date) && ' • '}
+                <span className={styles.subtitle__location}>
+                  {journal.locations?.[0]?.value || journal.locations?.[0]?.name}
+                </span>
+                {(journal.locations?.[0] || journal.organizations?.[0]) && journal.publication_date && ' • '}
+                <span className={styles.subtitle__date}>{journal.publication_date}</span>
+              </p>
             </>
           )}
 
           {activeTab === TABS.ANNOTATION && (
-            <div className={styles.journalCard__annotation}>{journal.annotation || 'Текст аннотации...'}</div>
+            <AnnotationContent markdown={journal.markdown_content || 'Текст аннотации...'} />
           )}
 
           {activeTab === TABS.CONTENT && (
