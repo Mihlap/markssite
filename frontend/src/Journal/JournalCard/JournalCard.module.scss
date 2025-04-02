@@ -9,7 +9,7 @@
   align-items: center;
   justify-content: center;
   cursor: pointer;
-
+ 
   &__left {
     position: relative;
     display: flex;
@@ -39,20 +39,21 @@
   &__authorsGrid {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: center;    
 
     &1 {
       .journalCard__authorWrapper {
         width: 15rem;
         height: 15rem;
         margin-left: 0;
-      }
+       }      
+              
     }
 
     &2 {
       .journalCard__authorWrapper {
         width: 11rem;
-        height: 11rem;
+        height: 11rem;      
 
         &:not(:first-child) {
           margin-left: -2.5rem;
@@ -81,7 +82,7 @@
     .journalCard__authorWrapper {
       width: 8rem;
       height: 8rem;
-      margin-left: 0;
+      margin-left: 0;      
     }
 
     .journalCard__authorWrapper:not(:nth-child(3n+1)) {
@@ -232,17 +233,159 @@
 }
 
 .annotationContainer {
-  /* Общие стили для области аннотации */
-  color: var(--white-F6F6F6, #F6F6F6);
+  position: relative;
   font-variant-numeric: lining-nums proportional-nums;
-  font-family: Raleway, sans-serif;
+  font-family: var(--font-raleway);
   font-size: 1.125rem;
   font-style: normal;
-  font-weight: 400;
+  font-weight: var(--fw-400);
   line-height: 1.625rem;
   max-height: auto;
   overflow-y: auto;
+
+  -webkit-mask-image: linear-gradient(to bottom,
+      rgba(0, 0, 0, 1) calc(100% - 2rem),
+      rgba(0, 0, 0, 0) 100%);
+  mask-image: linear-gradient(to bottom,
+      rgba(0, 0, 0, 1) calc(100% - 2rem),
+      rgba(0, 0, 0, 0) 100%);
 }
+
+.annotationContainer::-webkit-scrollbar {
+  width: 4px;
+}
+
+.annotationContainer::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.annotationContainer::-webkit-scrollbar-thumb {
+  background: var(--scroll-thumb-color, var(--originWhite-FFFFFF));
+  border: 8px solid var(--scroll-thumb-color, var(--originWhite-FFFFFF));
+  border-radius: 8px;
+}
+
+.annotationContainer::-webkit-scrollbar-button,
+.annotationContainer::-webkit-scrollbar-corner {
+  display: none;
+}
+
+.keywords {
+  margin-bottom: 1rem;
+}
+
+.annotationText {
+  margin-bottom: 1rem;
+}
+
+.contentContainer {
+  display: flex;
+  gap: 2rem;
+  position: relative;
+  padding-left: 3rem;
+  max-height: auto;
+  height: 100%;
+  overflow-y: auto;
+  font-family: var(--font-raleway);
+  font-size: 1.125rem;
+  font-style: normal;
+  font-weight: var(--fw-400);
+  line-height: 1.625rem;
+
+  -webkit-mask-image: linear-gradient(to bottom,
+      rgba(0, 0, 0, 1) calc(100% - 2rem),
+      rgba(0, 0, 0, 0) 100%);
+  mask-image: linear-gradient(to bottom,
+      rgba(0, 0, 0, 1) calc(100% - 2rem),
+      rgba(0, 0, 0, 0) 100%);
+
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: var(--scroll-thumb-color, var(--originWhite-FFFFFF));
+    border: 8px solid var(--scroll-thumb-color, var(--originWhite-FFFFFF));
+    border-radius: 8px;
+  }
+
+  &::-webkit-scrollbar-button,
+  &::-webkit-scrollbar-corner {
+    display: none;
+  }
+  
+
+  .tableOfContents ul {
+    position: relative;
+    margin: 0;
+    padding: 1rem 0;
+  }
+
+
+  .tableOfContents ul::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 1.5rem;
+    bottom: 2.5rem;
+    width: 3px;
+    background-color: var(--dark-blue-389FFF);
+  }
+
+  .tableOfContents ul li {
+    position: relative;
+    margin-bottom: 1rem;
+    padding-left: 2rem;
+  }
+
+.tableOfContents ul li::after {
+  content: "";
+  position: absolute;
+  left: -2px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 8px;
+  height: 8px;
+  background-color: var(--dark-blue-389FFF);
+  border-radius: 50%;
+  transition: all 0.23s ease;
+  z-index: 2;
+}
+
+.tableOfContents ul li.activeChapter::before {
+  content: "";
+  position: absolute;
+  left: -12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 2px solid var(--dark-blue-389FFF);
+  background: var(--current-bg-color);
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  z-index: 1;
+}
+
+  .tableOfContents ul li.activeChapter a {
+    color: var(--dark-blue-389FFF);
+    transition: color 0.2s ease;
+  }
+
+  .tableOfContents ul li:not(:first-child) a {
+      display: inline-block;
+      margin-left: 1rem;
+  }
+
+  .contentMarkdown {
+    display: none;
+  }
+}
+
 
 .journalCard__authorWrapper {
   position: relative;
@@ -331,3 +474,4 @@
   object-fit: contain;
   padding: 0.5rem;
 }
+
