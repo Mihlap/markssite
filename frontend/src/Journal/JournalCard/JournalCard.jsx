@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import AnnotationContent from './AnnotationContent';
+import ContentSection from './ContentSection';
 import styles from './JournalCard.module.scss';
 
 import butt1 from '../icons/butt11.svg';
@@ -11,7 +13,6 @@ import cat3 from '../icons/cat3.svg';
 import cat4 from '../icons/cat4.svg';
 import cat5 from '../icons/cat5.svg';
 import cat6 from '../icons/cat6.svg';
-import AnnotationContent from './AnnotationContent';
 
 const TABS = {
   ARTICLE: 'Статья',
@@ -41,6 +42,7 @@ function JournalCard({ journal, index }) {
 
   const currentCardColor =
     activeTab === TABS.ARTICLE ? articleColor : activeTab === TABS.ANNOTATION ? annotationColor : contentColor;
+   const scrollThumbColor = currentCardColor === '#FFFFFF' ? '#75bbfd' : '#FFFFFF';
   
   const isInverted = currentCardColor === '#75BBFD';
 
@@ -139,7 +141,14 @@ function JournalCard({ journal, index }) {
           </button>
         </div>
 
-        <div className={styles.journalCard__content} style={{ backgroundColor: currentCardColor }}>
+        <div
+          className={styles.journalCard__content}
+          style={{
+            backgroundColor: currentCardColor,
+            color: currentCardColor === '#FFFFFF' ? '#1d2e43' : '#FFFFFF',
+            '--scroll-thumb-color': scrollThumbColor,
+            '--current-bg-color': currentCardColor,
+          }}>
           {activeTab === TABS.ARTICLE && (
             <>
               <div className={styles.journalCard__title}>{journal.title}</div>
@@ -158,11 +167,15 @@ function JournalCard({ journal, index }) {
           )}
 
           {activeTab === TABS.ANNOTATION && (
-            <AnnotationContent markdown={journal.markdown_content || 'Текст аннотации...'} />
+            <AnnotationContent
+              markdown={journal.markdown_content && journal.markdown_content !== 'null' ? journal.markdown_content : ''}
+            />
           )}
 
           {activeTab === TABS.CONTENT && (
-            <div className={styles.journalCard__contentSection}>{journal.content || 'Текст содержания...'}</div>
+            <ContentSection
+              markdown={journal.markdown_content && journal.markdown_content !== 'null' ? journal.markdown_content : ''}
+            />
           )}
         </div>
       </div>
