@@ -3,6 +3,9 @@ import ReactMarkdown from 'react-markdown';
 import styles from './JournalCard.module.scss';
 
 function AnnotationContent({ markdown }) {
+  const chapterPattern = /<!--\s*chapter:start=.*?-->([\s\S]*?)<!--\s*chapter:end=.*?-->/g;
+  const cleanedMarkdown = markdown.replace(chapterPattern, '').trim();
+
   const annotationStartMarker = '<!-- annotation:start -->';
   const annotationEndMarker = '<!-- annotation:end -->';
   const keywordsStartMarker = '<!-- keywords:start -->';
@@ -10,34 +13,52 @@ function AnnotationContent({ markdown }) {
 
   let annotationText = '';
   let keywordsText = '';
+  let annotationIndex = -1;
+  let keywordsIndex = -1;
 
-  const annotationStartIndex = markdown.indexOf(annotationStartMarker);
-  const annotationEndIndex = markdown.indexOf(annotationEndMarker);
-  if (annotationStartIndex !== -1 && annotationEndIndex !== -1) {
-    annotationText = markdown.substring(annotationStartIndex + annotationStartMarker.length, annotationEndIndex).trim();
+  annotationIndex = cleanedMarkdown.indexOf(annotationStartMarker);
+  if (annotationIndex !== -1) {
+    const endIndex = cleanedMarkdown.indexOf(annotationEndMarker, annotationIndex);
+    if (endIndex !== -1) {
+      annotationText = cleanedMarkdown.substring(annotationIndex + annotationStartMarker.length, endIndex).trim();
+    }
   }
 
-  const keywordsStartIndex = markdown.indexOf(keywordsStartMarker);
-  const keywordsEndIndex = markdown.indexOf(keywordsEndMarker);
-  if (keywordsStartIndex !== -1 && keywordsEndIndex !== -1) {
-    keywordsText = markdown.substring(keywordsStartIndex + keywordsStartMarker.length, keywordsEndIndex).trim();
+  keywordsIndex = cleanedMarkdown.indexOf(keywordsStartMarker);
+  if (keywordsIndex !== -1) {
+    const endIndex = cleanedMarkdown.indexOf(keywordsEndMarker, keywordsIndex);
+    if (endIndex !== -1) {
+      keywordsText = cleanedMarkdown.substring(keywordsIndex + keywordsStartMarker.length, endIndex).trim();
+    }
   }
 
   if (!annotationText && !keywordsText) {
-    annotationText = markdown;
+    annotationText = cleanedMarkdown;
+    annotationIndex = 0;
   }
+
+  const blocks = [];
+  if (keywordsText) {
+    blocks.push({ type: 'keywords', content: keywordsText, index: keywordsIndex });
+  }
+  if (annotationText) {
+    blocks.push({ type: 'annotation', content: annotationText, index: annotationIndex });
+  }
+
+  blocks.sort((a, b) => a.index - b.index);
 
   return (
     <div className={styles.annotationContainer}>
-      {keywordsText && (
-        <div className={styles.keywords}>
-          <ReactMarkdown>{keywordsText}</ReactMarkdown>
-        </div>
-      )}
-      {annotationText && (
-        <div className={styles.annotationText}>
-          <ReactMarkdown>{annotationText}</ReactMarkdown>
-        </div>
+      {blocks.map((block, idx) =>
+        block.type === 'keywords' ? (
+          <div key={idx} className={styles.keywords}>
+            <ReactMarkdown>{block.content}</ReactMarkdown>
+          </div>
+        ) : (
+          <div key={idx} className={styles.annotationText}>
+            <ReactMarkdown>{block.content}</ReactMarkdown>
+          </div>
+        )
       )}
     </div>
   );
