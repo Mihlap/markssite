@@ -1,10 +1,13 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import AnnotationContent from './AnnotationContent';
 import ContentSection from './ContentSection';
 import styles from './JournalCard.module.scss';
 
 import butt1 from '../icons/butt11.svg';
+import butt1m from '../icons/butt11m.svg';
 import butt2 from '../icons/butt22.svg';
+import butt2m from '../icons/butt22m.svg';
 import butt3 from '../icons/butt33.svg';
 
 import cat1 from '../icons/cat1.svg';
@@ -34,16 +37,27 @@ const getButtonTextColor = (bgColor) => {
 };
 
 function JournalCard({ journal, index }) {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState(TABS.ARTICLE);
   const authors = journal?.authors || [];
-  const authorsToDisplay = authors.slice(0, 6);
+  const authorsToDisplay = authors.slice(0, 6); 
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 1100);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth <= 768);
+      setIsSmallScreen(window.innerWidth <= 1100);
+    };
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const [articleColor, annotationColor, contentColor] = TAB_COLOR_SETS[index % TAB_COLOR_SETS.length];
 
   const currentCardColor =
     activeTab === TABS.ARTICLE ? articleColor : activeTab === TABS.ANNOTATION ? annotationColor : contentColor;
-   const scrollThumbColor = currentCardColor === '#FFFFFF' ? '#75bbfd' : '#FFFFFF';
-  
+  const scrollThumbColor = currentCardColor === '#FFFFFF' ? '#75bbfd' : '#FFFFFF';
   const isInverted = currentCardColor === '#75BBFD';
 
   let authorsCountClass = '';
@@ -65,10 +79,15 @@ function JournalCard({ journal, index }) {
       ? styles.activeTab1
       : activeTab === TABS.ANNOTATION
       ? styles.activeTab2
-      : styles.activeTab3;
+        : styles.activeTab3;
+  
+  const handleCardClick = () => {
+    navigate(`/journal/${journal.id}`, { state: { journal } });
+  };
+
 
   return (
-    <div className={styles.journalCard}>
+    <div className={styles.journalCard} onClick={handleCardClick}>
       <div className={styles.journalCard__left} style={{ backgroundColor: currentCardColor }}>
         <div className={`${styles.journalCard__authorsGrid} ${authorsCountClass}`}>
           {authorsToDisplay.map((author, idx) => {
@@ -83,6 +102,7 @@ function JournalCard({ journal, index }) {
                 <img
                   src={imageSrc}
                   alt={`Автор ${author.name}`}
+                  loading="lazy"
                   className={`${styles.journalCard__authorImg} ${isFallback ? styles.fallbackIcon : ''}`}
                   onError={(e) => {
                     e.target.onerror = null;
@@ -102,43 +122,54 @@ function JournalCard({ journal, index }) {
             className={`${styles.journalCard__tabBtn} ${styles.tabBtn1} ${
               activeTab === TABS.ARTICLE ? styles.active : ''
             }`}
-            onClick={() => setActiveTab(TABS.ARTICLE)}
+            onClick={(e) => {
+              e.stopPropagation();
+              setActiveTab(TABS.ARTICLE);
+            }}
             style={{
-              WebkitMask: `url(${butt1}) no-repeat center / contain`,
-              mask: `url(${butt1}) no-repeat center / contain`,
+              WebkitMask: `url(${isMobile ? butt1m : butt1}) no-repeat center / contain`,
+              mask: `url(${isMobile ? butt1m : butt1}) no-repeat center / contain`,
               backgroundColor: articleColor,
               color: getButtonTextColor(articleColor),
             }}>
-            <span className={styles.tabText}>Статья</span>
+            <span className={styles.tabTextArticle}>Статья</span>
           </button>
 
           <button
             className={`${styles.journalCard__tabBtn} ${styles.tabBtn2} ${
               activeTab === TABS.ANNOTATION ? styles.active : ''
             }`}
-            onClick={() => setActiveTab(TABS.ANNOTATION)}
+            onClick={(e) => {
+              e.stopPropagation();
+              setActiveTab(TABS.ANNOTATION);
+            }}
             style={{
-              WebkitMask: `url(${butt2}) no-repeat center / contain`,
-              mask: `url(${butt2}) no-repeat center / contain`,
+              WebkitMask: `url(${isMobile ? butt2m : butt2}) no-repeat center / contain`,
+              mask: `url(${isMobile ? butt2m : butt2}) no-repeat center / contain`,
               backgroundColor: annotationColor,
               color: getButtonTextColor(annotationColor),
             }}>
-            Аннотация
+            <span className={styles.tabText}>Аннотация</span>
           </button>
 
-          <button
-            className={`${styles.journalCard__tabBtn} ${styles.tabBtn3} ${
-              activeTab === TABS.CONTENT ? styles.active : ''
-            }`}
-            onClick={() => setActiveTab(TABS.CONTENT)}
-            style={{
-              WebkitMask: `url(${butt3}) no-repeat center / contain`,
-              mask: `url(${butt3}) no-repeat center / contain`,
-              backgroundColor: contentColor,
-              color: getButtonTextColor(contentColor),
-            }}>
-            Содержание
-          </button>
+          {!isMobile && (
+            <button
+              className={`${styles.journalCard__tabBtn} ${styles.tabBtn3} ${
+                activeTab === TABS.CONTENT ? styles.active : ''
+              }`}              
+              onClick={(e) => {
+                e.stopPropagation();
+                setActiveTab(TABS.CONTENT);
+              }}
+              style={{
+                WebkitMask: `url(${butt3}) no-repeat center / contain`,
+                mask: `url(${butt3}) no-repeat center / contain`,
+                backgroundColor: contentColor,
+                color: getButtonTextColor(contentColor),
+              }}>
+              <span className={styles.tabText}>Содержание</span>
+            </button>
+          )}
         </div>
 
         <div
@@ -152,6 +183,12 @@ function JournalCard({ journal, index }) {
           {activeTab === TABS.ARTICLE && (
             <>
               <div className={styles.journalCard__title}>{journal.title}</div>
+              {isSmallScreen && journal.authors && journal.authors.length > 0 && (
+                <div className={styles.authorsNames}>
+                  <strong>{journal.authors.length > 1 ? 'Авторы: ' : 'Автор: '}</strong>
+                  {journal.authors.map((author) => author.name).join(' • ')}
+                </div>
+              )}
               <p className={styles.journalCard__subtitle}>
                 <span className={styles.subtitle__org}>
                   {journal.organizations?.[0]?.value || journal.organizations?.[0]?.name}
