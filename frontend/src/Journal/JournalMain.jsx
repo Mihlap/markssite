@@ -66,9 +66,11 @@ function JournalMain() {
       <Cover />
       <CategoryFilters />
       <NumbersFilterIssue />
-      {filteredJournals.map((journal, index) => (
-        <JournalCard key={journal.id} journal={journal} index={index} />
-      ))}
+      <div className={styles.journalCardsContainer}>
+        {filteredJournals.map((journal, index) => (
+          <JournalCard key={journal.id} journal={journal} index={index} />
+        ))}
+      </div>
     </div>
   );
 }
