@@ -57,13 +57,18 @@ const NavBarPhone = memo(() => {
                     Публикации
                   </Link>
                 </li>
+                {/* <li className={styles['menu-item']}>
+                  <Link onClick={handleBurgerClick} to="/journalPage" className={styles['menu-link']}>
+                    MARKS journal
+                  </Link>
+                </li> */}
                 <li className={styles['menu-item']}>
                   <Link onClick={handleBurgerClick} to="/company" className={styles['menu-link']}>
                     О компании
                   </Link>
                 </li>
                 <li className={styles['menu-item']}>
-                  <Link 
+                  <Link
                     onClick={handleBurgerClick}
                     target="_blank"
                     to="/portal/vacanciesMain"

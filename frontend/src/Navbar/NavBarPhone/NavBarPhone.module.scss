@@ -174,39 +174,44 @@
 
 }
 
-// Стили для телефонов
-@media only screen and (max-width: 425px) {
+// стили для планшета
+@media only screen and (min-width: 426px) and (max-width: 1200px) {
   .navbar_block {
-    .burger {
-      display: block;
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .menu {
-      width: 100%;
-      max-height: 0rem;
-      padding: 0;
-      opacity: 0;
-      visibility: hidden;
-      overflow: hidden;
-      transition: all 0.35s ease;
-
-      &.is-active {
-        height: 100vh;
-        z-index: 9999;
-        visibility: visible;
+    & {
+      .burger {
+        display: block;
         opacity: 1;
-        pointer-events: auto;
+        visibility: visible;
       }
 
-      &-inner {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        gap: 2rem;
-        padding: 6.5rem 0;
+      .menu {
+        width: 19.5rem;
+        max-height: 0rem;
+        padding: 0;
+        opacity: 0;
+        visibility: hidden;
+        overflow: hidden;
+        transition: all 0.35s ease;
+
+        &.is-active {
+          height: 100vh;
+          z-index: 9999;
+          visibility: visible;
+          opacity: 1;
+          pointer-events: auto;
+          border-top: 1px solid var(--black-1D2E43);
+          background: var(--white-F6F6F6);
+          box-shadow: 0px 4px 22px 0px rgba(0, 0, 0, 0.12);
+        }
+
+        &-inner {
+          display: flex;
+          flex-direction: column;
+          justify-content: stretch;
+          align-items: baseline;
+          gap: 2rem;
+          padding: 2rem 1.69rem;
+        }
       }
     }
   }
@@ -244,44 +249,39 @@
   }
 }
 
-// стили для планшета
-@media only screen and (min-width: 426px) and (max-width: 1025px) {
+// Стили для телефонов
+@media only screen and (max-width: 425px) {
   .navbar_block {
-    & {
-      .burger {
-        display: block;
-        opacity: 1;
+    .burger {
+      display: block;
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .menu {
+      width: 100%;
+      max-height: 0rem;
+      padding: 0;
+      opacity: 0;
+      visibility: hidden;
+      overflow: hidden;
+      transition: all 0.35s ease;
+
+      &.is-active {
+        height: 100vh;
+        z-index: 9999;
         visibility: visible;
+        opacity: 1;
+        pointer-events: auto;
       }
 
-      .menu {
-        width: 19.5rem;
-        max-height: 0rem;
-        padding: 0;
-        opacity: 0;
-        visibility: hidden;
-        overflow: hidden;
-        transition: all 0.35s ease;
-
-        &.is-active {
-          height: 100vh;
-          z-index: 9999;
-          visibility: visible;
-          opacity: 1;
-          pointer-events: auto;
-          border-top: 1px solid var(--black-1D2E43);
-          background: var(--white-F6F6F6);
-          box-shadow: 0px 4px 22px 0px rgba(0, 0, 0, 0.12);
-        }
-
-        &-inner {
-          display: flex;
-          flex-direction: column;
-          justify-content: stretch;
-          align-items: baseline;
-          gap: 2rem;
-          padding: 2rem 1.69rem;
-        }
+      &-inner {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        gap: 2rem;
+        padding: 6.5rem 0;
       }
     }
   }

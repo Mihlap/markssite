@@ -121,6 +121,7 @@ const journalSlice = createSlice({
     journals: [],
     loading: false,
     error: null,
+    selectedIssueNumber: null,
   },
   reducers: {
     setFormData(state, action) {
@@ -145,6 +146,9 @@ const journalSlice = createSlice({
           { id: Date.now() + 2, type: 'location', value: '' },
         ],
       };
+    },
+    setSelectedIssueNumber(state, action) {
+      state.selectedIssueNumber = action.payload;
     },
   },
   extraReducers: (builder) => {
@@ -256,6 +260,6 @@ const journalSlice = createSlice({
   },
 });
 
-export const { setFormData, updateAuthors, clearFormData, addTemporaryImage } = journalSlice.actions;
+export const { setFormData, updateAuthors, clearFormData, addTemporaryImage, setSelectedIssueNumber } = journalSlice.actions;
 
 export default journalSlice.reducer;
