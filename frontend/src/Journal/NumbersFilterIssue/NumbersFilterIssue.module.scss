@@ -3,79 +3,162 @@
 
 .scrollWrapper {
   width: 100%;
-  overflow-x: auto; // можно использовать auto или scroll
+  overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: none;
-  /* Firefox */
   -ms-overflow-style: none;
-  /* IE 10+ */
 
   &::-webkit-scrollbar {
     display: none;
-    /* Chrome, Safari, Opera */
   }
 }
 
 .numbersFilterIssue {
-display: flex;
+  display: flex;
   flex-wrap: nowrap;
   min-width: max-content;
   padding: 1.5rem 2rem;
   align-items: center;
-  gap: 2rem;
-  background: #F6F6F6;
+  gap: 1rem;
+  background: var(--white-F6F6F6);
   white-space: nowrap;
+}
 
-  .issueButton {
-    position: relative;
-    display: inline-flex;
-    flex: 0 0 auto;
-    padding: 0.375rem 1.5rem 0.375rem 0.375rem;
-    justify-content: center;
-    align-items: center;
-    gap: 0.5rem;
-    background: #FFFFFF;
-    border-radius: 1.5rem;
-    cursor: pointer;
-    white-space: nowrap;
+.issueButton {
+  position: relative;
+  display: inline-flex;
+  flex: 0 0 auto;
+  padding: 0.375rem 1.5rem 0.375rem 0.375rem;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+  background: var(--originWhite-FFFFFF);
+  border-radius: 1.5rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background-color 0.3s ease, color 0.3s ease, fill 0.3s ease;
 
-    &:hover {
-      /* При необходимости добавьте стили hover */
-    }
 
-    &.active {
-      background: #e0e0e0;
+  &.active {
+    background: var(--black-1D2E43);
 
-      svg path {
-        fill: #cfcfcf;
-      }
+    .issueText {
+      background: var(--originWhite-FFFFFF);
+      color: var(--black-1D2E43);
     }
 
     .issueSvg {
-      width: 51px;
-      height: 15px;
-      fill: #F6F6F6;
-    }
-
-    .issueText {
-      font-family: var(--font-raleway);
-      font-size: 1.3rem;
-      font-style: normal;
-      font-weight: var(--fw-700);
-      color: var(--white-F6F6F6);
-      background: var(--black-1D2E43);
-      padding: 0.45rem 0.62rem;
-      border-radius: 7.6875rem;
-      white-space: nowrap;
+      fill: var(--black-1D2E43);
     }
 
     .marksText {
-      font-family: var(--font-raleway);
-      font-size: 1rem;
-      font-style: normal;
-      font-weight: var(--fw-700);
-      color: var(--black-1D2E43);
-      white-space: nowrap;
+      color: var(--originWhite-FFFFFF);
     }
+
+    &:hover {
+      background-color: var(--dark-gray-566272);
+    }
+  }
+
+  .issueSvg {
+    width: 51px;
+    height: 15px;
+    fill: var(--white-F6F6F6);
+    transition: fill 0.3s ease;
+  }
+
+  .issueText {
+    font-family: var(--font-raleway);
+    font-size: 1.3rem;
+    font-weight: var(--fw-700);
+    color: var(--white-F6F6F6);
+    background: var(--black-1D2E43);
+    padding: 0.45rem 0.62rem;
+    border-radius: 7.6875rem;
+    white-space: nowrap;
+    transition: background-color 0.3s ease, color 0.3s ease;
+
+    &:hover {
+      background-color: var(--dark-gray-566272);
+    }
+  }
+
+  .marksText {
+    font-family: var(--font-raleway);
+    font-size: 1rem;
+    font-weight: var(--fw-700);
+    color: var(--black-1D2E43);
+    white-space: nowrap;
+    transition: color 0.3s ease;
+  }
+}
+
+.issueButton.active {
+  .issueText {
+    &:hover {
+      background-color: var(--originWhite-FFFFFF);
+    }
+  }
+}
+
+
+@media screen and (min-width: 768px) and (max-width: 1024px) {
+
+  .numbersFilterIssue {
+    padding: 0rem 3.22vw;
+  }
+
+  .issueButton {
+    cursor: none;
+  }
+
+}
+
+@media screen and (max-width: 768px) {
+  .numbersFilterIssue {
+    padding: 0rem 1rem;
+  }
+
+  .issueButton {
+    cursor: none;
+  }
+
+}
+
+// отключение ховера на адаптивных экранах
+@media screen and (max-width: 1024px) {
+
+  .issueButton:not(.active):hover {
+    background: var(--originWhite-FFFFFF);
+  }
+
+  .issueButton:not(.active):hover .issueText {
+    background: var(--black-1D2E43);
+    color: var(--white-F6F6F6);
+  }
+
+  .issueButton:not(.active):hover .issueSvg {
+    fill: var(--white-F6F6F6);
+  }
+
+  .issueButton:not(.active):hover .marksText {
+    color: var(--black-1D2E43);
+  }
+
+  .issueButton.active:hover {
+    background: var(--black-1D2E43);
+  }
+
+  .issueButton.active:hover .issueText {
+    background: var(--originWhite-FFFFFF);
+    color: var(--black-1D2E43);
+  }
+
+  .issueButton.active:hover .issueSvg {
+    fill: var(--black-1D2E43);
+  }
+
+  .issueButton.active:hover .marksText {
+    color: var(--originWhite-FFFFFF);
   }
 }
