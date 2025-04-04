@@ -9,13 +9,13 @@ preloadShoeModel();
 const Rocket = () => {
   const light = useRef();
 
-  const [containerStyle, setContainerStyle] = useState({
+   const [containerStyle, setContainerStyle] = useState({
     position: 'fixed',
-    right: 0, 
+    right: 0,
     bottom: 0,
     width: '100%',
     height: '100%',
-    display: 'flex', 
+    display: 'flex',   
   });
 
   const handleResize = useCallback(() => {
@@ -31,13 +31,9 @@ const Rocket = () => {
     else if (screenWidth >= 1024) width = '75%';
     else width = '95%';
 
-    if (isSafari) {
-      width = '35%';
-    }
-
     setContainerStyle((prevStyle) => ({
       ...prevStyle,
-      width,
+      width,    
     }));
   }, []);
 
@@ -50,7 +46,11 @@ const Rocket = () => {
 
   return (
     <div style={containerStyle}>
-      <Canvas flat shadows camera={{ position: [0, 0, 80], fov: 30, near: 1, far: 3000 }}>
+      <Canvas
+        flat
+        shadows
+        gl={{ preserveDrawingBuffer: true, alpha: true }}
+        camera={{ position: [0, 0, 80], fov: 30, near: 1, far: 3000 }}>
         <ambientLight intensity={2} color="#91c8fc" />
         <directionalLight castShadow position={[-10, -20, 50]} intensity={2.4} shadow-mapSize={1024} />
         <pointLight ref={light} intensity={1400} color="#389FFF" decay={2} distance={600} position={[-10, 4, 45]} />
