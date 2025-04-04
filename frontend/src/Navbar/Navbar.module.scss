@@ -103,8 +103,8 @@
   }
 
 
- /* Стили для меню на экранах шириной меньше или равной 1024px */
-  @media screen and (max-width: 1025px) {
+ /* Стили для меню на экранах шириной меньше или равной 1200px */
+  @media screen and (max-width: 1200px) {
     &__phone {
       display: block;
     }

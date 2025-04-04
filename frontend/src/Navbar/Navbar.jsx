@@ -1,7 +1,6 @@
 import React, { memo, useState, useEffect, useCallback } from 'react';
 import styles from './Navbar.module.scss';
 import { NavLink } from 'react-router-dom';
-// import { handleScroll, handleItemClick, handlePath, handleStoredClass } from './utils/navbarUtils';
 import NavBarPhone from './NavBarPhone/NavBarPhone';
 
 
@@ -14,7 +13,7 @@ const handleScroll = useCallback(() => {
   const currentScrollPos = window.scrollY;
   const delta = currentScrollPos - prevScrollPos; 
 
-  if (window.innerWidth > 1024) {
+  if (window.innerWidth > 1200) {
     if (prevScrollPos > currentScrollPos || currentScrollPos <= 0) {
       setVisible(true);
       setScrollDelta(0);
@@ -43,10 +42,9 @@ const handleScroll = useCallback(() => {
           <div className={styles.Navbar__logo}>
             <NavLink
               onMouseEnter={handleMouseEnter}
-              onMouseLeave={handleMouseLeave}              
+              onMouseLeave={handleMouseLeave}
               to="/"
-              className={styles.Navbar__title}              
-            >
+              className={styles.Navbar__title}>
               <h1>MARKS GROUP</h1>
             </NavLink>
           </div>
@@ -73,32 +71,35 @@ const handleScroll = useCallback(() => {
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
               className={({ isActive }) => `${styles.Navbar__item} ${isActive ? styles.Navbar__item_open : ''}`}
-              to="/"             
-            >
+              to="/">
               <div>Главная</div>
             </NavLink>
             <NavLink
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
               className={({ isActive }) => `${styles.Navbar__item} ${isActive ? styles.Navbar__item_open : ''}`}
-              to="/project"             
-            >
+              to="/project">
               <div>Проекты</div>
             </NavLink>
             <NavLink
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
               className={({ isActive }) => `${styles.Navbar__item} ${isActive ? styles.Navbar__item_open : ''}`}
-              to="/publication"              
-            >
+              to="/publication">
               <div>Публикации</div>
             </NavLink>
+            {/* <NavLink
+              onMouseEnter={handleMouseEnter}
+              onMouseLeave={handleMouseLeave}
+              className={({ isActive }) => `${styles.Navbar__item} ${isActive ? styles.Navbar__item_open : ''}`}
+              to="/journalPage">
+              <div>MARKS journal</div>
+            </NavLink> */}
             <NavLink
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
               className={({ isActive }) => `${styles.Navbar__item} ${isActive ? styles.Navbar__item_open : ''}`}
-              to="/company"              
-            >
+              to="/company">
               <div>О Компании</div>
             </NavLink>
             <NavLink
@@ -106,22 +107,20 @@ const handleScroll = useCallback(() => {
               onMouseLeave={handleMouseLeave}
               className={({ isActive }) => `${styles.Navbar__item} ${isActive ? styles.Navbar__item_open : ''}`}
               to="/portal/vacanciesMain"
-              target="_blank"            
-            >
+              target="_blank">
               <div>HR портал</div>
             </NavLink>
             <NavLink
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
               className={({ isActive }) => `${styles.Navbar__item} ${isActive ? styles.Navbar__item_open : ''}`}
-              to="/contacts"              
-            >
+              to="/contacts">
               <div>Контакты</div>
             </NavLink>
             <NavLink
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
-              to="https://marksgroup.org/"           
+              to="https://marksgroup.org/"
               className={({ isActive }) => `${styles.Navbar__item} ${isActive ? styles.Navbar__item_open : ''}`}>
               <div>EN</div>
             </NavLink>
