@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AnnotationContent from './AnnotationContent';
 import ContentSection from './ContentSection';
@@ -32,15 +32,16 @@ const TAB_COLOR_SETS = [
 
 const catImages = [cat1, cat2, cat3, cat4, cat5, cat6];
 
-const getButtonTextColor = (bgColor) => {
-  return bgColor === '#FFFFFF' ? '#1D2E43' : '#FFFFFF';
-};
+const getButtonTextColor = (bgColor) => (bgColor === '#FFFFFF' ? '#1D2E43' : '#FFFFFF');
 
 function JournalCard({ journal, index }) {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState(TABS.ARTICLE);
-  const authors = journal?.authors || [];
-  const authorsToDisplay = authors.slice(0, 6); 
+
+  const authors = useMemo(() => journal?.authors || [], [journal]);
+  
+  const authorsToDisplay = useMemo(() => authors.slice(0, 6), [authors]);
+
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 1100);
 
@@ -53,38 +54,40 @@ function JournalCard({ journal, index }) {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  const [articleColor, annotationColor, contentColor] = TAB_COLOR_SETS[index % TAB_COLOR_SETS.length];
+  const [articleColor, annotationColor, contentColor] = useMemo(
+    () => TAB_COLOR_SETS[index % TAB_COLOR_SETS.length],
+    [index]
+  );
 
-  const currentCardColor =
-    activeTab === TABS.ARTICLE ? articleColor : activeTab === TABS.ANNOTATION ? annotationColor : contentColor;
-  const scrollThumbColor = currentCardColor === '#FFFFFF' ? '#75bbfd' : '#FFFFFF';
-  const isInverted = currentCardColor === '#75BBFD';
+  const currentCardColor = useMemo(() => {
+    if (activeTab === TABS.ARTICLE) return articleColor;
+    if (activeTab === TABS.ANNOTATION) return annotationColor;
+    return contentColor;
+  }, [activeTab, articleColor, annotationColor, contentColor]);
 
-  let authorsCountClass = '';
-  if (authorsToDisplay.length <= 3) {
-    authorsCountClass =
-      authorsToDisplay.length === 1
-        ? styles.journalCard__authorsGrid1
-        : authorsToDisplay.length === 2
-        ? styles.journalCard__authorsGrid2
-        : styles.journalCard__authorsGrid3;
-  } else {
-    authorsCountClass = styles.journalCard__authorsGridTwoRows;
-  }
+  const scrollThumbColor = useMemo(() => (currentCardColor === '#FFFFFF' ? '#75bbfd' : '#FFFFFF'), [currentCardColor]);
+  const isInverted = useMemo(() => currentCardColor === '#75BBFD', [currentCardColor]);
 
-  const getRandomCat = () => catImages[Math.floor(Math.random() * catImages.length)];
+ const authorsCountClass = useMemo(() => {
+    if (authorsToDisplay.length <= 3) {
+      if (authorsToDisplay.length === 1) return styles.journalCard__authorsGrid1;
+      if (authorsToDisplay.length === 2) return styles.journalCard__authorsGrid2;
+      return styles.journalCard__authorsGrid3;
+    }
+    return styles.journalCard__authorsGridTwoRows;
+  }, [authorsToDisplay.length]);
 
-  const activeTabClass =
-    activeTab === TABS.ARTICLE
-      ? styles.activeTab1
-      : activeTab === TABS.ANNOTATION
-      ? styles.activeTab2
-        : styles.activeTab3;
-  
-  const handleCardClick = () => {
+  const getRandomCat = useCallback(() => catImages[Math.floor(Math.random() * catImages.length)], []);
+
+  const activeTabClass = useMemo(() => {
+    if (activeTab === TABS.ARTICLE) return styles.activeTab1;
+    if (activeTab === TABS.ANNOTATION) return styles.activeTab2;
+    return styles.activeTab3;
+  }, [activeTab]);
+
+  const handleCardClick = useCallback(() => {
     navigate(`/journal/${journal.id}`, { state: { journal } });
-  };
-
+  }, [journal, navigate]);
 
   return (
     <div className={styles.journalCard} onClick={handleCardClick}>
@@ -156,7 +159,7 @@ function JournalCard({ journal, index }) {
             <button
               className={`${styles.journalCard__tabBtn} ${styles.tabBtn3} ${
                 activeTab === TABS.CONTENT ? styles.active : ''
-              }`}              
+              }`}
               onClick={(e) => {
                 e.stopPropagation();
                 setActiveTab(TABS.CONTENT);
