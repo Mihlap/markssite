@@ -159,7 +159,7 @@ const journalSlice = createSlice({
       })
       .addCase(fetchJournals.fulfilled, (state, action) => {
         state.loading = false;
-        state.journals = action.payload;
+        state.journals = action.payload;    
       })
       .addCase(fetchJournals.rejected, (state, action) => {
         state.loading = false;
