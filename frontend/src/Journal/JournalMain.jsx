@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useEffect, useMemo, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchJournals } from '../store/Slice/journalSlice';
 import Cover from './Cover/Cover';
@@ -11,13 +11,13 @@ function JournalMain() {
   const dispatch = useDispatch();
   const journals = useSelector((state) => state.journal.journals);
   const selectedIssueNumber = useSelector((state) => state.journal.selectedIssueNumber);
+  const hasFetchedRef = useRef(false);
 
   const isDesktop = window.innerWidth > 1024;
 
   const { selectedCategories: desktopSelectedCategories = [], searchValue: desktopSearchValue = '' } = useSelector(
     (state) => state.categoryFilters.desktop
   );
-
   const { selectedCategories: mobileSelectedCategories = [], searchValue: mobileSearchValue = '' } = useSelector(
     (state) => state.categoryFilters.mobile
   );
@@ -25,8 +25,9 @@ function JournalMain() {
   const selectedCategories = isDesktop ? desktopSelectedCategories : mobileSelectedCategories;
   const searchValue = isDesktop ? desktopSearchValue : mobileSearchValue;
 
-  useEffect(() => {
-    if (!journals || journals.length === 0) {
+  useEffect(() => {  
+    if (!hasFetchedRef.current && journals.length === 0) {
+      hasFetchedRef.current = true;
       dispatch(fetchJournals());
     }
   }, [dispatch, journals]);
