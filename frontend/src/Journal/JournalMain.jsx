@@ -78,4 +78,3 @@ function JournalMain() {
 
 export default JournalMain;
 
-// 11111
