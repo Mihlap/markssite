@@ -20,7 +20,7 @@ const CounterCompanyMobile = () => {
       if (countProjectM < 200 && activeCounter === 1) {
         setCountProjectM(countProjectM + 5);
       }
-      if (countHumanM < 18 && activeCounter === 2) {
+      if (countHumanM < 19 && activeCounter === 2) {
         setCountHumanM(countHumanM + 1);
       }
     }, 50);
@@ -34,7 +34,7 @@ const CounterCompanyMobile = () => {
         setActiveCounter(2);
         setFinishedCounters([...finishedCounters, 1]);
       }
-      if (countHumanM >= 18 && !finishedCounters.includes(2)) {
+      if (countHumanM >= 19 && !finishedCounters.includes(2)) {
         setFinishedCounters([...finishedCounters, 2]);
       }
     }, 600);

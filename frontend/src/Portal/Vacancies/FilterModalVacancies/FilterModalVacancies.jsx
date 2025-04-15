@@ -83,6 +83,7 @@ const FilterModalVacancies = ({ isOpen, onClose, setFilters, selectedFilter }) =
         { id: 'locationStaff-3', label: 'Воронеж', value: 'Воронеж' },
         { id: 'locationStaff-4', label: 'Оренбург', value: 'Оренбург' },
         { id: 'locationStaff-5', label: 'Челябинск', value: 'Челябинск' },
+        { id: 'locationStaff-6', label: 'Уфа', value: 'Уфа' },
         { id: 'locationStaff-6', label: 'Ташкент', value: 'Ташкент' },
       ],
     },

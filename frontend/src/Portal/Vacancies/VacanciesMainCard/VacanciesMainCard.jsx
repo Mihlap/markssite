@@ -377,7 +377,7 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
             <div className={styles.main_vacancyWrapper__wrapperCountBlock}>
               <div className={styles.countItem}>
                 <div className={styles.countLabel}>На&nbsp;рынке</div>
-                <div className={styles.countValue}>17&nbsp;лет</div>
+                <div className={styles.countValue}>19&nbsp;лет</div>
               </div>
               <div className={styles.countItem}>
                 <img className={styles.offerHeart2} src={heart2} alt={heart2} />
