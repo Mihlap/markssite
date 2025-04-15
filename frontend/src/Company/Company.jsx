@@ -188,7 +188,7 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
       if (countProject < 200) {
         setCountProject(countProject + 5);
       }
-      if (countHuman < 18) {
+      if (countHuman < 19) {
         setCountHuman(countHuman + 1);
       }
     }, 50);
