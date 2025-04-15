@@ -38,6 +38,7 @@ export const selectBlocks = [
       { value: 'Воронеж', label: 'Воронеж' },
       { value: 'Оренбург', label: 'Оренбург' },
       { value: 'Челябинск', label: 'Челябинск' },
+      { value: 'Уфа', label: 'Уфа' },
       { value: 'Ташкент', label: 'Ташкент' },
     ],
   },
