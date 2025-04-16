@@ -6,22 +6,68 @@
   width: 100%;
   min-height: 100vh;
   background-color: var(--white-F6F6F6);
-  padding-top: 4rem;
-  padding-bottom: 2rem;
+
+  &__fon {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-height: 31.5rem;
+    height: 100%;
+    background-image: url('../../../src/Journal/icons/fon.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    justify-content: center;
+  }
+}
 
 
-    &__fon {
-       display: flex;
-       flex-direction: column;
-        width: 100%;
-        min-height: 31.5rem;
-        background-image: url('../../../src/Journal/icons/fon.svg');
-        background-repeat: no-repeat;
-        background-size: cover;
-        background-position: center;  
-        // align-items: center;
-        justify-content: center;
-      }
+
+.allButton_div {
+  padding-top: 6.7rem;
+  padding-left: 1.75rem;
+  cursor: pointer;
+}
+
+.left_title {
+  max-width: 60%;
+  width: 100%;
+  font-family: var(--font-unbounded);
+  font-size: 3rem;
+  font-weight: 300;
+  line-height: 4rem;
+  color: var(--white-F6F6F6);
+  padding: 4rem 1rem 0rem 1.75rem;
+}
+
+.authorsNames {
+  font-family: var(--font-unbounded);
+  font-size: 1.5rem;
+  font-weight: 300;
+  line-height: 2rem;
+  color: var(--white-F6F6F6);
+  padding: 1rem 1rem 0rem 1.75rem;
+}
+
+.authorsNames span.authorName,
+.authorsNames span.authorSeparator {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.publication_date {
+  color: var(--white-F6F6F6);
+  font-family: var(--font-raleway);
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.25rem;
+  padding: 0.5rem 1rem 6.5rem 1.75rem;
+}
+
+.publication_date span {
+  display: inline-block;
+  white-space: nowrap;
 }
 
 .wrapper {
@@ -30,54 +76,14 @@
   background-color: var(--originWhite-FFFFFF);
   border-radius: 0.5rem;
 
-  @media screen and (max-width: 1024px) {
-    width: 70%;
+  @media screen and (max-width: 1200px) {
+    width: 80%;
     padding: 2rem;
   }
 
   @media screen and (max-width: 768px) {
-    width: 90%;
+    width: 100%;
     padding: 1rem;
-  }
-}
-
-.all_button_div {
-  position: absolute;
-  top: 6rem;
-  left: 1.69rem;
-  cursor: pointer;
-  z-index: 1;
-}
-
-.left_title {
-  font-family: var(--font-unbounded);
-  font-size: 3rem;
-  font-weight: 300;
-  line-height: 4rem;
-  color: var(--white-F6F6F6);
-  margin-bottom: 1rem;
-
-  @media screen and (max-width: 768px) {
-    font-size: 1.5rem;
-    line-height: 2rem;
-  }
-}
-
-.title_text {
-  font-family: var(--font-raleway);
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.5rem;
-  color: var(--white-F6F6F6);
-  margin-bottom: 2rem;
-
-  strong {
-    font-weight: 600;
-  }
-
-  @media screen and (max-width: 768px) {
-    font-size: 0.875rem;
-    line-height: 1.25rem;
   }
 }
 
@@ -306,4 +312,110 @@
   border-radius: 0.5rem;
   overflow: auto;
   margin-bottom: 1.5rem;
+}
+
+
+@media screen and (min-width: 1201px) and (max-width: 1600px) {
+  .allButton_div {
+    padding-top: 3.25rem;
+    padding-left: 1.88rem;
+    cursor: pointer;
+  }
+
+  .left_title {
+    max-width: 100%;
+    padding: 3.81rem 1.75rem 0rem 1.75rem;
+  }
+
+}
+
+@media screen and (min-width: 768px) and (max-width: 1200px) {
+  .allButton_div {
+    padding-top: 7rem;
+    padding-left: 10.81rem;
+    cursor: pointer;
+  }
+
+  .left_title {
+    max-width: 100%;
+    padding: 3.75rem 1rem 0rem 10.75rem;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  }
+
+
+  .authorsNames {
+    max-width: 80%;
+    padding: 1rem 1rem 0rem 10.75rem;
+  }  
+
+  .publication_date {
+    max-width: 80%;
+    padding: 0.5rem 1rem 4rem 10.75rem;
+  } 
+}
+
+@media screen and (max-width: 767px) {
+  .allButton_div {
+    padding-top: 5rem;
+    padding-left: 1rem;
+    cursor: pointer;
+  }
+
+  .left_title {
+    font-size: 1.5rem;   
+    font-weight: 300;
+    line-height: 2rem;
+    max-width: 100%;
+    padding: 2.8rem 1rem 0rem 1rem;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  }
+
+
+  .authorsNames {
+    font-size: 1.25rem;
+    font-weight: 300;
+    line-height: 2rem;
+    max-width: 100%;
+    padding: 2rem 1rem 0rem 1rem;
+  }
+
+  .publication_date {
+    max-width: 100%;
+    padding: 0.5rem 1rem 2rem 1rem;  
+  }
+
+  .publication_date span {
+    display: inline-block;
+    white-space: wrap;
+  }
+
+}
+
+
+.articleLayout {
+  display: flex;
+  justify-content: space-between;
+
+  @media (max-width: 1199px) {
+    flex-direction: column;
+  }
+}
+
+.sidebar {
+  width: 25%;
+  display: block;
+
+  @media (max-width: 1199px) {
+    display: none;
+  }
+}
+
+.wrapper {
+  width: 75%;
+
+  @media (max-width: 1199px) {
+    width: 100%;
+  }
 }

@@ -12,6 +12,7 @@ import { BlockMath, InlineMath } from 'react-katex';
 import styles from './ArticleJournalPage.module.scss';
 import 'katex/dist/katex.min.css';
 import AllArticlesButton from '../../UI/ButtonsArticles/AllArticlesButton';
+import ArticleTableOfContents, { parseChapters } from './ArticleTableOfContents';
 
 const InlineMathComponent = ({ value }) => <InlineMath>{value}</InlineMath>;
 
@@ -60,36 +61,10 @@ const Paragraph = ({ node, children, ...props }) => {
   );
 };
 
-const Heading1 = ({ children, ...props }) => (
-  <h1 className={styles.heading1} {...props}>
-    {children}
-  </h1>
-);
-const Heading2 = ({ children, ...props }) => (
-  <h2 className={styles.heading2} {...props}>
-    {children}
-  </h2>
-);
-const Heading3 = ({ children, ...props }) => (
-  <h3 className={styles.heading3} {...props}>
-    {children}
-  </h3>
-);
-const Heading4 = ({ children, ...props }) => (
-  <h4 className={styles.heading4} {...props}>
-    {children}
-  </h4>
-);
-const Heading5 = ({ children, ...props }) => (
-  <h5 className={styles.heading5} {...props}>
-    {children}
-  </h5>
-);
-const Heading6 = ({ children, ...props }) => (
-  <h6 className={styles.heading6} {...props}>
-    {children}
-  </h6>
-);
+const Heading =
+  (level) =>
+  ({ children, ...props }) =>
+    React.createElement(`h${level}`, { ...props, className: styles[`heading${level}`] }, children);
 
 const LinkComponent = ({ href, children, ...props }) => (
   <a href={href} target="_blank" rel="noopener noreferrer" className={styles.link} {...props}>
@@ -144,12 +119,12 @@ function ArticleJournalPage() {
 
   const markdownComponents = useMemo(
     () => ({
-      h1: Heading1,
-      h2: Heading2,
-      h3: Heading3,
-      h4: Heading4,
-      h5: Heading5,
-      h6: Heading6,
+      h1: Heading(1),
+      h2: Heading(2),
+      h3: Heading(3),
+      h4: Heading(4),
+      h5: Heading(5),
+      h6: Heading(6),
       p: Paragraph,
       PDFEmbed: PDFEmbedComponent,
       math: MathBlock,
@@ -162,38 +137,71 @@ function ArticleJournalPage() {
       blockquote: BlockQuote,
       code: InlineCode,
       pre: CodeBlock,
-     }),
+    }),
     []
   );
 
+  const chapters = useMemo(() => {
+    return parseChapters(journal.markdown_content).map((ch) => {
+      const slug = ch.title
+        .toLowerCase()
+        .replace(/[^\wа-яё\s-]/gi, '')
+        .replace(/\s+/g, '-');
+      return { ...ch, slug };
+    });
+  }, [journal.markdown_content]);
+
+  
   if (!journal) {
     return <div className={styles.not_found}>Статья не найдена</div>;
   }
 
+
   return (
     <div className={styles.main_article_card}>
       <div className={styles.main_article_card__fon}>
-          <div className={styles.all_button_div}>
-            <AllArticlesButton path="/journalPage" />
-          </div>
-          <div className={styles.left_title}>{journal.title}</div>
-          <div className={styles.title_text}>
-            <strong>{journal.authors?.map((a) => a.name).join(', ')}</strong>
-            <br />
-            {journal.publication_date} • {journal.locations?.[0]?.name}
-          </div>
+        <div className={styles.allButton_div}>
+          <AllArticlesButton path="/journalPage" />
+        </div>
+        <div className={styles.left_title}>{journal.title}</div>
+        <div className={styles.authorsNames}>
+          {journal.authors?.map((a, idx) => (
+            <React.Fragment key={idx}>
+              <span className={styles.authorName}>{a.name}</span>
+              {idx < journal.authors.length - 1 && <span className={styles.authorSeparator}>&nbsp;•&nbsp;</span>}
+            </React.Fragment>
+          ))}
+        </div>
+
+        <div className={styles.publication_date}>
+          <span>{journal.organizations?.[0]?.value || journal.organizations?.[0]?.name}</span>
+          {' • '}
+          <span>{journal.publication_date}</span>
+        </div>
+      </div>
+
+      <div className={styles.articleLayout}>
+        <div className={styles.sidebar}>
+          <ArticleTableOfContents markdown={journal.markdown_content} />
         </div>
         <div className={styles.wrapper}>
-        <ReactMarkdown
-          children={journal.markdown_content}
-          remarkPlugins={[remarkMath, remarkGfm, remarkBreaks]}
-          rehypePlugins={[rehypeKatex, rehypeRaw, rehypePdfEmbedder, rehypeUniqueHeadingIds]}
-          unwrapDisallowed={true}
-          className={styles.markdown_body}
-          components={markdownComponents}
-          />
+          <div className={styles.markdown_body}>
+            {chapters.map((chapter, idx) => (
+              <div key={idx} id={chapter.slug} style={{ marginBottom: '2rem' }}>
+                <h2>{chapter.title}</h2>
+                <ReactMarkdown
+                  children={chapter.content}
+                  remarkPlugins={[remarkMath, remarkGfm, remarkBreaks]}
+                  rehypePlugins={[rehypeKatex, rehypeRaw, rehypePdfEmbedder, rehypeUniqueHeadingIds]}
+                  unwrapDisallowed={true}
+                  components={markdownComponents}
+                />
+              </div>
+            ))}
           </div>
-        </div>   
+        </div>
+      </div>
+    </div>
   );
 }
 
