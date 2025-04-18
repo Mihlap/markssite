@@ -71,8 +71,8 @@
 }
 
 .wrapper {
-  width: 50%;
-  margin: 0 auto;
+  width: 82rem;
+
   background-color: var(--originWhite-FFFFFF);
   border-radius: 0.5rem;
 
@@ -347,12 +347,12 @@
   .authorsNames {
     max-width: 80%;
     padding: 1rem 1rem 0rem 10.75rem;
-  }  
+  }
 
   .publication_date {
     max-width: 80%;
     padding: 0.5rem 1rem 4rem 10.75rem;
-  } 
+  }
 }
 
 @media screen and (max-width: 767px) {
@@ -363,7 +363,7 @@
   }
 
   .left_title {
-    font-size: 1.5rem;   
+    font-size: 1.5rem;
     font-weight: 300;
     line-height: 2rem;
     max-width: 100%;
@@ -383,7 +383,7 @@
 
   .publication_date {
     max-width: 100%;
-    padding: 0.5rem 1rem 2rem 1rem;  
+    padding: 0.5rem 1rem 2rem 1rem;
   }
 
   .publication_date span {
@@ -396,7 +396,8 @@
 
 .articleLayout {
   display: flex;
-  justify-content: space-between;
+  align-items: center;
+  justify-content: center;
 
   @media (max-width: 1199px) {
     flex-direction: column;
@@ -404,8 +405,11 @@
 }
 
 .sidebar {
-  width: 25%;
-  display: block;
+  flex: 0 0 300px;
+  position: sticky;
+  align-self: flex-start;
+  margin-left: 1rem;
+  margin-right: 1rem;
 
   @media (max-width: 1199px) {
     display: none;
@@ -413,7 +417,7 @@
 }
 
 .wrapper {
-  width: 75%;
+  width: 70%;
 
   @media (max-width: 1199px) {
     width: 100%;

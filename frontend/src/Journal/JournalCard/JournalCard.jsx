@@ -16,6 +16,7 @@ import cat3 from '../icons/cat3.svg';
 import cat4 from '../icons/cat4.svg';
 import cat5 from '../icons/cat5.svg';
 import cat6 from '../icons/cat6.svg';
+import ContentWithChapters from './ContentSection';
 
 const TABS = {
   ARTICLE: 'Статья',
@@ -213,7 +214,8 @@ function JournalCard({ journal, index }) {
           )}
 
           {activeTab === TABS.CONTENT && (
-            <ContentSection
+            <ContentWithChapters
+              journal={journal}
               markdown={journal.markdown_content && journal.markdown_content !== 'null' ? journal.markdown_content : ''}
             />
           )}
