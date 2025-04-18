@@ -38,7 +38,6 @@ const MathBlock = ({ value }) => (
 );
 MathBlock.displayName = 'MathBlock';
 
-// Функция для разворачивания вложенных детей
 const flattenChildren = (children) => {
   let result = [];
   React.Children.forEach(children, (child) => {
@@ -52,7 +51,6 @@ const flattenChildren = (children) => {
   return result;
 };
 
-// Функция для переопределения абзаца
 const Paragraph = ({ node, children, ...props }) => {
   const flatChildren = flattenChildren(children);
   const hasBlockChild = flatChildren.some((child) => {
@@ -283,18 +281,6 @@ const MarkdownEditor = ({ onTempFilesChange }) => {
   useEffect(() => {
     debouncedCheck();
   }, [markdown, debouncedCheck]);
-
-  //  useEffect(() => {
-  //    if (previewRef.current) {
-  //      const headings = previewRef.current.querySelectorAll('h1, h2, h3, h4, h5, h6');
-  //      const headingsData = Array.from(headings).map((heading) => ({
-  //        id: heading.id,
-  //        text: heading.textContent,
-  //        level: Number(heading.tagName.substring(1)), // h1 -> 1 и т.д.
-  //      }));
-  //      console.log('Заголовки в этом превью:', headingsData);
-  //    }
-  //  }, [markdown]);
 
   return (
     <div

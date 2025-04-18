@@ -35,7 +35,7 @@ MathBlock.displayName = 'MathBlock';
 const flattenChildren = (children) => {
   let result = [];
   React.Children.forEach(children, (child) => {
-    if (React.isValidElement(child) && child.props && child.props.children) {
+    if (React.isValidElement(child) && child.props?.children) {
       result.push(child);
       result = result.concat(flattenChildren(child.props.children));
     } else {
@@ -46,11 +46,12 @@ const flattenChildren = (children) => {
 };
 
 const Paragraph = ({ node, children, ...props }) => {
-  const flatChildren = flattenChildren(children);
-  const hasBlockChild = flatChildren.some(
-    (child) => child && typeof child === 'object' && (child.type === PDFEmbedComponent || child.type === MathBlock)
+  const flat = flattenChildren(children);
+  const hasBlock = flat.some(
+    (c) => c && typeof c === 'object' && (c.type === PDFEmbedComponent || c.type === MathBlock)
   );
-  return hasBlockChild ? (
+
+  return hasBlock ? (
     <div {...props} className={styles.paragraph}>
       {children}
     </div>
@@ -67,7 +68,7 @@ const Heading =
     React.createElement(`h${level}`, { ...props, className: styles[`heading${level}`] }, children);
 
 const LinkComponent = ({ href, children, ...props }) => (
-  <a href={href} target="_blank" rel="noopener noreferrer" className={styles.link} {...props}>
+  <a href={href} target="_blank" rel="noopener noreferrer" {...props} className={styles.link}>
     {children}
   </a>
 );
@@ -111,11 +112,19 @@ const CodeBlock = ({ children, ...props }) => (
 
 function ArticleJournalPage() {
   const { state } = useLocation();
-  const { journal } = state || {};
+ const { journal, targetChapterSlug } = state || {};
+ const md = journal?.markdown_content ?? '';
 
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
+ const chapters = useMemo(() => {
+    return parseChapters(md).map((ch, idx) => {
+       const baseSlug = ch.title
+         .toLowerCase()
+         .replace(/[^\wа-яё\s-]/gi, '')
+        .replace(/\s+/g, '-');
+      const slug = `${baseSlug}-${idx}`;
+      return { ...ch, slug };
+    });
+  }, [md]);
 
   const markdownComponents = useMemo(
     () => ({
@@ -141,21 +150,23 @@ function ArticleJournalPage() {
     []
   );
 
-  const chapters = useMemo(() => {
-    return parseChapters(journal.markdown_content).map((ch) => {
-      const slug = ch.title
-        .toLowerCase()
-        .replace(/[^\wа-яё\s-]/gi, '')
-        .replace(/\s+/g, '-');
-      return { ...ch, slug };
-    });
-  }, [journal.markdown_content]);
+  useEffect(() => {
+    if (!journal) return;
 
-  
+    if (targetChapterSlug) {
+      const el = document.getElementById(targetChapterSlug);
+      if (el) {      
+          el.scrollIntoView({ behavior: 'smooth' });
+          window.history.replaceState(null, '', `#${targetChapterSlug}`);       
+      }
+    } else {
+      window.scrollTo(0, 0);
+    }
+  }, [journal, targetChapterSlug]);
+
   if (!journal) {
     return <div className={styles.not_found}>Статья не найдена</div>;
   }
-
 
   return (
     <div className={styles.main_article_card}>
@@ -172,22 +183,20 @@ function ArticleJournalPage() {
             </React.Fragment>
           ))}
         </div>
-
         <div className={styles.publication_date}>
-          <span>{journal.organizations?.[0]?.value || journal.organizations?.[0]?.name}</span>
-          {' • '}
+          <span>{journal.organizations?.[0]?.value ?? journal.organizations?.[0]?.name}</span> •{' '}
           <span>{journal.publication_date}</span>
         </div>
       </div>
 
       <div className={styles.articleLayout}>
         <div className={styles.sidebar}>
-          <ArticleTableOfContents markdown={journal.markdown_content} />
+          <ArticleTableOfContents markdown={md} activeSlug={targetChapterSlug} />
         </div>
         <div className={styles.wrapper}>
           <div className={styles.markdown_body}>
-            {chapters.map((chapter, idx) => (
-              <div key={idx} id={chapter.slug} style={{ marginBottom: '2rem' }}>
+            {chapters.map((chapter) => (
+              <div key={chapter.slug} id={chapter.slug} style={{ marginBottom: '2rem' }}>
                 <h2>{chapter.title}</h2>
                 <ReactMarkdown
                   children={chapter.content}
