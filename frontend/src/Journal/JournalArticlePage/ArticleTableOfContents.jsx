@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
 import styles from './ArticleTableOfContents.module.scss';
 
-export function parseChapters(markdown) {
+export function parseChapters(markdown = '') {
+  if (typeof markdown !== 'string' || markdown.trim() === '') {
+    return [];
+  }
   const pattern = /<!--\s*chapter:start=(.*?)\s*-->([\s\S]*?)<!--\s*chapter:end=(.*?)\s*-->/g;
   const chapters = [];
   let match;
@@ -16,48 +18,66 @@ export function parseChapters(markdown) {
   return chapters;
 }
 
-function ArticleTableOfContents({ markdown }) {
-  const [activeChapter, setActiveChapter] = useState(null);
-  const { pathname } = useLocation();
-  const chapters = parseChapters(markdown);
+function ArticleTableOfContents({ markdown, activeSlug }) {
+  const [activeChapter, setActiveChapter] = useState(activeSlug || null);
 
-  const chaptersWithSlug = chapters.map((ch) => {
-    const slug = ch.title
+  useEffect(() => {
+    if (activeSlug) {
+      setActiveChapter(activeSlug);
+    }
+  }, [activeSlug]);
+
+  useEffect(() => {
+    const hash = window.location.hash.slice(1);
+    if (hash) {
+      setActiveChapter(hash);
+      const el = document.getElementById(hash);
+      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  }, []);
+
+  const raw = parseChapters(markdown);
+  if (!raw.length) return null;
+
+  const chapters = [...raw].sort((a, b) => a.index - b.index);
+  const skipTitles = ['аннотация', 'библиографический список'];
+  const chaptersWithSlug = chapters.map((ch, idx) => {
+    const base = ch.title
       .toLowerCase()
       .replace(/[^\wа-яё\s-]/gi, '')
       .replace(/\s+/g, '-');
-    return { ...ch, slug };
+     const slug = `${base}-${idx}`;
+     const isUnnumbered = skipTitles.includes(ch.title.toLowerCase());
+     return { ...ch, slug, isUnnumbered };
   });
 
-  const handleClick = (slug, e) => {
+  const onClick = (slug, e) => {
     e.preventDefault();
     setActiveChapter(slug);
     const el = document.getElementById(slug);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' });
-    }
-
-    if (window.history.pushState) {
-      window.history.pushState(null, '', `${pathname}#${slug}`);
-    }
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start', marginTop: '3rem' });
+    window.history.pushState(null, '', `#${slug}`);
   };
 
   return (
-    <div className={styles.tocWrapper}>
+    <nav className={styles.tocWrapper}>
       <p className={styles.tocTitle}>Содержание</p>
       <ul className={styles.tocList}>
-        {chaptersWithSlug.map((chapter) => (
-          <li key={chapter.slug}>
-            <Link
-              to={`${pathname}#${chapter.slug}`}
-              onClick={(e) => handleClick(chapter.slug, e)}
-              className={activeChapter === chapter.slug ? styles.active : ''}>
-              {chapter.title}
-            </Link>
+        {chaptersWithSlug.map((chap) => (
+          <li
+            key={chap.slug}
+            className={chap.isUnnumbered ? styles.unnumbered : ''}
+            >
+            <a
+              href={`#${chap.slug}`}
+              className={activeChapter === chap.slug ? styles.active : ''}
+              onClick={(e) => onClick(chap.slug, e)}>
+              {chap.title}
+            </a>
           </li>
         ))}
       </ul>
-    </div>
+    </nav>
   );
 }
 
