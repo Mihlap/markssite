@@ -1,3 +1,6 @@
+@import '../../../src/App.css';
+@import '../../../src/variables';
+
 .tocWrapper {
   display: flex;
   flex-direction: column;
@@ -32,22 +35,26 @@
     &.unnumbered {
       counter-increment: none;
       padding-left: 0;
-      list-style: none;
     }
 
     &:not(.unnumbered) {
-      padding-left: 2rem;
+      padding-left: 1rem;
       counter-increment: section;
-      list-style: none;
+    }
+  }
 
-      &::before {
-        content: counter(section) ".";
-        position: absolute;
-        left: 0.5rem;
-        width: 1rem;
-        text-align: right;
-        color: var(--dark-gray-566269);
-      }
+  li:not(.unnumbered)>a {
+    display: inline-block;
+    position: relative;
+    padding-left: 1.5rem;
+
+    &::before {
+      content: counter(section) ".";
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1.2rem;
+      text-align: right;
     }
   }
 
