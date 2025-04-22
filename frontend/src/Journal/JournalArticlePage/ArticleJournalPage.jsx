@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo } from 'react';
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation, useParams } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import ReactMarkdown from 'react-markdown';
 import remarkMath from 'remark-math';
 import rehypeKatex from 'rehype-katex';
@@ -9,10 +10,17 @@ import remarkBreaks from 'remark-breaks';
 import rehypePdfEmbedder from '../../Add/add-articles/AddJournal/utils/rehypePdfEmbedder';
 import rehypeUniqueHeadingIds from '../../Add/add-articles/AddJournal/utils/rehypeUniqueHeadingIds';
 import { BlockMath, InlineMath } from 'react-katex';
+import { fetchJournals } from '../../store/Slice/journalSlice';
 import styles from './ArticleJournalPage.module.scss';
 import 'katex/dist/katex.min.css';
 import AllArticlesButton from '../../UI/ButtonsArticles/AllArticlesButton';
 import ArticleTableOfContents, { parseChapters } from './ArticleTableOfContents';
+import ArticleAuthors from './ArticleAuthors';
+import { shareToVK, shareToTelegram } from './utils';
+
+import next from '../../icons/next.svg';
+import previous from '../../icons/previous.svg';
+import SkeletonArticle from './SkeletonArticle';
 
 const InlineMathComponent = ({ value }) => <InlineMath>{value}</InlineMath>;
 
@@ -62,6 +70,17 @@ const Paragraph = ({ node, children, ...props }) => {
   );
 };
 
+const ChapterTitle = ({ title, level }) => (
+  <ReactMarkdown
+    remarkPlugins={[remarkGfm, remarkBreaks]}
+    components={{
+      p: ({ children, ...props }) =>
+        React.createElement(`h${level}`, { ...props, className: styles[`heading${level}`] }, children),
+    }}>
+    {title}
+  </ReactMarkdown>
+);
+
 const Heading =
   (level) =>
   ({ children, ...props }) =>
@@ -110,21 +129,48 @@ const CodeBlock = ({ children, ...props }) => (
   </pre>
 );
 
-function ArticleJournalPage() {
+function ArticleJournalPage({ handleMouseEnter, handleMouseLeave, handleMouseHover }) {
+  const dispatch = useDispatch();
+  const { id } = useParams();
   const { state } = useLocation();
- const { journal, targetChapterSlug } = state || {};
- const md = journal?.markdown_content ?? '';
+  const { journal: stateJournal, targetChapterSlug } = state || {};
+  const journals = useSelector((s) => s.journal.journals);
+  const loading = useSelector((s) => s.journal.loading);
 
- const chapters = useMemo(() => {
-    return parseChapters(md).map((ch, idx) => {
-       const baseSlug = ch.title
-         .toLowerCase()
-         .replace(/[^\wа-яё\s-]/gi, '')
+  useEffect(() => {
+    if (journals.length === 0) {
+      dispatch(fetchJournals());
+    }
+  }, [dispatch, journals.length]);
+
+  const journalToUse = useMemo(() => {
+    if (stateJournal) return stateJournal;
+    return journals.find((j) => String(j.id) === String(id));
+  }, [stateJournal, journals, id]);
+
+  const { previousArticle, nextArticle } = useMemo(() => {
+    const len = journals.length;
+    const idx = journals.findIndex((j) => j.id === journalToUse?.id);
+    if (idx === -1 || len < 2) {
+      return { previousArticle: null, nextArticle: null };
+    }
+    return {
+      previousArticle: journals[(idx - 1 + len) % len],
+      nextArticle: journals[(idx + 1) % len],
+    };
+  }, [journals, journalToUse]);
+
+  const mdContent = journalToUse?.markdown_content ?? '';
+
+  const chapters = useMemo(() => {
+    return parseChapters(mdContent).map((ch, idx) => {
+      const baseSlug = ch.title
+        .toLowerCase()
+        .replace(/[^\wа-яё\s-]/gi, '')
         .replace(/\s+/g, '-');
-      const slug = `${baseSlug}-${idx}`;
-      return { ...ch, slug };
+      return { ...ch, slug: `${baseSlug}-${idx}` };
     });
-  }, [md]);
+  }, [mdContent]);
 
   const markdownComponents = useMemo(
     () => ({
@@ -151,22 +197,21 @@ function ArticleJournalPage() {
   );
 
   useEffect(() => {
-    if (!journal) return;
-
+    if (!journalToUse) return;
     if (targetChapterSlug) {
       const el = document.getElementById(targetChapterSlug);
-      if (el) {      
-          el.scrollIntoView({ behavior: 'smooth' });
-          window.history.replaceState(null, '', `#${targetChapterSlug}`);       
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+        window.history.replaceState(null, '', `#${targetChapterSlug}`);
+        return;
       }
-    } else {
-      window.scrollTo(0, 0);
     }
-  }, [journal, targetChapterSlug]);
+    window.scrollTo(0, 0);
+  }, [journalToUse, targetChapterSlug]);
 
-  if (!journal) {
-    return <div className={styles.not_found}>Статья не найдена</div>;
-  }
+ if (loading || !journalToUse) {
+   return <SkeletonArticle />;
+ }
 
   return (
     <div className={styles.main_article_card}>
@@ -174,30 +219,33 @@ function ArticleJournalPage() {
         <div className={styles.allButton_div}>
           <AllArticlesButton path="/journalPage" />
         </div>
-        <div className={styles.left_title}>{journal.title}</div>
+        <div className={styles.left_title}>{journalToUse.title}</div>
         <div className={styles.authorsNames}>
-          {journal.authors?.map((a, idx) => (
+          {journalToUse.authors?.map((a, idx) => (
             <React.Fragment key={idx}>
               <span className={styles.authorName}>{a.name}</span>
-              {idx < journal.authors.length - 1 && <span className={styles.authorSeparator}>&nbsp;•&nbsp;</span>}
+              {idx < journalToUse.authors.length - 1 && <span className={styles.authorSeparator}>&nbsp;•&nbsp;</span>}
             </React.Fragment>
           ))}
         </div>
         <div className={styles.publication_date}>
-          <span>{journal.organizations?.[0]?.value ?? journal.organizations?.[0]?.name}</span> •{' '}
-          <span>{journal.publication_date}</span>
+          <span>{journalToUse.organizations?.[0]?.value ?? journalToUse.organizations?.[0]?.name}</span>
+          {' • '}
+          <span>{journalToUse.publication_date}</span>
         </div>
       </div>
 
       <div className={styles.articleLayout}>
         <div className={styles.sidebar}>
-          <ArticleTableOfContents markdown={md} activeSlug={targetChapterSlug} />
+          <ArticleTableOfContents markdown={mdContent} activeSlug={targetChapterSlug} />
         </div>
         <div className={styles.wrapper}>
           <div className={styles.markdown_body}>
             {chapters.map((chapter) => (
-              <div key={chapter.slug} id={chapter.slug} style={{ marginBottom: '2rem' }}>
+              <div key={chapter.slug} id={chapter.slug} style={{ marginTop: '3rem' }}>
                 <h2>{chapter.title}</h2>
+                {/* <ChapterTitle title={chapter.title} level={2} /> */}
+                {/* <ChapterTitle title={chapter.title} level={chapter.level} /> */}
                 <ReactMarkdown
                   children={chapter.content}
                   remarkPlugins={[remarkMath, remarkGfm, remarkBreaks]}
@@ -208,7 +256,71 @@ function ArticleJournalPage() {
               </div>
             ))}
           </div>
+          <div className={styles.share_article}>
+            <div>Поделиться статьей</div>
+            <div id="articles" className={styles.social_links_articleCard}>
+              <button
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                onClick={() => shareToVK(journalToUse)}>
+                <span className={styles.social_links_item} style={{ marginRight: '18px', color: '#FF7F6A' }}>
+                  VK
+                </span>
+              </button>
+              <button onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} onClick={() => {}}>
+                <span className={styles.social_links_item} style={{ marginRight: '18px', color: '#FF7F6A' }}>
+                  IG
+                </span>
+              </button>
+
+              <button onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} onClick={() => {}}>
+                <span className={styles.social_links_item} style={{ marginRight: '18px', color: '#FF7F6A' }}>
+                  BE
+                </span>
+              </button>
+              <button
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}
+                onClick={() => shareToTelegram(journalToUse)}>
+                <span className={styles.social_links_item} style={{ color: '#FF7F6A' }}>
+                  TG
+                </span>
+              </button>
+            </div>
+          </div>
+          <div className={styles.button_article_articleCard}>
+            {previousArticle && (
+              <Link
+                to={`/journal/${previousArticle.id}`}
+                className={styles.button_article_link_articleCard1}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}>
+                <div className={styles.previous_svg_articleCard}>
+                  <img src={previous} alt="«Предыдущая»" />
+                  <span className={styles.previous__span_articleCard}>{previousArticle.title}</span>
+                </div>
+              </Link>
+            )}
+
+            {nextArticle && (
+              <Link
+                to={`/journal/${nextArticle.id}`}
+                className={styles.button_article_link_articleCard2}
+                onMouseEnter={handleMouseEnter}
+                onMouseLeave={handleMouseLeave}>
+                <div className={styles.next_svg_articleCard}>
+                  <span className={styles.next__span_articleCard}>{nextArticle.title}</span>
+                  <img src={next} alt="«Следующая»" />
+                </div>
+              </Link>
+            )}
+          </div>
         </div>
+        {mdContent.trim()?.length > 0 && (
+          <div className={styles.sidebar}>
+            <ArticleAuthors authors={journalToUse.authors} />
+          </div>
+        )}
       </div>
     </div>
   );
