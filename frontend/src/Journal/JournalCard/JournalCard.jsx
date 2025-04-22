@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AnnotationContent from './AnnotationContent';
-import ContentSection from './ContentSection';
+import ContentWithChapters from './ContentSection';
+import AsyncImage from './AsyncImage';
 import styles from './JournalCard.module.scss';
 
 import butt1 from '../icons/butt11.svg';
@@ -16,7 +17,6 @@ import cat3 from '../icons/cat3.svg';
 import cat4 from '../icons/cat4.svg';
 import cat5 from '../icons/cat5.svg';
 import cat6 from '../icons/cat6.svg';
-import ContentWithChapters from './ContentSection';
 
 const TABS = {
   ARTICLE: 'Статья',
@@ -92,18 +92,19 @@ function JournalCard({ journal, index }) {
 
   return (
     <div className={styles.journalCard} onClick={handleCardClick}>
-      <div className={styles.journalCard__left} style={{ backgroundColor: currentCardColor }}>
+      <div className={styles.journalCard__left} style={{ backgroundColor: articleColor }}>
         <div className={`${styles.journalCard__authorsGrid} ${authorsCountClass}`}>
           {authorsToDisplay.map((author, idx) => {
-            const isFallback = !author.image;
-            const imageSrc = author.image || getRandomCat();
+            // const isFallback = !author.image;
+             const fallback = getRandomCat();
+            // const imageSrc = author.image || getRandomCat();
 
             return (
               <div
                 key={idx}
                 className={`${styles.journalCard__authorWrapper} ${isInverted ? styles.inverted : ''}`}
                 data-name={author.name}>
-                <img
+                {/* <img
                   src={imageSrc}
                   alt={`Автор ${author.name}`}
                   loading="lazy"
@@ -113,7 +114,15 @@ function JournalCard({ journal, index }) {
                     e.target.src = getRandomCat();
                     e.target.classList.add(styles.fallbackIcon);
                   }}
-                />
+                /> */}
+        <AsyncImage
+     key={idx}
+     src={author.image || fallback}
+     alt={author.name}
+     wrapperClass={`${styles.journalCard__authorWrapper} ${isInverted ? styles.inverted : ''}`}
+     imgClass={`${styles.journalCard__authorImg} ${!author.image ? styles.fallbackIcon : ''}`}
+    />
+          
               </div>
             );
           })}

@@ -570,14 +570,6 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
                   WA
                 </span>
               </button>
-              {/* <button onClick={() => shareToViber(project, Host)}>
-                <span
-                  className={styles.social_links_item}
-                  style={{ marginRight: "22px", color: "#FF7F6A" }}
-                >
-                  VB
-                </span>
-              </button> */}
               <button
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
@@ -591,10 +583,7 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
           </div>
         )}
         <div className={styles.project_name_text}>Ещё по теме</div>
-        {/* <div className={styles.swiper_progect_container}> */}
-        {/* <SwiperContainerProgect projects={projects} /> */}
-        {/* </div> */}
-        <div className={styles.main_project_projectCard}>
+             <div className={styles.main_project_projectCard}>
           <Swiper
             className={styles.slider_card_container_project_projectCard}
             id="slider_card_container_project"
