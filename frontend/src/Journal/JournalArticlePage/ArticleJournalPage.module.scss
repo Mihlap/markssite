@@ -21,6 +21,7 @@
   }
 }
 
+
 .allButton_div {
   padding-top: 6.7rem;
   padding-left: 1.75rem;
@@ -71,7 +72,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--originWhite-FFFFFF);
+  background-color: var(--white-F6F6F6);
 
   @media (max-width: 1199px) {
     flex-direction: column;
@@ -97,12 +98,12 @@
   background-color: var(--originWhite-FFFFFF);
   border-radius: 0.5rem;
 
-  @media screen and (max-width: 1200px) {
-    width: 100%;
-    padding: 0 9rem 2.7rem 9rem;
+  @media screen and (max-width: 1199px) {
+    width: 70%;
+    padding: 0 0 2.7rem 0;
   }
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 767px) {
     width: 100%;
     padding: 0;
   }
