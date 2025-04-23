@@ -70,17 +70,6 @@ const Paragraph = ({ node, children, ...props }) => {
   );
 };
 
-const ChapterTitle = ({ title, level }) => (
-  <ReactMarkdown
-    remarkPlugins={[remarkGfm, remarkBreaks]}
-    components={{
-      p: ({ children, ...props }) =>
-        React.createElement(`h${level}`, { ...props, className: styles[`heading${level}`] }, children),
-    }}>
-    {title}
-  </ReactMarkdown>
-);
-
 const Heading =
   (level) =>
   ({ children, ...props }) =>
@@ -209,9 +198,9 @@ function ArticleJournalPage({ handleMouseEnter, handleMouseLeave, handleMouseHov
     window.scrollTo(0, 0);
   }, [journalToUse, targetChapterSlug]);
 
- if (loading || !journalToUse) {
-   return <SkeletonArticle />;
- }
+  if (loading || !journalToUse) {
+    return <SkeletonArticle />;
+  }
 
   return (
     <div className={styles.main_article_card}>
@@ -241,20 +230,23 @@ function ArticleJournalPage({ handleMouseEnter, handleMouseLeave, handleMouseHov
         </div>
         <div className={styles.wrapper}>
           <div className={styles.markdown_body}>
-            {chapters.map((chapter) => (
-              <div key={chapter.slug} id={chapter.slug} style={{ marginTop: '3rem' }}>
-                <h2>{chapter.title}</h2>
-                {/* <ChapterTitle title={chapter.title} level={2} /> */}
-                {/* <ChapterTitle title={chapter.title} level={chapter.level} /> */}
-                <ReactMarkdown
-                  children={chapter.content}
-                  remarkPlugins={[remarkMath, remarkGfm, remarkBreaks]}
-                  rehypePlugins={[rehypeKatex, rehypeRaw, rehypePdfEmbedder, rehypeUniqueHeadingIds]}
-                  unwrapDisallowed={true}
-                  components={markdownComponents}
-                />
-              </div>
-            ))}
+            {chapters.map((chapter) => {
+                const rawTitle = chapter.title.replace(/^(#+)(?!\s)/, '$1 ').trim();
+             return (
+               <div key={chapter.slug} id={chapter.slug} style={{ marginTop: '3rem' }}>
+                 <ReactMarkdown remarkPlugins={[remarkGfm, remarkBreaks]} components={markdownComponents}>
+                   {rawTitle}
+                 </ReactMarkdown>              
+                 <ReactMarkdown
+                   children={chapter.content}
+                   remarkPlugins={[remarkMath, remarkGfm, remarkBreaks]}
+                   rehypePlugins={[rehypeKatex, rehypeRaw, rehypePdfEmbedder, rehypeUniqueHeadingIds]}
+                   unwrapDisallowed={true}
+                   components={markdownComponents}
+                 />
+               </div>
+             );
+           })}
           </div>
           <div className={styles.share_article}>
             <div>Поделиться статьей</div>

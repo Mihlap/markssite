@@ -39,17 +39,27 @@ function ArticleTableOfContents({ markdown, activeSlug }) {
   const raw = parseChapters(markdown);
   if (!raw.length) return null;
 
-  const chapters = [...raw].sort((a, b) => a.index - b.index);
   const skipTitles = ['аннотация', 'библиографический список'];
-  const chaptersWithSlug = chapters.map((ch, idx) => {
-    const base = ch.title
-      .toLowerCase()
-      .replace(/[^\wа-яё\s-]/gi, '')
-      .replace(/\s+/g, '-');
-     const slug = `${base}-${idx}`;
-     const isUnnumbered = skipTitles.includes(ch.title.toLowerCase());
-     return { ...ch, slug, isUnnumbered };
-  });
+  
+   const chaptersWithSlug = raw
+     .slice()
+     .sort((a, b) => a.index - b.index)
+     .map((ch, idx) => {    
+       const cleaned = ch.title
+         .replace(/^[#*` \s]+/, '')
+         .replace(/[*_~`]+/g, '')
+         .trim();
+
+       const base = cleaned
+         .toLowerCase()
+         .replace(/[^\wа-яё\s-]/gi, '')
+         .replace(/\s+/g, '-');
+
+       const slug = `${base}-${idx}`;
+       const isUnnumbered = skipTitles.includes(cleaned.toLowerCase());
+
+       return { ...ch, title: cleaned, slug, isUnnumbered };
+     });
 
   const onClick = (slug, e) => {
     e.preventDefault();
