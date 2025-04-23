@@ -22,27 +22,9 @@ const SliderContainerProjectCard = ({ projects }) => {
     Конструкции: '#566272',
     Дизайн: '#FAA8BD',
     Инженерия: '#90B734',
-  };
+  };  
 
-  // const handlePageClick = (index) => {
-  //   setCurrentIndex(index);
-  //   if (swiperRef.current && swiperRef.current.slideTo) {
-  //     swiperRef.current.slideTo(index);
-  //   }
-  // };
-
-  const isFullUrl = (url) => url.startsWith('http://') || url.startsWith('https://');
-
-const imageSrc = projects.imageProject
-  ? isFullUrl(projects.imageProject)
-    ? projects.imageProject
-    : `${bucket_url}/images/imageAdd/${projects.imageProject}`
-  : projects.imageTitle
-    ? isFullUrl(projects.imageTitle)
-      ? projects.imageTitle
-      : `${bucket_url}/images/imageAdd/${projects.imageTitle}`
-    : "";
-
+  const isFullUrl = (url) => typeof url === 'string' && (url.startsWith('http://') || url.startsWith('https://'));
 
   return (
     <div className="swiper_container_ProjectCard">
@@ -61,88 +43,91 @@ const imageSrc = projects.imageProject
         }}>
         <div className="swiper_wrapper_ProjectCard">
           {projects?.map((project) => {
-            if (project) {
-              return (
-                <SwiperSlide className="swiper_container_item" key={project.id}>
-                  <Link key={project.id} to={`/projects/${project.id}`}>
-                    <SliderItemProject
-                      className="swiper_item_image"
-                      title={project.title}
-                      src={imageSrc}
-                      text={project.text}
-                      id={project.link}
-                      selectCompetencies={(() => {
-                        try {
-                          const selectCompetencies = project.selectCompetencies;
+            if (!project) return null;
 
-                          if (Array.isArray(selectCompetencies)) {
-                            // ... (то же, что и в предыдущем коде)
-                          } else if (typeof project.selectCompetencies === 'string') {
-                            // Если строка с одним значением и без запятых, отобразить компетенцию
-                            if (!project.selectCompetencies.includes(',')) {
-                              const label = project.selectCompetencies.trim();
-                              return (
-                                <div
-                                  key={label}
-                                  className="div_el_selectCompetencies_ProjectCard"
-                                  style={{
-                                    color: colors[label],
-                                    borderColor: colors[label],
-                                    border: '0.5px solid',
-                                    padding: '3px 6px',
-                                    borderRadius: '34px',
-                                  }}>
-                                  {label}
-                                </div>
-                              );
+            const imageSrc = project.imageProject
+              ? isFullUrl(project.imageProject)
+                ? project.imageProject
+                : `${bucket_url}/images/imageAdd/${project.imageProject}`
+              : project.imageTitle
+              ? isFullUrl(project.imageTitle)
+                ? project.imageTitle
+                : `${bucket_url}/images/imageAdd/${project.imageTitle}`
+              : '';
+
+            return (
+              <SwiperSlide className="swiper_container_item" key={project.id}>
+                <Link to={`/projects/${project.id}`}>
+                  <SliderItemProject
+                    className="swiper_item_image"
+                    title={project.title}
+                    src={imageSrc}
+                    text={project.text}
+                    id={project.link}
+                    selectCompetencies={(() => {
+                      try {
+                        const sc = project.selectCompetencies;
+
+                        if (Array.isArray(sc)) {
+                          return sc.map((item, idx) => {
+                            let label = '';
+                            let color = '#000';
+
+                            if (typeof item === 'string') {
+                              label = item.trim();
+                              color = colors[label] || '#000';
+                            } else if (item && (item.value || item.label)) {
+                              label = item.label || item.value;
+                              color = colors[item.value] || '#000';
                             } else {
-                              // Строка с несколькими значениями, разделенными запятыми
-                              return project.selectCompetencies.split(',').map((value) => {
-                                const label = value.trim();
-                                return (
-                                  <div
-                                    key={value}
-                                    className="div_el_selectCompetencies_ProjectCard"
-                                    style={{
-                                      color: colors[value],
-                                      borderColor: colors[value],
-                                      border: '0.5px solid',
-                                      padding: '3px 6px',
-                                      borderRadius: '34px',
-                                    }}>
-                                    {label}
-                                  </div>
-                                );
-                              });
+                              return null;
                             }
-                          }
-                        } catch (error) {
-                          return null;
+
+                            return (
+                              <div
+                                key={idx}
+                                className="div_el_selectCompetencies_ProjectCard"
+                                style={{
+                                  color,
+                                  borderColor: color,
+                                  border: '0.5px solid',
+                                  padding: '3px 6px',
+                                  borderRadius: '34px',
+                                }}>
+                                {label}
+                              </div>
+                            );
+                          });
+                        } else if (typeof sc === 'string') {
+                          const label = sc.trim();
+                          const color = colors[label] || '#000';
+                          return (
+                            <div
+                              className="div_el_selectCompetencies_ProjectCard"
+                              style={{
+                                color,
+                                borderColor: color,
+                                border: '0.5px solid',
+                                padding: '3px 6px',
+                                borderRadius: '34px',
+                              }}>
+                              {label}
+                            </div>
+                          );
                         }
-                      })()}
-                      countryCity={project.countryCity}
-                      monthYear={project.monthYear}
-                    />
-                  </Link>
-                </SwiperSlide>
-              );
-            } else {
-              return null;
-            }
+                      } catch {
+                        return null;
+                      }
+                    })()}
+                    countryCity={project.countryCity}
+                    monthYear={project.monthYear}
+                  />
+                </Link>
+              </SwiperSlide>
+            );
           })}
         </div>
-      </Swiper>
-      {/* <div className="swiper_pagination_ProjectCard">
-        {projects && projects?.map((_, index) => (
-            <button
-              key={index}
-              className={`swiper_pagination_bullet_ProjectCard ${
-                currentIndex === index ? "active" : ""
-              }`}
-              onClick={() => handlePageClick(index)}
-            />
-          ))}
-      </div> */}
+      </Swiper>  
     </div>
   );
 };
