@@ -138,6 +138,7 @@
   h6 {
     font-family: var(--font-unbounded);
     font-weight: 300;
+    line-height: 1.5rem;
     margin: 2rem 0 1rem;
     color: var(--black-1D2E43);
   }
@@ -320,11 +321,15 @@
 }
 
 .blockquote {
-  border-left: 4px solid var(--gray-959DA6);
+border-left: 0.5rem solid #75BBFD;
   padding-left: 1rem;
-  margin: 1.5rem 0;
-  font-style: italic;
-  color: var(--gray-959DA6);
+  color: var(--black-1D2E43, );
+  font-style: var(--font-raleway);
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: var(--fw-400);
+  line-height: 1.5rem;
+  margin: auto 0;
 }
 
 .inlineCode {

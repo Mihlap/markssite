@@ -111,23 +111,19 @@
   }
 }
 
-/* Компонент PDF Embed */
 .markdown-editor__pdfembed {
   margin: 1em 0;
 }
 
-/* Компонент MathBlock */
 .markdown-editor__mathblock {
   margin: 1em 0;
 }
 
-/* Абзацы */
 .markdown-editor__paragraph {
   margin-bottom: 12px;
   line-height: 1.8;
 }
 
-/* Заголовки */
 .markdown-editor__heading1 {
   font-size: 24px;
   font-weight: bold;
@@ -170,7 +166,6 @@
   color: var(--black-1D2E43);
 }
 
-/* Ссылки */
 .markdown-editor__link {
   color: var(--blue-75BBFD);
   text-decoration: underline;
@@ -180,7 +175,6 @@
   }
 }
 
-/* Изображения */
 .markdown-editor__img {
   max-width: 100%;
   height: auto;
@@ -190,7 +184,6 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Таблицы */
 .markdown-editor__table-container {
   overflow-x: auto;
 }
@@ -214,22 +207,19 @@
   font-weight: bold;
 }
 
-/* Списки */
 .markdown-editor__list {
   margin: 1em 0;
   margin-left: 20px;
 }
 
-/* Цитаты */
 .markdown-editor__blockquote {
-  border-left: 4px solid #75BBFD;
-  padding-left: 16px;
-  color: var(--light-gray-C0C5CB);
-  font-style: var(--font-unbounded);
-  margin: 20px 0;
+  border-left: 0.5rem solid #75BBFD;
+  padding-left: 1rem;
+  color: var(--black-1D2E43,);
+  font-style: var(--font-raleway);
+  margin: auto 0; 
 }
 
-/* Inline-код */
 .markdown-editor__code {
   background-color: var(--white-F6F6F6);
   padding: 4px 8px;
@@ -239,7 +229,6 @@
   color: var(--crimson-E00747);
 }
 
-/* Блочный код */
 .markdown-editor__pre {
   background-color: var(--white-F6F6F6);
   padding: 16px;

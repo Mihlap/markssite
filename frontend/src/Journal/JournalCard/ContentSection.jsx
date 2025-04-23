@@ -1,11 +1,8 @@
-// src/Journal/JournalCard/ContentSection.jsx
-
 import React, { useState, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ReactMarkdown from 'react-markdown';
 import styles from './JournalCard.module.scss';
 
-// Функция парсинга глав из Markdown
 function parseChapters(markdown = '') {
   const pattern = /<!--\s*chapter:start=(.*?)\s*-->([\s\S]*?)<!--\s*chapter:end=(.*?)\s*-->/g;
   const chapters = [];
@@ -24,22 +21,31 @@ export default function ContentSection({ markdown, journal }) {
   const navigate = useNavigate();
   const [activeChapter, setActiveChapter] = useState(null);
 
-  // Парсим и сортируем главы
   const rawChapters = useMemo(() => parseChapters(markdown), [markdown]);
   const sortedChapters = useMemo(() => [...rawChapters].sort((a, b) => a.index - b.index), [rawChapters]);
+
   const chaptersWithSlug = useMemo(
     () =>
-      sortedChapters.map((ch, idx) => {
-        const base = ch.title
+      sortedChapters.map((ch, idx) => {     
+        const cleaned = ch.title
+          .replace(/^[#*`_\s]+/, '')
+          .replace(/[*_~`]+/g, '')
+          .trim();
+
+        const base = cleaned
           .toLowerCase()
           .replace(/[^\wа-яё\s-]/gi, '')
           .replace(/\s+/g, '-');
-        return { ...ch, slug: `${base}-${idx}` };
+
+        return {
+          ...ch,
+          title: cleaned,
+          slug: `${base}-${idx}`,
+        };
       }),
     [sortedChapters]
   );
 
-  // При клике — навигируем в полный просмотр и передаём slug
   const handleChapterClick = useCallback(
     (slug, e) => {
       e.stopPropagation();
@@ -75,7 +81,7 @@ export default function ContentSection({ markdown, journal }) {
       <div className={styles.contentMarkdown}>
         {chaptersWithSlug.map((chapter) => (
           <section key={chapter.slug} id={chapter.slug} style={{ marginBottom: '2rem' }}>
-            <h3>{chapter.title}</h3>
+            <h3 className={styles.heading3}>{chapter.title}</h3>
             <ReactMarkdown>{chapter.content}</ReactMarkdown>
           </section>
         ))}
