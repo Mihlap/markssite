@@ -44,11 +44,26 @@
     gap: 8px;
   }
 
+  &__button {
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--white-F6F6F6);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: border 0.3s ease;
+
+    &--active {
+      color: var(--white-F6F6F6);
+      border: 2px solid #75BBFD;
+    }
+  }
+
   &__content {
     display: flex;
-    flex-direction: row;
-    height: 100%;
-    width: 100%;
+    flex: 1;
     border: 1px solid #d4edfb;
     border-radius: 6px;
     overflow: hidden;
@@ -76,7 +91,7 @@
     flex: 1;
     padding: 16px;
     overflow-y: auto;
-    background-color: #f8fafc;
+    background-color: var(--white-F6F6F6);
     border-top-right-radius: 6px;
     border-bottom-right-radius: 6px;
     font-size: 16px;
@@ -92,149 +107,4 @@
       font-weight: 400;
     }
   }
-
-  &__button {
-    width: 24px;
-    height: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: var(--white-F6F6F6);
-    border-radius: 4px;
-    cursor: pointer;
-    transition: border 0.3s ease;
-
-    &--active {
-      color: var(--white-F6F6F6);
-      border: 2px solid #75BBFD;
-    }
-  }
-}
-
-.markdown-editor__pdfembed {
-  margin: 1em 0;
-}
-
-.markdown-editor__mathblock {
-  margin: 1em 0;
-}
-
-.markdown-editor__paragraph {
-  margin-bottom: 12px;
-  line-height: 1.8;
-}
-
-.markdown-editor__heading1 {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 16px;
-  color: var(--black-1D2E43);
-}
-
-.markdown-editor__heading2 {
-  font-size: 22px;
-  font-weight: bold;
-  margin-bottom: 14px;
-  color: var(--black-1D2E43);
-}
-
-.markdown-editor__heading3 {
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 12px;
-  color: var(--black-1D2E43);
-}
-
-.markdown-editor__heading4 {
-  font-size: 18px;
-  font-weight: bold;
-  margin-bottom: 10px;
-  color: var(--black-1D2E43);
-}
-
-.markdown-editor__heading5 {
-  font-size: 16px;
-  font-weight: bold;
-  margin-bottom: 8px;
-  color: var(--black-1D2E43);
-}
-
-.markdown-editor__heading6 {
-  font-size: 14px;
-  font-weight: bold;
-  margin-bottom: 6px;
-  color: var(--black-1D2E43);
-}
-
-.markdown-editor__link {
-  color: var(--blue-75BBFD);
-  text-decoration: underline;
-
-  &:hover {
-    text-decoration: none;
-  }
-}
-
-.markdown-editor__img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-  margin: 0 auto;
-  border-radius: 6px;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-}
-
-.markdown-editor__table-container {
-  overflow-x: auto;
-}
-
-.markdown-editor__table {
-  width: 100%;
-  border-collapse: collapse;
-  border: 1px solid var(--black-4E4E4E);
-  margin-bottom: 16px;
-}
-
-.markdown-editor__table th,
-.markdown-editor__table td {
-  border: 1px solid var(--black-4E4E4E);
-  padding: 8px;
-  text-align: left;
-}
-
-.markdown-editor__table th {
-  background-color: var(--light-light-gray-EDEDED);
-  font-weight: bold;
-}
-
-.markdown-editor__list {
-  margin: 1em 0;
-  margin-left: 20px;
-}
-
-.markdown-editor__blockquote {
-  border-left: 0.5rem solid #75BBFD;
-  padding-left: 1rem;
-  color: var(--black-1D2E43,);
-  font-style: var(--font-raleway);
-  margin: auto 0; 
-}
-
-.markdown-editor__code {
-  background-color: var(--white-F6F6F6);
-  padding: 4px 8px;
-  border-radius: 4px;
-  font-family: 'Courier New', monospace;
-  font-size: 14px;
-  color: var(--crimson-E00747);
-}
-
-.markdown-editor__pre {
-  background-color: var(--white-F6F6F6);
-  padding: 16px;
-  border-radius: 6px;
-  overflow-x: auto;
-  font-size: 14px;
-  white-space: pre-wrap;
-  color: var(--crimson-E00747);
 }
