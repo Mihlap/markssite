@@ -10,6 +10,16 @@ export const shareToVK = (journal) => {
   window.open(vkUrl, '_blank', 'noopener');
 };
 
+export const shareToWhatsAppJournal = (journal) => {
+  const origin = window.location.origin;
+  const journalUrl = `${origin}/journal/${journal.id}`;
+  const title = journal.title;
+  const message = `${title}\n${journalUrl}`;
+  const encodedMessage = encodeURIComponent(message);
+  const whatsappUrl = `https://wa.me/?text=${encodedMessage}`;
+  window.open(whatsappUrl, '_blank', 'noopener');
+};
+
 export const shareToTelegram = (journal) => {
   const origin = window.location.origin;
   const journalUrl = `${origin}/journal/${journal.id}`;

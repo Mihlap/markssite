@@ -18,66 +18,51 @@ export function parseChapters(markdown = '') {
   return chapters;
 }
 
-function ArticleTableOfContents({ markdown, activeSlug }) {
-  const [activeChapter, setActiveChapter] = useState(activeSlug || null);
+function ArticleTableOfContents({ markdown = '', activeSlug }) {
+  const [activeChapter, setActiveChapter] = useState(activeSlug || '');
 
   useEffect(() => {
-    if (activeSlug) {
-      setActiveChapter(activeSlug);
-    }
+    if (activeSlug) setActiveChapter(activeSlug);
   }, [activeSlug]);
-
-  useEffect(() => {
-    const hash = window.location.hash.slice(1);
-    if (hash) {
-      setActiveChapter(hash);
-      const el = document.getElementById(hash);
-      if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  }, []);
-
-  const raw = parseChapters(markdown);
-  if (!raw.length) return null;
-
-  const skipTitles = ['аннотация', 'библиографический список'];
-  
-   const chaptersWithSlug = raw
-     .slice()
-     .sort((a, b) => a.index - b.index)
-     .map((ch, idx) => {    
-       const cleaned = ch.title
-         .replace(/^[#*` \s]+/, '')
-         .replace(/[*_~`]+/g, '')
-         .trim();
-
-       const base = cleaned
-         .toLowerCase()
-         .replace(/[^\wа-яё\s-]/gi, '')
-         .replace(/\s+/g, '-');
-
-       const slug = `${base}-${idx}`;
-       const isUnnumbered = skipTitles.includes(cleaned.toLowerCase());
-
-       return { ...ch, title: cleaned, slug, isUnnumbered };
-     });
 
   const onClick = (slug, e) => {
     e.preventDefault();
     setActiveChapter(slug);
     const el = document.getElementById(slug);
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start', marginTop: '3rem' });
-    window.history.pushState(null, '', `#${slug}`);
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      window.history.replaceState(null, '', `#${slug}`);
+    }
   };
+
+  const raw = parseChapters(markdown);
+  if (!raw.length) return null;
+
+  const skipTitles = ['аннотация', 'библиографический список'];
+
+  const chaptersWithSlug = raw
+    .slice()
+    .sort((a, b) => a.index - b.index)
+    .map((ch, idx) => {
+      const cleaned = ch.title
+        .replace(/^[#*` \s]+/, '')
+        .replace(/[*_~`]+/g, '')
+        .trim();
+      const base = cleaned
+        .toLowerCase()
+        .replace(/[^\wа-яё\s-]/gi, '')
+        .replace(/\s+/g, '-');
+      const slug = `${base}-${idx}`;
+      const isUnnumbered = skipTitles.includes(cleaned.toLowerCase());
+      return { ...ch, title: cleaned, slug, isUnnumbered };
+    });
 
   return (
     <nav className={styles.tocWrapper}>
       <p className={styles.tocTitle}>Содержание</p>
       <ul className={styles.tocList}>
         {chaptersWithSlug.map((chap) => (
-          <li
-            key={chap.slug}
-            className={chap.isUnnumbered ? styles.unnumbered : ''}
-            >
+          <li key={chap.slug} className={chap.isUnnumbered ? styles.unnumbered : ''}>
             <a
               href={`#${chap.slug}`}
               className={activeChapter === chap.slug ? styles.active : ''}

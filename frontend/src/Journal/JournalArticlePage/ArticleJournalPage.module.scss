@@ -347,6 +347,18 @@ border-left: 0.5rem solid #75BBFD;
   margin-bottom: 1.5rem;
 }
 
+.keywordsSection {
+  background: var(--light-yellow-FFF9C4);
+  padding: 1rem;
+  border-radius: 4px;
+}
+
+.annotationSection {
+  background: var(--light-blue-E3F2FD);
+  padding: 1rem;
+  border-radius: 4px;
+}
+
 .share_article {
   order: 0;
   position: static;

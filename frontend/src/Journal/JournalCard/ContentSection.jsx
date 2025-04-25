@@ -1,6 +1,5 @@
 import React, { useState, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import ReactMarkdown from 'react-markdown';
 import styles from './JournalCard.module.scss';
 
 function parseChapters(markdown = '') {
@@ -62,8 +61,7 @@ export default function ContentSection({ markdown, journal }) {
   }
 
   return (
-    <div className={styles.contentContainer}>
-      {/* Боковое оглавление */}
+    <div className={styles.contentContainer}>   
       <aside className={styles.tableOfContents}>
         <h4 className={styles.tocTitle}>Содержание</h4>
         <ul className={styles.listWrapper}>
@@ -75,17 +73,7 @@ export default function ContentSection({ markdown, journal }) {
             </li>
           ))}
         </ul>
-      </aside>
-
-      {/* Превью-содержимое */}
-      <div className={styles.contentMarkdown}>
-        {chaptersWithSlug.map((chapter) => (
-          <section key={chapter.slug} id={chapter.slug} style={{ marginBottom: '2rem' }}>
-            <h3 className={styles.heading3}>{chapter.title}</h3>
-            <ReactMarkdown>{chapter.content}</ReactMarkdown>
-          </section>
-        ))}
-      </div>
+      </aside>  
     </div>
   );
 }
