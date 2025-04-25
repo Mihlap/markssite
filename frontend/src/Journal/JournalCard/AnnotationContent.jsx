@@ -1,67 +1,83 @@
 import React from 'react';
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+import remarkBreaks from 'remark-breaks';
+import remarkMath from 'remark-math';
+import rehypeRaw from 'rehype-raw';
+import rehypeKatex from 'rehype-katex';
+import rehypePdfEmbedder from '../../Add/add-articles/AddJournal/utils/rehypePdfEmbedder';
+import rehypeUniqueHeadingIds from '../../Add/add-articles/AddJournal/utils/rehypeUniqueHeadingIds';
+import { BlockMath, InlineMath } from 'react-katex';
 import styles from './JournalCard.module.scss';
 
-function AnnotationContent({ markdown }) {
-  const chapterPattern = /<!--\s*chapter:start=.*?-->([\s\S]*?)<!--\s*chapter:end=.*?-->/g;
-  const cleanedMarkdown = markdown.replace(chapterPattern, '').trim();
+const markdownComponents = {
+  p: ({ children, ...props }) => <p className={styles.annotationText} {...props}>{children}</p>,
+  strong: ({ children, ...props }) => <strong {...props}>{children}</strong>,
+  em: ({ children, ...props }) => <em {...props}>{children}</em>,
+  del: ({ children, ...props }) => <del {...props}>{children}</del>,
+  inlineMath: ({ value }) => <InlineMath>{value}</InlineMath>,
+  math: ({ value }) => <BlockMath>{value}</BlockMath>,
+};
 
-  const annotationStartMarker = '<!-- annotation:start -->';
-  const annotationEndMarker = '<!-- annotation:end -->';
-  const keywordsStartMarker = '<!-- keywords:start -->';
-  const keywordsEndMarker = '<!-- keywords:end -->';
+export default function AnnotationContent({ markdown }) {
+  const chapterPattern = /<!--\s*chapter:start=.*?-->([\s\S]*?)<!--\s*chapter:end=.*?-->/g;
+  const cleaned = markdown.replace(chapterPattern, (_, inner) => inner).trim();
+
+  const annotationStart = '<!-- annotation:start -->';
+  const annotationEnd   = '<!-- annotation:end -->';
+  const keywordsStart   = '<!-- keywords:start -->';
+  const keywordsEnd     = '<!-- keywords:end -->';
 
   let annotationText = '';
+  const aStart = cleaned.indexOf(annotationStart);
+  if (aStart !== -1) {
+    const aEnd = cleaned.indexOf(annotationEnd, aStart + annotationStart.length);
+    if (aEnd !== -1) {
+      annotationText = cleaned
+        .slice(aStart + annotationStart.length, aEnd)
+        .trim();
+    }
+  }
+
   let keywordsText = '';
-  let annotationIndex = -1;
-  let keywordsIndex = -1;
-
-  annotationIndex = cleanedMarkdown.indexOf(annotationStartMarker);
-  if (annotationIndex !== -1) {
-    const endIndex = cleanedMarkdown.indexOf(annotationEndMarker, annotationIndex);
-    if (endIndex !== -1) {
-      annotationText = cleanedMarkdown.substring(annotationIndex + annotationStartMarker.length, endIndex).trim();
+  const kStart = cleaned.indexOf(keywordsStart);
+  if (kStart !== -1) {
+    const kEnd = cleaned.indexOf(keywordsEnd, kStart + keywordsStart.length);
+    if (kEnd !== -1) {
+      keywordsText = cleaned
+        .slice(kStart + keywordsStart.length, kEnd)
+        .trim();
     }
   }
 
-  keywordsIndex = cleanedMarkdown.indexOf(keywordsStartMarker);
-  if (keywordsIndex !== -1) {
-    const endIndex = cleanedMarkdown.indexOf(keywordsEndMarker, keywordsIndex);
-    if (endIndex !== -1) {
-      keywordsText = cleanedMarkdown.substring(keywordsIndex + keywordsStartMarker.length, endIndex).trim();
-    }
-  }
-
-  if (!annotationText && !keywordsText) {
-    annotationText = cleanedMarkdown;
-    annotationIndex = 0;
-  }
-
-  const blocks = [];
-  if (keywordsText) {
-    blocks.push({ type: 'keywords', content: keywordsText, index: keywordsIndex });
-  }
-  if (annotationText) {
-    blocks.push({ type: 'annotation', content: annotationText, index: annotationIndex });
-  }
-
-  blocks.sort((a, b) => a.index - b.index);
+  const remarkPlugins = [remarkGfm, remarkMath, remarkBreaks];
+  const rehypePlugins = [rehypeRaw, rehypeKatex, rehypePdfEmbedder, rehypeUniqueHeadingIds];
 
   return (
     <div className={styles.annotationContainer}>
-      {blocks.map((block, idx) =>
-        block.type === 'keywords' ? (
-          <div key={idx} className={styles.keywords}>
-            <ReactMarkdown>{block.content}</ReactMarkdown>
-          </div>
-        ) : (
-          <div key={idx} className={styles.annotationText}>
-            <ReactMarkdown>{block.content}</ReactMarkdown>
-          </div>
-        )
+      {keywordsText && (
+        <div className={styles.keywords}>
+          <ReactMarkdown
+            remarkPlugins={remarkPlugins}
+            rehypePlugins={rehypePlugins}
+            components={markdownComponents}
+          >
+            {keywordsText}
+          </ReactMarkdown>
+        </div>
+      )}
+
+      {annotationText && (
+        <div className={styles.annotationText}>
+          <ReactMarkdown
+            remarkPlugins={remarkPlugins}
+            rehypePlugins={rehypePlugins}
+            components={markdownComponents}
+          >
+            {annotationText}
+          </ReactMarkdown>
+        </div>
       )}
     </div>
   );
 }
-
-export default AnnotationContent;

@@ -1,0 +1,163 @@
+@import '../../../src/App.css';
+@import '../../../src/variables';
+
+@keyframes shimmer {
+  to {
+    transform: translateX(100%);
+  }
+}
+
+.shimmer {
+  position: relative;
+  background: #e0e0e0;
+  overflow: hidden;
+
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(to right,
+        transparent 0%,
+        rgba(255, 255, 255, 0.6) 50%,
+        transparent 100%);
+    animation: shimmer 1.5s infinite;
+  }
+}
+
+.skeleton {
+  width: 100%;
+  background-color: var(--white-F6F6F6);
+  display: flex;
+  flex-direction: column;
+}
+
+.hero {
+  position: relative;
+  min-height: 31.5rem;
+  @extend .shimmer;
+  padding: 6.7rem 1rem 6.5rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.button {
+  width: 8rem;
+  height: 2.5rem;
+  border-radius: 0.5rem;
+}
+
+.title {
+  width: 70%;
+  height: 3rem;
+  border-radius: 0.5rem;
+  top: 3rem;
+}
+
+.authors {
+  width: 70%;
+  height: 1.5rem;
+  border-radius: 0.5rem;
+  top: 5rem;
+}
+
+.date {
+  width: 100%;
+  height: 1rem;
+  border-radius: 0.5rem;
+  top: 6rem;
+}
+
+.articleLayout {
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  background-color: var(--white-F6F6F6);
+  padding: 0 12.5rem;
+
+  @media (max-width: 1199px) {
+    flex-direction: column;
+    padding: 0 9rem;
+  }
+
+    @media (max-width: 767px) {
+      padding: 0;
+    }
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 82rem;
+  background-color: var(--originWhite-FFFFFF);
+  border-radius: 0.5rem;
+  margin: 0 auto;
+
+  @media (max-width: 1199px) {
+    width: 100%;
+    padding-bottom: 2.7rem;
+  }
+
+  @media (max-width: 767px) {
+    padding: 0;
+  }
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 2rem 2rem;
+  width: 100%;
+
+  @media (max-width: 1199px) {
+    width: 100%;
+    padding: 2rem 2rem;
+  }
+
+  @media (max-width: 767px) {
+    padding: 1.5rem 1rem 0rem 1rem;
+  }
+}
+
+.line {
+  width: 100%;
+  height: 1rem;
+  border-radius: 0.25rem;
+}
+
+.block {
+  width: 100%;
+  height: 8rem;
+  border-radius: 0.25rem;
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
+  padding: 2rem 2rem;
+
+  @media (max-width: 1199px) {
+    padding: 1.5rem 2rem;
+  }
+
+  @media (max-width: 767px) {
+    padding: 1.5rem 1rem;
+  }
+}
+
+.nav {
+  display: flex;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.navPrev,
+.navNext {
+  width: 50%;
+  height: 2.5rem;
+}
