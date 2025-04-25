@@ -1,0 +1,85 @@
+@import '../../../src/App.css';
+@import '../../../src/variables';
+
+.tocWrapper {
+  display: flex;
+  flex-direction: column;
+  padding-top: 2rem;
+}
+
+.tocTitle {
+  color: var(--black-1D2E43);
+  font-family: var(--font-unbounded);
+  font-size: 1.25rem;
+  font-style: normal;
+  font-weight: 300;
+  line-height: 1.75rem;
+  margin-bottom: 1.6rem;
+}
+
+.tocList {
+  font-variant-numeric: lining-nums proportional-nums;
+  font-family: var(--font-raleway);
+  font-size: 1rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.5rem;
+  padding: 0;
+  list-style: none;
+  counter-reset: section;
+
+  li {
+    margin-bottom: 1rem;
+    position: relative;
+
+    &.unnumbered {
+      counter-increment: none;
+      padding-left: 0;
+    }
+
+    &:not(.unnumbered) {
+      padding-left: 1rem;
+      counter-increment: section;
+    }
+  }
+
+  li:not(.unnumbered)>a {
+    display: inline-block;
+    position: relative;
+    padding-left: 1.5rem;
+
+    &::before {
+      content: counter(section) ".";
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 1.2rem;
+      text-align: right;
+    }
+  }
+
+  a {
+    display: inline-block;
+    text-decoration: none;
+    color: var(--dark-gray-566269);
+    text-decoration-line: underline;
+    text-decoration-color: var(--dark-gray-566269);
+    text-decoration-skip-ink: none;
+    text-decoration-thickness: auto;
+    text-underline-offset: auto;
+    transition: color 0.2s, text-decoration-color 0.2s;
+
+    &:hover {
+      color: var(--blue-75BBFD);
+      text-decoration: underline;
+      text-decoration-color: var(--blue-75BBFD);
+    }
+  }
+
+  .active {
+    color: var(--dark-blue-389FFF);
+    font-weight: bold;
+    text-decoration: underline;
+    text-decoration-color: var(--dark-blue-389FFF);
+  }
+}

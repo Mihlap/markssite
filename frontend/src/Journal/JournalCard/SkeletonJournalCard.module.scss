@@ -1,0 +1,86 @@
+@import '../../../src/App.css';
+@import '../../../src/variables';
+
+@keyframes shimmer {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.skeletonCard {
+  display: flex;
+  width: 100%;
+  margin-bottom: 2rem;
+  border-radius: 0.5rem;
+  overflow: hidden;
+  background: #f2f2f2;
+}
+
+.leftBox {
+  flex: 0 0 22.125rem;
+  height: 22.125rem;
+  border-radius: 4rem 2rem 2rem 4rem;
+  background: #e0e0e0;
+  position: relative;
+  overflow: hidden;
+}
+
+.rightBox {
+  flex: 1;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  border-radius: 0 2rem 2rem 2rem;
+  background: #e0e0e0;
+  position: relative;
+  overflow: hidden;
+}
+
+.titleLine,
+.metaLine,
+.tab {
+  position: relative;
+  background: #e0e0e0;
+  border-radius: 0.25rem;
+  overflow: hidden;
+}
+
+.titleLine {
+  height: 2.5rem;
+  width: 60%;
+}
+
+.metaLine {
+  height: 1rem;
+  width: 40%;
+}
+
+.tabBar {
+  display: flex;
+  gap: 1rem;
+  margin-top: auto;
+}
+
+.tab {
+  flex: 1;
+  height: 2.44rem; 
+  width: auto;
+}
+
+.skeletonCard>*,
+.skeletonCard * {
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    height: 100%;
+    width: 100%;
+    background: linear-gradient(to right,
+        transparent 0%,
+        rgba(255, 255, 255, 0.6) 50%,
+        transparent 100%);
+    animation: shimmer 1.5s infinite;
+  }
+}

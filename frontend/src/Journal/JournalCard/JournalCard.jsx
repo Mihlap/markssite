@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useMemo, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AnnotationContent from './AnnotationContent';
-import ContentSection from './ContentSection';
+import ContentWithChapters from './ContentSection';
+import AsyncImage from './AsyncImage';
 import styles from './JournalCard.module.scss';
 
 import butt1 from '../icons/butt11.svg';
@@ -39,7 +40,7 @@ function JournalCard({ journal, index }) {
   const [activeTab, setActiveTab] = useState(TABS.ARTICLE);
 
   const authors = useMemo(() => journal?.authors || [], [journal]);
-  
+
   const authorsToDisplay = useMemo(() => authors.slice(0, 6), [authors]);
 
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
@@ -68,7 +69,7 @@ function JournalCard({ journal, index }) {
   const scrollThumbColor = useMemo(() => (currentCardColor === '#FFFFFF' ? '#75bbfd' : '#FFFFFF'), [currentCardColor]);
   const isInverted = useMemo(() => currentCardColor === '#75BBFD', [currentCardColor]);
 
- const authorsCountClass = useMemo(() => {
+  const authorsCountClass = useMemo(() => {
     if (authorsToDisplay.length <= 3) {
       if (authorsToDisplay.length === 1) return styles.journalCard__authorsGrid1;
       if (authorsToDisplay.length === 2) return styles.journalCard__authorsGrid2;
@@ -91,27 +92,21 @@ function JournalCard({ journal, index }) {
 
   return (
     <div className={styles.journalCard} onClick={handleCardClick}>
-      <div className={styles.journalCard__left} style={{ backgroundColor: currentCardColor }}>
+      <div className={styles.journalCard__left} style={{ backgroundColor: articleColor }}>
         <div className={`${styles.journalCard__authorsGrid} ${authorsCountClass}`}>
           {authorsToDisplay.map((author, idx) => {
-            const isFallback = !author.image;
-            const imageSrc = author.image || getRandomCat();
-
+            const fallback = getRandomCat();
             return (
               <div
                 key={idx}
                 className={`${styles.journalCard__authorWrapper} ${isInverted ? styles.inverted : ''}`}
                 data-name={author.name}>
-                <img
-                  src={imageSrc}
-                  alt={`Автор ${author.name}`}
-                  loading="lazy"
-                  className={`${styles.journalCard__authorImg} ${isFallback ? styles.fallbackIcon : ''}`}
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src = getRandomCat();
-                    e.target.classList.add(styles.fallbackIcon);
-                  }}
+                <AsyncImage
+                  key={idx}
+                  src={author.image || fallback}
+                  alt={author.name}
+                  wrapperClass={`${styles.journalCard__authorWrapper} ${isInverted ? styles.inverted : ''}`}
+                  imgClass={`${styles.journalCard__authorImg} ${!author.image ? styles.fallbackIcon : ''}`}
                 />
               </div>
             );
@@ -213,7 +208,8 @@ function JournalCard({ journal, index }) {
           )}
 
           {activeTab === TABS.CONTENT && (
-            <ContentSection
+            <ContentWithChapters
+              journal={journal}
               markdown={journal.markdown_content && journal.markdown_content !== 'null' ? journal.markdown_content : ''}
             />
           )}

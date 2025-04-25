@@ -1,12 +1,8 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import ReactMarkdown from 'react-markdown';
+import React, { useState, useMemo, useCallback } from 'react';
+import { useNavigate } from 'react-router-dom';
 import styles from './JournalCard.module.scss';
 
-function parseChapters(markdown) {
-  // <!-- chapter:start=Название -->
-  //     (любой текст)
-  // <!-- chapter:end=Название -->
+function parseChapters(markdown = '') {
   const pattern = /<!--\s*chapter:start=(.*?)\s*-->([\s\S]*?)<!--\s*chapter:end=(.*?)\s*-->/g;
   const chapters = [];
   let match;
@@ -15,64 +11,69 @@ function parseChapters(markdown) {
     const content = match[2].trim();
     const titleEnd = match[3].trim();
     const finalTitle = titleStart === titleEnd ? titleStart : `${titleStart} / ${titleEnd}`;
-    chapters.push({
-      title: finalTitle,
-      content,
-      index: match.index,
-    });
+    chapters.push({ title: finalTitle, content, index: match.index });
   }
   return chapters;
 }
 
-function ContentWithChapters({ markdown }) {
+export default function ContentSection({ markdown, journal }) {
+  const navigate = useNavigate();
   const [activeChapter, setActiveChapter] = useState(null);
-  if (!markdown) return null;
-  const chapters = parseChapters(markdown);
-  if (chapters.length === 0) return null;
-  chapters.sort((a, b) => a.index - b.index);
-  const chaptersWithSlug = chapters.map((ch) => {
-    const slug = ch.title
-      .toLowerCase()
-      .replace(/[^\wа-яё\s-]/gi, '')
-      .replace(/\s+/g, '-');
-    return { ...ch, slug };
-  });
-  const handleChapterClick = (slug, e) => {
-    e.preventDefault();
-    setActiveChapter(slug);
-    setTimeout(() => {
-      setActiveChapter(null);
-    }, 300);
-  };
+
+  const rawChapters = useMemo(() => parseChapters(markdown), [markdown]);
+  const sortedChapters = useMemo(() => [...rawChapters].sort((a, b) => a.index - b.index), [rawChapters]);
+
+  const chaptersWithSlug = useMemo(
+    () =>
+      sortedChapters.map((ch, idx) => {     
+        const cleaned = ch.title
+          .replace(/^[#*`_\s]+/, '')
+          .replace(/[*_~`]+/g, '')
+          .trim();
+
+        const base = cleaned
+          .toLowerCase()
+          .replace(/[^\wа-яё\s-]/gi, '')
+          .replace(/\s+/g, '-');
+
+        return {
+          ...ch,
+          title: cleaned,
+          slug: `${base}-${idx}`,
+        };
+      }),
+    [sortedChapters]
+  );
+
+  const handleChapterClick = useCallback(
+    (slug, e) => {
+      e.stopPropagation();
+      setActiveChapter(slug);
+      navigate(`/journal/${journal.id}`, {
+        state: { journal, targetChapterSlug: slug },
+      });
+    },
+    [journal, navigate]
+  );
+
+  if (!markdown || chaptersWithSlug.length === 0) {
+    return null;
+  }
 
   return (
-    <div className={styles.contentContainer}>
-      {/* СОДЕРЖАНИЕ (Список глав) */}
-      <div className={styles.tableOfContents}>
-        <div className={styles.listWrapper}>
-          <ul>
-            {chaptersWithSlug.map((chapter, i) => (
-              <li key={i} className={activeChapter === chapter.slug ? styles.activeChapter : ''}>
-                <Link to={`${chapter.slug}`} onClick={(e) => handleChapterClick(chapter.slug, e)}>
-                  {chapter.title}
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </div>
-
-      {/* САМИ ГЛАВЫ */}
-      <div className={styles.contentMarkdown}>
-        {chaptersWithSlug.map((chapter, idx) => (
-          <div key={idx} id={chapter.slug} style={{ marginBottom: '2rem' }}>
-            <h3>{chapter.title}</h3>
-            <ReactMarkdown>{chapter.content}</ReactMarkdown>
-          </div>
-        ))}
-      </div>
+    <div className={styles.contentContainer}>   
+      <aside className={styles.tableOfContents}>
+        <h4 className={styles.tocTitle}>Содержание</h4>
+        <ul className={styles.listWrapper}>
+          {chaptersWithSlug.map((chapter) => (
+            <li key={chapter.slug} className={activeChapter === chapter.slug ? styles.activeChapter : ''}>
+              <button type="button" className={styles.tocLink} onClick={(e) => handleChapterClick(chapter.slug, e)}>
+                {chapter.title}
+              </button>
+            </li>
+          ))}
+        </ul>
+      </aside>  
     </div>
   );
 }
-
-export default ContentWithChapters;
