@@ -64,60 +64,41 @@ const SliderContainerProjectCard = ({ projects }) => {
                     src={imageSrc}
                     text={project.text}
                     id={project.link}
-                    selectCompetencies={(() => {
-                      try {
-                        const sc = project.selectCompetencies;
+                    selectCompetencies={(() => {                   
+                      let competencies = [];
+                      const sc = project.selectCompetencies;
 
-                        if (Array.isArray(sc)) {
-                          return sc.map((item, idx) => {
-                            let label = '';
-                            let color = '#000';
-
-                            if (typeof item === 'string') {
-                              label = item.trim();
-                              color = colors[label] || '#000';
-                            } else if (item && (item.value || item.label)) {
-                              label = item.label || item.value;
-                              color = colors[item.value] || '#000';
-                            } else {
-                              return null;
-                            }
-
-                            return (
-                              <div
-                                key={idx}
-                                className="div_el_selectCompetencies_ProjectCard"
-                                style={{
-                                  color,
-                                  borderColor: color,
-                                  border: '0.5px solid',
-                                  padding: '3px 6px',
-                                  borderRadius: '34px',
-                                }}>
-                                {label}
-                              </div>
-                            );
-                          });
-                        } else if (typeof sc === 'string') {
-                          const label = sc.trim();
-                          const color = colors[label] || '#000';
-                          return (
-                            <div
-                              className="div_el_selectCompetencies_ProjectCard"
-                              style={{
-                                color,
-                                borderColor: color,
-                                border: '0.5px solid',
-                                padding: '3px 6px',
-                                borderRadius: '34px',
-                              }}>
-                              {label}
-                            </div>
-                          );
+                      if (Array.isArray(sc)) {
+                        competencies = sc;
+                      } else if (typeof sc === 'string') {                    
+                        try {
+                          const parsed = JSON.parse(sc);
+                          competencies = Array.isArray(parsed) ? parsed : [parsed];
+                        } catch {                       
+                          competencies = sc.split(',').map((v) => v.trim());
                         }
-                      } catch {
-                        return null;
                       }
+
+                       return competencies.map((item, idx) => {
+                        const label = typeof item === 'string' ? item : item.label || item.value;
+                        const keyForColor = typeof item === 'string' ? label : item.value;
+                        const color = colors[keyForColor] || '#000';
+
+                        return (
+                          <div
+                            key={idx}
+                            className="div_el_selectCompetencies_ProjectCard"
+                            style={{
+                              color,
+                              borderColor: color,
+                              border: '0.5px solid',
+                              padding: '3px 6px',
+                              borderRadius: '34px',
+                            }}>
+                            {label}
+                          </div>
+                        );
+                      });
                     })()}
                     countryCity={project.countryCity}
                     monthYear={project.monthYear}
