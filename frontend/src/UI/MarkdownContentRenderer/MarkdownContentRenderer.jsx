@@ -11,19 +11,8 @@ import { BlockMath, InlineMath } from 'react-katex';
 import { parseChapters } from '../../Journal/JournalArticlePage/ArticleTableOfContents';
 import styles from '../../Journal/JournalArticlePage/ArticleJournalPage.module.scss';
 
-const annotationRe =
-  /<!--\s*chapter:start=(#+)?([^\s>][^>]*)\s*-->[\s\S]*?<!--\s*annotation:start\s*-->([\s\S]*?)<!--\s*annotation:end\s*-->(?:[\s\S]*?<!--\s*chapter:end=.*?-->)/;
-
-function makeSlug(title, idx) {
-  return (
-    title
-      .toLowerCase()
-      .replace(/^#+\s*/, '')
-      .replace(/[^\wа-яё\s-]/gi, '')
-      .trim()
-      .replace(/\s+/g, '-') + `-${idx}`
-  );
-}
+const remarkPlugins = [remarkGfm, remarkMath, remarkBreaks];
+const rehypePlugins = [rehypeRaw, rehypeKatex, rehypePdfEmbedder, rehypeUniqueHeadingIds];
 
 const PDFEmbedComponent = ({ src, title }) => (
   <div className={styles.pdfEmbed}>
@@ -37,180 +26,198 @@ const MathBlock = ({ value }) => (
 );
 
 const flattenChildren = (children) => {
-  let result = [];
-  React.Children.forEach(children, (child) => {
-    if (React.isValidElement(child) && child.props?.children) {
-      result.push(child);
-      result = result.concat(flattenChildren(child.props.children));
+  let res = [];
+  React.Children.forEach(children, (c) => {
+    if (React.isValidElement(c) && c.props?.children) {
+      res.push(c);
+      res = res.concat(flattenChildren(c.props.children));
     } else {
-      result.push(child);
+      res.push(c);
     }
   });
-  return result;
+  return res;
 };
 const Paragraph = ({ children, ...props }) => {
   const flat = flattenChildren(children);
-  const hasBlock = flat.some(
-    (c) => c && typeof c === 'object' && (c.type === PDFEmbedComponent || c.type === MathBlock)
-  );
+  const hasBlock = flat.some((c) => React.isValidElement(c) && (c.type === PDFEmbedComponent || c.type === MathBlock));
   return hasBlock ? (
-    <div {...props} className={styles.paragraph}>
+    <div className={styles.paragraph} {...props}>
       {children}
     </div>
   ) : (
-    <p {...props} className={styles.paragraph}>
+    <p className={styles.paragraph} {...props}>
       {children}
     </p>
   );
 };
-const Heading =
-  (level) =>
-  ({ children, ...props }) =>
-    React.createElement(`h${level}`, { className: styles[`heading${level}`], ...props }, children);
-const LinkComponent = ({ href, children, ...props }) => (
-  <a href={href} target="_blank" rel="noopener noreferrer" className={styles.link} {...props}>
-    {children}
-  </a>
-);
-const Table = ({ children, ...props }) => (
-  <div className={styles.tableContainer}>
-    <table className={styles.table} {...props}>
-      {children}
-    </table>
-  </div>
-);
-const List = ({ ordered, children, ...props }) =>
-  ordered ? (
-    <ol className={styles.list} {...props}>
-      {children}
-    </ol>
-  ) : (
-    <ul className={styles.list} {...props}>
-      {children}
-    </ul>
+
+const keywordsRe = /<!--\s*keywords:start\s*-->([\s\S]*?)<!--\s*keywords:end\s*-->/;
+const annotationRe =
+  /<!--\s*chapter:start=(#+)?([^\s>][^>]*)\s*-->[\s\S]*?<!--\s*annotation:start\s*-->([\s\S]*?)<!--\s*annotation:end\s*-->/;
+const chapterRe = /<!--\s*chapter:start=.*?-->[\s\S]*?<!--\s*chapter:end=.*?-->/;
+
+function makeSlug(title, idx) {
+  return (
+    title
+      .toLowerCase()
+      .replace(/^#+\s*/, '')
+      .replace(/[^\wа-яё\s-]/gi, '')
+      .trim()
+      .replace(/\s+/g, '-') + `-${idx}`
   );
-const BlockQuote = ({ children, ...props }) => (
-  <blockquote className={styles.blockquote} {...props}>
-    {children}
-  </blockquote>
-);
-const InlineCode = ({ children, ...props }) => (
-  <code className={styles.inlineCode} {...props}>
-    {children}
-  </code>
-);
-const CodeBlock = ({ children, ...props }) => (
-  <pre className={styles.pre} {...props}>
-    {children}
-  </pre>
-);
+}
 
 const markdownComponents = {
-  h1: Heading(1),
-  h2: Heading(2),
-  h3: Heading(3),
-  h4: Heading(4),
-  h5: Heading(5),
-  h6: Heading(6),
   p: Paragraph,
-  PDFEmbed: PDFEmbedComponent,
+  img: ({ src, alt }) => <img className={styles.image} src={src} alt={alt} />,
+  a: ({ href, children }) => (
+    <a href={href} target="_blank" rel="noopener noreferrer" className={styles.link}>
+      {children}
+    </a>
+  ),
+  table: ({ children }) => (
+    <div className={styles.tableContainer}>
+      <table className={styles.table}>{children}</table>
+    </div>
+  ),
+  ul: ({ children }) => <ul className={styles.list}>{children}</ul>,
+  ol: ({ children }) => <ol className={styles.orderedList}>{children}</ol>,
+  blockquote: ({ children }) => <blockquote className={styles.blockquote}>{children}</blockquote>,
+  code: ({ inline, className, children }) =>
+    inline ? (
+      <code className={styles.inlineCode}>{children}</code>
+    ) : (
+      <pre className={styles.pre}>
+        <code className={className}>{children}</code>
+      </pre>
+    ),
   math: MathBlock,
   inlineMath: ({ value }) => <InlineMath>{value}</InlineMath>,
-  img: ({ src, alt }) => <img src={src} alt={alt} className={styles.image} />,
-  a: LinkComponent,
-  table: Table,
-  ul: List,
-  ol: List,
-  blockquote: BlockQuote,
-  code: InlineCode,
-  pre: CodeBlock,
-  strong: ({ children, ...props }) => <strong {...props}>{children}</strong>,
-  em: ({ children, ...props }) => <em {...props}>{children}</em>,
-  del: ({ children, ...props }) => <del {...props}>{children}</del>,
+  PDFEmbed: PDFEmbedComponent,
+  h1: ({ children }) => <h1 className={styles.heading1}>{children}</h1>,
+  h2: ({ children }) => <h2 className={styles.heading2}>{children}</h2>,
+  h3: ({ children }) => <h3 className={styles.heading3}>{children}</h3>,
+  h4: ({ children }) => <h4 className={styles.heading4}>{children}</h4>,
+  h5: ({ children }) => <h5 className={styles.heading5}>{children}</h5>,
+  h6: ({ children }) => <h6 className={styles.heading6}>{children}</h6>,
 };
 
 export default function MarkdownContentRenderer({ markdown = '' }) {
-  const remarkPlugins = [remarkGfm, remarkMath, remarkBreaks];
-  const rehypePlugins = [rehypeRaw, rehypeKatex, rehypePdfEmbedder, rehypeUniqueHeadingIds];
-
-  const kwMatch = markdown.match(/<!--\s*keywords:start\s*-->([\s\S]*?)<!--\s*keywords:end\s*-->/);
+  const kwMatch = markdown.match(keywordsRe);
   const annotationMatch = markdown.match(annotationRe);
-  
+
   let cleaned = markdown;
   if (kwMatch) cleaned = cleaned.replace(kwMatch[0], '');
   if (annotationMatch) cleaned = cleaned.replace(annotationMatch[0], '');
 
-  const chapters = useMemo(() => {
-    const raw = parseChapters(cleaned) || [];
-    return raw.map((ch, idx) => {
-      const titleRaw = ch.title.trim();
-      const cleanTitle = titleRaw.replace(/^#+\s*/, '');
-      const slug = makeSlug(cleanTitle, idx + (annotationMatch ? 1 : 0));
-      return { slug, titleRaw, content: ch.content.trim() };
-    });
-  }, [cleaned, annotationMatch]);
+  const rawChapters = useMemo(() => parseChapters(cleaned) || [], [cleaned]);
+  const chapters = useMemo(
+    () =>
+      rawChapters.map((ch, idx) => {
+        const titleRaw = ch.title.trim();
+        const cleanT = titleRaw.replace(/^#+\s*/, '');
+        const slug = makeSlug(cleanT, idx + (annotationMatch ? 1 : 0));
+        return {
+          slug,
+          level: Math.min((ch.title.match(/^(#+)/) || ['#'])[0].length, 6),
+          title: cleanT,
+          content: ch.content.trim(),
+        };
+      }),
+    [rawChapters, annotationMatch]
+  );
 
+  const segments = useMemo(() => {
+    const splitRe = new RegExp(`(${keywordsRe.source})|(${annotationRe.source})|(${chapterRe.source})`, 'g');
+    const segs = [];
+    let last = 0,
+      m;
+    while ((m = splitRe.exec(markdown)) !== null) {
+      if (m.index > last) {
+        segs.push({ type: 'text', content: markdown.slice(last, m.index) });
+      }
+      const raw = m[0];
+      if (keywordsRe.test(raw)) {
+        const [, kw] = keywordsRe.exec(raw);
+        segs.push({ type: 'keywords', content: kw.trim() });
+      } else if (annotationRe.test(raw)) {
+        const [, hashes, title, content] = annotationRe.exec(raw);
+        segs.push({
+          type: 'annotation',
+          level: Math.min(hashes.length, 6),
+          title: title.trim(),
+          content: content.trim(),
+        });
+      } else {
+        segs.push({ type: 'chapter-raw' });
+      }
+      last = splitRe.lastIndex;
+    }
+    if (last < markdown.length) {
+      segs.push({ type: 'text', content: markdown.slice(last) });
+    }
+    return segs;
+  }, [markdown]);
+
+  let chapterIndex = 0;
   return (
     <>
-      {/* Аннотация */}
-      {annotationMatch &&
-        (() => {
-          const hashPart = annotationMatch[1] || '#';
-          const rawTitle = annotationMatch[2].trim();
-          const content = annotationMatch[3].trim();
-          const level = Math.min(hashPart.length, 6);
-        // const slug = rawTitle.toLowerCase().replace(/\s+/g, '-') + '-annotation';
-        const slug = makeSlug(rawTitle, 0);
-
-          return (
-            <section
-              id={slug}
-              className={styles.annotationSection}
-              style={{ marginBottom: '2rem', scrollMarginTop: '2rem' }}>
+      {segments.map((seg, i) => {
+        switch (seg.type) {
+          case 'text':
+            return (
               <ReactMarkdown
-                remarkPlugins={[remarkGfm, remarkBreaks]}
-                rehypePlugins={[rehypeRaw]}
-                components={markdownComponents}>
-                {`${'#'.repeat(level)} ${rawTitle}\n\n${content}`}
-              </ReactMarkdown>
-            </section>
-          );
-        })()}
-
-      {/* Ключевые слова */}
-      {kwMatch && (
-        <div className={styles.keywordsSection} style={{ marginBottom: '2rem', scrollMarginTop: '2rem' }}>
-          <ReactMarkdown remarkPlugins={remarkPlugins} rehypePlugins={rehypeRaw} components={markdownComponents}>
-            {kwMatch[1].trim()}
-          </ReactMarkdown>
-        </div>
-      )}
-
-      {/* Обычные главы */}
-      {chapters.map(({ slug, titleRaw, content }) => {
-        const match = titleRaw.match(/^(#+)?\s*(.+)$/);
-        const hashPart = (match && match[1]) || '##';
-        const cleanTitle = match ? match[2] : titleRaw;
-        const level = Math.min(hashPart.length, 6);
-
-        return (
-          <section key={slug} id={slug} style={{ marginTop: '2rem', scrollMarginTop: '2rem' }}>
-            {/* Заголовок */}
-            <ReactMarkdown
-              remarkPlugins={[remarkGfm, remarkBreaks]}
-              rehypePlugins={[rehypeRaw]}
-              components={markdownComponents}>
-              {`${'#'.repeat(level)} ${cleanTitle}`}
-            </ReactMarkdown>
-            {/* Контент */}
-            <ReactMarkdown
-              children={content}
-              remarkPlugins={remarkPlugins}
-              rehypePlugins={rehypePlugins}
-              components={markdownComponents}
-            />
-          </section>
-        );
+                key={i}
+                children={seg.content}
+                remarkPlugins={remarkPlugins}
+                rehypePlugins={rehypePlugins}
+                components={markdownComponents}
+              />
+            );
+          case 'keywords':
+            return (
+              <div key={i} className={styles.keywordsSection} style={{ marginBottom: '2rem', scrollMarginTop: '2rem' }}>
+                <ReactMarkdown
+                  children={seg.content}
+                  remarkPlugins={remarkPlugins}
+                  rehypePlugins={[rehypeRaw]}
+                  components={markdownComponents}
+                />
+              </div>
+            );
+          case 'annotation':
+            const aSlug = makeSlug(seg.title, 0);
+            return (
+              <section
+                key={i}
+                id={aSlug}
+                className={styles.annotationSection}
+                style={{ marginBottom: '2rem', scrollMarginTop: '2rem' }}>
+                <ReactMarkdown
+                  children={`${'#'.repeat(seg.level)} ${seg.title}\n\n${seg.content}`}
+                  remarkPlugins={[remarkGfm, remarkBreaks]}
+                  rehypePlugins={[rehypeRaw]}
+                  components={markdownComponents}
+                />
+              </section>
+            );
+          case 'chapter-raw':
+            if (chapterIndex >= chapters.length) return null;
+            const { slug, level, title, content } = chapters[chapterIndex++];
+            const md = `${'#'.repeat(level)} ${title}\n\n${content}`;
+            return (
+              <section key={slug} id={slug} style={{ marginTop: '2rem', scrollMarginTop: '2rem' }}>
+                <ReactMarkdown
+                  children={md}
+                  remarkPlugins={remarkPlugins}
+                  rehypePlugins={rehypePlugins}
+                  components={markdownComponents}
+                />
+              </section>
+            );
+          default:
+            return null;
+        }
       })}
     </>
   );
