@@ -88,13 +88,13 @@ const handleScroll = useCallback(() => {
               to="/publication">
               <div>Публикации</div>
             </NavLink>
-            <NavLink
+            {/* <NavLink
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
               className={({ isActive }) => `${styles.Navbar__item} ${isActive ? styles.Navbar__item_open : ''}`}
               to="/journalPage">
               <div>MARKS journal</div>
-            </NavLink>
+            </NavLink> */}
             <NavLink
               onMouseEnter={handleMouseEnter}
               onMouseLeave={handleMouseLeave}
