@@ -21,7 +21,6 @@
   }
 }
 
-
 .allButton_div {
   padding-top: 6.7rem;
   padding-left: 1.75rem;
@@ -70,7 +69,7 @@
 
 .articleLayout {
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
   background-color: var(--white-F6F6F6);
 
@@ -114,7 +113,7 @@
   font-family: var(--font-raleway);
   font-size: 1rem;
   font-weight: 400;
-  line-height: 1.6rem;
+  line-height: 1.5rem;
   color: var(--black-1D2E43);
   background-color: var(--originWhite-FFFFFF);
   padding-left: 12.5rem;
@@ -138,8 +137,8 @@
   h6 {
     font-family: var(--font-unbounded);
     font-weight: 300;
-    line-height: 1.5rem;
-    margin: 2rem 0 1rem;
+    line-height: 1.75rem; 
+    margin: 3rem 0 1rem;
     color: var(--black-1D2E43);
   }
 
@@ -155,31 +154,6 @@
     li {
       margin-bottom: 0.5rem;
     }
-  }
-
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 1.5rem;
-
-    thead {
-      background-color: #f2f2f2;
-    }
-
-    th,
-    td {
-      border: 1px solid #ccc;
-      padding: 0.75rem;
-      text-align: left;
-    }
-  }
-
-  img {
-    display: block;
-    max-width: 100%;
-    height: auto;
-    margin: 2rem auto;
-    border-radius: 0.5rem;
   }
 
   pre {
@@ -202,11 +176,14 @@
 }
 
 .pdfEmbed {
-  margin: 2rem 0;
+  margin: 3rem 0;
+  width: 100%;
+  height: 28rem;
+  background-color: #e0e0e0;
 
   iframe {
     width: 100%;
-    min-height: 80vh;
+     height: 100%;
     border: none;
     border-radius: 0.5rem;
   }
@@ -221,11 +198,15 @@
   color: var(--gray-959DA6);
 }
 
-.item_img {
+.image {
   display: block;
-  max-width: 100%;
-  height: auto;
-  margin: 2rem auto;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  max-height: 100%;
+  object-fit: contain;
+  object-position: center;
+  background-color: #f0f0f0;
+  margin: 3rem auto;
   border-radius: 0.5rem;
 }
 
@@ -286,7 +267,7 @@
 }
 
 .link {
-  color: var(--blue-75BBFD);
+  color: var(--dark-blue-389FFF);
   text-decoration: underline;
 }
 
@@ -298,30 +279,71 @@
 .table {
   width: 100%;
   border-collapse: collapse;
+  border: 1px solid var(--dark-blue-389FFF);
 
   thead {
-    background-color: #f2f2f2;
+    background-color: var(--blue-75BBFD);    
   }
 
-  th,
-  td {
-    border: 1px solid #ccc;
-    padding: 0.75rem;
-    text-align: left;
-  }
+        th {
+          background-color: var(--blue-75BBFD);
+          border: 1px solid var(--dark-blue-389FFF);
+          text-align: left;
+          padding: 0.75rem;
+        }
+    
+    
+        td {
+          border: 1px solid var(--dark-blue-389FFF);
+          padding: 0.75rem;
+          text-align: left;
+        }
 }
 
+/* ==== Ненумерованный список ==== */
 .list {
   margin-left: 1.5rem;
   margin-bottom: 1.5rem;
+  padding: 0; 
+  list-style: none; 
+}
 
-  li {
-    margin-bottom: 0.5rem;
-  }
+.list li {
+  position: relative;
+  margin-bottom: 0.5rem;
+  padding-left: 1.25rem;
+}
+
+.list li::before {
+  content: "-";
+  position: absolute;
+  left: 0;
+}
+
+/* ==== Нумерованный список ==== */
+.orderedList {
+  margin-left: 1.5rem;
+  margin-bottom: 1.5rem;
+  padding: 0;
+  list-style: none;
+  counter-reset: section;
+}
+
+.orderedList li {
+  position: relative;
+  margin-bottom: 0.5rem;
+  padding-left: 1.5rem;
+  counter-increment: section;
+}
+
+.orderedList li::before {
+  content: counter(section) ".";
+  position: absolute;
+  left: 0;
 }
 
 .blockquote {
-border-left: 0.5rem solid #75BBFD;
+border-left: 0.5rem solid var(--blue-75BBFD);
   padding-left: 1rem;
   color: var(--black-1D2E43, );
   font-style: var(--font-raleway);
@@ -348,14 +370,10 @@ border-left: 0.5rem solid #75BBFD;
 }
 
 .keywordsSection {
-  background: var(--light-yellow-FFF9C4);
-  padding: 1rem;
   border-radius: 4px;
 }
 
 .annotationSection {
-  background: var(--light-blue-E3F2FD);
-  padding: 1rem;
   border-radius: 4px;
 }
 
