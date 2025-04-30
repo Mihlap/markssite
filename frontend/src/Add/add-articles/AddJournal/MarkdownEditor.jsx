@@ -14,12 +14,18 @@ import collapse from './icons/collapse.svg';
 
 const MarkdownEditor = ({ onTempFilesChange }) => {
   const dispatch = useDispatch();
-  const markdown = useSelector((state) => state.journal.formData.markdown_content);
+  const markdown = useSelector((s) => s.journal.formData.markdown_content);
+
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [uploadedFiles, setUploadedFiles] = useState(new Map());
   const [mode, setMode] = useState('both');
+
   const editorRef = useRef(null);
   const previewRef = useRef(null);
+
+  useEffect(() => {
+    onTempFilesChange?.(Array.from(uploadedFiles.keys()));
+  }, [uploadedFiles, onTempFilesChange]);
 
   const handleChange = useCallback(
     (e) => {
@@ -29,59 +35,55 @@ const MarkdownEditor = ({ onTempFilesChange }) => {
   );
 
   const toggleFullscreen = useCallback(() => {
-    setIsFullscreen((prev) => !prev);
+    setIsFullscreen((f) => !f);
   }, []);
 
   useEffect(() => {
-    const handleFullscreenChange = () => {
-      setIsFullscreen(!!document.fullscreenElement);
-    };
-    document.addEventListener('fullscreenchange', handleFullscreenChange);
-    document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
-    document.addEventListener('mozfullscreenchange', handleFullscreenChange);
-    document.addEventListener('MSFullscreenChange', handleFullscreenChange);
+    const onFs = () => setIsFullscreen(!!document.fullscreenElement);
+    document.addEventListener('fullscreenchange', onFs);
+    document.addEventListener('webkitfullscreenchange', onFs);
+    document.addEventListener('mozfullscreenchange', onFs);
+    document.addEventListener('MSFullscreenChange', onFs);
     return () => {
-      document.removeEventListener('fullscreenchange', handleFullscreenChange);
-      document.removeEventListener('webkitfullscreenchange', handleFullscreenChange);
-      document.removeEventListener('mozfullscreenchange', handleFullscreenChange);
-      document.removeEventListener('MSFullscreenChange', handleFullscreenChange);
+      document.removeEventListener('fullscreenchange', onFs);
+      document.removeEventListener('webkitfullscreenchange', onFs);
+      document.removeEventListener('mozfullscreenchange', onFs);
+      document.removeEventListener('MSFullscreenChange', onFs);
     };
   }, []);
 
-  const handleModeChange = useCallback((newMode) => {
-    setMode(newMode);
+  const handleModeChange = useCallback((m) => {
+    setMode(m);
   }, []);
 
-  const insertTextAtCursor = useCallback((textarea, textToInsert) => {
-    const start = textarea.selectionStart;
-    const end = textarea.selectionEnd;
-    const currentValue = textarea.value;
-    const newValue = currentValue.slice(0, start) + textToInsert + currentValue.slice(end);
-    textarea.value = newValue;
-    const pos = start + textToInsert.length;
-    textarea.selectionStart = textarea.selectionEnd = pos;
-    return newValue;
+  const insertTextAtCursor = useCallback((ta, txt) => {
+    const start = ta.selectionStart;
+    const end = ta.selectionEnd;
+    const v = ta.value;
+    const newVal = v.slice(0, start) + txt + v.slice(end);
+    ta.value = newVal;
+    const pos = start + txt.length;
+    ta.selectionStart = ta.selectionEnd = pos;
+    return newVal;
   }, []);
 
-  const handleDrop = useCallback(
+   const handleDrop = useCallback(
     async (e) => {
       e.preventDefault();
-      const files = Array.from(e.dataTransfer.files);
+      const files = Array.from(e.dataTransfer.files).filter(
+        (f) => f.type.startsWith('image/') || f.type === 'application/pdf'
+      );
       if (!files.length) return;
       const textarea = e.target.closest('textarea');
       for (let file of files) {
-        const isImage = file.type.startsWith('image/');
-        const isPdf = file.type === 'application/pdf';
-        if (!isImage && !isPdf) continue;
         try {
           const url = await dispatch(uploadMarkdownFile(file)).unwrap();
           setUploadedFiles((prev) => {
-            const map = new Map(prev);
-            map.set(url, (map.get(url) || 0) + 1);
-            onTempFilesChange?.(Array.from(map.keys()));
-            return map;
+            const m = new Map(prev);
+            m.set(url, (m.get(url) || 0) + 1);
+            return m;
           });
-          const tag = isImage ? `![Alt](${url})` : `[${file.name}](${url})`;
+          const tag = file.type.startsWith('image/') ? `![Alt](${url})` : `[${file.name}](${url})`;
           const newMd = textarea ? insertTextAtCursor(textarea, tag) : markdown + '\n' + tag;
           dispatch(setFormData({ name: 'markdown_content', value: newMd }));
         } catch (err) {
@@ -89,7 +91,7 @@ const MarkdownEditor = ({ onTempFilesChange }) => {
         }
       }
     },
-    [dispatch, insertTextAtCursor, markdown, onTempFilesChange]
+    [dispatch, insertTextAtCursor, markdown]
   );
 
   const debouncedCheck = useDebouncedCallback(() => {
@@ -97,15 +99,15 @@ const MarkdownEditor = ({ onTempFilesChange }) => {
     uploadedFiles.forEach((count, url) => {
       if (!links.includes(url)) {
         setUploadedFiles((prev) => {
-          const map = new Map(prev);
-          const c = map.get(url) || 0;
-          if (c > 1) map.set(url, c - 1);
-          else {
+          const m = new Map(prev);
+          const c = m.get(url) || 0;
+          if (c > 1) {
+            m.set(url, c - 1);
+          } else {
             dispatch(deleteMarkdownFile(url)).unwrap().catch(console.error);
-            map.delete(url);
+            m.delete(url);
           }
-          onTempFilesChange?.(Array.from(map.keys()));
-          return map;
+          return m;
         });
       }
     });
@@ -154,6 +156,7 @@ const MarkdownEditor = ({ onTempFilesChange }) => {
       </div>
 
       <div className={styles['markdown-editor__content']}>
+        {/* редактор */}
         <div className={styles['markdown-editor__editor']} style={{ display: mode === 'preview' ? 'none' : 'block' }}>
           <textarea
             placeholder="Markdown"
@@ -163,6 +166,7 @@ const MarkdownEditor = ({ onTempFilesChange }) => {
           />
         </div>
 
+        {/* превью */}
         <div
           ref={previewRef}
           className={styles['markdown-editor__preview']}

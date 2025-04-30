@@ -32,7 +32,7 @@
   width: 100%;
   font-family: var(--font-unbounded);
   font-size: 3rem;
-  font-weight: var(--fw-300);
+  font-weight: 300;
   line-height: 4rem;
   color: var(--white-F6F6F6);
   padding: 4rem 1rem 0 1.75rem;
@@ -69,7 +69,7 @@
 
 .articleLayout {
   display: flex;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
   background-color: var(--white-F6F6F6);
 
