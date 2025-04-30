@@ -1,4 +1,3 @@
-// src/Journal/JournalMain.jsx
 import React, { useEffect, useMemo, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { fetchJournals } from '../store/Slice/journalSlice';
@@ -13,14 +12,13 @@ function JournalMain() {
   const dispatch = useDispatch();
   const journals = useSelector((state) => state.journal.journals);
   const loading = useSelector((state) => state.journal.loading);
-   const error = useSelector((state) => state.journal.error);
+  const error = useSelector((state) => state.journal.error);
   const selectedIssueNumber = useSelector((state) => state.journal.selectedIssueNumber);
   const hasFetchedRef = useRef(false);
 
   const isDesktop = window.innerWidth > 1024;
   const desktopFilters = useSelector((state) => state.categoryFilters.desktop);
   const mobileFilters = useSelector((state) => state.categoryFilters.mobile);
-
   const selectedCategories = isDesktop ? desktopFilters.selectedCategories : mobileFilters.selectedCategories;
   const searchValue = isDesktop ? desktopFilters.searchValue : mobileFilters.searchValue;
 
@@ -63,9 +61,16 @@ function JournalMain() {
     );
   }
 
-
   if (error) {
     return <p className={styles.error}>Ошибка: {error}</p>;
+  }
+
+  if (filteredJournals.length === 0) {
+    return (
+      <div className={styles.emptyState}>
+        <p className={styles.noJournalsMessage}>Готовьтесь! Скоро то, о чем все говорят…</p>
+      </div>
+    );
   }
 
   return (
