@@ -1,5 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import styles from './ArticleTableOfContents.module.scss';
+
+gsap.registerPlugin(ScrollTrigger);
 
 export function parseChapters(markdown = '') {
   if (typeof markdown !== 'string' || markdown.trim() === '') {
@@ -20,10 +24,56 @@ export function parseChapters(markdown = '') {
 
 function ArticleTableOfContents({ markdown = '', activeSlug }) {
   const [activeChapter, setActiveChapter] = useState(activeSlug || '');
+  const tocRef = useRef(null);
 
   useEffect(() => {
     if (activeSlug) setActiveChapter(activeSlug);
   }, [activeSlug]);
+
+ 
+  useEffect(() => {
+    const toc = tocRef.current;
+    const wrapper = document.getElementById('articleLayout');
+    if (!toc || !wrapper) return;
+
+    const mm = gsap.matchMedia();
+
+   mm.add('(min-width: 1200px) and (max-width: 1600px)', () => {
+     const st = ScrollTrigger.create({
+       trigger: toc,
+       start: 'top top',
+       endTrigger: wrapper,
+       end: 'bottom bottom',
+       pin: true,
+       pinSpacing: false,
+      onEnter:     () => gsap.to(toc, { y: '2rem', duration: 0.3, ease: 'power1.out' }),  
+      onEnterBack: () => gsap.to(toc, { y: '2rem', duration: 0.3, ease: 'power1.out' }),  
+     });
+     return () => st.kill();
+   });
+
+    mm.add('(min-width: 1601px)', () => {    
+      const endPos = document.body.scrollHeight - window.innerHeight;
+      const st = ScrollTrigger.create({
+        trigger: toc,
+        start: 'top top',
+        end: endPos,
+        pin: true,
+        pinSpacing: false,
+        onEnter: () => gsap.to(toc, { y: '2rem', duration: 0.3, ease: 'power1.out' }),
+        onEnterBack: () => gsap.to(toc, { y: '2rem', duration: 0.3, ease: 'power1.out' }),    
+      });
+      return () => st.kill();
+    });
+
+    mm.add('(max-width: 1199px)', () => {
+    });
+
+     return () => {
+       mm.revert();
+       ScrollTrigger.getAll().forEach((t) => t.kill());
+     };
+  }, []);
 
   const onClick = (slug, e) => {
     e.preventDefault();
@@ -58,7 +108,7 @@ function ArticleTableOfContents({ markdown = '', activeSlug }) {
     });
 
   return (
-    <nav className={styles.tocWrapper}>
+    <nav ref={tocRef} className={styles.tocWrapper}>
       <p className={styles.tocTitle}>Содержание</p>
       <ul className={styles.tocList}>
         {chaptersWithSlug.map((chap) => (
