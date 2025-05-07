@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from './AsyncImage.module.scss';
 
-export default function AsyncImage({ src, alt = '', wrapperClass = '', imgClass = '', ...props }) {
+export default function AsyncImage({ src, alt = '', wrapperClass = '', imgClass = '', onError, ...props }) {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
@@ -9,7 +9,13 @@ export default function AsyncImage({ src, alt = '', wrapperClass = '', imgClass 
     const img = new Image();
     img.src = src;
     img.onload = () => setLoaded(true);
-  }, [src]);
+    img.onerror = (e) => {
+      console.error('AsyncImage failed to load:', e);   
+      if (typeof onError === 'function') {
+        onError(new Error(`Cannot load image ${src}`));
+      }
+    };
+  }, [src, onError]);
 
   return (
     <div className={`${wrapperClass} ${!loaded ? styles.loading : ''}`}>

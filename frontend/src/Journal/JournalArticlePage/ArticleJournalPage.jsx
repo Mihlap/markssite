@@ -1,4 +1,6 @@
-import React, { useEffect, useMemo, useRef } from 'react';
+import React, { useEffect, useMemo } from 'react';
+import gsap from 'gsap';
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 import { Link, useLocation, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { fetchJournals } from '../../store/Slice/journalSlice';
@@ -13,6 +15,8 @@ import styles from './ArticleJournalPage.module.scss';
 
 import next from '../../icons/next.svg';
 import previous from '../../icons/previous.svg';
+
+gsap.registerPlugin(ScrollToPlugin);
 
 function ArticleJournalPage({ handleMouseEnter, handleMouseLeave }) {
   const dispatch = useDispatch();
@@ -47,18 +51,23 @@ function ArticleJournalPage({ handleMouseEnter, handleMouseLeave }) {
 
   const mdContent = journalToUse?.markdown_content ?? '';
 
-  useEffect(() => {
-    if (!journalToUse) return;
-    if (targetChapterSlug) {
-      const el = document.getElementById(targetChapterSlug);
-      if (el) {
-        el.scrollIntoView({ behavior: 'smooth' });
-        window.history.replaceState(null, '', `#${targetChapterSlug}`);
+    useEffect(() => {
+      if (!journalToUse) return;
+      if (targetChapterSlug) {
+        const hash = `#${targetChapterSlug}`;
+        const rem = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+        gsap.to(window, {
+          duration: 0.6,
+          ease: 'power1.out',
+          scrollTo: { y: hash, offsetY: rem * 4, autoKill: false },
+          onComplete() {
+            window.history.replaceState(null, '', hash);
+          },
+        });
         return;
       }
-    }
-    window.scrollTo(0, 0);
-  }, [journalToUse, targetChapterSlug]);
+      window.scrollTo(0, 0);
+    }, [journalToUse, targetChapterSlug]);
 
   if (loading || !journalToUse) {
     return <SkeletonArticle />;
