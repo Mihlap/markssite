@@ -3,7 +3,9 @@
 
 .tocWrapper {
   display: flex;
+  position: sticky;
   flex-direction: column;
+    align-self: flex-start;
   padding-top: 2rem;
 }
 
@@ -32,6 +34,10 @@
     margin-bottom: 1rem;
     position: relative;
 
+      @media (min-width: 1200px) and (max-width: 1600px) {
+          margin-bottom: 0.5rem;
+      }
+
     &.unnumbered {
       counter-increment: none;
       padding-left: 0;
@@ -41,6 +47,7 @@
       padding-left: 1rem;
       counter-increment: section;
     }
+       
   }
 
   li:not(.unnumbered)>a {
@@ -83,3 +90,4 @@
     text-decoration-color: var(--dark-blue-389FFF);
   }
 }
+
