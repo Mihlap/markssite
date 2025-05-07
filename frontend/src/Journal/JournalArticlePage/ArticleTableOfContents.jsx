@@ -1,14 +1,13 @@
 import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 import styles from './ArticleTableOfContents.module.scss';
 
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 export function parseChapters(markdown = '') {
-  if (typeof markdown !== 'string' || markdown.trim() === '') {
-    return [];
-  }
+  if (typeof markdown !== 'string' || !markdown.trim()) return [];
   const pattern = /<!--\s*chapter:start=(.*?)\s*-->([\s\S]*?)<!--\s*chapter:end=(.*?)\s*-->/g;
   const chapters = [];
   let match;
@@ -22,7 +21,7 @@ export function parseChapters(markdown = '') {
   return chapters;
 }
 
-function ArticleTableOfContents({ markdown = '', activeSlug }) {
+export default function ArticleTableOfContents({ markdown = '', activeSlug }) {
   const [activeChapter, setActiveChapter] = useState(activeSlug || '');
   const tocRef = useRef(null);
 
@@ -30,66 +29,55 @@ function ArticleTableOfContents({ markdown = '', activeSlug }) {
     if (activeSlug) setActiveChapter(activeSlug);
   }, [activeSlug]);
 
- 
   useEffect(() => {
     const toc = tocRef.current;
     const wrapper = document.getElementById('articleLayout');
     if (!toc || !wrapper) return;
 
     const mm = gsap.matchMedia();
-
-   mm.add('(min-width: 1200px) and (max-width: 1600px)', () => {
-     const st = ScrollTrigger.create({
-       trigger: toc,
-       start: 'top top',
-       endTrigger: wrapper,
-       end: 'bottom bottom',
-       pin: true,
-       pinSpacing: false,
-      onEnter:     () => gsap.to(toc, { y: '2rem', duration: 0.3, ease: 'power1.out' }),  
-      onEnterBack: () => gsap.to(toc, { y: '2rem', duration: 0.3, ease: 'power1.out' }),  
-     });
-     return () => st.kill();
-   });
-
-    mm.add('(min-width: 1601px)', () => {    
-      const endPos = document.body.scrollHeight - window.innerHeight;
+    mm.add('(min-width: 1200px)', () => {
       const st = ScrollTrigger.create({
         trigger: toc,
         start: 'top top',
-        end: endPos,
+        endTrigger: wrapper,
+        end: 'bottom bottom',
         pin: true,
         pinSpacing: false,
         onEnter: () => gsap.to(toc, { y: '2rem', duration: 0.3, ease: 'power1.out' }),
-        onEnterBack: () => gsap.to(toc, { y: '2rem', duration: 0.3, ease: 'power1.out' }),    
+        onEnterBack: () => gsap.to(toc, { y: '2rem', duration: 0.3, ease: 'power1.out' }),
+        onLeave: () => {
+          if (toc.scrollHeight > toc.clientHeight) {
+            toc.scrollTo({ top: toc.scrollHeight - toc.clientHeight, behavior: 'smooth' });
+          }
+        },
+        onLeaveBack: () => {
+          gsap.to(toc, { y: '0rem', duration: 0.3, ease: 'power1.out' });
+          toc.scrollTo({ top: 0, behavior: 'smooth' });
+        },
       });
       return () => st.kill();
     });
-
-    mm.add('(max-width: 1199px)', () => {
-    });
-
-     return () => {
-       mm.revert();
-       ScrollTrigger.getAll().forEach((t) => t.kill());
-     };
+    return () => mm.revert();
   }, []);
 
   const onClick = (slug, e) => {
     e.preventDefault();
     setActiveChapter(slug);
-    const el = document.getElementById(slug);
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      window.history.replaceState(null, '', `#${slug}`);
-    }
+    const rem = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+    gsap.to(window, {
+      duration: 0.6,
+      ease: 'power1.out',
+      scrollTo: { y: `#${slug}`, offsetY: rem * 4, autoKill: false },
+      onComplete() {
+        window.history.replaceState(null, '', `#${slug}`);
+      },
+    });
   };
 
   const raw = parseChapters(markdown);
   if (!raw.length) return null;
 
   const skipTitles = ['аннотация', 'библиографический список'];
-
   const chaptersWithSlug = raw
     .slice()
     .sort((a, b) => a.index - b.index)
@@ -125,5 +113,3 @@ function ArticleTableOfContents({ markdown = '', activeSlug }) {
     </nav>
   );
 }
-
-export default ArticleTableOfContents;
