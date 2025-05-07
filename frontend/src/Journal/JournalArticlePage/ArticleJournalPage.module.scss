@@ -53,6 +53,8 @@
   }
 }
 
+
+
 .publication_date {
   color: var(--white-F6F6F6);
   font-family: var(--font-raleway);
@@ -75,6 +77,16 @@
 
   @media (max-width: 1199px) {
     flex-direction: column;
+  }
+}
+
+.sidebarToc {
+  flex: 0 0 300px;
+  align-self: flex-start;
+  padding: 0 1rem;
+
+  @media (max-width: 1199px) {
+    display: none;
   }
 }
 
@@ -138,7 +150,7 @@
     font-family: var(--font-unbounded);
     font-weight: var(--fw-300);
     line-height: 1.75rem;
-    margin: 3rem 0 1rem;
+    margin: 2rem 0 1rem;
     color: var(--black-1D2E43);
   }
 

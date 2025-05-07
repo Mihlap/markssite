@@ -45,7 +45,7 @@ const cityInfo = {
   },
  'Челябинск': {
     address: 'Челябинск, ул. Северная, д. 52/3',
-    phone: '+7 (968) 110-11-30',
+    // phone: '+7 (968) 110-11-30',
     mail: 'mail@marksgroup.ru',
     hour: '+ 2 МСК',
   },
