@@ -1,7 +1,10 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { clearFormData, deleteJournal, fetchJournals, setFormData } from '../../../store/Slice/journalSlice';
-import { fetchToggleStateForButton4Async, updateToggleStateForButton4Async } from '../../../store/Slice/toggleSlice';
+import {
+  fetchToggleStateForButton4Async,
+  // updateToggleStateForButton4Async
+} from '../../../store/Slice/toggleSlice';
 import LoadingModal from '../../add-project/loading/LoadingModal';
 import FormAddJournal from './FormAddEditJournal/FormAddJournal';
 import FormEditJournal from './FormAddEditJournal/FormEditJournal';
@@ -16,7 +19,7 @@ export default function AddJournal({ user }) {
   const journals = useSelector((state) => state.journal.journals);
   const loading = useSelector((state) => state.journal.loading);
   const error = useSelector((state) => state.journal.error);
-  const isActiveForButton4 = useSelector((state) => state.toggle.isActiveForButton4);
+  // const isActiveForButton4 = useSelector((state) => state.toggle.isActiveForButton4);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCopied, setIsCopied] = useState(false);
@@ -145,18 +148,19 @@ export default function AddJournal({ user }) {
     }
   }, [isCopied]);
 
-  const toggleActive = useCallback(() => {
-    dispatch(updateToggleStateForButton4Async(!isActiveForButton4));
-  }, [dispatch, isActiveForButton4]);
+  // ------ Закомментирован код для кнопки скрытия фильтрации -----
+  // const toggleActive = useCallback(() => {
+  //   dispatch(updateToggleStateForButton4Async(!isActiveForButton4));
+  // }, [dispatch, isActiveForButton4]);
 
   return (
     <>
-      <div className={`${styles.card_components_admin__hide_block} ${styles.card_components_admin__hide_block_top}`}>
+      {/* <div className={`${styles.card_components_admin__hide_block} ${styles.card_components_admin__hide_block_top}`}>
         <div className={styles.card_components_admin__hide_text}>Скрыть фильтрацию</div>
         <div className={`${styles.toggleButton} ${isActiveForButton4 ? styles.active : ''}`} onClick={toggleActive}>
           <div className={styles.circle}></div>
         </div>
-      </div>
+      </div> */}
       <div>
         <div className={styles.card_components_admin__button_block} onClick={handleOpenModal}>
           <button className={styles.card_components_admin__button}>
