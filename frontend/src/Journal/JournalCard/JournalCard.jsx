@@ -66,7 +66,7 @@ function JournalCard({ journal, index }) {
     return contentColor;
   }, [activeTab, articleColor, annotationColor, contentColor]);
 
-  const scrollThumbColor = useMemo(() => (currentCardColor === '#FFFFFF' ? '#75bbfd' : '#FFFFFF'), [currentCardColor]);
+  const scrollThumbColor = useMemo(() => (currentCardColor === '#BADDFE' ? '#75BBFD' : '#BADDFE'), [currentCardColor]);
   const isInverted = useMemo(() => currentCardColor === '#75BBFD', [currentCardColor]);
 
   const authorsCountClass = useMemo(() => {
@@ -169,50 +169,60 @@ function JournalCard({ journal, index }) {
             </button>
           )}
         </div>
-
         <div
-          className={styles.journalCard__content}
+          className={styles.contentWrapper}
           style={{
-            backgroundColor: currentCardColor,
-            color: currentCardColor === '#FFFFFF' ? '#1d2e43' : '#FFFFFF',
-            '--scroll-thumb-color': scrollThumbColor,
-            '--current-bg-color': currentCardColor,
+            backgroundColor: articleColor,
+            borderRadius: '0rem 2rem 2rem 2rem',     
           }}>
-          {activeTab === TABS.ARTICLE && (
-            <>
-              <div className={styles.journalCard__title}>{journal.title}</div>
-              {isSmallScreen && journal.authors && journal.authors.length > 0 && (
-                <div className={styles.authorsNames}>
-                  <strong>{journal.authors.length > 1 ? 'Авторы: ' : 'Автор: '}</strong>
-                  {journal.authors.map((author) => author.name).join(' • ')}
-                </div>
-              )}
-              <p className={styles.journalCard__subtitle}>
-                <span className={styles.subtitle__org}>
-                  {journal.organizations?.[0]?.value || journal.organizations?.[0]?.name}
-                </span>
-                {journal.organizations?.[0] && (journal.locations?.[0] || journal.publication_date) && ' • '}
-                <span className={styles.subtitle__location}>
-                  {journal.locations?.[0]?.value || journal.locations?.[0]?.name}
-                </span>
-                {(journal.locations?.[0] || journal.organizations?.[0]) && journal.publication_date && ' • '}
-                <span className={styles.subtitle__date}>{journal.publication_date}</span>
-              </p>
-            </>
-          )}
+          <div
+            className={styles.journalCard__content}
+            style={{
+              backgroundColor: currentCardColor,
+              color: currentCardColor === '#FFFFFF' ? '#1d2e43' : '#FFFFFF',
+              '--scroll-thumb-color': scrollThumbColor,
+              '--current-bg-color': currentCardColor,
+            }}>
+            {activeTab === TABS.ARTICLE && (
+              <>
+                <div className={styles.journalCard__title}>{journal.title}</div>
+                {isSmallScreen && journal.authors && journal.authors.length > 0 && (
+                  <div className={styles.authorsNames}>
+                    <strong>{journal.authors.length > 1 ? 'Авторы: ' : 'Автор: '}</strong>
+                    {journal.authors.map((author) => author.name).join(' • ')}
+                  </div>
+                )}
+                <p className={styles.journalCard__subtitle}>
+                  <span className={styles.subtitle__org}>
+                    {journal.organizations?.[0]?.value || journal.organizations?.[0]?.name}
+                  </span>
+                  {journal.organizations?.[0] && (journal.locations?.[0] || journal.publication_date) && ' • '}
+                  <span className={styles.subtitle__location}>
+                    {journal.locations?.[0]?.value || journal.locations?.[0]?.name}
+                  </span>
+                  {(journal.locations?.[0] || journal.organizations?.[0]) && journal.publication_date && ' • '}
+                  <span className={styles.subtitle__date}>{journal.publication_date}</span>
+                </p>
+              </>
+            )}
 
-          {activeTab === TABS.ANNOTATION && (
-            <AnnotationContent
-              markdown={journal.markdown_content && journal.markdown_content !== 'null' ? journal.markdown_content : ''}
-            />
-          )}
+            {activeTab === TABS.ANNOTATION && (
+              <AnnotationContent
+                markdown={
+                  journal.markdown_content && journal.markdown_content !== 'null' ? journal.markdown_content : ''
+                }
+              />
+            )}
 
-          {activeTab === TABS.CONTENT && (
-            <ContentWithChapters
-              journal={journal}
-              markdown={journal.markdown_content && journal.markdown_content !== 'null' ? journal.markdown_content : ''}
-            />
-          )}
+            {activeTab === TABS.CONTENT && (
+              <ContentWithChapters
+                journal={journal}
+                markdown={
+                  journal.markdown_content && journal.markdown_content !== 'null' ? journal.markdown_content : ''
+                }
+              />
+            )}
+          </div>
         </div>
       </div>
     </div>
