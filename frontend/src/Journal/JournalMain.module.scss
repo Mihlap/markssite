@@ -11,6 +11,11 @@
   grid-template-columns: repeat(2, 1fr);
   gap: 3rem;
   padding: 3rem 2rem 11rem 2rem;
+  justify-items: center;
+
+      @media screen and (min-width: 3300px) {
+          grid-template-columns: repeat(3, 1fr);
+        }
 }
 
 .emptyState {
@@ -33,12 +38,13 @@
 }
 
 
-@media screen and (max-width: 2100px) {
+@media screen and (max-width: 2161px) {
   .journalCardsContainer {
     display: grid;
     grid-template-columns: 1fr;
     gap: 2rem;
     padding: 2.5rem 2rem 11rem 2rem;
+    justify-items: center;
   }
 }
 
@@ -48,6 +54,7 @@
     grid-template-columns: 1fr;
     gap: 1.5rem;
     padding: 3.625rem 2.06rem;
+    justify-items: center;
   }
 
   .noJournalsMessage {
@@ -67,3 +74,4 @@
     font-size: 1.5rem;
   }
 }
+
