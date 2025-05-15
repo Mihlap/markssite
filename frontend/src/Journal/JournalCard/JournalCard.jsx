@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AnnotationContent from './AnnotationContent';
 import ContentWithChapters from './ContentSection';
@@ -39,9 +39,13 @@ function JournalCard({ journal, index }) {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState(TABS.ARTICLE);
 
-  const authors = useMemo(() => journal?.authors || [], [journal]);
-
+  const authors = useMemo(() => journal.authors || [], [journal.authors]);
   const authorsToDisplay = useMemo(() => authors.slice(0, 6), [authors]);
+
+   const fallbackIconsRef = useRef([]);
+   if (fallbackIconsRef.current.length === 0) {
+     fallbackIconsRef.current = authorsToDisplay.map(() => catImages[Math.floor(Math.random() * catImages.length)]);
+   }
 
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 1100);
@@ -78,8 +82,6 @@ function JournalCard({ journal, index }) {
     return styles.journalCard__authorsGridTwoRows;
   }, [authorsToDisplay.length]);
 
-  const getRandomCat = useCallback(() => catImages[Math.floor(Math.random() * catImages.length)], []);
-
   const activeTabClass = useMemo(() => {
     if (activeTab === TABS.ARTICLE) return styles.activeTab1;
     if (activeTab === TABS.ANNOTATION) return styles.activeTab2;
@@ -94,23 +96,19 @@ function JournalCard({ journal, index }) {
     <div className={styles.journalCard} onClick={handleCardClick}>
       <div className={styles.journalCard__left} style={{ backgroundColor: articleColor }}>
         <div className={`${styles.journalCard__authorsGrid} ${authorsCountClass}`}>
-          {authorsToDisplay.map((author, idx) => {
-            const fallback = getRandomCat();
-            return (
-              <div
-                key={idx}
-                className={`${styles.journalCard__authorWrapper} ${isInverted ? styles.inverted : ''}`}
-                data-name={author.name}>
-                <AsyncImage
-                  key={idx}
-                  src={author.image || fallback}
-                  alt={author.name}
-                  wrapperClass={`${styles.journalCard__authorWrapper} ${isInverted ? styles.inverted : ''}`}
-                  imgClass={`${styles.journalCard__authorImg} ${!author.image ? styles.fallbackIcon : ''}`}
-                />
-              </div>
-            );
-          })}
+          {authorsToDisplay.map((author, i) => (
+            <div
+              key={i}
+              className={`${styles.journalCard__authorWrapper} ${isInverted ? styles.inverted : ''}`}
+              data-name={author.name}>
+              <AsyncImage
+                src={author.image || fallbackIconsRef.current[i]}
+                alt={author.name}
+                wrapperClass={`${styles.journalCard__authorWrapper} ${isInverted ? styles.inverted : ''}`}
+                imgClass={`${styles.journalCard__authorImg} ${!author.image ? styles.fallbackIcon : ''}`}
+              />
+            </div>
+          ))}
         </div>
       </div>
 
@@ -173,7 +171,7 @@ function JournalCard({ journal, index }) {
           className={styles.contentWrapper}
           style={{
             backgroundColor: articleColor,
-            borderRadius: '0rem 2rem 2rem 2rem',     
+            borderRadius: '0rem 2rem 2rem 2rem',
           }}>
           <div
             className={styles.journalCard__content}
