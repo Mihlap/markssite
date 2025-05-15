@@ -3,24 +3,24 @@
 
 .journalCard {
   display: flex;
-  width: -moz-fit-content;
-  width: fit-content;
-  margin: 0 auto;
-  cursor: pointer;
+  justify-content: center;
+  width: 100%;
+  pointer-events: none;
 
   &__left {
     position: relative;
     display: flex;
     height: 22.125rem;
-    width: 22.1rem;
+    min-width: 22.1rem;
     // border-radius: 3.7rem 1.7rem 1.7rem 3.7rem;
-    // border-radius: 0;
+    border-radius: 0;
+    -webkit-clip-path: path("M354 64C354 33.8301 354 18.7452 344.627 9.37258C335.255 0 320.17 0 290 0H128C67.6602 0 37.4903 0 18.7452 18.7452C0 37.4903 0 67.6602 0 128V226C0 286.34 0 316.51 18.7452 335.255C37.4903 354 67.6602 354 128 354H290C320.17 354 335.255 354 344.627 344.627C354 335.255 354 320.17 354 290V64Z");
+    clip-path: path("M354 64C354 33.8301 354 18.7452 344.627 9.37258C335.255 0 320.17 0 290 0H128C67.6602 0 37.4903 0 18.7452 18.7452C0 37.4903 0 67.6602 0 128V226C0 286.34 0 316.51 18.7452 335.255C37.4903 354 67.6602 354 128 354H290C320.17 354 335.255 354 344.627 344.627C354 335.255 354 320.17 354 290V64Z");
     align-items: center;
     justify-content: center;
     z-index: 10;
-  -webkit-clip-path: path("M354 64C354 33.8301 354 18.7452 344.627 9.37258C335.255 0 320.17 0 290 0H128C67.6602 0 37.4903 0 18.7452 18.7452C0 37.4903 0 67.6602 0 128V226C0 286.34 0 316.51 18.7452 335.255C37.4903 354 67.6602 354 128 354H290C320.17 354 335.255 354 344.627 344.627C354 335.255 354 320.17 354 290V64Z");
-    clip-path: path("M354 64C354 33.8301 354 18.7452 344.627 9.37258C335.255 0 320.17 0 290 0H128C67.6602 0 37.4903 0 18.7452 18.7452C0 37.4903 0 67.6602 0 128V226C0 286.34 0 316.51 18.7452 335.255C37.4903 354 67.6602 354 128 354H290C320.17 354 335.255 354 344.627 344.627C354 335.255 354 320.17 354 290V64Z");
-    
+    cursor: pointer;
+
 
     &::before {
       content: "";
@@ -94,8 +94,8 @@
   &__right {
     flex: 1;
     max-height: 22.125rem;
-    max-width: 54.625rem;
-    width: 100%;
+    width: auto;
+    cursor: pointer;
   }
 
   &__tabs {
@@ -472,12 +472,34 @@
   padding: 0.5rem;
 }
 
-@media screen and (min-width: 1101px) and (max-width: 2100px) {
+@media screen and (min-width: 2161px) {
   .journalCard {
+    width: 100%;
+    display: inline-flex;
+    justify-content: center;
 
     &__right {
-      flex: 1;
+      flex: 0 1 54.625rem;
       max-height: 22.125rem;
+    }
+  }
+}
+
+.journalCard__left,
+.journalCard__right {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
+@media screen and (min-width: 1101px) and (max-width: 2160px) {
+  .journalCard {
+    display: inline-flex;
+    width: 100%;
+    justify-content: center;
+   
+    &__right {
+      flex: 0 1 49.75rem;
+      max-height: 22.125rem;  
     }
 
     &__tabBtn {
@@ -537,8 +559,22 @@
   }
 }
 
+.journalCard__left,
+.journalCard__right {
+  pointer-events: auto;
+  cursor: pointer;
+}
+
 @media screen and (min-width: 768px) and (max-width: 1100px) {
   .journalCard {
+    width: 100%;
+    display: inline-flex;
+  
+
+    &__right {
+      flex: 0 1 42.375rem;
+    }
+
     &__tabs {
       display: flex;
       justify-content: flex-start;
@@ -596,6 +632,8 @@
 
 @media screen and (max-width: 768px) {
   .journalCard {
+    display: flex;
+    width: 100%;
 
     &__right {
       flex: 1;
@@ -660,7 +698,7 @@
 
   .annotationContainer {
     padding: 1rem 0.5rem;
-
+    min-height: 16rem;
   }
 
   .keywords {

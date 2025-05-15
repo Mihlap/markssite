@@ -176,8 +176,14 @@
 
 @media screen and (min-width: 1025px) and (max-width: 1600px) {
 
+  .categoryButtons {
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 1rem;
+     }
+
   .categoryButtonsExpanded {
-    display: flex;
+    display: flex;    
     flex-wrap: nowrap;
     gap: 1rem;
   }
