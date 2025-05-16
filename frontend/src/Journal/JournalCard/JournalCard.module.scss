@@ -12,15 +12,49 @@
     display: flex;
     height: 22.125rem;
     min-width: 22.1rem;
-    // border-radius: 3.7rem 1.7rem 1.7rem 3.7rem;
+    // border-radius: 7rem 1.7rem 1.7rem 3.7rem;
     border-radius: 0;
     -webkit-clip-path: path("M354 64C354 33.8301 354 18.7452 344.627 9.37258C335.255 0 320.17 0 290 0H128C67.6602 0 37.4903 0 18.7452 18.7452C0 37.4903 0 67.6602 0 128V226C0 286.34 0 316.51 18.7452 335.255C37.4903 354 67.6602 354 128 354H290C320.17 354 335.255 354 344.627 344.627C354 335.255 354 320.17 354 290V64Z");
     clip-path: path("M354 64C354 33.8301 354 18.7452 344.627 9.37258C335.255 0 320.17 0 290 0H128C67.6602 0 37.4903 0 18.7452 18.7452C0 37.4903 0 67.6602 0 128V226C0 286.34 0 316.51 18.7452 335.255C37.4903 354 67.6602 354 128 354H290C320.17 354 335.255 354 344.627 344.627C354 335.255 354 320.17 354 290V64Z");
     align-items: center;
     justify-content: center;
     z-index: 10;
-    cursor: pointer;
-
+    cursor: pointer;  
+    
+                      //  .corner {
+                      //     position: absolute;
+                      //     top: 0;
+                      //     left: 0;
+                      //     width: 100%;
+                      //     height: 100%;
+                      //     pointer-events: none;
+                      //     z-index: -1;            
+                      //     background-color: var(--corner-color);                
+                      //     mask-repeat: no-repeat;
+                      //     mask-size: contain;
+                      //     -webkit-mask-repeat: no-repeat;
+                      //     -webkit-mask-size: contain;
+                      //   }            
+                    
+                      //   .topLeft {
+                      //     mask-position: left top;
+                      //     -webkit-mask-position: left top;
+                      //   }
+            
+                      //   .topRight {
+                      //     mask-position: right top;
+                      //     -webkit-mask-position: right top;
+                      //   }
+            
+                      //   .bottomRight {
+                      //     mask-position: right bottom;
+                      //     -webkit-mask-position: right bottom;
+                      //   }
+            
+                      //   .bottomLeft {
+                      //     mask-position: left bottom;
+                      //     -webkit-mask-position: left bottom;
+                      //   }
 
     &::before {
       content: "";
@@ -28,7 +62,7 @@
       inset: 0;
       z-index: 0;
       background: url("/Journal/icons/background.svg") no-repeat center;
-      pointer-events: none;
+      pointer-events: none;    
     }
   }
 
@@ -123,7 +157,7 @@
   }
 
   &__tabBtn.active {
-    z-index: 999;
+    z-index: 999; 
   }
 
   .activeTab1 {
@@ -187,11 +221,15 @@
     margin-right: 4rem;
   }
 
+  &__contentWrapper {
+    border-radius: 0rem 2.05rem 2.05rem 2.05rem;
+  }
+
   &__content {
     display: flex;
     flex-direction: column;
     padding: 1rem;
-    border-radius: 1.7rem;
+    border-radius: 2rem;
     height: 19.625rem;
     color: var(--originWhite-FFFFFF);
     justify-content: center;

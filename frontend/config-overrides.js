@@ -56,7 +56,10 @@ module.exports = {
   devServer: (configFunction) => {
     return (proxy, allowedHost) => {  
       const config = configFunction(proxy, allowedHost);    
-      config.client = { overlay: false };   
+        config.client = {
+          ...config.client,
+          overlay: false,
+        };   
       config.allowedHosts = ['all'];   
       return config;
     };

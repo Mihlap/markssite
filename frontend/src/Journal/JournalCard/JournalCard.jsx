@@ -18,6 +18,9 @@ import cat4 from '../icons/cat4.svg';
 import cat5 from '../icons/cat5.svg';
 import cat6 from '../icons/cat6.svg';
 
+import leftUp from '../icons/leftUp.svg';
+import leftDown from '../icons/leftDown.svg'; 
+
 const TABS = {
   ARTICLE: 'Статья',
   ANNOTATION: 'Аннотация',
@@ -95,6 +98,38 @@ function JournalCard({ journal, index }) {
   return (
     <div className={styles.journalCard} onClick={handleCardClick}>
       <div className={styles.journalCard__left} style={{ backgroundColor: articleColor }}>
+        {/* <span
+          className={`${styles.corner} ${styles.topLeft}`}
+          style={{
+            backgroundColor: articleColor,
+            mask: `url(${leftUp}) no-repeat`,
+            WebkitMask: `url(${leftUp}) no-repeat`,
+          }}
+        /> */}
+        {/* <span
+          className={`${styles.corner} ${styles.bottomLeft}`}
+          style={{
+            backgroundColor: articleColor,
+            mask: `url(${leftDown}) no-repeat`,
+            WebkitMask: `url(${leftDown}) no-repeat`,
+          }}
+        /> */}
+        {/* <span
+          className={`${styles.corner} ${styles.topRight}`}
+          style={{
+            backgroundColor: articleColor,
+            mask: `url(${rightUp}) no-repeat`,
+            WebkitMask: `url(${rightUp}) no-repeat`,
+          }}
+        />
+        <span
+          className={`${styles.corner} ${styles.bottomRight}`}
+          style={{
+            backgroundColor: articleColor,
+            mask: `url(${rightDown}) no-repeat`,
+            WebkitMask: `url(${rightDown}) no-repeat`,
+          }}
+        /> */}
         <div className={`${styles.journalCard__authorsGrid} ${authorsCountClass}`}>
           {authorsToDisplay.map((author, i) => (
             <div
@@ -168,10 +203,9 @@ function JournalCard({ journal, index }) {
           )}
         </div>
         <div
-          className={styles.contentWrapper}
+          className={styles.journalCard__contentWrapper}
           style={{
             backgroundColor: articleColor,
-            borderRadius: '0rem 2rem 2rem 2rem',
           }}>
           <div
             className={styles.journalCard__content}

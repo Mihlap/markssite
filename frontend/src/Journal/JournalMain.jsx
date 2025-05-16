@@ -70,12 +70,12 @@ function JournalMain() {
     );
 
   if (error) return <p className={styles.error}>Ошибка: {error}</p>;
-  // if (filteredJournals.length === 0)
-  //   return (
-  //     <div className={styles.emptyState}>
-  //       <p className={styles.noJournalsMessage}>Готовьтесь! Скоро то, о чем все говорят…</p>
-  //     </div>
-  //   );
+  if (journals.length === 0)
+    return (
+      <div className={styles.emptyState}>
+        <p className={styles.noJournalsMessage}>Готовьтесь! Скоро то, о чем все говорят…</p>
+      </div>
+    );
 
   return (
     <div className={styles.journalMain}>

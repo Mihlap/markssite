@@ -50,7 +50,7 @@ const CategoryButton = React.memo(function CategoryButton({
       return hovered ? darkenColor(color, 20) : color;
     } else {
       if (isSmallScreen) {
-        return 'var(--light-light-gray-EDEDED)';
+        return 'var(--white-F6F6F6)';
       } else {
         return hovered ? 'var(--light-light-gray-EDEDED)' : 'var(--white-F6F6F6)';
       }
