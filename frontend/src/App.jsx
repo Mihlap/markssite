@@ -67,6 +67,7 @@ export default function App() {
     location.pathname.startsWith('/portal/vacancy');
 
   const isFooterFormPage = location.pathname === '/footerForm';
+  
 
   useEffect(() => {
     const vacancyDetailPath = /^\/portal\/vacancy\/\d+$/;
