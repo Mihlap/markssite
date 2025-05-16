@@ -171,7 +171,7 @@ function DesktopCategoryFilters({ categoriesList }) {
       dispatch(
         setDesktopDropdownStyle({
           position: 'absolute',
-          top: rect.bottom + window.scrollY + 2,
+          top: rect.bottom + window.scrollY + 8,
           left: rect.left + window.scrollX,
           width: rect.width,
           zIndex: 1000,
@@ -233,7 +233,7 @@ function DesktopCategoryFilters({ categoriesList }) {
             style={
               windowWidth >= 1025 && windowWidth <= 1600 && isSearchExpanded
                 ? { transform: `translateX(${buttonsOffset}px)` }
-                : {}
+                : { transition: 'transform 0.3s ease' }
             }>
             {visibleCategories.map(({ cat, count }) => {
               const { color, icon } = categoriesConfig[cat] || { color: '#000', icon: null };
