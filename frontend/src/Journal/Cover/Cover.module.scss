@@ -50,12 +50,22 @@
     &__cover {
       padding-bottom: 30%;
     }
+
+    &__title {
+      font-size: 3rem;
+      line-height: 4rem;
+    }
+
+    &__subtitle {
+      font-size: 1.5rem;
+      line-height: 2rem;
+    }
   }
 
   @media screen and (min-width: 768px) and (max-width: 1024px) {
     &__cover {
       margin-top: 3.5rem;
-      padding-bottom: 50%;
+      padding-bottom: 36%;
     }
 
     &__overlay {
@@ -76,9 +86,9 @@
     }
   }
 
-  @media screen and (max-width: 768px) {
+  @media screen and (max-width: 768px) { 
     &__cover {
-      padding-bottom: 100%;
+      padding-bottom: 70%;
     }
 
     &__overlay {
