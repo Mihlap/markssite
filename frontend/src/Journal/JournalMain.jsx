@@ -69,13 +69,16 @@ function JournalMain() {
       </div>
     );
 
+  const isFilterActive = selectedCategories.length > 0 || Boolean(searchValue.trim());
+
   if (error) return <p className={styles.error}>Ошибка: {error}</p>;
-  if (journals.length === 0)
+  if (filteredJournals.length === 0 && !isFilterActive) {
     return (
       <div className={styles.emptyState}>
         <p className={styles.noJournalsMessage}>Готовьтесь! Скоро то, о чем все говорят…</p>
       </div>
     );
+  }
 
   return (
     <div className={styles.journalMain}>
