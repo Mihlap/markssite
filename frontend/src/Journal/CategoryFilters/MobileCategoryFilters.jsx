@@ -1,4 +1,4 @@
-import { memo, useCallback, useMemo, useState, useEffect } from 'react';
+import React, { memo, useCallback, useMemo, useState, useEffect } from 'react';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import {
   setMobileSearchValue,
@@ -20,57 +20,38 @@ function MobileCategoryFilters({ categoriesList }) {
     (state) => state.categoryFilters.mobile,
     shallowEqual
   );
+
   const journals = useSelector((state) => state.journal.journals, shallowEqual);
-  const selectedIssueNumber = useSelector((state) => state.journal.selectedIssueNumber);
-  const hasActiveCategory = Array.isArray(selectedCategories) && selectedCategories.length > 0;
-  const isSearchActive = mobileInput.trim().length > 0;
-
-  const filteredJournals = useMemo(() => {
-    let filtered = journals;
-
-    if (selectedIssueNumber) {
-      filtered = filtered.filter((journal) => String(journal.issue_number).padStart(3, '0') === selectedIssueNumber);
-    }
-
-    if (!isSearchActive && hasActiveCategory) {
-      filtered = filtered.filter((journal) => selectedCategories.includes(journal.category));
-    }
-    return filtered;
-  }, [journals, selectedIssueNumber, selectedCategories, isSearchActive, hasActiveCategory]);
-
-  const mobileFilteredResults = useMemo(() => {
-    const query = mobileInput.trim().toLowerCase();
-    if (!query) return [];
-    return filteredJournals.filter((journal) => journal.title.toLowerCase().includes(query));
-  }, [mobileInput, filteredJournals]);
+  const hasActiveCategory = selectedCategories.length > 0;
 
   useEffect(() => {
     dispatch(setMobileSearchValue(''));
     dispatch(setMobileInput(''));
-  }, [selectedIssueNumber, dispatch]);
+    dispatch(setMobileSelectedCategories([]));
+  }, [dispatch]);
 
   const [showAllCategories, setShowAllCategories] = useState(false);
   const defaultVisibleCount = 4;
 
   useEffect(() => {
-    if (!isOverlayOpen) {
-      setShowAllCategories(false);
-    }
+    if (!isOverlayOpen) setShowAllCategories(false);
   }, [isOverlayOpen]);
 
   const openOverlay = useCallback(() => {
     dispatch(setMobilePrevSearchValue(searchValue));
     dispatch(setMobilePrevSelectedCategory(selectedCategories));
-    dispatch(setMobileInput(searchValue));
+    dispatch(setMobileInput(''));
     dispatch(setMobileIsOverlayOpen(true));
-    if (selectedCategories) {
-      setShowAllCategories(true);
-    }
-  }, [dispatch, searchValue, selectedCategories]);
+    if (hasActiveCategory) setShowAllCategories(true);
+  }, [dispatch, searchValue, selectedCategories, hasActiveCategory]);
 
   const handleCancel = useCallback(() => {
+    if (mobileInput.trim()) {
+      dispatch(setMobileSearchValue(mobileInput.trim()));
+      dispatch(setMobileSelectedCategories([]));
+    }
     dispatch(setMobileIsOverlayOpen(false));
-  }, [dispatch]);
+  }, [dispatch, mobileInput]);
 
   const handleClearOverlayInput = useCallback(() => {
     dispatch(setMobileInput(''));
@@ -89,15 +70,12 @@ function MobileCategoryFilters({ categoriesList }) {
 
   const handleCategoryClick = useCallback(
     (cat) => {
-      let updated;
-      if (selectedCategories.includes(cat)) {
-        updated = selectedCategories.filter((c) => c !== cat);
-      } else {
-        updated = [...selectedCategories, cat];
-      }
-      dispatch(setMobileSearchValue(''));
-      dispatch(setMobileInput(''));
+      const updated = selectedCategories.includes(cat)
+        ? selectedCategories.filter((c) => c !== cat)
+        : [...selectedCategories, cat];
+
       dispatch(setMobileSelectedCategories(updated));
+      dispatch(setMobileSearchValue(''));
       dispatch(setMobileIsOverlayOpen(false));
     },
     [dispatch, selectedCategories]
@@ -105,8 +83,9 @@ function MobileCategoryFilters({ categoriesList }) {
 
   const handleMobileInputChange = useCallback(
     (e) => {
-      dispatch(setMobileInput(e.target.value));
-      if (e.target.value.trim()) {
+      const val = e.target.value;
+      dispatch(setMobileInput(val));
+      if (val.trim()) {
         dispatch(setMobileSelectedCategories([]));
       }
     },
@@ -124,11 +103,11 @@ function MobileCategoryFilters({ categoriesList }) {
 
   const highlightMatches = useCallback((text, query) => {
     if (!query.trim()) return text;
-    const escapedQuery = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    const regex = new RegExp(`(${escapedQuery})`, 'gi');
-    return text.split(regex).map((part, index) =>
-      regex.test(part) ? (
-        <span key={index} className={styles.highlight}>
+    const esc = query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    const re = new RegExp(`(${esc})`, 'gi');
+    return text.split(re).map((part, i) =>
+      re.test(part) ? (
+        <span key={i} className={styles.highlight}>
           {part}
         </span>
       ) : (
@@ -137,22 +116,36 @@ function MobileCategoryFilters({ categoriesList }) {
     );
   }, []);
 
+  const filteredByText = useMemo(() => {
+    const q = mobileInput.trim().toLowerCase();
+    if (!q) return [];
+    return journals.filter((j) => j.title.toLowerCase().includes(q));
+  }, [mobileInput, journals]);
+
   const visibleCategories = useMemo(
     () => (showAllCategories ? categoriesList : categoriesList.slice(0, defaultVisibleCount)),
     [showAllCategories, categoriesList]
   );
-  const hiddenCount = useMemo(() => categoriesList.length - defaultVisibleCount, [categoriesList]);
+  const hiddenCount = categoriesList.length - defaultVisibleCount;
 
   return (
     <div className={styles.categoryFilters}>
-      <div className={`${styles.searchContainer} ${searchValue ? styles.filledBorder : ''}`}
-       onClick={openOverlay}>
+      <div
+        className={`${styles.searchContainer} ${searchValue || hasActiveCategory ? styles.filledBorder : ''}`}
+        onClick={openOverlay}>
         <SearchIcon className={styles.searchIcon} />
-        <input className={styles.searchInput} type="text" placeholder="Поиск" value={searchValue} readOnly />
-        {searchValue && !isOverlayOpen && (
+        <input
+          className={styles.searchInput}
+          type="text"
+          placeholder="Поиск"
+          value={searchValue ? searchValue : hasActiveCategory ? selectedCategories.join(', ') : ''}
+          readOnly
+        />
+        {(searchValue || hasActiveCategory) && !isOverlayOpen && (
           <CloseIcon className={styles.closeIconMobile} onClick={handleClearMainSearch} />
         )}
       </div>
+
       {isOverlayOpen && (
         <div className={styles.mobileOverlay}>
           <div className={styles.mobileOverlayWrapper}>
@@ -173,9 +166,10 @@ function MobileCategoryFilters({ categoriesList }) {
               Отмена
             </button>
           </div>
+
           <div className={styles.mobileOverlayCategories}>
             {visibleCategories.map(({ cat, count }) => {
-              const { color, icon } = categoriesConfig[cat] || { color: '#000', icon: null };
+              const { color, icon } = categoriesConfig[cat] || {};
               return (
                 <CategoryButton
                   key={cat}
@@ -183,35 +177,41 @@ function MobileCategoryFilters({ categoriesList }) {
                   count={count}
                   color={color}
                   icon={icon}
-                  isActive={Array.isArray(selectedCategories) && selectedCategories.includes(cat)}
+                  isActive={selectedCategories.includes(cat)}
                   onClick={() => handleCategoryClick(cat)}
                 />
               );
             })}
-            {categoriesList.length > defaultVisibleCount && !showAllCategories && (
+            {hiddenCount > 0 && !showAllCategories && (
               <CategoryButton
-                key="more-categories"
+                key="more"
                 cat={`＋ ещё ${hiddenCount}`}
                 count={0}
                 isActive={false}
-                color={'var(--light-light-gray-EDEDED)'}
-                icon={null}
+                color="var(--light-light-gray-EDEDED)"
                 onClick={() => setShowAllCategories(true)}
                 customStyle={{ padding: '0.875rem 1rem' }}
               />
             )}
           </div>
-          {mobileInput.trim() && mobileFilteredResults.length > 0 && (
+
+          {mobileInput.trim() && (
             <div className={styles.mobileOverlayResults}>
-              <div className={styles.resultsTitle}>Результаты поиска</div>
-              {mobileFilteredResults.slice(0, 30).map((journal) => (
-                <div
-                  key={journal.id}
-                  className={styles.dropdownItem}
-                  onMouseDown={() => handleMobileResultClick(journal.title)}>
-                  {highlightMatches(journal.title, mobileInput)}
-                </div>
-              ))}
+              {filteredByText.length > 0 ? (
+                <>
+                  <div className={styles.resultsTitle}>Результаты поиска</div>
+                  {filteredByText.map((j) => (
+                    <div
+                      key={j.id}
+                      className={styles.dropdownItem}
+                      onMouseDown={() => handleMobileResultClick(j.title)}>
+                      {highlightMatches(j.title, mobileInput)}
+                    </div>
+                  ))}
+                </>
+              ) : (
+                <div className={styles.noResults}>Ничего не найдено :(</div>
+              )}
             </div>
           )}
         </div>
