@@ -19,42 +19,42 @@
     align-items: center;
     justify-content: center;
     z-index: 10;
-    cursor: pointer;  
-    
-                      //  .corner {
-                      //     position: absolute;
-                      //     top: 0;
-                      //     left: 0;
-                      //     width: 100%;
-                      //     height: 100%;
-                      //     pointer-events: none;
-                      //     z-index: -1;            
-                      //     background-color: var(--corner-color);                
-                      //     mask-repeat: no-repeat;
-                      //     mask-size: contain;
-                      //     -webkit-mask-repeat: no-repeat;
-                      //     -webkit-mask-size: contain;
-                      //   }            
-                    
-                      //   .topLeft {
-                      //     mask-position: left top;
-                      //     -webkit-mask-position: left top;
-                      //   }
-            
-                      //   .topRight {
-                      //     mask-position: right top;
-                      //     -webkit-mask-position: right top;
-                      //   }
-            
-                      //   .bottomRight {
-                      //     mask-position: right bottom;
-                      //     -webkit-mask-position: right bottom;
-                      //   }
-            
-                      //   .bottomLeft {
-                      //     mask-position: left bottom;
-                      //     -webkit-mask-position: left bottom;
-                      //   }
+    cursor: pointer;
+
+    //  .corner {
+    //     position: absolute;
+    //     top: 0;
+    //     left: 0;
+    //     width: 100%;
+    //     height: 100%;
+    //     pointer-events: none;
+    //     z-index: -1;            
+    //     background-color: var(--corner-color);                
+    //     mask-repeat: no-repeat;
+    //     mask-size: contain;
+    //     -webkit-mask-repeat: no-repeat;
+    //     -webkit-mask-size: contain;
+    //   }            
+
+    //   .topLeft {
+    //     mask-position: left top;
+    //     -webkit-mask-position: left top;
+    //   }
+
+    //   .topRight {
+    //     mask-position: right top;
+    //     -webkit-mask-position: right top;
+    //   }
+
+    //   .bottomRight {
+    //     mask-position: right bottom;
+    //     -webkit-mask-position: right bottom;
+    //   }
+
+    //   .bottomLeft {
+    //     mask-position: left bottom;
+    //     -webkit-mask-position: left bottom;
+    //   }
 
     &::before {
       content: "";
@@ -62,11 +62,11 @@
       inset: 0;
       z-index: 0;
       background: url("/Journal/icons/background.svg") no-repeat center;
-      pointer-events: none;    
+      pointer-events: none;
     }
   }
 
-  @media (max-width: 1100px) {
+  @media (max-width: 1024px) {
     &__left {
       display: none;
     }
@@ -114,7 +114,7 @@
     display: grid;
     grid-template-columns: repeat(3, auto);
     justify-content: center;
-    align-items: center; 
+    align-items: center;
 
     .journalCard__authorWrapper {
       width: 7.3125rem;
@@ -148,7 +148,7 @@
     width: 19.94rem;
     height: 2.44rem;
     border: none;
-    cursor: pointer;
+    pointer-events: auto;
     color: var(--originWhite-FFFFFF);
     z-index: 1;
     margin-left: -1rem;
@@ -159,7 +159,7 @@
   }
 
   &__tabBtn.active {
-    z-index: 999; 
+    z-index: 999;
   }
 
   .activeTab1 {
@@ -190,7 +190,7 @@
     }
   }
 
-  .activeTab3 {      
+  .activeTab3 {
     .tabBtn3 {
       z-index: 3;
     }
@@ -539,10 +539,10 @@
     display: inline-flex;
     width: 100%;
     justify-content: center;
-   
+
     &__right {
       flex: 0 1 49.75rem;
-      max-height: 22.125rem;  
+      max-height: 22.125rem;
     }
 
     &__tabBtn {
@@ -613,7 +613,7 @@
     width: 100%;
     min-width: 42.375rem;
     display: inline-flex;
-  
+
 
     &__right {
       flex: 0 1 42.375rem;
@@ -627,8 +627,8 @@
 
     &__tabBtn {
       max-width: 17rem;
-      height: 100%; 
-      min-height: 2.1rem;    
+      height: 100%;
+      min-height: 2.1rem;
       margin-left: -0.85rem;
     }
 
@@ -640,7 +640,16 @@
     }
 
     &__title {
+
+      line-height: 2.3rem;
       margin: 1.5rem 1.5rem 0 1.5rem;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: normal;
+      word-break: break-word;
     }
 
     &__subtitle {
@@ -648,7 +657,7 @@
     }
 
     &__content {
-     padding: 1rem 0 2.5rem 0; 
+      padding: 1rem 0 2.5rem 0;
     }
   }
 
@@ -684,7 +693,7 @@
   .journalCard {
     display: flex;
     width: 100%;
-  
+
     &__right {
       flex: 1;
       max-height: 100%;
@@ -711,7 +720,7 @@
     }
 
     &__content {
-      padding: 2.81rem 1rem 2.5rem 1rem;
+      padding: 2.5rem 1rem 2.5rem 1rem;
       height: auto;
     }
 
@@ -719,14 +728,14 @@
       color: var(--white-F6F6F6);
       font-size: 1.5rem;
       line-height: 2rem;
-      margin: 0rem 0.5rem 1.5rem 0.5rem;
-      -webkit-box-orient: unset;
-      -webkit-line-clamp: unset;
-      overflow: visible;
-      text-overflow: clip;
+      margin: 0 0.5rem 1.5rem;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 6;
+      overflow: hidden;
+      text-overflow: ellipsis;
       white-space: normal;
-      word-break: normal;
-      overflow-wrap: break-word;
+      word-break: break-word;
     }
 
     &__subtitle {
@@ -739,12 +748,7 @@
       word-break: normal;
       overflow-wrap: break-word;
     }
-
-    .subtitle__location,
-    .subtitle__date {
-      white-space: wrap;
-    }
-  }
+   }
 
   .annotationContainer {
     padding: 1rem 0.5rem;
@@ -768,3 +772,128 @@
     margin: 0rem 0.5rem 1.5rem 0.5rem;
   }
 }
+
+
+// //
+// // Отрезаем по clip-path и слева, и справа
+// //
+// .journalCard__tabBtn.tabBtn1 {
+//   /* таб 1 сдвинут влево на 1rem, и у него правый край надо обрезать на ~2.7rem */
+//   clip-path: inset(0
+//       /* top */
+//       2.3rem
+//       /* right */
+//       0
+//       /* bottom */
+//       1rem
+//       /* left */
+//     );
+// }
+
+// .journalCard__tabBtn.tabBtn2 {
+//   /* таб 2 сдвинут влево на 8rem, и у него правый край обрезаем на ~2.7rem */
+//   clip-path: inset(0
+//       /* top */
+//       2.3rem
+//       /* right */
+//       0
+//       /* bottom */
+//       2.3rem
+//       /* left */
+//     );
+// }
+
+// .journalCard__tabBtn.tabBtn3 {
+//   /* таб 3 сдвинут влево на 7.3rem, и у него правый край обрезаем на ~2.5rem */
+//   clip-path: inset(0
+//       /* top */
+//       2.3rem
+//       /* right */
+//       0
+//       /* bottom */
+//       2.3rem
+//       /* left */
+//     );
+// }
+
+// // ------------------------------------------------------------------
+// // Для планшетов: ширина 768px – 1100px
+// // ------------------------------------------------------------------
+// @media screen and (min-width: 768px) and (max-width: 1100px) {
+//   .journalCard__tabBtn.tabBtn1 {
+//     /* правый край обрезаем на 2.3rem, левый — на 0.85rem (margin-left у базовой кнопки) */
+//     clip-path: inset(0
+//         /* top */
+//         2.3rem
+//         /* right */
+//         0
+//         /* bottom */
+//         0rem);
+//     /* left */
+//   }
+
+//   .journalCard__tabBtn.tabBtn2 {
+//     /* правый край — 2.3rem, левый — 2.3rem (видимая зона перекрытия) */
+//     clip-path: inset(0
+//         /* top */
+//         2.3rem
+//         /* right */
+//         0
+//         /* bottom */
+//         2.3rem);
+//     /* left */
+//   }
+
+//   .journalCard__tabBtn.tabBtn3 {
+//     /* правый край — 2.5rem, левый — 2.3rem */
+//     clip-path: inset(0
+//         /* top */
+//         2.5rem
+//         /* right */
+//         0
+//         /* bottom */
+//         2.3rem);
+//     /* left */
+//   }
+// }
+
+// // ------------------------------------------------------------------
+// // Для мобилок: ширина до 768px
+// // ------------------------------------------------------------------
+// @media screen and (max-width: 768px) {
+//   .journalCard__tabBtn.tabBtn1 {
+//     /* правый — 2.3rem, левый — 0.9rem (margin-left на мобилках) */
+//     clip-path: inset(0
+//         /* top */
+//         2.8rem
+//         /* right */
+//         0
+//         /* bottom */
+//         0rem);
+//     /* left */
+//   }
+
+//   .journalCard__tabBtn.tabBtn2 {
+//     /* правый — 2.3rem, левый — 2.3rem */
+//     clip-path: inset(0
+//         /* top */
+//         2.3rem
+//         /* right */
+//         0
+//         /* bottom */
+//         2.5rem);
+//     /* left */
+//   }
+
+//   .journalCard__tabBtn.tabBtn3 {
+//     /* правый — 2.3rem, левый — 2.3rem */
+//     clip-path: inset(0
+//         /* top */
+//         2.3rem
+//         /* right */
+//         0
+//         /* bottom */
+//         2.3rem);
+//     /* left */
+//   }
+// }
