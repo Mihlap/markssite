@@ -18,8 +18,16 @@ import cat4 from '../icons/cat4.svg';
 import cat5 from '../icons/cat5.svg';
 import cat6 from '../icons/cat6.svg';
 
-import leftUp from '../icons/leftUp.svg';
-import leftDown from '../icons/leftDown.svg'; 
+import { ReactComponent as LeftUp } from '../icons/leftUp.svg';
+import { ReactComponent as RightUp } from '../icons/rightUp.svg';
+import { ReactComponent as RightDown } from '../icons/rightDown.svg';
+import { ReactComponent as LeftDown } from '../icons/leftDown.svg';
+
+import { ReactComponent as LeftTop } from '../icons/leftTop.svg';
+import { ReactComponent as RightTop } from '../icons/rightTop.svg';
+import { ReactComponent as RightBottom } from '../icons/rightBottom.svg';
+import { ReactComponent as LeftBottom } from '../icons/leftBottom.svg';
+
 
 const TABS = {
   ARTICLE: 'Статья',
@@ -97,39 +105,11 @@ function JournalCard({ journal, index }) {
 
   return (
     <div className={styles.journalCard} onClick={handleCardClick}>
-      <div className={styles.journalCard__left} style={{ backgroundColor: articleColor }}>
-        {/* <span
-          className={`${styles.corner} ${styles.topLeft}`}
-          style={{
-            backgroundColor: articleColor,
-            mask: `url(${leftUp}) no-repeat`,
-            WebkitMask: `url(${leftUp}) no-repeat`,
-          }}
-        /> */}
-        {/* <span
-          className={`${styles.corner} ${styles.bottomLeft}`}
-          style={{
-            backgroundColor: articleColor,
-            mask: `url(${leftDown}) no-repeat`,
-            WebkitMask: `url(${leftDown}) no-repeat`,
-          }}
-        /> */}
-        {/* <span
-          className={`${styles.corner} ${styles.topRight}`}
-          style={{
-            backgroundColor: articleColor,
-            mask: `url(${rightUp}) no-repeat`,
-            WebkitMask: `url(${rightUp}) no-repeat`,
-          }}
-        />
-        <span
-          className={`${styles.corner} ${styles.bottomRight}`}
-          style={{
-            backgroundColor: articleColor,
-            mask: `url(${rightDown}) no-repeat`,
-            WebkitMask: `url(${rightDown}) no-repeat`,
-          }}
-        /> */}
+      <div className={styles.journalCard__left} style={{ backgroundColor: articleColor, color: articleColor }}>
+        <LeftUp className={`${styles.corner} ${styles.leftUp}`} />
+        <RightUp className={`${styles.corner} ${styles.rightUp}`} />
+        <RightDown className={`${styles.corner} ${styles.rightDown}`} />
+        <LeftDown className={`${styles.corner} ${styles.leftDown}`} />
         <div className={`${styles.journalCard__authorsGrid} ${authorsCountClass}`}>
           {authorsToDisplay.map((author, i) => (
             <div
@@ -206,7 +186,12 @@ function JournalCard({ journal, index }) {
           className={styles.journalCard__contentWrapper}
           style={{
             backgroundColor: articleColor,
+            color: currentCardColor,
           }}>
+          <LeftTop className={`${styles.corner} ${styles.leftTop}`} />
+          <RightTop className={`${styles.corner} ${styles.rightTop}`} />
+          <RightBottom className={`${styles.corner} ${styles.rightBottom}`} />
+          <LeftBottom className={`${styles.corner} ${styles.leftBottom}`} />
           <div
             className={styles.journalCard__content}
             style={{
