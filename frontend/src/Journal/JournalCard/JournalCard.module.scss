@@ -12,49 +12,45 @@
     display: flex;
     height: 22.125rem;
     min-width: 22.1rem;
-    // border-radius: 7rem 1.7rem 1.7rem 3.7rem;
-    border-radius: 0;
-    -webkit-clip-path: path("M354 64C354 33.8301 354 18.7452 344.627 9.37258C335.255 0 320.17 0 290 0H128C67.6602 0 37.4903 0 18.7452 18.7452C0 37.4903 0 67.6602 0 128V226C0 286.34 0 316.51 18.7452 335.255C37.4903 354 67.6602 354 128 354H290C320.17 354 335.255 354 344.627 344.627C354 335.255 354 320.17 354 290V64Z");
-    clip-path: path("M354 64C354 33.8301 354 18.7452 344.627 9.37258C335.255 0 320.17 0 290 0H128C67.6602 0 37.4903 0 18.7452 18.7452C0 37.4903 0 67.6602 0 128V226C0 286.34 0 316.51 18.7452 335.255C37.4903 354 67.6602 354 128 354H290C320.17 354 335.255 354 344.627 344.627C354 335.255 354 320.17 354 290V64Z");
+    border-radius: 7.5rem 4rem 4rem 7.5rem;
+    // border-radius: 0;
+    // -webkit-clip-path: path("M354 64C354 33.8301 354 18.7452 344.627 9.37258C335.255 0 320.17 0 290 0H128C67.6602 0 37.4903 0 18.7452 18.7452C0 37.4903 0 67.6602 0 128V226C0 286.34 0 316.51 18.7452 335.255C37.4903 354 67.6602 354 128 354H290C320.17 354 335.255 354 344.627 344.627C354 335.255 354 320.17 354 290V64Z");
+    // clip-path: path("M354 64C354 33.8301 354 18.7452 344.627 9.37258C335.255 0 320.17 0 290 0H128C67.6602 0 37.4903 0 18.7452 18.7452C0 37.4903 0 67.6602 0 128V226C0 286.34 0 316.51 18.7452 335.255C37.4903 354 67.6602 354 128 354H290C320.17 354 335.255 354 344.627 344.627C354 335.255 354 320.17 354 290V64Z");
     align-items: center;
     justify-content: center;
     z-index: 10;
     cursor: pointer;
 
-    //  .corner {
-    //     position: absolute;
-    //     top: 0;
-    //     left: 0;
-    //     width: 100%;
-    //     height: 100%;
-    //     pointer-events: none;
-    //     z-index: -1;            
-    //     background-color: var(--corner-color);                
-    //     mask-repeat: no-repeat;
-    //     mask-size: contain;
-    //     -webkit-mask-repeat: no-repeat;
-    //     -webkit-mask-size: contain;
-    //   }            
+    .corner {
+      position: absolute;
+      pointer-events: none;
+      z-index: -1;
 
-    //   .topLeft {
-    //     mask-position: left top;
-    //     -webkit-mask-position: left top;
-    //   }
 
-    //   .topRight {
-    //     mask-position: right top;
-    //     -webkit-mask-position: right top;
-    //   }
+      & path {
+        fill: currentColor;
+      }
+    }
 
-    //   .bottomRight {
-    //     mask-position: right bottom;
-    //     -webkit-mask-position: right bottom;
-    //   }
+    .leftUp {
+      top: 0;
+      left: 0;
+    }
 
-    //   .bottomLeft {
-    //     mask-position: left bottom;
-    //     -webkit-mask-position: left bottom;
-    //   }
+    .rightUp {
+      top: 0;
+      right: 0;
+    }
+
+    .rightDown {
+      bottom: 0;
+      right: 0;
+    }
+
+    .leftDown {
+      bottom: 0;
+      left: 0;
+    }
 
     &::before {
       content: "";
@@ -128,7 +124,8 @@
   }
 
   &__right {
-    flex: 1;
+    flex: 1 1 auto;
+    min-width: 0;
     max-height: 22.125rem;
     width: auto;
     cursor: pointer;
@@ -227,14 +224,45 @@
   }
 
   &__contentWrapper {
-    border-radius: 0rem 2.05rem 2.05rem 2.05rem;
+    position: relative;
+    border-radius: 0rem 3rem 3rem 3rem;
+
+    .corner {
+        position: absolute;
+        pointer-events: none;
+        z-index: 1;     
+    
+        & path {
+          fill: currentColor;
+        }
+      }
+    
+      .leftTop {
+        top: 0;
+        left: 0;
+      }
+    
+      .rightTop {
+        top: 0;
+        right: 0;
+      }
+    
+      .rightBottom {
+        bottom: 0;
+        right: 0;
+      }
+    
+      .leftBottom {
+        bottom: 0;
+        left: 0;
+      }
   }
 
   &__content {
     display: flex;
     flex-direction: column;
     padding: 1rem;
-    border-radius: 2rem;
+    border-radius: 3rem;
     height: 19.625rem;
     color: var(--originWhite-FFFFFF);
     // justify-content: center;
@@ -556,7 +584,7 @@
       cursor: pointer;
       color: var(--originWhite-FFFFFF);
       z-index: 1;
-      margin-left: -1.2rem;
+      margin-left: -1.3rem;
     }
 
     .tabTextArticle {
@@ -623,13 +651,13 @@
       display: flex;
       justify-content: flex-start;
       position: relative;
+      margin-bottom: -1px;
     }
 
     &__tabBtn {
       max-width: 17rem;
-      height: 100%;
-      min-height: 2.1rem;
-      margin-left: -0.85rem;
+      height: 2.15rem;
+      margin-left: -0.7rem;
     }
 
     .tabText {
@@ -640,7 +668,6 @@
     }
 
     &__title {
-
       line-height: 2.3rem;
       margin: 1.5rem 1.5rem 0 1.5rem;
       display: -webkit-box;
@@ -692,6 +719,8 @@
 @media screen and (max-width: 768px) {
   .journalCard {
     display: flex;
+    flex: 1 1 auto;
+    min-width: 0;
     width: 100%;
 
     &__right {
@@ -722,6 +751,7 @@
     &__content {
       padding: 2.5rem 1rem 2.5rem 1rem;
       height: auto;
+      max-height: 25rem;
     }
 
     &__title {
@@ -748,11 +778,12 @@
       word-break: normal;
       overflow-wrap: break-word;
     }
-   }
+  }
 
   .annotationContainer {
     padding: 1rem 0.5rem;
     min-height: 16rem;
+    max-height: 25rem;
   }
 
   .keywords {
@@ -773,127 +804,52 @@
   }
 }
 
+// ------------------------------------------------------------------
+// Немного подрезаем область видимость кнопок
+// ------------------------------------------------------------------
+.journalCard__tabBtn.tabBtn1 {
+  clip-path: inset(0 3rem 0 1rem);
+}
 
-// //
-// // Отрезаем по clip-path и слева, и справа
-// //
-// .journalCard__tabBtn.tabBtn1 {
-//   /* таб 1 сдвинут влево на 1rem, и у него правый край надо обрезать на ~2.7rem */
-//   clip-path: inset(0
-//       /* top */
-//       2.3rem
-//       /* right */
-//       0
-//       /* bottom */
-//       1rem
-//       /* left */
-//     );
-// }
+.journalCard__tabBtn.tabBtn2 {
+  clip-path: inset(0 2.2rem 0 2rem);
+}
 
-// .journalCard__tabBtn.tabBtn2 {
-//   /* таб 2 сдвинут влево на 8rem, и у него правый край обрезаем на ~2.7rem */
-//   clip-path: inset(0
-//       /* top */
-//       2.3rem
-//       /* right */
-//       0
-//       /* bottom */
-//       2.3rem
-//       /* left */
-//     );
-// }
+.journalCard__tabBtn.tabBtn3 {
+  clip-path: inset(0 2.2rem 0 2.2rem);
+}
 
-// .journalCard__tabBtn.tabBtn3 {
-//   /* таб 3 сдвинут влево на 7.3rem, и у него правый край обрезаем на ~2.5rem */
-//   clip-path: inset(0
-//       /* top */
-//       2.3rem
-//       /* right */
-//       0
-//       /* bottom */
-//       2.3rem
-//       /* left */
-//     );
-// }
 
-// // ------------------------------------------------------------------
-// // Для планшетов: ширина 768px – 1100px
-// // ------------------------------------------------------------------
-// @media screen and (min-width: 768px) and (max-width: 1100px) {
-//   .journalCard__tabBtn.tabBtn1 {
-//     /* правый край обрезаем на 2.3rem, левый — на 0.85rem (margin-left у базовой кнопки) */
-//     clip-path: inset(0
-//         /* top */
-//         2.3rem
-//         /* right */
-//         0
-//         /* bottom */
-//         0rem);
-//     /* left */
-//   }
+// ------------------------------------------------------------------
+// Для планшетов: ширина 768px – 1100px
+// ------------------------------------------------------------------
+@media screen and (min-width: 768px) and (max-width: 1100px) {
+  .journalCard__tabBtn.tabBtn1 {
+    clip-path: inset(0 2rem 0 0rem);
+  }
 
-//   .journalCard__tabBtn.tabBtn2 {
-//     /* правый край — 2.3rem, левый — 2.3rem (видимая зона перекрытия) */
-//     clip-path: inset(0
-//         /* top */
-//         2.3rem
-//         /* right */
-//         0
-//         /* bottom */
-//         2.3rem);
-//     /* left */
-//   }
+  .journalCard__tabBtn.tabBtn2 {
+    clip-path: inset(0 1.6rem 0 1.6rem);
+  }
 
-//   .journalCard__tabBtn.tabBtn3 {
-//     /* правый край — 2.5rem, левый — 2.3rem */
-//     clip-path: inset(0
-//         /* top */
-//         2.5rem
-//         /* right */
-//         0
-//         /* bottom */
-//         2.3rem);
-//     /* left */
-//   }
-// }
+  .journalCard__tabBtn.tabBtn3 {
+    clip-path: inset(0 1.6rem 0 2rem);
+  }
+}
 
-// // ------------------------------------------------------------------
-// // Для мобилок: ширина до 768px
-// // ------------------------------------------------------------------
-// @media screen and (max-width: 768px) {
-//   .journalCard__tabBtn.tabBtn1 {
-//     /* правый — 2.3rem, левый — 0.9rem (margin-left на мобилках) */
-//     clip-path: inset(0
-//         /* top */
-//         2.8rem
-//         /* right */
-//         0
-//         /* bottom */
-//         0rem);
-//     /* left */
-//   }
+// ------------------------------------------------------------------
+// Для мобилок: ширина до 768px
+// ------------------------------------------------------------------
+@media screen and (max-width: 767px) {
+  .journalCard__tabBtn.tabBtn1 {
+    clip-path: inset(0 2.6rem 0 0rem);
+  }
 
-//   .journalCard__tabBtn.tabBtn2 {
-//     /* правый — 2.3rem, левый — 2.3rem */
-//     clip-path: inset(0
-//         /* top */
-//         2.3rem
-//         /* right */
-//         0
-//         /* bottom */
-//         2.5rem);
-//     /* left */
-//   }
+  .journalCard__tabBtn.tabBtn2 {
+    clip-path: inset(0 2.3rem 0 2.2rem);
+  }
 
-//   .journalCard__tabBtn.tabBtn3 {
-//     /* правый — 2.3rem, левый — 2.3rem */
-//     clip-path: inset(0
-//         /* top */
-//         2.3rem
-//         /* right */
-//         0
-//         /* bottom */
-//         2.3rem);
-//     /* left */
-//   }
-// }
+  .journalCard__tabBtn.tabBtn3 {
+    clip-path: inset(0 2.3rem 0 2.3rem);
+  }
+}
