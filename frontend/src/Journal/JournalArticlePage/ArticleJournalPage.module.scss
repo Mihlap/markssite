@@ -13,7 +13,7 @@
     width: 100%;
     min-height: 31.5rem;
     height: 100%;
-    background-image: url('../../../src/Journal/icons/fon.svg');
+    background-image: url('../../../src/Journal/icons/fon5.svg');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -39,6 +39,8 @@
 }
 
 .authorsNames {
+  max-width: 60%;
+  width: 100%;
   font-family: var(--font-unbounded);
   font-size: 1.5rem;
   font-weight: var(--fw-300);
@@ -83,7 +85,7 @@
 .sidebarToc {
   flex: 0 0 300px;
   align-self: flex-start;
-  padding: 0 1rem;
+  padding: 0 2rem;
 
   @media (max-width: 1199px) {
     display: none;
@@ -94,7 +96,7 @@
   flex: 0 0 300px;
   position: sticky;
   align-self: flex-start;
-  padding-left: 1rem;
+  padding-left: 2rem;
   padding-right: 1rem;
 
   @media (max-width: 1199px) {
@@ -108,6 +110,11 @@
   max-width: 82rem;
   background-color: var(--originWhite-FFFFFF);
   border-radius: 0.5rem;
+
+  @media screen and (max-width: 1600px) {
+    max-width: 40.875rem;
+    width: 100%;
+  }
 
   @media screen and (max-width: 1199px) {
     width: 70%;
@@ -147,16 +154,17 @@
   h4,
   h5,
   h6 {
-    font-family: var(--font-unbounded);
+    font-family: var(--font-unbounded); 
     font-weight: var(--fw-300);
     line-height: 1.75rem;
-    margin: 2rem 0 1rem;
+    margin: 2.5rem 0 1.5rem;
     color: var(--black-1D2E43);
   }
 
   p {
     margin-bottom: 1.5rem;
     word-break: break-word;
+    border-radius: 1rem;
   }
 
   ul,
@@ -171,7 +179,7 @@
   pre {
     background: #f8f8f8;
     padding: 1rem;
-    border-radius: 0.5rem;
+    border-radius: 1rem;
     overflow: auto;
     margin-bottom: 1.5rem;
 
@@ -197,7 +205,7 @@
     width: 100%;
     height: 100%;
     border: none;
-    border-radius: 0.5rem;
+    border-radius: 1rem;
   }
 }
 
@@ -219,22 +227,24 @@
   object-position: center;
   background-color: #f0f0f0;
   margin: 3rem auto;
-  border-radius: 0.5rem;
+  border-radius: 1rem;
 }
 
 .mathBlock {
   margin: 1rem 0;
+  border-radius: 1rem;
 }
 
 .paragraph {
   margin-bottom: 1.5rem;
+  border-radius: 1rem;
 }
 
 .heading1 {
   font-family: var(--font-unbounded);
   font-size: 2rem;
   font-weight: var(--fw-300);
-  margin: 2rem 0 1rem;
+  margin: 2rem 0 1.5rem;
   color: var(--black-1D2E43);
 }
 
@@ -242,7 +252,7 @@
   font-family: var(--font-unbounded);
   font-size: 1.75rem;
   font-weight: var(--fw-300);
-  margin: 2rem 0 1rem;
+  margin: 2rem 0 1.5rem;
   color: var(--black-1D2E43);
 }
 
@@ -250,7 +260,7 @@
   font-family: var(--font-unbounded);
   font-size: 1.5rem;
   font-weight: var(--fw-300);
-  margin: 2rem 0 1rem;
+  margin: 2rem 0 1.5rem;
   color: var(--black-1D2E43);
 }
 
@@ -258,7 +268,7 @@
   font-family: var(--font-unbounded);
   font-size: 1.25rem;
   font-weight: var(--fw-300);
-  margin: 2rem 0 1rem;
+  margin: 2rem 0 1.5rem;
   color: var(--black-1D2E43);
 }
 
@@ -266,7 +276,7 @@
   font-family: var(--font-unbounded);
   font-size: 1rem;
   font-weight: var(--fw-300);
-  margin: 2rem 0 1rem;
+  margin: 2rem 0 1.5rem;
   color: var(--black-1D2E43);
 }
 
@@ -274,7 +284,7 @@
   font-family: var(--font-unbounded);
   font-size: 0.875rem;
   font-weight: var(--fw-300);
-  margin: 2rem 0 1rem;
+  margin: 2rem 0 1.5rem;
   color: var(--black-1D2E43);
 }
 
@@ -286,29 +296,36 @@
 .tableContainer {
   overflow-x: auto;
   margin-bottom: 1.5rem;
+  border-radius: 0.5rem;
+  border-top: 1px solid var(--blue-75BBFD);
+  border-right: 1px solid var(--blue-75BBFD);
+  border-left: 0px solid var(--blue-75BBFD);
+  border-bottom: 1px solid var(--blue-75BBFD);
 }
 
 .table {
   width: 100%;
   border-collapse: collapse;
-  border: 1px solid var(--dark-blue-389FFF);
 
   thead {
     background-color: var(--blue-75BBFD);
   }
 
   th {
-    background-color: var(--blue-75BBFD);
-    border: 1px solid var(--dark-blue-389FFF);
+    padding: 1rem;
     text-align: left;
-    padding: 0.75rem;
+    background-color: #E2F1FF;
+    border-left: 1px solid var(--blue-75BBFD);
+    border-right: 0px solid var(--blue-75BBFD);
   }
 
 
   td {
-    border: 1px solid var(--dark-blue-389FFF);
-    padding: 0.75rem;
+    padding: 1rem;
     text-align: left;
+    border-right: 0px solid var(--blue-75BBFD);
+    border-left: 1px solid var(--blue-75BBFD);
+    border-top: 1px solid var(--blue-75BBFD);
   }
 }
 
@@ -425,100 +442,14 @@
   font-weight: var(--fw-500);
   line-height: 1.25rem;
   letter-spacing: 0.0875rem;
+  padding-bottom: 1rem;
 }
-
-@media screen and (min-width: 1200px) and (max-width: 1600px) {
-  .allButton_div {
-    padding-top: 3.25rem;
-    padding-left: 1.88rem;
-  }
-
-  .left_title {
-    max-width: 100%;
-    padding: 3.81rem 1.75rem 0 1.75rem;
-  }
-
-  .markdown_body {
-    padding-left: 1.88rem;
-    padding-right: 1.88rem;
-  }
-}
-
-@media screen and (min-width: 768px) and (max-width: 1199px) {
-  .allButton_div {
-    padding-top: 7rem;
-    padding-left: 10.81rem;
-  }
-
-  .left_title {
-    max-width: 100%;
-    padding: 3.75rem 1rem 0 10.75rem;
-    overflow-wrap: break-word;
-  }
-
-  .markdown_body {
-    padding-left: 1.87rem;
-    padding-right: 1.87rem;
-  }
-
-  .authorsNames {
-    max-width: 80%;
-    padding: 1rem 1rem 0 10.75rem;
-  }
-
-  .publication_date {
-    max-width: 80%;
-    padding: 0.5rem 1rem 4rem 10.75rem;
-  }
-}
-
-@media screen and (max-width: 767px) {
-  .allButton_div {
-    padding-top: 5rem;
-    padding-left: 1rem;
-  }
-
-  .left_title {
-    font-size: 1.5rem;
-    line-height: 2rem;
-    max-width: 100%;
-    padding: 2.8rem 1rem 0 1rem;
-    overflow-wrap: break-word;
-  }
-
-  .markdown_body {
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-
-  .authorsNames {
-    font-size: 1.25rem;
-    line-height: 2rem;
-    max-width: 100%;
-    padding: 2rem 1rem 0 1rem;
-  }
-
-  .publication_date {
-    max-width: 100%;
-    padding: 0.5rem 1rem 2rem 1rem;
-
-    span {
-      white-space: wrap;
-    }
-  }
-
-  .share_article {
-    display: none !important;
-  }
-}
-
-
 
 .button_article_articleCard {
   order: 1;
   display: flex;
   flex-wrap: nowrap;
-  margin: 2.5rem 0 0;
+  padding: 2.5rem 0 0;
   width: 100%;
 
   @media (min-width: 1200px) and (max-width: 1600px) {
@@ -650,5 +581,137 @@
 
   .button_article_articleCard {
     order: 0;
+  }
+}
+
+@media screen and (min-width: 1200px) and (max-width: 1600px) {
+  .main_article_card {
+
+    &__fon {
+      background-image: url('../../../src/Journal/icons/fon5.svg');
+      background-size: auto 100%;
+    }
+  }
+
+  .allButton_div {
+    padding-top: 6.5rem;
+    padding-left: 1.88rem;
+  }
+
+  .left_title {
+    max-width: 80%;
+    width: 100%;
+    padding: 3.81rem 1.75rem 0 1.75rem;
+  }
+
+  .authorsNames {
+    max-width: 80%;
+  }
+
+  .markdown_body {
+    padding-left: 1.88rem;
+    padding-right: 1.88rem;
+  }  
+
+  .social_links_articleCard {
+    padding-bottom: 0rem;
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1199px) {
+  .main_article_card {
+
+    &__fon {
+      background-image: url('../../../src/Journal/icons/fon6.svg');
+    }
+  }
+
+  .allButton_div {
+    padding-top: 7rem;
+    padding-left: 10.81rem;
+  }
+
+  .left_title {
+    max-width: 90%;
+    padding: 3.75rem 1rem 0 10.75rem;
+    overflow-wrap: break-word;
+  }
+
+  .authorsNames {
+    max-width: 90%;
+  }
+
+  .markdown_body {
+    padding-left: 1.87rem;
+    padding-right: 1.87rem;
+  }
+
+  .authorsNames {
+    max-width: 80%;
+    padding: 1rem 1rem 0 10.75rem;
+  }
+
+  .publication_date {
+    max-width: 80%;
+    padding: 0.5rem 1rem 4rem 10.75rem;
+  }
+
+  .social_links_articleCard {
+    padding-bottom: 0rem;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .main_article_card {
+
+    &__fon {
+      background-image: url('../../../src/Journal/icons/fon6.svg');
+    }
+  }
+
+  .allButton_div {
+    padding-top: 5rem;
+    padding-left: 1rem;
+  }
+
+  .left_title {
+    font-size: 1.5rem;
+    line-height: 2rem;
+    max-width: 100%;
+    padding: 2.8rem 1rem 0 1rem;
+    overflow-wrap: break-word;
+  }
+
+  .authorsNames {
+    max-width: 100%;
+  }
+
+  .markdown_body {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .authorsNames {
+    font-size: 1.25rem;
+    line-height: 2rem;
+    max-width: 100%;
+    padding: 2rem 1rem 0 1rem;
+  }
+
+  .publication_date {
+    max-width: 100%;
+    padding: 0.5rem 1rem 2rem 1rem;
+
+    span {
+      white-space: wrap;
+    }
+  }
+
+  .share_article {
+    display: none !important;
+  }
+
+  .social_links_articleCard {
+    padding-bottom: 0rem;
   }
 }
