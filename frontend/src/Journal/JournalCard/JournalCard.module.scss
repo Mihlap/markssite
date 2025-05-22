@@ -19,7 +19,7 @@
     align-items: center;
     justify-content: center;
     z-index: 10;
-    cursor: pointer;
+    cursor: pointer;    
 
     .corner {
       position: absolute;
@@ -58,7 +58,7 @@
       inset: 0;
       z-index: 0;
       background: url("/Journal/icons/background.svg") no-repeat center;
-      pointer-events: none;
+      pointer-events: none;      
     }
   }
 
@@ -226,7 +226,7 @@
   &__contentWrapper {
     position: relative;
     border-radius: 0rem 3rem 3rem 3rem;
-
+ 
     .corner {
         position: absolute;
         pointer-events: none;
@@ -280,6 +280,7 @@
     -webkit-line-clamp: 4;
     overflow: hidden;
     text-overflow: ellipsis;
+    z-index: 2;
   }
 
   &__subtitle {
@@ -294,6 +295,7 @@
     -webkit-line-clamp: 2;
     overflow: hidden;
     text-overflow: ellipsis;
+    z-index: 2;
 
     .subtitle__location,
     .subtitle__date {
@@ -777,6 +779,10 @@
       white-space: normal;
       word-break: normal;
       overflow-wrap: break-word;
+
+      .subtitle__location,
+      .subtitle__date {
+          white-space: wrap; }
     }
   }
 

@@ -176,7 +176,7 @@ export default function MarkdownContentRenderer({ markdown = '' }) {
             );
           case 'keywords':
             return (
-              <div key={i} className={styles.keywordsSection} style={{ marginBottom: '2rem', scrollMarginTop: '2rem' }}>
+              <div key={i} className={styles.keywordsSection} style={{ marginBottom: '1.5rem', scrollMarginTop: '2rem' }}>
                 <ReactMarkdown
                   children={seg.content}
                   remarkPlugins={remarkPlugins}
@@ -192,7 +192,7 @@ export default function MarkdownContentRenderer({ markdown = '' }) {
                 key={i}
                 id={aSlug}
                 className={styles.annotationSection}
-                style={{ marginBottom: '2rem', scrollMarginTop: '2rem' }}>
+                style={{ marginBottom: '1.5rem', scrollMarginTop: '2rem' }}>
                 <ReactMarkdown
                   children={`${'#'.repeat(seg.level)} ${seg.title}\n\n${seg.content}`}
                   remarkPlugins={[remarkGfm, remarkBreaks]}
@@ -206,7 +206,7 @@ export default function MarkdownContentRenderer({ markdown = '' }) {
             const { slug, level, title, content } = chapters[chapterIndex++];
             const md = `${'#'.repeat(level)} ${title}\n\n${content}`;
             return (
-              <section key={slug} id={slug} style={{ marginTop: '2rem', scrollMarginTop: '2rem' }}>
+              <section key={slug} id={slug} style={{ marginTop: '1.5rem', scrollMarginTop: '2rem' }}>
                 <ReactMarkdown
                   children={md}
                   remarkPlugins={remarkPlugins}
