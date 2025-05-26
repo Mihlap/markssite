@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useCallback } from 'react';
+import React, { useState, useEffect, useMemo, useCallback, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AnnotationContent from './AnnotationContent';
 import ContentWithChapters from './ContentSection';
@@ -17,6 +17,17 @@ import cat3 from '../icons/cat3.svg';
 import cat4 from '../icons/cat4.svg';
 import cat5 from '../icons/cat5.svg';
 import cat6 from '../icons/cat6.svg';
+
+import { ReactComponent as LeftUp } from '../icons/leftUp.svg';
+import { ReactComponent as RightUp } from '../icons/rightUp.svg';
+import { ReactComponent as RightDown } from '../icons/rightDown.svg';
+import { ReactComponent as LeftDown } from '../icons/leftDown.svg';
+
+import { ReactComponent as LeftTop } from '../icons/leftTop.svg';
+import { ReactComponent as RightTop } from '../icons/rightTop.svg';
+import { ReactComponent as RightBottom } from '../icons/rightBottom.svg';
+import { ReactComponent as LeftBottom } from '../icons/leftBottom.svg';
+
 
 const TABS = {
   ARTICLE: 'Статья',
@@ -39,9 +50,13 @@ function JournalCard({ journal, index }) {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState(TABS.ARTICLE);
 
-  const authors = useMemo(() => journal?.authors || [], [journal]);
-
+  const authors = useMemo(() => journal.authors || [], [journal.authors]);
   const authorsToDisplay = useMemo(() => authors.slice(0, 6), [authors]);
+
+   const fallbackIconsRef = useRef([]);
+   if (fallbackIconsRef.current.length === 0) {
+     fallbackIconsRef.current = authorsToDisplay.map(() => catImages[Math.floor(Math.random() * catImages.length)]);
+   }
 
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const [isSmallScreen, setIsSmallScreen] = useState(window.innerWidth <= 1100);
@@ -66,7 +81,7 @@ function JournalCard({ journal, index }) {
     return contentColor;
   }, [activeTab, articleColor, annotationColor, contentColor]);
 
-  const scrollThumbColor = useMemo(() => (currentCardColor === '#FFFFFF' ? '#75bbfd' : '#FFFFFF'), [currentCardColor]);
+  const scrollThumbColor = useMemo(() => (currentCardColor === '#BADDFE' ? '#75BBFD' : '#BADDFE'), [currentCardColor]);
   const isInverted = useMemo(() => currentCardColor === '#75BBFD', [currentCardColor]);
 
   const authorsCountClass = useMemo(() => {
@@ -77,8 +92,6 @@ function JournalCard({ journal, index }) {
     }
     return styles.journalCard__authorsGridTwoRows;
   }, [authorsToDisplay.length]);
-
-  const getRandomCat = useCallback(() => catImages[Math.floor(Math.random() * catImages.length)], []);
 
   const activeTabClass = useMemo(() => {
     if (activeTab === TABS.ARTICLE) return styles.activeTab1;
@@ -92,25 +105,25 @@ function JournalCard({ journal, index }) {
 
   return (
     <div className={styles.journalCard} onClick={handleCardClick}>
-      <div className={styles.journalCard__left} style={{ backgroundColor: articleColor }}>
+      <div className={styles.journalCard__left} style={{ backgroundColor: articleColor, color: articleColor }}>
+        <LeftUp className={`${styles.corner} ${styles.leftUp}`} />
+        <RightUp className={`${styles.corner} ${styles.rightUp}`} />
+        <RightDown className={`${styles.corner} ${styles.rightDown}`} />
+        <LeftDown className={`${styles.corner} ${styles.leftDown}`} />
         <div className={`${styles.journalCard__authorsGrid} ${authorsCountClass}`}>
-          {authorsToDisplay.map((author, idx) => {
-            const fallback = getRandomCat();
-            return (
-              <div
-                key={idx}
-                className={`${styles.journalCard__authorWrapper} ${isInverted ? styles.inverted : ''}`}
-                data-name={author.name}>
-                <AsyncImage
-                  key={idx}
-                  src={author.image || fallback}
-                  alt={author.name}
-                  wrapperClass={`${styles.journalCard__authorWrapper} ${isInverted ? styles.inverted : ''}`}
-                  imgClass={`${styles.journalCard__authorImg} ${!author.image ? styles.fallbackIcon : ''}`}
-                />
-              </div>
-            );
-          })}
+          {authorsToDisplay.map((author, i) => (
+            <div
+              key={i}
+              className={`${styles.journalCard__authorWrapper} ${isInverted ? styles.inverted : ''}`}
+              data-name={author.name}>
+              <AsyncImage
+                src={author.image || fallbackIconsRef.current[i]}
+                alt={author.name}
+                wrapperClass={`${styles.journalCard__authorWrapper} ${isInverted ? styles.inverted : ''}`}
+                imgClass={`${styles.journalCard__authorImg} ${!author.image ? styles.fallbackIcon : ''}`}
+              />
+            </div>
+          ))}
         </div>
       </div>
 
@@ -169,50 +182,64 @@ function JournalCard({ journal, index }) {
             </button>
           )}
         </div>
-
         <div
-          className={styles.journalCard__content}
+          className={styles.journalCard__contentWrapper}
           style={{
-            backgroundColor: currentCardColor,
-            color: currentCardColor === '#FFFFFF' ? '#1d2e43' : '#FFFFFF',
-            '--scroll-thumb-color': scrollThumbColor,
-            '--current-bg-color': currentCardColor,
+            backgroundColor: articleColor,
+            color: currentCardColor,
           }}>
-          {activeTab === TABS.ARTICLE && (
-            <>
-              <div className={styles.journalCard__title}>{journal.title}</div>
-              {isSmallScreen && journal.authors && journal.authors.length > 0 && (
-                <div className={styles.authorsNames}>
-                  <strong>{journal.authors.length > 1 ? 'Авторы: ' : 'Автор: '}</strong>
-                  {journal.authors.map((author) => author.name).join(' • ')}
-                </div>
-              )}
-              <p className={styles.journalCard__subtitle}>
-                <span className={styles.subtitle__org}>
-                  {journal.organizations?.[0]?.value || journal.organizations?.[0]?.name}
-                </span>
-                {journal.organizations?.[0] && (journal.locations?.[0] || journal.publication_date) && ' • '}
-                <span className={styles.subtitle__location}>
-                  {journal.locations?.[0]?.value || journal.locations?.[0]?.name}
-                </span>
-                {(journal.locations?.[0] || journal.organizations?.[0]) && journal.publication_date && ' • '}
-                <span className={styles.subtitle__date}>{journal.publication_date}</span>
-              </p>
-            </>
-          )}
+          <LeftTop className={`${styles.corner} ${styles.leftTop}`} />
+          <RightTop className={`${styles.corner} ${styles.rightTop}`} />
+          <RightBottom className={`${styles.corner} ${styles.rightBottom}`} />
+          <LeftBottom className={`${styles.corner} ${styles.leftBottom}`} />
+          <div
+            className={styles.journalCard__content}
+            style={{
+              backgroundColor: currentCardColor,
+              color: currentCardColor === '#FFFFFF' ? '#1d2e43' : '#FFFFFF',
+              '--scroll-thumb-color': scrollThumbColor,
+              '--current-bg-color': currentCardColor,
+            }}>
+            {activeTab === TABS.ARTICLE && (
+              <>
+                <div className={styles.journalCard__title}>{journal.title}</div>
+                {isSmallScreen && journal.authors && journal.authors.length > 0 && (
+                  <div className={styles.authorsNames}>
+                    <strong>{journal.authors.length > 1 ? 'Авторы: ' : 'Автор: '}</strong>
+                    {journal.authors.map((author) => author.name).join(' • ')}
+                  </div>
+                )}
+                <p className={styles.journalCard__subtitle}>
+                  <span className={styles.subtitle__org}>
+                    {journal.organizations?.[0]?.value || journal.organizations?.[0]?.name}
+                  </span>
+                  {journal.organizations?.[0] && (journal.locations?.[0] || journal.publication_date) && ' • '}
+                  <span className={styles.subtitle__location}>
+                    {journal.locations?.[0]?.value || journal.locations?.[0]?.name}
+                  </span>
+                  {(journal.locations?.[0] || journal.organizations?.[0]) && journal.publication_date && ' • '}
+                  <span className={styles.subtitle__date}>{journal.publication_date}</span>
+                </p>
+              </>
+            )}
 
-          {activeTab === TABS.ANNOTATION && (
-            <AnnotationContent
-              markdown={journal.markdown_content && journal.markdown_content !== 'null' ? journal.markdown_content : ''}
-            />
-          )}
+            {activeTab === TABS.ANNOTATION && (
+              <AnnotationContent
+                markdown={
+                  journal.markdown_content && journal.markdown_content !== 'null' ? journal.markdown_content : ''
+                }
+              />
+            )}
 
-          {activeTab === TABS.CONTENT && (
-            <ContentWithChapters
-              journal={journal}
-              markdown={journal.markdown_content && journal.markdown_content !== 'null' ? journal.markdown_content : ''}
-            />
-          )}
+            {activeTab === TABS.CONTENT && (
+              <ContentWithChapters
+                journal={journal}
+                markdown={
+                  journal.markdown_content && journal.markdown_content !== 'null' ? journal.markdown_content : ''
+                }
+              />
+            )}
+          </div>
         </div>
       </div>
     </div>

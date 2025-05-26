@@ -6,11 +6,12 @@
     position: relative;
     overflow: hidden;
     width: 100%;
+    height: 100%;
     padding-bottom: 30%;
     background-image: url('../../../src/Journal/icons/fon.svg');
     background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
+    background-size: contain;
+    background-position: center;    
   }
 
   &__overlay {
@@ -49,13 +50,25 @@
   @media screen and (min-width: 1024px) and (max-width: 1600px) {
     &__cover {
       padding-bottom: 30%;
+      background-image: url('../../../src/Journal/icons/fon1.svg');
+    }
+
+    &__title {
+      font-size: 3rem;
+      line-height: 4rem;
+    }
+
+    &__subtitle {
+      font-size: 1.5rem;
+      line-height: 2rem;
     }
   }
 
   @media screen and (min-width: 768px) and (max-width: 1024px) {
     &__cover {
       margin-top: 3.5rem;
-      padding-bottom: 50%;
+      padding-bottom: 36%;
+      background-image: url('../../../src/Journal/icons/fon2.svg');
     }
 
     &__overlay {
@@ -76,14 +89,16 @@
     }
   }
 
-  @media screen and (max-width: 768px) {
-    &__cover {
-      padding-bottom: 100%;
+  @media screen and (max-width: 768px) { 
+    &__cover {   
+      padding-bottom: 70%;
+      background-image: url('../../../src/Journal/icons/fon3.svg');
+      background-size: cover;
     }
 
     &__overlay {
       position: absolute;
-      top: 30%;
+      top: 22%;
       left: 20%;
       right: 0;
       width: 80%;
