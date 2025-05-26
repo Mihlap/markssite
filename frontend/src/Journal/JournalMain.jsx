@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { fetchJournals } from '../store/Slice/journalSlice';
 import Cover from './Cover/Cover';
 import CategoryFilters from './CategoryFilters/CategoryFilters';
@@ -10,17 +10,26 @@ import styles from './JournalMain.module.scss';
 
 function JournalMain() {
   const dispatch = useDispatch();
-  const journals = useSelector((state) => state.journal.journals);
-  const loading = useSelector((state) => state.journal.loading);
-  const error = useSelector((state) => state.journal.error);
-  const selectedIssueNumber = useSelector((state) => state.journal.selectedIssueNumber);
+  const journals = useSelector((state) => state.journal.journals, shallowEqual);
+  const loading = useSelector((state) => state.journal.loading, shallowEqual);
+  const error = useSelector((state) => state.journal.error, shallowEqual);
+  const selectedIssueNumber = useSelector((state) => state.journal.selectedIssueNumber, shallowEqual);
   const hasFetchedRef = useRef(false);
 
   const isDesktop = window.innerWidth > 1024;
-  const desktopFilters = useSelector((state) => state.categoryFilters.desktop);
-  const mobileFilters = useSelector((state) => state.categoryFilters.mobile);
-  const selectedCategories = isDesktop ? desktopFilters.selectedCategories : mobileFilters.selectedCategories;
-  const searchValue = isDesktop ? desktopFilters.searchValue : mobileFilters.searchValue;
+  const desktopSelectedCategories = useSelector(
+    (state) => state.categoryFilters.desktop.selectedCategories,
+    shallowEqual
+  );
+  const desktopSearchValue = useSelector((state) => state.categoryFilters.desktop.searchValue, shallowEqual);
+  const mobileSelectedCategories = useSelector(
+    (state) => state.categoryFilters.mobile.selectedCategories,
+    shallowEqual
+  );
+  const mobileSearchValue = useSelector((state) => state.categoryFilters.mobile.searchValue, shallowEqual);
+
+  const selectedCategories = isDesktop ? desktopSelectedCategories : mobileSelectedCategories;
+  const searchValue = isDesktop ? desktopSearchValue : mobileSearchValue;
 
   useEffect(() => {
     if (!hasFetchedRef.current && journals.length === 0) {
@@ -46,7 +55,7 @@ function JournalMain() {
     return result;
   }, [journals, selectedIssueNumber, selectedCategories, searchValue]);
 
-  if (loading) {
+  if (loading)
     return (
       <div className={styles.journalMain}>
         <Cover />
@@ -59,13 +68,11 @@ function JournalMain() {
         </div>
       </div>
     );
-  }
 
-  if (error) {
-    return <p className={styles.error}>Ошибка: {error}</p>;
-  }
+  const isFilterActive = selectedCategories.length > 0 || Boolean(searchValue.trim());
 
-  if (filteredJournals.length === 0) {
+  if (error) return <p className={styles.error}>Ошибка: {error}</p>;
+  if (filteredJournals.length === 0 && !isFilterActive) {
     return (
       <div className={styles.emptyState}>
         <p className={styles.noJournalsMessage}>Готовьтесь! Скоро то, о чем все говорят…</p>
@@ -87,4 +94,4 @@ function JournalMain() {
   );
 }
 
-export default JournalMain;
+export default React.memo(JournalMain);

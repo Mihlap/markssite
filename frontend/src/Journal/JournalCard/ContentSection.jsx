@@ -62,8 +62,7 @@ export default function ContentSection({ markdown, journal }) {
 
   return (
     <div className={styles.contentContainer}>   
-      <aside className={styles.tableOfContents}>
-        <h4 className={styles.tocTitle}>Содержание</h4>
+      <aside className={styles.tableOfContents}>  
         <ul className={styles.listWrapper}>
           {chaptersWithSlug.map((chapter) => (
             <li key={chapter.slug} className={activeChapter === chapter.slug ? styles.activeChapter : ''}>
