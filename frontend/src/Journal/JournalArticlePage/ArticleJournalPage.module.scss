@@ -157,8 +157,7 @@
   h6 {
     font-family: var(--font-unbounded);
     font-weight: var(--fw-300);
-    line-height: 1.75rem;
-    margin: 2.5rem 0 1.5rem;
+    margin: 2rem 0 1.5rem;
     color: var(--black-1D2E43);
     word-break: break-word;
   }
@@ -180,7 +179,7 @@
 
   pre {
     background: #f8f8f8;
-    padding: 1rem;
+    padding: 0.5rem;
     border-radius: 1rem;
     overflow: auto;
     margin-bottom: 1.5rem;
@@ -191,14 +190,23 @@
     }
   }
 
-  .katex {
-    margin: 1rem 0;
-    overflow-x: auto;
-  }
+    :global(.katex-display) {
+      display: block;
+      margin: 2.875rem 0;
+      text-align: center;
+    }
+
+    :global(.katex) {
+      display: block;
+      margin-top: 2.875rem;
+      margin-bottom: 0;
+      text-align: center;
+    }
 }
 
+
 .pdfEmbed {
-  margin: 3rem 0;
+  margin: 0;
   width: 100%;
   height: 28rem;
   background-color: #e0e0e0;
@@ -228,7 +236,7 @@
   object-fit: contain;
   object-position: center;
   background-color: #f0f0f0;
-  margin: 3rem auto;
+  margin: 0;
   border-radius: 1rem;
 }
 
@@ -237,57 +245,40 @@
   border-radius: 1rem;
 }
 
+
 .paragraph {
   margin-bottom: 1.5rem;
   border-radius: 1rem;
 }
 
 .heading1 {
-  font-family: var(--font-unbounded);
-  font-size: 2rem;
-  font-weight: var(--fw-300);
-  margin: 2rem 0 1.5rem;
-  color: var(--black-1D2E43);
+  font-size: 2.5rem;
+  line-height: 3rem;
 }
 
 .heading2 {
-  font-family: var(--font-unbounded);
-  font-size: 1.75rem;
-  font-weight: var(--fw-300);
-  margin: 2rem 0 1.5rem;
-  color: var(--black-1D2E43);
+  font-size: 2rem;
+  line-height: 2.5rem;
 }
 
 .heading3 {
-  font-family: var(--font-unbounded);
-  font-size: 1.5rem;
-  font-weight: var(--fw-300);
-  margin: 2rem 0 1.5rem;
-  color: var(--black-1D2E43);
+  font-size: 1.75rem;
+  line-height: 2.375rem;
 }
 
 .heading4 {
-  font-family: var(--font-unbounded);
-  font-size: 1.25rem;
-  font-weight: var(--fw-300);
-  margin: 2rem 0 1.5rem;
-  color: var(--black-1D2E43);
+  font-size: 1.5rem;
+  line-height: 2rem;
 }
 
 .heading5 {
-  font-family: var(--font-unbounded);
-  font-size: 1rem;
-  font-weight: var(--fw-300);
-  margin: 2rem 0 1.5rem;
-  color: var(--black-1D2E43);
+  font-size: 1.25rem;
+  line-height: 1.75rem;
 }
 
 .heading6 {
-  font-family: var(--font-unbounded);
-  font-size: 0.875rem;
-  font-weight: var(--fw-300);
-  margin: 2rem 0 1.5rem;
-  color: var(--black-1D2E43);
+  font-size: 1.125rem;
+  line-height: 1.625rem;
 }
 
 .link {
@@ -582,9 +573,9 @@
 
     &__fon {
       background-image: url('../../../src/Journal/icons/fon5.svg');
-        background-repeat: no-repeat;
-        background-size: auto 100%; 
-        background-position: left top;      
+      background-repeat: no-repeat;
+      background-size: auto 100%;
+      background-position: left top;
     }
   }
 
@@ -606,6 +597,43 @@
   .markdown_body {
     padding-left: 1.88rem;
     padding-right: 1.88rem;
+
+    h6 {
+      font-weight: var(--fw-700);
+      strong {
+          font-weight: inherit; }
+    }
+  }
+
+  .heading1 {
+    font-size: 2rem;
+    line-height: 2.5rem;
+  }
+
+  .heading2 {
+    font-size: 1.75rem;
+    line-height: 2.375rem;
+  }
+
+  .heading3 {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+
+  .heading4 {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+  }
+
+  .heading5 {
+    font-size: 1.125rem;
+    line-height: 1.625rem;
+  }
+
+  .heading6 {
+    font-size: 1rem;
+    line-height: 1.375rem;
+    font-weight: var(--fw-300);
   }
 
   .social_links_articleCard {
@@ -635,7 +663,44 @@
   .markdown_body {
     padding-left: 1.87rem;
     padding-right: 1.87rem;
+
+    h6 {
+        font-weight: var(--fw-700);
+        strong {
+            font-weight: inherit;   }
+      }
   }
+
+    .heading1 {
+      font-size: 2rem;
+      line-height: 2.5rem;
+    }
+  
+    .heading2 {
+      font-size: 1.75rem;
+      line-height: 2.375rem;
+    }
+  
+    .heading3 {
+      font-size: 1.5rem;
+      line-height: 2rem;
+    }
+  
+    .heading4 {
+      font-size: 1.25rem;
+      line-height: 1.75rem;
+    }
+  
+    .heading5 {
+      font-size: 1.125rem;
+      line-height: 1.625rem;
+    }
+  
+    .heading6 {
+      font-size: 1rem;
+      line-height: 1.375rem;
+      font-weight: var(--fw-300);
+    }
 
   .authorsNames {
     max-width: 90%;
@@ -652,9 +717,9 @@
     background-color: var(--white-F6F6F6);
   }
 
-   .button_article_articleCard {
-      order: 0;
-    }
+  .button_article_articleCard {
+    order: 0;
+  }
 
   .social_links_articleCard {
     padding-bottom: 2.69rem;
@@ -687,21 +752,51 @@
     overflow-wrap: break-word;
   }
 
- 
+
   .markdown_body {
     padding-left: 1rem;
     padding-right: 1rem;
 
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {  
-      line-height: 2rem;    
+    h4,    
+    h6 {
+      font-weight: var(--fw-700);
+
+      strong {
+          font-weight: inherit; }
     }
   }
 
+    .heading1 {
+      font-size: 1.5rem;
+      line-height: 2rem;
+    }
+  
+    .heading2 {
+      font-size: 1.375rem;
+      line-height: 1.875rem;
+    }
+  
+    .heading3 {
+      font-size: 1.25rem;
+      line-height: 1.75rem;
+    }
+  
+    .heading4 {
+      font-size: 1.125rem;
+      line-height: 1.625rem;
+      font-weight: var(--fw-300);
+    }
+  
+    .heading5 {
+      font-size: 1.125rem;
+      line-height: 1.625rem;
+    }
+  
+    .heading6 {
+      font-size: 1rem;
+      line-height: 1.375rem;
+      font-weight: var(--fw-300);
+    }
 
   .authorsNames {
     font-size: 1.25rem;
@@ -711,10 +806,10 @@
 
     span.authorName,
     span.authorSeparator {
-        display: inline-block;
-        white-space: wrap;
-        word-break: break-word;
-      } 
+      display: inline-block;
+      white-space: wrap;
+      word-break: break-word;
+    }
   }
 
   .publication_date {
@@ -733,7 +828,7 @@
   .social_links_articleCard {
     padding-bottom: 0rem;
   }
-    
+
   .button_article_articleCard {
     display: flex;
     padding-right: 0rem;
@@ -741,16 +836,16 @@
     margin-top: 0rem;
     width: 100%;
   }
-  
+
   .button_article_link_articleCard1,
   .button_article_link_articleCard2 {
     flex: 0 0 50%;
     padding: 0.625rem;
     width: 11.6875rem;
     width: 100%;
-    min-height: 4rem;   
+    min-height: 4rem;
   }
-  
+
   .previous_svg_articleCard,
   .next_svg_articleCard {
     display: flex;
@@ -758,25 +853,25 @@
     align-items: center;
     width: 100%;
   }
-  
+
   .previous__span_articleCard {
     padding-left: 0.37rem;
     font-size: 0.75rem;
     line-height: 1rem;
   }
-  
+
   .next__span_articleCard {
     font-size: 0.75rem;
     line-height: 1rem;
     text-align: right;
     padding-right: 0.37rem;
   }
-  
+
   .button_article_link_articleCard1:hover {
     background: var(--light-light-gray-EBECEE);
     fill: var(--light-gray-C0C5CB);
   }
-  
+
   .button_article_link_articleCard2:hover {
     background: var(--salmon-light-FFBFB5);
     fill: var(--salmon-FF7F6A);
