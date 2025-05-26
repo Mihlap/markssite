@@ -30,8 +30,10 @@
 .blockHeadingTitle {
   display: flex;
   flex-direction: column;
-  margin-top: 3.75rem;
-  margin-bottom: 3.75rem;
+  // margin-top: 3.75rem;
+  // margin-bottom: 3.75rem;
+  width: 50%;
+  margin: 3.75rem auto;
 
   &__heading {
     color: var(--black-1D2E43);
@@ -42,6 +44,7 @@
     line-height: 32px;
     word-wrap: break-word;
     margin-bottom: 40px;
+    
   }
 
   &__text {
@@ -242,6 +245,7 @@
   .blockHeadingTitle {
     padding-right: 23vw;
     padding-left: 23vw;
+    width: 100%;
     white-space: pre-wrap;
     word-break: break-word;
   }
@@ -287,6 +291,7 @@
     padding: 0rem 0rem 0rem 0rem;
     margin-bottom: 40px;
     margin-top: 40px;
+    width: 100%;
 
     &__heading {
       color: var(--black-1D2E43);
@@ -506,6 +511,7 @@
     margin-bottom: 24px;
     padding-left: 0;
     padding-right: 0;
+    width: 100%;
 
     &__heading {
       color: var(--black-1D2E43);

@@ -110,7 +110,7 @@ function ArticleJournalPage({ handleMouseEnter, handleMouseLeave }) {
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
                 onClick={() => shareToVK(journalToUse)}>
-                <span className={styles.social_links_item} style={{ marginRight: '10px', color: '#FF7F6A' }}>
+                <span className={styles.social_links_item} style={{ marginRight: '16px', color: '#FF7F6A' }}>
                   VK
                 </span>
               </button>
@@ -118,7 +118,7 @@ function ArticleJournalPage({ handleMouseEnter, handleMouseLeave }) {
                 onMouseEnter={handleMouseEnter}
                 onMouseLeave={handleMouseLeave}
                 onClick={() => shareToWhatsAppJournal(journalToUse)}>
-                <span className={styles.social_links_item} style={{ marginRight: '10px', color: '#FF7F6A' }}>
+                <span className={styles.social_links_item} style={{ marginRight: '16px', color: '#FF7F6A' }}>
                   WA
                 </span>
               </button>

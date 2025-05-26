@@ -171,7 +171,7 @@ function DesktopCategoryFilters({ categoriesList }) {
       dispatch(
         setDesktopDropdownStyle({
           position: 'absolute',
-          top: rect.bottom + window.scrollY + 2,
+          top: rect.bottom + window.scrollY + 8,
           left: rect.left + window.scrollX,
           width: rect.width,
           zIndex: 1000,
@@ -229,15 +229,11 @@ function DesktopCategoryFilters({ categoriesList }) {
         <div className={styles.categoryButtonsWrapper} ref={buttonsWrapperRef}>
           <div
             ref={buttonsRef}
-            className={
-              windowWidth >= 1025 && windowWidth <= 1600 && isSearchExpanded
-                ? styles.categoryButtonsExpanded
-                : styles.categoryButtons
-            }
+            className={windowWidth > 1600 && isSearchExpanded ? styles.categoryButtonsExpanded : styles.categoryButtons}
             style={
               windowWidth >= 1025 && windowWidth <= 1600 && isSearchExpanded
                 ? { transform: `translateX(${buttonsOffset}px)` }
-                : {}
+                : { transition: 'transform 0.3s ease' }
             }>
             {visibleCategories.map(({ cat, count }) => {
               const { color, icon } = categoriesConfig[cat] || { color: '#000', icon: null };
@@ -274,9 +270,9 @@ function DesktopCategoryFilters({ categoriesList }) {
         </div>
 
         <div
-          className={`${styles.searchContainer} ${
-            windowWidth >= 1025 && windowWidth <= 1600 ? (isSearchExpanded ? styles.expanded : styles.collapsed) : ''
-          }`}
+          className={`${styles.searchContainer}
+           ${windowWidth >= 1025 && windowWidth <= 1600 ? (isSearchExpanded ? styles.expanded : styles.collapsed) : ''}
+          `}
           ref={searchContainerRef}
           onClick={() => {
             if (windowWidth >= 1025 && windowWidth <= 1600 && !isSearchExpanded) {
