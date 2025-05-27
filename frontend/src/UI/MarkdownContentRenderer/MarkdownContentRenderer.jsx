@@ -176,7 +176,10 @@ export default function MarkdownContentRenderer({ markdown = '' }) {
             );
           case 'keywords':
             return (
-              <div key={i} className={styles.keywordsSection} style={{ marginBottom: '1.5rem', scrollMarginTop: '2rem' }}>
+              <div
+                key={i}
+                className={styles.keywordsSection}
+                style={{ marginBottom: '1.5rem', scrollMarginTop: '2rem' }}>
                 <ReactMarkdown
                   children={seg.content}
                   remarkPlugins={remarkPlugins}
@@ -185,14 +188,10 @@ export default function MarkdownContentRenderer({ markdown = '' }) {
                 />
               </div>
             );
-          case 'annotation':
-            const aSlug = makeSlug(seg.title, 0);
+          case 'annotation': {
+            const slug = makeSlug(seg.title, 0);
             return (
-              <section
-                key={i}
-                id={aSlug}
-                className={styles.annotationSection}
-                style={{ marginBottom: '1.5rem', scrollMarginTop: '2rem' }}>
+              <section key={i} id={slug} className={styles.annotationSection}>
                 <ReactMarkdown
                   children={`${'#'.repeat(seg.level)} ${seg.title}\n\n${seg.content}`}
                   remarkPlugins={[remarkGfm, remarkBreaks]}
@@ -201,24 +200,57 @@ export default function MarkdownContentRenderer({ markdown = '' }) {
                 />
               </section>
             );
-          case 'chapter-raw':
+          }
+          case 'chapter-raw': {
             if (chapterIndex >= chapters.length) return null;
             const { slug, level, title, content } = chapters[chapterIndex++];
-            const md = `${'#'.repeat(level)} ${title}\n\n${content}`;
+        
+            const imageRe = /^!\[.*?\]\((.*?)\)\s*([\s\S]+)/;           
+            const pdfLinkRe = /^\[.*?\.pdf\]\((.*?\.pdf)\)\s*([\s\S]+)/;           
+            const embedPdfRe = /^<PDFEmbed\s+src="(.*?)".*?\/?>\s*([\s\S]+)/;
+
+            let match,
+              mediaType = null;
+
+            if ((match = content.match(imageRe))) {
+              mediaType = 'image';
+            } else if ((match = content.match(pdfLinkRe))) {
+              mediaType = 'pdfLink';
+            } else if ((match = content.match(embedPdfRe))) {
+              mediaType = 'pdfEmbed';
+            }
+        
+            const leading = match
+              ? content.replace(mediaType === 'image' ? imageRe : mediaType === 'pdfLink' ? pdfLinkRe : embedPdfRe, '')
+              : content;
+
             return (
-              <section key={slug} id={slug} style={{ marginTop: '1.5rem', scrollMarginTop: '2rem' }}>
-                <ReactMarkdown
-                  children={md}
+              <section key={slug} id={slug}>
+               <ReactMarkdown
+                  children={`${'#'.repeat(level)} ${title}\n\n${leading}`}
                   remarkPlugins={remarkPlugins}
                   rehypePlugins={rehypePlugins}
                   components={markdownComponents}
-                />
+                />              
+                {match && (
+                  <div className={styles.figureBlock}>
+                    {mediaType === 'image' ? (
+                      <img className={styles.image} src={match[1]} alt="" />
+                    ) : (                    
+                      <PDFEmbedComponent src={match[1]} title={title} />
+                    )}
+                    <div className={styles.figureCaption}>
+                      {match[2].trim()}
+                    </div>
+                  </div>
+                )}
               </section>
             );
+          }
           default:
             return null;
         }
       })}
     </>
   );
-}
+  }
