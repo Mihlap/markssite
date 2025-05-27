@@ -55,7 +55,7 @@ const Rocket = () => {
         <directionalLight castShadow position={[-10, -20, 50]} intensity={2.4} shadow-mapSize={1024} />
         <pointLight ref={light} intensity={1400} color="#389FFF" decay={2} distance={600} position={[-10, 4, 45]} />
         <pointLight ref={light} intensity={14000} color="#8d3e10" distance={600} position={[20, -15, 36]} />
-        <pointLight ref={light} intensity={800} color="white" decay={2} distance={600} position={[12, 3, 38]} />
+        <pointLight ref={light} intensity={0} color="white" decay={2} distance={600} position={[12, 3, 38]} />
         <Suspense fallback={null}>
           <Planet />
           <Show />
