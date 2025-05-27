@@ -240,6 +240,20 @@
   border-radius: 1rem;
 }
 
+.figureBlock {
+  margin-bottom: 1.5rem;
+}
+
+.figureCaption {
+  color: var(--gray-959DA6); 
+  font-family: Raleway;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.25rem;
+  margin-top: 0.5rem;
+}
+
 .mathBlock {
   margin: 1rem 0;
   border-radius: 1rem;
@@ -287,7 +301,7 @@
 }
 
 .tableContainer {
-  overflow-x: auto;
+  // overflow-x: auto;
   margin-bottom: 1.5rem;
   border-radius: 0.5rem;
   border-top: 1px solid var(--blue-75BBFD);
