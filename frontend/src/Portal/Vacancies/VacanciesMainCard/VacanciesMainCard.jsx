@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useParams } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet-async';
@@ -53,11 +53,17 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
   const [selectedVacancy, setSelectedVacancy] = useState(null);
   const [isVisible, setIsVisible] = useState(window.innerWidth > 1024);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+  const [blockReady, setBlockReady] = useState(false);
 
   const formRef = useRef(null);
   const formButtonRef = useRef(null);
   const rocketRef = useRef(null);
   const sputnikRef = useRef(null);
+
+  useEffect(() => {
+    const raf = requestAnimationFrame(() => setBlockReady(true));
+    return () => cancelAnimationFrame(raf);
+  }, []);
 
   useEffect(() => {
     const handleResizeDebounced = debounce(() => {
@@ -93,26 +99,28 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
       cancelAnimationFrame(frameId);
       ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [windowWidth, vacancies, selectedVacancy]);
 
-  const setupScrollTriggers = () => {
-    if (!selectedVacancy) return;
+  const setupScrollTriggers = useCallback(
+    () => {
+      if (!selectedVacancy) return;
+      ScrollTrigger.getAll().forEach((t) => t.kill());
 
-    const triggers = [];
-
-    vacancies.forEach((vacancy) => {
-      const blockRight = document.getElementById(`blockRight-${vacancy.id}`);
-      const wrapperTextBlock = document.getElementById(`wrapperTextBlock-${selectedVacancy.id}`);
-      if (!blockRight || !wrapperTextBlock) return;
-
-      const trigger = setupBlockAnimation(blockRight, wrapperTextBlock);
-      if (trigger) triggers.push(trigger);
-    });
-
-    return () => {
-      triggers.forEach((trigger) => trigger.kill());
-    };
-  };
+      const triggers = [];
+      vacancies.forEach((vacancy) => {
+        const blockRight = document.getElementById(`blockRight-${vacancy.id}`);
+        const wrapper = document.getElementById(`wrapperTextBlock-${selectedVacancy.id}`);
+        if (!blockRight || !wrapper) return;
+        const trig = setupBlockAnimation(blockRight, wrapper);
+        if (trig) triggers.push(trig);
+      });
+    
+      return () => triggers.forEach((t) => t.kill());
+    },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [vacancies, selectedVacancy, windowWidth]
+  );
 
   const setupBlockAnimation = (blockRight, wrapperTextBlock) => {
     const blockRightRect = blockRight.getBoundingClientRect();
@@ -263,7 +271,9 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
                     </ul>
                   </div>
                 </div>
-                <div className={styles.main_vacancy_block__blockRightWrapper} id={`blockRight-${vacancy?.id}`}>
+                <div
+                  id={`blockRight-${vacancy?.id}`}
+                  className={`${styles.main_vacancy_block__blockRightWrapper} ${blockReady ? styles.ready : ''}`}>
                   <div className={styles.main_vacancy_block__blockRight}>
                     <div className={`${styles.main_vacancy_block__detailItem} ${styles.topLeftSquare}`}>
                       <span className={styles.main_vacancy_block__detailKey}>Опыт&nbsp;работы:</span>

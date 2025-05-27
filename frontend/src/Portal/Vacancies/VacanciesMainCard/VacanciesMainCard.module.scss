@@ -85,6 +85,8 @@
       right: 0;
       height: 25vh;
       width: 35vw;
+      opacity: 0;
+      transition: opacity 0.3s ease-in-out;
     }
 
     &__blockRight {
@@ -175,6 +177,9 @@
       justify-content: center;
     }
 
+        .ready {
+          opacity: 1;   }
+
     .topLeftSquare {
       border-left: 1px solid rgb(235, 236, 238);
       border-top: 1px solid rgb(235, 236, 238);
@@ -235,6 +240,8 @@
     background: rgba(255, 255, 255, 0.7);
     padding: 6.5vh 6.25rem 7vh 6.25rem;
     width: 100%;
+    border-left: 1px solid rgb(235, 236, 238);
+    border-bottom: 1px solid rgb(235, 236, 238);
   }
 
   &__offer {
