@@ -26,7 +26,12 @@ const AllVacancyButton = () => {
   const buttonLink = previousPage === 'internships' ? '/portal/internships' : '/portal/vacancies';
 
   return (
-    <Link to={buttonLink} ref={refs.link}>
+    <Link
+      to={buttonLink}
+      ref={refs.link}
+      onClick={() => {    
+        ScrollTrigger.getAll().forEach((t) => t.kill());
+      }}>
       <button className={style.button_link_vacancy}>
         <div className={style.button_link_allProjectButton}>
           <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
