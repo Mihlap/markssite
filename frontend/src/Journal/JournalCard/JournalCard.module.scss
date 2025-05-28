@@ -19,7 +19,7 @@
     align-items: center;
     justify-content: center;
     z-index: 10;
-    cursor: pointer;    
+    cursor: pointer;
 
     .corner {
       position: absolute;
@@ -58,7 +58,7 @@
       inset: 0;
       z-index: 0;
       background: url("/Journal/icons/background.svg") no-repeat center;
-      pointer-events: none;      
+      pointer-events: none;
     }
   }
 
@@ -143,12 +143,11 @@
     align-items: center;
     justify-content: center;
     width: 19.94rem;
-    height: 2.44rem;
     border: none;
     pointer-events: auto;
     color: var(--originWhite-FFFFFF);
     z-index: 1;
-    margin-left: -1rem;
+    margin-left: -1.2rem;
 
     &:not(:first-child) {
       margin-left: -8rem;
@@ -157,6 +156,7 @@
 
   &__tabBtn.active {
     z-index: 999;
+    height: 2.4rem;
   }
 
   .activeTab1 {
@@ -226,36 +226,38 @@
   &__contentWrapper {
     position: relative;
     border-radius: 0rem 3rem 3rem 3rem;
- 
+    margin-top: -0.1rem;
+    z-index: 10;
+
     .corner {
-        position: absolute;
-        pointer-events: none;
-        z-index: 1;     
-    
-        & path {
-          fill: currentColor;
-        }
+      position: absolute;
+      pointer-events: none;
+      z-index: 1;
+
+      & path {
+        fill: currentColor;
       }
-    
-      .leftTop {
-        top: 0;
-        left: 0;
-      }
-    
-      .rightTop {
-        top: 0;
-        right: 0;
-      }
-    
-      .rightBottom {
-        bottom: 0;
-        right: 0;
-      }
-    
-      .leftBottom {
-        bottom: 0;
-        left: 0;
-      }
+    }
+
+    .leftTop {
+      top: 0;
+      left: 0;
+    }
+
+    .rightTop {
+      top: 0;
+      right: 0;
+    }
+
+    .rightBottom {
+      bottom: 0;
+      right: 0;
+    }
+
+    .leftBottom {
+      bottom: 0;
+      left: 0;
+    }
   }
 
   &__content {
@@ -265,7 +267,6 @@
     border-radius: 3rem;
     height: 19.625rem;
     color: var(--originWhite-FFFFFF);
-    // justify-content: center;
   }
 
   &__title {
@@ -581,12 +582,11 @@
       align-items: center;
       justify-content: flex-start;
       width: 19.94rem;
-      height: 2.4rem;
       border: none;
       cursor: pointer;
       color: var(--originWhite-FFFFFF);
       z-index: 1;
-      margin-left: -1.3rem;
+      margin-left: -1.2rem;
     }
 
     .tabTextArticle {
@@ -653,13 +653,29 @@
       display: flex;
       justify-content: flex-start;
       position: relative;
-      margin-bottom: -1px;
     }
 
     &__tabBtn {
       max-width: 17rem;
-      height: 2.15rem;
-      margin-left: -0.7rem;
+      margin-left: -1.5px;
+    }
+
+    &__tabBtn.active {
+      height: 2.3rem;
+    }
+
+    .tabBtn1 {
+      text-align: center;
+      justify-content: center;
+    }
+
+    .tabBtn2 {
+      margin-left: -7rem;
+    }
+
+    .tabBtn3 {
+      margin-left: -7rem;
+      color: var(--black-1D2E43);
     }
 
     .tabText {
@@ -693,7 +709,7 @@
 
   .annotationContainer {
     padding: 1rem 2.5rem;
-
+    margin-right: 1rem;
   }
 
   .keywords {
@@ -706,6 +722,7 @@
 
   .contentContainer {
     padding: 1.5rem 2.5rem;
+    margin-right: 1rem;
   }
 
   .authorsNames {
@@ -739,8 +756,11 @@
 
     &__tabBtn {
       max-width: 15rem;
-      height: 2.5rem;
       margin-left: -0.9rem;
+    }
+
+    &__tabBtn.active {
+      height: 2.5rem;
     }
 
     .tabText {
@@ -782,7 +802,8 @@
 
       .subtitle__location,
       .subtitle__date {
-          white-space: wrap; }
+        white-space: wrap;
+      }
     }
   }
 
@@ -831,15 +852,15 @@
 // ------------------------------------------------------------------
 @media screen and (min-width: 768px) and (max-width: 1100px) {
   .journalCard__tabBtn.tabBtn1 {
-    clip-path: inset(0 2rem 0 0rem);
+    clip-path: inset(0 2.3rem 0 0rem);
   }
 
   .journalCard__tabBtn.tabBtn2 {
-    clip-path: inset(0 1.6rem 0 1.6rem);
+    clip-path: inset(0 1.7rem 0 1.7rem);
   }
 
   .journalCard__tabBtn.tabBtn3 {
-    clip-path: inset(0 1.6rem 0 2rem);
+    clip-path: inset(0 1.6rem 0 1.7rem);
   }
 }
 
