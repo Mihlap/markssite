@@ -1,3 +1,153 @@
+// const nodemailer = require('nodemailer');
+
+// module.exports = async function mailRouter (fastify, options) {
+//   const defaultTransport = nodemailer.createTransport({
+//     pool: true,
+//     host: 'smtp.mail.ru',
+//     port: 587,
+//     secure: false,
+//     auth: {
+//       user: process.env.EMAIL_USER,
+//       pass: process.env.EMAIL_PASS,
+//     },
+//     connectionTimeout: 30000,
+//   });
+
+//   const subscribeTransport = nodemailer.createTransport({
+//     pool: true,
+//     host: 'smtp.mail.ru',
+//     port: 587,
+//     secure: false,
+//     auth: {
+//       user: process.env.EMAIL_USER,
+//       pass: process.env.EMAIL_PASS,
+//     },
+//     connectionTimeout: 30000,
+//   });
+
+//   const portalTransport = nodemailer.createTransport({
+//     pool: true,
+//     host: 'smtp.mail.ru',
+//     port: 587,
+//     secure: false,
+//     auth: {
+//       user: process.env.EMAIL_PORTAL_USER,
+//       pass: process.env.EMAIL_PORTAL_PASS,
+//     },
+//     connectionTimeout: 500,
+//   });
+
+//   fastify.post('/submitFooterForm', async (request, reply) => {
+//     const { text, name, tel } = request.body;
+//     try {
+//       await defaultTransport.sendMail({
+//         from: process.env.EMAIL_USER,
+//         to: process.env.EMAIL_USER,
+//         subject: 'Новый запрос',
+//         text: `Задача: ${text}\nИмя: ${name}\nТелефон: ${tel}`,
+//       });
+//       return reply.code(200).send('Форма успешно отправлена');
+//     } catch (err) {
+//       request.log.error('Ошибка отправки письма (footer):', err);
+//       return reply.code(500).send('Ошибка при отправке формы');
+//     }
+//   });
+
+//   fastify.post('/submitForm', async (request, reply) => {
+//     const { name, phone, task, consentGiven } = request.body;
+//     try {
+//       await defaultTransport.sendMail({
+//         from: process.env.EMAIL_USER,
+//         to: process.env.EMAIL_USER,
+//         subject: 'Новая форма от клиента',
+//         text: `Имя: ${name}\nТелефон: ${phone}\nЗадача: ${task}\nСогласие: ${
+//           consentGiven ? 'Да' : 'Нет'
+//         }`,
+//       });
+//       return reply.code(200).send('Форма успешно отправлена');
+//     } catch (err) {
+//       request.log.error('Ошибка отправки письма (form):', err);
+//       return reply.code(500).send('Ошибка при отправке формы');
+//     }
+//   });
+
+//   fastify.post('/subscribe', async (request, reply) => {
+//     const { email } = request.body;
+//     const isValid = /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$/i.test(email);
+//     if (!isValid) {
+//       return reply.code(400).send({ message: 'Некорректный Email' });
+//     }
+//     try {
+//       await subscribeTransport.sendMail({
+//         from: process.env.EMAIL_USER,
+//         to: process.env.EMAIL_USER,
+//         subject: 'Подписка на новости',
+//         text: `Подписка на новости: ${email}`,
+//       });
+//       return reply.code(200).send({ message: 'Письмо успешно отправлено' });
+//     } catch (err) {
+//       request.log.error('Ошибка отправки подписки:', err);
+//       return reply.code(500).send({ message: 'Ошибка отправки письма' });
+//     }
+//   });
+
+//   fastify.post('/portalSubmitForm', async (request, reply) => {
+//     const {
+//       name = '',
+//       phone = '',
+//       city = '',
+//       choose = '',
+//       letter = '',
+//       resume = '',
+//       title = '',
+//       resumeFiles = [],
+//     } = request.body;
+
+//     const files = Array.isArray(resumeFiles) ? resumeFiles : [resumeFiles];
+  
+//     const attachments = await Promise.all(
+//       files
+//         .filter(
+//           (f) =>
+//             f &&
+//             (f.mimetype.startsWith('image/') ||
+//               f.mimetype === 'application/pdf' ||
+//               f.mimetype.startsWith('application/')),
+//         )
+//         .map(async (f) => ({
+//           filename: f.filename || 'file',
+//           content: await f.toBuffer(),
+//           contentType: f.mimetype,
+//         })),
+//     );
+
+//     const text = [
+//       `Имя: ${name}`,
+//       `Телефон: ${phone}`,
+//       city && `Город: ${city}`,
+//       choose && `Направление: ${choose}`,
+//       `Сопроводительное письмо: ${letter}`,
+//       `Ссылка на резюме/портфолио: ${resume}`,
+//     ]
+//       .filter(Boolean)
+//       .join('\n');
+
+//     try {
+//       await portalTransport.sendMail({
+//         from: process.env.EMAIL_PORTAL_USER,
+//         to: process.env.EMAIL_PORTAL_USER,
+//         subject: title ? `Заявка на вакансию: ${title}` : 'Заявка на вакансию',
+//         text,
+//         attachments,
+//       });
+//       return reply.code(200).send({ message: 'Письмо успешно отправлено' });
+//     } catch (err) {
+//       request.log.error('Ошибка отправки portal формы:', err);
+//       return reply.code(500).send({ message: 'Ошибка отправки письма' });
+//     }
+//   });
+// };
+
 const express = require('express');
 const nodemailer = require('nodemailer');
 const multer = require("multer");
@@ -15,15 +165,13 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-const upload = multer({ 
-  storage, 
+const upload = multer({
+  storage,
   fileFilter,
-  limits: { fileSize: 5 * 1024 * 1024 }, 
+  limits: { fileSize: 5 * 1024 * 1024 },
 });
 
-
 const dotenv = require('dotenv');
-
 
 dotenv.config();
 
@@ -51,7 +199,7 @@ mailRouter.post('/submitFooterForm', async (req, res) => {
     text: `
     Задача: ${formData.text}
     Имя: ${formData.name}
-    Телефон: ${formData.tel}   
+    Телефон: ${formData.tel}
     `,
   };
 
@@ -164,7 +312,6 @@ mailRouter.post('/portalSubmitForm', upload.array('resumeFiles', 2), (req, res) 
     text: emailBody,
     attachments: [],
   };
-  
 
   if (resumeFiles) {
     resumeFiles.forEach((file, index) => {
@@ -175,7 +322,7 @@ mailRouter.post('/portalSubmitForm', upload.array('resumeFiles', 2), (req, res) 
       delete resumeFiles[index].buffer;
     });
    }
-  
+
   transportPortal.sendMail(mailOptions, (error, info) => {
     if (error) {
       console.error('Ошибка отправки письма:', error);
