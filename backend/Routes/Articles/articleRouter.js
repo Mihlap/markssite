@@ -1,3 +1,372 @@
+// /* eslint-disable no-restricted-syntax, no-await-in-loop */
+// const { URL } = require('url');
+// const { Articles, ConstructorArticles } = require('../../db/models');
+// const { uploadFileToS3, deleteFileFromS3 } = require('../../s3Utils/s3Service');
+
+// function extractFileNameAndFolderFromUrl(fileUrl) {
+//   if (!fileUrl.includes('http')) return { fileName: fileUrl, folder: 'images/imageArticle' };
+//   try {
+//     const urlObj = new URL(fileUrl);
+//     const parts = urlObj.pathname.split('/').filter(Boolean);
+//     if (parts.length >= 2) {
+//       const folder = parts.slice(0, -1).join('/');
+//       const fileName = parts.pop();
+//       return { fileName, folder };
+//     }
+//     return { fileName: parts[0], folder: 'images/imageArticle' };
+//   } catch (err) {
+//     console.error(`Ошибка извлечения данных из URL: ${fileUrl}`, err);
+//     return null;
+//   }
+// }
+
+// async function removeFileFromS3(fileUrl) {
+//   const info = extractFileNameAndFolderFromUrl(fileUrl);
+//   if (!info) return;
+//   let { fileName, folder } = info;
+//   fileName = decodeURIComponent(fileName);
+//   folder = decodeURIComponent(folder);
+//   try {
+//     await deleteFileFromS3(fileName, folder);
+//   } catch (err) {
+//     console.error(`Ошибка при удалении файла ${fileName}:`, err);
+//   }
+// }
+
+// function updateDynamicBlocksContent(blocks, newImages) {
+//   let idx = 0;
+//   return blocks.map((group) =>
+//     group.map((block) => {
+//       if (block.type === 'file' && Array.isArray(block.value)) {
+//         const values = block.value.map((val) => {
+//           if (typeof val === 'string' && (val.startsWith('blob:') || val.startsWith('temp_'))) {
+//             const img = newImages[idx];
+//             idx += 1;
+//             return img;
+//           }
+//           return val;
+//         });
+//         return { ...block, value: values };
+//       }
+//       return block;
+//     }),
+//   );
+// }
+
+// async function articleRouter(fastify, options) { 
+//   fastify.post('/postzapros', async (request, reply) => {
+//     try {
+//       const body = {};
+//       const filesMap = {};
+//       for await (const part of request.parts()) {
+//         if (part.file) {
+//           filesMap[part.fieldname] = filesMap[part.fieldname] || [];
+//           filesMap[part.fieldname].push(part);
+//         } else {
+//           body[part.fieldname] = part.value;
+//         }
+//       }
+    
+//       const dynParts = filesMap.dynamicImages || [];
+//       const dynUrls = await Promise.all(
+//         dynParts.map(async (p) => {
+//           const buf = await p.toBuffer();
+//           return uploadFileToS3(
+//             { buffer: buf, originalname: p.filename, mimetype: p.mimetype },
+//             'images/imageArticle',
+//           );
+//         }),
+//       );
+//       let dynamicBlocks = [];
+//       if (body.dynamicBlocksJSON) {
+//         try {
+//           dynamicBlocks = JSON.parse(body.dynamicBlocksJSON);
+//         } catch (_) {
+//           return reply.code(400).send({ message: 'Неверный формат dynamicBlocksJSON' });
+//         }
+//       }
+     
+//       const dropParts = filesMap.dropPhoto || [];
+//       const dropUrls = await Promise.all(
+//         dropParts.map(async (p) => {
+//           const buf = await p.toBuffer();
+//           return uploadFileToS3(
+//             { buffer: buf, originalname: p.filename, mimetype: p.mimetype },
+//             'images/imageArticle',
+//           );
+//         }),
+//       );
+//       const ava = filesMap.photoAva?.[0];
+//       const open = filesMap.imageOpen?.[0];
+//       const close = filesMap.imageClose?.[0];
+//       const imageAvaUrl = ava
+//         ? await uploadFileToS3(
+//             { buffer: await ava.toBuffer(), originalname: ava.filename, mimetype: ava.mimetype },
+//             'images/imageArticle',
+//           )
+//         : null;
+//       const imageOpenUrl = open
+//         ? await uploadFileToS3(
+//             { buffer: await open.toBuffer(), originalname: open.filename, mimetype: open.mimetype },
+//             'images/imageArticle',
+//           )
+//         : null;
+//       const imageCloseUrl = close
+//         ? await uploadFileToS3(
+//             {
+//               buffer: await close.toBuffer(),
+//               originalname: close.filename,
+//               mimetype: close.mimetype,
+//             },
+//             'images/imageArticle',
+//           )
+//         : null;
+   
+//       const article = await Articles.create({
+//         title: body.title,
+//         author: body.author,
+//         city: body.city,
+//         dataMonthYear: body.dataMonthYear,
+//         selectCompetencies: body.selectCompetencies,
+//         titleTextBlock: body.titleTextBlock,
+//         descriptionArticle: body.descriptionArticle,
+//         textBlock: body.textBlock,
+//         imageTitle: dropUrls.join(', '),
+//         imageAuthor: imageAvaUrl,
+//         imageOpen: imageOpenUrl,
+//         imageClose: imageCloseUrl,
+//       });
+
+//       await ConstructorArticles.create({
+//         data: dynamicBlocks,
+//         image: dynUrls.join(', '),
+//         idBlock: article.id,
+//       });
+
+//       return reply.code(200).send({ message: 'Данные успешно сохранены' });
+//     } catch (err) {
+//       fastify.log.error('Ошибка POST /postzapros:', err);
+//       return reply.code(500).send({ message: 'Ошибка при сохранении данных' });
+//     }
+//   });
+
+//   fastify.put('/editzapros/:articleId', async (request, reply) => {
+//     try {
+//       const { articleId } = request.params;
+//       const body = {};
+//       const filesMap = {};
+//       for await (const part of request.parts()) {
+//         if (part.file) {
+//           filesMap[part.fieldname] = filesMap[part.fieldname] || [];
+//           filesMap[part.fieldname].push(part);
+//         } else {
+//           body[part.fieldname] = part.value;
+//         }
+//       }
+
+//       const art = await Articles.findByPk(articleId, { include: [ConstructorArticles] });
+//       if (!art) {
+//         return reply.code(404).send({ message: 'Статья не найдена' });
+//       }
+
+//       const {
+//         title,
+//         author,
+//         city,
+//         dataMonthYear,
+//         selectCompetencies,
+//         titleTextBlock,
+//         descriptionArticle,
+//         textBlock,
+//         dynamicBlocksJSON,
+//       } = body;
+
+//       const currTitles = art.imageTitle?.split(', ').map((s) => s.trim()) || [];
+//       const currAuthors = art.imageAuthor ? [art.imageAuthor] : [];
+//       const currOpens = art.imageOpen ? [art.imageOpen] : [];
+//       const currCloses = art.imageClose ? [art.imageClose] : [];
+    
+//       const newTitles = filesMap.dropPhoto
+//         ? await Promise.all(
+//             filesMap.dropPhoto.map(async (p) =>
+//               uploadFileToS3(
+//                 { buffer: await p.toBuffer(), originalname: p.filename, mimetype: p.mimetype },
+//                 'images/imageArticle',
+//               ),
+//             ),
+//           )
+//         : [];
+//       const newAuthor = filesMap.photoAva?.[0]
+//         ? await uploadFileToS3(
+//             {
+//               buffer: await filesMap.photoAva[0].toBuffer(),
+//               originalname: filesMap.photoAva[0].filename,
+//               mimetype: filesMap.photoAva[0].mimetype,
+//             },
+//             'images/imageArticle',
+//           )
+//         : null;
+//       const newOpen = filesMap.imageOpen?.[0]
+//         ? await uploadFileToS3(
+//             {
+//               buffer: await filesMap.imageOpen[0].toBuffer(),
+//               originalname: filesMap.imageOpen[0].filename,
+//               mimetype: filesMap.imageOpen[0].mimetype,
+//             },
+//             'images/imageArticle',
+//           )
+//         : null;
+//       const newClose = filesMap.imageClose?.[0]
+//         ? await uploadFileToS3(
+//             {
+//               buffer: await filesMap.imageClose[0].toBuffer(),
+//               originalname: filesMap.imageClose[0].filename,
+//               mimetype: filesMap.imageClose[0].mimetype,
+//             },
+//             'images/imageArticle',
+//           )
+//         : null;
+    
+//       let clientTitles = [];
+//       if (typeof body.imageTitle === 'string') {
+//         clientTitles = body.imageTitle.split(',').map((s) => s.trim());
+//       } else if (Array.isArray(body.imageTitle)) {
+//         clientTitles = body.imageTitle.map((s) => s.trim());
+//       }
+//       const clientAuthors = body.imageAuthor ? [body.imageAuthor] : [];
+//       const clientOpens = body.imageOpen ? [body.imageOpen] : [];
+//       const clientCloses = body.imageClose ? [body.imageClose] : [];
+
+//       const updTitles = [...clientTitles, ...newTitles];
+//       const updAuthors = newAuthor ? [newAuthor] : clientAuthors;
+//       const updOpens = newOpen ? [newOpen] : clientOpens;
+//       const updCloses = newClose ? [newClose] : clientCloses;
+      
+//       const normCurr = [...currTitles, ...currAuthors, ...currOpens, ...currCloses]
+//         .map((u) => extractFileNameAndFolderFromUrl(u)?.fileName)
+//         .filter(Boolean);
+//       const normUpd = [...updTitles, ...updAuthors, ...updOpens, ...updCloses]
+//         .map((u) => extractFileNameAndFolderFromUrl(u)?.fileName)
+//         .filter(Boolean);
+//       for (const fn of normCurr.filter((f) => !normUpd.includes(f))) {
+//         await removeFileFromS3(fn);
+//       }
+   
+//       await art.update({
+//         title,
+//         author,
+//         city,
+//         dataMonthYear,
+//         selectCompetencies,
+//         titleTextBlock,
+//         descriptionArticle,
+//         textBlock,
+//         imageTitle: updTitles.join(', '),
+//         imageAuthor: updAuthors[0] || null,
+//         imageOpen: updOpens[0] || null,
+//         imageClose: updCloses[0] || null,
+//       });
+    
+//       const existingCons = await ConstructorArticles.findOne({ where: { idBlock: articleId } });
+//       let dynBlocks = [];
+//       try {
+//         dynBlocks = dynamicBlocksJSON ? JSON.parse(dynamicBlocksJSON) : [];
+//       } catch (_) {
+//         return reply.code(400).send({ message: 'Неверный формат dynamicBlocksJSON' });
+//       }
+//       const newDynParts = filesMap.dynamicImages || [];
+//       const newDynUrls = await Promise.all(
+//         newDynParts.map(async (p) =>
+//           uploadFileToS3(
+//             { buffer: await p.toBuffer(), originalname: p.filename, mimetype: p.mimetype },
+//             'images/imageArticle',
+//           ),
+//         ),
+//       );
+//       const existImgs = existingCons?.image?.split(', ').map((s) => s.trim()) || [];
+//       const normExistDyn = existImgs
+//         .map((u) => extractFileNameAndFolderFromUrl(u)?.fileName)
+//         .filter(Boolean);
+//       const normNewDyn = newDynUrls
+//         .map((u) => extractFileNameAndFolderFromUrl(u)?.fileName)
+//         .filter(Boolean);
+//       for (const fn of normExistDyn.filter((f) => !normNewDyn.includes(f))) {
+//         await removeFileFromS3(fn);
+//       }
+//       const updatedContent = updateDynamicBlocksContent(dynBlocks, [...existImgs, ...newDynUrls]);
+//       if (existingCons) {
+//         await existingCons.update({ data: updatedContent, image: newDynUrls.join(', ') });
+//       } else {
+//         await ConstructorArticles.create({
+//           data: updatedContent,
+//           image: newDynUrls.join(', '),
+//           idBlock: articleId,
+//         });
+//       }
+
+//       return reply.code(200).send({ message: 'Статья успешно обновлена' });
+//     } catch (err) {
+//       fastify.log.error('Ошибка PUT /editzapрос:', err);
+//       return reply.code(500).send({ message: 'Ошибка при обновлении статьи', error: err.message });
+//     }
+//   });
+
+//   fastify.get('/getzapros', async (request, reply) => {
+//     try {
+//       const data = await Articles.findAll({
+//         include: [ConstructorArticles],
+//         order: [['id', 'DESC']],
+//       });
+//       return reply.send(data);
+//     } catch (err) {
+//       fastify.log.error('Ошибка GET /getzapros:', err);
+//       return reply.code(500).send();
+//     }
+//   });
+
+//   fastify.get('/getdynamicdata/:articleId', async (request, reply) => {
+//     try {
+//       const { articleId } = request.params;
+//       const cons = await ConstructorArticles.findOne({ where: { idBlock: articleId } });
+//       if (!cons) return reply.code(404).send({ message: 'Динамические данные не найдены' });
+//       return reply.send({ dynamicData: cons.data, dynamicImages: cons.image.split(', ') });
+//     } catch (err) {
+//       fastify.log.error('Ошибка GET /getdynamicdata:', err);
+//       return reply.code(500).send({ message: 'Ошибка при получении динамических данных' });
+//     }
+//   });
+
+//   fastify.delete('/deletezapros/:id', async (request, reply) => {
+//     try {
+//       const { id } = request.params;
+//       const art = await Articles.findByPk(id);
+//       const cons = await ConstructorArticles.findOne({ where: { idBlock: id } });
+//       const urlsToDelete = [];
+//       if (cons?.image) urlsToDelete.push(...cons.image.split(', '));
+//       if (art?.imageTitle) urlsToDelete.push(...art.imageTitle.split(', '));
+//       if (art?.imageAuthor) urlsToDelete.push(art.imageAuthor);
+//       if (art?.imageOpen) urlsToDelete.push(art.imageOpen);
+//       if (art?.imageClose) urlsToDelete.push(art.imageClose);
+//       const uniqueFiles = [
+//         ...new Set(
+//           urlsToDelete.map((u) => extractFileNameAndFolderFromUrl(u)?.fileName).filter(Boolean),
+//         ),
+//       ];
+//       for (const fn of uniqueFiles) {
+//         await removeFileFromS3(fn);
+//       }
+//       await ConstructorArticles.destroy({ where: { idBlock: id } });
+//       await Articles.destroy({ where: { id } });
+//       return reply.code(200).send();
+//     } catch (err) {
+//       fastify.log.error('Ошибка DELETE /deletezapros:', err);
+//       return reply.code(500).send();
+//     }
+//   });
+// };
+
+// module.exports = articleRouter;
+
 const express = require('express');
 const {
   URL
@@ -50,8 +419,6 @@ const extractFileNameAndFolderFromUrl = (url) => {
   }
 };
 
-
-
 const deleteImageFromS3 = async (fileUrl) => {
   const result = extractFileNameAndFolderFromUrl(fileUrl);
   if (result) {
@@ -71,7 +438,6 @@ const deleteImageFromS3 = async (fileUrl) => {
     console.log(`Не удалось извлечь имя файла и папку из URL: ${fileUrl}`);
   }
 };
-
 
 // Функция для обновления dynamicBlocksContent с новыми изображениями
 const updateDynamicBlocksContent = (blocks, newImages) => {
@@ -96,7 +462,6 @@ const updateDynamicBlocksContent = (blocks, newImages) => {
     })
   );
 };
-
 
 router.post(
   '/postzapros',
@@ -162,7 +527,6 @@ router.post(
       const imageCloses = req.files.imageClose ?
         await uploadFileToS3(req.files.imageClose[0], 'images/imageArticle') :
         null;
-
 
       const createdArticle = await Articles.create({
         title: req.body.title,
@@ -236,7 +600,6 @@ router.put(
         });
       }
 
-
       // Получение текущих изображений
       const currentImageTitles = articleToUpdate.imageTitle ? articleToUpdate.imageTitle.split(', ').map((item) => item.trim()) : [];
       const currentImageAuthors = articleToUpdate.imageAuthor ? [articleToUpdate.imageAuthor] : [];
@@ -268,10 +631,8 @@ router.put(
       const updatedImageOpens = imageOpenNew ? [imageOpenNew] : imageOpenFromClient;
       const updatedImageCloses = imageCloseNew ? [imageCloseNew] : imageCloseFromClient;
 
-
       // Нормализация URL для корректного сравнения (на основе имени файла)
       const extractFileName = (url) => url.split('/').pop().split('?')[0];
-
 
       const normalizedCurrentImages = [...currentImageTitles, ...currentImageAuthors, ...currentImageOpens, ...currentImageCloses]
         .filter(Boolean)
@@ -303,7 +664,6 @@ router.put(
         imageClose: updatedImageCloses[0] || null,
       });
 
-
       // Поиск или создание данных конструктора
       const existingConstructor = await ConstructorArticles.findOne({
         where: {
@@ -325,7 +685,6 @@ router.put(
             return fileUrl;
           })) : [];
 
-
       // Сохраняем текущие динамические изображения, если они уже существуют
       const existingDynamicImages = existingConstructor && existingConstructor.image ?
         existingConstructor.image.split(', ').map((img) => img.trim()) : [];
@@ -339,7 +698,6 @@ router.put(
         allDynamicImages
       );
 
-
       // Извлекаем изображения из динамических блоков
       const extractImages = (blocks) =>
         blocks
@@ -350,7 +708,6 @@ router.put(
 
       const newDynamicImages = extractImages(dynamicBlocksContent).map((img) => img.trim());
 
-
       // Нормализованные массивы динамических изображений
       const normalizedExistingDynamicImages = existingDynamicImages.map(extractFileName);
       const normalizedNewDynamicImages = newDynamicImages.map(extractFileName);
@@ -360,7 +717,6 @@ router.put(
 
       // Удаление старых динамических изображений из S3
       await Promise.all(imagesToRemoveFromDynamicBlocks.map(deleteImageFromS3));
-
 
       if (existingConstructor) {
         await existingConstructor.update({
@@ -432,8 +788,6 @@ router.get('/getdynamicdata/:articleId', async (req, res) => {
     });
   }
 });
-
-
 
 router.delete('/deletezapros/:id', async (req, res) => {
   try {
@@ -517,7 +871,5 @@ router.delete('/deletezapros/:id', async (req, res) => {
     res.sendStatus(500);
   }
 });
-
-
 
 module.exports = router;
