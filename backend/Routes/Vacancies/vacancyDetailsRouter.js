@@ -1,7 +1,178 @@
+// const { Op } = require('sequelize');
+// const { VacancyMainSlideCard } = require('../../db/models');
+// const { uploadFileToS3, deleteFileFromS3 } = require('../../s3Utils/s3Service');
+
+// async function vacancyDetailsRouter(fastify, options) {
+//   // Парсинг multipart через req.parts()
+//   /* eslint-disable no-restricted-syntax, no-await-in-loop */
+//   async function parseMultipart(parts) {
+//     const files = {};
+//     const fields = {};
+//     for await (const part of parts) {
+//       if (part.file) {
+//         if (!files[part.fieldname]) files[part.fieldname] = [];
+//         const buffer = await part.toBuffer();
+//         files[part.fieldname].push({ ...part, buffer });
+//       } else {
+//         fields[part.fieldname] = part.value;
+//       }
+//     }
+//     return { files, fields };
+//   }
+//   /* eslint-enable no-restricted-syntax, no-await-in-loop */
+
+//   // Получение имени файла из URL
+//   function getFileNameFromUrl(url) {
+//     const parts = url.split('/');
+//     return parts[parts.length - 1];
+//   }
+
+//   // Удаление изображения из S3, если больше нигде не используется
+//   async function deleteImageIfUnused(imageUrl, currentId) {
+//     try {
+//       const other = await VacancyMainSlideCard.findOne({
+//         where: { photoAva: imageUrl, id: { [Op.ne]: currentId } },
+//       });
+//       if (!other && imageUrl) {
+//         const fileName = getFileNameFromUrl(imageUrl);
+//         await deleteFileFromS3(fileName, 'images/slideCard');
+//       }
+//     } catch (err) {
+//       console.error(`Ошибка при удалении изображения ${imageUrl}:`, err);
+//     }
+//   }
+
+//   // Обновление одного слайда
+//   fastify.put('/update-slide/:id', async (request, reply) => {
+//     const { files, fields } = await parseMultipart(request.parts());
+//     const { id } = request.params;
+//     const slide = await VacancyMainSlideCard.findByPk(id);
+//     if (!slide) {
+//       return reply.code(404).send({ message: 'Слайд не найден' });
+//     }
+//     const oldImage = slide.photoAva;
+//     let details;
+//     try {
+//       details = JSON.parse(fields.details || '{}');
+//     } catch {
+//       details = {};
+//     }
+
+//     if (fields.removePhotoAva === 'true' && slide.photoAva) {
+//       await deleteImageIfUnused(slide.photoAva, id);
+//       slide.photoAva = '';
+//     }
+
+//     if (files.photoAva) {
+//       const fileUrl = await uploadFileToS3(files.photoAva[0], 'images/slideCard');
+//       slide.photoAva = fileUrl;
+//     }
+
+//     await slide.update({ photoAva: slide.photoAva, cardData: details });
+
+//     if (oldImage && oldImage !== slide.photoAva) {
+//       await deleteImageIfUnused(oldImage, id);
+//     }
+
+//     reply.send({ message: 'Слайд успешно обновлен', data: slide });
+//   });
+
+//   // Обновление порядка слайдов
+//   fastify.put('/update-slides-order', async (request, reply) => {
+//     const { slides } = request.body;
+//     if (!Array.isArray(slides)) {
+//       return reply.code(400).send({ error: 'Некорректные данные: ожидался массив слайдов' });
+//     }
+//     /* eslint-disable no-await-in-loop */
+//     for (let i = 0; i < slides.length; i+=1) {
+//       const { id, order } = slides[i];
+//       await VacancyMainSlideCard.update({ order }, { where: { id } });
+//     }
+//     /* eslint-enable no-await-in-loop */
+
+//     const updatedSlides = await VacancyMainSlideCard.findAll({ order: [['order', 'ASC']] });
+//     reply.send({ message: 'Порядок слайдов успешно обновлен', slides: updatedSlides });
+//   });
+
+//   // Создание нового слайда
+//   fastify.post('/save-vacancy-details', async (request, reply) => {
+//     const { files, fields } = await parseMultipart(request.parts());
+//     let details;
+//     try {
+//       details = JSON.parse(fields.details);
+//     } catch {
+//       return reply.code(400).send({ error: 'Некорректные данные: не удалось распарсить JSON' });
+//     }
+
+//     if (!details.card1 || !details.card2 || !details.card3) {
+//       return reply.code(400).send({ error: 'Некорректные данные: отсутствуют необходимые поля' });
+//     }
+
+//     let photoAva = '';
+//     if (files.photoAva) {
+//       photoAva = await uploadFileToS3(files.photoAva[0], 'images/slideCard');
+//     }
+
+//     const cardData = { card1: details.card1, card2: details.card2, card3: details.card3 };
+//     const newSlide = await VacancyMainSlideCard.create({ cardData, hidden: false, photoAva });
+//     reply.code(200).send({ message: 'Детали вакансии сохранены успешно.', data: newSlide });
+//   });
+
+//   // Получение всех слайдов
+//   fastify.get('/get-slides', async (request, reply) => {
+//     const data = await VacancyMainSlideCard.findAll({ order: [['order', 'ASC']] });
+//     reply.send(data);
+//   });
+
+//   // Получение одного слайда
+//   fastify.get('/get-slide/:id', async (request, reply) => {
+//     const { id } = request.params;
+//     const slide = await VacancyMainSlideCard.findByPk(id);
+//     if (!slide) {
+//       return reply.code(404).send({ message: 'Слайд не найден' });
+//     }
+//     reply.send(slide);
+//   });
+
+//   // Переключение видимости слайда
+//   fastify.put('/toggle-slide/:id', async (request, reply) => {
+//     const { id } = request.params;
+//     const { hidden } = request.body;
+//     const [count] = await VacancyMainSlideCard.update({ hidden }, { where: { id } });
+//     if (count) {
+//       reply.send({ message: 'Статус вакансии успешно обновлен', id, hidden });
+//     } else {
+//       reply.code(404).send({ error: 'Вакансия не найдена' });
+//     }
+//   });
+
+//   // Удаление слайда
+//   fastify.delete('/delete-slide/:id', async (request, reply) => {
+//     const { id } = request.params;
+//     if (!id || isNaN(parseInt(id, 10))) {
+//       return reply.code(400).send({ error: 'Некорректный идентификатор слайда.' });
+//     }
+
+//     const slide = await VacancyMainSlideCard.findByPk(id);
+//     if (!slide) {
+//       return reply.code(404).send({ error: 'Слайд не найден.' });
+//     }
+
+//     await VacancyMainSlideCard.destroy({ where: { id } });
+//     if (slide.photoAva) {
+//       await deleteImageIfUnused(slide.photoAva, id);
+//     }
+
+//     reply.send({ message: 'Слайд удален', id });
+//   });
+// };
+
+// module.exports = vacancyDetailsRouter;
+
 /* eslint-disable no-await-in-loop */
 const express = require('express');
 const { Op } = require('sequelize');
-const fileMiddleware = require('../../middleware/file');   
+const fileMiddleware = require('../../middleware/file');
 const { VacancyMainSlideCard } = require('../../db/models');
 const { uploadFileToS3, deleteFileFromS3 } = require('../../s3Utils/s3Service');
 
@@ -9,7 +180,7 @@ const router = express.Router();
 
 function getFileNameFromUrl(url) {
   const urlParts = url.split('/');
-  return urlParts[urlParts.length - 1]; 
+  return urlParts[urlParts.length - 1];
 }
 
 const deleteImageIfUnused = async (imageName, currentSlideId) => {
@@ -19,7 +190,7 @@ const deleteImageIfUnused = async (imageName, currentSlideId) => {
     });
 
      if (!otherSlidesWithImage) {
-      const fileName = getFileNameFromUrl(imageName); 
+      const fileName = getFileNameFromUrl(imageName);
       await deleteFileFromS3(fileName, 'images/slideCard');
     }
   } catch (error) {
@@ -27,8 +198,7 @@ const deleteImageIfUnused = async (imageName, currentSlideId) => {
   }
 };
 
-
-router.put('/update-slide/:id', fileMiddleware.fields([{ name: 'photoAva', maxCount: 1 }]), 
+router.put('/update-slide/:id', fileMiddleware.fields([{ name: 'photoAva', maxCount: 1 }]),
   async (req, res) => {
     try {
       const { id } = req.params;
@@ -39,16 +209,16 @@ router.put('/update-slide/:id', fileMiddleware.fields([{ name: 'photoAva', maxCo
         return res.status(404).json({ message: "Слайд не найден" });
       }
 
-      const oldImage = slide.photoAva;  
+      const oldImage = slide.photoAva;
 
        if (req.body.removePhotoAva === 'true' && slide.photoAva) {
         await deleteImageIfUnused(slide.photoAva, id);
         slide.photoAva = '';
       }
 
-      if (req.files && req.files['photoAva']) {     
+      if (req.files && req.files['photoAva']) {
         const fileUrl = await uploadFileToS3(req.files['photoAva'][0], 'images/slideCard');
-        slide.photoAva = fileUrl; 
+        slide.photoAva = fileUrl;
       }
 
       await slide.update({
@@ -68,9 +238,6 @@ router.put('/update-slide/:id', fileMiddleware.fields([{ name: 'photoAva', maxCo
   }
 );
 
-
-
-
 router.put('/update-slides-order', async (req, res) => {
   const { slides } = req.body;
 
@@ -81,7 +248,7 @@ router.put('/update-slides-order', async (req, res) => {
   try {
     // eslint-disable-next-line no-plusplus
     for (let i = 0; i < slides.length; i++) {
-      const { id, order } = slides[i];     
+      const { id, order } = slides[i];
 
       await VacancyMainSlideCard.update({ order }, { where: { id } });
     }
@@ -96,8 +263,6 @@ router.put('/update-slides-order', async (req, res) => {
     res.status(500).json({ error: 'Ошибка сервера при обновлении порядка слайдов' });
   }
 });
-
-
 
 router.post('/save-vacancy-details',
   fileMiddleware.fields([{
@@ -148,9 +313,6 @@ router.post('/save-vacancy-details',
   }
 });
 
-
-
-
 router.get('/get-slides', async (req, res) => {
   try {
     const data = await VacancyMainSlideCard.findAll({ order: [['order', 'ASC']] });
@@ -162,8 +324,6 @@ router.get('/get-slides', async (req, res) => {
     });
   }
 });
-
-
 
 router.get('/get-slide/:id', async (req, res) => {
   const { id } = req.params;
@@ -181,12 +341,11 @@ router.get('/get-slide/:id', async (req, res) => {
   }
 });
 
-
 router.put('/toggle-slide/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const { hidden } = req.body;
-   
+
     const updated = await VacancyMainSlideCard.update({ hidden }, {
       where: { id }
     });
@@ -202,12 +361,10 @@ router.put('/toggle-slide/:id', async (req, res) => {
   }
 });
 
-
-
 router.delete('/delete-slide/:id', async (req, res) => {
-  const {id} = req.params; 
+  const {id} = req.params;
 
-  if (!id || isNaN(parseInt(id))) { 
+  if (!id || isNaN(parseInt(id))) {
     return res.status(400).json({ error: "Некорректный идентификатор слайда." });
   }
 
@@ -222,14 +379,13 @@ router.delete('/delete-slide/:id', async (req, res) => {
 
     if (result > 0) {
        const otherSlidesWithImage = await VacancyMainSlideCard.findOne({
-        where: { photoAva: slide.photoAva, id: { [Op.ne]: id } } 
+        where: { photoAva: slide.photoAva, id: { [Op.ne]: id } }
       });
 
       if (!otherSlidesWithImage && slide.photoAva) {
         const fileName = getFileNameFromUrl(slide.photoAva);
-        await deleteFileFromS3(fileName, 'images/slideCard'); 
+        await deleteFileFromS3(fileName, 'images/slideCard');
       }
-
 
       res.json({ message: "Слайд удален", id });
     } else {

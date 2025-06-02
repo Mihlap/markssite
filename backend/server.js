@@ -1,6 +1,145 @@
+// require('dotenv').config();
+// const fs = require('fs');
+// const path = require('path');
+// const Fastify = require('fastify');
+// const middie = require('@fastify/middie');
+// const fastifyCors = require('@fastify/cors');
+// const fastifyFormbody = require('@fastify/formbody');
+// const fastifyStatic = require('@fastify/static');
+// const fastifyHelmet = require('@fastify/helmet');
+// const fastifyRateLimit = require('@fastify/rate-limit');
+// const fastifyCookie = require('@fastify/cookie');
+// const fastifySession = require('@fastify/session');
+// const fastifyMultipart = require('@fastify/multipart');
+// const morgan = require('morgan');
+
+// const indexRouter = require('./Routes/indexRouter');
+// const authRouter = require('./Routes/authRouter');
+// const staffsRouter = require('./Routes/staffsRouter');
+// const projectRouter = require('./Routes/Project/projectRouter');
+// const searchRouter = require('./Routes/Project/searchRouter');
+// const articleRouter = require('./Routes/Articles/articleRouter');
+// const searchVacanciesRouter = require('./Routes/Vacancies/searchVacanciesRouter');
+// const searchArticleLeft = require('./Routes/Articles/searchArticleLeftRouter');
+// const searchArticleRight = require('./Routes/Articles/searchArticleRightRouter');
+// const mailRouter = require('./Routes/mailRouter');
+// const toggleRouter = require('./Routes/toggle/toggleRouter');
+// const videoRouter = require('./Routes/videoRouter');
+// const uploadRouter = require('./Routes/uploadRouter');
+// const vacancyRouter = require('./Routes/Vacancies/vacancyRouter');
+// const vacancyDetailsRouter = require('./Routes/Vacancies/vacancyDetailsRouter');
+// const vacancyEventRouter = require('./Routes/Vacancies/vacancyEventRouter');
+// const journalRouter = require('./Routes/Journal/journalRouter');
+
+// const PORT = process.env.PORT || 5000;
+
+// const sessionSecret = process.env.SESSION_SECRET;
+// if (!sessionSecret || sessionSecret.length < 32) {
+//   console.error('ERROR: SESSION_SECRET env var must be at least 32 characters.');
+//   process.exit(1);
+// }
+
+// const fastify = Fastify({ logger: true, exposeHeadRoutes: false });
+
+// fastify.register(middie).after(() => {
+//   fastify.use(morgan('dev'));
+// });
+
+// fastify.register(fastifyCors, {
+//   origin: [
+//     'https://www.marksgroup.ru',
+//     'https://marksgroup.ru',
+//     'http://localhost:3002',
+//     'http://localhost:3000',
+//   ],
+//   credentials: true,
+// });
+
+// fastify.register(fastifyFormbody);
+
+// fastify.addContentTypeParser(
+//   'application/json',
+//   { parseAs: 'string' },
+//   fastify.getDefaultJsonParser('error', 'ignore'),
+// );
+
+// fastify.register(fastifyHelmet);
+
+// fastify.register(fastifyRateLimit, {
+//   max: 5000,
+//   timeWindow: '15 minutes',
+// });
+
+// const tryStatic = (opts) => fs.existsSync(opts.root) && fastify.register(fastifyStatic, opts);
+
+// tryStatic({ root: path.join(__dirname, 'build'), prefix: '/', wildcard: false });
+// tryStatic({ root: path.join(__dirname, 'images'), prefix: '/images/', decorateReply: false });
+// tryStatic({
+//   root: path.join(__dirname, 'images', 'video'),
+//   prefix: '/videos/',
+//   decorateReply: false,
+// });
+// tryStatic({
+//   root: path.join(__dirname, 'assets'),
+//   prefix: '/public/assets/',
+//   decorateReply: false,
+// });
+
+// fastify.register(fastifyCookie);
+
+// fastify.register(fastifySession, {
+//   secret: sessionSecret,
+//   cookie: {
+//     secure: false,
+//     httpOnly: true,
+//     sameSite: 'lax',
+//     maxAge: 10 * 24 * 60 * 60 * 1000,
+//   },
+// });
+
+// fastify.register(fastifyMultipart, {
+//   attachFieldsToBody: true,
+//   limits: { fileSize: 5 * 1024 * 1024, files: 200 },
+// });
+
+// fastify.register(authRouter, { prefix: '/api/auth' });
+// fastify.register(indexRouter);
+// fastify.register(staffsRouter, { prefix: '/api-stuffs' });
+// fastify.register(projectRouter, { prefix: '/api-project' });
+// fastify.register(articleRouter, { prefix: '/api-article' });
+// fastify.register(searchRouter, { prefix: '/search' });
+// fastify.register(searchVacanciesRouter, { prefix: '/search' });
+// fastify.register(searchArticleLeft, { prefix: '/search-article' });
+// fastify.register(searchArticleRight, { prefix: '/search-articles' });
+// fastify.register(mailRouter, { prefix: '/api-mail' });
+// fastify.register(toggleRouter, { prefix: '/api/toggle' });
+// fastify.register(videoRouter, { prefix: '/api/video' });
+// fastify.register(uploadRouter, { prefix: '/api' });
+// fastify.register(vacancyRouter, { prefix: '/api-vacancy' });
+// fastify.register(vacancyDetailsRouter, { prefix: '/api-vacancyDetails' });
+// fastify.register(vacancyEventRouter, { prefix: '/api-events' });
+// fastify.register(journalRouter, { prefix: '/api-journal' });
+// fastify.register(journalRouter, { prefix: '/api-upload' });
+
+// fastify.setErrorHandler((error, request, reply) => {
+//   request.log.error(error);
+//   reply.status(500).send('Something went wrong!');
+// });
+
+// const start = async () => {
+//   try {
+//     await fastify.listen({ port: PORT, host: '0.0.0.0' });
+//     fastify.log.info(`🚀 Server listening on port ${PORT}`);
+//   } catch (err) {
+//     fastify.log.error(err);
+//     process.exit(1);
+//   }
+// };
+// start();
+
 const express = require('express');
 require('dotenv').config();
-// const https = require('https'); 
+// const https = require('https');
 // const fs = require('fs');
 const morgan = require('morgan');
 const cors = require('cors');
@@ -60,11 +199,11 @@ app.use(cors({
 
 // app.use((req, res, next) => {
 //   res.header('Access-Control-Allow-Origin', '*');
-//   // res.header('Access-Control-Allow-Origin', 'https://marksgroup.ru'); 
+//   // res.header('Access-Control-Allow-Origin', 'https://marksgroup.ru');
 //   res.header('Access-Control-Allow-Origin', req.header('origin'));
 //   // res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
 //   res.header('Access-Control-Allow-Methods', 'HEAD, GET, POST, PUT, DELETE, OPTIONS');
-//   res.header('Access-Control-Allow-Credentials', 'true'); 
+//   res.header('Access-Control-Allow-Credentials', 'true');
 //   // res.header('Content-Type', 'application/json; charset=utf-8');
 //   // res.header('Content-Type', 'video/mp4');
 //   // res.header('Accept-Ranges', 'bytes');
@@ -90,10 +229,9 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-
-const imagesPath = path.join(__dirname, 'images');  
+const imagesPath = path.join(__dirname, 'images');
 const videoPath = path.join(__dirname, 'images/video');
- 
+
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -103,13 +241,11 @@ app.use('/public/assets', express.static(path.join(__dirname, 'assets'), { maxAg
 app.use(session(sessionConfig));
 app.use(express.static(path.join(__dirname, 'build')));
 
-
 // Обработчик ошибок
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send('Something went wrong!');
 });
-
 
 app.get('/', indexRouter);
 app.use('/api/auth', authRouter);

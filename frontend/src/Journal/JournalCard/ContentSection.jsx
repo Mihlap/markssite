@@ -11,7 +11,11 @@ function parseChapters(markdown = '') {
     const content = match[2].trim();
     const titleEnd = match[3].trim();
     const finalTitle = titleStart === titleEnd ? titleStart : `${titleStart} / ${titleEnd}`;
-    chapters.push({ title: finalTitle, content, index: match.index });
+    chapters.push({
+      title: finalTitle,
+      content,
+      index: match.index,
+    });
   }
   return chapters;
 }
@@ -20,37 +24,42 @@ export default function ContentSection({ markdown, journal }) {
   const navigate = useNavigate();
   const [activeChapter, setActiveChapter] = useState(null);
 
+
   const rawChapters = useMemo(() => parseChapters(markdown), [markdown]);
   const sortedChapters = useMemo(() => [...rawChapters].sort((a, b) => a.index - b.index), [rawChapters]);
-
+ 
   const chaptersWithSlug = useMemo(
     () =>
-      sortedChapters.map((ch, idx) => {     
+      sortedChapters.map((ch, idx) => {      
         const cleaned = ch.title
           .replace(/^[#*`_\s]+/, '')
           .replace(/[*_~`]+/g, '')
           .trim();
 
-        const base = cleaned
+      const base = cleaned
           .toLowerCase()
           .replace(/[^\wа-яё\s-]/gi, '')
           .replace(/\s+/g, '-');
+        const slug = `${base}-${idx}`;
+       
+        const displayTitle = cleaned.replace(/^\d+\.\s*/, '');
 
         return {
           ...ch,
           title: cleaned,
-          slug: `${base}-${idx}`,
+          slug, 
+          displayTitle, 
         };
       }),
-    [sortedChapters]
-  );
+    [sortedChapters]  );
+
 
   const handleChapterClick = useCallback(
     (slug, e) => {
       e.stopPropagation();
       setActiveChapter(slug);
       navigate(`/journal/${journal.id}`, {
-        state: { journal, targetChapterSlug: slug },
+        state: { targetChapterSlug: slug },
       });
     },
     [journal, navigate]
@@ -61,18 +70,18 @@ export default function ContentSection({ markdown, journal }) {
   }
 
   return (
-    <div className={styles.contentContainer}>   
-      <aside className={styles.tableOfContents}>  
+    <div className={styles.contentContainer}>
+      <aside className={styles.tableOfContents}>
         <ul className={styles.listWrapper}>
           {chaptersWithSlug.map((chapter) => (
             <li key={chapter.slug} className={activeChapter === chapter.slug ? styles.activeChapter : ''}>
               <button type="button" className={styles.tocLink} onClick={(e) => handleChapterClick(chapter.slug, e)}>
-                {chapter.title}
+                {chapter.displayTitle}
               </button>
             </li>
           ))}
         </ul>
-      </aside>  
+      </aside>
     </div>
   );
 }
