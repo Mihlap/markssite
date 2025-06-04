@@ -1,6 +1,6 @@
 const express = require('express');
 require('dotenv').config();
-// const https = require('https'); 
+// const https = require('https');
 // const fs = require('fs');
 const morgan = require('morgan');
 const cors = require('cors');
@@ -58,22 +58,6 @@ app.use(cors({
   credentials: true,
 }));
 
-// app.use((req, res, next) => {
-//   res.header('Access-Control-Allow-Origin', '*');
-//   // res.header('Access-Control-Allow-Origin', 'https://marksgroup.ru'); 
-//   res.header('Access-Control-Allow-Origin', req.header('origin'));
-//   // res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
-//   res.header('Access-Control-Allow-Methods', 'HEAD, GET, POST, PUT, DELETE, OPTIONS');
-//   res.header('Access-Control-Allow-Credentials', 'true'); 
-//   // res.header('Content-Type', 'application/json; charset=utf-8');
-//   // res.header('Content-Type', 'video/mp4');
-//   // res.header('Accept-Ranges', 'bytes');
-//   // res.header('Cross-Origin-Opener-Policy', 'same-origin');
-//   // res.header('Cross-Origin-Embedder-Policy', 'require-corp');
-//   res.header('Content-Security-Policy', 'default-src *');
-//   next();
-// });
-
 app.use((req, res, next) => {
   res.header('Access-Control-Allow-Methods', 'HEAD, GET, POST, PUT, DELETE, OPTIONS');
   res.header('Access-Control-Allow-Credentials', 'true');
@@ -90,10 +74,9 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-
-const imagesPath = path.join(__dirname, 'images');  
+const imagesPath = path.join(__dirname, 'images');
 const videoPath = path.join(__dirname, 'images/video');
- 
+
 app.use(morgan('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -103,13 +86,10 @@ app.use('/public/assets', express.static(path.join(__dirname, 'assets'), { maxAg
 app.use(session(sessionConfig));
 app.use(express.static(path.join(__dirname, 'build')));
 
-
-// Обработчик ошибок
 app.use((err, req, res, next) => {
   console.error(err.stack);
   res.status(500).send('Something went wrong!');
 });
-
 
 app.get('/', indexRouter);
 app.use('/api/auth', authRouter);

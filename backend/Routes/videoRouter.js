@@ -2,13 +2,12 @@ const express = require("express");
 const fs = require('fs');
 const path = require("path");
 const { Constructor } = require('../db/models');
-const videoUpload = require('../middleware/fileVideo'); 
+const videoUpload = require('../middleware/fileVideo');
 
 const router = express.Router();
 
 const destinationPath = path.join(__dirname, "../images/video");
 
-// Проверяем существование пути, если не существует, создаем
 if (!fs.existsSync(destinationPath)){
     fs.mkdirSync(destinationPath, { recursive: true });
 }
@@ -17,7 +16,7 @@ router.post(`/upload-video`, videoUpload.single("video"), async (req, res) => {
   try {
 
     const videoPath = path.join(destinationPath, req.file.originalname);
-   
+
     const constructor = await Constructor.create({
       videoPath,
     });
@@ -27,7 +26,6 @@ router.post(`/upload-video`, videoUpload.single("video"), async (req, res) => {
     return res.status(500).json(error);
   }
 });
-
 
 router.get('/:videoName', async (req, res) => {
   const { videoName } = req.params;
@@ -50,17 +48,15 @@ router.get('/:videoName', async (req, res) => {
 router.get('/:filename', async (req, res) => {
   const { filename } = req.params;
 
-  // console.log('Запрос на имя файла в роутере:', filename);
-
-  const videoPath = path.join(destinationPath, filename);
+ const videoPath = path.join(destinationPath, filename);
 
   try {
     const stats = await fs.promises.stat(videoPath);
 
     if (stats.isFile()) {
-     
+
       res.sendFile(videoPath, {
-        maxAge: '5d', // Время кэширования
+        maxAge: '5d',
         headers: {
           'Cache-Control': 'public, max-age=432000', // 432000 секунд = 5 дней
         },
@@ -74,6 +70,5 @@ router.get('/:filename', async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
-
 
 module.exports = router;

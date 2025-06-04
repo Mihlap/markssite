@@ -330,11 +330,11 @@ router.get('/getzapros/:id', async (req, res) => {
 
 router.delete('/delete-file', async (req, res) => {
   try {
-    const { url } = req.body;  
+    const { url } = req.body;
     if (!url) {
       return res.status(400).json({ message: 'URL не предоставлен' });
     }
-    const result = extractFileNameAndFolderFromUrl(url);   
+    const result = extractFileNameAndFolderFromUrl(url);
     if (!result) {
       return res.status(400).json({ message: 'Невозможно определить данные из URL' });
     }
@@ -391,7 +391,7 @@ router.delete('/deletezapros/:id', async (req, res) => {
         }),
       );
     };
- 
+
     if (post.attachments) {
       const attachmentUrls = post.attachments;
       await extractAndDeleteFiles(attachmentUrls, false, false);    }

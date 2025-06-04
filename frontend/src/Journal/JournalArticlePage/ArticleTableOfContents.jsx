@@ -2,6 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
+import { useLocation } from 'react-router-dom';
 import styles from './ArticleTableOfContents.module.scss';
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
@@ -21,13 +22,28 @@ export function parseChapters(markdown = '') {
   return chapters;
 }
 
-export default function ArticleTableOfContents({ markdown = '', activeSlug }) {
-  const [activeChapter, setActiveChapter] = useState(activeSlug || '');
+export default function ArticleTableOfContents({ markdown = '' }) {
+  const location = useLocation();
+  const [activeChapter, setActiveChapter] = useState('');
   const tocRef = useRef(null);
 
   useEffect(() => {
-    if (activeSlug) setActiveChapter(activeSlug);
-  }, [activeSlug]);
+    if (location.state?.targetChapterSlug) {
+      setActiveChapter(location.state.targetChapterSlug);
+
+      const slug = location.state.targetChapterSlug;
+      setTimeout(() => {
+        const el = document.getElementById(slug);
+        if (el) {
+          const rem = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;      
+          window.scrollTo({
+            top: el.getBoundingClientRect().top + window.scrollY - rem * 4,
+            behavior: 'smooth',
+          });
+        }
+      }, 0);
+    }
+  }, [location.state]);
 
   useEffect(() => {
     const toc = tocRef.current;
@@ -60,20 +76,6 @@ export default function ArticleTableOfContents({ markdown = '', activeSlug }) {
     return () => mm.revert();
   }, []);
 
-  const onClick = (slug, e) => {
-    e.preventDefault();
-    setActiveChapter(slug);
-    const rem = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
-    gsap.to(window, {
-      duration: 0.6,
-      ease: 'power1.out',
-      scrollTo: { y: `#${slug}`, offsetY: rem * 4, autoKill: false },
-      onComplete() {
-        window.history.replaceState(null, '', `#${slug}`);
-      },
-    });
-  };
-
   const raw = parseChapters(markdown);
   if (!raw.length) return null;
 
@@ -86,14 +88,33 @@ export default function ArticleTableOfContents({ markdown = '', activeSlug }) {
         .replace(/^[#*` \s]+/, '')
         .replace(/[*_~`]+/g, '')
         .trim();
+
       const base = cleaned
         .toLowerCase()
         .replace(/[^\wа-яё\s-]/gi, '')
         .replace(/\s+/g, '-');
       const slug = `${base}-${idx}`;
+
       const isUnnumbered = skipTitles.includes(cleaned.toLowerCase());
-      return { ...ch, title: cleaned, slug, isUnnumbered };
+
+      const displayTitle = cleaned.replace(/^\d+\.\s*/, '');
+
+      return { ...ch, title: cleaned, slug, isUnnumbered, displayTitle };
     });
+
+  const onClick = (slug, e) => {
+    e.preventDefault();
+    setActiveChapter(slug);  
+    const rem = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+    const el = document.getElementById(slug);
+    if (el) {
+      window.scrollTo({
+        top: el.getBoundingClientRect().top + window.scrollY - rem * 4,
+        behavior: 'smooth',
+      });
+      window.history.replaceState(null, '', `#${slug}`);
+    }
+  };
 
   return (
     <nav ref={tocRef} className={styles.tocWrapper}>
@@ -105,7 +126,7 @@ export default function ArticleTableOfContents({ markdown = '', activeSlug }) {
               href={`#${chap.slug}`}
               className={activeChapter === chap.slug ? styles.active : ''}
               onClick={(e) => onClick(chap.slug, e)}>
-              {chap.title}
+              {chap.displayTitle}
             </a>
           </li>
         ))}

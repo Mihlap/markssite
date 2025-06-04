@@ -9,5 +9,4 @@ router.get('*', (req, res, next) => {
   // res.render('Layout', initState);
 });
 
-
 module.exports = router;

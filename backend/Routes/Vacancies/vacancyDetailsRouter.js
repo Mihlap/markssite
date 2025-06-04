@@ -1,7 +1,7 @@
 /* eslint-disable no-await-in-loop */
 const express = require('express');
 const { Op } = require('sequelize');
-const fileMiddleware = require('../../middleware/file');   
+const fileMiddleware = require('../../middleware/file');
 const { VacancyMainSlideCard } = require('../../db/models');
 const { uploadFileToS3, deleteFileFromS3 } = require('../../s3Utils/s3Service');
 
@@ -9,7 +9,7 @@ const router = express.Router();
 
 function getFileNameFromUrl(url) {
   const urlParts = url.split('/');
-  return urlParts[urlParts.length - 1]; 
+  return urlParts[urlParts.length - 1];
 }
 
 const deleteImageIfUnused = async (imageName, currentSlideId) => {
@@ -19,7 +19,7 @@ const deleteImageIfUnused = async (imageName, currentSlideId) => {
     });
 
      if (!otherSlidesWithImage) {
-      const fileName = getFileNameFromUrl(imageName); 
+      const fileName = getFileNameFromUrl(imageName);
       await deleteFileFromS3(fileName, 'images/slideCard');
     }
   } catch (error) {
@@ -27,8 +27,7 @@ const deleteImageIfUnused = async (imageName, currentSlideId) => {
   }
 };
 
-
-router.put('/update-slide/:id', fileMiddleware.fields([{ name: 'photoAva', maxCount: 1 }]), 
+router.put('/update-slide/:id', fileMiddleware.fields([{ name: 'photoAva', maxCount: 1 }]),
   async (req, res) => {
     try {
       const { id } = req.params;
@@ -39,16 +38,16 @@ router.put('/update-slide/:id', fileMiddleware.fields([{ name: 'photoAva', maxCo
         return res.status(404).json({ message: "Слайд не найден" });
       }
 
-      const oldImage = slide.photoAva;  
+      const oldImage = slide.photoAva;
 
        if (req.body.removePhotoAva === 'true' && slide.photoAva) {
         await deleteImageIfUnused(slide.photoAva, id);
         slide.photoAva = '';
       }
 
-      if (req.files && req.files['photoAva']) {     
+      if (req.files && req.files['photoAva']) {
         const fileUrl = await uploadFileToS3(req.files['photoAva'][0], 'images/slideCard');
-        slide.photoAva = fileUrl; 
+        slide.photoAva = fileUrl;
       }
 
       await slide.update({
@@ -68,9 +67,6 @@ router.put('/update-slide/:id', fileMiddleware.fields([{ name: 'photoAva', maxCo
   }
 );
 
-
-
-
 router.put('/update-slides-order', async (req, res) => {
   const { slides } = req.body;
 
@@ -81,7 +77,7 @@ router.put('/update-slides-order', async (req, res) => {
   try {
     // eslint-disable-next-line no-plusplus
     for (let i = 0; i < slides.length; i++) {
-      const { id, order } = slides[i];     
+      const { id, order } = slides[i];
 
       await VacancyMainSlideCard.update({ order }, { where: { id } });
     }
@@ -96,8 +92,6 @@ router.put('/update-slides-order', async (req, res) => {
     res.status(500).json({ error: 'Ошибка сервера при обновлении порядка слайдов' });
   }
 });
-
-
 
 router.post('/save-vacancy-details',
   fileMiddleware.fields([{
@@ -148,9 +142,6 @@ router.post('/save-vacancy-details',
   }
 });
 
-
-
-
 router.get('/get-slides', async (req, res) => {
   try {
     const data = await VacancyMainSlideCard.findAll({ order: [['order', 'ASC']] });
@@ -162,8 +153,6 @@ router.get('/get-slides', async (req, res) => {
     });
   }
 });
-
-
 
 router.get('/get-slide/:id', async (req, res) => {
   const { id } = req.params;
@@ -181,12 +170,11 @@ router.get('/get-slide/:id', async (req, res) => {
   }
 });
 
-
 router.put('/toggle-slide/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const { hidden } = req.body;
-   
+
     const updated = await VacancyMainSlideCard.update({ hidden }, {
       where: { id }
     });
@@ -202,12 +190,10 @@ router.put('/toggle-slide/:id', async (req, res) => {
   }
 });
 
-
-
 router.delete('/delete-slide/:id', async (req, res) => {
-  const {id} = req.params; 
+  const {id} = req.params;
 
-  if (!id || isNaN(parseInt(id))) { 
+  if (!id || isNaN(parseInt(id))) {
     return res.status(400).json({ error: "Некорректный идентификатор слайда." });
   }
 
@@ -222,14 +208,13 @@ router.delete('/delete-slide/:id', async (req, res) => {
 
     if (result > 0) {
        const otherSlidesWithImage = await VacancyMainSlideCard.findOne({
-        where: { photoAva: slide.photoAva, id: { [Op.ne]: id } } 
+        where: { photoAva: slide.photoAva, id: { [Op.ne]: id } }
       });
 
       if (!otherSlidesWithImage && slide.photoAva) {
         const fileName = getFileNameFromUrl(slide.photoAva);
-        await deleteFileFromS3(fileName, 'images/slideCard'); 
+        await deleteFileFromS3(fileName, 'images/slideCard');
       }
-
 
       res.json({ message: "Слайд удален", id });
     } else {

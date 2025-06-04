@@ -74,8 +74,6 @@ const extractFileNameAndFolderFromUrl = (url) => {
   }
 };
 
-
-
 const deleteImageFromS3 = async (fileUrl) => {
   const result = extractFileNameAndFolderFromUrl(fileUrl);
   if (result) {
@@ -95,8 +93,6 @@ const deleteImageFromS3 = async (fileUrl) => {
     console.log(`Не удалось извлечь имя файла и папку из URL: ${fileUrl}`);
   }
 };
-
-
 
 // Функция для обновления dynamicBlocksContent с новыми изображениями
 const updateDynamicBlocksContent = (blocks, newImages) => {
@@ -121,7 +117,6 @@ const updateDynamicBlocksContent = (blocks, newImages) => {
     })
   );
 };
-
 
 router.post(
   '/postzapros',
@@ -158,7 +153,6 @@ router.post(
             return fileUrl;
           })
         ) : [];
-
 
       if (req.body.dynamicBlocksJSON) {
         try {
@@ -304,7 +298,7 @@ router.put(
 
       // Нормализация URL для корректного сравнения (на основе имени файла)
       const extractFileName = (url) => url.split('/').pop().split('?')[0];
-     
+
       const normalizedCurrentImages = [...currentImageTitles, ...currentImageProjects, ...currentImageOpens, ...currentImageCloses]
         .filter(Boolean)
         .map(extractFileName);
@@ -313,10 +307,9 @@ router.put(
         .filter(Boolean)
         .map(extractFileName);
 
-
       // Поиск изображений для удаления (тех, которые больше не используются)
       const imagesToRemove = normalizedCurrentImages.filter((image) => !normalizedUpdatedImages.includes(image));
-   
+
       // Удаление старых изображений из S3
       await Promise.all(imagesToRemove.map(deleteImageFromS3));
 
@@ -436,7 +429,6 @@ router.put(
   }
 );
 
-
 router.get('/getzapros', async (req, res) => {
   try {
     const data = await Project.findAll({
@@ -509,8 +501,6 @@ router.get('/getdynamicdata/:projectId', async (req, res) => {
     });
   }
 });
-
-
 
 router.delete('/deletezapros/:id', async (req, res) => {
   try {
@@ -599,6 +589,5 @@ router.delete('/deletezapros/:id', async (req, res) => {
     res.sendStatus(500);
   }
 });
-
 
 module.exports = router;

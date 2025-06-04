@@ -2,7 +2,7 @@ const express = require('express');
 const { Op } = require('sequelize');
 const path = require('path');
 const fs = require('fs');
-const fileMiddleware = require('../../middleware/file');   
+const fileMiddleware = require('../../middleware/file');
 const { VacancyMainEvent } = require('../../db/models');
 const { uploadFileToS3, deleteFileFromS3 } = require('../../s3Utils/s3Service');
 
@@ -10,9 +10,8 @@ const router = express.Router();
 
 function getFileNameFromUrl(url) {
   const urlParts = url.split('/');
-  return urlParts[urlParts.length - 1]; 
+  return urlParts[urlParts.length - 1];
 }
-
 
 const deleteImageIfUnused = async (imageUrl, currentEventId) => {
   try {
@@ -21,14 +20,13 @@ const deleteImageIfUnused = async (imageUrl, currentEventId) => {
     });
 
      if (!otherEventsWithImage) {
-      const fileName = getFileNameFromUrl(imageUrl); 
+      const fileName = getFileNameFromUrl(imageUrl);
       await deleteFileFromS3(fileName, 'images/imageEvent');
     }
   } catch (error) {
     console.error(`Ошибка при удалении изображения ${imageUrl}:`, error);
   }
 };
-
 
 router.put('/update-event/:id', fileMiddleware.fields([{ name: 'files', maxCount: 500 }]),
   async (req, res) => {
@@ -77,7 +75,6 @@ router.put('/update-event/:id', fileMiddleware.fields([{ name: 'files', maxCount
   }
 );
 
-
 router.put('/update-event-order', async (req, res) => {
   const { events } = req.body;
 
@@ -88,7 +85,7 @@ router.put('/update-event-order', async (req, res) => {
   try {
     // eslint-disable-next-line no-plusplus
     for (let i = 0; i < events.length; i++) {
-      const { id, order } = events[i];     
+      const { id, order } = events[i];
 
       // eslint-disable-next-line no-await-in-loop
       await VacancyMainEvent.update({ order }, { where: { id } });
@@ -105,8 +102,6 @@ router.put('/update-event-order', async (req, res) => {
   }
 });
 
-
-
 router.post('/save-event-details',
   fileMiddleware.fields([
     { name: 'files', maxCount: 500 },
@@ -118,12 +113,12 @@ router.post('/save-event-details',
   } catch (error) {
     return res.status(400).json({ error: 'Некорректные данные: не удалось распарсить JSON' });
   }
-  
+
   if (!details || !details.eventData || !Array.isArray(details.eventData)) {
     return res.status(400).json({ error: 'Некорректные данные: отсутствуют необходимые поля' });
   }
-  
-    const {eventData} = details; 
+
+    const {eventData} = details;
     const files = [];
 
      // Загрузка файлов в S3
@@ -142,7 +137,7 @@ router.post('/save-event-details',
 
      const newEvent = await VacancyMainEvent.create({
         title,
-        hidden: false,        
+        hidden: false,
         files,
         eventData,
         order: 0
@@ -158,7 +153,7 @@ router.post('/save-event-details',
 router.get('/get-events', async (req, res) => {
   try {
     const data = await VacancyMainEvent.findAll({
-      order: [  
+      order: [
         ['order', 'ASC']
       ]
     });
@@ -168,8 +163,6 @@ router.get('/get-events', async (req, res) => {
     res.status(500).json({ error: "Ошибка сервера при получении данных"  });
   }
 });
-
-
 
 router.get('/get-event/:id', async (req, res) => {
   const { id } = req.params;
@@ -191,7 +184,7 @@ router.put('/toggle-event/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const { hidden } = req.body;
-   
+
     const updated = await VacancyMainEvent.update({ hidden }, {
       where: { id }
     });
@@ -206,8 +199,6 @@ router.put('/toggle-event/:id', async (req, res) => {
     res.status(500).json({ message: 'Ошибка сервера при обновлении статуса мероприятий' });
   }
 });
-
-
 
 // удаление из s3 хранилище
 
@@ -231,9 +222,9 @@ router.delete('/delete-event/:id', async (req, res) => {
       if (event.files && Array.isArray(event.files)) {
         // eslint-disable-next-line no-restricted-syntax
         for (const fileUrl of event.files) {
-          const fileName = getFileNameFromUrl(fileUrl); 
+          const fileName = getFileNameFromUrl(fileUrl);
           // eslint-disable-next-line no-await-in-loop
-          await deleteFileFromS3(fileName, 'images/imageEvent'); 
+          await deleteFileFromS3(fileName, 'images/imageEvent');
         }
       }
 
@@ -247,8 +238,4 @@ router.delete('/delete-event/:id', async (req, res) => {
   }
 });
 
-
 module.exports = router;
-
-
-
