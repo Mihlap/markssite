@@ -11,9 +11,7 @@ const router = express.Router();
 router.put('/project', async (req, res) => {
   try {
     const { isActiveForButton1 } = req.body;
-    // console.log(isActiveForButton1);
-
-    // Удалить все записи
+     // Удалить все записи
     await SwitchingFilterProjects.destroy({ truncate: true });
 
     // Создать новую запись с заданным значением isActive
@@ -74,7 +72,6 @@ router.get('/article', async (req, res) => {
   }
 });
 
-
 // << ============ SwitchingFilterRegistration ============ >>
 
 router.put('/button3', async (req, res) => {
@@ -116,7 +113,7 @@ router.get('/button3', async (req, res) => {
 router.put('/journal', async (req, res) => {
   try {
     const { isActiveForButton4 } = req.body;
-  
+
     // Удалить все записи
     await SwitchingFilterJournal.destroy({ truncate: true });
 
@@ -143,7 +140,5 @@ router.get('/journal', async (req, res) => {
     res.status(500).json({ success: false, message: error.message });
   }
 });
-
-
 
 module.exports = router;

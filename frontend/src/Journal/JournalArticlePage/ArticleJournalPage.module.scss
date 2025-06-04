@@ -138,6 +138,7 @@
   background-color: var(--originWhite-FFFFFF);
   padding-left: 12.5rem;
   padding-right: 12.5rem;
+  width: 100%;
 
   p:last-child,
   ul:last-child,
@@ -159,21 +160,28 @@
     font-weight: var(--fw-300);
     margin: 2rem 0 1.5rem;
     color: var(--black-1D2E43);
-    word-break: break-word;
+    overflow-wrap: break-word;
+    word-break: normal;
+    hyphens: none;
   }
 
   p {
     margin-bottom: 1.5rem;
-    word-break: break-word;
     border-radius: 1rem;
+    overflow-wrap: break-word;
+    word-break: normal;
+    hyphens: none;
   }
-
+ 
   ul,
   ol {
     margin: 0 0 1.5rem 1.5rem;
 
     li {
       margin-bottom: 0.5rem;
+      overflow-wrap: break-word;
+      word-break: normal;
+      hyphens: none;
     }
   }
 
@@ -203,7 +211,6 @@
       text-align: center;
     }
 }
-
 
 .pdfEmbed {
   margin: 0;
@@ -237,21 +244,19 @@
   object-position: center;
   background-color: #f0f0f0;
   margin: 0;
+  margin-top: 1.5rem;
   border-radius: 1rem;
 }
 
-.figureBlock {
-  margin-bottom: 1.5rem;
-}
-
 .figureCaption {
-  color: var(--gray-959DA6); 
-  font-family: Raleway;
-  font-size: 0.875rem;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 1.25rem;
-  margin-top: 0.5rem;
+  color: var(--gray-959DA6);
+    font-family: Raleway;
+    font-size: 0.875rem;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 1.25rem;  
+    white-space: normal;
+    word-break: break-word;
 }
 
 .mathBlock {
@@ -263,6 +268,9 @@
 .paragraph {
   margin-bottom: 1.5rem;
   border-radius: 1rem;
+  overflow-wrap: break-word;
+  word-break: normal;
+  hyphens: none;
 }
 
 .heading1 {
@@ -301,26 +309,39 @@
 }
 
 .tableContainer {
-  // overflow-x: auto;
+  width: 100%;
   margin-bottom: 1.5rem;
   border-radius: 0.5rem;
   border-top: 1px solid var(--blue-75BBFD);
   border-right: 1px solid var(--blue-75BBFD);
   border-left: 0px solid var(--blue-75BBFD);
   border-bottom: 1px solid var(--blue-75BBFD);
-}
-
+  overflow-x: auto;
+  scrollbar-width: thin; 
+  scrollbar-color: #75bbfd #f6f6f6;
+} 
+  
 .table {
   width: 100%;
   border-collapse: collapse;
+  //  table-layout: fixed;  
+  border-collapse: collapse;
+  transition: all 0.2s ease;
+
+  th,
+    td {
+      padding: 1rem;
+      text-align: left;
+      overflow-wrap: break-word;
+      word-break: normal;
+      hyphens: none;
+    }
 
   thead {
     background-color: var(--blue-75BBFD);
   }
 
   th {
-    padding: 1rem;
-    text-align: left;
     background-color: #E2F1FF;
     border-left: 1px solid var(--blue-75BBFD);
     border-right: 0px solid var(--blue-75BBFD);
@@ -328,8 +349,6 @@
 
 
   td {
-    padding: 1rem;
-    text-align: left;
     border-right: 0px solid var(--blue-75BBFD);
     border-left: 1px solid var(--blue-75BBFD);
     border-top: 1px solid var(--blue-75BBFD);
@@ -348,6 +367,9 @@
   position: relative;
   margin-bottom: 0.5rem;
   padding-left: 1.25rem;
+  overflow-wrap: break-word;
+  word-break: normal;
+  hyphens: none;
 }
 
 .list li::before {
@@ -370,6 +392,9 @@
   margin-bottom: 0.5rem;
   padding-left: 1.5rem;
   counter-increment: section;
+  overflow-wrap: break-word;
+  word-break: normal;
+  hyphens: none;
 }
 
 .orderedList li::before {
@@ -407,6 +432,7 @@
 
 .keywordsSection {
   border-radius: 4px;
+  margin-top: 1.5rem;
 }
 
 .annotationSection {
@@ -769,7 +795,7 @@
 
   .markdown_body {
     padding-left: 1rem;
-    padding-right: 1rem;
+    padding-right: 1rem;    
 
     h4,    
     h6 {

@@ -16,8 +16,7 @@ const router = express.Router();
 
 const extractFileNameAndFolderFromUrl = (url) => {
 
-  // Если это не полный URL, значит это локальный путь файла
-  if (!url.includes('http')) {
+ if (!url.includes('http')) {
     return {
       fileName: url,
       folder: 'images/imageArticle',
@@ -25,7 +24,6 @@ const extractFileNameAndFolderFromUrl = (url) => {
   }
 
   try {
-    // Обрабатываем только корректные URL с протоколом
     const urlObj = new URL(url);
     const {
       pathname
@@ -50,8 +48,6 @@ const extractFileNameAndFolderFromUrl = (url) => {
   }
 };
 
-
-
 const deleteImageFromS3 = async (fileUrl) => {
   const result = extractFileNameAndFolderFromUrl(fileUrl);
   if (result) {
@@ -71,7 +67,6 @@ const deleteImageFromS3 = async (fileUrl) => {
     console.log(`Не удалось извлечь имя файла и папку из URL: ${fileUrl}`);
   }
 };
-
 
 // Функция для обновления dynamicBlocksContent с новыми изображениями
 const updateDynamicBlocksContent = (blocks, newImages) => {
@@ -96,7 +91,6 @@ const updateDynamicBlocksContent = (blocks, newImages) => {
     })
   );
 };
-
 
 router.post(
   '/postzapros',
@@ -162,7 +156,6 @@ router.post(
       const imageCloses = req.files.imageClose ?
         await uploadFileToS3(req.files.imageClose[0], 'images/imageArticle') :
         null;
-
 
       const createdArticle = await Articles.create({
         title: req.body.title,
@@ -236,7 +229,6 @@ router.put(
         });
       }
 
-
       // Получение текущих изображений
       const currentImageTitles = articleToUpdate.imageTitle ? articleToUpdate.imageTitle.split(', ').map((item) => item.trim()) : [];
       const currentImageAuthors = articleToUpdate.imageAuthor ? [articleToUpdate.imageAuthor] : [];
@@ -268,10 +260,8 @@ router.put(
       const updatedImageOpens = imageOpenNew ? [imageOpenNew] : imageOpenFromClient;
       const updatedImageCloses = imageCloseNew ? [imageCloseNew] : imageCloseFromClient;
 
-
       // Нормализация URL для корректного сравнения (на основе имени файла)
       const extractFileName = (url) => url.split('/').pop().split('?')[0];
-
 
       const normalizedCurrentImages = [...currentImageTitles, ...currentImageAuthors, ...currentImageOpens, ...currentImageCloses]
         .filter(Boolean)
@@ -303,7 +293,6 @@ router.put(
         imageClose: updatedImageCloses[0] || null,
       });
 
-
       // Поиск или создание данных конструктора
       const existingConstructor = await ConstructorArticles.findOne({
         where: {
@@ -325,7 +314,6 @@ router.put(
             return fileUrl;
           })) : [];
 
-
       // Сохраняем текущие динамические изображения, если они уже существуют
       const existingDynamicImages = existingConstructor && existingConstructor.image ?
         existingConstructor.image.split(', ').map((img) => img.trim()) : [];
@@ -339,7 +327,6 @@ router.put(
         allDynamicImages
       );
 
-
       // Извлекаем изображения из динамических блоков
       const extractImages = (blocks) =>
         blocks
@@ -350,7 +337,6 @@ router.put(
 
       const newDynamicImages = extractImages(dynamicBlocksContent).map((img) => img.trim());
 
-
       // Нормализованные массивы динамических изображений
       const normalizedExistingDynamicImages = existingDynamicImages.map(extractFileName);
       const normalizedNewDynamicImages = newDynamicImages.map(extractFileName);
@@ -360,7 +346,6 @@ router.put(
 
       // Удаление старых динамических изображений из S3
       await Promise.all(imagesToRemoveFromDynamicBlocks.map(deleteImageFromS3));
-
 
       if (existingConstructor) {
         await existingConstructor.update({
@@ -432,8 +417,6 @@ router.get('/getdynamicdata/:articleId', async (req, res) => {
     });
   }
 });
-
-
 
 router.delete('/deletezapros/:id', async (req, res) => {
   try {
@@ -517,7 +500,5 @@ router.delete('/deletezapros/:id', async (req, res) => {
     res.sendStatus(500);
   }
 });
-
-
 
 module.exports = router;

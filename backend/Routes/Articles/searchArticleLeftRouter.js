@@ -20,7 +20,6 @@ router.post('/left', async (req, res) => {
   }
 });
 
-
 router.get('/left-get', async (req, res) => {
     try {
       const data = await PublicationOne.findAll();
@@ -61,9 +60,5 @@ router.put('/left-update', async (req, res) => {
     res.status(500).json({ error: 'Ошибка при обновлении данных в базе данных' });
   }
 });
-
-
-
-
 
 module.exports = router;
