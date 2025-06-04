@@ -42,12 +42,12 @@ authRouter.post('/signup', async(req, res) => {
 });
 
 authRouter.post('/login', async(req, res) => {
-    const { userName, password } = req.body; 
+    const { userName, password } = req.body;
 
     const foundUser = await User.findOne({ where: { userName } });
 
     if (!foundUser) return res.status(401).json({ message: 'пользователь не найден' })
-    
+
     if (await bcrypt.compare(password, foundUser.hashpass)) {
 
         const sessionData = {
@@ -55,7 +55,7 @@ authRouter.post('/login', async(req, res) => {
           id: foundUser.id,
         };
 
-        req.session.user = sessionData; 
+        req.session.user = sessionData;
 
         return res.status(200).json(sessionData);
     }
@@ -115,7 +115,6 @@ authRouter.delete('/user/:id', async (req, res) => {
     res.status(500).json({ message: 'Ошибка при удалении пользователя' });
   }
 });
-
 
 authRouter.get('/logout', (req, res) => {
     req.session.destroy();

@@ -15,15 +15,13 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-const upload = multer({ 
-  storage, 
+const upload = multer({
+  storage,
   fileFilter,
-  limits: { fileSize: 5 * 1024 * 1024 }, 
+  limits: { fileSize: 5 * 1024 * 1024 },
 });
 
-
 const dotenv = require('dotenv');
-
 
 dotenv.config();
 
@@ -51,7 +49,7 @@ mailRouter.post('/submitFooterForm', async (req, res) => {
     text: `
     Задача: ${formData.text}
     Имя: ${formData.name}
-    Телефон: ${formData.tel}   
+    Телефон: ${formData.tel}
     `,
   };
 
@@ -164,7 +162,6 @@ mailRouter.post('/portalSubmitForm', upload.array('resumeFiles', 2), (req, res) 
     text: emailBody,
     attachments: [],
   };
-  
 
   if (resumeFiles) {
     resumeFiles.forEach((file, index) => {
@@ -175,7 +172,7 @@ mailRouter.post('/portalSubmitForm', upload.array('resumeFiles', 2), (req, res) 
       delete resumeFiles[index].buffer;
     });
    }
-  
+
   transportPortal.sendMail(mailOptions, (error, info) => {
     if (error) {
       console.error('Ошибка отправки письма:', error);

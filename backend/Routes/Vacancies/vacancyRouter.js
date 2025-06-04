@@ -96,8 +96,6 @@ router.post('/copyVacancy/:id', async (req, res) => {
   }
 });
 
-
-
 // изменяем  данные вакансии
 router.put('/editVacancy/:id', async (req, res) => {
   try {
@@ -141,9 +139,8 @@ router.put('/editVacancy/:id', async (req, res) => {
       res.status(500).json({
           message: 'Ошибка сервера при обновлении вакансии'
       });
-  }  
+  }
 });
-
 
 // изменяем  данные вакансии, свойство hidden
 router.put('/updateVacancyLookStatus/:id', async (req, res) => {
@@ -165,7 +162,6 @@ router.put('/updateVacancyLookStatus/:id', async (req, res) => {
     res.status(500).json({ message: 'Ошибка сервера при обновлении статуса вакансии' });
   }
 });
-
 
 // получаем  данные вакансии, свойство hidden
 router.get('/getHiddenVacancies', async (req, res) => {
@@ -191,7 +187,6 @@ router.get('/getHiddenVacancies', async (req, res) => {
     });
 }
 });
-
 
 // получение данных формы
 router.get('/getzapros', async (req, res) => {
@@ -224,7 +219,6 @@ router.get('/vacancies/:id', async (req, res) => {
   }
 });
 
-
 router.get('/getzapros-filter', async (req, res) => {
   try {
     const {
@@ -251,7 +245,6 @@ router.get('/getzapros-filter', async (req, res) => {
   }
 });
 
-
 router.get('/getzapros-modalFilter', async (req, res) => {
   try {
     const filters = req.query;
@@ -261,16 +254,16 @@ router.get('/getzapros-modalFilter', async (req, res) => {
       "Требуемый опыт работы": "experience",
       'Локация': 'locationStaff',
       "Режим работы": "modeOperating",
-      "Занятость": "busyness",      
+      "Занятость": "busyness",
     };
-    
+
     Object.keys(filters).forEach((key) => {
       if (filters[key] && filters[key] !== 'Все') {
         const columnName = filterMappings[key] || key;
         whereCondition[columnName] = filters[key];
       }
     });
-    
+
     const filteredVacancies = await Employee.findAll({
       where: whereCondition,
     });
@@ -281,11 +274,10 @@ router.get('/getzapros-modalFilter', async (req, res) => {
   }
 });
 
-
 // удаление вакансии
 router.delete('/deletezapros/:id', async (req, res) => {
   const { id } = req.params;
-  
+
   // Начало транзакции
   const transaction = await sequelize.transaction();
 
@@ -314,6 +306,5 @@ router.delete('/deletezapros/:id', async (req, res) => {
     });
   }
 });
-
 
 module.exports = router;

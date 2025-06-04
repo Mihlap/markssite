@@ -9,13 +9,11 @@ router.post('/search-project', async (req, res) => {
     const publicationData = req.body;
     const IdProjects = req.body.project.id;
 
-    // Save the project data to the database
     const savedProject = await ProjectMain.create({
       project: publicationData,
       IdProject: IdProjects,
     });
 
-    // Send back the ID of the saved project
     res.status(200).json({ message: 'Данные успешно сохранены', projectId: savedProject.id });
   } catch (error) {
     console.error('Ошибка при сохранении в базе данных:', error);
@@ -26,13 +24,12 @@ router.post('/search-project', async (req, res) => {
 router.get('/search-project/getzapros', async (req, res) => {
   try {
     const data = await ProjectMain.findAll();
-    
+
     res.json(data);
   } catch (error) {
     console.log(error);
   }
 });
-
 
 router.delete('/search-project/deletezapros/:IdProject', async (req, res) => {
   try {
@@ -45,19 +42,16 @@ router.delete('/search-project/deletezapros/:IdProject', async (req, res) => {
   }
 });
 
-
 router.put('/search-project-replacement', async (req, res) => {
   try {
     const updatedProjects = req.body;
 
-    // Update the order of each project in the database
     for (let i = 0; i < updatedProjects.length; i++) {
       await ProjectMain.update({ order: i },
         { where: { id: updatedProjects[i].id } }
       );
     }
 
-    // Fetch the updated data from the database and send it back
     const data = await ProjectMain.findAll();
     res.json(data);
   } catch (error) {
@@ -65,7 +59,5 @@ router.put('/search-project-replacement', async (req, res) => {
     res.sendStatus(500);
   }
 });
-
-
 
 module.exports = router;
