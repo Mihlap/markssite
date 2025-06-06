@@ -12,46 +12,189 @@ import { parseChapters } from '../../Journal/JournalArticlePage/ArticleTableOfCo
 import styles from '../../Journal/JournalArticlePage/ArticleJournalPage.module.scss';
 
 const remarkPlugins = [remarkGfm, remarkMath, remarkBreaks];
-const rehypePlugins = [rehypeRaw, rehypeKatex, rehypePdfEmbedder, rehypeUniqueHeadingIds];
+const rehypePlugins = [rehypeRaw, [rehypeKatex, { strict: 'ignore' }], rehypePdfEmbedder, rehypeUniqueHeadingIds];
 
-const PDFEmbedComponent = ({ src, title }) => (
-  <div className={styles.pdfEmbed} style={{ marginTop: '1rem' }}>
-    <iframe src={src} title={title} width="100%" height="350px" style={{ border: 'none' }} allowFullScreen />
-  </div>
-);
+/**
+ Вставляет двойной перевод строки (\n\n) после любого блока “медиа + подпись”,
+ чтобы последующий Markdown начинался с отдельного <p>.
+ */
+function ensureEmptyLineAfterMediaCaptions(md) {
+  const figureWithCaptionRe = /(!\[[^\]]*\]\([^)]+\)\r?\n(?:[^\r?\n]+\r?\n?)+?)(?!\r?\n\r?\n)/g;
+  const pdfWithCaptionRe = /(\[[^\]]*\.pdf\]\([^)]+\)\r?\n(?:[^\r?\n]+\r?\n?)+?)(?!\r?\n\r?\n)/g;
+  const addNewlineAfter = (match) => match + '\n\n';
+  let result = md;
+  result = result.replace(figureWithCaptionRe, addNewlineAfter);
+  result = result.replace(pdfWithCaptionRe, addNewlineAfter);
+  return result;
+}
 
-const MathBlock = ({ value }) => (
-  <div className={styles.mathBlock}>
-    <BlockMath>{value}</BlockMath>
-  </div>
-);
+// Параграф отдельно для подписей
+const CaptionParagraph = ({ children }) => <p className={styles.paragraphCaption}>{children}</p>;
 
-const flattenChildren = (children) => {
-  let res = [];
-  React.Children.forEach(children, (c) => {
-    if (React.isValidElement(c) && c.props?.children) {
-      res.push(c);
-      res = res.concat(flattenChildren(c.props.children));
-    } else {
-      res.push(c);
-    }
-  });
-  return res;
+// Список подписей (ul/ol) с элементами <CaptionParagraph> внутри <li>
+const CaptionList = ({ ordered, children }) =>
+  ordered ? (
+    <ol className={styles.orderedListCaption}>
+      {React.Children.map(children, (li, idx) => (
+        <li key={idx} className={styles.listItemCaption}>
+          {li.props.children}
+        </li>
+      ))}
+    </ol>
+  ) : (
+    <ul className={styles.listCaption}>
+      {React.Children.map(children, (li, idx) => (
+        <li key={idx} className={styles.listItemCaption}>
+          {li.props.children}
+        </li>
+      ))}
+    </ul>
+  );
+
+/**
+ * Рендерит markdown подписи, но заменяет:
+ - <p> → <CaptionParagraph>
+ - <ul>/<ol> → <CaptionList>
+ - <li> внутри CaptionList → обёртка в <CaptionParagraph> (через listItemCaption)
+ */
+const captionComponents = {
+  p: CaptionParagraph,
+  ul: ({ children }) => <CaptionList ordered={false}>{children}</CaptionList>,
+  ol: ({ children }) => <CaptionList ordered>{children}</CaptionList>,
+  li: ({ children }) => <CaptionParagraph>{children}</CaptionParagraph>,
 };
 
-const Paragraph = ({ children, ...props }) => {
-  const flat = flattenChildren(children);
-  const hasBlock = flat.some((c) => React.isValidElement(c) && (c.type === PDFEmbedComponent || c.type === MathBlock));
-  return hasBlock ? (
-    <div className={styles.paragraph} {...props}>
-      {children}
+/**
+ Блок “картинка + подпись”
+ */
+function FigureWithCaption({ src, alt, captionMd }) {
+  return (
+    <div className={styles.figureBlock}>
+      <img className={styles.image} src={src} alt={alt} />
+      {captionMd && (
+        <div className={styles.figureCaption}>
+          <ReactMarkdown
+            children={captionMd.trim()}
+            remarkPlugins={[remarkGfm, remarkBreaks]}
+            rehypePlugins={[rehypeRaw]}
+            components={captionComponents}
+          />
+        </div>
+      )}
     </div>
-  ) : (
-    <p className={styles.paragraph} {...props}>
-      {children}
-    </p>
+  );
+}
+
+/**
+ Блок “PDF + подпись”
+ */
+function PDFWithCaption({ src, captionMd }) {
+  return (
+    <div className={styles.figureBlock}>
+      <div className={styles.pdfEmbed} style={{ marginTop: '1rem' }}>
+        <iframe src={src} title="PDF Document" width="100%" height="350px" style={{ border: 'none' }} allowFullScreen />
+      </div>
+      {captionMd && (
+        <div className={styles.figureCaption}>
+          <ReactMarkdown
+            children={captionMd.trim()}
+            remarkPlugins={[remarkGfm, remarkBreaks]}
+            rehypePlugins={[rehypeRaw]}
+            components={captionComponents}
+          />
+        </div>
+      )}
+    </div>
+  );
+}
+
+/**
+ Проверяет, является ли строка точной картинкой или PDF-ссылкой
+ */
+const isNewBlockLine = (line) => {
+  const t = line.trim();
+  return (
+    /^!\[([^\]]*)\]\(([^)]+)\)$/.test(t) ||
+    /^\[([^\]]*\.pdf)\]\(([^)]+)\)$/.test(t)
   );
 };
+
+/**
+ * Разбивает кусок Markdown на блоки:
+ - { type: 'text',    content: string }
+ - { type: 'image',   src: string, alt: string, captionMd: string }
+ - { type: 'pdf',     src: string, captionMd: string }
+ */
+function processContent(content) {
+  const lines = content.split('\n');
+  const blocks = [];
+  let currentText = [];
+
+  const flushText = () => {
+    if (currentText.length) {
+      blocks.push({ type: 'text', content: currentText.join('\n') });
+      currentText = [];
+    }
+  };
+
+  for (let i = 0; i < lines.length; i++) {
+    const rawLine = lines[i];
+    const trimmed = rawLine.trim();
+  
+    const imageMatch = trimmed.match(/^!\[([^\]]*)\]\(([^)]+)\)$/);
+    if (imageMatch) {
+      flushText();
+      const alt = imageMatch[1];
+      const src = imageMatch[2];    
+      const captionLines = [];
+      let j = i + 1;
+      while (j < lines.length && lines[j].trim() !== '' && !isNewBlockLine(lines[j])) {
+        captionLines.push(lines[j]);
+        j++;
+      }
+      if (j < lines.length && lines[j].trim() === '') {
+        i = j;
+      } else {
+        i = j - 1;
+      }
+      blocks.push({
+        type: 'image',
+        src,
+        alt,
+        captionMd: captionLines.join('\n').trim(),
+      });
+      continue;
+    }
+  
+    const pdfMatch = trimmed.match(/^\[([^\]]*\.pdf)\]\(([^)]+)\)$/);
+    if (pdfMatch) {
+      flushText();
+      const src = pdfMatch[2];
+      const captionLines = [];
+      let j = i + 1;
+      while (j < lines.length && lines[j].trim() !== '' && !isNewBlockLine(lines[j])) {
+        captionLines.push(lines[j]);
+        j++;
+      }
+      if (j < lines.length && lines[j].trim() === '') {
+        i = j;
+      } else {
+        i = j - 1;
+      }
+      blocks.push({
+        type: 'pdf',
+        src,
+        captionMd: captionLines.join('\n').trim(),
+      });
+      continue;
+    }
+
+
+    currentText.push(rawLine);
+  }
+  flushText();
+  return blocks;
+}
 
 const keywordsRe = /<!--\s*keywords:start\s*-->([\s\S]*?)<!--\s*keywords:end\s*-->/;
 const annotationRe =
@@ -69,164 +212,11 @@ function makeSlug(title, idx) {
   );
 }
 
-function FigureWithCaption({ src, alt, captionMd }) {
-  return (
-    <>
-      <img className={styles.image} src={src} alt={alt} />
-      <div
-        className={styles.figureCaption}
-        style={{
-          color: 'var(--gray-959DA6)',
-          fontFamily: 'Raleway',
-          fontSize: '0.875rem',
-          fontStyle: 'normal',
-          fontWeight: 400,
-          lineHeight: '1.25rem',
-          marginTop: '1rem',
-          whiteSpace: 'normal',
-          wordBreak: 'break-word',
-        }}>
-        <ReactMarkdown
-          children={captionMd.trim()}
-          remarkPlugins={[remarkGfm, remarkBreaks]}
-          components={{
-            ol: ({ children, ...props }) => (
-              <ol
-                {...props}
-                style={{
-                  listStyleType: 'decimal',
-                  listStylePosition: 'outside',
-                  paddingLeft: '1.5rem',
-                  margin: 0,
-                }}>
-                {children}
-              </ol>
-            ),
-            li: ({ children, ...props }) => (
-              <li {...props} style={{ marginBottom: '0.5rem' }}>
-                {children}
-              </li>
-            ),
-          }}
-        />
-      </div>
-    </>
-  );
-}
-
-function PDFWithCaption({ src, captionMd }) {
-  return (
-    <>
-      <div className={styles.pdfEmbed} style={{ marginTop: '1rem' }}>
-        <iframe src={src} title="PDF Document" width="100%" height="350px" style={{ border: 'none' }} allowFullScreen />
-      </div>
-      <div
-        className={styles.figureCaption}
-        style={{
-          color: 'var(--gray-959DA6)',
-          fontFamily: 'Raleway',
-          fontSize: '0.875rem',
-          fontWeight: 400,
-          lineHeight: '1.25rem',
-          marginTop: '0.5rem',
-          whiteSpace: 'normal',
-          wordBreak: 'break-word',
-        }}>
-        <ReactMarkdown
-          children={captionMd.trim()}
-          remarkPlugins={[remarkGfm, remarkBreaks]}
-          components={{
-            ol: ({ children, ...props }) => (
-              <ol
-                {...props}
-                style={{
-                  listStyleType: 'decimal',
-                  listStylePosition: 'outside',
-                  paddingLeft: '1.5rem',
-                  margin: 0,
-                }}>
-                {children}
-              </ol>
-            ),
-            li: ({ children, ...props }) => (
-              <li {...props} style={{ marginBottom: '0.5rem' }}>
-                {children}
-              </li>
-            ),
-          }}
-        />
-      </div>
-    </>
-  );
-}
-
-function extractFigureWithCaption(md) {
-  const re = /^!\[([^\]]*)\]\(([^)]+)\)\s*\n+([\s\S]+?)(?=\n{2,}|$)/m;
-  const match = md.match(re);
-  if (!match) return null;
-  const [fullMatch, alt, src, captionMd] = match;
-  const before = md.slice(0, match.index);
-  const after = md.slice(match.index + fullMatch.length);
-  return { alt, src, captionMd, before, after };
-}
-
-function ensureEmptyLineAfterMediaCaptions(md) {
-  const figureWithCaptionRe = /(!\[[^\]]*\]\([^)]+\)\s*\n(?:[^\n]+\n?)+)(?!\n\n)/g;
-  const pdfWithCaptionRe = /(\[[^\]]*\.pdf\]\([^)]+\)\s*\n(?:[^\n]+\n?)+)(?!\n\n)/g;
-
-  function addNewlineAfter(match) {
-    return match + '\n';
-  }
-
-  let result = md;
-
-  result = result.replace(figureWithCaptionRe, addNewlineAfter);
-  result = result.replace(pdfWithCaptionRe, addNewlineAfter);
-
-  return result;
-}
-
-const markdownComponents = {
-  p: Paragraph,
-  img: ({ src, alt }) => <img className={styles.image} src={src} alt={alt} />,
-  a: ({ href, children }) => (
-    <a href={href} target="_blank" rel="noopener noreferrer" className={styles.link}>
-      {children}
-    </a>
-  ),
-  table: ({ children }) => (
-    <div className={styles.tableContainer}>
-      <table className={styles.table}>{children}</table>
-    </div>
-  ),
-  ul: ({ children }) => <ul className={styles.list}>{children}</ul>,
-  ol: ({ children }) => <ol className={styles.orderedList}>{children}</ol>,
-  blockquote: ({ children }) => <blockquote className={styles.blockquote}>{children}</blockquote>,
-  code: ({ inline, className, children }) =>
-    inline ? (
-      <code className={styles.inlineCode}>{children}</code>
-    ) : (
-      <pre className={styles.pre}>
-        <code className={className}>{children}</code>
-      </pre>
-    ),
-  math: MathBlock,
-  inlineMath: ({ value }) => <InlineMath>{value}</InlineMath>,
-  PDFEmbed: PDFEmbedComponent,
-  h1: ({ children }) => <h1 className={styles.heading1}>{children}</h1>,
-  h2: ({ children }) => <h2 className={styles.heading2}>{children}</h2>,
-  h3: ({ children }) => <h3 className={styles.heading3}>{children}</h3>,
-  h4: ({ children }) => <h4 className={styles.heading4}>{children}</h4>,
-  h5: ({ children }) => <h5 className={styles.heading5}>{children}</h5>,
-  h6: ({ children }) => <h6 className={styles.heading6}>{children}</h6>,
-};
-
 export default function MarkdownContentRenderer({ markdown = '' }) {
-  const fixedMarkdown = ensureEmptyLineAfterMediaCaptions(markdown);
+  const fixedMarkdown = useMemo(() => ensureEmptyLineAfterMediaCaptions(markdown), [markdown]);
 
   const kwMatch = fixedMarkdown.match(keywordsRe);
   const annotationMatch = fixedMarkdown.match(annotationRe);
-
   let cleaned = fixedMarkdown;
   if (kwMatch) cleaned = cleaned.replace(kwMatch[0], '');
   if (annotationMatch) cleaned = cleaned.replace(annotationMatch[0], '');
@@ -251,11 +241,11 @@ export default function MarkdownContentRenderer({ markdown = '' }) {
   const segments = useMemo(() => {
     const splitRe = new RegExp(`(${keywordsRe.source})|(${annotationRe.source})|(${chapterRe.source})`, 'g');
     const segs = [];
-    let last = 0;
+    let lastIndex = 0;
     let m;
     while ((m = splitRe.exec(fixedMarkdown)) !== null) {
-      if (m.index > last) {
-        segs.push({ type: 'text', content: fixedMarkdown.slice(last, m.index) });
+      if (m.index > lastIndex) {
+        segs.push({ type: 'text', content: fixedMarkdown.slice(lastIndex, m.index) });
       }
       const raw = m[0];
       if (keywordsRe.test(raw)) {
@@ -272,116 +262,126 @@ export default function MarkdownContentRenderer({ markdown = '' }) {
       } else {
         segs.push({ type: 'chapter-raw' });
       }
-      last = splitRe.lastIndex;
+      lastIndex = splitRe.lastIndex;
     }
-    if (last < fixedMarkdown.length) {
-      segs.push({ type: 'text', content: fixedMarkdown.slice(last) });
+    if (lastIndex < fixedMarkdown.length) {
+      segs.push({ type: 'text', content: fixedMarkdown.slice(lastIndex) });
     }
     return segs;
   }, [fixedMarkdown]);
 
   let chapterIndex = 0;
 
-  const captionTextStyles = {
-    color: 'var(--gray-959DA6)',
-    fontFamily: 'Raleway',
-    fontSize: '0.875rem',
-    fontStyle: 'normal',
-    fontWeight: 400,
-    lineHeight: '1.25rem',
-    whiteSpace: 'normal',
-    wordBreak: 'break-word',
-  };
-
   return (
     <>
       {segments.map((seg, i) => {
         switch (seg.type) {
           case 'text': {
-            const fig = extractFigureWithCaption(seg.content);
-
-            function extractPdfWithCaption(md) {
-              const pdfRe = /^\[.*?\.pdf\]\((.*?\.pdf)\)\s*([\s\S]+)?/m;
-              const match = md.match(pdfRe);
-              if (!match) return null;
-              const before = md.slice(0, match.index);
-              const after = md.slice(match.index + match[0].length);
-              return { src: match[1], captionMd: match[2] || '', before, after };
-            }
-            const pdf = !fig ? extractPdfWithCaption(seg.content) : null;
-
-            if (fig) {
-              return (
-                <React.Fragment key={i}>
-                  {fig.before && (
-                    <ReactMarkdown
-                      children={fig.before}
-                      remarkPlugins={remarkPlugins}
-                      rehypePlugins={rehypePlugins}
-                      components={markdownComponents}
-                    />
-                  )}
-                  <FigureWithCaption src={fig.src} alt={fig.alt} captionMd={fig.captionMd} />
-                  {fig.after && (
-                    <div style={captionTextStyles}>
-                      <ReactMarkdown
-                        children={fig.after}
-                        remarkPlugins={remarkPlugins}
-                        rehypePlugins={rehypePlugins}
-                        components={markdownComponents}
-                      />
-                    </div>
-                  )}
-                </React.Fragment>
-              );
-            } else if (pdf) {
-              return (
-                <React.Fragment key={i}>
-                  {pdf.before && (
-                    <ReactMarkdown
-                      children={pdf.before}
-                      remarkPlugins={remarkPlugins}
-                      rehypePlugins={rehypePlugins}
-                      components={markdownComponents}
-                    />
-                  )}
-                  <PDFWithCaption src={pdf.src} captionMd={pdf.captionMd} />
-                  {pdf.after && (
-                    <div style={captionTextStyles}>
-                      <ReactMarkdown
-                        children={pdf.after}
-                        remarkPlugins={remarkPlugins}
-                        rehypePlugins={rehypePlugins}
-                        components={markdownComponents}
-                      />
-                    </div>
-                  )}
-                </React.Fragment>
-              );
-            }
-
+            const blocks = processContent(seg.content);
             return (
-              <ReactMarkdown
-                key={i}
-                children={seg.content}
-                remarkPlugins={remarkPlugins}
-                rehypePlugins={rehypePlugins}
-                components={markdownComponents}
-              />
+              <React.Fragment key={`text-seg-${i}`}>
+                {blocks.map((b, idx) => {
+                  if (b.type === 'text') {
+                    return (
+                      <ReactMarkdown
+                        key={`text-${i}-${idx}`}
+                        children={b.content}
+                        remarkPlugins={remarkGfm ? [remarkGfm, remarkBreaks, remarkMath] : [remarkGfm, remarkBreaks]}
+                        rehypePlugins={rehypePlugins}
+                        components={{
+                          p: ({ children, ...props }) => (
+                            <p className={styles.paragraph} {...props}>
+                              {children}
+                            </p>
+                          ),
+                          img: ({ src, alt }) => <img className={styles.image} src={src} alt={alt} />,
+                          a: ({ href, children }) => (
+                            <a href={href} target="_blank" rel="noopener noreferrer" className={styles.link}>
+                              {children}
+                            </a>
+                          ),
+                          table: ({ children }) => (
+                            <div className={styles.tableContainer}>
+                              <table className={styles.table}>{children}</table>
+                            </div>
+                          ),
+                          ul: ({ children }) => <ul className={styles.list}>{children}</ul>,
+                          ol: ({ children }) => <ol className={styles.orderedList}>{children}</ol>,
+                          blockquote: ({ children }) => (
+                            <blockquote className={styles.blockquote}>{children}</blockquote>
+                          ),
+                          code: ({ inline, className, children }) =>
+                            inline ? (
+                              <code className={styles.inlineCode}>{children}</code>
+                            ) : (
+                              <pre className={styles.pre}>
+                                <code className={className}>{children}</code>
+                              </pre>
+                            ),
+                          math: ({ value }) => (
+                            <div className={styles.mathBlock}>
+                              <BlockMath strict="ignore">{value}</BlockMath>
+                            </div>
+                          ),
+                          inlineMath: ({ value }) => <InlineMath strict="ignore">{value}</InlineMath>,
+                          PDFEmbed: ({ src, title }) => (
+                            <div className={styles.pdfEmbed} style={{ marginTop: '1rem' }}>
+                              <iframe
+                                src={src}
+                                title={title}
+                                width="100%"
+                                height="350px"
+                                style={{ border: 'none' }}
+                                allowFullScreen
+                              />
+                            </div>
+                          ),
+                          h1: ({ children }) => <h1 className={styles.heading1}>{children}</h1>,
+                          h2: ({ children }) => <h2 className={styles.heading2}>{children}</h2>,
+                          h3: ({ children }) => <h3 className={styles.heading3}>{children}</h3>,
+                          h4: ({ children }) => <h4 className={styles.heading4}>{children}</h4>,
+                          h5: ({ children }) => <h5 className={styles.heading5}>{children}</h5>,
+                          h6: ({ children }) => <h6 className={styles.heading6}>{children}</h6>,
+                        }}
+                      />
+                    );
+                  }
+                  if (b.type === 'image') {
+                    return (
+                      <FigureWithCaption key={`img-${i}-${idx}`} src={b.src} alt={b.alt} captionMd={b.captionMd} />
+                    );
+                  }
+                  if (b.type === 'pdf') {
+                    return <PDFWithCaption key={`pdf-${i}-${idx}`} src={b.src} captionMd={b.captionMd} />;
+                  }
+                  return null;
+                })}
+              </React.Fragment>
             );
           }
 
           case 'keywords':
             return (
               <div
-                key={i}
+                key={`keywords-${i}`}
                 className={styles.keywordsSection}
                 style={{ marginBottom: '1.5rem', scrollMarginTop: '2rem' }}>
                 <ReactMarkdown
                   children={seg.content}
-                  remarkPlugins={remarkPlugins}
+                  remarkPlugins={[remarkGfm, remarkBreaks]}
                   rehypePlugins={[rehypeRaw]}
-                  components={markdownComponents}
+                  components={{
+                    p: ({ children, ...props }) => (
+                      <p className={styles.paragraph} {...props}>
+                        {children}
+                      </p>
+                    ),
+                    a: ({ href, children }) => (
+                      <a href={href} target="_blank" rel="noopener noreferrer" className={styles.link}>
+                        {children}
+                      </a>
+                    ),
+                  }}
                 />
               </div>
             );
@@ -389,12 +389,23 @@ export default function MarkdownContentRenderer({ markdown = '' }) {
           case 'annotation': {
             const slug = makeSlug(seg.title, 0);
             return (
-              <section key={i} id={slug} className={styles.annotationSection}>
+              <section key={`annot-${i}`} id={slug} className={styles.annotationSection}>
                 <ReactMarkdown
                   children={`${'#'.repeat(seg.level)} ${seg.title}\n\n${seg.content}`}
                   remarkPlugins={[remarkGfm, remarkBreaks]}
                   rehypePlugins={[rehypeRaw]}
-                  components={markdownComponents}
+                  components={{
+                    p: ({ children, ...props }) => (
+                      <p className={styles.paragraph} {...props}>
+                        {children}
+                      </p>
+                    ),
+                    a: ({ href, children }) => (
+                      <a href={href} target="_blank" rel="noopener noreferrer" className={styles.link}>
+                        {children}
+                      </a>
+                    ),
+                  }}
                 />
               </section>
             );
@@ -403,155 +414,111 @@ export default function MarkdownContentRenderer({ markdown = '' }) {
           case 'chapter-raw': {
             if (chapterIndex >= chapters.length) return null;
             const { slug, level, title, content } = chapters[chapterIndex++];
-
-            const imageRe = /^!\[.*?\]\((.*?)\)\s*([\s\S]+)/;
-            const pdfLinkRe = /^\[.*?\.pdf\]\((.*?\.pdf)\)\s*([\s\S]+)/;
-            const embedPdfRe = /^<PDFEmbed\s+src="(.*?)".*?\/?>\s*([\s\S]+)/;
-
-            let match = null;
-            let mediaType = null;
-            if ((match = content.match(imageRe))) {
-              mediaType = 'image';
-            } else if ((match = content.match(pdfLinkRe))) {
-              mediaType = 'pdfLink';
-            } else if ((match = content.match(embedPdfRe))) {
-              mediaType = 'pdfEmbed';
-            }
-
-            const leading = match
-              ? content.replace(mediaType === 'image' ? imageRe : mediaType === 'pdfLink' ? pdfLinkRe : embedPdfRe, '')
-              : content;
-
-            const fig = extractFigureWithCaption(leading.trim());
-
-            if (fig) {
-              return (
-                <section key={slug} id={slug}>
-                  <ReactMarkdown
-                    children={`${'#'.repeat(level)} ${title}`}
-                    remarkPlugins={remarkPlugins}
-                    rehypePlugins={rehypePlugins}
-                    components={markdownComponents}
-                  />
-                  {fig.before && (
-                    <ReactMarkdown
-                      children={fig.before}
-                      remarkPlugins={remarkPlugins}
-                      rehypePlugins={rehypePlugins}
-                      components={markdownComponents}
-                    />
-                  )}
-                  <FigureWithCaption src={fig.src} alt={fig.alt} captionMd={fig.captionMd} />
-                  {fig.after && (
-                    <div style={captionTextStyles}>
-                      <ReactMarkdown
-                        children={fig.after}
-                        remarkPlugins={remarkPlugins}
-                        rehypePlugins={rehypePlugins}
-                        components={markdownComponents}
-                      />
-                    </div>
-                  )}
-                </section>
-              );
-            }
-            if (mediaType === 'pdfLink') {
-              return (
-                <section key={slug} id={slug}>
-                  <ReactMarkdown
-                    children={`${'#'.repeat(level)} ${title}\n\n${leading}`}
-                    remarkPlugins={remarkPlugins}
-                    rehypePlugins={rehypePlugins}
-                    components={markdownComponents}
-                  />
-                  <PDFEmbedComponent src={match[1]} title={title} />
-                  <div
-                    className={styles.figureCaption}
-                    style={{
-                      color: 'var(--gray-959DA6)',
-                      fontFamily: 'Raleway',
-                      fontSize: '0.875rem',
-                      fontWeight: 400,
-                      lineHeight: '1.25rem',
-                      marginTop: '0.5rem',
-                      whiteSpace: 'normal',
-                      wordBreak: 'break-word',
-                    }}>
-                    <ReactMarkdown
-                      children={match[2].trim()}
-                      remarkPlugins={[remarkGfm, remarkBreaks]}
-                      components={{
-                        ol: ({ children, ...props }) => (
-                          <ol
-                            {...props}
-                            style={{
-                              listStyleType: 'decimal',
-                              listStylePosition: 'outside',
-                              paddingLeft: '1.5rem',
-                              margin: 0,
-                            }}>
-                            {children}
-                          </ol>
-                        ),
-                        li: ({ children, ...props }) => (
-                          <li {...props} style={{ marginBottom: '0.5rem' }}>
-                            {children}
-                          </li>
-                        ),
-                      }}
-                    />
-                  </div>
-                </section>
-              );
-            }
             return (
-              <section key={slug} id={slug}>
+              <section key={`chap-${slug}`} id={slug}>
                 <ReactMarkdown
-                  children={`${'#'.repeat(level)} ${title}\n\n${leading}`}
+                  children={`${'#'.repeat(level)} ${title}`}
                   remarkPlugins={remarkPlugins}
                   rehypePlugins={rehypePlugins}
-                  components={markdownComponents}
+                  components={{
+                    p: ({ children, ...props }) => (
+                      <p className={styles.paragraph} {...props}>
+                        {children}
+                      </p>
+                    ),
+                    a: ({ href, children }) => (
+                      <a href={href} target="_blank" rel="noopener noreferrer" className={styles.link}>
+                        {children}
+                      </a>
+                    ),
+                    img: ({ src, alt }) => <img className={styles.image} src={src} alt={alt} />,
+                  }}
                 />
-                {match && mediaType === 'image' && (
-                  <div className={styles.figureBlock}>
-                    <img className={styles.image} src={match[1]} alt={title} />
-                    <div className={styles.figureCaption} style={{ whiteSpace: 'normal', wordBreak: 'break-word' }}>
-                      {(() => {
-                        const raw = match[2].trim();
-                        const caption = raw.replace(/^(\d+)\.\s*(.*)/gm, '$1. $2');
-                        const md = '\n' + caption;
-                        return (
-                          <ReactMarkdown
-                            children={md}
-                            remarkPlugins={[remarkGfm, remarkBreaks]}
-                            components={{
-                              ol: ({ children, ...props }) => (
-                                <ol
-                                  {...props}
-                                  style={{
-                                    listStyleType: 'decimal',
-                                    listStylePosition: 'outside',
-                                    paddingLeft: '1.5rem',
-                                    margin: 0,
-                                  }}>
-                                  {children}
-                                </ol>
-                              ),
-                              li: ({ children, ...props }) => (
-                                <li {...props} style={{ marginBottom: '0.5rem' }}>
-                                  {children}
-                                </li>
-                              ),
-                            }}
-                          />
-                        );
-                      })()}
-                    </div>
-                  </div>
-                )}
+                {processContent(content).map((b, idx) => {
+                  if (b.type === 'text') {
+                    return (
+                      <ReactMarkdown
+                        key={`chap-text-${slug}-${idx}`}
+                        children={b.content}
+                        remarkPlugins={remarkGfm ? [remarkGfm, remarkBreaks, remarkMath] : [remarkGfm, remarkBreaks]}
+                        rehypePlugins={rehypePlugins}
+                        components={{
+                          p: ({ children, ...props }) => (
+                            <p className={styles.paragraph} {...props}>
+                              {children}
+                            </p>
+                          ),
+                          a: ({ href, children }) => (
+                            <a href={href} target="_blank" rel="noopener noreferrer" className={styles.link}>
+                              {children}
+                            </a>
+                          ),
+                          img: ({ src, alt }) => <img className={styles.image} src={src} alt={alt} />,
+                          table: ({ children }) => (
+                            <div className={styles.tableContainer}>
+                              <table className={styles.table}>{children}</table>
+                            </div>
+                          ),
+                          ul: ({ children }) => <ul className={styles.list}>{children}</ul>,
+                          ol: ({ children }) => <ol className={styles.orderedList}>{children}</ol>,
+                          blockquote: ({ children }) => (
+                            <blockquote className={styles.blockquote}>{children}</blockquote>
+                          ),
+                          code: ({ inline, className, children }) =>
+                            inline ? (
+                              <code className={styles.inlineCode}>{children}</code>
+                            ) : (
+                              <pre className={styles.pre}>
+                                <code className={className}>{children}</code>
+                              </pre>
+                            ),
+                          math: ({ value }) => (
+                            <div className={styles.mathBlock}>
+                              <BlockMath strict="ignore">{value}</BlockMath>
+                            </div>
+                          ),
+                          inlineMath: ({ value }) => <InlineMath strict="ignore">{value}</InlineMath>,
+                          PDFEmbed: ({ src, title }) => (
+                            <div className={styles.pdfEmbed} style={{ marginTop: '1rem' }}>
+                              <iframe
+                                src={src}
+                                title={title}
+                                width="100%"
+                                height="350px"
+                                style={{ border: 'none' }}
+                                allowFullScreen
+                              />
+                            </div>
+                          ),
+                          h1: ({ children }) => <h1 className={styles.heading1}>{children}</h1>,
+                          h2: ({ children }) => <h2 className={styles.heading2}>{children}</h2>,
+                          h3: ({ children }) => <h3 className={styles.heading3}>{children}</h3>,
+                          h4: ({ children }) => <h4 className={styles.heading4}>{children}</h4>,
+                          h5: ({ children }) => <h5 className={styles.heading5}>{children}</h5>,
+                          h6: ({ children }) => <h6 className={styles.heading6}>{children}</h6>,
+                        }}
+                      />
+                    );
+                  }
+                  if (b.type === 'image') {
+                    return (
+                      <FigureWithCaption
+                        key={`chap-img-${slug}-${idx}`}
+                        src={b.src}
+                        alt={b.alt}
+                        captionMd={b.captionMd}
+                      />
+                    );
+                  }
+                  if (b.type === 'pdf') {
+                    return <PDFWithCaption key={`chap-pdf-${slug}-${idx}`} src={b.src} captionMd={b.captionMd} />;
+                  }
+                  return null;
+                })}
               </section>
             );
           }
+
           default:
             return null;
         }
