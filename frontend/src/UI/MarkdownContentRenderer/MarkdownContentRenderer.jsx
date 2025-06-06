@@ -14,10 +14,6 @@ import styles from '../../Journal/JournalArticlePage/ArticleJournalPage.module.s
 const remarkPlugins = [remarkGfm, remarkMath, remarkBreaks];
 const rehypePlugins = [rehypeRaw, [rehypeKatex, { strict: 'ignore' }], rehypePdfEmbedder, rehypeUniqueHeadingIds];
 
-/**
- Вставляет двойной перевод строки (\n\n) после любого блока “медиа + подпись”,
- чтобы последующий Markdown начинался с отдельного <p>.
- */
 function ensureEmptyLineAfterMediaCaptions(md) {
   const figureWithCaptionRe = /(!\[[^\]]*\]\([^)]+\)\r?\n(?:[^\r?\n]+\r?\n?)+?)(?!\r?\n\r?\n)/g;
   const pdfWithCaptionRe = /(\[[^\]]*\.pdf\]\([^)]+\)\r?\n(?:[^\r?\n]+\r?\n?)+?)(?!\r?\n\r?\n)/g;
@@ -28,10 +24,8 @@ function ensureEmptyLineAfterMediaCaptions(md) {
   return result;
 }
 
-// Параграф отдельно для подписей
 const CaptionParagraph = ({ children }) => <p className={styles.paragraphCaption}>{children}</p>;
 
-// Список подписей (ul/ol) с элементами <CaptionParagraph> внутри <li>
 const CaptionList = ({ ordered, children }) =>
   ordered ? (
     <ol className={styles.orderedListCaption}>
@@ -51,12 +45,6 @@ const CaptionList = ({ ordered, children }) =>
     </ul>
   );
 
-/**
- * Рендерит markdown подписи, но заменяет:
- - <p> → <CaptionParagraph>
- - <ul>/<ol> → <CaptionList>
- - <li> внутри CaptionList → обёртка в <CaptionParagraph> (через listItemCaption)
- */
 const captionComponents = {
   p: CaptionParagraph,
   ul: ({ children }) => <CaptionList ordered={false}>{children}</CaptionList>,
@@ -64,17 +52,25 @@ const captionComponents = {
   li: ({ children }) => <CaptionParagraph>{children}</CaptionParagraph>,
 };
 
-/**
- Блок “картинка + подпись”
- */
-function FigureWithCaption({ src, alt, captionMd }) {
+function escapeNumberedLines(captionMd) {
+  return captionMd
+    .split('\n')
+    .map((line) => {    
+      return line.replace(/^(\s*)(\d+)\.(\s?)/, '$1$2\\.$3');
+    })
+    .join('\n');
+}
+
+function FigureWithCaption({ src, alt, captionMd }) { 
+  const escapedCaption = captionMd ? escapeNumberedLines(captionMd.trim()) : '';
+
   return (
     <div className={styles.figureBlock}>
       <img className={styles.image} src={src} alt={alt} />
-      {captionMd && (
+      {escapedCaption && (
         <div className={styles.figureCaption}>
           <ReactMarkdown
-            children={captionMd.trim()}
+            children={escapedCaption}
             remarkPlugins={[remarkGfm, remarkBreaks]}
             rehypePlugins={[rehypeRaw]}
             components={captionComponents}
@@ -85,19 +81,18 @@ function FigureWithCaption({ src, alt, captionMd }) {
   );
 }
 
-/**
- Блок “PDF + подпись”
- */
 function PDFWithCaption({ src, captionMd }) {
+  const escapedCaption = captionMd ? escapeNumberedLines(captionMd.trim()) : '';
+
   return (
     <div className={styles.figureBlock}>
       <div className={styles.pdfEmbed} style={{ marginTop: '1rem' }}>
         <iframe src={src} title="PDF Document" width="100%" height="350px" style={{ border: 'none' }} allowFullScreen />
       </div>
-      {captionMd && (
+      {escapedCaption && (
         <div className={styles.figureCaption}>
           <ReactMarkdown
-            children={captionMd.trim()}
+            children={escapedCaption}
             remarkPlugins={[remarkGfm, remarkBreaks]}
             rehypePlugins={[rehypeRaw]}
             components={captionComponents}
@@ -108,9 +103,6 @@ function PDFWithCaption({ src, captionMd }) {
   );
 }
 
-/**
- Проверяет, является ли строка точной картинкой или PDF-ссылкой
- */
 const isNewBlockLine = (line) => {
   const t = line.trim();
   return (
@@ -119,12 +111,6 @@ const isNewBlockLine = (line) => {
   );
 };
 
-/**
- * Разбивает кусок Markdown на блоки:
- - { type: 'text',    content: string }
- - { type: 'image',   src: string, alt: string, captionMd: string }
- - { type: 'pdf',     src: string, captionMd: string }
- */
 function processContent(content) {
   const lines = content.split('\n');
   const blocks = [];
@@ -145,7 +131,7 @@ function processContent(content) {
     if (imageMatch) {
       flushText();
       const alt = imageMatch[1];
-      const src = imageMatch[2];    
+      const src = imageMatch[2];
       const captionLines = [];
       let j = i + 1;
       while (j < lines.length && lines[j].trim() !== '' && !isNewBlockLine(lines[j])) {
@@ -188,10 +174,10 @@ function processContent(content) {
       });
       continue;
     }
-
-
+   
     currentText.push(rawLine);
   }
+
   flushText();
   return blocks;
 }
@@ -214,10 +200,11 @@ function makeSlug(title, idx) {
 
 export default function MarkdownContentRenderer({ markdown = '' }) {
   const fixedMarkdown = useMemo(() => ensureEmptyLineAfterMediaCaptions(markdown), [markdown]);
-
   const kwMatch = fixedMarkdown.match(keywordsRe);
   const annotationMatch = fixedMarkdown.match(annotationRe);
+
   let cleaned = fixedMarkdown;
+
   if (kwMatch) cleaned = cleaned.replace(kwMatch[0], '');
   if (annotationMatch) cleaned = cleaned.replace(annotationMatch[0], '');
 
