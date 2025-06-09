@@ -81,10 +81,7 @@
     "resolve-url-loader": "5.0.0"
   },
   "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "extends": ["react-app", "react-app/jest"]
   },
   "browserslist": {
     "production": [
@@ -113,8 +110,8 @@
     "postcss": "8.4.31",
     "postcss-import": "^16.1.0",
     "postcss-preset-env": "^10.1.4",
-    "react-app-rewired": "^2.2.1",
-    "react-scripts": "^5.0.1",
+    "react-app-rewired": "2.2.1",
+    "react-scripts": "5.0.1",
     "sass": "^1.78.0",
     "sass-loader": "^16.0.2",
     "webpack-bundle-analyzer": "^4.10.2",
