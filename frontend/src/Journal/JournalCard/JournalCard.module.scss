@@ -18,7 +18,7 @@
     // clip-path: path("M354 64C354 33.8301 354 18.7452 344.627 9.37258C335.255 0 320.17 0 290 0H128C67.6602 0 37.4903 0 18.7452 18.7452C0 37.4903 0 67.6602 0 128V226C0 286.34 0 316.51 18.7452 335.255C37.4903 354 67.6602 354 128 354H290C320.17 354 335.255 354 344.627 344.627C354 335.255 354 320.17 354 290V64Z");
     align-items: center;
     justify-content: center;
-    z-index: 10;
+    z-index: 11;
     cursor: pointer;
 
     .corner {
@@ -508,20 +508,6 @@
 
   &:hover .journalCard__authorImg {
     border-color: var(--blue-75BBFD);
-  }
-
-  &.inverted {
-    &:hover::after {
-      background: var(--black-1D2E43);
-    }
-
-    &:hover::before {
-      border-top-color: var(--black-1D2E43);
-    }
-
-    &:hover .journalCard__authorImg {
-      border: 4px solid var(--black-1D2E43);
-    }
   }
 }
 
