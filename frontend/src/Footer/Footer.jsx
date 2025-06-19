@@ -121,7 +121,14 @@ const Footer = ({ handleMouseEnterFooter, handleMouseEnterFooterMore, handleMous
               className={styles.footer__documents_link}>
               <span>Документы</span>
             </Link>
-            <div className={styles.footer__copyright}>©&nbsp;MARKSLAB</div>
+            <Link
+              to="https://laba-laba.ru/"
+              target="_blank"
+              onMouseEnter={handleMouseEnterFooterMore}
+              onMouseLeave={handleMouseLeaveFooter}
+              className={styles.footer__copyright}>
+              <span>©&nbsp;LABA</span>
+            </Link>            
           </div>
         </div>
       </div>

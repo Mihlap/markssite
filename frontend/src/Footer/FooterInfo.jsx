@@ -82,11 +82,18 @@ const FooterInfo = ({
             href="./Information"
             onMouseEnter={handleMouseEnterFooterMore}
             onMouseLeave={handleMouseLeaveFooter}
-            target="_blank"
-          >
+            target="_blank">
             Документы
           </a>
-          <span>&copy; laba</span>
+          <a
+            href="https://laba-laba.ru/"
+            onMouseEnter={handleMouseEnterFooterMore}
+            onMouseLeave={handleMouseLeaveFooter}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <span>&copy; laba</span>
+          </a>
         </div>
       </div>
     </div>
