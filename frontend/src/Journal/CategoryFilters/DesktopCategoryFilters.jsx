@@ -13,10 +13,16 @@ import {
   resetDesktopSearchState,
 } from '../../store/Slice/journal_categoryFiltersSlice.js';
 import CategoryButton from './CategoryButton';
-import styles from './CategoryFilters.module.scss';
 import { categoriesConfig } from './categories.js';
+import styles from './CategoryFilters.module.scss';
+
 import { ReactComponent as SearchIcon } from '../icons/search.svg';
 import { ReactComponent as CloseIcon } from '../icons/close.svg';
+
+import { ReactComponent as Left1 } from '../icons/left1.svg';
+import { ReactComponent as Left2 } from '../icons/left2.svg';
+import { ReactComponent as Right1 } from '../icons/right1.svg';
+import { ReactComponent as Right2 } from '../icons/right2.svg';
 
 function DesktopCategoryFilters({ categoriesList }) {
   const dispatch = useDispatch();
@@ -226,6 +232,10 @@ function DesktopCategoryFilters({ categoriesList }) {
   return (
     <div className={styles.categoryFiltersMain}>
       <div className={styles.categoryFilters} ref={wrapperRef}>
+        <Left1 className={`${styles.corner} ${styles.leftTop}`} />
+        <Left2 className={`${styles.corner} ${styles.leftBottom}`} />
+        <Right1 className={`${styles.corner} ${styles.rightTop}`} />
+        <Right2 className={`${styles.corner} ${styles.rightBottom}`} />
         <div className={styles.categoryButtonsWrapper} ref={buttonsWrapperRef}>
           <div
             ref={buttonsRef}
