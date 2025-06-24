@@ -115,7 +115,8 @@ function JournalCard({ journal, index }) {
             <div
               key={i}
               className={`${styles.journalCard__authorWrapper} ${isInverted ? styles.inverted : ''}`}
-              data-name={author.name}>
+              data-tooltip={author.name}
+              >
               <AsyncImage
                 src={author.image || fallbackIconsRef.current[i]}
                 alt={author.name}
