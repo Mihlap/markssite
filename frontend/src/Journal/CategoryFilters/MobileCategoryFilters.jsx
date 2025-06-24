@@ -1,4 +1,4 @@
-import React, { memo, useCallback, useMemo, useState, useEffect } from 'react';
+import { memo, useCallback, useMemo, useState, useEffect } from 'react';
 import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import {
   setMobileSearchValue,
@@ -9,8 +9,9 @@ import {
   setMobileInput,
 } from '../../store/Slice/journal_categoryFiltersSlice.js';
 import CategoryButton from './CategoryButton';
-import styles from './CategoryFilters.module.scss';
 import { categoriesConfig } from './categories.js';
+import styles from './CategoryFilters.module.scss';
+
 import { ReactComponent as SearchIcon } from '../icons/search.svg';
 import { ReactComponent as CloseIcon } from '../icons/close.svg';
 
@@ -132,7 +133,7 @@ function MobileCategoryFilters({ categoriesList }) {
     <div className={styles.categoryFilters}>
       <div
         className={`${styles.searchContainer} ${searchValue || hasActiveCategory ? styles.filledBorder : ''}`}
-        onClick={openOverlay}>
+        onClick={openOverlay}>   
         <SearchIcon className={styles.searchIcon} />
         <input
           className={styles.searchInput}
