@@ -476,25 +476,30 @@
     }
   }
 
-  &:hover::after {
-    content: attr(data-name);
+  &::after,
+  &::before {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+    transition-property: opacity, visibility;
+    transition-duration: 0.3s, 0s;
+  }
+
+  &::after {
+    content: attr(data-tooltip);
     position: absolute;
     bottom: calc(100% + 10px);
     left: 50%;
     transform: translateX(-50%);
-    display: flex;
-    align-items: flex-start;
-    gap: 0.625rem;
     padding: 0.5rem 1.1875rem;
     border-radius: 2.6875rem;
     background: var(--blue-75BBFD);
     color: var(--originWhite-FFFFFF);
     white-space: nowrap;
-    pointer-events: none;
     z-index: 10;
   }
 
-  &:hover::before {
+  &::before {
     content: '';
     position: absolute;
     bottom: 100%;
@@ -503,11 +508,20 @@
     border: 6px solid transparent;
     border-top-color: var(--blue-75BBFD);
     z-index: 9;
-    pointer-events: none;
+  }
+
+  &:hover {
+    &::after,
+    &::before {
+      visibility: visible;
+      transition-delay: 0s, 0s;
+      opacity: 1;
+    }
   }
 
   &:hover .journalCard__authorImg {
     border-color: var(--blue-75BBFD);
+    transition: border-color 0.3s ease;
   }
 }
 
