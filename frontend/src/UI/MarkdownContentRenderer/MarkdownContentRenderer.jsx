@@ -328,7 +328,7 @@ export default function MarkdownContentRenderer({ markdown = '' }) {
                           h3: ({ children }) => <h3 className={styles.heading3}>{children}</h3>,
                           h4: ({ children }) => <h4 className={styles.heading4}>{children}</h4>,
                           h5: ({ children }) => <h5 className={styles.heading5}>{children}</h5>,
-                          h6: ({ children }) => <h6 className={styles.heading6}>{children}</h6>,
+                          h6: ({ children }) => <h6 className={styles.heading6}>{children}</h6>,                       
                         }}
                       />
                     );
