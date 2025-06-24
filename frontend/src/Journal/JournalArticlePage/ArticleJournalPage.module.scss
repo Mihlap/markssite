@@ -165,6 +165,21 @@
     hyphens: none;
   }
 
+  h1 strong,
+  h1 b,
+  h2 strong,
+  h2 b,
+  h3 strong,
+  h3 b,
+  h4 strong,
+  h4 b,
+  h5 strong,
+  h5 b,
+  h6 strong,
+  h6 b {
+    font-weight: inherit;
+  }
+
   p {
     margin-bottom: 1.5rem;
     border-radius: 1rem;
@@ -172,7 +187,7 @@
     word-break: normal;
     hyphens: none;
   }
- 
+
   ul,
   ol {
     margin: 0 0 1.5rem 1.5rem;
@@ -198,18 +213,18 @@
     }
   }
 
-    :global(.katex-display) {
-      display: block;
-      margin: 2.875rem 0;
-      text-align: center;
-    }
+  :global(.katex-display) {
+    display: block;
+    margin: 2.875rem 0;
+    text-align: center;
+  }
 
-    :global(.katex) {
-      display: block;
-      margin-top: 2.875rem;
-      margin-bottom: 0;
-      text-align: center;
-    }
+  :global(.katex) {
+    display: block;
+    margin-top: 2.875rem;
+    margin-bottom: 0;
+    text-align: center;
+  }
 }
 
 .pdfEmbed {
@@ -249,14 +264,14 @@
 
 .figureCaption {
   color: var(--gray-959DA6);
-    font-family: Raleway;
-    font-size: 0.875rem;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 1.25rem; 
-    margin-top: 1rem;   
-    white-space: normal;
-    word-break: break-word;
+  font-family: Raleway;
+  font-size: 0.875rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.25rem;
+  margin-top: 1rem;
+  white-space: normal;
+  word-break: break-word;
 }
 
 .mathBlock {
@@ -276,6 +291,7 @@
 .heading1 {
   font-size: 2.5rem;
   line-height: 3rem;
+  font-weight: normal;
 }
 
 .heading2 {
@@ -317,10 +333,10 @@
   border-left: 0px solid var(--blue-75BBFD);
   border-bottom: 1px solid var(--blue-75BBFD);
   overflow-x: auto;
-  scrollbar-width: thin; 
+  scrollbar-width: thin;
   scrollbar-color: #75bbfd #f6f6f6;
-} 
-  
+}
+
 .table {
   width: 100%;
   border-collapse: collapse;
@@ -329,13 +345,13 @@
   transition: all 0.2s ease;
 
   th,
-    td {
-      padding: 1rem;
-      text-align: left;
-      overflow-wrap: break-word;
-      word-break: normal;
-      hyphens: none;
-    }
+  td {
+    padding: 1rem;
+    text-align: left;
+    overflow-wrap: break-word;
+    word-break: normal;
+    hyphens: none;
+  }
 
   thead {
     background-color: var(--blue-75BBFD);
@@ -637,12 +653,15 @@
   .markdown_body {
     padding-left: 1.88rem;
     padding-right: 1.88rem;
+  }
 
-    h6 {
-      font-weight: var(--fw-700);
-      strong {
-          font-weight: inherit; }
-    }
+  .markdown_body h6 {
+    font-weight: var(--fw-700);
+  }
+
+  .markdown_body h6 strong,
+  .markdown_body h6 b {
+    font-weight: inherit;
   }
 
   .heading1 {
@@ -705,42 +724,44 @@
     padding-right: 1.87rem;
 
     h6 {
-        font-weight: var(--fw-700);
-        strong {
-            font-weight: inherit;   }
+      font-weight: var(--fw-700);
+
+      strong {
+        font-weight: inherit;
       }
+    }
   }
 
-    .heading1 {
-      font-size: 2rem;
-      line-height: 2.5rem;
-    }
-  
-    .heading2 {
-      font-size: 1.75rem;
-      line-height: 2.375rem;
-    }
-  
-    .heading3 {
-      font-size: 1.5rem;
-      line-height: 2rem;
-    }
-  
-    .heading4 {
-      font-size: 1.25rem;
-      line-height: 1.75rem;
-    }
-  
-    .heading5 {
-      font-size: 1.125rem;
-      line-height: 1.625rem;
-    }
-  
-    .heading6 {
-      font-size: 1rem;
-      line-height: 1.375rem;
-      font-weight: var(--fw-300);
-    }
+  .heading1 {
+    font-size: 2rem;
+    line-height: 2.5rem;
+  }
+
+  .heading2 {
+    font-size: 1.75rem;
+    line-height: 2.375rem;
+  }
+
+  .heading3 {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+
+  .heading4 {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+  }
+
+  .heading5 {
+    font-size: 1.125rem;
+    line-height: 1.625rem;
+  }
+
+  .heading6 {
+    font-size: 1rem;
+    line-height: 1.375rem;
+    font-weight: var(--fw-300);
+  }
 
   .authorsNames {
     max-width: 90%;
@@ -795,48 +816,58 @@
 
   .markdown_body {
     padding-left: 1rem;
-    padding-right: 1rem;    
-
-    h4,    
-    h6 {
-      font-weight: var(--fw-700);
-
-      strong {
-          font-weight: inherit; }
-    }
+    padding-right: 1rem;
   }
 
-    .heading1 {
-      font-size: 1.5rem;
-      line-height: 2rem;
-    }
-  
-    .heading2 {
-      font-size: 1.375rem;
-      line-height: 1.875rem;
-    }
-  
-    .heading3 {
-      font-size: 1.25rem;
-      line-height: 1.75rem;
-    }
-  
-    .heading4 {
-      font-size: 1.125rem;
-      line-height: 1.625rem;
-      font-weight: var(--fw-300);
-    }
-  
-    .heading5 {
-      font-size: 1.125rem;
-      line-height: 1.625rem;
-    }
-  
-    .heading6 {
-      font-size: 1rem;
-      line-height: 1.375rem;
-      font-weight: var(--fw-300);
-    }
+  .heading1 {
+    font-size: 1.5rem;
+    line-height: 2rem;
+  }
+
+  .heading2 {
+    font-size: 1.375rem;
+    line-height: 1.875rem;
+  }
+
+  .heading3 {
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+  }
+
+  .heading4 {
+    font-size: 1.125rem;
+    line-height: 1.625rem;
+    font-weight: var(--fw-300);
+  }
+
+  .heading5 {
+    font-size: 1.125rem;
+    line-height: 1.625rem;
+  }
+
+  .heading6 {
+    font-size: 1rem;
+    line-height: 1.375rem;
+    font-weight: var(--fw-300);
+  }
+
+  .markdown_body h4 {
+    font-weight: var(--fw-700);
+  }
+
+  .markdown_body h4 strong,
+  .markdown_body h4 b {
+    font-weight: inherit;
+  }
+
+  .markdown_body h6 {
+    font-weight: var(--fw-700);
+  }
+
+  .markdown_body h6 strong,
+  .markdown_body h6 b {
+    font-weight: inherit;
+  }
 
   .authorsNames {
     font-size: 1.25rem;
@@ -917,4 +948,3 @@
     fill: var(--salmon-FF7F6A);
   }
 }
-
