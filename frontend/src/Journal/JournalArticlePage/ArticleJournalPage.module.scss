@@ -13,7 +13,7 @@
     width: 100%;
     min-height: 31.5rem;
     height: auto;
-    background-image: url('../../../src/Journal/icons/fon5.svg');
+    background-image: url('../../../src/Journal/icons/fon4.svg');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -28,7 +28,7 @@
 }
 
 .left_title {
-  max-width: 60%;
+  max-width: 70%;
   width: 100%;
   font-family: var(--font-unbounded);
   font-size: 3rem;
@@ -178,6 +178,12 @@
   h6 strong,
   h6 b {
     font-weight: inherit;
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid var(--black-1D2E43);
+    margin-top: 0.5rem;
   }
 
   p {
@@ -641,7 +647,7 @@
   }
 
   .left_title {
-    max-width: 80%;
+    max-width: 85%;
     width: 100%;
     padding: 3.81rem 1.75rem 0 1.75rem;
   }
