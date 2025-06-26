@@ -125,7 +125,7 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
   const setupBlockAnimation = (blockRight, wrapperTextBlock) => {
     const blockRightRect = blockRight.getBoundingClientRect();
     const wrapperTextBlockRect = wrapperTextBlock.getBoundingClientRect();
-    let wrapperTextBlockBottom = wrapperTextBlockRect.bottom + window.scrollY - blockRightRect.height - 350;
+    let wrapperTextBlockBottom = wrapperTextBlockRect.bottom + window.scrollY - blockRightRect.height - 300;
 
     if (windowWidth > 1601) {
       wrapperTextBlockBottom -= 200;
@@ -303,6 +303,7 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
                           buttonText={
                             activePage === 'internships' ? 'Откликнуться на стажировку' : 'Откликнуться на вакансию'
                           }
+                          inputPaddingTop={windowWidth >= 1024 && windowWidth <= 1600 ? '2rem' : undefined}
                         />
                       )}
                     </div>

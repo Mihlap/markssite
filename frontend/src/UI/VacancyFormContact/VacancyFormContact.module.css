@@ -1,8 +1,6 @@
 @import '../../App.css';
 @import '../../_variables.scss';
 
-/* @media screen and (min-width: 1601px) and (max-width: 3000px) { */
-
 .form_vacancy_wrapper {
   display: flex;
   height: fit-content;
@@ -338,8 +336,6 @@
   color: var(--blue-75BBFD);
 }
 
-/* } */
-
 @media screen and (min-width: 1024px) and (max-width: 1600px) {
   .form_vacancy_wrapper {
     display: flex;
@@ -354,6 +350,7 @@
     column-gap: 88px;
     width: 60rem;
   }
+  
 
   .form_vacancy_left,
   .form_vacancy_right {
