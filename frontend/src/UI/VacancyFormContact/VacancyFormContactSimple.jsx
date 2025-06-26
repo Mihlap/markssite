@@ -18,15 +18,16 @@ const VacancyFormContactSimple = ({
   setIsModalOpen,
   vacancyTitleSimple,
   buttonText,
+  inputPaddingTop,
 }) => {
-   const [formData, setFormData] = useState({
-     name: '',
-     phone: '',
-     letter: '',
-     resume: '',
-     title: vacancyTitleSimple,
-   });
-  
+  const [formData, setFormData] = useState({
+    name: '',
+    phone: '',
+    letter: '',
+    resume: '',
+    title: vacancyTitleSimple,
+  });
+
   const [isFocused, setIsFocused] = useState({
     name: false,
     phone: false,
@@ -34,27 +35,29 @@ const VacancyFormContactSimple = ({
     resume: false,
   });
 
+  const overrideInputStyle = inputPaddingTop ? { paddingTop: inputPaddingTop } : {};
+
   const [isValid, setIsValid] = useState(true);
   const [isFormValid, setIsFormValid] = useState(false);
   const [selectedFiles, setSelectedFiles] = useState([]);
   const [fileAttached, setFileAttached] = useState(false);
   const [errors, setErrors] = useState({});
   const phoneInputRef = useRef(null);
-  const [isMetricSent, setIsMetricSent] = useState(false); 
+  const [isMetricSent, setIsMetricSent] = useState(false);
 
   const fileInputRef = useRef(null);
   const isFilled = useCallback((name) => !!formData[name], [formData]);
 
-const handleFocus = useCallback(
-      (event) => {
-        const name = event?.target?.name;
-        setIsFocused((prev) => ({ ...prev, [name]: true }));
-        if (name === 'phone' && !formData.phone) {
-          setFormData((prev) => ({ ...prev, phone: maskOptions.mask }));
-        }
-      },
-      [formData.phone]
-    );
+  const handleFocus = useCallback(
+    (event) => {
+      const name = event?.target?.name;
+      setIsFocused((prev) => ({ ...prev, [name]: true }));
+      if (name === 'phone' && !formData.phone) {
+        setFormData((prev) => ({ ...prev, phone: maskOptions.mask }));
+      }
+    },
+    [formData.phone]
+  );
 
   const handlePaste = useCallback((event) => {
     event.preventDefault();
@@ -73,21 +76,21 @@ const handleFocus = useCallback(
     }
   }, []);
 
- const handleBlur = useCallback(
-   (event) => {
-     const name = event?.target?.name;
-     setIsFocused((prev) => ({ ...prev, [name]: false }));
-     if (name === 'phone') {
-       const phoneNumberRegex = /^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/;
-   
-       if (formData.phone === maskOptions.mask) {
-         setFormData((prev) => ({ ...prev, phone: '' }));
-       }
-       setIsValid(phoneNumberRegex.test(formData.phone));
-     }
-   },
-   [formData.phone]
- );
+  const handleBlur = useCallback(
+    (event) => {
+      const name = event?.target?.name;
+      setIsFocused((prev) => ({ ...prev, [name]: false }));
+      if (name === 'phone') {
+        const phoneNumberRegex = /^\+7 \(\d{3}\) \d{3}-\d{2}-\d{2}$/;
+
+        if (formData.phone === maskOptions.mask) {
+          setFormData((prev) => ({ ...prev, phone: '' }));
+        }
+        setIsValid(phoneNumberRegex.test(formData.phone));
+      }
+    },
+    [formData.phone]
+  );
 
   const handleChange = useCallback((event) => {
     const { name, value } = event.target;
@@ -169,14 +172,7 @@ const handleFocus = useCallback(
           setIsMetricSent(false);
         });
     },
-    [
-      isMetricSent,
-      formData,
-      selectedFiles,
-      vacancyTitleSimple,
-      setIsLoading,
-      setIsModalOpen
-    ]
+    [isMetricSent, formData, selectedFiles, vacancyTitleSimple, setIsLoading, setIsModalOpen]
   );
 
   const getLineClassSimple = (field) => {
@@ -252,6 +248,7 @@ const handleFocus = useCallback(
                   maxLength="100"
                   autoComplete="off"
                   className={styles.input_name_form_contacts}
+                  style={overrideInputStyle}
                 />
                 {/* <div className={styles.lineSimple}></div> */}
                 <div className={getLineClassSimple('name')}></div>
@@ -277,7 +274,10 @@ const handleFocus = useCallback(
                   autoComplete="off"
                   onPaste={handlePaste}
                   className={`${styles.input_tel_form_contacts} ${isFocused.phone ? styles.focused : ''}`}
-                  style={{ fontVariantNumeric: 'lining-nums' }}
+                  style={{
+                    ...overrideInputStyle,
+                    fontVariantNumeric: 'lining-nums',
+                  }}
                 />
                 {/* <div className={styles.lineSimple}></div> */}
                 <div className={getLineClassSimple('phone')}></div>
@@ -305,6 +305,7 @@ const handleFocus = useCallback(
                   maxLength="500"
                   autoComplete="off"
                   className={styles.input_letter_form_contacts}
+                  style={overrideInputStyle}
                 />
                 <div className={styles.lineSimple}></div>
                 <span className={styles.placeholder}>Сопроводительное письмо</span>
@@ -326,6 +327,7 @@ const handleFocus = useCallback(
                   maxLength="200"
                   autoComplete="off"
                   className={styles.input_resume_form_contacts}
+                  style={overrideInputStyle}
                 />
                 <div className={`${getLineClassSimple('resume')} ${styles.line_resume}`}></div>
                 {/* <div className={`${styles.lineSimple} ${styles.line_resume}`}></div> */}
