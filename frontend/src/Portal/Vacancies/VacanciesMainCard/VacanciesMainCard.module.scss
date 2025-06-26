@@ -83,7 +83,7 @@
       position: fixed;
       top: 0;
       right: 0;
-      height: 25vh;
+      height: 18vh;
       width: 35vw;
       opacity: 0;
       transition: opacity 0.3s ease-in-out;
@@ -238,7 +238,7 @@
   .vacancyFormWrapperSimple {
     backdrop-filter: blur(4.5px);
     background: rgba(255, 255, 255, 0.7);
-    padding: 6.5vh 6.25rem 7vh 6.25rem;
+    padding: 1vh 6.25rem 7vh 6.25rem;
     width: 100%;
     border-left: 1px solid rgb(235, 236, 238);
     border-bottom: 1px solid rgb(235, 236, 238);
@@ -614,8 +614,7 @@
     text-align: left;
     letter-spacing: 0px;
     max-width: 30rem;
-    gap: 24px;
-    // z-index: -3;
+    gap: 24px; 
   }
 
   .rocketVectorAround1Block {
@@ -623,7 +622,6 @@
     display: block;
     top: 30rem;
     right: 55rem;
-    // z-index: -1;
 
     .rocket {
       margin-right: -1.5rem;
@@ -662,9 +660,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      width: 100%;
-      // height: 100%;
-      // pointer-events: none;
+      width: 100%;  
     }
 
     .verticalSlide {
@@ -879,23 +875,14 @@
         padding-left: 3.875rem;
       }
 
-      &__blockRight {
-        height: 100vh;
-        // height: calc(100% - 5vh);
-      }
-
+ 
       &__vacancyTitle {
         display: flex;
         flex-wrap: wrap;
         width: fit-content;
         padding-right: 40rem;
       }
-
-      // &__vacancyTitle {
-      //   padding-right: 40vw;
-      //   padding-top: 186px;
-      //   width: 50%;
-      // }
+    
 
       &__vacancyTitle1 {
         padding-top: 32px;
@@ -912,12 +899,8 @@
         max-width: 80%;
       }
 
-      &__detailItem {
-        // max-height: 25vh;
-        min-height: 20vh;
-        padding-left: 2.5rem;
-        height: auto;
-        // margin-bottom: -2rem;
+      &__detailItem {      
+        padding-left: 2.5rem;      
       }
 
       &__detailKey {
@@ -935,9 +918,8 @@
     .vacancyFormWrapperSimple {
       backdrop-filter: blur(4.5px);
       background: rgba(255, 255, 255, 0.7);
-      padding: 2rem 2.5rem;
-      width: 100%;
-      // opacity: 0.9;
+      padding: 1rem 2.5rem 2rem 2.5rem;
+      width: 100%;   
     }
 
     &__offer {
@@ -1073,8 +1055,7 @@
         width: 40rem;
         height: 28rem;
         top: 60%;
-        left: -5rem;
-        // z-index: -5;
+        left: -5rem;    
       }
 
       .background9 {
@@ -1123,8 +1104,7 @@
         line-height: 3rem;
         padding-top: 24px;
         white-space: pre-wrap;
-        z-index: -1;
-        // white-space: normal;
+        z-index: -1;     
       }
     }
 
@@ -1156,16 +1136,14 @@
     &__spanWrapperLocation {
       right: 3rem;
       top: 500px;
-      max-width: 25rem;
-      // z-index: -3;
+      max-width: 25rem; 
     }
 
     .rocketVectorAround1Block {
       position: absolute;
       display: block;
       top: 30rem;
-      right: 29rem;
-      // z-index: -1;
+      right: 29rem; 
 
       .rocket {
         margin-right: -1.5rem;
@@ -1205,12 +1183,6 @@
         height: 100%;
       }
 
-      .verticalSlide {
-      }
-
-      .horizontalSlide {
-      }
-
       .wrapper_sliderContainer_blockSlide {
         display: flex;
         justify-content: center;
@@ -1218,7 +1190,6 @@
         width: 100%;
         height: 100%;
         border-radius: 1rem;
-        // gap: 1.88rem;
       }
 
       .wrapper_sliderContainer_blockSlide,
@@ -1955,9 +1926,7 @@
         line-height: 2.5rem;
         padding-right: 0rem;
         padding-top: 149px;
-        overflow-wrap: break-word;
-        // word-break: break-all;
-        // hyphens: auto
+        overflow-wrap: break-word;  
       }
 
       &__vacancyTitle1 {
@@ -2562,13 +2531,3 @@
   }
 }
 
-// @media screen and (min-width: 300px) and (max-width: 540px) {
-
-// .background8 {
-//   width: 24rem;
-//   height: 15rem;
-//   top: 110%;
-//   left: 0%;
-//   right: 50%;
-//  }
-// }
