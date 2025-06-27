@@ -26,7 +26,7 @@ import Error from '../Loading/Error/Error';
 import bracket from '../icons/bracket.svg';
 import bracket_dark from '../icons/bracket_dark.svg';
 import CompanyFormContacts from '../UI/CompanyFormContacts/CompanyFormContacts';
-import CompanySubscriptionForm from '../UI/CompanySubscriptionForm/CompanySubscriptionForm';
+// import CompanySubscriptionForm from '../UI/CompanySubscriptionForm/CompanySubscriptionForm';
 import CounterCompanyMobile from '../UI/CounterCompanyMobile';
 import CounterCompanyMobile2 from '../UI/CounterCompanyMobile2';
 // import CompanyGroupSlider from "./CompanyGroupSlider/CompanyGroupSlider";
@@ -56,7 +56,7 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
     []
   );
 
-  const [windowWidth] = useState(window.innerWidth);
+  // const [windowWidth] = useState(window.innerWidth);
   const [countPercent, setCountPercent] = useState(0);
   const [countHuman, setCountHuman] = useState(0);
   const [countProject, setCountProject] = useState(0);
