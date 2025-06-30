@@ -43,7 +43,7 @@ const Header = React.memo(
     // const cursorVariant = useSelector((state) => state.cursor);
 
     const [, setCurrentSlideIndex] = useState(0);
-    
+
     const [videoSrc, setVideoSrc] = useState(null);
     const sliderCardRef = useRef(null);
 
@@ -181,6 +181,8 @@ const Header = React.memo(
               {videoSrc && (
                 <video
                   playsInline
+                  preload="metadata"
+                  webkitplaysinline="true"
                   autoPlay
                   muted
                   loop
