@@ -68,7 +68,14 @@ export default function Publics({ handleMouseEnter, handleMouseLeave, handleMous
       <div className={styles.public_container_main}>
         <div className={styles.public_image_header}>
           {videoSrc && (
-            <video playsInline autoPlay muted loop className={styles.bg_video}>
+            <video
+              playsInline
+              preload="metadata"
+              webkitplaysinline="true"
+              autoPlay
+              muted
+              loop
+              className={styles.bg_video}>
               <source src={videoSrc} type="video/mp4" />
             </video>
           )}
