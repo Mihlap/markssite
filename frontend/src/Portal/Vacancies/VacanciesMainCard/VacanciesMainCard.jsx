@@ -42,6 +42,11 @@ import frame4 from '../icons/frame/frame4.svg';
 import BenefitsVacancy from '../BenefitsVacancy/BenefitsVacancy';
 
 gsap.registerPlugin(ScrollTrigger);
+function setViewportUnits() {
+  document.documentElement.style.setProperty('--vh', `${window.innerHeight / 100}px`);
+  document.documentElement.style.setProperty('--vw', `${window.innerWidth / 100}px`);
+}
+
 
 const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHover }) => {
   const dispatch = useDispatch();
@@ -63,6 +68,14 @@ const VacanciesMainCard = ({ handleMouseEnter, handleMouseLeave, handleMouseHove
   useEffect(() => {
     const raf = requestAnimationFrame(() => setBlockReady(true));
     return () => cancelAnimationFrame(raf);
+  }, []);
+
+  useEffect(() => {  
+    setViewportUnits();
+    window.addEventListener('resize', setViewportUnits);
+    return () => {    
+      window.removeEventListener('resize', setViewportUnits);
+    };
   }, []);
 
   useEffect(() => {
