@@ -300,7 +300,15 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
         <div className={styles.company_intro}>
           <div className={styles.block_video_company}>
             {videoSrc2 && (
-              <video playsInline autoPlay muted loop id="bg-video" className={styles.bg_video}>
+              <video
+                playsInline
+                preload="metadata"
+                webkitplaysinline="true"
+                autoPlay
+                muted
+                loop
+                id="bg-video"
+                className={styles.bg_video}>
                 <source src={videoSrc2} type="video/mp4" preload="auto" />
               </video>
             )}
@@ -889,7 +897,7 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
         <div className={styles.fon}>
           <div className={styles.video_wrapper}>
             {videoSrc && (
-              <video playsInline autoPlay muted loop id="bg-video_2">
+              <video playsInline preload="metadata" webkitplaysinline="true" autoPlay muted loop id="bg-video_2">
                 <source src={videoSrc} type="video/mp4" preload="auto" />
               </video>
             )}

@@ -83,8 +83,8 @@
       position: fixed;
       top: 0;
       right: 0;
-      height: 18vh;
-      width: 35vw;
+      height: calc(var(--vh) * 17);
+      width: calc(var(--vw) * 35); 
       opacity: 0;
       transition: opacity 0.3s ease-in-out;
     }
@@ -899,6 +899,17 @@
         max-width: 80%;
       }
 
+            // &__blockRightWrapper {
+            //   position: -webkit-fixed;
+            //   position: fixed;
+            //   top: 0;
+            //   right: 0;
+            //   height: calc(var(--vh) * 17);
+            //   width: 35vw;
+            //   opacity: 0;
+            //   transition: opacity 0.3s ease-in-out;
+            // }
+
       &__detailItem {      
         padding-left: 2.5rem;      
       }
@@ -913,13 +924,13 @@
         line-height: 1.75rem;
         margin-top: 8px;
       }
-    }
+    }  
 
     .vacancyFormWrapperSimple {
       backdrop-filter: blur(4.5px);
       background: rgba(255, 255, 255, 0.7);
       padding: 1rem 2.5rem 2rem 2.5rem;
-      width: 100%;   
+      width: 100%;    
     }
 
     &__offer {
@@ -1309,6 +1320,8 @@
       padding: 2.75rem 0rem 5rem 3.875rem;
     }
   }
+
+  
 
   /* стили для планшетной версии  */
   @media screen and (min-width: 768px) and (max-width: 1024px) {
