@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './HomeAdmin.module.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { arrIdProjectSelector } from './utils/HomeAdminSelectors';
@@ -16,7 +16,6 @@ export default function HomeAdmin() {
   const projects = useSelector((state) => state.project.projects);
   const articles = useSelector((state) => state.article.article);
 
-  // стейты для инпута ПРОЕКТЫ
   const [errorMessage, setErrorMessage] = useState('');
   const [showError, setShowError] = useState(false);
   const [okMessage, setOkMessage] = useState('');
@@ -26,19 +25,14 @@ export default function HomeAdmin() {
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [searchId, setSearchId] = useState('');
   const [savedId, setSavedId] = useState(null);
-  // стейты для инпута ПРОЕКТЫ
 
-  // стейты для инпута ПУБЛИКАЦИИ левый
   const [searcIdOne, setSearcIdOne] = useState('');
   const [saveIdOne, setSaveIdOne] = useState(null);
   const [isBtnDisabledPublicOne, setIsBtnDisabledPublicOne] = useState(true);
-  // стейты для инпута ПУБЛИКАЦИИ левый
-
-  // стейты для инпута ПУБЛИКАЦИИ справа
+  
   const [searcIdTwo, setSearcIdTwo] = useState('');
   const [saveIdTwo, setSaveIdTwo] = useState(null);
-  const [isBtnDisabledPublicTwo, setIsBtnDisabledPublicTwo] = useState(true);
-  // стейты для инпута ПУБЛИКАЦИИ справа
+  const [isBtnDisabledPublicTwo, setIsBtnDisabledPublicTwo] = useState(true); 
 
   const arrIdProject = useSelector(arrIdProjectSelector);
   const arrIdArticleLeft = useSelector(arrIdArticlesLeftSelector);

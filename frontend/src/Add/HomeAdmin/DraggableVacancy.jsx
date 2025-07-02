@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import styles from './HomeAdmin.module.scss';
 
