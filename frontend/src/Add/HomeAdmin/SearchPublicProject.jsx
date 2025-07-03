@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import styles from './HomeAdmin.module.scss';
 import DraggableProject from './DraggableProject';
@@ -43,28 +43,9 @@ export default function SearchPublicProject({
     return () => clearTimeout(t);
   }, [showError, showOk, replacement, setShowError, setShowOk, setReplacement]);
 
-  const handleFormDelete = (id) => dispatch(deleteProject(id));
+  const list = useMemo(() => arrIdProject.filter((p) => p && p.IdProject), [arrIdProject]);
 
-  const filterProjectsById = async () => {
-    const found = projects.find((p) => p.id === +searchId);
-    if (found) {
-      try {
-        await dispatch(searchProgectMainPostzapros(found, setSearchId, setSavedId));
-        setOkMessage('Проект добавлен');
-        setShowOk(true);
-      } catch {
-        setErrorMessage('Ошибка при сохранении проекта');
-        setShowError(true);
-      }
-    } else {
-      setErrorMessage('Проект с таким id не найден');
-      setShowError(true);
-    }
-  };
-
-  const list = arrIdProject.filter((p) => p && p.IdProject);
-
-  const reorder = (base, fromId, toId) => {
+  const reorder = useCallback((base, fromId, toId) => {
     const arr = [...base];
     const fromIdx = arr.findIndex((p) => p.IdProject === fromId);
     const toIdx = toId == null ? arr.length : arr.findIndex((p) => p.IdProject === toId);
@@ -72,26 +53,59 @@ export default function SearchPublicProject({
     const [item] = arr.splice(fromIdx, 1);
     arr.splice(toIdx, 0, item);
     return arr;
-  };
+  }, []);
 
-  const moveProject = (draggedId, targetId) => {
-    const updated = reorder(list, draggedId, targetId);
-    dispatch(updateProjectOrderSuccess(updated));
-  };
+  const moveProject = useCallback(
+    (draggedId, targetId) => {
+      const updated = reorder(list, draggedId, targetId);
+      dispatch(updateProjectOrderSuccess(updated));
+    },
+    [dispatch, list, reorder]
+  );
 
-  const handleDrop = (draggedId, targetId) => {
-    const updated = reorder(list, draggedId, targetId);
-    dispatch(updateProjectOrderSuccess(updated));
-    dispatch(updateProjectOrderReplacement(updated));
-    setReplacementMessage('Порядок сохранён');
-    setReplacement(true);
-  };
+  const handleDrop = useCallback(
+    (draggedId, targetId) => {
+      const updated = reorder(list, draggedId, targetId);
+      dispatch(updateProjectOrderSuccess(updated));
+      dispatch(updateProjectOrderReplacement(updated));
+      setReplacementMessage('Порядок сохранён');
+      setReplacement(true);
+    },
+    [dispatch, list, reorder, setReplacement, setReplacementMessage]
+  );
+
+  const handleFormDelete = useCallback(
+    (id) => {
+      dispatch(deleteProject(id));
+    },
+    [dispatch]
+  );
+
+  const filterProjectsById = useCallback(async () => {
+    const found = projects.find((p) => p.id === +searchId);
+
+    if (!found) {
+      setErrorMessage('Проект с таким id не найден');
+      setShowError(true);
+      return;
+    }
+
+    try {
+      await dispatch(searchProgectMainPostzapros(found, setSearchId, setSavedId));
+      setOkMessage('Проект добавлен');
+      setShowOk(true);
+    } catch {
+      setErrorMessage('Ошибка при сохранении проекта');
+      setShowError(true);
+    }
+  }, [dispatch, projects, searchId, setErrorMessage, setShowError, setOkMessage, setShowOk, setSearchId, setSavedId]);
 
   return (
     <div className={styles.home_admin_section__section}>
       <div className={styles.home_admin_section__block_search}>
         <div className={styles.home_admin_section__id_container}>
           <DropZone onDrop={handleDrop} />
+
           {list.map((proj, idx) => (
             <React.Fragment key={proj.IdProject}>
               <DraggableProject
@@ -105,6 +119,7 @@ export default function SearchPublicProject({
             </React.Fragment>
           ))}
         </div>
+
         <div className={`${styles.form__group} ${styles.field}`}>
           <input
             type="number"
@@ -126,6 +141,7 @@ export default function SearchPublicProject({
             disabled={isButtonDisabled}
           />
         </div>
+
         {showError && <div className={styles.home_admin_section__error}>{errorMessage}</div>}
         {showOk && <div className={styles.home_admin_section__ok}>{okMessage}</div>}
         {replacement && <div className={styles.home_admin_section__ok}>{replacementMessage}</div>}

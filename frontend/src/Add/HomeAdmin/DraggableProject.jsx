@@ -1,14 +1,8 @@
-import { useRef } from 'react';
+import { memo, useRef } from 'react';
 import { useDrag, useDrop } from 'react-dnd';
 import styles from './HomeAdmin.module.scss';
 
-export default function DraggableProject({
-  project,
-  index,
-  moveProject,
-  handleDrop,
-  handleFormDelete,
-}) {
+export default memo(function DraggableProject({ project, index, moveProject, handleDrop, handleFormDelete }) {
   const ref = useRef(null);
 
   const [, dropHover] = useDrop({
@@ -19,8 +13,8 @@ export default function DraggableProject({
       const hoverMiddleX = (hoverRect.right - hoverRect.left) / 2;
       const clientOffset = monitor.getClientOffset();
       const hoverX = clientOffset.x - hoverRect.left;
-   
-      if (item.index < index && hoverX < hoverMiddleX) return;     
+
+      if (item.index < index && hoverX < hoverMiddleX) return;
       if (item.index > index && hoverX > hoverMiddleX) return;
 
       moveProject(item.id, project.IdProject);
@@ -44,7 +38,7 @@ export default function DraggableProject({
     },
   });
 
- drag(dropFinish(dropHover(ref)));
+  drag(dropFinish(dropHover(ref)));
 
   return (
     <div ref={ref} className={styles.home_admin_section__id_block}>
@@ -62,4 +56,4 @@ export default function DraggableProject({
       </button>
     </div>
   );
-}
+});

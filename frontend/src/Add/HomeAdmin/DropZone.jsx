@@ -1,6 +1,7 @@
+import { memo } from 'react';
 import { useDrop } from 'react-dnd';
 
-export default function DropZone({ onDrop }) {
+export default memo(function DropZone({ onDrop }) {
   const [{ isOver }, drop] = useDrop({
     accept: 'PROJECT',
     drop: (item) => onDrop(item.id, null),
@@ -19,4 +20,4 @@ export default function DropZone({ onDrop }) {
       }}
     />
   );
-}
+});
