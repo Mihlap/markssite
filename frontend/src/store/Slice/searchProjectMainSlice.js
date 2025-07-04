@@ -15,14 +15,14 @@ const searchProjectMainSlice = createSlice({
     },
     fetchProjectSuccess(state, action) {
       state.loading = false;
-      state.projects = action.payload;
+      state.projects = action.payload.slice().sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
     },
     fetchProjectFailure(state, action) {
       state.loading = false;
       state.error = action.payload;
     },
     updateProjectOrderSuccess(state, action) {
-      state.projects = action.payload;
+      state.projects = action.payload.slice().sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
     },
     deleteProjectSuccess(state, action) {
       const projectId = action.payload;
@@ -96,8 +96,8 @@ export const deleteProject = (IdProject) => async (dispatch) => {
 
 export const updateProjectOrderReplacement = (updatedProjects) => async (dispatch) => {
   dispatch(fetchProjectStart());
-  try {   
-    const response = await axios.put(`${serverHost}/search/search-project-replacement`, updatedProjects); 
+  try {
+    const response = await axios.put(`${serverHost}/search/search-project-replacement`, updatedProjects);
     dispatch(updateProjectOrderSuccess(response.data));
   } catch (error) {
     console.error('Ошибка при отправке на бекенд:', error);
