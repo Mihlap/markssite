@@ -1,13 +1,14 @@
-import React, { useEffect } from 'react';
-import styles from './HomeAdmin.module.scss';
+import React, { useEffect, useMemo, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
+import styles from './HomeAdmin.module.scss';
+import DraggableProject from './DraggableProject';
+import DropZone from './DropZone';
 import {
   deleteProject,
   searchProgectMainPostzapros,
-  updateProjectOrderReplacement,
   updateProjectOrderSuccess,
+  updateProjectOrderReplacement,
 } from '../../store/Slice/searchProjectMainSlice';
-import DraggableProject from './DraggableProject';
 
 export default function SearchPublicProject({
   projects,
@@ -33,128 +34,105 @@ export default function SearchPublicProject({
 }) {
   const dispatch = useDispatch();
 
-  const handleSearchChange = (event) => {
-    setSearchId(event.target.value);
-
-    // Устанавливаем состояние дизейблинга кнопки в зависимости от того, пустое ли поле ввода
-    setIsButtonDisabled(event.target.value === '');
-  };
-
-  const handleKeyPress = (event) => {
-    // Проверяем, является ли нажатая клавиша клавишей "Enter" (код клавиши 13)
-    if (event.key === 'Enter') {
-      filterProjectsById(); // Выполняем поиск
-    }
-  };
-  // Функция для фильтрации проектов по введенному id
-  const filterProjectsById = async () => {
-    const filteredProject = projects.find((project) => project.id === parseInt(searchId, 10));
-    if (filteredProject) {
-      try {
-        await dispatch(searchProgectMainPostzapros(filteredProject, setSearchId, setSavedId));
-
-        showMessage('Проект добавлен', 'ok');
-      } catch (error) {
-        console.error('Ошибка при сохранении проекта:', error);
-        showMessage('Ошибка при сохранении проекта:', 'error');
-      }
-    } else {
-      // console.log("Проект с таким id не найден");
-      showMessage('Проект с таким id не найден', 'error');
-    }
-  };
-
-  const handleFormDelete = (formId) => {
-    dispatch(deleteProject(formId));
-  };
-
   useEffect(() => {
-    const timer = setTimeout(() => {
+    const t = setTimeout(() => {
       setShowError(false);
       setShowOk(false);
       setReplacement(false);
     }, 5000);
+    return () => clearTimeout(t);
+  }, [showError, showOk, replacement, setShowError, setShowOk, setReplacement]);
 
-    return () => clearTimeout(timer);
-  }, [showError, showOk, replacement]);
+  const list = useMemo(() => arrIdProject.filter((p) => p && p.IdProject), [arrIdProject]);
 
-  const updateProjectOrder = (updatedProjects) => {
-    return (dispatch) => {
-      dispatch(updateProjectOrderSuccess(updatedProjects));
-    };
-  };
+  const reorder = useCallback((base, fromId, toId) => {
+    const arr = [...base];
+    const fromIdx = arr.findIndex((p) => p.IdProject === fromId);
+    const toIdx = toId == null ? arr.length : arr.findIndex((p) => p.IdProject === toId);
+    if (fromIdx < 0 || toIdx < 0 || fromIdx === toIdx) return arr;
+    const [item] = arr.splice(fromIdx, 1);
+    arr.splice(toIdx, 0, item);
+    return arr;
+  }, []);
 
-  const moveProject = (draggedIndex, targetIndex) => {
-    const updatedProjects = [...arrIdProject];
-    const draggedProject = updatedProjects[draggedIndex];
-    updatedProjects.splice(draggedIndex, 1);
-    updatedProjects.splice(targetIndex, 0, draggedProject);
+  const moveProject = useCallback(
+    (draggedId, targetId) => {
+      const updated = reorder(list, draggedId, targetId);
+      dispatch(updateProjectOrderSuccess(updated));
+    },
+    [dispatch, list, reorder]
+  );
 
-    // Вызываем действие для обновления порядка элементов
-    dispatch(updateProjectOrder(updatedProjects));
+  const handleDrop = useCallback(
+    (draggedId, targetId) => {
+      const updated = reorder(list, draggedId, targetId);
+      dispatch(updateProjectOrderSuccess(updated));
+      dispatch(updateProjectOrderReplacement(updated));
+      setReplacementMessage('Порядок сохранён');
+      setReplacement(true);
+    },
+    [dispatch, list, reorder, setReplacement, setReplacementMessage]
+  );
 
-    showMessage('Проект перемещен', 'replacement');
-    // И тут же сохраняем новый порядок в базу данных
-    dispatch(updateProjectOrderReplacement(updatedProjects));
-  };
+  const handleFormDelete = useCallback(
+    (id) => {
+      dispatch(deleteProject(id));
+    },
+    [dispatch]
+  );
 
-  const showMessage = (message, type) => {
-    switch (type) {
-      case 'error':
-        setErrorMessage(message);
-        setShowError(true);
-        break;
-      case 'ok':
-        setOkMessage(message);
-        setShowOk(true);
-        break;
-      case 'replacement':
-        setReplacementMessage(message);
-        setReplacement(true);
-        break;
-      default:
-        break;
+  const filterProjectsById = useCallback(async () => {
+    const found = projects.find((p) => p.id === +searchId);
+
+    if (!found) {
+      setErrorMessage('Проект с таким id не найден');
+      setShowError(true);
+      return;
     }
-  };
 
-  const Message = ({ message, type }) => {
-    return (
-      <div className={type === 'error' ? styles.home_admin_section__error : styles.home_admin_section__ok}>
-        {message}
-      </div>
-    );
-  };
+    try {
+      await dispatch(searchProgectMainPostzapros(found, setSearchId, setSavedId));
+      setOkMessage('Проект добавлен');
+      setShowOk(true);
+    } catch {
+      setErrorMessage('Ошибка при сохранении проекта');
+      setShowError(true);
+    }
+  }, [dispatch, projects, searchId, setErrorMessage, setShowError, setOkMessage, setShowOk, setSearchId, setSavedId]);
 
   return (
     <div className={styles.home_admin_section__section}>
       <div className={styles.home_admin_section__block_search}>
         <div className={styles.home_admin_section__id_container}>
-          {arrIdProject?.map((el, index) => (
-            <DraggableProject
-              key={index}
-              project={el}
-              index={index}
-              moveProject={moveProject}
-              handleFormDelete={handleFormDelete}
-            />
+          <DropZone onDrop={handleDrop} />
+
+          {list.map((proj, idx) => (
+            <React.Fragment key={proj.IdProject}>
+              <DraggableProject
+                project={proj}
+                index={idx}
+                moveProject={moveProject}
+                handleDrop={handleDrop}
+                handleFormDelete={handleFormDelete}
+              />
+              <DropZone onDrop={handleDrop} />
+            </React.Fragment>
           ))}
         </div>
+
         <div className={`${styles.form__group} ${styles.field}`}>
           <input
             type="number"
             className={styles.form__field}
-            placeholder="idshnik"
-            name="idshnik"
-            id="idshnik"
-            value={savedId !== null ? savedId : searchId}
-            onChange={handleSearchChange}
-            onKeyDown={handleKeyPress}
-            required
-            autoComplete="off"
+            placeholder="id проекта"
+            value={savedId ?? searchId}
+            onChange={(e) => {
+              setSearchId(e.target.value);
+              setIsButtonDisabled(e.target.value === '');
+            }}
+            onKeyDown={(e) => e.key === 'Enter' && filterProjectsById()}
           />
-          <label htmlFor="idshnik" className={styles.form__label}>
-            Укажите id проекта
-          </label>
+          <label className={styles.form__label}>Укажите id проекта</label>
         </div>
         <div className={styles.home_admin_section__button_container_project}>
           <button
@@ -163,9 +141,10 @@ export default function SearchPublicProject({
             disabled={isButtonDisabled}
           />
         </div>
-        <div>{showError && <Message message={errorMessage} type="error" />}</div>
-        <div>{showOk && <Message message={okMessage} type="ok" />}</div>
-        <div>{replacement && <Message message={replacementMessage} type="replacement" />}</div>
+
+        {showError && <div className={styles.home_admin_section__error}>{errorMessage}</div>}
+        {showOk && <div className={styles.home_admin_section__ok}>{okMessage}</div>}
+        {replacement && <div className={styles.home_admin_section__ok}>{replacementMessage}</div>}
       </div>
     </div>
   );
