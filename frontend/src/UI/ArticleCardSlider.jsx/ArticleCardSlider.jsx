@@ -1,7 +1,7 @@
-import React, { useRef, useState, useEffect } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import Slider from 'react-slick';
 import catPhoto from '../../img/default-photo.jpeg';
-import '.././Company_Slider/Company_Slider.css';
+import '.././Company_Slider/CompanySlider.css';
 
 const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 

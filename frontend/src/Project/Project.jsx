@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
+import { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import Modal from 'react-modal';
 import { Helmet } from 'react-helmet-async';
 import { Link, useLocation } from 'react-router-dom';
@@ -12,9 +12,9 @@ import {
   getFetchFormCityFilter,
   getFetchFormLocationFilter,
 } from '../store/Slice/projectSlice';
-import Company_Slider from '../UI/Company_Slider/Company_Slider';
+import CompanySlider from '../UI/Company_Slider/CompanySlider';
+import '../UI/Company_Slider/CompanySlider.css';
 import { extractCityFromCountryCity, getUserGeolocation } from './utils';
-import '../UI/Company_Slider/Company_Slider.css';
 import '../UI/ButtonsProjects/AllProjectsButton.module.css';
 import { fetchToggleStateAsync } from '../store/Slice/toggleSlice';
 import catPhoto from '../img/default-photo.jpeg';
@@ -283,7 +283,7 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
       </Helmet>
       <div className={styles.project_main}>
         <div className={styles.project_slider_box}>
-          <Company_Slider />
+          <CompanySlider />
           <div className={styles.project_slider_text}>
             <p className={styles.actuality_text}>Креативные пространства от MARKS GROUP</p>
             <span className={styles.projects_name_text}>Проекты</span>
@@ -343,8 +343,7 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
               slidesPerView="auto"
               spaceBetween={8}
               className={styles.my_swiper2_button_group_project}
-              touch="true"
-            >
+              touch="true">
               <div className={styles.button_group_project}>
                 {buttonChoose &&
                   buttonChoose?.map((el, index) => (
@@ -357,8 +356,7 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
                           ? styles.active
                           : ''
                       }`}
-                      style={{ width: 'fit-content' }}
-                    >
+                      style={{ width: 'fit-content' }}>
                       <p type="button" className={styles.menu_button_items}>
                         {el}
                       </p>

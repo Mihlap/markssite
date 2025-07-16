@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Slider from 'react-slick';
 import styles from './ConstructorBlockRenderer.module.scss';
 import '../stylePaginationSlider.css';
@@ -239,30 +239,6 @@ export default function ConstructorBlockRenderer({ block, handleMouseLeave, hand
       </div>
     );
   };
-
-  // const renderThreeImages = (block, index) => {
-  //   const images = block[0].value;
-  //   return (
-  //     <div className={styles.gridContainer}>
-  //       {images?.slice(0, 2).map((img, index) => (
-  //         <img
-  //           className={styles.horizontalImage}
-  //           key={index}
-  //           src={`${Host}/images/imageAdd/${img}`}
-  //           alt="Horizontal_image"
-  //           loading="lazy"
-  //         />
-  //       ))}
-  //       <img
-  //         className={styles.verticalImage}
-  //         src={`${Host}/images/imageAdd/${images[2]}`}
-  //         alt="Vertical_image"
-  //         loading="lazy"
-  //       />
-  //     </div>
-  //   );
-  // };
-
   const renderTwoImage = (block, index) => {
     const images = block[0].value;
     return (
@@ -337,8 +313,7 @@ export default function ConstructorBlockRenderer({ block, handleMouseLeave, hand
           style={i === activeSlide ? activeDotStyle : inactiveDotStyle} // сравнение с активным слайдом
         />
       ),
-      infinite: true,
-      // speed: 500,
+      infinite: true,   
       slidesToShow: 1,
       slidesToScroll: 1,
       arrows: dotsVisible, // Включение стрелочек
@@ -349,8 +324,6 @@ export default function ConstructorBlockRenderer({ block, handleMouseLeave, hand
       prevArrow: dotsVisible && <PrevArrow onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} />,
       nextArrow: dotsVisible && <NextArrow onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} />,
     };
-
-    // console.log('Block:', block);
 
     return (
       <div className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockFive} ${styles.slider_container}`}>
@@ -405,8 +378,7 @@ export default function ConstructorBlockRenderer({ block, handleMouseLeave, hand
       setIsHovered(false);
     };
 
-    const handleFullscreen = () => {
-      // const videoElement = videoRef.current;
+    const handleFullscreen = () => {  
       const containerElement = document.documentElement;
 
       if (containerElement.requestFullscreen) {
