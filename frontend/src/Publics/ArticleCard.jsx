@@ -40,7 +40,7 @@ const ArticleCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
 
   const [enableVerticalScroll, setEnableVerticalScroll] = useState(true);
   const [isHorizontalScroll, setIsHorizontalScroll] = useState(false);
-  const [isAtRightEdge, setIsAtRightEdge] = useState(false);
+  const [, setIsAtRightEdge] = useState(false);
   const [scrollingMode, setScrollingMode] = useState('vertical');
 
   const isMobile = window.innerWidth <= 767;

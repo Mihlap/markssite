@@ -1,8 +1,8 @@
-import React, { useRef, useState, useEffect, useCallback } from 'react';
+import { useRef, useState, useEffect, useCallback } from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import './Company_Slider.css';
+import './CompanySlider.css';
 
 const catPhoto = '../../img/default-photo.jpeg';
 
