@@ -517,7 +517,7 @@ export default function ConstructorBlockRenderer({ block, handleMouseEnter, hand
       outline: 'none',
       display: 'block',
       width: '100%',
-      height: isFullscreen ? '100vh' : 'auto',
+      height: isFullscreen ? '50vh' : 'auto',
       objectFit: 'cover',
     };
 

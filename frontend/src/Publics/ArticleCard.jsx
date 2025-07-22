@@ -1,212 +1,191 @@
-import React, { useEffect, useRef, useState, useMemo } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useRef, useMemo, useCallback } from 'react';
+import { useDispatch, useSelector, shallowEqual } from 'react-redux';
 import { Link, useParams } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import gsap from 'gsap';
-import { Swiper, SwiperSlide } from 'swiper/react';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { MotionPathPlugin } from 'gsap/MotionPathPlugin';
+import { Swiper, SwiperSlide } from 'swiper/react';
+
 import AllArticlesButton from '../UI/ButtonsArticles/AllArticlesButton';
 import ArticleCardSlider from '../UI/ArticleCardSlider.jsx/ArticleCardSlider';
 import SliderContainerArticleCard from '../UI/Project&ArticleCardSlider/SlideContainerArticleCard';
+
 import { getFetchFormArticle } from '../store/Slice/articleSlice';
-import { handleScroll, onVerticalScroll, onWheel } from '../Project/utils';
-import {
-  shareToVK,
-  shareToTelegram,
-  shareToWhatsApp,
-  // shareToViber,
-} from './utils';
+import { handleScroll, onVerticalScroll, onWheel, containsListTags, renderListWithDots } from '../Project/utils';
+import { shareToVK, shareToTelegram } from './utils';
+
 import styles from './ArticleCard.module.css';
 import catPhoto from '../img/default-photo.jpeg';
-
 import next from '.././icons/next.svg';
 import previous from '.././icons/previous.svg';
 import ConstructorBlockRenderer from './ConstructorArticle/ConstructorBlockRender';
-import { containsListTags } from '../Project/utils';
-import { renderListWithDots } from '../Project/utils';
 
 gsap.registerPlugin(ScrollTrigger, MotionPathPlugin);
 
 const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
+const isFullUrl = (url = '') => /^(https?:)?\/\//i.test(url);
+
+const pickImage = (raw, fallback = catPhoto) => {
+  if (!raw) return fallback;
+  return isFullUrl(raw) ? raw : `${bucket_url}/images/imageArticle/${raw}`;
+};
+
+const shuffle = (arr) => {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+};
+
+const useArticles = () => useSelector((s) => s.article.article, shallowEqual);
+
 const ArticleCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMouseHover }) => {
   const { id } = useParams();
   const dispatch = useDispatch();
+
   const sliderArticleCardRef = useRef(null);
-  const slidesCard = useSelector((state) => state.article.article);
-  const article = slidesCard.find((item) => item.id === parseInt(`${id}`));
-  const articles = useSelector((state) => state.article.article);
 
-  const [enableVerticalScroll, setEnableVerticalScroll] = useState(true);
-  const [isHorizontalScroll, setIsHorizontalScroll] = useState(false);
-  const [, setIsAtRightEdge] = useState(false);
-  const [scrollingMode, setScrollingMode] = useState('vertical');
+  const articles = useArticles();
+  const article = useMemo(() => articles.find((i) => i.id === Number(id)), [articles, id]);
 
-  const isMobile = window.innerWidth <= 767;
+  useEffect(() => {
+    if (!articles.length) dispatch(getFetchFormArticle());
+  }, [dispatch, articles.length]);
 
-  const refs = {
-    title: useRef(null),
-    city: useRef(null),
-    author: useRef(null),
-    blockLeft: useRef(null),
-    blockRight: useRef(null),
-    frameBlock: useRef(null),
-    blockHeadingTitle: useRef(null),
-    imageToDescriptionArticle: useRef(null),
-    imageClose: useRef(null),
-    address_imageClose: useRef(null),
-    blockDescription: useRef(null),
-    quoteBlockLeft: useRef(null),
-    quoteBlockRight: useRef(null),
-    blockRightPhone: useRef(null),
-    constructorBlock: useRef(null),
-    // leftImg1: useRef(null),
-    // leftImg2: useRef(null),
-    // leftImg3: useRef(null),
-    // leftImg4: useRef(null),
-  };
+  const previousArticle = useMemo(() => {
+    if (!articles.length || !article) return null;
+    const currentIndex = articles.findIndex((p) => p.id === article.id);
+    const prevIndex = (currentIndex - 1 + articles.length) % articles.length;
+    return articles[prevIndex];
+  }, [articles, article]);
 
-  const {
-    title,
-    city,
-    author,
-    blockLeft,
-    blockRight,
-    blockDescription,
-    quoteBlockLeft,
-    quoteBlockRight,
-    frameBlock,
-    blockHeadingTitle,
-    imageToDescriptionArticle,
-    imageClose,
-    address_imageClose,
-    constructorBlock,
-    // blockRightPhone,
-    // leftImg1,
-    // leftImg2,
-    // leftImg3,
-    // leftImg4,
-  } = refs;
+  const nextArticle = useMemo(() => {
+    if (!articles.length || !article) return null;
+    const currentIndex = articles.findIndex((p) => p.id === article.id);
+    const nextIndex = (currentIndex + 1) % articles.length;
+    return articles[nextIndex];
+  }, [articles, article]);
 
-  const elementsRight = [
-    // blockRightPhone.current,
-    blockDescription.current,
-    quoteBlockLeft.current,
-    quoteBlockRight.current,
-    frameBlock.current,
-    blockHeadingTitle.current,
-    imageToDescriptionArticle.current,
-    imageClose.current,
-    address_imageClose.current,
-    blockLeft.current,
-    blockRight.current,
-    constructorBlock.current,
-    // leftImg1.current,
-    // leftImg2.current,
-    // leftImg3.current,
-    // leftImg4.current,
-  ];
+  const userSelectedBlocks = article?.ConstructorArticles?.map((el) => el.data) || [];
+
+  const imageOpenSource = pickImage(article?.imageOpen);
+  const imageCloseSource = pickImage(article?.imageClose);
+  const imageAuthorSource = article?.imageAuthor ? pickImage(article.imageAuthor, '') : '';
+
+  const randomArticles = useMemo(() => (articles.length ? shuffle(articles).slice(0, 20) : []), [articles]);
+
+  const isMobile = typeof window !== 'undefined' && window.innerWidth <= 767;
+
+  const title = useRef(null);
+  const city = useRef(null);
+  const author = useRef(null);
+  const blockLeft = useRef(null);
+  const blockRight = useRef(null);
+  const blockDescription = useRef(null);
+  const quoteBlockLeft = useRef(null);
+  const quoteBlockRight = useRef(null);
+  const frameBlock = useRef(null);
+  const blockHeadingTitle = useRef(null);
+  const imageToDescriptionArticle = useRef(null);
+  const imageClose = useRef(null);
+  const address_imageClose = useRef(null);
+  const constructorBlock = useRef(null);
+
+  const elementsRightRef = useRef([]);
+
+  useEffect(() => {
+    elementsRightRef.current = [
+      blockDescription.current,
+      quoteBlockLeft.current,
+      quoteBlockRight.current,
+      frameBlock.current,
+      blockHeadingTitle.current,
+      imageToDescriptionArticle.current,
+      imageClose.current,
+      address_imageClose.current,
+      blockLeft.current,
+      blockRight.current,
+      constructorBlock.current,
+    ];
+  }, []);
 
   useEffect(() => {
     window.scrollTo(20, 0);
 
-    // Скрываем заголовок, ссылку и описание перед анимацией
     if (title.current && city.current) {
       gsap.set([title.current, city.current], { opacity: 0 });
     }
 
-    // Анимируем появление заголовка, затем ссылки, затем описания
-    gsap?.to(title?.current, { duration: 1, opacity: 1, delay: 0.5 });
-    gsap.to(author?.current, { duration: 1, opacity: 1, delay: 1 });
-    gsap?.to(city?.current, { duration: 1, opacity: 1, delay: 0.7 });
+    gsap.to(title.current, { duration: 1, opacity: 1, delay: 0.5 });
+    // gsap.to(author.current, { duration: 1, opacity: 1, delay: 1 });
+    // gsap.to(city.current, { duration: 1, opacity: 1, delay: 0.7 });
 
-    const animateElement = (element) => {
-      if (element) {
-        gsap.from(element, {
-          x: '-100%',
-          opacity: 0,
-          duration: 1.5,
-          delay: 1,
-          ease: 'power4.out',
-          scrollTrigger: {
-            trigger: element,
-          },
-        });
-      }
-      gsap.from(element, { duration: 1, clipPath: { start: '110%' } });
-    };
+    // const animate = (el) => {
+    //   if (!el) return;
+    //   gsap.from(el, {
+    //     x: '-100%',
+    //     opacity: 0,
+    //     duration: 1.5,
+    //     delay: 1,
+    //     ease: 'power4.out',
+    //     scrollTrigger: { trigger: el },
+    //   });
+    // };
 
-    elementsRight.forEach(animateElement);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // elementsRightRef.current.forEach(animate);
   }, []);
+
+  const enableVerticalScrollRef = useRef(true);
+  const isHorizontalScrollRef = useRef(false);
+  const isAtRightEdgeRef = useRef(false);
+
+  const verticalHandler = useCallback((e) => {
+    const el = sliderArticleCardRef.current;
+    onVerticalScroll(el, e, (v) => (enableVerticalScrollRef.current = v));
+  }, []);
+
+  const wheelHandler = useCallback((e) => {
+    const el = sliderArticleCardRef.current;
+    onWheel(
+      el,
+      e,
+      enableVerticalScrollRef.current,
+      isHorizontalScrollRef.current,
+      (v) => (isHorizontalScrollRef.current = v)
+    );
+  }, []);
+
+  const scrollHandler = useCallback(() => {
+    const el = sliderArticleCardRef.current;
+    handleScroll(
+      el,
+      articles,
+      (v) => (enableVerticalScrollRef.current = v),
+      (v) => (isHorizontalScrollRef.current = v),
+      (v) => (isAtRightEdgeRef.current = v)
+    );
+  }, [articles]);
 
   useEffect(() => {
     const el = sliderArticleCardRef.current;
-    if (el) {
-      el.addEventListener('wheel', (e) => onVerticalScroll(el, e, setEnableVerticalScroll), { passive: false });
-      el.addEventListener(
-        'wheel',
-        (e) => onWheel(el, e, enableVerticalScroll, isHorizontalScroll, setIsHorizontalScroll),
-        { passive: false }
-      );
-      el.addEventListener('scroll', () =>
-        handleScroll(el, articles, setEnableVerticalScroll, setIsHorizontalScroll, setIsAtRightEdge)
-      );
-      return () => {
-        el.removeEventListener('wheel', (e) => onVerticalScroll(el, e, setEnableVerticalScroll));
-        el.removeEventListener('wheel', (e) =>
-          onWheel(el, e, enableVerticalScroll, isHorizontalScroll, setIsHorizontalScroll)
-        );
-        el.removeEventListener('scroll', () =>
-          handleScroll(el, articles, setEnableVerticalScroll, setIsHorizontalScroll, setIsAtRightEdge)
-        );
-      };
-    }
-  }, [scrollingMode]);
+    if (!el) return undefined;
 
-  useEffect(() => {
-    dispatch(getFetchFormArticle());
-  }, [dispatch]);
+    el.addEventListener('wheel', verticalHandler, { passive: false });
+    el.addEventListener('wheel', wheelHandler, { passive: false });
+    el.addEventListener('scroll', scrollHandler, { passive: true });
 
-  const currentIndex = useMemo(() => articles.findIndex((p) => p.id === article.id), [articles, article]);
+    return () => {
+      el.removeEventListener('wheel', verticalHandler);
+      el.removeEventListener('wheel', wheelHandler);
+      el.removeEventListener('scroll', scrollHandler);
+    };
+  }, [verticalHandler, wheelHandler, scrollHandler]);
 
-  const previousIndex = (currentIndex - 1 + articles.length) % articles.length;
-  const nextIndex = (currentIndex + 1) % articles.length;
-
-  const previousArticle = articles[previousIndex];
-  const nextArticle = articles[nextIndex];
-  const userSelectedBlocks = article?.ConstructorArticles?.map((el) => el.data) || [];
-  const isFullUrl = (url) => url.startsWith('http://') || url.startsWith('https://');
-
-  const imageOpenSource =
-    article && article.imageOpen
-      ? isFullUrl(article.imageOpen)
-        ? article.imageOpen
-        : `${bucket_url}/images/imageArticle/${article.imageOpen}`
-      : catPhoto;
-
-  const imageCloseSource =
-    article && article.imageClose
-      ? isFullUrl(article.imageClose)
-        ? article.imageClose
-        : `${bucket_url}/images/imageArticle/${article.imageClose}`
-      : catPhoto;
-
-  const imageAuthorSource =
-    article && article.imageAuthor
-      ? isFullUrl(article.imageAuthor)
-        ? article.imageAuthor
-        : `${bucket_url}/images/imageArticle/${article.imageAuthor}`
-      : '';
-
-  // const altTextOpen = (article && article.imageOpen) || 'Default Alt Text';
-  // const altTextClose = (article && article.imageClose) || 'Default Alt Text';
-
-  // Получаем 20 рандомных статей
-  const randomArticles = useMemo(() => {
-    return articles ? [...articles].sort(() => 0.5 - Math.random()).slice(0, 20) : [];
-  }, [articles]);
+  if (!article) return null;
 
   return (
     <>
@@ -214,193 +193,179 @@ const ArticleCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
         <title>{article ? article.title : 'Marks Group'}</title>
         <meta property="og:image" content={article ? `${bucket_url}/images/imageArticle/${article.imageOpen}` : ''} />
       </Helmet>
+
       <div className={`${styles.main_article_card} article-card`}>
-        {article && <ArticleCardSlider slidesCard={[article]} />}
+        <ArticleCardSlider slidesCard={[article]} />
+
         <div className={styles.all_button_div} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
           <AllArticlesButton />
         </div>
+
         <div className={styles.section_article__block__card}>
-          {article && (
-            <div className={styles.cart_article__block__card}>
-              <div className={styles.cart_article__container__block__card}>
-                <div className={styles.article_content__wrapper__block__card}>
-                  <div className={styles.cart_article__content__block__card}>
-                    <div className={styles.cart_article_title__block__card} ref={refs.title}>
-                      {article.title}
-                    </div>
+          <div className={styles.cart_article__block__card}>
+            <div className={styles.cart_article__container__block__card}>
+              <div className={styles.article_content__wrapper__block__card}>
+                <div className={styles.cart_article__content__block__card}>
+                  <div className={styles.cart_article_title__block__card} ref={title}>
+                    {article.title}
                   </div>
-                </div>
-                <div className={styles.cart_article__author__block__card} ref={refs.author}>
-                  {article.author}
-                </div>
-                <div className={styles.cart_article__address__block__card} ref={refs.city}>
-                  {article.city}{' '}
-                  <div className={styles.cart_article__address__svg__block__card}>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="2" height="2" viewBox="0 0 2 2" fill="none">
-                      <circle cx="1" cy="1" r="1" fill="#F6F6F6" />
-                    </svg>{' '}
-                  </div>
-                  {article.dataMonthYear}
                 </div>
               </div>
+              <div className={styles.cart_article__author__block__card} ref={author}>
+                {article.author}
+              </div>
+              <div className={styles.cart_article__address__block__card} ref={city}>
+                {article.city}{' '}
+                <div className={styles.cart_article__address__svg__block__card}>
+                  <svg xmlns="http://www.w3.org/2000/svg" width="2" height="2" viewBox="0 0 2 2" fill="none">
+                    <circle cx="1" cy="1" r="1" fill="#F6F6F6" />
+                  </svg>{' '}
+                </div>
+                {article.dataMonthYear}
+              </div>
             </div>
-          )}
+          </div>
         </div>
-        {article && (
-          <div className={styles.container}>
-            <div className={styles.wrapper}>
-              <div className={styles.header_content}>
-                <div ref={refs.blockLeft} className={styles.header_content_left}>
-                  <div className={styles.title_block}>
-                    <div className={styles.left_title}>{article.titleTextBlock}</div>
+
+        <div className={styles.container}>
+          <div className={styles.wrapper}>
+            <div className={styles.header_content}>
+              <div ref={blockLeft} className={styles.header_content_left}>
+                <div className={styles.title_block}>
+                  <div className={styles.left_title}>{article.titleTextBlock}</div>
+                </div>
+                <div className={styles.title_text}>
+                  {containsListTags(article.descriptionArticle) ? (
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: renderListWithDots(article.descriptionArticle),
+                      }}
+                    />
+                  ) : (
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: renderListWithDots(article.descriptionArticle),
+                      }}
+                    />
+                  )}
+                </div>
+                <div className={styles.result_container}></div>
+              </div>
+
+              {imageAuthorSource ? (
+                <div ref={blockRight} className={styles.header_content_right}>
+                  <div className={styles.local_container_photo_author}>
+                    <img
+                      className={styles.container__imageAuthor_articleCard}
+                      src={imageAuthorSource}
+                      alt={article.imageAuthor || 'Default Alt Text'}
+                      loading="lazy"
+                    />
+                    <div className={styles.author_name}>{article.author}</div>
+                    <div className={styles.text_author}>Автор статьи</div>
                   </div>
-                  <div className={styles.title_text}>
-                    {containsListTags(article.descriptionArticle) ? (
+                </div>
+              ) : null}
+            </div>
+
+            <div className={styles.blockImg}>
+              <div className={styles.container}>
+                <div className={styles.item}>
+                  <img className={styles.item_img} src={imageOpenSource} alt="" loading="lazy" />
+                  <div className={styles.leftImg1_object_text1}>
+                    {containsListTags(article.textBlock) ? (
                       <div
                         dangerouslySetInnerHTML={{
-                          __html: renderListWithDots(article.descriptionArticle),
+                          __html: renderListWithDots(article.textBlock),
                         }}
                       />
                     ) : (
                       <div
                         dangerouslySetInnerHTML={{
-                          __html: renderListWithDots(article.descriptionArticle),
+                          __html: renderListWithDots(article.textBlock),
                         }}
                       />
                     )}
                   </div>
-                  <div className={styles.result_container}></div>
-                </div>
-                {article && article.imageAuthor ? (
-                  <div ref={refs.blockRight} className={styles.header_content_right}>
-                    <div className={styles.local_container_photo_author}>
-                      <img
-                        className={styles.container__imageAuthor_articleCard}
-                        src={imageAuthorSource}
-                        alt={article.imageAuthor || 'Default Alt Text'}
-                      />
-                      <div className={styles.author_name}>{article.author}</div>
-                      <div className={styles.text_author}>Автор статьи</div>
-                    </div>
-                  </div>
-                ) : null}
-              </div>
-              <div className={styles.blockImg}>
-                <div className={styles.container}>
-                  <div className={styles.item} ref={refs.leftImg1}>
-                    <img className={styles.item_img} src={imageOpenSource} alt="" loading="lazy" />
-                    <div className={styles.leftImg1_object_text1}>
-                      {/* {article.textBlock} */}
-                      {containsListTags(article.textBlock) ? (
-                        <div
-                          dangerouslySetInnerHTML={{
-                            __html: renderListWithDots(article.textBlock),
-                          }}
-                        />
-                      ) : (
-                        <div
-                          dangerouslySetInnerHTML={{
-                            __html: renderListWithDots(article.textBlock),
-                          }}
-                        />
-                      )}
-                    </div>
-                  </div>
                 </div>
               </div>
-              <div className={styles.div_conteiner} ref={refs.constructorBlock}>
-                {userSelectedBlocks?.map((innerBlocks, outerIndex) => (
-                  <div key={outerIndex}>
-                    {innerBlocks?.map((block, innerIndex) => (
-                      <ConstructorBlockRenderer
-                        handleMouseEnter={handleMouseEnter}
-                        handleMouseLeave={handleMouseLeave}
-                        key={innerIndex}
-                        block={block}
-                      />
-                    ))}
-                  </div>
-                ))}
-              </div>
-              <div className={styles.item_container_imageClose} ref={refs.imageClose}>
-                <div className={styles.item}>
-                  <img className={styles.item_img_close} src={imageCloseSource} alt="" loading="lazy" />
-                </div>
-              </div>
-              <div className={styles.container_author_wrapper}>
-                <div className={styles.container_author_address_imageClose_share_article}>
-                  <div className={styles.container_author_address_imageClose} ref={refs.address_imageClose}>
-                    {/* <img
-                    className={styles.item_img}
-                    src={`${Host}/images/imageArticle/${article.imageClose}`}
-                    alt={article.imageClose}
-                  /> */}
-                    <div className={styles.cart_article__author__block__card_imageClose}>{article.author}</div>
-                    <div className={styles.cart_article__address__block__card_imageClose}>
-                      {article.city}{' '}
-                      <div className={styles.cart_article__address__svg__block__card_imageClose}>
-                        <svg xmlns="http://www.w3.org/2000/svg" width="2" height="2" viewBox="0 0 2 2" fill="none">
-                          <circle cx="1" cy="1" r="1" fill="#959DA6" />
-                        </svg>{' '}
-                      </div>
-                      {article.dataMonthYear}
-                    </div>
-                  </div>
-                  <div className={styles.share_article}>
-                    <div>Поделиться статьей</div>
-                    <div id="articles" className={styles.social_links_articleCard}>
-                      <button
-                        onMouseEnter={handleMouseEnter}
-                        onMouseLeave={handleMouseLeave}
-                        onClick={() => shareToVK(article, bucket_url)}>
-                        <span className={styles.social_links_item} style={{ marginRight: '18px', color: '#FF7F6A' }}>
-                          VK
-                        </span>
-                      </button>
-                      <button onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} onClick={() => {}}>
-                        <span className={styles.social_links_item} style={{ marginRight: '18px', color: '#FF7F6A' }}>
-                          IG
-                        </span>
-                      </button>
+            </div>
 
-                      <button onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} onClick={() => {}}>
-                        <span className={styles.social_links_item} style={{ marginRight: '18px', color: '#FF7F6A' }}>
-                          BE
-                        </span>
-                      </button>
-                      {/* <button
-                  onMouseEnter={handleMouseEnter}
-                  onMouseLeave={handleMouseLeave}
-                  onClick={() => shareToWhatsApp(article, bucket_url)}
-                >
-                  <span className={styles.social_links_item} style={{ marginRight: '18px', color: '#FF7F6A' }}>
-                    WA
-                  </span>
-                </button> */}
+            <div className={styles.div_conteiner} ref={constructorBlock}>
+              {userSelectedBlocks?.map((innerBlocks, outerIndex) => (
+                <div key={outerIndex}>
+                  {innerBlocks?.map((block, innerIndex) => (
+                    <ConstructorBlockRenderer
+                      handleMouseEnter={handleMouseEnter}
+                      handleMouseLeave={handleMouseLeave}
+                      key={innerIndex}
+                      block={block}
+                    />
+                  ))}
+                </div>
+              ))}
+            </div>
 
-                      {/* <button onClick={() => shareToViber(article, Host)}>
-                <span
-                  className={styles.social_links_item}
-                  style={{ marginRight: "22px", color: "#FF7F6A" }}
-                >
-                  VB
-                </span>
-              </button> */}
-                      <button
-                        onMouseEnter={handleMouseEnter}
-                        onMouseLeave={handleMouseLeave}
-                        onClick={() => shareToTelegram(article, bucket_url)}>
-                        <span className={styles.social_links_item} style={{ color: '#FF7F6A' }}>
-                          TG
-                        </span>
-                      </button>
+            <div className={styles.item_container_imageClose} ref={imageClose}>
+              <div className={styles.item}>
+                <img className={styles.item_img_close} src={imageCloseSource} alt="" loading="lazy" />
+              </div>
+            </div>
+
+            <div className={styles.container_author_wrapper}>
+              <div className={styles.container_author_address_imageClose_share_article}>
+                <div className={styles.container_author_address_imageClose} ref={address_imageClose}>
+                  <div className={styles.cart_article__author__block__card_imageClose}>{article.author}</div>
+                  <div className={styles.cart_article__address__block__card_imageClose}>
+                    {article.city}{' '}
+                    <div className={styles.cart_article__address__svg__block__card_imageClose}>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="2" height="2" viewBox="0 0 2 2" fill="none">
+                        <circle cx="1" cy="1" r="1" fill="#959DA6" />
+                      </svg>{' '}
                     </div>
+                    {article.dataMonthYear}
+                  </div>
+                </div>
+
+                <div className={styles.share_article}>
+                  <div>Поделиться статьей</div>
+                  <div id="articles" className={styles.social_links_articleCard}>
+                    <button
+                      onMouseEnter={handleMouseEnter}
+                      onMouseLeave={handleMouseLeave}
+                      onClick={() => shareToVK(article, bucket_url)}>
+                      <span className={styles.social_links_item} style={{ marginRight: '18px', color: '#FF7F6A' }}>
+                        VK
+                      </span>
+                    </button>
+
+                    <button onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} onClick={() => {}}>
+                      <span className={styles.social_links_item} style={{ marginRight: '18px', color: '#FF7F6A' }}>
+                        IG
+                      </span>
+                    </button>
+
+                    <button onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} onClick={() => {}}>
+                      <span className={styles.social_links_item} style={{ marginRight: '18px', color: '#FF7F6A' }}>
+                        BE
+                      </span>
+                    </button>
+
+                    <button
+                      onMouseEnter={handleMouseEnter}
+                      onMouseLeave={handleMouseLeave}
+                      onClick={() => shareToTelegram(article, bucket_url)}>
+                      <span className={styles.social_links_item} style={{ color: '#FF7F6A' }}>
+                        TG
+                      </span>
+                    </button>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-        )}
+        </div>
+
         <div className={styles.button_article_articleCard}>
           {previousArticle && (
             <Link
@@ -416,6 +381,7 @@ const ArticleCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
               </div>
             </Link>
           )}
+
           {nextArticle && (
             <Link
               className={styles.button_article_link_articleCard2}
@@ -431,8 +397,10 @@ const ArticleCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
             </Link>
           )}
         </div>
+
         <div className={styles.article_name_text}>Ещё по теме</div>
-        <div className={styles.swiper_article_container}>{/* <SwiperContainerProgect projects={projects} /> */}</div>
+        <div className={styles.swiper_article_container} />
+
         <div className={styles.main_article_articleCard}>
           <Swiper
             className={styles.slider_card_container_article_articleCard}
@@ -443,60 +411,28 @@ const ArticleCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
             direction="horizontal"
             loop={true}
             breakpoints={{
-              2500: {
-                slidesPerView: 4.7,
-              },
-              2000: {
-                slidesPerView: 4.2,
-              },
-              1750: {
-                slidesPerView: 3.5,
-              },
-              1440: {
-                slidesPerView: 2.7,
-              },
-              1300: {
-                slidesPerView: 2.7,
-              },
-              1200: {
-                slidesPerView: 2.5,
-              },
-              1024: {
-                slidesPerView: 2.3,
-              },
-              900: {
-                slidesPerView: 2.1,
-              },
-              700: {
-                slidesPerView: 2.1,
-              },
+              2500: { slidesPerView: 4.7 },
+              2000: { slidesPerView: 4.2 },
+              1750: { slidesPerView: 3.5 },
+              1440: { slidesPerView: 2.7 },
+              1300: { slidesPerView: 2.7 },
+              1200: { slidesPerView: 2.5 },
+              1024: { slidesPerView: 2.3 },
+              900: { slidesPerView: 2.1 },
+              700: { slidesPerView: 2.1 },
             }}>
-            {randomArticles?.map((article, index) => {
-              if (!article) {
-                return null;
-              }
-
-              const imagePathsForArticle = article.imageTitle
-                ? article.imageTitle.split(',').map((el) => el.trim())
-                : [];
+            {randomArticles.map((ra, index) => {
+              const imagePathsForArticle = ra.imageTitle ? ra.imageTitle.split(',').map((el) => el.trim()) : [];
               const firstImageName = imagePathsForArticle[0] || null;
-              const defaultImagePath = `${catPhoto}`;
-              const isFullUrl = (url) => url.startsWith('http://') || url.startsWith('https://');
-
-              const firstImagePath = firstImageName
-                ? isFullUrl(firstImageName)
-                  ? firstImageName
-                  : `${bucket_url}/images/imageArticle/${firstImageName}`
-                : defaultImagePath;
+              const firstImagePath = firstImageName ? pickImage(firstImageName, catPhoto) : catPhoto;
 
               return (
                 <SwiperSlide
-                  key={article.id}
-                  onScroll={handleScroll}
+                  key={ra.id}
                   id="slider_container_item_card"
                   className={styles.slider_container_item_card_articleCard}
                   style={index % 2 === 1 ? { paddingTop: '10rem' } : {}}>
-                  <Link to={`/publication/${article.id}`} key={article.id}>
+                  <Link to={`/publication/${ra.id}`}>
                     <div className={styles.wrapper_container_item_card_articleCard}>
                       <img
                         className={styles.container__imageTitle_articleCard}
@@ -504,19 +440,20 @@ const ArticleCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
                         alt={firstImagePath}
                         onMouseEnter={handleMouseHover}
                         onMouseLeave={handleMouseLeave}
+                        loading="lazy"
                       />
                     </div>
                     <div className={styles.title_articleCard}>
-                      <div className={styles.container__title_articleCard}>{article.title}</div>
+                      <div className={styles.container__title_articleCard}>{ra.title}</div>
                     </div>
                     <div className={styles.countryCity_monthYear_articleCard}>
-                      <div className={styles.container__countryCity_articleCard}>{article.city} </div>
+                      <div className={styles.container__countryCity_articleCard}>{ra.city} </div>
                       <div className={styles.cart_article__address__svg_articleCard}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="2" height="2" viewBox="0 0 2 2" fill="none">
                           <circle cx="1" cy="1" r="1" fill="#959DA6" />
                         </svg>{' '}
                       </div>
-                      <div className={styles.container__monthYear_articleCard}>{article.dataMonthYear}</div>
+                      <div className={styles.container__monthYear_articleCard}>{ra.dataMonthYear}</div>
                     </div>
                   </Link>
                 </SwiperSlide>
@@ -524,9 +461,10 @@ const ArticleCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
             })}
           </Swiper>
         </div>
+
         <div className={styles.article_container_articleCard_sliderMobile}>
           <SliderContainerArticleCard articles={randomArticles} />
-        </div>{' '}
+        </div>
       </div>
     </>
   );
