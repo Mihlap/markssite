@@ -1,4 +1,3 @@
-import React from 'react';
 import styles from './ConstructorPage.module.scss';
 
 import svg1 from './svg/Group4650.svg';
@@ -126,7 +125,7 @@ export default function ConstructorPage({ handleClick }) {
             [
               {
                 type: 'file',
-                label: 'Слайдер *допускается загрузка 8ми изображений',
+                label: 'Слайдер *допускается загрузка 8-ми изображений',
                 required: true,
               },
             ],

@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from '../../style/style-card.module.scss';
-import FormAddNews from './FormAddNews';
+import FormAddNews from '../AddNews/FormAddNews/FormAddNews';
 import FormEditNews from './FormEditNews';
 import { deleteFormArticle, getFetchFormArticle } from '../../../store/Slice/articleSlice';
 import LoadingModal from '../../add-project/loading/LoadingModal';
@@ -28,10 +28,10 @@ export default function AddNews({ user }) {
   const isMountedRef = useRef(true);
 
   const updateModalBlockHeight = useCallback(() => {
-      const windowHeight = window.innerHeight;
-      const maxHeight = Math.min(windowHeight - 100, 1900);
-      setModalBlockHeight(`${maxHeight}px`);
-    }, []);
+    const windowHeight = window.innerHeight;
+    const maxHeight = Math.min(windowHeight - 100, 1900);
+    setModalBlockHeight(`${maxHeight}px`);
+  }, []);
 
   useEffect(() => {
     dispatch(getFetchFormArticle());
@@ -54,7 +54,6 @@ export default function AddNews({ user }) {
     }
   }, [editArticleData]);
 
-
   const handleCloseModal = useCallback(() => {
     setIsModalOpen(false);
   }, []);
@@ -74,17 +73,17 @@ export default function AddNews({ user }) {
     });
   }, []);
 
-    const handleCopyClick = useCallback(async (id) => {
-      try {
-        await navigator.clipboard.writeText(id);
-        if (isMountedRef.current) {
-          setIsCopied(true);
-          setCopiedId(id);
-        }
-      } catch (err) {
-        console.error('Unable to copy article to clipboard:', err);
+  const handleCopyClick = useCallback(async (id) => {
+    try {
+      await navigator.clipboard.writeText(id);
+      if (isMountedRef.current) {
+        setIsCopied(true);
+        setCopiedId(id);
       }
-    }, []);
+    } catch (err) {
+      console.error('Unable to copy article to clipboard:', err);
+    }
+  }, []);
 
   const handleEditClick = useCallback(
     async (id) => {
@@ -110,15 +109,15 @@ export default function AddNews({ user }) {
     [dispatch, handleDeleteModalClose]
   );
 
-    useEffect(() => {
-      if (isCopied) {
-        const timer = setTimeout(() => {
-          setIsCopied(false);
-          setCopiedId('');
-        }, 3000);
-        return () => clearTimeout(timer);
-      }
-    }, [isCopied]);
+  useEffect(() => {
+    if (isCopied) {
+      const timer = setTimeout(() => {
+        setIsCopied(false);
+        setCopiedId('');
+      }, 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [isCopied]);
 
   const toggleActive = useCallback(() => {
     dispatch(updateToggleStateForButton2Async(!isActiveForButton2));
@@ -280,6 +279,3 @@ export default function AddNews({ user }) {
     </>
   );
 }
-
-
-// 222222222

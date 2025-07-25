@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState, useCallback } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 import Select from 'react-select';
 import { transliterate } from 'transliteration';
 import { useDispatch } from 'react-redux';

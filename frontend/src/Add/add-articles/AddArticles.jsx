@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import styles from '../style/style-card.module.scss';
 import AddNews from './AddNews/AddNews';
 import AddJournal from './AddJournal/AddJournal';
