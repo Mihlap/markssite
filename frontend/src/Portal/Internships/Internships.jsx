@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, useMemo } from 'react';
+import React, { useEffect, useState, useCallback, useMemo, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from '../Vacancies/VacanciesMain/VacanciesComponent/VacanciesComponent.module.css';
@@ -17,6 +17,9 @@ const Internships = ({ handleMouseEnter, handleMouseLeave, handleMouseHover, hid
   const [showManyVacancies, setShowManyVacancies] = useState(false);
   const [totalDisplayedVacancies, setTotalDisplayedVacancies] = useState(6);
   const [windowWidth, setWindowWidth] = useState(window.innerWidth);
+
+  const wrapperRef = useRef(null);
+
 
   const vacanciesMain = useMemo(() => [...vacancies].reverse(), [vacancies]);
 
@@ -43,6 +46,13 @@ const Internships = ({ handleMouseEnter, handleMouseLeave, handleMouseHover, hid
     dispatch(getFetchForm());
   }, [dispatch]);
 
+ useEffect(() => {
+   const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+   if (isSafari && wrapperRef.current) {
+     wrapperRef.current.classList.add('safari');
+   }
+ }, []);
+
   const toggleShowAllVacancies = useCallback(() => {
     setShowManyVacancies((prev) => !prev);
   }, []);
@@ -63,7 +73,7 @@ const Internships = ({ handleMouseEnter, handleMouseLeave, handleMouseHover, hid
       </Helmet>
       {!hideVacancies && (
         <div className={styles.main_vacancies_block}>
-          <div className={styles.wrapper_vacancies}>
+          <div className={styles.wrapper_vacancies} ref={wrapperRef}>
             <div className={styles.rocket_model}>
               <RocketComponents />
             </div>

@@ -13,6 +13,7 @@
     padding-top: 2.5rem;
     padding-bottom: 1.75rem;
   }
+
   &__blockAddEvent {
     padding-top: 3.75rem;
   }
@@ -25,7 +26,6 @@
     line-height: 2.5rem;
   }
 
-  // ToggleButton.scss
   .toggleButton {
     width: 40px;
     height: 24px;
@@ -61,13 +61,13 @@
     justify-content: space-between;
   }
 
-  
+
   .card_components_admin__hide_block_top {
-   margin-top: -5.625rem; 
-   position: relative; 
-   z-index: 1; 
-   margin-bottom: 6.25rem;
- }
+    margin-top: -5.625rem;
+    position: relative;
+    z-index: 1;
+    margin-bottom: 6.25rem;
+  }
 
   &__hide_block {
     display: flex;
@@ -75,7 +75,7 @@
     text-align: center;
     gap: 10px;
     margin-top: 10px;
-  }  
+  }
 
 
   &__hide_text {
@@ -105,10 +105,6 @@
     &:hover {
       background-color: var(--dark-blue-389FFF);
     }
-
-    // &:hover .card_components_admin__icon circle {
-    //     fill: var(--black-1D2E43);
-    // }
   }
 
   &__icon circle {
@@ -134,7 +130,6 @@
 
   .formAddProjectClass {
     max-height: 400px;
-    /* например, 400px */
     overflow-y: auto;
   }
 
@@ -146,7 +141,6 @@
     width: 100%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.6);
-    /* Затемнение фона */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -154,11 +148,10 @@
   }
 
   &__modal_block {
-    position: relative; // Add position: relative to the modal block
+    position: relative;
     max-height: 900px;
     overflow: hidden;
     background-color: #fff;
-    // padding: 20px;
     border-radius: 1rem;
     box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
     height: 100%;
@@ -195,7 +188,6 @@
 
   &__close_button:hover {
     transform: scale(1.2);
-    /* Увеличиваем размер кнопки при наведении в 1.2 раза */
   }
 
   &__loading_list {
@@ -423,8 +415,6 @@
     gap: 10px;
     opacity: 0;
     animation: fade-in 0.2s ease-in forwards, fade-out 0.3s 3s ease-out forwards;
-    /* Добавьте задержку в 3 секунды перед началом анимации fade-out */
-    /* Добавляем анимации появления и исчезновения */
 
     &::after {
       content: '';
@@ -486,13 +476,13 @@
   display: flex;
   flex: 0 1 29.9%;
 
- &__img {
-        object-fit: cover;
-        object-position: center;
-        width: 100%;
-        height: 100%;
-        border-radius: 1rem;
-      }
+  &__img {
+    object-fit: cover;
+    object-position: center;
+    width: 100%;
+    height: 100%;
+    border-radius: 1rem;
+  }
 }
 
 .cart_vacancy_container {
@@ -521,7 +511,6 @@
     line-height: 20px;
     color: var(--black-4E4E4E);
     padding-left: 2rem;
-    // margin-right: 2rem;
   }
 
   &__department {
@@ -574,8 +563,6 @@
     gap: 10px;
     opacity: 0;
     animation: fade-in 0.2s ease-in forwards, fade-out 0.3s 3s ease-out forwards;
-    /* Добавьте задержку в 3 секунды перед началом анимации fade-out */
-    /* Добавляем анимации появления и исчезновения */
 
     &::after {
       content: '';
@@ -655,7 +642,7 @@
   background-color: var(--light-gray-C0C5CB);
 }
 
-// стили помойного ведра
+// стили ведра
 .del_block {
   position: absolute;
   right: 80px;
@@ -814,7 +801,6 @@
   }
 
   // стили удаления вакансии
-
   .del_block_vacancy {
     display: flex;
     align-items: center;
@@ -965,7 +951,6 @@
 
   &__close_button:hover {
     transform: scale(1.2);
-    /* Увеличиваем размер кнопки при наведении в 1.2 раза */
   }
 }
 
@@ -995,7 +980,6 @@
       font-weight: 400;
       line-height: 24px;
       margin-right: 8px;
-      /* Отступ между текстом и кнопкой */
     }
 
     &:hover {
@@ -1024,7 +1008,6 @@
       font-weight: 400;
       line-height: 24px;
       margin-right: 8px;
-      /* Отступ между текстом и кнопкой */
     }
 
     &:hover {
@@ -1034,7 +1017,6 @@
 }
 
 // стили адаптив
-
 @media screen and (min-width: 1024px) and (max-width: 1600px) {
   .card_components_admin {
     padding-left: 2rem;
