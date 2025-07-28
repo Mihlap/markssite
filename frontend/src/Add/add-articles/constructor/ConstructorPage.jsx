@@ -1,3 +1,4 @@
+import React from 'react';
 import styles from './ConstructorPage.module.scss';
 
 import svg1 from './svg/Group4650.svg';
@@ -117,6 +118,7 @@ export default function ConstructorPage({ handleClick }) {
       >
         <img src={svg4} alt="svg_three_icon" />
       </div>
+
       {/* слайдер с картинками  */}
       <div
         className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockFive}`}
@@ -125,7 +127,7 @@ export default function ConstructorPage({ handleClick }) {
             [
               {
                 type: 'file',
-                label: 'Слайдер *допускается загрузка 8-ми изображений',
+                label: 'Слайдер *допускается загрузка 8ми изображений',
                 required: true,
               },
             ],
@@ -135,6 +137,7 @@ export default function ConstructorPage({ handleClick }) {
       >
         <img src={svg5} alt="svg_three_icon" />
       </div>
+
       {/* видео */}
       <div
         className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockSix}`}
@@ -153,6 +156,7 @@ export default function ConstructorPage({ handleClick }) {
       >
         <img src={svg6} alt="svg_six_icon" />
       </div>
+      
       {/* видео для ссылки */}
       <div
         className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockVideoFrame}`}

@@ -154,7 +154,7 @@ export async function changeHandler(
         break;
       case 'imageClose':
         isLoadingState = setIsLoadingCloseImage;
-        break;   
+        break;
       default:
         console.error('Unrecognized input name:', inputName);
         return;
@@ -186,7 +186,7 @@ export async function changeHandler(
         }
       })
     );
-  
+
     newFiles = newFiles.filter((file) => file !== null);
 
     switch (event.target.name) {
@@ -259,5 +259,3 @@ export async function getEmbedLink(link) {
   }
   return link;
 }
-
-
