@@ -15,8 +15,7 @@ export default function SliderUploadBlock({
   setIsLoadingDropPhoto,
   setIsLoadingOpenImage,
   setIsLoadingCloseImage,
-  handleRemovePreviewPhoto,
-  previewPhotos,
+  handleRemovePreviewPhoto,  
   isLoadingDropPhoto,
 }) {
   return (
