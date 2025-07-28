@@ -1,6 +1,6 @@
 import compressImageFile from 'browser-image-compression';
 const { transliterate } = require('transliteration');
-// formHelpers.js
+
 export const removePreviewPhoto = (
   previewPhotos,
   setPreviewPhotos,
@@ -13,7 +13,6 @@ export const removePreviewPhoto = (
   updatedPreviewPhotos.splice(index, 1);
   setPreviewPhotos(updatedPreviewPhotos);
 
-  // Удаление фото из массива выбранных файлов
   const updatedDropPhotos = [...inputData.dropPhoto];
   updatedDropPhotos.splice(index, 1);
 
@@ -28,7 +27,6 @@ export const removePreviewPhoto = (
     imageTitle: updatedImageTitle,
   }));
 
-  // Возвращаем label, если все фотографии удалены
   if (updatedPreviewPhotos.length === 0) {
     setIsDropPhotoVisible(true);
   }
@@ -45,9 +43,8 @@ export const removePreviewPhotoAva = (
   const updatedPreviewPhotosAva = [...previewPhotoAva];
   updatedPreviewPhotosAva.splice(index, 1);
   setPreviewPhotoAva(updatedPreviewPhotosAva);
-  setIsPhotoAvaVisible(updatedPreviewPhotosAva.length > 0);
+  setIsPhotoAvaVisible(updatedPreviewPhotosAva.length === 0);
 
-  // Удаление фото из массива выбранных файлов
   const updatedDropPhotosAva = Array.isArray(inputData.photoAva) ? [...inputData.photoAva] : [];
   updatedDropPhotosAva.splice(index, 1);
 
@@ -116,12 +113,9 @@ function generateUniqueName(originalName) {
   const randomNum = Math.floor(Math.random() * 10000);
   const fileExtension = originalName.split('.').pop();
 
-  // Транслитерация части оригинального имени файла
   const sliceOfOriginalName = transliterate(originalName.slice(0, 5));
 
-  const newName = `file_${sliceOfOriginalName}_${timestamp}_${randomNum}.${fileExtension}`;
-
-  // console.log("Generated name:", newName);
+  const newName = `file_${sliceOfOriginalName}_${timestamp}_${randomNum}.${fileExtension}`;;
 
   return newName;
 }
@@ -161,7 +155,6 @@ export async function changeHandler(
       case 'imageClose':
         isLoadingState = setIsLoadingCloseImage;
         break;
-      // Добавьте другие case для других input элементов, если они есть
       default:
         console.error('Unrecognized input name:', inputName);
         return;
@@ -184,7 +177,7 @@ export async function changeHandler(
             });
           } catch (error) {
             console.error('Ошибка при сжатии файла:', error);
-            return null; // В случае ошибки сжатия, вернуть null
+            return null;
           }
         } else {
           return new File([originalFile], uniqueName, {
@@ -194,7 +187,6 @@ export async function changeHandler(
       })
     );
 
-    // Отфильтровать null значения, если есть ошибки сжатия
     newFiles = newFiles.filter((file) => file !== null);
 
     switch (event.target.name) {
