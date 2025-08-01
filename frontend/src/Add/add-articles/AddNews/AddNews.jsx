@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styles from '../../style/style-card.module.scss';
-import FormAddNews from '../AddNews/FormAddNews/FormAddNews';
-import FormEditNews from './FormEditNews';
+import FormAddNews from '../AddNews/FormAddEditNews/FormAddNews';
+import FormEditNews from '../AddNews/FormAddEditNews/FormEditNews';
 import { deleteFormArticle, getFetchFormArticle } from '../../../store/Slice/articleSlice';
 import LoadingModal from '../../add-project/loading/LoadingModal';
 import { fetchToggleStateForButton2Async, updateToggleStateForButton2Async } from '../../../store/Slice/toggleSlice';

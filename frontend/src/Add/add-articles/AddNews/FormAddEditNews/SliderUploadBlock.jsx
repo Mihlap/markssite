@@ -15,8 +15,9 @@ export default function SliderUploadBlock({
   setIsLoadingDropPhoto,
   setIsLoadingOpenImage,
   setIsLoadingCloseImage,
-  handleRemovePreviewPhoto,  
+  handleRemovePreviewPhoto,
   isLoadingDropPhoto,
+  bucket_url,
 }) {
   return (
     <div className={`${styles.slider_container} ${styles.flex_block_gap}`}>
@@ -25,9 +26,7 @@ export default function SliderUploadBlock({
           Слайдер <span> *допускается загрузка 4х изображений</span>
         </div>
       </div>
-      <label
-        className={styles.slider_container__customFileUpload}
-        style={{ width: 'fit-content' }}>
+      <label className={styles.slider_container__customFileUpload} style={{ width: 'fit-content' }}>
         <input
           type="file"
           name="dropPhoto"
@@ -67,20 +66,45 @@ export default function SliderUploadBlock({
       </label>
       {isLoadingDropPhoto && <div className={styles.preview_photos_container__loading}>Загрузка . . .</div>}
       <div className={styles.preview_photos_container}>
-        {inputData.dropPhoto.map((preview, index) => (
-          <div key={index} className={styles.preview_photos_container__block}>
-            <img
-              className={styles.preview_photos_container__img}
-              src={URL.createObjectURL(preview)}
-              alt={`Preview ${index}`}
-            />
-            <div
-              className={styles.preview_photos_container__remove_icon}
-              onClick={() => handleRemovePreviewPhoto(index)}>
-              <span></span>
+        {Array.isArray(inputData.dropPhoto) &&
+          inputData.dropPhoto.length > 0 &&
+          inputData.dropPhoto.map((preview, index) => (
+            <div key={index} className={styles.preview_photos_container__block}>
+              <img
+                className={styles.preview_photos_container__img}
+                src={URL.createObjectURL(preview)}
+                alt={`Preview ${index}`}
+              />
+              <div
+                className={styles.preview_photos_container__remove_icon}
+                onClick={() => handleRemovePreviewPhoto(index)}>
+                <span></span>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        {inputData.imageTitle !== null &&
+          inputData.dropPhoto.length === 0 &&
+          [] // Создаем новый массив
+            .concat(inputData.imageTitle) // Преобразуем inputData.imageTitle в массив
+            .filter(Boolean) // Убираем пустые значения
+            .map((imageFileName, index) => (
+              <div key={index} className={styles.preview_photos_container__block}>
+                <img
+                  className={styles.preview_photos_container__img}
+                  src={
+                    imageFileName.trim().includes('https')
+                      ? imageFileName.trim()
+                      : `${bucket_url}/images/imageArticle/${imageFileName.trim()}`
+                  }
+                  alt={`Preview ${index}`}
+                />
+                <div
+                  className={styles.preview_photos_container__remove_icon}
+                  onClick={() => handleRemovePreviewPhoto(index)}>
+                  <span></span>
+                </div>
+              </div>
+            ))}
       </div>
     </div>
   );
