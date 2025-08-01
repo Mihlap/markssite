@@ -211,71 +211,69 @@ export default function FormAddNews({ setIsModalOpen }) {
       <div className={styles.form_container__block_form}>
         <form className={styles.form_container__form} onSubmit={submitHandler}>
           <HeaderFields
-            {...{
-              inputData,
-              setInputData,
-              selectedCompetencies,
-              setSelectedCompetencies,
-              setIsFocused,
-              customStyles,
-              styles,
-              PublicationIndicator,
-              PublicationContainer,
-              changeHandler,
-            }}
+            inputData={inputData}
+            setInputData={setInputData}
+            selectedCompetencies={selectedCompetencies}
+            setSelectedCompetencies={setSelectedCompetencies}
+            setIsFocused={setIsFocused}
+            customStyles={customStyles}
+            styles={styles}
+            PublicationIndicator={PublicationIndicator}
+            PublicationContainer={PublicationContainer}
+            changeHandler={changeHandler}
           />
 
           <SliderUploadBlock
-            {...{
-              styles,
-              inputData,
-              changeHandler,
-              setInputData,
-              previewPhotos,
-              setPreviewPhotos,
-              isLoadingDropPhoto,
-              setIsLoadingDropPhoto,
-              setIsDropPhotoVisible,
-              setIsLoading,
-              handleRemovePreviewPhoto,
-            }}
+            styles={styles}
+            inputData={inputData}
+            changeHandler={changeHandler}
+            setInputData={setInputData}
+            previewPhotos={previewPhotos}
+            setPreviewPhotos={setPreviewPhotos}
+            isLoadingDropPhoto={isLoadingDropPhoto}
+            setIsLoadingDropPhoto={setIsLoadingDropPhoto}
+            setIsDropPhotoVisible={setIsDropPhotoVisible}
+            setIsLoading={setIsLoading}
+            handleRemovePreviewPhoto={handleRemovePreviewPhoto}
           />
 
-          <TextBlockFields {...{ styles, inputData, setInputData, changeHandler, quillRef1 }} />
+          <TextBlockFields
+            styles={styles}
+            inputData={inputData}
+            setInputData={setInputData}
+            changeHandler={changeHandler}
+            quillRef1={quillRef1}
+          />
 
           <AuthorPhotoBlock
-            {...{
-              styles,
-              inputData,
-              changeHandler,
-              setInputData,
-              setPreviewPhotos,
-              setPreviewPhotoAva,
-              setIsPhotoAvaVisible,
-              setIsLoading,
-              previewPhotoAva,
-              isPhotoAvaVisible,
-              isLoading,
-              handleRemovePreviewPhotoAva,
-            }}
+            styles={styles}
+            inputData={inputData}
+            changeHandler={changeHandler}
+            setInputData={setInputData}
+            setPreviewPhotos={setPreviewPhotos}
+            setPreviewPhotoAva={setPreviewPhotoAva}
+            setIsPhotoAvaVisible={setIsPhotoAvaVisible}
+            setIsLoading={setIsLoading}
+            previewPhotoAva={previewPhotoAva}
+            isPhotoAvaVisible={isPhotoAvaVisible}
+            isLoading={isLoading}
+            handleRemovePreviewPhotoAva={handleRemovePreviewPhotoAva}
           />
 
           <OpenImageBlock
-            {...{
-              styles,
-              inputData,
-              changeHandler,
-              setInputData,
-              setPreviewPhotos,
-              setPreviewPhotoOpen,
-              setIsPhotoOpenVisible,
-              setIsLoading,
-              setIsLoadingOpenImage,
-              previewPhotoOpen,
-              isPhotoOpenVisible,
-              isLoadingOpenImage,
-              handleRemovePreviewPhotoOpen,
-            }}
+            styles={styles}
+            inputData={inputData}
+            changeHandler={changeHandler}
+            setInputData={setInputData}
+            setPreviewPhotos={setPreviewPhotos}
+            setPreviewPhotoOpen={setPreviewPhotoOpen}
+            setIsPhotoOpenVisible={setIsPhotoOpenVisible}
+            setIsLoading={setIsLoading}
+            setIsLoadingOpenImage={setIsLoadingOpenImage}
+            previewPhotoOpen={previewPhotoOpen}
+            isPhotoOpenVisible={isPhotoOpenVisible}
+            isLoadingOpenImage={isLoadingOpenImage}
+            handleRemovePreviewPhotoOpen={handleRemovePreviewPhotoOpen}
           />
 
           <SecondaryTextBlock styles={styles} quillRef2={quillRef2} inputData={inputData} setInputData={setInputData} />
@@ -297,21 +295,19 @@ export default function FormAddNews({ setIsModalOpen }) {
           />
 
           <CloseImageBlock
-            {...{
-              styles,
-              inputData,
-              changeHandler,
-              setInputData,
-              setPreviewPhotos,
-              setPreviewPhotoClose,
-              setIsPhotoCloseVisible,
-              setIsLoading,
-              setIsLoadingCloseImage,
-              previewPhotoClose,
-              isPhotoCloseVisible,
-              isLoadingCloseImage,
-              handleRemovePreviewPhotoClose,
-            }}
+            styles={styles}
+            inputData={inputData}
+            changeHandler={changeHandler}
+            setInputData={setInputData}
+            setPreviewPhotos={setPreviewPhotos}
+            setPreviewPhotoClose={setPreviewPhotoClose}
+            setIsPhotoCloseVisible={setIsPhotoCloseVisible}
+            setIsLoading={setIsLoading}
+            setIsLoadingCloseImage={setIsLoadingCloseImage}
+            previewPhotoClose={previewPhotoClose}
+            isPhotoCloseVisible={isPhotoCloseVisible}
+            isLoadingCloseImage={isLoadingCloseImage}
+            handleRemovePreviewPhotoClose={handleRemovePreviewPhotoClose}
           />
 
           <SubmitButtons styles={styles} closeModal={closeModal} />
