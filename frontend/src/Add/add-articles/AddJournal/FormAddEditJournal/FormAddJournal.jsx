@@ -12,8 +12,11 @@ import {
   deleteMarkdownFile,
 } from '../../../../store/Slice/journalSlice';
 import { createJournal } from '../../../../store/Slice/journalSlice';
-import styles from '../../../../Add/add-project/formAdd/FormAddProject.module.scss';
-import { PublicationContainer, PublicationIndicator } from '../../../add-project/formAdd/utils/CustomSelectComponents';
+import styles from '../../../../Add/add-project/FormAddEditProject/FormAddProject.module.scss';
+import {
+  PublicationContainer,
+  PublicationIndicator,
+} from '../../../add-project/FormAddEditProject/utils/CustomSelectComponents';
 import { categoryOptions } from '../utils/journalCategoryOptions';
 import { wrapAnnotationAndKeywords } from '../utils/markdownTransform';
 
