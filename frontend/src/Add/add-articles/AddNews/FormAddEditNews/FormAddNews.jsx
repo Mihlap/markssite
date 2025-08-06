@@ -1,16 +1,19 @@
 import { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import 'react-quill-new/dist/quill.snow.css';
 import { useDispatch } from 'react-redux';
-import styles from '../../../add-project/formAdd/FormAddProject.module.scss';
+import styles from '../../../add-project/FormAddEditProject/FormAddProject.module.scss';
 
 import { changeHandler } from '../utils/formHelpers';
 import { usePreviewHandlers } from '../utils/hooks/usePreviewHandlers';
 import { sharedHandleDynamicInputChange, sharedHandleDeletePreview, getPreviewClassName } from '../utils/formShared';
 
 import { fetchArticle } from '../../../../store/Slice/articleSlice';
-import customStyles from '../../../add-project/formAdd/utils/customStyles';
+import customStyles from '../../../add-project/FormAddEditProject/utils/customStyles';
 import ConstructorPage from '../../constructor/ConstructorPage';
-import { PublicationContainer, PublicationIndicator } from '../../../add-project/formAdd/utils/CustomSelectComponents';
+import {
+  PublicationContainer,
+  PublicationIndicator,
+} from '../../../add-project/FormAddEditProject/utils/CustomSelectComponents';
 
 import HeaderFields from './HeaderFields';
 import SliderUploadBlock from './SliderUploadBlock';

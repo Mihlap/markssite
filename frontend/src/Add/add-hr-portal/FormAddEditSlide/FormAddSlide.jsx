@@ -1,8 +1,8 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import compressImageFile from 'browser-image-compression';
 import styles from './FormAddSlide.module.scss';
-import { removePreviewPhotoAva } from '../../add-project/formAdd/utils/formHelpers';
+import { removePreviewPhotoAva } from '../../add-project/FormAddEditProject/utils/formHelpers';
 import CalendarAdd from './CalendarAdd';
 import { postVacancyData, resetSlidesState } from '../../../store/Slice/vacancyMainSlideCardSlice';
 
