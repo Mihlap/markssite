@@ -1,7 +1,5 @@
 import compressImageFile from 'browser-image-compression';
 const { transliterate } = require('transliteration');
-
-// formHelpers.js
 export const removePreviewPhoto = (
   previewPhotos,
   setPreviewPhotos,
@@ -253,85 +251,3 @@ export async function changeHandler(
   }
 }
 
-// export function changeHandler(
-//   event,
-//   inputData,
-//   setInputData,
-//   setPreviewPhotos,
-//   setIsDropPhotoVisible,
-//   setPreviewPhotoAva,
-//   setIsPhotoAvaVisible,
-//   setPreviewPhotoOpen,
-//   setIsPhotoOpenVisible,
-//   setPreviewPhotoClose,
-//   setIsPhotoCloseVisible
-// ) {
-//   if (event.target.files) {
-//     const originalFiles = Array.from(event.target.files);
-
-//     let newFiles = originalFiles.map((originalFile) => {
-//       const uniqueName = generateUniqueName(originalFile.name);
-//       return new File([originalFile], uniqueName, { type: originalFile.type });
-//     });
-
-//     switch (event.target.name) {
-//       case "dropPhoto":
-//         setInputData((prev) => ({
-//           ...prev,
-//           dropPhoto: newFiles,
-//         }));
-//         setIsDropPhotoVisible(false);
-//         setPreviewPhotos(newFiles.map((file) => URL.createObjectURL(file)));
-//         break;
-//       case "photoAva":
-//         setInputData((prev) => ({
-//           ...prev,
-//           photoAva: newFiles,
-//         }));
-//         setIsPhotoAvaVisible(false);
-//         setPreviewPhotoAva(newFiles.map((file) => URL.createObjectURL(file)));
-//         break;
-//       case "imageOpen":
-//         setInputData((prev) => ({
-//           ...prev,
-//           imageOpen: newFiles,
-//         }));
-//         setIsPhotoOpenVisible(false);
-//         setPreviewPhotoOpen(newFiles.map((file) => URL.createObjectURL(file)));
-//         break;
-//       case "imageClose":
-//         setInputData((prev) => ({
-//           ...prev,
-//           imageClose: newFiles,
-//         }));
-//         setIsPhotoCloseVisible(false);
-//         setPreviewPhotoClose(newFiles.map((file) => URL.createObjectURL(file)));
-//         break;
-//       default:
-//         console.error("Unrecognized input name:", event.target.name);
-//         break;
-//     }
-//     event.target.value = null;
-//     event.target.style.display = "none";
-//   } else if (
-//     event.target.name === "totalArea" ||
-//     event.target.name === "siteArea" ||
-//     event.target.name === "floors" ||
-//     event.target.name === "altitude" ||
-//     event.target.name === "constructionVolume" ||
-//     event.target.name === "numberOfLanes" ||
-//     event.target.name === "long"
-//   ) {
-//     const onlyDigits = event.target.value.replace(/\D+/g, "");
-//     const formattedValue = formatNumberWithThousandSeparator(onlyDigits);
-//     setInputData((prev) => ({
-//       ...prev,
-//       [event.target.name]: formattedValue,
-//     }));
-//   } else {
-//     setInputData((prev) => ({
-//       ...prev,
-//       [event.target.name]: event.target.value,
-//     }));
-//   }
-// }

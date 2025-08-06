@@ -13,10 +13,13 @@ import {
   deleteMarkdownFile,
 } from '../../../../store/Slice/journalSlice';
 
-import { PublicationContainer, PublicationIndicator } from '../../../add-project/formAdd/utils/CustomSelectComponents';
+import {
+  PublicationContainer,
+  PublicationIndicator,
+} from '../../../add-project/FormAddEditProject/utils/CustomSelectComponents';
 import { categoryOptions } from '../utils/journalCategoryOptions';
 import { wrapAnnotationAndKeywords } from '../utils/markdownTransform';
-import styles from '../../../../Add/add-project/formAdd/FormAddProject.module.scss';
+import styles from '../../../../Add/add-project/FormAddEditProject/FormAddProject.module.scss';
 
 export default function FormEditJournal({ editJournalData, setIsModalOpen }) {
   const dispatch = useDispatch();

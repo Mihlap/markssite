@@ -1,4 +1,5 @@
-export default function AuthorPhotoBlock({
+import { memo } from "react";
+function AuthorPhotoBlock({
   styles,
   inputData,
   changeHandler,
@@ -25,13 +26,10 @@ export default function AuthorPhotoBlock({
     <div className={`${styles.photo_orientation_selector} ${styles.flex_block_gap}`}>
       <div className={styles.form_container__checkbox_block}>
         <div>
-          Фото автора текста
-          {/* <span> для отображения на странице «Проекты»</span> */}
+          Фото автора текста       
         </div>
       </div>
-      <div
-      // style={{ display: isPhotoAvaVisible ? "block" : "none" }}
-      >
+      <div>
         {/* {!isLoading && ( */}
         <label className={styles.slider_container__customFileUpload}>
           <input
@@ -82,7 +80,7 @@ export default function AuthorPhotoBlock({
               src={
                 inputData?.imageAuthor?.includes('https')
                   ? inputData.imageAuthor
-                  : `${bucket_url}/images/imagerticle/${inputData?.imageAuthor}`
+                  : `${bucket_url}/images/imageArticle/${inputData?.imageAuthor}`
               }
               alt=""
             />
@@ -105,3 +103,5 @@ export default function AuthorPhotoBlock({
     </div>
   );
 }
+
+export default memo(AuthorPhotoBlock);

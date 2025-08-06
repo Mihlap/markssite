@@ -1,4 +1,6 @@
-export default function SubmitButtons({ styles, closeModal }) {
+import { memo } from "react";
+
+function SubmitButtons({ styles, closeModal }) {
   return (
     <div className={styles.form_container__button_block}>
       <button className={styles.form_container__button_save} type="submit">
@@ -9,4 +11,4 @@ export default function SubmitButtons({ styles, closeModal }) {
   );
 }
 
-
+export default memo(SubmitButtons);
