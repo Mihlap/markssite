@@ -1,4 +1,5 @@
-export default function OpenImageBlock({
+import { memo } from "react";
+function OpenImageBlock({
   styles,
   inputData,
   changeHandler,
@@ -101,3 +102,5 @@ export default function OpenImageBlock({
     </div>
   );
 }
+
+export default memo(OpenImageBlock);

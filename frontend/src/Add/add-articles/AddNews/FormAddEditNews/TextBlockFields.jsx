@@ -1,5 +1,6 @@
+import { memo } from 'react';
 import ReactQuill from 'react-quill-new';
-export default function TextBlockFields({ styles, inputData, setInputData, changeHandler, quillRef1 }) {
+function TextBlockFields({ styles, inputData, setInputData, changeHandler, quillRef1 }) {
   return (
     <div className={styles.blockContainer}>
       <div className={styles.form_container__heading_block}>
@@ -66,3 +67,5 @@ export default function TextBlockFields({ styles, inputData, setInputData, chang
     </div>
   );
 }
+
+export default memo(TextBlockFields);

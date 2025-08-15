@@ -1,7 +1,8 @@
+import { memo } from 'react';
 import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
 
-export default function SecondaryTextBlock({ styles, quillRef2, inputData, setInputData }) {
+function SecondaryTextBlock({ styles, quillRef2, inputData, setInputData }) {
   return (
     <div className={styles.blockContainer}>
       <div className={styles.form_container__description_text}>
@@ -43,3 +44,5 @@ export default function SecondaryTextBlock({ styles, quillRef2, inputData, setIn
     </div>
   );
 }
+
+export default memo(SecondaryTextBlock);

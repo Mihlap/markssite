@@ -1,5 +1,6 @@
+import { memo } from 'react';
 import Select from 'react-select';
-export default function HeaderFields({
+function HeaderFields({
   inputData,
   setInputData,
   selectedCompetencies,
@@ -100,3 +101,5 @@ export default function HeaderFields({
     </div>
   );
 }
+
+export default memo(HeaderFields);
