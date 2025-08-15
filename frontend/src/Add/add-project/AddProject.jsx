@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import styles from '../style/style-card.module.scss';
-import FormAddProject from './formAdd/FormAddProject';
-import FormEditProject from './formAdd/FormEditProject';
+import FormAddProject from './FormAddEditProject/FormAddProject';
+import FormEditProject from './FormAddEditProject/FormEditProject';
 // import cat from "../img/default-photo.jpeg";
 import cat from '../../img/default-photo.jpeg';
 import { useDispatch, useSelector } from 'react-redux';

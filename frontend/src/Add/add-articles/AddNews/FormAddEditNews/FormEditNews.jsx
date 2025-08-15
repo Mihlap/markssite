@@ -7,8 +7,11 @@ import { usePreviewHandlers } from '../utils/hooks/usePreviewHandlers';
 import { sharedHandleDynamicInputChange, sharedHandleDeletePreview, getPreviewClassName } from '../utils/formShared';
 
 import { fetchArticle, setArticleId } from '../../../../store/Slice/articleSlice';
-import customStyles from '../../../add-project/formAdd/utils/customStyles';
-import { PublicationContainer, PublicationIndicator } from '../../../add-project/formAdd/utils/CustomSelectComponents';
+import customStyles from '../../../add-project/FormAddEditProject/utils/customStyles';
+import {
+  PublicationContainer,
+  PublicationIndicator,
+} from '../../../add-project/FormAddEditProject/utils/CustomSelectComponents';
 
 import HeaderFields from './HeaderFields';
 import SliderUploadBlock from './SliderUploadBlock';
@@ -21,13 +24,13 @@ import ConstructionSectionFromEdit from './ConstructionSectionFromEdit';
 import ConstructorPage from '../../constructor/ConstructorPage';
 import SubmitButtons from './SubmitButtons';
 
-import styles from '../../../add-project/formAdd/FormAddProject.module.scss';
+import styles from '../../../add-project/FormAddEditProject/FormAddProject.module.scss';
 
 const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
 export default function FormEditNews({ setIsModalOpen, editArticleData }) {
   const dispatch = useDispatch();
-  
+
   const [inputData, setInputData] = useState({
     title: '',
     author: '',
@@ -58,7 +61,7 @@ export default function FormEditNews({ setIsModalOpen, editArticleData }) {
   const [isLoadingDropPhoto, setIsLoadingDropPhoto] = useState(false);
   const [isLoadingOpenImage, setIsLoadingOpenImage] = useState(false);
   const [isLoadingCloseImage, setIsLoadingCloseImage] = useState(false);
-  
+
   const quillRef1 = useRef(null);
   const quillRef2 = useRef(null);
   const quillRefs = useMemo(() => [quillRef1, quillRef2], []);
@@ -102,7 +105,6 @@ export default function FormEditNews({ setIsModalOpen, editArticleData }) {
     setIsPhotoOpenVisible,
     setIsPhotoCloseVisible,
   });
-
 
   const data = editArticleData?.ConstructorArticles?.[0]?.data;
 
@@ -168,7 +170,7 @@ export default function FormEditNews({ setIsModalOpen, editArticleData }) {
         });
       }
     }
-  }, [editArticleData]); 
+  }, [editArticleData]);
 
   const submitHandler = useCallback(
     async (e) => {
