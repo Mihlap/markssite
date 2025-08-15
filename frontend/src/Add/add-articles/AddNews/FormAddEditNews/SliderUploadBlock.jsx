@@ -1,4 +1,5 @@
-export default function SliderUploadBlock({
+import { memo } from "react";
+function SliderUploadBlock({
   styles,
   inputData,
   changeHandler,
@@ -109,3 +110,5 @@ export default function SliderUploadBlock({
     </div>
   );
 }
+
+export default memo(SliderUploadBlock); 

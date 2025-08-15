@@ -1,4 +1,5 @@
-export default function CloseImageBlock({
+import { memo } from "react";
+function CloseImageBlock({
   styles,
   inputData,
   changeHandler,
@@ -85,7 +86,7 @@ export default function CloseImageBlock({
               src={
                 inputData?.imageClose?.includes('https')
                   ? inputData.imageClose
-                  : `${bucket_url}/images/imageAdd/${inputData?.imageClose}`
+                  : `${bucket_url}/images/imageArticle/${inputData?.imageClose}`
               }
               alt="Preview"
             />
@@ -100,3 +101,5 @@ export default function CloseImageBlock({
     </div>
   );
 }
+
+export default memo(CloseImageBlock);
