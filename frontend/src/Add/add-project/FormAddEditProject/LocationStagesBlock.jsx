@@ -31,14 +31,8 @@ function LocationStagesBlock({
             name="location"
             autoComplete="off"
             id="location"
-            value={inputData.location}
-            onChange={(event) =>
-              changeHandler(
-                event,
-                inputData,
-                setInputData,               
-              )
-            }
+            value={inputData.location ?? ''}
+            onChange={(event) => changeHandler(event, inputData, setInputData)}
           />
           <label htmlFor="location" className={styles.form__label}>
             Расположение: Город, улица, номер дома
@@ -77,7 +71,7 @@ function LocationStagesBlock({
         </div>
         <div className={`${styles.form__group} ${styles.field}`}>
           <Select
-            styles={customStyles}     
+            styles={customStyles}
             name="statusObject"
             options={[
               {
@@ -91,7 +85,7 @@ function LocationStagesBlock({
             ]}
             className={styles.form__field}
             placeholder="Статус объекта"
-            value={selectStatusObject}
+            value={selectStatusObject ?? null}
             onChange={setSelectStatusObject}
             components={{
               DropdownIndicator: AnotherDropdownIndicator,
@@ -109,14 +103,8 @@ function LocationStagesBlock({
             name="customer"
             autoComplete="off"
             id="customer"
-            value={inputData.customer}
-            onChange={(event) =>
-              changeHandler(
-                event,
-                inputData,
-                setInputData,                
-              )
-            }         
+            value={inputData.customer ?? ''}
+            onChange={(event) => changeHandler(event, inputData, setInputData)}
           />
           <label htmlFor="customer" className={styles.form__label}>
             Заказчик
@@ -133,14 +121,8 @@ function LocationStagesBlock({
                 name="publication"
                 autoComplete="off"
                 id="publication"
-                value={inputData.publication}
-                onChange={(event) =>
-                  changeHandler(
-                    event,
-                    inputData,
-                    setInputData,                    
-                  )
-                }
+                value={inputData.publication ?? ''}
+                onChange={(event) => changeHandler(event, inputData, setInputData)}
               />
               <label htmlFor="publication" className={styles.form__label}>
                 Публикация
@@ -154,14 +136,8 @@ function LocationStagesBlock({
                 name="publicationTwo"
                 id="publicationTwo"
                 autoComplete="off"
-                value={inputData.publicationTwo}
-                onChange={(event) =>
-                  changeHandler(
-                    event,
-                    inputData,
-                    setInputData,                    
-                  )
-                }
+                value={inputData.publicationTwo ?? ''}
+                onChange={(event) => changeHandler(event, inputData, setInputData)}
               />
               <label htmlFor="publicationTwo" className={styles.form__label}>
                 Публикация
@@ -177,14 +153,8 @@ function LocationStagesBlock({
                 name="linkToPublication"
                 id="linkToPublication"
                 autoComplete="off"
-                value={inputData.linkToPublication}
-                onChange={(event) =>
-                  changeHandler(
-                    event,
-                    inputData,
-                    setInputData,                    
-                  )
-                }
+                value={inputData.linkToPublication ?? ''}
+                onChange={(event) => changeHandler(event, inputData, setInputData)}
               />
               <label htmlFor="linkToPublication" className={styles.form__label}>
                 Ссылк на статью
@@ -198,27 +168,21 @@ function LocationStagesBlock({
                 name="linkToPublicationTwo"
                 id="linkToPublicationTwo"
                 autoComplete="off"
-                value={inputData.linkToPublicationTwo}
-                onChange={(event) =>
-                  changeHandler(
-                    event,
-                    inputData,
-                    setInputData,                    
-                  )
-                }
+                value={inputData.linkToPublicationTwo ?? ''}
+                onChange={(event) => changeHandler(event, inputData, setInputData)}
               />
               <label htmlFor="linkToPublicationTwo" className={styles.form__label}>
                 Ссылк на статью
               </label>
             </div>
           </div>
-        </div>       
+        </div>
         <div className={`${styles.form__group} ${styles.field}`}>
           <Select
             styles={customStyles}
             isMulti
             name="awards"
-            value={selectedProjectStages}
+            value={selectedProjectStages ?? []}
             onChange={setSelectedProjectStages}
             options={[
               {

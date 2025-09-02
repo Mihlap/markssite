@@ -10,10 +10,7 @@ import { changeHandler } from './utils/formHelpers';
 import { usePreviewHandlers } from './utils/hooks/usePreviewHandlers';
 import customStyles from './utils/customStyles';
 
-import {
-  fetchProject,
-  setProjectId, 
-} from '../../../store/Slice/projectSlice';
+import { fetchProject, setProjectId } from '../../../store/Slice/projectSlice';
 
 import ConstructorPage from '../constructor/ConstructorPage';
 import HeaderFields from './HeaderFields';
@@ -70,7 +67,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
   const [selectedViewConstruction, setSelectedViewConstruction] = useState([]);
   const [selectedProjectStages, setSelectedProjectStages] = useState([]);
   const [selectedDegreeParticipation, setSelectedDegreeParticipation] = useState([]);
-  const [selectStatusObject, setSelectStatusObject] = useState(null);  
+  const [selectStatusObject, setSelectStatusObject] = useState(null);
   const [previewPhotos, setPreviewPhotos] = useState([]);
   const [previewPhotoAva, setPreviewPhotoAva] = useState([]);
   const [previewPhotoOpen, setPreviewPhotoOpen] = useState([]);
@@ -91,7 +88,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
   const [selectedYear, setSelectedYear] = useState(null);
   const [embedLink] = useState('');
 
-  const quillRef1 = useRef(null); 
+  const quillRef1 = useRef(null);
   const quillRefs = useMemo(() => [quillRef1], [quillRef1]);
 
   const applyStylesToQuillEditor = useCallback((quillRef) => {
@@ -110,7 +107,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
     quillRefs.forEach((quillRef) => applyStylesToQuillEditor(quillRef));
   }, [quillRefs, applyStylesToQuillEditor]);
 
-  const [openConstructor, setOpenConstructor] = useState(false);  
+  const [openConstructor, setOpenConstructor] = useState(false);
   const [dynamicPreviews, setDynamicPreviews] = useState([]);
   const [dynamicData, setDynamicData] = useState([]);
 
@@ -143,7 +140,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
       const initialSelectedCompetencies = editProjectData.selectCompetencies
         ? editProjectData.selectCompetencies.split(',').map((item) => ({ value: item.trim(), label: item.trim() }))
         : [];
-      const [selectedMonth, selectedYear] = (editProjectData.monthYear || '').split(' ');
+      const [m, y] = (editProjectData.monthYear || '').trim().split(' ');
       const initialViewConstruction = editProjectData.viewConstruction
         ? editProjectData.viewConstruction.split(',').map((item) => ({ value: item.trim(), label: item.trim() }))
         : [];
@@ -155,12 +152,16 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
         : [];
 
       setSelectedCompetencies(initialSelectedCompetencies);
-      setSelectedMonth({ value: selectedMonth, label: selectedMonth });
-      setSelectedYear({ value: selectedYear, label: selectedYear });
+      setSelectedMonth(m ? { value: m, label: m } : null);
+      setSelectedYear(y ? { value: y, label: y } : null);
       setSelectedViewConstruction(initialViewConstruction);
       setSelectedProjectStages(initialProjectStages);
       setSelectedDegreeParticipation(initialDegreeParticipation);
-      setSelectStatusObject(editProjectData.statusObject ? { label: editProjectData.statusObject } : null);
+      setSelectStatusObject(
+        editProjectData.statusObject
+          ? { value: editProjectData.statusObject, label: editProjectData.statusObject }
+          : null
+      );
 
       setInputData((prevInputData) => {
         const updatedInputData = {
@@ -236,7 +237,6 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
     }
   }, [editProjectData, data]);
 
-
   const validateForm = useCallback(() => {
     let isValid = true;
     let errors = [];
@@ -274,24 +274,24 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
     try {
       const formattedData = {
         ...inputData,
-        dynamicBlocks: dynamicData,   
+        dynamicBlocks: dynamicData,
         selectCompetencies: Array.isArray(selectedCompetencies)
           ? selectedCompetencies.map((option) => option.label).join(',')
           : '',
         degreeParticipation: Array.isArray(selectedDegreeParticipation)
           ? selectedDegreeParticipation.map((option) => option.label).join(',')
           : '',
-        statusObject: selectStatusObject.label,
+        statusObject: selectStatusObject?.label ?? '',
         viewConstruction: Array.isArray(selectedViewConstruction)
           ? selectedViewConstruction.map((option) => option.label).join(',')
           : '',
         awards: Array.isArray(selectedProjectStages)
           ? selectedProjectStages.map((option) => option.label).join(',')
-          : '',      
+          : '',
         photoAva: inputData.photoAva,
         imageOpen: inputData.imageOpen,
         imageClose: inputData.imageClose,
-      };    
+      };
       if (formattedData.selectCompetencies && formattedData.selectCompetencies !== '') {
         formattedData.selectCompetencies = Array.isArray(formattedData.selectCompetencies)
           ? formattedData.selectCompetencies.map((option) => option.label).join(',')
@@ -314,15 +314,15 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
       }
 
       if (editProjectData && editProjectData.id) {
-        dispatch(setProjectId(editProjectData.id));   
+        dispatch(setProjectId(editProjectData.id));
         dispatch(fetchProject(formattedData, setInputData, editProjectData.id));
-      } else {    
+      } else {
         dispatch(fetchProject(formattedData, setInputData));
       }
-    
+
       setSelectedCompetencies([]);
       setSelectedDegreeParticipation([]);
-      setSelectStatusObject('');
+      setSelectStatusObject(null);
       setSelectedViewConstruction([]);
       setSelectedProjectStages([]);
       setPreviewPhotos([]);
@@ -361,10 +361,9 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
       setErrorMessage('');
       setIsModalOpen(false);
     } catch (error) {
-      console.error('Произошла ошибка при отправке формы:', error);    
+      console.error('Произошла ошибка при отправке формы:', error);
     }
   };
-
 
   const handlerOpenConstructor = useCallback(() => {
     setOpenConstructor(!openConstructor);
@@ -419,7 +418,6 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
       console.error('Ошибка при сжатии изображения:', error);
     }
   }, []);
-
 
   const handleDynamicInputChange = useCallback(
     async (blockIndex, inputIndex, value) => {
@@ -556,7 +554,6 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
     ];
     return inputsToCheck.filter((input) => inputData[input]).length;
   }, [inputData]);
- 
 
   return (
     <div className={styles.form_container}>

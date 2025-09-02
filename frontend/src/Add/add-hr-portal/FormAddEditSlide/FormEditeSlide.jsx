@@ -1,16 +1,14 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import compressImageFile from 'browser-image-compression';
 import styles from './FormAddSlide.module.scss';
 import CalendarAdd from './CalendarAdd';
 import { postVacancyData, editSlide, fetchSlides } from '../../../store/Slice/vacancyMainSlideCardSlice';
 
-// const Host = process.env.REACT_APP_SERVER_HOST;
-
 export default function FormEditSlide({ setIsModalOpenMain, editSlideData }) {
   const dispatch = useDispatch();
 
-  const [previewPhotos, setPreviewPhotos] = useState([]);
+  const [, setPreviewPhotos] = useState([]);
   const [previewPhotoAva, setPreviewPhotoAva] = useState([]);
   const [isPhotoAvaVisible, setIsPhotoAvaVisible] = useState(true);
   const [showNotification, setShowNotification] = useState(false);
