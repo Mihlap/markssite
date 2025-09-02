@@ -293,7 +293,7 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
   return (
     <>
       <Helmet>
-        <title>Marks Group</title>
+        <title>MARKS GROUP</title>
       </Helmet>
       <div className={styles.company_main}>
         {/* <Company_Slider /> */}
@@ -315,8 +315,8 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
           </div>
           <div ref={blockSlider} className={styles.underSlider_text_wrapper}>
             <span className={styles.span_underSlider_text1}>
-              Создаём пространства будущего.
-              <br />
+              {/* Создаём пространства будущего.
+              <br /> */}
               Знаковые проекты от&nbsp;ведущих специалистов <br />
               в&nbsp;области комплексного проектирования
             </span>
@@ -375,17 +375,16 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
           <div className={styles.right_about}>
             <div className={styles.text_right_about}>
               <p>
-                MARKS GROUP &ndash; ключевая компания в&nbsp;сфере генерального проектирования, начиная
-                от&nbsp;концепции и&nbsp;заканчивая авторским надзором за&nbsp;строительством объекта и&nbsp;его
-                введением в&nbsp;эксплуатацию.
+                MARKS GROUP &ndash; генеральный проектировщик полного цикла, от&nbsp;концепции и&nbsp;заканчивая вводом
+                объекта в&nbsp;эксплуатацию.
               </p>
-              <br />
+              {/* <br /> */}
               {/* <br /> */}
               <p>
                 С&nbsp;2005&nbsp;года непрерывный опыт проектирования уникальных объектов, жилых и&nbsp;общественных
                 зданий, промышленных предприятий и&nbsp;объектов транспортной инфраструктуры.
               </p>
-              <br />
+              {/* <br /> */}
               {/* <br /> */}
               <p>MARKS GROUP. Вдохновляющие проекты для&nbsp;амбициозных заказчиков.</p>
             </div>
