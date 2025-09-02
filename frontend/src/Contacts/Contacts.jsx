@@ -102,7 +102,7 @@ const Contacts = ({ handleMouseEnter, handleMouseLeave }) => {
   return (
     <>
       <Helmet>
-        <title>Marks Group</title>
+        <title>MARKS GROUP</title>
       </Helmet>
       <div className={styles.main_contact}>
         <div className={styles.menu_block}>
@@ -118,8 +118,10 @@ const Contacts = ({ handleMouseEnter, handleMouseLeave }) => {
           <div className={styles.menu_address}>{address}</div>
           <div className={styles.menu_work}>
             Режим работы &nbsp;&bull;&nbsp; Пн.&nbsp;&mdash; Пт.&nbsp;10.00&mdash;19.00
-            {selectedMap !== 'Москва' && selectedMap !== 'Санкт-Петербург' && selectedMap !== 'Воронеж' && <> &nbsp;&bull;&nbsp; {hour}</>}
-          </div>
+            {selectedMap !== 'Москва' && selectedMap !== 'Санкт-Петербург' && selectedMap !== 'Воронеж' && (
+              <> &nbsp;&bull;&nbsp; {hour}</>
+            )}
+          </div>          
           <div className={styles.menu_hour}></div>
           <div className={styles.menu_office_name}>Наши офисы</div>
           <div className={styles.menu_button_group}>
@@ -129,8 +131,7 @@ const Contacts = ({ handleMouseEnter, handleMouseLeave }) => {
                 className={`${styles.menu_button} ${selectedMap === city.name ? styles.menu_button_active : ''}`}
                 onClick={() => handleCityClick(city)}
                 onMouseEnter={handleMouseEnter}
-                onMouseLeave={handleMouseLeave}
-              >
+                onMouseLeave={handleMouseLeave}>
                 <p className={styles.menu_button_city}>{city.name}</p>
               </button>
             ))}
@@ -149,8 +150,7 @@ const Contacts = ({ handleMouseEnter, handleMouseLeave }) => {
               width="100%"
               height="100%"
               query={{ apiKey: apiKey }}
-              options={mapOptions}
-            >
+              options={mapOptions}>
               <Placemark
                 geometry={mapCenter}
                 options={{
@@ -166,8 +166,7 @@ const Contacts = ({ handleMouseEnter, handleMouseLeave }) => {
             slidesPerView={'auto'}
             spaceBetween={10}
             className={styles.mySwiper}
-            touch={'true'}
-          >
+            touch={'true'}>
             <div className={styles.slider_menu_button_group}>
               {cities.map((city) => (
                 <SwiperSlide
@@ -175,8 +174,7 @@ const Contacts = ({ handleMouseEnter, handleMouseLeave }) => {
                   className={`${styles.slider_menu_button} ${
                     selectedMap === city.name ? styles.slider_menu_button_active : ''
                   }`}
-                  onClick={() => handleCityClick(city)}
-                >
+                  onClick={() => handleCityClick(city)}>
                   <p className={styles.slider_button_city}>{city.name}</p>
                 </SwiperSlide>
               ))}

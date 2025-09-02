@@ -69,7 +69,7 @@ const Internships = ({ handleMouseEnter, handleMouseLeave, handleMouseHover, hid
   return (
     <>
       <Helmet>
-        <title>Marks Group</title>
+        <title>MARKS GROUP</title>
       </Helmet>
       {!hideVacancies && (
         <div className={styles.main_vacancies_block}>

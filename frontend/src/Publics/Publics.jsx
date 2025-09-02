@@ -28,7 +28,7 @@ export default function Publics({ handleMouseEnter, handleMouseLeave, handleMous
   );
 
   const buttonChoices = useMemo(
-    () => ['Все', 'Выступления', 'Интервью', 'Новости', 'Статьи', 'Научные публикации'],
+    () => ['Все', 'Выступления', 'Интервью', 'Новости', 'Научные публикации'],
     []
   );
 
@@ -63,7 +63,7 @@ export default function Publics({ handleMouseEnter, handleMouseLeave, handleMous
   return (
     <>
       <Helmet>
-        <title>Marks Group</title>
+        <title>MARKS GROUP</title>
       </Helmet>
       <div className={styles.public_container_main}>
         <div className={styles.public_image_header}>
