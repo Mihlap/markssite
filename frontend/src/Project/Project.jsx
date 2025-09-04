@@ -257,6 +257,33 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
     };
   }, []);
 
+  const categoriesSet = useMemo(() => {
+    const set = new Set();
+
+    const searchValue = (value || '').toLowerCase();
+    const selectedCityLower = (selectedCity || '').toLowerCase();
+
+    for (const p of projects) {
+      const projectLocation = (p.location || '').toLowerCase();
+      const projectCityLower = (extractCityFromCountryCity(p.countryCity) || '').toLowerCase();
+
+      if (selectedCity && projectCityLower !== selectedCityLower) continue;
+      if (searchValue && !projectLocation.includes(searchValue)) continue;
+
+      const vc = p.viewConstruction;
+      if (Array.isArray(vc)) {
+        vc.forEach((cat) => set.add(cat));
+      } else if (typeof vc === 'string') {
+        for (const cat of buttonChoose) {
+          if (cat === 'Все') continue;
+          if (vc.includes(cat)) set.add(cat);
+        }
+      }
+    }
+
+    return set;
+  }, [projects, selectedCity, value]);
+
   const filteredProjects = useMemo(() => {
     return projects
       .filter((project) =>
@@ -279,7 +306,7 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
   return (
     <>
       <Helmet>
-        <title>Marks Group</title>
+        <title>MARKS GROUP</title>
       </Helmet>
       <div className={styles.project_main}>
         <div className={styles.project_slider_box}>
@@ -346,47 +373,59 @@ export default function Project({ handleMouseEnter, handleMouseLeave, handleMous
               touch="true">
               <div className={styles.button_group_project}>
                 {buttonChoose &&
-                  buttonChoose?.map((el, index) => (
-                    <SwiperSlide
-                      key={el}
-                      onClick={() => handleButtonClick(el)}
-                      className={`${styles.menu__button__allProject} ${
-                        !isModalProjectOpen &&
-                        (el === selectedViewConstruction || (index === 0 && !selectedViewConstruction))
-                          ? styles.active
-                          : ''
-                      }`}
-                      style={{ width: 'fit-content' }}>
-                      <p type="button" className={styles.menu_button_items}>
-                        {el}
-                      </p>
-                    </SwiperSlide>
-                  ))}
+                  buttonChoose?.map((el, index) => {
+                    const shouldShow = el === 'Все' || categoriesSet.has(el);
+                    if (!shouldShow) return null;
+
+                    return (
+                      <SwiperSlide
+                        key={el}
+                        onClick={() => handleButtonClick(el)}
+                        className={`${styles.menu__button__allProject} ${
+                          !isModalProjectOpen &&
+                          (el === selectedViewConstruction || (index === 0 && !selectedViewConstruction))
+                            ? styles.active
+                            : ''
+                        }`}
+                        style={{ width: 'fit-content' }}>
+                        <p type="button" className={styles.menu_button_items}>
+                          {el}
+                        </p>
+                      </SwiperSlide>
+                    );
+                  })}
               </div>
             </Swiper>
           )}
         </div>
-        {/* этот isActive скрывает фильтрацию  */}
+
         {!isActive && (
           <div className={styles.menu_button_group_project_wrapper_main}>
             <div className={styles.menu_button_group_project_wrapper}>
               <div className={styles.menu_button_group_project}>
-                {buttonChoose.map((el, index) => (
-                  <div key={el} className={`${styles.button_wrapper} ${showButton ? '' : index ? styles.hidden : ''}`}>
-                    <button
-                      onMouseEnter={handleMouseEnter}
-                      onMouseLeave={handleMouseLeave}
-                      className={`${styles.menu__button__allProject} ${
-                        !isModalProjectOpen &&
-                        (el === selectedViewConstruction || (index === 0 && !selectedViewConstruction))
-                          ? styles.active
-                          : ''
-                      }`}
-                      onClick={() => handleButtonClick(el)}>
-                      <p className={styles.menu_button_items}>{el}</p>
-                    </button>
-                  </div>
-                ))}
+                {buttonChoose.map((el, index) => {
+                  const shouldShow = el === 'Все' || categoriesSet.has(el);
+                  if (!shouldShow) return null;
+
+                  return (
+                    <div
+                      key={el}
+                      className={`${styles.button_wrapper} ${showButton ? '' : index ? styles.hidden : ''}`}>
+                      <button
+                        onMouseEnter={handleMouseEnter}
+                        onMouseLeave={handleMouseLeave}
+                        className={`${styles.menu__button__allProject} ${
+                          !isModalProjectOpen &&
+                          (el === selectedViewConstruction || (index === 0 && !selectedViewConstruction))
+                            ? styles.active
+                            : ''
+                        }`}
+                        onClick={() => handleButtonClick(el)}>
+                        <p className={styles.menu_button_items}>{el}</p>
+                      </button>
+                    </div>
+                  );
+                })}
               </div>
             </div>
             <button

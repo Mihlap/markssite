@@ -190,7 +190,7 @@ const ArticleCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
   return (
     <>
       <Helmet>
-        <title>{article ? article.title : 'Marks Group'}</title>
+        <title>{article ? article.title : 'MARKS GROUP'}</title>
         <meta property="og:image" content={article ? `${bucket_url}/images/imageArticle/${article.imageOpen}` : ''} />
       </Helmet>
 

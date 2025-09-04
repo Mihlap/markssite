@@ -173,7 +173,7 @@ const Header = React.memo(
     return (
       <>
         <Helmet>
-          <title>Marks Group</title>
+          <title>MARKS GROUP</title>
         </Helmet>
         <main className={styles.header}>
           <div className={styles.wrapper_nameCompanyMainHeader}>
@@ -195,8 +195,8 @@ const Header = React.memo(
             </div>
             <div className={styles.nameCompanyContainer}>
               <img src={imageSrc} alt={nameCompany} />
-              <span className={styles.span_nameCompany}>Генеральное проектирование</span>
-              <span className={styles.span_nameCompany11}>Реализация всех типов объектов «под ключ»</span>
+              <span className={styles.span_nameCompany}>ГЕНЕРАЛЬНОЕ ПРОЕКТИРОВАНИЕ</span>
+              <span className={styles.span_nameCompany11}>ОТ КОНЦЕПЦИИ ДО ВВОДА ОБЪЕКТА В ЭКСПЛУАТАЦИЮ</span>
             </div>
           </div>
           <div className={styles.header_desctop_block}>
@@ -219,7 +219,7 @@ const Header = React.memo(
               onMouseEnter={handleSpecialHover}
               onMouseLeave={handleMouseLeave}
               className={styles.sliderHeader_container}>
-              <NavLink to="/company#table-header-anchor">              
+              <NavLink to="/company#table-header-anchor">
                 <SliderHeader isAwards={true} />
               </NavLink>
             </div>
@@ -229,7 +229,7 @@ const Header = React.memo(
                 article2={articles.filter((article) => MapArticleRight.some((el) => el.id === article.id))}
               />
             </div>
-            <div className={styles.card_container}>            
+            <div className={styles.card_container}>
               {articles && articles.length > 0 ? (
                 <>
                   {articles
@@ -421,14 +421,14 @@ const Header = React.memo(
             </div>
             <div className={styles.most}>
               <img className={styles.image_most} loading="lazy" src="./assets/most2.png" alt=""></img>
-            </div>          
+            </div>
             <div className={styles.block_header_maim_wrapper} id="blockHeaderMain">
               <BlockHeaderMain handleMouseEnter={handleMouseEnter} handleMouseLeave={handleMouseLeave} />
             </div>
             <Mapbox3D />
           </div>
           <div className={styles.sliderMobile_container}>
-           <SliderHeader />
+            <SliderHeader />
           </div>
           <div id="projects" className={styles.project_name}>
             Проекты
@@ -487,7 +487,7 @@ const Header = React.memo(
 
                 return (
                   <SwiperSlide
-                    key={`${project.IdProject}-${index}`}                  
+                    key={`${project.IdProject}-${index}`}
                     id="slider_container_item_card"
                     className={styles.slider_container_item_card}
                     style={index % 2 === 1 ? { paddingTop: '10rem' } : {}}>
