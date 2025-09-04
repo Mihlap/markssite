@@ -85,8 +85,7 @@ function HeaderFields({
         options={[
           { value: 'Выступления', label: 'Выступления' },
           { value: 'Интервью', label: 'Интервью' },
-          { value: 'Новости', label: 'Новости' },
-          { value: 'Статьи', label: 'Статьи' },
+          { value: 'Новости', label: 'Новости' },       
           { value: 'Научные публикации', label: 'Научные публикации' },
         ]}
         className={styles.form__field}
