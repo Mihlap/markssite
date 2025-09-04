@@ -187,7 +187,7 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
   return (
     <>
       <Helmet>
-        <title>{project.title || 'Marks Group'}</title>
+        <title>{project.title || 'MARKS GROUP'}</title>
         <meta property="og:image" content={`${bucket_url}/images/imageAdd/${project.imageProject}`} />
       </Helmet>
 
@@ -333,7 +333,7 @@ const ProjectCard = React.memo(({ handleMouseEnter, handleMouseLeave, handleMous
                     </div>
                   )}
                   <div className={styles.description_object_text1}>
-                    <div                    
+                    <div
                       dangerouslySetInnerHTML={{
                         __html: containsListTags(project.textBlock)
                           ? renderListWithDots(project.textBlock)
