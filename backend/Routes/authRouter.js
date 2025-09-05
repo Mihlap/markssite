@@ -4,122 +4,107 @@ const { User } = require('../db/models');
 
 const authRouter = express.Router();
 
-authRouter.post('/signup', async(req, res) => {
-  const { userName, password } = req.body;
+authRouter.post('/signup', async (req, res) => {
+  try {
+    const { userName, password } = req.body;
+    const hashpass = await bcrypt.hash(password, 10);
 
-  const hashpass = await bcrypt.hash(password, 10);
-
-  const [currentUser, created] = await User.findOrCreate({
-    where: {
-      userName,
-    },
-    defaults: {
-      userName,
-      hashpass,
-    },
-  });
-  const sessionData = {
-    name: currentUser.userName,
-    id: currentUser.id,
-    };
-  req.session.user = sessionData; // Используйте ту же переменную сессии, которую вы пытаетесь получить позже
-  // вот тут вы вкладываем в сессию данные пользователя и его id из объекта sessionData
-  if (!created) {
-    return res.status(401).json({
-      message: 'этот name уже используется!',
+    const [currentUser, created] = await User.findOrCreate({
+      where: { userName },
+      defaults: { userName, hashpass },
     });
-  }
 
-  req.session.save((err) => {
-    // Сохраните сессию после добавления данных пользователя
-    if (err) {
-      console.log(err);
-      res.status(500).json({ message: 'Ошибка при сохранении сессии' });
-    } else {
-      res.status(200).json(req.session.user);
+    if (!created) {
+      return res.status(401).json({ message: 'этот name уже используется!' });
     }
-  });
+
+    const sessionData = { name: currentUser.userName, id: currentUser.id };
+    req.session.user = sessionData;
+
+    req.session.save((err) => {
+      if (err) {
+        console.log(err);
+        return res.status(500).json({ message: 'Ошибка при сохранении сессии' });
+      }
+      return res.status(200).json(req.session.user);
+    });
+  } catch (e) {
+    console.error(e);
+    return res.status(500).json({ message: 'Ошибка регистрации' });
+  }
 });
 
-authRouter.post('/login', async(req, res) => {
+authRouter.post('/login', async (req, res) => {
+  try {
     const { userName, password } = req.body;
 
     const foundUser = await User.findOne({ where: { userName } });
+    if (!foundUser) return res.status(401).json({ message: 'пользователь не найден' });
 
-    if (!foundUser) return res.status(401).json({ message: 'пользователь не найден' })
+    const ok = await bcrypt.compare(password, foundUser.hashpass);
+    if (!ok) return res.status(401).json({ message: 'неправильный name пользователя или пароль' });
 
-    if (await bcrypt.compare(password, foundUser.hashpass)) {
+    const sessionData = { name: foundUser.userName, id: foundUser.id };
+    req.session.user = sessionData;
 
-        const sessionData = {
-          name: foundUser.userName,
-          id: foundUser.id,
-        };
-
-        req.session.user = sessionData;
-
-        return res.status(200).json(sessionData);
-    }
-
-    return res.status(401).json({ message: 'неправильный name пользователя или пароль' });
-})
-
-authRouter.get('/user', (req, res) => {
-  if (req.session.user) {
-    res.status(200).json(req.session.user);
-  } else {
-    res.status(401).json({ message: 'Пользователь не авторизован' });
+    return res.status(200).json(sessionData);
+  } catch (e) {
+    console.error(e);
+    return res.status(500).json({ message: 'Ошибка авторизации' });
   }
 });
 
- // Добавьте этот обработчик после существующих роутов
+authRouter.get('/user', (req, res) => {
+  if (req.session.user) {
+    return res.status(200).json(req.session.user);
+  }
+  return res.status(401).json({ message: 'Пользователь не авторизован' });
+});
+
 authRouter.get('/allUsers', async (req, res) => {
   try {
-    const users = await User.findAll({
-      attributes: ['id', 'userName'], // Выбираем поля id и userName
-    });
-
-    // Отправляем список пользователей (с id и userName) в виде массива в ответе JSON
-    res.status(200).json(users);
+    const users = await User.findAll({ attributes: ['id', 'userName'] });
+    return res.status(200).json(users);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Ошибка при получении пользователей' });
+    return res.status(500).json({ message: 'Ошибка при получении пользователей' });
   }
 });
 
 authRouter.delete('/user/:id', async (req, res) => {
   try {
-    const userId = req.params.id;
-    const userToDelete = await User.findByPk(userId);
+    const userId = Number(req.params.id);
+    if (Number.isNaN(userId)) {
+      return res.status(400).json({ message: 'Некорректный id' });
+    }
 
-    // Проверьте, является ли текущий пользователь администратором или имеет доступ к удалению
-    // В зависимости от ваших требований к безопасности
-    // В примере мы запрещаем удаление пользователей "Pokemon" и "obezyankaa"
+    const userToDelete = await User.findByPk(userId);
+    if (!userToDelete) {
+      return res.status(404).json({ message: 'Пользователь не найден' });
+    }
 
     if (userToDelete.userName === 'Pokemon' || userToDelete.userName === 'obezyankaa') {
       return res.status(403).json({ message: 'Этого пользователя нельзя удалить' });
     }
 
-    const deletedUser = await User.destroy({
-      where: {
-        id: userId,
-      },
-    });
+    await User.destroy({ where: { id: userId } });
 
-    if (deletedUser === 0) {
-      return res.status(404).json({ message: 'Пользователь не найден' });
+    if (req.session.user?.id === userId) {
+      req.session.destroy(() => {});
+      res.clearCookie('user_marks_group');
     }
 
-    res.status(200).json({ message: 'Пользователь успешно удален' });
+    return res.status(200).json({ id: userId, ok: true });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: 'Ошибка при удалении пользователя' });
+    return res.status(500).json({ message: 'Ошибка при удалении пользователя' });
   }
 });
 
 authRouter.get('/logout', (req, res) => {
-    req.session.destroy();
-    res.clearCookie('user_marks_group');
-    res.sendStatus(200);
+  req.session.destroy(() => {});
+  res.clearCookie('user_marks_group');
+  res.sendStatus(200);
 });
 
 module.exports = authRouter;
