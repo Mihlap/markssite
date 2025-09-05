@@ -91,15 +91,20 @@ export default function Applications() {
     });
   }, []);
 
-  const handleConfirmDeleteUser = useCallback(
-    (id) => {
-      dispatch(deleteUser(id)).then(() => {
-        dispatch(getAllUserNames());
-        handleDeleteModalClose(id);
-      });
-    },
-    [dispatch, handleDeleteModalClose]
-  );
+const handleConfirmDeleteUser = useCallback(
+  async (id) => {
+    try {
+      await dispatch(deleteUser(id)).unwrap();
+      await dispatch(getAllUserNames());
+      handleDeleteModalClose(id);
+    } catch (e) {
+      console.error('Delete user failed:', e);
+    }
+  },
+  [dispatch, handleDeleteModalClose]
+);
+
+
 
   return (
     <section className={styles.Applications}>
