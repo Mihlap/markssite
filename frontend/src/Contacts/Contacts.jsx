@@ -1,11 +1,11 @@
-import React, { useEffect, useState, useCallback, useMemo } from 'react';
+import React, { useEffect, useState, useCallback, useMemo, useRef } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import 'swiper/css';
 import 'swiper/css/pagination';
 import { YMaps, Map, Placemark } from '@r3flector/react-yandex-maps';
 import { Link } from 'react-router-dom';
-import styles from './Contacts.module.css';
+import styles from './Contacts.module.scss';
 
 const apiKey = process.env.REACT_APP_API_KEY;
 
@@ -19,7 +19,7 @@ const cities = [
 ];
 
 const cityInfo = {
-  'Москва': {
+  Москва: {
     address: 'Москва, 3-я ул. Ямского Поля, д. 20, с. 1, офис 704',
     phone: '+7 (495) 120-12-26',
     mail: 'mail@marksgroup.ru',
@@ -31,25 +31,20 @@ const cityInfo = {
     mail: 'mail@marksgroup.ru',
     hour: '',
   },
-  'Воронеж': {
+  Воронеж: {
     address: 'Воронеж, ул. Ворошилова, д. 1а',
     phone: '+7 (495) 120-12-26',
     mail: 'mail@marksgroup.ru',
     hour: '',
   },
-  'Оренбург': {
+  Оренбург: {
     address: 'Оренбург, пр. Нижний, д. 17, офис 305',
     phone: '+7 (3532) 22-86-96',
     mail: 'mail@marksgroup.ru',
     hour: '+ 2 МСК',
   },
- 'Челябинск': {
-    address: 'Челябинск, ул. Северная, д. 52/3',
-    // phone: '+7 (968) 110-11-30',
-    mail: 'mail@marksgroup.ru',
-    hour: '+ 2 МСК',
-  },
-  'Ташкент': {
+  Челябинск: { address: 'Челябинск, ул. Северная, д. 52/3', mail: 'mail@marksgroup.ru', hour: '+ 2 МСК' },
+  Ташкент: {
     address: 'Tashkent, Oybek Street, 18/1',
     phone: '+998 99 353 96 90',
     mail: 'mail@marksgroup.ru',
@@ -57,17 +52,19 @@ const cityInfo = {
   },
 };
 
-const customMarkerSVG = `<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <g id="Property 1=64, Property 2=mdi:map-marker">
-    <path id="Vector" d="M32 30.6667C30.2319 30.6667 28.5362 29.9643 27.286 28.714C26.0358 27.4638 25.3334 25.7681 25.3334 24C25.3334 22.2319 26.0358 20.5362 27.286 19.286C28.5362 18.0357 30.2319 17.3333 32 17.3333C33.7682 17.3333 35.4638 18.0357 36.7141 19.286C37.9643 20.5362 38.6667 22.2319 38.6667 24C38.6667 24.8755 38.4943 25.7424 38.1592 26.5512C37.8242 27.3601 37.3331 28.095 36.7141 28.714C36.095 29.3331 35.3601 29.8242 34.5513 30.1592C33.7424 30.4942 32.8755 30.6667 32 30.6667ZM32 5.33333C27.0493 5.33333 22.3014 7.29999 18.8007 10.8007C15.3 14.3014 13.3334 19.0493 13.3334 24C13.3334 38 32 58.6667 32 58.6667C32 58.6667 50.6667 38 50.6667 24C50.6667 19.0493 48.7 14.3014 45.1994 10.8007C41.6987 7.29999 36.9507 5.33333 32 5.33333Z" fill="#FF7F6A"/>
-  </g>
-</svg>`;
+const customMarkerSVG =
+  `<svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">` +
+  `<path d="M32 30.6667C30.2319 30.6667 28.5362 29.9643 27.286 28.714C26.0358 27.4638 25.3334 25.7681 25.3334 24C25.3334 22.2319 26.0358 20.5362 27.286 19.286C28.5362 18.0357 30.2319 17.3333 32 17.3333C33.7682 17.3333 35.4638 18.0357 36.7141 19.286C37.9643 20.5362 38.6667 22.2319 38.6667 24C38.6667 24.8755 38.4943 25.7424 38.1592 26.5512C37.8242 27.3601 37.3331 28.095 36.7141 28.714C36.095 29.3331 35.3601 29.8242 34.5513 30.1592C33.7424 30.4942 32.8755 30.6667 32 30.6667ZM32 5.33333C27.0493 5.33333 22.3014 7.29999 18.8007 10.8007C15.3 14.3014 13.3334 19.0493 13.3334 24C13.3334 38 32 58.6667 32 58.6667C32 58.6667 50.6667 38 50.6667 24C50.6667 19.0493 48.7 14.3014 45.1994 10.8007C41.6987 7.29999 36.9507 5.33333 32 5.33333Z" fill="#FF7F6A"/></svg>`;
 
-const Contacts = ({ handleMouseEnter, handleMouseLeave }) => {
+function Contacts({ handleMouseEnter, handleMouseLeave }) {
   const [selectedMap, setSelectedMap] = useState(cities[0].name);
   const [swiper, setSwiper] = useState(null);
   const [mapCenter, setMapCenter] = useState(cities[0].coords);
   const [mapKey, setMapKey] = useState(0);
+
+  const menuRef = useRef(null);
+  const mapRef = useRef(null);
+  const ymapsRef = useRef(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -75,37 +72,86 @@ const Contacts = ({ handleMouseEnter, handleMouseLeave }) => {
 
   useEffect(() => {
     if (swiper) {
-      swiper.slideTo(cities.findIndex((c) => c.name === selectedMap));
+      const idx = cities.findIndex((c) => c.name === selectedMap);
+      if (idx >= 0) swiper.slideTo(idx);
     }
-    setMapCenter(cities.find((c) => c.name === selectedMap)?.coords || [37.5804, 55.783]);
-    setMapKey((prevKey) => prevKey + 1);
+    const coords = cities.find((c) => c.name === selectedMap)?.coords || [55.783, 37.5804];
+    setMapCenter(coords);
+    setMapKey((k) => k + 1);
   }, [selectedMap, swiper]);
 
-  const handleCityClick = useCallback((city) => {
-    setSelectedMap(city.name);
-  }, []);
+  const handleCityClick = useCallback((city) => setSelectedMap(city.name), []);
 
   const mapOptions = useMemo(
-    () =>
-      window.innerWidth <= 767
-        ? {
-            suppressMapOpenBlock: true,
-            suppressMapOpenBlockKey: 'ctrlKey',
-          }
-        : {},
+    () => (window.innerWidth <= 767 ? { suppressMapOpenBlock: true, suppressMapOpenBlockKey: 'ctrlKey' } : {}),
     []
   );
 
+  const centerWithSidebarSafe = useCallback(() => {
+    const map = mapRef.current;
+    const ymaps = ymapsRef.current;
+    if (!map || !ymaps || !mapCenter) return;
+
+    const w = window.innerWidth;
+    const isDesktop = w >= 1025;
+
+    const left = isDesktop && menuRef.current ? menuRef.current.offsetWidth : 0;
+    const top = !isDesktop && menuRef.current ? menuRef.current.offsetHeight : 0;
+
+    try {
+      const margins = [top, 0, 0, left];
+      if (map.margin && map.margin.setDefaultMargin) {
+        map.margin.setDefaultMargin(margins);
+      } else if (map.options && map.options.set) {
+        map.options.set('margin', margins);
+      }
+
+      if (map.panTo) {
+        map.panTo(mapCenter, { flying: false, duration: 0, useMapMargin: true });
+      } else if (map.setCenter) {
+        map.setCenter(mapCenter, map.getZoom ? map.getZoom() : 11, { useMapMargin: true });
+      }
+    } catch (e) {
+      console.warn('Map centering error:', e);
+    }
+ 
+    try {
+      const zoom = map.getZoom ? map.getZoom() : 11;
+      const projection = map.options.get && map.options.get('projection');
+      if (projection && projection.toGlobalPixels && projection.fromGlobalPixels && (left > 0 || top > 0)) {
+        const global = projection.toGlobalPixels(mapCenter, zoom);
+
+        const shiftedGlobal = [global[0] - (left > 0 ? left / 2 : 0), global[1] - (top > 0 ? top / 2 : 0)];
+        const shiftedCenter = projection.fromGlobalPixels(shiftedGlobal, zoom);
+
+        if (map.panTo) {
+          map.panTo(shiftedCenter, { flying: false, duration: 0 });
+        } else if (map.setCenter) {
+          map.setCenter(shiftedCenter, zoom);
+        }
+      }
+    } catch (e) {  
+      console.warn('Map fallback error:', e);
+    }
+  }, [mapCenter]);
+ 
+  useEffect(() => {
+    centerWithSidebarSafe();
+    const onResize = () => centerWithSidebarSafe();
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, [centerWithSidebarSafe]);
+
   const { address, phone, mail, hour } = cityInfo[selectedMap];
-  const isLargeScreen = window.innerWidth >= 1024;
 
   return (
     <>
       <Helmet>
         <title>MARKS GROUP</title>
       </Helmet>
+
       <div className={styles.main_contact}>
-        <div className={styles.menu_block}>
+        <div className={styles.menu_block} ref={menuRef}>
           <div className={styles.menu_span}>Стать клиентом или&nbsp;партнёром</div>
           <div className={styles.menu_mail}>{mail}</div>
           <div className={styles.menu_tel}>{phone}</div>
@@ -115,15 +161,25 @@ const Contacts = ({ handleMouseEnter, handleMouseLeave }) => {
           <Link to={`tel:${phone}`} className={styles.link_tel}>
             {phone}
           </Link>
+
           <div className={styles.menu_address}>{address}</div>
           <div className={styles.menu_work}>
             Режим работы &nbsp;&bull;&nbsp; Пн.&nbsp;&mdash; Пт.&nbsp;10.00&mdash;19.00
             {selectedMap !== 'Москва' && selectedMap !== 'Санкт-Петербург' && selectedMap !== 'Воронеж' && (
               <> &nbsp;&bull;&nbsp; {hour}</>
             )}
-          </div>          
-          <div className={styles.menu_hour}></div>
-          <div className={styles.menu_office_name}>Наши офисы</div>
+          </div>
+
+          <div className={styles.menu_pr}>
+            По&nbsp;вопросам PR, публикаций в&nbsp;СМИ, участия в&nbsp;конференциях:
+            <br />
+            <Link to="mailto:pr@marksgroup.ru" className={styles.menu_pr_mail}>
+              pr@marksgroup.ru
+            </Link>
+          </div>
+
+          <div className={styles.menu_office_name}>У нас есть офисы по всему материку!</div>
+
           <div className={styles.menu_button_group}>
             {cities.map((city) => (
               <button
@@ -137,20 +193,23 @@ const Contacts = ({ handleMouseEnter, handleMouseLeave }) => {
             ))}
           </div>
         </div>
+
         <div className={styles.map_block}>
           <YMaps>
             <Map
               key={mapKey}
-              defaultState={{
-                center: isLargeScreen
-                  ? [mapCenter[0], mapCenter[1] - 0.15]
-                  : [mapCenter[0] + 0.05, mapCenter[1] + 0.05],
-                zoom: 11,
-              }}
+              defaultState={{ center: mapCenter, zoom: 12 }}
               width="100%"
               height="100%"
-              query={{ apiKey: apiKey }}
-              options={mapOptions}>
+              query={{ apiKey }}
+              options={mapOptions}
+              instanceRef={(ref) => {
+                mapRef.current = ref;
+              }}
+              onLoad={(ymaps) => {
+                ymapsRef.current = ymaps;              
+                setTimeout(centerWithSidebarSafe, 0);
+              }}>
               <Placemark
                 geometry={mapCenter}
                 options={{
@@ -161,12 +220,8 @@ const Contacts = ({ handleMouseEnter, handleMouseLeave }) => {
               />
             </Map>
           </YMaps>
-          <Swiper
-            onSwiper={setSwiper}
-            slidesPerView={'auto'}
-            spaceBetween={10}
-            className={styles.mySwiper}
-            touch={'true'}>
+
+          <Swiper onSwiper={setSwiper} slidesPerView="auto" spaceBetween={10} className={styles.mySwiper}>
             <div className={styles.slider_menu_button_group}>
               {cities.map((city) => (
                 <SwiperSlide
@@ -182,30 +237,15 @@ const Contacts = ({ handleMouseEnter, handleMouseLeave }) => {
           </Swiper>
         </div>
       </div>
-      <style>
-        {`
-          [class*="ymaps-2"][class*="-ground-pane"] {    
-            -webkit-filter: grayscale(88%) brightness(100%);
-          }
-        `}
-      </style>
-      {/* <style>
-        {`
-          [class*="ymaps-2"][class*="-ground-pane"] {
-            filter: grayscale(98%) brightness(100%);
-          }      
-        `}
-      </style> */}
-      {/* <style>
-        {`
-          [class*="ymaps-2"][class*="-ground-pane"] {
-            filter: brightness(95%) hue-rotate(500deg) saturate(100%) !important;
-          }
-        `}
-      </style> */}
+
+      <style>{`
+        [class*="ymaps-2"][class*="-ground-pane"] {
+          -webkit-filter: grayscale(88%) brightness(100%);
+        }
+      `}</style>
     </>
   );
-};
+}
 
 export default React.memo(Contacts);
 
