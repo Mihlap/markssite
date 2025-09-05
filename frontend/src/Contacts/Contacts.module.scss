@@ -10,40 +10,37 @@
 
 .menu_block {
   flex-direction: column;
-  width: min-content;
-  max-width: 100%;
+  max-width: 46%;
+  min-width: 40rem;
+  width: 100%;
   height: 100%;
   font-family: var(--font-unbounded);
   font-style: normal;
   font-weight: var(--fw-300);
   color: var(--black-1D2E43);
-  background: linear-gradient(
-    261.46deg,
-    rgba(117, 187, 253, 0.09) -4.67%,
-    rgba(123, 163, 217, 0.05) 44.63%,
-    rgba(117, 187, 253, 0.09) 103.07%
-  );
+  background: linear-gradient(261.46deg,
+      rgba(117, 187, 253, 0.09) -4.67%,
+      rgba(123, 163, 217, 0.05) 44.63%,
+      rgba(117, 187, 253, 0.09) 103.07%);
   box-shadow: 0px 0px 37px rgba(44, 59, 68, 0.17);
   backdrop-filter: blur(14px);
   z-index: 1;
-  padding-left: 1.94vw;
-  padding-right: 2.39vw;
-}
+  padding-left: 1.75rem;
+  padding-right: 1.75rem;
 
-.menu_block::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  width: 1px;
-  background: linear-gradient(
-    261.46deg,
-    rgba(117, 187, 253, 0.09) -4.67%,
-    rgba(123, 163, 217, 0.05) 44.63%,
-    rgba(117, 187, 253, 0.09) 103.07%
-  );
-  box-shadow: 0px 0px 37px rgba(44, 59, 68, 0.17);
+  &::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 1px;
+    background: linear-gradient(261.46deg,
+        rgba(117, 187, 253, 0.09) -4.67%,
+        rgba(123, 163, 217, 0.05) 44.63%,
+        rgba(117, 187, 253, 0.09) 103.07%);
+    box-shadow: 0px 0px 37px rgba(44, 59, 68, 0.17);
+  }
 }
 
 .map_block {
@@ -56,18 +53,19 @@
 .menu_span {
   font-size: 20px;
   line-height: 28px;
-  padding-top: 15vh;
+  padding-top: 9.94rem;
 }
 
 .menu_mail {
   font-size: 48px;
   line-height: 64px;
-  padding-top: 0.54vh;
+  padding-top: 0.5rem;
 }
+
 .menu_tel {
   font-size: 24px;
   line-height: 32px;
-  padding-top: 4.82vh;
+  padding-top: 2rem;
 }
 
 .link_mail,
@@ -80,30 +78,54 @@
   font-weight: var(--fw-400);
   font-size: 16px;
   line-height: 24px;
-  padding-top: 2.14vh;
+  padding-top: 1rem;
 }
 
 .menu_work {
   font-family: var(--font-raleway);
   font-weight: var(--fw-400);
-  font-size: 14px;
-  line-height: 20px;
-  padding-top: 0.54vh;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  padding-top: 0.25rem;
   color: var(--dark-gray-566272);
+}
+
+.menu_pr {
+  color: var(--black-1D2E43);
+  font-variant-numeric: lining-nums proportional-nums;
+  font-family: var(--font-raleway);
+  font-weight: var(--fw-400);
+  font-size: 1rem;
+  font-style: normal;
+  line-height: 1.5rem;
+  padding-top: 2.75rem;
+}
+
+.menu_pr_mail {
+  color: var(--black-1D2E43);
+  font-variant-numeric: lining-nums proportional-nums;
+  font-family: var(--font-raleway);
+  font-weight: var(--fw-700);
+  font-size: 1rem;
+  font-style: normal;
+  line-height: 1.5rem;
 }
 
 .menu_office_name {
   font-size: 24px;
   line-height: 32px;
-  color: #000000;
-  padding-top: 30vh;
+  color: var(--black-1D2E43);
+  padding-top: 6.44rem;
 }
 
 .menu_button_group {
   display: flex;
   padding-top: 1.688rem;
-  gap: 8px;
-  padding-bottom: 8vh;
+  column-gap: 0.625rem;
+  row-gap: 1.5rem;
+  padding-bottom: 3.5rem;
+  flex-wrap: wrap;
+  max-width: 100%;
 }
 
 .menu_button {
@@ -119,14 +141,14 @@
   align-items: center;
   transition: background-color 0.8s ease, color 0.8s ease;
   white-space: nowrap;
-}
 
-.menu_button:hover {
-  background-color: var(--dark-gray-566272);
-  border: 1px solid transparent;
-  color: var(--white-F6F6F6);
-  font-weight: var(--fw-300);
-  transition: background-color 0.4s ease, color 0.4s ease;
+  &:hover {
+    background-color: var(--dark-gray-566272);
+    border: 1px solid transparent;
+    color: var(--white-F6F6F6);
+    font-weight: var(--fw-300);
+    transition: background-color 0.4s ease, color 0.4s ease;
+  }
 }
 
 .menu_button_active {
@@ -135,13 +157,13 @@
   pointer-events: none;
   font-weight: var(--fw-300);
 }
+
 .menu_button_city {
-  padding: 8px 24px;
+  padding: 0.5rem 1.5rem;
   width: 100%;
 }
 
-/* Стили планшетной версии */
-
+/* ========= Планшет ========= */
 @media screen and (min-width: 768px) and (max-width: 1024px) {
   .main_contact {
     min-width: 0px;
@@ -150,28 +172,32 @@
   .menu_block {
     position: absolute;
     height: auto;
+    max-width: 100%;
     width: 100%;
-    padding-left: 3.43rem;
     border-bottom: 1px solid #ebecee;
+    padding-left: 0;
+    padding-right: 0;
   }
 
   .menu_span {
     font-family: var(--font-raleway);
-    font-weight: var(--fw-400);
-    font-size: 16px;
-    line-height: 24px;
-    padding-top: 6.25rem;
+    font-weight: var(--fw-300);
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    padding-top: 9.4rem;
+    padding-left: 3.5rem;
   }
 
   .link_mail {
     display: block;
     font-family: var(--font-unbounded);
-    font-size: 48px;
+    font-size: 3rem;
     font-style: normal;
-    line-height: 64px;
-    font-weight: var(--fw-400);
+    line-height: 4rem;
+    font-weight: var(--fw-300);
     color: var(--black-1D2E43);
     padding-top: 0.5rem;
+    padding-left: 3.5rem;
   }
 
   .link_tel {
@@ -179,10 +205,11 @@
     font-family: var(--font-unbounded);
     font-style: normal;
     font-weight: var(--fw-300);
-    font-size: 24px;
-    line-height: 32px;
+    font-size: 1.5rem;
+    line-height: 2rem;
     color: var(--black-1D2E43);
-    padding-top: 2rem;
+    padding-top: 1.75rem;
+    padding-left: 3.5rem;
   }
 
   .menu_mail,
@@ -191,10 +218,19 @@
   }
 
   .menu_address {
-    font-size: 16px;
-    line-height: 24px;
+    font-size: 1rem;
+    line-height: 1.5rem;
     font-feature-settings: 'pnum' on, 'lnum' on;
     padding-top: 1rem;
+    padding-left: 3.5rem;
+  }
+
+  .menu_work {
+    padding-left: 3.5rem;
+  }
+
+  .menu_pr {
+    padding-left: 3.5rem;
   }
 
   .menu_office_name {
@@ -202,21 +238,39 @@
   }
 
   .menu_button_group {
-    padding-bottom: 2rem;
+    display: flex;
     gap: 8px;
+    padding-top: 3rem;
+    padding-bottom: 2rem;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    padding-left: 3.5rem;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 
   .menu_button {
+    flex: 0 0 auto;
     background-color: var(--white-F6F6F6);
     transition: background-color 0.4s ease, color 0.4s ease;
+
+    &:hover {
+      background: var(--white-F6F6F6);
+      color: var(--black-1D2E43);
+      border: 1px solid var(--black-1D2E43);
+      transition: none;
+    }
   }
 
-  .menu_button:hover {
-    background: var(--white-F6F6F6);
-    color: var(--black-1D2E43);
-    border: 1px solid var(--black-1D2E43);
-    transition: none;
+  .menu_button_city {
+    padding: 8px 24px;
   }
+
   .menu_button_active {
     color: var(--white-F6F6F6);
     background-color: var(--black-1D2E43);
@@ -234,11 +288,10 @@
   }
 }
 
-/* Стили мобильной версии */
-
+/* ========= Мобилка ========= */
 @media screen and (max-width: 767px) {
   .main_contact {
-    min-width: 0px;
+    min-width: 0;
     display: flex;
     flex-direction: column;
   }
@@ -246,35 +299,40 @@
   .menu_block {
     position: absolute;
     height: auto;
+    min-width: 0;
+    max-width: 100%;
     width: 100%;
-    padding-left: 16px;
+    padding-left: 1rem;
+    padding-right: 1rem;
     border-bottom: 1px solid #ebecee;
+    padding-bottom: 2.5rem;
   }
 
   .menu_span {
     font-family: var(--font-raleway);
     font-style: normal;
     font-weight: var(--fw-400);
-    font-size: 16px;
-    line-height: 24px;
-    padding-top: 130px;
+    font-size: 1rem;
+    line-height: 1.5rem;
+    padding-top: 7.37rem;
   }
 
   .link_mail {
     display: block;
-    font-size: 27px;
-    line-height: 32px;
+    font-size: 1.6875rem;
+    line-height: 2rem;
     font-weight: var(--fw-400);
     color: var(--black-1D2E43);
-    padding-top: 8px;
+    padding-top: 0.5rem;
   }
 
   .link_tel {
     display: block;
-    font-size: 20px;
-    line-height: 28px;
+    font-size: 1.25rem;
+    line-height: 1.75rem;
+    font-weight: var(--fw-300);
     color: var(--black-1D2E43);
-    padding-top: 32px;
+    padding-top: 1.75rem;
   }
 
   .menu_mail,
@@ -286,15 +344,15 @@
     font-size: 16px;
     line-height: 24px;
     font-feature-settings: 'pnum' on, 'lnum' on;
-    padding-right: 10px;
+    padding-top: 1rem;
+  }
+
+  .menu_pr {
+    padding-top: 2.5rem;  
   }
 
   .menu_office_name {
     display: none;
-  }
-
-  .menu_work {
-    padding-bottom: 48px;
   }
 
   .menu_button_group {
@@ -329,10 +387,12 @@
     cursor: pointer;
     transition: background-color 0.4s ease, color 0.4s ease;
   }
+
   .slider_menu_button_active {
     color: var(--white-F6F6F6);
     background-color: var(--black-1D2E43);
   }
+
   .slider_button_city {
     padding: 2px 24px;
   }
@@ -341,5 +401,10 @@
 @media (min-width: 1025px) {
   .mySwiper {
     display: none;
+  }
+
+  .menu_pr_mail:hover {
+    color: var(--salmon-FF7F6A, #FF7F6A);
+    cursor: pointer;
   }
 }
