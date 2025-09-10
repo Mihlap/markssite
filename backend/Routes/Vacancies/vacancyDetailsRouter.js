@@ -26,6 +26,56 @@ const deleteImageIfUnused = async (imageName, currentSlideId) => {
   }
 };
 
+router.post(
+  '/save-vacancy-details',
+  fileMiddleware.fields([{ name: 'photoAva', maxCount: 1 }]),
+  async (req, res) => {
+    let details;
+    try {
+      details = JSON.parse(req.body.details);
+    } catch (error) {
+      return res.status(400).json({ error: 'Некорректные данные: не удалось распарсить JSON' });
+    }
+
+    if (!details || !details.card1 || !details.card2 || !details.card3) {
+      return res.status(400).json({ error: 'Некорректные данные: отсутствуют необходимые поля' });
+    }
+
+    let photoAva = '';
+    if (req.files && req.files['photoAva']) {
+      try {
+        photoAva = await uploadFileToS3(req.files['photoAva'][0], 'images/slideCard');
+      } catch (error) {
+        console.error('Ошибка при загрузке фото на S3:', error);
+        return res.status(500).json({ error: 'Ошибка при загрузке фото' });
+      }
+    }
+
+    const cardData = {
+      card1: details.card1,
+      card2: details.card2,
+      card3: details.card3,
+    };
+
+    try {   
+      const maxOrder = await VacancyMainSlideCard.max('order');
+      const nextOrder = Number.isFinite(maxOrder) ? Number(maxOrder) + 1 : 0;
+
+      const newSlide = await VacancyMainSlideCard.create({
+        cardData,
+        hidden: false,
+        photoAva,
+        order: nextOrder,
+      });
+
+      res.status(200).json({ message: 'Детали вакансии сохранены успешно.', data: newSlide });
+    } catch (error) {
+      console.error('Ошибка при сохранении деталей вакансии:', error);
+      res.status(500).json({ error: 'Ошибка при обработке вашего запроса', details: error.errors });
+    }
+  },
+);
+
 router.put('/update-slide/:id', fileMiddleware.fields([{ name: 'photoAva', maxCount: 1 }]),
   async (req, res) => {
     try {
@@ -70,82 +120,41 @@ router.put('/update-slides-order', async (req, res) => {
   const { slides } = req.body;
   if (!Array.isArray(slides)) return res.status(400).json({ error: 'Ожидался массив слайдов' });
 
+  const t = await VacancyMainSlideCard.sequelize.transaction();
   try {
-    await Promise.all(
-      slides
-        .filter((s) => Number.isInteger(+s.id) && Number.isInteger(+s.order))
-        .map(({ id, order }) =>
-          VacancyMainSlideCard.update({ order: +order }, { where: { id: +id } }),
-        ),
-    );
+    for (const { id, order } of slides) {
+      if (!Number.isInteger(+id) || !Number.isInteger(+order)) continue;
+      await VacancyMainSlideCard.update({ order: +order }, { where: { id: +id }, transaction: t });
+    }
+    await t.commit();
 
-    const updatedSlides = await VacancyMainSlideCard.findAll({ order: [['order', 'ASC']] });
+    const updatedSlides = await VacancyMainSlideCard.findAll({
+      order: [
+        ['order', 'ASC'],
+        ['id', 'ASC'],
+      ],
+    });
     res.json({ message: 'Порядок слайдов успешно обновлен', slides: updatedSlides });
   } catch (e) {
+    await t.rollback();
     console.error('Ошибка при обновлении порядка слайдов:', e);
     res.status(500).json({ error: 'Ошибка сервера при обновлении порядка слайдов' });
   }
 });
 
 
-router.post('/save-vacancy-details',
-  fileMiddleware.fields([{
-  name: 'photoAva',
-  maxCount: 1
-    },
-  ]), async (req, res) => {
-  let details;
-  try {
-    details = JSON.parse(req.body.details);
-  } catch (error) {
-    return res.status(400).json({ error: 'Некорректные данные: не удалось распарсить JSON' });
-  }
-
-  if (!details || !details.card1 || !details.card2 || !details.card3) {
-    return res.status(400).json({ error: 'Некорректные данные: отсутствуют необходимые поля' });
-  }
-
-  let photoAva = '';
-  // Если загружено фото
-  if (req.files && req.files['photoAva']) {
-    try {
-      // Загружаем фото на S3 и получаем URL
-      photoAva = await uploadFileToS3(req.files['photoAva'][0], 'images/slideCard');
-    } catch (error) {
-      console.error('Ошибка при загрузке фото на S3:', error);
-      return res.status(500).json({ error: 'Ошибка при загрузке фото' });
-    }
-  }
-
-  const cardData = {
-    card1: details.card1,
-    card2: details.card2,
-    card3: details.card3,
-  };
-
-  try {
-    const newSlide = await VacancyMainSlideCard.create({
-      cardData,
-      hidden: false,
-      photoAva
-    });
-
-    res.status(200).json({ message: 'Детали вакансии сохранены успешно.', data: newSlide });
-  } catch (error) {
-    console.error('Ошибка при сохранении деталей вакансии:', error);
-    res.status(500).json({ error: 'Ошибка при обработке вашего запроса', details: error.errors });
-  }
-});
-
 router.get('/get-slides', async (req, res) => {
   try {
-    const data = await VacancyMainSlideCard.findAll({ order: [['order', 'ASC']] });
+    const data = await VacancyMainSlideCard.findAll({
+      order: [
+        ['order', 'ASC'],
+        ['id', 'ASC'],
+      ],
+    });
     res.json(data);
   } catch (error) {
     console.error(error);
-    res.status(500).json({
-      error: 'Произошла ошибка при получении данных.'
-    });
+    res.status(500).json({ error: 'Произошла ошибка при получении данных.' });
   }
 });
 
