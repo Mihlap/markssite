@@ -194,11 +194,11 @@ function Contacts({ handleMouseEnter, handleMouseLeave }) {
           </div>
         </div>
 
-        <div className={styles.map_block}>
+        <div id="contacts-map" className={styles.map_block}>
           <YMaps>
             <Map
               key={mapKey}
-              defaultState={{ center: mapCenter, zoom: 12 }}
+              defaultState={{ center: mapCenter, zoom: 11 }}
               width="100%"
               height="100%"
               query={{ apiKey }}
@@ -207,7 +207,7 @@ function Contacts({ handleMouseEnter, handleMouseLeave }) {
                 mapRef.current = ref;
               }}
               onLoad={(ymaps) => {
-                ymapsRef.current = ymaps;              
+                ymapsRef.current = ymaps;
                 setTimeout(centerWithSidebarSafe, 0);
               }}>
               <Placemark
@@ -220,6 +220,8 @@ function Contacts({ handleMouseEnter, handleMouseLeave }) {
               />
             </Map>
           </YMaps>
+          <div className={styles.mapTintBase} />
+          <div className={styles.mapTintWarm} />
 
           <Swiper onSwiper={setSwiper} slidesPerView="auto" spaceBetween={10} className={styles.mySwiper}>
             <div className={styles.slider_menu_button_group}>
@@ -240,12 +242,27 @@ function Contacts({ handleMouseEnter, handleMouseLeave }) {
 
       <style>{`
         [class*="ymaps-2"][class*="-ground-pane"] {
-          -webkit-filter: grayscale(88%) brightness(100%);
+          -webkit-filter: grayscale(80%) brightness(100%);
         }
       `}</style>
+
+      {/* <style>
+        {`
+          [class*="ymaps-2"][class*="-ground-pane"] {
+            filter: grayscale(98%) brightness(100%);
+          }      
+        `}
+      </style> */}
+      {/* <style>
+        {`
+          [class*="ymaps-2"][class*="-ground-pane"] {
+            filter: brightness(95%) hue-rotate(500deg) saturate(100%) !important;
+          }
+        `}
+      </style> */}
     </>
   );
-}
+};
 
 export default React.memo(Contacts);
 
