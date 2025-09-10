@@ -10,10 +10,8 @@ export const postVacancyData = createAsyncThunk(
       const res = await axios.post(`${serverHost}/api-vacancyDetails/save-vacancy-details`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' },
       });
-
       const slide = res?.data?.data;
       if (!slide) throw new Error('Некорректный ответ сервера: отсутствует поле data');
-
       dispatch(fetchSlides());
       return slide;
     } catch (error) {
@@ -56,14 +54,9 @@ export const editSlide = createAsyncThunk('slides/editSlide', async ({ id, data 
     const res = await axios.put(`${serverHost}/api-vacancyDetails/update-slide/${id}`, data, {
       headers: { 'Content-Type': 'multipart/form-data' },
     });
-
-    if (res.status !== 200) {
-      return rejectWithValue('Не удалось обновить слайд');
-    }
-
+    if (res.status !== 200) return rejectWithValue('Не удалось обновить слайд');
     const slide = res?.data?.data;
     if (!slide) throw new Error('Некорректный ответ сервера: отсутствует поле data');
-
     return slide;
   } catch (error) {
     return rejectWithValue('Ошибка при обновлении слайда: ' + error.message);
@@ -75,10 +68,7 @@ export const updateSlidesOrder = createAsyncThunk(
   async (slides, { rejectWithValue }) => {
     try {
       const payload = slides
-        .map((slide, index) => ({
-          id: slide.id ?? slide.data?.id,
-          order: index,
-        }))
+        .map((slide, index) => ({ id: slide.id ?? slide.data?.id, order: index }))
         .filter((s) => s.id != null);
 
       const res = await axios.put(`${serverHost}/api-vacancyDetails/update-slides-order`, { slides: payload });
@@ -97,7 +87,6 @@ export const toggleSlideVisibility = createAsyncThunk(
       const res = await axios.put(`${serverHost}/api-vacancyDetails/toggle-slide/${id}`, { hidden });
       if (res.status === 200) {
         dispatch(updateSlideVisibility({ id, hidden }));
-        dispatch(fetchSlides());
       }
       return res.data;
     } catch (error) {
@@ -107,14 +96,35 @@ export const toggleSlideVisibility = createAsyncThunk(
   }
 );
 
-export const deleteSlide = createAsyncThunk('slides/deleteSlide', async (id, { rejectWithValue }) => {
-  try {
-    await axios.delete(`${serverHost}/api-vacancyDetails/delete-slide/${id}`);
-    return id;
-  } catch (error) {
-    return rejectWithValue('Ошибка при удалении слайда: ' + error.message);
+export const deleteSlide = createAsyncThunk(
+  'slides/deleteSlide',
+  async (id, { dispatch, getState, rejectWithValue }) => {
+    try {
+      await axios.delete(`${serverHost}/api-vacancyDetails/delete-slide/${id}`);
+      const state = getState();
+      const slides = (state.formAddSlide?.slides || [])
+        .filter((s) => s.id !== id)
+        .sort((a, b) => {
+          const ao = a.order ?? 0;
+          const bo = b.order ?? 0;
+          if (ao !== bo) return ao - bo;
+          return (a.id ?? 0) - (b.id ?? 0);
+        });
+
+      const reindexed = slides.map((s, i) => ({ ...s, order: i }));
+      dispatch(updateSlidesOrderLocally(reindexed));
+      try {
+        await dispatch(updateSlidesOrder(reindexed)).unwrap();
+      } catch (e) {
+        console.warn('Не удалось сохранить новый порядок после удаления:', e);
+      }
+
+      return id;
+    } catch (error) {
+      return rejectWithValue('Ошибка при удалении слайда: ' + (error?.message || 'unknown'));
+    }
   }
-});
+);
 
 const formAddSlideSlice = createSlice({
   name: 'slides',
@@ -132,7 +142,7 @@ const formAddSlideSlice = createSlice({
     updateSlideVisibility(state, action) {
       const index = state.slides.findIndex((slide) => slide.id === action.payload.id);
       if (index !== -1) {
-        state.slides[index].hidden = action.payload.hidden;
+        state.slides[index] = { ...state.slides[index], hidden: action.payload.hidden };
         state.slides = [...state.slides];
       }
     },
@@ -146,11 +156,27 @@ const formAddSlideSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(fetchSlides.fulfilled, (state, action) => {
-        state.slides = action.payload;
+        const arr = Array.isArray(action.payload) ? action.payload : [];
+        state.slides = [...arr].sort((a, b) => {
+          const ao = a.order ?? 0;
+          const bo = b.order ?? 0;
+          if (ao !== bo) return ao - bo;
+          return (a.id ?? 0) - (b.id ?? 0);
+        });
         state.isLoading = false;
       })
       .addCase(fetchSlides.rejected, (state, action) => {
         state.isLoading = false;
+        state.error = action.payload || action.error.message;
+      })
+      .addCase(fetchSlideDetails.fulfilled, (state, action) => {
+        const slide = action.payload;
+        const i = state.slides.findIndex((s) => s.id === slide.id);
+        if (i !== -1) state.slides[i] = slide;
+        else state.slides.push(slide);
+        state.slides = [...state.slides];
+      })
+      .addCase(fetchSlideDetails.rejected, (state, action) => {
         state.error = action.payload || action.error.message;
       })
       .addCase(postVacancyData.fulfilled, (state, action) => {
@@ -164,6 +190,7 @@ const formAddSlideSlice = createSlice({
         } else {
           state.slides.push(slide);
         }
+        state.slides = [...state.slides];
       })
       .addCase(editSlide.rejected, (state, action) => {
         state.error = action.payload || action.error.message;
@@ -173,20 +200,25 @@ const formAddSlideSlice = createSlice({
         const i = state.slides.findIndex((s) => s.id === slide.id);
         if (i !== -1) state.slides[i] = slide;
         else state.slides.push(slide);
+        state.slides = [...state.slides];
       })
       .addCase(fetchSlideById.rejected, (state, action) => {
-        console.error('Ошибка при получении данных слайда:', action.payload);
         state.error = action.payload || action.error.message;
       })
       .addCase(updateSlidesOrder.fulfilled, (state, action) => {
-        state.slides = [...(action.payload.slides || [])];
+        const arr = action.payload?.slides || [];
+        state.slides = [...arr].sort((a, b) => {
+          const ao = a.order ?? 0;
+          const bo = b.order ?? 0;
+          if (ao !== bo) return ao - bo;
+          return (a.id ?? 0) - (b.id ?? 0);
+        });
       })
       .addCase(updateSlidesOrder.rejected, (state, action) => {
         state.error = action.payload || action.error.message;
       })
       .addCase(deleteSlide.fulfilled, (state, action) => {
-        state.slides = state.slides.filter((slide) => slide.id !== action.payload);
-        state.slides = [...state.slides];
+        state.slides = state.slides.filter((s) => s.id !== action.payload);
       })
       .addCase(deleteSlide.rejected, (state, action) => {
         state.error = action.payload || action.error.message;
@@ -195,5 +227,4 @@ const formAddSlideSlice = createSlice({
 });
 
 export const { resetSlidesState, updateSlideVisibility, updateSlidesOrderLocally } = formAddSlideSlice.actions;
-
 export default formAddSlideSlice.reducer;
