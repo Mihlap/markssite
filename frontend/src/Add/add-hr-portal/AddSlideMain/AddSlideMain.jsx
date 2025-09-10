@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import SlidesList from './SlidesList';
 import SlideModalManager from './SlideModalManager';
@@ -21,10 +21,11 @@ export default function AddSlideMain({
   const dispatch = useDispatch();
   const slides = useSelector((state) => state.formAddSlide.slides || []);
   const [deleteModalStateSlide, setDeleteModalStateSlide] = useState({});
+
   const handleOpenModal = useCallback(() => {
     setIsModalOpenMain(true);
     setEditSlideData(null);
-  }, []);
+  }, [setIsModalOpenMain, setEditSlideData]);
 
   const handleDeleteModalOpenSlide = useCallback((id) => {
     setDeleteModalStateSlide((prevState) => ({
@@ -51,7 +52,7 @@ export default function AddSlideMain({
 
   const handleLookClick = useCallback(
     (id) => {
-      const slide = slides.find((slide) => slide.id === id);
+      const slide = slides.find((s) => s.id === id);
       if (slide) {
         dispatch(toggleSlideVisibility({ id, hidden: !slide.hidden }));
       } else {
@@ -68,7 +69,7 @@ export default function AddSlideMain({
         setEditSlideData(slideData);
         setIsModalOpenMain(true);
 
-        const updatedSlides = slides.map((slide) => (slide.id === slideData.id ? slideData : slide));
+        const updatedSlides = slides.map((s) => (s.id === slideData.id ? slideData : s));
         dispatch(updateSlidesOrderLocally(updatedSlides));
       } catch (error) {
         console.error('Ошибка при загрузке данных слайда:', error);
@@ -80,6 +81,7 @@ export default function AddSlideMain({
   return (
     <div className={styles.card_components_admin__blockAddSlide}>
       <span className={styles.card_components_admin__title}>Ведущая компания в сфере проектирования</span>
+
       <div className={styles.card_components_admin__button_block} onClick={handleOpenModal}>
         <button className={styles.card_components_admin__button}>
           <div>
@@ -89,8 +91,7 @@ export default function AddSlideMain({
               height="40"
               viewBox="0 0 41 40"
               fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+              xmlns="http://www.w3.org/2000/svg">
               <g id="icon">
                 <circle id="Ellipse 4" cx="20.5" cy="20" r="20" fill="#F6F6F6" />
                 <path
