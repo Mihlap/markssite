@@ -28,10 +28,7 @@ export default function AddSlideMain({
   }, [setIsModalOpenMain, setEditSlideData]);
 
   const handleDeleteModalOpenSlide = useCallback((id) => {
-    setDeleteModalStateSlide((prevState) => ({
-      ...prevState,
-      [id]: true,
-    }));
+    setDeleteModalStateSlide((prevState) => ({ ...prevState, [id]: true }));
   }, []);
 
   const handleDeleteModalCloseSlide = useCallback((id) => {
@@ -53,11 +50,8 @@ export default function AddSlideMain({
   const handleLookClick = useCallback(
     (id) => {
       const slide = slides.find((s) => s.id === id);
-      if (slide) {
-        dispatch(toggleSlideVisibility({ id, hidden: !slide.hidden }));
-      } else {
-        console.error('Слайд с таким ID не найден:', id);
-      }
+      if (slide) dispatch(toggleSlideVisibility({ id, hidden: !slide.hidden }));
+      else console.error('Слайд с таким ID не найден:', id);
     },
     [dispatch, slides]
   );
@@ -68,7 +62,6 @@ export default function AddSlideMain({
         const slideData = await dispatch(fetchSlideById(id)).unwrap();
         setEditSlideData(slideData);
         setIsModalOpenMain(true);
-
         const updatedSlides = slides.map((s) => (s.id === slideData.id ? slideData : s));
         dispatch(updateSlidesOrderLocally(updatedSlides));
       } catch (error) {

@@ -17,10 +17,16 @@ export default function SlidesList({
   handleFormDeleteSlide,
   handleLookClick,
 }) {
-  const dispatch = useDispatch(); 
+  const dispatch = useDispatch();
   const slidesFromStore = useSelector((state) => state.formAddSlide.slides || []);
   const slides = useMemo(
-    () => [...slidesFromStore].sort((a, b) => (a.order ?? 0) - (b.order ?? 0)),
+    () =>
+      [...slidesFromStore].sort((a, b) => {
+        const ao = a.order ?? 0;
+        const bo = b.order ?? 0;
+        if (ao !== bo) return ao - bo;
+        return (a.id ?? 0) - (b.id ?? 0);
+      }),
     [slidesFromStore]
   );
 
@@ -32,7 +38,11 @@ export default function SlidesList({
 
   const handleDragStart = useCallback(
     (e, index) => {
-      setDraggedItem(slides[index]);
+      const item = slides[index];
+      setDraggedItem(item);     
+      try {
+        e.dataTransfer.setData('text/plain', String(item.id));
+      } catch (_) {}
       e.dataTransfer.effectAllowed = 'move';
     },
     [slides]
@@ -53,12 +63,15 @@ export default function SlidesList({
       const draggedIndex = slides.findIndex((s) => s.id === draggedItem.id);
       if (draggedIndex === index) return;
 
-      const updatedSlides = [...slides];
-      const [removed] = updatedSlides.splice(draggedIndex, 1);
-      updatedSlides.splice(index, 0, removed);   
-      dispatch(updateSlidesOrderLocally(updatedSlides));   
+      const updated = [...slides];
+      const [removed] = updated.splice(draggedIndex, 1);
+      updated.splice(index, 0, removed);
+      
+      const reindexed = updated.map((s, i) => ({ ...s, order: i }));
+   
+      dispatch(updateSlidesOrderLocally(reindexed));     
       try {
-        await dispatch(updateSlidesOrder(updatedSlides)).unwrap();
+        await dispatch(updateSlidesOrder(reindexed)).unwrap();
       } finally {
         setDraggedItem(null);
       }
