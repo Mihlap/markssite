@@ -137,7 +137,7 @@ const formAddSlideSlice = createSlice({
       }
     },
     updateSlidesOrderLocally(state, action) {
-      state.slides = action.payload;
+      state.slides = [...action.payload];
     },
   },
   extraReducers: (builder) => {
@@ -179,7 +179,7 @@ const formAddSlideSlice = createSlice({
         state.error = action.payload || action.error.message;
       })
       .addCase(updateSlidesOrder.fulfilled, (state, action) => {
-        state.slides = action.payload.slides;
+        state.slides = [...(action.payload.slides || [])];
       })
       .addCase(updateSlidesOrder.rejected, (state, action) => {
         state.error = action.payload || action.error.message;
