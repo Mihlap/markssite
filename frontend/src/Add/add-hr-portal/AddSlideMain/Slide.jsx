@@ -38,7 +38,7 @@ const Slide = ({
             <button className={styles.buttom_look}>
               <label htmlFor="look" className={styles.label}>
                 <div className={styles.wrapper}>
-                  <img src={el.hidden ? noLook : Look} alt={el.hidden ? 'No look' : 'Look'} />
+                  <img src={el.hidden ? noLook : Look} alt={el.hidden ? 'hidden' : 'visible'} />
                 </div>
               </label>
             </button>
