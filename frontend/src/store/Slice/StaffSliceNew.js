@@ -1,0 +1,202 @@
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import axios from 'axios';
+
+const HOST = (process.env.REACT_APP_SERVER_HOST || process.env.REACT_APP_API_URL || '').replace(/\/+$/, '');
+
+const api = axios.create({
+  baseURL: `${HOST}`,
+  withCredentials: true,
+  headers: { 'Content-Type': 'application/json' },
+});
+
+const normalizeCategory = (val) =>
+  Array.isArray(val)
+    ? val
+    : val
+    ? String(val)
+        .split(',')
+        .map((s) => s.trim())
+        .filter(Boolean)
+    : [];
+
+async function maybeUploadImage(imgFile) {
+  if (!imgFile) return null;
+  const fd = new FormData();
+  fd.append('file', imgFile); 
+  const { data } = await api.post('api-stuffs/upload', fd, {
+    headers: { 'Content-Type': 'multipart/form-data' },
+  });
+  return data?.filename || data?.url || null;
+}
+
+export const fetchStaffAsync = createAsyncThunk('staff/fetchAll', async (_, { rejectWithValue }) => {
+  try {
+    const { data } = await api.get('/api-stuffs/stuffs', {
+      params: { includeHidden: true },
+    });
+    return data;
+  } catch (e) {
+    return rejectWithValue(e.response?.data || e.message);
+  }
+});
+
+export const fetchStaffByCategoryPublic = createAsyncThunk(
+  'staff/fetchByCategoryPublic',
+  async (category, { rejectWithValue }) => {
+    try {
+      const { data } = await api.get('/api-stuffs/stuffs', {
+        params: { category },
+      });
+      return data;
+    } catch (e) {
+      return rejectWithValue(e.response?.data || e.message);
+    }
+  }
+);
+
+export const createStaffAsync = createAsyncThunk('staff/create', async (payload, { rejectWithValue }) => {
+  try {
+    let img = payload.img || null;
+    if (payload.imgFile) img = await maybeUploadImage(payload.imgFile);
+
+    const body = {
+      name: payload.name?.trim(),
+      position: payload.position || '',
+      description: payload.description || '',
+      profileContent: payload.profileContent || '',
+      contentFormat: payload.contentFormat || 'markdown',
+      img,
+      category: normalizeCategory(payload.category),
+      isVisible: payload.isVisible ?? true,
+      sortIndex: payload.sortIndex ?? 0,
+      userId: payload.userId ?? null,
+    };
+
+    const { data } = await api.post('/api-stuffs/stuffs', body);
+    return data;
+  } catch (e) {
+    return rejectWithValue(e.response?.data || e.message);
+  }
+});
+
+export const updateStaffAsync = createAsyncThunk('staff/update', async ({ id, changes }, { rejectWithValue }) => {
+  try {
+    let img = changes.img ?? null;
+    if (changes.imgFile) img = await maybeUploadImage(changes.imgFile);
+
+    const body = {
+      ...changes,
+      img,
+      category: normalizeCategory(changes.category),
+    };
+
+    const { data } = await api.put(`/api-stuffs/stuffs/${id}`, body);
+    return data;
+  } catch (e) {
+    return rejectWithValue(e.response?.data || e.message);
+  }
+});
+
+export const deleteStaffAsync = createAsyncThunk('staff/delete', async (id, { rejectWithValue }) => {
+  try {
+    await api.delete(`/api-stuffs/stuffs/${id}`);
+    return id;
+  } catch (e) {
+    return rejectWithValue(e.response?.data || e.message);
+  }
+});
+
+export const toggleVisibilityStaffAsync = createAsyncThunk(
+  'staff/toggleVisibility',
+  async ({ id, isVisible }, { rejectWithValue }) => {
+    try {
+      await api.patch(`/api-stuffs/stuffs/${id}/visibility`, { isVisible });
+      return { id, isVisible };
+    } catch (e) {
+      return rejectWithValue(e.response?.data || e.message);
+    }
+  }
+);
+
+export const reorderStaffAsync = createAsyncThunk('staff/reorder', async (items, { rejectWithValue }) => {
+  try {
+    await api.patch('/api-stuffs/stuffs/reorder', { items });
+    return items;
+  } catch (e) {
+    return rejectWithValue(e.response?.data || e.message);
+  }
+});
+
+export const copyStaffAsync = createAsyncThunk('staff/copy', async (id, { rejectWithValue }) => {
+  try {
+    const { data } = await api.post(`/api-stuffs/stuffs/${id}/copy`);
+    return data?.copiedId;
+  } catch (e) {
+    return rejectWithValue(e.response?.data || e.message);
+  }
+});
+
+const staffSlice = createSlice({
+  name: 'staff',
+  initialState: {
+    items: [],
+    loading: false,
+    error: null,
+    copiedId: null,
+  },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder   
+      .addCase(fetchStaffAsync.pending, (s) => {
+        s.loading = true;
+        s.error = null;
+      })
+      .addCase(fetchStaffAsync.fulfilled, (s, a) => {
+        s.loading = false;
+        s.items = a.payload || [];
+      })
+      .addCase(fetchStaffAsync.rejected, (s, a) => {
+        s.loading = false;
+        s.error = a.payload || 'Ошибка';
+      })  
+      .addCase(fetchStaffByCategoryPublic.pending, (s) => {
+        s.loading = true;
+        s.error = null;
+        s.items = [];
+      })
+      .addCase(fetchStaffByCategoryPublic.fulfilled, (s, a) => {
+        s.loading = false;
+        s.items = a.payload || [];
+      })
+      .addCase(fetchStaffByCategoryPublic.rejected, (s, a) => {
+        s.loading = false;
+        s.error = a.payload || 'Ошибка';
+      })
+      .addCase(createStaffAsync.fulfilled, (s, a) => {
+        s.items.push(a.payload);
+      })
+      .addCase(updateStaffAsync.fulfilled, (s, a) => {
+        const i = s.items.findIndex((x) => x.id === a.payload.id);
+        if (i !== -1) s.items[i] = a.payload;
+      })
+      .addCase(deleteStaffAsync.fulfilled, (s, a) => {
+        s.items = s.items.filter((x) => x.id !== a.payload);
+      })
+      .addCase(toggleVisibilityStaffAsync.fulfilled, (s, a) => {
+        const it = s.items.find((x) => x.id === a.payload.id);
+        if (it) it.isVisible = a.payload.isVisible;
+      })
+      .addCase(reorderStaffAsync.fulfilled, (s, a) => {
+        for (const { id, sortIndex } of a.payload) {
+          const it = s.items.find((x) => x.id === id);
+          if (it) it.sortIndex = sortIndex;
+        }
+        s.items.sort((a, b) => (a.sortIndex ?? 0) - (b.sortIndex ?? 0));
+      })
+      .addCase(copyStaffAsync.fulfilled, (s, a) => {
+        s.copiedId = a.payload;
+      });
+  },
+});
+
+export default staffSlice.reducer;
