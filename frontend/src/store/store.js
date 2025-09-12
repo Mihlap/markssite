@@ -1,6 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import projectSlice from './Slice/projectSlice';
 import staffSlice from './Slice/StaffSlice';
+import StaffSliceNew from './Slice/StaffSliceNew';
 import counterSlice from './Slice/counterSlice';
 import articleSlice from './Slice/articleSlice';
 import searchProjectMainSlice from './Slice/searchProjectMainSlice';
@@ -25,7 +26,8 @@ export default configureStore({
     user: userReducer,
     auth: authReducer,
     project: projectSlice,
-    staff: staffSlice,
+    // staff: staffSlice,
+    staff: StaffSliceNew,
     counter: counterSlice,
     article: articleSlice,
     searchproject: searchProjectMainSlice,
