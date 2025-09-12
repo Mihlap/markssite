@@ -81,7 +81,6 @@ export const fetchToggleStateForButton3Async = createAsyncThunk(
   }
 );
 
-// Добавляем новое действие для Jornal кнопки
 export const updateToggleStateForButton4Async = createAsyncThunk(
   'toggle/updateStateForButton4',
   async (isActiveForButton4, { rejectWithValue }) => {
@@ -108,6 +107,30 @@ export const fetchToggleStateForButton4Async = createAsyncThunk(
   }
 );
 
+export const fetchStaffCategoryTogglesAsync = createAsyncThunk(
+  'toggle/fetchStaffCats',
+  async (_, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.get(`${serverHost}/api/toggle/staff-categories`);
+      return data;
+    } catch (e) {
+      return rejectWithValue(e?.response?.data || 'Unknown error');
+    }
+  }
+);
+
+export const updateStaffCategoryToggleAsync = createAsyncThunk(
+  'toggle/updateStaffCat',
+  async ({ key, value }, { rejectWithValue }) => {
+    try {
+      const { data } = await axios.put(`${serverHost}/api/toggle/staff-categories`, { key, value });
+      return data;
+    } catch (e) {
+      return rejectWithValue(e?.response?.data || 'Unknown error');
+    }
+  }
+);
+
 const toggleSlice = createSlice({
   name: 'toggle',
   initialState: {
@@ -115,88 +138,87 @@ const toggleSlice = createSlice({
     isActiveForButton2: false,
     isActiveForButton3: false,
     isActiveForButton4: false,
+    staffCats: { leadership: false, science: false, hr: false },
     error: null,
   },
   reducers: {},
   extraReducers: {
-    [updateToggleStateAsync.pending]: (state, action) => {
-      // console.log("Starting API request to update toggle");
-    },
+    [updateToggleStateAsync.pending]: (state, action) => {},
     [updateToggleStateAsync.fulfilled]: (state, action) => {
       state.isActiveForButton1 = !state.isActiveForButton1;
-      // console.log("Successfully updated toggle in state");
     },
     [updateToggleStateAsync.rejected]: (state, action) => {
       state.error = action.payload?.message || 'An unknown error occurred';
-      // console.error("Error updating toggle:", state.error);
     },
     [fetchToggleStateAsync.fulfilled]: (state, action) => {
       state.isActiveForButton1 = action.payload;
-      // console.log("Successfully fetched toggle state from server");
     },
     [fetchToggleStateAsync.rejected]: (state, action) => {
       if (action.payload && action.payload.message) {
         state.error = action.payload?.message;
-        // console.error("Error fetching toggle state:", action.payload.message);
       } else {
         state.error = 'Unknown error occurred.';
-        // console.error("Unknown error occurred during toggle state fetch.");
       }
     },
-    [updateToggleStateForButton2Async.pending]: (state, action) => {
-      // console.log("Starting API request to update toggle for button 2");
-    },
+    [updateToggleStateForButton2Async.pending]: (state, action) => {},
     [updateToggleStateForButton2Async.fulfilled]: (state, action) => {
       state.isActiveForButton2 = !state.isActiveForButton2;
-      // console.log("Successfully updated toggle for button 2 in state");
     },
     [updateToggleStateForButton2Async.rejected]: (state, action) => {
       state.error = action.payload?.message || 'An unknown error occurred';
-      // console.error(
-      //   "Error updating toggle for button 2:",
-      //   action.payload?.message
-      // );
     },
     [fetchToggleStateForButton2Async.fulfilled]: (state, action) => {
       state.isActiveForButton2 = action.payload;
-      // console.log("Successfully fetched toggle state for button 2 from server");
     },
     [fetchToggleStateForButton2Async.rejected]: (state, action) => {
       state.error = action.payload?.message || 'An unknown error occurred';
       console.error('Error fetching toggle state for button 2:', action.payload?.message);
     },
-    [updateToggleStateForButton3Async.pending]: (state, action) => {
-      // console.log("Starting API request to update toggle for button 3");
-    },
+    [updateToggleStateForButton3Async.pending]: (state, action) => {},
     [updateToggleStateForButton3Async.fulfilled]: (state, action) => {
       state.isActiveForButton3 = !state.isActiveForButton3;
-      // console.log("Successfully updated toggle for button 3 in state");
     },
     [updateToggleStateForButton3Async.rejected]: (state, action) => {
       state.error = action.payload?.message || 'Unknown error occurred';
-      // console.error("Error updating toggle for button 3:", state.error);
     },
     [fetchToggleStateForButton3Async.fulfilled]: (state, action) => {
       state.isActiveForButton3 = action.payload;
-      // console.log("Successfully fetched toggle state for button 3 from server");
     },
     [fetchToggleStateForButton3Async.rejected]: (state, action) => {
       state.error = action.payload?.message || 'Unknown error occurred';
-      // console.error("Error fetching toggle state for button 3:", state.error);
     },
-    [updateToggleStateForButton4Async.pending]: (state, action) => {    
-    },
+    [updateToggleStateForButton4Async.pending]: (state, action) => {},
     [updateToggleStateForButton4Async.fulfilled]: (state, action) => {
       state.isActiveForButton4 = !state.isActiveForButton4;
     },
     [updateToggleStateForButton4Async.rejected]: (state, action) => {
-      state.error = action.payload?.message || 'An unknown error occurred';   
+      state.error = action.payload?.message || 'An unknown error occurred';
     },
     [fetchToggleStateForButton4Async.fulfilled]: (state, action) => {
       state.isActiveForButton4 = action.payload;
     },
     [fetchToggleStateForButton4Async.rejected]: (state, action) => {
-      state.error = action.payload?.message || 'An unknown error occurred';  
+      state.error = action.payload?.message || 'An unknown error occurred';
+    },
+    [fetchStaffCategoryTogglesAsync.fulfilled]: (state, action) => {
+      const p = action.payload || {};
+      state.staffCats = {
+        leadership: !!p.leadership,
+        science: !!p.science,
+        hr: !!p.hr,
+      };
+    },
+    [fetchStaffCategoryTogglesAsync.rejected]: (state, action) => {
+      state.error = action.payload?.message || 'Unknown error';
+    },
+    [updateStaffCategoryToggleAsync.fulfilled]: (state, action) => {
+      const { key, value } = action.payload || {};
+      if (key && key in state.staffCats) {
+        state.staffCats[key] = !!value;
+      }
+    },
+    [updateStaffCategoryToggleAsync.rejected]: (state, action) => {
+      state.error = action.payload?.message || 'Unknown error';
     },
   },
 });

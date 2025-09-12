@@ -4,17 +4,52 @@ const {
   SwitchingFilterArticle,
   SwitchingFilterRegistration,
   SwitchingFilterJournal,
+  SwitchingStaffCategories,
 } = require('../../db/models');
 
 const router = express.Router();
 
+router.get('/staff-categories', async (req, res) => {
+  try {
+    let row = await SwitchingStaffCategories.findOne();
+    if (!row) {
+      row = await SwitchingStaffCategories.create({ leadership: false, science: false, hr: false });
+    }
+    res.json({
+      leadership: !!row.leadership,
+      science: !!row.science,
+      hr: !!row.hr,
+    });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ success: false, message: e.message });
+  }
+});
+
+router.put('/staff-categories', async (req, res) => {
+  try {
+    const { key, value } = req.body || {};
+    const allowed = ['leadership', 'science', 'hr'];
+    if (!allowed.includes(key)) {
+      return res.status(400).json({ success: false, message: 'Bad key' });
+    }
+    let row = await SwitchingStaffCategories.findOne();
+    if (!row) {
+      row = await SwitchingStaffCategories.create({ leadership: false, science: false, hr: false });
+    }
+    row[key] = !!value;
+    await row.save();
+    res.json({ key, value: !!value });
+  } catch (e) {
+    console.error(e);
+    res.status(500).json({ success: false, message: e.message });
+  }
+});
+
 router.put('/project', async (req, res) => {
   try {
-    const { isActiveForButton1 } = req.body;
-     // Удалить все записи
-    await SwitchingFilterProjects.destroy({ truncate: true });
-
-    // Создать новую запись с заданным значением isActive
+    const { isActiveForButton1 } = req.body; 
+    await SwitchingFilterProjects.destroy({ truncate: true }); 
       await SwitchingFilterProjects.create({
         state: isActiveForButton1,
       });
@@ -43,12 +78,8 @@ router.get('/project', async (req, res) => {
 router.put('/article', async (req, res) => {
   try {
     const { isActiveForButton2 } = req.body;
-    // console.log(isActiveForButton2);
-
-    // Удалить все записи
     await SwitchingFilterArticle.destroy({ truncate: true });
-
-    // Создать новую запись с заданным значением isActive
+  
     await SwitchingFilterArticle.create({
       state: isActiveForButton2,
     });
@@ -79,10 +110,8 @@ router.put('/button3', async (req, res) => {
     const { isActiveForButton3 } = req.body;
     console.log(isActiveForButton3);
 
-    // Удалить все записи
     await SwitchingFilterRegistration.destroy({ truncate: true });
 
-    // Создать новую запись с заданным значением isActive
     await SwitchingFilterRegistration.create({
       state: isActiveForButton3,
     });
@@ -113,11 +142,9 @@ router.get('/button3', async (req, res) => {
 router.put('/journal', async (req, res) => {
   try {
     const { isActiveForButton4 } = req.body;
-
-    // Удалить все записи
+  
     await SwitchingFilterJournal.destroy({ truncate: true });
-
-    // Создать новую запись с заданным значением isActive
+ 
     await SwitchingFilterJournal.create({
       state: isActiveForButton4,
     });
