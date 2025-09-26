@@ -6,9 +6,9 @@ module.exports = (sequelize, DataTypes) => {
   }
   SwitchingStaffCategories.init(
     {
-      leadership: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false },
-      science: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false },
-      hr: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: false },
+      leadership: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: true },
+      science: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: true },
+      hr: { type: DataTypes.BOOLEAN, allowNull: false, defaultValue: true },
     },
     { sequelize, modelName: 'SwitchingStaffCategories' },
   );

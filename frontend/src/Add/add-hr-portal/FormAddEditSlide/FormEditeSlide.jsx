@@ -1,9 +1,16 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import compressImageFile from 'browser-image-compression';
+
 import styles from './FormAddSlide.module.scss';
-import CalendarAdd from './CalendarAdd';
+import adminStyles from '../../style/style-card.module.scss';
+
 import { postVacancyData, editSlide, fetchSlides } from '../../../store/Slice/vacancyMainSlideCardSlice';
+import useInterceptExternalClose from '../../hooks/useInterceptExternalClose';
+
+import CalendarAdd from './CalendarAdd';
+import SubmitButtons from '../../../UI/SubmitButtons/SubmitButtons';
+import ExitConfirmModal from '../../../UI/ExitConfirmModal/ExitConfirmModal';
 
 export default function FormEditSlide({ setIsModalOpenMain, editSlideData }) {
   const dispatch = useDispatch();
@@ -14,12 +21,17 @@ export default function FormEditSlide({ setIsModalOpenMain, editSlideData }) {
   const [showNotification, setShowNotification] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isImageRemoved, setIsImageRemoved] = useState(false);
+  const [showExitConfirm, setShowExitConfirm] = useState(false);
   const [formData, setFormData] = useState({
     photoAva: editSlideData?.photoAva || '',
     card1: editSlideData?.card1 || { description: '', date: '' },
     card2: editSlideData?.card2 || { description: '', date: '' },
     card3: editSlideData?.card3 || { description: '', date: '' },
   });
+
+  const openExitConfirm = useCallback(() => setShowExitConfirm(true), []);
+
+  useInterceptExternalClose(`.${adminStyles.card_components_admin__close_button}`, openExitConfirm);
 
   useEffect(() => {
     if (editSlideData) {
@@ -203,8 +215,7 @@ export default function FormEditSlide({ setIsModalOpenMain, editSlideData }) {
                 rows="10"
                 placeholder="Не более 150 символов"
                 value={formData.card1.description}
-                onChange={(e) => handleDescriptionChange('card1', e.target.value)}
-              ></textarea>
+                onChange={(e) => handleDescriptionChange('card1', e.target.value)}></textarea>
               <label htmlFor="descriptionCard1" className={styles.form_container__textarea_label_constructor}>
                 Название конкурса
               </label>
@@ -240,8 +251,7 @@ export default function FormEditSlide({ setIsModalOpenMain, editSlideData }) {
                   <img className={styles.preview_photos_container__img} src={formData.photoAva} alt="Preview" />
                   <div
                     className={styles.preview_photos_container__remove_icon}
-                    onClick={() => handleRemovePreviewPhotoAva()}
-                  >
+                    onClick={() => handleRemovePreviewPhotoAva()}>
                     <span></span>
                   </div>
                 </div>
@@ -251,8 +261,7 @@ export default function FormEditSlide({ setIsModalOpenMain, editSlideData }) {
                   <img className={styles.preview_photos_container__img} src={preview} alt={`Preview ${index}`} />
                   <div
                     className={styles.preview_photos_container__remove_icon}
-                    onClick={() => handleRemovePreviewPhotoAva(index)}
-                  >
+                    onClick={() => handleRemovePreviewPhotoAva(index)}>
                     <span></span>
                   </div>
                 </div>
@@ -274,8 +283,7 @@ export default function FormEditSlide({ setIsModalOpenMain, editSlideData }) {
                 rows="10"
                 placeholder="Не более 150 символов"
                 value={formData.card2.description}
-                onChange={(e) => handleDescriptionChange('card2', e.target.value)}
-              ></textarea>
+                onChange={(e) => handleDescriptionChange('card2', e.target.value)}></textarea>
               <label htmlFor="descriptionCard2" className={styles.form_container__textarea_label_constructor}>
                 Название конкурса
               </label>
@@ -311,11 +319,27 @@ export default function FormEditSlide({ setIsModalOpenMain, editSlideData }) {
             </div>
           </div>
           <CalendarAdd date={formData.card3.date} setDate={(date) => handleDateChange('card3', date)} />
-          <div className={styles.form_container__button_block}>
-            <button className={styles.form_container__button_save} type="submit"></button>
-            <button className={styles.form_container__button_cancel} type="submit" onClick={closeModal}></button>
-          </div>
+          
+          <SubmitButtons
+            classNames={{
+              wrapper: styles.form_container__button_block,
+              save: styles.form_container__button_save,
+              cancel: styles.form_container__button_cancel,
+            }}
+            onCancel={(e) => {
+              e?.preventDefault?.();
+              e?.stopPropagation?.();
+              setShowExitConfirm(true);
+              setShowExitConfirm(true);
+            }}
+          />
         </form>
+
+        <ExitConfirmModal
+          open={showExitConfirm}
+          onCancel={() => setShowExitConfirm(false)}
+          onLeave={() => setIsModalOpenMain(false)}
+        />
       </div>
     </div>
   );

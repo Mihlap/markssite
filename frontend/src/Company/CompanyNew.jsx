@@ -479,7 +479,7 @@ export default function CompanyNew({ handleMouseEnter, handleMouseLeave, handleM
               </div>
             )}
 
-            <div className={styles.companySubscriptionForm_wrapper}>{/* место под форму подписки, если вернёшь */}</div>
+            <div className={styles.companySubscriptionForm_wrapper}>{/* место под форму подписки*/}</div>
           </div>
         </div>
       </div>

@@ -1,18 +1,25 @@
-import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
+import { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
 import Select from 'react-select';
 import { useDispatch } from 'react-redux';
+
 import { addVacancy } from '../../../store/Slice/vacanciesSlice.js';
 import { selectBlocks } from '../utils.js';
-import customStyle  from './customStyle.js';
+import useInterceptExternalClose from '../../hooks/useInterceptExternalClose.js';
 
+import customStyle  from './customStyle.js';
 import styles from './FormAddVacancy.module.scss';
+import adminStyles from '../../style/style-card.module.scss';
+
+import SubmitButtons from '../../../UI/SubmitButtons/SubmitButtons.jsx';
+import ExitConfirmModal from '../../../UI/ExitConfirmModal/ExitConfirmModal.jsx';
 
 export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
   const [showNotification] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [, setLoading] = useState(false);
   const [, setError] = useState(null);
+  const [showExitConfirm, setShowExitConfirm] = useState(false);
 
   const dispatch = useDispatch();
   const type = selectedFilter === 'Вакансии' ? 'вакансия' : 'стажировка';
@@ -63,6 +70,10 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
       editorElement.style.lineHeight = '1';
     }
   }, []);
+
+  const openExitConfirm = useCallback(() => setShowExitConfirm(true), []);
+
+  useInterceptExternalClose(`.${adminStyles.card_components_admin__close_button}`, openExitConfirm);
 
   useEffect(() => {
     quillRefs.forEach((quillRef) => applyStylesToQuillEditor(quillRef));
@@ -337,11 +348,26 @@ export default function FormAddVacancy({ setIsModalOpen, selectedFilter }) {
               </div>
             </div>
           </div>
-          <div className={styles.form_container__button_block}>
-            <button className={styles.form_container__button_save} type="submit" disabled={loading}></button>
-            <button className={styles.form_container__button_cancel} type="button" onClick={closeModal}></button>
-          </div>
+          <SubmitButtons
+            classNames={{
+              wrapper: styles.form_container__button_block,
+              save: styles.form_container__button_save,
+              cancel: styles.form_container__button_cancel,
+            }}
+            onCancel={(e) => {
+              e?.preventDefault?.();
+              e?.stopPropagation?.();
+              setShowExitConfirm(true);
+              setShowExitConfirm(true);
+            }}
+          />
         </form>
+
+        <ExitConfirmModal
+          open={showExitConfirm}
+          onCancel={() => setShowExitConfirm(false)}
+          onLeave={() => setIsModalOpen(false)}
+        />
       </div>
     </div>
   );
