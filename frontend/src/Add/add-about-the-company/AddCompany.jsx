@@ -11,11 +11,13 @@ import {
 
 import { fetchStaffCategoryTogglesAsync, updateStaffCategoryToggleAsync } from '../../store/Slice/toggleSlice';
 
-import StaffForm from './StaffForm';
+import FormAddStaff from './FormAddEditStaff/FormAddStaff';
 import Edit from '../icon/Edit.svg';
 import Look from '../icon/eye.svg';
 import NoLook from '../icon/eye2.svg';
 import defaultPhoto from '../../img/default-photo.jpeg';
+import cursorPng from '../img/cursor.png';
+import dragDrop from '../icon/drag&drop.svg';
 
 const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
@@ -47,8 +49,7 @@ function Toggle({ on, onClick, style }) {
         alignItems: 'center',
         padding: 2,
         ...style,
-      }}
-    >
+      }}>
       <div
         style={{
           width: 20,
@@ -68,6 +69,7 @@ export default function AddCompany({ user }) {
   const dispatch = useDispatch();
   const { items, loading, error } = useSelector((s) => s.staff);
   const staffCats = useSelector((s) => s.toggle.staffCats);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editData, setEditData] = useState(null);
   const [deleteModalState, setDeleteModalState] = useState({});
@@ -76,6 +78,8 @@ export default function AddCompany({ user }) {
   const [orderIds, setOrderIds] = useState([]);
   const [dragId, setDragId] = useState(null);
   const [dirty, setDirty] = useState(false);
+  const [hoverId, setHoverId] = useState(null);
+  const closeGuardRef = useRef(null);
 
   const [cols, setCols] = useState(() => {
     const w = typeof window !== 'undefined' ? window.innerWidth : 1440;
@@ -87,7 +91,6 @@ export default function AddCompany({ user }) {
   const isMountedRef = useRef(true);
 
   const uname = String(user?.name ?? user?.userName ?? '').trim();
-
   const canDelete = uname === 'obezyankaa' || uname === 'Pokemon';
   const canEdit = uname === 'obezyankaa' || uname === 'manager' || uname === 'Pokemon';
   const canToggle = uname === 'obezyankaa' || uname === 'Pokemon' || uname === 'manager';
@@ -122,6 +125,20 @@ export default function AddCompany({ user }) {
     };
   }, [updateModalBlockHeight, handleResize]);
 
+  const enabledCats = useMemo(() => CATEGORY_OPTIONS.filter((c) => !!staffCats[CAT_KEYS[c]]), [staffCats]);
+
+  useEffect(() => {
+    const current = CATEGORY_OPTIONS[activeIdx];
+    if (!staffCats[CAT_KEYS[current]]) {
+      if (enabledCats.length) {
+        const idx = CATEGORY_OPTIONS.findIndex((c) => c === enabledCats[0]);
+        setActiveIdx(idx === -1 ? 0 : idx);
+      }
+    }
+  }, [staffCats, activeIdx, enabledCats]);
+
+  const currentCategory = CATEGORY_OPTIONS[activeIdx];
+
   const photoSrc = (row) => {
     const name = row?.img;
     if (!name) return defaultPhoto;
@@ -131,32 +148,32 @@ export default function AddCompany({ user }) {
 
   const filtered = useMemo(() => {
     const list = Array.isArray(items) ? items : [];
-    const selected = CATEGORY_OPTIONS[activeIdx];
+    const selected = currentCategory;
     const synonyms = CAT_EQUIV[selected] || [selected];
     const norm = (s) =>
       String(s || '')
         .toLowerCase()
         .trim();
-    return list.filter((it) => (it.category || []).some((c) => synonyms.map(norm).includes(norm(c))));
-  }, [items, activeIdx]);
+    return list
+      .map((it) => ({
+        ...it,
+        visibilityByCategory:
+          it.visibilityByCategory && typeof it.visibilityByCategory === 'object' ? it.visibilityByCategory : {},
+      }))
+      .filter((it) => (it.category || []).some((c) => synonyms.map(norm).includes(norm(c))));
+  }, [items, currentCategory]);
 
   const ordered = useMemo(() => {
-    const arr = [...filtered].map((it) => ({
+    const arr = filtered.map((it) => ({
       ...it,
       isVisible: typeof it.isVisible === 'boolean' ? it.isVisible : true,
     }));
-    arr.sort((a, b) => (a.sortIndex ?? 0) - (b.sortIndex ?? 0) || new Date(a.createdAt) - new Date(b.createdAt));
+    arr.sort(
+      (a, b) =>
+        (a.sortIndex ?? 0) - (b.sortIndex ?? 0) || new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+    );
     return arr;
   }, [filtered]);
-
-  useEffect(() => {
-    const currentCat = CATEGORY_OPTIONS[activeIdx];
-    const currentKey = CAT_KEYS[currentCat];
-    if (staffCats[currentKey]) {
-      const firstOnIdx = CATEGORY_OPTIONS.findIndex((c) => !staffCats[CAT_KEYS[c]]);
-      setActiveIdx(firstOnIdx === -1 ? 0 : firstOnIdx);
-    }
-  }, [staffCats, activeIdx]);
 
   useEffect(() => {
     setOrderIds(ordered.map((x) => x.id));
@@ -167,13 +184,16 @@ export default function AddCompany({ user }) {
     setEditData(null);
     setIsModalOpen(true);
   }, []);
+
   const openEditModal = useCallback((row) => {
     setEditData(row);
     setIsModalOpen(true);
   }, []);
+
   const closeModal = useCallback(() => setIsModalOpen(false), []);
 
   const openDeleteModal = useCallback((id) => setDeleteModalState((p) => ({ ...p, [id]: true })), []);
+  
   const closeDeleteModal = useCallback((id) => {
     setDeleteModalState((p) => {
       const n = { ...p };
@@ -181,6 +201,7 @@ export default function AddCompany({ user }) {
       return n;
     });
   }, []);
+
   const confirmDelete = useCallback(
     (id) => {
       dispatch(deleteStaffAsync(id));
@@ -191,18 +212,25 @@ export default function AddCompany({ user }) {
 
   const handleLookClick = useCallback(
     (row) => {
-      const current = typeof row.isVisible === 'boolean' ? row.isVisible : true;
-      dispatch(toggleVisibilityStaffAsync({ id: row.id, isVisible: !current }));
+      const perCat = row.visibilityByCategory || {};
+      const current = perCat[currentCategory] ?? true;
+      dispatch(
+        toggleVisibilityStaffAsync({
+          id: row.id,
+          isVisible: !current,
+          category: currentCategory,
+        })
+      );
     },
-    [dispatch]
+    [dispatch, currentCategory]
   );
 
-  const handleFilterClick = (index) => {
-    const cat = CATEGORY_OPTIONS[index];
-    const key = CAT_KEYS[cat];
-    if (staffCats[key]) return;
-    setActiveIdx(index);
-  };
+  // const handleFilterClick = (index) => {
+  //   const cat = CATEGORY_OPTIONS[index];
+  //   const key = CAT_KEYS[cat];
+  //   if (!staffCats[key]) return;
+  //   setActiveIdx(index);
+  // };
 
   const moveId = (ids, fromId, toId) => {
     if (fromId === toId) return ids;
@@ -253,36 +281,70 @@ export default function AddCompany({ user }) {
     dispatch(updateStaffCategoryToggleAsync({ key, value: nextVal }));
   };
 
+  const byId = useMemo(() => {
+    const m = new Map();
+    for (const it of ordered) m.set(it.id, it);
+    return m;
+  }, [ordered]);
+
+  const noEnabledCats = enabledCats.length === 0;
+
   return (
     <section className={styles.card_components_admin}>
       <div className={styles.card_components_admin__block}>
         <div className={styles.card_components_admin__block_title_btn}>
           <div className={styles.card_components_admin__title}>Сотрудники</div>
         </div>
-        <div className={styles.card_components_admin__buttonFilter}>
-          {CATEGORY_OPTIONS.map((cat, i) => {
-            const key = CAT_KEYS[cat];
-            const disabled = !!staffCats[key];
-            return (
-              <div className={styles.buttonFilterItem} key={cat}>
-                <button
-                  className={`${styles.card_components_admin__buttonFilter__group} ${
-                    activeIdx === i ? styles.activeButtonVacancy : ''
-                  } ${i === 0 ? styles.noAnimation : ''}`}
-                  onClick={() => handleFilterClick(i)}
-                  disabled={disabled}
-                  style={{ paddingRight: 64, opacity: disabled ? 0.5 : 1 }}>
-                  {cat}
-                </button>
 
-                <Toggle
-                  on={disabled}
-                  onClick={() => toggleCategory(cat)}
-                  style={{ position: 'absolute', top: '50%', right: '2rem', transform: 'translateY(-50%)' }}
-                />
-              </div>
-            );
-          })}
+        <div className={styles.card_components_admin__buttonFilter}>
+          <div className={styles.buttonFilterStrip}>
+            {CATEGORY_OPTIONS.map((cat, i) => {
+              const key = CAT_KEYS[cat];
+              const isEnabled = !!staffCats?.[key];
+              const isActive = isEnabled && activeIdx === i;
+
+              const btnStyle = isEnabled
+                ? { paddingRight: 16, cursor: 'pointer' }
+                : {
+                    paddingRight: 16,
+                    background: 'var(--light-light-gray-EBECEE)',
+                    color: 'var(--gray-959DA6)',
+                    transition: 'none',
+                  };
+
+              return (
+                <div className={styles.buttonFilterItem} key={cat}>
+                  <button
+                    type="button"
+                    className={`${styles.card_components_admin__buttonFilter__group} ${
+                      isActive ? styles.activeButtonVacancy : ''
+                    }`}
+                    aria-disabled={!isEnabled}
+                    data-disabled={!isEnabled}
+                    style={btnStyle}
+                    onClick={() => {
+                      if (isEnabled) setActiveIdx(i);
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!isEnabled) {
+                        e.currentTarget.style.background = 'var(--light-light-gray-EBECEE)';
+                        e.currentTarget.style.color = 'var(--gray-959DA6)';
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!isEnabled) {
+                        e.currentTarget.style.background = 'var(--light-light-gray-EBECEE)';
+                        e.currentTarget.style.color = 'var(--gray-959DA6)';
+                      }
+                    }}>
+                    <span className={styles.buttonText}>{cat}</span>
+
+                    <Toggle on={isEnabled} onClick={() => toggleCategory(cat)} style={{ marginLeft: 'auto' }} />
+                  </button>
+                </div>
+              );
+            })}
+          </div>
         </div>
 
         <div className={styles.card_components_admin__button_block} onClick={openAddModal}>
@@ -313,8 +375,12 @@ export default function AddCompany({ user }) {
         {isModalOpen && (
           <div className={styles.card_components_admin__modal_container}>
             <div style={{ maxHeight: modalBlockHeight }} className={styles.card_components_admin__modal_block}>
-              <StaffForm initial={editData} onClose={closeModal} />
-              <button className={styles.card_components_admin__close_button} onClick={closeModal} />
+              <FormAddStaff
+                initial={editData}
+                onClose={closeModal}
+                registerCloseGuard={(fn) => (closeGuardRef.current = fn)}
+                currentCategory={currentCategory}
+              />         
             </div>
           </div>
         )}
@@ -323,6 +389,8 @@ export default function AddCompany({ user }) {
           <div className={styles.card_components_admin__errore_div}>Ошибка: {String(error)}</div>
         ) : loading ? (
           <div className={styles.card_components_admin__null_project}>Загрузка…</div>
+        ) : noEnabledCats ? (
+          <div className={styles.card_components_admin__null_project}>Все категории выключены.</div>
         ) : !orderIds.length ? (
           <div className={styles.card_components_admin__null_project}>Сотрудников пока нет.</div>
         ) : (
@@ -335,13 +403,13 @@ export default function AddCompany({ user }) {
               gridTemplateColumns: `repeat(${cols}, minmax(0, 1fr))`,
               gap: '24px',
               alignItems: 'start',
-              cursor: dragId ? 'grabbing' : 'grab',
             }}>
             {orderIds.map((id) => {
-              const el = ordered.find((x) => x.id === id);
+              const el = byId.get(id);
               if (!el) return null;
 
-              const isHidden = el.isVisible === false;
+              const perCat = el.visibilityByCategory || {};
+              const isHiddenInCurrent = (perCat[currentCategory] ?? true) === false;
               const isDragging = dragId === el.id;
 
               return (
@@ -352,10 +420,33 @@ export default function AddCompany({ user }) {
                     onDragStart={(e) => handleDragStart(e, el.id)}
                     onDragEnter={(e) => handleDragEnter(e, el.id)}
                     onDragEnd={handleDragEnd}
-                    style={{ width: '100%', opacity: isDragging ? 0.6 : 1, transition: 'opacity 120ms ease' }}>
+                    onMouseEnter={() => setHoverId(el.id)}
+                    onMouseLeave={() => setHoverId((p) => (p === el.id ? null : p))}
+                    style={{
+                      position: 'relative',
+                      width: '100%',
+                      opacity: isDragging ? 0.6 : 1,
+                      transition: 'opacity 120ms ease',
+                      ...(hoverId === el.id && !dragId ? { cursor: `url(${cursorPng}) 12 12, pointer` } : {}),
+                    }}>
+                    {hoverId === el.id && !dragId && (
+                      <img
+                        src={dragDrop}
+                        alt=""
+                        aria-hidden="true"
+                        style={{
+                          position: 'absolute',
+                          top: 16,
+                          right: 18,
+                          zIndex: 3,
+                          pointerEvents: 'none',
+                          userSelect: 'none',
+                        }}
+                      />
+                    )}
                     <div className={styles.cart_project_container__imageContainer}>
                       <img
-                        className={styles.cart_project_container__img}                   
+                        className={styles.cart_project_container__img}
                         loading="lazy"
                         src={photoSrc(el)}
                         alt={el.name || 'staff'}
@@ -383,13 +474,16 @@ export default function AddCompany({ user }) {
 
                       {canToggle && (
                         <div
-                          className={`${styles.look_block} ${isHidden ? styles.disabled : ''}`}
+                          className={`${styles.look_block} ${isHiddenInCurrent ? styles.disabled : ''}`}
                           onClick={() => handleLookClick(el)}
                           style={{ right: '70px' }}>
                           <button className={styles.buttom_look}>
                             <label className={styles.label}>
                               <div className={styles.wrapper}>
-                                <img src={isHidden ? NoLook : Look} alt={isHidden ? 'No look' : 'Look'} />
+                                <img
+                                  src={isHiddenInCurrent ? NoLook : Look}
+                                  alt={isHiddenInCurrent ? 'No look' : 'Look'}
+                                />
                               </div>
                             </label>
                           </button>
@@ -421,9 +515,13 @@ export default function AddCompany({ user }) {
                     <div className={styles.delete_modal_container}>
                       <div className={styles.delete_modal_block}>
                         <div className={styles.delete_modal_block__title}>
-                          Вы точно хотите удалить карточку <br /> «{el.name}»?
+                          Вы точно хотите удалить <br />
+                          сотрудника «{el.name}»?
                         </div>
-                        <p className={styles.delete_modal_block__text}>Удаленную карточку нельзя будет вернуть</p>
+                        <p className={styles.delete_modal_block__text}>
+                          Если вы удалите информацию о сотруднике, вернуть <br />
+                          ее будет невозможно
+                        </p>
                         <div className={styles.button_block}>
                           <button
                             className={`${styles.button_block__cancel} ${styles.delete_modal_button_cancel}`}

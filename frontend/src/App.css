@@ -26,6 +26,7 @@ button {
 
 /* Colors */
 :root {
+  --light-blue-D4EDFB: #BADDFE;
   --blue-75BBFD: #75bbfd;
   --dark-blue-389FFF: #389fff;
   --super-dark-blue-345374: #345374;

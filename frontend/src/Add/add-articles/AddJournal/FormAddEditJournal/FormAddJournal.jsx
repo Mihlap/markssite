@@ -1,9 +1,10 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import InputField from '../InputField';
 import DropdownSelect from '../DropdownSelect';
 import AuthorsSection from '../AuthorsSection';
 import MarkdownEditor from '../MarkdownEditor';
+
 import {
   setFormData,
   updateAuthors,
@@ -12,13 +13,20 @@ import {
   deleteMarkdownFile,
 } from '../../../../store/Slice/journalSlice';
 import { createJournal } from '../../../../store/Slice/journalSlice';
+
 import styles from '../../../../Add/add-project/FormAddEditProject/FormAddProject.module.scss';
+import adminStyles from '../../../style/style-card.module.scss';
+
 import {
   PublicationContainer,
   PublicationIndicator,
 } from '../../../add-project/FormAddEditProject/utils/CustomSelectComponents';
 import { categoryOptions } from '../utils/journalCategoryOptions';
 import { wrapAnnotationAndKeywords } from '../utils/markdownTransform';
+import useInterceptExternalClose from '../../../hooks/useInterceptExternalClose';
+
+import SubmitButtons from '../../../../UI/SubmitButtons/SubmitButtons';
+import ExitConfirmModal from '../../../../UI/ExitConfirmModal/ExitConfirmModal';
 
 export default function FormAddJournal({ setIsModalOpen }) {
   const dispatch = useDispatch();
@@ -28,7 +36,11 @@ export default function FormAddJournal({ setIsModalOpen }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [localImages, setLocalImages] = useState({});
   const tempFilesRef = useRef([]);
-  
+  const [showExitConfirm, setShowExitConfirm] = useState(false);
+
+  const openExitConfirm = useCallback(() => setShowExitConfirm(true), []);
+
+  useInterceptExternalClose(`.${adminStyles.card_components_admin__close_button}`, openExitConfirm);
 
   const handleInputChange = useCallback(
     (name, value) => {
@@ -94,7 +106,7 @@ export default function FormAddJournal({ setIsModalOpen }) {
         formDataToSend.append('organizations', JSON.stringify(blocks.filter((block) => block.type === 'university')));
         formDataToSend.append('locations', JSON.stringify(blocks.filter((block) => block.type === 'location')));
         formDataToSend.append('imageKey', imageKey || null);
-        
+
         const transformedMarkdown = wrapAnnotationAndKeywords(markdown_content ?? '');
         formDataToSend.append('markdown_content', transformedMarkdown);
 
@@ -339,11 +351,26 @@ export default function FormAddJournal({ setIsModalOpen }) {
             </div>
           </div>
 
-          <div className={styles.form_container__button_block}>
-            <button type="submit" className={styles.form_container__button_save}></button>
-            <button type="button" className={styles.form_container__button_cancel} onClick={closeModal}></button>
-          </div>
+          <SubmitButtons
+            classNames={{
+              wrapper: styles.form_container__button_block,
+              save: styles.form_container__button_save,
+              cancel: styles.form_container__button_cancel,
+            }}
+            onCancel={(e) => {
+              e?.preventDefault?.();
+              e?.stopPropagation?.();
+              setShowExitConfirm(true);
+              setShowExitConfirm(true);
+            }}
+          />
         </form>
+
+        <ExitConfirmModal
+          open={showExitConfirm}
+          onCancel={() => setShowExitConfirm(false)}
+          onLeave={() => setIsModalOpen(false)}
+        />
       </div>
     </div>
   );

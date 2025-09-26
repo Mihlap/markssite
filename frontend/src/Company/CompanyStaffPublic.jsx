@@ -19,6 +19,23 @@ const CAT_META = [
   // { name: 'HR', key: 'hr' },
 ];
 
+const norm = (s) =>
+  String(s || '')
+    .toLowerCase()
+    .replace(/\s+/g, ' ')
+    .replace(/[-–—]/g, '-')
+    .trim();
+
+const aliasSetFor = (displayName) => {
+  const n = norm(displayName);
+  if (n === 'руководство') return new Set(['руководство', 'leadership']);
+  if (n === 'научное сопровождение' || n === 'научно-техническое сопровождение') {
+    return new Set(['научное сопровождение', 'научно-техническое сопровождение', 'science']);
+  }
+  if (n === 'hr') return new Set(['hr']);
+  return new Set([n]);
+};
+
 const photoSrc = (row) => {
   const name = row?.img;
   if (!name) return `${bucket_url}/images/imageStuff/no_photo.png`;
@@ -43,7 +60,7 @@ export default function CompanyStaffPublic({ handleMouseEnter, handleMouseLeave,
     dispatch(fetchStaffCategoryTogglesAsync());
   }, [dispatch]);
 
-  const visibleCats = useMemo(() => CAT_META.filter((c) => !staffCats[c.key]), [staffCats]);
+  const visibleCats = useMemo(() => CAT_META.filter((c) => staffCats?.[c.key] === true), [staffCats]);
 
   useEffect(() => {
     if (!visibleCats.length) {
@@ -51,7 +68,10 @@ export default function CompanyStaffPublic({ handleMouseEnter, handleMouseLeave,
       setActiveButton(null);
       return;
     }
-    if (!category || staffCats[CAT_META.find((c) => c.name === category)?.key]) {
+    const curKey = CAT_META.find((c) => c.name === category)?.key;
+    const curOn = curKey ? staffCats?.[curKey] === true : false;
+
+    if (!category || !curOn) {
       setCategory(visibleCats[0].name);
       setActiveButton(visibleCats[0].name);
     }
@@ -65,15 +85,42 @@ export default function CompanyStaffPublic({ handleMouseEnter, handleMouseLeave,
 
   useEffect(() => {
     if (category) {
-      dispatch(fetchStaffByCategoryPublic(category)).then(() => setShowCards(true));
+      setShowCards(false);
+      dispatch(fetchStaffByCategoryPublic(undefined)).then(() => setShowCards(true));
     }
   }, [category, dispatch]);
 
+  const filtered = useMemo(() => {
+    const arr = Array.isArray(items) ? items : [];
+    if (!category) return arr;
+
+    const aliases = aliasSetFor(category);
+    const hasAlias = (v) => aliases.has(norm(v));
+
+    return arr.filter((it) => {
+      if (it?.isVisible === false) return false;
+
+      const cats = Array.isArray(it?.category) ? it.category : [];
+      if (!cats.some(hasAlias)) return false;
+
+      const vbc =
+        it?.visibilityByCategory && typeof it.visibilityByCategory === 'object' ? it.visibilityByCategory : {};
+
+      for (const [k, v] of Object.entries(vbc)) {
+        if (v === false && hasAlias(k)) return false;
+      }
+      return true;
+    });
+  }, [items, category]);
+
   const ordered = useMemo(() => {
-    const arr = (items || []).slice();
-    arr.sort((a, b) => (a.sortIndex ?? 0) - (b.sortIndex ?? 0) || new Date(a.createdAt) - new Date(b.createdAt));
+    const arr = filtered.slice();
+    arr.sort(
+      (a, b) =>
+        (a.sortIndex ?? 0) - (b.sortIndex ?? 0) || new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+    );
     return arr;
-  }, [items]);
+  }, [filtered]);
 
   const handleOpenCard = useCallback(
     (id) => {
@@ -106,7 +153,7 @@ export default function CompanyStaffPublic({ handleMouseEnter, handleMouseLeave,
     <>
       <div className={styles.specialist_wrapper}>
         <div className={styles.specialist}>Специалисты</div>
-   
+
         {isMobile ? (
           <Swiper slidesPerView="auto" spaceBetween={8} className={styles.my_swiper_button_group} touch="true">
             <div className={styles.button_group}>
@@ -143,7 +190,7 @@ export default function CompanyStaffPublic({ handleMouseEnter, handleMouseLeave,
           </div>
         )}
       </div>
- 
+
       <div className={styles.card_container} style={{ opacity: showCards ? 1 : 0 }}>
         <ul className={styles.card_container_ul}>
           {error ? (
@@ -179,7 +226,7 @@ export default function CompanyStaffPublic({ handleMouseEnter, handleMouseLeave,
           )}
         </ul>
       </div>
-    
+
       {isMobile && (
         <div className={styles.slider_card_wrapper}>
           {loading ? (
@@ -294,19 +341,10 @@ export default function CompanyStaffPublic({ handleMouseEnter, handleMouseLeave,
               </div>
             </div>
             <div className={styles.modal_name_stuff}>{selectedCard.name}</div>
-            {selectedCard.position && (
-              <div className={styles.modal_description_stuff} style={{ color: '#6b7280', marginTop: 6 }}>
-                {selectedCard.position}
-              </div>
-            )}
             {selectedCard.description && (
               <div className={styles.modal_description_stuff}>{selectedCard.description}</div>
             )}
-            {selectedCard.profileContent && (
-              <div className={styles.modal_about_stuff} style={{ marginTop: 12 }}>
-                {selectedCard.profileContent}
-              </div>
-            )}
+            <div className={styles.modal_about_stuff}>Ключевые проекты:</div>
             {aboutKeys.map((k) =>
               selectedCard[k] ? (
                 <div key={k} className={styles.modal_about_stuff1}>
@@ -314,6 +352,26 @@ export default function CompanyStaffPublic({ handleMouseEnter, handleMouseLeave,
                   {selectedCard[k]}
                 </div>
               ) : null
+            )}
+            <div className={styles.modal_about_stuff}>Стаж работы в отрасли:</div>
+            {selectedCard.workExperience && (
+              <div className={styles.modal_about_stuff} >
+                <div className={styles.modal_about_stuff1} >
+                  <div className={styles.modal_about_stuff_symbol}>{bulletSymbol}</div>
+                  {selectedCard.workExperience}
+                </div>
+              </div>
+            )}
+            <div className={styles.modal_about_stuff}>
+              Образование:
+            </div>
+            {selectedCard.education && (
+              <div className={styles.modal_about_stuff}>
+                <div className={styles.modal_about_stuff1}>
+                  <div className={styles.modal_about_stuff_symbol}>{bulletSymbol}</div>
+                  {selectedCard.education}
+                </div>
+              </div>
             )}
           </div>
         </Modal>

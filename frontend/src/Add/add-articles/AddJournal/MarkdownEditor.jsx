@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setFormData, uploadMarkdownFile, deleteMarkdownFile } from '../../../store/Slice/journalSlice';
 import { extractMarkdownLinks } from './utils/extractMarkdownLinks';
 import styles from './MarkdownEditor.module.scss';
-import articleStyles from '../../../Journal/JournalArticlePage/ArticleJournalPage.module.scss';
 
 import MarkdownContentRenderer from '../../../UI/MarkdownContentRenderer/MarkdownContentRenderer';
 
@@ -171,10 +170,7 @@ const MarkdownEditor = ({ onTempFilesChange }) => {
         {/* превью */}
         <div
           ref={previewRef}
-          className={`
-            ${styles['markdown-editor__preview']}
-            ${articleStyles.markdown_body}
-          `}
+          className={styles['markdown-editor__preview']}
           style={{ display: mode === 'markdown' ? 'none' : 'block' }}>
           {markdown.trim() === '' ? (
             <div className={styles['markdown-editor__preview-placeholder']}>Предпросмотр</div>

@@ -215,23 +215,25 @@ export default function AddHRPortal({ user }) {
       <div className={styles.card_components_admin__block}>
         <div className={styles.card_components_admin__title}>HR портал</div>
         <div className={styles.card_components_admin__buttonFilter}>
-          {buttonsFilter.map((button, index) => (
-            <button
-              key={index}
-              className={`${styles.card_components_admin__buttonFilter__group} ${
-                activeButtonIndex === index ? styles.activeButtonVacancy : ''
-              } ${index === 0 ? styles.noAnimation : ''}`}
-              onClick={() => handleButtonsFilterClick(index)}>
-              <img
-                className={`${styles.card_components_admin__buttonFilter__icons} ${
-                  activeButtonIndex === index ? styles.activeIcon : ''
-                }`}
-                src={buttonIcons[button]}
-                alt={button}
-              />
-              {button}
-            </button>
-          ))}
+          <div className={styles.buttonFilterStrip}>
+            {buttonsFilter.map((button, index) => (
+              <button
+                key={index}
+                className={`${styles.card_components_admin__buttonFilter__group} ${
+                  activeButtonIndex === index ? styles.activeButtonVacancy : ''
+                } ${index === 0 ? styles.noAnimation : ''}`}
+                onClick={() => handleButtonsFilterClick(index)}>
+                <img
+                  className={`${styles.card_components_admin__buttonFilter__icons} ${
+                    activeButtonIndex === index ? styles.activeIcon : ''
+                  }`}
+                  src={buttonIcons[button]}
+                  alt={button}
+                />
+                {button}
+              </button>
+            ))}
+          </div>
         </div>
         {selectedFilter === 'Главная hr' ? (
           <>
@@ -439,12 +441,9 @@ export default function AddHRPortal({ user }) {
                               <div className={styles.delete_modal_container}>
                                 <div className={styles.delete_modal_block}>
                                   <div className={styles.delete_modal_block__title}>
-                                    {selectedFilter === 'Вакансии'
-                                      ? `Вы точно хотите удалить вакансию`
-                                      : selectedFilter === 'Стажировки'
-                                      ? `Вы точно хотите удалить стажировку`
-                                      : `Вы точно хотите удалить вакансию`}
-                                    <br /> «{el.title}»?
+                                    <>Вы точно хотите удалить</>
+                                    <br />
+                                    {selectedFilter === 'Стажировки' ? 'стажировку' : 'вакансию'} «{el.title}»?
                                   </div>
                                   <p className={styles.delete_modal_block__text}>
                                     Удаленную {selectedFilter === 'Вакансии' ? 'вакансию' : 'стажировку'} вернуть будет

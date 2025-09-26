@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       name: { type: DataTypes.STRING, allowNull: false },
       position: DataTypes.STRING,
       img: DataTypes.TEXT,
-      description: DataTypes.TEXT,   
+      description: DataTypes.TEXT,
       category: {
         type: DataTypes.JSONB,
         allowNull: true,
@@ -27,9 +27,9 @@ module.exports = (sequelize, DataTypes) => {
         set(val) {
           this.setDataValue('category', Array.isArray(val) ? val : val ? [val] : []);
         },
-      },     
+      },
       profileContent: DataTypes.TEXT,
-      contentFormat: { type: DataTypes.STRING, defaultValue: 'markdown' },    
+      contentFormat: { type: DataTypes.STRING, defaultValue: 'markdown' },
       isVisible: { type: DataTypes.BOOLEAN, defaultValue: true },
       sortIndex: { type: DataTypes.INTEGER, defaultValue: 0 },
 
@@ -73,10 +73,10 @@ module.exports = (sequelize, DataTypes) => {
       modelName: 'Staff',
       paranoid: true,
       timestamps: true,
-      indexes: [    
+      indexes: [
         { fields: ['sortIndex'] },
-        { fields: ['isVisible'] },  
-        { using: 'GIN', fields: ['category'] },      
+        { fields: ['isVisible'] },
+        { using: 'GIN', fields: ['category'] },
         { fields: ['sortIndex', 'createdAt'] },
       ],
     },
