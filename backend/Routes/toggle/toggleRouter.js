@@ -13,7 +13,7 @@ router.get('/staff-categories', async (req, res) => {
   try {
     let row = await SwitchingStaffCategories.findOne();
     if (!row) {
-      row = await SwitchingStaffCategories.create({ leadership: false, science: false, hr: false });
+      row = await SwitchingStaffCategories.create({ leadership: true, science: true, hr: true });
     }
     res.json({
       leadership: !!row.leadership,
@@ -35,7 +35,7 @@ router.put('/staff-categories', async (req, res) => {
     }
     let row = await SwitchingStaffCategories.findOne();
     if (!row) {
-      row = await SwitchingStaffCategories.create({ leadership: false, science: false, hr: false });
+      row = await SwitchingStaffCategories.create({ leadership: true, science: true, hr: true });
     }
     row[key] = !!value;
     await row.save();

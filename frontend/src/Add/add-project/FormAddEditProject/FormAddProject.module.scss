@@ -508,6 +508,24 @@
     }
   }
 
+  &__customFileUploadStaff {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    position: relative;
+    padding: 0.5rem 1rem;
+    background-color: var(--light-blue-D4EDFB);
+    color: var(--secondary-dark-gray-525459);
+    border-radius: 20px;
+    cursor: pointer;
+    transition: color 0.3s, background-color 0.3s, color 0.3s;
+
+    &:hover {
+      background-color: var(--blue-75BBFD);
+    }
+  }
+
   &__customFileUploadOrangeColor {
     display: inline-flex;
     align-items: center;
@@ -773,7 +791,7 @@
 .preview_photos_container_block_constructor {
   position: relative;
   padding: 5px 0px;
- 
+
   &__remove_icon {
     width: 40px;
     height: 40px;

@@ -1,10 +1,18 @@
 import { useState, useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import compressImageFile from 'browser-image-compression';
+
 import styles from './FormAddSlide.module.scss';
+import adminStyles from '../../style/style-card.module.scss';
+
 import { removePreviewPhotoAva } from '../../add-project/FormAddEditProject/utils/formHelpers';
-import CalendarAdd from './CalendarAdd';
+import useInterceptExternalClose from '../../hooks/useInterceptExternalClose';
+
 import { postVacancyData, resetSlidesState } from '../../../store/Slice/vacancyMainSlideCardSlice';
+
+import CalendarAdd from './CalendarAdd';
+import SubmitButtons from '../../../UI/SubmitButtons/SubmitButtons';
+import ExitConfirmModal from '../../../UI/ExitConfirmModal/ExitConfirmModal';
 
 export default function FormAddSlide({ setIsModalOpenMain }) {
   const dispatch = useDispatch();
@@ -14,12 +22,17 @@ export default function FormAddSlide({ setIsModalOpenMain }) {
   const [showNotification, setShowNotification] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [showExitConfirm, setShowExitConfirm] = useState(false);
   const [inputData, setInputData] = useState({
     photoAva: '',
     card1: { description: '', date: null },
     card2: { description: '', date: null },
     card3: { description: '', date: null },
   });
+
+  const openExitConfirm = useCallback(() => setShowExitConfirm(true), []);
+
+  useInterceptExternalClose(`.${adminStyles.card_components_admin__close_button}`, openExitConfirm);
 
   const validateForm = useCallback(() => {
     const isValid =
@@ -187,8 +200,7 @@ export default function FormAddSlide({ setIsModalOpenMain }) {
                 rows="10"
                 placeholder="Не более 150 символов"
                 value={inputData.card1.description}
-                onChange={(e) => handleDescriptionChange('card1', e.target.value)}
-              ></textarea>
+                onChange={(e) => handleDescriptionChange('card1', e.target.value)}></textarea>
               <label htmlFor="descriptionCard1" className={styles.form_container__textarea_label_constructor}>
                 Название конкурса
               </label>
@@ -224,8 +236,7 @@ export default function FormAddSlide({ setIsModalOpenMain }) {
                   <img className={styles.preview_photos_container__img} src={preview} alt={`Preview ${index}`} />
                   <div
                     className={styles.preview_photos_container__remove_icon}
-                    onClick={() => handleRemovePreviewPhotoAva(index)}
-                  >
+                    onClick={() => handleRemovePreviewPhotoAva(index)}>
                     <span></span>
                   </div>
                 </div>
@@ -249,8 +260,7 @@ export default function FormAddSlide({ setIsModalOpenMain }) {
                 rows="10"
                 placeholder="Не более 150 символов"
                 value={inputData.card2.description}
-                onChange={(e) => handleDescriptionChange('card2', e.target.value)}
-              ></textarea>
+                onChange={(e) => handleDescriptionChange('card2', e.target.value)}></textarea>
               <label htmlFor="descriptionCard2" className={styles.form_container__textarea_label_constructor}>
                 Название конкурса
               </label>
@@ -288,11 +298,27 @@ export default function FormAddSlide({ setIsModalOpenMain }) {
             </div>
           </div>
           <CalendarAdd date={inputData.card3.date} setDate={(date) => handleDateChange('card3', date)} />
-          <div className={styles.form_container__button_block}>
-            <button className={styles.form_container__button_save} type="submit"></button>
-            <button className={styles.form_container__button_cancel} type="submit" onClick={closeModal}></button>
-          </div>
+          
+          <SubmitButtons
+            classNames={{
+              wrapper: styles.form_container__button_block,
+              save: styles.form_container__button_save,
+              cancel: styles.form_container__button_cancel,
+            }}
+            onCancel={(e) => {
+              e?.preventDefault?.();
+              e?.stopPropagation?.();
+              setShowExitConfirm(true);
+              setShowExitConfirm(true);
+            }}
+          />
         </form>
+
+        <ExitConfirmModal
+          open={showExitConfirm}
+          onCancel={() => setShowExitConfirm(false)}
+          onLeave={() => setIsModalOpenMain(false)}
+        />
       </div>
     </div>
   );

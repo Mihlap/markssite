@@ -108,15 +108,16 @@ export const deleteStaffAsync = createAsyncThunk('staff/delete', async (id, { re
 
 export const toggleVisibilityStaffAsync = createAsyncThunk(
   'staff/toggleVisibility',
-  async ({ id, isVisible }, { rejectWithValue }) => {
+  async ({ id, isVisible, category }, { rejectWithValue }) => {
     try {
-      await api.patch(`/api-stuffs/stuffs/${id}/visibility`, { isVisible });
-      return { id, isVisible };
+      const { data } = await api.patch(`/api-stuffs/stuffs/${id}/visibility`, { isVisible, category });
+      return data;
     } catch (e) {
       return rejectWithValue(e.response?.data || e.message);
     }
   }
 );
+
 
 export const reorderStaffAsync = createAsyncThunk('staff/reorder', async (items, { rejectWithValue }) => {
   try {
@@ -146,19 +147,22 @@ const staffSlice = createSlice({
   },
   reducers: {},
   extraReducers: (builder) => {
-    builder   
+    builder
       .addCase(fetchStaffAsync.pending, (s) => {
         s.loading = true;
         s.error = null;
       })
       .addCase(fetchStaffAsync.fulfilled, (s, a) => {
         s.loading = false;
-        s.items = a.payload || [];
+        s.items = (a.payload || []).map((it) => ({
+          ...it,
+          visibilityByCategory: it.visibilityByCategory || {},
+        }));
       })
       .addCase(fetchStaffAsync.rejected, (s, a) => {
         s.loading = false;
         s.error = a.payload || 'Ошибка';
-      })  
+      })
       .addCase(fetchStaffByCategoryPublic.pending, (s) => {
         s.loading = true;
         s.error = null;
@@ -166,7 +170,10 @@ const staffSlice = createSlice({
       })
       .addCase(fetchStaffByCategoryPublic.fulfilled, (s, a) => {
         s.loading = false;
-        s.items = a.payload || [];
+        s.items = (a.payload || []).map((it) => ({
+          ...it,
+          visibilityByCategory: it.visibilityByCategory || {},
+        }));
       })
       .addCase(fetchStaffByCategoryPublic.rejected, (s, a) => {
         s.loading = false;
@@ -182,9 +189,46 @@ const staffSlice = createSlice({
       .addCase(deleteStaffAsync.fulfilled, (s, a) => {
         s.items = s.items.filter((x) => x.id !== a.payload);
       })
+      .addCase(toggleVisibilityStaffAsync.pending, (s, a) => {
+        const { id, isVisible, category } = a.meta.arg || {};
+        const it = s.items.find((x) => x.id === id);
+        if (!it) return;
+
+        if (category) {
+          if (!it.visibilityByCategory) it.visibilityByCategory = {};
+          it.visibilityByCategory[category] = isVisible;
+        } else {
+          it.isVisible = isVisible;
+        }
+      })
       .addCase(toggleVisibilityStaffAsync.fulfilled, (s, a) => {
-        const it = s.items.find((x) => x.id === a.payload.id);
-        if (it) it.isVisible = a.payload.isVisible;
+        const { id, isVisible, category } = a.payload || {};
+        const it = s.items.find((x) => x.id === id);
+        if (!it) return;
+
+        if (category) {
+          if (!it.visibilityByCategory) it.visibilityByCategory = {};
+          it.visibilityByCategory[category] = isVisible;
+        } else {
+          it.isVisible = isVisible;
+        }
+      })
+      .addCase(toggleVisibilityStaffAsync.rejected, (s, a) => {
+        const { id, category } = a.meta.arg || {};
+        const it = s.items.find((x) => x.id === id);
+        if (!it) return;
+
+        if (category) {
+          const cur = it.visibilityByCategory?.[category];
+          if (typeof cur === 'boolean') {
+            it.visibilityByCategory[category] = !cur;
+          }
+        } else {
+          if (typeof it.isVisible === 'boolean') {
+            it.isVisible = !it.isVisible;
+          }
+        }
+        s.error = a.payload || a.error?.message || 'Ошибка переключения видимости';
       })
       .addCase(reorderStaffAsync.fulfilled, (s, a) => {
         for (const { id, sortIndex } of a.payload) {
