@@ -299,6 +299,13 @@
   padding-top: 21px;
 }
 
+.buttonFilterStrip {
+  width: 100%;
+  display: flex;
+  border-radius: 0.5rem;
+  background: var(--light-light-gray-EBECEE);  
+}
+
 .card_components_admin__buttonFilter__group {
   position: relative;
   cursor: pointer;
@@ -775,6 +782,39 @@
   }
 }
 
+.look_block {
+  position: absolute;
+  right: 20px;
+  bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background-color: var(--blue-75BBFD);
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--dark-blue-389FFF);
+  }
+}
+
+.buttom_look {
+  .wrapper {
+    position: relative;
+    cursor: pointer;
+  }
+}
+
+.disabled {
+  background: var(--light-gray-C0C5CB);
+
+  &:hover {
+    background: var(--light-gray-C0C5CB);
+  }
+}
+
 .cart_vacancy_container_buttonClick {
   display: flex;
   margin-left: 2rem;
@@ -873,6 +913,95 @@
   }
 }
 
+/* === модальное окно выхода без сохранения === */
+.exit_modal_container {
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.exit_modal_block {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--originWhite-FFFFFF);
+  width: 766px;
+  height: auto;
+  padding: 64px 33px 32px 32px;
+  border-radius: 1rem;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  text-align: left;
+
+  &__title {
+    color: #000;
+    font-family: var(--font-unbounded);
+    font-size: 24px;
+    font-style: normal;
+    font-weight: 300;
+    line-height: 32px;
+    padding-bottom: 1rem;
+  }
+
+  &__text {
+    color: #000;
+    padding-bottom: 40px;
+    font-family: var(--font-raleway);
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 24px;
+  }
+
+  &__close_button {
+    position: absolute;
+    top: 24px;
+    right: 24px;
+    width: 25px;
+    height: 25px;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    transition: transform 0.3s ease;
+  }
+
+  &__close_button::after,
+  &__close_button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 16px;
+    height: 1px;
+    background-color: #000;
+    transform: translate(-50%, -50%) rotate(45deg);
+  }
+
+  &__close_button::after {
+    transform: translate(-50%, -50%) rotate(-45deg);
+  }
+
+  &__close_button:hover {
+    transform: scale(1.2);
+  }
+}
+
+.exit_modal_button_leave::before {
+  content: 'Не сохранять' !important;
+}
+
+.exit_modal_button_cancel::before {
+  content: 'Отмена' !important;
+}
+
 // ______________________________________
 
 .delete_modal_container {
@@ -892,13 +1021,14 @@
   position: relative;
   display: flex;
   flex-direction: column;
-  background-color: #fff;
-  width: 534px;
+  background-color: var(--originWhite-FFFFFF);
+  width: 766px;
   height: auto;
-  padding: 64px 32px 31px 32px;
+  padding: 64px 33px 32px 32px;
   border-radius: 1rem;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
   overflow-y: auto;
+  text-align: left;
 
   &__title {
     color: #000;
@@ -912,7 +1042,7 @@
 
   &__text {
     color: #000;
-    padding-bottom: 68px;
+    padding-bottom: 40px;
     font-family: var(--font-raleway);
     font-size: 16px;
     font-style: normal;
@@ -956,12 +1086,12 @@
 
 .button_block {
   display: flex;
-  gap: 7px;
+  gap: 24px;
   flex-direction: row-reverse;
 
   &__save {
     display: flex;
-    width: 231px;
+    width: 339px;
     padding: 16px 32px;
     justify-content: center;
     align-items: center;
@@ -989,7 +1119,7 @@
 
   &__cancel {
     display: flex;
-    width: 231px;
+    width: 339px;
     padding: 16px 32px;
     justify-content: center;
     align-items: center;
@@ -1014,6 +1144,50 @@
       background-color: var(--light-gray-C0C5CB);
     }
   }
+}
+
+
+.card_components_admin__buttonFilter {
+  display: flex;
+  flex-wrap: nowrap;
+}
+
+.buttonFilterItem {
+  position: relative;
+  flex: 1 1 33.333%;
+  min-width: 100px;
+}
+
+.card_components_admin__buttonFilter__group {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 0 16px;
+  background: var(--light-light-gray-EBECEE);
+  color: var(--gray-959DA6);
+  width: 100%;
+  height: 50px;
+  border-radius: 0.5rem;
+  font-family: var(--font-raleway);
+  font-size: 1rem;
+  font-weight: var(--fw-400);
+  line-height: 1.5rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+
+.card_components_admin__buttonFilter__group[data-disabled="true"] {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.buttonText {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 // стили адаптив

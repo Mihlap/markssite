@@ -1,9 +1,10 @@
-import React, { useEffect, useCallback, useState, useRef } from 'react';
+import { useEffect, useCallback, useState, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import InputField from '../InputField';
 import DropdownSelect from '../DropdownSelect';
 import AuthorsSection from '../AuthorsSection';
 import MarkdownEditor from '../MarkdownEditor';
+
 import {
   fetchJournalById,
   updateJournal,
@@ -17,9 +18,16 @@ import {
   PublicationContainer,
   PublicationIndicator,
 } from '../../../add-project/FormAddEditProject/utils/CustomSelectComponents';
+
 import { categoryOptions } from '../utils/journalCategoryOptions';
 import { wrapAnnotationAndKeywords } from '../utils/markdownTransform';
+import useInterceptExternalClose from '../../../hooks/useInterceptExternalClose';
+
 import styles from '../../../../Add/add-project/FormAddEditProject/FormAddProject.module.scss';
+import adminStyles from '../../../style/style-card.module.scss';
+
+import SubmitButtons from '../../../../UI/SubmitButtons/SubmitButtons';
+import ExitConfirmModal from '../../../../UI/ExitConfirmModal/ExitConfirmModal';
 
 export default function FormEditJournal({ editJournalData, setIsModalOpen }) {
   const dispatch = useDispatch();
@@ -32,6 +40,11 @@ export default function FormEditJournal({ editJournalData, setIsModalOpen }) {
   const [universityBlocks, setUniversityBlocks] = useState([]);
   const [locationBlocks, setLocationBlocks] = useState([]);
   const tempFilesRef = useRef([]);
+  const [showExitConfirm, setShowExitConfirm] = useState(false);
+
+  const openExitConfirm = useCallback(() => setShowExitConfirm(true), []);
+
+  useInterceptExternalClose(`.${adminStyles.card_components_admin__close_button}`, openExitConfirm);
 
   useEffect(() => {
     if (editJournalData) {
@@ -261,7 +274,7 @@ export default function FormEditJournal({ editJournalData, setIsModalOpen }) {
                   name="category"
                   placeholder="Выберите категорию фильтрации"
                   isMulti
-                 options={categoryOptions}
+                  options={categoryOptions}
                   value={
                     Array.isArray(formData.category) ? formData.category.map((cat) => ({ value: cat, label: cat })) : []
                   }
@@ -400,11 +413,26 @@ export default function FormEditJournal({ editJournalData, setIsModalOpen }) {
                 </div>
               </div>
 
-              <div className={styles.form_container__button_block}>
-                <button type="submit" className={styles.form_container__button_save} />
-                <button type="button" className={styles.form_container__button_cancel} onClick={closeModal} />
-              </div>
+              <SubmitButtons
+                classNames={{
+                  wrapper: styles.form_container__button_block,
+                  save: styles.form_container__button_save,
+                  cancel: styles.form_container__button_cancel,
+                }}
+                onCancel={(e) => {
+                  e?.preventDefault?.();
+                  e?.stopPropagation?.();
+                  setShowExitConfirm(true);
+                  setShowExitConfirm(true);
+                }}
+              />
             </form>
+
+            <ExitConfirmModal
+              open={showExitConfirm}
+              onCancel={() => setShowExitConfirm(false)}
+              onLeave={() => setIsModalOpen(false)}
+            />
           </div>
         </>
       )}

@@ -5,13 +5,18 @@ import 'react-quill-new/dist/quill.snow.css';
 import { changeHandler } from '../utils/formHelpers';
 import { usePreviewHandlers } from '../utils/hooks/usePreviewHandlers';
 import { sharedHandleDynamicInputChange, sharedHandleDeletePreview, getPreviewClassName } from '../utils/formShared';
+import useInterceptExternalClose from '../../../hooks/useInterceptExternalClose';
 
-import { fetchArticle, setArticleId } from '../../../../store/Slice/articleSlice';
 import customStyles from '../../../add-project/FormAddEditProject/utils/customStyles';
+import adminStyles from '../../../style/style-card.module.scss';
+import styles from '../../../add-project/FormAddEditProject/FormAddProject.module.scss';
+
 import {
   PublicationContainer,
   PublicationIndicator,
 } from '../../../add-project/FormAddEditProject/utils/CustomSelectComponents';
+
+import { fetchArticle, setArticleId } from '../../../../store/Slice/articleSlice';
 
 import HeaderFields from './HeaderFields';
 import SliderUploadBlock from './SliderUploadBlock';
@@ -22,9 +27,8 @@ import SecondaryTextBlock from './SecondaryTextBlock';
 import CloseImageBlock from './CloseImageBlock';
 import ConstructionSectionFromEdit from './ConstructionSectionFromEdit';
 import ConstructorPage from '../../constructor/ConstructorPage';
-import SubmitButtons from './SubmitButtons';
-
-import styles from '../../../add-project/FormAddEditProject/FormAddProject.module.scss';
+import SubmitButtons from '../../../../UI/SubmitButtons/SubmitButtons';
+import ExitConfirmModal from '../../../../UI/ExitConfirmModal/ExitConfirmModal';
 
 const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
@@ -61,10 +65,15 @@ export default function FormEditNews({ setIsModalOpen, editArticleData }) {
   const [isLoadingDropPhoto, setIsLoadingDropPhoto] = useState(false);
   const [isLoadingOpenImage, setIsLoadingOpenImage] = useState(false);
   const [isLoadingCloseImage, setIsLoadingCloseImage] = useState(false);
+  const [showExitConfirm, setShowExitConfirm] = useState(false);
 
   const quillRef1 = useRef(null);
   const quillRef2 = useRef(null);
   const quillRefs = useMemo(() => [quillRef1, quillRef2], []);
+
+  const openExitConfirm = useCallback(() => setShowExitConfirm(true), []);
+
+  useInterceptExternalClose(`.${adminStyles.card_components_admin__close_button}`, openExitConfirm);
 
   const applyQuillStyles = useCallback((ref) => {
     if (ref.current) {
@@ -344,8 +353,26 @@ export default function FormEditNews({ setIsModalOpen, editArticleData }) {
             handleRemovePreviewPhotoClose={handleRemovePreviewPhotoClose}
           />
 
-          <SubmitButtons styles={styles} closeModal={closeModal} />
+          <SubmitButtons
+            classNames={{
+              wrapper: styles.form_container__button_block,
+              save: styles.form_container__button_save,
+              cancel: styles.form_container__button_cancel,
+            }}
+            onCancel={(e) => {
+              e?.preventDefault?.();
+              e?.stopPropagation?.();
+              setShowExitConfirm(true);
+              setShowExitConfirm(true);
+            }}
+          />
         </form>
+
+        <ExitConfirmModal
+          open={showExitConfirm}
+          onCancel={() => setShowExitConfirm(false)}
+          onLeave={() => setIsModalOpen(false)}
+        />
       </div>
     </div>
   );

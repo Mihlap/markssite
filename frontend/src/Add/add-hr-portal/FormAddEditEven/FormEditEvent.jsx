@@ -1,8 +1,16 @@
-import React, { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import compressImageFile from 'browser-image-compression';
+
 import styles from './FormAddEvent.module.scss';
+import adminStyles from '../../style/style-card.module.scss';
+
 import { editEvent, fetchEvents, postEventData } from '../../../store/Slice/vacancyEventSlice';
+
+import useInterceptExternalClose from '../../hooks/useInterceptExternalClose';
+
+import SubmitButtons from '../../../UI/SubmitButtons/SubmitButtons';
+import ExitConfirmModal from '../../../UI/ExitConfirmModal/ExitConfirmModal';
 
 export default function FormEditSlide({ setIsModalOpenEvent, editEventData }) {
   const dispatch = useDispatch();
@@ -13,11 +21,16 @@ export default function FormEditSlide({ setIsModalOpenEvent, editEventData }) {
   const [isLoading, setIsLoading] = useState(false);
   const [isImageRemoved, setIsImageRemoved] = useState(false);
   const [removedFiles, setRemovedFiles] = useState([]);
+  const [showExitConfirm, setShowExitConfirm] = useState(false);
   const [formData, setFormData] = useState({
     title: editEventData?.title || '',
     files: editEventData?.files || [],
     eventData: editEventData?.eventData || [],
   });
+
+  const openExitConfirm = useCallback(() => setShowExitConfirm(true), []);
+
+  useInterceptExternalClose(`.${adminStyles.card_components_admin__close_button}`, openExitConfirm);
 
   useEffect(() => {
     if (editEventData) {
@@ -231,8 +244,7 @@ export default function FormEditSlide({ setIsModalOpenEvent, editEventData }) {
                       <img className={styles.preview_photos_container__img} src={file} alt={`Preview ${index}`} />
                       <div
                         className={styles.preview_photos_container__remove_icon}
-                        onClick={() => handleRemovePreviewPhotoAva(index)}
-                      >
+                        onClick={() => handleRemovePreviewPhotoAva(index)}>
                         <span></span>
                       </div>
                     </div>
@@ -242,8 +254,7 @@ export default function FormEditSlide({ setIsModalOpenEvent, editEventData }) {
                     <img className={styles.preview_photos_container__img} src={preview} alt={`Preview ${index}`} />
                     <div
                       className={styles.preview_photos_container__remove_icon}
-                      onClick={() => handleRemovePreviewPhotoAva(index)}
-                    >
+                      onClick={() => handleRemovePreviewPhotoAva(index)}>
                       <span></span>
                     </div>
                   </div>
@@ -298,16 +309,14 @@ export default function FormEditSlide({ setIsModalOpenEvent, editEventData }) {
                   />
                   <div
                     className={styles.blockContainer__close_button}
-                    onClick={() => handleRemoveVideoField(index)}
-                  ></div>
+                    onClick={() => handleRemoveVideoField(index)}></div>
                 </div>
               </div>
             ))}
             <label
               className={styles.slider_container__customFileUpload}
               style={{ marginTop: '1rem', marginBottom: '2rem' }}
-              onClick={addNewVideoField}
-            >
+              onClick={addNewVideoField}>
               <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <g id="Frame 4684">
                   <path
@@ -323,11 +332,26 @@ export default function FormEditSlide({ setIsModalOpenEvent, editEventData }) {
               <div className={styles.slider_container__uploadTextForm}>Добавить URL</div>
             </label>
           </div>
-          <div className={styles.form_container__button_block}>
-            <button className={styles.form_container__button_save} type="submit"></button>
-            <button className={styles.form_container__button_cancel} type="submit" onClick={closeModalEvent}></button>
-          </div>
+          <SubmitButtons
+            classNames={{
+              wrapper: styles.form_container__button_block,
+              save: styles.form_container__button_save,
+              cancel: styles.form_container__button_cancel,
+            }}
+            onCancel={(e) => {
+              e?.preventDefault?.();
+              e?.stopPropagation?.();
+              setShowExitConfirm(true);
+              setShowExitConfirm(true);
+            }}
+          />
         </form>
+
+        <ExitConfirmModal
+          open={showExitConfirm}
+          onCancel={() => setShowExitConfirm(false)}
+          onLeave={() => setIsModalOpenEvent(false)}
+        />
       </div>
     </div>
   );
