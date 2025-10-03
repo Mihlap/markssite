@@ -59,11 +59,11 @@ export default function AddHRPortal({ user }) {
   const [activeButtonIndex, setActiveButtonIndex] = useState(0);
   const [selectedFilter, setSelectedFilter] = useState('Вакансии');
 
-    const buttonIcons = {
-      Вакансии: hr,
-      Стажировки: internships,
-      'Главная hr': pencilIcon,
-    };
+  const buttonIcons = {
+    Вакансии: hr,
+    Стажировки: internships,
+    'Главная hr': pencilIcon,
+  };
 
   const updateModalBlockHeight = useCallback(() => {
     const windowHeight = window.innerHeight;
@@ -84,12 +84,20 @@ export default function AddHRPortal({ user }) {
       isMountedRef.current = false;
     };
   }, [updateModalBlockHeight]);
+  
+  useEffect(() => {
+    document.body.style.overflow = isModalOpen ? 'hidden' : '';
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isModalOpen]);
 
   const handleOpenModal = useCallback(() => {
     if (selectedFilter !== 'Главная hr') {
       setIsModalOpen(true);
       setEditVacancyData(null);
     } else {
+      // noop
     }
   }, [selectedFilter]);
 
@@ -117,53 +125,57 @@ export default function AddHRPortal({ user }) {
     setSelectedFilter(buttonsFilter[filter]);
   }, []);
 
-  const handleCopyClick = useCallback(async (id) => {
-    try {
-      await navigator.clipboard.writeText(id);
-      if (isMountedRef.current) {
-        setIsCopied(true);
-        setCopiedId(id);
-      }
-    } catch (err) {
-      console.error('Unable to copy project to clipboard:', err);
+  const tryCopyToClipboard = (text) => {
+    if (!navigator?.clipboard?.writeText) return;
+    navigator.clipboard.writeText(String(text)).catch(() => {});
+  };
+ 
+  const handleCopyClick = useCallback((id) => {
+    tryCopyToClipboard(id);
+    if (isMountedRef.current) {
+      setIsCopied(true);
+      setCopiedId(id);
     }
   }, []);
-
+ 
   const handleCopyVacancyClick = useCallback(
-    async (id) => {
-      try {
-        await navigator.clipboard.writeText(id);
-        if (isMountedRef.current) {
-          const vacancyToCopy = vacanciesAdd.find((el) => el.id === id);
-          const copiedVacancy = { ...vacancyToCopy, id };
-          dispatch(sendCopiedVacancyToServer(copiedVacancy)).then((response) => {
-            const copiedId = response.data.copiedId;
+    (id) => {
+      tryCopyToClipboard(id);
+
+      if (!isMountedRef.current) return;
+      const vacancyToCopy = vacanciesAdd.find((el) => el.id === id);
+      if (!vacancyToCopy) return;
+
+      const copiedVacancy = { ...vacancyToCopy, id };
+
+      dispatch(sendCopiedVacancyToServer(copiedVacancy))
+        .then((response) => {
+          const copiedId = response?.data?.copiedId;
+          if (copiedId) {
             setCopiedVacancyId(copiedId);
             setTimeout(() => {
               setCopiedVacancyId(null);
             }, 5000);
-            dispatch(getFetchForm());
-          });
-        }
-      } catch (err) {
-        console.error('Unable to copy vacancy:', err);
-      }
+          }
+          dispatch(getFetchForm());
+        })
+        .catch(() => {
+          
+        });
     },
     [dispatch, vacanciesAdd]
   );
 
   const handleEditClick = useCallback(
-    async (id) => {
-      try {
-        await navigator.clipboard.writeText(id);
-        if (isMountedRef.current) {
-          const vacancyToEdit = vacanciesAdd.find((el) => el.id === id);
-          setEditVacancyData(vacancyToEdit);
-          setIsModalOpen(true);
-        }
-      } catch (err) {
-        console.error('Unable to copy vacancy to clipboard:', err);
-      }
+    (id) => {
+      tryCopyToClipboard(id);
+
+      if (!isMountedRef.current) return;
+      const vacancyToEdit = vacanciesAdd.find((el) => el.id === id);
+      if (!vacancyToEdit) return;
+
+      setEditVacancyData(vacancyToEdit);
+      setIsModalOpen(true);
     },
     [vacanciesAdd]
   );

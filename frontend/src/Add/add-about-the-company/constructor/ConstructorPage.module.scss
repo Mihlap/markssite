@@ -5,7 +5,7 @@
   flex-wrap: wrap;
   gap: 16px;
   justify-content: center;
-
+ 
   &__item {
     width: 141px;
     height: 116px;
@@ -30,23 +30,19 @@
   }
 
   &__blockThree {
-    padding: 22px 21px 22px 22px;
+    padding: 10px;
   }
 
   &__blockFour {
-    padding: 22px 21px 22px 22px;
+    padding: 20px 18px;
   }
 
   &__blockFive {
-    padding: 32px 10px;
+    padding: 10px 4px;
   }
 
   &__blockSix {
-    padding: 32px;
-  }
-
-  &__blockSeven {
-    padding: 42px 32px 41px 33px;
+    padding: 40px 20px;
   }
 
   &__blockEight {
@@ -66,21 +62,6 @@
   &__blockTen {
     padding: 43px 27px;
   }
-
-  &__blockVideoFrame {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 6px;
-  }
-}
-
-.videoText {
-  font-size: 1rem;
-  color: var(--white-F6F6F6);
-  white-space: nowrap;
-  margin-top: -20px;
 }
 
 .constructorBlockOne {

@@ -234,13 +234,11 @@ export const getHiddenVacanciesFromDB = () => async (dispatch) => {
   }
 };
 
-// Добавляем новое действие для извлечения информации о скрытых вакансиях из базы данных
-export const getFetchForm = (hidden) => async (dispatch) => {
+export const getFetchForm = () => async (dispatch) => {
   dispatch(fetchVacancyStart());
   try {
     const response = await axios.get(`${serverHost}/api-vacancy/getzapros`);
     dispatch(fetchVacancySuccess(response.data));
-    dispatch(updateVacancyLookStatusSuccess(response.data));
     return response.data;
   } catch (error) {
     dispatch(fetchVacancyFailure(error.message));
