@@ -100,8 +100,7 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
     };
 
     window.addEventListener('resize', handleResize);
-
-    // Очистка обработчика при размонтировании
+ 
     return () => {
       window.removeEventListener('resize', handleResize);
     };
@@ -109,12 +108,21 @@ export default function Company({ handleMouseEnter, handleMouseLeave, handleMous
 
   const symbol = '•';
 
-  const filteredStaff = staff.filter((staff) => {
-    const categoryArray =
-      staff.category.startsWith('{') && staff.category.endsWith('}')
-        ? staff.category.slice(1, -1).split(',')
-        : [staff.category];
+  // const filteredStaff = staff.filter((staff) => {
+  //   const categoryArray =
+  //     staff.category.startsWith('{') && staff.category.endsWith('}')
+  //       ? staff.category.slice(1, -1).split(',')
+  //       : [staff.category];
 
+  //   return categoryArray.some((cat) => cat.trim().replace(/"/g, '') === category);
+  // });
+
+  const staffList = Array.isArray(staff) ? staff : [];
+  const filteredStaff = staffList.filter((staff) => {
+    const categoryArray =
+      staff.category && staff.category.startsWith('{') && staff.category.endsWith('}')
+        ? staff.category.slice(1, -1).split(',')
+        : [staff.category ?? ''];
     return categoryArray.some((cat) => cat.trim().replace(/"/g, '') === category);
   });
 

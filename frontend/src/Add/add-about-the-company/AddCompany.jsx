@@ -139,11 +139,17 @@ export default function AddCompany({ user }) {
 
   const currentCategory = CATEGORY_OPTIONS[activeIdx];
 
+  const trim = (s) => String(s || '').replace(/\/+$/, '');
+  const ltrim = (s) => String(s || '').replace(/^\/+/, '');
+
   const photoSrc = (row) => {
-    const name = row?.img;
-    if (!name) return defaultPhoto;
-    if (/^https?:\/\//i.test(String(name))) return name;
-    return `${bucket_url}/images/imageStuff/${name}`;
+    const key = row?.img;
+    if (!key) return defaultPhoto;
+    const val = String(key);
+    if (/^https?:\/\//i.test(val)) return val;
+    const base = trim(bucket_url);
+    if (val.includes('/')) return `${base}/${ltrim(val)}`;
+    return `${base}/images/imageStaff/${val}`;
   };
 
   const filtered = useMemo(() => {
@@ -193,7 +199,7 @@ export default function AddCompany({ user }) {
   const closeModal = useCallback(() => setIsModalOpen(false), []);
 
   const openDeleteModal = useCallback((id) => setDeleteModalState((p) => ({ ...p, [id]: true })), []);
-  
+
   const closeDeleteModal = useCallback((id) => {
     setDeleteModalState((p) => {
       const n = { ...p };
@@ -204,10 +210,12 @@ export default function AddCompany({ user }) {
 
   const confirmDelete = useCallback(
     (id) => {
-      dispatch(deleteStaffAsync(id));
+      setOrderIds((prev) => prev.filter((x) => x !== id));
+      if (hoverId === id) setHoverId(null);
       closeDeleteModal(id);
+      dispatch(deleteStaffAsync({ id, category: currentCategory }));
     },
-    [dispatch, closeDeleteModal]
+    [dispatch, currentCategory, closeDeleteModal, hoverId]
   );
 
   const handleLookClick = useCallback(
@@ -224,13 +232,6 @@ export default function AddCompany({ user }) {
     },
     [dispatch, currentCategory]
   );
-
-  // const handleFilterClick = (index) => {
-  //   const cat = CATEGORY_OPTIONS[index];
-  //   const key = CAT_KEYS[cat];
-  //   if (!staffCats[key]) return;
-  //   setActiveIdx(index);
-  // };
 
   const moveId = (ids, fromId, toId) => {
     if (fromId === toId) return ids;
@@ -287,6 +288,10 @@ export default function AddCompany({ user }) {
     return m;
   }, [ordered]);
 
+  useEffect(() => {
+    setOrderIds((prev) => prev.filter((id) => byId.has(id)));
+  }, [byId]);
+
   const noEnabledCats = enabledCats.length === 0;
 
   return (
@@ -303,6 +308,10 @@ export default function AddCompany({ user }) {
               const isEnabled = !!staffCats?.[key];
               const isActive = isEnabled && activeIdx === i;
 
+              const btnClass = `${styles.card_components_admin__buttonFilter__group} ${
+                isActive ? styles.activeButtonVacancy : ''
+              } ${i === 0 ? styles.noAnimation : ''}`;
+
               const btnStyle = isEnabled
                 ? { paddingRight: 16, cursor: 'pointer' }
                 : {
@@ -313,35 +322,31 @@ export default function AddCompany({ user }) {
                   };
 
               return (
-                <div className={styles.buttonFilterItem} key={cat}>
-                  <button
-                    type="button"
-                    className={`${styles.card_components_admin__buttonFilter__group} ${
-                      isActive ? styles.activeButtonVacancy : ''
-                    }`}
-                    aria-disabled={!isEnabled}
-                    data-disabled={!isEnabled}
-                    style={btnStyle}
-                    onClick={() => {
-                      if (isEnabled) setActiveIdx(i);
-                    }}
-                    onMouseEnter={(e) => {
-                      if (!isEnabled) {
-                        e.currentTarget.style.background = 'var(--light-light-gray-EBECEE)';
-                        e.currentTarget.style.color = 'var(--gray-959DA6)';
-                      }
-                    }}
-                    onMouseLeave={(e) => {
-                      if (!isEnabled) {
-                        e.currentTarget.style.background = 'var(--light-light-gray-EBECEE)';
-                        e.currentTarget.style.color = 'var(--gray-959DA6)';
-                      }
-                    }}>
-                    <span className={styles.buttonText}>{cat}</span>
-
-                    <Toggle on={isEnabled} onClick={() => toggleCategory(cat)} style={{ marginLeft: 'auto' }} />
-                  </button>
-                </div>
+                <button
+                  key={cat}
+                  type="button"
+                  className={btnClass}
+                  aria-disabled={!isEnabled}
+                  data-disabled={!isEnabled}
+                  style={btnStyle}
+                  onClick={() => {
+                    if (isEnabled) setActiveIdx(i);
+                  }}
+                  onMouseEnter={(e) => {
+                    if (!isEnabled) {
+                      e.currentTarget.style.background = 'var(--light-light-gray-EBECEE)';
+                      e.currentTarget.style.color = 'var(--gray-959DA6)';
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (!isEnabled) {
+                      e.currentTarget.style.background = 'var(--light-light-gray-EBECEE)';
+                      e.currentTarget.style.color = 'var(--gray-959DA6)';
+                    }
+                  }}>
+                  <span className={styles.buttonText}>{cat}</span>
+                  <Toggle on={isEnabled} onClick={() => toggleCategory(cat)} style={{ marginLeft: 'auto' }} />
+                </button>
               );
             })}
           </div>
@@ -380,7 +385,7 @@ export default function AddCompany({ user }) {
                 onClose={closeModal}
                 registerCloseGuard={(fn) => (closeGuardRef.current = fn)}
                 currentCategory={currentCategory}
-              />         
+              />
             </div>
           </div>
         )}
@@ -450,6 +455,26 @@ export default function AddCompany({ user }) {
                         loading="lazy"
                         src={photoSrc(el)}
                         alt={el.name || 'staff'}
+                        onError={(e) => {
+                          const key = el?.img;
+                          if (key && !String(key).includes('/') && bucket_url) {
+                            e.currentTarget.onerror = null;
+                            e.currentTarget.src = `${String(bucket_url || '').replace(
+                              /\/+$/,
+                              ''
+                            )}/images/imageStaff/${key}`;
+                            return;
+                          }
+                          if (key && String(key).includes('imageStaff') && bucket_url) {
+                            e.currentTarget.onerror = null;
+                            e.currentTarget.src = `${String(bucket_url || '').replace(/\/+$/, '')}/${String(key)
+                              .replace(/^\/+/, '')
+                              .replace('imageStaff', 'imageStaff')}`;
+                            return;
+                          }
+                          e.currentTarget.onerror = null;
+                          e.currentTarget.src = defaultPhoto;
+                        }}
                       />
 
                       {canDelete && (

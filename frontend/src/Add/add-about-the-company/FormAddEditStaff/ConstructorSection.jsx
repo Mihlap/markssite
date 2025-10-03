@@ -1,6 +1,7 @@
 import { memo } from 'react';
 import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
+import MarkdownEditor from '../../add-articles/AddJournal/MarkdownEditor';
 
 function ConstructorSection({
   styles,
@@ -171,19 +172,20 @@ function ConstructorSection({
             )}
           </>
         )}
-        {inputType === 'videoLink' && (
-          <div className={styles.form_container__heading_block}>
-            <input
-              type="url"
-              value={dynamicData[blockIndex][inputIndex].value || ''}
-              className={`${styles.form_container__heading_block_input} ${styles.orange_color}`}
-              placeholder={labelText}
-              onChange={(e) => {
-                handleDynamicInputChange(blockIndex, inputIndex, e.target.value);
-              }}
-            />
-            <label className={styles.form_container__heading_block_label}>{labelText}</label>
-          </div>
+        {inputType === 'markdown' && (
+          // <div className={styles.form_container__heading_block}>
+          //   <input
+          //     type="url"
+          //     value={dynamicData[blockIndex][inputIndex].value || ''}
+          //     className={`${styles.form_container__heading_block_input} ${styles.orange_color}`}
+          //     placeholder={labelText}
+          //     onChange={(e) => {
+          //       handleDynamicInputChange(blockIndex, inputIndex, e.target.value);
+          //     }}
+          //   />
+          //   <label className={styles.form_container__heading_block_label}>{labelText}</label>
+          // </div>
+          <MarkdownEditor />
         )}
         {inputType === 'textarea' && (
           <div key={inputIndex} className={styles.form_container__description_text}>
@@ -206,10 +208,7 @@ function ConstructorSection({
                 }
               }}
               modules={{
-                toolbar: [
-                  ['bold', 'italic', 'underline'],
-                  [{ list: 'bullet' }, { list: 'ordered' }],
-                ],
+                toolbar: [['bold', 'underline', { list: 'bullet' }, { list: ' ' }], []],
                 clipboard: {
                   matchVisual: false,
                 },
@@ -227,7 +226,7 @@ function ConstructorSection({
                 paddingBottom: '2.5rem',
                 whiteSpace: 'pre-wrap',
               }}
-              formats={['bold', 'italic', 'underline', 'list']}
+              formats={['bold', 'underline', 'list']}
               className={`${styles.form_container__textarea} ${styles.orange_color}`}
               required
               name={key}

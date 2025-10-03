@@ -168,7 +168,7 @@ li {
 }
 
 .ql-editor ol li:before {
-  content: '•';
+  /* content: '•'; */
 
 }
 

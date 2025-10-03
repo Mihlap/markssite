@@ -13,6 +13,7 @@ const rateLimit = require('express-rate-limit');
 const indexRouter = require('./Routes/indexRouter');
 const authRouter = require('./Routes/authRouter');
 const staffsRouter = require('./Routes/staffsRouter');
+// const newStaffsRouter = require('./Routes/newStaffsRouter');
 const projectRouter = require('./Routes/Project/projectRouter');
 const articleRouter = require('./Routes/Articles/articleRouter');
 const searchRouter = require('./Routes/Project/searchRouter');
@@ -94,6 +95,7 @@ app.use((err, req, res, next) => {
 app.get('/', indexRouter);
 app.use('/api/auth', authRouter);
 app.use('/api-stuffs', staffsRouter);
+// app.use('/api-stuffs', newStaffsRouter);
 app.use('/api-project', projectRouter);
 app.use('/api-article', articleRouter);
 app.use('/search', searchRouter);

@@ -4,43 +4,20 @@ import quoteRight from '../../add-articles/constructor/svg/icomoon-free_quotes-r
 import quoteLeft from '../../add-articles/constructor/svg/icomoon-free_quotes-right2.svg';
 import svg1 from '../../add-articles/constructor/svg/Group4650.svg';
 import svg2 from './svg/card_additional_block1.svg';
-import svg4 from './svg/card_additional_block2.svg';
-import svg5 from './svg/Group4649.svg';
-import svg6 from './svg/Group4641.svg';
-import svg7 from './svg/Group4348.svg';
-import svg8 from './svg/Group4348.svg';
+import svg3 from './svg/card_additional_block6.svg';
+import svg6 from './svg/card_additional_block5.svg';
+import svg7 from './svg/card_additional_block4.svg';
 import svg9 from '../../add-articles/constructor/svg/Group46412.svg';
+import svg10 from '../../add-articles/constructor/svg/Group4348.svg';
 
 export default function ConstructorPage({ handleClick }) {
   return (
     <div className={styles.div_conteiner}>
-      {/* блок заголовок и описание  */}
-      <div
-        className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockTwo}`}
-        onClick={() =>
-          handleClick(
-            [
-              { type: 'text', label: 'Заголовок', required: false },
-              { type: 'textarea', label: 'Текстовый блок', required: true },
-            ],
-            0
-          )
-        }>
-        <img src={svg2} alt="svg_two_icon" />
-      </div>
-
-      {/* блок описание */}
-      <div
-        className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockSeven}`}
-        onClick={() => handleClick([{ type: 'textarea', label: 'Блок описание', required: true }], 1)}>
-        <img src={svg7} alt="svg_two_icon" />
-      </div>
-
       {/* Текст в рамочке */}
       <div
         className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockEight}`}
-        onClick={() => handleClick([{ type: 'textarea', label: 'Текст в рамочке', required: true }], 2)}>
-        <img className={styles.div_conteiner__blockEight_img} src={svg7} alt="svg_two_icon" />
+        onClick={() => handleClick([{ type: 'textarea', label: 'Текстовый блок в рамке', required: true }], 2)}>
+        <img className={styles.div_conteiner__blockEight_img} src={svg10} alt="10" />
       </div>
 
       {/* блок с картинкой и описание картинки  */}
@@ -49,13 +26,13 @@ export default function ConstructorPage({ handleClick }) {
         onClick={() =>
           handleClick(
             [
-              { type: 'file', label: 'Картинка с описанием', required: true },
-              { type: 'text', label: 'Описание картинки', required: false },
+              { type: 'file', label: 'Изображение', required: true },
+              { type: 'text', label: 'Описание', required: false },
             ],
             3
           )
         }>
-        <img src={svg1} alt="svg_one_icon" />
+        <img src={svg1} alt="svg_one" />
       </div>
 
       {/* блок с цитала с фио, описание, картинка  */}
@@ -64,106 +41,73 @@ export default function ConstructorPage({ handleClick }) {
         onClick={() =>
           handleClick(
             [
+              { type: 'file', label: 'Автор цитаты', required: false },
               {
                 type: 'text',
-                label: 'Автор цитаты ( ФИО должность )',
+                label: 'ФИО/Описание',
                 required: true,
               },
-              { type: 'textarea', label: 'Текст цитаты', required: true },
-              { type: 'file', label: 'Фото автора статьи', required: false },
+              { type: 'textarea', label: 'Цитата', required: true },
             ],
             4
           )
         }>
         <div className={styles.block_quote_img}>
           <img className={styles.div_conteiner__blockNine_imgLeft} src={quoteLeft} alt="ковычки вверх" />
-          <img src={svg8} alt="svg_one_icon" />
+          <img src={svg10} alt="svg_10" />
           <img src={quoteRight} className={styles.div_conteiner__blockNine_imgRight} alt="ковычки вниз" />
         </div>
+      </div>
+
+      {/* блок маркдаун */}
+      <div
+        className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockThree}`}
+        onClick={() => handleClick([{ type: 'markdown', label: 'Тело статьи', required: true }], 1)}>
+        <img src={svg2} alt="markdown" />
       </div>
 
       {/* Текст заметки */}
       <div
         className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockTen}`}
         onClick={() => handleClick([{ type: 'textarea', label: 'Текст заметки', required: true }], 5)}>
-        <img
-          // className={styles.div_conteiner__blockEight_img}
-          src={svg9}
-          alt="svg_two_icon"
-        />
+        <img src={svg9} alt="svg_9" />
       </div>
 
-      {/* блок с двумя вертикальными картинками  */}
+      {/* блок с фактом, картинка, описание, фото сотрудника  */}
       <div
         className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockFour}`}
         onClick={() =>
           handleClick(
             [
+              { type: 'file', label: 'Изображение', required: false },
+              { type: 'textarea', label: 'Интересный факт', required: true },
+              { type: 'file', label: 'Портрет сотрудника', required: false },
               {
-                type: 'file',
-                label: 'Блок 2е вертикальные картинки',
+                type: 'text',
+                label: 'ФИО/Описание',
                 required: true,
               },
             ],
-            6
+            4
           )
         }>
-        <img src={svg4} alt="svg_three_icon" />
+        <div className={styles.block_quote_img}>
+          <img src={svg7} alt="svg_7" />
+        </div>
       </div>
 
-      {/* слайдер с картинками  */}
+      {/* блок описание с фоном */}
       <div
         className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockFive}`}
-        onClick={() =>
-          handleClick(
-            [
-              {
-                type: 'file',
-                label: 'Слайдер *допускается загрузка 8ми изображений',
-                required: true,
-              },
-            ],
-            7
-          )
-        }>
-        <img src={svg5} alt="svg_three_icon" />
+        onClick={() => handleClick([{ type: 'textarea', label: 'Текст с фоном', required: true }], 1)}>
+        <img src={svg3} alt="svg_3" />
       </div>
 
-      {/* видео */}
+      {/* блок описание с точкой*/}
       <div
         className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockSix}`}
-        onClick={() =>
-          handleClick(
-            [
-              {
-                type: 'file',
-                label: 'Видеоролик',
-                required: true,
-              },
-            ],
-            8
-          )
-        }>
-        <img src={svg6} alt="svg_six_icon" />
-      </div>
-
-      {/* видео для ссылки */}
-      <div
-        className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockVideoFrame}`}
-        onClick={() =>
-          handleClick(
-            [
-              {
-                type: 'videoLink',
-                label: 'Ссылка на видеоролик',
-                required: true,
-              },
-            ],
-            8
-          )
-        }>
-        <p className={styles.videoText}>Видео-ссылка</p>
-        <img src={svg6} alt="svg_six_icon" />
+        onClick={() => handleClick([{ type: 'textarea', label: 'Блок описание', required: true }], 1)}>
+        <img src={svg6} alt="svg_6" />
       </div>
     </div>
   );

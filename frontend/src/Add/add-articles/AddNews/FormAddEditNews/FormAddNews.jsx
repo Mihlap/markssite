@@ -208,10 +208,6 @@ export default function FormAddNews({ setIsModalOpen }) {
     [dispatch, inputData, dynamicData, selectedCompetencies, setIsModalOpen]
   );
 
-  const closeModal = useCallback(() => {
-    setIsModalOpen(false);
-  }, [setIsModalOpen]);
-
   return (
     <div className={styles.form_container}>
       {showNotification && (

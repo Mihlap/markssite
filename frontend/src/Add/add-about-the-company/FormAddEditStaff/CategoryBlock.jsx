@@ -1,4 +1,4 @@
-import { useMemo, memo, useEffect, useRef, useState } from 'react';
+import { useMemo, memo, useEffect, useRef, useState, useCallback } from 'react';
 import Select, { components } from 'react-select';
 import customStyles from '../../add-hr-portal/FormAddEditVacancy/customStyle';
 
@@ -17,6 +17,8 @@ export default memo(function CategoryBlock({
   isEditing = false,
 }) {
   const [hasFocus, setHasFocus] = useState(false);
+  const [pointerInsideMenu, setPointerInsideMenu] = useState(false);
+  const [hasKeyboardNav, setHasKeyboardNav] = useState(false);
   const outerRef = useRef(null);
   const selectApiRef = useRef(null);
   const timerRef = useRef(null);
@@ -47,15 +49,15 @@ export default memo(function CategoryBlock({
     };
   }, []);
 
-  const commitBlurIfOutside = (delay = 0) => {   
+  const commitBlurIfOutside = (delay = 0) => {
     if (timerRef.current) clearTimeout(timerRef.current);
     timerRef.current = setTimeout(() => {
       const active = document.activeElement;
       const inside = outerRef.current?.contains(active);
-      if (!inside) {     
+      if (!inside) {
         try {
           selectApiRef.current?.blur?.();
-        } catch (e) {       
+        } catch (e) {    
         }
         setHasFocus(false);
         setIsFocused?.(false);
@@ -65,7 +67,7 @@ export default memo(function CategoryBlock({
 
   const handleChange = (selected) => {
     const vals = Array.isArray(selected) ? selected.map((s) => s.value) : [];
-    setInputData((p) => ({ ...p, category: vals }));  
+    setInputData((p) => ({ ...p, category: vals }));
     commitBlurIfOutside(10);
   };
 
@@ -79,7 +81,51 @@ export default memo(function CategoryBlock({
     if (isDefault) return null;
     return <components.MultiValueRemove {...props} />;
   };
-  
+
+  const MenuListWrapper = (props) => {
+    const { innerRef, innerProps } = props;
+    const onMouseEnter = (e) => {
+      setPointerInsideMenu(true);
+      innerProps?.onMouseEnter?.(e);
+    };
+    const onMouseLeave = (e) => {
+      setPointerInsideMenu(false);
+      innerProps?.onMouseLeave?.(e);
+    };
+    return (
+      <components.MenuList
+        {...props}
+        innerProps={{
+          ...innerProps,
+          onMouseEnter,
+          onMouseLeave,
+        }}
+        innerRef={innerRef}
+      />
+    );
+  };
+ 
+  const InteractiveOption = (props) => {
+    const { innerProps = {} } = props;
+    const onMouseEnter = (e) => {
+      setPointerInsideMenu(true);
+      innerProps.onMouseEnter?.(e);
+    };
+    const onMouseLeave = (e) => {   
+      innerProps.onMouseLeave?.(e);
+    };
+    return (
+      <components.Option
+        {...props}
+        innerProps={{
+          ...innerProps,
+          onMouseEnter,
+          onMouseLeave,
+        }}
+      />
+    );
+  };
+ 
   const mergedStyles = {
     ...customStyles,
     control: (base, state) => {
@@ -98,6 +144,7 @@ export default memo(function CategoryBlock({
         },
       };
     },
+
     multiValue: (base, state) => {
       const baseFromCustom =
         typeof customStyles.multiValue === 'function' ? customStyles.multiValue(base, state) : base;
@@ -107,6 +154,7 @@ export default memo(function CategoryBlock({
         cursor: state?.data?.value === currentCategory && !isEditing ? 'default' : 'pointer',
       };
     },
+
     multiValueLabel: (base, state) => {
       const baseFromCustom =
         typeof customStyles.multiValueLabel === 'function' ? customStyles.multiValueLabel(base, state) : base;
@@ -117,6 +165,7 @@ export default memo(function CategoryBlock({
         cursor: isDefault ? 'default' : 'pointer',
       };
     },
+
     multiValueRemove: (base, state) => {
       const baseFromCustom =
         typeof customStyles.multiValueRemove === 'function' ? customStyles.multiValueRemove(base, state) : base;
@@ -127,10 +176,27 @@ export default memo(function CategoryBlock({
         cursor: isDefault ? 'default' : 'pointer',
       };
     },
+
     dropdownIndicator: (base, state) => {
       const baseFromCustom =
         typeof customStyles.dropdownIndicator === 'function' ? customStyles.dropdownIndicator(base, state) : base;
       return { ...baseFromCustom, cursor: 'pointer' };
+    },
+
+    option: (base, { isFocused, isSelected }) => {
+      const hoverBg = 'var(--light-blue-D4EDFB)';   
+      const showBg = isFocused && (pointerInsideMenu || hasKeyboardNav);
+      const background = showBg ? hoverBg : 'transparent';
+      const color = 'var(--dark-gray-566272)';
+      return {
+        ...base,
+        background,
+        color,
+        cursor: isSelected && !isFocused ? 'default' : 'pointer',
+        ':active': {
+          background: showBg ? hoverBg : 'transparent',
+        },
+      };
     },
   };
 
@@ -160,11 +226,25 @@ export default memo(function CategoryBlock({
   const handleMenuOpen = () => {
     setHasFocus(true);
     setIsFocused?.(true);
+    setPointerInsideMenu(false);
+    setHasKeyboardNav(false);
   };
 
   const handleMenuClose = () => {
     commitBlurIfOutside(0);
+    setPointerInsideMenu(false);
+    setHasKeyboardNav(false);
   };
+
+  const handleKeyDown = useCallback(
+    (e) => {
+      const keysThatIndicateNavigation = ['ArrowDown', 'ArrowUp', 'Enter', ' '];
+      if (keysThatIndicateNavigation.includes(e.key)) {
+        setHasKeyboardNav(true);
+      }
+    },
+    [setHasKeyboardNav]
+  );
 
   return (
     <div className={styles.form_container__block_gray_one} style={{ paddingTop: 0, marginBottom: 0 }} ref={outerRef}>
@@ -192,11 +272,14 @@ export default memo(function CategoryBlock({
             ValueContainer: InlineValueContainer,
             MultiValueRemove,
             ClearIndicator: () => null,
+            Option: InteractiveOption,
+            MenuList: MenuListWrapper,
           }}
           onFocus={handleFocus}
           onBlur={handleBlur}
           onMenuOpen={handleMenuOpen}
           onMenuClose={handleMenuClose}
+          onKeyDown={handleKeyDown}
           placeholder={value.length > 0 ? '' : 'Выберите категорию'}
           closeMenuOnSelect={true}
           blurInputOnSelect={false}
