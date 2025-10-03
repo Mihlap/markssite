@@ -1,56 +1,57 @@
-const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const JavaScriptObfuscator = require('webpack-obfuscator');
 
-function webpack(config, env) {
-  if (env === 'production') {
-    config.devtool = false;
+module.exports = {
+  webpack: (config, env) => {
+    const isProd = env === 'production';
 
-    config.optimization = {
-      ...config.optimization,
-      minimizer: [
-        ...(config.optimization?.minimizer || []),
-        new CssMinimizerPlugin({
-          minimizerOptions: {
-            preset: ['default', { discardComments: { removeAll: true } }],
+    config.cache = { type: 'filesystem' };
+
+    if (isProd) {
+      process.env.GENERATE_SOURCEMAP = 'false';
+      config.devtool = false;
+
+      const EXCLUDES = [
+        '**/static/js/*.js',
+        '!**/static/js/main.*.js',
+        '**/*.map',
+        '**/static/js/*mapbox*.js',
+        '**/static/js/*react-map-gl*.js',
+        '**/static/js/runtime-*.js',
+        '**/static/js/vendors~*.js',
+        '**/static/js/vendor*.js',
+      ];
+
+      config.plugins.push(
+        new JavaScriptObfuscator(
+          {
+            compact: true,
+            controlFlowFlattening: false,
+            deadCodeInjection: false,
+            debugProtection: true,
+            debugProtectionInterval: 0,
+            disableConsoleOutput: true,
+            domainLock: ['marksgroup.ru', 'www.marksgroup.ru'],
+            mangle: true,
+            rotateStringArray: false,
+            selfDefending: false,
+            stringArray: true,
+            stringArrayEncoding: ['base64'],
+            stringArrayThreshold: 0.2,
+            unicodeEscapeSequence: false,
           },
-          parallel: true,
-        }),
-      ],
-    };
+          EXCLUDES
+        )
+      );
+    }
 
-    config.plugins.push(
-      new JavaScriptObfuscator(
-        {
-          controlFlowFlattening: true,
-          controlFlowFlatteningThreshold: 0.75,
-          deadCodeInjection: false,
-          debugProtection: true,
-          debugProtectionInterval: 4000,
-          disableConsoleOutput: true,
-          domainLock: ['marksgroup.ru', 'www.marksgroup.ru'],
-          mangle: true,
-          renameGlobals: false,
-          rotateStringArray: true,
-          selfDefending: true,
-          stringArray: true,
-          stringArrayEncoding: ['base64'],
-          stringArrayThreshold: 0.75,
-          unicodeEscapeSequence: false,
-        },
-        []
-      )
-    );
-  }
-  return config;
-}
-
-function devServer(configFunction) {
-  return (proxy, allowedHost) => {
-    const config = configFunction(proxy, allowedHost);
-    config.client = { ...config.client, overlay: false };
-    config.allowedHosts = 'all';
     return config;
-  };
-}
+  },
 
-module.exports = { webpack, devServer };
+  devServer: (configFunction) => {
+    return (proxy, allowedHost) => {
+      const config = configFunction(proxy, allowedHost);
+      config.allowedHosts = 'all';
+      return config;
+    };
+  },
+};
