@@ -1,18 +1,24 @@
-import React, { useEffect, useRef, useState, useCallback, useMemo } from 'react';
+import { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import ReactQuill from 'react-quill-new';
 import 'react-quill-new/dist/quill.snow.css';
 import Select from 'react-select';
 import { useDispatch } from 'react-redux';
+
 import { editVacancy } from '../../../store/Slice/vacanciesSlice.js';
 import { selectBlocks } from '../utils.js';
-import customStyle from './customStyle.js';
 
+import customStyle from './customStyle.js';
 import styles from './FormAddVacancy.module.scss';
+import adminStyles from '../../style/style-card.module.scss';
+import SubmitButtons from '../../../UI/SubmitButtons/SubmitButtons.jsx';
+import ExitConfirmModal from '../../../UI/ExitConfirmModal/ExitConfirmModal.jsx';
+import useInterceptExternalClose from '../../hooks/useInterceptExternalClose.js';
 
 export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVacancyData }) {
   const [showNotification] = useState(false);
   const [, setLoading] = useState(false);
   const [, setError] = useState(null);
+  const [showExitConfirm, setShowExitConfirm] = useState(false);
 
   const dispatch = useDispatch();
   const type = selectedFilter === 'Вакансии' ? 'вакансия' : 'стажировка';
@@ -64,6 +70,10 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
     }
   }, []);
 
+   const openExitConfirm = useCallback(() => setShowExitConfirm(true), []);
+  
+   useInterceptExternalClose(`.${adminStyles.card_components_admin__close_button}`, openExitConfirm);
+
   useEffect(() => {
     quillRefs.forEach((quillRef) => applyStylesToQuillEditor(quillRef));
   }, [applyStylesToQuillEditor, quillRefs]);
@@ -92,16 +102,14 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
         if (!str) return [];
         const parts = str.split(',').map((s) => s.trim());
         let result = [];
-        for (let i = 0; i < parts.length; i++) {
-          // Если текущая часть уже валидна — используем её
+        for (let i = 0; i < parts.length; i++) {     
           if (validOptions.includes(parts[i])) {
             result.push(parts[i]);
-          } else if (i < parts.length - 1) {
-            // Пробуем объединить текущую и следующую часть
+          } else if (i < parts.length - 1) {     
             const combined = parts[i] + ', ' + parts[i + 1];
             if (validOptions.includes(combined)) {
               result.push(combined);
-              i++; // пропускаем следующий, т.к. он уже включён в объединённое значение
+              i++;
             } else {
               result.push(parts[i]);
             }
@@ -111,10 +119,8 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
         }
         return result;
       };
-
-      // Получаем список валидных значений для benefits из selectBlocks
-      const benefitsOptions = selectBlocks.find((b) => b.name === 'benefits')?.options.map((o) => o.value) || [];
-      // Аналогично можно сделать для других полей, если требуется
+ 
+      const benefitsOptions = selectBlocks.find((b) => b.name === 'benefits')?.options.map((o) => o.value) || [];     
       const skillsOptions = selectBlocks.find((b) => b.name === 'skills')?.options.map((o) => o.value) || [];
       const directionOptions = selectBlocks.find((b) => b.name === 'direction')?.options.map((o) => o.value) || [];
       const experienceOptions = selectBlocks.find((b) => b.name === 'experience')?.options.map((o) => o.value) || [];
@@ -142,7 +148,6 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
       }));
     }
   }, [editVacancyData]);
-
 
   const handleSubmit = useCallback(
     async (event) => {
@@ -199,9 +204,6 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
     }));
   }, []);
 
-  const closeModal = useCallback(() => {
-    setIsModalOpen(false);
-  }, [setIsModalOpen]);
 
   return (
     <div className={styles.form_container}>
@@ -409,11 +411,26 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
               </div>
             </div>
           </div>
-          <div className={styles.form_container__button_block}>
-            <button className={styles.form_container__button_save} type="submit"></button>
-            <button className={styles.form_container__button_cancel} type="button" onClick={closeModal}></button>
-          </div>
+          <SubmitButtons
+            classNames={{
+              wrapper: styles.form_container__button_block,
+              save: styles.form_container__button_save,
+              cancel: styles.form_container__button_cancel,
+            }}
+            onCancel={(e) => {
+              e?.preventDefault?.();
+              e?.stopPropagation?.();
+              setShowExitConfirm(true);
+              setShowExitConfirm(true);
+            }}
+          />
         </form>
+
+        <ExitConfirmModal
+          open={showExitConfirm}
+          onCancel={() => setShowExitConfirm(false)}
+          onLeave={() => setIsModalOpen(false)}
+        />
       </div>
     </div>
   );

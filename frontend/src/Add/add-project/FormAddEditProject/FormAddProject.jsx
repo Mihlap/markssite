@@ -4,11 +4,14 @@ import compressImageFile from 'browser-image-compression';
 import { transliterate } from 'transliteration';
 
 import styles from './FormAddProject.module.scss';
+import adminStyles from '../../style/style-card.module.scss';
+
 import 'react-quill-new/dist/quill.snow.css';
 
 import { changeHandler } from './utils/formHelpers';
 import { usePreviewHandlers } from './utils/hooks/usePreviewHandlers';
 import customStyles from './utils/customStyles';
+import useInterceptExternalClose from '../../hooks/useInterceptExternalClose';
 
 import { clearFormData, fetchProject } from '../../../store/Slice/projectSlice';
 
@@ -17,13 +20,14 @@ import SliderUploadBlock from './SliderUploadBlock';
 import OpenImageBlock from './OpenImageBlock';
 import ConstructorSection from './ConstructorSection';
 import CloseImageBlock from './CloseImageBlock';
-import SubmitButtons from './SubmitButtons';
 import TextSecondBlock from './TextSecondBlock';
 import PhotoAvaUpload from './PhotoAvaUpload';
 import TitleTextBlock from './TitleTextBlock';
 import MeasurementsBlock from './MeasurementsBlock';
 import LocationStagesBlock from './LocationStagesBlock';
 import ConstructorPage from '../constructor/ConstructorPage';
+import SubmitButtons from '../../../UI/SubmitButtons/SubmitButtons';
+import ExitConfirmModal from '../../../UI/ExitConfirmModal/ExitConfirmModal';
 
 export default function FormAddProject({ setIsModalOpen }) {
   const dispatch = useDispatch();
@@ -54,6 +58,7 @@ export default function FormAddProject({ setIsModalOpen }) {
   const [isLoadingDropPhoto, setIsLoadingDropPhoto] = useState(false);
   const [isLoadingOpenImage, setIsLoadingOpenImage] = useState(false);
   const [isLoadingCloseImage, setIsLoadingCloseImage] = useState(false);
+  const [showExitConfirm, setShowExitConfirm] = useState(false);
 
   const quillRef1 = useRef(null);
 
@@ -166,9 +171,9 @@ export default function FormAddProject({ setIsModalOpen }) {
     return isValid;
   }, [selectedMonth, selectedYear]);
 
-  const closeModal = useCallback(() => {
-    setIsModalOpen(false);
-  }, [setIsModalOpen]);
+  const openExitConfirm = useCallback(() => setShowExitConfirm(true), []);
+
+  useInterceptExternalClose(`.${adminStyles.card_components_admin__close_button}`, openExitConfirm);
 
   const submitHandler = useCallback(
     async (e) => {
@@ -616,8 +621,26 @@ export default function FormAddProject({ setIsModalOpen }) {
             handleRemovePreviewPhotoClose={handleRemovePreviewPhotoClose}
           />
 
-          <SubmitButtons styles={styles} closeModal={closeModal} />
+          <SubmitButtons
+            classNames={{
+              wrapper: styles.form_container__button_block,
+              save: styles.form_container__button_save,
+              cancel: styles.form_container__button_cancel,
+            }}
+            onCancel={(e) => {
+              e?.preventDefault?.();
+              e?.stopPropagation?.();
+              setShowExitConfirm(true);
+              setShowExitConfirm(true);
+            }}
+          />
         </form>
+
+        <ExitConfirmModal
+          open={showExitConfirm}
+          onCancel={() => setShowExitConfirm(false)}
+          onLeave={() => setIsModalOpen(false)}
+        />
       </div>
     </div>
   );

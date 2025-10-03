@@ -1,14 +1,17 @@
 import { useEffect, useRef, useState, useCallback, useMemo } from 'react';
 import 'react-quill-new/dist/quill.snow.css';
 import { useDispatch } from 'react-redux';
+
 import styles from '../../../add-project/FormAddEditProject/FormAddProject.module.scss';
+import adminStyles from '../../../style/style-card.module.scss';
+import customStyles from '../../../add-project/FormAddEditProject/utils/customStyles';
 
 import { changeHandler } from '../utils/formHelpers';
 import { usePreviewHandlers } from '../utils/hooks/usePreviewHandlers';
 import { sharedHandleDynamicInputChange, sharedHandleDeletePreview, getPreviewClassName } from '../utils/formShared';
+import useInterceptExternalClose from '../../../hooks/useInterceptExternalClose';
 
 import { fetchArticle } from '../../../../store/Slice/articleSlice';
-import customStyles from '../../../add-project/FormAddEditProject/utils/customStyles';
 import ConstructorPage from '../../constructor/ConstructorPage';
 import {
   PublicationContainer,
@@ -22,8 +25,9 @@ import AuthorPhotoBlock from './AuthorPhotoBlock';
 import OpenImageBlock from './OpenImageBlock';
 import CloseImageBlock from './CloseImageBlock';
 import ConstructorSection from './ConstructorSection';
-import SubmitButtons from './SubmitButtons';
 import SecondaryTextBlock from './SecondaryTextBlock';
+import SubmitButtons from '../../../../UI/SubmitButtons/SubmitButtons';
+import ExitConfirmModal from '../../../../UI/ExitConfirmModal/ExitConfirmModal';
 
 export default function FormAddNews({ setIsModalOpen }) {
   const dispatch = useDispatch();
@@ -38,6 +42,7 @@ export default function FormAddNews({ setIsModalOpen }) {
   const [, setIsDropPhotoVisible] = useState(true);
   const [, setIsFocused] = useState(false);
   const [showNotification, setShowNotification] = useState(false);
+  const [showExitConfirm, setShowExitConfirm] = useState(false);
 
   const [inputData, setInputData] = useState({
     title: '',
@@ -62,6 +67,10 @@ export default function FormAddNews({ setIsModalOpen }) {
   const quillRef1 = useRef(null);
   const quillRef2 = useRef(null);
   const quillRefs = useMemo(() => [quillRef1, quillRef2], []);
+
+  const openExitConfirm = useCallback(() => setShowExitConfirm(true), []);
+
+  useInterceptExternalClose(`.${adminStyles.card_components_admin__close_button}`, openExitConfirm);
 
   const applyStylesToQuillEditor = useCallback((quillRef) => {
     if (quillRef && quillRef.current) {
@@ -199,10 +208,6 @@ export default function FormAddNews({ setIsModalOpen }) {
     [dispatch, inputData, dynamicData, selectedCompetencies, setIsModalOpen]
   );
 
-  const closeModal = useCallback(() => {
-    setIsModalOpen(false);
-  }, [setIsModalOpen]);
-
   return (
     <div className={styles.form_container}>
       {showNotification && (
@@ -313,8 +318,26 @@ export default function FormAddNews({ setIsModalOpen }) {
             handleRemovePreviewPhotoClose={handleRemovePreviewPhotoClose}
           />
 
-          <SubmitButtons styles={styles} closeModal={closeModal} />
+          <SubmitButtons
+            classNames={{
+              wrapper: styles.form_container__button_block,
+              save: styles.form_container__button_save,
+              cancel: styles.form_container__button_cancel,
+            }}
+            onCancel={(e) => {
+              e?.preventDefault?.();
+              e?.stopPropagation?.();
+              setShowExitConfirm(true);
+              setShowExitConfirm(true);
+            }}
+          />
         </form>
+
+        <ExitConfirmModal
+          open={showExitConfirm}
+          onCancel={() => setShowExitConfirm(false)}
+          onLeave={() => setIsModalOpen(false)}
+        />
       </div>
     </div>
   );

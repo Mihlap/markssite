@@ -5,9 +5,11 @@ import { transliterate } from 'transliteration';
 
 import 'react-quill-new/dist/quill.snow.css';
 import styles from './FormAddProject.module.scss';
+import adminStyles from '../../style/style-card.module.scss';
 
 import { changeHandler } from './utils/formHelpers';
 import { usePreviewHandlers } from './utils/hooks/usePreviewHandlers';
+import useInterceptExternalClose from '../../hooks/useInterceptExternalClose';
 import customStyles from './utils/customStyles';
 
 import { fetchProject, setProjectId } from '../../../store/Slice/projectSlice';
@@ -23,7 +25,8 @@ import LocationStagesBlock from './LocationStagesBlock';
 import OpenImageBlock from './OpenImageBlock';
 import ConstructionSectionFromEdit from './ConstructionSectionFromEdit';
 import CloseImageBlock from './CloseImageBlock';
-import SubmitButtons from './SubmitButtons';
+import SubmitButtons from '../../../UI/SubmitButtons/SubmitButtons';
+import ExitConfirmModal from '../../../UI/ExitConfirmModal/ExitConfirmModal';
 
 const bucket_url = process.env.REACT_APP_S3_BUCKET_URL;
 
@@ -87,6 +90,7 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
   const [selectedMonth, setSelectedMonth] = useState(null);
   const [selectedYear, setSelectedYear] = useState(null);
   const [embedLink] = useState('');
+  const [showExitConfirm, setShowExitConfirm] = useState(false);
 
   const quillRef1 = useRef(null);
   const quillRefs = useMemo(() => [quillRef1], [quillRef1]);
@@ -102,6 +106,10 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
       editorElement.style.border = 'none';
     }
   }, []);
+
+  const openExitConfirm = useCallback(() => setShowExitConfirm(true), []);
+
+  useInterceptExternalClose(`.${adminStyles.card_components_admin__close_button}`, openExitConfirm);
 
   useEffect(() => {
     quillRefs.forEach((quillRef) => applyStylesToQuillEditor(quillRef));
@@ -259,10 +267,6 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
     }
     return isValid;
   }, [selectedMonth, selectedYear]);
-
-  const closeModal = useCallback(() => {
-    setIsModalOpen(false);
-  }, [setIsModalOpen]);
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -715,8 +719,26 @@ export default function FormEditProject({ setIsModalOpen, editProjectData }) {
             handleRemovePreviewPhotoClose={handleRemovePreviewPhotoClose}
             bucket_url={bucket_url}
           />
-          <SubmitButtons styles={styles} closeModal={closeModal} />
+          <SubmitButtons
+            classNames={{
+              wrapper: styles.form_container__button_block,
+              save: styles.form_container__button_save,
+              cancel: styles.form_container__button_cancel,
+            }}
+            onCancel={(e) => {
+              e?.preventDefault?.();
+              e?.stopPropagation?.();
+              setShowExitConfirm(true);
+              setShowExitConfirm(true);
+            }}
+          />
         </form>
+
+        <ExitConfirmModal
+          open={showExitConfirm}
+          onCancel={() => setShowExitConfirm(false)}
+          onLeave={() => setIsModalOpen(false)}
+        />
       </div>
     </div>
   );

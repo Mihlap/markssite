@@ -8,23 +8,19 @@ const BenefitsVacancy = () => {
 
   const processAdvantages = (advantages) => {
     if (!advantages) return [];
-    if (Array.isArray(advantages)) return advantages;
-    // Разбиваем строку по запятым
+    if (Array.isArray(advantages)) return advantages;  
     const parts = advantages.split(',').map((item) => item.trim());
     let result = [];
     for (let i = 0; i < parts.length; i++) {
       let current = parts[i];
-      // Если текущее значение уже найдено в списке, добавляем его
       if (benefitsData.some((b) => b.title === current)) {
         result.push(current);
-      } else if (i < parts.length - 1) {
-        // Пробуем объединить текущее со следующим
+      } else if (i < parts.length - 1) {   
         const combined = current + ', ' + parts[i + 1];
         if (benefitsData.some((b) => b.title === combined)) {
           result.push(combined);
-          i++; // Пропускаем следующий, так как он уже объединён
-        } else {
-          // Если объединённое значение не найдено, добавляем текущее как есть
+          i++;
+        } else {      
           result.push(current);
         }
       } else {

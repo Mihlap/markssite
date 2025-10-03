@@ -48,6 +48,7 @@ import FooterCircle from './Footer/FooterCircle';
 import FooterForm from './Footer/FooterForm';
 import JournalMain from './Journal/JournalMain';
 import ArticleJournalPage from './Journal/JournalArticlePage/ArticleJournalPage';
+// import CompanyNew from './Company/CompanyNew';
 
 export default function App() {
   const user = useSelector((state) => state.auth.user);
