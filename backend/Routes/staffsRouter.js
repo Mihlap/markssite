@@ -1,134 +1,87 @@
 const express = require('express');
-const { sequelize, StaffNew } = require('../db/models');
-const { Op } = require('sequelize');
+const { Staff } = require('../db/models');
+
 const router = express.Router();
 
 router.get('/stuffs', async (req, res) => {
   try {
-    const { category, includeHidden } = req.query;
-
-    const where = {};
-    const showHidden = String(includeHidden).toLowerCase() === 'true';
-    if (!showHidden) where.isVisible = true;
-    if (category) where.category = { [Op.contains]: [category] };
-
-    const rows = await StaffNew.findAll({
-      where,
-      order: [
-        ['sortIndex', 'ASC'],
-        ['createdAt', 'ASC'],
+    const rows = await Staff.findAll({   
+      paranoid: false,
+      attributes: [
+        'id',
+        'userId',
+        'name',
+        'position',
+        'img',
+        'description',
+        'category',
+        'about',
+        'about1',
+        'about2',
+        'about3',
+        'about4',
+        'about5',
+        'about6',
+        'about7',
+        'about8',
+        'about9',
+        'about10',
+        'about11',
+        'about12',
+        'about13',
+        'about14',
+        'about15',
+        'about16',
+        'about17',
+        'about18',
+        'about19',
+        'about20',
+        'about21',
+        'about22',
+        'about23',
+        'description1',
+        'about24',
+        'description2',
+        'about25',
+        'about26',
+        'about27',
+        'about28',
+        'about29',
+        'about30',
+        'createdAt',
+        'updatedAt',
       ],
+      order: [['id', 'ASC']],
+      raw: true,
+    });
+  
+    const data = rows.map((r) => {
+      let category = r.category;
+    
+      if (Array.isArray(category)) {   
+      } else if (category == null) {
+        category = '';
+      } else if (typeof category === 'object') {     
+        try {
+          category = JSON.stringify(category);
+        } catch {
+          category = String(category);
+        }
+      } else {     
+        category = String(category);
+      }
+
+      return {
+        ...r,
+        category,
+        img: r.img || 'no_photo.png',
+      };
     });
 
-    const out =
-      !showHidden && category
-        ? rows.filter((r) => {
-            const vbc = r.visibilityByCategory || {};       
-            return vbc[category] !== false;
-          })
-        : rows;
-
-    res.json(out);
-  } catch (e) {
-    console.error(e);
-    res.status(500).json({ error: 'Ошибка получения списка сотрудников' });
-  }
-});
-
-router.post('/stuffs', async (req, res) => {
-  try {
-    const payload = req.body;
-    if (payload.category && !Array.isArray(payload.category)) {
-      payload.category = [payload.category];
-    }
-    const row = await StaffNew.create(payload);
-    res.status(201).json(row);
-  } catch (e) {
-    console.error(e);
-    res.status(500).json({ error: 'Ошибка создания карточки' });
-  }
-});
-
-router.patch('/stuffs/:id/visibility', async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { isVisible, category } = req.body;
-
-    const row = await StaffNew.findByPk(id);
-    if (!row) return res.status(404).json({ error: 'Карточка не найдена' });
-
-    if (category) {
-      const vbc = { ...(row.visibilityByCategory || {}) };
-      vbc[category] = !!isVisible;
-      await row.update({ visibilityByCategory: vbc });
-      return res.json({ id, category, isVisible: !!isVisible });
-    }
- 
-    await row.update({ isVisible: !!isVisible });
-    return res.json({ id, isVisible: !!isVisible });
-  } catch (e) {
-    console.error(e);
-    res.status(500).json({ error: 'Ошибка смены видимости' });
-  }
-});
-
-router.put('/stuffs/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    const payload = req.body;
-    if (payload.category && !Array.isArray(payload.category)) {
-      payload.category = [payload.category];
-    }
-    const [cnt] = await StaffNew.update(payload, { where: { id } });
-    if (!cnt) return res.status(404).json({ error: 'Карточка не найдена' });
-    const row = await StaffNew.findByPk(id);
-    res.json(row);
-  } catch (e) {
-    console.error(e);
-    res.status(500).json({ error: 'Ошибка обновления карточки' });
-  }
-});
-
-router.patch('/stuffs/reorder', async (req, res) => {
-  const t = await sequelize.transaction();
-  try {
-    const { items } = req.body;
-    for (const it of items) {
-      await StaffNew.update({ sortIndex: it.sortIndex }, { where: { id: it.id }, transaction: t });
-    }
-    await t.commit();
-    res.json({ ok: true });
-  } catch (e) {
-    await t.rollback();
-    console.error(e);
-    res.status(500).json({ error: 'Ошибка смены порядка' });
-  }
-});
-
-router.post('/stuffs/:id/copy', async (req, res) => {
-  try {
-    const src = await StaffNew.findByPk(req.params.id);
-    if (!src) return res.status(404).json({ error: 'Карточка не найдена' });
-    const data = src.toJSON();
-    delete data.id;
-    data.sortIndex = (data.sortIndex ?? 0) + 1;
-    const copy = await StaffNew.create(data);
-    res.status(201).json({ copiedId: copy.id });
-  } catch (e) {
-    console.error(e);
-    res.status(500).json({ error: 'Ошибка копирования' });
-  }
-});
-
-router.delete('/stuffs/:id', async (req, res) => {
-  try {
-    const { id } = req.params;
-    const cnt = await StaffNew.destroy({ where: { id } });
-    if (!cnt) return res.status(404).json({ error: 'Карточка не найдена' });
-    res.json({ id });
-  } catch (e) {
-    console.error(e);
-    res.status(500).json({ error: 'Ошибка удаления' });
+    res.json(data);
+  } catch (error) {
+    console.error('Ошибка получения данных сотрудников:', error);
+    res.status(500).json({ error: 'Внутренняя ошибка сервера' });
   }
 });
 

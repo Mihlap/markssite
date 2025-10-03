@@ -102,16 +102,14 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
         if (!str) return [];
         const parts = str.split(',').map((s) => s.trim());
         let result = [];
-        for (let i = 0; i < parts.length; i++) {
-          // Если текущая часть уже валидна — используем её
+        for (let i = 0; i < parts.length; i++) {     
           if (validOptions.includes(parts[i])) {
             result.push(parts[i]);
-          } else if (i < parts.length - 1) {
-            // Пробуем объединить текущую и следующую часть
+          } else if (i < parts.length - 1) {     
             const combined = parts[i] + ', ' + parts[i + 1];
             if (validOptions.includes(combined)) {
               result.push(combined);
-              i++; // пропускаем следующий, т.к. он уже включён в объединённое значение
+              i++;
             } else {
               result.push(parts[i]);
             }
@@ -121,10 +119,8 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
         }
         return result;
       };
-
-      // Получаем список валидных значений для benefits из selectBlocks
-      const benefitsOptions = selectBlocks.find((b) => b.name === 'benefits')?.options.map((o) => o.value) || [];
-      // Аналогично можно сделать для других полей, если требуется
+ 
+      const benefitsOptions = selectBlocks.find((b) => b.name === 'benefits')?.options.map((o) => o.value) || [];     
       const skillsOptions = selectBlocks.find((b) => b.name === 'skills')?.options.map((o) => o.value) || [];
       const directionOptions = selectBlocks.find((b) => b.name === 'direction')?.options.map((o) => o.value) || [];
       const experienceOptions = selectBlocks.find((b) => b.name === 'experience')?.options.map((o) => o.value) || [];
@@ -208,9 +204,6 @@ export default function FormEditVacancy({ setIsModalOpen, selectedFilter, editVa
     }));
   }, []);
 
-  const closeModal = useCallback(() => {
-    setIsModalOpen(false);
-  }, [setIsModalOpen]);
 
   return (
     <div className={styles.form_container}>
