@@ -1,25 +1,39 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize');
+
 module.exports = (sequelize, DataTypes) => {
   class Staff extends Model {
-    /**
-     * Helper method for defining associations.
-     * This method is not a part of Sequelize lifecycle.
-     * The `models/index` file will call this method automatically.
-     */
-    static associate({User}) {
-      this.belongsTo(User, { foreignKey: 'userId' });
+    static associate({ User }) {
+      this.belongsTo(User, { foreignKey: 'userId', as: 'author' });
     }
   }
+
   Staff.init(
     {
-      name: DataTypes.STRING,
-      img: DataTypes.TEXT,
-      category: DataTypes.STRING,
+      userId: { type: DataTypes.INTEGER, allowNull: true },
+
+      name: { type: DataTypes.STRING, allowNull: false },
       position: DataTypes.STRING,
+      img: DataTypes.TEXT,
       description: DataTypes.TEXT,
+      category: {
+        type: DataTypes.JSONB,
+        allowNull: true,
+        get() {
+          const v = this.getDataValue('category');
+          if (!v) return [];
+          return Array.isArray(v) ? v : [v];
+        },
+        set(val) {
+          this.setDataValue('category', Array.isArray(val) ? val : val ? [val] : []);
+        },
+      },
+      profileContent: DataTypes.TEXT,
+      contentFormat: { type: DataTypes.STRING, defaultValue: 'markdown' },
+      isVisible: { type: DataTypes.BOOLEAN, defaultValue: true },
+      sortIndex: { type: DataTypes.INTEGER, defaultValue: 0 },
+
+      // — старые поля для обратной совместимости —
       about: DataTypes.TEXT,
       about1: DataTypes.TEXT,
       about2: DataTypes.TEXT,
@@ -44,21 +58,29 @@ module.exports = (sequelize, DataTypes) => {
       about21: DataTypes.TEXT,
       about22: DataTypes.TEXT,
       about23: DataTypes.TEXT,
-      description1: DataTypes.TEXT,
       about24: DataTypes.TEXT,
-      description2: DataTypes.TEXT,
       about25: DataTypes.TEXT,
       about26: DataTypes.TEXT,
       about27: DataTypes.TEXT,
       about28: DataTypes.TEXT,
       about29: DataTypes.TEXT,
       about30: DataTypes.TEXT,
-      userId: DataTypes.INTEGER,
+      description1: DataTypes.TEXT,
+      description2: DataTypes.TEXT,
     },
     {
       sequelize,
       modelName: 'Staff',
+      paranoid: true,
+      timestamps: true,
+      indexes: [
+        { fields: ['sortIndex'] },
+        { fields: ['isVisible'] },
+        { using: 'GIN', fields: ['category'] },
+        { fields: ['sortIndex', 'createdAt'] },
+      ],
     },
   );
+
   return Staff;
 };

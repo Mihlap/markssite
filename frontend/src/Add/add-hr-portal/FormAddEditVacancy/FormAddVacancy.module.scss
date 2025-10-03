@@ -4,40 +4,28 @@
   padding: 1.62rem 1rem 1.75rem 2rem;
 
   &__block_form {
-    /* Прячем стандартный скроллбар для Firefox и IE/Edge */
     scrollbar-width: none;
-    /* Для Firefox */
     -ms-overflow-style: none;
-    /* Для Internet Explorer и Edge */
-
     padding-right: 15px;
-    /* Отступ от правого края */
   }
 
   &__block_form::-webkit-scrollbar {
     width: 5px;
-    /* Ширина скролла */
   }
 
   &__block_form::-webkit-scrollbar-track {
     background-color: #f5f5f5;
-    /* Цвет фона трека */
   }
 
   &__block_form::-webkit-scrollbar-thumb {
     background-color: #948e8e;
-    /* Цвет самого скролла */
-    border-radius: 10px;
-    /* Скругление углов */
-    width: 5px;
-    /* Ширина бегунка */
-    height: 30px;
-    /* Устанавливаем фиксированную высоту для бегунка */
+    border-radius: 10px;  
+    width: 5px; 
+    height: 30px;   
   }
 
   &__block_form::-webkit-scrollbar-thumb:hover {
     background-color: #555;
-    /* Цвет скролла при наведении */
   }
 
   &__form {
@@ -59,7 +47,7 @@
   &__notification {
     position: fixed;
     top: 20px;
-    right: 12px; // начальная позиция справа за пределами экрана
+    right: 12px;
     font-family: var(--font-raleway);
     background-color: var(--white-F6F6F6);
     color: var(--black-1D2E43);
@@ -70,7 +58,7 @@
     transition: right 0.5s;
 
     &.show {
-      right: 20px; // конечная позиция в пределах экрана
+      right: 20px;
     }
   }
 
@@ -114,7 +102,6 @@
       font-weight: 400;
       line-height: 24px;
       margin-right: 8px;
-      /* Отступ между текстом и кнопкой */
     }
 
     &:hover {
@@ -142,8 +129,7 @@
       font-style: normal;
       font-weight: 400;
       line-height: 24px;
-      margin-right: 8px;
-      /* Отступ между текстом и кнопкой */
+      margin-right: 8px;   
     }
 
     &:hover {
@@ -305,12 +291,10 @@
 
 .form__field:focus {
   border-color: var(--blue-75BBFD);
-  /* Замените var(--your-focus-color) на цвет, который вы хотите использовать при фокусе */
 }
 
 .form__field:focus::caret {
   color: var(--your-caret-color);
-  /* Замените var(--your-caret-color) на желаемый цвет */
 }
 
 .form__field::placeholder {
@@ -319,10 +303,8 @@
 
 .form__field:not(:placeholder-shown) ~ .form__label {
   font-size: 0.8rem;
-  /* Уменьшите размер метки */
   cursor: text;
   top: 5px;
-  /* Уменьшите отступ сверху */
   font-weight: var(--fw-400);
   color: var(--light-gray-C0C5CB);
 }

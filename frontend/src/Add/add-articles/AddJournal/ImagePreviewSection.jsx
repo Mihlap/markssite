@@ -1,4 +1,3 @@
-import React from 'react';
 import styles from './ImagePreviewSection.module.scss';
 
 export default function ImagePreviewSection({ images = [], onRemove, isLoading }) {

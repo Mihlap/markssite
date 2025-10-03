@@ -88,7 +88,11 @@ const Slide = ({
     {deleteModalStateSlide[el.id] && (
       <div className={styles.delete_modal_container}>
         <div className={styles.delete_modal_block}>
-          <div className={styles.delete_modal_block__title}>Вы точно хотите удалить слайд «Слайд {el.id}»?</div>
+          <div className={styles.delete_modal_block__title}>
+            Вы точно хотите
+            <br />
+            удалить «Слайд {el.id}»?
+          </div>
           <p className={styles.delete_modal_block__text}>Удаленный слайд вернуть будет невозможно</p>
           <div className={styles.button_block}>
             <button className={styles.button_block__cancel} onClick={() => handleDeleteModalCloseSlide(el.id)} />

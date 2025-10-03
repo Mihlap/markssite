@@ -1,4 +1,3 @@
-import React from 'react';
 import styles from './ConstructorPage.module.scss';
 
 import svg1 from './svg/Group4650.svg';

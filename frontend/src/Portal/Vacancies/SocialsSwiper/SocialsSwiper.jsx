@@ -1,4 +1,4 @@
-import React, { useRef, useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import styles from './SocialsSwiper.module.scss';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -11,7 +11,7 @@ import 'swiper/css/navigation';
 import social_1 from '../icons/socials-swiper-1.svg';
 import social_2 from '../icons/socials-swiper-2.svg';
 import social_3 from '../icons/socials-swiper-3.svg';
-import social_4 from '../icons/socials-swiper-4.svg';
+// import social_4 from '../icons/socials-swiper-4.svg';
 import social_5 from '../icons/socials-swiper-5.svg';
 import social_6 from '../icons/socials-swiper-6.svg';
 import social_7 from '../icons/socials-swiper-7.svg';
@@ -36,12 +36,12 @@ const socialsArray = [
     subtitle: 'MARKS DIGITAL',
     link: 'https://t.me/digitalmarks',
   },
-  {
-    picture: social_4,
-    title: 'Telegram',
-    subtitle: 'Проект Молодёжь',
-    link: 'https://t.me/marks_molodezh',
-  },
+  // {
+  //   picture: social_4,
+  //   title: 'Telegram',
+  //   subtitle: 'Проект Молодёжь',
+  //   link: 'https://t.me/marks_molodezh',
+  // },
   {
     picture: social_5,
     title: 'Дзен',
@@ -93,10 +93,8 @@ const SocialsSwiper = () => {
           <span>социальных сетях!</span>
         </h2>
       </div>
-      <div className={styles.SocialsSwiper__slider}>
-        {/* Переиспользуемый компонент - стрелки для свайпера */}
+      <div className={styles.SocialsSwiper__slider}>      
         <ArrowsSwiper prevRef={prevRef} nextRef={nextRef} />
-        {/* Свайпер с социальными сетями  */}
         <Swiper
           className={styles.SocialsSwiper__swiper}
           ref={swiperRef}

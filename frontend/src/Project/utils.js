@@ -189,32 +189,24 @@ export const onWheel = (el, e, enableVerticalScroll, isHorizontalScroll, setIsHo
   }
 };
 
-// Функция проверки наличия тегов списка в HTML строке
 export const containsListTags = (htmlString) => {
-  // Проверяем наличие тегов <ul> и <li> для неупорядоченного списка
-  // или <ol> и <li> для упорядоченного списка
   return (
     /<ul\b[\s\S]*?<li\b[\s\S]*?>[\s\S]*?<\/li>[\s\S]*?<\/ul>/i.test(htmlString) ||
     /<ol\b[\s\S]*?<li\b[\s\S]*?>[\s\S]*?<\/li>[\s\S]*?<\/ol>/i.test(htmlString)
   );
 };
 
-// Функция преобразования тегов списка с точками и номерами
-export const renderListWithDots = (htmlString) => {
-  // Заменяем неразрывные пробелы на обычные пробелы, чтобы корректно обрабатывать введённые пробелы
-  // const withSpaces = htmlString.replace(/&nbsp;/g, ' ');
 
-  // Заменяем обычные пробелы на неразрывные для корректного отображения
+export const renderListWithDots = (htmlString) => {
+
   const withNonBreakingSpaces = htmlString.replace(/ {2}/g, ' &nbsp;');
 
-  // Заменяем теги <ul> и <li> для неупорядоченного списка
   let newListHTML = withNonBreakingSpaces.replace(/<ul\b[^>]*>[\s\S]*?<\/ul>/gi, (ulMatch) => {
     return ulMatch.replace(/<li\b([^>]*)>([\s\S]*?)<\/li>/gi, (liMatch, liAttributes, liContent) => {
       return processListItem(liAttributes, liContent);
     });
   });
 
-  // Заменяем теги <ol> и <li> для упорядоченного списка
   newListHTML = newListHTML.replace(/<ol\b[^>]*>[\s\S]*?<\/ol>/gi, (olMatch) => {
     let order = 1;
     return olMatch.replace(/<li\b([^>]*)>([\s\S]*?)<\/li>/gi, (liMatch, liAttributes, liContent) => {
@@ -227,12 +219,10 @@ export const renderListWithDots = (htmlString) => {
     });
   });
 
-  // Обработка отступов для тегов <p>
   newListHTML = newListHTML.replace(/<p\b([^>]*)>([\s\S]*?)<\/p>/gi, (pMatch, pAttributes, pContent) => {
     return processParagraph(pAttributes, pContent);
   });
 
-  // Возвращаем обработанную строку
   return newListHTML;
 };
 

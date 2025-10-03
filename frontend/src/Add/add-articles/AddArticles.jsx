@@ -29,23 +29,25 @@ export default function AddArticles({ user }) {
           <div className={styles.card_components_admin__title}>Публикации</div>
         </div>
         <div className={styles.card_components_admin__buttonFilter}>
-          {filters.map((filter, index) => (
-            <button
-              key={index}
-              className={`${styles.card_components_admin__buttonFilter__group} ${
-                activeButtonIndex === index ? styles.activeButtonVacancy : ''
-              } ${index === 0 ? styles.noAnimation : ''}`}
-              onClick={() => handleFilterChange(filter, index)}>
-              <img
-                className={`${styles.card_components_admin__buttonFilter__icons} ${
-                  activeButtonIndex === index ? styles.activeIcon : ''
-                }`}
-                src={icons[index]}
-                alt={filter}
-              />
-              {filter}
-            </button>
-          ))}
+          <div className={styles.buttonFilterStrip}>
+            {filters.map((filter, index) => (
+              <button
+                key={index}
+                className={`${styles.card_components_admin__buttonFilter__group} ${
+                  activeButtonIndex === index ? styles.activeButtonVacancy : ''
+                } ${index === 0 ? styles.noAnimation : ''}`}
+                onClick={() => handleFilterChange(filter, index)}>
+                <img
+                  className={`${styles.card_components_admin__buttonFilter__icons} ${
+                    activeButtonIndex === index ? styles.activeIcon : ''
+                  }`}
+                  src={icons[index]}
+                  alt={filter}
+                />
+                {filter}
+              </button>
+            ))}
+          </div>
         </div>
         <div>{selectedFilter === 'Новости' ? <AddNews user={user} /> : <AddJournal user={user} />}</div>
       </div>

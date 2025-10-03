@@ -1,6 +1,6 @@
 import frame4 from '../icons/frame/frame4.svg';
 import frame5 from '../icons/frame/frame5.svg';
-import frame6 from '../icons/frame/frame6.svg';
+// import frame6 from '../icons/frame/frame6.svg';
 import frame7 from '../icons/frame/frame7.svg';
 import frame8 from '../icons/frame/frame8.svg';
 import frame9 from '../icons/frame/frame9.svg';
@@ -16,9 +16,9 @@ import frame19 from '../icons/frame/frame19.svg';
 
 const benefitsData = [
   { title: 'Менторство и наставничество', icon: frame4, typographed: 'Менторство и&nbsp;наставничество' },
-  { title: 'Фруктовый понедельник', icon: frame6 },
+  // { title: 'Фруктовый понедельник', icon: frame6 },
   { title: 'Корпоративный английский', icon: frame5 },
-  { title: 'НС и ДМС со стоматологией', icon: frame7, typographed: 'НС и&nbsp;ДМС со&nbsp;стоматологией' },
+  { title: 'ДМС, полис ВЗР Страхование жизни', icon: frame7, typographed: 'ДМС,&nbsp;полис ВЗР, Страхование жизни' },
   { title: 'Занятие в фитнес клубе', icon: frame8, typographed: 'Занятие в&nbsp;фитнес клубе' },
   { title: 'Командные виды спорта, йога', icon: frame9 },
   { title: 'Библиотека профессиональной литературы', icon: frame19 },
@@ -26,9 +26,9 @@ const benefitsData = [
   { title: 'Корпоративное такси для встреч', icon: frame11 },
   { title: 'Зажигательные корпоративы', icon: frame13 },
   {
-    title: 'Адаптация и досуг от совета молодых специалистов',
+    title: 'Адаптация и досуг молодых специалистов',
     icon: frame12,
-    typographed: 'Адаптация и&nbsp;досуг от&nbsp;совета молодых специалистов',
+    typographed: 'Адаптация и досуг молодых специалистов',
   },
   {
     title: 'Обучение и карьерный рост',

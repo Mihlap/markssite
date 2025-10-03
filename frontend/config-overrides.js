@@ -1,23 +1,17 @@
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 const JavaScriptObfuscator = require('webpack-obfuscator');
 
-module.exports = function override(config, env) {
+function webpack(config, env) {
   if (env === 'production') {
-
     config.devtool = false;
-    
+
     config.optimization = {
       ...config.optimization,
       minimizer: [
-        ...(config.optimization.minimizer || []),
+        ...(config.optimization?.minimizer || []),
         new CssMinimizerPlugin({
           minimizerOptions: {
-            preset: [
-              'default',
-              {
-                discardComments: { removeAll: true },
-              },
-            ],
+            preset: ['default', { discardComments: { removeAll: true } }],
           },
           parallel: true,
         }),
@@ -30,12 +24,10 @@ module.exports = function override(config, env) {
           controlFlowFlattening: true,
           controlFlowFlatteningThreshold: 0.75,
           deadCodeInjection: false,
-          deadCodeInjectionThreshold: 0.4,
           debugProtection: true,
           debugProtectionInterval: 4000,
           disableConsoleOutput: true,
           domainLock: ['marksgroup.ru', 'www.marksgroup.ru'],
-          log: false,
           mangle: true,
           renameGlobals: false,
           rotateStringArray: true,
@@ -50,18 +42,15 @@ module.exports = function override(config, env) {
     );
   }
   return config;
-};
+}
 
-module.exports = {
-  devServer: (configFunction) => {
-    return (proxy, allowedHost) => {  
-      const config = configFunction(proxy, allowedHost);    
-        config.client = {
-          ...config.client,
-          overlay: false,
-        };   
-      config.allowedHosts = ['all'];   
-      return config;
-    };
-  },
-};
+function devServer(configFunction) {
+  return (proxy, allowedHost) => {
+    const config = configFunction(proxy, allowedHost);
+    config.client = { ...config.client, overlay: false };
+    config.allowedHosts = 'all';
+    return config;
+  };
+}
+
+module.exports = { webpack, devServer };
