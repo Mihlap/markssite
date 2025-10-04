@@ -1,24 +1,52 @@
 const JavaScriptObfuscator = require('webpack-obfuscator');
+const TerserPlugin = require('terser-webpack-plugin');
+const CssMinimizerPlugin = require('css-minimizer-webpack-plugin');
 
 module.exports = {
   webpack: (config, env) => {
     const isProd = env === 'production';
-
     config.cache = { type: 'filesystem' };
 
     if (isProd) {
-      process.env.GENERATE_SOURCEMAP = 'false';
+      // process.env.GENERATE_SOURCEMAP = 'false';
       config.devtool = false;
 
-      const EXCLUDES = [
-        '**/static/js/*.js',
-        '!**/static/js/main.*.js',
-        '**/*.map',
-        '**/static/js/*mapbox*.js',
-        '**/static/js/*react-map-gl*.js',
+      config.plugins = (config.plugins || []).filter(
+        (p) => (p && p.constructor && p.constructor.name) !== 'ESLintWebpackPlugin'
+      );
+
+      config.optimization = {
+        ...config.optimization,
+        minimize: true,
+        minimizer: [
+          new TerserPlugin({
+            parallel: true,
+            extractComments: false,
+            terserOptions: {
+              compress: { passes: 1, drop_console: true, drop_debugger: true },
+              mangle: true,
+              format: { comments: false },
+            },
+          }),
+          new CssMinimizerPlugin({
+            parallel: true,
+            minimizerOptions: { preset: ['default', { discardComments: { removeAll: true } }] },
+          }),
+        ],
+      };
+
+      const OBFUSCATOR_EXCLUDES = [
+        '**/static/js/*.chunk.js',
         '**/static/js/runtime-*.js',
         '**/static/js/vendors~*.js',
         '**/static/js/vendor*.js',
+        '**/*.map',     
+        '**/static/js/*mapbox*.js',
+        '**/static/js/*react-map-gl*.js',
+        '**/static/js/*three*.js',
+        '**/static/js/*mediapipe*.js',
+        '**/static/js/*katex*.js',
+        '**/static/js/*quill*.js',
       ];
 
       config.plugins.push(
@@ -27,19 +55,17 @@ module.exports = {
             compact: true,
             controlFlowFlattening: false,
             deadCodeInjection: false,
-            debugProtection: true,
+            debugProtection: false,
             debugProtectionInterval: 0,
             disableConsoleOutput: true,
-            domainLock: ['marksgroup.ru', 'www.marksgroup.ru'],
             mangle: true,
+            domainLock: ['marksgroup.ru', 'www.marksgroup.ru'],
             rotateStringArray: false,
             selfDefending: false,
-            stringArray: true,
-            stringArrayEncoding: ['base64'],
-            stringArrayThreshold: 0.2,
+            stringArray: false,
             unicodeEscapeSequence: false,
           },
-          EXCLUDES
+          OBFUSCATOR_EXCLUDES
         )
       );
     }
@@ -51,6 +77,7 @@ module.exports = {
     return (proxy, allowedHost) => {
       const config = configFunction(proxy, allowedHost);
       config.allowedHosts = 'all';
+      config.client = { ...(config.client || {}), overlay: false };
       return config;
     };
   },
