@@ -61,7 +61,7 @@
   "scripts": {
     "start": "react-app-rewired start",
     "dev": "react-scripts start",
-     "build": "cross-env GENERATE_SOURCEMAP=false react-app-rewired build",
+    "build": "cross-env GENERATE_SOURCEMAP=false react-app-rewired build",
     "test": "react-app-rewired test",
     "eject": "react-scripts eject",
     "format": "prettier --write ."
@@ -111,6 +111,8 @@
   "devDependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "autoprefixer": "^10.4.20",
+    "babel-plugin-transform-remove-console": "^6.9.4",
+    "cross-env": "^10.1.0",
     "css-minimizer-webpack-plugin": "^7.0.2",
     "postcss": "8.4.31",
     "postcss-import": "^16.1.0",
