@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import styles from './SliderHeader.module.scss';
 
 const awardsImages = [
@@ -12,6 +12,8 @@ const awardsImages = [
   { src: './assets/6.png', alt: 'award6' },
   { src: './assets/9.png', alt: 'award9' },
   { src: './assets/10.png', alt: 'award10' },
+  { src: './assets/11.svg', alt: 'award11' },
+  { src: './assets/12.svg', alt: 'award12' },
 ];
 
 const companiesImages = [
