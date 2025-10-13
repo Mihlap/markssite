@@ -16,7 +16,19 @@ export default function ConstructorPage({ handleClick }) {
       {/* Текст в рамочке */}
       <div
         className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockEight}`}
-        onClick={() => handleClick([{ type: 'textarea', label: 'Текстовый блок в рамке', required: true }], 2)}>
+        onClick={() =>
+          handleClick(
+            [
+              {
+                type: 'textarea',
+                label: 'Текстовый блок в рамке',
+                placeholder: 'Нет ограничения по символам',
+                required: true,
+              },
+            ],
+            2
+          )
+        }>
         <img className={styles.div_conteiner__blockEight_img} src={svg10} alt="10" />
       </div>
 
@@ -27,7 +39,7 @@ export default function ConstructorPage({ handleClick }) {
           handleClick(
             [
               { type: 'file', label: 'Изображение', required: true },
-              { type: 'text', label: 'Описание', required: false },
+              { type: 'text', label: '', placeholder: 'Описание', required: false },
             ],
             3
           )
@@ -41,21 +53,17 @@ export default function ConstructorPage({ handleClick }) {
         onClick={() =>
           handleClick(
             [
-              { type: 'file', label: 'Автор цитаты', required: false },
-              {
-                type: 'text',
-                label: 'ФИО/Описание',
-                required: true,
-              },
-              { type: 'textarea', label: 'Цитата', required: true },
+              { type: 'file', label: 'Автор цитаты', required: false, pairKey: 'quoteAuthor' },
+              { type: 'text', placeholder: 'ФИО/Описание', required: true, pairKey: 'quoteAuthor' },
+              { type: 'textarea', label: 'Цитата', placeholder: 'Нет ограничения по символам', required: true },
             ],
             4
           )
         }>
         <div className={styles.block_quote_img}>
-          <img className={styles.div_conteiner__blockNine_imgLeft} src={quoteLeft} alt="ковычки вверх" />
+          <img className={styles.div_conteiner__blockNine_imgLeft} src={quoteLeft} alt="кавычки вверх" />
           <img src={svg10} alt="svg_10" />
-          <img src={quoteRight} className={styles.div_conteiner__blockNine_imgRight} alt="ковычки вниз" />
+          <img src={quoteRight} className={styles.div_conteiner__blockNine_imgRight} alt="кавычки вниз" />
         </div>
       </div>
 
@@ -66,10 +74,22 @@ export default function ConstructorPage({ handleClick }) {
         <img src={svg2} alt="markdown" />
       </div>
 
-      {/* Текст заметки */}
+      {/* Текстовый блок выделенный*/}
       <div
         className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockTen}`}
-        onClick={() => handleClick([{ type: 'textarea', label: 'Текст заметки', required: true }], 5)}>
+        onClick={() =>
+          handleClick(
+            [
+              {
+                type: 'textarea',
+                label: 'Текстовый блок выделенный',
+                placeholder: 'Нет ограничения по символам',
+                required: true,
+              },
+            ],
+            5
+          )
+        }>
         <img src={svg9} alt="svg_9" />
       </div>
 
@@ -80,13 +100,14 @@ export default function ConstructorPage({ handleClick }) {
           handleClick(
             [
               { type: 'file', label: 'Изображение', required: false },
-              { type: 'textarea', label: 'Интересный факт', required: true },
-              { type: 'file', label: 'Портрет сотрудника', required: false },
               {
-                type: 'text',
-                label: 'ФИО/Описание',
+                type: 'textarea',
+                label: 'Интересный факт',
+                placeholder: 'Нет ограничения по символам',
                 required: true,
               },
+              { type: 'file', label: 'Портрет сотрудника', required: false, pairKey: 'factPortrait' },
+              { type: 'text', label: '', placeholder: 'ФИО/Описание', required: true, pairKey: 'factPortrait' },
             ],
             4
           )
@@ -99,14 +120,38 @@ export default function ConstructorPage({ handleClick }) {
       {/* блок описание с фоном */}
       <div
         className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockFive}`}
-        onClick={() => handleClick([{ type: 'textarea', label: 'Текст с фоном', required: true }], 1)}>
+        onClick={() =>
+          handleClick(
+            [
+              {
+                type: 'textarea',
+                label: 'Текстовый блок с фоном',
+                placeholder: 'Нет ограничения по символам',
+                required: true,
+              },
+            ],
+            1
+          )
+        }>
         <img src={svg3} alt="svg_3" />
       </div>
 
-      {/* блок описание с точкой*/}
+      {/* Текстовый блок с точкой*/}
       <div
         className={`${styles.div_conteiner__item} ${styles.div_conteiner__blockSix}`}
-        onClick={() => handleClick([{ type: 'textarea', label: 'Блок описание', required: true }], 1)}>
+        onClick={() =>
+          handleClick(
+            [
+              {
+                type: 'textarea',
+                label: 'Текстовый блок с точкой',
+                placeholder: 'Нет ограничения по символам',
+                required: true,
+              },
+            ],
+            1
+          )
+        }>
         <img src={svg6} alt="svg_6" />
       </div>
     </div>

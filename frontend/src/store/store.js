@@ -1,7 +1,7 @@
 import { configureStore } from '@reduxjs/toolkit';
 import projectSlice from './Slice/projectSlice';
 import staffSlice from './Slice/StaffSlice';
-import StaffSliceNew from './Slice/StaffSliceNew';
+// import StaffSliceNew from './Slice/StaffSliceNew';
 import counterSlice from './Slice/counterSlice';
 import articleSlice from './Slice/articleSlice';
 import searchProjectMainSlice from './Slice/searchProjectMainSlice';

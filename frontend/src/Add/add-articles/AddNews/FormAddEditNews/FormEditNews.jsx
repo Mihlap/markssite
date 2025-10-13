@@ -197,8 +197,7 @@ export default function FormEditNews({ setIsModalOpen, editArticleData }) {
       setIsModalOpen(false);
     },
     [dispatch, editArticleData, inputData, selectedCompetencies, dynamicData, setIsModalOpen]
-  );
-  const closeModal = useCallback(() => setIsModalOpen(false), [setIsModalOpen]);
+  ); 
 
   const handlerOpenConstructor = useCallback(() => setOpenConstructor((o) => !o), []);
 
