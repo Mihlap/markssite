@@ -12,6 +12,7 @@ import {
 import { fetchStaffCategoryTogglesAsync, updateStaffCategoryToggleAsync } from '../../store/Slice/toggleSlice';
 
 import FormAddStaff from './FormAddEditStaff/FormAddStaff';
+import FormEditStaff from './FormAddEditStaff/FormEditStaff';
 import Edit from '../icon/Edit.svg';
 import Look from '../icon/eye.svg';
 import NoLook from '../icon/eye2.svg';
@@ -196,8 +197,6 @@ export default function AddCompany({ user }) {
     setIsModalOpen(true);
   }, []);
 
-  const closeModal = useCallback(() => setIsModalOpen(false), []);
-
   const openDeleteModal = useCallback((id) => setDeleteModalState((p) => ({ ...p, [id]: true })), []);
 
   const closeDeleteModal = useCallback((id) => {
@@ -380,12 +379,29 @@ export default function AddCompany({ user }) {
         {isModalOpen && (
           <div className={styles.card_components_admin__modal_container}>
             <div style={{ maxHeight: modalBlockHeight }} className={styles.card_components_admin__modal_block}>
-              <FormAddStaff
-                initial={editData}
-                onClose={closeModal}
-                registerCloseGuard={(fn) => (closeGuardRef.current = fn)}
-                currentCategory={currentCategory}
-              />
+              {editData ? (
+                <FormEditStaff
+                  key={`edit-${editData.id}`}
+                  initial={editData}
+                  onClose={() => {
+                    setIsModalOpen(false);
+                    setEditData(null);
+                  }}
+                  registerCloseGuard={(fn) => (closeGuardRef.current = fn)}
+                  currentCategory={currentCategory}
+                />
+              ) : (
+                <FormAddStaff
+                  key="add"
+                  initial={null}
+                  onClose={() => {
+                    setIsModalOpen(false);
+                    setEditData(null);
+                  }}
+                  registerCloseGuard={(fn) => (closeGuardRef.current = fn)}
+                  currentCategory={currentCategory}
+                />
+              )}
             </div>
           </div>
         )}

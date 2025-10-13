@@ -25,6 +25,8 @@ import nameCompany from '../icons/nameCompany.svg';
 import nameCompany1 from '../icons/nameCompany1.svg';
 // import nameCompany1 from '../icons/newYear1.svg';
 import img123 from './img/Главная.png';
+import mainIcon from '../icons/main.svg';
+
 
 SwiperCore.use([Navigation]);
 
@@ -192,6 +194,16 @@ const Header = React.memo(
                   <source src={videoSrc} type="video/mp4" />
                 </video>
               )}
+            </div>
+            <div className={styles.heroBadge}>
+              <img className={styles.mainIcon} src={mainIcon} alt="" aria-hidden="true" />
+              <span className={styles.heroBadgeText}>
+                Лучший
+                <br />
+                проектировщик
+                <br />
+                жилья в России
+              </span>
             </div>
             <div className={styles.nameCompanyContainer}>
               <img src={imageSrc} alt={nameCompany} />

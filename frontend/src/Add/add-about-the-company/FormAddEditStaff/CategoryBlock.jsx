@@ -23,7 +23,21 @@ export default memo(function CategoryBlock({
   const selectApiRef = useRef(null);
   const timerRef = useRef(null);
 
+  const locked = Boolean(isEditing && currentCategory);
+ 
+  const options = useMemo(() => {
+    if (locked) {
+      const only = CATEGORY_OPTIONS.find((o) => o.value === currentCategory);
+      return only ? [only] : [];
+    }
+    return CATEGORY_OPTIONS;
+  }, [locked, currentCategory]);
+
   const value = useMemo(() => {
+    if (locked) {
+      const only = options[0] || null;
+      return only ? [only] : [];
+    }
     const curArr = Array.isArray(inputData?.category) ? inputData.category : [];
     if (curArr.length > 0) {
       return curArr
@@ -35,13 +49,19 @@ export default memo(function CategoryBlock({
       return categoryOption ? [categoryOption] : [];
     }
     return [];
-  }, [inputData?.category, currentCategory]);
-
+  }, [locked, options, inputData?.category, currentCategory]);
+ 
   useEffect(() => {
     if (!isEditing && currentCategory && (!inputData.category || inputData.category.length === 0)) {
       setInputData((p) => ({ ...p, category: [currentCategory] }));
     }
   }, [currentCategory, isEditing, inputData.category, setInputData]);
+
+  useEffect(() => {
+    if (locked) {
+      setInputData((p) => ({ ...p, category: currentCategory ? [currentCategory] : [] }));
+    }
+  }, [locked, currentCategory, setInputData]);
 
   useEffect(() => {
     return () => {
@@ -57,8 +77,7 @@ export default memo(function CategoryBlock({
       if (!inside) {
         try {
           selectApiRef.current?.blur?.();
-        } catch (e) {    
-        }
+        } catch {}
         setHasFocus(false);
         setIsFocused?.(false);
       }
@@ -66,18 +85,19 @@ export default memo(function CategoryBlock({
   };
 
   const handleChange = (selected) => {
+    if (locked) return;
     const vals = Array.isArray(selected) ? selected.map((s) => s.value) : [];
     setInputData((p) => ({ ...p, category: vals }));
     commitBlurIfOutside(10);
   };
 
   const isOptionDisabled = (option) => {
-    if (!isEditing && currentCategory && option.value === currentCategory) return true;
+    if (!locked && !isEditing && currentCategory && option.value === currentCategory) return true;
     return false;
   };
 
   const MultiValueRemove = (props) => {
-    const isDefault = props?.data?.value === currentCategory && !isEditing;
+    const isDefault = props?.data?.value === currentCategory && !isEditing && !locked;
     if (isDefault) return null;
     return <components.MultiValueRemove {...props} />;
   };
@@ -93,39 +113,22 @@ export default memo(function CategoryBlock({
       innerProps?.onMouseLeave?.(e);
     };
     return (
-      <components.MenuList
-        {...props}
-        innerProps={{
-          ...innerProps,
-          onMouseEnter,
-          onMouseLeave,
-        }}
-        innerRef={innerRef}
-      />
+      <components.MenuList {...props} innerProps={{ ...innerProps, onMouseEnter, onMouseLeave }} innerRef={innerRef} />
     );
   };
- 
+
   const InteractiveOption = (props) => {
     const { innerProps = {} } = props;
     const onMouseEnter = (e) => {
       setPointerInsideMenu(true);
       innerProps.onMouseEnter?.(e);
     };
-    const onMouseLeave = (e) => {   
+    const onMouseLeave = (e) => {
       innerProps.onMouseLeave?.(e);
     };
-    return (
-      <components.Option
-        {...props}
-        innerProps={{
-          ...innerProps,
-          onMouseEnter,
-          onMouseLeave,
-        }}
-      />
-    );
+    return <components.Option {...props} innerProps={{ ...innerProps, onMouseEnter, onMouseLeave }} />;
   };
- 
+
   const mergedStyles = {
     ...customStyles,
     control: (base, state) => {
@@ -139,52 +142,43 @@ export default memo(function CategoryBlock({
         boxShadow: 'none',
         outline: 'none',
         transition: 'border-color 120ms ease',
-        '&:hover': {
-          borderBottom: `1px solid ${borderColor}`,
-        },
+        '&:hover': { borderBottom: `1px solid ${borderColor}` },      
+        backgroundColor: 'transparent',
+        opacity: locked ? 1 : undefined,
+        cursor: locked ? 'default' : 'text',
       };
     },
-
     multiValue: (base, state) => {
-      const baseFromCustom =
-        typeof customStyles.multiValue === 'function' ? customStyles.multiValue(base, state) : base;
+      const fromCustom = typeof customStyles.multiValue === 'function' ? customStyles.multiValue(base, state) : base;
       return {
-        ...baseFromCustom,
+        ...fromCustom,
         marginRight: 11,
         cursor: state?.data?.value === currentCategory && !isEditing ? 'default' : 'pointer',
       };
     },
-
     multiValueLabel: (base, state) => {
-      const baseFromCustom =
+      const fromCustom =
         typeof customStyles.multiValueLabel === 'function' ? customStyles.multiValueLabel(base, state) : base;
       const isDefault = state?.data?.value === currentCategory && !isEditing;
       return {
-        ...baseFromCustom,
-        color: isDefault ? '#75BBFD' : baseFromCustom.color,
+        ...fromCustom,
+        color: isDefault ? '#75BBFD' : fromCustom.color,
         cursor: isDefault ? 'default' : 'pointer',
       };
     },
-
     multiValueRemove: (base, state) => {
-      const baseFromCustom =
+      const fromCustom =
         typeof customStyles.multiValueRemove === 'function' ? customStyles.multiValueRemove(base, state) : base;
       const isDefault = state?.data?.value === currentCategory && !isEditing;
-      return {
-        ...baseFromCustom,
-        marginLeft: 0,
-        cursor: isDefault ? 'default' : 'pointer',
-      };
+      return { ...fromCustom, marginLeft: 0, cursor: isDefault ? 'default' : 'pointer' };
     },
-
     dropdownIndicator: (base, state) => {
-      const baseFromCustom =
+      const fromCustom =
         typeof customStyles.dropdownIndicator === 'function' ? customStyles.dropdownIndicator(base, state) : base;
-      return { ...baseFromCustom, cursor: 'pointer' };
+      return { ...fromCustom, cursor: locked ? 'default' : 'pointer' };
     },
-
     option: (base, { isFocused, isSelected }) => {
-      const hoverBg = 'var(--light-blue-D4EDFB)';   
+      const hoverBg = 'var(--light-blue-D4EDFB)';
       const showBg = isFocused && (pointerInsideMenu || hasKeyboardNav);
       const background = showBg ? hoverBg : 'transparent';
       const color = 'var(--dark-gray-566272)';
@@ -193,9 +187,7 @@ export default memo(function CategoryBlock({
         background,
         color,
         cursor: isSelected && !isFocused ? 'default' : 'pointer',
-        ':active': {
-          background: showBg ? hoverBg : 'transparent',
-        },
+        ':active': { background: showBg ? hoverBg : 'transparent' },
       };
     },
   };
@@ -236,15 +228,10 @@ export default memo(function CategoryBlock({
     setHasKeyboardNav(false);
   };
 
-  const handleKeyDown = useCallback(
-    (e) => {
-      const keysThatIndicateNavigation = ['ArrowDown', 'ArrowUp', 'Enter', ' '];
-      if (keysThatIndicateNavigation.includes(e.key)) {
-        setHasKeyboardNav(true);
-      }
-    },
-    [setHasKeyboardNav]
-  );
+  const handleKeyDown = useCallback((e) => {
+    const keysThatIndicateNavigation = ['ArrowDown', 'ArrowUp', 'Enter', ' '];
+    if (keysThatIndicateNavigation.includes(e.key)) setHasKeyboardNav(true);
+  }, []);
 
   return (
     <div className={styles.form_container__block_gray_one} style={{ paddingTop: 0, marginBottom: 0 }} ref={outerRef}>
@@ -258,11 +245,12 @@ export default memo(function CategoryBlock({
         <Select
           ref={selectApiRef}
           styles={mergedStyles}
-          isMulti
+          isMulti={!locked}
           isClearable={false}
           isSearchable={false}
+          isDisabled={locked}
           name="category"
-          options={CATEGORY_OPTIONS}
+          options={options}
           className={styles.form__field}
           value={value}
           onChange={handleChange}
