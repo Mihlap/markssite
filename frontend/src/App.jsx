@@ -3,6 +3,7 @@ import { Route, Routes, useLocation } from 'react-router';
 import { HelmetProvider } from 'react-helmet-async';
 import './App.css';
 import Company from './Company/Company';
+// import CompanyNew from './Company/CompanyNew';
 import Header from './Header/Header';
 import Contacts from './Contacts/Contacts';
 import Project from './Project/Project';
@@ -48,7 +49,6 @@ import FooterCircle from './Footer/FooterCircle';
 import FooterForm from './Footer/FooterForm';
 import JournalMain from './Journal/JournalMain';
 import ArticleJournalPage from './Journal/JournalArticlePage/ArticleJournalPage';
-// import CompanyNew from './Company/CompanyNew';
 
 export default function App() {
   const user = useSelector((state) => state.auth.user);
